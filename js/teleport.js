@@ -13,6 +13,7 @@
 // is placed.
 
 import { rn1 } from './rng.js';
+import { update_player_regions, update_monster_region } from './region.js';
 import { m_into_limbo } from './mon.js';
 import { unstuck } from './mon.js';
 import { engulfing_u } from './const.js';
@@ -623,6 +624,7 @@ export async function rloc_to_core(mtmp, x, y, rlocflags) {
     const { mon_track_clear, set_apparxy } = await import('./monmove.js');
     mon_track_clear(mtmp);
     place_monster(mtmp, x, y);
+    update_monster_region(mtmp);
     newsym(x, y);
     set_apparxy(mtmp);
 
@@ -780,6 +782,8 @@ export async function teleds(nux, nuy, teleds_flags) {
     else if (ballUnplaced)
         await placebc();
 
+    // src/teleport.c:529, teleport updates membership without entry callbacks.
+    update_player_regions();
     newsym(ux0, uy0);           /* clear the old position */
     see_monsters();             /* clear or redraw old sensing glyphs */
     vision_recalc(0);           /* vision before effects */

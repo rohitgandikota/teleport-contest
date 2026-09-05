@@ -52,6 +52,7 @@ import { mdistu, mon_track_clear, m_everyturn_effect,
 // with the wrong number of monsters desynchronises on its very first turn.
 
 import { game } from './gstate.js';
+import { set_mon_data } from './mondata.js';
 import { get_wormno, initworm, place_worm_tail_randomly,
          worm_cross, worm_wire } from './worm.js';
 import { adjalign, change_luck, exercise } from './attrib.js';
@@ -94,7 +95,8 @@ import { MON_DETACH, P_DAGGER, P_SABER, M_AP_TYPE, M_AP_NOTHING, M_AP_MONSTER, S
          PLNMSG_UNKNOWN, PLNMSG_GROWL } from './const.js';
 import { NO_MM_FLAGS } from './const.js';
 import { PMNAMES, MONSYMS, MFLAGS, ATTKS, MSOUND, NUMMONS } from './monst_data.js';
-import { def_monsyms } from './drawing_data.js';
+import { def_monsyms, cmap_names } from './drawing_data.js';
+import { visible_region_at } from './region.js';
 import { NO_COLOR } from './terminal.js';
 
 import { has_ceiling, surface } from './dungeon.js';
@@ -132,11 +134,7 @@ import { M_POISONGAS_OK, M_POISONGAS_MINOR, M_POISONGAS_BAD } from './const.js';
    src/mon.c:44 LEVEL_SPECIFIC_NOCORPSE(); src/mon.c:549 KEEPTRAITS();
    include/you.h ALIGNLIM; include/youprop.h Blind_telepat;
    include/mondata.h always_hostile(); include/prop.h:25 res_to_mr() */
-const ofood = (o) => (o.otyp === ONAMES.CORPSE || o.otyp === ONAMES.EGG || o.otyp === ONAMES.TIN);
-const polyfood = (obj) =>
-    (ofood(obj) && obj.corpsenm >= LOW_PM
-     && (pm_to_cham(obj.corpsenm) !== NON_PM
-         || dmgtype(game.mons[obj.corpsenm], ATTKS.AD_POLY)));
+import { ofood, polyfood } from './obj.js';
 const mlevelgain = (obj) => (ofood(obj) && obj.corpsenm === PMNAMES.PM_WRAITH);
 const mhealup = (obj) => (ofood(obj) && obj.corpsenm === PMNAMES.PM_NURSE);
 const mstoning = (obj) =>
@@ -700,6 +698,9 @@ export function mfndpos(mon, data, flag) {
         lavaok = false;
     let rockok = false, treeok = false, mw_tmp;
     let thrudoor = ((flag & (ALLOW_WALL | BUSTDOOR)) !== 0);
+    const poisongas_ok = m_poisongas_ok(mon) === M_POISONGAS_OK;
+    let gas_reg = visible_region_at(x, y);
+    const in_poisongas = !!gas_reg && gas_reg.glyph_cmap === cmap_names.S_poisoncloud;
 
     if (flag & ALLOW_DIG) {
         /* need to be specific about what can currently be dug */
@@ -771,6 +772,12 @@ export function mfndpos(mon, data, flag) {
                     && (((loc.doormask & D_CLOSED) && !(flag & OPENDOOR))
                         || ((loc.doormask & D_LOCKED) && !(flag & UNLOCKDOOR)))
                     && !thrudoor)
+                    continue;
+
+                // src/mon.c:2240, avoid entering poison gas from outside it.
+                if (!poisongas_ok && !in_poisongas
+                    && (gas_reg = visible_region_at(nx, ny))
+                    && gas_reg.glyph_cmap === cmap_names.S_poisoncloud)
                     continue;
 
                 /* first diagonal checks (tight squeezes handled below) */
@@ -3363,6 +3370,19 @@ export async function mondead(mdef) {
         return;
     if (be_sad)
         await You('have a sad feeling for a moment, then it passes.');
+    const mptr = mdef.data; /* saved for m_detach light cleanup */
+    /* src/mon.c:3113, the remains and death count use the true species. */
+    if (ismnum(mdef.cham)) {
+        set_mon_data(mdef, game.mons[mdef.cham]);
+        mdef.cham = NON_PM;
+    } else if (mdef.mnum === PMNAMES.PM_WEREJACKAL) {
+        set_mon_data(mdef, game.mons[PMNAMES.PM_HUMAN_WEREJACKAL]);
+    } else if (mdef.mnum === PMNAMES.PM_WEREWOLF) {
+        set_mon_data(mdef, game.mons[PMNAMES.PM_HUMAN_WEREWOLF]);
+    } else if (mdef.mnum === PMNAMES.PM_WERERAT) {
+        set_mon_data(mdef, game.mons[PMNAMES.PM_HUMAN_WERERAT]);
+    }
+
     /* src/mon.c:3134 — mvitals[].died doubles as the total-dead count and
        the experience factor; #vanquished reads it */
     {
@@ -3391,7 +3411,7 @@ export async function mondead(mdef) {
     unmap_invisible(mx, my);
     /* src/mon.c:3177 m_detach(). A dead glowing monster must not leave an
        orphaned source that forces vision recalculation on later turns. */
-    if (mx > 0 && emits_light(mdef.data))
+    if (mx > 0 && emits_light(mptr))
         del_light_source(LS_MONSTER, mdef.m_id);
     /* src/mon.c:2757 m_detach(): mon_leaving_level() takes mtmp off the map
        (remove_monster/remove_worm, fill_pit, newsym) */

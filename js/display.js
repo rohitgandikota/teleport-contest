@@ -2,6 +2,11 @@
 // C ref: display.c — newsym, show_glyph, docrt, cls, flush_screen.
 
 import { PLNMSG_UNKNOWN } from './const.js';
+import { DISP_BEAM, DISP_ALL, DISP_TETHER, DISP_FLASH, DISP_ALWAYS,
+         DISP_CHANGE, DISP_END, DISP_FREEMEM, BACKTRACK, HI_ZAP,
+         NUM_ZAP } from './const.js';
+import { impossible } from './pline.js';
+import { monsndx } from './makemon.js';
 import { iter_mons } from './mon.js';
 import { block_point, unblock_point } from './vision.js';
 import { is_lightblocker_mappear } from './monst.js';
@@ -1468,7 +1473,7 @@ export function newsym(x, y) {
        drawing.c def_warnsyms (1-3 red, 4 magenta, 5 bright magenta). */
     if (!cansee(x, y)) {
         const wmon = m_at(x, y);
-        if (wmon && mon_warning(wmon)) {
+        if (wmon && mon_warning(wmon) && wmon.mx === x && wmon.my === y) {
             let wl = Hallucination()
                 ? rn2_on_display_rng(5) + 1
                 : ((wmon.m_lev ?? 0) / 4) | 0;
@@ -1999,23 +2004,7 @@ export function feel_location(x, y) {
     if (ep && engr_can_be_felt(ep))
         ep.erevealed = 1;
 
-    /* _map_location(x, y, 1) */
-    const obj = covers_objects(x, y) ? null : vobj_at(x, y);
-    const trap = t_at(x, y);
-    const mapped = obj ? mapped_object_glyphs(obj, x, y) : null;
-    const memg = mapped?.remembered
-        ?? ((trap && trap.tseen) ? trap_glyph(trap)
-            : (engraving_glyph(loc, x, y) || terrain_glyph(loc, x, y)));
-    if (game.level?.flags?.hero_memory)
-        loc.remembered_glyph = { ch: memg.ch, color: memg.color,
-                                 decgfx: memg.dec,
-                                 glyph: memg.glyph
-                                     ?? { kind: 'cmap', cmap: memg.cmap } };
-
-    /* map_background()/map_location() record the terrain type the hero
-       has last seen here (svl.lastseentyp); callers compare it to learn
-       whether feeling the spot taught the hero anything. */
-    update_lastseentyp(x, y);
+    map_location(x, y, 1);
     if (game.u.uball) {
         for (const [piece, bit] of [[game.u.uchain, BC_CHAIN], [game.u.uball, BC_BALL]]) {
             if (piece?.where === OBJ_FLOOR && piece.ox === x && piece.oy === y
@@ -2025,35 +2014,25 @@ export function feel_location(x, y) {
                 game.u.bc_felt &= ~bit;
         }
     }
-    const sensed = (game.u.ux !== x || game.u.uy !== y) && m_at(x, y)
-                   && sensemon(m_at(x, y));
-    if (sensed) {
+    /* src/display.c:893, show the dark floor after mapping the location. */
+    const rg = loc.remembered_glyph;
+    let cmap;
+    if (loc.typ === ROOM && rg?.glyph?.cmap === CM.S_room
+        && (!loc.waslit || dark_room_color()))
+        cmap = game.flags?.dark_room !== false ? CM.S_darkroom : CM.S_stone;
+    else if (loc.typ === CORR && rg?.glyph?.cmap === CM.S_litcorr
+             && !loc.waslit)
+        cmap = CM.S_corr;
+    if (cmap !== undefined) {
+        const sym = showsym(cmap);
+        const cell = { ch: sym.ch, color: defsyms[cmap].color,
+            decgfx: !!sym.dec, glyph: { kind: 'cmap', cmap } };
+        loc.remembered_glyph = cell;
+        show_glyph_cell(x, y, cell.ch, cell.color, cell.decgfx, 0, cell.glyph);
+    }
+    const mon = m_at(x, y);
+    if ((game.u.ux !== x || game.u.uy !== y) && mon && sensemon(mon))
         newsym(x, y);
-    } else {
-        const shown = mapped?.shown ?? memg;
-        show_glyph_cell(x, y, shown.ch, shown.color, shown.dec ?? false,
-                        pile_attr(shown.glyph), shown.glyph
-                            ?? { kind: 'cmap', cmap: memg.cmap });
-    }
-
-    /* src/display.c:894 — "Floor spaces are dark if unlit": with dark_room
-       on (5.0 default) a felt room floor is remembered as S_darkroom even
-       when waslit; an unlit felt corridor drops its lit form. The rewrite
-       is what makes pick_lock's "did the hero learn anything" comparison
-       come out true on a plain floor square. It runs AFTER the repaint
-       (C's fixup follows _map_location), so the newsym above must not
-       clobber it. */
-    {
-        const rg = loc.remembered_glyph;
-        if (loc.typ === ROOM && rg?.glyph?.cmap === CM.S_room
-            && (!loc.waslit || dark_room_color()))
-            loc.remembered_glyph = darkroomsym_cell();
-        else if (loc.typ === CORR && rg?.glyph?.cmap === CM.S_litcorr
-                 && !loc.waslit)
-            loc.remembered_glyph = { ch: '#', color: NO_COLOR, decgfx: false,
-                                     glyph: { kind: 'cmap',
-                                              cmap: CM.S_corr } };
-    }
 }
 
 // src/display.c:726 feel_newsym(): use touch mapping while blind, otherwise
@@ -2325,7 +2304,9 @@ export async function urgent_pline(msg) {
         tty_clear_nhwindow_message(game._topl_cury || 0);
         game._win_stop = false;
     }
+    game._win_nostop = true; /* tty_putstr: WIN_NOSTOP */
     await update_topl(msg);
+    game._win_nostop = false; /* tty_putstr: one message only */
     (game.iflags ||= {}).last_msg = PLNMSG_UNKNOWN;
     game._prevmsg = msg;
 }
@@ -2401,7 +2382,7 @@ export async function more() {
     /* win/tty/topl.c more():234 — ESC sets WIN_STOP: the player has asked to
        skip this turn's remaining messages. update_topl drops the paint (but
        still buffers) and tty_yn_function skips its own more() while set. */
-    if (game.morc === '\x1b')
+    if (game.morc === '\x1b' && !game._win_nostop)
         game._win_stop = true;
 
     /* win/tty/wintty.c tty_display_nhwindow(), NHW_MESSAGE:
@@ -2697,6 +2678,135 @@ export function map_object(obj, show) {
                         shown.glyph
                             ?? { kind: 'cmap', cmap: shown.cmap });
     }
+}
+
+// src/display.c:440 map_location(), including its _map_location macro.
+export function map_location(x, y, show) {
+    let obj, trap, ep, reg;
+    if ((obj = vobj_at(x, y)) && !covers_objects(x, y)) {
+        map_object(obj, show);
+    } else if ((trap = t_at(x, y)) && trap.tseen && !covers_traps(x, y)) {
+        map_trap(trap, show);
+    } else if (spot_shows_engravings(x, y)
+               && (ep = engr_at(x, y)) && ep.erevealed && !covers_traps(x, y)) {
+        map_engraving(ep, show);
+    } else {
+        map_background(x, y, show);
+    }
+    update_lastseentyp(x, y);
+    if (show && !Blind() && (reg = visible_region_at(x, y)))
+        show_region(reg, x, y);
+}
+
+// include/display.h:554 mon_to_glyph(), in the port's cell representation.
+export function mon_to_glyph(mon, rng) {
+    const mnum = Hallucination() ? rng(NUMMONS) : monsndx(mon.data);
+    const ptr = game.mons[mnum];
+    return { ch: def_monsyms[ptr.mlet], color: ptr.mcolor, decgfx: false,
+        glyph: { kind: 'mon', mon, mnum, female: !!mon.female } };
+}
+
+// src/display.c:1127 tether_glyph()
+async function tether_glyph(x, y) {
+    const tdx = game.u.ux - x, tdy = game.u.uy - y;
+    return await zapdir_to_glyph(Math.sign(tdx), Math.sign(tdy), 2);
+}
+
+// src/display.c:1174 tmp_at()
+export async function tmp_at(x, y) {
+    let tglyph = game.tmp_glyph;
+    switch (x) {
+    case DISP_BEAM:
+    case DISP_ALL:
+    case DISP_TETHER:
+    case DISP_FLASH:
+    case DISP_ALWAYS:
+        game.tmp_glyph = { prev: tglyph, saved: [], sidx: 0, style: x, glyph: y };
+        await flush_screen(0);
+        return;
+    case DISP_FREEMEM:
+        while (game.tmp_glyph)
+            game.tmp_glyph = game.tmp_glyph.prev;
+        return;
+    }
+    if (!tglyph)
+        throw new Error('tmp_at: tglyph not initialized');
+    switch (x) {
+    case DISP_CHANGE:
+        tglyph.glyph = y;
+        break;
+    case DISP_END:
+        if (tglyph.style === DISP_BEAM || tglyph.style === DISP_ALL) {
+            for (let i = 0; i < tglyph.sidx; i++)
+                newsym(tglyph.saved[i].x, tglyph.saved[i].y);
+        } else if (tglyph.style === DISP_TETHER) {
+            if (y === BACKTRACK && tglyph.sidx > 1) {
+                for (let i = tglyph.sidx - 1; i > 0; i--) {
+                    newsym(tglyph.saved[i].x, tglyph.saved[i].y);
+                    const g = tglyph.glyph;
+                    show_glyph_cell(tglyph.saved[i - 1].x, tglyph.saved[i - 1].y,
+                        g.ch, g.color, g.decgfx, g.attr, g.glyph);
+                    await flush_screen(0);
+                    if (game.animationFrame)
+                        await game.animationFrame();
+                }
+                tglyph.sidx = 1;
+            }
+            for (let i = 0; i < tglyph.sidx; i++)
+                newsym(tglyph.saved[i].x, tglyph.saved[i].y);
+        } else if (tglyph.sidx) {
+            newsym(tglyph.saved[0].x, tglyph.saved[0].y);
+        }
+        game.tmp_glyph = tglyph.prev;
+        break;
+    default:
+        if (!isok(x, y))
+            break;
+        if (tglyph.style === DISP_BEAM || tglyph.style === DISP_ALL) {
+            if (tglyph.style !== DISP_ALL && !cansee(x, y))
+                break;
+            if (tglyph.sidx >= COLNO * 2)
+                break;
+            tglyph.saved[tglyph.sidx++] = { x, y };
+        } else if (tglyph.style === DISP_TETHER) {
+            if (tglyph.sidx >= COLNO * 2)
+                break;
+            if (tglyph.sidx) {
+                const { x: px, y: py } = tglyph.saved[tglyph.sidx - 1];
+                const g = await tether_glyph(px, py);
+                show_glyph_cell(px, py, g.ch, g.color, g.decgfx, g.attr, g.glyph);
+            }
+            tglyph.saved[tglyph.sidx++] = { x, y };
+        } else {
+            if (tglyph.sidx) {
+                newsym(tglyph.saved[0].x, tglyph.saved[0].y);
+                tglyph.sidx = 0;
+            }
+            if (!cansee(x, y) && tglyph.style !== DISP_ALWAYS)
+                break;
+            tglyph.saved[0] = { x, y };
+            tglyph.sidx = 1;
+        }
+        const g = tglyph.glyph;
+        show_glyph_cell(x, y, g.ch, g.color, g.decgfx, g.attr, g.glyph);
+        await flush_screen(0);
+        break;
+    }
+}
+
+// src/display.c:2461 zapdir_to_glyph()
+export async function zapdir_to_glyph(dx, dy, beam_type) {
+    if (beam_type >= NUM_ZAP) {
+        await impossible('zapdir_to_glyph:  illegal beam type');
+        beam_type = 0;
+    }
+    dx = dx === dy ? 2 : dx && dy ? 3 : dx ? 1 : 0;
+    const cmap = cmap_names.S_vbeam + dx;
+    const sym = showsym(cmap);
+    const colors = [HI_ZAP, CLR_ORANGE, CLR_WHITE, HI_ZAP,
+        CLR_BLACK, CLR_WHITE, CLR_GREEN, CLR_YELLOW];
+    return { ch: sym.ch, color: colors[beam_type], decgfx: !!sym.dec,
+        glyph: { kind: 'zap', cmap, beam_type } };
 }
 
 // include/display.h obj_to_glyph(). Capture the glyph tmp_at() will retain

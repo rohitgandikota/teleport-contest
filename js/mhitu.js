@@ -20,7 +20,7 @@ import { pline_The, pline_mon, verbalize } from './pline.js';
 import { update_inventory } from './invent.js';
 import { cloak_simple_name, helm_simple_name, Ring_gone, Ring_on,
          stop_donning } from './do_wear.js';
-import { mhitm_ad_poly } from './uhitm.js';
+import { mhitm_ad_poly, mhitm_ad_deth } from './uhitm.js';
 import { monsndx } from './makemon.js';
 import { split_mon } from './potion.js';
 import { Your } from './pline.js';
@@ -95,7 +95,7 @@ import { mhitm_ad_phys, mhitm_ad_fire, mhitm_ad_cold, mhitm_ad_elec,
          mhitm_ad_drst,
          mhitm_ad_blnd, mhitm_ad_ston, mhitm_ad_drli,
          mhitm_ad_ench, mhitm_ad_samu, mhitm_ad_sedu, mhitm_ad_wrap,
-         mhitm_ad_heal, mhitm_ad_plys, mhitm_ad_slee,
+         mhitm_ad_heal, mhitm_ad_plys, mhitm_ad_slee, mhitm_ad_slim,
          mhitm_knockback,
          mhitm_mgc_atk_negated, attk_protection, erode_armor,
          golemeffects } from './uhitm.js';
@@ -157,32 +157,6 @@ async function mhitm_ad_famn(magr, mhm) {
 async function mhitm_ad_pest(magr, mhm) {
     await pline(`${Monnam(magr)} reaches out, and you feel fever and chills.`);
     await diseasemu(magr.data);
-}
-
-async function mhitm_ad_deth(magr, mhm) {
-    await pline(`${Monnam(magr)} reaches out with its deadly touch.`);
-    if (is_undead(game.youmonst.data)) {
-        mhm.damage = Math.trunc((mhm.damage + 1) / 2);
-        await pline('Was that the touch of death?');
-        return;
-    }
-
-    const roll = rn2(20);
-    const antimagic = !!(game.u.uprops?.ANTIMAGIC
-                         || game.u.uprops?.MAGIC_RES
-                         || game.u.intrinsic?.HAntimagic);
-    if (roll >= 17 && !antimagic) {
-        note_unported_mhitu('mhitm_ad_deth:touch_of_death');
-        mhm.damage = 0;
-    } else if (roll >= 5) {
-        await You_feel('your life force draining away...');
-        mhm.permdmg = 1;
-    } else {
-        if (antimagic)
-            note_unported_mhitu('mhitm_ad_deth:shieldeff');
-        await pline("Lucky for you, it didn't work!");
-        mhm.damage = 0;
-    }
 }
 
 // include/you.h:324 mhis() — possessive pronoun for a monster.
@@ -1331,6 +1305,8 @@ async function hitmu(mtmp, mattk, indx) {
         await mhitm_ad_plys(mtmp, mattk, game.youmonst, mhm);
     } else if (mattk[1] === A.AD_SLEE) {
         await mhitm_ad_slee(mtmp, mattk, game.youmonst, mhm);
+    } else if (mattk[1] === A.AD_SLIM) {
+        await mhitm_ad_slim(mtmp, mattk, game.youmonst, mhm);
     } else if (mattk[1] === A.AD_FIRE) {
         await mhitm_ad_fire(mtmp, mattk, game.youmonst, mhm);
     } else if (mattk[1] === A.AD_COLD) {
@@ -1360,7 +1336,7 @@ async function hitmu(mtmp, mattk, indx) {
     } else if (mattk[1] === A.AD_PEST) {
         await mhitm_ad_pest(mtmp, mhm);
     } else if (mattk[1] === A.AD_DETH) {
-        await mhitm_ad_deth(mtmp, mhm);
+        await mhitm_ad_deth(mtmp, mattk, game.youmonst, mhm);
     } else if (mattk[1] === A.AD_WERE) {
         // src/uhitm.c:4264 mhitm_ad_were(). The infection roll is made on
         // every landed were bite, before all protection checks.

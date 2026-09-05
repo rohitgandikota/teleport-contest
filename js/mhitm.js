@@ -15,7 +15,7 @@ import { unstuck } from './mon.js';
 import { pline_mon } from './pline.js';
 import { sticks } from './mondata.js';
 import { some_mon_nam } from './do_name.js';
-import { mhitm_ad_poly } from './uhitm.js';
+import { mhitm_ad_poly, mhitm_ad_deth } from './uhitm.js';
 import { MONSYMS } from './monst_data.js';
 import { finish_meating } from './dogmove.js';
 import { tele, tele_restrict, rloc } from './teleport.js';
@@ -43,7 +43,7 @@ import { mdistu, monnear, itsstuck } from './monmove.js';
 import { engulfing_u } from './const.js';
 import { Monnam, mon_nam_too } from './do_name.js';
 import { could_seduce, getmattk, mswings_verb } from './mhitu.js';
-import { MON_WEP, DEADMONSTER, mon_offmap } from './monst.js';
+import { MON_WEP, DEADMONSTER, mon_offmap, troll_baned } from './monst.js';
 import { hitval, mon_wield_item, possibly_unwield } from './weapon.js';
 import { mon_nam } from './do_name.js';
 import { xname } from './objnam.js';
@@ -61,16 +61,17 @@ import { PMNAMES, MFLAGS } from './monst_data.js';
 import { find_mac } from './worn.js';
 import { canseemon, sensemon } from './display.js';
 import { cansee } from './vision.js';
-import { m_at, monkilled, monstone } from './mon.js';
+import { m_at, monkilled, monstone, zombie_maker } from './mon.js';
+import { zombie_form } from './mkobj.js';
 import { touch_petrifies } from './dog.js';
-import { is_orc, unsolid, resists_ston, is_whirly, passes_walls,
+import { is_orc, unsolid, resists_ston, is_whirly, passes_walls, attacktype,
          poly_when_stoned } from './mondata.js';
 import { distmin, s_suffix } from './hacklib.js';
 import { mhitm_ad_phys, mhitm_ad_fire, mhitm_ad_cold, mhitm_ad_elec,
          mhitm_ad_acid, mhitm_ad_drst, mhitm_ad_blnd,
          mhitm_ad_sedu, mhitm_ad_drli, mhitm_ad_drin,
          mhitm_ad_ston, mhitm_ad_wrap, mhitm_ad_heal,
-         mhitm_ad_plys, mhitm_ad_slee, attk_protection,
+         mhitm_ad_plys, mhitm_ad_slee, mhitm_ad_slim, attk_protection,
          mhitm_knockback } from './uhitm.js';
 import { grow_up, goodpos, remove_monster, place_monster } from './makemon.js';
 import { M_ATTK_MISS, M_ATTK_HIT, M_ATTK_DEF_DIED, M_ATTK_AGR_DIED, M_ATTK_AGR_DONE } from './const.js';
@@ -638,6 +639,8 @@ export async function mdamagem(magr, mdef, mattk, mwep, dieroll) {
         await mhitm_ad_plys(magr, mattk, mdef, mhm);
     } else if (mattk[1] === A.AD_SLEE) {
         await mhitm_ad_slee(magr, mattk, mdef, mhm);
+    } else if (mattk[1] === A.AD_SLIM) {
+        await mhitm_ad_slim(magr, mattk, mdef, mhm);
     } else if (mattk[1] === A.AD_FIRE) {
         await mhitm_ad_fire(magr, mattk, mdef, mhm);
     } else if (mattk[1] === A.AD_COLD) {
@@ -654,6 +657,8 @@ export async function mdamagem(magr, mdef, mattk, mwep, dieroll) {
         await mhitm_ad_blnd(magr, mattk, mdef, mhm);
     } else if (mattk[1] === A.AD_DRLI) {
         await mhitm_ad_drli(magr, mattk, mdef, mhm);
+    } else if (mattk[1] === A.AD_DETH) {
+        await mhitm_ad_deth(magr, mattk, mdef, mhm);
     } else if (mattk[1] === A.AD_DRIN) {
         await mhitm_ad_drin(magr, mattk, mdef, mhm);
     } else if (mattk[1] === A.AD_STON) {
@@ -689,7 +694,15 @@ export async function mdamagem(magr, mdef, mattk, mwep, dieroll) {
             place_monster(mdef, mdef.mx, mdef.my);
             mdef.mhp = hp;
         }
+        if (mattk[0] === A.AT_WEAP || mattk[0] === A.AT_CLAW)
+            game.mkcorpstat_norevive = troll_baned(mdef, mwep) ? 1 : 0;
+        game.zombify = (!mwep && zombie_maker(magr)
+            && (mattk[0] === A.AT_TUCH || mattk[0] === A.AT_CLAW
+                || mattk[0] === A.AT_BITE)
+            && zombie_form(mdef.data) !== NON_PM);
         await monkilled(mdef, '', mattk[1]);
+        game.zombify = false;
+        game.mkcorpstat_norevive = 0;
         if (mdef.mhp > 0)
             return mhm.hitflags;        /* mdef lifesaved */
         else if (mhm.hitflags === M_ATTK_AGR_DIED)
@@ -915,5 +928,16 @@ export async function slept_monst(mon) {
         && !sticks(game.youmonst.data) && !game.u.uswallow) {
         await pline_mon(mon, `${s_suffix(Monnam(mon))} grip relaxes.`);
         await unstuck(mon);
+    }
+}
+
+// src/mhitm.c:1461 xdrainenergym()
+export async function xdrainenergym(mon, givemsg) {
+    if (mon.mspec_used < 20
+        && (attacktype(mon.data, ATTKS.AT_MAGC)
+            || attacktype(mon.data, ATTKS.AT_BREA))) {
+        mon.mspec_used += d(2, 2);
+        if (givemsg)
+            await pline_mon(mon, `${Monnam(mon)} seems lethargic.`);
     }
 }

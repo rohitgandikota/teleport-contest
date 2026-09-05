@@ -366,6 +366,8 @@ export const DISP_CHANGE = -6;
 export const DISP_END = -7;
 export const DISP_FREEMEM = -8;
 export const BACKTRACK = -1;
+// include/display.h, zap glyph groups.
+export const NUM_ZAP = 8;
 
 // Body-part selector enum (include/hack.h enum bodypart_types; src/polyself.c)
 // Runtime fields:

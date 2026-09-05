@@ -2302,7 +2302,7 @@ export function makemon(ptr, x, y, mmflags) {
         /* C zeroes the whole struct (cg.zeromonst); movement in particular
            must start at 0, or movemon() lets the monster act on turn 1 when
            C makes it wait for its first allotment. */
-        movement: 0, mspeed: 0, permspeed: 0,
+        movement: 0, mspeed: 0, permspeed: 0, mblinded: 0, mspec_used: 0,
         seen_resistance: 0,
         /* C zeroes the apparent hero position before set_apparxy(). */
         mux: 0, muy: 0,

@@ -315,8 +315,10 @@ const WIZ_INTRINSICS = [
 ];
 
 function wiz_intrinsic_timeout(key) {
-    if (key === 'SICK')
-        return Number(game.u.uprops?.SICK) || 0;
+    if (key === 'SICK' || key === 'STONED' || key === 'SLIMED' || key === 'VOMITING')
+        return (game.u.uprops?.[key] || 0) & TIMEOUT;
+    if (key === 'UNCHANGING')
+        return (game.u.intrinsic?.HUnchanging || 0) & TIMEOUT;
     if (key === 'CONFUSION')
         return game.u.intrinsic?.HConfusion | 0;
     if (key === 'HALLUC')
@@ -402,6 +404,26 @@ export async function wiz_intrinsic() {
             const { make_sick } = await import('./potion.js');
             const type = !rn2(2) ? SICK_VOMITABLE : SICK_NONVOMITABLE;
             await make_sick(oldtimeout || amount, '#wizintrinsic', true, type);
+        } else if (key === 'SLIMED') {
+            const { make_slimed } = await import('./potion.js');
+            await make_slimed(oldtimeout || amount,
+                `You are${oldtimeout ? ' still' : ''} turning into slime.`);
+        } else if (key === 'STONED') {
+            const { make_stoned } = await import('./potion.js');
+            const { KILLED_BY } = await import('./const.js');
+            await make_stoned(oldtimeout || amount,
+                `You are${oldtimeout ? ' still' : ''} turning into stone.`,
+                KILLED_BY, '#wizintrinsic');
+        } else if (key === 'VOMITING') {
+            const { make_vomiting } = await import('./potion.js');
+            await make_vomiting(oldtimeout + amount, false);
+            await pline(`You are${oldtimeout ? ' still' : ''} vomiting.`);
+        } else if (key === 'UNCHANGING') {
+            const { incr_itimeout } = await import('./potion.js');
+            incr_itimeout('HUnchanging', amount);
+            (game.disp ||= {}).botl = true;
+            await pline(`Timeout for ${name} ${oldtimeout
+                ? 'increased by' : 'set to'} ${amount}.`);
         } else if (key === 'GLIB') {
             const { make_glib } = await import('./potion.js');
             make_glib(oldtimeout + amount);

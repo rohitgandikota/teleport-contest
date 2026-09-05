@@ -11,7 +11,10 @@
 import { game } from './gstate.js';
 import { OCLASSES, ONAMES, MATERIALS, SKILLS, objects } from './objects_data.js';
 import { MFLAGS, PMNAMES, MONSYMS } from './monst_data.js';
-import { humanoid, noncorporeal } from './mondata.js';
+import { humanoid, noncorporeal, dmgtype } from './mondata.js';
+import { pm_to_cham } from './mon.js';
+import { LOW_PM, NON_PM } from './const.js';
+import { ATTKS } from './monst_data.js';
 import { permapoisoned } from './artifact.js';
 
 // include/objclass.h:36 enum obj_armor_types
@@ -64,6 +67,13 @@ export const OBJ_ONBILL = 7;    /* object on shk bill */
 export const carried = (o) => o.where === OBJ_INVENT;
 // include/obj.h:333
 export const mcarried = (o) => o.where === OBJ_MINVENT;
+
+// include/obj.h:317 ofood(), :321 polyfood()
+export const ofood = (o) => o.otyp === ONAMES.CORPSE
+    || o.otyp === ONAMES.EGG || o.otyp === ONAMES.TIN;
+export const polyfood = (obj) => ofood(obj) && obj.corpsenm >= LOW_PM
+    && (pm_to_cham(obj.corpsenm) !== NON_PM
+        || dmgtype(game.mons[obj.corpsenm], ATTKS.AD_POLY));
 
 // include/obj.h:327 Is_pudding() — the four glob types by NAME, not by the
 // globby flag. mksobj sets globby for exactly these, so the two agree today,

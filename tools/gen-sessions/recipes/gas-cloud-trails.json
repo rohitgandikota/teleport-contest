@@ -1,0 +1,56 @@
+{
+  "name": "gas-cloud-trails",
+  "description": "Steam-vortex and hezrou movement creates visible clouds, prompts before entering dangerous gas, and exposes cloud redraw through searching.",
+  "coverage": [
+    "mode.debug",
+    "monster.movement",
+    "monster.special-effects",
+    "forms.polymorph",
+    "combat.melee",
+    "survival.timed-status",
+    "ui.getlin",
+    "ui.more-paging"
+  ],
+  "branches": [
+    "gas-cloud-trails.steam-vortex",
+    "gas-cloud-trails.hezrou"
+  ],
+  "requireBranchAssertions": true,
+  "segments": [
+    {
+      "name": "steam-vortex",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             #polyself\rsteam vortex\r  \u001b\u001b\u001b\u001b\u001b\u001bkhjl  \u001b\u001b\u001b\u001b\u001b\u001bkhjl  \u001b\u001b\u001b\u001b\u001b\u001bkhjl  \u001b\u001b\u001b\u001b\u001b\u001bkhjl  \u001b\u001b\u001b\u001b\u001b\u001bkhjl  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b",
+      "steps": []
+    },
+    {
+      "name": "hezrou",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             #polyself\rhezrou\r  \u001b\u001b\u001b\u001b\u001b\u001bkhjl  \u001b\u001b\u001b\u001b\u001b\u001bkhjl  \u001b\u001b\u001b\u001b\u001b\u001bkhjl  \u001b\u001b\u001b\u001b\u001b\u001bkhjl  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b",
+      "steps": []
+    }
+  ],
+  "branchAssertions": [
+    {
+      "branch": "gas-cloud-trails.steam-vortex",
+      "segment": 0,
+      "screenIncludes": [
+        "You turn into a steam vortex!",
+        "There is a vapor cloud here.",
+        "You engulf it!  You expel it!"
+      ]
+    },
+    {
+      "branch": "gas-cloud-trails.hezrou",
+      "segment": 1,
+      "screenIncludes": [
+        "Step into that poison gas cloud?",
+        "You see a gas cloud dissipate."
+      ]
+    }
+  ]
+}

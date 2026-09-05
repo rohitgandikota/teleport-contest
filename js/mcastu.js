@@ -255,7 +255,7 @@ export async function touch_of_death(mtmp) {
     let dmg = 50 + d(8, 6);
     const drain = Math.trunc(dmg / 2);
 
-    /* if we get here, hero is either not resistant or hero has been
+    /* if we get here, hero isn't magic resistant and isn't
        poly'd into an undead or demon */
     await You_feel('drained...');
     const kbuf = death_inflicted_by('the touch of death', mtmp);

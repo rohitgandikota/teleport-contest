@@ -28,6 +28,7 @@ import { Has_contents } from './obj.js';
 import { get_obj_location } from './zap.js';
 import { unpunish } from './read.js';
 import { game } from './gstate.js';
+import { visible_region_at, reg_damg } from './region.js';
 import { read_engr_at } from './engrave.js';
 import { stairway_at, stairs_description } from './stairs.js';
 import { cmdq_pop, cmdq_clear, cmdq_add_key, cmdq_add_int, get_count } from './cmd.js';
@@ -554,11 +555,15 @@ export async function look_here(obj_cnt, lhflags) {
     }
 
     if (!skip_objects) {
-        /* visible_region_at for gas clouds remains separate. */
-        const trap = t_at(game.u.ux, game.u.uy);
-        if (trap && trap.tseen) {
+        const reg = visible_region_at(game.u.ux, game.u.uy);
+        let trap = t_at(game.u.ux, game.u.uy);
+        if (trap && !trap.tseen)
+            trap = null;
+        if (reg || trap) {
             const { trapname } = await import('./trap.js');
-            await pline(`There is ${an(trapname(trap.ttyp, false))} here.`);
+            const regbuf = reg ? `a ${reg_damg(reg) ? 'poison gas' : 'vapor'} cloud` : '';
+            await pline(`There is ${regbuf}${reg && trap ? ' and ' : ''}${
+                trap ? an(trapname(trap.ttyp, false)) : ''} here.`);
         }
     }
 

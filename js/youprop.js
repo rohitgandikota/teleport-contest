@@ -157,6 +157,12 @@ export const Slow_digestion = () =>
     !!(game.u?.intrinsic?.HSlow_digestion || game.u?.uprops?.SLOW_DIGESTION);
 export const Half_physical_damage = () =>
     !!(game.u?.intrinsic?.HHalf_physical_damage || game.u?.uprops?.HALF_PHDAM);
+// include/youprop.h:405 Half_gas_damage
+export const Half_gas_damage = () => !!game.u?.ublindf
+    && game.u.ublindf.otyp === ONAMES.TOWEL && game.u.ublindf.spe > 0;
+// include/youprop.h:81/84
+export const Stunned = () => !!(game.u?.intrinsic?.HStun || game.u?.uprops?.STUNNED);
+export const Confusion = () => !!(game.u?.intrinsic?.HConfusion || game.u?.uprops?.CONFUSION);
 export const Antimagic = () =>
     !!(game.u?.intrinsic?.HAntimagic || game.u?.uprops?.ANTIMAGIC);
 /* #define Stealth ((HStealth || EStealth) && !BStealth) — nothing that sets

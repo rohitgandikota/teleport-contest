@@ -11,25 +11,89 @@
 
 import { update_inventory } from './invent.js';
 import { little_to_big } from './mkobj.js';
-import { make_slimed } from './potion.js';
+import { make_slimed, make_stoned, make_vomiting, set_itimeout } from './potion.js';
+import { Popeye } from './eat.js';
+import { nolimbs, emits_light } from './mondata.js';
+import { exercise } from './attrib.js';
+import { Blind, Hallucination } from './youprop.js';
+import { an } from './objnam.js';
+import { hcolor, rndmonnam } from './do_name.js';
+import { find_delayed_killer, dealloc_killer, done } from './end.js';
+import { polymon } from './polyself.js';
 import { game } from './gstate.js';
 import { rn2, rnd, d } from './rng.js';
 import { stop_occupation } from './allmain.js';
 import { nomul } from './hack.js';
 import { TIMEOUT, FROMOUTSIDE, I_SPECIAL, WT_NOISY_INV, FOOT, NECK,
-         A_STR, A_DEX, A_CON, DIED, KILLED_BY,
+         A_STR, A_DEX, A_CON, DIED, KILLED_BY, KILLED_BY_AN,
+         NO_KILLER_PREFIX, STONED, SLIMED, SICK, STRANGLED,
+         STONING, TURNED_SLIME, GENOCIDED, POISONING,
+         M_AP_MONSTER, NH_GREEN, G_GENOD, Upolyd, PLNMSG_OK_DONT_DIE,
          PLNMSG_ONE_ITEM_HERE, FULL_MOON, FAINTING, MV_KNOWS_EGG,
          NO_MINVENT, MM_NOMSG, OBJ_FLOOR, OBJ_INVENT, OBJ_MINVENT,
          CONTAINED_TOO, BURIED_TOO }
     from './const.js';
 import { ONAMES } from './objects_data.js';
 import { PMNAMES, MFLAGS, MONSYMS } from './monst_data.js';
-import { pline } from './display.js';
-import { del_light_source, new_light_source, arti_light_radius, LS_OBJECT } from './light.js';
+import { pline, urgent_pline, newsym } from './display.js';
+import { del_light_source, new_light_source, arti_light_radius, LS_OBJECT, LS_MONSTER } from './light.js';
 import { artifact_light } from './artifact.js';
 import { get_obj_location } from './zap.js';
 import { impossible } from './pline.js';
 import { xname } from './objnam.js';
+
+// src/timeout.c:129 stoned_texts[], :138 stoned_dialogue()
+const stoned_texts = [
+    'You are slowing down.',
+    'Your limbs are stiffening.',
+    'Your limbs have turned to stone.',
+    'You have turned to stone.',
+    'You are a statue.',
+];
+async function stoned_dialogue() {
+    const i = (game.u.uprops.STONED || 0) & TIMEOUT;
+    const intr = (game.u.intrinsic ||= {});
+    if (i > 0 && i <= stoned_texts.length) {
+        let buf = stoned_texts[stoned_texts.length - i];
+        if (nolimbs(game.youmonst.data) && /limbs/i.test(buf))
+            buf = buf.replace('limbs', 'extremities');
+        await urgent_pline(buf);
+    }
+    switch (i) {
+    case 5:
+        intr.HFast = 0;
+        if (game.multi > 0)
+            nomul(0);
+        break;
+    case 4:
+        if (!Popeye(STONED))
+            await stop_occupation();
+        if (game.multi > 0)
+            nomul(0);
+        break;
+    case 3:
+        await stop_occupation();
+        nomul(-3);
+        game.multi_reason = 'getting stoned';
+        game.nomovemsg = 'You can move again.';
+        if ((intr.HWounded_legs || game.u.EWounded_legs) && !game.u.usteed) {
+            const { heal_legs } = await import('./do.js');
+            await heal_legs(2);
+        }
+        break;
+    case 2:
+        if ((intr.HDeaf & TIMEOUT) > 0 && (intr.HDeaf & TIMEOUT) < 5)
+            set_itimeout('HDeaf', 5);
+        if (game.u.uprops.VOMITING)
+            await make_vomiting(0, false);
+        if (game.u.uprops.SLIMED)
+            await make_slimed(0, null);
+        break;
+    default:
+        break;
+    }
+    exercise(A_DEX, false);
+}
 
 // src/timeout.c:187 vomiting_dialogue(). It runs before the property timer is
 // decremented, so every switch value uses the pending timeout minus one.
@@ -102,6 +166,98 @@ async function vomiting_dialogue() {
         await pline(`You ${text}`);
     const { exercise } = await import('./attrib.js');
     exercise(A_CON, false);
+}
+
+// src/timeout.c:381 slime_texts[], :389 slime_dialogue()
+const slime_texts = [
+    'You are turning a little %s.',
+    'Your limbs are getting oozy.',
+    'Your skin begins to peel away.',
+    'You are turning into %s.',
+    'You have become %s.',
+];
+async function slime_dialogue() {
+    const t = game.u.uprops.SLIMED & TIMEOUT, i = Math.trunc(t / 2);
+    const intr = (game.u.intrinsic ||= {});
+    if (t === 1) {
+        game.youmonst.m_ap_type = M_AP_MONSTER;
+        game.youmonst.mappearance = PMNAMES.PM_GREEN_SLIME;
+        newsym(game.u.ux, game.u.uy);
+    }
+    if (t % 2 !== 0 && i >= 0 && i < slime_texts.length) {
+        let buf = slime_texts[slime_texts.length - i - 1];
+        if (nolimbs(game.youmonst.data) && /limbs/i.test(buf))
+            buf = buf.replace('limbs', 'extremities');
+        if (buf.includes('%')) {
+            if (i === 4) {
+                if (!Blind())
+                    await urgent_pline(buf.replace('%s', hcolor(NH_GREEN)));
+            } else {
+                await urgent_pline(buf.replace('%s', an(Hallucination()
+                    ? rndmonnam(null) : 'green slime')));
+            }
+        } else {
+            await urgent_pline(buf);
+        }
+    }
+    switch (i) {
+    case 3:
+        intr.HFast = 0;
+        if (!Popeye(SLIMED))
+            await stop_occupation();
+        if (game.multi > 0)
+            nomul(0);
+        break;
+    case 2:
+        if ((intr.HDeaf & TIMEOUT) > 0 && (intr.HDeaf & TIMEOUT) < 5)
+            set_itimeout('HDeaf', 5);
+        break;
+    case 1:
+        if (game.u.uprops.STONED)
+            await make_stoned(0, null, KILLED_BY_AN, null);
+        break;
+    }
+    exercise(A_DEX, false);
+}
+
+// src/timeout.c:448 burn_away_slime(), fire burns off the green slime.
+export async function burn_away_slime() {
+    if (game.u.uprops?.SLIMED) {
+        await make_slimed(0, 'The slime that covers you is burned away!');
+    }
+}
+
+// src/timeout.c:457 slimed_to_death()
+async function slimed_to_death(kptr) {
+    if (Upolyd(game.u) && game.u.umonnum === PMNAMES.PM_GREEN_SLIME) {
+        dealloc_killer(kptr);
+        return;
+    }
+    game.killer ||= {};
+    if (kptr?.name) {
+        game.killer.format = kptr.format;
+        game.killer.name = kptr.name;
+    } else {
+        game.killer.format = NO_KILLER_PREFIX;
+        game.killer.name = 'turned into green slime';
+    }
+    dealloc_killer(kptr);
+    if (emits_light(game.youmonst.data))
+        del_light_source(LS_MONSTER, game.youmonst.m_id);
+    const save_mvflags = game.mvitals[PMNAMES.PM_GREEN_SLIME].mvflags;
+    game.mvitals[PMNAMES.PM_GREEN_SLIME].mvflags = save_mvflags & ~G_GENOD;
+    await polymon(PMNAMES.PM_GREEN_SLIME);
+    game.mvitals[PMNAMES.PM_GREEN_SLIME].mvflags = save_mvflags;
+    await done_timeout(TURNED_SLIME, SLIMED);
+    if ((game.mvitals[PMNAMES.PM_GREEN_SLIME].mvflags & G_GENOD) !== 0) {
+        game.killer.format = KILLED_BY;
+        game.killer.name = 'slimicide';
+        if (game.iflags.last_msg === PLNMSG_OK_DONT_DIE)
+            await urgent_pline('Yes, you do.  Green slime has been genocided...');
+        else
+            await urgent_pline('Unfortunately, green slime has been genocided...');
+        await done(GENOCIDED);
+    }
 }
 
 // include/timeout.h:11 enum timer_type
@@ -754,6 +910,17 @@ async function slip_or_trip() {
     }
 }
 
+// src/timeout.c:575 done_timeout()
+async function done_timeout(how, which) {
+    const props = which === STRANGLED ? game.u.intrinsic : game.u.uprops;
+    const key = { [STONED]: 'STONED', [SLIMED]: 'SLIMED',
+                  [SICK]: 'SICK', [STRANGLED]: 'HStrangled' }[which];
+    props[key] |= I_SPECIAL;
+    await done(how);
+    props[key] &= ~I_SPECIAL;
+    (game.disp ||= {}).botl = true;
+}
+
 // src/timeout.c:588 nh_timeout() - per-turn luck and intrinsic timeouts.
 export async function nh_timeout() {
     const u = game.u;
@@ -785,18 +952,12 @@ export async function nh_timeout() {
     if (u.uinvulnerable)
         return;
 
-    /* src/timeout.c:649: facial cream wears off one point per turn before
-       HBlinded is decremented below. */
-    if (u.ucreamed)
-        u.ucreamed--;
-
-    const vomiting = u.uprops?.VOMITING || 0;
-    if (vomiting) {
+    if (u.uprops?.STONED)
+        await stoned_dialogue();
+    if (u.uprops?.SLIMED)
+        await slime_dialogue();
+    if (u.uprops?.VOMITING)
         await vomiting_dialogue();
-        u.uprops.VOMITING = vomiting - 1;
-        if (!u.uprops.VOMITING)
-            (game.disp ||= {}).botl = true;
-    }
 
     const strangled = intr.HStrangled || 0;
     if (strangled) {
@@ -850,28 +1011,100 @@ export async function nh_timeout() {
         }
         const { exercise } = await import('./attrib.js');
         exercise(A_CON, false);
-        game.u.uprops.SICK = sick - 1;
     }
 
-    for (const key of Object.keys(intr)) {
-        const v = intr[key];
+    /* src/timeout.c:649, before intrinsic timeouts are decremented. */
+    if (u.ucreamed)
+        u.ucreamed--;
+
+    /* include/prop.h and include/youprop.h: visit intrinsic slots in
+       property-number order, independent of when JS fields were created. */
+    for (const key of [
+        'HFire_resistance', 'HCold_resistance', 'HSleep_resistance',
+        'HDisint_resistance', 'HShock_resistance', 'HPoison_resistance',
+        'HAcid_resistance', 'HStone_resistance', 'HDrain_resistance',
+        'HSick_resistance', 'HAntimagic', 'HStun',
+        'HConfusion', 'HBlinded', 'HDeaf',
+        'SICK', 'STONED', 'HStrangled',
+        'VOMITING', 'HGlib', 'SLIMED',
+        'HHallucination', 'HHalluc_resistance', 'HFumbling',
+        'HWounded_legs', 'HSleepy', 'HHunger',
+        'HSee_invisible', 'HTelepat', 'HWarning',
+        'HWarn_of_mon', 'HUndead_warning', 'HSearching',
+        'HClairvoyant', 'HInfravision', 'HDetect_monsters',
+        'HBlnd_resist', 'HInvis', 'HDisplaced',
+        'HStealth', 'HAggravate_monster', 'HConflict',
+        'HJumping', 'HTeleportation', 'HTeleport_control',
+        'HLevitation', 'HFlying', 'HWwalking',
+        'HSwimming', 'HMagical_breathing', 'HPasses_walls',
+        'HSlow_digestion', 'HHalf_spell_damage', 'HHalf_physical_damage',
+        'HRegeneration', 'HEnergy_regeneration', 'HProtection',
+        'HProtection_from_shape_changers', 'HPolymorph', 'HPolymorph_control',
+        'HUnchanging', 'HFast', 'HReflecting',
+    ]) {
+        const props = key.startsWith('H') ? intr : (u.uprops ||= {});
+        const v = props[key];
         if (typeof v !== 'number' || !(v & TIMEOUT))
             continue;
-        intr[key] = (v & ~TIMEOUT) | (((v & TIMEOUT) - 1) & TIMEOUT);
-        if (intr[key] & TIMEOUT)
+        props[key] = v - 1;
+        if (props[key] & TIMEOUT)
             continue;
         /* the timeout just ran out */
         switch (key) {
+        case 'SICK': {
+            const { SICK_NONVOMITABLE, SICK_ALL, LOW_PM, G_UNIQ } = await import('./const.js');
+            const { ACURR, adjattrib } = await import('./attrib.js');
+            const { make_sick } = await import('./potion.js');
+            const { name_to_mon, type_is_pname } = await import('./mondata.js');
+            const { the } = await import('./objnam.js');
+            if (((u.usick_type || 0) & SICK_NONVOMITABLE) === 0
+                && rn2(100) < ACURR(A_CON)) {
+                await pline('You have recovered from your illness.');
+                await make_sick(0, null, false, SICK_ALL);
+                exercise(A_CON, false);
+                await adjattrib(A_CON, -1, 1);
+                break;
+            }
+            await urgent_pline('You die from your illness.');
+            const kptr = find_delayed_killer(SICK);
+            game.killer ||= {};
+            game.killer.format = kptr?.name ? kptr.format : KILLED_BY_AN;
+            game.killer.name = kptr?.name || '';
+            dealloc_killer(kptr);
+            const m_idx = name_to_mon(game.killer.name, null);
+            if (m_idx >= LOW_PM) {
+                if (type_is_pname(game.mons[m_idx])) {
+                    game.killer.format = KILLED_BY;
+                } else if (game.mons[m_idx].geno & G_UNIQ) {
+                    game.killer.name = the(game.killer.name);
+                    game.killer.format = KILLED_BY;
+                }
+            }
+            await done_timeout(POISONING, SICK);
+            u.usick_type = 0;
+            break;
+        }
+        case 'STONED': {
+            const kptr = find_delayed_killer(STONED);
+            game.killer ||= {};
+            game.killer.format = kptr?.name ? kptr.format : NO_KILLER_PREFIX;
+            game.killer.name = kptr?.name || 'killed by petrification';
+            dealloc_killer(kptr);
+            await done_timeout(STONING, STONED);
+            break;
+        }
+        case 'SLIMED':
+            await slimed_to_death(find_delayed_killer(SLIMED));
+            break;
+        case 'VOMITING':
+            await make_vomiting(0, true);
+            break;
         case 'HStrangled': {
-            intr.HStrangled |= I_SPECIAL;
             game.killer = {
                 format: KILLED_BY,
                 name: u.uburied ? 'suffocation' : 'strangulation',
             };
-            const { done } = await import('./end.js');
-            await done(DIED);
-            intr.HStrangled &= ~I_SPECIAL;
-            (game.disp ||= {}).botl = true;
+            await done_timeout(DIED, STRANGLED);
             if (u.uamul?.otyp === ONAMES.AMULET_OF_STRANGULATION) {
                 const amulet = u.uamul;
                 const { Your } = await import('./pline.js');
@@ -1250,12 +1483,7 @@ export async function do_storms() {
     }
 }
 
-// src/timeout.c:448 burn_away_slime(), fire burns off the green slime.
-export async function burn_away_slime() {
-    if (game.u.uprops?.SLIMED) {
-        await make_slimed(0, 'The slime that covers you is burned away!');
-    }
-}
+
 
 // src/timeout.c:2404 obj_has_timer(); does the object have a timer of the
 // given type?

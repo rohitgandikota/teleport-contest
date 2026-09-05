@@ -28,7 +28,8 @@ import { block_door, block_entry, u_entered_shop, u_left_shop } from './shk.js';
 import { curr_mon_load } from './mon.js';
 import { inv_weight, weight_cap } from './attrib.js';
 import { carrying } from './invent.js';
-import { a_monnam, upstart } from './do_name.js';
+import { a_monnam, upstart, pmname } from './do_name.js';
+import { an } from './objnam.js';
 import { is_door_mappear, helpless, DEADMONSTER } from './monst.js';
 import { dist2, distmin } from './hacklib.js';
 import { Levitation, Flying, Fire_resistance, Underwater,
@@ -42,11 +43,16 @@ import { Is_waterlevel, WATER, LAVAPOOL, POOL } from './const.js';
 import { waterbody_name } from './pager.js';
 import { surface, recalc_mapseen } from './dungeon.js';
 import { pickup, can_reach_floor } from './pickup.js';
-import { dotrap } from './trap.js';
+import { dotrap, immune_to_trap, into_vs_onto } from './trap.js';
 import { is_pit, EXT_ENCUMBER, HVY_ENCUMBER, IS_FURNITURE, STAIRS, ECMD_OK, ECMD_TIME, OBJ_AT, GOLD_SYM, TT_BEARTRAP, TT_PIT, TT_WEB, TT_LAVA, TT_INFLOOR, TT_BURIEDBALL } from './const.js';
 import { near_capacity } from './attrib.js';
 import { gethungry } from './eat.js';
-import { cmdq_clear, closed_door } from './cmd.js';
+import { cmdq_clear, closed_door, paranoid_query } from './cmd.js';
+import { paranoia_bits } from './options.js';
+import { PARANOID_TRAP, PARANOID_CONFIRM, TRAPNUM, TRAP_CLEARLY_IMMUNE } from './const.js';
+import { Blind, Stunned, Confusion } from './youprop.js';
+import { visible_region_at, reg_damg } from './region.js';
+import { defsyms } from './drawing_data.js';
 // hack.js — the hero's movement and the terrain predicates that go with it.
 // C ref: src/hack.c
 //
@@ -57,12 +63,15 @@ import { cmdq_clear, closed_door } from './cmd.js';
 // None of them draws.
 
 import { game } from './gstate.js';
-import { do_attack } from './uhitm.js';
-import { sensemon, is_safemon, mon_visible, pline, canspotmon } from './display.js';
+import { do_attack, explum } from './uhitm.js';
+import { rehumanize } from './polyself.js';
+import { wake_nearto } from './mon.js';
+import { attacktype, attacktype_fordmg } from './mondata.js';
+import { sensemon, is_safemon, mon_visible, pline, urgent_pline, canspotmon } from './display.js';
 import { hides_under, noattacks, is_hider } from './mondata.js';
 import { onscary } from './monmove.js';
 import { PMNAMES, MONSYMS, ATTKS } from './monst_data.js';
-import { rn2 } from './rng.js';
+import { rn2, rnd } from './rng.js';
 import {
     IS_STWALL, IS_TREE, IS_OBSTRUCTED,
     W_NONDIGGABLE, W_NONPASSWALL,
@@ -598,7 +607,7 @@ export async function losehp(n, knam, k_format) {
         }
         /* src/hack.c:4287 urgent_pline() can block on a pending message before
            done() repaints the status, so that More frame keeps the old HP. */
-        await pline('You die...');
+        await urgent_pline('You die...');
         await done(DIED);
     } else if (n > 0 && game.u.uhp * 10 < game.u.uhpmax) {
         await maybe_wail();
@@ -919,7 +928,9 @@ export function in_town(x, y) {
 // to fight. Wastes the turn with the "harmlessly attack" line.
 export async function domove_fight_empty(x, y) {
     const off_edge = !isok(x, y);
+    const explo = Upolyd(game.u) && attacktype(game.youmonst.data, ATTKS.AT_EXPL);
     let buf;
+    let solid_or_boulder = off_edge;
 
     if (off_edge) {
         /* treat as if solid rock, even on planes' levels */
@@ -952,14 +963,57 @@ export async function domove_fight_empty(x, y) {
            terrain or object which was hidden underneath it. */
         unmap_invisible(x, y);
         newsym(x, y);
-        const solid_or_boulder = !!(boulder || solid);
-        await You(`${solid_or_boulder ? 'harmlessly ' : ''}attack ${buf}.`);
-        nomul(0);
-        return true;
+        solid_or_boulder = !!(boulder || solid);
     }
-    await You(`harmlessly attack ${buf}.`);
+    await You(`${solid_or_boulder ? (explo ? 'futilely ' : 'harmlessly ') : ''}${
+        explo ? 'explode at' : 'attack'} ${buf}.`);
     nomul(0);
+    if (explo) {
+        const attk = attacktype_fordmg(game.youmonst.data, ATTKS.AT_EXPL, ATTKS.AD_ANY);
+        await wake_nearto(game.u.ux, game.u.uy, 7 * 7);
+        if (attk)
+            await explum(null, attk);
+        game.u.mh = -1;
+        await rehumanize();
+    }
     return true;
+}
+
+// src/hack.c:2515 avoid_trap_andor_region()
+export async function avoid_trap_andor_region(x, y) {
+    const bits = paranoia_bits();
+    let newreg, oldreg, trap;
+    if ((bits & PARANOID_TRAP) && !Blind() && !Stunned() && !Confusion() && !Hallucination()
+        && (!game.context.nopick || game.context.run)
+        && (newreg = visible_region_at(x, y))
+        && (!(oldreg = visible_region_at(game.u.ux, game.u.uy))
+            || (reg_damg(newreg) > 0 && reg_damg(oldreg) === 0))
+        && await test_move(game.u.ux, game.u.uy, game.u.dx, game.u.dy, TEST_MOVE)) {
+        const qbuf = `${u_locomotion('step')} into that ${reg_damg(newreg) > 0
+            ? 'poison gas' : 'vapor'} cloud?`;
+        if (!(await paranoid_query(bits & PARANOID_CONFIRM, upstart(qbuf)))) {
+            nomul(0);
+            game.context.move = 0;
+            return true;
+        }
+    }
+    if ((bits & PARANOID_TRAP) && !Stunned() && !Confusion()
+        && (!game.context.nopick || game.context.run)
+        && (trap = t_at(x, y)) && trap.tseen
+        && await test_move(game.u.ux, game.u.uy, game.u.dx, game.u.dy, TEST_MOVE)
+        && ((await immune_to_trap(game.youmonst, trap.ttyp)) !== TRAP_CLEARLY_IMMUNE
+            || Hallucination())) {
+        const traptype = Hallucination() ? rnd(TRAPNUM - 1) : trap.ttyp;
+        const into = into_vs_onto(traptype);
+        const qbuf = `Really ${u_locomotion('step')} ${into ? 'into' : 'onto'} that ${
+            defsyms[cmap_names.S_arrow_trap + traptype - 1].explain}?`;
+        if (!(await paranoid_query(bits & PARANOID_CONFIRM, qbuf))) {
+            nomul(0);
+            game.context.move = 0;
+            return true;
+        }
+    }
+    return false;
 }
 
 // src/hack.c domove_attackmon_at() — the gate between walking into a square
@@ -1256,8 +1310,6 @@ export function nomul(nval) {
 //
 // THE CLEAR-BEFORE-CALL on afternmv IS LOAD-BEARING and C comments it: a
 // callback that sets afternmv again must not be clobbered after it returns.
-// The polymorph-reminder arm cannot fire (Upolyd is impossible here) and the
-// life-saving message never arises, so only the plain wake path is live.
 export async function unmul(msg_override) {
     (game.disp ||= {}).botl = true;
     game.multi = 0; /* caller will usually have done this already */
@@ -1270,8 +1322,11 @@ export async function unmul(msg_override) {
     /* and dereferences it here (`if (*gn.nomovemsg)`), so "" prints nothing.
        Collapsing the two states made every nomovemsg="" caller -- jump is
        one -- announce "You can move again." where C stays silent. */
-    if (game.nomovemsg)
+    if (game.nomovemsg) {
         await pline(game.nomovemsg);
+        if (Upolyd(game.u) && /^You survived that /i.test(game.nomovemsg))
+            await You(`are ${an(pmname(game.mons[game.u.umonnum], game.u.mfemale ? 1 : 0))}.`);
+    }
     game.nomovemsg = null;
     if (game.u)
         game.u.usleep = 0;

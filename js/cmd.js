@@ -42,20 +42,22 @@ import { PMNAMES, MFLAGS, MONSYMS } from './monst_data.js';
 import { hides_under, is_hider, verysmall, sticks } from './mondata.js';
 import { bad_rock, cant_squeeze_thru, nomul, domove_attackmon_at, spoteffects,
          domove_bump_mon, dopickup, trapmove, doorless_door,
-         could_move_onto_boulder, u_locomotion,
+         could_move_onto_boulder,
          disturb_buried_zombies, may_passwall,
-         runmode_delay_output } from './hack.js';
+         runmode_delay_output, avoid_trap_andor_region } from './hack.js';
 import { In_sokoban, surface } from './dungeon.js';
 import { Blind, Flying, Hallucination, Levitation, Passes_walls, Stealth }
     from './youprop.js';
 import { u_on_newpos } from './teleport.js';
+import { in_out_region } from './region.js';
+import { m_postmove_effect } from './monmove.js';
 import { doloot, dotip, query_inventory_category } from './pickup.js';
 import { curr_mon_load } from './mon.js';
 import { ECMD_FAIL, ECMD_CANCEL, Never_mind, A_DEX, A_CON, M_AP_TYPE,
          M_AP_FURNITURE, M_AP_OBJECT, OVERLOADED, Is_airlevel,
          Upolyd } from './const.js';
 import { ACURR, exercise, near_capacity } from './attrib.js';
-import { is_pit, GETOBJ_EXCLUDE, GETOBJ_SUGGEST, GETOBJ_NOFLAGS, GETOBJ_PROMPT, GETOBJ_ALLOWCNT, GETOBJ_DOWNPLAY, W_ARMOR, W_ACCESSORY, GETOBJ_EXCLUDE_INACCESS, ARTICLE_YOUR, ARTICLE_THE, CQ_CANNED, CQ_REPEAT, CMDQ_EXTCMD, CMDQ_KEY, BEAR_TRAP, LANDMINE, ROLLING_BOULDER_TRAP, PIT, SPIKED_PIT, HOLE, TRAPDOOR, TELEP_TRAP, LEVEL_TELEP, MAGIC_PORTAL, WEB } from './const.js';
+import { is_pit, GETOBJ_EXCLUDE, GETOBJ_SUGGEST, GETOBJ_NOFLAGS, GETOBJ_PROMPT, GETOBJ_ALLOWCNT, GETOBJ_DOWNPLAY, W_ARMOR, W_ACCESSORY, GETOBJ_EXCLUDE_INACCESS, ARTICLE_YOUR, ARTICLE_THE, CQ_CANNED, CQ_REPEAT, CMDQ_EXTCMD, CMDQ_KEY, PIT, HOLE, WEB } from './const.js';
 import { ONAMES, OCLASSES } from './objects_data.js';
 import { an, cxname, simpleonames, the, makeplural, singular, xname,
          the_unique_obj, armor_simple_name } from './objnam.js';
@@ -128,7 +130,7 @@ import { get_valid_jump_position, is_valid_jump_pos } from './apply.js';
 import { dowear, doputon, dotakeoff, doremring, doddoremarm,
          canwearobj_core } from './do_wear.js';
 import { boolean_option, show_menu_controls, paranoia_bits,
-         PARANOID_CONFIRM, PARANOID_QUIT, PARANOID_TRAP } from './options.js';
+         PARANOID_CONFIRM, PARANOID_QUIT } from './options.js';
 import { xwaitforspace } from './tty/getline.js';
 import { NO_COLOR } from './terminal.js';
 import { nhgetch } from './input.js';
@@ -2757,6 +2759,10 @@ async function domove_core() {
        replace the marker in map memory. */
     unmap_invisible(newx, newy);
 
+    // src/hack.c:2826, confirm hazards before struggling out of a trap.
+    if (await avoid_trap_andor_region(newx, newy))
+        return;
+
     /* src/hack.c:2831 — when u.utrap is true the struggle may consume the
        move: trapmove() returns FALSE to stay put (time passes), TRUE when
        the hero escaped or may proceed. */
@@ -2780,41 +2786,6 @@ async function domove_core() {
             game.context.move = 0;
             nomul(0);
             return;
-        }
-    }
-
-    /* src/hack.c:2549, ask before walking into a known harmful trap.
-       The default paranoid setting uses a single y/n answer. */
-    {
-        const bits = paranoia_bits();
-        const trap = t_at(newx, newy);
-        const groundTypes = new Set([
-            BEAR_TRAP, LANDMINE, ROLLING_BOULDER_TRAP, PIT, SPIKED_PIT,
-            HOLE, TRAPDOOR,
-        ]);
-        const clearlyImmune = groundTypes.has(trap?.ttyp)
-            && (Levitation() || Flying());
-        if ((bits & PARANOID_TRAP) && !game.u.uprops?.STUNNED
-            && !game.u.uprops?.CONFUSION
-            && (!game.context.nopick || game.context.run)
-            && trap?.tseen && !clearlyImmune) {
-            const intoTypes = new Set([
-                BEAR_TRAP, PIT, SPIKED_PIT, HOLE, TELEP_TRAP,
-                LEVEL_TELEP, MAGIC_PORTAL, WEB,
-            ]);
-            const cmap = cmap_names.S_arrow_trap + trap.ttyp - 1;
-            const explanation = defsyms[cmap]?.explain || 'trap';
-            if (bits & PARANOID_CONFIRM)
-                note_unported_cmd('domove:paranoid_confirm_words');
-            const answer = await tty_yn_function(
-                `Really ${u_locomotion('step')} ${
-                    intoTypes.has(trap.ttyp) ? 'into' : 'onto'} that ${
-                    explanation}?`, 'yn', 'n');
-            if (answer !== 'y') {
-                game.context.move = 0;
-                nomul(0);
-                return;
-            }
         }
     }
 
@@ -2935,10 +2906,17 @@ async function domove_core() {
             return;
     }
 
+    // src/hack.c:2867, check regions before tentatively moving the hero.
+    if (!(await in_out_region(newx, newy)))
+        return;
+
     // Move the hero
     const oldx = u.ux, oldy = u.uy;
     u.ux = newx;
     u.uy = newy;
+
+    // src/hack.c:2877 m_postmove_effect()
+    await m_postmove_effect(game.youmonst);
 
     /* src/hack.c:2919 — with a safe monster at the destination, move it to
        the hero's previous square. This is the ELSE-IF arm of the

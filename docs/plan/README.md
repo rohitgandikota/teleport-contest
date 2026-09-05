@@ -17,24 +17,24 @@ and persistent gameplay state. Continue source review, measured C branches,
 independent oracles, implementation, and regression checks until that goal is
 met. Current corpus success is not the stopping criterion.
 
-The latest verified pass adds 20 C cases for engulfing, resistance, polymorph
-and attached equipment. All 44 public and 470 supplemental fixtures pass.
-The measured C union has 54,140/108,268 direct outcomes and 4,315/5,491
-entered function records. The assertion ledger is 1,867/1,867. A mutation
-omitting golem healing passes all visible new replays but fails the state
-gate. The published held-out result
-recorded during the audit is 78.39%, distinct from the local result.
+The latest verified pass adds 35 C cases for gas clouds, hero engulfing,
+digestion and fatal countdowns. All 44 public and 475 supplemental fixtures
+pass. The measured C union has 54,531/108,268 direct outcomes and
+4,341/5,491 entered function records. The assertion ledger is 1,902/1,902.
+Changing the engulfing blindness cap still passes all visible new replays
+but fails the state gate. The published held-out result recorded during the
+earlier audit is 78.39%, distinct from the local result.
 
 See [STATUS.md](STATUS.md) for checkpoint and next-action details,
-[engulfing-audit.md](engulfing-audit.md) for the current review, and
+[gas-cloud-audit.md](gas-cloud-audit.md) for the current review, and
 [gameplay-gap-audit.md](gameplay-gap-audit.md) for measurement limits.
 Shop billing and used-up inventory are pushed as `9ceac165`; their review is
 [shop-billing-copy-audit.md](shop-billing-copy-audit.md). The
 [compiled constant audit](c-constant-audit.md) compares 1,666 values with zero
 different values and one reviewed signed-mask representation. The shared
 creation tail, theft body and monster acquisition are verified on their
-expanded corpora. The next source pass continues gas-cloud effects and hero
-movement updates, followed by remaining monster-death and engulfing branches.
+expanded corpora. The next source pass tests native energy drain, tin interventions during
+fatal countdowns, slimicide and remaining timeout arms.
 The full-port goal remains active.
 
 ## Previous focus, 2026-09-03

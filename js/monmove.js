@@ -40,7 +40,8 @@ import { ACCESSIBLE, DOOR, D_LOCKED, D_CLOSED, D_ISOPEN, D_NODOOR,
 import { is_vampshifter } from './monst.js';
 import { newsym, canseemon, canspotmon, sensemon, pline } from './display.js';
 import { You, You_see, You_hear } from './pline.js';
-import { create_gas_cloud, visible_region_at } from './region.js';
+import { create_gas_cloud, visible_region_at, m_in_out_region } from './region.js';
+import { worm_move, worm_nomove } from './worm.js';
 import { Adjmonnam, Monnam, mon_nam, y_monnam, upstart } from './do_name.js';
 import { Blind, Deaf } from './youprop.js';
 import { Is_rogue_level as IRL_const, D_TRAPPED } from './const.js';
@@ -1856,6 +1857,9 @@ export async function m_move(mtmp, after) {
         if ((mfp.info[chi] & ALLOW_M)
             || (nix === mtmp.mux && niy === mtmp.muy))
             return await m_move_aggress(mtmp, nix, niy);
+        // src/monmove.c:2039, update the selected region membership.
+        if (!(await m_in_out_region(mtmp, nix, niy)))
+            return MMOVE_DONE;
         /* src/monmove.c:2047 — postmove effects run BEFORE the location
            changes (monsters have no "previous location" field) */
         await m_postmove_effect(mtmp);
@@ -1864,6 +1868,9 @@ export async function m_move(mtmp, after) {
            square. */
         remove_monster(omx, omy);
         place_monster(mtmp, nix, niy);
+        // src/monmove.c:2057, reconnect the moved head to its tail.
+        if (mtmp.wormno)
+            worm_move(mtmp);
         maybe_unhide_at_mon(mtmp);
         /* the newsym for the vacated square is in postmov(), not here --
            src/monmove.c:1508 sits inside postmov so that EVERY path returning
@@ -1874,13 +1881,17 @@ export async function m_move(mtmp, after) {
            the matching remembered square, so an unmaintained track makes
            every match land on j=0 and draws the wrong modulus. */
         mon_track_add(mtmp, omx, omy);
-    } else if (is_unicorn(ptr) && rn2(2)) {
-        /* A unicorn which cannot find an acceptable step may teleport. */
-        const { rloc, tele_restrict } = await import('./teleport.js');
-        if (!await tele_restrict(mtmp)) {
-            await rloc(mtmp, RLOC_MSG);
-            return MMOVE_MOVED;
+    } else {
+        if (is_unicorn(ptr) && rn2(2)) {
+            /* A unicorn which cannot find an acceptable step may teleport. */
+            const { rloc, tele_restrict } = await import('./teleport.js');
+            if (!await tele_restrict(mtmp)) {
+                await rloc(mtmp, RLOC_MSG);
+                return MMOVE_MOVED;
+            }
         }
+        if (mtmp.wormno)
+            worm_nomove(mtmp);
     }
 
     return await postmov(mtmp, ptr, omx, omy, mmoved, can_tunnel);

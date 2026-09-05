@@ -48,7 +48,7 @@ import { mk_artifact, nartifact_exist } from './artifact.js';
 import { game } from './gstate.js';
 import { start_timer, stop_timer, TIMER_OBJECT,
          ROT_CORPSE as TIMEOUT_ROT_CORPSE,
-         REVIVE_MON as TIMEOUT_REVIVE_MON,
+         REVIVE_MON as TIMEOUT_REVIVE_MON, ZOMBIFY_MON,
          SHRINK_GLOB,
          obj_stop_timers, obj_split_timers, FIG_TRANSFORM,
          attach_fig_transform_timeout } from './timeout.js';
@@ -1704,6 +1704,7 @@ export function mkcorpstat(objtype, mtmp, ptr, x, y, corpstatflags) {
     }
     /* record gender and 'historic statue' in overloaded enchantment field */
     otmp.spe = corpstatflags & CORPSTAT_SPE_VAL;
+    otmp.norevive = game.mkcorpstat_norevive || 0;
 
     if (mtmp) {
         /* save_mtraits() keeps the individual's stats with the remains */
@@ -1721,7 +1722,7 @@ export function mkcorpstat(objtype, mtmp, ptr, x, y, corpstatflags) {
         otmp.corpsenm = ptr.pmidx ?? game.mons.indexOf(ptr);
         otmp.owt = weight(otmp);
         if (otmp.otyp === ONAMES.CORPSE
-            && (special_corpse(old_corpsenm)
+            && (game.zombify || special_corpse(old_corpsenm)
                 || special_corpse(otmp.corpsenm))) {
             /* obj_stop_timers + start_corpse_timeout */
             obj_stop_timers(otmp);
@@ -1944,6 +1945,10 @@ export function start_corpse_timeout(body) {
                 when = a;
                 break;
             }
+    } else if (game.zombify && zombie_form(game.mons[body.corpsenm]) !== NON_PM
+               && !body.norevive) {
+        action = ZOMBIFY_MON;
+        when = rn1(15, 5);
     }
     /* src/mkobj.c:1440 — start_timer(when, TIMER_OBJECT, ROT_CORPSE, body).
        Scheduling was missing: the rnz above drew but the corpse never

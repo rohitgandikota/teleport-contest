@@ -1255,6 +1255,27 @@ make_gas_cloud owns the steam message, nearby makemon must call set_apparxy,
 warnreveal follows automatic search, and deleting a light requests vision
 recalculation. A matching attack's RNG does not verify those later effects.
 
+The gas-cloud pass adds a second state-only counterexample: changing
+gulpum's blindness cap from 127 to 126 passes all 11,548 new visible screens,
+130,031 RNG entries and 118 animations, but fails the blindness state control.
+Native branch coverage also rejects an intended energy-drain claim: the
+energy-vortex replay reaches shock but never calls xdrainenergym. Validate
+species constants before constructing controls; an undefined makemon species
+requests random creation instead of rejecting a misspelling.
+
+An old fog-human replay exposed a missing relocation update. Native #timeout
+snapshots showed the new cloud expiring in C while JS kept extending it. This
+did not prove the fog was missing from C's map. A separate diagnostic build
+showed both clouds initially included it; expulsion later removed membership
+through rloc_to_core's update_monster_region call, which the port omitted.
+Verify the state transition that could explain an absence before inferring
+the state was never present. The ordinary recorder was unchanged.
+
+Urgent tty output sets WIN_NOSTOP for one update_topl call and clears it
+afterward. Keeping it set until a later screen changed ESC suppression in
+unrelated messages. Feeling a floor likewise can overwrite a cloud glyph
+without deleting its region. See [gas-cloud-audit.md](gas-cloud-audit.md).
+
 ## dat/nhlib.lua replaces math.random; the nhlua.c warning is about the built-in
 
 `src/nhlua.c:2946` carries a warning that looks alarming for a byte-exact port:

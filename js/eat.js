@@ -198,7 +198,8 @@ import { getobj, weight, useup, useupf, GETOBJ_EXCLUDE, GETOBJ_SUGGEST, GETOBJ_E
 import { pline } from './display.js';
 import { observe_object } from './o_init.js';
 /* include/obj.h:332 carried() is a WHERE test, not list membership. */
-import { carried } from './obj.js';
+import { carried, polyfood } from './obj.js';
+import { HUNGER, STONED, SLIMED, SICK, VOMITING } from './const.js';
 import { splitobj, bcsign } from './mkobj.js';
 import { is_rottable, b_trapped } from './trap.js';
 import { body_part } from './polyself.js';
@@ -2931,4 +2932,41 @@ export async function cant_finish_meal(corpse) {
         await stop_occupation();
         await newuhs(false);
     }
+}
+
+// src/eat.c:3920 Popeye()
+export function Popeye(threat) {
+    if (game.occupation !== opentin)
+        return false;
+    const otin = game.context.tin.tin;
+    if (!carried(otin)
+        && (!obj_here(otin, game.u.ux, game.u.uy) || !can_reach_floor(true)))
+        return false;
+    if (!otin.known)
+        return true;
+    const mndx = otin.corpsenm;
+    switch (threat) {
+    case HUNGER:
+        return mndx !== NON_PM || otin.spe === 1;
+    case STONED:
+        return ismnum(mndx)
+            && (mndx === PMNAMES.PM_LIZARD || acidic(game.mons[mndx]));
+    case SLIMED:
+        return !!polyfood(otin);
+    case SICK:
+    case VOMITING:
+        break;
+    default:
+        break;
+    }
+    return false;
+}
+
+// src/eat.c:3961 Finish_digestion()
+export async function Finish_digestion() {
+    if (game.corpsenm_digested !== NON_PM) {
+        await cpostfx(game.corpsenm_digested);
+        game.corpsenm_digested = NON_PM;
+    }
+    return 0;
 }

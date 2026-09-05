@@ -1,0 +1,172 @@
+{
+  "name": "hero-engulf-elements",
+  "description": "Hero engulf attacks burn, freeze, shock, blind, wrap and release targets. Resistant and breathless targets survive, and an explosive form attacking thin air rehumanizes.",
+  "coverage": [
+    "mode.debug",
+    "monster.movement",
+    "monster.special-effects",
+    "forms.polymorph",
+    "combat.melee",
+    "survival.timed-status",
+    "ui.getlin",
+    "ui.more-paging"
+  ],
+  "branches": [
+    "hero-engulf-elements.fire",
+    "hero-engulf-elements.cold-resistance",
+    "hero-engulf-elements.cold",
+    "hero-engulf-elements.energy-vortex",
+    "hero-engulf-elements.dust-blindness",
+    "hero-engulf-elements.trapper",
+    "hero-engulf-elements.acid-resistance",
+    "hero-engulf-elements.breathless-fog",
+    "hero-engulf-elements.explosive-form"
+  ],
+  "requireBranchAssertions": true,
+  "segments": [
+    {
+      "name": "fire",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\n",
+      "moves": " #levelchange\r30\r                             #polyself\rfire vortex\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0007peaceful ogre\r\u001b\u001b\u001b\u001b\u001b\u001bFl  \u001b\u001b\u001b\u001b\u001b\u001bFl  \u001b\u001b\u001b\u001b\u001b\u001bFl  \u001b\u001b\u001b\u001b\u001b\u001bFl  \u001b\u001b\u001b\u001b\u001b\u001bFl  \u001b\u001b\u001b\u001b\u001b\u001bFy  \u001b\u001b\u001b\u001b\u001b\u001bFk  \u001b\u001b\u001b\u001b\u001b\u001bFu  \u001b\u001b\u001b\u001b\u001b\u001bFl  \u001b\u001b\u001b\u001b\u001b\u001bFn  \u001b\u001b\u001b\u001b\u001b\u001bFj  \u001b\u001b\u001b\u001b\u001b\u001bFb  \u001b\u001b\u001b\u001b\u001b\u001bFh  \u001b\u001b\u001b\u001b\u001b\u001bFy  \u001b\u001b\u001b\u001b\u001b\u001bFk  \u001b\u001b\u001b\u001b\u001b\u001bFu  \u001b\u001b\u001b\u001b\u001b\u001bFl  \u001b\u001b\u001b\u001b\u001b\u001bFn  \u001b\u001b\u001b\u001b\u001b\u001bFj  \u001b\u001b\u001b\u001b\u001b\u001bFb  \u001b\u001b\u001b\u001b\u001b\u001bFh  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b",
+      "steps": []
+    },
+    {
+      "name": "cold-resistance",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\n",
+      "moves": " #levelchange\r30\r                             #polyself\rice vortex\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0007peaceful winter wolf\r\u001b\u001b\u001b\u001b\u001b\u001bFl  \u001b\u001b\u001b\u001b\u001b\u001bFl  \u001b\u001b\u001b\u001b\u001b\u001bFl  \u001b\u001b\u001b\u001b\u001b\u001bFl  \u001b\u001b\u001b\u001b\u001b\u001bFl  \u001b\u001b\u001b\u001b\u001b\u001bFy  \u001b\u001b\u001b\u001b\u001b\u001bFk  \u001b\u001b\u001b\u001b\u001b\u001bFu  \u001b\u001b\u001b\u001b\u001b\u001bFl  \u001b\u001b\u001b\u001b\u001b\u001bFn  \u001b\u001b\u001b\u001b\u001b\u001bFj  \u001b\u001b\u001b\u001b\u001b\u001bFb  \u001b\u001b\u001b\u001b\u001b\u001bFh  \u001b\u001b\u001b\u001b\u001b\u001bFy  \u001b\u001b\u001b\u001b\u001b\u001bFk  \u001b\u001b\u001b\u001b\u001b\u001bFu  \u001b\u001b\u001b\u001b\u001b\u001bFl  \u001b\u001b\u001b\u001b\u001b\u001bFn  \u001b\u001b\u001b\u001b\u001b\u001bFj  \u001b\u001b\u001b\u001b\u001b\u001bFb  \u001b\u001b\u001b\u001b\u001b\u001bFh  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b",
+      "steps": []
+    },
+    {
+      "name": "cold",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\n",
+      "moves": " #levelchange\r30\r                             #polyself\rice vortex\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0007peaceful ogre\r\u001b\u001b\u001b\u001b\u001b\u001bFl  \u001b\u001b\u001b\u001b\u001b\u001bFl  \u001b\u001b\u001b\u001b\u001b\u001bFl  \u001b\u001b\u001b\u001b\u001b\u001bFl  \u001b\u001b\u001b\u001b\u001b\u001bFl  \u001b\u001b\u001b\u001b\u001b\u001bFy  \u001b\u001b\u001b\u001b\u001b\u001bFk  \u001b\u001b\u001b\u001b\u001b\u001bFu  \u001b\u001b\u001b\u001b\u001b\u001bFl  \u001b\u001b\u001b\u001b\u001b\u001bFn  \u001b\u001b\u001b\u001b\u001b\u001bFj  \u001b\u001b\u001b\u001b\u001b\u001bFb  \u001b\u001b\u001b\u001b\u001b\u001bFh  \u001b\u001b\u001b\u001b\u001b\u001bFy  \u001b\u001b\u001b\u001b\u001b\u001bFk  \u001b\u001b\u001b\u001b\u001b\u001bFu  \u001b\u001b\u001b\u001b\u001b\u001bFl  \u001b\u001b\u001b\u001b\u001b\u001bFn  \u001b\u001b\u001b\u001b\u001b\u001bFj  \u001b\u001b\u001b\u001b\u001b\u001bFb  \u001b\u001b\u001b\u001b\u001b\u001bFh  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b",
+      "steps": []
+    },
+    {
+      "name": "energy-vortex",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\n",
+      "moves": " #levelchange\r30\r                             #polyself\renergy vortex\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0007peaceful gnome wizard\r\u001b\u001b\u001b\u001b\u001b\u001bFl  \u001b\u001b\u001b\u001b\u001b\u001bFl  \u001b\u001b\u001b\u001b\u001b\u001bFl  \u001b\u001b\u001b\u001b\u001b\u001bFl  \u001b\u001b\u001b\u001b\u001b\u001bFl  \u001b\u001b\u001b\u001b\u001b\u001bFy  \u001b\u001b\u001b\u001b\u001b\u001bFk  \u001b\u001b\u001b\u001b\u001b\u001bFu  \u001b\u001b\u001b\u001b\u001b\u001bFl  \u001b\u001b\u001b\u001b\u001b\u001bFn  \u001b\u001b\u001b\u001b\u001b\u001bFj  \u001b\u001b\u001b\u001b\u001b\u001bFb  \u001b\u001b\u001b\u001b\u001b\u001bFh  \u001b\u001b\u001b\u001b\u001b\u001bFy  \u001b\u001b\u001b\u001b\u001b\u001bFk  \u001b\u001b\u001b\u001b\u001b\u001bFu  \u001b\u001b\u001b\u001b\u001b\u001bFl  \u001b\u001b\u001b\u001b\u001b\u001bFn  \u001b\u001b\u001b\u001b\u001b\u001bFj  \u001b\u001b\u001b\u001b\u001b\u001bFb  \u001b\u001b\u001b\u001b\u001b\u001bFh  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b",
+      "steps": []
+    },
+    {
+      "name": "dust-blindness",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\n",
+      "moves": " #levelchange\r30\r                             #polyself\rdust vortex\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0007peaceful ogre\r\u001b\u001b\u001b\u001b\u001b\u001bFl  \u001b\u001b\u001b\u001b\u001b\u001bFl  \u001b\u001b\u001b\u001b\u001b\u001bFl  \u001b\u001b\u001b\u001b\u001b\u001bFl  \u001b\u001b\u001b\u001b\u001b\u001bFl  \u001b\u001b\u001b\u001b\u001b\u001bFy  \u001b\u001b\u001b\u001b\u001b\u001bFk  \u001b\u001b\u001b\u001b\u001b\u001bFu  \u001b\u001b\u001b\u001b\u001b\u001bFl  \u001b\u001b\u001b\u001b\u001b\u001bFn  \u001b\u001b\u001b\u001b\u001b\u001bFj  \u001b\u001b\u001b\u001b\u001b\u001bFb  \u001b\u001b\u001b\u001b\u001b\u001bFh  \u001b\u001b\u001b\u001b\u001b\u001bFy  \u001b\u001b\u001b\u001b\u001b\u001bFk  \u001b\u001b\u001b\u001b\u001b\u001bFu  \u001b\u001b\u001b\u001b\u001b\u001bFl  \u001b\u001b\u001b\u001b\u001b\u001bFn  \u001b\u001b\u001b\u001b\u001b\u001bFj  \u001b\u001b\u001b\u001b\u001b\u001bFb  \u001b\u001b\u001b\u001b\u001b\u001bFh  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b",
+      "steps": []
+    },
+    {
+      "name": "trapper",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\n",
+      "moves": " #levelchange\r30\r                             #polyself\rtrapper\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0007peaceful ogre\r\u001b\u001b\u001b\u001b\u001b\u001bFl  \u001b\u001b\u001b\u001b\u001b\u001bFl  \u001b\u001b\u001b\u001b\u001b\u001bFl  \u001b\u001b\u001b\u001b\u001b\u001bFl  \u001b\u001b\u001b\u001b\u001b\u001bFl  \u001b\u001b\u001b\u001b\u001b\u001bFy  \u001b\u001b\u001b\u001b\u001b\u001bFk  \u001b\u001b\u001b\u001b\u001b\u001bFu  \u001b\u001b\u001b\u001b\u001b\u001bFl  \u001b\u001b\u001b\u001b\u001b\u001bFn  \u001b\u001b\u001b\u001b\u001b\u001bFj  \u001b\u001b\u001b\u001b\u001b\u001bFb  \u001b\u001b\u001b\u001b\u001b\u001bFh  \u001b\u001b\u001b\u001b\u001b\u001bFy  \u001b\u001b\u001b\u001b\u001b\u001bFk  \u001b\u001b\u001b\u001b\u001b\u001bFu  \u001b\u001b\u001b\u001b\u001b\u001bFl  \u001b\u001b\u001b\u001b\u001b\u001bFn  \u001b\u001b\u001b\u001b\u001b\u001bFj  \u001b\u001b\u001b\u001b\u001b\u001bFb  \u001b\u001b\u001b\u001b\u001b\u001bFh  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b",
+      "steps": []
+    },
+    {
+      "name": "acid-resistance",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\n",
+      "moves": " #levelchange\r30\r                             #polyself\rochre jelly\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0007peaceful acid blob\r\u001b\u001b\u001b\u001b\u001b\u001bFy  \u001b\u001b\u001b\u001b\u001b\u001bFk  \u001b\u001b\u001b\u001b\u001b\u001bFu  \u001b\u001b\u001b\u001b\u001b\u001bFl  \u001b\u001b\u001b\u001b\u001b\u001bFn  \u001b\u001b\u001b\u001b\u001b\u001bFj  \u001b\u001b\u001b\u001b\u001b\u001bFb  \u001b\u001b\u001b\u001b\u001b\u001bFh  \u001b\u001b\u001b\u001b\u001b\u001bFy  \u001b\u001b\u001b\u001b\u001b\u001bFk  \u001b\u001b\u001b\u001b\u001b\u001bFu  \u001b\u001b\u001b\u001b\u001b\u001bFl  \u001b\u001b\u001b\u001b\u001b\u001bFn  \u001b\u001b\u001b\u001b\u001b\u001bFj  \u001b\u001b\u001b\u001b\u001b\u001bFb  \u001b\u001b\u001b\u001b\u001b\u001bFh  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b",
+      "steps": []
+    },
+    {
+      "name": "breathless-fog",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             #polyself\rfog cloud\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0007hostile flesh golem\r  \u001b\u001b\u001b\u001b\u001b\u001bFk  \u001b\u001b\u001b\u001b\u001b\u001bFh  \u001b\u001b\u001b\u001b\u001b\u001bFj  \u001b\u001b\u001b\u001b\u001b\u001bFl  \u001b\u001b\u001b\u001b\u001b\u001bFk  \u001b\u001b\u001b\u001b\u001b\u001bFh  \u001b\u001b\u001b\u001b\u001b\u001bFj  \u001b\u001b\u001b\u001b\u001b\u001bFl  \u001b\u001b\u001b\u001b\u001b\u001bFk  \u001b\u001b\u001b\u001b\u001b\u001bFh  \u001b\u001b\u001b\u001b\u001b\u001bFj  \u001b\u001b\u001b\u001b\u001b\u001bFl  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b",
+      "steps": []
+    },
+    {
+      "name": "explosive-form",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             #polyself\ryellow light\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0007hostile ettin\r  \u001b\u001b\u001b\u001b\u001b\u001bFk  \u001b\u001b\u001b\u001b\u001b\u001bFh  \u001b\u001b\u001b\u001b\u001b\u001bFj  \u001b\u001b\u001b\u001b\u001b\u001bFl  \u001b\u001b\u001b\u001b\u001b\u001bFk  \u001b\u001b\u001b\u001b\u001b\u001bFh  \u001b\u001b\u001b\u001b\u001b\u001bFj  \u001b\u001b\u001b\u001b\u001b\u001bFl  \u001b\u001b\u001b\u001b\u001b\u001bFk  \u001b\u001b\u001b\u001b\u001b\u001bFh  \u001b\u001b\u001b\u001b\u001b\u001bFj  \u001b\u001b\u001b\u001b\u001b\u001bFl  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b",
+      "steps": []
+    }
+  ],
+  "branchAssertions": [
+    {
+      "branch": "hero-engulf-elements.fire",
+      "segment": 0,
+      "screenIncludes": [
+        "You engulf it!",
+        "It is burning to a crisp!"
+      ]
+    },
+    {
+      "branch": "hero-engulf-elements.cold-resistance",
+      "segment": 1,
+      "screenIncludes": [
+        "You engulf it!",
+        "It seems mildly chilly."
+      ]
+    },
+    {
+      "branch": "hero-engulf-elements.cold",
+      "segment": 2,
+      "screenIncludes": [
+        "You engulf it!",
+        "It is freezing to death!"
+      ]
+    },
+    {
+      "branch": "hero-engulf-elements.energy-vortex",
+      "segment": 3,
+      "screenIncludes": [
+        "You engulf it!",
+        "The air around it crackles with electricity."
+      ]
+    },
+    {
+      "branch": "hero-engulf-elements.dust-blindness",
+      "segment": 4,
+      "screenIncludes": [
+        "You engulf it!",
+        "It can't see in there!"
+      ]
+    },
+    {
+      "branch": "hero-engulf-elements.trapper",
+      "segment": 5,
+      "screenIncludes": [
+        "You enclose it!",
+        "It is being squashed!",
+        "You release it!"
+      ]
+    },
+    {
+      "branch": "hero-engulf-elements.acid-resistance",
+      "segment": 6,
+      "screenIncludes": [
+        "It is covered with your goo!  It seems harmless to it."
+      ]
+    },
+    {
+      "branch": "hero-engulf-elements.breathless-fog",
+      "segment": 7,
+      "screenIncludes": [
+        "You engulf it!  It is laden with your moisture.  It seems unharmed."
+      ]
+    },
+    {
+      "branch": "hero-engulf-elements.explosive-form",
+      "segment": 8,
+      "screenIncludes": [
+        "You explode at thin air.  You return to human form!"
+      ]
+    }
+  ]
+}

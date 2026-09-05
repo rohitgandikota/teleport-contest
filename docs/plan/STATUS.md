@@ -12,9 +12,77 @@ Continue the authorized work; do not mark it complete or recreate it.
 Current-corpus success is not the stopping criterion. Track unreviewed,
 untested, missing, and unreachable source paths explicitly.
 
-### Current work: verified engulfing pass, preparing local checkpoint
+### Current checkpoint: gas clouds and hero engulfing
 
-Uncommitted edits in mhitu.js, mhitm.js and youprop.js now port the missing
+The gas-cloud pass is verified and awaiting a local commit. It ports region
+construction, membership, gas callbacks, movement hooks, hazard confirmation,
+cloud display, hero gulpum/explum, digestion completion and reached fatal
+countdown/survival paths. The full source bodies are documented in
+[gas-cloud-audit.md](gas-cloud-audit.md); surrounding partial functions are
+not certified. C function names and provenance are preserved. Region's 22
+functions and newly grouped helpers are in source order. Frozen files and the
+original C recorder are unchanged.
+
+Five permanent recipes contain 35 C cases: gas-cloud-hero (9),
+gas-cloud-monsters (7), gas-cloud-trails (2), hero-engulf-digestion (8), and
+hero-engulf-elements (9). They match 11,548 screens/cursors, 130,031 RNG
+entries and 118 animations. All five native recordings and branch assertions
+are exact. The assertion ledger is 1,902/1,902, with 99 covered and seven
+partial scenario categories. The energy-vortex case reaches shock but no
+xdrainenergym, and the nurse case earns digestion, not healing, evidence.
+
+All 519 fixtures pass in .cache/gas-cloud/regression-relocation.log: 44 public
+and 475 supplemental. Supplemental matches 183,034 screens/cursors,
+8,051,471 RNG entries and 21,473 animations. Public remains 11,405
+screens/cursors, 792,838 RNG and 1,462/1,483 animations. Fuzz is 101/102 with
+its known fixed-date miss, 14,261/14,262 screens and all 491,759 RNG.
+All 49 hang checks, 80 role controls, 16 tool tests, source audit (0/268),
+two new state gates and ten related state gates pass. function-order-score
+checks the final declaration/comment-only edits after the full sweep.
+
+The first stable sweep's old fog-human regression came from rloc_to_core
+omitting update_monster_region after expulsion. A fresh ordinary C recording
+was exact. A separate instrumented build disproved an initial missing-map-
+monster hypothesis: both clouds begin with membership; C later removes the
+fog from the new cloud when relocating. Adding the shared update fixes it.
+The diagnostics match all screens/cursors/animations and normalized RNG;
+only source line annotations shift. Files are old-fog*, fog-timeouts* and
+native-region.log. Do not alter the original C to fit the JS.
+
+Gas and hero state gates cover 18 and 17 replays plus source controls.
+Changing gulpum's blindness cap from 127 to 126 still passes all five visible
+fixtures but correctly fails the state gate. The exact 20832cc5 baseline
+fails all five: 4,774 screens, 10,932 cursors, 12,737 RNG and ten animations.
+Both loaders run in scoring workers via NODE_OPTIONS. Baseline/negative first
+attempts raced the loader creation and are invalid; use *-score-second logs.
+Constructed-control setup errors were fixed from C: a nonliving golem cannot
+use an ordinary lifesaver, already blind monsters resist light-induced
+blindness, and PM_GNOMISH_WIZARD must not be misspelled (undefined requests
+random creation). The helper now validates the species number.
+
+Native union: 54,531/108,268 direct outcomes and 4,341/5,491 entered records,
+adding 391 outcomes and 26 records. The five exact recordings are under
+.cache/c-coverage/gas-cloud-20260905; .cache/gas-cloud/union.log and
+remaining.json show the gaps. gulpum is 55/82, inside_gas_cloud 20/22,
+stoned_dialogue 18/28, slime_dialogue 18/30, slimed_to_death 3/10, Popeye 1/28,
+xdrainenergym 0/8 and worm_nomove 0/4. Constructed controls earn no native
+coverage. The larger original code and Lua are far from certified.
+
+Next pass already has ignored inputs in .cache/fatal-timers/initial.input.json:
+six corrected gnomish-wizard energy probes and eight fatal-countdown/tin/
+amulet probes. The initial recording lacked version:5 and was rejected;
+initial-record-second is the valid recording attempt. Validate actual native
+intent, then score and trace first differences. Focus on energy drain and
+tin interventions, slimicide and remaining timeout arms. Full mondead,
+mon_break_armor, display suppression and surrounding modules remain later
+source work. Do not stop at this checkpoint or recreate the goal.
+
+Publishing remains blocked on the unanswered authorization question. Do not
+retry a push. Local source work continues.
+
+### Previous verified checkpoint: engulfing
+
+Commit 20832cc5 in mhitu.js, mhitm.js and youprop.js ports the missing
 gulpmu arms: shared engulf_target and failed_grab, punishment, mounting,
 occupations, traps, leashes, initial and final petrification, elemental
 resistance effects, disease renewal, physical damage reduction and huge-form
@@ -66,7 +134,7 @@ state control alone correctly exits 1. Exact 85153c8b baseline modules fail
 all three new fixtures: 3,555 screens, 4,482 cursors, 29,205 RNG and nine
 animations. See engulfing-audit.md and .cache/engulfing/totals.json.
 
-Next: commit the verified pass locally, then continue region.c's incomplete
+Next: continue region.c's incomplete
 monster cloud effects and the missing hero m_postmove_effect hook in hack.js.
 feel_location still has incomplete suppression/dark-room/sensed-monster
 rendering; del_light_source diagnostics remain partial. Full mondead and

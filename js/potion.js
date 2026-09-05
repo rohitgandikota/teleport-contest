@@ -12,7 +12,7 @@ import { cloneu } from './mhitu.js';
 import { object_detect } from './detect.js';
 import { mon_set_minvis, mon_adjust_speed, which_armor } from './worn.js';
 import { SLIMED, M_AP_MONSTER, M_AP_NOTHING } from './const.js';
-import { fruitname, makeplural, xname } from './objnam.js';
+import { fruitname, makeplural, xname, vtense } from './objnam.js';
 import { hliquid, trycall } from './do_name.js';
 import { newuhs } from './eat.js';
 import { game } from './gstate.js';
@@ -922,9 +922,18 @@ export async function make_blinded(xtime, talk) {
             await pline('Far out!  Everything is all cosmic again!');
         else
             await You('can see again.');
-    } else if (old_timeout && !new_timeout && talk && blocked) {
-        await Your(`vision seems to brighten for a moment but is ${
-            Hallucination() ? 'sadder' : 'normal'} now.`);
+    } else if (old_timeout && !new_timeout && talk) {
+        if (!haseyes(game.youmonst.data) || (intr.HBlinded & FROMOUTSIDE)) {
+            await strange_feeling(null, null);
+        } else if (blindfolded) {
+            let eyes = body_part(EYE);
+            if (eyecount(game.youmonst.data) !== 1)
+                eyes = makeplural(eyes);
+            await Your(`${eyes} momentarily ${vtense(eyes, 'itch')}.`);
+        } else {
+            await Your(`vision seems to brighten for a moment but is ${
+                Hallucination() ? 'sadder' : 'normal'} now.`);
+        }
     }
 
     if (!was_blind && blind_now && talk) {
@@ -932,9 +941,18 @@ export async function make_blinded(xtime, talk) {
             await pline('Oh, bummer!  Everything is dark!  Help!');
         else
             await pline('A cloud of darkness falls upon you.');
-    } else if (!old_timeout && new_timeout && talk && blocked) {
-        await Your(`vision seems to dim for a moment but is ${
-            Hallucination() ? 'happier' : 'normal'} now.`);
+    } else if (!old_timeout && new_timeout && talk) {
+        if (!haseyes(game.youmonst.data) || (intr.HBlinded & FROMOUTSIDE)) {
+            await strange_feeling(null, null);
+        } else if (blindfolded) {
+            let eyes = body_part(EYE);
+            if (eyecount(game.youmonst.data) !== 1)
+                eyes = makeplural(eyes);
+            await Your(`${eyes} momentarily ${vtense(eyes, 'twitch')}.`);
+        } else {
+            await Your(`vision seems to dim for a moment but is ${
+                Hallucination() ? 'happier' : 'normal'} now.`);
+        }
     }
 
     /* src/potion.c:308: capture the glyphs under an attached ball and chain

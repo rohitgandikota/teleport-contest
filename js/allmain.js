@@ -407,6 +407,10 @@ export async function newgame() {
     init_uhunger();
     /* src/u_init.c:1005 — "no prayers just yet" */
     g.u.ublesscnt = 300;
+    // src/u_init.c:1016, initialize ordinary sight and disable special ranges.
+    g.u.nv_range = 1;
+    g.u.xray_range = -1;
+    g.u.unblind_telepat_range = -1;
 
     // src/allmain.c:816-818 — docrt(); flush_screen(1); bot(); all run BEFORE
     // u_init_skills_discoveries() and the legacy pager, which is why the legacy

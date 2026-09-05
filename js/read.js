@@ -43,7 +43,7 @@ import { ECMD_CANCEL, SPE_LIM, CORR, Is_rogue_level, W_ARMOR, W_ARM, NODIR,
          OBJ_AT, COLNO, ROWNO, HAND, HEAD, NH_RED,
          NH_PURPLE } from './const.js';
 import { sgn, distu, isok } from './hacklib.js';
-import { valid_cloud_pos } from './region.js';
+import { ACCESSIBLE } from './const.js';
 import { cansee } from './vision.js';
 import { bcsign, blessorcurse, mkobj, mksobj, place_object,
          uncurse } from './mkobj.js';
@@ -116,7 +116,7 @@ import { A_WIS } from './const.js';
 import { outrumor } from './rumors.js';
 import { setworn, which_armor } from './worn.js';
 import { LIMITS, MFLAGS, MONSYMS, PMNAMES, mons_name } from './monst_data.js';
-import { delobj, is_pool, m_at, setmangry } from './mon.js';
+import { delobj, is_pool, is_lava, m_at, setmangry } from './mon.js';
 import { roles } from './role_data.js';
 import { body_part } from './polyself.js';
 import { Blind, Hallucination, Invisible } from './youprop.js';
@@ -1634,6 +1634,13 @@ async function seffect_remove_curse(sobj) {
 // a read scroll yet; they record. The plain arm runs destroy_arm() with
 // its rn2(4)+1 hit rolls, or gives the "Your skin itches." strange
 // feeling with no armor.
+// src/read.c:1069 valid_cloud_pos()
+export function valid_cloud_pos(x, y) {
+    if (!isok(x, y))
+        return false;
+    return ACCESSIBLE(game.level.at(x, y).typ) || is_pool(x, y) || is_lava(x, y);
+}
+
 // src/read.c:1080 can_center_cloud()
 function can_center_cloud(x, y) {
     if (!valid_cloud_pos(x, y))

@@ -918,7 +918,7 @@ async function sacrifice_your_race(obj, highaltar, altaralign) {
 
     const pm = dlord(altaralign);
     const dmon = pm !== NON_PM
-        ? makemon(game.mons[pm], game.u.ux, game.u.uy, MM_NOMSG)
+        ? await makemon(game.mons[pm], game.u.ux, game.u.uy, MM_NOMSG)
         : null;
     if (dmon) {
         let name = a_monnam(dmon);

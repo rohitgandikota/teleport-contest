@@ -2360,7 +2360,7 @@ export async function split_mon(mon, mtmp) {
     if (mon === game.youmonst) {
         if (game.u.mh > game.u.mhmax) /* sanity precaution */
             game.u.mh = game.u.mhmax;
-        mtmp2 = (game.u.mh > 1) ? cloneu() : null;
+        mtmp2 = (game.u.mh > 1) ? await cloneu() : null;
         if (mtmp2) {
             /* cloneu() has done mtmp2->mhpmax = u.mhmax, mtmp2->mhp = u.mh / 2,
                and u.mh -= mtmp2->mhp; these reductions for both max hp

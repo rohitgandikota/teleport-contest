@@ -689,7 +689,7 @@ async function makekops(origin) {
             continue;
         for (let left = counts[k]; left > 0; --left) {
             if (enexto(spot, spot.x, spot.y, game.mons[mndx])) {
-                makemon(game.mons[mndx], spot.x, spot.y, MM_NOMSG);
+                await makemon(game.mons[mndx], spot.x, spot.y, MM_NOMSG);
             }
         }
     }

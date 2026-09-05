@@ -1996,7 +1996,7 @@ async function passiveum_mon_to_stone(mtmp) {
 }
 
 // src/mhitu.c:2616 cloneu()
-export function cloneu() {
+export async function cloneu() {
     const u = game.u;
     let mon;
     const mndx = monsndx(game.youmonst.data);
@@ -2005,7 +2005,7 @@ export function cloneu() {
         return null;
     if (game.mvitals[mndx].mvflags & MFLAGS.G_EXTINCT)
         return null;
-    mon = makemon(game.youmonst.data, u.ux, u.uy,
+    mon = await makemon(game.youmonst.data, u.ux, u.uy,
                   NO_MINVENT | MM_EDOG | MM_NOMSG);
     if (!mon)
         return null;

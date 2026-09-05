@@ -1585,7 +1585,7 @@ async function final_level() {
     /* create some player-monsters */
     const { create_mplayers } = await import('./mplayer.js');
     const { rn1 } = await import('./rng.js');
-    create_mplayers(rn1(4, 3), true);
+    await create_mplayers(rn1(4, 3), true);
 
     /* create a guardian angel next to player, if worthy */
     const { gain_guardian_angel } = await import('./minion.js');

@@ -986,7 +986,7 @@ async function montraits(obj, cc, adjacentok) {
         mtmp2.data = game.mons[mtmp2.mnum];
 
         if (mtmp2.mhpmax > 0 || is_rider(mtmp2.data)) {
-            mtmp = makemon(mtmp2.data, cc.x, cc.y,
+            mtmp = await makemon(mtmp2.data, cc.x, cc.y,
                            (NO_MINVENT | MM_NOWAIT | MM_NOCOUNTBIRTH
                             /* in case mtmp2 is a long worm; saved traits for
                                long worm don't include tail segments so don't
@@ -1234,7 +1234,7 @@ export async function revive(corpse, by_hero) {
     if (cant_revive(montype_box, true, corpse)) {
         montype = montype_box.v;
         /* make a new monster */
-        mtmp = makemon(game.mons[montype], x, y, mmflags);
+        mtmp = await makemon(game.mons[montype], x, y, mmflags);
         if (mtmp && !game.in_mklev && game.occupation)
             await dochugw(mtmp, false);
         if (mtmp) {
@@ -1260,7 +1260,7 @@ export async function revive(corpse, by_hero) {
             wary_dog(mtmp, true);
     } else {
         /* make a new monster */
-        mtmp = makemon(mptr, x, y, mmflags | MM_NOCOUNTBIRTH);
+        mtmp = await makemon(mptr, x, y, mmflags | MM_NOCOUNTBIRTH);
         if (mtmp && !game.in_mklev && game.occupation)
             await dochugw(mtmp, false);
     }

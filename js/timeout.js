@@ -1076,7 +1076,7 @@ export async function hatch_egg(egg, timeout) {
             const cc = { x: 0, y: 0 };
             if (!enexto(cc, x, y, ptr))
                 break;
-            mon = makemon(ptr, cc.x, cc.y, NO_MINVENT | MM_NOMSG);
+            mon = await makemon(ptr, cc.x, cc.y, NO_MINVENT | MM_NOMSG);
             if (!mon)
                 break;
 

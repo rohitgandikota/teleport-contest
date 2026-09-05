@@ -818,7 +818,7 @@ export async function animate_statue(statue, x, y, cause) {
     if (cause === ANIMATE_SPELL)
         mmflags |= MM_ADJACENTOK;
 
-    const mon = makemon(mptr, x, y, mmflags);
+    const mon = await makemon(mptr, x, y, mmflags);
     if (!mon)
         return null;
 
@@ -1795,7 +1795,7 @@ async function domagictrap() {
         (game.disp ||= {}).botl = true;
 
         while (cnt--)
-            makemon(null, game.u.ux, game.u.uy, NO_MM_FLAGS);
+            await makemon(null, game.u.ux, game.u.uy, NO_MM_FLAGS);
         await wake_nearto(game.u.ux, game.u.uy, 7 * 7);
         return;
     }

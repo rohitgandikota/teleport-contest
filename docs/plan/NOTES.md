@@ -13,6 +13,14 @@ Newest first within each section.
 
 ## Scoring: what the runner actually does
 
+**Loader mutations must reach the scoring worker.** `ps_test_runner.mjs`
+spawns a fresh Node process without forwarding command-line `--loader` or
+`--import` flags. Set the loader in `NODE_OPTIONS`, which the worker inherits,
+or run the worker directly. A creation-occupation mutation appeared to pass
+all 566 screens when only the parent loaded it; the inherited mutation fails
+the replay. A direct state-gate invocation already runs in the loaded process.
+Keep mutation logs separate from unchanged-runtime verification.
+
 **Closing a menu can preserve hallucinated glyphs.** `docallcmd` must rely
 on the tty window's dismissal path. An extra `docrt` redraws every visible
 monster and object with new hallucinations even when gameplay RNG is exact.

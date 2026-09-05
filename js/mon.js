@@ -3330,9 +3330,9 @@ export async function mondead(mdef) {
             return null;
         })();
         if (roll === 1 && down)
-            makemon(mdef.data, down.sx, down.sy, NO_MM_FLAGS);
+            await makemon(mdef.data, down.sx, down.sy, NO_MM_FLAGS);
         else if (roll === 1 || roll === 2)
-            makemon(mdef.data, 0, 0, NO_MM_FLAGS);
+            await makemon(mdef.data, 0, 0, NO_MM_FLAGS);
     }
     /* src/mon.c:3170, death proves the remembered invisible marker stale.
        Clear it before detaching so the corpse or dropped object can replace

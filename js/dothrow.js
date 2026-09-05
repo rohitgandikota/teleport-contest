@@ -2045,7 +2045,7 @@ export async function release_camera_demon(obj, x, y) {
     let mtmp;
 
     if (!rn2(3)
-        && (mtmp = makemon(game.mons[rn2(3) ? PMNAMES.PM_HOMUNCULUS
+        && (mtmp = await makemon(game.mons[rn2(3) ? PMNAMES.PM_HOMUNCULUS
                                             : PMNAMES.PM_IMP], x, y,
                            MM_NOMSG)) != null) {
         if (canspotmon(mtmp))

@@ -17,24 +17,23 @@ and persistent gameplay state. Continue source review, measured C branches,
 independent oracles, implementation, and regression checks until that goal is
 met. Current corpus success is not the stopping criterion.
 
-The latest verified pass adds 17 C cases for figurine perception, ownership
-and monster-detection expiry. All 44 public and 453 supplemental fixtures
-pass. The measured C union has 53,770/108,268 direct outcomes and
-4,310/5,491 entered function records. The assertion ledger is 1,778/1,778.
-A mutation retaining expired detection passes every visible-floor screen
-and RNG entry but fails its state gate. The published held-out result
+The latest verified pass adds 12 C cases for shared creation messages,
+monster groups, occupations and visible or invisible figurine carriers.
+All 44 public and 456 supplemental fixtures pass. The measured C union has
+53,785/108,268 direct outcomes and 4,310/5,491 entered function records.
+The assertion ledger is 1,790/1,790. A mutation omitting creation's occupation
+check fails the C replay and source-state control. The published held-out result
 recorded during the audit is 78.39%, distinct from the local result.
 
 See [STATUS.md](STATUS.md) for checkpoint and next-action details,
-[figurine-detection-audit.md](figurine-detection-audit.md) for the current review, and
+[creation-audit.md](creation-audit.md) for the current review, and
 [gameplay-gap-audit.md](gameplay-gap-audit.md) for measurement limits.
 Shop billing and used-up inventory are pushed as `9ceac165`; their review is
 [shop-billing-copy-audit.md](shop-billing-copy-audit.md). The
 [compiled constant audit](c-constant-audit.md) compares 1,666 values with zero
-different values and one reviewed signed-mask representation. The next
-reproduced gap is makemon's shared arrival-message and occupation tail,
-exposed by the lit monster-carrier figurine probe. The full-port goal remains
-active.
+different values and one reviewed signed-mask representation. The shared
+creation tail is verified. The next source pass continues the remaining
+monster acquisition and theft paths. The full-port goal remains active.
 
 ## Previous focus, 2026-09-03
 

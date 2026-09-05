@@ -9,55 +9,67 @@ loop until complete. The goal is active without a requested token budget.
 Current-corpus success is not the stopping criterion. Track unreviewed,
 untested, missing, and unreachable source paths explicitly.
 
-### Current work: verified detection expiry; missing creation message next
+### Current work: verified shared creation; remaining theft paths next
 
-The beatitude checkpoint is pushed as 65d7e37d. The current verified pass
-fixes monster-detection timeouts and extends figurine perception and ownership
-coverage. Timed detection now uses intrinsic.HDetect_monsters, separate from
-temporary extrinsic detection. C's full potion effect and itimeout_incr mask
-are ported. The shared macro and expiry redraw preserve C's sensing behavior.
+Detection expiry is pushed as 666d4323. The current verified, uncommitted
+pass ports makemon's shared arrival-message and occupation tail. Runtime
+callers await creation; level construction remains synchronous. m_initgrp
+waits for runtime children before the parent's inventory and appearance.
+mk_mplayer and mk_roamer retain conditional continuations. Duplicate arrival
+messages in apply, read, sit, were and wizard are removed. The full makemon,
+m_initgrp, mk_mplayer and mk_roamer C bodies have been read.
 
-Three permanent recipes add 17 C intent-validated cases: figurine-perception
-(six), figurine-carriers (three), and monster-detection-timeout (eight).
-They match 3,157 screens/cursors, 172,289 RNG and 7,765 animations. The state
-gate checks C-visible timeout values, timer deadlines, ownership, disposal,
-names and expiry. Separate source controls cover permanent source bits,
-extrinsic detection, spell duration and stale invisible markers. The existing
-monster-fire-trap state gate reads the new intrinsic field; expected 30 stays
-unchanged. A loader retaining detection still passes the visible floor case's
-310 screens/cursors and 6,087 RNG but fails its expired-detection state check.
+Shared mimic naming exposed wrong remembered-glyph and object_from_map result
+fields in mhidden_description; both are fixed. The full C body was reviewed.
+Invisible theft now caches Some_Monnam before equipment removal and refreshes
+it if removal reveals the thief. The full C steal body at steal.c:343-615 has
+been read. Delayed armor, selection guards, punishment, billing and stoning
+remain outside this cached-name fix.
 
-Final runtime: 44 public and 453 supplemental fixtures pass. Supplemental has
-154,171 exact screens/cursors, 7,508,661 RNG and 14,287 animations. Public
-remains 11,405 screens/cursors, 792,838 RNG and 1,462/1,483 animations. Fuzz
-remains 101/102 with the fixed-date mismatch, 14,261/14,262 screens, 14,262
-cursors, 491,759 RNG and 75/76 animations. All 47 hang checks, 80 role-smoke
-controls, 16 tool tests, source audit and three state gates pass. Ledger:
-1,778/1,778. All three native recordings are exact, adding 27 outcomes.
-Union: 53,770/108,268 outcomes and 4,310/5,491 entered function records.
-fig_transform now reaches 31/56, monster detection 13/20, nh_timeout 95/184.
-Logs are .cache/figurine/{regression-final,fuzz-final,hang-final,roles-final,
-state-final,beatitude-state-final,fire-state-final,source-final2,native,union}.log.
-See [figurine-detection-audit.md](figurine-detection-audit.md).
+Three permanent recipes add 12 C intent-validated cases: creation-carriers,
+creation-groups and creation-occupation, four each. They match 2,352
+screens/cursors, 208,608 RNG and 7,033 animations. The state gate covers C
+attachment deadlines, ownership, disposal, names, group disposition and the
+occupation boundary. Source controls cover synchronous generation, MM_NOMSG
+still checking threats and invisible creation preserving the occupation.
 
-Next reproduced failure: .cache/figurine/carrier-lit.input.json and
-carrier-lit.session.json. A lit magic lamp makes the monster carrier visible,
-and segments zero and one reach the proper figurine message. A random jackal
-exposes the missing makemon arrival message: 35,571/35,571 RNG but 898/903
-screens and 901/903 cursors match. Segment zero step 290 is the first screen
-miss; C step 291 says 'A jackal suddenly appears close by!', which JS omits.
-JS flushes the kitten a message too soon. Keep this failing probe, not credited
-as verified behavior, and implement the shared C creation-message tail next.
-The full makemon C body through return has been read. The tail is at
-makemon.c:1472-1510, including occupation/dochugw. Existing arrival copies are
-in apply.js:3372 bagotricks_arrival, were.js, wizard.js and read.js's
-create_particular_creation. Their callers need the shared behavior in source
-order. m_initgrp's common path must stay synchronous for level generation;
-runtime group messages must complete before parent inventory initialization.
-Its C body was read through line 125; read the remaining loop before editing.
-The newcham function already uses conditional promise continuations for this
-same synchronous-creation constraint. No makemon edits have been made yet.
-The full-port goal remains active and work continues after this checkpoint.
+Stable runtime: 44 public and 456 supplemental fixtures pass, 500 total.
+Supplemental has 156,523 exact screens/cursors, 7,717,269 RNG and 21,320
+animations. Public stays 11,405 screens/cursors, 792,838 RNG and 1,462/1,483
+animations. Fuzz stays 101/102, the fixed-date mismatch, with 14,261/14,262
+screens, all 14,262 cursors and 491,759 RNG, and 75/76 animations. All 47 hang
+checks, 80 role controls, 16 tool tests, source audit and four state gates
+pass. Ledger: 1,790/1,790. All three native recordings are exact, adding 15
+outcomes and no new records. Union: 53,785/108,268 and 4,310/5,491.
+fig_transform reaches 38/56, makemon 244/276, m_initgrp 11/14, dochugw 24/26.
+Logs: .cache/creation/{regression-final,fuzz-second,hang,roles,tool-tests,
+state,figurine-state,beatitude-state,fire-state,source-final,ledger,native,
+union,totals}.log. See [creation-audit.md](creation-audit.md).
+
+The negative loader skip-occupation.mjs fails its source-state check and,
+when inherited by the scoring worker, drops the occupation replay to
+543/566 screens and 21,313/81,481 RNG. An initial command-line --loader
+only affected the scoring parent and is not valid evidence; use NODE_OPTIONS
+or the worker directly. This is recorded in NOTES. Rechecked inherited
+bag-weight and detection mutations still pass all 1,105/310 visible screens
+and 36,887/6,087 RNG. Runtime and oracle files are unchanged by mutations.
+
+The invisible carrier requires deadline 6587, not the visible carrier's
+1298. Its long wait stops at move 144 because the nymph returns; the final
+recipe resumes and checks its position at move 6586. Diagnostic #timeout
+pointer frames remain ignored. The permanent invisible-lit case reaches
+'You see a kitten drop out of thin air!'. Lit visible, dark visible and
+occluded invisible controls are also verified.
+
+Next: checkpoint this verified pass, then continue remaining source paths.
+makemon's no-inventory disposal arm remains absent. mk_mplayer and mk_roamer
+still have occupied-square relocation markers. mhidden_description lacks
+the region-length bound. Synchronous special-level callbacks are not proof
+of runtime Lua support. maketrap can also run from wizard wishes; do not
+label all of its callers generation-only. Full steal remains a focused next
+source gap, along with mpickobj's billing/null/light branches. Do not touch
+frozen files or conflate the current corpus with full-game completion.
+The full-port goal remains active and the work loop continues.
 
 ### Verified beatitude side effects and figurine timers
 

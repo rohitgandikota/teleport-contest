@@ -1365,7 +1365,7 @@ async function precheck(mon, obj) {
                     return 0;
                 await mquaffmsg(mon, obj);
                 m_useup(mon, obj);
-                mtmp = makemon(game.mons[PMNAMES.PM_GHOST], cc.x, cc.y, MM_NOMSG);
+                mtmp = await makemon(game.mons[PMNAMES.PM_GHOST], cc.x, cc.y, MM_NOMSG);
                 if (!mtmp) {
                     if (vis)
                         await pline(empty);
@@ -1387,7 +1387,7 @@ async function precheck(mon, obj) {
                 return 0;
             await mquaffmsg(mon, obj);
             m_useup(mon, obj);
-            mtmp = makemon(game.mons[PMNAMES.PM_DJINNI], cc.x, cc.y, MM_NOMSG);
+            mtmp = await makemon(game.mons[PMNAMES.PM_DJINNI], cc.x, cc.y, MM_NOMSG);
             if (!mtmp) {
                 if (vis)
                     await pline(empty);
@@ -1882,7 +1882,7 @@ export async function use_defensive(mtmp) {
         if (!enexto(cc, mtmp.mx, mtmp.my, pm))
             return 0;
         await mzapwand(mtmp, otmp, false);
-        mon = makemon(null, cc.x, cc.y, NO_MM_FLAGS);
+        mon = await makemon(null, cc.x, cc.y, NO_MM_FLAGS);
         if (mon && canspotmon(mon) && oseen)
             makeknown(ONAMES.WAN_CREATE_MONSTER);
         return 2;
@@ -1908,7 +1908,7 @@ export async function use_defensive(mtmp) {
                `pm' is what to actually create (0 => random) */
             if (!enexto(cc, mtmp.mx, mtmp.my, fish))
                 break;
-            mon = makemon(pm, cc.x, cc.y, NO_MM_FLAGS);
+            mon = await makemon(pm, cc.x, cc.y, NO_MM_FLAGS);
             if (mon && canspotmon(mon))
                 known = true;
         }

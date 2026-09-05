@@ -1,6 +1,18 @@
 {
   "version": 1,
   "requirements": [
+    {"group":"Shared monster creation messages and occupations","id":"creation-carriers.visible-lit","cFile":"src/apply.c","cFunction":"fig_transform","description":"visible lit"},
+    {"group":"Shared monster creation messages and occupations","id":"creation-carriers.visible-dark","cFile":"src/apply.c","cFunction":"fig_transform","description":"visible dark"},
+    {"group":"Shared monster creation messages and occupations","id":"creation-carriers.invisible-lit","cFile":"src/apply.c","cFunction":"fig_transform","description":"invisible lit"},
+    {"group":"Shared monster creation messages and occupations","id":"creation-carriers.invisible-occluded","cFile":"src/apply.c","cFunction":"fig_transform","description":"invisible occluded"},
+    {"group":"Shared monster creation messages and occupations","id":"creation-groups.grid-bug-group","cFile":"src/makemon.c","cFunction":"makemon","description":"grid bug group"},
+    {"group":"Shared monster creation messages and occupations","id":"creation-groups.independent-monsters","cFile":"src/makemon.c","cFunction":"makemon","description":"independent monsters"},
+    {"group":"Shared monster creation messages and occupations","id":"creation-groups.jackal-group","cFile":"src/makemon.c","cFunction":"makemon","description":"jackal group"},
+    {"group":"Shared monster creation messages and occupations","id":"creation-groups.repeated-arrival","cFile":"src/makemon.c","cFunction":"makemon","description":"repeated arrival"},
+    {"group":"Shared monster creation messages and occupations","id":"creation-occupation.named-kitten","cFile":"src/makemon.c","cFunction":"makemon","description":"named kitten"},
+    {"group":"Shared monster creation messages and occupations","id":"creation-occupation.bat","cFile":"src/makemon.c","cFunction":"makemon","description":"bat"},
+    {"group":"Shared monster creation messages and occupations","id":"creation-occupation.stalker","cFile":"src/makemon.c","cFunction":"makemon","description":"stalker"},
+    {"group":"Shared monster creation messages and occupations","id":"creation-occupation.mimic","cFile":"src/makemon.c","cFunction":"makemon","description":"mimic"},
     {"group":"Figurine perception, ownership and detection timeouts","id":"figurine-perception.stalker","cFile":"src/apply.c","cFunction":"fig_transform","description":"stalker"},
     {"group":"Figurine perception, ownership and detection timeouts","id":"figurine-perception.mimic","cFile":"src/apply.c","cFunction":"fig_transform","description":"mimic"},
     {"group":"Figurine perception, ownership and detection timeouts","id":"figurine-perception.bat","cFile":"src/apply.c","cFunction":"fig_transform","description":"bat"},

@@ -860,7 +860,7 @@ export async function animate_statue(statue, x, y, cause) {
     const { mpickobj } = await import('./steal.js');
     for (const item of [...(statue.cobj || [])]) {
         obj_extract_self(item);
-        mpickobj(mon, item);
+        await mpickobj(mon, item);
     }
     m_dowear(mon, true);
     delobj(statue);
@@ -1651,7 +1651,7 @@ async function trapeffect_poly_trap(mtmp, trap, trflags) {
             let shoes = which_armor(mtmp, W_ARMF);
 
             extract_from_minvent(mtmp, shoes, true, true);
-            if (mpickobj(mtmp, shoes)) {
+            if (await mpickobj(mtmp, shoes)) {
                 /* impossible("re-equipping iron shoes destroyed them?") */
                 return Trap_Effect_Finished;
             }
@@ -4900,7 +4900,7 @@ export async function launch_obj(otyp, x1, y1, x2, y2, style) {
                     await pline(`${Monnam(mtmp)} snatches the boulder.`);
                 singleobj.otrapped = 0;
                 const { mpickobj } = await import('./steal.js');
-                mpickobj(mtmp, singleobj);
+                await mpickobj(mtmp, singleobj);
                 used_up = true;
                 break;
             }

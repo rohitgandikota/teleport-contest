@@ -5,11 +5,72 @@
 The user explicitly set an ongoing goal: port every reachable C and Lua
 behavior faithfully, with byte-identical output and persistent state, and
 continue the source review, oracle generation, implementation, and verification
-loop until complete. The goal is active without a requested token budget.
+loop until complete. The user requested an unbudgeted goal. The goal tracker currently reports
+blocked after the earlier model-capacity failure; this turn is running and
+local work has no such blocker. The available goal tools cannot resume it.
+Continue the authorized work; do not mark it complete or recreate it.
 Current-corpus success is not the stopping criterion. Track unreviewed,
 untested, missing, and unreachable source paths explicitly.
 
-### Current work: theft port and final verification
+### Current work: verified monster pickup; remaining engulfing next
+
+The local pickup pass is verified but not yet committed. It ports the full
+mpickobj C body, including null and attached-punishment diagnostics, billing
+through nested containers, transient projectile references, knowledge loss,
+ownership flags, carrying effects and shared add_to_minv insertion. Runtime
+callers await feedback; unlit construction remains synchronous. Light sources
+are prepended in C order, and snuff_light_source uses cached coordinates,
+skips artifacts and removes the first eligible burning source. Burning uses
+C's ignitable macro rather than lamplit alone.
+
+The new probes exposed thitmonst's missing swallowed ordinary-object branch,
+gulpmu's missing initial snuffing and AD_BLND effect, the missing swallowed
+search message, an incorrect candle refusal string and monstone's missing
+escape message. Those paths are fixed. The full C thitmonst, gulpmu and
+monstone bodies were read, but their other missing arms remain unported.
+gulpmu still lacks failed grabs, steed/punishment/leash cleanup, several
+polymorph/resistance/damage effects and its petrifying-hero tail. monstone
+still lacks its initial vampire/lifesaving checks, worn inventory effects,
+floor effects and some light/display cleanup. These are the next source work.
+
+Four permanent recipes contain 17 C intent-validated cases: monster-pickup-light
+(five), monster-pickup-currents (three), engulf-carried-light (six), and
+swallowed-corpse-transfer (three). All 2,098 screens/cursors and 41,364 RNG
+entries match; there are no animation frames. Baseline 669b8416, loaded from
+its exact module sources through the scoring worker's NODE_OPTIONS, fails all
+four fixtures at 1,949 screens, 2,089 cursors and 22,036 RNG. Fog probes never
+engulf and the air-elemental probe never reaches the pickup; neither was
+promoted. The candle-blocked case never lights, correctly covering refusal.
+
+monster-pickup-state-gate passes all 17 replays plus source controls for
+knowledge exceptions, ownership, merging, billing, punishment, fuel restoration,
+source order, cached coordinates and artifact light. The retain-no-charge
+negative loader passes all visible new replay metrics but fails the source
+ownership check (1 versus 0). No runtime or C oracle is edited by the control.
+
+All 508 fixtures pass: 44 public and 464 supplemental. Supplemental matches
+164,617 screens/cursors, 7,836,900 RNG and 21,326 animations. Public remains
+11,405 screens/cursors, 792,838 RNG and 1,462/1,483 animations. Fuzz is unchanged
+at 101/102 with its fixed-date miss, 14,261/14,262 screens, all 14,262 cursors,
+491,759 RNG and 75/76 animations. All 48 hang checks, 80 role controls, 16 tool
+tests, source audit (0/268), pickup state and four related state gates pass.
+The assertion ledger is 1,837/1,837, with 99 covered and seven partial categories.
+
+All four native recordings are exact in .cache/c-coverage/monster-pickup-20260905.
+They add 56 outcomes and one entered record (snuff_light_source). Union:
+54,001/108,268 and 4,315/5,491. mpickobj reaches 23/32, snuff_light_source 6/12,
+thitmonst 79/156, gulpmu 55/100 and monstone 19/28. Source controls earn no
+native credit. Logs are .cache/monster-pickup/{regression-second,fuzz,hang,
+roles,tool-tests,source-second,state-third,theft-state,fire-state,merge-state,
+beatitude-state,ledger-second,native,union,baseline,negative-replay,negative-state}.log
+and totals.json. See [monster-pickup-audit.md](monster-pickup-audit.md).
+
+Theft is committed locally as 669b8416. Its push was rejected by automatic
+approval review for lack of explicit publishing authorization. The async push
+question is still pending. Do not retry or publish later checkpoints without
+that authorization. Local source work and the full-port goal continue.
+
+### Verified theft and shared creation checkpoints
 
 Detection expiry is pushed as 666d4323. The verified shared-creation pass is
 committed and pushed as cdd126c9. It ports makemon's shared arrival-message
@@ -62,7 +123,7 @@ pointer frames remain ignored. The permanent invisible-lit case reaches
 'You see a kitten drop out of thin air!'. Lit visible, dark visible and
 occluded invisible controls are also verified.
 
-The uncommitted theft pass implements the full steal body, worn_item_removal,
+The committed theft pass implements the full steal body, worn_item_removal,
 thiefdead, unstolenarm and stealarm. The existing unresponsive helper moves
 from mhitu to its C steal module. Both monster removal routes reset pending
 theft at C's hook. stop_donning calls cancel_don before reading multi, as C
@@ -105,16 +166,19 @@ all 504 fixtures: 44 public and 460 supplemental. Supplemental matches
 logs are .cache/theft/{regression-stable,fuzz-stable,state-final,hang,roles,
 tool-tests,source-final,ledger,native-final,union-final,negative-replay,
 negative-state}.log and totals.json. See [theft-audit.md](theft-audit.md).
-The theft pass is verified and ready to checkpoint; the full-port loop continues.
+The theft pass is committed locally as 669b8416. Automatic approval review
+rejected its push to origin/main, stating that publishing to this remote
+branch lacks explicit user authorization. An async question asks whether to
+push this and future verified checkpoints or keep commits local. Do not retry
+the push without authorization. Continue local source work while it is pending.
+The full-port goal is not blocked by the push approval.
 
 makemon's no-inventory disposal arm remains absent. mk_mplayer and mk_roamer
 still have occupied-square relocation markers. mhidden_description lacks
 the region-length bound. Synchronous special-level callbacks are not proof
 of runtime Lua support. maketrap can also run from wizard wishes; do not
-label all of its callers generation-only. Next read and port mpickobj's
-billing/null/light branches and continue theft's uncovered guards. Do not touch
-frozen files or conflate the current corpus with full-game completion.
-The full-port goal remains active and the work loop continues.
+label all of its callers generation-only. Do not touch frozen files or conflate
+the current corpus with full-game completion. The full-port work continues.
 
 ### Verified beatitude side effects and figurine timers
 

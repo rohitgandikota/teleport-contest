@@ -3,26 +3,23 @@
 
 import { game } from './gstate.js';
 import { cansee } from './vision.js';
-import { doname, armor_simple_name, yname } from './objnam.js';
-import { Monnam, Some_Monnam, Adjmonnam } from './do_name.js';
+import { doname, armor_simple_name, yname, simpleonames, Tobjnam } from './objnam.js';
+import { Monnam, Some_Monnam, Adjmonnam, pmname } from './do_name.js';
 import { pline_xy, You, impossible } from './pline.js';
 import { newsym, pline, urgent_pline } from './display.js';
-import { place_object, unknow_object } from './mkobj.js';
-import { freeinv, stackobj, obj_extract_self, carry_obj_effects } from './invent.js';
+import { place_object, unknow_object, add_to_minv } from './mkobj.js';
+import { freeinv, stackobj, obj_extract_self, carry_obj_effects, count_unpaid } from './invent.js';
 import { flooreffects } from './do.js';
-/* src/light.c obj_sheds_light() == obj_is_burning(): a lit lamp/candle/
-   artifact. The port tracks lamplit; artifact light records elsewhere. */
-const obj_sheds_light = (o) => !!o.lamplit;
+import { obj_sheds_light, snuff_light_source } from './light.js';
 import { attacktype, is_animal, dmgtype, throws_rocks, touch_petrifies } from './mondata.js';
 import { ATTKS, MONSYMS, MFLAGS } from './monst_data.js';
 import { canseemon, canspotmon } from './display.js';
-import { merged } from './invent.js';
 import { LOST_NONE, LOST_THROWN, LOST_DROPPED, LOST_STOLEN,
-         OBJ_MINVENT, W_ARMOR, W_ACCESSORY, W_WEAPONS,
-         RLOC_MSG } from './const.js';
+         W_ARMOR, W_ACCESSORY, W_WEAPONS,
+         RLOC_MSG, Mgender, engulfing_u } from './const.js';
 import { OCLASSES, ONAMES } from './objects_data.js';
 import { droppables } from './dog.js';
-import { costly_spot, subfrombill, shop_keeper } from './shk.js';
+import { costly_spot, subfrombill, shop_keeper, find_objowner } from './shk.js';
 import { obj_resists } from './zap.js';
 import { any_quest_artifact, is_quest_artifact } from './questpgr.js';
 import { W_SADDLE } from './const.js';
@@ -46,7 +43,7 @@ import { can_carry } from './mon.js';
 import { monnear, monflee } from './monmove.js';
 import { tele_restrict, rloc } from './teleport.js';
 import { DEADMONSTER } from './monst.js';
-import { bimanual } from './obj.js';
+import { bimanual, Has_contents } from './obj.js';
 import { o_unleash } from './apply.js';
 import { openholdingtrap, minstapetrify } from './trap.js';
 
@@ -103,7 +100,7 @@ async function stealarm() {
                             subfrombill(otmp, shop_keeper(game.u.ushops?.[0]));
                         freeinv(otmp);
                         await pline(`${Monnam(mtmp)} steals ${doname(otmp)}!`);
-                        mpickobj(mtmp, otmp);
+                        await mpickobj(mtmp, otmp);
                         await monflee(mtmp, 0, false, false);
                         if (!await tele_restrict(mtmp))
                             await rloc(mtmp, RLOC_MSG);
@@ -416,7 +413,7 @@ export async function steal(mtmp, objnambuf = null) {
     const could_petrify = otmp.otyp === ONAMES.CORPSE
         && touch_petrifies(game.mons[otmp.corpsenm]);
     otmp.how_lost = LOST_STOLEN;
-    mpickobj(mtmp, otmp);
+    await mpickobj(mtmp, otmp);
     if (could_petrify && !(mtmp.misc_worn_check & W_ARMG)) {
         await minstapetrify(mtmp, true);
         return -1;
@@ -475,7 +472,7 @@ export async function stealamulet(mtmp) {
 
     freeinv(otmp);
     const stolenName = doname(otmp);
-    mpickobj(mtmp, otmp);
+    await mpickobj(mtmp, otmp);
     await pline(`${Some_Monnam(mtmp)} steals ${stolenName}!`);
     if ((mtmp.data.mflags1 & MFLAGS.M1_TPORT) !== 0) {
         const { tele_restrict, rloc } = await import('./teleport.js');
@@ -564,10 +561,15 @@ export async function relobj(mtmp, show, is_pet) {
 // src/steal.c:618 mpickobj() — a monster takes possession of an object.
 // Returns 1 when the object merged into an existing stack (and is gone).
 //
-// subfrombill (shop billing), unknow_object, the engulfer light snuff and
-// the cursed-figurine timer record, each behind its own gate.
 export function mpickobj(mtmp, otmp) {
-    /* C: impossible() on null or on taking the hero's ball & chain */
+    if (!otmp) {
+        return impossible(`monster (${pmname(mtmp.data, Mgender(mtmp))}) taking or picking up nothing?`)
+            .then(() => 1);
+    } else if (otmp === game.u.uball || otmp === game.u.uchain) {
+        return impossible(`monster (${pmname(mtmp.data, Mgender(mtmp))}) taking or picking up attached ${
+            otmp === game.u.uchain ? 'chain' : 'ball'} (${simpleonames(otmp)})?`)
+            .then(() => 0);
+    }
     /* if monster is acquiring a thrown or kicked object, the throwing
        or kicking code shouldn't continue to track and place it */
     if (otmp === game.thrownobj)
@@ -576,34 +578,33 @@ export function mpickobj(mtmp, otmp) {
         game.kickedobj = null;
     /* an unpaid item can be on the floor; if a monster picks it up, take
        it off the shop bill */
-    if (otmp.unpaid)
-        note_unported_steal('mpickobj:subfrombill');
-    /* don't want hidden light source inside the monster */
-    if (obj_sheds_light(otmp)
-        && attacktype(game.mons[mtmp.mnum], ATTKS.AT_ENGL))
-        note_unported_steal('mpickobj:snuff_light');
-    /* for hero owned object on shop floor, mtmp is taking possession */
-    otmp.no_charge = 0;
-    /* some object handling is only done if mtmp isn't a pet */
-    if (!mtmp.mtame) {
-        if (!canseemon(mtmp) && mtmp !== game.u.ustuck)
-            unknow_object(otmp);   /* hero loses knowledge of it */
-        if (otmp.how_lost === LOST_THROWN)
-            otmp.how_lost = LOST_STOLEN;
-        else if (otmp.how_lost === LOST_DROPPED)
-            otmp.how_lost = LOST_NONE;
+    if (otmp.unpaid || (Has_contents(otmp) && count_unpaid(otmp.cobj)))
+        subfrombill(otmp, find_objowner(otmp, otmp.ox, otmp.oy));
+    const snuff_otmp = obj_sheds_light(otmp) && attacktype(mtmp.data, ATTKS.AT_ENGL);
+
+    // Construction stays synchronous; runtime feedback finishes before acquisition.
+    const acquire = () => {
+        otmp.no_charge = 0;
+        if (!mtmp.mtame) {
+            if (!canseemon(mtmp) && mtmp !== game.u.ustuck)
+                unknow_object(otmp);
+            if (otmp.how_lost === LOST_THROWN)
+                otmp.how_lost = LOST_STOLEN;
+            else if (otmp.how_lost === LOST_DROPPED)
+                otmp.how_lost = LOST_NONE;
+        }
+        /* Must do carrying effects on object prior to add_to_minv(). */
+        carry_obj_effects(otmp);
+        const freed_otmp = add_to_minv(mtmp, otmp);
+        if (snuff_otmp)
+            snuff_light_source(mtmp.mx, mtmp.my);
+        return freed_otmp;
+    };
+    if (snuff_otmp && engulfing_u(mtmp) && !Blind()) {
+        return (async () => {
+            await pline(`${Tobjnam(otmp, 'go')} out.`);
+            return acquire();
+        })();
     }
-    /* Must do carrying effects on object prior to add_to_minv() */
-    carry_obj_effects(otmp);
-    /* add_to_minv (src/mkobj.c:2648): merge if possible, else insert */
-    for (const held of (mtmp.minvent || [])) {
-        if (merged({ o: held }, { o: otmp }))
-            return 1; /* obj merged and then free'd */
-    }
-    /* add_to_minv() prepends to the nobj chain. Inventory order controls
-       both which item a monster drops first and which item is drawn on top. */
-    (mtmp.minvent ||= []).unshift(otmp);
-    otmp.where = OBJ_MINVENT;
-    otmp.ocarry = mtmp;
-    return 0;
+    return acquire();
 }

@@ -25,7 +25,8 @@ import { monsndx } from './makemon.js';
 import { split_mon } from './potion.js';
 import { Your } from './pline.js';
 import { ugolemeffects } from './polyself.js';
-import { make_blinded, make_hallucinated, make_stunned } from './potion.js';
+import { make_blinded, make_hallucinated, make_stunned, incr_itimeout } from './potion.js';
+import { snuff_lit } from './apply.js';
 import { mondead, wake_nearto } from './mon.js';
 import { resists_blnd } from './mondata.js';
 import { is_waterwall } from './dbridge.js';
@@ -40,11 +41,11 @@ import { is_animal, is_human, perceives, dmgtype, gender, pronoun_gender,
          defended, resists_acid, resists_cold, resists_elec, resists_fire,
          resists_ston, resists_drli, sticks, haseyes, stagger,
          poly_when_stoned, mhe, noit_mhim, cvt_adtyp_to_mseenres,
-         monstseesu, monstunseesu }
+         monstseesu, monstunseesu, flaming }
          from './mondata.js';
 import { is_vampshifter, DEADMONSTER, MON_WEP } from './monst.js';
 import { poly_gender, body_part, polymon } from './polyself.js';
-import { Blind, Invis, See_invisible, Underwater, Deaf, Levitation, Flying,
+import { Blind, Blinded, Invis, See_invisible, Underwater, Deaf, Levitation, Flying,
          Cold_resistance, Fire_resistance, Hallucination,
          Reflecting, Shock_resistance, Stone_resistance,
          Unaware, Protection_from_shape_changers, Detect_monsters } from './youprop.js';
@@ -1620,7 +1621,7 @@ async function money2mon_seduction(mon, amount) {
     freeinv(paid);
     paid.where = OBJ_FREE;
     paid.ocarry = null;
-    mpickobj(mon, paid);
+    await mpickobj(mon, paid);
     (game.disp ||= {}).botl = true;
     return amount;
 }
@@ -1714,7 +1715,7 @@ export async function doseduce(mon) {
             if (ring.owornmask)
                 await remove_worn_item(ring, false);
             freeinv(ring);
-            mpickobj(mon, ring);
+            await mpickobj(mon, ring);
         } else {
             if (u.uleft && u.uright
                 && u.uleft.otyp === ONAMES.RIN_ADORNMENT
@@ -2289,12 +2290,9 @@ async function gulpmu(mtmp, mattk) {
         }
         u.uswldtim = (tim_tmp < 2) ? 2 : tim_tmp;
         await swallowed(1); /* the engulf interior display */
-        if (!(mdat.mflags2 & 0 /* flaming() */)) {
-            /* snuff_lit over invent: lit lamps go out; recorded when a
-               session carries one into an engulfer */
-            if ((game.invent || []).some(o => o.lamplit))
-                note_unported_mhitu('gulpmu:snuff_lit');
-        }
+        if (!flaming(mdat))
+            for (const obj of [...(game.invent || [])])
+                await snuff_lit(obj);
     }
 
     if (mtmp !== u.ustuck)
@@ -2342,7 +2340,18 @@ async function gulpmu(mtmp, mattk) {
         }
         break;
     case ATTKS.AD_BLND:
-        note_unported_mhitu('gulpmu:AD_BLND');
+        if (can_blnd(mtmp, game.youmonst, mattk[0], null)) {
+            if (!Blind()) {
+                const was_blinded = Blinded();
+                if (!was_blinded)
+                    await You("can't see in here!");
+                await make_blinded(tmp, false);
+                if (!was_blinded && !Blind())
+                    await Your('vision quickly clears.');
+            } else {
+                incr_itimeout('HBlinded', 1);
+            }
+        }
         tmp = 0;
         break;
     case ATTKS.AD_ELEC:
@@ -2481,11 +2490,6 @@ export async function u_slip_free(mtmp, mattk) {
     }
     return false;
 }
-
-/* include/youprop.h Blinded: timed blindness or a worn blindfold/towel */
-const Blinded = () => !!((game.u.intrinsic?.HBlinded | 0)
-                         || (game.u.ublindf && (game.u.ublindf.otyp === ONAMES.BLINDFOLD
-                                                 || game.u.ublindf.otyp === ONAMES.TOWEL)));
 
 // src/mhitu.c:1273 gulp_blnd_check(); an engulfer with a blinding attack
 // gets its blinding in as soon as the hero can see again

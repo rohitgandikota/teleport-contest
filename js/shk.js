@@ -2063,7 +2063,7 @@ async function money2mon(mon, amount) {
     freeinv(paidGold);
     paidGold.where = OBJ_FREE;
     const { mpickobj } = await import('./steal.js');
-    mpickobj(mon, paidGold);
+    await mpickobj(mon, paidGold);
     (game.disp ||= {}).botl = true;
     return amount;
 }

@@ -1009,7 +1009,7 @@ export async function mloot_container(mon, container, vismon) {
             }
             if (container.otyp === ONAMES.ICE_BOX)
                 await removed_from_icebox(xobj);
-            mpickobj(mon, xobj);
+            await mpickobj(mon, xobj);
             result = 2;
         } else {
             const alreadyNomerge = !!xobj.nomerge;
@@ -2426,7 +2426,7 @@ export async function use_misc(mtmp) {
             break;
         case 3:
             await pline(`${Monnam(mtmp)} snatches ${the_weapon}!`);
-            mpickobj(mtmp, target);
+            await mpickobj(mtmp, target);
             break;
         default:
             break;

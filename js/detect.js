@@ -277,7 +277,8 @@ export async function dosearch0(aflag) {
     let x, y;
 
     if (u.uswallow) {
-        /* Norep("What are you looking for?  The exit?") — no draw */
+        if (!aflag)
+            await Norep('What are you looking for?  The exit?');
         return 1;
     }
 

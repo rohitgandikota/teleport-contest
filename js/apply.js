@@ -2111,7 +2111,7 @@ async function use_royal_jelly(jelly) {
 }
 
 /* src/apply.c no_elbow_room[] */
-const no_elbow_room = 'have no elbow-room to maneuver.';
+const no_elbow_room = "don't have enough elbow-room to maneuver.";
 const is_wet_towel = (obj) => obj.otyp === ONAMES.TOWEL && obj.spe > 0;
 /* include/youprop.h: Blinded (timed or a worn blindfold/towel), its timeout,
    Sick, Stunned, Confusion; include/you.h Ugender */

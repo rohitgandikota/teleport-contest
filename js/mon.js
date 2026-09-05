@@ -115,6 +115,8 @@ import { bigmonst, amorphous, is_whirly, noncorporeal, slithy, needspick, nohand
 import { ONAMES, OCLASSES, MATERIALS } from './objects_data.js';
 import { distant_name, doname, makeplural } from './objnam.js';
 import { You, You_feel, You_hear } from './pline.js';
+import { digests } from './mondata.js';
+import { u_locomotion } from './hack.js';
 import { Blind, Hallucination, Deaf } from './youprop.js';
 /* include/obj.h:321 polyfood(), mlevelgain(), mhealup(), ofood();
    src/mon.c:1384 mstoning(); include/mondata.h:28 cant_drown();
@@ -1326,7 +1328,7 @@ export async function meatobj(mtmp) {
             else if (ecount === 2)
                 engulf_message = `${Monnam(mtmp)} engulfs several objects.`;
             obj_extract_self(otmp);
-            mpickobj(mtmp, otmp);
+            await mpickobj(mtmp, otmp);
         } else {
             count++;
             if (cansee(mtmp.mx, mtmp.my)) {
@@ -2129,7 +2131,10 @@ export async function monstone(mdef) {
     stackobj(remains);
     if (cansee(x, y))
         newsym(x, y);
+    const wasinside = engulfing_u(mdef);
     await mondead(mdef);
+    if (wasinside && digests(mdef.data))
+        await You(`${u_locomotion('jump')} through an opening in the new ${xname(remains)}.`);
     return remains;
 }
 
@@ -2990,10 +2995,8 @@ export async function mpickstuff(mtmp) {
                     await pline(`${Monnam(mtmp)} picks up ${otmpname}.`);
             }
             obj_extract_self(otmp3);        /* remove from floor */
-            /* src/steal.c:618 mpickobj() may merge and free otmp3. Its
-               conditional markers cover the unported billing, light, and
-               figurine branches without flagging every ordinary pickup. */
-            mpickobj(mtmp, otmp3);
+            /* src/steal.c:618 mpickobj() may merge and free otmp3. */
+            await mpickobj(mtmp, otmp3);
             check_gear_next_turn(mtmp);
             newsym(mtmp.mx, mtmp.my);
             return true;                    /* pick only one object */

@@ -320,7 +320,7 @@ async function steal_it(mdef, mattk) {
 
     while ((otmp = (mdef.minvent || [])[0]) != null) {
         if (gold) /* put 'mdef's gold back after remembering mdef->minvent */
-            mpickobj(mdef, gold), gold = null;
+            await mpickobj(mdef, gold), gold = null;
         if (!Upolyd(game.u))
             break; /* no longer have ability to steal */
         unwornmask = otmp.owornmask;
@@ -367,7 +367,7 @@ async function steal_it(mdef, mattk) {
        (so will be present in mdef's minvent for bones, or in its statue
        now if it has just been turned into one) */
     if (gold)
-        mpickobj(mdef, gold);
+        await mpickobj(mdef, gold);
 }
 
 // src/uhitm.c:6425 light_hits_gremlin()
@@ -3252,7 +3252,7 @@ export async function mhitm_ad_sedu(magr, mattk, mdef, mhm) {
         extract_from_minvent(mdef, obj, true);
         const objectName = game.vis ? doname(obj) : '';
         const { mpickobj } = await import('./steal.js');
-        mpickobj(magr, obj);
+        await mpickobj(magr, obj);
         const attackerName = Monnam(magr);
         if (game.vis && canseemon(mdef)) {
             await pline(`${attackerName} steals ${objectName} from ${

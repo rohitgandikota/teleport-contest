@@ -1,0 +1,1517 @@
+{
+  "name": "swallowed-corpse-transfer",
+  "description": "A thrown cockatrice corpse petrifies an animal engulfer and is destroyed rather than left in its statue. A vortex retains the corpse, and an ordinary corpse enters a purple worm.",
+  "coverage": [
+    "mode.debug",
+    "monster.special-effects",
+    "ui.getlin",
+    "ui.menus",
+    "ui.more-paging",
+    "object.food-corpses",
+    "combat.ranged"
+  ],
+  "branches": [
+    "swallowed-corpse-transfer.worm-cockatrice",
+    "swallowed-corpse-transfer.ice-cockatrice",
+    "swallowed-corpse-transfer.worm-newt"
+  ],
+  "requireBranchAssertions": true,
+  "segments": [
+    {
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             #wizintrinsic\r 200d\r\u001b\u001b\u001b\u001b\u001b\u001b\u0007purple worm\rmsms \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed cockatrice corpse\r\u001b\u001b\u001b\u001b\u001b\u001btal  \u001b\u001b\u001b\u001b\u001b\u001bi\u001b",
+      "name": "worm-cockatrice"
+    },
+    {
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             #wizintrinsic\r 200d\r\u001b\u001b\u001b\u001b\u001b\u001b\u0007hostile ice vortex\rmsms \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed cockatrice corpse\r\u001b\u001b\u001b\u001b\u001b\u001btal  \u001b\u001b\u001b\u001b\u001b\u001bi\u001b",
+      "name": "ice-cockatrice"
+    },
+    {
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             #wizintrinsic\r 200d\r\u001b\u001b\u001b\u001b\u001b\u001b\u0007purple worm\rmsms \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed newt corpse\r\u001b\u001b\u001b\u001b\u001b\u001btal  \u001b\u001b\u001b\u001b\u001b\u001bi\u001b",
+      "name": "worm-newt"
+    }
+  ],
+  "branchAssertions": [
+    {
+      "branch": "swallowed-corpse-transfer.worm-cockatrice",
+      "segment": 0,
+      "screenIncludes": [
+        "The purple worm bites!  The purple worm swallows you whole!--More--",
+        "a - a cockatrice corpse.",
+        "You jump through an opening in the new statue of a purple worm."
+      ],
+      "screenCells": [
+        {
+          "step": 142,
+          "x": 0,
+          "y": 0,
+          "equals": "N"
+        },
+        {
+          "step": 142,
+          "x": 1,
+          "y": 0,
+          "equals": "o"
+        },
+        {
+          "step": 142,
+          "x": 2,
+          "y": 0,
+          "equals": "t"
+        },
+        {
+          "step": 142,
+          "x": 3,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 142,
+          "x": 4,
+          "y": 0,
+          "equals": "c"
+        },
+        {
+          "step": 142,
+          "x": 5,
+          "y": 0,
+          "equals": "a"
+        },
+        {
+          "step": 142,
+          "x": 6,
+          "y": 0,
+          "equals": "r"
+        },
+        {
+          "step": 142,
+          "x": 7,
+          "y": 0,
+          "equals": "r"
+        },
+        {
+          "step": 142,
+          "x": 8,
+          "y": 0,
+          "equals": "y"
+        },
+        {
+          "step": 142,
+          "x": 9,
+          "y": 0,
+          "equals": "i"
+        },
+        {
+          "step": 142,
+          "x": 10,
+          "y": 0,
+          "equals": "n"
+        },
+        {
+          "step": 142,
+          "x": 11,
+          "y": 0,
+          "equals": "g"
+        },
+        {
+          "step": 142,
+          "x": 12,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 142,
+          "x": 13,
+          "y": 0,
+          "equals": "a"
+        },
+        {
+          "step": 142,
+          "x": 14,
+          "y": 0,
+          "equals": "n"
+        },
+        {
+          "step": 142,
+          "x": 15,
+          "y": 0,
+          "equals": "y"
+        },
+        {
+          "step": 142,
+          "x": 16,
+          "y": 0,
+          "equals": "t"
+        },
+        {
+          "step": 142,
+          "x": 17,
+          "y": 0,
+          "equals": "h"
+        },
+        {
+          "step": 142,
+          "x": 18,
+          "y": 0,
+          "equals": "i"
+        },
+        {
+          "step": 142,
+          "x": 19,
+          "y": 0,
+          "equals": "n"
+        },
+        {
+          "step": 142,
+          "x": 20,
+          "y": 0,
+          "equals": "g"
+        },
+        {
+          "step": 142,
+          "x": 21,
+          "y": 0,
+          "equals": "."
+        },
+        {
+          "step": 142,
+          "x": 22,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 142,
+          "x": 23,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 142,
+          "x": 24,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 142,
+          "x": 25,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 142,
+          "x": 26,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 142,
+          "x": 27,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 142,
+          "x": 28,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 142,
+          "x": 29,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 142,
+          "x": 30,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 142,
+          "x": 31,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 142,
+          "x": 32,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 142,
+          "x": 33,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 142,
+          "x": 34,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 142,
+          "x": 35,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 142,
+          "x": 36,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 142,
+          "x": 37,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 142,
+          "x": 38,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 142,
+          "x": 39,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 142,
+          "x": 40,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 142,
+          "x": 41,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 142,
+          "x": 42,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 142,
+          "x": 43,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 142,
+          "x": 44,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 142,
+          "x": 45,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 142,
+          "x": 46,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 142,
+          "x": 47,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 142,
+          "x": 48,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 142,
+          "x": 49,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 142,
+          "x": 50,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 142,
+          "x": 51,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 142,
+          "x": 52,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 142,
+          "x": 53,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 142,
+          "x": 54,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 142,
+          "x": 55,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 142,
+          "x": 56,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 142,
+          "x": 57,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 142,
+          "x": 58,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 142,
+          "x": 59,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 142,
+          "x": 60,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 142,
+          "x": 61,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 142,
+          "x": 62,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 142,
+          "x": 63,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 142,
+          "x": 64,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 142,
+          "x": 65,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 142,
+          "x": 66,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 142,
+          "x": 67,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 142,
+          "x": 68,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 142,
+          "x": 69,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 142,
+          "x": 70,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 142,
+          "x": 71,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 142,
+          "x": 72,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 142,
+          "x": 73,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 142,
+          "x": 74,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 142,
+          "x": 75,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 142,
+          "x": 76,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 142,
+          "x": 77,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 142,
+          "x": 78,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 142,
+          "x": 79,
+          "y": 0,
+          "equals": " "
+        }
+      ]
+    },
+    {
+      "branch": "swallowed-corpse-transfer.ice-cockatrice",
+      "segment": 1,
+      "screenIncludes": [
+        "The ice vortex engulfs you!--More--",
+        "a - a cockatrice corpse.",
+        "The corpse vanishes into the ice vortex's currents.--More--"
+      ],
+      "screenCells": [
+        {
+          "step": 149,
+          "x": 0,
+          "y": 0,
+          "equals": "N"
+        },
+        {
+          "step": 149,
+          "x": 1,
+          "y": 0,
+          "equals": "o"
+        },
+        {
+          "step": 149,
+          "x": 2,
+          "y": 0,
+          "equals": "t"
+        },
+        {
+          "step": 149,
+          "x": 3,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 149,
+          "x": 4,
+          "y": 0,
+          "equals": "c"
+        },
+        {
+          "step": 149,
+          "x": 5,
+          "y": 0,
+          "equals": "a"
+        },
+        {
+          "step": 149,
+          "x": 6,
+          "y": 0,
+          "equals": "r"
+        },
+        {
+          "step": 149,
+          "x": 7,
+          "y": 0,
+          "equals": "r"
+        },
+        {
+          "step": 149,
+          "x": 8,
+          "y": 0,
+          "equals": "y"
+        },
+        {
+          "step": 149,
+          "x": 9,
+          "y": 0,
+          "equals": "i"
+        },
+        {
+          "step": 149,
+          "x": 10,
+          "y": 0,
+          "equals": "n"
+        },
+        {
+          "step": 149,
+          "x": 11,
+          "y": 0,
+          "equals": "g"
+        },
+        {
+          "step": 149,
+          "x": 12,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 149,
+          "x": 13,
+          "y": 0,
+          "equals": "a"
+        },
+        {
+          "step": 149,
+          "x": 14,
+          "y": 0,
+          "equals": "n"
+        },
+        {
+          "step": 149,
+          "x": 15,
+          "y": 0,
+          "equals": "y"
+        },
+        {
+          "step": 149,
+          "x": 16,
+          "y": 0,
+          "equals": "t"
+        },
+        {
+          "step": 149,
+          "x": 17,
+          "y": 0,
+          "equals": "h"
+        },
+        {
+          "step": 149,
+          "x": 18,
+          "y": 0,
+          "equals": "i"
+        },
+        {
+          "step": 149,
+          "x": 19,
+          "y": 0,
+          "equals": "n"
+        },
+        {
+          "step": 149,
+          "x": 20,
+          "y": 0,
+          "equals": "g"
+        },
+        {
+          "step": 149,
+          "x": 21,
+          "y": 0,
+          "equals": "."
+        },
+        {
+          "step": 149,
+          "x": 22,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 149,
+          "x": 23,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 149,
+          "x": 24,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 149,
+          "x": 25,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 149,
+          "x": 26,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 149,
+          "x": 27,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 149,
+          "x": 28,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 149,
+          "x": 29,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 149,
+          "x": 30,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 149,
+          "x": 31,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 149,
+          "x": 32,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 149,
+          "x": 33,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 149,
+          "x": 34,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 149,
+          "x": 35,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 149,
+          "x": 36,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 149,
+          "x": 37,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 149,
+          "x": 38,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 149,
+          "x": 39,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 149,
+          "x": 40,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 149,
+          "x": 41,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 149,
+          "x": 42,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 149,
+          "x": 43,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 149,
+          "x": 44,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 149,
+          "x": 45,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 149,
+          "x": 46,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 149,
+          "x": 47,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 149,
+          "x": 48,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 149,
+          "x": 49,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 149,
+          "x": 50,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 149,
+          "x": 51,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 149,
+          "x": 52,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 149,
+          "x": 53,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 149,
+          "x": 54,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 149,
+          "x": 55,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 149,
+          "x": 56,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 149,
+          "x": 57,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 149,
+          "x": 58,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 149,
+          "x": 59,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 149,
+          "x": 60,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 149,
+          "x": 61,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 149,
+          "x": 62,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 149,
+          "x": 63,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 149,
+          "x": 64,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 149,
+          "x": 65,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 149,
+          "x": 66,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 149,
+          "x": 67,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 149,
+          "x": 68,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 149,
+          "x": 69,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 149,
+          "x": 70,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 149,
+          "x": 71,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 149,
+          "x": 72,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 149,
+          "x": 73,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 149,
+          "x": 74,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 149,
+          "x": 75,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 149,
+          "x": 76,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 149,
+          "x": 77,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 149,
+          "x": 78,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 149,
+          "x": 79,
+          "y": 0,
+          "equals": " "
+        }
+      ]
+    },
+    {
+      "branch": "swallowed-corpse-transfer.worm-newt",
+      "segment": 2,
+      "screenIncludes": [
+        "The purple worm bites!  The purple worm swallows you whole!--More--",
+        "a - a newt corpse.",
+        "The corpse vanishes into the purple worm's entrails."
+      ],
+      "screenCells": [
+        {
+          "step": 136,
+          "x": 0,
+          "y": 0,
+          "equals": "N"
+        },
+        {
+          "step": 136,
+          "x": 1,
+          "y": 0,
+          "equals": "o"
+        },
+        {
+          "step": 136,
+          "x": 2,
+          "y": 0,
+          "equals": "t"
+        },
+        {
+          "step": 136,
+          "x": 3,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 136,
+          "x": 4,
+          "y": 0,
+          "equals": "c"
+        },
+        {
+          "step": 136,
+          "x": 5,
+          "y": 0,
+          "equals": "a"
+        },
+        {
+          "step": 136,
+          "x": 6,
+          "y": 0,
+          "equals": "r"
+        },
+        {
+          "step": 136,
+          "x": 7,
+          "y": 0,
+          "equals": "r"
+        },
+        {
+          "step": 136,
+          "x": 8,
+          "y": 0,
+          "equals": "y"
+        },
+        {
+          "step": 136,
+          "x": 9,
+          "y": 0,
+          "equals": "i"
+        },
+        {
+          "step": 136,
+          "x": 10,
+          "y": 0,
+          "equals": "n"
+        },
+        {
+          "step": 136,
+          "x": 11,
+          "y": 0,
+          "equals": "g"
+        },
+        {
+          "step": 136,
+          "x": 12,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 136,
+          "x": 13,
+          "y": 0,
+          "equals": "a"
+        },
+        {
+          "step": 136,
+          "x": 14,
+          "y": 0,
+          "equals": "n"
+        },
+        {
+          "step": 136,
+          "x": 15,
+          "y": 0,
+          "equals": "y"
+        },
+        {
+          "step": 136,
+          "x": 16,
+          "y": 0,
+          "equals": "t"
+        },
+        {
+          "step": 136,
+          "x": 17,
+          "y": 0,
+          "equals": "h"
+        },
+        {
+          "step": 136,
+          "x": 18,
+          "y": 0,
+          "equals": "i"
+        },
+        {
+          "step": 136,
+          "x": 19,
+          "y": 0,
+          "equals": "n"
+        },
+        {
+          "step": 136,
+          "x": 20,
+          "y": 0,
+          "equals": "g"
+        },
+        {
+          "step": 136,
+          "x": 21,
+          "y": 0,
+          "equals": "."
+        },
+        {
+          "step": 136,
+          "x": 22,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 136,
+          "x": 23,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 136,
+          "x": 24,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 136,
+          "x": 25,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 136,
+          "x": 26,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 136,
+          "x": 27,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 136,
+          "x": 28,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 136,
+          "x": 29,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 136,
+          "x": 30,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 136,
+          "x": 31,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 136,
+          "x": 32,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 136,
+          "x": 33,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 136,
+          "x": 34,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 136,
+          "x": 35,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 136,
+          "x": 36,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 136,
+          "x": 37,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 136,
+          "x": 38,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 136,
+          "x": 39,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 136,
+          "x": 40,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 136,
+          "x": 41,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 136,
+          "x": 42,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 136,
+          "x": 43,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 136,
+          "x": 44,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 136,
+          "x": 45,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 136,
+          "x": 46,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 136,
+          "x": 47,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 136,
+          "x": 48,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 136,
+          "x": 49,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 136,
+          "x": 50,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 136,
+          "x": 51,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 136,
+          "x": 52,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 136,
+          "x": 53,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 136,
+          "x": 54,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 136,
+          "x": 55,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 136,
+          "x": 56,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 136,
+          "x": 57,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 136,
+          "x": 58,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 136,
+          "x": 59,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 136,
+          "x": 60,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 136,
+          "x": 61,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 136,
+          "x": 62,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 136,
+          "x": 63,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 136,
+          "x": 64,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 136,
+          "x": 65,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 136,
+          "x": 66,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 136,
+          "x": 67,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 136,
+          "x": 68,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 136,
+          "x": 69,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 136,
+          "x": 70,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 136,
+          "x": 71,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 136,
+          "x": 72,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 136,
+          "x": 73,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 136,
+          "x": 74,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 136,
+          "x": 75,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 136,
+          "x": 76,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 136,
+          "x": 77,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 136,
+          "x": 78,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 136,
+          "x": 79,
+          "y": 0,
+          "equals": " "
+        }
+      ]
+    }
+  ]
+}

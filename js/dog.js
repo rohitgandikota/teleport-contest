@@ -1882,7 +1882,7 @@ export async function dog_invent(mtmp, edog, udist) {
                         }
                         obj_extract_self(otmp);
                         newsym(omx, omy);
-                        mpickobj(mtmp, otmp);
+                        await mpickobj(mtmp, otmp);
                         if (attacktype(mtmp.data, ATTKS.AT_WEAP)
                             && mtmp.weapon_check === NEED_WEAPON) {
                             mtmp.weapon_check = NEED_HTH_WEAPON;

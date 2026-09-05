@@ -17,24 +17,24 @@ and persistent gameplay state. Continue source review, measured C branches,
 independent oracles, implementation, and regression checks until that goal is
 met. Current corpus success is not the stopping criterion.
 
-The latest verified pass adds 30 C cases for monster theft, equipment effects,
-interrupted dressing and disrobing, refusal, punishment and petrification.
-All 44 public and 460 supplemental fixtures pass. The measured C union has
-53,945/108,268 direct outcomes and 4,314/5,491 entered function records.
-The assertion ledger is 1,820/1,820. A mutation clearing theft's retaliation
-bit passes all visible new replays but fails the state gate. The published held-out result
+The latest verified pass adds 17 C cases for monster pickup, swallowed light,
+blindness and corpse transfer. All 44 public and 464 supplemental fixtures
+pass. The measured C union has 54,001/108,268 direct outcomes and 4,315/5,491
+entered function records. The assertion ledger is 1,837/1,837. A mutation
+preserving an acquired object's old shop exemption passes all visible new
+replays but fails the state gate. The published held-out result
 recorded during the audit is 78.39%, distinct from the local result.
 
 See [STATUS.md](STATUS.md) for checkpoint and next-action details,
-[theft-audit.md](theft-audit.md) for the current review, and
+[monster-pickup-audit.md](monster-pickup-audit.md) for the current review, and
 [gameplay-gap-audit.md](gameplay-gap-audit.md) for measurement limits.
 Shop billing and used-up inventory are pushed as `9ceac165`; their review is
 [shop-billing-copy-audit.md](shop-billing-copy-audit.md). The
 [compiled constant audit](c-constant-audit.md) compares 1,666 values with zero
 different values and one reviewed signed-mask representation. The shared
-creation tail and theft body are verified on their expanded corpora. The next
-source pass continues monster acquisition's billing and swallowed-light paths
-and theft's uncovered guards. The full-port goal remains active.
+creation tail, theft body and monster acquisition are verified on their
+expanded corpora. The next source pass continues the remaining engulfing and
+monster petrification branches. The full-port goal remains active.
 
 ## Previous focus, 2026-09-03
 

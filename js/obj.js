@@ -81,6 +81,14 @@ export const Is_container = (o) =>
 export const Is_candle = (o) =>
     o.otyp === ONAMES.TALLOW_CANDLE || o.otyp === ONAMES.WAX_CANDLE;
 
+// include/obj.h:397 ignitable()
+export const ignitable = (otmp) =>
+    otmp.otyp === ONAMES.BRASS_LANTERN || otmp.otyp === ONAMES.OIL_LAMP
+    || (otmp.otyp === ONAMES.MAGIC_LAMP && otmp.spe > 0)
+    || otmp.otyp === ONAMES.CANDELABRUM_OF_INVOCATION
+    || otmp.otyp === ONAMES.TALLOW_CANDLE || otmp.otyp === ONAMES.WAX_CANDLE
+    || otmp.otyp === ONAMES.POT_OIL;
+
 // include/obj.h:334 Has_contents()
 export const Has_contents = (o) => !!(o.cobj && o.cobj.length);
 

@@ -1,0 +1,366 @@
+{
+  "name": "inventory-packorder",
+  "description": "C custom pack order controls inventory and discovery class order, keeps explicit gold placement, and appends omitted classes.",
+  "coverage": [
+    "mode.debug",
+    "level.ordinary",
+    "options.rc-bindings",
+    "ui.menus",
+    "ui.getlin",
+    "ui.cancel-invalid",
+    "object.identification"
+  ],
+  "branches": [
+    "inventory-packorder.default",
+    "inventory-packorder.potions-first",
+    "inventory-packorder.books-potions",
+    "inventory-packorder.gold-last",
+    "inventory-packorder.reverse",
+    "inventory-packorder.armor-first",
+    "inventory-packorder.potions-coins-books",
+    "inventory-packorder.food-gems"
+  ],
+  "requireBranchAssertions": true,
+  "segments": [
+    {
+      "seed": 102200,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " i\u001b#name\rd\u001b\\\u001bmO>>>>>\u001b",
+      "name": "default"
+    },
+    {
+      "seed": 102200,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=packorder:!\n",
+      "moves": " i\u001b#name\rd\u001b\\\u001bmO>>>>>\u001b",
+      "name": "potions-first"
+    },
+    {
+      "seed": 102200,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=packorder:+!\n",
+      "moves": " i\u001b#name\rd\u001b\\\u001bmO>>>>>\u001b",
+      "name": "books-potions"
+    },
+    {
+      "seed": 102200,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=packorder:!$\n",
+      "moves": "\u0017100 gold pieces\ri\u001b#name\rd\u001b\\\u001bmO>>>>>\u001b",
+      "name": "gold-last"
+    },
+    {
+      "seed": 102200,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=packorder:_0`*(/=!+?%[)\"$\n",
+      "moves": "\u0017100 gold pieces\ri\u001b#name\rd\u001b\\\u001bmO>>>>>\u001b",
+      "name": "reverse"
+    },
+    {
+      "seed": 102200,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=packorder:[\n",
+      "moves": " i\u001b#name\rd\u001b\\\u001bmO>>>>>\u001b",
+      "name": "armor-first"
+    },
+    {
+      "seed": 102200,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=packorder:!$+\n",
+      "moves": "\u0017100 gold pieces\ri\u001b#name\rd\u001b\\\u001bmO>>>>>\u001b",
+      "name": "potions-coins-books"
+    },
+    {
+      "seed": 102200,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=packorder:%*\n",
+      "moves": " i\u001b#name\rd\u001b\\\u001bmO>>>>>\u001b",
+      "name": "food-gems"
+    }
+  ],
+  "branchAssertions": [
+    {
+      "branch": "inventory-packorder.default",
+      "segment": 0,
+      "screenIncludes": [
+        "[$\")[%?+!=/(*`0_]"
+      ],
+      "screenCells": [
+        {
+          "step": 2,
+          "x": 21,
+          "y": 0,
+          "equals": "W"
+        },
+        {
+          "step": 2,
+          "x": 21,
+          "y": 2,
+          "equals": "A"
+        },
+        {
+          "step": 2,
+          "x": 21,
+          "y": 8,
+          "equals": "S"
+        },
+        {
+          "step": 2,
+          "x": 21,
+          "y": 11,
+          "equals": "P"
+        }
+      ]
+    },
+    {
+      "branch": "inventory-packorder.potions-first",
+      "segment": 1,
+      "screenIncludes": [
+        "[$!\")[%?+=/(*`0_]"
+      ],
+      "screenCells": [
+        {
+          "step": 2,
+          "x": 21,
+          "y": 0,
+          "equals": "P"
+        },
+        {
+          "step": 2,
+          "x": 21,
+          "y": 4,
+          "equals": "W"
+        },
+        {
+          "step": 2,
+          "x": 21,
+          "y": 6,
+          "equals": "A"
+        },
+        {
+          "step": 2,
+          "x": 21,
+          "y": 12,
+          "equals": "S"
+        }
+      ]
+    },
+    {
+      "branch": "inventory-packorder.books-potions",
+      "segment": 2,
+      "screenIncludes": [
+        "[$+!\")[%?=/(*`0_]"
+      ],
+      "screenCells": [
+        {
+          "step": 2,
+          "x": 21,
+          "y": 0,
+          "equals": "S"
+        },
+        {
+          "step": 2,
+          "x": 21,
+          "y": 3,
+          "equals": "P"
+        },
+        {
+          "step": 2,
+          "x": 21,
+          "y": 7,
+          "equals": "W"
+        },
+        {
+          "step": 2,
+          "x": 21,
+          "y": 9,
+          "equals": "A"
+        }
+      ]
+    },
+    {
+      "branch": "inventory-packorder.gold-last",
+      "segment": 3,
+      "screenIncludes": [
+        "[!$\")[%?+=/(*`0_]"
+      ],
+      "screenCells": [
+        {
+          "step": 18,
+          "x": 1,
+          "y": 0,
+          "equals": "P"
+        },
+        {
+          "step": 18,
+          "x": 1,
+          "y": 4,
+          "equals": "C"
+        },
+        {
+          "step": 18,
+          "x": 1,
+          "y": 6,
+          "equals": "W"
+        },
+        {
+          "step": 18,
+          "x": 1,
+          "y": 8,
+          "equals": "A"
+        },
+        {
+          "step": 18,
+          "x": 1,
+          "y": 14,
+          "equals": "S"
+        }
+      ]
+    },
+    {
+      "branch": "inventory-packorder.reverse",
+      "segment": 4,
+      "screenIncludes": [
+        "[_0`*(/=!+?%[)\"$]"
+      ],
+      "screenCells": [
+        {
+          "step": 18,
+          "x": 1,
+          "y": 7,
+          "equals": "P"
+        },
+        {
+          "step": 18,
+          "x": 1,
+          "y": 11,
+          "equals": "S"
+        },
+        {
+          "step": 18,
+          "x": 1,
+          "y": 18,
+          "equals": "A"
+        },
+        {
+          "step": 18,
+          "x": 1,
+          "y": 20,
+          "equals": "W"
+        },
+        {
+          "step": 18,
+          "x": 1,
+          "y": 22,
+          "equals": "C"
+        }
+      ]
+    },
+    {
+      "branch": "inventory-packorder.armor-first",
+      "segment": 5,
+      "screenIncludes": [
+        "[$[\")%?+!=/(*`0_]"
+      ],
+      "screenCells": [
+        {
+          "step": 2,
+          "x": 21,
+          "y": 0,
+          "equals": "A"
+        },
+        {
+          "step": 2,
+          "x": 21,
+          "y": 2,
+          "equals": "W"
+        },
+        {
+          "step": 2,
+          "x": 21,
+          "y": 8,
+          "equals": "S"
+        },
+        {
+          "step": 2,
+          "x": 21,
+          "y": 11,
+          "equals": "P"
+        }
+      ]
+    },
+    {
+      "branch": "inventory-packorder.potions-coins-books",
+      "segment": 6,
+      "screenIncludes": [
+        "[!$+\")[%?=/(*`0_]"
+      ],
+      "screenCells": [
+        {
+          "step": 18,
+          "x": 1,
+          "y": 0,
+          "equals": "P"
+        },
+        {
+          "step": 18,
+          "x": 1,
+          "y": 4,
+          "equals": "C"
+        },
+        {
+          "step": 18,
+          "x": 1,
+          "y": 6,
+          "equals": "S"
+        },
+        {
+          "step": 18,
+          "x": 1,
+          "y": 9,
+          "equals": "W"
+        },
+        {
+          "step": 18,
+          "x": 1,
+          "y": 11,
+          "equals": "A"
+        }
+      ]
+    },
+    {
+      "branch": "inventory-packorder.food-gems",
+      "segment": 7,
+      "screenIncludes": [
+        "[$%*\")[?+!=/(`0_]"
+      ],
+      "screenCells": [
+        {
+          "step": 2,
+          "x": 21,
+          "y": 0,
+          "equals": "W"
+        },
+        {
+          "step": 2,
+          "x": 21,
+          "y": 2,
+          "equals": "A"
+        },
+        {
+          "step": 2,
+          "x": 21,
+          "y": 8,
+          "equals": "S"
+        },
+        {
+          "step": 2,
+          "x": 21,
+          "y": 11,
+          "equals": "P"
+        }
+      ]
+    }
+  ]
+}

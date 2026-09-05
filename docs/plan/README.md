@@ -18,19 +18,24 @@ independent oracles, implementation, and regression checks until that goal is
 met. Current corpus success is not the stopping criterion.
 
 The compiler-guided loops now include 38 object type, floor naming, pauper role,
-and gem-identification scenarios. All 44 public and 427 supplemental fixtures
-pass. The measured C union has 52,910/108,268 direct outcomes and 4,287/5,491
+and gem-identification scenarios, followed by 24 pack-order scenarios. All 44
+public and 429 supplemental fixtures pass. The measured C union has
+52,952/108,268 direct outcomes and 4,291/5,491
 entered function records. State gates catch ownership, light, discovery and
 stored-bill errors beyond screen parity. The published held-out result recorded
 during the audit is 78.39%, distinct from the local result.
 See [STATUS.md](STATUS.md) for verification and the next action,
-[object-type-naming-audit.md](object-type-naming-audit.md) for the latest review,
+[inventory-packorder-audit.md](inventory-packorder-audit.md) for the latest review,
+[object-type-naming-audit.md](object-type-naming-audit.md) for type discovery,
 [monster-naming-audit.md](monster-naming-audit.md) for monster names,
 [inventory-adjust-audit.md](inventory-adjust-audit.md) for inventory decisions,
 and [gameplay-gap-audit.md](gameplay-gap-audit.md) for measurement limits.
 The [compiled constant audit](c-constant-audit.md) compares 1,666 values with zero
 different values and one reviewed signed-mask representation. Continue with
-custom discovery ordering and the remaining inventory/display dependencies.
+discovery sorting and the remaining inventory/display dependencies.
+Checkpoint `52d4016b` is pushed. The pack-order pass has 24 exact C scenarios,
+independent stored-order checks, full regression and native coverage complete;
+it is ready for review, commit and push.
 
 ## Previous focus, 2026-09-03
 

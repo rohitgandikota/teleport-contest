@@ -27,7 +27,8 @@ import { OCLASSES } from './objects_data.js';
 import { color_attr_to_str, attr2attrname } from './coloratt.js';
 import { roles, races, genders, aligns, ROLE_RANDOM } from './role.js';
 import { vision_recalc } from './vision.js';
-import { reassign, update_inventory } from './invent.js';
+import { reassign, update_inventory, inv_order } from './invent.js';
+import { def_oc_syms } from './drawing_data.js';
 
 function note_unported_options(what) {
     (game.unported ||= new Set()).add('options:' + what);
@@ -139,6 +140,7 @@ export function parseoptions(opts, tinitial, tfrom_file, result) {
         return false;
     }
     if (value === null && opt.type !== 'BoolOpt' && opt.valok === 'Yes'
+        && opt.name !== 'packorder'
         && !(opt.name === 'paranoid_confirmation' && negated)) {
         config_error_add(result, `Missing value for '${opt.name}'`);
         return false;
@@ -164,6 +166,14 @@ export function parseoptions(opts, tinitial, tfrom_file, result) {
             return false;
         }
         result.opts[opt.name] = burden;
+    } else if (opt.name === 'packorder') {
+        // C string_for_opt returns empty_optstr for an absent/empty value.
+        if (value === null || value === '')
+            return false;
+        const order = opts.slice(sep + 1);
+        result.opts.packorder = order;
+        if (!change_inv_order(order, result))
+            retval = false;
     } else {
         result.opts[opt.name] = negated ? null : value;
     }
@@ -896,10 +906,7 @@ function get_option_value(o) {
                : (tmp === 'f') ? 'full' : 'reversed';
     }
     case 'packorder':               /* src/options.c:2670 optfn_packorder */
-        /* oc_to_str(flags.inv_order): this port keeps the order as class
-           numbers (js/invent.js inv_order()) and the default's symbol
-           spelling is exactly def_inv_order */
-        return def_inv_order;
+        return inv_order().map(oclass => def_oc_syms[oclass]).join('');
     case 'paranoid_confirmation': { /* src/options.c:2818 */
         const bits = paranoia_bits();
         const names = [];
@@ -1160,6 +1167,8 @@ async function doset_simple_menu() {
                 if (abuf !== null && abuf !== '\x1b') {
                     if (allopt[k].name === 'fruit')
                         set_fruit_name(abuf);
+                    else if (allopt[k].name === 'packorder')
+                        await set_packorder(abuf);
                     else
                         game.flags[allopt[k].name] = abuf;
                 }
@@ -1724,7 +1733,10 @@ export async function doset() {
                 const abuf = await getlin(`Set ${o.name} to what?`);
                 if (abuf === null || abuf === '\x1b')
                     continue;
-                game.flags[o.name] = abuf;
+                if (o.name === 'packorder')
+                    await set_packorder(abuf);
+                else
+                    game.flags[o.name] = abuf;
             }
         }
 
@@ -1763,6 +1775,48 @@ async function reset_needed_visuals() {
    display site, and nothing here needs the numbers), so the table is spelled
    with the symbols def_oc_syms[] gives those classes. */
 const def_inv_order = '$")[%?+!=/(*`0_';
+
+// src/options.c:7466 change_inv_order(). Keep each symbol's final occurrence,
+// append omitted classes in their previous order, and report every bad entry.
+function change_inv_order(op, result) {
+    const previous = result.opts.inv_order
+        ?? [...def_inv_order].map(def_char_to_objclass);
+    const order = op.includes('$') ? [] : [OCLASSES.COIN_CLASS];
+    let ok = true;
+    for (let i = 0; i < op.length; i++) {
+        const symbol = op[i], oclass = def_char_to_objclass(symbol);
+        let error = '';
+        if (oclass === OCLASSES.MAXOCLASSES)
+            error = `Not an object class '${symbol}'`;
+        else if (!previous.includes(oclass))
+            error = `Object class '${symbol}' not allowed`;
+        else if (op.includes(symbol, i + 1))
+            error = `Duplicate object class '${symbol}'`;
+        if (error) {
+            config_error_add(result, error);
+            ok = false;
+        } else {
+            order.push(oclass);
+        }
+    }
+    for (const oclass of previous)
+        if (!order.includes(oclass))
+            order.push(oclass);
+    result.opts.inv_order = order;
+    return ok;
+}
+
+// Interactive config_erradd() prints errors immediately with punctuation.
+async function set_packorder(value) {
+    value = value.trimEnd();
+    if (!value)
+        return; // optfn_packorder rejects empty_optstr without changing order.
+    const result = { opts: game.flags, errors: [] };
+    change_inv_order(value, result);
+    game.flags.packorder = value;
+    for (const error of result.errors)
+        await pline(error + (/[.!?]$/.test(error) ? '' : '.'));
+}
 
 // src/options.c:3321 optfn_pickup_types(), the do_set arm reached with no
 // value: put up the class menu and rebuild flags.pickup_types from the picks.

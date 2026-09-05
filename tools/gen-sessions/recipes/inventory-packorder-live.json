@@ -1,0 +1,656 @@
+{
+  "name": "inventory-packorder-live",
+  "description": "C interactive pack-order changes retain valid entries from bad input, preserve omitted classes across changes, and expose the canonical stored order.",
+  "coverage": [
+    "mode.debug",
+    "level.ordinary",
+    "options.rc-bindings",
+    "ui.menus",
+    "ui.getlin",
+    "ui.cancel-invalid",
+    "object.identification"
+  ],
+  "branches": [
+    "inventory-packorder-live.runtime-potions",
+    "inventory-packorder-live.runtime-gold-last",
+    "inventory-packorder-live.runtime-duplicate",
+    "inventory-packorder-live.runtime-disallowed",
+    "inventory-packorder-live.runtime-invalid",
+    "inventory-packorder-live.runtime-empty",
+    "inventory-packorder-live.runtime-cancel",
+    "inventory-packorder-live.successive-prefixes",
+    "inventory-packorder-live.gold-reset-to-front",
+    "inventory-packorder-live.preserve-omitted-order",
+    "inventory-packorder-live.multiple-invalid",
+    "inventory-packorder-live.display-stored-order",
+    "inventory-packorder-live.empty-keeps-order",
+    "inventory-packorder-live.escape-keeps-order",
+    "inventory-packorder-live.leading-space",
+    "inventory-packorder-live.spaces-keep-order"
+  ],
+  "requireBranchAssertions": true,
+  "segments": [
+    {
+      "seed": 102200,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": "mO:packorder\r\r!\ri\u001b#name\rd\u001bmO>>>>>\u001b",
+      "name": "runtime-potions"
+    },
+    {
+      "seed": 102200,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": "mO:packorder\r\r!$\ri\u001b#name\rd\u001bmO>>>>>\u001b",
+      "name": "runtime-gold-last"
+    },
+    {
+      "seed": 102200,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": "mO:packorder\r\r!+!\ri\u001b#name\rd\u001bmO>>>>>\u001b",
+      "name": "runtime-duplicate"
+    },
+    {
+      "seed": 102200,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": "mO:packorder\r\r.\ri\u001b#name\rd\u001bmO>>>>>\u001b",
+      "name": "runtime-disallowed"
+    },
+    {
+      "seed": 102200,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": "mO:packorder\r\rx!\ri\u001b#name\rd\u001bmO>>>>>\u001b",
+      "name": "runtime-invalid"
+    },
+    {
+      "seed": 102200,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": "mO:packorder\r\r\ri\u001b#name\rd\u001bmO>>>>>\u001b",
+      "name": "runtime-empty"
+    },
+    {
+      "seed": 102200,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": "mO:packorder\r\r\u001bi\u001b#name\rd\u001bmO>>>>>\u001b",
+      "name": "runtime-cancel"
+    },
+    {
+      "seed": 102200,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": "mO:packorder\r\r!\rmO:packorder\r\r+\ri\u001b#name\rd\u001bmO>>>>>\u001b",
+      "name": "successive-prefixes"
+    },
+    {
+      "seed": 102200,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": "mO:packorder\r\r!$\rmO:packorder\r\r+\ri\u001b#name\rd\u001bmO>>>>>\u001b",
+      "name": "gold-reset-to-front"
+    },
+    {
+      "seed": 102200,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": "mO:packorder\r\r!+\rmO:packorder\r\r*\ri\u001b#name\rd\u001bmO>>>>>\u001b",
+      "name": "preserve-omitted-order"
+    },
+    {
+      "seed": 102200,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": "mO:packorder\r\r.x!+!$\r i\u001b#name\rd\u001bmO>>>>>\u001b",
+      "name": "multiple-invalid"
+    },
+    {
+      "seed": 102200,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": "mO:packorder\r\r!\rmO>>>>>\u001b",
+      "name": "display-stored-order"
+    },
+    {
+      "seed": 102200,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": "mO:packorder\r\r!$\rmO:packorder\r\r\ri\u001bmO>>>>>\u001b",
+      "name": "empty-keeps-order"
+    },
+    {
+      "seed": 102200,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": "mO:packorder\r\r!$\rmO:packorder\r\r\u001bi\u001bmO>>>>>\u001b",
+      "name": "escape-keeps-order"
+    },
+    {
+      "seed": 102200,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": "mO:packorder\r\r!$\rmO:packorder\r\r !+ \ri\u001bmO>>>>>\u001b",
+      "name": "leading-space"
+    },
+    {
+      "seed": 102200,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": "mO:packorder\r\r!$\rmO:packorder\r\r   \ri\u001bmO>>>>>\u001b",
+      "name": "spaces-keep-order"
+    }
+  ],
+  "branchAssertions": [
+    {
+      "branch": "inventory-packorder-live.runtime-potions",
+      "segment": 0,
+      "screenIncludes": [
+        "[$!\")[%?+=/(*`0_]"
+      ],
+      "screenCells": [
+        {
+          "step": 17,
+          "x": 21,
+          "y": 0,
+          "equals": "P"
+        },
+        {
+          "step": 17,
+          "x": 21,
+          "y": 4,
+          "equals": "W"
+        },
+        {
+          "step": 17,
+          "x": 21,
+          "y": 6,
+          "equals": "A"
+        },
+        {
+          "step": 17,
+          "x": 21,
+          "y": 12,
+          "equals": "S"
+        }
+      ]
+    },
+    {
+      "branch": "inventory-packorder-live.runtime-gold-last",
+      "segment": 1,
+      "screenIncludes": [
+        "[!$\")[%?+=/(*`0_]"
+      ],
+      "screenCells": [
+        {
+          "step": 18,
+          "x": 21,
+          "y": 0,
+          "equals": "P"
+        },
+        {
+          "step": 18,
+          "x": 21,
+          "y": 4,
+          "equals": "W"
+        },
+        {
+          "step": 18,
+          "x": 21,
+          "y": 6,
+          "equals": "A"
+        },
+        {
+          "step": 18,
+          "x": 21,
+          "y": 12,
+          "equals": "S"
+        }
+      ]
+    },
+    {
+      "branch": "inventory-packorder-live.runtime-duplicate",
+      "segment": 2,
+      "screenIncludes": [
+        "[$+!\")[%?=/(*`0_]",
+        "Duplicate object class '!'."
+      ],
+      "screenCells": [
+        {
+          "step": 19,
+          "x": 21,
+          "y": 0,
+          "equals": "S"
+        },
+        {
+          "step": 19,
+          "x": 21,
+          "y": 3,
+          "equals": "P"
+        },
+        {
+          "step": 19,
+          "x": 21,
+          "y": 7,
+          "equals": "W"
+        },
+        {
+          "step": 19,
+          "x": 21,
+          "y": 9,
+          "equals": "A"
+        }
+      ]
+    },
+    {
+      "branch": "inventory-packorder-live.runtime-disallowed",
+      "segment": 3,
+      "screenIncludes": [
+        "[$\")[%?+!=/(*`0_]",
+        "Object class '.' not allowed."
+      ],
+      "screenCells": [
+        {
+          "step": 17,
+          "x": 21,
+          "y": 0,
+          "equals": "W"
+        },
+        {
+          "step": 17,
+          "x": 21,
+          "y": 2,
+          "equals": "A"
+        },
+        {
+          "step": 17,
+          "x": 21,
+          "y": 8,
+          "equals": "S"
+        },
+        {
+          "step": 17,
+          "x": 21,
+          "y": 11,
+          "equals": "P"
+        }
+      ]
+    },
+    {
+      "branch": "inventory-packorder-live.runtime-invalid",
+      "segment": 4,
+      "screenIncludes": [
+        "[$!\")[%?+=/(*`0_]",
+        "Not an object class 'x'."
+      ],
+      "screenCells": [
+        {
+          "step": 18,
+          "x": 21,
+          "y": 0,
+          "equals": "P"
+        },
+        {
+          "step": 18,
+          "x": 21,
+          "y": 4,
+          "equals": "W"
+        },
+        {
+          "step": 18,
+          "x": 21,
+          "y": 6,
+          "equals": "A"
+        },
+        {
+          "step": 18,
+          "x": 21,
+          "y": 12,
+          "equals": "S"
+        }
+      ]
+    },
+    {
+      "branch": "inventory-packorder-live.runtime-empty",
+      "segment": 5,
+      "screenIncludes": [
+        "[$\")[%?+!=/(*`0_]"
+      ],
+      "screenCells": [
+        {
+          "step": 16,
+          "x": 21,
+          "y": 0,
+          "equals": "W"
+        },
+        {
+          "step": 16,
+          "x": 21,
+          "y": 2,
+          "equals": "A"
+        },
+        {
+          "step": 16,
+          "x": 21,
+          "y": 8,
+          "equals": "S"
+        },
+        {
+          "step": 16,
+          "x": 21,
+          "y": 11,
+          "equals": "P"
+        }
+      ]
+    },
+    {
+      "branch": "inventory-packorder-live.runtime-cancel",
+      "segment": 6,
+      "screenIncludes": [
+        "[$\")[%?+!=/(*`0_]"
+      ],
+      "screenCells": [
+        {
+          "step": 16,
+          "x": 21,
+          "y": 0,
+          "equals": "W"
+        },
+        {
+          "step": 16,
+          "x": 21,
+          "y": 2,
+          "equals": "A"
+        },
+        {
+          "step": 16,
+          "x": 21,
+          "y": 8,
+          "equals": "S"
+        },
+        {
+          "step": 16,
+          "x": 21,
+          "y": 11,
+          "equals": "P"
+        }
+      ]
+    },
+    {
+      "branch": "inventory-packorder-live.successive-prefixes",
+      "segment": 7,
+      "screenIncludes": [
+        "[$+!\")[%?=/(*`0_]"
+      ],
+      "screenCells": [
+        {
+          "step": 33,
+          "x": 21,
+          "y": 0,
+          "equals": "S"
+        },
+        {
+          "step": 33,
+          "x": 21,
+          "y": 3,
+          "equals": "P"
+        },
+        {
+          "step": 33,
+          "x": 21,
+          "y": 7,
+          "equals": "W"
+        },
+        {
+          "step": 33,
+          "x": 21,
+          "y": 9,
+          "equals": "A"
+        }
+      ]
+    },
+    {
+      "branch": "inventory-packorder-live.gold-reset-to-front",
+      "segment": 8,
+      "screenIncludes": [
+        "[$+!\")[%?=/(*`0_]"
+      ],
+      "screenCells": [
+        {
+          "step": 34,
+          "x": 21,
+          "y": 0,
+          "equals": "S"
+        },
+        {
+          "step": 34,
+          "x": 21,
+          "y": 3,
+          "equals": "P"
+        },
+        {
+          "step": 34,
+          "x": 21,
+          "y": 7,
+          "equals": "W"
+        },
+        {
+          "step": 34,
+          "x": 21,
+          "y": 9,
+          "equals": "A"
+        }
+      ]
+    },
+    {
+      "branch": "inventory-packorder-live.preserve-omitted-order",
+      "segment": 9,
+      "screenIncludes": [
+        "[$*!+\")[%?=/(`0_]"
+      ],
+      "screenCells": [
+        {
+          "step": 34,
+          "x": 21,
+          "y": 0,
+          "equals": "P"
+        },
+        {
+          "step": 34,
+          "x": 21,
+          "y": 4,
+          "equals": "S"
+        },
+        {
+          "step": 34,
+          "x": 21,
+          "y": 7,
+          "equals": "W"
+        },
+        {
+          "step": 34,
+          "x": 21,
+          "y": 9,
+          "equals": "A"
+        }
+      ]
+    },
+    {
+      "branch": "inventory-packorder-live.multiple-invalid",
+      "segment": 10,
+      "screenIncludes": [
+        "[+!$\")[%?=/(*`0_]",
+        "Object class '.' not allowed.  Not an object class 'x'.--More--",
+        "Duplicate object class '!'."
+      ],
+      "screenCells": [
+        {
+          "step": 23,
+          "x": 21,
+          "y": 0,
+          "equals": "S"
+        },
+        {
+          "step": 23,
+          "x": 21,
+          "y": 3,
+          "equals": "P"
+        },
+        {
+          "step": 23,
+          "x": 21,
+          "y": 7,
+          "equals": "W"
+        },
+        {
+          "step": 23,
+          "x": 21,
+          "y": 9,
+          "equals": "A"
+        }
+      ]
+    },
+    {
+      "branch": "inventory-packorder-live.display-stored-order",
+      "segment": 11,
+      "screenIncludes": [
+        "[$!\")[%?+=/(*`0_]"
+      ]
+    },
+    {
+      "branch": "inventory-packorder-live.empty-keeps-order",
+      "segment": 12,
+      "screenIncludes": [
+        "[!$\")[%?+=/(*`0_]"
+      ],
+      "screenCells": [
+        {
+          "step": 33,
+          "x": 21,
+          "y": 0,
+          "equals": "P"
+        },
+        {
+          "step": 33,
+          "x": 21,
+          "y": 4,
+          "equals": "W"
+        },
+        {
+          "step": 33,
+          "x": 21,
+          "y": 6,
+          "equals": "A"
+        },
+        {
+          "step": 33,
+          "x": 21,
+          "y": 12,
+          "equals": "S"
+        }
+      ]
+    },
+    {
+      "branch": "inventory-packorder-live.escape-keeps-order",
+      "segment": 13,
+      "screenIncludes": [
+        "[!$\")[%?+=/(*`0_]"
+      ],
+      "screenCells": [
+        {
+          "step": 33,
+          "x": 21,
+          "y": 0,
+          "equals": "P"
+        },
+        {
+          "step": 33,
+          "x": 21,
+          "y": 4,
+          "equals": "W"
+        },
+        {
+          "step": 33,
+          "x": 21,
+          "y": 6,
+          "equals": "A"
+        },
+        {
+          "step": 33,
+          "x": 21,
+          "y": 12,
+          "equals": "S"
+        }
+      ]
+    },
+    {
+      "branch": "inventory-packorder-live.leading-space",
+      "segment": 14,
+      "screenIncludes": [
+        "[$!+\")[%?=/(*`0_]",
+        "Not an object class ' '."
+      ],
+      "screenCells": [
+        {
+          "step": 37,
+          "x": 21,
+          "y": 0,
+          "equals": "P"
+        },
+        {
+          "step": 37,
+          "x": 21,
+          "y": 4,
+          "equals": "S"
+        },
+        {
+          "step": 37,
+          "x": 21,
+          "y": 7,
+          "equals": "W"
+        },
+        {
+          "step": 37,
+          "x": 21,
+          "y": 9,
+          "equals": "A"
+        }
+      ]
+    },
+    {
+      "branch": "inventory-packorder-live.spaces-keep-order",
+      "segment": 15,
+      "screenIncludes": [
+        "[!$\")[%?+=/(*`0_]"
+      ],
+      "screenCells": [
+        {
+          "step": 36,
+          "x": 21,
+          "y": 0,
+          "equals": "P"
+        },
+        {
+          "step": 36,
+          "x": 21,
+          "y": 4,
+          "equals": "W"
+        },
+        {
+          "step": 36,
+          "x": 21,
+          "y": 6,
+          "equals": "A"
+        },
+        {
+          "step": 36,
+          "x": 21,
+          "y": 12,
+          "equals": "S"
+        }
+      ]
+    }
+  ]
+}

@@ -9,10 +9,56 @@ loop until complete. The goal is active without a requested token budget.
 Current-corpus success is not the stopping criterion. Track unreviewed,
 untested, missing, and unreachable source paths explicitly.
 
+### Current verified follow-up: custom pack order
+
+Type naming below is committed and pushed as `52d4016b`. The current uncommitted
+pass reads C `def_inv_order`, `optfn_packorder`, `change_inv_order`, and the
+interactive `config_erradd` path. It adds `change_inv_order` to options.js,
+uses the configured class array in invent.js, and shares that order with
+o_init.js instead of its local constant. C excludes venom from packorder;
+full discoveries explicitly append it. Both options menus set the live order,
+and the options display formats the stored classes back into symbols.
+
+The permanent recipes `inventory-packorder` (eight cases) and
+`inventory-packorder-live` (16 cases) match **871/871 screens/cursors** and
+**73,998/73,998 RNG**. They cover valid prefixes, gold placement, duplicates,
+invalid/disallowed symbols, successive changes, multiple errors, leading space,
+empty and whitespace-only input, and Escape. The state gate reads each complete
+stored order from C's final options page with the frozen decoder and compares
+the JS class array. An empty-input case after a nondefault order first exposed
+a bug that moved gold to the front; the paired control now passes.
+
+Both native recordings are exact in `.cache/c-coverage/packorder-20260905`.
+They add **42 direct outcomes** and four entered function records. The union
+is **52,952/108,268 outcomes**, **4,291/5,491 entered records**;
+`change_inv_order` reaches 16/16 outcomes. The assertion ledger is 1,456/1,456,
+99 categories covered, seven partial. See
+[inventory-packorder-audit.md](inventory-packorder-audit.md) for exact scope.
+
+Final stable-runtime verification: public **44/44**, 11,405 screens/cursors,
+792,838 RNG; supplemental **429/429**, **124,701 screens/cursors**,
+**6,292,842 RNG**, **3,248 animations**, all exact. Public animations remain
+1,462/1,483. Fuzz remains 101/102 with the fixed-datetime artifact, 14,261/14,262
+screens, 14,262 cursors, 491,759 RNG and 75/76 animations. All 46 hang checks,
+80 reused role-smoke controls, 16 tool tests, source audit and the pack-order,
+object-type and inventory-adjustment state gates pass. Logs are in
+`.cache/discoveries/`. Review the diff, commit and push this checkpoint.
+
+Next: discovery sorting and the unique-item/artifact sections. Complete C bodies
+already read: `dodiscovered` o_init.c:758-876, `choose_disco_sort`:611-656,
+`disco_fmt_uniq`:725-737, `get_sortdisco`:1210-end,
+`disp_artifact_discoveries` artifact.c:1147-1174, `optfn_sortdiscoveries`
+options.c:3863-3914, and discovery comparison/output helpers. Read the remainder
+of `doclassdisco` from o_init.c:948-1130 and `loot_classify` before porting.
+Native union has no outcomes in `choose_disco_sort`, `disco_output_sorted` or
+`sortloot_descr`; `dodiscovered` reaches 34/66 and `doclassdisco` 51/124.
+Initial rc errors remain collected but never displayed by jsmain, a separate
+configuration lifecycle gap. Keep the goal active after this checkpoint.
+
 ### Current verified follow-up: object type naming and discoveries
 
-Monster naming is pushed as `ee16f012`. The new type-naming checkpoint is
-verified and ready to commit. It adds 38 C scenarios in `object-type-naming`,
+Monster naming is pushed as `ee16f012`. The type-naming checkpoint is
+committed and pushed as `52d4016b`. It adds 38 C scenarios in `object-type-naming`,
 `object-type-guards`, `pauper-role-discoveries`, and `shop-gem-identification`.
 They match **1,761/1,761 screens and cursors**, **111,115/111,115 RNG entries**.
 All runtime changes and their limits are recorded in
@@ -54,9 +100,9 @@ artifact. All 48 hang checks, 80 role-smoke controls, 16 tool tests, source
 audit, the new state gate and 14 related gates pass. Frozen files unchanged.
 Logs: `.cache/naming/type-final-*.log`. The 80 role games reuse control seeds.
 
-Next: commit/push this checkpoint, then continue with discovery ordering and
-missing shared inventory/display dependencies. `inv_order()` in o_init.js:667
-hardcodes the default instead of `flags.inv_order`. The complete C
+Next: continue with discovery sorting and missing shared inventory/display
+dependencies, tracked above. Custom inventory order is fixed in the next pass.
+The complete C
 `rename_disco` body has been read at o_init.c:1131-1208. C `see_monsters` has
 also been read at display.c:1487-1529; JS still lacks deferred/arriving guards,
 worm-tail refresh and warning-count effects. `update_inventory` remains partial.

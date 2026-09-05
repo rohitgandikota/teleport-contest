@@ -17,7 +17,7 @@ import { gem_learned } from './shk.js';
 import { impossible } from './pline.js';
 import { docall, objtyp_is_callable } from './do_name.js';
 import { BUFSZ } from './const.js';
-import { update_inventory } from './invent.js';
+import { update_inventory, inv_order } from './invent.js';
 import { Hallucination } from './youprop.js';
 import { A_WIS } from './const.js';
 import { rn2 } from './rng.js';
@@ -514,7 +514,10 @@ export function dodiscovered() {
     lines.push(['', ATR_NONE]);
 
     let ct = 0;
-    for (const oclass of inv_order()) {
+    const classes = [...inv_order()];
+    if (!classes.includes(VENOM_CLASS))
+        classes.push(VENOM_CLASS);
+    for (const oclass of classes) {
         let prev_class = -1;
         for (let i = game.bases[oclass];
              i < objects.length && objects[i].oc_class === oclass; i++) {
@@ -661,15 +664,6 @@ export async function rename_disco() {
         }
     }
     tty_destroy_nhwindow(win);
-}
-
-// src/decl.c flags.inv_order — the default packorder.
-function inv_order() {
-    const O = OCLASSES;
-    return [O.COIN_CLASS, O.AMULET_CLASS, O.WEAPON_CLASS, O.ARMOR_CLASS,
-            O.FOOD_CLASS, O.SCROLL_CLASS, O.SPBOOK_CLASS, O.POTION_CLASS,
-            O.RING_CLASS, O.WAND_CLASS, O.TOOL_CLASS, O.GEM_CLASS,
-            O.ROCK_CLASS, O.BALL_CLASS, O.CHAIN_CLASS, O.VENOM_CLASS];
 }
 
 // src/objnam.c let_to_name() — the plural class heading used in menus.

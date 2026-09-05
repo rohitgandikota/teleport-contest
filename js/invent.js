@@ -589,11 +589,13 @@ export async function dolook() {
 
 // src/decl.c flags.inv_order — the default packorder.
 export function inv_order() {
+    if (game.flags?.inv_order)
+        return game.flags.inv_order;
     const O = OCLASSES;
     return [O.COIN_CLASS, O.AMULET_CLASS, O.WEAPON_CLASS, O.ARMOR_CLASS,
             O.FOOD_CLASS, O.SCROLL_CLASS, O.SPBOOK_CLASS, O.POTION_CLASS,
             O.RING_CLASS, O.WAND_CLASS, O.TOOL_CLASS, O.GEM_CLASS,
-            O.ROCK_CLASS, O.BALL_CLASS, O.CHAIN_CLASS, O.VENOM_CLASS];
+            O.ROCK_CLASS, O.BALL_CLASS, O.CHAIN_CLASS];
 }
 
 const CLASS_NAMES = {

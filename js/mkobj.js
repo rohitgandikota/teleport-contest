@@ -2015,6 +2015,15 @@ export function fixup_oil(potion, /* potion that just had its otyp changed */
     }
 }
 
+// src/mkobj.c:2596 extract_nobj(); unlink without inventory side effects.
+export function extract_nobj(obj, chain) {
+    const index = chain.indexOf(obj);
+    if (index < 0)
+        throw new Error('extract_nobj: object lost');
+    chain.splice(index, 1);
+    obj.where = OBJ_FREE;
+}
+
 // src/mkobj.c replace_object(); put otmp where obj is in whichever list
 // holds obj.  The C splices linked lists; ours replaces the array slot.
 // extract_nobj() leaves obj free.

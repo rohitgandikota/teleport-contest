@@ -1,0 +1,336 @@
+{
+  "name": "inventory-adjust-source-gaps",
+  "description": "C inventory organization branches: moving, splitting, collection, merging, cancellation, destination validation, used-letter menus, floating letters, and full-pack rollback.",
+  "coverage": [
+    "mode.debug",
+    "level.ordinary",
+    "ui.menus",
+    "ui.count-repeat",
+    "ui.cancel-invalid",
+    "ui.more-paging",
+    "object.weapons",
+    "object.tools-containers"
+  ],
+  "segments": [
+    {
+      "name": "empty",
+      "seed": 101100,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #adjust\ri\u001b"
+    },
+    {
+      "name": "only-gold",
+      "seed": 101101,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017100 gold pieces\r#adjust\ri\u001b"
+    },
+    {
+      "name": "move",
+      "seed": 101102,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed towel\r#adjust\razi\u001b"
+    },
+    {
+      "name": "split",
+      "seed": 101103,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u001710 uncursed darts\r#adjust\r3abi\u001b"
+    },
+    {
+      "name": "split-cancel",
+      "seed": 101104,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u001710 uncursed darts\r#adjust\r3a\u001bi\u001b"
+    },
+    {
+      "name": "split-same-slot",
+      "seed": 101105,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u001710 uncursed darts\r#adjust\r3aai\u001b"
+    },
+    {
+      "name": "split-bump",
+      "seed": 101106,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u001710 uncursed darts\r\u0017uncursed towel\r#adjust\r3abi\u001b"
+    },
+    {
+      "name": "merge",
+      "seed": 101107,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u001710 uncursed darts\r#adjust\r3ab#adjust\rabi\u001b"
+    },
+    {
+      "name": "collect",
+      "seed": 101108,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u001710 uncursed darts\r#adjust\r3ab#adjust\raai\u001b"
+    },
+    {
+      "name": "split-merge",
+      "seed": 101109,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u001710 uncursed darts\r#adjust\r3ab#adjust\r2abi\u001b"
+    },
+    {
+      "name": "menu-select",
+      "seed": 101110,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u001710 uncursed darts\r\u0017uncursed towel\r#adjust\ra?bi\u001b"
+    },
+    {
+      "name": "menu-cancel",
+      "seed": 101111,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u001710 uncursed darts\r\u0017uncursed towel\r#adjust\ra?\u001bi\u001b"
+    },
+    {
+      "name": "gold-slot-reject",
+      "seed": 101112,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u001710 uncursed darts\r#adjust\ra$i\u001b"
+    },
+    {
+      "name": "getobj-cancel",
+      "seed": 101200,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u001710 uncursed darts\r#adjust\r\u001bi\u001b"
+    },
+    {
+      "name": "split-gold-reject",
+      "seed": 101204,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u001710 uncursed darts\r#adjust\r3a$i\u001b"
+    },
+    {
+      "name": "split-menu",
+      "seed": 101205,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u001710 uncursed darts\r\u0017uncursed towel\r#adjust\r3a?bi\u001b"
+    },
+    {
+      "name": "split-menu-cancel",
+      "seed": 101206,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u001710 uncursed darts\r\u0017uncursed towel\r#adjust\r3a?\u001bi\u001b"
+    },
+    {
+      "name": "menu-empty",
+      "seed": 101207,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u001710 uncursed darts\r\u0017uncursed towel\r#adjust\ra?\rbi\u001b"
+    },
+    {
+      "name": "menu-star",
+      "seed": 101208,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u001710 uncursed darts\r\u0017uncursed towel\r#adjust\ra*bi\u001b"
+    },
+    {
+      "name": "menu-unsorted",
+      "seed": 101209,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!sortpack\n",
+      "moves": " \u001710 uncursed darts\r\u0017uncursed towel\r#adjust\ra?bi\u001b"
+    },
+    {
+      "name": "floating-move",
+      "seed": 101210,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!fixinv\n",
+      "moves": " \u001710 uncursed darts\r\u0017uncursed towel\r#adjust\raz#adjust\rabi\u001b"
+    },
+    {
+      "name": "floating-split",
+      "seed": 101211,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!fixinv\n",
+      "moves": " \u001710 uncursed darts\r\u0017uncursed towel\r#adjust\r3aci\u001b"
+    },
+    {
+      "name": "floating-gold",
+      "seed": 101212,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!fixinv\n",
+      "moves": " \u001710 uncursed darts\r\u0017100 gold pieces\r\u0017uncursed towel\r#adjust\raz#adjust\rbai\u001b"
+    },
+    {
+      "name": "item-split",
+      "seed": 101213,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u001710 uncursed darts\riaI3\rbi\u001b"
+    },
+    {
+      "name": "item-two",
+      "seed": 101214,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00172 uncursed darts\riaIbi\u001b"
+    },
+    {
+      "name": "item-cancel-first",
+      "seed": 101215,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u001710 uncursed darts\riaI\u001bi\u001b"
+    },
+    {
+      "name": "item-cancel-count",
+      "seed": 101216,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u001710 uncursed darts\riaI3\u001bi\u001b"
+    },
+    {
+      "name": "item-invalid-end",
+      "seed": 101217,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u001710 uncursed darts\riaI3xi\u001b"
+    },
+    {
+      "name": "item-zero",
+      "seed": 101218,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u001710 uncursed darts\riaI0\ri\u001b"
+    },
+    {
+      "name": "item-whole",
+      "seed": 101219,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u001710 uncursed darts\riaI10\ri\u001b"
+    },
+    {
+      "name": "item-over",
+      "seed": 101220,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u001710 uncursed darts\riaI11\ri\u001b"
+    },
+    {
+      "name": "split-full-pack",
+      "seed": 101229,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u001710 uncursed darts\r\u0017uncursed ring of adornment\r\u0017uncursed ring of adornment\r\u0017uncursed ring of adornment\r\u0017uncursed ring of adornment\r\u0017uncursed ring of adornment\r\u0017uncursed ring of adornment\r\u0017uncursed ring of adornment\r\u0017uncursed ring of adornment\r\u0017uncursed ring of adornment\r\u0017uncursed ring of adornment\r\u0017uncursed ring of adornment\r\u0017uncursed ring of adornment\r\u0017uncursed ring of adornment\r\u0017uncursed ring of adornment\r\u0017uncursed ring of adornment\r\u0017uncursed ring of adornment\r\u0017uncursed ring of adornment\r\u0017uncursed ring of adornment\r\u0017uncursed ring of adornment\r\u0017uncursed ring of adornment\r\u0017uncursed ring of adornment\r\u0017uncursed ring of adornment\r\u0017uncursed ring of adornment\r\u0017uncursed ring of adornment\r\u0017uncursed ring of adornment\r\u0017uncursed ring of adornment\r\u0017uncursed ring of adornment\r\u0017uncursed ring of adornment\r\u0017uncursed ring of adornment\r\u0017uncursed ring of adornment\r\u0017uncursed ring of adornment\r\u0017uncursed ring of adornment\r\u0017uncursed ring of adornment\r\u0017uncursed ring of adornment\r\u0017uncursed ring of adornment\r\u0017uncursed ring of adornment\r\u0017uncursed ring of adornment\r\u0017uncursed ring of adornment\r\u0017uncursed ring of adornment\r\u0017uncursed ring of adornment\r\u0017uncursed ring of adornment\r\u0017uncursed ring of adornment\r\u0017uncursed ring of adornment\r\u0017uncursed ring of adornment\r\u0017uncursed ring of adornment\r\u0017uncursed ring of adornment\r\u0017uncursed ring of adornment\r\u0017uncursed ring of adornment\r\u0017uncursed ring of adornment\r\u0017uncursed ring of adornment\r\u0017uncursed ring of adornment\r#adjust\r3abi\u001b"
+    },
+    {
+      "name": "retry-valid",
+      "seed": 101300,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u001710 uncursed darts\r#adjust\ra1 bi\u001b"
+    },
+    {
+      "name": "retry-five",
+      "seed": 101301,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u001710 uncursed darts\r#adjust\ra1 1 1 1 1i\u001b"
+    },
+    {
+      "name": "split-retry-five",
+      "seed": 101302,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u001710 uncursed darts\r#adjust\r3a1 1 1 1 1i\u001b"
+    }
+  ],
+  "branches": [
+    "inventory.adjust.empty",
+    "inventory.adjust.only-gold",
+    "inventory.adjust.move",
+    "inventory.adjust.split",
+    "inventory.adjust.split-cancel",
+    "inventory.adjust.split-same-slot",
+    "inventory.adjust.split-bump",
+    "inventory.adjust.merge",
+    "inventory.adjust.collect",
+    "inventory.adjust.split-merge",
+    "inventory.adjust.menu-select",
+    "inventory.adjust.menu-cancel",
+    "inventory.adjust.gold-slot-reject",
+    "inventory.adjust.getobj-cancel",
+    "inventory.adjust.split-gold-reject",
+    "inventory.adjust.split-menu",
+    "inventory.adjust.split-menu-cancel",
+    "inventory.adjust.menu-empty",
+    "inventory.adjust.menu-star",
+    "inventory.adjust.menu-unsorted",
+    "inventory.adjust.floating-move",
+    "inventory.adjust.floating-split",
+    "inventory.adjust.floating-gold",
+    "inventory.adjust.item-split",
+    "inventory.adjust.item-two",
+    "inventory.adjust.item-cancel-first",
+    "inventory.adjust.item-cancel-count",
+    "inventory.adjust.item-invalid-end",
+    "inventory.adjust.item-zero",
+    "inventory.adjust.item-whole",
+    "inventory.adjust.item-over",
+    "inventory.adjust.split-full-pack",
+    "inventory.adjust.retry-valid",
+    "inventory.adjust.retry-five",
+    "inventory.adjust.split-retry-five"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {"branch":"inventory.adjust.empty","segment":0,"screenIncludes":["You aren't carrying anything to adjust."],"screenCells":[{"step":10,"x":0,"y":0,"equals":"N"},{"step":10,"x":4,"y":0,"equals":"c"},{"step":10,"x":21,"y":0,"equals":"."}]},
+    {"branch":"inventory.adjust.only-gold","segment":1,"screenIncludes":["You aren't carrying anything adjustable."],"screenCells":[{"step":27,"x":41,"y":1,"equals":"$"},{"step":27,"x":45,"y":1,"equals":"1"},{"step":27,"x":59,"y":1,"equals":"s"}]},
+    {"branch":"inventory.adjust.move","segment":2,"screenIncludes":["Moving: z - a towel."],"screenCells":[{"step":28,"x":41,"y":1,"equals":"z"},{"step":28,"x":45,"y":1,"equals":"a"},{"step":28,"x":51,"y":1,"equals":"l"}]},
+    {"branch":"inventory.adjust.split","segment":3,"screenIncludes":["Splitting: b - 3 darts."],"screenCells":[{"step":32,"x":41,"y":1,"equals":"a"},{"step":32,"x":45,"y":1,"equals":"7"},{"step":32,"x":51,"y":1,"equals":"s"},{"step":32,"x":41,"y":2,"equals":"b"},{"step":32,"x":45,"y":2,"equals":"3"},{"step":32,"x":51,"y":2,"equals":"s"}]},
+    {"branch":"inventory.adjust.split-cancel","segment":4,"screenIncludes":["Never mind."],"screenCells":[{"step":32,"x":41,"y":1,"equals":"a"},{"step":32,"x":45,"y":1,"equals":"1"},{"step":32,"x":52,"y":1,"equals":"s"},{"step":32,"x":46,"y":1,"equals":"0"}]},
+    {"branch":"inventory.adjust.split-same-slot","segment":5,"screenIncludes":["Never mind."],"screenCells":[{"step":32,"x":41,"y":1,"equals":"a"},{"step":32,"x":45,"y":1,"equals":"1"},{"step":32,"x":52,"y":1,"equals":"s"},{"step":32,"x":46,"y":1,"equals":"0"}]},
+    {"branch":"inventory.adjust.split-bump","segment":6,"screenIncludes":["Splitting: b - 3 darts.  Moving: c - a towel."],"screenCells":[{"step":48,"x":41,"y":1,"equals":"a"},{"step":48,"x":45,"y":1,"equals":"7"},{"step":48,"x":51,"y":1,"equals":"s"},{"step":48,"x":41,"y":2,"equals":"b"},{"step":48,"x":45,"y":2,"equals":"3"},{"step":48,"x":51,"y":2,"equals":"s"},{"step":48,"x":41,"y":4,"equals":"c"},{"step":48,"x":45,"y":4,"equals":"a"},{"step":48,"x":51,"y":4,"equals":"l"}]},
+    {"branch":"inventory.adjust.merge","segment":7,"screenIncludes":["Merging: b - 10 darts."],"screenCells":[{"step":42,"x":41,"y":1,"equals":"b"},{"step":42,"x":45,"y":1,"equals":"1"},{"step":42,"x":52,"y":1,"equals":"s"},{"step":42,"x":46,"y":1,"equals":"0"}]},
+    {"branch":"inventory.adjust.collect","segment":8,"screenIncludes":["Collecting: a - 10 darts."],"screenCells":[{"step":42,"x":41,"y":1,"equals":"a"},{"step":42,"x":45,"y":1,"equals":"1"},{"step":42,"x":52,"y":1,"equals":"s"},{"step":42,"x":46,"y":1,"equals":"0"}]},
+    {"branch":"inventory.adjust.split-merge","segment":9,"screenIncludes":["Merging: b - 5 darts."],"screenCells":[{"step":43,"x":41,"y":1,"equals":"a"},{"step":43,"x":45,"y":1,"equals":"5"},{"step":43,"x":51,"y":1,"equals":"s"},{"step":43,"x":41,"y":2,"equals":"b"},{"step":43,"x":45,"y":2,"equals":"5"},{"step":43,"x":51,"y":2,"equals":"s"}]},
+    {"branch":"inventory.adjust.menu-select","segment":10,"screenIncludes":["Inventory letters used:"],"screenCells":[{"step":48,"x":41,"y":1,"equals":"b"},{"step":48,"x":45,"y":1,"equals":"1"},{"step":48,"x":52,"y":1,"equals":"s"},{"step":48,"x":46,"y":1,"equals":"0"},{"step":48,"x":41,"y":3,"equals":"a"},{"step":48,"x":45,"y":3,"equals":"a"},{"step":48,"x":51,"y":3,"equals":"l"}]},
+    {"branch":"inventory.adjust.menu-cancel","segment":11,"screenIncludes":["Never mind."],"screenCells":[{"step":48,"x":41,"y":1,"equals":"a"},{"step":48,"x":45,"y":1,"equals":"1"},{"step":48,"x":52,"y":1,"equals":"s"},{"step":48,"x":46,"y":1,"equals":"0"},{"step":48,"x":41,"y":3,"equals":"b"},{"step":48,"x":45,"y":3,"equals":"a"},{"step":48,"x":51,"y":3,"equals":"l"}]},
+    {"branch":"inventory.adjust.gold-slot-reject","segment":12,"screenIncludes":["Only gold coins may be moved into the '$' slot."],"screenCells":[{"step":31,"x":41,"y":1,"equals":"a"},{"step":31,"x":45,"y":1,"equals":"1"},{"step":31,"x":52,"y":1,"equals":"s"},{"step":31,"x":46,"y":1,"equals":"0"}],"screenExcludes":["Never mind."]},
+    {"branch":"inventory.adjust.getobj-cancel","segment":13,"screenIncludes":["Never mind."],"screenCells":[{"step":30,"x":41,"y":1,"equals":"a"},{"step":30,"x":45,"y":1,"equals":"1"},{"step":30,"x":61,"y":1,"equals":"s"},{"step":30,"x":46,"y":1,"equals":"0"}]},
+    {"branch":"inventory.adjust.split-gold-reject","segment":14,"screenIncludes":["Only gold coins may be moved into the '$' slot."],"screenCells":[{"step":32,"x":41,"y":1,"equals":"a"},{"step":32,"x":45,"y":1,"equals":"1"},{"step":32,"x":52,"y":1,"equals":"s"},{"step":32,"x":46,"y":1,"equals":"0"}],"screenExcludes":["Never mind."]},
+    {"branch":"inventory.adjust.split-menu","segment":15,"screenIncludes":["Inventory letters used:"],"screenCells":[{"step":49,"x":41,"y":1,"equals":"a"},{"step":49,"x":45,"y":1,"equals":"7"},{"step":49,"x":51,"y":1,"equals":"s"},{"step":49,"x":41,"y":2,"equals":"b"},{"step":49,"x":45,"y":2,"equals":"3"},{"step":49,"x":51,"y":2,"equals":"s"},{"step":49,"x":41,"y":4,"equals":"c"},{"step":49,"x":45,"y":4,"equals":"a"},{"step":49,"x":51,"y":4,"equals":"l"}]},
+    {"branch":"inventory.adjust.split-menu-cancel","segment":16,"screenIncludes":["Never mind."],"screenCells":[{"step":49,"x":41,"y":1,"equals":"a"},{"step":49,"x":45,"y":1,"equals":"1"},{"step":49,"x":52,"y":1,"equals":"s"},{"step":49,"x":46,"y":1,"equals":"0"},{"step":49,"x":41,"y":3,"equals":"b"},{"step":49,"x":45,"y":3,"equals":"a"},{"step":49,"x":51,"y":3,"equals":"l"}]},
+    {"branch":"inventory.adjust.menu-empty","segment":17,"screenIncludes":["Swapping: b - 10 darts."],"screenCells":[{"step":49,"x":41,"y":1,"equals":"b"},{"step":49,"x":45,"y":1,"equals":"1"},{"step":49,"x":52,"y":1,"equals":"s"},{"step":49,"x":46,"y":1,"equals":"0"},{"step":49,"x":41,"y":3,"equals":"a"},{"step":49,"x":45,"y":3,"equals":"a"},{"step":49,"x":51,"y":3,"equals":"l"}]},
+    {"branch":"inventory.adjust.menu-star","segment":18,"screenIncludes":["Inventory letters used:"],"screenCells":[{"step":48,"x":41,"y":1,"equals":"b"},{"step":48,"x":45,"y":1,"equals":"1"},{"step":48,"x":52,"y":1,"equals":"s"},{"step":48,"x":46,"y":1,"equals":"0"},{"step":48,"x":41,"y":3,"equals":"a"},{"step":48,"x":45,"y":3,"equals":"a"},{"step":48,"x":51,"y":3,"equals":"l"}]},
+    {"branch":"inventory.adjust.menu-unsorted","segment":19,"screenIncludes":["Swapping: b - 10 darts."],"screenCells":[{"step":48,"x":41,"y":0,"equals":"a"},{"step":48,"x":45,"y":0,"equals":"a"},{"step":48,"x":51,"y":0,"equals":"l"},{"step":48,"x":41,"y":1,"equals":"b"},{"step":48,"x":45,"y":1,"equals":"1"},{"step":48,"x":52,"y":1,"equals":"s"}]},
+    {"branch":"inventory.adjust.floating-move","segment":20,"screenIncludes":["Moving: b - 10 darts."],"screenCells":[{"step":57,"x":41,"y":1,"equals":"a"},{"step":57,"x":45,"y":1,"equals":"1"},{"step":57,"x":52,"y":1,"equals":"s"},{"step":57,"x":46,"y":1,"equals":"0"},{"step":57,"x":41,"y":3,"equals":"b"},{"step":57,"x":45,"y":3,"equals":"a"},{"step":57,"x":51,"y":3,"equals":"l"}]},
+    {"branch":"inventory.adjust.floating-split","segment":21,"screenIncludes":["Split 3 to what [ac]"],"screenCells":[{"step":48,"x":41,"y":1,"equals":"a"},{"step":48,"x":45,"y":1,"equals":"7"},{"step":48,"x":51,"y":1,"equals":"s"},{"step":48,"x":41,"y":2,"equals":"c"},{"step":48,"x":45,"y":2,"equals":"3"},{"step":48,"x":51,"y":2,"equals":"s"},{"step":48,"x":41,"y":4,"equals":"b"},{"step":48,"x":45,"y":4,"equals":"a"},{"step":48,"x":51,"y":4,"equals":"l"}]},
+    {"branch":"inventory.adjust.floating-gold","segment":22,"screenIncludes":["Moving: b - 10 darts."],"screenCells":[{"step":74,"x":41,"y":1,"equals":"$"},{"step":74,"x":45,"y":1,"equals":"1"},{"step":74,"x":59,"y":1,"equals":"s"},{"step":74,"x":41,"y":3,"equals":"a"},{"step":74,"x":45,"y":3,"equals":"1"},{"step":74,"x":52,"y":3,"equals":"s"},{"step":74,"x":46,"y":3,"equals":"0"},{"step":74,"x":41,"y":5,"equals":"b"},{"step":74,"x":45,"y":5,"equals":"a"},{"step":74,"x":51,"y":5,"equals":"l"}]},
+    {"branch":"inventory.adjust.item-split","segment":23,"screenIncludes":["Split off how many?"],"screenCells":[{"step":27,"x":41,"y":1,"equals":"a"},{"step":27,"x":45,"y":1,"equals":"7"},{"step":27,"x":51,"y":1,"equals":"s"},{"step":27,"x":41,"y":2,"equals":"b"},{"step":27,"x":45,"y":2,"equals":"3"},{"step":27,"x":51,"y":2,"equals":"s"}]},
+    {"branch":"inventory.adjust.item-two","segment":24,"screenIncludes":["Split 1 to what"],"screenCells":[{"step":24,"x":41,"y":1,"equals":"a"},{"step":24,"x":45,"y":1,"equals":"a"},{"step":24,"x":50,"y":1,"equals":"t"},{"step":24,"x":41,"y":2,"equals":"b"},{"step":24,"x":45,"y":2,"equals":"a"},{"step":24,"x":50,"y":2,"equals":"t"}],"screenExcludes":["Split off how many?"]},
+    {"branch":"inventory.adjust.item-cancel-first","segment":25,"screenIncludes":["Never mind."],"screenCells":[{"step":25,"x":41,"y":1,"equals":"a"},{"step":25,"x":45,"y":1,"equals":"1"},{"step":25,"x":52,"y":1,"equals":"s"},{"step":25,"x":46,"y":1,"equals":"0"}]},
+    {"branch":"inventory.adjust.item-cancel-count","segment":26,"screenIncludes":["Never mind."],"screenCells":[{"step":26,"x":41,"y":1,"equals":"a"},{"step":26,"x":45,"y":1,"equals":"1"},{"step":26,"x":52,"y":1,"equals":"s"},{"step":26,"x":46,"y":1,"equals":"0"}]},
+    {"branch":"inventory.adjust.item-invalid-end","segment":27,"screenIncludes":["Never mind."],"screenCells":[{"step":26,"x":41,"y":1,"equals":"a"},{"step":26,"x":45,"y":1,"equals":"1"},{"step":26,"x":52,"y":1,"equals":"s"},{"step":26,"x":46,"y":1,"equals":"0"}]},
+    {"branch":"inventory.adjust.item-zero","segment":28,"screenIncludes":["Amount to split from current stack must be at least 1."],"screenCells":[{"step":26,"x":41,"y":1,"equals":"a"},{"step":26,"x":45,"y":1,"equals":"1"},{"step":26,"x":52,"y":1,"equals":"s"},{"step":26,"x":46,"y":1,"equals":"0"}]},
+    {"branch":"inventory.adjust.item-whole","segment":29,"screenIncludes":["Amount to split from current stack must be less than 10."],"screenCells":[{"step":27,"x":41,"y":1,"equals":"a"},{"step":27,"x":45,"y":1,"equals":"1"},{"step":27,"x":52,"y":1,"equals":"s"},{"step":27,"x":46,"y":1,"equals":"0"}]},
+    {"branch":"inventory.adjust.item-over","segment":30,"screenIncludes":["Amount to split from current stack must be less than 10."],"screenCells":[{"step":27,"x":41,"y":1,"equals":"a"},{"step":27,"x":45,"y":1,"equals":"1"},{"step":27,"x":52,"y":1,"equals":"s"},{"step":27,"x":46,"y":1,"equals":"0"}]},
+    {"branch":"inventory.adjust.split-full-pack","segment":31,"screenIncludes":["Your pack is too full."],"screenCells":[{"step":1460,"x":1,"y":1,"equals":"a"},{"step":1460,"x":5,"y":1,"equals":"1"},{"step":1460,"x":12,"y":1,"equals":"s"},{"step":1460,"x":6,"y":1,"equals":"0"}]},
+    {"branch":"inventory.adjust.retry-valid","segment":32,"screenIncludes":["Select an inventory slot letter."],"screenCells":[{"step":33,"x":41,"y":1,"equals":"b"},{"step":33,"x":45,"y":1,"equals":"1"},{"step":33,"x":52,"y":1,"equals":"s"},{"step":33,"x":46,"y":1,"equals":"0"}]},
+    {"branch":"inventory.adjust.retry-five","segment":33,"screenIncludes":["Never mind."],"screenCells":[{"step":39,"x":41,"y":1,"equals":"a"},{"step":39,"x":45,"y":1,"equals":"1"},{"step":39,"x":52,"y":1,"equals":"s"},{"step":39,"x":46,"y":1,"equals":"0"}]},
+    {"branch":"inventory.adjust.split-retry-five","segment":34,"screenIncludes":["Never mind."],"screenCells":[{"step":40,"x":41,"y":1,"equals":"a"},{"step":40,"x":45,"y":1,"equals":"1"},{"step":40,"x":52,"y":1,"equals":"s"},{"step":40,"x":46,"y":1,"equals":"0"}]}
+  ]
+}

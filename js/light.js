@@ -416,10 +416,10 @@ export function candle_light_range(obj) {
 
 // src/light.c:808 obj_merge_light_sources(); candles were attached to the
 // candelabrum (src == dest) or merged into a lit stack
-export async function obj_merge_light_sources(src, dest) {
+export function obj_merge_light_sources(src, dest) {
     /* src == dest implies adding to candelabrum */
     if (src !== dest)
-        await end_burn(src, true); /* extinguish candles */
+        end_burn(src, true); /* extinguish candles */
 
     for (const ls of lights())
         if (ls.type === LS_OBJECT && ls.id === dest.o_id) {

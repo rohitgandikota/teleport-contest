@@ -27,6 +27,7 @@ import { OCLASSES } from './objects_data.js';
 import { color_attr_to_str, attr2attrname } from './coloratt.js';
 import { roles, races, genders, aligns, ROLE_RANDOM } from './role.js';
 import { vision_recalc } from './vision.js';
+import { reassign, update_inventory } from './invent.js';
 
 function note_unported_options(what) {
     (game.unported ||= new Set()).add('options:' + what);
@@ -1536,10 +1537,14 @@ function boolopt_side_effects(name) {
     case 'mention_decor':
         (game.iflags ||= {}).prev_decor = 0;    /* STONE */
         break;
+    case 'fixinv': case 'price_quotes': case 'sortpack':
+    case 'implicit_uncursed': case 'wizweight':
+        if (game.flags.fixinv === false)
+            reassign();
+        update_inventory();
+        break;
     default:
-        /* fixinv/price_quotes/sortpack/implicit_uncursed re-run
-           update_inventory(), a no-op for tty without perm_invent;
-           customcolors/customsymbols/menucolors touch palette machinery
+        /* customcolors/customsymbols/menucolors touch palette machinery
            this port does not have */
         break;
     }

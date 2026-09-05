@@ -61,7 +61,16 @@ unobserved direct C outcomes across the program. The union therefore reaches
 caller excludes before calling the function. Do not manufacture an impossible
 game state merely to turn that denominator into 100%.
 
-The next candidates below come from measured C execution. Their untested
+The inventory continuation now adds 50 asserted C scenarios, fixes the command,
+named-stack, equipment and light-source divergences they exposed, and passes
+all 44 public plus 418 supplemental fixtures. It adds 217 direct outcomes and
+five entered functions to the union above, reaching 52,680 outcomes and 4,280
+entered function records. Its source-derived state gate catches a candle light
+leak which passed terminal parity; an isolated omitted-cleanup fault confirms
+the check detects that defect. See [inventory-adjust-audit.md](inventory-adjust-audit.md)
+for source coverage, remaining decisions, and the still-missing merger lifecycle.
+
+The initial candidates below came from measured C execution. Their untested
 behavior is a hypothesis about possible defects until a C/JS mismatch is
 reproduced. The source locations refer to the recorder-patched C tree.
 
@@ -85,8 +94,9 @@ state checkpoints after object transfers, equipment changes, death recovery,
 and save/restore. Object identity, quantity, location, timers, bills, and
 equipment slots can differ while the current terminal frame still agrees.
 Second, use isolated mutation tests to check whether existing fixtures detect
-deliberately reversed guards or omitted state updates. These are proposed next
-steps, not capabilities implemented in this change.
+deliberately reversed guards or omitted state updates. The inventory continuation
+implements one focused state gate and fault injection. Full C/JS checkpoint
+comparison and a general mutation system are still proposed work.
 
 Keep future evaluation batches separate from development. Fix the generator,
 choose fresh seeds and action/state combinations, score the entire batch

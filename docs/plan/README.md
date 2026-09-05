@@ -12,15 +12,21 @@ Ground rules are in `/CLAUDE.md`. Read that first if you have not.
 
 ## Current focus, 2026-09-05
 
-Use measured C branch execution to choose gameplay gaps. The first compiler
-census covers 48.44% of direct outcomes across the compiled C game and tty
-functions. It found a never-executed corpse-wielding safety check; the new
-six-case C oracle and faithful fix now pass, alongside all 44 public and 415
-supplemental fixtures. The live held-out result is 78.39%, distinct from the
-100% local supplemental result. See [STATUS.md](STATUS.md) for working-tree
-verification and [gameplay-gap-audit.md](gameplay-gap-audit.md) for the measured
-backlog, coverage limitations, and independent-evaluation plan. Existing leash
-work remains in progress and is preserved.
+The active goal is the complete faithful C/Lua port, with byte-identical output
+and persistent gameplay state. Continue source review, measured C branches,
+independent oracles, implementation, and regression checks until that goal is
+met. Current corpus success is not the stopping criterion.
+
+The first two compiler-guided loops cover corpse wielding and 50 inventory
+organization scenarios. All 44 public and 418 supplemental fixtures pass.
+The measured C union has 52,680/108,268 direct outcomes and 4,280/5,491 entered
+function records. A new state gate catches an orphan candle light source which
+screen parity missed, and an isolated fault injection verifies that check.
+The published held-out result recorded during the audit is 78.39%, distinct
+from the local supplemental result. See [STATUS.md](STATUS.md) for verification,
+[inventory-adjust-audit.md](inventory-adjust-audit.md) for remaining inventory
+decisions, and [gameplay-gap-audit.md](gameplay-gap-audit.md) for measurement
+limits and the broader backlog. The leash/corpse checkpoint is pushed.
 
 ## Previous focus, 2026-09-03
 

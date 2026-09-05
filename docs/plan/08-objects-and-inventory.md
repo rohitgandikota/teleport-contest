@@ -3,10 +3,11 @@
 **Goal:** the object model, the inventory UI, and every command that manipulates
 an item.
 
-**Why it is worth a lot:** inventory and menus are pure screen output, exercised
-by nearly every session, and `src/objnam.c` (5,700 lines) exists solely to produce
-the strings we are scored on. Getting an article or a plural wrong on a common
-item costs points in every session that carries it.
+**Why it matters:** inventory controls object identity, quantities, equipment,
+timers, light sources and billing as well as the menus exercised by nearly
+every session. A correct-looking inventory can conceal wrong persistent state.
+The September source audit and remaining decisions are tracked in
+[inventory-adjust-audit.md](inventory-adjust-audit.md).
 
 **C files in scope:** `src/mkobj.c`, `src/objects.c` (data), `src/objnam.c`,
 `src/invent.c`, `src/pickup.c`, `src/do.c` (drop), `src/do_wear.c`,
@@ -35,6 +36,11 @@ plausible-but-wrong names that are hard to spot in a diff.
 
 ### 8.2 Inventory
 
+- [x] September `#adjust` source pass: count handling, split rollback,
+      collect/merge/name rules, bumping and full-pack refusal, used-letter menus,
+      floating letters, and equipment/light merger fixes. Fifty asserted C
+      scenarios and the equipment/light state gate pass. Remaining branches
+      and the discarded-object/billing lifecycle are tracked in the audit.
 - [ ] `src/invent.c`: `addinv`, `freeinv`, `getobj`, `ggetobj`, `display_inventory`,
       `display_pickinv`, letter assignment, `#adjust`, merge and split rules
 - [ ] Inventory menu rendering goes through the M3 menu code; the *content* is here

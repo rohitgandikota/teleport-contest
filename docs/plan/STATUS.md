@@ -9,13 +9,53 @@ loop until complete. The goal is active without a requested token budget.
 Current-corpus success is not the stopping criterion. Track unreviewed,
 untested, missing, and unreachable source paths explicitly.
 
-The first continuation targets `invent.c` inventory adjustment, splitting,
-merging, cancellation, and used-letter menus. The source review confirms that
-the existing JS command does not enable counts and its core omits C's split
-rollback, collection, merging, named-stack handling, and used-letter menu.
-The last verified working-tree baseline is the 44/44 public and 415/415
-supplemental run documented immediately below. No new inventory implementation
-has been validated yet.
+The first continuation now has **50 C scenarios in three permanent fixtures**:
+`inventory-adjust-source-gaps`, `inventory-adjust-named-stacks`, and
+`inventory-adjust-equipment`. Every scenario asserts its final inventory
+observation. The command now enables counts and ports split rollback,
+collection, merging, named-stack handling, occupied-slot bumping, full-pack
+refusal, retries, and the used-letter menu. Source review also found and fixed
+queued item naming, floating-letter reassignment, unsorted menu object symbols,
+and equipment precedence when combining wielded, alternate, and quivered stacks.
+
+A screen-perfect lit-candle merger still left two light sources, including one
+whose object was gone, and an undersized surviving light. The source-derived
+`tools/inventory-adjust-state-gate.mjs` checks all seven equipment scenarios,
+including object references, quantity, the one remaining burn timer and light,
+and C's radius four for ten candles. The port now calls C's light merger and
+keeps its bookkeeping synchronous. An isolated copy with that call omitted
+fails the new state gate; the clean copy passes. This is one focused fault
+injection, not a comprehensive mutation-testing system.
+
+The three new fixtures match **3,642/3,642 screens and cursors** and
+**144,726/144,726 RNG entries**. Exact native re-recordings credit all three.
+They add **217 direct C outcomes** and **five newly entered function records**
+to the previous census plus corpse-wielding union. The measured union is now
+**52,680/108,268 outcomes** and **4,280/5,491 entered function records**.
+`doorganize_core` reaches 115/132 outcomes, `adjust_split` 18/22,
+`display_used_invlets` 22/24, and `reassign` 12/16. None is being declared
+fully tested. The scenario ledger is **1,345/1,345**, distinct from those
+compiler counts.
+
+Full verification on this working tree: public **44/44**, **11,405/11,405
+screens**, **792,838/792,838 RNG**; supplemental **418/418**, **116,750/116,750
+screens**, **5,951,681/5,951,681 RNG**, and **3,248/3,248 animations**. Public
+animations remain 1,462/1,483. The existing fuzz corpus remains **101/102**,
+**14,261/14,262 screens**, and **491,759/491,759 RNG**, with the same known
+fixed-datetime artifact. All 47 public/new-fixture hang checks pass. The
+80-game role smoke, 14 tool tests, source audit, new inventory state gate, and
+existing fire-light and source-audit state gates pass. Frozen files are
+unchanged. Logs are in `.cache/inventory-adjust/`; the exact profiles are in
+`.cache/c-coverage/inventory-adjust-20260905/`.
+
+The previous verified leash/corpse/coverage work is pushed as `b97c150f`.
+Next, continue the inventory review using
+[inventory-adjust-audit.md](inventory-adjust-audit.md). Remaining feasible
+decisions include unnamed-to-named splits, incompatible collection, repeated
+classes in the used-letter menu, and 52 floating slots. `merged()` still needs
+its discarded-object/billing lifecycle reviewed against `obfree(obj, otmp)`;
+`mergable()` still refuses unpaid-stack matching. Those omissions are not
+resolved by the current pass rate. Preserve the active full-port goal.
 
 ## 2026-09-05: measure deterministic C branches and fix corpse wielding
 

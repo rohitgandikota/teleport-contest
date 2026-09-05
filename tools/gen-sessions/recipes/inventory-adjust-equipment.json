@@ -1,0 +1,84 @@
+{
+  "name": "inventory-adjust-equipment",
+  "description": "C stack-merger equipment precedence and lit-candle light-source cleanup, with final weapon and inventory observations.",
+  "coverage": [
+    "mode.debug",
+    "level.ordinary",
+    "ui.menus",
+    "ui.count-repeat",
+    "ui.cancel-invalid",
+    "ui.more-paging",
+    "object.weapons",
+    "object.tools-containers"
+  ],
+  "segments": [
+    {
+      "name": "merge-wielded",
+      "seed": 101303,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u001710 uncursed darts\r#adjust\r3abwb#adjust\rba)i\u001b"
+    },
+    {
+      "name": "merge-quivered",
+      "seed": 101304,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u001710 uncursed darts\r#adjust\r3abQb#adjust\rba)i\u001b"
+    },
+    {
+      "name": "merge-alternate",
+      "seed": 101305,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u001710 uncursed darts\r#adjust\r3abwbx#adjust\rba)i\u001b"
+    },
+    {
+      "name": "merge-wielded-quiver",
+      "seed": 101306,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u001710 uncursed darts\r#adjust\r3abwaQb#adjust\rba)i\u001b"
+    },
+    {
+      "name": "merge-quiver-wielded",
+      "seed": 101307,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u001710 uncursed darts\r#adjust\r3abQawb#adjust\rba)i\u001b"
+    },
+    {
+      "name": "merge-alternate-quiver",
+      "seed": 101308,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u001710 uncursed darts\r#adjust\r3abwaxQb#adjust\rba)i\u001b"
+    },
+    {
+      "name": "lit-candle-merge",
+      "seed": 101309,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u001710 uncursed wax candles\raa#adjust\r3ab#adjust\rbai\u001b"
+    }
+  ],
+  "branches": [
+    "inventory.adjust.merge-wielded",
+    "inventory.adjust.merge-quivered",
+    "inventory.adjust.merge-alternate",
+    "inventory.adjust.merge-wielded-quiver",
+    "inventory.adjust.merge-quiver-wielded",
+    "inventory.adjust.merge-alternate-quiver",
+    "inventory.adjust.lit-candle-merge"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {"branch":"inventory.adjust.merge-wielded","segment":0,"screenIncludes":["Merging: a - 10 darts (wielded)."],"screenCells":[{"step":45,"x":41,"y":1,"equals":"a"},{"step":45,"x":45,"y":1,"equals":"1"},{"step":45,"x":62,"y":1,"equals":")"},{"step":45,"x":46,"y":1,"equals":"0"}]},
+    {"branch":"inventory.adjust.merge-quivered","segment":1,"screenIncludes":["Merging: a - 10 darts (at the ready)."],"screenCells":[{"step":45,"x":41,"y":1,"equals":"a"},{"step":45,"x":45,"y":1,"equals":"1"},{"step":45,"x":67,"y":1,"equals":")"},{"step":45,"x":46,"y":1,"equals":"0"}]},
+    {"branch":"inventory.adjust.merge-alternate","segment":2,"screenIncludes":["Merging: a - 10 darts (alternate weapons; not wielded)."],"screenCells":[{"step":46,"x":33,"y":1,"equals":"a"},{"step":46,"x":37,"y":1,"equals":"1"},{"step":46,"x":77,"y":1,"equals":")"},{"step":46,"x":38,"y":1,"equals":"0"}]},
+    {"branch":"inventory.adjust.merge-wielded-quiver","segment":3,"screenIncludes":["Merging: a - 10 darts (wielded)."],"screenCells":[{"step":47,"x":41,"y":1,"equals":"a"},{"step":47,"x":45,"y":1,"equals":"1"},{"step":47,"x":62,"y":1,"equals":")"},{"step":47,"x":46,"y":1,"equals":"0"}]},
+    {"branch":"inventory.adjust.merge-quiver-wielded","segment":4,"screenIncludes":["Merging: a - 10 darts (wielded)."],"screenCells":[{"step":47,"x":41,"y":1,"equals":"a"},{"step":47,"x":45,"y":1,"equals":"1"},{"step":47,"x":62,"y":1,"equals":")"},{"step":47,"x":46,"y":1,"equals":"0"}]},
+    {"branch":"inventory.adjust.merge-alternate-quiver","segment":5,"screenIncludes":["Merging: a - 10 darts (alternate weapons; not wielded)."],"screenCells":[{"step":48,"x":33,"y":1,"equals":"a"},{"step":48,"x":37,"y":1,"equals":"1"},{"step":48,"x":77,"y":1,"equals":")"},{"step":48,"x":38,"y":1,"equals":"0"}]},
+    {"branch":"inventory.adjust.lit-candle-merge","segment":6,"screenIncludes":["Merging: a - 10 partly used candles (lit)."],"screenCells":[{"step":50,"x":41,"y":1,"equals":"a"},{"step":50,"x":45,"y":1,"equals":"1"},{"step":50,"x":72,"y":1,"equals":")"},{"step":50,"x":46,"y":1,"equals":"0"}]}
+  ]
+}

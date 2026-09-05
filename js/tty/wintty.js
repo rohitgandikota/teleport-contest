@@ -189,6 +189,7 @@ export function tty_add_menu(window, glyphinfo, identifier, ch, gch,
 
     const item = {
         identifier,
+        glyphinfo,
         count: -1,
         selected: !!(itemflags & MENU_ITEMFLAGS_SELECTED),
         itemflags: itemflags | 0,
@@ -474,6 +475,19 @@ function process_menu_window(cw, page, display) {
     for (let curr = cw.mlist; curr; n++, curr = curr.next)
         if (Math.floor(n / lmax) === page) items.push(curr);
 
+    /* win/tty/wintty.c:1413; the default shows object symbols only when
+       the entire menu has no headings, including its title. */
+    const menuobjsyms = game.iflags?.menuobjsyms ?? 4;
+    let show_obj_syms = !!(menuobjsyms & (2 | 4));
+    if (menuobjsyms & 4) {
+        for (let curr = cw.mlist; curr; curr = curr.next) {
+            if (!curr.identifier) {
+                show_obj_syms = false;
+                break;
+            }
+        }
+    }
+
     if (!cw.offx) display.clearScreen();
 
     items.forEach((item, lineno) => {
@@ -503,9 +517,16 @@ function process_menu_window(cw, page, display) {
 
         for (let i = 0; i < s.length && col < COLS; i++, col++) {
             const on = (i >= attr_n && !plainrun[i]) ? attr : 0;
-            const ch = (i === 2 && item.identifier && item.selected)
-                       ? (item.count === -1 ? '*' : '#') : s[i];
-            display.setCell(col, row, ch, NO_COLOR, on);
+            let ch = s[i], color = NO_COLOR;
+            if (i === 2 && item.identifier) {
+                if (item.selected)
+                    ch = item.count === -1 ? '*' : '#';
+                else if (show_obj_syms && item.glyphinfo?.ch) {
+                    ch = item.glyphinfo.ch;
+                    color = item.glyphinfo.color;
+                }
+            }
+            display.setCell(col, row, ch, color, on);
         }
         for (let c = col; c < COLS; c++)
             display.setCell(c, row, ' ', NO_COLOR, 0);

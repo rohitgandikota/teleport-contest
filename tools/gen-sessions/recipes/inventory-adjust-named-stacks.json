@@ -1,0 +1,93 @@
+{
+  "name": "inventory-adjust-named-stacks",
+  "description": "C named-stack organization: preserve distinct names on collection, merge matching names, give a split the destination name, retain names when bumping, and use item-menu naming.",
+  "coverage": [
+    "mode.debug",
+    "level.ordinary",
+    "ui.menus",
+    "ui.count-repeat",
+    "ui.cancel-invalid",
+    "ui.more-paging",
+    "object.weapons",
+    "ui.getlin"
+  ],
+  "segments": [
+    {
+      "name": "named-split-merge",
+      "seed": 101221,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u001710 uncursed darts named Alpha\r\u00177 uncursed darts named Beta\r#adjust\r3abi\u001b"
+    },
+    {
+      "name": "named-swap",
+      "seed": 101222,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u001710 uncursed darts named Alpha\r\u00177 uncursed darts named Beta\r#adjust\rabi\u001b"
+    },
+    {
+      "name": "named-collect",
+      "seed": 101223,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u001710 uncursed darts named Alpha\r\u00177 uncursed darts named Beta\r#adjust\raai\u001b"
+    },
+    {
+      "name": "named-bump",
+      "seed": 101224,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u001710 uncursed darts named Alpha\r\u0017uncursed towel\r#adjust\r3abi\u001b"
+    },
+    {
+      "name": "named-same-merge",
+      "seed": 101225,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u001710 uncursed darts named Alpha\r#adjust\r3ab#adjust\rabi\u001b"
+    },
+    {
+      "name": "named-same-collect",
+      "seed": 101226,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u001710 uncursed darts named Alpha\r#adjust\r3ab#adjust\raai\u001b"
+    },
+    {
+      "name": "unnamed-collect-skip-named",
+      "seed": 101227,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u001710 uncursed darts\r#adjust\r3abibcAlpha\r#adjust\raai\u001b"
+    },
+    {
+      "name": "named-collect-unnamed",
+      "seed": 101228,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u001710 uncursed darts\r#adjust\r3abibcAlpha\r#adjust\rbbi\u001b"
+    }
+  ],
+  "branches": [
+    "inventory.adjust.named-split-merge",
+    "inventory.adjust.named-swap",
+    "inventory.adjust.named-collect",
+    "inventory.adjust.named-bump",
+    "inventory.adjust.named-same-merge",
+    "inventory.adjust.named-same-collect",
+    "inventory.adjust.unnamed-collect-skip-named",
+    "inventory.adjust.named-collect-unnamed"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {"branch":"inventory.adjust.named-split-merge","segment":0,"screenIncludes":["Splitting and merging: b - 10 darts named Beta."],"screenCells":[{"step":73,"x":41,"y":1,"equals":"a"},{"step":73,"x":45,"y":1,"equals":"7"},{"step":73,"x":63,"y":1,"equals":"a"},{"step":73,"x":41,"y":2,"equals":"b"},{"step":73,"x":45,"y":2,"equals":"1"},{"step":73,"x":63,"y":2,"equals":"a"},{"step":73,"x":46,"y":2,"equals":"0"}]},
+    {"branch":"inventory.adjust.named-swap","segment":1,"screenIncludes":["Swapping: b - 10 darts named Alpha."],"screenCells":[{"step":72,"x":41,"y":1,"equals":"a"},{"step":72,"x":45,"y":1,"equals":"7"},{"step":72,"x":62,"y":1,"equals":"a"},{"step":72,"x":41,"y":2,"equals":"b"},{"step":72,"x":45,"y":2,"equals":"1"},{"step":72,"x":64,"y":2,"equals":"a"},{"step":72,"x":46,"y":2,"equals":"0"}]},
+    {"branch":"inventory.adjust.named-collect","segment":2,"screenIncludes":["Collecting: a - 10 darts named Alpha."],"screenCells":[{"step":72,"x":41,"y":1,"equals":"a"},{"step":72,"x":45,"y":1,"equals":"1"},{"step":72,"x":64,"y":1,"equals":"a"},{"step":72,"x":46,"y":1,"equals":"0"},{"step":72,"x":41,"y":2,"equals":"b"},{"step":72,"x":45,"y":2,"equals":"7"},{"step":72,"x":62,"y":2,"equals":"a"}]},
+    {"branch":"inventory.adjust.named-bump","segment":3,"screenIncludes":["Splitting: b - 3 darts named Alpha."],"screenCells":[{"step":60,"x":41,"y":1,"equals":"a"},{"step":60,"x":45,"y":1,"equals":"7"},{"step":60,"x":63,"y":1,"equals":"a"},{"step":60,"x":41,"y":2,"equals":"b"},{"step":60,"x":45,"y":2,"equals":"3"},{"step":60,"x":63,"y":2,"equals":"a"},{"step":60,"x":41,"y":4,"equals":"c"},{"step":60,"x":45,"y":4,"equals":"a"},{"step":60,"x":51,"y":4,"equals":"l"}]},
+    {"branch":"inventory.adjust.named-same-merge","segment":4,"screenIncludes":["Merging: b - 10 darts named Alpha."],"screenCells":[{"step":54,"x":41,"y":1,"equals":"b"},{"step":54,"x":45,"y":1,"equals":"1"},{"step":54,"x":64,"y":1,"equals":"a"},{"step":54,"x":46,"y":1,"equals":"0"}]},
+    {"branch":"inventory.adjust.named-same-collect","segment":5,"screenIncludes":["Collecting: a - 10 darts named Alpha."],"screenCells":[{"step":54,"x":41,"y":1,"equals":"a"},{"step":54,"x":45,"y":1,"equals":"1"},{"step":54,"x":64,"y":1,"equals":"a"},{"step":54,"x":46,"y":1,"equals":"0"}]},
+    {"branch":"inventory.adjust.unnamed-collect-skip-named","segment":6,"screenIncludes":["Collecting: a - 7 darts."],"screenCells":[{"step":51,"x":41,"y":1,"equals":"a"},{"step":51,"x":45,"y":1,"equals":"7"},{"step":51,"x":51,"y":1,"equals":"s"},{"step":51,"x":41,"y":2,"equals":"b"},{"step":51,"x":45,"y":2,"equals":"3"},{"step":51,"x":63,"y":2,"equals":"a"}]},
+    {"branch":"inventory.adjust.named-collect-unnamed","segment":7,"screenIncludes":["Collecting: b - 10 darts named Alpha."],"screenCells":[{"step":51,"x":41,"y":1,"equals":"b"},{"step":51,"x":45,"y":1,"equals":"1"},{"step":51,"x":64,"y":1,"equals":"a"},{"step":51,"x":46,"y":1,"equals":"0"}]}
+  ]
+}

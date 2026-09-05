@@ -4196,6 +4196,18 @@ effects and passes exactly. See `gameplay-gap-audit.md` for the full evidence.
 One canonical options-help screen contains the original user's local path and
 fails even an ordinary C re-recording; its profile is deliberately excluded.
 
+When combining runs, use the full LLVM branch tuples and verify their order
+and structural fields within each function. Line/column alone is not a unique
+branch identifier. Collapsing missing outcomes to a set of source coordinates
+overstates coverage because several compiled branches can share a coordinate.
+
+The inventory continuation found a lit-candle merger which matched every
+screen and RNG entry but retained an orphan light and the wrong surviving
+radius. C removes the old source, then recomputes the combined stack's radius.
+`inventory-adjust-state-gate.mjs` checks the actual light, timer and equipment
+references. Omitting the cleanup in an isolated runtime makes that gate fail.
+Source-backed state checks can expose defects before a visible frame changes.
+
 Repeatedly fixing failures in a random-play batch makes that batch regression
 coverage. Fresh seeds alone also do not remove the public trigram model's
 input-distribution bias. Record first-run results on a fresh batch before
@@ -4207,10 +4219,11 @@ edit code. The historical fuzz measurements below predate this distinction.
 The recorder runs a 217-key, four-segment session in under a second, so
 random-play sessions are cheap. Keys are sampled from a trigram model of
 the PUBLIC sessions' inputs (the judges' command idioms), never their
-outputs, and every game gets a fresh seed and datetime, so nothing can
-overfit. Batch pass rate tracks held-out (16/42 and 64% screens on the
-first run against 9/44 and 53% on the board); the first-divergence causes
-are the work list. Three things learned running it:
+outputs, with varied seeds and datetimes. This still samples the public input
+distribution. The historical first run had 16/42 sessions and 64% screens,
+against 9/44 and 53% on the board; that comparison does not establish a reliable
+held-out estimator. First divergences provide a debugging work list. Three
+things learned running it:
 
   - Split the input model by rc style, including whether the legacy intro
     is on: a stream sampled from `!legacy` sessions spends every key

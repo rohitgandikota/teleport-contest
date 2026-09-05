@@ -769,9 +769,9 @@ export async function moveloop_core() {
                     const { tele } = await import('./teleport.js');
                     await tele();
                     if (g.u.ux !== oldUx || g.u.uy !== oldUy) {
-                        const { next_to_u } = await import('./apply.js');
+                        const { next_to_u, check_leash } = await import('./apply.js');
                         if (!await next_to_u())
-                            (g.unported ||= new Set()).add('check_leash');
+                            await check_leash(oldUx, oldUy);
                         const { cmdq_clear } = await import('./cmd.js');
                         const { CQ_CANNED, CQ_REPEAT } = await import('./const.js');
                         cmdq_clear(CQ_CANNED);

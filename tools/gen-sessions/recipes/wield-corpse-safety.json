@@ -1,0 +1,132 @@
+{
+  "name": "wield-corpse-safety",
+  "description": "C branch-coverage regression for corpse wielding: bare-hand petrification, gloves, stone resistance, harmless corpses, life saving, and flesh-golem conversion. Each case also inspects the resulting weapon slot.",
+  "coverage": [
+    "mode.debug",
+    "level.ordinary",
+    "object.food-corpses",
+    "object.armor",
+    "object.amulets",
+    "forms.polymorph",
+    "ui.more-paging"
+  ],
+  "branches": [
+    "equipment.wield-corpse.bare-petrification",
+    "equipment.wield-corpse.gloves",
+    "equipment.wield-corpse.stone-resistance",
+    "equipment.wield-corpse.harmless",
+    "equipment.wield-corpse.life-saving",
+    "equipment.wield-corpse.golem-conversion"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "equipment.wield-corpse.bare-petrification",
+      "segment": 0,
+      "screenIncludes": [
+        "You wield the cockatrice corpse in your bare hands.",
+        "You turn to stone...",
+        "You are bare handed."
+      ],
+      "screenExcludes": [
+        "cockatrice corpse (wielded)"
+      ]
+    },
+    {
+      "branch": "equipment.wield-corpse.gloves",
+      "segment": 1,
+      "screenIncludes": [
+        "b - a cockatrice corpse (wielded)."
+      ],
+      "screenExcludes": [
+        "You wield the cockatrice corpse in your bare",
+        "You turn to stone..."
+      ]
+    },
+    {
+      "branch": "equipment.wield-corpse.stone-resistance",
+      "segment": 2,
+      "screenIncludes": [
+        "You turn into a stone golem!",
+        "a - a cockatrice corpse (wielded)."
+      ],
+      "screenExcludes": [
+        "You wield the cockatrice corpse in your bare",
+        "You turn to stone..."
+      ]
+    },
+    {
+      "branch": "equipment.wield-corpse.harmless",
+      "segment": 3,
+      "screenIncludes": [
+        "a - a newt corpse (wielded)."
+      ],
+      "screenExcludes": [
+        "You wield the cockatrice corpse in your bare",
+        "You turn to stone..."
+      ]
+    },
+    {
+      "branch": "equipment.wield-corpse.life-saving",
+      "segment": 4,
+      "screenIncludes": [
+        "Your medallion begins to glow!",
+        "The medallion crumbles to dust!",
+        "You are bare handed."
+      ],
+      "screenExcludes": [
+        "cockatrice corpse (wielded)"
+      ]
+    },
+    {
+      "branch": "equipment.wield-corpse.golem-conversion",
+      "segment": 5,
+      "screenIncludes": [
+        "You wield the cockatrice corpse in your bare claws.",
+        "You turn into a stone golem!",
+        "You are bare handed."
+      ],
+      "screenExcludes": [
+        "cockatrice corpse (wielded)"
+      ]
+    }
+  ],
+  "segments": [
+    {
+      "seed": 100401,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Wielder,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed leather gloves\rWa\u0017uncursed cockatrice corpse\rTyes\rwb  n)"
+    },
+    {
+      "seed": 100402,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Wielder,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed leather gloves\rWa\u0017uncursed cockatrice corpse\rwb)"
+    },
+    {
+      "seed": 100403,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Wielder,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #polyself\rstone golem\r   \u0017uncursed cockatrice corpse\rwa)"
+    },
+    {
+      "seed": 100404,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Wielder,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed newt corpse\rwa)"
+    },
+    {
+      "seed": 100405,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Wielder,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed amulet of life saving\rPa\u0017uncursed leather gloves\rWb\u0017uncursed cockatrice corpse\rTyes\rwc   )"
+    },
+    {
+      "seed": 100406,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Wielder,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #polyself\rflesh golem\r   \u0017uncursed leather gloves\rWa\u0017uncursed cockatrice corpse\rTyes\rwb )"
+    }
+  ]
+}

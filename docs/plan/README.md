@@ -10,7 +10,19 @@ Ground rules are in `/CLAUDE.md`. Read that first if you have not.
 
 ---
 
-## Current focus, 2026-09-03
+## Current focus, 2026-09-05
+
+Use measured C branch execution to choose gameplay gaps. The first compiler
+census covers 48.44% of direct outcomes across the compiled C game and tty
+functions. It found a never-executed corpse-wielding safety check; the new
+six-case C oracle and faithful fix now pass, alongside all 44 public and 415
+supplemental fixtures. The live held-out result is 78.39%, distinct from the
+100% local supplemental result. See [STATUS.md](STATUS.md) for working-tree
+verification and [gameplay-gap-audit.md](gameplay-gap-audit.md) for the measured
+backlog, coverage limitations, and independent-evaluation plan. Existing leash
+work remains in progress and is preserved.
+
+## Previous focus, 2026-09-03
 
 Continue from pushed checkpoint `a80b4d7`. The protected starting baseline is
 `85203f6` on `codex/last-working-heldout-7959-2026-09-03`. The latest published

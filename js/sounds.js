@@ -1064,6 +1064,37 @@ export async function yelp(mtmp) {
     }
 }
 
+// src/sounds.c:479 whimper(), the quieter distressed-pet reaction.
+export async function whimper(mtmp) {
+    let whimper_verb = 0;
+
+    if (helpless(mtmp) || game.mons[mtmp.mnum].msound === MSOUND.MS_SILENT)
+        return;
+
+    if (Hallucination())
+        whimper_verb = h_sounds[rn2(h_sounds.length)];
+    else
+        switch (game.mons[mtmp.mnum].msound) {
+        case MSOUND.MS_MEW:
+        case MSOUND.MS_GROWL:
+            whimper_verb = 'whimper';
+            break;
+        case MSOUND.MS_BARK:
+            whimper_verb = 'whine';
+            break;
+        case MSOUND.MS_SQEEK:
+            whimper_verb = 'squeal';
+            break;
+        }
+    if (whimper_verb) {
+        await pline(`${Monnam(mtmp)} ${vtense(null, whimper_verb)}.`);
+        if (game.context?.run)
+            nomul(0);
+        await wake_nearto(
+            mtmp.mx, mtmp.my, game.mons[mtmp.mnum].mlevel * 6);
+    }
+}
+
 const note_sounds_unported = (w) => {
     (game.unported ||= new Set()).add('sounds:' + w);
     return 0;

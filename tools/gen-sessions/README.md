@@ -64,6 +64,35 @@ The first command writes `docs/plan/supplemental-coverage.md`. A covered dynamic
 row means enough tagged C traces exist in the required modes. It does not mean
 the JavaScript port passes those traces.
 
+Measure actual C decisions, including functions without RNG calls, with:
+
+```bash
+node tools/c-branch-coverage.mjs --build
+node tools/c-branch-coverage.mjs --out .cache/c-coverage/full
+```
+
+This copies the existing recorder into a separate cache and compiles it with
+Clang coverage instrumentation. It currently requires macOS and the Xcode
+command-line tools: continuous LLVM profiles preserve counters when the
+recording driver terminates the C process. Rebuild after changing the C
+reference. Run one collector at a time because its private install carries
+save and bones state between segments.
+
+The default scan re-records public and supplemental sessions. Only recordings
+with exact RNG, screens, cursors, keys, and animation frames contribute coverage.
+A mismatch exits nonzero, remains listed in the report, and contributes no
+profile. Explicit session paths or corpus directories restrict the scan.
+Each run needs a fresh output directory. It produces `report.md`,
+`summary.json`, `functions.json`, and the full `coverage.json` export.
+The concise denominator counts direct C conditions in compiled `src/` and
+`win/tty/` functions, including unreachable/error paths; it excludes Lua,
+macro-internal conditions, and inactive build configurations. Process startup
+and recorder shutdown are included. Coverage is evidence of execution, not
+correctness or whole-game completeness.
+
+The initial results and next gameplay targets are in
+[`gameplay-gap-audit.md`](../../docs/plan/gameplay-gap-audit.md).
+
 Optional `branches` tags come from `branch-requirements.json`. Each tag names a
 specific C decision and its source function. The report keeps broad category
 coverage separate from branch coverage, so a category can be represented while

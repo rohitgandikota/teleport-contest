@@ -4171,7 +4171,38 @@ macros over rn2/rnd; line numbers must come from the recorder-patched tree
 (`nethack-c/recorder/src`), not upstream, or 22 sites go stray. The corpus
 scan is cached by mtime under `tools/gen-sessions/.cache/`.
 
-## fuzz.mjs: an unbiased local estimate of held-out, with an oracle attached
+## Compiler branch coverage observes deterministic code (5 Sep)
+
+`tools/c-branch-coverage.mjs` copies the built recorder into `.cache/`, removes
+the copied game objects, and rebuilds with Clang's `-fprofile-instr-generate
+-fcoverage-mapping`. Darwin's `LLVM_PROFILE_FILE=%p%c.profraw` mode is required:
+the driver kills the game at its final input, so exit-only profiles lose the
+counters. Each segment gets a separate profile; only recordings matching every
+key, RNG entry, screen, cursor, and animation frame are merged. The ordinary
+recorder is untouched. Process startup and shutdown are also measured.
+
+Use `llvm-cov export --skip-expansions`; exporting nested expansion regions
+produced 576 MB for this program, exceeding Node's maximum string length.
+Skipping expansion regions reduces it to about 30 MB while retaining function
+branch tuples. The concise census selects branch tuples whose file ID is zero,
+so macro-internal conditions are kept in the raw export but excluded from the
+direct-C denominator. Inspect reachability before pursuing 100%: the
+`cant_wield_corpse()` non-corpse guard is unreachable from its guarded callers.
+
+The initial public-plus-supplemental scan reaches 48.44% of direct C outcomes.
+The first useful gap was a corpse-wielding function with no RNG calls and a JS
+placeholder. The resulting six-case oracle now covers the state and message
+effects and passes exactly. See `gameplay-gap-audit.md` for the full evidence.
+One canonical options-help screen contains the original user's local path and
+fails even an ordinary C re-recording; its profile is deliberately excluded.
+
+Repeatedly fixing failures in a random-play batch makes that batch regression
+coverage. Fresh seeds alone also do not remove the public trigram model's
+input-distribution bias. Record first-run results on a fresh batch before
+inspecting failures, then replace it as an evaluation set after using it to
+edit code. The historical fuzz measurements below predate this distinction.
+
+## fuzz.mjs: random-play evaluation with an oracle attached
 
 The recorder runs a 217-key, four-segment session in under a second, so
 random-play sessions are cheap. Keys are sampled from a trigram model of

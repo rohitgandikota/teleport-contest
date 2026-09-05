@@ -1297,6 +1297,22 @@
     {"group":"Trap setting","id":"tool.trap.cursed-self-trigger","cFile":"src/apply.c","cFunction":"set_trap","description":"Finish arming a cursed land mine, fail its safety roll, and trigger it under the hero"},
     {"group":"Trap setting","id":"tool.trap.mounted-cursed-landmine-bungle","cFile":"src/apply.c","cFunction":"use_trap","description":"Fail the low-riding-skill cursed land-mine roll and force an immediate mounted bungle"},
     {"group":"Trap setting","id":"tool.trap.mounted-uncursed-bear-continue","cFile":"src/apply.c","cFunction":"use_trap","description":"Pass the low-riding-skill uncursed bear-trap roll and finish arming it from the saddle"},
-    {"group":"Trap setting","id":"tool.trap.mounted-cursed-bear-drop","cFile":"src/apply.c","cFunction":"use_trap","description":"Fail the low-riding-skill cursed bear-trap roll and drop it without arming it"}
+    {"group":"Trap setting","id":"tool.trap.mounted-cursed-bear-drop","cFile":"src/apply.c","cFunction":"use_trap","description":"Fail the low-riding-skill cursed bear-trap roll and drop it without arming it"},
+    {"group":"Leashed pets","id":"tool.leash.cursed-choke-survive","cFile":"src/apply.c","cFunction":"check_leash","description":"Damage a breathing pet with a cursed leash without killing it"},
+    {"group":"Leashed pets","id":"tool.leash.cursed-tameness-loss","cFile":"src/apply.c","cFunction":"check_leash","description":"Reduce a choked pet's tameness while preserving the floor of one"},
+    {"group":"Leashed pets","id":"tool.leash.cursed-distance-kill","cFile":"src/apply.c","cFunction":"check_leash","description":"Kill a breathing pet when a cursed leash is stretched beyond five squares"},
+    {"group":"Leashed pets","id":"tool.leash.cursed-breathless-pull","cFile":"src/apply.c","cFunction":"check_leash","description":"Bypass cursed-leash choking for a breathless pet and use the ordinary pull path"},
+    {"group":"Leashed pets","id":"tool.leash.uncursed-growl-roll","cFile":"src/apply.c","cFunction":"check_leash","description":"Select the growl reaction when an uncursed leash is pulled"},
+    {"group":"Leashed pets","id":"tool.leash.uncursed-yelp-roll","cFile":"src/apply.c","cFunction":"check_leash","description":"Select the yelp reaction when an uncursed leash is pulled"},
+    {"group":"Leashed pets","id":"tool.leash.uncursed-whimper-roll","cFile":"src/apply.c","cFunction":"check_leash","description":"Select the whimper reaction when an uncursed leash is pulled"},
+    {"group":"Leashed pets","id":"tool.leash.uncursed-distance-snap","cFile":"src/apply.c","cFunction":"check_leash","description":"Detach an uncursed leash when it is stretched beyond five squares"},
+    {"group":"Leashed pets","id":"monster.pet.leashed-stay-reposition","cFile":"src/dogmove.c","cFunction":"dog_move","description":"Pull a distant leashed pet adjacent to the hero after ordinary candidate selection leaves it stationary"},
+    {"group":"Leashed pets","id":"monster.pet.leashed-known-trap-whimper","cFile":"src/dogmove.c","cFunction":"dog_move","description":"Make a leashed pet whimper while considering a known harmful trap"},
+    {"group":"Corpse wielding","id":"equipment.wield-corpse.bare-petrification","cFile":"src/wield.c","cFunction":"cant_wield_corpse","description":"Wield a cockatrice corpse without gloves, enter instant petrification, and leave the weapon slot empty after refusing death in debug mode"},
+    {"group":"Corpse wielding","id":"equipment.wield-corpse.gloves","cFile":"src/wield.c","cFunction":"cant_wield_corpse","description":"Allow a gloved hero to wield a cockatrice corpse safely"},
+    {"group":"Corpse wielding","id":"equipment.wield-corpse.stone-resistance","cFile":"src/wield.c","cFunction":"cant_wield_corpse","description":"Allow a stone-resistant stone golem to wield a cockatrice corpse without gloves"},
+    {"group":"Corpse wielding","id":"equipment.wield-corpse.harmless","cFile":"src/wield.c","cFunction":"cant_wield_corpse","description":"Allow a bare-handed hero to wield a non-petrifying newt corpse"},
+    {"group":"Corpse wielding","id":"equipment.wield-corpse.life-saving","cFile":"src/wield.c","cFunction":"cant_wield_corpse","description":"Consume an amulet of life saving during corpse-wielding petrification and leave the corpse unwielded"},
+    {"group":"Corpse wielding","id":"equipment.wield-corpse.golem-conversion","cFile":"src/wield.c","cFunction":"cant_wield_corpse","description":"Convert a flesh golem wielding a cockatrice corpse into a stone golem and leave the weapon slot empty"}
   ]
 }

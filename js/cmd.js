@@ -4,7 +4,7 @@ import { dobreathe, dospit, doremove, dogaze, dosummon, dohide, dospinweb, domin
 import { pet_ranged_attk } from './dog.js';
 import { is_vampshifter } from './monst.js';
 import { aggravate } from './wizard.js';
-import { use_unicorn_horn } from './apply.js';
+import { use_unicorn_horn, check_leash } from './apply.js';
 import { There } from './pline.js';
 import { dryup } from './fountain.js';
 import { split_mon } from './potion.js';
@@ -2987,6 +2987,8 @@ async function domove_core() {
     if (hides_under(game.youmonst.data)
         || game.youmonst.data.mlet === MONSYMS.S_EEL || u.dx || u.dy)
         hideunder(game.youmonst);
+
+    await check_leash(game.u.ux0, game.u.uy0);
 
     // Update display
     newsym(oldx, oldy);

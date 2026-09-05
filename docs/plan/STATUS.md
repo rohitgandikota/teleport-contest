@@ -1,5 +1,74 @@
 # STATUS — live handoff board
 
+## 2026-09-05: full faithful port is the active goal
+
+The user explicitly set an ongoing goal: port every reachable C and Lua
+behavior faithfully, with byte-identical output and persistent state, and
+continue the source review, oracle generation, implementation, and verification
+loop until complete. The goal is active without a requested token budget.
+Current-corpus success is not the stopping criterion. Track unreviewed,
+untested, missing, and unreachable source paths explicitly.
+
+The first continuation targets `invent.c` inventory adjustment, splitting,
+merging, cancellation, and used-letter menus. The source review confirms that
+the existing JS command does not enable counts and its core omits C's split
+rollback, collection, merging, named-stack handling, and used-letter menu.
+The last verified working-tree baseline is the 44/44 public and 415/415
+supplemental run documented immediately below. No new inventory implementation
+has been validated yet.
+
+## 2026-09-05: measure deterministic C branches and fix corpse wielding
+
+The new `tools/c-branch-coverage.mjs` builds an isolated instrumented recorder
+and credits only exact C re-recordings. The first scan selects 44 public plus
+414 supplemental recordings, including the existing uncommitted leash fixture.
+It credits 457/458 and measures **4,274/5,491 entered C function records** and
+**52,450/108,268 direct branch outcomes (48.44%)**. The one rejected trace is
+`seed2200-wizard-quaff-zap-read`, step 158: an options-help path from the
+original recording machine. The ordinary C recorder has the same mismatch.
+This scan excludes Lua, macro-internal branches, and inactive configurations;
+it includes unreachable guards, error paths, startup, and recorder shutdown.
+It must not be called a whole-game completeness score.
+
+The census found that `wield.c:cant_wield_corpse()` had never executed. Its JS
+counterpart was still a placeholder. The port now honors stone resistance and
+awaits the exact C corpse name, bare-hand message, and instant-petrification
+path in both callers. The new six-segment `wield-corpse-safety` C oracle covers
+bare hands, gloves, resistance, harmless corpses, life saving, and flesh-golem
+conversion, with an explicit final weapon-slot observation. It improves from
+**390/405 to 405/405 screens**, **396/405 to 405/405 cursors**, and
+**3,085/16,856 to 16,856/16,856 RNG entries**. It adds one newly entered function
+and 13 previously unseen direct outcomes to the measured C union. Six asserted
+scenario requirements raise the ledger to **1,295/1,295**, including the ten
+pre-existing leash requirements.
+
+Verification on the working tree: public **44/44**, **11,405/11,405 screens**,
+**792,838/792,838 RNG**; supplemental **415/415**, **113,108/113,108 screens**,
+**5,806,955/5,806,955 RNG**, and **3,248/3,248 animations**. Public animations
+remain 1,462/1,483. The existing fuzz corpus remains **101/102**,
+**14,261/14,262 screens**, and **491,759/491,759 RNG**, with the same known
+fixed-datetime screen artifact. Public and new-fixture hang checks pass,
+fresh-seed smoke is 80/80 across 13 roles, all 14 tool tests pass, and the
+source/import audit has zero findings. Frozen files are unchanged.
+
+The live leaderboard fetched during this audit reports **8,831/11,265 held-out
+screens (78.39%)**, **17/44 sessions**, and rank 3 overall; the category dashboard
+records rank 1 among agentic entries. Its last-scored time is
+2026-09-04T21:02:12.072Z. No held-out improvement is claimed for this local change.
+Existing leash edits in `allmain`, `apply`, `cmd`, `dog`, and `sounds` are
+preserved. Dashboard commit `4a4f31f7` appeared during the audit.
+
+Next: use the measured backlog in [gameplay-gap-audit.md](gameplay-gap-audit.md).
+Inventory split/cancel/merge paths, the used-letter menu, disarming traps, and
+potion dipping are concrete candidates. Do not keep interpreting a previously
+debugged random-play corpus as independent evaluation. Add C/JS state
+checkpoints and isolated mutation tests when checking whether a passing trace
+would detect a silent state defect. Those two capabilities are proposed, not
+implemented here. Full compiler exports and per-function gaps are cached under
+`.cache/c-coverage/baseline-20260905/`; the new oracle profile is under
+`.cache/c-coverage/wield-corpse-20260905/`. Reproduction commands are in the
+generator README. The compiler collector currently requires macOS.
+
 ## 2026-09-04: grappling and cursed applied tools reach exact C parity
 
 Two permanent C oracles add 23 focused segments across grappling hooks and

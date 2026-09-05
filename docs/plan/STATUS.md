@@ -9,10 +9,60 @@ loop until complete. The goal is active without a requested token budget.
 Current-corpus success is not the stopping criterion. Track unreviewed,
 untested, missing, and unreachable source paths explicitly.
 
-### Current work: verified beatitude side effects and figurine timers
+### Current work: verified detection expiry; missing creation message next
+
+The beatitude checkpoint is pushed as 65d7e37d. The current verified pass
+fixes monster-detection timeouts and extends figurine perception and ownership
+coverage. Timed detection now uses intrinsic.HDetect_monsters, separate from
+temporary extrinsic detection. C's full potion effect and itimeout_incr mask
+are ported. The shared macro and expiry redraw preserve C's sensing behavior.
+
+Three permanent recipes add 17 C intent-validated cases: figurine-perception
+(six), figurine-carriers (three), and monster-detection-timeout (eight).
+They match 3,157 screens/cursors, 172,289 RNG and 7,765 animations. The state
+gate checks C-visible timeout values, timer deadlines, ownership, disposal,
+names and expiry. Separate source controls cover permanent source bits,
+extrinsic detection, spell duration and stale invisible markers. The existing
+monster-fire-trap state gate reads the new intrinsic field; expected 30 stays
+unchanged. A loader retaining detection still passes the visible floor case's
+310 screens/cursors and 6,087 RNG but fails its expired-detection state check.
+
+Final runtime: 44 public and 453 supplemental fixtures pass. Supplemental has
+154,171 exact screens/cursors, 7,508,661 RNG and 14,287 animations. Public
+remains 11,405 screens/cursors, 792,838 RNG and 1,462/1,483 animations. Fuzz
+remains 101/102 with the fixed-date mismatch, 14,261/14,262 screens, 14,262
+cursors, 491,759 RNG and 75/76 animations. All 47 hang checks, 80 role-smoke
+controls, 16 tool tests, source audit and three state gates pass. Ledger:
+1,778/1,778. All three native recordings are exact, adding 27 outcomes.
+Union: 53,770/108,268 outcomes and 4,310/5,491 entered function records.
+fig_transform now reaches 31/56, monster detection 13/20, nh_timeout 95/184.
+Logs are .cache/figurine/{regression-final,fuzz-final,hang-final,roles-final,
+state-final,beatitude-state-final,fire-state-final,source-final2,native,union}.log.
+See [figurine-detection-audit.md](figurine-detection-audit.md).
+
+Next reproduced failure: .cache/figurine/carrier-lit.input.json and
+carrier-lit.session.json. A lit magic lamp makes the monster carrier visible,
+and segments zero and one reach the proper figurine message. A random jackal
+exposes the missing makemon arrival message: 35,571/35,571 RNG but 898/903
+screens and 901/903 cursors match. Segment zero step 290 is the first screen
+miss; C step 291 says 'A jackal suddenly appears close by!', which JS omits.
+JS flushes the kitten a message too soon. Keep this failing probe, not credited
+as verified behavior, and implement the shared C creation-message tail next.
+The full makemon C body through return has been read. The tail is at
+makemon.c:1472-1510, including occupation/dochugw. Existing arrival copies are
+in apply.js:3372 bagotricks_arrival, were.js, wizard.js and read.js's
+create_particular_creation. Their callers need the shared behavior in source
+order. m_initgrp's common path must stay synchronous for level generation;
+runtime group messages must complete before parent inventory initialization.
+Its C body was read through line 125; read the remaining loop before editing.
+The newcham function already uses conditional promise continuations for this
+same synchronous-creation constraint. No makemon edits have been made yet.
+The full-port goal remains active and work continues after this checkpoint.
+
+### Verified beatitude side effects and figurine timers
 
 Shop billing and used-up itemization are pushed as `9ceac165`. The current
-beatitude pass is verified and ready to commit/push. It ports the full shared
+beatitude pass is committed and pushed as `65d7e37d`. It ports the full shared
 bless, unbless, curse and uncurse bodies, book_cursed, carrying figurine
 scheduling, timer expiration, and the quiet figurine-location checks. Runtime
 callers await message paths while free-object construction completes its
@@ -50,7 +100,36 @@ adding 98 outcomes and five entered records. The union is 53,743/108,268
 outcomes and 4,310/5,491 records. Logs are in .cache/beatitude/ and the review
 is [beatitude-audit.md](beatitude-audit.md).
 
-Next: commit/push this verified pass, then extend figurine-timer coverage to
+Active continuation: ignored C probes in .cache/figurine/ extend the callback
+to six species/descriptions, monster theft and floor ownership. The six
+species cases match 770 screens and 122,165 RNG; unseen monster-inventory
+expiration matches 185 screens and 11,768 RNG. The nymph theft prefix itself
+matches 155 screens and 3,236 RNG. No runtime changes follow 65d7e37d yet.
+The first floor case exposed permanent blessed monster detection: JS retained
+147 for 1,291 turns. It is fixed locally by putting the timeout in
+intrinsic.HDetect_monsters, using C's shared Detect_monsters macro in readers,
+and redrawing on expiry. C's temporary EDetect_monsters remains in uprops.
+The full peffect_monster_detection now includes spell duration and invisible
+marker clearing; itimeout_incr now masks source bits before incrementing.
+Both floor cases now match 566 screens and 12,129 RNG. The old mismatch was
+at screen [31,14], which is game [32,13], not a monster movement discrepancy.
+Final C inputs and recordings
+are floor.input.json and floor.session.json; floor-screen.log is the focused
+diff. Diagnostic-only #timeout recordings supplied the absolute timer deadline
+1298 and current times 7/188; their raw pointer output must never be promoted
+as a parity oracle. The final fixtures contain no #timeout command.
+Eight direct detection cases match 1,636 screens and 26,227 RNG, including
+expiry, blindness, extensions, the >=300 one-turn potion rule and loneliness.
+Their #wizintrinsic menu rows expose C's remaining timeout without pointers.
+The stable runtime passes 494/494 existing public+supplemental fixtures and
+101/102 fuzz fixtures (known fixed-date mismatch). Source audit is clean.
+The existing monster-fire-trap gate now reads HDetect_monsters; its expected
+30 is unchanged and the gate passes. A lit-lamp carrier probe is in progress
+to reach the visible monster-inventory callback. Earlier nearby setups either
+let the nymph teleport away or kept the creation square in darkness; do not
+credit their absent message as a visible-carrier branch.
+
+Next: extend figurine-timer coverage to
 floor and monster inventories and the invisible/hiding/retry branches.
 fig_transform reaches only 15/56 direct outcomes; its full C body has been
 read and ported but those paths need C scenarios. mpickobj's full C body was

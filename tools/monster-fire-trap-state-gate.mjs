@@ -55,7 +55,7 @@ for (const [index, segment] of recipe.segments.entries()) {
     assert.ok(trap, `segment ${index} retains its fire trap`);
     states.push({
         blind: !!game.u.ublind,
-        detection: game.u.uprops?.DETECT_MONSTERS | 0,
+        detection: game.u.intrinsic?.HDetect_monsters | 0,
         trap: {
             position: [trap.tx, trap.ty],
             seen: !!trap.tseen,

@@ -960,6 +960,11 @@ export async function nh_timeout() {
             }
             break;
         }
+        case 'HDetect_monsters': {
+            const { see_monsters } = await import('./display.js');
+            see_monsters();
+            break;
+        }
         default:
             note_unported_timeout(`nh_timeout:${key}`);
             break;

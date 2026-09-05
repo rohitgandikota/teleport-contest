@@ -89,6 +89,10 @@ export const Unaware = () =>
 export const See_invisible = () => !!(game.u?.intrinsic?.HSee_invisible
                                       || game.u?.uprops?.SEE_INVIS);
 
+// include/youprop.h:190 Detect_monsters
+export const Detect_monsters = () => !!(game.u?.intrinsic?.HDetect_monsters
+                                        || game.u?.uprops?.DETECT_MONSTERS);
+
 // include/youprop.h:198 Invis — ((HInvis || EInvis) && !BInvis).
 export const Invis = () => !!(game.u?.intrinsic?.HInvis
                               || game.u?.uprops?.INVIS)

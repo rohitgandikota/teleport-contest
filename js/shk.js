@@ -55,7 +55,7 @@ import { move_special } from './priest.js';
 import { addinv, carrying, sobj_at, currency, money_cnt, freeinv,
          contained_gold, hidden_gold, weight } from './invent.js';
 import { m_at, t_at, wake_nearto } from './mon.js';
-import { Blind, Deaf, Invis } from './youprop.js';
+import { Blind, Deaf, Invis, Detect_monsters } from './youprop.js';
 import { ACURR, Fast, adjalign, exercise } from './attrib.js';
 import { ONAMES, OCLASSES, MATERIALS } from './objects_data.js';
 import { PMNAMES, MSOUND, MFLAGS } from './monst_data.js';
@@ -397,7 +397,7 @@ async function deserted_shop(enterstring) {
 
     const blindTelepat = !!(game.u.intrinsic?.HTelepat
                              || game.u.uprops?.TELEPAT);
-    if (Blind() && !(blindTelepat || game.u.uprops?.DETECT_MONSTERS))
+    if (Blind() && !(blindTelepat || Detect_monsters()))
         ++total;
     await pline(`This shop ${seen < total ? 'seems to be' : 'is'} ${
         !total ? 'deserted' : 'untended'}.`);

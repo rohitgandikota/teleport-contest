@@ -59,7 +59,7 @@ import { ACURR, adjalign, change_luck, encumber_msg, Fast,
          Very_fast } from './attrib.js';
 import { paranoia_bits, PARANOID_REMOVE } from './options.js';
 import { Blind, Flying, Glib, Hallucination, Invis, Levitation,
-         Protection_from_shape_changers, See_invisible } from './youprop.js';
+         Protection_from_shape_changers, See_invisible, Detect_monsters } from './youprop.js';
 import { body_part, change_sex, poly_gender } from './polyself.js';
 import { def_oc_syms } from './drawing_data.js';
 import { surface } from './dungeon.js';
@@ -1259,7 +1259,7 @@ export async function toggle_displacement(obj, oldprop, on) {
         && !game.u.blocked?.DISPLACED
         && ((!Blind() && !game.u.uswallow && !Invis())
             || game.u.unblind_telepat_range >= 0
-            || game.u.uprops?.DETECT_MONSTERS)) {
+            || Detect_monsters())) {
         if (obj)
             makeknown(obj.otyp);
         await You_feel(`that monsters${on ? '' : ' no longer'} have difficulty `

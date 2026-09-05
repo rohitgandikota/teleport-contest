@@ -16,13 +16,14 @@ import { fruitname, makeplural, xname } from './objnam.js';
 import { hliquid, trycall } from './do_name.js';
 import { newuhs } from './eat.js';
 import { game } from './gstate.js';
-import { canseemon, canspotmon, map_invisible, newsym, pline, see_monsters }
+import { canseemon, canspotmon, map_invisible, newsym, pline, see_monsters,
+         glyph_is_invisible_at, unmap_object }
     from './display.js';
 import { You, You_feel, pline_The } from './pline.js';
 import { exercise, adjattrib, A_MAX, ACURR, Fast } from './attrib.js';
 import { A_STR, A_INT, A_DEX, A_CON, A_CHA,
          BOLT_LIM, QBUFSZ, KILLED_BY_AN, KILLED_BY, POTHIT_HERO_THROW,
-         POTHIT_OTHER_THROW,
+         POTHIT_OTHER_THROW, COLNO, ROWNO,
          HEAD, EYE, SICK_ALL, TIMEOUT, A_CHAOTIC, A_LAWFUL, NON_PM,
          Upolyd, ismnum, FAST, MFAST, MSLOW, STRAT_WAITFORU } from './const.js';
 import { Your } from './pline.js';
@@ -33,7 +34,7 @@ import { cmdq_peek, drink_ok } from './cmd.js';
 import { carried, is_plural } from './obj.js';
 import { Unaware, Hallucination, Halluc_resistance, Blind,
          Deaf, Poison_resistance, Sleep_resistance,
-         Underwater, Antimagic } from './youprop.js';
+         Underwater, Antimagic, Detect_monsters } from './youprop.js';
 import { rn2, rn1, rnd, rnl, d } from './rng.js';
 import { ONAMES, MATERIALS } from './objects_data.js';
 import { PMNAMES, MFLAGS, ATTKS } from './monst_data.js';
@@ -973,8 +974,8 @@ export async function make_blinded(xtime, talk) {
     }
 }
 
-// include/hack.h itimeout_incr() — add to a timeout, clamping at TIMEOUT.
-const itimeout_incr = (old, incr) => Math.max(0, (old || 0) + incr);
+// src/potion.c:68 itimeout_incr()
+const itimeout_incr = (old, incr) => itimeout((old & TIMEOUT) + incr);
 
 // include/obj.h bcsign()
 const bcsign = (o) => (o.blessed ? 1 : 0) - (o.cursed ? 1 : 0);
@@ -1181,24 +1182,31 @@ async function peffect_gain_energy(otmp) {
     exercise(A_WIS, true);
 }
 
-// src/potion.c:912 peffect_monster_detection(). Blessed monster detection
-// persists long enough to reveal every live monster for the debug selector;
-// ordinary and cursed doses use detect.c's one-shot map browser.
+// src/potion.c:914 peffect_monster_detection()
 async function peffect_monster_detection(otmp) {
     if (otmp.blessed) {
-        const props = (game.u.uprops ||= {});
-        if (props.DETECT_MONSTERS)
+        let i;
+        if (Detect_monsters())
             game.potion_nothing++;
         game.potion_unkn++;
 
-        const current = Number(props.DETECT_MONSTERS) || 0;
-        const duration = current >= 300 ? 1 : rn2(100) + 100;
-        props.DETECT_MONSTERS = itimeout_incr(current, duration);
-
-        const monsters = (game.level?.monsters || [])
-            .filter(mon => mon.mhp > 0 && !(mon.isgd && !mon.mx));
-        if (monsters.length)
-            game.potion_unkn = 0;
+        if (((game.u.intrinsic?.HDetect_monsters | 0) & TIMEOUT) >= 300)
+            i = 1;
+        else if (otmp.oclass === OCLASSES.SPBOOK_CLASS)
+            i = rn1(40, 21);
+        else
+            i = rn2(100) + 100;
+        incr_itimeout('HDetect_monsters', i);
+        for (let x = 1; x < COLNO; x++) {
+            for (let y = 0; y < ROWNO; y++) {
+                if (glyph_is_invisible_at(x, y)) {
+                    unmap_object(x, y);
+                    newsym(x, y);
+                }
+                if (game.level.monAt.get(`${x},${y}`)) /* MON_AT */
+                    game.potion_unkn = 0;
+            }
+        }
 
         if (!game.u.uswallow && !Underwater()) {
             see_monsters();

@@ -1,0 +1,485 @@
+{
+  "name": "pauper-role-discoveries",
+  "description": "All thirteen C pauper role starts retain their role-specific object recognition, reset weapon skills, and receive two skill credits.",
+  "coverage": [
+    "mode.debug",
+    "level.ordinary",
+    "ui.menus",
+    "object.identification"
+  ],
+  "branches": [
+    "pauper-role-discoveries.archeologist",
+    "pauper-role-discoveries.barbarian",
+    "pauper-role-discoveries.cave-dweller",
+    "pauper-role-discoveries.healer",
+    "pauper-role-discoveries.knight",
+    "pauper-role-discoveries.monk",
+    "pauper-role-discoveries.cleric",
+    "pauper-role-discoveries.ranger",
+    "pauper-role-discoveries.rogue",
+    "pauper-role-discoveries.samurai",
+    "pauper-role-discoveries.tourist",
+    "pauper-role-discoveries.valkyrie",
+    "pauper-role-discoveries.wizard"
+  ],
+  "requireBranchAssertions": true,
+  "segments": [
+    {
+      "seed": 102200,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Archeologist,race:human,gender:male,align:lawful,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #name\rd\u001b#enhance\r\u001b",
+      "name": "archeologist"
+    },
+    {
+      "seed": 102200,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Barbarian,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #name\rd\u001b#enhance\r\u001b",
+      "name": "barbarian"
+    },
+    {
+      "seed": 102200,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Caveman,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #name\rd\u001b#enhance\r\u001b",
+      "name": "cave-dweller"
+    },
+    {
+      "seed": 102200,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Healer,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #name\rd\u001b#enhance\r\u001b",
+      "name": "healer"
+    },
+    {
+      "seed": 102200,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Knight,race:human,gender:male,align:lawful,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #name\rd\u001b#enhance\r\u001b",
+      "name": "knight"
+    },
+    {
+      "seed": 102200,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Monk,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #name\rd\u001b#enhance\r\u001b",
+      "name": "monk"
+    },
+    {
+      "seed": 102200,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Priest,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #name\rd\u001b#enhance\r\u001b",
+      "name": "cleric"
+    },
+    {
+      "seed": 102200,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Ranger,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #name\rd\u001b#enhance\r\u001b",
+      "name": "ranger"
+    },
+    {
+      "seed": 102200,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Rogue,race:human,gender:male,align:chaotic,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #name\rd\u001b#enhance\r\u001b",
+      "name": "rogue"
+    },
+    {
+      "seed": 102200,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Samurai,race:human,gender:male,align:lawful,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #name\rd\u001b#enhance\r\u001b",
+      "name": "samurai"
+    },
+    {
+      "seed": 102200,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Tourist,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #name\rd\u001b#enhance\r\u001b",
+      "name": "tourist"
+    },
+    {
+      "seed": 102200,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Valkyrie,race:human,gender:female,align:lawful,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #name\rd\u001b#enhance\r\u001b",
+      "name": "valkyrie"
+    },
+    {
+      "seed": 102200,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #name\rd\u001b#enhance\r\u001b",
+      "name": "wizard"
+    }
+  ],
+  "branchAssertions": [
+    {
+      "branch": "pauper-role-discoveries.archeologist",
+      "segment": 0,
+      "screenIncludes": [
+        "touchstone (gray)",
+        "Current skills:  (2 slots available)"
+      ],
+      "screenCells": [
+        {
+          "step": 8,
+          "y": 3,
+          "x": 45,
+          "equals": "t"
+        },
+        {
+          "step": 8,
+          "y": 3,
+          "x": 53,
+          "equals": "n"
+        },
+        {
+          "step": 8,
+          "y": 3,
+          "x": 61,
+          "equals": ")"
+        }
+      ]
+    },
+    {
+      "branch": "pauper-role-discoveries.barbarian",
+      "segment": 1,
+      "screenIncludes": [
+        "You haven't discovered anything yet...",
+        "Current skills:  (2 slots available)"
+      ],
+      "screenCells": [
+        {
+          "step": 8,
+          "y": 0,
+          "x": 0,
+          "equals": "Y"
+        },
+        {
+          "step": 8,
+          "y": 0,
+          "x": 19,
+          "equals": "r"
+        },
+        {
+          "step": 8,
+          "y": 0,
+          "x": 37,
+          "equals": "."
+        }
+      ]
+    },
+    {
+      "branch": "pauper-role-discoveries.cave-dweller",
+      "segment": 2,
+      "screenIncludes": [
+        "flint stone (gray)",
+        "Current skills:  (2 slots available)"
+      ],
+      "screenCells": [
+        {
+          "step": 8,
+          "y": 3,
+          "x": 45,
+          "equals": "f"
+        },
+        {
+          "step": 8,
+          "y": 3,
+          "x": 54,
+          "equals": "n"
+        },
+        {
+          "step": 8,
+          "y": 3,
+          "x": 62,
+          "equals": ")"
+        }
+      ]
+    },
+    {
+      "branch": "pauper-role-discoveries.healer",
+      "segment": 3,
+      "screenIncludes": [
+        "spellbook of healing (indigo)",
+        "Current skills:  (2 slots available)"
+      ],
+      "screenCells": [
+        {
+          "step": 8,
+          "y": 3,
+          "x": 45,
+          "equals": "s"
+        },
+        {
+          "step": 8,
+          "y": 3,
+          "x": 59,
+          "equals": "e"
+        },
+        {
+          "step": 8,
+          "y": 3,
+          "x": 73,
+          "equals": ")"
+        }
+      ]
+    },
+    {
+      "branch": "pauper-role-discoveries.knight",
+      "segment": 4,
+      "screenIncludes": [
+        "spellbook of protection (copper)",
+        "Current skills:  (2 slots available)"
+      ],
+      "screenCells": [
+        {
+          "step": 8,
+          "y": 3,
+          "x": 45,
+          "equals": "s"
+        },
+        {
+          "step": 8,
+          "y": 3,
+          "x": 61,
+          "equals": "t"
+        },
+        {
+          "step": 8,
+          "y": 3,
+          "x": 76,
+          "equals": ")"
+        }
+      ]
+    },
+    {
+      "branch": "pauper-role-discoveries.monk",
+      "segment": 5,
+      "screenIncludes": [
+        "spellbook of protection (copper)",
+        "Current skills:  (2 slots available)"
+      ],
+      "screenCells": [
+        {
+          "step": 8,
+          "y": 3,
+          "x": 45,
+          "equals": "s"
+        },
+        {
+          "step": 8,
+          "y": 3,
+          "x": 61,
+          "equals": "t"
+        },
+        {
+          "step": 8,
+          "y": 3,
+          "x": 76,
+          "equals": ")"
+        }
+      ]
+    },
+    {
+      "branch": "pauper-role-discoveries.cleric",
+      "segment": 6,
+      "screenIncludes": [
+        "potion of water (clear)",
+        "Current skills:  (2 slots available)"
+      ],
+      "screenCells": [
+        {
+          "step": 8,
+          "y": 5,
+          "x": 45,
+          "equals": "p"
+        },
+        {
+          "step": 8,
+          "y": 5,
+          "x": 56,
+          "equals": "a"
+        },
+        {
+          "step": 8,
+          "y": 5,
+          "x": 67,
+          "equals": ")"
+        }
+      ]
+    },
+    {
+      "branch": "pauper-role-discoveries.ranger",
+      "segment": 7,
+      "screenIncludes": [
+        "You haven't discovered anything yet...",
+        "Current skills:  (2 slots available)"
+      ],
+      "screenCells": [
+        {
+          "step": 8,
+          "y": 0,
+          "x": 0,
+          "equals": "Y"
+        },
+        {
+          "step": 8,
+          "y": 0,
+          "x": 19,
+          "equals": "r"
+        },
+        {
+          "step": 8,
+          "y": 0,
+          "x": 37,
+          "equals": "."
+        }
+      ]
+    },
+    {
+      "branch": "pauper-role-discoveries.rogue",
+      "segment": 8,
+      "screenIncludes": [
+        "sack (bag)",
+        "Current skills:  (2 slots available)"
+      ],
+      "screenCells": [
+        {
+          "step": 8,
+          "y": 3,
+          "x": 45,
+          "equals": "s"
+        },
+        {
+          "step": 8,
+          "y": 3,
+          "x": 50,
+          "equals": "("
+        },
+        {
+          "step": 8,
+          "y": 3,
+          "x": 54,
+          "equals": ")"
+        }
+      ]
+    },
+    {
+      "branch": "pauper-role-discoveries.samurai",
+      "segment": 9,
+      "screenIncludes": [
+        "None of your discoveries can be assigned names...",
+        "Current skills:  (2 slots available)"
+      ],
+      "screenCells": [
+        {
+          "step": 8,
+          "y": 0,
+          "x": 0,
+          "equals": "N"
+        },
+        {
+          "step": 8,
+          "y": 0,
+          "x": 24,
+          "equals": " "
+        },
+        {
+          "step": 8,
+          "y": 0,
+          "x": 48,
+          "equals": "."
+        }
+      ]
+    },
+    {
+      "branch": "pauper-role-discoveries.tourist",
+      "segment": 10,
+      "screenIncludes": [
+        "sack (bag)",
+        "Current skills:  (2 slots available)"
+      ],
+      "screenCells": [
+        {
+          "step": 8,
+          "y": 3,
+          "x": 45,
+          "equals": "s"
+        },
+        {
+          "step": 8,
+          "y": 3,
+          "x": 50,
+          "equals": "("
+        },
+        {
+          "step": 8,
+          "y": 3,
+          "x": 54,
+          "equals": ")"
+        }
+      ]
+    },
+    {
+      "branch": "pauper-role-discoveries.valkyrie",
+      "segment": 11,
+      "screenIncludes": [
+        "You haven't discovered anything yet...",
+        "Current skills:  (2 slots available)"
+      ],
+      "screenCells": [
+        {
+          "step": 8,
+          "y": 0,
+          "x": 0,
+          "equals": "Y"
+        },
+        {
+          "step": 8,
+          "y": 0,
+          "x": 19,
+          "equals": "r"
+        },
+        {
+          "step": 8,
+          "y": 0,
+          "x": 37,
+          "equals": "."
+        }
+      ]
+    },
+    {
+      "branch": "pauper-role-discoveries.wizard",
+      "segment": 12,
+      "screenIncludes": [
+        "spellbook of force bolt (thin)",
+        "Current skills:  (2 slots available)"
+      ],
+      "screenCells": [
+        {
+          "step": 8,
+          "y": 3,
+          "x": 45,
+          "equals": "s"
+        },
+        {
+          "step": 8,
+          "y": 3,
+          "x": 60,
+          "equals": "r"
+        },
+        {
+          "step": 8,
+          "y": 3,
+          "x": 74,
+          "equals": ")"
+        }
+      ]
+    }
+  ]
+}

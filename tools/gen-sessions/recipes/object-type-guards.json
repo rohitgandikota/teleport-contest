@@ -1,0 +1,404 @@
+{
+  "name": "object-type-guards",
+  "description": "C nearby floor choices, cursor cancellation, noncallable types, unknown blind choices, previously seen types while blind, hallucinated floor naming, and a mimic temporary object.",
+  "coverage": [
+    "mode.debug",
+    "level.ordinary",
+    "object.potions",
+    "ui.menus",
+    "ui.getlin",
+    "ui.getpos",
+    "ui.cancel-invalid",
+    "monster.special-effects",
+    "ui.hallucination",
+    "ui.map-memory-vision",
+    "survival.timed-status"
+  ],
+  "branches": [
+    "object-type-guards.floor-nearby",
+    "object-type-guards.floor-cancel",
+    "object-type-guards.floor-noncallable-one",
+    "object-type-guards.floor-noncallable-many",
+    "object-type-guards.floor-unseen",
+    "object-type-guards.inventory-unseen",
+    "object-type-guards.inventory-blind-known",
+    "object-type-guards.floor-hallucination",
+    "object-type-guards.floor-wet-towel-noncallable",
+    "object-type-guards.floor-figurine-noncallable",
+    "object-type-guards.floor-mimic-tripe"
+  ],
+  "requireBranchAssertions": true,
+  "segments": [
+    {
+      "seed": 102200,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00173 uncursed potions of gain energy\rdah#name\rfl.Spark\r",
+      "name": "floor-nearby"
+    },
+    {
+      "seed": 102200,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00173 uncursed potions of gain energy\r#name\rf\u001b",
+      "name": "floor-cancel"
+    },
+    {
+      "seed": 102200,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed apple\rda#name\rf.",
+      "name": "floor-noncallable-one"
+    },
+    {
+      "seed": 102200,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00172 uncursed apples\rda#name\rf.",
+      "name": "floor-noncallable-many"
+    },
+    {
+      "seed": 102200,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed blindfold\rPa\u00173 uncursed potions of gain energy\rdb#name\rf.",
+      "name": "floor-unseen"
+    },
+    {
+      "seed": 102200,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed blindfold\rPa\u00173 uncursed potions of gain energy\r#name\rob",
+      "name": "inventory-unseen"
+    },
+    {
+      "seed": 102200,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00173 uncursed potions of gain energy\r\u0017uncursed blindfold\rPb#name\roaSpark\r",
+      "name": "inventory-blind-known"
+    },
+    {
+      "seed": 102200,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00173 uncursed potions of gain energy\rda#wizintrinsic\rh\r #name\rf.",
+      "name": "floor-hallucination"
+    },
+    {
+      "seed": 102200,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017wet towel\rda#name\rf.",
+      "name": "floor-wet-towel-noncallable"
+    },
+    {
+      "seed": 102200,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed figurine of a newt\rda#name\rf.",
+      "name": "floor-figurine-noncallable"
+    },
+    {
+      "seed": 7704,
+      "datetime": "20260601010404",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed ring of protection from shape changers\r\u0007hostile giant mimic\rPorR#name\rfk.\u001b",
+      "name": "floor-mimic-tripe"
+    }
+  ],
+  "branchAssertions": [
+    {
+      "branch": "object-type-guards.floor-nearby",
+      "segment": 0,
+      "screenIncludes": [
+        "Call a sky blue potion:"
+      ],
+      "screenCells": [
+        {
+          "step": 53,
+          "y": 0,
+          "x": 0,
+          "equals": "C"
+        },
+        {
+          "step": 53,
+          "y": 0,
+          "x": 11,
+          "equals": "b"
+        },
+        {
+          "step": 53,
+          "y": 0,
+          "x": 22,
+          "equals": ":"
+        }
+      ]
+    },
+    {
+      "branch": "object-type-guards.floor-cancel",
+      "segment": 1,
+      "screenIncludes": [],
+      "screenExcludes": [
+        "Call a sky blue potion:"
+      ],
+      "screenCells": [
+        {
+          "step": 44,
+          "x": 0,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 44,
+          "x": 0,
+          "y": 1,
+          "equals": " "
+        }
+      ]
+    },
+    {
+      "branch": "object-type-guards.floor-noncallable-one",
+      "segment": 2,
+      "screenIncludes": [
+        "That apple can't be assigned a type name."
+      ],
+      "screenCells": [
+        {
+          "step": 27,
+          "y": 0,
+          "x": 0,
+          "equals": "T"
+        },
+        {
+          "step": 27,
+          "y": 0,
+          "x": 20,
+          "equals": "a"
+        },
+        {
+          "step": 27,
+          "y": 0,
+          "x": 40,
+          "equals": "."
+        }
+      ]
+    },
+    {
+      "branch": "object-type-guards.floor-noncallable-many",
+      "segment": 3,
+      "screenIncludes": [
+        "Those apples can't be assigned a type name."
+      ],
+      "screenCells": [
+        {
+          "step": 30,
+          "y": 0,
+          "x": 0,
+          "equals": "T"
+        },
+        {
+          "step": 30,
+          "y": 0,
+          "x": 21,
+          "equals": " "
+        },
+        {
+          "step": 30,
+          "y": 0,
+          "x": 42,
+          "equals": "."
+        }
+      ]
+    },
+    {
+      "branch": "object-type-guards.floor-unseen",
+      "segment": 4,
+      "screenIncludes": [
+        "You don't know those potions well enough to name them."
+      ],
+      "screenCells": [
+        {
+          "step": 68,
+          "y": 0,
+          "x": 0,
+          "equals": "Y"
+        },
+        {
+          "step": 68,
+          "y": 0,
+          "x": 27,
+          "equals": "s"
+        },
+        {
+          "step": 68,
+          "y": 0,
+          "x": 53,
+          "equals": "."
+        }
+      ]
+    },
+    {
+      "branch": "object-type-guards.inventory-unseen",
+      "segment": 5,
+      "screenIncludes": [
+        "You would never recognize another one."
+      ],
+      "screenCells": [
+        {
+          "step": 66,
+          "y": 0,
+          "x": 0,
+          "equals": "Y"
+        },
+        {
+          "step": 66,
+          "y": 0,
+          "x": 19,
+          "equals": "o"
+        },
+        {
+          "step": 66,
+          "y": 0,
+          "x": 37,
+          "equals": "."
+        }
+      ]
+    },
+    {
+      "branch": "object-type-guards.inventory-blind-known",
+      "segment": 6,
+      "screenIncludes": [
+        "Call a sky blue potion:"
+      ],
+      "screenCells": [
+        {
+          "step": 71,
+          "y": 0,
+          "x": 0,
+          "equals": "C"
+        },
+        {
+          "step": 71,
+          "y": 0,
+          "x": 11,
+          "equals": "b"
+        },
+        {
+          "step": 71,
+          "y": 0,
+          "x": 22,
+          "equals": ":"
+        }
+      ]
+    },
+    {
+      "branch": "object-type-guards.floor-hallucination",
+      "segment": 7,
+      "screenIncludes": [
+        "The sky blue potions decide to call you \"Necromancer.\""
+      ],
+      "screenCells": [
+        {
+          "step": 63,
+          "y": 0,
+          "x": 0,
+          "equals": "T"
+        },
+        {
+          "step": 63,
+          "y": 0,
+          "x": 27,
+          "equals": " "
+        },
+        {
+          "step": 63,
+          "y": 0,
+          "x": 53,
+          "equals": "\""
+        }
+      ]
+    },
+    {
+      "branch": "object-type-guards.floor-wet-towel-noncallable",
+      "segment": 8,
+      "screenIncludes": [
+        "That towel can't be assigned a type name."
+      ],
+      "screenCells": [
+        {
+          "step": 22,
+          "y": 0,
+          "x": 0,
+          "equals": "T"
+        },
+        {
+          "step": 22,
+          "y": 0,
+          "x": 20,
+          "equals": "a"
+        },
+        {
+          "step": 22,
+          "y": 0,
+          "x": 40,
+          "equals": "."
+        }
+      ]
+    },
+    {
+      "branch": "object-type-guards.floor-figurine-noncallable",
+      "segment": 9,
+      "screenIncludes": [
+        "That figurine can't be assigned a type name."
+      ],
+      "screenCells": [
+        {
+          "step": 40,
+          "y": 0,
+          "x": 0,
+          "equals": "T"
+        },
+        {
+          "step": 40,
+          "y": 0,
+          "x": 22,
+          "equals": " "
+        },
+        {
+          "step": 40,
+          "y": 0,
+          "x": 43,
+          "equals": "."
+        }
+      ]
+    },
+    {
+      "branch": "object-type-guards.floor-mimic-tripe",
+      "segment": 10,
+      "screenIncludes": [
+        "That tripe ration can't be assigned a type name."
+      ],
+      "screenCells": [
+        {
+          "step": 84,
+          "y": 0,
+          "x": 0,
+          "equals": "T"
+        },
+        {
+          "step": 84,
+          "y": 0,
+          "x": 24,
+          "equals": "b"
+        },
+        {
+          "step": 84,
+          "y": 0,
+          "x": 47,
+          "equals": "."
+        }
+      ]
+    }
+  ]
+}

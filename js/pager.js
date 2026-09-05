@@ -9,7 +9,7 @@
 // Functions appear in src/pager.c order. dohelp()/doextversion() at the
 // bottom predate this port of the rest of the file.
 
-import { Mgender } from './const.js';
+import { Mgender, NON_PM } from './const.js';
 import { M_AP_MONSTER } from './const.js';
 import { MONSYMS } from './monst_data.js';
 import { visible_region_at } from './region.js';
@@ -27,6 +27,7 @@ import { Levitation } from './youprop.js';
 import { cansee } from './vision.js';
 import { distu } from './hacklib.js';
 import { spot_time_left } from './timeout.js';
+import { obj_stop_timers } from './timeout.js';
 import { db_under_typ } from './dbridge.js';
 import { doextlist } from './cmd.js';
 import { game } from './gstate.js';
@@ -146,12 +147,18 @@ function monhealthdescr(mon) {
 // src/pager.c:282 object_from_map() — recover the object represented by a
 // remembered glyph, manufacturing the same temporary object as C when the
 // glyph belongs to a mimic, stale memory, or detection display.
-function object_from_map(glyph, x, y) {
+export function object_from_map(glyph, x, y) {
     const glyphotyp = glyph?.kind === 'obj'
         ? (glyph.otyp ?? ONAMES.STRANGE_OBJECT)
+        : glyph?.kind === 'cmap'
+        ? ((game.level?.objects || []).some(o => o.ox === x && o.oy === y
+            && o.otyp === ONAMES.CHEST) ? ONAMES.CHEST : ONAMES.LARGE_BOX)
         : ONAMES.STRANGE_OBJECT;
     let otmp = (game.level?.objects || [])
         .find(o => o.ox === x && o.oy === y && o.otyp === glyphotyp) || null;
+    if (!otmp)
+        otmp = (game.level?.buriedobjs || [])
+            .find(o => o.ox === x && o.oy === y && o.otyp === glyphotyp) || null;
     let mtmp = m_at(x, y);
     let mimicObj = false;
 
@@ -168,6 +175,8 @@ function object_from_map(glyph, x, y) {
         otmp = OBJ_NAME(objclass)
             ? mksobj(glyphotyp, false, false)
             : mkobj(objclass?.oc_class ?? OCLASSES.ILLOBJ_CLASS, false);
+        if (otmp.timed)
+            obj_stop_timers(otmp);
         fake = true;
 
         if (otmp.oclass === OCLASSES.COIN_CLASS)
@@ -175,11 +184,12 @@ function object_from_map(glyph, x, y) {
         else if (otmp.otyp === ONAMES.SLIME_MOLD)
             otmp.spe = game.context?.current_fruit ?? 1;
 
-        if (mtmp && (mtmp.mcorpsenm ?? -1) >= 0) {
+        const corpsenm = mtmp?.mcorpsenm ?? mtmp?.mextra?.mcorpsenm ?? NON_PM;
+        if (corpsenm !== NON_PM) {
             if (otmp.otyp === ONAMES.SLIME_MOLD)
-                otmp.spe = mtmp.mcorpsenm;
+                otmp.spe = corpsenm;
             else
-                otmp.corpsenm = mtmp.mcorpsenm;
+                otmp.corpsenm = corpsenm;
         } else if (otmp.otyp === ONAMES.CORPSE && glyph?.body) {
             otmp.corpsenm = glyph.corpsenm;
         } else if (otmp.otyp === ONAMES.STATUE && glyph?.statue) {
@@ -187,7 +197,7 @@ function object_from_map(glyph, x, y) {
         }
 
         if (otmp.otyp === ONAMES.LEASH)
-            otmp.corpsenm = 0;
+            otmp.leashmon = 0;
         otmp.where = OBJ_FLOOR;
         otmp.ox = x;
         otmp.oy = y;

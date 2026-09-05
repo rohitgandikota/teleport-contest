@@ -735,26 +735,25 @@ knowing exactly.
   `@ pleased(pray.c:1356)`.
 - **Seeding** is 8 little-endian bytes of the seed (`src/rnd.c:43-58`).
 
-## The display RNG context is not scored
+## Display RNG affects screens, but has no direct RNG score
 
-`rn2_on_display_rng` (`src/rnd.c:70`) draws from `rnglist[DISP]`, a second
-ISAAC64 context. Recorder patch 005 logs those calls with a `~d` prefix
-(`~drn2(N) = M`), and only when a separate env var is set.
+`rn2_on_display_rng` draws from a second ISAAC64 context. Ordinary fixtures
+omit these calls and the scorer filters out their `~d` prefix. Their order
+still determines hallucinated glyphs and names on scored screens.
 
-**There are zero `~d` entries in the public corpus**, and the scorer's
-`isRngCall` predicate (`/^(?:rn2|rnd|rn1|rnl|rne|rnz|d)\(/`) would filter them
-out anyway. So display draws never affect the RNG score.
+The pinned C initializes both contexts in options.c:7161-7162 through
+`init_random`. The recorder's `sys_random_seed` hook in unixmain.c:816 returns
+`NETHACK_SEED`, making both reproducible. Earlier notes here incorrectly claimed
+the display context was never seeded. The current JS seeds it on first use.
 
-They do affect *screens*, because hallucination picks glyphs through this stream
-— `seed0383-wizard-hallucinate` and `seed0399-wizard-hallu-actions` are 751 steps
-between them. Two things to know when M10.6 gets there:
-
-- `rnglist[DISP]` has `init: FALSE` and is **never seeded**. It is a
-  zero-initialised `isaac64_ctx` that is drawn from directly, so the display
-  sequence is the same in every game regardless of seed.
-- `js/isaac64.js` (frozen) exports no way to construct a zero-state context —
-  `isaac64_init` takes seed bytes. Building the display context will need a
-  zero-state equivalent assembled by hand.
+Set `NETHACK_RNGLOG_DISP=1` when making a separate diagnostic C recording to
+include `~drn2` entries. Keep that diagnostic separate from permanent oracles.
+The object-type floor-hallucination probe revealed a missing display draw even
+though its entire core trace matched: `docrt_flags` calls `see_monsters`, which
+calls `newsym` on the unmounted hero and maps the object underneath it. Drawing
+only the hero glyph skipped that map call. An isolated instrumented C build
+with `map_object` stack traces confirmed the call; the source fix restored
+screen parity. See `.cache/naming/c-map-trace.log` and the type-naming audit.
 
 ## o_init.c is the first RNG consumer in every session
 

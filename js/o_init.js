@@ -13,6 +13,12 @@ import { NODIR, IMMEDIATE } from './const.js';
 import { game } from './gstate.js';
 import { PMNAMES } from './monst_data.js';
 import { exercise } from './attrib.js';
+import { gem_learned } from './shk.js';
+import { impossible } from './pline.js';
+import { docall, objtyp_is_callable } from './do_name.js';
+import { BUFSZ } from './const.js';
+import { update_inventory } from './invent.js';
+import { Hallucination } from './youprop.js';
 import { A_WIS } from './const.js';
 import { rn2 } from './rng.js';
 import { obj_typename, OBJ_DESCR as objDescrOf, OBJ_NAME,
@@ -342,12 +348,8 @@ const disco_orders_descr = [
 // starting kit ends up '  listed' rather than '* listed' in discoveries.
 export function observe_object(obj) {
     const oindx = obj.otyp;
-    /* skip for generic objects and for STRANGE_OBJECT; FIRST_OBJECT is the
-       first real otyp after the per-class generic dummies.  Hallucination
-       test inlined (uprops.HALLUC && !HALLUC_RES, youprop.h:120) to keep
-       o_init free of higher-level imports. */
-    if (oindx >= 18 /* FIRST_OBJECT */
-        && !(game.u?.uprops?.HALLUC && !game.u?.uprops?.HALLUC_RES)) {
+    /* Skip generic objects and STRANGE_OBJECT. */
+    if (oindx >= ONAMES.FIRST_OBJECT && !Hallucination()) {
         obj.dknown = 1;
         discover_object(oindx, false, true, false);
     }
@@ -359,7 +361,7 @@ export function observe_object(obj) {
 export function discover_object(oindx, mark_as_known, mark_as_encountered,
                                 credit_hero) {
     const objects = game.objects;
-    if (oindx < 1)                    /* FIRST_OBJECT */
+    if (oindx < ONAMES.FIRST_OBJECT)
         return;
 
     if ((!objects[oindx].oc_name_known && mark_as_known)
@@ -387,7 +389,34 @@ export function discover_object(oindx, mark_as_known, mark_as_encountered,
                one rn2(19); re-knowing draws nothing */
             if (credit_hero)
                 exercise(A_WIS, true);
+            if (game.program_state?.in_moveloop && !game.program_state_gameover) {
+                if (objects[oindx].oc_class === GEM_CLASS)
+                    gem_learned(oindx);
+                update_inventory();
+            }
         }
+    }
+}
+
+// src/o_init.c:498 undiscover_object(); preserve identified or encountered types.
+export async function undiscover_object(oindx) {
+    const objects = game.objects;
+    if (!objects[oindx].oc_name_known && !objects[oindx].oc_encountered) {
+        const acls = objects[oindx].oc_class;
+        let found = false, dindx = game.bases[acls];
+        for (; dindx < NUM_OBJECTS && game.disco[dindx]
+               && objects[dindx].oc_class === acls; dindx++) {
+            if (found)
+                game.disco[dindx - 1] = game.disco[dindx];
+            else if (game.disco[dindx] === oindx)
+                found = true;
+        }
+        if (found)
+            game.disco[dindx - 1] = 0;
+        else
+            await impossible('named object not in disco');
+        if (acls === GEM_CLASS)
+            gem_learned(oindx);
     }
 }
 
@@ -430,6 +459,25 @@ function disco_typename(otyp) {
         }
     }
     return result;
+}
+
+// src/o_init.c:694 disco_append_typename(); preserve a trailing appearance
+// when truncating a long type name, and append the price quote only if it fits.
+function disco_append_typename(buf, dis) {
+    const name = disco_typename(dis);
+    const paren = name.lastIndexOf('(');
+    if (buf.length + name.length < BUFSZ) {
+        buf += name;
+    } else if (paren > 0 && name[paren - 1] === ' ' && name.includes(')', paren)) {
+        const suffix = name.slice(paren - 1);
+        buf += name.slice(0, BUFSZ - 1 - buf.length - suffix.length) + suffix;
+    } else {
+        buf += name.slice(0, BUFSZ - 1 - buf.length);
+    }
+    const quote = append_price_quote(dis);
+    if (quote.length < BUFSZ - buf.length - 1)
+        buf += quote;
+    return buf;
 }
 
 // src/shk.c:454 append_price_quote(), used unconditionally by discoveries.
@@ -562,6 +610,57 @@ export async function doclassdisco() {
         await xwaitforspace(' \r\n\x1b');
     tty_destroy_nhwindow(win);
     return 0;
+}
+
+// src/o_init.c:1131 rename_disco(); name a discovered type without an instance.
+export async function rename_disco() {
+    const {
+        tty_create_nhwindow, tty_start_menu, tty_add_menu, tty_end_menu,
+        tty_select_menu, tty_destroy_nhwindow, NHW_MENU,
+    } = await import('./tty/wintty.js');
+    const { MENU_BEHAVE_STANDARD, MENU_ITEMFLAGS_NONE, PICK_ONE } =
+        await import('./const.js');
+    const { NO_COLOR } = await import('./terminal.js');
+    const { add_menu_heading } = await import('./options.js');
+    const { You } = await import('./pline.js');
+    const { pline } = await import('./display.js');
+    const win = tty_create_nhwindow(NHW_MENU);
+    tty_start_menu(win, MENU_BEHAVE_STANDARD);
+    let ct = 0, mn = 0;
+    for (const oclass of inv_order()) {
+        let prev_class = oclass + 1;
+        for (let i = game.bases[oclass];
+             i < NUM_OBJECTS && game.objects[i].oc_class === oclass; i++) {
+            const dis = game.disco?.[i];
+            if (!dis || !interesting_to_discover(dis))
+                continue;
+            ct++;
+            if (!objtyp_is_callable(dis))
+                continue;
+            mn++;
+            if (oclass !== prev_class) {
+                add_menu_heading(win, let_to_name(oclass));
+                prev_class = oclass;
+            }
+            tty_add_menu(win, null, dis, 0, 0, ATR_NONE, NO_COLOR,
+                         disco_append_typename('', dis), MENU_ITEMFLAGS_NONE);
+        }
+    }
+    if (!ct) {
+        await You("haven't discovered anything yet...");
+    } else if (!mn) {
+        await pline('None of your discoveries can be assigned names...');
+    } else {
+        tty_end_menu(win, 'Pick an object type to name');
+        const picks = await tty_select_menu(win, PICK_ONE);
+        const dis = picks[0] || ONAMES.STRANGE_OBJECT;
+        if (dis !== ONAMES.STRANGE_OBJECT) {
+            const oc = game.objects[dis];
+            await docall({ otyp: dis, oclass: oc.oc_class, quan: 1,
+                           known: !oc.oc_uses_known, dknown: 1 });
+        }
+    }
+    tty_destroy_nhwindow(win);
 }
 
 // src/decl.c flags.inv_order — the default packorder.

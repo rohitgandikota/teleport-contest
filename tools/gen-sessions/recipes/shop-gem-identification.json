@@ -1,0 +1,91 @@
+{
+  "name": "shop-gem-identification",
+  "description": "Identify two unpaid diamonds and two unpaid pieces of white glass. C keeps the diamond bill at 10666 and reprices the glass bill from 2134 to 14.",
+  "coverage": [
+    "mode.debug",
+    "level.ordinary",
+    "object.gems-stones",
+    "object.scrolls",
+    "social.shops-billing",
+    "object.identification"
+  ],
+  "branches": [
+    "shop-gem-identification.diamond-control",
+    "shop-gem-identification.white-glass-reprice"
+  ],
+  "requireBranchAssertions": true,
+  "segments": [
+    {
+      "seed": 6903,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00162\r\u0006\u0014  llllllllllllllllllll.  \u00172 uncursed diamonds\rdo y,b\r \u0017uncursed scroll of identify\rrpo\ri\u001b",
+      "name": "diamond-control"
+    },
+    {
+      "seed": 6903,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00162\r\u0006\u0014  llllllllllllllllllll.  \u00172 uncursed worthless pieces of white glass\rdo y,b\r \u0017uncursed scroll of identify\rrpo\ri\u001b",
+      "name": "white-glass-reprice"
+    }
+  ],
+  "branchAssertions": [
+    {
+      "branch": "shop-gem-identification.diamond-control",
+      "segment": 0,
+      "screenIncludes": [
+        "o - 2 uncursed diamonds (unpaid, 10666 zorkmids).",
+        "2 white gems (unpaid, 10666 zorkmids)"
+      ],
+      "screenCells": [
+        {
+          "step": 93,
+          "y": 0,
+          "x": 0,
+          "equals": "o"
+        },
+        {
+          "step": 93,
+          "y": 0,
+          "x": 24,
+          "equals": "("
+        },
+        {
+          "step": 93,
+          "y": 0,
+          "x": 48,
+          "equals": "."
+        }
+      ]
+    },
+    {
+      "branch": "shop-gem-identification.white-glass-reprice",
+      "segment": 1,
+      "screenIncludes": [
+        "o - 2 uncursed worthless pieces of white glass (unpaid, 14 zorkmids).",
+        "2 white gems (unpaid, 2134 zorkmids)"
+      ],
+      "screenCells": [
+        {
+          "step": 116,
+          "y": 0,
+          "x": 0,
+          "equals": "o"
+        },
+        {
+          "step": 116,
+          "y": 0,
+          "x": 34,
+          "equals": " "
+        },
+        {
+          "step": 116,
+          "y": 0,
+          "x": 68,
+          "equals": "."
+        }
+      ]
+    }
+  ]
+}

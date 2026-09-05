@@ -6,7 +6,7 @@
 // own combat are not ported. js/shknam.js holds the naming and stocking half
 // (shtypes, nameshk, stock_room), which is src/shknam.c.
 
-import { obfree } from './invent.js';
+import { obfree, o_on } from './invent.js';
 import { obj_extract_self } from './invent.js';
 import { mpickobj } from './steal.js';
 import { flush_screen } from './display.js';
@@ -186,6 +186,43 @@ export function onbill(obj, shkp, silent) {
     }
     /* if (obj->unpaid && !silent) impossible("onbill: unpaid obj %s?", ...) */
     return null;
+}
+
+// src/shk.c:2777 find_oid(); bill-only objects deliberately are not searched.
+export function find_oid(id) {
+    for (const chain of [game.invent, game.level?.objects,
+                         game.level?.buriedobjs, game.migrating_objs]) {
+        const obj = o_on(id, chain);
+        if (obj)
+            return obj;
+    }
+    for (const chain of [game.level?.monsters, game.migrating_mons, game.mydogs])
+        for (const mon of chain || []) {
+            const obj = o_on(id, mon.minvent);
+            if (obj)
+                return obj;
+        }
+    return null;
+}
+
+// src/shk.c:3198 gem_learned(); reprice matching gem stacks on active bills.
+export function gem_learned(oindx) {
+    const monsters = game.level?.monsters || [];
+    for (let shkp = next_shkp(monsters[0] ?? null, true); shkp;
+         shkp = next_shkp(monsters[monsters.indexOf(shkp) + 1] ?? null, true)) {
+        const eshk = shkp.eshk || ESHK(shkp);
+        let index = 0;
+        for (let ct = eshk.billct; --ct >= 0;) {
+            const bp = eshk.bill_p[index];
+            const obj = find_oid(bp.bo_id);
+            if (!obj)
+                continue; // C also leaves bp unchanged for a missing object.
+            if (oindx !== ONAMES.STRANGE_OBJECT ? obj.otyp === oindx
+                : obj.oclass === OCLASSES.GEM_CLASS)
+                bp.price = get_cost(obj, shkp);
+            index++;
+        }
+    }
 }
 
 // src/shk.c:3237 alter_cost() — an unpaid object was changed (enchanted,

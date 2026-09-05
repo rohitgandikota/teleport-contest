@@ -1,0 +1,440 @@
+{
+  "name": "object-type-naming",
+  "description": "C type naming, whitespace normalization, clear and cancellation, long names, diluted named stacks, floor selection and discoveries renaming.",
+  "coverage": [
+    "mode.debug",
+    "level.ordinary",
+    "object.potions",
+    "ui.menus",
+    "ui.getlin",
+    "ui.getpos",
+    "ui.cancel-invalid"
+  ],
+  "branches": [
+    "object-type-naming.type-new",
+    "object-type-naming.type-rename",
+    "object-type-naming.type-clear",
+    "object-type-naming.type-empty-cancel",
+    "object-type-naming.type-escape-cancel",
+    "object-type-naming.type-long",
+    "object-type-naming.type-named-diluted",
+    "object-type-naming.floor-here",
+    "object-type-naming.floor-empty",
+    "object-type-naming.discoveries-rename-potion",
+    "object-type-naming.discoveries-starting-known",
+    "object-type-naming.discoveries-truly-empty"
+  ],
+  "requireBranchAssertions": true,
+  "segments": [
+    {
+      "seed": 102200,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00173 uncursed potions of gain energy\r#name\roaSpark\ri\u001b",
+      "name": "type-new"
+    },
+    {
+      "seed": 102200,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00173 uncursed potions of gain energy\r#name\roaSpark\r#name\roa  Bright   Spark  \ri\u001b",
+      "name": "type-rename"
+    },
+    {
+      "seed": 102200,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00173 uncursed potions of gain energy\r#name\roaSpark\r#name\roa   \ri\u001b",
+      "name": "type-clear"
+    },
+    {
+      "seed": 102200,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00173 uncursed potions of gain energy\r#name\roaSpark\r#name\roa\ri\u001b",
+      "name": "type-empty-cancel"
+    },
+    {
+      "seed": 102200,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00173 uncursed potions of gain energy\r#name\roaSpark\r#name\roa\u001bi\u001b",
+      "name": "type-escape-cancel"
+    },
+    {
+      "seed": 102200,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00173 uncursed potions of gain energy\r#name\roaQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ\ri\u001b",
+      "name": "type-long"
+    },
+    {
+      "seed": 102200,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00172 diluted potions of gain energy named Pebble\r#name\roaSpark\ri\u001b",
+      "name": "type-named-diluted"
+    },
+    {
+      "seed": 102200,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00173 uncursed potions of gain energy\rda#name\rf.Spark\r,i\u001b",
+      "name": "floor-here"
+    },
+    {
+      "seed": 102200,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00173 uncursed potions of gain energy\r#name\rf.",
+      "name": "floor-empty"
+    },
+    {
+      "seed": 102200,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00173 uncursed potions of gain energy\r#name\roaSpark\r#name\rdbNova\ri\u001b",
+      "name": "discoveries-rename-potion"
+    },
+    {
+      "seed": 102200,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #name\rdaNova\r#name\rd\u001b",
+      "name": "discoveries-starting-known"
+    },
+    {
+      "seed": 102200,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Barbarian,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #name\rd",
+      "name": "discoveries-truly-empty"
+    }
+  ],
+  "branchAssertions": [
+    {
+      "branch": "object-type-naming.type-new",
+      "segment": 0,
+      "screenIncludes": [
+        "3 potions called Spark"
+      ],
+      "screenCells": [
+        {
+          "step": 51,
+          "y": 1,
+          "x": 45,
+          "equals": "3"
+        },
+        {
+          "step": 51,
+          "y": 1,
+          "x": 56,
+          "equals": "a"
+        },
+        {
+          "step": 51,
+          "y": 1,
+          "x": 66,
+          "equals": "k"
+        }
+      ]
+    },
+    {
+      "branch": "object-type-naming.type-rename",
+      "segment": 1,
+      "screenIncludes": [
+        "3 potions called Bright Spark"
+      ],
+      "screenCells": [
+        {
+          "step": 78,
+          "y": 1,
+          "x": 45,
+          "equals": "3"
+        },
+        {
+          "step": 78,
+          "y": 1,
+          "x": 59,
+          "equals": "e"
+        },
+        {
+          "step": 78,
+          "y": 1,
+          "x": 73,
+          "equals": "k"
+        }
+      ]
+    },
+    {
+      "branch": "object-type-naming.type-clear",
+      "segment": 2,
+      "screenIncludes": [
+        "3 sky blue potions"
+      ],
+      "screenCells": [
+        {
+          "step": 63,
+          "y": 1,
+          "x": 45,
+          "equals": "3"
+        },
+        {
+          "step": 63,
+          "y": 1,
+          "x": 54,
+          "equals": "e"
+        },
+        {
+          "step": 63,
+          "y": 1,
+          "x": 62,
+          "equals": "s"
+        }
+      ]
+    },
+    {
+      "branch": "object-type-naming.type-empty-cancel",
+      "segment": 3,
+      "screenIncludes": [
+        "3 potions called Spark"
+      ],
+      "screenCells": [
+        {
+          "step": 60,
+          "y": 1,
+          "x": 45,
+          "equals": "3"
+        },
+        {
+          "step": 60,
+          "y": 1,
+          "x": 56,
+          "equals": "a"
+        },
+        {
+          "step": 60,
+          "y": 1,
+          "x": 66,
+          "equals": "k"
+        }
+      ]
+    },
+    {
+      "branch": "object-type-naming.type-escape-cancel",
+      "segment": 4,
+      "screenIncludes": [
+        "3 potions called Spark"
+      ],
+      "screenCells": [
+        {
+          "step": 60,
+          "y": 1,
+          "x": 45,
+          "equals": "3"
+        },
+        {
+          "step": 60,
+          "y": 1,
+          "x": 56,
+          "equals": "a"
+        },
+        {
+          "step": 60,
+          "y": 1,
+          "x": 66,
+          "equals": "k"
+        }
+      ]
+    },
+    {
+      "branch": "object-type-naming.type-long",
+      "segment": 5,
+      "screenIncludes": [
+        "3 potions called QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ"
+      ],
+      "screenCells": [
+        {
+          "step": 116,
+          "y": 1,
+          "x": 5,
+          "equals": "3"
+        },
+        {
+          "step": 116,
+          "y": 1,
+          "x": 42,
+          "equals": "Q"
+        },
+        {
+          "step": 116,
+          "y": 1,
+          "x": 78,
+          "equals": "Q"
+        }
+      ]
+    },
+    {
+      "branch": "object-type-naming.type-named-diluted",
+      "segment": 6,
+      "screenIncludes": [
+        "2 diluted potions called Spark named Pebble"
+      ],
+      "screenCells": [
+        {
+          "step": 63,
+          "y": 1,
+          "x": 35,
+          "equals": "2"
+        },
+        {
+          "step": 63,
+          "y": 1,
+          "x": 56,
+          "equals": "l"
+        },
+        {
+          "step": 63,
+          "y": 1,
+          "x": 77,
+          "equals": "e"
+        }
+      ]
+    },
+    {
+      "branch": "object-type-naming.floor-here",
+      "segment": 7,
+      "screenIncludes": [
+        "3 potions called Spark"
+      ],
+      "screenCells": [
+        {
+          "step": 54,
+          "y": 1,
+          "x": 45,
+          "equals": "3"
+        },
+        {
+          "step": 54,
+          "y": 1,
+          "x": 56,
+          "equals": "a"
+        },
+        {
+          "step": 54,
+          "y": 1,
+          "x": 66,
+          "equals": "k"
+        }
+      ]
+    },
+    {
+      "branch": "object-type-naming.floor-empty",
+      "segment": 8,
+      "screenIncludes": [
+        "There doesn't seem to be any object under you."
+      ],
+      "screenCells": [
+        {
+          "step": 44,
+          "y": 0,
+          "x": 0,
+          "equals": "T"
+        },
+        {
+          "step": 44,
+          "y": 0,
+          "x": 23,
+          "equals": "e"
+        },
+        {
+          "step": 44,
+          "y": 0,
+          "x": 45,
+          "equals": "."
+        }
+      ]
+    },
+    {
+      "branch": "object-type-naming.discoveries-rename-potion",
+      "segment": 9,
+      "screenIncludes": [
+        "3 potions called Nova"
+      ],
+      "screenCells": [
+        {
+          "step": 64,
+          "y": 1,
+          "x": 45,
+          "equals": "3"
+        },
+        {
+          "step": 64,
+          "y": 1,
+          "x": 55,
+          "equals": "c"
+        },
+        {
+          "step": 64,
+          "y": 1,
+          "x": 65,
+          "equals": "a"
+        }
+      ]
+    },
+    {
+      "branch": "object-type-naming.discoveries-starting-known",
+      "segment": 10,
+      "screenIncludes": [
+        "spellbook of force bolt called Nova (thin)"
+      ],
+      "screenCells": [
+        {
+          "step": 21,
+          "y": 3,
+          "x": 36,
+          "equals": "s"
+        },
+        {
+          "step": 21,
+          "y": 3,
+          "x": 57,
+          "equals": "l"
+        },
+        {
+          "step": 21,
+          "y": 3,
+          "x": 77,
+          "equals": ")"
+        }
+      ]
+    },
+    {
+      "branch": "object-type-naming.discoveries-truly-empty",
+      "segment": 11,
+      "screenIncludes": [
+        "You haven't discovered anything yet..."
+      ],
+      "screenCells": [
+        {
+          "step": 8,
+          "y": 0,
+          "x": 0,
+          "equals": "Y"
+        },
+        {
+          "step": 8,
+          "y": 0,
+          "x": 19,
+          "equals": "r"
+        },
+        {
+          "step": 8,
+          "y": 0,
+          "x": 37,
+          "equals": "."
+        }
+      ]
+    }
+  ]
+}

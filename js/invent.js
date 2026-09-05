@@ -1111,9 +1111,23 @@ export async function getobj(word, obj_ok_func, ctrlflags) {
 // scroll of scare monster here" (onscary) got NO from a function that had never
 // src/invent.c:1495 carrying() — first inventory object of the given type.
 export function carrying(type) {
-    for (const otmp of game.invent) {
+    for (const otmp of game.invent || []) {
         if (otmp.otyp === type)
             return otmp;
+    }
+    return null;
+}
+
+// src/invent.c:1587 o_on(); search a chain and its nested container contents.
+export function o_on(id, objchn) {
+    for (const obj of objchn || []) {
+        if (obj.o_id === id)
+            return obj;
+        if (obj.cobj?.length) {
+            const contained = o_on(id, obj.cobj);
+            if (contained)
+                return contained;
+        }
     }
     return null;
 }

@@ -12,13 +12,13 @@ import { vtense, makeplural } from './objnam.js';
 import { ismnum, CORPSTAT_GENDER, CORPSTAT_MALE, CORPSTAT_FEMALE, CORPSTAT_RANDOM, MALE, FEMALE, NEUTRAL } from './const.js';
 import { tty_create_nhwindow, tty_start_menu, tty_add_menu, tty_end_menu,
          tty_select_menu, tty_destroy_nhwindow } from './tty/wintty.js';
-import { flush_screen, pline, glyph_at, sensemon, see_with_infrared } from './display.js';
-import { discover_object } from './o_init.js';
-import { an, just_an, xname } from './objnam.js';
+import { flush_screen, pline, glyph_at, sensemon, see_with_infrared, vobj_at } from './display.js';
+import { discover_object, undiscover_object, rename_disco } from './o_init.js';
+import { an, just_an, xname, simpleonames, safe_qbuf, OBJ_DESCR, The } from './objnam.js';
 import { NHW_MENU, MENU_BEHAVE_STANDARD, MENU_ITEMFLAGS_NONE,
          PICK_ONE, ECMD_OK, GETOBJ_PROMPT, GETOBJ_EXCLUDE,
          GETOBJ_DOWNPLAY, GETOBJ_SUGGEST, ONAME_VIA_NAMING,
-         ONAME_KNOW_ARTI } from './const.js';
+         ONAME_KNOW_ARTI, GETOBJ_NOFLAGS, OBJ_INVENT, OBJ_FREE, Upolyd } from './const.js';
 import { ATR_NONE, NO_COLOR } from './terminal.js';
 import { game } from './gstate.js';
 import { rn1, rn2, rn2_on_display_rng } from './rng.js';
@@ -33,12 +33,12 @@ import { ARTICLE_NONE, ARTICLE_THE, ARTICLE_A, ARTICLE_YOUR,
          MD_PAD_BOGONS,
          has_mgivenname, MGIVENNAME, W_SADDLE, In_endgame } from './const.js';
 import { humanoid, is_animal, is_mplayer, mindless, pronoun_gender,
-         type_is_pname, is_rider, mhe, mhis } from './mondata.js';
+         type_is_pname, is_rider, mhe, mhis, hides_under } from './mondata.js';
 import { canspotmon } from './display.js';
 import { ONAME_SKIP_INVUPD } from './const.js';
 import { exist_artifact, artifact_exists } from './artifact.js';
 import { carried } from './obj.js';
-import { getobj, update_inventory } from './invent.js';
+import { getobj, update_inventory, carrying } from './invent.js';
 import { cmdq_pop, cmdq_clear } from './cmd.js';
 import { CMDQ_KEY, CQ_CANNED } from './const.js';
 import { get_rnd_text } from './rumors.js';
@@ -49,10 +49,11 @@ import { getpos } from './getpos.js';
 import { cansee } from './vision.js';
 import { m_at, m_next2u } from './mon.js';
 import { u_at, M_AP_FURNITURE, M_AP_OBJECT, has_ebones, Is_astralevel } from './const.js';
-import { You, verbalize } from './pline.js';
+import { You, verbalize, There } from './pline.js';
 import { helpless } from './monst.js';
 import { shkname } from './shknam.js';
 import { priestname } from './priest.js';
+import { object_from_map } from './pager.js';
 
 
 // src/do_name.c:759 ghostnames[] — 34 entries.
@@ -684,13 +685,22 @@ export async function docallcmd() {
         }
         break;
     case 'o': /* name a type of object in inventory */
-        note_unported_do_name('docallcmd:docall');
+        {
+            const obj = await getobj('call', call_ok, GETOBJ_NOFLAGS);
+            if (obj) {
+                xname(obj); // C observes it as though examining inventory.
+                if (!obj.dknown)
+                    await You('would never recognize another one.');
+                else
+                    await docall(obj);
+            }
+        }
         break;
     case 'f': /* name a type of object visible on the floor */
-        note_unported_do_name('docallcmd:namefloorobj');
+        await namefloorobj();
         break;
     case 'd': /* name a type of object on the discoveries list */
-        note_unported_do_name('docallcmd:rename_disco');
+        await rename_disco();
         break;
     case 'a': /* annotate level */
         await donamelevel();
@@ -725,8 +735,6 @@ export async function donamelevel() {
 // item. The name is stored on the object TYPE (objects[otyp].oc_uname), so it
 // shows on every future one of that kind.
 //
-// The sink-water kludge (obj->fromsink) and the EDIT_GETLIN default response
-// are not reached by anything ported.
 export async function docall(obj) {
     if (!obj.dknown)
         return; /* probably blind */
@@ -738,7 +746,9 @@ export async function docall(obj) {
     /* safe_qbuf(qbuf, "Call ", ":", obj, docall_xname, simpleonames, "thing")
        — docall_xname() strips quantity and BUC so the prompt names the TYPE,
        not this particular item. */
-    const qbuf = `Call ${docall_xname(obj)}:`;
+    const qbuf = obj.oclass === OCLASSES.POTION_CLASS && obj.fromsink
+        ? `Call a stream of ${OBJ_DESCR(game.objects[obj.otyp])} fluid:`
+        : safe_qbuf('Call ', ':', obj, docall_xname, simpleonames, 'thing');
     const name = await name_from_player(qbuf);
     if (name === null)
         return;
@@ -749,19 +759,84 @@ export async function docall(obj) {
     if (!name) {
         if (had_name) {
             oc.oc_uname = null;
-            note_undiscover(obj.otyp);
+            await undiscover_object(obj.otyp);
         }
     } else {
         oc.oc_uname = name;
         discover_object(obj.otyp, false, true, true);
     }
+    if (obj.where === OBJ_INVENT || carrying(obj.otyp))
+        update_inventory();
 }
 
 /* src/do_name.c docall_xname() — the object named as its type: one of them,
    no blessed/cursed prefix. */
 function docall_xname(obj) {
-    const otemp = { ...obj, quan: 1, blessed: 0, cursed: 0, oextra: null };
+    const otemp = { ...obj, quan: 1, blessed: 0, cursed: 0, oextra: null, oname: null };
+    if (otemp.oclass === OCLASSES.WEAPON_CLASS)
+        otemp.opoisoned = 0;
+    else if (otemp.oclass === OCLASSES.POTION_CLASS)
+        otemp.odiluted = 0;
+    else if (otemp.otyp === ONAMES.TOWEL || otemp.otyp === ONAMES.STATUE)
+        otemp.spe = 0;
+    else if (otemp.otyp === ONAMES.TIN)
+        otemp.known = 0;
+    else if (otemp.otyp === ONAMES.FIGURINE)
+        otemp.corpsenm = NON_PM;
+    else if (otemp.otyp === ONAMES.HEAVY_IRON_BALL)
+        otemp.owt = game.objects[ONAMES.HEAVY_IRON_BALL].oc_weight;
+    else if (otemp.oclass === OCLASSES.FOOD_CLASS && otemp.globby)
+        otemp.owt = 120;
     return an(xname(otemp));
+}
+
+// src/do_name.c:679 namefloorobj(); call a visible type or the top object here.
+async function namefloorobj() {
+    const cc = { x: game.u.ux, y: game.u.uy };
+    const over = game.u.uundetected && hides_under(game.youmonst.data);
+    const goal = `object on map (or '.' for one ${over ? 'over' : 'under'} you)`;
+    if (await getpos(cc, false, goal) < 0 || cc.x <= 0)
+        return;
+    let obj = null, fakeobj = false;
+    if (u_at(cc.x, cc.y)) {
+        obj = vobj_at(game.u.ux, game.u.uy);
+    } else {
+        const glyph = glyph_at(cc.x, cc.y);
+        if (glyph?.kind === 'obj') {
+            const result = object_from_map(glyph, cc.x, cc.y);
+            obj = result.otmp;
+            fakeobj = result.fake;
+        }
+    }
+    if (!obj) {
+        await There(`doesn't seem to be any object ${u_at(cc.x, cc.y) ? 'under you' : 'there'}.`);
+        return;
+    }
+    const buf = obj.otyp !== ONAMES.STRANGE_OBJECT
+        ? simpleonames(obj) : obj_descr[ONAMES.STRANGE_OBJECT].oc_name;
+    const use_plural = obj.quan > 1;
+    if (Hallucination()) {
+        const role = game.urole;
+        const female = Upolyd(game.u) ? game.u.mfemale : game.flags.female;
+        const unames = [female && role.name.f ? role.name.f : role.name.m,
+            rank_of(rn2_on_display_rng(30) + 1, role, game.flags.female), bogusmon()];
+        unames.push(unames[2], roguename(), 'Wibbly Wobbly');
+        await pline(`${The(buf)} ${use_plural ? 'decide' : 'decides'} to call you "${
+            unames[rn2_on_display_rng(unames.length)]}."`);
+    } else if (call_ok(obj) === GETOBJ_EXCLUDE) {
+        await pline(`${use_plural ? 'Those' : 'That'} ${buf} can't be assigned a type name.`);
+    } else if (!obj.dknown) {
+        await You(`don't know ${use_plural ? 'those' : 'that'} ${buf} well enough to name ${
+            use_plural ? 'them' : 'it'}.`);
+    } else {
+        await docall(obj);
+    }
+    if (fakeobj) {
+        obj.where = OBJ_FREE;
+        // C dealloc_obj(): object_from_map removed its timers. This temporary
+        // has no contents, light, or external owner; JS collects the local.
+        obj = null;
+    }
 }
 
 // src/do.c:395 trycall() — offer to name a type the hero has just used and
@@ -770,12 +845,6 @@ export async function trycall(obj) {
     const oc = game.objects[obj.otyp];
     if (!oc.oc_name_known && !oc.oc_uname)
         await docall(obj);
-}
-
-/* src/o_init.c undiscover_object() — drop a type from the discoveries list
-   when its player-given name is cleared. Not ported; recorded. */
-function note_undiscover(otyp) {
-    (game.unported ||= new Set()).add('do_name:undiscover_object');
 }
 
 /* src/do_name.c:1441 hcolors[] — the hallucinatory colour list. */

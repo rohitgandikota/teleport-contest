@@ -7,7 +7,7 @@ import { block_point, unblock_point } from './vision.js';
 import { is_lightblocker_mappear } from './monst.js';
 import { game } from './gstate.js';
 import { rn2_on_display_rng } from './rng.js';
-import { money_cnt } from './invent.js';
+import { money_cnt, update_inventory } from './invent.js';
 import { ONAMES, OCLASSES } from './objects_data.js';
 import { update_topl, show_topl_nohistory } from './tty/topl.js';
 import { xwaitforspace } from './tty/getline.js';
@@ -928,7 +928,7 @@ function pile_attr(glyph) {
 /* src/mkobj.c:2336-2348 place_object() keeps every boulder at the head of
    its per-square nexthere chain.  The port's flat fobj-style list must remain
    newest-first for global traversals, so derive the visible pile head here. */
-function vobj_at(x, y) {
+export function vobj_at(x, y) {
     const objects = game.level?.objects || [];
     return objects.find(o => o.ox === x && o.oy === y
                              && o.otyp === ONAMES.BOULDER)
@@ -1644,29 +1644,10 @@ export async function docrt() {
        this pass shows the hero's actual surroundings. */
     vision_recalc(0);
 
-    /* src/display.c:1761 — "overlay with monsters": see_monsters() runs a
-       newsym over every live monster, which is what brings the pet back
-       after a menu overlay is dismissed and the map redrawn from memory. */
-    for (const mtmp of game.level.monsters || []) {
-        if (mtmp.mhp <= 0) continue;
-        newsym(mtmp.mx, mtmp.my);
-    }
-    if (game.u?.ux > 0 && canspotself()) {
-        const steed = game.u.usteed;
-        if (steed && mon_visible(steed))
-            show_glyph_cell(game.u.ux, game.u.uy,
-                            def_monsyms[steed.data.mlet] || '?',
-                            steed.data.mcolor ?? NO_COLOR, false, 0,
-                            { kind: 'hero', mon: steed });
-        else {
-            const self = game.youmonst?.data;
-            show_glyph_cell(game.u.ux, game.u.uy,
-                            Upolyd(game.u)
-                                ? (def_monsyms[self.mlet] || '?') : '@',
-                            Upolyd(game.u) ? self.mcolor : CLR_WHITE,
-                            false, 0, { kind: 'hero' });
-        }
-    }
+    /* C overlays monsters and calls newsym on an unmounted hero too. That
+       also updates the object beneath the hero, including display RNG. */
+    see_monsters();
+    update_inventory();
 
     /* C's docrt() only refills the glyph buffer; the physical paint comes
        from the flush its caller always reaches before the next input (the
@@ -2535,15 +2516,10 @@ export function set_mimic_blocking() {
 // src/display.c:1558 see_objects() redraws the top object at every occupied
 // floor location while hallucinating.
 export function see_objects() {
-    const objects = game.level?.objects || [];
-    const seen = new Set();
-    for (const obj of objects) {
-        const key = `${obj.ox},${obj.oy}`;
-        if (seen.has(key))
-            continue;
-        seen.add(key);
-        newsym(obj.ox, obj.oy);
-    }
+    for (const obj of game.level?.objects || [])
+        if (vobj_at(obj.ox, obj.oy) === obj)
+            newsym(obj.ox, obj.oy);
+    update_inventory();
 }
 
 // src/display.c:1611 see_traps() refreshes traps which are currently the

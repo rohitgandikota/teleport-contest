@@ -17,20 +17,20 @@ and persistent gameplay state. Continue source review, measured C branches,
 independent oracles, implementation, and regression checks until that goal is
 met. Current corpus success is not the stopping criterion.
 
-The compiler-guided loops cover corpse wielding, inventory organization and
-merging, object naming, and now 27 monster naming scenarios. All 44 public and
-423 supplemental fixtures pass. The measured C union has 52,835/108,268 direct
-outcomes and 4,284/5,491 entered function records. State gates catch ownership,
-light and persistent-name errors beyond screen parity. The published held-out
-result recorded during the audit is 78.39%, distinct from the local result.
-See [STATUS.md](STATUS.md) for verification and the exact next action,
-[monster-naming-audit.md](monster-naming-audit.md) for the naming review,
+The compiler-guided loops now include 38 object type, floor naming, pauper role,
+and gem-identification scenarios. All 44 public and 427 supplemental fixtures
+pass. The measured C union has 52,910/108,268 direct outcomes and 4,287/5,491
+entered function records. State gates catch ownership, light, discovery and
+stored-bill errors beyond screen parity. The published held-out result recorded
+during the audit is 78.39%, distinct from the local result.
+See [STATUS.md](STATUS.md) for verification and the next action,
+[object-type-naming-audit.md](object-type-naming-audit.md) for the latest review,
+[monster-naming-audit.md](monster-naming-audit.md) for monster names,
 [inventory-adjust-audit.md](inventory-adjust-audit.md) for inventory decisions,
 and [gameplay-gap-audit.md](gameplay-gap-audit.md) for measurement limits.
-The [compiled constant audit](c-constant-audit.md), pushed as `4518990d`, compares
-1,666 values with zero different values and one reviewed signed-mask
-representation. The next source pass covers type names in inventory, floor
-objects and discoveries. Its initial C probes already expose missing behavior.
+The [compiled constant audit](c-constant-audit.md) compares 1,666 values with zero
+different values and one reviewed signed-mask representation. Continue with
+custom discovery ordering and the remaining inventory/display dependencies.
 
 ## Previous focus, 2026-09-03
 

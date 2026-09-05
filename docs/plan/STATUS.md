@@ -9,7 +9,61 @@ loop until complete. The goal is active without a requested token budget.
 Current-corpus success is not the stopping criterion. Track unreviewed,
 untested, missing, and unreachable source paths explicitly.
 
-### Current verified follow-up: monster naming
+### Current verified follow-up: object type naming and discoveries
+
+Monster naming is pushed as `ee16f012`. The new type-naming checkpoint is
+verified and ready to commit. It adds 38 C scenarios in `object-type-naming`,
+`object-type-guards`, `pauper-role-discoveries`, and `shop-gem-identification`.
+They match **1,761/1,761 screens and cursors**, **111,115/111,115 RNG entries**.
+All runtime changes and their limits are recorded in
+[object-type-naming-audit.md](object-type-naming-audit.md).
+
+The pass ports inventory/floor/discovery type naming, prompt attribute removal,
+clear/cancel semantics, `undiscover_object`, and in-moveloop gem-discovery
+callbacks. Dependencies add `o_on`, `find_oid`, `gem_learned`, and the pauper
+skill/discovery reset. A Cleric must still recognize water while a pauper.
+`object_from_map` stops fake-object timers, checks buried objects, handles cmap
+container choices, clears the leash field and reads mimic corpse payloads.
+`docrt` now calls `see_monsters`, including the hero's underlying object; its
+omission caused a verified display-RNG mismatch. `see_objects` uses C floor
+chain/pile-head identity and updates inventory.
+
+The new state gate verifies all 38 recordings and source controls for discovery
+retention/removal, recursive object ownership lookup, fake-corpse timers and
+buried/container choices. Identifying unpaid glass reprices the stored bill
+from 1,067 to 7 per piece; the diamond control stays at 5,333. An isolated loader
+that disables the gem callback makes the state gate fail at 1,067 instead of 7.
+Temporary map objects have no contents, light or external owner and are reclaimed
+by JS after their timers are stopped. This does not finish general deletion
+queues or Lua object references.
+
+All four new native recordings are exact. Profiles in
+`.cache/c-coverage/object-types-20260905` add **75 direct outcomes**, entering
+`namefloorobj`, `undiscover_object`, and `rename_disco` for the first time. The
+union is **52,910/108,268 outcomes**, **4,287/5,491 entered function records**.
+The tuple-preserving union script/report remains `.cache/naming/coverage-union`.
+The scenario assertion ledger is **1,432/1,432**, 99 categories covered, seven
+partial, no declared gaps. Native coverage and this ledger are distinct.
+
+Stable-runtime verification: public **44/44**, **11,405/11,405 screens/cursors**,
+**792,838/792,838 RNG**; supplemental **427/427**, **123,830/123,830 screens and
+cursors**, **6,218,844/6,218,844 RNG**, **3,248/3,248 animations**. Public
+animations remain 1,462/1,483. Fuzz stays 101/102, 14,261/14,262 screens,
+491,759/491,759 RNG, 14,262 cursors, 75/76 animations, with the fixed-datetime
+artifact. All 48 hang checks, 80 role-smoke controls, 16 tool tests, source
+audit, the new state gate and 14 related gates pass. Frozen files unchanged.
+Logs: `.cache/naming/type-final-*.log`. The 80 role games reuse control seeds.
+
+Next: commit/push this checkpoint, then continue with discovery ordering and
+missing shared inventory/display dependencies. `inv_order()` in o_init.js:667
+hardcodes the default instead of `flags.inv_order`. The complete C
+`rename_disco` body has been read at o_init.c:1131-1208. C `see_monsters` has
+also been read at display.c:1487-1529; JS still lacks deferred/arriving guards,
+worm-tail refresh and warning-count effects. `update_inventory` remains partial.
+Mimic corpse payload writers and cleanup mix flat/nested fields and need review.
+The full-port goal remains active. Do not stop at this checkpoint.
+
+### Previous verified follow-up: monster naming
 
 The compiled-constant checkpoint below is committed and pushed as `4518990d`.
 The naming follow-up ports `do_mgivenname`, `alreadynamed`, name allocation and
@@ -50,21 +104,6 @@ gates pass. The final trailing-newline/backspace clear in `addtopl` has a
 source-state check; the full/fuzz/hang gates also pass after that last runtime
 change. Logs are `.cache/naming/final-*.log`. Frozen files are
 unchanged. Keep the full-port goal active.
-
-Next, continue type naming from inventory, floor and discoveries. The complete
-C `docallcmd`, `docall`, `docall_xname`, `namefloorobj` (679), and `rename_disco`
-(o_init.c:1131) bodies have been read. Their existing JS dispatch still has
-unported markers. Eleven new C probes are in `.cache/naming/type-probes` with
-`.mjs`, `.input.json`, `.cases.json`, `.session.json` and `type-baseline.log`.
-They currently match only 460/682 screens and 24,657/33,164 RNG entries. The
-last case labeled "discoveries-empty" actually exercises the Wizard's starting
-known types, so relabel it before promotion. The floor pickup probe includes
-an unnecessary trailing space command; trim it while refining the C scenarios.
-The refined 12-case `.cache/naming/type-refined` input, cases, session and
-baseline log correct those issues, select the potion entry on discoveries,
-also rename a starting known spellbook, and verify a truly empty Barbarian
-discovery list. Start implementation from this refined fixture. No type-naming
-implementation change yet.
 
 ### Previous verified follow-up: compiled C constants
 

@@ -1,0 +1,1002 @@
+{
+  "name": "autopickup-origin",
+  "description": "C dropped and thrown origin overrides, automatic quiver selection and manual pickup controls.",
+  "coverage": [
+    "mode.debug",
+    "level.ordinary",
+    "ui.getlin",
+    "ui.menus",
+    "ui.more-paging",
+    "options.rc-bindings",
+    "object.weapons"
+  ],
+  "branches": [
+    "autopickup-origin.dropped-default",
+    "autopickup-origin.dropped-enabled",
+    "autopickup-origin.dropped-class-excluded",
+    "autopickup-origin.thrown-default-override",
+    "autopickup-origin.thrown-disabled",
+    "autopickup-origin.thrown-class-included",
+    "autopickup-origin.manual-dropped",
+    "autopickup-origin.manual-thrown"
+  ],
+  "requireBranchAssertions": true,
+  "segments": [
+    {
+      "name": "dropped-default",
+      "seed": 102200,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=autopickup,pauper,pickup_types:all\n",
+      "moves": "\u0017dagger\r\u001b\u001bdahl\u001b\u001b\u001b\u001bi\u001b"
+    },
+    {
+      "name": "dropped-enabled",
+      "seed": 102200,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=autopickup,pauper,pickup_types:all,!dropped_nopick\n",
+      "moves": "\u0017dagger\r\u001b\u001bdahl\u001b\u001b\u001b\u001bi\u001b"
+    },
+    {
+      "name": "dropped-class-excluded",
+      "seed": 102200,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=autopickup,pauper,pickup_types:!,!dropped_nopick\n",
+      "moves": "\u0017dagger\r\u001b\u001bdahl\u001b\u001b\u001b\u001bi\u001b"
+    },
+    {
+      "name": "thrown-default-override",
+      "seed": 102200,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=autopickup,pauper,pickup_types:!\n",
+      "moves": "\u0017dagger\r\u001b\u001bta>hl\u001b\u001b\u001b\u001bi\u001b"
+    },
+    {
+      "name": "thrown-disabled",
+      "seed": 102200,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=autopickup,pauper,pickup_types:!,!pickup_thrown\n",
+      "moves": "\u0017dagger\r\u001b\u001bta>hl\u001b\u001b\u001b\u001bi\u001b"
+    },
+    {
+      "name": "thrown-class-included",
+      "seed": 102200,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=autopickup,pauper,pickup_types:),!pickup_thrown\n",
+      "moves": "\u0017dagger\r\u001b\u001bta>hl\u001b\u001b\u001b\u001bi\u001b"
+    },
+    {
+      "name": "manual-dropped",
+      "seed": 102200,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=autopickup,pauper,pickup_types:all\n",
+      "moves": "\u0017dagger\r\u001b\u001bdahl\u001b\u001b\u001b\u001b,\u001b\u001b\u001b\u001bi\u001b"
+    },
+    {
+      "name": "manual-thrown",
+      "seed": 102200,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=autopickup,pauper,pickup_types:!,!pickup_thrown\n",
+      "moves": "\u0017dagger\r\u001b\u001bta>hl\u001b\u001b\u001b\u001b,\u001b\u001b\u001b\u001bi\u001b"
+    }
+  ],
+  "branchAssertions": [
+    {
+      "branch": "autopickup-origin.dropped-default",
+      "segment": 0,
+      "screenCells": [
+        {
+          "step": 19,
+          "x": 0,
+          "y": 0,
+          "equals": "N"
+        },
+        {
+          "step": 19,
+          "x": 1,
+          "y": 0,
+          "equals": "o"
+        },
+        {
+          "step": 19,
+          "x": 2,
+          "y": 0,
+          "equals": "t"
+        },
+        {
+          "step": 19,
+          "x": 3,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 19,
+          "x": 4,
+          "y": 0,
+          "equals": "c"
+        },
+        {
+          "step": 19,
+          "x": 5,
+          "y": 0,
+          "equals": "a"
+        },
+        {
+          "step": 19,
+          "x": 6,
+          "y": 0,
+          "equals": "r"
+        },
+        {
+          "step": 19,
+          "x": 7,
+          "y": 0,
+          "equals": "r"
+        },
+        {
+          "step": 19,
+          "x": 8,
+          "y": 0,
+          "equals": "y"
+        },
+        {
+          "step": 19,
+          "x": 9,
+          "y": 0,
+          "equals": "i"
+        },
+        {
+          "step": 19,
+          "x": 10,
+          "y": 0,
+          "equals": "n"
+        },
+        {
+          "step": 19,
+          "x": 11,
+          "y": 0,
+          "equals": "g"
+        },
+        {
+          "step": 19,
+          "x": 12,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 19,
+          "x": 13,
+          "y": 0,
+          "equals": "a"
+        },
+        {
+          "step": 19,
+          "x": 14,
+          "y": 0,
+          "equals": "n"
+        },
+        {
+          "step": 19,
+          "x": 15,
+          "y": 0,
+          "equals": "y"
+        },
+        {
+          "step": 19,
+          "x": 16,
+          "y": 0,
+          "equals": "t"
+        },
+        {
+          "step": 19,
+          "x": 17,
+          "y": 0,
+          "equals": "h"
+        },
+        {
+          "step": 19,
+          "x": 18,
+          "y": 0,
+          "equals": "i"
+        },
+        {
+          "step": 19,
+          "x": 19,
+          "y": 0,
+          "equals": "n"
+        },
+        {
+          "step": 19,
+          "x": 20,
+          "y": 0,
+          "equals": "g"
+        },
+        {
+          "step": 19,
+          "x": 21,
+          "y": 0,
+          "equals": "."
+        }
+      ],
+      "screenIncludes": [
+        "You drop a dagger."
+      ]
+    },
+    {
+      "branch": "autopickup-origin.dropped-enabled",
+      "segment": 1,
+      "screenCells": [
+        {
+          "step": 19,
+          "x": 41,
+          "y": 1,
+          "equals": "a"
+        },
+        {
+          "step": 19,
+          "x": 42,
+          "y": 1,
+          "equals": " "
+        },
+        {
+          "step": 19,
+          "x": 43,
+          "y": 1,
+          "equals": "-"
+        },
+        {
+          "step": 19,
+          "x": 44,
+          "y": 1,
+          "equals": " "
+        },
+        {
+          "step": 19,
+          "x": 45,
+          "y": 1,
+          "equals": "a"
+        },
+        {
+          "step": 19,
+          "x": 46,
+          "y": 1,
+          "equals": " "
+        },
+        {
+          "step": 19,
+          "x": 47,
+          "y": 1,
+          "equals": "d"
+        },
+        {
+          "step": 19,
+          "x": 48,
+          "y": 1,
+          "equals": "a"
+        },
+        {
+          "step": 19,
+          "x": 49,
+          "y": 1,
+          "equals": "g"
+        },
+        {
+          "step": 19,
+          "x": 50,
+          "y": 1,
+          "equals": "g"
+        },
+        {
+          "step": 19,
+          "x": 51,
+          "y": 1,
+          "equals": "e"
+        },
+        {
+          "step": 19,
+          "x": 52,
+          "y": 1,
+          "equals": "r"
+        }
+      ],
+      "screenIncludes": [
+        "You drop a dagger."
+      ]
+    },
+    {
+      "branch": "autopickup-origin.dropped-class-excluded",
+      "segment": 2,
+      "screenCells": [
+        {
+          "step": 19,
+          "x": 0,
+          "y": 0,
+          "equals": "N"
+        },
+        {
+          "step": 19,
+          "x": 1,
+          "y": 0,
+          "equals": "o"
+        },
+        {
+          "step": 19,
+          "x": 2,
+          "y": 0,
+          "equals": "t"
+        },
+        {
+          "step": 19,
+          "x": 3,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 19,
+          "x": 4,
+          "y": 0,
+          "equals": "c"
+        },
+        {
+          "step": 19,
+          "x": 5,
+          "y": 0,
+          "equals": "a"
+        },
+        {
+          "step": 19,
+          "x": 6,
+          "y": 0,
+          "equals": "r"
+        },
+        {
+          "step": 19,
+          "x": 7,
+          "y": 0,
+          "equals": "r"
+        },
+        {
+          "step": 19,
+          "x": 8,
+          "y": 0,
+          "equals": "y"
+        },
+        {
+          "step": 19,
+          "x": 9,
+          "y": 0,
+          "equals": "i"
+        },
+        {
+          "step": 19,
+          "x": 10,
+          "y": 0,
+          "equals": "n"
+        },
+        {
+          "step": 19,
+          "x": 11,
+          "y": 0,
+          "equals": "g"
+        },
+        {
+          "step": 19,
+          "x": 12,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 19,
+          "x": 13,
+          "y": 0,
+          "equals": "a"
+        },
+        {
+          "step": 19,
+          "x": 14,
+          "y": 0,
+          "equals": "n"
+        },
+        {
+          "step": 19,
+          "x": 15,
+          "y": 0,
+          "equals": "y"
+        },
+        {
+          "step": 19,
+          "x": 16,
+          "y": 0,
+          "equals": "t"
+        },
+        {
+          "step": 19,
+          "x": 17,
+          "y": 0,
+          "equals": "h"
+        },
+        {
+          "step": 19,
+          "x": 18,
+          "y": 0,
+          "equals": "i"
+        },
+        {
+          "step": 19,
+          "x": 19,
+          "y": 0,
+          "equals": "n"
+        },
+        {
+          "step": 19,
+          "x": 20,
+          "y": 0,
+          "equals": "g"
+        },
+        {
+          "step": 19,
+          "x": 21,
+          "y": 0,
+          "equals": "."
+        }
+      ],
+      "screenIncludes": [
+        "You drop a dagger."
+      ]
+    },
+    {
+      "branch": "autopickup-origin.thrown-default-override",
+      "segment": 3,
+      "screenCells": [
+        {
+          "step": 20,
+          "x": 41,
+          "y": 1,
+          "equals": "a"
+        },
+        {
+          "step": 20,
+          "x": 42,
+          "y": 1,
+          "equals": " "
+        },
+        {
+          "step": 20,
+          "x": 43,
+          "y": 1,
+          "equals": "-"
+        },
+        {
+          "step": 20,
+          "x": 44,
+          "y": 1,
+          "equals": " "
+        },
+        {
+          "step": 20,
+          "x": 45,
+          "y": 1,
+          "equals": "a"
+        },
+        {
+          "step": 20,
+          "x": 46,
+          "y": 1,
+          "equals": " "
+        },
+        {
+          "step": 20,
+          "x": 47,
+          "y": 1,
+          "equals": "d"
+        },
+        {
+          "step": 20,
+          "x": 48,
+          "y": 1,
+          "equals": "a"
+        },
+        {
+          "step": 20,
+          "x": 49,
+          "y": 1,
+          "equals": "g"
+        },
+        {
+          "step": 20,
+          "x": 50,
+          "y": 1,
+          "equals": "g"
+        },
+        {
+          "step": 20,
+          "x": 51,
+          "y": 1,
+          "equals": "e"
+        },
+        {
+          "step": 20,
+          "x": 52,
+          "y": 1,
+          "equals": "r"
+        },
+        {
+          "step": 20,
+          "x": 53,
+          "y": 1,
+          "equals": " "
+        },
+        {
+          "step": 20,
+          "x": 54,
+          "y": 1,
+          "equals": "("
+        },
+        {
+          "step": 20,
+          "x": 55,
+          "y": 1,
+          "equals": "a"
+        },
+        {
+          "step": 20,
+          "x": 56,
+          "y": 1,
+          "equals": "t"
+        },
+        {
+          "step": 20,
+          "x": 57,
+          "y": 1,
+          "equals": " "
+        },
+        {
+          "step": 20,
+          "x": 58,
+          "y": 1,
+          "equals": "t"
+        },
+        {
+          "step": 20,
+          "x": 59,
+          "y": 1,
+          "equals": "h"
+        },
+        {
+          "step": 20,
+          "x": 60,
+          "y": 1,
+          "equals": "e"
+        },
+        {
+          "step": 20,
+          "x": 61,
+          "y": 1,
+          "equals": " "
+        },
+        {
+          "step": 20,
+          "x": 62,
+          "y": 1,
+          "equals": "r"
+        },
+        {
+          "step": 20,
+          "x": 63,
+          "y": 1,
+          "equals": "e"
+        },
+        {
+          "step": 20,
+          "x": 64,
+          "y": 1,
+          "equals": "a"
+        },
+        {
+          "step": 20,
+          "x": 65,
+          "y": 1,
+          "equals": "d"
+        },
+        {
+          "step": 20,
+          "x": 66,
+          "y": 1,
+          "equals": "y"
+        },
+        {
+          "step": 20,
+          "x": 67,
+          "y": 1,
+          "equals": ")"
+        }
+      ],
+      "screenIncludes": [
+        "A dagger hits the stairs."
+      ]
+    },
+    {
+      "branch": "autopickup-origin.thrown-disabled",
+      "segment": 4,
+      "screenCells": [
+        {
+          "step": 20,
+          "x": 0,
+          "y": 0,
+          "equals": "N"
+        },
+        {
+          "step": 20,
+          "x": 1,
+          "y": 0,
+          "equals": "o"
+        },
+        {
+          "step": 20,
+          "x": 2,
+          "y": 0,
+          "equals": "t"
+        },
+        {
+          "step": 20,
+          "x": 3,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 20,
+          "x": 4,
+          "y": 0,
+          "equals": "c"
+        },
+        {
+          "step": 20,
+          "x": 5,
+          "y": 0,
+          "equals": "a"
+        },
+        {
+          "step": 20,
+          "x": 6,
+          "y": 0,
+          "equals": "r"
+        },
+        {
+          "step": 20,
+          "x": 7,
+          "y": 0,
+          "equals": "r"
+        },
+        {
+          "step": 20,
+          "x": 8,
+          "y": 0,
+          "equals": "y"
+        },
+        {
+          "step": 20,
+          "x": 9,
+          "y": 0,
+          "equals": "i"
+        },
+        {
+          "step": 20,
+          "x": 10,
+          "y": 0,
+          "equals": "n"
+        },
+        {
+          "step": 20,
+          "x": 11,
+          "y": 0,
+          "equals": "g"
+        },
+        {
+          "step": 20,
+          "x": 12,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 20,
+          "x": 13,
+          "y": 0,
+          "equals": "a"
+        },
+        {
+          "step": 20,
+          "x": 14,
+          "y": 0,
+          "equals": "n"
+        },
+        {
+          "step": 20,
+          "x": 15,
+          "y": 0,
+          "equals": "y"
+        },
+        {
+          "step": 20,
+          "x": 16,
+          "y": 0,
+          "equals": "t"
+        },
+        {
+          "step": 20,
+          "x": 17,
+          "y": 0,
+          "equals": "h"
+        },
+        {
+          "step": 20,
+          "x": 18,
+          "y": 0,
+          "equals": "i"
+        },
+        {
+          "step": 20,
+          "x": 19,
+          "y": 0,
+          "equals": "n"
+        },
+        {
+          "step": 20,
+          "x": 20,
+          "y": 0,
+          "equals": "g"
+        },
+        {
+          "step": 20,
+          "x": 21,
+          "y": 0,
+          "equals": "."
+        }
+      ],
+      "screenIncludes": [
+        "A dagger hits the stairs."
+      ]
+    },
+    {
+      "branch": "autopickup-origin.thrown-class-included",
+      "segment": 5,
+      "screenCells": [
+        {
+          "step": 20,
+          "x": 41,
+          "y": 1,
+          "equals": "a"
+        },
+        {
+          "step": 20,
+          "x": 42,
+          "y": 1,
+          "equals": " "
+        },
+        {
+          "step": 20,
+          "x": 43,
+          "y": 1,
+          "equals": "-"
+        },
+        {
+          "step": 20,
+          "x": 44,
+          "y": 1,
+          "equals": " "
+        },
+        {
+          "step": 20,
+          "x": 45,
+          "y": 1,
+          "equals": "a"
+        },
+        {
+          "step": 20,
+          "x": 46,
+          "y": 1,
+          "equals": " "
+        },
+        {
+          "step": 20,
+          "x": 47,
+          "y": 1,
+          "equals": "d"
+        },
+        {
+          "step": 20,
+          "x": 48,
+          "y": 1,
+          "equals": "a"
+        },
+        {
+          "step": 20,
+          "x": 49,
+          "y": 1,
+          "equals": "g"
+        },
+        {
+          "step": 20,
+          "x": 50,
+          "y": 1,
+          "equals": "g"
+        },
+        {
+          "step": 20,
+          "x": 51,
+          "y": 1,
+          "equals": "e"
+        },
+        {
+          "step": 20,
+          "x": 52,
+          "y": 1,
+          "equals": "r"
+        }
+      ],
+      "screenIncludes": [
+        "A dagger hits the stairs."
+      ]
+    },
+    {
+      "branch": "autopickup-origin.manual-dropped",
+      "segment": 6,
+      "screenCells": [
+        {
+          "step": 24,
+          "x": 41,
+          "y": 1,
+          "equals": "a"
+        },
+        {
+          "step": 24,
+          "x": 42,
+          "y": 1,
+          "equals": " "
+        },
+        {
+          "step": 24,
+          "x": 43,
+          "y": 1,
+          "equals": "-"
+        },
+        {
+          "step": 24,
+          "x": 44,
+          "y": 1,
+          "equals": " "
+        },
+        {
+          "step": 24,
+          "x": 45,
+          "y": 1,
+          "equals": "a"
+        },
+        {
+          "step": 24,
+          "x": 46,
+          "y": 1,
+          "equals": " "
+        },
+        {
+          "step": 24,
+          "x": 47,
+          "y": 1,
+          "equals": "d"
+        },
+        {
+          "step": 24,
+          "x": 48,
+          "y": 1,
+          "equals": "a"
+        },
+        {
+          "step": 24,
+          "x": 49,
+          "y": 1,
+          "equals": "g"
+        },
+        {
+          "step": 24,
+          "x": 50,
+          "y": 1,
+          "equals": "g"
+        },
+        {
+          "step": 24,
+          "x": 51,
+          "y": 1,
+          "equals": "e"
+        },
+        {
+          "step": 24,
+          "x": 52,
+          "y": 1,
+          "equals": "r"
+        }
+      ],
+      "screenIncludes": [
+        "You drop a dagger."
+      ]
+    },
+    {
+      "branch": "autopickup-origin.manual-thrown",
+      "segment": 7,
+      "screenCells": [
+        {
+          "step": 25,
+          "x": 41,
+          "y": 1,
+          "equals": "a"
+        },
+        {
+          "step": 25,
+          "x": 42,
+          "y": 1,
+          "equals": " "
+        },
+        {
+          "step": 25,
+          "x": 43,
+          "y": 1,
+          "equals": "-"
+        },
+        {
+          "step": 25,
+          "x": 44,
+          "y": 1,
+          "equals": " "
+        },
+        {
+          "step": 25,
+          "x": 45,
+          "y": 1,
+          "equals": "a"
+        },
+        {
+          "step": 25,
+          "x": 46,
+          "y": 1,
+          "equals": " "
+        },
+        {
+          "step": 25,
+          "x": 47,
+          "y": 1,
+          "equals": "d"
+        },
+        {
+          "step": 25,
+          "x": 48,
+          "y": 1,
+          "equals": "a"
+        },
+        {
+          "step": 25,
+          "x": 49,
+          "y": 1,
+          "equals": "g"
+        },
+        {
+          "step": 25,
+          "x": 50,
+          "y": 1,
+          "equals": "g"
+        },
+        {
+          "step": 25,
+          "x": 51,
+          "y": 1,
+          "equals": "e"
+        },
+        {
+          "step": 25,
+          "x": 52,
+          "y": 1,
+          "equals": "r"
+        }
+      ],
+      "screenIncludes": [
+        "A dagger hits the stairs."
+      ]
+    }
+  ]
+}

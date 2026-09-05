@@ -52,6 +52,7 @@ import { doname, an, corpse_xname, makeplural, obj_typename, CXN_PFX_THE,
          CXN_ARTICLE, yname } from './objnam.js';
 import { OCLASSES, ONAMES, MATERIALS, SKILLS } from './objects_data.js';
 import { is_pole } from './u_init.js';
+import { throwing_weapon } from './dothrow.js';
 import { OBJ_DESCR, not_fully_identified } from './objnam.js';
 export { not_fully_identified } from './objnam.js';
 import { MONSYMS, NUMMONS, PMNAMES } from './monst_data.js';
@@ -378,7 +379,7 @@ function addinv_finish(obj, objWasThrown, otherObj) {
     if (objWasThrown && game.flags?.pickup_thrown !== false
         && !game.u.uquiver && obj.oartifact !== ART_MJOLLNIR
         && obj.otyp !== ONAMES.AKLYS
-        && (is_missile(obj) || is_ammo(obj)))
+        && (throwing_weapon(obj) || is_ammo(obj)))
         setuqwep(obj);
     return result;
 }

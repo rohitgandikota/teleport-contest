@@ -9,10 +9,54 @@ loop until complete. The goal is active without a requested token budget.
 Current-corpus success is not the stopping criterion. Track unreviewed,
 untested, missing, and unreachable source paths explicitly.
 
-### Current work: automatic-pickup options
+### Current work: verified pickup origins, floor impacts and saddle water
 
-Discovery sorting is committed and pushed as `136b6a33`. The next uncommitted
-pass fixes pickup_types configuration and its live text/menu handler in
+The preceding automatic-pickup options pass is committed and pushed as
+`adb4a54b`. The current verified checkpoint ports shop/origin guards in
+pickup.js, thrown-dagger quiver selection in invent.js, complete hard-floor
+impact dispatch in dothrow.js, and saddle selection/H2Opotion_dip in potion.js.
+do.js re-exports hitfloor from its C-owned module. Full relevant C bodies were
+read, including potionhit's common vapor footer.
+
+Five permanent recipes contain 49 C cases: autopickup-origin (eight),
+autopickup-shop-stock (four), floor-throw-impact (14), mounted-potion-impact
+(15), and saddle-water-state (eight). They match 4,465/4,465 screens/cursors,
+151,867/151,867 RNG and 48/48 animations. Both new state gates pass, covering
+ownership, quiver identity, origin, bills, floor disposal, saddle knowledge,
+beatitude and 22 shard-damage boundaries. An isolated loader removing the
+unknown-water knowledge reset still passes the blind holy-water case's
+164 screens/cursors and 2,851 RNG, but the saddle state gate fails. The loader
+and logs are in `.cache/autopickup/saddle-negative-*` and
+`retain-saddle-knowledge.mjs`; no runtime file is changed by the control.
+
+All five native recordings are exact in
+`.cache/c-coverage/pickup-impact-20260905`, adding 119 direct outcomes and two
+entered records. The union is 53,331/108,268 outcomes and 4,300/5,491 records.
+The ledger is 1,613/1,613. Stable regression passes 44 public and 439
+supplemental fixtures. Public has 11,405 exact screens/cursors and 792,838 RNG;
+supplemental has 132,474 exact screens/cursors, 6,771,747 RNG and 3,296
+animations. Public animations remain 1,462/1,483. Fuzz is unchanged at 101/102
+with only the fixed-datetime artifact. All 49 hang checks, 80 reused role-smoke
+controls, 16 tool tests, source audit and six related state gates pass.
+See [pickup-impact-audit.md](pickup-impact-audit.md), then commit and push.
+The full original corpus and five new fixtures were verified separately on
+the identical runtime; logs are `impact-regression.log` and
+`impact-new-regression.log` under `.cache/autopickup/`.
+
+Next source target: potion_dip, C potion.c:2442 and JS potion.js:1951. The
+existing JS function handles alchemy only and does not call H2Opotion_dip.
+Read the full C body before porting its water path, then record carried-item
+water damage, blessing/cursing, no-effect consumption and shop-water cost
+controls. H2Opotion_dip's saddle paths reach 24/38 direct outcomes; carried
+items and shop-water callers remain uncredited. Other explicit open paths:
+autopickup exceptions and their POSIX ERE backend, upward toss_up, interlevel
+ship_object migration, potionhit's unpaid billing and startup error display.
+The goal remains active after this checkpoint.
+
+### Verified checkpoint: automatic-pickup options
+
+Discovery sorting is committed and pushed as `136b6a33`. Checkpoint `adb4a54b`
+fixed pickup_types configuration and its live text/menu handler in
 options.js. Traditional and combination styles now use C's getlin prompt;
 full and partial styles use the existing class menu. Both honor custom pack
 order, and wizard menus append venom. Empty text and Escape restore the
@@ -39,20 +83,7 @@ Public has 11,405 exact screens/cursors and 792,838 RNG; supplemental has
 128,009 exact screens/cursors, 6,619,880 RNG and 3,248 animations. Public
 animations remain 1,462/1,483. Results are in
 `.cache/autopickup/final-regression.log`. See
-[autopickup-options-audit.md](autopickup-options-audit.md), then commit and push.
-
-The next pass is already reproduced in the ignored cache:
-`.cache/autopickup/overrides.{input,session}.json` has eight dropped/thrown and
-manual-pickup controls. Baseline is 158/182 screens, 174/182 cursors and
-12,656/24,342 concatenated RNG matches. These are not permanent assertions or
-credited native profiles yet. The full C bodies of autopick_testobj, autopick
-and check_autopickup_exceptions were read at pickup.c:914-1010. The current
-predicate ignores shop cost, how_lost and exceptions despite existing writers
-in do.js, dothrow.js and steal.js. Thrown pickup also readies the dagger in C;
-review the addinv dependency before claiming that path complete. Exception
-configuration and regex support are absent; the pinned backend still needs
-inspection (sys/share/{posixregex,pmatchregex}.c). Continue into these controls
-after the current verified checkpoint is committed and pushed.
+[autopickup-options-audit.md](autopickup-options-audit.md). This pass is pushed.
 
 ### Verified follow-up: discovery sorting and identification
 

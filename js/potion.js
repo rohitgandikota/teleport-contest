@@ -10,7 +10,7 @@ import { Unchanging } from './youprop.js';
 import { clone_mon } from './makemon.js';
 import { cloneu } from './mhitu.js';
 import { object_detect } from './detect.js';
-import { mon_set_minvis, mon_adjust_speed } from './worn.js';
+import { mon_set_minvis, mon_adjust_speed, which_armor } from './worn.js';
 import { SLIMED, M_AP_MONSTER, M_AP_NOTHING } from './const.js';
 import { fruitname, makeplural, xname } from './objnam.js';
 import { hliquid, trycall } from './do_name.js';
@@ -30,11 +30,11 @@ import { nomul, losehp } from './hack.js';
 import { surface } from './dungeon.js';
 import { A_WIS, ECMD_CANCEL, ECMD_FAIL, CQ_CANNED, IS_FOUNTAIN, IS_SINK } from './const.js';
 import { cmdq_peek, drink_ok } from './cmd.js';
-import { is_plural } from './obj.js';
+import { carried, is_plural } from './obj.js';
 import { Unaware, Hallucination, Halluc_resistance, Blind,
          Deaf, Poison_resistance, Sleep_resistance,
          Underwater, Antimagic } from './youprop.js';
-import { rn2, rn1, rnd, d } from './rng.js';
+import { rn2, rn1, rnd, rnl, d } from './rng.js';
 import { ONAMES, MATERIALS } from './objects_data.js';
 import { PMNAMES, MFLAGS, ATTKS } from './monst_data.js';
 import { OBJ_DESCR } from './objnam.js';
@@ -51,7 +51,7 @@ import { tty_yn_function } from './tty/topl.js';
 import { GETOBJ_NOFLAGS } from './const.js';
 import { GETOBJ_SUGGEST, GETOBJ_DOWNPLAY, GETOBJ_EXCLUDE } from './invent.js';
 import { GETOBJ_EXCLUDE_INACCESS } from './invent.js';
-import { doname, otense, short_oname, simpleonames, thesimpleoname,
+import { an, aobjnam, doname, otense, short_oname, simpleonames, thesimpleoname,
          Tobjnam } from './objnam.js';
 import { body_part } from './polyself.js';
 import { breathless, dmgtype, eyecount, haseyes, has_head, is_human, is_silent,
@@ -59,8 +59,8 @@ import { breathless, dmgtype, eyecount, haseyes, has_head, is_human, is_silent,
     from './mondata.js';
 import { cansee, vision_recalc } from './vision.js';
 import { hcolor } from './do_name.js';
-import { Monnam, mon_nam } from './do_name.js';
-import { mkobj, splitobj } from './mkobj.js';
+import { Monnam, mon_nam, upstart, x_monnam } from './do_name.js';
+import { bless, curse, mkobj, splitobj, unbless, uncurse } from './mkobj.js';
 import { distu, s_suffix } from './hacklib.js';
 import { pluslvl } from './exper.js';
 import { heal_legs } from './do.js';
@@ -85,7 +85,11 @@ import { has_ceiling, ceiling, depth, get_level, Can_rise_up,
          ledger_no } from './dungeon.js';
 import { spoteffects } from './hack.js';
 import { rndexp } from './exper.js';
-import { float_up } from './trap.js';
+import { float_up, water_damage } from './trap.js';
+import { alter_cost, costly_alteration } from './shk.js';
+import { ARTICLE_THE, SUPPRESS_IT, SUPPRESS_SADDLE, W_SADDLE,
+         NH_AMBER, NH_LIGHT_BLUE, NH_BLACK, COST_UNCURS, COST_UNBLSS,
+         ER_NOTHING, PLNMSG_OBJ_GLOWS } from './const.js';
 import { float_vs_flight } from './polyself.js';
 import { delayed_killer, find_delayed_killer, dealloc_killer } from './end.js';
 const G_GONE = MFLAGS.G_GENOD | MFLAGS.G_EXTINCT;
@@ -392,12 +396,72 @@ export async function potionbreathe(obj) {
     }
 }
 
-// src/potion.c:1618 potionhit(). The bottle name and impact damage are drawn
+// src/potion.c:1497 H2Opotion_dip()
+export async function H2Opotion_dip(potion, targobj, useeit, objphrase) {
+    let func = null, glowcolor;
+    const COST_alter = -2, COST_none = -1;
+    let costchange = COST_none, altfmt = false, res = false;
+
+    if (!potion || potion.otyp !== ONAMES.POT_WATER)
+        return false;
+    if (potion.blessed) {
+        if (targobj.cursed) {
+            func = uncurse;
+            glowcolor = NH_AMBER;
+            costchange = COST_UNCURS;
+        } else if (!targobj.blessed) {
+            func = bless;
+            glowcolor = NH_LIGHT_BLUE;
+            costchange = COST_alter;
+            altfmt = true;
+        }
+    } else if (potion.cursed) {
+        if (targobj.blessed) {
+            func = unbless;
+            glowcolor = 'brown';
+            costchange = COST_UNBLSS;
+        } else if (!targobj.cursed) {
+            func = curse;
+            glowcolor = NH_BLACK;
+            costchange = COST_alter;
+            altfmt = true;
+        }
+    } else if (carried(targobj)) {
+        game.mentioned_water = false;
+        if (await water_damage(targobj, 0, true) !== ER_NOTHING)
+            res = true;
+        if (game.mentioned_water)
+            makeknown(ONAMES.POT_WATER);
+        game.mentioned_water = false;
+    }
+    if (func) {
+        if (useeit) {
+            glowcolor = hcolor(glowcolor);
+            await pline(altfmt ? `${objphrase} with ${an(glowcolor)} aura.`
+                              : `${objphrase} ${glowcolor}.`);
+            game.iflags.last_msg = PLNMSG_OBJ_GLOWS;
+            targobj.bknown = !Hallucination();
+        } else if (!potion.bknown || !potion.dknown) {
+            targobj.bknown = 0;
+        }
+        if (targobj.unpaid && targobj.otyp === ONAMES.POT_WATER) {
+            if (costchange === COST_alter)
+                alter_cost(targobj, 0);
+            else if (costchange !== COST_none)
+                await costly_alteration(targobj, costchange);
+        }
+        func(targobj);
+        res = true;
+    }
+    return res;
+}
+
+// src/potion.c:1624 potionhit(). The bottle name and impact damage are drawn
 // before the potion effect, anger, and possible adjacent vapor exposure.
 export async function potionhit(mon, obj, how) {
     const botlnam = bottlename();
     const isyou = mon === game.youmonst;
-    let tx, ty, distance;
+    let tx, ty, distance, saddle = null, hit_saddle = false;
 
     if (isyou) {
         tx = game.u.ux;
@@ -414,21 +478,30 @@ export async function potionhit(mon, obj, how) {
     } else {
         tx = mon.mx;
         ty = mon.my;
+        if ((mon.misc_worn_check & W_SADDLE)
+            && (saddle = which_armor(mon, W_SADDLE))
+            && (!rn2(10) || (obj.otyp === ONAMES.POT_WATER
+                && ((rnl(10) > 7 && obj.cursed)
+                    || (rnl(10) < 4 && obj.blessed) || !rn2(3)))))
+            hit_saddle = true;
         distance = distu(tx, ty);
         if (cansee(tx, ty)) {
-            const target = has_head(mon.data)
-                ? `${s_suffix(mon_nam(mon))} ${game.notonhead ? 'body'
-                                                             : 'head'}`
-                : mon_nam(mon);
+            const mnam = mon_nam(mon);
+            const target = hit_saddle && saddle
+                ? `${s_suffix(x_monnam(mon, ARTICLE_THE, null,
+                    SUPPRESS_IT | SUPPRESS_SADDLE, false))} saddle`
+                : has_head(mon.data)
+                    ? `${s_suffix(mnam)} ${game.notonhead ? 'body' : 'head'}`
+                    : mnam;
             await pline_The(`${botlnam} crashes on ${target} and breaks into shards.`);
         } else {
             await pline('Crash!');
         }
-        if (rn2(5) && (mon.mhp | 0) > 1)
+        if (rn2(5) && (mon.mhp | 0) > 1 && !hit_saddle)
             mon.mhp--;
     }
 
-    if (obj.otyp !== ONAMES.POT_OIL && cansee(tx, ty))
+    if (obj.otyp !== ONAMES.POT_OIL && !hit_saddle && cansee(tx, ty))
         await pline(`${Tobjnam(obj, 'evaporate')}.`);
 
     if (isyou) {
@@ -448,6 +521,22 @@ export async function potionhit(mon, obj, how) {
                 damage = Math.trunc((damage + 1) / 2);
             await losehp(damage, 'potion of acid', KILLED_BY_AN);
         }
+    } else if (hit_saddle && saddle) {
+        const useeit = !Blind() && canseemon(mon) && cansee(tx, ty);
+        const mnam = x_monnam(mon, ARTICLE_THE, null,
+                             SUPPRESS_IT | SUPPRESS_SADDLE, false);
+        const buf = upstart(s_suffix(mnam));
+        let affected = false;
+        switch (obj.otyp) {
+        case ONAMES.POT_WATER:
+            affected = await H2Opotion_dip(obj, saddle, useeit,
+                `${buf} ${aobjnam(saddle, 'glow')}`);
+            break;
+        case ONAMES.POT_POLYMORPH:
+            break;
+        }
+        if (useeit && !affected)
+            await pline(`${buf} ${aobjnam(saddle, 'get')} wet.`);
     } else {
         let angermon = how <= POTHIT_HERO_THROW;
         switch (obj.otyp) {

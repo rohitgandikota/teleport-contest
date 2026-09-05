@@ -17,29 +17,23 @@ and persistent gameplay state. Continue source review, measured C branches,
 independent oracles, implementation, and regression checks until that goal is
 met. Current corpus success is not the stopping criterion.
 
-The compiler-guided loops now include 38 object type, floor naming, pauper role,
-and gem-identification scenarios, followed by 24 pack-order and 72 discovery
-and identification scenarios. All 44 public and 432 supplemental fixtures pass.
-The measured C union has 53,178/108,268 direct outcomes and 4,298/5,491
-entered function records. State gates catch ownership, light, discovery and
-stored-bill errors beyond screen parity. The published held-out result recorded
-during the audit is 78.39%, distinct from the local result.
-See [STATUS.md](STATUS.md) for verification and the next action,
-[discovery-sorting-audit.md](discovery-sorting-audit.md) for the latest review,
-[inventory-packorder-audit.md](inventory-packorder-audit.md) for class order,
-[object-type-naming-audit.md](object-type-naming-audit.md) for type discovery,
-[monster-naming-audit.md](monster-naming-audit.md) for monster names,
-[inventory-adjust-audit.md](inventory-adjust-audit.md) for inventory decisions,
-and [gameplay-gap-audit.md](gameplay-gap-audit.md) for measurement limits.
-The [compiled constant audit](c-constant-audit.md) compares 1,666 values with zero
-different values and one reviewed signed-mask representation. Continue with
-discovery sorting and the remaining inventory/display dependencies.
-Checkpoints `2ec9e465` and `136b6a33` are pushed with 24 pack-order and 72
-discovery scenarios. The next verified automatic-pickup options pass has 36
-exact permanent C cases, a passing state gate and 34 newly reached direct
-outcomes, taking the union to 53,212/108,268. All 44 public and 434 supplemental
-fixtures pass. See [autopickup-options-audit.md](autopickup-options-audit.md) and
-STATUS.md before committing and continuing with dropped/thrown overrides.
+The latest verified pass adds 49 C scenarios for pickup origin, shop ownership,
+floor impacts and mounted potion effects. All 44 public and 439 supplemental
+fixtures pass. The measured C union has 53,331/108,268 direct outcomes and
+4,300/5,491 entered function records. The assertion ledger is 1,613/1,613.
+State gates check hidden ownership, bills, saddle health and beatitude. A
+negative control retains unknown saddle knowledge and still passes the screen
+oracle, but fails the state gate. The published held-out result recorded during
+the audit is 78.39%, distinct from the local result.
+
+See [STATUS.md](STATUS.md) for checkpoint and next-action details,
+[pickup-impact-audit.md](pickup-impact-audit.md) for this review,
+[autopickup-options-audit.md](autopickup-options-audit.md) for pushed checkpoint
+`adb4a54b`, and [gameplay-gap-audit.md](gameplay-gap-audit.md) for measurement
+limits. The [compiled constant audit](c-constant-audit.md) compares 1,666 values
+with zero different values and one reviewed signed-mask representation.
+The next target is potion_dip's water path and H2Opotion_dip's remaining
+carried-item and shop-water callers. The full-port goal remains active.
 
 ## Previous focus, 2026-09-03
 

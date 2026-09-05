@@ -10,7 +10,7 @@ import { digests } from './mondata.js';
 import { engulfing_u } from './const.js';
 import { PICK_ANY } from './const.js';
 import { CONTAINED_SYM } from './const.js';
-import { OBJ_MINVENT } from './const.js';
+import { OBJ_MINVENT, OBJ_FLOOR } from './const.js';
 import { AUTOSELECT_SINGLE } from './const.js';
 import { USE_INVLET } from './const.js';
 import { INCLUDE_HERO } from './const.js';
@@ -44,7 +44,7 @@ import { newsym, pline, bot, display_nhwindow_message,
 import { UNENCUMBERED, SLT_ENCUMBER, MOD_ENCUMBER, HVY_ENCUMBER,
          EXT_ENCUMBER, SHOPBASE, invlet_basic, HAND, KILLED_BY_AN,
          DOOR, D_CLOSED, D_LOCKED, IS_SINK, ZAP_POS, isok, xdir, ydir,
-         LOST_DROPPED, A_WIS, st_all }
+         LOST_DROPPED, LOST_THROWN, LOST_STOLEN, LOST_EXPLODING, A_WIS, st_all }
     from './const.js';
 import { addtobill, costly_spot, doname_with_price, sellobj,
          sellobj_state } from './shk.js';
@@ -324,7 +324,7 @@ export async function pickup(what) {
        with no menu at all, so the class filter has to run here or every
        object on the square gets grabbed regardless of pickup_types. */
     if (autopickup)
-        here = here.filter(o => autopick_testobj(o));
+        here = autopick(here);
     let n_picked = 0, n_tried = 0;
     if (here.length > 1 && !autopickup) {
         const picked = await query_objlist('Pick up what?', here, INVORDER_SORT, PICK_ANY, allow_all);
@@ -357,20 +357,42 @@ export async function pickup(what) {
     return n_tried > 0 ? 1 : 0;
 }
 
-// src/pickup.c:930 autopick_testobj() — is this object eligible for
-// autopickup? Only the pickup_types test is live: costly_spot() needs shop
-// floors, and the pickup_thrown / pickup_stolen / dropped_nopick overrides
-// need obj.how_lost, which nothing sets yet.
-function autopick_testobj(otmp) {
-    const otypes = game.flags?.pickup_types || '';
+// src/pickup.c:934 autopick_testobj()'s cached cost applies to the whole pile.
+let autopick_costly = false;
 
-    if (otmp.how_lost)
-        note_unported_pickup('autopick_testobj:how_lost');
+// src/pickup.c:930 autopick_testobj(), shop and origin guards precede types.
+export function autopick_testobj(otmp, calc_costly) {
+    const otypes = game.flags?.pickup_types || '';
+    if (calc_costly)
+        autopick_costly = otmp.where === OBJ_FLOOR && costly_spot(otmp.ox, otmp.oy);
+    if (autopick_costly && !otmp.no_charge)
+        return false;
+    if ((game.flags.pickup_thrown !== false && otmp.how_lost === LOST_THROWN)
+        || (game.flags.pickup_stolen !== false && otmp.how_lost === LOST_STOLEN))
+        return true;
+    if (game.flags.dropped_nopick !== false && otmp.how_lost === LOST_DROPPED)
+        return false;
+    if (otmp.how_lost === LOST_EXPLODING)
+        return false;
     if (game.apelist)
         note_unported_pickup('autopick_testobj:exceptions');
-
-    /* check for pickup_types */
     return !otypes || otypes.includes(def_oc_syms[otmp.oclass]);
+}
+
+// src/pickup.c:979 autopick(). Arrays already carry the requested chain order.
+function autopick(olist) {
+    let n = 0, check_costly = true;
+    for (const curr of olist) {
+        if (autopick_testobj(curr, check_costly))
+            n++;
+        check_costly = false;
+    }
+    const picks = [];
+    if (n)
+        for (const curr of olist)
+            if (autopick_testobj(curr, false))
+                picks.push(curr);
+    return picks;
 }
 
 // src/pickup.c allow_all(); query_objlist() filter that accepts everything

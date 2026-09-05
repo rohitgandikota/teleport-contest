@@ -74,7 +74,11 @@ import { depth } from './dungeon.js';
 import { block_point } from './vision.js';
 import { obj_sheds_light, obj_split_light_source } from './light.js';
 import { splitbill } from './shk.js';
-import { bill_dummy_object, billable, costly_spot, stolen_value } from './shk.js';
+import { billable, costly_spot, stolen_value, unpaid_cost, subfrombill,
+         shop_keeper, addtobill, alter_cost } from './shk.js';
+import { copy_mextra } from './mon.js';
+import { ONAME, has_oname, has_omid, OMID, free_omid, ONAME_SKIP_INVUPD,
+         COST_SINGLEOBJ, OBJ_DELETED } from './const.js';
 import { in_rooms } from './hack.js';
 import { impossible, verbalize } from './pline.js';
 import { simpleonames } from './objnam.js';
@@ -141,6 +145,31 @@ const hellprobs = [
 ];
 
 export { mkobjprobs, boxiprobs, rogueprobs, hellprobs };
+
+// src/mkobj.c:417 copy_oextra(). Names are flat in this object model.
+export function copy_oextra(obj2, obj1) {
+    if (!obj2 || !obj1 || (!obj1.oextra && !has_oname(obj1)))
+        return;
+    obj2.oextra ||= {};
+    if (has_oname(obj1))
+        oname(obj2, ONAME(obj1), ONAME_SKIP_INVUPD);
+    if (has_omonst(obj1)) {
+        const source = OMONST(obj1);
+        const saved = obj2.oextra.omonst || {};
+        Object.assign(saved, source, { mextra: null, nmon: null });
+        if (source.mtrack)
+            saved.mtrack = structuredClone(source.mtrack);
+        if (source.mgoal)
+            saved.mgoal = { ...source.mgoal };
+        obj2.omonst = obj2.oextra.omonst = saved;
+        if (source.mextra)
+            copy_mextra(saved, source);
+    }
+    if (obj1.oextra?.omailcmd)
+        obj2.oextra.omailcmd = obj1.oextra.omailcmd;
+    if (has_omid(obj1))
+        obj2.oextra.omid = OMID(obj1);
+}
 
 // src/mkobj.c:536 nextoid() — pick the split-off object's id.
 //
@@ -341,6 +370,32 @@ export function clear_splitobjs() {
     game.context.objsplit = { parent_oid: 0, child_oid: 0 };
 }
 
+// src/mkobj.c:712 bill_dummy_object()
+export async function bill_dummy_object(otmp) {
+    let cost = 0;
+    if (otmp.unpaid) {
+        cost = await unpaid_cost(otmp, COST_SINGLEOBJ);
+        subfrombill(otmp, shop_keeper((game.u.ushops || '').charCodeAt(0)));
+    }
+    const dummy = { ...otmp, oextra: null, where: OBJ_FREE };
+    delete dummy.oname;
+    delete dummy.omonst;
+    delete dummy.omid;
+    dummy.o_id = nextoid(otmp, dummy);
+    dummy.timed = 0;
+    copy_oextra(dummy, otmp);
+    if (has_omid(dummy))
+        free_omid(dummy);
+    if (Is_candle(dummy))
+        dummy.lamplit = 0;
+    dummy.owornmask = 0;
+    await addtobill(dummy, false, true, true);
+    if (cost && dummy.where !== OBJ_DELETED)
+        alter_cost(dummy, -cost);
+    otmp.no_charge = otmp.where === OBJ_FLOOR || otmp.where === OBJ_CONTAINED ? 1 : 0;
+    otmp.unpaid = 0;
+}
+
 // src/mkobj.c:744 alteration_verbs[]
 const alteration_verbs = [
     'cancel', 'drain', 'uncharge', 'unbless', 'uncurse', 'disenchant',
@@ -378,7 +433,7 @@ export async function costly_alteration(obj, alter_type) {
         if (learn_bknown)
             set_bknown(obj, 1);
         await verbalize(`You ${alteration_verbs[alter_type]} ${those} ${simpleonames(obj)}, you pay for ${them}!`);
-        bill_dummy_object(obj);
+        await bill_dummy_object(obj);
         break;
     case OBJ_FLOOR:
         if (learn_bknown)
@@ -386,7 +441,7 @@ export async function costly_alteration(obj, alter_type) {
         if (costly_spot(game.u.ux, game.u.uy)
             && objroom === (game.u.ushops || '').charCodeAt(0)) {
             await verbalize(`You ${alteration_verbs[alter_type]} ${those}, you pay for ${them}!`);
-            bill_dummy_object(obj);
+            await bill_dummy_object(obj);
         } else {
             await stolen_value(obj, cc.x, cc.y, false, false);
         }

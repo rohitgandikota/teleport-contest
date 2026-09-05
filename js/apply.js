@@ -1242,7 +1242,7 @@ async function use_lamp(obj) {
                 /* struct monst *shkp = shop_keeper(*in_rooms(u.ux, u.uy, SHOPBASE)); SetVoice(shkp, 0, 80, 0); */
 
                 await verbalize(`You burn ${ithem}, you bought ${ithem}!`);
-                bill_dummy_object(obj);
+                await bill_dummy_object(obj);
             }
         }
         await begin_burn(obj, false);
@@ -1297,7 +1297,7 @@ async function light_cocktail(optr) {
         await check_unpaid(obj);
         /* SetVoice(shkp, 0, 80, 0); */
         await verbalize("That's in addition to the cost of the potion, of course.");
-        bill_dummy_object(obj);
+        await bill_dummy_object(obj);
     }
     makeknown(obj.otyp);
 

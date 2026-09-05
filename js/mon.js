@@ -92,6 +92,7 @@ import { def_monsyms } from './drawing_data.js';
 import { NO_COLOR } from './terminal.js';
 
 import { has_ceiling, surface } from './dungeon.js';
+import { new_mgivenname } from './do_name.js';
 import { in_rooms } from './hack.js';
 import { m_harmless_trap } from './trap.js';
 import { hastrack } from './track.js';
@@ -4282,6 +4283,37 @@ export async function relmon(mon, monst_list) {
 
     if (monst_list) /* put on migrating_mons or mydogs */
         monst_list.unshift(mon);
+}
+
+// src/mon.c:2597 copy_mextra(). The extension structs contain value fields;
+// eshk.bill_p is the one pointer, copied without cloning its target in C.
+export function copy_mextra(mtmp2, mtmp1) {
+    if (!mtmp2 || !mtmp1 || !mtmp1.mextra)
+        return;
+    mtmp2.mextra ||= { mcorpsenm: NON_PM };
+    if (MGIVENNAME(mtmp1)) {
+        new_mgivenname(mtmp2, MGIVENNAME(mtmp1).length + 1);
+        mtmp2.mgivenname = MGIVENNAME(mtmp1);
+    }
+    if (mtmp1.mextra.egd)
+        Object.assign(mtmp2.mextra.egd ||= {}, structuredClone(mtmp1.mextra.egd));
+    if (mtmp1.mextra.epri)
+        mtmp2.epri = Object.assign(mtmp2.mextra.epri ||= {}, structuredClone(mtmp1.mextra.epri));
+    if (mtmp1.mextra.eshk) {
+        mtmp2.eshk = Object.assign(mtmp2.mextra.eshk ||= {}, structuredClone({
+            ...mtmp1.mextra.eshk, bill_p: null,
+        }));
+        mtmp2.mextra.eshk.bill_p = mtmp1.mextra.eshk.bill_p;
+    }
+    if (mtmp1.mextra.emin)
+        Object.assign(mtmp2.mextra.emin ||= {}, structuredClone(mtmp1.mextra.emin));
+    if (mtmp1.edog || mtmp1.mextra.edog)
+        mtmp2.edog = Object.assign(mtmp2.mextra.edog ||= {}, structuredClone(mtmp1.edog || mtmp1.mextra.edog));
+    if (mtmp1.mextra.ebones)
+        Object.assign(mtmp2.mextra.ebones ||= {}, structuredClone(mtmp1.mextra.ebones));
+    const mcorpsenm = mtmp1.mcorpsenm ?? mtmp1.mextra.mcorpsenm ?? NON_PM;
+    if (mcorpsenm !== NON_PM)
+        mtmp2.mcorpsenm = mtmp2.mextra.mcorpsenm = mcorpsenm;
 }
 
 // src/mon.c:4698 maybe_unhide_at(), a hider at <x,y> that lost its cover

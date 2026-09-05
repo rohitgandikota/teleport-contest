@@ -17,23 +17,22 @@ and persistent gameplay state. Continue source review, measured C branches,
 independent oracles, implementation, and regression checks until that goal is
 met. Current corpus success is not the stopping criterion.
 
-The current verified pass adds 94 C scenarios for potion dipping, alteration
-billing and fire damage. All 44 public and 444 supplemental fixtures pass.
-The measured C union has 53,583/108,268 direct outcomes and 4,304/5,491 entered
-function records. The assertion ledger is 1,707/1,707. State gates check
-inventory identity, consumption, beatitude, bills, light timers and container
-contents. A negative control retains a potion's consumption flag and passes
-the screen oracle while failing the state gate. The published held-out result
-recorded during the audit is 78.39%, distinct from the local result.
+The latest verified pass adds 14 C scenarios for shop billing copies and
+used-up inventory. All 44 public and 445 supplemental fixtures pass. The
+measured C union has 53,638/108,268 direct outcomes and 4,305/5,491 entered
+function records. The assertion ledger is 1,721/1,721. A wrong-identity
+negative control passes every new screen and RNG entry but fails the hidden
+price-adjustment check. The published held-out result recorded during the
+audit is 78.39%, distinct from the local result.
 
 See [STATUS.md](STATUS.md) for checkpoint and next-action details,
-[potion-dipping-audit.md](potion-dipping-audit.md) for the current review,
-[pickup-impact-audit.md](pickup-impact-audit.md) for pushed checkpoint
-`ed337b52`, and [gameplay-gap-audit.md](gameplay-gap-audit.md) for measurement
+[shop-billing-copy-audit.md](shop-billing-copy-audit.md) for the current review,
+[potion-dipping-audit.md](potion-dipping-audit.md) for pushed checkpoint
+`9fee431f`, and [gameplay-gap-audit.md](gameplay-gap-audit.md) for measurement
 limits. The [compiled constant audit](c-constant-audit.md) compares 1,666 values
 with zero different values and one reviewed signed-mask representation.
-The next target is bill_dummy_object's copying and identity, followed by
-bless/curse's shared side effects. The full-port goal remains active.
+Next are remaining itemized-bill paths and bless/curse's shared side effects.
+The full-port goal remains active.
 
 ## Previous focus, 2026-09-03
 

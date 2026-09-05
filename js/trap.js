@@ -398,7 +398,7 @@ export async function catch_lit(obj) {
             await check_unpaid(obj);
             await pline(`"That's in addition to the cost of ${yname(obj)} ${
                 obj.quan === 1 ? 'itself' : 'themselves'}, of course."`);
-            bill_dummy_object(obj);
+            await bill_dummy_object(obj);
         }
     }
 

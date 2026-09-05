@@ -9,7 +9,38 @@ loop until complete. The goal is active without a requested token budget.
 Current-corpus success is not the stopping criterion. Track unreviewed,
 untested, missing, and unreachable source paths explicitly.
 
-### Current work: full potion dipping and shared alteration effects
+### Current work: shop billing copies and used-up inventory
+
+Potion dipping is committed and pushed as `9fee431f`. The current verified,
+uncommitted pass ports bill_dummy_object in mkobj.js, copy_oextra and
+copy_mextra, unpaid_cost, add_to_billobjs, bp_to_obj and doinvbill. xprname
+has C's price formatting, quantity and letter rules. The existing default
+inventory-category command exposes the missing used-up menu and bill display.
+
+The new permanent shop-billing-copies fixture has 14 C intent-validated cases,
+1,779 exact screens/cursors and 75,178 exact RNG entries. The state gate checks
+IDs, original prices, quantities, names, billing ownership, flags and timers,
+with separate saved-monster struct/pointer and lit-lamp source controls. A
+loader using next_ident instead of nextoid still passes all new screens/RNG,
+but the state gate fails on stack-oil's changed price adjustment.
+
+Stable-runtime regression passes 44 public and 445 supplemental fixtures;
+supplemental has 143,726 exact screens/cursors, 7,151,465 RNG and 3,298
+animations. Fuzz remains 101/102 with the same fixed-date artifact. All 45
+hang checks, 80 reused role-smoke controls, 16 tool tests, source audit and
+seven state gates pass. Native recording shop-billing-copy-20260905 is exact,
+adding 55 outcomes and one entered record. The union is 53,638/108,268 and
+4,305/5,491; the ledger is 1,721/1,721. Logs are in .cache/billcopy/ and the
+review is [shop-billing-copy-audit.md](shop-billing-copy-audit.md).
+
+Next action: review/stage/commit/push this verified checkpoint. Then continue
+with partially consumed bills, debt-only itemization and bill paging, or the
+full bless/curse bodies already read below. add_one_tobill still lacks the
+full-bill/billability disposal, glob metadata and quote recording paths;
+copy_oextra is not yet shared by splitobj or saved-trait callers. Do not mark
+the full-port goal complete at this checkpoint.
+
+### Verified potion dipping and shared alteration effects
 
 Pickup/floor/saddle checkpoint `ed337b52` is pushed. The current uncommitted
 pass ports potion_dip's full C body, hold_potion, poof, blindness macros and
@@ -35,10 +66,10 @@ Ten related state gates pass. The measured union adds 252 outcomes and four
 entered records, reaching 53,583/108,268 and 4,304/5,491. Supplemental totals
 are 141,947 exact screens/cursors, 7,076,287 RNG and 3,298 animations. New cases
 total 9,473 screens/cursors, 304,540 RNG and two animations. See
-[potion-dipping-audit.md](potion-dipping-audit.md). The diff is ready for final
-review, commit and push; runtime files have not changed since the full gates.
+[potion-dipping-audit.md](potion-dipping-audit.md). The checkpoint is committed
+and pushed as `9fee431f`; runtime files have not changed since the full gates.
 
-Next source action after pushing: bill_dummy_object's complete C body has been
+Current source action: bill_dummy_object's complete C body has been
 read at mkobj.c:712-740. The existing shk.js implementation drops oextra,
 uses next_ident instead of nextoid, and clears lamplit for every object rather
 than candles only. Port its actual ownership/copy/billing calls in mkobj.js,

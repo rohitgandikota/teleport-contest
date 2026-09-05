@@ -1340,6 +1340,7 @@ function count_categories(olist, filter = null) {
 }
 
 /* include/hack.h query_category qflags */
+import { BILLED_TYPES } from './const.js';
 const ALL_TYPES = 0x0020, UNPAID_TYPES = 0x0004, WORN_TYPES = 0x0010,
       CHOOSE_ALL = 0x0080,
       BUC_BLESSED = 0x0100, BUC_CURSED = 0x0200, BUC_UNCURSED = 0x0400,
@@ -1366,6 +1367,7 @@ async function query_category(qstr, olist, qflags, how = null) {
     const do_worn = (qflags & WORN_TYPES) !== 0;
     const ofilter = do_worn ? (obj) => !!obj.owornmask : null;
     const do_unpaid = (qflags & UNPAID_TYPES) !== 0 && count_unpaid(olist);
+    const do_usedup = (qflags & BILLED_TYPES) !== 0;
     let num_buc_types = 0;
     const do_blessed = (qflags & BUC_BLESSED) !== 0
                        && count_buc(olist, 'B', ofilter) && ++num_buc_types;
@@ -1380,7 +1382,7 @@ async function query_category(qstr, olist, qflags, how = null) {
 
     const ccount = count_categories(olist, ofilter);
     /* no point in actually showing a menu for a single category */
-    if (ccount === 1 && !do_unpaid && num_buc_types <= 1) {
+    if (ccount === 1 && !do_unpaid && !do_usedup && num_buc_types <= 1) {
         const curr = olist.find((obj) => !ofilter || ofilter(obj));
         return curr ? [curr.oclass] : [];
     }
@@ -1425,11 +1427,14 @@ async function query_category(qstr, olist, qflags, how = null) {
         invlet = String.fromCharCode(invlet.charCodeAt(0) + 1);
     }
 
-    if (do_unpaid || num_buc_types > 0 || num_justpicked)
+    if (do_unpaid || do_usedup || num_buc_types > 0 || num_justpicked)
         tty_add_menu_str(win, '');
     if (do_unpaid)
         tty_add_menu(win, null, 'u'.charCodeAt(0), 'u', 0, ATR_NONE,
                      NO_COLOR, 'Unpaid items', MENU_ITEMFLAGS_SKIPINVERT);
+    if (do_usedup)
+        tty_add_menu(win, null, 'x'.charCodeAt(0), 'x', 0, ATR_NONE,
+                     NO_COLOR, 'Unpaid items already used up', MENU_ITEMFLAGS_SKIPINVERT);
     /* the BUCX cluster is in alphabetical order (B, C, U, X), reversing
        the usual U/C sequence, and every entry skips bulk inverts */
     if (do_blessed)
@@ -1468,11 +1473,11 @@ async function query_category(qstr, olist, qflags, how = null) {
 
 // src/invent.c dotypeinv(), default MENU_FULL category prompt. Unlike the
 // drop and loot callers this accepts exactly one class or BUC filter.
-export async function query_inventory_category(olist) {
+export async function query_inventory_category(olist, billx = false) {
     return query_category(
         'What type of object do you want an inventory of?', olist,
         UNPAID_TYPES | BUC_BLESSED | BUC_CURSED | BUC_UNCURSED | BUC_UNKNOWN
-        | JUSTPICKED | INCLUDE_VENOM,
+        | JUSTPICKED | INCLUDE_VENOM | (billx ? BILLED_TYPES : 0),
         1 /* PICK_ONE */);
 }
 

@@ -13,6 +13,7 @@ import { ansimpleoname } from './objnam.js';
 import { docrt } from './display.js';
 import { add_menu_heading } from './options.js';
 import { QBUFSZ } from './const.js';
+import { BUFSZ, CONTAINED_SYM } from './const.js';
 import { MINV_PICKMASK } from './const.js';
 import { MINV_ALL } from './const.js';
 import { INCLUDE_HERO } from './const.js';
@@ -1842,21 +1843,41 @@ function note_unported_invent(what) {
     (game.unported ||= new Set()).add(what);
 }
 
-// src/invent.c xprname() — one inventory line: "b - a +1 bow".
-//
-// C's format is "%c - %.*s%s": the letter, " - ", the object's name, and a
-// suffix that is "." when the caller asked for a sentence.
+// src/invent.c:2895 xprname()
 export function xprname(obj, txt, let_, dot, cost, quan) {
-    /* if quan is non-0, print that quantity rather than obj->quan */
+    const use_invlet = game.flags.fixinv !== false && obj
+        && let_ !== CONTAINED_SYM && let_ !== HANDS_SYM;
     let savequan = 0;
     if (quan && obj) {
         savequan = obj.quan;
         obj.quan = quan;
     }
-    const name = txt || doname(obj);
+    if (!txt)
+        txt = doname(obj);
+    let txtlen = txt.length, suffix, pad = false;
+    if (cost !== 0 || let_ === '*') {
+        if (dot && use_invlet)
+            let_ = obj.invlet;
+        suffix = `${game.iflags.menu_tab_sep ? '\t' : ' '}${String(cost).padStart(6)} ${currency(cost).slice(0, 50)}`;
+        if (!game.iflags.menu_tab_sep) {
+            pad = true;
+            if (txtlen < 45)
+                txtlen = 45;
+        }
+    } else {
+        if (use_invlet)
+            let_ = obj.invlet;
+        suffix = dot ? '.' : '';
+    }
+    if (txtlen > BUFSZ - 1 - (4 + suffix.length))
+        txtlen = BUFSZ - 1 - (4 + suffix.length);
+    let text = txt.slice(0, txtlen);
+    if (pad)
+        text = text.padEnd(45);
+    const result = `${let_} - ${text}${suffix}`;
     if (savequan)
         obj.quan = savequan;
-    return `${let_} - ${name}${dot ? '.' : ''}`;
+    return result;
 }
 
 // src/invent.c:2861 obj_to_let(); assign floating letters before printing.

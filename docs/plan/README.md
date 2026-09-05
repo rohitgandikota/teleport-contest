@@ -34,11 +34,12 @@ and [gameplay-gap-audit.md](gameplay-gap-audit.md) for measurement limits.
 The [compiled constant audit](c-constant-audit.md) compares 1,666 values with zero
 different values and one reviewed signed-mask representation. Continue with
 discovery sorting and the remaining inventory/display dependencies.
-Checkpoint `2ec9e465` is pushed with 24 pack-order scenarios and stored-order
-checks. The next uncommitted discovery sorting and identification pass has
-72 exact permanent C probes, a passing state gate with a negative control,
-and 226 newly reached direct outcomes. Full regression passes. See STATUS.md
-before committing this work and continuing with automatic-pickup options.
+Checkpoints `2ec9e465` and `136b6a33` are pushed with 24 pack-order and 72
+discovery scenarios. The next verified automatic-pickup options pass has 36
+exact permanent C cases, a passing state gate and 34 newly reached direct
+outcomes, taking the union to 53,212/108,268. All 44 public and 434 supplemental
+fixtures pass. See [autopickup-options-audit.md](autopickup-options-audit.md) and
+STATUS.md before committing and continuing with dropped/thrown overrides.
 
 ## Previous focus, 2026-09-03
 

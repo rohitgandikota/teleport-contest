@@ -1,0 +1,5669 @@
+{
+  "name": "autopickup-options",
+  "description": "C automatic pickup class configuration, all four menu styles, hidden venom, custom class order and partial invalid values.",
+  "coverage": [
+    "mode.debug",
+    "level.ordinary",
+    "options.rc-bindings",
+    "ui.menus",
+    "ui.getlin",
+    "ui.cancel-invalid",
+    "object.food-corpses"
+  ],
+  "branches": [
+    "autopickup-options.style-traditional",
+    "autopickup-options.style-combination",
+    "autopickup-options.style-full",
+    "autopickup-options.style-partial",
+    "autopickup-options.prompt-empty",
+    "autopickup-options.prompt-cancel",
+    "autopickup-options.prompt-spaces",
+    "autopickup-options.prompt-all",
+    "autopickup-options.prompt-uppercase-all",
+    "autopickup-options.prompt-duplicates",
+    "autopickup-options.prompt-unknown",
+    "autopickup-options.prompt-whitespace",
+    "autopickup-options.prompt-menu",
+    "autopickup-options.prompt-menu-cancel",
+    "autopickup-options.menu-cancel",
+    "autopickup-options.menu-all",
+    "autopickup-options.menu-toggle-class",
+    "autopickup-options.menu-accept-default",
+    "autopickup-options.wizard-venom",
+    "autopickup-options.wizard-select-all",
+    "autopickup-options.menu-unselect",
+    "autopickup-options.menu-autopickup-on",
+    "autopickup-options.normal-menu",
+    "autopickup-options.custom-order",
+    "autopickup-options.prompt-custom-order",
+    "autopickup-options.config-all",
+    "autopickup-options.config-uppercase-all",
+    "autopickup-options.config-classes",
+    "autopickup-options.config-all-prefix",
+    "autopickup-options.config-venom"
+  ],
+  "requireBranchAssertions": true,
+  "segments": [
+    {
+      "name": "style-traditional",
+      "seed": 102200,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=menustyle:traditional\n",
+      "moves": "mO:pickup_types\r\r!?\rmO>>>>>>>>>>\u001b"
+    },
+    {
+      "name": "style-combination",
+      "seed": 102200,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=menustyle:combination\n",
+      "moves": "mO:pickup_types\r\r!?\rmO>>>>>>>>>>\u001b"
+    },
+    {
+      "name": "style-full",
+      "seed": 102200,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=menustyle:full\n",
+      "moves": "mO:pickup_types\r\r!?\rmO>>>>>>>>>>\u001b"
+    },
+    {
+      "name": "style-partial",
+      "seed": 102200,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=menustyle:partial\n",
+      "moves": "mO:pickup_types\r\r!?\rmO>>>>>>>>>>\u001b"
+    },
+    {
+      "name": "prompt-empty",
+      "seed": 102200,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=menustyle:traditional,pickup_types:$\n",
+      "moves": "mO:pickup_types\r\r\r\u001b\u001bmO>>>>>>>>>>\u001b"
+    },
+    {
+      "name": "prompt-cancel",
+      "seed": 102200,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=menustyle:traditional,pickup_types:$\n",
+      "moves": "mO:pickup_types\r\r\u001b\u001b\u001bmO>>>>>>>>>>\u001b"
+    },
+    {
+      "name": "prompt-spaces",
+      "seed": 102200,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=menustyle:traditional,pickup_types:$\n",
+      "moves": "mO:pickup_types\r\r   \r\u001b\u001bmO>>>>>>>>>>\u001b"
+    },
+    {
+      "name": "prompt-all",
+      "seed": 102200,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=menustyle:traditional,pickup_types:$\n",
+      "moves": "mO:pickup_types\r\rall\r\u001b\u001bmO>>>>>>>>>>\u001b"
+    },
+    {
+      "name": "prompt-uppercase-all",
+      "seed": 102200,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=menustyle:traditional,pickup_types:$\n",
+      "moves": "mO:pickup_types\r\rAll\r\u001b\u001bmO>>>>>>>>>>\u001b"
+    },
+    {
+      "name": "prompt-duplicates",
+      "seed": 102200,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=menustyle:traditional,pickup_types:$\n",
+      "moves": "mO:pickup_types\r\r!!?\r\u001b\u001bmO>>>>>>>>>>\u001b"
+    },
+    {
+      "name": "prompt-unknown",
+      "seed": 102200,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=menustyle:traditional,pickup_types:$\n",
+      "moves": "mO:pickup_types\r\r!x?\r\u001b\u001bmO>>>>>>>>>>\u001b"
+    },
+    {
+      "name": "prompt-whitespace",
+      "seed": 102200,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=menustyle:traditional,pickup_types:$\n",
+      "moves": "mO:pickup_types\r\r  !  ?  \r\u001b\u001bmO>>>>>>>>>>\u001b"
+    },
+    {
+      "name": "prompt-menu",
+      "seed": 102200,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=menustyle:traditional,pickup_types:$\n",
+      "moves": "mO:pickup_types\r\rm\r!?\r\u001b\u001bmO>>>>>>>>>>\u001b"
+    },
+    {
+      "name": "prompt-menu-cancel",
+      "seed": 102200,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=menustyle:traditional,pickup_types:$\n",
+      "moves": "mO:pickup_types\r\rm\r\u001b\u001b\u001bmO>>>>>>>>>>\u001b"
+    },
+    {
+      "name": "menu-cancel",
+      "seed": 102200,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=menustyle:full,pickup_types:$\n",
+      "moves": "mO:pickup_types\r\r\u001bmO>>>>>>>>>>\u001b"
+    },
+    {
+      "name": "menu-all",
+      "seed": 102200,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=menustyle:full,pickup_types:$\n",
+      "moves": "mO:pickup_types\r\rA\rmO>>>>>>>>>>\u001b"
+    },
+    {
+      "name": "menu-toggle-class",
+      "seed": 102200,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=menustyle:full,pickup_types:$\n",
+      "moves": "mO:pickup_types\r\r$!?\rmO>>>>>>>>>>\u001b"
+    },
+    {
+      "name": "menu-accept-default",
+      "seed": 102200,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=menustyle:full,pickup_types:$\n",
+      "moves": "mO:pickup_types\r\r\rmO>>>>>>>>>>\u001b"
+    },
+    {
+      "name": "wizard-venom",
+      "seed": 102200,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=menustyle:full\n",
+      "moves": "mO:pickup_types\r\rp\rmO>>>>>>>>>>\u001b"
+    },
+    {
+      "name": "wizard-select-all",
+      "seed": 102200,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=menustyle:full\n",
+      "moves": "mO:pickup_types\r\r.\rmO>>>>>>>>>>\u001b"
+    },
+    {
+      "name": "menu-unselect",
+      "seed": 102200,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=menustyle:full,pickup_types:$\n",
+      "moves": "mO:pickup_types\r\r$\rmO>>>>>>>>>>\u001b"
+    },
+    {
+      "name": "menu-autopickup-on",
+      "seed": 102200,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=menustyle:full,autopickup\n",
+      "moves": "mO:pickup_types\r\r!?\rmO>>>>>>>>>>\u001b"
+    },
+    {
+      "name": "normal-menu",
+      "seed": 102200,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:normal\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=menustyle:full\n",
+      "moves": "mO:pickup_types\r\r!?\rmO>>>>>>>>>>\u001b"
+    },
+    {
+      "name": "custom-order",
+      "seed": 102200,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=menustyle:full,packorder:!?$\n",
+      "moves": "mO:pickup_types\r\rab\rmO>>>>>>>>>>\u001b"
+    },
+    {
+      "name": "prompt-custom-order",
+      "seed": 102200,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=menustyle:combination,packorder:!?$\n",
+      "moves": "mO:pickup_types\r\r!?\rmO>>>>>>>>>>\u001b"
+    },
+    {
+      "name": "config-all",
+      "seed": 102200,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=pickup_types:all\n",
+      "moves": "mO>>>>>>>>>>\u001b"
+    },
+    {
+      "name": "config-uppercase-all",
+      "seed": 102200,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=pickup_types:All\n",
+      "moves": "mO>>>>>>>>>>\u001b"
+    },
+    {
+      "name": "config-classes",
+      "seed": 102200,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=pickup_types:!?$\n",
+      "moves": "mO>>>>>>>>>>\u001b"
+    },
+    {
+      "name": "config-all-prefix",
+      "seed": 102200,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=pickup_types:Anything\n",
+      "moves": "mO>>>>>>>>>>\u001b"
+    },
+    {
+      "name": "config-venom",
+      "seed": 102200,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=pickup_types:.\n",
+      "moves": "mO>>>>>>>>>>\u001b"
+    }
+  ],
+  "branchAssertions": [
+    {
+      "branch": "autopickup-options.style-traditional",
+      "segment": 0,
+      "screenIncludes": [
+        "New pickup_types:"
+      ],
+      "screenCells": [
+        {
+          "step": 28,
+          "x": 5,
+          "y": 0,
+          "equals": "p"
+        },
+        {
+          "step": 28,
+          "x": 6,
+          "y": 0,
+          "equals": "i"
+        },
+        {
+          "step": 28,
+          "x": 7,
+          "y": 0,
+          "equals": "c"
+        },
+        {
+          "step": 28,
+          "x": 8,
+          "y": 0,
+          "equals": "k"
+        },
+        {
+          "step": 28,
+          "x": 9,
+          "y": 0,
+          "equals": "u"
+        },
+        {
+          "step": 28,
+          "x": 10,
+          "y": 0,
+          "equals": "p"
+        },
+        {
+          "step": 28,
+          "x": 11,
+          "y": 0,
+          "equals": "_"
+        },
+        {
+          "step": 28,
+          "x": 12,
+          "y": 0,
+          "equals": "t"
+        },
+        {
+          "step": 28,
+          "x": 13,
+          "y": 0,
+          "equals": "y"
+        },
+        {
+          "step": 28,
+          "x": 14,
+          "y": 0,
+          "equals": "p"
+        },
+        {
+          "step": 28,
+          "x": 15,
+          "y": 0,
+          "equals": "e"
+        },
+        {
+          "step": 28,
+          "x": 16,
+          "y": 0,
+          "equals": "s"
+        },
+        {
+          "step": 28,
+          "x": 17,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 28,
+          "x": 18,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 28,
+          "x": 19,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 28,
+          "x": 20,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 28,
+          "x": 21,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 28,
+          "x": 22,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 28,
+          "x": 23,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 28,
+          "x": 24,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 28,
+          "x": 25,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 28,
+          "x": 26,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 28,
+          "x": 27,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 28,
+          "x": 28,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 28,
+          "x": 29,
+          "y": 0,
+          "equals": "["
+        },
+        {
+          "step": 28,
+          "x": 30,
+          "y": 0,
+          "equals": "!"
+        },
+        {
+          "step": 28,
+          "x": 31,
+          "y": 0,
+          "equals": "?"
+        },
+        {
+          "step": 28,
+          "x": 32,
+          "y": 0,
+          "equals": "]"
+        }
+      ]
+    },
+    {
+      "branch": "autopickup-options.style-combination",
+      "segment": 1,
+      "screenIncludes": [
+        "New pickup_types:"
+      ],
+      "screenCells": [
+        {
+          "step": 28,
+          "x": 5,
+          "y": 0,
+          "equals": "p"
+        },
+        {
+          "step": 28,
+          "x": 6,
+          "y": 0,
+          "equals": "i"
+        },
+        {
+          "step": 28,
+          "x": 7,
+          "y": 0,
+          "equals": "c"
+        },
+        {
+          "step": 28,
+          "x": 8,
+          "y": 0,
+          "equals": "k"
+        },
+        {
+          "step": 28,
+          "x": 9,
+          "y": 0,
+          "equals": "u"
+        },
+        {
+          "step": 28,
+          "x": 10,
+          "y": 0,
+          "equals": "p"
+        },
+        {
+          "step": 28,
+          "x": 11,
+          "y": 0,
+          "equals": "_"
+        },
+        {
+          "step": 28,
+          "x": 12,
+          "y": 0,
+          "equals": "t"
+        },
+        {
+          "step": 28,
+          "x": 13,
+          "y": 0,
+          "equals": "y"
+        },
+        {
+          "step": 28,
+          "x": 14,
+          "y": 0,
+          "equals": "p"
+        },
+        {
+          "step": 28,
+          "x": 15,
+          "y": 0,
+          "equals": "e"
+        },
+        {
+          "step": 28,
+          "x": 16,
+          "y": 0,
+          "equals": "s"
+        },
+        {
+          "step": 28,
+          "x": 17,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 28,
+          "x": 18,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 28,
+          "x": 19,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 28,
+          "x": 20,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 28,
+          "x": 21,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 28,
+          "x": 22,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 28,
+          "x": 23,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 28,
+          "x": 24,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 28,
+          "x": 25,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 28,
+          "x": 26,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 28,
+          "x": 27,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 28,
+          "x": 28,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 28,
+          "x": 29,
+          "y": 0,
+          "equals": "["
+        },
+        {
+          "step": 28,
+          "x": 30,
+          "y": 0,
+          "equals": "!"
+        },
+        {
+          "step": 28,
+          "x": 31,
+          "y": 0,
+          "equals": "?"
+        },
+        {
+          "step": 28,
+          "x": 32,
+          "y": 0,
+          "equals": "]"
+        }
+      ]
+    },
+    {
+      "branch": "autopickup-options.style-full",
+      "segment": 2,
+      "screenIncludes": [
+        "Autopickup what?"
+      ],
+      "screenCells": [
+        {
+          "step": 28,
+          "x": 5,
+          "y": 0,
+          "equals": "p"
+        },
+        {
+          "step": 28,
+          "x": 6,
+          "y": 0,
+          "equals": "i"
+        },
+        {
+          "step": 28,
+          "x": 7,
+          "y": 0,
+          "equals": "c"
+        },
+        {
+          "step": 28,
+          "x": 8,
+          "y": 0,
+          "equals": "k"
+        },
+        {
+          "step": 28,
+          "x": 9,
+          "y": 0,
+          "equals": "u"
+        },
+        {
+          "step": 28,
+          "x": 10,
+          "y": 0,
+          "equals": "p"
+        },
+        {
+          "step": 28,
+          "x": 11,
+          "y": 0,
+          "equals": "_"
+        },
+        {
+          "step": 28,
+          "x": 12,
+          "y": 0,
+          "equals": "t"
+        },
+        {
+          "step": 28,
+          "x": 13,
+          "y": 0,
+          "equals": "y"
+        },
+        {
+          "step": 28,
+          "x": 14,
+          "y": 0,
+          "equals": "p"
+        },
+        {
+          "step": 28,
+          "x": 15,
+          "y": 0,
+          "equals": "e"
+        },
+        {
+          "step": 28,
+          "x": 16,
+          "y": 0,
+          "equals": "s"
+        },
+        {
+          "step": 28,
+          "x": 17,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 28,
+          "x": 18,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 28,
+          "x": 19,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 28,
+          "x": 20,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 28,
+          "x": 21,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 28,
+          "x": 22,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 28,
+          "x": 23,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 28,
+          "x": 24,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 28,
+          "x": 25,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 28,
+          "x": 26,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 28,
+          "x": 27,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 28,
+          "x": 28,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 28,
+          "x": 29,
+          "y": 0,
+          "equals": "["
+        },
+        {
+          "step": 28,
+          "x": 30,
+          "y": 0,
+          "equals": "?"
+        },
+        {
+          "step": 28,
+          "x": 31,
+          "y": 0,
+          "equals": "!"
+        },
+        {
+          "step": 28,
+          "x": 32,
+          "y": 0,
+          "equals": "]"
+        }
+      ]
+    },
+    {
+      "branch": "autopickup-options.style-partial",
+      "segment": 3,
+      "screenIncludes": [
+        "Autopickup what?"
+      ],
+      "screenCells": [
+        {
+          "step": 28,
+          "x": 5,
+          "y": 0,
+          "equals": "p"
+        },
+        {
+          "step": 28,
+          "x": 6,
+          "y": 0,
+          "equals": "i"
+        },
+        {
+          "step": 28,
+          "x": 7,
+          "y": 0,
+          "equals": "c"
+        },
+        {
+          "step": 28,
+          "x": 8,
+          "y": 0,
+          "equals": "k"
+        },
+        {
+          "step": 28,
+          "x": 9,
+          "y": 0,
+          "equals": "u"
+        },
+        {
+          "step": 28,
+          "x": 10,
+          "y": 0,
+          "equals": "p"
+        },
+        {
+          "step": 28,
+          "x": 11,
+          "y": 0,
+          "equals": "_"
+        },
+        {
+          "step": 28,
+          "x": 12,
+          "y": 0,
+          "equals": "t"
+        },
+        {
+          "step": 28,
+          "x": 13,
+          "y": 0,
+          "equals": "y"
+        },
+        {
+          "step": 28,
+          "x": 14,
+          "y": 0,
+          "equals": "p"
+        },
+        {
+          "step": 28,
+          "x": 15,
+          "y": 0,
+          "equals": "e"
+        },
+        {
+          "step": 28,
+          "x": 16,
+          "y": 0,
+          "equals": "s"
+        },
+        {
+          "step": 28,
+          "x": 17,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 28,
+          "x": 18,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 28,
+          "x": 19,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 28,
+          "x": 20,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 28,
+          "x": 21,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 28,
+          "x": 22,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 28,
+          "x": 23,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 28,
+          "x": 24,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 28,
+          "x": 25,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 28,
+          "x": 26,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 28,
+          "x": 27,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 28,
+          "x": 28,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 28,
+          "x": 29,
+          "y": 0,
+          "equals": "["
+        },
+        {
+          "step": 28,
+          "x": 30,
+          "y": 0,
+          "equals": "?"
+        },
+        {
+          "step": 28,
+          "x": 31,
+          "y": 0,
+          "equals": "!"
+        },
+        {
+          "step": 28,
+          "x": 32,
+          "y": 0,
+          "equals": "]"
+        }
+      ]
+    },
+    {
+      "branch": "autopickup-options.prompt-empty",
+      "segment": 4,
+      "screenIncludes": [
+        "New pickup_types:"
+      ],
+      "screenCells": [
+        {
+          "step": 28,
+          "x": 5,
+          "y": 0,
+          "equals": "p"
+        },
+        {
+          "step": 28,
+          "x": 6,
+          "y": 0,
+          "equals": "i"
+        },
+        {
+          "step": 28,
+          "x": 7,
+          "y": 0,
+          "equals": "c"
+        },
+        {
+          "step": 28,
+          "x": 8,
+          "y": 0,
+          "equals": "k"
+        },
+        {
+          "step": 28,
+          "x": 9,
+          "y": 0,
+          "equals": "u"
+        },
+        {
+          "step": 28,
+          "x": 10,
+          "y": 0,
+          "equals": "p"
+        },
+        {
+          "step": 28,
+          "x": 11,
+          "y": 0,
+          "equals": "_"
+        },
+        {
+          "step": 28,
+          "x": 12,
+          "y": 0,
+          "equals": "t"
+        },
+        {
+          "step": 28,
+          "x": 13,
+          "y": 0,
+          "equals": "y"
+        },
+        {
+          "step": 28,
+          "x": 14,
+          "y": 0,
+          "equals": "p"
+        },
+        {
+          "step": 28,
+          "x": 15,
+          "y": 0,
+          "equals": "e"
+        },
+        {
+          "step": 28,
+          "x": 16,
+          "y": 0,
+          "equals": "s"
+        },
+        {
+          "step": 28,
+          "x": 17,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 28,
+          "x": 18,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 28,
+          "x": 19,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 28,
+          "x": 20,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 28,
+          "x": 21,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 28,
+          "x": 22,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 28,
+          "x": 23,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 28,
+          "x": 24,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 28,
+          "x": 25,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 28,
+          "x": 26,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 28,
+          "x": 27,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 28,
+          "x": 28,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 28,
+          "x": 29,
+          "y": 0,
+          "equals": "["
+        },
+        {
+          "step": 28,
+          "x": 30,
+          "y": 0,
+          "equals": "$"
+        },
+        {
+          "step": 28,
+          "x": 31,
+          "y": 0,
+          "equals": "]"
+        }
+      ]
+    },
+    {
+      "branch": "autopickup-options.prompt-cancel",
+      "segment": 5,
+      "screenIncludes": [
+        "New pickup_types:"
+      ],
+      "screenCells": [
+        {
+          "step": 28,
+          "x": 5,
+          "y": 0,
+          "equals": "p"
+        },
+        {
+          "step": 28,
+          "x": 6,
+          "y": 0,
+          "equals": "i"
+        },
+        {
+          "step": 28,
+          "x": 7,
+          "y": 0,
+          "equals": "c"
+        },
+        {
+          "step": 28,
+          "x": 8,
+          "y": 0,
+          "equals": "k"
+        },
+        {
+          "step": 28,
+          "x": 9,
+          "y": 0,
+          "equals": "u"
+        },
+        {
+          "step": 28,
+          "x": 10,
+          "y": 0,
+          "equals": "p"
+        },
+        {
+          "step": 28,
+          "x": 11,
+          "y": 0,
+          "equals": "_"
+        },
+        {
+          "step": 28,
+          "x": 12,
+          "y": 0,
+          "equals": "t"
+        },
+        {
+          "step": 28,
+          "x": 13,
+          "y": 0,
+          "equals": "y"
+        },
+        {
+          "step": 28,
+          "x": 14,
+          "y": 0,
+          "equals": "p"
+        },
+        {
+          "step": 28,
+          "x": 15,
+          "y": 0,
+          "equals": "e"
+        },
+        {
+          "step": 28,
+          "x": 16,
+          "y": 0,
+          "equals": "s"
+        },
+        {
+          "step": 28,
+          "x": 17,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 28,
+          "x": 18,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 28,
+          "x": 19,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 28,
+          "x": 20,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 28,
+          "x": 21,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 28,
+          "x": 22,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 28,
+          "x": 23,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 28,
+          "x": 24,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 28,
+          "x": 25,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 28,
+          "x": 26,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 28,
+          "x": 27,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 28,
+          "x": 28,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 28,
+          "x": 29,
+          "y": 0,
+          "equals": "["
+        },
+        {
+          "step": 28,
+          "x": 30,
+          "y": 0,
+          "equals": "$"
+        },
+        {
+          "step": 28,
+          "x": 31,
+          "y": 0,
+          "equals": "]"
+        }
+      ]
+    },
+    {
+      "branch": "autopickup-options.prompt-spaces",
+      "segment": 6,
+      "screenIncludes": [
+        "New pickup_types:"
+      ],
+      "screenCells": [
+        {
+          "step": 31,
+          "x": 5,
+          "y": 0,
+          "equals": "p"
+        },
+        {
+          "step": 31,
+          "x": 6,
+          "y": 0,
+          "equals": "i"
+        },
+        {
+          "step": 31,
+          "x": 7,
+          "y": 0,
+          "equals": "c"
+        },
+        {
+          "step": 31,
+          "x": 8,
+          "y": 0,
+          "equals": "k"
+        },
+        {
+          "step": 31,
+          "x": 9,
+          "y": 0,
+          "equals": "u"
+        },
+        {
+          "step": 31,
+          "x": 10,
+          "y": 0,
+          "equals": "p"
+        },
+        {
+          "step": 31,
+          "x": 11,
+          "y": 0,
+          "equals": "_"
+        },
+        {
+          "step": 31,
+          "x": 12,
+          "y": 0,
+          "equals": "t"
+        },
+        {
+          "step": 31,
+          "x": 13,
+          "y": 0,
+          "equals": "y"
+        },
+        {
+          "step": 31,
+          "x": 14,
+          "y": 0,
+          "equals": "p"
+        },
+        {
+          "step": 31,
+          "x": 15,
+          "y": 0,
+          "equals": "e"
+        },
+        {
+          "step": 31,
+          "x": 16,
+          "y": 0,
+          "equals": "s"
+        },
+        {
+          "step": 31,
+          "x": 17,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 31,
+          "x": 18,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 31,
+          "x": 19,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 31,
+          "x": 20,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 31,
+          "x": 21,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 31,
+          "x": 22,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 31,
+          "x": 23,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 31,
+          "x": 24,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 31,
+          "x": 25,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 31,
+          "x": 26,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 31,
+          "x": 27,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 31,
+          "x": 28,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 31,
+          "x": 29,
+          "y": 0,
+          "equals": "["
+        },
+        {
+          "step": 31,
+          "x": 30,
+          "y": 0,
+          "equals": "a"
+        },
+        {
+          "step": 31,
+          "x": 31,
+          "y": 0,
+          "equals": "l"
+        },
+        {
+          "step": 31,
+          "x": 32,
+          "y": 0,
+          "equals": "l"
+        },
+        {
+          "step": 31,
+          "x": 33,
+          "y": 0,
+          "equals": "]"
+        }
+      ]
+    },
+    {
+      "branch": "autopickup-options.prompt-all",
+      "segment": 7,
+      "screenIncludes": [
+        "New pickup_types:"
+      ],
+      "screenCells": [
+        {
+          "step": 31,
+          "x": 5,
+          "y": 0,
+          "equals": "p"
+        },
+        {
+          "step": 31,
+          "x": 6,
+          "y": 0,
+          "equals": "i"
+        },
+        {
+          "step": 31,
+          "x": 7,
+          "y": 0,
+          "equals": "c"
+        },
+        {
+          "step": 31,
+          "x": 8,
+          "y": 0,
+          "equals": "k"
+        },
+        {
+          "step": 31,
+          "x": 9,
+          "y": 0,
+          "equals": "u"
+        },
+        {
+          "step": 31,
+          "x": 10,
+          "y": 0,
+          "equals": "p"
+        },
+        {
+          "step": 31,
+          "x": 11,
+          "y": 0,
+          "equals": "_"
+        },
+        {
+          "step": 31,
+          "x": 12,
+          "y": 0,
+          "equals": "t"
+        },
+        {
+          "step": 31,
+          "x": 13,
+          "y": 0,
+          "equals": "y"
+        },
+        {
+          "step": 31,
+          "x": 14,
+          "y": 0,
+          "equals": "p"
+        },
+        {
+          "step": 31,
+          "x": 15,
+          "y": 0,
+          "equals": "e"
+        },
+        {
+          "step": 31,
+          "x": 16,
+          "y": 0,
+          "equals": "s"
+        },
+        {
+          "step": 31,
+          "x": 17,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 31,
+          "x": 18,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 31,
+          "x": 19,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 31,
+          "x": 20,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 31,
+          "x": 21,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 31,
+          "x": 22,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 31,
+          "x": 23,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 31,
+          "x": 24,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 31,
+          "x": 25,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 31,
+          "x": 26,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 31,
+          "x": 27,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 31,
+          "x": 28,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 31,
+          "x": 29,
+          "y": 0,
+          "equals": "["
+        },
+        {
+          "step": 31,
+          "x": 30,
+          "y": 0,
+          "equals": "a"
+        },
+        {
+          "step": 31,
+          "x": 31,
+          "y": 0,
+          "equals": "l"
+        },
+        {
+          "step": 31,
+          "x": 32,
+          "y": 0,
+          "equals": "l"
+        },
+        {
+          "step": 31,
+          "x": 33,
+          "y": 0,
+          "equals": "]"
+        }
+      ]
+    },
+    {
+      "branch": "autopickup-options.prompt-uppercase-all",
+      "segment": 8,
+      "screenIncludes": [
+        "New pickup_types:"
+      ],
+      "screenCells": [
+        {
+          "step": 31,
+          "x": 5,
+          "y": 0,
+          "equals": "p"
+        },
+        {
+          "step": 31,
+          "x": 6,
+          "y": 0,
+          "equals": "i"
+        },
+        {
+          "step": 31,
+          "x": 7,
+          "y": 0,
+          "equals": "c"
+        },
+        {
+          "step": 31,
+          "x": 8,
+          "y": 0,
+          "equals": "k"
+        },
+        {
+          "step": 31,
+          "x": 9,
+          "y": 0,
+          "equals": "u"
+        },
+        {
+          "step": 31,
+          "x": 10,
+          "y": 0,
+          "equals": "p"
+        },
+        {
+          "step": 31,
+          "x": 11,
+          "y": 0,
+          "equals": "_"
+        },
+        {
+          "step": 31,
+          "x": 12,
+          "y": 0,
+          "equals": "t"
+        },
+        {
+          "step": 31,
+          "x": 13,
+          "y": 0,
+          "equals": "y"
+        },
+        {
+          "step": 31,
+          "x": 14,
+          "y": 0,
+          "equals": "p"
+        },
+        {
+          "step": 31,
+          "x": 15,
+          "y": 0,
+          "equals": "e"
+        },
+        {
+          "step": 31,
+          "x": 16,
+          "y": 0,
+          "equals": "s"
+        },
+        {
+          "step": 31,
+          "x": 17,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 31,
+          "x": 18,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 31,
+          "x": 19,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 31,
+          "x": 20,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 31,
+          "x": 21,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 31,
+          "x": 22,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 31,
+          "x": 23,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 31,
+          "x": 24,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 31,
+          "x": 25,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 31,
+          "x": 26,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 31,
+          "x": 27,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 31,
+          "x": 28,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 31,
+          "x": 29,
+          "y": 0,
+          "equals": "["
+        },
+        {
+          "step": 31,
+          "x": 30,
+          "y": 0,
+          "equals": "a"
+        },
+        {
+          "step": 31,
+          "x": 31,
+          "y": 0,
+          "equals": "l"
+        },
+        {
+          "step": 31,
+          "x": 32,
+          "y": 0,
+          "equals": "l"
+        },
+        {
+          "step": 31,
+          "x": 33,
+          "y": 0,
+          "equals": "]"
+        }
+      ]
+    },
+    {
+      "branch": "autopickup-options.prompt-duplicates",
+      "segment": 9,
+      "screenIncludes": [
+        "New pickup_types:",
+        "Unknown pickup_types parameter ''."
+      ],
+      "screenCells": [
+        {
+          "step": 31,
+          "x": 5,
+          "y": 0,
+          "equals": "p"
+        },
+        {
+          "step": 31,
+          "x": 6,
+          "y": 0,
+          "equals": "i"
+        },
+        {
+          "step": 31,
+          "x": 7,
+          "y": 0,
+          "equals": "c"
+        },
+        {
+          "step": 31,
+          "x": 8,
+          "y": 0,
+          "equals": "k"
+        },
+        {
+          "step": 31,
+          "x": 9,
+          "y": 0,
+          "equals": "u"
+        },
+        {
+          "step": 31,
+          "x": 10,
+          "y": 0,
+          "equals": "p"
+        },
+        {
+          "step": 31,
+          "x": 11,
+          "y": 0,
+          "equals": "_"
+        },
+        {
+          "step": 31,
+          "x": 12,
+          "y": 0,
+          "equals": "t"
+        },
+        {
+          "step": 31,
+          "x": 13,
+          "y": 0,
+          "equals": "y"
+        },
+        {
+          "step": 31,
+          "x": 14,
+          "y": 0,
+          "equals": "p"
+        },
+        {
+          "step": 31,
+          "x": 15,
+          "y": 0,
+          "equals": "e"
+        },
+        {
+          "step": 31,
+          "x": 16,
+          "y": 0,
+          "equals": "s"
+        },
+        {
+          "step": 31,
+          "x": 17,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 31,
+          "x": 18,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 31,
+          "x": 19,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 31,
+          "x": 20,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 31,
+          "x": 21,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 31,
+          "x": 22,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 31,
+          "x": 23,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 31,
+          "x": 24,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 31,
+          "x": 25,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 31,
+          "x": 26,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 31,
+          "x": 27,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 31,
+          "x": 28,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 31,
+          "x": 29,
+          "y": 0,
+          "equals": "["
+        },
+        {
+          "step": 31,
+          "x": 30,
+          "y": 0,
+          "equals": "!"
+        },
+        {
+          "step": 31,
+          "x": 31,
+          "y": 0,
+          "equals": "?"
+        },
+        {
+          "step": 31,
+          "x": 32,
+          "y": 0,
+          "equals": "]"
+        }
+      ]
+    },
+    {
+      "branch": "autopickup-options.prompt-unknown",
+      "segment": 10,
+      "screenIncludes": [
+        "New pickup_types:",
+        "Unknown pickup_types parameter ''."
+      ],
+      "screenCells": [
+        {
+          "step": 31,
+          "x": 5,
+          "y": 0,
+          "equals": "p"
+        },
+        {
+          "step": 31,
+          "x": 6,
+          "y": 0,
+          "equals": "i"
+        },
+        {
+          "step": 31,
+          "x": 7,
+          "y": 0,
+          "equals": "c"
+        },
+        {
+          "step": 31,
+          "x": 8,
+          "y": 0,
+          "equals": "k"
+        },
+        {
+          "step": 31,
+          "x": 9,
+          "y": 0,
+          "equals": "u"
+        },
+        {
+          "step": 31,
+          "x": 10,
+          "y": 0,
+          "equals": "p"
+        },
+        {
+          "step": 31,
+          "x": 11,
+          "y": 0,
+          "equals": "_"
+        },
+        {
+          "step": 31,
+          "x": 12,
+          "y": 0,
+          "equals": "t"
+        },
+        {
+          "step": 31,
+          "x": 13,
+          "y": 0,
+          "equals": "y"
+        },
+        {
+          "step": 31,
+          "x": 14,
+          "y": 0,
+          "equals": "p"
+        },
+        {
+          "step": 31,
+          "x": 15,
+          "y": 0,
+          "equals": "e"
+        },
+        {
+          "step": 31,
+          "x": 16,
+          "y": 0,
+          "equals": "s"
+        },
+        {
+          "step": 31,
+          "x": 17,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 31,
+          "x": 18,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 31,
+          "x": 19,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 31,
+          "x": 20,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 31,
+          "x": 21,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 31,
+          "x": 22,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 31,
+          "x": 23,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 31,
+          "x": 24,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 31,
+          "x": 25,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 31,
+          "x": 26,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 31,
+          "x": 27,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 31,
+          "x": 28,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 31,
+          "x": 29,
+          "y": 0,
+          "equals": "["
+        },
+        {
+          "step": 31,
+          "x": 30,
+          "y": 0,
+          "equals": "!"
+        },
+        {
+          "step": 31,
+          "x": 31,
+          "y": 0,
+          "equals": "?"
+        },
+        {
+          "step": 31,
+          "x": 32,
+          "y": 0,
+          "equals": "]"
+        }
+      ]
+    },
+    {
+      "branch": "autopickup-options.prompt-whitespace",
+      "segment": 11,
+      "screenIncludes": [
+        "New pickup_types:",
+        "Unknown pickup_types parameter ''."
+      ],
+      "screenCells": [
+        {
+          "step": 36,
+          "x": 5,
+          "y": 0,
+          "equals": "p"
+        },
+        {
+          "step": 36,
+          "x": 6,
+          "y": 0,
+          "equals": "i"
+        },
+        {
+          "step": 36,
+          "x": 7,
+          "y": 0,
+          "equals": "c"
+        },
+        {
+          "step": 36,
+          "x": 8,
+          "y": 0,
+          "equals": "k"
+        },
+        {
+          "step": 36,
+          "x": 9,
+          "y": 0,
+          "equals": "u"
+        },
+        {
+          "step": 36,
+          "x": 10,
+          "y": 0,
+          "equals": "p"
+        },
+        {
+          "step": 36,
+          "x": 11,
+          "y": 0,
+          "equals": "_"
+        },
+        {
+          "step": 36,
+          "x": 12,
+          "y": 0,
+          "equals": "t"
+        },
+        {
+          "step": 36,
+          "x": 13,
+          "y": 0,
+          "equals": "y"
+        },
+        {
+          "step": 36,
+          "x": 14,
+          "y": 0,
+          "equals": "p"
+        },
+        {
+          "step": 36,
+          "x": 15,
+          "y": 0,
+          "equals": "e"
+        },
+        {
+          "step": 36,
+          "x": 16,
+          "y": 0,
+          "equals": "s"
+        },
+        {
+          "step": 36,
+          "x": 17,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 36,
+          "x": 18,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 36,
+          "x": 19,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 36,
+          "x": 20,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 36,
+          "x": 21,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 36,
+          "x": 22,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 36,
+          "x": 23,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 36,
+          "x": 24,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 36,
+          "x": 25,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 36,
+          "x": 26,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 36,
+          "x": 27,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 36,
+          "x": 28,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 36,
+          "x": 29,
+          "y": 0,
+          "equals": "["
+        },
+        {
+          "step": 36,
+          "x": 30,
+          "y": 0,
+          "equals": "!"
+        },
+        {
+          "step": 36,
+          "x": 31,
+          "y": 0,
+          "equals": "?"
+        },
+        {
+          "step": 36,
+          "x": 32,
+          "y": 0,
+          "equals": "]"
+        }
+      ]
+    },
+    {
+      "branch": "autopickup-options.prompt-menu",
+      "segment": 12,
+      "screenIncludes": [
+        "New pickup_types:"
+      ],
+      "screenCells": [
+        {
+          "step": 32,
+          "x": 5,
+          "y": 0,
+          "equals": "p"
+        },
+        {
+          "step": 32,
+          "x": 6,
+          "y": 0,
+          "equals": "i"
+        },
+        {
+          "step": 32,
+          "x": 7,
+          "y": 0,
+          "equals": "c"
+        },
+        {
+          "step": 32,
+          "x": 8,
+          "y": 0,
+          "equals": "k"
+        },
+        {
+          "step": 32,
+          "x": 9,
+          "y": 0,
+          "equals": "u"
+        },
+        {
+          "step": 32,
+          "x": 10,
+          "y": 0,
+          "equals": "p"
+        },
+        {
+          "step": 32,
+          "x": 11,
+          "y": 0,
+          "equals": "_"
+        },
+        {
+          "step": 32,
+          "x": 12,
+          "y": 0,
+          "equals": "t"
+        },
+        {
+          "step": 32,
+          "x": 13,
+          "y": 0,
+          "equals": "y"
+        },
+        {
+          "step": 32,
+          "x": 14,
+          "y": 0,
+          "equals": "p"
+        },
+        {
+          "step": 32,
+          "x": 15,
+          "y": 0,
+          "equals": "e"
+        },
+        {
+          "step": 32,
+          "x": 16,
+          "y": 0,
+          "equals": "s"
+        },
+        {
+          "step": 32,
+          "x": 17,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 32,
+          "x": 18,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 32,
+          "x": 19,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 32,
+          "x": 20,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 32,
+          "x": 21,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 32,
+          "x": 22,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 32,
+          "x": 23,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 32,
+          "x": 24,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 32,
+          "x": 25,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 32,
+          "x": 26,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 32,
+          "x": 27,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 32,
+          "x": 28,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 32,
+          "x": 29,
+          "y": 0,
+          "equals": "["
+        },
+        {
+          "step": 32,
+          "x": 30,
+          "y": 0,
+          "equals": "$"
+        },
+        {
+          "step": 32,
+          "x": 31,
+          "y": 0,
+          "equals": "?"
+        },
+        {
+          "step": 32,
+          "x": 32,
+          "y": 0,
+          "equals": "!"
+        },
+        {
+          "step": 32,
+          "x": 33,
+          "y": 0,
+          "equals": "]"
+        }
+      ]
+    },
+    {
+      "branch": "autopickup-options.prompt-menu-cancel",
+      "segment": 13,
+      "screenIncludes": [
+        "New pickup_types:"
+      ],
+      "screenCells": [
+        {
+          "step": 30,
+          "x": 5,
+          "y": 0,
+          "equals": "p"
+        },
+        {
+          "step": 30,
+          "x": 6,
+          "y": 0,
+          "equals": "i"
+        },
+        {
+          "step": 30,
+          "x": 7,
+          "y": 0,
+          "equals": "c"
+        },
+        {
+          "step": 30,
+          "x": 8,
+          "y": 0,
+          "equals": "k"
+        },
+        {
+          "step": 30,
+          "x": 9,
+          "y": 0,
+          "equals": "u"
+        },
+        {
+          "step": 30,
+          "x": 10,
+          "y": 0,
+          "equals": "p"
+        },
+        {
+          "step": 30,
+          "x": 11,
+          "y": 0,
+          "equals": "_"
+        },
+        {
+          "step": 30,
+          "x": 12,
+          "y": 0,
+          "equals": "t"
+        },
+        {
+          "step": 30,
+          "x": 13,
+          "y": 0,
+          "equals": "y"
+        },
+        {
+          "step": 30,
+          "x": 14,
+          "y": 0,
+          "equals": "p"
+        },
+        {
+          "step": 30,
+          "x": 15,
+          "y": 0,
+          "equals": "e"
+        },
+        {
+          "step": 30,
+          "x": 16,
+          "y": 0,
+          "equals": "s"
+        },
+        {
+          "step": 30,
+          "x": 17,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 30,
+          "x": 18,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 30,
+          "x": 19,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 30,
+          "x": 20,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 30,
+          "x": 21,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 30,
+          "x": 22,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 30,
+          "x": 23,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 30,
+          "x": 24,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 30,
+          "x": 25,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 30,
+          "x": 26,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 30,
+          "x": 27,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 30,
+          "x": 28,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 30,
+          "x": 29,
+          "y": 0,
+          "equals": "["
+        },
+        {
+          "step": 30,
+          "x": 30,
+          "y": 0,
+          "equals": "$"
+        },
+        {
+          "step": 30,
+          "x": 31,
+          "y": 0,
+          "equals": "]"
+        }
+      ]
+    },
+    {
+      "branch": "autopickup-options.menu-cancel",
+      "segment": 14,
+      "screenIncludes": [
+        "Autopickup what?"
+      ],
+      "screenCells": [
+        {
+          "step": 26,
+          "x": 5,
+          "y": 0,
+          "equals": "p"
+        },
+        {
+          "step": 26,
+          "x": 6,
+          "y": 0,
+          "equals": "i"
+        },
+        {
+          "step": 26,
+          "x": 7,
+          "y": 0,
+          "equals": "c"
+        },
+        {
+          "step": 26,
+          "x": 8,
+          "y": 0,
+          "equals": "k"
+        },
+        {
+          "step": 26,
+          "x": 9,
+          "y": 0,
+          "equals": "u"
+        },
+        {
+          "step": 26,
+          "x": 10,
+          "y": 0,
+          "equals": "p"
+        },
+        {
+          "step": 26,
+          "x": 11,
+          "y": 0,
+          "equals": "_"
+        },
+        {
+          "step": 26,
+          "x": 12,
+          "y": 0,
+          "equals": "t"
+        },
+        {
+          "step": 26,
+          "x": 13,
+          "y": 0,
+          "equals": "y"
+        },
+        {
+          "step": 26,
+          "x": 14,
+          "y": 0,
+          "equals": "p"
+        },
+        {
+          "step": 26,
+          "x": 15,
+          "y": 0,
+          "equals": "e"
+        },
+        {
+          "step": 26,
+          "x": 16,
+          "y": 0,
+          "equals": "s"
+        },
+        {
+          "step": 26,
+          "x": 17,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 26,
+          "x": 18,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 26,
+          "x": 19,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 26,
+          "x": 20,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 26,
+          "x": 21,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 26,
+          "x": 22,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 26,
+          "x": 23,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 26,
+          "x": 24,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 26,
+          "x": 25,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 26,
+          "x": 26,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 26,
+          "x": 27,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 26,
+          "x": 28,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 26,
+          "x": 29,
+          "y": 0,
+          "equals": "["
+        },
+        {
+          "step": 26,
+          "x": 30,
+          "y": 0,
+          "equals": "$"
+        },
+        {
+          "step": 26,
+          "x": 31,
+          "y": 0,
+          "equals": "]"
+        }
+      ]
+    },
+    {
+      "branch": "autopickup-options.menu-all",
+      "segment": 15,
+      "screenIncludes": [
+        "Autopickup what?"
+      ],
+      "screenCells": [
+        {
+          "step": 27,
+          "x": 5,
+          "y": 0,
+          "equals": "p"
+        },
+        {
+          "step": 27,
+          "x": 6,
+          "y": 0,
+          "equals": "i"
+        },
+        {
+          "step": 27,
+          "x": 7,
+          "y": 0,
+          "equals": "c"
+        },
+        {
+          "step": 27,
+          "x": 8,
+          "y": 0,
+          "equals": "k"
+        },
+        {
+          "step": 27,
+          "x": 9,
+          "y": 0,
+          "equals": "u"
+        },
+        {
+          "step": 27,
+          "x": 10,
+          "y": 0,
+          "equals": "p"
+        },
+        {
+          "step": 27,
+          "x": 11,
+          "y": 0,
+          "equals": "_"
+        },
+        {
+          "step": 27,
+          "x": 12,
+          "y": 0,
+          "equals": "t"
+        },
+        {
+          "step": 27,
+          "x": 13,
+          "y": 0,
+          "equals": "y"
+        },
+        {
+          "step": 27,
+          "x": 14,
+          "y": 0,
+          "equals": "p"
+        },
+        {
+          "step": 27,
+          "x": 15,
+          "y": 0,
+          "equals": "e"
+        },
+        {
+          "step": 27,
+          "x": 16,
+          "y": 0,
+          "equals": "s"
+        },
+        {
+          "step": 27,
+          "x": 17,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 27,
+          "x": 18,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 27,
+          "x": 19,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 27,
+          "x": 20,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 27,
+          "x": 21,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 27,
+          "x": 22,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 27,
+          "x": 23,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 27,
+          "x": 24,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 27,
+          "x": 25,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 27,
+          "x": 26,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 27,
+          "x": 27,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 27,
+          "x": 28,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 27,
+          "x": 29,
+          "y": 0,
+          "equals": "["
+        },
+        {
+          "step": 27,
+          "x": 30,
+          "y": 0,
+          "equals": "a"
+        },
+        {
+          "step": 27,
+          "x": 31,
+          "y": 0,
+          "equals": "l"
+        },
+        {
+          "step": 27,
+          "x": 32,
+          "y": 0,
+          "equals": "l"
+        },
+        {
+          "step": 27,
+          "x": 33,
+          "y": 0,
+          "equals": "]"
+        }
+      ]
+    },
+    {
+      "branch": "autopickup-options.menu-toggle-class",
+      "segment": 16,
+      "screenIncludes": [
+        "Autopickup what?"
+      ],
+      "screenCells": [
+        {
+          "step": 29,
+          "x": 5,
+          "y": 0,
+          "equals": "p"
+        },
+        {
+          "step": 29,
+          "x": 6,
+          "y": 0,
+          "equals": "i"
+        },
+        {
+          "step": 29,
+          "x": 7,
+          "y": 0,
+          "equals": "c"
+        },
+        {
+          "step": 29,
+          "x": 8,
+          "y": 0,
+          "equals": "k"
+        },
+        {
+          "step": 29,
+          "x": 9,
+          "y": 0,
+          "equals": "u"
+        },
+        {
+          "step": 29,
+          "x": 10,
+          "y": 0,
+          "equals": "p"
+        },
+        {
+          "step": 29,
+          "x": 11,
+          "y": 0,
+          "equals": "_"
+        },
+        {
+          "step": 29,
+          "x": 12,
+          "y": 0,
+          "equals": "t"
+        },
+        {
+          "step": 29,
+          "x": 13,
+          "y": 0,
+          "equals": "y"
+        },
+        {
+          "step": 29,
+          "x": 14,
+          "y": 0,
+          "equals": "p"
+        },
+        {
+          "step": 29,
+          "x": 15,
+          "y": 0,
+          "equals": "e"
+        },
+        {
+          "step": 29,
+          "x": 16,
+          "y": 0,
+          "equals": "s"
+        },
+        {
+          "step": 29,
+          "x": 17,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 29,
+          "x": 18,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 29,
+          "x": 19,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 29,
+          "x": 20,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 29,
+          "x": 21,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 29,
+          "x": 22,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 29,
+          "x": 23,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 29,
+          "x": 24,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 29,
+          "x": 25,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 29,
+          "x": 26,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 29,
+          "x": 27,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 29,
+          "x": 28,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 29,
+          "x": 29,
+          "y": 0,
+          "equals": "["
+        },
+        {
+          "step": 29,
+          "x": 30,
+          "y": 0,
+          "equals": "?"
+        },
+        {
+          "step": 29,
+          "x": 31,
+          "y": 0,
+          "equals": "!"
+        },
+        {
+          "step": 29,
+          "x": 32,
+          "y": 0,
+          "equals": "]"
+        }
+      ]
+    },
+    {
+      "branch": "autopickup-options.menu-accept-default",
+      "segment": 17,
+      "screenIncludes": [
+        "Autopickup what?"
+      ],
+      "screenCells": [
+        {
+          "step": 26,
+          "x": 5,
+          "y": 0,
+          "equals": "p"
+        },
+        {
+          "step": 26,
+          "x": 6,
+          "y": 0,
+          "equals": "i"
+        },
+        {
+          "step": 26,
+          "x": 7,
+          "y": 0,
+          "equals": "c"
+        },
+        {
+          "step": 26,
+          "x": 8,
+          "y": 0,
+          "equals": "k"
+        },
+        {
+          "step": 26,
+          "x": 9,
+          "y": 0,
+          "equals": "u"
+        },
+        {
+          "step": 26,
+          "x": 10,
+          "y": 0,
+          "equals": "p"
+        },
+        {
+          "step": 26,
+          "x": 11,
+          "y": 0,
+          "equals": "_"
+        },
+        {
+          "step": 26,
+          "x": 12,
+          "y": 0,
+          "equals": "t"
+        },
+        {
+          "step": 26,
+          "x": 13,
+          "y": 0,
+          "equals": "y"
+        },
+        {
+          "step": 26,
+          "x": 14,
+          "y": 0,
+          "equals": "p"
+        },
+        {
+          "step": 26,
+          "x": 15,
+          "y": 0,
+          "equals": "e"
+        },
+        {
+          "step": 26,
+          "x": 16,
+          "y": 0,
+          "equals": "s"
+        },
+        {
+          "step": 26,
+          "x": 17,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 26,
+          "x": 18,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 26,
+          "x": 19,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 26,
+          "x": 20,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 26,
+          "x": 21,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 26,
+          "x": 22,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 26,
+          "x": 23,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 26,
+          "x": 24,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 26,
+          "x": 25,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 26,
+          "x": 26,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 26,
+          "x": 27,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 26,
+          "x": 28,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 26,
+          "x": 29,
+          "y": 0,
+          "equals": "["
+        },
+        {
+          "step": 26,
+          "x": 30,
+          "y": 0,
+          "equals": "$"
+        },
+        {
+          "step": 26,
+          "x": 31,
+          "y": 0,
+          "equals": "]"
+        }
+      ]
+    },
+    {
+      "branch": "autopickup-options.wizard-venom",
+      "segment": 18,
+      "screenIncludes": [
+        "Autopickup what?",
+        "p + .  splash of venom"
+      ],
+      "screenCells": [
+        {
+          "step": 27,
+          "x": 5,
+          "y": 0,
+          "equals": "p"
+        },
+        {
+          "step": 27,
+          "x": 6,
+          "y": 0,
+          "equals": "i"
+        },
+        {
+          "step": 27,
+          "x": 7,
+          "y": 0,
+          "equals": "c"
+        },
+        {
+          "step": 27,
+          "x": 8,
+          "y": 0,
+          "equals": "k"
+        },
+        {
+          "step": 27,
+          "x": 9,
+          "y": 0,
+          "equals": "u"
+        },
+        {
+          "step": 27,
+          "x": 10,
+          "y": 0,
+          "equals": "p"
+        },
+        {
+          "step": 27,
+          "x": 11,
+          "y": 0,
+          "equals": "_"
+        },
+        {
+          "step": 27,
+          "x": 12,
+          "y": 0,
+          "equals": "t"
+        },
+        {
+          "step": 27,
+          "x": 13,
+          "y": 0,
+          "equals": "y"
+        },
+        {
+          "step": 27,
+          "x": 14,
+          "y": 0,
+          "equals": "p"
+        },
+        {
+          "step": 27,
+          "x": 15,
+          "y": 0,
+          "equals": "e"
+        },
+        {
+          "step": 27,
+          "x": 16,
+          "y": 0,
+          "equals": "s"
+        },
+        {
+          "step": 27,
+          "x": 17,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 27,
+          "x": 18,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 27,
+          "x": 19,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 27,
+          "x": 20,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 27,
+          "x": 21,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 27,
+          "x": 22,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 27,
+          "x": 23,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 27,
+          "x": 24,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 27,
+          "x": 25,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 27,
+          "x": 26,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 27,
+          "x": 27,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 27,
+          "x": 28,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 27,
+          "x": 29,
+          "y": 0,
+          "equals": "["
+        },
+        {
+          "step": 27,
+          "x": 30,
+          "y": 0,
+          "equals": "."
+        },
+        {
+          "step": 27,
+          "x": 31,
+          "y": 0,
+          "equals": "]"
+        }
+      ]
+    },
+    {
+      "branch": "autopickup-options.wizard-select-all",
+      "segment": 19,
+      "screenIncludes": [
+        "Autopickup what?"
+      ],
+      "screenCells": [
+        {
+          "step": 27,
+          "x": 5,
+          "y": 0,
+          "equals": "p"
+        },
+        {
+          "step": 27,
+          "x": 6,
+          "y": 0,
+          "equals": "i"
+        },
+        {
+          "step": 27,
+          "x": 7,
+          "y": 0,
+          "equals": "c"
+        },
+        {
+          "step": 27,
+          "x": 8,
+          "y": 0,
+          "equals": "k"
+        },
+        {
+          "step": 27,
+          "x": 9,
+          "y": 0,
+          "equals": "u"
+        },
+        {
+          "step": 27,
+          "x": 10,
+          "y": 0,
+          "equals": "p"
+        },
+        {
+          "step": 27,
+          "x": 11,
+          "y": 0,
+          "equals": "_"
+        },
+        {
+          "step": 27,
+          "x": 12,
+          "y": 0,
+          "equals": "t"
+        },
+        {
+          "step": 27,
+          "x": 13,
+          "y": 0,
+          "equals": "y"
+        },
+        {
+          "step": 27,
+          "x": 14,
+          "y": 0,
+          "equals": "p"
+        },
+        {
+          "step": 27,
+          "x": 15,
+          "y": 0,
+          "equals": "e"
+        },
+        {
+          "step": 27,
+          "x": 16,
+          "y": 0,
+          "equals": "s"
+        },
+        {
+          "step": 27,
+          "x": 17,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 27,
+          "x": 18,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 27,
+          "x": 19,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 27,
+          "x": 20,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 27,
+          "x": 21,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 27,
+          "x": 22,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 27,
+          "x": 23,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 27,
+          "x": 24,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 27,
+          "x": 25,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 27,
+          "x": 26,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 27,
+          "x": 27,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 27,
+          "x": 28,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 27,
+          "x": 29,
+          "y": 0,
+          "equals": "["
+        },
+        {
+          "step": 27,
+          "x": 30,
+          "y": 0,
+          "equals": "$"
+        },
+        {
+          "step": 27,
+          "x": 31,
+          "y": 0,
+          "equals": "\""
+        },
+        {
+          "step": 27,
+          "x": 32,
+          "y": 0,
+          "equals": ")"
+        },
+        {
+          "step": 27,
+          "x": 33,
+          "y": 0,
+          "equals": "["
+        },
+        {
+          "step": 27,
+          "x": 34,
+          "y": 0,
+          "equals": "%"
+        },
+        {
+          "step": 27,
+          "x": 35,
+          "y": 0,
+          "equals": "?"
+        },
+        {
+          "step": 27,
+          "x": 36,
+          "y": 0,
+          "equals": "+"
+        },
+        {
+          "step": 27,
+          "x": 37,
+          "y": 0,
+          "equals": "!"
+        },
+        {
+          "step": 27,
+          "x": 38,
+          "y": 0,
+          "equals": "="
+        },
+        {
+          "step": 27,
+          "x": 39,
+          "y": 0,
+          "equals": "/"
+        },
+        {
+          "step": 27,
+          "x": 40,
+          "y": 0,
+          "equals": "("
+        },
+        {
+          "step": 27,
+          "x": 41,
+          "y": 0,
+          "equals": "*"
+        },
+        {
+          "step": 27,
+          "x": 42,
+          "y": 0,
+          "equals": "`"
+        },
+        {
+          "step": 27,
+          "x": 43,
+          "y": 0,
+          "equals": "0"
+        },
+        {
+          "step": 27,
+          "x": 44,
+          "y": 0,
+          "equals": "_"
+        },
+        {
+          "step": 27,
+          "x": 45,
+          "y": 0,
+          "equals": "."
+        },
+        {
+          "step": 27,
+          "x": 46,
+          "y": 0,
+          "equals": "]"
+        }
+      ]
+    },
+    {
+      "branch": "autopickup-options.menu-unselect",
+      "segment": 20,
+      "screenIncludes": [
+        "Autopickup what?"
+      ],
+      "screenCells": [
+        {
+          "step": 27,
+          "x": 5,
+          "y": 0,
+          "equals": "p"
+        },
+        {
+          "step": 27,
+          "x": 6,
+          "y": 0,
+          "equals": "i"
+        },
+        {
+          "step": 27,
+          "x": 7,
+          "y": 0,
+          "equals": "c"
+        },
+        {
+          "step": 27,
+          "x": 8,
+          "y": 0,
+          "equals": "k"
+        },
+        {
+          "step": 27,
+          "x": 9,
+          "y": 0,
+          "equals": "u"
+        },
+        {
+          "step": 27,
+          "x": 10,
+          "y": 0,
+          "equals": "p"
+        },
+        {
+          "step": 27,
+          "x": 11,
+          "y": 0,
+          "equals": "_"
+        },
+        {
+          "step": 27,
+          "x": 12,
+          "y": 0,
+          "equals": "t"
+        },
+        {
+          "step": 27,
+          "x": 13,
+          "y": 0,
+          "equals": "y"
+        },
+        {
+          "step": 27,
+          "x": 14,
+          "y": 0,
+          "equals": "p"
+        },
+        {
+          "step": 27,
+          "x": 15,
+          "y": 0,
+          "equals": "e"
+        },
+        {
+          "step": 27,
+          "x": 16,
+          "y": 0,
+          "equals": "s"
+        },
+        {
+          "step": 27,
+          "x": 17,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 27,
+          "x": 18,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 27,
+          "x": 19,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 27,
+          "x": 20,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 27,
+          "x": 21,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 27,
+          "x": 22,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 27,
+          "x": 23,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 27,
+          "x": 24,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 27,
+          "x": 25,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 27,
+          "x": 26,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 27,
+          "x": 27,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 27,
+          "x": 28,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 27,
+          "x": 29,
+          "y": 0,
+          "equals": "["
+        },
+        {
+          "step": 27,
+          "x": 30,
+          "y": 0,
+          "equals": "a"
+        },
+        {
+          "step": 27,
+          "x": 31,
+          "y": 0,
+          "equals": "l"
+        },
+        {
+          "step": 27,
+          "x": 32,
+          "y": 0,
+          "equals": "l"
+        },
+        {
+          "step": 27,
+          "x": 33,
+          "y": 0,
+          "equals": "]"
+        }
+      ]
+    },
+    {
+      "branch": "autopickup-options.menu-autopickup-on",
+      "segment": 21,
+      "screenIncludes": [
+        "Autopickup what?"
+      ],
+      "screenCells": [
+        {
+          "step": 28,
+          "x": 5,
+          "y": 0,
+          "equals": "p"
+        },
+        {
+          "step": 28,
+          "x": 6,
+          "y": 0,
+          "equals": "i"
+        },
+        {
+          "step": 28,
+          "x": 7,
+          "y": 0,
+          "equals": "c"
+        },
+        {
+          "step": 28,
+          "x": 8,
+          "y": 0,
+          "equals": "k"
+        },
+        {
+          "step": 28,
+          "x": 9,
+          "y": 0,
+          "equals": "u"
+        },
+        {
+          "step": 28,
+          "x": 10,
+          "y": 0,
+          "equals": "p"
+        },
+        {
+          "step": 28,
+          "x": 11,
+          "y": 0,
+          "equals": "_"
+        },
+        {
+          "step": 28,
+          "x": 12,
+          "y": 0,
+          "equals": "t"
+        },
+        {
+          "step": 28,
+          "x": 13,
+          "y": 0,
+          "equals": "y"
+        },
+        {
+          "step": 28,
+          "x": 14,
+          "y": 0,
+          "equals": "p"
+        },
+        {
+          "step": 28,
+          "x": 15,
+          "y": 0,
+          "equals": "e"
+        },
+        {
+          "step": 28,
+          "x": 16,
+          "y": 0,
+          "equals": "s"
+        },
+        {
+          "step": 28,
+          "x": 17,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 28,
+          "x": 18,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 28,
+          "x": 19,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 28,
+          "x": 20,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 28,
+          "x": 21,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 28,
+          "x": 22,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 28,
+          "x": 23,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 28,
+          "x": 24,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 28,
+          "x": 25,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 28,
+          "x": 26,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 28,
+          "x": 27,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 28,
+          "x": 28,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 28,
+          "x": 29,
+          "y": 0,
+          "equals": "["
+        },
+        {
+          "step": 28,
+          "x": 30,
+          "y": 0,
+          "equals": "?"
+        },
+        {
+          "step": 28,
+          "x": 31,
+          "y": 0,
+          "equals": "!"
+        },
+        {
+          "step": 28,
+          "x": 32,
+          "y": 0,
+          "equals": "]"
+        }
+      ]
+    },
+    {
+      "branch": "autopickup-options.normal-menu",
+      "segment": 22,
+      "screenIncludes": [
+        "Autopickup what?"
+      ],
+      "screenCells": [
+        {
+          "step": 27,
+          "x": 5,
+          "y": 13,
+          "equals": "p"
+        },
+        {
+          "step": 27,
+          "x": 6,
+          "y": 13,
+          "equals": "i"
+        },
+        {
+          "step": 27,
+          "x": 7,
+          "y": 13,
+          "equals": "c"
+        },
+        {
+          "step": 27,
+          "x": 8,
+          "y": 13,
+          "equals": "k"
+        },
+        {
+          "step": 27,
+          "x": 9,
+          "y": 13,
+          "equals": "u"
+        },
+        {
+          "step": 27,
+          "x": 10,
+          "y": 13,
+          "equals": "p"
+        },
+        {
+          "step": 27,
+          "x": 11,
+          "y": 13,
+          "equals": "_"
+        },
+        {
+          "step": 27,
+          "x": 12,
+          "y": 13,
+          "equals": "t"
+        },
+        {
+          "step": 27,
+          "x": 13,
+          "y": 13,
+          "equals": "y"
+        },
+        {
+          "step": 27,
+          "x": 14,
+          "y": 13,
+          "equals": "p"
+        },
+        {
+          "step": 27,
+          "x": 15,
+          "y": 13,
+          "equals": "e"
+        },
+        {
+          "step": 27,
+          "x": 16,
+          "y": 13,
+          "equals": "s"
+        },
+        {
+          "step": 27,
+          "x": 17,
+          "y": 13,
+          "equals": " "
+        },
+        {
+          "step": 27,
+          "x": 18,
+          "y": 13,
+          "equals": " "
+        },
+        {
+          "step": 27,
+          "x": 19,
+          "y": 13,
+          "equals": " "
+        },
+        {
+          "step": 27,
+          "x": 20,
+          "y": 13,
+          "equals": " "
+        },
+        {
+          "step": 27,
+          "x": 21,
+          "y": 13,
+          "equals": " "
+        },
+        {
+          "step": 27,
+          "x": 22,
+          "y": 13,
+          "equals": " "
+        },
+        {
+          "step": 27,
+          "x": 23,
+          "y": 13,
+          "equals": " "
+        },
+        {
+          "step": 27,
+          "x": 24,
+          "y": 13,
+          "equals": " "
+        },
+        {
+          "step": 27,
+          "x": 25,
+          "y": 13,
+          "equals": " "
+        },
+        {
+          "step": 27,
+          "x": 26,
+          "y": 13,
+          "equals": " "
+        },
+        {
+          "step": 27,
+          "x": 27,
+          "y": 13,
+          "equals": " "
+        },
+        {
+          "step": 27,
+          "x": 28,
+          "y": 13,
+          "equals": " "
+        },
+        {
+          "step": 27,
+          "x": 29,
+          "y": 13,
+          "equals": "["
+        },
+        {
+          "step": 27,
+          "x": 30,
+          "y": 13,
+          "equals": "?"
+        },
+        {
+          "step": 27,
+          "x": 31,
+          "y": 13,
+          "equals": "!"
+        },
+        {
+          "step": 27,
+          "x": 32,
+          "y": 13,
+          "equals": "]"
+        }
+      ],
+      "screenExcludes": [
+        "splash of venom"
+      ]
+    },
+    {
+      "branch": "autopickup-options.custom-order",
+      "segment": 23,
+      "screenIncludes": [
+        "Autopickup what?"
+      ],
+      "screenCells": [
+        {
+          "step": 28,
+          "x": 5,
+          "y": 0,
+          "equals": "p"
+        },
+        {
+          "step": 28,
+          "x": 6,
+          "y": 0,
+          "equals": "i"
+        },
+        {
+          "step": 28,
+          "x": 7,
+          "y": 0,
+          "equals": "c"
+        },
+        {
+          "step": 28,
+          "x": 8,
+          "y": 0,
+          "equals": "k"
+        },
+        {
+          "step": 28,
+          "x": 9,
+          "y": 0,
+          "equals": "u"
+        },
+        {
+          "step": 28,
+          "x": 10,
+          "y": 0,
+          "equals": "p"
+        },
+        {
+          "step": 28,
+          "x": 11,
+          "y": 0,
+          "equals": "_"
+        },
+        {
+          "step": 28,
+          "x": 12,
+          "y": 0,
+          "equals": "t"
+        },
+        {
+          "step": 28,
+          "x": 13,
+          "y": 0,
+          "equals": "y"
+        },
+        {
+          "step": 28,
+          "x": 14,
+          "y": 0,
+          "equals": "p"
+        },
+        {
+          "step": 28,
+          "x": 15,
+          "y": 0,
+          "equals": "e"
+        },
+        {
+          "step": 28,
+          "x": 16,
+          "y": 0,
+          "equals": "s"
+        },
+        {
+          "step": 28,
+          "x": 17,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 28,
+          "x": 18,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 28,
+          "x": 19,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 28,
+          "x": 20,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 28,
+          "x": 21,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 28,
+          "x": 22,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 28,
+          "x": 23,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 28,
+          "x": 24,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 28,
+          "x": 25,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 28,
+          "x": 26,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 28,
+          "x": 27,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 28,
+          "x": 28,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 28,
+          "x": 29,
+          "y": 0,
+          "equals": "["
+        },
+        {
+          "step": 28,
+          "x": 30,
+          "y": 0,
+          "equals": "!"
+        },
+        {
+          "step": 28,
+          "x": 31,
+          "y": 0,
+          "equals": "?"
+        },
+        {
+          "step": 28,
+          "x": 32,
+          "y": 0,
+          "equals": "]"
+        }
+      ]
+    },
+    {
+      "branch": "autopickup-options.prompt-custom-order",
+      "segment": 24,
+      "screenIncludes": [
+        "New pickup_types:"
+      ],
+      "screenCells": [
+        {
+          "step": 28,
+          "x": 5,
+          "y": 0,
+          "equals": "p"
+        },
+        {
+          "step": 28,
+          "x": 6,
+          "y": 0,
+          "equals": "i"
+        },
+        {
+          "step": 28,
+          "x": 7,
+          "y": 0,
+          "equals": "c"
+        },
+        {
+          "step": 28,
+          "x": 8,
+          "y": 0,
+          "equals": "k"
+        },
+        {
+          "step": 28,
+          "x": 9,
+          "y": 0,
+          "equals": "u"
+        },
+        {
+          "step": 28,
+          "x": 10,
+          "y": 0,
+          "equals": "p"
+        },
+        {
+          "step": 28,
+          "x": 11,
+          "y": 0,
+          "equals": "_"
+        },
+        {
+          "step": 28,
+          "x": 12,
+          "y": 0,
+          "equals": "t"
+        },
+        {
+          "step": 28,
+          "x": 13,
+          "y": 0,
+          "equals": "y"
+        },
+        {
+          "step": 28,
+          "x": 14,
+          "y": 0,
+          "equals": "p"
+        },
+        {
+          "step": 28,
+          "x": 15,
+          "y": 0,
+          "equals": "e"
+        },
+        {
+          "step": 28,
+          "x": 16,
+          "y": 0,
+          "equals": "s"
+        },
+        {
+          "step": 28,
+          "x": 17,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 28,
+          "x": 18,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 28,
+          "x": 19,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 28,
+          "x": 20,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 28,
+          "x": 21,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 28,
+          "x": 22,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 28,
+          "x": 23,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 28,
+          "x": 24,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 28,
+          "x": 25,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 28,
+          "x": 26,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 28,
+          "x": 27,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 28,
+          "x": 28,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 28,
+          "x": 29,
+          "y": 0,
+          "equals": "["
+        },
+        {
+          "step": 28,
+          "x": 30,
+          "y": 0,
+          "equals": "!"
+        },
+        {
+          "step": 28,
+          "x": 31,
+          "y": 0,
+          "equals": "?"
+        },
+        {
+          "step": 28,
+          "x": 32,
+          "y": 0,
+          "equals": "]"
+        }
+      ]
+    },
+    {
+      "branch": "autopickup-options.config-all",
+      "segment": 25,
+      "screenIncludes": [],
+      "screenCells": [
+        {
+          "step": 8,
+          "x": 5,
+          "y": 0,
+          "equals": "p"
+        },
+        {
+          "step": 8,
+          "x": 6,
+          "y": 0,
+          "equals": "i"
+        },
+        {
+          "step": 8,
+          "x": 7,
+          "y": 0,
+          "equals": "c"
+        },
+        {
+          "step": 8,
+          "x": 8,
+          "y": 0,
+          "equals": "k"
+        },
+        {
+          "step": 8,
+          "x": 9,
+          "y": 0,
+          "equals": "u"
+        },
+        {
+          "step": 8,
+          "x": 10,
+          "y": 0,
+          "equals": "p"
+        },
+        {
+          "step": 8,
+          "x": 11,
+          "y": 0,
+          "equals": "_"
+        },
+        {
+          "step": 8,
+          "x": 12,
+          "y": 0,
+          "equals": "t"
+        },
+        {
+          "step": 8,
+          "x": 13,
+          "y": 0,
+          "equals": "y"
+        },
+        {
+          "step": 8,
+          "x": 14,
+          "y": 0,
+          "equals": "p"
+        },
+        {
+          "step": 8,
+          "x": 15,
+          "y": 0,
+          "equals": "e"
+        },
+        {
+          "step": 8,
+          "x": 16,
+          "y": 0,
+          "equals": "s"
+        },
+        {
+          "step": 8,
+          "x": 17,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 8,
+          "x": 18,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 8,
+          "x": 19,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 8,
+          "x": 20,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 8,
+          "x": 21,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 8,
+          "x": 22,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 8,
+          "x": 23,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 8,
+          "x": 24,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 8,
+          "x": 25,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 8,
+          "x": 26,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 8,
+          "x": 27,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 8,
+          "x": 28,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 8,
+          "x": 29,
+          "y": 0,
+          "equals": "["
+        },
+        {
+          "step": 8,
+          "x": 30,
+          "y": 0,
+          "equals": "a"
+        },
+        {
+          "step": 8,
+          "x": 31,
+          "y": 0,
+          "equals": "l"
+        },
+        {
+          "step": 8,
+          "x": 32,
+          "y": 0,
+          "equals": "l"
+        },
+        {
+          "step": 8,
+          "x": 33,
+          "y": 0,
+          "equals": "]"
+        }
+      ]
+    },
+    {
+      "branch": "autopickup-options.config-uppercase-all",
+      "segment": 26,
+      "screenIncludes": [],
+      "screenCells": [
+        {
+          "step": 8,
+          "x": 5,
+          "y": 0,
+          "equals": "p"
+        },
+        {
+          "step": 8,
+          "x": 6,
+          "y": 0,
+          "equals": "i"
+        },
+        {
+          "step": 8,
+          "x": 7,
+          "y": 0,
+          "equals": "c"
+        },
+        {
+          "step": 8,
+          "x": 8,
+          "y": 0,
+          "equals": "k"
+        },
+        {
+          "step": 8,
+          "x": 9,
+          "y": 0,
+          "equals": "u"
+        },
+        {
+          "step": 8,
+          "x": 10,
+          "y": 0,
+          "equals": "p"
+        },
+        {
+          "step": 8,
+          "x": 11,
+          "y": 0,
+          "equals": "_"
+        },
+        {
+          "step": 8,
+          "x": 12,
+          "y": 0,
+          "equals": "t"
+        },
+        {
+          "step": 8,
+          "x": 13,
+          "y": 0,
+          "equals": "y"
+        },
+        {
+          "step": 8,
+          "x": 14,
+          "y": 0,
+          "equals": "p"
+        },
+        {
+          "step": 8,
+          "x": 15,
+          "y": 0,
+          "equals": "e"
+        },
+        {
+          "step": 8,
+          "x": 16,
+          "y": 0,
+          "equals": "s"
+        },
+        {
+          "step": 8,
+          "x": 17,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 8,
+          "x": 18,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 8,
+          "x": 19,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 8,
+          "x": 20,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 8,
+          "x": 21,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 8,
+          "x": 22,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 8,
+          "x": 23,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 8,
+          "x": 24,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 8,
+          "x": 25,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 8,
+          "x": 26,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 8,
+          "x": 27,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 8,
+          "x": 28,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 8,
+          "x": 29,
+          "y": 0,
+          "equals": "["
+        },
+        {
+          "step": 8,
+          "x": 30,
+          "y": 0,
+          "equals": "a"
+        },
+        {
+          "step": 8,
+          "x": 31,
+          "y": 0,
+          "equals": "l"
+        },
+        {
+          "step": 8,
+          "x": 32,
+          "y": 0,
+          "equals": "l"
+        },
+        {
+          "step": 8,
+          "x": 33,
+          "y": 0,
+          "equals": "]"
+        }
+      ]
+    },
+    {
+      "branch": "autopickup-options.config-classes",
+      "segment": 27,
+      "screenIncludes": [],
+      "screenCells": [
+        {
+          "step": 8,
+          "x": 5,
+          "y": 0,
+          "equals": "p"
+        },
+        {
+          "step": 8,
+          "x": 6,
+          "y": 0,
+          "equals": "i"
+        },
+        {
+          "step": 8,
+          "x": 7,
+          "y": 0,
+          "equals": "c"
+        },
+        {
+          "step": 8,
+          "x": 8,
+          "y": 0,
+          "equals": "k"
+        },
+        {
+          "step": 8,
+          "x": 9,
+          "y": 0,
+          "equals": "u"
+        },
+        {
+          "step": 8,
+          "x": 10,
+          "y": 0,
+          "equals": "p"
+        },
+        {
+          "step": 8,
+          "x": 11,
+          "y": 0,
+          "equals": "_"
+        },
+        {
+          "step": 8,
+          "x": 12,
+          "y": 0,
+          "equals": "t"
+        },
+        {
+          "step": 8,
+          "x": 13,
+          "y": 0,
+          "equals": "y"
+        },
+        {
+          "step": 8,
+          "x": 14,
+          "y": 0,
+          "equals": "p"
+        },
+        {
+          "step": 8,
+          "x": 15,
+          "y": 0,
+          "equals": "e"
+        },
+        {
+          "step": 8,
+          "x": 16,
+          "y": 0,
+          "equals": "s"
+        },
+        {
+          "step": 8,
+          "x": 17,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 8,
+          "x": 18,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 8,
+          "x": 19,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 8,
+          "x": 20,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 8,
+          "x": 21,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 8,
+          "x": 22,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 8,
+          "x": 23,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 8,
+          "x": 24,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 8,
+          "x": 25,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 8,
+          "x": 26,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 8,
+          "x": 27,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 8,
+          "x": 28,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 8,
+          "x": 29,
+          "y": 0,
+          "equals": "["
+        },
+        {
+          "step": 8,
+          "x": 30,
+          "y": 0,
+          "equals": "!"
+        },
+        {
+          "step": 8,
+          "x": 31,
+          "y": 0,
+          "equals": "?"
+        },
+        {
+          "step": 8,
+          "x": 32,
+          "y": 0,
+          "equals": "$"
+        },
+        {
+          "step": 8,
+          "x": 33,
+          "y": 0,
+          "equals": "]"
+        }
+      ]
+    },
+    {
+      "branch": "autopickup-options.config-all-prefix",
+      "segment": 28,
+      "screenIncludes": [],
+      "screenCells": [
+        {
+          "step": 8,
+          "x": 5,
+          "y": 0,
+          "equals": "p"
+        },
+        {
+          "step": 8,
+          "x": 6,
+          "y": 0,
+          "equals": "i"
+        },
+        {
+          "step": 8,
+          "x": 7,
+          "y": 0,
+          "equals": "c"
+        },
+        {
+          "step": 8,
+          "x": 8,
+          "y": 0,
+          "equals": "k"
+        },
+        {
+          "step": 8,
+          "x": 9,
+          "y": 0,
+          "equals": "u"
+        },
+        {
+          "step": 8,
+          "x": 10,
+          "y": 0,
+          "equals": "p"
+        },
+        {
+          "step": 8,
+          "x": 11,
+          "y": 0,
+          "equals": "_"
+        },
+        {
+          "step": 8,
+          "x": 12,
+          "y": 0,
+          "equals": "t"
+        },
+        {
+          "step": 8,
+          "x": 13,
+          "y": 0,
+          "equals": "y"
+        },
+        {
+          "step": 8,
+          "x": 14,
+          "y": 0,
+          "equals": "p"
+        },
+        {
+          "step": 8,
+          "x": 15,
+          "y": 0,
+          "equals": "e"
+        },
+        {
+          "step": 8,
+          "x": 16,
+          "y": 0,
+          "equals": "s"
+        },
+        {
+          "step": 8,
+          "x": 17,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 8,
+          "x": 18,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 8,
+          "x": 19,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 8,
+          "x": 20,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 8,
+          "x": 21,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 8,
+          "x": 22,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 8,
+          "x": 23,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 8,
+          "x": 24,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 8,
+          "x": 25,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 8,
+          "x": 26,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 8,
+          "x": 27,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 8,
+          "x": 28,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 8,
+          "x": 29,
+          "y": 0,
+          "equals": "["
+        },
+        {
+          "step": 8,
+          "x": 30,
+          "y": 0,
+          "equals": "a"
+        },
+        {
+          "step": 8,
+          "x": 31,
+          "y": 0,
+          "equals": "l"
+        },
+        {
+          "step": 8,
+          "x": 32,
+          "y": 0,
+          "equals": "l"
+        },
+        {
+          "step": 8,
+          "x": 33,
+          "y": 0,
+          "equals": "]"
+        }
+      ]
+    },
+    {
+      "branch": "autopickup-options.config-venom",
+      "segment": 29,
+      "screenIncludes": [],
+      "screenCells": [
+        {
+          "step": 8,
+          "x": 5,
+          "y": 0,
+          "equals": "p"
+        },
+        {
+          "step": 8,
+          "x": 6,
+          "y": 0,
+          "equals": "i"
+        },
+        {
+          "step": 8,
+          "x": 7,
+          "y": 0,
+          "equals": "c"
+        },
+        {
+          "step": 8,
+          "x": 8,
+          "y": 0,
+          "equals": "k"
+        },
+        {
+          "step": 8,
+          "x": 9,
+          "y": 0,
+          "equals": "u"
+        },
+        {
+          "step": 8,
+          "x": 10,
+          "y": 0,
+          "equals": "p"
+        },
+        {
+          "step": 8,
+          "x": 11,
+          "y": 0,
+          "equals": "_"
+        },
+        {
+          "step": 8,
+          "x": 12,
+          "y": 0,
+          "equals": "t"
+        },
+        {
+          "step": 8,
+          "x": 13,
+          "y": 0,
+          "equals": "y"
+        },
+        {
+          "step": 8,
+          "x": 14,
+          "y": 0,
+          "equals": "p"
+        },
+        {
+          "step": 8,
+          "x": 15,
+          "y": 0,
+          "equals": "e"
+        },
+        {
+          "step": 8,
+          "x": 16,
+          "y": 0,
+          "equals": "s"
+        },
+        {
+          "step": 8,
+          "x": 17,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 8,
+          "x": 18,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 8,
+          "x": 19,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 8,
+          "x": 20,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 8,
+          "x": 21,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 8,
+          "x": 22,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 8,
+          "x": 23,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 8,
+          "x": 24,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 8,
+          "x": 25,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 8,
+          "x": 26,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 8,
+          "x": 27,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 8,
+          "x": 28,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 8,
+          "x": 29,
+          "y": 0,
+          "equals": "["
+        },
+        {
+          "step": 8,
+          "x": 30,
+          "y": 0,
+          "equals": "."
+        },
+        {
+          "step": 8,
+          "x": 31,
+          "y": 0,
+          "equals": "]"
+        }
+      ]
+    }
+  ]
+}

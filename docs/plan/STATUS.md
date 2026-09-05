@@ -9,9 +9,54 @@ loop until complete. The goal is active without a requested token budget.
 Current-corpus success is not the stopping criterion. Track unreviewed,
 untested, missing, and unreachable source paths explicitly.
 
-### Current work: discovery sorting and identification
+### Current work: automatic-pickup options
 
-Pack order is committed and pushed as `2ec9e465`. The uncommitted next pass
+Discovery sorting is committed and pushed as `136b6a33`. The next uncommitted
+pass fixes pickup_types configuration and its live text/menu handler in
+options.js. Traditional and combination styles now use C's getlin prompt;
+full and partial styles use the existing class menu. Both honor custom pack
+order, and wizard menus append venom. Empty text and Escape restore the
+previous selection, spaces clear it, and lowercase m enters the class menu.
+Invalid or duplicate characters report C's empty-parameter error while keeping
+valid classes. A leading a/A means all classes, including during startup.
+
+Permanent `autopickup-options` (30 cases) and `autopickup-type-filter` (six)
+match 1,233/1,233 screens/cursors and 110,131/110,131 RNG. The latter walks
+back over dropped food and potions with the independent dropped-object
+override disabled. All cases have C intent assertions. The state gate reads
+C's final option row and checks real inventory/floor ownership after movement.
+It also checks that choosing all classes does not toggle autopickup itself.
+That caught an intermediate parser bug with the menu's single-space value.
+
+Both native recordings are exact in
+`.cache/c-coverage/autopickup-options-20260905`, adding 34 direct outcomes.
+The union is 53,212/108,268 outcomes and 4,298/5,491 entered records;
+optfn_pickup_types reaches 52/60. The assertion ledger is 1,564/1,564.
+State gates, source audit, 16 tool tests, 46 hang checks and 80 reused role-smoke
+controls pass. Fuzz remains 101/102 with the same fixed-datetime artifact.
+Final regression passes 44/44 public and 434/434 supplemental fixtures.
+Public has 11,405 exact screens/cursors and 792,838 RNG; supplemental has
+128,009 exact screens/cursors, 6,619,880 RNG and 3,248 animations. Public
+animations remain 1,462/1,483. Results are in
+`.cache/autopickup/final-regression.log`. See
+[autopickup-options-audit.md](autopickup-options-audit.md), then commit and push.
+
+The next pass is already reproduced in the ignored cache:
+`.cache/autopickup/overrides.{input,session}.json` has eight dropped/thrown and
+manual-pickup controls. Baseline is 158/182 screens, 174/182 cursors and
+12,656/24,342 concatenated RNG matches. These are not permanent assertions or
+credited native profiles yet. The full C bodies of autopick_testobj, autopick
+and check_autopickup_exceptions were read at pickup.c:914-1010. The current
+predicate ignores shop cost, how_lost and exceptions despite existing writers
+in do.js, dothrow.js and steal.js. Thrown pickup also readies the dagger in C;
+review the addinv dependency before claiming that path complete. Exception
+configuration and regex support are absent; the pinned backend still needs
+inspection (sys/share/{posixregex,pmatchregex}.c). Continue into these controls
+after the current verified checkpoint is committed and pushed.
+
+### Verified follow-up: discovery sorting and identification
+
+Pack order is committed and pushed as `2ec9e465`. Checkpoint `136b6a33`
 ports full discovery sorting, sort selection, unique/artifact sections and all
 class-discovery menu styles. `dodiscovered` now owns its C-equivalent window
 instead of returning lines through cmd.js. `loot_classify` is ported in
@@ -69,8 +114,8 @@ animations. Public animations remain 1,462/1,483. Results are in
 the only failing fixture is the fixed-datetime artifact. All 47 hang checks,
 80 reused role-smoke controls, 16 tool tests, source audit and the pack-order,
 object-type and inventory-adjustment state gates pass. The completed review is
-[discovery-sorting-audit.md](discovery-sorting-audit.md). Commit and push this
-verified pass, then continue with the next source dependency below.
+[discovery-sorting-audit.md](discovery-sorting-audit.md). This verified pass is
+committed and pushed as `136b6a33`.
 
 Next source pass: `optfn_pickup_types` still has an absent traditional prompt
 and string-valued menu-style checks although C stores numeric constants. Its

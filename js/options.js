@@ -13,7 +13,7 @@ import {
     MENU_ITEMFLAGS_NONE, MENU_ITEMFLAGS_SELECTED, MENU_ITEMFLAGS_SKIPINVERT,
     MENU_BEHAVE_STANDARD,
     PICK_ONE, PICK_ANY, ECMD_OK,
-    AUTOUNLOCK_APPLY_KEY,
+    AUTOUNLOCK_APPLY_KEY, MENU_TRADITIONAL, MENU_COMBINATION,
 } from './const.js';
 import { NO_COLOR } from './terminal.js';
 import { allopt, findOption } from './optlist.js';
@@ -30,6 +30,7 @@ import { vision_recalc } from './vision.js';
 import { reassign, update_inventory, inv_order } from './invent.js';
 import { def_oc_syms } from './drawing_data.js';
 import { choose_disco_sort, get_sortdisco } from './o_init.js';
+import { mungspaces } from './hacklib.js';
 
 function note_unported_options(what) {
     (game.unported ||= new Set()).add('options:' + what);
@@ -141,7 +142,7 @@ export function parseoptions(opts, tinitial, tfrom_file, result) {
         return false;
     }
     if (value === null && opt.type !== 'BoolOpt' && opt.valok === 'Yes'
-        && opt.name !== 'packorder'
+        && opt.name !== 'packorder' && opt.name !== 'pickup_types'
         && !(opt.name === 'menustyle' && (negated || opts.length <= 5))
         && !(opt.name === 'paranoid_confirmation' && negated)) {
         config_error_add(result, `Missing value for '${opt.name}'`);
@@ -168,6 +169,34 @@ export function parseoptions(opts, tinitial, tfrom_file, result) {
             return false;
         }
         result.opts[opt.name] = burden;
+    } else if (opt.name === 'pickup_types') {
+        // src/options.c:3321 optfn_pickup_types(), configured-value arm.
+        result.opts.pickup_types = '';
+        let op = sep < 0 ? '' : opts.slice(sep + 1);
+        if (!op) {
+            if (tinitial && opts.length > 6)
+                config_error_add(result, `Missing parameter for '${opts}'`);
+            result.opts.autopickup = !negated;
+        } else {
+            while (op[0] === ' ')
+                op = op.slice(1);
+            if (op[0] !== 'a' && op[0] !== 'A') {
+                let badopt = false;
+                for (const ch of op) {
+                    const oc_sym = def_char_to_objclass(ch);
+                    if (oc_sym !== OCLASSES.MAXOCLASSES
+                        && !result.opts.pickup_types.includes(ch))
+                        result.opts.pickup_types += ch;
+                    else
+                        badopt = true;
+                }
+                if (badopt) {
+                    // C reports op after advancing it to the terminator.
+                    config_error_add(result, "Unknown pickup_types parameter ''");
+                    retval = false;
+                }
+            }
+        }
     } else if (opt.name === 'menustyle') {
         // src/options.c:2320 optfn_menustyle(), do_set arm.
         const order = value ? opts.slice(sep + 1) : '';
@@ -1199,7 +1228,7 @@ async function doset_simple_menu() {
                    handler_pickup_types() just re-enters parseoptions with a
                    bare "pickup_types", which takes optfn_pickup_types()'s
                    do_set arm and prompts. */
-                await optfn_pickup_types_do_set();
+                await optfn_pickup_types();
             } else if (allopt[k].name === 'sortdiscoveries') {
                 await choose_disco_sort(0);
             } else if (allopt[k].name === 'menustyle') {
@@ -1742,7 +1771,7 @@ export async function doset() {
                                                                  : 'off'}.`);
             } else if (o.hasHandler === 'Yes' && o.name === 'pickup_types') {
                 /* compound option with a handler: optfn's do_handler arm */
-                await optfn_pickup_types_do_set();
+                await optfn_pickup_types();
             } else if (o.hasHandler === 'Yes' && o.name === 'symset') {
                 await do_symset();
             } else if (o.hasHandler === 'Yes' && o.name === 'sortdiscoveries') {
@@ -1882,42 +1911,41 @@ async function set_packorder(value) {
         await pline(error + (/[.!?]$/.test(error) ? '' : '.'));
 }
 
-// src/options.c:3321 optfn_pickup_types(), the do_set arm reached with no
-// value: put up the class menu and rebuild flags.pickup_types from the picks.
-//
-// Only the menu branch is live. C falls back to a getlin prompt when
-// menu_style is MENU_TRADITIONAL or MENU_COMBINATION; the default style takes
-// the menu, and no recorded rc changes it.
-async function optfn_pickup_types_do_set() {
+// src/options.c:3337 optfn_pickup_types(), interactive no-value arm.
+// The configured-value arm above also validates the resulting selection.
+async function optfn_pickup_types() {
     const { choose_classes_menu } = await import('./windows.js');
-
-    /* oc_to_str(flags.pickup_types, tbuf); flags.pickup_types[0] = 0 */
     const tbuf = { s: game.flags?.pickup_types || '' };
     game.flags.pickup_types = '';
-
-    if (game.flags?.menu_style === 'traditional'
-        || game.flags?.menu_style === 'combination') {
-        note_unported_options('pickup_types:getlin_prompt');
-        game.flags.pickup_types = tbuf.s;
-        return;
+    let ocl = inv_order().map(c => def_oc_syms[c]).join('');
+    let use_menu = true, op = '';
+    if (game.flags.menu_style === MENU_TRADITIONAL
+        || game.flags.menu_style === MENU_COMBINATION) {
+        const { getlin } = await import('./cmd.js');
+        use_menu = false;
+        const abuf = await getlin(`New pickup_types: [${ocl} am] (${tbuf.s || 'all'})`);
+        const wasspace = abuf?.[0] === ' ';
+        op = mungspaces(abuf || '');
+        if (wasspace && !op)
+            ; // one or more spaces remove the old value
+        else if (!op || op[0] === '\x1b')
+            op = tbuf.s;
+        else if (op[0] === 'm')
+            use_menu = true;
     }
-    /* the wizard-mode VENOM_SYM addition is skipped: no recorded game with
-       wizard mode opens this menu */
-    if (game.wizard)
-        note_unported_options('pickup_types:venom_sym');
-    await choose_classes_menu('Autopickup what?', 1, true, def_inv_order, tbuf);
-    let op = tbuf.s;
-
+    if (use_menu) {
+        const venom = def_oc_syms[OCLASSES.VENOM_CLASS];
+        if (game.wizard && !ocl.includes(venom))
+            ocl += venom;
+        await choose_classes_menu('Autopickup what?', 1, true, ocl, tbuf);
+        op = tbuf.s;
+    }
+    // The prompt already handled an empty response. Supplying 'a' keeps its
+    // all-types meaning without entering the no-value option arm again.
     while (op[0] === ' ')
         op = op.slice(1);
-    if (op[0] !== 'a' && op[0] !== 'A') {
-        let types = '';
-        for (const ch of op) {
-            const oc_sym = def_char_to_objclass(ch);
-            /* make sure all are valid obj symbols occurring once */
-            if (oc_sym !== OCLASSES.MAXOCLASSES && !types.includes(ch))
-                types += ch;
-        }
-        game.flags.pickup_types = types;
-    }
+    const result = { opts: game.flags, errors: [] };
+    parseoptions('pickup_types:' + (op || 'a'), false, false, result);
+    for (const error of result.errors)
+        await pline(error + (/[.!?]$/.test(error) ? '' : '.'));
 }

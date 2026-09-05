@@ -29,6 +29,7 @@ import { roles, races, genders, aligns, ROLE_RANDOM } from './role.js';
 import { vision_recalc } from './vision.js';
 import { reassign, update_inventory, inv_order } from './invent.js';
 import { def_oc_syms } from './drawing_data.js';
+import { choose_disco_sort, get_sortdisco } from './o_init.js';
 
 function note_unported_options(what) {
     (game.unported ||= new Set()).add('options:' + what);
@@ -141,6 +142,7 @@ export function parseoptions(opts, tinitial, tfrom_file, result) {
     }
     if (value === null && opt.type !== 'BoolOpt' && opt.valok === 'Yes'
         && opt.name !== 'packorder'
+        && !(opt.name === 'menustyle' && (negated || opts.length <= 5))
         && !(opt.name === 'paranoid_confirmation' && negated)) {
         config_error_add(result, `Missing value for '${opt.name}'`);
         return false;
@@ -166,6 +168,35 @@ export function parseoptions(opts, tinitial, tfrom_file, result) {
             return false;
         }
         result.opts[opt.name] = burden;
+    } else if (opt.name === 'menustyle') {
+        // src/options.c:2320 optfn_menustyle(), do_set arm.
+        const order = value ? opts.slice(sep + 1) : '';
+        const c = order ? order[0].toLowerCase() : negated ? 'n' : 'f';
+        const style = c === 'n' || c === 't' ? 0 : c === 'c' ? 1
+            : c === 'f' ? 2 : c === 'p' ? 3 : -1;
+        if (style < 0) {
+            config_error_add(result, `Unknown menustyle parameter '${order}'`);
+            return false;
+        }
+        result.opts.menu_style = style;
+        result.opts.menustyle = menutype[style];
+    } else if (opt.name === 'sortdiscoveries') {
+        // src/options.c:3863 optfn_sortdiscoveries(), initial do_set arm.
+        if (negated) {
+            result.opts.discosort = 'o';
+        } else if (value) {
+            const order = opts.slice(sep + 1);
+            const c = order[0].toLowerCase();
+            const i = '0123'.indexOf(c);
+            if (i >= 0 || 'osca'.includes(c))
+                result.opts.discosort = i >= 0 ? 'osca'[i] : c;
+            else {
+                config_error_add(result, `Unknown sortdiscoveries parameter '${order}'`);
+                return false;
+            }
+        } else {
+            return false;
+        }
     } else if (opt.name === 'packorder') {
         // C string_for_opt returns empty_optstr for an absent/empty value.
         if (value === null || value === '')
@@ -659,6 +690,9 @@ function set_bool_optval(name, value) {
    at the live variable. Most options live in game.flags here, while the three
    wizard debug switches match C's iflags fields. */
 function bool_optval(o) {
+    // optlist.h stores these options in u.uroleplay; pauper also sets nudist.
+    if ((o.name === 'nudist' || o.name === 'pauper') && game.u?.uroleplay)
+        return !!game.u.uroleplay[o.name];
     const v = bool_opt_store(o.name)[o.name];
     return (v === undefined) ? (o.initval === 'On') : !!v;
 }
@@ -718,15 +752,6 @@ const vanqorders = [
     ['c', 'by monster class, low to high level in class'],
     ['n', 'by count, high to low'],
     ['z', 'by count, low to high'],
-];
-
-/* src/o_init.c:599 disco_order_let / disco_orders_descr */
-const disco_order_let = 'osca';
-const disco_orders_descr = [
-    'by order of discovery within each class',
-    'sortloot order (by class with some sub-class groupings)',
-    'alphabetical within each class',
-    'alphabetical across all classes',
 ];
 
 /* src/options.c:128 paranoia[] — flag bit and primary name, in table order
@@ -944,11 +969,8 @@ function get_option_value(o) {
         if (own) s += `${top > 0 || around > 0 ? '/' : ''}own`;
         return s || 'none';
     }
-    case 'sortdiscoveries': {       /* src/o_init.c:1210 get_sortdisco */
-        let p = disco_order_let.indexOf(game.flags?.discosort ?? 'o');
-        if (p < 0) p = 0;
-        return disco_orders_descr[p];
-    }
+    case 'sortdiscoveries':
+        return get_sortdisco(false);
     case 'sortloot': {              /* src/options.c optfn_sortloot */
         const c = game.flags?.sortloot ?? 'l';          /* options.c:7208 */
         for (const t of sortltype)
@@ -1178,6 +1200,10 @@ async function doset_simple_menu() {
                    bare "pickup_types", which takes optfn_pickup_types()'s
                    do_set arm and prompts. */
                 await optfn_pickup_types_do_set();
+            } else if (allopt[k].name === 'sortdiscoveries') {
+                await choose_disco_sort(0);
+            } else if (allopt[k].name === 'menustyle') {
+                await handler_menustyle();
             } else {
                 note_unported_options(`doset_simple:set=${allopt[k].name}`);
             }
@@ -1719,6 +1745,10 @@ export async function doset() {
                 await optfn_pickup_types_do_set();
             } else if (o.hasHandler === 'Yes' && o.name === 'symset') {
                 await do_symset();
+            } else if (o.hasHandler === 'Yes' && o.name === 'sortdiscoveries') {
+                await choose_disco_sort(0);
+            } else if (o.hasHandler === 'Yes' && o.name === 'menustyle') {
+                await handler_menustyle();
             } else if (o.name === 'bind keys') {
                 await handler_rebind_keys();
             } else if (o.name === 'status condition fields') {
@@ -1775,6 +1805,40 @@ async function reset_needed_visuals() {
    display site, and nothing here needs the numbers), so the table is spelled
    with the symbols def_oc_syms[] gives those classes. */
 const def_inv_order = '$")[%?+!=/(*`0_';
+
+// src/options.c:5544 handler_menustyle().
+async function handler_menustyle() {
+    const old_menu_style = game.flags.menu_style ?? 2;
+    const descriptions = [
+        ['[prompt for object class(es), then', ' ask y/n for each item in those classes]'],
+        ['[prompt for object class(es), then', ' use menu for items in those classes]'],
+        ['[use menu to choose class(es), then', ' use another menu for items in those]'],
+        ['[skip class filtering; always', ' use menu of all available items]'],
+    ];
+    const sep = game.iflags?.menu_tab_sep ? '\t' : ' ';
+    const win = tty_create_nhwindow(NHW_MENU);
+    tty_start_menu(win, MENU_BEHAVE_STANDARD);
+    for (let i = 0; i < menutype.length; i++) {
+        const buf = menutype[i].padEnd(12) + sep + descriptions[i][0];
+        tty_add_menu(win, null, i + 1, buf[0], 0, ATR_NONE, NO_COLOR, buf,
+                     i === old_menu_style ? MENU_ITEMFLAGS_SELECTED : MENU_ITEMFLAGS_NONE);
+        tty_add_menu_str(win, ' '.repeat(16) + sep + descriptions[i][1]);
+    }
+    tty_end_menu(win, 'Select menustyle:');
+    const picks = await tty_select_menu(win, PICK_ONE);
+    if (picks.length) {
+        let i = picks[0] - 1;
+        if (picks.length > 1 && i === old_menu_style)
+            i = picks[1] - 1;
+        game.flags.menu_style = i;
+    }
+    tty_destroy_nhwindow(win);
+    const style = game.flags.menu_style ?? 2;
+    const chngd = style !== old_menu_style;
+    if (chngd || game.flags.verbose !== false)
+        await pline(`'menustyle' ${chngd ? 'changed to' : 'is still'} "${menutype[style]}".`);
+    return 0;
+}
 
 // src/options.c:7466 change_inv_order(). Keep each symbol's final occurrence,
 // append omitted classes in their previous order, and report every bad entry.

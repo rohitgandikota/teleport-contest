@@ -14,7 +14,7 @@
 import { M_AP_OBJECT } from './const.js';
 import { M_AP_TYPE } from './const.js';
 import { ONAME } from './const.js';
-import { get_artifact } from './artifact.js';
+import { get_artifact, find_artifact } from './artifact.js';
 import { QBUFSZ } from './const.js';
 import { shk_your } from './shk.js';
 import { carried, is_poisonable, Has_contents, OBJ_FLOOR, OBJ_MINVENT } from './obj.js';
@@ -89,8 +89,10 @@ const {
 /* The generated obj_descr table stores 0 (a NUMBER) for absent strings, and
    `?? null` passes 0 through — which made "has a description" tests true for
    every descriptionless item the moment one entered the discoveries list. */
-export const OBJ_NAME = (ocl) => obj_descr[ocl.oc_name_idx]?.oc_name || null;
-export const OBJ_DESCR = (ocl) => obj_descr[ocl.oc_descr_idx]?.oc_descr || null;
+export const OBJ_NAME = (ocl) =>
+    (game.obj_descr || obj_descr)[ocl.oc_name_idx]?.oc_name || null;
+export const OBJ_DESCR = (ocl) =>
+    (game.obj_descr || obj_descr)[ocl.oc_descr_idx]?.oc_descr || null;
 
 // include/objclass.h:38-44 — armour category, stored in oc_subtyp.
 export const ARM_SUIT = 0, ARM_SHIELD = 1, ARM_HELM = 2, ARM_GLOVES = 3,
@@ -121,7 +123,7 @@ export function obj_typename(otyp) {
             dn = 'koto';
     }
     const un = ocl.oc_uname || null;
-    const nn = ocl.oc_name_known;
+    let nn = ocl.oc_name_known;
     let buf = '';
 
     switch (ocl.oc_class) {
@@ -130,7 +132,14 @@ export function obj_typename(otyp) {
     case POTION_CLASS: buf = 'potion'; break;
     case SCROLL_CLASS: buf = 'scroll'; break;
     case WAND_CLASS:   buf = 'wand'; break;
-    case SPBOOK_CLASS: buf = 'spellbook'; break;
+    case SPBOOK_CLASS:
+        if (otyp !== ONAMES.SPE_NOVEL)
+            buf = 'spellbook';
+        else {
+            buf = nn ? 'novel' : 'book';
+            nn = 0;
+        }
+        break;
     case RING_CLASS:   buf = 'ring'; break;
     case AMULET_CLASS:
         buf = nn ? actualn : 'amulet';
@@ -153,7 +162,7 @@ export function obj_typename(otyp) {
         } else {
             buf += (dn || actualn);
             if (ocl.oc_class === GEM_CLASS)
-                buf += (ocl.oc_material === 8) ? ' stone' : ' gem';
+                buf += (ocl.oc_material === MATERIALS.MINERAL) ? ' stone' : ' gem';
             if (un) buf += ` called ${un}`;
         }
         return buf;
@@ -293,6 +302,9 @@ export function xname(obj) {
 // src/objnam.c xname_flags()
 export function xname_flags(obj, cxn_flags) {
     const ocl = game.objects[obj.otyp];
+    // src/objnam.c:625, unique articles must not reveal forgotten types.
+    if (!ocl.oc_name_known && ocl.oc_uses_known && ocl.oc_unique)
+        obj.known = 0;
     /* src/objnam.c:627 — naming an object the hero can see observes it:
            if (!Blind && !gd.distantname) observe_object(obj);
        This is where a wished amulet's dknown comes from ("a cubical
@@ -303,7 +315,7 @@ export function xname_flags(obj, cxn_flags) {
     if (game.urole?.mnum === 'PM_CLERIC'
         || game.urole?.mnum === PMNAMES.PM_CLERIC)
         obj.bknown = 1;
-    const nn = ocl.oc_name_known;
+    const nn = game.iflags?.override_ID ? 1 : ocl.oc_name_known;
     let actualn = OBJ_NAME(ocl) ?? 'object?';
     let dn = OBJ_DESCR(ocl) ?? actualn;
     /* src/objnam.c:605 — a Samurai reads these items in Japanese */
@@ -315,7 +327,11 @@ export function xname_flags(obj, cxn_flags) {
     }
     const un = ocl.oc_uname || null;
     let pluralize = (obj.quan !== 1) && !(cxn_flags & CXN_SINGULAR);
-    const dknown = obj.dknown;
+    const dknown = obj.dknown || game.iflags?.override_ID;
+    const known = obj.known || game.iflags?.override_ID;
+    const bknown = obj.bknown || game.iflags?.override_ID;
+    if (obj.oartifact && obj.dknown)
+        find_artifact(obj);
     let buf = '';
 
     /* src/objnam.c:663, jump directly to the personal name once an artifact
@@ -372,7 +388,7 @@ export function xname_flags(obj, cxn_flags) {
             if (nn) {
                 /* src/objnam.c:841 — known blessed/cursed water reads
                    "potion of holy/unholy water" */
-                const holy = (obj.otyp === ONAMES.POT_WATER && obj.bknown
+                const holy = (obj.otyp === ONAMES.POT_WATER && bknown
                               && (obj.blessed || obj.cursed))
                     ? (obj.blessed ? 'holy ' : 'unholy ') : '';
                 buf += ` of ${holy}${actualn}`;
@@ -410,7 +426,7 @@ export function xname_flags(obj, cxn_flags) {
         }
         buf = actualn;
         /* src/objnam.c tin_details(): a tin names its contents once known */
-        if (obj.otyp === ONAMES.TIN && obj.known)
+        if (obj.otyp === ONAMES.TIN && known)
             buf = tin_details(obj);
         break;
     }
@@ -420,7 +436,7 @@ export function xname_flags(obj, cxn_flags) {
         else if (obj.otyp === ONAMES.AMULET_OF_YENDOR
                  || obj.otyp === ONAMES.FAKE_AMULET_OF_YENDOR)
             /* each must be identified individually */
-            buf = obj.known ? actualn : dn;
+            buf = known ? actualn : dn;
         else if (nn)
             buf = actualn;
         else if (un)
@@ -617,7 +633,9 @@ export function minimal_xname(obj) {
     ocl.oc_uname = 0;
     /* suppress actual name if object's description is unknown */
     const save_name_known = ocl.oc_name_known;
-    if (!obj.dknown)
+    if (game.iflags?.override_ID)
+        ocl.oc_name_known = 1;
+    else if (!obj.dknown)
         ocl.oc_name_known = 0;
 
     /* caveat: this makes a lot of assumptions about which fields are
@@ -625,7 +643,7 @@ export function minimal_xname(obj) {
     const bareobj = {
         otyp: otyp,
         oclass: obj.oclass,
-        dknown: obj.dknown ? 1 : 0,
+        dknown: (obj.dknown || game.iflags?.override_ID) ? 1 : 0,
         /* suppress known except for amulets (needed for fakes and real
            A-of-Y); default is "on" for types which don't use it */
         known: (obj.oclass === OCLASSES.AMULET_CLASS)
@@ -866,20 +884,9 @@ const has_oname = (obj) => obj.oname != null;
 export function obj_is_pname(obj) {
     if (!obj.oartifact || !has_oname(obj))
         return false;
-    if (!game.program_state_gameover && !game.iflags?.override_ID) {
-        const ocl = game.objects[obj.otyp];
-        if (!obj.known || !obj.dknown || !obj.bknown || !ocl.oc_name_known
-            || (obj.oartifact && undiscovered_artifact(obj.oartifact)))
-            return false;
-        if ((!obj.cknown && (Is_container(obj) || obj.otyp === ONAMES.STATUE))
-            || (!obj.lknown && Is_box(obj)))
-            return false;
-        if (!obj.rknown
-            && (obj.oclass === ARMOR_CLASS || obj.oclass === WEAPON_CLASS
-                || is_weptool(obj, game.objects))
-            && is_damageable(obj))
-            return false;
-    }
+    if (!game.program_state_gameover && !game.iflags?.override_ID
+        && not_fully_identified(obj))
+        return false;
     return true;
 }
 
@@ -887,9 +894,9 @@ export function obj_is_pname(obj) {
 // unique object the hero has identified)? The fake amulet lies while
 // unknown.
 export function the_unique_obj(obj) {
-    const known = obj.known;
+    const known = obj.known || game.iflags?.override_ID;
 
-    if (!obj.dknown)
+    if (!obj.dknown && !game.iflags?.override_ID)
         return false;
     else if (obj.otyp === ONAMES.FAKE_AMULET_OF_YENDOR && !known)
         return true; /* lie */
@@ -1095,11 +1102,14 @@ export function doname(obj, vague_quan = false) {
     const ocl = game.objects[obj.otyp];
     let bp = xname(obj);
     /* xname() can update the object's observed and Priest-known flags. */
-    const known = obj.known, bknown = obj.bknown, dknown = obj.dknown;
+    const override = !!game.iflags?.override_ID;
+    const known = override || obj.known, bknown = override || obj.bknown;
+    const dknown = override || obj.dknown, cknown = override || obj.cknown;
+    const lknown = override || obj.lknown;
     let prefix = '';
 
     if (obj.quan !== 1)
-        prefix = vague_quan && !obj.dknown ? 'some ' : `${obj.quan} `;
+        prefix = vague_quan && !dknown ? 'some ' : `${obj.quan} `;
     else if (obj.otyp === ONAMES.CORPSE)
         ;                              /* corpse_xname supplies the article */
     else if (obj_is_pname(obj) || the_unique_obj(obj))
@@ -1110,7 +1120,7 @@ export function doname(obj, vague_quan = false) {
     /* src/objnam.c:1300 — "empty" goes at the beginning: a container known
        to have no contents (bag of tricks and horn of plenty key on charges
        instead and are recorded with the charge subsystem) */
-    if (obj.cknown
+    if (cknown
         && ((obj.otyp === ONAMES.BAG_OF_TRICKS
              || obj.otyp === ONAMES.HORN_OF_PLENTY)
             ? (obj.spe === 0 && !known)
@@ -1142,7 +1152,7 @@ export function doname(obj, vague_quan = false) {
 
     /* src/objnam.c:1358 — a box whose lock state is known says so. This
        runs after the BUC words and before greased, which is where C has it. */
-    if (obj.lknown && Is_box(obj)) {
+    if (lknown && Is_box(obj)) {
         if (obj.obroken)
             /* 3.6.0 used "unlockable" here but that could be misunderstood
                to mean "capable of being unlocked" rather than the intended
@@ -1174,7 +1184,7 @@ export function doname(obj, vague_quan = false) {
         prefix += is_corrodeable(obj, game.objects) ? 'corroded '
                   : 'rotted ';
     }
-    if (obj.rknown && obj.oerodeproof)
+    if ((obj.rknown || override) && obj.oerodeproof)
         prefix += is_rustprone(obj, game.objects) ? 'rustproof '
                   : is_corrodeable(obj, game.objects) ? 'corrodeproof '
                     : is_flammable(obj, game.objects) ? 'fireproof '
@@ -1184,7 +1194,7 @@ export function doname(obj, vague_quan = false) {
 
     /* src/objnam.c:1373 -- once a container's contents are known, doname()
        reports the number of separate stacks it holds. */
-    if (obj.cknown && obj.cobj?.length)
+    if (cknown && obj.cobj?.length)
         bp += ` containing ${obj.cobj.length} item${plur(obj.cobj.length)}`;
 
     switch (is_weptool(obj, game.objects) ? WEAPON_CLASS : obj.oclass) {
@@ -1356,6 +1366,26 @@ export function doname(obj, vague_quan = false) {
         prefix = just_an(rest || bp) + rest;
     }
     return prefix + bp;
+}
+
+// src/objnam.c:1787 not_fully_identified(). Erosion knowledge only matters
+// for vulnerable armor, weapons, weapon-tools and iron balls.
+export function not_fully_identified(otmp) {
+    if (otmp.oclass === COIN_CLASS)
+        return false;
+    if (!otmp.known || !otmp.dknown || !otmp.bknown
+        || !game.objects[otmp.otyp].oc_name_known)
+        return true;
+    if ((!otmp.cknown && (Is_container(otmp) || otmp.otyp === ONAMES.STATUE))
+        || (!otmp.lknown && Is_box(otmp)))
+        return true;
+    if (otmp.oartifact && undiscovered_artifact(otmp.oartifact))
+        return true;
+    if (otmp.rknown
+        || (otmp.oclass !== ARMOR_CLASS && otmp.oclass !== WEAPON_CLASS
+            && !is_weptool(otmp, game.objects) && otmp.oclass !== BALL_CLASS))
+        return false;
+    return !!is_damageable(otmp);
 }
 
 // src/objnam.c:1768 doname_vague_quan(). Farlook uses "some" instead of a

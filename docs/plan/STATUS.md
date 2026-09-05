@@ -9,9 +9,82 @@ loop until complete. The goal is active without a requested token budget.
 Current-corpus success is not the stopping criterion. Track unreviewed,
 untested, missing, and unreachable source paths explicitly.
 
-### Current verified follow-up: custom pack order
+### Current work: discovery sorting and identification
 
-Type naming below is committed and pushed as `52d4016b`. The current uncommitted
+Pack order is committed and pushed as `2ec9e465`. The uncommitted next pass
+ports full discovery sorting, sort selection, unique/artifact sections and all
+class-discovery menu styles. `dodiscovered` now owns its C-equivalent window
+instead of returning lines through cmd.js. `loot_classify` is ported in
+invent.js and shared by pickup's existing within-class sorter. Options now
+parse sortdiscoveries and menustyle and expose their handlers. Tty yn prompts
+hide choices after ESC and return the NUL default on cancellation. A pauper's
+nudist option display now reads the actual roleplay state.
+
+All 72 permanent cases match 2,075/2,075 screens/cursors and 216,907/216,907
+RNG: `discovery-sort-order` has 19 cases, `discovery-sorting-details` 31, and
+`discovery-identification` 22. Positive class selection covers all four menu
+styles. Other cases cover temporary/permanent identification, selected objects
+and classes, empty menus, artifacts, relics, the Amulet's extra wish, novels,
+named types, custom order and unseen spellbook markers.
+
+The detail recordings exposed absent debug identification selection and its
+default ^I binding, so `wiz_identify` now delegates to display_pickinv's C
+override-ID path. `not_fully_identified` has moved into objnam.js with all C
+conditions; invent.js re-exports it. `fully_identify_obj` calls the existing
+set_cknown_lknown and learn_egg_type. Name formatting now uses temporary
+override-ID locals, finds actually seen artifacts and handles unique amnesia.
+Artifact discovery/dump functions are in artifact.js. The gray-stone type name
+used obsolete material value 8 instead of MINERAL, now fixed. The other RNG
+failure was initoptions_finish's missing SLIME_MOLD name rewrite to "fruit":
+reset_objects now applies it to its per-game table and naming macros read that
+table. Wishing for the preferred "slime mold" now takes C's fruit-list path.
+
+The stored-state gate passes all 72 cases plus source controls. It checks
+persisted sort choice, real and temporary knowledge, artifact discovery,
+intrinsic blindness, dummy-object ownership, type names and the one-time Amulet
+wish. An isolated loader that removes the permanent blindness source still
+passes the 677-screen/65,322-RNG identification fixture, but the state gate
+fails on the missing FROMOUTSIDE bit. Loader and logs are in
+`.cache/discoveries/discovery-*-negative.*`; it never edits the runtime.
+
+The blind cases exposed absent roleplay initialization and a make_blinded path
+that discarded permanent source bits. Both are fixed. The Amulet message now
+uses C's urgent_pline so Escape cannot suppress its following wish prompt.
+Unidentified novels display as books, identified ones as novels. A seen dummy
+spellbook changes the encountered flag only after its first discovery marker
+is written, while the blind control keeps the marker.
+
+All three native recordings reproduced exactly in
+`.cache/c-coverage/discovery-sorting-20260905`. They add 226 direct outcomes and
+seven entered function records. The union is 53,178/108,268 outcomes and
+4,298/5,491 entered records. The separate assertion ledger is 1,528/1,528, with
+99 categories covered and seven partial.
+
+Final stable-runtime regression passes 44/44 public and 432/432 supplemental
+fixtures. Public has 11,405 exact screens/cursors and 792,838 RNG;
+supplemental has 126,776 exact screens/cursors, 6,509,749 RNG and 3,248
+animations. Public animations remain 1,462/1,483. Results are in
+`.cache/discoveries/discovery-final-regression.log`. Fuzz is unchanged at
+101/102, 14,261/14,262 screens, 14,262 cursors, 491,759 RNG and 75/76 animations;
+the only failing fixture is the fixed-datetime artifact. All 47 hang checks,
+80 reused role-smoke controls, 16 tool tests, source audit and the pack-order,
+object-type and inventory-adjustment state gates pass. The completed review is
+[discovery-sorting-audit.md](discovery-sorting-audit.md). Commit and push this
+verified pass, then continue with the next source dependency below.
+
+Next source pass: `optfn_pickup_types` still has an absent traditional prompt
+and string-valued menu-style checks although C stores numeric constants. Its
+full do_set body was read at options.c:3315-3402. Read the declaration above
+it, handler_pickup_types and windows.c choose_classes_menu before porting.
+Other explicit gaps: make_blinded's non-transition feedback/toggle effects,
+initial rc error presentation, general inventory sort/in-use filtering and
+non-ASCII byte comparison. Bare !sortdiscoveries causes a C startup error;
+the valid negated-value control uses !sortdiscoveries:a. Keep the goal active
+after committing and pushing this checkpoint.
+
+### Previous verified follow-up: custom pack order
+
+Type naming below is committed and pushed as `52d4016b`. The pack-order
 pass reads C `def_inv_order`, `optfn_packorder`, `change_inv_order`, and the
 interactive `config_erradd` path. It adds `change_inv_order` to options.js,
 uses the configured class array in invent.js, and shares that order with
@@ -42,7 +115,7 @@ Final stable-runtime verification: public **44/44**, 11,405 screens/cursors,
 screens, 14,262 cursors, 491,759 RNG and 75/76 animations. All 46 hang checks,
 80 reused role-smoke controls, 16 tool tests, source audit and the pack-order,
 object-type and inventory-adjustment state gates pass. Logs are in
-`.cache/discoveries/`. Review the diff, commit and push this checkpoint.
+`.cache/discoveries/`. Checkpoint `2ec9e465` is committed and pushed.
 
 Next: discovery sorting and the unique-item/artifact sections. Complete C bodies
 already read: `dodiscovered` o_init.c:758-876, `choose_disco_sort`:611-656,

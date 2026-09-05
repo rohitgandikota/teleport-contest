@@ -75,6 +75,9 @@ import { ONAMES } from './objects_data.js';
 import { artifact_names, artifact_otyps, artifact_records,
          ART_GRIMTOOTH, ART_EXCALIBUR,
          ART_SUNSWORD } from './artilist_data.js';
+import { align_str } from './role.js';
+import { simple_typename } from './objnam.js';
+import { tty_putstr, ATR_INVERSE } from './tty/wintty.js';
 import { PMNAMES, MFLAGS, MONSYMS, ATTKS as ADTYPES } from './monst_data.js';
 import { is_covetous, is_mplayer, defended, is_demon, resists_fire,
          resists_cold, resists_elec, resists_poison, resists_ston }
@@ -158,6 +161,48 @@ export function discover_artifact(art) {
     const discovered = (game.artidisco ||= []);
     if (art > 0 && !discovered.includes(art))
         discovered.push(art);
+}
+
+// src/artifact.c:151 artiname().
+export function artiname(artinum) {
+    return artinum <= 0 || artinum > NROFARTIFACTS ? '' : artifact_names[artinum];
+}
+
+// src/artifact.c:1149 disp_artifact_discoveries(). WIN_ERR only counts.
+export function disp_artifact_discoveries(tmpwin) {
+    let i;
+    for (i = 0; i < NROFARTIFACTS; i++) {
+        const m = game.artidisco?.[i];
+        if (!m)
+            break;
+        if (tmpwin === -1)
+            continue;
+        if (i === 0)
+            tty_putstr(tmpwin, game.iflags?.menu_headings?.attr ?? ATR_INVERSE,
+                       'Artifacts');
+        let algnstr = align_str(artifact_alignment(artifact_records[m], m));
+        if (algnstr === 'unaligned')
+            algnstr = 'non-aligned';
+        tty_putstr(tmpwin, 0, `  ${artiname(m)} [${algnstr} ${
+            simple_typename(arti_otyp[m])}]`);
+    }
+    return i;
+}
+
+// src/artifact.c:1177 dump_artifact_info(). Preserve creation flag order.
+export function dump_artifact_info(tmpwin) {
+    tty_putstr(tmpwin, game.iflags?.menu_headings?.attr ?? ATR_INVERSE,
+               'Artifacts');
+    for (let m = 1; m <= NROFARTIFACTS; m++) {
+        const a = artiexist()[m];
+        const flags = (a.exists ? 'exists;' : '')
+            + (a.found ? ' hero knows;' : '')
+            + (a.gift ? ' gift' : '') + (a.wish ? ' wish' : '')
+            + (a.named ? ' named' : '') + (a.viadip ? ' viadip' : '')
+            + (a.lvldef ? ' lvldef' : '') + (a.bones ? ' bones' : '')
+            + (a.rndm ? ' random' : '');
+        tty_putstr(tmpwin, 0, `  ${artiname(m).slice(0, 36).padEnd(36)}[${flags}]`);
+    }
 }
 
 // src/artifact.c artifact_exists() — an artifact has just been created or is

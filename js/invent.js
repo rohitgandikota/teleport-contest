@@ -50,7 +50,10 @@ import { Blind as heroBlind, Hallucination,
          Stone_resistance } from './youprop.js';
 import { doname, an, corpse_xname, makeplural, obj_typename, CXN_PFX_THE,
          CXN_ARTICLE, yname } from './objnam.js';
-import { OCLASSES, ONAMES } from './objects_data.js';
+import { OCLASSES, ONAMES, MATERIALS, SKILLS } from './objects_data.js';
+import { is_pole } from './u_init.js';
+import { OBJ_DESCR, not_fully_identified } from './objnam.js';
+export { not_fully_identified } from './objnam.js';
 import { MONSYMS, NUMMONS, PMNAMES } from './monst_data.js';
 import { erosion_matters, curse, splitobj, clear_splitobjs, extract_nobj,
          start_glob_timeout } from './mkobj.js';
@@ -83,13 +86,98 @@ import { discover_artifact, set_artifact_intrinsic,
 import { ART_MJOLLNIR } from './artilist_data.js';
 import { body_part } from './polyself.js';
 import { HAND } from './const.js';
-import { obj_stop_timers, stop_timer, SHRINK_GLOB } from './timeout.js';
+import { obj_stop_timers, stop_timer, SHRINK_GLOB, learn_egg_type } from './timeout.js';
 import { obj_merge_light_sources } from './light.js';
 
 // include/hack.h — command result flags. ECMD_TIME means the command consumed
 // a move, which is what makes moveloop advance svm.moves.
 export const ECMD_OK = 0;
 export const ECMD_TIME = 1;
+
+// src/invent.c:149 loot_classify(). Lower values sort before higher values.
+export function loot_classify(sort_item, obj) {
+    const O = OCLASSES, N = ONAMES, P = SKILLS;
+    const def_srt_order = [O.COIN_CLASS, O.AMULET_CLASS, O.RING_CLASS,
+        O.WAND_CLASS, O.POTION_CLASS, O.SCROLL_CLASS, O.SPBOOK_CLASS,
+        O.GEM_CLASS, O.FOOD_CLASS, O.TOOL_CLASS, O.WEAPON_CLASS,
+        O.ARMOR_CLASS, O.ROCK_CLASS, O.BALL_CLASS, O.CHAIN_CLASS];
+    const otyp = obj.otyp, oclass = obj.oclass, oc = game.objects[otyp];
+    const discovered = !!oc.oc_name_known;
+    if (!heroBlind())
+        observe_object(obj);
+    const seen = !!obj.dknown;
+    const classorder = game.flags.sortpack !== false ? inv_order() : def_srt_order;
+    const p = classorder.indexOf(oclass);
+    let k = p >= 0 ? 1 + p
+        : 1 + classorder.length + Number(oclass !== O.VENOM_CLASS);
+    sort_item.orderclass = k;
+    switch (oclass) {
+    case O.ARMOR_CLASS: {
+        const armcat = [7, 4, 1, 2, 3, 5, 6, 8];
+        k = oc.oc_armcat;
+        if (k < 0 || k >= 7)
+            k = 7;
+        k = armcat[k];
+        break;
+    }
+    case O.WEAPON_CLASS:
+        k = oc.oc_skill;
+        k = k < 0 ? (k >= -P.P_CROSSBOW && k <= -P.P_BOW ? 1 : 3)
+            : (k >= P.P_BOW && k <= P.P_CROSSBOW ? 2
+               : k === P.P_SPEAR || k === P.P_DAGGER || k === P.P_KNIFE ? 4
+                 : !is_pole(obj) ? 5 : 6);
+        break;
+    case O.TOOL_CLASS:
+        if (seen && discovered
+            && (otyp === N.BAG_OF_TRICKS || otyp === N.HORN_OF_PLENTY))
+            k = 2;
+        else if (Is_container(obj))
+            k = 1;
+        else
+            switch (otyp) {
+            case N.WOODEN_FLUTE: case N.MAGIC_FLUTE:
+            case N.TOOLED_HORN: case N.FROST_HORN: case N.FIRE_HORN:
+            case N.WOODEN_HARP: case N.MAGIC_HARP: case N.BUGLE:
+            case N.LEATHER_DRUM: case N.DRUM_OF_EARTHQUAKE:
+            case N.HORN_OF_PLENTY:
+                k = 3;
+                break;
+            default:
+                k = 4;
+                break;
+            }
+        break;
+    case O.FOOD_CLASS:
+        switch (otyp) {
+        case N.SLIME_MOLD: k = 1; break;
+        default: k = obj.globby ? 6 : 2; break;
+        case N.TIN: k = 3; break;
+        case N.EGG: k = 4; break;
+        case N.CORPSE: k = 5; break;
+        }
+        break;
+    case O.GEM_CLASS:
+        switch (oc.oc_material) {
+        case MATERIALS.GEMSTONE:
+            k = !seen ? 1 : !discovered ? 2 : 3;
+            break;
+        case MATERIALS.GLASS:
+            k = !seen ? 1 : !discovered ? 2 : 4;
+            break;
+        default:
+            k = !seen ? 5 : otyp !== N.ROCK ? (!discovered ? 6 : 7) : 8;
+            break;
+        }
+        break;
+    default:
+        k = 1;
+        break;
+    }
+    sort_item.subclass = k;
+    k = !seen ? 1 : discovered || !OBJ_DESCR(oc) ? 4 : oc.oc_uname ? 3 : 2;
+    sort_item.disco = k;
+    sort_item.inuse = 0;
+}
 
 // src/invent.c:4334 will_feel_cockatrice()
 export function will_feel_cockatrice(otmp, force_touch = false) {
@@ -674,11 +762,13 @@ export function display_inventory(allowed_choices = null) {
     if (game.flags.fixinv === false)
         reassign();
     const out = [];
+    const wizid = game.wizard && game.iflags?.override_ID;
     const sortpack = game.flags.sortpack !== false;
     for (const oclass of sortpack ? inv_order() : [0]) {
         const items = (game.invent || []).filter(
             o => (!sortpack || o.oclass === oclass)
-                 && (!allowed_choices || allowed_choices.includes(o.invlet)));
+                 && (!allowed_choices || allowed_choices.includes(o.invlet))
+                 && (!wizid || not_fully_identified(o)));
         if (!items.length) continue;
         /* add_menu_heading(win, class_header) — iflags.menu_headings */
         if (sortpack)
@@ -717,6 +807,7 @@ export async function display_pickinv(allowed_choices, handsbuf, menuquery,
 
     if (handsbuf || menuquery)
         note_unported_invent('display_pickinv:hands_or_forcemenu');
+    const wizid = game.wizard && game.iflags?.override_ID;
 
     /* src/invent.c:3130 — count 0, 1, or more-than-1 candidates. With
        exactly one item of interest C uses a message-line "menu" instead of
@@ -733,7 +824,7 @@ export async function display_pickinv(allowed_choices, handsbuf, menuquery,
         }
         if (game.flags.fixinv === false)
             reassign();
-        if (n === 1 && allowed_choices) {
+        if (n === 1 && allowed_choices && !wizid) {
             const otmp = (game.invent || [])
                 .find(o => o.invlet === allowed_choices[0]);
             if (otmp) {
@@ -749,6 +840,24 @@ export async function display_pickinv(allowed_choices, handsbuf, menuquery,
 
     const win = tty_create_nhwindow(W_MENU);
     tty_start_menu(win, MENU_BEHAVE_STANDARD);
+    const wizid_fakeobj = {};
+    if (wizid) {
+        const { MENU_ITEMFLAGS_SKIPINVERT } = await import('./const.js');
+        const { visctrl } = await import('./hacklib.js');
+        const unid_cnt = count_unidentified(game.invent);
+        tty_add_menu_str(win, 'Debug Identify' + (unid_cnt
+            ? ` -- unidentified or partially identified item${unid_cnt === 1 ? '' : 's'}` : ''));
+        if (!unid_cnt)
+            tty_add_menu_str(win, '(all items are permanently identified already)');
+        else {
+            const override = game.iflags.override_ID;
+            let prompt = `select ${unid_cnt === 1 ? 'it' : 'any or all of them'} to permanently identify`;
+            if (unid_cnt > 1)
+                prompt += ` (${visctrl(override)} for all)`;
+            tty_add_menu(win, null, wizid_fakeobj, '_', override, A_NONE, NO_COLOR,
+                         prompt, MENU_ITEMFLAGS_SKIPINVERT);
+        }
+    }
     /* src/invent.c:3273 — C applies the `lets` filter FIRST and only then adds
        the class heading, gated on `!classcount`, so a heading appears just
        before the first item of its class that survived the filter. Emitting
@@ -768,7 +877,10 @@ export async function display_pickinv(allowed_choices, handsbuf, menuquery,
                          pending_heading.str, MENU_ITEMFLAGS_NONE);
             pending_heading = null;
         }
-        tty_add_menu(win, e.glyphinfo, e.invlet.charCodeAt(0), e.invlet, 0,
+        const obj = (game.invent || []).find(o => o.invlet === e.invlet);
+        const { def_oc_syms } = await import('./drawing_data.js');
+        tty_add_menu(win, e.glyphinfo, wizid ? obj : e.invlet.charCodeAt(0),
+                     e.invlet, wizid ? def_oc_syms[obj.oclass] : 0,
                      A_NONE, NO_COLOR, e.str, MENU_ITEMFLAGS_NONE);
     }
     /* src/invent.c:3378 — `end_menu(win, (query && *query) ? query : NULL)`.
@@ -776,7 +888,7 @@ export async function display_pickinv(allowed_choices, handsbuf, menuquery,
        this window has NO title; the hardcoded one added a phantom first row. */
     tty_end_menu(win, (menuquery && menuquery.length) ? menuquery : null);
 
-    const picks = await tty_select_menu(win, PICK_ONE);
+    const picks = await tty_select_menu(win, wizid ? 2 /* PICK_ANY */ : PICK_ONE);
     const cancelled = !!tty_get_nhwindow(win)?.cancelled;
     tty_destroy_nhwindow(win);
 
@@ -784,6 +896,22 @@ export async function display_pickinv(allowed_choices, handsbuf, menuquery,
         return '\x1b';
     if (!picks.length)
         return 0;
+    if (wizid) {
+        game.iflags.override_ID = 0;
+        let all_id = false;
+        for (const otmp of picks) {
+            if (otmp === wizid_fakeobj) {
+                await identify_pack(0, false);
+                all_id = true;
+                break;
+            }
+            if (not_fully_identified(otmp))
+                await identify(otmp);
+        }
+        if (!all_id)
+            update_inventory();
+        return 0;
+    }
     return String.fromCharCode(picks[0]);
 }
 
@@ -2313,26 +2441,6 @@ export async function doprgold() {
 }
 
 
-// src/objnam.c:1787 not_fully_identified() — is anything about this object
-// still unknown? The rknown tail (erosion-proofing) needs the erodeable
-// predicates and is recorded.
-export function not_fully_identified(otmp) {
-    /* gold doesn't have any interesting attributes */
-    if (otmp.oclass === OCLASSES.COIN_CLASS)
-        return false;
-    if (!otmp.known || !otmp.dknown || !otmp.bknown
-        || !game.objects[otmp.otyp].oc_name_known)
-        return true;
-    /* include/obj.h:338 Is_box() */
-    const Is_box = (o) => o.otyp === ONAMES.LARGE_BOX || o.otyp === ONAMES.CHEST;
-    if ((!otmp.cknown && Is_container(otmp))
-        || (!otmp.lknown && Is_box(otmp)))
-        return true;
-    if (otmp.oartifact)
-        note_unported_invent('not_fully_identified:artifact');
-    return false;
-}
-
 // src/invent.c:2698 count_unidentified()
 export function count_unidentified(objchn) {
     let unid_cnt = 0;
@@ -2350,10 +2458,9 @@ export function fully_identify_obj(otmp) {
         discover_artifact(otmp.oartifact);
     observe_object(otmp);
     otmp.known = otmp.bknown = otmp.rknown = 1;
-    if (Is_container(otmp) || otmp.otyp === ONAMES.STATUE)
-        otmp.cknown = otmp.lknown = 1;
+    set_cknown_lknown(otmp);
     if (otmp.otyp === ONAMES.EGG && (otmp.corpsenm ?? -1) >= 0)
-        note_unported_invent('fully_identify_obj:egg_type');
+        learn_egg_type(otmp.corpsenm);
 }
 
 export async function identify(otmp) {

@@ -170,6 +170,8 @@ export class NethackGame {
             uroleplay: {
                 pauper: !!g.flags.pauper,
                 nudist: !!g.flags.nudist || !!g.flags.pauper,
+                blind: !!g.flags.blind,
+                deaf: !!g.flags.deaf,
             },
         };
         g.context = { move: 0 };

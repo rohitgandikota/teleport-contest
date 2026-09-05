@@ -105,7 +105,7 @@ do_wire_dokick(ship_object);
    do.js into the dungeon module graph */
 import { dungeon_wire_stairway_at } from './dungeon.js';
 dungeon_wire_stairway_at(stairway_at);
-import { wiz_level_change, wiz_level_tele, wiz_wish } from './wizcmds.js';
+import { wiz_level_change, wiz_level_tele, wiz_wish, wiz_identify } from './wizcmds.js';
 import { tty_yn_function, doprev_message } from './tty/topl.js';
 import { extcmdlist, EXTCMD_FLAGS } from './extcmd_data.js';
 import { dodiscovered, doclassdisco } from './o_init.js';
@@ -117,7 +117,6 @@ import { tty_create_nhwindow, tty_putstr, tty_display_nhwindow, tty_next_page,
 import { MENU_ITEMFLAGS_NONE, MENU_BEHAVE_STANDARD, isok, HEADSTONE, xdir, ydir, zdir, N_DIRS, N_DIRS_Z, DIR_ERR, DIR_W, DIR_NW, DIR_N, DIR_NE, DIR_E, DIR_SE, DIR_S, DIR_SW, DOMOVE_WALK, DOMOVE_RUSH, BC_BALL, BC_CHAIN, SLT_ENCUMBER, OBJ_FLOOR, WT_ELF } from './const.js';
 import { doopen, doopen_indir, doclose } from './lock.js';
 import { ECMD_OK, getobj } from './invent.js';
-import { count_unidentified } from './invent.js';
 import { doeat } from './eat.js';
 import { doread, wiz_genesis } from './read.js';
 import { dodrink } from './potion.js';
@@ -992,7 +991,7 @@ async function execute_extcmd(name) {
         return await doorganize();
     }
     if (name === 'wizidentify')
-        return await show_wiz_identify();
+        return await wiz_identify();
     if (name === 'genocided') {
         const { dogenocided } = await import('./insight.js');
         return await dogenocided();
@@ -1903,6 +1902,9 @@ export async function rhack(key) {
            the pinned build, so this command always follows its first arm. */
         await pline("Persistent inventory display is not supported by 'tty'.");
         game.context.move = 0;
+    } else if (ch === '\t') {
+        // src/cmd.c cmdlist, ^I invokes wiz_identify().
+        game.context.move = ((await wiz_identify()) === ECMD_TIME ? 1 : 0);
     } else if (ch === '\x18') {
         // src/cmd.c cmdlist — ^X is doattributes, which returns ECMD_OK.
         game.context.move = 0;
@@ -1910,7 +1912,7 @@ export async function rhack(key) {
     } else if (ch === '\\') {
         // src/cmd.c cmdlist — '\\' is dodiscovered, which returns ECMD_OK.
         game.context.move = 0;
-        await show_discoveries();
+        await dodiscovered();
     } else if (ch === '`') {
         // src/o_init.c doclassdisco() filters discoveries by object class.
         game.context.move = ((await doclassdisco()) === ECMD_TIME ? 1 : 0);
@@ -3121,58 +3123,6 @@ const bigmonst = (ptr) => ptr.msize >= MFLAGS.MZ_LARGE;
 // lays out. The window stays up until a key dismisses it, so the frame captured
 // at the NEXT nhgetch() is the one showing it.
 let open_window = null;
-
-// C's display_nhwindow(win, TRUE) BLOCKS inside the window: wintty.c's dmore()
-// waits for a key while the window is on screen, so the frame the recorder
-// captures at that nhgetch() is the window itself. Returning to the move loop
-// instead would let its flush_screen() redraw the map over it before the next
-// capture, which is exactly what a first attempt at this did.
-async function show_discoveries() {
-    const lines = dodiscovered();
-    if (!lines) {
-        await pline("You haven't discovered anything yet...");
-        return;
-    }
-    const win = tty_create_nhwindow(NHW_TEXT);
-    for (const [text, attr] of lines)
-        tty_putstr(win, attr, text);
-    await tty_display_nhwindow(win);      /* draws the page and parks the cursor */
-
-    /* dmore(): block once per page until the player dismisses the window. */
-    await xwaitforspace(' \r\n\x1b');
-    while (game.morc !== '\x1b' && tty_next_page(win))
-        await xwaitforspace(' \r\n\x1b');
-
-    tty_destroy_nhwindow(win);
-}
-
-// src/wizcmds.c wiz_identify(), empty-selection arm of display_inventory().
-async function show_wiz_identify() {
-    if (!game.wizard) {
-        await pline("Unavailable command '#wizidentify'.");
-        return ECMD_OK;
-    }
-
-    const win = tty_create_nhwindow(NHW_MENU);
-    tty_start_menu(win, MENU_BEHAVE_STANDARD);
-    tty_add_menu(win, null, 0, 0, 0, ATR_NONE, NO_COLOR,
-                 'Debug Identify', MENU_ITEMFLAGS_NONE);
-    const unid = count_unidentified(game.invent || []);
-    if (!unid) {
-        tty_add_menu(win, null, 0, 0, 0, ATR_NONE, NO_COLOR,
-                     '(all items are permanently identified already)',
-                     MENU_ITEMFLAGS_NONE);
-    } else {
-        tty_add_menu(win, null, 0, 0, 0, ATR_NONE, NO_COLOR,
-                     `select ${unid === 1 ? 'it' : 'any or all of them'} to permanently identify`,
-                     MENU_ITEMFLAGS_NONE);
-    }
-    tty_end_menu(win, null);
-    await tty_select_menu(win, 0 /* PICK_NONE */);
-    tty_destroy_nhwindow(win);
-    return ECMD_OK;
-}
-
 
 // src/insight.c doattributes() -> enlightenment(BASICENLIGHTENMENT, 0).
 //

@@ -275,7 +275,7 @@ const TBUFSZ = 300;
 // unacknowledged line, and toplin goes to TOPLINE_SPECIAL_PROMPT, which is
 // what stops the next message from joining onto the prompt text.
 // The response filter and numeric '#' input are ported. The Ctrl-P history
-// interaction and acceptable responses hidden after an ESC byte are not.
+// interaction is not yet ported.
 export async function tty_yn_function(query, resp, def, addcmdq = false) {
     /* src/cmd.c:5487 yn_function(), repeatable questions consume their
        saved answer before invoking the window port. There is deliberately
@@ -322,9 +322,9 @@ export async function tty_yn_function(query, resp, def, addcmdq = false) {
     if (resp) {
         /* win/tty/topl.c builds "<query> [<resp>] " and appends "(<def>) "
            when there is a default. The screen shows it as
-           "... Ready it instead? [ynq] (q)". Acceptable responses after an
-           embedded ESC byte are not yet hidden from the displayed prompt. */
-        prompt += ` [${resp}]`;
+           "... Ready it instead? [ynq] (q)". Choices after ESC remain
+           acceptable but aren't displayed (win/tty/topl.c:410). */
+        prompt += ` [${resp.split('\x1b')[0]}]`;
         if (def && def !== '\0')
             prompt += ` (${def})`;
     }
@@ -406,9 +406,9 @@ export async function tty_yn_function(query, resp, def, addcmdq = false) {
             if (ch === '\x1b') {
                 answer = resp.includes('q') ? 'q'
                        : resp.includes('n') ? 'n'
-                         : (def && def !== '\0') ? def : ch;
+                         : def;
             } else if (quitchars.includes(ch)) {
-                answer = (def && def !== '\0') ? def : ch;
+                answer = def;
             } else if (!resp.includes(ch) && !digit_ok) {
                 /* tty_nhbell(); try again */
             } else if (ch === '#' || digit_ok) {

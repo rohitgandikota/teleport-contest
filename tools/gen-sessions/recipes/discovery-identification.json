@@ -1,0 +1,2161 @@
+{
+  "name": "discovery-identification",
+  "description": "C permanent identification versus temporary revelation, blind discoveries, artifact alignment, named types and the real Amulet.",
+  "coverage": [
+    "mode.debug",
+    "level.ordinary",
+    "options.rc-bindings",
+    "ui.menus",
+    "ui.getlin",
+    "ui.cancel-invalid",
+    "object.identification"
+  ],
+  "branches": [
+    "discovery-identification.reveal-cancel",
+    "discovery-identification.identified-menu-empty",
+    "discovery-identification.identify-one",
+    "discovery-identification.identify-class",
+    "discovery-identification.identify-all-accelerator",
+    "discovery-identification.identify-invert",
+    "discovery-identification.identify-empty",
+    "discovery-identification.discovery-empty",
+    "discovery-identification.reveal-blind",
+    "discovery-identification.identify-blind",
+    "discovery-identification.amulet-wish-decline",
+    "discovery-identification.fake-amulet",
+    "discovery-identification.unseen-spell-star",
+    "discovery-identification.unseen-spell-blind-star",
+    "discovery-identification.non-aligned-artifact",
+    "discovery-identification.chaotic-role-artifact",
+    "discovery-identification.named-order",
+    "discovery-identification.custom-pack-sort",
+    "discovery-identification.without-sortpack",
+    "discovery-identification.novel-encountered",
+    "discovery-identification.novel-identified",
+    "discovery-identification.amulet-identified"
+  ],
+  "requireBranchAssertions": true,
+  "segments": [
+    {
+      "seed": 102200,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=pauper\n",
+      "moves": "\u0017Magicbane\r\t\u001b\\\u001bi\u001b",
+      "name": "reveal-cancel"
+    },
+    {
+      "seed": 102200,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=pauper\n",
+      "moves": "\u0017Magicbane\r\t_\r\u001b\u001b\u001b\u001b\u001b\u001b\t\u001b\\\u001b",
+      "name": "identified-menu-empty"
+    },
+    {
+      "seed": 102200,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=pauper\n",
+      "moves": "\u0017potion of speed\r\u0017potion of healing\r\ta\r\u001b\u001b\u001b\u001b\u001b\u001b\\\u001b\t\u001b",
+      "name": "identify-one"
+    },
+    {
+      "seed": 102200,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=pauper\n",
+      "moves": "\u0017potion of speed\r\u0017potion of healing\r\u0017ring of searching\r\t!\r\u001b\u001b\u001b\u001b\u001b\u001b\\\u001b\t\u001b",
+      "name": "identify-class"
+    },
+    {
+      "seed": 102200,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=pauper\n",
+      "moves": "\u0017potion of speed\r\u0017ring of searching\r\t\t\r\u001b\u001b\u001b\u001b\u001b\u001b\\\u001b\t\u001b",
+      "name": "identify-all-accelerator"
+    },
+    {
+      "seed": 102200,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=pauper\n",
+      "moves": "\u0017potion of speed\r\u0017ring of searching\r\t@\r\u001b\u001b\u001b\u001b\u001b\u001b\\\u001b",
+      "name": "identify-invert"
+    },
+    {
+      "seed": 102200,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Barbarian,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=pauper\n",
+      "moves": "\t",
+      "name": "identify-empty"
+    },
+    {
+      "seed": 102200,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Barbarian,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=pauper\n",
+      "moves": "\\`",
+      "name": "discovery-empty"
+    },
+    {
+      "seed": 102200,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=pauper\nOPTIONS=blind\n",
+      "moves": "\u0017Magicbane\r\t\u001b\\\u001b",
+      "name": "reveal-blind"
+    },
+    {
+      "seed": 102200,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=pauper\nOPTIONS=blind\n",
+      "moves": "\u0017Magicbane\r\t_\r\u001b\u001b\u001b\u001b\u001b\u001b\\\u001b",
+      "name": "identify-blind"
+    },
+    {
+      "seed": 102200,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=pauper\n",
+      "moves": "\u0017Amulet of Yendor\r\u001b\u001bnothing\r\u001b\u001b\u001b\u001b\u001b\u001b\\\u001b`r\u001b",
+      "name": "amulet-wish-decline"
+    },
+    {
+      "seed": 102200,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=pauper\n",
+      "moves": "\u0017cheap plastic imitation of the Amulet of Yendor\r\\\u001b\t_\r\u001b\u001b\u001b\u001b\u001b\u001b\\\u001b",
+      "name": "fake-amulet"
+    },
+    {
+      "seed": 102200,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=pauper\n",
+      "moves": "m\\s\u001b\\\u001b",
+      "name": "unseen-spell-star"
+    },
+    {
+      "seed": 102200,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=pauper\nOPTIONS=blind\n",
+      "moves": "m\\s\u001b\\\u001b",
+      "name": "unseen-spell-blind-star"
+    },
+    {
+      "seed": 102200,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=pauper\n",
+      "moves": "\u0017Frost Brand\r\t_\r\u001b\u001b\u001b\u001b\u001b\u001bm\\a\u001b",
+      "name": "non-aligned-artifact"
+    },
+    {
+      "seed": 102200,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:chaotic,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=pauper\n",
+      "moves": "\u0017Magicbane\r\t_\r\u001b\u001b\u001b\u001b\u001b\u001b\\\u001b",
+      "name": "chaotic-role-artifact"
+    },
+    {
+      "seed": 102200,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=pauper\n",
+      "moves": "\u0017potion of speed\r\u0017potion of healing\r#name\roaZeta\r#name\robAlpha\rm\\c\u001b",
+      "name": "named-order"
+    },
+    {
+      "seed": 102200,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=pauper\nOPTIONS=packorder:!\n",
+      "moves": "\u0017helmet\r\u0017potion of speed\rm\\s\u001b",
+      "name": "custom-pack-sort"
+    },
+    {
+      "seed": 102200,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=pauper\nOPTIONS=!sortpack\n",
+      "moves": "\u0017helmet\r\u0017potion of speed\rm\\s\u001b",
+      "name": "without-sortpack"
+    },
+    {
+      "seed": 102200,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=pauper\n",
+      "moves": "\u0017novel\r\\\u001b",
+      "name": "novel-encountered"
+    },
+    {
+      "seed": 102200,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=pauper\n",
+      "moves": "\u0017novel\r\t_\r\u001b\u001b\u001b\u001b\u001b\u001b\\\u001b",
+      "name": "novel-identified"
+    },
+    {
+      "seed": 102200,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=pauper\n",
+      "moves": "\u0017Amulet of Yendor\r\u001b\u001bnothing\r\u001b\u001b\u001b\u001b\u001b\u001b\t_\r\u001b\u001b\u001b\u001b\u001b\u001b\\\u001b`r\u001b",
+      "name": "amulet-identified"
+    }
+  ],
+  "branchAssertions": [
+    {
+      "branch": "discovery-identification.reveal-cancel",
+      "segment": 0,
+      "screenIncludes": [
+        "Debug Identify",
+        "athame named Magicbane"
+      ],
+      "screenCells": [
+        {
+          "step": 14,
+          "x": 0,
+          "y": 2,
+          "equals": "S"
+        },
+        {
+          "step": 14,
+          "x": 7,
+          "y": 2,
+          "equals": "o"
+        },
+        {
+          "step": 14,
+          "x": 9,
+          "y": 2,
+          "equals": "s"
+        },
+        {
+          "step": 14,
+          "x": 0,
+          "y": 3,
+          "equals": "*"
+        },
+        {
+          "step": 14,
+          "x": 7,
+          "y": 3,
+          "equals": "b"
+        },
+        {
+          "step": 14,
+          "x": 31,
+          "y": 3,
+          "equals": ")"
+        }
+      ],
+      "screenExcludes": [
+        "Unique items or Relics",
+        "Artifacts\n"
+      ]
+    },
+    {
+      "branch": "discovery-identification.identified-menu-empty",
+      "segment": 1,
+      "screenIncludes": [
+        "all items are permanently identified already",
+        "Magicbane [neutral athame]"
+      ],
+      "screenCells": [
+        {
+          "step": 23,
+          "x": 0,
+          "y": 2,
+          "equals": "A"
+        },
+        {
+          "step": 23,
+          "x": 7,
+          "y": 2,
+          "equals": "t"
+        },
+        {
+          "step": 23,
+          "x": 8,
+          "y": 2,
+          "equals": "s"
+        },
+        {
+          "step": 23,
+          "x": 0,
+          "y": 3,
+          "equals": " "
+        },
+        {
+          "step": 23,
+          "x": 2,
+          "y": 3,
+          "equals": "M"
+        },
+        {
+          "step": 23,
+          "x": 9,
+          "y": 3,
+          "equals": "n"
+        },
+        {
+          "step": 23,
+          "x": 27,
+          "y": 3,
+          "equals": "]"
+        },
+        {
+          "step": 23,
+          "x": 0,
+          "y": 4,
+          "equals": "S"
+        },
+        {
+          "step": 23,
+          "x": 7,
+          "y": 4,
+          "equals": "o"
+        },
+        {
+          "step": 23,
+          "x": 9,
+          "y": 4,
+          "equals": "s"
+        },
+        {
+          "step": 23,
+          "x": 0,
+          "y": 5,
+          "equals": "*"
+        },
+        {
+          "step": 23,
+          "x": 7,
+          "y": 5,
+          "equals": "b"
+        },
+        {
+          "step": 23,
+          "x": 31,
+          "y": 5,
+          "equals": ")"
+        }
+      ]
+    },
+    {
+      "branch": "discovery-identification.identify-one",
+      "segment": 2,
+      "screenIncludes": [
+        "potion of speed (fizzy)",
+        "potion (brilliant blue)"
+      ],
+      "screenCells": [
+        {
+          "step": 46,
+          "x": 0,
+          "y": 2,
+          "equals": "S"
+        },
+        {
+          "step": 46,
+          "x": 7,
+          "y": 2,
+          "equals": "o"
+        },
+        {
+          "step": 46,
+          "x": 9,
+          "y": 2,
+          "equals": "s"
+        },
+        {
+          "step": 46,
+          "x": 0,
+          "y": 3,
+          "equals": "*"
+        },
+        {
+          "step": 46,
+          "x": 7,
+          "y": 3,
+          "equals": "b"
+        },
+        {
+          "step": 46,
+          "x": 31,
+          "y": 3,
+          "equals": ")"
+        },
+        {
+          "step": 46,
+          "x": 0,
+          "y": 4,
+          "equals": "P"
+        },
+        {
+          "step": 46,
+          "x": 6,
+          "y": 4,
+          "equals": "s"
+        },
+        {
+          "step": 46,
+          "x": 0,
+          "y": 5,
+          "equals": " "
+        },
+        {
+          "step": 46,
+          "x": 2,
+          "y": 5,
+          "equals": "p"
+        },
+        {
+          "step": 46,
+          "x": 9,
+          "y": 5,
+          "equals": "o"
+        },
+        {
+          "step": 46,
+          "x": 24,
+          "y": 5,
+          "equals": ")"
+        },
+        {
+          "step": 46,
+          "x": 0,
+          "y": 6,
+          "equals": " "
+        },
+        {
+          "step": 46,
+          "x": 2,
+          "y": 6,
+          "equals": "p"
+        },
+        {
+          "step": 46,
+          "x": 9,
+          "y": 6,
+          "equals": "("
+        },
+        {
+          "step": 46,
+          "x": 24,
+          "y": 6,
+          "equals": ")"
+        }
+      ]
+    },
+    {
+      "branch": "discovery-identification.identify-class",
+      "segment": 3,
+      "screenIncludes": [
+        "potion of speed (fizzy)",
+        "potion of healing (brilliant blue)",
+        "ring (wire)"
+      ],
+      "screenCells": [
+        {
+          "step": 65,
+          "x": 0,
+          "y": 2,
+          "equals": "S"
+        },
+        {
+          "step": 65,
+          "x": 7,
+          "y": 2,
+          "equals": "o"
+        },
+        {
+          "step": 65,
+          "x": 9,
+          "y": 2,
+          "equals": "s"
+        },
+        {
+          "step": 65,
+          "x": 0,
+          "y": 3,
+          "equals": "*"
+        },
+        {
+          "step": 65,
+          "x": 7,
+          "y": 3,
+          "equals": "b"
+        },
+        {
+          "step": 65,
+          "x": 31,
+          "y": 3,
+          "equals": ")"
+        },
+        {
+          "step": 65,
+          "x": 0,
+          "y": 4,
+          "equals": "P"
+        },
+        {
+          "step": 65,
+          "x": 6,
+          "y": 4,
+          "equals": "s"
+        },
+        {
+          "step": 65,
+          "x": 0,
+          "y": 5,
+          "equals": " "
+        },
+        {
+          "step": 65,
+          "x": 2,
+          "y": 5,
+          "equals": "p"
+        },
+        {
+          "step": 65,
+          "x": 9,
+          "y": 5,
+          "equals": "o"
+        },
+        {
+          "step": 65,
+          "x": 24,
+          "y": 5,
+          "equals": ")"
+        },
+        {
+          "step": 65,
+          "x": 0,
+          "y": 6,
+          "equals": " "
+        },
+        {
+          "step": 65,
+          "x": 2,
+          "y": 6,
+          "equals": "p"
+        },
+        {
+          "step": 65,
+          "x": 9,
+          "y": 6,
+          "equals": "o"
+        },
+        {
+          "step": 65,
+          "x": 35,
+          "y": 6,
+          "equals": ")"
+        },
+        {
+          "step": 65,
+          "x": 0,
+          "y": 7,
+          "equals": "R"
+        },
+        {
+          "step": 65,
+          "x": 4,
+          "y": 7,
+          "equals": "s"
+        },
+        {
+          "step": 65,
+          "x": 0,
+          "y": 8,
+          "equals": " "
+        },
+        {
+          "step": 65,
+          "x": 2,
+          "y": 8,
+          "equals": "r"
+        },
+        {
+          "step": 65,
+          "x": 9,
+          "y": 8,
+          "equals": "i"
+        },
+        {
+          "step": 65,
+          "x": 12,
+          "y": 8,
+          "equals": ")"
+        }
+      ]
+    },
+    {
+      "branch": "discovery-identification.identify-all-accelerator",
+      "segment": 4,
+      "screenIncludes": [
+        "potion of speed (fizzy)",
+        "ring of searching (wire)"
+      ],
+      "screenCells": [
+        {
+          "step": 46,
+          "x": 0,
+          "y": 2,
+          "equals": "S"
+        },
+        {
+          "step": 46,
+          "x": 7,
+          "y": 2,
+          "equals": "o"
+        },
+        {
+          "step": 46,
+          "x": 9,
+          "y": 2,
+          "equals": "s"
+        },
+        {
+          "step": 46,
+          "x": 0,
+          "y": 3,
+          "equals": "*"
+        },
+        {
+          "step": 46,
+          "x": 7,
+          "y": 3,
+          "equals": "b"
+        },
+        {
+          "step": 46,
+          "x": 31,
+          "y": 3,
+          "equals": ")"
+        },
+        {
+          "step": 46,
+          "x": 0,
+          "y": 4,
+          "equals": "P"
+        },
+        {
+          "step": 46,
+          "x": 6,
+          "y": 4,
+          "equals": "s"
+        },
+        {
+          "step": 46,
+          "x": 0,
+          "y": 5,
+          "equals": " "
+        },
+        {
+          "step": 46,
+          "x": 2,
+          "y": 5,
+          "equals": "p"
+        },
+        {
+          "step": 46,
+          "x": 9,
+          "y": 5,
+          "equals": "o"
+        },
+        {
+          "step": 46,
+          "x": 24,
+          "y": 5,
+          "equals": ")"
+        },
+        {
+          "step": 46,
+          "x": 0,
+          "y": 6,
+          "equals": "R"
+        },
+        {
+          "step": 46,
+          "x": 4,
+          "y": 6,
+          "equals": "s"
+        },
+        {
+          "step": 46,
+          "x": 0,
+          "y": 7,
+          "equals": " "
+        },
+        {
+          "step": 46,
+          "x": 2,
+          "y": 7,
+          "equals": "r"
+        },
+        {
+          "step": 46,
+          "x": 9,
+          "y": 7,
+          "equals": " "
+        },
+        {
+          "step": 46,
+          "x": 25,
+          "y": 7,
+          "equals": ")"
+        }
+      ]
+    },
+    {
+      "branch": "discovery-identification.identify-invert",
+      "segment": 5,
+      "screenIncludes": [
+        "potion of speed (fizzy)",
+        "ring of searching (wire)"
+      ],
+      "screenCells": [
+        {
+          "step": 46,
+          "x": 0,
+          "y": 2,
+          "equals": "S"
+        },
+        {
+          "step": 46,
+          "x": 7,
+          "y": 2,
+          "equals": "o"
+        },
+        {
+          "step": 46,
+          "x": 9,
+          "y": 2,
+          "equals": "s"
+        },
+        {
+          "step": 46,
+          "x": 0,
+          "y": 3,
+          "equals": "*"
+        },
+        {
+          "step": 46,
+          "x": 7,
+          "y": 3,
+          "equals": "b"
+        },
+        {
+          "step": 46,
+          "x": 31,
+          "y": 3,
+          "equals": ")"
+        },
+        {
+          "step": 46,
+          "x": 0,
+          "y": 4,
+          "equals": "P"
+        },
+        {
+          "step": 46,
+          "x": 6,
+          "y": 4,
+          "equals": "s"
+        },
+        {
+          "step": 46,
+          "x": 0,
+          "y": 5,
+          "equals": " "
+        },
+        {
+          "step": 46,
+          "x": 2,
+          "y": 5,
+          "equals": "p"
+        },
+        {
+          "step": 46,
+          "x": 9,
+          "y": 5,
+          "equals": "o"
+        },
+        {
+          "step": 46,
+          "x": 24,
+          "y": 5,
+          "equals": ")"
+        },
+        {
+          "step": 46,
+          "x": 0,
+          "y": 6,
+          "equals": "R"
+        },
+        {
+          "step": 46,
+          "x": 4,
+          "y": 6,
+          "equals": "s"
+        },
+        {
+          "step": 46,
+          "x": 0,
+          "y": 7,
+          "equals": " "
+        },
+        {
+          "step": 46,
+          "x": 2,
+          "y": 7,
+          "equals": "r"
+        },
+        {
+          "step": 46,
+          "x": 9,
+          "y": 7,
+          "equals": " "
+        },
+        {
+          "step": 46,
+          "x": 25,
+          "y": 7,
+          "equals": ")"
+        }
+      ]
+    },
+    {
+      "branch": "discovery-identification.identify-empty",
+      "segment": 6,
+      "screenIncludes": [
+        "Not carrying anything."
+      ]
+    },
+    {
+      "branch": "discovery-identification.discovery-empty",
+      "segment": 7,
+      "screenIncludes": [
+        "You haven't discovered anything yet...",
+        "You haven't discovered any items yet."
+      ]
+    },
+    {
+      "branch": "discovery-identification.reveal-blind",
+      "segment": 8,
+      "screenIncludes": [
+        "Debug Identify",
+        "Magicbane",
+        "Blind"
+      ],
+      "screenCells": [
+        {
+          "step": 14,
+          "x": 0,
+          "y": 2,
+          "equals": "S"
+        },
+        {
+          "step": 14,
+          "x": 7,
+          "y": 2,
+          "equals": "o"
+        },
+        {
+          "step": 14,
+          "x": 9,
+          "y": 2,
+          "equals": "s"
+        },
+        {
+          "step": 14,
+          "x": 0,
+          "y": 3,
+          "equals": "*"
+        },
+        {
+          "step": 14,
+          "x": 7,
+          "y": 3,
+          "equals": "b"
+        },
+        {
+          "step": 14,
+          "x": 31,
+          "y": 3,
+          "equals": ")"
+        }
+      ],
+      "screenExcludes": [
+        "Unique items or Relics",
+        "Artifacts\n"
+      ]
+    },
+    {
+      "branch": "discovery-identification.identify-blind",
+      "segment": 9,
+      "screenIncludes": [
+        "Magicbane [neutral athame]",
+        "Blind"
+      ],
+      "screenCells": [
+        {
+          "step": 21,
+          "x": 0,
+          "y": 2,
+          "equals": "A"
+        },
+        {
+          "step": 21,
+          "x": 7,
+          "y": 2,
+          "equals": "t"
+        },
+        {
+          "step": 21,
+          "x": 8,
+          "y": 2,
+          "equals": "s"
+        },
+        {
+          "step": 21,
+          "x": 0,
+          "y": 3,
+          "equals": " "
+        },
+        {
+          "step": 21,
+          "x": 2,
+          "y": 3,
+          "equals": "M"
+        },
+        {
+          "step": 21,
+          "x": 9,
+          "y": 3,
+          "equals": "n"
+        },
+        {
+          "step": 21,
+          "x": 27,
+          "y": 3,
+          "equals": "]"
+        },
+        {
+          "step": 21,
+          "x": 0,
+          "y": 4,
+          "equals": "S"
+        },
+        {
+          "step": 21,
+          "x": 7,
+          "y": 4,
+          "equals": "o"
+        },
+        {
+          "step": 21,
+          "x": 9,
+          "y": 4,
+          "equals": "s"
+        },
+        {
+          "step": 21,
+          "x": 0,
+          "y": 5,
+          "equals": "*"
+        },
+        {
+          "step": 21,
+          "x": 7,
+          "y": 5,
+          "equals": "b"
+        },
+        {
+          "step": 21,
+          "x": 31,
+          "y": 5,
+          "equals": ")"
+        }
+      ]
+    },
+    {
+      "branch": "discovery-identification.amulet-wish-decline",
+      "segment": 10,
+      "screenIncludes": [
+        "The Amulet is bestowing a wish upon you!",
+        "amulet (Amulet of Yendor)"
+      ],
+      "screenCells": [
+        {
+          "step": 35,
+          "x": 0,
+          "y": 2,
+          "equals": "A"
+        },
+        {
+          "step": 35,
+          "x": 6,
+          "y": 2,
+          "equals": "s"
+        },
+        {
+          "step": 35,
+          "x": 0,
+          "y": 3,
+          "equals": " "
+        },
+        {
+          "step": 35,
+          "x": 2,
+          "y": 3,
+          "equals": "a"
+        },
+        {
+          "step": 35,
+          "x": 9,
+          "y": 3,
+          "equals": "("
+        },
+        {
+          "step": 35,
+          "x": 26,
+          "y": 3,
+          "equals": ")"
+        },
+        {
+          "step": 35,
+          "x": 0,
+          "y": 4,
+          "equals": "S"
+        },
+        {
+          "step": 35,
+          "x": 7,
+          "y": 4,
+          "equals": "o"
+        },
+        {
+          "step": 35,
+          "x": 9,
+          "y": 4,
+          "equals": "s"
+        },
+        {
+          "step": 35,
+          "x": 0,
+          "y": 5,
+          "equals": "*"
+        },
+        {
+          "step": 35,
+          "x": 7,
+          "y": 5,
+          "equals": "b"
+        },
+        {
+          "step": 35,
+          "x": 31,
+          "y": 5,
+          "equals": ")"
+        }
+      ],
+      "screenExcludes": [
+        "Unique items or Relics",
+        "Artifacts\n"
+      ]
+    },
+    {
+      "branch": "discovery-identification.fake-amulet",
+      "segment": 11,
+      "screenIncludes": [
+        "cheap plastic imitation of the Amulet of Yendor"
+      ],
+      "screenCells": [
+        {
+          "step": 50,
+          "x": 0,
+          "y": 2,
+          "equals": "A"
+        },
+        {
+          "step": 50,
+          "x": 6,
+          "y": 2,
+          "equals": "s"
+        },
+        {
+          "step": 50,
+          "x": 0,
+          "y": 3,
+          "equals": " "
+        },
+        {
+          "step": 50,
+          "x": 2,
+          "y": 3,
+          "equals": "a"
+        },
+        {
+          "step": 50,
+          "x": 9,
+          "y": 3,
+          "equals": "("
+        },
+        {
+          "step": 50,
+          "x": 26,
+          "y": 3,
+          "equals": ")"
+        },
+        {
+          "step": 50,
+          "x": 0,
+          "y": 4,
+          "equals": "S"
+        },
+        {
+          "step": 50,
+          "x": 7,
+          "y": 4,
+          "equals": "o"
+        },
+        {
+          "step": 50,
+          "x": 9,
+          "y": 4,
+          "equals": "s"
+        },
+        {
+          "step": 50,
+          "x": 0,
+          "y": 5,
+          "equals": "*"
+        },
+        {
+          "step": 50,
+          "x": 7,
+          "y": 5,
+          "equals": "b"
+        },
+        {
+          "step": 50,
+          "x": 31,
+          "y": 5,
+          "equals": ")"
+        },
+        {
+          "step": 61,
+          "x": 0,
+          "y": 2,
+          "equals": "A"
+        },
+        {
+          "step": 61,
+          "x": 6,
+          "y": 2,
+          "equals": "s"
+        },
+        {
+          "step": 61,
+          "x": 0,
+          "y": 3,
+          "equals": " "
+        },
+        {
+          "step": 61,
+          "x": 2,
+          "y": 3,
+          "equals": "c"
+        },
+        {
+          "step": 61,
+          "x": 9,
+          "y": 3,
+          "equals": "l"
+        },
+        {
+          "step": 61,
+          "x": 67,
+          "y": 3,
+          "equals": ")"
+        },
+        {
+          "step": 61,
+          "x": 0,
+          "y": 4,
+          "equals": "S"
+        },
+        {
+          "step": 61,
+          "x": 7,
+          "y": 4,
+          "equals": "o"
+        },
+        {
+          "step": 61,
+          "x": 9,
+          "y": 4,
+          "equals": "s"
+        },
+        {
+          "step": 61,
+          "x": 0,
+          "y": 5,
+          "equals": "*"
+        },
+        {
+          "step": 61,
+          "x": 7,
+          "y": 5,
+          "equals": "b"
+        },
+        {
+          "step": 61,
+          "x": 31,
+          "y": 5,
+          "equals": ")"
+        }
+      ],
+      "screenExcludes": [
+        "Unique items or Relics",
+        "Artifacts\n"
+      ]
+    },
+    {
+      "branch": "discovery-identification.unseen-spell-star",
+      "segment": 12,
+      "screenIncludes": [
+        "* spellbook of force bolt (thin)"
+      ],
+      "screenCells": [
+        {
+          "step": 3,
+          "x": 0,
+          "y": 2,
+          "equals": "S"
+        },
+        {
+          "step": 3,
+          "x": 7,
+          "y": 2,
+          "equals": "o"
+        },
+        {
+          "step": 3,
+          "x": 9,
+          "y": 2,
+          "equals": "s"
+        },
+        {
+          "step": 3,
+          "x": 0,
+          "y": 3,
+          "equals": "*"
+        },
+        {
+          "step": 3,
+          "x": 7,
+          "y": 3,
+          "equals": "b"
+        },
+        {
+          "step": 3,
+          "x": 31,
+          "y": 3,
+          "equals": ")"
+        },
+        {
+          "step": 5,
+          "x": 0,
+          "y": 2,
+          "equals": "S"
+        },
+        {
+          "step": 5,
+          "x": 7,
+          "y": 2,
+          "equals": "o"
+        },
+        {
+          "step": 5,
+          "x": 9,
+          "y": 2,
+          "equals": "s"
+        },
+        {
+          "step": 5,
+          "x": 0,
+          "y": 3,
+          "equals": " "
+        },
+        {
+          "step": 5,
+          "x": 2,
+          "y": 3,
+          "equals": "s"
+        },
+        {
+          "step": 5,
+          "x": 9,
+          "y": 3,
+          "equals": "o"
+        },
+        {
+          "step": 5,
+          "x": 31,
+          "y": 3,
+          "equals": ")"
+        }
+      ]
+    },
+    {
+      "branch": "discovery-identification.unseen-spell-blind-star",
+      "segment": 13,
+      "screenIncludes": [
+        "* spellbook of force bolt (thin)",
+        "Blind"
+      ],
+      "screenCells": [
+        {
+          "step": 3,
+          "x": 0,
+          "y": 2,
+          "equals": "S"
+        },
+        {
+          "step": 3,
+          "x": 7,
+          "y": 2,
+          "equals": "o"
+        },
+        {
+          "step": 3,
+          "x": 9,
+          "y": 2,
+          "equals": "s"
+        },
+        {
+          "step": 3,
+          "x": 0,
+          "y": 3,
+          "equals": "*"
+        },
+        {
+          "step": 3,
+          "x": 7,
+          "y": 3,
+          "equals": "b"
+        },
+        {
+          "step": 3,
+          "x": 31,
+          "y": 3,
+          "equals": ")"
+        },
+        {
+          "step": 5,
+          "x": 0,
+          "y": 2,
+          "equals": "S"
+        },
+        {
+          "step": 5,
+          "x": 7,
+          "y": 2,
+          "equals": "o"
+        },
+        {
+          "step": 5,
+          "x": 9,
+          "y": 2,
+          "equals": "s"
+        },
+        {
+          "step": 5,
+          "x": 0,
+          "y": 3,
+          "equals": "*"
+        },
+        {
+          "step": 5,
+          "x": 7,
+          "y": 3,
+          "equals": "b"
+        },
+        {
+          "step": 5,
+          "x": 31,
+          "y": 3,
+          "equals": ")"
+        }
+      ]
+    },
+    {
+      "branch": "discovery-identification.non-aligned-artifact",
+      "segment": 14,
+      "screenIncludes": [
+        "Frost Brand [non-aligned long sword]"
+      ],
+      "screenCells": [
+        {
+          "step": 25,
+          "x": 0,
+          "y": 2,
+          "equals": "A"
+        },
+        {
+          "step": 25,
+          "x": 7,
+          "y": 2,
+          "equals": "t"
+        },
+        {
+          "step": 25,
+          "x": 8,
+          "y": 2,
+          "equals": "s"
+        },
+        {
+          "step": 25,
+          "x": 0,
+          "y": 3,
+          "equals": " "
+        },
+        {
+          "step": 25,
+          "x": 2,
+          "y": 3,
+          "equals": "F"
+        },
+        {
+          "step": 25,
+          "x": 9,
+          "y": 3,
+          "equals": "r"
+        },
+        {
+          "step": 25,
+          "x": 37,
+          "y": 3,
+          "equals": "]"
+        },
+        {
+          "step": 25,
+          "x": 0,
+          "y": 4,
+          "equals": "D"
+        },
+        {
+          "step": 25,
+          "x": 7,
+          "y": 4,
+          "equals": "r"
+        },
+        {
+          "step": 25,
+          "x": 15,
+          "y": 4,
+          "equals": "s"
+        },
+        {
+          "step": 25,
+          "x": 0,
+          "y": 5,
+          "equals": "*"
+        },
+        {
+          "step": 25,
+          "x": 7,
+          "y": 5,
+          "equals": "b"
+        },
+        {
+          "step": 25,
+          "x": 31,
+          "y": 5,
+          "equals": ")"
+        }
+      ]
+    },
+    {
+      "branch": "discovery-identification.chaotic-role-artifact",
+      "segment": 15,
+      "screenIncludes": [
+        "Magicbane [chaotic athame]"
+      ],
+      "screenCells": [
+        {
+          "step": 21,
+          "x": 0,
+          "y": 2,
+          "equals": "A"
+        },
+        {
+          "step": 21,
+          "x": 7,
+          "y": 2,
+          "equals": "t"
+        },
+        {
+          "step": 21,
+          "x": 8,
+          "y": 2,
+          "equals": "s"
+        },
+        {
+          "step": 21,
+          "x": 0,
+          "y": 3,
+          "equals": " "
+        },
+        {
+          "step": 21,
+          "x": 2,
+          "y": 3,
+          "equals": "M"
+        },
+        {
+          "step": 21,
+          "x": 9,
+          "y": 3,
+          "equals": "n"
+        },
+        {
+          "step": 21,
+          "x": 27,
+          "y": 3,
+          "equals": "]"
+        },
+        {
+          "step": 21,
+          "x": 0,
+          "y": 4,
+          "equals": "S"
+        },
+        {
+          "step": 21,
+          "x": 7,
+          "y": 4,
+          "equals": "o"
+        },
+        {
+          "step": 21,
+          "x": 9,
+          "y": 4,
+          "equals": "s"
+        },
+        {
+          "step": 21,
+          "x": 0,
+          "y": 5,
+          "equals": "*"
+        },
+        {
+          "step": 21,
+          "x": 7,
+          "y": 5,
+          "equals": "b"
+        },
+        {
+          "step": 21,
+          "x": 31,
+          "y": 5,
+          "equals": ")"
+        }
+      ]
+    },
+    {
+      "branch": "discovery-identification.named-order",
+      "segment": 16,
+      "screenIncludes": [
+        "potion called Alpha (brilliant blue)",
+        "potion called Zeta (fizzy)"
+      ],
+      "screenCells": [
+        {
+          "step": 66,
+          "x": 0,
+          "y": 2,
+          "equals": "S"
+        },
+        {
+          "step": 66,
+          "x": 7,
+          "y": 2,
+          "equals": "o"
+        },
+        {
+          "step": 66,
+          "x": 9,
+          "y": 2,
+          "equals": "s"
+        },
+        {
+          "step": 66,
+          "x": 0,
+          "y": 3,
+          "equals": "*"
+        },
+        {
+          "step": 66,
+          "x": 7,
+          "y": 3,
+          "equals": "b"
+        },
+        {
+          "step": 66,
+          "x": 31,
+          "y": 3,
+          "equals": ")"
+        },
+        {
+          "step": 66,
+          "x": 0,
+          "y": 4,
+          "equals": "P"
+        },
+        {
+          "step": 66,
+          "x": 6,
+          "y": 4,
+          "equals": "s"
+        },
+        {
+          "step": 66,
+          "x": 0,
+          "y": 5,
+          "equals": " "
+        },
+        {
+          "step": 66,
+          "x": 2,
+          "y": 5,
+          "equals": "p"
+        },
+        {
+          "step": 66,
+          "x": 9,
+          "y": 5,
+          "equals": "c"
+        },
+        {
+          "step": 66,
+          "x": 37,
+          "y": 5,
+          "equals": ")"
+        },
+        {
+          "step": 66,
+          "x": 0,
+          "y": 6,
+          "equals": " "
+        },
+        {
+          "step": 66,
+          "x": 2,
+          "y": 6,
+          "equals": "p"
+        },
+        {
+          "step": 66,
+          "x": 9,
+          "y": 6,
+          "equals": "c"
+        },
+        {
+          "step": 66,
+          "x": 27,
+          "y": 6,
+          "equals": ")"
+        }
+      ]
+    },
+    {
+      "branch": "discovery-identification.custom-pack-sort",
+      "segment": 17,
+      "screenIncludes": [
+        "Discoveries, sortloot order"
+      ],
+      "screenCells": [
+        {
+          "step": 28,
+          "x": 0,
+          "y": 2,
+          "equals": "P"
+        },
+        {
+          "step": 28,
+          "x": 6,
+          "y": 2,
+          "equals": "s"
+        },
+        {
+          "step": 28,
+          "x": 0,
+          "y": 3,
+          "equals": " "
+        },
+        {
+          "step": 28,
+          "x": 2,
+          "y": 3,
+          "equals": "p"
+        },
+        {
+          "step": 28,
+          "x": 9,
+          "y": 3,
+          "equals": "("
+        },
+        {
+          "step": 28,
+          "x": 15,
+          "y": 3,
+          "equals": ")"
+        },
+        {
+          "step": 28,
+          "x": 0,
+          "y": 4,
+          "equals": "A"
+        },
+        {
+          "step": 28,
+          "x": 4,
+          "y": 4,
+          "equals": "r"
+        },
+        {
+          "step": 28,
+          "x": 0,
+          "y": 5,
+          "equals": " "
+        },
+        {
+          "step": 28,
+          "x": 2,
+          "y": 5,
+          "equals": "c"
+        },
+        {
+          "step": 28,
+          "x": 9,
+          "y": 5,
+          "equals": " "
+        },
+        {
+          "step": 28,
+          "x": 15,
+          "y": 5,
+          "equals": "t"
+        },
+        {
+          "step": 28,
+          "x": 0,
+          "y": 6,
+          "equals": "S"
+        },
+        {
+          "step": 28,
+          "x": 7,
+          "y": 6,
+          "equals": "o"
+        },
+        {
+          "step": 28,
+          "x": 9,
+          "y": 6,
+          "equals": "s"
+        },
+        {
+          "step": 28,
+          "x": 0,
+          "y": 7,
+          "equals": "*"
+        },
+        {
+          "step": 28,
+          "x": 7,
+          "y": 7,
+          "equals": "b"
+        },
+        {
+          "step": 28,
+          "x": 31,
+          "y": 7,
+          "equals": ")"
+        }
+      ]
+    },
+    {
+      "branch": "discovery-identification.without-sortpack",
+      "segment": 18,
+      "screenIncludes": [
+        "Discoveries, sortloot order"
+      ],
+      "screenCells": [
+        {
+          "step": 28,
+          "x": 0,
+          "y": 2,
+          "equals": "A"
+        },
+        {
+          "step": 28,
+          "x": 4,
+          "y": 2,
+          "equals": "r"
+        },
+        {
+          "step": 28,
+          "x": 0,
+          "y": 3,
+          "equals": " "
+        },
+        {
+          "step": 28,
+          "x": 2,
+          "y": 3,
+          "equals": "c"
+        },
+        {
+          "step": 28,
+          "x": 9,
+          "y": 3,
+          "equals": " "
+        },
+        {
+          "step": 28,
+          "x": 15,
+          "y": 3,
+          "equals": "t"
+        },
+        {
+          "step": 28,
+          "x": 0,
+          "y": 4,
+          "equals": "S"
+        },
+        {
+          "step": 28,
+          "x": 7,
+          "y": 4,
+          "equals": "o"
+        },
+        {
+          "step": 28,
+          "x": 9,
+          "y": 4,
+          "equals": "s"
+        },
+        {
+          "step": 28,
+          "x": 0,
+          "y": 5,
+          "equals": "*"
+        },
+        {
+          "step": 28,
+          "x": 7,
+          "y": 5,
+          "equals": "b"
+        },
+        {
+          "step": 28,
+          "x": 31,
+          "y": 5,
+          "equals": ")"
+        },
+        {
+          "step": 28,
+          "x": 0,
+          "y": 6,
+          "equals": "P"
+        },
+        {
+          "step": 28,
+          "x": 6,
+          "y": 6,
+          "equals": "s"
+        },
+        {
+          "step": 28,
+          "x": 0,
+          "y": 7,
+          "equals": " "
+        },
+        {
+          "step": 28,
+          "x": 2,
+          "y": 7,
+          "equals": "p"
+        },
+        {
+          "step": 28,
+          "x": 9,
+          "y": 7,
+          "equals": "("
+        },
+        {
+          "step": 28,
+          "x": 15,
+          "y": 7,
+          "equals": ")"
+        }
+      ]
+    },
+    {
+      "branch": "discovery-identification.novel-encountered",
+      "segment": 19,
+      "screenIncludes": [
+        "book (paperback)"
+      ],
+      "screenCells": [
+        {
+          "step": 8,
+          "x": 0,
+          "y": 2,
+          "equals": "S"
+        },
+        {
+          "step": 8,
+          "x": 7,
+          "y": 2,
+          "equals": "o"
+        },
+        {
+          "step": 8,
+          "x": 9,
+          "y": 2,
+          "equals": "s"
+        },
+        {
+          "step": 8,
+          "x": 0,
+          "y": 3,
+          "equals": "*"
+        },
+        {
+          "step": 8,
+          "x": 7,
+          "y": 3,
+          "equals": "b"
+        },
+        {
+          "step": 8,
+          "x": 31,
+          "y": 3,
+          "equals": ")"
+        },
+        {
+          "step": 8,
+          "x": 0,
+          "y": 4,
+          "equals": " "
+        },
+        {
+          "step": 8,
+          "x": 2,
+          "y": 4,
+          "equals": "b"
+        },
+        {
+          "step": 8,
+          "x": 9,
+          "y": 4,
+          "equals": "a"
+        },
+        {
+          "step": 8,
+          "x": 17,
+          "y": 4,
+          "equals": ")"
+        }
+      ]
+    },
+    {
+      "branch": "discovery-identification.novel-identified",
+      "segment": 20,
+      "screenIncludes": [
+        "novel (paperback)"
+      ],
+      "screenCells": [
+        {
+          "step": 17,
+          "x": 0,
+          "y": 2,
+          "equals": "S"
+        },
+        {
+          "step": 17,
+          "x": 7,
+          "y": 2,
+          "equals": "o"
+        },
+        {
+          "step": 17,
+          "x": 9,
+          "y": 2,
+          "equals": "s"
+        },
+        {
+          "step": 17,
+          "x": 0,
+          "y": 3,
+          "equals": "*"
+        },
+        {
+          "step": 17,
+          "x": 7,
+          "y": 3,
+          "equals": "b"
+        },
+        {
+          "step": 17,
+          "x": 31,
+          "y": 3,
+          "equals": ")"
+        },
+        {
+          "step": 17,
+          "x": 0,
+          "y": 4,
+          "equals": " "
+        },
+        {
+          "step": 17,
+          "x": 2,
+          "y": 4,
+          "equals": "n"
+        },
+        {
+          "step": 17,
+          "x": 9,
+          "y": 4,
+          "equals": "p"
+        },
+        {
+          "step": 17,
+          "x": 18,
+          "y": 4,
+          "equals": ")"
+        }
+      ]
+    },
+    {
+      "branch": "discovery-identification.amulet-identified",
+      "segment": 21,
+      "screenIncludes": [
+        "Unique items or Relics",
+        "Amulet of Yendor"
+      ],
+      "screenCells": [
+        {
+          "step": 44,
+          "x": 0,
+          "y": 2,
+          "equals": "U"
+        },
+        {
+          "step": 44,
+          "x": 7,
+          "y": 2,
+          "equals": "i"
+        },
+        {
+          "step": 44,
+          "x": 21,
+          "y": 2,
+          "equals": "s"
+        },
+        {
+          "step": 44,
+          "x": 0,
+          "y": 3,
+          "equals": " "
+        },
+        {
+          "step": 44,
+          "x": 2,
+          "y": 3,
+          "equals": "A"
+        },
+        {
+          "step": 44,
+          "x": 9,
+          "y": 3,
+          "equals": "o"
+        },
+        {
+          "step": 44,
+          "x": 17,
+          "y": 3,
+          "equals": "r"
+        },
+        {
+          "step": 44,
+          "x": 0,
+          "y": 4,
+          "equals": "A"
+        },
+        {
+          "step": 44,
+          "x": 6,
+          "y": 4,
+          "equals": "s"
+        },
+        {
+          "step": 44,
+          "x": 0,
+          "y": 5,
+          "equals": " "
+        },
+        {
+          "step": 44,
+          "x": 2,
+          "y": 5,
+          "equals": "A"
+        },
+        {
+          "step": 44,
+          "x": 9,
+          "y": 5,
+          "equals": "o"
+        },
+        {
+          "step": 44,
+          "x": 36,
+          "y": 5,
+          "equals": ")"
+        },
+        {
+          "step": 44,
+          "x": 0,
+          "y": 6,
+          "equals": "S"
+        },
+        {
+          "step": 44,
+          "x": 7,
+          "y": 6,
+          "equals": "o"
+        },
+        {
+          "step": 44,
+          "x": 9,
+          "y": 6,
+          "equals": "s"
+        },
+        {
+          "step": 44,
+          "x": 0,
+          "y": 7,
+          "equals": "*"
+        },
+        {
+          "step": 44,
+          "x": 7,
+          "y": 7,
+          "equals": "b"
+        },
+        {
+          "step": 44,
+          "x": 31,
+          "y": 7,
+          "equals": ")"
+        }
+      ]
+    }
+  ]
+}

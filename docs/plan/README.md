@@ -18,14 +18,15 @@ independent oracles, implementation, and regression checks until that goal is
 met. Current corpus success is not the stopping criterion.
 
 The compiler-guided loops now include 38 object type, floor naming, pauper role,
-and gem-identification scenarios, followed by 24 pack-order scenarios. All 44
-public and 429 supplemental fixtures pass. The measured C union has
-52,952/108,268 direct outcomes and 4,291/5,491
+and gem-identification scenarios, followed by 24 pack-order and 72 discovery
+and identification scenarios. All 44 public and 432 supplemental fixtures pass.
+The measured C union has 53,178/108,268 direct outcomes and 4,298/5,491
 entered function records. State gates catch ownership, light, discovery and
 stored-bill errors beyond screen parity. The published held-out result recorded
 during the audit is 78.39%, distinct from the local result.
 See [STATUS.md](STATUS.md) for verification and the next action,
-[inventory-packorder-audit.md](inventory-packorder-audit.md) for the latest review,
+[discovery-sorting-audit.md](discovery-sorting-audit.md) for the latest review,
+[inventory-packorder-audit.md](inventory-packorder-audit.md) for class order,
 [object-type-naming-audit.md](object-type-naming-audit.md) for type discovery,
 [monster-naming-audit.md](monster-naming-audit.md) for monster names,
 [inventory-adjust-audit.md](inventory-adjust-audit.md) for inventory decisions,
@@ -33,9 +34,11 @@ and [gameplay-gap-audit.md](gameplay-gap-audit.md) for measurement limits.
 The [compiled constant audit](c-constant-audit.md) compares 1,666 values with zero
 different values and one reviewed signed-mask representation. Continue with
 discovery sorting and the remaining inventory/display dependencies.
-Checkpoint `52d4016b` is pushed. The pack-order pass has 24 exact C scenarios,
-independent stored-order checks, full regression and native coverage complete;
-it is ready for review, commit and push.
+Checkpoint `2ec9e465` is pushed with 24 pack-order scenarios and stored-order
+checks. The next uncommitted discovery sorting and identification pass has
+72 exact permanent C probes, a passing state gate with a negative control,
+and 226 newly reached direct outcomes. Full regression passes. See STATUS.md
+before committing this work and continuing with automatic-pickup options.
 
 ## Previous focus, 2026-09-03
 

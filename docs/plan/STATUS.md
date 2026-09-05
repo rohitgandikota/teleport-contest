@@ -9,7 +9,47 @@ loop until complete. The goal is active without a requested token budget.
 Current-corpus success is not the stopping criterion. Track unreviewed,
 untested, missing, and unreachable source paths explicitly.
 
-### Current work: verified pickup origins, floor impacts and saddle water
+### Current work: full potion dipping and shared alteration effects
+
+Pickup/floor/saddle checkpoint `ed337b52` is pushed. The current uncommitted
+pass ports potion_dip's full C body, hold_potion, poof, blindness macros and
+hands selection, costly_alteration in its C-owned mkobj module, and the missing
+fire_damage branches. Five permanent recipes contain 94 C-validated cases:
+potion-dipping-water (27), effects (30), shop (six), details (16), and fire (15).
+Stack splitting, poisonable arrows, greased shop catalysts and an empty ice
+box are deliberate C-verified setup details, not assumptions about selection.
+
+The final stable-runtime sweep passes all 44 public and 444 supplemental
+fixtures. Fuzz remains 101/102 with only the known fixed-datetime artifact.
+All five native recordings are exact in
+`.cache/c-coverage/potion-dipping-20260905`. Hang checks (49), role smoke (80),
+tool tests (16), source audit (0/268) and the ledger (1,707/1,707) pass.
+Logs are under `.cache/dipping/`, with final-regression.log, final-fuzz.log,
+native-coverage.log, hang.log, roles.log, tool-tests.log and ledger.log.
+
+The 94-case state gate passes. The shop now records both inventory pages;
+its revised replay and hang check pass separately on the same runtime. An
+isolated loader retaining potion.in_use still passes 70 screens/cursors and
+3,026 RNG in the already-blessed-dagger control, but fails the state gate.
+Ten related state gates pass. The measured union adds 252 outcomes and four
+entered records, reaching 53,583/108,268 and 4,304/5,491. Supplemental totals
+are 141,947 exact screens/cursors, 7,076,287 RNG and 3,298 animations. New cases
+total 9,473 screens/cursors, 304,540 RNG and two animations. See
+[potion-dipping-audit.md](potion-dipping-audit.md). The diff is ready for final
+review, commit and push; runtime files have not changed since the full gates.
+
+Next source action after pushing: bill_dummy_object's complete C body has been
+read at mkobj.c:712-740. The existing shk.js implementation drops oextra,
+uses next_ident instead of nextoid, and clears lamplit for every object rather
+than candles only. Port its actual ownership/copy/billing calls in mkobj.js,
+with C probes and hidden-state checks. The full bless/unbless/curse/uncurse
+bodies at mkobj.c:1746-1838 were also read; their light, weight, timer and
+gear side effects are a subsequent target. dodip's environment and
+inaccessible-equipment paths, dip_into, and getobj's hands menu remain open.
+Unpaid neutral water blessing/curse probes were invalid due to inventory
+merging and were removed, not credited. The full-port goal stays active.
+
+### Verified pickup origins, floor impacts and saddle water
 
 The preceding automatic-pickup options pass is committed and pushed as
 `adb4a54b`. The current verified checkpoint ports shop/origin guards in
@@ -38,16 +78,20 @@ supplemental has 132,474 exact screens/cursors, 6,771,747 RNG and 3,296
 animations. Public animations remain 1,462/1,483. Fuzz is unchanged at 101/102
 with only the fixed-datetime artifact. All 49 hang checks, 80 reused role-smoke
 controls, 16 tool tests, source audit and six related state gates pass.
-See [pickup-impact-audit.md](pickup-impact-audit.md), then commit and push.
+See [pickup-impact-audit.md](pickup-impact-audit.md). This checkpoint is
+committed and pushed as `ed337b52`.
 The full original corpus and five new fixtures were verified separately on
 the identical runtime; logs are `impact-regression.log` and
 `impact-new-regression.log` under `.cache/autopickup/`.
 
 Next source target: potion_dip, C potion.c:2442 and JS potion.js:1951. The
 existing JS function handles alchemy only and does not call H2Opotion_dip.
-Read the full C body before porting its water path, then record carried-item
-water damage, blessing/cursing, no-effect consumption and shop-water cost
-controls. H2Opotion_dip's saddle paths reach 24/38 direct outcomes; carried
+The complete potion_dip C body has now been read through its common footer,
+along with dodip, dip_into, poof, hold_potion, mixtype and dip_ok. The ignored
+`.cache/dipping/water` input and C recording contain 27 initial water, hands
+and bottle controls; the baseline is being measured before runtime edits.
+Continue into water damage, blessing/cursing, no-effect consumption and
+shop-water cost controls. H2Opotion_dip's saddle paths reach 24/38 direct outcomes; carried
 items and shop-water callers remain uncredited. Other explicit open paths:
 autopickup exceptions and their POSIX ERE backend, upward toss_up, interlevel
 ship_object migration, potionhit's unpaid billing and startup error display.

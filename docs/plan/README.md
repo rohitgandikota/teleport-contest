@@ -17,23 +17,23 @@ and persistent gameplay state. Continue source review, measured C branches,
 independent oracles, implementation, and regression checks until that goal is
 met. Current corpus success is not the stopping criterion.
 
-The latest verified pass adds 49 C scenarios for pickup origin, shop ownership,
-floor impacts and mounted potion effects. All 44 public and 439 supplemental
-fixtures pass. The measured C union has 53,331/108,268 direct outcomes and
-4,300/5,491 entered function records. The assertion ledger is 1,613/1,613.
-State gates check hidden ownership, bills, saddle health and beatitude. A
-negative control retains unknown saddle knowledge and still passes the screen
-oracle, but fails the state gate. The published held-out result recorded during
-the audit is 78.39%, distinct from the local result.
+The current verified pass adds 94 C scenarios for potion dipping, alteration
+billing and fire damage. All 44 public and 444 supplemental fixtures pass.
+The measured C union has 53,583/108,268 direct outcomes and 4,304/5,491 entered
+function records. The assertion ledger is 1,707/1,707. State gates check
+inventory identity, consumption, beatitude, bills, light timers and container
+contents. A negative control retains a potion's consumption flag and passes
+the screen oracle while failing the state gate. The published held-out result
+recorded during the audit is 78.39%, distinct from the local result.
 
 See [STATUS.md](STATUS.md) for checkpoint and next-action details,
-[pickup-impact-audit.md](pickup-impact-audit.md) for this review,
-[autopickup-options-audit.md](autopickup-options-audit.md) for pushed checkpoint
-`adb4a54b`, and [gameplay-gap-audit.md](gameplay-gap-audit.md) for measurement
+[potion-dipping-audit.md](potion-dipping-audit.md) for the current review,
+[pickup-impact-audit.md](pickup-impact-audit.md) for pushed checkpoint
+`ed337b52`, and [gameplay-gap-audit.md](gameplay-gap-audit.md) for measurement
 limits. The [compiled constant audit](c-constant-audit.md) compares 1,666 values
 with zero different values and one reviewed signed-mask representation.
-The next target is potion_dip's water path and H2Opotion_dip's remaining
-carried-item and shop-water callers. The full-port goal remains active.
+The next target is bill_dummy_object's copying and identity, followed by
+bless/curse's shared side effects. The full-port goal remains active.
 
 ## Previous focus, 2026-09-03
 

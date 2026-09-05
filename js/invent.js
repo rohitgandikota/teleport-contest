@@ -1037,9 +1037,8 @@ function compactify(str) {
 export async function getobj(word, obj_ok_func, ctrlflags) {
     /* src/invent.c:1779 — a queued CMDQ_KEY picks the object without
        prompting; a failed lookup discards the rest of the canned queue so a
-       broken script cannot run its tail against the wrong object. The
-       CMDQ_INT partial-stack arm and the HANDS_SYM choice have no producer
-       in this port yet and are recorded when reached. */
+       broken script cannot run its tail against the wrong object. Queued
+       hands choices use the same suitability callback as object letters. */
     const allowcnt = !!(ctrlflags & GETOBJ_ALLOWCNT);
     let cnt = 0;
     let cntgiven = false;
@@ -1067,7 +1066,9 @@ export async function getobj(word, obj_ok_func, ctrlflags) {
         let otmp = null;
         if (cmdq.typ === CMDQ_KEY) {
             if (cmdq.key === HANDS_SYM) {
-                note_unported_invent('getobj:cmdq_hands');
+                const v = await obj_ok_func(null);
+                if (v === GETOBJ_SUGGEST || v === GETOBJ_DOWNPLAY)
+                    otmp = hands_obj;
             } else {
                 /* there could be more than one match if key is '#';
                    take first one which passes the obj_ok callback */
@@ -1154,7 +1155,9 @@ export async function getobj(word, obj_ok_func, ctrlflags) {
         if (ilet === '-') {
             /* HANDS_SYM — "your hands" as the object; C returns &hands_obj
                when the filter allows the no-object choice */
-            if (obj_ok_func && obj_ok_func(null) === GETOBJ_SUGGEST)
+            const v = obj_ok_func ? await obj_ok_func(null) : GETOBJ_EXCLUDE;
+            if (v === GETOBJ_SUGGEST || v === GETOBJ_DOWNPLAY
+                || v === GETOBJ_EXCLUDE_INACCESS || v === GETOBJ_EXCLUDE_SELECTABLE)
                 return hands_obj;
             note_unported_invent('getobj:hands');
             return null;

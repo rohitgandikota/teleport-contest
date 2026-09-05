@@ -3839,7 +3839,8 @@ async function disintegrate_mon(mon, type, fltxt) /* type: hero vs other */
 const DMG_DESTROY_SCALE = 5;
 const MAX_ITEMS_DESTROYED = 20;
 
-const destroy_strings = [
+// src/zap.c:5778 destroy_strings[][], also used by trap.c fire_damage().
+export const destroy_strings = [
     ['freezes and shatters', 'freeze and shatter', 'shattered potion'],
     ['boils and explodes', 'boil and explode', 'boiling potion'],
     ['ignites and explodes', 'ignite and explode', 'exploding potion'],

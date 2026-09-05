@@ -108,7 +108,7 @@ import { extract_from_minvent, update_mon_extrinsics } from './worn.js';
 import { polyself } from './polyself.js';
 import { shieldeff } from './display.js';
 import { prinv } from './invent.js';
-import { poly_obj, resist } from './zap.js';
+import { poly_obj, resist, destroy_strings } from './zap.js';
 import { x_monnam } from './do_name.js';
 import { Antimagic, Unchanging } from './youprop.js';
 import { has_mgivenname, ARTICLE_THE, ARTICLE_NONE, SUPPRESS_SADDLE, NOTELL, NC_SHOW_MSG, DISMOUNT_POLY, POLY_NOFLAGS } from './const.js';
@@ -3512,14 +3512,17 @@ export async function water_damage_chain(obj, here) {
 export async function fire_damage(obj, force, x, y) {
     const inSight = !Blind() && couldsee(x, y);
 
+    if (await catch_lit(obj))
+        return false;
+
     /* The container-content branch is separate because burning a container
        spills its contents back onto the same square. */
-    if (Is_container_tr(obj)) {
-        if (obj.otyp === ONAMES.ICE_BOX)
+    if (Is_container_tr(obj) || obj.otyp === ONAMES.STATUE) {
+        if (obj.otyp === ONAMES.ICE_BOX || obj.otyp === ONAMES.STATUE)
             return false;
         const chance = obj.otyp === ONAMES.CHEST ? 40
                      : obj.otyp === ONAMES.LARGE_BOX ? 30 : 20;
-        if (!force && (game.u.uluck | 0) + 5 > rn2(chance))
+        if (!force && (game.u.uluck | 0) + (game.u.moreluck | 0) + 5 > rn2(chance))
             return false;
         if (inSight)
             await pline(`${Yname2(obj)} catches fire and burns.`);
@@ -3527,16 +3530,17 @@ export async function fire_damage(obj, force, x, y) {
             if (inSight)
                 await pline('Its contents fall out.');
             for (const item of [...obj.cobj]) {
-                obj.cobj.splice(obj.cobj.indexOf(item), 1);
-                item.ocontainer = null;
-                place_object(item, x, y);
+                obj_extract_self(item);
+                if (!await flooreffects(item, x, y, ''))
+                    place_object(item, x, y);
             }
         }
+        setnotworn(obj);
         delobj(obj);
         return true;
     }
 
-    if (!force && (game.u.uluck | 0) + 5 > rn2(20))
+    if (!force && (game.u.uluck | 0) + (game.u.moreluck | 0) + 5 > rn2(20))
         return false;
 
     if (obj.oclass === OCLASSES.SCROLL_CLASS
@@ -3545,19 +3549,22 @@ export async function fire_damage(obj, force, x, y) {
             return false;
         if (obj.otyp === ONAMES.SPE_BOOK_OF_THE_DEAD) {
             if (inSight)
-                await pline(`Smoke rises from the ${xname(obj)}.`);
+                await pline(`Smoke rises from ${the(xname(obj))}.`);
             return false;
         }
+        const dindx = obj.oclass === OCLASSES.SCROLL_CLASS ? 3 : 4;
         if (inSight)
-            await pline(`${Yname2(obj)} catches fire and burns.`);
+            await pline(`${Yname2(obj)} ${destroy_strings[dindx][obj.quan > 1 ? 1 : 0]}.`);
+        setnotworn(obj);
         delobj(obj);
         return true;
     }
 
     if (obj.oclass === OCLASSES.POTION_CLASS) {
+        const dindx = obj.otyp !== ONAMES.POT_OIL ? 1 : 2;
         if (inSight)
-            await pline(`${Yname2(obj)} ${obj.otyp === ONAMES.POT_OIL
-                ? 'ignites and explodes' : 'boils and explodes'}.`);
+            await pline(`${Yname2(obj)} ${destroy_strings[dindx][obj.quan > 1 ? 1 : 0]}.`);
+        setnotworn(obj);
         delobj(obj);
         return true;
     }

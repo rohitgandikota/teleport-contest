@@ -74,6 +74,11 @@ import { depth } from './dungeon.js';
 import { block_point } from './vision.js';
 import { obj_sheds_light, obj_split_light_source } from './light.js';
 import { splitbill } from './shk.js';
+import { bill_dummy_object, billable, costly_spot, stolen_value } from './shk.js';
+import { in_rooms } from './hack.js';
+import { impossible, verbalize } from './pline.js';
+import { simpleonames } from './objnam.js';
+import { SHOPBASE, CONTAINED_TOO, COST_UNCURS, COST_UNBLSS } from './const.js';
 import { is_ice } from './dbridge.js';
 
 
@@ -334,6 +339,59 @@ export function bcsign(otmp) {
 // src/mkobj.c:626 clear_splitobjs() — forget the last splitobj() pair.
 export function clear_splitobjs() {
     game.context.objsplit = { parent_oid: 0, child_oid: 0 };
+}
+
+// src/mkobj.c:744 alteration_verbs[]
+const alteration_verbs = [
+    'cancel', 'drain', 'uncharge', 'unbless', 'uncurse', 'disenchant',
+    'degrade', 'dilute', 'erase', 'burn', 'neutralize', 'destroy', 'splatter',
+    'bite', 'open', 'break the lock on', 'rust', 'rot', 'tarnish', 'crack',
+];
+
+// src/mkobj.c:752 costly_alteration()
+export async function costly_alteration(obj, alter_type) {
+    if (alter_type < 0 || alter_type >= alteration_verbs.length) {
+        await impossible(`invalid alteration type (${alter_type})`);
+        alter_type = 0;
+    }
+    const cc = { x: 0, y: 0 }, shkpp = { shkp: null };
+    let objroom = 0;
+    if (carried(obj) || obj.where === OBJ_FREE) {
+        if (!obj.unpaid)
+            return;
+    } else {
+        if (!get_obj_location(obj, cc, CONTAINED_TOO)) {
+            cc.x = game.u.ux;
+            cc.y = game.u.uy;
+        }
+        if (!costly_spot(cc.x, cc.y))
+            return;
+        objroom = (in_rooms(cc.x, cc.y, SHOPBASE) || '').charCodeAt(0) || 0;
+        if (!billable(shkpp, obj, objroom, false))
+            return;
+    }
+    const those = obj.quan === 1 ? 'that' : 'those';
+    const them = obj.quan === 1 ? 'it' : 'them';
+    const learn_bknown = alter_type === COST_UNCURS || alter_type === COST_UNBLSS;
+    switch (obj.where) {
+    case OBJ_FREE: case OBJ_INVENT:
+        if (learn_bknown)
+            set_bknown(obj, 1);
+        await verbalize(`You ${alteration_verbs[alter_type]} ${those} ${simpleonames(obj)}, you pay for ${them}!`);
+        bill_dummy_object(obj);
+        break;
+    case OBJ_FLOOR:
+        if (learn_bknown)
+            obj.bknown = 1;
+        if (costly_spot(game.u.ux, game.u.uy)
+            && objroom === (game.u.ushops || '').charCodeAt(0)) {
+            await verbalize(`You ${alteration_verbs[alter_type]} ${those}, you pay for ${them}!`);
+            bill_dummy_object(obj);
+        } else {
+            await stolen_value(obj, cc.x, cc.y, false, false);
+        }
+        break;
+    }
 }
 
 // src/mkobj.c:1864 set_bknown() — set the bless/curse-state known flag.

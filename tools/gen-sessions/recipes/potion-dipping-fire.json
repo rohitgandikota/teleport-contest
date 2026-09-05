@@ -1,0 +1,5667 @@
+{
+  "name": "potion-dipping-fire",
+  "description": "C burning-oil dipping, fire-resistant objects, worn equipment, container contents, empty magic lamps and permanent poison.",
+  "coverage": [
+    "mode.debug",
+    "level.ordinary",
+    "object.potions",
+    "object.alchemy",
+    "object.tools-containers",
+    "ui.getlin",
+    "ui.menus",
+    "ui.more-paging"
+  ],
+  "branches": [
+    "potion-dipping-fire.fire-scroll",
+    "potion-dipping-fire.fire-scroll-stack",
+    "potion-dipping-fire.fire-scroll-immune",
+    "potion-dipping-fire.fire-book",
+    "potion-dipping-fire.fire-book-immune",
+    "potion-dipping-fire.fire-book-dead",
+    "potion-dipping-fire.alchemy-lit-oil",
+    "potion-dipping-fire.fire-statue",
+    "potion-dipping-fire.fire-icebox",
+    "potion-dipping-fire.fire-chest",
+    "potion-dipping-fire.fire-sack",
+    "potion-dipping-fire.fire-worn-cloak",
+    "potion-dipping-fire.spent-magic-lamp",
+    "potion-dipping-fire.spent-magic-diluted",
+    "potion-dipping-fire.permanent-poison"
+  ],
+  "requireBranchAssertions": true,
+  "segments": [
+    {
+      "name": "fire-scroll",
+      "seed": 102200,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!autopickup,pauper\n",
+      "moves": "#levelchange\r30\r                             \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed scroll of identify\r\u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed potion of oil\r\u001b\u001b\u001b\u001b\u001b\u001bab\u001b\u001b\u001b\u001b\u001b\u001b#dip\rab \u001b\u001b\u001b\u001b\u001b\u001bi\u001b"
+    },
+    {
+      "name": "fire-scroll-stack",
+      "seed": 102200,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!autopickup,pauper\n",
+      "moves": "#levelchange\r30\r                             \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed scrolls of identify\r\u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed potion of oil\r\u001b\u001b\u001b\u001b\u001b\u001bab\u001b\u001b\u001b\u001b\u001b\u001b#dip\rab \u001b\u001b\u001b\u001b\u001b\u001bi\u001b"
+    },
+    {
+      "name": "fire-scroll-immune",
+      "seed": 102200,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!autopickup,pauper\n",
+      "moves": "#levelchange\r30\r                             \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed scroll of fire\r\u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed potion of oil\r\u001b\u001b\u001b\u001b\u001b\u001bab\u001b\u001b\u001b\u001b\u001b\u001b#dip\rab \u001b\u001b\u001b\u001b\u001b\u001bi\u001b"
+    },
+    {
+      "name": "fire-book",
+      "seed": 102200,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!autopickup,pauper\n",
+      "moves": "#levelchange\r30\r                             \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed spellbook of force bolt\r\u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed potion of oil\r\u001b\u001b\u001b\u001b\u001b\u001bab\u001b\u001b\u001b\u001b\u001b\u001b#dip\rab \u001b\u001b\u001b\u001b\u001b\u001bi\u001b"
+    },
+    {
+      "name": "fire-book-immune",
+      "seed": 102200,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!autopickup,pauper\n",
+      "moves": "#levelchange\r30\r                             \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed spellbook of fireball\r\u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed potion of oil\r\u001b\u001b\u001b\u001b\u001b\u001bab\u001b\u001b\u001b\u001b\u001b\u001b#dip\rab \u001b\u001b\u001b\u001b\u001b\u001bi\u001b"
+    },
+    {
+      "name": "fire-book-dead",
+      "seed": 102200,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!autopickup,pauper\n",
+      "moves": "#levelchange\r30\r                             \u001b\u001b\u001b\u001b\u001b\u001b\u0017Book of the Dead\r\u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed potion of oil\r\u001b\u001b\u001b\u001b\u001b\u001bab\u001b\u001b\u001b\u001b\u001b\u001b#dip\rab \u001b\u001b\u001b\u001b\u001b\u001bi\u001b"
+    },
+    {
+      "name": "alchemy-lit-oil",
+      "seed": 102200,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!autopickup,pauper\n",
+      "moves": "#levelchange\r30\r                             \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed potions of healing\r\u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed potion of oil\r\u001b\u001b\u001b\u001b\u001b\u001bab\u001b\u001b\u001b\u001b\u001b\u001b#dip\rab \u001b\u001b\u001b\u001b\u001b\u001bi\u001b"
+    },
+    {
+      "name": "fire-statue",
+      "seed": 102200,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!autopickup,pauper\n",
+      "moves": "#levelchange\r30\r                             \u001b\u001b\u001b\u001b\u001b\u001b\u0017statue of a newt\r\u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed potion of oil\r\u001b\u001b\u001b\u001b\u001b\u001bab\u001b\u001b\u001b\u001b\u001b\u001b#dip\rab \u001b\u001b\u001b\u001b\u001b\u001bi\u001b"
+    },
+    {
+      "name": "fire-icebox",
+      "seed": 102200,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!autopickup,pauper\nOPTIONS=pickup_burden:overloaded\n",
+      "moves": "#levelchange\r30\r                             \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed gauntlets of power\r\u001b\u001b\u001b\u001b\u001b\u001bWa\u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed empty ice box\r\u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed potion of oil\r\u001b\u001b\u001b\u001b\u001b\u001bac\u001b\u001b\u001b\u001b\u001b\u001b#dip\rbc \u001b\u001b\u001b\u001b\u001b\u001bi\u001b"
+    },
+    {
+      "name": "fire-chest",
+      "seed": 102200,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!autopickup,pauper\n",
+      "moves": "#levelchange\r30\r                             \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed chest\r\u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed potion of oil\r\u001b\u001b\u001b\u001b\u001b\u001bab\u001b\u001b\u001b\u001b\u001b\u001b#dip\rab \u001b\u001b\u001b\u001b\u001b\u001bi\u001b"
+    },
+    {
+      "name": "fire-sack",
+      "seed": 102200,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!autopickup,pauper\n",
+      "moves": "#levelchange\r30\r                             \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed sack\r\u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed potion of oil\r\u001b\u001b\u001b\u001b\u001b\u001bab\u001b\u001b\u001b\u001b\u001b\u001b#dip\rab \u001b\u001b\u001b\u001b\u001b\u001bi\u001b"
+    },
+    {
+      "name": "fire-worn-cloak",
+      "seed": 102200,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!autopickup,pauper\n",
+      "moves": "#levelchange\r30\r                             \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed cloak of protection\r\u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed potion of oil\r\u001b\u001b\u001b\u001b\u001b\u001bWa\u001b\u001b\u001b\u001b\u001b\u001bab\u001b\u001b\u001b\u001b\u001b\u001b#dip\rab \u001b\u001b\u001b\u001b\u001b\u001bi\u001b"
+    },
+    {
+      "name": "spent-magic-lamp",
+      "seed": 102200,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!autopickup,pauper\n",
+      "moves": "#levelchange\r30\r                             \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed magic lamp (0)\r\u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed potion of oil\r\u001b\u001b\u001b\u001b\u001b\u001b#dip\rab \u001b\u001b\u001b\u001b\u001b\u001bi\u001b"
+    },
+    {
+      "name": "spent-magic-diluted",
+      "seed": 102200,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!autopickup,pauper\n",
+      "moves": "#levelchange\r30\r                             \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed magic lamp (0)\r\u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed diluted potion of oil\r\u001b\u001b\u001b\u001b\u001b\u001b#dip\rab \u001b\u001b\u001b\u001b\u001b\u001bi\u001b"
+    },
+    {
+      "name": "permanent-poison",
+      "seed": 102200,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!autopickup,pauper\n",
+      "moves": "#levelchange\r30\r                             \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed poisoned Grimtooth\r\u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed potion of healing\r\u001b\u001b\u001b\u001b\u001b\u001b#dip\rab \u001b\u001b\u001b\u001b\u001b\u001bi\u001b"
+    }
+  ],
+  "branchAssertions": [
+    {
+      "branch": "potion-dipping-fire.fire-scroll",
+      "segment": 0,
+      "screenCells": [
+        {
+          "step": 131,
+          "x": 0,
+          "y": 0,
+          "equals": "Y"
+        },
+        {
+          "step": 131,
+          "x": 1,
+          "y": 0,
+          "equals": "o"
+        },
+        {
+          "step": 131,
+          "x": 2,
+          "y": 0,
+          "equals": "u"
+        },
+        {
+          "step": 131,
+          "x": 3,
+          "y": 0,
+          "equals": "r"
+        },
+        {
+          "step": 131,
+          "x": 4,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 131,
+          "x": 5,
+          "y": 0,
+          "equals": "s"
+        },
+        {
+          "step": 131,
+          "x": 6,
+          "y": 0,
+          "equals": "c"
+        },
+        {
+          "step": 131,
+          "x": 7,
+          "y": 0,
+          "equals": "r"
+        },
+        {
+          "step": 131,
+          "x": 8,
+          "y": 0,
+          "equals": "o"
+        },
+        {
+          "step": 131,
+          "x": 9,
+          "y": 0,
+          "equals": "l"
+        },
+        {
+          "step": 131,
+          "x": 10,
+          "y": 0,
+          "equals": "l"
+        },
+        {
+          "step": 131,
+          "x": 11,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 131,
+          "x": 12,
+          "y": 0,
+          "equals": "l"
+        },
+        {
+          "step": 131,
+          "x": 13,
+          "y": 0,
+          "equals": "a"
+        },
+        {
+          "step": 131,
+          "x": 14,
+          "y": 0,
+          "equals": "b"
+        },
+        {
+          "step": 131,
+          "x": 15,
+          "y": 0,
+          "equals": "e"
+        },
+        {
+          "step": 131,
+          "x": 16,
+          "y": 0,
+          "equals": "l"
+        },
+        {
+          "step": 131,
+          "x": 17,
+          "y": 0,
+          "equals": "e"
+        },
+        {
+          "step": 131,
+          "x": 18,
+          "y": 0,
+          "equals": "d"
+        },
+        {
+          "step": 131,
+          "x": 19,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 131,
+          "x": 20,
+          "y": 0,
+          "equals": "S"
+        },
+        {
+          "step": 131,
+          "x": 21,
+          "y": 0,
+          "equals": "T"
+        },
+        {
+          "step": 131,
+          "x": 22,
+          "y": 0,
+          "equals": "R"
+        },
+        {
+          "step": 131,
+          "x": 23,
+          "y": 0,
+          "equals": "C"
+        },
+        {
+          "step": 131,
+          "x": 24,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 131,
+          "x": 25,
+          "y": 0,
+          "equals": "P"
+        },
+        {
+          "step": 131,
+          "x": 26,
+          "y": 0,
+          "equals": "R"
+        },
+        {
+          "step": 131,
+          "x": 27,
+          "y": 0,
+          "equals": "S"
+        },
+        {
+          "step": 131,
+          "x": 28,
+          "y": 0,
+          "equals": "T"
+        },
+        {
+          "step": 131,
+          "x": 29,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 131,
+          "x": 30,
+          "y": 0,
+          "equals": "S"
+        },
+        {
+          "step": 131,
+          "x": 31,
+          "y": 0,
+          "equals": "K"
+        },
+        {
+          "step": 131,
+          "x": 32,
+          "y": 0,
+          "equals": "R"
+        },
+        {
+          "step": 131,
+          "x": 33,
+          "y": 0,
+          "equals": "Z"
+        },
+        {
+          "step": 131,
+          "x": 34,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 131,
+          "x": 35,
+          "y": 0,
+          "equals": "K"
+        },
+        {
+          "step": 131,
+          "x": 36,
+          "y": 0,
+          "equals": "R"
+        },
+        {
+          "step": 131,
+          "x": 37,
+          "y": 0,
+          "equals": "K"
+        },
+        {
+          "step": 131,
+          "x": 38,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 131,
+          "x": 39,
+          "y": 0,
+          "equals": "c"
+        },
+        {
+          "step": 131,
+          "x": 40,
+          "y": 0,
+          "equals": "a"
+        },
+        {
+          "step": 131,
+          "x": 41,
+          "y": 0,
+          "equals": "t"
+        },
+        {
+          "step": 131,
+          "x": 42,
+          "y": 0,
+          "equals": "c"
+        },
+        {
+          "step": 131,
+          "x": 43,
+          "y": 0,
+          "equals": "h"
+        },
+        {
+          "step": 131,
+          "x": 44,
+          "y": 0,
+          "equals": "e"
+        },
+        {
+          "step": 131,
+          "x": 45,
+          "y": 0,
+          "equals": "s"
+        },
+        {
+          "step": 131,
+          "x": 46,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 131,
+          "x": 47,
+          "y": 0,
+          "equals": "f"
+        },
+        {
+          "step": 131,
+          "x": 48,
+          "y": 0,
+          "equals": "i"
+        },
+        {
+          "step": 131,
+          "x": 49,
+          "y": 0,
+          "equals": "r"
+        },
+        {
+          "step": 131,
+          "x": 50,
+          "y": 0,
+          "equals": "e"
+        },
+        {
+          "step": 131,
+          "x": 51,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 131,
+          "x": 52,
+          "y": 0,
+          "equals": "a"
+        },
+        {
+          "step": 131,
+          "x": 53,
+          "y": 0,
+          "equals": "n"
+        },
+        {
+          "step": 131,
+          "x": 54,
+          "y": 0,
+          "equals": "d"
+        },
+        {
+          "step": 131,
+          "x": 55,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 131,
+          "x": 56,
+          "y": 0,
+          "equals": "b"
+        },
+        {
+          "step": 131,
+          "x": 57,
+          "y": 0,
+          "equals": "u"
+        },
+        {
+          "step": 131,
+          "x": 58,
+          "y": 0,
+          "equals": "r"
+        },
+        {
+          "step": 131,
+          "x": 59,
+          "y": 0,
+          "equals": "n"
+        },
+        {
+          "step": 131,
+          "x": 60,
+          "y": 0,
+          "equals": "s"
+        },
+        {
+          "step": 131,
+          "x": 61,
+          "y": 0,
+          "equals": "."
+        },
+        {
+          "step": 139,
+          "x": 0,
+          "y": 0,
+          "equals": "N"
+        },
+        {
+          "step": 139,
+          "x": 1,
+          "y": 0,
+          "equals": "o"
+        },
+        {
+          "step": 139,
+          "x": 2,
+          "y": 0,
+          "equals": "t"
+        },
+        {
+          "step": 139,
+          "x": 3,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 139,
+          "x": 4,
+          "y": 0,
+          "equals": "c"
+        },
+        {
+          "step": 139,
+          "x": 5,
+          "y": 0,
+          "equals": "a"
+        },
+        {
+          "step": 139,
+          "x": 6,
+          "y": 0,
+          "equals": "r"
+        },
+        {
+          "step": 139,
+          "x": 7,
+          "y": 0,
+          "equals": "r"
+        },
+        {
+          "step": 139,
+          "x": 8,
+          "y": 0,
+          "equals": "y"
+        },
+        {
+          "step": 139,
+          "x": 9,
+          "y": 0,
+          "equals": "i"
+        },
+        {
+          "step": 139,
+          "x": 10,
+          "y": 0,
+          "equals": "n"
+        },
+        {
+          "step": 139,
+          "x": 11,
+          "y": 0,
+          "equals": "g"
+        },
+        {
+          "step": 139,
+          "x": 12,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 139,
+          "x": 13,
+          "y": 0,
+          "equals": "a"
+        },
+        {
+          "step": 139,
+          "x": 14,
+          "y": 0,
+          "equals": "n"
+        },
+        {
+          "step": 139,
+          "x": 15,
+          "y": 0,
+          "equals": "y"
+        },
+        {
+          "step": 139,
+          "x": 16,
+          "y": 0,
+          "equals": "t"
+        },
+        {
+          "step": 139,
+          "x": 17,
+          "y": 0,
+          "equals": "h"
+        },
+        {
+          "step": 139,
+          "x": 18,
+          "y": 0,
+          "equals": "i"
+        },
+        {
+          "step": 139,
+          "x": 19,
+          "y": 0,
+          "equals": "n"
+        },
+        {
+          "step": 139,
+          "x": 20,
+          "y": 0,
+          "equals": "g"
+        },
+        {
+          "step": 139,
+          "x": 21,
+          "y": 0,
+          "equals": "."
+        }
+      ]
+    },
+    {
+      "branch": "potion-dipping-fire.fire-scroll-stack",
+      "segment": 1,
+      "screenCells": [
+        {
+          "step": 134,
+          "x": 0,
+          "y": 0,
+          "equals": "Y"
+        },
+        {
+          "step": 134,
+          "x": 1,
+          "y": 0,
+          "equals": "o"
+        },
+        {
+          "step": 134,
+          "x": 2,
+          "y": 0,
+          "equals": "u"
+        },
+        {
+          "step": 134,
+          "x": 3,
+          "y": 0,
+          "equals": "r"
+        },
+        {
+          "step": 134,
+          "x": 4,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 134,
+          "x": 5,
+          "y": 0,
+          "equals": "s"
+        },
+        {
+          "step": 134,
+          "x": 6,
+          "y": 0,
+          "equals": "c"
+        },
+        {
+          "step": 134,
+          "x": 7,
+          "y": 0,
+          "equals": "r"
+        },
+        {
+          "step": 134,
+          "x": 8,
+          "y": 0,
+          "equals": "o"
+        },
+        {
+          "step": 134,
+          "x": 9,
+          "y": 0,
+          "equals": "l"
+        },
+        {
+          "step": 134,
+          "x": 10,
+          "y": 0,
+          "equals": "l"
+        },
+        {
+          "step": 134,
+          "x": 11,
+          "y": 0,
+          "equals": "s"
+        },
+        {
+          "step": 134,
+          "x": 12,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 134,
+          "x": 13,
+          "y": 0,
+          "equals": "l"
+        },
+        {
+          "step": 134,
+          "x": 14,
+          "y": 0,
+          "equals": "a"
+        },
+        {
+          "step": 134,
+          "x": 15,
+          "y": 0,
+          "equals": "b"
+        },
+        {
+          "step": 134,
+          "x": 16,
+          "y": 0,
+          "equals": "e"
+        },
+        {
+          "step": 134,
+          "x": 17,
+          "y": 0,
+          "equals": "l"
+        },
+        {
+          "step": 134,
+          "x": 18,
+          "y": 0,
+          "equals": "e"
+        },
+        {
+          "step": 134,
+          "x": 19,
+          "y": 0,
+          "equals": "d"
+        },
+        {
+          "step": 134,
+          "x": 20,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 134,
+          "x": 21,
+          "y": 0,
+          "equals": "S"
+        },
+        {
+          "step": 134,
+          "x": 22,
+          "y": 0,
+          "equals": "T"
+        },
+        {
+          "step": 134,
+          "x": 23,
+          "y": 0,
+          "equals": "R"
+        },
+        {
+          "step": 134,
+          "x": 24,
+          "y": 0,
+          "equals": "C"
+        },
+        {
+          "step": 134,
+          "x": 25,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 134,
+          "x": 26,
+          "y": 0,
+          "equals": "P"
+        },
+        {
+          "step": 134,
+          "x": 27,
+          "y": 0,
+          "equals": "R"
+        },
+        {
+          "step": 134,
+          "x": 28,
+          "y": 0,
+          "equals": "S"
+        },
+        {
+          "step": 134,
+          "x": 29,
+          "y": 0,
+          "equals": "T"
+        },
+        {
+          "step": 134,
+          "x": 30,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 134,
+          "x": 31,
+          "y": 0,
+          "equals": "S"
+        },
+        {
+          "step": 134,
+          "x": 32,
+          "y": 0,
+          "equals": "K"
+        },
+        {
+          "step": 134,
+          "x": 33,
+          "y": 0,
+          "equals": "R"
+        },
+        {
+          "step": 134,
+          "x": 34,
+          "y": 0,
+          "equals": "Z"
+        },
+        {
+          "step": 134,
+          "x": 35,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 134,
+          "x": 36,
+          "y": 0,
+          "equals": "K"
+        },
+        {
+          "step": 134,
+          "x": 37,
+          "y": 0,
+          "equals": "R"
+        },
+        {
+          "step": 134,
+          "x": 38,
+          "y": 0,
+          "equals": "K"
+        },
+        {
+          "step": 134,
+          "x": 39,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 134,
+          "x": 40,
+          "y": 0,
+          "equals": "c"
+        },
+        {
+          "step": 134,
+          "x": 41,
+          "y": 0,
+          "equals": "a"
+        },
+        {
+          "step": 134,
+          "x": 42,
+          "y": 0,
+          "equals": "t"
+        },
+        {
+          "step": 134,
+          "x": 43,
+          "y": 0,
+          "equals": "c"
+        },
+        {
+          "step": 134,
+          "x": 44,
+          "y": 0,
+          "equals": "h"
+        },
+        {
+          "step": 134,
+          "x": 45,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 134,
+          "x": 46,
+          "y": 0,
+          "equals": "f"
+        },
+        {
+          "step": 134,
+          "x": 47,
+          "y": 0,
+          "equals": "i"
+        },
+        {
+          "step": 134,
+          "x": 48,
+          "y": 0,
+          "equals": "r"
+        },
+        {
+          "step": 134,
+          "x": 49,
+          "y": 0,
+          "equals": "e"
+        },
+        {
+          "step": 134,
+          "x": 50,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 134,
+          "x": 51,
+          "y": 0,
+          "equals": "a"
+        },
+        {
+          "step": 134,
+          "x": 52,
+          "y": 0,
+          "equals": "n"
+        },
+        {
+          "step": 134,
+          "x": 53,
+          "y": 0,
+          "equals": "d"
+        },
+        {
+          "step": 134,
+          "x": 54,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 134,
+          "x": 55,
+          "y": 0,
+          "equals": "b"
+        },
+        {
+          "step": 134,
+          "x": 56,
+          "y": 0,
+          "equals": "u"
+        },
+        {
+          "step": 134,
+          "x": 57,
+          "y": 0,
+          "equals": "r"
+        },
+        {
+          "step": 134,
+          "x": 58,
+          "y": 0,
+          "equals": "n"
+        },
+        {
+          "step": 134,
+          "x": 59,
+          "y": 0,
+          "equals": "."
+        },
+        {
+          "step": 142,
+          "x": 0,
+          "y": 0,
+          "equals": "N"
+        },
+        {
+          "step": 142,
+          "x": 1,
+          "y": 0,
+          "equals": "o"
+        },
+        {
+          "step": 142,
+          "x": 2,
+          "y": 0,
+          "equals": "t"
+        },
+        {
+          "step": 142,
+          "x": 3,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 142,
+          "x": 4,
+          "y": 0,
+          "equals": "c"
+        },
+        {
+          "step": 142,
+          "x": 5,
+          "y": 0,
+          "equals": "a"
+        },
+        {
+          "step": 142,
+          "x": 6,
+          "y": 0,
+          "equals": "r"
+        },
+        {
+          "step": 142,
+          "x": 7,
+          "y": 0,
+          "equals": "r"
+        },
+        {
+          "step": 142,
+          "x": 8,
+          "y": 0,
+          "equals": "y"
+        },
+        {
+          "step": 142,
+          "x": 9,
+          "y": 0,
+          "equals": "i"
+        },
+        {
+          "step": 142,
+          "x": 10,
+          "y": 0,
+          "equals": "n"
+        },
+        {
+          "step": 142,
+          "x": 11,
+          "y": 0,
+          "equals": "g"
+        },
+        {
+          "step": 142,
+          "x": 12,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 142,
+          "x": 13,
+          "y": 0,
+          "equals": "a"
+        },
+        {
+          "step": 142,
+          "x": 14,
+          "y": 0,
+          "equals": "n"
+        },
+        {
+          "step": 142,
+          "x": 15,
+          "y": 0,
+          "equals": "y"
+        },
+        {
+          "step": 142,
+          "x": 16,
+          "y": 0,
+          "equals": "t"
+        },
+        {
+          "step": 142,
+          "x": 17,
+          "y": 0,
+          "equals": "h"
+        },
+        {
+          "step": 142,
+          "x": 18,
+          "y": 0,
+          "equals": "i"
+        },
+        {
+          "step": 142,
+          "x": 19,
+          "y": 0,
+          "equals": "n"
+        },
+        {
+          "step": 142,
+          "x": 20,
+          "y": 0,
+          "equals": "g"
+        },
+        {
+          "step": 142,
+          "x": 21,
+          "y": 0,
+          "equals": "."
+        }
+      ]
+    },
+    {
+      "branch": "potion-dipping-fire.fire-scroll-immune",
+      "segment": 2,
+      "screenCells": [
+        {
+          "step": 135,
+          "x": 41,
+          "y": 1,
+          "equals": "a"
+        },
+        {
+          "step": 135,
+          "x": 42,
+          "y": 1,
+          "equals": " "
+        },
+        {
+          "step": 135,
+          "x": 43,
+          "y": 1,
+          "equals": "-"
+        },
+        {
+          "step": 135,
+          "x": 44,
+          "y": 1,
+          "equals": " "
+        },
+        {
+          "step": 135,
+          "x": 45,
+          "y": 1,
+          "equals": "a"
+        },
+        {
+          "step": 135,
+          "x": 46,
+          "y": 1,
+          "equals": " "
+        },
+        {
+          "step": 135,
+          "x": 47,
+          "y": 1,
+          "equals": "s"
+        },
+        {
+          "step": 135,
+          "x": 48,
+          "y": 1,
+          "equals": "c"
+        },
+        {
+          "step": 135,
+          "x": 49,
+          "y": 1,
+          "equals": "r"
+        },
+        {
+          "step": 135,
+          "x": 50,
+          "y": 1,
+          "equals": "o"
+        },
+        {
+          "step": 135,
+          "x": 51,
+          "y": 1,
+          "equals": "l"
+        },
+        {
+          "step": 135,
+          "x": 52,
+          "y": 1,
+          "equals": "l"
+        },
+        {
+          "step": 135,
+          "x": 53,
+          "y": 1,
+          "equals": " "
+        },
+        {
+          "step": 135,
+          "x": 54,
+          "y": 1,
+          "equals": "l"
+        },
+        {
+          "step": 135,
+          "x": 55,
+          "y": 1,
+          "equals": "a"
+        },
+        {
+          "step": 135,
+          "x": 56,
+          "y": 1,
+          "equals": "b"
+        },
+        {
+          "step": 135,
+          "x": 57,
+          "y": 1,
+          "equals": "e"
+        },
+        {
+          "step": 135,
+          "x": 58,
+          "y": 1,
+          "equals": "l"
+        },
+        {
+          "step": 135,
+          "x": 59,
+          "y": 1,
+          "equals": "e"
+        },
+        {
+          "step": 135,
+          "x": 60,
+          "y": 1,
+          "equals": "d"
+        },
+        {
+          "step": 135,
+          "x": 61,
+          "y": 1,
+          "equals": " "
+        },
+        {
+          "step": 135,
+          "x": 62,
+          "y": 1,
+          "equals": "X"
+        },
+        {
+          "step": 135,
+          "x": 63,
+          "y": 1,
+          "equals": "O"
+        },
+        {
+          "step": 135,
+          "x": 64,
+          "y": 1,
+          "equals": "R"
+        },
+        {
+          "step": 135,
+          "x": 65,
+          "y": 1,
+          "equals": " "
+        },
+        {
+          "step": 135,
+          "x": 66,
+          "y": 1,
+          "equals": "O"
+        },
+        {
+          "step": 135,
+          "x": 67,
+          "y": 1,
+          "equals": "T"
+        },
+        {
+          "step": 135,
+          "x": 68,
+          "y": 1,
+          "equals": "A"
+        }
+      ],
+      "screenExcludes": [
+        "catches fire and burns"
+      ]
+    },
+    {
+      "branch": "potion-dipping-fire.fire-book",
+      "segment": 3,
+      "screenCells": [
+        {
+          "step": 136,
+          "x": 0,
+          "y": 0,
+          "equals": "Y"
+        },
+        {
+          "step": 136,
+          "x": 1,
+          "y": 0,
+          "equals": "o"
+        },
+        {
+          "step": 136,
+          "x": 2,
+          "y": 0,
+          "equals": "u"
+        },
+        {
+          "step": 136,
+          "x": 3,
+          "y": 0,
+          "equals": "r"
+        },
+        {
+          "step": 136,
+          "x": 4,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 136,
+          "x": 5,
+          "y": 0,
+          "equals": "s"
+        },
+        {
+          "step": 136,
+          "x": 6,
+          "y": 0,
+          "equals": "p"
+        },
+        {
+          "step": 136,
+          "x": 7,
+          "y": 0,
+          "equals": "e"
+        },
+        {
+          "step": 136,
+          "x": 8,
+          "y": 0,
+          "equals": "l"
+        },
+        {
+          "step": 136,
+          "x": 9,
+          "y": 0,
+          "equals": "l"
+        },
+        {
+          "step": 136,
+          "x": 10,
+          "y": 0,
+          "equals": "b"
+        },
+        {
+          "step": 136,
+          "x": 11,
+          "y": 0,
+          "equals": "o"
+        },
+        {
+          "step": 136,
+          "x": 12,
+          "y": 0,
+          "equals": "o"
+        },
+        {
+          "step": 136,
+          "x": 13,
+          "y": 0,
+          "equals": "k"
+        },
+        {
+          "step": 136,
+          "x": 14,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 136,
+          "x": 15,
+          "y": 0,
+          "equals": "o"
+        },
+        {
+          "step": 136,
+          "x": 16,
+          "y": 0,
+          "equals": "f"
+        },
+        {
+          "step": 136,
+          "x": 17,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 136,
+          "x": 18,
+          "y": 0,
+          "equals": "f"
+        },
+        {
+          "step": 136,
+          "x": 19,
+          "y": 0,
+          "equals": "o"
+        },
+        {
+          "step": 136,
+          "x": 20,
+          "y": 0,
+          "equals": "r"
+        },
+        {
+          "step": 136,
+          "x": 21,
+          "y": 0,
+          "equals": "c"
+        },
+        {
+          "step": 136,
+          "x": 22,
+          "y": 0,
+          "equals": "e"
+        },
+        {
+          "step": 136,
+          "x": 23,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 136,
+          "x": 24,
+          "y": 0,
+          "equals": "b"
+        },
+        {
+          "step": 136,
+          "x": 25,
+          "y": 0,
+          "equals": "o"
+        },
+        {
+          "step": 136,
+          "x": 26,
+          "y": 0,
+          "equals": "l"
+        },
+        {
+          "step": 136,
+          "x": 27,
+          "y": 0,
+          "equals": "t"
+        },
+        {
+          "step": 136,
+          "x": 28,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 136,
+          "x": 29,
+          "y": 0,
+          "equals": "c"
+        },
+        {
+          "step": 136,
+          "x": 30,
+          "y": 0,
+          "equals": "a"
+        },
+        {
+          "step": 136,
+          "x": 31,
+          "y": 0,
+          "equals": "t"
+        },
+        {
+          "step": 136,
+          "x": 32,
+          "y": 0,
+          "equals": "c"
+        },
+        {
+          "step": 136,
+          "x": 33,
+          "y": 0,
+          "equals": "h"
+        },
+        {
+          "step": 136,
+          "x": 34,
+          "y": 0,
+          "equals": "e"
+        },
+        {
+          "step": 136,
+          "x": 35,
+          "y": 0,
+          "equals": "s"
+        },
+        {
+          "step": 136,
+          "x": 36,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 136,
+          "x": 37,
+          "y": 0,
+          "equals": "f"
+        },
+        {
+          "step": 136,
+          "x": 38,
+          "y": 0,
+          "equals": "i"
+        },
+        {
+          "step": 136,
+          "x": 39,
+          "y": 0,
+          "equals": "r"
+        },
+        {
+          "step": 136,
+          "x": 40,
+          "y": 0,
+          "equals": "e"
+        },
+        {
+          "step": 136,
+          "x": 41,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 136,
+          "x": 42,
+          "y": 0,
+          "equals": "a"
+        },
+        {
+          "step": 136,
+          "x": 43,
+          "y": 0,
+          "equals": "n"
+        },
+        {
+          "step": 136,
+          "x": 44,
+          "y": 0,
+          "equals": "d"
+        },
+        {
+          "step": 136,
+          "x": 45,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 136,
+          "x": 46,
+          "y": 0,
+          "equals": "b"
+        },
+        {
+          "step": 136,
+          "x": 47,
+          "y": 0,
+          "equals": "u"
+        },
+        {
+          "step": 136,
+          "x": 48,
+          "y": 0,
+          "equals": "r"
+        },
+        {
+          "step": 136,
+          "x": 49,
+          "y": 0,
+          "equals": "n"
+        },
+        {
+          "step": 136,
+          "x": 50,
+          "y": 0,
+          "equals": "s"
+        },
+        {
+          "step": 136,
+          "x": 51,
+          "y": 0,
+          "equals": "."
+        },
+        {
+          "step": 144,
+          "x": 0,
+          "y": 0,
+          "equals": "N"
+        },
+        {
+          "step": 144,
+          "x": 1,
+          "y": 0,
+          "equals": "o"
+        },
+        {
+          "step": 144,
+          "x": 2,
+          "y": 0,
+          "equals": "t"
+        },
+        {
+          "step": 144,
+          "x": 3,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 144,
+          "x": 4,
+          "y": 0,
+          "equals": "c"
+        },
+        {
+          "step": 144,
+          "x": 5,
+          "y": 0,
+          "equals": "a"
+        },
+        {
+          "step": 144,
+          "x": 6,
+          "y": 0,
+          "equals": "r"
+        },
+        {
+          "step": 144,
+          "x": 7,
+          "y": 0,
+          "equals": "r"
+        },
+        {
+          "step": 144,
+          "x": 8,
+          "y": 0,
+          "equals": "y"
+        },
+        {
+          "step": 144,
+          "x": 9,
+          "y": 0,
+          "equals": "i"
+        },
+        {
+          "step": 144,
+          "x": 10,
+          "y": 0,
+          "equals": "n"
+        },
+        {
+          "step": 144,
+          "x": 11,
+          "y": 0,
+          "equals": "g"
+        },
+        {
+          "step": 144,
+          "x": 12,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 144,
+          "x": 13,
+          "y": 0,
+          "equals": "a"
+        },
+        {
+          "step": 144,
+          "x": 14,
+          "y": 0,
+          "equals": "n"
+        },
+        {
+          "step": 144,
+          "x": 15,
+          "y": 0,
+          "equals": "y"
+        },
+        {
+          "step": 144,
+          "x": 16,
+          "y": 0,
+          "equals": "t"
+        },
+        {
+          "step": 144,
+          "x": 17,
+          "y": 0,
+          "equals": "h"
+        },
+        {
+          "step": 144,
+          "x": 18,
+          "y": 0,
+          "equals": "i"
+        },
+        {
+          "step": 144,
+          "x": 19,
+          "y": 0,
+          "equals": "n"
+        },
+        {
+          "step": 144,
+          "x": 20,
+          "y": 0,
+          "equals": "g"
+        },
+        {
+          "step": 144,
+          "x": 21,
+          "y": 0,
+          "equals": "."
+        }
+      ]
+    },
+    {
+      "branch": "potion-dipping-fire.fire-book-immune",
+      "segment": 4,
+      "screenCells": [
+        {
+          "step": 142,
+          "x": 41,
+          "y": 1,
+          "equals": "a"
+        },
+        {
+          "step": 142,
+          "x": 42,
+          "y": 1,
+          "equals": " "
+        },
+        {
+          "step": 142,
+          "x": 43,
+          "y": 1,
+          "equals": "-"
+        },
+        {
+          "step": 142,
+          "x": 44,
+          "y": 1,
+          "equals": " "
+        },
+        {
+          "step": 142,
+          "x": 45,
+          "y": 1,
+          "equals": "a"
+        },
+        {
+          "step": 142,
+          "x": 46,
+          "y": 1,
+          "equals": " "
+        },
+        {
+          "step": 142,
+          "x": 47,
+          "y": 1,
+          "equals": "d"
+        },
+        {
+          "step": 142,
+          "x": 48,
+          "y": 1,
+          "equals": "u"
+        },
+        {
+          "step": 142,
+          "x": 49,
+          "y": 1,
+          "equals": "l"
+        },
+        {
+          "step": 142,
+          "x": 50,
+          "y": 1,
+          "equals": "l"
+        },
+        {
+          "step": 142,
+          "x": 51,
+          "y": 1,
+          "equals": " "
+        },
+        {
+          "step": 142,
+          "x": 52,
+          "y": 1,
+          "equals": "s"
+        },
+        {
+          "step": 142,
+          "x": 53,
+          "y": 1,
+          "equals": "p"
+        },
+        {
+          "step": 142,
+          "x": 54,
+          "y": 1,
+          "equals": "e"
+        },
+        {
+          "step": 142,
+          "x": 55,
+          "y": 1,
+          "equals": "l"
+        },
+        {
+          "step": 142,
+          "x": 56,
+          "y": 1,
+          "equals": "l"
+        },
+        {
+          "step": 142,
+          "x": 57,
+          "y": 1,
+          "equals": "b"
+        },
+        {
+          "step": 142,
+          "x": 58,
+          "y": 1,
+          "equals": "o"
+        },
+        {
+          "step": 142,
+          "x": 59,
+          "y": 1,
+          "equals": "o"
+        },
+        {
+          "step": 142,
+          "x": 60,
+          "y": 1,
+          "equals": "k"
+        }
+      ],
+      "screenExcludes": [
+        "catches fire and burns"
+      ]
+    },
+    {
+      "branch": "potion-dipping-fire.fire-book-dead",
+      "segment": 5,
+      "screenCells": [
+        {
+          "step": 120,
+          "x": 0,
+          "y": 0,
+          "equals": "S"
+        },
+        {
+          "step": 120,
+          "x": 1,
+          "y": 0,
+          "equals": "m"
+        },
+        {
+          "step": 120,
+          "x": 2,
+          "y": 0,
+          "equals": "o"
+        },
+        {
+          "step": 120,
+          "x": 3,
+          "y": 0,
+          "equals": "k"
+        },
+        {
+          "step": 120,
+          "x": 4,
+          "y": 0,
+          "equals": "e"
+        },
+        {
+          "step": 120,
+          "x": 5,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 120,
+          "x": 6,
+          "y": 0,
+          "equals": "r"
+        },
+        {
+          "step": 120,
+          "x": 7,
+          "y": 0,
+          "equals": "i"
+        },
+        {
+          "step": 120,
+          "x": 8,
+          "y": 0,
+          "equals": "s"
+        },
+        {
+          "step": 120,
+          "x": 9,
+          "y": 0,
+          "equals": "e"
+        },
+        {
+          "step": 120,
+          "x": 10,
+          "y": 0,
+          "equals": "s"
+        },
+        {
+          "step": 120,
+          "x": 11,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 120,
+          "x": 12,
+          "y": 0,
+          "equals": "f"
+        },
+        {
+          "step": 120,
+          "x": 13,
+          "y": 0,
+          "equals": "r"
+        },
+        {
+          "step": 120,
+          "x": 14,
+          "y": 0,
+          "equals": "o"
+        },
+        {
+          "step": 120,
+          "x": 15,
+          "y": 0,
+          "equals": "m"
+        },
+        {
+          "step": 120,
+          "x": 16,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 120,
+          "x": 17,
+          "y": 0,
+          "equals": "t"
+        },
+        {
+          "step": 120,
+          "x": 18,
+          "y": 0,
+          "equals": "h"
+        },
+        {
+          "step": 120,
+          "x": 19,
+          "y": 0,
+          "equals": "e"
+        },
+        {
+          "step": 120,
+          "x": 20,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 120,
+          "x": 21,
+          "y": 0,
+          "equals": "p"
+        },
+        {
+          "step": 120,
+          "x": 22,
+          "y": 0,
+          "equals": "a"
+        },
+        {
+          "step": 120,
+          "x": 23,
+          "y": 0,
+          "equals": "p"
+        },
+        {
+          "step": 120,
+          "x": 24,
+          "y": 0,
+          "equals": "y"
+        },
+        {
+          "step": 120,
+          "x": 25,
+          "y": 0,
+          "equals": "r"
+        },
+        {
+          "step": 120,
+          "x": 26,
+          "y": 0,
+          "equals": "u"
+        },
+        {
+          "step": 120,
+          "x": 27,
+          "y": 0,
+          "equals": "s"
+        },
+        {
+          "step": 120,
+          "x": 28,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 120,
+          "x": 29,
+          "y": 0,
+          "equals": "s"
+        },
+        {
+          "step": 120,
+          "x": 30,
+          "y": 0,
+          "equals": "p"
+        },
+        {
+          "step": 120,
+          "x": 31,
+          "y": 0,
+          "equals": "e"
+        },
+        {
+          "step": 120,
+          "x": 32,
+          "y": 0,
+          "equals": "l"
+        },
+        {
+          "step": 120,
+          "x": 33,
+          "y": 0,
+          "equals": "l"
+        },
+        {
+          "step": 120,
+          "x": 34,
+          "y": 0,
+          "equals": "b"
+        },
+        {
+          "step": 120,
+          "x": 35,
+          "y": 0,
+          "equals": "o"
+        },
+        {
+          "step": 120,
+          "x": 36,
+          "y": 0,
+          "equals": "o"
+        },
+        {
+          "step": 120,
+          "x": 37,
+          "y": 0,
+          "equals": "k"
+        },
+        {
+          "step": 120,
+          "x": 38,
+          "y": 0,
+          "equals": "."
+        },
+        {
+          "step": 128,
+          "x": 41,
+          "y": 1,
+          "equals": "a"
+        },
+        {
+          "step": 128,
+          "x": 42,
+          "y": 1,
+          "equals": " "
+        },
+        {
+          "step": 128,
+          "x": 43,
+          "y": 1,
+          "equals": "-"
+        },
+        {
+          "step": 128,
+          "x": 44,
+          "y": 1,
+          "equals": " "
+        },
+        {
+          "step": 128,
+          "x": 45,
+          "y": 1,
+          "equals": "a"
+        },
+        {
+          "step": 128,
+          "x": 46,
+          "y": 1,
+          "equals": " "
+        },
+        {
+          "step": 128,
+          "x": 47,
+          "y": 1,
+          "equals": "p"
+        },
+        {
+          "step": 128,
+          "x": 48,
+          "y": 1,
+          "equals": "a"
+        },
+        {
+          "step": 128,
+          "x": 49,
+          "y": 1,
+          "equals": "p"
+        },
+        {
+          "step": 128,
+          "x": 50,
+          "y": 1,
+          "equals": "y"
+        },
+        {
+          "step": 128,
+          "x": 51,
+          "y": 1,
+          "equals": "r"
+        },
+        {
+          "step": 128,
+          "x": 52,
+          "y": 1,
+          "equals": "u"
+        },
+        {
+          "step": 128,
+          "x": 53,
+          "y": 1,
+          "equals": "s"
+        },
+        {
+          "step": 128,
+          "x": 54,
+          "y": 1,
+          "equals": " "
+        },
+        {
+          "step": 128,
+          "x": 55,
+          "y": 1,
+          "equals": "s"
+        },
+        {
+          "step": 128,
+          "x": 56,
+          "y": 1,
+          "equals": "p"
+        },
+        {
+          "step": 128,
+          "x": 57,
+          "y": 1,
+          "equals": "e"
+        },
+        {
+          "step": 128,
+          "x": 58,
+          "y": 1,
+          "equals": "l"
+        },
+        {
+          "step": 128,
+          "x": 59,
+          "y": 1,
+          "equals": "l"
+        },
+        {
+          "step": 128,
+          "x": 60,
+          "y": 1,
+          "equals": "b"
+        },
+        {
+          "step": 128,
+          "x": 61,
+          "y": 1,
+          "equals": "o"
+        },
+        {
+          "step": 128,
+          "x": 62,
+          "y": 1,
+          "equals": "o"
+        },
+        {
+          "step": 128,
+          "x": 63,
+          "y": 1,
+          "equals": "k"
+        }
+      ]
+    },
+    {
+      "branch": "potion-dipping-fire.alchemy-lit-oil",
+      "segment": 6,
+      "screenCells": [
+        {
+          "step": 133,
+          "x": 0,
+          "y": 0,
+          "equals": "T"
+        },
+        {
+          "step": 133,
+          "x": 1,
+          "y": 0,
+          "equals": "h"
+        },
+        {
+          "step": 133,
+          "x": 2,
+          "y": 0,
+          "equals": "e"
+        },
+        {
+          "step": 133,
+          "x": 3,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 133,
+          "x": 4,
+          "y": 0,
+          "equals": "b"
+        },
+        {
+          "step": 133,
+          "x": 5,
+          "y": 0,
+          "equals": "r"
+        },
+        {
+          "step": 133,
+          "x": 6,
+          "y": 0,
+          "equals": "i"
+        },
+        {
+          "step": 133,
+          "x": 7,
+          "y": 0,
+          "equals": "l"
+        },
+        {
+          "step": 133,
+          "x": 8,
+          "y": 0,
+          "equals": "l"
+        },
+        {
+          "step": 133,
+          "x": 9,
+          "y": 0,
+          "equals": "i"
+        },
+        {
+          "step": 133,
+          "x": 10,
+          "y": 0,
+          "equals": "a"
+        },
+        {
+          "step": 133,
+          "x": 11,
+          "y": 0,
+          "equals": "n"
+        },
+        {
+          "step": 133,
+          "x": 12,
+          "y": 0,
+          "equals": "t"
+        },
+        {
+          "step": 133,
+          "x": 13,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 133,
+          "x": 14,
+          "y": 0,
+          "equals": "b"
+        },
+        {
+          "step": 133,
+          "x": 15,
+          "y": 0,
+          "equals": "l"
+        },
+        {
+          "step": 133,
+          "x": 16,
+          "y": 0,
+          "equals": "u"
+        },
+        {
+          "step": 133,
+          "x": 17,
+          "y": 0,
+          "equals": "e"
+        },
+        {
+          "step": 133,
+          "x": 18,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 133,
+          "x": 19,
+          "y": 0,
+          "equals": "p"
+        },
+        {
+          "step": 133,
+          "x": 20,
+          "y": 0,
+          "equals": "o"
+        },
+        {
+          "step": 133,
+          "x": 21,
+          "y": 0,
+          "equals": "t"
+        },
+        {
+          "step": 133,
+          "x": 22,
+          "y": 0,
+          "equals": "i"
+        },
+        {
+          "step": 133,
+          "x": 23,
+          "y": 0,
+          "equals": "o"
+        },
+        {
+          "step": 133,
+          "x": 24,
+          "y": 0,
+          "equals": "n"
+        },
+        {
+          "step": 133,
+          "x": 25,
+          "y": 0,
+          "equals": "s"
+        },
+        {
+          "step": 133,
+          "x": 26,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 133,
+          "x": 27,
+          "y": 0,
+          "equals": "m"
+        },
+        {
+          "step": 133,
+          "x": 28,
+          "y": 0,
+          "equals": "i"
+        },
+        {
+          "step": 133,
+          "x": 29,
+          "y": 0,
+          "equals": "x"
+        },
+        {
+          "step": 133,
+          "x": 30,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 133,
+          "x": 31,
+          "y": 0,
+          "equals": "w"
+        },
+        {
+          "step": 133,
+          "x": 32,
+          "y": 0,
+          "equals": "i"
+        },
+        {
+          "step": 133,
+          "x": 33,
+          "y": 0,
+          "equals": "t"
+        },
+        {
+          "step": 133,
+          "x": 34,
+          "y": 0,
+          "equals": "h"
+        },
+        {
+          "step": 133,
+          "x": 35,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 133,
+          "x": 36,
+          "y": 0,
+          "equals": "t"
+        },
+        {
+          "step": 133,
+          "x": 37,
+          "y": 0,
+          "equals": "h"
+        },
+        {
+          "step": 133,
+          "x": 38,
+          "y": 0,
+          "equals": "e"
+        },
+        {
+          "step": 133,
+          "x": 39,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 133,
+          "x": 40,
+          "y": 0,
+          "equals": "p"
+        },
+        {
+          "step": 133,
+          "x": 41,
+          "y": 0,
+          "equals": "o"
+        },
+        {
+          "step": 133,
+          "x": 42,
+          "y": 0,
+          "equals": "t"
+        },
+        {
+          "step": 133,
+          "x": 43,
+          "y": 0,
+          "equals": "i"
+        },
+        {
+          "step": 133,
+          "x": 44,
+          "y": 0,
+          "equals": "o"
+        },
+        {
+          "step": 133,
+          "x": 45,
+          "y": 0,
+          "equals": "n"
+        },
+        {
+          "step": 133,
+          "x": 46,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 133,
+          "x": 47,
+          "y": 0,
+          "equals": "o"
+        },
+        {
+          "step": 133,
+          "x": 48,
+          "y": 0,
+          "equals": "f"
+        },
+        {
+          "step": 133,
+          "x": 49,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 133,
+          "x": 50,
+          "y": 0,
+          "equals": "o"
+        },
+        {
+          "step": 133,
+          "x": 51,
+          "y": 0,
+          "equals": "i"
+        },
+        {
+          "step": 133,
+          "x": 52,
+          "y": 0,
+          "equals": "l"
+        },
+        {
+          "step": 133,
+          "x": 53,
+          "y": 0,
+          "equals": "."
+        },
+        {
+          "step": 133,
+          "x": 54,
+          "y": 0,
+          "equals": "."
+        },
+        {
+          "step": 133,
+          "x": 55,
+          "y": 0,
+          "equals": "."
+        },
+        {
+          "step": 133,
+          "x": 56,
+          "y": 0,
+          "equals": "-"
+        },
+        {
+          "step": 133,
+          "x": 57,
+          "y": 0,
+          "equals": "-"
+        },
+        {
+          "step": 133,
+          "x": 58,
+          "y": 0,
+          "equals": "M"
+        },
+        {
+          "step": 133,
+          "x": 59,
+          "y": 0,
+          "equals": "o"
+        },
+        {
+          "step": 133,
+          "x": 60,
+          "y": 0,
+          "equals": "r"
+        },
+        {
+          "step": 133,
+          "x": 61,
+          "y": 0,
+          "equals": "e"
+        },
+        {
+          "step": 133,
+          "x": 62,
+          "y": 0,
+          "equals": "-"
+        },
+        {
+          "step": 133,
+          "x": 63,
+          "y": 0,
+          "equals": "-"
+        },
+        {
+          "step": 141,
+          "x": 0,
+          "y": 0,
+          "equals": "N"
+        },
+        {
+          "step": 141,
+          "x": 1,
+          "y": 0,
+          "equals": "o"
+        },
+        {
+          "step": 141,
+          "x": 2,
+          "y": 0,
+          "equals": "t"
+        },
+        {
+          "step": 141,
+          "x": 3,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 141,
+          "x": 4,
+          "y": 0,
+          "equals": "c"
+        },
+        {
+          "step": 141,
+          "x": 5,
+          "y": 0,
+          "equals": "a"
+        },
+        {
+          "step": 141,
+          "x": 6,
+          "y": 0,
+          "equals": "r"
+        },
+        {
+          "step": 141,
+          "x": 7,
+          "y": 0,
+          "equals": "r"
+        },
+        {
+          "step": 141,
+          "x": 8,
+          "y": 0,
+          "equals": "y"
+        },
+        {
+          "step": 141,
+          "x": 9,
+          "y": 0,
+          "equals": "i"
+        },
+        {
+          "step": 141,
+          "x": 10,
+          "y": 0,
+          "equals": "n"
+        },
+        {
+          "step": 141,
+          "x": 11,
+          "y": 0,
+          "equals": "g"
+        },
+        {
+          "step": 141,
+          "x": 12,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 141,
+          "x": 13,
+          "y": 0,
+          "equals": "a"
+        },
+        {
+          "step": 141,
+          "x": 14,
+          "y": 0,
+          "equals": "n"
+        },
+        {
+          "step": 141,
+          "x": 15,
+          "y": 0,
+          "equals": "y"
+        },
+        {
+          "step": 141,
+          "x": 16,
+          "y": 0,
+          "equals": "t"
+        },
+        {
+          "step": 141,
+          "x": 17,
+          "y": 0,
+          "equals": "h"
+        },
+        {
+          "step": 141,
+          "x": 18,
+          "y": 0,
+          "equals": "i"
+        },
+        {
+          "step": 141,
+          "x": 19,
+          "y": 0,
+          "equals": "n"
+        },
+        {
+          "step": 141,
+          "x": 20,
+          "y": 0,
+          "equals": "g"
+        },
+        {
+          "step": 141,
+          "x": 21,
+          "y": 0,
+          "equals": "."
+        }
+      ]
+    },
+    {
+      "branch": "potion-dipping-fire.fire-statue",
+      "segment": 7,
+      "screenCells": [
+        {
+          "step": 128,
+          "x": 41,
+          "y": 1,
+          "equals": "a"
+        },
+        {
+          "step": 128,
+          "x": 42,
+          "y": 1,
+          "equals": " "
+        },
+        {
+          "step": 128,
+          "x": 43,
+          "y": 1,
+          "equals": "-"
+        },
+        {
+          "step": 128,
+          "x": 44,
+          "y": 1,
+          "equals": " "
+        },
+        {
+          "step": 128,
+          "x": 45,
+          "y": 1,
+          "equals": "a"
+        },
+        {
+          "step": 128,
+          "x": 46,
+          "y": 1,
+          "equals": " "
+        },
+        {
+          "step": 128,
+          "x": 47,
+          "y": 1,
+          "equals": "s"
+        },
+        {
+          "step": 128,
+          "x": 48,
+          "y": 1,
+          "equals": "t"
+        },
+        {
+          "step": 128,
+          "x": 49,
+          "y": 1,
+          "equals": "a"
+        },
+        {
+          "step": 128,
+          "x": 50,
+          "y": 1,
+          "equals": "t"
+        },
+        {
+          "step": 128,
+          "x": 51,
+          "y": 1,
+          "equals": "u"
+        },
+        {
+          "step": 128,
+          "x": 52,
+          "y": 1,
+          "equals": "e"
+        },
+        {
+          "step": 128,
+          "x": 53,
+          "y": 1,
+          "equals": " "
+        },
+        {
+          "step": 128,
+          "x": 54,
+          "y": 1,
+          "equals": "o"
+        },
+        {
+          "step": 128,
+          "x": 55,
+          "y": 1,
+          "equals": "f"
+        },
+        {
+          "step": 128,
+          "x": 56,
+          "y": 1,
+          "equals": " "
+        },
+        {
+          "step": 128,
+          "x": 57,
+          "y": 1,
+          "equals": "a"
+        },
+        {
+          "step": 128,
+          "x": 58,
+          "y": 1,
+          "equals": " "
+        },
+        {
+          "step": 128,
+          "x": 59,
+          "y": 1,
+          "equals": "n"
+        },
+        {
+          "step": 128,
+          "x": 60,
+          "y": 1,
+          "equals": "e"
+        },
+        {
+          "step": 128,
+          "x": 61,
+          "y": 1,
+          "equals": "w"
+        },
+        {
+          "step": 128,
+          "x": 62,
+          "y": 1,
+          "equals": "t"
+        }
+      ],
+      "screenExcludes": [
+        "catches fire and burns"
+      ]
+    },
+    {
+      "branch": "potion-dipping-fire.fire-icebox",
+      "segment": 8,
+      "screenCells": [
+        {
+          "step": 177,
+          "x": 30,
+          "y": 1,
+          "equals": "a"
+        },
+        {
+          "step": 177,
+          "x": 31,
+          "y": 1,
+          "equals": " "
+        },
+        {
+          "step": 177,
+          "x": 32,
+          "y": 1,
+          "equals": "-"
+        },
+        {
+          "step": 177,
+          "x": 33,
+          "y": 1,
+          "equals": " "
+        },
+        {
+          "step": 177,
+          "x": 34,
+          "y": 1,
+          "equals": "a"
+        },
+        {
+          "step": 177,
+          "x": 35,
+          "y": 1,
+          "equals": " "
+        },
+        {
+          "step": 177,
+          "x": 36,
+          "y": 1,
+          "equals": "-"
+        },
+        {
+          "step": 177,
+          "x": 37,
+          "y": 1,
+          "equals": "3"
+        },
+        {
+          "step": 177,
+          "x": 38,
+          "y": 1,
+          "equals": " "
+        },
+        {
+          "step": 177,
+          "x": 39,
+          "y": 1,
+          "equals": "p"
+        },
+        {
+          "step": 177,
+          "x": 40,
+          "y": 1,
+          "equals": "a"
+        },
+        {
+          "step": 177,
+          "x": 41,
+          "y": 1,
+          "equals": "i"
+        },
+        {
+          "step": 177,
+          "x": 42,
+          "y": 1,
+          "equals": "r"
+        },
+        {
+          "step": 177,
+          "x": 43,
+          "y": 1,
+          "equals": " "
+        },
+        {
+          "step": 177,
+          "x": 44,
+          "y": 1,
+          "equals": "o"
+        },
+        {
+          "step": 177,
+          "x": 45,
+          "y": 1,
+          "equals": "f"
+        },
+        {
+          "step": 177,
+          "x": 46,
+          "y": 1,
+          "equals": " "
+        },
+        {
+          "step": 177,
+          "x": 47,
+          "y": 1,
+          "equals": "g"
+        },
+        {
+          "step": 177,
+          "x": 48,
+          "y": 1,
+          "equals": "a"
+        },
+        {
+          "step": 177,
+          "x": 49,
+          "y": 1,
+          "equals": "u"
+        },
+        {
+          "step": 177,
+          "x": 50,
+          "y": 1,
+          "equals": "n"
+        },
+        {
+          "step": 177,
+          "x": 51,
+          "y": 1,
+          "equals": "t"
+        },
+        {
+          "step": 177,
+          "x": 52,
+          "y": 1,
+          "equals": "l"
+        },
+        {
+          "step": 177,
+          "x": 53,
+          "y": 1,
+          "equals": "e"
+        },
+        {
+          "step": 177,
+          "x": 54,
+          "y": 1,
+          "equals": "t"
+        },
+        {
+          "step": 177,
+          "x": 55,
+          "y": 1,
+          "equals": "s"
+        },
+        {
+          "step": 177,
+          "x": 56,
+          "y": 1,
+          "equals": " "
+        },
+        {
+          "step": 177,
+          "x": 57,
+          "y": 1,
+          "equals": "o"
+        },
+        {
+          "step": 177,
+          "x": 58,
+          "y": 1,
+          "equals": "f"
+        },
+        {
+          "step": 177,
+          "x": 59,
+          "y": 1,
+          "equals": " "
+        },
+        {
+          "step": 177,
+          "x": 60,
+          "y": 1,
+          "equals": "p"
+        },
+        {
+          "step": 177,
+          "x": 61,
+          "y": 1,
+          "equals": "o"
+        },
+        {
+          "step": 177,
+          "x": 62,
+          "y": 1,
+          "equals": "w"
+        },
+        {
+          "step": 177,
+          "x": 63,
+          "y": 1,
+          "equals": "e"
+        },
+        {
+          "step": 177,
+          "x": 64,
+          "y": 1,
+          "equals": "r"
+        },
+        {
+          "step": 177,
+          "x": 65,
+          "y": 1,
+          "equals": " "
+        },
+        {
+          "step": 177,
+          "x": 66,
+          "y": 1,
+          "equals": "("
+        },
+        {
+          "step": 177,
+          "x": 67,
+          "y": 1,
+          "equals": "b"
+        },
+        {
+          "step": 177,
+          "x": 68,
+          "y": 1,
+          "equals": "e"
+        },
+        {
+          "step": 177,
+          "x": 69,
+          "y": 1,
+          "equals": "i"
+        },
+        {
+          "step": 177,
+          "x": 70,
+          "y": 1,
+          "equals": "n"
+        },
+        {
+          "step": 177,
+          "x": 71,
+          "y": 1,
+          "equals": "g"
+        },
+        {
+          "step": 177,
+          "x": 72,
+          "y": 1,
+          "equals": " "
+        },
+        {
+          "step": 177,
+          "x": 73,
+          "y": 1,
+          "equals": "w"
+        },
+        {
+          "step": 177,
+          "x": 74,
+          "y": 1,
+          "equals": "o"
+        },
+        {
+          "step": 177,
+          "x": 75,
+          "y": 1,
+          "equals": "r"
+        },
+        {
+          "step": 177,
+          "x": 76,
+          "y": 1,
+          "equals": "n"
+        },
+        {
+          "step": 177,
+          "x": 77,
+          "y": 1,
+          "equals": ")"
+        },
+        {
+          "step": 177,
+          "x": 30,
+          "y": 3,
+          "equals": "b"
+        },
+        {
+          "step": 177,
+          "x": 31,
+          "y": 3,
+          "equals": " "
+        },
+        {
+          "step": 177,
+          "x": 32,
+          "y": 3,
+          "equals": "-"
+        },
+        {
+          "step": 177,
+          "x": 33,
+          "y": 3,
+          "equals": " "
+        },
+        {
+          "step": 177,
+          "x": 34,
+          "y": 3,
+          "equals": "a"
+        },
+        {
+          "step": 177,
+          "x": 35,
+          "y": 3,
+          "equals": "n"
+        },
+        {
+          "step": 177,
+          "x": 36,
+          "y": 3,
+          "equals": " "
+        },
+        {
+          "step": 177,
+          "x": 37,
+          "y": 3,
+          "equals": "i"
+        },
+        {
+          "step": 177,
+          "x": 38,
+          "y": 3,
+          "equals": "c"
+        },
+        {
+          "step": 177,
+          "x": 39,
+          "y": 3,
+          "equals": "e"
+        },
+        {
+          "step": 177,
+          "x": 40,
+          "y": 3,
+          "equals": " "
+        },
+        {
+          "step": 177,
+          "x": 41,
+          "y": 3,
+          "equals": "b"
+        },
+        {
+          "step": 177,
+          "x": 42,
+          "y": 3,
+          "equals": "o"
+        },
+        {
+          "step": 177,
+          "x": 43,
+          "y": 3,
+          "equals": "x"
+        }
+      ],
+      "screenExcludes": [
+        "catches fire and burns"
+      ]
+    },
+    {
+      "branch": "potion-dipping-fire.fire-chest",
+      "segment": 9,
+      "screenCells": [
+        {
+          "step": 118,
+          "x": 0,
+          "y": 0,
+          "equals": "Y"
+        },
+        {
+          "step": 118,
+          "x": 1,
+          "y": 0,
+          "equals": "o"
+        },
+        {
+          "step": 118,
+          "x": 2,
+          "y": 0,
+          "equals": "u"
+        },
+        {
+          "step": 118,
+          "x": 3,
+          "y": 0,
+          "equals": "r"
+        },
+        {
+          "step": 118,
+          "x": 4,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 118,
+          "x": 5,
+          "y": 0,
+          "equals": "c"
+        },
+        {
+          "step": 118,
+          "x": 6,
+          "y": 0,
+          "equals": "h"
+        },
+        {
+          "step": 118,
+          "x": 7,
+          "y": 0,
+          "equals": "e"
+        },
+        {
+          "step": 118,
+          "x": 8,
+          "y": 0,
+          "equals": "s"
+        },
+        {
+          "step": 118,
+          "x": 9,
+          "y": 0,
+          "equals": "t"
+        },
+        {
+          "step": 118,
+          "x": 10,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 118,
+          "x": 11,
+          "y": 0,
+          "equals": "c"
+        },
+        {
+          "step": 118,
+          "x": 12,
+          "y": 0,
+          "equals": "a"
+        },
+        {
+          "step": 118,
+          "x": 13,
+          "y": 0,
+          "equals": "t"
+        },
+        {
+          "step": 118,
+          "x": 14,
+          "y": 0,
+          "equals": "c"
+        },
+        {
+          "step": 118,
+          "x": 15,
+          "y": 0,
+          "equals": "h"
+        },
+        {
+          "step": 118,
+          "x": 16,
+          "y": 0,
+          "equals": "e"
+        },
+        {
+          "step": 118,
+          "x": 17,
+          "y": 0,
+          "equals": "s"
+        },
+        {
+          "step": 118,
+          "x": 18,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 118,
+          "x": 19,
+          "y": 0,
+          "equals": "f"
+        },
+        {
+          "step": 118,
+          "x": 20,
+          "y": 0,
+          "equals": "i"
+        },
+        {
+          "step": 118,
+          "x": 21,
+          "y": 0,
+          "equals": "r"
+        },
+        {
+          "step": 118,
+          "x": 22,
+          "y": 0,
+          "equals": "e"
+        },
+        {
+          "step": 118,
+          "x": 23,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 118,
+          "x": 24,
+          "y": 0,
+          "equals": "a"
+        },
+        {
+          "step": 118,
+          "x": 25,
+          "y": 0,
+          "equals": "n"
+        },
+        {
+          "step": 118,
+          "x": 26,
+          "y": 0,
+          "equals": "d"
+        },
+        {
+          "step": 118,
+          "x": 27,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 118,
+          "x": 28,
+          "y": 0,
+          "equals": "b"
+        },
+        {
+          "step": 118,
+          "x": 29,
+          "y": 0,
+          "equals": "u"
+        },
+        {
+          "step": 118,
+          "x": 30,
+          "y": 0,
+          "equals": "r"
+        },
+        {
+          "step": 118,
+          "x": 31,
+          "y": 0,
+          "equals": "n"
+        },
+        {
+          "step": 118,
+          "x": 32,
+          "y": 0,
+          "equals": "s"
+        },
+        {
+          "step": 118,
+          "x": 33,
+          "y": 0,
+          "equals": "."
+        },
+        {
+          "step": 118,
+          "x": 34,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 118,
+          "x": 35,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 118,
+          "x": 36,
+          "y": 0,
+          "equals": "I"
+        },
+        {
+          "step": 118,
+          "x": 37,
+          "y": 0,
+          "equals": "t"
+        },
+        {
+          "step": 118,
+          "x": 38,
+          "y": 0,
+          "equals": "s"
+        },
+        {
+          "step": 118,
+          "x": 39,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 118,
+          "x": 40,
+          "y": 0,
+          "equals": "c"
+        },
+        {
+          "step": 118,
+          "x": 41,
+          "y": 0,
+          "equals": "o"
+        },
+        {
+          "step": 118,
+          "x": 42,
+          "y": 0,
+          "equals": "n"
+        },
+        {
+          "step": 118,
+          "x": 43,
+          "y": 0,
+          "equals": "t"
+        },
+        {
+          "step": 118,
+          "x": 44,
+          "y": 0,
+          "equals": "e"
+        },
+        {
+          "step": 118,
+          "x": 45,
+          "y": 0,
+          "equals": "n"
+        },
+        {
+          "step": 118,
+          "x": 46,
+          "y": 0,
+          "equals": "t"
+        },
+        {
+          "step": 118,
+          "x": 47,
+          "y": 0,
+          "equals": "s"
+        },
+        {
+          "step": 118,
+          "x": 48,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 118,
+          "x": 49,
+          "y": 0,
+          "equals": "f"
+        },
+        {
+          "step": 118,
+          "x": 50,
+          "y": 0,
+          "equals": "a"
+        },
+        {
+          "step": 118,
+          "x": 51,
+          "y": 0,
+          "equals": "l"
+        },
+        {
+          "step": 118,
+          "x": 52,
+          "y": 0,
+          "equals": "l"
+        },
+        {
+          "step": 118,
+          "x": 53,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 118,
+          "x": 54,
+          "y": 0,
+          "equals": "o"
+        },
+        {
+          "step": 118,
+          "x": 55,
+          "y": 0,
+          "equals": "u"
+        },
+        {
+          "step": 118,
+          "x": 56,
+          "y": 0,
+          "equals": "t"
+        },
+        {
+          "step": 118,
+          "x": 57,
+          "y": 0,
+          "equals": "."
+        },
+        {
+          "step": 118,
+          "x": 58,
+          "y": 0,
+          "equals": "-"
+        },
+        {
+          "step": 118,
+          "x": 59,
+          "y": 0,
+          "equals": "-"
+        },
+        {
+          "step": 118,
+          "x": 60,
+          "y": 0,
+          "equals": "M"
+        },
+        {
+          "step": 118,
+          "x": 61,
+          "y": 0,
+          "equals": "o"
+        },
+        {
+          "step": 118,
+          "x": 62,
+          "y": 0,
+          "equals": "r"
+        },
+        {
+          "step": 118,
+          "x": 63,
+          "y": 0,
+          "equals": "e"
+        },
+        {
+          "step": 118,
+          "x": 64,
+          "y": 0,
+          "equals": "-"
+        },
+        {
+          "step": 118,
+          "x": 65,
+          "y": 0,
+          "equals": "-"
+        },
+        {
+          "step": 126,
+          "x": 0,
+          "y": 0,
+          "equals": "N"
+        },
+        {
+          "step": 126,
+          "x": 1,
+          "y": 0,
+          "equals": "o"
+        },
+        {
+          "step": 126,
+          "x": 2,
+          "y": 0,
+          "equals": "t"
+        },
+        {
+          "step": 126,
+          "x": 3,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 126,
+          "x": 4,
+          "y": 0,
+          "equals": "c"
+        },
+        {
+          "step": 126,
+          "x": 5,
+          "y": 0,
+          "equals": "a"
+        },
+        {
+          "step": 126,
+          "x": 6,
+          "y": 0,
+          "equals": "r"
+        },
+        {
+          "step": 126,
+          "x": 7,
+          "y": 0,
+          "equals": "r"
+        },
+        {
+          "step": 126,
+          "x": 8,
+          "y": 0,
+          "equals": "y"
+        },
+        {
+          "step": 126,
+          "x": 9,
+          "y": 0,
+          "equals": "i"
+        },
+        {
+          "step": 126,
+          "x": 10,
+          "y": 0,
+          "equals": "n"
+        },
+        {
+          "step": 126,
+          "x": 11,
+          "y": 0,
+          "equals": "g"
+        },
+        {
+          "step": 126,
+          "x": 12,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 126,
+          "x": 13,
+          "y": 0,
+          "equals": "a"
+        },
+        {
+          "step": 126,
+          "x": 14,
+          "y": 0,
+          "equals": "n"
+        },
+        {
+          "step": 126,
+          "x": 15,
+          "y": 0,
+          "equals": "y"
+        },
+        {
+          "step": 126,
+          "x": 16,
+          "y": 0,
+          "equals": "t"
+        },
+        {
+          "step": 126,
+          "x": 17,
+          "y": 0,
+          "equals": "h"
+        },
+        {
+          "step": 126,
+          "x": 18,
+          "y": 0,
+          "equals": "i"
+        },
+        {
+          "step": 126,
+          "x": 19,
+          "y": 0,
+          "equals": "n"
+        },
+        {
+          "step": 126,
+          "x": 20,
+          "y": 0,
+          "equals": "g"
+        },
+        {
+          "step": 126,
+          "x": 21,
+          "y": 0,
+          "equals": "."
+        }
+      ]
+    },
+    {
+      "branch": "potion-dipping-fire.fire-sack",
+      "segment": 10,
+      "screenCells": [
+        {
+          "step": 117,
+          "x": 0,
+          "y": 0,
+          "equals": "Y"
+        },
+        {
+          "step": 117,
+          "x": 1,
+          "y": 0,
+          "equals": "o"
+        },
+        {
+          "step": 117,
+          "x": 2,
+          "y": 0,
+          "equals": "u"
+        },
+        {
+          "step": 117,
+          "x": 3,
+          "y": 0,
+          "equals": "r"
+        },
+        {
+          "step": 117,
+          "x": 4,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 117,
+          "x": 5,
+          "y": 0,
+          "equals": "b"
+        },
+        {
+          "step": 117,
+          "x": 6,
+          "y": 0,
+          "equals": "a"
+        },
+        {
+          "step": 117,
+          "x": 7,
+          "y": 0,
+          "equals": "g"
+        },
+        {
+          "step": 117,
+          "x": 8,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 117,
+          "x": 9,
+          "y": 0,
+          "equals": "c"
+        },
+        {
+          "step": 117,
+          "x": 10,
+          "y": 0,
+          "equals": "a"
+        },
+        {
+          "step": 117,
+          "x": 11,
+          "y": 0,
+          "equals": "t"
+        },
+        {
+          "step": 117,
+          "x": 12,
+          "y": 0,
+          "equals": "c"
+        },
+        {
+          "step": 117,
+          "x": 13,
+          "y": 0,
+          "equals": "h"
+        },
+        {
+          "step": 117,
+          "x": 14,
+          "y": 0,
+          "equals": "e"
+        },
+        {
+          "step": 117,
+          "x": 15,
+          "y": 0,
+          "equals": "s"
+        },
+        {
+          "step": 117,
+          "x": 16,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 117,
+          "x": 17,
+          "y": 0,
+          "equals": "f"
+        },
+        {
+          "step": 117,
+          "x": 18,
+          "y": 0,
+          "equals": "i"
+        },
+        {
+          "step": 117,
+          "x": 19,
+          "y": 0,
+          "equals": "r"
+        },
+        {
+          "step": 117,
+          "x": 20,
+          "y": 0,
+          "equals": "e"
+        },
+        {
+          "step": 117,
+          "x": 21,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 117,
+          "x": 22,
+          "y": 0,
+          "equals": "a"
+        },
+        {
+          "step": 117,
+          "x": 23,
+          "y": 0,
+          "equals": "n"
+        },
+        {
+          "step": 117,
+          "x": 24,
+          "y": 0,
+          "equals": "d"
+        },
+        {
+          "step": 117,
+          "x": 25,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 117,
+          "x": 26,
+          "y": 0,
+          "equals": "b"
+        },
+        {
+          "step": 117,
+          "x": 27,
+          "y": 0,
+          "equals": "u"
+        },
+        {
+          "step": 117,
+          "x": 28,
+          "y": 0,
+          "equals": "r"
+        },
+        {
+          "step": 117,
+          "x": 29,
+          "y": 0,
+          "equals": "n"
+        },
+        {
+          "step": 117,
+          "x": 30,
+          "y": 0,
+          "equals": "s"
+        },
+        {
+          "step": 117,
+          "x": 31,
+          "y": 0,
+          "equals": "."
+        },
+        {
+          "step": 125,
+          "x": 0,
+          "y": 0,
+          "equals": "N"
+        },
+        {
+          "step": 125,
+          "x": 1,
+          "y": 0,
+          "equals": "o"
+        },
+        {
+          "step": 125,
+          "x": 2,
+          "y": 0,
+          "equals": "t"
+        },
+        {
+          "step": 125,
+          "x": 3,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 125,
+          "x": 4,
+          "y": 0,
+          "equals": "c"
+        },
+        {
+          "step": 125,
+          "x": 5,
+          "y": 0,
+          "equals": "a"
+        },
+        {
+          "step": 125,
+          "x": 6,
+          "y": 0,
+          "equals": "r"
+        },
+        {
+          "step": 125,
+          "x": 7,
+          "y": 0,
+          "equals": "r"
+        },
+        {
+          "step": 125,
+          "x": 8,
+          "y": 0,
+          "equals": "y"
+        },
+        {
+          "step": 125,
+          "x": 9,
+          "y": 0,
+          "equals": "i"
+        },
+        {
+          "step": 125,
+          "x": 10,
+          "y": 0,
+          "equals": "n"
+        },
+        {
+          "step": 125,
+          "x": 11,
+          "y": 0,
+          "equals": "g"
+        },
+        {
+          "step": 125,
+          "x": 12,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 125,
+          "x": 13,
+          "y": 0,
+          "equals": "a"
+        },
+        {
+          "step": 125,
+          "x": 14,
+          "y": 0,
+          "equals": "n"
+        },
+        {
+          "step": 125,
+          "x": 15,
+          "y": 0,
+          "equals": "y"
+        },
+        {
+          "step": 125,
+          "x": 16,
+          "y": 0,
+          "equals": "t"
+        },
+        {
+          "step": 125,
+          "x": 17,
+          "y": 0,
+          "equals": "h"
+        },
+        {
+          "step": 125,
+          "x": 18,
+          "y": 0,
+          "equals": "i"
+        },
+        {
+          "step": 125,
+          "x": 19,
+          "y": 0,
+          "equals": "n"
+        },
+        {
+          "step": 125,
+          "x": 20,
+          "y": 0,
+          "equals": "g"
+        },
+        {
+          "step": 125,
+          "x": 21,
+          "y": 0,
+          "equals": "."
+        }
+      ]
+    },
+    {
+      "branch": "potion-dipping-fire.fire-worn-cloak",
+      "segment": 11,
+      "screenCells": [
+        {
+          "step": 140,
+          "x": 0,
+          "y": 0,
+          "equals": "Y"
+        },
+        {
+          "step": 140,
+          "x": 1,
+          "y": 0,
+          "equals": "o"
+        },
+        {
+          "step": 140,
+          "x": 2,
+          "y": 0,
+          "equals": "u"
+        },
+        {
+          "step": 140,
+          "x": 3,
+          "y": 0,
+          "equals": "r"
+        },
+        {
+          "step": 140,
+          "x": 4,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 140,
+          "x": 5,
+          "y": 0,
+          "equals": "c"
+        },
+        {
+          "step": 140,
+          "x": 6,
+          "y": 0,
+          "equals": "l"
+        },
+        {
+          "step": 140,
+          "x": 7,
+          "y": 0,
+          "equals": "o"
+        },
+        {
+          "step": 140,
+          "x": 8,
+          "y": 0,
+          "equals": "a"
+        },
+        {
+          "step": 140,
+          "x": 9,
+          "y": 0,
+          "equals": "k"
+        },
+        {
+          "step": 140,
+          "x": 10,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 140,
+          "x": 11,
+          "y": 0,
+          "equals": "o"
+        },
+        {
+          "step": 140,
+          "x": 12,
+          "y": 0,
+          "equals": "f"
+        },
+        {
+          "step": 140,
+          "x": 13,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 140,
+          "x": 14,
+          "y": 0,
+          "equals": "p"
+        },
+        {
+          "step": 140,
+          "x": 15,
+          "y": 0,
+          "equals": "r"
+        },
+        {
+          "step": 140,
+          "x": 16,
+          "y": 0,
+          "equals": "o"
+        },
+        {
+          "step": 140,
+          "x": 17,
+          "y": 0,
+          "equals": "t"
+        },
+        {
+          "step": 140,
+          "x": 18,
+          "y": 0,
+          "equals": "e"
+        },
+        {
+          "step": 140,
+          "x": 19,
+          "y": 0,
+          "equals": "c"
+        },
+        {
+          "step": 140,
+          "x": 20,
+          "y": 0,
+          "equals": "t"
+        },
+        {
+          "step": 140,
+          "x": 21,
+          "y": 0,
+          "equals": "i"
+        },
+        {
+          "step": 140,
+          "x": 22,
+          "y": 0,
+          "equals": "o"
+        },
+        {
+          "step": 140,
+          "x": 23,
+          "y": 0,
+          "equals": "n"
+        },
+        {
+          "step": 140,
+          "x": 24,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 140,
+          "x": 25,
+          "y": 0,
+          "equals": "s"
+        },
+        {
+          "step": 140,
+          "x": 26,
+          "y": 0,
+          "equals": "m"
+        },
+        {
+          "step": 140,
+          "x": 27,
+          "y": 0,
+          "equals": "o"
+        },
+        {
+          "step": 140,
+          "x": 28,
+          "y": 0,
+          "equals": "u"
+        },
+        {
+          "step": 140,
+          "x": 29,
+          "y": 0,
+          "equals": "l"
+        },
+        {
+          "step": 140,
+          "x": 30,
+          "y": 0,
+          "equals": "d"
+        },
+        {
+          "step": 140,
+          "x": 31,
+          "y": 0,
+          "equals": "e"
+        },
+        {
+          "step": 140,
+          "x": 32,
+          "y": 0,
+          "equals": "r"
+        },
+        {
+          "step": 140,
+          "x": 33,
+          "y": 0,
+          "equals": "s"
+        },
+        {
+          "step": 140,
+          "x": 34,
+          "y": 0,
+          "equals": "!"
+        },
+        {
+          "step": 148,
+          "x": 31,
+          "y": 1,
+          "equals": "a"
+        },
+        {
+          "step": 148,
+          "x": 32,
+          "y": 1,
+          "equals": " "
+        },
+        {
+          "step": 148,
+          "x": 33,
+          "y": 1,
+          "equals": "-"
+        },
+        {
+          "step": 148,
+          "x": 34,
+          "y": 1,
+          "equals": " "
+        },
+        {
+          "step": 148,
+          "x": 35,
+          "y": 1,
+          "equals": "a"
+        },
+        {
+          "step": 148,
+          "x": 36,
+          "y": 1,
+          "equals": " "
+        },
+        {
+          "step": 148,
+          "x": 37,
+          "y": 1,
+          "equals": "b"
+        },
+        {
+          "step": 148,
+          "x": 38,
+          "y": 1,
+          "equals": "u"
+        },
+        {
+          "step": 148,
+          "x": 39,
+          "y": 1,
+          "equals": "r"
+        },
+        {
+          "step": 148,
+          "x": 40,
+          "y": 1,
+          "equals": "n"
+        },
+        {
+          "step": 148,
+          "x": 41,
+          "y": 1,
+          "equals": "t"
+        },
+        {
+          "step": 148,
+          "x": 42,
+          "y": 1,
+          "equals": " "
+        },
+        {
+          "step": 148,
+          "x": 43,
+          "y": 1,
+          "equals": "-"
+        },
+        {
+          "step": 148,
+          "x": 44,
+          "y": 1,
+          "equals": "3"
+        },
+        {
+          "step": 148,
+          "x": 45,
+          "y": 1,
+          "equals": " "
+        },
+        {
+          "step": 148,
+          "x": 46,
+          "y": 1,
+          "equals": "c"
+        },
+        {
+          "step": 148,
+          "x": 47,
+          "y": 1,
+          "equals": "l"
+        },
+        {
+          "step": 148,
+          "x": 48,
+          "y": 1,
+          "equals": "o"
+        },
+        {
+          "step": 148,
+          "x": 49,
+          "y": 1,
+          "equals": "a"
+        },
+        {
+          "step": 148,
+          "x": 50,
+          "y": 1,
+          "equals": "k"
+        },
+        {
+          "step": 148,
+          "x": 51,
+          "y": 1,
+          "equals": " "
+        },
+        {
+          "step": 148,
+          "x": 52,
+          "y": 1,
+          "equals": "o"
+        },
+        {
+          "step": 148,
+          "x": 53,
+          "y": 1,
+          "equals": "f"
+        },
+        {
+          "step": 148,
+          "x": 54,
+          "y": 1,
+          "equals": " "
+        },
+        {
+          "step": 148,
+          "x": 55,
+          "y": 1,
+          "equals": "p"
+        },
+        {
+          "step": 148,
+          "x": 56,
+          "y": 1,
+          "equals": "r"
+        },
+        {
+          "step": 148,
+          "x": 57,
+          "y": 1,
+          "equals": "o"
+        },
+        {
+          "step": 148,
+          "x": 58,
+          "y": 1,
+          "equals": "t"
+        },
+        {
+          "step": 148,
+          "x": 59,
+          "y": 1,
+          "equals": "e"
+        },
+        {
+          "step": 148,
+          "x": 60,
+          "y": 1,
+          "equals": "c"
+        },
+        {
+          "step": 148,
+          "x": 61,
+          "y": 1,
+          "equals": "t"
+        },
+        {
+          "step": 148,
+          "x": 62,
+          "y": 1,
+          "equals": "i"
+        },
+        {
+          "step": 148,
+          "x": 63,
+          "y": 1,
+          "equals": "o"
+        },
+        {
+          "step": 148,
+          "x": 64,
+          "y": 1,
+          "equals": "n"
+        },
+        {
+          "step": 148,
+          "x": 65,
+          "y": 1,
+          "equals": " "
+        },
+        {
+          "step": 148,
+          "x": 66,
+          "y": 1,
+          "equals": "("
+        },
+        {
+          "step": 148,
+          "x": 67,
+          "y": 1,
+          "equals": "b"
+        },
+        {
+          "step": 148,
+          "x": 68,
+          "y": 1,
+          "equals": "e"
+        },
+        {
+          "step": 148,
+          "x": 69,
+          "y": 1,
+          "equals": "i"
+        },
+        {
+          "step": 148,
+          "x": 70,
+          "y": 1,
+          "equals": "n"
+        },
+        {
+          "step": 148,
+          "x": 71,
+          "y": 1,
+          "equals": "g"
+        },
+        {
+          "step": 148,
+          "x": 72,
+          "y": 1,
+          "equals": " "
+        },
+        {
+          "step": 148,
+          "x": 73,
+          "y": 1,
+          "equals": "w"
+        },
+        {
+          "step": 148,
+          "x": 74,
+          "y": 1,
+          "equals": "o"
+        },
+        {
+          "step": 148,
+          "x": 75,
+          "y": 1,
+          "equals": "r"
+        },
+        {
+          "step": 148,
+          "x": 76,
+          "y": 1,
+          "equals": "n"
+        },
+        {
+          "step": 148,
+          "x": 77,
+          "y": 1,
+          "equals": ")"
+        }
+      ]
+    },
+    {
+      "branch": "potion-dipping-fire.spent-magic-lamp",
+      "segment": 12,
+      "screenCells": [
+        {
+          "step": 119,
+          "x": 0,
+          "y": 0,
+          "equals": "Y"
+        },
+        {
+          "step": 119,
+          "x": 1,
+          "y": 0,
+          "equals": "o"
+        },
+        {
+          "step": 119,
+          "x": 2,
+          "y": 0,
+          "equals": "u"
+        },
+        {
+          "step": 119,
+          "x": 3,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 119,
+          "x": 4,
+          "y": 0,
+          "equals": "f"
+        },
+        {
+          "step": 119,
+          "x": 5,
+          "y": 0,
+          "equals": "i"
+        },
+        {
+          "step": 119,
+          "x": 6,
+          "y": 0,
+          "equals": "l"
+        },
+        {
+          "step": 119,
+          "x": 7,
+          "y": 0,
+          "equals": "l"
+        },
+        {
+          "step": 119,
+          "x": 8,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 119,
+          "x": 9,
+          "y": 0,
+          "equals": "y"
+        },
+        {
+          "step": 119,
+          "x": 10,
+          "y": 0,
+          "equals": "o"
+        },
+        {
+          "step": 119,
+          "x": 11,
+          "y": 0,
+          "equals": "u"
+        },
+        {
+          "step": 119,
+          "x": 12,
+          "y": 0,
+          "equals": "r"
+        },
+        {
+          "step": 119,
+          "x": 13,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 119,
+          "x": 14,
+          "y": 0,
+          "equals": "l"
+        },
+        {
+          "step": 119,
+          "x": 15,
+          "y": 0,
+          "equals": "a"
+        },
+        {
+          "step": 119,
+          "x": 16,
+          "y": 0,
+          "equals": "m"
+        },
+        {
+          "step": 119,
+          "x": 17,
+          "y": 0,
+          "equals": "p"
+        },
+        {
+          "step": 119,
+          "x": 18,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 119,
+          "x": 19,
+          "y": 0,
+          "equals": "w"
+        },
+        {
+          "step": 119,
+          "x": 20,
+          "y": 0,
+          "equals": "i"
+        },
+        {
+          "step": 119,
+          "x": 21,
+          "y": 0,
+          "equals": "t"
+        },
+        {
+          "step": 119,
+          "x": 22,
+          "y": 0,
+          "equals": "h"
+        },
+        {
+          "step": 119,
+          "x": 23,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 119,
+          "x": 24,
+          "y": 0,
+          "equals": "o"
+        },
+        {
+          "step": 119,
+          "x": 25,
+          "y": 0,
+          "equals": "i"
+        },
+        {
+          "step": 119,
+          "x": 26,
+          "y": 0,
+          "equals": "l"
+        },
+        {
+          "step": 119,
+          "x": 27,
+          "y": 0,
+          "equals": "."
+        },
+        {
+          "step": 127,
+          "x": 41,
+          "y": 1,
+          "equals": "a"
+        },
+        {
+          "step": 127,
+          "x": 42,
+          "y": 1,
+          "equals": " "
+        },
+        {
+          "step": 127,
+          "x": 43,
+          "y": 1,
+          "equals": "-"
+        },
+        {
+          "step": 127,
+          "x": 44,
+          "y": 1,
+          "equals": " "
+        },
+        {
+          "step": 127,
+          "x": 45,
+          "y": 1,
+          "equals": "a"
+        },
+        {
+          "step": 127,
+          "x": 46,
+          "y": 1,
+          "equals": " "
+        },
+        {
+          "step": 127,
+          "x": 47,
+          "y": 1,
+          "equals": "l"
+        },
+        {
+          "step": 127,
+          "x": 48,
+          "y": 1,
+          "equals": "a"
+        },
+        {
+          "step": 127,
+          "x": 49,
+          "y": 1,
+          "equals": "m"
+        },
+        {
+          "step": 127,
+          "x": 50,
+          "y": 1,
+          "equals": "p"
+        }
+      ]
+    },
+    {
+      "branch": "potion-dipping-fire.spent-magic-diluted",
+      "segment": 13,
+      "screenCells": [
+        {
+          "step": 127,
+          "x": 0,
+          "y": 0,
+          "equals": "Y"
+        },
+        {
+          "step": 127,
+          "x": 1,
+          "y": 0,
+          "equals": "o"
+        },
+        {
+          "step": 127,
+          "x": 2,
+          "y": 0,
+          "equals": "u"
+        },
+        {
+          "step": 127,
+          "x": 3,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 127,
+          "x": 4,
+          "y": 0,
+          "equals": "f"
+        },
+        {
+          "step": 127,
+          "x": 5,
+          "y": 0,
+          "equals": "i"
+        },
+        {
+          "step": 127,
+          "x": 6,
+          "y": 0,
+          "equals": "l"
+        },
+        {
+          "step": 127,
+          "x": 7,
+          "y": 0,
+          "equals": "l"
+        },
+        {
+          "step": 127,
+          "x": 8,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 127,
+          "x": 9,
+          "y": 0,
+          "equals": "y"
+        },
+        {
+          "step": 127,
+          "x": 10,
+          "y": 0,
+          "equals": "o"
+        },
+        {
+          "step": 127,
+          "x": 11,
+          "y": 0,
+          "equals": "u"
+        },
+        {
+          "step": 127,
+          "x": 12,
+          "y": 0,
+          "equals": "r"
+        },
+        {
+          "step": 127,
+          "x": 13,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 127,
+          "x": 14,
+          "y": 0,
+          "equals": "l"
+        },
+        {
+          "step": 127,
+          "x": 15,
+          "y": 0,
+          "equals": "a"
+        },
+        {
+          "step": 127,
+          "x": 16,
+          "y": 0,
+          "equals": "m"
+        },
+        {
+          "step": 127,
+          "x": 17,
+          "y": 0,
+          "equals": "p"
+        },
+        {
+          "step": 127,
+          "x": 18,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 127,
+          "x": 19,
+          "y": 0,
+          "equals": "w"
+        },
+        {
+          "step": 127,
+          "x": 20,
+          "y": 0,
+          "equals": "i"
+        },
+        {
+          "step": 127,
+          "x": 21,
+          "y": 0,
+          "equals": "t"
+        },
+        {
+          "step": 127,
+          "x": 22,
+          "y": 0,
+          "equals": "h"
+        },
+        {
+          "step": 127,
+          "x": 23,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 127,
+          "x": 24,
+          "y": 0,
+          "equals": "o"
+        },
+        {
+          "step": 127,
+          "x": 25,
+          "y": 0,
+          "equals": "i"
+        },
+        {
+          "step": 127,
+          "x": 26,
+          "y": 0,
+          "equals": "l"
+        },
+        {
+          "step": 127,
+          "x": 27,
+          "y": 0,
+          "equals": "."
+        },
+        {
+          "step": 135,
+          "x": 41,
+          "y": 1,
+          "equals": "a"
+        },
+        {
+          "step": 135,
+          "x": 42,
+          "y": 1,
+          "equals": " "
+        },
+        {
+          "step": 135,
+          "x": 43,
+          "y": 1,
+          "equals": "-"
+        },
+        {
+          "step": 135,
+          "x": 44,
+          "y": 1,
+          "equals": " "
+        },
+        {
+          "step": 135,
+          "x": 45,
+          "y": 1,
+          "equals": "a"
+        },
+        {
+          "step": 135,
+          "x": 46,
+          "y": 1,
+          "equals": " "
+        },
+        {
+          "step": 135,
+          "x": 47,
+          "y": 1,
+          "equals": "l"
+        },
+        {
+          "step": 135,
+          "x": 48,
+          "y": 1,
+          "equals": "a"
+        },
+        {
+          "step": 135,
+          "x": 49,
+          "y": 1,
+          "equals": "m"
+        },
+        {
+          "step": 135,
+          "x": 50,
+          "y": 1,
+          "equals": "p"
+        }
+      ]
+    },
+    {
+      "branch": "potion-dipping-fire.permanent-poison",
+      "segment": 14,
+      "screenCells": [
+        {
+          "step": 127,
+          "x": 0,
+          "y": 0,
+          "equals": "I"
+        },
+        {
+          "step": 127,
+          "x": 1,
+          "y": 0,
+          "equals": "n"
+        },
+        {
+          "step": 127,
+          "x": 2,
+          "y": 0,
+          "equals": "t"
+        },
+        {
+          "step": 127,
+          "x": 3,
+          "y": 0,
+          "equals": "e"
+        },
+        {
+          "step": 127,
+          "x": 4,
+          "y": 0,
+          "equals": "r"
+        },
+        {
+          "step": 127,
+          "x": 5,
+          "y": 0,
+          "equals": "e"
+        },
+        {
+          "step": 127,
+          "x": 6,
+          "y": 0,
+          "equals": "s"
+        },
+        {
+          "step": 127,
+          "x": 7,
+          "y": 0,
+          "equals": "t"
+        },
+        {
+          "step": 127,
+          "x": 8,
+          "y": 0,
+          "equals": "i"
+        },
+        {
+          "step": 127,
+          "x": 9,
+          "y": 0,
+          "equals": "n"
+        },
+        {
+          "step": 127,
+          "x": 10,
+          "y": 0,
+          "equals": "g"
+        },
+        {
+          "step": 127,
+          "x": 11,
+          "y": 0,
+          "equals": "."
+        },
+        {
+          "step": 127,
+          "x": 12,
+          "y": 0,
+          "equals": "."
+        },
+        {
+          "step": 127,
+          "x": 13,
+          "y": 0,
+          "equals": "."
+        },
+        {
+          "step": 135,
+          "x": 35,
+          "y": 1,
+          "equals": "a"
+        },
+        {
+          "step": 135,
+          "x": 36,
+          "y": 1,
+          "equals": " "
+        },
+        {
+          "step": 135,
+          "x": 37,
+          "y": 1,
+          "equals": "-"
+        },
+        {
+          "step": 135,
+          "x": 38,
+          "y": 1,
+          "equals": " "
+        },
+        {
+          "step": 135,
+          "x": 39,
+          "y": 1,
+          "equals": "a"
+        },
+        {
+          "step": 135,
+          "x": 40,
+          "y": 1,
+          "equals": " "
+        },
+        {
+          "step": 135,
+          "x": 41,
+          "y": 1,
+          "equals": "p"
+        },
+        {
+          "step": 135,
+          "x": 42,
+          "y": 1,
+          "equals": "o"
+        },
+        {
+          "step": 135,
+          "x": 43,
+          "y": 1,
+          "equals": "i"
+        },
+        {
+          "step": 135,
+          "x": 44,
+          "y": 1,
+          "equals": "s"
+        },
+        {
+          "step": 135,
+          "x": 45,
+          "y": 1,
+          "equals": "o"
+        },
+        {
+          "step": 135,
+          "x": 46,
+          "y": 1,
+          "equals": "n"
+        },
+        {
+          "step": 135,
+          "x": 47,
+          "y": 1,
+          "equals": "e"
+        },
+        {
+          "step": 135,
+          "x": 48,
+          "y": 1,
+          "equals": "d"
+        },
+        {
+          "step": 135,
+          "x": 49,
+          "y": 1,
+          "equals": " "
+        },
+        {
+          "step": 135,
+          "x": 50,
+          "y": 1,
+          "equals": "c"
+        },
+        {
+          "step": 135,
+          "x": 51,
+          "y": 1,
+          "equals": "r"
+        },
+        {
+          "step": 135,
+          "x": 52,
+          "y": 1,
+          "equals": "u"
+        },
+        {
+          "step": 135,
+          "x": 53,
+          "y": 1,
+          "equals": "d"
+        },
+        {
+          "step": 135,
+          "x": 54,
+          "y": 1,
+          "equals": "e"
+        },
+        {
+          "step": 135,
+          "x": 55,
+          "y": 1,
+          "equals": " "
+        },
+        {
+          "step": 135,
+          "x": 56,
+          "y": 1,
+          "equals": "d"
+        },
+        {
+          "step": 135,
+          "x": 57,
+          "y": 1,
+          "equals": "a"
+        },
+        {
+          "step": 135,
+          "x": 58,
+          "y": 1,
+          "equals": "g"
+        },
+        {
+          "step": 135,
+          "x": 59,
+          "y": 1,
+          "equals": "g"
+        },
+        {
+          "step": 135,
+          "x": 60,
+          "y": 1,
+          "equals": "e"
+        },
+        {
+          "step": 135,
+          "x": 61,
+          "y": 1,
+          "equals": "r"
+        },
+        {
+          "step": 135,
+          "x": 62,
+          "y": 1,
+          "equals": " "
+        },
+        {
+          "step": 135,
+          "x": 63,
+          "y": 1,
+          "equals": "n"
+        },
+        {
+          "step": 135,
+          "x": 64,
+          "y": 1,
+          "equals": "a"
+        },
+        {
+          "step": 135,
+          "x": 65,
+          "y": 1,
+          "equals": "m"
+        },
+        {
+          "step": 135,
+          "x": 66,
+          "y": 1,
+          "equals": "e"
+        },
+        {
+          "step": 135,
+          "x": 67,
+          "y": 1,
+          "equals": "d"
+        },
+        {
+          "step": 135,
+          "x": 68,
+          "y": 1,
+          "equals": " "
+        },
+        {
+          "step": 135,
+          "x": 69,
+          "y": 1,
+          "equals": "G"
+        },
+        {
+          "step": 135,
+          "x": 70,
+          "y": 1,
+          "equals": "r"
+        },
+        {
+          "step": 135,
+          "x": 71,
+          "y": 1,
+          "equals": "i"
+        },
+        {
+          "step": 135,
+          "x": 72,
+          "y": 1,
+          "equals": "m"
+        },
+        {
+          "step": 135,
+          "x": 73,
+          "y": 1,
+          "equals": "t"
+        },
+        {
+          "step": 135,
+          "x": 74,
+          "y": 1,
+          "equals": "o"
+        },
+        {
+          "step": 135,
+          "x": 75,
+          "y": 1,
+          "equals": "o"
+        },
+        {
+          "step": 135,
+          "x": 76,
+          "y": 1,
+          "equals": "t"
+        },
+        {
+          "step": 135,
+          "x": 77,
+          "y": 1,
+          "equals": "h"
+        },
+        {
+          "step": 135,
+          "x": 35,
+          "y": 3,
+          "equals": "b"
+        },
+        {
+          "step": 135,
+          "x": 36,
+          "y": 3,
+          "equals": " "
+        },
+        {
+          "step": 135,
+          "x": 37,
+          "y": 3,
+          "equals": "-"
+        },
+        {
+          "step": 135,
+          "x": 38,
+          "y": 3,
+          "equals": " "
+        },
+        {
+          "step": 135,
+          "x": 39,
+          "y": 3,
+          "equals": "a"
+        },
+        {
+          "step": 135,
+          "x": 40,
+          "y": 3,
+          "equals": " "
+        },
+        {
+          "step": 135,
+          "x": 41,
+          "y": 3,
+          "equals": "b"
+        },
+        {
+          "step": 135,
+          "x": 42,
+          "y": 3,
+          "equals": "r"
+        },
+        {
+          "step": 135,
+          "x": 43,
+          "y": 3,
+          "equals": "i"
+        },
+        {
+          "step": 135,
+          "x": 44,
+          "y": 3,
+          "equals": "l"
+        },
+        {
+          "step": 135,
+          "x": 45,
+          "y": 3,
+          "equals": "l"
+        },
+        {
+          "step": 135,
+          "x": 46,
+          "y": 3,
+          "equals": "i"
+        },
+        {
+          "step": 135,
+          "x": 47,
+          "y": 3,
+          "equals": "a"
+        },
+        {
+          "step": 135,
+          "x": 48,
+          "y": 3,
+          "equals": "n"
+        },
+        {
+          "step": 135,
+          "x": 49,
+          "y": 3,
+          "equals": "t"
+        },
+        {
+          "step": 135,
+          "x": 50,
+          "y": 3,
+          "equals": " "
+        },
+        {
+          "step": 135,
+          "x": 51,
+          "y": 3,
+          "equals": "b"
+        },
+        {
+          "step": 135,
+          "x": 52,
+          "y": 3,
+          "equals": "l"
+        },
+        {
+          "step": 135,
+          "x": 53,
+          "y": 3,
+          "equals": "u"
+        },
+        {
+          "step": 135,
+          "x": 54,
+          "y": 3,
+          "equals": "e"
+        },
+        {
+          "step": 135,
+          "x": 55,
+          "y": 3,
+          "equals": " "
+        },
+        {
+          "step": 135,
+          "x": 56,
+          "y": 3,
+          "equals": "p"
+        },
+        {
+          "step": 135,
+          "x": 57,
+          "y": 3,
+          "equals": "o"
+        },
+        {
+          "step": 135,
+          "x": 58,
+          "y": 3,
+          "equals": "t"
+        },
+        {
+          "step": 135,
+          "x": 59,
+          "y": 3,
+          "equals": "i"
+        },
+        {
+          "step": 135,
+          "x": 60,
+          "y": 3,
+          "equals": "o"
+        },
+        {
+          "step": 135,
+          "x": 61,
+          "y": 3,
+          "equals": "n"
+        }
+      ]
+    }
+  ]
+}

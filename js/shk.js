@@ -43,7 +43,7 @@ import { update_inventory } from './invent.js';
 import { game } from './gstate.js';
 import { ESHK, SHOPBASE, IS_DOOR, ROOMOFFSET, NO_ROOM, A_CHA, MAXULEV,
          HUNGRY, PICK_ANY, MENU_BEHAVE_STANDARD, MENU_ITEMFLAGS_NONE,
-         ECMD_OK, ECMD_TIME, G_GONE, COST_BITE, COST_DSTROY, COST_OPEN, A_WIS,
+         ECMD_OK, ECMD_TIME, G_GONE, A_WIS,
          M_AP_TYPE, M_AP_NOTHING, M_AP_MONSTER, MIGR_APPROX_XY, RLOC_NOMSG,
          NON_PM, REPAIR_DELAY, BOLT_LIM, D_BROKEN, D_CLOSED, IS_ROOM,
          IS_WALL, SVALL, u_at, HAND, PRONOUN_NO_IT, PRONOUN_HALLU }
@@ -1813,70 +1813,8 @@ export function obfree_bill(obj, merge = null) {
     return false;
 }
 
-// src/mkobj.c:752 costly_alteration(), COST_BITE, COST_OPEN, and COST_DSTROY.
-// Altering shop stock replaces it with a private clone, so the used-up item
-// can still be itemized.
-export async function costly_alteration(obj, alter_type) {
-    const verb = alter_type === COST_BITE ? 'bite'
-               : alter_type === COST_OPEN ? 'open'
-                 : alter_type === COST_DSTROY ? 'destroy' : null;
-    const onFloor = obj.where === OBJ_FLOOR;
-    const floorStock = onFloor && !obj.no_charge && costly_spot(obj.ox, obj.oy);
-    if (!verb || (!obj.unpaid && !floorStock))
-        return;
-
-    const rooms = floorStock ? in_rooms(obj.ox, obj.oy, SHOPBASE)
-                             : game.u.ushops;
-    const roomno = rooms ? rooms.charCodeAt(0) : NO_ROOM;
-    const shkp = shop_keeper(roomno);
-    if (!shkp || !inhishop(shkp))
-        return;
-    const eshk = shkp.eshk || ESHK(shkp);
-    const original = floorStock ? null
-        : (eshk.bill_p || []).find(bp => bp.bo_id === obj.o_id);
-    if (!floorStock && !original)
-        return;
-
-    const those = obj.quan === 1 ? 'that' : 'those';
-    const them = obj.quan === 1 ? 'it' : 'them';
-    if (floorStock) {
-        await pline(`"You ${verb} ${those}, you pay for ${them}!"`);
-    } else {
-        await pline(`"You ${verb} ${those} ${simpleonames(obj)}, you pay for ${them}!"`);
-    }
-
-    let originalPrice = 0;
-    let originalQuan = 0;
-    if (!floorStock) {
-        originalPrice = original.price;
-        originalQuan = original.bquan;
-        subfrombill(obj, shkp);
-    }
-    const dummy = {
-        ...obj,
-        oextra: null,
-        o_id: next_ident(),
-        timed: 0,
-        lamplit: 0,
-        owornmask: 0,
-        where: OBJ_FREE,
-        unpaid: 0,
-        ocarry: null,
-        ocontainer: null,
-    };
-    if (!add_one_tobill(dummy, true, shkp))
-        return;
-    const billed = eshk.bill_p[eshk.bill_p.length - 1];
-    if (!floorStock) {
-        billed.price = originalPrice;
-        billed.bquan = originalQuan;
-    }
-    billed.obj = dummy;
-    dummy.where = OBJ_ONBILL;
-    (game.billobjs ||= []).unshift(dummy);
-    obj.no_charge = floorStock ? 1 : 0;
-    obj.unpaid = 0;
-}
+// Preserve existing imports while the implementation lives in its C module.
+export { costly_alteration } from './mkobj.js';
 
 async function money2u(mon, amount) {
     const minvent = mon.minvent || [];

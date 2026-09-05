@@ -71,6 +71,19 @@ node tools/c-branch-coverage.mjs --build
 node tools/c-branch-coverage.mjs --out .cache/c-coverage/full
 ```
 
+The configured recorder headers also support an independent integer audit:
+
+```bash
+node tools/c-constant-audit.mjs
+node --test tools/c-constant-audit.test.mjs
+```
+
+This requires Clang and compares shared JS constants with compiled C values.
+Each run writes a new report under `.cache/c-constants/`, separating numeric
+differences, matching int32 patterns, and names rejected by the C compiler.
+It neither credits gameplay branches nor verifies function-like macros or
+noninteger definitions. See `docs/plan/c-constant-audit.md` for the current review.
+
 This copies the existing recorder into a separate cache and compiles it with
 Clang coverage instrumentation. It currently requires macOS and the Xcode
 command-line tools: continuous LLVM profiles preserve counters when the

@@ -4227,6 +4227,18 @@ defines light source tags as none=0, object=1, monster=2. The old shared constan
 were 0/1 while `light.js` had a separate correct enum; it now re-exports the
 corrected shared values. This prompted the compiled constant audit in STATUS.
 
+The reusable `tools/c-constant-audit.mjs` found 45 different shared integer
+definitions, plus the intentional signed `NOGARLIC` representation, among 1,661
+names comparable with the configured C headers. Correct local copies masked
+some drift in ordinary gameplay. Compile the actual expressions rather than
+evaluating C text as JavaScript. Runtime expressions, function-like macros and
+unavailable names must be rejected with reasons; header errors must abort even
+when all requested symbols also produce errors. A fault-injection test caught
+that false-success case in the first tool implementation. Unsigned constants
+above INT64_MAX also need unsigned printing, not a cast to signed long long.
+The final audit compares 1,666 names after adding five missing enum entries;
+267 rejected names and all noninteger definitions remain outside its credit.
+
 Repeatedly fixing failures in a random-play batch makes that batch regression
 coverage. Fresh seeds alone also do not remove the public trigram model's
 input-distribution bias. Record first-run results on a fresh batch before

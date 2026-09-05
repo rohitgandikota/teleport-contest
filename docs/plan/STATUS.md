@@ -9,7 +9,54 @@ loop until complete. The goal is active without a requested token budget.
 Current-corpus success is not the stopping criterion. Track unreviewed,
 untested, missing, and unreachable source paths explicitly.
 
-### Current verified follow-up: unpaid merging
+### Current verified follow-up: compiled C constants
+
+The unpaid-merger checkpoint below is committed and pushed as `7d6fd1bd`.
+`tools/c-constant-audit.mjs` now compiles numeric exports against the pinned
+recorder headers, with explicit reasons for rejecting unavailable or nonconstant
+names. It preserves signed and unsigned 64-bit values and aborts on header
+errors. Two compiler-backed tests cover enum aliases, wrong values, wide values,
+signed masks, rejected symbols/runtime expressions and a broken header. The
+header-failure test first caught a false empty-success bug in the new tool;
+that was fixed before using the audit result.
+
+The baseline compared 1,661/1,928 exports, finding 45 different values plus one
+matching int32 pattern. Corrected shared definitions now compare **1,666/1,933**
+with **zero different values**, **one reviewed representation difference**
+(`NOGARLIC`) and **267 explicit rejections**. Five missing enum entries were
+added. The reviewed definitions include exact-name masks, dig result codes,
+scatter/explosion/relocation flags, BUC masks, status fields and native version
+metadata. Many had correct local duplicates or symbolic consumers, so these
+are not 45 claimed gameplay failures. See [c-constant-audit.md](c-constant-audit.md).
+
+The new `constant-consumer-state-gate.mjs` uses a saddled pony from the existing
+mounted-jousting C fixture. Ordinary naming includes the saddle; C's exact-name
+mask suppresses it. This demonstrates an effect of the corrected mask that the
+current screen corpus did not expose. `x_monnam` itself remains partial.
+
+Verification remains public **44/44**, **11,405/11,405 screens**,
+**792,838/792,838 RNG**; supplemental **421/421**, **119,635/119,635 screens**,
+**6,031,413/6,031,413 RNG**, **3,248/3,248 animations**. Public animations remain
+1,462/1,483. Fuzz remains **101/102**, **14,261/14,262 screens** and
+**491,759/491,759 RNG**, with the known fixed-datetime artifact. All 44 public
+hang checks, 80 role-smoke games, 16 tool tests, source audit, the new constant
+consumer check, and collision/petrification/merger/name state gates pass. Frozen
+files are unchanged. Logs are `.cache/inventory-adjust/constants-*.log` plus
+`constant-tool-final.log` and `constant-consumer-state.log`; the final header
+report is `.cache/c-constants/header-final-20260905/report.json`. No new C branch
+coverage is credited by this scalar audit; the union remains 52,748/108,268.
+
+Next, review and exercise the naming worker. Source inspection found that
+`docallcmd` still marks monster, type, floor and discoveries naming unported,
+although `docall` already exists. `x_monnam` omits `SUPPRESS_NAME`, monster
+disguises, game-over behavior and some named-role/priest rules. Read C
+`do_mgivenname` at 199, `docallcmd` at 511, and `x_monnam` at 827. The x_monnam
+body through 1026 has been read; the last return tail remains. The existing
+`mhurtle-hero-collision` recipe segment 2 creates a sleeping hostile cockatrice
+and can supply a C setup for named-monster death formatting. No new naming
+probe has been generated yet. Keep the full-port goal active.
+
+### Previous unpaid-merger checkpoint
 
 The naming checkpoint below is committed and pushed as `5569faa5`. The current
 verified edits port `same_price`, connect ordinary `merged()` calls to

@@ -27,8 +27,10 @@ from the local supplemental result. See [STATUS.md](STATUS.md) for verification,
 [inventory-adjust-audit.md](inventory-adjust-audit.md) for remaining inventory
 decisions, and [gameplay-gap-audit.md](gameplay-gap-audit.md) for measurement
 limits and the broader backlog. The inventory checkpoint is pushed as
-`1b054373`, and the naming checkpoint as `5569faa5`. The unpaid-stack follow-up
-is verified. A compiled comparison of C and JS constants is the next audit.
+`1b054373`, the naming checkpoint as `5569faa5`, and unpaid merging as `7d6fd1bd`.
+The [compiled constant audit](c-constant-audit.md) now compares 1,666 values with
+zero different values and one reviewed signed-mask representation. The next
+source pass covers unimplemented naming commands and monster-name formatting.
 
 ## Previous focus, 2026-09-03
 

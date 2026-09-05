@@ -25,6 +25,9 @@ The September source audit and remaining decisions are tracked in
       all-space removal, whitespace folding and the 62-character stored limit.
       Six C controls and the death-name restoration state gate pass. Artifact
       restrictions and the rest of the naming machinery remain open.
+- [x] Compile shared integer constants against C and correct numeric drift,
+      including the exact-name mask. A real saddled-pony state control checks
+      the mask's effect. Monster naming commands and `x_monnam` remain partial.
 - [ ] Generate `js/objects_data.js` from `src/objects.c` with the M2 generator
 - [ ] Port `src/o_init.c` — randomised appearances per game, which consumes RNG at
       game start and must match exactly (`js/o_init.js` is currently 12 lines)

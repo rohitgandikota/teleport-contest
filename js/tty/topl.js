@@ -128,13 +128,25 @@ function addtopl(bp) {
                    + (game._pending_message || '')).split('\n');
     let x = game._topl_curx || 0, y = game._topl_cury || 0;
     for (const c of bp) {
-        if (x === columns - 1) {
+        if (c === '\b') {
+            if (x === 0 && y > 0) {
+                x = columns;
+                y--;
+            }
+            x--;
+            continue;
+        }
+        if (c === '\n' || x === columns - 1) {
+            lines[y] = (lines[y] || '').slice(0, x);
             x = 0;
             y++;
         }
+        if (c === '\n')
+            continue;
         lines[y] = (lines[y] || '').slice(0, x).padEnd(x, ' ') + c;
         x++;
     }
+    lines[y] = (lines[y] || '').slice(0, x); // C addtopl(): cl_end(), including after newline/backspace.
     game._pending_message = lines.join('\n');
     game._topline_physical_prefix = '';
     game._topl_curx = x;
@@ -241,13 +253,16 @@ export function show_topl_nohistory(str) {
     if (game._win_stop)
         return;
 
+    if (game._topl_cury && game._toplin === TOPLINE_NON_EMPTY)
+        tty_clear_nhwindow_message(game._topl_cury);
     game._pending_message = '';
-    game._topline_physical_prefix = str;
-    game._topl_curx = str.split('\n').at(-1).length;
-    game._topl_cury = (str.match(/\n/g) || []).length;
+    game._topline_physical_prefix = '';
+    game._topl_curx = game._topl_cury = 0;
+    addtopl(str);
+    game._topline_physical_prefix = game._pending_message;
+    game._pending_message = '';
     game._toplin = game._topl_cury
         ? TOPLINE_NON_EMPTY : TOPLINE_NEED_MORE;
-    paint_topline();
 }
 
 // include/decl.h TBUFSZ

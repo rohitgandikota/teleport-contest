@@ -13,6 +13,14 @@ Newest first within each section.
 
 ## Scoring: what the runner actually does
 
+**Closing a menu can preserve hallucinated glyphs.** `docallcmd` must rely
+on the tty window's dismissal path. An extra `docrt` redraws every visible
+monster and object with new hallucinations even when gameplay RNG is exact.
+The monster-name refusal fixture under hallucination catches this. Long
+monster names also require `getlin` to replace `getpos`'s physical no-history
+description, and `show_topl` to wrap through `addtopl` at column 79. The
+monster-name state gate checks trailing newline and backspace clearing too.
+
 **A status redraw is not always harmless.** C only calls `bot` from
 `flush_screen` when `disp.botl` or `disp.botlx` is set, then clears the
 flags. Removing a corpse or restoring pre-polymorph attributes can change

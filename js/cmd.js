@@ -500,6 +500,11 @@ export async function getlin(query, hook) {
     if (game._toplin === TOPLINE_NEED_MORE && !game._win_stop)
         await more();
 
+    // C clears WIN_STOP and redraws the prompt through custompline/redotoplin.
+    // Replace any physical no-history description left by getpos().
+    game._win_stop = false;
+    game._topline_physical_prefix = '';
+
     for (;;) {
         /* win/tty/getline.c hooked_tty_getlin():
          *

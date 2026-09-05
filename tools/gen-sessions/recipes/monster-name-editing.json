@@ -1,0 +1,355 @@
+{
+  "name": "monster-name-editing",
+  "description": "C monster naming, cancellation, all-spaces removal, long names and wrapped descriptions, and named cockatrice collision.",
+  "coverage": [
+    "mode.debug",
+    "level.ordinary",
+    "ui.menus",
+    "ui.getlin",
+    "ui.getpos",
+    "ui.cancel-invalid",
+    "monster.special-effects",
+    "ui.more-paging"
+  ],
+  "branches": [
+    "monster.naming.named-cockatrice-collision",
+    "monster.naming.monster-name-clear",
+    "monster.naming.monster-name-empty-cancel",
+    "monster.naming.monster-name-escape-cancel",
+    "monster.naming.monster-name-long",
+    "monster.naming.monster-name-self",
+    "monster.naming.monster-name-empty-square",
+    "monster.naming.monster-name-cursor-cancel"
+  ],
+  "requireBranchAssertions": true,
+  "segments": [
+    {
+      "seed": 6970,
+      "datetime": "20000112131200",
+      "nethackrc": "OPTIONS=name:wizard,role:Healer,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r20\r                             \u0007sleeping hostile cockatrice\r#name\rmn.Pebble\r#wiztelekinesis\rn.y  n",
+      "name": "named-cockatrice-collision"
+    },
+    {
+      "seed": 6970,
+      "datetime": "20000112131200",
+      "nethackrc": "OPTIONS=name:wizard,role:Healer,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r20\r                             \u0007sleeping hostile cockatrice\r#name\rmn.Pebble\r#name\rmn.   \r#name\rmn.\u001b",
+      "name": "monster-name-clear"
+    },
+    {
+      "seed": 6970,
+      "datetime": "20000112131200",
+      "nethackrc": "OPTIONS=name:wizard,role:Healer,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r20\r                             \u0007sleeping hostile cockatrice\r#name\rmn.Pebble\r#name\rmn.\r#name\rmn.\u001b",
+      "name": "monster-name-empty-cancel"
+    },
+    {
+      "seed": 6970,
+      "datetime": "20000112131200",
+      "nethackrc": "OPTIONS=name:wizard,role:Healer,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r20\r                             \u0007sleeping hostile cockatrice\r#name\rmn.Pebble\r#name\rmn.\u001b#name\rmn.\u001b",
+      "name": "monster-name-escape-cancel"
+    },
+    {
+      "seed": 6970,
+      "datetime": "20000112131200",
+      "nethackrc": "OPTIONS=name:wizard,role:Healer,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r20\r                             \u0007sleeping hostile cockatrice\r#name\rmn.QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ\r#name\rmn.\u001b",
+      "name": "monster-name-long"
+    },
+    {
+      "seed": 6970,
+      "datetime": "20000112131200",
+      "nethackrc": "OPTIONS=name:wizard,role:Healer,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r20\r                             \u0007sleeping hostile cockatrice\r#name\rm.",
+      "name": "monster-name-self"
+    },
+    {
+      "seed": 6970,
+      "datetime": "20000112131200",
+      "nethackrc": "OPTIONS=name:wizard,role:Healer,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r20\r                             \u0007sleeping hostile cockatrice\r#name\rmh.",
+      "name": "monster-name-empty-square"
+    },
+    {
+      "seed": 6970,
+      "datetime": "20000112131200",
+      "nethackrc": "OPTIONS=name:wizard,role:Healer,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r20\r                             \u0007sleeping hostile cockatrice\r#name\rm\u001b",
+      "name": "monster-name-cursor-cancel"
+    }
+  ],
+  "branchAssertions": [
+    {
+      "branch": "monster.naming.named-cockatrice-collision",
+      "segment": 0,
+      "screenIncludes": [
+        "Pebble bumps into you."
+      ],
+      "screenCells": [
+        {
+          "step": 113,
+          "x": 0,
+          "y": 0,
+          "equals": "O"
+        },
+        {
+          "step": 113,
+          "x": 26,
+          "y": 0,
+          "equals": "r"
+        },
+        {
+          "step": 113,
+          "x": 51,
+          "y": 0,
+          "equals": ")"
+        },
+        {
+          "step": 113,
+          "x": 52,
+          "y": 0,
+          "equals": " "
+        }
+      ]
+    },
+    {
+      "branch": "monster.naming.monster-name-clear",
+      "segment": 1,
+      "screenIncludes": [
+        "What do you want to call the cockatrice?"
+      ],
+      "screenCells": [
+        {
+          "step": 113,
+          "x": 0,
+          "y": 0,
+          "equals": "W"
+        },
+        {
+          "step": 113,
+          "x": 20,
+          "y": 0,
+          "equals": "c"
+        },
+        {
+          "step": 113,
+          "x": 39,
+          "y": 0,
+          "equals": "?"
+        },
+        {
+          "step": 113,
+          "x": 40,
+          "y": 0,
+          "equals": " "
+        }
+      ]
+    },
+    {
+      "branch": "monster.naming.monster-name-empty-cancel",
+      "segment": 2,
+      "screenIncludes": [
+        "What do you want to call the cockatrice called Pebble?"
+      ],
+      "screenCells": [
+        {
+          "step": 110,
+          "x": 0,
+          "y": 0,
+          "equals": "W"
+        },
+        {
+          "step": 110,
+          "x": 27,
+          "y": 0,
+          "equals": "e"
+        },
+        {
+          "step": 110,
+          "x": 53,
+          "y": 0,
+          "equals": "?"
+        },
+        {
+          "step": 110,
+          "x": 54,
+          "y": 0,
+          "equals": " "
+        }
+      ]
+    },
+    {
+      "branch": "monster.naming.monster-name-escape-cancel",
+      "segment": 3,
+      "screenIncludes": [
+        "What do you want to call the cockatrice called Pebble?"
+      ],
+      "screenCells": [
+        {
+          "step": 110,
+          "x": 0,
+          "y": 0,
+          "equals": "W"
+        },
+        {
+          "step": 110,
+          "x": 27,
+          "y": 0,
+          "equals": "e"
+        },
+        {
+          "step": 110,
+          "x": 53,
+          "y": 0,
+          "equals": "?"
+        },
+        {
+          "step": 110,
+          "x": 54,
+          "y": 0,
+          "equals": " "
+        }
+      ]
+    },
+    {
+      "branch": "monster.naming.monster-name-long",
+      "segment": 4,
+      "screenIncludes": [
+        "What do you want to call the cockatrice called QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ"
+      ],
+      "screenCells": [
+        {
+          "step": 164,
+          "x": 0,
+          "y": 0,
+          "equals": "W"
+        },
+        {
+          "step": 164,
+          "x": 39,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 164,
+          "x": 78,
+          "y": 0,
+          "equals": "Q"
+        },
+        {
+          "step": 164,
+          "x": 79,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 164,
+          "x": 0,
+          "y": 1,
+          "equals": "Q"
+        },
+        {
+          "step": 164,
+          "x": 15,
+          "y": 1,
+          "equals": "Q"
+        },
+        {
+          "step": 164,
+          "x": 30,
+          "y": 1,
+          "equals": "?"
+        },
+        {
+          "step": 164,
+          "x": 31,
+          "y": 1,
+          "equals": " "
+        }
+      ]
+    },
+    {
+      "branch": "monster.naming.monster-name-self",
+      "segment": 5,
+      "screenIncludes": [
+        "This handsome creature is called wizard and cannot be renamed."
+      ],
+      "screenCells": [
+        {
+          "step": 83,
+          "x": 0,
+          "y": 0,
+          "equals": "T"
+        },
+        {
+          "step": 83,
+          "x": 31,
+          "y": 0,
+          "equals": "d"
+        },
+        {
+          "step": 83,
+          "x": 61,
+          "y": 0,
+          "equals": "."
+        },
+        {
+          "step": 83,
+          "x": 62,
+          "y": 0,
+          "equals": " "
+        }
+      ]
+    },
+    {
+      "branch": "monster.naming.monster-name-empty-square",
+      "segment": 6,
+      "screenIncludes": [
+        "I see no monster there."
+      ],
+      "screenCells": [
+        {
+          "step": 84,
+          "x": 0,
+          "y": 0,
+          "equals": "I"
+        },
+        {
+          "step": 84,
+          "x": 11,
+          "y": 0,
+          "equals": "n"
+        },
+        {
+          "step": 84,
+          "x": 22,
+          "y": 0,
+          "equals": "."
+        },
+        {
+          "step": 84,
+          "x": 23,
+          "y": 0,
+          "equals": " "
+        }
+      ]
+    },
+    {
+      "branch": "monster.naming.monster-name-cursor-cancel",
+      "segment": 7,
+      "screenIncludes": [
+        "(For instructions type a '?')"
+      ],
+      "screenCells": [
+        {
+          "step": 83,
+          "x": 0,
+          "y": 0,
+          "equals": " "
+        }
+      ]
+    }
+  ]
+}

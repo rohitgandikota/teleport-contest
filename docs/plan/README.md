@@ -17,20 +17,20 @@ and persistent gameplay state. Continue source review, measured C branches,
 independent oracles, implementation, and regression checks until that goal is
 met. Current corpus success is not the stopping criterion.
 
-The compiler-guided loops cover corpse wielding, 58 inventory organization
-scenarios, six naming controls and eight unpaid-merger cases. All 44 public and
-421 supplemental fixtures pass. The measured C union has 52,748/108,268 direct
-outcomes and 4,282/5,491 entered function records. State gates catch orphan
-candle lights that screen parity missed and check bill and object ownership.
-The published held-out result recorded during the audit is 78.39%, distinct
-from the local supplemental result. See [STATUS.md](STATUS.md) for verification,
-[inventory-adjust-audit.md](inventory-adjust-audit.md) for remaining inventory
-decisions, and [gameplay-gap-audit.md](gameplay-gap-audit.md) for measurement
-limits and the broader backlog. The inventory checkpoint is pushed as
-`1b054373`, the naming checkpoint as `5569faa5`, and unpaid merging as `7d6fd1bd`.
-The [compiled constant audit](c-constant-audit.md) now compares 1,666 values with
-zero different values and one reviewed signed-mask representation. The next
-source pass covers unimplemented naming commands and monster-name formatting.
+The compiler-guided loops cover corpse wielding, inventory organization and
+merging, object naming, and now 27 monster naming scenarios. All 44 public and
+423 supplemental fixtures pass. The measured C union has 52,835/108,268 direct
+outcomes and 4,284/5,491 entered function records. State gates catch ownership,
+light and persistent-name errors beyond screen parity. The published held-out
+result recorded during the audit is 78.39%, distinct from the local result.
+See [STATUS.md](STATUS.md) for verification and the exact next action,
+[monster-naming-audit.md](monster-naming-audit.md) for the naming review,
+[inventory-adjust-audit.md](inventory-adjust-audit.md) for inventory decisions,
+and [gameplay-gap-audit.md](gameplay-gap-audit.md) for measurement limits.
+The [compiled constant audit](c-constant-audit.md), pushed as `4518990d`, compares
+1,666 values with zero different values and one reviewed signed-mask
+representation. The next source pass covers type names in inventory, floor
+objects and discoveries. Its initial C probes already expose missing behavior.
 
 ## Previous focus, 2026-09-03
 

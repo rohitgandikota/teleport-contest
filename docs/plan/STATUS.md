@@ -9,7 +9,64 @@ loop until complete. The goal is active without a requested token budget.
 Current-corpus success is not the stopping criterion. Track unreviewed,
 untested, missing, and unreachable source paths explicitly.
 
-### Current verified follow-up: compiled C constants
+### Current verified follow-up: monster naming
+
+The compiled-constant checkpoint below is committed and pushed as `4518990d`.
+The naming follow-up ports `do_mgivenname`, `alreadynamed`, name allocation and
+62-character storage, `distant_monnam`, and the full `x_monnam`, `priestname` and
+`mon_aligntyp` decision bodies. Twenty-seven permanent C scenarios in
+`monster-name-editing` and `monster-name-guards` match **2,434/2,434 screens and
+cursors**, **76,316/76,316 RNG entries**. The persistent-state gate checks all
+27 names, cancellation/clearing, the petrification killer record, minion
+extension ownership/alignment, and temporary exact-name formatting restoration.
+Constructed source controls exercise additional formatting and tty behaviors;
+they do not earn native gameplay coverage. See [monster-naming-audit.md](monster-naming-audit.md).
+
+The new scenarios exposed three shared tty defects: `getlin` retained the
+no-history `getpos` description, `show_topl` clipped long names, and an extra
+`docrt` after menu dismissal changed hallucinated map glyphs. They also exposed
+an omitted `makemon` decision that initializes ordinary clerics and some Angels
+as roaming minions before equipment creation. `newemin` now records the owner
+ID; the naming helper reads the special alignment and normalizes its sign.
+An ordinary high cleric without a shrine illustrates C's unusual title rule:
+its roamer name omits "high". The paired trace preserves that behavior.
+
+Exact native profiles add **87 direct C outcomes** and two entered records,
+`do_mgivenname` and `alreadynamed`. The union is **52,835/108,268 outcomes** and
+**4,284/5,491 entered function records**. `do_mgivenname` reaches 36/50,
+`alreadynamed` 20/26, `x_monnam` 95/124, and `priestname` 42/64. The scenario
+assertion ledger is **1,394/1,394**. Profiles are in
+`.cache/c-coverage/monster-naming-20260905`; the complete tuple-preserving union
+script and report are `.cache/naming/coverage-union.mjs` and `.log`.
+
+The full regression run passes public **44/44**, **11,405/11,405 screens**,
+**792,838/792,838 RNG**, and supplemental **423/423**, **122,069/122,069 screens**,
+**6,107,729/6,107,729 RNG**, **3,248/3,248 animations**. Public animations remain
+1,462/1,483. Fuzz remains **101/102**, **14,261/14,262 screens** and
+**491,759/491,759 RNG**, with the known fixed-datetime artifact. All 46 hang
+checks, 80 role-smoke games, 16 tool tests, source audit and targeted name,
+collision, creation, invisibility, equipment, polymorph and petrification state
+gates pass. The final trailing-newline/backspace clear in `addtopl` has a
+source-state check; the full/fuzz/hang gates also pass after that last runtime
+change. Logs are `.cache/naming/final-*.log`. Frozen files are
+unchanged. Keep the full-port goal active.
+
+Next, continue type naming from inventory, floor and discoveries. The complete
+C `docallcmd`, `docall`, `docall_xname`, `namefloorobj` (679), and `rename_disco`
+(o_init.c:1131) bodies have been read. Their existing JS dispatch still has
+unported markers. Eleven new C probes are in `.cache/naming/type-probes` with
+`.mjs`, `.input.json`, `.cases.json`, `.session.json` and `type-baseline.log`.
+They currently match only 460/682 screens and 24,657/33,164 RNG entries. The
+last case labeled "discoveries-empty" actually exercises the Wizard's starting
+known types, so relabel it before promotion. The floor pickup probe includes
+an unnecessary trailing space command; trim it while refining the C scenarios.
+The refined 12-case `.cache/naming/type-refined` input, cases, session and
+baseline log correct those issues, select the potion entry on discoveries,
+also rename a starting known spellbook, and verify a truly empty Barbarian
+discovery list. Start implementation from this refined fixture. No type-naming
+implementation change yet.
+
+### Previous verified follow-up: compiled C constants
 
 The unpaid-merger checkpoint below is committed and pushed as `7d6fd1bd`.
 `tools/c-constant-audit.mjs` now compiles numeric exports against the pinned
@@ -53,8 +110,8 @@ disguises, game-over behavior and some named-role/priest rules. Read C
 `do_mgivenname` at 199, `docallcmd` at 511, and `x_monnam` at 827. The x_monnam
 body through 1026 has been read; the last return tail remains. The existing
 `mhurtle-hero-collision` recipe segment 2 creates a sleeping hostile cockatrice
-and can supply a C setup for named-monster death formatting. No new naming
-probe has been generated yet. Keep the full-port goal active.
+and supplies a C setup for named-monster death formatting. The current work is
+recorded above. Keep the full-port goal active.
 
 ### Previous unpaid-merger checkpoint
 

@@ -1,0 +1,877 @@
+{
+  "name": "monster-name-guards",
+  "description": "C unique, ghost, ordinary Angel, cleric and shopkeeper naming decisions, including same-name refusals, title retention, deafness and hallucination.",
+  "coverage": [
+    "mode.debug",
+    "level.ordinary",
+    "ui.menus",
+    "ui.getlin",
+    "ui.getpos",
+    "ui.cancel-invalid",
+    "ui.hallucination"
+  ],
+  "branches": [
+    "monster.naming.oracle-new",
+    "monster.naming.oracle-clear",
+    "monster.naming.oracle-same",
+    "monster.naming.juiblex-misspell",
+    "monster.naming.juiblex-same",
+    "monster.naming.death-clear",
+    "monster.naming.death-same",
+    "monster.naming.ghost-new",
+    "monster.naming.ghost-clear",
+    "monster.naming.ordinary-angel-name",
+    "monster.naming.cleric-new",
+    "monster.naming.cleric-clear",
+    "monster.naming.cleric-deity",
+    "monster.naming.high-cleric-new",
+    "monster.naming.shopkeeper-new",
+    "monster.naming.shopkeeper-clear",
+    "monster.naming.shopkeeper-same",
+    "monster.naming.shopkeeper-deaf",
+    "monster.naming.monster-hallucination"
+  ],
+  "requireBranchAssertions": true,
+  "segments": [
+    {
+      "seed": 6970,
+      "datetime": "20000112131200",
+      "nethackrc": "OPTIONS=name:wizard,role:Healer,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r20\r                             \u0007sleeping peaceful Oracle\ry#name\rmn.Pebble\r",
+      "name": "oracle-new"
+    },
+    {
+      "seed": 6970,
+      "datetime": "20000112131200",
+      "nethackrc": "OPTIONS=name:wizard,role:Healer,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r20\r                             \u0007sleeping peaceful Oracle\ry#name\rmn.   \r",
+      "name": "oracle-clear"
+    },
+    {
+      "seed": 6970,
+      "datetime": "20000112131200",
+      "nethackrc": "OPTIONS=name:wizard,role:Healer,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r20\r                             \u0007sleeping peaceful Oracle\ry#name\rmn.the_oracle\r",
+      "name": "oracle-same"
+    },
+    {
+      "seed": 6970,
+      "datetime": "20000112131200",
+      "nethackrc": "OPTIONS=name:wizard,role:Healer,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r20\r                             \u0007sleeping peaceful Juiblex\ry#name\rmn.Jubilex\r",
+      "name": "juiblex-misspell"
+    },
+    {
+      "seed": 6970,
+      "datetime": "20000112131200",
+      "nethackrc": "OPTIONS=name:wizard,role:Healer,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r20\r                             \u0007sleeping peaceful Juiblex\ry#name\rmn.juiblex\r",
+      "name": "juiblex-same"
+    },
+    {
+      "seed": 6970,
+      "datetime": "20000112131200",
+      "nethackrc": "OPTIONS=name:wizard,role:Healer,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r20\r                             \u0007sleeping peaceful Death\ry#name\rmn.   \r",
+      "name": "death-clear"
+    },
+    {
+      "seed": 6970,
+      "datetime": "20000112131200",
+      "nethackrc": "OPTIONS=name:wizard,role:Healer,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r20\r                             \u0007sleeping peaceful Death\ry#name\rmn.Death\r",
+      "name": "death-same"
+    },
+    {
+      "seed": 6970,
+      "datetime": "20000112131200",
+      "nethackrc": "OPTIONS=name:wizard,role:Healer,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r20\r                             \u0007sleeping peaceful ghost\r#name\rmn.Pebble\r",
+      "name": "ghost-new"
+    },
+    {
+      "seed": 6970,
+      "datetime": "20000112131200",
+      "nethackrc": "OPTIONS=name:wizard,role:Healer,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r20\r                             \u0007sleeping peaceful ghost\r#name\rmn.   \r",
+      "name": "ghost-clear"
+    },
+    {
+      "seed": 6970,
+      "datetime": "20000112131200",
+      "nethackrc": "OPTIONS=name:wizard,role:Healer,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r20\r                             \u0007sleeping peaceful angel\ry#name\rmn.Pebble\r",
+      "name": "ordinary-angel-name"
+    },
+    {
+      "seed": 6970,
+      "datetime": "20000112131200",
+      "nethackrc": "OPTIONS=name:wizard,role:Healer,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r20\r                             \u0007sleeping peaceful priest\ry#name\rmn.Pebble\r",
+      "name": "cleric-new"
+    },
+    {
+      "seed": 6970,
+      "datetime": "20000112131200",
+      "nethackrc": "OPTIONS=name:wizard,role:Healer,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r20\r                             \u0007sleeping peaceful priest\ry#name\rmn.   \r",
+      "name": "cleric-clear"
+    },
+    {
+      "seed": 6970,
+      "datetime": "20000112131200",
+      "nethackrc": "OPTIONS=name:wizard,role:Healer,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r20\r                             \u0007sleeping peaceful priest\ry#name\rmn.Hermes\r",
+      "name": "cleric-deity"
+    },
+    {
+      "seed": 6970,
+      "datetime": "20000112131200",
+      "nethackrc": "OPTIONS=name:wizard,role:Healer,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r20\r                             \u0007sleeping peaceful high priest\ry#name\rmn.Pebble\r",
+      "name": "high-cleric-new"
+    },
+    {
+      "name": "shopkeeper-new",
+      "seed": 6903,
+      "datetime": "20000110233600",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00162\r\u0006\u0014  llllllllllllllllllll.  #name\rmm.Pebble\r"
+    },
+    {
+      "name": "shopkeeper-clear",
+      "seed": 6903,
+      "datetime": "20000110233600",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00162\r\u0006\u0014  llllllllllllllllllll.  #name\rmm.   \r"
+    },
+    {
+      "name": "shopkeeper-same",
+      "seed": 6903,
+      "datetime": "20000110233600",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00162\r\u0006\u0014  llllllllllllllllllll.  #name\rmm.Upernavik\r"
+    },
+    {
+      "name": "shopkeeper-deaf",
+      "seed": 6903,
+      "datetime": "20000110233600",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00162\r\u0006\u0014  llllllllllllllllllll.  #wizintrinsic\rj\r #name\rmm.Pebble\r"
+    },
+    {
+      "seed": 6970,
+      "datetime": "20000112131200",
+      "nethackrc": "OPTIONS=name:wizard,role:Healer,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r20\r                             \u0007sleeping hostile cockatrice\r#wizintrinsic\rh\r #name\rm",
+      "name": "monster-hallucination"
+    }
+  ],
+  "branchAssertions": [
+    {
+      "branch": "monster.naming.oracle-new",
+      "segment": 0,
+      "screenIncludes": [
+        "The Oracle doesn't like being called names!"
+      ],
+      "screenCells": [
+        {
+          "step": 89,
+          "x": 0,
+          "y": 0,
+          "equals": "T"
+        },
+        {
+          "step": 89,
+          "x": 21,
+          "y": 0,
+          "equals": "k"
+        },
+        {
+          "step": 89,
+          "x": 42,
+          "y": 0,
+          "equals": "!"
+        },
+        {
+          "step": 89,
+          "x": 43,
+          "y": 0,
+          "equals": " "
+        }
+      ]
+    },
+    {
+      "branch": "monster.naming.oracle-clear",
+      "segment": 1,
+      "screenIncludes": [
+        "The Oracle would rather keep her existing title."
+      ],
+      "screenCells": [
+        {
+          "step": 86,
+          "x": 0,
+          "y": 0,
+          "equals": "T"
+        },
+        {
+          "step": 86,
+          "x": 24,
+          "y": 0,
+          "equals": "k"
+        },
+        {
+          "step": 86,
+          "x": 47,
+          "y": 0,
+          "equals": "."
+        },
+        {
+          "step": 86,
+          "x": 48,
+          "y": 0,
+          "equals": " "
+        }
+      ]
+    },
+    {
+      "branch": "monster.naming.oracle-same",
+      "segment": 2,
+      "screenIncludes": [
+        "She is already called the Oracle."
+      ],
+      "screenCells": [
+        {
+          "step": 93,
+          "x": 0,
+          "y": 0,
+          "equals": "S"
+        },
+        {
+          "step": 93,
+          "x": 16,
+          "y": 0,
+          "equals": "a"
+        },
+        {
+          "step": 93,
+          "x": 32,
+          "y": 0,
+          "equals": "."
+        },
+        {
+          "step": 93,
+          "x": 33,
+          "y": 0,
+          "equals": " "
+        }
+      ]
+    },
+    {
+      "branch": "monster.naming.juiblex-misspell",
+      "segment": 3,
+      "screenIncludes": [
+        "Juiblex doesn't like being called Jubilex."
+      ],
+      "screenCells": [
+        {
+          "step": 91,
+          "x": 0,
+          "y": 0,
+          "equals": "J"
+        },
+        {
+          "step": 91,
+          "x": 21,
+          "y": 0,
+          "equals": "b"
+        },
+        {
+          "step": 91,
+          "x": 41,
+          "y": 0,
+          "equals": "."
+        },
+        {
+          "step": 91,
+          "x": 42,
+          "y": 0,
+          "equals": " "
+        }
+      ]
+    },
+    {
+      "branch": "monster.naming.juiblex-same",
+      "segment": 4,
+      "screenIncludes": [
+        "He is already called Juiblex."
+      ],
+      "screenCells": [
+        {
+          "step": 91,
+          "x": 0,
+          "y": 0,
+          "equals": "H"
+        },
+        {
+          "step": 91,
+          "x": 14,
+          "y": 0,
+          "equals": "c"
+        },
+        {
+          "step": 91,
+          "x": 28,
+          "y": 0,
+          "equals": "."
+        },
+        {
+          "step": 91,
+          "x": 29,
+          "y": 0,
+          "equals": " "
+        }
+      ]
+    },
+    {
+      "branch": "monster.naming.death-clear",
+      "segment": 5,
+      "screenIncludes": [
+        "Death would rather keep its existing name."
+      ],
+      "screenCells": [
+        {
+          "step": 85,
+          "x": 0,
+          "y": 0,
+          "equals": "D"
+        },
+        {
+          "step": 85,
+          "x": 21,
+          "y": 0,
+          "equals": "e"
+        },
+        {
+          "step": 85,
+          "x": 41,
+          "y": 0,
+          "equals": "."
+        },
+        {
+          "step": 85,
+          "x": 42,
+          "y": 0,
+          "equals": " "
+        }
+      ]
+    },
+    {
+      "branch": "monster.naming.death-same",
+      "segment": 6,
+      "screenIncludes": [
+        "Death is already called that."
+      ],
+      "screenCells": [
+        {
+          "step": 87,
+          "x": 0,
+          "y": 0,
+          "equals": "D"
+        },
+        {
+          "step": 87,
+          "x": 14,
+          "y": 0,
+          "equals": "d"
+        },
+        {
+          "step": 87,
+          "x": 28,
+          "y": 0,
+          "equals": "."
+        },
+        {
+          "step": 87,
+          "x": 29,
+          "y": 0,
+          "equals": " "
+        }
+      ]
+    },
+    {
+      "branch": "monster.naming.ghost-new",
+      "segment": 7,
+      "screenIncludes": [
+        "Emile's ghost will not accept the name Pebble."
+      ],
+      "screenCells": [
+        {
+          "step": 87,
+          "x": 0,
+          "y": 0,
+          "equals": "E"
+        },
+        {
+          "step": 87,
+          "x": 23,
+          "y": 0,
+          "equals": "a"
+        },
+        {
+          "step": 87,
+          "x": 45,
+          "y": 0,
+          "equals": "."
+        },
+        {
+          "step": 87,
+          "x": 46,
+          "y": 0,
+          "equals": " "
+        }
+      ]
+    },
+    {
+      "branch": "monster.naming.ghost-clear",
+      "segment": 8,
+      "screenIncludes": [
+        "Emile's ghost would rather keep his existing name."
+      ],
+      "screenCells": [
+        {
+          "step": 84,
+          "x": 0,
+          "y": 0,
+          "equals": "E"
+        },
+        {
+          "step": 84,
+          "x": 25,
+          "y": 0,
+          "equals": "r"
+        },
+        {
+          "step": 84,
+          "x": 49,
+          "y": 0,
+          "equals": "."
+        },
+        {
+          "step": 84,
+          "x": 50,
+          "y": 0,
+          "equals": " "
+        }
+      ]
+    },
+    {
+      "branch": "monster.naming.ordinary-angel-name",
+      "segment": 9,
+      "screenIncludes": [
+        "What do you want to call the Angel? Pebble"
+      ],
+      "screenCells": [
+        {
+          "step": 88,
+          "x": 0,
+          "y": 0,
+          "equals": " "
+        }
+      ]
+    },
+    {
+      "branch": "monster.naming.cleric-new",
+      "segment": 10,
+      "screenIncludes": [
+        "The renegade priest of Hermes will not accept the name Pebble."
+      ],
+      "screenCells": [
+        {
+          "step": 89,
+          "x": 0,
+          "y": 0,
+          "equals": "T"
+        },
+        {
+          "step": 89,
+          "x": 31,
+          "y": 0,
+          "equals": "i"
+        },
+        {
+          "step": 89,
+          "x": 61,
+          "y": 0,
+          "equals": "."
+        },
+        {
+          "step": 89,
+          "x": 62,
+          "y": 0,
+          "equals": " "
+        }
+      ]
+    },
+    {
+      "branch": "monster.naming.cleric-clear",
+      "segment": 11,
+      "screenIncludes": [
+        "The renegade priest of Hermes would rather keep his existing title."
+      ],
+      "screenCells": [
+        {
+          "step": 86,
+          "x": 0,
+          "y": 0,
+          "equals": "T"
+        },
+        {
+          "step": 86,
+          "x": 33,
+          "y": 0,
+          "equals": "l"
+        },
+        {
+          "step": 86,
+          "x": 66,
+          "y": 0,
+          "equals": "."
+        },
+        {
+          "step": 86,
+          "x": 67,
+          "y": 0,
+          "equals": " "
+        }
+      ]
+    },
+    {
+      "branch": "monster.naming.cleric-deity",
+      "segment": 12,
+      "screenIncludes": [
+        "He is already called the renegade priest of Hermes."
+      ],
+      "screenCells": [
+        {
+          "step": 89,
+          "x": 0,
+          "y": 0,
+          "equals": "H"
+        },
+        {
+          "step": 89,
+          "x": 25,
+          "y": 0,
+          "equals": "r"
+        },
+        {
+          "step": 89,
+          "x": 50,
+          "y": 0,
+          "equals": "."
+        },
+        {
+          "step": 89,
+          "x": 51,
+          "y": 0,
+          "equals": " "
+        }
+      ]
+    },
+    {
+      "branch": "monster.naming.high-cleric-new",
+      "segment": 13,
+      "screenIncludes": [
+        "The priest of Athena doesn't like being called names!"
+      ],
+      "screenCells": [
+        {
+          "step": 94,
+          "x": 0,
+          "y": 0,
+          "equals": "T"
+        },
+        {
+          "step": 94,
+          "x": 26,
+          "y": 0,
+          "equals": "'"
+        },
+        {
+          "step": 94,
+          "x": 52,
+          "y": 0,
+          "equals": "!"
+        },
+        {
+          "step": 94,
+          "x": 53,
+          "y": 0,
+          "equals": " "
+        }
+      ]
+    },
+    {
+      "branch": "monster.naming.shopkeeper-new",
+      "segment": 14,
+      "screenIncludes": [
+        "\"I'm Upernavik, not Pebble.\""
+      ],
+      "screenCells": [
+        {
+          "step": 47,
+          "x": 0,
+          "y": 0,
+          "equals": "\""
+        },
+        {
+          "step": 47,
+          "x": 14,
+          "y": 0,
+          "equals": ","
+        },
+        {
+          "step": 47,
+          "x": 27,
+          "y": 0,
+          "equals": "\""
+        },
+        {
+          "step": 47,
+          "x": 28,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 47,
+          "x": 0,
+          "y": 1,
+          "equals": " "
+        },
+        {
+          "step": 47,
+          "x": 22,
+          "y": 1,
+          "equals": " "
+        },
+        {
+          "step": 47,
+          "x": 44,
+          "y": 1,
+          "equals": "#"
+        },
+        {
+          "step": 47,
+          "x": 45,
+          "y": 1,
+          "equals": " "
+        }
+      ]
+    },
+    {
+      "branch": "monster.naming.shopkeeper-clear",
+      "segment": 15,
+      "screenIncludes": [
+        "Upernavik would rather keep her existing name."
+      ],
+      "screenCells": [
+        {
+          "step": 44,
+          "x": 0,
+          "y": 0,
+          "equals": "U"
+        },
+        {
+          "step": 44,
+          "x": 23,
+          "y": 0,
+          "equals": "k"
+        },
+        {
+          "step": 44,
+          "x": 45,
+          "y": 0,
+          "equals": "."
+        },
+        {
+          "step": 44,
+          "x": 46,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 44,
+          "x": 0,
+          "y": 1,
+          "equals": " "
+        },
+        {
+          "step": 44,
+          "x": 22,
+          "y": 1,
+          "equals": " "
+        },
+        {
+          "step": 44,
+          "x": 44,
+          "y": 1,
+          "equals": "#"
+        },
+        {
+          "step": 44,
+          "x": 45,
+          "y": 1,
+          "equals": " "
+        }
+      ]
+    },
+    {
+      "branch": "monster.naming.shopkeeper-same",
+      "segment": 16,
+      "screenIncludes": [
+        "She is already called Upernavik."
+      ],
+      "screenCells": [
+        {
+          "step": 50,
+          "x": 0,
+          "y": 0,
+          "equals": "S"
+        },
+        {
+          "step": 50,
+          "x": 16,
+          "y": 0,
+          "equals": "a"
+        },
+        {
+          "step": 50,
+          "x": 31,
+          "y": 0,
+          "equals": "."
+        },
+        {
+          "step": 50,
+          "x": 32,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 50,
+          "x": 0,
+          "y": 1,
+          "equals": " "
+        },
+        {
+          "step": 50,
+          "x": 22,
+          "y": 1,
+          "equals": " "
+        },
+        {
+          "step": 50,
+          "x": 44,
+          "y": 1,
+          "equals": "#"
+        },
+        {
+          "step": 50,
+          "x": 45,
+          "y": 1,
+          "equals": " "
+        }
+      ]
+    },
+    {
+      "branch": "monster.naming.shopkeeper-deaf",
+      "segment": 17,
+      "screenIncludes": [
+        "Upernavik will not accept the name Pebble."
+      ],
+      "screenCells": [
+        {
+          "step": 64,
+          "x": 0,
+          "y": 0,
+          "equals": "U"
+        },
+        {
+          "step": 64,
+          "x": 21,
+          "y": 0,
+          "equals": "c"
+        },
+        {
+          "step": 64,
+          "x": 41,
+          "y": 0,
+          "equals": "."
+        },
+        {
+          "step": 64,
+          "x": 42,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 64,
+          "x": 0,
+          "y": 1,
+          "equals": " "
+        },
+        {
+          "step": 64,
+          "x": 22,
+          "y": 1,
+          "equals": " "
+        },
+        {
+          "step": 64,
+          "x": 44,
+          "y": 1,
+          "equals": "#"
+        },
+        {
+          "step": 64,
+          "x": 45,
+          "y": 1,
+          "equals": " "
+        }
+      ]
+    },
+    {
+      "branch": "monster.naming.monster-hallucination",
+      "segment": 18,
+      "screenIncludes": [
+        "You would never recognize it anyway."
+      ],
+      "screenCells": [
+        {
+          "step": 99,
+          "x": 0,
+          "y": 0,
+          "equals": "Y"
+        },
+        {
+          "step": 99,
+          "x": 18,
+          "y": 0,
+          "equals": "c"
+        },
+        {
+          "step": 99,
+          "x": 35,
+          "y": 0,
+          "equals": "."
+        },
+        {
+          "step": 99,
+          "x": 36,
+          "y": 0,
+          "equals": " "
+        }
+      ]
+    }
+  ]
+}

@@ -144,6 +144,11 @@ which is how the save/restore pair restores its save file.
 
 ## Inspect
 
+`monster-name-editing` and `monster-name-guards` contain 27 source-derived
+monster naming scenarios. `node tools/monster-name-state-gate.mjs` checks
+persistent names, minion ownership and exact-name formatting restoration
+beyond the paired terminal traces. See `docs/plan/monster-naming-audit.md`.
+
 ```bash
 node tools/gen-sessions/render.mjs generated/<name>.session.json msgs   # key + message per step
 node tools/gen-sessions/render.mjs generated/<name>.session.json 27     # full screen of step 27

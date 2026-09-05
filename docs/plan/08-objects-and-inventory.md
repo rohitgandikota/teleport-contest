@@ -27,7 +27,11 @@ The September source audit and remaining decisions are tracked in
       restrictions and the rest of the naming machinery remain open.
 - [x] Compile shared integer constants against C and correct numeric drift,
       including the exact-name mask. A real saddled-pony state control checks
-      the mask's effect. Monster naming commands and `x_monnam` remain partial.
+      the mask's effect. The subsequent naming review is recorded below.
+- [x] Port monster naming, fixed-name refusal rules, `x_monnam`, `priestname`
+      and shared alignment naming. Twenty-seven C scenarios and persistent
+      name/minion/formatting controls pass. See [monster-naming-audit.md](monster-naming-audit.md)
+      for the still-uncovered source decisions and type-naming backlog.
 - [ ] Generate `js/objects_data.js` from `src/objects.c` with the M2 generator
 - [ ] Port `src/o_init.c` — randomised appearances per game, which consumes RNG at
       game start and must match exactly (`js/o_init.js` is currently 12 lines)

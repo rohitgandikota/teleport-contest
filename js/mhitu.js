@@ -1594,14 +1594,7 @@ export function could_seduce(magr, mdef, mattk) {
          : (pagr.mlet === MONSYMS.S_NYMPH) ? 2 : 0;
 }
 
-// src/steal.c:132 unresponsive() -- paralysis counts alongside sleep and
-// fainting for seduction, but ordinary multi-turn commands do not.
-function unresponsive_to_seduction() {
-    if ((game.multi ?? 0) >= 0)
-        return false;
-    const why = game.multi_reason || '';
-    return Unaware() || why.startsWith('frozen') || why.startsWith('paralyzed');
-}
+import { unresponsive } from './steal.js';
 
 function carried_gloves() {
     if (game.u.uarmg)
@@ -1681,7 +1674,7 @@ export async function doseduce(mon) {
             mon.mcan ? 'severe ' : ''}headache.`);
         return 0;
     }
-    if (unresponsive_to_seduction()) {
+    if (unresponsive()) {
         await pline_mon(mon, `${Monnam(mon)} seems dismayed at your lack of response.`);
         return 0;
     }

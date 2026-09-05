@@ -14,16 +14,16 @@
 import { M_AP_OBJECT } from './const.js';
 import { M_AP_TYPE } from './const.js';
 import { ONAME } from './const.js';
-import { get_artifact, find_artifact, artifact_light } from './artifact.js';
+import { artiname, find_artifact, artifact_light } from './artifact.js';
 import { arti_light_description } from './light.js';
-import { QBUFSZ } from './const.js';
+import { BUFSZ, QBUFSZ } from './const.js';
 import { shk_your } from './shk.js';
-import { carried, is_poisonable, Has_contents, OBJ_FLOOR, OBJ_MINVENT } from './obj.js';
+import { carried, is_poisonable, Has_contents } from './obj.js';
 import { game } from './gstate.js';
 import { vegetarian, name_to_monplus, type_is_pname, verysmall,
          is_neuter, is_human } from './mondata.js';
 import { MFLAGS, MSOUND, MONSYMS } from './monst_data.js';
-import { pmname, oname, y_monnam, noit_mon_nam } from './do_name.js';
+import { pmname, oname, noit_mon_nam } from './do_name.js';
 import { rn2, rnd, rn1 } from './rng.js';
 import { mksobj, mkobj, rnd_class, curse, set_corpsenm, zombie_form,
          set_tin_variety,
@@ -804,60 +804,27 @@ export function Tobjnam(otmp, verb) {
     return bp;
 }
 
-// The CORPSE arm redirects xname to cxname for the monster type; corpses on
-// this tree go through the same xname, so the redirect has nothing to change.
-/* src/objnam.c yname() and src/shk.c shk_your(). */
+// src/objnam.c:2359 yname()
+export function yname(obj) {
+    let s = cxname(obj);
+
+    /* leave off "your" for most of your artifacts, but prepend
+     * "your" for unique objects and "foo of bar" quest artifacts */
+    if (!carried(obj) || !obj_is_pname(obj)
+        || obj.oartifact >= ART_ORB_OF_DETECTION) {
+        const outbuf = shk_your(obj);
+        const space_left = BUFSZ - 1 - outbuf.length;
+
+        s = outbuf + s.slice(0, space_left);
+    }
+
+    return s;
+}
+
 // src/objnam.c:2378 Yname2() — capitalized variant of yname().
 export function Yname2(obj) {
     const s = yname(obj);
     return s ? s[0].toUpperCase() + s.slice(1) : s;   /* *s = highc(*s) */
-}
-
-function shop_owner_prefix(obj) {
-    const floorStock = obj.where === OBJ_FLOOR && !obj.no_charge;
-    if (!obj.unpaid && !floorStock)
-        return null;
-
-    let x, y;
-    if (obj.where === OBJ_FLOOR) {
-        x = obj.ox;
-        y = obj.oy;
-    } else if (carried(obj)) {
-        x = game.u.ux;
-        y = game.u.uy;
-    } else {
-        return null;
-    }
-
-    const loc = game.level?.at(x, y);
-    const roomno = loc?.roomno ?? 0;
-    if (!loc || loc.edge || roomno < ROOMOFFSET)
-        return null;
-    const roomidx = roomno - ROOMOFFSET;
-    const room = game.level?.rooms?.[roomidx]
-        || (game.level?.subrooms || []).find(candidate =>
-            candidate.roomnoidx === roomidx);
-    const shkp = room?.resident;
-    const eshk = shkp?.eshk || shkp?.mextra?.eshk;
-    if (!shkp?.isshk || !eshk)
-        return null;
-    if (floorStock && eshk.shk?.x === x && eshk.shk?.y === y)
-        return null;
-
-    const raw = shkp.shknam || eshk.shknam;
-    if (!raw)
-        return null;
-    const name = /^[-+_|=]/.test(raw) ? raw.slice(1) : raw;
-    return s_suffix(name);
-}
-
-export function yname(obj) {
-    const shopOwner = shop_owner_prefix(obj);
-    if (shopOwner)
-        return `${shopOwner} ${xname(obj)}`;
-    if (obj.where === OBJ_MINVENT && obj.ocarry)
-        return `${s_suffix(y_monnam(obj.ocarry))} ${xname(obj)}`;
-    return `${carried(obj) ? 'your' : 'the'} ${xname(obj)}`;
 }
 
 /* src/objnam.c fruitname() — the hero's fruit, optionally as juice. */
@@ -3984,13 +3951,13 @@ export function safe_qbuf(qprefix, qsuffix, obj, func, altfunc, lastR) {
     return qbuf;
 }
 
-// src/objnam.c bare_artifactname(), the artifact's name without any
+// src/objnam.c:2502 bare_artifactname(), the artifact's name without any
 // object type or known/dknown/&c feedback.
 export function bare_artifactname(obj) {
     let outbuf;
 
     if (obj.oartifact) {
-        outbuf = get_artifact(obj)?.name ?? xname(obj);
+        outbuf = artiname(obj.oartifact);
         if (outbuf.startsWith('The '))
             outbuf = outbuf[0].toLowerCase() + outbuf.slice(1);
     } else {

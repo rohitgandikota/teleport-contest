@@ -9,10 +9,11 @@ loop until complete. The goal is active without a requested token budget.
 Current-corpus success is not the stopping criterion. Track unreviewed,
 untested, missing, and unreachable source paths explicitly.
 
-### Current work: verified shared creation; remaining theft paths next
+### Current work: theft port and final verification
 
-Detection expiry is pushed as 666d4323. The current verified, uncommitted
-pass ports makemon's shared arrival-message and occupation tail. Runtime
+Detection expiry is pushed as 666d4323. The verified shared-creation pass is
+committed and pushed as cdd126c9. It ports makemon's shared arrival-message
+and occupation tail. Runtime
 callers await creation; level construction remains synchronous. m_initgrp
 waits for runtime children before the parent's inventory and appearance.
 mk_mplayer and mk_roamer retain conditional continuations. Duplicate arrival
@@ -61,13 +62,57 @@ pointer frames remain ignored. The permanent invisible-lit case reaches
 'You see a kitten drop out of thin air!'. Lit visible, dark visible and
 occluded invisible controls are also verified.
 
-Next: checkpoint this verified pass, then continue remaining source paths.
+The uncommitted theft pass implements the full steal body, worn_item_removal,
+thiefdead, unstolenarm and stealarm. The existing unresponsive helper moves
+from mhitu to its C steal module. Both monster removal routes reset pending
+theft at C's hook. stop_donning calls cancel_don before reading multi, as C
+does. C's result is zero even if an earlier removal had time remaining.
+The new doffing probes exposed armoroff's anonymous callback and missing
+named-handler checks. The full armoroff body and doffing checks now match C;
+four existing armor-off handlers read their C global slots. Their remaining
+per-item bodies were not comprehensively ported by this pass.
+
+The first extra probes matched all RNG but missed ten corpse-name screens.
+yname now uses cxname, shared shk_your, artifact prefix rules and the C buffer
+bound. Two C recordings confirm that Oracle's corpse really gets 'the the',
+while Medusa's gets no ownership prefix. Preserve this C quirk. The full
+bare_artifactname body now uses artiname instead of a nonexistent record.name
+and fallback xname. Valid source controls initialize artifact existence and
+await addinv; an earlier malformed manual artifact state is not a valid
+gameplay crash reproduction.
+
+Four permanent theft recipes contain 30 C intent-validated cases. Initial
+sleeping-nymph probes remain ignored and earn no theft credit. The permanent
+cases match 5,996 screens/cursors, 78,267 RNG and six animations. The new
+theft-state-gate passes all 30 replays plus delayed-callback guards, both
+monster-removal hooks, all seven armor slots, unresponsive and shared naming.
+Its skip-avenge loader, inherited through NODE_OPTIONS, still passes every
+visible permanent replay but fails the retaliation state check. The runtime
+and C oracle are not edited by this negative control.
+
+All four final native recordings are exact in
+.cache/c-coverage/theft-final-20260905. The earlier 28-case collection added
+160 direct outcomes and four entered records; the final two unique-corpse
+cases add no outcomes. Union: 53,945/108,268 and 4,314/5,491. steal reaches
+153/216, stealarm 10/20, armoroff 28/38, doffing 43/56. thiefdead and
+unstolenarm still have no native C call; source controls do not earn that
+credit. Final fuzz is unchanged at 101/102, with the known fixed-date miss.
+All 48 hang checks, 80 role controls, 16 tool tests, source audit and six
+related state gates pass. Ledger: 1,820/1,820. The final broad replay passes
+all 504 fixtures: 44 public and 460 supplemental. Supplemental matches
+162,519 screens/cursors, 7,795,536 RNG and 21,326 animations. Public remains
+11,405 screens/cursors, 792,838 RNG and 1,462/1,483 animations. The final
+logs are .cache/theft/{regression-stable,fuzz-stable,state-final,hang,roles,
+tool-tests,source-final,ledger,native-final,union-final,negative-replay,
+negative-state}.log and totals.json. See [theft-audit.md](theft-audit.md).
+The theft pass is verified and ready to checkpoint; the full-port loop continues.
+
 makemon's no-inventory disposal arm remains absent. mk_mplayer and mk_roamer
 still have occupied-square relocation markers. mhidden_description lacks
 the region-length bound. Synchronous special-level callbacks are not proof
 of runtime Lua support. maketrap can also run from wizard wishes; do not
-label all of its callers generation-only. Full steal remains a focused next
-source gap, along with mpickobj's billing/null/light branches. Do not touch
+label all of its callers generation-only. Next read and port mpickobj's
+billing/null/light branches and continue theft's uncovered guards. Do not touch
 frozen files or conflate the current corpus with full-game completion.
 The full-port goal remains active and the work loop continues.
 

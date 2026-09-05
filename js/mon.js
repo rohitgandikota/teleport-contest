@@ -1995,6 +1995,8 @@ export function can_touch_safely(mtmp, otmp) {
    include/monst.h:279 via src/mondata.c:129. */
 
 
+import { thiefdead } from './steal.js';
+
 // src/mon.c:2734 m_detach() — take a monster off the map.
 //
 // C does NOT unlink from the fmon chain here: it flags MON_DETACH and bumps
@@ -2036,6 +2038,9 @@ export function m_detach(mtmp, mptr, due_to_death) {
     }
 
     mtmp.mhp = 0;               /* simplify some tests: force mhp to 0 */
+
+    if (mtmp.m_id === game.stealmid)
+        thiefdead();
 
     /* src/mon.c:2790, a removed shopkeeper no longer owns a shop */
     if (mtmp.isshk)
@@ -3371,6 +3376,8 @@ export async function mondead(mdef) {
         const { relobj } = await import('./steal.js');
         await relobj(mdef, 1, false);
     }
+    if (mdef.m_id === game.stealmid)
+        thiefdead();
     if (mdef.isshk)
         shkgone(mdef);
     /* src/mon.c:2808 m_detach(): a dead steed immediately stops being the

@@ -41,11 +41,13 @@ import { ERODE_BURN, ERODE_RUST, ERODE_CRACK, ERODE_ROT, ERODE_CORRODE,
          ER_DESTROYED } from './const.js';
 import { set_occupation, stop_occupation } from './allmain.js';
 import { newsym, pline, see_monsters } from './display.js';
-import { There, You, You_feel, You_cant, Your } from './pline.js';
+import { There, You, You_feel, You_cant, Your, impossible } from './pline.js';
 import { an, xname, doname, the, Tobjnam, gloves_simple_name,
          boots_simple_name, suit_simple_name, Yname2, makeplural,
          makesingular, otense, corpse_xname, CXN_NOCORPSE,
-         CXN_NOARTICLE, CXN_SINGULAR, thesimpleoname } from './objnam.js';
+         CXN_NOARTICLE, CXN_SINGULAR, thesimpleoname,
+         ARM_SUIT, ARM_SHIELD, ARM_HELM, ARM_GLOVES, ARM_BOOTS,
+         ARM_CLOAK, ARM_SHIRT } from './objnam.js';
 import { makeknown, observe_object } from './o_init.js';
 import { hcolor } from './do_name.js';
 import { ART_OGRESMASHER } from './artilist_data.js';
@@ -399,7 +401,9 @@ async function Cloak_on() {
     return reveal_worn_armor(W_ARMC);
 }
 
-export async function Cloak_off(otmp) {
+// src/do_wear.c:383 Cloak_off()
+export async function Cloak_off() {
+    const otmp = game.u.uarmc;
     const prop = PROP_KEYS[objects[otmp.otyp].oc_oprop];
     const oldprop = prop
         ? (game.u.uprops?.[prop] || 0) & ~WORN_CLOAK : 0;
@@ -510,7 +514,9 @@ function adjust_helmet_brilliance(obj, delta) {
     (game.disp ||= {}).botl = true;
 }
 
-export async function Helmet_off(otmp) {
+// src/do_wear.c:518 Helmet_off()
+export async function Helmet_off() {
+    const otmp = game.u.uarmh;
     (game.context_takeoff ||= {}).mask &= ~W_ARMH;
     switch (otmp.otyp) {
     case ONAMES.FEDORA:
@@ -738,20 +744,20 @@ export function doffing(otmp) {
     let result = false;
 
     /* 'T' (or 'R' used for armor) sets ga.afternmv, 'A' sets takeoff.what */
-    if (otmp === game.u.uarmf)
-        result = (what === WORN_BOOTS);   /* Boots_off is not an afternmv */
-    else if (otmp === game.u.uarm)
-        result = (what === WORN_ARMOR);
+    if (otmp === game.u.uarm)
+        result = (game.afternmv === Armor_off || what === WORN_ARMOR);
     else if (otmp === game.u.uarmu)
-        result = (what === WORN_SHIRT);
+        result = (game.afternmv === Shirt_off || what === WORN_SHIRT);
     else if (otmp === game.u.uarmc)
-        result = (what === WORN_CLOAK);
+        result = (game.afternmv === Cloak_off || what === WORN_CLOAK);
+    else if (otmp === game.u.uarmf)
+        result = (game.afternmv === Boots_off || what === WORN_BOOTS);
     else if (otmp === game.u.uarmh)
-        result = (what === WORN_HELMET);
+        result = (game.afternmv === Helmet_off || what === WORN_HELMET);
     else if (otmp === game.u.uarmg)
-        result = (what === WORN_GLOVES);
+        result = (game.afternmv === Gloves_off || what === WORN_GLOVES);
     else if (otmp === game.u.uarms)
-        result = (what === WORN_SHIELD);
+        result = (game.afternmv === Shield_off || what === WORN_SHIELD);
     /* these 1-turn items don't need 'ga.afternmv' checks */
     else if (otmp === game.u.uamul)
         result = (what === WORN_AMUL);
@@ -803,15 +809,15 @@ export async function stop_donning(stolenobj) {
     const putting_on = !doffing(otmp);
     let result = 0;
     let message = '';
+    cancel_don();
+    game.afternmv = null;
     if (putting_on || otmp !== stolenobj) {
         message = `You stop ${putting_on ? 'putting on' : 'taking off'} ${
             thesimpleoname(otmp)}.`;
     } else {
-        result = -(game.multi || 0);
+        result = -(game.multi | 0) | 0;
     }
 
-    cancel_don();
-    game.afternmv = null;
     await unmul(message);
     if (putting_on) {
         const { remove_worn_item } = await import('./steal.js');
@@ -905,8 +911,9 @@ export async function Boots_on() {
     }
 }
 
-// src/do_wear.c:239 Boots_off()
-export async function Boots_off(otmp) {
+// src/do_wear.c:262 Boots_off()
+export async function Boots_off() {
+    const otmp = game.u.uarmf;
     const prop = PROP_KEYS[objects[otmp.otyp].oc_oprop];
     const oldprop = prop
         ? (game.u.uprops?.[prop] || 0) & ~WORN_BOOTS : 0;
@@ -2240,33 +2247,84 @@ export async function doddoremarm() {
     return ECMD_OK;
 }
 
-// src/do_wear.c:76 armoroff()
-async function armoroff(otmp) {
-    const delay = -(objects[otmp.otyp].oc_delay || 0);
+// src/do_wear.c:1920 armoroff()
+export async function armoroff(otmp) {
+    const delay = -objects[otmp.otyp].oc_delay;
+    let what = null;
 
     if (await cursed(otmp))
         return 0;
-    const cat = objects[otmp.otyp].oc_subtyp;
-    const names = ['suit', 'shield', 'helmet', 'gloves', 'boots',
-                   'cloak', 'shirt'];
-    let what = names[cat] || 'armor';
-    if (cat === 0) what = suit_simple_name(otmp);
-    if (cat === 5) what = cloak_simple_name(otmp);
-    if (cat === 2) what = helm_simple_name(otmp);
-    if (cat === 3) what = gloves_simple_name(otmp);
-    if (cat === 4) what = boots_simple_name(otmp);
-
     if (delay) {
         nomul(delay);
         game.multi_reason = 'disrobing';
-        game.afternmv = async () => {
-            await slot_off(otmp);
-        };
-        game.nomovemsg = `You finish taking off your ${what}.`;
+        switch (objects[otmp.otyp].oc_subtyp) {
+        case ARM_SUIT:
+            what = suit_simple_name(otmp);
+            game.afternmv = Armor_off;
+            break;
+        case ARM_SHIELD:
+            what = shield_simple_name(otmp);
+            game.afternmv = Shield_off;
+            break;
+        case ARM_HELM:
+            what = helm_simple_name(otmp);
+            game.afternmv = Helmet_off;
+            break;
+        case ARM_GLOVES:
+            what = gloves_simple_name(otmp);
+            game.afternmv = Gloves_off;
+            break;
+        case ARM_BOOTS:
+            what = boots_simple_name(otmp);
+            game.afternmv = Boots_off;
+            break;
+        case ARM_CLOAK:
+            what = cloak_simple_name(otmp);
+            game.afternmv = Cloak_off;
+            break;
+        case ARM_SHIRT:
+            what = shirt_simple_name(otmp);
+            game.afternmv = Shirt_off;
+            break;
+        default:
+            await impossible(`Taking off unknown armor (${otmp.otyp}: ${
+                objects[otmp.otyp].oc_subtyp}), delay ${delay}`);
+            break;
+        }
+        if (what)
+            game.nomovemsg = `You finish taking off your ${what}.`.slice(0, 59);
     } else {
-        await slot_off(otmp);
+        switch (objects[otmp.otyp].oc_subtyp) {
+        case ARM_SUIT:
+            await Armor_off();
+            break;
+        case ARM_SHIELD:
+            await Shield_off();
+            break;
+        case ARM_HELM:
+            await Helmet_off();
+            break;
+        case ARM_GLOVES:
+            await Gloves_off();
+            break;
+        case ARM_BOOTS:
+            await Boots_off();
+            break;
+        case ARM_CLOAK:
+            await Cloak_off();
+            break;
+        case ARM_SHIRT:
+            await Shirt_off();
+            break;
+        default:
+            await impossible(`Taking off unknown armor (${otmp.otyp}: ${
+                objects[otmp.otyp].oc_subtyp}), no delay`);
+            break;
+        }
         await off_msg(otmp);
     }
+    const takeoff = (game.context_takeoff ||= {});
+    takeoff.mask = takeoff.what = 0;
     return 1;
 }
 
@@ -2304,7 +2362,9 @@ async function slot_off(otmp) {
     }
 }
 
-export async function Gloves_off(otmp) {
+// src/do_wear.c:646 Gloves_off()
+export async function Gloves_off() {
+    const otmp = game.u.uarmg;
     switch (otmp.otyp) {
     case ONAMES.GAUNTLETS_OF_POWER:
         makeknown(otmp.otyp);

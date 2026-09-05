@@ -417,7 +417,7 @@ export async function drinkfountain() {
                 for (const obj of [...(game.invent || [])]) {
                     if (obj.oclass !== OCLASSES.COIN_CLASS && !obj.cursed
                         && !rn2(5)) {
-                        curse(obj);
+                        await curse(obj);
                         ++buc_changed;
                     }
                 }
@@ -654,7 +654,7 @@ export async function dipfountain(obj) {
     switch (rnd(30)) {
     case 16: /* Curse the item */
         if (obj.oclass !== OCLASSES.COIN_CLASS && !obj.cursed) {
-            curse(obj);
+            await curse(obj);
         }
         break;
     case 17:
@@ -664,7 +664,7 @@ export async function dipfountain(obj) {
         if (obj.cursed) {
             if (!game.u.ublind)
                 await pline_The('water glows for a moment.');
-            uncurse(obj);
+            await uncurse(obj);
         } else {
             await pline('A feeling of loss comes over you.');
         }

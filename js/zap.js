@@ -631,7 +631,7 @@ export function increment_intrinsic_timeout(key, amount) {
 
 // src/zap.c:1239 cancel_item(). Cancellation removes enchantment and magic
 // from exposed inventory while preserving the few explicitly immune items.
-function cancel_item(obj) {
+async function cancel_item(obj) {
     const otyp = obj.otyp;
     const wornmask = obj.owornmask | 0;
     const abon = (game.u.abon ||= {}).a
@@ -741,8 +741,8 @@ function cancel_item(obj) {
             start_timer(timeout, TIMER_OBJECT, ROT_CORPSE, obj);
         }
     }
-    unbless(obj);
-    uncurse(obj);
+    await unbless(obj);
+    await uncurse(obj);
 }
 
 // src/mon.c:4431 normal_shape(), the cancellation subset. Shapechangers
@@ -786,7 +786,7 @@ export async function cancel_monst(mdef, obj, youattack, allow_cancel_kill,
     if (self_cancel) {
         const inventory = youdefend ? game.invent : (mdef.minvent || []);
         for (const otmp of inventory)
-            cancel_item(otmp);
+            await cancel_item(otmp);
         if (youdefend) {
             (game.disp ||= {}).botl = true;
             find_ac();
@@ -2875,7 +2875,7 @@ export async function bhito(obj, otmp) {
             break;
         case ONAMES.WAN_CANCELLATION:
         case ONAMES.SPE_CANCELLATION:
-            cancel_item(obj);
+            await cancel_item(obj);
             newsym(obj.ox, obj.oy); /* might change color */
             break;
         case ONAMES.SPE_DRAIN_LIFE:

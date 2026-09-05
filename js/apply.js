@@ -51,7 +51,7 @@ import { ECMD_OK, ECMD_TIME, ECMD_CANCEL, CQ_CANNED, GETOBJ_NOFLAGS,
     from './const.js';
 import { addinv, addinv_nomerge, carrying, freeinv, getobj, hands_obj,
          hold_another_object, obj_extract_self, update_inventory, useup,
-         useupall, useupf, weight, any_obj_ok, prinv, stackobj }
+         useupall, useupf, weight, any_obj_ok, prinv, stackobj, obfree }
     from './invent.js';
 import { getdir, get_adjacent_loc, cmdq_add_ec, cmdq_add_key, confdir, getlin }
     from './cmd.js';
@@ -77,7 +77,7 @@ import { closed_door } from './cmd.js';
 import { sobj_at } from './invent.js';
 import { ONAMES } from './objects_data.js';
 import { canseemon, canspotmon, glyph_is_invisible_at, map_invisible, newsym,
-         pline, sensemon, unmap_invisible } from './display.js';
+         pline, sensemon, unmap_invisible, vobj_at } from './display.js';
 import { You, There, You_feel, Your } from './pline.js';
 import { dist2, distu, s_suffix } from './hacklib.js';
 import { cansee } from './vision.js';
@@ -88,7 +88,7 @@ import { OBJ_NAME, The, Tobjnam, Yname2, Yobjnam2, an, aobjnam, doname, singular
          cxname, xname, yname, the, thesimpleoname, gloves_simple_name, makeplural,
          otense, vtense } from './objnam.js';
 import { Amonnam, Monnam, a_monnam, hcolor, l_monnam, mon_nam,
-         noit_mon_nam, pmname, upstart, x_monnam, y_monnam }
+         noit_mon_nam, pmname, upstart, x_monnam, y_monnam, m_monnam }
     from './do_name.js';
 import { defsyms } from './drawing_data.js';
 import { bimanual, carried, Is_candle, is_boots, is_gloves,
@@ -97,7 +97,7 @@ import { clear_splitobjs, mkobj, mksobj, place_object, rnd_class, set_bknown,
          splitobj, set_tin_variety, unbless } from './mkobj.js';
 import { attacktype_fordmg, can_blow, has_head, haseyes, nohands, nolimbs,
          breathless, passes_walls, poly_when_stoned, throws_rocks, touch_petrifies,
-         unsolid } from './mondata.js';
+         unsolid, hides_under, locomotion } from './mondata.js';
 import { check_capacity, invocation_pos, losehp, may_passwall } from './hack.js';
 import { tty_yn_function } from './tty/topl.js';
 import { makeknown, observe_object } from './o_init.js';
@@ -109,7 +109,9 @@ import { is_rider, makemon, set_malign, MM_NOMSG, NO_MM_FLAGS }
     from './makemon.js';
 import { ATTKS, PMNAMES } from './monst_data.js';
 import { attach_egg_hatch_timeout, begin_burn, end_burn, HATCH_EGG,
-         stop_timer } from './timeout.js';
+         stop_timer, start_timer, TIMER_OBJECT, FIG_TRANSFORM } from './timeout.js';
+import { impossible } from './pline.js';
+import { make_familiar } from './dog.js';
 import { bhit, obj_resists, zapyourself } from './zap.js';
 import { ceiling, surface } from './dungeon.js';
 import { can_reach_floor, pickup_object } from './pickup.js';
@@ -3005,15 +3007,103 @@ async function use_stethoscope(obj) {
     return res;
 }
 
+// src/apply.c:2398 fig_transform()
+export async function fig_transform(figurine, timeout) {
+    const cc = { x: 0, y: 0 };
+    let redraw = false, suppress_see = false;
+
+    if (!figurine) {
+        await impossible('null figurine in fig_transform()');
+        return;
+    }
+    const silent = timeout !== game.moves;
+    let okay_spot = get_obj_location(figurine, cc, 0);
+    if (figurine.where === OBJ_INVENT || figurine.where === OBJ_MINVENT)
+        okay_spot = enexto(cc, cc.x, cc.y, game.mons[figurine.corpsenm]);
+    if (!okay_spot || !await figurine_location_checks(figurine, cc, true)) {
+        start_timer(rnd(5000), TIMER_OBJECT, FIG_TRANSFORM, figurine);
+        return;
+    }
+
+    const cansee_spot = cansee(cc.x, cc.y);
+    const mtmp = await make_familiar(figurine, cc.x, cc.y, true);
+    if (mtmp) {
+        const mshelter = vobj_at(mtmp.mx, mtmp.my);
+        const monnambuf = an(m_monnam(mtmp));
+        let and_vanish = '';
+        if ((mtmp.minvis && !See_invisible())
+            || (mtmp.data.mlet === MONSYMS.S_MIMIC
+                && M_AP_TYPE(mtmp) !== M_AP_NOTHING))
+            suppress_see = true;
+
+        if (mtmp.mundetected) {
+            if (hides_under(mtmp.data) && mshelter) {
+                and_vanish = ` and ${locomotion(mtmp.data, 'crawl')} under ${doname(mshelter)}`;
+            } else if (mtmp.data.mlet === MONSYMS.S_MIMIC
+                       || mtmp.data.mlet === MONSYMS.S_EEL) {
+                suppress_see = true;
+            } else {
+                and_vanish = ' and vanish';
+            }
+        }
+
+        switch (figurine.where) {
+        case OBJ_INVENT:
+            if (Blind() || suppress_see)
+                await You_feel(`something ${locomotion(mtmp.data, 'drop')} from your pack!`);
+            else
+                await You_see(`${monnambuf} ${locomotion(mtmp.data, 'drop')} out of your pack${and_vanish}!`);
+            break;
+        case OBJ_FLOOR:
+            if (cansee_spot && !silent) {
+                set_msg_xy(cc.x, cc.y);
+                if (suppress_see)
+                    await pline(`${an(xname(figurine))} suddenly vanishes!`);
+                else
+                    await You_see(`a figurine transform into ${monnambuf}${and_vanish}!`);
+                redraw = true;
+            }
+            break;
+        case OBJ_MINVENT:
+            if (cansee_spot && !silent && !suppress_see) {
+                const mon = figurine.ocarry;
+                let carriedby;
+                if (canseemon(mon) && (!mon.wormno || cansee(mon.mx, mon.my)))
+                    carriedby = `${s_suffix(a_monnam(mon))} pack`;
+                else if (is_pool(mon.mx, mon.my))
+                    carriedby = 'empty water';
+                else
+                    carriedby = 'thin air';
+                await You_see(`${monnambuf} ${locomotion(mtmp.data, 'drop')} out of ${carriedby}${and_vanish}!`);
+            }
+            break;
+        default:
+            await impossible(`figurine came to life where? (${figurine.where})`);
+            break;
+        }
+    }
+    if (carried(figurine)) {
+        useup(figurine);
+    } else {
+        obj_extract_self(figurine);
+        await obfree(figurine, null);
+    }
+    if (redraw)
+        newsym(cc.x, cc.y);
+}
+
 // src/apply.c:2511 figurine_location_checks(). A carried figurine can be
 // activated only where its monster can physically fit.
-async function figurine_location_checks(obj, x, y) {
-    if (game.u.uswallow) {
-        await You("don't have enough room in here.");
+async function figurine_location_checks(obj, cc, quietly) {
+    if (carried(obj) && game.u.uswallow) {
+        if (!quietly)
+            await You("don't have enough room in here.");
         return false;
     }
+    const x = cc ? cc.x : game.u.ux, y = cc ? cc.y : game.u.uy;
     if (!isok(x, y)) {
-        await You('cannot put the figurine there.');
+        if (!quietly)
+            await You('cannot put the figurine there.');
         return false;
     }
 
@@ -3021,13 +3111,15 @@ async function figurine_location_checks(obj, x, y) {
     const typ = game.level.at(x, y).typ;
     if (IS_OBSTRUCTED(typ)
         && !(passes_walls(ptr) && may_passwall(x, y))) {
-        await You(`cannot place a figurine in ${IS_TREE(typ)
-            ? 'a tree' : 'solid rock'}!`);
+        if (!quietly)
+            await You(`cannot place a figurine in ${IS_TREE(typ)
+                ? 'a tree' : 'solid rock'}!`);
         return false;
     }
     if (sobj_at(ONAMES.BOULDER, x, y) && !passes_walls(ptr)
         && !throws_rocks(ptr)) {
-        await You('cannot fit the figurine on the boulder.');
+        if (!quietly)
+            await You('cannot fit the figurine on the boulder.');
         return false;
     }
     return true;
@@ -3036,15 +3128,17 @@ async function figurine_location_checks(obj, x, y) {
 // src/apply.c:2544 use_figurine().
 async function use_figurine(obj) {
     if (game.u.uswallow) {
-        await figurine_location_checks(obj, game.u.ux, game.u.uy);
-        return ECMD_OK;
+        if (!await figurine_location_checks(obj, null, false))
+            return ECMD_OK;
     }
-    if (!await getdir(null))
+    if (!await getdir(null)) {
+        game.context.move = game.multi = 0;
         return ECMD_CANCEL;
+    }
 
     const x = game.u.ux + game.u.dx;
     const y = game.u.uy + game.u.dy;
-    if (!await figurine_location_checks(obj, x, y))
+    if (!await figurine_location_checks(obj, { x, y }, false))
         return ECMD_TIME;
 
     let action;
@@ -3059,8 +3153,8 @@ async function use_figurine(obj) {
         action = 'set the figurine on the ground';
 
     await You(`${action} and it ${Blind() ? 'supposedly ' : ''}transforms.`);
-    const { make_familiar } = await import('./dog.js');
     await make_familiar(obj, x, y, false);
+    stop_timer(FIG_TRANSFORM, obj);
     useup(obj);
     if (Blind())
         map_invisible(x, y);
@@ -3670,7 +3764,7 @@ export async function doapply() {
                     await pline(`${Yobjnam2(obj, 'glow')} ${hcolor('brown')}.`);
                     set_bknown(obj, 1);
                 }
-                unbless(obj);
+                await unbless(obj);
             }
         } else {
             await use_whistle(obj);

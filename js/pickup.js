@@ -685,7 +685,7 @@ export async function pickup_object(obj, count, telekinesis) {
             obj = splitobj(obj, count);
 
         if (obj.blessed) {
-            unbless(obj);
+            await unbless(obj);
         } else if (!obj.spe && !obj.cursed) {
             obj.spe = 1;
         } else {

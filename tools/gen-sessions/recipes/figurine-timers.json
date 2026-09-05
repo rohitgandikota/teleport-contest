@@ -1,0 +1,719 @@
+{
+  "name": "figurine-timers",
+  "description": "C figurine timers expire while carried, with sight, blindness and disabled monster creation controls. Generation is disabled during the long wait and restored immediately before successful transformations.",
+  "coverage": [
+    "mode.debug",
+    "object.tools-containers",
+    "object.potions",
+    "object.artifacts",
+    "religion.luck-calendar",
+    "turn.timers",
+    "ui.getlin",
+    "ui.menus",
+    "ui.more-paging"
+  ],
+  "branches": [
+    "figurine-timers.transform-carried",
+    "figurine-timers.transform-creation-disabled",
+    "figurine-timers.transform-carried-blind"
+  ],
+  "requireBranchAssertions": true,
+  "segments": [
+    {
+      "name": "transform-carried",
+      "seed": 102200,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!autopickup,pauper\n",
+      "moves": "mO aqr\r\u001b\u001b\u001b\u001b\u001b\u001b\u0017blessed scroll of genocide\r\u001b\u001b\u001b\u001b\u001b\u001bra  *\r\u001b\u001b\u001b\u001b\u001b\u001b\u0017cursed figurine of a kitten\r\u001b\u001b\u001b\u001b\u001b\u001b8320.\u001b\u001b\u001b\u001b\u001b\u001bmO r\r\u001b\u001b\u001b\u001b\u001b\u001b. \u001b\u001b\u001b\u001b\u001b\u001bi\u001b"
+    },
+    {
+      "name": "transform-creation-disabled",
+      "seed": 102200,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!autopickup,pauper\n",
+      "moves": "mO aqr\r\u001b\u001b\u001b\u001b\u001b\u001b\u0017blessed scroll of genocide\r\u001b\u001b\u001b\u001b\u001b\u001bra  *\r\u001b\u001b\u001b\u001b\u001b\u001b\u0017cursed figurine of a kitten\r\u001b\u001b\u001b\u001b\u001b\u001b8321. \u001b\u001b\u001b\u001b\u001b\u001bi\u001b"
+    },
+    {
+      "name": "transform-carried-blind",
+      "seed": 102200,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!autopickup,pauper\n",
+      "moves": "mO aqr\r\u001b\u001b\u001b\u001b\u001b\u001b\u0017blessed scroll of genocide\r\u001b\u001b\u001b\u001b\u001b\u001bra  *\r\u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed blindfold\r\u001b\u001b\u001b\u001b\u001b\u001bPb\u001b\u001b\u001b\u001b\u001b\u001b\u0017cursed figurine of a kitten\r\u001b\u001b\u001b\u001b\u001b\u001b5928.\u001b\u001b\u001b\u001b\u001b\u001bmO r\r\u001b\u001b\u001b\u001b\u001b\u001b. \u001b\u001b\u001b\u001b\u001b\u001bi\u001b"
+    }
+  ],
+  "branchAssertions": [
+    {
+      "branch": "figurine-timers.transform-carried",
+      "segment": 0,
+      "screenCells": [
+        {
+          "step": 117,
+          "x": 0,
+          "y": 0,
+          "equals": "Y"
+        },
+        {
+          "step": 117,
+          "x": 1,
+          "y": 0,
+          "equals": "o"
+        },
+        {
+          "step": 117,
+          "x": 2,
+          "y": 0,
+          "equals": "u"
+        },
+        {
+          "step": 117,
+          "x": 3,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 117,
+          "x": 4,
+          "y": 0,
+          "equals": "s"
+        },
+        {
+          "step": 117,
+          "x": 5,
+          "y": 0,
+          "equals": "e"
+        },
+        {
+          "step": 117,
+          "x": 6,
+          "y": 0,
+          "equals": "e"
+        },
+        {
+          "step": 117,
+          "x": 7,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 117,
+          "x": 8,
+          "y": 0,
+          "equals": "a"
+        },
+        {
+          "step": 117,
+          "x": 9,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 117,
+          "x": 10,
+          "y": 0,
+          "equals": "k"
+        },
+        {
+          "step": 117,
+          "x": 11,
+          "y": 0,
+          "equals": "i"
+        },
+        {
+          "step": 117,
+          "x": 12,
+          "y": 0,
+          "equals": "t"
+        },
+        {
+          "step": 117,
+          "x": 13,
+          "y": 0,
+          "equals": "t"
+        },
+        {
+          "step": 117,
+          "x": 14,
+          "y": 0,
+          "equals": "e"
+        },
+        {
+          "step": 117,
+          "x": 15,
+          "y": 0,
+          "equals": "n"
+        },
+        {
+          "step": 117,
+          "x": 16,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 117,
+          "x": 17,
+          "y": 0,
+          "equals": "d"
+        },
+        {
+          "step": 117,
+          "x": 18,
+          "y": 0,
+          "equals": "r"
+        },
+        {
+          "step": 117,
+          "x": 19,
+          "y": 0,
+          "equals": "o"
+        },
+        {
+          "step": 117,
+          "x": 20,
+          "y": 0,
+          "equals": "p"
+        },
+        {
+          "step": 117,
+          "x": 21,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 117,
+          "x": 22,
+          "y": 0,
+          "equals": "o"
+        },
+        {
+          "step": 117,
+          "x": 23,
+          "y": 0,
+          "equals": "u"
+        },
+        {
+          "step": 117,
+          "x": 24,
+          "y": 0,
+          "equals": "t"
+        },
+        {
+          "step": 117,
+          "x": 25,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 117,
+          "x": 26,
+          "y": 0,
+          "equals": "o"
+        },
+        {
+          "step": 117,
+          "x": 27,
+          "y": 0,
+          "equals": "f"
+        },
+        {
+          "step": 117,
+          "x": 28,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 117,
+          "x": 29,
+          "y": 0,
+          "equals": "y"
+        },
+        {
+          "step": 117,
+          "x": 30,
+          "y": 0,
+          "equals": "o"
+        },
+        {
+          "step": 117,
+          "x": 31,
+          "y": 0,
+          "equals": "u"
+        },
+        {
+          "step": 117,
+          "x": 32,
+          "y": 0,
+          "equals": "r"
+        },
+        {
+          "step": 117,
+          "x": 33,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 117,
+          "x": 34,
+          "y": 0,
+          "equals": "p"
+        },
+        {
+          "step": 117,
+          "x": 35,
+          "y": 0,
+          "equals": "a"
+        },
+        {
+          "step": 117,
+          "x": 36,
+          "y": 0,
+          "equals": "c"
+        },
+        {
+          "step": 117,
+          "x": 37,
+          "y": 0,
+          "equals": "k"
+        },
+        {
+          "step": 117,
+          "x": 38,
+          "y": 0,
+          "equals": "!"
+        }
+      ],
+      "screenIncludes": [
+        "Eliminated 2 monsters.",
+        "You see a kitten drop out of your pack!"
+      ],
+      "rngIncludes": [
+        "@ attach_fig_transform_timeout(timeout.c:1214)"
+      ]
+    },
+    {
+      "branch": "figurine-timers.transform-creation-disabled",
+      "segment": 1,
+      "screenCells": [],
+      "screenIncludes": [
+        "Eliminated 2 monsters."
+      ],
+      "rngIncludes": [
+        "@ attach_fig_transform_timeout(timeout.c:1214)"
+      ]
+    },
+    {
+      "branch": "figurine-timers.transform-carried-blind",
+      "segment": 2,
+      "screenCells": [
+        {
+          "step": 159,
+          "x": 41,
+          "y": 1,
+          "equals": "b"
+        },
+        {
+          "step": 159,
+          "x": 42,
+          "y": 1,
+          "equals": " "
+        },
+        {
+          "step": 159,
+          "x": 43,
+          "y": 1,
+          "equals": "-"
+        },
+        {
+          "step": 159,
+          "x": 44,
+          "y": 1,
+          "equals": " "
+        },
+        {
+          "step": 159,
+          "x": 45,
+          "y": 1,
+          "equals": "a"
+        },
+        {
+          "step": 159,
+          "x": 46,
+          "y": 1,
+          "equals": " "
+        },
+        {
+          "step": 159,
+          "x": 47,
+          "y": 1,
+          "equals": "b"
+        },
+        {
+          "step": 159,
+          "x": 48,
+          "y": 1,
+          "equals": "l"
+        },
+        {
+          "step": 159,
+          "x": 49,
+          "y": 1,
+          "equals": "i"
+        },
+        {
+          "step": 159,
+          "x": 50,
+          "y": 1,
+          "equals": "n"
+        },
+        {
+          "step": 159,
+          "x": 51,
+          "y": 1,
+          "equals": "d"
+        },
+        {
+          "step": 159,
+          "x": 52,
+          "y": 1,
+          "equals": "f"
+        },
+        {
+          "step": 159,
+          "x": 53,
+          "y": 1,
+          "equals": "o"
+        },
+        {
+          "step": 159,
+          "x": 54,
+          "y": 1,
+          "equals": "l"
+        },
+        {
+          "step": 159,
+          "x": 55,
+          "y": 1,
+          "equals": "d"
+        },
+        {
+          "step": 159,
+          "x": 56,
+          "y": 1,
+          "equals": " "
+        },
+        {
+          "step": 159,
+          "x": 57,
+          "y": 1,
+          "equals": "("
+        },
+        {
+          "step": 159,
+          "x": 58,
+          "y": 1,
+          "equals": "b"
+        },
+        {
+          "step": 159,
+          "x": 59,
+          "y": 1,
+          "equals": "e"
+        },
+        {
+          "step": 159,
+          "x": 60,
+          "y": 1,
+          "equals": "i"
+        },
+        {
+          "step": 159,
+          "x": 61,
+          "y": 1,
+          "equals": "n"
+        },
+        {
+          "step": 159,
+          "x": 62,
+          "y": 1,
+          "equals": "g"
+        },
+        {
+          "step": 159,
+          "x": 63,
+          "y": 1,
+          "equals": " "
+        },
+        {
+          "step": 159,
+          "x": 64,
+          "y": 1,
+          "equals": "w"
+        },
+        {
+          "step": 159,
+          "x": 65,
+          "y": 1,
+          "equals": "o"
+        },
+        {
+          "step": 159,
+          "x": 66,
+          "y": 1,
+          "equals": "r"
+        },
+        {
+          "step": 159,
+          "x": 67,
+          "y": 1,
+          "equals": "n"
+        },
+        {
+          "step": 159,
+          "x": 68,
+          "y": 1,
+          "equals": ")"
+        },
+        {
+          "step": 151,
+          "x": 0,
+          "y": 0,
+          "equals": "Y"
+        },
+        {
+          "step": 151,
+          "x": 1,
+          "y": 0,
+          "equals": "o"
+        },
+        {
+          "step": 151,
+          "x": 2,
+          "y": 0,
+          "equals": "u"
+        },
+        {
+          "step": 151,
+          "x": 3,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 151,
+          "x": 4,
+          "y": 0,
+          "equals": "f"
+        },
+        {
+          "step": 151,
+          "x": 5,
+          "y": 0,
+          "equals": "e"
+        },
+        {
+          "step": 151,
+          "x": 6,
+          "y": 0,
+          "equals": "e"
+        },
+        {
+          "step": 151,
+          "x": 7,
+          "y": 0,
+          "equals": "l"
+        },
+        {
+          "step": 151,
+          "x": 8,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 151,
+          "x": 9,
+          "y": 0,
+          "equals": "s"
+        },
+        {
+          "step": 151,
+          "x": 10,
+          "y": 0,
+          "equals": "o"
+        },
+        {
+          "step": 151,
+          "x": 11,
+          "y": 0,
+          "equals": "m"
+        },
+        {
+          "step": 151,
+          "x": 12,
+          "y": 0,
+          "equals": "e"
+        },
+        {
+          "step": 151,
+          "x": 13,
+          "y": 0,
+          "equals": "t"
+        },
+        {
+          "step": 151,
+          "x": 14,
+          "y": 0,
+          "equals": "h"
+        },
+        {
+          "step": 151,
+          "x": 15,
+          "y": 0,
+          "equals": "i"
+        },
+        {
+          "step": 151,
+          "x": 16,
+          "y": 0,
+          "equals": "n"
+        },
+        {
+          "step": 151,
+          "x": 17,
+          "y": 0,
+          "equals": "g"
+        },
+        {
+          "step": 151,
+          "x": 18,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 151,
+          "x": 19,
+          "y": 0,
+          "equals": "d"
+        },
+        {
+          "step": 151,
+          "x": 20,
+          "y": 0,
+          "equals": "r"
+        },
+        {
+          "step": 151,
+          "x": 21,
+          "y": 0,
+          "equals": "o"
+        },
+        {
+          "step": 151,
+          "x": 22,
+          "y": 0,
+          "equals": "p"
+        },
+        {
+          "step": 151,
+          "x": 23,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 151,
+          "x": 24,
+          "y": 0,
+          "equals": "f"
+        },
+        {
+          "step": 151,
+          "x": 25,
+          "y": 0,
+          "equals": "r"
+        },
+        {
+          "step": 151,
+          "x": 26,
+          "y": 0,
+          "equals": "o"
+        },
+        {
+          "step": 151,
+          "x": 27,
+          "y": 0,
+          "equals": "m"
+        },
+        {
+          "step": 151,
+          "x": 28,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 151,
+          "x": 29,
+          "y": 0,
+          "equals": "y"
+        },
+        {
+          "step": 151,
+          "x": 30,
+          "y": 0,
+          "equals": "o"
+        },
+        {
+          "step": 151,
+          "x": 31,
+          "y": 0,
+          "equals": "u"
+        },
+        {
+          "step": 151,
+          "x": 32,
+          "y": 0,
+          "equals": "r"
+        },
+        {
+          "step": 151,
+          "x": 33,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 151,
+          "x": 34,
+          "y": 0,
+          "equals": "p"
+        },
+        {
+          "step": 151,
+          "x": 35,
+          "y": 0,
+          "equals": "a"
+        },
+        {
+          "step": 151,
+          "x": 36,
+          "y": 0,
+          "equals": "c"
+        },
+        {
+          "step": 151,
+          "x": 37,
+          "y": 0,
+          "equals": "k"
+        },
+        {
+          "step": 151,
+          "x": 38,
+          "y": 0,
+          "equals": "!"
+        }
+      ],
+      "screenIncludes": [
+        "Eliminated 2 monsters.",
+        "You feel something drop from your pack!"
+      ],
+      "rngIncludes": [
+        "@ attach_fig_transform_timeout(timeout.c:1214)"
+      ]
+    }
+  ]
+}

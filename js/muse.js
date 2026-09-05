@@ -2067,7 +2067,7 @@ export async function use_defensive(mtmp) {
     case MUSE_POT_FULL_HEALING:
         await mquaffmsg(mtmp, otmp);
         if (otmp.otyp === ONAMES.POT_SICKNESS)
-            unbless(otmp); /* Pestilence */
+            await unbless(otmp); /* Pestilence */
         healmon(mtmp, mtmp.mhpmax, otmp.blessed ? 8 : 4);
         if (!mtmp.mcansee && otmp.otyp !== ONAMES.POT_SICKNESS)
             await mcureblindness(mtmp, vismon);

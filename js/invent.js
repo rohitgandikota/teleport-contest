@@ -58,7 +58,7 @@ import { OBJ_DESCR, not_fully_identified } from './objnam.js';
 export { not_fully_identified } from './objnam.js';
 import { MONSYMS, NUMMONS, PMNAMES } from './monst_data.js';
 import { erosion_matters, curse, splitobj, clear_splitobjs, extract_nobj,
-         start_glob_timeout } from './mkobj.js';
+         start_glob_timeout, dead_species } from './mkobj.js';
 import { carried, OBJ_FREE, OBJ_FLOOR, OBJ_CONTAINED, OBJ_INVENT, OBJ_MINVENT, OBJ_BURIED, Is_container, Is_candle, Is_pudding } from './obj.js';
 import { setworn, setnotworn, recalc_telepat_range } from './worn.js';
 import { is_rider, hideunder } from './makemon.js';
@@ -88,7 +88,9 @@ import { discover_artifact, set_artifact_intrinsic,
 import { ART_MJOLLNIR } from './artilist_data.js';
 import { body_part } from './polyself.js';
 import { HAND } from './const.js';
-import { obj_stop_timers, stop_timer, SHRINK_GLOB, learn_egg_type } from './timeout.js';
+import { obj_stop_timers, stop_timer, SHRINK_GLOB, learn_egg_type,
+         FIG_TRANSFORM, attach_fig_transform_timeout } from './timeout.js';
+import { NON_PM } from './const.js';
 import { obj_merge_light_sources } from './light.js';
 
 // include/hack.h — command result flags. ECMD_TIME means the command consumed
@@ -340,7 +342,10 @@ function addinv_finish(obj, objWasThrown, otherObj) {
             obj.pickup_prev = 1;
             game.invent.splice(index, 0, obj);
             const side = addinv_core2(obj);
-            return side ? side.then(() => obj) : obj;
+            if (side)
+                return side.then(() => { carry_obj_effects(obj); return obj; });
+            carry_obj_effects(obj);
+            return obj;
         }
     }
 
@@ -355,7 +360,10 @@ function addinv_finish(obj, objWasThrown, otherObj) {
         const finish = () => {
             otmp.pickup_prev = 1;
             const side = addinv_core2(otmp);
-            return side ? side.then(() => otmp) : otmp;
+            if (side)
+                return side.then(() => { carry_obj_effects(otmp); return otmp; });
+            carry_obj_effects(otmp);
+            return otmp;
         };
         return (r instanceof Promise) ? r.then(finish) : finish();
     };
@@ -397,7 +405,10 @@ export function addinv_nomerge(obj) {
     if (game.flags.fixinv !== false)
         reorder_invent();
     const side = addinv_core2(obj);
-    return side ? side.then(() => obj) : obj;
+    if (side)
+        return side.then(() => { carry_obj_effects(obj); return obj; });
+    carry_obj_effects(obj);
+    return obj;
 }
 
 // src/invent.c:1022 addinv_core2() — side effects of an object having
@@ -1981,10 +1992,11 @@ export function freeinv_core(obj) {
 
     if (obj.otyp === ONAMES.LOADSTONE)
         curse(obj);
-    else if (confers_luck(obj))
+    else if (confers_luck(obj)) {
         set_moreluck();
-    else if (obj.otyp === ONAMES.FIGURINE && obj.timed)
-        note_unported_invent('freeinv_core:stop_timer');
+        (game.disp ||= {}).botl = true;
+    } else if (obj.otyp === ONAMES.FIGURINE && obj.timed)
+        stop_timer(FIG_TRANSFORM, obj);
 
     if (obj === game.context?.tin?.tin) {
         game.context.tin.tin = null;
@@ -2006,6 +2018,15 @@ export function freeinv(obj) {
     obj.pickup_prev = 0;
     freeinv_core(obj);
     update_inventory();
+}
+
+// src/invent.c:1187 carry_obj_effects()
+export function carry_obj_effects(obj) {
+    if (obj.otyp === ONAMES.FIGURINE) {
+        if (obj.cursed && obj.corpsenm !== NON_PM
+            && !dead_species(obj.corpsenm, true))
+            attach_fig_transform_timeout(obj);
+    }
 }
 
 // src/invent.c:1208 hold_another_object() — add an item to the inventory

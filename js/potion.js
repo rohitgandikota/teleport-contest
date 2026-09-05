@@ -21,7 +21,7 @@ import { canseemon, canspotmon, map_invisible, newsym, pline, see_monsters }
 import { You, You_feel, pline_The } from './pline.js';
 import { exercise, adjattrib, A_MAX, ACURR, Fast } from './attrib.js';
 import { A_STR, A_INT, A_DEX, A_CON, A_CHA,
-         BOLT_LIM, KILLED_BY_AN, KILLED_BY, POTHIT_HERO_THROW,
+         BOLT_LIM, QBUFSZ, KILLED_BY_AN, KILLED_BY, POTHIT_HERO_THROW,
          POTHIT_OTHER_THROW,
          HEAD, EYE, SICK_ALL, TIMEOUT, A_CHAOTIC, A_LAWFUL, NON_PM,
          Upolyd, ismnum, FAST, MFAST, MSLOW, STRAT_WAITFORU } from './const.js';
@@ -465,7 +465,7 @@ export async function H2Opotion_dip(potion, targobj, useeit, objphrase) {
             else if (costchange !== COST_none)
                 await costly_alteration(targobj, costchange);
         }
-        func(targobj);
+        await func(targobj);
         res = true;
     }
     return res;
@@ -2243,7 +2243,9 @@ export async function dodip() {
     const is_hands = obj === hands_obj;
     const shortestname = is_hands || is_plural(obj) || pair_of(obj) ? 'them' : 'it';
     const obuf = is_hands ? `your ${makeplural(body_part(HAND))}`
-                         : short_oname(obj, doname, thesimpleoname, 49);
+        : short_oname(obj, doname, thesimpleoname,
+            QBUFSZ - ('What do you want to dip'
+                + ' into? [abdeghjkmnpqstvwyzBCEFHIKLNOQRTUWXZ#-# or ?*] ').length - 1);
 
     if (at_fountain || at_pool || at_sink) {
         /* can_reach_floor is true for an unimpaired hero */

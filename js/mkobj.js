@@ -1,6 +1,6 @@
 import { cmap_names } from './drawing_data.js';
 import { HATCH_EGG } from './const.js';
-import { carried } from './obj.js';
+import { carried, mcarried, bimanual } from './obj.js';
 import { makeplural, obj_typename } from './objnam.js';
 import { You_see, Your, You_hear } from './pline.js';
 import { Hallucination } from './youprop.js';
@@ -50,7 +50,8 @@ import { start_timer, stop_timer, TIMER_OBJECT,
          ROT_CORPSE as TIMEOUT_ROT_CORPSE,
          REVIVE_MON as TIMEOUT_REVIVE_MON,
          SHRINK_GLOB,
-         obj_stop_timers, obj_split_timers } from './timeout.js';
+         obj_stop_timers, obj_split_timers, FIG_TRANSFORM,
+         attach_fig_transform_timeout } from './timeout.js';
 import { attach_egg_hatch_timeout } from './timeout.js';
 import { Is_rogue_level, MAX_OIL_IN_FLASK, NODIR, OBJ_FLOOR, OBJ_INVENT,
          OBJ_BURIED, ICE, DRAWBRIDGE_UP, DB_UNDER, DB_ICE,
@@ -65,7 +66,10 @@ import { PMNAMES, MONSYMS, MFLAGS, GROWNUPS } from './monst_data.js';
    Both sides export function DECLARATIONS, which hoist, so each module sees the
    other's bindings by the time anything is called. */
 import { merged, mergable, weight, update_inventory,
-         obj_extract_self } from './invent.js';
+         obj_extract_self, confers_luck, set_moreluck } from './invent.js';
+import { reset_remarm } from './do_wear.js';
+import { drop_uswapwep } from './wield.js';
+import { book_cursed } from './spell.js';
 import { OBJ_CONTAINED, Is_pudding, Is_candle } from './obj.js';
 import { oname, noveltitle } from './do_name.js';
 import { oid_price_adjustment } from './shk.js';
@@ -82,7 +86,8 @@ import { ONAME, has_oname, has_omid, OMID, free_omid, ONAME_SKIP_INVUPD,
 import { in_rooms } from './hack.js';
 import { impossible, verbalize } from './pline.js';
 import { simpleonames } from './objnam.js';
-import { SHOPBASE, CONTAINED_TOO, COST_UNCURS, COST_UNBLSS } from './const.js';
+import { SHOPBASE, CONTAINED_TOO, COST_UNCURS, COST_UNBLSS,
+         PLNMSG_OBJ_GLOWS } from './const.js';
 import { is_ice } from './dbridge.js';
 
 
@@ -457,27 +462,6 @@ export function set_bknown(obj, onoff) {
         if (obj.where === OBJ_INVENT && game.moves > 1)
             update_inventory();
     }
-}
-
-// src/mkobj.c:1783 curse(), :1745 bless(), and :1767 unbless(). Blessing and
-// cursing return early for gold and clear the opposite flag. The
-// lamplit/arti_light_radius bookkeeping needs the light-source subsystem.
-export function curse(otmp) {
-    if (otmp.oclass === OCLASSES.COIN_CLASS)
-        return;
-    otmp.blessed = 0;
-    otmp.cursed = 1;
-}
-export function bless(otmp) {
-    if (otmp.oclass === OCLASSES.COIN_CLASS)
-        return;
-    otmp.cursed = 0;
-    otmp.blessed = 1;
-}
-export function unbless(otmp) {
-    otmp.blessed = 0;
-    if (otmp.otyp === ONAMES.BAG_OF_HOLDING)
-        otmp.owt = weight(otmp);
 }
 
 // src/mkobj.c:1846 blessorcurse()
@@ -1791,9 +1775,9 @@ export async function maybe_adjust_light(obj, old_range) {
            artifacts have to be in use to emit light and monsters' gear won't
            change bless or curse state */
         if (!Blind() && get_obj_location(obj, cc, 0)) {
-            /* iflags.last_msg == PLNMSG_OBJ_GLOWS is not tracked by the
-               port's pline, so the "It/They shine" variant never fires */
-            if (obj.where === OBJ_INVENT || cansee(cc.x, cc.y))
+            if (game.iflags.last_msg === PLNMSG_OBJ_GLOWS)
+                buf = obj.quan === 1 ? 'It' : 'They';
+            else if (carried(obj) || cansee(cc.x, cc.y))
                 buf = Yname2(obj);
             if (buf) {
                 /* "brightly" if uncursed, and "brilliantly" if blessed;
@@ -1808,12 +1792,92 @@ export async function maybe_adjust_light(obj, old_range) {
     }
 }
 
-export function uncurse(otmp) {
+// src/mkobj.c:1746 bless(). Free-object construction stays synchronous;
+// lit artifacts return the pending light message to their caller.
+export function bless(otmp) {
+    let old_light = 0;
+
+    if (otmp.oclass === OCLASSES.COIN_CLASS)
+        return;
     if (otmp.lamplit)
-        note_unported_obj('uncurse:arti_light_radius');
+        old_light = arti_light_radius(otmp);
     otmp.cursed = 0;
-    if (otmp.otyp === ONAMES.BAG_OF_HOLDING)
+    otmp.blessed = 1;
+    if (carried(otmp) && confers_luck(otmp))
+        set_moreluck();
+    else if (otmp.otyp === ONAMES.BAG_OF_HOLDING)
         otmp.owt = weight(otmp);
+    else if (otmp.otyp === ONAMES.FIGURINE && otmp.timed)
+        stop_timer(FIG_TRANSFORM, otmp);
+    if (otmp.lamplit)
+        return maybe_adjust_light(otmp, old_light);
+}
+
+// src/mkobj.c:1769 unbless()
+export function unbless(otmp) {
+    let old_light = 0;
+
+    if (otmp.lamplit)
+        old_light = arti_light_radius(otmp);
+    otmp.blessed = 0;
+    if (carried(otmp) && confers_luck(otmp))
+        set_moreluck();
+    else if (otmp.otyp === ONAMES.BAG_OF_HOLDING)
+        otmp.owt = weight(otmp);
+    if (otmp.lamplit)
+        return maybe_adjust_light(otmp, old_light);
+}
+
+// src/mkobj.c:1785 curse(). Construction executes through the footer
+// synchronously; only equipped-object or active-study messages suspend it.
+export async function curse(otmp) {
+    let old_light = 0;
+
+    if (otmp.oclass === OCLASSES.COIN_CLASS)
+        return;
+    if (otmp.lamplit)
+        old_light = arti_light_radius(otmp);
+    const already_cursed = otmp.cursed;
+    otmp.blessed = 0;
+    otmp.cursed = 1;
+    if (otmp === game.u.uwep && bimanual(otmp))
+        reset_remarm();
+    if (otmp === game.u.uswapwep && game.u.twoweap)
+        await drop_uswapwep();
+    if (carried(otmp) && confers_luck(otmp)) {
+        set_moreluck();
+    } else if (otmp.otyp === ONAMES.BAG_OF_HOLDING) {
+        otmp.owt = weight(otmp);
+    } else if (otmp.otyp === ONAMES.FIGURINE) {
+        if (otmp.corpsenm !== NON_PM && !dead_species(otmp.corpsenm, true)
+            && (carried(otmp) || mcarried(otmp)))
+            attach_fig_transform_timeout(otmp);
+    } else if (otmp.oclass === OCLASSES.SPBOOK_CLASS) {
+        if (!already_cursed) {
+            const pending = book_cursed(otmp);
+            if (pending)
+                await pending;
+        }
+    }
+    if (otmp.lamplit)
+        await maybe_adjust_light(otmp, old_light);
+}
+
+// src/mkobj.c:1824 uncurse()
+export function uncurse(otmp) {
+    let old_light = 0;
+
+    if (otmp.lamplit)
+        old_light = arti_light_radius(otmp);
+    otmp.cursed = 0;
+    if (carried(otmp) && confers_luck(otmp))
+        set_moreluck();
+    else if (otmp.otyp === ONAMES.BAG_OF_HOLDING)
+        otmp.owt = weight(otmp);
+    else if (otmp.otyp === ONAMES.FIGURINE && otmp.timed)
+        stop_timer(FIG_TRANSFORM, otmp);
+    if (otmp.lamplit)
+        return maybe_adjust_light(otmp, old_light);
 }
 
 export function set_corpsenm(obj, id) {

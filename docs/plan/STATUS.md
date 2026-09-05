@@ -9,65 +9,71 @@ loop until complete. The goal is active without a requested token budget.
 Current-corpus success is not the stopping criterion. Track unreviewed,
 untested, missing, and unreachable source paths explicitly.
 
-### Current work: shop billing copies and used-up inventory
+### Current work: verified beatitude side effects and figurine timers
 
-Potion dipping is committed and pushed as `9fee431f`. The current verified
-pass is committed and pushed as `06dabf37`. It ports bill_dummy_object in mkobj.js, copy_oextra and
-copy_mextra, unpaid_cost, add_to_billobjs, bp_to_obj and doinvbill. xprname
-has C's price formatting, quantity and letter rules. The existing default
-inventory-category command exposes the missing used-up menu and bill display.
+Shop billing and used-up itemization are pushed as `9ceac165`. The current
+beatitude pass is verified and ready to commit/push. It ports the full shared
+bless, unbless, curse and uncurse bodies, book_cursed, carrying figurine
+scheduling, timer expiration, and the quiet figurine-location checks. Runtime
+callers await message paths while free-object construction completes its
+state changes synchronously. reset_remarm preserves C's other context fields.
+Inventory names show artifact intensity and dipping uses C's actual 50-byte
+name budget rather than the stale 49-byte comment.
 
-The new permanent shop-billing-copies fixture has 14 C intent-validated cases,
-1,779 exact screens/cursors and 75,178 exact RNG entries. The state gate checks
-IDs, original prices, quantities, names, billing ownership, flags and timers,
-with separate saved-monster struct/pointer and lit-lamp source controls. A
-loader using next_ident instead of nextoid still passes all new screens/RNG,
-but the state gate fails on stack-oil's changed price adjustment.
+Four permanent recipes contain 33 C intent-validated cases: beatitude-shared
+(12), beatitude-light-equipment (10), figurine-timers (three), and
+beatitude-lifecycle (eight). They match all 3,117 screens/cursors, 143,722 RNG
+entries and 3,224 animation frames. The 12-case baseline already matched
+all 1,105 screens but missed three figurine timer draws. The expanded state
+gate checks bag weights, luck, original and replacement deadlines, ownership,
+light radii, dropped alternate weapons and timer cleanup. Separate source
+controls check free construction, monster acquisition, genocide/extinction,
+blocked-floor retries, armor-removal context and interrupted study.
 
-Stable-runtime regression passes 44 public and 445 supplemental fixtures;
-supplemental has 143,726 exact screens/cursors, 7,151,465 RNG and 3,298
-animations. Fuzz remains 101/102 with the same fixed-date artifact. All 45
-hang checks, 80 reused role-smoke controls, 16 tool tests, source audit and
-seven state gates pass. Native recording shop-billing-copy-20260905 is exact,
-adding 55 outcomes and one entered record. The union is 53,638/108,268 and
-4,305/5,491; the ledger is 1,721/1,721. Logs are in .cache/billcopy/ and the
-review is [shop-billing-copy-audit.md](shop-billing-copy-audit.md).
+The loader .cache/beatitude/retain-bag-weight.mjs omits only bless's bag weight
+update. It still passes all shared-case 1,105 screens and 36,887 RNG entries,
+but fails the state gate with weight 35 rather than 25. No expected C data or
+runtime file is changed by this control. See negative-replay.log and
+negative-state.log. The state gate also avoids two false assumptions about C:
+chance==1 in make_familiar retains the initial disposition, and dead_species
+checks the baby of an adult but does not map a baby back to an adult.
 
-The current follow-up is verified and ready to commit/push. Seven C probes
-for partially consumed bills, debt-only itemization, unused stock, long bill
-paging and cancellation are promoted as shop-usedup-inventory. All 4,171
-screens/cursors and 41,185 RNG match. Its state check caught retained in_use
-on fully consumed bill objects. obfree_bill now calls add_to_billobjs and
-uses OMID for original glob weight. The expanded gate passes all 21 C cases.
-An isolated loader retaining in_use still passes the new replay but fails
-the state gate. No C expected data was changed to accommodate the fix.
+The final stable runtime passes 44 public and 450 supplemental fixtures.
+Supplemental totals are 151,014 exact screens/cursors, 7,336,372 exact RNG and
+6,522 exact animations. Public is unchanged at 11,405 screens/cursors,
+792,838 RNG and 1,462/1,483 animations. Fuzz remains 101/102 with the known
+fixed-date mismatch, 14,261/14,262 screens, 14,262 exact cursors, 491,759 exact
+RNG and 75/76 animations. All 48 hang checks, 80 reused role-smoke controls,
+16 tool tests, source audit and six state gates pass. The ledger is 1,761/1,761.
+All four native recordings in .cache/c-coverage/beatitude-20260905 are exact,
+adding 98 outcomes and five entered records. The union is 53,743/108,268
+outcomes and 4,310/5,491 records. Logs are in .cache/beatitude/ and the review
+is [beatitude-audit.md](beatitude-audit.md).
 
-All 44 public and 446 supplemental fixtures pass on the stable runtime;
-supplemental has 147,897 exact screens/cursors, 7,192,650 RNG and 3,298
-animations. Fuzz, public counts and animations are unchanged. All 45 hang
-checks, 80 reused role-smoke controls, 16 tool tests, source audit and six
-state gates pass. Native shop-usedup-inventory-20260905 is exact and adds
-seven outcomes. The union is 53,645/108,268 and 4,305/5,491. The ledger is
-1,728/1,728. Logs are .cache/billcopy/itemization-*.log. The long-bill setup
-must follow changing inventory letters o through M; reusing o only consumed
-the first item and was rejected by C intent checks.
+Next: commit/push this verified pass, then extend figurine-timer coverage to
+floor and monster inventories and the invisible/hiding/retry branches.
+fig_transform reaches only 15/56 direct outcomes; its full C body has been
+read and ported but those paths need C scenarios. mpickobj's full C body was
+read, but its billing, null/ball guards and swallowed-light handling remain
+unported; this pass only connects carry_obj_effects in its source position.
+book_cursed's interruption is source-tested, not credited as a new C action.
 
-Next after committing/pushing: twelve beatitude probes are being recorded
-in .cache/beatitude/input.json and probe.session.json, with baseline.log.
-make-input.mjs makes filled bags, luckstones and kitten figurines for all
-four beatitude transitions. No beatitude runtime edits yet. Read the C
-intent and first divergence before porting. The full bless/curse bodies,
-book_cursed and attach_fig_transform_timeout have been read. Curse/bless
-have 70 call sites; preserve synchronous free-object construction when
-connecting their message-producing equipped/light side effects. See the
-existing addinv_core2 convention for functions which return a promise only
-on message paths. drop_uswapwep is implemented but not exported.
-The full dotypeinv body has now been read
-at invent.c:3827-4042; its traditional and unpaid-object paths remain absent.
-The full bless/curse bodies were also read below. add_one_tobill still lacks the
-full-bill/billability disposal, glob metadata and quote recording paths;
-copy_oextra is not yet shared by splitobj or saved-trait callers. Do not mark
-the full-port goal complete at this checkpoint.
+Rejected timer setups remain ignored: debug_hunger/debug_mongen in startup
+rc do not set the live wizard flags. Use the C options menu (`mO aqr\r`) to
+turn off acoustics and turn on the two debug flags. A blessed genocide scroll
+needs both More acknowledgements (`ra  *\r`) before '*' eliminates existing
+monsters. The successful timers wait with generation disabled, then toggle
+it back on with `mO r\r` one turn before the C-recorded deadline. The prefix
+recording independently supplies the delay; make-timers.mjs builds the final
+input. An earlier dual-wield setup only made the hero bare handed; the valid
+sequence swaps the first dagger out, wields the short sword, then twoweapons.
+
+Other retained source work: dotypeinv's full C body at invent.c:3827-4042 was
+read, but traditional and unpaid-object paths remain absent. add_one_tobill
+needs full-bill/billability disposal, glob metadata and quote recording.
+copy_oextra is not yet shared by splitobj or saved-trait callers. dodip's
+inaccessible equipment, environment paths and dip_into also remain open.
+The full-port goal stays active after this checkpoint.
 
 ### Verified potion dipping and shared alteration effects
 

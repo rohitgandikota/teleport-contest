@@ -475,7 +475,7 @@ async function Helmet_on() {
             else
                 await pline(`${Tobjnam(uarmh, 'glow')} ${hcolor(NH_BLACK)} `
                             + 'for a moment.');
-            curse(uarmh);
+            await curse(uarmh);
             if (Blind())
                 set_bknown(uarmh, 0);
             else if (game.urole?.name?.m === 'Priest')
@@ -1821,9 +1821,9 @@ async function select_off(otmp) {
 
 // src/do_wear.c:3016 reset_remarm()
 export function reset_remarm() {
-    game.context_takeoff = {
-        mask: 0, what: 0, delay: 0, disrobing: '',
-    };
+    const takeoff = (game.context_takeoff ||= {});
+    takeoff.what = takeoff.mask = 0;
+    takeoff.disrobing = '';
 }
 
 const takeoff_order = [

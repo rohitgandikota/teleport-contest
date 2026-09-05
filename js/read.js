@@ -558,7 +558,7 @@ export async function recharge(obj, curse_bless) {
             if (is_cursed) {
                 if (!obj.cursed) {
                     await p_glow2(obj, NH_BLACK);
-                    curse(obj);
+                    await curse(obj);
                 } else {
                     await pline(`${Yobjnam2(obj, 'vibrate')} briefly.`);
                 }
@@ -569,7 +569,7 @@ export async function recharge(obj, curse_bless) {
                 obj.spe = 7;
                 await p_glow2(obj, !obj.blessed ? NH_LIGHT_BLUE : NH_BLUE);
                 if (!obj.blessed)
-                    bless(obj);
+                    await bless(obj);
             } else {
                 if (obj.spe < 7 || obj.cursed) {
                     n = rnd(2);
@@ -578,7 +578,7 @@ export async function recharge(obj, curse_bless) {
                         await p_glow1(obj);
                     } else {
                         await p_glow2(obj, NH_AMBER);
-                        uncurse(obj);
+                        await uncurse(obj);
                     }
                 } else {
                     await pline(nothing_happens);
@@ -1612,7 +1612,7 @@ async function seffect_remove_curse(sobj) {
                     obj.bknown = 0;
                 } else if (obj.cursed) {
                     const knew_curse = !!obj.bknown;
-                    uncurse(obj);
+                    await uncurse(obj);
                     if (knew_curse && otyp === ONAMES.SCR_REMOVE_CURSE)
                         learnscrolltyp(ONAMES.SCR_REMOVE_CURSE);
                 }
@@ -1798,9 +1798,9 @@ async function seffect_enchant_armor(sobj) {
             otmp.spe++;
             cap_spe(otmp);
             if (!otmp.blessed)
-                bless(otmp);
+                await bless(otmp);
         } else if (otmp.cursed)
-            uncurse(otmp);
+            await uncurse(otmp);
         otmp.known = 1;
         setworn(otmp, W_ARM);
         if (otmp.unpaid)
@@ -1821,11 +1821,11 @@ async function seffect_enchant_armor(sobj) {
     if (s < 0)
         await costly_alteration(otmp, COST_DECHNT);
     if (scursed && !otmp.cursed)
-        curse(otmp);
+        await curse(otmp);
     else if (sblessed && !otmp.blessed)
-        bless(otmp);
+        await bless(otmp);
     else if (!scursed && otmp.cursed)
-        uncurse(otmp);
+        await uncurse(otmp);
     if (s) {
         const oldspe = otmp.spe;
 

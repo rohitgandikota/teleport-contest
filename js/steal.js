@@ -8,7 +8,7 @@ import { Monnam, Some_Monnam } from './do_name.js';
 import { pline_xy } from './pline.js';
 import { newsym, pline } from './display.js';
 import { place_object, unknow_object } from './mkobj.js';
-import { freeinv, stackobj, obj_extract_self } from './invent.js';
+import { freeinv, stackobj, obj_extract_self, carry_obj_effects } from './invent.js';
 import { flooreffects } from './do.js';
 /* src/light.c obj_sheds_light() == obj_is_burning(): a lit lamp/candle/
    artifact. The port tracks lamplit; artifact light records elsewhere. */
@@ -390,9 +390,7 @@ export function mpickobj(mtmp, otmp) {
             otmp.how_lost = LOST_NONE;
     }
     /* Must do carrying effects on object prior to add_to_minv() */
-    if (otmp.otyp === ONAMES.FIGURINE && otmp.cursed
-        && (otmp.corpsenm ?? -1) !== -1)
-        note_unported_steal('mpickobj:fig_transform');
+    carry_obj_effects(otmp);
     /* add_to_minv (src/mkobj.c:2648): merge if possible, else insert */
     for (const held of (mtmp.minvent || [])) {
         if (merged({ o: held }, { o: otmp }))

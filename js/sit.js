@@ -681,9 +681,9 @@ export async function rndcurse() {
             }
 
             if (otmp.blessed)
-                unbless(otmp);
+                await unbless(otmp);
             else
-                curse(otmp);
+                await curse(otmp);
         }
         update_inventory();
     }
@@ -692,9 +692,9 @@ export async function rndcurse() {
     if (u.usteed && !rn2(4) && (otmp = which_armor(u.usteed, W_SADDLE)) != null
         && !otmp.cursed) { /* skip if already cursed */
         if (otmp.blessed)
-            unbless(otmp);
+            await unbless(otmp);
         else
-            curse(otmp);
+            await curse(otmp);
         if (!Blind()) {
             await pline(`${Yobjnam2(otmp, 'glow')} ${hcolor(otmp.cursed ? NH_BLACK : 'brown')}.`);
             otmp.bknown = Hallucination() ? 0 : 1; /* bypass set_bknown() */

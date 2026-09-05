@@ -17,16 +17,18 @@ and persistent gameplay state. Continue source review, measured C branches,
 independent oracles, implementation, and regression checks until that goal is
 met. Current corpus success is not the stopping criterion.
 
-The first two compiler-guided loops cover corpse wielding and 50 inventory
-organization scenarios. All 44 public and 418 supplemental fixtures pass.
-The measured C union has 52,680/108,268 direct outcomes and 4,280/5,491 entered
+The compiler-guided loops cover corpse wielding, 58 inventory organization
+scenarios, and six naming controls. All 44 public and 420 supplemental fixtures
+pass. The measured C union has 52,726/108,268 direct outcomes and 4,280/5,491 entered
 function records. A new state gate catches an orphan candle light source which
 screen parity missed, and an isolated fault injection verifies that check.
 The published held-out result recorded during the audit is 78.39%, distinct
 from the local supplemental result. See [STATUS.md](STATUS.md) for verification,
 [inventory-adjust-audit.md](inventory-adjust-audit.md) for remaining inventory
 decisions, and [gameplay-gap-audit.md](gameplay-gap-audit.md) for measurement
-limits and the broader backlog. The leash/corpse checkpoint is pushed.
+limits and the broader backlog. The inventory checkpoint is pushed as
+`1b054373`. The naming follow-up is verified; unpaid-stack merging is the next
+reproduced gap.
 
 ## Previous focus, 2026-09-03
 

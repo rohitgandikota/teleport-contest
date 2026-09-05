@@ -1363,6 +1363,20 @@
     {"group":"Inventory organization","id":"inventory.adjust.merge-wielded-quiver","cFile":"src/invent.c","cFunction":"merged","description":"merge wielded quiver; verify a - 10 darts (wielded) in the final inventory observation"},
     {"group":"Inventory organization","id":"inventory.adjust.merge-quiver-wielded","cFile":"src/invent.c","cFunction":"merged","description":"merge quiver wielded; verify a - 10 darts (wielded) in the final inventory observation"},
     {"group":"Inventory organization","id":"inventory.adjust.merge-alternate-quiver","cFile":"src/invent.c","cFunction":"merged","description":"merge alternate quiver; verify a - 10 darts (alternate weapons; not wielded) in the final inventory observation"},
-    {"group":"Inventory organization","id":"inventory.adjust.lit-candle-merge","cFile":"src/light.c","cFunction":"obj_merge_light_sources","description":"lit candle merge; verify a - 10 partly used candles (lit) in the final inventory observation"}
+    {"group":"Inventory organization","id":"inventory.adjust.lit-candle-merge","cFile":"src/light.c","cFunction":"obj_merge_light_sources","description":"lit candle merge; verify a - 10 partly used candles (lit) in the final inventory observation"},
+    {"group":"Inventory names and remaining decisions","id":"inventory.adjust.used-menu-same-class","cFile":"src/invent.c","cFunction":"display_used_invlets","description":"used menu same class; verify final b - 10 darts"},
+    {"group":"Inventory names and remaining decisions","id":"inventory.adjust.unnamed-split-to-named","cFile":"src/invent.c","cFunction":"doorganize_core","description":"unnamed split to named; verify final b - 5 darts named Beta"},
+    {"group":"Inventory names and remaining decisions","id":"inventory.adjust.unnamed-move-to-named","cFile":"src/invent.c","cFunction":"doorganize_core","description":"unnamed move to named; verify final b - 7 darts"},
+    {"group":"Inventory names and remaining decisions","id":"inventory.adjust.collect-incompatible","cFile":"src/invent.c","cFunction":"doorganize_core","description":"collect incompatible; verify final b - 10 darts"},
+    {"group":"Inventory names and remaining decisions","id":"inventory.adjust.floating-full-pack","cFile":"src/invent.c","cFunction":"reassign","description":"floating full pack; verify final a - 10 darts"},
+    {"group":"Inventory names and remaining decisions","id":"inventory.adjust.reject-at-sign","cFile":"src/invent.c","cFunction":"doorganize_core","description":"reject at sign; verify final b - 10 darts"},
+    {"group":"Inventory names and remaining decisions","id":"inventory.adjust.reject-hyphen","cFile":"src/invent.c","cFunction":"doorganize_core","description":"reject hyphen; verify final b - 10 darts"},
+    {"group":"Inventory names and remaining decisions","id":"inventory.adjust.clear-stack-name","cFile":"src/do_name.c","cFunction":"do_oname","description":"clear stack name; verify final a - 10 darts"},
+    {"group":"Inventory names and remaining decisions","id":"object.naming.empty-cancel","cFile":"src/do_name.c","cFunction":"name_from_player","description":"empty cancel; verify final a - 10 darts named Alpha"},
+    {"group":"Inventory names and remaining decisions","id":"object.naming.escape-cancel","cFile":"src/do_name.c","cFunction":"name_from_player","description":"escape cancel; verify final a - 10 darts named Alpha"},
+    {"group":"Inventory names and remaining decisions","id":"object.naming.spaces-clear","cFile":"src/do_name.c","cFunction":"name_from_player","description":"spaces clear; verify final a - 10 darts"},
+    {"group":"Inventory names and remaining decisions","id":"object.naming.rename","cFile":"src/do_name.c","cFunction":"name_from_player","description":"rename; verify final a - 10 darts named Beta Note"},
+    {"group":"Inventory names and remaining decisions","id":"object.naming.name-truncate","cFile":"src/do_name.c","cFunction":"name_from_player","description":"name truncate; verify final a - 10 darts named QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ"},
+    {"group":"Inventory names and remaining decisions","id":"object.naming.named-corpse-wield","cFile":"src/objnam.c","cFunction":"killer_xname","description":"named corpse wield; verify final b - a cockatrice corpse named Pebble"}
   ]
 }

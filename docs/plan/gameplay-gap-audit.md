@@ -70,6 +70,12 @@ leak which passed terminal parity; an isolated omitted-cleanup fault confirms
 the check detects that defect. See [inventory-adjust-audit.md](inventory-adjust-audit.md)
 for source coverage, remaining decisions, and the still-missing merger lifecycle.
 
+The next 14 inventory and naming controls add 46 direct outcomes, bringing the
+union to 52,726/108,268. All 44 public and 420 supplemental fixtures pass. The
+new name state gate checks persisted names and temporary formatting changes;
+the C terminal alone cannot expose the full stored name length. Unpaid merging
+now has six failing C probes for the next implementation pass.
+
 The initial candidates below came from measured C execution. Their untested
 behavior is a hypothesis about possible defects until a C/JS mismatch is
 reproduced. The source locations refer to the recorder-patched C tree.

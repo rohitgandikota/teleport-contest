@@ -4003,7 +4003,7 @@ export function killer_xname(obj) {
     obj.opoisoned = 0;
     /* strip user-supplied name; artifacts keep theirs */
     if (!obj.oartifact && save_oname)
-        obj.oextra.oname = null;
+        obj.oname = null;
     /* temporarily identify the type of object */
     save_ocknown = game.objects[obj.otyp].oc_name_known;
     game.objects[obj.otyp].oc_name_known = 1;
@@ -4022,14 +4022,14 @@ export function killer_xname(obj) {
         buf = xname(obj);
     }
     /* apply an article if appropriate; caller should always use KILLED_BY */
-    if (obj.quan === 1 && !strstri(buf, "'s ") && !strstri(buf, "s' "))
+    if (obj.quan === 1 && strstri(buf, "'s ") < 0 && strstri(buf, "s' ") < 0)
         buf = (obj_is_pname(obj) || the_unique_obj(obj)) ? the(buf) : an(buf);
 
     game.objects[obj.otyp].oc_name_known = save_ocknown;
     game.objects[obj.otyp].oc_uname = save_ocuname;
     Object.assign(obj, save_obj); /* restore object's core settings */
     if (!obj.oartifact && save_oname)
-        obj.oextra.oname = save_oname;
+        obj.oname = save_oname;
 
     return buf;
 }

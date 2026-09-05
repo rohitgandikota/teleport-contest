@@ -9,6 +9,44 @@ loop until complete. The goal is active without a requested token budget.
 Current-corpus success is not the stopping criterion. Track unreviewed,
 untested, missing, and unreachable source paths explicitly.
 
+The 50-case inventory checkpoint below is committed and pushed as `1b054373`.
+The verified follow-up adds eight source-derived inventory cases and six object
+naming controls in `inventory-adjust-remaining-branches` and
+`object-name-editing`. The first eight-case run passed seven; all-space name
+removal failed. The shared ONAME macros read the wrong object field, and the
+player-name helper treated an all-space name as a cancel. Both are fixed.
+The new object-name state gate also exposed a C pointer-to-JS index mistake in
+`killer_xname`: an absent `strstri` match is -1, so C's negation must become an
+explicit negative-index check. The corrected formatter supplies the article,
+temporarily suppresses the player name, and restores the object's fields.
+
+All 14 scenarios match **2,139/2,139 screens and cursors** and **36,663/36,663
+RNG entries**. Exact native profiles add **46 direct outcomes** to the measured
+union, now **52,726/108,268**, with **4,280/5,491** function records entered.
+The union reaches `doorganize_core` 122/132, `display_used_invlets` 23/24,
+`reassign` 15/16, and `name_from_player` 6/6. These counters do not establish
+whole-function or whole-game equivalence. The scenario ledger is **1,359/1,359**.
+
+Full verification for this follow-up: public **44/44**, **11,405/11,405 screens**,
+**792,838/792,838 RNG**; supplemental **420/420**, **118,889/118,889 screens**,
+**5,988,344/5,988,344 RNG**, and **3,248/3,248 animations**. Public animations
+remain 1,462/1,483. Fuzz remains **101/102**, **14,261/14,262 screens** and
+**491,759/491,759 RNG**, with the known fixed-datetime artifact. All 46 hang
+checks, the 80-game role smoke, 14 tool tests, source audit, inventory and naming
+state gates, and existing fire-light/source-audit state gates pass. Logs are
+`.cache/inventory-adjust/naming-*.log`; profiles are
+`.cache/c-coverage/inventory-naming-20260905/`. Frozen files are unchanged.
+
+Next, port unpaid merging and the discarded-object lifecycle. Six C probes in
+`.cache/inventory-adjust/shop-probes.session.json` currently score 474/502
+screens and 21,694/32,204 RNG entries. They reuse the independently verified
+shop setup from `shop-unpaid-stack-split`, then split/merge, cancel, drop/pick
+up, and pay. These are targeted regression candidates, not a fresh-seed estimate.
+Read `same_price`, `obfree(obj, merge)`, and `oid_price_adjustment` in `shk.c`.
+The C inputs and names are in `shop-probes.input.json` and `.cases.json`.
+
+### Previous inventory checkpoint
+
 The first continuation now has **50 C scenarios in three permanent fixtures**:
 `inventory-adjust-source-gaps`, `inventory-adjust-named-stacks`, and
 `inventory-adjust-equipment`. Every scenario asserts its final inventory
@@ -49,10 +87,10 @@ unchanged. Logs are in `.cache/inventory-adjust/`; the exact profiles are in
 `.cache/c-coverage/inventory-adjust-20260905/`.
 
 The previous verified leash/corpse/coverage work is pushed as `b97c150f`.
-Next, continue the inventory review using
-[inventory-adjust-audit.md](inventory-adjust-audit.md). Remaining feasible
-decisions include unnamed-to-named splits, incompatible collection, repeated
-classes in the used-letter menu, and 52 floating slots. `merged()` still needs
+Continue the inventory review using
+[inventory-adjust-audit.md](inventory-adjust-audit.md). The follow-up above
+covers unnamed-to-named splits, incompatible collection, repeated classes in
+the used-letter menu, and 52 floating slots. `merged()` still needs
 its discarded-object/billing lifecycle reviewed against `obfree(obj, otmp)`;
 `mergable()` still refuses unpaid-stack matching. Those omissions are not
 resolved by the current pass rate. Preserve the active full-port goal.

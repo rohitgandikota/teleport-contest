@@ -4208,6 +4208,15 @@ radius. C removes the old source, then recomputes the combined stack's radius.
 references. Omitting the cleanup in an isolated runtime makes that gate fail.
 Source-backed state checks can expose defects before a visible frame changes.
 
+The naming follow-up found two representation boundaries that the state gate
+must preserve. `ONAME` and `has_oname` must access `obj.oname`, where this port
+stores names, rather than C's `obj.oextra.oname`. `strstri` returns an index
+or -1 here, so C's `!strstri(...)` becomes `strstri(...) < 0`. The literal C
+condition silently omitted articles in `killer_xname`. The new name state gate
+checks full stored names and restoration after temporary death-name formatting;
+the C terminal row truncates a 62-character name to 59 visible characters.
+Do not treat the visible truncation as the object's persisted name length.
+
 Repeatedly fixing failures in a random-play batch makes that batch regression
 coverage. Fresh seeds alone also do not remove the public trigram model's
 input-distribution bias. Record first-run results on a fresh batch before

@@ -469,6 +469,16 @@ export function free_oname(obj) {
 // include/global.h:404 PL_PSIZ
 const PL_PSIZ = 63;
 
+// src/do_name.c:105 name_from_player(); EDIT_GETLIN is off in the reference.
+// An empty response cancels; a response of spaces clears an existing name.
+async function name_from_player(prompt) {
+    const { getlin } = await import('./cmd.js');
+    const raw = await getlin(prompt);
+    if (!raw || raw[0] === '\x1b')
+        return null;
+    return mungspaces(raw).slice(0, PL_PSIZ - 1);
+}
+
 // src/do_name.c:372 oname() — assign a name to an object, creating the
 // artifact when the name matches one whose base type fits.
 export function oname(obj, name, oflgs) {
@@ -526,14 +536,9 @@ async function do_oname(obj) {
         return;
     }
 
-    const { getlin } = await import('./cmd.js');
     const which = obj.quan > 1 ? 'these' : 'this';
-    const raw = await getlin(`What do you want to name ${which} ${xname(obj)}?`);
-    if (!raw || raw[0] === '\x1b')
-        return;
-
-    const name = mungspaces(raw).slice(0, PL_PSIZ - 1);
-    if (!name)
+    const name = await name_from_player(`What do you want to name ${which} ${xname(obj)}?`);
+    if (name === null)
         return;
     if (obj.oartifact) {
         await pline(`${obj.oname || 'The artifact'} resists the attempt.`);
@@ -660,15 +665,13 @@ export async function docall(obj) {
        — docall_xname() strips quantity and BUC so the prompt names the TYPE,
        not this particular item. */
     const qbuf = `Call ${docall_xname(obj)}:`;
-    const { getlin } = await import('./cmd.js');
-    const buf = await getlin(qbuf);
-    if (buf === null || buf === '' || buf === '\x1b')
+    const name = await name_from_player(qbuf);
+    if (name === null)
         return;
 
     const oc = game.objects[obj.otyp];
     const had_name = !!oc.oc_uname;
     /* mungspaces(): all-spaces uncalls the item */
-    const name = buf.trim().replace(/\s+/g, ' ');
     if (!name) {
         if (had_name) {
             oc.oc_uname = null;

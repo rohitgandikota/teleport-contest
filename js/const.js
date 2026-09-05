@@ -2909,9 +2909,9 @@ export function has_edog(mtmp) { return !!EDOG(mtmp); }
 export function has_ebones(mtmp) { return !!mtmp?.mextra?.ebones; }
 
 // Object extra accessors
-// C: ONAME(obj) → ((char *)(obj)->oextra->oname)
-export function ONAME(obj) { return obj?.oextra?.oname || ''; }
-export function has_oname(obj) { return !!obj?.oextra?.oname; }
+// C: ONAME(obj) uses oextra; this port stores names directly on obj.
+export function ONAME(obj) { return obj?.oname || ''; }
+export function has_oname(obj) { return obj?.oname != null; }
 export function OMONST(obj) { return obj?.oextra?.omonst; }
 // include/obj.h:194 OMID(), :197 has_omonst(), :199 has_omid(); mkobj.c
 // free_omonst()/free_omid() drop the saved data

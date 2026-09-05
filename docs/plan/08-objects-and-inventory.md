@@ -21,6 +21,10 @@ The September source audit and remaining decisions are tracked in
 
 ### 8.1 Object data and naming
 
+- [x] September name editing pass: shared name accessors, C cancellation versus
+      all-space removal, whitespace folding and the 62-character stored limit.
+      Six C controls and the death-name restoration state gate pass. Artifact
+      restrictions and the rest of the naming machinery remain open.
 - [ ] Generate `js/objects_data.js` from `src/objects.c` with the M2 generator
 - [ ] Port `src/o_init.c` — randomised appearances per game, which consumes RNG at
       game start and must match exactly (`js/o_init.js` is currently 12 lines)
@@ -38,7 +42,7 @@ plausible-but-wrong names that are hard to spot in a diff.
 
 - [x] September `#adjust` source pass: count handling, split rollback,
       collect/merge/name rules, bumping and full-pack refusal, used-letter menus,
-      floating letters, and equipment/light merger fixes. Fifty asserted C
+      floating letters, and equipment/light merger fixes. Fifty-eight asserted C
       scenarios and the equipment/light state gate pass. Remaining branches
       and the discarded-object/billing lifecycle are tracked in the audit.
 - [ ] `src/invent.c`: `addinv`, `freeinv`, `getobj`, `ggetobj`, `display_inventory`,

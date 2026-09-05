@@ -4,7 +4,7 @@ Verified 2026-09-05 against the pinned recorder C tree. This is an incremental
 review under the active full-port goal. The functions below are not a claim
 that the rest of `invent.c` has been reviewed or that all their paths are tested.
 
-| C function | Source review and current implementation | Outcomes in the new C fixtures |
+| C function | Source review and current implementation | Outcomes in the first 50 C scenarios |
 |---|---|---:|
 | `invent.c:4981 doorganize` | Empty/gold-only refusal, floating letters, gold sanity filter, count-enabled getobj | 12/14 |
 | `invent.c:5068 doorganize_core` | Split detection, slot suggestions, retries, rollback, collection, name rules, merge/swap/bump, reinsertion | 115/132 |
@@ -56,9 +56,9 @@ share a source coordinate. The full profile is
 summary are in `.cache/inventory-adjust/coverage-union.mjs` and
 `coverage-union-summary.json`.
 
-## Next decisions to exercise
+## Follow-up inventory and naming controls
 
-The following are untested, feasible candidates from the remaining counters:
+Eight further cases exercise these previously untested decisions:
 
 - A used-letter menu with multiple objects of one class, so an existing heading
   is reused (`invent.c:3490`).
@@ -67,6 +67,29 @@ The following are untested, feasible candidates from the remaining counters:
 - Reject `@` and `-` as destination letters (`5172`).
 - Collect an unnamed incompatible stack, testing a failed merger (`5205`).
 - Move or split an unnamed stack into a named destination (`5214`, `5238`).
+
+Their first run passed seven of eight. Clearing a stack's name with spaces
+failed because `do_oname` treated the normalized empty name as cancellation.
+It now uses C's `name_from_player`: raw empty or escape input cancels; spaces
+clear the name; other input is normalized and capped at 62 characters. The
+shared `ONAME` accessors now use the port's actual flat name field, so the item
+menu correctly offers rename/un-name. Six additional C naming controls cover
+cancel, escape, spaces, whitespace folding, truncation, and a named corpse.
+
+`object-name-state-gate.mjs` verifies the full stored names, including the
+62-character name whose inventory row only displays 59 characters. It also
+checks that `killer_xname` suppresses a player name and restores every field.
+That check also found an article omission that the C fixture did not expose:
+the helper used C's `!strstri` even though the JS search returns -1 for no match. It now uses
+the correct negative-index check and formats `a cockatrice corpse`.
+
+The two new fixtures match 2,139 screens/cursors and 36,663 RNG entries. Their
+exact profiles add 46 direct outcomes to the union, now 52,726/108,268 with
+4,280/5,491 function records. The union reaches `doorganize_core` 122/132,
+`display_used_invlets` 23/24, `reassign` 15/16, and `name_from_player` 6/6.
+The remaining outcomes still require source and reachability review.
+
+## Next decisions to exercise
 
 Some cold outcomes are guards rather than normal gameplay. An empty inventory
 cannot reach the used-letter menu through `doorganize`; getobj and the item
@@ -80,8 +103,10 @@ Several nearby implementation gaps remain verified by source inspection:
 the name instead of going through `oname`; and `mergable()` still marks
 `same_price` unported and refuses unpaid merges. Compare the discarded-object,
 identity, bill, timer and transient-reference behavior against C before closing
-that review. The naming worker also needs editing/clearing-name cases, and
-custom pack order and menu-symbol options need their own controls.
+that review. Six new unpaid merge/cancel/drop/pickup/payment C probes already
+fail at 474/502 screens and 21,694/32,204 RNG entries. Custom pack order and
+menu-symbol options still need their own controls, as do artifact naming and
+the rest of the naming worker's branches.
 
 Full C/JS state checkpoints and a general mutation system remain future work.
 The new source-derived state assertions and single isolated fault injection

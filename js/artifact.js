@@ -362,6 +362,7 @@ function artifact_alignment(rec, artinum) {
 }
 
 /* include/artifact.h SPFX_* bits used below */
+export { SPFX_SEARCH };
 const SPFX_INTEL = 0x04, SPFX_RESTR = 0x02, SPFX_SPEAK = 0x08,
       SPFX_WARN = 0x20,
       SPFX_ATTK = 0x40, SPFX_SEARCH = 0x00000200,

@@ -101,6 +101,10 @@ export const Invis = () => !!(game.u?.intrinsic?.HInvis
 // include/youprop.h:199 Invisible, invisibility the hero cannot see.
 export const Invisible = () => Invis() && !See_invisible();
 
+// include/youprop.h:205 Displaced
+export const Displaced = () => !!(game.u?.intrinsic?.HDisplaced
+                                  || game.u?.uprops?.DISPLACED);
+
 // include/youprop.h:240 Levitation — ((HLevitation || ELevitation) && !BLevitation).
 export const Levitation = () =>
     !!(game.u?.intrinsic?.HLevitation || game.u?.uprops?.LEVITATION)
@@ -148,6 +152,11 @@ export const Drain_resistance = () =>
     !!(game.u?.intrinsic?.HDrain_resistance || game.u?.uprops?.DRAIN_RES);
 export const Sick_resistance = () =>
     !!(game.u?.intrinsic?.HSick_resistance || game.u?.uprops?.SICK_RES);
+// include/youprop.h:291/341
+export const Slow_digestion = () =>
+    !!(game.u?.intrinsic?.HSlow_digestion || game.u?.uprops?.SLOW_DIGESTION);
+export const Half_physical_damage = () =>
+    !!(game.u?.intrinsic?.HHalf_physical_damage || game.u?.uprops?.HALF_PHDAM);
 export const Antimagic = () =>
     !!(game.u?.intrinsic?.HAntimagic || game.u?.uprops?.ANTIMAGIC);
 /* #define Stealth ((HStealth || EStealth) && !BStealth) — nothing that sets

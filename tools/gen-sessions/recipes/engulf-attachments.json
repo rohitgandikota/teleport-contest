@@ -1,0 +1,155 @@
+{
+  "name": "engulf-attachments",
+  "description": "Swallowing removes floor punishment pieces and restores them on expulsion while preserving a carried ball. It releases a web and leash and plucks riders from their steeds, relocating the steeds before subsequent attacks.",
+  "coverage": [
+    "mode.debug",
+    "monster.movement",
+    "monster.special-effects",
+    "monster.pets",
+    "monster.steeds",
+    "object.tools-containers",
+    "object.armor",
+    "forms.polymorph",
+    "combat.melee",
+    "survival.timed-status",
+    "ui.getlin",
+    "ui.more-paging"
+  ],
+  "branches": [
+    "engulf-attachments.punished-death-reprieve",
+    "engulf-attachments.punished-slow-floor",
+    "engulf-attachments.punished-slow-carried",
+    "engulf-attachments.web-release",
+    "engulf-attachments.leash-release",
+    "engulf-attachments.mounted-worm",
+    "engulf-attachments.mounted-fire",
+    "engulf-attachments.mounted-acid"
+  ],
+  "requireBranchAssertions": true,
+  "segments": [
+    {
+      "name": "punished-death-reprieve",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             \u0017uncursed scroll of punishment\rra  \u001b\u001b\u001b\u001b\u001b\u001b\u0007hostile purple worm\rms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed ring of slow digestion\rPar\u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "punished-slow-floor",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             \u0017uncursed ring of slow digestion\rPar\u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed scroll of punishment\rrb  \u001b\u001b\u001b\u001b\u001b\u001b\u0007hostile purple worm\rms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "punished-slow-carried",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             \u0017uncursed ring of slow digestion\rPar\u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed scroll of punishment\rrb  \u001b\u001b\u001b\u001b\u001b\u001b,\u001b\u001b\u001b\u001b\u001b\u001b\u0007hostile purple worm\rms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "web-release",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             k\u0017web trap\rjk\u001b\u001b\u001b\u001b\u001b\u001b\u0007hostile purple worm\rms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "leash-release",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             \u0007tame wumpus\r\u0017uncursed leash\raal\u001b\u001b\u001b\u001b\u001b\u001b\u0007hostile purple worm\rms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "mounted-worm",
+      "seed": 6962,
+      "datetime": "20000112124000",
+      "nethackrc": "OPTIONS=name:wizard,role:Knight,race:human,gender=male,align:lawful,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             i\u001bwb \u0007tame saddled pony\r#ride\ryy\u001b\u001b\u001b\u001b\u001b\u001b\u0007hostile purple worm\rms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "mounted-fire",
+      "seed": 6962,
+      "datetime": "20000112124000",
+      "nethackrc": "OPTIONS=name:wizard,role:Knight,race:human,gender=male,align:lawful,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             i\u001bwb \u0007tame saddled pony\r#ride\ryy\u001b\u001b\u001b\u001b\u001b\u001b\u0007hostile fire vortex\rms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "mounted-acid",
+      "seed": 6962,
+      "datetime": "20000112124000",
+      "nethackrc": "OPTIONS=name:wizard,role:Knight,race:human,gender=male,align:lawful,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             i\u001bwb \u0007tame saddled pony\r#ride\ryy\u001b\u001b\u001b\u001b\u001b\u001b\u0007hostile ochre jelly\rms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    }
+  ],
+  "branchAssertions": [
+    {
+      "branch": "engulf-attachments.punished-death-reprieve",
+      "segment": 0,
+      "screenIncludes": [
+        "You are being punished for your misbehavior!",
+        "The purple worm bites!  The purple worm swallows you whole!--More--",
+        "OK, so you don't die.  You get regurgitated!--More--"
+      ]
+    },
+    {
+      "branch": "engulf-attachments.punished-slow-floor",
+      "segment": 1,
+      "screenIncludes": [
+        "You are being punished for your misbehavior!",
+        "The purple worm bites!  The purple worm swallows you whole!--More--",
+        "Obviously the purple worm doesn't like your taste.--More--"
+      ]
+    },
+    {
+      "branch": "engulf-attachments.punished-slow-carried",
+      "segment": 2,
+      "screenIncludes": [
+        "c - a heavy iron ball (chained to you).",
+        "The purple worm bites!  The purple worm swallows you whole!--More--",
+        "Obviously the purple worm doesn't like your taste.--More--"
+      ]
+    },
+    {
+      "branch": "engulf-attachments.web-release",
+      "segment": 3,
+      "screenIncludes": [
+        "You stumble into a spider web!",
+        "The purple worm bites!  The purple worm swallows you whole!--More--",
+        "You are released from the web!--More--"
+      ]
+    },
+    {
+      "branch": "engulf-attachments.leash-release",
+      "segment": 4,
+      "screenIncludes": [
+        "You slip the leash around your wumpus.",
+        "The purple worm bites!  The purple worm swallows you whole!--More--",
+        "The leash snaps loose.--More--"
+      ]
+    },
+    {
+      "branch": "engulf-attachments.mounted-worm",
+      "segment": 5,
+      "screenIncludes": [
+        "The purple worm lunges forward and plucks you off the saddled pony!--More--"
+      ]
+    },
+    {
+      "branch": "engulf-attachments.mounted-fire",
+      "segment": 6,
+      "screenIncludes": [
+        "The fire vortex whirls forward and plucks you off the saddled pony!--More--"
+      ]
+    },
+    {
+      "branch": "engulf-attachments.mounted-acid",
+      "segment": 7,
+      "screenIncludes": [
+        "The ochre jelly oozes forward and plucks you off the saddled pony!--More--"
+      ]
+    }
+  ]
+}

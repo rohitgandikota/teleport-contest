@@ -508,7 +508,7 @@ export async function chest_trap(obj, bodypart, disarm) {
                                15, false);
             } else {
                 const { create_gas_cloud } = await import('./region.js');
-                create_gas_cloud(obj.ox, obj.oy, 1, 8);
+                await create_gas_cloud(obj.ox, obj.oy, 1, 8);
             }
             exercise(A_CON, false);
         } else if (outcome >= 13) {

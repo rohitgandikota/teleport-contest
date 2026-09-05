@@ -8,7 +8,7 @@
 import { monsndx } from './makemon.js';
 import { mon_aligntyp } from './priest.js';
 import { is_obj_mappear } from './monst.js';
-import { Invis } from './youprop.js';
+import { Invis, Displaced, Underwater } from './youprop.js';
 import { CORR } from './const.js';
 import { ROOM } from './const.js';
 import { switch_terrain } from './hack.js';
@@ -995,7 +995,7 @@ export async function monflee(mtmp, fleetime, first, fleemsg) {
         /* src/monmove.c:521 — a vrock covers its escape in a stench cloud */
         if (mtmp.mnum === PMNAMES.PM_VROCK && !mtmp.mspec_used) {
             mtmp.mspec_used = 75 + rn2(25);
-            create_gas_cloud(mtmp.mx, mtmp.my, 5, 8);
+            await create_gas_cloud(mtmp.mx, mtmp.my, 5, 8);
         }
 
         mtmp.mflee = 1;
@@ -1014,6 +1014,7 @@ export async function monflee(mtmp, fleetime, first, fleemsg) {
 export function set_apparxy(mtmp) {
     let mx = mtmp.mux, my = mtmp.muy;
     let displ;
+    const umoney = money_cnt(game.invent);
 
     /* pet knows your smell; grabber still has hold of you; monsters which
        know where you are don't suddenly forget, if you haven't moved away */
@@ -1024,19 +1025,14 @@ export function set_apparxy(mtmp) {
         return;
     }
 
-    const Invis = !!game.u.uprops?.INVIS;
-    const Displaced = !!game.u.uprops?.DISPLACED;
-    const Underwater = !!game.u.uinwater;
+    const notseen = (!mtmp.mcansee || (Invis() && !perceives(game.mons[mtmp.mnum])));
+    const notthere = (Displaced() && mtmp.mnum !== PMNAMES.PM_DISPLACER_BEAST);
 
-    const notseen = (!mtmp.mcansee || (Invis && !perceives(game.mons[mtmp.mnum])));
-    const notthere = (Displaced && mtmp.mnum !== PMNAMES.PM_DISPLACER_BEAST);
-
-    if (Underwater) {
+    if (Underwater()) {
         displ = 1;
     } else if (notseen) {
         /* Xorns can smell quantities of valuable metal like that in solid
            gold coins, treat as seen */
-        const umoney = money_cnt(game.invent);
         displ = (mtmp.mnum === PMNAMES.PM_XORN && umoney) ? 0 : 1;
     } else if (notthere) {
         displ = couldsee(mx, my) ? 2 : 1;
@@ -1862,7 +1858,7 @@ export async function m_move(mtmp, after) {
             return await m_move_aggress(mtmp, nix, niy);
         /* src/monmove.c:2047 — postmove effects run BEFORE the location
            changes (monsters have no "previous location" field) */
-        m_postmove_effect(mtmp);
+        await m_postmove_effect(mtmp);
         /* src/monmove.c:2051 — remove then place, so level.monsters[][] tracks
            the move. Writing mx/my alone leaves m_at() answering with the old
            square. */
@@ -2390,7 +2386,7 @@ function finish_meating(mtmp) {
 // src/monmove.c:650 m_everyturn_effect() — called every turn for each
 // living monster (and the hero): a fog cloud sheds a harmless vapor trail
 // where it stands (this is what fills the Valley with drifting mist).
-export function m_everyturn_effect(mtmp) {
+export async function m_everyturn_effect(mtmp) {
     const is_u = (mtmp === game.youmonst);
     const x = is_u ? game.u.ux : mtmp.mx,
           y = is_u ? game.u.uy : mtmp.my;
@@ -2399,19 +2395,21 @@ export function m_everyturn_effect(mtmp) {
         /* don't leave a vapor cloud if some other gas cloud is already
            present, or when flowing under closed doors */
         if (!closed_door_mm(x, y) && !visible_region_at(x, y))
-            create_gas_cloud(x, y, 1, 0);       /* harmless vapor */
+            await create_gas_cloud(x, y, 1, 0);       /* harmless vapor */
     }
 }
 
 // src/monmove.c:672 m_postmove_effect() — effects a monster leaves at the
 // square it is ABOUT to vacate: hezrou stench and steam-vortex vapor.
-export function m_postmove_effect(mtmp) {
-    const x = mtmp.mx, y = mtmp.my;
+export async function m_postmove_effect(mtmp) {
+    const is_u = mtmp === game.youmonst;
+    const x = is_u ? game.u.ux0 : mtmp.mx;
+    const y = is_u ? game.u.uy0 : mtmp.my;
 
     if (mtmp.mnum === PMNAMES.PM_HEZROU)        /* stench */
-        create_gas_cloud(x, y, 1, 8);
+        await create_gas_cloud(x, y, 1, 8);
     else if (mtmp.mnum === PMNAMES.PM_STEAM_VORTEX && !mtmp.mcan)
-        create_gas_cloud(x, y, 1, 0);           /* harmless vapor */
+        await create_gas_cloud(x, y, 1, 0);           /* harmless vapor */
 }
 
 // src/monmove.c mon_yells(); a monster shouts (a watchman's warning)

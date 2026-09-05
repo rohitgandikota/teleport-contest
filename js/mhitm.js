@@ -30,7 +30,7 @@ import { you_were, you_unwere } from './were.js';
 import { polyself } from './polyself.js';
 import { You_feel } from './pline.js';
 import { shieldeff } from './display.js';
-import { Antimagic, Unchanging } from './youprop.js';
+import { Antimagic, Unchanging, Passes_walls } from './youprop.js';
 import { game } from './gstate.js';
 import { Deaf } from './youprop.js';
 import { You, You_hear } from './pline.js';
@@ -494,25 +494,29 @@ export async function hitmm(magr, mdef, mattk, mwep, dieroll) {
     return await mdamagem(magr, mdef, mattk, mwep, dieroll);
 }
 
-function engulfSquareAllowed(mon, x, y, otherData) {
-    const loc = game.level?.at(x, y);
-    if (!loc || passes_walls(mon.data))
-        return !!loc;
-    return !IS_OBSTRUCTED(loc.typ) && !closed_door(x, y)
-           && !IS_TREE(loc.typ)
-           && !(loc.typ === IRONBARS && !is_whirly(otherData));
-}
-
 // src/mhitm.c:807 engulf_target(), the shared size, trap, and terrain gate
-// used before one monster can move onto another monster's square.
-function engulf_target(magr, mdef) {
+export function engulf_target(magr, mdef) {
+    const uatk = magr === game.youmonst, udef = mdef === game.youmonst;
     if (mdef.data.msize >= MFLAGS.MZ_HUGE
         || (magr.data.msize < mdef.data.msize && !is_whirly(magr.data)))
         return false;
     if (mdef.mtrapped || magr.mtrapped)
         return false;
-    return engulfSquareAllowed(mdef, mdef.mx, mdef.my, magr.data)
-           && engulfSquareAllowed(magr, magr.mx, magr.my, mdef.data);
+    const dx = udef ? game.u.ux : mdef.mx;
+    const dy = udef ? game.u.uy : mdef.my;
+    let lev = game.level.at(dx, dy);
+    if (!(udef ? Passes_walls() : passes_walls(mdef.data))
+        && (IS_OBSTRUCTED(lev.typ) || closed_door(dx, dy) || IS_TREE(lev.typ)
+            || (lev.typ === IRONBARS && !is_whirly(magr.data))))
+        return false;
+    const ax = uatk ? game.u.ux : magr.mx;
+    const ay = uatk ? game.u.uy : magr.my;
+    lev = game.level.at(ax, ay);
+    if (!(uatk ? Passes_walls() : passes_walls(magr.data))
+        && (IS_OBSTRUCTED(lev.typ) || closed_door(ax, ay) || IS_TREE(lev.typ)
+            || (lev.typ === IRONBARS && !is_whirly(mdef.data))))
+        return false;
+    return true;
 }
 
 function engulfVerb(ptr) {

@@ -21,7 +21,7 @@ import { wary_dog } from './dog.js';
 import { makeknown } from './o_init.js';
 import { unmap_object, glyph_is_invisible_at } from './display.js';
 import { is_vampshifter } from './monst.js';
-import { revive_corpse } from './do.js';
+import { revive_corpse, placebc } from './do.js';
 import { monsndx } from './makemon.js';
 import { kill_egg } from './timeout.js';
 import { Has_contents } from './obj.js';
@@ -123,7 +123,10 @@ import { distant_name, doname, makeplural } from './objnam.js';
 import { You, You_feel, You_hear } from './pline.js';
 import { digests } from './mondata.js';
 import { u_locomotion } from './hack.js';
-import { Blind, Hallucination, Deaf } from './youprop.js';
+import { Blind, Hallucination, Deaf, Breathless, Underwater, Poison_resistance } from './youprop.js';
+import { immune_poisongas, attacktype_fordmg,
+         resists_poison as resists_poison_gas } from './mondata.js';
+import { M_POISONGAS_OK, M_POISONGAS_MINOR, M_POISONGAS_BAD } from './const.js';
 /* include/obj.h:321 polyfood(), mlevelgain(), mhealup(), ofood();
    src/mon.c:1384 mstoning(); include/mondata.h:28 cant_drown();
    src/mon.c:44 LEVEL_SPECIFIC_NOCORPSE(); src/mon.c:549 KEEPTRAITS();
@@ -317,6 +320,27 @@ export async function movemon() {
     return gs_somebody_can_move;
 }
 
+// src/mon.c:330 m_poisongas_ok()
+export function m_poisongas_ok(mtmp) {
+    const is_you = mtmp === game.youmonst;
+    if (nonliving(mtmp.data) || is_vampshifter(mtmp)
+        || breathless(mtmp.data) || immune_poisongas(mtmp.data))
+        return M_POISONGAS_OK;
+    const px = is_you ? game.u.ux : mtmp.mx;
+    const py = is_you ? game.u.uy : mtmp.my;
+    if ((mtmp.data.mlet === MONSYMS.S_EEL || Is_waterlevel(game.u.uz))
+        && is_pool(px, py))
+        return M_POISONGAS_OK;
+    if (attacktype_fordmg(mtmp.data, ATTKS.AT_BREA, ATTKS.AD_DRST)
+        || attacktype_fordmg(mtmp.data, ATTKS.AT_BREA, ATTKS.AD_RBRE))
+        return M_POISONGAS_OK;
+    if (is_you && (game.u.uinvulnerable || Breathless() || Underwater()))
+        return M_POISONGAS_OK;
+    if (is_you ? Poison_resistance() : resists_poison_gas(mtmp))
+        return M_POISONGAS_MINOR;
+    return M_POISONGAS_BAD;
+}
+
 // src/mon.c:1214 movemon_singlemon()
 async function movemon_singlemon(mtmp) {
     /* src/mon.c:1219 — end monster movement early if hero is flagged to
@@ -332,7 +356,7 @@ async function movemon_singlemon(mtmp) {
 
     /* src/mon.c:1248 m_everyturn_effect() — fog clouds shed harmless
        vapor where they stand, before the movement-energy gate */
-    m_everyturn_effect(mtmp);
+    await m_everyturn_effect(mtmp);
 
     if (globalThis.__dog_trace && mtmp.mtame)
         console.error(`DOGNRG turn=${game.moves} mv=${mtmp.movement}`);
@@ -2191,7 +2215,8 @@ export async function unstuck(mtmp) {
             game.mswallower = null;
             game.u.ux = mtmp.mx;
             game.u.uy = mtmp.my;
-            /* Punished ball&chain placebc: no session is punished */
+            if (game.u.uball && game.u.uchain.where !== OBJ_FLOOR)
+                await placebc();
             game.vision_full_recalc = 1;
             const { docrt } = await import('./display.js');
             await docrt();

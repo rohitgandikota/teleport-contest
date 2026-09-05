@@ -1242,6 +1242,19 @@ the hero is within three squares. The successful C probes tame the carrier
 after pickup, verify the wear message, and only then cause petrification.
 Body armor separately prevents petrification from hurtling into a cockatrice.
 
+The engulfing pass supplies another state-only counterexample. Removing the
+three gulpmu calls to ugolemeffects still passes all 4,579 new visible screens,
+55,683 RNG entries and 22 animations, but a source-state control catches lost
+iron-golem healing (HP 10 instead of 19). An occupation control also exposed
+cmd.reset_remarm writing an unused context.takeoff while the active record was
+context_takeoff. Use the shared C counterpart before introducing another copy
+of global state. See [engulfing-audit.md](engulfing-audit.md).
+
+Cloud creation and invisible polymorphs can expose errors far from combat:
+make_gas_cloud owns the steam message, nearby makemon must call set_apparxy,
+warnreveal follows automatic search, and deleting a light requests vision
+recalculation. A matching attack's RNG does not verify those later effects.
+
 ## dat/nhlib.lua replaces math.random; the nhlua.c warning is about the built-in
 
 `src/nhlua.c:2946` carries a warning that looks alarming for a byte-exact port:

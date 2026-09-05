@@ -29,6 +29,18 @@ import { IS_GRAVE } from './const.js';
 import { NO_MM_FLAGS } from './const.js';
 import { makemon } from './makemon.js';
 import { PMNAMES } from './monst_data.js';
+
+// src/engrave.c:297 engr_can_be_felt()
+export function engr_can_be_felt(ep) {
+    switch (ep.engr_type) {
+    case ENGRAVE:
+    case HEADSTONE:
+    case BURN:
+        return true;
+    default:
+        return false;
+    }
+}
 import { Amonnam } from './do_name.js';
 
 

@@ -113,7 +113,7 @@ import { MONSYMS } from './monst_data.js';
 import { m_everyturn_effect } from './monmove.js';
 import { u_wipe_engr } from './engrave.js';
 import { dosounds } from './sounds.js';
-import { dosearch0 } from './detect.js';
+import { dosearch0, warnreveal } from './detect.js';
 import { run_regions } from './region.js';
 import { nh_timeout, do_storms } from './timeout.js';
 import { age_spells } from './spell.js';
@@ -823,6 +823,9 @@ export async function moveloop_core() {
                     && !g.level?.flags?.noautosearch && (g.multi ?? 0) >= 0)
                     await dosearch0(1);
 
+                if (g.u.uprops?.WARNING || g.u.intrinsic?.HWarning)
+                    await warnreveal();
+
                 if (g.were_changes) {
                     const { set_ulycn } = await import('./were.js');
                     set_ulycn(g.u.ulycn);
@@ -978,7 +981,7 @@ export async function moveloop_core() {
     /* src/allmain.c:481, every living hero form gets its once-per-input
        monster effect before occupations and command reading. Fog clouds use
        this to leave a harmless one-square vapor trail. */
-    m_everyturn_effect(g.youmonst);
+    await m_everyturn_effect(g.youmonst);
 
     /* src/allmain.c:485 — an active occupation CONSUMES the turn instead of
        reading a command. It runs once per turn until it returns 0, and a

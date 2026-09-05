@@ -1,0 +1,125 @@
+{
+  "name": "engulf-form-transitions",
+  "description": "Unsolid forms defeat wrapping and digestion grabs. Polymorph changes cause expulsion, and losing a luminous form refreshes vision before the next message. The black-light case also reaches warning reveal while searching without floor reach.",
+  "coverage": [
+    "mode.debug",
+    "monster.movement",
+    "monster.special-effects",
+    "monster.pets",
+    "monster.steeds",
+    "object.tools-containers",
+    "object.armor",
+    "forms.polymorph",
+    "combat.melee",
+    "survival.timed-status",
+    "ui.getlin",
+    "ui.more-paging"
+  ],
+  "branches": [
+    "engulf-form-transitions.wraith-worm",
+    "engulf-form-transitions.wraith-lurker",
+    "engulf-form-transitions.black-light-trapper",
+    "engulf-form-transitions.cockatrice-inside",
+    "engulf-form-transitions.huge-inside",
+    "engulf-form-transitions.light-form-dies"
+  ],
+  "requireBranchAssertions": true,
+  "segments": [
+    {
+      "name": "wraith-worm",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             #polyself\rwraith\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0007hostile purple worm\rms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "wraith-lurker",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             #polyself\rwraith\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0007hostile lurker above\rms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "black-light-trapper",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             #polyself\rblack light\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0007hostile trapper\rms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "cockatrice-inside",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             \u0007hostile purple worm\rms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b#polyself\rcockatrice\r  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "huge-inside",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             \u0007hostile purple worm\rms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b#polyself\rgiant\r  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "light-form-dies",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             #polyself\ryellow light\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0007hostile purple worm\rms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    }
+  ],
+  "branchAssertions": [
+    {
+      "branch": "engulf-form-transitions.wraith-worm",
+      "segment": 0,
+      "screenIncludes": [
+        "You turn into a wraith!",
+        "The purple worm's gulp attempt passes right through you!"
+      ]
+    },
+    {
+      "branch": "engulf-form-transitions.wraith-lurker",
+      "segment": 1,
+      "screenIncludes": [
+        "You turn into a wraith!",
+        "The lurker above's grab attempt passes right through you!--More--",
+        "The lurker above folds itself around you!--More--"
+      ]
+    },
+    {
+      "branch": "engulf-form-transitions.black-light-trapper",
+      "segment": 2,
+      "screenIncludes": [
+        "You turn into a black light!",
+        "Its grab attempt passes right through you!--More--",
+        "Your danger sense causes you to take a second to check nearby.--More--"
+      ]
+    },
+    {
+      "branch": "engulf-form-transitions.cockatrice-inside",
+      "segment": 3,
+      "screenIncludes": [
+        "The purple worm bites!  The purple worm swallows you whole!--More--",
+        "You turn into a cockatrice!",
+        "The purple worm very hurriedly regurgitates you!--More--"
+      ]
+    },
+    {
+      "branch": "engulf-form-transitions.huge-inside",
+      "segment": 4,
+      "screenIncludes": [
+        "The purple worm bites!  The purple worm swallows you whole!--More--",
+        "You turn into a stone giant!  You get regurgitated!--More--"
+      ]
+    },
+    {
+      "branch": "engulf-form-transitions.light-form-dies",
+      "segment": 5,
+      "screenIncludes": [
+        "You turn into a yellow light!",
+        "You feel an unseen monster!  It bites!  You return to human form!--More--",
+        "You can see again.  The purple worm swallows you whole!--More--"
+      ]
+    }
+  ]
+}

@@ -12,9 +12,69 @@ Continue the authorized work; do not mark it complete or recreate it.
 Current-corpus success is not the stopping criterion. Track unreviewed,
 untested, missing, and unreachable source paths explicitly.
 
-### Current work: monster statues and life saving verified, local commit next
+### Current work: verified engulfing pass, preparing local checkpoint
 
-Uncommitted runtime after 66fa5d8c now ports the full monstone body and shared
+Uncommitted edits in mhitu.js, mhitm.js and youprop.js now port the missing
+gulpmu arms: shared engulf_target and failed_grab, punishment, mounting,
+occupations, traps, leashes, initial and final petrification, elemental
+resistance effects, disease renewal, physical damage reduction and huge-form
+expulsion. The full C gulpmu, failed_grab, engulf_target and diseasemu bodies
+were reviewed. Slow_digestion and Half_physical_damage use shared properties.
+
+All 29 ignored C probes now pass in .cache/engulfing/{initial,branches,
+interactions}.session.json: 6,588 screens/cursors, 80,914 RNG, 34 animations.
+The repaired dependencies include unstuck returning punishment pieces,
+makemon calling set_apparxy for nearby creation, set_apparxy's intrinsic
+invisibility/displacement, del_light_source requesting vision recalc,
+dismount_steed's relocation and missing branches, make_gas_cloud's shared
+feedback with awaiting runtime callers, m_poisongas_ok, mfind0/warnreveal,
+search bonuses and feel_location's levitation/underwater/engraving/ball arms.
+Full C dismount_steed, set_apparxy, expels, unstuck, mfind0, dosearch0,
+warnreveal, feel_location, polyman, rehumanize, make_blinded, make_gas_cloud,
+m_poisongas_ok and del_light_source/delete_ls bodies were read. This does not
+certify the whole surrounding modules. Source audit is 0/268.
+
+Intent validation: fire/cold/shock rings and alchemy smock resist; wraith-worm
+and wraith-lurker/black-light-trapper have failed grabs; web and leash detach;
+floor/carried slow-digestion punishment reappears; Knight mounts are plucked
+by worm/fire vortex/ochre jelly; fog human and flesh-golem cases engulf;
+cockatrice-in-worm is hurriedly released. Yellow light dies to a bite before
+swallowing, useful as rehumanization/light-deletion evidence only. Initial
+ghost polys were rejected; initial purported acid resistance lacks it; newt
+fog and cockatrice-before-worm do not reach their intended gulp branches.
+Do not give those failed setups branch credit.
+
+Three permanent recipes now contain 20 intent-validated C cases: engulf-resistance,
+engulf-form-transitions and engulf-attachments. They match 4,579 screens/cursors,
+55,683 RNG entries and 22 animations. The assertion ledger is 1,867/1,867.
+All three native recordings are exact and add 90 outcomes, no entered records:
+union 54,140/108,268 and 4,315/5,491. gulpmu reaches 75/100 outcomes.
+
+The new engulfing-state-gate passes all 20 replays and constructed source
+controls. Omitting golem healing still passes all new visible replays, but
+fails the state control (iron golem HP 10 rather than 19). Another state
+control exposed cmd.reset_remarm clearing a duplicate take-off record rather
+than context_takeoff. cmd now imports the shared do_wear counterpart. The final
+514-fixture regression after this runtime edit passed, log regression-occupation.
+All 44 public and 470 supplemental fixtures pass. Supplemental matches 171,486
+screens/cursors, 7,921,440 RNG and 21,355 animations. Public remains 11,405
+screens/cursors, 792,838 RNG and 1,462/1,483 animations. Fuzz remains 101/102
+with the known fixed-date miss, 14,261/14,262 screens. All 47 hang checks,
+80 role controls, 16 tool tests, source audit (0/268), engulfing state and
+relevant state gates pass. All final job exits were collected; the negative
+state control alone correctly exits 1. Exact 85153c8b baseline modules fail
+all three new fixtures: 3,555 screens, 4,482 cursors, 29,205 RNG and nine
+animations. See engulfing-audit.md and .cache/engulfing/totals.json.
+
+Next: commit the verified pass locally, then continue region.c's incomplete
+monster cloud effects and the missing hero m_postmove_effect hook in hack.js.
+feel_location still has incomplete suppression/dark-room/sensed-monster
+rendering; del_light_source diagnostics remain partial. Full mondead and
+mon_break_armor are later source work. No publishing authorization has arrived.
+
+### Previous verified checkpoint: monster statues
+
+Local commit 85153c8b now ports the full monstone body and shared
 lifesaved_monster/set_mon_min_mhpmax, m_useup/m_useupall, m_lose_armor and
 extract_from_minvent behavior. wary_dog includes revival feedback and cleanup.
 The statue probes also exposed dochug ignoring use_misc/use_defensive's zero
@@ -35,7 +95,7 @@ tools/monster-statue-state-gate.mjs (ten replays plus source controls), now
 passing. The first state attempt incorrectly assumed all four items stayed in
 their sacks; C RNG and source trace disprove that for boots and armor.
 
-All 511 fixtures pass on the current runtime, 44 public and 467 supplemental.
+All 511 fixtures pass at 85153c8b, 44 public and 467 supplemental.
 Supplemental matches 166,907 screens/cursors, 7,865,757 RNG and 21,333 animations.
 Public remains 11,405 screens/cursors, 792,838 RNG and 1,462/1,483 animations.
 Fuzz is 101/102 with its known fixed-date miss (14,261/14,262 screens). All
@@ -58,10 +118,8 @@ Logs and rejected exploratory inputs are under .cache/monster-statue:
 regression-final, permanent-score, state-final, equipment-state-final, fuzz,
 hang, roles, tool-tests-final, source-final, ledger-final, native, union,
 baseline-permanent, negative-replay, negative-state, and totals.json.
-Related gates use their full tool names as log names. No implementation or
-fixture commit has been made for this pass yet. Finish the local commit, then
-continue gulpmu. Its full C body (mhitu.c:1289-1590) has been read again;
-no engulfing edits have started in this pass.
+Related gates use their full tool names as log names. Commit 85153c8b is local;
+the publishing-authorization question remains pending.
 
 ### Previous verified checkpoint: monster pickup
 

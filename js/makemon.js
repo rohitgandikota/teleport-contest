@@ -54,7 +54,7 @@ import { attacktype, is_neuter, is_floater, emits_light, likes_lava,
 import { is_vampshifter } from './monst.js';
 import { t_at, is_pool, is_lava, m_in_air, resists_ston } from './mon.js';
 import { touch_petrifies } from './mondata.js';
-import { can_hide_under_obj, dochugw } from './monmove.js';
+import { can_hide_under_obj, dochugw, set_apparxy } from './monmove.js';
 import { couldsee } from './vision.js';
 import { is_pit, OBJ_FLOOR, PLNMSG_HIDE_UNDER } from './const.js';
 import { ACCESSIBLE, POOL, LAVAPOOL,
@@ -2303,11 +2303,8 @@ export function makemon(ptr, x, y, mmflags) {
            must start at 0, or movemon() lets the monster act on turn 1 when
            C makes it wait for its first allotment. */
         movement: 0, mspeed: 0, permspeed: 0,
-        /* mux/muy are where the monster THINKS the hero is. set_apparxy()
-           assigns them each turn and is not ported; until it is, they have to
-           read as C's zeroed 0 rather than undefined, because monlineu() feeds
-           them to online2() where undefined makes every delta NaN and `!dy`
-           then answers true for EVERY square. */
+        seen_resistance: 0,
+        /* C zeroes the apparent hero position before set_apparxy(). */
         mux: 0, muy: 0,
         female: 0, msleeping: 0, mpeaceful: 0, mtame: 0,
         minvent: null, mgold: 0, data: ptr, mnum: mndx,
@@ -2467,6 +2464,7 @@ export function makemon(ptr, x, y, mmflags) {
         /* src/makemon.c:1391. Creation beside the hero draws the monster
            once here and again in the common arrival block below. */
         newsym(mtmp.mx, mtmp.my);
+        set_apparxy(mtmp);
     }
 
     /* src/makemon.c:1404 — a long worm grows a random tail at creation */

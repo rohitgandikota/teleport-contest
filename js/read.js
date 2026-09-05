@@ -1664,7 +1664,7 @@ async function do_stinking_cloud(sobj, mention_stinking) {
         return;
     }
     const { create_gas_cloud } = await import('./region.js');
-    create_gas_cloud(cc.x, cc.y, 15 + 10 * bcsign(sobj),
+    await create_gas_cloud(cc.x, cc.y, 15 + 10 * bcsign(sobj),
                      8 + 4 * bcsign(sobj));
 }
 

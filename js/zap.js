@@ -4682,7 +4682,7 @@ export async function zap_over_floor(
             /* don't create steam clouds on Plane of Water; air bubble
                movement and gas regions don't understand each other */
             if (!on_water_level) {
-                create_gas_cloud(x, y, rnd(5), 0); /* 1..5, no damg */
+                await create_gas_cloud(x, y, rnd(5), 0); /* 1..5, no damg */
                 if (game.iflags.last_msg === PLNMSG_ENVELOPED_IN_GAS)
                     msggiven = true;
             }
@@ -4727,7 +4727,7 @@ export async function zap_over_floor(
                 }
             }
         } else if (IS_FOUNTAIN(lev.typ)) {
-            create_gas_cloud(x, y, rnd(3), 0); /* 1..3, no damage */
+            await create_gas_cloud(x, y, rnd(3), 0); /* 1..3, no damage */
             if (see_it)
                 await pline('Steam billows from the fountain.');
             rangemod -= 1;
@@ -4836,7 +4836,7 @@ export async function zap_over_floor(
            caller is placing a series of 1x1 clouds along the zap's path;
            <x,y> for wall locations might be included--reject those */
         if (ZAP_POS(lev.typ))
-            create_gas_cloud(x, y, 1, 8);
+            await create_gas_cloud(x, y, 1, 8);
         break;
 
     case ZT_LIGHTNING:

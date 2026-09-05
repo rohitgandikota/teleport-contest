@@ -37,7 +37,9 @@ export function visible_region_at(x, y) {
 
 import { rn1, rn2, rnd } from './rng.js';
 import { isok } from './hacklib.js';
-import { ACCESSIBLE } from './const.js';
+import { ACCESSIBLE, M_POISONGAS_OK, REG_NOT_HEROS, PLNMSG_ENVELOPED_IN_GAS } from './const.js';
+import { m_poisongas_ok } from './mon.js';
+import { You } from './pline.js';
 import { cmap_names } from './drawing_data.js';
 import { PMNAMES } from './monst_data.js';
 import { selection_getbounds, selection_getpoint } from './selvar.js';
@@ -88,10 +90,18 @@ export function remove_region(reg) {
     }
 }
 
+// src/region.c:1168 is_hero_inside_gas_cloud()
+function is_hero_inside_gas_cloud() {
+    return (game.regions || []).some(reg => reg.hero_inside
+        && reg.inside_f === 'INSIDE_GAS_CLOUD');
+}
+
 // src/region.c:1182 make_gas_cloud() — flags, callbacks and the visible
 // glyph. Damage clouds are poison (S_poisoncloud), zero-damage clouds are
 // steam/vapor (S_cloud).
 function make_gas_cloud(cloud, damage, inside_cloud) {
+    if (!game.in_mklev && !game.context?.mon_moving)
+        cloud.player_flags = (cloud.player_flags ?? REG_NOT_HEROS) & ~REG_NOT_HEROS;
     cloud.inside_f = 'INSIDE_GAS_CLOUD';
     cloud.expire_f = 'EXPIRE_GAS_CLOUD';
     cloud.arg = damage;
@@ -101,8 +111,11 @@ function make_gas_cloud(cloud, damage, inside_cloud) {
        : S_cloud); show_region() (js/display.js) paints it */
     cloud.glyph_cmap = damage ? cmap_names.S_poisoncloud : cmap_names.S_cloud;
     add_region(cloud);
-    /* add_region records whether the hero starts inside the cloud so the
-       per-turn callback can apply its effects. */
+    if (!game.in_mklev && !inside_cloud && is_hero_inside_gas_cloud())
+        return (async () => {
+            await You(`are enveloped in a cloud of ${damage ? 'noxious gas' : 'steam'}!`);
+            game.iflags.last_msg = PLNMSG_ENVELOPED_IN_GAS;
+        })();
 }
 
 // src/region.c:1210 create_gas_cloud() — breadth-first cloud growth from
@@ -111,6 +124,11 @@ function make_gas_cloud(cloud, damage, inside_cloud) {
 export function create_gas_cloud(x, y, cloudsize, damage) {
     const xcoords = [x], ycoords = [y];
     let newidx = 1;
+    let inside_cloud = is_hero_inside_gas_cloud();
+    if (!game.context?.mon_moving && game.u.ux === x && game.u.uy === y
+        && cloudsize === 1 && (!damage
+            || (damage && m_poisongas_ok(game.youmonst) === M_POISONGAS_OK)))
+        inside_cloud = true;
 
     if (cloudsize > MAX_CLOUD_SIZE)
         cloudsize = MAX_CLOUD_SIZE;
@@ -175,13 +193,14 @@ export function create_gas_cloud(x, y, cloudsize, damage) {
     /* a cloud constrained in a small space lives longer */
     cloud.ttl = Math.trunc((cloud.ttl * cloudsize) / newidx);
 
-    make_gas_cloud(cloud, damage, false);
-    return cloud;
+    const message = make_gas_cloud(cloud, damage, inside_cloud);
+    return message ? message.then(() => cloud) : cloud;
 }
 
 // src/region.c:1315 create_gas_cloud_selection(). Special-level clouds have
 // no random lifetime: create_region() leaves ttl at -1, so they persist.
 export function create_gas_cloud_selection(sel, damage) {
+    const inside_cloud = is_hero_inside_gas_cloud();
     const bounds = { lx: 0, ly: 0, hx: 0, hy: 0 };
     selection_getbounds(sel, bounds);
     const cloud = {
@@ -201,8 +220,8 @@ export function create_gas_cloud_selection(sel, damage) {
                 cloud.bounding_box.hy = Math.max(cloud.bounding_box.hy, y);
             }
 
-    make_gas_cloud(cloud, damage, false);
-    return cloud;
+    const message = make_gas_cloud(cloud, damage, inside_cloud);
+    return message ? message.then(() => cloud) : cloud;
 }
 
 // src/region.c:1090 inside_gas_cloud(), the hero branch.

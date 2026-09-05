@@ -7,13 +7,15 @@ import { block_point, unblock_point } from './vision.js';
 import { is_lightblocker_mappear } from './monst.js';
 import { game } from './gstate.js';
 import { rn2_on_display_rng } from './rng.js';
-import { money_cnt, update_inventory } from './invent.js';
+import { money_cnt, update_inventory, sobj_at } from './invent.js';
+import { can_reach_floor } from './pickup.js';
 import { ONAMES, OCLASSES } from './objects_data.js';
 import { update_topl, show_topl_nohistory } from './tty/topl.js';
 import { xwaitforspace } from './tty/getline.js';
 import { term_start_color } from './tty/termcap.js';
 import { rank, rank_of, bot_conditions } from './botl.js';
-import { Upolyd } from './const.js';
+import { Upolyd, WARNCOUNT, IS_OBSTRUCTED, IS_ROOM, IS_POOL,
+         OBJ_FLOOR, BC_CHAIN, BC_BALL } from './const.js';
 import { cansee, couldsee, vision_recalc } from './vision.js';
 import { Blind, Infravision, Hallucination, Invis, See_invisible,
          Underwater, Detect_monsters } from './youprop.js';
@@ -39,9 +41,9 @@ import {
     AM_NONE, AM_CHAOTIC, AM_NEUTRAL, AM_LAWFUL, AM_MASK, AM_SANCTUM,
     ACCESSIBLE, Is_rogue_level, Is_waterlevel,
 } from './const.js';
-import { engr_at } from './engrave.js';
+import { engr_at, engr_can_be_felt } from './engrave.js';
 import { visible_region_at } from './region.js';
-import { is_pool_or_lava } from './dbridge.js';
+import { is_pool_or_lava, is_ice } from './dbridge.js';
 import { is_pool } from './mon.js';
 import { nhgetch } from './input.js';
 import { update_lastseentyp } from './dungeon.js';
@@ -1923,9 +1925,10 @@ export function set_seenv(lev, x0, y0, x, y) {
 
 // src/display.c:746 feel_location() — the hero maps a square by touch:
 // seen vector set as if seen, then the memory written from the level's
-// truth (top object, else seen trap, else engraving/terrain), regardless
-// of vision. The levitation feel rules and the underwater arm are gated.
+// truth subject to reach, remembered terrain and underwater restrictions.
 export function feel_location(x, y) {
+    if (game.in_mklev)
+        return;
     if (!isok(x, y))
         return;
     const loc = game.level?.at(x, y);
@@ -1938,10 +1941,63 @@ export function feel_location(x, y) {
     if (glyph_is_invisible_at(x, y) && m_at(x, y))
         return;
 
+    if (Underwater() && !Is_waterlevel(game.u.uz)
+        && !is_pool_or_lava(x, y) && !is_ice(x, y))
+        return;
+
     set_seenv(loc, game.u.ux, game.u.uy, x, y);
 
-    if (game.u.uprops?.LEVITATION)
-        (game.unported ||= new Set()).add('feel_location:levitation');
+    if (!can_reach_floor(false)) {
+        const boulder = sobj_at(ONAMES.BOULDER, x, y);
+        if (IS_OBSTRUCTED(loc.typ)
+            || (IS_DOOR(loc.typ) && (loc.doormask & (D_LOCKED | D_CLOSED)))) {
+            map_background(x, y, 1);
+        } else if (boulder) {
+            map_object(boulder, 1);
+        } else if (IS_DOOR(loc.typ)) {
+            map_background(x, y, 1);
+        } else if (IS_ROOM(loc.typ) || IS_POOL(loc.typ)) {
+            let do_room_glyph = false;
+            const glyph = loc.remembered_glyph?.glyph;
+            if ((glyph?.kind === 'obj' && glyph.otyp === ONAMES.BOULDER)
+                || glyph_is_invisible_at(x, y)) {
+                if (loc.typ !== ROOM && loc.seenv)
+                    map_background(x, y, 1);
+                else
+                    do_room_glyph = true;
+            } else if (glyph?.kind === 'cmap' && glyph.cmap >= CM.S_stone
+                       && glyph.cmap < CM.S_darkroom) {
+                do_room_glyph = true;
+            }
+            if (do_room_glyph) {
+                const cmap = dark_room_color() && !Is_rogue_level(game.u.uz)
+                    ? CM.S_darkroom : loc.waslit ? CM.S_room : CM.S_stone;
+                const sym = showsym(cmap);
+                const cell = { ch: sym.ch, color: defsyms[cmap].color,
+                    decgfx: !!sym.dec, glyph: { kind: 'cmap', cmap } };
+                loc.remembered_glyph = cell;
+                show_glyph_cell(x, y, cell.ch, cell.color, cell.decgfx, 0, cell.glyph);
+            }
+        } else {
+            map_background(x, y, 1);
+            const glyph = loc.remembered_glyph?.glyph;
+            if (loc.typ === CORR && glyph?.cmap === CM.S_litcorr && !loc.waslit) {
+                const sym = showsym(CM.S_corr);
+                const cell = { ch: sym.ch, color: defsyms[CM.S_corr].color,
+                    decgfx: !!sym.dec, glyph: { kind: 'cmap', cmap: CM.S_corr } };
+                loc.remembered_glyph = cell;
+                show_glyph_cell(x, y, cell.ch, cell.color, cell.decgfx, 0, cell.glyph);
+            }
+        }
+        const mon = m_at(x, y);
+        if ((game.u.ux !== x || game.u.uy !== y) && mon && sensemon(mon))
+            newsym(x, y);
+        return;
+    }
+
+    const ep = engr_at(x, y);
+    if (ep && engr_can_be_felt(ep))
+        ep.erevealed = 1;
 
     /* _map_location(x, y, 1) */
     const obj = covers_objects(x, y) ? null : vobj_at(x, y);
@@ -1960,6 +2016,15 @@ export function feel_location(x, y) {
        has last seen here (svl.lastseentyp); callers compare it to learn
        whether feeling the spot taught the hero anything. */
     update_lastseentyp(x, y);
+    if (game.u.uball) {
+        for (const [piece, bit] of [[game.u.uchain, BC_CHAIN], [game.u.uball, BC_BALL]]) {
+            if (piece?.where === OBJ_FLOOR && piece.ox === x && piece.oy === y
+                && vobj_at(x, y) === piece)
+                game.u.bc_felt |= bit;
+            else
+                game.u.bc_felt &= ~bit;
+        }
+    }
     const sensed = (game.u.ux !== x || game.u.uy !== y) && m_at(x, y)
                    && sensemon(m_at(x, y));
     if (sensed) {
@@ -2791,6 +2856,11 @@ export function mon_warning(mon) {
     if (dx * dx + dy * dy >= 100)
         return false;
     return (((mon.m_lev ?? 0) / 4) | 0) >= (game.context?.warnlevel ?? 1);
+}
+
+// src/display.c:654 warning_of()
+export function warning_of(mon) {
+    return mon_warning(mon) ? Math.min(Math.trunc(mon.m_lev / 4), WARNCOUNT - 1) : 0;
 }
 
 /* include/engrave.h:50 spot_shows_engravings() */

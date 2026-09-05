@@ -70,8 +70,10 @@ function new_light_core(x, y, range, type, id) {
 export function del_light_source(type, id) {
     const ls = lights();
     const i = ls.findIndex((s) => s.type === type && s.id === id);
-    if (i >= 0)
+    if (i >= 0) {
         ls.splice(i, 1);
+        game.vision_full_recalc = 1; // src/light.c:160 delete_ls()
+    }
 }
 
 // src/light.c:826 obj_adjust_light_radius() — an artifact's light changed

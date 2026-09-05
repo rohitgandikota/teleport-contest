@@ -617,6 +617,11 @@ export function attacktype(ptr, atyp) {
 
 // include/mondata.h:26 breathless()
 export const breathless = (d) => (d.mflags1 & MFLAGS.M1_BREATHLESS) !== 0;
+// include/mondata.h:28 cant_drown()
+export const cant_drown = (ptr) => is_swimmer(ptr) || amphibious(ptr) || breathless(ptr);
+// include/mondata.h:16 immune_poisongas()
+export const immune_poisongas = (ptr) => ptr === game.mons[PMNAMES.PM_HEZROU]
+    || ptr === game.mons[PMNAMES.PM_VROCK];
 // include/mondata.h:55 has_head() — note the sense: NOHEAD CLEAR means it has one
 export const has_head   = (d) => (d.mflags1 & MFLAGS.M1_NOHEAD) === 0;
 // include/mondata.h:62 is_silent()

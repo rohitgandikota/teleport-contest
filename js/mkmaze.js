@@ -982,7 +982,7 @@ export async function fumaroles() {
 
         if (game.level.at(x, y)?.typ === LAVAPOOL) {
             const { create_gas_cloud } = await import('./region.js');
-            const r = create_gas_cloud(x, y, rn1(10, sizemin), rn1(10, 5));
+            const r = await create_gas_cloud(x, y, rn1(10, sizemin), rn1(10, 5));
 
             /* include/region.h:22 clear_heros_fault(): not the hero's doing */
             if (r)

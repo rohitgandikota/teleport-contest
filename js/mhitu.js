@@ -26,7 +26,11 @@ import { split_mon } from './potion.js';
 import { Your } from './pline.js';
 import { ugolemeffects } from './polyself.js';
 import { make_blinded, make_hallucinated, make_stunned, incr_itimeout } from './potion.js';
-import { snuff_lit } from './apply.js';
+import { snuff_lit, number_leashed, unleash_all } from './apply.js';
+import { engulf_target, failed_grab } from './mhitm.js';
+import { unplacebc, placebc } from './do.js';
+import { dismount_steed } from './steed.js';
+import { reset_occupations } from './cmd.js';
 import { mondead, wake_nearto } from './mon.js';
 import { resists_blnd } from './mondata.js';
 import { is_waterwall } from './dbridge.js';
@@ -41,37 +45,40 @@ import { is_animal, is_human, perceives, dmgtype, gender, pronoun_gender,
          defended, resists_acid, resists_cold, resists_elec, resists_fire,
          resists_ston, resists_drli, sticks, haseyes, stagger,
          poly_when_stoned, mhe, noit_mhim, cvt_adtyp_to_mseenres,
-         monstseesu, monstunseesu, flaming }
+         monstseesu, monstunseesu, flaming, amorphous, amphibious }
          from './mondata.js';
 import { is_vampshifter, DEADMONSTER, MON_WEP } from './monst.js';
 import { poly_gender, body_part, polymon } from './polyself.js';
 import { Blind, Blinded, Invis, See_invisible, Underwater, Deaf, Levitation, Flying,
          Cold_resistance, Fire_resistance, Hallucination,
          Reflecting, Shock_resistance, Stone_resistance,
+         Acid_resistance, Sick_resistance, Slow_digestion,
+         Half_physical_damage, Amphibious, Breathless,
          Unaware, Protection_from_shape_changers, Detect_monsters } from './youprop.js';
 import { ATTKS, MONSYMS, PMNAMES, MFLAGS } from './monst_data.js';
 import { W_ARMOR, W_AMUL, NON_PM, u_at, is_pit, Upolyd, PRONOUN_HALLU,
          M_ATTK_MISS, M_ATTK_HIT, M_ATTK_AGR_DIED, M_ATTK_AGR_DONE,
          M_ATTK_DEF_DIED,
-         TT_PIT, WATER, P_WHIP, P_POLEARMS, NEED_WEAPON,
+         TT_PIT, TT_WEB, DISMOUNT_ENGULFED, WATER, P_WHIP, P_POLEARMS, NEED_WEAPON,
          NEED_HTH_WEAPON, LEFT_SIDE, RIGHT_SIDE, LEG,
          MON_EXPLODE, XKILL_NOMSG, SICK_NONVOMITABLE, STONING,
          KILLED_BY, W_ARMG, ERODE_CORRODE, EF_GREASE, EF_VERBOSE,
          STRAT_WAITFORU, NO_MINVENT, MM_EDOG, MM_NOMSG, A_CHAOTIC,
          A_INT, A_WIS, A_CHA, HAND, HAIR, LEFT_RING, RIGHT_RING,
          RLOC_MSG, OBJ_FREE, LARGEST_INT, BOLT_LIM, TIMEOUT,
-         M_SEEN_FIRE } from './const.js';
+         M_SEEN_FIRE, M_SEEN_COLD, M_SEEN_ELEC, M_SEEN_ACID } from './const.js';
 import { ONAMES, OCLASSES } from './objects_data.js';
 import { genders } from './role_data.js';
 import { pline, canspotmon, canseemon, mon_visible, sensemon, bot,
-         map_invisible, newsym, urgent_pline, shieldeff } from './display.js';
+         map_invisible, newsym, urgent_pline, shieldeff,
+         display_nhwindow_message } from './display.js';
 import { cansee, couldsee } from './vision.js';
 import { Amonnam, Monnam, pmname, rndmonnam, hliquid, christen_monst,
          upstart, noit_mon_nam, noit_Monnam }
          from './do_name.js';
 import { You, You_feel, You_hear } from './pline.js';
 import { attacktype_fordmg, dmgtype_fromattack } from './mondata.js';
-import { mon_nam } from './do_name.js';
+import { mon_nam, Some_Monnam } from './do_name.js';
 import { Inhell, remove_monster, place_monster, makemon } from './makemon.js';
 import { swallowed } from './display.js';
 import { vision_recalc } from './vision.js';
@@ -80,7 +87,7 @@ import { A_CON, A_STR, A_DEX } from './const.js';
 import { sobj_at } from './invent.js';
 import { s_suffix } from './hacklib.js';
 import { an, doname, makeplural, safe_qbuf, simpleonames,
-         suit_simple_name, the, xname, yname } from './objnam.js';
+         suit_simple_name, the, xname, yname, vtense } from './objnam.js';
 import { nomul } from './hack.js';
 import { stop_occupation } from './allmain.js';
 import { hitval, mon_wield_item } from './weapon.js';
@@ -96,7 +103,7 @@ import { is_pool, t_at, newcham } from './mon.js';
 import { touch_petrifies, initedog } from './dog.js';
 import { find_offensive, use_offensive, mon_reflects } from './muse.js';
 import { buzzmu, castmu } from './mcastu.js';
-import { burnarmor, erode_obj, ignite_items } from './trap.js';
+import { burnarmor, erode_obj, ignite_items, reset_utrap, minstapetrify } from './trap.js';
 import { destroy_items, drain_item } from './zap.js';
 import { defends, retouch_equipment } from './artifact.js';
 import { set_ulycn } from './were.js';
@@ -125,14 +132,14 @@ const Ugender = () => ((Upolyd(game.u) ? game.u.mfemale : game.flags.female) ? 1
 
 // src/mhitu.c:1033 diseasemu(). Pestilence gives a fatal illness unless
 // sickness resistance blocks it.
-async function diseasemu(mdat) {
-    if (game.u.uprops?.SICK_RES
-        || game.u.intrinsic?.HSick_resistance) {
+export async function diseasemu(mdat) {
+    if (Sick_resistance()) {
         await You_feel('a slight illness.');
         return false;
     }
     const { make_sick } = await import('./potion.js');
-    await make_sick(rn1(ACURR(A_CON), 20), pmname(mdat, 2), true,
+    const sick = game.u.uprops?.SICK || 0;
+    await make_sick(sick ? Math.trunc(sick / 3) + 1 : rn1(ACURR(A_CON), 20), pmname(mdat, 2), true,
                     SICK_NONVOMITABLE);
     return true;
 }
@@ -2233,9 +2240,10 @@ const enfolds = (ptr) =>
 
 // src/mhitu.c:1289 gulpmu() — monster swallows you, or damages you when
 // already swallowed.
-async function gulpmu(mtmp, mattk) {
+export async function gulpmu(mtmp, mattk) {
     const u = game.u;
     const mdat = game.mons[mtmp.mnum];
+    const t = t_at(u.ux, u.uy);
     let tmp = d(mattk[2], mattk[3]);
     let tim_tmp;
     let physical_damage = false;
@@ -2243,37 +2251,58 @@ async function gulpmu(mtmp, mattk) {
     if (!u.uswallow) { /* swallows you */
         const omx = mtmp.mx, omy = mtmp.my;
 
-        if (!engulf_target_u(mtmp))
+        if (!engulf_target(mtmp, game.youmonst))
             return M_ATTK_MISS;
-        const t = t_at(u.ux, u.uy);
         if (t && is_pit(t.ttyp) && sobj_at(ONAMES.BOULDER, u.ux, u.uy))
             return M_ATTK_MISS;
-        /* failed_grab: hero is solid, never passes */
+        if (await failed_grab(mtmp, game.youmonst, mattk))
+            return M_ATTK_MISS;
 
-        /* Punished unplacebc: no session is punished */
+        if (u.uball)
+            unplacebc();
         remove_monster(omx, omy);
         mtmp.mtrapped = 0; /* no longer on old trap */
         place_monster(mtmp, u.ux, u.uy);
-        set_ustuck_mh(mtmp);
+        set_ustuck(mtmp);
         newsym(mtmp.mx, mtmp.my);
-        /* steed dismount arm: no session rides into an engulfer */
-        await pline(`${Monnam(mtmp)} ${
-            digests(mdat) ? 'swallows you whole'
-            : enfolds(mdat) ? 'folds itself around you'
-              : 'engulfs you'}!`);
+        if (u.usteed) {
+            const buf = mon_nam(u.usteed);
+            await urgent_pline(`${Some_Monnam(mtmp)} ${
+                is_animal(mdat) ? 'lunges' : is_whirly(mdat) ? 'whirls'
+                : unsolid(mdat) ? 'flows' : amorphous(mdat) ? 'oozes'
+                : 'surges'} forward and plucks you off ${buf}!`);
+            await dismount_steed(DISMOUNT_ENGULFED);
+        } else {
+            await urgent_pline(`${Monnam(mtmp)} ${
+                digests(mdat) ? 'swallows you whole'
+                : enfolds(mdat) ? 'folds itself around you'
+                  : 'engulfs you'}!`);
+        }
         await stop_occupation();
-        /* reset_occupations(): behave as if you had moved */
+        reset_occupations();
 
         if (u.utrap) {
             await pline(`You are released from the ${
-                u.utraptype === 1 /* TT_WEB */ ? 'web' : 'trap'}!`);
-            u.utrap = 0;
-            u.utraptype = 0;
+                u.utraptype === TT_WEB ? 'web' : 'trap'}!`);
+            await reset_utrap(false);
         }
-        /* leashes snap: no session leashes a pet */
+        const i = number_leashed();
+        if (i > 0) {
+            const s = i > 1 ? 'leashes' : 'leash';
+            await pline_The(`${s} ${vtense(s, 'snap')} loose.`);
+            unleash_all();
+        }
+        if (touch_petrifies(game.youmonst.data) && !resists_ston(mtmp)) {
+            remove_monster(mtmp.mx, mtmp.my);
+            place_monster(mtmp, omx, omy);
+            await minstapetrify(mtmp, true);
+            if (u.uball)
+                await placebc();
+            set_ustuck(null);
+            return !DEADMONSTER(mtmp) ? M_ATTK_MISS : M_ATTK_AGR_DIED;
+        }
 
-        /* touch_petrifies hero form: not reachable unpolymorphed */
-
+        await display_nhwindow_message();
         vision_recalc(2); /* hero can't see anything */
         u.uswallow = 1;
         if (mattk[1] === ATTKS.AD_DGST) {
@@ -2297,18 +2326,30 @@ async function gulpmu(mtmp, mattk) {
 
     if (mtmp !== u.ustuck)
         return M_ATTK_MISS;
+    if (u.uball) {
+        if (u.uchain.where === OBJ_FREE) {
+            u.uchain.ox = mtmp.mx;
+            u.uchain.oy = mtmp.my;
+        }
+        if (u.uball.where === OBJ_FREE) {
+            u.uball.ox = mtmp.mx;
+            u.uball.oy = mtmp.my;
+        }
+    }
     if (u.uswldtim > 0)
         u.uswldtim -= 1;
 
     switch (mattk[1]) {
     case ATTKS.AD_DGST:
         physical_damage = true;
-        if (game.u.uprops?.SLOW_DIGESTION) {
+        if (Slow_digestion()) {
             u.uswldtim = 0;
             tmp = 0;
         } else if (u.uswldtim === 0) {
             await pline(`${Monnam(mtmp)} totally digests you!`);
             tmp = u.uhp;
+            if (Half_physical_damage())
+                tmp *= 2;
         } else {
             await pline(`${Monnam(mtmp)}${
                 u.uswldtim === 2 ? ' thoroughly'
@@ -2319,8 +2360,11 @@ async function gulpmu(mtmp, mattk) {
     case ATTKS.AD_PHYS:
         physical_damage = true;
         if (mtmp.mnum === PMNAMES.PM_FOG_CLOUD) {
-            await pline('You are laden with moisture and can barely breathe!');
-            /* flaming/Breathless/amphibious hero forms not reachable */
+            await You(`are laden with moisture and ${flaming(game.youmonst.data)
+                ? 'are smoldering out!' : Breathless() ? 'find it mildly uncomfortable.'
+                : amphibious(game.youmonst.data) ? 'feel comforted.' : 'can barely breathe!'}`);
+            if ((Amphibious() || Breathless()) && !flaming(game.youmonst.data))
+                tmp = 0;
         } else {
             await pline(`You are ${enfolds(mdat) ? 'being squashed'
                                                  : 'pummeled with debris'}!`);
@@ -2328,15 +2372,17 @@ async function gulpmu(mtmp, mattk) {
         }
         break;
     case ATTKS.AD_ACID:
-        if (game.u.uprops?.ACID_RES) {
+        if (Acid_resistance()) {
             await pline('You are covered with a seemingly harmless goo.');
+            monstseesu(M_SEEN_ACID);
             tmp = 0;
         } else {
-            if (game.u.uprops?.HALLUC && !game.u.uprops?.HALLUC_RES)
+            if (Hallucination())
                 await pline("Ouch!  You've been slimed!");
             else
                 await pline('You are covered in slime!  It burns!');
             exercise(A_STR, false);
+            monstunseesu(M_SEEN_ACID);
         }
         break;
     case ATTKS.AD_BLND:
@@ -2357,33 +2403,50 @@ async function gulpmu(mtmp, mattk) {
     case ATTKS.AD_ELEC:
         if (!mtmp.mcan && rn2(2)) {
             await pline('The air around you crackles with electricity.');
-            if (game.u.uprops?.SHOCK_RES) {
-                note_unported_mhitu('gulpmu:shieldeff');
+            if (Shock_resistance()) {
+                await shieldeff(u.ux, u.uy);
+                await You('seem unhurt.');
+                monstseesu(M_SEEN_ELEC);
+                await ugolemeffects(ATTKS.AD_ELEC, tmp);
                 tmp = 0;
-            }
+            } else
+                monstunseesu(M_SEEN_ELEC);
         } else
             tmp = 0;
         break;
     case ATTKS.AD_COLD:
         if (!mtmp.mcan && rn2(2)) {
-            if (game.u.uprops?.COLD_RES) {
-                note_unported_mhitu('gulpmu:shieldeff');
+            if (Cold_resistance()) {
+                await shieldeff(u.ux, u.uy);
+                await You_feel('mildly chilly.');
+                monstseesu(M_SEEN_COLD);
+                await ugolemeffects(ATTKS.AD_COLD, tmp);
                 tmp = 0;
             } else {
                 await pline('You are freezing to death!');
+                monstunseesu(M_SEEN_COLD);
             }
         } else
             tmp = 0;
         break;
     case ATTKS.AD_FIRE:
         if (!mtmp.mcan && rn2(2)) {
-            if (game.u.uprops?.FIRE_RES) {
-                note_unported_mhitu('gulpmu:shieldeff');
+            if (Fire_resistance()) {
+                await shieldeff(u.ux, u.uy);
+                await You_feel('mildly hot.');
+                monstseesu(M_SEEN_FIRE);
+                await ugolemeffects(ATTKS.AD_FIRE, tmp);
                 tmp = 0;
             } else {
                 await pline('You are burning to a crisp!');
+                monstunseesu(M_SEEN_FIRE);
             }
+            await burn_away_slime();
         } else
+            tmp = 0;
+        break;
+    case ATTKS.AD_DISE:
+        if (!await diseasemu(mdat))
             tmp = 0;
         break;
     case ATTKS.AD_DREN:
@@ -2405,7 +2468,8 @@ async function gulpmu(mtmp, mattk) {
             tmp -= rnd(-u.uac);
         if (tmp < 0)
             tmp = 1;
-        /* Maybe_Half_Phys: no half-damage sources reachable */
+        if (Half_physical_damage())
+            tmp = Math.trunc((tmp + 1) / 2); // Maybe_Half_Phys(tmp)
     }
 
     game.mswallower = mtmp;
@@ -2416,34 +2480,19 @@ async function gulpmu(mtmp, mattk) {
 
     if (!u.uswallow) {
         ; /* life-saving has already expelled swallowed hero */
-    } else if (!u.uswldtim || game.mons[game.u.umonnum ?? -1]?.msize >= 6) {
+    } else if (touch_petrifies(game.youmonst.data) && !resists_ston(mtmp)) {
+        await pline(`${Monnam(mtmp)} very hurriedly ${digests(mdat) ? 'regurgitates'
+            : enfolds(mdat) ? 'releases' : 'expels'} you!`);
+        await expels(mtmp, mtmp.data, false);
+    } else if (!u.uswldtim || game.youmonst.data.msize >= MFLAGS.MZ_HUGE) {
         await pline(`You get ${digests(mdat) ? 'regurgitated'
                     : enfolds(mdat) ? 'released' : 'expelled'}!`);
         if (game.flags?.verbose
-            && digests(mdat) && game.u.uprops?.SLOW_DIGESTION)
+            && digests(mdat) && Slow_digestion())
             await pline(`Obviously ${mon_nam(mtmp)} doesn't like your taste.`);
         await expels(mtmp, mdat, false);
     }
     return M_ATTK_HIT;
-}
-
-// src/mhitm.c:807 engulf_target(), the hero-defender slice.
-function engulf_target_u(magr) {
-    const u = game.u;
-    const herodata = game.youmonst?.data ?? game.mons[game.urole?.mnum] ?? {};
-
-    /* can't swallow something that's too big; the unpolymorphed hero is
-       human-sized (MZ_HUMAN 2 < MZ_HUGE 4) */
-    if ((herodata.msize ?? 2) >= 4 /* MZ_HUGE */
-        || ((game.mons[magr.mnum].msize ?? 0) < (herodata.msize ?? 2)
-            && !is_whirly(game.mons[magr.mnum])))
-        return false;
-
-    if (u.utrap || magr.mtrapped)
-        return false;
-
-    /* phasing-in-rock placement guards: no session phases */
-    return true;
 }
 
 function set_ustuck_mh(mtmp) {

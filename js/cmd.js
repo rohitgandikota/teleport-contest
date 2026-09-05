@@ -73,7 +73,7 @@ import { is_launcher } from './u_init.js';
 import { could_twoweap, cantwield } from './mondata.js';
 import { is_blade } from './mon.js';
 import { checkfile, chkfilIaCheck, chkfilDontAsk } from './pager.js';
-import { worn, ia_dotakeoff, remarm_swapwep } from './do_wear.js';
+import { worn, ia_dotakeoff, remarm_swapwep, reset_remarm } from './do_wear.js';
 import { name_ok, call_ok } from './do_name.js';
 import { wearmask_to_obj, armcat_to_wornmask } from './worn.js';
 import { doorganize, adjust_split } from './invent.js';
@@ -3834,12 +3834,7 @@ function queue_item_action(action, obj) {
     }
 }
 
-// src/do_wear.c reset_remarm() — forget a partly-finished take-off.
-export function reset_remarm() {
-    const t = (game.context.takeoff ||= {});
-    t.what = t.mask = 0;
-    t.disrobing = '';
-}
+export { reset_remarm } from './do_wear.js';
 
 // src/lock.c:259 reset_pick() — forget a partly-finished lock pick or force.
 export function reset_pick() {

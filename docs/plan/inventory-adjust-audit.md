@@ -98,15 +98,33 @@ excluded from adjustment unless the inventory is already malformed. Overflow
 slot and artifact-split cases need a source-backed reachability argument before
 adding a scenario. Do not fabricate an impossible state for coverage credit.
 
-Several nearby implementation gaps remain verified by source inspection:
-`merged()` does not yet call `obfree(obj, otmp)`; its existing naming step copies
-the name instead of going through `oname`; and `mergable()` still marks
-`same_price` unported and refuses unpaid merges. Compare the discarded-object,
-identity, bill, timer and transient-reference behavior against C before closing
-that review. Six new unpaid merge/cancel/drop/pickup/payment C probes already
-fail at 474/502 screens and 21,694/32,204 RNG entries. Custom pack order and
-menu-symbol options still need their own controls, as do artifact naming and
-the rest of the naming worker's branches.
+The next review resolved three omissions: `merged()` now calls
+`obfree(obj, otmp)` after ordinary mergers, transfers names through `oname`,
+and uses `same_price` to accept unpaid objects only when their owner and quoted
+unit price match. C combines the bill quantities, replaces the removed bill
+entry with the last entry, and deallocates the discarded object. An unbilled
+merger preserves whichever object ID carries the higher unidentified price.
+
+Eight C controls now cover merge direction, cancel, pickup and payment, plus
+equal-price and charisma-altered repurchases. The first six improved from
+474/502 screens and 21,694/32,204 RNG entries to full parity. All eight match
+746 screens/cursors and 43,069 RNG entries. Their exact profiles add 22 outcomes
+and two function records, for a union of 52,748/108,268 and 4,282/5,491. The union
+reaches `same_price` 9/20, `obfree` 24/38, and `oid_price_adjustment` 8/8 outcomes.
+
+`inventory-merge-state-gate.mjs` checks the resulting bill records and verifies
+that a legal split/rejoin disposes of the child and clears split bookkeeping.
+Two source-state candle controls, separate from C recording coverage, test both
+price-order directions. The first failed because the retained object ID changed
+but its light still used the old ID. C's light is an object pointer. The JS
+numeric reference is now retargeted, preserving the light and its radius while
+the burn timer still points at the same object. The shared light constants now
+match `vision.h`, and `light.js` re-exports those definitions.
+
+This does not close the full lifecycle review. C's deletion queue and Lua
+references, corrupt-bill diagnostic scheduling, cross-shop ownership
+reachability, and glob absorption remain open. Custom pack order and menu-symbol
+options still need controls, as do artifact naming and the rest of that worker.
 
 Full C/JS state checkpoints and a general mutation system remain future work.
 The new source-derived state assertions and single isolated fault injection

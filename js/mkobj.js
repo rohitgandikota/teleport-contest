@@ -68,6 +68,7 @@ import { merged, mergable, weight, update_inventory,
          obj_extract_self } from './invent.js';
 import { OBJ_CONTAINED, Is_pudding, Is_candle } from './obj.js';
 import { oname, noveltitle } from './do_name.js';
+import { oid_price_adjustment } from './shk.js';
 import { ONAME_NO_FLAGS } from './const.js';
 import { depth } from './dungeon.js';
 import { block_point } from './vision.js';
@@ -135,25 +136,6 @@ const hellprobs = [
 ];
 
 export { mkobjprobs, boxiprobs, rogueprobs, hellprobs };
-
-// src/mkobj.c:521 next_ident()
-// One rnd(2) per created object or monster. Cheap to overlook and it appears
-// between every pair of object draws in the recordings.
-// src/shk.c:2864 oid_price_adjustment() — the +1 an unidentified object's
-// o_id can add to its shop price. Its C home is shk.c; there is no js/shk.js
-// yet, and it exists here only because nextoid() below is its sole caller so
-// far. Move it when the shop code lands.
-function oid_price_adjustment(obj, oid) {
-    let res = 0;
-    const otyp = obj.otyp;
-
-    if (!(obj.dknown && game.objects[otyp].oc_name_known)
-        && (obj.oclass !== OCLASSES.GEM_CLASS
-            || game.objects[otyp].oc_material !== GLASS)) {
-        res = ((oid % 4) === 0) ? 1 : 0; /* id%4 ==0 -> +1, ==1..3 -> 0 */
-    }
-    return res;
-}
 
 // src/mkobj.c:536 nextoid() — pick the split-off object's id.
 //
@@ -276,6 +258,7 @@ export async function unsplitobj(obj) {
     return await merged({ o: parent }, { o: child }) ? parent : null;
 }
 
+// src/mkobj.c:521 next_ident(); one rnd(2) per new object or monster id.
 export function next_ident() {
     const ctx = game.context;
     const id = ctx.ident || 1;

@@ -45,6 +45,10 @@ plausible-but-wrong names that are hard to spot in a diff.
       floating letters, and equipment/light merger fixes. Fifty-eight asserted C
       scenarios and the equipment/light state gate pass. Remaining branches
       and the discarded-object/billing lifecycle are tracked in the audit.
+- [x] Unpaid merger pass: same owner and quote, bill quantity combination,
+      deallocation and split cleanup, name transfer, and price-identity/light
+      preservation. Eight C cases and the merger state gate pass. Full C
+      lifecycle review remains open.
 - [ ] `src/invent.c`: `addinv`, `freeinv`, `getobj`, `ggetobj`, `display_inventory`,
       `display_pickinv`, letter assignment, `#adjust`, merge and split rules
 - [ ] Inventory menu rendering goes through the M3 menu code; the *content* is here

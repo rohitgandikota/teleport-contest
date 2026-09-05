@@ -4217,6 +4217,16 @@ checks full stored names and restoration after temporary death-name formatting;
 the C terminal row truncates a 62-character name to 59 visible characters.
 Do not treat the visible truncation as the object's persisted name length.
 
+The next merger check found a second light-ownership trap. `obfree(obj, merge)`
+can replace the surviving object's ID to preserve a higher unidentified-item
+price. C light records retain an object pointer, but JS light records retain the
+ID number. Retarget them before changing the ID; timers already store the object
+itself. The two price-order controls in `inventory-merge-state-gate.mjs` failed
+before this fix despite all eight new shop C recordings matching. `vision.h`
+defines light source tags as none=0, object=1, monster=2. The old shared constants
+were 0/1 while `light.js` had a separate correct enum; it now re-exports the
+corrected shared values. This prompted the compiled constant audit in STATUS.
+
 Repeatedly fixing failures in a random-play batch makes that batch regression
 coverage. Fresh seeds alone also do not remove the public trigram model's
 input-distribution bias. Record first-run results on a fresh batch before

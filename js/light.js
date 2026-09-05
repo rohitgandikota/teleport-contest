@@ -18,7 +18,7 @@ import { DEADMONSTER } from './monst.js';
 import { FM_YOU, FM_FMON, FM_MIGRATE, FM_MYDOGS } from './const.js';
 import { artifact_light } from './artifact.js';
 import { game } from './gstate.js';
-import { COLNO, ROWNO, OBJ_FREE } from './const.js';
+import { COLNO, ROWNO, OBJ_FREE, LS_NONE, LS_OBJECT, LS_MONSTER } from './const.js';
 import { ONAMES } from './objects_data.js';
 /* imported from vision.c, for small circles (src/light.c:56) */
 import { circle_ptr, clear_path, COULD_SEE, TEMP_LIT } from './vision.js';
@@ -28,7 +28,7 @@ import { end_burn } from './timeout.js';
 
 
 // include/vision.h:15 enum ls_sources
-export const LS_NONE = 0, LS_OBJECT = 1, LS_MONSTER = 2;
+export { LS_NONE, LS_OBJECT, LS_MONSTER };
 
 // include/vision.h:59
 export const MAX_RADIUS = 15;

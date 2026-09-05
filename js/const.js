@@ -1988,10 +1988,10 @@ export const XL_DOWN = 2;
 export const XL_LEFT = 4;
 export const XL_RIGHT = 8;
 
-// Light-source type tags (src/light.c)
+// Light-source type tags (include/vision.h:15 enum ls_sources).
 // Runtime fields: light_base[] entry type and routing for object/monster lookups.
-export const LS_OBJECT = 0;
-export const LS_MONSTER = 1;
+export const LS_OBJECT = 1;
+export const LS_MONSTER = 2;
 
 // Timeout timer-kind and timer-function enums (src/timeout.c)
 // Runtime fields: timer queue kind/func selectors and timer dispatch.

@@ -18,17 +18,17 @@ independent oracles, implementation, and regression checks until that goal is
 met. Current corpus success is not the stopping criterion.
 
 The compiler-guided loops cover corpse wielding, 58 inventory organization
-scenarios, and six naming controls. All 44 public and 420 supplemental fixtures
-pass. The measured C union has 52,726/108,268 direct outcomes and 4,280/5,491 entered
-function records. A new state gate catches an orphan candle light source which
-screen parity missed, and an isolated fault injection verifies that check.
+scenarios, six naming controls and eight unpaid-merger cases. All 44 public and
+421 supplemental fixtures pass. The measured C union has 52,748/108,268 direct
+outcomes and 4,282/5,491 entered function records. State gates catch orphan
+candle lights that screen parity missed and check bill and object ownership.
 The published held-out result recorded during the audit is 78.39%, distinct
 from the local supplemental result. See [STATUS.md](STATUS.md) for verification,
 [inventory-adjust-audit.md](inventory-adjust-audit.md) for remaining inventory
 decisions, and [gameplay-gap-audit.md](gameplay-gap-audit.md) for measurement
 limits and the broader backlog. The inventory checkpoint is pushed as
-`1b054373`. The naming follow-up is verified; unpaid-stack merging is the next
-reproduced gap.
+`1b054373`, and the naming checkpoint as `5569faa5`. The unpaid-stack follow-up
+is verified. A compiled comparison of C and JS constants is the next audit.
 
 ## Previous focus, 2026-09-03
 

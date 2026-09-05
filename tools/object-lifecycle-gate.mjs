@@ -155,7 +155,10 @@ function testUsedUpBillEntry() {
         useup: false,
         price: 5,
     };
-    game.level.monsters = [{ isshk: 1, eshk: { bill_p: [entry], billct: 1 } }];
+    game.level.monsters = [{
+        isshk: 1, mhp: 30, mpeaceful: 1,
+        eshk: { bill_p: [entry], billct: 1 },
+    }];
 
     consume(potion);
 

@@ -2,7 +2,7 @@
 // C ref: src/invent.c
 
 import { MON_WEP } from './monst.js';
-import { noit_Monnam } from './do_name.js';
+import { noit_Monnam, oname } from './do_name.js';
 import { engulfing_u } from './const.js';
 import { allow_all } from './pickup.js';
 import { query_objlist } from './pickup.js';
@@ -33,7 +33,8 @@ import { cmdq_pop, cmdq_clear, cmdq_add_key, cmdq_add_int, get_count } from './c
 import { GC_SAVEHIST } from './const.js';
 import { GC_ECHOFIRST, GC_CONDHIST, GETOBJ_NOFLAGS, ECMD_FAIL, ECMD_CANCEL } from './const.js';
 import { delobj, t_at, is_pool, is_lava } from './mon.js';
-import { addtobill, costly_spot, doname_with_price, obfree_bill } from './shk.js';
+import { addtobill, costly_spot, doname_with_price, obfree_bill, same_price } from './shk.js';
+import { ONAME, has_oname, ONAME_SKIP_INVUPD } from './const.js';
 import { u_at, CMDQ_KEY, CMDQ_INT, CQ_CANNED, CQ_REPEAT, FOUNTAIN, THRONE, SINK, GRAVE, ALTAR, TREE,
          ICE, DRAWBRIDGE_DOWN, IRONBARS, Never_mind, LOST_NONE, LOST_THROWN, LOST_EXPLODING, LOOKHERE_PICKED_SOME, LOOKHERE_SKIP_DFEATURE, IS_DOOR, D_NODOOR, D_ISOPEN, D_BROKEN,
          AM_SANCTUM, AM_SHRINE, Amask2align, A_NONE, A_LAWFUL,
@@ -1351,10 +1352,8 @@ export function mergable(otmp, obj) {
     if (obj.otyp === ONAMES.POT_OIL && obj.lamplit)
         return false;
 
-    if (obj.unpaid) {
-        note_unported_invent('mergable:same_price');   /* shop pricing */
+    if (obj.unpaid && !same_price(obj, otmp))
         return false;
-    }
 
     /* some additional information is always incompatible */
     if (obj.omonst || obj.omid || otmp.omonst || otmp.omid)
@@ -1459,7 +1458,8 @@ function absorb_globs(potmp, pobj) {
 // Both arguments are pointers-to-pointers in C because otmp can be REPLACED by
 // oname(); the JS equivalent is a one-element holder so the caller sees it.
 export function merged(potmp, pobj) {
-    const otmp = potmp.o, obj = pobj.o;
+    let otmp = potmp.o;
+    const obj = pobj.o;
 
     if (mergable(otmp, obj)) {
         /* Approximate age. Not done when lit: the burn would have to be
@@ -1478,8 +1478,8 @@ export function merged(potmp, pobj) {
         } else if (!Is_pudding(otmp)) {
             otmp.owt = weight(otmp);
         }
-        if (!otmp.oname && obj.oname)
-            otmp.oname = obj.oname;     /* oname(..., ONAME_SKIP_INVUPD) */
+        if (!has_oname(otmp) && has_oname(obj))
+            otmp = potmp.o = oname(otmp, ONAME(obj), ONAME_SKIP_INVUPD);
 
         obj_extract_self(obj);
 
@@ -1574,10 +1574,12 @@ export function merged(potmp, pobj) {
                 return (async () => {
                     await pline(
                         'You learn more about your items by comparing them.');
+                    obfree(obj, otmp);
                     return 1;
                 })();
             }
 
+            obfree(obj, otmp);
             return 1;
         }
     }
@@ -1940,7 +1942,7 @@ export async function hold_another_object(obj, drop_fmt, drop_arg, hold_msg) {
 // returns. Objects on a shop bill are retained there; every other object is
 // marked deleted after its timers, light source, and transient references are
 // cleared.
-export function obfree(obj) {
+export function obfree(obj, merge = null) {
     if (obj.otyp === ONAMES.LEASH && obj.leashmon) {
         const mon = (game.level?.monsters || [])
             .find(candidate => candidate.m_id === obj.leashmon);
@@ -1977,7 +1979,7 @@ export function obfree(obj) {
     if (obj.otyp === ONAMES.BOULDER)
         obj.next_boulder = null;
 
-    if (obfree_bill(obj))
+    if (obfree_bill(obj, merge))
         return;
 
     if (obj.owornmask)

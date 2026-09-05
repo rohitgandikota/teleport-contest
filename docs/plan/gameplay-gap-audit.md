@@ -74,7 +74,13 @@ The next 14 inventory and naming controls add 46 direct outcomes, bringing the
 union to 52,726/108,268. All 44 public and 420 supplemental fixtures pass. The
 new name state gate checks persisted names and temporary formatting changes;
 the C terminal alone cannot expose the full stored name length. Unpaid merging
-now has six failing C probes for the next implementation pass.
+initially had six failing C probes. The completed eight-case follow-up ports
+quoted-price matching and bill/object cleanup, adds 22 native outcomes, and
+passes all 44 public plus 421 supplemental fixtures. The union now contains
+52,748/108,268 outcomes and 4,282/5,491 entered function records. A second light
+ownership state failure involved changing the retained object's price-based ID;
+C stores a pointer while JS had retained the old numeric ID. That fix is checked
+in both price-order directions. The full lifecycle review remains open.
 
 The initial candidates below came from measured C execution. Their untested
 behavior is a hypothesis about possible defects until a C/JS mismatch is

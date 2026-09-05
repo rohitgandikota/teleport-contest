@@ -9,6 +9,59 @@ loop until complete. The goal is active without a requested token budget.
 Current-corpus success is not the stopping criterion. Track unreviewed,
 untested, missing, and unreachable source paths explicitly.
 
+### Current verified follow-up: unpaid merging
+
+The naming checkpoint below is committed and pushed as `5569faa5`. The current
+verified edits port `same_price`, connect ordinary `merged()` calls to
+`obfree(obj, otmp)`, combine bill quantities with C's last-entry replacement,
+and preserve the higher unidentified-object price identity. Name transfers now
+call `oname(..., ONAME_SKIP_INVUPD)`. The pricing helper moved from `mkobj.js`
+to its C home in `shk.js`, shared with `nextoid`.
+
+Eight permanent C scenarios in `inventory-unpaid-merging` cover counted merges,
+reverse merges, cancellation, floor pickup, payment, same-price repurchase and
+repurchase after charisma changes the quote. The first six probes scored
+474/502 screens and 21,694/32,204 RNG entries; all eight now match **746/746
+screens and cursors** and **43,069/43,069 RNG entries**. Their exact profiles add
+22 direct outcomes and two entered records (`same_price`, `extremeattr`) to the
+union: **52,748/108,268 outcomes**, **4,282/5,491 function records**. `same_price`
+reaches 9/20 outcomes, `obfree` 24/38, and `oid_price_adjustment` 8/8 in the union.
+The assertion ledger is **1,367/1,367**, separate from compiler coverage.
+
+`inventory-merge-state-gate.mjs` checks bill ownership, quantity, unit price,
+used-up status, and disposal/rollback cleanup after a legal split/rejoin. Two
+additional source-state candle controls check both price-order directions. The
+first such check found that changing the surviving object ID orphaned its light,
+since C stores an object pointer while JS stores the ID. Retargeting the numeric
+light reference fixes that mismatch. The shared light-source constants now
+match `vision.h`; `light.js` re-exports them. The old lifecycle test's shopkeeper
+fixture now has positive HP and peaceful status, required by C's `next_shkp`.
+
+Verification: public **44/44**, **11,405/11,405 screens**, **792,838/792,838 RNG**;
+supplemental **421/421**, **119,635/119,635 screens**, **6,031,413/6,031,413 RNG**,
+and **3,248/3,248 animations**. Public animations remain 1,462/1,483. Fuzz remains
+**101/102**, **14,261/14,262 screens**, **491,759/491,759 RNG**, with the known
+fixed-datetime artifact. All 45 hang checks, 80 role-smoke games, 14 tool tests,
+source/import audit, merger/inventory/naming/shop-fire/lifecycle/fire-light/
+source-audit state gates pass. Frozen files are unchanged. Logs are
+`.cache/inventory-adjust/shop-*.log`; exact profiles are
+`.cache/c-coverage/inventory-unpaid-20260905/`.
+
+Next, turn the compiled header comparison into a reviewed audit. The read-only
+prototype `.cache/inventory-adjust/constant-probe.mjs` compared **1,661** exported
+integer constants against the pinned C headers and found **46 numeric
+differences**. Another 267 names were unavailable or not integer constants in
+that C compilation and are explicitly rejected. Results and the compile log are
+beside the script. These are candidates, not 46 verified gameplay defects:
+review C definitions, signed-width conventions, import sites and local aliases.
+No prototype finding has been applied yet. Keep the full-port goal active.
+
+The merger review remains partial. C's deletion queue, Lua object references,
+cross-shop ownership reachability, corrupt-bill diagnostic scheduling and glob
+absorption still need review. Do not label the entire C lifecycle complete.
+
+### Previous naming checkpoint
+
 The 50-case inventory checkpoint below is committed and pushed as `1b054373`.
 The verified follow-up adds eight source-derived inventory cases and six object
 naming controls in `inventory-adjust-remaining-branches` and
@@ -37,7 +90,8 @@ state gates, and existing fire-light/source-audit state gates pass. Logs are
 `.cache/inventory-adjust/naming-*.log`; profiles are
 `.cache/c-coverage/inventory-naming-20260905/`. Frozen files are unchanged.
 
-Next, port unpaid merging and the discarded-object lifecycle. Six C probes in
+The next pass above ports unpaid merging and part of the discarded-object
+lifecycle. Its first six C probes in
 `.cache/inventory-adjust/shop-probes.session.json` currently score 474/502
 screens and 21,694/32,204 RNG entries. They reuse the independently verified
 shop setup from `shop-unpaid-stack-split`, then split/merge, cancel, drop/pick

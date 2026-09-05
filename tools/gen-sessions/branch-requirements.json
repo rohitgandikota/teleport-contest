@@ -1377,6 +1377,14 @@
     {"group":"Inventory names and remaining decisions","id":"object.naming.spaces-clear","cFile":"src/do_name.c","cFunction":"name_from_player","description":"spaces clear; verify final a - 10 darts"},
     {"group":"Inventory names and remaining decisions","id":"object.naming.rename","cFile":"src/do_name.c","cFunction":"name_from_player","description":"rename; verify final a - 10 darts named Beta Note"},
     {"group":"Inventory names and remaining decisions","id":"object.naming.name-truncate","cFile":"src/do_name.c","cFunction":"name_from_player","description":"name truncate; verify final a - 10 darts named QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ"},
-    {"group":"Inventory names and remaining decisions","id":"object.naming.named-corpse-wield","cFile":"src/objnam.c","cFunction":"killer_xname","description":"named corpse wield; verify final b - a cockatrice corpse named Pebble"}
+    {"group":"Inventory names and remaining decisions","id":"object.naming.named-corpse-wield","cFile":"src/objnam.c","cFunction":"killer_xname","description":"named corpse wield; verify final b - a cockatrice corpse named Pebble"},
+    {"group":"Unpaid inventory mergers","id":"inventory.merge.unpaid-split-merge","cFile":"src/shk.c","cFunction":"obfree","description":"unpaid split merge; preserve C bill quantities, quoted prices and final gold"},
+    {"group":"Unpaid inventory mergers","id":"inventory.merge.unpaid-reverse-merge","cFile":"src/shk.c","cFunction":"obfree","description":"unpaid reverse merge; preserve C bill quantities, quoted prices and final gold"},
+    {"group":"Unpaid inventory mergers","id":"inventory.merge.unpaid-cancel-split","cFile":"src/shk.c","cFunction":"obfree","description":"unpaid cancel split; preserve C bill quantities, quoted prices and final gold"},
+    {"group":"Unpaid inventory mergers","id":"inventory.merge.unpaid-split-merge-pay","cFile":"src/shk.c","cFunction":"obfree","description":"unpaid split merge pay; preserve C bill quantities, quoted prices and final gold"},
+    {"group":"Unpaid inventory mergers","id":"inventory.merge.unpaid-drop-pickup","cFile":"src/shk.c","cFunction":"obfree","description":"unpaid drop pickup; preserve C bill quantities, quoted prices and final gold"},
+    {"group":"Unpaid inventory mergers","id":"inventory.merge.unpaid-drop-pickup-pay","cFile":"src/shk.c","cFunction":"obfree","description":"unpaid drop pickup pay; preserve C bill quantities, quoted prices and final gold"},
+    {"group":"Unpaid inventory mergers","id":"inventory.merge.same-price-repurchase","cFile":"src/shk.c","cFunction":"same_price","description":"same price repurchase; preserve C bill quantities, quoted prices and final gold"},
+    {"group":"Unpaid inventory mergers","id":"inventory.merge.different-price-repurchase","cFile":"src/shk.c","cFunction":"same_price","description":"different price repurchase; preserve C bill quantities, quoted prices and final gold"}
   ]
 }

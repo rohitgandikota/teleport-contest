@@ -144,4 +144,55 @@ assert.ok(!game.timer_base.some(t => t.arg === lampCopy));
 assert.ok(game.timer_base.some(t => t.arg === lamp));
 assert.ok(!game.light_sources.some(l => l.id === lampCopy.o_id));
 assert.ok(game.light_sources.some(l => l.id === lamp.o_id));
-console.log('shop billing copy state: PASS (14 C scenarios plus saved-data controls)');
+
+const itemization = read('gen-sessions/recipes/shop-usedup-inventory.json');
+const itemizationOracle = read('gen-sessions/generated/shop-usedup-inventory.session.json');
+for (const [i, segment] of itemization.segments.entries()) {
+    const frames = itemizationOracle.segments[i].steps;
+    let before;
+    const quantities = state => [...(state.invent || []), ...(state.billobjs || [])]
+        .map(o => [o.o_id, o.quan]).sort(([a], [b]) => a - b);
+    globalThis.__step_snapshot = {
+        step: frames.findLastIndex(frame => frame.key === 'I'),
+        cb: state => { before = quantities(state); },
+    };
+    try {
+        await runSegment({ ...segment, storage: new InMemoryStorage() });
+    } finally {
+        delete globalThis.__step_snapshot;
+    }
+    assert.deepEqual(quantities(game), before, segment.name + ': displaying a bill preserves quantities');
+    const shkp = game.level.monsters.find(m => m.isshk), bill = shkp.eshk.bill_p;
+    const copies = game.billobjs || [], many = segment.name.startsWith('bill-paging');
+    assert.equal(bill.length, many ? 25 : 1);
+    const remaining = { 'partially-drunk-once': 2, 'partially-drunk-twice': 1 }[segment.name];
+    if (remaining) {
+        assert.equal(game.invent.find(o => o.invlet === 'o').quan, remaining);
+        assert.equal(bill[0].bquan, 3);
+        assert.equal(!!bill[0].useup, false);
+        assert.equal(copies.length, 0);
+        const used = bill[0].price * (bill[0].bquan - remaining);
+        assert.equal(used, remaining === 2 ? 27 : 54);
+    } else if (segment.name === 'fully-drunk-stack') {
+        assert.equal(bill[0].bquan, 3);
+        assert.ok(bill[0].useup);
+        assert.equal(copies[0].quan, 1, 'the final consumed unit retains its own quantity');
+        assert.ok(!game.invent.some(o => o.invlet === 'o'));
+    } else if (many) {
+        assert.equal(copies.length, 25);
+        assert.equal(bill.reduce((sum, bp) => sum + bp.bquan * bp.price, 0), 675);
+        for (const copy of copies) {
+            assert.equal(copy.quan, 1);
+            assert.equal(copy.where, OBJ_ONBILL);
+            assert.equal(!!copy.in_use, false);
+        }
+        assert.equal(new Set(copies.map(o => o.oname)).size, 25);
+    } else {
+        assert.equal(copies.length, 0);
+        assert.equal(!!bill[0].useup, false);
+        assert.equal(shkp.eshk.debit, segment.name === 'debt-only' ? 13 : 0);
+    }
+    assert.equal(await doinvbill(0), many ? 25 : segment.name === 'unused-stock' ? 0 : 1);
+    assert.equal(game.iflags.suppress_price | 0, 0);
+}
+console.log('shop billing copy state: PASS (21 C scenarios plus saved-data controls)');

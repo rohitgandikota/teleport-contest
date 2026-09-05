@@ -11,8 +11,8 @@ untested, missing, and unreachable source paths explicitly.
 
 ### Current work: shop billing copies and used-up inventory
 
-Potion dipping is committed and pushed as `9fee431f`. The current verified,
-uncommitted pass ports bill_dummy_object in mkobj.js, copy_oextra and
+Potion dipping is committed and pushed as `9fee431f`. The current verified
+pass is committed and pushed as `06dabf37`. It ports bill_dummy_object in mkobj.js, copy_oextra and
 copy_mextra, unpaid_cost, add_to_billobjs, bp_to_obj and doinvbill. xprname
 has C's price formatting, quantity and letter rules. The existing default
 inventory-category command exposes the missing used-up menu and bill display.
@@ -33,9 +33,38 @@ adding 55 outcomes and one entered record. The union is 53,638/108,268 and
 4,305/5,491; the ledger is 1,721/1,721. Logs are in .cache/billcopy/ and the
 review is [shop-billing-copy-audit.md](shop-billing-copy-audit.md).
 
-Next action: review/stage/commit/push this verified checkpoint. Then continue
-with partially consumed bills, debt-only itemization and bill paging, or the
-full bless/curse bodies already read below. add_one_tobill still lacks the
+The current follow-up is verified and ready to commit/push. Seven C probes
+for partially consumed bills, debt-only itemization, unused stock, long bill
+paging and cancellation are promoted as shop-usedup-inventory. All 4,171
+screens/cursors and 41,185 RNG match. Its state check caught retained in_use
+on fully consumed bill objects. obfree_bill now calls add_to_billobjs and
+uses OMID for original glob weight. The expanded gate passes all 21 C cases.
+An isolated loader retaining in_use still passes the new replay but fails
+the state gate. No C expected data was changed to accommodate the fix.
+
+All 44 public and 446 supplemental fixtures pass on the stable runtime;
+supplemental has 147,897 exact screens/cursors, 7,192,650 RNG and 3,298
+animations. Fuzz, public counts and animations are unchanged. All 45 hang
+checks, 80 reused role-smoke controls, 16 tool tests, source audit and six
+state gates pass. Native shop-usedup-inventory-20260905 is exact and adds
+seven outcomes. The union is 53,645/108,268 and 4,305/5,491. The ledger is
+1,728/1,728. Logs are .cache/billcopy/itemization-*.log. The long-bill setup
+must follow changing inventory letters o through M; reusing o only consumed
+the first item and was rejected by C intent checks.
+
+Next after committing/pushing: twelve beatitude probes are being recorded
+in .cache/beatitude/input.json and probe.session.json, with baseline.log.
+make-input.mjs makes filled bags, luckstones and kitten figurines for all
+four beatitude transitions. No beatitude runtime edits yet. Read the C
+intent and first divergence before porting. The full bless/curse bodies,
+book_cursed and attach_fig_transform_timeout have been read. Curse/bless
+have 70 call sites; preserve synchronous free-object construction when
+connecting their message-producing equipped/light side effects. See the
+existing addinv_core2 convention for functions which return a promise only
+on message paths. drop_uswapwep is implemented but not exported.
+The full dotypeinv body has now been read
+at invent.c:3827-4042; its traditional and unpaid-object paths remain absent.
+The full bless/curse bodies were also read below. add_one_tobill still lacks the
 full-bill/billability disposal, glob metadata and quote recording paths;
 copy_oextra is not yet shared by splitobj or saved-trait callers. Do not mark
 the full-port goal complete at this checkpoint.

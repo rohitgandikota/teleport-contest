@@ -63,9 +63,38 @@ fuzz.log, hang.log, roles.log, related-state.log and state-final.log.
 The shared addtobill/add_one_tobill implementation still needs its remaining
 billability, full-bill disposal, glob and quote-recording source review.
 copy_oextra is connected to billing here; splitobj and saved-trait callers
-still need to use the shared copy routines. Traditional inventory categories,
-partially consumed bills, debt-only itemization, long bill paging and general
-non-ASCII byte formatting need additional C recordings. The next broader
+still need to use the shared copy routines. Traditional inventory categories
+and general non-ASCII byte formatting need additional C recordings. The next broader
 dependency is bless/curse's light, weight, timer and equipment side effects.
 Native outcome counts and current-corpus success do not establish complete
 gameplay or held-out parity. The full-port goal remains active.
+
+## Follow-up: partial consumption and two-page bills
+
+Seven additional C scenarios in shop-usedup-inventory cover one and two
+potions consumed from a three-potion stack, complete consumption, usage-only
+debt, an unused purchase, and a 25-entry bill with both paging and Escape.
+The initial long-bill setup reused the first inventory letter after later
+wishes received new letters. That setup was rejected before promotion. The
+corrected C recording reaches all 25 purchases and shows a 675-zorkmid total.
+All 4,171 screens/cursors and 41,185 RNG entries match.
+
+The state check exposed an independent bug despite perfect replay: obfree_bill
+manually linked consumed objects and left in_use set. It now calls C's shared
+add_to_billobjs cleanup and reads original glob weight through OMID. The gate
+checks all 21 C cases, proves that bill display restores temporary quantities,
+and distinguishes live partial stacks from completely consumed bill objects.
+A fully consumed three-potion stack retains a final object with quantity one
+and a billed quantity of three. A loader retaining in_use still passes all
+4,171 screens and 41,185 RNG entries but fails the stored-state check.
+
+The exact native recording in shop-usedup-inventory-20260905 adds seven
+outcomes. The union is 53,645/108,268 outcomes and 4,305/5,491 entered records;
+doinvbill reaches 26/32. The ledger is 1,728/1,728. All 44 public and 446
+supplemental fixtures pass. Supplemental has 147,897 exact screens/cursors,
+7,192,650 exact RNG entries and 3,298 exact animations. Public and fuzz counts
+are unchanged from the previous checkpoint. All 45 hang checks, 80 reused
+role-smoke controls, 16 tool tests, source audit, the expanded state gate and
+five related state gates pass. Final verification logs are
+.cache/billcopy/itemization-*.log. The source controls and exclusions above
+still apply.

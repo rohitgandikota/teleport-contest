@@ -17,10 +17,10 @@ and persistent gameplay state. Continue source review, measured C branches,
 independent oracles, implementation, and regression checks until that goal is
 met. Current corpus success is not the stopping criterion.
 
-The latest verified pass adds 14 C scenarios for shop billing copies and
-used-up inventory. All 44 public and 445 supplemental fixtures pass. The
-measured C union has 53,638/108,268 direct outcomes and 4,305/5,491 entered
-function records. The assertion ledger is 1,721/1,721. A wrong-identity
+The latest verified passes add 21 C scenarios for shop billing copies and
+used-up inventory. All 44 public and 446 supplemental fixtures pass. The
+measured C union has 53,645/108,268 direct outcomes and 4,305/5,491 entered
+function records. The assertion ledger is 1,728/1,728. A wrong-identity
 negative control passes every new screen and RNG entry but fails the hidden
 price-adjustment check. The published held-out result recorded during the
 audit is 78.39%, distinct from the local result.
@@ -31,7 +31,7 @@ See [STATUS.md](STATUS.md) for checkpoint and next-action details,
 `9fee431f`, and [gameplay-gap-audit.md](gameplay-gap-audit.md) for measurement
 limits. The [compiled constant audit](c-constant-audit.md) compares 1,666 values
 with zero different values and one reviewed signed-mask representation.
-Next are remaining itemized-bill paths and bless/curse's shared side effects.
+Next are bless/curse's shared light, weight, timer and equipment side effects.
 The full-port goal remains active.
 
 ## Previous focus, 2026-09-03

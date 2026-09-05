@@ -1,6 +1,13 @@
 {
   "version": 1,
   "requirements": [
+    {"group":"Used-up bill quantity and pagination","id":"shop-usedup-inventory.partially-drunk-once","cFile":"src/shk.c","cFunction":"doinvbill","description":"partially drunk once"},
+    {"group":"Used-up bill quantity and pagination","id":"shop-usedup-inventory.partially-drunk-twice","cFile":"src/shk.c","cFunction":"doinvbill","description":"partially drunk twice"},
+    {"group":"Used-up bill quantity and pagination","id":"shop-usedup-inventory.fully-drunk-stack","cFile":"src/shk.c","cFunction":"doinvbill","description":"fully drunk stack"},
+    {"group":"Used-up bill quantity and pagination","id":"shop-usedup-inventory.debt-only","cFile":"src/shk.c","cFunction":"doinvbill","description":"debt only"},
+    {"group":"Used-up bill quantity and pagination","id":"shop-usedup-inventory.unused-stock","cFile":"src/shk.c","cFunction":"doinvbill","description":"unused stock"},
+    {"group":"Used-up bill quantity and pagination","id":"shop-usedup-inventory.bill-paging","cFile":"src/shk.c","cFunction":"doinvbill","description":"bill paging"},
+    {"group":"Used-up bill quantity and pagination","id":"shop-usedup-inventory.bill-paging-cancel","cFile":"src/shk.c","cFunction":"doinvbill","description":"bill paging cancel"},
     {"group":"Shop billing copies and used-up inventory","id":"shop-billing-copies.named-unbless","cFile":"src/mkobj.c","cFunction":"bill_dummy_object","description":"named unbless"},
     {"group":"Shop billing copies and used-up inventory","id":"shop-billing-copies.named-uncurse","cFile":"src/mkobj.c","cFunction":"bill_dummy_object","description":"named uncurse"},
     {"group":"Shop billing copies and used-up inventory","id":"shop-billing-copies.stack-unbless","cFile":"src/mkobj.c","cFunction":"bill_dummy_object","description":"stack unbless"},

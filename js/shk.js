@@ -84,6 +84,7 @@ import { block_point, cansee } from './vision.js';
 import { del_engr_at } from './engrave.js';
 import { Norep, You_feel, You_hear } from './pline.js';
 import { COST_SINGLEOBJ, COST_CONTENTS } from './const.js';
+import { has_omid, OMID } from './const.js';
 import { obj_stop_timers } from './timeout.js';
 import { xprname } from './invent.js';
 import { tty_putstr, tty_display_nhwindow, tty_next_page } from './tty/wintty.js';
@@ -1798,10 +1799,9 @@ export function obfree_bill(obj, merge = null) {
         bp.useup = true;
         bp.obj = obj;
         obj.unpaid = 0;
-        if (obj.globby && !obj.owt && obj.omid)
-            obj.owt = obj.omid;
-        obj.where = OBJ_ONBILL;
-        (game.billobjs ||= []).unshift(obj);
+        if (obj.globby && !obj.owt && has_omid(obj))
+            obj.owt = OMID(obj);
+        add_to_billobjs(obj);
         return true;
     }
     const bpm = onbill(merge, shkp, false);

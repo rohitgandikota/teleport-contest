@@ -14,24 +14,59 @@ untested, missing, and unreachable source paths explicitly.
 
 ### Active pass: lock-picking occupations
 
-Next work is `.cache/lock-occupation`. No next-pass runtime edits yet.
-Finish the local untrapping commit first. Full C lock_action and picklock
-have been read. Full pick_lock has now been re-read in chunks363..657.
-JS hardcodes magic_key=false, skips its trap-disarm occupation and omits
-entry guards, artifact touch, broken-lock messages, mimics and shop damage.
-Read the remaining relevant full C helpers before porting them.
+HEAD cda8c13f. Work .cache/lock-occupation, ready for audit and local commit.
+Dirty runtime lock,steal,cmd,monmove,options; new tools/lock-state-gate.mjs.
+No C/frozen edits. Entire lock.c read; full maybe_absorb_item, getdir,
+watch_on_duty, can_ooze, stuff_prevents_passage, can_fog, parsebindings and
+C test_move read. Larger command/movement/configuration helpers remain partial.
 
-Initial24 native probes had invalid intended setups: neutral Wizard's key
-was rejected, Rogue's north-door move was blocked, and answers arrived
-before the actual question. Corrected24 uses chaotic Wizard and east doors.
-`drive-prompts.mjs` then answers each actual C prompt in three stages:
-direction24, unlock24 and magic disarm12. Final corpus is disarm.input/session.
-The other12 are ordinary trap-triggering controls. Recorder jobs37117 and
-66426 are finished and collected. Baseline scorer82074 is running in
-`disarm-before.log`. Inspect native final messages and first divergence.
-Do not promote initial/corrected/answered intermediate probes as successes.
-First drive-prompts heredoc had a syntax error before any recording; the
-saved script corrected it and all three stages completed. Continue goal.
+Ported magic-key disarming, entry/resume guards,autokey artifact priority,
+box knowledge order,artifact touch,mimic absorption,shop damage,blind closing,
+small/passwall guards,integer close threshold,queued kick directions,forcing
+reach/hand guards and erosion,doorlock diagnostic,picking_lock/watch warnings.
+Can_ooze now uses canonical data and existing bulk helper, corrected to use
+hero inventory. m_canseeu includes C invisible/underwater guards. BINDINGS and
+its4-character abbreviations connect configuration to existing bindings.
+
+Three permanent recipes157 native scenarios: magic-key24, operations99,
+passage34. All50602 screens/cursors,370292 RNG and241 animations match.
+Official recorder metadata, independent assertions and exact instrumented C
+repeats pass. Ledger3342/3342,99 categories covered and7 partial. C union
+56813/108268 outcomes,4401/5491 entered records, +194 outcomes/+3 entered
+overcda8c13f. Instrumented dirs lock-occupations-20260906 and
+lock-passage-final-20260906 are both included. Exact gaps in remaining.json.
+
+State157 native replays,93 inventory observations,6 disarms,2 mimic acquisitions
+and64 constructed groups pass. Eight mutants all fail state. Native tests
+still miss trap-knowledge and watch mutants. Added native follow-ups catch
+fractional closing strength (St12,Dx17,Co14,roll14) and recovery of an absorbed
+key after killing the mimic. Final mutation totals are in mutation-results.json;
+exact prior5modules fail3/3 with7423 screen,4786 cursor,349541 positional RNG
+misses. Constructed states earn no C coverage credit.
+
+Final full sweep572/572:44 public528 supplemental, all621590 screens/cursors
+and12551703 RNG match. Public retains21 older animation misses. Fuzz101/102
+has the known fixed-date screen difference; all491759 RNG match. Fourteen
+related state gates,47 hang cases plus final passage,80 fresh games across
+13 roles,14 tool tests and source0/268 pass. verifier15917 and sweep42527
+are finished and collected. Final unused test-import cleanup has syntax and
+state passes in state-reviewed.log;99472 collected. No runtime edits since gates.
+
+Probe validity: neutral Wizard magic key was rejected; use corrected chaotic
+Wizard/east-door cases. Actual native prompt boundaries answer y/n/q, padding
+spaces cancel them. Booze cases renamed confusion. Default sack was empty,
+not full. Only north mimic approach absorbs the key; other7 are door controls.
+Do not rerun cache promoters: official recording corrected metadata and
+passage now has34 cases. Initial rm.glyph port used a nonexistent JS field,
+causing publicseed1500 to lose a learned-information turn; remembered_glyph
+with defaultS_stone fixed it. All public screens now match.
+
+Audit and plan updates complete; final runtime diff and diff-check reviewed.
+Next: local commit, then continue source gaps (doorlock26/102, obstruction,
+shop damage and town watches). Full doorlock/boxlock/obstructed C bodies
+re-read for that continuation. No next-pass implementation started yet.
+Do not push; publication authorization remains unanswered. Passing this corpus
+does not complete the ongoing full-port goal.
 
 ### Checkpoint: full untrapping
 
@@ -62,7 +97,7 @@ identified success now proves3->2 and catches the mutation in native output.
 Exact prior six modules fail6/6,8186screens2744cursors645490 positional RNG.
 Native/mutation totals are saved in native-totals.json and mutation-results.
 Final review makes constructed artifact types valid and gives the offhand
-blade a primary mace. State job80069 checks these last test-only corrections.
+blade a primary mace. State job80069 passed73/73 with these last test-only corrections.
 
 Full final sweep569/569:44 public525 supplemental. All570988 screens/cursors
 and12181411 RNG match. Supplemental559583screens/cursors11388573RNG24496
@@ -71,8 +106,7 @@ state gates,50 hang cases,80 fresh roles,14 tool tests,source0/268 pass. Final
 tool additions separately pass hang. Fuzz101/102 has the known fixed-date
 screen difference and all491759RNG match. verification-exits, complete-exits,
 regression-complete.log and totals.json preserve results. All untrapping
-jobs are collected except latest state80069. Check it, diff/check and locally
-commit this finished pass. Do not push; publication authorization unanswered.
+jobs are collected, including80069. This pass is committed as cda8c13f. Do not push; publication authorization unanswered.
 
 The audit explains failed trap locations, early prompt answers, wrong
 #identify, invalid Valkyrie gender and dropped Orb setups. These are excluded

@@ -1,5 +1,17 @@
 # Gameplay gaps measured from C execution
 
+The September 6 lock continuation reaches 56,813/108,268 direct C outcomes
+and 4,401/5,491 entered records. It adds 157 native scenarios, with all
+50,602 screens/cursors, 370,292 RNG calls and 241 animations matching.
+Mutation tests exposed two weak observations: a key vanished after mimic
+absorption without affecting the original replay, and sampled closing rolls
+missed C's integer threshold. Killing the mimic and recovering its key, and
+testing a roll of 14 against attributes averaging 14 1/3, now detect those
+faults in native output. Trap knowledge and town warnings remain dependent
+on constructed state controls. See [lock-occupation-audit.md](lock-occupation-audit.md)
+for exact source gaps and the 572/572 regression result. This does not update
+the historical judge score below or establish full game coverage.
+
 Verified on 2026-09-05. The live leaderboard snapshot fetched during this audit
 was dated 2026-09-04T21:38:30.263Z; our fork was last scored at
 2026-09-04T21:02:12.072Z. It reports 11,405/11,405 public screens and

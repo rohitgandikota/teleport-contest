@@ -109,6 +109,11 @@ import { mbodypart } from './polyself.js';
 import { HEAD } from './const.js';
 import { ARM } from './const.js';
 import { makeplural } from './objnam.js';
+import { picking_lock } from './lock.js';
+import { is_digging, watch_dig } from './dig.js';
+import { angry_guards } from './mon.js';
+import { stop_occupation } from './allmain.js';
+import { IS_DOOR, D_WARNED } from './const.js';
 
 
 
@@ -131,12 +136,28 @@ const is_watch = (ptr) => ptr.pmidx === PMNAMES.PM_WATCHMAN
 
 // src/monmove.c:176 watch_on_duty() — a peaceful Minetown watch member has
 // a one-in-three chance to notice lock picking or digging in town.
-function watch_on_duty(mtmp) {
+export async function watch_on_duty(mtmp) {
     if (mtmp.mpeaceful
         && in_town(game.u.ux + game.u.dx, game.u.uy + game.u.dy)
         && mtmp.mcansee && m_canseeu(mtmp) && !rn2(3)) {
-        if (game.occtxt === 'picking the lock' || game.occtxt === 'digging')
-            note_unported_monmove('watch_on_duty:warning');
+        const cc = { x: 0, y: 0 };
+        if (picking_lock(cc) && IS_DOOR(game.level.at(cc.x, cc.y).typ)
+            && (game.level.at(cc.x, cc.y).doormask & D_LOCKED)) {
+            if (couldsee(mtmp.mx, mtmp.my)) {
+                const door = game.level.at(cc.x, cc.y);
+                if (door.looted & D_WARNED) {
+                    await mon_yells(mtmp, "Halt, thief!  You're under arrest!");
+                    await angry_guards(Deaf());
+                } else {
+                    await mon_yells(mtmp, 'Hey, stop picking that lock!');
+                    door.looted |= D_WARNED;
+                }
+                await stop_occupation();
+            }
+        } else if (is_digging()) {
+            await watch_dig(mtmp, game.context.digging.pos.x,
+                            game.context.digging.pos.y, false);
+        }
     }
 }
 
@@ -740,7 +761,7 @@ export function monnear(mon, x, y) {
 // src/monmove.c:2316 stuff_prevents_passage(). Bulky carried objects stop an
 // amorphous monster, or a vampire in fog form, from passing under a door.
 function stuff_prevents_passage(mtmp) {
-    for (const obj of (mtmp.minvent || [])) {
+    for (const obj of (mtmp === game.youmonst ? game.invent : mtmp.minvent) || []) {
         const typ = obj.otyp;
         if (typ === OCLASSES.COIN_CLASS && obj.quan > 100)
             return true;
@@ -1112,14 +1133,8 @@ function closed_door_mm(x, y) {
 }
 
 // src/monmove.c:2356 can_ooze() — squeeze under a door.
-// stuff_prevents_passage() needs the inventory-bulk rules; it is recorded
-// rather than assumed, since assuming FALSE would let a laden monster ooze.
 export function can_ooze(mtmp) {
-    if (!amorphous(game.mons[mtmp.mnum]))
-        return false;
-    if (mtmp.minvent && mtmp.minvent.length)
-        note_unported('can_ooze:stuff_prevents_passage');
-    return true;
+    return amorphous(mtmp.data) && !stuff_prevents_passage(mtmp);
 }
 
 // src/monmove.c:532 distfleeck()
@@ -1315,7 +1330,7 @@ export async function dochug(mtmp) {
     }
 
     if (is_watch(mdat)) {
-        watch_on_duty(mtmp);
+        await watch_on_duty(mtmp);
     } else if ((mdat.pmidx === PMNAMES.PM_MIND_FLAYER
                 || mdat.pmidx === PMNAMES.PM_MASTER_MIND_FLAYER)
                && !rn2(20)) {
@@ -2278,10 +2293,10 @@ function m_balks_at_approaching(oldappr, mtmp, prange) {
     return oldappr;
 }
 
-// include/vision.h:50 m_canseeu() — Invis and Underwater are hero states the
-// port does not have yet, so this reduces to line of sight.
+// include/vision.h:50 m_canseeu(), the active macro without buried-state tests.
 export function m_canseeu(mtmp) {
-    return couldsee(mtmp.mx, mtmp.my);
+    return (!Invis() || perceives(mtmp.data))
+        && !Underwater() && couldsee(mtmp.mx, mtmp.my);
 }
 
 // src/mhitu.c:2413 ranged_attk_available() — does this monster have any attack

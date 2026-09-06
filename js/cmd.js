@@ -1,5 +1,9 @@
 import { NODIAG } from './hack.js';
-import { MV_ANY, MV_RUN, MV_RUSH, MV_WALK, CMDQ_INT, IRONBARS, DO_MOVE } from './const.js';
+import { MV_ANY, MV_RUN, MV_RUSH, MV_WALK, CMDQ_INT, CMDQ_DIR, DIR_DOWN, DIR_UP, IRONBARS, DO_MOVE } from './const.js';
+import { impossible } from './pline.js';
+import { can_ooze } from './monmove.js';
+import { Confusion, Stunned, Fumbling, Underwater } from './youprop.js';
+import { tunnels, needspick, amorphous } from './mondata.js';
 import { dobreathe, dospit, doremove, dogaze, dosummon, dohide, dospinweb, domindblast, dopoly } from './polyself.js';
 import { pet_ranged_attk } from './dog.js';
 import { is_vampshifter } from './monst.js';
@@ -153,12 +157,10 @@ import { place_object } from './mkobj.js';
 // Direction deltas: y u k
 //                   h . l
 //                   b j n
-const DIR_DX = { h: -1, l: 1, j: 0, k: 0, y: -1, u: 1, b: -1, n: 1 };
 /* include/hack.h — sdir order "hykulnjb" indexes xdir/ydir; the same DIR
    codes set_move_cmd() receives from the do_move_/do_run_/do_rush_ family. */
 const KEY_TO_DIR = { h: DIR_W, y: DIR_NW, k: DIR_N, u: DIR_NE,
                      l: DIR_E, n: DIR_SE, j: DIR_S, b: DIR_SW };
-const DIR_DY = { h: 0, l: 0, j: 1, k: -1, y: -1, u: -1, b: 1, n: 1 };
 
 function isMovementKey(ch) {
     return 'hjklyubn'.includes(ch);
@@ -211,11 +213,16 @@ async function blocksMove(x, y, dx, dy) {
     }
     if (IS_OBSTRUCTED(loc.typ)
         && !(Passes_walls() && may_passwall(x, y))) return true;
-    if (loc.typ === DOOR && (loc.doormask & (D_CLOSED | D_LOCKED))
-        && !Passes_walls()) return true;
+    if (closed_door(x, y)) {
+        if (Passes_walls() || can_ooze(game.youmonst)) {
+            const { test_move } = await import('./hack.js');
+            return !(await test_move(game.u.ux, game.u.uy, dx, dy, DO_MOVE));
+        }
+        return true;
+    }
     /* src/hack.c:1140 test_move() — diagonal moves into an intact doorway
        are not allowed (block_door boulder check needs Sokoban state) */
-    if (dx && dy && IS_DOOR(loc.typ)) {
+    if (dx && dy && !Passes_walls() && IS_DOOR(loc.typ)) {
         if (!doorless_door(x, y))
             return true;
         const { block_door } = await import('./shk.js');
@@ -224,7 +231,7 @@ async function blocksMove(x, y, dx, dy) {
     }
     /* src/hack.c:1208 — nor diagonal moves OUT of one */
     const ust = game.level?.at(game.u.ux, game.u.uy);
-    if (dx && dy && ust && IS_DOOR(ust.typ)
+    if (dx && dy && !Passes_walls() && ust && IS_DOOR(ust.typ)
         && !doorless_door(game.u.ux, game.u.uy)) return true;
     return false;
 }
@@ -369,10 +376,8 @@ export function set_move_cmd(dir, run) {
 
 // src/cmd.c getdir() — read a direction key and set u.dx/u.dy/u.dz.
 //
-// Only the plain movement-key path is reachable from a recorded session; the
-// mouse, help and fuzzer arms all need input this port does not receive. The
-// key IS consumed either way, so a caller that skips getdir leaves the session
-// one keystroke out of step, not merely one draw.
+// Queued directions bypass the live prompt. Both paths use the movement
+// bindings and form restrictions. Mouse, help-retry and redraw remain partial.
 export async function getdir(s) {
     /* src/cmd.c getdir():
          dirsym = yn_function((s && *s != '^') ? s : "In what direction?",
@@ -382,33 +387,31 @@ export async function getdir(s) {
        key is consumed. A caller-supplied string starting with '^' is a
        key-hint, not a prompt, and is ignored here as C ignores it. */
     let dirsym;
-    /* This port's canned action builders predate CMDQ_DIR and can leave the
-       next top-level command at the head while a live getdir prompt runs.
-       Only repetition currently supplies a saved direction key here. */
-    const queued = game.in_doagain ? cmdq_pop() : null;
+    const queued = cmdq_pop();
     if (queued) {
-        if (queued.typ === CMDQ_KEY) {
+        if (queued.typ === CMDQ_DIR) {
+            dirsym = cmd_from_dir(queued.dirz
+                ? (queued.dirz > 0 ? DIR_DOWN : DIR_UP)
+                : xytodir(queued.dirx, queued.diry), MV_WALK);
+        } else if (queued.typ === CMDQ_KEY) {
             dirsym = queued.key;
         } else {
             /* src/cmd.c:3974, a non-direction entry is a broken canned
                command. C discards the canned tail and treats it as NUL. */
             cmdq_clear(CQ_CANNED);
             dirsym = '\0';
+            await impossible('getdir: command queue had no dir?');
         }
     } else {
         dirsym = await tty_yn_function(
             (s && s[0] !== '^') ? s : 'In what direction?', null, '\0', false);
+        tty_clear_nhwindow_message(game._topl_cury || 0);
+        game._pending_message = '';
         /* src/cmd.c:4017, getdir records the literal answer itself. Its
            yn_function call uses addcmdq=FALSE so the key appears once. */
         if (!game.in_doagain)
             cmdq_add_key(CQ_REPEAT, dirsym);
     }
-
-    /* src/cmd.c:4011 — "remove the prompt string so caller won't have to":
-       clear_nhwindow(WIN_MESSAGE) physically blanks the topline on every
-       exit path, so the answered prompt is gone by the next boundary. */
-    tty_clear_nhwindow_message(game._topl_cury || 0);
-    game._pending_message = '';
 
     if (dirsym === '.' || dirsym === 's') {
         game.u.dx = game.u.dy = game.u.dz = 0;
@@ -418,18 +421,14 @@ export async function getdir(s) {
         confdir(false);
         return true;
     }
-    if (dirsym === '<' || dirsym === '>') {
-        game.u.dx = game.u.dy = 0;
-        game.u.dz = (dirsym === '<') ? -1 : 1;
-        return true;
-    }
-    if (!isMovementKey(dirsym)) {
+    const is_mov = movecmd(dirsym, MV_ANY);
+    if (!is_mov && !game.u.dz) {
         /* src/cmd.c:4095-4110 — a key in quitchars (" \r\n\033",
            src/decl.c:96) cancels quietly; anything else gets the cmdassist
            help panel (iflags.cmdassist is opt_out, default On) or the
            "What a strange direction!" pline when assistance is off. The
            '?' help-request retry is recorded; no recorded session asks. */
-        if (!" \r\n\x1b".includes(dirsym)) {
+        if (!"\0 \r\n\x1b".includes(dirsym)) {
             let did_help = false;
             if (dirsym === '?' || boolean_option('cmdassist')) {
                 did_help = await help_dir('\0', "Invalid direction key!");
@@ -441,9 +440,10 @@ export async function getdir(s) {
         }
         return false;
     }
-    game.u.dx = DIR_DX[dirsym];
-    game.u.dy = DIR_DY[dirsym];
-    game.u.dz = 0;
+    if (is_mov && !dxdy_moveok()) {
+        await You_cant('orient yourself that direction.');
+        return false;
+    }
 
     if (!game.u.dz)
         confdir(false);
@@ -2672,11 +2672,17 @@ async function domove_core() {
        never needs to press 'o' for this draw to happen; it fires on the first
        step into a doorway. */
     if (closed_door(newx, newy)
+        && !Passes_walls() && !can_ooze(game.youmonst) && !Underwater()
+        && !(tunnels(game.youmonst.data) && !needspick(game.youmonst.data))
         && flags_autoopen() && !game.context.run
-        && !game.u.uprops?.CONFUSION && !game.u.uprops?.STUNNED
-        && !game.u.uprops?.FUMBLING) {
-        await doopen_indir(newx, newy);
-        game.context.door_opened = !closed_door(newx, newy);
+        && !Confusion() && !Stunned() && !Fumbling()) {
+        if (amorphous(game.youmonst.data))
+            await You("try to ooze under the door, but can't squeeze your possessions through.");
+        const result = await doopen_indir(newx, newy);
+        const queued = cmdq_peek(CQ_CANNED);
+        game.context.door_opened = (result === ECMD_OK
+            && queued?.typ === CMDQ_EXTCMD && queued.fn === dokick)
+            || !closed_door(newx, newy);
         game.context.move = 0; /* (ux != u.ux || uy != u.uy) */
         return;
     }
@@ -3822,6 +3828,13 @@ export function cmdq_add_key(q, key) {
 // src/cmd.c:283 cmdq_add_int() — add an integer (a count) to the command queue.
 export function cmdq_add_int(q, intval) {
     ((game.command_queue ||= [])[q] ||= []).push({ typ: CMDQ_INT, intval });
+}
+
+// src/cmd.c:294 cmdq_add_dir()
+export function cmdq_add_dir(q, dx, dy, dz) {
+    ((game.command_queue ||= [])[q] ||= []).push({
+        typ: CMDQ_DIR, dirx: dx, diry: dy, dirz: dz,
+    });
 }
 
 // src/cmd.c:410 cmdq_pop() — pop the topmost command. The queue popped

@@ -3,8 +3,8 @@
 
 import { game } from './gstate.js';
 import { cansee } from './vision.js';
-import { doname, armor_simple_name, yname, simpleonames, Tobjnam } from './objnam.js';
-import { Monnam, Some_Monnam, Adjmonnam, pmname } from './do_name.js';
+import { doname, armor_simple_name, yname, simpleonames, Tobjnam, makeplural, otense } from './objnam.js';
+import { Monnam, Some_Monnam, Adjmonnam, pmname, upstart } from './do_name.js';
 import { pline_xy, You, impossible } from './pline.js';
 import { newsym, pline, urgent_pline } from './display.js';
 import { place_object, unknow_object, add_to_minv } from './mkobj.js';
@@ -30,7 +30,7 @@ import { encumber_msg } from './attrib.js';
 import { donning, doffing, stop_donning, cancel_don, Armor_off, Cloak_off, Boots_off, Gloves_off, Helmet_off, Shield_off, Shirt_off, Amulet_off, Ring_gone, Blindf_off, worn } from './do_wear.js';
 import { uwepgone, uswapwepgone, uqwepgone, welded } from './wield.js';
 import { unpunish } from './read.js';
-import { skinback } from './polyself.js';
+import { skinback, body_part } from './polyself.js';
 import { setworn } from './worn.js';
 import { W_AMUL, W_RING, W_TOOL, W_BALL, W_CHAIN, OBJ_DELETED, W_ARM, W_ARMC, W_ARMF, W_ARMG, W_ARMH, W_ARMS, W_ARMU } from './const.js';
 import { LEFT_RING, RIGHT_RING, LEFT_HANDED, TT_BURIEDBALL,
@@ -46,6 +46,8 @@ import { DEADMONSTER } from './monst.js';
 import { bimanual, Has_contents } from './obj.js';
 import { o_unleash } from './apply.js';
 import { openholdingtrap, minstapetrify } from './trap.js';
+import { touch_artifact } from './artifact.js';
+import { HAND, OBJ_INVENT } from './const.js';
 
 // src/steal.c:120 thiefdead()
 export function thiefdead() {
@@ -480,6 +482,35 @@ export async function stealamulet(mtmp) {
             await rloc(mtmp, RLOC_MSG);
     }
     await encumber_msg();
+}
+
+// src/steal.c:776 maybe_absorb_item()
+export async function maybe_absorb_item(mon, obj, ochance, achance) {
+    if (obj === game.u.uball || obj === game.u.uchain
+        || obj.oclass === OCLASSES.ROCK_CLASS
+        || obj_resists(obj, 100 - ochance, 100 - achance)
+        || !await touch_artifact(obj, mon))
+        return;
+
+    if (obj.where === OBJ_INVENT) {
+        if (obj.owornmask)
+            await remove_worn_item(obj, true);
+        if (obj.unpaid)
+            subfrombill(obj, shop_keeper(game.u.ushops?.[0]));
+        if (cansee(mon.mx, mon.my)) {
+            await pline(`${Some_Monnam(mon)} pulls ${yname(obj)} away from you and absorbs ${obj.quan > 1 ? 'them' : 'it'}!`);
+        } else {
+            let hand_s = body_part(HAND);
+            if (bimanual(obj))
+                hand_s = makeplural(hand_s);
+            await pline(`${upstart(yname(obj))} ${otense(obj, 'are')} pulled from your ${hand_s}!`);
+        }
+        freeinv(obj);
+        await encumber_msg();
+    } else if (canspotmon(mon)) {
+        await pline(`${Monnam(mon)} absorbs ${yname(obj)}!`);
+    }
+    await mpickobj(mon, obj);
 }
 
 // src/steal.c:814 mdrop_obj() — monster puts one object on its own square.

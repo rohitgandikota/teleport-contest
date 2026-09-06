@@ -78,6 +78,11 @@ plausible-but-wrong names that are hard to spot in a diff.
 
 ### 8.3 Pickup, drop, containers
 
+- [x] Lock occupations and door passage: 157 C scenarios cover magic-key
+      disarming, forcing, tool choice, mimic ownership, queued kicking and
+      integer closing strength. Native state and 64 constructed groups pass.
+      See [lock-occupation-audit.md](lock-occupation-audit.md) for measured
+      outcomes and remaining magical-door, obstruction and watch coverage.
 - [x] Untrapping entry and rescue: 284 C scenarios cover floor, container and
       door selection, roles, tools, captive rescue, half damage and flight
       blocking. Native state and 73 constructed groups pass. See

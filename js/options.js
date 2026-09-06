@@ -359,6 +359,10 @@ export function parseNethackrc(rc) {
             result.symbols.push(rest);
             break;
         case 'BIND':
+        case 'BINDI':
+        case 'BINDIN':
+        case 'BINDING':
+        case 'BINDINGS':
             result.bindings.push(rest);
             break;
         default:

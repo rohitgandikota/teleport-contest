@@ -14,22 +14,25 @@ sit on the side we cannot measure.
 
 ## September source-guided continuation
 
-The bones branch follow-up adds ten native game segments and twelve
-constructed state groups. All seven deliberate faults fail state assertions;
-four survive native output. See [bones-links-audit.md](bones-links-audit.md).
-The earlier [bones audit](bones-audit.md) retains its distinct gaps.
+The Minetown follow-up adds 25 native game segments and 39 constructed state
+groups. It fixes room creation overwriting the maze flag and ports the C
+shop-annotation fields. All six deliberate faults fail state assertions;
+four survive native output. See [minetown-map-audit.md](minetown-map-audit.md).
+The [bones branch audit](bones-links-audit.md) and earlier
+[bones audit](bones-audit.md) retain their distinct gaps.
 
-The full regression passes 605/605 fixtures, matching 781,705 screens/cursors
-and 14,592,028 RNG calls. C execution adds eight outcomes and no entered
-records, reaching 57,372/108,268 and 4,412/5,491. getlev's own coverage stays
-86/120 despite the new cross-seed case exposing a wrong destination. Coverage
-alone cannot establish state correctness across different game layouts.
+The full regression passes 606/606 fixtures, matching 786,130 screens/cursors
+and 14,728,376 RNG calls. C execution adds 17 outcomes and no entered records,
+reaching 57,389/108,268 and 4,412/5,491. The assertion ledger passes 3,802
+cases. Coverage alone cannot establish state correctness across layouts:
+forcing non-maze status or clearing the cavern flag passes every new native
+screen while failing a state assertion.
 
 The full port remains the active goal. The 21 existing public animation
-mismatches and known fixed-date fuzz difference remain explicit. A preserved
-seed-40 Minetown candidate has a separate map shift before loading bones and
-is the next investigation. Native portal repair, restore ordering, object
-disposal, shop damage and broader lifecycle controls remain open.
+mismatches and known fixed-date fuzz difference remain explicit. The
+preserved seed-40 Minetown map shift is fixed. Broader map bounds, region
+creation and flip state still need work. Native portal repair, restore
+ordering, object disposal and shop damage remain open.
 
 ## 12.1 The overfit audit
 

@@ -17,25 +17,24 @@ and persistent gameplay state. Continue source review, measured C branches,
 independent oracles, implementation and regression checks until that goal is
 met. Current corpus success is not the stopping criterion.
 
-The latest pass reconnects bones stairs and portals to the new game's dungeon.
-Ten native game segments test cross-seed Mines return destinations and Quest
-bones eligibility. All 44 public and 561 supplemental fixtures pass, matching
-781,705 screens/cursors and 14,592,028 RNG calls. The C union reaches
-57,372/108,268 direct outcomes and 4,412/5,491 entered records. The new state
-gate checks ten native replays and twelve constructed groups. All seven
-deliberate faults fail state assertions; four pass native output comparisons.
-The assertion ledger passes 3,777/3,777 cases.
+The latest pass fixes Minetown region classification and adds C's short shop
+annotations. Twenty-five native games cover seven town variants and four flip
+orientations. All 44 public and 562 supplemental fixtures pass, matching
+786,130 screens/cursors and 14,728,376 RNG calls. The C union reaches
+57,389/108,268 direct outcomes and 4,412/5,491 entered records. The state gate
+checks 25 native replays, 50 C stair positions and 39 constructed groups.
+All six deliberate faults fail state assertions; four survive native output.
+The assertion ledger passes 3,802/3,802 cases.
 
 See [STATUS.md](STATUS.md) for the current action,
-[bones-links-audit.md](bones-links-audit.md) for the source review and
+[minetown-map-audit.md](minetown-map-audit.md) for this source review and
 [gameplay-gap-audit.md](gameplay-gap-audit.md) for measurement limits.
 The September 6 leaderboard snapshot reports 81.48% held-out screens and
-rank 1 among agentic entries. Its score still predates today's pushes; the
-local suite does not establish a newer held-out score. The user explicitly
-authorized prompt pushes of every verified commit. The next reproduced gap
-is a seed-40 Minetown map shift before bones are loaded. The full-port goal
-continues through remaining generation, restore, inventory, spell, monster
-and Lua paths.
+rank 1 among agentic entries. Its score predates today's pushes; the local
+suite does not establish a newer held-out score. The user explicitly
+authorized prompt pushes of every verified commit. The full-port goal
+continues through remaining map bounds, region creation, flip state,
+restore, inventory, spell, monster and Lua paths.
 
 ## Previous focus, 2026-09-03
 

@@ -193,6 +193,21 @@ steps) are the broad tests.
 
 ---
 
+## September 6 Minetown source check
+
+Region creation now preserves C's maze and cavern flags. This fixes a
+one-column shift when a joined, walled town is mirrored. The C short shop
+annotations are also present. A permanent 25-game native recipe covers seven
+town variants and four orientations, with 4,425 exact screens/cursors and
+136,348 RNG calls. It does not cover all 28 variant-orientation combinations.
+
+The state gate verifies 50 native stair positions and 39 constructed controls.
+All six deliberate faults fail state, including four which pass the native
+fixture. The full corpus passes 606/606. lspo_region, lspo_map and flip_level
+remain partial, with source gaps listed in
+[minetown-map-audit.md](minetown-map-audit.md). This resolves the preserved
+seed-40 generation defect from the bones pass.
+
 ## Done when
 
 - The two quest-tour sessions pass end to end

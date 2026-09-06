@@ -5,14 +5,46 @@
 The user explicitly set an ongoing goal: port every reachable C and Lua
 behavior faithfully, with byte-identical output and persistent state, and
 continue the source review, oracle generation, implementation, and verification
-loop until complete. The user requested an unbudgeted goal. The goal tracker currently reports
-blocked after the earlier model-capacity failure; this turn is running and
-local work has no such blocker. The available goal tools cannot resume it.
-Continue the authorized work; do not mark it complete or recreate it.
+loop until complete. The user requested an unbudgeted goal. The goal tracker now reports active.
 Current-corpus success is not the stopping criterion. Track unreviewed,
 untested, missing, and unreachable source paths explicitly.
 
-### Active pass: bones destination repair
+### Active checkpoint: Minetown map flags and shop annotations
+
+Work .cache/minetown-map. Last checkpoint f168e862 is pushed to origin/main.
+The user authorizes all future verified checkpoint pushes without asking.
+Two runtime modules: sp_lev removes forced maze classification on region
+creation; shknam copies all twelve C annotations. Full C bodies and relevant
+Lua read, no C or frozen edits. Audit docs/plan/minetown-map-audit.md.
+
+Permanent minetown-map-flags:25 games,all7variants/all4orientations,not all28
+pairs. Promoter RAN ONCE. Official88376 and Ccoverage92356 finished with
+assertions/integrity/exact repeat1/1. Before4368/4425screens4424cursors;
+mapfixonly4424both;finalall4425screens/cursors136348RNG. Originalseed40bones
+reproductionalsoall1988screens/cursors63739RNG.
+
+Fullregression32663 finished606/606,44public562supp:786130screens/cursors,
+14728376RNG,29999/30020animations(same21publicmisses). Finalstategate61278
+passes25native50stairs39constructed. Initialgateassumptionscorrected:tty
+x+1/y-1,mapstructvaluevsobjectidentity,onlyvariant5maze,remoteoverviewentry.
+Sixmutantstatechecks50999 rerunagainstfinalgate,allintendedassertionfailures.
+Fourpassnative:force-nonmaze,clear-cavern,omitarmorlabel,omitvegetarianlabel.
+Forcemaze56screenmisses,omitlighting1screen/cursor. Baselinef1682modules57
+screen1cursormiss,nativeallRNG,noerrors. Nativefaultchecks14985finished.
+
+Cunion65288 adds17/+0 to57389/108268,4412/5491. lspo_region23/36,map98/132,
+level_init4/4,mkmap13/14,extends47/52,flip119/188,fliprnd6/6,shopstring4/6,
+print_mapseen113/148. No newunreachableclaims. Related56055 allpass:4state,
+45hang,80fresh13roles,source0/269,ledger3802/3802(99covered7partial).
+Fuzz101/102samefixeddate,all491759RNG14262cursors14261screens75/76anim.
+Alljobscomplete. Syntax/finaldiff andcommit/push next. Permission persists.
+
+Next source gaps: get_level_extends omits C horizontal clamps; themed region
+room creation, MAXNROFROOMS, no-contents coder stack; flip extras/guards/
+drawbridges/timers/exclusions/regions. Keep broader parents partial. Full
+unbudgeted goal is active and continues after pushing this checkpoint.
+
+### Checkpoint: bones destination repair
 
 Work .cache/bones-links. Previous bones checkpoint committed and pushed as
 9cdc2fbde0110eb9cb98ff65076727fb08173dee on September6 about11:56EDT.
@@ -52,7 +84,7 @@ previouscheckpoint's14passingtooltests.
 Cunion+8directoutcomes/+0entered→57372/108268,4412/5491. getlevstays86/120:
 coveredbranchesalonedidnotdetectwrongcross-gamedestination. No newunreachable
 claims. Auditdocs/plan/bones-links-audit.md andplansupdated. Finalsyntax/diff
-check,commit,pushnext. Runtimefrozenafterallchecks. Allsessionsfinished:
+checkpassed;committedandpushedf168e862. Allsessionsfinished:
 16066fullreg,27003Ccoverage,24959related,99073mutations,82566union,68344state,
 11884portalmutant. No active recorders orjobs. No permission question.
 

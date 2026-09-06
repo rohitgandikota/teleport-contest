@@ -1,14 +1,15 @@
 # Gameplay gaps measured from C execution
 
-The September 6 bones branch follow-up reaches 57,372/108,268 direct C
-outcomes and 4,412/5,491 entered records. Ten native game segments match all
-2,379 screens/cursors and 74,230 RNG calls. All seven deliberate faults fail
-state assertions; four survive native output. getlev remains at 86/120
-outcomes even though a new cross-seed input exposes a wrong exit destination.
-See [bones-links-audit.md](bones-links-audit.md) for that evidence and the
-605/605 regression result. A separate seed-40 Minetown map shift is preserved
-as a failing candidate for the next pass. These measurements do not establish
-full game coverage.
+The September 6 Minetown follow-up reaches 57,389/108,268 direct C outcomes
+and 4,412/5,491 entered records. Twenty-five native games match all 4,425
+screens/cursors and 136,348 RNG calls, covering all seven town variants and
+four orientations, not every variant-orientation pair. Six deliberate faults
+fail state assertions; four survive native output. See
+[minetown-map-audit.md](minetown-map-audit.md) for the 39 constructed groups
+and 606/606 regression result. The preserved seed-40 map shift is fixed.
+The prior [bones branch audit](bones-links-audit.md) likewise shows why
+covered branches alone did not detect a wrong cross-game exit destination.
+These measurements do not establish full game coverage.
 
 Verified on 2026-09-06. The fetched leaderboard snapshot was dated
 2026-09-06T11:49:08.879Z; our fork was last scored at

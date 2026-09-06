@@ -3621,7 +3621,6 @@ export function lspo_region_full(opts) {
         troom.needfill = needfill;
         /* src/sp_lev.c:5674 — needjoining defaults TRUE */
         troom.needjoining = opts.joined ?? true;
-        game.level.flags.is_maze_lev = true;
         /* src/sp_lev.c:5697 — the room goes on the coder stack while its
            contents closure runs, exactly like lspo_room */
         if (opts.contents) {

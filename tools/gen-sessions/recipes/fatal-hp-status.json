@@ -1,0 +1,847 @@
+{
+  "name": "fatal-hp-status",
+  "description": "Exact negative, zero and positive HP boundaries, damage-message controls, and lava status preservation.",
+  "coverage": [
+    "mode.debug",
+    "ui.more-paging",
+    "survival.instant-deaths"
+  ],
+  "branches": [
+    "fatal-hp-status.hp-minus-two-damage-off",
+    "fatal-hp-status.hp-minus-two-damage-on",
+    "fatal-hp-status.hp-minus-one-damage-off",
+    "fatal-hp-status.hp-minus-one-damage-on",
+    "fatal-hp-status.hp-positive-two-damage-off",
+    "fatal-hp-status.hp-positive-two-damage-on",
+    "fatal-hp-status.hp-zero-damage-off",
+    "fatal-hp-status.hp-zero-damage-on",
+    "fatal-hp-status.hp-positive-one-damage-off",
+    "fatal-hp-status.hp-positive-one-damage-on",
+    "fatal-hp-status.lava-previous-hp",
+    "fatal-hp-status.lava-status-disabled"
+  ],
+  "requireBranchAssertions": true,
+  "segments": [
+    {
+      "name": "hp-minus-two-damage-off",
+      "seed": 35,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\nOPTIONS=!showdamage\n",
+      "moves": " #levelchange\r1\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed wand of striking (0:3)\r              \u001b\u001b\u001b\u001b\u001b\u001bzb.              \u001b\u001b\u001b\u001b\u001b\u001bi               \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "hp-minus-two-damage-on",
+      "seed": 35,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\nOPTIONS=showdamage\n",
+      "moves": " #levelchange\r1\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed wand of striking (0:3)\r              \u001b\u001b\u001b\u001b\u001b\u001bzb.              \u001b\u001b\u001b\u001b\u001b\u001bi               \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "hp-minus-one-damage-off",
+      "seed": 33,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\nOPTIONS=!showdamage\n",
+      "moves": " #levelchange\r1\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed wand of striking (0:3)\r              \u001b\u001b\u001b\u001b\u001b\u001bzb.              \u001b\u001b\u001b\u001b\u001b\u001bi               \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "hp-minus-one-damage-on",
+      "seed": 33,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\nOPTIONS=showdamage\n",
+      "moves": " #levelchange\r1\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed wand of striking (0:3)\r              \u001b\u001b\u001b\u001b\u001b\u001bzb.              \u001b\u001b\u001b\u001b\u001b\u001bi               \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "hp-positive-two-damage-off",
+      "seed": 34,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\nOPTIONS=!showdamage\n",
+      "moves": " #levelchange\r1\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed wand of striking (0:3)\r              \u001b\u001b\u001b\u001b\u001b\u001bzb.              \u001b\u001b\u001b\u001b\u001b\u001bi               \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "hp-positive-two-damage-on",
+      "seed": 34,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\nOPTIONS=showdamage\n",
+      "moves": " #levelchange\r1\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed wand of striking (0:3)\r              \u001b\u001b\u001b\u001b\u001b\u001bzb.              \u001b\u001b\u001b\u001b\u001b\u001bi               \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "hp-zero-damage-off",
+      "seed": 42,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\nOPTIONS=!showdamage\n",
+      "moves": " #levelchange\r1\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed wand of striking (0:3)\r              \u001b\u001b\u001b\u001b\u001b\u001bzb.              \u001b\u001b\u001b\u001b\u001b\u001bi               \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "hp-zero-damage-on",
+      "seed": 42,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\nOPTIONS=showdamage\n",
+      "moves": " #levelchange\r1\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed wand of striking (0:3)\r              \u001b\u001b\u001b\u001b\u001b\u001bzb.              \u001b\u001b\u001b\u001b\u001b\u001bi               \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "hp-positive-one-damage-off",
+      "seed": 45,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\nOPTIONS=!showdamage\n",
+      "moves": " #levelchange\r1\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed wand of striking (0:3)\r              \u001b\u001b\u001b\u001b\u001b\u001bzb.              \u001b\u001b\u001b\u001b\u001b\u001bi               \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "hp-positive-one-damage-on",
+      "seed": 45,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\nOPTIONS=showdamage\n",
+      "moves": " #levelchange\r1\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed wand of striking (0:3)\r              \u001b\u001b\u001b\u001b\u001b\u001bzb.              \u001b\u001b\u001b\u001b\u001b\u001bi               \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "lava-previous-hp",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:full\nOPTIONS=!showdamage\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001bk        \u001b\u001b\u001b\u001b\u001b\u001b\u0017lava\r        \u001b\u001b\u001b\u001b\u001b\u001b,        \u001b\u001b\u001b\u001b\u001b\u001b        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "lava-status-disabled",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:full\nOPTIONS=!status_updates,time\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001bk        \u001b\u001b\u001b\u001b\u001b\u001b\u0017lava\r        \u001b\u001b\u001b\u001b\u001b\u001b,        \u001b\u001b\u001b\u001b\u001b\u001b        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b"
+    }
+  ],
+  "branchAssertions": [
+    {
+      "branch": "fatal-hp-status.hp-minus-two-damage-off",
+      "segment": 0,
+      "screenIncludes": [
+        "You bash yourself!"
+      ],
+      "screenExcludes": [
+        "[HP "
+      ],
+      "screenCells": [
+        {
+          "step": 144,
+          "x": 11,
+          "y": 23,
+          "equals": "H"
+        },
+        {
+          "step": 144,
+          "x": 12,
+          "y": 23,
+          "equals": "P"
+        },
+        {
+          "step": 144,
+          "x": 13,
+          "y": 23,
+          "equals": ":"
+        },
+        {
+          "step": 144,
+          "x": 14,
+          "y": 23,
+          "equals": "0"
+        },
+        {
+          "step": 144,
+          "x": 15,
+          "y": 23,
+          "equals": "("
+        },
+        {
+          "step": 144,
+          "x": 16,
+          "y": 23,
+          "equals": "1"
+        },
+        {
+          "step": 144,
+          "x": 17,
+          "y": 23,
+          "equals": "2"
+        },
+        {
+          "step": 144,
+          "x": 18,
+          "y": 23,
+          "equals": ")"
+        }
+      ]
+    },
+    {
+      "branch": "fatal-hp-status.hp-minus-two-damage-on",
+      "segment": 1,
+      "screenIncludes": [
+        "You bash yourself!  [HP -14, -2 left]"
+      ],
+      "screenCells": [
+        {
+          "step": 144,
+          "x": 11,
+          "y": 23,
+          "equals": "H"
+        },
+        {
+          "step": 144,
+          "x": 12,
+          "y": 23,
+          "equals": "P"
+        },
+        {
+          "step": 144,
+          "x": 13,
+          "y": 23,
+          "equals": ":"
+        },
+        {
+          "step": 144,
+          "x": 14,
+          "y": 23,
+          "equals": "0"
+        },
+        {
+          "step": 144,
+          "x": 15,
+          "y": 23,
+          "equals": "("
+        },
+        {
+          "step": 144,
+          "x": 16,
+          "y": 23,
+          "equals": "1"
+        },
+        {
+          "step": 144,
+          "x": 17,
+          "y": 23,
+          "equals": "2"
+        },
+        {
+          "step": 144,
+          "x": 18,
+          "y": 23,
+          "equals": ")"
+        }
+      ]
+    },
+    {
+      "branch": "fatal-hp-status.hp-minus-one-damage-off",
+      "segment": 2,
+      "screenIncludes": [
+        "You bash yourself!"
+      ],
+      "screenExcludes": [
+        "[HP "
+      ],
+      "screenCells": [
+        {
+          "step": 144,
+          "x": 11,
+          "y": 23,
+          "equals": "H"
+        },
+        {
+          "step": 144,
+          "x": 12,
+          "y": 23,
+          "equals": "P"
+        },
+        {
+          "step": 144,
+          "x": 13,
+          "y": 23,
+          "equals": ":"
+        },
+        {
+          "step": 144,
+          "x": 14,
+          "y": 23,
+          "equals": "1"
+        },
+        {
+          "step": 144,
+          "x": 15,
+          "y": 23,
+          "equals": "2"
+        },
+        {
+          "step": 144,
+          "x": 16,
+          "y": 23,
+          "equals": "("
+        },
+        {
+          "step": 144,
+          "x": 17,
+          "y": 23,
+          "equals": "1"
+        },
+        {
+          "step": 144,
+          "x": 18,
+          "y": 23,
+          "equals": "2"
+        },
+        {
+          "step": 144,
+          "x": 19,
+          "y": 23,
+          "equals": ")"
+        }
+      ]
+    },
+    {
+      "branch": "fatal-hp-status.hp-minus-one-damage-on",
+      "segment": 3,
+      "screenIncludes": [
+        "You bash yourself!  [HP -13, -1 left]"
+      ],
+      "screenCells": [
+        {
+          "step": 144,
+          "x": 11,
+          "y": 23,
+          "equals": "H"
+        },
+        {
+          "step": 144,
+          "x": 12,
+          "y": 23,
+          "equals": "P"
+        },
+        {
+          "step": 144,
+          "x": 13,
+          "y": 23,
+          "equals": ":"
+        },
+        {
+          "step": 144,
+          "x": 14,
+          "y": 23,
+          "equals": "1"
+        },
+        {
+          "step": 144,
+          "x": 15,
+          "y": 23,
+          "equals": "2"
+        },
+        {
+          "step": 144,
+          "x": 16,
+          "y": 23,
+          "equals": "("
+        },
+        {
+          "step": 144,
+          "x": 17,
+          "y": 23,
+          "equals": "1"
+        },
+        {
+          "step": 144,
+          "x": 18,
+          "y": 23,
+          "equals": "2"
+        },
+        {
+          "step": 144,
+          "x": 19,
+          "y": 23,
+          "equals": ")"
+        }
+      ]
+    },
+    {
+      "branch": "fatal-hp-status.hp-positive-two-damage-off",
+      "segment": 4,
+      "screenIncludes": [
+        "You bash yourself!"
+      ],
+      "screenExcludes": [
+        "[HP "
+      ],
+      "screenCells": [
+        {
+          "step": 143,
+          "x": 11,
+          "y": 23,
+          "equals": "H"
+        },
+        {
+          "step": 143,
+          "x": 12,
+          "y": 23,
+          "equals": "P"
+        },
+        {
+          "step": 143,
+          "x": 13,
+          "y": 23,
+          "equals": ":"
+        },
+        {
+          "step": 143,
+          "x": 14,
+          "y": 23,
+          "equals": "2"
+        },
+        {
+          "step": 143,
+          "x": 15,
+          "y": 23,
+          "equals": "("
+        },
+        {
+          "step": 143,
+          "x": 16,
+          "y": 23,
+          "equals": "1"
+        },
+        {
+          "step": 143,
+          "x": 17,
+          "y": 23,
+          "equals": "2"
+        },
+        {
+          "step": 143,
+          "x": 18,
+          "y": 23,
+          "equals": ")"
+        }
+      ]
+    },
+    {
+      "branch": "fatal-hp-status.hp-positive-two-damage-on",
+      "segment": 5,
+      "screenIncludes": [
+        "You bash yourself!  [HP -10, 2 left]"
+      ],
+      "screenCells": [
+        {
+          "step": 143,
+          "x": 11,
+          "y": 23,
+          "equals": "H"
+        },
+        {
+          "step": 143,
+          "x": 12,
+          "y": 23,
+          "equals": "P"
+        },
+        {
+          "step": 143,
+          "x": 13,
+          "y": 23,
+          "equals": ":"
+        },
+        {
+          "step": 143,
+          "x": 14,
+          "y": 23,
+          "equals": "2"
+        },
+        {
+          "step": 143,
+          "x": 15,
+          "y": 23,
+          "equals": "("
+        },
+        {
+          "step": 143,
+          "x": 16,
+          "y": 23,
+          "equals": "1"
+        },
+        {
+          "step": 143,
+          "x": 17,
+          "y": 23,
+          "equals": "2"
+        },
+        {
+          "step": 143,
+          "x": 18,
+          "y": 23,
+          "equals": ")"
+        }
+      ]
+    },
+    {
+      "branch": "fatal-hp-status.hp-zero-damage-off",
+      "segment": 6,
+      "screenIncludes": [
+        "You bash yourself!"
+      ],
+      "screenExcludes": [
+        "[HP "
+      ],
+      "screenCells": [
+        {
+          "step": 144,
+          "x": 11,
+          "y": 23,
+          "equals": "H"
+        },
+        {
+          "step": 144,
+          "x": 12,
+          "y": 23,
+          "equals": "P"
+        },
+        {
+          "step": 144,
+          "x": 13,
+          "y": 23,
+          "equals": ":"
+        },
+        {
+          "step": 144,
+          "x": 14,
+          "y": 23,
+          "equals": "0"
+        },
+        {
+          "step": 144,
+          "x": 15,
+          "y": 23,
+          "equals": "("
+        },
+        {
+          "step": 144,
+          "x": 16,
+          "y": 23,
+          "equals": "1"
+        },
+        {
+          "step": 144,
+          "x": 17,
+          "y": 23,
+          "equals": "2"
+        },
+        {
+          "step": 144,
+          "x": 18,
+          "y": 23,
+          "equals": ")"
+        }
+      ]
+    },
+    {
+      "branch": "fatal-hp-status.hp-zero-damage-on",
+      "segment": 7,
+      "screenIncludes": [
+        "You bash yourself!  [HP -12, 0 left]"
+      ],
+      "screenCells": [
+        {
+          "step": 144,
+          "x": 11,
+          "y": 23,
+          "equals": "H"
+        },
+        {
+          "step": 144,
+          "x": 12,
+          "y": 23,
+          "equals": "P"
+        },
+        {
+          "step": 144,
+          "x": 13,
+          "y": 23,
+          "equals": ":"
+        },
+        {
+          "step": 144,
+          "x": 14,
+          "y": 23,
+          "equals": "0"
+        },
+        {
+          "step": 144,
+          "x": 15,
+          "y": 23,
+          "equals": "("
+        },
+        {
+          "step": 144,
+          "x": 16,
+          "y": 23,
+          "equals": "1"
+        },
+        {
+          "step": 144,
+          "x": 17,
+          "y": 23,
+          "equals": "2"
+        },
+        {
+          "step": 144,
+          "x": 18,
+          "y": 23,
+          "equals": ")"
+        }
+      ]
+    },
+    {
+      "branch": "fatal-hp-status.hp-positive-one-damage-off",
+      "segment": 8,
+      "screenIncludes": [
+        "You bash yourself!"
+      ],
+      "screenExcludes": [
+        "[HP "
+      ],
+      "screenCells": [
+        {
+          "step": 143,
+          "x": 11,
+          "y": 23,
+          "equals": "H"
+        },
+        {
+          "step": 143,
+          "x": 12,
+          "y": 23,
+          "equals": "P"
+        },
+        {
+          "step": 143,
+          "x": 13,
+          "y": 23,
+          "equals": ":"
+        },
+        {
+          "step": 143,
+          "x": 14,
+          "y": 23,
+          "equals": "1"
+        },
+        {
+          "step": 143,
+          "x": 15,
+          "y": 23,
+          "equals": "("
+        },
+        {
+          "step": 143,
+          "x": 16,
+          "y": 23,
+          "equals": "1"
+        },
+        {
+          "step": 143,
+          "x": 17,
+          "y": 23,
+          "equals": "2"
+        },
+        {
+          "step": 143,
+          "x": 18,
+          "y": 23,
+          "equals": ")"
+        }
+      ]
+    },
+    {
+      "branch": "fatal-hp-status.hp-positive-one-damage-on",
+      "segment": 9,
+      "screenIncludes": [
+        "You bash yourself!  [HP -11, 1 left]"
+      ],
+      "screenCells": [
+        {
+          "step": 143,
+          "x": 11,
+          "y": 23,
+          "equals": "H"
+        },
+        {
+          "step": 143,
+          "x": 12,
+          "y": 23,
+          "equals": "P"
+        },
+        {
+          "step": 143,
+          "x": 13,
+          "y": 23,
+          "equals": ":"
+        },
+        {
+          "step": 143,
+          "x": 14,
+          "y": 23,
+          "equals": "1"
+        },
+        {
+          "step": 143,
+          "x": 15,
+          "y": 23,
+          "equals": "("
+        },
+        {
+          "step": 143,
+          "x": 16,
+          "y": 23,
+          "equals": "1"
+        },
+        {
+          "step": 143,
+          "x": 17,
+          "y": 23,
+          "equals": "2"
+        },
+        {
+          "step": 143,
+          "x": 18,
+          "y": 23,
+          "equals": ")"
+        }
+      ]
+    },
+    {
+      "branch": "fatal-hp-status.lava-previous-hp",
+      "segment": 10,
+      "screenIncludes": [
+        "You burn to a crisp..."
+      ],
+      "screenExcludes": [
+        "[HP "
+      ],
+      "screenCells": [
+        {
+          "step": 110,
+          "x": 11,
+          "y": 23,
+          "equals": "H"
+        },
+        {
+          "step": 110,
+          "x": 12,
+          "y": 23,
+          "equals": "P"
+        },
+        {
+          "step": 110,
+          "x": 13,
+          "y": 23,
+          "equals": ":"
+        },
+        {
+          "step": 110,
+          "x": 14,
+          "y": 23,
+          "equals": "1"
+        },
+        {
+          "step": 110,
+          "x": 15,
+          "y": 23,
+          "equals": "2"
+        },
+        {
+          "step": 110,
+          "x": 16,
+          "y": 23,
+          "equals": "6"
+        },
+        {
+          "step": 110,
+          "x": 17,
+          "y": 23,
+          "equals": "("
+        },
+        {
+          "step": 110,
+          "x": 18,
+          "y": 23,
+          "equals": "1"
+        },
+        {
+          "step": 110,
+          "x": 19,
+          "y": 23,
+          "equals": "2"
+        },
+        {
+          "step": 110,
+          "x": 20,
+          "y": 23,
+          "equals": "6"
+        },
+        {
+          "step": 110,
+          "x": 21,
+          "y": 23,
+          "equals": ")"
+        }
+      ]
+    },
+    {
+      "branch": "fatal-hp-status.lava-status-disabled",
+      "segment": 11,
+      "screenIncludes": [
+        "You burn to a crisp..."
+      ],
+      "screenExcludes": [
+        "[HP "
+      ],
+      "screenCells": [
+        {
+          "step": 110,
+          "x": 0,
+          "y": 22,
+          "equals": " "
+        },
+        {
+          "step": 110,
+          "x": 14,
+          "y": 22,
+          "equals": " "
+        },
+        {
+          "step": 110,
+          "x": 30,
+          "y": 22,
+          "equals": " "
+        },
+        {
+          "step": 110,
+          "x": 79,
+          "y": 22,
+          "equals": " "
+        },
+        {
+          "step": 110,
+          "x": 0,
+          "y": 23,
+          "equals": " "
+        },
+        {
+          "step": 110,
+          "x": 14,
+          "y": 23,
+          "equals": " "
+        },
+        {
+          "step": 110,
+          "x": 30,
+          "y": 23,
+          "equals": " "
+        },
+        {
+          "step": 110,
+          "x": 79,
+          "y": 23,
+          "equals": " "
+        }
+      ]
+    }
+  ]
+}

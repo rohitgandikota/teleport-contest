@@ -17,21 +17,21 @@ and persistent gameplay state. Continue source review, measured C branches,
 independent oracles, implementation, and regression checks until that goal is
 met. Current corpus success is not the stopping criterion.
 
-The latest pass adds 123 C cases for floor pickup, swallowed object
-transfers and digestion, and reach guards. All 44 public and 507
-supplemental fixtures pass, matching 386,415 screens/cursors and
-10,500,604 RNG calls. The C union reaches 55,680/108,268 direct outcomes
-and 4,373/5,491 entered records. The assertion ledger is 2,526/2,526.
-State checks cover ownership, quantities, monster transformations, flight
-blocking and punishment diagnostics. Deliberate regressions verify that
-the new checks detect missing transfers, movement scaling and ball guards.
+The latest pass adds 23 C cases for fatal HP boundaries, damage messages,
+disabled status updates and polymorph reversion. Porting C's exact HP -1
+status guard removes three message-timing workarounds. All 44 public and
+509 supplemental fixtures pass, matching 390,285 screens/cursors and
+10,570,155 RNG calls. The C union reaches 55,702/108,268 direct outcomes
+and 4,375/5,491 entered records. The assertion ledger is 2,549/2,549.
+A missing running-cancellation call passes the new native screen/RNG
+corpus but fails the constructed state check.
 
 See [STATUS.md](STATUS.md) for the checkpoint and next action,
-[floor-pickup-audit.md](floor-pickup-audit.md) for the current
+[status-suppression-audit.md](status-suppression-audit.md) for the current
 review and [gameplay-gap-audit.md](gameplay-gap-audit.md) for measurement
 limits. The earlier published held-out result was 78.39%; the local suite
-does not establish a newer held-out score. A retained lava-death status
-mismatch is next. Tipping, object menus, multiple-container looting,
+does not establish a newer held-out score. Category selection and looting
+entry paths are next. Tipping, object menus, multiple-container looting,
 disclosure, inventory lifecycle, spell, monster and Lua paths remain open.
 The full-port goal remains active.
 

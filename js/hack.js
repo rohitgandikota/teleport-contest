@@ -50,7 +50,7 @@ import { is_pit, EXT_ENCUMBER, HVY_ENCUMBER, IS_FURNITURE, STAIRS, ECMD_OK, ECMD
 import { near_capacity } from './attrib.js';
 import { gethungry } from './eat.js';
 import { cmdq_clear, closed_door, paranoid_query } from './cmd.js';
-import { paranoia_bits } from './options.js';
+import { paranoia_bits, boolean_option } from './options.js';
 import { PARANOID_TRAP, PARANOID_CONFIRM, TRAPNUM, TRAP_CLEARLY_IMMUNE } from './const.js';
 import { Blind, Stunned, Confusion } from './youprop.js';
 import { visible_region_at, reg_damg } from './region.js';
@@ -575,14 +575,20 @@ async function maybe_wail() {
     }
 }
 
-// src/hack.c:4256 losehp() — the hero takes damage, and dies if it reaches 0.
-//
-// This is the main route into done(). It draws nothing itself; showdamage and
-// end_running are display and movement bookkeeping.
+// src/hack.c:4247 showdamage().
+export async function showdamage(dmg) {
+    if (!boolean_option('showdamage') || !dmg)
+        return;
+    await pline(`[HP ${-dmg}, ${Upolyd(game.u) ? game.u.mh : game.u.uhp} left]`);
+}
+
+// src/hack.c:4256 losehp().
 export async function losehp(n, knam, k_format) {
     (game.disp ||= {}).botl = true;
+    end_running(true);
     if (Upolyd(game.u)) {
         game.u.mh -= n;
+        await showdamage(n);
         if (game.u.mh > game.u.mhmax)
             game.u.mhmax = game.u.mh;
         if (game.u.mh < 1) {
@@ -596,26 +602,13 @@ export async function losehp(n, knam, k_format) {
         return;
     }
 
-    const shownHp = game.u.uhp;
     game.u.uhp -= n;
+    await showdamage(n);
     if (game.u.uhp > game.u.uhpmax)
         game.u.uhpmax = game.u.uhp;     /* perhaps n was negative */
 
     if (game.u.uhp < 1) {
-        game.killer = { format: k_format, name: knam };
-        const pending = game._pending_message || '';
-        if (game.u.uhp === -1 && pending) {
-            game._deferred_status_hp_until_more = Math.max(shownHp | 0, 0);
-            game._deferred_status_hp_more_count =
-                pending.startsWith('Ouch!  That hurts!') ? 2
-                : pending.includes('  ') || pending.includes('wand hits you!')
-                    ? 1 : 2;
-        } else {
-            const { bot } = await import('./display.js');
-            await bot();
-        }
-        /* src/hack.c:4287 urgent_pline() can block on a pending message before
-           done() repaints the status, so that More frame keeps the old HP. */
+        game.killer = { format: k_format, name: knam || '' };
         await urgent_pline('You die...');
         await done(DIED);
     } else if (n > 0 && game.u.uhp * 10 < game.u.uhpmax) {

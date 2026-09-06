@@ -12,9 +12,57 @@ Continue the authorized work; do not mark it complete or recreate it.
 Current-corpus success is not the stopping criterion. Track unreviewed,
 untested, missing, and unreachable source paths explicitly.
 
+### Checkpoint: status suppression and fatal damage
+
+Ready for local commit on b3a6c51b. Work .cache/status-suppression.
+Cbotl.c:259 skipsdrawing whenhumanHP==-1, then clearsdirtyflags. Cdone
+callsbotbeforeforcingHP0. Full Cbot/timebot,flush_screen,vpline/urgent_pline,
+suppress_map_output macro+wrapper,losehp/showdamage,mdamageu,end_running,
+lava_effects/done read. Fourruntimefiles: displayguards; trapremovesHP
+deferral; hacklosehp removesmessagecontent/Morecountpatches andcalls
+end_running/showdamage; mhitu usescanonicalshowdamage andnegativeerror.
+PassivecoldHPdeferralunchanged. No C or frozen edits. See audit.
+
+Two permanent recipes23cases: fatal-hp-status12,damage-feedback11.
+All3870screens/cursors69551RNGmatch. Ccoverage repeat2/2 exact; separate
+assertions/integritypass. Initialcoverage tag combat.polymorph wasinvalid,
+correctedtoactualforms.polymorph andregenerated. Ledger2549/2549,99covered
+7partial. Cunion+22outcomes,+2enteredrecords(back_on_ground,rescued_from_terrain)
+reaches55702/108268 and4375/5491. bot8/10,timebot5/8,showdamage3/4,
+losehp14/20,mdamageu7/10. remaining.json hasexactgaps. No unreachableclaims.
+
+State gate23native+25constructedgroupspasses. ExactHP-2,-1,0,1,2pairs;
+disabledstatus,polymorphHP/reversion,mortalityfromansweredCquestions,
+save/restore/hangupguards,dirtyflags,timebot,clamps,negativehealing and
+runningcancellation. Bat/dragon/waterelemental couldn'tzap andwereexcluded.
+Withshowdamage, copiedmonsterkeysanswer3Diequestionsvs4andlast'y'withoutit.
+Native deathcountsverifiedfromCprompt+nextkey, notassumedfromoriginalrecipe.
+
+Final553/553=44public509supplemental matches390285screens/cursors10570155RNG.
+Supplemental378880screens9777317RNG21704animationsallmatch;21oldpublic
+animationmissesremain. regression-final.log andtotals.json. Twelve related
+gates,46hang,80freshroles,14tooltests,sourceaudit0/268pass. Fuzz101/102known
+fixed-date miss, all491759RNG. Everyjobcompleted andexitcollected. Nojobsrunning.
+
+No-sentinelmutationfails13screens/allRNG/cursorsmatch. No-showdamagefails
+102screens95cursors5949positionalRNG. No-end-runningpassesbothnativefixtures
+butfailsconstructedrun/travel/multistate. All3mutantsfailstategate. Exact
+b3a6c51b runtimeacross4filesfailsbothfixtures782screens95cursors5949RNG.
+NODE_OPTIONSrequiredforworkers. verification-exits.json preservesinitial
+ledger1andcorrectedledger-final0;originalverifyotherwisepassedallrelated.
+
+Next: commitlocally, continuequery_categoryandlooting. Full Cquery_category
+1226..1508 andcount_categories1511..1535 nowread, pluscurrentJS1534..1695.
+JS lacksAconfirmation/hintcounters/venom/symbolheadings, usesanywornbit,
+count_categorieswrongfilter signature. Need Cparanoid_ynq5588..5650review
+andnativecategoryprobesbeforeport. Noedit/probeyettoquery_category.
+Broaderstatuswindowport/suppressioncallers,remainingdeathpaths,
+end_runningterrainstatus/travelmap andpassivecolddeferralstillopen.
+Do notpush; publicationauthorization remains unanswered. Continuegoal.
+
 ### Checkpoint: floor pickup, swallowed objects and digestion
 
-Ready for local commit on03561841. Twelve runtime modules: pickup,invent,
+Committed locally as b3a6c51b. Twelve runtime modules: pickup,invent,
 jsmain,do,hack,steed,mon,trap,vision,youprop,do_wear,artifact. Full C bodies
 read before ports, exact scope and partial bodies in floor-pickup-audit.md.
 All work in .cache/floor-pickup. No C or frozen edits.

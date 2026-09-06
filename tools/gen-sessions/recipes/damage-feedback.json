@@ -1,0 +1,823 @@
+{
+  "name": "damage-feedback",
+  "description": "Damage messages, disabled status updates, polymorph HP and reversion, and repeated monster attacks.",
+  "coverage": [
+    "mode.debug",
+    "ui.more-paging",
+    "survival.instant-deaths",
+    "forms.polymorph",
+    "monster.hero-melee"
+  ],
+  "branches": [
+    "damage-feedback.striking-normal",
+    "damage-feedback.striking-damage",
+    "damage-feedback.striking-no-status",
+    "damage-feedback.striking-no-status-damage",
+    "damage-feedback.polymorph-hp-damage",
+    "damage-feedback.polymorph-kobold-reversion",
+    "damage-feedback.polymorph-orc-reversion",
+    "damage-feedback.monster-damage-no-status_updates",
+    "damage-feedback.monster-damage-no-status_updates-time",
+    "damage-feedback.monster-damage-showdamage",
+    "damage-feedback.monster-damage-showdamage-no-status_updates"
+  ],
+  "requireBranchAssertions": true,
+  "segments": [
+    {
+      "name": "striking-normal",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\nOPTIONS=!showdamage\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed wand of striking (0:3)\r              \u001b\u001b\u001b\u001b\u001b\u001bzb.              \u001b\u001b\u001b\u001b\u001b\u001bi               \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "striking-damage",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\nOPTIONS=showdamage\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed wand of striking (0:3)\r              \u001b\u001b\u001b\u001b\u001b\u001bzb.              \u001b\u001b\u001b\u001b\u001b\u001bi               \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "striking-no-status",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\nOPTIONS=!status_updates,time\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed wand of striking (0:3)\r              \u001b\u001b\u001b\u001b\u001b\u001bzb.              \u001b\u001b\u001b\u001b\u001b\u001bi               \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "striking-no-status-damage",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\nOPTIONS=!status_updates,time,showdamage\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed wand of striking (0:3)\r              \u001b\u001b\u001b\u001b\u001b\u001bzb.              \u001b\u001b\u001b\u001b\u001b\u001bi               \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "polymorph-hp-damage",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\nOPTIONS=showdamage\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed wand of striking (0:3)\r              \u001b\u001b\u001b\u001b\u001b\u001b#polyself\rxorn\r              \u001b\u001b\u001b\u001b\u001b\u001bzb.              \u001b\u001b\u001b\u001b\u001b\u001bi               \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "polymorph-kobold-reversion",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\nOPTIONS=showdamage\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed wand of striking (0:3)\r              \u001b\u001b\u001b\u001b\u001b\u001b#polyself\rkobold\r              \u001b\u001b\u001b\u001b\u001b\u001bzb.              \u001b\u001b\u001b\u001b\u001b\u001bi               \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "polymorph-orc-reversion",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\nOPTIONS=showdamage\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed wand of striking (0:3)\r              \u001b\u001b\u001b\u001b\u001b\u001b#polyself\rhill orc\r              \u001b\u001b\u001b\u001b\u001b\u001bzb.              \u001b\u001b\u001b\u001b\u001b\u001bi               \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "seed": 6141,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Wizard,role:Tourist,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!safe_wait\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!status_updates\n",
+      "moves": " \u0007water demon\ns s s s s s s s s s s s s s s s s s s s y       ",
+      "name": "monster-damage-no-status_updates"
+    },
+    {
+      "seed": 6141,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Wizard,role:Tourist,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!safe_wait\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!status_updates,time\n",
+      "moves": " \u0007water demon\ns s s s s s s s s s s s s s s s s s s s y       ",
+      "name": "monster-damage-no-status_updates-time"
+    },
+    {
+      "seed": 6141,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Wizard,role:Tourist,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!safe_wait\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=showdamage\n",
+      "moves": " \u0007water demon\ns s s s s s s s s s s s s s s s s s s s y       ",
+      "name": "monster-damage-showdamage"
+    },
+    {
+      "seed": 6141,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Wizard,role:Tourist,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!safe_wait\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=showdamage,!status_updates\n",
+      "moves": " \u0007water demon\ns s s s s s s s s s s s s s s s s s s s y       ",
+      "name": "monster-damage-showdamage-no-status_updates"
+    }
+  ],
+  "branchAssertions": [
+    {
+      "branch": "damage-feedback.striking-normal",
+      "segment": 0,
+      "screenIncludes": [
+        "You bash yourself!"
+      ],
+      "screenExcludes": [
+        "[HP "
+      ],
+      "screenCells": [
+        {
+          "step": 144,
+          "x": 11,
+          "y": 23,
+          "equals": "H"
+        },
+        {
+          "step": 144,
+          "x": 12,
+          "y": 23,
+          "equals": "P"
+        },
+        {
+          "step": 144,
+          "x": 13,
+          "y": 23,
+          "equals": ":"
+        },
+        {
+          "step": 144,
+          "x": 14,
+          "y": 23,
+          "equals": "1"
+        },
+        {
+          "step": 144,
+          "x": 15,
+          "y": 23,
+          "equals": "1"
+        },
+        {
+          "step": 144,
+          "x": 16,
+          "y": 23,
+          "equals": "3"
+        },
+        {
+          "step": 144,
+          "x": 17,
+          "y": 23,
+          "equals": "("
+        },
+        {
+          "step": 144,
+          "x": 18,
+          "y": 23,
+          "equals": "1"
+        },
+        {
+          "step": 144,
+          "x": 19,
+          "y": 23,
+          "equals": "2"
+        },
+        {
+          "step": 144,
+          "x": 20,
+          "y": 23,
+          "equals": "6"
+        },
+        {
+          "step": 144,
+          "x": 21,
+          "y": 23,
+          "equals": ")"
+        }
+      ]
+    },
+    {
+      "branch": "damage-feedback.striking-damage",
+      "segment": 1,
+      "screenIncludes": [
+        "You bash yourself!  [HP -13, 113 left]"
+      ],
+      "screenCells": [
+        {
+          "step": 144,
+          "x": 11,
+          "y": 23,
+          "equals": "H"
+        },
+        {
+          "step": 144,
+          "x": 12,
+          "y": 23,
+          "equals": "P"
+        },
+        {
+          "step": 144,
+          "x": 13,
+          "y": 23,
+          "equals": ":"
+        },
+        {
+          "step": 144,
+          "x": 14,
+          "y": 23,
+          "equals": "1"
+        },
+        {
+          "step": 144,
+          "x": 15,
+          "y": 23,
+          "equals": "1"
+        },
+        {
+          "step": 144,
+          "x": 16,
+          "y": 23,
+          "equals": "3"
+        },
+        {
+          "step": 144,
+          "x": 17,
+          "y": 23,
+          "equals": "("
+        },
+        {
+          "step": 144,
+          "x": 18,
+          "y": 23,
+          "equals": "1"
+        },
+        {
+          "step": 144,
+          "x": 19,
+          "y": 23,
+          "equals": "2"
+        },
+        {
+          "step": 144,
+          "x": 20,
+          "y": 23,
+          "equals": "6"
+        },
+        {
+          "step": 144,
+          "x": 21,
+          "y": 23,
+          "equals": ")"
+        }
+      ]
+    },
+    {
+      "branch": "damage-feedback.striking-no-status",
+      "segment": 2,
+      "screenIncludes": [
+        "You bash yourself!"
+      ],
+      "screenExcludes": [
+        "[HP "
+      ],
+      "screenCells": [
+        {
+          "step": 144,
+          "x": 0,
+          "y": 22,
+          "equals": " "
+        },
+        {
+          "step": 144,
+          "x": 14,
+          "y": 22,
+          "equals": " "
+        },
+        {
+          "step": 144,
+          "x": 30,
+          "y": 22,
+          "equals": " "
+        },
+        {
+          "step": 144,
+          "x": 79,
+          "y": 22,
+          "equals": " "
+        },
+        {
+          "step": 144,
+          "x": 0,
+          "y": 23,
+          "equals": " "
+        },
+        {
+          "step": 144,
+          "x": 14,
+          "y": 23,
+          "equals": " "
+        },
+        {
+          "step": 144,
+          "x": 30,
+          "y": 23,
+          "equals": " "
+        },
+        {
+          "step": 144,
+          "x": 79,
+          "y": 23,
+          "equals": " "
+        }
+      ]
+    },
+    {
+      "branch": "damage-feedback.striking-no-status-damage",
+      "segment": 3,
+      "screenIncludes": [
+        "You bash yourself!  [HP -13, 113 left]"
+      ],
+      "screenCells": [
+        {
+          "step": 144,
+          "x": 0,
+          "y": 22,
+          "equals": " "
+        },
+        {
+          "step": 144,
+          "x": 14,
+          "y": 22,
+          "equals": " "
+        },
+        {
+          "step": 144,
+          "x": 30,
+          "y": 22,
+          "equals": " "
+        },
+        {
+          "step": 144,
+          "x": 79,
+          "y": 22,
+          "equals": " "
+        },
+        {
+          "step": 144,
+          "x": 0,
+          "y": 23,
+          "equals": " "
+        },
+        {
+          "step": 144,
+          "x": 14,
+          "y": 23,
+          "equals": " "
+        },
+        {
+          "step": 144,
+          "x": 30,
+          "y": 23,
+          "equals": " "
+        },
+        {
+          "step": 144,
+          "x": 79,
+          "y": 23,
+          "equals": " "
+        }
+      ]
+    },
+    {
+      "branch": "damage-feedback.polymorph-hp-damage",
+      "segment": 4,
+      "screenIncludes": [
+        "You bash yourself!  [HP -13, 15 left]"
+      ],
+      "screenCells": [
+        {
+          "step": 179,
+          "x": 11,
+          "y": 23,
+          "equals": "H"
+        },
+        {
+          "step": 179,
+          "x": 12,
+          "y": 23,
+          "equals": "P"
+        },
+        {
+          "step": 179,
+          "x": 13,
+          "y": 23,
+          "equals": ":"
+        },
+        {
+          "step": 179,
+          "x": 14,
+          "y": 23,
+          "equals": "1"
+        },
+        {
+          "step": 179,
+          "x": 15,
+          "y": 23,
+          "equals": "5"
+        },
+        {
+          "step": 179,
+          "x": 16,
+          "y": 23,
+          "equals": "("
+        },
+        {
+          "step": 179,
+          "x": 17,
+          "y": 23,
+          "equals": "2"
+        },
+        {
+          "step": 179,
+          "x": 18,
+          "y": 23,
+          "equals": "8"
+        },
+        {
+          "step": 179,
+          "x": 19,
+          "y": 23,
+          "equals": ")"
+        }
+      ]
+    },
+    {
+      "branch": "damage-feedback.polymorph-kobold-reversion",
+      "segment": 5,
+      "screenIncludes": [
+        "You bash yourself!  [HP -17, -15 left]  You return to human form!"
+      ],
+      "screenCells": [
+        {
+          "step": 181,
+          "x": 11,
+          "y": 23,
+          "equals": "H"
+        },
+        {
+          "step": 181,
+          "x": 12,
+          "y": 23,
+          "equals": "P"
+        },
+        {
+          "step": 181,
+          "x": 13,
+          "y": 23,
+          "equals": ":"
+        },
+        {
+          "step": 181,
+          "x": 14,
+          "y": 23,
+          "equals": "1"
+        },
+        {
+          "step": 181,
+          "x": 15,
+          "y": 23,
+          "equals": "2"
+        },
+        {
+          "step": 181,
+          "x": 16,
+          "y": 23,
+          "equals": "6"
+        },
+        {
+          "step": 181,
+          "x": 17,
+          "y": 23,
+          "equals": "("
+        },
+        {
+          "step": 181,
+          "x": 18,
+          "y": 23,
+          "equals": "1"
+        },
+        {
+          "step": 181,
+          "x": 19,
+          "y": 23,
+          "equals": "2"
+        },
+        {
+          "step": 181,
+          "x": 20,
+          "y": 23,
+          "equals": "6"
+        },
+        {
+          "step": 181,
+          "x": 21,
+          "y": 23,
+          "equals": ")"
+        }
+      ]
+    },
+    {
+      "branch": "damage-feedback.polymorph-orc-reversion",
+      "segment": 6,
+      "screenIncludes": [
+        "You bash yourself!  [HP -7, -2 left]  You return to human form!"
+      ],
+      "screenCells": [
+        {
+          "step": 183,
+          "x": 11,
+          "y": 23,
+          "equals": "H"
+        },
+        {
+          "step": 183,
+          "x": 12,
+          "y": 23,
+          "equals": "P"
+        },
+        {
+          "step": 183,
+          "x": 13,
+          "y": 23,
+          "equals": ":"
+        },
+        {
+          "step": 183,
+          "x": 14,
+          "y": 23,
+          "equals": "1"
+        },
+        {
+          "step": 183,
+          "x": 15,
+          "y": 23,
+          "equals": "2"
+        },
+        {
+          "step": 183,
+          "x": 16,
+          "y": 23,
+          "equals": "6"
+        },
+        {
+          "step": 183,
+          "x": 17,
+          "y": 23,
+          "equals": "("
+        },
+        {
+          "step": 183,
+          "x": 18,
+          "y": 23,
+          "equals": "1"
+        },
+        {
+          "step": 183,
+          "x": 19,
+          "y": 23,
+          "equals": "2"
+        },
+        {
+          "step": 183,
+          "x": 20,
+          "y": 23,
+          "equals": "6"
+        },
+        {
+          "step": 183,
+          "x": 21,
+          "y": 23,
+          "equals": ")"
+        }
+      ]
+    },
+    {
+      "branch": "damage-feedback.monster-damage-no-status_updates",
+      "segment": 7,
+      "screenIncludes": [
+        "You die..."
+      ],
+      "screenExcludes": [
+        "[HP "
+      ],
+      "screenCells": [
+        {
+          "step": 22,
+          "x": 0,
+          "y": 22,
+          "equals": " "
+        },
+        {
+          "step": 22,
+          "x": 14,
+          "y": 22,
+          "equals": " "
+        },
+        {
+          "step": 22,
+          "x": 30,
+          "y": 22,
+          "equals": " "
+        },
+        {
+          "step": 22,
+          "x": 79,
+          "y": 22,
+          "equals": " "
+        },
+        {
+          "step": 22,
+          "x": 0,
+          "y": 23,
+          "equals": " "
+        },
+        {
+          "step": 22,
+          "x": 14,
+          "y": 23,
+          "equals": " "
+        },
+        {
+          "step": 22,
+          "x": 30,
+          "y": 23,
+          "equals": " "
+        },
+        {
+          "step": 22,
+          "x": 79,
+          "y": 23,
+          "equals": " "
+        }
+      ]
+    },
+    {
+      "branch": "damage-feedback.monster-damage-no-status_updates-time",
+      "segment": 8,
+      "screenIncludes": [
+        "You die..."
+      ],
+      "screenExcludes": [
+        "[HP "
+      ],
+      "screenCells": [
+        {
+          "step": 22,
+          "x": 0,
+          "y": 22,
+          "equals": " "
+        },
+        {
+          "step": 22,
+          "x": 14,
+          "y": 22,
+          "equals": " "
+        },
+        {
+          "step": 22,
+          "x": 30,
+          "y": 22,
+          "equals": " "
+        },
+        {
+          "step": 22,
+          "x": 79,
+          "y": 22,
+          "equals": " "
+        },
+        {
+          "step": 22,
+          "x": 0,
+          "y": 23,
+          "equals": " "
+        },
+        {
+          "step": 22,
+          "x": 14,
+          "y": 23,
+          "equals": " "
+        },
+        {
+          "step": 22,
+          "x": 30,
+          "y": 23,
+          "equals": " "
+        },
+        {
+          "step": 22,
+          "x": 79,
+          "y": 23,
+          "equals": " "
+        }
+      ]
+    },
+    {
+      "branch": "damage-feedback.monster-damage-showdamage",
+      "segment": 9,
+      "screenIncludes": [
+        "The water demon hits!  [HP -2, 8 left]  The water demon hits!"
+      ],
+      "screenCells": [
+        {
+          "step": 24,
+          "x": 13,
+          "y": 23,
+          "equals": "H"
+        },
+        {
+          "step": 24,
+          "x": 14,
+          "y": 23,
+          "equals": "P"
+        },
+        {
+          "step": 24,
+          "x": 15,
+          "y": 23,
+          "equals": ":"
+        },
+        {
+          "step": 24,
+          "x": 16,
+          "y": 23,
+          "equals": "1"
+        },
+        {
+          "step": 24,
+          "x": 17,
+          "y": 23,
+          "equals": "("
+        },
+        {
+          "step": 24,
+          "x": 18,
+          "y": 23,
+          "equals": "1"
+        },
+        {
+          "step": 24,
+          "x": 19,
+          "y": 23,
+          "equals": "0"
+        },
+        {
+          "step": 24,
+          "x": 20,
+          "y": 23,
+          "equals": ")"
+        }
+      ]
+    },
+    {
+      "branch": "damage-feedback.monster-damage-showdamage-no-status_updates",
+      "segment": 10,
+      "screenIncludes": [
+        "The water demon hits!  [HP -2, 8 left]  The water demon hits!"
+      ],
+      "screenCells": [
+        {
+          "step": 24,
+          "x": 0,
+          "y": 22,
+          "equals": " "
+        },
+        {
+          "step": 24,
+          "x": 14,
+          "y": 22,
+          "equals": " "
+        },
+        {
+          "step": 24,
+          "x": 30,
+          "y": 22,
+          "equals": " "
+        },
+        {
+          "step": 24,
+          "x": 79,
+          "y": 22,
+          "equals": " "
+        },
+        {
+          "step": 24,
+          "x": 0,
+          "y": 23,
+          "equals": " "
+        },
+        {
+          "step": 24,
+          "x": 14,
+          "y": 23,
+          "equals": " "
+        },
+        {
+          "step": 24,
+          "x": 30,
+          "y": 23,
+          "equals": " "
+        },
+        {
+          "step": 24,
+          "x": 79,
+          "y": 23,
+          "equals": " "
+        }
+      ]
+    }
+  ]
+}

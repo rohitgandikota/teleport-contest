@@ -4075,13 +4075,10 @@ export async function lava_effects() {
             /* burn to death; if hero is life-saved on the first pass, try
                to teleport to safety; if that fails, burn all over again */
             for (burncount = 0; burncount < 2; ++burncount) {
-                const shownHp = u.uhp; /* the port's status line is refreshed
-                                          only after the --More-- */
                 u.uhp = -1;
                 /* killer format and name are reconstructed every iteration
                    because lifesaving resets them */
                 game.killer = { format: KILLED_BY, name: lava_killer };
-                game._deferred_status_hp_until_more = shownHp;
                 await urgent_pline(`You ${boil_away ? 'boil away' : 'burn to a crisp'}...`);
                 await done(BURNING);
                 if (await safe_teleds(TELEDS_ALLOW_DRAG | TELEDS_TELEPORT))

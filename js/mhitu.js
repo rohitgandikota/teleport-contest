@@ -7,7 +7,7 @@
 // that are absent and are recorded through note_unported_mhitu() at the
 // exact C decision point, so game.unported names what a divergence wanted.
 
-import { unmul, losehp } from './hack.js';
+import { unmul, losehp, showdamage } from './hack.js';
 import { mimic_obj_name } from './objnam.js';
 import { set_ustuck, m_next2u } from './mon.js';
 import { m_monnam } from './do_name.js';
@@ -76,7 +76,7 @@ import { cansee, couldsee } from './vision.js';
 import { Amonnam, Monnam, pmname, rndmonnam, hliquid, christen_monst,
          upstart, noit_mon_nam, noit_Monnam }
          from './do_name.js';
-import { You, You_feel, You_hear } from './pline.js';
+import { You, You_feel, You_hear, impossible } from './pline.js';
 import { attacktype_fordmg, dmgtype_fromattack } from './mondata.js';
 import { mon_nam, Some_Monnam } from './do_name.js';
 import { Inhell, remove_monster, place_monster, makemon } from './makemon.js';
@@ -1482,13 +1482,15 @@ async function hitmu(mtmp, mattk, indx) {
 
 // src/mhitu.c:1902 mdamageu() — apply n points of damage to the hero.
 export async function mdamageu(mtmp, n) {
-    if (n < 0)
+    if (n < 0) {
+        await impossible(`mdamageu for negative damage? (${n})`);
         n = 0;
+    }
 
     (game.disp ||= {}).botl = true;
     if (Upolyd(game.u)) {
         game.u.mh -= n;
-        showdamage(n);
+        await showdamage(n);
         if (game.u.mh > game.u.mhmax)
             game.u.mh = game.u.mhmax;
         if (game.u.mh < 1) {
@@ -1496,31 +1498,15 @@ export async function mdamageu(mtmp, n) {
             await rehumanize();
         }
     } else {
-        const shownHp = game.u.uhp;
         game.u.uhp -= n;
-        showdamage(n);
+        await showdamage(n);
         if (game.u.uhp > game.u.uhpmax)
             game.u.uhp = game.u.uhpmax;
         if (game.u.uhp < 1) {
-            const pending = game._pending_message || '';
-            if (game.u.uhp === -1 && pending) {
-                game._deferred_status_hp_until_more = Math.max(shownHp | 0, 0);
-                game._deferred_status_hp_more_count = game.u.uprops?.LIFESAVED
-                    || pending.includes('  Boing!  ')
-                    ? 1 : 2;
-            }
             const { done_in_by, DIED } = await import('./end.js');
             await done_in_by(mtmp, DIED);
         }
     }
-}
-
-/* src/hack.c:4247 showdamage() — gated on the 'showdamage' option, which
-   defaults off; the message internals are recorded if it is ever on. */
-function showdamage(dmg) {
-    if (!game.rc?.opts?.showdamage || !dmg)
-        return;
-    note_unported_mhitu('showdamage:message');
 }
 
 // src/sys.c:100 sysopt.seduce — "if it's compiled in, default to on", and the

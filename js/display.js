@@ -55,6 +55,7 @@ import { update_lastseentyp } from './dungeon.js';
 import { def_monsyms, def_oc_syms, cmap_names, defsyms } from './drawing_data.js';
 import { PMNAMES, mons, NUMMONS, MFLAGS } from './monst_data.js';
 import { showsym } from './symbols.js';
+import { boolean_option } from './options.js';
 import { NO_COLOR, CLR_GRAY, CLR_BROWN, CLR_WHITE, CLR_YELLOW, CLR_BRIGHT_BLUE,
          CLR_GREEN, CLR_BLUE, CLR_RED, CLR_ORANGE, CLR_CYAN, CLR_BLACK,
          CLR_MAGENTA, CLR_BRIGHT_MAGENTA, CLR_BRIGHT_GREEN,
@@ -1196,6 +1197,12 @@ export function see_nearby_objects() {
         }
 }
 
+// src/display.c:715 suppress_map_output(), including the hangup build guard.
+export function suppress_map_output() {
+    const state = game.program_state || {};
+    return !!(game.in_mklev || state.saving || state.restoring || state.done_hup);
+}
+
 export function newsym(x, y) {
     /* src/display.c:926 — don't try to produce map output when level is in
        a state of flux (_suppress_map_output: in_mklev, saving, restoring).
@@ -2080,6 +2087,8 @@ export function paint_topline() {
 // writes are invisible: that is what leaves the OLD level on screen under
 // the "You descend the stairs.--More--" prompt during goto_level.
 export async function flush_screen(cursor_on_u) {
+    if (suppress_map_output())
+        return;
     const display = game?.nhDisplay;
     if (!display) return;
 
@@ -2183,23 +2192,25 @@ export async function bot() {
     if (game.bot_disabled)
         return;
     const display = game?.nhDisplay;
-    if (!display) return;
-    const CO = display.cols ?? 80;
+    /* C also uses -1 while saving. The same guard preserves the last
+       painted status when a fatal path temporarily assigns that value. */
+    if (game.u.uhp !== -1 && game.youmonst?.data
+        && boolean_option('status_updates') && !suppress_map_output() && display) {
+        const CO = display.cols ?? 80;
 
-    /* doseduce() changes maximum energy without setting disp.botl. Preserve
-       the already painted values through clean repaint calls, then expose the
-       live values as soon as C would process a real status-dirty event. */
-    if (game._deferred_status_power_until_dirty
-        && (game.disp?.botl || game.disp?.botlx))
-        delete game._deferred_status_power_until_dirty;
+        /* doseduce() changes maximum energy without setting disp.botl. */
+        if (game._deferred_status_power_until_dirty
+            && (game.disp?.botl || game.disp?.botlx))
+            delete game._deferred_status_power_until_dirty;
 
-    const s1 = _statusLine1().replace(/\x1b\[[0-9;]*[A-Za-z]/g, m =>
-        m.match(/\x1b\[\d+C/) ? ' '.repeat(parseInt(m.slice(2))) : '');
-    for (let c = 0; c < CO; c++)
-        display.setCell(c, 22, c < s1.length ? s1[c] : ' ', NO_COLOR, 0);
-    const s2 = _statusLine2();
-    for (let c = 0; c < CO; c++)
-        display.setCell(c, 23, c < s2.length ? s2[c] : ' ', NO_COLOR, 0);
+        const s1 = _statusLine1().replace(/\x1b\[[0-9;]*[A-Za-z]/g, m =>
+            m.match(/\x1b\[\d+C/) ? ' '.repeat(parseInt(m.slice(2))) : '');
+        for (let c = 0; c < CO; c++)
+            display.setCell(c, 22, c < s1.length ? s1[c] : ' ', NO_COLOR, 0);
+        const s2 = _statusLine2();
+        for (let c = 0; c < CO; c++)
+            display.setCell(c, 23, c < s2.length ? s2[c] : ' ', NO_COLOR, 0);
+    }
     const disp = (game.disp ||= {});
     disp.botl = disp.botlx = disp.time_botl = false;
 }
@@ -2213,7 +2224,8 @@ export function timebot() {
         return;
     const display = game?.nhDisplay;
     const disp = (game.disp ||= {});
-    if (!display || !game.flags?.time) {
+    if (!display || !game.flags?.time || !boolean_option('status_updates')
+        || suppress_map_output()) {
         disp.time_botl = false;
         return;
     }

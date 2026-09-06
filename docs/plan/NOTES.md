@@ -11,6 +11,21 @@ Newest first within each section.
 
 ---
 
+## Fatal HP and status timing
+
+C botl.c:259 skips the whole status draw when human HP is exactly -1,
+including while polymorphed. It still clears the dirty flags. done() calls
+bot before forcing HP to zero. The next message flush can therefore show
+the previous HP beneath a death More prompt. Other negative values draw
+zero normally. Test -2, -1, 0 and positive HP separately.
+
+This guard replaces the lava, losehp and mdamageu workarounds that inspected
+message text or counted More prompts. The fatal-hp-status recipe pins C's
+status cells and damage messages at the exact boundaries. showdamage must
+run immediately after subtraction, before maximum-HP clamps. Turning it on
+adds More prompts and can change which later key reaches a Die question;
+count answered native questions before asserting mortality.
+
 ## Container transfer probes
 
 A wished stack can merge into one of several existing stacks. Eight wishes

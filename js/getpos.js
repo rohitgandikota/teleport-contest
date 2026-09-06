@@ -464,16 +464,19 @@ export async function getpos(ccp, force, goal) {
                         await pline(`Can't find dungeon feature '${ch}'.`);
                         msg_given = true;
                     }
+                    /* src/getpos.c:1113 goto nxtc, for found and not found */
+                    curs_map(c.x, c.y);
+                    flush_screen(0);
+                    continue;
                 } else {
                     const note = !force
                         ? 'aborted'
                         : "use 'h', 'j', 'k', 'l' or '.'";
                     await pline(`Unknown direction: '${visctrl(ch)}' (${note}).`);
                     msg_given = true;
+                    /* no goto here: an unknown key falls through to the
+                       "Done." arm below unless 'force' keeps the picker up */
                 }
-                curs_map(c.x, c.y);
-                flush_screen(0);
-                continue;
             }
             /* quitchars: space/enter dismiss the picker */
             if (force) {

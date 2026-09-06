@@ -1100,37 +1100,8 @@ async function execute_extcmd(name) {
         return await donamelevel();
     }
     if (name === 'version') {
-        /* src/version.c:169 doextversion() — the options text substitutes
-           :LUAVERSION:, and get_lua_version() boots a Lua state the FIRST
-           time, which loads nhlib.lua and spends its 3-item align shuffle
-           (rn2(3), rn2(2)). Cached in gl.lua_ver afterwards. The pager
-           display itself is recorded. */
-        if (!game._lua_ver_known) {
-            game._lua_ver_known = true;
-            const themedAlign = [0, 1, 2];
-            for (let i = themedAlign.length; i > 1; i--) {
-                const j = rn2(i);
-                [themedAlign[i - 1], themedAlign[j]] =
-                    [themedAlign[j], themedAlign[i - 1]];
-            }
-        }
-        /* the pager window: banner line, then the compiled-options text
-           (build data, js/version_data.js) */
-        {
-            const { VERSION_BANNER_LINE, VERSION_OPTIONS_TEXT } =
-                await import('./version_data.js');
-            const win = tty_create_nhwindow(NHW_TEXT);
-            tty_putstr(win, 0, VERSION_BANNER_LINE);
-            for (const line of VERSION_OPTIONS_TEXT)
-                tty_putstr(win, 0, line);
-            await tty_display_nhwindow(win);
-            await nhgetch();
-            while (tty_next_page(win))
-                await nhgetch();
-            tty_destroy_nhwindow(win);
-            await docrt();
-        }
-        return ECMD_OK;
+        const { doextversion } = await import('./pager.js');
+        return await doextversion();
     }
     if (name === 'wizwish')
         return await wiz_wish();

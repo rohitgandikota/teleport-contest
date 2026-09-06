@@ -5395,3 +5395,39 @@ for HConfusion + rnd(30); the spell says "Your head spins as something
 blocks the spell!". A blessed scroll converts every SDOOR before mapping;
 a cursed one maps under forced confusion and says "Unfortunately, you
 can't grasp the details."
+
+## randrole() is only drawn when pick_role() fails
+
+src/role.c:2361: `k = pick_role(...); if (k < 0) k = randrole(FALSE);`.
+A JS helper of the form pickOr(pick_role(...), randrole()) evaluates the
+fallback eagerly and draws rn2(13) every time the role menu's random entry
+is used. Fallbacks that draw must stay behind the condition.
+
+## flags.female is set in u_init_misc(), before the legacy blurb
+
+src/u_init.c:949 u_init_misc() starts with `flags.female = flags.initgend`
+and runs before mklev() and long before the legacy pager. Ours set it after
+the pager, so "You, a newly trained Plunderess" and the status line's rank
+under the legacy window used the male form when chargen picked female.
+
+## getpos: an unknown key ends a non-forced picker with "Done."
+
+src/getpos.c:1115: only "Can't find dungeon feature" jumps back to the
+cursor loop (goto nxtc); an unknown key prints "Unknown direction: 'x'
+(aborted)." and then falls through to `if (force) goto nxtc; pline("Done.")`
+and returns 0. Ours looped in both cases.
+
+## #version is doextversion(), paged with dmore keys
+
+The extended command had an inline copy in cmd.js that turned pages on any
+key (^W turned a page C ignores) and a stale second copy of the options
+text in pager.js. Both now go through pager.js doextversion(), which reads
+js/version_data.js and creates the Lua state only the first time, like
+get_lua_version()'s gl.lua_ver cache. The scorer normalises the banner
+line to <<VERSION_BANNER>>; screendiff shows that placeholder for C.
+
+## Entering a tended temple records ACH_TMPL
+
+src/priest.c:425 intemple(): `if ((priest = findpriest(roomno)) != 0)
+record_achievement(ACH_TMPL);` — the chronicle line "entered a temple"
+was missing from ours, shifting every later #chronicle line.

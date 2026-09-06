@@ -656,10 +656,16 @@ async function genl_player_setup(screenheight) {
                 return RS_ROLE;
             }
             if (r.kind === 'jump') { clearFacet(r.to); return r.to; }
-            f.initrole = (r.kind === 'random')
-                ? pickOr(pick_role(f.initrace, f.initgend, f.initalign,
-                                   PICK_RANDOM), randrole())
-                : r.i;
+            if (r.kind === 'random') {
+                /* src/role.c:2361 — randrole() only when pick_role() fails;
+                   it draws, so it must not be evaluated eagerly */
+                let k = pick_role(f.initrace, f.initgend, f.initalign,
+                                  PICK_RANDOM);
+                if (k < 0)
+                    k = randrole();
+                f.initrole = k;
+            } else
+                f.initrole = r.i;
             return RS_RACE;
         }
         if (which === RS_RACE) {

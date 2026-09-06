@@ -288,6 +288,11 @@ export async function newgame() {
     // overwrite them afterwards.
     init_dungeons();
 
+    /* src/u_init.c:949 u_init_misc() starts with flags.female =
+       flags.initgend, the facet chargen settled on; it runs before mklev()
+       and before the legacy blurb, whose text and status line read it */
+    g.flags.female = (g.flags.initgend === 1);
+
     // src/u_init.c:996-997 — u.uhp = newhp(); u.uen = newpw();
     // newhp() draws nothing at level 0 because every role and race has
     // hpadv.inrnd == 0; newpw() draws rnd(enadv.inrnd) per role and race.
@@ -476,12 +481,6 @@ export async function newgame() {
        dozen lines above. The status line reads them directly, so every
        session showed a Tourist's numbers. */
     g.u.uexp = 0;
-    /* src/u_init.c:949 — flags.female comes from flags.initgend, the facet
-       chargen actually settled on. Reading it back out of the rc option
-       instead threw away a randomly picked gender: seed0004's player answers
-       "y" to "shall I pick for you", pick_gend chooses female, and this line
-       overwrote it with male because the rc names no gender. */
-    g.flags.female = (g.flags.initgend === 1);
     g.plname = g.plname || 'Contestant';
 
     /* src/allmain.c:838 save_currentstate(), INSURANCE is enabled in C.

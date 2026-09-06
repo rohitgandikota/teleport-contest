@@ -47,6 +47,16 @@ when the status is dirty (a queued fire command runs over an unflushed
 map); the chargen confirmation is a real tty menu and 'q'/ESC bails out
 through tty_player_selection(); seffect_magic_mapping() in C form.
 
+Third round, the three seed-12 games the census still flagged (they were
+pre-existing, not regressions): the eager randrole() draw in the random
+role pick; flags.female set where u_init_misc() sets it (before the
+legacy blurb, which reads it); getpos' unknown key falls through to
+"Done." when the picker is not forced; `#version` routed to doextversion()
+with the cached Lua init, dmore paging and js/version_data.js as the one
+text source; record_achievement(ACH_TMPL) on entering a tended temple.
+Census after this: every fuzz game RNG-perfect; the only screen misses
+are the recording-timezone cases.
+
 Next: keep recording long batches with new seeds (`--seed 13`, mix
 `--debug`/`--normal`), fix what diverges, then return to the note_unported
 list (hack.js 19, spell.js 20, shk.js 19). tools/jsplay.mjs has a new

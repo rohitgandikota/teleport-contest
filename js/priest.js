@@ -43,6 +43,8 @@ import { adjalign, exercise } from './attrib.js';
 import { in_rooms } from './hack.js';
 import { pronoun_gender } from './mondata.js';
 import { genders } from './role_data.js';
+import { record_achievement } from './insight.js';
+import { ACH_TMPL } from './const.js';
 
 const xdir = [-1, -1, 0, 1, 1, 1, 0, -1];
 const ydir = [0, -1, -1, -1, 0, 1, 1, 1];
@@ -397,6 +399,9 @@ export async function intemple(roomno) {
         mtmp.mhp > 0 && mtmp.ispriest && mtmp.epri?.shroom === roomno
         && histemple_at(mtmp, mtmp.mx, mtmp.my));
     if (priest) {
+        /* tended */
+        record_achievement(ACH_TMPL);
+
         const epri = priest.epri;
         const shrined = has_shrine(priest);
         const sanctumLevel = game.special_levels?.sanctum_level;

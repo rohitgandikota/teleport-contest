@@ -1,9 +1,7 @@
 // botl.js — the bottom status lines.
 // C ref: src/botl.c
 //
-// Only rank_of() so far, which both the status line and the ^X window need.
-// It used to be approximated as `urole.rank.m` against a stub role record; the
-// real table in js/role_data.js is an array of nine tiers.
+// Level descriptions, rank names, and status conditions.
 
 import { game } from './gstate.js';
 import { roles } from './role_data.js';
@@ -11,6 +9,35 @@ import { near_capacity } from './attrib.js';
 import { NOT_HUNGRY, UNENCUMBERED, SICK_VOMITABLE, SICK_NONVOMITABLE,
          TT_LAVA } from './const.js';
 import { Blind, Deaf, Levitation, Flying } from './youprop.js';
+import { Is_knox_level, In_quest, In_endgame, In_tutorial } from './const.js';
+import { depth, endgamelevelname } from './dungeon.js';
+
+// src/botl.c describe_level(), return the output buffer and classification.
+// The optional level replaces C callers' temporary assignment to u.uz.
+export function describe_level(dflgs, lev = game.u.uz) {
+    const addspace = !!(dflgs & 1);
+    let addbranch = !!(dflgs & 2), text, special = 1;
+    if (Is_knox_level(lev)) {
+        text = game.dungeons[lev.dnum].dname;
+        addbranch = false;
+    } else if (In_quest(lev)) {
+        text = `Home ${lev.dlevel}`;
+    } else if (In_endgame(lev)) {
+        text = endgamelevelname(depth(lev));
+        if (!addbranch)
+            text = text.replace('Plane of ', '');
+        addbranch = false;
+    } else {
+        text = addbranch ? `level ${depth(lev)}`
+            : `${In_tutorial(lev) ? 'Tutorial' : 'Dlvl'}:${String(depth(lev)).padEnd(2)}`;
+        special = 0;
+    }
+    if (addbranch)
+        text = `${text}, ${game.dungeons[lev.dnum].dname}`.replace('The ', 'the ');
+    if (addspace)
+        text += ' ';
+    return { text, special };
+}
 
 /* src/botl.c:817 condtests[] — one row per status condition. `enabled`
    defaults to !opt_in and the 'status condition fields' option edits it; the

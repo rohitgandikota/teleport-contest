@@ -1014,10 +1014,8 @@ async function execute_extcmd(name) {
         return await do_gamelog();
     }
     if (name === 'overview') {
-        /* src/dungeon.c:3339 show_overview() — the ^O window */
-        const { show_overview } = await import('./dungeon.js');
-        await show_overview();
-        return ECMD_OK;
+        const { dooverview } = await import('./dungeon.js');
+        return await dooverview();
     }
     if (name === 'wizwhere') {
         const { print_dungeon } = await import('./dungeon.js');
@@ -1879,8 +1877,8 @@ export async function rhack(key) {
         game.context.move = ((await do_gamelog()) === ECMD_TIME ? 1 : 0);
     } else if (ch === '\x0f') {
         // src/cmd.c cmdlist, C('o') is the dungeon overview.
-        const { show_overview } = await import('./dungeon.js');
-        await show_overview();
+        const { dooverview } = await import('./dungeon.js');
+        await dooverview();
         game.context.move = 0;
     } else if (ch === '\x01') {
         // src/cmd.c cmdlist, C('a') is #repeat / do_repeat.

@@ -14,19 +14,20 @@ sit on the side we cannot measure.
 
 ## September source-guided continuation
 
-The level-knowledge pass adds 103 native scenarios and 88 constructed state
-groups. All twelve deliberate regressions fail state checks. Four survive the
-new native comparisons: uncapped feature counts, missing room discovery,
-missing shopkeeper guards and discarded saved quest genders. See
-[level-knowledge-audit.md](level-knowledge-audit.md).
+The overview pass adds 57 native scenarios and 95 constructed state groups.
+All fourteen deliberate faults fail at least one gate. State catches five
+faults missed by native output; native output catches the message-flush fault
+missed by state. See [overview-audit.md](overview-audit.md). The earlier
+[level-knowledge audit](level-knowledge-audit.md) retains its distinct gaps.
 
-The final regression suite passes 583/583 fixtures, with all 742,406 screens
-and cursors and 13,426,403 RNG calls matching. C execution adds 120 outcomes
-and one entered record, reaching 57,076/108,268 and 4,404/5,491. Those are
+The final regression suite passes 587/587 fixtures, with all 759,903 screens
+and cursors and 14,122,292 RNG calls matching. C execution adds 44 outcomes
+and no entered records, reaching 57,120/108,268 and 4,404/5,491. Those are
 coverage measurements, not a percentage of gameplay implemented. The full
 port remains the active goal. The 21 existing public animation mismatches
-and known fixed-date fuzz screen difference remain explicit. Full overview,
-annotation queries, teleport bounds and restore lifecycle remain open.
+and known fixed-date fuzz screen difference remain explicit. Several overview
+filters need stronger native coverage; teleport bounds, bones and restore
+lifecycle remain open.
 
 ## 12.1 The overfit audit
 

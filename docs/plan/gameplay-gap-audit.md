@@ -1,13 +1,12 @@
 # Gameplay gaps measured from C execution
 
-The September 6 level-knowledge continuation reaches 57,076/108,268 direct C
-outcomes and 4,404/5,491 entered records. It adds 103 native scenarios, with
-all 30,553 screens/cursors and 445,313 RNG calls matching. Named lookup reaches
-34/36 direct outcomes, while recalc_mapseen remains58/96. All twelve deliberate
-regressions fail state checks. Four still survive the new native comparisons,
-including uncapped remembered feature counts and discarded saved quest genders.
-See [level-knowledge-audit.md](level-knowledge-audit.md) for the exact gaps and
-the583/583 regression result. This does not update
+The September 6 overview continuation reaches 57,120/108,268 direct C
+outcomes and 4,404/5,491 entered records. It adds 57 native scenarios, with
+all 17,497 screens/cursors and 695,889 RNG calls matching. Annotation queries
+reach 22/24 direct outcomes; print_mapseen reaches 98/148. All fourteen
+deliberate faults fail state or native output checks. Five survive native
+output, and one survives state checks. See [overview-audit.md](overview-audit.md)
+for the exact gaps and the 587/587 regression result. This does not update
 the historical judge score below or establish full game coverage.
 
 Verified on 2026-09-05. The live leaderboard snapshot fetched during this audit

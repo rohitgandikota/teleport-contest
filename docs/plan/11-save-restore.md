@@ -22,6 +22,13 @@ and a fresh one between sessions.
 
 ## Items
 
+The overview pass resets the bubble chain, bounds and traversal direction at
+each new-game boundary, matching C's fresh process. It preserves their state
+during level travel. The new native bones-overview probe exposes missing
+cemetery identity, death reason and discovery coordinates in the saved record.
+See [overview-audit.md](overview-audit.md). The bones lifecycle is the next
+source and oracle target.
+
 ### 11.1 Understand the segment contract first
 
 From `docs/API.md`: `runSegment(input, prevGame)` is called once per segment. Each

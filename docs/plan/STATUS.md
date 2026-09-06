@@ -12,9 +12,85 @@ Continue the authorized work; do not mark it complete or recreate it.
 Current-corpus success is not the stopping criterion. Track unreviewed,
 untested, missing, and unreachable source paths explicitly.
 
-### Active pass: named-level teleporting and map knowledge
+### Active pass: bones persistence and cemetery records
 
-HEADb6c8181b. Work .cache/named-level. Fourteen runtime modules changed:
+Work .cache/bones-overview. No runtime implementation yet. New main.input.json
+and main.session.json preserve the complete original bones-persistence first
+segment, then cut the second just before its farlook command at move346 and
+open overview. The old recipe's later annotation-looking text is actually
+literal unfinished extended-command input, so do not use its final boundary
+as evidence of later combat. New native611screens: all36988RNG and15animations
+match; one screen/cursor misses. C lists Ashen-Pri-Hum-Fem-Law, killed by an
+arrow, on Mines depth5 with a grave. Current saved bonesinfo only has name-role,
+no how/when/frpx/frpy/next. Full original bones.c has now been read from first
+line through EOF, including resetobjs, give_to_nearby_mon, drop_upon_death,
+fixuporacle, can_make_bones, removal, savebones, getbones, name matching,
+sanitization, ghostly objects, new/free ebones. JS bones.js relevant save/write/
+load/name-match bodies read. Many substantial lifecycle gaps remain; next port
+cemetery state and expand native save/load/bones controls before broadening.
+Do not end with a checkpoint final; the full port continues.
+
+### Checkpoint: overview selection and annotation queries
+
+Work .cache/annotation-overview, audit docs/plan/overview-audit.md. Nine runtime
+modules: botl,cmd,const,do_name,dungeon,end,jsmain,mklev,mkmaze. Full C query,
+overview traversal/interest/printing/helpers, describe_level, done/really_done/
+disclose, create_room/build_room, movebubbles/setup/teardown and complete Twin
+businesses Lua read. No C/frozen edits. All jobs finished and collected:
+76922officialrecord,25426coverage,49153state,31695score,18809union,57472verifier,
+95696fullreg,72285fuzz,10606fresh, and all earlier candidates.
+
+Port menu-prefix selection with ledger+1 identifiers; current/remote query,
+branch descriptions, custom/custom_lth, cancellation/spaces/30charpreview.
+Duplicate level_annotations writes removed; no other runtime uses existed.
+Describe_level returns{text,special} and explicit target preserves hero level.
+Status and livelog's separate descriptions remain separate. Interest tutorial/
+Sokoban/endgame/bones gates, endgame ordering, forgot detail guard, sealed Quest
+portal, final self markers and bones list visibility/order/punctuation ported.
+Missing pre-disclosure message flush fixed in really_done. Longer traversal
+found omitted Twin businesses: ported9x5 parent/two3x3 shop subrooms, all12door
+coin flips before selecting8placements, shop swap, door states. Lua die isrn2,
+notrnd. Native covers failed creation and one successful placement, notall8.
+Repeated games found bubble chain/direction leak; reset_mkmaze on game startup,
+not level travel. Broader bones, death, bubbles, generation remainpartial.
+
+Permanent official recipes: overview-annotations30 (8233screens84499RNG),
+overview-branches14 (3906/131820),overview-pages6 (3660/359018),
+overview-disclosure7 (1698/120552). Total57,all17497screens/cursors695889RNG,
+noanimations. Official assertions/integrity and exact instrumented C repeat4/4.
+Promoter RAN ONCE. No generic level.special/economy.shops tags. C union+44/+0
+reaches57120/108268,4404/5491. query22/24,interest22/36,print98/148,
+describe12/12,show8/8,traverse8/8,dooverview2/2,donamelevel2/2.
+Remaining.json preserves exactgaps; no newunreachableclaims.
+
+Native57 state checks50selectionboundaries99annotations,HP,RNG,objectownership,
+hero location,prefix,lengths. Constructed95groups pass.13/14mutantsfailstate;
+omit-disclosure-flush survivesstate butnative6screenscatchit. Fivenativemutants
+surviveall4fixtures:wrong-annotation-length,retain-menu-prefix,
+show-tutorial-outside,show-forgotten-details,hide-unknown-bones. Statecatchesall5.
+Every mutantdetected; all failuresareassertions, no native runtimeexceptions.
+Exact9prior809c4a37modulesfail4/4:4161screens3543cursors511740positionalRNG.
+Mutation-results/totals/verification-exits preserve results. Neverreadbaseline.mjs
+withcat/sed (hugeembeddedsource). Do not rerunpromoter.
+
+Full587/587,44public543supp,all759903screens/cursors14122292RNG,
+29919/29940animations (21oldpublicmisses). Fuzz101/102knownfixeddate,
+all491759RNG14261/14262screens75/76animations.17relatedstate,48hang,
+80freshgames13roles,14tooltests,source0/268,ledger3676/3676(99covered7partial)
+pass. Initialmutator had duplicate substring forflush, correctedbeforefinalrun;
+initialverifier stoppedonmissingmutation-names, finalruncomplete. No runtime
+edits after allfinalchecks started. Audit/plans updated; finaldiff/commitnext.
+No push: publication authorization remains unanswered. Local commitallowed.
+
+Probe details: Mines→numeric1→wizardmenua returnsMAIN1. MenuJseed31 isAstral,
+notEarth. Then-1Earth,-2Air,-3Fire,-4Water. Selectors restartperpage;24levels
+secondpage f selects24. Cgetlin storesatmostCOLNO80, so255/300labelsareattempts.
+Wizardquit answers y thenDumpcore n; q skipsdisclosure. Actualpetrification
+probes answerDiey andstopinoverview. Final24levelquit advancesonepage.
+
+### Checkpoint: named-level teleporting and map knowledge
+
+Committed809c4a37. PriorHEADb6c8181b. Work .cache/named-level. Fourteen runtime modules changed:
 allmain,cmd,detect,display,do,do_name,dungeon,jsmain,monmove,options,questpgr,
 save,teleport,unixmain. No C/frozen edits. Official promoter RAN ONCE.
 Five permanent recipes,103 native cases:level-names32,level-annotations7,
@@ -69,7 +145,7 @@ all5independentassertion/integritychecks pass. ledger-final3619/3619,99covered
 7partial. verification-exits.json preservesinitialmetadatafailureandfinalpass.
 Audit docs/plan/level-knowledge-audit.md,README,M8,M11,M12,gameplay-gapupdated.
 Finalruntime diffreview anddiff-checkdone. Onlytestunusedimportremovedafterchecks;
-syntaxchecknext. Needlocalcommitthencontinuation. No push; publicationpermission
+syntaxchecknext. Committed locally as809c4a37. No push; publicationpermission
 remainsunanswered. Do NOTfinal-checkpoint. Nextsourcequery_annotation,dooverview,
 show_overviewselection alreadyre-readfull C: m-prefix useswhy=-1/PICK_ONE,ledger+1
 menuidentifier,selectedlevprompt withdescribe_level. ExistingJSquery onlycurrent,

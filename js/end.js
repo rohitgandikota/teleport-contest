@@ -567,6 +567,11 @@ async function really_done(how) {
         }
     }
 
+    // src/end.c really_done(), acknowledge the message window before
+    // disclosure. An already-read prompt keeps its pixels until overwritten.
+    const { display_nhwindow_message } = await import('./display.js');
+    await display_nhwindow_message();
+
     /* discover everything in inventory for disclosure and dumplog */
     const { discover_object } = await import('./o_init.js');
     const { Is_container } = await import('./obj.js');

@@ -58,6 +58,7 @@ import { altarmask_at, align_gname } from './pray.js';
 import { ldrname } from './questpgr.js';
 import { shop_keeper } from './shk.js';
 import { findpriest, inhishop, inhistemple } from './monmove.js';
+import { In_tutorial, ECMD_OK, PICK_NONE, ESCAPED, ASCENDED } from './const.js';
 
 
 // include/global.h:408-409
@@ -1528,21 +1529,64 @@ export async function print_level_annotation() {
     }
 }
 
+// src/dungeon.c query_annotation(), EDIT_GETLIN is disabled in this build.
+export async function query_annotation(lev = null) {
+    const target = lev || game.u.uz;
+    const m = game.mapseen?.[`${target.dnum}:${target.dlevel}`];
+    if (!m)
+        return;
+    let prompt;
+    if (m.custom) {
+        prompt = `Replace annotation "${m.custom.slice(0, 30)}${m.custom.length > 30 ? '...' : ''}" with?`;
+    } else {
+        let description = 'this dungeon level';
+        if (lev && !Lcheck(lev, game.u.uz)) {
+            const { describe_level } = await import('./botl.js');
+            description = describe_level(lev.dnum === game.u.uz.dnum ? 0 : 2, lev)
+                .text.replace('Dlvl:', 'level ').trim();
+        }
+        prompt = `What do you want to call ${description}?`;
+    }
+    const { getlin } = await import('./cmd.js');
+    const raw = await getlin(prompt);
+    if (!raw || raw[0] === '\x1b')
+        return;
+    const name = raw.replace(/[ \t]+/g, ' ').trim();
+    m.custom = name || null;
+    m.custom_lth = name.length;
+}
+
+// src/dungeon.c dooverview(), reset the prefix after the selected query.
+export async function dooverview() {
+    await show_overview(game.iflags.menu_requested ? -1 : 0, 0);
+    game.iflags.menu_requested = false;
+    return ECMD_OK;
+}
+
 function interest_mapseen(m) {
     if (game.u.uz.dnum === m.dnum && game.u.uz.dlevel === m.dlevel)
         return true;
     if (m.flags?.notreachable || m.flags?.forgot)
+        return false;
+    if (In_tutorial(game.u.uz))
+        return In_tutorial(m);
+    if (In_tutorial(m))
         return false;
     if (m.flags?.oracle || m.flags?.bigroom || m.flags?.roguelevel
         || m.flags?.castle || m.flags?.valley || m.flags?.msanctum
         || m.flags?.vibrating_square || m.flags?.quest_summons
         || m.flags?.questing)
         return true;
+    if (In_sokoban(m) && (In_sokoban(game.u.uz) || !m.flags?.sokosolved))
+        return true;
+    if (In_endgame(game.u.uz))
+        return In_endgame(m);
     const f = m.feat || {};
     if (f.nfount || f.nsink || f.naltar || f.nthrone || f.ngrave
         || f.ntree || f.nshop || f.ntemple)
         return true;
-    return !!(m.custom || m.br
+    return !!((m.final_resting_place && (m.flags?.knownbones || game.wizard))
+        || m.custom || m.br
         || m.dlevel === game.dungeons?.[m.dnum]?.dunlev_ureached);
 }
 
@@ -1555,12 +1599,10 @@ function seen_string(x, obj) {
     case 2: return 'some';
     case 3: return 'many';
     }
-    return 'many';
+    return '(unknown)';
 }
 
-// src/dungeon.c:3339 show_overview() + :3516 print_mapseen — the ^O/#overview
-// window. Only the branch-annotation and endgame arms are unported.
-const ESCAPED_HOW = 14; /* include/hack.h:497 ESCAPED */
+// src/dungeon.c show_overview(), traverse_mapseenchn() and print_mapseen().
 export async function show_overview(why, reason) {
     /* why: 0 normal #overview, -1 'm' prefix, 1 final (lived), 2 final
        (died); reason: how the game ended, for the resting-place line */
@@ -1577,9 +1619,13 @@ export async function show_overview(why, reason) {
 
     const win = tty_create_nhwindow(NHW_MENU);
     tty_start_menu(win, 0);
-    const entries = Object.values(game.mapseen || {})
-        .filter(m => why !== 0 || interest_mapseen(m))
+    const sorted = Object.values(game.mapseen || {})
         .sort((a, b) => (a.dnum - b.dnum) || (a.dlevel - b.dlevel));
+    const inEndgame = In_endgame(game.u.uz);
+    const entries = (inEndgame
+        ? [...sorted.filter(In_endgame), ...(why > 0 ? sorted.filter(m => !In_endgame(m)) : [])]
+        : sorted.filter(m => !In_endgame(m)))
+        .filter(m => why !== 0 || interest_mapseen(m));
     let lastdnum = -1;
     for (const m of entries) {
         if (m.dnum !== lastdnum) {
@@ -1609,7 +1655,8 @@ export async function show_overview(why, reason) {
         const depthstart = m.dnum === game.quest_dnum || m.dnum === game.knox_level?.dnum
             ? 1 : game.dungeons[m.dnum].depth_start;
         const dep = depthstart + m.dlevel - 1;
-        let buf = `${TAB}Level ${dep}:`;
+        let buf = `${why === -1 ? '' : TAB}${In_endgame(m)
+            ? endgamelevelname(dep) : `Level ${dep}`}:`;
         if (game.wizard) {
             const slev = Is_special({ dnum: m.dnum, dlevel: m.dlevel });
             if (slev)
@@ -1617,29 +1664,16 @@ export async function show_overview(why, reason) {
         }
         if (m.custom)
             buf += ` "${m.custom}"`;
-        const died_here = (why > 0 && game.u.uz.dnum === m.dnum
+        const died_here = (why === 2 && game.u.uz.dnum === m.dnum
                            && game.u.uz.dlevel === m.dlevel);
         if (game.u.uz.dnum === m.dnum && game.u.uz.dlevel === m.dlevel)
-            buf += ` <- You ${why <= 0 ? 'are'
-                : (why === 1 && reason === ESCAPED_HOW) ? 'left from'
+            buf += ` <- You ${why <= 0 || (why === 1 && reason === ASCENDED) ? 'are'
+                : (why === 1 && reason === ESCAPED) ? 'left from'
                   : 'were'} here.`;
-        tty_add_menu(win, null, 0, 0, 0, 0, NO_COLOR, buf, 0);
-
-        /* src/dungeon.c:3696 — bones details; at game end the hero's own
-           resting place is listed (before bones creation, so it gives
-           nothing away) */
-        if (died_here) {
-            tty_add_menu(win, null, 0, 0, 0, 0, NO_COLOR,
-                         `${PREFIX}Final resting place for`, 0);
-            const { formatkiller } = await import('./end.js');
-            let tmpbuf = formatkiller(reason, true)
-                .replace(' himself', ' yourself')
-                .replace(' herself', ' yourself')
-                .replace(' his ', ' your ')
-                .replace(' her ', ' your ');
-            tty_add_menu(win, null, 0, 0, 0, 0, NO_COLOR,
-                         `${PREFIX}${TAB}you, ${tmpbuf}.`, 0);
-        }
+        tty_add_menu(win, null, why === -1 ? ledger_no(m) + 1 : 0,
+                     0, 0, 0, NO_COLOR, buf, 0);
+        if (m.flags?.forgot)
+            continue;
 
         const f = m.feat || {};
         let i = 0;
@@ -1720,13 +1754,16 @@ export async function show_overview(why, reason) {
             const br = m.br;
             let descr;
             if (br.type === BR_PORTAL)
-                descr = 'Portal';
+                descr = br.end2.dnum === game.quest_dnum && game.u.uevent?.qexpelled
+                    ? 'Sealed portal' : 'Portal';
             else if (br.type === BR_NO_END1)
                 descr = 'Connection';
             else if (br.type === BR_NO_END2)
                 descr = `One way stairs ${br.end1_up ? 'up' : 'down'}`;
-            else
+            else if (br.type === BR_STAIR)
                 descr = `Stairs ${br.end1_up ? 'up' : 'down'}`;
+            else
+                descr = '(unknown)';
             let branch = `${PREFIX}${descr} to ${
                 game.dungeons?.[br.end2.dnum]?.dname || 'unknown dungeon'}`;
             if (br.end1_up && !In_endgame(br.end2))
@@ -1734,9 +1771,31 @@ export async function show_overview(why, reason) {
             tty_add_menu(win, null, 0, 0, 0, 0, NO_COLOR,
                          `${branch}.`, 0);
         }
+
+        const resting = [];
+        if (died_here) {
+            const { formatkiller } = await import('./end.js');
+            const killer = formatkiller(reason, true)
+                .replace(' himself', ' yourself').replace(' herself', ' yourself')
+                .replace(' his ', ' your ').replace(' her ', ' your ');
+            resting.push(`you, ${killer}`);
+        }
+        for (let bp = m.final_resting_place; bp; bp = bp.next)
+            if (bp.bonesknown || game.wizard || why > 0)
+                resting.push(`${bp.who}, ${bp.how}`);
+        if (resting.length) {
+            tty_add_menu(win, null, 0, 0, 0, 0, NO_COLOR,
+                         `${PREFIX}Final resting place for`, 0);
+            resting.forEach((text, i) => tty_add_menu(win, null, 0, 0, 0, 0, NO_COLOR,
+                `${PREFIX}${TAB}${text}${i + 1 === resting.length ? '.' : ','}`, 0));
+        }
     }
     tty_end_menu(win, '');
-    await tty_select_menu(win, 0 /* PICK_NONE */);
+    const selected = await tty_select_menu(win, why === -1 ? PICK_ONE : PICK_NONE);
+    if (selected.length) {
+        const ledger = selected[0] - 1;
+        await query_annotation({ dnum: ledger_to_dnum(ledger), dlevel: ledger_to_dlev(ledger) });
+    }
     tty_destroy_nhwindow(win);
     return 0;
 }

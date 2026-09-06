@@ -23,6 +23,7 @@ import { GameDisplay } from './game_display.js';
 import { reset_windows } from './tty/wintty.js';
 import { init_rect_globals } from './rect.js';
 import { reset_role_globals } from './role.js';
+import { reset_mkmaze } from './mkmaze.js';
 
 // ── NethackGame ──
 // Wraps a single game session with replay infrastructure.
@@ -102,6 +103,7 @@ export class NethackGame {
         reset_windows();
         init_rect_globals();
         reset_role_globals();
+        reset_mkmaze();
 
         // Parse nethackrc. `rc.opts` is keyed by canonical option name, as
         // resolved against the generated table in js/optlist.js.

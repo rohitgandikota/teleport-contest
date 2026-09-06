@@ -17,21 +17,22 @@ and persistent gameplay state. Continue source review, measured C branches,
 independent oracles, implementation and regression checks until that goal is
 met. Current corpus success is not the stopping criterion.
 
-The latest pass adds 103 C cases for named levels, annotations, remembered
-terrain and save/restore behavior. All 44 public and 539 supplemental fixtures
-pass, matching 742,406 screens/cursors and 13,426,403 RNG calls. The C union
-reaches 57,076/108,268 direct outcomes and 4,404/5,491 entered records. State
-checks validate 103 native replays and 88 constructed groups. All twelve
-deliberate regressions fail state checks; four survive the new native output
-comparisons. The audit names those gaps.
-The assertion ledger passes 3,619/3,619 declared cases.
+The latest pass adds 57 C cases for overview selection, annotation queries,
+branch descriptions and disclosure. It also ports the Twin businesses Lua
+room and resets bubble state between games. All 44 public and 543 supplemental
+fixtures pass, matching 759,903 screens/cursors and 14,122,292 RNG calls. The C
+union reaches 57,120/108,268 direct outcomes and 4,404/5,491 entered records.
+State checks validate 57 native replays and 95 constructed groups. All fourteen
+deliberate faults fail at least one gate. Five survive native output comparisons;
+one survives state checks. The audit names those gaps.
+The assertion ledger passes 3,676/3,676 declared cases.
 
 See [STATUS.md](STATUS.md) for the current action,
-[level-knowledge-audit.md](level-knowledge-audit.md) for the source review and
+[overview-audit.md](overview-audit.md) for the source review and
 [gameplay-gap-audit.md](gameplay-gap-audit.md) for measurement limits.
 The earlier published held-out result was 78.39%; this local suite does not
-establish a newer held-out score. Full annotation queries, overview selection,
-remaining teleport bounds, restore lifecycle, lock, disclosure, inventory,
+establish a newer held-out score. Native coverage of some overview filters,
+remaining teleport bounds, restore and bones lifecycle, lock, disclosure, inventory,
 spell, monster and Lua paths are open.
 The full-port goal continues.
 

@@ -1,0 +1,247 @@
+{
+  "name": "horn-container-tipping",
+  "description": "Horn creation into a container or onto floor, shop usage and ownership, high drops and a floor bag of tricks.",
+  "coverage": [
+    "mode.debug",
+    "object.tools-containers",
+    "ui.menus",
+    "ui.more-paging"
+  ],
+  "branches": [
+    "horn-container-tipping.horn-normal-floor",
+    "horn-container-tipping.horn-normal-sack",
+    "horn-container-tipping.horn-levitating-floor",
+    "horn-container-tipping.horn-levitating-sack",
+    "horn-container-tipping.horn-altar",
+    "horn-container-tipping.horn-pool",
+    "horn-container-tipping.horn-lava",
+    "horn-container-tipping.shop-horn-owned-floor",
+    "horn-container-tipping.shop-horn-unpaid-floor",
+    "horn-container-tipping.shop-horn-owned-sack",
+    "horn-container-tipping.shop-horn-unpaid-sack",
+    "horn-container-tipping.shop-floor-bag-of-tricks"
+  ],
+  "requireBranchAssertions": true,
+  "segments": [
+    {
+      "name": "horn-normal-floor",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017blessed horn of plenty (0:3)\r        \u001b\u001b\u001b\u001b\u001b\u001b#tip\rb\r        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b        \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "horn-normal-sack",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017blessed horn of plenty (0:3)\r        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed sack\r        \u001b\u001b\u001b\u001b\u001b\u001b#tip\rbc        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b        \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "horn-levitating-floor",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017blessed ring of levitation\r        \u001b\u001b\u001b\u001b\u001b\u001bPbl        \u001b\u001b\u001b\u001b\u001b\u001b\u0017blessed horn of plenty (0:3)\r        \u001b\u001b\u001b\u001b\u001b\u001b#tip\rc\r        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b        \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "horn-levitating-sack",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017blessed ring of levitation\r        \u001b\u001b\u001b\u001b\u001b\u001bPbl        \u001b\u001b\u001b\u001b\u001b\u001b\u0017blessed horn of plenty (0:3)\r        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed sack\r        \u001b\u001b\u001b\u001b\u001b\u001b#tip\rcd        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b        \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "horn-altar",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017blessed ring of levitation\r        \u001b\u001b\u001b\u001b\u001b\u001bPbl        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed horn of plenty (0:3)\r        \u001b\u001b\u001b\u001b\u001b\u001b\u0017lawful altar\r        \u001b\u001b\u001b\u001b\u001b\u001b#tip\rc\r        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b        \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "horn-pool",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017blessed ring of levitation\r        \u001b\u001b\u001b\u001b\u001b\u001bPbl        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed horn of plenty (0:3)\r        \u001b\u001b\u001b\u001b\u001b\u001b\u0017pool\r        \u001b\u001b\u001b\u001b\u001b\u001b#tip\rc\r        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b        \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "horn-lava",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017blessed ring of levitation\r        \u001b\u001b\u001b\u001b\u001b\u001bPbl        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed horn of plenty (0:3)\r        \u001b\u001b\u001b\u001b\u001b\u001b\u0017lava\r        \u001b\u001b\u001b\u001b\u001b\u001b#tip\rc\r        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b        \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "seed": 6901,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=menustyle:traditional\n",
+      "moves": " \u00162\r\u0006\u0014  lllllllllllllllllllllllllk.  \u0017uncursed horn of plenty (0:3)\r        \u001b\u001b\u001b\u001b\u001b\u001b#tip\rn\r        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b",
+      "name": "shop-horn-owned-floor"
+    },
+    {
+      "seed": 6903,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00162\r\u0006\u0014  llllllllllllllllllll.  \u0017uncursed horn of plenty (0:3)\r        \u001b\u001b\u001b\u001b\u001b\u001bdo y,a\r         \u001b\u001b\u001b\u001b\u001b\u001b#tip\ro\r        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b",
+      "name": "shop-horn-unpaid-floor"
+    },
+    {
+      "seed": 6901,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=menustyle:traditional\n",
+      "moves": " \u00162\r\u0006\u0014  lllllllllllllllllllllllllk.  \u0017uncursed horn of plenty (0:3)\r        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed sack\r        \u001b\u001b\u001b\u001b\u001b\u001b#tip\rno        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b",
+      "name": "shop-horn-owned-sack"
+    },
+    {
+      "seed": 6903,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00162\r\u0006\u0014  llllllllllllllllllll.  \u0017uncursed horn of plenty (0:3)\r        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed sack\r        \u001b\u001b\u001b\u001b\u001b\u001bdo y,a\r         \u001b\u001b\u001b\u001b\u001b\u001b#tip\rop        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b",
+      "name": "shop-horn-unpaid-sack"
+    },
+    {
+      "seed": 6903,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00162\r\u0006\u0014  llllllllllllllllllll.  \u0017uncursed bag of tricks (0:2)\r        \u001b\u001b\u001b\u001b\u001b\u001bdo y        \u001b\u001b\u001b\u001b\u001b\u001b#tip\ry\r        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b",
+      "name": "shop-floor-bag-of-tricks"
+    }
+  ],
+  "branchAssertions": [
+    {
+      "branch": "horn-container-tipping.horn-normal-floor",
+      "segment": 0,
+      "screenIncludes": [
+        "Where to tip the contents of",
+        "spills out."
+      ],
+      "rngIncludes": [
+        "rn2(13)=12 @ hornoplenty(mkobj.c:2867)"
+      ]
+    },
+    {
+      "branch": "horn-container-tipping.horn-normal-sack",
+      "segment": 1,
+      "screenIncludes": [
+        "Where to tip the contents of",
+        "spills out."
+      ],
+      "rngIncludes": [
+        "rn2(13)=7 @ hornoplenty(mkobj.c:2867)"
+      ]
+    },
+    {
+      "branch": "horn-container-tipping.horn-levitating-floor",
+      "segment": 2,
+      "screenIncludes": [
+        "Where to tip the contents of",
+        "spills out."
+      ],
+      "rngIncludes": [
+        "rn2(13)=0 @ hornoplenty(mkobj.c:2867)"
+      ]
+    },
+    {
+      "branch": "horn-container-tipping.horn-levitating-sack",
+      "segment": 3,
+      "screenIncludes": [
+        "Where to tip the contents of",
+        "spills out."
+      ],
+      "rngIncludes": [
+        "rn2(13)=2 @ hornoplenty(mkobj.c:2867)"
+      ]
+    },
+    {
+      "branch": "horn-container-tipping.horn-altar",
+      "segment": 4,
+      "screenIncludes": [
+        "Where to tip the contents of",
+        "spills out."
+      ],
+      "rngIncludes": [
+        "rn2(13)=0 @ hornoplenty(mkobj.c:2867)"
+      ]
+    },
+    {
+      "branch": "horn-container-tipping.horn-pool",
+      "segment": 5,
+      "screenIncludes": [
+        "Where to tip the contents of",
+        "spills out."
+      ],
+      "rngIncludes": [
+        "rn2(13)=0 @ hornoplenty(mkobj.c:2867)"
+      ]
+    },
+    {
+      "branch": "horn-container-tipping.horn-lava",
+      "segment": 6,
+      "screenIncludes": [
+        "Where to tip the contents of",
+        "spills out."
+      ],
+      "rngIncludes": [
+        "rn2(13)=0 @ hornoplenty(mkobj.c:2867)"
+      ]
+    },
+    {
+      "branch": "horn-container-tipping.shop-horn-owned-floor",
+      "segment": 7,
+      "screenIncludes": [
+        "Where to tip the contents of",
+        "spills out."
+      ],
+      "rngIncludes": [
+        "rn2(13)=8 @ hornoplenty(mkobj.c:2867)"
+      ]
+    },
+    {
+      "branch": "horn-container-tipping.shop-horn-unpaid-floor",
+      "segment": 8,
+      "screenIncludes": [
+        "Where to tip the contents of",
+        "spills out.",
+        "Emptying that will cost you 67 zorkmids."
+      ],
+      "rngIncludes": [
+        "rn2(13)=7 @ hornoplenty(mkobj.c:2867)"
+      ]
+    },
+    {
+      "branch": "horn-container-tipping.shop-horn-owned-sack",
+      "segment": 9,
+      "screenIncludes": [
+        "Where to tip the contents of",
+        "spills out."
+      ],
+      "rngIncludes": [
+        "rn2(13)=3 @ hornoplenty(mkobj.c:2867)"
+      ]
+    },
+    {
+      "branch": "horn-container-tipping.shop-horn-unpaid-sack",
+      "segment": 10,
+      "screenIncludes": [
+        "Where to tip the contents of",
+        "spills out.",
+        "Emptying that will cost you 67 zorkmids."
+      ],
+      "rngIncludes": [
+        "rn2(13)=12 @ hornoplenty(mkobj.c:2867)"
+      ]
+    },
+    {
+      "branch": "horn-container-tipping.shop-floor-bag-of-tricks",
+      "segment": 11,
+      "screenIncludes": [
+        "Where to tip the contents of",
+        "Emptying that will cost you 133 zorkmids."
+      ],
+      "rngIncludes": [
+        "rn2(23)=2 @ bagotricks(makemon.c:2577)"
+      ]
+    }
+  ]
+}

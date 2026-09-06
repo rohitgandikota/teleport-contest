@@ -1,0 +1,441 @@
+{
+  "name": "container-tipping-transfers",
+  "description": "Container transfers, resumed corpse rot, explosion ordering, shop ownership, high drops and cursed losses.",
+  "coverage": [
+    "mode.debug",
+    "object.tools-containers",
+    "ui.menus",
+    "ui.more-paging"
+  ],
+  "branches": [
+    "container-tipping-transfers.sack-floor",
+    "container-tipping-transfers.sack-sack",
+    "container-tipping-transfers.holding-floor",
+    "container-tipping-transfers.holding-sack",
+    "container-tipping-transfers.icebox-floor",
+    "container-tipping-transfers.icebox-sack",
+    "container-tipping-transfers.explosion-cancellation",
+    "container-tipping-transfers.explosion-empty-cancellation",
+    "container-tipping-transfers.explosion-holding",
+    "container-tipping-transfers.explosion-tricks",
+    "container-tipping-transfers.highdrop-stairs",
+    "container-tipping-transfers.highdrop-altar",
+    "container-tipping-transfers.highdrop-pool",
+    "container-tipping-transfers.highdrop-lava",
+    "container-tipping-transfers.shop-held-floor",
+    "container-tipping-transfers.shop-held-sack",
+    "container-tipping-transfers.shop-floor-floor",
+    "container-tipping-transfers.shop-floor-sack",
+    "container-tipping-transfers.shop-floor-sold-armor-floor",
+    "container-tipping-transfers.shop-floor-sold-armor-sack",
+    "container-tipping-transfers.cursed-retain-41",
+    "container-tipping-transfers.cursed-retain-42",
+    "container-tipping-transfers.cursed-retain-43",
+    "container-tipping-transfers.cursed-retain-44",
+    "container-tipping-transfers.cursed-loss-45",
+    "container-tipping-transfers.cursed-loss-50"
+  ],
+  "requireBranchAssertions": true,
+  "segments": [
+    {
+      "name": "sack-floor",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed sack\r        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed apple\r        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed potion of healing\r        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed newt corpse\r        \u001b\u001b\u001b\u001b\u001b\u001babi%\ra        \u001b\u001b\u001b\u001b\u001b\u001b#tip\rb\r        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b        \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "sack-sack",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed sack\r        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed sack\r        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed apple\r        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed potion of healing\r        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed newt corpse\r        \u001b\u001b\u001b\u001b\u001b\u001babi%\ra        \u001b\u001b\u001b\u001b\u001b\u001b#tip\rbc        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b        \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "holding-floor",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017cursed bag of holding\r        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed apple\r        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed potion of healing\r        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed newt corpse\r        \u001b\u001b\u001b\u001b\u001b\u001babi%\ra        \u001b\u001b\u001b\u001b\u001b\u001b#tip\rb\r        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b        \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "holding-sack",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017cursed bag of holding\r        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed sack\r        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed apple\r        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed potion of healing\r        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed newt corpse\r        \u001b\u001b\u001b\u001b\u001b\u001babi%\ra        \u001b\u001b\u001b\u001b\u001b\u001b#tip\rbc        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b        \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "icebox-floor",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017empty unlocked ice box\r        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed newt corpse\r        \u001b\u001b\u001b\u001b\u001b\u001babi%\ra        \u001b\u001b\u001b\u001b\u001b\u001b#tip\rb\r        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b        \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "icebox-sack",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017empty unlocked ice box\r        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed sack\r        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed newt corpse\r        \u001b\u001b\u001b\u001b\u001b\u001babi%\ra        \u001b\u001b\u001b\u001b\u001b\u001b#tip\rbc        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b        \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "explosion-cancellation",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed sack\r        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed bag of holding\r        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed apple\r        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed wand of cancellation (0:2)\r        \u001b\u001b\u001b\u001b\u001b\u001babsd        \u001b\u001b\u001b\u001b\u001b\u001babse        \u001b\u001b\u001b\u001b\u001b\u001b#tip\rbc        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b        \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "explosion-empty-cancellation",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed sack\r        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed bag of holding\r        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed apple\r        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed wand of cancellation (0:0)\r        \u001b\u001b\u001b\u001b\u001b\u001babsd        \u001b\u001b\u001b\u001b\u001b\u001babse        \u001b\u001b\u001b\u001b\u001b\u001b#tip\rbc        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b        \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "explosion-holding",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed sack\r        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed bag of holding\r        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed apple\r        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed bag of holding\r        \u001b\u001b\u001b\u001b\u001b\u001babsd        \u001b\u001b\u001b\u001b\u001b\u001babse        \u001b\u001b\u001b\u001b\u001b\u001b#tip\rbc        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b        \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "explosion-tricks",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed sack\r        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed bag of holding\r        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed apple\r        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed bag of tricks (0:2)\r        \u001b\u001b\u001b\u001b\u001b\u001babsd        \u001b\u001b\u001b\u001b\u001b\u001babse        \u001b\u001b\u001b\u001b\u001b\u001b#tip\rbc        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b        \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "highdrop-stairs",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed sack\r        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed potion of healing\r        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed apple\r        \u001b\u001b\u001b\u001b\u001b\u001b\u0017blessed ring of levitation\r        \u001b\u001b\u001b\u001b\u001b\u001babsc        \u001b\u001b\u001b\u001b\u001b\u001babsd        \u001b\u001b\u001b\u001b\u001b\u001bPel        \u001b\u001b\u001b\u001b\u001b\u001b#tip\rb\r        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b        \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "highdrop-altar",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed sack\r        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed potion of healing\r        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed apple\r        \u001b\u001b\u001b\u001b\u001b\u001b\u0017blessed ring of levitation\r        \u001b\u001b\u001b\u001b\u001b\u001babsc        \u001b\u001b\u001b\u001b\u001b\u001babsd        \u001b\u001b\u001b\u001b\u001b\u001bPel        \u001b\u001b\u001b\u001b\u001b\u001b\u0017lawful altar\r        \u001b\u001b\u001b\u001b\u001b\u001b#tip\rb\r        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b        \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "highdrop-pool",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed sack\r        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed potion of healing\r        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed apple\r        \u001b\u001b\u001b\u001b\u001b\u001b\u0017blessed ring of levitation\r        \u001b\u001b\u001b\u001b\u001b\u001babsc        \u001b\u001b\u001b\u001b\u001b\u001babsd        \u001b\u001b\u001b\u001b\u001b\u001bPel        \u001b\u001b\u001b\u001b\u001b\u001b\u0017pool\r        \u001b\u001b\u001b\u001b\u001b\u001b#tip\rb\r        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b        \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "highdrop-lava",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed sack\r        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed potion of healing\r        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed apple\r        \u001b\u001b\u001b\u001b\u001b\u001b\u0017blessed ring of levitation\r        \u001b\u001b\u001b\u001b\u001b\u001babsc        \u001b\u001b\u001b\u001b\u001b\u001babsd        \u001b\u001b\u001b\u001b\u001b\u001bPel        \u001b\u001b\u001b\u001b\u001b\u001b\u0017lava\r        \u001b\u001b\u001b\u001b\u001b\u001b#tip\rb\r        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b        \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "seed": 6901,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=menustyle:traditional\n",
+      "moves": " \u00162\r\u0006\u0014  lllllllllllllllllllllllllk.  \u0017uncursed sack\r        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed apple\r        \u001b\u001b\u001b\u001b\u001b\u001banso        \u001b\u001b\u001b\u001b\u001b\u001b#tip\rn\r        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b",
+      "name": "shop-held-floor"
+    },
+    {
+      "seed": 6901,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=menustyle:traditional\n",
+      "moves": " \u00162\r\u0006\u0014  lllllllllllllllllllllllllk.  \u0017uncursed sack\r        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed sack\r        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed apple\r        \u001b\u001b\u001b\u001b\u001b\u001bansp        \u001b\u001b\u001b\u001b\u001b\u001b#tip\rno        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b",
+      "name": "shop-held-sack"
+    },
+    {
+      "seed": 6901,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=menustyle:traditional\n",
+      "moves": " \u00162\r\u0006\u0014  lllllllllllllllllllllllllk.  \u0017uncursed sack\r        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed apple\r        \u001b\u001b\u001b\u001b\u001b\u001banso        \u001b\u001b\u001b\u001b\u001b\u001bdn        \u001b\u001b\u001b\u001b\u001b\u001b#tip\ry\r        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b",
+      "name": "shop-floor-floor"
+    },
+    {
+      "seed": 6901,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=menustyle:traditional\n",
+      "moves": " \u00162\r\u0006\u0014  lllllllllllllllllllllllllk.  \u0017uncursed sack\r        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed sack\r        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed apple\r        \u001b\u001b\u001b\u001b\u001b\u001bansp        \u001b\u001b\u001b\u001b\u001b\u001bdn        \u001b\u001b\u001b\u001b\u001b\u001b#tip\ryo        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b",
+      "name": "shop-floor-sack"
+    },
+    {
+      "seed": 6901,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00162\r\u0006\u0014  lllllllllllllllllllllllllk.  \u0017uncursed sack\r        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed leather armor\r        \u001b\u001b\u001b\u001b\u001b\u001banic\ro\r        \u001b\u001b\u001b\u001b\u001b\u001bdn y        \u001b\u001b\u001b\u001b\u001b\u001b#tip\ry\r        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b",
+      "name": "shop-floor-sold-armor-floor"
+    },
+    {
+      "seed": 6901,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00162\r\u0006\u0014  lllllllllllllllllllllllllk.  \u0017uncursed sack\r        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed leather armor\r        \u001b\u001b\u001b\u001b\u001b\u001banic\ro\r        \u001b\u001b\u001b\u001b\u001b\u001bdn y        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed sack\r        \u001b\u001b\u001b\u001b\u001b\u001b#tip\ryp        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b",
+      "name": "shop-floor-sold-armor-sack"
+    },
+    {
+      "name": "cursed-retain-41",
+      "seed": 41,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017cursed bag of holding\r        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed apple\r        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed potion of healing\r        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed newt corpse\r        \u001b\u001b\u001b\u001b\u001b\u001babi%\ra        \u001b\u001b\u001b\u001b\u001b\u001b#tip\rb\r        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b        \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "cursed-retain-42",
+      "seed": 42,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017cursed bag of holding\r        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed apple\r        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed potion of healing\r        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed newt corpse\r        \u001b\u001b\u001b\u001b\u001b\u001babi%\ra        \u001b\u001b\u001b\u001b\u001b\u001b#tip\rb\r        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b        \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "cursed-retain-43",
+      "seed": 43,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017cursed bag of holding\r        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed apple\r        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed potion of healing\r        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed newt corpse\r        \u001b\u001b\u001b\u001b\u001b\u001babi%\ra        \u001b\u001b\u001b\u001b\u001b\u001b#tip\rb\r        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b        \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "cursed-retain-44",
+      "seed": 44,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017cursed bag of holding\r        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed apple\r        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed potion of healing\r        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed newt corpse\r        \u001b\u001b\u001b\u001b\u001b\u001babi%\ra        \u001b\u001b\u001b\u001b\u001b\u001b#tip\rb\r        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b        \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "cursed-loss-45",
+      "seed": 45,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017cursed bag of holding\r        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed apple\r        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed potion of healing\r        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed newt corpse\r        \u001b\u001b\u001b\u001b\u001b\u001babi%\ra        \u001b\u001b\u001b\u001b\u001b\u001b#tip\rb\r        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b        \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "cursed-loss-50",
+      "seed": 50,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017cursed bag of holding\r        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed apple\r        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed potion of healing\r        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed newt corpse\r        \u001b\u001b\u001b\u001b\u001b\u001babi%\ra        \u001b\u001b\u001b\u001b\u001b\u001b#tip\rb\r        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b        \u001b\u001b\u001b\u001b\u001b\u001b"
+    }
+  ],
+  "branchAssertions": [
+    {
+      "branch": "container-tipping-transfers.sack-floor",
+      "segment": 0,
+      "screenIncludes": [
+        "Where to tip the contents of",
+        "spill"
+      ]
+    },
+    {
+      "branch": "container-tipping-transfers.sack-sack",
+      "segment": 1,
+      "screenIncludes": [
+        "Where to tip the contents of",
+        "into the bag."
+      ]
+    },
+    {
+      "branch": "container-tipping-transfers.holding-floor",
+      "segment": 2,
+      "screenIncludes": [
+        "Where to tip the contents of",
+        "spill"
+      ]
+    },
+    {
+      "branch": "container-tipping-transfers.holding-sack",
+      "segment": 3,
+      "screenIncludes": [
+        "Where to tip the contents of",
+        "into the bag."
+      ]
+    },
+    {
+      "branch": "container-tipping-transfers.icebox-floor",
+      "segment": 4,
+      "screenIncludes": [
+        "Where to tip the contents of",
+        "spill"
+      ]
+    },
+    {
+      "branch": "container-tipping-transfers.icebox-sack",
+      "segment": 5,
+      "screenIncludes": [
+        "Where to tip the contents of",
+        "into the bag."
+      ]
+    },
+    {
+      "branch": "container-tipping-transfers.explosion-cancellation",
+      "segment": 6,
+      "screenIncludes": [
+        "Where to tip the contents of",
+        "you are blasted by a magical explosion!"
+      ]
+    },
+    {
+      "branch": "container-tipping-transfers.explosion-empty-cancellation",
+      "segment": 7,
+      "screenIncludes": [
+        "Where to tip the contents of",
+        "into the bag."
+      ]
+    },
+    {
+      "branch": "container-tipping-transfers.explosion-holding",
+      "segment": 8,
+      "screenIncludes": [
+        "Where to tip the contents of",
+        "you are blasted by a magical explosion!"
+      ]
+    },
+    {
+      "branch": "container-tipping-transfers.explosion-tricks",
+      "segment": 9,
+      "screenIncludes": [
+        "Where to tip the contents of",
+        "you are blasted by a magical explosion!"
+      ]
+    },
+    {
+      "branch": "container-tipping-transfers.highdrop-stairs",
+      "segment": 10,
+      "screenIncludes": [
+        "Where to tip the contents of",
+        "spill"
+      ]
+    },
+    {
+      "branch": "container-tipping-transfers.highdrop-altar",
+      "segment": 11,
+      "screenIncludes": [
+        "Where to tip the contents of",
+        "spill"
+      ]
+    },
+    {
+      "branch": "container-tipping-transfers.highdrop-pool",
+      "segment": 12,
+      "screenIncludes": [
+        "Where to tip the contents of",
+        "spill"
+      ]
+    },
+    {
+      "branch": "container-tipping-transfers.highdrop-lava",
+      "segment": 13,
+      "screenIncludes": [
+        "Where to tip the contents of",
+        "spill"
+      ]
+    },
+    {
+      "branch": "container-tipping-transfers.shop-held-floor",
+      "segment": 14,
+      "screenIncludes": [
+        "Where to tip the contents of",
+        "spill"
+      ]
+    },
+    {
+      "branch": "container-tipping-transfers.shop-held-sack",
+      "segment": 15,
+      "screenIncludes": [
+        "Where to tip the contents of",
+        "into the bag."
+      ]
+    },
+    {
+      "branch": "container-tipping-transfers.shop-floor-floor",
+      "segment": 16,
+      "screenIncludes": [
+        "Where to tip the contents of",
+        "spill"
+      ]
+    },
+    {
+      "branch": "container-tipping-transfers.shop-floor-sack",
+      "segment": 17,
+      "screenIncludes": [
+        "Where to tip the contents of",
+        "into the bag."
+      ]
+    },
+    {
+      "branch": "container-tipping-transfers.shop-floor-sold-armor-floor",
+      "segment": 18,
+      "screenIncludes": [
+        "Where to tip the contents of",
+        "spill",
+        "You sold the contents of a bag for 3 gold pieces."
+      ]
+    },
+    {
+      "branch": "container-tipping-transfers.shop-floor-sold-armor-sack",
+      "segment": 19,
+      "screenIncludes": [
+        "Where to tip the contents of",
+        "into the bag.",
+        "You sold the contents of a bag for 3 gold pieces."
+      ]
+    },
+    {
+      "branch": "container-tipping-transfers.cursed-retain-41",
+      "segment": 20,
+      "screenIncludes": [
+        "Where to tip the contents of",
+        "spill"
+      ]
+    },
+    {
+      "branch": "container-tipping-transfers.cursed-retain-42",
+      "segment": 21,
+      "screenIncludes": [
+        "Where to tip the contents of",
+        "spill"
+      ]
+    },
+    {
+      "branch": "container-tipping-transfers.cursed-retain-43",
+      "segment": 22,
+      "screenIncludes": [
+        "Where to tip the contents of",
+        "spill"
+      ]
+    },
+    {
+      "branch": "container-tipping-transfers.cursed-retain-44",
+      "segment": 23,
+      "screenIncludes": [
+        "Where to tip the contents of",
+        "spill"
+      ]
+    },
+    {
+      "branch": "container-tipping-transfers.cursed-loss-45",
+      "segment": 24,
+      "screenIncludes": [
+        "Where to tip the contents of",
+        "spill"
+      ],
+      "rngIncludes": [
+        "rn2(13)=0 @ is_boh_item_gone(pickup.c:2512)"
+      ]
+    },
+    {
+      "branch": "container-tipping-transfers.cursed-loss-50",
+      "segment": 25,
+      "screenIncludes": [
+        "Where to tip the contents of",
+        "spill"
+      ],
+      "rngIncludes": [
+        "rn2(13)=0 @ is_boh_item_gone(pickup.c:2512)"
+      ]
+    }
+  ]
+}

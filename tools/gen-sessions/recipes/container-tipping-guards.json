@@ -1,0 +1,285 @@
+{
+  "name": "container-tipping-guards",
+  "description": "Empty, locked and trapped containers; concealed bags of tricks, hand restrictions, cancellation and destination deselection.",
+  "coverage": [
+    "mode.debug",
+    "object.tools-containers",
+    "ui.menus",
+    "ui.more-paging"
+  ],
+  "branches": [
+    "container-tipping-guards.empty-floor",
+    "container-tipping-guards.empty-sack",
+    "container-tipping-guards.locked-floor",
+    "container-tipping-guards.locked-sack",
+    "container-tipping-guards.target-locked-large-box",
+    "container-tipping-guards.target-bag-of-tricks-(0:2)",
+    "container-tipping-guards.no-free-hand",
+    "container-tipping-guards.cancel-target",
+    "container-tipping-guards.toggle-floor",
+    "container-tipping-guards.trapped-floor",
+    "container-tipping-guards.trapped-sack",
+    "container-tipping-guards.target-trapped",
+    "container-tipping-guards.target-known-locked",
+    "container-tipping-guards.target-no-hands",
+    "container-tipping-guards.horn-target-locked",
+    "container-tipping-guards.horn-target-trapped"
+  ],
+  "requireBranchAssertions": true,
+  "segments": [
+    {
+      "name": "empty-floor",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017empty uncursed sack\r        \u001b\u001b\u001b\u001b\u001b\u001b#tip\rb\r        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b        \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "empty-sack",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017empty uncursed sack\r        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed sack\r        \u001b\u001b\u001b\u001b\u001b\u001b#tip\rbc        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b        \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "locked-floor",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017locked uncursed large box\r        \u001b\u001b\u001b\u001b\u001b\u001b#tip\rb\r        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b        \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "locked-sack",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017locked uncursed large box\r        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed sack\r        \u001b\u001b\u001b\u001b\u001b\u001b#tip\rbc        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b        \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "target-locked-large-box",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed sack\r        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed locked large box\r        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed apple\r        \u001b\u001b\u001b\u001b\u001b\u001babsd        \u001b\u001b\u001b\u001b\u001b\u001b#tip\rbc        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b        \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "target-bag-of-tricks-(0:2)",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed sack\r        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed bag of tricks (0:2)\r        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed apple\r        \u001b\u001b\u001b\u001b\u001b\u001babsd        \u001b\u001b\u001b\u001b\u001b\u001b#tip\rbc        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b        \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "no-free-hand",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed sack\r        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed sack\r        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed apple\r        \u001b\u001b\u001b\u001b\u001b\u001b\u0017cursed two-handed sword\r        \u001b\u001b\u001b\u001b\u001b\u001babsd        \u001b\u001b\u001b\u001b\u001b\u001bwe        \u001b\u001b\u001b\u001b\u001b\u001b#tip\rb\r        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b        \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "cancel-target",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed sack\r        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed apple\r        \u001b\u001b\u001b\u001b\u001b\u001babsc        \u001b\u001b\u001b\u001b\u001b\u001b#tip\rb\u001b        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b        \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "toggle-floor",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed sack\r        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed apple\r        \u001b\u001b\u001b\u001b\u001b\u001babsc        \u001b\u001b\u001b\u001b\u001b\u001b#tip\rb-\r        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b        \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "trapped-floor",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017unlocked trapped empty large box\r        \u001b\u001b\u001b\u001b\u001b\u001b#tip\rb\r        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b        \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "trapped-sack",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017unlocked trapped empty large box\r        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed sack\r        \u001b\u001b\u001b\u001b\u001b\u001b#tip\rbc        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b        \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "target-trapped",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed sack\r        \u001b\u001b\u001b\u001b\u001b\u001b\u0017unlocked trapped empty large box\r        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed apple\r        \u001b\u001b\u001b\u001b\u001b\u001babsd        \u001b\u001b\u001b\u001b\u001b\u001b#tip\rbc        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b        \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "target-known-locked",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed sack\r        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed locked large box\r        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed apple\r        \u001b\u001b\u001b\u001b\u001b\u001babsd        \u001b\u001b\u001b\u001b\u001b\u001bac        \u001b\u001b\u001b\u001b\u001b\u001b#tip\rbc        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b        \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "target-no-hands",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed sack\r        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed sack\r        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed apple\r        \u001b\u001b\u001b\u001b\u001b\u001b\u0017cursed two-handed sword\r        \u001b\u001b\u001b\u001b\u001b\u001babsd        \u001b\u001b\u001b\u001b\u001b\u001b#polyself\racid blob\r        \u001b\u001b\u001b\u001b\u001b\u001b#tip\rb\r        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b        \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "horn-target-locked",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017blessed horn of plenty (0:3)\r        \u001b\u001b\u001b\u001b\u001b\u001b\u0017locked empty large box\r        \u001b\u001b\u001b\u001b\u001b\u001b#tip\rbc        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b        \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "horn-target-trapped",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017blessed horn of plenty (0:3)\r        \u001b\u001b\u001b\u001b\u001b\u001b\u0017unlocked trapped empty large box\r        \u001b\u001b\u001b\u001b\u001b\u001b#tip\rbc        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b        \u001b\u001b\u001b\u001b\u001b\u001b"
+    }
+  ],
+  "branchAssertions": [
+    {
+      "branch": "container-tipping-guards.empty-floor",
+      "segment": 0,
+      "screenIncludes": [
+        "Where to tip the contents of",
+        "The bag is empty."
+      ]
+    },
+    {
+      "branch": "container-tipping-guards.empty-sack",
+      "segment": 1,
+      "screenIncludes": [
+        "Where to tip the contents of",
+        "The bag is empty."
+      ]
+    },
+    {
+      "branch": "container-tipping-guards.locked-floor",
+      "segment": 2,
+      "screenIncludes": [
+        "Where to tip the contents of",
+        "locked"
+      ]
+    },
+    {
+      "branch": "container-tipping-guards.locked-sack",
+      "segment": 3,
+      "screenIncludes": [
+        "Where to tip the contents of",
+        "locked"
+      ]
+    },
+    {
+      "branch": "container-tipping-guards.target-locked-large-box",
+      "segment": 4,
+      "screenIncludes": [
+        "Where to tip the contents of",
+        "locked"
+      ]
+    },
+    {
+      "branch": "container-tipping-guards.target-bag-of-tricks-(0:2)",
+      "segment": 5,
+      "screenIncludes": [
+        "Where to tip the contents of"
+      ],
+      "rngIncludes": [
+        "rn2(23)=22 @ bagotricks(makemon.c:2577)"
+      ]
+    },
+    {
+      "branch": "container-tipping-guards.no-free-hand",
+      "segment": 6,
+      "screenIncludes": [
+        "Where to tip the contents of",
+        "You have no free hand."
+      ]
+    },
+    {
+      "branch": "container-tipping-guards.cancel-target",
+      "segment": 7,
+      "screenIncludes": [
+        "Where to tip the contents of"
+      ],
+      "screenExcludes": [
+        "spills out"
+      ]
+    },
+    {
+      "branch": "container-tipping-guards.toggle-floor",
+      "segment": 8,
+      "screenIncludes": [
+        "Where to tip the contents of",
+        "spill"
+      ]
+    },
+    {
+      "branch": "container-tipping-guards.trapped-floor",
+      "segment": 9,
+      "screenIncludes": [
+        "Where to tip the contents of"
+      ],
+      "rngIncludes": [
+        "rn2(13)=4 @ chest_trap(trap.c:6312)"
+      ]
+    },
+    {
+      "branch": "container-tipping-guards.trapped-sack",
+      "segment": 10,
+      "screenIncludes": [
+        "Where to tip the contents of"
+      ],
+      "rngIncludes": [
+        "rn2(13)=2 @ chest_trap(trap.c:6312)"
+      ]
+    },
+    {
+      "branch": "container-tipping-guards.target-trapped",
+      "segment": 11,
+      "screenIncludes": [
+        "Where to tip the contents of"
+      ],
+      "rngIncludes": [
+        "rn2(13)=8 @ chest_trap(trap.c:6312)"
+      ]
+    },
+    {
+      "branch": "container-tipping-guards.target-known-locked",
+      "segment": 12,
+      "screenIncludes": [
+        "Where to tip the contents of",
+        "locked"
+      ]
+    },
+    {
+      "branch": "container-tipping-guards.target-no-hands",
+      "segment": 13,
+      "screenIncludes": [
+        "Where to tip the contents of",
+        "You have no hands!"
+      ]
+    },
+    {
+      "branch": "container-tipping-guards.horn-target-locked",
+      "segment": 14,
+      "screenIncludes": [
+        "Where to tip the contents of",
+        "locked"
+      ]
+    },
+    {
+      "branch": "container-tipping-guards.horn-target-trapped",
+      "segment": 15,
+      "screenIncludes": [
+        "Where to tip the contents of"
+      ],
+      "rngIncludes": [
+        "rn2(13)=4 @ chest_trap(trap.c:6312)"
+      ]
+    }
+  ]
+}

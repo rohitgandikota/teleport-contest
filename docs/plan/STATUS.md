@@ -12,9 +12,63 @@ Continue the authorized work; do not mark it complete or recreate it.
 Current-corpus success is not the stopping criterion. Track unreviewed,
 untested, missing, and unreachable source paths explicitly.
 
+### Active pass: floor pickup and object queries
+
+The tipping checkpoint below is verified and ready for a local commit.
+Current HEAD077834e4 is a dashboard-only commit after a429a01d; preserve it.
+Next work has only .cache/floor-pickup files, no further runtime edits.
+Full Cpickup672..913, query_objlist1025..1215 and query_classes140..263 read.
+The JS pickup always uses full menus and omits count-prefixed and traditional
+paths. basic43 native cases recorded successfully; basic-before.log scorer
+running exec14424. Inspect actual native selections before promoting labels.
+The preserved old failure is basic lastcase traditional-shop-horn-pickup.
+Base setup inventory letters b=3daggers,c=potion,d=ring,e=leatherarmor.
+Queries currently miss sortloot flags, full callbacks, touching corpses,
+engulfer equipment selection and the C window lifecycle. Continue there.
+
+### Checkpoint: container tipping and generated chest weight
+
+Four runtime modules changed: apply,mkobj,pickup,mklev. Shared tipcontainer,
+gettarget andchecks ported. Canonical hornoplenty moved to mkobj. Generated
+supply chest final weight update added after native state failure and C
+wizweight confirmation (670vs600). Full Cbodies reviewed before edits.
+See container-tipping-audit.md; all work in .cache/container-tipping.
+
+Four permanent recipes add72cases: transfers26,guards16,quantum18,horns12.
+All18114screens/cursors226162RNG match. C repeats exact4/4; separate assertions
+andintegritypass. Ledger2403/2403,99covered7partial. Cunion adds73outcomes and
+lava_damage, reaching55448/108268 and4367/5491enteredrecords. Remaining native:
+tipcontainer70/76,gettarget28/32,checks51/56,horn29/38,bagotricks22/32.
+No newunreachableclaims. choose_tip_container_menu/tiphat still0nativecalls.
+
+Final post-weight sweep546/546=44public+502supplemental. All354203screens/
+cursors10208249RNG match; supplemental342798screens9415411RNG21701animations
+allmatch. Public retains21oldanimationmisses. regression-post-weight.log and
+totals.json holdresults. State gate72native+8constructed controls passes;
+12relatedgates,48hang,80freshroles,14tooltests,sourceaudit0/268pass. Fuzz101/102
+knownfixed-date screenmiss,all491759RNG. All tipping jobs finished and every
+exit collected; only next-pass basic-before scorer is running.
+
+No-weight mutation fails persistent weight, while fullpre-fix546sweep hadall
+screens/cursors/RNGmatching. No-stop mutation fails9screens3cursors(all85200
+RNGmatching) andnative state(sourceapplegone). Exact a429a01d runtime across
+fourmodulesfails4/4fixtures:454screens106cursors147493positionalRNG. Loaders
+useNODE_OPTIONSforworkers. verification-exits.json hascollectedexits.
+
+Native probe corrections: heavyicebox/lockedtrap cases replaced, floorhorn
+excluded(Is_container). Cursed-retain41..44 hadnotiploss;45/50verifyactual
+post-#tip losses. Shop horn setup6903 fixes invalidarmorstore/pickupkeys.
+Fees67horn/133floortricks; billct1floor,4sack,0floortricks. Originalextended33
+floorpickupfailure retained. wizweightdiagnosticnotpromoted(JSdisplaymissing).
+
+Stillopen: full dotipentry, multi-floor-container menu,able_to_loot,tiphat,
+remaininghornoutcomes,query_category,deathdisclosure,deletedobjects. Csource
+review foundexistingmkbox_cnts childweight andiceboxtimergaps,unfixed. Continue
+full-portgoal. Do notpush; publicationauthorization remainsunanswered.
+
 ### Checkpoint: quantum containers and teleport attacks, 2026-09-06
 
-Work in .cache/quantum-containers is ready for local commit. Six runtime
+Work in .cache/quantum-containers is committed locally as a429a01d. Six runtime
 modules: makemon creates frozen quantum boxes; insight uses the nudist
 sentence; potion removes the extra post-enlightenment docrt; uhitm ports
 all three mhitm_ad_tlpt directions; mhitu/mhitm connect the new damage type.

@@ -1,0 +1,363 @@
+{
+  "name": "quantum-container-tipping",
+  "description": "Live and dead quantum boxes tipped onto the floor or into a bag, blind and hallucinating observations, and bag-of-tricks destination precedence.",
+  "coverage": [
+    "mode.debug",
+    "object.tools-containers",
+    "ui.menus",
+    "ui.more-paging"
+  ],
+  "branches": [
+    "quantum-container-tipping.quantum-floor-13",
+    "quantum-container-tipping.quantum-bag-13",
+    "quantum-container-tipping.quantum-tricks-13",
+    "quantum-container-tipping.quantum-floor-43",
+    "quantum-container-tipping.quantum-bag-43",
+    "quantum-container-tipping.quantum-tricks-43",
+    "quantum-container-tipping.quantum-bag-29",
+    "quantum-container-tipping.quantum-bag-30",
+    "quantum-container-tipping.quantum-bag-61",
+    "quantum-container-tipping.quantum-bag-91",
+    "quantum-container-tipping.quantum-tip-13-blind",
+    "quantum-container-tipping.quantum-tip-13-hallucinating",
+    "quantum-container-tipping.quantum-tip-29-blind",
+    "quantum-container-tipping.quantum-tip-29-hallucinating",
+    "quantum-container-tipping.quantum-tip-43-blind",
+    "quantum-container-tipping.quantum-tip-43-hallucinating",
+    "quantum-container-tipping.quantum-tip-76-blind",
+    "quantum-container-tipping.quantum-tip-76-hallucinating"
+  ],
+  "requireBranchAssertions": true,
+  "segments": [
+    {
+      "name": "quantum-floor-13",
+      "seed": 13,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0007peaceful sleeping quantum mechanic\r      \u001b\u001b\u001b\u001b\u001b\u001b#wizkill\rm.\u001b        \u001b\u001b\u001b\u001b\u001b\u001bk        \u001b\u001b\u001b\u001b\u001b\u001b#tip\ry\r        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "quantum-bag-13",
+      "seed": 13,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0007peaceful sleeping quantum mechanic\r      \u001b\u001b\u001b\u001b\u001b\u001b#wizkill\rm.\u001b        \u001b\u001b\u001b\u001b\u001b\u001bk        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed sack\r        \u001b\u001b\u001b\u001b\u001b\u001b#tip\ryb        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "quantum-tricks-13",
+      "seed": 13,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0007peaceful sleeping quantum mechanic\r      \u001b\u001b\u001b\u001b\u001b\u001b#wizkill\rm.\u001b        \u001b\u001b\u001b\u001b\u001b\u001bk        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed bag of tricks (0:2)\r        \u001b\u001b\u001b\u001b\u001b\u001b#tip\ryb        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "quantum-floor-43",
+      "seed": 43,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0007peaceful sleeping quantum mechanic\r      \u001b\u001b\u001b\u001b\u001b\u001b#wizkill\rm.\u001b        \u001b\u001b\u001b\u001b\u001b\u001bn        \u001b\u001b\u001b\u001b\u001b\u001b#tip\ry\r        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "quantum-bag-43",
+      "seed": 43,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0007peaceful sleeping quantum mechanic\r      \u001b\u001b\u001b\u001b\u001b\u001b#wizkill\rm.\u001b        \u001b\u001b\u001b\u001b\u001b\u001bn        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed sack\r        \u001b\u001b\u001b\u001b\u001b\u001b#tip\ryb        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "quantum-tricks-43",
+      "seed": 43,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0007peaceful sleeping quantum mechanic\r      \u001b\u001b\u001b\u001b\u001b\u001b#wizkill\rm.\u001b        \u001b\u001b\u001b\u001b\u001b\u001bn        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed bag of tricks (0:2)\r        \u001b\u001b\u001b\u001b\u001b\u001b#tip\ryb        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "quantum-bag-29",
+      "seed": 29,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0007peaceful sleeping quantum mechanic\r      \u001b\u001b\u001b\u001b\u001b\u001b#wizkill\rm.\u001b        \u001b\u001b\u001b\u001b\u001b\u001bu        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed sack\r        \u001b\u001b\u001b\u001b\u001b\u001b#tip\ryb        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "quantum-bag-30",
+      "seed": 30,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0007peaceful sleeping quantum mechanic\r      \u001b\u001b\u001b\u001b\u001b\u001b#wizkill\rm.\u001b        \u001b\u001b\u001b\u001b\u001b\u001bj        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed sack\r        \u001b\u001b\u001b\u001b\u001b\u001b#tip\ryb        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "quantum-bag-61",
+      "seed": 61,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0007peaceful sleeping quantum mechanic\r      \u001b\u001b\u001b\u001b\u001b\u001b#wizkill\rm.\u001b        \u001b\u001b\u001b\u001b\u001b\u001bj        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed sack\r        \u001b\u001b\u001b\u001b\u001b\u001b#tip\ryb        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "quantum-bag-91",
+      "seed": 91,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0007peaceful sleeping quantum mechanic\r      \u001b\u001b\u001b\u001b\u001b\u001b#wizkill\rm.\u001b        \u001b\u001b\u001b\u001b\u001b\u001bb        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed sack\r        \u001b\u001b\u001b\u001b\u001b\u001b#tip\ryb        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "quantum-tip-13-blind",
+      "seed": 13,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0007peaceful sleeping quantum mechanic\r      \u001b\u001b\u001b\u001b\u001b\u001b#wizkill\rm.\u001b        \u001b\u001b\u001b\u001b\u001b\u001bk        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed blindfold\r        \u001b\u001b\u001b\u001b\u001b\u001bab        \u001b\u001b\u001b\u001b\u001b\u001b#tip\ry\r        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "quantum-tip-13-hallucinating",
+      "seed": 13,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0007peaceful sleeping quantum mechanic\r      \u001b\u001b\u001b\u001b\u001b\u001b#wizkill\rm.\u001b        \u001b\u001b\u001b\u001b\u001b\u001bk        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed potion of hallucination\r        \u001b\u001b\u001b\u001b\u001b\u001bqb        \u001b\u001b\u001b\u001b\u001b\u001b#tip\ry\r        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "quantum-tip-29-blind",
+      "seed": 29,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0007peaceful sleeping quantum mechanic\r      \u001b\u001b\u001b\u001b\u001b\u001b#wizkill\rm.\u001b        \u001b\u001b\u001b\u001b\u001b\u001bu        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed blindfold\r        \u001b\u001b\u001b\u001b\u001b\u001bab        \u001b\u001b\u001b\u001b\u001b\u001b#tip\ry\r        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "quantum-tip-29-hallucinating",
+      "seed": 29,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0007peaceful sleeping quantum mechanic\r      \u001b\u001b\u001b\u001b\u001b\u001b#wizkill\rm.\u001b        \u001b\u001b\u001b\u001b\u001b\u001bu        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed potion of hallucination\r        \u001b\u001b\u001b\u001b\u001b\u001bqb        \u001b\u001b\u001b\u001b\u001b\u001b#tip\ry\r        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "quantum-tip-43-blind",
+      "seed": 43,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0007peaceful sleeping quantum mechanic\r      \u001b\u001b\u001b\u001b\u001b\u001b#wizkill\rm.\u001b        \u001b\u001b\u001b\u001b\u001b\u001bn        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed blindfold\r        \u001b\u001b\u001b\u001b\u001b\u001bab        \u001b\u001b\u001b\u001b\u001b\u001b#tip\ry\r        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "quantum-tip-43-hallucinating",
+      "seed": 43,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0007peaceful sleeping quantum mechanic\r      \u001b\u001b\u001b\u001b\u001b\u001b#wizkill\rm.\u001b        \u001b\u001b\u001b\u001b\u001b\u001bn        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed potion of hallucination\r        \u001b\u001b\u001b\u001b\u001b\u001bqb        \u001b\u001b\u001b\u001b\u001b\u001b#tip\ry\r        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "quantum-tip-76-blind",
+      "seed": 76,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0007peaceful sleeping quantum mechanic\r      \u001b\u001b\u001b\u001b\u001b\u001b#wizkill\rm.\u001b        \u001b\u001b\u001b\u001b\u001b\u001bl        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed blindfold\r        \u001b\u001b\u001b\u001b\u001b\u001bab        \u001b\u001b\u001b\u001b\u001b\u001b#tip\ry\r        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "quantum-tip-76-hallucinating",
+      "seed": 76,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0007peaceful sleeping quantum mechanic\r      \u001b\u001b\u001b\u001b\u001b\u001b#wizkill\rm.\u001b        \u001b\u001b\u001b\u001b\u001b\u001bl        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed potion of hallucination\r        \u001b\u001b\u001b\u001b\u001b\u001bqb        \u001b\u001b\u001b\u001b\u001b\u001b#tip\ry\r        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b"
+    }
+  ],
+  "branchAssertions": [
+    {
+      "branch": "quantum-container-tipping.quantum-floor-13",
+      "segment": 0,
+      "screenIncludes": [
+        "Where to tip the contents of",
+        "The housecat inside the box is dead!  An object spills out:"
+      ],
+      "rngIncludes": [
+        "rn2(2)=1 @ observe_quantum_cat(pickup.c:2832)"
+      ]
+    },
+    {
+      "branch": "quantum-container-tipping.quantum-bag-13",
+      "segment": 1,
+      "screenIncludes": [
+        "Where to tip the contents of",
+        "The housecat inside the box is still alive!  The box is now empty."
+      ],
+      "rngIncludes": [
+        "rn2(2)=0 @ observe_quantum_cat(pickup.c:2832)"
+      ]
+    },
+    {
+      "branch": "quantum-container-tipping.quantum-tricks-13",
+      "segment": 2,
+      "screenIncludes": [
+        "Where to tip the contents of"
+      ],
+      "screenExcludes": [
+        "inside the box is"
+      ],
+      "rngIncludes": [
+        "rn2(23)=7 @ bagotricks(makemon.c:2577)"
+      ]
+    },
+    {
+      "branch": "quantum-container-tipping.quantum-floor-43",
+      "segment": 3,
+      "screenIncludes": [
+        "Where to tip the contents of",
+        "The housecat inside the box is still alive!  The box is now empty."
+      ],
+      "rngIncludes": [
+        "rn2(2)=0 @ observe_quantum_cat(pickup.c:2832)"
+      ]
+    },
+    {
+      "branch": "quantum-container-tipping.quantum-bag-43",
+      "segment": 4,
+      "screenIncludes": [
+        "Where to tip the contents of",
+        "The housecat inside the box is still alive!  The box is now empty."
+      ],
+      "rngIncludes": [
+        "rn2(2)=0 @ observe_quantum_cat(pickup.c:2832)"
+      ]
+    },
+    {
+      "branch": "quantum-container-tipping.quantum-tricks-43",
+      "segment": 5,
+      "screenIncludes": [
+        "Where to tip the contents of"
+      ],
+      "screenExcludes": [
+        "inside the box is"
+      ],
+      "rngIncludes": [
+        "rn2(23)=10 @ bagotricks(makemon.c:2577)"
+      ]
+    },
+    {
+      "branch": "quantum-container-tipping.quantum-bag-29",
+      "segment": 6,
+      "screenIncludes": [
+        "Where to tip the contents of",
+        "The housecat inside the box is still alive!  The box is now empty."
+      ],
+      "rngIncludes": [
+        "rn2(2)=0 @ observe_quantum_cat(pickup.c:2832)"
+      ]
+    },
+    {
+      "branch": "quantum-container-tipping.quantum-bag-30",
+      "segment": 7,
+      "screenIncludes": [
+        "Where to tip the contents of",
+        "The housecat inside the box is still alive!  The box is now empty."
+      ],
+      "rngIncludes": [
+        "rn2(2)=0 @ observe_quantum_cat(pickup.c:2832)"
+      ]
+    },
+    {
+      "branch": "quantum-container-tipping.quantum-bag-61",
+      "segment": 8,
+      "screenIncludes": [
+        "Where to tip the contents of",
+        "The housecat inside the box is dead!  An object tumbles into the bag."
+      ],
+      "rngIncludes": [
+        "rn2(2)=1 @ observe_quantum_cat(pickup.c:2832)"
+      ]
+    },
+    {
+      "branch": "quantum-container-tipping.quantum-bag-91",
+      "segment": 9,
+      "screenIncludes": [
+        "Where to tip the contents of",
+        "The housecat inside the box is still alive!  The box is now empty."
+      ],
+      "rngIncludes": [
+        "rn2(2)=0 @ observe_quantum_cat(pickup.c:2832)"
+      ]
+    },
+    {
+      "branch": "quantum-container-tipping.quantum-tip-13-blind",
+      "segment": 10,
+      "screenIncludes": [
+        "Where to tip the contents of",
+        "The housecat inside the box is dead!  An object spills out:"
+      ],
+      "rngIncludes": [
+        "rn2(2)=1 @ observe_quantum_cat(pickup.c:2832)"
+      ]
+    },
+    {
+      "branch": "quantum-container-tipping.quantum-tip-13-hallucinating",
+      "segment": 11,
+      "screenIncludes": [
+        "Where to tip the contents of",
+        "The lhurgoyf inside the box is dead!  An object spills out:"
+      ],
+      "rngIncludes": [
+        "rn2(2)=1 @ observe_quantum_cat(pickup.c:2832)"
+      ]
+    },
+    {
+      "branch": "quantum-container-tipping.quantum-tip-29-blind",
+      "segment": 12,
+      "screenIncludes": [
+        "Where to tip the contents of",
+        "You think something brushed your foot.  The box is now empty."
+      ],
+      "rngIncludes": [
+        "rn2(2)=0 @ observe_quantum_cat(pickup.c:2832)"
+      ]
+    },
+    {
+      "branch": "quantum-container-tipping.quantum-tip-29-hallucinating",
+      "segment": 13,
+      "screenIncludes": [
+        "Where to tip the contents of",
+        "The storm giant inside the box is still alive!  The box is now empty."
+      ],
+      "rngIncludes": [
+        "rn2(2)=0 @ observe_quantum_cat(pickup.c:2832)"
+      ]
+    },
+    {
+      "branch": "quantum-container-tipping.quantum-tip-43-blind",
+      "segment": 14,
+      "screenIncludes": [
+        "Where to tip the contents of",
+        "The housecat inside the box is dead!  An object spills out:"
+      ],
+      "rngIncludes": [
+        "rn2(2)=1 @ observe_quantum_cat(pickup.c:2832)"
+      ]
+    },
+    {
+      "branch": "quantum-container-tipping.quantum-tip-43-hallucinating",
+      "segment": 15,
+      "screenIncludes": [
+        "Where to tip the contents of",
+        "The giant mimic inside the box is dead!  An object spills out:"
+      ],
+      "rngIncludes": [
+        "rn2(2)=1 @ observe_quantum_cat(pickup.c:2832)"
+      ]
+    },
+    {
+      "branch": "quantum-container-tipping.quantum-tip-76-blind",
+      "segment": 16,
+      "screenIncludes": [
+        "Where to tip the contents of",
+        "The housecat inside the box is dead!  An object spills out:"
+      ],
+      "rngIncludes": [
+        "rn2(2)=1 @ observe_quantum_cat(pickup.c:2832)"
+      ]
+    },
+    {
+      "branch": "quantum-container-tipping.quantum-tip-76-hallucinating",
+      "segment": 17,
+      "screenIncludes": [
+        "Where to tip the contents of",
+        "The dingbat inside the box is dead!  An object spills out:"
+      ],
+      "rngIncludes": [
+        "rn2(2)=1 @ observe_quantum_cat(pickup.c:2832)"
+      ]
+    }
+  ]
+}

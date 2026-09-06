@@ -5069,3 +5069,30 @@ JS reaches82and57elapsedmoves. A351request records identical behavior.
 Requested repeat counts are not evidence of elapsed turns. The no-control
 attack cases remove the intrinsic, but wizardmode still offers controlled
 teleportation. They do not establish random uncontrolled teleport coverage.
+
+## Tipping state and native probe validity, 2026-09-06
+
+See container-tipping-audit.md for the 72 new native cases. An explosion
+must leave the unprocessed objects in the source, even after clearing the
+destination pointer. Price suppression must still be decremented before
+breaking the transfer loop. Deselecting the floor menu entry is distinct
+from Escape: zero selected entries still means tip onto the floor.
+
+The all-green screen/RNG corpus hid a supply chest with empty stored weight.
+The state gate exposed it. C's wizweight display verified 670 instead of
+JS's 600, and fill_ordinary_room explicitly updates the weight after adding
+contents. Verify such consistency assertions against C before fixing them;
+C can have bookkeeping quirks too. wizweight is diagnostic only until its
+JS display path is ported.
+
+A trapped box can also be locked; the lock wins. A heavy wished icebox may
+be dropped rather than carried. A floor horn does not pass Is_container.
+Check that native actions reach the claimed branch before promotion. For
+cursed tipping losses, inspect is_boh_item_gone rolls after #tip, because
+opening the bag during setup can independently destroy contents.
+
+The failed armor-shop horn probe exposed a traditional pickup gap before
+tipping. Its original extended segment 33 is retained for the pickup pass.
+Corrected unpaid horn cases use a shop that buys tools and native-observed
+pickup responses. Do not change a failing setup into a passing label and
+then claim it exercised the original behavior.

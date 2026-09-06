@@ -3404,6 +3404,7 @@ async function fill_ordinary_room(croom, bonus_items) {
                     }
                     add_to_container(supply_chest, otmp);
                 }
+                supply_chest.owt = weight(supply_chest);
             }
             skip_chests = true;
         }

@@ -17,15 +17,16 @@ and persistent gameplay state. Continue source review, measured C branches,
 independent oracles, implementation, and regression checks until that goal is
 met. Current corpus success is not the stopping criterion.
 
-The latest pass adds 63 C cases for quantum containers, concealed picks and
-teleport attacks. All 44 public and 498 supplemental fixtures pass, matching
-336,089 screens/cursors and 9,982,087 RNG calls. The C union reaches
-55,375/108,268 direct outcomes and 4,366/5,491 entered records. The assertion
-ledger is 2,331/2,331. A missing corpse timer stop passes native screen/RNG
-comparison but fails the new persistent-state check.
+The latest pass adds 72 C cases for container tipping, including quantum
+boxes, horns, shop billing, cursed losses and explosions. All 44 public and
+502 supplemental fixtures pass, matching 354,203 screens/cursors and
+10,208,249 RNG calls. The C union reaches 55,448/108,268 direct outcomes and
+4,367/5,491 entered records. The assertion ledger is 2,403/2,403. A missing
+supply-chest weight update passes the full screen/RNG corpus but fails the
+new persistent-state check; C's weight display confirms the mismatch.
 
 See [STATUS.md](STATUS.md) for the checkpoint and next action,
-[quantum-containers-audit.md](quantum-containers-audit.md) for the current
+[container-tipping-audit.md](container-tipping-audit.md) for the current
 review and [gameplay-gap-audit.md](gameplay-gap-audit.md) for measurement
 limits. The earlier published held-out result was 78.39%; the local suite
 does not establish a newer held-out score. Tipping, object menus, floor

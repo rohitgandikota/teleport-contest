@@ -68,7 +68,7 @@ import { m_move } from './monmove.js';
 import { setuwep } from './wield.js';
 import { untwoweapon } from './wield.js';
 import { can_twoweapon } from './wield.js';
-import { monkilled, m_next2u } from './mon.js';
+import { monkilled, m_next2u, mon_give_prop } from './mon.js';
 import { angry_guards } from './mon.js';
 import { ghod_hitsu } from './priest.js';
 import { bigmonst } from './mondata.js';
@@ -208,8 +208,10 @@ import { stop_occupation } from './allmain.js';
 import { fall_asleep } from './timeout.js';
 import { drain_en } from './trap.js';
 import { Protection_from_shape_changers } from './youprop.js';
-import { set_ulycn } from './were.js';
+import { set_ulycn, is_were, were_change } from './were.js';
 
+import { night } from './calendar.js';
+import { attrcurse } from './sit.js';
 function note_unported_uhitm(what) {
     (game.unported ||= new Set()).add(`uhitm:${what}`);
 }
@@ -1767,6 +1769,13 @@ export async function damageum(mon, mattk, specialdmg) {
             damage = mhm.damage;
             if (mhm.done)
                 return mhm.hitflags;
+        } else if (mattk[1] === ATTKS.AD_CURS) {
+            const mhm = { damage, hitflags: M_ATTK_MISS, permdmg: 0,
+                          specialdmg, done: false };
+            await mhitm_ad_curs(game.youmonst, mattk, mon, mhm);
+            damage = mhm.damage;
+            if (mhm.done)
+                return mhm.hitflags;
         } else {
             note_unported_uhitm(`damageum:adtyp=${mattk[1]}`);
         }
@@ -3263,6 +3272,88 @@ export async function nohandglow(mon) {
         await Your(`${hands} no longer glow so brightly ${hcolor(NH_RED)}.`);
     }
     game.u.umconf--;
+}
+
+// src/uhitm.c:3042 mhitm_ad_curs()
+export async function mhitm_ad_curs(magr, mattk, mdef, mhm) {
+    const pa = magr.data;
+    const pd = mdef.data;
+
+    if (magr === game.youmonst) {
+        /* uhitm */
+        if (night() && !rn2(10) && !mdef.mcan) {
+            if (pd === game.mons[PMNAMES.PM_CLAY_GOLEM]) {
+                if (!Blind())
+                    await pline(`Some writing vanishes from ${
+                                s_suffix(mon_nam(mdef))} head!`);
+                await xkilled(mdef, XKILL_NOMSG);
+                /* Don't return yet; keep hp<1 and mhm.damage=0 for pet msg */
+            } else {
+                mdef.mcan = 1;
+                await You('chuckle.');
+            }
+        }
+        mhm.damage = 0;
+    } else if (mdef === game.youmonst) {
+        /* mhitu */
+        await hitmsg(magr, mattk, mhm.indx);
+        if (!night() && pa === game.mons[PMNAMES.PM_GREMLIN])
+            return;
+        if (!magr.mcan && !rn2(10)) {
+            if (!Deaf()) {
+                /* Soundeffect(se_laughter, 40); */
+                if (Blind()) {
+                    await You_hear('laughter.');
+                } else {
+                    await pline_mon(magr, `${Monnam(magr)} chuckles.`);
+                }
+            }
+            if (game.u.umonnum === PMNAMES.PM_CLAY_GOLEM) {
+                await pline('Some writing vanishes from your head!');
+                /* KMH -- this is okay with unchanging */
+                await rehumanize();
+                return;
+            }
+            mon_give_prop(magr, await attrcurse());
+        }
+    } else {
+        /* mhitm */
+        if (!night() && (pa === game.mons[PMNAMES.PM_GREMLIN]))
+            return;
+        if (!magr.mcan && !rn2(10)) {
+            mdef.mcan = 1; /* cancelled regardless of lifesave */
+            mdef.mstrategy = (mdef.mstrategy | 0) & ~STRAT_WAITFORU;
+            if (is_were(pd) && pd.mlet !== MONSYMS.S_HUMAN)
+                await were_change(mdef);
+            if (pd === game.mons[PMNAMES.PM_CLAY_GOLEM]) {
+                if (game.vis && canseemon(mdef)) {
+                    await pline(`Some writing vanishes from ${
+                                s_suffix(mon_nam(mdef))} head!`);
+                    await pline_mon(mdef, `${Monnam(mdef)} is destroyed!`);
+                }
+                await mondied(mdef);
+                if (!DEADMONSTER(mdef)) {
+                    mhm.hitflags = M_ATTK_MISS;
+                    mhm.done = true;
+                    return;
+                } else if (mdef.mtame && !game.vis) {
+                    /* You(brief_feeling, "strangely sad") */
+                    await You('have a strangely sad feeling for a moment, then it passes.');
+                }
+                mhm.hitflags = (M_ATTK_DEF_DIED
+                                | (grow_up(magr, mdef) ? 0
+                                   : M_ATTK_AGR_DIED));
+                mhm.done = true;
+                return;
+            }
+            if (!Deaf()) {
+                if (!game.vis)
+                    await You_hear('laughter.');
+                else if (canseemon(magr))
+                    await pline_mon(magr, `${Monnam(magr)} chuckles.`);
+            }
+        }
+    }
 }
 
 // src/uhitm.c:3981 mhitm_ad_phys() — the AD_PHYS arm of mhitm_adtyping.

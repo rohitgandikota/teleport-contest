@@ -46,6 +46,7 @@ import { tty_start_menu, tty_add_menu, tty_end_menu, tty_select_menu,
          ATR_NONE } from './tty/wintty.js';
 import { NO_COLOR } from './terminal.js';
 import { xwaitforspace } from './tty/getline.js';
+import { what_is_a_location } from './pager.js';
 
 const CM = cmap_names;
 
@@ -130,7 +131,20 @@ async function getpos_help(force, goal) {
     if (getpos_getvalid)
         put("Use 'z' or 'Z' to move to valid locations.");
     put("Use '#' to toggle automatic description.");
-    put("Type a '.' when you are at the right place.");
+    /* disgusting hack; the alternate selection characters work for any
+       getpos call, but only matter for dowhatis (and doquickwhatis,
+       also for dotherecmdmenu's simulated mouse) */
+    const doing_what_is = (goal === what_is_a_location);
+    const kbuf = doing_what_is ? "'.' or ',' or ';' or ':'" : "'.'";
+    put(`Type a ${kbuf} when you are at the right place.`);
+    if (doing_what_is) {
+        put("  ':' describe current spot, show 'more info', move to another spot.");
+        put(`  '.' describe current spot,${
+            (game.flags?.help !== false && !force) ? " prompt if 'more info'," : ''
+            } move to another spot;`);
+        put("  ',' describe current spot, move to another spot;");
+        put("  ';' describe current spot, stop looking at things;");
+    }
     if (!force)
         put("Type Space or Escape when you're done.");
     put('');

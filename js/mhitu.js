@@ -20,7 +20,7 @@ import { pline_The, pline_mon, verbalize } from './pline.js';
 import { update_inventory } from './invent.js';
 import { cloak_simple_name, helm_simple_name, Ring_gone, Ring_on,
          stop_donning } from './do_wear.js';
-import { mhitm_ad_poly, mhitm_ad_deth, mhitm_ad_tlpt } from './uhitm.js';
+import { mhitm_ad_poly, mhitm_ad_deth, mhitm_ad_tlpt, mhitm_ad_curs } from './uhitm.js';
 import { monsndx } from './makemon.js';
 import { split_mon } from './potion.js';
 import { Your } from './pline.js';
@@ -1425,6 +1425,8 @@ async function hitmu(mtmp, mattk, indx) {
         } else {
             await mhitm_ad_sedu(mtmp, mattk, game.youmonst, mhm);
         }
+    } else if (mattk[1] === A.AD_CURS) {
+        await mhitm_ad_curs(mtmp, mattk, game.youmonst, mhm);
     } else {
         note_unported_mhitu(`hitmu:adtyp=${mattk[1]}`);
         /* the generic arms still print the plain hit message */

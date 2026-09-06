@@ -147,7 +147,7 @@ import { rnd, rn2 } from './rng.js';
 import { ACCESSIBLE } from './const.js';
 import { morehungry } from './eat.js';
 import { dohelp, dowhatis, doquickwhatis, dowhatdoes } from './pager.js';
-import { dolook, ECMD_TIME, display_inventory } from './invent.js';
+import { dolook, ECMD_TIME, display_pickinv_entries } from './invent.js';
 import { dovspell, docast, known_spell, spe_Fresh, spelleffects } from './spell.js';
 import { dowieldquiver, dowield, doswapweapon, dotwoweapon } from './wield.js';
 import { dozap } from './zap.js';
@@ -1684,7 +1684,7 @@ export async function rhack(key) {
        command. */
     if ((game.domove_attempting & DOMOVE_RUSH)
         && (movemode !== 0
-            || (!isMovementKey(ch) && !'gGmF'.includes(ch) && prefixCommand))) {
+            || (!isMovementKey(ch) && !'gGmF-'.includes(ch) && prefixCommand))) {
         const prefix = game.context.run === 3 ? 'G' : 'g';
         const vertical = ch === '<' || ch === '>';
         game.context.run = 0;
@@ -1699,7 +1699,7 @@ export async function rhack(key) {
        dispatched as its ordinary command. */
     if (game.context.forcefight
         && (movemode !== 0
-            || (!isMovementKey(ch) && !'gGmF'.includes(ch) && prefixCommand))) {
+            || (!isMovementKey(ch) && !'gGmF-'.includes(ch) && prefixCommand))) {
         const vertical = ch === '<' || ch === '>';
         game.context.forcefight = 0;
         game.context.move = 0;
@@ -1712,7 +1712,7 @@ export async function rhack(key) {
        selected nonmovement commands. Reject a known command whose cmdlist
        entry lacks CMD_M_PREFIX instead of dispatching it normally. */
     if (continuedPrefix && game.iflags.menu_requested
-        && !isMovementKey(ch) && !'gGmF'.includes(ch)) {
+        && !isMovementKey(ch) && !'gGmF-'.includes(ch)) {
         if (prefixCommand && !accept_menu_prefix(prefixCommand)) {
             await pline_nohistory(`The ${prefixCommand.ef_txt} command does not accept 'm' prefix.`);
             reset_cmd_vars(true);
@@ -1939,8 +1939,11 @@ export async function rhack(key) {
             game._cmd_prefix_pending = true;
         }
         game.context.move = 0;
-    } else if (ch === 'F') {
+    } else if (ch === 'F' || ch === '-') {
         // src/cmd.c:1622 do_fight — a PREFIX. It sets context.forcefight and
+        // returns WITHOUT reading another key. commands_init() (cmd.c:2772)
+        // also binds '-' to it, in both number_pad modes; the prefix message
+        // still names 'F' because cmd_from_func() skips '-' for !num_pad.
         // returns WITHOUT reading another key; the direction that follows is a
         // normal movement command that attacks instead of moving. Leaving 'F'
         // unhandled therefore did not misalign keys, it displaced the HERO:
@@ -3126,7 +3129,7 @@ async function show_attributes() {
 // and trailing space. seed8000 records the window at column 32 with the cursor
 // at [38,20].
 async function show_inventory() {
-    const items = display_inventory(null, true);
+    const items = display_pickinv_entries(null, true);
     if (!items.length) {
         await pline('Not carrying anything.');
         return;

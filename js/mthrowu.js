@@ -9,12 +9,12 @@ import { sobj_at } from './invent.js';
 import { obfree, weight } from './invent.js';
 import { extract_from_minvent } from './worn.js';
 import { MFLAGS } from './monst_data.js';
-import { ARM_GLOVES } from './const.js';
+import { ARM_GLOVES, PET_MISSILE_RANGE2, M_AP_NOTHING, M_AP_TYPE } from './const.js';
 import { WT_IRON_BALL_INCR } from './const.js';
 import { BRK_MELEE } from './const.js';
 import { BRK_BY_HERO } from './const.js';
 import { W_NONDIGGABLE } from './const.js';
-import { wake_nearto } from './mon.js';
+import { wake_nearto, m_carrying } from './mon.js';
 import { acurrstr } from './attrib.js';
 import { is_flimsy } from './obj.js';
 import { dissolve_bars } from './monmove.js';
@@ -28,7 +28,7 @@ import { rounddiv } from './hack.js';
 import { is_ammo, matching_launcher, ammo_and_launcher } from './wield.js';
 import { multishot_class_bonus } from './dothrow.js';
 import { is_prince, is_lord, is_mplayer, is_elf, is_orc,
-         is_gnome, is_unicorn, nohands } from './mondata.js';
+         is_gnome, is_unicorn, nohands, throws_rocks } from './mondata.js';
 import { OCLASSES, ONAMES } from './objects_data.js';
 import { should_mulch_missile } from './dothrow.js';
 import { delobj, m_at } from './mon.js';
@@ -724,6 +724,47 @@ export async function monshoot(mtmp, otmp, mwep) {
     game.m_shot.s = false;
 }
 
+// src/mthrowu.c:969 thrwmm() — monster throws item at another monster
+export async function thrwmm(mtmp, mtarg) {
+    /* Polearms won't be applied by monsters against other monsters */
+    if (mtmp.weapon_check === NEED_WEAPON || !MON_WEP(mtmp)) {
+        mtmp.weapon_check = NEED_RANGED_WEAPON;
+        /* mon_wield_item resets weapon_check as appropriate */
+        if (await mon_wield_item(mtmp) !== 0)
+            return M_ATTK_MISS;
+    }
+
+    /* Pick a weapon */
+    const otmp = select_rwep(mtmp);
+    if (!otmp)
+        return M_ATTK_MISS;
+    const ispole = is_pole(otmp);
+
+    const x = mtmp.mx;
+    const y = mtmp.my;
+
+    const mwep = MON_WEP(mtmp); /* wielded weapon */
+
+    if (!ispole && m_lined_up(mtarg, mtmp)) {
+        const chance = Math.max(BOLT_LIM - distmin(x, y, mtarg.mx, mtarg.my), 1);
+
+        if (!mtarg.mflee || !rn2(chance)) {
+            if (ammo_and_launcher(otmp, mwep)
+                && dist2(mtmp.mx, mtmp.my, mtarg.mx, mtarg.my)
+                   > PET_MISSILE_RANGE2)
+                return M_ATTK_MISS; /* Out of range */
+            /* Set target monster */
+            game.mtarget = mtarg;
+            game.marcher = mtmp;
+            await monshoot(mtmp, otmp, mwep); /* multishot shooting or throwing */
+            game.marcher = game.mtarget = null;
+            nomul(0);
+            return M_ATTK_HIT;
+        }
+    }
+    return M_ATTK_MISS;
+}
+
 // src/mthrowu.c:1016 spitmm() -- a monster spits venom at another monster.
 // Venom is a real temporary object, so even a failed spit spends the
 // next_ident() draw in mksobj() before rolling its chance to fire.
@@ -1058,6 +1099,27 @@ export function linedup_callback(ax, ay, bx, by, fnc) {
         } while (bx !== ax || by !== ay);
     }
     return false;
+}
+
+// src/mthrowu.c:1376 m_lined_up() — is mtmp in position to use a ranged
+// attack on mtarg?  (lined_up(), the hero-target form, is in js/monmove.js.)
+export function m_lined_up(mtarg, mtmp) {
+    const utarget = (mtarg === game.youmonst);
+    const tx = utarget ? mtmp.mux : mtarg.mx;
+    const ty = utarget ? mtmp.muy : mtarg.my;
+    const ignore_boulders = utarget && (throws_rocks(game.mons[mtmp.mnum])
+                                        || m_carrying(mtmp, ONAMES.WAN_STRIKING));
+
+    /* hero concealment usually trumps monst awareness of being lined up */
+    if (utarget && game.u.umonnum !== game.u.umonster && rn2(25)
+        && (game.u.uundetected
+            || (M_AP_TYPE(game.youmonst) !== M_AP_NOTHING
+                && M_AP_TYPE(game.youmonst) !== M_AP_MONSTER)))
+        return false;
+
+    /* [no callers care about the 1 vs 2 situation any more] */
+    return linedup(tx, ty, mtmp.mx, mtmp.my,
+                   utarget ? (ignore_boulders ? 1 : 2) : 0);
 }
 
 // src/mthrowu.c:1417 hit_bars(); objp is a {obj} box

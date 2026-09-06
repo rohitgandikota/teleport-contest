@@ -728,11 +728,13 @@ async function really_done(how) {
         await tty_display_nhwindow(endwin, true);
     }
     if (!game.done_stopprint) {
-        /* the text window's --More-- accepts only space/return/ESC */
+        /* the text window's --More-- accepts only space/return/ESC;
+           wintty.c process_text_window(): ESC at a page's --More-- sets
+           WIN_CANCEL and stops paging instead of showing the next page */
         const { xwaitforspace } = await import('./tty/getline.js');
         const { tty_next_page } = await import('./tty/wintty.js');
         await xwaitforspace(' ');
-        while (tty_next_page(endwin))
+        while (game.morc !== '\x1b' && tty_next_page(endwin))
             await xwaitforspace(' ');
     }
     tty_destroy_nhwindow(endwin);
@@ -836,7 +838,7 @@ async function disclose(how, taken) {
             : 'Do you want your possessions identified?';
         c = ask ? await tty_yn_function(qbuf, 'ynq', defquery) : defquery;
         if (c === 'y') {
-            const { display_inventory } = await import('./invent.js');
+            const { display_pickinv_entries } = await import('./invent.js');
             const { tty_start_menu, tty_add_menu, tty_end_menu,
                     tty_next_page } = await import('./tty/wintty.js');
             const { MENU_BEHAVE_STANDARD, MENU_ITEMFLAGS_NONE } =
@@ -846,7 +848,7 @@ async function disclose(how, taken) {
             const { docrt } = await import('./display.js');
             const win = tty_create_nhwindow(NHW_MENU);
             tty_start_menu(win, MENU_BEHAVE_STANDARD);
-            for (const item of display_inventory()) {
+            for (const item of display_pickinv_entries()) {
                 tty_add_menu(win, item.glyphinfo ?? null,
                              item.heading ? 0 : 1,
                              item.invlet || 0, 0, 0, NO_COLOR, item.str,

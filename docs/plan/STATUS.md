@@ -68,8 +68,29 @@ cannot see the hero drifts silently (no RNG) before a track roll differs;
 the hero-track code and mfndpos match the C, so the cause is upstream
 (unseen monster movement) and needs the C stream walked back.
 
-Next: keep recording long batches with new seeds (`--seed 14`, mix
-`--debug`/`--normal`), fix what diverges, then return to the note_unported
+Fifth round, `--seed 14` (9 failures in 40, 8 fixed): the farlook `i`
+arm used a JS-only inventory helper that ran docrt()+flush after the menu,
+painting the status rows C leaves blank under the data.base overlay; it is
+now C's display_inventory() wrapper (cmdq check) over display_pickinv()
+with want_reply. '-' is the fight prefix in both number_pad modes. doread's
+non-scroll arms (shirts, apron, dunce cap, credit card, grease, marker,
+coins, Orb of Fate, candy bar) are ported; the Hawaiian design and eroded
+shirt text need ubirthday and stay recorded. mhitm_ad_curs with its three
+dispatch sites. flip_level flips rolling-boulder launch points and pit
+conjoined bits (a flipped level's trap launched nothing, silently, until
+C's boulder hit monsters). launch_obj prints the LAUNCH_UNSEEN roll
+messages. newsym's hero-square memory keeps a seen trap (blind hero on a
+magic trap). ESC at the tombstone --More-- cancels the remaining pages.
+Pets shoot at lined-up monsters: thrwmm()/m_lined_up() and the AT_WEAP
+ranged arm of mattackm. doengrave() is the full C shape (ctx_init,
+sfx_item_WAN, sfx_item, ctx_verb, engrave occupation, blind_writing,
+wand_explode exported); any non-wand stylus used to eat a turn silently.
+Throwing calls u_wipe_engr(2) and the bare-handed cockatrice arm. Open:
+s14-23 (priest, centaur appr differs in m_move with no RNG difference;
+same class as s13-31, needs the recorder instrumented for positions).
+
+Next: record `--seed 15` (mix `--debug`/`--normal`), fix what diverges,
+then return to the note_unported
 list (hack.js 19, spell.js 20, shk.js 19). tools/jsplay.mjs has a new
 `--aeval "<await expr>"` flag with the hack.js namespace as `h` for state
 probes. The census script is `tally.sh` in the scratchpad (diverge.mjs

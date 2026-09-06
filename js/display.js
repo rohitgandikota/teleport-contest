@@ -1269,11 +1269,20 @@ export function newsym(x, y) {
            include/display.h:246 maybe_display_usteed() — while riding, the
            hero's square shows the STEED's glyph, not '@'. */
         const under = covers_objects(x, y) ? null : vobj_at(x, y);
-        /* src/display.c:422 map_location(): objects, then the engraving,
-           then the background */
+        /* src/display.c:455 _map_location(): objects, then a seen trap,
+           then the engraving, then the background. The trap arm matters
+           here when the hero is blind on a trap just triggered (seetrap()
+           ran before the blindness): feel_location() remembers '^', which
+           is what the square shows once the hero steps off it. */
+        const trapHere = !under ? t_at(x, y) : null;
+        const trapg = (trapHere && trapHere.tseen && !covers_traps(x, y))
+            ? trap_glyph(trapHere) : null;
         const mapped = under ? mapped_object_glyphs(under, x, y) : null;
         const tg = mapped?.shown
-                   ?? (engraving_glyph(loc, x, y) ?? terrain_glyph(loc, x, y));
+                   ?? (trapg ? { ...trapg,
+                                 glyph: { kind: 'cmap', cmap: trapg.cmap } }
+                             : (engraving_glyph(loc, x, y)
+                                ?? terrain_glyph(loc, x, y)));
         const memg = mapped?.remembered ?? tg;
         if (canspotself())
             display_self(); /* the steed, the disguise, or the hero */

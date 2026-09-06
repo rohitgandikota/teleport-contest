@@ -1221,7 +1221,7 @@ export async function do_look(mode) {
         cc.y = game.u.uy;
         break;
     case 'i': {
-        const invlet = await display_inventory_pickone();
+        const invlet = await display_inventory(null, true);
         if (!invlet || invlet === '\x1b')
             return ECMD_OK;
         let os = '';
@@ -1325,35 +1325,6 @@ export async function dowhatis() {
 }
 export async function doquickwhatis() {
     return await do_look(1);
-}
-
-/* display_inventory((char *)0, TRUE) — the PICK_ONE inventory browse the
-   'i' arm of do_look uses. Reuses invent.js's menu-entry builder. */
-async function display_inventory_pickone() {
-    const entries = display_inventory(null, true);
-    if (!entries.length) {
-        await pline('Not carrying anything.');
-        return 0;
-    }
-    const win = tty_create_nhwindow(NHW_MENU);
-    tty_start_menu(win, MENU_BEHAVE_STANDARD);
-    for (const e of entries) {
-        if (e.heading)
-            tty_add_menu(win, null, 0, 0, 0, e.attr, NO_COLOR, e.str,
-                         MENU_ITEMFLAGS_NONE);
-        else
-            tty_add_menu(win, e.glyphinfo, e.invlet, e.invlet, 0,
-                         ATR_NONE, NO_COLOR,
-                         e.str, MENU_ITEMFLAGS_NONE);
-    }
-    tty_end_menu(win, null);
-    const picks = await tty_select_menu(win, 1 /* PICK_ONE */);
-    tty_destroy_nhwindow(win);
-    await docrt();
-    /* the caller's checkfile window draws straight over this screen, so the
-       map must be repainted into the grid NOW, not at the next boundary */
-    await flush_screen(0);
-    return picks.length ? picks[0] : 0;
 }
 
 // src/pager.c:1955 look_region_nearby()

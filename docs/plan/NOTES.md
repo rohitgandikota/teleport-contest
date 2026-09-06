@@ -5467,3 +5467,98 @@ mfndpos filters were compared line by line and match. The drift is in a
 deterministic m_move decision for a monster that cannot see the hero; the
 C recording cannot show the position, so the next step is instrumenting
 the recorder (print monster positions per turn) for this seed.
+
+## A JS-only helper around a menu repaints what C leaves blank
+
+The farlook `i` arm had its own `display_inventory_pickone()` that ran
+docrt() plus flush_screen() after tty_select_menu(). In C the path is
+display_inventory() -> display_pickinv() -> select_menu(), and windows.c
+select_menu() runs with bot_disabled set, so erase_menu_or_text's docrt()
+redraws the map but not the status rows; the data.base window then
+overlays a screen whose rows 22-23 are blank until the next flush. Any
+extra redraw a port helper adds after a menu is visible. display_inventory
+is now the C wrapper (cmdq_pop check, then display_pickinv with
+want_reply); the entry builder is display_pickinv_entries().
+
+## docrt()'s trailing flush is load-bearing
+
+Trying to fix the case above by removing display.js docrt()'s
+flush_screen(0) dropped the public score from 44 to 40. Many port call
+sites rely on that flush; when a status repaint looks wrong, look for the
+caller that flushes, not for docrt().
+
+## '-' is the fight prefix in both number_pad modes
+
+cmd.c:2772 commands_init() binds '-' to "fight" unconditionally;
+reset_commands() never rebinds it. Ours printed "Unknown command '-'" and
+then treated the next key as a normal command. The prefix validators
+(g/G/F/m) must also count '-' as another prefix key. The refusal message
+still names 'F' because cmd_from_func() skips '-' for !num_pad.
+
+## doread's non-scroll arms
+
+read.c:375-560: T-shirt and apron text, Hawaiian shirt design, dunce cap
+and cornuthaum (tourists only, o_id % 3), credit card (message table plus
+the number formula on o_id), can of grease, magic marker (red_mons[]),
+coins, the Orb of Fate signature, candy bar wrapper, then "silly thing".
+Ours said "That is a silly thing to read." for all of them, which cost a
+whole turn of monster movement relative to C's --More-- flow. Two pieces
+need ubirthday (NOTES "ubirthday"): hawaiian_motif/design hash o_id with
+it, and erode_obj_text seeds wipeout_text with it for eroded shirts; both
+are recorded as unported, everything else is ported.
+
+## mhitm_ad_curs is a draw on every landed AD_CURS hit
+
+uhitm.c:3042: the mhitu arm rolls rn2(10) after hitmsg() (unless a gremlin
+by day), then attrcurse() and mon_give_prop(); the mhitm arm cancels the
+defender, changes were form and destroys clay golems; the uhitm arm needs
+night(). All three dispatch chains (mhitm.js mdamagem, mhitu.js hitmu,
+uhitm.js damageum) fell to their unported default and skipped the roll.
+
+## flip_level must flip rolling-boulder launch points
+
+sp_lev.c:590 flip_level() moves ttmp->launch and launch2 for
+ROLLING_BOULDER_TRAP and transposes pit conjoined bits with
+flip_encoded_dir_bits(); ours flipped only tx/ty. On a flipped level the
+trap's launch square held no boulder, so launch_obj() returned 0 with no
+message and no draws, while C's boulder rolled and hit monsters (ohitmon
+rnd(20) per victim). The census caught it deep in Gehennom (Dlvl 40).
+
+## launch_obj's LAUNCH_UNSEEN arm prints
+
+trap.c:3318: for a boulder, "You see a boulder start to roll." when the
+launch square is in view, "You hear someone bowling." when hallucinating,
+else "You hear rumbling nearby." (distu <= 16) or "in the distance."
+Ours consumed the flag as animation-only.
+
+## Hero-square memory follows _map_location order
+
+display.c _map_location() maps object, then a seen trap, then engraving,
+then background. newsym's hero arm skipped the trap layer, so a hero
+blinded by the magic trap under them remembered floor; C remembers '^'
+(seetrap() ran before the flash) and shows it once the hero steps off.
+
+## ESC at the tombstone --More-- cancels the remaining pages
+
+wintty.c process_text_window(): ESC at a page's --More-- sets WIN_CANCEL
+and stops. end.js paged on regardless, showing an empty second page with a
+--More-- where C had already printed the wizard-mode score notice.
+
+## Pets shoot at lined-up monsters
+
+dogmove.c pet_ranged_attk() -> mattackm() -> AT_WEAP with distmin > 1 ->
+thrwmm() (mthrowu.c:969) -> monshoot() with gm.mtarget set. mattackm's
+ranged arm was a note_unported placeholder; thrwmm() and m_lined_up() are
+now in mthrowu.js (lined_up(), the hero-target form, stays in monmove.js).
+
+## doengrave is the C shape
+
+engrave.c:545-1498: doengrave_ctx_init, doengrave_sfx_item_WAN,
+doengrave_sfx_item, doengrave_ctx_verb, doengrave, engrave (occupation with
+stylus dulling, marker ink, truncation and finish messages), blind_writing
+and blengr(). The old compressed doengrave accepted fingers and the fire
+and digging wands only; every other stylus returned ECMD_TIME with no
+message, so a quarterstaff "write" spent a turn and the prompt never came.
+wand_explode (read.js) and the towel helpers (apply.js) are exported for
+it. throw_obj's u_wipe_engr(2) and its bare-handed cockatrice arm were
+placeholders too.

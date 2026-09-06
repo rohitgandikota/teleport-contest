@@ -12,9 +12,63 @@ Continue the authorized work; do not mark it complete or recreate it.
 Current-corpus success is not the stopping criterion. Track unreviewed,
 untested, missing, and unreachable source paths explicitly.
 
+### Active checkpoint: casting preconditions and forgotten spells
+
+Work is in .cache/spell-memory and is ready to commit. The final full
+sweep passes all 531 fixtures, 44 public plus 487 supplemental: 249,251
+screens/cursors and 9,273,681 RNG. The 21 prior public animation misses
+remain. regression-final.log and totals.json are complete. Supplemental
+matches 237,846 screens/cursors, 8,480,843 RNG and 21,679 animations.
+All jobs are complete and exits collected, including the negative state's
+expected exit one. No sweep is running. The final state gate passes.
+
+Four permanent recipes add 72 C cases, 22,545 screens/cursors and 183,171
+RNG: spell-casting-preconditions (30), spell-forgetting (18),
+spell-memory-selection (10), spell-identification (14). All four native
+re-recordings are exact, with assertions/integrity checked separately.
+The ledger is 2,065/2,065 (99 covered, seven partial categories).
+All ten backfire values are reached: 20/20 direct outcomes. The union is
+54,941/108,268 direct outcomes and 4,356/5,491 entered records, adding
+166 outcomes and eight entered records. remaining.json has exact gaps.
+
+Full rejectcasting, getspell, docast, spell_backfire and spelleffects_check
+control flow is ported. can_chant lives in mondata; freehand lives in
+engrave, shared by all current callers. Timer setters preserve permanent
+bits. seffect_identify distinguishes scrolls/spells and reports empty
+inventory. menu_identify is connected for nontraditional inventory menus,
+with SIGNAL_NOMENU/ESCAPE in query_objlist. Its normal-map synchronization
+uses flush_screen; broader tty_wait_synch still needs review.
+identify_pack's traditional ggetobj arm is still explicitly absent.
+rhack clears cancelled queues and propagates docast failures. No frozen or
+C-recorder edits. Twelve runtime modules changed. Full details and limits:
+spell-memory-audit.md.
+
+The state gate replays all 72 cases, checks 17 backfires before energy loss
+and 27 amnesia selections, plus source controls for timers, memory/energy/
+hunger bounds, hands and queue types. Its first version incorrectly tried
+to observe rnd through the rn2-only probe; it now observes the energy write.
+Removing additive confusion fails native output on 98 screens and 16,300
+positional RNG entries, and the state gate reports 6 rather than 36 turns.
+The exact 5f71c712 baseline across all 12 old modules fails 3/4 new fixtures:
+2,225 screens, 53 cursors and 108,754 positional RNG entries. Selection
+already worked and now has execution evidence.
+
+Fuzz is 101/102 with the known fixed-date miss and all RNG matching. All
+48 hang checks, 80 role controls, 16 tool tests, source audit (0/268),
+the new state gate and 14 related gates pass. related-gates.log initially
+has wizard-create exit one, reproduced on the old checkpoint. Its test
+compared raw m_ap_type with M_AP_OBJECT; C's M_AP_TYPE masks M_AP_F_DKNOWN.
+The existing native coin-pile recording verifies the corrected assertion.
+wizard-create-final-state.log passes; no mimic runtime changed.
+
+Next immediate action: commit this checkpoint locally, then continue into
+ggetobj/askchain without stopping. The full C ggetobj
+body at invent.c:2202..2370 has been read; askchain has not. Publishing
+remains blocked on the prior unanswered authorization question. Do not push.
+
 ### Current checkpoint: resistance and protective armor
 
-The final runtime is verified and ready for a local commit. Work is in
+The final runtime is committed locally as 5f71c712. Work is in
 .cache/resist-meals. All 527 fixtures pass in regression-second.log:
 44 public plus 483 supplemental, 226,706 screens/cursors and 9,090,510 RNG.
 Public keeps its 21 prior animation misses (1,462/1,483); supplemental matches
@@ -75,7 +129,7 @@ meal-second's w/x selected nothing and earns no branch credit. Yellow dragon
 corpses remain on the floor; carried acid controls use acid blobs. Natural
 resistance probes in initial are valid. All raw probes remain in the cache.
 
-Next: commit the verified pass locally, then finish casting preconditions,
+Next: finish casting preconditions,
 forgotten-spell effects and the remaining timeout/inventory/monster/Lua source
 paths. Full spelleffects_check, more_experienced (overflow/percentage status),
 getobj, wiz_intrinsic, nh_timeout and broader armor handlers remain partial.

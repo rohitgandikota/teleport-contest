@@ -13,6 +13,7 @@ import { CONTAINED_SYM } from './const.js';
 import { OBJ_MINVENT, OBJ_FLOOR } from './const.js';
 import { AUTOSELECT_SINGLE } from './const.js';
 import { USE_INVLET } from './const.js';
+import { SIGNAL_NOMENU, SIGNAL_ESCAPE } from './const.js';
 import { INCLUDE_HERO } from './const.js';
 import { MAY_HIT, MAY_DESTROY } from './const.js';
 import { scatter } from './explode.js';
@@ -79,7 +80,7 @@ import { is_rider } from './makemon.js';
 import { body_part } from './polyself.js';
 import { tty_yn_function } from './tty/topl.js';
 import { inv_cnt } from './hack.js';
-import { freehand } from './wield.js';
+import { freehand } from './engrave.js';
 
 
 
@@ -441,7 +442,7 @@ export async function query_objlist(qstr,   /* query string */
     }
 
     if (n === 0) /* nothing to pick here */
-        return [];
+        return (qflags & SIGNAL_NOMENU) ? -1 : [];
 
     if (n === 1 && (qflags & AUTOSELECT_SINGLE)) {
         const picks = [last];
@@ -519,6 +520,9 @@ export async function query_objlist(qstr,   /* query string */
     const ids = await tty_select_menu(win, how);
     tty_destroy_nhwindow(win);
     await docrt();
+
+    if (ids.cancelled && (qflags & SIGNAL_ESCAPE))
+        return -2;
 
     const picks = [];
     const counts = new Map();

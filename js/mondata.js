@@ -642,6 +642,17 @@ export function can_blow(mtmp) {
     return true;
 }
 
+// src/mondata.c:580 can_chant()
+export function can_chant(mtmp) {
+    if ((mtmp === game.youmonst
+         && (game.u.intrinsic?.HStrangled || game.u.uprops?.STRANGLED))
+        || is_silent(mtmp.data) || !has_head(mtmp.data)
+        || mtmp.data.msound === MSOUND.MS_BUZZ
+        || mtmp.data.msound === MSOUND.MS_BURBLE)
+        return false;
+    return true;
+}
+
 // include/mondata.h:59 flaming() — an identity test against four specific
 // permonst entries, not a flag test.
 export const flaming = (d) =>

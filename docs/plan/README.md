@@ -17,24 +17,26 @@ and persistent gameplay state. Continue source review, measured C branches,
 independent oracles, implementation, and regression checks until that goal is
 met. Current corpus success is not the stopping criterion.
 
-The latest verified pass adds 56 C cases for dangerous meals, protective
-armor loss and secondary armor effects. All 44 public and 483 supplemental
-fixtures pass. The C union has 54,775/108,268 direct outcomes and
-4,348/5,491 entered function records. The assertion ledger is 1,993/1,993.
-Disabling meal protection now fails native visible tests and state checks.
+The latest pass adds 72 C cases for casting preconditions, spell memory,
+amnesia selection and identification. All 44 public and 487 supplemental
+fixtures pass. The C union has 54,941/108,268 direct outcomes and
+4,356/5,491 entered function records. The assertion ledger is 2,065/2,065.
+Every backfire switch value is reached, covering 20/20 direct outcomes.
+Removing additive confusion fails both native visible tests and state checks.
 The published held-out result recorded during the earlier audit is 78.39%,
 distinct from the local result.
 
 See [STATUS.md](STATUS.md) for checkpoint and next-action details,
-[resistance-armor-audit.md](resistance-armor-audit.md) for the current review, and
+[spell-memory-audit.md](spell-memory-audit.md) for the current review, and
 [gameplay-gap-audit.md](gameplay-gap-audit.md) for measurement limits.
 Shop billing and used-up inventory are pushed as `9ceac165`; their review is
 [shop-billing-copy-audit.md](shop-billing-copy-audit.md). The
 [compiled constant audit](c-constant-audit.md) compares 1,666 values with zero
 different values and one reviewed signed-mask representation. The shared
 creation tail, theft body and monster acquisition are verified on their
-expanded corpora. The next source pass completes casting preconditions and forgotten-spell
-effects, then continues the remaining timeout, inventory, monster and Lua paths.
+expanded corpora. The next source pass ports the traditional inventory
+selection chain, ggetobj and askchain, then continues the remaining spell
+effects, timeout, inventory, monster and Lua paths.
 The full-port goal remains active.
 
 ## Previous focus, 2026-09-03

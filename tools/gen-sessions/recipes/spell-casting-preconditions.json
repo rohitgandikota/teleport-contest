@@ -1,0 +1,476 @@
+{
+  "name": "spell-casting-preconditions",
+  "description": "Casting rejection, speech and hand constraints, overload, repeat queues and Amulet energy boundaries.",
+  "coverage": [
+    "mode.debug",
+    "object.spellbooks-spells",
+    "ui.menus",
+    "survival.timed-status"
+  ],
+  "branches": [
+    "spell-casting-preconditions.known-control",
+    "spell-casting-preconditions.no-spells",
+    "spell-casting-preconditions.stunned",
+    "spell-casting-preconditions.form-giant-ant",
+    "spell-casting-preconditions.form-acid-blob",
+    "spell-casting-preconditions.form-green-slime",
+    "spell-casting-preconditions.form-ettin",
+    "spell-casting-preconditions.form-giant-eel",
+    "spell-casting-preconditions.welded-two-hands",
+    "spell-casting-preconditions.welded-one-hand",
+    "spell-casting-preconditions.welded-dagger-shield",
+    "spell-casting-preconditions.welded-quarterstaff",
+    "spell-casting-preconditions.capacity",
+    "spell-casting-preconditions.strangled",
+    "spell-casting-preconditions.repeat",
+    "spell-casting-preconditions.traditional-retry",
+    "spell-casting-preconditions.traditional-limit",
+    "spell-casting-preconditions.traditional-menu",
+    "spell-casting-preconditions.repeat-cast",
+    "spell-casting-preconditions.repeat-cast-traditional",
+    "spell-casting-preconditions.repeat-cancelled",
+    "spell-casting-preconditions.repeat-count-cancelled",
+    "spell-casting-preconditions.repeat-cast-cancelled",
+    "spell-casting-preconditions.confused-cast",
+    "spell-casting-preconditions.cast-killer-bee",
+    "spell-casting-preconditions.cast-wumpus",
+    "spell-casting-preconditions.amulet-high-energy",
+    "spell-casting-preconditions.low-energy-cleared",
+    "spell-casting-preconditions.amulet-low-energy-cleared",
+    "spell-casting-preconditions.amulet-low-cleared-33"
+  ],
+  "requireBranchAssertions": true,
+  "segments": [
+    {
+      "name": "known-control",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017blessed spellbook of healing\rrb     \u001b\u001b\u001b\u001b\u001b\u001bZa.     \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "no-spells",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001bZ     \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "stunned",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017blessed spellbook of healing\rrb     \u001b\u001b\u001b\u001b\u001b\u001b#wizintrinsic\r30f\r     \u001b\u001b\u001b\u001b\u001b\u001bZ     \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "form-giant-ant",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017blessed spellbook of healing\rrb     \u001b\u001b\u001b\u001b\u001b\u001b#polyself\rgiant ant\r     \u001b\u001b\u001b\u001b\u001b\u001bZa.     \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "form-acid-blob",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017blessed spellbook of healing\rrb     \u001b\u001b\u001b\u001b\u001b\u001b#polyself\racid blob\r     \u001b\u001b\u001b\u001b\u001b\u001bZa.     \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "form-green-slime",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017blessed spellbook of healing\rrb     \u001b\u001b\u001b\u001b\u001b\u001b#polyself\rgreen slime\r     \u001b\u001b\u001b\u001b\u001b\u001bZa.     \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "form-ettin",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017blessed spellbook of healing\rrb     \u001b\u001b\u001b\u001b\u001b\u001b#polyself\rettin\r     \u001b\u001b\u001b\u001b\u001b\u001bZa.     \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "form-giant-eel",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017blessed spellbook of healing\rrb     \u001b\u001b\u001b\u001b\u001b\u001b#polyself\rgiant eel\r     \u001b\u001b\u001b\u001b\u001b\u001bZa.     \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "welded-two-hands",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017blessed spellbook of healing\rrb     \u001b\u001b\u001b\u001b\u001b\u001b\u0017cursed two-handed sword\rwc     \u001b\u001b\u001b\u001b\u001b\u001bZ     \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "welded-one-hand",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017blessed spellbook of healing\rrb     \u001b\u001b\u001b\u001b\u001b\u001b\u0017cursed dagger\rwc     \u001b\u001b\u001b\u001b\u001b\u001bZa.     \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "welded-dagger-shield",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017blessed spellbook of healing\rrb     \u001b\u001b\u001b\u001b\u001b\u001b\u0017cursed small shield\rWc     \u001b\u001b\u001b\u001b\u001b\u001b\u0017cursed dagger\rwd     \u001b\u001b\u001b\u001b\u001b\u001bZ     \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "welded-quarterstaff",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017blessed spellbook of healing\rrb     \u001b\u001b\u001b\u001b\u001b\u001b\u0017cursed quarterstaff\rwc     \u001b\u001b\u001b\u001b\u001b\u001bZa.     \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "capacity",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017blessed spellbook of healing\rrb     \u001b\u001b\u001b\u001b\u001b\u001b\u001710 cursed loadstones\r     \u001b\u001b\u001b\u001b\u001b\u001bZa     \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "strangled",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017blessed spellbook of healing\rrb     \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed amulet of strangulation\rPc     \u001b\u001b\u001b\u001b\u001b\u001bZ\u001b\u001b\u001b\u001b\u001b\u001bRc     \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "repeat",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017blessed spellbook of healing\rrb     \u001b\u001b\u001b\u001b\u001b\u001bZa.     \u001b\u001b\u001b\u001b\u001b\u001b\u0001     \u001b\u001b\u001b\u001b\u001b\u001b\u0001     \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "traditional-retry",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017blessed spellbook of healing\rrb     \u001b\u001b\u001b\u001b\u001b\u001bZz a.     \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "traditional-limit",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017blessed spellbook of healing\rrb     \u001b\u001b\u001b\u001b\u001b\u001bZz z z z z z z z z z      \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "traditional-menu",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017blessed spellbook of healing\rrb     \u001b\u001b\u001b\u001b\u001b\u001bZ?a.     \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "repeat-cast",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017blessed spellbook of healing\rrb     \u001b\u001b\u001b\u001b\u001b\u001bZa.\u0001\u0001     \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "repeat-cast-traditional",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017blessed spellbook of healing\rrb     \u001b\u001b\u001b\u001b\u001b\u001bZa.\u0001\u0001     \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "repeat-cancelled",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017blessed spellbook of healing\rrb     \u001b\u001b\u001b\u001b\u001b\u001bZa.\u001b\u0001\u0001     \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "repeat-count-cancelled",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017blessed spellbook of healing\rrb     \u001b\u001b\u001b\u001b\u001b\u001bZa.12\u001b\u0001     \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "repeat-cast-cancelled",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017blessed spellbook of healing\rrb     \u001b\u001b\u001b\u001b\u001b\u001bZa.Z\u001b\u0001     \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "confused-cast",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017blessed spellbook of healing\rrb     \u001b\u001b\u001b\u001b\u001b\u001b#wizintrinsic\r30g\r     \u001b\u001b\u001b\u001b\u001b\u001bZa     \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "cast-killer-bee",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017blessed spellbook of healing\rrb     \u001b\u001b\u001b\u001b\u001b\u001b#polyself\rkiller bee\r     \u001b\u001b\u001b\u001b\u001b\u001bZ     \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "cast-wumpus",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017blessed spellbook of healing\rrb     \u001b\u001b\u001b\u001b\u001b\u001b#polyself\rwumpus\r     \u001b\u001b\u001b\u001b\u001b\u001bZ     \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "amulet-high-energy",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017blessed spellbook of healing\rrb     \u001b\u001b\u001b\u001b\u001b\u001b\u0017Amulet of Yendor\r     \u001b\u001b\u001b\u001b\u001b\u001bZa.     \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "low-energy-cleared",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\n",
+      "moves": " \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017blessed spellbook of healing\rrb     \u001b\u001b\u001b\u001b\u001b\u001bZa.     \u001b\u001b\u001b\u001b\u001b\u001bZa.     \u001b\u001b\u001b\u001b\u001b\u001bZa.     \u001b\u001b\u001b\u001b\u001b\u001bZa.     \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "amulet-low-energy-cleared",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\n",
+      "moves": " \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017blessed spellbook of healing\rrb     \u001b\u001b\u001b\u001b\u001b\u001b\u0017Amulet of Yendor\r     \u001b\u001b\u001b\u001b\u001b\u001bZa.     \u001b\u001b\u001b\u001b\u001b\u001bZa.     \u001b\u001b\u001b\u001b\u001b\u001bZa.     \u001b\u001b\u001b\u001b\u001b\u001bZa.     \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "amulet-low-cleared-33",
+      "seed": 33,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\n",
+      "moves": " \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017blessed spellbook of healing\rrb     \u001b\u001b\u001b\u001b\u001b\u001b\u0017Amulet of Yendor\r     \u001b\u001b\u001b\u001b\u001b\u001bZa.     \u001b\u001b\u001b\u001b\u001b\u001bZa.     \u001b\u001b\u001b\u001b\u001b\u001bZa.     \u001b\u001b\u001b\u001b\u001b\u001bZa.     \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    }
+  ],
+  "branchAssertions": [
+    {
+      "branch": "spell-casting-preconditions.known-control",
+      "segment": 0,
+      "screenIncludes": [
+        "You feel better."
+      ]
+    },
+    {
+      "branch": "spell-casting-preconditions.no-spells",
+      "segment": 1,
+      "screenIncludes": [
+        "You don't know any spells right now."
+      ]
+    },
+    {
+      "branch": "spell-casting-preconditions.stunned",
+      "segment": 2,
+      "screenIncludes": [
+        "You are too impaired to cast a spell."
+      ]
+    },
+    {
+      "branch": "spell-casting-preconditions.form-giant-ant",
+      "segment": 3,
+      "screenIncludes": [
+        "You are unable to chant the incantation."
+      ]
+    },
+    {
+      "branch": "spell-casting-preconditions.form-acid-blob",
+      "segment": 4,
+      "screenIncludes": [
+        "You are unable to chant the incantation."
+      ]
+    },
+    {
+      "branch": "spell-casting-preconditions.form-green-slime",
+      "segment": 5,
+      "screenIncludes": [
+        "You are unable to chant the incantation."
+      ]
+    },
+    {
+      "branch": "spell-casting-preconditions.form-ettin",
+      "segment": 6,
+      "screenIncludes": [
+        "You feel better."
+      ]
+    },
+    {
+      "branch": "spell-casting-preconditions.form-giant-eel",
+      "segment": 7,
+      "screenIncludes": [
+        "You are unable to chant the incantation."
+      ]
+    },
+    {
+      "branch": "spell-casting-preconditions.welded-two-hands",
+      "segment": 8,
+      "screenIncludes": [
+        "Your arms are not free to cast!"
+      ]
+    },
+    {
+      "branch": "spell-casting-preconditions.welded-one-hand",
+      "segment": 9,
+      "screenIncludes": [
+        "You feel better."
+      ]
+    },
+    {
+      "branch": "spell-casting-preconditions.welded-dagger-shield",
+      "segment": 10,
+      "screenIncludes": [
+        "Your arms are not free to cast!"
+      ]
+    },
+    {
+      "branch": "spell-casting-preconditions.welded-quarterstaff",
+      "segment": 11,
+      "screenIncludes": [
+        "You feel better."
+      ]
+    },
+    {
+      "branch": "spell-casting-preconditions.capacity",
+      "segment": 12,
+      "screenIncludes": [
+        "Your concentration falters while carrying so much stuff."
+      ]
+    },
+    {
+      "branch": "spell-casting-preconditions.strangled",
+      "segment": 13,
+      "screenIncludes": [
+        "You are unable to chant the incantation."
+      ]
+    },
+    {
+      "branch": "spell-casting-preconditions.repeat",
+      "segment": 14,
+      "screenIncludes": [
+        "There is no command available to repeat."
+      ]
+    },
+    {
+      "branch": "spell-casting-preconditions.traditional-retry",
+      "segment": 15,
+      "screenIncludes": [
+        "You feel better."
+      ]
+    },
+    {
+      "branch": "spell-casting-preconditions.traditional-limit",
+      "segment": 16,
+      "screenIncludes": [
+        "That's enough tries."
+      ]
+    },
+    {
+      "branch": "spell-casting-preconditions.traditional-menu",
+      "segment": 17,
+      "screenIncludes": [
+        "You feel better."
+      ]
+    },
+    {
+      "branch": "spell-casting-preconditions.repeat-cast",
+      "segment": 18,
+      "screenIncludes": [
+        "You feel better."
+      ]
+    },
+    {
+      "branch": "spell-casting-preconditions.repeat-cast-traditional",
+      "segment": 19,
+      "screenIncludes": [
+        "Invalid direction key!"
+      ]
+    },
+    {
+      "branch": "spell-casting-preconditions.repeat-cancelled",
+      "segment": 20,
+      "screenIncludes": [
+        "There is no command available to repeat."
+      ]
+    },
+    {
+      "branch": "spell-casting-preconditions.repeat-count-cancelled",
+      "segment": 21,
+      "screenIncludes": [
+        "There is no command available to repeat."
+      ]
+    },
+    {
+      "branch": "spell-casting-preconditions.repeat-cast-cancelled",
+      "segment": 22,
+      "screenIncludes": [
+        "There is no command available to repeat."
+      ]
+    },
+    {
+      "branch": "spell-casting-preconditions.confused-cast",
+      "segment": 23,
+      "screenIncludes": [
+        "You fail to cast the spell correctly."
+      ]
+    },
+    {
+      "branch": "spell-casting-preconditions.cast-killer-bee",
+      "segment": 24,
+      "screenIncludes": [
+        "You are unable to chant the incantation."
+      ]
+    },
+    {
+      "branch": "spell-casting-preconditions.cast-wumpus",
+      "segment": 25,
+      "screenIncludes": [
+        "You are unable to chant the incantation."
+      ]
+    },
+    {
+      "branch": "spell-casting-preconditions.amulet-high-energy",
+      "segment": 26,
+      "screenIncludes": [
+        "You feel the amulet draining your energy away."
+      ],
+      "rngIncludes": [
+        "@ spelleffects_check(spell.c:1298)"
+      ]
+    },
+    {
+      "branch": "spell-casting-preconditions.low-energy-cleared",
+      "segment": 27,
+      "screenIncludes": [
+        "You don't have enough energy to cast that spell."
+      ]
+    },
+    {
+      "branch": "spell-casting-preconditions.amulet-low-energy-cleared",
+      "segment": 28,
+      "screenIncludes": [
+        "You feel the amulet draining your energy away."
+      ],
+      "rngIncludes": [
+        "@ spelleffects_check(spell.c:1298)"
+      ]
+    },
+    {
+      "branch": "spell-casting-preconditions.amulet-low-cleared-33",
+      "segment": 29,
+      "screenIncludes": [
+        "You feel the amulet draining your energy away."
+      ],
+      "rngIncludes": [
+        "@ spelleffects_check(spell.c:1298)"
+      ]
+    }
+  ]
+}

@@ -25,7 +25,7 @@ import { game } from './gstate.js';
 
 import { rnd } from './rng.js';
 import { rounddiv } from './hack.js';
-import { is_ammo, matching_launcher, ammo_and_launcher, welded } from './wield.js';
+import { is_ammo, matching_launcher, ammo_and_launcher } from './wield.js';
 import { multishot_class_bonus } from './dothrow.js';
 import { is_prince, is_lord, is_mplayer, is_elf, is_orc,
          is_gnome, is_unicorn, nohands } from './mondata.js';
@@ -60,7 +60,8 @@ import { mon_nam, Monnam, hliquid } from './do_name.js';
 import { mhim } from './mondata.js';
 import { s_suffix } from './hacklib.js';
 import { mon_hates_silver, touch_petrifies } from './dog.js';
-import { bimanual, stone_missile, is_poisonable } from './obj.js';
+import { stone_missile, is_poisonable } from './obj.js';
+import { freehand } from './engrave.js';
 import { passes_rocks, passive_obj } from './uhitm.js';
 import { obj_extract_self } from './invent.js';
 import { MATERIALS } from './objects_data.js';
@@ -417,12 +418,6 @@ function mt_flightcheck(pre, singleobj, dx, dy) {
 // The rn2(catch_chance) draw happens whenever the hero is unimpaired with a
 // free hand and the object light enough; the actual catch (1 in ~90) then
 // adds it to inventory.
-function freehand() {
-    const u = game.u;
-    return !u.uwep || !welded(u.uwep)
-        || (!bimanual(u.uwep) && (!u.uarms || !u.uarms.cursed));
-}
-
 // src/mthrowu.c:497 ucatchgem(): unicorn forms catch real and glass gems.
 async function ucatchgem(gem, mon) {
     if (gem.otyp > ONAMES.LAST_GLASS_GEM

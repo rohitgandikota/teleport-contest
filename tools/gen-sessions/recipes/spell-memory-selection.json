@@ -1,0 +1,221 @@
+{
+  "name": "spell-memory-selection",
+  "description": "Amnesia with zero and multiple known spells, worse-of-two confusion rolls and luck rerolls.",
+  "coverage": [
+    "mode.debug",
+    "object.spellbooks-spells",
+    "ui.menus",
+    "survival.timed-status"
+  ],
+  "branches": [
+    "spell-memory-selection.multi-amnesia-31",
+    "spell-memory-selection.multi-amnesia-32",
+    "spell-memory-selection.multi-amnesia-34",
+    "spell-memory-selection.confused-multi-amnesia-34",
+    "spell-memory-selection.confused-multi-amnesia-31",
+    "spell-memory-selection.confused-multi-amnesia-36",
+    "spell-memory-selection.multi-amnesia-38",
+    "spell-memory-selection.confused-multi-amnesia-48",
+    "spell-memory-selection.amnesia-no-spells-blessed",
+    "spell-memory-selection.amnesia-no-spells-uncursed"
+  ],
+  "requireBranchAssertions": true,
+  "segments": [
+    {
+      "name": "multi-amnesia-31",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017blessed spellbook of healing\rrb     \u001b\u001b\u001b\u001b\u001b\u001b\u0017blessed spellbook of force bolt\rrc     \u001b\u001b\u001b\u001b\u001b\u001b\u0017blessed spellbook of cure sickness\rrd     \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed scroll of amnesia\rre     \u001b\u001b\u001b\u001b\u001b\u001b+\u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "multi-amnesia-32",
+      "seed": 32,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017blessed spellbook of healing\rrb     \u001b\u001b\u001b\u001b\u001b\u001b\u0017blessed spellbook of force bolt\rrc     \u001b\u001b\u001b\u001b\u001b\u001b\u0017blessed spellbook of cure sickness\rrd     \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed scroll of amnesia\rre     \u001b\u001b\u001b\u001b\u001b\u001b+\u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "multi-amnesia-34",
+      "seed": 34,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017blessed spellbook of healing\rrb     \u001b\u001b\u001b\u001b\u001b\u001b\u0017blessed spellbook of force bolt\rrc     \u001b\u001b\u001b\u001b\u001b\u001b\u0017blessed spellbook of cure sickness\rrd     \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed scroll of amnesia\rre     \u001b\u001b\u001b\u001b\u001b\u001b+\u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "confused-multi-amnesia-34",
+      "seed": 34,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017blessed spellbook of healing\rrb     \u001b\u001b\u001b\u001b\u001b\u001b\u0017blessed spellbook of force bolt\rrc     \u001b\u001b\u001b\u001b\u001b\u001b\u0017blessed spellbook of cure sickness\rrd     \u001b\u001b\u001b\u001b\u001b\u001b#wizintrinsic\r30g\r     \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed scroll of amnesia\rre     \u001b\u001b\u001b\u001b\u001b\u001b+\u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "confused-multi-amnesia-31",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017blessed spellbook of healing\rrb     \u001b\u001b\u001b\u001b\u001b\u001b\u0017blessed spellbook of force bolt\rrc     \u001b\u001b\u001b\u001b\u001b\u001b\u0017blessed spellbook of cure sickness\rrd     \u001b\u001b\u001b\u001b\u001b\u001b#wizintrinsic\r30g\r     \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed scroll of amnesia\rre     \u001b\u001b\u001b\u001b\u001b\u001b+\u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "confused-multi-amnesia-36",
+      "seed": 36,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017blessed spellbook of healing\rrb     \u001b\u001b\u001b\u001b\u001b\u001b\u0017blessed spellbook of force bolt\rrc     \u001b\u001b\u001b\u001b\u001b\u001b\u0017blessed spellbook of cure sickness\rrd     \u001b\u001b\u001b\u001b\u001b\u001b#wizintrinsic\r30g\r     \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed scroll of amnesia\rre     \u001b\u001b\u001b\u001b\u001b\u001b+\u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "multi-amnesia-38",
+      "seed": 38,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017blessed spellbook of healing\rrb     \u001b\u001b\u001b\u001b\u001b\u001b\u0017blessed spellbook of force bolt\rrc     \u001b\u001b\u001b\u001b\u001b\u001b\u0017blessed spellbook of cure sickness\rrd     \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed scroll of amnesia\rre     \u001b\u001b\u001b\u001b\u001b\u001b+\u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "confused-multi-amnesia-48",
+      "seed": 48,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017blessed spellbook of healing\rrb     \u001b\u001b\u001b\u001b\u001b\u001b\u0017blessed spellbook of force bolt\rrc     \u001b\u001b\u001b\u001b\u001b\u001b\u0017blessed spellbook of cure sickness\rrd     \u001b\u001b\u001b\u001b\u001b\u001b#wizintrinsic\r30g\r     \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed scroll of amnesia\rre     \u001b\u001b\u001b\u001b\u001b\u001b+\u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "amnesia-no-spells-blessed",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017blessed scroll of amnesia\rrb     \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "amnesia-no-spells-uncursed",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed scroll of amnesia\rrb     \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    }
+  ],
+  "branchAssertions": [
+    {
+      "branch": "spell-memory-selection.multi-amnesia-31",
+      "segment": 0,
+      "screenIncludes": [
+        "Currently known spells"
+      ],
+      "rngIncludes": [
+        "rn2(4)=2 @ losespells(spell.c:1777)",
+        "rnl(7)=5 @ losespells(spell.c:1784)",
+        "rn2(3)=2 @ losespells(spell.c:1814)",
+        "rn2(2)=1 @ losespells(spell.c:1814)",
+        "rn2(1)=0 @ losespells(spell.c:1814)"
+      ]
+    },
+    {
+      "branch": "spell-memory-selection.multi-amnesia-32",
+      "segment": 1,
+      "screenIncludes": [
+        "Currently known spells"
+      ],
+      "rngIncludes": [
+        "rn2(4)=3 @ losespells(spell.c:1777)",
+        "rnl(7)=2 @ losespells(spell.c:1784)",
+        "rn2(3)=2 @ losespells(spell.c:1814)",
+        "rn2(2)=0 @ losespells(spell.c:1814)",
+        "rn2(1)=0 @ losespells(spell.c:1814)"
+      ]
+    },
+    {
+      "branch": "spell-memory-selection.multi-amnesia-34",
+      "segment": 2,
+      "screenIncludes": [
+        "Currently known spells"
+      ],
+      "rngIncludes": [
+        "rn2(4)=0 @ losespells(spell.c:1777)"
+      ]
+    },
+    {
+      "branch": "spell-memory-selection.confused-multi-amnesia-34",
+      "segment": 3,
+      "screenIncludes": [
+        "Currently known spells"
+      ],
+      "rngIncludes": [
+        "rn2(4)=0 @ losespells(spell.c:1777)",
+        "rn2(4)=1 @ losespells(spell.c:1779)",
+        "rn2(3)=0 @ losespells(spell.c:1814)"
+      ]
+    },
+    {
+      "branch": "spell-memory-selection.confused-multi-amnesia-31",
+      "segment": 4,
+      "screenIncludes": [
+        "Currently known spells"
+      ],
+      "rngIncludes": [
+        "rn2(4)=2 @ losespells(spell.c:1777)",
+        "rn2(4)=1 @ losespells(spell.c:1779)",
+        "rnl(7)=5 @ losespells(spell.c:1784)",
+        "rn2(3)=2 @ losespells(spell.c:1814)",
+        "rn2(2)=0 @ losespells(spell.c:1814)",
+        "rn2(1)=0 @ losespells(spell.c:1814)"
+      ]
+    },
+    {
+      "branch": "spell-memory-selection.confused-multi-amnesia-36",
+      "segment": 5,
+      "screenIncludes": [
+        "Currently known spells"
+      ],
+      "rngIncludes": [
+        "rn2(4)=0 @ losespells(spell.c:1777)",
+        "rn2(4)=0 @ losespells(spell.c:1779)"
+      ]
+    },
+    {
+      "branch": "spell-memory-selection.multi-amnesia-38",
+      "segment": 6,
+      "screenIncludes": [
+        "Currently known spells"
+      ],
+      "rngIncludes": [
+        "rn2(4)=2 @ losespells(spell.c:1777)",
+        "rnl(7)=0 @ losespells(spell.c:1784)",
+        "rnd(2)=2 @ losespells(spell.c:1785)",
+        "rn2(3)=1 @ losespells(spell.c:1814)",
+        "rn2(2)=1 @ losespells(spell.c:1814)",
+        "rn2(1)=0 @ losespells(spell.c:1814)"
+      ]
+    },
+    {
+      "branch": "spell-memory-selection.confused-multi-amnesia-48",
+      "segment": 7,
+      "screenIncludes": [
+        "Currently known spells"
+      ],
+      "rngIncludes": [
+        "rn2(4)=3 @ losespells(spell.c:1777)",
+        "rn2(4)=0 @ losespells(spell.c:1779)",
+        "rnl(7)=0 @ losespells(spell.c:1784)",
+        "rnd(3)=3 @ losespells(spell.c:1785)",
+        "rn2(3)=0 @ losespells(spell.c:1814)",
+        "rn2(2)=1 @ losespells(spell.c:1814)",
+        "rn2(1)=0 @ losespells(spell.c:1814)"
+      ]
+    },
+    {
+      "branch": "spell-memory-selection.amnesia-no-spells-blessed",
+      "segment": 8,
+      "screenIncludes": [
+        "Maud"
+      ]
+    },
+    {
+      "branch": "spell-memory-selection.amnesia-no-spells-uncursed",
+      "segment": 9,
+      "screenIncludes": [
+        "Maud"
+      ],
+      "rngIncludes": [
+        "rn2(1)=0 @ losespells(spell.c:1777)"
+      ]
+    }
+  ]
+}

@@ -11,6 +11,30 @@ Newest first within each section.
 
 ---
 
+## Spell and repeat probes
+
+Traditional getspell calls yn_function with addcmdq true and docast stores
+the selected letter again. A repeated directional cast can therefore consume
+an invalid direction. This is native behavior; preserve it. Padding with
+spaces or escape clears the repeat queue, so real repeat tests must send
+Ctrl-A immediately after the cast finishes.
+
+Wizard intrinsic letters h/i are hallucination/blindness. Require the actual
+native status message before claiming a blind-reading test. Tiny bee forms
+can be overloaded even by a scroll, which makes doread reject before can_chant.
+The wumpus case reaches silent blind reading without that carrying-capacity
+interference.
+
+The existing RNG probe runs in rn2, not rnd. Observe the energy write after
+spell_backfire to inspect both timers before a turn decrements them. Ordinary
+spelleffects runs the check; forced #wizcast bypasses it and cannot prove the
+casting preconditions.
+
+Use M_AP_TYPE when comparing a mimic's appearance kind. Its raw m_ap_type can
+also include M_AP_F_DKNOWN. The wizard-create state gate's coin-disguise
+assertion was stale on both sides of the casting checkpoint; C's existing
+recording still shows the coin pile.
+
 ## Resistance and equipment probes
 
 Wizard intrinsic menus restart their letters on every page. Acid and stone

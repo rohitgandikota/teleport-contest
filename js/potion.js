@@ -767,8 +767,8 @@ export async function make_confused(xtime, talk) {
     if ((xtime && !old) || (!xtime && old))
         (game.disp ||= {}).botl = true;
 
-    (game.u.intrinsic ||= {}).HConfusion = xtime;
-    if (xtime)
+    set_itimeout('HConfusion', xtime);
+    if (game.u.intrinsic.HConfusion)
         (game.u.uprops ||= {}).CONFUSION = 1;
     else if (game.u.uprops)
         delete game.u.uprops.CONFUSION;
@@ -794,8 +794,8 @@ export async function make_stunned(xtime, talk) {
     if ((!xtime && old) || (xtime && !old))
         (game.disp ||= {}).botl = true;
 
-    (game.u.intrinsic ||= {}).HStun = xtime;
-    if (xtime)
+    set_itimeout('HStun', xtime);
+    if (game.u.intrinsic.HStun)
         (game.u.uprops ||= {}).STUNNED = 1;
     else if (game.u.uprops)
         delete game.u.uprops.STUNNED;
@@ -2405,12 +2405,12 @@ export async function split_mon(mon, mtmp) {
     return mtmp2;
 }
 
-// src/potion.c itimeout(); clamp a timeout value to the TIMEOUT field
+// src/potion.c:57 itimeout()
 export function itimeout(val) {
-    if (val < 0)
-        val = 0;
-    else if (val > TIMEOUT)
+    if (val >= TIMEOUT)
         val = TIMEOUT;
+    else if (val < 1)
+        val = 0;
     return val;
 }
 

@@ -118,7 +118,7 @@ import { can_reach_floor, pickup_object } from './pickup.js';
 import { use_pick_axe } from './dig.js';
 import { dbon, do_attack } from './uhitm.js';
 import { possibly_unwield, setmnotwielded } from './weapon.js';
-import { freehand } from './wield.js';
+import { freehand } from './engrave.js';
 import { mwelded } from './wield.js';
 import { fingers_or_gloves } from './do_wear.js';
 import { dowrite } from './write.js';

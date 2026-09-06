@@ -6,7 +6,7 @@
 import assert from 'node:assert/strict';
 import { runSegment } from '../js/jsmain.js';
 import { game } from '../js/gstate.js';
-import { M_AP_OBJECT, NON_PM, W_SADDLE } from '../js/const.js';
+import { M_AP_TYPE, M_AP_OBJECT, NON_PM, W_SADDLE } from '../js/const.js';
 import { PMNAMES } from '../js/monst_data.js';
 import { ONAMES } from '../js/objects_data.js';
 import { which_armor } from '../js/worn.js';
@@ -101,7 +101,7 @@ mon = monsters.find(candidate => candidate.mnum === PMNAMES.PM_ELF_NOBLE);
 assert.equal(mon?.female, 1, 'gendered alternate name selects elf-lady sex');
 
 monsters = await run(6985, ' \x07]\r');
-mon = monsters.find(candidate => candidate.m_ap_type === M_AP_OBJECT
+mon = monsters.find(candidate => M_AP_TYPE(candidate) === M_AP_OBJECT
                               && candidate.mappearance === ONAMES.GOLD_PIECE);
 assert.ok(mon, 'mimic-class symbol can create a coin-pile disguise');
 

@@ -1473,7 +1473,7 @@ async function do_repeat() {
     if (game.in_doagain)
         return 0;
     if (!cmdq_peek(CQ_REPEAT)) {
-        await pline('There is no command available to repeat.');
+        await Norep('There is no command available to repeat.');
         return ECMD_FAIL;
     }
 
@@ -1614,7 +1614,7 @@ export async function rhack(key) {
             game._toplin = TOPLINE_EMPTY;
             game.command_count = 0;
             game.last_command_count = 0;
-            game.context.move = 0;
+            reset_cmd_vars(true);
             return;
         }
         game.command_count = cnt;
@@ -1629,6 +1629,12 @@ export async function rhack(key) {
         tty_clear_nhwindow_message(game._topl_cury || 0);
         game._pending_message = '';
         game._toplin = TOPLINE_EMPTY;
+    }
+
+    // src/cmd.c:3662, an absent command or escape clears both queues.
+    if (!key || key === 255 || key === 27) {
+        reset_cmd_vars(true);
+        return;
     }
 
     const parsedKey = ch0;
@@ -1780,7 +1786,7 @@ export async function rhack(key) {
         game.context.move = ((await doswapweapon()) === ECMD_TIME ? 1 : 0);
     } else if (ch === 'Z') {
         // src/cmd.c cmdlist — 'Z' is docast.
-        game.context.move = ((await docast()) === ECMD_TIME ? 1 : 0);
+        useResult(await docast());
     } else if (ch === '\x16') {
         // src/cmd.c:1970 — C('v') is wizlevelport / wiz_level_tele.
         game.context.move = ((await wiz_level_tele()) === ECMD_TIME ? 1 : 0);

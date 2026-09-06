@@ -19,6 +19,8 @@ import { MINV_ALL } from './const.js';
 import { INCLUDE_HERO } from './const.js';
 import { INVORDER_SORT } from './const.js';
 import { PICK_NONE } from './const.js';
+import { PICK_ANY, SIGNAL_NOMENU, SIGNAL_ESCAPE, USE_INVLET,
+         MENU_TRADITIONAL, thats_enough_tries } from './const.js';
 import { MENU_BEHAVE_STANDARD } from './const.js';
 import { tty_select_menu } from './tty/wintty.js';
 import { tty_end_menu } from './tty/wintty.js';
@@ -2534,6 +2536,42 @@ export async function identify(otmp) {
     return 1;
 }
 
+// src/invent.c:2660 menu_identify()
+async function menu_identify(id_limit) {
+    let first = 1, tryct = 5;
+
+    while (id_limit) {
+        const buf = `What would you like to identify ${first ? 'first' : 'next'}?`;
+        const pick_list = await query_objlist(buf, game.invent,
+            SIGNAL_NOMENU | SIGNAL_ESCAPE | USE_INVLET | INVORDER_SORT,
+            PICK_ANY, not_fully_identified);
+        let n = Array.isArray(pick_list) ? pick_list.length : pick_list;
+
+        if (n > 0) {
+            if (n > id_limit)
+                n = id_limit;
+            for (let i = 0; i < n; i++, id_limit--)
+                await identify(pick_list[i]);
+            if (id_limit) {
+                // tty_wait_synch's active-map arm, before opening another menu.
+                const { flush_screen } = await import('./display.js');
+                await flush_screen(0);
+            }
+            first = 0;
+        } else if (n === -2) {
+            break;
+        } else if (n === -1) {
+            await pline('That was all.');
+            break;
+        } else if (!--tryct) {
+            await pline(thats_enough_tries);
+            break;
+        } else {
+            await pline('Choose an item; use ESC to decline.');
+        }
+    }
+}
+
 // src/invent.c:2711 identify_pack() — identify up to id_limit items.
 //
 // id_limit 0 means all. The "already identified" line is the one an
@@ -2555,7 +2593,10 @@ export async function identify_pack(id_limit, learning_id) {
             }
         }
     } else {
-        note_unported_invent('identify_pack:menu');
+        if (game.flags.menu_style === MENU_TRADITIONAL)
+            note_unported_invent('identify_pack:ggetobj');
+        else
+            await menu_identify(id_limit);
     }
     update_inventory();
 }

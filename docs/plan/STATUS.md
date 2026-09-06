@@ -12,9 +12,56 @@ Continue the authorized work; do not mark it complete or recreate it.
 Current-corpus success is not the stopping criterion. Track unreviewed,
 untested, missing, and unreachable source paths explicitly.
 
+### Active checkpoint: category selection and menu symbols
+
+Six runtime modules changed on9ba75b04: pickup,options,jsmain,invent,cmd,pager.
+Full C query_category/count_categories/paranoid_ynq, menu_objsyms handlers,
+display_pickinv,this_type_only,dotypeinv,let_to_name,wiz_identify read.
+See category-selection-audit.md. Work in.cache/category-selection.
+
+Three permanent recipes117cases: category-autoselect23,category-filters46,
+menu-object-symbols48. All29012screens/cursors287419RNGmatch. C repeat3/3
+exact, separate assertions/integritypass. Ledger2666/2666,99covered7partial.
+Cunion adds122outcomes,1enteredrecord(handler_menu_objsyms), reaching
+55824/108268 and4376/5491. count_categories12/12,query_category133/154,
+this_type_only33/34; exact remaining outcomes in remaining.json.
+
+State gate117native,503Cinventoryobservations,46constructedgroupspass.
+Final46thgroup coversinvalidpack overflow diagnostic, which now awaits
+impossible. Initialverificationwas45groups; state-final-guard.log and
+source-final.log verifytheaddedguard. Everymutantfailsstategate: no-confirm
+fails152screens127cursors140335positionalRNG; no-worn1screen1cursor;
+no-symbols54screens; no-coins2screens2cursors. Exact9ba75b04 across6modules
+failsall3fixtures234screens149cursors151838RNG. NODE_OPTIONSforworkers.
+
+Finalfullsweep556/556=44public512supplemental,419297screens/cursors,
+10857574RNGallmatch. 21oldpublicanimationmissesremain. Twelve relatedgates,
+47hang,80freshroles,14tooltests,sourceaudit0/268pass. Fuzz101/102known
+fixed-date miss,all491759RNG. verifyjob79473finishedandcollected. Firstfull
+regressionjob3806finishedandcollected. Finalfullsweep24568afterawaited
+diagnosticfinishedandcollected. regression-final.log andtotals.json match;
+allcategorypassjobsfinished. verification-exits.json hasallcollectedexits.
+
+Invalidnumericoptionprobeextra1retained: parsercorrect,error screenmissing,
+233screens/cursorsdifferent andtemporarypathinCtext. Notpromoted. Original
+B selectionswerenotknownBUC; renamedunavailablecontrolsandreplacedby
+identifiedcases. Correctedpotions-filter accelerator afterapplechangedorder.
+
+Nextpass.cache/inventory-types:64nativeprobesrecorded, before scorercomplete:
+51screen41cursormisses,all171668RNGmatching. FirstCtraditionalpromptvsJSmenu.
+Cfull dotypeinv3827..4041 anddounpaid3654..3790read. Traditional/combination
+prompts andunpaid-displaymissing. Cfind_unpaid3010..3041, xprname2895..2954,
+unknwn_contnr_contents684..697,distant_name347..409nowread. JSdistant_name
+incorrectlyusesobj.xy insteadofget_obj_location andomitsgameovero_id0guard.
+Nineextrasinshop.input.json:contained0/2tradsetupinvalidbecauseitsetstyle
+beforelooting; mustswitchstyleliveaftersetup. Keepfullvariants1/3 andactual
+unpaidobservationsonly. Allnext-passjobsfinished. Noeditsinthisnextpassyet. Finishcurrent
+checkpointlocally,thencontinuefullentryport. No C/frozenedits. Do notpush;
+publicationauthorization remainsunanswered. Goalcontinues.
+
 ### Checkpoint: status suppression and fatal damage
 
-Ready for local commit on b3a6c51b. Work .cache/status-suppression.
+Committed locally as 9ba75b04. Work .cache/status-suppression.
 Cbotl.c:259 skipsdrawing whenhumanHP==-1, then clearsdirtyflags. Cdone
 callsbotbeforeforcingHP0. Full Cbot/timebot,flush_screen,vpline/urgent_pline,
 suppress_map_output macro+wrapper,losehp/showdamage,mdamageu,end_running,
@@ -51,11 +98,16 @@ b3a6c51b runtimeacross4filesfailsbothfixtures782screens95cursors5949RNG.
 NODE_OPTIONSrequiredforworkers. verification-exits.json preservesinitial
 ledger1andcorrectedledger-final0;originalverifyotherwisepassedallrelated.
 
-Next: commitlocally, continuequery_categoryandlooting. Full Cquery_category
-1226..1508 andcount_categories1511..1535 nowread, pluscurrentJS1534..1695.
-JS lacksAconfirmation/hintcounters/venom/symbolheadings, usesanywornbit,
-count_categorieswrongfilter signature. Need Cparanoid_ynq5588..5650review
-andnativecategoryprobesbeforeport. Noedit/probeyettoquery_category.
+Active next pass: .cache/category-selection. Full C query_category,
+count_categories, paranoid_ynq, optfn_menu_objsyms, handler_menu_objsyms,
+set_menuobjsyms_flags read. 33 native probes recorded: 7706 screens,
+75778 RNG. Before score fails136 screens and105 cursors. First mismatch
+is lone A: C says No relevant items selected; JS drops all objects.
+JS lacks confirmation/hint counters/venom/symbol headings, uses any worn
+bit, and counts categories outside inv_order. No runtime edits yet.
+Probe BUC cases currently wish unknown-BUC objects, so B selections do
+not demonstrate blessed filtering. Correct those before promotion.
+Options header symbols are unimplemented; query core is the next edit.
 Broaderstatuswindowport/suppressioncallers,remainingdeathpaths,
 end_runningterrainstatus/travelmap andpassivecolddeferralstillopen.
 Do notpush; publicationauthorization remains unanswered. Continuegoal.

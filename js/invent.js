@@ -1050,13 +1050,13 @@ export async function display_binventory(x, y, as_if_seen = false) {
 // selector and no identifier, an item carries its inventory letter. The "a - "
 // prefix is NOT built here; tty_add_menu() builds it, exactly as in C, which is
 // what makes the +2 in tty_end_menu()'s width the right rule for this window.
-export function display_inventory(allowed_choices = null) {
+export function display_inventory(allowed_choices = null, want_reply = false) {
     if (game.flags.fixinv === false)
         reassign();
     const out = [];
     const wizid = game.wizard && game.iflags?.override_ID;
     const sortpack = game.flags.sortpack !== false;
-    for (const oclass of sortpack ? inv_order() : [0]) {
+    for (const oclass of sortpack ? [...inv_order(), OCLASSES.VENOM_CLASS] : [0]) {
         const items = (game.invent || []).filter(
             o => (!sortpack || o.oclass === oclass)
                  && (!allowed_choices || allowed_choices.includes(o.invlet))
@@ -1064,7 +1064,10 @@ export function display_inventory(allowed_choices = null) {
         if (!items.length) continue;
         /* add_menu_heading(win, class_header) — iflags.menu_headings */
         if (sortpack)
-            out.push({ heading: true, str: let_to_name(oclass), attr: ATR_INVERSE });
+            out.push({ heading: true,
+                       str: let_to_name(oclass, false,
+                           want_reply && game.iflags.menu_head_objsym),
+                       attr: ATR_INVERSE });
         for (const o of items) {
             /* src/invent.c:1039 — displaying the item observes its type */
             if (!Blind())
@@ -1077,6 +1080,25 @@ export function display_inventory(allowed_choices = null) {
         }
     }
     return out;
+}
+
+// src/invent.c:3793 this_type_only(), including the goldX classification.
+export function this_type_only(obj) {
+    const type = game.this_type;
+    if (type === 'P'.charCodeAt(0))
+        return !!obj.pickup_prev;
+    if (obj.oclass === OCLASSES.COIN_CLASS) {
+        if (type && 'BUCX'.includes(String.fromCharCode(type)))
+            return type === (game.flags.goldX ? 'X' : 'U').charCodeAt(0);
+    } else {
+        switch (String.fromCharCode(type)) {
+        case 'B': return !!(obj.bknown && obj.blessed);
+        case 'U': return !!(obj.bknown && !(obj.blessed || obj.cursed));
+        case 'C': return !!(obj.bknown && obj.cursed);
+        case 'X': return !obj.bknown;
+        }
+    }
+    return obj.oclass === type;
 }
 
 // src/invent.c:3220 display_pickinv() — the menu getobj's '?' and '*' open.
@@ -1156,7 +1178,7 @@ export async function display_pickinv(allowed_choices, handsbuf, menuquery,
        headings up front instead listed every empty class: quaffing showed
        Coins/Weapons/Armor/... around a lone Potions section. */
     let pending_heading = null;
-    for (const e of display_inventory(allowed_choices)) {
+    for (const e of display_inventory(allowed_choices, !wizid)) {
         if (e.heading) {
             pending_heading = e;
             continue;

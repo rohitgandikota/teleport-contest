@@ -143,6 +143,7 @@ export function parseoptions(opts, tinitial, tfrom_file, result) {
     }
     if (value === null && opt.type !== 'BoolOpt' && opt.valok === 'Yes'
         && opt.name !== 'packorder' && opt.name !== 'pickup_types'
+        && opt.name !== 'menu_objsyms'
         && !(opt.name === 'menustyle' && (negated || opts.length <= 5))
         && !(opt.name === 'paranoid_confirmation' && negated)) {
         config_error_add(result, `Missing value for '${opt.name}'`);
@@ -209,6 +210,32 @@ export function parseoptions(opts, tinitial, tfrom_file, result) {
         }
         result.opts.menu_style = style;
         result.opts.menustyle = menutype[style];
+    } else if (opt.name === 'menu_objsyms') {
+        // src/options.c:2225 optfn_menu_objsyms(), do_set arm.
+        const op = sep < 0 ? '' : opts.slice(sep + 1);
+        let osyms = 0;
+        if (negated) {
+            osyms = 0;
+        } else if (!op) {
+            osyms = opts.startsWith('use_menu_glyphs') ? 2 : 1;
+        } else if (/^[0-9]/.test(op)) {
+            osyms = parseInt(op, 10);
+            if (osyms >= objsymvals.length) {
+                config_error_add(result, `Illegal menu_objsyms parameter '${op}'`);
+                return false;
+            }
+        } else {
+            for (let i = 0; i < objsymvals.length; i++) {
+                const name = objsymvals[i];
+                const l = op.length >= 4 ? op.length : name.length;
+                if (name.slice(0, l).toLowerCase() === op.slice(0, l).toLowerCase()
+                    || (i === 5 && op.toLowerCase().startsWith('one-or-the-other'))) {
+                    osyms = i;
+                    break;
+                }
+            }
+        }
+        result.opts.menuobjsyms = osyms;
     } else if (opt.name === 'sortdiscoveries') {
         // src/options.c:3863 optfn_sortdiscoveries(), initial do_set arm.
         if (negated) {
@@ -1233,6 +1260,8 @@ async function doset_simple_menu() {
                 await choose_disco_sort(0);
             } else if (allopt[k].name === 'menustyle') {
                 await handler_menustyle();
+            } else if (allopt[k].name === 'menu_objsyms') {
+                await handler_menu_objsyms();
             } else {
                 note_unported_options(`doset_simple:set=${allopt[k].name}`);
             }
@@ -1778,6 +1807,8 @@ export async function doset() {
                 await choose_disco_sort(0);
             } else if (o.hasHandler === 'Yes' && o.name === 'menustyle') {
                 await handler_menustyle();
+            } else if (o.hasHandler === 'Yes' && o.name === 'menu_objsyms') {
+                await handler_menu_objsyms();
             } else if (o.name === 'bind keys') {
                 await handler_rebind_keys();
             } else if (o.name === 'status condition fields') {
@@ -1834,6 +1865,44 @@ async function reset_needed_visuals() {
    display site, and nothing here needs the numbers), so the table is spelled
    with the symbols def_oc_syms[] gives those classes. */
 const def_inv_order = '$")[%?+!=/(*`0_';
+
+// src/options.c:7446 set_menuobjsyms_flags().
+export function set_menuobjsyms_flags(newobjsyms) {
+    game.iflags.menuobjsyms = newobjsyms;
+    game.iflags.menu_head_objsym = !!(newobjsyms & 1);
+    game.iflags.use_menu_glyphs = !!(newobjsyms & (2 | 4));
+}
+
+// src/options.c:5795 handler_menu_objsyms().
+export async function handler_menu_objsyms() {
+    const descriptions = [
+        "don't show object symbols in menus",
+        'show object symbols in menu header lines',
+        'show object symbols in individual menu entries',
+        'show object symbols in headers and menu entries',
+        'show objsyms in entries if no headers are shown',
+        'show objsyms in header, in entries if no header',
+    ];
+    const sep = game.iflags.menu_tab_sep ? '\t' : ' ';
+    const win = tty_create_nhwindow(NHW_MENU);
+    tty_start_menu(win, MENU_BEHAVE_STANDARD);
+    for (let i = 0; i < objsymvals.length; i++) {
+        const buf = objsymvals[i].padEnd(12) + sep + descriptions[i];
+        tty_add_menu(win, null, i + 1, String(i), buf[0], ATR_NONE, NO_COLOR, buf,
+                     i === game.iflags.menuobjsyms
+                         ? MENU_ITEMFLAGS_SELECTED : MENU_ITEMFLAGS_NONE);
+    }
+    tty_end_menu(win, 'Set object symbols in menus to what?');
+    const picks = await tty_select_menu(win, PICK_ONE);
+    if (picks.length) {
+        let i = picks[0] - 1;
+        if (picks.length > 1 && i === game.iflags.menuobjsyms)
+            i = picks[1] - 1;
+        set_menuobjsyms_flags(i);
+    }
+    tty_destroy_nhwindow(win);
+    return 0;
+}
 
 // src/options.c:5544 handler_menustyle().
 async function handler_menustyle() {

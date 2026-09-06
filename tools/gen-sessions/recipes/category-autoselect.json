@@ -1,0 +1,462 @@
+{
+  "name": "category-autoselect",
+  "description": "Category auto-selection, confirmation, cancellation, full-word retries, and repeated menu hints.",
+  "coverage": [
+    "mode.debug",
+    "ui.menus",
+    "ui.cancel-invalid",
+    "options.rc-bindings",
+    "object.tools-containers"
+  ],
+  "branches": [
+    "category-autoselect.autoall-off-only",
+    "category-autoselect.autoall-off-all-types",
+    "category-autoselect.autoall-off-weapons",
+    "category-autoselect.autoall-off-unavailable-buc",
+    "category-autoselect.autoall-off-cancel",
+    "category-autoselect.autoall-yes",
+    "category-autoselect.autoall-no",
+    "category-autoselect.autoall-no-cancel",
+    "category-autoselect.autoall-quit",
+    "category-autoselect.autoall-escape",
+    "category-autoselect.autoall-weapons-yes",
+    "category-autoselect.autoall-weapons-no",
+    "category-autoselect.autoall-unavailable-buc-no",
+    "category-autoselect.autoall-words-yes",
+    "category-autoselect.autoall-words-no",
+    "category-autoselect.autoall-words-quit",
+    "category-autoselect.autoall-words-escape",
+    "category-autoselect.autoall-words-retry-yes",
+    "category-autoselect.autoall-words-retry-no",
+    "category-autoselect.hint-repeat-ordinary-quiet",
+    "category-autoselect.hint-repeat-ordinary-assist",
+    "category-autoselect.hint-repeat-paranoid-quiet",
+    "category-autoselect.hint-repeat-paranoid-assist"
+  ],
+  "requireBranchAssertions": true,
+  "segments": [
+    {
+      "name": "autoall-off-only",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:full\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed daggers\r\u0017blessed potion of healing\r\u0017cursed ring of protection\r\u0017uncursed leather armor\r        \u001b\u001b\u001b\u001b\u001b\u001bDA\r        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "autoall-off-all-types",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:full\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed daggers\r\u0017blessed potion of healing\r\u0017cursed ring of protection\r\u0017uncursed leather armor\r        \u001b\u001b\u001b\u001b\u001b\u001bDAa\r        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "autoall-off-weapons",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:full\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed daggers\r\u0017blessed potion of healing\r\u0017cursed ring of protection\r\u0017uncursed leather armor\r        \u001b\u001b\u001b\u001b\u001b\u001bDAb\r        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "autoall-off-unavailable-buc",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:full\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed daggers\r\u0017blessed potion of healing\r\u0017cursed ring of protection\r\u0017uncursed leather armor\r        \u001b\u001b\u001b\u001b\u001b\u001bDAB\r        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "autoall-off-cancel",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:full\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed daggers\r\u0017blessed potion of healing\r\u0017cursed ring of protection\r\u0017uncursed leather armor\r        \u001b\u001b\u001b\u001b\u001b\u001bD\u001b        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "autoall-yes",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:full\nOPTIONS=paranoid_confirmation:autoall\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed daggers\r\u0017blessed potion of healing\r\u0017cursed ring of protection\r\u0017uncursed leather armor\r        \u001b\u001b\u001b\u001b\u001b\u001bDA\ry        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "autoall-no",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:full\nOPTIONS=paranoid_confirmation:autoall\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed daggers\r\u0017blessed potion of healing\r\u0017cursed ring of protection\r\u0017uncursed leather armor\r        \u001b\u001b\u001b\u001b\u001b\u001bDA\rn,\r        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "autoall-no-cancel",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:full\nOPTIONS=paranoid_confirmation:autoall\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed daggers\r\u0017blessed potion of healing\r\u0017cursed ring of protection\r\u0017uncursed leather armor\r        \u001b\u001b\u001b\u001b\u001b\u001bDA\rn\u001b        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "autoall-quit",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:full\nOPTIONS=paranoid_confirmation:autoall\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed daggers\r\u0017blessed potion of healing\r\u0017cursed ring of protection\r\u0017uncursed leather armor\r        \u001b\u001b\u001b\u001b\u001b\u001bDA\rq        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "autoall-escape",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:full\nOPTIONS=paranoid_confirmation:autoall\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed daggers\r\u0017blessed potion of healing\r\u0017cursed ring of protection\r\u0017uncursed leather armor\r        \u001b\u001b\u001b\u001b\u001b\u001bDA\r\u001b        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "autoall-weapons-yes",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:full\nOPTIONS=paranoid_confirmation:autoall\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed daggers\r\u0017blessed potion of healing\r\u0017cursed ring of protection\r\u0017uncursed leather armor\r        \u001b\u001b\u001b\u001b\u001b\u001bDAb\ry        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "autoall-weapons-no",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:full\nOPTIONS=paranoid_confirmation:autoall\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed daggers\r\u0017blessed potion of healing\r\u0017cursed ring of protection\r\u0017uncursed leather armor\r        \u001b\u001b\u001b\u001b\u001b\u001bDAb\rn,\r        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "autoall-unavailable-buc-no",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:full\nOPTIONS=paranoid_confirmation:autoall\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed daggers\r\u0017blessed potion of healing\r\u0017cursed ring of protection\r\u0017uncursed leather armor\r        \u001b\u001b\u001b\u001b\u001b\u001bDAB\rn,\r        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "autoall-words-yes",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:full\nOPTIONS=paranoid_confirmation:autoall confirm\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed daggers\r\u0017blessed potion of healing\r\u0017cursed ring of protection\r\u0017uncursed leather armor\r        \u001b\u001b\u001b\u001b\u001b\u001bDA\ryes\r        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "autoall-words-no",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:full\nOPTIONS=paranoid_confirmation:autoall confirm\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed daggers\r\u0017blessed potion of healing\r\u0017cursed ring of protection\r\u0017uncursed leather armor\r        \u001b\u001b\u001b\u001b\u001b\u001bDA\rno\r,\r        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "autoall-words-quit",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:full\nOPTIONS=paranoid_confirmation:autoall confirm\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed daggers\r\u0017blessed potion of healing\r\u0017cursed ring of protection\r\u0017uncursed leather armor\r        \u001b\u001b\u001b\u001b\u001b\u001bDA\rquit\r        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "autoall-words-escape",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:full\nOPTIONS=paranoid_confirmation:autoall confirm\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed daggers\r\u0017blessed potion of healing\r\u0017cursed ring of protection\r\u0017uncursed leather armor\r        \u001b\u001b\u001b\u001b\u001b\u001bDA\r\u001b        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "autoall-words-retry-yes",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:full\nOPTIONS=paranoid_confirmation:autoall confirm\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed daggers\r\u0017blessed potion of healing\r\u0017cursed ring of protection\r\u0017uncursed leather armor\r        \u001b\u001b\u001b\u001b\u001b\u001bDA\ry\ryes\r        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "autoall-words-retry-no",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:full\nOPTIONS=paranoid_confirmation:autoall confirm\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed daggers\r\u0017blessed potion of healing\r\u0017cursed ring of protection\r\u0017uncursed leather armor\r        \u001b\u001b\u001b\u001b\u001b\u001bDA\rn\rno\r,\r        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "hint-repeat-ordinary-quiet",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:full\nOPTIONS=!cmdassist\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed daggers\r\u0017blessed potion of healing\r\u0017cursed ring of protection\r\u0017uncursed leather armor\r        \u001b\u001b\u001b\u001b\u001b\u001bD\u001b        \u001b\u001b\u001b\u001b\u001b\u001bD\u001b        \u001b\u001b\u001b\u001b\u001b\u001bD\u001b        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "hint-repeat-ordinary-assist",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:full\nOPTIONS=cmdassist\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed daggers\r\u0017blessed potion of healing\r\u0017cursed ring of protection\r\u0017uncursed leather armor\r        \u001b\u001b\u001b\u001b\u001b\u001bD\u001b        \u001b\u001b\u001b\u001b\u001b\u001bD\u001b        \u001b\u001b\u001b\u001b\u001b\u001bD\u001b        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "hint-repeat-paranoid-quiet",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:full\nOPTIONS=paranoid_confirmation:autoall,!cmdassist\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed daggers\r\u0017blessed potion of healing\r\u0017cursed ring of protection\r\u0017uncursed leather armor\r        \u001b\u001b\u001b\u001b\u001b\u001bD\u001b        \u001b\u001b\u001b\u001b\u001b\u001bD\u001b        \u001b\u001b\u001b\u001b\u001b\u001bD\u001b        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "hint-repeat-paranoid-assist",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:full\nOPTIONS=paranoid_confirmation:autoall,cmdassist\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed daggers\r\u0017blessed potion of healing\r\u0017cursed ring of protection\r\u0017uncursed leather armor\r        \u001b\u001b\u001b\u001b\u001b\u001bD\u001b        \u001b\u001b\u001b\u001b\u001b\u001bD\u001b        \u001b\u001b\u001b\u001b\u001b\u001bD\u001b        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b"
+    }
+  ],
+  "branchAssertions": [
+    {
+      "branch": "category-autoselect.autoall-off-only",
+      "segment": 0,
+      "screenIncludes": [
+        "Auto-select every relevant item",
+        "No relevant items selected."
+      ],
+      "screenExcludes": [
+        "You drop"
+      ]
+    },
+    {
+      "branch": "category-autoselect.autoall-off-all-types",
+      "segment": 1,
+      "screenIncludes": [
+        "Auto-select every relevant item"
+      ]
+    },
+    {
+      "branch": "category-autoselect.autoall-off-weapons",
+      "segment": 2,
+      "screenIncludes": [
+        "Auto-select every relevant item"
+      ]
+    },
+    {
+      "branch": "category-autoselect.autoall-off-unavailable-buc",
+      "segment": 3,
+      "screenIncludes": [
+        "Auto-select every relevant item",
+        "No relevant items selected."
+      ]
+    },
+    {
+      "branch": "category-autoselect.autoall-off-cancel",
+      "segment": 4,
+      "screenIncludes": [
+        "Auto-select every relevant item"
+      ]
+    },
+    {
+      "branch": "category-autoselect.autoall-yes",
+      "segment": 5,
+      "screenIncludes": [
+        "Auto-select every relevant item",
+        "Really autoselect All?"
+      ]
+    },
+    {
+      "branch": "category-autoselect.autoall-no",
+      "segment": 6,
+      "screenIncludes": [
+        "Auto-select every relevant item",
+        "Really autoselect All?"
+      ]
+    },
+    {
+      "branch": "category-autoselect.autoall-no-cancel",
+      "segment": 7,
+      "screenIncludes": [
+        "Auto-select every relevant item",
+        "Really autoselect All?"
+      ]
+    },
+    {
+      "branch": "category-autoselect.autoall-quit",
+      "segment": 8,
+      "screenIncludes": [
+        "Auto-select every relevant item",
+        "Really autoselect All?"
+      ]
+    },
+    {
+      "branch": "category-autoselect.autoall-escape",
+      "segment": 9,
+      "screenIncludes": [
+        "Auto-select every relevant item",
+        "Really autoselect All?"
+      ]
+    },
+    {
+      "branch": "category-autoselect.autoall-weapons-yes",
+      "segment": 10,
+      "screenIncludes": [
+        "Auto-select every relevant item",
+        "Really autoselect All?"
+      ]
+    },
+    {
+      "branch": "category-autoselect.autoall-weapons-no",
+      "segment": 11,
+      "screenIncludes": [
+        "Auto-select every relevant item",
+        "Really autoselect All?"
+      ]
+    },
+    {
+      "branch": "category-autoselect.autoall-unavailable-buc-no",
+      "segment": 12,
+      "screenIncludes": [
+        "Auto-select every relevant item",
+        "Really autoselect All?"
+      ]
+    },
+    {
+      "branch": "category-autoselect.autoall-words-yes",
+      "segment": 13,
+      "screenIncludes": [
+        "Auto-select every relevant item",
+        "Really autoselect All?"
+      ]
+    },
+    {
+      "branch": "category-autoselect.autoall-words-no",
+      "segment": 14,
+      "screenIncludes": [
+        "Auto-select every relevant item",
+        "Really autoselect All?"
+      ]
+    },
+    {
+      "branch": "category-autoselect.autoall-words-quit",
+      "segment": 15,
+      "screenIncludes": [
+        "Auto-select every relevant item",
+        "Really autoselect All?"
+      ]
+    },
+    {
+      "branch": "category-autoselect.autoall-words-escape",
+      "segment": 16,
+      "screenIncludes": [
+        "Auto-select every relevant item",
+        "Really autoselect All?"
+      ]
+    },
+    {
+      "branch": "category-autoselect.autoall-words-retry-yes",
+      "segment": 17,
+      "screenIncludes": [
+        "Auto-select every relevant item",
+        "Really autoselect All?"
+      ]
+    },
+    {
+      "branch": "category-autoselect.autoall-words-retry-no",
+      "segment": 18,
+      "screenIncludes": [
+        "Auto-select every relevant item",
+        "Really autoselect All?"
+      ]
+    },
+    {
+      "branch": "category-autoselect.hint-repeat-ordinary-quiet",
+      "segment": 19,
+      "screenIncludes": [
+        "Auto-select every relevant item"
+      ],
+      "screenCells": [
+        {
+          "step": 201,
+          "x": 27,
+          "y": 3,
+          "equals": "("
+        },
+        {
+          "step": 217,
+          "x": 43,
+          "y": 3,
+          "equals": " "
+        },
+        {
+          "step": 233,
+          "x": 43,
+          "y": 3,
+          "equals": " "
+        }
+      ]
+    },
+    {
+      "branch": "category-autoselect.hint-repeat-ordinary-assist",
+      "segment": 20,
+      "screenIncludes": [
+        "Auto-select every relevant item"
+      ],
+      "screenCells": [
+        {
+          "step": 201,
+          "x": 27,
+          "y": 3,
+          "equals": "("
+        },
+        {
+          "step": 217,
+          "x": 27,
+          "y": 3,
+          "equals": "("
+        },
+        {
+          "step": 233,
+          "x": 27,
+          "y": 3,
+          "equals": "("
+        }
+      ]
+    },
+    {
+      "branch": "category-autoselect.hint-repeat-paranoid-quiet",
+      "segment": 21,
+      "screenIncludes": [
+        "Auto-select every relevant item"
+      ],
+      "screenCells": [
+        {
+          "step": 201,
+          "x": 30,
+          "y": 3,
+          "equals": "("
+        },
+        {
+          "step": 217,
+          "x": 43,
+          "y": 3,
+          "equals": " "
+        },
+        {
+          "step": 233,
+          "x": 43,
+          "y": 3,
+          "equals": " "
+        }
+      ]
+    },
+    {
+      "branch": "category-autoselect.hint-repeat-paranoid-assist",
+      "segment": 22,
+      "screenIncludes": [
+        "Auto-select every relevant item"
+      ],
+      "screenCells": [
+        {
+          "step": 201,
+          "x": 30,
+          "y": 3,
+          "equals": "("
+        },
+        {
+          "step": 217,
+          "x": 30,
+          "y": 3,
+          "equals": "("
+        },
+        {
+          "step": 233,
+          "x": 30,
+          "y": 3,
+          "equals": "("
+        }
+      ]
+    }
+  ]
+}

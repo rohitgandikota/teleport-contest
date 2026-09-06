@@ -16,7 +16,7 @@ import { pushKey, nhgetch } from './input.js';
 import { newgame, newgame_moveloop_preamble, moveloop_core,
          maybe_do_tutorial } from './allmain.js';
 import { wd_message } from './unixmain.js';
-import { parseNethackrc, optValue, set_fruit_name } from './options.js';
+import { parseNethackrc, optValue, set_fruit_name, set_menuobjsyms_flags } from './options.js';
 import { assign_graphics } from './symbols.js';
 import { flush_screen } from './display.js';
 import { GameDisplay } from './game_display.js';
@@ -159,6 +159,7 @@ export class NethackGame {
                     pickup_thrown: true,
                     ...rc.opts };
         g.iflags = {};
+        set_menuobjsyms_flags(rc.opts.menuobjsyms ?? 4);
         const pettype = optValue(rc, 'pettype');
         if (pettype) g.preferred_pet = pettype[0];
         if ('tutorial' in rc.opts) g.tutorial_set_in_config = true;

@@ -26,7 +26,7 @@ import { seemimic } from './mon.js';
 import { game } from './gstate.js';
 import { dodrop, doddrop } from './do.js';
 import { any_obj_ok, doprwep, doprarm, doprring, dopramulet, doprtool,
-         doprinuse, doprgold, obj_extract_self } from './invent.js';
+         doprinuse, doprgold, obj_extract_self, this_type_only } from './invent.js';
 import { dodown, doup, do_wire_mklev, do_wire_dokick, stairway_at } from './do.js';
 import { dokick_wire, ship_object, dokick } from './dokick.js';
 import { mklev, mklev_wire_mon } from './mklev.js';
@@ -51,7 +51,8 @@ import { Blind, Flying, Hallucination, Levitation, Passes_walls, Stealth }
 import { u_on_newpos } from './teleport.js';
 import { in_out_region } from './region.js';
 import { m_postmove_effect } from './monmove.js';
-import { doloot, dotip, query_inventory_category } from './pickup.js';
+import { doloot, dotip, query_inventory_category, query_objlist } from './pickup.js';
+import { USE_INVLET, INVORDER_SORT, INCLUDE_VENOM } from './const.js';
 import { curr_mon_load } from './mon.js';
 import { ECMD_FAIL, ECMD_CANCEL, Never_mind, A_DEX, A_CON, M_AP_TYPE,
          M_AP_FURNITURE, M_AP_OBJECT, OVERLOADED, Is_airlevel,
@@ -3137,22 +3138,15 @@ async function show_attributes() {
 // offx: 80 - (maxcol) - 1, and js/tty/wintty.js adds the +2 for the leading
 // and trailing space. seed8000 records the window at column 32 with the cursor
 // at [38,20].
-async function show_inventory(allowed_choices = null, title = null,
-                              show_class_headings = true) {
-    const items = display_inventory(allowed_choices);
+async function show_inventory() {
+    const items = display_inventory(null, true);
     if (!items.length) {
         await pline('Not carrying anything.');
         return;
     }
     const win = tty_create_nhwindow(NHW_MENU);
     tty_start_menu(win, MENU_BEHAVE_STANDARD);
-    /* query_objlist() uses gt.this_title as an ordinary first menu line.
-       It is deliberately not the highlighted end_menu prompt. */
-    if (title)
-        tty_add_menu_str(win, title);
     for (const it of items) {
-        if (it.heading && !show_class_headings)
-            continue;
         tty_add_menu(win, it.glyphinfo ?? null,
                      it.heading ? 0 : it.invlet.charCodeAt(0),
                      it.invlet || 0, 0,
@@ -3174,6 +3168,8 @@ async function show_inventory(allowed_choices = null, title = null,
 // offers classes and BUC states which are present, then query_objlist shows
 // the matching inventory and optionally enters that item's action menu.
 async function dotypeinv() {
+    game.this_type = 0;
+    game.this_title = null;
     const invent = game.invent || [];
     const { doinvbill } = await import('./shk.js');
     const billx = (game.u.ushops || '').length && await doinvbill(0);
@@ -3194,31 +3190,23 @@ async function dotypeinv() {
             await doinvbill(1);
         return ECMD_OK;
     }
-    let filter, title = null;
-    if (code > 0 && code < OCLASSES.MAXOCLASSES) {
-        filter = (obj) => obj.oclass === code;
-    } else if (marker === 'B') {
-        filter = (obj) => !!obj.bknown && !!obj.blessed;
-        title = 'Items known to be blessed:';
-    } else if (marker === 'U') {
-        filter = (obj) => !!obj.bknown && !obj.blessed && !obj.cursed;
-        title = 'Items known to be uncursed:';
-    } else if (marker === 'C') {
-        filter = (obj) => !!obj.bknown && !!obj.cursed;
-        title = 'Items known to be cursed:';
-    } else if (marker === 'X') {
-        filter = (obj) => !obj.bknown;
-        title = 'Items whose blessed/uncursed/cursed status is unknown:';
-    } else if (marker === 'P') {
-        filter = (obj) => !!obj.pickup_prev;
-        title = 'Items that were just picked up:';
-    } else {
+    if (!(code > 0 && code < OCLASSES.MAXOCLASSES) && !'BUCXP'.includes(marker))
         return ECMD_OK;
-    }
-
-    const letters = invent.filter(filter).map((obj) => obj.invlet).join('');
-    if (letters)
-        await show_inventory(letters, title);
+    game.this_type = code;
+    game.this_title = ({
+        B: 'Items known to be blessed:',
+        U: 'Items known to be uncursed:',
+        C: 'Items known to be cursed:',
+        X: 'Items whose blessed/uncursed/cursed status is unknown:',
+        P: 'Items that were just picked up:',
+    })[marker] || null;
+    const selected = await query_objlist(null, invent,
+        (game.flags.fixinv !== false ? USE_INVLET : 0) | INVORDER_SORT | INCLUDE_VENOM,
+        PICK_ONE, this_type_only);
+    if (selected.length)
+        await itemactions(selected[0]);
+    game.this_type = 0;
+    game.this_title = null;
     return ECMD_OK;
 }
 

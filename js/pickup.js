@@ -60,7 +60,7 @@ import { In_sokoban, surface } from './dungeon.js';
 import { Is_mbag, splitobj, unbless, place_object, add_to_container,
          start_corpse_timeout, start_glob_timeout, set_bknown, hornoplenty }
     from './mkobj.js';
-import { PARANOID_AUTOALL } from './const.js';
+import { PARANOID_AUTOALL, PARANOID_CONFIRM } from './const.js';
 import { paranoia_bits, boolean_option, add_menu_heading } from './options.js';
 import { PMNAMES } from './monst_data.js';
 import { def_char_to_objclass } from './sp_lev.js';
@@ -91,7 +91,7 @@ import { inv_cnt } from './hack.js';
 import { freehand } from './engrave.js';
 import { Norep, impossible, pline_The, livelog_printf } from './pline.js';
 import { MENU_TRADITIONAL, MENU_FULL, MENU_PARTIAL, OBJ_CONTAINED,
-         W_ARMOR, W_ACCESSORY, LL_ACHIEVE, NO_MINVENT, MM_ADJACENTOK,
+         W_ARMOR, W_ACCESSORY, W_WEAPONS, LL_ACHIEVE, NO_MINVENT, MM_ADJACENTOK,
          MM_NOMSG, FOOT, ONAME_NO_FLAGS, has_omonst, OMONST } from './const.js';
 import { unsplitobj, get_mtraits, set_corpsenm } from './mkobj.js';
 import { setuwep_with_feedback, setuswapwep, setuqwep, welded, weldmsg } from './wield.js';
@@ -102,7 +102,7 @@ import { docrt, canspotmon } from './display.js';
 import { tty_create_nhwindow, tty_putstr, tty_display_nhwindow,
          tty_next_page, tty_destroy_nhwindow, NHW_MENU, NHW_TEXT } from './tty/wintty.js';
 import { xwaitforspace } from './tty/getline.js';
-import { getlin } from './cmd.js';
+import { getlin, paranoid_ynq } from './cmd.js';
 import { shop_keeper, stolen_value, pick_pick, check_unpaid_usage, subfrombill, Shk_Your } from './shk.js';
 import { is_pick } from './mon.js';
 import { uhis } from './mhitu.js';
@@ -1519,16 +1519,14 @@ export function find_justpicked(olist) {
 }
 
 /* src/pickup.c:1511 count_categories() */
-function count_categories(olist, filter = null) {
+export function count_categories(olist, qflags) {
     let ccount = 0;
-    const seen = new Set();
-    for (const curr of olist || []) {
-        if (filter && !filter(curr))
-            continue;
-        if (!seen.has(curr.oclass)) {
-            seen.add(curr.oclass);
-            ccount++;
-        }
+    const do_worn = (qflags & WORN_TYPES) !== 0;
+    for (const oclass of inv_order()) {
+        if ((olist || []).some(obj => obj.oclass === oclass
+            && (!do_worn || (obj.owornmask
+                            & (W_ARMOR | W_ACCESSORY | W_WEAPONS)))))
+            ++ccount;
     }
     return ccount;
 }
@@ -1547,19 +1545,18 @@ const ALL_TYPES_SELECTED = -2;
 // codes, ALL_TYPES_SELECTED, 'B'/'U'/'C'/'X'). Identifiers in the tty
 // menu are the codes themselves (offset by +1000 to keep them non-zero
 // is unnecessary: all are non-zero already).
-async function query_category(qstr, olist, qflags, how = null) {
+export async function query_category(qstr, olist, qflags, how = PICK_ANY) {
     const { tty_create_nhwindow, tty_start_menu, tty_add_menu,
-            tty_add_menu_str, tty_end_menu, tty_display_nhwindow,
-            tty_select_menu, tty_destroy_nhwindow, ATR_NONE, ATR_INVERSE,
+            tty_add_menu_str, tty_end_menu,
+            tty_select_menu, tty_destroy_nhwindow, ATR_NONE,
             NHW_MENU } = await import('./tty/wintty.js');
-    const { MENU_BEHAVE_STANDARD, MENU_ITEMFLAGS_NONE,
-            MENU_ITEMFLAGS_SKIPINVERT, PICK_ONE, PICK_ANY }
+    const { MENU_ITEMFLAGS_SKIPINVERT }
         = await import('./const.js');
     if (!olist || !olist.length)
         return [];
 
     const do_worn = (qflags & WORN_TYPES) !== 0;
-    const ofilter = do_worn ? (obj) => !!obj.owornmask : null;
+    const ofilter = do_worn ? is_worn : null;
     const do_unpaid = (qflags & UNPAID_TYPES) !== 0 && count_unpaid(olist);
     const do_usedup = (qflags & BILLED_TYPES) !== 0;
     let num_buc_types = 0;
@@ -1572,9 +1569,9 @@ async function query_category(qstr, olist, qflags, how = null) {
     const do_buc_unknown = (qflags & BUC_UNKNOWN) !== 0
                            && count_buc(olist, BUC_UNKNOWN, ofilter) && ++num_buc_types;
     const num_justpicked = (qflags & JUSTPICKED) !== 0
-        ? olist.filter(o => o.pickup_prev).length : 0;
+        ? count_justpicked(olist) : 0;
 
-    const ccount = count_categories(olist, ofilter);
+    const ccount = count_categories(olist, qflags);
     /* no point in actually showing a menu for a single category */
     if (ccount === 1 && !do_unpaid && !do_usedup && num_buc_types <= 1) {
         const curr = olist.find((obj) => !ofilter || ofilter(obj));
@@ -1584,8 +1581,11 @@ async function query_category(qstr, olist, qflags, how = null) {
     const win = tty_create_nhwindow(NHW_MENU);
     tty_start_menu(win, MENU_BEHAVE_STANDARD);
 
-    const pack = inv_order();
+    const pack = [...inv_order()];
+    if (qflags & INCLUDE_VENOM)
+        pack.push(OCLASSES.VENOM_CLASS);
     const show_a = (qflags & ALL_TYPES) !== 0 && ccount > 1;
+    let verify_All = false;
 
     if ((qflags & CHOOSE_ALL) !== 0) {
         tty_add_menu(win, null, 'A'.charCodeAt(0), 'A', 0, ATR_NONE,
@@ -1593,9 +1593,20 @@ async function query_category(qstr, olist, qflags, how = null) {
                          ? 'Auto-select every item being worn or wielded'
                          : 'Auto-select every relevant item',
                      MENU_ITEMFLAGS_SKIPINVERT);
-        /* verify_All needs paranoid_confirm:A which defaults off */
-        tty_add_menu_str(win,
-            '    (ignored unless some other choices are also picked)');
+        verify_All = how === PICK_ANY && !!(paranoia_bits() & PARANOID_AUTOALL);
+        if (!verify_All) {
+            const prior = game.A_first_hint ?? 0;
+            game.A_first_hint = prior + 1;
+            if (!prior || boolean_option('cmdassist'))
+                tty_add_menu_str(win,
+                    '    (ignored unless some other choices are also picked)');
+        } else if (show_a) {
+            const prior = game.A_second_hint ?? 0;
+            game.A_second_hint = prior + 1;
+            if (!prior || boolean_option('cmdassist'))
+                tty_add_menu_str(win,
+                    "    (if no other choices are picked, 'a' is implied)");
+        }
         tty_add_menu_str(win, '');
     }
 
@@ -1617,8 +1628,15 @@ async function query_category(qstr, olist, qflags, how = null) {
             continue;
         tty_add_menu(win, null, oclass, invlet, def_oc_syms[oclass],
                      ATR_NONE, NO_COLOR,
-                     let_to_name(oclass), MENU_ITEMFLAGS_NONE);
+                     let_to_name(oclass, false,
+                         how !== PICK_NONE && game.iflags.menu_head_objsym),
+                     MENU_ITEMFLAGS_NONE);
         invlet = String.fromCharCode(invlet.charCodeAt(0) + 1);
+        if (invlet >= 'u') {
+            await impossible('query_category: too many categories');
+            tty_destroy_nhwindow(win);
+            return [];
+        }
     }
 
     if (do_unpaid || do_usedup || num_buc_types > 0 || num_justpicked)
@@ -1648,7 +1666,7 @@ async function query_category(qstr, olist, qflags, how = null) {
                      NO_COLOR, 'Items of unknown Bless/Curse status',
                      MENU_ITEMFLAGS_SKIPINVERT);
     if (num_justpicked) {
-        const jp = olist.find(o => o.pickup_prev);
+        const jp = find_justpicked(olist);
         const buf = (num_justpicked === 1 && jp)
                     ? `Just picked up: ${doname(jp)}`
                     : 'Items you just picked up';
@@ -1656,8 +1674,30 @@ async function query_category(qstr, olist, qflags, how = null) {
                      NO_COLOR, buf, MENU_ITEMFLAGS_SKIPINVERT);
     }
     tty_end_menu(win, qstr);
-    await tty_display_nhwindow(win);
-    const picks = await tty_select_menu(win, how ?? PICK_ANY);
+    let picks = await tty_select_menu(win, how);
+    const all = 'A'.charCodeAt(0);
+    if (picks.length && verify_All) {
+        const i = picks.indexOf(all);
+        if (i >= 0) {
+            const answer = await paranoid_ynq(paranoia_bits() & PARANOID_CONFIRM,
+                'Really autoselect All?', true);
+            if (answer === 'n' && picks.length > 1) {
+                picks.splice(i, 1);
+                picks.counts?.delete(all);
+            } else if (answer === 'n' && (qflags & ALL_TYPES)) {
+                picks[0] = ALL_TYPES_SELECTED;
+                if (picks.counts?.has(all)) {
+                    picks.counts.set(ALL_TYPES_SELECTED, picks.counts.get(all));
+                    picks.counts.delete(all);
+                }
+            } else if (answer !== 'y') {
+                picks = [];
+            }
+        }
+    } else if (picks.length === 1 && !verify_All && picks[0] === all) {
+        picks = [];
+        await pline('No relevant items selected.');
+    }
     tty_destroy_nhwindow(win);
     /* tty_select_menu() already dismisses the window while status output is
        suppressed. A second docrt() here would repaint status cells which C

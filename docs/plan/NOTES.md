@@ -11,6 +11,30 @@ Newest first within each section.
 
 ---
 
+## Category selection, venom and menu symbols
+
+C counts categories only in inv_order, then appends venom to the menu.
+The single-category shortcut returns the first eligible object in list
+order, which can be venom even though venom did not contribute to the
+count. count_categories excludes saddle bits; is_worn includes them.
+Ball and chain bits are excluded by both. Test these predicates separately.
+
+A alone is rejected unless ParanoidAutoAll enables confirmation. Declining
+replaces a lone A with All types only when the caller permits that flag.
+Mixed selections retain their other categories and counts. The two hint
+counters reset per game; cmdassist controls repetition after the first hint.
+
+Wishes do not generally reveal BUC. Use wizard identification before
+claiming a B/U/C filtering probe. Adding a new class changes accelerators.
+Assert the actual C menu and final inventory, not just the requested keys.
+
+menu_objsyms has six modes. Its obsolete bare alias is case-sensitive in
+the C value handler: lowercase use_menu_glyphs selects entries, uppercase
+selects headers. The alternate one-or-the-other spelling accepts a suffix.
+The native recipes preserve these quirks. Invalid numeric values expose
+an unported startup error screen; keep that failure separate from parser
+checks and passing gameplay recordings.
+
 ## Fatal HP and status timing
 
 C botl.c:259 skips the whole status draw when human HP is exactly -1,

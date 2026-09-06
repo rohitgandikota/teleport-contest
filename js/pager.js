@@ -1320,7 +1320,7 @@ export async function doquickwhatis() {
 /* display_inventory((char *)0, TRUE) — the PICK_ONE inventory browse the
    'i' arm of do_look uses. Reuses invent.js's menu-entry builder. */
 async function display_inventory_pickone() {
-    const entries = display_inventory();
+    const entries = display_inventory(null, true);
     if (!entries.length) {
         await pline('Not carrying anything.');
         return 0;

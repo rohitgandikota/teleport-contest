@@ -11,9 +11,7 @@ import { add_damage } from './shk.js';
 import { in_rooms } from './hack.js';
 import { wake_nearto } from './mon.js';
 import { distu, s_suffix } from './hacklib.js';
-import { could_untrap, untrap_box } from './trap.js';
-import { has_magic_key } from './artifact.js';
-import { Confusion, Hallucination } from './youprop.js';
+import { could_untrap, untrap } from './trap.js';
 import { safe_qbuf, ysimple_name } from './objnam.js';
 import { Deaf } from './youprop.js';
 import { Unaware } from './youprop.js';
@@ -588,9 +586,7 @@ export async function pick_lock(pick, rx, ry, container) {
                     : await ynq(safe_qbuf('Check ', ' for a trap?', otmp,
                                         yname, ysimple_name, 'this'))) !== 'n') {
                 if (c === 'q') return PICKLOCK_DID_NOTHING;
-                // src/trap.c:5864..5878 untrap(FALSE,0,0,otmp), container arm.
-                const confused = Confusion() || Hallucination();
-                await untrap_box(otmp, !!has_magic_key(game.youmonst), confused);
+                await untrap(false, 0, 0, otmp);
                 return PICKLOCK_DID_SOMETHING;
             } else if (autounlock && (au & AUTOUNLOCK_APPLY_KEY) !== 0) {
                 c = 'q';
@@ -707,12 +703,15 @@ export async function pick_lock(pick, rx, ry, container) {
         await pline('This door is broken.');
         return PICKLOCK_LEARNED_SOMETHING;
     default: {
-        /* AUTOUNLOCK_UNTRAP is not in the default autounlock setting and
-           could_untrap needs trap-detection machinery; record if an rc
-           ever turns it on */
-        if (((game.flags?.autounlock ?? AUTOUNLOCK_APPLY_KEY)
-             & AUTOUNLOCK_UNTRAP) !== 0)
-            note_unported_lock('pick_lock:autounlock_untrap');
+        if ((game.flags.autounlock & AUTOUNLOCK_UNTRAP) !== 0
+            && await could_untrap(false, false)) {
+            const c = await ynq('Check this door for a trap?');
+            if (c !== 'n') {
+                if (c === 'q') return PICKLOCK_DID_NOTHING;
+                await untrap(false, cc.x, cc.y, null);
+                return PICKLOCK_DID_SOMETHING;
+            }
+        }
 
         /* credit cards are only good for unlocking */
         if (picktyp === ONAMES.CREDIT_CARD && !(door.doormask & D_LOCKED)) {

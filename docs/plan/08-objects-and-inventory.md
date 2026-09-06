@@ -78,12 +78,16 @@ plausible-but-wrong names that are hard to spot in a diff.
 
 ### 8.3 Pickup, drop, containers
 
+- [x] Untrapping entry and rescue: 284 C scenarios cover floor, container and
+      door selection, roles, tools, captive rescue, half damage and flight
+      blocking. Native state and 73 constructed groups pass. See
+      [untrapping-audit.md](untrapping-audit.md) for measured C outcomes and
+      the remaining mounted, mimic, shop and rare-rescue coverage gaps.
 - [x] Looting entry and automatic container unlocking: 144 C scenarios cover
       multiple containers, floor guards, saddle dispatch, confused gold
       transfers, option parsing and menus, trap checks, and magic-key roles
       and ordering. Native state and 52 constructed groups pass. See
-      [looting-entry-audit.md](looting-entry-audit.md). Full untrap and the
-      remaining pick_lock/autokey branches remain open.
+      [looting-entry-audit.md](looting-entry-audit.md). Remaining pick_lock/autokey branches remain open.
 - [x] Container selection and carrying pass: complete relevant query_classes,
       traditional_loot, menu_loot, use_container and transfer callbacks, with
       counted-stack restoration, carrying limits, gold rounding and contents

@@ -9,9 +9,8 @@ import { game } from './gstate.js';
 import { roles } from './role_data.js';
 import { near_capacity } from './attrib.js';
 import { NOT_HUNGRY, UNENCUMBERED, SICK_VOMITABLE, SICK_NONVOMITABLE,
-         TT_LAVA, Upolyd } from './const.js';
-import { MFLAGS } from './monst_data.js';
-import { Blind } from './youprop.js';
+         TT_LAVA } from './const.js';
+import { Blind, Levitation, Flying } from './youprop.js';
 
 /* src/botl.c:817 condtests[] — one row per status condition. `enabled`
    defaults to !opt_in and the 'status condition fields' option edits it; the
@@ -141,13 +140,10 @@ export function bot_conditions() {
         cond += ' Blind';
     if (intr.HConfusion || props.CONFUSION) cond += ' Conf';
     if (intr.HDeaf || props.DEAF) cond += ' Deaf';
-    if (!(props.LEVITATION || intr.HLevitation)
-        && (props.FLYING || intr.HFlying
-            || (Upolyd(u) && (game.youmonst.data.mflags1 & MFLAGS.M1_FLY))))
-        cond += ' Fly';
+    if (Flying()) cond += ' Fly';
     if ((intr.HHallucination || props.HALLUC) && !props.HALLUC_RES)
         cond += ' Hallu';
-    if (props.LEVITATION || intr.HLevitation) cond += ' Lev';
+    if (Levitation()) cond += ' Lev';
     if (u.usteed) cond += ' Ride';
     if (intr.HStun || props.STUNNED) cond += ' Stun';
     return cond;

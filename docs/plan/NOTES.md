@@ -11,6 +11,30 @@ Newest first within each section.
 
 ---
 
+## Untrapping and rescue oracles
+
+A pit does not stop a hurtled monster while it is airborne. Put a wall beyond
+it to make the monster land there. Small monsters evade bear traps; pony,
+large dog and troll setups reach actual capture. Check the native monster
+state and rescue message before calling a scenario a rescue.
+
+Spaces answer ynq prompts using their default, often cancellation. A known
+trap's movement warning also needs explicit yes before testing a trapped
+hero. The wizard identification command is #wizidentify, with a real menu
+selection to make identification permanent. #identify is unknown. Inspect
+the native prompt and next key, not just a probe's intended input string.
+
+C float_up compares utraptype with WEB, not TT_WEB. Preserve its resulting
+leg-stuck message for a web. Capture uses set_utrap so blocked Lev/Fly stays
+consistent; terrain transitions must call switch_terrain to restore flight.
+Explosion HP damage is halved separately from the raw damage used for stun.
+
+Remembered trap glyphs are not live trap-state oracles. Use native action
+messages at exact input boundaries, and constructed states for hidden
+knowledge and ownership. Omitting the pager tseen update passes the new
+native corpus but fails its state gate. Charge deduction needs either a
+constructed success or an identified, successful native grease repair.
+
 ## Looting, automatic unlocking and magic keys
 
 C autounlock is a bitmask, not the configuration string. Its parser accepts

@@ -10,26 +10,26 @@ Ground rules are in `/CLAUDE.md`. Read that first if you have not.
 
 ---
 
-## Current focus, 2026-09-05
+## Current focus, 2026-09-06
 
 The active goal is the complete faithful C/Lua port, with byte-identical output
 and persistent gameplay state. Continue source review, measured C branches,
-independent oracles, implementation, and regression checks until that goal is
+independent oracles, implementation and regression checks until that goal is
 met. Current corpus success is not the stopping criterion.
 
-The latest pass adds 144 C cases for looting entry, confused gold transfers,
-automatic unlocking, container traps and magic-key rules. All 44 public and
-519 supplemental fixtures pass, matching 476,790 screens/cursors and 11,484,057
-RNG calls. The C union reaches 56,206/108,268 direct outcomes and 4,385/5,491
-entered records. The assertion ledger is 2,901/2,901. State checks validate
-144 native replays and 52 constructed groups. Skipping a coffer weight update
-passes native output checks but fails the state gate.
+The latest pass adds 284 C cases for untrapping, monster rescue, tools,
+automatic checks, half damage and blocked flight. All 44 public and 525
+supplemental fixtures pass, matching 570,988 screens/cursors and 12,181,411
+RNG calls. The C union reaches 56,619/108,268 direct outcomes and 4,398/5,491
+entered records. The assertion ledger is 3,185/3,185. State checks validate
+284 native replays and 73 constructed groups. Omitting a trap-knowledge
+update passes all new native output checks but fails the state gate.
 
-See [STATUS.md](STATUS.md) for the checkpoint and next action,
-[looting-entry-audit.md](looting-entry-audit.md) for the current review and
+See [STATUS.md](STATUS.md) for the current action,
+[untrapping-audit.md](untrapping-audit.md) for the source review and
 [gameplay-gap-audit.md](gameplay-gap-audit.md) for measurement limits.
-The earlier published held-out result was 78.39%; the local suite does not
-establish a newer held-out score. The full untrapping flow is next. Remaining
+The earlier published held-out result was 78.39%; this local suite does not
+establish a newer held-out score. Lock-picking occupations are next. Remaining
 lock, disclosure, inventory lifecycle, spell, monster and Lua paths are open.
 The full-port goal continues.
 

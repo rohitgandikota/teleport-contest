@@ -6,6 +6,32 @@
 // holds the pieces of src/trap.c it calls into, so that a grep for a C symbol
 // finds it in the file its C twin lives in.
 
+import { Is_box } from './obj.js';
+import { Confusion, Stunned } from './youprop.js';
+import { has_magic_key, u_wield_art, attacks } from './artifact.js';
+import { ART_STING } from './artilist_data.js';
+import { test_move, bad_rock, check_capacity } from './hack.js';
+import { getdir, preparePunishmentMove, finishPunishmentMove } from './cmd.js';
+import { u_on_newpos } from './teleport.js';
+import { check_leash, consume_obj_charge } from './apply.js';
+import { inv_weight, weight_cap, calc_capacity, adjalign } from './attrib.js';
+import { bigmonst, unique_corpstat } from './mondata.js';
+import { is_blade, killed } from './mon.js';
+import { P_SKILL } from './weapon.js';
+import { rider_cant_reach } from './steed.js';
+import { abuse_dog } from './dog.js';
+import { maketrap } from './mklev.js';
+import { There, You_cant } from './pline.js';
+import { bare_artifactname, safe_qbuf, ansimpleoname } from './objnam.js';
+import { mon_pmname } from './do_name.js';
+import { getobj, GETOBJ_EXCLUDE, GETOBJ_SUGGEST, GETOBJ_DOWNPLAY, GETOBJ_PROMPT } from './invent.js';
+import { stumble_on_door_mimic } from './lock.js';
+import { stumble_onto_mimic } from './uhitm.js';
+import { unblock_point } from './vision.js';
+import { add_damage } from './shk.js';
+import { ECMD_TIME, TEST_MOVE, WT_TOOMUCH_DIAGONAL, P_RIDING, P_BASIC,
+         A_LAWFUL, M_AP_TYPE, M_AP_FURNITURE, M_AP_OBJECT,
+         D_NODOOR, D_ISOPEN, D_TRAPPED } from './const.js';
 import { t_at, mon_to_stone } from './mon.js';
 import { mon_adjust_speed } from './worn.js';
 import { pline_mon } from './pline.js';
@@ -323,16 +349,14 @@ import { impossible } from './pline.js';
 // src/trap.c:6694 b_trapped(), shared by trapped doors and tins.
 export async function b_trapped(item, bodypart) {
     const lvl = level_difficulty();
-    let dmg = rnd(5 + (lvl < 5 ? lvl : 2 + Math.trunc(lvl / 2)));
-    await pline(`KABOOM!!  The ${item} was booby-trapped!`);
+    const dmg = rnd(5 + (lvl < 5 ? lvl : 2 + Math.trunc(lvl / 2)));
+    await pline(`KABOOM!!  ${The(item)} was booby-trapped!`);
     await wake_nearby(false);
-    if (game.u.uprops?.HALF_PHYS)
-        dmg = Math.trunc((dmg + 1) / 2);
-    await losehp(dmg, 'explosion', KILLED_BY_AN);
+    await losehp(Maybe_Half_Phys(dmg), 'explosion', KILLED_BY_AN);
     exercise(A_STR, false);
     if (bodypart !== NO_PART)
         exercise(A_CON, false);
-    const oldStun = game.u.intrinsic?.HStun | 0;
+    const oldStun = (game.u.intrinsic?.HStun || 0) & TIMEOUT;
     const { make_stunned } = await import('./potion.js');
     await make_stunned(oldStun + dmg, true);
 }
@@ -629,18 +653,445 @@ export async function untrap_box(box, force, confused) {
     }
 }
 
-// src/trap.c:5250 dountrap() and the preliminary could_untrap() checks.
+// src/trap.c:5250 dountrap().
 export async function dountrap() {
-    const mdat = game.youmonst.data;
-    if ((nohands(mdat) && !webmaker(mdat)) || !mdat.mmove) {
-        await pline('And just how do you expect to do that?');
+    if (!await could_untrap(true, false))
         return ECMD_OK;
+    return await untrap(false, 0, 0, null) ? ECMD_TIME : ECMD_OK;
+}
+
+// src/trap.c:5292 untrap_prob(), zero means success. Keep draw order intact.
+export function untrap_prob(ttmp) {
+    let chance = 3;
+    const u = game.u;
+    if (ttmp.ttyp === WEB) {
+        const wep = u.uwep && is_blade(u.uwep) ? u.uwep
+            : u.uswapwep && u.twoweap && is_blade(u.uswapwep) ? u.uswapwep : null;
+        if (wep && !m_at(ttmp.tx, ttmp.ty)) {
+            if (u_wield_art(ART_STING) || attacks(ATTKS.AD_FIRE, wep))
+                chance = 1;
+        } else if (!webmaker(game.youmonst.data)) {
+            chance = 7;
+        }
     }
-    const { getdir } = await import('./cmd.js');
-    if (!(await getdir(null)))
-        return ECMD_OK;
-    (game.unported ||= new Set()).add('trap:dountrap');
-    return ECMD_OK;
+    if (Confusion() || Hallucination()) chance++;
+    if (Blind()) chance++;
+    if (Stunned()) chance += 2;
+    if (Fumbling()) chance *= 2;
+    if (ttmp.madeby_u) chance--;
+    if (Role_if(PMNAMES.PM_RANGER) && ttmp.ttyp === BEAR_TRAP && chance <= 3)
+        return 0;
+    if (Role_if(PMNAMES.PM_ROGUE)) {
+        if (rn2(2 * MAXULEV) < u.ulevel) chance--;
+        if (u.uhave?.questart && chance > 1) chance--;
+    } else if (Role_if(PMNAMES.PM_RANGER) && chance > 1) {
+        chance--;
+    }
+    if (chance < 1) chance = 1;
+    return rn2(chance);
+}
+
+// src/trap.c:5393 move_into_trap(), including punishment and forced triggering.
+export async function move_into_trap(ttmp) {
+    const u = game.u, x = ttmp.tx, y = ttmp.ty;
+    let punishmentMove = null;
+    if (await test_move(u.ux, u.uy, Math.sign(x - u.ux), Math.sign(y - u.uy), TEST_MOVE)
+        && (!Punished() || (punishmentMove = await preparePunishmentMove(x, y, true)))) {
+        u.ux0 = u.ux;
+        u.uy0 = u.uy;
+        u_on_newpos(x, y);
+        u.umoved = true;
+        newsym(u.ux0, u.uy0);
+        vision_recalc(1);
+        await check_leash(u.ux0, u.uy0);
+        if (Punished()) finishPunishmentMove(punishmentMove);
+        ttmp.tseen = 0;
+        game.iflags.failing_untrap = (game.iflags.failing_untrap || 0) + 1;
+        await spoteffects(true);
+        game.iflags.failing_untrap--;
+        if ((ttmp = t_at(u.ux, u.uy))) ttmp.tseen = 1;
+        exercise(A_WIS, false);
+    } else {
+        await pline(`Fortunately, you don't move ${into_vs_onto(ttmp.ttyp) ? 'into' : 'onto'} it.`);
+    }
+}
+
+// src/trap.c:5441 try_disarm(), 0 refuses, 1 fails, 2 succeeds.
+export async function try_disarm(ttmp, force_failure) {
+    const u = game.u, mtmp = m_at(ttmp.tx, ttmp.ty), ttype = ttmp.ttyp;
+    const under_u = !u.dx && !u.dy, holdingtrap = ttype === BEAR_TRAP || ttype === WEB;
+    if (mtmp && (!mtmp.mtrapped || !holdingtrap)) {
+        await pline(`${Monnam(mtmp)} is in the way.`);
+        return 0;
+    }
+    if (sobj_at(ONAMES.BOULDER, ttmp.tx, ttmp.ty) && !Passes_walls() && !under_u) {
+        await There('is a boulder in your way.');
+        return 0;
+    }
+    if (u.dx && u.dy && bad_rock(game.youmonst.data, u.ux, ttmp.ty)
+        && bad_rock(game.youmonst.data, ttmp.tx, u.uy)) {
+        if ((game.invent.length && inv_weight() + weight_cap() > WT_TOOMUCH_DIAGONAL)
+            || bigmonst(game.youmonst.data)) {
+            await You(`are unable to reach the ${trapname(ttype, false)}!`);
+            return 0;
+        }
+    }
+    if (!can_reach_floor(under_u)) {
+        if (u.usteed && P_SKILL(P_RIDING) < P_BASIC)
+            await rider_cant_reach();
+        else
+            await You(`are unable to reach the ${trapname(ttype, false)}!`);
+        return 0;
+    }
+    if (force_failure || untrap_prob(ttmp)) {
+        if (rnl(5)) {
+            await pline('Whoops...');
+            if (mtmp) {
+                if (ttype === BEAR_TRAP) {
+                    if (mtmp.mtame) await abuse_dog(mtmp);
+                    mtmp.mhp -= rnd(4);
+                    if (DEADMONSTER(mtmp)) await killed(mtmp);
+                } else if (ttype === WEB) {
+                    let ttmp2 = t_at(u.ux, u.uy);
+                    if (!webmaker(game.youmonst.data) && !rn2(3)
+                        && (ttmp2 ? ttmp2.ttyp === WEB : (ttmp2 = maketrap(u.ux, u.uy, WEB)))) {
+                        await pline_The("web sticks to you.  You're caught too!");
+                        await dotrap(ttmp2, NOWEBMSG);
+                        if (u.usteed && u.utrap) await dismount_steed(DISMOUNT_FELL);
+                    }
+                    if (mtmp.mtrapped) await pline(`${Monnam(mtmp)} remains entangled.`);
+                }
+            } else if (under_u) {
+                await dotrap(ttmp, FAILEDUNTRAP);
+            } else {
+                await move_into_trap(ttmp);
+            }
+        } else {
+            await pline(`${ttmp.madeby_u ? 'Your' : under_u ? 'This' : 'That'} ${
+                trapname(ttype, false)} is difficult to ${ttype === WEB ? 'remove' : 'disarm'}.`);
+        }
+        return 1;
+    }
+    return 2;
+}
+
+// src/trap.c:5530 reward_untrap(), friendliness and lawful alignment rewards.
+export async function reward_untrap(ttmp, mtmp) {
+    if (!ttmp.madeby_u) {
+        if (rnl(10) < 8 && !mtmp.mpeaceful && !helpless(mtmp)
+            && !mtmp.mfrozen && !mindless(mtmp.data) && !unique_corpstat(mtmp.data)
+            && mtmp.data.mlet !== MONSYMS.S_HUMAN) {
+            mtmp.mpeaceful = 1;
+            set_malign(mtmp);
+            await pline(`${Monnam(mtmp)} is grateful.`);
+        }
+        if (!rn2(3) && !rnl(8) && game.u.ualign.type === A_LAWFUL) {
+            adjalign(1);
+            await You_feel('that you did the right thing.');
+        }
+    }
+}
+
+// src/trap.c:5553 disarm_holdingtrap(), touching only the trap, not the monster.
+export async function disarm_holdingtrap(ttmp) {
+    const which = ttmp.madeby_u ? 'your' : 'the';
+    const fails = await try_disarm(ttmp, false);
+    if (fails < 2) return fails;
+    const u = game.u, mtmp = m_at(ttmp.tx, ttmp.ty);
+    if (mtmp) {
+        mtmp.mtrapped = 0;
+        await You(`extract ${mon_nam(mtmp)} from ${which} ${ttmp.ttyp === BEAR_TRAP ? 'bear trap' : 'web'}.`);
+        await reward_untrap(ttmp, mtmp);
+    } else if (ttmp.ttyp === BEAR_TRAP) {
+        await You(`disarm ${which} bear trap.`);
+        await cnv_trap_obj(ONAMES.BEARTRAP, 1, ttmp, false);
+    } else if (ttmp.ttyp === WEB) {
+        const wep = u.uwep && is_blade(u.uwep) ? u.uwep
+            : u.uswapwep && u.twoweap && is_blade(u.uswapwep) ? u.uswapwep : null;
+        if (wep && wep.oartifact && (u_wield_art(ART_STING) || attacks(ATTKS.AD_FIRE, wep)))
+            await pline(`${bare_artifactname(u.uwep)} ${u_wield_art(ART_STING) ? 'cuts' : 'burns'} through ${which} web!`);
+        else if (wep)
+            await You(`cut through ${which} web.`);
+        else
+            await You(`succeed in removing ${which} web.`);
+        deltrap(ttmp);
+    }
+    newsym(u.ux + u.dx, u.uy + u.dy);
+    return 1;
+}
+
+// src/trap.c:5594 disarm_landmine().
+export async function disarm_landmine(ttmp) {
+    const fails = await try_disarm(ttmp, false);
+    if (fails < 2) return fails;
+    await You(`disarm ${ttmp.madeby_u ? 'your' : 'the'} land mine.`);
+    await cnv_trap_obj(ONAMES.LAND_MINE, 1, ttmp, false);
+    return 1;
+}
+
+// src/trap.c:5608 unsqueak_ok(), downplay unknown oil and other potions.
+export function unsqueak_ok(obj) {
+    if (!obj) return GETOBJ_EXCLUDE;
+    if (obj.otyp === ONAMES.CAN_OF_GREASE) return GETOBJ_SUGGEST;
+    if (obj.otyp === ONAMES.POT_OIL && obj.dknown && game.objects[ONAMES.POT_OIL].oc_name_known)
+        return GETOBJ_SUGGEST;
+    if (obj.oclass === OCLASSES.POTION_CLASS) return GETOBJ_DOWNPLAY;
+    return GETOBJ_EXCLUDE;
+}
+
+// src/trap.c:5630 disarm_squeaky_board(). Failed attempts do not consume a tool.
+export async function disarm_squeaky_board(ttmp) {
+    const obj = await getobj('untrap with', unsqueak_ok, GETOBJ_PROMPT);
+    if (!obj) return 0;
+    const bad_tool = obj.cursed || ((obj.otyp !== ONAMES.POT_OIL || obj.lamplit)
+        && (obj.otyp !== ONAMES.CAN_OF_GREASE || !obj.spe));
+    const fails = await try_disarm(ttmp, bad_tool);
+    if (fails < 2) return fails;
+    if (obj.otyp === ONAMES.CAN_OF_GREASE) {
+        await consume_obj_charge(obj, true);
+    } else {
+        await useup(obj);
+        makeknown(ONAMES.POT_OIL);
+    }
+    await You('repair the squeaky board.');
+    deltrap(ttmp);
+    newsym(game.u.ux + game.u.dx, game.u.uy + game.u.dy);
+    more_experienced(1, 5);
+    await newexplevel();
+    return 1;
+}
+
+// src/trap.c:5664 disarm_shooting_trap().
+export async function disarm_shooting_trap(ttmp, otyp) {
+    const fails = await try_disarm(ttmp, false);
+    if (fails < 2) return fails;
+    await You(`disarm ${ttmp.madeby_u ? 'your' : 'the'} trap.`);
+    await cnv_trap_obj(otyp, 50 - rnl(50), ttmp, false);
+    return 1;
+}
+
+// src/trap.c:5677 try_lift(), including appreciation after a failed lift.
+export async function try_lift(mtmp, ttmp, xtra_wt, stuff) {
+    if (calc_capacity(xtra_wt) >= HVY_ENCUMBER) {
+        await pline(`${Monnam(mtmp)} is ${stuff ? 'carrying too much' : 'too heavy'} for you to lift.`);
+        if (!ttmp.madeby_u && !mtmp.mpeaceful && mtmp.mcanmove
+            && !mindless(mtmp.data) && mtmp.data.mlet !== MONSYMS.S_HUMAN && rnl(10) < 3) {
+            mtmp.mpeaceful = 1;
+            set_malign(mtmp);
+            await pline(`${Monnam(mtmp)} thinks it was nice of you to try.`);
+        }
+        return 0;
+    }
+    return 1;
+}
+
+// src/trap.c:5700 help_monster_out(), contact, waking, weight and pit filling.
+export async function help_monster_out(mtmp, ttmp) {
+    if (!mtmp.mtrapped) {
+        await pline(`${Monnam(mtmp)} isn't trapped.`);
+        return 0;
+    }
+    if (await check_capacity(null)) return 1;
+    const uprob = untrap_prob(ttmp);
+    if (uprob && !helpless(mtmp)) {
+        await You(`try to reach out your ${makeplural(body_part(ARM))}, but ${mon_nam(mtmp)} backs away skeptically.`);
+        return 1;
+    }
+    if (touch_petrifies(mtmp.data) && !game.u.uarmg && !Stone_resistance()) {
+        const name = mon_pmname(mtmp);
+        await You(`grab the trapped ${name} using your bare ${makeplural(body_part(HAND))}.`);
+        if (poly_when_stoned(game.youmonst.data) && await polymon(PMNAMES.PM_STONE_GOLEM)) {
+            await display_nhwindow_message(false);
+        } else {
+            await instapetrify(`trying to help ${an(name)} out of a pit`);
+            return 1;
+        }
+    }
+    if (uprob) {
+        await You(`try to grab ${mon_nam(mtmp)}, but cannot get a firm grasp.`);
+        if (mtmp.msleeping) {
+            mtmp.msleeping = 0;
+            await pline(`${Monnam(mtmp)} awakens.`);
+        }
+        return 1;
+    }
+    await You(`reach out your ${makeplural(body_part(ARM))} and grab ${mon_nam(mtmp)}.`);
+    if (mtmp.msleeping) {
+        mtmp.msleeping = 0;
+        await pline(`${Monnam(mtmp)} awakens.`);
+    } else if (mtmp.mfrozen && !rn2(mtmp.mfrozen)) {
+        mtmp.mcanmove = 1;
+        mtmp.mfrozen = 0;
+        await pline(`${Monnam(mtmp)} stirs.`);
+    }
+    let xtra_wt = mtmp.data.cwt;
+    if (!await try_lift(mtmp, ttmp, xtra_wt, false)) return 1;
+    if (mtmp.minvent?.length) {
+        for (const obj of mtmp.minvent) xtra_wt += obj.owt;
+        if (!await try_lift(mtmp, ttmp, xtra_wt, true)) return 1;
+    }
+    await You(`pull ${mon_nam(mtmp)} out of the pit.`);
+    mtmp.mtrapped = 0;
+    await reward_untrap(ttmp, mtmp);
+    await fill_pit(mtmp.mx, mtmp.my);
+    return 1;
+}
+
+// src/trap.c:5848 untrap(), floor, box and door selection share one turn rule.
+export async function untrap(force, rx, ry, container) {
+    const u = game.u, confused = Confusion() || Hallucination();
+    let x, y, trap_skipped = false, autounlock_door = false, boxcnt = 0;
+    if (!force && has_magic_key(game.youmonst)) force = true;
+    if (!rx && !container) {
+        if (!await getdir(null)) return 0;
+        x = u.ux + u.dx;
+        y = u.uy + u.dy;
+    } else {
+        if (container) {
+            await untrap_box(container, force, confused);
+            return 1;
+        }
+        x = rx;
+        y = ry;
+        autounlock_door = true;
+    }
+    if (!isok(x, y)) {
+        await pline_The('perils lurking there are beyond your grasp.');
+        return 0;
+    }
+    let ttmp = t_at(x, y);
+    if (ttmp && !ttmp.tseen) ttmp = null;
+    const trapdescr = ttmp ? trapname(ttmp.ttyp, false) : null;
+    const here = u.ux === x && u.uy === y;
+    if (here)
+        for (const obj of game.level.objects)
+            if (obj.ox === x && obj.oy === y && Is_box(obj) && ++boxcnt > 1) break;
+    let deal_with_floor_trap = can_reach_floor(false);
+    if (autounlock_door) {
+        // Automatic door checks skip the floor and container inquiries.
+    } else if (!deal_with_floor_trap) {
+        let the_trap = ttmp ? an(trapdescr) : '';
+        if (ttmp && boxcnt) the_trap += ' and ';
+        if (boxcnt) the_trap += boxcnt === 1 ? 'a container' : 'containers';
+        const plural = (ttmp && boxcnt > 0) || boxcnt > 1;
+        if (ttmp || boxcnt)
+            await There(`${plural ? 'are' : 'is'} ${the_trap} ${here ? 'here' : 'there'} but you can't reach ${plural ? 'them' : 'it'}${u.usteed ? ' while mounted' : ''}.`);
+        trap_skipped = !!ttmp;
+    } else {
+        if (ttmp) {
+            const the_trap = the(trapdescr);
+            if (boxcnt) {
+                if (is_pit(ttmp.ttyp)) {
+                    await You_cant(`do much about ${the_trap}${u.utrap ? " that you're stuck in" : ' while standing on the edge of it'}.`);
+                    trap_skipped = true;
+                    deal_with_floor_trap = false;
+                } else {
+                    const q = `There ${boxcnt === 1 ? 'is a container' : 'are containers'} and ${an(trapdescr)} here.  ${ttmp.ttyp === WEB ? 'Remove' : 'Disarm'} ${the_trap}?`;
+                    const c = await tty_yn_function(q, 'ynq', 'q');
+                    if (c === 'q') return 0;
+                    if (c === 'n') {
+                        trap_skipped = true;
+                        deal_with_floor_trap = false;
+                    }
+                }
+            }
+            if (deal_with_floor_trap) {
+                if (u.utrap) {
+                    await You(`cannot deal with ${the_trap} while trapped${here ? ' in it' : ''}!`);
+                    return 1;
+                }
+                const mtmp = m_at(x, y);
+                if (mtmp && (M_AP_TYPE(mtmp) === M_AP_FURNITURE || M_AP_TYPE(mtmp) === M_AP_OBJECT)) {
+                    await stumble_onto_mimic(mtmp);
+                    return 1;
+                }
+                switch (ttmp.ttyp) {
+                case BEAR_TRAP:
+                case WEB: return await disarm_holdingtrap(ttmp);
+                case LANDMINE: return await disarm_landmine(ttmp);
+                case SQKY_BOARD: return await disarm_squeaky_board(ttmp);
+                case DART_TRAP: return await disarm_shooting_trap(ttmp, ONAMES.DART);
+                case ARROW_TRAP: return await disarm_shooting_trap(ttmp, ONAMES.ARROW);
+                case PIT:
+                case SPIKED_PIT:
+                    if (here) {
+                        await You('are already on the edge of the pit.');
+                        return 0;
+                    }
+                    if (!mtmp) {
+                        await pline('Try filling the pit instead.');
+                        return 0;
+                    }
+                    return await help_monster_out(mtmp, ttmp);
+                default:
+                    await You(`cannot disable ${here ? 'this' : 'that'} trap.`);
+                    return 0;
+                }
+            }
+        }
+        if (boxcnt) {
+            for (const obj of game.level.objects) {
+                if (obj.ox !== x || obj.oy !== y || !Is_box(obj)) continue;
+                const q = obj.tknown && obj.dknown
+                    ? safe_qbuf('Disarm this ', null, obj, xname, ansimpleoname, 'a box')
+                    : safe_qbuf('There is ', ' here.  Check it for traps?', obj, doname, ansimpleoname, 'a box');
+                const c = await tty_yn_function(q, 'ynq', 'q');
+                if (c === 'q') return 0;
+                if (c === 'y') {
+                    if (obj.tknown && obj.dknown) await disarm_box(obj, force, confused);
+                    else await untrap_box(obj, force, confused);
+                    return 1;
+                }
+            }
+            await There('are no other chests or boxes here.');
+        }
+        if (await stumble_on_door_mimic(x, y)) return 1;
+    }
+    const loc = game.level.at(x, y);
+    if (!IS_DOOR(loc.typ)) {
+        if (!trap_skipped) await You('know of no traps there.');
+        return 0;
+    }
+    switch (loc.doormask) {
+    case D_NODOOR:
+        await You(`${Blind() ? 'feel' : 'see'} no door there.`);
+        return 0;
+    case D_ISOPEN:
+        await pline('This door is safely open.');
+        return 0;
+    case D_BROKEN:
+        await pline('This door is broken.');
+        return 0;
+    }
+    if (((loc.doormask & D_TRAPPED)
+         && (force || (!confused && rn2(MAXULEV - u.ulevel + 11) < 10)))
+        || (!force && confused && !rn2(3))) {
+        await You('find a trap on the door!');
+        exercise(A_WIS, true);
+        if (await tty_yn_function('Disarm it?', 'ynq', 'q') !== 'y') return 1;
+        if (loc.doormask & D_TRAPPED) {
+            const ch = 15 + (Role_if(PMNAMES.PM_ROGUE) ? u.ulevel * 3 : u.ulevel);
+            exercise(A_DEX, true);
+            if (!force && (confused || Fumbling() || rnd(75 + Math.trunc(level_difficulty() / 2)) > ch)) {
+                await You('set it off!');
+                await b_trapped('door', FINGER);
+                loc.doormask = D_NODOOR;
+                unblock_point(x, y);
+                newsym(x, y);
+                if (in_rooms(x, y, SHOPBASE)) add_damage(x, y, 0);
+            } else {
+                await You('disarm it!');
+                loc.doormask &= ~D_TRAPPED;
+                more_experienced(8, 0);
+                await newexplevel();
+            }
+        } else {
+            await pline('This door was not trapped.');
+        }
+        return 1;
+    }
+    await You('find no traps on the door.');
+    return 1;
 }
 
 // include/rm.h:538 Sokoban — the level flag, not the dungeon branch.
@@ -1463,20 +1914,21 @@ export async function openholdingtrap(mon, noticed) {
     return true;
 }
 
-// src/trap.c:6194 closeholdingtrap(), hero arm. Magic locking forces an
-// idle bear trap or web to act on the hero.
+// src/trap.c:6210 closeholdingtrap(), magic locking affects hero or monster.
 export async function closeholdingtrap(mon, noticed) {
+    if (!mon) return false;
     const ishero = mon === game.youmonst || mon === game.u.usteed;
-    if (!ishero)
-        return false;
-    const trap = t_at_mon(game.u.ux, game.u.uy);
-    if (!trap || (trap.ttyp !== BEAR_TRAP && trap.ttyp !== WEB)
-        || game.u.utrap)
-        return false;
-
-    noticed.v = true;
-    await dotrap(trap, FORCETRAP);
-    return !!game.u.utrap;
+    const trap = t_at(ishero ? game.u.ux : mon.mx, ishero ? game.u.uy : mon.my);
+    if (!trap || (trap.ttyp !== BEAR_TRAP && trap.ttyp !== WEB)) return false;
+    if (ishero) {
+        if (game.u.utrap) return false;
+        noticed.v = true;
+        await dotrap(trap, FORCETRAP | (game.u.usteed ? NOWEBMSG : 0));
+        return !!game.u.utrap;
+    }
+    if (mon.mtrapped) return false;
+    noticed.v = cansee(trap.tx, trap.ty) || canspotmon(mon);
+    return await mintrap(mon, FORCETRAP) !== Trap_Effect_Finished;
 }
 
 // src/trap.c:3063 trapnote() — the name of the note a squeaky board plays,
@@ -2541,8 +2993,7 @@ async function trapeffect_web(mtmp, trap, trflags) {
             await You(`${verbbuf} ${article} spider web!`);
         }
 
-        game.u.utrap = 1;
-        game.u.utraptype = TT_WEB;
+        set_utrap(1, TT_WEB);
         let str = ACURR(A_STR), tim;
         /* If mounted, the steed gets trapped.  Use mintrap
          * to do all the work.  If mtrapped is set as a result,
@@ -2592,9 +3043,7 @@ async function trapeffect_web(mtmp, trap, trflags) {
             deltrap(trap);
             newsym(game.u.ux, game.u.uy);
         }
-        game.u.utrap = tim;
-        if (!tim)
-            game.u.utraptype = 0;
+        set_utrap(tim, TT_WEB);
         return Trap_Effect_Finished;
     }
 
@@ -4578,7 +5027,8 @@ export async function float_up() {
                above that floor but not from enhancing carrying capacity */
             await You(`feel lighter, but your ${body_part(LEG)} is still chained to the ${
                 IS_ROOM(game.level.at(cc.x, cc.y).typ) ? 'floor' : 'ground'}.`);
-        } else if (u.utraptype === TT_WEB) {
+        } else if (u.utraptype === WEB) {
+            // C compares with WEB here, not TT_WEB; preserve that behavior.
             await You(`float up slightly, but you are still stuck in the ${
                 trapname(WEB, false)}.`);
         } else { /* bear trap */

@@ -12,9 +12,77 @@ Continue the authorized work; do not mark it complete or recreate it.
 Current-corpus success is not the stopping criterion. Track unreviewed,
 untested, missing, and unreachable source paths explicitly.
 
-### Active checkpoint: looting entry, autounlock and container traps
+### Active pass: lock-picking occupations
 
-Looting pass complete and verified, pending local commit. Seven runtime modules:
+Next work is `.cache/lock-occupation`. No next-pass runtime edits yet.
+Finish the local untrapping commit first. Full C lock_action and picklock
+have been read. Full pick_lock has now been re-read in chunks363..657.
+JS hardcodes magic_key=false, skips its trap-disarm occupation and omits
+entry guards, artifact touch, broken-lock messages, mimics and shop damage.
+Read the remaining relevant full C helpers before porting them.
+
+Initial24 native probes had invalid intended setups: neutral Wizard's key
+was rejected, Rogue's north-door move was blocked, and answers arrived
+before the actual question. Corrected24 uses chaotic Wizard and east doors.
+`drive-prompts.mjs` then answers each actual C prompt in three stages:
+direction24, unlock24 and magic disarm12. Final corpus is disarm.input/session.
+The other12 are ordinary trap-triggering controls. Recorder jobs37117 and
+66426 are finished and collected. Baseline scorer82074 is running in
+`disarm-before.log`. Inspect native final messages and first divergence.
+Do not promote initial/corrected/answered intermediate probes as successes.
+First drive-prompts heredoc had a syntax error before any recording; the
+saved script corrected it and all three stages completed. Continue goal.
+
+### Checkpoint: full untrapping
+
+Work `.cache/untrap`; previous local commit32307679. Six runtime modules:
+trap, lock, hack, artifact, botl and pager. Full untrap entry/helpers read and
+ported, including probability, disarming, captive rescue and rewards.
+Automatic box/door checks and invocation use untrap. closeholdingtrap and
+b_trapped are ported. Web capture uses set_utrap; status and movement use
+canonical Lev/Fly. spoteffects restores terrain blocking and propagates
+FAILEDUNTRAP. Pager describes visible holding traps and sets tseen. C's
+float_up WEB-vs-TT_WEB quirk is preserved after a native case proved its
+leg-stuck message. Larger spoteffects, pick_lock, arti_invoke and
+look_at_monster remain partial. No C or frozen edits.
+
+Six permanent recipes284 cases: floor90, containers40, doors51, tools19,
+rescue71 and flight13. All94,198 screens/cursors,697,354 RNG and2,770 animations
+match. Each final fixture has an exact instrumented C re-recording; tools
+was re-recorded after corrections. Separate assertions and integrity pass.
+Ledger3185/3185,99 covered and7 partial. C union adds413 outcomes and13
+entered records over32307679, reaching56619/108268 and4398/5491. Exact source
+gaps in remaining.json. No new unreachable or constructed-C-coverage claims.
+
+State284 native,174 inventory,284HP,9 trapped-hero,40 captive,2 death and2
+charge observations plus73 constructed groups pass. Every one of8 mutants
+fails state. Skipping trap knowledge passes all6 native fixtures. Skipping
+grease consumption initially passed, because all new grease attempts failed;
+identified success now proves3->2 and catches the mutation in native output.
+Exact prior six modules fail6/6,8186screens2744cursors645490 positional RNG.
+Native/mutation totals are saved in native-totals.json and mutation-results.
+Final review makes constructed artifact types valid and gives the offhand
+blade a primary mace. State job80069 checks these last test-only corrections.
+
+Full final sweep569/569:44 public525 supplemental. All570988 screens/cursors
+and12181411 RNG match. Supplemental559583screens/cursors11388573RNG24496
+animations all match. Public21 old animation misses remain. Thirteen related
+state gates,50 hang cases,80 fresh roles,14 tool tests,source0/268 pass. Final
+tool additions separately pass hang. Fuzz101/102 has the known fixed-date
+screen difference and all491759RNG match. verification-exits, complete-exits,
+regression-complete.log and totals.json preserve results. All untrapping
+jobs are collected except latest state80069. Check it, diff/check and locally
+commit this finished pass. Do not push; publication authorization unanswered.
+
+The audit explains failed trap locations, early prompt answers, wrong
+#identify, invalid Valkyrie gender and dropped Orb setups. These are excluded
+from permanent coverage claims. Remembered '^' is not a live trap-state
+oracle; use action-boundary observations. Pit rescue needs a wall beyond the
+pit to stop the hurtled monster. No C/frozen edits. Continue the ongoing goal.
+
+### Checkpoint: looting entry, autounlock and container traps
+
+Looting pass committed locally as32307679. Seven runtime modules:
 pickup, lock, options, jsmain, trap, artifact and cmd. Full source scope and
 remaining partial functions are in looting-entry-audit.md. Work .cache/looting-entry.
 No C or frozen edits. Full untrap and remaining pick_lock/autokey paths are open.
@@ -48,8 +116,8 @@ named dispatch; cmd.js now connects both options and optionsfull.
 
 Next pass: full #untrap. C untrap5848..6096 and all helper bodies5289..5789
 have been read. Re-read the body before implementing. JS already has cnv_trap_obj
-and into_vs_onto near5309; inspect those before adding helpers. No next-pass
-runtime edits or probe directory yet. Connect automatic container untrapping
+and into_vs_onto near5309; inspect those before adding helpers. Work .cache/untrap has122 native probes recorded. Baseline scorer running,
+no next-pass runtime edits yet. Connect automatic container untrapping
 through the full wrapper once ported. Continue C oracles, state checks, source
 coverage, mutations and regression. Do not push; publication authorization
 remains unanswered. Current corpus success does not complete the goal.

@@ -1086,6 +1086,16 @@ async function invoke_energy_boost(obj) {
     return ECMD_TIME;
 }
 
+// src/artifact.c:1838 invoke_untrap(), cancellation refunds the cooldown.
+export async function invoke_untrap(obj) {
+    const { untrap } = await import('./trap.js');
+    if (!await untrap(true, 0, 0, null)) {
+        obj.age = 0;
+        return ECMD_CANCEL;
+    }
+    return ECMD_TIME;
+}
+
 // src/artifact.c:1918 invoke_create_ammo(). The new arrows inherit the
 // Longbow's beatitude, then pass through normal inventory merging.
 async function invoke_create_ammo(obj) {
@@ -1272,6 +1282,8 @@ export async function doinvoke() {
         return invoke_healing(obj);
     case 'ENERGY_BOOST':
         return invoke_energy_boost(obj);
+    case 'UNTRAP':
+        return invoke_untrap(obj);
     case 'CREATE_AMMO':
         return invoke_create_ammo(obj);
     case 'ENLIGHTENING':

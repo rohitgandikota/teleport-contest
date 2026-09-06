@@ -1,5 +1,5 @@
 import { maybe_unhide_at } from './mon.js';
-import { is_rider } from './mondata.js';
+import { is_rider, locomotion } from './mondata.js';
 import { goodpos } from './makemon.js';
 import { rloc_to, enexto } from './teleport.js';
 import { revive_corpse } from './do.js';
@@ -8,7 +8,7 @@ import { spot_time_left, spot_stop_timers, MELT_ICE_AWAY } from './timeout.js';
 import { float_vs_flight } from './polyself.js';
 import { float_up } from './trap.js';
 import { You_cant } from './pline.js';
-import { FROMOUTSIDE, DRAWBRIDGE_UP, DB_UNDER, DB_ICE } from './const.js';
+import { FROMOUTSIDE, DRAWBRIDGE_UP, DB_UNDER, DB_ICE, MAX_TYPE } from './const.js';
 import { obj_extract_self } from './invent.js';
 import { place_object } from './mkobj.js';
 import { exercise } from './attrib.js';
@@ -1225,13 +1225,15 @@ export async function pooleffects(newspot) {
 
 // src/hack.c:3312 spoteffects() — what happens on the square just moved onto.
 //
-// The reachable slice is the pickup(1) call, ordered around a pit trap the
-// way C orders it. switch_terrain, pooleffects, dosinkfall and the
-// levitation-timeout deferral are tied to terrain state the current levels
-// never put under the hero; dotrap and the special-room announcements are
-// recorded when their state is underfoot.
+// Terrain changes and pool effects precede pickup and trap activation.
+// Sink handling, recursion guards and levitation-timeout deferral remain partial.
 export async function spoteffects(pick) {
     const trap = t_at(game.u.ux, game.u.uy);
+    const trapflag = game.iflags.failing_untrap ? 0x40 /* FAILEDUNTRAP */ : 0;
+    // src/hack.c:3342, moving out of rock restores blocked Lev/Fly.
+    if (game.level.at(game.u.ux, game.u.uy).typ !== game.level.at(game.u.ux0, game.u.uy0).typ
+        || game.iflags.terrain_typ === MAX_TYPE)
+        await switch_terrain();
 
     /* src/hack.c:3349 — pooleffects first; when the hero is carried off by
        water or lava (drown/lava_effects moved them), the rest is skipped */
@@ -1253,7 +1255,7 @@ export async function spoteffects(pick) {
         if (pick && !pit)
             await pickup(1);
         if (trap)
-            await dotrap(trap, 0);
+            await dotrap(trap, trapflag);
         if (pick && pit)
             await pickup(1);
     }
@@ -1734,18 +1736,13 @@ export function monster_nearby() {
     return false;
 }
 
-// src/hack.c:1817 u_locomotion() — the verb for the hero's own movement.
-//
-// Levitation and Flying override the polyform's; locomotion() would need the
-// hero's monster data, which for an unpolymorphed hero always yields `def`.
+// src/hack.c:1817 u_locomotion(), effective flight and form-specific movement.
 export function u_locomotion(def) {
-    const capitalize = (def[0] === def[0].toUpperCase());
-
-    return game.u.uprops?.LEVITATION ? (capitalize ? 'Float' : 'float')
-         : game.u.uprops?.FLYING ? (capitalize ? 'Fly' : 'fly')
-         : def;
+    const capitalize = def[0] === def[0].toUpperCase();
+    return Levitation() ? (capitalize ? 'Float' : 'float')
+        : Flying() ? (capitalize ? 'Fly' : 'fly')
+        : locomotion(game.youmonst.data, def);
 }
-
 
 // src/hack.c:4399 check_capacity() — refuse an action when overloaded.
 export async function check_capacity(str) {

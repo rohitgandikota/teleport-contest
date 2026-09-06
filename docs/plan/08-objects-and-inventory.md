@@ -8,6 +8,12 @@ timers, light sources and billing as well as the menus exercised by nearly
 every session. A correct-looking inventory can conceal wrong persistent state.
 The September source audit and remaining decisions are tracked in
 [inventory-adjust-audit.md](inventory-adjust-audit.md).
+The September bones pass additionally ports recursive object knowledge reset,
+invocation-item downgrades, fruit names and remapping, one-time handedness
+adjustment, and timed/lighted ownership after restore. See
+[bones-audit.md](bones-audit.md) for native and state evidence. Shared held-state
+helpers and in-use object disposal remain partial.
+
 
 **C files in scope:** `src/mkobj.c`, `src/objects.c` (data), `src/objnam.c`,
 `src/invent.c`, `src/pickup.c`, `src/do.c` (drop), `src/do_wear.c`,

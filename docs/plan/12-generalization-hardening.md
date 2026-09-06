@@ -14,20 +14,21 @@ sit on the side we cannot measure.
 
 ## September source-guided continuation
 
-The overview pass adds 57 native scenarios and 95 constructed state groups.
-All fourteen deliberate faults fail at least one gate. State catches five
-faults missed by native output; native output catches the message-flush fault
-missed by state. See [overview-audit.md](overview-audit.md). The earlier
-[level-knowledge audit](level-knowledge-audit.md) retains its distinct gaps.
+The bones pass adds 91 native game segments and 89 constructed state groups.
+All sixteen deliberate faults fail at least one gate. State catches six faults
+missed by native output; native output catches the welded-weapon message fault
+missed by state. See [bones-audit.md](bones-audit.md). The earlier
+[overview audit](overview-audit.md) retains its distinct gaps.
 
-The final regression suite passes 587/587 fixtures, with all 759,903 screens
-and cursors and 14,122,292 RNG calls matching. C execution adds 44 outcomes
-and no entered records, reaching 57,120/108,268 and 4,404/5,491. Those are
-coverage measurements, not a percentage of gameplay implemented. The full
-port remains the active goal. The 21 existing public animation mismatches
-and known fixed-date fuzz screen difference remain explicit. Several overview
-filters need stronger native coverage; teleport bounds, bones and restore
-lifecycle remain open.
+The existing regression and new corpus pass 603/603 fixtures at the same
+functional runtime, with all 779,326 screens/cursors and 14,517,798 RNG calls
+matching. C execution adds 244 outcomes and eight entered records, reaching
+57,364/108,268 and 4,412/5,491. Those are coverage measurements, not a
+percentage of gameplay implemented. The full port remains the active goal.
+The 21 existing public animation mismatches and known fixed-date fuzz screen
+difference remain explicit. Native decline/replacement, multiple-death and
+timer controls need expansion. Bones and restore ordering, object disposal,
+shop damage, stairs and portals remain open.
 
 ## 12.1 The overfit audit
 

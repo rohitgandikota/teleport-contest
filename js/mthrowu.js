@@ -37,10 +37,10 @@ import { dropy, flooreffects } from './do.js';
 import { place_object, mksobj } from './mkobj.js';
 import { hold_another_object, stackobj } from './invent.js';
 import { u_at, M_AP_MONSTER, XKILL_NOMSG, SLT_ENCUMBER,
-         A_DEX, WATER, LAVAWALL, M_SEEN_MAGR, M_SEEN_FIRE,
+         A_DEX, A_STR, WATER, LAVAWALL, M_SEEN_MAGR, M_SEEN_FIRE,
          M_SEEN_COLD, M_SEEN_SLEEP, M_SEEN_DISINT, M_SEEN_ELEC,
          M_SEEN_POISON, M_SEEN_ACID, M_SEEN_REFL } from './const.js';
-import { calc_capacity, ACURR } from './attrib.js';
+import { calc_capacity, ACURR, poisoned } from './attrib.js';
 import { MON_WEP } from './monst.js';
 import { DEADMONSTER, is_vampshifter } from './monst.js';
 import { cansee } from './vision.js';
@@ -48,7 +48,8 @@ import { makeknown, observe_object } from './o_init.js';
 import { find_mac } from './worn.js';
 import { omon_adj } from './dothrow.js';
 import { dobuzz, hit, miss, exclam } from './zap.js';
-import { distant_name, mshot_xname, simpleonames, xname, an, the } from './objnam.js';
+import { distant_name, mshot_xname, simpleonames, xname, an, the,
+         killer_xname } from './objnam.js';
 import { pline, canspotmon, display_object_at, temporary_object_glyph,
          newsym, flush_screen } from './display.js';
 import { pline_The, You } from './pline.js';
@@ -620,9 +621,9 @@ export async function m_throw(mon, x, y, dx, dy, range, obj) {
             }
             }
             if (hitu && singleobj.opoisoned && is_poisonable(singleobj)) {
-                /* poisoned(): attribute loss and possible death */
-                note_unported_mthrowu('m_throw:poisoned');
-                void oldumort;
+                const name = xname(singleobj), killer = killer_xname(singleobj);
+                await poisoned(name, A_STR, killer,
+                    (game.u.umortality ?? 0) > oldumort ? 0 : 10, true);
             }
             if (hitu && (singleobj.otyp === ONAMES.BLINDING_VENOM
                          || singleobj.otyp === ONAMES.CREAM_PIE)) {

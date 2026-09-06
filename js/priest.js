@@ -51,6 +51,12 @@ function note_unported_priest(what) {
     (game.unported ||= new Set()).add('priest:' + what);
 }
 
+// src/priest.c:933 restpriest(), the shrine follows its restored bones level.
+export function restpriest(mon, ghostly) {
+    if (game.u.uz.dlevel && ghostly)
+        EPRI(mon).shrlevel = {...game.u.uz};
+}
+
 // src/priest.c:219 priestini() — exclusively for mktemple()/shrine altars.
 export function priestini(lvl, sroom, sx, sy, sanctum) {
     game.p_coaligned = p_coaligned;

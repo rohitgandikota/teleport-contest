@@ -272,7 +272,7 @@ async function m_calcdistress(mtmp) {
 var gs_somebody_can_move = false;
 
 // src/mon.c:2487 dmonsfree(): unlink monsters detached during the sweep.
-function dmonsfree() {
+export function dmonsfree() {
     const monsters = game.level?.monsters;
     if (!monsters)
         return;

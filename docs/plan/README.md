@@ -17,24 +17,24 @@ and persistent gameplay state. Continue source review, measured C branches,
 independent oracles, implementation and regression checks until that goal is
 met. Current corpus success is not the stopping criterion.
 
-The latest pass adds 57 C cases for overview selection, annotation queries,
-branch descriptions and disclosure. It also ports the Twin businesses Lua
-room and resets bubble state between games. All 44 public and 543 supplemental
-fixtures pass, matching 759,903 screens/cursors and 14,122,292 RNG calls. The C
-union reaches 57,120/108,268 direct outcomes and 4,404/5,491 entered records.
-State checks validate 57 native replays and 95 constructed groups. All fourteen
-deliberate faults fail at least one gate. Five survive native output comparisons;
-one survives state checks. The audit names those gaps.
-The assertion ledger passes 3,676/3,676 declared cases.
+The latest pass adds 91 native game segments for bones, remains, fruit names,
+and persistent level state. All 44 public and 559 supplemental fixtures pass
+at the verified runtime, matching 779,326 screens/cursors and 14,517,798 RNG
+calls across the existing and new corpus runs. The C union reaches
+57,364/108,268 direct outcomes and 4,412/5,491 entered records. State checks
+validate all 91 native replays and 89 constructed groups. All sixteen
+deliberate faults fail at least one gate. Six survive native output comparisons;
+one survives state checks. The assertion ledger passes 3,767/3,767 cases.
 
 See [STATUS.md](STATUS.md) for the current action,
-[overview-audit.md](overview-audit.md) for the source review and
+[bones-audit.md](bones-audit.md) for the source review and
 [gameplay-gap-audit.md](gameplay-gap-audit.md) for measurement limits.
-The earlier published held-out result was 78.39%; this local suite does not
-establish a newer held-out score. Native coverage of some overview filters,
-remaining teleport bounds, restore and bones lifecycle, lock, disclosure, inventory,
-spell, monster and Lua paths are open.
-The full-port goal continues.
+The September 6 leaderboard snapshot reports 81.48% held-out screens and
+rank 1 among agentic entries. Its team score predates the September 6 push;
+this local suite does not establish a newer held-out score. The user has
+explicitly authorized prompt pushes of every verified commit. Bones and
+restore ordering, object disposal, shop damage, stairs, portals, and broader
+inventory, spell, monster and Lua paths remain open. The full-port goal continues.
 
 ## Previous focus, 2026-09-03
 

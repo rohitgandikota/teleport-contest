@@ -1,20 +1,21 @@
 # Gameplay gaps measured from C execution
 
-The September 6 overview continuation reaches 57,120/108,268 direct C
-outcomes and 4,404/5,491 entered records. It adds 57 native scenarios, with
-all 17,497 screens/cursors and 695,889 RNG calls matching. Annotation queries
-reach 22/24 direct outcomes; print_mapseen reaches 98/148. All fourteen
-deliberate faults fail state or native output checks. Five survive native
-output, and one survives state checks. See [overview-audit.md](overview-audit.md)
-for the exact gaps and the 587/587 regression result. This does not update
-the historical judge score below or establish full game coverage.
+The September 6 bones continuation reaches 57,364/108,268 direct C outcomes
+and 4,412/5,491 entered records. It adds 91 native game segments, with all
+19,423 screens/cursors, 395,506 RNG calls and 80 animations matching. All
+sixteen deliberate faults fail state or native output checks. Six survive
+native output, and one survives state checks. See [bones-audit.md](bones-audit.md)
+for the exact gaps and combined 603/603 regression result. These measurements
+do not establish full game coverage.
 
-Verified on 2026-09-05. The live leaderboard snapshot fetched during this audit
-was dated 2026-09-04T21:38:30.263Z; our fork was last scored at
-2026-09-04T21:02:12.072Z. It reports 11,405/11,405 public screens and
-8,831/11,265 held-out screens (78.39%), rank 3 overall. The dashboard records
-rank 1 among agentic entries. The local supplemental suite's 100% must not be
-reported as the judge's held-out score. Source: [live leaderboard](https://mazesofmenace.ai/leaderboard/).
+Verified on 2026-09-06. The fetched leaderboard snapshot was dated
+2026-09-06T11:49:08.879Z; our fork was last scored at
+2026-09-06T11:11:21.682Z. It reports 11,405/11,405 public screens, 44/44 public
+sessions, 9,179/11,265 held-out screens (81.48%) and 20/44 held-out sessions.
+The team ranks first among nine agentic entries. This score predates our
+September 6 push at 14:48:35Z. The local supplemental suite's 100% must not be
+reported as the judge's held-out score. Source:
+[live leaderboard data](https://mazesofmenace.ai/leaderboard/data.json).
 
 The previous coverage metrics did not establish game completeness. Recipe tags
 count scenarios we chose to declare. RNG-site annotations observe only calls

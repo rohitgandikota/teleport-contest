@@ -22,12 +22,13 @@ and a fresh one between sessions.
 
 ## Items
 
-The overview pass resets the bubble chain, bounds and traversal direction at
-each new-game boundary, matching C's fresh process. It preserves their state
-during level travel. The new native bones-overview probe exposes missing
-cemetery identity, death reason and discovery coordinates in the saved record.
-See [overview-audit.md](overview-audit.md). The bones lifecycle is the next
-source and oracle target.
+The bones pass adds 91 native game segments with complete terminal, cursor,
+RNG and animation parity. It ports cemetery records, ghost/statue/undead
+remains, object reset, fruits, shared room identity, timer/light/region and
+engraving persistence, and the corresponding startup/travel call sites.
+Native shared-storage checks and 89 constructed groups pass. All sixteen
+deliberate faults are detected. See [bones-audit.md](bones-audit.md) for exact
+source and coverage limits. The save/restore parents remain partial.
 
 ### 11.1 Understand the segment contract first
 
@@ -78,6 +79,14 @@ This session is worth 1,953 steps and is unusually sensitive: the topten file
 accumulates across segments, so segment 7's screen depends on segments 1-6.
 
 ### 11.4 Bones
+
+- [x] September bones pass: 29 native writes and 30 load boundaries verify
+      cemetery identity, remains, inventory ownership, room and monster bindings,
+      timer/light owners, fruits and file retention/deletion. Sixteen official
+      recipes and exact C repeats pass. See [bones-audit.md](bones-audit.md).
+- [ ] Finish native decline/replacement and multiple-death controls, object
+      disposal, shop damage, worm tails, exclusions, stasis clocks, ghostly
+      stairs/portals and the remaining restore ordering differences.
 
 - [ ] `src/bones.c`: saving a bones file on death, loading it in a later game,
       the ghost and the grave, and the "you feel like you have been here before"

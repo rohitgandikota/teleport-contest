@@ -1075,6 +1075,16 @@ export async function goto_level(newlevel, at_stairs, falling, portal) {
            the whole level instead of the scripted destination area. */
         game.level._saved_updest = { ...(game.updest || {}) };
         game.level._saved_dndest = { ...(game.dndest || {}) };
+        const { save_engravings } = await import('./engrave.js');
+        game.level._saved_engravings = save_engravings();
+        // src/save.c savelev(), local timers and lights remain on this level.
+        {
+            const { save_timers } = await import('./timeout.js');
+            const { save_light_sources } = await import('./light.js');
+            const { RANGE_LEVEL } = await import('./const.js');
+            game.level._saved_timers = save_timers(RANGE_LEVEL, true);
+            game.level._saved_lights = save_light_sources(RANGE_LEVEL, true);
+        }
         (game.saved_levels ||= new Map())
             .set(`${game.u.uz.dnum}:${game.u.uz.dlevel}`, game.level);
         (game.visited_ledgers ||= new Set())
@@ -1153,6 +1163,17 @@ export async function goto_level(newlevel, at_stairs, falling, portal) {
         }
         game.updest = { ...(game.level._saved_updest || game.updest) };
         game.dndest = { ...(game.level._saved_dndest || game.dndest) };
+        const { rest_engravings } = await import('./engrave.js');
+        rest_engravings(game.level._saved_engravings);
+        {
+            const { restore_timers, relink_timers } = await import('./timeout.js');
+            const { restore_light_sources, relink_light_sources } = await import('./light.js');
+            const { RANGE_LEVEL } = await import('./const.js');
+            restore_timers(game.level._saved_timers, RANGE_LEVEL);
+            restore_light_sources(game.level._saved_lights);
+            relink_timers(false);
+            relink_light_sources(false);
+        }
         const { oinit } = await import('./o_init.js');
         oinit();
         const { DEADMONSTER } = await import('./monst.js');
@@ -1302,6 +1323,10 @@ export async function goto_level(newlevel, at_stairs, falling, portal) {
     /* C runs ordinary migrating-object delivery here before monster arrivals.
        Species-targeted loot is delivered through makemon()/mon_arrive(). */
     await losedogs();
+
+    // src/do.c:1823, expired level timers run after their owners arrive.
+    const { run_timers } = await import('./timeout.js');
+    await run_timers();
 
     /* src/do.c:1826 — hero might be arriving at a spot containing a
        monster; u_collide_m moves one or the other */
@@ -1523,8 +1548,11 @@ export async function goto_level(newlevel, at_stairs, falling, portal) {
     /* src/do.c:1969 save_currentstate(), a checkpoint marks VISITED. */
     {
         const { boolean_option } = await import('./options.js');
-        if (boolean_option('checkpoint'))
+        if (boolean_option('checkpoint')) {
             game.visited_ledgers.add(ledger);
+            const { save_engravings } = await import('./engrave.js');
+            save_engravings();
+        }
     }
 
     /* src/do.c:1974, a saved overview annotation is repeated on arrival,

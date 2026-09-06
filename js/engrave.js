@@ -31,6 +31,52 @@ import { makemon } from './makemon.js';
 import { PMNAMES } from './monst_data.js';
 import { welded } from './wield.js';
 import { bimanual } from './obj.js';
+import { sanitize_name } from './bones.js';
+
+// src/engrave.c:1551 save_engravings(). The three text strings
+// replace the C allocation and its pointers into text storage.
+export function save_engravings() {
+    const saved = [];
+    for (const ep of game.level.lev_engr || []) {
+        if (!ep.engr_txt)
+            continue;
+        // C rewinds the text pointers to their allocation before writing,
+        // including spaces skipped by wipe_engr_at or rest_engravings. It
+        // leaves them rewound even for a checkpoint which keeps the level.
+        ep.engr_txt = ' '.repeat(ep.engr_txt_offset || 0) + ep.engr_txt;
+        ep.engr_txt_remembered = ' '.repeat(ep.engr_remembered_offset || 0)
+            + (ep.engr_txt_remembered || '');
+        ep.engr_txt_offset = ep.engr_remembered_offset = 0;
+        saved.push({...ep});
+    }
+    return saved;
+}
+
+// src/engrave.c:1584 rest_engravings()
+export function rest_engravings(saved) {
+    game.level.lev_engr = [];
+    for (const ep of saved || []) {
+        const actual = ep.engr_txt.replace(/^ +/, '');
+        const remembered = (ep.engr_txt_remembered || '').replace(/^ +/, '');
+        game.level.lev_engr.unshift({...ep, engr_txt: actual,
+            engr_txt_remembered: remembered,
+            engr_txt_offset: ep.engr_txt.length - actual.length,
+            engr_remembered_offset: (ep.engr_txt_remembered || '').length - remembered.length,
+            engr_time: game.moves});
+    }
+}
+
+// src/engrave.c:1509 forget_engravings()
+export function forget_engravings() {
+    for (const ep of game.level.lev_engr || [])
+        ep.erevealed = ep.eread = 0;
+}
+
+// src/engrave.c:1498 sanitize_engravings()
+export function sanitize_engravings() {
+    for (const ep of game.level.lev_engr || [])
+        ep.engr_txt = sanitize_name(ep.engr_txt);
+}
 
 // src/engrave.c:297 engr_can_be_felt()
 export function engr_can_be_felt(ep) {
@@ -310,7 +356,7 @@ export function make_engr_at(x, y, s, pristine_s, e_time, e_type) {
             ep.guardobjects = 1;
     }
 
-    (game.level.lev_engr ||= []).push(ep);
+    (game.level.lev_engr ||= []).unshift(ep);
 }
 
 // src/engrave.c:250 u_wipe_engr() — rub out part of what is under the hero.
@@ -338,7 +384,9 @@ export function wipe_engr_at(x, y, cnt, magical) {
         cnt = rn2(1 + Math.trunc(50 / (cnt + 1))) ? 0 : 1;
 
     ep.engr_txt = wipeout_text(ep.engr_txt, cnt, 0);
-    ep.engr_txt = ep.engr_txt.replace(/^ +/, '');
+    const trimmed = ep.engr_txt.replace(/^ +/, '');
+    ep.engr_txt_offset = (ep.engr_txt_offset || 0) + ep.engr_txt.length - trimmed.length;
+    ep.engr_txt = trimmed;
     if (!ep.engr_txt) del_engr(ep);
 }
 

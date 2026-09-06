@@ -836,6 +836,62 @@ export function fruitname(juice) {
     return makesingular(fruit_nam) + (juice ? ' juice' : '');
 }
 
+// src/objnam.c:431 fruit_from_indx()
+export function fruit_from_indx(indx) {
+    for (let f = game.ffruit; f; f = f.nextf)
+        if (f.fid === indx)
+            return f;
+    return null;
+}
+
+// src/objnam.c:443 fruit_from_name()
+export function fruit_from_name(fname, exact, highest_fid) {
+    if (highest_fid)
+        highest_fid.v = 0;
+    for (let f = game.ffruit; f; f = f.nextf) {
+        if (f.fname === fname)
+            return f;
+        if (highest_fid && f.fid > highest_fid.v)
+            highest_fid.v = f.fid;
+    }
+
+    let f = null;
+    if (!exact) {
+        let tentativef = null;
+        for (let candidate = game.ffruit; candidate; candidate = candidate.nextf) {
+            const k = candidate.fname.length;
+            if (fname.startsWith(candidate.fname)
+                && (!fname[k] || fname[k] === ' ')
+                && (!tentativef || k > tentativef.fname.length))
+                tentativef = candidate;
+        }
+        f = tentativef;
+    }
+    if (!f) {
+        const altfname = makesingular(fname);
+        for (f = game.ffruit; f; f = f.nextf)
+            if (f.fname === altfname)
+                break;
+    }
+    if (!f && !exact) {
+        let tentativef = null;
+        const fname_k = fname.length;
+        for (f = game.ffruit; f; f = f.nextf) {
+            let k = f.fname.length;
+            const p = fname.indexOf(' ', k);
+            if (fname_k >= k && p >= 0) {
+                const altfname = makesingular(fname.slice(0, p));
+                k = altfname.length;
+                if (f.fname === altfname
+                    && (!tentativef || k > tentativef.fname.length))
+                    tentativef = f;
+            }
+        }
+        f = tentativef;
+    }
+    return f || null;
+}
+
 /* src/decl.c:111 vowels[] */
 const vowels = 'aeiouAEIOU';
 

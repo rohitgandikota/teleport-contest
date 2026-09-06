@@ -67,13 +67,13 @@ import { ask_do_tutorial, set_playmode, optfn_playmode } from './options.js';
 import { ROLE_GENDMASK, ROLE_MALE, ROLE_FEMALE, A_CURRENT, In_endgame,
          FULL_MOON, NEW_MOON, COLNO, A_CON, A_WIS, A_INT, MOD_ENCUMBER,
          UNENCUMBERED, SLT_ENCUMBER, HVY_ENCUMBER, EXT_ENCUMBER, A_DEX,
-         Upolyd, Is_waterlevel, Is_airlevel, FROMFORM, TT_LAVA, NON_PM }
+         Upolyd, Is_waterlevel, Is_airlevel, FROMFORM, TT_LAVA, NON_PM, RLOC_NOMSG }
          from './const.js';
 import { mklev, l_nhcore_init, u_on_upstairs } from './mklev.js';
 import { rhack, domove, enter_explore_mode } from './cmd.js';
 import { clear_bypasses } from './worn.js';
 import { lookaround, end_running, unmul, nomul,
-         monster_nearby, in_rooms, runmode_delay_output } from './hack.js';
+         monster_nearby, in_rooms, runmode_delay_output, check_special_room } from './hack.js';
 import { deferred_goto } from './do.js';
 import { You } from './pline.js';
 import {
@@ -108,7 +108,7 @@ function init_sound_disp_gamewindows() {
 
 // include/you.h:441-442
 const RIGHT_HANDED = 0x00, LEFT_HANDED = 0x01;
-import { mcalcmove, mcalcdistress, movemon, NORMAL_SPEED, is_pool } from './mon.js';
+import { mcalcmove, mcalcdistress, movemon, NORMAL_SPEED, is_pool, m_at, mnexto } from './mon.js';
 import { breathless } from './mondata.js';
 import { MONSYMS } from './monst_data.js';
 import { m_everyturn_effect } from './monmove.js';
@@ -381,6 +381,8 @@ export async function newgame() {
 
     // Real mklev generates the level with correct room positions
     // Structural phase consumes RNG for rooms/corridors/doors/stairs
+    init_vision_globals();
+    game._newsym_ref = newsym;
     await mklev();
 
     // Room filling and mineralize both run for real inside mklev() now, as
@@ -393,6 +395,11 @@ export async function newgame() {
     // collect_coords ring shuffle from enexto), so putting it on the wrong
     // side of u_init shifts everything after it.
     u_on_upstairs();
+    vision_reset();
+    await check_special_room(false);
+    const at_start = m_at(g.u.ux, g.u.uy);
+    if (at_start)
+        await mnexto(at_start, RLOC_NOMSG);
 
     await makedog();
 
@@ -421,9 +428,6 @@ export async function newgame() {
     // src/allmain.c:816-818 — docrt(); flush_screen(1); bot(); all run BEFORE
     // u_init_skills_discoveries() and the legacy pager, which is why the legacy
     // window is drawn over a map and a status line rather than a blank screen.
-    init_vision_globals();
-    game._newsym_ref = newsym;
-    vision_reset();
     vision_recalc(0);
     /* src/allmain.c:756 display_nhwindow(WIN_MESSAGE, FALSE) — the NON-blocking
        arm, which win/tty/wintty.c:1879 shows sets toplin back to TOPLINE_EMPTY.
@@ -478,8 +482,11 @@ export async function newgame() {
        Track its VISITED bit separately from the parked level map. */
     g.visited_ledgers = new Set();
     const { boolean_option } = await import('./options.js');
-    if (boolean_option('checkpoint'))
+    if (boolean_option('checkpoint')) {
         g.visited_ledgers.add(`${g.u.uz.dnum}:${g.u.uz.dlevel}`);
+        const { save_engravings } = await import('./engrave.js');
+        save_engravings();
+    }
 
     // src/allmain.c welcome() — the new-game branch. The alignment, the race
     // adjective and the role name were all hardcoded here ("neutral", "human",

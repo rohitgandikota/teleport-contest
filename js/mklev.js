@@ -688,8 +688,8 @@ async function getbones() {
     if (game.discover) return false;      /* src/bones.c:639 */
     if ((game.flags || {}).bones === false) return false;
     if (rn2(3) && !game.wizard) return false;
-    /* no_bones_level: the early levels the sessions reach all allow them */
-    const { getbones_load } = await import('./bones.js');
+    const { getbones_load, no_bones_level } = await import('./bones.js');
+    if (no_bones_level(game.u.uz)) return false;
     return await getbones_load();
 }
 

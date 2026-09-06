@@ -14,23 +14,93 @@ untested, missing, and unreachable source paths explicitly.
 
 ### Active pass: bones persistence and cemetery records
 
-Work .cache/bones-overview. No runtime implementation yet. New main.input.json
-and main.session.json preserve the complete original bones-persistence first
-segment, then cut the second just before its farlook command at move346 and
-open overview. The old recipe's later annotation-looking text is actually
-literal unfinished extended-command input, so do not use its final boundary
-as evidence of later combat. New native611screens: all36988RNG and15animations
-match; one screen/cursor misses. C lists Ashen-Pri-Hum-Fem-Law, killed by an
-arrow, on Mines depth5 with a grave. Current saved bonesinfo only has name-role,
-no how/when/frpx/frpy/next. Full original bones.c has now been read from first
-line through EOF, including resetobjs, give_to_nearby_mon, drop_upon_death,
-fixuporacle, can_make_bones, removal, savebones, getbones, name matching,
-sanitization, ghostly objects, new/free ebones. JS bones.js relevant save/write/
-load/name-match bodies read. Many substantial lifecycle gaps remain; next port
-cemetery state and expand native save/load/bones controls before broadening.
-Do not end with a checkpoint final; the full port continues.
+Work .cache/bones-overview. HEAD c06850cc. On September 6 the user explicitly
+authorized pushing the 25 verified commits and every future verified commit
+to public origin/main, so the leaderboard keeps updating. This authorization
+persists; do not ask again. Commit only after the appropriate checks pass,
+then push promptly. Pushed c06850cc successfully September6 10:48:35 EDT;
+origin/main and HEAD are equal,0behind/0ahead. Session97901 completed. Public
+Actions API reports Score active but zero listed runs; no new remote score
+verified yet. gh CLI is unauthenticated, so used the public API. Current
+unfinished work is uncommitted. Before this push the last successful push was
+September 5 11:00:30 EDT,cdd126c9; prior auto-review had rejected publication
+for lack of explicit authorization. That authorization issue is now resolved.
+
+The bones audit and plan updates are complete. Final diff, syntax and frozen
+checks pass. Commit and immediate push are next. Runtime is frozen. No active
+jobs or native recorders. Work: .cache/bones-overview. Original bones.c and
+relevant complete C function bodies have been read. Twenty-four runtime modules
+changed, including new restore.js. No C or frozen edits.
+
+Ported cemetery identity/reason/date/location/chains; ghost, statue and undead
+remains; permanent resistances; inventory cleanup, knowledge/name reset and
+invocation downgrades; level eligibility; fruit names and ID remapping; ghostly
+weapon adjustment; object and monster renumbering; room/subroom identity;
+shop/priest bindings; local timers/lights; regions and engraving persistence.
+Native long replay exposed checkpoint text-pointer rewinding, poisoned missile
+handling, and welded monster-weapon feedback. Those are fixed and verified.
+
+Sixteen permanent recipes contain 91 native segments. Official promoter RAN
+ONCE. Assertions and integrity checks pass; 16/16 exact instrumented C repeats.
+All new 19,423 screens/cursors, 395,506 RNG calls and 80 animations match.
+Final prior regression: 587/587, all 759,903 screens/cursors, 14,122,292 RNG,
+29,919/29,940 animations. Combined at the same functional runtime: 603/603
+fixtures (44 public,559 supplemental),779,326 screens/cursors,14,517,798 RNG,
+29,999/30,020 animations. The 21 existing public animation misses remain.
+Logs: official-score.log,regression-second.log. All sessions completed.
+
+State gate tools/bones-state-gate.mjs passes 91 native replays,29 written bones,
+30 load boundaries,25 inventory and5 native floor-fruit observations and89
+constructed C-derived groups. state-fruit-final.log. Sixteen deliberate faults
+all detected:15 by state, with omitted welded feedback caught by native output.
+The final floor-fruit observation now detects omitted load-time remapping.
+Six faults survive all native fixtures but fail state: candle age, temporary
+resistance retention, duplicate subrooms, double timer count, old remembered
+engravings, recursive ghostly marking. Baseline loads all23 prior modified
+modules from c06850cc and fails16/16, including7 runtime errors (undefined
+locations). mutation-results.json preserves exact results. Never read
+baseline.mjs directly, it embeds complete source.
+
+C union adds244 direct outcomes and8 entered functions, reaching57,364/108,268
+and4,412/5,491. New entries: bones fix_ghostly_obj,goodfruit,fixuporacle;
+mondata give_u_to_m_resistances; restore ghostfruit; zap fracture_rock,
+break_statue; hacklib ordin. coverage-union-summary.json andremaining.json
+preserve counts/gaps. New corpus enters rot_corpse andburn_object butNOT
+hatch_egg. Long replay requested500waits; combat/death prompts interrupt it,
+so do not claim500 actual turns.
+
+Eighteen related state gates,60 hang checks,80 fresh games across13roles,
+14 tool tests,source audit0findings/269modules,branch ledger3767/3767 with99
+covered7partial pass. Fuzz101/102 unchanged:491,759RNG,14,261/14,262screens,
+14,262cursors,75/76animations; known fixed-date screen difference. See
+related-exits.json. Runtime changed only in provenance comments after checks.
+
+Remaining: in_use usesobfree instead ofCdealloc_obj; shared place_object and
+add_to_container held transitions remainpartial (explicit C sites ported);
+shop damage/bill objects,worm tails,exclusions,stasis clocks,ghostly branch
+stairs/portal rebinding,normal restore ordering,OMONST/OMID fixup ordering,
+save/get decline and replacement prompts,multiple native cemetery deaths.
+Unicode input beyond byte-valued strings is not established. Parent save,
+restore,death,missile and weapon paths remainpartial. Keep
+eligibility-multiturn native fixture with its known Invocation visibility gap.
+Commit this verified checkpoint before expanding runtime. Next source pass:
+object disposal and restore ordering, with independent C controls. Audit:
+docs/plan/bones-audit.md. Final state and fruit-mutant jobs83585/20039 finished.
+
+Leaderboard last fetched after push: snapshot2026-09-06T11:49:08.879Z, team
+last scored2026-09-06T11:11:21.682Z, before our push. Public11405/11405,
+44/44sessions. Held-out9179/11265screens(81.48246782068354%),20/44sessions,
+82.89433765170723%RNG. Agentic rank1/9. Do not claim held-out100% or a new
+score for the pushed commit. Cacheleaderboard-after-push-fresh.json.
+
+IMPORTANT: native recorder calls share lock and bones files. Run one at a
+time and collect actual process completion before starting another. All
+permanent candidates were rerecorded after earlier accidental overlap.
+Do not end with a checkpoint final; full port work continues.
 
 ### Checkpoint: overview selection and annotation queries
+
+Committed c06850cc (27files), pushed September 6 at 10:48:35 EDT.
 
 Work .cache/annotation-overview, audit docs/plan/overview-audit.md. Nine runtime
 modules: botl,cmd,const,do_name,dungeon,end,jsmain,mklev,mkmaze. Full C query,
@@ -79,8 +149,8 @@ all491759RNG14261/14262screens75/76animations.17relatedstate,48hang,
 80freshgames13roles,14tooltests,source0/268,ledger3676/3676(99covered7partial)
 pass. Initialmutator had duplicate substring forflush, correctedbeforefinalrun;
 initialverifier stoppedonmissingmutation-names, finalruncomplete. No runtime
-edits after allfinalchecks started. Audit/plans updated; finaldiff/commitnext.
-No push: publication authorization remains unanswered. Local commitallowed.
+edits after allfinalchecks started. Audit/plans updated; finaldiff/commitdone.
+Published September 6 after explicit authorization. Future verified pushes are authorized.
 
 Probe details: Mines→numeric1→wizardmenua returnsMAIN1. MenuJseed31 isAstral,
 notEarth. Then-1Earth,-2Air,-3Fire,-4Water. Selectors restartperpage;24levels

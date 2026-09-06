@@ -5431,3 +5431,39 @@ line to <<VERSION_BANNER>>; screendiff shows that placeholder for C.
 src/priest.c:425 intemple(): `if ((priest = findpriest(roomno)) != 0)
 record_achievement(ACH_TMPL);` — the chronicle line "entered a temple"
 was missing from ours, shifting every later #chronicle line.
+
+## Shared damage handlers must exist for every AD type that draws
+
+src/uhitm.c mhitm_adtyping() routes each damage type to one shared
+mhitm_ad_*() with uhitm/mhitu/mhitm arms. Fifteen of them start with
+mhitm_mgc_atk_negated(), an unconditional rn2(10) (unless the attacker is
+cancelled). mdamagem() in mhitm.js dispatched only a subset, so a lichen
+touching a pet (AD_STCK 0d0) skipped the roll. mhitm_ad_stck, _dren,
+_slow and _were are ported in C form; the handlers still missing from the
+mhitm dispatch are listed by the note_unported `mdamagem:adtyp=N` hits.
+
+## Run and rush keys are movement commands everywhere
+
+src/cmd.c:3462 reset_commands() binds highc(dirchar) to run and
+C(dirchar) to rush (^J/^L/^N override redraw/annotate), so movecmd(sym,
+MV_ANY) accepts them: getdir() treats RET (^J) as south and doclose says
+"You see no door there." instead of "What a strange direction". With
+number_pad the digits walk and M(digit) runs. movecmd() now models these.
+
+## Local copies of constants drift
+
+lock.js carried `P_LANCE = 24`; skills.h says 19 (P_BOW is 20). A bow is
+not a forceable weapon in C, so #force takes no time; ours spent the turn
+and a pet moved, silently, until its next roll differed. Constants belong
+in js/const.js under their C names; grep for local `= <number>` copies
+when a divergence looks impossible.
+
+## Silent monster drift, open case (s13-31)
+
+A grid bug two rooms away from the hero ends up one square from where C
+has it, with no RNG difference until its mtrack roll rn2(4*(cnt-j)) sees a
+different candidate count. can_track()/gettrack()/settrack() and the
+mfndpos filters were compared line by line and match. The drift is in a
+deterministic m_move decision for a monster that cannot see the hero; the
+C recording cannot show the position, so the next step is instrumenting
+the recorder (print monster positions per turn) for this seed.

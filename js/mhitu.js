@@ -82,7 +82,7 @@ import { mon_nam, Some_Monnam } from './do_name.js';
 import { Inhell, remove_monster, place_monster, makemon } from './makemon.js';
 import { swallowed } from './display.js';
 import { vision_recalc } from './vision.js';
-import { ACURR, adjalign, adjattrib, exercise } from './attrib.js';
+import { ACURR, adjalign, adjattrib, exercise, Fast } from './attrib.js';
 import { A_CON, A_STR, A_DEX } from './const.js';
 import { sobj_at } from './invent.js';
 import { s_suffix } from './hacklib.js';
@@ -181,6 +181,16 @@ const AC_VALUE = (AC) => (AC >= 0 ? AC : -rnd(-AC));
 // pointer (mattk == gh.hitmsg_prev + 1). The slot index plays that role for
 // attacks from the monster table. A getmattk() substitution uses one shared C
 // scratch slot instead, so it can never be adjacent to the previous attack.
+// src/mhitu.c:163 u_slow_down()
+export async function u_slow_down() {
+    (game.u.intrinsic ||= {}).HFast = 0;
+    if (!Fast())
+        await You('slow down.');
+    else /* speed boots */
+        await Your('quickness feels less natural.');
+    exercise(A_DEX, false);
+}
+
 export async function hitmsg(mtmp, mattk, indx) {
     const A = ATTKS;
     let compat;

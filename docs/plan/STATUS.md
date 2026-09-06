@@ -57,7 +57,18 @@ text source; record_achievement(ACH_TMPL) on entering a tended temple.
 Census after this: every fuzz game RNG-perfect; the only screen misses
 are the recording-timezone cases.
 
-Next: keep recording long batches with new seeds (`--seed 13`, mix
+Fourth round, `--seed 13` (5 failures in 40): the shared damage handlers
+mhitm_ad_stck/dren/slow/were with u_slow_down() and their mdamagem dispatch
+(a lichen's sticky touch on a pet skipped the magic-negation roll);
+movecmd() accepts highc() run and C() rush keys (RET at "In what
+direction?" is rush-south in C); peffect_see_invisible() in C form
+(permchance roll); lock.js used a local P_LANCE of 24 (C: 19) so #force
+with a bow spent a turn. One game is still open: s13-31, a grid bug that
+cannot see the hero drifts silently (no RNG) before a track roll differs;
+the hero-track code and mfndpos match the C, so the cause is upstream
+(unseen monster movement) and needs the C stream walked back.
+
+Next: keep recording long batches with new seeds (`--seed 14`, mix
 `--debug`/`--normal`), fix what diverges, then return to the note_unported
 list (hack.js 19, spell.js 20, shk.js 19). tools/jsplay.mjs has a new
 `--aeval "<await expr>"` flag with the hack.js namespace as `h` for state

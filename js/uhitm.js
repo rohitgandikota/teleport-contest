@@ -1,4 +1,4 @@
-import { DISMOUNT_KNOCKED } from './const.js';
+import { DISMOUNT_KNOCKED, NON_PM } from './const.js';
 import { NEUTRAL } from './const.js';
 import { A_CON } from './const.js';
 import { RLOC_MSG } from './const.js';
@@ -13,7 +13,7 @@ import { POTHIT_HERO_THROW } from './const.js';
 import { POTHIT_HERO_BASH } from './const.js';
 import { MMOVE_DIED } from './const.js';
 import { dismount_steed } from './steed.js';
-import { cloneu } from './mhitu.js';
+import { cloneu, u_slow_down } from './mhitu.js';
 import { mpickobj } from './steal.js';
 import { findgold } from './makemon.js';
 import { the } from './objnam.js';
@@ -54,7 +54,7 @@ import { potionhit } from './potion.js';
 import { hold_another_object } from './invent.js';
 import { freeinv } from './invent.js';
 import { splitobj } from './mkobj.js';
-import { find_artifact } from './artifact.js';
+import { find_artifact, retouch_equipment } from './artifact.js';
 import { artifact_hit } from './artifact.js';
 import { artifact_light } from './artifact.js';
 import { corpse_xname } from './objnam.js';
@@ -68,7 +68,7 @@ import { m_move } from './monmove.js';
 import { setuwep } from './wield.js';
 import { untwoweapon } from './wield.js';
 import { can_twoweapon } from './wield.js';
-import { monkilled } from './mon.js';
+import { monkilled, m_next2u } from './mon.js';
 import { angry_guards } from './mon.js';
 import { ghod_hitsu } from './priest.js';
 import { bigmonst } from './mondata.js';
@@ -97,7 +97,7 @@ import { touch_petrifies, abuse_dog, slimeproof } from './dog.js';
 import { munslime } from './muse.js';
 import { delayed_killer } from './end.js';
 import { SLIMED, NC_SHOW_MSG } from './const.js';
-import { which_armor, extract_from_minvent } from './worn.js';
+import { which_armor, extract_from_minvent, mon_adjust_speed } from './worn.js';
 import { hitmsg, magic_negation, mdamageu, mpoisons_subj, mhis } from './mhitu.js';
 import { You, Your, You_feel, You_hear, livelog_add, pline_The,
          pline_mon, verbalize } from './pline.js';
@@ -206,6 +206,9 @@ import { cansee, vision_recalc } from './vision.js';
 import { make_stunned, paralyze_monst } from './potion.js';
 import { stop_occupation } from './allmain.js';
 import { fall_asleep } from './timeout.js';
+import { drain_en } from './trap.js';
+import { Protection_from_shape_changers } from './youprop.js';
+import { set_ulycn } from './were.js';
 
 function note_unported_uhitm(what) {
     (game.unported ||= new Set()).add(`uhitm:${what}`);
@@ -4605,6 +4608,120 @@ export async function mhitm_ad_slee(magr, mattk, mdef, mhm) {
         }
         mdef.mstrategy = (mdef.mstrategy | 0) & ~STRAT_WAITFORU;
         await slept_monst(mdef);
+    }
+}
+
+// src/uhitm.c:2418 mhitm_ad_dren()
+export async function mhitm_ad_dren(magr, mattk, mdef, mhm) {
+    const negated = await mhitm_mgc_atk_negated(magr, mdef, false);
+
+    if (magr === game.youmonst) {
+        /* uhitm */
+        if (!negated && !rn2(4))
+            await xdrainenergym(mdef, true);
+        mhm.damage = 0;
+    } else if (mdef === game.youmonst) {
+        /* mhitu */
+        await hitmsg(magr, mattk, mhm.indx);
+        if (!negated && !rn2(4)) /* 25% chance */
+            await drain_en(mhm.damage, false);
+        mhm.damage = 0;
+    } else {
+        /* mhitm */
+        if (!negated && !rn2(4))
+            await xdrainenergym(mdef, !!(game.vis && canspotmon(mdef)
+                                          && mattk[0] !== ATTKS.AT_ENGL));
+        mhm.damage = 0;
+    }
+}
+
+// src/uhitm.c:3306 mhitm_ad_stck()
+export async function mhitm_ad_stck(magr, mattk, mdef, mhm) {
+    const negated = await mhitm_mgc_atk_negated(magr, mdef, false);
+    const pd = mdef.data;
+    const barbs = (magr.data === game.mons[PMNAMES.PM_BARBED_DEVIL]);
+
+    if (magr === game.youmonst) {
+        /* uhitm */
+        if (!negated && !sticks(pd) && m_next2u(mdef)) {
+            set_ustuck(mdef); /* it's now stuck to you */
+            if (barbs)
+                await Your(`barbs stick to ${y_monnam(mdef)}!`);
+        }
+    } else if (mdef === game.youmonst) {
+        /* mhitu */
+        await hitmsg(magr, mattk, mhm.indx);
+        if (!negated && !game.u.ustuck && !sticks(pd)) {
+            set_ustuck(magr);
+            if (barbs)
+                await pline('The barbs stick to you!');
+        }
+    } else {
+        /* mhitm */
+        if (negated)
+            mhm.damage = 0;
+    }
+}
+
+// src/uhitm.c:3652 mhitm_ad_slow()
+export async function mhitm_ad_slow(magr, mattk, mdef, mhm) {
+    const negated = await mhitm_mgc_atk_negated(magr, mdef, false);
+
+    if (defended(mdef, ATTKS.AD_SLOW))
+        return;
+
+    if (magr === game.youmonst) {
+        /* uhitm */
+        if (!negated && mdef.mspeed !== MSLOW) {
+            const oldspeed = mdef.mspeed;
+
+            mon_adjust_speed(mdef, -1, null);
+            if (mdef.mspeed !== oldspeed && canseemon(mdef))
+                await pline(`${Monnam(mdef)} slows down.`);
+        }
+    } else if (mdef === game.youmonst) {
+        /* mhitu */
+        await hitmsg(magr, mattk, mhm.indx);
+        if (!negated && (game.u.intrinsic?.HFast | 0) && !rn2(4))
+            await u_slow_down();
+    } else {
+        /* mhitm */
+        if (!negated && mdef.mspeed !== MSLOW) {
+            const oldspeed = mdef.mspeed;
+
+            mon_adjust_speed(mdef, -1, null);
+            mdef.mstrategy = (mdef.mstrategy | 0) & ~STRAT_WAITFORU;
+            if (mdef.mspeed !== oldspeed && game.vis && canspotmon(mdef))
+                await pline_mon(mdef, `${Monnam(mdef)} slows down.`);
+        }
+    }
+}
+
+// src/uhitm.c:4265 mhitm_ad_were()
+export async function mhitm_ad_were(magr, mattk, mdef, mhm) {
+    const pa = magr.data;
+
+    if (magr === game.youmonst) {
+        /* uhitm */
+        await mhitm_ad_phys(magr, mattk, mdef, mhm);
+        if (mhm.done)
+            return;
+    } else if (mdef === game.youmonst) {
+        /* mhitu */
+        await hitmsg(magr, mattk, mhm.indx);
+        if (!rn2(4) && game.u.ulycn === NON_PM
+            && !Protection_from_shape_changers() && !defends(ATTKS.AD_WERE, game.u.uwep)
+            && !(await mhitm_mgc_atk_negated(magr, mdef, true))) {
+            await urgent_pline('You feel feverish.');
+            exercise(A_CON, false);
+            set_ulycn(monsndx(pa));
+            await retouch_equipment(2);
+        }
+    } else {
+        /* mhitm */
+        await mhitm_ad_phys(magr, mattk, mdef, mhm);
+        if (mhm.done)
+            return;
     }
 }
 

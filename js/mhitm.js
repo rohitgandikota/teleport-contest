@@ -72,6 +72,7 @@ import { mhitm_ad_phys, mhitm_ad_fire, mhitm_ad_cold, mhitm_ad_elec,
          mhitm_ad_sedu, mhitm_ad_drli, mhitm_ad_drin,
          mhitm_ad_ston, mhitm_ad_wrap, mhitm_ad_heal,
          mhitm_ad_plys, mhitm_ad_slee, mhitm_ad_slim, attk_protection,
+         mhitm_ad_were, mhitm_ad_dren, mhitm_ad_stck, mhitm_ad_slow,
          mhitm_knockback } from './uhitm.js';
 import { grow_up, goodpos, remove_monster, place_monster } from './makemon.js';
 import { M_ATTK_MISS, M_ATTK_HIT, M_ATTK_DEF_DIED, M_ATTK_AGR_DIED, M_ATTK_AGR_DONE } from './const.js';
@@ -673,6 +674,14 @@ export async function mdamagem(magr, mdef, mattk, mwep, dieroll) {
                || mattk[1] === A.AD_SEDU
                || mattk[1] === A.AD_SSEX) {
         await mhitm_ad_sedu(magr, mattk, mdef, mhm);
+    } else if (mattk[1] === A.AD_WERE) {
+        await mhitm_ad_were(magr, mattk, mdef, mhm);
+    } else if (mattk[1] === A.AD_DREN) {
+        await mhitm_ad_dren(magr, mattk, mdef, mhm);
+    } else if (mattk[1] === A.AD_STCK) {
+        await mhitm_ad_stck(magr, mattk, mdef, mhm);
+    } else if (mattk[1] === A.AD_SLOW) {
+        await mhitm_ad_slow(magr, mattk, mdef, mhm);
     } else {
         note_unported_mhitm(`mdamagem:adtyp=${mattk[1]}`);
     }

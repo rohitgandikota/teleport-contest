@@ -4198,9 +4198,31 @@ export function movecmd(sym, mode) {
     let bound = game.rc_key_bindings?.[sym];
 
     if (bound === undefined) {
-        const dk = KEY_TO_DIR[sym];
+        /* src/cmd.c:3462 reset_commands(): dirchars walk; without
+           number_pad highc(dirchar) runs and C(dirchar) rushes (^J/^L/^N
+           override their default commands); with number_pad the digits
+           walk and M(digit) runs ("can't bind highc() or C() of digits") */
+        const num_pad = !!game.iflags?.num_pad;
+        const ndir = '47896321', sdir = 'hykulnjb';
+        const code = sym.length === 1 ? sym.charCodeAt(0) : -1;
+        const letter_of = (ch) => {
+            if (!num_pad)
+                return ch;
+            const i = ndir.indexOf(ch);
+            return i >= 0 ? sdir[i] : null;
+        };
+        let dk = KEY_TO_DIR[letter_of(sym)];
         if (dk !== undefined)
             bound = move_funcs[dk][MV_WALK];
+        else if (!num_pad && code >= 0x41 && code <= 0x5a
+                 && (dk = KEY_TO_DIR[sym.toLowerCase()]) !== undefined)
+            bound = move_funcs[dk][MV_RUN];     /* highc(dirchar) */
+        else if (!num_pad && code >= 0 && code < 0x20
+                 && (dk = KEY_TO_DIR[String.fromCharCode(code | 0x60)]) !== undefined)
+            bound = move_funcs[dk][MV_RUSH];    /* C(dirchar) */
+        else if (num_pad && code >= 0x80
+                 && (dk = KEY_TO_DIR[letter_of(String.fromCharCode(code & 0x7f))]) !== undefined)
+            bound = move_funcs[dk][MV_RUN];     /* M(digit) */
         else if (sym === '<')
             bound = 'up';
         else if (sym === '>')

@@ -1,0 +1,92 @@
+{
+  "name": "concealed-shop-picks",
+  "description": "Removing concealed picks in a shop, once-per-turn reactions to one or two picks, deaf feedback and a dagger control.",
+  "coverage": [
+    "mode.debug",
+    "object.tools-containers",
+    "ui.menus",
+    "ui.more-paging"
+  ],
+  "branches": [
+    "concealed-shop-picks.shop-pick-one",
+    "concealed-shop-picks.shop-pick-two",
+    "concealed-shop-picks.shop-pick-no-pick",
+    "concealed-shop-picks.shop-pick-one-deaf",
+    "concealed-shop-picks.shop-pick-two-deaf"
+  ],
+  "requireBranchAssertions": true,
+  "segments": [
+    {
+      "seed": 6901,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=menustyle:traditional\n",
+      "moves": " \u00162\r\u0006\u0014  lllllllllllllllllllllllllk.  \u0017uncursed sack\r        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed pick-axe\r        \u001b\u001b\u001b\u001b\u001b\u001banso        \u001b\u001b\u001b\u001b\u001b\u001banoa\r        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b",
+      "name": "shop-pick-one"
+    },
+    {
+      "seed": 6901,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=menustyle:traditional\n",
+      "moves": " \u00162\r\u0006\u0014  lllllllllllllllllllllllllk.  \u0017uncursed sack\r        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed pick-axe\r        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed dwarvish mattock\r        \u001b\u001b\u001b\u001b\u001b\u001banso        \u001b\u001b\u001b\u001b\u001b\u001bansp        \u001b\u001b\u001b\u001b\u001b\u001banoa\r        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b",
+      "name": "shop-pick-two"
+    },
+    {
+      "seed": 6901,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=menustyle:traditional\n",
+      "moves": " \u00162\r\u0006\u0014  lllllllllllllllllllllllllk.  \u0017uncursed sack\r        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed dagger\r        \u001b\u001b\u001b\u001b\u001b\u001banso        \u001b\u001b\u001b\u001b\u001b\u001banoa\r        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b",
+      "name": "shop-pick-no-pick"
+    },
+    {
+      "seed": 6901,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=menustyle:traditional\n",
+      "moves": " \u00162\r\u0006\u0014  lllllllllllllllllllllllllk.  \u0017uncursed sack\r        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed pick-axe\r        \u001b\u001b\u001b\u001b\u001b\u001banso        \u001b\u001b\u001b\u001b\u001b\u001b#wizintrinsic\rj\r        \u001b\u001b\u001b\u001b\u001b\u001banoa\r        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b",
+      "name": "shop-pick-one-deaf"
+    },
+    {
+      "seed": 6901,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=menustyle:traditional\n",
+      "moves": " \u00162\r\u0006\u0014  lllllllllllllllllllllllllk.  \u0017uncursed sack\r        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed pick-axe\r        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed dwarvish mattock\r        \u001b\u001b\u001b\u001b\u001b\u001banso        \u001b\u001b\u001b\u001b\u001b\u001bansp        \u001b\u001b\u001b\u001b\u001b\u001b#wizintrinsic\rj\r        \u001b\u001b\u001b\u001b\u001b\u001banoa\r        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b",
+      "name": "shop-pick-two-deaf"
+    }
+  ],
+  "branchAssertions": [
+    {
+      "branch": "concealed-shop-picks.shop-pick-one",
+      "segment": 0,
+      "screenIncludes": [
+        "You sneaky cad!  Get out of here with that pick!"
+      ]
+    },
+    {
+      "branch": "concealed-shop-picks.shop-pick-two",
+      "segment": 1,
+      "screenIncludes": [
+        "You sneaky cad!  Get out of here with that pick!"
+      ]
+    },
+    {
+      "branch": "concealed-shop-picks.shop-pick-no-pick",
+      "segment": 2,
+      "screenIncludes": [
+        "o - a dagger."
+      ]
+    },
+    {
+      "branch": "concealed-shop-picks.shop-pick-one-deaf",
+      "segment": 3,
+      "screenIncludes": [
+        "glares at your pick!"
+      ]
+    },
+    {
+      "branch": "concealed-shop-picks.shop-pick-two-deaf",
+      "segment": 4,
+      "screenIncludes": [
+        "glares at your pick!"
+      ]
+    }
+  ]
+}

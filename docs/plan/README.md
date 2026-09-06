@@ -17,22 +17,20 @@ and persistent gameplay state. Continue source review, measured C branches,
 independent oracles, implementation, and regression checks until that goal is
 met. Current corpus success is not the stopping criterion.
 
-The latest container pass adds 114 C cases. All 44 public and 494
-supplemental fixtures pass, matching 321,154 screens/cursors and 9,769,782
-RNG calls. The C union reaches 55,303/108,268 direct outcomes and
-4,362/5,491 entered records. The assertion ledger is 2,268/2,268.
-Disabling stack restoration fails native output and persistent state.
+The latest pass adds 63 C cases for quantum containers, concealed picks and
+teleport attacks. All 44 public and 498 supplemental fixtures pass, matching
+336,089 screens/cursors and 9,982,087 RNG calls. The C union reaches
+55,375/108,268 direct outcomes and 4,366/5,491 entered records. The assertion
+ledger is 2,331/2,331. A missing corpse timer stop passes native screen/RNG
+comparison but fails the new persistent-state check.
 
 See [STATUS.md](STATUS.md) for the checkpoint and next action,
-[container-selection-audit.md](container-selection-audit.md) for the current
+[quantum-containers-audit.md](quantum-containers-audit.md) for the current
 review and [gameplay-gap-audit.md](gameplay-gap-audit.md) for measurement
 limits. The earlier published held-out result was 78.39%; the local suite
-does not establish a newer held-out score. The complete shared selection,
-container callbacks and carrying calculations are now integrated. Native
-coverage still lacks quantum-cat observation and concealed-pick reactions.
-The remaining object menus, floor pickup, multiple-container looting,
-disclosure, inventory lifecycle, spell, monster and Lua paths remain open.
-The full-port goal remains active.
+does not establish a newer held-out score. Tipping, object menus, floor
+pickup, multiple-container looting, disclosure, inventory lifecycle,
+spell, monster and Lua paths remain open. The full-port goal remains active.
 
 ## Previous focus, 2026-09-03
 

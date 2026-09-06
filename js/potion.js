@@ -1417,7 +1417,6 @@ async function peffect_hallucination(otmp) {
                 = await import('./const.js');
             const { NO_COLOR, ATR_NONE } = await import('./terminal.js');
             const { xwaitforspace } = await import('./tty/getline.js');
-            const { docrt } = await import('./display.js');
             const win = tty_create_nhwindow(NHW_MENU);
             tty_start_menu(win, MENU_BEHAVE_STANDARD);
             for (const line of enlightenment(MAGICENLIGHTENMENT,
@@ -1430,7 +1429,6 @@ async function peffect_hallucination(otmp) {
             while (game.morc !== '\x1b' && tty_next_page(win))
                 await xwaitforspace(' \r\n\x1b');
             tty_destroy_nhwindow(win);
-            await docrt();
         }
         await Your('awareness re-normalizes.');
         exercise(A_WIS, true);

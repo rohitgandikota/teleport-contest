@@ -15,7 +15,7 @@ import { unstuck } from './mon.js';
 import { pline_mon } from './pline.js';
 import { sticks } from './mondata.js';
 import { some_mon_nam } from './do_name.js';
-import { mhitm_ad_poly, mhitm_ad_deth } from './uhitm.js';
+import { mhitm_ad_poly, mhitm_ad_deth, mhitm_ad_tlpt } from './uhitm.js';
 import { MONSYMS } from './monst_data.js';
 import { finish_meating } from './dogmove.js';
 import { tele, tele_restrict, rloc } from './teleport.js';
@@ -665,6 +665,8 @@ export async function mdamagem(magr, mdef, mattk, mwep, dieroll) {
         await mhitm_ad_ston(magr, mattk, mdef, mhm);
     } else if (mattk[1] === A.AD_WRAP) {
         await mhitm_ad_wrap(magr, mattk, mdef, mhm);
+    } else if (mattk[1] === A.AD_TLPT) {
+        await mhitm_ad_tlpt(magr, mattk, mdef, mhm);
     } else if (mattk[1] === A.AD_POLY) {
         await mhitm_ad_poly(magr, mattk, mdef, mhm);
     } else if (mattk[1] === A.AD_SITM

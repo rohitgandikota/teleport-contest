@@ -5043,3 +5043,29 @@ The JS built `u.uconduct` lazily and an unset counter went NaN on `++`,
 which reads as "never" in the end-of-game conducts ("You were a
 pacifist"). allmain.js now creates every counter at 0 next to
 `u.ualign`.
+
+
+## Quantum box timers and teleport attacks, 2026-09-06
+
+See quantum-containers-audit.md for the63newnativecases andsourcecoverage.
+An unopened quantum box contains a housecat corpse with its ROT_CORPSE
+timer stopped. Leaving that timer running passes every creation screen,
+cursor and RNG entry but fails the new native state assertion immediately.
+Use persistent-state checks alongside output comparison for these paths.
+
+The delayed-loot probe also found missing AD_TLPT dispatch. The shared C
+helper now covers all three combat directions and nonfatal damage. The
+Upolyd helper takes game.u explicitly. The low-HP safety boundary is
+constructed coverage; ordinary native attack cases do not exercise it.
+
+NETHACK_RNGLOG_DISP adds ~drn2 entries, not strings containing "display".
+A hallucination potion's enlightenment window already restores the map on
+dismissal. The additional docrt inserted six display draws before the
+next three normal draws, with no core-RNG difference. Remove only the
+proven extra redraw; other callers still need independent source review.
+
+The350-turn rest request in the delayed probe is interrupted by gameplay;
+JS reaches82and57elapsedmoves. A351request records identical behavior.
+Requested repeat counts are not evidence of elapsed turns. The no-control
+attack cases remove the intrinsic, but wizardmode still offers controlled
+teleportation. They do not establish random uncontrolled teleport coverage.

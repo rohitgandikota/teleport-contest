@@ -25,7 +25,7 @@ import { locomotion } from './mondata.js';
 import { mdistu } from './monmove.js';
 import { steal } from './steal.js';
 import { rloc } from './teleport.js';
-import { tele_restrict } from './teleport.js';
+import { tele_restrict, tele, u_teleport_mon } from './teleport.js';
 import { could_seduce } from './mhitu.js';
 import { u_slip_free } from './mhitu.js';
 import { failed_grab, sleep_monst, slept_monst, engulf_target,
@@ -111,7 +111,7 @@ import { Acid_resistance, Antimagic, Blind, Cold_resistance, Deaf,
          Fire_resistance, Free_action, Fumbling, Hallucination, Flying, Levitation,
          Invisible, Shock_resistance, Swimming, Amphibious, Breathless,
          Sleep_resistance, Stone_resistance, Sick_resistance,
-         Slow_digestion, Unchanging } from './youprop.js';
+         Slow_digestion, Unchanging, Teleport_control, Stunned } from './youprop.js';
 import { canseemon, canspotmon, glyph_at, sensemon, newsym, pline, shieldeff,
          flush_screen, glyph_is_invisible_at, map_invisible,
          unmap_invisible, urgent_pline, map_location, mon_to_glyph,
@@ -134,7 +134,7 @@ import { an, aobjnam, yname, cxname, xname, The, makeplural, simpleonames,
          obj_is_pname, otense, mshot_xname, Yname2, Yobjnam2,
          doname } from './objnam.js';
 import { mintrap, instapetrify, minstapetrify, mselftouch, erode_obj,
-         ignite_items } from './trap.js';
+         ignite_items, unconscious } from './trap.js';
 import { clone_mon, goodpos, place_monster, remove_monster,
          is_rider, grow_up, monsndx } from './makemon.js';
 import { rn2, rnd, d, rn2_on_display_rng } from './rng.js';
@@ -1727,6 +1727,11 @@ export async function damageum(mon, mattk, specialdmg) {
             const mhm = { damage, hitflags: M_ATTK_MISS, permdmg: 0,
                           specialdmg, done: false };
             await mhitm_ad_wrap(game.youmonst, mattk, mon, mhm);
+            damage = mhm.damage;
+        } else if (mattk[1] === ATTKS.AD_TLPT) {
+            const mhm = { damage, hitflags: M_ATTK_MISS, permdmg: 0,
+                          specialdmg, done: false };
+            await mhitm_ad_tlpt(game.youmonst, mattk, mon, mhm);
             damage = mhm.damage;
         } else if (mattk[1] === ATTKS.AD_POLY) {
             const mhm = { damage, hitflags: M_ATTK_MISS, permdmg: 0,
@@ -3555,6 +3560,75 @@ export async function mhitm_ad_drli(magr, mattk, mdef, mhm) {
                 mhm.damage = mdef.mhp;
             else
                 mdef.m_lev--;
+        }
+    }
+}
+
+// src/uhitm.c:2859 mhitm_ad_tlpt(), teleportation attacks in all three
+// combat directions. A successful teleport must leave its target alive.
+export async function mhitm_ad_tlpt(magr, mattk, mdef, mhm) {
+    if (magr === game.youmonst) {
+        if (mhm.damage <= 0)
+            mhm.damage = 1;
+        if (await mhitm_mgc_atk_negated(magr, mdef, true)) {
+            await pline(`${Monnam(mdef)} is not affected.`);
+        } else {
+            const u_saw_mon = canseemon(mdef) || engulfing_u(mdef);
+            const nambuf = Monnam(mdef);
+            if (await u_teleport_mon(mdef, false) && u_saw_mon
+                && !(canseemon(mdef) || engulfing_u(mdef)))
+                await pline(`${nambuf} suddenly disappears!`);
+            if (mhm.damage >= mdef.mhp) {
+                if (mdef.mhp === 1)
+                    ++mdef.mhp;
+                mhm.damage = mdef.mhp - 1;
+            }
+        }
+    } else if (mdef === game.youmonst) {
+        await hitmsg(magr, mattk, mhm.indx);
+        if (await mhitm_mgc_atk_negated(magr, mdef, false)) {
+            await You('are not affected.');
+        } else {
+            if (game.flags.verbose)
+                await Your(`position suddenly seems ${
+                    Teleport_control() && !Stunned() && !unconscious()
+                        ? '' : 'very '}uncertain!`);
+            await tele();
+            const tmphp = Upolyd(game.u) ? game.u.mh : game.u.uhp;
+            if ((Half_physical_damage() ? Math.trunc((mhm.damage - 1) / 2)
+                                       : mhm.damage) >= tmphp) {
+                mhm.damage = tmphp - 1;
+                if (Half_physical_damage())
+                    mhm.damage *= 2;
+                if (mhm.damage < 1) {
+                    mhm.damage = 1;
+                    if (Upolyd(game.u) && game.u.mh === 1)
+                        ++game.u.mh;
+                    else if (!Upolyd(game.u) && game.u.uhp === 1)
+                        ++game.u.uhp;
+                }
+            }
+        }
+    } else {
+        if (magr.mcan || mhm.damage >= mdef.mhp
+            || await tele_restrict(mdef)) {
+            // C emits no negation message on these early exits.
+        } else if (await mhitm_mgc_atk_negated(magr, mdef, true)) {
+            if (game.vis)
+                await pline_mon(mdef, `${Monnam(mdef)} is not affected.`);
+        } else {
+            const wasseen = canspotmon(mdef);
+            const mdef_Monnam = game.vis && wasseen ? Monnam(mdef) : '';
+            mdef.mstrategy &= ~STRAT_WAITFORU;
+            await rloc(mdef, RLOC_NOMSG);
+            if (game.vis && wasseen && !canspotmon(mdef)
+                && mdef !== game.u.usteed)
+                await pline(`${mdef_Monnam} suddenly disappears!`);
+            if (mhm.damage >= mdef.mhp) {
+                if (mdef.mhp === 1)
+                    ++mdef.mhp;
+                mhm.damage = mdef.mhp - 1;
+            }
         }
     }
 }

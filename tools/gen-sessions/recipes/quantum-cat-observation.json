@@ -1,0 +1,505 @@
+{
+  "name": "quantum-cat-observation",
+  "description": "Living and dead quantum cats, sighted, blind and hallucinating observation, including potion enlightenment.",
+  "coverage": [
+    "mode.debug",
+    "object.tools-containers",
+    "ui.menus",
+    "ui.more-paging"
+  ],
+  "branches": [
+    "quantum-cat-observation.quantum-loot-13",
+    "quantum-cat-observation.quantum-loot-29",
+    "quantum-cat-observation.quantum-loot-30",
+    "quantum-cat-observation.quantum-loot-40",
+    "quantum-cat-observation.quantum-loot-43",
+    "quantum-cat-observation.quantum-loot-61",
+    "quantum-cat-observation.quantum-loot-76",
+    "quantum-cat-observation.quantum-loot-91",
+    "quantum-cat-observation.quantum-loot-106",
+    "quantum-cat-observation.quantum-loot-13-blind",
+    "quantum-cat-observation.quantum-loot-13-hallucinating",
+    "quantum-cat-observation.quantum-loot-29-blind",
+    "quantum-cat-observation.quantum-loot-29-hallucinating",
+    "quantum-cat-observation.quantum-loot-30-blind",
+    "quantum-cat-observation.quantum-loot-30-hallucinating",
+    "quantum-cat-observation.quantum-loot-40-blind",
+    "quantum-cat-observation.quantum-loot-40-hallucinating",
+    "quantum-cat-observation.quantum-loot-43-blind",
+    "quantum-cat-observation.quantum-loot-43-hallucinating",
+    "quantum-cat-observation.quantum-loot-61-blind",
+    "quantum-cat-observation.quantum-loot-61-hallucinating",
+    "quantum-cat-observation.quantum-loot-76-blind",
+    "quantum-cat-observation.quantum-loot-76-hallucinating",
+    "quantum-cat-observation.quantum-loot-91-blind",
+    "quantum-cat-observation.quantum-loot-91-hallucinating",
+    "quantum-cat-observation.quantum-loot-106-blind",
+    "quantum-cat-observation.quantum-loot-106-hallucinating"
+  ],
+  "requireBranchAssertions": true,
+  "segments": [
+    {
+      "name": "quantum-loot-13",
+      "seed": 13,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0007peaceful sleeping quantum mechanic\r      \u001b\u001b\u001b\u001b\u001b\u001b#wizkill\rm.\u001b        \u001b\u001b\u001b\u001b\u001b\u001bk        \u001b\u001b\u001b\u001b\u001b\u001b#loot\r        \u001b\u001b\u001b\u001b\u001b\u001bq        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "quantum-loot-29",
+      "seed": 29,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0007peaceful sleeping quantum mechanic\r      \u001b\u001b\u001b\u001b\u001b\u001b#wizkill\rm.\u001b        \u001b\u001b\u001b\u001b\u001b\u001bu        \u001b\u001b\u001b\u001b\u001b\u001b#loot\r        \u001b\u001b\u001b\u001b\u001b\u001bq        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "quantum-loot-30",
+      "seed": 30,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0007peaceful sleeping quantum mechanic\r      \u001b\u001b\u001b\u001b\u001b\u001b#wizkill\rm.\u001b        \u001b\u001b\u001b\u001b\u001b\u001bj        \u001b\u001b\u001b\u001b\u001b\u001b#loot\r        \u001b\u001b\u001b\u001b\u001b\u001bq        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "quantum-loot-40",
+      "seed": 40,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0007peaceful sleeping quantum mechanic\r      \u001b\u001b\u001b\u001b\u001b\u001b#wizkill\rm.\u001b        \u001b\u001b\u001b\u001b\u001b\u001bu        \u001b\u001b\u001b\u001b\u001b\u001b#loot\r        \u001b\u001b\u001b\u001b\u001b\u001bq        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "quantum-loot-43",
+      "seed": 43,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0007peaceful sleeping quantum mechanic\r      \u001b\u001b\u001b\u001b\u001b\u001b#wizkill\rm.\u001b        \u001b\u001b\u001b\u001b\u001b\u001bn        \u001b\u001b\u001b\u001b\u001b\u001b#loot\r        \u001b\u001b\u001b\u001b\u001b\u001bq        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "quantum-loot-61",
+      "seed": 61,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0007peaceful sleeping quantum mechanic\r      \u001b\u001b\u001b\u001b\u001b\u001b#wizkill\rm.\u001b        \u001b\u001b\u001b\u001b\u001b\u001bj        \u001b\u001b\u001b\u001b\u001b\u001b#loot\r        \u001b\u001b\u001b\u001b\u001b\u001bq        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "quantum-loot-76",
+      "seed": 76,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0007peaceful sleeping quantum mechanic\r      \u001b\u001b\u001b\u001b\u001b\u001b#wizkill\rm.\u001b        \u001b\u001b\u001b\u001b\u001b\u001bl        \u001b\u001b\u001b\u001b\u001b\u001b#loot\r        \u001b\u001b\u001b\u001b\u001b\u001bq        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "quantum-loot-91",
+      "seed": 91,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0007peaceful sleeping quantum mechanic\r      \u001b\u001b\u001b\u001b\u001b\u001b#wizkill\rm.\u001b        \u001b\u001b\u001b\u001b\u001b\u001bb        \u001b\u001b\u001b\u001b\u001b\u001b#loot\r        \u001b\u001b\u001b\u001b\u001b\u001bq        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "quantum-loot-106",
+      "seed": 106,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0007peaceful sleeping quantum mechanic\r      \u001b\u001b\u001b\u001b\u001b\u001b#wizkill\rm.\u001b        \u001b\u001b\u001b\u001b\u001b\u001bb        \u001b\u001b\u001b\u001b\u001b\u001b#loot\r        \u001b\u001b\u001b\u001b\u001b\u001bq        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "quantum-loot-13-blind",
+      "seed": 13,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0007peaceful sleeping quantum mechanic\r      \u001b\u001b\u001b\u001b\u001b\u001b#wizkill\rm.\u001b        \u001b\u001b\u001b\u001b\u001b\u001bk        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed blindfold\r        \u001b\u001b\u001b\u001b\u001b\u001bab        \u001b\u001b\u001b\u001b\u001b\u001b#loot\r        \u001b\u001b\u001b\u001b\u001b\u001bq        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "quantum-loot-13-hallucinating",
+      "seed": 13,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0007peaceful sleeping quantum mechanic\r      \u001b\u001b\u001b\u001b\u001b\u001b#wizkill\rm.\u001b        \u001b\u001b\u001b\u001b\u001b\u001bk        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed potion of hallucination\r        \u001b\u001b\u001b\u001b\u001b\u001bqb        \u001b\u001b\u001b\u001b\u001b\u001b#loot\r        \u001b\u001b\u001b\u001b\u001b\u001bq        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "quantum-loot-29-blind",
+      "seed": 29,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0007peaceful sleeping quantum mechanic\r      \u001b\u001b\u001b\u001b\u001b\u001b#wizkill\rm.\u001b        \u001b\u001b\u001b\u001b\u001b\u001bu        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed blindfold\r        \u001b\u001b\u001b\u001b\u001b\u001bab        \u001b\u001b\u001b\u001b\u001b\u001b#loot\r        \u001b\u001b\u001b\u001b\u001b\u001bq        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "quantum-loot-29-hallucinating",
+      "seed": 29,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0007peaceful sleeping quantum mechanic\r      \u001b\u001b\u001b\u001b\u001b\u001b#wizkill\rm.\u001b        \u001b\u001b\u001b\u001b\u001b\u001bu        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed potion of hallucination\r        \u001b\u001b\u001b\u001b\u001b\u001bqb        \u001b\u001b\u001b\u001b\u001b\u001b#loot\r        \u001b\u001b\u001b\u001b\u001b\u001bq        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "quantum-loot-30-blind",
+      "seed": 30,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0007peaceful sleeping quantum mechanic\r      \u001b\u001b\u001b\u001b\u001b\u001b#wizkill\rm.\u001b        \u001b\u001b\u001b\u001b\u001b\u001bj        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed blindfold\r        \u001b\u001b\u001b\u001b\u001b\u001bab        \u001b\u001b\u001b\u001b\u001b\u001b#loot\r        \u001b\u001b\u001b\u001b\u001b\u001bq        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "quantum-loot-30-hallucinating",
+      "seed": 30,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0007peaceful sleeping quantum mechanic\r      \u001b\u001b\u001b\u001b\u001b\u001b#wizkill\rm.\u001b        \u001b\u001b\u001b\u001b\u001b\u001bj        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed potion of hallucination\r        \u001b\u001b\u001b\u001b\u001b\u001bqb        \u001b\u001b\u001b\u001b\u001b\u001b#loot\r        \u001b\u001b\u001b\u001b\u001b\u001bq        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "quantum-loot-40-blind",
+      "seed": 40,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0007peaceful sleeping quantum mechanic\r      \u001b\u001b\u001b\u001b\u001b\u001b#wizkill\rm.\u001b        \u001b\u001b\u001b\u001b\u001b\u001bu        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed blindfold\r        \u001b\u001b\u001b\u001b\u001b\u001bab        \u001b\u001b\u001b\u001b\u001b\u001b#loot\r        \u001b\u001b\u001b\u001b\u001b\u001bq        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "quantum-loot-40-hallucinating",
+      "seed": 40,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0007peaceful sleeping quantum mechanic\r      \u001b\u001b\u001b\u001b\u001b\u001b#wizkill\rm.\u001b        \u001b\u001b\u001b\u001b\u001b\u001bu        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed potion of hallucination\r        \u001b\u001b\u001b\u001b\u001b\u001bqb        \u001b\u001b\u001b\u001b\u001b\u001b#loot\r        \u001b\u001b\u001b\u001b\u001b\u001bq        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "quantum-loot-43-blind",
+      "seed": 43,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0007peaceful sleeping quantum mechanic\r      \u001b\u001b\u001b\u001b\u001b\u001b#wizkill\rm.\u001b        \u001b\u001b\u001b\u001b\u001b\u001bn        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed blindfold\r        \u001b\u001b\u001b\u001b\u001b\u001bab        \u001b\u001b\u001b\u001b\u001b\u001b#loot\r        \u001b\u001b\u001b\u001b\u001b\u001bq        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "quantum-loot-43-hallucinating",
+      "seed": 43,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0007peaceful sleeping quantum mechanic\r      \u001b\u001b\u001b\u001b\u001b\u001b#wizkill\rm.\u001b        \u001b\u001b\u001b\u001b\u001b\u001bn        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed potion of hallucination\r        \u001b\u001b\u001b\u001b\u001b\u001bqb        \u001b\u001b\u001b\u001b\u001b\u001b#loot\r        \u001b\u001b\u001b\u001b\u001b\u001bq        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "quantum-loot-61-blind",
+      "seed": 61,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0007peaceful sleeping quantum mechanic\r      \u001b\u001b\u001b\u001b\u001b\u001b#wizkill\rm.\u001b        \u001b\u001b\u001b\u001b\u001b\u001bj        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed blindfold\r        \u001b\u001b\u001b\u001b\u001b\u001bab        \u001b\u001b\u001b\u001b\u001b\u001b#loot\r        \u001b\u001b\u001b\u001b\u001b\u001bq        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "quantum-loot-61-hallucinating",
+      "seed": 61,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0007peaceful sleeping quantum mechanic\r      \u001b\u001b\u001b\u001b\u001b\u001b#wizkill\rm.\u001b        \u001b\u001b\u001b\u001b\u001b\u001bj        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed potion of hallucination\r        \u001b\u001b\u001b\u001b\u001b\u001bqb        \u001b\u001b\u001b\u001b\u001b\u001b#loot\r        \u001b\u001b\u001b\u001b\u001b\u001bq        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "quantum-loot-76-blind",
+      "seed": 76,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0007peaceful sleeping quantum mechanic\r      \u001b\u001b\u001b\u001b\u001b\u001b#wizkill\rm.\u001b        \u001b\u001b\u001b\u001b\u001b\u001bl        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed blindfold\r        \u001b\u001b\u001b\u001b\u001b\u001bab        \u001b\u001b\u001b\u001b\u001b\u001b#loot\r        \u001b\u001b\u001b\u001b\u001b\u001bq        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "quantum-loot-76-hallucinating",
+      "seed": 76,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0007peaceful sleeping quantum mechanic\r      \u001b\u001b\u001b\u001b\u001b\u001b#wizkill\rm.\u001b        \u001b\u001b\u001b\u001b\u001b\u001bl        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed potion of hallucination\r        \u001b\u001b\u001b\u001b\u001b\u001bqb        \u001b\u001b\u001b\u001b\u001b\u001b#loot\r        \u001b\u001b\u001b\u001b\u001b\u001bq        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "quantum-loot-91-blind",
+      "seed": 91,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0007peaceful sleeping quantum mechanic\r      \u001b\u001b\u001b\u001b\u001b\u001b#wizkill\rm.\u001b        \u001b\u001b\u001b\u001b\u001b\u001bb        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed blindfold\r        \u001b\u001b\u001b\u001b\u001b\u001bab        \u001b\u001b\u001b\u001b\u001b\u001b#loot\r        \u001b\u001b\u001b\u001b\u001b\u001bq        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "quantum-loot-91-hallucinating",
+      "seed": 91,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0007peaceful sleeping quantum mechanic\r      \u001b\u001b\u001b\u001b\u001b\u001b#wizkill\rm.\u001b        \u001b\u001b\u001b\u001b\u001b\u001bb        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed potion of hallucination\r        \u001b\u001b\u001b\u001b\u001b\u001bqb        \u001b\u001b\u001b\u001b\u001b\u001b#loot\r        \u001b\u001b\u001b\u001b\u001b\u001bq        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "quantum-loot-106-blind",
+      "seed": 106,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0007peaceful sleeping quantum mechanic\r      \u001b\u001b\u001b\u001b\u001b\u001b#wizkill\rm.\u001b        \u001b\u001b\u001b\u001b\u001b\u001bb        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed blindfold\r        \u001b\u001b\u001b\u001b\u001b\u001bab        \u001b\u001b\u001b\u001b\u001b\u001b#loot\r        \u001b\u001b\u001b\u001b\u001b\u001bq        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "quantum-loot-106-hallucinating",
+      "seed": 106,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0007peaceful sleeping quantum mechanic\r      \u001b\u001b\u001b\u001b\u001b\u001b#wizkill\rm.\u001b        \u001b\u001b\u001b\u001b\u001b\u001bb        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed potion of hallucination\r        \u001b\u001b\u001b\u001b\u001b\u001bqb        \u001b\u001b\u001b\u001b\u001b\u001b#loot\r        \u001b\u001b\u001b\u001b\u001b\u001bq        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b"
+    }
+  ],
+  "branchAssertions": [
+    {
+      "branch": "quantum-cat-observation.quantum-loot-13",
+      "segment": 0,
+      "screenIncludes": [
+        "The housecat inside the box is dead!"
+      ],
+      "rngIncludes": [
+        "rn2(2)=1 @ observe_quantum_cat(pickup.c:2832)"
+      ]
+    },
+    {
+      "branch": "quantum-cat-observation.quantum-loot-29",
+      "segment": 1,
+      "screenIncludes": [
+        "The housecat inside the box is dead!"
+      ],
+      "rngIncludes": [
+        "rn2(2)=1 @ observe_quantum_cat(pickup.c:2832)"
+      ]
+    },
+    {
+      "branch": "quantum-cat-observation.quantum-loot-30",
+      "segment": 2,
+      "screenIncludes": [
+        "The housecat inside the box is dead!"
+      ],
+      "rngIncludes": [
+        "rn2(2)=1 @ observe_quantum_cat(pickup.c:2832)"
+      ]
+    },
+    {
+      "branch": "quantum-cat-observation.quantum-loot-40",
+      "segment": 3,
+      "screenIncludes": [
+        "The housecat inside the box is dead!"
+      ],
+      "rngIncludes": [
+        "rn2(2)=1 @ observe_quantum_cat(pickup.c:2832)"
+      ]
+    },
+    {
+      "branch": "quantum-cat-observation.quantum-loot-43",
+      "segment": 4,
+      "screenIncludes": [
+        "The housecat inside the box is still alive!"
+      ],
+      "rngIncludes": [
+        "rn2(2)=0 @ observe_quantum_cat(pickup.c:2832)"
+      ]
+    },
+    {
+      "branch": "quantum-cat-observation.quantum-loot-61",
+      "segment": 5,
+      "screenIncludes": [
+        "The housecat inside the box is dead!"
+      ],
+      "rngIncludes": [
+        "rn2(2)=1 @ observe_quantum_cat(pickup.c:2832)"
+      ]
+    },
+    {
+      "branch": "quantum-cat-observation.quantum-loot-76",
+      "segment": 6,
+      "screenIncludes": [
+        "The housecat inside the box is still alive!"
+      ],
+      "rngIncludes": [
+        "rn2(2)=0 @ observe_quantum_cat(pickup.c:2832)"
+      ]
+    },
+    {
+      "branch": "quantum-cat-observation.quantum-loot-91",
+      "segment": 7,
+      "screenIncludes": [
+        "The housecat inside the box is dead!"
+      ],
+      "rngIncludes": [
+        "rn2(2)=1 @ observe_quantum_cat(pickup.c:2832)"
+      ]
+    },
+    {
+      "branch": "quantum-cat-observation.quantum-loot-106",
+      "segment": 8,
+      "screenIncludes": [
+        "The housecat inside the box is still alive!"
+      ],
+      "rngIncludes": [
+        "rn2(2)=0 @ observe_quantum_cat(pickup.c:2832)"
+      ]
+    },
+    {
+      "branch": "quantum-cat-observation.quantum-loot-13-blind",
+      "segment": 9,
+      "screenIncludes": [
+        "The housecat inside the box is dead!"
+      ],
+      "rngIncludes": [
+        "rn2(2)=1 @ observe_quantum_cat(pickup.c:2832)"
+      ]
+    },
+    {
+      "branch": "quantum-cat-observation.quantum-loot-13-hallucinating",
+      "segment": 10,
+      "screenIncludes": [
+        "The lhurgoyf inside the box is dead!"
+      ],
+      "rngIncludes": [
+        "rn2(2)=1 @ observe_quantum_cat(pickup.c:2832)"
+      ]
+    },
+    {
+      "branch": "quantum-cat-observation.quantum-loot-29-blind",
+      "segment": 11,
+      "screenIncludes": [
+        "You think something brushed your foot."
+      ],
+      "rngIncludes": [
+        "rn2(2)=0 @ observe_quantum_cat(pickup.c:2832)"
+      ]
+    },
+    {
+      "branch": "quantum-cat-observation.quantum-loot-29-hallucinating",
+      "segment": 12,
+      "screenIncludes": [
+        "The storm giant inside the box is still alive!",
+        "You do not wear any armor."
+      ],
+      "rngIncludes": [
+        "rn2(2)=0 @ observe_quantum_cat(pickup.c:2832)"
+      ]
+    },
+    {
+      "branch": "quantum-cat-observation.quantum-loot-30-blind",
+      "segment": 13,
+      "screenIncludes": [
+        "The housecat inside the box is dead!"
+      ],
+      "rngIncludes": [
+        "rn2(2)=1 @ observe_quantum_cat(pickup.c:2832)"
+      ]
+    },
+    {
+      "branch": "quantum-cat-observation.quantum-loot-30-hallucinating",
+      "segment": 14,
+      "screenIncludes": [
+        "The Angel inside the box is still alive!",
+        "You do not wear any armor."
+      ],
+      "rngIncludes": [
+        "rn2(2)=0 @ observe_quantum_cat(pickup.c:2832)"
+      ]
+    },
+    {
+      "branch": "quantum-cat-observation.quantum-loot-40-blind",
+      "segment": 15,
+      "screenIncludes": [
+        "You think something brushed your foot."
+      ],
+      "rngIncludes": [
+        "rn2(2)=0 @ observe_quantum_cat(pickup.c:2832)"
+      ]
+    },
+    {
+      "branch": "quantum-cat-observation.quantum-loot-40-hallucinating",
+      "segment": 16,
+      "screenIncludes": [
+        "The gray unicorn inside the box is dead!"
+      ],
+      "rngIncludes": [
+        "rn2(2)=1 @ observe_quantum_cat(pickup.c:2832)"
+      ]
+    },
+    {
+      "branch": "quantum-cat-observation.quantum-loot-43-blind",
+      "segment": 17,
+      "screenIncludes": [
+        "The housecat inside the box is dead!"
+      ],
+      "rngIncludes": [
+        "rn2(2)=1 @ observe_quantum_cat(pickup.c:2832)"
+      ]
+    },
+    {
+      "branch": "quantum-cat-observation.quantum-loot-43-hallucinating",
+      "segment": 18,
+      "screenIncludes": [
+        "The giant mimic inside the box is dead!"
+      ],
+      "rngIncludes": [
+        "rn2(2)=1 @ observe_quantum_cat(pickup.c:2832)"
+      ]
+    },
+    {
+      "branch": "quantum-cat-observation.quantum-loot-61-blind",
+      "segment": 19,
+      "screenIncludes": [
+        "You think something brushed your foot."
+      ],
+      "rngIncludes": [
+        "rn2(2)=0 @ observe_quantum_cat(pickup.c:2832)"
+      ]
+    },
+    {
+      "branch": "quantum-cat-observation.quantum-loot-61-hallucinating",
+      "segment": 20,
+      "screenIncludes": [
+        "The doppelganger inside the box is still alive!"
+      ],
+      "rngIncludes": [
+        "rn2(2)=0 @ observe_quantum_cat(pickup.c:2832)"
+      ]
+    },
+    {
+      "branch": "quantum-cat-observation.quantum-loot-76-blind",
+      "segment": 21,
+      "screenIncludes": [
+        "The housecat inside the box is dead!"
+      ],
+      "rngIncludes": [
+        "rn2(2)=1 @ observe_quantum_cat(pickup.c:2832)"
+      ]
+    },
+    {
+      "branch": "quantum-cat-observation.quantum-loot-76-hallucinating",
+      "segment": 22,
+      "screenIncludes": [
+        "The dingbat inside the box is dead!"
+      ],
+      "rngIncludes": [
+        "rn2(2)=1 @ observe_quantum_cat(pickup.c:2832)"
+      ]
+    },
+    {
+      "branch": "quantum-cat-observation.quantum-loot-91-blind",
+      "segment": 23,
+      "screenIncludes": [
+        "You think something brushed your foot."
+      ],
+      "rngIncludes": [
+        "rn2(2)=0 @ observe_quantum_cat(pickup.c:2832)"
+      ]
+    },
+    {
+      "branch": "quantum-cat-observation.quantum-loot-91-hallucinating",
+      "segment": 24,
+      "screenIncludes": [
+        "The gecko inside the box is still alive!"
+      ],
+      "rngIncludes": [
+        "rn2(2)=0 @ observe_quantum_cat(pickup.c:2832)"
+      ]
+    },
+    {
+      "branch": "quantum-cat-observation.quantum-loot-106-blind",
+      "segment": 25,
+      "screenIncludes": [
+        "The housecat inside the box is dead!"
+      ],
+      "rngIncludes": [
+        "rn2(2)=1 @ observe_quantum_cat(pickup.c:2832)"
+      ]
+    },
+    {
+      "branch": "quantum-cat-observation.quantum-loot-106-hallucinating",
+      "segment": 26,
+      "screenIncludes": [
+        "The human mummy inside the box is still alive!"
+      ],
+      "rngIncludes": [
+        "rn2(2)=0 @ observe_quantum_cat(pickup.c:2832)"
+      ]
+    }
+  ]
+}

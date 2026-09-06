@@ -38,7 +38,8 @@ import {
 } from './monst_data.js';
 import { ONAMES, OCLASSES, SKILLS, MATERIALS } from './objects_data.js';
 import { depth } from './dungeon.js';
-import { next_ident, mksobj, mkobj, place_object, curse, rnd_class, can_be_hatched } from './mkobj.js';
+import { next_ident, mksobj, mkobj, place_object, curse, rnd_class, can_be_hatched,
+         set_corpsenm, add_to_container } from './mkobj.js';
 import { sgn, isok, distu } from './hacklib.js';
 import { get_shop_item } from './shknam.js';
 import { canseemon, canspotmon, newsym } from './display.js';
@@ -67,7 +68,7 @@ import { mon_track_clear, onscary } from './monmove.js';
 /* questpgr.js has no imports back into makemon.js at module level except
    through the mkclass wire below (set at this module's top level). */
 import { qt_montype, questpgr_wire_mkclass } from './questpgr.js';
-import { start_timer, TIMER_OBJECT, BURN_OBJECT } from './timeout.js';
+import { start_timer, TIMER_OBJECT, BURN_OBJECT, stop_timer, ROT_CORPSE } from './timeout.js';
 
 
 // include/permonst.h:15,23
@@ -983,11 +984,19 @@ function m_initinv(mtmp) {
         }
         break;
     case S_QUANTMECH:
-        /* src/makemon.c:776 — a quantum mechanic may carry Schroedinger's
-           box. The draw happens for every S_QUANTMECH; the box and its
-           cat corpse are recorded. */
-        if (!rn2(20) && ptr.pmidx === PMNAMES.PM_QUANTUM_MECHANIC)
-            note_unported('m_initinv:schroedingers_box');
+        // src/makemon.c:777, the unobserved cat corpse has no rot timer.
+        if (!rn2(20) && ptr.pmidx === PMNAMES.PM_QUANTUM_MECHANIC) {
+            const otmp = mksobj(ONAMES.LARGE_BOX, false, false);
+            const catcorpse = mksobj(ONAMES.CORPSE, true, false);
+            if (catcorpse) {
+                otmp.spe = 1;
+                set_corpsenm(catcorpse, PMNAMES.PM_HOUSECAT);
+                stop_timer(ROT_CORPSE, catcorpse);
+                add_to_container(otmp, catcorpse);
+                otmp.owt = weight_fn(otmp);
+            }
+            mpickobj(mtmp, otmp);
+        }
         break;
     case S_DEMON:
         /* src/makemon.c:800 — moved here from m_initweap() because these

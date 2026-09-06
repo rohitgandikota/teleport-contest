@@ -1,0 +1,328 @@
+{
+  "name": "quantum-teleport-attacks",
+  "description": "Teleportation attacks against the hero, polymorphed-hero attacks, monster combat, cancellation, magic negation and delayed box observation.",
+  "coverage": [
+    "mode.debug",
+    "object.tools-containers",
+    "ui.menus",
+    "ui.more-paging",
+    "combat.melee",
+    "combat.resist-reflect",
+    "forms.polymorph",
+    "monster.hero-melee",
+    "monster.vs-monster"
+  ],
+  "branches": [
+    "quantum-teleport-attacks.hero-controlled-13",
+    "quantum-teleport-attacks.hero-no-control-13",
+    "quantum-teleport-attacks.hero-magic-negation-13",
+    "quantum-teleport-attacks.hero-half-damage-13",
+    "quantum-teleport-attacks.hero-controlled-43",
+    "quantum-teleport-attacks.hero-no-control-43",
+    "quantum-teleport-attacks.hero-magic-negation-43",
+    "quantum-teleport-attacks.hero-half-damage-43",
+    "quantum-teleport-attacks.poly-hill-giant-99712",
+    "quantum-teleport-attacks.poly-lichen-99712",
+    "quantum-teleport-attacks.poly-hill-giant-99716",
+    "quantum-teleport-attacks.poly-lichen-99716",
+    "quantum-teleport-attacks.cancel-99724",
+    "quantum-teleport-attacks.cancel-99725",
+    "quantum-teleport-attacks.monsters-hill-giant-99713",
+    "quantum-teleport-attacks.monsters-lichen-99713",
+    "quantum-teleport-attacks.monsters-hill-giant-99717",
+    "quantum-teleport-attacks.monsters-lichen-99717",
+    "quantum-teleport-attacks.quantum-delayed-loot-13",
+    "quantum-teleport-attacks.quantum-delayed-loot-43"
+  ],
+  "requireBranchAssertions": true,
+  "segments": [
+    {
+      "name": "hero-controlled-13",
+      "seed": 13,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0007hostile quantum mechanic\r        \u001b\u001b\u001b\u001b\u001b\u001b20s        \u001b\u001b\u001b\u001b\u001b\u001b20s        \u001b\u001b\u001b\u001b\u001b\u001b20s        \u001b\u001b\u001b\u001b\u001b\u001b20s        \u001b\u001b\u001b\u001b\u001b\u001b        \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "hero-no-control-13",
+      "seed": 13,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Barbarian,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0007hostile quantum mechanic\r        \u001b\u001b\u001b\u001b\u001b\u001b20s        \u001b\u001b\u001b\u001b\u001b\u001b20s        \u001b\u001b\u001b\u001b\u001b\u001b20s        \u001b\u001b\u001b\u001b\u001b\u001b20s        \u001b\u001b\u001b\u001b\u001b\u001b        \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "hero-magic-negation-13",
+      "seed": 13,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017blessed +0 cloak of protection\r        \u001b\u001b\u001b\u001b\u001b\u001bWb        \u001b\u001b\u001b\u001b\u001b\u001b\u0007hostile quantum mechanic\r        \u001b\u001b\u001b\u001b\u001b\u001b20s        \u001b\u001b\u001b\u001b\u001b\u001b20s        \u001b\u001b\u001b\u001b\u001b\u001b20s        \u001b\u001b\u001b\u001b\u001b\u001b20s        \u001b\u001b\u001b\u001b\u001b\u001b        \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "hero-half-damage-13",
+      "seed": 13,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017blessed Orb of Fate\r        \u001b\u001b\u001b\u001b\u001b\u001b\u0007hostile quantum mechanic\r        \u001b\u001b\u001b\u001b\u001b\u001b20s        \u001b\u001b\u001b\u001b\u001b\u001b20s        \u001b\u001b\u001b\u001b\u001b\u001b20s        \u001b\u001b\u001b\u001b\u001b\u001b20s        \u001b\u001b\u001b\u001b\u001b\u001b        \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "hero-controlled-43",
+      "seed": 43,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0007hostile quantum mechanic\r        \u001b\u001b\u001b\u001b\u001b\u001b20s        \u001b\u001b\u001b\u001b\u001b\u001b20s        \u001b\u001b\u001b\u001b\u001b\u001b20s        \u001b\u001b\u001b\u001b\u001b\u001b20s        \u001b\u001b\u001b\u001b\u001b\u001b        \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "hero-no-control-43",
+      "seed": 43,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Barbarian,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0007hostile quantum mechanic\r        \u001b\u001b\u001b\u001b\u001b\u001b20s        \u001b\u001b\u001b\u001b\u001b\u001b20s        \u001b\u001b\u001b\u001b\u001b\u001b20s        \u001b\u001b\u001b\u001b\u001b\u001b20s        \u001b\u001b\u001b\u001b\u001b\u001b        \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "hero-magic-negation-43",
+      "seed": 43,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017blessed +0 cloak of protection\r        \u001b\u001b\u001b\u001b\u001b\u001bWb        \u001b\u001b\u001b\u001b\u001b\u001b\u0007hostile quantum mechanic\r        \u001b\u001b\u001b\u001b\u001b\u001b20s        \u001b\u001b\u001b\u001b\u001b\u001b20s        \u001b\u001b\u001b\u001b\u001b\u001b20s        \u001b\u001b\u001b\u001b\u001b\u001b20s        \u001b\u001b\u001b\u001b\u001b\u001b        \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "hero-half-damage-43",
+      "seed": 43,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017blessed Orb of Fate\r        \u001b\u001b\u001b\u001b\u001b\u001b\u0007hostile quantum mechanic\r        \u001b\u001b\u001b\u001b\u001b\u001b20s        \u001b\u001b\u001b\u001b\u001b\u001b20s        \u001b\u001b\u001b\u001b\u001b\u001b20s        \u001b\u001b\u001b\u001b\u001b\u001b20s        \u001b\u001b\u001b\u001b\u001b\u001b        \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "poly-hill-giant-99712",
+      "seed": 99712,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017blessed +10 ring of increase accuracy\r        \u001b\u001b\u001b\u001b\u001b\u001bPbr        \u001b\u001b\u001b\u001b\u001b\u001b#polyself\rquantum mechanic\r        \u001b\u001b\u001b\u001b\u001b\u001b\u0007sleeping hostile hill giant\r        \u001b\u001b\u001b\u001b\u001b\u001bFy        \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "poly-lichen-99712",
+      "seed": 99712,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017blessed +10 ring of increase accuracy\r        \u001b\u001b\u001b\u001b\u001b\u001bPbr        \u001b\u001b\u001b\u001b\u001b\u001b#polyself\rquantum mechanic\r        \u001b\u001b\u001b\u001b\u001b\u001b\u0007sleeping hostile lichen\r        \u001b\u001b\u001b\u001b\u001b\u001bFy        \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "poly-hill-giant-99716",
+      "seed": 99716,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017blessed +10 ring of increase accuracy\r        \u001b\u001b\u001b\u001b\u001b\u001bPbr        \u001b\u001b\u001b\u001b\u001b\u001b#polyself\rquantum mechanic\r        \u001b\u001b\u001b\u001b\u001b\u001b\u0007sleeping hostile hill giant\r        \u001b\u001b\u001b\u001b\u001b\u001bFk        \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "poly-lichen-99716",
+      "seed": 99716,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017blessed +10 ring of increase accuracy\r        \u001b\u001b\u001b\u001b\u001b\u001bPbr        \u001b\u001b\u001b\u001b\u001b\u001b#polyself\rquantum mechanic\r        \u001b\u001b\u001b\u001b\u001b\u001b\u0007sleeping hostile lichen\r        \u001b\u001b\u001b\u001b\u001b\u001bFk        \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "cancel-99724",
+      "seed": 99724,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017blessed wand of cancellation (0:20)\r        \u001b\u001b\u001b\u001b\u001b\u001b\u0007sleeping hostile quantum mechanic\r        \u001b\u001b\u001b\u001b\u001b\u001bzbk        \u001b\u001b\u001b\u001b\u001b\u001bzbk        \u001b\u001b\u001b\u001b\u001b\u001bzbk        \u001b\u001b\u001b\u001b\u001b\u001b20s        \u001b\u001b\u001b\u001b\u001b\u001b20s        \u001b\u001b\u001b\u001b\u001b\u001b20s        \u001b\u001b\u001b\u001b\u001b\u001b20s        \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "cancel-99725",
+      "seed": 99725,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017blessed wand of cancellation (0:20)\r        \u001b\u001b\u001b\u001b\u001b\u001b\u0007sleeping hostile quantum mechanic\r        \u001b\u001b\u001b\u001b\u001b\u001bzbh        \u001b\u001b\u001b\u001b\u001b\u001bzbh        \u001b\u001b\u001b\u001b\u001b\u001bzbh        \u001b\u001b\u001b\u001b\u001b\u001b20s        \u001b\u001b\u001b\u001b\u001b\u001b20s        \u001b\u001b\u001b\u001b\u001b\u001b20s        \u001b\u001b\u001b\u001b\u001b\u001b20s        \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "monsters-hill-giant-99713",
+      "seed": 99713,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b#wizintrinsic\r300a>>300h\r        \u001b\u001b\u001b\u001b\u001b\u001b\u0007tame quantum mechanic\r\u0007tame quantum mechanic\r\u0007tame quantum mechanic\r\u0007tame quantum mechanic\r\u0007hostile hill giant\r\u0007hostile hill giant\r20s        \u001b\u001b\u001b\u001b\u001b\u001b20s        \u001b\u001b\u001b\u001b\u001b\u001b20s        \u001b\u001b\u001b\u001b\u001b\u001b        \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "monsters-lichen-99713",
+      "seed": 99713,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b#wizintrinsic\r300a>>300h\r        \u001b\u001b\u001b\u001b\u001b\u001b\u0007tame quantum mechanic\r\u0007tame quantum mechanic\r\u0007tame quantum mechanic\r\u0007tame quantum mechanic\r\u0007hostile lichen\r\u0007hostile lichen\r20s        \u001b\u001b\u001b\u001b\u001b\u001b20s        \u001b\u001b\u001b\u001b\u001b\u001b20s        \u001b\u001b\u001b\u001b\u001b\u001b        \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "monsters-hill-giant-99717",
+      "seed": 99717,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b#wizintrinsic\r300a>>300h\r        \u001b\u001b\u001b\u001b\u001b\u001b\u0007tame quantum mechanic\r\u0007tame quantum mechanic\r\u0007tame quantum mechanic\r\u0007tame quantum mechanic\r\u0007hostile hill giant\r\u0007hostile hill giant\r20s        \u001b\u001b\u001b\u001b\u001b\u001b20s        \u001b\u001b\u001b\u001b\u001b\u001b20s        \u001b\u001b\u001b\u001b\u001b\u001b        \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "monsters-lichen-99717",
+      "seed": 99717,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b#wizintrinsic\r300a>>300h\r        \u001b\u001b\u001b\u001b\u001b\u001b\u0007tame quantum mechanic\r\u0007tame quantum mechanic\r\u0007tame quantum mechanic\r\u0007tame quantum mechanic\r\u0007hostile lichen\r\u0007hostile lichen\r20s        \u001b\u001b\u001b\u001b\u001b\u001b20s        \u001b\u001b\u001b\u001b\u001b\u001b20s        \u001b\u001b\u001b\u001b\u001b\u001b        \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "quantum-delayed-loot-13",
+      "seed": 13,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0007peaceful sleeping quantum mechanic\r      \u001b\u001b\u001b\u001b\u001b\u001b#wizkill\rm.\u001b        \u001b\u001b\u001b\u001b\u001b\u001bk        \u001b\u001b\u001b\u001b\u001b\u001b350.        \u001b\u001b\u001b\u001b\u001b\u001b#loot\r :         \u001b\u001b\u001b\u001b\u001b\u001bq        \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "quantum-delayed-loot-43",
+      "seed": 43,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0007peaceful sleeping quantum mechanic\r      \u001b\u001b\u001b\u001b\u001b\u001b#wizkill\rm.\u001b        \u001b\u001b\u001b\u001b\u001b\u001bn        \u001b\u001b\u001b\u001b\u001b\u001b350.        \u001b\u001b\u001b\u001b\u001b\u001b#loot\r :         \u001b\u001b\u001b\u001b\u001b\u001bq        \u001b\u001b\u001b\u001b\u001b\u001b"
+    }
+  ],
+  "branchAssertions": [
+    {
+      "branch": "quantum-teleport-attacks.hero-controlled-13",
+      "segment": 0,
+      "screenIncludes": [
+        "position suddenly seems uncertain!"
+      ]
+    },
+    {
+      "branch": "quantum-teleport-attacks.hero-no-control-13",
+      "segment": 1,
+      "screenIncludes": [
+        "position suddenly seems very uncertain!"
+      ]
+    },
+    {
+      "branch": "quantum-teleport-attacks.hero-magic-negation-13",
+      "segment": 2,
+      "screenIncludes": [
+        "You are not affected."
+      ]
+    },
+    {
+      "branch": "quantum-teleport-attacks.hero-half-damage-13",
+      "segment": 3,
+      "screenIncludes": [
+        "position suddenly seems uncertain!"
+      ]
+    },
+    {
+      "branch": "quantum-teleport-attacks.hero-controlled-43",
+      "segment": 4,
+      "screenIncludes": [
+        "position suddenly seems uncertain!"
+      ]
+    },
+    {
+      "branch": "quantum-teleport-attacks.hero-no-control-43",
+      "segment": 5,
+      "screenIncludes": [
+        "position suddenly seems very uncertain!"
+      ]
+    },
+    {
+      "branch": "quantum-teleport-attacks.hero-magic-negation-43",
+      "segment": 6,
+      "screenIncludes": [
+        "You are not affected."
+      ]
+    },
+    {
+      "branch": "quantum-teleport-attacks.hero-half-damage-43",
+      "segment": 7,
+      "screenIncludes": [
+        "position suddenly seems uncertain!"
+      ]
+    },
+    {
+      "branch": "quantum-teleport-attacks.poly-hill-giant-99712",
+      "segment": 8,
+      "screenIncludes": [
+        "suddenly disappears"
+      ]
+    },
+    {
+      "branch": "quantum-teleport-attacks.poly-lichen-99712",
+      "segment": 9,
+      "screenIncludes": [
+        "suddenly disappears"
+      ]
+    },
+    {
+      "branch": "quantum-teleport-attacks.poly-hill-giant-99716",
+      "segment": 10,
+      "screenIncludes": [
+        "suddenly disappears"
+      ]
+    },
+    {
+      "branch": "quantum-teleport-attacks.poly-lichen-99716",
+      "segment": 11,
+      "screenIncludes": [
+        "suddenly disappears"
+      ]
+    },
+    {
+      "branch": "quantum-teleport-attacks.cancel-99724",
+      "segment": 12,
+      "screenIncludes": [
+        "You are not affected."
+      ]
+    },
+    {
+      "branch": "quantum-teleport-attacks.cancel-99725",
+      "segment": 13,
+      "screenIncludes": [
+        "You are not affected."
+      ]
+    },
+    {
+      "branch": "quantum-teleport-attacks.monsters-hill-giant-99713",
+      "segment": 14,
+      "screenIncludes": [
+        "suddenly disappears"
+      ]
+    },
+    {
+      "branch": "quantum-teleport-attacks.monsters-lichen-99713",
+      "segment": 15,
+      "screenIncludes": [
+        "suddenly disappears"
+      ]
+    },
+    {
+      "branch": "quantum-teleport-attacks.monsters-hill-giant-99717",
+      "segment": 16,
+      "screenIncludes": [
+        "suddenly disappears"
+      ]
+    },
+    {
+      "branch": "quantum-teleport-attacks.monsters-lichen-99717",
+      "segment": 17,
+      "screenIncludes": [
+        "suddenly disappears"
+      ]
+    },
+    {
+      "branch": "quantum-teleport-attacks.quantum-delayed-loot-13",
+      "segment": 18,
+      "screenIncludes": [
+        "The housecat inside the box is still alive!"
+      ],
+      "rngIncludes": [
+        "rn2(2)=0 @ observe_quantum_cat(pickup.c:2832)"
+      ]
+    },
+    {
+      "branch": "quantum-teleport-attacks.quantum-delayed-loot-43",
+      "segment": 19,
+      "screenIncludes": [
+        "The housecat inside the box is still alive!"
+      ],
+      "rngIncludes": [
+        "rn2(2)=0 @ observe_quantum_cat(pickup.c:2832)"
+      ]
+    }
+  ]
+}

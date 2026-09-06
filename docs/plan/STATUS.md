@@ -12,9 +12,58 @@ Continue the authorized work; do not mark it complete or recreate it.
 Current-corpus success is not the stopping criterion. Track unreviewed,
 untested, missing, and unreachable source paths explicitly.
 
+### Checkpoint: quantum containers and teleport attacks, 2026-09-06
+
+Work in .cache/quantum-containers is ready for local commit. Six runtime
+modules: makemon creates frozen quantum boxes; insight uses the nudist
+sentence; potion removes the extra post-enlightenment docrt; uhitm ports
+all three mhitm_ad_tlpt directions; mhitu/mhitm connect the new damage type.
+See quantum-containers-audit.md for complete source review and limits.
+
+Four permanent recipes add63nativecases: creation11, observation27,
+concealed picks5, teleport attacks20. All14935screens/cursors,212305RNG
+and22animations match. Instrumented C repeats exact4/4; assertions and
+integrity pass. Ledger2331/2331,99covered7partial. The C union adds72
+outcomes and4enteredrecords: observe_quantum_cat,pick_pick,u_teleport_mon,
+mhitm_ad_tlpt. Totals55375/108268 and4366/5491. Exact missing paths remain
+in remaining.json; no unreachable claims. AD_TLPT has30/62nativeoutcomes.
+
+Final regression542/542:44public+498supplemental,336089screens/cursors,
+9982087RNG. Supplemental324684screens/cursors,9189249RNG,21701animations
+allmatch; public retains21oldanimationmisses. Both newstate gatespass:
+43containerreplays (9frozen births,12live15dead observations,5shopcontrols),
+20attackreplays+19constructed boundarygroups. Twelve relatedgates,48hang,
+80freshroles,14tooltests,sourceaudit0/268pass. Fuzz101/102knownfixed-date
+screenmiss,all491759RNG. Every job completed and every exit collected.
+
+The no-rot-stop mutation still passes1507nativecreation screens/cursors
+and34166RNG, but the native state gate catches timed=1 instead of0.
+The no-HP-protection mutation passes20nativeattackcases but fails the
+constructed3HP/4damage boundary (C damage2). The exact d444a94f runtime
+across all6oldmodules fails3/4fixtures:1772screens,194cursors,
+171200positionalRNG. Concealed picks already worked. Scorer loader
+controls use NODE_OPTIONS so workers inherit them.
+
+A delayed observation exposed the missing AD_TLPT attack. Its350-turn
+rest request was interrupted: replay moves3to85 and3to60, not350turns.
+A351variant hasidenticalCoutput andisnotpromoted. Hallucination diagnostic
+uses ~drn2 entries: C3normaldisplaydraws; JSextra docrt inserted6first.
+Nativeattack no-control cases are stillwizardmode andoffer getpos;
+randomuncontrolledteleport,lowHPnative,restrictedlevels/steeds remainopen.
+
+Next: porttipcontainer_checks andfinish tipping source/target/shop/floor
+paths. Full Ctipcontainer3688..3846 andchecks3954..4057 read in priorpass.
+Full Chornoplenty(mkobj.c2847..2935) nowread; currentJSinapply lacks target,
+properfloor handling andsomebilling/suppress_price logic. No tipping edit
+ornewcacheyet. Movehornoplenty to canonicalmkobjmodule whenporting,update
+apply/pickup imports. Otherenlightenmentcallers withmanualdocrt needreview.
+Fullquery_objlist/query_category,floorpickup,deathdisclosure/deletedobjects
+remainopen. Do not push; publicationauthorization remainsunanswered.
+Continue the full-port loop without marking the goal complete.
+
 ### Active checkpoint: container selection and carrying
 
-Work in .cache/container-selection is verified and awaiting a local commit.
+Work in .cache/container-selection is committed locally as d444a94f.
 Nine runtime modules port the relevant container selection, transfer and
 carrying bodies, end.container_contents, linked stack splitting, money2u,
 tally_BUCX and related helpers. See container-selection-audit.md for the
@@ -53,7 +102,7 @@ sortloot string. Two incorrect extended probes (unworn ring and uncounted
 wand) were excluded; corrected ring and menu count cases were promoted.
 The 360000gold case is warning/default refusal, not confirmed acceptance.
 
-Next: commit this reviewed pass, then reach the remaining native quantum
+Next: reach the remaining native quantum
 cat and concealed-pick paths, and finish query_objlist/query_category and
 normal floor-pickup/multiple-container looting. observe_quantum_cat is
 source-ported with constructed live/dead/no-create controls but0nativecalls.

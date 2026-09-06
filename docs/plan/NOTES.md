@@ -5316,3 +5316,82 @@ doorway (couldsee() is enough for the neighbor test).
 
 src/pager.c:2711 formats the key with visctrl(), so a space prints as
 ' '. key2txt() ("<space>") is only for dowhatdoes_core's key column.
+
+## rndmonnum() needs its Plan B
+
+src/mkobj.c:395 rndmonnum_adj(): when rndmonst() finds no level-appropriate
+monster, C picks any common monster by rn1(SPECIAL_PM - LOW_PM, LOW_PM)
+until one is not G_UNIQ|G_NOGEN and matches the level's hell flag. Ours
+returned NON_PM, and mktrap_victim() -> mkcorpstat() -> mksobj_init()
+crashed on mvitals[-1] the first time a wizard entered such a level. A
+thrown exception forfeits every remaining step of a session.
+
+## Leaving the dungeon ends the game in goto_level()
+
+src/do.c:1517: `new_ledger = ledger_no(newlevel); if (new_ledger <= 0)
+done(ESCAPED);` runs before anything else in goto_level(). The negative
+level_tele arm schedules newlevel {0,0} for exactly this. Ours only had the
+"up the level 1 stairs without the Amulet" case, so an escaped wizard kept
+playing. Also ported there: the dunlevs_in_dungeon() clamp and the endgame
+Amulet check.
+
+## Text window paging is dmore(), not any key
+
+win/tty/wintty.c process_text_window() pages with dmore(quitchars): only
+space, return and ESC turn a page; other keys ring the bell. The end-of-game
+attributes window in end.js used nhgetch() and turned pages on 'k'. Use
+xwaitforspace(' \r\n\x1b') for every text window.
+
+## moverock() compares with the pile top
+
+src/hack.c moverock_core(): "make sure that this boulder is visible as the
+top object" tests `otmp != svl.level.objects[sx][sy]` (the top of that
+square's pile) and only then re-links it. Ours tested the head of the whole
+floor chain, so every failed push moved the boulder to the head of the
+chain and changed the order dog_goal() scans objects in (a pet's apport
+roll landed on a different object). Floor chain order is state: it is only
+visible through scans like this one and "things that are here" lists.
+
+## xname's dn fallback happens after the Samurai substitution
+
+src/objnam.c keeps dn NULL when the class has no description and writes
+`dn ? dn : actualn` at each use. The JS defaulted dn to actualn before
+Japanese_item_name() changed actualn, so a distant (not dknown) knife was
+"a knife" instead of "a shito" in "picks up" messages.
+
+## The command table needs CMD_MOVE_PREFIXES
+
+tools/gen-extcmd.mjs read only numeric #defines with an all-caps regex, so
+CMD_gGF_PREFIX (lowercase g) and the composite CMD_MOVE_PREFIXES never made
+it into the flags. Movement entries had flags 1024 instead of 1408, which
+lost the "[m]" markers in the `?` key list and the CMD_M_PREFIX acceptance
+of movement commands. The generator now resolves `#define X (A | B)`.
+
+## The once-per-input flush is conditional
+
+src/allmain.c:474 moveloop_core(): `if (disp.botl || disp.botlx) { bot();
+curs_on_u(); } else if (disp.time_botl) { timebot(); curs_on_u(); }` is
+the only per-input flush; parse() flushes before reading a key. A command
+taken from the command queue (fireassist's doswapweapon+dofire) therefore
+runs over a map that still shows the pet where it was, and its getdir
+prompt's more() shows that stale map under the --More--. Ours flushed
+unconditionally and showed the pet's new square one key early.
+
+## Quitting the character confirmation bails out
+
+The "Is this ok? [ynaq]" confirmation is a real select_menu(): ':' opens
+"Search for:", ESC cancels the search, a second ESC returns -1 and
+genl_player_setup() returns 0, then win/tty/wintty.c tty_player_selection()
+calls bail(NULL): end_screen() clears the terminal, an empty raw line is
+printed and the process exits. Ours ignored the result and started the
+game. jsmain.js runSegment() now treats the terminate signal during
+start() as the end of the segment.
+
+## seffect_magic_mapping() on nommap levels
+
+A scroll on a nommap level says "Your mind is filled with crazy lines!"
+then "Wow!  Modern art." or "Your head spins in bewilderment." and confuses
+for HConfusion + rnd(30); the spell says "Your head spins as something
+blocks the spell!". A blessed scroll converts every SDOOR before mapping;
+a cursed one maps under forced confusion and says "Unfortunately, you
+can't grasp the details."

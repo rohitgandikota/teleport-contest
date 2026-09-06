@@ -880,17 +880,20 @@ async function disclose(how, taken) {
             const { tty_create_nhwindow, tty_putstr, tty_display_nhwindow,
                     tty_destroy_nhwindow, tty_next_page } =
                 await import('./tty/wintty.js');
-            const { nhgetch } = await import('./input.js');
+            const { xwaitforspace } = await import('./tty/getline.js');
             const win = tty_create_nhwindow(NHW_MENU);
             for (const l of enlightenment(
                      BASICENLIGHTENMENT | MAGICENLIGHTENMENT,
                      (how >= PANICKED) ? ENL_GAMEOVERALIVE
                                        : ENL_GAMEOVERDEAD))
                 tty_putstr(win, 0, l);
+            /* display_nhwindow(ge.en_win, TRUE): win/tty/wintty.c
+               process_text_window() pages with dmore(quitchars), so only
+               space, return and ESC turn a page */
             await tty_display_nhwindow(win);
-            await nhgetch();
-            while (tty_next_page(win))
-                await nhgetch();
+            await xwaitforspace(' \r\n\x1b');
+            while (game.morc !== '\x1b' && tty_next_page(win))
+                await xwaitforspace(' \r\n\x1b');
             tty_destroy_nhwindow(win);
         }
         if (c === 'q')

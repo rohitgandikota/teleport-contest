@@ -8,7 +8,7 @@ import { spot_time_left, spot_stop_timers, MELT_ICE_AWAY } from './timeout.js';
 import { float_vs_flight } from './polyself.js';
 import { float_up } from './trap.js';
 import { You_cant } from './pline.js';
-import { FROMOUTSIDE, DRAWBRIDGE_UP, DB_UNDER, DB_ICE, MAX_TYPE } from './const.js';
+import { FROMOUTSIDE, DRAWBRIDGE_UP, DB_UNDER, DB_ICE, MAX_TYPE, OBJ_FLOOR } from './const.js';
 import { obj_extract_self } from './invent.js';
 import { place_object } from './mkobj.js';
 import { exercise } from './attrib.js';
@@ -2054,8 +2054,13 @@ async function moverock_core(sx, sy) {
         otmp.next_boulder = firstboulder ? 0 : 1;
         firstboulder = false;
 
-        /* make sure that this boulder is visible as the top object */
-        if (game.level.objects[0] !== otmp) {
+        /* make sure that this boulder is visible as the top object:
+           C compares with svl.level.objects[sx][sy], the top of the pile on
+           that square, and only then re-links through movobj() */
+        const pile_top = game.level.objects.find(
+            (o) => o.ox === sx && o.oy === sy
+                   && (o.where === undefined || o.where === OBJ_FLOOR));
+        if (pile_top !== otmp) {
             const i = game.level.objects.indexOf(otmp);
             if (i > 0) {
                 game.level.objects.splice(i, 1);

@@ -358,6 +358,10 @@ export async function runSegment(input) {
     try {
         await nhGame.start();
     } catch (e) {
+        /* win/tty/wintty.c bail(): a refused character selection exits the
+           program before the move loop; the remaining keys go nowhere */
+        if (e && e.__nh_gameover)
+            return nhGame;
         if (!String(e?.message || '').includes('Input queue empty'))
             throw e;
         return nhGame;

@@ -1,4 +1,4 @@
-import { PL_NSIZ } from './const.js';
+import { PL_NSIZ, PICK_ONE } from './const.js';
 // plselect.js — interactive character selection.
 // C ref: src/role.c genl_player_setup() (:2206) and tty_askname().
 //
@@ -39,8 +39,7 @@ import {
     tty_base_pos, tty_create_nhwindow, tty_destroy_nhwindow,
     tty_get_nhwindow, tty_start_menu, tty_add_menu, tty_add_menu_str,
     tty_end_menu, tty_display_nhwindow, set_item_state, menu_page_items,
-    NHW_MENU, ATR_NONE,
-} from './tty/wintty.js';
+    NHW_MENU, ATR_NONE, tty_select_menu } from './tty/wintty.js';
 import { NO_COLOR } from './terminal.js';
 
 const ROWS = 24;
@@ -831,7 +830,10 @@ async function genl_player_setup(screenheight) {
                          MENU_ITEMFLAGS_NONE);
             tty_end_menu(win,
                          `Is this ok? [yn${game.renameallowed ? 'a' : ''}q]`);
-            const choice = await select_menu_pick_one(win);
+            const selected = await tty_select_menu(win, PICK_ONE);
+            const n = selected.cancelled ? -1 : selected.length;
+            /* [pick-one menus with a preselected entry behave oddly...] */
+            const choice = (n > 0) ? selected[n - 1] : (n === 0) ? 1 : -1;
             tty_destroy_nhwindow(win);
 
             if (choice === 3) {

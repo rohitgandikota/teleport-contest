@@ -5,7 +5,7 @@
 // seffects and stay recorded after their prompt keys are consumed.
 
 import { unique_corpstat } from './mondata.js';
-import { has_omonst } from './const.js';
+import { has_omonst, SDOOR, something } from './const.js';
 import { monster_census } from './minion.js';
 import { monsndx, NO_MINVENT, MM_NOMSG } from './makemon.js';
 import { pmname } from './do_name.js';
@@ -26,7 +26,7 @@ import { NUMMONS, MSOUND } from './monst_data.js';
 import { vampshifted } from './monst.js';
 import { name_to_mon, is_human, is_demon } from './mondata.js';
 import { readmail } from './mail.js';
-import { trap_detect, gold_detect, food_detect } from './detect.js';
+import { trap_detect, gold_detect, food_detect, cvt_sdoor_to_door } from './detect.js';
 import { actualoname } from './objnam.js';
 import { TIMEOUT } from './const.js';
 import { make_stunned } from './potion.js';
@@ -44,7 +44,7 @@ import { ECMD_CANCEL, SPE_LIM, CORR, Is_rogue_level, W_ARMOR, W_ARM, NODIR,
          NH_PURPLE } from './const.js';
 import { sgn, distu, isok } from './hacklib.js';
 import { ACCESSIBLE } from './const.js';
-import { cansee } from './vision.js';
+import { cansee, unblock_point } from './vision.js';
 import { bcsign, blessorcurse, mkobj, mksobj, place_object,
          uncurse } from './mkobj.js';
 import { chwepon } from './wield.js';
@@ -2147,26 +2147,55 @@ async function seffect_teleportation(sobj) {
     }
 }
 
-// src/read.c:2100 seffect_magic_mapping()
+// src/read.c:2102 seffect_magic_mapping()
 async function seffect_magic_mapping(sobj) {
-    const sblessed = !!sobj.blessed, scursed = !!sobj.cursed;
-    const confused = !!game.u.uprops?.CONFUSION?.intrinsic;
+    const is_scroll = (sobj.oclass === OCLASSES.SCROLL_CLASS);
+    const sblessed = !!sobj.blessed;
+    const scursed = !!sobj.cursed;
+    const confused = !!Confusion();
+    let cval;
+
+    if (is_scroll) {
+        if (game.level?.flags?.nommap) {
+            await Your('mind is filled with crazy lines!');
+            if (Hallucination())
+                await pline('Wow!  Modern art.');
+            else
+                await Your(`${body_part(HEAD)} spins in bewilderment.`);
+            await make_confused((game.u.intrinsic?.HConfusion | 0) + rnd(30), false);
+            return;
+        }
+        if (sblessed) {
+            let x, y;
+
+            for (x = 1; x < COLNO; x++)
+                for (y = 0; y < ROWNO; y++)
+                    if (game.level.at(x, y).typ === SDOOR) {
+                        cvt_sdoor_to_door(game.level.at(x, y));
+                        if (Is_rogue_level(game.u.uz))
+                            unblock_point(x, y);
+                    }
+            /* do_mapping() already reveals secret passages */
+        }
+        game.known = true;
+    }
 
     if (game.level?.flags?.nommap) {
-        note_unported_read('seffect_magic_mapping:nommap');
+        await Your(`${body_part(HEAD)} spins as ${something} blocks the spell!`);
+        await make_confused((game.u.intrinsic?.HConfusion | 0) + rnd(30), false);
         return;
     }
-    if (sblessed)
-        note_unported_read('seffect_magic_mapping:blessed_reveal');
-    game.known = true;
-
     await pline('A map coalesces in your mind!');
-    const cval = (scursed && !confused);
+    cval = (scursed && !confused);
     if (cval)
-        note_unported_read('seffect_magic_mapping:cursed_confusion');
-    /* notice_mon_off/_on wrap the mapping so newly drawn monsters are not
-       announced */
+        (game.u.intrinsic ||= {}).HConfusion = 1; /* to screw up map */
+    /* notice_mon_off() / notice_mon_on() wrap the mapping so newly drawn
+       monsters are not announced */
     await do_mapping();
+    if (cval) {
+        game.u.intrinsic.HConfusion = 0; /* restore */
+        await pline("Unfortunately, you can't grasp the details.");
+    }
 }
 
 

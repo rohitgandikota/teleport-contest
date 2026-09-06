@@ -1,5 +1,5 @@
 import { allow_all } from './pickup.js';
-import { PICK_ANY } from './const.js';
+import { PICK_ANY, In_endgame, ESCAPED } from './const.js';
 import { USE_INVLET, MENU_TRADITIONAL, MENU_COMBINATION, ALL_FINISHED, INCLUDE_VENOM, SELL_DELIBERATE, SELL_NORMAL } from './const.js';
 import { INVORDER_SORT } from './const.js';
 import { Has_contents, bimanual } from './obj.js';
@@ -99,6 +99,7 @@ import { mpickobj } from './steal.js';
 import { newcham, healmon, mcureblindness, delobj } from './mon.js';
 import { minstapetrify } from './trap.js';
 import { grow_up } from './makemon.js';
+import { ledger_no, dunlevs_in_dungeon } from './dungeon.js';
 
 
 
@@ -935,16 +936,31 @@ export async function goto_level(newlevel, at_stairs, falling, portal) {
        lev.dnum == tutorial_dnum; entering stashes the whole game state
        (inventory included) via nhcore's enter_tutorial, leaving restores
        it and re-enters level 1 as if starting a new game. */
+    if (newlevel.dlevel > dunlevs_in_dungeon(newlevel))
+        newlevel.dlevel = dunlevs_in_dungeon(newlevel);
     {
         if (newdungeon) {
             const { tutorial } = await import('./nhlua.js');
-            if (newlevel.dnum === game.tutorial_dnum) {
+            if (In_endgame(newlevel)) { /* 1st Endgame Level !!! */
+                if (!game.u.uhave?.amulet)
+                    return;  /* must have the Amulet */
+                if (!game.wizard) { /* wizard ^V can bypass Earth level */
+                    newlevel.dnum = game.earth_level.dnum; /* (redundant) */
+                    newlevel.dlevel = game.earth_level.dlevel;
+                }
+            } else if (newlevel.dnum === game.tutorial_dnum) {
                 await tutorial(true); /* entering tutorial */
             } else if (game.u.uz.dnum === game.tutorial_dnum) {
                 await tutorial(false); /* leaving tutorial */
                 up = false; /* re-enter level 1 as if starting new game */
             }
         }
+    }
+    /* src/do.c:1517 */
+    const new_ledger = ledger_no(newlevel);
+    if (new_ledger <= 0) {
+        const { done } = await import('./end.js');
+        await done(ESCAPED); /* in fact < 0 is impossible */
     }
 
     /* src/do.c:1541: while carrying the real Amulet, one quarter of early
@@ -1231,7 +1247,6 @@ export async function goto_level(newlevel, at_stairs, falling, portal) {
         await flush_screen(-1);
     }
 
-    const { In_endgame } = await import('./const.js');
     if (portal && !In_endgame(game.u.uz)) {
         /* src/do.c:1722, portal travel lands on the matching portal without
            a random-position draw. Quest expulsion relies on this path. */

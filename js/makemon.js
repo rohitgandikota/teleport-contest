@@ -459,13 +459,25 @@ export function mkclass_poly(klass) {
     return first;
 }
 
-// src/mkobj.c:395 rndmonnum_adj() — Plan A is a level-appropriate common
-// monster; the fallback paths are not ported yet.
+// src/mkobj.c:395 rndmonnum_adj()
 export function rndmonnum_adj(minadj, maxadj) {
-    const ptr = rndmonst_adj(minadj, maxadj);
+    let ptr;
+    let i;
+    let excludeflags;
+
+    /* Plan A: get a level-appropriate common monster */
+    ptr = rndmonst_adj(minadj, maxadj);
     if (ptr)
         return monsndx(ptr);
-    return NON_PM;
+
+    /* Plan B: get any common monster */
+    excludeflags = MFLAGS.G_UNIQ | MFLAGS.G_NOGEN | (Inhell() ? MFLAGS.G_NOHELL : MFLAGS.G_HELL);
+    do {
+        i = rn1(SPECIAL_PM - LOW_PM, LOW_PM);
+        ptr = game.mons[i];
+    } while ((ptr.geno & excludeflags) !== 0);
+
+    return i;
 }
 
 // src/mkobj.c:387 rndmonnum()

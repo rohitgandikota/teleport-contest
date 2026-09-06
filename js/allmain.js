@@ -77,7 +77,7 @@ import { lookaround, end_running, unmul, nomul,
 import { deferred_goto } from './do.js';
 import { You } from './pline.js';
 import {
-    docrt, cls, bot, flush_screen, pline, see_monsters, see_objects,
+    docrt, cls, bot, timebot, flush_screen, pline, see_monsters, see_objects,
     see_traps, swallowed, newsym,
     TOPLINE_EMPTY,
 } from './display.js';
@@ -205,8 +205,14 @@ export async function newgame() {
         await plnamesuffix();
 
         if (g.flags.initrole < 0 || g.flags.initrace < 0
-            || g.flags.initgend < 0 || g.flags.initalign < 0)
-            await player_selection();
+            || g.flags.initgend < 0 || g.flags.initalign < 0) {
+            /* win/tty/wintty.c:634 tty_player_selection(): a refused
+               selection ('q' or ESC) bails out of the game */
+            if (!(await player_selection())) {
+                const { bail } = await import('./tty/wintty.js');
+                await bail(null);
+            }
+        }
     }
 
     /* sys/unix/unixmain.c — after the name is final, try to restore a
@@ -1002,7 +1008,16 @@ export async function moveloop_core() {
         if (g.vision_full_recalc)
             vision_recalc(0);
     }
-    await flush_screen(1);
+    /* src/allmain.c:474 — the once-per-input flush only happens when the
+       status line needs redrawing; a queued command (cmdq) therefore runs
+       over an unflushed map, and parse() flushes before reading a key */
+    if (g.disp?.botl || g.disp?.botlx) {
+        await bot();
+        await flush_screen(1); /* curs_on_u() */
+    } else if (g.disp?.time_botl) {
+        timebot();
+        await flush_screen(1); /* curs_on_u() */
+    }
 
     /* src/allmain.c:481, every living hero form gets its once-per-input
        monster effect before occupations and command reading. Fog clouds use

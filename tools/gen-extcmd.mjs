@@ -66,8 +66,16 @@ for (const ch of body) {
 // include/func_tab.h flag bits, read from the header so they cannot drift.
 const hdr = readFileSync(join(ROOT, 'nethack-c/upstream/include/func_tab.h'), 'utf8');
 const FLAGS = {};
-for (const m of hdr.matchAll(/^#define\s+([A-Z0-9_]+)\s+(0x[0-9a-fA-F]+|\d+)\s*(?:\/\*|$)/gm))
+for (const m of hdr.matchAll(/^#define\s+([A-Za-z0-9_]+)\s+(0x[0-9a-fA-F]+|\d+)\s*(?:\/\*|$)/gm))
     FLAGS[m[1]] = Number(m[2]);
+/* CMD_MOVE_PREFIXES is (CMD_M_PREFIX | CMD_gGF_PREFIX): resolve the
+   composite defines from the names they combine */
+for (const m of hdr.matchAll(/^#define\s+([A-Za-z0-9_]+)\s+\(([A-Za-z0-9_ |]+)\)/gm)) {
+    let v = 0, ok = true;
+    for (const part of m[2].split('|').map(x => x.trim()))
+        if (FLAGS[part] !== undefined) v |= FLAGS[part]; else ok = false;
+    if (ok) FLAGS[m[1]] = v;
+}
 
 const out = [];
 for (const eRaw of entries) {
@@ -117,7 +125,7 @@ for (const eRaw of entries) {
                  (m, name) => DEFINED.has(name) ? '' : m)
         .replace(/#ifdef\s+(\w+)[\s\S]*?#endif[^\n]*/g,
                  (m, name) => DEFINED.has(name) ? m : '');
-    for (const m of flagsrc.matchAll(/\b([A-Z][A-Z0-9_]{2,})\b/g))
+    for (const m of flagsrc.matchAll(/\b([A-Z][A-Za-z0-9_]{2,})\b/g))
         if (FLAGS[m[1]] !== undefined) flags |= FLAGS[m[1]];
 
     /* ef_desc is the third field, the human description dowhatdoes,

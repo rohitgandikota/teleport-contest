@@ -34,11 +34,25 @@ longer rejects unexplored squares (hack.js). Also committed: the previous
 agent's mkmaze.c get_level_extends clamps and bound_digging W_NONPASSWALL
 (mklev.js) with tools/map-boundary-state-gate.mjs, verified against the C.
 
-Next: record more long batches with new seeds (`--seed 12`, `--keys 1000`,
-`--debug`/`--normal` splits), fix what diverges, and only then go back to
-the note_unported list (411 notes; hack.js 19, spell.js 20, shk.js 19).
-tools/jsplay.mjs has a new `--aeval "<await expr>"` flag with the hack.js
-namespace as `h` for state probes.
+Second batch, `--games 40 --keys 1000 --seed 12`: 8 failures, all fixed
+except the two timezone cases (s12-06 ^X time of day, s12-15 moon phase):
+rndmonnum() Plan B (a crash in mktrap_victim on levels with no eligible
+monster); goto_level() prologue with ledger_no() <= 0 -> done(ESCAPED) so a
+hero teleported above the dungeon actually leaves the game; the final
+attributes window pages with dmore() keys only; moverock compares the
+boulder with its pile top, not the chain head; the Samurai item-name
+fallback; CMD_MOVE_PREFIXES/CMD_gGF_PREFIX in the generated command table
+([m] markers, prefix acceptance); the once-per-input screen flush only
+when the status is dirty (a queued fire command runs over an unflushed
+map); the chargen confirmation is a real tty menu and 'q'/ESC bails out
+through tty_player_selection(); seffect_magic_mapping() in C form.
+
+Next: keep recording long batches with new seeds (`--seed 13`, mix
+`--debug`/`--normal`), fix what diverges, then return to the note_unported
+list (hack.js 19, spell.js 20, shk.js 19). tools/jsplay.mjs has a new
+`--aeval "<await expr>"` flag with the hack.js namespace as `h` for state
+probes. The census script is `tally.sh` in the scratchpad (diverge.mjs
+--screens over tools/gen-sessions/fuzz/*.session.json, 4 at a time).
 
 ### Checkpoint: Minetown map flags and shop annotations
 

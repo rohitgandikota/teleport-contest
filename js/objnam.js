@@ -319,7 +319,7 @@ export function xname_flags(obj, cxn_flags) {
         obj.bknown = 1;
     const nn = game.iflags?.override_ID ? 1 : ocl.oc_name_known;
     let actualn = OBJ_NAME(ocl) ?? 'object?';
-    let dn = OBJ_DESCR(ocl) ?? actualn;
+    let dn = OBJ_DESCR(ocl);
     /* src/objnam.c:605 — a Samurai reads these items in Japanese */
     if (game.urole?.mnum === 'PM_SAMURAI'
         || game.urole?.mnum === mons_PM_SAMURAI) {
@@ -327,6 +327,10 @@ export function xname_flags(obj, cxn_flags) {
         if (obj.otyp === ONAMES.WOODEN_HARP || obj.otyp === ONAMES.MAGIC_HARP)
             dn = 'koto';
     }
+    /* C keeps dn NULL and writes "dn ? dn : actualn" at each use; the
+       fallback has to see the substituted actualn */
+    if (dn == null)
+        dn = actualn;
     const un = ocl.oc_uname || null;
     let pluralize = (obj.quan !== 1) && !(cxn_flags & CXN_SINGULAR);
     const dknown = obj.dknown || game.iflags?.override_ID;

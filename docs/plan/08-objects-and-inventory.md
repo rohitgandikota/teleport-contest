@@ -78,6 +78,11 @@ plausible-but-wrong names that are hard to spot in a diff.
 
 ### 8.3 Pickup, drop, containers
 
+- [x] Magical doors and message feedback: 174 C scenarios cover wand effects,
+      Rogue door concealment, object obstructions, senses, coordinate modes
+      and eyewear articles. Native state and 72 constructed groups pass.
+      See [door-magic-audit.md](door-magic-audit.md) for exact source gaps,
+      including native monster-obstruction and trap-knowledge observations.
 - [x] Lock occupations and door passage: 157 C scenarios cover magic-key
       disarming, forcing, tool choice, mimic ownership, queued kicking and
       integer closing strength. Native state and 64 constructed groups pass.

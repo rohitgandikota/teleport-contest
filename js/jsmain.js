@@ -159,7 +159,7 @@ export class NethackGame {
                     sortpack: true, sortloot: 'l', // optlist.h and options.c:7208
                     pickup_thrown: true,
                     ...rc.opts };
-        g.iflags = {};
+        g.iflags = { getpos_coords: rc.opts.getpos_coords ?? 'n' };
         set_menuobjsyms_flags(rc.opts.menuobjsyms ?? 4);
         const pettype = optValue(rc, 'pettype');
         if (pettype) g.preferred_pet = pettype[0];

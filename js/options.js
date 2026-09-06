@@ -14,6 +14,8 @@ import {
     MENU_BEHAVE_STANDARD,
     PICK_ONE, PICK_ANY, ECMD_OK,
     AUTOUNLOCK_APPLY_KEY, MENU_TRADITIONAL, MENU_COMBINATION,
+    GPCOORDS_NONE, GPCOORDS_COMPASS, GPCOORDS_COMFULL, GPCOORDS_MAP,
+    GPCOORDS_SCREEN, COLNO, ROWNO,
 } from './const.js';
 import { NO_COLOR } from './terminal.js';
 import { allopt, findOption } from './optlist.js';
@@ -145,6 +147,7 @@ export function parseoptions(opts, tinitial, tfrom_file, result) {
         && opt.name !== 'packorder' && opt.name !== 'pickup_types'
         && opt.name !== 'menu_objsyms' && opt.name !== 'autounlock'
         && !(opt.name === 'menustyle' && (negated || opts.length <= 5))
+        && !(opt.name === 'whatis_coord' && negated)
         && !(opt.name === 'paranoid_confirmation' && negated)) {
         config_error_add(result, `Missing value for '${opt.name}'`);
         return false;
@@ -277,6 +280,21 @@ export function parseoptions(opts, tinitial, tfrom_file, result) {
             }
         }
         result.opts.menuobjsyms = osyms;
+    } else if (opt.name === 'whatis_coord') {
+        // src/options.c:4703 optfn_whatis_coord(), do_set arm.
+        if (negated) {
+            result.opts.getpos_coords = GPCOORDS_NONE;
+        } else if (value) {
+            const c = value[0].toLowerCase();
+            if ('ncfms'.includes(c))
+                result.opts.getpos_coords = c;
+            else {
+                config_error_add(result, `Unknown whatis_coord parameter '${value}'`);
+                return false;
+            }
+        } else {
+            return false;
+        }
     } else if (opt.name === 'sortdiscoveries') {
         // src/options.c:3863 optfn_sortdiscoveries(), initial do_set arm.
         if (negated) {
@@ -1860,6 +1878,8 @@ export async function doset() {
                 await handler_autounlock();
             } else if (o.hasHandler === 'Yes' && o.name === 'menu_objsyms') {
                 await handler_menu_objsyms();
+            } else if (o.hasHandler === 'Yes' && o.name === 'whatis_coord') {
+                await handler_whatis_coord();
             } else if (o.name === 'bind keys') {
                 await handler_rebind_keys();
             } else if (o.name === 'status condition fields') {
@@ -1980,6 +2000,36 @@ export async function handler_menu_objsyms() {
         if (picks.length > 1 && i === game.iflags.menuobjsyms)
             i = picks[1] - 1;
         set_menuobjsyms_flags(i);
+    }
+    tty_destroy_nhwindow(win);
+    return 0;
+}
+
+// src/options.c:6206 handler_whatis_coord(), the pinned tty window port.
+export async function handler_whatis_coord() {
+    const old = game.iflags.getpos_coords;
+    const entries = [
+        [GPCOORDS_COMPASS, "compass ('east' or '3s' or '2n,4w')"],
+        [GPCOORDS_COMFULL, "full compass ('east' or '3south' or '2north,4west')"],
+        [GPCOORDS_MAP, 'map <x,y>'],
+        [GPCOORDS_SCREEN, 'screen [row,column]'],
+        [GPCOORDS_NONE, 'none (no coordinates displayed)'],
+    ];
+    const win = tty_create_nhwindow(NHW_MENU);
+    tty_start_menu(win, MENU_BEHAVE_STANDARD);
+    for (const [mode, label] of entries)
+        tty_add_menu(win, null, mode, mode, 0, ATR_NONE, NO_COLOR, label,
+                     old === mode ? MENU_ITEMFLAGS_SELECTED : MENU_ITEMFLAGS_NONE);
+    tty_add_menu_str(win, '');
+    tty_add_menu_str(win, `map: upper-left: <1,0>, lower-right: <${COLNO - 1},${ROWNO - 1}>${game.flags.verbose ? '; column 0 unused, off left edge' : ''}`);
+    tty_add_menu_str(win, `screen: upper-left: [02,01], lower-right: [${ROWNO + 1},${COLNO - 1}]${COLNO === 80 && game.flags.verbose ? '; column 80 is not used' : ''}`);
+    tty_add_menu_str(win, '');
+    tty_end_menu(win, 'Select coordinate display when auto-describing a map position:');
+    const picks = await tty_select_menu(win, PICK_ONE);
+    if (picks.length) {
+        game.iflags.getpos_coords = picks[0];
+        if (picks.length > 1 && picks[0] === old)
+            game.iflags.getpos_coords = picks[1];
     }
     tty_destroy_nhwindow(win);
     return 0;

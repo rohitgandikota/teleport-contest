@@ -177,7 +177,7 @@ const is_minion = (ptr) => (ptr.mflags2 & MFLAGS.M2_MINION) !== 0;
 export async function mb_trapped(mtmp, canseeit) {
     if (game.flags?.verbose) {
         if (canseeit && !Unaware())
-            await pline('KABOOM!!  You see a door explode.');
+            await pline_mon(mtmp, 'KABOOM!!  You see a door explode.');
         else if (!Deaf())
             await You_hear(`a ${distu(mtmp.mx, mtmp.my) > 7 * 7
                                 ? 'distant' : 'nearby'} explosion.`);

@@ -17,21 +17,21 @@ and persistent gameplay state. Continue source review, measured C branches,
 independent oracles, implementation and regression checks until that goal is
 met. Current corpus success is not the stopping criterion.
 
-The latest pass adds 157 C cases for lock occupations, magic-key disarming,
-mimic ownership, queued kicking, door passage and closing strength. All 44
-public and 528 supplemental fixtures pass, matching 621,590 screens/cursors
-and 12,551,703 RNG calls. The C union reaches 56,813/108,268 direct outcomes
-and 4,401/5,491 entered records. The assertion ledger is 3,342/3,342. State
-checks validate 157 native replays and 64 constructed groups. Native
-follow-ups now detect lost mimic inventory and fractional closing strength;
-trap knowledge and town warnings still rely on constructed mutation controls.
+The latest pass adds 174 C cases for magical doors, obstructions, message
+locations and eyewear feedback. All 44 public and 534 supplemental fixtures
+pass, matching 711,853 screens/cursors and 12,981,090 RNG calls. The C union
+reaches 56,956/108,268 direct outcomes and 4,403/5,491 entered records. The
+assertion ledger is 3,516/3,516. State checks validate 174 native replays and
+72 constructed groups. All ten deliberate regressions fail state checks;
+missing monster trap knowledge still survives native output comparisons.
 
 See [STATUS.md](STATUS.md) for the current action,
-[lock-occupation-audit.md](lock-occupation-audit.md) for the source review and
+[door-magic-audit.md](door-magic-audit.md) for the source review and
 [gameplay-gap-audit.md](gameplay-gap-audit.md) for measurement limits.
 The earlier published held-out result was 78.39%; this local suite does not
-establish a newer held-out score. Magical doors and town watches are next.
-Remaining lock, disclosure, inventory lifecycle, spell, monster and Lua paths are open.
+establish a newer held-out score. Named-level teleporting is the next confirmed
+gap, with fresh native probes already failing the JS stub. Remaining lock,
+disclosure, inventory lifecycle, spell, monster and Lua paths are open.
 The full-port goal continues.
 
 ## Previous focus, 2026-09-03

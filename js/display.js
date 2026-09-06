@@ -56,6 +56,8 @@ import { def_monsyms, def_oc_syms, cmap_names, defsyms } from './drawing_data.js
 import { PMNAMES, mons, NUMMONS, MFLAGS } from './monst_data.js';
 import { showsym } from './symbols.js';
 import { boolean_option } from './options.js';
+import { coord_desc } from './getpos.js';
+import { GPCOORDS_NONE, GPCOORDS_COMFULL } from './const.js';
 import { NO_COLOR, CLR_GRAY, CLR_BROWN, CLR_WHITE, CLR_YELLOW, CLR_BRIGHT_BLUE,
          CLR_GREEN, CLR_BLUE, CLR_RED, CLR_ORANGE, CLR_CYAN, CLR_BLACK,
          CLR_MAGENTA, CLR_BRIGHT_MAGENTA, CLR_BRIGHT_GREEN,
@@ -2262,7 +2264,21 @@ async function prepare_pline() {
         await flush_screen(1);
 }
 
+// src/pline.c:162-189 vpline(), consume the location before any message work.
+export function message_with_location(msg) {
+    const loc = game.a11y?.msg_loc;
+    if (game.a11y)
+        game.a11y.msg_loc = { x: 0, y: 0 };
+    if (msg && loc && isok(loc.x, loc.y) && boolean_option('accessiblemsg')) {
+        const mode = game.iflags?.getpos_coords ?? GPCOORDS_NONE;
+        return `${coord_desc(loc.x, loc.y, mode === GPCOORDS_NONE ? GPCOORDS_COMFULL : mode)}: ${msg}`;
+    }
+    return msg;
+}
+
 export async function pline(msg) {
+    msg = message_with_location(msg);
+    if (!msg) return;
     await prepare_pline();
 
     /* src/pline.c vpline() -> putstr(WIN_MESSAGE) -> tty_putstr() ->
@@ -2284,6 +2300,8 @@ export async function pline(msg) {
 // custompline(SUPPRESS_HISTORY): the message is shown but not remembered;
 // the cursor returns to the hero as for an ordinary pline.
 export async function pline_nohistory(msg) {
+    msg = message_with_location(msg);
+    if (!msg) return;
     if (game.vision_full_recalc)
         vision_recalc(0);
     if (game.u?.ux)
@@ -2298,6 +2316,8 @@ export async function pline_nohistory(msg) {
 }
 
 export async function pline_nohistory_no_cursor(msg) {
+    msg = message_with_location(msg);
+    if (!msg) return;
     if (game.vision_full_recalc)
         vision_recalc(0);
     if (game.u?.ux)
@@ -2311,6 +2331,8 @@ export async function pline_nohistory_no_cursor(msg) {
 // after pline's vision and screen flush.  Doing it earlier briefly painted a
 // suppressed spell message before the urgent polymorph-reversion message.
 export async function urgent_pline(msg) {
+    msg = message_with_location(msg);
+    if (!msg) return;
     await prepare_pline();
     if (game._win_stop) {
         tty_clear_nhwindow_message(game._topl_cury || 0);

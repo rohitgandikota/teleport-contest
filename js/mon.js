@@ -2890,7 +2890,7 @@ export async function wake_msg(mtmp, interesting) {
     if (mtmp.msleeping && canseemon(mtmp)) {
         const alive = mtmp.mnum === PMNAMES.PM_FLESH_GOLEM
             ? " It's alive!" : '';
-        await pline(`${Monnam(mtmp)} wakes up${interesting ? '!' : '.'}${alive}`);
+        await pline_mon(mtmp, `${Monnam(mtmp)} wakes up${interesting ? '!' : '.'}${alive}`);
     }
 }
 

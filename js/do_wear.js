@@ -49,7 +49,7 @@ import { an, xname, doname, the, Tobjnam, gloves_simple_name,
          boots_simple_name, suit_simple_name, Yname2, makeplural,
          makesingular, otense, corpse_xname, CXN_NOCORPSE,
          CXN_NOARTICLE, CXN_SINGULAR, CXN_ARTICLE, thesimpleoname,
-         simpleonames, killer_xname,
+         simpleonames, killer_xname, obj_is_pname,
          ARM_SUIT, ARM_SHIELD, ARM_HELM, ARM_GLOVES, ARM_BOOTS,
          ARM_CLOAK, ARM_SHIRT } from './objnam.js';
 import { makeknown, observe_object } from './o_init.js';
@@ -928,7 +928,8 @@ async function off_msg(otmp) {
 }
 
 async function on_msg(otmp) {
-    if ((otmp.owornmask & (W_RINGL | W_RINGR | W_AMUL)) !== 0) {
+    if ((otmp.owornmask & (W_RINGL | W_RINGR | W_AMUL)) !== 0
+        || ((otmp.owornmask & W_TOOL) !== 0 && !game.flags.verbose)) {
         await prinv(null, otmp, 0);
         return;
     }
@@ -936,8 +937,7 @@ async function on_msg(otmp) {
         const otmp_name = xname(otmp);
         const how = otmp.otyp === ONAMES.TOWEL
             ? ` around your ${body_part(HEAD)}` : '';
-        /* obj_is_pname() only for artifacts */
-        await You(`are now wearing ${an(otmp_name)}${how}.`);
+        await You(`are now wearing ${obj_is_pname(otmp) ? the(otmp_name) : an(otmp_name)}${how}.`);
     }
 }
 

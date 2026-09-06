@@ -12,10 +12,63 @@ Continue the authorized work; do not mark it complete or recreate it.
 Current-corpus success is not the stopping criterion. Track unreviewed,
 untested, missing, and unreachable source paths explicitly.
 
-### Active pass: lock-picking occupations
+### Active pass: named-level teleporting
 
-HEAD cda8c13f. Work .cache/lock-occupation, ready for audit and local commit.
-Dirty runtime lock,steal,cmd,monmove,options; new tools/lock-state-gate.mjs.
+Door-magic pass complete and ready for local commit, HEAD6a324980 before it.
+All jobs collected. No active scorer/recorder. No C/frozen edits. Nine runtime
+modules botl,do_wear,display,getpos,jsmain,monmove,mon,options,pline plus state
+and six permanent recipes. Local commit next, then implement named-level gap.
+No push; publication authorization remains unanswered.
+
+Next work .cache/named-level. Full C lev_by_name, find_branch, find_level,
+find_mapseen_by_str and level_tele read. Notes in source-notes.md. Eighteen
+native name probes recorded and inspected: aliases succeed, branches land at
+the current-side connection, minetn inaccessible from main, Minetown invalid.
+Baseline fails1650screens1509cursors115758positionalRNG. Duplicate case labels
+rogue/Rogue need correction before promotion. C name resolver has annotation
+priority, article/suffix cleanup, hell/gehennom/delphi aliases, same-branch or
+main/Gehennom guards, VISITED checks and branch endpoints. JS lev_by_name stub
+and find_branch generation-only. No next-pass runtime implementation yet.
+C VISITED is set by savelev on departure, not by generation/current-level
+presence. JS visited_ledgers stores incoming STRING keys, so cannot assume
+it matches this C bit. Inspect saved_levels and regeneration before reusing.
+Donamelevel stores level_annotations immediately; recalc_mapseen copies custom
+later. Preserve immediate annotation matching and sorted C mapseen priority.
+Larger level_tele has missing ten-invalid fallback, Nowhere, single-level,
+buried-ball, above-dungeon, quest and invocation paths. Full body read.
+Continue until faithful port, not just these tests. Do not mark goal complete.
+
+### Checkpoint: magical doors and message locations
+
+Work .cache/door-magic, docs/plan/door-magic-audit.md. Nine runtime modules
+port Deaf conduct status, quiet eyewear/proper artifact article, message
+locations and one-time consumption, monster wake/explosion coordinates,
+whatis_coord config/fulloptions. Larger vpline, eyewear and status staypartial.
+174 native scenarios in six official recipes: door-magic84,town8,monsters27,
+message-locations39,obstructions10,eyewear6. All90263screens/cursors429387RNG
+3720animations match. Exact instrumented C repeat6/6 and independent assertion/
+integrity pass. State174replays217inventory3monsterHP164feedback and72
+constructed groups pass. Firstdeathassertion corrected to C's HP clamp0.
+Alltenmutantsfailstate; missingmonstertrapknowledge passesallnativefixtures.
+Exact9priorruntimefiles fail3/6 with8748screens40cursors34973positionalRNG.
+Mutation-results.json/totals.json preserve exactcounts. Constructed states
+receive noCcoverage. Cunion+143outcomes/+2entered to56956/1082684403/5491.
+New entered handler_whatis_coord,probe_monster. Remaining.json exactgaps.
+Ledger3516/3516,99covered7partial. Doorlock84/102,obstructed3/14,mb_trapped4/6.
+Full578/578:44public534supp all711853screens/cursors12981090RNG. Public21old
+animationmissesremain. Fuzz101/102knownfixeddate,all491759RNG. Fifteenrelated
+stategates50hang80freshroles14tooltests0/268source pass. Jobs7737,5180,75823,
+44878,82519 andallotherpreviousdoor-magicjobsfinishedandcollected.
+Native northmonsterpositivesonly;other21directionsdoorcontrols. HP24/53,
+51/60,31/42stunned allsurvive. No native death. Distant3north/3nmode and
+identifiedEyesproperarticle observed. Earlierinvalidtrap/Monk/menu sets
+excluded. Correct land mine trap/bear trap trap,fulloptions,minimalMonk.
+No promoter rerun. Audit/plans/diffreview done, local commit remains next.
+
+### Checkpoint: lock-picking occupations
+
+Committed as6a324980. Work .cache/lock-occupation, audit and local commit done.
+Runtime lock,steal,cmd,monmove,options; new tools/lock-state-gate.mjs.
 No C/frozen edits. Entire lock.c read; full maybe_absorb_item, getdir,
 watch_on_duty, can_ooze, stuff_prevents_passage, can_fog, parsebindings and
 C test_move read. Larger command/movement/configuration helpers remain partial.
@@ -62,7 +115,7 @@ causing publicseed1500 to lose a learned-information turn; remembered_glyph
 with defaultS_stone fixed it. All public screens now match.
 
 Audit and plan updates complete; final runtime diff and diff-check reviewed.
-Next: local commit, then continue source gaps (doorlock26/102, obstruction,
+Next: continue source gaps (doorlock26/102, obstruction,
 shop damage and town watches). Full doorlock/boxlock/obstructed C bodies
 re-read for that continuation. No next-pass implementation started yet.
 Do not push; publication authorization remains unanswered. Passing this corpus

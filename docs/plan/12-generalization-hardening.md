@@ -14,19 +14,18 @@ sit on the side we cannot measure.
 
 ## September source-guided continuation
 
-The lock-occupation pass adds 157 native scenarios and 64 constructed state
-groups. All eight deliberate regressions fail state checks. Two initially
-survived native output checks: fractional closing strength and lost mimic
-inventory. Native boundary and recovery follow-ups now detect both. Trap
-knowledge and watch warnings still require stronger native observations.
-See [lock-occupation-audit.md](lock-occupation-audit.md).
+The magical-door pass adds 174 native scenarios and 72 constructed state
+groups. All ten deliberate regressions fail state checks. Missing monster
+trap knowledge still survives all six native fixtures, so native follow-up
+coverage remains open. See [door-magic-audit.md](door-magic-audit.md).
 
-The final regression suite passes 572/572 fixtures, with all 621,590 screens
-and cursors and 12,551,703 RNG calls matching. C execution adds 194 outcomes
-and three entered records, reaching 56,813/108,268 and 4,401/5,491. Those are
+The final regression suite passes 578/578 fixtures, with all 711,853 screens
+and cursors and 12,981,090 RNG calls matching. C execution adds 143 outcomes
+and two entered records, reaching 56,956/108,268 and 4,403/5,491. Those are
 coverage measurements, not a percentage of gameplay implemented. The full
 port remains the active goal. The 21 existing public animation mismatches
-and known fixed-date fuzz screen difference remain explicit.
+and known fixed-date fuzz screen difference remain explicit. Named-level
+teleporting is the next confirmed source gap.
 
 ## 12.1 The overfit audit
 

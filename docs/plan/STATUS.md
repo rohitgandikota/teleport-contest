@@ -12,9 +12,80 @@ Continue the authorized work; do not mark it complete or recreate it.
 Current-corpus success is not the stopping criterion. Track unreviewed,
 untested, missing, and unreachable source paths explicitly.
 
-### Current checkpoint: fatal timers and first-bite effects
+### Current checkpoint: resistance and protective armor
 
-The final runtime is verified and awaiting a local commit. It ports full
+The final runtime is verified and ready for a local commit. Work is in
+.cache/resist-meals. All 527 fixtures pass in regression-second.log:
+44 public plus 483 supplemental, 226,706 screens/cursors and 9,090,510 RNG.
+Public keeps its 21 prior animation misses (1,462/1,483); supplemental matches
+21,679 animations, 215,301 screens/cursors and 8,297,672 RNG. Fuzz is 101/102
+with the known fixed-date miss, all 491,759 RNG and 14,261/14,262 screens.
+All 47 hang checks, 80 role controls, 16 tool tests, source audit (0/268),
+the new state gate and twelve related state gates pass. All job exits are
+collected, including negative-state's expected exit one. No sweep is running.
+
+Three permanent recipes hold 56 C cases and 56 assertions: resistance-meals
+(21), protective-armor-loss (10), armor-secondary-effects (25). All match
+20,794 screens/cursors, 147,424 RNG and 28 animations. All three native
+re-recordings are exact. The ledger is 1,993/1,993 (99 covered, seven partial
+categories). The first gold-mail assertion used "brightly" instead of C's
+"brilliantly"; metadata is corrected and all three assertion/integrity
+checks pass. Inputs and recorded C behavior were unchanged.
+
+The full Gloves_off and dragon_armor_handling control flow is ported, with
+wielding_corpse callbacks, voluntary/involuntary source arguments and bounded
+death formatting. Trap callers now share mkobj's material predicates, fixing
+missing dragon-hide rot and the wrong FIRE_RES value. Floor-food callbacks
+and getobj's null-object switch preserve declined alternatives. Wizard acid/
+stone timers use the actual intrinsic slots. newuhs uses force_save_hs and
+per-game saved hunger state. The main loop obeys dirty status; experience,
+spell energy and menu dismissal set the missing C flags. m_move checks
+can_hide_under_obj before the hiding draw. Eleven runtime files changed;
+frozen files and the original C recorder are unchanged.
+
+The source review and explicit limits are in resistance-armor-audit.md.
+The first 524 sweep matched every RNG call but failed 29 fixtures on display.
+Root causes were missing XP/energy dirty flags and docorner's botlx flag;
+do not restore the extra unconditional main-loop bot call. It incorrectly
+shows Satiated during the long dragon meal. Knight's final six misses were
+failed-cast energy, fixed in spelleffects_check. The second full sweep is exact.
+
+The state gate observes 216 acid and nine stone renewals in native inputs,
+checks equipment properties, mortality, released corpses, slippery gloves,
+and constructed source controls. An oversized corpse object name is stripped
+by killer_xname; it cannot exercise the maximum kbuf length. The gate checks
+that fact, not a fabricated 255-character native boundary. Disabling stone
+renewal now fails the visible recipe on 12 screens/five cursors with all RNG
+matching, and fails the state gate's renewal assertion. Baseline 54edb7b2
+loads all eleven old modules via NODE_OPTIONS and fails two of three fixtures:
+952 screens, 41 cursors, 24,095 positional RNG entries and two animations.
+Secondary armor effects mostly already worked and now have execution evidence.
+
+The union is 54,775/108,268 direct outcomes and 4,348/5,491 entered records,
+adding 104 outcomes and armor_to_dragon. Current union: Gloves_off 22/32,
+wielding_corpse 15/22, dragon_armor_handling 51/54, Armor_off 7/10,
+Armor_gone 3/10, eating_dangerous_corpse 9/14. remaining.json holds missing
+outcomes; no new unreachable claims. Native recipe collection credited 3/3.
+
+Setup: T auto-selects the sole armor; glove confirmation is Tyes/Enter.
+Destruction scrolls can only erode, so thoroughly eroded armor guarantees
+loss. Erosion calls Armor_off, polymorph calls Armor_gone. Wizard property
+menus restart letters per page: > then c/d selects acid/stone. Initial
+meal-second's w/x selected nothing and earns no branch credit. Yellow dragon
+corpses remain on the floor; carried acid controls use acid blobs. Natural
+resistance probes in initial are valid. All raw probes remain in the cache.
+
+Next: commit the verified pass locally, then finish casting preconditions,
+forgotten-spell effects and the remaining timeout/inventory/monster/Lua source
+paths. Full spelleffects_check, more_experienced (overflow/percentage status),
+getobj, wiz_intrinsic, nh_timeout and broader armor handlers remain partial.
+Continue the full-port goal without stopping at this checkpoint.
+Publishing remains blocked on the unanswered authorization question. Do not
+retry a push. Local source work continues.
+
+### Previous checkpoint: fatal timers and first-bite effects
+
+The final runtime is committed locally as 54edb7b2. It ports full
 cursetxt, domove_fight_empty, cprefx, eating_dangerous_corpse and the control
 flow of wielding_corpse. It connects first-bite effects to meals and tins,
 fixes start_eating's nomovemsg guards, adds ACID_RES/STONE_RES expiry,
@@ -71,8 +142,7 @@ all nine cases start with 2,194 RNG entries and decline death. Its combined
 replay exposed the static cannibal guard leak which isolated replays missed.
 Do not repeat these invalid setups or change the recorder to conceal them.
 
-Next: finish final source/diff bookkeeping and commit locally, then create
-native probes for resistance expiring during dangerous meals, glove/armor
+Next: create native probes for resistance expiring during dangerous meals, glove/armor
 removal callers and remaining first-bite branches. Bounded death-reason
 formatting is also not certified. Full nh_timeout, use_misc, mondead,
 mon_break_armor, display and Lua remain later source work. Continue the

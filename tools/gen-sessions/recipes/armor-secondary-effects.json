@@ -1,0 +1,396 @@
+{
+  "name": "armor-secondary-effects",
+  "description": "Every dragon scale and mail type, power/dexterity/fumbling gloves, and erosion of an invisibility cloak.",
+  "coverage": [
+    "mode.debug",
+    "object.armor",
+    "survival.timed-status",
+    "ui.more-paging"
+  ],
+  "branches": [
+    "armor-secondary-effects.black-scales",
+    "armor-secondary-effects.blue-scales",
+    "armor-secondary-effects.green-scales",
+    "armor-secondary-effects.red-scales",
+    "armor-secondary-effects.gold-scales",
+    "armor-secondary-effects.orange-scales",
+    "armor-secondary-effects.yellow-scales",
+    "armor-secondary-effects.white-scales",
+    "armor-secondary-effects.gray-scales",
+    "armor-secondary-effects.silver-scales",
+    "armor-secondary-effects.black-mail",
+    "armor-secondary-effects.blue-mail",
+    "armor-secondary-effects.green-mail",
+    "armor-secondary-effects.red-mail",
+    "armor-secondary-effects.gold-mail",
+    "armor-secondary-effects.orange-mail",
+    "armor-secondary-effects.yellow-mail",
+    "armor-secondary-effects.white-mail",
+    "armor-secondary-effects.gray-mail",
+    "armor-secondary-effects.silver-mail",
+    "armor-secondary-effects.power-0-off",
+    "armor-secondary-effects.dexterity-3-off",
+    "armor-secondary-effects.dexterity-0-off",
+    "armor-secondary-effects.fumbling-0-off",
+    "armor-secondary-effects.invisibility-cloak-destroyed"
+  ],
+  "requireBranchAssertions": true,
+  "segments": [
+    {
+      "name": "black-scales",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed black dragon scales\rWb     \u001b\u001b\u001b\u001b\u001b\u001bT     \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "blue-scales",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed blue dragon scales\rWb     \u001b\u001b\u001b\u001b\u001b\u001bT     \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "green-scales",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed green dragon scales\rWb     \u001b\u001b\u001b\u001b\u001b\u001bT     \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "red-scales",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed red dragon scales\rWb     \u001b\u001b\u001b\u001b\u001b\u001bT     \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "gold-scales",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed gold dragon scales\rWb     \u001b\u001b\u001b\u001b\u001b\u001bT     \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "orange-scales",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed orange dragon scales\rWb     \u001b\u001b\u001b\u001b\u001b\u001bT     \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "yellow-scales",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed yellow dragon scales\rWb     \u001b\u001b\u001b\u001b\u001b\u001bT     \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "white-scales",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed white dragon scales\rWb     \u001b\u001b\u001b\u001b\u001b\u001bT     \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "gray-scales",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed gray dragon scales\rWb     \u001b\u001b\u001b\u001b\u001b\u001bT     \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "silver-scales",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed silver dragon scales\rWb     \u001b\u001b\u001b\u001b\u001b\u001bT     \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "black-mail",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed black dragon scale mail\rWb     \u001b\u001b\u001b\u001b\u001b\u001bT     \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "blue-mail",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed blue dragon scale mail\rWb     \u001b\u001b\u001b\u001b\u001b\u001bT     \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "green-mail",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed green dragon scale mail\rWb     \u001b\u001b\u001b\u001b\u001b\u001bT     \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "red-mail",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed red dragon scale mail\rWb     \u001b\u001b\u001b\u001b\u001b\u001bT     \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "gold-mail",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed gold dragon scale mail\rWb     \u001b\u001b\u001b\u001b\u001b\u001bT     \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "orange-mail",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed orange dragon scale mail\rWb     \u001b\u001b\u001b\u001b\u001b\u001bT     \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "yellow-mail",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed yellow dragon scale mail\rWb     \u001b\u001b\u001b\u001b\u001b\u001bT     \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "white-mail",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed white dragon scale mail\rWb     \u001b\u001b\u001b\u001b\u001b\u001bT     \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "gray-mail",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed gray dragon scale mail\rWb     \u001b\u001b\u001b\u001b\u001b\u001bT     \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "silver-mail",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed silver dragon scale mail\rWb     \u001b\u001b\u001b\u001b\u001b\u001bT     \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "power-0-off",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed +0 gauntlets of power\rWb     \u001b\u001b\u001b\u001b\u001b\u001bT     \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "dexterity-3-off",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed +3 gauntlets of dexterity\rWb     \u001b\u001b\u001b\u001b\u001b\u001bT     \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "dexterity-0-off",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed +0 gauntlets of dexterity\rWb     \u001b\u001b\u001b\u001b\u001b\u001bT     \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "fumbling-0-off",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed +0 gauntlets of fumbling\rWb     \u001b\u001b\u001b\u001b\u001b\u001bT     \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "invisibility-cloak-destroyed",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed thoroughly burnt cloak of invisibility\rWb     \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed scroll of destroy armor\rrc     \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    }
+  ],
+  "branchAssertions": [
+    {
+      "branch": "armor-secondary-effects.black-scales",
+      "segment": 0,
+      "screenIncludes": [
+        "You finish taking off your"
+      ]
+    },
+    {
+      "branch": "armor-secondary-effects.blue-scales",
+      "segment": 1,
+      "screenIncludes": [
+        "You speed up.",
+        "You slow down."
+      ]
+    },
+    {
+      "branch": "armor-secondary-effects.green-scales",
+      "segment": 2,
+      "screenIncludes": [
+        "You finish taking off your"
+      ]
+    },
+    {
+      "branch": "armor-secondary-effects.red-scales",
+      "segment": 3,
+      "screenIncludes": [
+        "You finish taking off your"
+      ]
+    },
+    {
+      "branch": "armor-secondary-effects.gold-scales",
+      "segment": 4,
+      "screenIncludes": [
+        "begins to shine brightly!",
+        "stops shining."
+      ]
+    },
+    {
+      "branch": "armor-secondary-effects.orange-scales",
+      "segment": 5,
+      "screenIncludes": [
+        "You finish taking off your"
+      ]
+    },
+    {
+      "branch": "armor-secondary-effects.yellow-scales",
+      "segment": 6,
+      "screenIncludes": [
+        "You finish taking off your"
+      ]
+    },
+    {
+      "branch": "armor-secondary-effects.white-scales",
+      "segment": 7,
+      "screenIncludes": [
+        "You finish taking off your"
+      ]
+    },
+    {
+      "branch": "armor-secondary-effects.gray-scales",
+      "segment": 8,
+      "screenIncludes": [
+        "You finish taking off your"
+      ]
+    },
+    {
+      "branch": "armor-secondary-effects.silver-scales",
+      "segment": 9,
+      "screenIncludes": [
+        "You finish taking off your"
+      ]
+    },
+    {
+      "branch": "armor-secondary-effects.black-mail",
+      "segment": 10,
+      "screenIncludes": [
+        "You finish taking off your"
+      ]
+    },
+    {
+      "branch": "armor-secondary-effects.blue-mail",
+      "segment": 11,
+      "screenIncludes": [
+        "You speed up.",
+        "You slow down."
+      ]
+    },
+    {
+      "branch": "armor-secondary-effects.green-mail",
+      "segment": 12,
+      "screenIncludes": [
+        "You finish taking off your"
+      ]
+    },
+    {
+      "branch": "armor-secondary-effects.red-mail",
+      "segment": 13,
+      "screenIncludes": [
+        "You finish taking off your"
+      ]
+    },
+    {
+      "branch": "armor-secondary-effects.gold-mail",
+      "segment": 14,
+      "screenIncludes": [
+        "begins to shine brilliantly!",
+        "stops shining."
+      ]
+    },
+    {
+      "branch": "armor-secondary-effects.orange-mail",
+      "segment": 15,
+      "screenIncludes": [
+        "You finish taking off your"
+      ]
+    },
+    {
+      "branch": "armor-secondary-effects.yellow-mail",
+      "segment": 16,
+      "screenIncludes": [
+        "You finish taking off your"
+      ]
+    },
+    {
+      "branch": "armor-secondary-effects.white-mail",
+      "segment": 17,
+      "screenIncludes": [
+        "You finish taking off your"
+      ]
+    },
+    {
+      "branch": "armor-secondary-effects.gray-mail",
+      "segment": 18,
+      "screenIncludes": [
+        "You finish taking off your"
+      ]
+    },
+    {
+      "branch": "armor-secondary-effects.silver-mail",
+      "segment": 19,
+      "screenIncludes": [
+        "You finish taking off your"
+      ]
+    },
+    {
+      "branch": "armor-secondary-effects.power-0-off",
+      "segment": 20,
+      "screenIncludes": [
+        "You finish taking off your"
+      ]
+    },
+    {
+      "branch": "armor-secondary-effects.dexterity-3-off",
+      "segment": 21,
+      "screenIncludes": [
+        "You finish taking off your"
+      ]
+    },
+    {
+      "branch": "armor-secondary-effects.dexterity-0-off",
+      "segment": 22,
+      "screenIncludes": [
+        "You finish taking off your"
+      ]
+    },
+    {
+      "branch": "armor-secondary-effects.fumbling-0-off",
+      "segment": 23,
+      "screenIncludes": [
+        "You finish taking off your"
+      ]
+    },
+    {
+      "branch": "armor-secondary-effects.invisibility-cloak-destroyed",
+      "segment": 24,
+      "screenIncludes": [
+        "Your cloak of invisibility smoulders away!"
+      ]
+    }
+  ]
+}

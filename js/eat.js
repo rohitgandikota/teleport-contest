@@ -196,7 +196,7 @@ import { losehp } from './hack.js';
 import { SICK_RES, SICK_VOMITABLE, KILLED_BY_AN } from './const.js';
 import { NOT_HUNGRY, ECMD_OK, ECMD_TIME, SATIATED, KILLED_BY, CHOKING, WEAK, HUNGRY, FAINTING, FAINTED, A_LAWFUL, W_ARMOR, W_TOOL, W_AMUL, W_SADDLE, HOMEMADE_TIN, NON_PM, STR18 } from './const.js';
 import { ONAMES, OCLASSES } from './objects_data.js';
-import { getobj, weight, useup, useupf, GETOBJ_EXCLUDE, GETOBJ_SUGGEST, GETOBJ_EXCLUDE_SELECTABLE, GETOBJ_DOWNPLAY, freeinv, update_inventory, reorder_invent, addinv_nomerge, stackobj } from './invent.js';
+import { getobj, weight, useup, useupf, GETOBJ_EXCLUDE, GETOBJ_EXCLUDE_NONINVENT, GETOBJ_SUGGEST, GETOBJ_EXCLUDE_SELECTABLE, GETOBJ_DOWNPLAY, freeinv, update_inventory, reorder_invent, addinv_nomerge, stackobj } from './invent.js';
 import { pline } from './display.js';
 import { observe_object } from './o_init.js';
 /* include/obj.h:332 carried() is a WHERE test, not list membership. */
@@ -622,7 +622,7 @@ export function tinnable(corpse) {
 
 function tin_ok(obj) {
     if (!obj)
-        return GETOBJ_EXCLUDE;
+        return game.getobj_else ? GETOBJ_EXCLUDE_NONINVENT : GETOBJ_EXCLUDE;
     if (obj.oclass !== OCLASSES.FOOD_CLASS)
         return GETOBJ_EXCLUDE;
     if (obj.otyp !== ONAMES.CORPSE || !tinnable(obj))
@@ -921,7 +921,7 @@ export function is_edible(obj) {
 // getobj and recorded there.
 export function eat_ok(obj) {
     if (!obj)
-        return GETOBJ_EXCLUDE;
+        return game.getobj_else ? GETOBJ_EXCLUDE_NONINVENT : GETOBJ_EXCLUDE;
 
     if (is_edible(obj))
         return GETOBJ_SUGGEST;
@@ -937,7 +937,7 @@ export function eat_ok(obj) {
 // selectable, with Amulets suggested only on the Astral Plane.
 function offer_ok(obj) {
     if (!obj)
-        return GETOBJ_EXCLUDE;
+        return game.getobj_else ? GETOBJ_EXCLUDE_NONINVENT : GETOBJ_EXCLUDE;
     if (obj.oclass !== OCLASSES.FOOD_CLASS
         && obj.oclass !== OCLASSES.AMULET_CLASS)
         return GETOBJ_EXCLUDE;
@@ -2240,8 +2240,6 @@ export async function do_reset_eat() {
 // single meal produces one message about the whole meal rather than one per
 // bite; the C's comment block says the occupation test alone is not enough
 // because start_eating calls bite() before setting the occupation.
-let save_hs = 0, saved_hs = false;
-
 export async function newuhs(incr) {
     const h = game.u.uhunger;
     const newhs = (h > 1000) ? SATIATED
@@ -2251,19 +2249,19 @@ export async function newuhs(incr) {
                              : FAINTING;
 
     /* mid-meal: remember the status we started at and report once at the end */
-    if (game.occupation === eatfood || game.context?.victual?.eating) {
-        if (!saved_hs) {
-            save_hs = game.u.uhs;
-            saved_hs = true;
+    if (game.occupation === eatfood || game.force_save_hs) {
+        if (!game.saved_hs) {
+            game.save_hs = game.u.uhs;
+            game.saved_hs = true;
         }
         game.u.uhs = newhs;
         return;
     }
-    if (saved_hs) {
+    if (game.saved_hs) {
         /* the whole-meal comparison: restore the status the meal started
            at, so the message switch below sees start -> end */
-        game.u.uhs = save_hs;
-        saved_hs = false;
+        game.u.uhs = game.save_hs;
+        game.saved_hs = false;
     }
 
     let newhs2 = newhs;

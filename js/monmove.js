@@ -1587,7 +1587,9 @@ export async function m_move(mtmp, after) {
     }
 
     /* hides_under comes next in C; it needs an object underfoot. */
-    if (hides_under(ptr) && OBJ_AT(omx, omy) && rn2(10))
+    if (hides_under(ptr) && OBJ_AT(omx, omy)
+        && can_hide_under_obj(objects_at(omx, omy)[0])
+        && rn2(10))
         return MMOVE_NOTHING;      /* do not leave hiding place */
 
     /* src/monmove.c:1761 — "Where does 'mtmp' think you are?  Not necessary

@@ -315,6 +315,9 @@ const WIZ_INTRINSICS = [
 ];
 
 function wiz_intrinsic_timeout(key) {
+    if (key === 'ACID_RES' || key === 'STONE_RES')
+        return (game.u.intrinsic?.[key === 'ACID_RES'
+            ? 'HAcid_resistance' : 'HStone_resistance'] || 0) & TIMEOUT;
     if (key === 'SICK' || key === 'STONED' || key === 'SLIMED' || key === 'VOMITING')
         return (game.u.uprops?.[key] || 0) & TIMEOUT;
     if (key === 'UNCHANGING')
@@ -383,7 +386,14 @@ export async function wiz_intrinsic() {
         if (amount <= 0)
             continue;
 
-        if (key === 'CONFUSION') {
+        if (key === 'ACID_RES' || key === 'STONE_RES') {
+            const { incr_itimeout } = await import('./potion.js');
+            incr_itimeout(key === 'ACID_RES'
+                ? 'HAcid_resistance' : 'HStone_resistance', amount);
+            (game.disp ||= {}).botl = true;
+            await pline(`Timeout for ${name} ${oldtimeout
+                ? 'increased by' : 'set to'} ${amount}.`);
+        } else if (key === 'CONFUSION') {
             const { make_confused } = await import('./potion.js');
             await make_confused(Math.min(TIMEOUT, oldtimeout + amount), false);
             await pline(`Timeout for ${name} ${oldtimeout

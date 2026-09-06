@@ -17,25 +17,24 @@ and persistent gameplay state. Continue source review, measured C branches,
 independent oracles, implementation, and regression checks until that goal is
 met. Current corpus success is not the stopping criterion.
 
-The latest verified pass adds 34 C cases for fatal countdowns, first bites,
-tin interventions, energy drain and resistance expiry. All 44 public and
-480 supplemental fixtures pass. The measured C union has 54,671/108,268
-direct outcomes and 4,347/5,491 entered function records. The assertion
-ledger is 1,937/1,937. Removing the dangerous-meal resistance extension
-still passes all new visible replays but fails the state gate. The published
-held-out result recorded during the
-earlier audit is 78.39%, distinct from the local result.
+The latest verified pass adds 56 C cases for dangerous meals, protective
+armor loss and secondary armor effects. All 44 public and 483 supplemental
+fixtures pass. The C union has 54,775/108,268 direct outcomes and
+4,348/5,491 entered function records. The assertion ledger is 1,993/1,993.
+Disabling meal protection now fails native visible tests and state checks.
+The published held-out result recorded during the earlier audit is 78.39%,
+distinct from the local result.
 
 See [STATUS.md](STATUS.md) for checkpoint and next-action details,
-[fatal-timers-audit.md](fatal-timers-audit.md) for the current review, and
+[resistance-armor-audit.md](resistance-armor-audit.md) for the current review, and
 [gameplay-gap-audit.md](gameplay-gap-audit.md) for measurement limits.
 Shop billing and used-up inventory are pushed as `9ceac165`; their review is
 [shop-billing-copy-audit.md](shop-billing-copy-audit.md). The
 [compiled constant audit](c-constant-audit.md) compares 1,666 values with zero
 different values and one reviewed signed-mask representation. The shared
 creation tail, theft body and monster acquisition are verified on their
-expanded corpora. The next source pass tests resistance expiration during
-dangerous meals, glove/armor removal and remaining first-bite/timeout arms.
+expanded corpora. The next source pass completes casting preconditions and forgotten-spell
+effects, then continues the remaining timeout, inventory, monster and Lua paths.
 The full-port goal remains active.
 
 ## Previous focus, 2026-09-03

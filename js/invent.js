@@ -971,19 +971,30 @@ function getobj_letters(obj_ok, ctrlflags) {
     let altbuf = '';
     let forceprompt = (ctrlflags & GETOBJ_PROMPT) !== 0;
 
-    if (forceprompt || !obj_ok) {
-        const v = obj_ok ? obj_ok(null) : GETOBJ_EXCLUDE;
-        if (v === GETOBJ_SUGGEST)
-            buf += HANDS_SYM + ' ';
+    let allownone = false;
+    let inaccess = 0;
+    /* src/invent.c:1838, classify hands and declined floor alternatives. */
+    switch (obj_ok ? obj_ok(null) : GETOBJ_EXCLUDE) {
+    case GETOBJ_SUGGEST:
+        allownone = true;
+        buf += HANDS_SYM + ' ';
+        break;
+    case GETOBJ_DOWNPLAY:
+    case GETOBJ_EXCLUDE_INACCESS:
+    case GETOBJ_EXCLUDE_SELECTABLE:
+        allownone = true;
+        altbuf += HANDS_SYM;
+        break;
+    case GETOBJ_EXCLUDE_NONINVENT:
+        forceprompt = false;
+        inaccess++;
+        break;
+    default:
+        break;
     }
 
-    /* the chain is kept in inv_rank order by reorder_invent(), so a plain
-       walk yields the letters in prompt order, as C's gi.invent walk does */
+    /* The chain is kept in inv_rank order by reorder_invent(). */
     let suggested = 0;
-    /* src/invent.c:1860 — inaccessible items (e.g. already-worn gear for
-       'P') are removed from the suggestions, but unlike plain exclusions
-       they turn "anything to ___" into "anything else to ___" */
-    let inaccess = 0;
     for (const otmp of (game.invent || [])) {
         const v = obj_ok ? obj_ok(otmp) : GETOBJ_SUGGEST;
         if (v === GETOBJ_SUGGEST) {
@@ -998,6 +1009,8 @@ function getobj_letters(obj_ok, ctrlflags) {
             forceprompt = true;
         }
     }
+    if (!suggested && buf.endsWith(' '))
+        buf = buf.slice(0, -1);
     /* src/invent.c:1908 — "if (suggested > 5) compactify" — five letters
        stay verbatim, six or more compress */
     /* src/invent.c:1907 copies the complete letter list into `lets` before
@@ -1010,6 +1023,7 @@ function getobj_letters(obj_ok, ctrlflags) {
         prompt: suggested > 5 ? compactify(buf) : buf,
         forceprompt,
         inaccess,
+        allownone,
     };
 }
 
@@ -1128,11 +1142,11 @@ export async function getobj(word, obj_ok_func, ctrlflags) {
         reassign();
     let qbuf = `What do you want to ${word}?`;
     const { choices: lets, altChoices, prompt: promptLets, forceprompt,
-            inaccess } = getobj_letters(obj_ok_func, ctrlflags | 0);
+            inaccess, allownone } = getobj_letters(obj_ok_func, ctrlflags | 0);
 
     /* src/invent.c:1911 — nothing suggested, no forced prompt, no '-'
        choice: refuse up front. */
-    if (!lets && obj_ok_func && !(ctrlflags & GETOBJ_PROMPT) && !forceprompt) {
+    if (!lets && !forceprompt && !allownone) {
         await You(`don't have anything ${inaccess ? 'else ' : ''}to ${word}.`);
         return null;
     }

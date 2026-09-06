@@ -183,7 +183,10 @@ import { float_vs_flight } from './polyself.js';
 import { body_part, mbodypart, polymon } from './polyself.js';
 import { mon_nam } from './do_name.js';
 import { MON_WEP, DEADMONSTER, helpless, is_vampshifter } from './monst.js';
-import { erosion_matters } from './mkobj.js';
+import { erosion_matters, is_flammable, is_rottable, is_rustprone,
+         is_crackable, is_corrodeable, is_damageable } from './mkobj.js';
+export { is_flammable, is_rottable, is_rustprone, is_crackable,
+         is_corrodeable, is_damageable } from './mkobj.js';
 import { cxname, vtense, suit_simple_name,
          gloves_simple_name } from './objnam.js';
 import { helm_simple_name, cloak_simple_name, hard_helmet } from './do_wear.js';
@@ -3017,45 +3020,6 @@ export function uescaped_shaft(trap) {
     return !!(trap && is_hole(trap.ttyp) && trap.tseen
               && game.u.ux === trap.tx && game.u.uy === trap.ty);
 }
-
-// src/apply.c:1518 splash_lit() — a lit lamp/candle hit by water. Only a
-// BRASS_LANTERN survives a rust-trap splash; everything else lamplit goes
-// out. No light-source timers exist in the port yet, so a lamplit object
-// records; an unlit one returns false without drawing, which is the whole
-// path today.
-// src/mkobj.c:2270 is_flammable()
-export function is_flammable(otmp) {
-    const otyp = otmp.otyp;
-    const omat = game.objects[otyp].oc_material;
-    /* Is_candle */
-    if (otyp === ONAMES.TALLOW_CANDLE || otyp === ONAMES.WAX_CANDLE)
-        return false;
-    if (game.objects[otyp].oc_oprop === 26 /* FIRE_RES */
-        || otyp === ONAMES.WAN_FIRE)
-        return false;
-    return (omat <= MATERIALS.WOOD && omat !== MATERIALS.LIQUID)
-           || omat === MATERIALS.PLASTIC;
-}
-
-// src/mkobj.c:2289 is_rottable()
-export function is_rottable(otmp) {
-    const omat = game.objects[otmp.otyp].oc_material;
-    return omat <= MATERIALS.WOOD && omat !== MATERIALS.LIQUID;
-}
-
-/* include/objclass.h:200 is_rustprone(), :201 is_crackable(),
-   :204 is_corrodeable(), :206 is_damageable() */
-export const is_rustprone = (otmp) =>
-    game.objects[otmp.otyp].oc_material === MATERIALS.IRON;
-export const is_crackable = (otmp) =>
-    game.objects[otmp.otyp].oc_material === MATERIALS.GLASS
-    && otmp.oclass === OCLASSES.ARMOR_CLASS;
-export const is_corrodeable = (otmp) =>
-    game.objects[otmp.otyp].oc_material === MATERIALS.COPPER
-    || game.objects[otmp.otyp].oc_material === MATERIALS.IRON;
-export const is_damageable = (otmp) =>
-    is_rustprone(otmp) || is_flammable(otmp) || is_rottable(otmp)
-    || is_corrodeable(otmp) || is_crackable(otmp);
 
 // src/zap.c:5710 inventory_resistance_check(). Equipped elemental
 // resistance protects carried objects 99% of the time. This check belongs

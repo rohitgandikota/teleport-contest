@@ -4,13 +4,15 @@
 // Initial u.uac is 0 when the first startup status is drawn. u_init's later
 // find_ac() computes the real value before welcome and moveloop paging.
 
-import { W_ARMOR, GETOBJ_SUGGEST, GETOBJ_EXCLUDE } from './const.js';
+import { BUFSZ, W_ARMOR, GETOBJ_SUGGEST, GETOBJ_EXCLUDE } from './const.js';
 import { obj_resists } from './zap.js';
 import { selftouch, instapetrify } from './trap.js';
 import { remove_worn_item } from './steal.js';
 import { shirt_simple_name, shield_simple_name, vtense } from './objnam.js';
 import { urgent_pline } from './display.js';
 import { artifact_light } from './artifact.js';
+import { condtests } from './botl.js';
+import { make_glib, make_hallucinated } from './potion.js';
 import { end_burn } from './timeout.js';
 import { setnotworn, which_armor } from './worn.js';
 import { game } from './gstate.js';
@@ -204,6 +206,167 @@ export async function glibr() {
     }
 }
 
+// src/do_wear.c:608 wielding_corpse()
+export async function wielding_corpse(obj, how, voluntary) {
+    const u = game.u;
+    if (!obj || obj.otyp !== ONAMES.CORPSE || u.uarmg)
+        return;
+    if (obj !== u.uwep && (obj !== u.uswapwep || !u.twoweap))
+        return;
+
+    if (touch_petrifies(game.mons[obj.corpsenm]) && !Stone_resistance()) {
+        await You(`${how && is_gloves(how) ? 'now wield' : 'are wielding'} ${
+            corpse_xname(obj, null, CXN_ARTICLE)} in your bare ${makeplural(body_part(HAND))}.`);
+        const hbuf = how
+            ? `${voluntary ? 'removing' : 'losing'} ${is_gloves(how)
+                ? gloves_simple_name(how) : simpleonames(how).replace('set of ', '')}`
+            : 'resistance timing out';
+        await instapetrify(`${hbuf} while wielding ${killer_xname(obj)}`.slice(0, BUFSZ - 1));
+        if (!Stone_resistance())
+            await remove_worn_item(obj, false);
+    }
+}
+
+// src/do_wear.c:646 Gloves_off()
+export async function Gloves_off() {
+    const u = game.u;
+    const gloves = u.uarmg;
+    const props = (u.uprops ||= {});
+    const intrinsic = (u.intrinsic ||= {});
+    const oldprop = (props[PROP_KEYS[objects[gloves.otyp].oc_oprop]] || 0)
+        & ~WORN_GLOVES;
+    const on_purpose = !game.context.mon_moving && !gloves.in_use;
+    const takeoff = (game.context_takeoff ||= {});
+    takeoff.mask &= ~W_ARMG;
+
+    switch (gloves.otyp) {
+    case ONAMES.LEATHER_GLOVES:
+        break;
+    case ONAMES.GAUNTLETS_OF_FUMBLING:
+        if (!oldprop && !((intrinsic.HFumbling || 0) & ~TIMEOUT)) {
+            intrinsic.HFumbling = 0;
+            delete props.FUMBLING;
+        }
+        break;
+    case ONAMES.GAUNTLETS_OF_POWER:
+        makeknown(gloves.otyp);
+        (game.disp ||= {}).botl = true;
+        break;
+    case ONAMES.GAUNTLETS_OF_DEXTERITY:
+        if (!takeoff.cancelled_don)
+            adj_abon(gloves, -gloves.spe);
+        break;
+    default:
+        await impossible(`Unknown type of gloves (${gloves.otyp})`);
+    }
+    setworn(null, W_ARMG);
+    takeoff.cancelled_don = false;
+    await encumber_msg();
+
+    if (Glib())
+        make_glib(0);
+    if (u.uwep && u.uwep.otyp === ONAMES.CORPSE)
+        await wielding_corpse(u.uwep, gloves, on_purpose);
+    if (u.twoweap && u.uswapwep && u.uswapwep.otyp === ONAMES.CORPSE)
+        await wielding_corpse(u.uswapwep, gloves, on_purpose);
+    if (condtests.find(c => c.id === 'bl_bareh').enabled)
+        (game.disp ||= {}).botl = true;
+    return 0;
+}
+
+// src/do_wear.c:798 dragon_armor_handling()
+async function dragon_armor_handling(otmp, puton, on_purpose) {
+    if (!otmp)
+        return;
+    const props = (game.u.uprops ||= {});
+
+    switch (otmp.otyp) {
+    case ONAMES.BLACK_DRAGON_SCALES:
+    case ONAMES.BLACK_DRAGON_SCALE_MAIL:
+        if (puton) {
+            props.DRAIN_RES = (props.DRAIN_RES || 0) | W_ARM;
+        } else {
+            props.DRAIN_RES &= ~W_ARM;
+            if (!props.DRAIN_RES)
+                delete props.DRAIN_RES;
+        }
+        break;
+    case ONAMES.BLUE_DRAGON_SCALES:
+    case ONAMES.BLUE_DRAGON_SCALE_MAIL:
+        if (puton) {
+            if (!Very_fast())
+                await You(`speed up${Fast() ? ' a bit more' : ''}.`);
+            props.FAST = (props.FAST || 0) | W_ARM;
+        } else {
+            props.FAST &= ~W_ARM;
+            if (!props.FAST)
+                delete props.FAST;
+            if (!Very_fast() && !game.context_takeoff?.cancelled_don)
+                await You('slow down.');
+        }
+        break;
+    case ONAMES.GREEN_DRAGON_SCALES:
+    case ONAMES.GREEN_DRAGON_SCALE_MAIL:
+        if (puton) {
+            props.SICK_RES = (props.SICK_RES || 0) | W_ARM;
+        } else {
+            props.SICK_RES &= ~W_ARM;
+            if (!props.SICK_RES)
+                delete props.SICK_RES;
+        }
+        break;
+    case ONAMES.RED_DRAGON_SCALES:
+    case ONAMES.RED_DRAGON_SCALE_MAIL:
+        if (puton) {
+            props.INFRAVISION = (props.INFRAVISION || 0) | W_ARM;
+        } else {
+            props.INFRAVISION &= ~W_ARM;
+            if (!props.INFRAVISION)
+                delete props.INFRAVISION;
+        }
+        see_monsters();
+        break;
+    case ONAMES.GOLD_DRAGON_SCALES:
+    case ONAMES.GOLD_DRAGON_SCALE_MAIL:
+        await make_hallucinated(puton ? 0 : 1, !game.program_state?.restoring, W_ARM);
+        break;
+    case ONAMES.ORANGE_DRAGON_SCALES:
+    case ONAMES.ORANGE_DRAGON_SCALE_MAIL:
+        if (puton) {
+            props.FREE_ACTION = (props.FREE_ACTION || 0) | W_ARM;
+        } else {
+            props.FREE_ACTION &= ~W_ARM;
+            if (!props.FREE_ACTION)
+                delete props.FREE_ACTION;
+        }
+        break;
+    case ONAMES.YELLOW_DRAGON_SCALES:
+    case ONAMES.YELLOW_DRAGON_SCALE_MAIL:
+        if (puton) {
+            props.STONE_RES = (props.STONE_RES || 0) | W_ARM;
+        } else {
+            props.STONE_RES &= ~W_ARM;
+            if (!props.STONE_RES)
+                delete props.STONE_RES;
+            await wielding_corpse(game.u.uwep, otmp, on_purpose);
+            await wielding_corpse(game.u.uswapwep, otmp, on_purpose);
+        }
+        break;
+    case ONAMES.WHITE_DRAGON_SCALES:
+    case ONAMES.WHITE_DRAGON_SCALE_MAIL:
+        if (puton) {
+            props.SLOW_DIGESTION = (props.SLOW_DIGESTION || 0) | W_ARM;
+        } else {
+            props.SLOW_DIGESTION &= ~W_ARM;
+            if (!props.SLOW_DIGESTION)
+                delete props.SLOW_DIGESTION;
+        }
+        break;
+    default:
+        break;
+    }
+}
+
 // src/do_wear.c Armor_on() — called when a suit becomes worn.
 //
 // The core is two lines and it is SCREEN-VISIBLE: setting uarm.known makes
@@ -220,7 +383,7 @@ export async function Armor_on() {
         game.u.uarm.known = 1; /* +/- evident because of status line AC */
         note_unported_do_wear('Armor_on:update_inventory');
     }
-    await dragon_armor_handling(game.u.uarm, true);
+    await dragon_armor_handling(game.u.uarm, true, true);
     if (is_gold_dragon_armor(game.u.uarm) && !game.u.uarm.lamplit)
         await begin_gold_dragon_light(game.u.uarm);
     else if (game.u.uarm.oartifact)
@@ -265,85 +428,6 @@ async function end_gold_dragon_light(obj) {
     update_inventory();
     if (!Blind())
         await pline(`${Tobjnam(obj, 'stop')} shining.`);
-}
-
-// src/do_wear.c dragon_armor_handling(). The armor's primary property is
-// managed by setworn(); this switch supplies its second property.
-async function dragon_armor_handling(obj, putOn) {
-    const props = (game.u.uprops ||= {});
-    let secondary = null;
-
-    switch (obj.otyp) {
-    case ONAMES.BLACK_DRAGON_SCALES:
-    case ONAMES.BLACK_DRAGON_SCALE_MAIL:
-        secondary = 'DRAIN_RES';
-        break;
-    case ONAMES.BLUE_DRAGON_SCALES:
-    case ONAMES.BLUE_DRAGON_SCALE_MAIL: {
-        const hfast = game.u.intrinsic?.HFast | 0;
-        const efast = props.FAST | 0;
-        if (putOn) {
-            const fast = !!(hfast || efast);
-            const very_fast = !!((hfast & TIMEOUT) || efast);
-            if (!very_fast)
-                await You(`speed up${fast ? ' a bit more' : ''}.`);
-            props.FAST = efast | W_ARM;
-        } else {
-            set_dragon_secondary(props, 'FAST', false);
-            if (!Very_fast() && !game.context_takeoff?.cancelled_don)
-                await You('slow down.');
-        }
-        return;
-    }
-    case ONAMES.GREEN_DRAGON_SCALES:
-    case ONAMES.GREEN_DRAGON_SCALE_MAIL:
-        secondary = 'SICK_RES';
-        break;
-    case ONAMES.RED_DRAGON_SCALES:
-    case ONAMES.RED_DRAGON_SCALE_MAIL:
-        secondary = 'INFRAVISION';
-        break;
-    case ONAMES.GOLD_DRAGON_SCALES:
-    case ONAMES.GOLD_DRAGON_SCALE_MAIL: {
-        const { make_hallucinated } = await import('./potion.js');
-        await make_hallucinated(putOn ? 0 : 1, true, W_ARM);
-        return;
-    }
-    case ONAMES.ORANGE_DRAGON_SCALES:
-    case ONAMES.ORANGE_DRAGON_SCALE_MAIL:
-        secondary = 'FREE_ACTION';
-        break;
-    case ONAMES.YELLOW_DRAGON_SCALES:
-    case ONAMES.YELLOW_DRAGON_SCALE_MAIL:
-        secondary = 'STONE_RES';
-        break;
-    case ONAMES.WHITE_DRAGON_SCALES:
-    case ONAMES.WHITE_DRAGON_SCALE_MAIL:
-        secondary = 'SLOW_DIGESTION';
-        break;
-    default:
-        return;
-    }
-
-    set_dragon_secondary(props, secondary, putOn);
-    if (secondary === 'INFRAVISION')
-        see_monsters();
-    if (!putOn && secondary === 'STONE_RES'
-        && [game.u.uwep, game.u.uswapwep].some(
-            item => item?.otyp === ONAMES.CORPSE))
-        note_unported_do_wear('dragon_armor_handling:wielding_corpse');
-}
-
-function set_dragon_secondary(props, prop, putOn) {
-    if (putOn) {
-        props[prop] = (props[prop] | 0) | W_ARM;
-    } else {
-        const left = (props[prop] | 0) & ~W_ARM;
-        if (left)
-            props[prop] = left;
-        else
-            delete props[prop];
-    }
 }
 
 /* Every armor-slot on-handler ends by revealing the item's enchantment: the
@@ -1095,7 +1179,7 @@ export async function Armor_off() {
         if (!Blind())
             await pline(`${Tobjnam(otmp, 'stop')} shining.`);
     }
-    await dragon_armor_handling(otmp, false);
+    await dragon_armor_handling(otmp, false, true);
     return 0;
 }
 
@@ -1118,7 +1202,7 @@ export async function Armor_gone() {
         if (!Blind())
             await pline(`${Tobjnam(otmp, 'stop')} shining.`);
     }
-    await dragon_armor_handling(otmp, false);
+    await dragon_armor_handling(otmp, false, false);
     return 0;
 }
 
@@ -2352,67 +2436,10 @@ async function slot_off(otmp) {
         return;
     }
     if (otmp.owornmask & W_ARM) {
-        /* Armor_off clears setworn's primary property before removing the
-           second property supplied by dragon armor. */
-        const wasGoldLight = is_gold_dragon_armor(otmp) && !!otmp.lamplit;
-        setworn(null, W_ARM);
-        if (wasGoldLight)
-            await end_gold_dragon_light(otmp);
-        await dragon_armor_handling(otmp, false);
+        await Armor_off();
     } else {
         setworn(null, mask); /* each C *_off handler clears its own slot */
     }
-}
-
-// src/do_wear.c:608 wielding_corpse()
-export async function wielding_corpse(obj, how, voluntary) {
-    const u = game.u;
-    if (!obj || obj.otyp !== ONAMES.CORPSE || u.uarmg)
-        return;
-    if (obj !== u.uwep && (obj !== u.uswapwep || !u.twoweap))
-        return;
-
-    if (touch_petrifies(game.mons[obj.corpsenm]) && !Stone_resistance()) {
-        await You(`${how && is_gloves(how) ? 'now wield' : 'are wielding'} ${
-            corpse_xname(obj, null, CXN_ARTICLE)} in your bare ${makeplural(body_part(HAND))}.`);
-        const hbuf = how
-            ? `${voluntary ? 'removing' : 'losing'} ${is_gloves(how)
-                ? gloves_simple_name(how) : simpleonames(how).replace('set of ', '')}`
-            : 'resistance timing out';
-        await instapetrify(`${hbuf} while wielding ${killer_xname(obj)}`);
-        if (!Stone_resistance())
-            await remove_worn_item(obj, false);
-    }
-}
-
-// src/do_wear.c:646 Gloves_off()
-export async function Gloves_off() {
-    const otmp = game.u.uarmg;
-    switch (otmp.otyp) {
-    case ONAMES.GAUNTLETS_OF_POWER:
-        makeknown(otmp.otyp);
-        (game.disp ||= {}).botl = true;
-        break;
-    case ONAMES.GAUNTLETS_OF_DEXTERITY:
-        if (!game.context_takeoff?.cancelled_don && otmp.spe) {
-            makeknown(otmp.otyp);
-            attribute_bonus_array()[A_DEX] -= otmp.spe;
-        }
-        (game.disp ||= {}).botl = true;
-        break;
-    case ONAMES.GAUNTLETS_OF_FUMBLING: {
-        const oldprop = (game.u.uprops?.FUMBLING || 0) & ~WORN_GLOVES;
-        const intrinsic = (game.u.intrinsic ||= {});
-        if (!oldprop && !((intrinsic.HFumbling || 0) & ~TIMEOUT)) {
-            intrinsic.HFumbling = 0;
-            if (game.u.uprops)
-                delete game.u.uprops.FUMBLING;
-        }
-        break;
-    }
-    }
-    setworn(null, W_ARMG);
-    await encumber_msg();
 }
 
 // src/do_wear.c:1771 armor_or_accessory_off()

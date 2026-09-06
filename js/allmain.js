@@ -979,7 +979,6 @@ export async function moveloop_core() {
         if (g.vision_full_recalc)
             vision_recalc(0);
     }
-    await bot();
     await flush_screen(1);
 
     /* src/allmain.c:481, every living hero form gets its once-per-input

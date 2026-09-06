@@ -1,0 +1,338 @@
+{
+  "name": "resistance-meals",
+  "description": "Dangerous carried and floor meals at resistance-expiry boundaries, with ordinary completion and declined floor food.",
+  "coverage": [
+    "mode.debug",
+    "survival.timed-status",
+    "object.food-corpses",
+    "ui.menus"
+  ],
+  "branches": [
+    "resistance-meals.cockatrice-wait-0",
+    "resistance-meals.cockatrice-wait-1",
+    "resistance-meals.cockatrice-wait-2",
+    "resistance-meals.cockatrice-wait-3",
+    "resistance-meals.cockatrice-wait-4",
+    "resistance-meals.cockatrice-wait-5",
+    "resistance-meals.cockatrice-wait-6",
+    "resistance-meals.cockatrice-wait-7",
+    "resistance-meals.cockatrice-wait-8",
+    "resistance-meals.acid-carried-2",
+    "resistance-meals.acid-carried-3",
+    "resistance-meals.acid-carried-4",
+    "resistance-meals.acid-floor-2",
+    "resistance-meals.acid-floor-3",
+    "resistance-meals.acid-floor-4",
+    "resistance-meals.stone-carried-2",
+    "resistance-meals.stone-carried-3",
+    "resistance-meals.stone-carried-4",
+    "resistance-meals.stone-floor-2",
+    "resistance-meals.stone-floor-3",
+    "resistance-meals.stone-floor-4"
+  ],
+  "requireBranchAssertions": true,
+  "segments": [
+    {
+      "name": "cockatrice-wait-0",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed tin of lizard meat\r\tb\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed dagger\rwc  \u001b\u001b\u001b\u001b\u001b\u001b#wizintrinsic\r6b\r  \u001b\u001b\u001b\u001b\u001b\u001beb   y  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed cockatrice corpse\red      \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "cockatrice-wait-1",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed tin of lizard meat\r\tb\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed dagger\rwc  \u001b\u001b\u001b\u001b\u001b\u001b#wizintrinsic\r6b\r  \u001b\u001b\u001b\u001b\u001b\u001beb   y  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed cockatrice corpse\red      \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "cockatrice-wait-2",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed tin of lizard meat\r\tb\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed dagger\rwc  \u001b\u001b\u001b\u001b\u001b\u001b#wizintrinsic\r6b\r  \u001b\u001b\u001b\u001b\u001b\u001beb   y  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed cockatrice corpse\red      \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "cockatrice-wait-3",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed tin of lizard meat\r\tb\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed dagger\rwc  \u001b\u001b\u001b\u001b\u001b\u001b#wizintrinsic\r6b\r  \u001b\u001b\u001b\u001b\u001b\u001beb   y  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed cockatrice corpse\red      \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "cockatrice-wait-4",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed tin of lizard meat\r\tb\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed dagger\rwc  \u001b\u001b\u001b\u001b\u001b\u001b#wizintrinsic\r6b\r  \u001b\u001b\u001b\u001b\u001b\u001beb   y  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed cockatrice corpse\red      \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "cockatrice-wait-5",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed tin of lizard meat\r\tb\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed dagger\rwc  \u001b\u001b\u001b\u001b\u001b\u001b#wizintrinsic\r6b\r  \u001b\u001b\u001b\u001b\u001b\u001beb   y  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed cockatrice corpse\red      \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "cockatrice-wait-6",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed tin of lizard meat\r\tb\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed dagger\rwc  \u001b\u001b\u001b\u001b\u001b\u001b#wizintrinsic\r6b\r  \u001b\u001b\u001b\u001b\u001b\u001beb   y  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed cockatrice corpse\red      \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "cockatrice-wait-7",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed tin of lizard meat\r\tb\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed dagger\rwc  \u001b\u001b\u001b\u001b\u001b\u001b#wizintrinsic\r6b\r  \u001b\u001b\u001b\u001b\u001b\u001beb   y  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed cockatrice corpse\red      \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "cockatrice-wait-8",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed tin of lizard meat\r\tb\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed dagger\rwc  \u001b\u001b\u001b\u001b\u001b\u001b#wizintrinsic\r6b\r  \u001b\u001b\u001b\u001b\u001b\u001beb   y  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed cockatrice corpse\red      \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "acid-carried-2",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed acid blob corpse\r     \u001b\u001b\u001b\u001b\u001b\u001b#wizintrinsic\r>2c\r     \u001b\u001b\u001b\u001b\u001b\u001beb     \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "acid-carried-3",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed acid blob corpse\r     \u001b\u001b\u001b\u001b\u001b\u001b#wizintrinsic\r>3c\r     \u001b\u001b\u001b\u001b\u001b\u001beb     \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "acid-carried-4",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed acid blob corpse\r     \u001b\u001b\u001b\u001b\u001b\u001b#wizintrinsic\r>4c\r     \u001b\u001b\u001b\u001b\u001b\u001beb     \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "acid-floor-2",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed yellow dragon corpse\r     \u001b\u001b\u001b\u001b\u001b\u001b#wizintrinsic\r>2c\r     \u001b\u001b\u001b\u001b\u001b\u001bey     \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "acid-floor-3",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed yellow dragon corpse\r     \u001b\u001b\u001b\u001b\u001b\u001b#wizintrinsic\r>3c\r     \u001b\u001b\u001b\u001b\u001b\u001bey     \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "acid-floor-4",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed yellow dragon corpse\r     \u001b\u001b\u001b\u001b\u001b\u001b#wizintrinsic\r>4c\r     \u001b\u001b\u001b\u001b\u001b\u001bey     \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "stone-carried-2",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b#wizintrinsic\r>30d\r     \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed cockatrice corpse\r     \u001b\u001b\u001b\u001b\u001b\u001b#wizintrinsic\r>2d\r     \u001b\u001b\u001b\u001b\u001b\u001beb     \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "stone-carried-3",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b#wizintrinsic\r>30d\r     \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed cockatrice corpse\r     \u001b\u001b\u001b\u001b\u001b\u001b#wizintrinsic\r>3d\r     \u001b\u001b\u001b\u001b\u001b\u001beb     \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "stone-carried-4",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b#wizintrinsic\r>30d\r     \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed cockatrice corpse\r     \u001b\u001b\u001b\u001b\u001b\u001b#wizintrinsic\r>4d\r     \u001b\u001b\u001b\u001b\u001b\u001beb     \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "stone-floor-2",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed cockatrice corpse\r     \u001b\u001b\u001b\u001b\u001b\u001b#wizintrinsic\r>2d\r     \u001b\u001b\u001b\u001b\u001b\u001bey     \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "stone-floor-3",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed cockatrice corpse\r     \u001b\u001b\u001b\u001b\u001b\u001b#wizintrinsic\r>3d\r     \u001b\u001b\u001b\u001b\u001b\u001bey     \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "stone-floor-4",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed cockatrice corpse\r     \u001b\u001b\u001b\u001b\u001b\u001b#wizintrinsic\r>4d\r     \u001b\u001b\u001b\u001b\u001b\u001bey     \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    }
+  ],
+  "branchAssertions": [
+    {
+      "branch": "resistance-meals.cockatrice-wait-0",
+      "segment": 0,
+      "screenIncludes": [
+        "You finish eating the cockatrice corpse."
+      ]
+    },
+    {
+      "branch": "resistance-meals.cockatrice-wait-1",
+      "segment": 1,
+      "screenIncludes": [
+        "You finish eating the cockatrice corpse."
+      ]
+    },
+    {
+      "branch": "resistance-meals.cockatrice-wait-2",
+      "segment": 2,
+      "screenIncludes": [
+        "You finish eating the cockatrice corpse."
+      ]
+    },
+    {
+      "branch": "resistance-meals.cockatrice-wait-3",
+      "segment": 3,
+      "screenIncludes": [
+        "You finish eating the cockatrice corpse."
+      ]
+    },
+    {
+      "branch": "resistance-meals.cockatrice-wait-4",
+      "segment": 4,
+      "screenIncludes": [
+        "You finish eating the cockatrice corpse."
+      ]
+    },
+    {
+      "branch": "resistance-meals.cockatrice-wait-5",
+      "segment": 5,
+      "screenIncludes": [
+        "You finish eating the cockatrice corpse."
+      ]
+    },
+    {
+      "branch": "resistance-meals.cockatrice-wait-6",
+      "segment": 6,
+      "screenIncludes": [
+        "You finish eating the cockatrice corpse."
+      ]
+    },
+    {
+      "branch": "resistance-meals.cockatrice-wait-7",
+      "segment": 7,
+      "screenIncludes": [
+        "You don't have anything else to eat."
+      ]
+    },
+    {
+      "branch": "resistance-meals.cockatrice-wait-8",
+      "segment": 8,
+      "screenIncludes": [
+        "You don't have anything else to eat."
+      ]
+    },
+    {
+      "branch": "resistance-meals.acid-carried-2",
+      "segment": 9,
+      "screenIncludes": [
+        "You finish eating the acid blob corpse.",
+        "You no longer feel safe from acid."
+      ]
+    },
+    {
+      "branch": "resistance-meals.acid-carried-3",
+      "segment": 10,
+      "screenIncludes": [
+        "You finish eating the acid blob corpse.",
+        "You no longer feel safe from acid."
+      ]
+    },
+    {
+      "branch": "resistance-meals.acid-carried-4",
+      "segment": 11,
+      "screenIncludes": [
+        "You finish eating the acid blob corpse.",
+        "You no longer feel safe from acid."
+      ]
+    },
+    {
+      "branch": "resistance-meals.acid-floor-2",
+      "segment": 12,
+      "screenIncludes": [
+        "This yellow dragon corpse is fatty.",
+        "You're finally finished."
+      ]
+    },
+    {
+      "branch": "resistance-meals.acid-floor-3",
+      "segment": 13,
+      "screenIncludes": [
+        "This yellow dragon corpse is fatty.",
+        "You're finally finished."
+      ]
+    },
+    {
+      "branch": "resistance-meals.acid-floor-4",
+      "segment": 14,
+      "screenIncludes": [
+        "This yellow dragon corpse is fatty.",
+        "You're finally finished."
+      ]
+    },
+    {
+      "branch": "resistance-meals.stone-carried-2",
+      "segment": 15,
+      "screenIncludes": [
+        "You finish eating the cockatrice corpse."
+      ]
+    },
+    {
+      "branch": "resistance-meals.stone-carried-3",
+      "segment": 16,
+      "screenIncludes": [
+        "You finish eating the cockatrice corpse."
+      ]
+    },
+    {
+      "branch": "resistance-meals.stone-carried-4",
+      "segment": 17,
+      "screenIncludes": [
+        "You finish eating the cockatrice corpse."
+      ]
+    },
+    {
+      "branch": "resistance-meals.stone-floor-2",
+      "segment": 18,
+      "screenIncludes": [
+        "You finish eating the cockatrice corpse."
+      ]
+    },
+    {
+      "branch": "resistance-meals.stone-floor-3",
+      "segment": 19,
+      "screenIncludes": [
+        "You finish eating the cockatrice corpse."
+      ]
+    },
+    {
+      "branch": "resistance-meals.stone-floor-4",
+      "segment": 20,
+      "screenIncludes": [
+        "You finish eating the cockatrice corpse."
+      ]
+    }
+  ]
+}

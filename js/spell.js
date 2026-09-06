@@ -942,6 +942,7 @@ export async function spelleffects_check(spell, energyRef) {
         note_unported_spell('spell_backfire');
         game.u.uen -= rnd(energyRef.v);
         if (game.u.uen < 0) game.u.uen = 0;
+        (game.disp ||= {}).botl = true;
         return { rejected: true, res: ECMD_TIME };
     } else if (spellknow(spell) <= KEEN / 200) {
         await You('strain to recall the spell.');
@@ -967,6 +968,7 @@ export async function spelleffects_check(spell, energyRef) {
         await You_feel('the amulet draining your energy away.');
         game.u.uen -= rnd(2 * energyRef.v);
         if (game.u.uen < 0) game.u.uen = 0;
+        (game.disp ||= {}).botl = true;
         res = ECMD_TIME;                /* time is used even if the cast fails */
     }
 
@@ -1002,6 +1004,7 @@ export async function spelleffects_check(spell, energyRef) {
     if (confused || (rnd(100) > chance)) {
         await You('fail to cast the spell correctly.');
         game.u.uen -= Math.trunc(energyRef.v / 2);
+        (game.disp ||= {}).botl = true;
         return { rejected: true, res: ECMD_TIME };
     }
     return { rejected: false, res };

@@ -11,6 +11,23 @@ Newest first within each section.
 
 ---
 
+## Resistance and equipment probes
+
+Wizard intrinsic menus restart their letters on every page. Acid and stone
+resistance are c/d on page two, reached with >. Using w/x on the first page
+silently selected nothing. Require the native timeout message. Gold scales
+shine "brightly"; gold mail shines "brilliantly".
+
+Taking off the only armor item auto-selects it. Glove danger confirmation
+uses T, "yes", Enter, without an inventory letter. Destroy-armor scrolls
+apply one to four erosion hits; wish thoroughly eroded armor to guarantee
+destruction. Erosion calls Armor_off even when destroying the suit; preserve
+that C death-reason wording. Polymorph loss reaches Armor_gone instead.
+
+A corpse's user name is stripped by killer_xname. An oversized object name
+cannot test the final kbuf truncation. The state control checks stripping;
+no native boundary-coverage claim is made for the 255-character bound.
+
 ## Scoring: what the runner actually does
 
 **Loader mutations must reach the scoring worker.** `ps_test_runner.mjs`
@@ -36,7 +53,10 @@ live values before a message is acknowledged. Repainting on every `pline`
 exposes those values too soon. Keep the flags on `game.disp`, including
 encumbrance; set them at the same C sites. `timebot` must change only the
 time field, not the other saved status fields. The revival and
-`status-dirty-state-gate` tests catch these distinctions.
+`status-dirty-state-gate` tests catch these distinctions. A long dragon meal
+also catches an unconditional bot call in moveloop_core. Removing it requires
+the missing C flags in more_experienced, spelleffects_check and docorner;
+otherwise XP/power stays stale and dismissed menus leave clipped status rows.
 
 **C's portable integer bound is 32767.** `rndexp` halves a range at or
 above `LARGEST_INT` before drawing and scales the result back up. Replacing

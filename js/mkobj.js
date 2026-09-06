@@ -803,7 +803,7 @@ const FIRE_RES = 1;               /* include/prop.h:15 */
 
 
 // src/mkobj.c is_flammable()
-export function is_flammable(otmp, objects) {
+export function is_flammable(otmp, objects = game.objects) {
     const o = objects[otmp.otyp];
     const omat = o.oc_material;
     /* candles burn but take no fire damage and cannot be fireproofed */
@@ -815,18 +815,18 @@ export function is_flammable(otmp, objects) {
 }
 
 // src/mkobj.c is_rottable()
-export function is_rottable(otmp, objects) {
+export function is_rottable(otmp, objects = game.objects) {
     const omat = objects[otmp.otyp].oc_material;
     return (omat <= WOOD && omat !== LIQUID) || omat === DRAGON_HIDE;
 }
 
 // include/objclass.h:200-211
-export const is_rustprone  = (o, objs) => objs[o.otyp].oc_material === IRON;
-export const is_crackable  = (o, objs) => objs[o.otyp].oc_material === GLASS
+export const is_rustprone  = (o, objs = game.objects) => objs[o.otyp].oc_material === IRON;
+export const is_crackable  = (o, objs = game.objects) => objs[o.otyp].oc_material === GLASS
                                 && o.oclass === ARMOR_CLASS;
-export const is_corrodeable = (o, objs) => objs[o.otyp].oc_material === COPPER
+export const is_corrodeable = (o, objs = game.objects) => objs[o.otyp].oc_material === COPPER
                                  || objs[o.otyp].oc_material === IRON;
-const is_damageable = (o, objs) =>
+export const is_damageable = (o, objs = game.objects) =>
     is_rustprone(o, objs) || is_flammable(o, objs) || is_rottable(o, objs)
     || is_corrodeable(o, objs) || is_crackable(o, objs);
 

@@ -456,7 +456,7 @@ export async function test_move(ux, uy, dx, dy, mode) {
     } else if (dx && dy && worm_cross(ux, uy, x, y)) {
         /* consecutive long worm segments are at <ux,y> and <x,uy> */
         if (mode === DO_MOVE)
-            note_unported_hack('test_move:worm_in_way_msg');
+            await pline(`${YMonnam(m_at(ux, y))} is in your way.`);
         return false;
     }
     /* Pick travel path that does not require crossing a trap.
@@ -552,8 +552,12 @@ async function test_move_testdiag(x, y, dx, dy, mode, passesWalls) {
     if (dx && dy && !passesWalls
         && (!doorless_door(x, y) || await block_door(x, y))) {
         /* Diagonal moves into a door are not allowed. */
-        if (mode === DO_MOVE)
-            note_unported_hack('test_move:diag_door_msg');
+        if (mode === DO_MOVE) {
+            if (game.u.ublind)
+                await feel_location(x, y);
+            if (Underwater() || game.flags?.mention_walls)
+                await You_cant('move diagonally into an intact doorway.');
+        }
         return false;
     }
     return 'fallthru';

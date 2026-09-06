@@ -76,7 +76,7 @@ import { tty_create_nhwindow, tty_putstr, tty_display_nhwindow,
 import { ok_to_quest } from './quest.js';
 import { costly_spot, doname_with_price } from './shk.js';
 import { trapname } from './trap.js';
-import { showsym_other, SYM_BOULDER } from './symbols.js';
+import { showsym_other, SYM_BOULDER, showsym as active_showsym } from './symbols.js';
 import { visctrl } from './hacklib.js';
 import { VERSION_BANNER_LINE, VERSION_OPTIONS_TEXT } from './version_data.js';
 
@@ -91,13 +91,14 @@ const invisexplain = 'remembered, unseen, creature';
 /* include/hack.h — quitchars */
 const quitchars = ' \r\n\x1b';
 
-// gs.showsyms[] for the cmap range: defsyms with the DECgraphics overrides
-// already applied by the generator, plus src/display.c:1850 —
-// "showsyms[S_darkroom] = showsyms[S_room]" while flags.dark_room and
-// iflags.use_color are both on, which they are in the reference build.
+// gs.showsyms[] for the cmap range: the ACTIVE symbol set's symbol (plain
+// '|' without OPTIONS=symset:DECgraphics, the DEC line-drawing set with it,
+// SYMBOLS= overrides on top) merged with the defsyms entry so callers keep
+// its explanation. Comparing against the DEC table regardless of the
+// option made a farlook on a plain '|' wall match only the grave entry.
 function showsym(idx) {
-    if (idx === CM.S_darkroom) idx = CM.S_room;
-    return defsyms[idx];
+    const s = active_showsym(idx);
+    return s ? { ...defsyms[idx], ch: s.ch, dec: !!s.dec } : defsyms[idx];
 }
 
 /* the display {ch,dec} pair for what a cell shows; the topline and window

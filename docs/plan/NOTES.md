@@ -5600,3 +5600,51 @@ insight.c:625: the "You are in <dungeon>, on level N" line appends ", a
 primitive area" on the Rogue level and ", a very big room" on the big room
 (when not blind). Is_bigroom() is the dungeon.h Lcheck against
 bigroom_level; it lives in js/dungeon.js.
+
+## Every AD type with a shared handler must be in every dispatch chain
+
+uhitm.c:4782 mhitm_adtyping() is one switch used by hitmu, mdamagem and
+damageum. The port has three if-ladders; hitmu's lacked AD_ACID, AD_DRIN,
+AD_DREN and AD_SLOW although the shared handlers existed, so a 5.0 ice
+devil's AT_TUCH/AD_SLOW 1d1 touch printed the hit message and skipped
+mhitm_mgc_atk_negated()'s rn2(10). When adding a handler, grep all three
+chains. Still unrouted for lack of handlers: SGLD, RUST, CORR, DCAY, CONF,
+DISE, DGST, HALU.
+
+## Symbol matching must use the active symbol set
+
+js/drawing_data.js defsyms carries the DECgraphics symbols baked in
+(`ch`/`dec`), which is right for the DECgraphics public corpus and wrong
+for a game without that option. pager.js compared farlook/autodescribe
+symbols against that table directly, so a plain '|' wall matched only the
+grave entry and getpos autodescribe printed nothing. It now goes through
+symbols.js showsym() (the active set with SYMBOLS= overrides), keeping the
+defsyms explanation.
+
+## Prayer in Gehennom
+
+pray.c prayer_done(): "Since you are in Gehennom, %s can't help you." then
+angrygods(u.ualign.type) unless the alignment record is positive and
+rnl(record) is zero; angrygods() itself substitutes A_NONE (Moloch) while
+Inhell. Ours fell through to the normal p_type arms and drew rnz(250).
+
+## Engraving punctuation uses the trimmed-prefix offset
+
+engrave.c:389 compares the last character with the pristine copy at
+`off + elen - 1`, where off is how far wipe_engr_at() advanced the text
+past leading spaces. Ours indexed the pristine copy without the offset,
+so a degraded graffiti whose final '.' survived got a second period. The
+231-character maxelen truncation is ported with it.
+
+## Izchak
+
+shknam.c nameshk(): the lighting shop on the Minetown town level is always
+"+Izchak" (male), before any name-list arithmetic. The '+'/'_'/'-'/'|'
+gender prefixes are stored with the name and stripped by shkname().
+
+## keepdogs() stay-behind arms
+
+dog.c:789: a follower that is eating or trapped stays ("is still
+eating/trapped"), one carrying the Amulet is "very disoriented", a leashed
+one left behind has its leash come loose, and a trapped one first tries
+mintrap(). Level teleport past a feeding kitten printed nothing here.

@@ -1046,7 +1046,7 @@ export async function goto_level(newlevel, at_stairs, falling, portal) {
     /* src/do.c:1623 — the tutorial transition sets iflags.nofollowers so
        the pet stays behind */
     if (!game.iflags?.nofollowers)
-        keepdogs(false);
+        await keepdogs(false);
     /* src/do.c:1625, preserve the overview information from the level
        being left before its visibility and live structures are replaced. */
     {

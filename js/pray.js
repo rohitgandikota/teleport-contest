@@ -485,7 +485,8 @@ async function angrygods(resp_god) {
     const u = game.u;
     let maxanger;
 
-    /* Inhell → A_NONE: Gehennom is not modelled */
+    if (Inhell())
+        resp_god = A_NONE;
     u.ublessed = 0; /* lose divine protection */
 
     const Luck = u.uluck ?? 0;
@@ -1544,7 +1545,13 @@ async function prayer_done() {
         note_unported_pray('prayer_done:moloch');
         return 0;
     }
-    /* Inhell arm — Gehennom is not modelled */
+    if (Inhell()) {
+        await pline(`Since you are in Gehennom, ${align_gname(alignment)} can't help you.`);
+        /* haltingly aligned is least likely to anger */
+        if (u.ualign.record <= 0 || rnl(u.ualign.record))
+            await angrygods(u.ualign.type);
+        return 0;
+    }
 
     if (p_type === 0) {
         if (on_altar() && u.ualign.type !== alignment)

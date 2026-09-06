@@ -101,7 +101,21 @@ feel_location()s it, and the drawbridge/Sokoban/mention_walls feedback
 lives in hack.js instead of an inline copy in domove_core); the ^X
 location line carries ", a primitive area" / ", a very big room".
 
-Next: record `--seed 16` (mix `--debug`/`--normal`), fix what diverges,
+Seventh round, `--seed 16` (6 failures in 40, 4 fixed; s16-29 and s16-34
+are the recording-timezone cases: the Hawaiian shirt design and ^X "It is
+nighttime."): hitmu's dispatch chain routes AD_ACID/DRIN/DREN/SLOW to the
+shared handlers (an ice devil's slowing touch skipped its negation roll);
+prayer_done() has the Gehennom arm ("Since you are in Gehennom, X can't
+help you.") and angrygods() answers as Moloch there; read_engr_at() checks
+the pristine text at the trimmed-prefix offset before skipping the added
+period; farlook and getpos autodescribe match symbols against the ACTIVE
+symbol set (a plain '|' wall listed only "a grave" because the pager used
+the DEC table unconditionally); Minetown's lighting shopkeeper is Izchak;
+keepdogs() is the C shape (mintrap, "is still eating/trapped", amulet
+disorientation, loose leashes) and dog_hunger() calls dog_starve() and
+beg(). Also: test_move's worm-in-the-way and diagonal-doorway messages.
+
+Next: record `--seed 17` (mix `--debug`/`--normal`), fix what diverges,
 then return to the note_unported
 list (hack.js 19, spell.js 20, shk.js 19). tools/jsplay.mjs has a new
 `--aeval "<await expr>"` flag with the hack.js namespace as `h` for state

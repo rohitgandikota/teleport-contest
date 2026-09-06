@@ -14,21 +14,22 @@ sit on the side we cannot measure.
 
 ## September source-guided continuation
 
-The bones pass adds 91 native game segments and 89 constructed state groups.
-All sixteen deliberate faults fail at least one gate. State catches six faults
-missed by native output; native output catches the welded-weapon message fault
-missed by state. See [bones-audit.md](bones-audit.md). The earlier
-[overview audit](overview-audit.md) retains its distinct gaps.
+The bones branch follow-up adds ten native game segments and twelve
+constructed state groups. All seven deliberate faults fail state assertions;
+four survive native output. See [bones-links-audit.md](bones-links-audit.md).
+The earlier [bones audit](bones-audit.md) retains its distinct gaps.
 
-The existing regression and new corpus pass 603/603 fixtures at the same
-functional runtime, with all 779,326 screens/cursors and 14,517,798 RNG calls
-matching. C execution adds 244 outcomes and eight entered records, reaching
-57,364/108,268 and 4,412/5,491. Those are coverage measurements, not a
-percentage of gameplay implemented. The full port remains the active goal.
-The 21 existing public animation mismatches and known fixed-date fuzz screen
-difference remain explicit. Native decline/replacement, multiple-death and
-timer controls need expansion. Bones and restore ordering, object disposal,
-shop damage, stairs and portals remain open.
+The full regression passes 605/605 fixtures, matching 781,705 screens/cursors
+and 14,592,028 RNG calls. C execution adds eight outcomes and no entered
+records, reaching 57,372/108,268 and 4,412/5,491. getlev's own coverage stays
+86/120 despite the new cross-seed case exposing a wrong destination. Coverage
+alone cannot establish state correctness across different game layouts.
+
+The full port remains the active goal. The 21 existing public animation
+mismatches and known fixed-date fuzz difference remain explicit. A preserved
+seed-40 Minetown candidate has a separate map shift before loading bones and
+is the next investigation. Native portal repair, restore ordering, object
+disposal, shop damage and broader lifecycle controls remain open.
 
 ## 12.1 The overfit audit
 

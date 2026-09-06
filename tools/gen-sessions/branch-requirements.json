@@ -1,6 +1,16 @@
 {
   "version": 1,
   "requirements": [
+    {"group":"Bones branch destinations","id":"bones-branch-stairs.mines-save-31-for-32","cFile":"src/restore.c","cFunction":"getlev","description":"mines save 31 for 32"},
+    {"group":"Bones branch destinations","id":"bones-branch-stairs.mines-reload-31-to-32","cFile":"src/restore.c","cFunction":"getlev","description":"mines reload 31 to 32"},
+    {"group":"Bones branch destinations","id":"bones-branch-stairs.mines-save-33-for-31","cFile":"src/restore.c","cFunction":"getlev","description":"mines save 33 for 31"},
+    {"group":"Bones branch destinations","id":"bones-branch-stairs.mines-reload-33-to-31","cFile":"src/restore.c","cFunction":"getlev","description":"mines reload 33 to 31"},
+    {"group":"Bones branch destinations","id":"bones-branch-stairs.mines-save-32-for-33","cFile":"src/restore.c","cFunction":"getlev","description":"mines save 32 for 33"},
+    {"group":"Bones branch destinations","id":"bones-branch-stairs.mines-reload-32-to-33","cFile":"src/restore.c","cFunction":"getlev","description":"mines reload 32 to 33"},
+    {"group":"Bones branch destinations","id":"bones-branch-stairs.mines-save-31-for-31","cFile":"src/restore.c","cFunction":"getlev","description":"mines save 31 for 31"},
+    {"group":"Bones branch destinations","id":"bones-branch-stairs.mines-reload-31-to-31","cFile":"src/restore.c","cFunction":"getlev","description":"mines reload 31 to 31"},
+    {"group":"Bones branch destinations","id":"bones-quest-eligibility.quest-death-without-bones","cFile":"src/bones.c","cFunction":"can_make_bones","description":"quest death without bones"},
+    {"group":"Bones branch destinations","id":"bones-quest-eligibility.quest-fresh-after-death","cFile":"src/bones.c","cFunction":"can_make_bones","description":"quest fresh after death"},
     {"group":"Bones and persistent remains","id":"bones-cemetery.leave-ashen-bones","cFile":"src/bones.c","cFunction":"savebones","description":"leave ashen bones"},
     {"group":"Bones and persistent remains","id":"bones-cemetery.remember-ashen-bones","cFile":"src/bones.c","cFunction":"savebones","description":"remember ashen bones"},
     {"group":"Bones and persistent remains","id":"bones-retain-delete.strangulation-save","cFile":"src/bones.c","cFunction":"getbones","description":"strangulation save"},

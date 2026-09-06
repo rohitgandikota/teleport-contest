@@ -17,7 +17,8 @@ import { MAGIC_PORTAL, LEAVESTATUE, OBJ_INVENT, OBJ_MINVENT, OBJ_FLOOR,
          ROOMOFFSET, has_omonst, free_omonst, HOLE, Is_botlevel,
          has_omid, OMID, free_omid, OMONST, EBONES, DELPHI,
          Is_oracle_level, DISMOUNT_BONES, RANGE_LEVEL, DEFUNCT_MONSTER,
-         has_mgivenname, MGIVENNAME } from './const.js';
+         has_mgivenname, MGIVENNAME, BR_STAIR, BR_NO_END1, BR_NO_END2,
+         BR_PORTAL } from './const.js';
 import { PMNAMES, MMFLAGS, MONSYMS, MSOUND } from './monst_data.js';
 import { ONAMES, OCLASSES } from './objects_data.js';
 import { is_undead, unique_corpstat, give_u_to_m_resistances } from './mondata.js';
@@ -27,6 +28,7 @@ import { obj_is_burning, save_light_sources, restore_light_sources,
          relink_light_sources } from './light.js';
 import { end_burn, save_timers, restore_timers, relink_timers } from './timeout.js';
 import { GameMap } from './game.js';
+import { deltrap } from './trap.js';
 import { free_oname, christen_monst } from './do_name.js';
 import { is_quest_artifact } from './questpgr.js';
 import { is_mines_prize, is_soko_prize, age_is_relative } from './obj.js';
@@ -732,9 +734,41 @@ export async function getbones_load() {
 
     rest_regions(snap.regions, true, idmap);
 
+    // src/restore.c getlev(), ghostly branch destinations belong to the
+    // new game's dungeon layout. getbones passes lev=0, so getlev's
+    // separate Medusa-to-Castle missing-stair repair does not run here.
+    game.oldfruit = null;
+    const branch = Is_branchlev_bones(game.u.uz);
+    if (branch && game.u.uz.dlevel === 1) {
+        const dest = branch.end1.dnum === game.u.uz.dnum
+            && branch.end1.dlevel === game.u.uz.dlevel ? branch.end2 : branch.end1;
+        switch (branch.type) {
+        case BR_STAIR:
+        case BR_NO_END1:
+        case BR_NO_END2:
+            for (let stair = game.stairs; stair; stair = stair.next) {
+                if (stair.tolev.dnum !== game.u.uz.dnum) {
+                    Object.assign(stair.tolev, dest);
+                    break;
+                }
+            }
+            break;
+        case BR_PORTAL: {
+            const portal = lvl.traps.find(trap => trap.ttyp === MAGIC_PORTAL);
+            if (!portal)
+                throw new Error('getlev: need portal but none found');
+            Object.assign(portal.dst, dest);
+            break;
+        }
+        }
+    } else if (!branch) {
+        for (const trap of [...lvl.traps])
+            if (trap.ttyp === MAGIC_PORTAL)
+                deltrap(trap);
+    }
+
     relink_timers(true, idmap);
     relink_light_sources(true, idmap);
-    game.oldfruit = null;
 
     for (const m of [...lvl.monsters]) {
         if (has_mgivenname(m))

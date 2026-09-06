@@ -1,12 +1,14 @@
 # Gameplay gaps measured from C execution
 
-The September 6 bones continuation reaches 57,364/108,268 direct C outcomes
-and 4,412/5,491 entered records. It adds 91 native game segments, with all
-19,423 screens/cursors, 395,506 RNG calls and 80 animations matching. All
-sixteen deliberate faults fail state or native output checks. Six survive
-native output, and one survives state checks. See [bones-audit.md](bones-audit.md)
-for the exact gaps and combined 603/603 regression result. These measurements
-do not establish full game coverage.
+The September 6 bones branch follow-up reaches 57,372/108,268 direct C
+outcomes and 4,412/5,491 entered records. Ten native game segments match all
+2,379 screens/cursors and 74,230 RNG calls. All seven deliberate faults fail
+state assertions; four survive native output. getlev remains at 86/120
+outcomes even though a new cross-seed input exposes a wrong exit destination.
+See [bones-links-audit.md](bones-links-audit.md) for that evidence and the
+605/605 regression result. A separate seed-40 Minetown map shift is preserved
+as a failing candidate for the next pass. These measurements do not establish
+full game coverage.
 
 Verified on 2026-09-06. The fetched leaderboard snapshot was dated
 2026-09-06T11:49:08.879Z; our fork was last scored at

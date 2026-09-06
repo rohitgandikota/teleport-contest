@@ -30,6 +30,12 @@ Native shared-storage checks and 89 constructed groups pass. All sixteen
 deliberate faults are detected. See [bones-audit.md](bones-audit.md) for exact
 source and coverage limits. The save/restore parents remain partial.
 
+The branch follow-up repairs restored stairs and portals against the new
+branch endpoints before timer/light relinking. Four native Mines return paths
+and two Quest eligibility segments pass, with twelve constructed controls and
+seven detected faults. Portal repair has constructed evidence only. See
+[bones-links-audit.md](bones-links-audit.md).
+
 ### 11.1 Understand the segment contract first
 
 From `docs/API.md`: `runSegment(input, prevGame)` is called once per segment. Each
@@ -85,8 +91,8 @@ accumulates across segments, so segment 7's screen depends on segments 1-6.
       timer/light owners, fruits and file retention/deletion. Sixteen official
       recipes and exact C repeats pass. See [bones-audit.md](bones-audit.md).
 - [ ] Finish native decline/replacement and multiple-death controls, object
-      disposal, shop damage, worm tails, exclusions, stasis clocks, ghostly
-      stairs/portals and the remaining restore ordering differences.
+      disposal, shop damage, worm tails, exclusions, stasis clocks, native
+      portal controls and the remaining restore ordering differences.
 
 - [ ] `src/bones.c`: saving a bones file on death, loading it in a later game,
       the ghost and the grave, and the "you feel like you have been here before"

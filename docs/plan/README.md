@@ -17,24 +17,25 @@ and persistent gameplay state. Continue source review, measured C branches,
 independent oracles, implementation and regression checks until that goal is
 met. Current corpus success is not the stopping criterion.
 
-The latest pass adds 91 native game segments for bones, remains, fruit names,
-and persistent level state. All 44 public and 559 supplemental fixtures pass
-at the verified runtime, matching 779,326 screens/cursors and 14,517,798 RNG
-calls across the existing and new corpus runs. The C union reaches
-57,364/108,268 direct outcomes and 4,412/5,491 entered records. State checks
-validate all 91 native replays and 89 constructed groups. All sixteen
-deliberate faults fail at least one gate. Six survive native output comparisons;
-one survives state checks. The assertion ledger passes 3,767/3,767 cases.
+The latest pass reconnects bones stairs and portals to the new game's dungeon.
+Ten native game segments test cross-seed Mines return destinations and Quest
+bones eligibility. All 44 public and 561 supplemental fixtures pass, matching
+781,705 screens/cursors and 14,592,028 RNG calls. The C union reaches
+57,372/108,268 direct outcomes and 4,412/5,491 entered records. The new state
+gate checks ten native replays and twelve constructed groups. All seven
+deliberate faults fail state assertions; four pass native output comparisons.
+The assertion ledger passes 3,777/3,777 cases.
 
 See [STATUS.md](STATUS.md) for the current action,
-[bones-audit.md](bones-audit.md) for the source review and
+[bones-links-audit.md](bones-links-audit.md) for the source review and
 [gameplay-gap-audit.md](gameplay-gap-audit.md) for measurement limits.
 The September 6 leaderboard snapshot reports 81.48% held-out screens and
-rank 1 among agentic entries. Its team score predates the September 6 push;
-this local suite does not establish a newer held-out score. The user has
-explicitly authorized prompt pushes of every verified commit. Bones and
-restore ordering, object disposal, shop damage, stairs, portals, and broader
-inventory, spell, monster and Lua paths remain open. The full-port goal continues.
+rank 1 among agentic entries. Its score still predates today's pushes; the
+local suite does not establish a newer held-out score. The user explicitly
+authorized prompt pushes of every verified commit. The next reproduced gap
+is a seed-40 Minetown map shift before bones are loaded. The full-port goal
+continues through remaining generation, restore, inventory, spell, monster
+and Lua paths.
 
 ## Previous focus, 2026-09-03
 

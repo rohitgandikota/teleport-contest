@@ -12,7 +12,65 @@ Continue the authorized work; do not mark it complete or recreate it.
 Current-corpus success is not the stopping criterion. Track unreviewed,
 untested, missing, and unreachable source paths explicitly.
 
-### Active pass: bones persistence and cemetery records
+### Active pass: bones destination repair
+
+Work .cache/bones-links. Previous bones checkpoint committed and pushed as
+9cdc2fbde0110eb9cb98ff65076727fb08173dee on September6 about11:56EDT.
+origin/main and HEAD are equal,0behind/0ahead. All publication is authorized.
+The 66-file checkpoint contains the24runtime modules,16recipes/91segments,
+state gate and audit described below. Pushsession20186 completedcollected.
+
+Complete Cdealloc_obj/dealloc_obj_real/dobjsfree,getlev,getbones,rest_stairs,
+reset_oattached_mids,save_stairs andIs_branchlev read. One runtime module:
+bones.js now portsgetlev's ghostlybranchendpoint repair before timer/light
+relink. Clearoldfruit atCpoint,skiplocalstairs,rewritefirstcrossbranchstairs,
+portalrepair/missingportalpanic,no-branchdanglingportalremoval. getbonespasses
+lev=0 soMedusa/Castlemissingstairguarddoesnotrunatthiscallsite. Broader
+restoreordering andobjectdeallocationremainpartial.
+
+Two permanent officialrecipes: bones-branch-stairs8segments,Questeligibility2.
+PromoterRANONCE. SourceMinesdeath/loadpairs31→32,33→31,32→33,31→31. All
+actualSave/Get/Unlinkanswersverified; finalnativeparentlevels3,2,4,2. Mapping
+isrequired beforegetpos'<'canfindunseenstairs. Questhomerejectsbones; noGet
+onlatergame. ItdoesNOTtestnativeportalrepair.
+
+10segmentsmatchall2379screens/cursors74230RNG,noanimations. Exactinstrumented
+Crepeat2/2. Fullregression605/605,44public561supp:781705screens/cursors,
+14592028RNG,29999/30020animations(21oldpublicmisses). regression.log.
+Newstate10native,4restoredlinks,4actualreturnlevels,12constructedgroups,
+including1explicitCpanicdiagnostic. state-final.log. Sevenmutantsallfail
+stateassertions;4native-survivors:repairpastentry,omitportal,retainportal,
+removeportalatmatchingnonentrybranch. Portalretentiontestnowassertscount
+beforederef;rerunpositive+thatmutantpass/failasexpected. mutation-results.json.
+Exactprior9cdc2fbdbonesmodulefails1/2:103screens73cursors51501positionalRNG,
+no runtimeerrors. Three relatedstate(bones/overview/levelknowledge),46hang,
+80fresh/13roles,source0/269,ledger3777/3777(99covered7partial)pass. Fuzz
+101/102unchangedknownfixeddate:491759RNG,14261/14262screens,14262cursors,
+75/76animations. verification-exits.json. Toolinfrastructureunchanged from
+previouscheckpoint's14passingtooltests.
+
+Cunion+8directoutcomes/+0entered→57372/108268,4412/5491. getlevstays86/120:
+coveredbranchesalonedidnotdetectwrongcross-gamedestination. No newunreachable
+claims. Auditdocs/plan/bones-links-audit.md andplansupdated. Finalsyntax/diff
+check,commit,pushnext. Runtimefrozenafterallchecks. Allsessionsfinished:
+16066fullreg,27003Ccoverage,24959related,99073mutations,82566union,68344state,
+11884portalmutant. No active recorders orjobs. No permission question.
+
+Next concrete defect: preservedmines-including-seed40.input/session.json.
+Underbranchfixall63739RNGmatch,but27screensdifferbeforebonesloadwhileentering
+seed40Minetown(6),cavemapshiftbyonecolumn. mines-screens-after.log showsfirst
+seg5step~121(global1115),nativecorrectcursor. Firstreproduction31→32in
+mines-first-reproduction.session.json. Usefullshared-storagereplaywhenbones
+matter;diverge--segisolatesstorageandgaveafalsegetbonesmismatch. Finalfour
+pairscorrectedcandidateuses32instead40,withindependentmapgapdocumented.
+Investigatespeciallevelselectedvariant/lspo_map/flip_levelnext. No runtime
+fixforseed40yet. Deallocobj andremainingrestorelifecyclefollowafterit.
+
+Leaderboardreadagainafter9cdc2fbdpush:stilltimestamp2026-09-06T11:49:08.879Z,
+lastScored11:11:21.682Z,public100%/heldout81.48%. No newpublishedscoreyet.
+Cacheleaderboard-after-push.json. Userinformedpushessucceeded,scorepredates.
+
+### Checkpoint: bones persistence and cemetery records
 
 Work .cache/bones-overview. HEAD c06850cc. On September 6 the user explicitly
 authorized pushing the 25 verified commits and every future verified commit
@@ -27,7 +85,7 @@ September 5 11:00:30 EDT,cdd126c9; prior auto-review had rejected publication
 for lack of explicit authorization. That authorization issue is now resolved.
 
 The bones audit and plan updates are complete. Final diff, syntax and frozen
-checks pass. Commit and immediate push are next. Runtime is frozen. No active
+checks pass. Committed and pushed as9cdc2fbd. Runtime is verified. No active
 jobs or native recorders. Work: .cache/bones-overview. Original bones.c and
 relevant complete C function bodies have been read. Twenty-four runtime modules
 changed, including new restore.js. No C or frozen edits.

@@ -1,0 +1,681 @@
+{
+  "name": "traditional-drop",
+  "description": "Shared item selection with counts, reversed classes, gold, floating letters, blessing filters, unpaid goods and every menu style.",
+  "coverage": [
+    "mode.debug",
+    "object.identification",
+    "ui.menus",
+    "ui.getlin",
+    "ui.cancel-invalid"
+  ],
+  "branches": [
+    "traditional-drop.drop-default",
+    "traditional-drop.drop-all",
+    "traditional-drop.drop-query-all",
+    "traditional-drop.drop-quit",
+    "traditional-drop.drop-weapon",
+    "traditional-drop.drop-number",
+    "traditional-drop.drop-zero",
+    "traditional-drop.drop-large-count",
+    "traditional-drop.drop-menu",
+    "traditional-drop.drop-filtered-menu",
+    "traditional-drop.drop-unknown",
+    "traditional-drop.drop-picked",
+    "traditional-drop.drop-no-matches",
+    "traditional-drop.drop-unknown-symbol",
+    "traditional-drop.drop-inventory",
+    "traditional-drop.drop-inventory-cancel",
+    "traditional-drop.drop-cancel",
+    "traditional-drop.drop-combo-all",
+    "traditional-drop.drop-combo-weapons",
+    "traditional-drop.drop-combo-query",
+    "traditional-drop.drop-partial",
+    "traditional-drop.drop-priest-B",
+    "traditional-drop.drop-priest-U",
+    "traditional-drop.drop-priest-C",
+    "traditional-drop.drop-reverse-classes-completed",
+    "traditional-drop.drop-combined-filter",
+    "traditional-drop.drop-combined-empty",
+    "traditional-drop.drop-combo-filter-all",
+    "traditional-drop.drop-combo-filter-none",
+    "traditional-drop.drop-welded-stack",
+    "traditional-drop.drop-coins-count-false",
+    "traditional-drop.drop-coins-buc-false",
+    "traditional-drop.drop-coins-count-true",
+    "traditional-drop.drop-coins-buc-true",
+    "traditional-drop.drop-coins-combined",
+    "traditional-drop.drop-floating-letters",
+    "traditional-drop.drop-upper-case",
+    "traditional-drop.drop-upper-case-floating",
+    "traditional-drop.drop-loadstone-completed",
+    "traditional-drop.drop-shop-live-unpaid",
+    "traditional-drop.drop-shop-live-unpaid-count",
+    "traditional-drop.drop-shop-live-unpaid-menu"
+  ],
+  "requireBranchAssertions": true,
+  "segments": [
+    {
+      "name": "drop-default",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed daggers\r\u0017blessed potion of healing\r\u0017cursed ring of protection\r\u0017uncursed leather armor\rD\rnnnn     \u001b\u001b\u001b\u001b\u001b\u001bi \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "drop-all",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed daggers\r\u0017blessed potion of healing\r\u0017cursed ring of protection\r\u0017uncursed leather armor\rDa\r     \u001b\u001b\u001b\u001b\u001b\u001bi \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "drop-query-all",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed daggers\r\u0017blessed potion of healing\r\u0017cursed ring of protection\r\u0017uncursed leather armor\rDA\ra     \u001b\u001b\u001b\u001b\u001b\u001bi \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "drop-quit",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed daggers\r\u0017blessed potion of healing\r\u0017cursed ring of protection\r\u0017uncursed leather armor\rDA\rq     \u001b\u001b\u001b\u001b\u001b\u001bi \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "drop-weapon",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed daggers\r\u0017blessed potion of healing\r\u0017cursed ring of protection\r\u0017uncursed leather armor\rD)\ry     \u001b\u001b\u001b\u001b\u001b\u001bi \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "drop-number",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed daggers\r\u0017blessed potion of healing\r\u0017cursed ring of protection\r\u0017uncursed leather armor\rD)\r1\r     \u001b\u001b\u001b\u001b\u001b\u001bi \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "drop-zero",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed daggers\r\u0017blessed potion of healing\r\u0017cursed ring of protection\r\u0017uncursed leather armor\rD)\r0\r     \u001b\u001b\u001b\u001b\u001b\u001bi \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "drop-large-count",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed daggers\r\u0017blessed potion of healing\r\u0017cursed ring of protection\r\u0017uncursed leather armor\rD)\r9\r     \u001b\u001b\u001b\u001b\u001b\u001bi \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "drop-menu",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed daggers\r\u0017blessed potion of healing\r\u0017cursed ring of protection\r\u0017uncursed leather armor\rDm\rb\r     \u001b\u001b\u001b\u001b\u001b\u001bi \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "drop-filtered-menu",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed daggers\r\u0017blessed potion of healing\r\u0017cursed ring of protection\r\u0017uncursed leather armor\rD)m\rb\r     \u001b\u001b\u001b\u001b\u001b\u001bi \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "drop-unknown",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed daggers\r\u0017blessed potion of healing\r\u0017cursed ring of protection\r\u0017uncursed leather armor\rDX\ra     \u001b\u001b\u001b\u001b\u001b\u001bi \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "drop-picked",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed daggers\r\u0017blessed potion of healing\r\u0017cursed ring of protection\r\u0017uncursed leather armor\rDP\ra     \u001b\u001b\u001b\u001b\u001b\u001bi \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "drop-no-matches",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed daggers\r\u0017blessed potion of healing\r\u0017cursed ring of protection\r\u0017uncursed leather armor\rD/\r     \u001b\u001b\u001b\u001b\u001b\u001bi \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "drop-unknown-symbol",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed daggers\r\u0017blessed potion of healing\r\u0017cursed ring of protection\r\u0017uncursed leather armor\rDk\rnnnn     \u001b\u001b\u001b\u001b\u001b\u001bi \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "drop-inventory",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed daggers\r\u0017blessed potion of healing\r\u0017cursed ring of protection\r\u0017uncursed leather armor\rDi\rb)\ry     \u001b\u001b\u001b\u001b\u001b\u001bi \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "drop-inventory-cancel",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed daggers\r\u0017blessed potion of healing\r\u0017cursed ring of protection\r\u0017uncursed leather armor\rDi\r\u001b     \u001b\u001b\u001b\u001b\u001b\u001bi \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "drop-cancel",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed daggers\r\u0017blessed potion of healing\r\u0017cursed ring of protection\r\u0017uncursed leather armor\rD\u001b     \u001b\u001b\u001b\u001b\u001b\u001bi \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "drop-combo-all",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:combination\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed daggers\r\u0017blessed potion of healing\r\u0017cursed ring of protection\r\u0017uncursed leather armor\rDa\r     \u001b\u001b\u001b\u001b\u001b\u001bi \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "drop-combo-weapons",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:combination\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed daggers\r\u0017blessed potion of healing\r\u0017cursed ring of protection\r\u0017uncursed leather armor\rD)\rb\r     \u001b\u001b\u001b\u001b\u001b\u001bi \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "drop-combo-query",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:combination\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed daggers\r\u0017blessed potion of healing\r\u0017cursed ring of protection\r\u0017uncursed leather armor\rDA\rb\r     \u001b\u001b\u001b\u001b\u001b\u001bi \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "drop-partial",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:partial\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed daggers\r\u0017blessed potion of healing\r\u0017cursed ring of protection\r\u0017uncursed leather armor\rDb\r     \u001b\u001b\u001b\u001b\u001b\u001bi \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "drop-priest-B",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Priest,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed daggers\r\u0017blessed potion of healing\r\u0017cursed ring of protection\r\u0017uncursed leather armor\rDB\ra     \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "drop-priest-U",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Priest,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed daggers\r\u0017blessed potion of healing\r\u0017cursed ring of protection\r\u0017uncursed leather armor\rDU\ra     \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "drop-priest-C",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Priest,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed daggers\r\u0017blessed potion of healing\r\u0017cursed ring of protection\r\u0017uncursed leather armor\rDC\ra     \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "drop-reverse-classes-completed",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed daggers\r\u0017blessed potion of healing\r\u0017cursed ring of protection\r\u0017uncursed leather armor\rD=)\ry y     \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "drop-combined-filter",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed daggers\r\u0017blessed potion of healing\r\u0017cursed ring of protection\r\u0017uncursed leather armor\rD)X\ry     \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "drop-combined-empty",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed daggers\r\u0017blessed potion of healing\r\u0017cursed ring of protection\r\u0017uncursed leather armor\rD)B\r     \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "drop-combo-filter-all",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:combination\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed daggers\r\u0017blessed potion of healing\r\u0017cursed ring of protection\r\u0017uncursed leather armor\rD)a\r     \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "drop-combo-filter-none",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:combination\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed daggers\r\u0017blessed potion of healing\r\u0017cursed ring of protection\r\u0017uncursed leather armor\rD)\r\u001b     \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "drop-welded-stack",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u00173 cursed daggers\rwb     \u001b\u001b\u001b\u001b\u001b\u001bD)\r1\r     \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "drop-coins-count-false",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\nOPTIONS=!goldX\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017100 gold pieces\r\u00173 uncursed daggers\rD$\r20\r     \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "drop-coins-buc-false",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\nOPTIONS=!goldX\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017100 gold pieces\r\u00173 uncursed daggers\rDU\ra     \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "drop-coins-count-true",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\nOPTIONS=goldX\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017100 gold pieces\r\u00173 uncursed daggers\rD$\r20\r     \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "drop-coins-buc-true",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\nOPTIONS=goldX\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017100 gold pieces\r\u00173 uncursed daggers\rDX\ra     \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "drop-coins-combined",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017100 gold pieces\r\u00173 uncursed daggers\rD$B\ry     \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "drop-floating-letters",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\nOPTIONS=!fixinv\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed daggers\r\u0017blessed potion of healing\r\u0017cursed ring of protection\r\u0017uncursed leather armor\rdb     \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed mace\rD\rnyyn     \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "drop-upper-case",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed dagger named blade0\r\u0017uncursed dagger named blade1\r\u0017uncursed dagger named blade2\r\u0017uncursed dagger named blade3\r\u0017uncursed dagger named blade4\r\u0017uncursed dagger named blade5\r\u0017uncursed dagger named blade6\r\u0017uncursed dagger named blade7\r\u0017uncursed dagger named blade8\r\u0017uncursed dagger named blade9\r\u0017uncursed dagger named blade10\r\u0017uncursed dagger named blade11\r\u0017uncursed dagger named blade12\r\u0017uncursed dagger named blade13\r\u0017uncursed dagger named blade14\r\u0017uncursed dagger named blade15\r\u0017uncursed dagger named blade16\r\u0017uncursed dagger named blade17\r\u0017uncursed dagger named blade18\r\u0017uncursed dagger named blade19\r\u0017uncursed dagger named blade20\r\u0017uncursed dagger named blade21\r\u0017uncursed dagger named blade22\r\u0017uncursed dagger named blade23\r\u0017uncursed dagger named blade24\r\u0017uncursed dagger named blade25\r\u0017uncursed dagger named blade26\r\u0017uncursed dagger named blade27\r\u0017uncursed dagger named blade28\r\u0017uncursed dagger named blade29\rD)\rnnnnnnnnnnnnnnnnnnnnnnnnnnny yn     \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "drop-upper-case-floating",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\nOPTIONS=!fixinv\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed dagger named blade0\r\u0017uncursed dagger named blade1\r\u0017uncursed dagger named blade2\r\u0017uncursed dagger named blade3\r\u0017uncursed dagger named blade4\r\u0017uncursed dagger named blade5\r\u0017uncursed dagger named blade6\r\u0017uncursed dagger named blade7\r\u0017uncursed dagger named blade8\r\u0017uncursed dagger named blade9\r\u0017uncursed dagger named blade10\r\u0017uncursed dagger named blade11\r\u0017uncursed dagger named blade12\r\u0017uncursed dagger named blade13\r\u0017uncursed dagger named blade14\r\u0017uncursed dagger named blade15\r\u0017uncursed dagger named blade16\r\u0017uncursed dagger named blade17\r\u0017uncursed dagger named blade18\r\u0017uncursed dagger named blade19\r\u0017uncursed dagger named blade20\r\u0017uncursed dagger named blade21\r\u0017uncursed dagger named blade22\r\u0017uncursed dagger named blade23\r\u0017uncursed dagger named blade24\r\u0017uncursed dagger named blade25\r\u0017uncursed dagger named blade26\r\u0017uncursed dagger named blade27\r\u0017uncursed dagger named blade28\r\u0017uncursed dagger named blade29\rD)\rnnnnnnnnnnnnnnnnnnnnnnnnnnny yn     \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "drop-loadstone-completed",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u00173 cursed loadstones\r     \u001b\u001b\u001b\u001b\u001b\u001bD*\r1\r     \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "seed": 6903,
+      "datetime": "20000110233600",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00162\r\u0006\u0014  llllllllllllllllllll.  \u00173 uncursed apples\rdo y,a\r mO:menustyle\r\rt     \u001b\u001b\u001b\u001b\u001b\u001bDu\ry     \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b",
+      "name": "drop-shop-live-unpaid"
+    },
+    {
+      "seed": 6903,
+      "datetime": "20000110233600",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00162\r\u0006\u0014  llllllllllllllllllll.  \u00173 uncursed apples\rdo y,a\r mO:menustyle\r\rt     \u001b\u001b\u001b\u001b\u001b\u001bD%u\r1\r     \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b",
+      "name": "drop-shop-live-unpaid-count"
+    },
+    {
+      "seed": 6903,
+      "datetime": "20000110233600",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00162\r\u0006\u0014  llllllllllllllllllll.  \u00173 uncursed apples\rdo y,a\r mO:menustyle\r\rt     \u001b\u001b\u001b\u001b\u001b\u001bDum\ro\r     \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b",
+      "name": "drop-shop-live-unpaid-menu"
+    }
+  ],
+  "branchAssertions": [
+    {
+      "branch": "traditional-drop.drop-default",
+      "segment": 0,
+      "screenIncludes": [
+        "What kinds of thing do you want to drop?"
+      ]
+    },
+    {
+      "branch": "traditional-drop.drop-all",
+      "segment": 1,
+      "screenIncludes": [
+        "What kinds of thing do you want to drop?"
+      ]
+    },
+    {
+      "branch": "traditional-drop.drop-query-all",
+      "segment": 2,
+      "screenIncludes": [
+        "What kinds of thing do you want to drop?"
+      ]
+    },
+    {
+      "branch": "traditional-drop.drop-quit",
+      "segment": 3,
+      "screenIncludes": [
+        "What kinds of thing do you want to drop?"
+      ]
+    },
+    {
+      "branch": "traditional-drop.drop-weapon",
+      "segment": 4,
+      "screenIncludes": [
+        "What kinds of thing do you want to drop?"
+      ]
+    },
+    {
+      "branch": "traditional-drop.drop-number",
+      "segment": 5,
+      "screenIncludes": [
+        "What kinds of thing do you want to drop?",
+        "You drop a dagger."
+      ]
+    },
+    {
+      "branch": "traditional-drop.drop-zero",
+      "segment": 6,
+      "screenIncludes": [
+        "What kinds of thing do you want to drop?",
+        "#0",
+        "That was all."
+      ]
+    },
+    {
+      "branch": "traditional-drop.drop-large-count",
+      "segment": 7,
+      "screenIncludes": [
+        "What kinds of thing do you want to drop?",
+        "#9",
+        "You drop 3 daggers."
+      ]
+    },
+    {
+      "branch": "traditional-drop.drop-menu",
+      "segment": 8,
+      "screenIncludes": [
+        "What kinds of thing do you want to drop?",
+        "What would you like to drop?"
+      ]
+    },
+    {
+      "branch": "traditional-drop.drop-filtered-menu",
+      "segment": 9,
+      "screenIncludes": [
+        "What kinds of thing do you want to drop?",
+        "What would you like to drop?"
+      ]
+    },
+    {
+      "branch": "traditional-drop.drop-unknown",
+      "segment": 10,
+      "screenIncludes": [
+        "What kinds of thing do you want to drop?"
+      ]
+    },
+    {
+      "branch": "traditional-drop.drop-picked",
+      "segment": 11,
+      "screenIncludes": [
+        "What kinds of thing do you want to drop?"
+      ]
+    },
+    {
+      "branch": "traditional-drop.drop-no-matches",
+      "segment": 12,
+      "screenIncludes": [
+        "What kinds of thing do you want to drop?",
+        "No applicable objects."
+      ]
+    },
+    {
+      "branch": "traditional-drop.drop-unknown-symbol",
+      "segment": 13,
+      "screenIncludes": [
+        "What kinds of thing do you want to drop?",
+        "You don't have any k's."
+      ]
+    },
+    {
+      "branch": "traditional-drop.drop-inventory",
+      "segment": 14,
+      "screenIncludes": [
+        "What kinds of thing do you want to drop?"
+      ]
+    },
+    {
+      "branch": "traditional-drop.drop-inventory-cancel",
+      "segment": 15,
+      "screenIncludes": [
+        "What kinds of thing do you want to drop?"
+      ]
+    },
+    {
+      "branch": "traditional-drop.drop-cancel",
+      "segment": 16,
+      "screenIncludes": [
+        "What kinds of thing do you want to drop?"
+      ]
+    },
+    {
+      "branch": "traditional-drop.drop-combo-all",
+      "segment": 17,
+      "screenIncludes": [
+        "What kinds of thing do you want to drop?"
+      ]
+    },
+    {
+      "branch": "traditional-drop.drop-combo-weapons",
+      "segment": 18,
+      "screenIncludes": [
+        "What kinds of thing do you want to drop?"
+      ]
+    },
+    {
+      "branch": "traditional-drop.drop-combo-query",
+      "segment": 19,
+      "screenIncludes": [
+        "What kinds of thing do you want to drop?"
+      ],
+      "screenExcludes": [
+        "What would you like to drop?"
+      ]
+    },
+    {
+      "branch": "traditional-drop.drop-partial",
+      "segment": 20,
+      "screenIncludes": [
+        "What would you like to drop?"
+      ]
+    },
+    {
+      "branch": "traditional-drop.drop-priest-B",
+      "segment": 21,
+      "screenIncludes": [
+        "What kinds of thing do you want to drop?",
+        "You drop a blessed brown potion."
+      ]
+    },
+    {
+      "branch": "traditional-drop.drop-priest-U",
+      "segment": 22,
+      "screenIncludes": [
+        "What kinds of thing do you want to drop?",
+        "You drop a leather armor."
+      ]
+    },
+    {
+      "branch": "traditional-drop.drop-priest-C",
+      "segment": 23,
+      "screenIncludes": [
+        "What kinds of thing do you want to drop?",
+        "You drop a cursed iron ring."
+      ]
+    },
+    {
+      "branch": "traditional-drop.drop-reverse-classes-completed",
+      "segment": 24,
+      "screenIncludes": [
+        "What kinds of thing do you want to drop?",
+        "You drop an iron ring.",
+        "You drop 3 daggers."
+      ]
+    },
+    {
+      "branch": "traditional-drop.drop-combined-filter",
+      "segment": 25,
+      "screenIncludes": [
+        "What kinds of thing do you want to drop?"
+      ]
+    },
+    {
+      "branch": "traditional-drop.drop-combined-empty",
+      "segment": 26,
+      "screenIncludes": [
+        "What kinds of thing do you want to drop?",
+        "No applicable objects."
+      ]
+    },
+    {
+      "branch": "traditional-drop.drop-combo-filter-all",
+      "segment": 27,
+      "screenIncludes": [
+        "What kinds of thing do you want to drop?"
+      ]
+    },
+    {
+      "branch": "traditional-drop.drop-combo-filter-none",
+      "segment": 28,
+      "screenIncludes": [
+        "What kinds of thing do you want to drop?"
+      ]
+    },
+    {
+      "branch": "traditional-drop.drop-welded-stack",
+      "segment": 29,
+      "screenIncludes": [
+        "What kinds of thing do you want to drop?",
+        "You cannot drop something welded to your hand."
+      ]
+    },
+    {
+      "branch": "traditional-drop.drop-coins-count-false",
+      "segment": 30,
+      "screenIncludes": [
+        "What kinds of thing do you want to drop?",
+        "You drop 20 gold pieces."
+      ]
+    },
+    {
+      "branch": "traditional-drop.drop-coins-buc-false",
+      "segment": 31,
+      "screenIncludes": [
+        "What kinds of thing do you want to drop?",
+        "You drop 100 gold pieces."
+      ]
+    },
+    {
+      "branch": "traditional-drop.drop-coins-count-true",
+      "segment": 32,
+      "screenIncludes": [
+        "What kinds of thing do you want to drop?",
+        "You drop 20 gold pieces."
+      ]
+    },
+    {
+      "branch": "traditional-drop.drop-coins-buc-true",
+      "segment": 33,
+      "screenIncludes": [
+        "What kinds of thing do you want to drop?",
+        "You drop 100 gold pieces."
+      ]
+    },
+    {
+      "branch": "traditional-drop.drop-coins-combined",
+      "segment": 34,
+      "screenIncludes": [
+        "What kinds of thing do you want to drop?",
+        "You drop 100 gold pieces."
+      ]
+    },
+    {
+      "branch": "traditional-drop.drop-floating-letters",
+      "segment": 35,
+      "screenIncludes": [
+        "What kinds of thing do you want to drop?",
+        "a - 3 daggers?",
+        "c - a leather armor?"
+      ]
+    },
+    {
+      "branch": "traditional-drop.drop-upper-case",
+      "segment": 36,
+      "screenIncludes": [
+        "What kinds of thing do you want to drop?",
+        "C - a dagger named blade27?"
+      ]
+    },
+    {
+      "branch": "traditional-drop.drop-upper-case-floating",
+      "segment": 37,
+      "screenIncludes": [
+        "What kinds of thing do you want to drop?",
+        "B - a dagger named blade27?"
+      ]
+    },
+    {
+      "branch": "traditional-drop.drop-loadstone-completed",
+      "segment": 38,
+      "screenIncludes": [
+        "What kinds of thing do you want to drop?",
+        "For some reason, you cannot drop the stones!"
+      ]
+    },
+    {
+      "branch": "traditional-drop.drop-shop-live-unpaid",
+      "segment": 39,
+      "screenIncludes": [
+        "What kinds of thing do you want to drop?",
+        "You drop 3 apples (unpaid, 27 zorkmids)."
+      ]
+    },
+    {
+      "branch": "traditional-drop.drop-shop-live-unpaid-count",
+      "segment": 40,
+      "screenIncludes": [
+        "What kinds of thing do you want to drop?",
+        "You drop an apple (unpaid, 9 zorkmids)."
+      ]
+    },
+    {
+      "branch": "traditional-drop.drop-shop-live-unpaid-menu",
+      "segment": 41,
+      "screenIncludes": [
+        "What kinds of thing do you want to drop?",
+        "What would you like to drop?",
+        "You drop 3 apples (unpaid, 27 zorkmids)."
+      ]
+    }
+  ]
+}

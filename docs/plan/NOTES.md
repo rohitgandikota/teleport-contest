@@ -11,6 +11,29 @@ Newest first within each section.
 
 ---
 
+## Traditional inventory selection probes
+
+identify_pack repeats ggetobj when category selection returns zero. Escape
+at that category prompt therefore retries; q at an item prompt returns minus
+one and ends identification. A declined full pass prints That was all and
+can require a More acknowledgement before the next category choice. Verify
+that a new recording finishes the intended interaction before promoting it.
+
+Changing an old shop recipe's menustyle also changes its earlier pickup
+prompts. Keep the proven setup and switch through the live option menu:
+`mO:menustyle\r\rt` selects Traditional. Then acknowledge the change message
+before sending the target command. The three unpaid-drop cases use this.
+
+C initializes menu_style to MENU_FULL in options.c:7258. Store that default
+at startup rather than relying on each caller to supply it. The shared
+selection port exposed this missing initialization in 23 existing fixtures.
+
+askchain preserves the entered class order. Its mx limit counts callback
+attempts, including zero results. A rejected counted split is recombined.
+Object iteration rechecks the live chain, because an earlier action can
+destroy a later selected object. The native reversed-class cases and the
+mutation gate distinguish these behaviors from a simple filtered-array loop.
+
 ## Spell and repeat probes
 
 Traditional getspell calls yn_function with addcmdq true and docast stores

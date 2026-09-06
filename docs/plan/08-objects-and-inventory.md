@@ -47,6 +47,13 @@ plausible-but-wrong names that are hard to spot in a diff.
 
 ### 8.2 Inventory
 
+- [x] Shared ggetobj/askchain selection for identification, dropping and
+      takeoff. Eighty-nine C cases, native state checks and constructed
+      controls cover class order, filters, counts, retries and changing
+      object chains. See [inventory-selection-audit.md](inventory-selection-audit.md).
+      Traditional container callers and the remaining sorting/menu integration
+      remain open; source coverage is 106/126 ggetobj and 100/124 askchain
+      direct outcomes, not complete function execution coverage.
 - [x] September `#adjust` source pass: count handling, split rollback,
       collect/merge/name rules, bumping and full-pack refusal, used-letter menus,
       floating letters, and equipment/light merger fixes. Fifty-eight asserted C
@@ -56,7 +63,7 @@ plausible-but-wrong names that are hard to spot in a diff.
       deallocation and split cleanup, name transfer, and price-identity/light
       preservation. Eight C cases and the merger state gate pass. Full C
       lifecycle review remains open.
-- [ ] `src/invent.c`: `addinv`, `freeinv`, `getobj`, `ggetobj`, `display_inventory`,
+- [ ] `src/invent.c`: `addinv`, `freeinv`, `getobj`, `display_inventory`,
       `display_pickinv`, letter assignment, `#adjust`, merge and split rules
 - [ ] Inventory menu rendering goes through the M3 menu code; the *content* is here
 - [ ] The 52-slot letter limit and its overflow behaviour

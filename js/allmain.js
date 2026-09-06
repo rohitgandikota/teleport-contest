@@ -71,6 +71,7 @@ import { ROLE_GENDMASK, ROLE_MALE, ROLE_FEMALE, A_CURRENT, In_endgame,
          from './const.js';
 import { mklev, l_nhcore_init, u_on_upstairs } from './mklev.js';
 import { rhack, domove } from './cmd.js';
+import { clear_bypasses } from './worn.js';
 import { lookaround, end_running, unmul, nomul,
          monster_nearby, in_rooms, runmode_delay_output } from './hack.js';
 import { deferred_goto } from './do.js';
@@ -684,6 +685,9 @@ export async function moveloop_core() {
             await deferred_goto();
         return;
     }
+
+    if (g.context?.bypasses)
+        clear_bypasses();
 
     if (g.context?.move) {
         /* src/allmain.c:205 — actual time passed */

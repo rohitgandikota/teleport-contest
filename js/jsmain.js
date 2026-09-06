@@ -10,6 +10,7 @@
 // For browser play, see nethack.js (uses NethackGame directly).
 
 import { game, resetGame } from './gstate.js';
+import { MENU_FULL } from './const.js';
 import { initRng, enableRngLog, getRngLog } from './rng.js';
 import { pushKey, nhgetch } from './input.js';
 import { newgame, newgame_moveloop_preamble, moveloop_core,
@@ -153,6 +154,7 @@ export class NethackGame {
         /* pickup_thrown is opt_out initval On (optlist.h:579), like the
            other two defaults */
         g.flags = { verbose: true, implicit_uncursed: true, legacy: true,
+                    menu_style: MENU_FULL, // src/options.c:7258
                     pickup_thrown: true,
                     ...rc.opts };
         g.iflags = {};

@@ -21,7 +21,7 @@ import { def_oc_syms } from './drawing_data.js';
 import { game } from './gstate.js';
 import { addinv, prinv, obj_extract_self, inv_order, let_to_name,
          freeinv, getobj, update_inventory, loot_classify, weight, mergable, merged, money_cnt,
-         useup, useupf, obfree, stackobj,
+         useup, useupf, obfree, stackobj, count_unpaid, count_buc, is_worn,
          GETOBJ_ALLOWCNT, GETOBJ_DOWNPLAY, GETOBJ_EXCLUDE,
          GETOBJ_EXCLUDE_SELECTABLE, GETOBJ_PROMPT, GETOBJ_SUGGEST }
     from './invent.js';
@@ -49,11 +49,13 @@ import { UNENCUMBERED, SLT_ENCUMBER, MOD_ENCUMBER, HVY_ENCUMBER,
     from './const.js';
 import { addtobill, costly_spot, doname_with_price, sellobj,
          sellobj_state } from './shk.js';
-import { calc_capacity, exercise, max_capacity, near_capacity } from './attrib.js';
+import { calc_capacity, exercise, max_capacity, near_capacity, Role_if } from './attrib.js';
 import { In_sokoban, surface } from './dungeon.js';
 import { Is_mbag, splitobj, unbless, place_object, add_to_container,
-         start_corpse_timeout, start_glob_timeout }
+         start_corpse_timeout, start_glob_timeout, set_bknown }
     from './mkobj.js';
+import { PARANOID_AUTOALL } from './const.js';
+import { paranoia_bits } from './options.js';
 import { PMNAMES } from './monst_data.js';
 import { def_char_to_objclass } from './sp_lev.js';
 import { read_engr_at } from './engrave.js';
@@ -1222,31 +1224,47 @@ export async function dotip() {
 /* C keeps the container being looted in gc.current_container */
 let current_container = null;
 
-/* src/pickup.c:475 add_valid_menu_class() and its filter state */
-let valid_menu_classes = '';
-let class_filter = false, bucx_filter = false, shop_filter = false,
-    picked_filter = false;
+// src/pickup.c:101 collect_obj_classes(); lists carry nobj/nexthere order.
+export function collect_obj_classes(ilets, otmp, here, filter, itemcount) {
+    let iletct = 0;
+    itemcount.v = 0;
+    ilets.length = 0;
+    for (const obj of otmp || []) {
+        const c = def_oc_syms[obj.oclass];
+        if (!ilets.includes(c) && (!filter || filter(obj)))
+            ilets[iletct++] = c;
+        itemcount.v += 1;
+    }
+    return iletct;
+}
 
+// src/pickup.c:469 menu_class_present()
+export function menu_class_present(c) {
+    return !!(c && (game.valid_menu_classes || '').includes(
+        typeof c === 'number' ? String.fromCharCode(c) : c));
+}
+
+// src/pickup.c:475 add_valid_menu_class()
 export function add_valid_menu_class(c) {
     if (c === 0) { /* reset */
-        valid_menu_classes = '';
-        class_filter = bucx_filter = shop_filter = picked_filter = false;
-    } else if (!valid_menu_classes.includes(
-                   typeof c === 'number' ? String.fromCharCode(c) : c)) {
+        game.valid_menu_classes = '';
+        game.class_filter = game.bucx_filter = game.shop_filter = false;
+        game.picked_filter = false;
+    } else if (!menu_class_present(c)) {
         const ch = typeof c === 'number' ? String.fromCharCode(c) : c;
-        valid_menu_classes += ch;
+        game.valid_menu_classes = (game.valid_menu_classes || '') + ch;
         switch (ch) {
         case 'B': case 'U': case 'C': case 'X':
-            bucx_filter = true;
+            game.bucx_filter = true;
             break;
         case 'P':
-            picked_filter = true;
+            game.picked_filter = true;
             break;
         case 'u':
-            shop_filter = true;
+            game.shop_filter = true;
             break;
         default:
-            class_filter = true;
+            game.class_filter = true;
             break;
         }
     }
@@ -1255,77 +1273,54 @@ export function add_valid_menu_class(c) {
 /* src/pickup.c:523 allow_category() — see the C's long comment: with more
    than one filter TYPE active, an object must match one entry of EACH type */
 export function allow_category(obj) {
-    if (!class_filter && !shop_filter && !bucx_filter && !picked_filter)
+    if (!game.class_filter && !game.shop_filter && !game.bucx_filter
+        && !game.picked_filter && !(paranoia_bits() & PARANOID_AUTOALL))
         return false;
 
-    if (obj.oclass === OCLASSES.COIN_CLASS && class_filter)
-        return valid_menu_classes.includes(
-            String.fromCharCode(OCLASSES.COIN_CLASS));
+    if (obj.oclass === OCLASSES.COIN_CLASS && game.class_filter)
+        return menu_class_present(OCLASSES.COIN_CLASS);
 
     /* Role_if(PM_CLERIC): priests automatically sense bless/curse state */
-    if (game.urole?.mnum === 'PM_CLERIC' && !obj.bknown)
-        obj.bknown = 1;
+    if (Role_if(PMNAMES.PM_CLERIC) && !obj.bknown)
+        set_bknown(obj, 1);
 
-    if (class_filter
-        && !valid_menu_classes.includes(String.fromCharCode(obj.oclass)))
+    if (game.class_filter && !menu_class_present(obj.oclass))
         return false;
-    if (shop_filter && !obj.unpaid
+    if (game.shop_filter && !obj.unpaid
         && !(Has_contents(obj) && count_unpaid(obj.cobj) > 0))
         return false;
-    if (bucx_filter) {
+    if (game.bucx_filter) {
         let bucx = !obj.bknown ? 'X'
                    : obj.blessed ? 'B' : obj.cursed ? 'C' : 'U';
         /* coins get treated as either 'U' or 'X' depending on goldX */
         if (obj.oclass === OCLASSES.COIN_CLASS)
             bucx = game.flags?.goldX ? 'X' : 'U';
-        if (!valid_menu_classes.includes(bucx))
+        if (!menu_class_present(bucx))
             return false;
     }
-    if (picked_filter && !obj.pickup_prev)
+    if (game.picked_filter && !obj.pickup_prev)
         return false;
     return true;
 }
 
-/* src/pickup.c count_unpaid() */
-function count_unpaid(olist) {
-    let count = 0;
-    for (const otmp of olist || []) {
-        if (otmp.unpaid)
-            count++;
-        if (Has_contents(otmp))
-            count += count_unpaid(otmp.cobj);
-    }
-    return count;
+// src/pickup.c:609 is_worn_by_type()
+export function is_worn_by_type(otmp) {
+    return is_worn(otmp) && allow_category(otmp);
 }
 
-/* src/pickup.c count_buc() over a list (no worn filter needed yet) */
-function count_buc(olist, type, filter = null) {
-    let count = 0;
-    for (const otmp of olist || []) {
-        if (filter && !filter(otmp))
-            continue;
-        /* coins are either uncursed or unknown based upon option setting */
-        if (otmp.oclass === OCLASSES.COIN_CLASS) {
-            if (type === (game.flags?.goldX ? 'X' : 'U'))
-                count++;
-            continue;
-        }
-        switch (type) {
-        case 'B':
-            if (otmp.bknown && otmp.blessed) count++;
-            break;
-        case 'C':
-            if (otmp.bknown && otmp.cursed) count++;
-            break;
-        case 'U':
-            if (otmp.bknown && !otmp.blessed && !otmp.cursed) count++;
-            break;
-        case 'X':
-            if (!otmp.bknown) count++;
-            break;
-        }
-    }
-    return count;
+// src/pickup.c:635 count_justpicked()
+export function count_justpicked(olist) {
+    let cnt = 0;
+    for (const otmp of olist || [])
+        if (otmp.pickup_prev) ++cnt;
+    return cnt;
+}
+
+// src/pickup.c:650 find_justpicked()
+export function find_justpicked(olist) {
+    for (const otmp of olist || [])
+        if (otmp.pickup_prev) return otmp;
+    return null;
 }
 
 /* src/pickup.c:1511 count_categories() */
@@ -1374,13 +1369,13 @@ async function query_category(qstr, olist, qflags, how = null) {
     const do_usedup = (qflags & BILLED_TYPES) !== 0;
     let num_buc_types = 0;
     const do_blessed = (qflags & BUC_BLESSED) !== 0
-                       && count_buc(olist, 'B', ofilter) && ++num_buc_types;
+                       && count_buc(olist, BUC_BLESSED, ofilter) && ++num_buc_types;
     const do_cursed = (qflags & BUC_CURSED) !== 0
-                      && count_buc(olist, 'C', ofilter) && ++num_buc_types;
+                      && count_buc(olist, BUC_CURSED, ofilter) && ++num_buc_types;
     const do_uncursed = (qflags & BUC_UNCURSED) !== 0
-                        && count_buc(olist, 'U', ofilter) && ++num_buc_types;
+                        && count_buc(olist, BUC_UNCURSED, ofilter) && ++num_buc_types;
     const do_buc_unknown = (qflags & BUC_UNKNOWN) !== 0
-                           && count_buc(olist, 'X', ofilter) && ++num_buc_types;
+                           && count_buc(olist, BUC_UNKNOWN, ofilter) && ++num_buc_types;
     const num_justpicked = (qflags & JUSTPICKED) !== 0
         ? olist.filter(o => o.pickup_prev).length : 0;
 
@@ -1689,6 +1684,11 @@ async function out_container(obj) {
     if (is_gold)
         await bot(); /* update character's gold piece count immediately */
     return 1;
+}
+
+// src/pickup.c:2903 container_gone()
+export function container_gone(fn) {
+    return (fn === in_container || fn === out_container) && !current_container;
 }
 
 /* include/obj.h Is_box() — the local ONAMES spelling */

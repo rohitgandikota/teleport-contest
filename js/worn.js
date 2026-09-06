@@ -32,7 +32,8 @@ import { verysmall, nohands, is_animal, mindless, slithy, cantweararm,
          has_horns, breakarm, sliparm, is_whirly, mhim,
          pronoun_gender } from './mondata.js';
 import { is_shirt, is_cloak, is_helmet, is_shield, is_gloves, is_boots,
-         is_suit, is_flimsy, bimanual, WrappingAllowed } from './obj.js';
+         is_suit, is_flimsy, bimanual, WrappingAllowed, Has_contents } from './obj.js';
+import { MCORPSENM, NON_PM } from './const.js';
 import { ARM_BONUS, PROP_KEYS, cancel_doff, cloak_simple_name }
     from './do_wear.js';
 import { is_weptool, place_object, curse } from './mkobj.js';
@@ -1062,8 +1063,72 @@ export function wearslot(obj) {
     return res;
 }
 
-// src/worn.c bypass_obj(); mark obj so the current zap skips it
+// src/worn.c:1055 clear_bypass()
+function clear_bypass(objchn) {
+    for (const o of objchn || []) {
+        o.bypass = 0;
+        if (Has_contents(o))
+            clear_bypass(o.cobj);
+    }
+}
+
+// src/worn.c:1070 clear_bypasses()
+export function clear_bypasses() {
+    clear_bypass(game.level?.objects);
+    clear_bypass(game.invent);
+    clear_bypass(game.migrating_objs);
+    clear_bypass(game.level?.buriedobjs);
+    clear_bypass(game.billobjs);
+    clear_bypass(game.objs_deleted);
+    for (const mtmp of game.level?.monsters || []) {
+        if (DEADMONSTER(mtmp)) continue;
+        clear_bypass(mtmp.minvent);
+        if (mtmp.data === game.mons[PMNAMES.PM_LONG_WORM]
+            && MCORPSENM(mtmp) !== NON_PM)
+            mtmp.mextra.mcorpsenm = NON_PM;
+    }
+    for (const mtmp of game.migrating_mons || [])
+        clear_bypass(mtmp.minvent);
+    for (const mtmp of game.mydogs || [])
+        clear_bypass(mtmp.minvent);
+    if (game.u.uball) game.u.uball.bypass = 0;
+    if (game.u.uchain) game.u.uchain.bypass = 0;
+    game.context.bypasses = false;
+}
+
+// src/worn.c:1119 bypass_obj()
 export function bypass_obj(obj) {
     obj.bypass = 1;
     (game.context ||= {}).bypasses = true;
+}
+
+// src/worn.c:1127 bypass_objlist()
+export function bypass_objlist(objchain, on) {
+    if (on && objchain?.length)
+        game.context.bypasses = true;
+    for (const obj of objchain || [])
+        obj.bypass = on ? 1 : 0;
+}
+
+// src/worn.c:1144 nxt_unbypassed_obj()
+export function nxt_unbypassed_obj(objchain) {
+    for (const obj of objchain || []) {
+        if (!obj.bypass) {
+            bypass_obj(obj);
+            return obj;
+        }
+    }
+    return null;
+}
+
+// src/worn.c:1159 nxt_unbypassed_loot()
+export function nxt_unbypassed_loot(lootarray, listhead) {
+    for (const { obj } of lootarray) {
+        if (!obj) break;
+        if (listhead?.includes(obj) && !obj.bypass) {
+            bypass_obj(obj);
+            return obj;
+        }
+    }
+    return null;
 }

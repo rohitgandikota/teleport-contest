@@ -27,7 +27,7 @@ import { W_ARM, W_ARMC, W_ARMH, W_ARMS, W_ARMG, W_ARMF, W_ARMU, W_TOOL,
          A_CHA, A_MAX, A_CURRENT, A_CHAOTIC, A_LAWFUL, A_NEUTRAL, NH_BLACK,
          INTRINSIC, HEAD, HAND, FINGER, CQ_CANNED, st_corpse,
          st_petrifies, MENU_TRADITIONAL, MENU_COMBINATION, MENU_FULL,
-         MENU_PARTIAL,
+         ALL_TYPES_SELECTED, ALL_FINISHED, SIGNAL_NOMENU, USE_INVLET, INVORDER_SORT, PICK_ANY,
          Is_airlevel, Is_astralevel } from './const.js';
 import { setworn } from './worn.js';
 import { welded, is_sword, setuwep, setuswapwep, setuqwep, empty_handed }
@@ -57,7 +57,7 @@ import { hcolor } from './do_name.js';
 import { ART_OGRESMASHER } from './artilist_data.js';
 import { cmdq_pop } from './cmd.js';
 import { CMDQ_KEY, ECMD_FAIL } from './const.js';
-import { prinv, update_inventory, useup, ECMD_OK, display_inventory, xprname }
+import { prinv, update_inventory, useup, ECMD_OK, ggetobj, is_worn, wearing_armor }
     from './invent.js';
 import { nomul, spoteffects, unmul } from './hack.js';
 import { tty_yn_function } from './tty/topl.js';
@@ -67,7 +67,6 @@ import { paranoia_bits, PARANOID_REMOVE } from './options.js';
 import { Blind, Flying, Glib, Hallucination, Invis, Levitation, Stone_resistance,
          Protection_from_shape_changers, See_invisible, Detect_monsters } from './youprop.js';
 import { body_part, change_sex, poly_gender } from './polyself.js';
-import { def_oc_syms } from './drawing_data.js';
 import { surface } from './dungeon.js';
 
 
@@ -2023,314 +2022,71 @@ async function take_off() {
     return 1;
 }
 
-async function query_worn_items(allow) {
-    const eligible = (game.invent || []).filter((obj) =>
-        !!obj.owornmask && allow(obj));
-    if (!eligible.length)
-        return null;
-
-    const letters = eligible.map((obj) => obj.invlet).join('');
-    const entries = display_inventory(letters);
-    const {
-        tty_create_nhwindow, tty_start_menu, tty_add_menu, tty_end_menu,
-        tty_select_menu, tty_destroy_nhwindow, NHW_MENU,
-    } = await import('./tty/wintty.js');
-    const { MENU_BEHAVE_STANDARD, MENU_ITEMFLAGS_NONE, PICK_ANY } =
-        await import('./const.js');
-    const { NO_COLOR } = await import('./terminal.js');
-
-    const win = tty_create_nhwindow(NHW_MENU);
-    tty_start_menu(win, MENU_BEHAVE_STANDARD);
-    for (const entry of entries) {
-        tty_add_menu(win, entry.glyphinfo ?? null,
-                     entry.heading ? 0 : entry.invlet.charCodeAt(0),
-                     entry.invlet || 0, 0, entry.attr, NO_COLOR, entry.str,
-                     MENU_ITEMFLAGS_NONE);
-    }
-    tty_end_menu(win, 'What do you want to take off?');
-    const picks = await tty_select_menu(win, PICK_ANY);
-    tty_destroy_nhwindow(win);
-    return picks.map((id) => (game.invent || [])
-        .find((obj) => obj.invlet.charCodeAt(0) === id)).filter(Boolean);
-}
-
-const removable_mask = W_WEAPONS | W_ARM | W_ARMC | W_ARMH | W_ARMS
-                     | W_ARMG | W_ARMF | W_ARMU | W_RINGL | W_RINGR
-                     | W_AMUL | W_TOOL;
-
-function takeoff_menu_style() {
-    const raw = game.flags?.menu_style ?? game.flags?.menustyle
-              ?? game.rc?.opts?.menustyle;
-    if (typeof raw === 'number')
-        return raw;
-    switch (String(raw || 'full').toLowerCase()[0]) {
-    case 't': return MENU_TRADITIONAL;
-    case 'c': return MENU_COMBINATION;
-    case 'p': return MENU_PARTIAL;
-    default: return MENU_FULL;
-    }
-}
-
-function is_worn_for_takeoff(obj) {
-    return !!(obj?.owornmask & removable_mask);
-}
-
-function takeoff_buc(obj) {
-    /* Priests know the BUC state of carried objects. */
-    if (game.urole?.mnum === 'PM_CLERIC' && !obj.bknown)
-        obj.bknown = 1;
-    return !obj.bknown ? 'X' : obj.blessed ? 'B' : obj.cursed ? 'C' : 'U';
-}
-
-function has_unpaid(olist) {
-    return (olist || []).some((obj) => obj.unpaid || has_unpaid(obj.cobj));
-}
-
-/* src/invent.c ggetobj("take off", ...). Traditional mode performs the
-   selection itself. Combination mode only gathers filters unless the player
-   chose lowercase 'a', which is the direct all-items shortcut. */
-async function ggetobj_takeoff(combo) {
-    const invent = game.invent || [];
-    const eligible = invent.filter(is_worn_for_takeoff);
-    const classes = [];
-    for (const obj of eligible) {
-        const symbol = def_oc_syms[obj.oclass];
-        if (symbol && !classes.includes(symbol))
-            classes.push(symbol);
-    }
-
-    let choices = `${classes.join('')} `;
-    if (has_unpaid(invent))
-        choices += 'u';
-    for (const buc of 'BUCX') {
-        if (eligible.some((obj) => takeoff_buc(obj) === buc))
-            choices += buc;
-    }
-    if (invent.some((obj) => obj.pickup_prev))
-        choices += 'P';
-    choices += 'ai';
-    if (!combo)
-        choices += 'm';
-
-    const { getlin } = await import('./cmd.js');
-    let answer;
-    for (;;) {
-        answer = await getlin(
-            `What kinds of thing do you want to take off? [${choices}]`);
-        if (answer === '\x1b')
-            return { result: 0, allFinished: false };
-        if (!answer.includes('i'))
-            break;
-
-        /* display_inventory(..., TRUE) permits a letter to dismiss the
-           inventory. Its return value is intentionally ignored here. */
-        const { display_pickinv } = await import('./invent.js');
-        const letters = eligible.map((obj) => obj.invlet).join('');
-        const picked = await display_pickinv(letters, null, null, false);
-        if (picked === '\x1b')
-            return { result: 0, allFinished: false };
-    }
-
-    const { add_valid_menu_class, allow_category } = await import('./pickup.js');
-    const classNumbers = new Map(def_oc_syms.map((symbol, i) => [symbol, i]));
-    const removeableClasses = new Set([
-        OCLASSES.ARMOR_CLASS, OCLASSES.WEAPON_CLASS, OCLASSES.RING_CLASS,
-        OCLASSES.AMULET_CLASS, OCLASSES.TOOL_CLASS,
-    ]);
-    const extraClasses = new Set(eligible
-        .filter((obj) => obj.owornmask & W_WEAPONS)
-        .map((obj) => obj.oclass));
-    const selectedClasses = [];
-    let allflag = false, menuSeen = false;
-
-    for (const symbol of answer) {
-        if (symbol === ' ')
-            continue;
-        const oclass = classNumbers.get(symbol);
-        if (oclass !== undefined && oclass !== OCLASSES.MAXOCLASSES
-            && !extraClasses.has(oclass)) {
-            if (!removeableClasses.has(oclass)) {
-                await pline('Not applicable.');
-                return { result: 0, allFinished: false };
-            }
-            if (oclass === OCLASSES.ARMOR_CLASS
-                && !eligible.some((obj) => obj.oclass === oclass)) {
-                await You('are not wearing any armor.');
-                return { result: 0, allFinished: false };
-            }
-            if (oclass === OCLASSES.WEAPON_CLASS
-                && !eligible.some((obj) => obj.owornmask & W_WEAPONS)) {
-                await You('are not wielding anything.');
-                return { result: 0, allFinished: false };
-            }
-            if (oclass === OCLASSES.RING_CLASS
-                && !eligible.some((obj) => obj.owornmask & (W_RINGL | W_RINGR))) {
-                await You('are not wearing rings.');
-                return { result: 0, allFinished: false };
-            }
-            if (oclass === OCLASSES.AMULET_CLASS
-                && !eligible.some((obj) => obj.owornmask & W_AMUL)) {
-                await You('are not wearing an amulet.');
-                return { result: 0, allFinished: false };
-            }
-            if (oclass === OCLASSES.TOOL_CLASS
-                && !eligible.some((obj) => obj.owornmask & W_TOOL)) {
-                await You('are not wearing a blindfold.');
-                return { result: 0, allFinished: false };
-            }
-        }
-
-        if (symbol === 'a') {
-            allflag = true;
-        } else if (symbol === 'A') {
-            /* default item-by-item behavior */
-        } else if ('uBUCXP'.includes(symbol)) {
-            add_valid_menu_class(symbol);
-        } else if (symbol === 'm') {
-            menuSeen = true;
-        } else if (oclass === undefined) {
-            await You(`don't have any ${symbol}'s.`);
-        } else if (!selectedClasses.includes(oclass)) {
-            selectedClasses.push(oclass);
-            add_valid_menu_class(oclass);
-        }
-    }
-
-    if (menuSeen) {
-        const filtered = selectedClasses.length
-            || [...answer].some((symbol) => 'uBUCXP'.includes(symbol));
-        return { result: (allflag || !filtered) ? -2 : -3,
-                 allFinished: false };
-    }
-    if (combo && !allflag)
-        return { result: 0, allFinished: false };
-
-    let candidates = [];
-    const byCategory = [...answer].some((symbol) => 'uBUCXP'.includes(symbol));
-    const addCandidates = (oclass) => {
-        for (const obj of eligible) {
-            if ((oclass === null || obj.oclass === oclass)
-                && (!byCategory || allow_category(obj))
-                && !candidates.includes(obj))
-                candidates.push(obj);
-        }
-    };
-    if (selectedClasses.length) {
-        for (const oclass of selectedClasses)
-            addCandidates(oclass);
-    } else {
-        addCandidates(null);
-    }
-    candidates.sort((a, b) => a.invlet.localeCompare(b.invlet));
-
-    let sawCandidate = false;
-    for (const obj of candidates) {
-        sawCandidate = true;
-        let choice = 'y';
-        if (!allflag) {
-            choice = await tty_yn_function(
-                `${xprname(obj, null, obj.invlet, false, 0, 0)}?`,
-                'ynaq', 'n');
-        }
-        if (choice === 'q')
-            break;
-        if (choice === 'a')
-            allflag = true;
-        if (allflag || choice === 'y')
-            await select_off(obj);
-    }
-    if (!sawCandidate)
-        await pline('No applicable objects.');
-    return { result: 0, allFinished: combo && allflag };
-}
-
-// src/do_wear.c menu_remarm(), all four menu styles.
-async function menu_remarm(retry = 0) {
-    const {
-        query_remove_categories, add_valid_menu_class, allow_category,
-    } = await import('./pickup.js');
-    /* A negative retry comes from Traditional ggetobj(). Keep the class and
-       BUC filters it just collected until query_worn_items() consumes them. */
-    if (!retry)
-        add_valid_menu_class(0);
-    try {
-        const style = takeoff_menu_style();
-        let all_worn = true;
-        if (retry) {
-            all_worn = retry === -2;
-        } else if (style === MENU_FULL) {
-            const categories = await query_remove_categories(game.invent || []);
-            if (!categories.length)
-                return;
-
-            all_worn = false;
-            for (const category of categories) {
-                if (category === -2)
-                    all_worn = true;
-                else
-                    add_valid_menu_class(category);
-            }
-            if (categories.some((category) => {
-                const ch = typeof category === 'number'
-                    ? String.fromCharCode(category) : category;
-                return 'uBUCX'.includes(ch);
-            }))
-                all_worn = false;
-        } else if (style === MENU_COMBINATION) {
-            const selection = await ggetobj_takeoff(true);
-            if (selection.allFinished)
-                return;
-            all_worn = selection.result === -2;
-        }
-
-        const selected = await query_worn_items(
-            all_worn ? () => true : allow_category);
-        if (selected === null) {
-            if (style !== MENU_COMBINATION)
-                await There('is nothing else you can remove or unwield.');
-            return;
-        }
-        for (const obj of selected)
-            await select_off(obj);
-    } finally {
-        add_valid_menu_class(0);
-    }
-}
-
-// src/do_wear.c doddoremarm(), the 'A' command.
+// src/do_wear.c:3024 doddoremarm()
 export async function doddoremarm() {
     const doff = game.context_takeoff ||= {
         mask: 0, what: 0, delay: 0, disrobing: '',
     };
+    let result = 0;
+    const u = game.u;
     if (doff.what || doff.mask) {
         await You(`continue ${doff.disrobing}.`);
         set_occupation(take_off, doff.disrobing, 0);
         return ECMD_OK;
-    }
-
-    const any_worn = (game.invent || []).some(is_worn_for_takeoff);
-    if (!any_worn) {
+    } else if (!u.uwep && !u.uswapwep && !u.uquiver && !u.uamul
+               && !u.ublindf && !u.uleft && !u.uright && !wearing_armor()) {
         await You('are not wearing anything.');
         return ECMD_OK;
     }
-
     const { add_valid_menu_class } = await import('./pickup.js');
     add_valid_menu_class(0);
-    const style = takeoff_menu_style();
-    if (style === MENU_TRADITIONAL) {
-        const selection = await ggetobj_takeoff(false);
-        if (selection.result < -1)
-            await menu_remarm(selection.result);
-    } else {
-        await menu_remarm();
-    }
-    add_valid_menu_class(0);
+    if (game.flags.menu_style !== MENU_TRADITIONAL
+        || (result = await ggetobj('take off', select_off, 0, false, null)) < -1)
+        await menu_remarm(result);
     if (doff.mask) {
-        doff.disrobing = (doff.mask & ~W_WEAPONS)
-            ? 'disrobing' : 'disarming';
+        doff.disrobing = doff.mask & ~W_WEAPONS ? 'disrobing' : 'disarming';
         await take_off();
     }
     return ECMD_OK;
+}
+
+// src/do_wear.c:3091 menu_remarm()
+async function menu_remarm(retry) {
+    const { query_remove_categories, add_valid_menu_class, menu_class_present,
+            query_objlist, is_worn_by_type } = await import('./pickup.js');
+    let all_worn_categories = true;
+    if (retry) {
+        all_worn_categories = retry === -2;
+    } else if (game.flags.menu_style === MENU_FULL) {
+        all_worn_categories = false;
+        const pick_list = await query_remove_categories(game.invent);
+        if (!pick_list.length) return 0;
+        for (const pick of pick_list) {
+            if (pick === ALL_TYPES_SELECTED)
+                all_worn_categories = true;
+            else
+                add_valid_menu_class(pick);
+        }
+    } else if (game.flags.menu_style === MENU_COMBINATION) {
+        const ggofeedback = { v: 0 };
+        const i = await ggetobj('take off', select_off, 0, true, ggofeedback);
+        if (ggofeedback.v & ALL_FINISHED) return 0;
+        all_worn_categories = i === -2;
+    }
+    if (menu_class_present('u') || menu_class_present('B')
+        || menu_class_present('U') || menu_class_present('C') || menu_class_present('X'))
+        all_worn_categories = false;
+    const pick_list = await query_objlist('What do you want to take off?', game.invent,
+        SIGNAL_NOMENU | USE_INVLET | INVORDER_SORT, PICK_ANY,
+        all_worn_categories ? is_worn : is_worn_by_type);
+    const n = Array.isArray(pick_list) ? pick_list.length : pick_list;
+    if (n > 0) {
+        for (const obj of pick_list)
+            await select_off(obj);
+    } else if (n < 0 && game.flags.menu_style !== MENU_COMBINATION) {
+        await There('is nothing else you can remove or unwield.');
+    }
+    return 0;
 }
 
 // src/do_wear.c:1920 armoroff()

@@ -12,9 +12,63 @@ Continue the authorized work; do not mark it complete or recreate it.
 Current-corpus success is not the stopping criterion. Track unreviewed,
 untested, missing, and unreachable source paths explicitly.
 
-### Active checkpoint: casting preconditions and forgotten spells
+### Active checkpoint: traditional inventory selection
 
-Work is in .cache/spell-memory and is ready to commit. The final full
+Work in .cache/inventory-selection is verified and ready for local commit.
+Seven runtime modules: invent (ggetobj/askchain, helpers, full sortloot
+comparator, noarmor), pickup (class/filter state, canonical BUC counts,
+container_gone), worn (bypass iteration/cleanup), do (all menu_drop control
+flow), do_wear (shared selection, removing ggetobj_takeoff), allmain (C's
+bypass cleanup), jsmain (MENU_FULL startup default). Full relevant C bodies
+were read before porting. See inventory-selection-audit.md for scope and
+remaining integration gaps. No C or frozen edits.
+
+The final expanded sweep passes all 534 fixtures, 44 public plus 490
+supplemental: 276566 screens/cursors and 9494086 RNG. Supplemental matches
+265161 screens/cursors, 8701248 RNG and all 21679 animations. Public keeps
+its 21 old animation misses. regression-final.log and totals.json hold the
+results. All jobs have completed and every exit is collected. No job is
+running. The 47 hang checks, 80 role controls, 16 tool tests, source audit
+(0/268), new state gate and twelve related gates pass. Fuzz is 101/102 with
+the known fixed-date miss and all 491759 RNG matching.
+
+Three permanent recipes add 89 C cases: traditional-identification 29,
+traditional-drop 42, traditional-takeoff 18. They match 27315 screens and
+cursors and 220405 RNG. All three instrumented C re-recordings are exact;
+assertions and integrity also pass separately. Ledger 2154/2154, 99 covered
+and seven partial categories. The C union gains 118 outcomes and ckunpaid,
+reaching 55059/108268 outcomes and 4357/5491 entered records. remaining.json
+lists the gaps: ggetobj106/126, askchain100/124, count_buc20/20,
+nxt_unbypassed_loot10/10. No new unreachable claims.
+
+The permanent state gate replays all89, checks33 C identification messages,
+quantities, unpaid remainders, removed gear and cleared bypass state; 35
+constructed control groups also pass. The no-next-class loader mutation
+fails native output on8screens/4cursors/87918 positional RNG entries, and
+fails the native state check with3daggers remaining instead of0. Baseline
+54ad0802 loaded across all7old modules fails3/3 fixtures:2023screens,
+1416cursors and140606 positional RNG entries. Takeoff alone misses2screens
+and2cursors with allRNG matching.
+
+regression-first.log was508/531 because default menu_style was unset.
+The new C menu_drop read it as a non-Full mode. jsmain now initializes it
+to MENU_FULL before applying explicit options. regression-second.log
+passes all531existing fixtures; final expanded sweep passes534. Invalid
+initial probe inputs are documented in the audit and were not promoted.
+The first retry assertion used the wrong dagger enchantment; it was
+corrected to C's minus-four value before promotion.
+
+Next: local commit, then continue traditional container selection. Full C
+traditional_loot (pickup.c3218..3261) and query_classes (140..263) have now
+been read. No next-pass edits or cache directory yet. in_container,
+out_container, ck_bag, simple_look and use_container need complete review.
+Existing pile/container menus still use sortloot_items; the new non-INVLET
+sortloot comparator paths have constructed controls but need integration
+and native testing. Do not push, publication authorization is unanswered.
+
+### Checkpoint: casting preconditions and forgotten spells
+
+Work in .cache/spell-memory is committed locally as 54ad0802. The final full
 sweep passes all 531 fixtures, 44 public plus 487 supplemental: 249,251
 screens/cursors and 9,273,681 RNG. The 21 prior public animation misses
 remain. regression-final.log and totals.json are complete. Supplemental
@@ -61,9 +115,8 @@ compared raw m_ap_type with M_AP_OBJECT; C's M_AP_TYPE masks M_AP_F_DKNOWN.
 The existing native coin-pile recording verifies the corrected assertion.
 wizard-create-final-state.log passes; no mimic runtime changed.
 
-Next immediate action: commit this checkpoint locally, then continue into
-ggetobj/askchain without stopping. The full C ggetobj
-body at invent.c:2202..2370 has been read; askchain has not. Publishing
+Next: continue into ggetobj/askchain without stopping. The full C ggetobj
+body at invent.c:2202..2370 and askchain have been read. Publishing
 remains blocked on the prior unanswered authorization question. Do not push.
 
 ### Current checkpoint: resistance and protective armor

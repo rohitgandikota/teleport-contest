@@ -1,10 +1,10 @@
 import { allow_all } from './pickup.js';
 import { PICK_ANY } from './const.js';
-import { USE_INVLET } from './const.js';
+import { USE_INVLET, MENU_TRADITIONAL, MENU_COMBINATION, ALL_FINISHED, INCLUDE_VENOM, SELL_DELIBERATE, SELL_NORMAL } from './const.js';
 import { INVORDER_SORT } from './const.js';
 import { Has_contents, bimanual } from './obj.js';
 import { COST_DEGRD } from './const.js';
-import { costly_alteration } from './shk.js';
+import { costly_alteration, sellobj_state } from './shk.js';
 import { distu } from './hacklib.js';
 import { Tobjnam } from './objnam.js';
 import { breakobj } from './dothrow.js';
@@ -12,7 +12,8 @@ import { obj_resists } from './zap.js';
 import { is_plural } from './obj.js';
 import { pudding_merge_message, obj_meld } from './mkobj.js';
 import { WT_SPLASH_THRESHOLD, ER_DESTROYED, HMON_THROWN, TRAPDOOR, HOLE, NO_TRAP } from './const.js';
-import { weight } from './invent.js';
+import { weight, ggetobj } from './invent.js';
+import { bypass_objlist, nxt_unbypassed_obj } from './worn.js';
 import { map_background } from './display.js';
 import { bury_objs } from './dig.js';
 import { Passes_walls, Underwater, Flying } from './youprop.js';
@@ -71,7 +72,7 @@ import { OCLASSES } from './objects_data.js';
 import { rn2, rnd, d } from './rng.js';
 import { can_reach_floor, u_safe_from_fatal_corpse,
          add_valid_menu_class, allow_category,
-         query_drop_categories, query_objlist } from './pickup.js';
+         query_drop_categories, query_objlist, count_justpicked, find_justpicked } from './pickup.js';
 import { body_part } from './polyself.js';
 import { dmgtype, is_displacer } from './mondata.js';
 import { ATTKS, PMNAMES, MFLAGS } from './monst_data.js';
@@ -1915,68 +1916,87 @@ async function menudrop_split(obj, count) {
     return drop(selected);
 }
 
+// src/do.c:924 doddrop()
 export async function doddrop() {
+    let result = ECMD_OK;
     if (!game.invent?.length) {
         await You('have nothing to drop.');
         return ECMD_OK;
     }
-
     add_valid_menu_class(0);
-    if (game.u.ushops?.length) {
-        const { sellobj_state } = await import('./shk.js');
-        sellobj_state(1); // SELL_DELIBERATE
-    }
+    if (game.u.ushops?.length) sellobj_state(SELL_DELIBERATE);
+    if (game.flags.menu_style !== MENU_TRADITIONAL
+        || (result = await ggetobj('drop', drop, 0, false, null)) < -1)
+        result = await menu_drop(result);
+    if (game.u.ushops?.length) sellobj_state(SELL_NORMAL);
+    if (result) reset_occupations();
+    return result;
+}
 
-    let result = ECMD_OK;
-    if ((game.flags?.menu_style ?? MENU_FULL) === MENU_FULL) {
-        let all_categories = false;
-        let drop_everything = false;
-        let autopick = false;
-        const categories = await query_drop_categories(game.invent);
-
-        for (const category of categories) {
-            if (category === ALL_TYPES_SELECTED) {
-                all_categories = true;
-            } else if (category === 'A'.charCodeAt(0)) {
-                drop_everything = autopick = true;
-            } else {
-                add_valid_menu_class(category);
-                drop_everything = false;
-            }
-        }
-
-        let dropped = 0;
-        if (autopick) {
-            for (const obj of [...game.invent]) {
-                if (drop_everything || all_categories || allow_category(obj))
-                    dropped += (await drop(obj)) === ECMD_TIME ? 1 : 0;
-            }
-        } else if (categories.length) {
-            const eligible = game.invent.filter(
-                (obj) => all_categories || allow_category(obj));
-            const objects = await query_objlist(
-                'What would you like to drop?', eligible,
-                INVORDER_SORT | USE_INVLET, PICK_ANY, allow_all);
-            for (const obj of objects) {
-                if (game.invent.includes(obj)) {
-                    const count = objects.counts?.get(obj) ?? obj.quan;
-                    dropped += (await menudrop_split(obj, count)) === ECMD_TIME
-                        ? 1 : 0;
+// src/do.c:982 menu_drop()
+async function menu_drop(retry) {
+    let n_dropped = 0;
+    let all_categories = true, drop_everything = false, autopick = false;
+    let drop_justpicked = false, justpicked_quan = 0;
+    drop_done: {
+        if (retry) {
+            all_categories = retry === -2;
+        } else if (game.flags.menu_style === MENU_FULL) {
+            all_categories = false;
+            const pick_list = await query_drop_categories(game.invent);
+            if (!pick_list.length) break drop_done;
+            for (const pick of pick_list) {
+                if (pick === ALL_TYPES_SELECTED) {
+                    all_categories = true;
+                } else if (pick === 65) {
+                    drop_everything = autopick = true;
+                } else if (pick === 80) {
+                    justpicked_quan = Math.max(0, pick_list.counts?.get(pick) ?? 0);
+                    drop_justpicked = true;
+                    drop_everything = false;
+                    add_valid_menu_class(pick);
+                } else {
+                    add_valid_menu_class(pick);
+                    drop_everything = false;
                 }
             }
+        } else if (game.flags.menu_style === MENU_COMBINATION) {
+            const ggoresults = { v: 0 };
+            all_categories = false;
+            const i = await ggetobj('drop', drop, 0, true, ggoresults);
+            if (i === -2) all_categories = true;
+            if (ggoresults.v & ALL_FINISHED) {
+                n_dropped = i;
+                break drop_done;
+            }
         }
-        result = dropped ? ECMD_TIME : ECMD_OK;
-    } else {
-        note_unported_do('doddrop:non_full_menu_style');
+        if (autopick) {
+            bypass_objlist(game.invent, false);
+            let otmp;
+            while ((otmp = nxt_unbypassed_obj(game.invent)) !== null)
+                if (drop_everything || all_categories || allow_category(otmp))
+                    n_dropped += (await drop(otmp) & ECMD_TIME) ? 1 : 0;
+            bypass_objlist(game.invent, false);
+        } else if (drop_justpicked && count_justpicked(game.invent) === 1) {
+            const otmp = find_justpicked(game.invent);
+            if (otmp)
+                n_dropped += (await menudrop_split(otmp, justpicked_quan) & ECMD_TIME) ? 1 : 0;
+        } else {
+            const pick_list = await query_objlist('What would you like to drop?', game.invent,
+                USE_INVLET | INVORDER_SORT | INCLUDE_VENOM, PICK_ANY,
+                all_categories ? allow_all : allow_category);
+            if (pick_list.length > 0) {
+                bypass_objlist(game.invent, true);
+                for (const otmp of pick_list) {
+                    if (!game.invent.includes(otmp) || !otmp.bypass) continue;
+                    n_dropped += (await menudrop_split(otmp,
+                        pick_list.counts?.get(otmp) ?? -1) & ECMD_TIME) ? 1 : 0;
+                }
+                bypass_objlist(game.invent, false);
+            }
+        }
     }
-
-    if (game.u.ushops?.length) {
-        const { sellobj_state } = await import('./shk.js');
-        sellobj_state(0); // SELL_NORMAL
-    }
-    if (result)
-        reset_occupations();
-    return result;
+    return n_dropped ? ECMD_TIME : ECMD_OK;
 }
 
 // src/do.c:665 canletgo() — may this object leave the hero's hands?

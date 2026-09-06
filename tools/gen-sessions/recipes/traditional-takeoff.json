@@ -1,0 +1,302 @@
+{
+  "name": "traditional-takeoff",
+  "description": "Shared takeoff selection preserves requested class order, equipment checks, menu handoff and unusual wielded objects.",
+  "coverage": [
+    "mode.debug",
+    "object.identification",
+    "ui.menus",
+    "ui.getlin",
+    "ui.cancel-invalid"
+  ],
+  "branches": [
+    "traditional-takeoff.takeoff-reverse-classes",
+    "traditional-takeoff.takeoff-all",
+    "traditional-takeoff.takeoff-default",
+    "traditional-takeoff.takeoff-quit",
+    "traditional-takeoff.takeoff-no-match-ring",
+    "traditional-takeoff.takeoff-no-match-amulet",
+    "traditional-takeoff.takeoff-no-match-tool",
+    "traditional-takeoff.takeoff-invalid-class",
+    "traditional-takeoff.takeoff-menu",
+    "traditional-takeoff.takeoff-filtered-menu",
+    "traditional-takeoff.takeoff-unknown",
+    "traditional-takeoff.takeoff-inventory",
+    "traditional-takeoff.takeoff-combo-all",
+    "traditional-takeoff.takeoff-combo-armor",
+    "traditional-takeoff.takeoff-no-armor",
+    "traditional-takeoff.takeoff-no-weapon",
+    "traditional-takeoff.takeoff-wielded-food",
+    "traditional-takeoff.takeoff-wielded-gem"
+  ],
+  "requireBranchAssertions": true,
+  "segments": [
+    {
+      "name": "takeoff-reverse-classes",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed daggers\r\u0017blessed potion of healing\r\u0017cursed ring of protection\r\u0017uncursed leather armor\rWe     \u001b\u001b\u001b\u001b\u001b\u001bwb     \u001b\u001b\u001b\u001b\u001b\u001bA[)\ryy     \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "takeoff-all",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed daggers\r\u0017blessed potion of healing\r\u0017cursed ring of protection\r\u0017uncursed leather armor\rWe     \u001b\u001b\u001b\u001b\u001b\u001bwb     \u001b\u001b\u001b\u001b\u001b\u001bAa\r     \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "takeoff-default",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed daggers\r\u0017blessed potion of healing\r\u0017cursed ring of protection\r\u0017uncursed leather armor\rWe     \u001b\u001b\u001b\u001b\u001b\u001bwb     \u001b\u001b\u001b\u001b\u001b\u001bAA\rny     \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "takeoff-quit",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed daggers\r\u0017blessed potion of healing\r\u0017cursed ring of protection\r\u0017uncursed leather armor\rWe     \u001b\u001b\u001b\u001b\u001b\u001bwb     \u001b\u001b\u001b\u001b\u001b\u001bAA\rq     \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "takeoff-no-match-ring",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed daggers\r\u0017blessed potion of healing\r\u0017cursed ring of protection\r\u0017uncursed leather armor\rWe     \u001b\u001b\u001b\u001b\u001b\u001bwb     \u001b\u001b\u001b\u001b\u001b\u001bA=\r     \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "takeoff-no-match-amulet",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed daggers\r\u0017blessed potion of healing\r\u0017cursed ring of protection\r\u0017uncursed leather armor\rWe     \u001b\u001b\u001b\u001b\u001b\u001bwb     \u001b\u001b\u001b\u001b\u001b\u001bA\"\r     \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "takeoff-no-match-tool",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed daggers\r\u0017blessed potion of healing\r\u0017cursed ring of protection\r\u0017uncursed leather armor\rWe     \u001b\u001b\u001b\u001b\u001b\u001bwb     \u001b\u001b\u001b\u001b\u001b\u001bA(\r     \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "takeoff-invalid-class",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed daggers\r\u0017blessed potion of healing\r\u0017cursed ring of protection\r\u0017uncursed leather armor\rWe     \u001b\u001b\u001b\u001b\u001b\u001bwb     \u001b\u001b\u001b\u001b\u001b\u001bA!\r     \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "takeoff-menu",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed daggers\r\u0017blessed potion of healing\r\u0017cursed ring of protection\r\u0017uncursed leather armor\rWe     \u001b\u001b\u001b\u001b\u001b\u001bwb     \u001b\u001b\u001b\u001b\u001b\u001bAm\rbe\r     \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "takeoff-filtered-menu",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed daggers\r\u0017blessed potion of healing\r\u0017cursed ring of protection\r\u0017uncursed leather armor\rWe     \u001b\u001b\u001b\u001b\u001b\u001bwb     \u001b\u001b\u001b\u001b\u001b\u001bA)m\rb\r     \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "takeoff-unknown",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed daggers\r\u0017blessed potion of healing\r\u0017cursed ring of protection\r\u0017uncursed leather armor\rWe     \u001b\u001b\u001b\u001b\u001b\u001bwb     \u001b\u001b\u001b\u001b\u001b\u001bAX\ra     \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "takeoff-inventory",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed daggers\r\u0017blessed potion of healing\r\u0017cursed ring of protection\r\u0017uncursed leather armor\rWe     \u001b\u001b\u001b\u001b\u001b\u001bwb     \u001b\u001b\u001b\u001b\u001b\u001bAi\rb)\ry     \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "takeoff-combo-all",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:combination\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed daggers\r\u0017blessed potion of healing\r\u0017cursed ring of protection\r\u0017uncursed leather armor\rWe     \u001b\u001b\u001b\u001b\u001b\u001bwb     \u001b\u001b\u001b\u001b\u001b\u001bAa\r     \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "takeoff-combo-armor",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:combination\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed daggers\r\u0017blessed potion of healing\r\u0017cursed ring of protection\r\u0017uncursed leather armor\rWe     \u001b\u001b\u001b\u001b\u001b\u001bwb     \u001b\u001b\u001b\u001b\u001b\u001bA[\re\r     \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "takeoff-no-armor",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed dagger\rwb     \u001b\u001b\u001b\u001b\u001b\u001bA[\r     \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "takeoff-no-weapon",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed leather armor\rWb     \u001b\u001b\u001b\u001b\u001b\u001bA)\r     \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "takeoff-wielded-food",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed food ration\rwb     \u001b\u001b\u001b\u001b\u001b\u001bA%\ry     \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "takeoff-wielded-gem",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed ruby\rwb     \u001b\u001b\u001b\u001b\u001b\u001bA*\ry     \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    }
+  ],
+  "branchAssertions": [
+    {
+      "branch": "traditional-takeoff.takeoff-reverse-classes",
+      "segment": 0,
+      "screenIncludes": [
+        "What kinds of thing do you want to take off?",
+        "e - a -1 leather armor (being worn)?",
+        "b - 3 daggers (wielded)?"
+      ]
+    },
+    {
+      "branch": "traditional-takeoff.takeoff-all",
+      "segment": 1,
+      "screenIncludes": [
+        "What kinds of thing do you want to take off?"
+      ]
+    },
+    {
+      "branch": "traditional-takeoff.takeoff-default",
+      "segment": 2,
+      "screenIncludes": [
+        "What kinds of thing do you want to take off?"
+      ]
+    },
+    {
+      "branch": "traditional-takeoff.takeoff-quit",
+      "segment": 3,
+      "screenIncludes": [
+        "What kinds of thing do you want to take off?"
+      ]
+    },
+    {
+      "branch": "traditional-takeoff.takeoff-no-match-ring",
+      "segment": 4,
+      "screenIncludes": [
+        "What kinds of thing do you want to take off?",
+        "You are not wearing rings."
+      ]
+    },
+    {
+      "branch": "traditional-takeoff.takeoff-no-match-amulet",
+      "segment": 5,
+      "screenIncludes": [
+        "What kinds of thing do you want to take off?",
+        "You are not wearing an amulet."
+      ]
+    },
+    {
+      "branch": "traditional-takeoff.takeoff-no-match-tool",
+      "segment": 6,
+      "screenIncludes": [
+        "What kinds of thing do you want to take off?",
+        "You are not wearing a blindfold."
+      ]
+    },
+    {
+      "branch": "traditional-takeoff.takeoff-invalid-class",
+      "segment": 7,
+      "screenIncludes": [
+        "What kinds of thing do you want to take off?",
+        "Not applicable."
+      ]
+    },
+    {
+      "branch": "traditional-takeoff.takeoff-menu",
+      "segment": 8,
+      "screenIncludes": [
+        "What kinds of thing do you want to take off?",
+        "What do you want to take off?"
+      ]
+    },
+    {
+      "branch": "traditional-takeoff.takeoff-filtered-menu",
+      "segment": 9,
+      "screenIncludes": [
+        "What kinds of thing do you want to take off?",
+        "What do you want to take off?"
+      ]
+    },
+    {
+      "branch": "traditional-takeoff.takeoff-unknown",
+      "segment": 10,
+      "screenIncludes": [
+        "What kinds of thing do you want to take off?"
+      ]
+    },
+    {
+      "branch": "traditional-takeoff.takeoff-inventory",
+      "segment": 11,
+      "screenIncludes": [
+        "What kinds of thing do you want to take off?"
+      ]
+    },
+    {
+      "branch": "traditional-takeoff.takeoff-combo-all",
+      "segment": 12,
+      "screenIncludes": [
+        "What kinds of thing do you want to take off?"
+      ]
+    },
+    {
+      "branch": "traditional-takeoff.takeoff-combo-armor",
+      "segment": 13,
+      "screenIncludes": [
+        "What kinds of thing do you want to take off?"
+      ]
+    },
+    {
+      "branch": "traditional-takeoff.takeoff-no-armor",
+      "segment": 14,
+      "screenIncludes": [
+        "What kinds of thing do you want to take off?",
+        "You are not wearing any armor."
+      ]
+    },
+    {
+      "branch": "traditional-takeoff.takeoff-no-weapon",
+      "segment": 15,
+      "screenIncludes": [
+        "What kinds of thing do you want to take off?",
+        "You are not wielding anything."
+      ]
+    },
+    {
+      "branch": "traditional-takeoff.takeoff-wielded-food",
+      "segment": 16,
+      "screenIncludes": [
+        "What kinds of thing do you want to take off?",
+        "b - a food ration (wielded)?",
+        "You finish disarming."
+      ]
+    },
+    {
+      "branch": "traditional-takeoff.takeoff-wielded-gem",
+      "segment": 17,
+      "screenIncludes": [
+        "What kinds of thing do you want to take off?",
+        "b - a red gem (wielded)?",
+        "You finish disarming."
+      ]
+    }
+  ]
+}

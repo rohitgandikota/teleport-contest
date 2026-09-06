@@ -1,0 +1,558 @@
+{
+  "name": "pickup-reach-guards",
+  "description": "Empty furniture, water and lava forms, levitation, blind reach, pits and holes, unskilled riding, and empty engulfer feedback.",
+  "coverage": [
+    "mode.debug",
+    "ui.menus",
+    "ui.more-paging",
+    "object.food-corpses",
+    "object.tools-containers"
+  ],
+  "branches": [
+    "pickup-reach-guards.empty-floor",
+    "pickup-reach-guards.empty-throne",
+    "pickup-reach-guards.empty-looted-throne",
+    "pickup-reach-guards.empty-sink",
+    "pickup-reach-guards.empty-grave",
+    "pickup-reach-guards.empty-fountain",
+    "pickup-reach-guards.empty-altar",
+    "pickup-reach-guards.empty-stairs",
+    "pickup-reach-guards.levitation-floor",
+    "pickup-reach-guards.levitation-blind",
+    "pickup-reach-guards.levitation-unseen-pit",
+    "pickup-reach-guards.levitation-hole",
+    "pickup-reach-guards.levitation-trap-door",
+    "pickup-reach-guards.pool-human",
+    "pickup-reach-guards.pool-bat",
+    "pickup-reach-guards.pool-floating-eye",
+    "pickup-reach-guards.pool-cave-spider",
+    "pickup-reach-guards.pool-xorn",
+    "pickup-reach-guards.pool-salamander",
+    "pickup-reach-guards.pool-lurker-above",
+    "pickup-reach-guards.pool-air-elemental",
+    "pickup-reach-guards.lava-bat",
+    "pickup-reach-guards.lava-floating-eye",
+    "pickup-reach-guards.lava-xorn",
+    "pickup-reach-guards.lava-salamander",
+    "pickup-reach-guards.lava-lurker-above",
+    "pickup-reach-guards.lava-air-elemental",
+    "pickup-reach-guards.pool-water-walking",
+    "pickup-reach-guards.lava-water-walking",
+    "pickup-reach-guards.empty-worm",
+    "pickup-reach-guards.empty-worm-blind-regurgitation",
+    "pickup-reach-guards.empty-vortex",
+    "pickup-reach-guards.empty-vortex-blind",
+    "pickup-reach-guards.seen-pit-bottom",
+    "pickup-reach-guards.mounted-unskilled",
+    "pickup-reach-guards.empty-open-door"
+  ],
+  "requireBranchAssertions": true,
+  "segments": [
+    {
+      "name": "empty-floor",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:full\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001bk        \u001b\u001b\u001b\u001b\u001b\u001b,        \u001b\u001b\u001b\u001b\u001b\u001b        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "empty-throne",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:full\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001bk        \u001b\u001b\u001b\u001b\u001b\u001b\u0017throne\r        \u001b\u001b\u001b\u001b\u001b\u001b,        \u001b\u001b\u001b\u001b\u001b\u001b        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "empty-looted-throne",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:full\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001bk        \u001b\u001b\u001b\u001b\u001b\u001b\u0017looted throne\r        \u001b\u001b\u001b\u001b\u001b\u001b,        \u001b\u001b\u001b\u001b\u001b\u001b        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "empty-sink",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:full\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001bk        \u001b\u001b\u001b\u001b\u001b\u001b\u0017sink\r        \u001b\u001b\u001b\u001b\u001b\u001b,        \u001b\u001b\u001b\u001b\u001b\u001b        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "empty-grave",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:full\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001bk        \u001b\u001b\u001b\u001b\u001b\u001b\u0017grave\r        \u001b\u001b\u001b\u001b\u001b\u001b,        \u001b\u001b\u001b\u001b\u001b\u001b        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "empty-fountain",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:full\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001bk        \u001b\u001b\u001b\u001b\u001b\u001b\u0017fountain\r        \u001b\u001b\u001b\u001b\u001b\u001b,        \u001b\u001b\u001b\u001b\u001b\u001b        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "empty-altar",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:full\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001bk        \u001b\u001b\u001b\u001b\u001b\u001b\u0017altar\r        \u001b\u001b\u001b\u001b\u001b\u001b,        \u001b\u001b\u001b\u001b\u001b\u001b        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "empty-stairs",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:full\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001bk        \u001b\u001b\u001b\u001b\u001b\u001bj        \u001b\u001b\u001b\u001b\u001b\u001b,        \u001b\u001b\u001b\u001b\u001b\u001b        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "levitation-floor",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:full\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001bk        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed ring of levitation\r        \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed daggers\r        \u001b\u001b\u001b\u001b\u001b\u001bdc        \u001b\u001b\u001b\u001b\u001b\u001bPbr        \u001b\u001b\u001b\u001b\u001b\u001b,        \u001b\u001b\u001b\u001b\u001b\u001b        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "levitation-blind",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:full\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001bk        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed ring of levitation\r        \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed daggers\r        \u001b\u001b\u001b\u001b\u001b\u001bdc        \u001b\u001b\u001b\u001b\u001b\u001bPbr        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed blindfold\r        \u001b\u001b\u001b\u001b\u001b\u001bPd        \u001b\u001b\u001b\u001b\u001b\u001b,        \u001b\u001b\u001b\u001b\u001b\u001b        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "levitation-unseen-pit",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:full\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001bk        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed ring of levitation\r        \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed daggers\r        \u001b\u001b\u001b\u001b\u001b\u001bdc        \u001b\u001b\u001b\u001b\u001b\u001bPbr        \u001b\u001b\u001b\u001b\u001b\u001b\u0017pit trap\r        \u001b\u001b\u001b\u001b\u001b\u001b,        \u001b\u001b\u001b\u001b\u001b\u001b        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "levitation-hole",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:full\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001bk        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed ring of levitation\r        \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed daggers\r        \u001b\u001b\u001b\u001b\u001b\u001bdc        \u001b\u001b\u001b\u001b\u001b\u001bPbr        \u001b\u001b\u001b\u001b\u001b\u001b\u0017hole\r        \u001b\u001b\u001b\u001b\u001b\u001b,        \u001b\u001b\u001b\u001b\u001b\u001b        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "levitation-trap-door",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:full\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001bk        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed ring of levitation\r        \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed daggers\r        \u001b\u001b\u001b\u001b\u001b\u001bdc        \u001b\u001b\u001b\u001b\u001b\u001bPbr        \u001b\u001b\u001b\u001b\u001b\u001b\u0017trap door\r        \u001b\u001b\u001b\u001b\u001b\u001b,        \u001b\u001b\u001b\u001b\u001b\u001b        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "pool-human",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:full\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001bk        \u001b\u001b\u001b\u001b\u001b\u001b\u0017pool\r        \u001b\u001b\u001b\u001b\u001b\u001b,        \u001b\u001b\u001b\u001b\u001b\u001b        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "pool-bat",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:full\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001bk        \u001b\u001b\u001b\u001b\u001b\u001b#polyself\rbat\r        \u001b\u001b\u001b\u001b\u001b\u001b\u0017pool\r        \u001b\u001b\u001b\u001b\u001b\u001b,        \u001b\u001b\u001b\u001b\u001b\u001b        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "pool-floating-eye",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:full\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001bk        \u001b\u001b\u001b\u001b\u001b\u001b#polyself\rfloating eye\r        \u001b\u001b\u001b\u001b\u001b\u001b\u0017pool\r        \u001b\u001b\u001b\u001b\u001b\u001b,        \u001b\u001b\u001b\u001b\u001b\u001b        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "pool-cave-spider",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:full\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001bk        \u001b\u001b\u001b\u001b\u001b\u001b#polyself\rcave spider\r        \u001b\u001b\u001b\u001b\u001b\u001b\u0017pool\r        \u001b\u001b\u001b\u001b\u001b\u001b,        \u001b\u001b\u001b\u001b\u001b\u001b        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "pool-xorn",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:full\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001bk        \u001b\u001b\u001b\u001b\u001b\u001b#polyself\rxorn\r        \u001b\u001b\u001b\u001b\u001b\u001b\u0017pool\r        \u001b\u001b\u001b\u001b\u001b\u001b,        \u001b\u001b\u001b\u001b\u001b\u001b        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "pool-salamander",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:full\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001bk        \u001b\u001b\u001b\u001b\u001b\u001b#polyself\rsalamander\r        \u001b\u001b\u001b\u001b\u001b\u001b\u0017pool\r        \u001b\u001b\u001b\u001b\u001b\u001b,        \u001b\u001b\u001b\u001b\u001b\u001b        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "pool-lurker-above",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:full\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001bk        \u001b\u001b\u001b\u001b\u001b\u001b#polyself\rlurker above\r        \u001b\u001b\u001b\u001b\u001b\u001b\u0017pool\r        \u001b\u001b\u001b\u001b\u001b\u001b,        \u001b\u001b\u001b\u001b\u001b\u001b        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "pool-air-elemental",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:full\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001bk        \u001b\u001b\u001b\u001b\u001b\u001b#polyself\rair elemental\r        \u001b\u001b\u001b\u001b\u001b\u001b\u0017pool\r        \u001b\u001b\u001b\u001b\u001b\u001b,        \u001b\u001b\u001b\u001b\u001b\u001b        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "lava-bat",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:full\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001bk        \u001b\u001b\u001b\u001b\u001b\u001b#polyself\rbat\r        \u001b\u001b\u001b\u001b\u001b\u001b\u0017lava\r        \u001b\u001b\u001b\u001b\u001b\u001b,        \u001b\u001b\u001b\u001b\u001b\u001b        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "lava-floating-eye",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:full\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001bk        \u001b\u001b\u001b\u001b\u001b\u001b#polyself\rfloating eye\r        \u001b\u001b\u001b\u001b\u001b\u001b\u0017lava\r        \u001b\u001b\u001b\u001b\u001b\u001b,        \u001b\u001b\u001b\u001b\u001b\u001b        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "lava-xorn",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:full\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001bk        \u001b\u001b\u001b\u001b\u001b\u001b#polyself\rxorn\r        \u001b\u001b\u001b\u001b\u001b\u001b\u0017lava\r        \u001b\u001b\u001b\u001b\u001b\u001b,        \u001b\u001b\u001b\u001b\u001b\u001b        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "lava-salamander",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:full\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001bk        \u001b\u001b\u001b\u001b\u001b\u001b#polyself\rsalamander\r        \u001b\u001b\u001b\u001b\u001b\u001b\u0017lava\r        \u001b\u001b\u001b\u001b\u001b\u001b,        \u001b\u001b\u001b\u001b\u001b\u001b        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "lava-lurker-above",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:full\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001bk        \u001b\u001b\u001b\u001b\u001b\u001b#polyself\rlurker above\r        \u001b\u001b\u001b\u001b\u001b\u001b\u0017lava\r        \u001b\u001b\u001b\u001b\u001b\u001b,        \u001b\u001b\u001b\u001b\u001b\u001b        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "lava-air-elemental",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:full\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001bk        \u001b\u001b\u001b\u001b\u001b\u001b#polyself\rair elemental\r        \u001b\u001b\u001b\u001b\u001b\u001b\u0017lava\r        \u001b\u001b\u001b\u001b\u001b\u001b,        \u001b\u001b\u001b\u001b\u001b\u001b        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "pool-water-walking",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:full\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001bk        \u001b\u001b\u001b\u001b\u001b\u001b\u0017fireproof uncursed water walking boots\r        \u001b\u001b\u001b\u001b\u001b\u001bWb        \u001b\u001b\u001b\u001b\u001b\u001b\u0017pool\r        \u001b\u001b\u001b\u001b\u001b\u001b,        \u001b\u001b\u001b\u001b\u001b\u001b        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "lava-water-walking",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:full\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001bk        \u001b\u001b\u001b\u001b\u001b\u001b\u0017fireproof uncursed water walking boots\r        \u001b\u001b\u001b\u001b\u001b\u001bWb        \u001b\u001b\u001b\u001b\u001b\u001b\u0017lava\r        \u001b\u001b\u001b\u001b\u001b\u001b,        \u001b\u001b\u001b\u001b\u001b\u001b        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             \u0017uncursed oil lamp\r\u001b\u001b\u001b\u001b\u001b\u001baa  \u001b\u001b\u001b\u001b\u001b\u001b\u0007purple worm\rmsms        \u001b\u001b\u001b\u001b\u001b\u001b,        \u001b\u001b\u001b\u001b\u001b\u001b:        \u001b\u001b\u001b\u001b\u001b\u001b",
+      "name": "empty-worm"
+    },
+    {
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             \u0017uncursed oil lamp\r\u001b\u001b\u001b\u001b\u001b\u001baa  \u001b\u001b\u001b\u001b\u001b\u001b\u0007purple worm\rmsms        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed blindfold\r        \u001b\u001b\u001b\u001b\u001b\u001bPb        \u001b\u001b\u001b\u001b\u001b\u001b,        \u001b\u001b\u001b\u001b\u001b\u001b:        \u001b\u001b\u001b\u001b\u001b\u001b",
+      "name": "empty-worm-blind-regurgitation"
+    },
+    {
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             \u0017uncursed oil lamp\r\u001b\u001b\u001b\u001b\u001b\u001baa  \u001b\u001b\u001b\u001b\u001b\u001b\u0007hostile ice vortex\rmsms        \u001b\u001b\u001b\u001b\u001b\u001b,        \u001b\u001b\u001b\u001b\u001b\u001b:        \u001b\u001b\u001b\u001b\u001b\u001b",
+      "name": "empty-vortex"
+    },
+    {
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             \u0017uncursed oil lamp\r\u001b\u001b\u001b\u001b\u001b\u001baa  \u001b\u001b\u001b\u001b\u001b\u001b\u0007hostile ice vortex\rmsms        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed blindfold\r        \u001b\u001b\u001b\u001b\u001b\u001bPb        \u001b\u001b\u001b\u001b\u001b\u001b,        \u001b\u001b\u001b\u001b\u001b\u001b:        \u001b\u001b\u001b\u001b\u001b\u001b",
+      "name": "empty-vortex-blind"
+    },
+    {
+      "name": "seen-pit-bottom",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:full\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001bk        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed ring of levitation\r        \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed daggers\r        \u001b\u001b\u001b\u001b\u001b\u001bdc        \u001b\u001b\u001b\u001b\u001b\u001b\u0017pit\r        \u001b\u001b\u001b\u001b\u001b\u001bjk        \u001b\u001b\u001b\u001b\u001b\u001bPbr        \u001b\u001b\u001b\u001b\u001b\u001b,        \u001b\u001b\u001b\u001b\u001b\u001b        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "mounted-unskilled",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:full\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001bk        \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed daggers\r        \u001b\u001b\u001b\u001b\u001b\u001bdb        \u001b\u001b\u001b\u001b\u001b\u001b\u0007tame saddled pony\r        \u001b\u001b\u001b\u001b\u001b\u001b#ride\rky        \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed daggers\r        \u001b\u001b\u001b\u001b\u001b\u001bdc        \u001b\u001b\u001b\u001b\u001b\u001b,        \u001b\u001b\u001b\u001b\u001b\u001b        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "empty-open-door",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:full\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001bk        \u001b\u001b\u001b\u001b\u001b\u001b\u0017iron bars\r        \u001b\u001b\u001b\u001b\u001b\u001b\u0017open door\r        \u001b\u001b\u001b\u001b\u001b\u001b,        \u001b\u001b\u001b\u001b\u001b\u001b        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b"
+    }
+  ],
+  "branchAssertions": [
+    {
+      "branch": "pickup-reach-guards.empty-floor",
+      "segment": 0,
+      "screenIncludes": [
+        "There is nothing here to pick up."
+      ]
+    },
+    {
+      "branch": "pickup-reach-guards.empty-throne",
+      "segment": 1,
+      "screenIncludes": [
+        "It must weigh a ton!"
+      ]
+    },
+    {
+      "branch": "pickup-reach-guards.empty-looted-throne",
+      "segment": 2,
+      "screenIncludes": [
+        "It must weigh almost a ton!"
+      ]
+    },
+    {
+      "branch": "pickup-reach-guards.empty-sink",
+      "segment": 3,
+      "screenIncludes": [
+        "The plumbing connects it to the floor."
+      ]
+    },
+    {
+      "branch": "pickup-reach-guards.empty-grave",
+      "segment": 4,
+      "screenIncludes": [
+        "You don't need a gravestone.  Yet."
+      ]
+    },
+    {
+      "branch": "pickup-reach-guards.empty-fountain",
+      "segment": 5,
+      "screenIncludes": [
+        "You could drink the water..."
+      ]
+    },
+    {
+      "branch": "pickup-reach-guards.empty-altar",
+      "segment": 6,
+      "screenIncludes": [
+        "Moving the altar would be a very bad idea."
+      ]
+    },
+    {
+      "branch": "pickup-reach-guards.empty-stairs",
+      "segment": 7,
+      "screenIncludes": [
+        "The stairs are solidly affixed."
+      ]
+    },
+    {
+      "branch": "pickup-reach-guards.levitation-floor",
+      "segment": 8,
+      "screenIncludes": [
+        "You cannot reach the floor."
+      ]
+    },
+    {
+      "branch": "pickup-reach-guards.levitation-blind",
+      "segment": 9,
+      "screenIncludes": [
+        "You cannot reach anything here."
+      ]
+    },
+    {
+      "branch": "pickup-reach-guards.levitation-unseen-pit",
+      "segment": 10,
+      "screenIncludes": [
+        "You cannot reach the floor."
+      ]
+    },
+    {
+      "branch": "pickup-reach-guards.levitation-hole",
+      "segment": 11,
+      "screenIncludes": [
+        "You cannot reach the edge of the hole."
+      ]
+    },
+    {
+      "branch": "pickup-reach-guards.levitation-trap-door",
+      "segment": 12,
+      "screenIncludes": [
+        "You cannot reach the trap door."
+      ]
+    },
+    {
+      "branch": "pickup-reach-guards.pool-human",
+      "segment": 13,
+      "screenIncludes": [
+        "You can't even see the bottom, let alone pick up something."
+      ]
+    },
+    {
+      "branch": "pickup-reach-guards.pool-bat",
+      "segment": 14,
+      "screenIncludes": [
+        "You cannot dive into the water to pick things up."
+      ]
+    },
+    {
+      "branch": "pickup-reach-guards.pool-floating-eye",
+      "segment": 15,
+      "screenIncludes": [
+        "You cannot dive into the water to pick things up."
+      ]
+    },
+    {
+      "branch": "pickup-reach-guards.pool-cave-spider",
+      "segment": 16,
+      "screenIncludes": [
+        "You can't even see the bottom, let alone pick up something."
+      ]
+    },
+    {
+      "branch": "pickup-reach-guards.pool-xorn",
+      "segment": 17,
+      "screenIncludes": [
+        "You can't even see the bottom, let alone pick up something."
+      ]
+    },
+    {
+      "branch": "pickup-reach-guards.pool-salamander",
+      "segment": 18,
+      "screenIncludes": [
+        "You can't even see the bottom, let alone pick up something."
+      ]
+    },
+    {
+      "branch": "pickup-reach-guards.pool-lurker-above",
+      "segment": 19,
+      "screenIncludes": [
+        "You cannot dive into the water to pick things up."
+      ]
+    },
+    {
+      "branch": "pickup-reach-guards.pool-air-elemental",
+      "segment": 20,
+      "screenIncludes": [
+        "You can't even see the bottom, let alone pick up something."
+      ]
+    },
+    {
+      "branch": "pickup-reach-guards.lava-bat",
+      "segment": 21,
+      "screenIncludes": [
+        "You can't reach the bottom to pick things up."
+      ]
+    },
+    {
+      "branch": "pickup-reach-guards.lava-floating-eye",
+      "segment": 22,
+      "screenIncludes": [
+        "You can't reach the bottom to pick things up."
+      ]
+    },
+    {
+      "branch": "pickup-reach-guards.lava-xorn",
+      "segment": 23,
+      "screenIncludes": [
+        "You would burn to a crisp trying to pick things up."
+      ]
+    },
+    {
+      "branch": "pickup-reach-guards.lava-salamander",
+      "segment": 24,
+      "screenIncludes": [
+        "There is nothing here to pick up."
+      ]
+    },
+    {
+      "branch": "pickup-reach-guards.lava-lurker-above",
+      "segment": 25,
+      "screenIncludes": [
+        "You can't reach the bottom to pick things up."
+      ]
+    },
+    {
+      "branch": "pickup-reach-guards.lava-air-elemental",
+      "segment": 26,
+      "screenIncludes": [
+        "You would burn to a crisp trying to pick things up."
+      ]
+    },
+    {
+      "branch": "pickup-reach-guards.pool-water-walking",
+      "segment": 27,
+      "screenIncludes": [
+        "You cannot dive into the water to pick things up."
+      ]
+    },
+    {
+      "branch": "pickup-reach-guards.lava-water-walking",
+      "segment": 28,
+      "screenIncludes": [
+        "You can't reach the bottom to pick things up."
+      ]
+    },
+    {
+      "branch": "pickup-reach-guards.empty-worm",
+      "segment": 29,
+      "screenIncludes": [
+        "You pick up the purple worm's tongue."
+      ]
+    },
+    {
+      "branch": "pickup-reach-guards.empty-worm-blind-regurgitation",
+      "segment": 30,
+      "screenIncludes": [
+        "You pick up the purple worm's tongue."
+      ]
+    },
+    {
+      "branch": "pickup-reach-guards.empty-vortex",
+      "segment": 31,
+      "screenIncludes": [
+        "You don't see anything in here to pick up."
+      ]
+    },
+    {
+      "branch": "pickup-reach-guards.empty-vortex-blind",
+      "segment": 32,
+      "screenIncludes": [
+        "You don't feel anything in here to pick up."
+      ]
+    },
+    {
+      "branch": "pickup-reach-guards.seen-pit-bottom",
+      "segment": 33,
+      "screenIncludes": [
+        "You cannot reach the bottom of the pit."
+      ]
+    },
+    {
+      "branch": "pickup-reach-guards.mounted-unskilled",
+      "segment": 34,
+      "screenIncludes": [
+        "You aren't skilled enough to reach from your pony."
+      ]
+    },
+    {
+      "branch": "pickup-reach-guards.empty-open-door",
+      "segment": 35,
+      "screenIncludes": [
+        "It won't come off the hinges."
+      ]
+    }
+  ]
+}

@@ -6,7 +6,9 @@
 // holds the pieces of src/trap.c it calls into, so that a grep for a C symbol
 // finds it in the file its C twin lives in.
 
-import { t_at } from './mon.js';
+import { t_at, mon_to_stone } from './mon.js';
+import { mon_adjust_speed } from './worn.js';
+import { pline_mon } from './pline.js';
 import { aobjnam } from './objnam.js';
 import { has_omonst } from './const.js';
 import { OMONST } from './const.js';
@@ -121,7 +123,7 @@ import { inv_cnt, crawl_destination, unmul, in_rooms,
 import { distu } from './hacklib.js';
 import { near_capacity, change_luck } from './attrib.js';
 import { UNENCUMBERED, SLT_ENCUMBER, KILLED_BY, DROWNING, BURNING, DISSOLVED,
-         STONING, WATER, FIRE_RES, FAST, MFAST, XKILL_NOMSG,
+         STONING, WATER, FIRE_RES, XKILL_NOMSG,
          NO_KILLER_PREFIX, OBJ_FLOOR, OBJ_INVENT, OBJ_MINVENT } from './const.js';
 import { goodpos, makemon, remove_monster, set_malign } from './makemon.js';
 import { waterbody_name } from './pager.js';
@@ -156,10 +158,10 @@ import { delobj, monkilled, monstone, newcham, resists_ston, seemimic,
 import { find_mac, m_dowear, which_armor } from './worn.js';
 import { canseemon } from './display.js';
 import { cansee } from './vision.js';
-import { gender, passes_walls, likes_lava, throws_rocks,
+import { passes_walls, likes_lava, throws_rocks,
          poly_when_stoned, touch_petrifies } from './mondata.js';
 import { has_ceiling, Can_fall_thru, depth, level_difficulty } from './dungeon.js';
-import { Monnam, pmname, rndcolor } from './do_name.js';
+import { Monnam, rndcolor } from './do_name.js';
 import { MATERIALS } from './objects_data.js';
 import { W_ARMF, A_DEX, A_CON, NO_PART } from './const.js';
 import { d, rn1 } from './rng.js';
@@ -252,32 +254,17 @@ export async function minstapetrify(mon, byplayer) {
         return;
 
     if (poly_when_stoned(mon.data)) {
-        if (canseemon(mon))
-            await pline(`${Monnam(mon)} solidifies...`);
-        if (await newcham(mon, game.mons[PMNAMES.PM_STONE_GOLEM], 0)) {
-            if (canseemon(mon))
-                await pline(`Now it's ${an(pmname(mon.data, gender(mon)))}.`);
-        } else if (canseemon(mon)) {
-            await pline('... and returns to normal.');
-        }
+        await mon_to_stone(mon);
         return;
     }
 
     if (!await vamp_stone(mon))
         return;
 
-    if ((mon.permspeed | 0) === MFAST)
-        mon.permspeed = 0;
-    const speedArmor = (mon.minvent || []).find((obj) =>
-        obj.owornmask && game.objects[obj.otyp]?.oc_oprop === FAST);
-    mon.mspeed = speedArmor ? MFAST : (mon.permspeed | 0);
-
-    if (mon.data.mmove && !mon.mfrozen && !mon.msleeping && canseemon(mon)
-        && game.flags?.verbose !== false)
-        await pline(`${Monnam(mon)} is slowing down.`);
+    await mon_adjust_speed(mon, -3, null);
 
     if (cansee(mon.mx, mon.my))
-        await pline(`${Monnam(mon)} turns to stone.`);
+        await pline_mon(mon, `${Monnam(mon)} turns to stone.`);
     if (byplayer) {
         game.stoned = true;
         await xkilled(mon, XKILL_NOMSG);
@@ -692,11 +679,12 @@ function floor_trigger(ttyp) {
 // src/trap.c:1085 check_in_air() — is this monster off the ground, allowing
 // for the trap flags? A flyer that was pushed or sat down is NOT in the air.
 function check_in_air(mtmp, trflags) {
+    const is_you = mtmp === game.youmonst;
     const plunged = (trflags & (TOOKPLUNGE | VIASITTING)) !== 0;
 
     return ((trflags & HURTLING) !== 0
-            || is_floater(mtmp.data)
-            || (is_flyer(mtmp.data) && !plunged));
+            || (is_you ? Levitation() : is_floater(mtmp.data))
+            || ((is_you ? Flying() : is_flyer(mtmp.data)) && !plunged));
 }
 
 // src/trap.c:1106 m_harmless_trap() — would this trap actually hurt `mtmp`?

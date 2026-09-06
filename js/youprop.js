@@ -113,10 +113,9 @@ export const Levitation = () =>
 // include/youprop.h:253 Flying — note the steed term: riding a flying mount
 // counts, which is why this cannot be a plain uprops read.
 export const Flying = () =>
-    !!game.u?.intrinsic?.HFlying
-    || !!game.u?.uprops?.FLYING
-    || !!(Upolyd(game.u) && is_flyer(game.youmonst.data))
-    || !!(game.u?.usteed && is_flyer(game.u.usteed.data));
+    !!(game.u?.intrinsic?.HFlying || game.u?.uprops?.FLYING
+       || (game.u?.usteed && is_flyer(game.u.usteed.data)))
+    && !game.u?.blocked?.FLYING;
 
 // include/youprop.h Fire_resistance — (HFire_resistance || EFire_resistance).
 // The H word carries the FROMEXPER/FROMRACE/FROMOUTSIDE source bits (role

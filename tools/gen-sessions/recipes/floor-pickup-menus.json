@@ -1,0 +1,543 @@
+{
+  "name": "floor-pickup-menus",
+  "description": "Full, partial and combination menus, sorting modes, object-class accelerators and stack selection counts.",
+  "coverage": [
+    "mode.debug",
+    "ui.menus",
+    "ui.more-paging",
+    "object.food-corpses",
+    "object.tools-containers"
+  ],
+  "branches": [
+    "floor-pickup-menus.full-all",
+    "floor-pickup-menus.full-one",
+    "floor-pickup-menus.full-partial",
+    "floor-pickup-menus.full-cancel",
+    "floor-pickup-menus.full-count-prefix",
+    "floor-pickup-menus.full-large-prefix",
+    "floor-pickup-menus.partial-all",
+    "floor-pickup-menus.partial-one",
+    "floor-pickup-menus.partial-partial",
+    "floor-pickup-menus.partial-cancel",
+    "floor-pickup-menus.partial-count-prefix",
+    "floor-pickup-menus.partial-large-prefix",
+    "floor-pickup-menus.combination-all",
+    "floor-pickup-menus.combination-one",
+    "floor-pickup-menus.combination-partial",
+    "floor-pickup-menus.combination-cancel",
+    "floor-pickup-menus.combination-count-prefix",
+    "floor-pickup-menus.combination-large-prefix",
+    "floor-pickup-menus.full-grouped-none",
+    "floor-pickup-menus.full-grouped-loot",
+    "floor-pickup-menus.full-grouped-full",
+    "floor-pickup-menus.full-ungrouped-none",
+    "floor-pickup-menus.full-ungrouped-loot",
+    "floor-pickup-menus.full-ungrouped-full",
+    "floor-pickup-menus.traditional-grouped-none",
+    "floor-pickup-menus.traditional-grouped-loot",
+    "floor-pickup-menus.traditional-grouped-full",
+    "floor-pickup-menus.traditional-ungrouped-none",
+    "floor-pickup-menus.traditional-ungrouped-loot",
+    "floor-pickup-menus.traditional-ungrouped-full",
+    "floor-pickup-menus.menu-weapon-group",
+    "floor-pickup-menus.menu-potion-group",
+    "floor-pickup-menus.menu-counted-group",
+    "floor-pickup-menus.menu-invert",
+    "floor-pickup-menus.menu-select-clear"
+  ],
+  "requireBranchAssertions": true,
+  "segments": [
+    {
+      "name": "full-all",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:full\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed daggers\r\u0017blessed potion of healing\r\u0017cursed ring of protection\r\u0017uncursed leather armor\rdb        \u001b\u001b\u001b\u001b\u001b\u001bdc        \u001b\u001b\u001b\u001b\u001b\u001bdd        \u001b\u001b\u001b\u001b\u001b\u001bde        \u001b\u001b\u001b\u001b\u001b\u001b,,\r        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "full-one",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:full\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed daggers\r\u0017blessed potion of healing\r\u0017cursed ring of protection\r\u0017uncursed leather armor\rdb        \u001b\u001b\u001b\u001b\u001b\u001bdc        \u001b\u001b\u001b\u001b\u001b\u001bdd        \u001b\u001b\u001b\u001b\u001b\u001bde        \u001b\u001b\u001b\u001b\u001b\u001b,a\r        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "full-partial",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:full\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed daggers\r\u0017blessed potion of healing\r\u0017cursed ring of protection\r\u0017uncursed leather armor\rdb        \u001b\u001b\u001b\u001b\u001b\u001bdc        \u001b\u001b\u001b\u001b\u001b\u001bdd        \u001b\u001b\u001b\u001b\u001b\u001bde        \u001b\u001b\u001b\u001b\u001b\u001b,2a\r        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "full-cancel",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:full\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed daggers\r\u0017blessed potion of healing\r\u0017cursed ring of protection\r\u0017uncursed leather armor\rdb        \u001b\u001b\u001b\u001b\u001b\u001bdc        \u001b\u001b\u001b\u001b\u001b\u001bdd        \u001b\u001b\u001b\u001b\u001b\u001bde        \u001b\u001b\u001b\u001b\u001b\u001b,\u001b        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "full-count-prefix",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:full\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed daggers\r\u0017blessed potion of healing\r\u0017cursed ring of protection\r\u0017uncursed leather armor\rdb        \u001b\u001b\u001b\u001b\u001b\u001bdc        \u001b\u001b\u001b\u001b\u001b\u001bdd        \u001b\u001b\u001b\u001b\u001b\u001bde        \u001b\u001b\u001b\u001b\u001b\u001b2,        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "full-large-prefix",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:full\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed daggers\r\u0017blessed potion of healing\r\u0017cursed ring of protection\r\u0017uncursed leather armor\rdb        \u001b\u001b\u001b\u001b\u001b\u001bdc        \u001b\u001b\u001b\u001b\u001b\u001bdd        \u001b\u001b\u001b\u001b\u001b\u001bde        \u001b\u001b\u001b\u001b\u001b\u001b9,        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "partial-all",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:partial\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed daggers\r\u0017blessed potion of healing\r\u0017cursed ring of protection\r\u0017uncursed leather armor\rdb        \u001b\u001b\u001b\u001b\u001b\u001bdc        \u001b\u001b\u001b\u001b\u001b\u001bdd        \u001b\u001b\u001b\u001b\u001b\u001bde        \u001b\u001b\u001b\u001b\u001b\u001b,,\r        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "partial-one",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:partial\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed daggers\r\u0017blessed potion of healing\r\u0017cursed ring of protection\r\u0017uncursed leather armor\rdb        \u001b\u001b\u001b\u001b\u001b\u001bdc        \u001b\u001b\u001b\u001b\u001b\u001bdd        \u001b\u001b\u001b\u001b\u001b\u001bde        \u001b\u001b\u001b\u001b\u001b\u001b,a\r        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "partial-partial",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:partial\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed daggers\r\u0017blessed potion of healing\r\u0017cursed ring of protection\r\u0017uncursed leather armor\rdb        \u001b\u001b\u001b\u001b\u001b\u001bdc        \u001b\u001b\u001b\u001b\u001b\u001bdd        \u001b\u001b\u001b\u001b\u001b\u001bde        \u001b\u001b\u001b\u001b\u001b\u001b,2a\r        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "partial-cancel",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:partial\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed daggers\r\u0017blessed potion of healing\r\u0017cursed ring of protection\r\u0017uncursed leather armor\rdb        \u001b\u001b\u001b\u001b\u001b\u001bdc        \u001b\u001b\u001b\u001b\u001b\u001bdd        \u001b\u001b\u001b\u001b\u001b\u001bde        \u001b\u001b\u001b\u001b\u001b\u001b,\u001b        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "partial-count-prefix",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:partial\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed daggers\r\u0017blessed potion of healing\r\u0017cursed ring of protection\r\u0017uncursed leather armor\rdb        \u001b\u001b\u001b\u001b\u001b\u001bdc        \u001b\u001b\u001b\u001b\u001b\u001bdd        \u001b\u001b\u001b\u001b\u001b\u001bde        \u001b\u001b\u001b\u001b\u001b\u001b2,        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "partial-large-prefix",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:partial\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed daggers\r\u0017blessed potion of healing\r\u0017cursed ring of protection\r\u0017uncursed leather armor\rdb        \u001b\u001b\u001b\u001b\u001b\u001bdc        \u001b\u001b\u001b\u001b\u001b\u001bdd        \u001b\u001b\u001b\u001b\u001b\u001bde        \u001b\u001b\u001b\u001b\u001b\u001b9,        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "combination-all",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:combination\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed daggers\r\u0017blessed potion of healing\r\u0017cursed ring of protection\r\u0017uncursed leather armor\rdb        \u001b\u001b\u001b\u001b\u001b\u001bdc        \u001b\u001b\u001b\u001b\u001b\u001bdd        \u001b\u001b\u001b\u001b\u001b\u001bde        \u001b\u001b\u001b\u001b\u001b\u001b,,\r        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "combination-one",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:combination\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed daggers\r\u0017blessed potion of healing\r\u0017cursed ring of protection\r\u0017uncursed leather armor\rdb        \u001b\u001b\u001b\u001b\u001b\u001bdc        \u001b\u001b\u001b\u001b\u001b\u001bdd        \u001b\u001b\u001b\u001b\u001b\u001bde        \u001b\u001b\u001b\u001b\u001b\u001b,a\r        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "combination-partial",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:combination\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed daggers\r\u0017blessed potion of healing\r\u0017cursed ring of protection\r\u0017uncursed leather armor\rdb        \u001b\u001b\u001b\u001b\u001b\u001bdc        \u001b\u001b\u001b\u001b\u001b\u001bdd        \u001b\u001b\u001b\u001b\u001b\u001bde        \u001b\u001b\u001b\u001b\u001b\u001b,2a\r        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "combination-cancel",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:combination\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed daggers\r\u0017blessed potion of healing\r\u0017cursed ring of protection\r\u0017uncursed leather armor\rdb        \u001b\u001b\u001b\u001b\u001b\u001bdc        \u001b\u001b\u001b\u001b\u001b\u001bdd        \u001b\u001b\u001b\u001b\u001b\u001bde        \u001b\u001b\u001b\u001b\u001b\u001b,\u001b        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "combination-count-prefix",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:combination\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed daggers\r\u0017blessed potion of healing\r\u0017cursed ring of protection\r\u0017uncursed leather armor\rdb        \u001b\u001b\u001b\u001b\u001b\u001bdc        \u001b\u001b\u001b\u001b\u001b\u001bdd        \u001b\u001b\u001b\u001b\u001b\u001bde        \u001b\u001b\u001b\u001b\u001b\u001b2,        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "combination-large-prefix",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:combination\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed daggers\r\u0017blessed potion of healing\r\u0017cursed ring of protection\r\u0017uncursed leather armor\rdb        \u001b\u001b\u001b\u001b\u001b\u001bdc        \u001b\u001b\u001b\u001b\u001b\u001bdd        \u001b\u001b\u001b\u001b\u001b\u001bde        \u001b\u001b\u001b\u001b\u001b\u001b9,        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "full-grouped-none",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:full\nOPTIONS=sortpack,sortloot:none\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed daggers\r\u0017blessed potion of healing\r\u0017cursed ring of protection\r\u0017uncursed leather armor\r\u00173 uncursed +1 daggers named zebra\r        \u001b\u001b\u001b\u001b\u001b\u001b\u00174 uncursed +1 daggers named ant\r        \u001b\u001b\u001b\u001b\u001b\u001bdf        \u001b\u001b\u001b\u001b\u001b\u001bdg        \u001b\u001b\u001b\u001b\u001b\u001bdb        \u001b\u001b\u001b\u001b\u001b\u001bdc        \u001b\u001b\u001b\u001b\u001b\u001bdd        \u001b\u001b\u001b\u001b\u001b\u001bde        \u001b\u001b\u001b\u001b\u001b\u001b,a\r        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "full-grouped-loot",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:full\nOPTIONS=sortpack,sortloot:loot\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed daggers\r\u0017blessed potion of healing\r\u0017cursed ring of protection\r\u0017uncursed leather armor\r\u00173 uncursed +1 daggers named zebra\r        \u001b\u001b\u001b\u001b\u001b\u001b\u00174 uncursed +1 daggers named ant\r        \u001b\u001b\u001b\u001b\u001b\u001bdf        \u001b\u001b\u001b\u001b\u001b\u001bdg        \u001b\u001b\u001b\u001b\u001b\u001bdb        \u001b\u001b\u001b\u001b\u001b\u001bdc        \u001b\u001b\u001b\u001b\u001b\u001bdd        \u001b\u001b\u001b\u001b\u001b\u001bde        \u001b\u001b\u001b\u001b\u001b\u001b,a\r        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "full-grouped-full",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:full\nOPTIONS=sortpack,sortloot:full\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed daggers\r\u0017blessed potion of healing\r\u0017cursed ring of protection\r\u0017uncursed leather armor\r\u00173 uncursed +1 daggers named zebra\r        \u001b\u001b\u001b\u001b\u001b\u001b\u00174 uncursed +1 daggers named ant\r        \u001b\u001b\u001b\u001b\u001b\u001bdf        \u001b\u001b\u001b\u001b\u001b\u001bdg        \u001b\u001b\u001b\u001b\u001b\u001bdb        \u001b\u001b\u001b\u001b\u001b\u001bdc        \u001b\u001b\u001b\u001b\u001b\u001bdd        \u001b\u001b\u001b\u001b\u001b\u001bde        \u001b\u001b\u001b\u001b\u001b\u001b,a\r        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "full-ungrouped-none",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:full\nOPTIONS=!sortpack,sortloot:none\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed daggers\r\u0017blessed potion of healing\r\u0017cursed ring of protection\r\u0017uncursed leather armor\r\u00173 uncursed +1 daggers named zebra\r        \u001b\u001b\u001b\u001b\u001b\u001b\u00174 uncursed +1 daggers named ant\r        \u001b\u001b\u001b\u001b\u001b\u001bdf        \u001b\u001b\u001b\u001b\u001b\u001bdg        \u001b\u001b\u001b\u001b\u001b\u001bdb        \u001b\u001b\u001b\u001b\u001b\u001bdc        \u001b\u001b\u001b\u001b\u001b\u001bdd        \u001b\u001b\u001b\u001b\u001b\u001bde        \u001b\u001b\u001b\u001b\u001b\u001b,a\r        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "full-ungrouped-loot",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:full\nOPTIONS=!sortpack,sortloot:loot\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed daggers\r\u0017blessed potion of healing\r\u0017cursed ring of protection\r\u0017uncursed leather armor\r\u00173 uncursed +1 daggers named zebra\r        \u001b\u001b\u001b\u001b\u001b\u001b\u00174 uncursed +1 daggers named ant\r        \u001b\u001b\u001b\u001b\u001b\u001bdf        \u001b\u001b\u001b\u001b\u001b\u001bdg        \u001b\u001b\u001b\u001b\u001b\u001bdb        \u001b\u001b\u001b\u001b\u001b\u001bdc        \u001b\u001b\u001b\u001b\u001b\u001bdd        \u001b\u001b\u001b\u001b\u001b\u001bde        \u001b\u001b\u001b\u001b\u001b\u001b,a\r        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "full-ungrouped-full",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:full\nOPTIONS=!sortpack,sortloot:full\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed daggers\r\u0017blessed potion of healing\r\u0017cursed ring of protection\r\u0017uncursed leather armor\r\u00173 uncursed +1 daggers named zebra\r        \u001b\u001b\u001b\u001b\u001b\u001b\u00174 uncursed +1 daggers named ant\r        \u001b\u001b\u001b\u001b\u001b\u001bdf        \u001b\u001b\u001b\u001b\u001b\u001bdg        \u001b\u001b\u001b\u001b\u001b\u001bdb        \u001b\u001b\u001b\u001b\u001b\u001bdc        \u001b\u001b\u001b\u001b\u001b\u001bdd        \u001b\u001b\u001b\u001b\u001b\u001bde        \u001b\u001b\u001b\u001b\u001b\u001b,a\r        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "traditional-grouped-none",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\nOPTIONS=sortpack,sortloot:none\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed daggers\r\u0017blessed potion of healing\r\u0017cursed ring of protection\r\u0017uncursed leather armor\r\u00173 uncursed +1 daggers named zebra\r        \u001b\u001b\u001b\u001b\u001b\u001b\u00174 uncursed +1 daggers named ant\r        \u001b\u001b\u001b\u001b\u001b\u001bdf        \u001b\u001b\u001b\u001b\u001b\u001bdg        \u001b\u001b\u001b\u001b\u001b\u001bdb        \u001b\u001b\u001b\u001b\u001b\u001bdc        \u001b\u001b\u001b\u001b\u001b\u001bdd        \u001b\u001b\u001b\u001b\u001b\u001bde        \u001b\u001b\u001b\u001b\u001b\u001b, m\ra\r        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "traditional-grouped-loot",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\nOPTIONS=sortpack,sortloot:loot\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed daggers\r\u0017blessed potion of healing\r\u0017cursed ring of protection\r\u0017uncursed leather armor\r\u00173 uncursed +1 daggers named zebra\r        \u001b\u001b\u001b\u001b\u001b\u001b\u00174 uncursed +1 daggers named ant\r        \u001b\u001b\u001b\u001b\u001b\u001bdf        \u001b\u001b\u001b\u001b\u001b\u001bdg        \u001b\u001b\u001b\u001b\u001b\u001bdb        \u001b\u001b\u001b\u001b\u001b\u001bdc        \u001b\u001b\u001b\u001b\u001b\u001bdd        \u001b\u001b\u001b\u001b\u001b\u001bde        \u001b\u001b\u001b\u001b\u001b\u001b, m\ra\r        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "traditional-grouped-full",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\nOPTIONS=sortpack,sortloot:full\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed daggers\r\u0017blessed potion of healing\r\u0017cursed ring of protection\r\u0017uncursed leather armor\r\u00173 uncursed +1 daggers named zebra\r        \u001b\u001b\u001b\u001b\u001b\u001b\u00174 uncursed +1 daggers named ant\r        \u001b\u001b\u001b\u001b\u001b\u001bdf        \u001b\u001b\u001b\u001b\u001b\u001bdg        \u001b\u001b\u001b\u001b\u001b\u001bdb        \u001b\u001b\u001b\u001b\u001b\u001bdc        \u001b\u001b\u001b\u001b\u001b\u001bdd        \u001b\u001b\u001b\u001b\u001b\u001bde        \u001b\u001b\u001b\u001b\u001b\u001b, m\ra\r        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "traditional-ungrouped-none",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\nOPTIONS=!sortpack,sortloot:none\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed daggers\r\u0017blessed potion of healing\r\u0017cursed ring of protection\r\u0017uncursed leather armor\r\u00173 uncursed +1 daggers named zebra\r        \u001b\u001b\u001b\u001b\u001b\u001b\u00174 uncursed +1 daggers named ant\r        \u001b\u001b\u001b\u001b\u001b\u001bdf        \u001b\u001b\u001b\u001b\u001b\u001bdg        \u001b\u001b\u001b\u001b\u001b\u001bdb        \u001b\u001b\u001b\u001b\u001b\u001bdc        \u001b\u001b\u001b\u001b\u001b\u001bdd        \u001b\u001b\u001b\u001b\u001b\u001bde        \u001b\u001b\u001b\u001b\u001b\u001b, m\ra\r        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "traditional-ungrouped-loot",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\nOPTIONS=!sortpack,sortloot:loot\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed daggers\r\u0017blessed potion of healing\r\u0017cursed ring of protection\r\u0017uncursed leather armor\r\u00173 uncursed +1 daggers named zebra\r        \u001b\u001b\u001b\u001b\u001b\u001b\u00174 uncursed +1 daggers named ant\r        \u001b\u001b\u001b\u001b\u001b\u001bdf        \u001b\u001b\u001b\u001b\u001b\u001bdg        \u001b\u001b\u001b\u001b\u001b\u001bdb        \u001b\u001b\u001b\u001b\u001b\u001bdc        \u001b\u001b\u001b\u001b\u001b\u001bdd        \u001b\u001b\u001b\u001b\u001b\u001bde        \u001b\u001b\u001b\u001b\u001b\u001b, m\ra\r        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "traditional-ungrouped-full",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\nOPTIONS=!sortpack,sortloot:full\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed daggers\r\u0017blessed potion of healing\r\u0017cursed ring of protection\r\u0017uncursed leather armor\r\u00173 uncursed +1 daggers named zebra\r        \u001b\u001b\u001b\u001b\u001b\u001b\u00174 uncursed +1 daggers named ant\r        \u001b\u001b\u001b\u001b\u001b\u001bdf        \u001b\u001b\u001b\u001b\u001b\u001bdg        \u001b\u001b\u001b\u001b\u001b\u001bdb        \u001b\u001b\u001b\u001b\u001b\u001bdc        \u001b\u001b\u001b\u001b\u001b\u001bdd        \u001b\u001b\u001b\u001b\u001b\u001bde        \u001b\u001b\u001b\u001b\u001b\u001b, m\ra\r        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "menu-weapon-group",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:full\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed daggers\r\u0017blessed potion of healing\r\u0017cursed ring of protection\r\u0017uncursed leather armor\rdb        \u001b\u001b\u001b\u001b\u001b\u001bdc        \u001b\u001b\u001b\u001b\u001b\u001bdd        \u001b\u001b\u001b\u001b\u001b\u001bde        \u001b\u001b\u001b\u001b\u001b\u001b,)\r        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "menu-potion-group",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:full\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed daggers\r\u0017blessed potion of healing\r\u0017cursed ring of protection\r\u0017uncursed leather armor\rdb        \u001b\u001b\u001b\u001b\u001b\u001bdc        \u001b\u001b\u001b\u001b\u001b\u001bdd        \u001b\u001b\u001b\u001b\u001b\u001bde        \u001b\u001b\u001b\u001b\u001b\u001b,!\r        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "menu-counted-group",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:full\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed daggers\r\u0017blessed potion of healing\r\u0017cursed ring of protection\r\u0017uncursed leather armor\rdb        \u001b\u001b\u001b\u001b\u001b\u001bdc        \u001b\u001b\u001b\u001b\u001b\u001bdd        \u001b\u001b\u001b\u001b\u001b\u001bde        \u001b\u001b\u001b\u001b\u001b\u001b,2)\r        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "menu-invert",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:full\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed daggers\r\u0017blessed potion of healing\r\u0017cursed ring of protection\r\u0017uncursed leather armor\rdb        \u001b\u001b\u001b\u001b\u001b\u001bdc        \u001b\u001b\u001b\u001b\u001b\u001bdd        \u001b\u001b\u001b\u001b\u001b\u001bde        \u001b\u001b\u001b\u001b\u001b\u001b,@\r        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "menu-select-clear",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:full\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed daggers\r\u0017blessed potion of healing\r\u0017cursed ring of protection\r\u0017uncursed leather armor\rdb        \u001b\u001b\u001b\u001b\u001b\u001bdc        \u001b\u001b\u001b\u001b\u001b\u001bdd        \u001b\u001b\u001b\u001b\u001b\u001bde        \u001b\u001b\u001b\u001b\u001b\u001b,,-\r        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b"
+    }
+  ],
+  "branchAssertions": [
+    {
+      "branch": "floor-pickup-menus.full-all",
+      "segment": 0,
+      "screenIncludes": [
+        "Pick up what?"
+      ]
+    },
+    {
+      "branch": "floor-pickup-menus.full-one",
+      "segment": 1,
+      "screenIncludes": [
+        "Pick up what?"
+      ]
+    },
+    {
+      "branch": "floor-pickup-menus.full-partial",
+      "segment": 2,
+      "screenIncludes": [
+        "Pick up what?"
+      ]
+    },
+    {
+      "branch": "floor-pickup-menus.full-cancel",
+      "segment": 3,
+      "screenIncludes": [
+        "Pick up what?"
+      ]
+    },
+    {
+      "branch": "floor-pickup-menus.full-count-prefix",
+      "segment": 4,
+      "screenIncludes": [
+        "b - 2 daggers."
+      ]
+    },
+    {
+      "branch": "floor-pickup-menus.full-large-prefix",
+      "segment": 5,
+      "screenIncludes": [
+        "Not carrying anything."
+      ]
+    },
+    {
+      "branch": "floor-pickup-menus.partial-all",
+      "segment": 6,
+      "screenIncludes": [
+        "Pick up what?"
+      ]
+    },
+    {
+      "branch": "floor-pickup-menus.partial-one",
+      "segment": 7,
+      "screenIncludes": [
+        "Pick up what?"
+      ]
+    },
+    {
+      "branch": "floor-pickup-menus.partial-partial",
+      "segment": 8,
+      "screenIncludes": [
+        "Pick up what?"
+      ]
+    },
+    {
+      "branch": "floor-pickup-menus.partial-cancel",
+      "segment": 9,
+      "screenIncludes": [
+        "Pick up what?"
+      ]
+    },
+    {
+      "branch": "floor-pickup-menus.partial-count-prefix",
+      "segment": 10,
+      "screenIncludes": [
+        "b - 2 daggers."
+      ]
+    },
+    {
+      "branch": "floor-pickup-menus.partial-large-prefix",
+      "segment": 11,
+      "screenIncludes": [
+        "Not carrying anything."
+      ]
+    },
+    {
+      "branch": "floor-pickup-menus.combination-all",
+      "segment": 12,
+      "screenIncludes": [
+        "Pick up what?"
+      ]
+    },
+    {
+      "branch": "floor-pickup-menus.combination-one",
+      "segment": 13,
+      "screenIncludes": [
+        "Pick up what?"
+      ]
+    },
+    {
+      "branch": "floor-pickup-menus.combination-partial",
+      "segment": 14,
+      "screenIncludes": [
+        "Pick up what?"
+      ]
+    },
+    {
+      "branch": "floor-pickup-menus.combination-cancel",
+      "segment": 15,
+      "screenIncludes": [
+        "Pick up what?"
+      ]
+    },
+    {
+      "branch": "floor-pickup-menus.combination-count-prefix",
+      "segment": 16,
+      "screenIncludes": [
+        "b - 2 daggers."
+      ]
+    },
+    {
+      "branch": "floor-pickup-menus.combination-large-prefix",
+      "segment": 17,
+      "screenIncludes": [
+        "Not carrying anything."
+      ]
+    },
+    {
+      "branch": "floor-pickup-menus.full-grouped-none",
+      "segment": 18,
+      "screenIncludes": [
+        "Pick up what?"
+      ]
+    },
+    {
+      "branch": "floor-pickup-menus.full-grouped-loot",
+      "segment": 19,
+      "screenIncludes": [
+        "Pick up what?"
+      ]
+    },
+    {
+      "branch": "floor-pickup-menus.full-grouped-full",
+      "segment": 20,
+      "screenIncludes": [
+        "Pick up what?"
+      ]
+    },
+    {
+      "branch": "floor-pickup-menus.full-ungrouped-none",
+      "segment": 21,
+      "screenIncludes": [
+        "Pick up what?"
+      ]
+    },
+    {
+      "branch": "floor-pickup-menus.full-ungrouped-loot",
+      "segment": 22,
+      "screenIncludes": [
+        "Pick up what?"
+      ]
+    },
+    {
+      "branch": "floor-pickup-menus.full-ungrouped-full",
+      "segment": 23,
+      "screenIncludes": [
+        "Pick up what?"
+      ]
+    },
+    {
+      "branch": "floor-pickup-menus.traditional-grouped-none",
+      "segment": 24,
+      "screenIncludes": [
+        "What kinds of thing do you want to pick up? [[=!) aA:mX]"
+      ]
+    },
+    {
+      "branch": "floor-pickup-menus.traditional-grouped-loot",
+      "segment": 25,
+      "screenIncludes": [
+        "What kinds of thing do you want to pick up? [[=!) aA:mX]"
+      ]
+    },
+    {
+      "branch": "floor-pickup-menus.traditional-grouped-full",
+      "segment": 26,
+      "screenIncludes": [
+        "What kinds of thing do you want to pick up? [[=!) aA:mX]"
+      ]
+    },
+    {
+      "branch": "floor-pickup-menus.traditional-ungrouped-none",
+      "segment": 27,
+      "screenIncludes": [
+        "What kinds of thing do you want to pick up? [[=!) aA:mX]"
+      ]
+    },
+    {
+      "branch": "floor-pickup-menus.traditional-ungrouped-loot",
+      "segment": 28,
+      "screenIncludes": [
+        "What kinds of thing do you want to pick up? [[=!) aA:mX]"
+      ]
+    },
+    {
+      "branch": "floor-pickup-menus.traditional-ungrouped-full",
+      "segment": 29,
+      "screenIncludes": [
+        "What kinds of thing do you want to pick up? [[=!) aA:mX]"
+      ]
+    },
+    {
+      "branch": "floor-pickup-menus.menu-weapon-group",
+      "segment": 30,
+      "screenIncludes": [
+        "Pick up what?"
+      ]
+    },
+    {
+      "branch": "floor-pickup-menus.menu-potion-group",
+      "segment": 31,
+      "screenIncludes": [
+        "Pick up what?"
+      ]
+    },
+    {
+      "branch": "floor-pickup-menus.menu-counted-group",
+      "segment": 32,
+      "screenIncludes": [
+        "Pick up what?"
+      ]
+    },
+    {
+      "branch": "floor-pickup-menus.menu-invert",
+      "segment": 33,
+      "screenIncludes": [
+        "Pick up what?"
+      ]
+    },
+    {
+      "branch": "floor-pickup-menus.menu-select-clear",
+      "segment": 34,
+      "screenIncludes": [
+        "Pick up what?"
+      ]
+    }
+  ]
+}

@@ -155,6 +155,7 @@ export class NethackGame {
            other two defaults */
         g.flags = { verbose: true, implicit_uncursed: true, legacy: true,
                     menu_style: MENU_FULL, // src/options.c:7258
+                    sortpack: true, sortloot: 'l', // optlist.h and options.c:7208
                     pickup_thrown: true,
                     ...rc.opts };
         g.iflags = {};

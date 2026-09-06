@@ -2,7 +2,7 @@
 // C ref: src/invent.c
 
 import { MON_WEP } from './monst.js';
-import { noit_Monnam, oname } from './do_name.js';
+import { noit_Monnam, mon_nam, oname } from './do_name.js';
 import { engulfing_u } from './const.js';
 import { allow_all, add_valid_menu_class, menu_class_present, allow_category,
          collect_obj_classes, count_justpicked, container_gone } from './pickup.js';
@@ -15,6 +15,7 @@ import { docrt } from './display.js';
 import { add_menu_heading } from './options.js';
 import { QBUFSZ } from './const.js';
 import { BUFSZ, CONTAINED_SYM } from './const.js';
+import { def_oc_syms } from './drawing_data.js';
 import { MINV_PICKMASK } from './const.js';
 import { MINV_ALL } from './const.js';
 import { INCLUDE_HERO } from './const.js';
@@ -95,8 +96,8 @@ import { surface } from './dungeon.js';
 import { discover_artifact, set_artifact_intrinsic,
          artifact_confers_luck } from './artifact.js';
 import { ART_MJOLLNIR } from './artilist_data.js';
-import { body_part } from './polyself.js';
-import { HAND } from './const.js';
+import { body_part, mbodypart } from './polyself.js';
+import { HAND, STOMACH } from './const.js';
 import { obj_stop_timers, stop_timer, SHRINK_GLOB, learn_egg_type,
          FIG_TRANSFORM, attach_fig_transform_timeout } from './timeout.js';
 import { NON_PM } from './const.js';
@@ -792,9 +793,8 @@ function dfeature_with_article(dfeature) {
 
 // src/invent.c:4104 look_here()
 //
-// The engulfed arm and gas regions are recorded when hit. Blind floor reach
-// and floor-pile cockatrice contact are live. The dungeon-feature description
-// carries only the stairway arm.
+// Includes engulfer contents, visible regions, blind floor reach and
+// floor-pile cockatrice contact.
 export async function look_here(obj_cnt, lhflags) {
     const Blind = heroBlind();
     const verb = Blind ? 'feel' : 'see';
@@ -806,7 +806,20 @@ export async function look_here(obj_cnt, lhflags) {
     const skip_objects = (pile_limit > 0 && obj_cnt >= pile_limit);
 
     if (game.u?.uswallow) {
-        note_unported_invent('look_here:uswallow');
+        const mtmp = game.u.ustuck;
+        let fbuf = `Contents of ${s_suffix(mon_nam(mtmp))} ${mbodypart(mtmp, STOMACH)}`;
+        await You(`${Blind ? 'try' : 'look around'} to ${verb} what is lying in ${fbuf.slice(12)}.`);
+        if (mtmp.minvent?.length) {
+            for (const otmp of mtmp.minvent) {
+                if (otmp.otyp === ONAMES.CORPSE)
+                    await feel_cockatrice(otmp, false);
+            }
+            if (Blind)
+                fbuf = 'You feel';
+            await display_minventory(mtmp, MINV_ALL | PICK_NONE, `${fbuf}:`);
+        } else {
+            await You(`${verb} no objects here.`);
+        }
         return Blind ? ECMD_TIME : ECMD_OK;
     }
 
@@ -968,10 +981,15 @@ const CLASS_NAMES = {
     ROCK_CLASS: 'Boulders/Statues', BALL_CLASS: 'Iron balls',
     CHAIN_CLASS: 'Chains', VENOM_CLASS: 'Venoms',
 };
-export function let_to_name(oclass) {
-    for (const [k, v] of Object.entries(OCLASSES))
-        if (v === oclass && CLASS_NAMES[k]) return CLASS_NAMES[k];
-    return '';
+// src/invent.c:4800 let_to_name(), including unpaid and class-symbol headings.
+export function let_to_name(oclass, unpaid = false, showsym = false) {
+    const key = Object.keys(OCLASSES).find(k => OCLASSES[k] === oclass);
+    const class_name = CLASS_NAMES[key]
+        || (oclass === CONTAINED_SYM ? 'Bagged/Boxed items' : 'Illegal objects');
+    let result = (unpaid ? 'Unpaid ' : '') + class_name;
+    if (typeof oclass === 'number' && oclass >= 1 && oclass < OCLASSES.MAXOCLASSES && showsym)
+        result += ' '.repeat(Math.max(0, 7 - class_name.length)) + `  ('${def_oc_syms[oclass]}')`;
+    return result;
 }
 
 // src/invent.c:5489 display_binventory() shows objects hidden below the

@@ -12,23 +12,60 @@ Continue the authorized work; do not mark it complete or recreate it.
 Current-corpus success is not the stopping criterion. Track unreviewed,
 untested, missing, and unreachable source paths explicitly.
 
-### Active pass: floor pickup and object queries
+### Checkpoint: floor pickup, swallowed objects and digestion
 
-The tipping checkpoint below is verified and ready for a local commit.
-Current HEAD077834e4 is a dashboard-only commit after a429a01d; preserve it.
-Next work has only .cache/floor-pickup files, no further runtime edits.
-Full Cpickup672..913, query_objlist1025..1215 and query_classes140..263 read.
-The JS pickup always uses full menus and omits count-prefixed and traditional
-paths. basic43 native cases recorded successfully; basic-before.log scorer
-running exec14424. Inspect actual native selections before promoting labels.
-The preserved old failure is basic lastcase traditional-shop-horn-pickup.
-Base setup inventory letters b=3daggers,c=potion,d=ring,e=leatherarmor.
-Queries currently miss sortloot flags, full callbacks, touching corpses,
-engulfer equipment selection and the C window lifecycle. Continue there.
+Ready for local commit on03561841. Twelve runtime modules: pickup,invent,
+jsmain,do,hack,steed,mon,trap,vision,youprop,do_wear,artifact. Full C bodies
+read before ports, exact scope and partial bodies in floor-pickup-audit.md.
+All work in .cache/floor-pickup. No C or frozen edits.
+
+Five permanent recipes123nativecases: traditional25,menus35,safety6,
+engulfer-transfers21,reach-guards36. C repeat5/5 exact; separate assertions
+and integrity pass. All32212screens/cursors292355RNG3animationsmatch.
+Ledger2526/2526,99covered7partial. Cunion+232outcomes,+6records reaches
+55680/108268,4373/5491. Digestion30/30,pickup121/156,query_objlist96/112,
+pickup_checks34/36,newcham66/114. remaining.json exactgaps. loot_mon5/22;
+saddle checks constructed. finesse0/6 butenteredonce. No unreachableclaims.
+
+Keyfixes: traditional/menu/countpickup, swallowedownership/digestion and
+look_herecontents, newchamrelease andset_mon_data movementscaling,
+canonicalminstapetrify, swallowedvision, Flyingblockedbits, Ring_on/Boots_on
+canonicalfloat_up withFROMOUTSIDEguard, check_in_airhero properties, high
+dropandfinesse_ahriman, actualhero ball/chain slots inpickup/dropchecks.
+Newstate gate123native+26constructed groupspasses. Olderpoly gate corrected:
+C allmain195 clearsbypass atnextinput; exact03561841 failedoldassertiontoo.
+
+Final551/551=44public507supplemental passesall386415screens/cursors and
+10500604RNG. Supplemental375010screens9707766RNG21704animationsallmatch;
+21oldpublicanimationmissesremain. regression-post-ball.log andtotals.json.
+Twelverelatedgates,49hang,80freshroles,14tooltests,sourceaudit0/268pass.
+Fuzz101/102knownfixed-date miss, all491759RNG. Alljobscompleted, allexits
+collected, verification-exits.json. Nothingrunning.
+
+Mutants: no-transfer fails108screens14cursors41462positionalRNG; no-speed
+fails44screens1cursor26146positionalRNG. Bothfailstategate. Exact03561841
+runtime across12modules failsall5recipes1046screens297cursors182958RNG.
+No-ball rootfieldmutation originallysurvivedownershiptest: mpickobj's
+secondguard rejectsattachedballandlogs impossible. Strengtheneddiagnostic
+assertionnowrejectsmutation. Rootfieldsareseparate, notaliases. NODE_OPTIONS
+requiredforloaderworkerinheritance. Seeauditforinvalidsetupcorrections.
+
+Next: localcommit, thenretainedlava-humanfatalstatusmismatch. guards-fixed
+segment21 (screendiffabsolutestep4460): C126HPvsJS0 beforeburningMore,
+allRNGmatching. FullClava_effects6790..6990anddone1021..1130nowread.
+JS trap4084defersHPuntilMore; display.more2365clearsitatpriorMore before
+urgentburningmessage. NeedtraceCbot/flush/messageorderandfixsourcebehavior,
+notarbitraryMorecounts. Noeditsinthisnextpassyet. Do notcountlava-human/
+cave-spider setupdeaths aspickupcoverage.
+
+Full#loot/#tip,query_category,menu_objsymsoptions,newchamimmunities/forms/
+names/hiding/gear,remainingdrop/dropz,creationweights/iceboxtimers,
+enddisclosureandunreviewedC/Luaremain. Continuegoalaftercheckpoint.
+Do notpush; publicationauthorization remains unanswered.
 
 ### Checkpoint: container tipping and generated chest weight
 
-Four runtime modules changed: apply,mkobj,pickup,mklev. Shared tipcontainer,
+Committed03561841. Four runtime modules changed: apply,mkobj,pickup,mklev. Shared tipcontainer,
 gettarget andchecks ported. Canonical hornoplenty moved to mkobj. Generated
 supply chest final weight update added after native state failure and C
 wizweight confirmation (670vs600). Full Cbodies reviewed before edits.

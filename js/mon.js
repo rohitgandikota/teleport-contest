@@ -123,7 +123,7 @@ import { bigmonst, amorphous, is_whirly, noncorporeal, slithy, needspick, nohand
 import { ONAMES, OCLASSES, MATERIALS } from './objects_data.js';
 import { distant_name, doname, makeplural } from './objnam.js';
 import { You, You_feel, You_hear } from './pline.js';
-import { digests } from './mondata.js';
+import { digests, sticks } from './mondata.js';
 import { u_locomotion } from './hack.js';
 import { Blind, Hallucination, Deaf, Breathless, Underwater, Poison_resistance } from './youprop.js';
 import { immune_poisongas, attacktype_fordmg,
@@ -4097,15 +4097,17 @@ async function usmellmon(mdat) {
 }
 
 // src/mon.c:5278 newcham(). The no-message creation path remains synchronous
-// for makemon(); NC_SHOW_MSG callers await the conditional promise below.
+// for makemon(); message and hero-release paths return a conditional promise.
 export function newcham(mtmp, mdat, ncflags) {
     let mndx = -1;
-    const msg = !!(ncflags & NC_SHOW_MSG);
-    const seenorsensed = msg ? canspotmon(mtmp) : false;
+    let msg = !!(ncflags & NC_SHOW_MSG);
+    const seenorsensed = canspotmon(mtmp);
     const oldname = msg
         ? upstart(x_monnam(mtmp, mtmp.mtame ? ARTICLE_YOUR : ARTICLE_THE,
                            null, SUPPRESS_SADDLE, false))
         : '';
+    const l_oldname = x_monnam(mtmp, ARTICLE_THE, null,
+                              has_mgivenname(mtmp) ? SUPPRESS_SADDLE : 0, false);
 
     if (!mdat) {
         let tryct = 20;
@@ -4137,8 +4139,7 @@ export function newcham(mtmp, mdat, ncflags) {
 
     /* take on the new form */
     const olddata = game.mons[mtmp.mnum];
-    mtmp.mnum = mndx;
-    mtmp.data = mdat;
+    set_mon_data(mtmp, mdat);
 
     const leashNeedsRelease = mtmp.mleashed
         && (mtmp.mnum === PMNAMES.PM_LONG_WORM
@@ -4146,6 +4147,18 @@ export function newcham(mtmp, mdat, ncflags) {
             || (nolimbs(mtmp.data) && !has_head(mtmp.data)));
     if (mtmp.mleashed && !leashNeedsRelease)
         update_inventory();
+
+    const finishDisplay = () => {
+        if (mdat === game.mons[PMNAMES.PM_LONG_WORM]
+            && (mtmp.wormno = get_wormno()) !== 0) {
+            worm_wire(goodpos);
+            initworm(mtmp, rn2(5));
+            place_worm_tail_randomly(mtmp, mtmp.mx, mtmp.my);
+        }
+
+        mtmp.meverseen = 0;
+        newsym(mtmp.mx, mtmp.my);
+    };
 
     const finishChange = () => {
         if (emits_light(olddata) !== emits_light(mdat)) {
@@ -4156,15 +4169,37 @@ export function newcham(mtmp, mdat, ncflags) {
                                  LS_MONSTER, mtmp.m_id);
         }
 
-        if (mdat === game.mons[PMNAMES.PM_LONG_WORM]
-            && (mtmp.wormno = get_wormno()) !== 0) {
-            worm_wire(goodpos);
-            initworm(mtmp, rn2(5));
-            place_worm_tail_randomly(mtmp, mtmp.mx, mtmp.my);
+        if (game.u.ustuck === mtmp) {
+            return (async () => {
+                if (game.u.uswallow) {
+                    if (!attacktype(mdat, ATTKS.AT_ENGL)) {
+                        if (!noncorporeal(mdat) && !is_whirly(mdat)
+                            && !(amorphous(mdat) || mdat.mlet === MONSYMS.S_LIGHT)) {
+                            const msgtrail = is_vampshifter(mtmp)
+                                ? ` which was a shapeshifted ${noname_monnam(mtmp, ARTICLE_NONE)}`
+                                : digests(mdat) ? "'s stomach" : '';
+                            await You(`${amorphous(olddata) || is_whirly(olddata)
+                                ? 'emerge from' : 'break out of'} ${l_oldname}${msgtrail}!`);
+                            msg = false;
+                            mtmp.mhp = 1;
+                        }
+                        const { expels } = await import('./mhitu.js');
+                        await expels(mtmp, olddata, false);
+                    } else {
+                        const { swallowed } = await import('./display.js');
+                        await swallowed(0);
+                    }
+                } else if ((!sticks(mdat) && !sticks(game.youmonst.data))
+                           || unsolid(mdat)) {
+                    await unstuck(mtmp);
+                }
+                finishDisplay();
+                return await finishPostChange();
+            })();
         }
 
-        mtmp.meverseen = 0;
-        newsym(mtmp.mx, mtmp.my);
+        finishDisplay();
+        return msg ? finishPostChange() : 1;
     };
 
     const showChange = async () => {
@@ -4210,13 +4245,11 @@ export function newcham(mtmp, mdat, ncflags) {
                 update_inventory();
             }
             mtmp.mleashed = 0;
-            finishChange();
-            return msg ? await finishPostChange() : 1;
+            return await finishChange();
         })();
     }
 
-    finishChange();
-    return msg ? finishPostChange() : 1;
+    return finishChange();
 }
 
 // src/mon.c:4367 wake_nearby() / wake_nearto_core() — noise wakes monsters

@@ -24,7 +24,7 @@ import { OBJ_MINVENT, is_metallic } from './obj.js';
 import { rn2, rnd, rn1 } from './rng.js';
 import { newsym, pline } from './display.js';
 import { You, You_cant, Your } from './pline.js';
-import { Monnam, mon_nam, pmname, hliquid } from './do_name.js';
+import { Monnam, mon_nam, pmname, hliquid, y_monnam } from './do_name.js';
 import { m_at, is_pool, is_lava, t_at, killed, monkilled } from './mon.js';
 import { remove_monster, place_monster } from './makemon.js';
 import { near_capacity, encumber_msg, adjalign } from './attrib.js';
@@ -73,6 +73,11 @@ import { P_SKILL } from './weapon.js';
 import { objdescr_is } from './o_init.js';
 import { remove_worn_item } from './steal.js';
 import { freeinv } from './invent.js';
+
+// src/steed.c:17 rider_cant_reach().
+export async function rider_cant_reach() {
+    await You(`aren't skilled enough to reach from ${y_monnam(game.u.usteed)}.`);
+}
 
 
 

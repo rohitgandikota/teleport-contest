@@ -1,0 +1,108 @@
+{
+  "name": "floor-pickup-safety",
+  "description": "Immediate repeated count commands and blind corpse pickup with gloves, stone resistance, bare hands and a count filter.",
+  "coverage": [
+    "mode.debug",
+    "ui.menus",
+    "ui.more-paging",
+    "object.food-corpses",
+    "object.tools-containers"
+  ],
+  "branches": [
+    "floor-pickup-safety.traditional-repeat-count",
+    "floor-pickup-safety.full-repeat-count",
+    "floor-pickup-safety.blind-corpse-bare",
+    "floor-pickup-safety.blind-corpse-gloves",
+    "floor-pickup-safety.blind-corpse-resistant",
+    "floor-pickup-safety.blind-corpse-count"
+  ],
+  "requireBranchAssertions": true,
+  "segments": [
+    {
+      "name": "traditional-repeat-count",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed daggers\r\u0017blessed potion of healing\r\u0017cursed ring of protection\r\u0017uncursed leather armor\rdb        \u001b\u001b\u001b\u001b\u001b\u001b2,\u0001        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "full-repeat-count",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:full\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed daggers\r\u0017blessed potion of healing\r\u0017cursed ring of protection\r\u0017uncursed leather armor\rdb        \u001b\u001b\u001b\u001b\u001b\u001b2,\u0001        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "blind-corpse-bare",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:full\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed leather gloves\r        \u001b\u001b\u001b\u001b\u001b\u001bWb        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed cockatrice corpse\r        \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed apples\r        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed blindfold\r        \u001b\u001b\u001b\u001b\u001b\u001bdc        \u001b\u001b\u001b\u001b\u001b\u001bdd        \u001b\u001b\u001b\u001b\u001b\u001bTb        \u001b\u001b\u001b\u001b\u001b\u001bPe        \u001b\u001b\u001b\u001b\u001b\u001b,        \u001b\u001b\u001b\u001b\u001b\u001b        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "blind-corpse-gloves",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:full\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed leather gloves\r        \u001b\u001b\u001b\u001b\u001b\u001bWb        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed cockatrice corpse\r        \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed apples\r        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed blindfold\r        \u001b\u001b\u001b\u001b\u001b\u001bdc        \u001b\u001b\u001b\u001b\u001b\u001bdd        \u001b\u001b\u001b\u001b\u001b\u001bPe        \u001b\u001b\u001b\u001b\u001b\u001b,,\r        \u001b\u001b\u001b\u001b\u001b\u001b        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "blind-corpse-resistant",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:full\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017blessed yellow dragon scale mail\r        \u001b\u001b\u001b\u001b\u001b\u001bWb        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed cockatrice corpse\r        \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed apples\r        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed blindfold\r        \u001b\u001b\u001b\u001b\u001b\u001bdc        \u001b\u001b\u001b\u001b\u001b\u001bdd        \u001b\u001b\u001b\u001b\u001b\u001bPe        \u001b\u001b\u001b\u001b\u001b\u001b,,\r        \u001b\u001b\u001b\u001b\u001b\u001b        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "blind-corpse-count",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:full\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed leather gloves\r        \u001b\u001b\u001b\u001b\u001b\u001bWb        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed cockatrice corpse\r        \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed apples\r        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed blindfold\r        \u001b\u001b\u001b\u001b\u001b\u001bdc        \u001b\u001b\u001b\u001b\u001b\u001bdd        \u001b\u001b\u001b\u001b\u001b\u001bTb        \u001b\u001b\u001b\u001b\u001b\u001bPe        \u001b\u001b\u001b\u001b\u001b\u001b2,        \u001b\u001b\u001b\u001b\u001b\u001b        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b"
+    }
+  ],
+  "branchAssertions": [
+    {
+      "branch": "floor-pickup-safety.traditional-repeat-count",
+      "segment": 0,
+      "screenIncludes": [
+        "b - 2 daggers."
+      ]
+    },
+    {
+      "branch": "floor-pickup-safety.full-repeat-count",
+      "segment": 1,
+      "screenIncludes": [
+        "b - 2 daggers."
+      ]
+    },
+    {
+      "branch": "floor-pickup-safety.blind-corpse-bare",
+      "segment": 2,
+      "screenIncludes": [
+        "Touching the cockatrice corpse is a fatal mistake..."
+      ]
+    },
+    {
+      "branch": "floor-pickup-safety.blind-corpse-gloves",
+      "segment": 3,
+      "screenIncludes": [
+        "Pick up what?"
+      ]
+    },
+    {
+      "branch": "floor-pickup-safety.blind-corpse-resistant",
+      "segment": 4,
+      "screenIncludes": [
+        "Pick up what?"
+      ]
+    },
+    {
+      "branch": "floor-pickup-safety.blind-corpse-count",
+      "segment": 5,
+      "screenIncludes": [
+        "d - 2 apples."
+      ]
+    }
+  ]
+}

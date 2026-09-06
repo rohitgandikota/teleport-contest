@@ -44,7 +44,7 @@ import { hliquid } from './do_name.js';
 import { Is_waterlevel, WATER, LAVAPOOL, POOL, AIR } from './const.js';
 import { waterbody_name } from './pager.js';
 import { surface, recalc_mapseen } from './dungeon.js';
-import { pickup, can_reach_floor } from './pickup.js';
+import { pickup, can_reach_floor, loot_mon } from './pickup.js';
 import { dotrap, immune_to_trap, into_vs_onto } from './trap.js';
 import { is_pit, EXT_ENCUMBER, HVY_ENCUMBER, IS_FURNITURE, STAIRS, ECMD_OK, ECMD_TIME, OBJ_AT, GOLD_SYM, TT_BEARTRAP, TT_PIT, TT_WEB, TT_LAVA, TT_INFLOOR, TT_BURIEDBALL } from './const.js';
 import { near_capacity } from './attrib.js';
@@ -105,6 +105,13 @@ import { INTRINSIC } from './const.js';
 import { start_timer, stop_timer, peek_timer, TIMER_OBJECT, ZOMBIFY_MON }
     from './timeout.js';
 import { Hello } from './role.js';
+import { digests, is_floater, is_clinger, likes_lava } from './mondata.js';
+import { Wwalking } from './youprop.js';
+import { s_suffix } from './hacklib.js';
+import { uteetering_at_seen_pit } from './trap.js';
+import { P_SKILL } from './weapon.js';
+import { P_RIDING, P_BASIC } from './const.js';
+import { rider_cant_reach } from './steed.js';
 
 // src/hack.c:2996 runmode_delay_output(). Multi-turn actions and running
 // periodically expose their intermediate screen. The default "run" mode
@@ -1776,14 +1783,38 @@ export async function overexertion() {
 // engulfer's inventory, and -1 for "go ahead and pick up".
 //
 // Draws nothing; every arm is a message.
-async function pickup_checks() {
+export async function pickup_checks() {
     if (game.u.uswallow) {
-        note_unported_hack('pickup_checks:uswallow');
-        return 1;
+        if (!game.u.ustuck.minvent?.length) {
+            if (digests(game.u.ustuck.data)) {
+                await You(`pick up ${s_suffix(mon_nam(game.u.ustuck))} tongue.`);
+                await pline("But it's kind of slimy, so you drop it.");
+            } else {
+                await You(`don't ${Blind() ? 'feel' : 'see'} anything in here to pick up.`);
+            }
+            return 1;
+        }
+        return -2;
     }
-    if (is_pool(game.u.ux, game.u.uy) || is_lava(game.u.ux, game.u.uy)) {
-        note_unported_hack('pickup_checks:pool_or_lava');
-        return 0;
+    if (is_pool(game.u.ux, game.u.uy)) {
+        if (Wwalking() || is_floater(game.youmonst.data) || is_clinger(game.youmonst.data)
+            || (Flying() && !Breathless())) {
+            await You(`cannot dive into the ${hliquid('water')} to pick things up.`);
+            return 0;
+        } else if (!Underwater()) {
+            await You_cant('even see the bottom, let alone pick up something.');
+            return 0;
+        }
+    }
+    if (is_lava(game.u.ux, game.u.uy)) {
+        if (Wwalking() || is_floater(game.youmonst.data) || is_clinger(game.youmonst.data)
+            || (Flying() && !Breathless())) {
+            await You_cant('reach the bottom to pick things up.');
+            return 0;
+        } else if (!likes_lava(game.youmonst.data)) {
+            await You('would burn to a crisp trying to pick things up.');
+            return 0;
+        }
     }
     if (!OBJ_AT(game.u.ux, game.u.uy)) {
         const lev = game.level?.at(game.u.ux, game.u.uy);
@@ -1798,7 +1829,7 @@ async function pickup_checks() {
         else if (lev.typ === GRAVE)
             await You("don't need a gravestone.  Yet.");
         else if (lev.typ === FOUNTAIN)
-            await You('could drink the water...');
+            await You(`could drink the ${hliquid('water')}...`);
         else if (IS_DOOR(lev.typ) && (lev.doormask & D_ISOPEN))
             await pline("It won't come off the hinges.");
         else if (lev.typ === ALTAR)
@@ -1811,7 +1842,20 @@ async function pickup_checks() {
     }
     const traphere = t_at(game.u.ux, game.u.uy);
     if (!can_reach_floor(!!(traphere && is_pit(traphere.ttyp)))) {
-        note_unported_hack('pickup_checks:cannot_reach');
+        if (traphere && uteetering_at_seen_pit(traphere)) {
+            await You('cannot reach the bottom of the pit.');
+        } else if (game.u.usteed && P_SKILL(P_RIDING) < P_BASIC) {
+            await rider_cant_reach();
+        } else if (Blind()) {
+            await You('cannot reach anything here.');
+        } else {
+            let surf = surface(game.u.ux, game.u.uy);
+            if (traphere?.ttyp === HOLE)
+                surf = 'edge of the hole';
+            else if (traphere?.ttyp === TRAPDOOR)
+                surf = 'trap door';
+            await You(`cannot reach the ${surf}.`);
+        }
         return 0;
     }
     return -1; /* can do normal pickup */
@@ -1826,8 +1870,7 @@ export async function dopickup() {
     if (ret >= 0)
         return ret ? ECMD_TIME : ECMD_OK;
     if (ret === -2) {
-        note_unported_hack('dopickup:loot_mon');
-        return ECMD_OK;
+        return await loot_mon(game.u.ustuck, { v: -count }, null) ? ECMD_TIME : ECMD_OK;
     }
     /* else ret == -1 */
     return (await pickup(-count)) ? ECMD_TIME : ECMD_OK;

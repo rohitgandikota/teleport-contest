@@ -23,7 +23,8 @@ import { addinv, prinv, obj_extract_self, inv_order, let_to_name,
          freeinv, getobj, update_inventory, loot_classify, weight, mergable, merged, money_cnt,
          useup, useupf, obfree, stackobj, count_unpaid, count_buc, is_worn,
          tally_BUCX, askchain, display_pickinv, currency, obj_here,
-         carrying, merge_choice, nxtobj,
+         carrying, merge_choice, nxtobj, sortloot, unsortloot, will_feel_cockatrice,
+         hold_another_object,
          GETOBJ_ALLOWCNT, GETOBJ_DOWNPLAY, GETOBJ_EXCLUDE,
          GETOBJ_EXCLUDE_SELECTABLE, GETOBJ_PROMPT, GETOBJ_SUGGEST }
     from './invent.js';
@@ -60,14 +61,14 @@ import { Is_mbag, splitobj, unbless, place_object, add_to_container,
          start_corpse_timeout, start_glob_timeout, set_bknown, hornoplenty }
     from './mkobj.js';
 import { PARANOID_AUTOALL } from './const.js';
-import { paranoia_bits, boolean_option } from './options.js';
+import { paranoia_bits, boolean_option, add_menu_heading } from './options.js';
 import { PMNAMES } from './monst_data.js';
 import { def_char_to_objclass } from './sp_lev.js';
 import { read_engr_at } from './engrave.js';
-import { rn2, rnd, d } from './rng.js';
+import { rn2, rnd, d, rn2_on_display_rng } from './rng.js';
 import { OBJ_AT, LOOKHERE_NOFLAGS, LOOKHERE_PICKED_SOME, LOOKHERE_SKIP_DFEATURE } from './const.js';
 import { NO_COLOR } from './terminal.js';
-import { There, You, Your } from './pline.js';
+import { There, You, Your, You_cant } from './pline.js';
 import { flush_screen } from './display.js';
 import { look_here } from './invent.js';
 import { nomul } from './hack.js';
@@ -78,12 +79,12 @@ import { P_SKILL } from './weapon.js';
 import { P_RIDING, P_BASIC, Is_airlevel, Is_waterlevel } from './const.js';
 import { ATTKS, MFLAGS } from './monst_data.js';
 import { is_pit } from './const.js';
-import { Blind, Levitation, Stone_resistance, Flying } from './youprop.js';
+import { Blind, Levitation, Stone_resistance, Flying, Underwater } from './youprop.js';
 import { st_gloves, st_corpse, st_petrifies, st_resists, W_ARMG } from './const.js';
 import { worn } from './do_wear.js';
 import { nohands, notake, poly_when_stoned, throws_rocks,
          touch_petrifies } from './mondata.js';
-import { is_rider } from './makemon.js';
+import { is_rider, hideunder } from './makemon.js';
 import { body_part } from './polyself.js';
 import { tty_yn_function } from './tty/topl.js';
 import { inv_cnt } from './hack.js';
@@ -110,6 +111,15 @@ import { makemon, set_malign } from './makemon.js';
 import { christen_monst, Monnam, rndmonnam, oname } from './do_name.js';
 import { more_experienced, newexplevel } from './exper.js';
 import { Hallucination } from './youprop.js';
+import { STONE, BY_NEXTHERE, FEEL_COCKATRICE, PICK_ONE,
+         PICK_NONE, SORTLOOT_LOOT, SORTLOOT_INVLET, SORTLOOT_PACK,
+         SORTLOOT_PETRIFY, MENU_BEHAVE_STANDARD, MENU_ITEMFLAGS_NONE } from './const.js';
+import { hides_under } from './mondata.js';
+import { newsym_force, temporary_object_glyph, mon_to_glyph } from './display.js';
+import { which_armor, extract_from_minvent } from './worn.js';
+import { nolimbs } from './mondata.js';
+import { x_monnam, mon_nam } from './do_name.js';
+import { W_SADDLE, ARTICLE_THE, SUPPRESS_SADDLE } from './const.js';
 
 
 
@@ -121,9 +131,8 @@ function note_unported_pickup(what) {
 
 // src/hack.c can_reach_floor() — is the floor in reach?
 //
-// The trap parameter widens reach inside a pit. Riding, being stuck to a
-// ceiling clinger, and polyform reach limits are states that cannot occur
-// yet; levitation can, via potions and rings.
+// The trap parameter checks objects at a pit's bottom. Riding, holders,
+// levitation, ceiling hiding and body size also constrain reach.
 export function can_reach_floor(check_pit) {
     const u = game.u;
     const youdata = game.youmonst?.data ?? game.mons[u.umonnum ?? 0];
@@ -326,7 +335,7 @@ export async function check_here(picked_some) {
     /* count the objects here */
     for (const obj of game.level?.objects || []) {
         if (obj.ox === game.u.ux && obj.oy === game.u.uy
-            && obj !== game.uchain)
+            && obj !== game.u.uchain)
             ct++;
     }
 
@@ -408,98 +417,210 @@ export async function force_decor(via_probing = false) {
 const is_pool_typ = (t) => t === POOL || t === MOAT || t === WATER;
 const LAVAPOOL_TYP = LAVAPOOL;
 
-// src/pickup.c:616 reset_justpicked() -- a new successful pickup attempt
-// replaces the previous "just picked up" inventory group.
-function reset_justpicked() {
-    for (const obj of game.invent || [])
+// src/pickup.c:616 reset_justpicked().
+export function reset_justpicked(olist) {
+    for (const obj of olist || [])
         obj.pickup_prev = 0;
 }
 
-export async function pickup(what) {
-    const autopickup = what > 0;
+// src/pickup.c:460 n_or_more(), count-prefixed menu pickup callback.
+function n_or_more(obj) {
+    return obj !== game.u.uchain && obj.quan >= game.val_for_n_or_more;
+}
 
-    /* we might have arrived here while fainted or sleeping */
+// src/pickup.c:509 all_but_uchain().
+function all_but_uchain(obj) {
+    return obj !== game.u.uchain;
+}
+
+// src/pickup.c:672 pickup(), including traditional and menu selection.
+export async function pickup(what) {
+    const autopickup = what > 0, count = what < 0 ? -what : 0;
+    let n_tried = 0, n_picked = 0, pick_list = null;
     if (autopickup && game.multi < 0 && unconscious()) {
+        game.iflags.prev_decor = STONE;
         return 0;
     }
-
-    /* src/pickup.c:691: only the first object that changes encumbrance in
-       this pickup operation gets the verbose lifting prefix. */
     game.pickup_encumbrance = 0;
-
     if (!game.u.uswallow) {
-        /* no auto-pick if no-pick move, nothing there, or in a pool */
         if (autopickup && (game.context.nopick || !OBJ_AT(game.u.ux, game.u.uy)
-                           || (is_pool(game.u.ux, game.u.uy) && !game.u.uinwater)
+                           || (is_pool(game.u.ux, game.u.uy) && !Underwater())
                            || is_lava(game.u.ux, game.u.uy))) {
-            if (game.flags?.mention_decor)
+            if (game.flags.mention_decor)
                 await describe_decor();
             await read_engr_at(game.u.ux, game.u.uy);
             return 0;
         }
-        /* no pickup if levitating & not on air or water level */
         const t = t_at(game.u.ux, game.u.uy);
         if (!can_reach_floor(!!(t && is_pit(t.ttyp)))) {
-            note_unported_pickup('pickup:cant_reach_floor');
+            await describe_decor();
+            if ((game.multi && !game.context.run)
+                || (autopickup && !game.flags.autopickup)
+                || (t && (uteetering_at_seen_pit(t) || uescaped_shaft(t))))
+                await read_engr_at(game.u.ux, game.u.uy);
             return 0;
         }
-        const cannotTake = notake(game.youmonst.data);
         if ((game.multi && !game.context.run)
-            || (autopickup && !game.flags?.autopickup)
-            || cannotTake) {
+            || (autopickup && !game.flags.autopickup)
+            || notake(game.youmonst.data)) {
             await check_here(false);
-            if (cannotTake && OBJ_AT(game.u.ux, game.u.uy)
-                && (autopickup || game.flags?.autopickup))
+            if (notake(game.youmonst.data) && OBJ_AT(game.u.ux, game.u.uy)
+                && (autopickup || game.flags.autopickup))
                 await You('are physically incapable of picking anything up.');
             return 0;
         }
-
-        /* if there's anything here, stop running */
         if (OBJ_AT(game.u.ux, game.u.uy) && game.context.run
             && game.context.run !== 8 && !game.context.nopick)
             nomul(0);
     }
 
-    /* src/pickup.c:1085 query_objlist() — with AUTOSELECT_SINGLE set, a
-       single candidate is taken WITHOUT a menu; two or more raise one. */
-    let here = (game.level?.objects || [])
-        .filter(o => o.ox === game.u.ux && o.oy === game.u.uy
-                     && o !== game.uchain);
-    /* src/pickup.c:975 autopick() — autopickup takes the eligible objects
-       with no menu at all, so the class filter has to run here or every
-       object on the square gets grabbed regardless of pickup_types. */
-    if (autopickup)
-        here = autopick(here);
-    let n_picked = 0, n_tried = 0;
-    if (here.length > 1 && !autopickup) {
-        const picked = await query_objlist('Pick up what?', here, INVORDER_SORT, PICK_ANY, allow_all);
-        if (picked.length)
-            reset_justpicked();
-        for (const obj of picked) {
-            n_tried++;
-            const count = picked.counts?.get(obj) ?? obj.quan;
-            if ((await pickup_object(obj, count, false)) > 0)
-                n_picked++;
+    add_valid_menu_class(0);
+    let objchain, traverse_how;
+    if (!game.u.uswallow) {
+        objchain = game.level.objects.filter(o => o.ox === game.u.ux && o.oy === game.u.uy);
+        // C place_object() keeps boulders ahead of other nexthere entries.
+        objchain.sort((a, b) => (b.otyp === ONAMES.BOULDER) - (a.otyp === ONAMES.BOULDER));
+        traverse_how = BY_NEXTHERE;
+    } else {
+        objchain = game.u.ustuck.minvent || [];
+        traverse_how = 0;
+    }
+    if (autopickup) {
+        pick_list = autopick(objchain);
+    } else if (game.flags.menu_style !== MENU_TRADITIONAL || game.iflags.menu_requested) {
+        traverse_how |= AUTOSELECT_SINGLE | (game.flags.sortpack ? INVORDER_SORT : 0);
+        if (count) {
+            game.val_for_n_or_more = count;
+            pick_list = await query_objlist(`Pick ${count} of what?`, objchain,
+                traverse_how, PICK_ONE, n_or_more);
+            for (const obj of pick_list)
+                pick_list.counts.set(obj, count);
+        } else {
+            pick_list = await query_objlist('Pick up what?', objchain,
+                traverse_how | FEEL_COCKATRICE, PICK_ANY, all_but_uchain);
         }
     } else {
-        /* autopick(): no menu, take every eligible object */
-        if (here.length)
-            reset_justpicked();
-        for (const obj of here) {
+        const oclasses = [], all_of_a_type = { v: true }, selective = { v: false };
+        if (objchain.length === 1 && count) {
+            const obj = objchain[0];
             n_tried++;
-            if ((await pickup_object(obj, obj.quan, false)) > 0)
+            reset_justpicked(game.invent);
+            if (await pickup_object(obj, Math.min(obj.quan, count), false) > 0)
                 n_picked++;
+        } else {
+            if (objchain.length >= 2) {
+                const via_menu = { v: 0 };
+                await There(`are ${objchain.length <= 10 ? 'several' : 'many'} objects here.`);
+                if (!await query_classes(oclasses, selective, all_of_a_type,
+                    'pick up', objchain, !!(traverse_how & BY_NEXTHERE), via_menu)) {
+                    if (!via_menu.v) {
+                        game.pickup_encumbrance = 0;
+                        add_valid_menu_class(0);
+                        return 0;
+                    }
+                    if (selective.v)
+                        traverse_how |= INVORDER_SORT;
+                    pick_list = await query_objlist('Pick up what?', objchain,
+                        traverse_how, PICK_ANY, via_menu.v === -2 ? allow_all : allow_category);
+                }
+            }
+            if (pick_list === null) {
+                const bycat = 'BUCX'.split('').some(menu_class_present);
+                for (const obj of [...objchain]) {
+                    if (bycat ? !allow_category(obj)
+                        : (!selective.v && oclasses.length && !oclasses.includes(obj.oclass)))
+                        continue;
+                    let lcount = -1;
+                    if (!all_of_a_type.v) {
+                        const qbuf = safe_qbuf('Pick up ', '?', obj, doname, ansimpleoname, 'something');
+                        const sym = await tty_yn_function(qbuf, obj.quan < 2 ? 'ynaq' : 'yn#aq', 'y', true);
+                        if (sym === 'q')
+                            break;
+                        if (sym === 'n')
+                            continue;
+                        if (sym === 'a') {
+                            all_of_a_type.v = true;
+                            if (selective.v) {
+                                selective.v = false;
+                                oclasses.splice(0, oclasses.length, obj.oclass);
+                            }
+                        } else if (sym === '#') {
+                            if (!game.yn_number)
+                                continue;
+                            lcount = Math.min(game.yn_number, obj.quan);
+                        }
+                    }
+                    if (lcount === -1)
+                        lcount = obj.quan;
+                    if (!n_tried)
+                        reset_justpicked(game.invent);
+                    n_tried++;
+                    const res = await pickup_object(obj, lcount, false);
+                    if (res < 0)
+                        break;
+                    n_picked += res;
+                }
+            }
         }
     }
-
-    /* src/pickup.c:903 — check if there's anything else here after
-       auto-pickup is done; this is what prints "You see here a jackal
-       corpse." when autopickup took nothing */
-    if (autopickup && !game.u.uswallow)
-        await check_here(n_picked > 0);
-
+    if (pick_list !== null) {
+        if (pick_list.length > 0)
+            reset_justpicked(game.invent);
+        n_tried = pick_list.length;
+        for (const obj of pick_list) {
+            const res = await pickup_object(obj, pick_list.counts?.get(obj) ?? obj.quan, false);
+            if (res < 0)
+                break;
+            n_picked += res;
+        }
+    }
+    if (!game.u.uswallow) {
+        if (hides_under(game.youmonst.data))
+            hideunder(game.youmonst);
+        if (n_picked)
+            newsym_force(game.u.ux, game.u.uy);
+        if (autopickup)
+            await check_here(n_picked > 0);
+    }
     game.pickup_encumbrance = 0;
+    add_valid_menu_class(0);
     return n_tried > 0 ? 1 : 0;
+}
+
+// src/pickup.c:2431 loot_mon(), remove a saddle or pick up from an engulfer.
+export async function loot_mon(mtmp, passed_info, prev_loot) {
+    let timepassed = 0;
+    const otmp = mtmp && mtmp !== game.u.usteed && which_armor(mtmp, W_SADDLE);
+    if (otmp) {
+        if (passed_info)
+            passed_info.v = 1;
+        const qbuf = `Do you want to remove the saddle from ${
+            x_monnam(mtmp, ARTICLE_THE, null, SUPPRESS_SADDLE, false)}?`;
+        const c = await tty_yn_function(qbuf, 'ynq', 'n', true);
+        if (c === 'y') {
+            if (nolimbs(game.youmonst.data)) {
+                await You_cant('do that without limbs.');
+                return 0;
+            }
+            if (otmp.cursed) {
+                await You(`can't.  The saddle seems to be stuck to ${
+                    x_monnam(mtmp, ARTICLE_THE, null, SUPPRESS_SADDLE, false)}.`);
+                return 1;
+            }
+            await extract_from_minvent(mtmp, otmp, true, false);
+            if (game.flags.verbose)
+                await You(`take ${thesimpleoname(otmp)} off of ${mon_nam(mtmp)}.`);
+            await hold_another_object(otmp, 'You drop %s!', doname(otmp), null);
+            timepassed = rnd(3);
+            if (prev_loot)
+                prev_loot.v = true;
+        } else if (c === 'q') {
+            return 0;
+        }
+    }
+    if (game.u.uswallow)
+        timepassed = await pickup(passed_info ? passed_info.v : 0);
+    return timepassed;
 }
 
 // src/pickup.c:934 autopick_testobj()'s cached cost applies to the whole pile.
@@ -545,140 +666,110 @@ export function allow_all(obj) {
     return true;
 }
 
-// src/pickup.c:1025 query_objlist() — the PICK_ANY menu over a pile.
-//
-// C sorts the list into class order with a heading per class, exactly as the
-// inventory menu does, and assigns a,b,c... down the list rather than reusing
-// any inventory letter. Returns the chosen objects in menu order.
-export async function query_objlist(qstr,   /* query string */
-                                    olist,  /* the list to pick from */
-                                    qflags = INVORDER_SORT, /* options to control the query */
-                                    how = PICK_ANY,         /* type of query */
-                                    allow = allow_all)      /* allow function */
-{
-    const use_invlet = (qflags & USE_INVLET) !== 0;
-    const sorted = (qflags & INVORDER_SORT) !== 0,
-          engulfer = (qflags & INCLUDE_HERO) !== 0;
-    let engulfer_minvent;
-    let n, last;
-
+// src/pickup.c:1025 query_objlist(); arrays carry C menu item pointers and
+// counts, with the negative SIGNAL_NOMENU and SIGNAL_ESCAPE return codes.
+export async function query_objlist(qstr, olist, qflags = INVORDER_SORT,
+                                    how = PICK_ANY, allow = allow_all) {
+    const sorted = !!(qflags & INVORDER_SORT), engulfer = !!(qflags & INCLUDE_HERO);
     if (!olist.length && !engulfer)
         return [];
-
-    /* count the number of items allowed */
-    n = 0, last = null;
-    for (const curr of olist)
+    let n = 0, last = null;
+    for (const curr of olist) {
         if (allow(curr)) {
             last = curr;
             n++;
         }
-    /* can't depend upon 'engulfer' because that's used to indicate whether
-       hero should be shown as an extra, fake item */
-    engulfer_minvent = (olist.length && olist[0].where === OBJ_MINVENT
-                        && engulfing_u(olist[0].ocarry));
-    if (engulfer_minvent && n === 1 && olist[0].owornmask) {
-        qflags &= ~AUTOSELECT_SINGLE;
     }
+    const engulfer_minvent = olist.length && olist[0].where === OBJ_MINVENT
+        && engulfing_u(olist[0].ocarry);
+    if (engulfer_minvent && n === 1 && olist[0].owornmask)
+        qflags &= ~AUTOSELECT_SINGLE;
     if (engulfer) {
         ++n;
-        /* don't autoselect swallowed hero if it's the only choice */
         qflags &= ~AUTOSELECT_SINGLE;
     }
-
-    if (n === 0) /* nothing to pick here */
-        return (qflags & SIGNAL_NOMENU) ? -1 : [];
-
+    if (n === 0)
+        return qflags & SIGNAL_NOMENU ? -1 : [];
     if (n === 1 && (qflags & AUTOSELECT_SINGLE)) {
         const picks = [last];
         Object.defineProperty(picks, 'counts', { value: new Map([[last, last.quan]]) });
         return picks;
     }
-    olist = olist.filter(allow);
 
-    const { tty_create_nhwindow, tty_start_menu, tty_add_menu, tty_end_menu,
-            tty_display_nhwindow, tty_select_menu, tty_destroy_nhwindow,
-            ATR_NONE, ATR_INVERSE, NHW_MENU } = await import('./tty/wintty.js');
-    const { MENU_BEHAVE_STANDARD, MENU_ITEMFLAGS_NONE, PICK_ANY }
-        = await import('./const.js');
-    const { docrt } = await import('./display.js');
-
-    const win = tty_create_nhwindow(NHW_MENU);
+    const mode = String(game.flags.sortloot).charAt(0);
+    const sortflags = ((mode === 'f' || (mode === 'l' && !(qflags & USE_INVLET)))
+        ? SORTLOOT_LOOT : (qflags & USE_INVLET) ? SORTLOOT_INVLET : 0)
+        | (game.flags.sortpack ? SORTLOOT_PACK : 0)
+        | ((qflags & FEEL_COCKATRICE) ? SORTLOOT_PETRIFY : 0);
+    const sortedolist = sortloot(olist, sortflags, !!(qflags & BY_NEXTHERE), allow);
+    const { tty_start_menu, tty_add_menu, tty_add_menu_str,
+            tty_end_menu, tty_select_menu, ATR_NONE } = await import('./tty/wintty.js');
+    const win = tty_create_nhwindow(NHW_MENU), fake_hero_object = { quan: 1 };
     tty_start_menu(win, MENU_BEHAVE_STANDARD);
-
-    /* sortloot's class grouping: C walks flags.inv_order and emits a heading
-       for each class that has anything in the pile */
-    const bylet = new Map();
-    let let_ = 'a';
-    let id = 1;
-    const byid = new Map();
-    const sortlootMode = String(game.flags?.sortloot ?? 'loot')
-        .charAt(0).toLowerCase();
-    const sortByLootName = sortlootMode === 'l' || sortlootMode === 'f';
-    for (const oclass of inv_order()) {
-        const items = olist.filter(o => o.oclass === oclass);
-        if (use_invlet) {
-            items.sort((a, b) => ((a.invlet.charCodeAt(0) ^ 0o40)
-                                  - (b.invlet.charCodeAt(0) ^ 0o40)));
-        } else {
-            items.splice(0, items.length,
-                         ...sortloot_items(items, sortByLootName));
-        }
-        if (!items.length)
-            continue;
-        tty_add_menu(win, null, 0, 0, 0, ATR_INVERSE, NO_COLOR,
-                     let_to_name(oclass), MENU_ITEMFLAGS_NONE);
-        let first_of_class = true;
-        for (const o of items) {
-            if (!game.u?.ublind)
-                observe_object(o);
-            byid.set(id, o);
-            /* the first coin entry keeps GOLD_SYM as its selector
-               (query_objlist: "(first && oclass == COIN_CLASS) ?
-               GOLD_SYM : 0"); everything else auto-assigns letters */
-            const sel = use_invlet ? o.invlet
-                        : (first_of_class && oclass === OCLASSES.COIN_CLASS)
-                          ? '$' : let_;
-            tty_add_menu(win, null, id, sel, 0, ATR_NONE,
-                         NO_COLOR, doname_with_price(o),
-                         MENU_ITEMFLAGS_NONE);
-            if (!use_invlet && sel !== '$')
-                let_ = String.fromCharCode(let_.charCodeAt(0) + 1);
-            first_of_class = false;
-            id++;
+    if (game.this_title)
+        tty_add_menu_str(win, game.this_title);
+    const pack = [...inv_order()];
+    if (qflags & INCLUDE_VENOM)
+        pack.push(OCLASSES.VENOM_CLASS);
+    let first = true;
+    for (const oclass of sorted ? pack : [0]) {
+        let printed_type_name = false;
+        for (const { obj: curr } of sortedolist) {
+            if (!curr)
+                break;
+            if (sorted && curr.oclass !== oclass)
+                continue;
+            if ((qflags & FEEL_COCKATRICE) && curr.otyp === ONAMES.CORPSE
+                && will_feel_cockatrice(curr, false)) {
+                tty_destroy_nhwindow(win);
+                await look_here(0, LOOKHERE_NOFLAGS);
+                unsortloot(sortedolist);
+                return [];
+            }
+            if (allow(curr)) {
+                if (sorted && !printed_type_name) {
+                    add_menu_heading(win, let_to_name(oclass, false,
+                        how !== PICK_NONE && game.iflags.menu_head_objsym));
+                    printed_type_name = true;
+                }
+                const glyphinfo = temporary_object_glyph(curr);
+                tty_add_menu(win, glyphinfo, curr,
+                    (qflags & USE_INVLET) ? curr.invlet
+                        : first && curr.oclass === OCLASSES.COIN_CLASS ? '$' : 0,
+                    def_oc_syms[game.objects[curr.otyp].oc_class], ATR_NONE, NO_COLOR,
+                    doname_with_price(curr), MENU_ITEMFLAGS_NONE);
+                first = false;
+            }
         }
     }
+    unsortloot(sortedolist);
     if (engulfer) {
-        if (sorted && n > 1) {
-            tty_add_menu(win, null, 0, 0, 0, ATR_INVERSE, NO_COLOR,
-                         `${digests(game.u.ustuck.data) ? 'Swallowed' : 'Engulfed'} Creatures`,
-                         MENU_ITEMFLAGS_NONE);
-        }
-        /* fake inventory letter, no group accelerator */
-        tty_add_menu(win, null, 0, CONTAINED_SYM, 0, ATR_NONE, NO_COLOR,
-                     an(self_lookat()), MENU_ITEMFLAGS_NONE);
+        if (sorted && n > 1)
+            add_menu_heading(win, `${digests(game.u.ustuck.data) ? 'Swallowed' : 'Engulfed'} Creatures`);
+        const glyphinfo = mon_to_glyph(game.youmonst, rn2_on_display_rng);
+        tty_add_menu(win, glyphinfo, fake_hero_object, CONTAINED_SYM, 0,
+            ATR_NONE, NO_COLOR, an(self_lookat()), MENU_ITEMFLAGS_NONE);
     }
-
     tty_end_menu(win, qstr);
-    await tty_display_nhwindow(win);
-
-    const ids = await tty_select_menu(win, how);
+    const selected = await tty_select_menu(win, how);
     tty_destroy_nhwindow(win);
-    await docrt();
-
-    if (ids.cancelled && (qflags & SIGNAL_ESCAPE))
-        return -2;
-
-    const picks = [];
-    const counts = new Map();
-    for (const id of ids) {
-        const obj = byid.get(id);
-        if (!obj)
+    if (selected.cancelled)
+        return qflags & SIGNAL_ESCAPE ? -2 : [];
+    const picks = [], counts = new Map();
+    for (const curr of selected) {
+        if (curr === fake_hero_object) {
+            await You_cant('pick yourself up!');
             continue;
-        let count = ids.counts?.get(id) ?? -1;
-        if (count < 0 || count > obj.quan)
-            count = obj.quan;
-        picks.push(obj);
-        counts.set(obj, count);
+        }
+        if (engulfer_minvent && curr.owornmask) {
+            await You_cant(`pick ${ysimple_name(curr)} up.`);
+            continue;
+        }
+        let count = selected.counts?.get(curr) ?? -1;
+        if (count === -1 || count > curr.quan)
+            count = curr.quan;
+        picks.push(curr);
+        counts.set(curr, count);
     }
     Object.defineProperty(picks, 'counts', { value: counts });
     return picks;
@@ -849,7 +940,7 @@ export async function pickup_object(obj, count, telekinesis) {
     if (!Blind())
         observe_object(obj);
 
-    if (obj === game.uchain)
+    if (obj === game.u.uchain)
         return 0;                       /* do not pick up attached chain */
     if (obj.oartifact && !await touch_artifact(obj, game.youmonst))
         return 0;
@@ -895,7 +986,7 @@ export async function pickup_object(obj, count, telekinesis) {
 // src/pickup.c:1897 pick_obj() — off the floor and into inventory.
 async function pick_obj(otmp) {
     const ox = otmp.ox, oy = otmp.oy;
-    let robshop = !game.u.uswallow && otmp !== game.uball
+    let robshop = !game.u.uswallow && otmp !== game.u.uball
                && costly_spot(ox, oy);
 
     obj_extract_self(otmp);
@@ -1663,7 +1754,7 @@ export async function in_container(obj) {
     if (!game.current_container) {
         await impossible('<in> no gc.current_container?');
         return 0;
-    } else if (obj === game.uball || obj === game.uchain) {
+    } else if (obj === game.u.uball || obj === game.u.uchain) {
         await You('must be kidding.');
         return 0;
     } else if (obj === game.current_container) {

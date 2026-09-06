@@ -91,7 +91,7 @@ import { ONAME_VIA_NAMING, ONAME_WISH, ONAME_GIFT, ONAME_VIA_DIP,
          ONAME_KNOW_ARTI, ECMD_OK, ECMD_TIME, ECMD_CANCEL, GETOBJ_PROMPT,
          nothing_happens, A_CON, A_WIS, KILLED_BY, W_ARM, W_WEP, W_ART, W_ARTI,
          SICK_ALL,
-         TIMEOUT, W_SWAPWEP, W_QUIVER, W_BALL, W_SADDLE,
+         I_SPECIAL, TIMEOUT, W_SWAPWEP, W_QUIVER, W_BALL, W_SADDLE,
          DISMOUNT_THROWN, IS_ALTAR } from './const.js';
 
 /* include/artilist.h — artilist[i].otyp, resolved from the generated
@@ -1123,6 +1123,19 @@ async function invoke_enlightening() {
     tty_destroy_nhwindow(win);
     await docrt();
     return ECMD_TIME;
+}
+
+// src/artifact.c:2236 finesse_ahriman(), whether freeinv will end levitation.
+export function finesse_ahriman(obj) {
+    const oart = get_artifact(obj);
+    const e = game.u.uprops?.LEVITATION || 0;
+    if (!Levitation() || oart === artifact_records[ART_NONARTIFACT]
+        || oart.inv_prop !== 'LEVITATION' || !(e & W_ARTI))
+        return false;
+    /* Probe the property bits cleared by arti_invoke(off), without changing
+       the live property. C saves and restores the whole prop record. */
+    const h = (game.u.intrinsic?.HLevitation || 0) & ~(I_SPECIAL | TIMEOUT);
+    return !(h || (e & ~W_ARTI));
 }
 
 // src/artifact.c:2131 arti_invoke(), ordinary property powers. These toggle

@@ -56,8 +56,10 @@ const helmet = floorObject(ONAMES.ORCISH_HELM, mon.mx, mon.my);
 assert.ok(helmet, 'the unusable helmet lands at the polymorph square');
 assert.equal(helmet.owornmask | 0, 0,
              'the dropped helmet has no worn-state bits');
-assert.equal(helmet.bypass, 1,
-             'a wand-polymorph drop is bypassed by the active beam');
+// C allmain.c:195 clears beam bypasses before accepting another command.
+assert.equal(helmet.bypass, 0,
+             'the completed beam leaves no bypass on the dropped helmet');
+assert.ok(!game.context.bypasses, 'completed command clears the bypass context');
 assertNoFormerMarkers();
 
 await run(1);

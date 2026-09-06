@@ -1,0 +1,335 @@
+{
+  "name": "engulfer-object-transfers",
+  "description": "Dropped objects retained by engulfers, counts and contents displays; corpse and meat digestion, growth, healing, polymorph, slime and petrification.",
+  "coverage": [
+    "mode.debug",
+    "ui.menus",
+    "ui.more-paging",
+    "object.food-corpses",
+    "object.tools-containers"
+  ],
+  "branches": [
+    "engulfer-object-transfers.engulfer-one",
+    "engulfer-object-transfers.engulfer-regurgitation-after-drop",
+    "engulfer-object-transfers.engulfer-look",
+    "engulfer-object-transfers.engulfer-count",
+    "engulfer-object-transfers.digest-newt",
+    "engulfer-object-transfers.digest-wraith",
+    "engulfer-object-transfers.digest-nurse-wish-drop",
+    "engulfer-object-transfers.digest-polymorph",
+    "engulfer-object-transfers.digest-petrify",
+    "engulfer-object-transfers.digest-slime",
+    "engulfer-object-transfers.digest-gray-glob",
+    "engulfer-object-transfers.digest-meatball",
+    "engulfer-object-transfers.digest-enormous-meatball",
+    "engulfer-object-transfers.digest-meat-ring",
+    "engulfer-object-transfers.digest-meat-stick",
+    "engulfer-object-transfers.digest-apple",
+    "engulfer-object-transfers.vortex-one",
+    "engulfer-object-transfers.vortex-many",
+    "engulfer-object-transfers.vortex-look",
+    "engulfer-object-transfers.vortex-count",
+    "engulfer-object-transfers.vortex-food"
+  ],
+  "requireBranchAssertions": true,
+  "segments": [
+    {
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             \u0017uncursed oil lamp\r\u001b\u001b\u001b\u001b\u001b\u001baa  \u001b\u001b\u001b\u001b\u001b\u001b\u0007purple worm\rmsms \u001b\u001b\u001b\u001b\u001b\u001bms \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed daggers\r        \u001b\u001b\u001b\u001b\u001b\u001bdb        \u001b\u001b\u001b\u001b\u001b\u001b,        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b",
+      "name": "engulfer-one"
+    },
+    {
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             \u0017uncursed oil lamp\r\u001b\u001b\u001b\u001b\u001b\u001baa  \u001b\u001b\u001b\u001b\u001b\u001b\u0007purple worm\rmsms \u001b\u001b\u001b\u001b\u001b\u001bms \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed daggers\r        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed potion of healing\r        \u001b\u001b\u001b\u001b\u001b\u001bdb        \u001b\u001b\u001b\u001b\u001b\u001bdc        \u001b\u001b\u001b\u001b\u001b\u001b,,\r        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b",
+      "name": "engulfer-regurgitation-after-drop"
+    },
+    {
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             \u0017uncursed oil lamp\r\u001b\u001b\u001b\u001b\u001b\u001baa  \u001b\u001b\u001b\u001b\u001b\u001b\u0007purple worm\rmsms \u001b\u001b\u001b\u001b\u001b\u001bms \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed potion of healing\r        \u001b\u001b\u001b\u001b\u001b\u001bdb        \u001b\u001b\u001b\u001b\u001b\u001b:        \u001b\u001b\u001b\u001b\u001b\u001b        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b",
+      "name": "engulfer-look"
+    },
+    {
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             \u0017uncursed oil lamp\r\u001b\u001b\u001b\u001b\u001b\u001baa  \u001b\u001b\u001b\u001b\u001b\u001b\u0007purple worm\rmsms \u001b\u001b\u001b\u001b\u001b\u001bms \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed daggers\r        \u001b\u001b\u001b\u001b\u001b\u001bdb        \u001b\u001b\u001b\u001b\u001b\u001b2,        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b",
+      "name": "engulfer-count"
+    },
+    {
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             \u0017uncursed oil lamp\r\u001b\u001b\u001b\u001b\u001b\u001baa  \u001b\u001b\u001b\u001b\u001b\u001b\u0007purple worm\rmsms        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed newt corpse\r        \u001b\u001b\u001b\u001b\u001b\u001bdb        \u001b\u001b\u001b\u001b\u001b\u001b:        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b",
+      "name": "digest-newt"
+    },
+    {
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             \u0017uncursed oil lamp\r\u001b\u001b\u001b\u001b\u001b\u001baa  \u001b\u001b\u001b\u001b\u001b\u001b\u0007purple worm\rmsms        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed wraith corpse\r        \u001b\u001b\u001b\u001b\u001b\u001bdb        \u001b\u001b\u001b\u001b\u001b\u001b:        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b",
+      "name": "digest-wraith"
+    },
+    {
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             \u0017uncursed oil lamp\r\u001b\u001b\u001b\u001b\u001b\u001baa  \u001b\u001b\u001b\u001b\u001b\u001b\u0007purple worm\rmsms        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed nurse corpse\r        \u001b\u001b\u001b\u001b\u001b\u001bdb        \u001b\u001b\u001b\u001b\u001b\u001b:        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b",
+      "name": "digest-nurse-wish-drop"
+    },
+    {
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             \u0017uncursed oil lamp\r\u001b\u001b\u001b\u001b\u001b\u001baa  \u001b\u001b\u001b\u001b\u001b\u001b\u0007purple worm\rmsms        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed chameleon corpse\r        \u001b\u001b\u001b\u001b\u001b\u001bdb        \u001b\u001b\u001b\u001b\u001b\u001b:        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b",
+      "name": "digest-polymorph"
+    },
+    {
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             \u0017uncursed oil lamp\r\u001b\u001b\u001b\u001b\u001b\u001baa  \u001b\u001b\u001b\u001b\u001b\u001b\u0007purple worm\rmsms        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed leather gloves\r        \u001b\u001b\u001b\u001b\u001b\u001bWb        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed cockatrice corpse\r        \u001b\u001b\u001b\u001b\u001b\u001bdc        \u001b\u001b\u001b\u001b\u001b\u001b:        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b",
+      "name": "digest-petrify"
+    },
+    {
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             \u0017uncursed oil lamp\r\u001b\u001b\u001b\u001b\u001b\u001baa  \u001b\u001b\u001b\u001b\u001b\u001b\u0007purple worm\rmsms        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed glob of green slime\r        \u001b\u001b\u001b\u001b\u001b\u001bdb        \u001b\u001b\u001b\u001b\u001b\u001b:        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b",
+      "name": "digest-slime"
+    },
+    {
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             \u0017uncursed oil lamp\r\u001b\u001b\u001b\u001b\u001b\u001baa  \u001b\u001b\u001b\u001b\u001b\u001b\u0007purple worm\rmsms        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed glob of gray ooze\r        \u001b\u001b\u001b\u001b\u001b\u001bdb        \u001b\u001b\u001b\u001b\u001b\u001b:        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b",
+      "name": "digest-gray-glob"
+    },
+    {
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             \u0017uncursed oil lamp\r\u001b\u001b\u001b\u001b\u001b\u001baa  \u001b\u001b\u001b\u001b\u001b\u001b\u0007purple worm\rmsms        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed meatball\r        \u001b\u001b\u001b\u001b\u001b\u001bdb        \u001b\u001b\u001b\u001b\u001b\u001b:        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b",
+      "name": "digest-meatball"
+    },
+    {
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             \u0017uncursed oil lamp\r\u001b\u001b\u001b\u001b\u001b\u001baa  \u001b\u001b\u001b\u001b\u001b\u001b\u0007purple worm\rmsms        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed enormous meatball\r        \u001b\u001b\u001b\u001b\u001b\u001bdb        \u001b\u001b\u001b\u001b\u001b\u001b:        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b",
+      "name": "digest-enormous-meatball"
+    },
+    {
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             \u0017uncursed oil lamp\r\u001b\u001b\u001b\u001b\u001b\u001baa  \u001b\u001b\u001b\u001b\u001b\u001b\u0007purple worm\rmsms        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed meat ring\r        \u001b\u001b\u001b\u001b\u001b\u001bdb        \u001b\u001b\u001b\u001b\u001b\u001b:        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b",
+      "name": "digest-meat-ring"
+    },
+    {
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             \u0017uncursed oil lamp\r\u001b\u001b\u001b\u001b\u001b\u001baa  \u001b\u001b\u001b\u001b\u001b\u001b\u0007purple worm\rmsms        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed meat stick\r        \u001b\u001b\u001b\u001b\u001b\u001bdb        \u001b\u001b\u001b\u001b\u001b\u001b:        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b",
+      "name": "digest-meat-stick"
+    },
+    {
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             \u0017uncursed oil lamp\r\u001b\u001b\u001b\u001b\u001b\u001baa  \u001b\u001b\u001b\u001b\u001b\u001b\u0007purple worm\rmsms        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed apple\r        \u001b\u001b\u001b\u001b\u001b\u001bdb        \u001b\u001b\u001b\u001b\u001b\u001b:        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b",
+      "name": "digest-apple"
+    },
+    {
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             \u0017uncursed oil lamp\r\u001b\u001b\u001b\u001b\u001b\u001baa  \u001b\u001b\u001b\u001b\u001b\u001b\u0007hostile ice vortex\rmsms        \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed daggers\r        \u001b\u001b\u001b\u001b\u001b\u001bdb        \u001b\u001b\u001b\u001b\u001b\u001b,        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b",
+      "name": "vortex-one"
+    },
+    {
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             \u0017uncursed oil lamp\r\u001b\u001b\u001b\u001b\u001b\u001baa  \u001b\u001b\u001b\u001b\u001b\u001b\u0007hostile ice vortex\rmsms        \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed daggers\r        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed potion of healing\r        \u001b\u001b\u001b\u001b\u001b\u001bdb        \u001b\u001b\u001b\u001b\u001b\u001bdc        \u001b\u001b\u001b\u001b\u001b\u001b,,\r        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b",
+      "name": "vortex-many"
+    },
+    {
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             \u0017uncursed oil lamp\r\u001b\u001b\u001b\u001b\u001b\u001baa  \u001b\u001b\u001b\u001b\u001b\u001b\u0007hostile ice vortex\rmsms        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed potion of healing\r        \u001b\u001b\u001b\u001b\u001b\u001bdb        \u001b\u001b\u001b\u001b\u001b\u001b:        \u001b\u001b\u001b\u001b\u001b\u001b        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b",
+      "name": "vortex-look"
+    },
+    {
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             \u0017uncursed oil lamp\r\u001b\u001b\u001b\u001b\u001b\u001baa  \u001b\u001b\u001b\u001b\u001b\u001b\u0007hostile ice vortex\rmsms        \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed daggers\r        \u001b\u001b\u001b\u001b\u001b\u001bdb        \u001b\u001b\u001b\u001b\u001b\u001b2,        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b",
+      "name": "vortex-count"
+    },
+    {
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             \u0017uncursed oil lamp\r\u001b\u001b\u001b\u001b\u001b\u001baa  \u001b\u001b\u001b\u001b\u001b\u001b\u0007hostile ice vortex\rmsms        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed newt corpse\r        \u001b\u001b\u001b\u001b\u001b\u001bdb        \u001b\u001b\u001b\u001b\u001b\u001b:        \u001b\u001b\u001b\u001b\u001b\u001b        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b",
+      "name": "vortex-food"
+    }
+  ],
+  "branchAssertions": [
+    {
+      "branch": "engulfer-object-transfers.engulfer-one",
+      "segment": 0,
+      "screenIncludes": [
+        "You drop 3 daggers into the purple worm's stomach."
+      ]
+    },
+    {
+      "branch": "engulfer-object-transfers.engulfer-regurgitation-after-drop",
+      "segment": 1,
+      "screenIncludes": [
+        "You drop 3 daggers into the purple worm's stomach."
+      ]
+    },
+    {
+      "branch": "engulfer-object-transfers.engulfer-look",
+      "segment": 2,
+      "screenIncludes": [
+        "You drop a brown potion into the purple worm's stomach."
+      ]
+    },
+    {
+      "branch": "engulfer-object-transfers.engulfer-count",
+      "segment": 3,
+      "screenIncludes": [
+        "You drop 3 daggers into the purple worm's stomach."
+      ]
+    },
+    {
+      "branch": "engulfer-object-transfers.digest-newt",
+      "segment": 4,
+      "screenIncludes": [
+        "The corpse is instantly digested!"
+      ]
+    },
+    {
+      "branch": "engulfer-object-transfers.digest-wraith",
+      "segment": 5,
+      "screenIncludes": [
+        "The corpse is instantly digested!"
+      ]
+    },
+    {
+      "branch": "engulfer-object-transfers.digest-nurse-wish-drop",
+      "segment": 6,
+      "screenIncludes": [
+        "The corpse is instantly digested!"
+      ]
+    },
+    {
+      "branch": "engulfer-object-transfers.digest-polymorph",
+      "segment": 7,
+      "screenIncludes": [
+        "The corpse is instantly digested!  You break out of the purple worm!",
+        "break out of"
+      ]
+    },
+    {
+      "branch": "engulfer-object-transfers.digest-petrify",
+      "segment": 8,
+      "screenIncludes": [
+        "The corpse is instantly digested!"
+      ]
+    },
+    {
+      "branch": "engulfer-object-transfers.digest-slime",
+      "segment": 9,
+      "screenIncludes": [
+        "The small glob of green slime is instantly digested!",
+        "A green slime appears!"
+      ]
+    },
+    {
+      "branch": "engulfer-object-transfers.digest-gray-glob",
+      "segment": 10,
+      "screenIncludes": [
+        "The small glob of gray ooze is instantly digested!"
+      ]
+    },
+    {
+      "branch": "engulfer-object-transfers.digest-meatball",
+      "segment": 11,
+      "screenIncludes": [
+        "The meatball is instantly digested!"
+      ]
+    },
+    {
+      "branch": "engulfer-object-transfers.digest-enormous-meatball",
+      "segment": 12,
+      "screenIncludes": [
+        "The enormous meatball is instantly digested!"
+      ]
+    },
+    {
+      "branch": "engulfer-object-transfers.digest-meat-ring",
+      "segment": 13,
+      "screenIncludes": [
+        "The meat ring is instantly digested!"
+      ]
+    },
+    {
+      "branch": "engulfer-object-transfers.digest-meat-stick",
+      "segment": 14,
+      "screenIncludes": [
+        "The meat stick is instantly digested!"
+      ]
+    },
+    {
+      "branch": "engulfer-object-transfers.digest-apple",
+      "segment": 15,
+      "screenIncludes": [
+        "b - an apple."
+      ]
+    },
+    {
+      "branch": "engulfer-object-transfers.vortex-one",
+      "segment": 16,
+      "screenIncludes": [
+        "You drop 3 daggers into the ice vortex."
+      ]
+    },
+    {
+      "branch": "engulfer-object-transfers.vortex-many",
+      "segment": 17,
+      "screenIncludes": [
+        "You drop 3 daggers into the ice vortex."
+      ]
+    },
+    {
+      "branch": "engulfer-object-transfers.vortex-look",
+      "segment": 18,
+      "screenIncludes": [
+        "You drop a brown potion into the ice vortex."
+      ]
+    },
+    {
+      "branch": "engulfer-object-transfers.vortex-count",
+      "segment": 19,
+      "screenIncludes": [
+        "You drop 3 daggers into the ice vortex."
+      ]
+    },
+    {
+      "branch": "engulfer-object-transfers.vortex-food",
+      "segment": 20,
+      "screenIncludes": [
+        "You drop a newt corpse into the ice vortex."
+      ]
+    }
+  ]
+}

@@ -28,14 +28,14 @@ import { W_ARM, W_ARMC, W_ARMH, W_ARMS, W_ARMG, W_ARMF, W_ARMU, W_TOOL,
          INTRINSIC, HEAD, HAND, FINGER, CQ_CANNED, st_corpse,
          st_petrifies, MENU_TRADITIONAL, MENU_COMBINATION, MENU_FULL,
          ALL_TYPES_SELECTED, ALL_FINISHED, SIGNAL_NOMENU, USE_INVLET, INVORDER_SORT, PICK_ANY,
-         Is_airlevel, Is_astralevel } from './const.js';
+         FROMOUTSIDE, Is_astralevel } from './const.js';
 import { setworn } from './worn.js';
 import { welded, is_sword, setuwep, setuswapwep, setuqwep, empty_handed }
     from './wield.js';
 import { bimanual, is_metallic } from './obj.js';
 import { nolimbs, nohands, touch_petrifies, verysmall } from './mondata.js';
 import { sgn } from './hacklib.js';
-import { erode_obj, float_down, is_flammable, is_rustprone, is_crackable, is_rottable,
+import { erode_obj, float_up, float_down, is_flammable, is_rustprone, is_crackable, is_rottable,
          is_corrodeable, is_damageable } from './trap.js';
 import { curse, erosion_matters, set_bknown } from './mkobj.js';
 import { rn1, rn2, rnd } from './rng.js';
@@ -66,7 +66,7 @@ import { ACURR, adjalign, change_luck, encumber_msg, Fast,
 import { paranoia_bits, PARANOID_REMOVE } from './options.js';
 import { Blind, Flying, Glib, Hallucination, Invis, Levitation, Stone_resistance,
          Protection_from_shape_changers, See_invisible, Detect_monsters } from './youprop.js';
-import { body_part, change_sex, poly_gender } from './polyself.js';
+import { body_part, change_sex, poly_gender, float_vs_flight } from './polyself.js';
 import { surface } from './dungeon.js';
 
 
@@ -971,13 +971,15 @@ export async function Boots_on() {
         break;
     case ONAMES.LEVITATION_BOOTS:
         if (!oldprop && !game.u.intrinsic?.HLevitation
-            && !game.u.blocked?.LEVITATION) {
+            && !((game.u.blocked?.LEVITATION | 0) & FROMOUTSIDE)) {
             uarmf.known = 1;
             (game.disp ||= {}).botl = true;
             makeknown(uarmf.otyp);
-            await float_up_from_wearable('Boots_on');
+            await float_up();
             if (Levitation())
                 await spoteffects(false);
+        } else {
+            float_vs_flight();
         }
         break;
     case ONAMES.FUMBLE_BOOTS: {
@@ -1297,31 +1299,6 @@ function adjust_ring_attribute(ring, which, amount) {
     (game.disp ||= {}).botl = true;
 }
 
-// src/trap.c float_up(), for the states currently represented by the port.
-// Traps, engulfers, and mounted levitation retain explicit reachability marks
-// until their source-specific state transitions are available here.
-async function float_up_from_wearable(source) {
-    (game.disp ||= {}).botl = true;
-    if (game.u.utrap) {
-        note_unported_do_wear(`${source}:levitation_trap`);
-    } else if (game.u.uinwater) {
-        await spoteffects(true);
-    } else if (game.u.uswallow) {
-        note_unported_do_wear(`${source}:levitation_swallowed`);
-    } else if (Hallucination()) {
-        await pline("Up, up, and awaaaay!  You're walking on air!");
-    } else if (Is_airlevel(game.u.uz)) {
-        await You('gain control over your movements.');
-    } else {
-        await You('start to float in the air!');
-    }
-    if (game.u.usteed)
-        note_unported_do_wear(`${source}:levitation_steed`);
-    if (Flying())
-        await You('are no longer able to control your flight.');
-    await encumber_msg();
-}
-
 // src/do_wear.c toggle_stealth().  A visible change in stealth identifies
 // the ring or boots and gives immediate feedback.  The blocked term is
 // tracked separately from the worn-property mask, as in C's BStealth.
@@ -1427,11 +1404,13 @@ export async function Ring_on(obj) {
         break;
     case ONAMES.RIN_LEVITATION:
         if (!oldprop && !game.u.intrinsic?.HLevitation
-            && !game.u.blocked?.LEVITATION) {
-            await float_up_from_wearable('Ring_on');
+            && !((game.u.blocked?.LEVITATION | 0) & FROMOUTSIDE)) {
+            await float_up();
             learnring(obj, true);
             if (Levitation())
                 await spoteffects(false);
+        } else {
+            float_vs_flight();
         }
         break;
     case ONAMES.RIN_STEALTH:

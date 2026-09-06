@@ -1,0 +1,1413 @@
+{
+  "name": "unpaid-inventory-display",
+  "description": "Single and multiple unpaid objects, known nested contents, carried and contained prices, and sorted versus unsorted totals.",
+  "coverage": [
+    "mode.debug",
+    "ui.menus",
+    "ui.cancel-invalid",
+    "social.shops-billing",
+    "object.tools-containers"
+  ],
+  "branches": [
+    "unpaid-inventory-display.contained-0-full",
+    "unpaid-inventory-display.contained-1-full",
+    "unpaid-inventory-display.single-4",
+    "unpaid-inventory-display.single-5",
+    "unpaid-inventory-display.multiple-sorted",
+    "unpaid-inventory-display.multiple-unsorted",
+    "unpaid-inventory-display.contained-0-traditional-live",
+    "unpaid-inventory-display.contained-1-traditional-live",
+    "unpaid-inventory-display.shop-traditional-Iu"
+  ],
+  "requireBranchAssertions": true,
+  "segments": [
+    {
+      "seed": 6903,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=menustyle:full\n",
+      "moves": " \u00162\r\u0006\u0014  llllllllllllllllllll.  \u0017uncursed sack\r\u0017uncursed leather armor\raoic\rp\rdo y,a\r         \u001b\u001b\u001b\u001b\u001b\u001bIu        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b",
+      "name": "contained-0-full"
+    },
+    {
+      "seed": 6901,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=menustyle:full\n",
+      "moves": " \u00162\r\u0006\u0014  lllllllllllllllllllllllllk.  \u0017uncursed sack\r\u0017uncursed leather armor\ranic\ro\rdn y,b\r         \u001b\u001b\u001b\u001b\u001b\u001bIu        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b",
+      "name": "contained-1-full"
+    },
+    {
+      "seed": 6903,
+      "datetime": "20000110233600",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00162\r\u0006\u0014  llllllllllllllllllll.  \u00173 uncursed apples\rdo y,a\r         \u001b\u001b\u001b\u001b\u001b\u001bIu        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b",
+      "name": "single-4"
+    },
+    {
+      "seed": 6903,
+      "datetime": "20000110233600",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00162\r\u0006\u0014  llllllllllllllllllll.  \u00173 uncursed apples\rdo y,a\r         \u001b\u001b\u001b\u001b\u001b\u001beo        \u001b\u001b\u001b\u001b\u001b\u001bIu        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b",
+      "name": "single-5"
+    },
+    {
+      "seed": 6903,
+      "datetime": "20000110233600",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=sortpack\n",
+      "moves": " \u00162\r\u0006\u0014  llllllllllllllllllll.  \u00173 uncursed apples\rdo y,a\r         \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed potion of healing\r        \u001b\u001b\u001b\u001b\u001b\u001bdp y,a\r        \u001b\u001b\u001b\u001b\u001b\u001bIu        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b",
+      "name": "multiple-sorted"
+    },
+    {
+      "seed": 6903,
+      "datetime": "20000110233600",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!sortpack\n",
+      "moves": " \u00162\r\u0006\u0014  llllllllllllllllllll.  \u00173 uncursed apples\rdo y,a\r         \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed potion of healing\r        \u001b\u001b\u001b\u001b\u001b\u001bdp y,a\r        \u001b\u001b\u001b\u001b\u001b\u001bIu        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b",
+      "name": "multiple-unsorted"
+    },
+    {
+      "seed": 6903,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00162\r\u0006\u0014  llllllllllllllllllll.  \u0017uncursed sack\r\u0017uncursed leather armor\raoic\rp\rdo y,a\r         \u001b\u001b\u001b\u001b\u001b\u001bmO:menustyle\r\rt        \u001b\u001b\u001b\u001b\u001b\u001b        \u001b\u001b\u001b\u001b\u001b\u001bIu        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b",
+      "name": "contained-0-traditional-live"
+    },
+    {
+      "seed": 6901,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00162\r\u0006\u0014  lllllllllllllllllllllllllk.  \u0017uncursed sack\r\u0017uncursed leather armor\ranic\ro\rdn y,b\r         \u001b\u001b\u001b\u001b\u001b\u001bmO:menustyle\r\rt        \u001b\u001b\u001b\u001b\u001b\u001b        \u001b\u001b\u001b\u001b\u001b\u001bIu        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b",
+      "name": "contained-1-traditional-live"
+    },
+    {
+      "seed": 6903,
+      "datetime": "20000110233600",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00162\r\u0006\u0014  llllllllllllllllllll.  \u00173 uncursed apples\rdo y,a\r         \u001b\u001b\u001b\u001b\u001b\u001b        \u001b\u001b\u001b\u001b\u001b\u001bmO:menustyle\r\rt        \u001b\u001b\u001b\u001b\u001b\u001b        \u001b\u001b\u001b\u001b\u001b\u001bIu        \u001b\u001b\u001b\u001b\u001b\u001bi         \u001b\u001b\u001b\u001b\u001b\u001b",
+      "name": "shop-traditional-Iu"
+    }
+  ],
+  "branchAssertions": [
+    {
+      "branch": "unpaid-inventory-display.contained-0-full",
+      "segment": 0,
+      "screenIncludes": [
+        "zorkmids"
+      ],
+      "screenCells": [
+        {
+          "step": 101,
+          "x": 69,
+          "y": 1,
+          "equals": "3"
+        },
+        {
+          "step": 101,
+          "x": 70,
+          "y": 1,
+          "equals": " "
+        },
+        {
+          "step": 101,
+          "x": 71,
+          "y": 1,
+          "equals": "z"
+        },
+        {
+          "step": 101,
+          "x": 72,
+          "y": 1,
+          "equals": "o"
+        },
+        {
+          "step": 101,
+          "x": 73,
+          "y": 1,
+          "equals": "r"
+        },
+        {
+          "step": 101,
+          "x": 74,
+          "y": 1,
+          "equals": "k"
+        },
+        {
+          "step": 101,
+          "x": 75,
+          "y": 1,
+          "equals": "m"
+        },
+        {
+          "step": 101,
+          "x": 76,
+          "y": 1,
+          "equals": "i"
+        },
+        {
+          "step": 101,
+          "x": 77,
+          "y": 1,
+          "equals": "d"
+        },
+        {
+          "step": 101,
+          "x": 78,
+          "y": 1,
+          "equals": "s"
+        },
+        {
+          "step": 101,
+          "x": 69,
+          "y": 3,
+          "equals": "7"
+        },
+        {
+          "step": 101,
+          "x": 70,
+          "y": 3,
+          "equals": " "
+        },
+        {
+          "step": 101,
+          "x": 71,
+          "y": 3,
+          "equals": "z"
+        },
+        {
+          "step": 101,
+          "x": 72,
+          "y": 3,
+          "equals": "o"
+        },
+        {
+          "step": 101,
+          "x": 73,
+          "y": 3,
+          "equals": "r"
+        },
+        {
+          "step": 101,
+          "x": 74,
+          "y": 3,
+          "equals": "k"
+        },
+        {
+          "step": 101,
+          "x": 75,
+          "y": 3,
+          "equals": "m"
+        },
+        {
+          "step": 101,
+          "x": 76,
+          "y": 3,
+          "equals": "i"
+        },
+        {
+          "step": 101,
+          "x": 77,
+          "y": 3,
+          "equals": "d"
+        },
+        {
+          "step": 101,
+          "x": 78,
+          "y": 3,
+          "equals": "s"
+        },
+        {
+          "step": 101,
+          "x": 67,
+          "y": 4,
+          "equals": "1"
+        },
+        {
+          "step": 101,
+          "x": 68,
+          "y": 4,
+          "equals": "7"
+        },
+        {
+          "step": 101,
+          "x": 69,
+          "y": 4,
+          "equals": "8"
+        },
+        {
+          "step": 101,
+          "x": 70,
+          "y": 4,
+          "equals": " "
+        },
+        {
+          "step": 101,
+          "x": 71,
+          "y": 4,
+          "equals": "z"
+        },
+        {
+          "step": 101,
+          "x": 72,
+          "y": 4,
+          "equals": "o"
+        },
+        {
+          "step": 101,
+          "x": 73,
+          "y": 4,
+          "equals": "r"
+        },
+        {
+          "step": 101,
+          "x": 74,
+          "y": 4,
+          "equals": "k"
+        },
+        {
+          "step": 101,
+          "x": 75,
+          "y": 4,
+          "equals": "m"
+        },
+        {
+          "step": 101,
+          "x": 76,
+          "y": 4,
+          "equals": "i"
+        },
+        {
+          "step": 101,
+          "x": 77,
+          "y": 4,
+          "equals": "d"
+        },
+        {
+          "step": 101,
+          "x": 78,
+          "y": 4,
+          "equals": "s"
+        },
+        {
+          "step": 101,
+          "x": 67,
+          "y": 6,
+          "equals": "1"
+        },
+        {
+          "step": 101,
+          "x": 68,
+          "y": 6,
+          "equals": "8"
+        },
+        {
+          "step": 101,
+          "x": 69,
+          "y": 6,
+          "equals": "8"
+        },
+        {
+          "step": 101,
+          "x": 70,
+          "y": 6,
+          "equals": " "
+        },
+        {
+          "step": 101,
+          "x": 71,
+          "y": 6,
+          "equals": "z"
+        },
+        {
+          "step": 101,
+          "x": 72,
+          "y": 6,
+          "equals": "o"
+        },
+        {
+          "step": 101,
+          "x": 73,
+          "y": 6,
+          "equals": "r"
+        },
+        {
+          "step": 101,
+          "x": 74,
+          "y": 6,
+          "equals": "k"
+        },
+        {
+          "step": 101,
+          "x": 75,
+          "y": 6,
+          "equals": "m"
+        },
+        {
+          "step": 101,
+          "x": 76,
+          "y": 6,
+          "equals": "i"
+        },
+        {
+          "step": 101,
+          "x": 77,
+          "y": 6,
+          "equals": "d"
+        },
+        {
+          "step": 101,
+          "x": 78,
+          "y": 6,
+          "equals": "s"
+        }
+      ]
+    },
+    {
+      "branch": "unpaid-inventory-display.contained-1-full",
+      "segment": 1,
+      "screenIncludes": [
+        "zorkmids"
+      ],
+      "screenCells": [
+        {
+          "step": 107,
+          "x": 55,
+          "y": 0,
+          "equals": "7"
+        },
+        {
+          "step": 107,
+          "x": 56,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 107,
+          "x": 57,
+          "y": 0,
+          "equals": "z"
+        },
+        {
+          "step": 107,
+          "x": 58,
+          "y": 0,
+          "equals": "o"
+        },
+        {
+          "step": 107,
+          "x": 59,
+          "y": 0,
+          "equals": "r"
+        },
+        {
+          "step": 107,
+          "x": 60,
+          "y": 0,
+          "equals": "k"
+        },
+        {
+          "step": 107,
+          "x": 61,
+          "y": 0,
+          "equals": "m"
+        },
+        {
+          "step": 107,
+          "x": 62,
+          "y": 0,
+          "equals": "i"
+        },
+        {
+          "step": 107,
+          "x": 63,
+          "y": 0,
+          "equals": "d"
+        },
+        {
+          "step": 107,
+          "x": 64,
+          "y": 0,
+          "equals": "s"
+        }
+      ]
+    },
+    {
+      "branch": "unpaid-inventory-display.single-4",
+      "segment": 2,
+      "screenIncludes": [
+        "zorkmids"
+      ],
+      "screenCells": [
+        {
+          "step": 74,
+          "x": 54,
+          "y": 0,
+          "equals": "2"
+        },
+        {
+          "step": 74,
+          "x": 55,
+          "y": 0,
+          "equals": "7"
+        },
+        {
+          "step": 74,
+          "x": 56,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 74,
+          "x": 57,
+          "y": 0,
+          "equals": "z"
+        },
+        {
+          "step": 74,
+          "x": 58,
+          "y": 0,
+          "equals": "o"
+        },
+        {
+          "step": 74,
+          "x": 59,
+          "y": 0,
+          "equals": "r"
+        },
+        {
+          "step": 74,
+          "x": 60,
+          "y": 0,
+          "equals": "k"
+        },
+        {
+          "step": 74,
+          "x": 61,
+          "y": 0,
+          "equals": "m"
+        },
+        {
+          "step": 74,
+          "x": 62,
+          "y": 0,
+          "equals": "i"
+        },
+        {
+          "step": 74,
+          "x": 63,
+          "y": 0,
+          "equals": "d"
+        },
+        {
+          "step": 74,
+          "x": 64,
+          "y": 0,
+          "equals": "s"
+        }
+      ]
+    },
+    {
+      "branch": "unpaid-inventory-display.single-5",
+      "segment": 3,
+      "screenIncludes": [
+        "zorkmids"
+      ],
+      "screenCells": [
+        {
+          "step": 90,
+          "x": 54,
+          "y": 0,
+          "equals": "1"
+        },
+        {
+          "step": 90,
+          "x": 55,
+          "y": 0,
+          "equals": "8"
+        },
+        {
+          "step": 90,
+          "x": 56,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 90,
+          "x": 57,
+          "y": 0,
+          "equals": "z"
+        },
+        {
+          "step": 90,
+          "x": 58,
+          "y": 0,
+          "equals": "o"
+        },
+        {
+          "step": 90,
+          "x": 59,
+          "y": 0,
+          "equals": "r"
+        },
+        {
+          "step": 90,
+          "x": 60,
+          "y": 0,
+          "equals": "k"
+        },
+        {
+          "step": 90,
+          "x": 61,
+          "y": 0,
+          "equals": "m"
+        },
+        {
+          "step": 90,
+          "x": 62,
+          "y": 0,
+          "equals": "i"
+        },
+        {
+          "step": 90,
+          "x": 63,
+          "y": 0,
+          "equals": "d"
+        },
+        {
+          "step": 90,
+          "x": 64,
+          "y": 0,
+          "equals": "s"
+        }
+      ]
+    },
+    {
+      "branch": "unpaid-inventory-display.multiple-sorted",
+      "segment": 4,
+      "screenIncludes": [
+        "zorkmids"
+      ],
+      "screenCells": [
+        {
+          "step": 137,
+          "x": 68,
+          "y": 1,
+          "equals": "2"
+        },
+        {
+          "step": 137,
+          "x": 69,
+          "y": 1,
+          "equals": "7"
+        },
+        {
+          "step": 137,
+          "x": 70,
+          "y": 1,
+          "equals": " "
+        },
+        {
+          "step": 137,
+          "x": 71,
+          "y": 1,
+          "equals": "z"
+        },
+        {
+          "step": 137,
+          "x": 72,
+          "y": 1,
+          "equals": "o"
+        },
+        {
+          "step": 137,
+          "x": 73,
+          "y": 1,
+          "equals": "r"
+        },
+        {
+          "step": 137,
+          "x": 74,
+          "y": 1,
+          "equals": "k"
+        },
+        {
+          "step": 137,
+          "x": 75,
+          "y": 1,
+          "equals": "m"
+        },
+        {
+          "step": 137,
+          "x": 76,
+          "y": 1,
+          "equals": "i"
+        },
+        {
+          "step": 137,
+          "x": 77,
+          "y": 1,
+          "equals": "d"
+        },
+        {
+          "step": 137,
+          "x": 78,
+          "y": 1,
+          "equals": "s"
+        },
+        {
+          "step": 137,
+          "x": 68,
+          "y": 3,
+          "equals": "2"
+        },
+        {
+          "step": 137,
+          "x": 69,
+          "y": 3,
+          "equals": "7"
+        },
+        {
+          "step": 137,
+          "x": 70,
+          "y": 3,
+          "equals": " "
+        },
+        {
+          "step": 137,
+          "x": 71,
+          "y": 3,
+          "equals": "z"
+        },
+        {
+          "step": 137,
+          "x": 72,
+          "y": 3,
+          "equals": "o"
+        },
+        {
+          "step": 137,
+          "x": 73,
+          "y": 3,
+          "equals": "r"
+        },
+        {
+          "step": 137,
+          "x": 74,
+          "y": 3,
+          "equals": "k"
+        },
+        {
+          "step": 137,
+          "x": 75,
+          "y": 3,
+          "equals": "m"
+        },
+        {
+          "step": 137,
+          "x": 76,
+          "y": 3,
+          "equals": "i"
+        },
+        {
+          "step": 137,
+          "x": 77,
+          "y": 3,
+          "equals": "d"
+        },
+        {
+          "step": 137,
+          "x": 78,
+          "y": 3,
+          "equals": "s"
+        },
+        {
+          "step": 137,
+          "x": 68,
+          "y": 5,
+          "equals": "5"
+        },
+        {
+          "step": 137,
+          "x": 69,
+          "y": 5,
+          "equals": "4"
+        },
+        {
+          "step": 137,
+          "x": 70,
+          "y": 5,
+          "equals": " "
+        },
+        {
+          "step": 137,
+          "x": 71,
+          "y": 5,
+          "equals": "z"
+        },
+        {
+          "step": 137,
+          "x": 72,
+          "y": 5,
+          "equals": "o"
+        },
+        {
+          "step": 137,
+          "x": 73,
+          "y": 5,
+          "equals": "r"
+        },
+        {
+          "step": 137,
+          "x": 74,
+          "y": 5,
+          "equals": "k"
+        },
+        {
+          "step": 137,
+          "x": 75,
+          "y": 5,
+          "equals": "m"
+        },
+        {
+          "step": 137,
+          "x": 76,
+          "y": 5,
+          "equals": "i"
+        },
+        {
+          "step": 137,
+          "x": 77,
+          "y": 5,
+          "equals": "d"
+        },
+        {
+          "step": 137,
+          "x": 78,
+          "y": 5,
+          "equals": "s"
+        }
+      ]
+    },
+    {
+      "branch": "unpaid-inventory-display.multiple-unsorted",
+      "segment": 5,
+      "screenIncludes": [
+        "zorkmids"
+      ],
+      "screenCells": [
+        {
+          "step": 137,
+          "x": 68,
+          "y": 0,
+          "equals": "2"
+        },
+        {
+          "step": 137,
+          "x": 69,
+          "y": 0,
+          "equals": "7"
+        },
+        {
+          "step": 137,
+          "x": 70,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 137,
+          "x": 71,
+          "y": 0,
+          "equals": "z"
+        },
+        {
+          "step": 137,
+          "x": 72,
+          "y": 0,
+          "equals": "o"
+        },
+        {
+          "step": 137,
+          "x": 73,
+          "y": 0,
+          "equals": "r"
+        },
+        {
+          "step": 137,
+          "x": 74,
+          "y": 0,
+          "equals": "k"
+        },
+        {
+          "step": 137,
+          "x": 75,
+          "y": 0,
+          "equals": "m"
+        },
+        {
+          "step": 137,
+          "x": 76,
+          "y": 0,
+          "equals": "i"
+        },
+        {
+          "step": 137,
+          "x": 77,
+          "y": 0,
+          "equals": "d"
+        },
+        {
+          "step": 137,
+          "x": 78,
+          "y": 0,
+          "equals": "s"
+        },
+        {
+          "step": 137,
+          "x": 68,
+          "y": 1,
+          "equals": "2"
+        },
+        {
+          "step": 137,
+          "x": 69,
+          "y": 1,
+          "equals": "7"
+        },
+        {
+          "step": 137,
+          "x": 70,
+          "y": 1,
+          "equals": " "
+        },
+        {
+          "step": 137,
+          "x": 71,
+          "y": 1,
+          "equals": "z"
+        },
+        {
+          "step": 137,
+          "x": 72,
+          "y": 1,
+          "equals": "o"
+        },
+        {
+          "step": 137,
+          "x": 73,
+          "y": 1,
+          "equals": "r"
+        },
+        {
+          "step": 137,
+          "x": 74,
+          "y": 1,
+          "equals": "k"
+        },
+        {
+          "step": 137,
+          "x": 75,
+          "y": 1,
+          "equals": "m"
+        },
+        {
+          "step": 137,
+          "x": 76,
+          "y": 1,
+          "equals": "i"
+        },
+        {
+          "step": 137,
+          "x": 77,
+          "y": 1,
+          "equals": "d"
+        },
+        {
+          "step": 137,
+          "x": 78,
+          "y": 1,
+          "equals": "s"
+        },
+        {
+          "step": 137,
+          "x": 68,
+          "y": 3,
+          "equals": "5"
+        },
+        {
+          "step": 137,
+          "x": 69,
+          "y": 3,
+          "equals": "4"
+        },
+        {
+          "step": 137,
+          "x": 70,
+          "y": 3,
+          "equals": " "
+        },
+        {
+          "step": 137,
+          "x": 71,
+          "y": 3,
+          "equals": "z"
+        },
+        {
+          "step": 137,
+          "x": 72,
+          "y": 3,
+          "equals": "o"
+        },
+        {
+          "step": 137,
+          "x": 73,
+          "y": 3,
+          "equals": "r"
+        },
+        {
+          "step": 137,
+          "x": 74,
+          "y": 3,
+          "equals": "k"
+        },
+        {
+          "step": 137,
+          "x": 75,
+          "y": 3,
+          "equals": "m"
+        },
+        {
+          "step": 137,
+          "x": 76,
+          "y": 3,
+          "equals": "i"
+        },
+        {
+          "step": 137,
+          "x": 77,
+          "y": 3,
+          "equals": "d"
+        },
+        {
+          "step": 137,
+          "x": 78,
+          "y": 3,
+          "equals": "s"
+        }
+      ]
+    },
+    {
+      "branch": "unpaid-inventory-display.contained-0-traditional-live",
+      "segment": 6,
+      "screenIncludes": [
+        "zorkmids"
+      ],
+      "screenCells": [
+        {
+          "step": 144,
+          "x": 69,
+          "y": 1,
+          "equals": "3"
+        },
+        {
+          "step": 144,
+          "x": 70,
+          "y": 1,
+          "equals": " "
+        },
+        {
+          "step": 144,
+          "x": 71,
+          "y": 1,
+          "equals": "z"
+        },
+        {
+          "step": 144,
+          "x": 72,
+          "y": 1,
+          "equals": "o"
+        },
+        {
+          "step": 144,
+          "x": 73,
+          "y": 1,
+          "equals": "r"
+        },
+        {
+          "step": 144,
+          "x": 74,
+          "y": 1,
+          "equals": "k"
+        },
+        {
+          "step": 144,
+          "x": 75,
+          "y": 1,
+          "equals": "m"
+        },
+        {
+          "step": 144,
+          "x": 76,
+          "y": 1,
+          "equals": "i"
+        },
+        {
+          "step": 144,
+          "x": 77,
+          "y": 1,
+          "equals": "d"
+        },
+        {
+          "step": 144,
+          "x": 78,
+          "y": 1,
+          "equals": "s"
+        },
+        {
+          "step": 144,
+          "x": 69,
+          "y": 3,
+          "equals": "7"
+        },
+        {
+          "step": 144,
+          "x": 70,
+          "y": 3,
+          "equals": " "
+        },
+        {
+          "step": 144,
+          "x": 71,
+          "y": 3,
+          "equals": "z"
+        },
+        {
+          "step": 144,
+          "x": 72,
+          "y": 3,
+          "equals": "o"
+        },
+        {
+          "step": 144,
+          "x": 73,
+          "y": 3,
+          "equals": "r"
+        },
+        {
+          "step": 144,
+          "x": 74,
+          "y": 3,
+          "equals": "k"
+        },
+        {
+          "step": 144,
+          "x": 75,
+          "y": 3,
+          "equals": "m"
+        },
+        {
+          "step": 144,
+          "x": 76,
+          "y": 3,
+          "equals": "i"
+        },
+        {
+          "step": 144,
+          "x": 77,
+          "y": 3,
+          "equals": "d"
+        },
+        {
+          "step": 144,
+          "x": 78,
+          "y": 3,
+          "equals": "s"
+        },
+        {
+          "step": 144,
+          "x": 67,
+          "y": 4,
+          "equals": "1"
+        },
+        {
+          "step": 144,
+          "x": 68,
+          "y": 4,
+          "equals": "7"
+        },
+        {
+          "step": 144,
+          "x": 69,
+          "y": 4,
+          "equals": "8"
+        },
+        {
+          "step": 144,
+          "x": 70,
+          "y": 4,
+          "equals": " "
+        },
+        {
+          "step": 144,
+          "x": 71,
+          "y": 4,
+          "equals": "z"
+        },
+        {
+          "step": 144,
+          "x": 72,
+          "y": 4,
+          "equals": "o"
+        },
+        {
+          "step": 144,
+          "x": 73,
+          "y": 4,
+          "equals": "r"
+        },
+        {
+          "step": 144,
+          "x": 74,
+          "y": 4,
+          "equals": "k"
+        },
+        {
+          "step": 144,
+          "x": 75,
+          "y": 4,
+          "equals": "m"
+        },
+        {
+          "step": 144,
+          "x": 76,
+          "y": 4,
+          "equals": "i"
+        },
+        {
+          "step": 144,
+          "x": 77,
+          "y": 4,
+          "equals": "d"
+        },
+        {
+          "step": 144,
+          "x": 78,
+          "y": 4,
+          "equals": "s"
+        },
+        {
+          "step": 144,
+          "x": 67,
+          "y": 6,
+          "equals": "1"
+        },
+        {
+          "step": 144,
+          "x": 68,
+          "y": 6,
+          "equals": "8"
+        },
+        {
+          "step": 144,
+          "x": 69,
+          "y": 6,
+          "equals": "8"
+        },
+        {
+          "step": 144,
+          "x": 70,
+          "y": 6,
+          "equals": " "
+        },
+        {
+          "step": 144,
+          "x": 71,
+          "y": 6,
+          "equals": "z"
+        },
+        {
+          "step": 144,
+          "x": 72,
+          "y": 6,
+          "equals": "o"
+        },
+        {
+          "step": 144,
+          "x": 73,
+          "y": 6,
+          "equals": "r"
+        },
+        {
+          "step": 144,
+          "x": 74,
+          "y": 6,
+          "equals": "k"
+        },
+        {
+          "step": 144,
+          "x": 75,
+          "y": 6,
+          "equals": "m"
+        },
+        {
+          "step": 144,
+          "x": 76,
+          "y": 6,
+          "equals": "i"
+        },
+        {
+          "step": 144,
+          "x": 77,
+          "y": 6,
+          "equals": "d"
+        },
+        {
+          "step": 144,
+          "x": 78,
+          "y": 6,
+          "equals": "s"
+        }
+      ]
+    },
+    {
+      "branch": "unpaid-inventory-display.contained-1-traditional-live",
+      "segment": 7,
+      "screenIncludes": [
+        "zorkmids"
+      ],
+      "screenCells": [
+        {
+          "step": 150,
+          "x": 55,
+          "y": 0,
+          "equals": "7"
+        },
+        {
+          "step": 150,
+          "x": 56,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 150,
+          "x": 57,
+          "y": 0,
+          "equals": "z"
+        },
+        {
+          "step": 150,
+          "x": 58,
+          "y": 0,
+          "equals": "o"
+        },
+        {
+          "step": 150,
+          "x": 59,
+          "y": 0,
+          "equals": "r"
+        },
+        {
+          "step": 150,
+          "x": 60,
+          "y": 0,
+          "equals": "k"
+        },
+        {
+          "step": 150,
+          "x": 61,
+          "y": 0,
+          "equals": "m"
+        },
+        {
+          "step": 150,
+          "x": 62,
+          "y": 0,
+          "equals": "i"
+        },
+        {
+          "step": 150,
+          "x": 63,
+          "y": 0,
+          "equals": "d"
+        },
+        {
+          "step": 150,
+          "x": 64,
+          "y": 0,
+          "equals": "s"
+        }
+      ]
+    },
+    {
+      "branch": "unpaid-inventory-display.shop-traditional-Iu",
+      "segment": 8,
+      "screenIncludes": [
+        "zorkmids"
+      ],
+      "screenCells": [
+        {
+          "step": 131,
+          "x": 54,
+          "y": 0,
+          "equals": "2"
+        },
+        {
+          "step": 131,
+          "x": 55,
+          "y": 0,
+          "equals": "7"
+        },
+        {
+          "step": 131,
+          "x": 56,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 131,
+          "x": 57,
+          "y": 0,
+          "equals": "z"
+        },
+        {
+          "step": 131,
+          "x": 58,
+          "y": 0,
+          "equals": "o"
+        },
+        {
+          "step": 131,
+          "x": 59,
+          "y": 0,
+          "equals": "r"
+        },
+        {
+          "step": 131,
+          "x": 60,
+          "y": 0,
+          "equals": "k"
+        },
+        {
+          "step": 131,
+          "x": 61,
+          "y": 0,
+          "equals": "m"
+        },
+        {
+          "step": 131,
+          "x": 62,
+          "y": 0,
+          "equals": "i"
+        },
+        {
+          "step": 131,
+          "x": 63,
+          "y": 0,
+          "equals": "d"
+        },
+        {
+          "step": 131,
+          "x": 64,
+          "y": 0,
+          "equals": "s"
+        }
+      ]
+    }
+  ]
+}

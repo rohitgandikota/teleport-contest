@@ -375,6 +375,18 @@ export function clear_splitobjs() {
     game.context.objsplit = { parent_oid: 0, child_oid: 0 };
 }
 
+// src/mkobj.c:684 unknwn_contnr_contents(), the outermost unknown container.
+export function unknwn_contnr_contents(obj) {
+    let result = null;
+    while (obj.where === OBJ_CONTAINED) {
+        const parent = obj.ocontainer;
+        if (!parent.cknown)
+            result = parent;
+        obj = parent;
+    }
+    return result;
+}
+
 // src/mkobj.c:712 bill_dummy_object()
 export async function bill_dummy_object(otmp) {
     let cost = 0;

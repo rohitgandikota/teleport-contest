@@ -11,6 +11,29 @@ Newest first within each section.
 
 ---
 
+## Inventory types and unpaid display
+
+Traditional and combination I use a single-character prompt. Full and
+partial use query_category. The response list contains hidden choices
+after Escape so missing types can produce a specific message. Uppercase
+U or X fall back to unpaid or used-up displays only when their BUC class
+is absent. Querying spends no turn and must preserve bills and ownership.
+
+C dounpaid uses a recursive find_unpaid cursor. A single visible item uses
+a message line; multiple items or hidden contents use a data window and a
+total. Unknown outer containers hide their individual contents. The full
+multi-item path checks the top container's cknown flag, even if an inner
+container remains unknown. Price suppression must be restored after naming.
+
+distant_name resolves ownership with get_obj_location before testing sight
+and distance. Carried coordinates can be stale. It temporarily clears o_id
+at game over and restores it after naming. The inventory native fixtures
+do not catch removing either guard; constructed controls do.
+
+Switch menustyle live after shop-container setup. Setting it earlier changes
+which keys the looting prompts consume. Do not append duplicate compound
+menustyle options: C shows startup errors, a separately retained port gap.
+
 ## Category selection, venom and menu symbols
 
 C counts categories only in inv_order, then appends venom to the menu.

@@ -1705,16 +1705,6 @@ export async function query_category(qstr, olist, qflags, how = PICK_ANY) {
     return picks;
 }
 
-// src/invent.c dotypeinv(), default MENU_FULL category prompt. Unlike the
-// drop and loot callers this accepts exactly one class or BUC filter.
-export async function query_inventory_category(olist, billx = false) {
-    return query_category(
-        'What type of object do you want an inventory of?', olist,
-        UNPAID_TYPES | BUC_BLESSED | BUC_CURSED | BUC_UNCURSED | BUC_UNKNOWN
-        | JUSTPICKED | INCLUDE_VENOM | (billx ? BILLED_TYPES : 0),
-        1 /* PICK_ONE */);
-}
-
 // src/do_wear.c menu_remarm(), default MENU_FULL category prompt.
 export async function query_remove_categories(olist) {
     return query_category(

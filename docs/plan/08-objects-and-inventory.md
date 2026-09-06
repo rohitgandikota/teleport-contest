@@ -47,6 +47,12 @@ plausible-but-wrong names that are hard to spot in a diff.
 
 ### 8.2 Inventory
 
+- [x] Complete C inventory-type entry and unpaid display, including all four
+      menu styles, hidden prompt choices, uppercase shop fallbacks, recursive
+      contained prices and unknown-container summaries. Ninety-one C scenarios
+      and 29 constructed controls pass. See
+      [inventory-types-audit.md](inventory-types-audit.md). Native branch gaps
+      remain explicit; this does not complete the inventory subsystem.
 - [x] Shared ggetobj/askchain selection for identification, dropping and
       takeoff. Eighty-nine C cases, native state checks and constructed
       controls cover class order, filters, counts, retries and changing

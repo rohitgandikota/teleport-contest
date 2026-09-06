@@ -58,6 +58,7 @@ import { mons, PMNAMES } from './monst_data.js';
 import { observe_object } from './o_init.js';
 import { ordin, distu, s_suffix } from './hacklib.js';
 import { cansee as cansee_o } from './vision.js';
+import { get_obj_location } from './zap.js';
 import { ART_ORB_OF_DETECTION, ART_EYES_OF_THE_OVERWORLD } from './artilist_data.js';
 const mons_PM_SAMURAI = PMNAMES.PM_SAMURAI;
 import { helm_simple_name, cloak_simple_name } from './do_wear.js';
@@ -3820,25 +3821,25 @@ export function mshot_xname(obj) {
     return onm;
 }
 
-// src/objnam.c distant_name() — format an object the hero may only see from
-// afar. Within touch range (xray-adjusted knight's-move ring) the normal
-// name; beyond it the C sets gd.distantname so xname skips the dknown
-// side-effects. This port's xname does not set dknown (observe_object does,
-// separately), so the flag is carried for fidelity and future readers.
+// src/objnam.c:347 distant_name(). Resolve ownership before the visibility
+// test, and suppress game-over details tied to the object's identity.
 export function distant_name(obj, func) {
     const r = ((game.u.xray_range ?? 0) > 2) ? game.u.xray_range : 2;
     const neardist = (r * r) * 2 - r;
-    const ox = obj.ox ?? 0, oy = obj.oy ?? 0;
+    const cc = { x: 0, y: 0 }, save_oid = obj.o_id;
+    if (game.program_state?.gameover)
+        obj.o_id = 0;
     let str;
 
-    if (ox && cansee_o(ox, oy)
-        && (obj.oartifact || distu(ox, oy) <= neardist)) {
+    if (get_obj_location(obj, cc, 0) && cansee_o(cc.x, cc.y)
+        && (obj.oartifact || distu(cc.x, cc.y) <= neardist)) {
         str = func(obj);
     } else {
         game.distantname = (game.distantname ?? 0) + 1;
         str = func(obj);
         game.distantname--;
     }
+    obj.o_id = save_oid;
     return str;
 }
 

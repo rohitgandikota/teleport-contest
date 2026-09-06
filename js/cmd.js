@@ -26,7 +26,7 @@ import { seemimic } from './mon.js';
 import { game } from './gstate.js';
 import { dodrop, doddrop } from './do.js';
 import { any_obj_ok, doprwep, doprarm, doprring, dopramulet, doprtool,
-         doprinuse, doprgold, obj_extract_self, this_type_only } from './invent.js';
+         doprinuse, doprgold, obj_extract_self, dotypeinv } from './invent.js';
 import { dodown, doup, do_wire_mklev, do_wire_dokick, stairway_at } from './do.js';
 import { dokick_wire, ship_object, dokick } from './dokick.js';
 import { mklev, mklev_wire_mon } from './mklev.js';
@@ -51,8 +51,7 @@ import { Blind, Flying, Hallucination, Levitation, Passes_walls, Stealth }
 import { u_on_newpos } from './teleport.js';
 import { in_out_region } from './region.js';
 import { m_postmove_effect } from './monmove.js';
-import { doloot, dotip, query_inventory_category, query_objlist } from './pickup.js';
-import { USE_INVLET, INVORDER_SORT, INCLUDE_VENOM } from './const.js';
+import { doloot, dotip } from './pickup.js';
 import { curr_mon_load } from './mon.js';
 import { ECMD_FAIL, ECMD_CANCEL, Never_mind, A_DEX, A_CON, M_AP_TYPE,
          M_AP_FURNITURE, M_AP_OBJECT, OVERLOADED, Is_airlevel,
@@ -3162,52 +3161,6 @@ async function show_inventory() {
     const obj = (game.invent || []).find(o => o.invlet === invlet);
     if (obj)
         await itemactions(obj);
-}
-
-// src/invent.c dotypeinv(), default MENU_FULL path. The category query only
-// offers classes and BUC states which are present, then query_objlist shows
-// the matching inventory and optionally enters that item's action menu.
-async function dotypeinv() {
-    game.this_type = 0;
-    game.this_title = null;
-    const invent = game.invent || [];
-    const { doinvbill } = await import('./shk.js');
-    const billx = (game.u.ushops || '').length && await doinvbill(0);
-    if (!invent.length && !billx) {
-        await You("aren't carrying anything.");
-        return ECMD_OK;
-    }
-
-    const picks = await query_inventory_category(invent, billx);
-    if (!picks.length)
-        return ECMD_OK;
-
-    const choice = picks[0];
-    const code = typeof choice === 'string' ? choice.charCodeAt(0) : choice;
-    const marker = String.fromCharCode(code);
-    if (marker === 'x') {
-        if (billx)
-            await doinvbill(1);
-        return ECMD_OK;
-    }
-    if (!(code > 0 && code < OCLASSES.MAXOCLASSES) && !'BUCXP'.includes(marker))
-        return ECMD_OK;
-    game.this_type = code;
-    game.this_title = ({
-        B: 'Items known to be blessed:',
-        U: 'Items known to be uncursed:',
-        C: 'Items known to be cursed:',
-        X: 'Items whose blessed/uncursed/cursed status is unknown:',
-        P: 'Items that were just picked up:',
-    })[marker] || null;
-    const selected = await query_objlist(null, invent,
-        (game.flags.fixinv !== false ? USE_INVLET : 0) | INVORDER_SORT | INCLUDE_VENOM,
-        PICK_ONE, this_type_only);
-    if (selected.length)
-        await itemactions(selected[0]);
-    game.this_type = 0;
-    game.this_title = null;
-    return ECMD_OK;
 }
 
 function add_item_action(win, action, text) {

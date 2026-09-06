@@ -6,8 +6,8 @@ import { noit_Monnam, mon_nam, oname } from './do_name.js';
 import { engulfing_u } from './const.js';
 import { allow_all, add_valid_menu_class, menu_class_present, allow_category,
          collect_obj_classes, count_justpicked, container_gone } from './pickup.js';
-import { query_objlist } from './pickup.js';
-import { s_suffix } from './hacklib.js';
+import { query_objlist, query_category } from './pickup.js';
+import { s_suffix, mungspaces } from './hacklib.js';
 import { strsubst } from './hacklib.js';
 import { safe_qbuf } from './objnam.js';
 import { ansimpleoname } from './objnam.js';
@@ -20,6 +20,8 @@ import { MINV_PICKMASK } from './const.js';
 import { MINV_ALL } from './const.js';
 import { INCLUDE_HERO } from './const.js';
 import { INVORDER_SORT } from './const.js';
+import { MENU_FULL, MENU_PARTIAL, UNPAID_TYPES, BILLED_TYPES,
+         JUSTPICKED, INCLUDE_VENOM, PICK_ONE, COST_NOCONTENTS } from './const.js';
 import { PICK_NONE } from './const.js';
 import { PICK_ANY, SIGNAL_NOMENU, SIGNAL_ESCAPE, USE_INVLET,
          MENU_TRADITIONAL, thats_enough_tries, ALL_FINISHED,
@@ -38,12 +40,12 @@ import { game } from './gstate.js';
 import { visible_region_at, reg_damg } from './region.js';
 import { read_engr_at } from './engrave.js';
 import { stairway_at, stairs_description } from './stairs.js';
-import { cmdq_pop, cmdq_clear, cmdq_add_key, cmdq_add_int, get_count } from './cmd.js';
+import { cmdq_pop, cmdq_clear, cmdq_add_key, cmdq_add_int, get_count, itemactions } from './cmd.js';
 import { GC_SAVEHIST } from './const.js';
 import { GC_ECHOFIRST, GC_CONDHIST, GETOBJ_NOFLAGS, ECMD_FAIL, ECMD_CANCEL } from './const.js';
 import { delobj, t_at, is_pool, is_lava } from './mon.js';
 import { addtobill, costly_spot, doname_with_price, obfree_bill, same_price,
-         shop_keeper, inside_shop, inhishop } from './shk.js';
+         shop_keeper, inside_shop, inhishop, unpaid_cost, doinvbill } from './shk.js';
 import { ONAME, has_oname, ONAME_SKIP_INVUPD } from './const.js';
 import { u_at, CMDQ_KEY, CMDQ_INT, CQ_CANNED, CQ_REPEAT, FOUNTAIN, THRONE, SINK, GRAVE, ALTAR, TREE,
          ICE, DRAWBRIDGE_DOWN, IRONBARS, Never_mind, LOST_NONE, LOST_THROWN, LOST_EXPLODING, LOOKHERE_PICKED_SOME, LOOKHERE_SKIP_DFEATURE, IS_DOOR, D_NODOOR, D_ISOPEN, D_BROKEN,
@@ -59,7 +61,7 @@ import { W_ARM, W_ARMC, W_ARMH, W_ARMS, W_ARMG, W_ARMF, W_ARMU,
 import { Blind as heroBlind, Hallucination,
          Stone_resistance } from './youprop.js';
 import { doname, an, corpse_xname, makeplural, obj_typename, CXN_PFX_THE,
-         CXN_ARTICLE, yname } from './objnam.js';
+         CXN_ARTICLE, yname, xname, distant_name } from './objnam.js';
 import { OCLASSES, ONAMES, MATERIALS, SKILLS } from './objects_data.js';
 import { is_pole } from './u_init.js';
 import { throwing_weapon } from './dothrow.js';
@@ -67,7 +69,7 @@ import { OBJ_DESCR, not_fully_identified } from './objnam.js';
 export { not_fully_identified } from './objnam.js';
 import { MONSYMS, NUMMONS, PMNAMES } from './monst_data.js';
 import { erosion_matters, curse, splitobj, clear_splitobjs, extract_nobj,
-         start_glob_timeout, dead_species, unsplitobj } from './mkobj.js';
+         start_glob_timeout, dead_species, unsplitobj, unknwn_contnr_contents } from './mkobj.js';
 import { carried, OBJ_FREE, OBJ_FLOOR, OBJ_CONTAINED, OBJ_INVENT, OBJ_MINVENT, OBJ_BURIED, Is_container, Is_candle, Is_pudding } from './obj.js';
 import { setworn, setnotworn, recalc_telepat_range, bypass_objlist,
          nxt_unbypassed_loot, clear_bypasses } from './worn.js';
@@ -86,7 +88,7 @@ import { ATR_NONE, ATR_INVERSE, tty_create_nhwindow, tty_putstr,
          tty_add_menu, NHW_MENU } from './tty/wintty.js';
 import { nhgetch } from './input.js';
 import { xwaitforspace } from './tty/getline.js';
-import { pline, display_nhwindow_message, temporary_object_glyph,
+import { pline, tty_clear_nhwindow_message, display_nhwindow_message, temporary_object_glyph,
          see_monsters } from './display.js';
 import { makeknown, observe_object } from './o_init.js';
 import { tty_yn_function } from './tty/topl.js';
@@ -1080,6 +1082,217 @@ export function display_inventory(allowed_choices = null, want_reply = false) {
         }
     }
     return out;
+}
+
+// src/invent.c:3021 find_unpaid(), a recursive cursor over unpaid objects.
+export function find_unpaid(list, last_found) {
+    for (const obj of list || []) {
+        if (obj.unpaid) {
+            if (last_found.v) {
+                if (obj === last_found.v)
+                    last_found.v = null;
+            } else {
+                last_found.v = obj;
+                return obj;
+            }
+        }
+        if (Has_contents(obj)) {
+            const found = find_unpaid(obj.cobj, last_found);
+            if (found)
+                return found;
+        }
+    }
+    return null;
+}
+
+// src/invent.c:3654 dounpaid(), including hidden contents and floor totals.
+export async function dounpaid(count, floorcount, buriedcount) {
+    let otmp = null, contnr = null;
+    const marker = { v: null }, xtracount = floorcount + buriedcount;
+    if (count === 1 && !xtracount) {
+        otmp = find_unpaid(game.invent, marker);
+        contnr = unknwn_contnr_contents(otmp);
+    }
+    if (otmp && !contnr) {
+        const cost = await unpaid_cost(otmp, COST_NOCONTENTS);
+        game.iflags.suppress_price = (game.iflags.suppress_price || 0) + 1;
+        await pline(xprname(otmp, distant_name(otmp, doname),
+            carried(otmp) ? otmp.invlet : CONTAINED_SYM, true, cost, 0));
+        game.iflags.suppress_price--;
+        return;
+    }
+
+    const win = tty_create_nhwindow(NHW_MENU);
+    let totcost = 0, num_so_far = 0;
+    if (game.flags.fixinv === false)
+        reassign();
+    const sortpack = game.flags.sortpack !== false;
+    for (const oclass of sortpack ? inv_order() : [0]) {
+        let classcount = 0;
+        for (const obj of game.invent || []) {
+            if (obj.unpaid && (!sortpack || obj.oclass === oclass)) {
+                if (sortpack && !classcount++)
+                    tty_putstr(win, 0, let_to_name(oclass, true, false));
+                const cost = await unpaid_cost(obj, COST_NOCONTENTS);
+                totcost += cost;
+                game.iflags.suppress_price = (game.iflags.suppress_price || 0) + 1;
+                tty_putstr(win, 0, xprname(obj, distant_name(obj, doname),
+                    obj.invlet, true, cost, 0));
+                game.iflags.suppress_price--;
+                num_so_far++;
+            }
+        }
+    }
+    if (count > num_so_far) {
+        if (sortpack)
+            tty_putstr(win, 0, let_to_name(CONTAINED_SYM, true, false));
+        for (const obj of game.invent || []) {
+            if (Has_contents(obj)) {
+                let contcost = 0;
+                marker.v = null;
+                while (find_unpaid(obj.cobj, marker)) {
+                    const cost = await unpaid_cost(marker.v, COST_NOCONTENTS);
+                    totcost += cost;
+                    contcost += cost;
+                    if (obj.cknown) {
+                        game.iflags.suppress_price = (game.iflags.suppress_price || 0) + 1;
+                        tty_putstr(win, 0, xprname(marker.v, distant_name(marker.v, doname),
+                            CONTAINED_SYM, true, cost, 0));
+                        game.iflags.suppress_price--;
+                    }
+                }
+                if (!obj.cknown)
+                    tty_putstr(win, 0, xprname(null, `${s_suffix(xname(obj))} contents`,
+                        CONTAINED_SYM, true, contcost, 0));
+            }
+        }
+    }
+    if (count > 0) {
+        tty_putstr(win, 0, '');
+        tty_putstr(win, 0, xprname(null, 'Total:', '*', false, totcost, 0));
+    }
+    if (xtracount > 0) {
+        const verb = xtracount > 1 ? 'are' : 'is';
+        const where = !buriedcount ? 'on the floor'
+            : !floorcount ? 'under the floor' : 'on or under the floor';
+        if (!count) {
+            await You(`aren't carrying any unpaid items but there ${verb} ${xtracount} ${where}.`);
+        } else {
+            tty_putstr(win, 0, '');
+            tty_putstr(win, 0, `(There ${verb} ${xtracount} more unpaid object${
+                xtracount === 1 ? '' : 's'} ${where}.)`);
+        }
+    }
+    if (count > 0) {
+        await tty_display_nhwindow(win);
+        do {
+            await xwaitforspace(' \r\n\x1b');
+        } while (game.morc !== '\x1b' && tty_next_page(win));
+    }
+    tty_destroy_nhwindow(win);
+}
+
+// src/invent.c:3827 dotypeinv(), traditional prompts and category menus.
+export async function dotypeinv() {
+    const prompt = 'What type of object do you want an inventory of?';
+    const invent = game.invent || [];
+    const billx = !!((game.u.ushops || '').length && await doinvbill(0));
+    game.this_type = 0;
+    game.this_title = null;
+ doI: {
+        if (!invent.length && !billx) {
+            await You("aren't carrying anything.");
+            break doI;
+        }
+        const u_carried = count_unpaid(invent), u_floor = count_unpaid(game.level.objects),
+            u_buried = count_unpaid(game.level.buriedobjs);
+        const any_unpaid = u_carried + u_floor + u_buried;
+        const b = {}, u = {}, c = {}, x = {}, o = {}, j = {};
+        tally_BUCX(invent, false, b, u, c, x, o, j);
+        let choice = '\0', types = '', traditional = true;
+        if (game.flags.menu_style === MENU_FULL || game.flags.menu_style === MENU_PARTIAL) {
+            traditional = false;
+            const flags = UNPAID_TYPES | (billx ? BILLED_TYPES : 0)
+                | (b.v ? BUC_BLESSED : 0) | (u.v ? BUC_UNCURSED : 0)
+                | (c.v ? BUC_CURSED : 0) | (x.v ? BUC_UNKNOWN : 0)
+                | (j.v ? JUSTPICKED : 0) | INCLUDE_VENOM;
+            const picks = await query_category(prompt, invent, flags, PICK_ONE);
+            if (!picks.length)
+                break doI;
+            game.this_type = picks[0];
+            choice = String.fromCharCode(picks[0]);
+        }
+        if (traditional) {
+            const classes = [], itemcount = {};
+            let class_count = collect_obj_classes(classes, invent, false, null, itemcount);
+            types = classes.join('');
+            for (const [include,letter] of [[any_unpaid || billx || b.v+c.v+u.v+x.v || j.v,' '],
+                [any_unpaid,'u'],[billx,'x'],[b.v,'B'],[u.v,'U'],[c.v,'C'],[x.v,'X'],[j.v,'P']]) {
+                if (include) {
+                    types += letter;
+                    class_count++;
+                }
+            }
+            types += '\x1b';
+            for (const [present,letter] of [[any_unpaid,'u'],[billx,'x'],[b.v,'B'],
+                [u.v,'U'],[c.v,'C'],[x.v,'X'],[j.v,'P']])
+                if (!present)
+                    types += letter;
+            for (const symbol of def_oc_syms)
+                if (!types.includes(symbol))
+                    types += symbol;
+            if (class_count > 1) {
+                choice = await tty_yn_function(prompt, types, '\0', true);
+                if (choice === '\0') {
+                    tty_clear_nhwindow_message();
+                    break doI;
+                }
+            } else {
+                choice = any_unpaid ? 'u' : billx ? 'x' : types[0];
+            }
+        }
+        if (choice === 'x' || (choice === 'X' && billx && !x.v)) {
+            if (billx)
+                await doinvbill(1);
+            else
+                await pline(`No used-up objects${any_unpaid ? ' on your shopping bill' : ''}.`);
+            break doI;
+        }
+        if (choice === 'u' || (choice === 'U' && any_unpaid && !u.v)) {
+            if (any_unpaid)
+                await dounpaid(u_carried, u_floor, u_buried);
+            else
+                await You('are not carrying any unpaid objects.');
+            break doI;
+        }
+        let before = '', after = '';
+        switch (choice) {
+        case 'B': before = 'known to be blessed '; break;
+        case 'U': before = 'known to be uncursed '; break;
+        case 'C': before = 'known to be cursed '; break;
+        case 'X': after = ' whose blessed/uncursed/cursed status is unknown'; break;
+        case 'P': after = ' that were just picked up'; break;
+        default: before = 'such '; break;
+        }
+        if (traditional) {
+            if (types.indexOf(choice) > types.indexOf('\x1b')) {
+                await You(`have no ${before}objects${after}.`);
+                break doI;
+            }
+            game.this_type = 'BUCXP'.includes(choice)
+                ? choice.charCodeAt(0) : def_char_to_objclass(choice);
+        }
+        if ('BUCXP'.includes(choice))
+            game.this_title = mungspaces(`Items ${before || after}`) + ':';
+        const picks = await query_objlist(null, invent,
+            (game.flags.fixinv !== false ? USE_INVLET : 0) | INVORDER_SORT | INCLUDE_VENOM,
+            PICK_ONE, this_type_only);
+        if (picks.length)
+            await itemactions(picks[0]);
+    }
+    game.this_type = 0;
+    game.this_title = null;
+    return ECMD_OK;
 }
 
 // src/invent.c:3793 this_type_only(), including the goldX classification.

@@ -12,10 +12,11 @@
 import { update_inventory } from './invent.js';
 import { little_to_big } from './mkobj.js';
 import { make_slimed, make_stoned, make_vomiting, set_itimeout } from './potion.js';
-import { Popeye } from './eat.js';
+import { Popeye, eating_dangerous_corpse } from './eat.js';
+import { wielding_corpse } from './do_wear.js';
 import { nolimbs, emits_light } from './mondata.js';
 import { exercise } from './attrib.js';
-import { Blind, Hallucination } from './youprop.js';
+import { Blind, Hallucination, Acid_resistance, Stone_resistance, Unaware } from './youprop.js';
 import { an } from './objnam.js';
 import { hcolor, rndmonnam } from './do_name.js';
 import { find_delayed_killer, dealloc_killer, done } from './end.js';
@@ -31,7 +32,7 @@ import { TIMEOUT, FROMOUTSIDE, I_SPECIAL, WT_NOISY_INV, FOOT, NECK,
          M_AP_MONSTER, NH_GREEN, G_GENOD, Upolyd, PLNMSG_OK_DONT_DIE,
          PLNMSG_ONE_ITEM_HERE, FULL_MOON, FAINTING, MV_KNOWS_EGG,
          NO_MINVENT, MM_NOMSG, OBJ_FLOOR, OBJ_INVENT, OBJ_MINVENT,
-         CONTAINED_TOO, BURIED_TOO }
+         CONTAINED_TOO, BURIED_TOO, ACID_RES, STONE_RES }
     from './const.js';
 import { ONAMES } from './objects_data.js';
 import { PMNAMES, MFLAGS, MONSYMS } from './monst_data.js';
@@ -1051,6 +1052,32 @@ export async function nh_timeout() {
             continue;
         /* the timeout just ran out */
         switch (key) {
+        case 'HAcid_resistance':
+            if (!Acid_resistance()) {
+                if (eating_dangerous_corpse(ACID_RES)) {
+                    set_itimeout('HAcid_resistance', 1);
+                    break;
+                }
+                if (!Unaware()) {
+                    const { You } = await import('./pline.js');
+                    await You('no longer feel safe from acid.');
+                }
+            }
+            break;
+        case 'HStone_resistance':
+            if (!Stone_resistance()) {
+                if (eating_dangerous_corpse(STONE_RES)) {
+                    set_itimeout('HStone_resistance', 1);
+                    break;
+                }
+                if (!Unaware()) {
+                    const { You } = await import('./pline.js');
+                    await You('no longer feel secure from petrification.');
+                }
+                await wielding_corpse(u.uwep, null, false);
+                await wielding_corpse(u.uswapwep, null, false);
+            }
+            break;
         case 'SICK': {
             const { SICK_NONVOMITABLE, SICK_ALL, LOW_PM, G_UNIQ } = await import('./const.js');
             const { ACURR, adjattrib } = await import('./attrib.js');

@@ -1,0 +1,145 @@
+{
+  "name": "energy-drain",
+  "description": "Energy-vortex attacks drain monster spell energy. Unseen casters, blind empty-square attacks and monster utility potions retain C message and RNG order.",
+  "coverage": [
+    "mode.debug",
+    "forms.polymorph",
+    "survival.timed-status",
+    "ui.getlin",
+    "ui.more-paging",
+    "combat.melee",
+    "monster.movement",
+    "monster.special-effects"
+  ],
+  "branches": [
+    "energy-drain.energy-25-1",
+    "energy-drain.energy-25-8",
+    "energy-drain.energy-31-1",
+    "energy-drain.energy-31-8",
+    "energy-drain.energy-47-1",
+    "energy-drain.energy-47-8",
+    "energy-drain.blind-empty-memory"
+  ],
+  "requireBranchAssertions": true,
+  "segments": [
+    {
+      "name": "energy-25-1",
+      "seed": 25,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\n",
+      "moves": " #levelchange\r30\r                             #polyself\renergy vortex\r  \u001b\u001b\u001b\u001b\u001b\u001b\u00071 sleeping peaceful gnomish wizard\r  \u001b\u001b\u001b\u001b\u001b\u001bFn  \u001b\u001b\u001b\u001b\u001b\u001bFb  \u001b\u001b\u001b\u001b\u001b\u001bFh  \u001b\u001b\u001b\u001b\u001b\u001bFy  \u001b\u001b\u001b\u001b\u001b\u001bFk  \u001b\u001b\u001b\u001b\u001b\u001bFu  \u001b\u001b\u001b\u001b\u001b\u001bFl  \u001b\u001b\u001b\u001b\u001b\u001bFj  \u001b\u001b\u001b\u001b\u001b\u001bFn  \u001b\u001b\u001b\u001b\u001b\u001bFb  \u001b\u001b\u001b\u001b\u001b\u001bFh  \u001b\u001b\u001b\u001b\u001b\u001bFy  \u001b\u001b\u001b\u001b\u001b\u001bFk  \u001b\u001b\u001b\u001b\u001b\u001bFu  \u001b\u001b\u001b\u001b\u001b\u001bFl  \u001b\u001b\u001b\u001b\u001b\u001bFj  \u001b\u001b\u001b\u001b\u001b\u001bFn  \u001b\u001b\u001b\u001b\u001b\u001bFb  \u001b\u001b\u001b\u001b\u001b\u001bFh  \u001b\u001b\u001b\u001b\u001b\u001bFy  \u001b\u001b\u001b\u001b\u001b\u001bFk  \u001b\u001b\u001b\u001b\u001b\u001bFu  \u001b\u001b\u001b\u001b\u001b\u001bFl  \u001b\u001b\u001b\u001b\u001b\u001bFj  \u001b\u001b\u001b\u001b\u001b\u001b",
+      "steps": []
+    },
+    {
+      "name": "energy-25-8",
+      "seed": 25,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\n",
+      "moves": " #levelchange\r30\r                             #polyself\renergy vortex\r  \u001b\u001b\u001b\u001b\u001b\u001b\u00078 sleeping peaceful gnomish wizard\r  \u001b\u001b\u001b\u001b\u001b\u001bFn  \u001b\u001b\u001b\u001b\u001b\u001bFb  \u001b\u001b\u001b\u001b\u001b\u001bFh  \u001b\u001b\u001b\u001b\u001b\u001bFy  \u001b\u001b\u001b\u001b\u001b\u001bFk  \u001b\u001b\u001b\u001b\u001b\u001bFu  \u001b\u001b\u001b\u001b\u001b\u001bFl  \u001b\u001b\u001b\u001b\u001b\u001bFj  \u001b\u001b\u001b\u001b\u001b\u001bFn  \u001b\u001b\u001b\u001b\u001b\u001bFb  \u001b\u001b\u001b\u001b\u001b\u001bFh  \u001b\u001b\u001b\u001b\u001b\u001bFy  \u001b\u001b\u001b\u001b\u001b\u001bFk  \u001b\u001b\u001b\u001b\u001b\u001bFu  \u001b\u001b\u001b\u001b\u001b\u001bFl  \u001b\u001b\u001b\u001b\u001b\u001bFj  \u001b\u001b\u001b\u001b\u001b\u001bFn  \u001b\u001b\u001b\u001b\u001b\u001bFb  \u001b\u001b\u001b\u001b\u001b\u001bFh  \u001b\u001b\u001b\u001b\u001b\u001bFy  \u001b\u001b\u001b\u001b\u001b\u001bFk  \u001b\u001b\u001b\u001b\u001b\u001bFu  \u001b\u001b\u001b\u001b\u001b\u001bFl  \u001b\u001b\u001b\u001b\u001b\u001bFj  \u001b\u001b\u001b\u001b\u001b\u001b",
+      "steps": []
+    },
+    {
+      "name": "energy-31-1",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\n",
+      "moves": " #levelchange\r30\r                             #polyself\renergy vortex\r  \u001b\u001b\u001b\u001b\u001b\u001b\u00071 sleeping peaceful gnomish wizard\r  \u001b\u001b\u001b\u001b\u001b\u001bFn  \u001b\u001b\u001b\u001b\u001b\u001bFb  \u001b\u001b\u001b\u001b\u001b\u001bFh  \u001b\u001b\u001b\u001b\u001b\u001bFy  \u001b\u001b\u001b\u001b\u001b\u001bFk  \u001b\u001b\u001b\u001b\u001b\u001bFu  \u001b\u001b\u001b\u001b\u001b\u001bFl  \u001b\u001b\u001b\u001b\u001b\u001bFj  \u001b\u001b\u001b\u001b\u001b\u001bFn  \u001b\u001b\u001b\u001b\u001b\u001bFb  \u001b\u001b\u001b\u001b\u001b\u001bFh  \u001b\u001b\u001b\u001b\u001b\u001bFy  \u001b\u001b\u001b\u001b\u001b\u001bFk  \u001b\u001b\u001b\u001b\u001b\u001bFu  \u001b\u001b\u001b\u001b\u001b\u001bFl  \u001b\u001b\u001b\u001b\u001b\u001bFj  \u001b\u001b\u001b\u001b\u001b\u001bFn  \u001b\u001b\u001b\u001b\u001b\u001bFb  \u001b\u001b\u001b\u001b\u001b\u001bFh  \u001b\u001b\u001b\u001b\u001b\u001bFy  \u001b\u001b\u001b\u001b\u001b\u001bFk  \u001b\u001b\u001b\u001b\u001b\u001bFu  \u001b\u001b\u001b\u001b\u001b\u001bFl  \u001b\u001b\u001b\u001b\u001b\u001bFj  \u001b\u001b\u001b\u001b\u001b\u001b",
+      "steps": []
+    },
+    {
+      "name": "energy-31-8",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\n",
+      "moves": " #levelchange\r30\r                             #polyself\renergy vortex\r  \u001b\u001b\u001b\u001b\u001b\u001b\u00078 sleeping peaceful gnomish wizard\r  \u001b\u001b\u001b\u001b\u001b\u001bFn  \u001b\u001b\u001b\u001b\u001b\u001bFb  \u001b\u001b\u001b\u001b\u001b\u001bFh  \u001b\u001b\u001b\u001b\u001b\u001bFy  \u001b\u001b\u001b\u001b\u001b\u001bFk  \u001b\u001b\u001b\u001b\u001b\u001bFu  \u001b\u001b\u001b\u001b\u001b\u001bFl  \u001b\u001b\u001b\u001b\u001b\u001bFj  \u001b\u001b\u001b\u001b\u001b\u001bFn  \u001b\u001b\u001b\u001b\u001b\u001bFb  \u001b\u001b\u001b\u001b\u001b\u001bFh  \u001b\u001b\u001b\u001b\u001b\u001bFy  \u001b\u001b\u001b\u001b\u001b\u001bFk  \u001b\u001b\u001b\u001b\u001b\u001bFu  \u001b\u001b\u001b\u001b\u001b\u001bFl  \u001b\u001b\u001b\u001b\u001b\u001bFj  \u001b\u001b\u001b\u001b\u001b\u001bFn  \u001b\u001b\u001b\u001b\u001b\u001bFb  \u001b\u001b\u001b\u001b\u001b\u001bFh  \u001b\u001b\u001b\u001b\u001b\u001bFy  \u001b\u001b\u001b\u001b\u001b\u001bFk  \u001b\u001b\u001b\u001b\u001b\u001bFu  \u001b\u001b\u001b\u001b\u001b\u001bFl  \u001b\u001b\u001b\u001b\u001b\u001bFj  \u001b\u001b\u001b\u001b\u001b\u001b",
+      "steps": []
+    },
+    {
+      "name": "energy-47-1",
+      "seed": 47,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\n",
+      "moves": " #levelchange\r30\r                             #polyself\renergy vortex\r  \u001b\u001b\u001b\u001b\u001b\u001b\u00071 sleeping peaceful gnomish wizard\r  \u001b\u001b\u001b\u001b\u001b\u001bFn  \u001b\u001b\u001b\u001b\u001b\u001bFb  \u001b\u001b\u001b\u001b\u001b\u001bFh  \u001b\u001b\u001b\u001b\u001b\u001bFy  \u001b\u001b\u001b\u001b\u001b\u001bFk  \u001b\u001b\u001b\u001b\u001b\u001bFu  \u001b\u001b\u001b\u001b\u001b\u001bFl  \u001b\u001b\u001b\u001b\u001b\u001bFj  \u001b\u001b\u001b\u001b\u001b\u001bFn  \u001b\u001b\u001b\u001b\u001b\u001bFb  \u001b\u001b\u001b\u001b\u001b\u001bFh  \u001b\u001b\u001b\u001b\u001b\u001bFy  \u001b\u001b\u001b\u001b\u001b\u001bFk  \u001b\u001b\u001b\u001b\u001b\u001bFu  \u001b\u001b\u001b\u001b\u001b\u001bFl  \u001b\u001b\u001b\u001b\u001b\u001bFj  \u001b\u001b\u001b\u001b\u001b\u001bFn  \u001b\u001b\u001b\u001b\u001b\u001bFb  \u001b\u001b\u001b\u001b\u001b\u001bFh  \u001b\u001b\u001b\u001b\u001b\u001bFy  \u001b\u001b\u001b\u001b\u001b\u001bFk  \u001b\u001b\u001b\u001b\u001b\u001bFu  \u001b\u001b\u001b\u001b\u001b\u001bFl  \u001b\u001b\u001b\u001b\u001b\u001bFj  \u001b\u001b\u001b\u001b\u001b\u001b",
+      "steps": []
+    },
+    {
+      "name": "energy-47-8",
+      "seed": 47,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\n",
+      "moves": " #levelchange\r30\r                             #polyself\renergy vortex\r  \u001b\u001b\u001b\u001b\u001b\u001b\u00078 sleeping peaceful gnomish wizard\r  \u001b\u001b\u001b\u001b\u001b\u001bFn  \u001b\u001b\u001b\u001b\u001b\u001bFb  \u001b\u001b\u001b\u001b\u001b\u001bFh  \u001b\u001b\u001b\u001b\u001b\u001bFy  \u001b\u001b\u001b\u001b\u001b\u001bFk  \u001b\u001b\u001b\u001b\u001b\u001bFu  \u001b\u001b\u001b\u001b\u001b\u001bFl  \u001b\u001b\u001b\u001b\u001b\u001bFj  \u001b\u001b\u001b\u001b\u001b\u001bFn  \u001b\u001b\u001b\u001b\u001b\u001bFb  \u001b\u001b\u001b\u001b\u001b\u001bFh  \u001b\u001b\u001b\u001b\u001b\u001bFy  \u001b\u001b\u001b\u001b\u001b\u001bFk  \u001b\u001b\u001b\u001b\u001b\u001bFu  \u001b\u001b\u001b\u001b\u001b\u001bFl  \u001b\u001b\u001b\u001b\u001b\u001bFj  \u001b\u001b\u001b\u001b\u001b\u001bFn  \u001b\u001b\u001b\u001b\u001b\u001bFb  \u001b\u001b\u001b\u001b\u001b\u001bFh  \u001b\u001b\u001b\u001b\u001b\u001bFy  \u001b\u001b\u001b\u001b\u001b\u001bFk  \u001b\u001b\u001b\u001b\u001b\u001bFu  \u001b\u001b\u001b\u001b\u001b\u001bFl  \u001b\u001b\u001b\u001b\u001b\u001bFj  \u001b\u001b\u001b\u001b\u001b\u001b",
+      "steps": []
+    }
+  ],
+  "branchAssertions": [
+    {
+      "branch": "energy-drain.energy-25-1",
+      "segment": 0,
+      "screenIncludes": [
+        "It seems lethargic."
+      ],
+      "rngIncludes": [
+        "xdrainenergym("
+      ]
+    },
+    {
+      "branch": "energy-drain.energy-25-8",
+      "segment": 1,
+      "screenIncludes": [
+        "You hear a mumbled curse."
+      ]
+    },
+    {
+      "branch": "energy-drain.energy-31-1",
+      "segment": 2,
+      "screenIncludes": [
+        "It seems lethargic."
+      ],
+      "rngIncludes": [
+        "xdrainenergym("
+      ]
+    },
+    {
+      "branch": "energy-drain.energy-31-8",
+      "segment": 3,
+      "screenIncludes": [
+        "You hear a mumbled curse."
+      ]
+    },
+    {
+      "branch": "energy-drain.energy-47-1",
+      "segment": 4,
+      "screenIncludes": [
+        "It seems lethargic."
+      ],
+      "rngIncludes": [
+        "xdrainenergym("
+      ]
+    },
+    {
+      "branch": "energy-drain.energy-47-8",
+      "segment": 5,
+      "screenIncludes": [
+        "It seems lethargic."
+      ],
+      "rngIncludes": [
+        "precheck(muse.c:74)"
+      ]
+    },
+    {
+      "branch": "energy-drain.blind-empty-memory",
+      "segment": 4,
+      "screenIncludes": [
+        "You attack thin air."
+      ],
+      "screenCells": [
+        {
+          "step": 174,
+          "x": 43,
+          "y": 3,
+          "equals": "·"
+        }
+      ]
+    }
+  ]
+}

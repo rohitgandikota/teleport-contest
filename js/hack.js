@@ -14,15 +14,17 @@ import { place_object } from './mkobj.js';
 import { exercise } from './attrib.js';
 import { A_STR, LANDMINE, SPIKED_PIT, PIT, HOLE, TRAPDOOR,
          LEVEL_TELEP, TELEP_TRAP, ROLLING_BOULDER_TRAP } from './const.js';
-import { the, xname } from './objnam.js';
+import { the, xname, ansimpleoname } from './objnam.js';
 import { costly_spot } from './shk.js';
 import { You_hear, There } from './pline.js';
-import { flush_screen, glyph_at, map_invisible, newsym, unmap_invisible } from './display.js';
+import { flush_screen, glyph_at, map_invisible, newsym, unmap_invisible,
+         unmap_object, map_object, back_to_glyph } from './display.js';
 import { YMonnam, m_monnam, mon_nam } from './do_name.js';
 import { is_flimsy } from './obj.js';
 import { You, You_feel, pline_xy, pline_The, set_msg_xy, Norep } from './pline.js';
 import { feel_location } from './display.js';
-import { can_ooze } from './monmove.js';
+import { can_ooze, accessible } from './monmove.js';
+import { dig_typ, use_pick_axe2 } from './dig.js';
 import { worm_cross } from './worm.js';
 import { block_door, block_entry, u_entered_shop, u_left_shop } from './shk.js';
 import { curr_mon_load } from './mon.js';
@@ -39,7 +41,7 @@ import { is_pool_or_lava } from './dbridge.js';
 import { is_pool, is_lava, t_at, m_at, is_pick, seemimic,
          wake_msg } from './mon.js';
 import { hliquid } from './do_name.js';
-import { Is_waterlevel, WATER, LAVAPOOL, POOL } from './const.js';
+import { Is_waterlevel, WATER, LAVAPOOL, POOL, AIR } from './const.js';
 import { waterbody_name } from './pager.js';
 import { surface, recalc_mapseen } from './dungeon.js';
 import { pickup, can_reach_floor } from './pickup.js';
@@ -924,59 +926,74 @@ export function in_town(x, y) {
 }
 
 
-// src/hack.c:2228 domove_fight_empty() — force-fight a square with nothing
-// to fight. Wastes the turn with the "harmlessly attack" line.
+// src/hack.c:2229 domove_fight_empty()
 export async function domove_fight_empty(x, y) {
+    const unknown_obstacle = 'an unknown obstacle';
     const off_edge = !isok(x, y);
-    const explo = Upolyd(game.u) && attacktype(game.youmonst.data, ATTKS.AT_EXPL);
-    let buf;
-    let solid_or_boulder = off_edge;
-
+    let glyph = !off_edge ? glyph_at(x, y) : { kind: 'unexplored' };
     if (off_edge) {
-        /* treat as if solid rock, even on planes' levels */
-        buf = 'an unknown obstacle';
-    } else {
-        const loc = game.level.at(x, y);
-        const solid = (!ACCESSIBLE(loc?.typ ?? 0) || IS_FURNITURE(loc?.typ));
-        const boulder = sobj_at(ONAMES.BOULDER, x, y);
-        /* the statue-attack, underwater and pick-digging arms are recorded */
-        if (boulder) {
-            const { xname } = await import('./objnam.js');
-            const nm = await xname(boulder);
-            buf = ('aeiouAEIOU'.includes(nm[0]) ? 'an ' : 'a ') + nm;
-        } else if (solid) {
-            if (loc?.seenv || IS_STWALL(loc?.typ)
-                || loc?.typ === SCORR || IS_SDOOR(loc?.typ)) {
-                const { back_to_glyph } = await import('./display.js');
-                const { defsyms } = await import('./drawing_data.js');
-                const g = back_to_glyph(loc, x, y);
-                const expl = defsyms[g.cmap]?.explain || 'wall';
-                buf = `the ${expl}`;
-            } else {
-                buf = 'an unknown obstacle';
-            }
+        x = 0; y = 1;
+    }
+    if (game.context.forcefight
+        || (glyph.kind === 'invis' && !m_at(x, y) && !game.context.nopick)) {
+        let boulder = null;
+        const explo = Upolyd(game.u) && attacktype(game.youmonst.data, ATTKS.AT_EXPL);
+        const solid = off_edge || !accessible(x, y)
+            || IS_FURNITURE(game.level.at(x, y).typ);
+        let buf;
+        if (off_edge) {
+            buf = unknown_obstacle;
         } else {
-            buf = 'thin air';
+            const loc = game.level.at(x, y);
+            if (!Underwater()) {
+                boulder = sobj_at(ONAMES.BOULDER, x, y);
+                if ((glyph.kind === 'obj' && glyph.statue)
+                    || (Hallucination() && glyph.kind === 'mon'))
+                    boulder = sobj_at(ONAMES.STATUE, x, y);
+                if (game.context.forcefight && game.u.uwep
+                    && dig_typ(game.u.uwep, x, y)
+                    && glyph.kind !== 'invis' && glyph.kind !== 'mon') {
+                    await use_pick_axe2(game.u.uwep);
+                    return true;
+                }
+            }
+            /* Clear remembered objects even while blind. */
+            unmap_object(x, y);
+            if (boulder)
+                map_object(boulder, true);
+            newsym(x, y);
+            glyph = glyph_at(x, y);
+            if (boulder) {
+                buf = ansimpleoname(boulder);
+            } else if (Underwater() && !is_pool(x, y)) {
+                buf = Is_waterlevel(game.u.uz) && loc.typ === AIR
+                    ? 'an air bubble' : 'nothing';
+            } else if (solid) {
+                if (loc.seenv || IS_STWALL(loc.typ) || IS_SDOOR(loc.typ)
+                    || loc.typ === SCORR) {
+                    glyph = back_to_glyph(loc, x, y);
+                    buf = the(defsyms[glyph.cmap].explain);
+                } else {
+                    buf = unknown_obstacle;
+                }
+            } else {
+                buf = 'thin air';
+            }
         }
-        /* src/hack.c removes a stale invisible-monster marker before drawing
-           and reporting the empty-square attack. newsym restores any real
-           terrain or object which was hidden underneath it. */
-        unmap_invisible(x, y);
-        newsym(x, y);
-        solid_or_boulder = !!(boulder || solid);
+        await You(`${!(boulder || solid) ? '' : !explo ? 'harmlessly ' : 'futilely '}${
+            explo ? 'explode at' : 'attack'} ${buf}.`);
+        nomul(0);
+        if (explo) {
+            const attk = attacktype_fordmg(game.youmonst.data, ATTKS.AT_EXPL, ATTKS.AD_ANY);
+            await wake_nearto(game.u.ux, game.u.uy, 7 * 7);
+            if (attk)
+                await explum(null, attk);
+            game.u.mh = -1;
+            await rehumanize();
+        }
+        return true;
     }
-    await You(`${solid_or_boulder ? (explo ? 'futilely ' : 'harmlessly ') : ''}${
-        explo ? 'explode at' : 'attack'} ${buf}.`);
-    nomul(0);
-    if (explo) {
-        const attk = attacktype_fordmg(game.youmonst.data, ATTKS.AT_EXPL, ATTKS.AD_ANY);
-        await wake_nearto(game.u.ux, game.u.uy, 7 * 7);
-        if (attk)
-            await explum(null, attk);
-        game.u.mh = -1;
-        await rehumanize();
-    }
-    return true;
+    return false;
 }
 
 // src/hack.c:2515 avoid_trap_andor_region()

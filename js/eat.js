@@ -177,12 +177,14 @@ import { You, You_cant } from './pline.js';
 import { outrumor } from './rumors.js';
 import { BY_COOKIE } from './const.js';
 import { PMNAMES, MFLAGS as MFLAGS_EAT, ATTKS } from './monst_data.js';
-import { done } from './end.js';
+import { done, delayed_killer } from './end.js';
+import { revive_corpse } from './do.js';
 import { end_running, nomul, rounddiv, check_capacity } from './hack.js';
 import { sgn, distu } from './hacklib.js';
 import { ACURR } from './attrib.js';
 import { A_CHA } from './const.js';
-import { make_stoned } from './potion.js';
+import { make_stoned, make_slimed } from './potion.js';
+import { STONING, LOW_PM } from './const.js';
 import { bot } from './display.js';
 import { A_STR, A_DEX, STARVING, STARVED, FIRE_RES, SLEEP_RES, COLD_RES,
          DISINT_RES, SHOCK_RES, POISON_RES, ACID_RES, STONE_RES, TELEPORT,
@@ -207,12 +209,6 @@ import { LIGHT_HEADED, Is_airlevel, Is_astralevel, Is_waterlevel } from './const
 import { surface } from './dungeon.js';
 import { FINGER, NH_GREEN, NO_PART, TIMEOUT } from './const.js';
 import { were_beastie } from './were.js';
-
-/* include/hack.h:51 CANNIBAL_ALLOWED() */
-const cannibal_allowed = () =>
-    game.urole?.mnum === 'PM_CAVE_DWELLER'
-    || game.urole?.mnum === PMNAMES.PM_CAVE_DWELLER
-    || Race_if(PMNAMES.PM_ORC);
 
 // src/eat.c:3170 gethungry()
 export async function gethungry() {
@@ -327,36 +323,19 @@ const CANNIBAL_ALLOWED = () => (Role_if(PMNAMES.PM_CAVE_DWELLER) || Race_if(PMNA
 /* include/youprop.h */
 const Lifesaved = () => !!game.u.uprops?.LIFESAVED;
 const Stoned = () => !!game.u.uprops?.STONED;
-/* src/eat.c maybe_cannibal()'s static */
-let ate_brains = 0;
 
-// src/eat.c:758 maybe_cannibal()
-export async function maybe_cannibal(pm, allowmsg) {
-    const fptr = game.mons[pm]; /* food type */
-
-    /* when poly'd into a mind flayer, multiple tentacle hits in one
-       turn cause multiple digestion checks to occur; avoid giving
-       multiple luck penalties for the same attack */
-    if (game.moves === ate_brains)
-        return false;
-    ate_brains = game.moves; /* ate_anything, not just brains... */
-
-    if (!CANNIBAL_ALLOWED()
-        /* non-cannibalistic heroes shouldn't eat own species ever
-           and also shouldn't eat current species when polymorphed
-           (even if having the form of something which doesn't care
-           about cannibalism--hero's innate traits aren't altered) */
-        && (your_race(fptr)
-            || (Upolyd(game.u) && same_race(game.youmonst.data, fptr))
-            || (ismnum(game.u.ulycn) && were_beastie(pm) === game.u.ulycn))) {
-        if (allowmsg) {
-            if (Upolyd(game.u) && your_race(fptr))
-                await You('have a bad feeling deep inside.');
-            await You('cannibal!  You will regret this!');
-        }
-        (game.u.intrinsic ||= {}).HAggravate_monster = (game.u.intrinsic.HAggravate_monster | 0) | FROMOUTSIDE;
-        change_luck(-rn1(4, 2)); /* -5..-2 */
-        return true;
+// src/eat.c:475 eating_dangerous_corpse()
+export function eating_dangerous_corpse(res) {
+    let food, mnum;
+    if (game.occupation === eatfood
+        && (food = game.context.victual.piece)
+        && food.otyp === ONAMES.CORPSE
+        && (mnum = food.corpsenm) >= LOW_PM
+        && (carried(food) || obj_here(food, game.u.ux, game.u.uy))) {
+        if (res === ACID_RES && acidic(game.mons[mnum]))
+            return true;
+        if (res === STONE_RES && flesh_petrifies(game.mons[mnum]))
+            return true;
     }
     return false;
 }
@@ -506,6 +485,111 @@ export async function eat_brains(magr, mdef, visflag, dmg_p) {
     }
 
     return result;
+}
+
+// src/eat.c:758 maybe_cannibal()
+export async function maybe_cannibal(pm, allowmsg) {
+    const fptr = game.mons[pm]; /* food type */
+
+    /* when poly'd into a mind flayer, multiple tentacle hits in one
+       turn cause multiple digestion checks to occur; avoid giving
+       multiple luck penalties for the same attack */
+    /* C's static starts at zero in each new process. */
+    if (game.moves === (game.ate_brains || 0))
+        return false;
+    game.ate_brains = game.moves; /* ate_anything, not just brains... */
+
+    if (!CANNIBAL_ALLOWED()
+        /* non-cannibalistic heroes shouldn't eat own species ever
+           and also shouldn't eat current species when polymorphed
+           (even if having the form of something which doesn't care
+           about cannibalism--hero's innate traits aren't altered) */
+        && (your_race(fptr)
+            || (Upolyd(game.u) && same_race(game.youmonst.data, fptr))
+            || (ismnum(game.u.ulycn) && were_beastie(pm) === game.u.ulycn))) {
+        if (allowmsg) {
+            if (Upolyd(game.u) && your_race(fptr))
+                await You('have a bad feeling deep inside.');
+            await You('cannibal!  You will regret this!');
+        }
+        (game.u.intrinsic ||= {}).HAggravate_monster = (game.u.intrinsic.HAggravate_monster | 0) | FROMOUTSIDE;
+        change_luck(-rn1(4, 2)); /* -5..-2 */
+        return true;
+    }
+    return false;
+}
+
+// src/eat.c:790 cprefx()
+export async function cprefx(pm) {
+    await maybe_cannibal(pm, true);
+    if (flesh_petrifies(game.mons[pm])) {
+        if (!Stone_resistance()
+            && !(poly_when_stoned(game.youmonst.data)
+                 && await polymon(PMNAMES.PM_STONE_GOLEM))) {
+            if (game.context.tin?.tin)
+                await use_up_tin(game.context.tin.tin);
+            game.killer = { name: `tasting ${game.mons[pm].pmnames[NEUTRAL]} meat`,
+                            format: KILLED_BY };
+            await You('turn to stone.');
+            await done(STONING);
+            if (game.context.victual.piece)
+                game.context.victual.eating = 0;
+            return;
+        }
+    }
+
+    switch (pm) {
+    case PMNAMES.PM_LITTLE_DOG:
+    case PMNAMES.PM_DOG:
+    case PMNAMES.PM_LARGE_DOG:
+    case PMNAMES.PM_KITTEN:
+    case PMNAMES.PM_HOUSECAT:
+    case PMNAMES.PM_LARGE_CAT:
+        if (!CANNIBAL_ALLOWED()) {
+            await You_feel(`that eating the ${game.mons[pm].pmnames[NEUTRAL]} was a bad idea.`);
+            game.u.intrinsic.HAggravate_monster |= FROMOUTSIDE;
+        }
+        break;
+    case PMNAMES.PM_LIZARD:
+        if (Stoned())
+            await fix_petrification();
+        break;
+    case PMNAMES.PM_DEATH:
+    case PMNAMES.PM_PESTILENCE:
+    case PMNAMES.PM_FAMINE:
+        await pline('Eating that is instantly fatal.');
+        game.killer = { name: `unwisely ate the body of ${game.mons[pm].pmnames[NEUTRAL]}`,
+                        format: NO_KILLER_PREFIX };
+        await done(DIED);
+        exercise(A_WIS, false);
+        if (game.context.victual.piece
+            && game.context.victual.piece.otyp === ONAMES.CORPSE
+            && await revive_corpse(game.context.victual.piece))
+            game.context.victual = {};
+        return;
+    case PMNAMES.PM_GREEN_SLIME:
+        if (!Slimed() && !Unchanging() && !slimeproof(game.youmonst.data)) {
+            await You("don't feel very well.");
+            await make_slimed(10, null);
+            delayed_killer(SLIMED, KILLED_BY_AN, '');
+        }
+        /* FALLTHROUGH */
+    default:
+        if (acidic(game.mons[pm]) && Stoned())
+            await fix_petrification();
+        break;
+    }
+}
+
+// src/eat.c:867 fix_petrification()
+export async function fix_petrification() {
+    let buf;
+    if (Hallucination())
+        buf = `What a pity--you just ruined a future piece of ${
+            ACURR(A_CHA) > 15 ? 'fine ' : ''}art!`;
+    else
+        buf = 'You feel limber!';
+    await make_stoned(0, buf, 0, null);
 }
 
 // src/eat.c:3347 is_fainted()
@@ -1495,17 +1579,6 @@ async function fprefx(otmp) {
 // the fortune cookie's rumor and the apple/pear "core dumped" deferral. The
 // stat-gain foods (royal jelly, giant corpses via cpostfx) and the wolfsbane
 // and carrot cures are gated on state no current hero has.
-// src/eat.c:867 fix_petrification() — stop turning to stone.
-export async function fix_petrification() {
-    let buf;
-    if (Hallucination())
-        buf = `What a pity--you just ruined a future piece of ${
-            ACURR(A_CHA) > 15 ? 'fine ' : ''}art!`;
-    else
-        buf = 'You feel limber!';
-    await make_stoned(0, buf, 0, null);
-}
-
 async function fpostfx(otmp) {
     switch (otmp.otyp) {
     case ONAMES.SPRIG_OF_WOLFSBANE:
@@ -1598,7 +1671,7 @@ async function fpostfx(otmp) {
     return;
 }
 
-// src/eat.c start_eating() — begin (or resume) a meal.
+// src/eat.c:2022 start_eating(), begin or resume a meal.
 //
 // bite() is called BEFORE usedtime is incremented, so a one-turn meal eaten
 // while Satiated chokes on the very first call rather than after finishing.
@@ -1609,22 +1682,13 @@ export async function start_eating(otmp, already_partly_eaten) {
     v.doreset = 0;
     v.eating = 1;
 
-    /* src/eat.c:2041 cprefx(), lycanthropy arm of maybe_cannibal().
-       An infected hero treats every related helper species as their own. */
-    if ((otmp.otyp === ONAMES.CORPSE || otmp.globby)
-        && game.context.ate_brains !== game.moves) {
-        game.context.ate_brains = game.moves;
-        const pm = v.piece?.corpsenm ?? NON_PM;
-        if (!cannibal_allowed() && game.u.ulycn >= 0
-            && were_beastie(pm) === game.u.ulycn) {
-            await You('cannibal!  You will regret this!');
-            const intr = (game.u.intrinsic ||= {});
-            intr.HAggravate_monster = (intr.HAggravate_monster | 0)
-                                      | FROMOUTSIDE;
-            change_luck(-rn1(4, 2));
-        }
+    if (otmp.otyp === ONAMES.CORPSE || otmp.globby) {
+        await cprefx(game.context.victual.piece.corpsenm);
+        if (!game.context.victual.piece || !game.context.victual.eating)
+            return;
     }
 
+    const old_nomovemsg = game.nomovemsg;
     if (await bite()) {
         /* survived choking, finish off food that's nearly done;
            need this to handle cockatrice eggs, fortune cookies, etc */
@@ -1633,9 +1697,11 @@ export async function start_eating(otmp, already_partly_eaten) {
                that done_eating() does not issue one when the reason we got
                here is a vomit() from bite(). */
             const save = game.nomovemsg;
-            game.nomovemsg = null;
+            if (!old_nomovemsg)
+                game.nomovemsg = null;
             await done_eating(false);
-            game.nomovemsg = save;
+            if (!old_nomovemsg)
+                game.nomovemsg = save;
         }
         return;
     }
@@ -1886,19 +1952,14 @@ async function consume_tin(mesg) {
         game.context.victual = {};
         const meat = mdat?.pmnames?.[2] ?? mdat?.pmnames?.[0] ?? 'monster';
         await You(`consume ${tintxts[r].txt} ${meat}.`);
-        const conduct = game.u.uconduct ||= {};
-        conduct.food = (conduct.food | 0) + 1;
-        if (!vegan(mdat))
-            conduct.unvegan = (conduct.unvegan | 0) + 1;
-        if (!vegetarian(mdat))
-            await violated_vegetarian();
+        await eating_conducts(mdat);
         observe_object(tin);
         tin.known = 1;
-        tin = await costly_tin(tin, COST_OPEN);
+        tin = game.context.tin.tin = await costly_tin(tin, COST_OPEN);
 
-        /* Newt and ordinary corpse effects already live in cpostfx(). The
-           pre-consumption special species remain explicit there or below. */
-        await cpostfx(mnum);
+        await cprefx(mnum);
+        if (game.context.tin.tin)
+            await cpostfx(mnum);
         if (!game.context.tin.tin)
             return;
 

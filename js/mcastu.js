@@ -26,7 +26,7 @@ import { minuhpmax, adjuhploss, losestr, ACURR } from './attrib.js';
 import { healmon } from './mon.js';
 import { monstseesu, monstunseesu, nonliving, is_demon, type_is_pname, pronoun_gender, eyecount } from './mondata.js';
 import { Antimagic, Free_action, Fire_resistance, Cold_resistance, Shock_resistance, Unaware, Blind } from './youprop.js';
-import { pline_mon, verbalize, pline_The, set_msg_xy, You_feel } from './pline.js';
+import { pline_mon, verbalize, pline_The, set_msg_xy, You_feel, Norep } from './pline.js';
 import { MONSYMS } from './monst_data.js';
 import { KILLED_BY, DIED, EYE, A_DEX, TIMEOUT, MM_ANGRY, MM_NOMSG, PRONOUN_HALLU, ismnum, Mgender, Upolyd, plur, u_at, M_SEEN_REFL } from './const.js';
 import { rnd } from './rng.js';
@@ -42,10 +42,11 @@ import { canspotmon, canseemon, map_invisible,
 import { cansee, couldsee } from './vision.js';
 import { Monnam, mon_nam } from './do_name.js';
 import { You, You_hear, Your } from './pline.js';
-import { Hallucination, See_invisible, Invis, Deaf } from './youprop.js';
+import { Hallucination, See_invisible, Invis, Displaced, Deaf } from './youprop.js';
 import { perceives } from './mondata.js';
 import { body_part } from './polyself.js';
-import { helpless } from './monst.js';
+import { helpless, is_obj_mappear } from './monst.js';
+import { ONAMES } from './objects_data.js';
 import { nomul } from './hack.js';
 import { sgn } from './hacklib.js';
 
@@ -129,6 +130,28 @@ const mhe = (mtmp) => genders[pronoun_gender(mtmp, PRONOUN_HALLU)].he;
 const is_undirected_spell = (spellnum) =>
     !!(MCAST_DATA[spellnum][1] & MCF_INDIRECT);
 
+// src/mcastu.c:63 cursetxt()
+async function cursetxt(mtmp, undirected) {
+    if (canseemon(mtmp) && couldsee(mtmp.mx, mtmp.my)) {
+        let point_msg;
+        if (undirected)
+            point_msg = 'all around, then curses';
+        else if ((Invis() && !perceives(mtmp.data)
+                  && (mtmp.mux !== game.u.ux || mtmp.muy !== game.u.uy))
+                 || is_obj_mappear(game.youmonst, ONAMES.STRANGE_OBJECT)
+                 || game.u.uundetected)
+            point_msg = 'and curses in your general direction';
+        else if (Displaced() && (mtmp.mux !== game.u.ux || mtmp.muy !== game.u.uy))
+            point_msg = 'and curses at your displaced image';
+        else
+            point_msg = 'at you, then curses';
+        await pline_mon(mtmp, `${Monnam(mtmp)} points ${point_msg}.`);
+    } else if (!(game.moves % 4) || !rn2(4)) {
+        if (!Deaf())
+            await Norep('You hear a mumbled curse.');
+    }
+}
+
 function has_aggravatables() {
     return (game.level?.monsters || []).some(mon =>
         mon.mhp > 0
@@ -195,17 +218,6 @@ function seen_resistance_for(adtyp) {
     case ATTKS.AD_DRST: return M_SEEN_POISON;
     case ATTKS.AD_ACID: return M_SEEN_ACID;
     default: return 0;
-    }
-}
-
-async function cursetxt(mtmp, undirected) {
-    if (canseemon(mtmp) && couldsee(mtmp.mx, mtmp.my)) {
-        const point_msg = undirected ? 'all around, then curses'
-              : 'at you, then curses';
-        await pline(`${Monnam(mtmp)} points ${point_msg}.`);
-    } else if (!(game.moves % 4) || !rn2(4)) {
-        if (!Deaf())
-            await You_hear('a mumbled curse.');
     }
 }
 

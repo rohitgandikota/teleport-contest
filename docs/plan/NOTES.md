@@ -192,6 +192,14 @@ the recorded first frame — one step, then nothing.
 segments **only when `save/` is empty**, preserving bones, the scoreboard, and
 genuine save/restore pairs. Hit by `seed5002-wizard-coverage-pair`.
 
+The fatal-timer probe batch also showed why padding input with repeated `y`
+is unsafe for intent: it accepted death and then `Save bones?`. Later cases
+loaded bones despite using the same seed and rc. The initial RNG count changed
+from 2,194 to 260 in those specific probes. Corrected commands consume the tin
+and decline death. Check actual prompts and fresh-game startup before treating
+each segment as an independent scenario; do not change the recorder's intended
+bones persistence to conceal a faulty recipe.
+
 **With all of the above, the recorder is bit-exact on the whole corpus:
 `node scripts/verify-rerecord.mjs` reports 44/44 pass.** No normalisation is
 needed for most sessions; `verify-rerecord.mjs` elides only the build-date
@@ -1084,6 +1092,12 @@ ever disagree again, look for module state before looking at the port.
 `js/jsmain.js start()` now calls `reset_windows()`, `init_rect_globals()` and
 `reset_role_globals()`. All three existed already and none of them had a caller.
 **When you add module-scope state, add it to that list in the same commit.**
+
+The fatal-timer pass found another instance in maybe_cannibal's `ate_brains`.
+Domestic meat in one game suppressed a human-meat penalty at the same move in
+the next game. Single-case replay passed; the combined recipe failed. The
+guard now lives on `game`, so resetGame supplies a fresh zero value just as a
+new C process does. The nine-case first-bite fixture preserves that regression.
 
 ## A stub with the right name is worse than a missing function
 

@@ -6,7 +6,8 @@
 
 import { W_ARMOR, GETOBJ_SUGGEST, GETOBJ_EXCLUDE } from './const.js';
 import { obj_resists } from './zap.js';
-import { selftouch } from './trap.js';
+import { selftouch, instapetrify } from './trap.js';
+import { remove_worn_item } from './steal.js';
 import { shirt_simple_name, shield_simple_name, vtense } from './objnam.js';
 import { urgent_pline } from './display.js';
 import { artifact_light } from './artifact.js';
@@ -45,7 +46,8 @@ import { There, You, You_feel, You_cant, Your, impossible } from './pline.js';
 import { an, xname, doname, the, Tobjnam, gloves_simple_name,
          boots_simple_name, suit_simple_name, Yname2, makeplural,
          makesingular, otense, corpse_xname, CXN_NOCORPSE,
-         CXN_NOARTICLE, CXN_SINGULAR, thesimpleoname,
+         CXN_NOARTICLE, CXN_SINGULAR, CXN_ARTICLE, thesimpleoname,
+         simpleonames, killer_xname,
          ARM_SUIT, ARM_SHIELD, ARM_HELM, ARM_GLOVES, ARM_BOOTS,
          ARM_CLOAK, ARM_SHIRT } from './objnam.js';
 import { makeknown, observe_object } from './o_init.js';
@@ -60,7 +62,7 @@ import { tty_yn_function } from './tty/topl.js';
 import { ACURR, adjalign, change_luck, encumber_msg, Fast,
          Very_fast } from './attrib.js';
 import { paranoia_bits, PARANOID_REMOVE } from './options.js';
-import { Blind, Flying, Glib, Hallucination, Invis, Levitation,
+import { Blind, Flying, Glib, Hallucination, Invis, Levitation, Stone_resistance,
          Protection_from_shape_changers, See_invisible, Detect_monsters } from './youprop.js';
 import { body_part, change_sex, poly_gender } from './polyself.js';
 import { def_oc_syms } from './drawing_data.js';
@@ -2359,6 +2361,27 @@ async function slot_off(otmp) {
         await dragon_armor_handling(otmp, false);
     } else {
         setworn(null, mask); /* each C *_off handler clears its own slot */
+    }
+}
+
+// src/do_wear.c:608 wielding_corpse()
+export async function wielding_corpse(obj, how, voluntary) {
+    const u = game.u;
+    if (!obj || obj.otyp !== ONAMES.CORPSE || u.uarmg)
+        return;
+    if (obj !== u.uwep && (obj !== u.uswapwep || !u.twoweap))
+        return;
+
+    if (touch_petrifies(game.mons[obj.corpsenm]) && !Stone_resistance()) {
+        await You(`${how && is_gloves(how) ? 'now wield' : 'are wielding'} ${
+            corpse_xname(obj, null, CXN_ARTICLE)} in your bare ${makeplural(body_part(HAND))}.`);
+        const hbuf = how
+            ? `${voluntary ? 'removing' : 'losing'} ${is_gloves(how)
+                ? gloves_simple_name(how) : simpleonames(how).replace('set of ', '')}`
+            : 'resistance timing out';
+        await instapetrify(`${hbuf} while wielding ${killer_xname(obj)}`);
+        if (!Stone_resistance())
+            await remove_worn_item(obj, false);
     }
 }
 

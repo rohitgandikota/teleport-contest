@@ -111,18 +111,13 @@ export const enc_stat = [
     "Strained", "Overtaxed", "Overloaded"
 ];
 
-// src/botl.c:164 bot2str() condition tail — worst ones first.
+// src/botl.c:781 conditions[]/:1333 cond_cmp(), tty/wintty.c:5150.
+// Conditions follow hunger and capacity, sorted by rank then useroption.
 export function bot_conditions() {
     const u = game.u;
     const intr = u.intrinsic || {};
     const props = u.uprops || {};
     let cond = '';
-    if (props.STONED) cond += ' Stone';
-    if (props.SLIMED) cond += ' Slime';
-    if (intr.HStrangled) cond += ' Strngl';
-    const sick_type = game._deferred_status_sick_type ?? u.usick_type;
-    if (sick_type & SICK_VOMITABLE) cond += ' FoodPois';
-    if (sick_type & SICK_NONVOMITABLE) cond += ' TermIll';
     if (u.uhs != null && u.uhs !== NOT_HUNGRY)
         cond += ' ' + hu_stat[u.uhs].trimEnd();
     /* encumber_msg() prints before botl is marked dirty.  The tty therefore
@@ -133,20 +128,27 @@ export function bot_conditions() {
         ? game._deferred_status_capacity
         : game._encumber_status_stale ? game.oldcap : near_capacity();
     if (cap > UNENCUMBERED) cond += ' ' + enc_stat[cap];
+    if (intr.HStrangled) cond += ' Strngl';
+    const sick_type = game._deferred_status_sick_type ?? u.usick_type;
+    if (sick_type & SICK_VOMITABLE) cond += ' FoodPois';
+    if (props.SLIMED) cond += ' Slime';
+    if (props.STONED) cond += ' Stone';
+    if (sick_type & SICK_NONVOMITABLE) cond += ' TermIll';
+    if (u.utrap && u.utraptype === TT_LAVA) cond += ' InLava';
     const blind = typeof game._deferred_status_blind === 'boolean'
         ? game._deferred_status_blind : Blind();
     if (blind)
         cond += ' Blind';
     if (intr.HConfusion || props.CONFUSION) cond += ' Conf';
     if (intr.HDeaf || props.DEAF) cond += ' Deaf';
+    if (!(props.LEVITATION || intr.HLevitation)
+        && (props.FLYING || intr.HFlying
+            || (Upolyd(u) && (game.youmonst.data.mflags1 & MFLAGS.M1_FLY))))
+        cond += ' Fly';
     if ((intr.HHallucination || props.HALLUC) && !props.HALLUC_RES)
         cond += ' Hallu';
     if (props.LEVITATION || intr.HLevitation) cond += ' Lev';
-    else if (props.FLYING || intr.HFlying
-             || (Upolyd(u) && (game.youmonst.data.mflags1 & MFLAGS.M1_FLY)))
-        cond += ' Fly';
     if (u.usteed) cond += ' Ride';
     if (intr.HStun || props.STUNNED) cond += ' Stun';
-    if (u.utrap && u.utraptype === TT_LAVA) cond += ' InLava';
     return cond;
 }

@@ -12,9 +12,78 @@ Continue the authorized work; do not mark it complete or recreate it.
 Current-corpus success is not the stopping criterion. Track unreviewed,
 untested, missing, and unreachable source paths explicitly.
 
-### Current checkpoint: gas clouds and hero engulfing
+### Current checkpoint: fatal timers and first-bite effects
 
-The gas-cloud pass is verified and awaiting a local commit. It ports region
+The final runtime is verified and awaiting a local commit. It ports full
+cursetxt, domove_fight_empty, cprefx, eating_dangerous_corpse and the control
+flow of wielding_corpse. It connects first-bite effects to meals and tins,
+fixes start_eating's nomovemsg guards, adds ACID_RES/STONE_RES expiry,
+use_misc's precheck entry and C's ordering for existing displayed conditions.
+maybe_cannibal's guard now resets with each game. The source review and
+explicit limits are in [fatal-timers-audit.md](fatal-timers-audit.md).
+Frozen files and the original C recorder are unchanged. No push is authorized.
+
+Five permanent recipes hold 34 C cases and 35 assertions: energy-drain (6),
+fatal-countdowns (6), fatal-tin-interventions (10), slimicide (3), and
+first-bite-effects (9). All match 11,473 screens/cursors, 98,777 RNG and
+178 animations. Four energy cases enter xdrainenergym; two group cases earn
+curse evidence only. Chameleon meat becomes marilith, then slime, and is
+credited as an attempted cure. Green-slime tins cannot supply that meat;
+the correct first-bite test uses a glob. All five final native recordings
+are exact. The ledger is 1,937/1,937 (99 covered, seven partial categories).
+
+Final verification: all 524 fixtures pass, from the unchanged runtime in
+.cache/fatal-timers/regression-second.log (519) and permanent-score.log (5).
+Public: 44 fixtures, 11,405 screens/cursors, 792,838 RNG, 1,462/1,483
+animations (21 prior misses). Supplemental: 480 fixtures, 194,507
+screens/cursors, 8,150,248 RNG and 21,651 animations all match. Fuzz remains
+101/102 with its known fixed-date miss, all 491,759 RNG and 14,261/14,262
+screens. All 49 hang checks, 80 role controls, 16 tool tests, source audit
+(0/268), the new state gate and eight related state gates pass. Job exits
+have been collected; negative-state correctly exits one. totals.json holds
+the exact corpus totals.
+
+The state gate checks 34 replays plus delayed-killer removal, protection
+while eating a dangerous carried/floor corpse, interruption/inaccessibility
+and stale invisible markers. Disabling the one-turn stone-resistance meal
+extension still passes all five visible fixtures, but fails the source
+control at zero versus one (negative-score/negative-state). Baseline
+08b8d021 fails four of five: 1,934 screens, 72 cursors, 32,868 positional
+RNG entries and 61 animations. Slimicide was already ported and now has
+native execution evidence. Both loaders run in scoring workers through
+NODE_OPTIONS; no production file was modified for these controls.
+
+The native union is 54,671/108,268 outcomes and 4,347/5,491 entered records,
+adding 140 outcomes and six records. .cache/fatal-timers/remaining.json
+tracks cprefx 24/40, Popeye 15/28, xdrainenergym 3/8, slimed_to_death 8/10,
+eating_dangerous_corpse 1/14, wielding_corpse 8/22 and empty attacks 32/62.
+Constructed controls earn no native coverage. The whole code and Lua remain
+far from certified.
+
+Diagnosis notes: the first 519 sweep's Knight regression used 'invisible'
+instead of this port's actual glyph kind 'invis'; both guards were fixed.
+Tin setup needs inventory b after the consumed genocide scroll, Ctrl-I/b/
+Enter for identification, and correctly timed More acknowledgments. Initial
+tins did not open. rescue-third uses 6b and a dagger to reach a helpful tin
+at stiffening. The first first-bite batch accepted death and bones, causing
+later segments to load a bones level. Only first-bite-second is valid:
+all nine cases start with 2,194 RNG entries and decline death. Its combined
+replay exposed the static cannibal guard leak which isolated replays missed.
+Do not repeat these invalid setups or change the recorder to conceal them.
+
+Next: finish final source/diff bookkeeping and commit locally, then create
+native probes for resistance expiring during dangerous meals, glove/armor
+removal callers and remaining first-bite branches. Bounded death-reason
+formatting is also not certified. Full nh_timeout, use_misc, mondead,
+mon_break_armor, display and Lua remain later source work. Continue the
+full-port goal without stopping at this checkpoint or recreating it.
+
+Publishing remains blocked on the unanswered authorization question. Do not
+retry a push. Local source work continues.
+
+### Previous verified checkpoint: gas clouds and hero engulfing
+
+The gas-cloud pass is committed locally as 08b8d021. It ports region
 construction, membership, gas callbacks, movement hooks, hazard confirmation,
 cloud display, hero gulpum/explum, digestion completion and reached fatal
 countdown/survival paths. The full source bodies are documented in
@@ -67,18 +136,6 @@ remaining.json show the gaps. gulpum is 55/82, inside_gas_cloud 20/22,
 stoned_dialogue 18/28, slime_dialogue 18/30, slimed_to_death 3/10, Popeye 1/28,
 xdrainenergym 0/8 and worm_nomove 0/4. Constructed controls earn no native
 coverage. The larger original code and Lua are far from certified.
-
-Next pass already has ignored inputs in .cache/fatal-timers/initial.input.json:
-six corrected gnomish-wizard energy probes and eight fatal-countdown/tin/
-amulet probes. The initial recording lacked version:5 and was rejected;
-initial-record-second is the valid recording attempt. Validate actual native
-intent, then score and trace first differences. Focus on energy drain and
-tin interventions, slimicide and remaining timeout arms. Full mondead,
-mon_break_armor, display suppression and surrounding modules remain later
-source work. Do not stop at this checkpoint or recreate the goal.
-
-Publishing remains blocked on the unanswered authorization question. Do not
-retry a push. Local source work continues.
 
 ### Previous verified checkpoint: engulfing
 

@@ -2091,6 +2091,9 @@ const PLNMSG_enum = -2;
 // drawing, consumes one potion, and spends the monster's action.
 export async function use_misc(mtmp) {
     const obj = game.m?.misc || null;
+    const i = await precheck(mtmp, obj);
+    if (i !== 0)
+        return i;
 
     switch (game.m?.has_misc || 0) {
     case MUSE_POT_GAIN_LEVEL: {

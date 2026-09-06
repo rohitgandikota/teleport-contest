@@ -2945,6 +2945,7 @@ export function magic_map_background(x, y, show) {
     if (show && tg)
         show_glyph_cell(x, y, tg.ch, tg.color, tg.dec, 0,
                         { kind: 'cmap', cmap: tg.cmap });
+    update_lastseentyp(x, y); /* src/display.c:257, even when not displayed */
 }
 
 // src/region.c:732 show_region() — paint the region's cloud glyph over the

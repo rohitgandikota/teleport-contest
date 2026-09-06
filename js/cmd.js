@@ -917,10 +917,8 @@ export async function domonability() {
     return ECMD_OK;
 }
 
-// The individual commands are not ported. What IS ported is reading the whole
-// name off the input, because a session that issues one and does not have it
-// consumed runs every later keystroke against the wrong command.
-async function enter_explore_mode() {
+// src/cmd.c enter_explore_mode(), also used for a deferred restore request.
+export async function enter_explore_mode() {
     if (game.discover) {
         await You('are already in explore mode.');
         return ECMD_OK;

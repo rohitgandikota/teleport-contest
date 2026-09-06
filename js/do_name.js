@@ -728,6 +728,10 @@ export async function donamelevel() {
         annotations[key] = annotation;
     else
         delete annotations[key];
+    // src/dungeon.c:2556 query_annotation(), lookup sees the change immediately.
+    const mseen = game.mapseen?.[key];
+    if (mseen)
+        mseen.custom = annotation || null;
     return ECMD_OK;
 }
 

@@ -1077,6 +1077,8 @@ export async function goto_level(newlevel, at_stairs, falling, portal) {
         game.level._saved_dndest = { ...(game.dndest || {}) };
         (game.saved_levels ||= new Map())
             .set(`${game.u.uz.dnum}:${game.u.uz.dlevel}`, game.level);
+        (game.visited_ledgers ||= new Set())
+            .add(`${game.u.uz.dnum}:${game.u.uz.dlevel}`);
         /* src/save.c savelev() — leaving a Plane of Water/Air parks the
            bubble/cloud list with the level (and frees the live copy) */
         {
@@ -1191,8 +1193,6 @@ export async function goto_level(newlevel, at_stairs, falling, portal) {
         }
     } else {
         familiar_level = false;         /* src/do.c "new" is the inverse */
-        game.visited_ledgers.add(ledger);
-
         /* entering this level for the first time; make it now */
         await mklev_fn();
     }
@@ -1520,6 +1520,12 @@ export async function goto_level(newlevel, at_stairs, falling, portal) {
 
     /* src/do.c:1967 — reset u.uz0 */
     game.u.uz0 = { dnum: game.u.uz.dnum, dlevel: game.u.uz.dlevel };
+    /* src/do.c:1969 save_currentstate(), a checkpoint marks VISITED. */
+    {
+        const { boolean_option } = await import('./options.js');
+        if (boolean_option('checkpoint'))
+            game.visited_ledgers.add(ledger);
+    }
 
     /* src/do.c:1974, a saved overview annotation is repeated on arrival,
        before room messages and the automatic pickup pass. */

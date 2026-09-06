@@ -12,31 +12,76 @@ Continue the authorized work; do not mark it complete or recreate it.
 Current-corpus success is not the stopping criterion. Track unreviewed,
 untested, missing, and unreachable source paths explicitly.
 
-### Active pass: named-level teleporting
+### Active pass: named-level teleporting and map knowledge
 
-Door-magic pass complete and ready for local commit, HEAD6a324980 before it.
-All jobs collected. No active scorer/recorder. No C/frozen edits. Nine runtime
-modules botl,do_wear,display,getpos,jsmain,monmove,mon,options,pline plus state
-and six permanent recipes. Local commit next, then implement named-level gap.
-No push; publication authorization remains unanswered.
+HEADb6c8181b. Work .cache/named-level. Fourteen runtime modules changed:
+allmain,cmd,detect,display,do,do_name,dungeon,jsmain,monmove,options,questpgr,
+save,teleport,unixmain. No C/frozen edits. Official promoter RAN ONCE.
+Five permanent recipes,103 native cases:level-names32,level-annotations7,
+level-visits24,map-knowledge30,level-name-save10. Official recorder and
+independent input assertions pass. 5/5perfect:30553screens/cursors445313RNG,
+noanimations. Exact instrumented C repeat5/5. Cunion +120/+1 →57076/108268,
+4404/5491; newfunctiontunesuffix. Remaining.json preserves exactgaps.
 
-Next work .cache/named-level. Full C lev_by_name, find_branch, find_level,
-find_mapseen_by_str and level_tele read. Notes in source-notes.md. Eighteen
-native name probes recorded and inspected: aliases succeed, branches land at
-the current-side connection, minetn inaccessible from main, Minetown invalid.
-Baseline fails1650screens1509cursors115758positionalRNG. Duplicate case labels
-rogue/Rogue need correction before promotion. C name resolver has annotation
-priority, article/suffix cleanup, hell/gehennom/delphi aliases, same-branch or
-main/Gehennom guards, VISITED checks and branch endpoints. JS lev_by_name stub
-and find_branch generation-only. No next-pass runtime implementation yet.
-C VISITED is set by savelev on departure, not by generation/current-level
-presence. JS visited_ledgers stores incoming STRING keys, so cannot assume
-it matches this C bit. Inspect saved_levels and regeneration before reusing.
-Donamelevel stores level_annotations immediately; recalc_mapseen copies custom
-later. Preserve immediate annotation matching and sorted C mapseen priority.
-Larger level_tele has missing ten-invalid fallback, Nowhere, single-level,
-buried-ball, above-dungeon, quest and invocation paths. Full body read.
-Continue until faithful port, not just these tests. Do not mark goal complete.
+Full C lev_by_name/find_branch/find_level/find_mapseen_by_str,savelev/core,
+dosave0,save_currentstate,query_annotation/donamelevel,init_mapseen,
+update_lastseentyp,count_feat_lastseentyp,recalc_mapseen,overviewhelpers,
+show_map_spot/do_mapping,magic_map_background,allwelcome,role_init,
+restgamestate/dorecover,unixmainrestoresite,enter_explore_mode,set_playmode,
+delete_savefile read. Largerparent functions remainpartial. INSURANCEenabled,
+checkpointdefaultsOn: savelevsetsVISITED whenwritten. Startup/arrivalmark
+onlyifcheckpoint; departure/manualsavemarkalways. Changingcheckpointdoesn't
+saveimmediately. State usesvisited_ledgersSTRINGkeys, serializesSet.
+Resolver customprioritybeforearticle/suffixaliases, sortedduplicates,
+specialnamebranchguards, main/Gehennominterchange, bothendpointvisits.
+Recalcusesrememberedtypes,cap3,altaralignment,room/subroomknowledge/attendance,
+flagsandbonesknowledge. Newguardhandlesmissingshopkeeper. Overviewautomatic
+annotations/deity/templeandaltar/Questdisplaydepth; reststillpartial.
+
+RestoreCtestsfoundmissingwelcomeannotation,keep-saveprompt,role_init RNG,
+andstartupdebugoverride. Fixed. Role_init genderdrawsrunbutSAVEDquestgenders
+win, matchinglaterCq_scoreload. Debug/exploresavesretaineduntilprompt, normal
+savesdeletedinrecover. Deferredexploreconfirmationwiredtoexistingcommand.
+Ckeepcontrol savesBasecamp,restoredebugkeepy→editTemporarycamp,restoreexplore
+fromnormalrc seesBasecampagain→deleten→freshnormalboot. Savedvisitedrestriction
+actuallytestedintheexplorerestore. Originalsave2 restoredebug isoverridecontrol.
+Two morenormal-savepairs testdeferredexploreyes/no. Allpass.
+
+Native103statepass:39inventory180features5restore65named-decisionobservations plus88
+constructedgroups. Construction corrections: actualvisionusesviz_array,
+roomrtypeOROOM differsfromterrainROOM. Earlierstatefailuresforthoseweretest
+setupmistakes. Cmissingattendantguardwasrealportgap,fixedbeforefinalchecks.
+All12mutantsfailstate. Initialcheckpointmutantpasseduntilnativeaccepted/rejected
+namechecksaddedat65actualpromptboundaries. Initialsavedgendermutantpassedbecause
+5nativefreshseedscoincidentallykeptgender;2constructedbothgendercontrolsnowcatch.
+Nativeoutput missesfourmutants:uncappedfeatures,no-mapping-rooms,no-attendant-guard,
+randomized-saved-genders. MissingattendantstatefailsTypeError,othersassertions.
+Allnative/Baselinefailureswithout runtimeexception. Exact14b6runtimebaseline
+fails5/5,3452screens3150cursors338017positionalRNG. Neverreadbaseline.mjswith
+cat/sed (it embedsfullsource). collect-results.mjs writesboundedtotals.
+
+ALL JOBSfinishedcollected. Finalfull583/583:742406screens/cursors13426403RNG,
+29919/29940anim (21oldpublicmisses). Fuzz101/102knownfixeddateall491759RNG,
+14261/14262screens75/76anim. Fresh80over13rolespass. Sixteenrelatedstate,
+49hang,14tooltests,source0/268pass. Initialledgerfailedunknowntaglevel.special.
+Corrected3recipesandofficialrerecorded. SHA256ofeachentiresegmentsarrayunchanged,
+all5independentassertion/integritychecks pass. ledger-final3619/3619,99covered
+7partial. verification-exits.json preservesinitialmetadatafailureandfinalpass.
+Audit docs/plan/level-knowledge-audit.md,README,M8,M11,M12,gameplay-gapupdated.
+Finalruntime diffreview anddiff-checkdone. Onlytestunusedimportremovedafterchecks;
+syntaxchecknext. Needlocalcommitthencontinuation. No push; publicationpermission
+remainsunanswered. Do NOTfinal-checkpoint. Nextsourcequery_annotation,dooverview,
+show_overviewselection alreadyre-readfull C: m-prefix useswhy=-1/PICK_ONE,ledger+1
+menuidentifier,selectedlevprompt withdescribe_level. ExistingJSquery onlycurrent,
+ignoresmenu_requested. Fullgoalcontinues;fullportnotcomplete.
+
+Probevalidity: usefinalcachefiles. Excludeannotations7warningonly. minendcorrect
+internalname. Defaultcurrentlabelscheckpoint-current. Gravecandidates1/2/4
+wishesproduced0/1/2graves; labelsgrave-wish-at-sites. Four-graves-on-flooruses
+fountain→floor→grave andCManygraves. Checkpointmenu exactsearch' checkpoint'
+avoidsidlecheckpoint. QuestnamesresolvebutCforceblocksdescent. Assertionsat
+FINALrequestboundary, notsetuparrival. MainMinesbranchparent2,childentry3;
+VladaliasesTower3depth34. Neveruseindependentsegmentreplayforsavepairs.
 
 ### Checkpoint: magical doors and message locations
 
@@ -63,7 +108,7 @@ Native northmonsterpositivesonly;other21directionsdoorcontrols. HP24/53,
 51/60,31/42stunned allsurvive. No native death. Distant3north/3nmode and
 identifiedEyesproperarticle observed. Earlierinvalidtrap/Monk/menu sets
 excluded. Correct land mine trap/bear trap trap,fulloptions,minimalMonk.
-No promoter rerun. Audit/plans/diffreview done, local commit remains next.
+No promoter rerun. Audit/plans/diffreview done; committed locally b6c8181b.
 
 ### Checkpoint: lock-picking occupations
 

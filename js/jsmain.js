@@ -15,7 +15,7 @@ import { initRng, enableRngLog, getRngLog } from './rng.js';
 import { pushKey, nhgetch } from './input.js';
 import { newgame, newgame_moveloop_preamble, moveloop_core,
          maybe_do_tutorial } from './allmain.js';
-import { wd_message } from './unixmain.js';
+import { wd_message, restore_savefile_prompt } from './unixmain.js';
 import { parseNethackrc, optValue, set_fruit_name, set_menuobjsyms_flags } from './options.js';
 import { assign_graphics } from './symbols.js';
 import { flush_screen } from './display.js';
@@ -223,6 +223,8 @@ export class NethackGame {
         /* sys/unix/unixmain.c:317 — "newgame(); wd_message();": the play-mode
            notice lands between welcome() and the tutorial query. */
         await wd_message();
+        if (resuming)
+            await restore_savefile_prompt();
 
         /* src/allmain.c moveloop() enters its preamble after unixmain's
            wd_message(). Initial pickup and its engraving feedback therefore

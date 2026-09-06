@@ -36,13 +36,20 @@ in `storage`; nothing else needs to cross the boundary.
 
 ### 11.2 Save file format
 
+- [x] September level-knowledge pass: saved VISITED flags, checkpoint behavior,
+      annotation reminders, keep/delete choices, startup debug override and
+      deferred explore confirmation. Ten new native save segments and shared
+      storage checks pass. See [level-knowledge-audit.md](level-knowledge-audit.md).
+
 We are not required to match C's save file bytes — only its behaviour. But the
 save/restore cycle must reconstruct state exactly enough that the RNG stream and
 screens after a restore match.
 
 - [ ] Port `src/save.c` and `src/restore.c` structurally, so that what is saved
       and what is restored matches C field for field
-- [ ] The RNG state itself must survive save and restore correctly
+- [x] Restore uses the new process's RNG seed. It reruns role initialization
+      and Lua initialization, while saved quest genders overwrite the temporary
+      draws. Native restore traces and both-gender state controls check this.
 - [ ] Level files: NetHack saves each visited level separately and reloads on
       revisit. Port that, since it affects monster and object state on return
 

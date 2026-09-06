@@ -14,18 +14,19 @@ sit on the side we cannot measure.
 
 ## September source-guided continuation
 
-The magical-door pass adds 174 native scenarios and 72 constructed state
-groups. All ten deliberate regressions fail state checks. Missing monster
-trap knowledge still survives all six native fixtures, so native follow-up
-coverage remains open. See [door-magic-audit.md](door-magic-audit.md).
+The level-knowledge pass adds 103 native scenarios and 88 constructed state
+groups. All twelve deliberate regressions fail state checks. Four survive the
+new native comparisons: uncapped feature counts, missing room discovery,
+missing shopkeeper guards and discarded saved quest genders. See
+[level-knowledge-audit.md](level-knowledge-audit.md).
 
-The final regression suite passes 578/578 fixtures, with all 711,853 screens
-and cursors and 12,981,090 RNG calls matching. C execution adds 143 outcomes
-and two entered records, reaching 56,956/108,268 and 4,403/5,491. Those are
+The final regression suite passes 583/583 fixtures, with all 742,406 screens
+and cursors and 13,426,403 RNG calls matching. C execution adds 120 outcomes
+and one entered record, reaching 57,076/108,268 and 4,404/5,491. Those are
 coverage measurements, not a percentage of gameplay implemented. The full
 port remains the active goal. The 21 existing public animation mismatches
-and known fixed-date fuzz screen difference remain explicit. Named-level
-teleporting is the next confirmed source gap.
+and known fixed-date fuzz screen difference remain explicit. Full overview,
+annotation queries, teleport bounds and restore lifecycle remain open.
 
 ## 12.1 The overfit audit
 

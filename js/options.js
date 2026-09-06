@@ -501,6 +501,7 @@ export function set_playmode() {
         game.plname = 'wizard';
         game.plnamelen = game.plname.length;
         game.discover = !game.wizard;
+        (game.iflags ||= {}).deferred_X = false;
     }
 }
 

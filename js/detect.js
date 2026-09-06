@@ -10,6 +10,8 @@ import { def_char_to_objclass } from './sp_lev.js';
 import { def_char_is_furniture, def_char_to_monclass } from './drawing.js';
 import { tty_yn_function } from './tty/topl.js';
 import { losehp } from './hack.js';
+import { room_discovered } from './hack.js';
+import { ROOMOFFSET } from './const.js';
 import { consume_obj_charge } from './apply.js';
 import { is_quest_artifact } from './questpgr.js';
 import { spec_ability, SPFX_SEARCH } from './artifact.js';
@@ -628,6 +630,8 @@ export function show_map_spot(x, y, cnf) {
            object glyphs (magic_map_background skips them) and newsym shows
            remembered glyphs for unseen cells */
     }
+    if (!cnf && loc.roomno >= ROOMOFFSET)
+        room_discovered(loc.roomno - ROOMOFFSET);
 }
 
 // src/detect.c:2124 skip_premap_detect() — areas outside the Sokoban map:

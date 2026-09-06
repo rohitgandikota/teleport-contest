@@ -68,7 +68,7 @@ import { is_demon, is_lord, is_prince, is_covetous,
          passes_walls, can_teleport } from './mondata.js';
 import { You, You_feel, You_cant } from './pline.js';
 import { getlin, preparePunishmentMove, finishPunishmentMove } from './cmd.js';
-import { get_level, find_hell, depth, print_dungeon,
+import { get_level, find_hell, depth, print_dungeon, lev_by_name,
          dunlevs_in_dungeon } from './dungeon.js';
 import { rnd } from './rng.js';
 import { Is_knox_level } from './const.js';
@@ -395,15 +395,6 @@ export async function level_tele() {
     schedule_goto(newlevel, UTOTYPE_NONE, null,
                   game.flags?.verbose
                       ? 'You materialize on a different level!' : null);
-}
-
-// src/dungeon.c lev_by_name() — a level's name ("medusa", "castle") to its
-// depth. The name table needs the dungeon overview data; nothing that reaches
-// here today passes a name.
-function lev_by_name(nam) {
-    if (nam && !/^[-0-9]/.test(nam))
-        note_unported_tele('level_tele:lev_by_name');
-    return 0;
 }
 
 // src/apply.c next_to_u(), loaded lazily to avoid the apply/monster cycle.

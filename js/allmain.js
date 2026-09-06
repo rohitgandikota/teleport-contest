@@ -70,7 +70,7 @@ import { ROLE_GENDMASK, ROLE_MALE, ROLE_FEMALE, A_CURRENT, In_endgame,
          Upolyd, Is_waterlevel, Is_airlevel, FROMFORM, TT_LAVA, NON_PM }
          from './const.js';
 import { mklev, l_nhcore_init, u_on_upstairs } from './mklev.js';
-import { rhack, domove } from './cmd.js';
+import { rhack, domove, enter_explore_mode } from './cmd.js';
 import { clear_bypasses } from './worn.js';
 import { lookaround, end_running, unmul, nomul,
          monster_nearby, in_rooms, runmode_delay_output } from './hack.js';
@@ -132,6 +132,9 @@ import { pickup } from './pickup.js';
 // welcome line is the one waiting at --More--, then the engraving is shown.
 export async function newgame_moveloop_preamble(resuming = false) {
     const g = game;
+
+    if (resuming && g.iflags.deferred_X)
+        await enter_explore_mode();
 
     /* side-effects from the real world */
     g.flags.moonphase = phase_of_the_moon();
@@ -208,8 +211,7 @@ export async function newgame() {
 
     /* sys/unix/unixmain.c — after the name is final, try to restore a
        saved game. A successful recover reinstalls the whole game state;
-       the only draws are nhlib.lua's align shuffle from the fresh Lua
-       core, and play continues where the save left off. */
+       role initialization and the fresh Lua core draw before play resumes. */
     {
         const { dorecover } = await import('./save.js');
         if (dorecover()) {
@@ -225,6 +227,9 @@ export async function newgame() {
                 await pline(`${Hello(null)} ${g.plname}, the ${g.urace.adj} `
                             + `${role_name}, welcome back to NetHack!`);
             }
+            // src/allmain.c:927 welcome(FALSE), remind after the greeting.
+            const { print_level_annotation } = await import('./dungeon.js');
+            await print_level_annotation();
             return true;
         }
     }
@@ -468,6 +473,13 @@ export async function newgame() {
        overwrote it with male because the rc names no gender. */
     g.flags.female = (g.flags.initgend === 1);
     g.plname = g.plname || 'Contestant';
+
+    /* src/allmain.c:838 save_currentstate(), INSURANCE is enabled in C.
+       Track its VISITED bit separately from the parked level map. */
+    g.visited_ledgers = new Set();
+    const { boolean_option } = await import('./options.js');
+    if (boolean_option('checkpoint'))
+        g.visited_ledgers.add(`${g.u.uz.dnum}:${g.u.uz.dlevel}`);
 
     // src/allmain.c welcome() — the new-game branch. The alignment, the race
     // adjective and the role name were all hardcoded here ("neutral", "human",

@@ -21,6 +21,10 @@ The September source audit and remaining decisions are tracked in
 
 ### 8.1 Object data and naming
 
+- [x] Immediate level annotation state now agrees with named teleport lookup
+      and save/restore. The full level query and overview selection remain
+      open. See [level-knowledge-audit.md](level-knowledge-audit.md) for the
+      103 native cases, state checks and source gaps.
 - [x] September name editing pass: shared name accessors, C cancellation versus
       all-space removal, whitespace folding and the 62-character stored limit.
       Six C controls and the death-name restoration state gate pass. Artifact

@@ -260,7 +260,7 @@ export function histemple_at(priest, x, y) {
 }
 
 // src/priest.c findpriest()
-function findpriest(roomno) {
+export function findpriest(roomno) {
     for (const mtmp of game.level.monsters || []) {
         if (DEADMONSTER(mtmp))
             continue;

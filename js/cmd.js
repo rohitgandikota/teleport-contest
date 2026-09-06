@@ -3956,6 +3956,36 @@ function cmdbind_table() {
     binds.set(0x80 | 'O'.charCodeAt(0), by_txt('overview'));
     binds.set(0x80 | '2'.charCodeAt(0), by_txt('twoweapon'));
     binds.set(0x80 | 'N'.charCodeAt(0), by_txt('name'));
+    /* src/cmd.c:3462 reset_commands(): the direction characters (and their
+       run/rush forms) replace whatever commands_init() had on those keys,
+       so cmdbind_get('l') is "moveeast" without number_pad and "loot"
+       with it. swap_yz and the phone layout are not modelled. */
+    {
+        const num_pad = !!game.iflags?.num_pad;
+        const dirchars = num_pad ? '47896321' : 'hykulnjb';
+        for (let i = 0; i < 8; i++) {
+            const di = dirchars.charCodeAt(i);
+            const up = String.fromCharCode(di).toUpperCase().charCodeAt(0);
+            /* back up the commands & keys overwritten by new movement keys */
+            binds.delete(di);
+            if (!num_pad) {
+                binds.delete(up);
+                binds.delete(di & 0x1f);
+            } else {
+                binds.delete(di | 0x80);
+            }
+            /* bind the new keys to movement commands */
+            binds.set(di, by_txt(move_funcs[i][0]));
+            if (!num_pad) {
+                binds.set(up, by_txt(move_funcs[i][1]));
+                binds.set(di & 0x1f, by_txt(move_funcs[i][2]));
+            } else {
+                /* M(number) works when altmeta is on */
+                binds.set(di | 0x80, by_txt(move_funcs[i][1]));
+                /* can't bind highc() or C() of digits. just use the 5 prefix. */
+            }
+        }
+    }
     return binds;
 }
 
@@ -4110,18 +4140,37 @@ export async function dokeylist() {
 // src/cmd.c key2extcmddesc() — what a key does, for dowhatdoes ('?f').
 export function key2extcmddesc(key) {
     const ch = String.fromCharCode(key & 0x7f);
-    /* movement commands take precedence over the binding table */
-    if (!(key & 0x80)) {
-        if ('hjklyubn'.includes(ch))
-            return 'move'; /* "move or attack"? */
-        if ('HJKLYUBN'.includes(ch))
-            return 'run';
+    const num_pad = !!game.iflags?.num_pad;
+    let key2cmdbuf = '';
+    /* need to check for movement commands before checking the extended
+       commands table because it contains entries for number_pad commands
+       that match !number_pad movement (like 'j' for "jump") */
+    const k = String.fromCharCode(key);
+    if (movecmd(k, MV_WALK))
+        key2cmdbuf = 'move'; /* "move or attack"? */
+    else if (movecmd(k, MV_RUSH))
+        key2cmdbuf = 'rush';
+    else if (movecmd(k, MV_RUN))
+        key2cmdbuf = 'run';
+    if ((ch >= '0' && ch <= '9' && !(key & 0x80))
+        || (num_pad && ch >= '0' && ch <= '9')) {
+        key2cmdbuf = '';
+        if (!num_pad)
+            key2cmdbuf = 'start of, or continuation of, a count';
+        else if (key === '5'.charCodeAt(0) || key === (0x80 | '5'.charCodeAt(0)))
+            key2cmdbuf = `${(!!game.iflags?.pcHack_compat ^ (key === (0x80 | '5'.charCodeAt(0))))
+                            ? 'run' : 'rush'} prefix`;
+        else if (key === '0'.charCodeAt(0)
+                 || (game.iflags?.pcHack_compat && key === (0x80 | '0'.charCodeAt(0))))
+            key2cmdbuf = "synonym for 'i'";
+        if (key2cmdbuf)
+            return key2cmdbuf;
     }
-    if (ch >= '0' && ch <= '9')
-        return 'start of, or continuation of, a count';
+    /* check prefixes before regular commands; includes ^A pseudo-command */
     for (const mk of misc_keys)
         if (key === mk.key)
             return mk.desc;
+    /* finally, check whether 'key' is a command */
     const cmd = cmdbind_table().get(key);
     if (cmd && cmd.ef_txt) {
         let buf = `${cmd.ef_desc} (#${cmd.ef_txt})`;
@@ -4133,7 +4182,7 @@ export function key2extcmddesc(key) {
                 + 'non-movement prefix:' + buf.slice(7);
         return buf;
     }
-    return null;
+    return key2cmdbuf || null;
 }
 
 // src/cmd.c:5655 paranoid_query(), a yes/no paranoid_ynq().

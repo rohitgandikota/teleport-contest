@@ -15,9 +15,9 @@
 
 import { upstart } from './do_name.js';
 import { monexplain } from './drawing_data.js';
-import { is_rider } from './mondata.js';
+import { is_rider, haseyes } from './mondata.js';
 import { NUMMONS, PMNAMES } from './monst_data.js';
-import { VANQ_MLVL_MNDX, VANQ_MSTR_MNDX, VANQ_ALPHA_SEP, VANQ_ALPHA_MIX, VANQ_MCLS_HTOL, VANQ_MCLS_LTOH, VANQ_COUNT_H_L, VANQ_COUNT_L_H, MENU_BEHAVE_STANDARD, MENU_ITEMFLAGS_SELECTED, MENU_ITEMFLAGS_NONE, PICK_ONE, ECMD_OK, LOW_PM, NEUTRAL, G_UNIQ, G_GENOD, G_GONE, G_EXTINCT, LL_ACHIEVE, LL_UMONST, LL_MINORAC, LL_SPOILER, LL_DUMP, Is_rogue_level } from './const.js';
+import { VANQ_MLVL_MNDX, VANQ_MSTR_MNDX, VANQ_ALPHA_SEP, VANQ_ALPHA_MIX, VANQ_MCLS_HTOL, VANQ_MCLS_LTOH, VANQ_COUNT_H_L, VANQ_COUNT_L_H, MENU_BEHAVE_STANDARD, MENU_ITEMFLAGS_SELECTED, MENU_ITEMFLAGS_NONE, PICK_ONE, ECMD_OK, LOW_PM, NEUTRAL, G_UNIQ, G_GENOD, G_GONE, G_EXTINCT, LL_ACHIEVE, LL_UMONST, LL_MINORAC, LL_SPOILER, LL_DUMP, Is_rogue_level, FROMOUTSIDE } from './const.js';
 import { NO_COLOR } from './terminal.js';
 import { docrt } from './display.js';
 import { tty_yn_function } from './tty/topl.js';
@@ -74,7 +74,7 @@ import { Fire_resistance, Cold_resistance, Sleep_resistance,
          Warning, Teleportation, Teleport_control, See_invisible,
          Infravision, Deaf, Blind, Hallucination, Halluc_resistance,
          Invis, Levitation, Flying, Swimming, Amphibious, Breathless,
-         Passes_walls, Regeneration, Reflecting } from './youprop.js';
+         Passes_walls, Regeneration, Reflecting, Blindfolded, Blindfolded_only } from './youprop.js';
 import { artifact_names } from './artilist_data.js';
 import { carried_artifact_conveys } from './artifact.js';
 import { body_part } from './polyself.js';
@@ -774,8 +774,18 @@ function status_enlightenment() {
         you_are('hallucinating');
 
     if (Blind()) {
-        const innatelyBlind = !!(u.intrinsic?.HBlinded & FROMFORM);
-        you_are(innatelyBlind ? 'innately blind' : 'temporarily blind');
+        /* check the reasons in same order as from_what() */
+        const HBlinded = u.intrinsic?.HBlinded | 0;
+        let buf = `${(HBlinded & FROMOUTSIDE) !== 0 ? 'permanently'
+                    : (HBlinded & FROMFORM) ? 'innately'
+                      /* better phrasing desperately wanted... */
+                      : Blindfolded_only() ? 'deliberately'
+                        /* timed, possibly combined with blindfold */
+                        : 'temporarily'} blind`;
+        if (game.wizard && (HBlinded === (HBlinded & TIMEOUT) && !Blindfolded()))
+            buf += ` (${HBlinded & TIMEOUT})`;
+        /* !haseyes: avoid "you are innately blind innately" */
+        you_are(buf, !haseyes(game.youmonst.data) ? '' : from_what('HBlinded'));
     }
 
     if (Deaf())

@@ -707,6 +707,8 @@ export async function moveloop_core() {
         await rhack(0);
         if (g.u.utotype)
             await deferred_goto();
+        if (g.vision_full_recalc)
+            vision_recalc(0); /* vision! */
         return;
     }
 
@@ -1116,6 +1118,10 @@ export async function moveloop_core() {
        here, AFTER rhack() returns, not inside the command itself. */
     if (g.u.utotype)
         await deferred_goto();
+
+    /* src/allmain.c:541 */
+    if (g.vision_full_recalc)
+        vision_recalc(0); /* vision! */
 }
 
 // C ref: allmain.c moveloop()

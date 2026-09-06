@@ -5648,3 +5648,52 @@ dog.c:789: a follower that is eating or trapped stays ("is still
 eating/trapped"), one carrying the Amulet is "very disoriented", a leashed
 one left behind has its leash come loose, and a trapped one first tries
 mintrap(). Level teleport past a feeding kitten printed nothing here.
+
+## Corpse eaters draw through delobj()
+
+mon.c:1656 meatcorpse(): a non-tame corpse_eater standing on a corpse
+eats it after moving (m_move's post-move block, after meatmetal and
+meatobj). m_consume_obj() -> delobj() -> obj_resists(obj, 0, 0) is the
+rn2(100) the census saw as "obj_resists" right after an mtrack roll; the
+"You hear a masticating sound." line is this function's unseen arm.
+
+## moverock's trap switch is all draws and messages
+
+hack.c:336 moverock(): a boulder pushed onto a landmine rolls rn2(10) and
+may blow_up_landmine(); onto a pit it goes through flooreffects() ("The
+boulder fills a pit.") which bury_objs() the pile there (one obj_resists
+per object, rnd(250) per organic one); a hole or trap door plugs with a
+message and bury_objs(); level teleporters and teleport traps move the
+boulder away; a rolling boulder trap launches it. The placeholder that
+returned -1 for every one of these left the hero standing still with no
+message, and the missing bury draws surfaced two pushes later.
+
+## Direction keys are cmdbinds
+
+cmd.c:3462 reset_commands() removes whatever commands_init() put on the
+direction characters and binds them (and highc()/C() forms without
+number_pad, M(digit) with it) to the move/run/rush commands. So
+cmdbind_get('l') is "moveeast" and key2extcmddesc('l') ends as "move east
+(screen right) (#moveeast)"; the early "move"/"run" strings are only what
+survives for keys that are not bound at all. cmdbind_table() now applies
+that rebinding.
+
+## Light-emitting monsters force a vision recalc
+
+mon.c:1332: after all monsters have moved, `if (any_light_source())
+gv.vision_full_recalc = 1` for every source type, and allmain.c:541
+recalcs after rhack() before the flush. The port set the flag only for
+object lights and had no post-rhack recalc, so a flaming sphere's light
+was painted one square behind it and a boulder the hero had just pushed
+next to themself stayed dark.
+
+## Open: remembered dark floor after magic mapping (s17-30)
+
+C describes a remembered lit-room square that is out of sight as "dark
+part of a room" (its lev->glyph is S_darkroom under dark_room + color);
+ours says "floor of a room". Our newsym() does rewrite S_room to
+S_darkroom when the square leaves sight (traced), but the memory read
+S_room again by the time of the farlook, with no further newsym on that
+square: magic_map_background() writes back_to_glyph() (S_room for a
+waslit square) in both C and the port, so C must re-darken it on a path
+the port lacks (level return or docrt). Not resolved.

@@ -16,7 +16,7 @@ import { in_rooms } from './hack.js';
 import { Is_special } from './dungeon.js';
 import { game } from './gstate.js';
 import { mpickstuff, mondied, wake_nearto, wake_msg, wakeup,
-         monkilled } from './mon.js';
+         monkilled, meatcorpse } from './mon.js';
 import { sengr_at, wipe_engr_at } from './engrave.js';
 import { autoreturn_weapon } from './weapon.js';
 import { MON_WEP, mon_offmap } from './monst.js';
@@ -2133,8 +2133,11 @@ async function postmov(mtmp, ptr, omx, omy, mmoved, can_tunnel) {
             }
 
             /* Maybe a purple worm ate a corpse */
-            if (corpse_eater(ptr))
-                note_unported('postmov:meatcorpse');
+            if (corpse_eater(ptr)) {
+                const etmp = await meatcorpse(mtmp);
+                if (etmp >= 2)
+                    return etmp; /* it died or got forced off the level */
+            }
 
             if (await mpickstuff(mtmp))
                 mmoved = MMOVE_DONE;

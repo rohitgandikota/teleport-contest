@@ -1,21 +1,21 @@
 import { maybe_unhide_at } from './mon.js';
 import { is_rider, locomotion } from './mondata.js';
 import { goodpos } from './makemon.js';
-import { rloc_to, enexto } from './teleport.js';
-import { revive_corpse } from './do.js';
-import { obj_ice_effects } from './mkobj.js';
+import { rloc_to, enexto, random_teleport_level, rloco } from './teleport.js';
+import { revive_corpse, flooreffects } from './do.js';
+import { obj_ice_effects, add_to_migration } from './mkobj.js';
 import { spot_time_left, spot_stop_timers, MELT_ICE_AWAY } from './timeout.js';
 import { float_vs_flight } from './polyself.js';
-import { float_up } from './trap.js';
+import { float_up, blow_up_landmine, fill_pit, deltrap, seetrap, feeltrap, launch_obj } from './trap.js';
 import { You_cant, pline_dir } from './pline.js';
-import { FROMOUTSIDE, DRAWBRIDGE_UP, DB_UNDER, DB_ICE, MAX_TYPE, OBJ_FLOOR } from './const.js';
-import { obj_extract_self } from './invent.js';
+import { FROMOUTSIDE, DRAWBRIDGE_UP, DB_UNDER, DB_ICE, MAX_TYPE, OBJ_FLOOR, IN_SIGHT, MIGR_RANDOM, ROLL, LAUNCH_KNOWN } from './const.js';
+import { obj_extract_self, useupf } from './invent.js';
 import { place_object } from './mkobj.js';
 import { exercise } from './attrib.js';
 import { A_STR, LANDMINE, SPIKED_PIT, PIT, HOLE, TRAPDOOR,
          LEVEL_TELEP, TELEP_TRAP, ROLLING_BOULDER_TRAP } from './const.js';
-import { the, xname, ansimpleoname } from './objnam.js';
-import { costly_spot } from './shk.js';
+import { the, xname, ansimpleoname, Tobjnam, otense } from './objnam.js';
+import { costly_spot, stolen_value } from './shk.js';
 import { You_hear, There } from './pline.js';
 import { flush_screen, glyph_at, map_invisible, newsym, unmap_invisible,
          unmap_object, map_object, back_to_glyph } from './display.js';
@@ -24,7 +24,7 @@ import { is_flimsy } from './obj.js';
 import { You, You_feel, pline_xy, pline_The, set_msg_xy, Norep } from './pline.js';
 import { feel_location } from './display.js';
 import { can_ooze, accessible } from './monmove.js';
-import { dig_typ, use_pick_axe2 } from './dig.js';
+import { dig_typ, use_pick_axe2, bury_objs } from './dig.js';
 import { worm_cross } from './worm.js';
 import { block_door, block_entry, u_entered_shop, u_left_shop } from './shk.js';
 import { curr_mon_load } from './mon.js';
@@ -43,7 +43,7 @@ import { is_pool, is_lava, t_at, m_at, is_pick, seemimic,
 import { hliquid } from './do_name.js';
 import { Is_waterlevel, WATER, LAVAPOOL, POOL, AIR } from './const.js';
 import { waterbody_name } from './pager.js';
-import { surface, recalc_mapseen } from './dungeon.js';
+import { surface, recalc_mapseen, depth, get_level } from './dungeon.js';
 import { pickup, can_reach_floor, loot_mon } from './pickup.js';
 import { dotrap, immune_to_trap, into_vs_onto } from './trap.js';
 import { is_pit, EXT_ENCUMBER, HVY_ENCUMBER, IS_FURNITURE, STAIRS, ECMD_OK, ECMD_TIME, OBJ_AT, GOLD_SYM, TT_BEARTRAP, TT_PIT, TT_WEB, TT_LAVA, TT_INFLOOR, TT_BURIEDBALL } from './const.js';
@@ -90,7 +90,7 @@ import {
     DIR_W, DIR_N, DIR_E, DIR_S, DIR_NW, DIR_NE, DIR_SE, DIR_SW,
     xdir, ydir, N_DIRS, Upolyd } from './const.js';
 import { sobj_at } from './invent.js';
-import { couldsee } from './vision.js';
+import { couldsee, cansee } from './vision.js';
 import { D_CLOSED, D_LOCKED } from './const.js';
 import { done } from './end.js';
 import { DIED } from './const.js';
@@ -2055,6 +2055,14 @@ function moverock_done(sx, sy) {
             otmp.next_boulder = 0; /* resume normal xname() */
 }
 
+// src/hack.c:315 rock_disappear_msg()
+async function rock_disappear_msg(otmp) {
+    if (game.u.usteed)
+        await pline(`${YMonnam(game.u.usteed)} pushes ${the(xname(otmp))} and suddenly it disappears!`);
+    else
+        await You(`push ${the(xname(otmp))} and suddenly it disappears!`);
+}
+
 // src/hack.c:336 moverock()
 export async function moverock() {
     const sx = game.u.ux + game.u.dx, sy = game.u.uy + game.u.dy;
@@ -2169,21 +2177,112 @@ async function moverock_core(sx, sy) {
             disturb_buried_zombies(sx, sy);
 
             if (ttmp) {
+                let newlev;
                 switch (ttmp.ttyp) {
                 case LANDMINE:
+                    if (rn2(10)) {
+                        obj_extract_self(otmp);
+                        place_object(otmp, rx, ry);
+                        newsym(sx, sy);
+                        await pline(`${
+                              /* "kablam" is a variation of "ka-boom" or
+                                 "kablooey", rather cartoonish descriptions
+                                 of the sound of an explosion, but give it
+                                 even when deaf if hero sees the explosion */
+                              (!Deaf() || !Blind()) ? 'KAABLAMM!!'
+                              /* use an alternate exclamation when feeling
+                                 the floor/ground/whatever shake (or maybe
+                                 a weak shockwave if levitating or flying) */
+                                                    : 'Gadzooks'}!  ${
+                              Tobjnam(otmp, 'trigger')} ${
+                              ttmp.madeby_u ? 'your' : 'a'} land mine.`);
+                        await blow_up_landmine(ttmp);
+                        /* if the boulder remains, it should fill the pit */
+                        await fill_pit(game.u.ux, game.u.uy);
+                        if (cansee(rx, ry))
+                            newsym(rx, ry);
+                        return sobj_at(ONAMES.BOULDER, sx, sy) ? -1 : 0;
+                    }
+                    break;
                 case SPIKED_PIT:
                 case PIT:
+                    obj_extract_self(otmp);
+                    /* vision kludge to get messages right;
+                       the pit will temporarily be seen even
+                       if this is one among multiple boulders */
+                    if (!Blind() && game.viz_array?.[ry])
+                        game.viz_array[ry][rx] |= IN_SIGHT;
+                    if (!(await flooreffects(otmp, rx, ry, 'fall'))) {
+                        place_object(otmp, rx, ry);
+                    }
+                    if (mtmp && !Blind())
+                        newsym(rx, ry);
+                    return sobj_at(ONAMES.BOULDER, sx, sy) ? -1 : 0;
                 case HOLE:
                 case TRAPDOOR:
+                    /* Soundeffect(se_kerplunk_boulder_gone, 40); */
+                    if (Blind())
+                        await pline(`Kerplunk!  You no longer feel ${the(xname(otmp))}.`);
+                    else
+                        await pline(`${Tobjnam(otmp, (ttmp.ttyp === TRAPDOOR)
+                                                      ? 'trigger' : 'fall')}${
+                                    (ttmp.ttyp === TRAPDOOR) ? '' : ' into'} and ${
+                                    otense(otmp, 'plug')} a ${
+                                    (ttmp.ttyp === TRAPDOOR) ? 'trap door' : 'hole'} in the ${
+                                    surface(rx, ry)}!`);
+                    deltrap(ttmp);
+                    useupf(otmp, 1);
+                    await bury_objs(rx, ry);
+                    game.level.at(rx, ry).wall_info &= ~W_NONDIGGABLE;
+                    game.level.at(rx, ry).candig = 1;
+                    if (cansee(rx, ry))
+                        newsym(rx, ry);
+                    return sobj_at(ONAMES.BOULDER, sx, sy) ? -1 : 0;
                 case LEVEL_TELEP:
+                    /* 20% chance of picking current level; 100% chance for
+                       that if in single-level branch (Knox) or in endgame */
+                    newlev = random_teleport_level();
+                    /* if trap doesn't work, skip "disappears" message */
+                    if (newlev === depth(game.u.uz)) {
+                        await dopush(sx, sy, rx, ry, otmp, costly);
+                        continue;
+                    }
+                    /* FALLTHRU */
                 case TELEP_TRAP:
-                case ROLLING_BOULDER_TRAP:
-                    /* the trap-operates-on-boulder arms (landmine rn2(10),
-                       pit fill, hole plug, teleport) sit on machinery that
-                       has its own draws; record which trap so the gap is
-                       visible per type */
-                    note_unported_hack(`moverock:trap=${ttmp.ttyp}`);
-                    return -1;
+                    await rock_disappear_msg(otmp);
+                    otmp.next_boulder = 0; /* reset before moving it */
+                    if (ttmp.ttyp === TELEP_TRAP) {
+                        await rloco(otmp);
+                    } else {
+                        if (costly)
+                            await stolen_value(otmp, rx, ry, !ttmp.tseen, false);
+                        obj_extract_self(otmp);
+                        add_to_migration(otmp);
+                        const dest = get_level(newlev);
+                        otmp.ox = dest.dnum;
+                        otmp.oy = dest.dlevel;
+                        otmp.owornmask = MIGR_RANDOM;
+                    }
+                    seetrap(ttmp);
+                    return sobj_at(ONAMES.BOULDER, sx, sy) ? -1 : 0;
+                case ROLLING_BOULDER_TRAP: {
+                    let tox = rx;
+                    let toy = ry;
+                    /* the boulder continues until it reaches one of
+                       the trap's launch spots or hits a wall / out-of-bounds */
+                    while (isok(tox + game.u.dx, toy + game.u.dy)) {
+                        tox += game.u.dx;
+                        toy += game.u.dy;
+                        if (tox === ttmp.launch.x && toy === ttmp.launch.y)
+                            break;
+                        if (tox === ttmp.launch2.x && toy === ttmp.launch2.y)
+                            break;
+                    }
+                    await pline(`${Tobjnam(otmp, 'suddenly roll')} away from you!`);
+                    feeltrap(ttmp);
+                    await launch_obj(ONAMES.BOULDER, sx, sy, tox, toy, ROLL | LAUNCH_KNOWN);
+                    return sobj_at(ONAMES.BOULDER, sx, sy) ? -1 : 0;
+                }
                 default:
                     break; /* boulder not affected by this trap */
                 }

@@ -115,7 +115,23 @@ keepdogs() is the C shape (mintrap, "is still eating/trapped", amulet
 disorientation, loose leashes) and dog_hunger() calls dog_starve() and
 beg(). Also: test_move's worm-in-the-way and diagonal-doorway messages.
 
-Next: record `--seed 17` (mix `--debug`/`--normal`), fix what diverges,
+Eighth round, `--seed 17` (5 failures in 40): meatcorpse() for corpse
+eaters (a purple worm's meal draws through delobj's obj_resists);
+moverock's whole trap switch (landmine, pit fill through flooreffects and
+bury_objs, hole and trap door plugs, level and teleport traps, rolling
+boulder launch) replaces a placeholder that refused the push; direction
+keys are real cmdbinds (reset_commands), so '&' describes 'l' as "move east
+(screen right) (#moveeast)"; movemon() flags a vision recalc for ANY light
+source and moveloop recalcs after rhack() like allmain.c:541 (a flaming
+sphere's light lagged one square, and a pushed boulder next to the hero
+stayed unseen); the ^X blindness line is the C form with the wizard-mode
+timeout. Left open: s17-03 (a mfndpos candidate count differs one turn
+after a corpse eater's meal, no RNG difference before it), s17-30 step 790
+(travel autodescribe says "floor of a room" where C remembers "dark part
+of a room" after magic mapping and a level return), s17-15 is the moon
+phase timezone case.
+
+Next: record `--seed 18` (mix `--debug`/`--normal`), fix what diverges,
 then return to the note_unported
 list (hack.js 19, spell.js 20, shk.js 19). tools/jsplay.mjs has a new
 `--aeval "<await expr>"` flag with the hack.js namespace as `h` for state

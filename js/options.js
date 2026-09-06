@@ -143,7 +143,7 @@ export function parseoptions(opts, tinitial, tfrom_file, result) {
     }
     if (value === null && opt.type !== 'BoolOpt' && opt.valok === 'Yes'
         && opt.name !== 'packorder' && opt.name !== 'pickup_types'
-        && opt.name !== 'menu_objsyms'
+        && opt.name !== 'menu_objsyms' && opt.name !== 'autounlock'
         && !(opt.name === 'menustyle' && (negated || opts.length <= 5))
         && !(opt.name === 'paranoid_confirmation' && negated)) {
         config_error_add(result, `Missing value for '${opt.name}'`);
@@ -197,6 +197,47 @@ export function parseoptions(opts, tinitial, tfrom_file, result) {
                     retval = false;
                 }
             }
+        }
+    } else if (opt.name === 'autounlock') {
+        // src/options.c:1066 optfn_autounlock(), do_set arm.
+        if (!value) {
+            result.opts.autounlock = negated ? 0 : AUTOUNLOCK_APPLY_KEY;
+        } else {
+            let op = value, newflags = 0;
+            const separator = op.includes('+') ? '+' : ' ';
+            while (op !== null) {
+                op = op.trim();
+                const i = op.indexOf(separator);
+                const next = i < 0 ? null : op.slice(i + 1);
+                if (i >= 0)
+                    op = op.slice(0, i).trim();
+                let matched = false;
+                if ('none'.startsWith(op.toLowerCase())) {
+                    negated = true;
+                    matched = true;
+                }
+                for (const [name] of unlocktypes) {
+                    if (matched) break;
+                    if (name.startsWith(op.toLowerCase())
+                        || op.replace(/[ _-]/g, '').toLowerCase() === name.replace(/-/g, '')) {
+                        const bit = 'uakf'.indexOf(op[0]);
+                        if (bit >= 0) {
+                            newflags |= 1 << bit;
+                            matched = true;
+                        }
+                    }
+                }
+                if (!matched) {
+                    config_error_add(result, `Invalid value for "autounlock": "${op}"`);
+                    return false;
+                }
+                op = next;
+            }
+            if (negated && newflags !== 0) {
+                config_error_add(result, `Invalid value combination for "autounlock": 'none' with some`);
+                return false;
+            }
+            result.opts.autounlock = newflags;
         }
     } else if (opt.name === 'menustyle') {
         // src/options.c:2320 optfn_menustyle(), do_set arm.
@@ -1260,6 +1301,8 @@ async function doset_simple_menu() {
                 await choose_disco_sort(0);
             } else if (allopt[k].name === 'menustyle') {
                 await handler_menustyle();
+            } else if (allopt[k].name === 'autounlock') {
+                await handler_autounlock();
             } else if (allopt[k].name === 'menu_objsyms') {
                 await handler_menu_objsyms();
             } else {
@@ -1295,9 +1338,11 @@ export async function doset_simple() {
 
     /* select and change one option at a time, then reprocess the menu
        with updated settings to offer chance for further change */
+    game.give_opt_msg = false;
     do {
         pickedone = await doset_simple_menu();
     } while (pickedone > 0);
+    game.give_opt_msg = true;
     await reset_needed_visuals();
     return ECMD_OK;
 }
@@ -1807,6 +1852,8 @@ export async function doset() {
                 await choose_disco_sort(0);
             } else if (o.hasHandler === 'Yes' && o.name === 'menustyle') {
                 await handler_menustyle();
+            } else if (o.hasHandler === 'Yes' && o.name === 'autounlock') {
+                await handler_autounlock();
             } else if (o.hasHandler === 'Yes' && o.name === 'menu_objsyms') {
                 await handler_menu_objsyms();
             } else if (o.name === 'bind keys') {
@@ -1871,6 +1918,36 @@ export function set_menuobjsyms_flags(newobjsyms) {
     game.iflags.menuobjsyms = newobjsyms;
     game.iflags.menu_head_objsym = !!(newobjsyms & 1);
     game.iflags.use_menu_glyphs = !!(newobjsyms & (2 | 4));
+}
+
+// src/options.c:5624 handler_autounlock(), select any combination of actions.
+export async function handler_autounlock() {
+    const oldflags = game.flags.autounlock;
+    const sep = game.iflags.menu_tab_sep ? '\t' : ' ';
+    const win = tty_create_nhwindow(NHW_MENU);
+    tty_start_menu(win, MENU_BEHAVE_STANDARD);
+    for (let i = 0; i < unlocktypes.length; i++) {
+        const [name, description] = unlocktypes[i];
+        tty_add_menu(win, null, i + 1, name[0], 0, ATR_NONE, NO_COLOR,
+            name.padEnd(10) + sep + description,
+            oldflags & (1 << i) ? MENU_ITEMFLAGS_SELECTED : MENU_ITEMFLAGS_NONE);
+    }
+    tty_end_menu(win, "Select 'autounlock' actions:");
+    const picks = await tty_select_menu(win, PICK_ANY);
+    if (picks.length) {
+        let newflags = 0;
+        for (const pick of picks) newflags |= 1 << (pick - 1);
+        game.flags.autounlock = newflags;
+    } else if (!picks.cancelled) {
+        game.flags.autounlock = 0;
+    }
+    tty_destroy_nhwindow(win);
+    const chngd = game.flags.autounlock !== oldflags;
+    if ((chngd || game.flags.verbose) && game.give_opt_msg !== false) {
+        const value = get_option_value({name: 'autounlock'});
+        await pline(`'autounlock' ${chngd ? 'changed to' : 'is still'} '${value}'.`);
+    }
+    return 0;
 }
 
 // src/options.c:5795 handler_menu_objsyms().

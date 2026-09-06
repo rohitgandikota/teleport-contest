@@ -10,7 +10,7 @@
 // For browser play, see nethack.js (uses NethackGame directly).
 
 import { game, resetGame } from './gstate.js';
-import { MENU_FULL } from './const.js';
+import { MENU_FULL, AUTOUNLOCK_APPLY_KEY } from './const.js';
 import { initRng, enableRngLog, getRngLog } from './rng.js';
 import { pushKey, nhgetch } from './input.js';
 import { newgame, newgame_moveloop_preamble, moveloop_core,
@@ -155,6 +155,7 @@ export class NethackGame {
            other two defaults */
         g.flags = { verbose: true, implicit_uncursed: true, legacy: true,
                     menu_style: MENU_FULL, // src/options.c:7258
+                    autounlock: AUTOUNLOCK_APPLY_KEY, // options.c:1074
                     sortpack: true, sortloot: 'l', // optlist.h and options.c:7208
                     pickup_thrown: true,
                     ...rc.opts };

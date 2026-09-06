@@ -11,6 +11,10 @@ import { add_damage } from './shk.js';
 import { in_rooms } from './hack.js';
 import { wake_nearto } from './mon.js';
 import { distu, s_suffix } from './hacklib.js';
+import { could_untrap, untrap_box } from './trap.js';
+import { has_magic_key } from './artifact.js';
+import { Confusion, Hallucination } from './youprop.js';
+import { safe_qbuf, ysimple_name } from './objnam.js';
 import { Deaf } from './youprop.js';
 import { Unaware } from './youprop.js';
 import { mb_trapped } from './monmove.js';
@@ -511,6 +515,8 @@ export function autokey(opening) {
 // container arm, the resume-an-interrupted-attempt arm and the real picking
 // occupation (its ynq prompt and chance rolls) are recorded when reached.
 export async function pick_lock(pick, rx, ry, container) {
+    const dummypick = { otyp: ONAMES.STRANGE_OBJECT };
+    if (!pick) pick = dummypick;
     const picktyp = pick.otyp;
     const cc = { x: 0, y: 0 };
     const autounlock = (rx !== 0 && rx != null) || container != null;
@@ -576,14 +582,19 @@ export async function pick_lock(pick, rx, ry, container) {
                 verb = 'pick';
 
             const au = game.flags?.autounlock ?? AUTOUNLOCK_APPLY_KEY;
-            if (autounlock && (au & AUTOUNLOCK_UNTRAP) !== 0) {
-                /* could_untrap/untrap on containers is not ported; the
-                   default autounlock setting never includes Untrap */
-                note_unported_lock('pick_lock:container_untrap');
-            }
-            if (autounlock && (au & AUTOUNLOCK_APPLY_KEY) !== 0) {
+            if (autounlock && (au & AUTOUNLOCK_UNTRAP) !== 0
+                && await could_untrap(false, true)
+                && (c = otmp.tknown ? (otmp.otrapped ? 'y' : 'n')
+                    : await ynq(safe_qbuf('Check ', ' for a trap?', otmp,
+                                        yname, ysimple_name, 'this'))) !== 'n') {
+                if (c === 'q') return PICKLOCK_DID_NOTHING;
+                // src/trap.c:5864..5878 untrap(FALSE,0,0,otmp), container arm.
+                const confused = Confusion() || Hallucination();
+                await untrap_box(otmp, !!has_magic_key(game.youmonst), confused);
+                return PICKLOCK_DID_SOMETHING;
+            } else if (autounlock && (au & AUTOUNLOCK_APPLY_KEY) !== 0) {
                 c = 'q';
-                if (pick) {
+                if (pick !== dummypick) {
                     c = await ynq(`Unlock it with ${yname(pick)}?`);
                 }
                 if (c !== 'y')
@@ -790,7 +801,7 @@ function is_weptool(o) {
 }
 
 // src/lock.c:660 u_have_forceable_weapon()
-function u_have_forceable_weapon() {
+export function u_have_forceable_weapon() {
     const uwep = game.u.uwep;
     if (!uwep)
         return false;

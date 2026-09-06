@@ -17,22 +17,21 @@ and persistent gameplay state. Continue source review, measured C branches,
 independent oracles, implementation, and regression checks until that goal is
 met. Current corpus success is not the stopping criterion.
 
-The latest pass adds91 C cases for inventory type queries and unpaid
-display. All44 public and514 supplemental fixtures pass, matching442,076
-screens/cursors and11,133,577 RNG calls. The C union reaches55,938/108,268
-direct outcomes and4,379/5,491 entered records. The assertion ledger is
-2,757/2,757. State checks validate91 native queries,19 observed prices and
-29 constructed groups. Removing location or identity guards survives the
-new native screens but fails the constructed checks.
+The latest pass adds 144 C cases for looting entry, confused gold transfers,
+automatic unlocking, container traps and magic-key rules. All 44 public and
+519 supplemental fixtures pass, matching 476,790 screens/cursors and 11,484,057
+RNG calls. The C union reaches 56,206/108,268 direct outcomes and 4,385/5,491
+entered records. The assertion ledger is 2,901/2,901. State checks validate
+144 native replays and 52 constructed groups. Skipping a coffer weight update
+passes native output checks but fails the state gate.
 
 See [STATUS.md](STATUS.md) for the checkpoint and next action,
-[inventory-types-audit.md](inventory-types-audit.md) for the current review
-and [gameplay-gap-audit.md](gameplay-gap-audit.md) for measurement limits.
-The earlier published held-out result was78.39%; the local suite does not
-establish a newer held-out score. Full looting entry paths are next.
-Multiple-container looting, confused contributions, disclosure, inventory
-lifecycle, spell, monster and Lua paths remain open. The full-port goal
-continues.
+[looting-entry-audit.md](looting-entry-audit.md) for the current review and
+[gameplay-gap-audit.md](gameplay-gap-audit.md) for measurement limits.
+The earlier published held-out result was 78.39%; the local suite does not
+establish a newer held-out score. The full untrapping flow is next. Remaining
+lock, disclosure, inventory lifecycle, spell, monster and Lua paths are open.
+The full-port goal continues.
 
 ## Previous focus, 2026-09-03
 

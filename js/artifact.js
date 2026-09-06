@@ -17,7 +17,9 @@ import { NECK } from './const.js';
 import { Upolyd } from './const.js';
 import { engulfing_u } from './const.js';
 import { losehp, nomul } from './hack.js';
-import { exercise } from './attrib.js';
+import { nxtobj } from './invent.js';
+import { ART_MASTER_KEY_OF_THIEVERY } from './artilist_data.js';
+import { exercise, Role_if } from './attrib.js';
 import { pline } from './display.js';
 import { map_invisible } from './display.js';
 import { canspotmon } from './display.js';
@@ -117,6 +119,28 @@ function artiexist() {
 // include/artifact.h:87 is_art()
 export function is_art(obj, art) {
     return !!(obj && obj.oartifact === art);
+}
+
+
+// src/artifact.c:2775 is_magic_key(), role and beatitude requirements.
+export function is_magic_key(mon, obj) {
+    if (is_art(obj, ART_MASTER_KEY_OF_THIEVERY)) {
+        if (mon === game.youmonst ? Role_if(PMNAMES.PM_ROGUE)
+                                  : mon && mon.data === game.mons[PMNAMES.PM_ROGUE])
+            return !obj.cursed;
+        return !!obj.blessed;
+    }
+    return false;
+}
+
+// src/artifact.c:2790 has_magic_key(), including a non-key first object.
+export function has_magic_key(mon) {
+    const key = ONAMES[artifact_otyps[ART_MASTER_KEY_OF_THIEVERY]];
+    if (!mon) mon = game.youmonst;
+    let obj = (mon === game.youmonst ? game.invent : mon.minvent)?.[0];
+    for (; obj; obj = nxtobj(obj, key, false))
+        if (is_magic_key(mon, obj)) return obj;
+    return null;
 }
 
 // src/artifact.c:2837 permapoisoned() — currently only Grimtooth.

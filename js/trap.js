@@ -33,6 +33,12 @@ import { hits_bars } from './mthrowu.js';
 import { linedup } from './mthrowu.js';
 import { tty_clear_nhwindow_message } from './display.js';
 import { burn_away_slime } from './timeout.js';
+import { bimanual } from './obj.js';
+import { can_reach_floor } from './pickup.js';
+import { tty_yn_function } from './tty/topl.js';
+import { Fumbling } from './youprop.js';
+import { more_experienced, newexplevel } from './exper.js';
+import { MAXULEV, HVY_ENCUMBER, HAND, FINGER, A_WIS } from './const.js';
 import { welded } from './wield.js';
 import { buried_ball } from './dig.js';
 import { liquid_flow } from './dig.js';
@@ -121,7 +127,7 @@ import { m_at, t_at as t_at_mon } from './mon.js';
 import { inv_cnt, crawl_destination, unmul, in_rooms,
          u_locomotion } from './hack.js';
 import { distu } from './hacklib.js';
-import { near_capacity, change_luck } from './attrib.js';
+import { near_capacity, change_luck, Role_if } from './attrib.js';
 import { UNENCUMBERED, SLT_ENCUMBER, KILLED_BY, DROWNING, BURNING, DISSOLVED,
          STONING, WATER, FIRE_RES, XKILL_NOMSG,
          NO_KILLER_PREFIX, OBJ_FLOOR, OBJ_INVENT, OBJ_MINVENT } from './const.js';
@@ -558,6 +564,69 @@ export async function chest_trap(obj, bodypart, disarm) {
     }
     obj.tknown = 1;
     return false;
+}
+
+// src/trap.c:5258 could_untrap(), preliminary checks shared with autounlock.
+export async function could_untrap(verbosely, check_floor) {
+    let buf = '';
+    if (near_capacity() >= HVY_ENCUMBER) {
+        buf = "You're too strained to do that.";
+    } else if ((nohands(game.youmonst.data) && !webmaker(game.youmonst.data))
+               || !game.youmonst.data.mmove) {
+        buf = 'And just how do you expect to do that?';
+    } else if (game.u.ustuck && sticks(game.youmonst.data)) {
+        buf = `You'll have to let go of ${mon_nam(game.u.ustuck)} first.`;
+    } else if (game.u.ustuck || (welded(game.u.uwep) && bimanual(game.u.uwep))) {
+        buf = `Your ${makeplural(body_part(HAND))} seem to be too busy for that.`;
+    } else if (check_floor && !can_reach_floor(false)) {
+        buf = `You can't reach the ${surface(game.u.ux, game.u.uy)}.`;
+    }
+    if (buf) {
+        if (verbosely) await pline(buf);
+        return 0;
+    }
+    return 1;
+}
+
+// src/trap.c:5794 disarm_box(). The failed attempt can destroy the box.
+export async function disarm_box(box, force, confused) {
+    if (box.otrapped) {
+        let ch = ACURR(A_DEX) + game.u.ulevel;
+        if (Role_if(PMNAMES.PM_ROGUE)) ch *= 2;
+        if (!force && (confused || Fumbling()
+                       || rnd(75 + Math.trunc(level_difficulty() / 2)) > ch)) {
+            await chest_trap(box, FINGER, true);
+        } else {
+            await You('disarm it!');
+            box.otrapped = 0;
+            box.tknown = 1;
+            more_experienced(8, 0);
+            await newexplevel();
+        }
+        exercise(A_DEX, true);
+    } else {
+        await pline(`That ${xname(box)} was not trapped.`);
+        box.tknown = 0;
+    }
+}
+
+// src/trap.c:5821 untrap_box(), trap discovery and optional disarming.
+export async function untrap_box(box, force, confused) {
+    if ((box.otrapped
+         && (force || (!confused && rn2(MAXULEV + 1 - game.u.ulevel) < 10)))
+        || box.tknown || (!force && confused && !rn2(3))) {
+        if (!(box.tknown && box.dknown))
+            await You(`find a trap on ${the(xname(box))}!`);
+        else
+            await pline(`There's a trap on ${the(xname(box))}.`);
+        box.tknown = 1;
+        observe_object(box);
+        if (!confused) exercise(A_WIS, true);
+        if (await tty_yn_function('Disarm it?', 'ynq', 'q') === 'y')
+            await disarm_box(box, force, confused);
+    } else {
+        await You(`find no traps on ${the(xname(box))}.`);
+    }
 }
 
 // src/trap.c:5250 dountrap() and the preliminary could_untrap() checks.

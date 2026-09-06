@@ -24,11 +24,11 @@ import { addinv, prinv, obj_extract_self, inv_order, let_to_name,
          useup, useupf, obfree, stackobj, count_unpaid, count_buc, is_worn,
          tally_BUCX, askchain, display_pickinv, currency, obj_here,
          carrying, merge_choice, nxtobj, sortloot, unsortloot, will_feel_cockatrice,
-         hold_another_object,
+         hold_another_object, feel_cockatrice, sobj_at, g_at,
          GETOBJ_ALLOWCNT, GETOBJ_DOWNPLAY, GETOBJ_EXCLUDE,
          GETOBJ_EXCLUDE_SELECTABLE, GETOBJ_PROMPT, GETOBJ_SUGGEST }
     from './invent.js';
-import { observe_object } from './o_init.js';
+import { observe_object, makeknown } from './o_init.js';
 import { doname, xname, cxname, the, yname, singular, an, corpse_xname,
          CXN_ARTICLE, CXN_SINGULAR, otense, vtense, safe_qbuf,
          ysimple_name, Ysimple_name2, Yname2, Tobjnam, thesimpleoname,
@@ -56,9 +56,9 @@ import { UNENCUMBERED, SLT_ENCUMBER, MOD_ENCUMBER, HVY_ENCUMBER,
 import { addtobill, costly_spot, doname_with_price, sellobj,
          sellobj_state } from './shk.js';
 import { calc_capacity, exercise, max_capacity, near_capacity, Role_if, encumber_msg } from './attrib.js';
-import { In_sokoban, surface } from './dungeon.js';
+import { In_sokoban, surface, ceiling } from './dungeon.js';
 import { Is_mbag, splitobj, unbless, place_object, add_to_container,
-         start_corpse_timeout, start_glob_timeout, set_bknown, hornoplenty }
+         start_corpse_timeout, start_glob_timeout, set_bknown, hornoplenty, add_to_minv }
     from './mkobj.js';
 import { PARANOID_AUTOALL, PARANOID_CONFIRM } from './const.js';
 import { paranoia_bits, boolean_option, add_menu_heading } from './options.js';
@@ -68,7 +68,7 @@ import { read_engr_at } from './engrave.js';
 import { rn2, rnd, d, rn2_on_display_rng } from './rng.js';
 import { OBJ_AT, LOOKHERE_NOFLAGS, LOOKHERE_PICKED_SOME, LOOKHERE_SKIP_DFEATURE } from './const.js';
 import { NO_COLOR } from './terminal.js';
-import { There, You, Your, You_cant } from './pline.js';
+import { There, You, Your, You_cant, verbalize } from './pline.js';
 import { flush_screen } from './display.js';
 import { look_here } from './invent.js';
 import { nomul } from './hack.js';
@@ -79,7 +79,8 @@ import { P_SKILL } from './weapon.js';
 import { P_RIDING, P_BASIC, Is_airlevel, Is_waterlevel } from './const.js';
 import { ATTKS, MFLAGS } from './monst_data.js';
 import { is_pit } from './const.js';
-import { Blind, Levitation, Stone_resistance, Flying, Underwater } from './youprop.js';
+import { Blind, Levitation, Stone_resistance, Flying, Underwater,
+         Confusion, Stunned, Half_physical_damage } from './youprop.js';
 import { st_gloves, st_corpse, st_petrifies, st_resists, W_ARMG } from './const.js';
 import { worn } from './do_wear.js';
 import { nohands, notake, poly_when_stoned, throws_rocks,
@@ -88,7 +89,7 @@ import { is_rider, hideunder } from './makemon.js';
 import { body_part } from './polyself.js';
 import { tty_yn_function } from './tty/topl.js';
 import { inv_cnt } from './hack.js';
-import { freehand } from './engrave.js';
+import { freehand, cant_reach_floor } from './engrave.js';
 import { Norep, impossible, pline_The, livelog_printf } from './pline.js';
 import { MENU_TRADITIONAL, MENU_FULL, MENU_PARTIAL, OBJ_CONTAINED,
          W_ARMOR, W_ACCESSORY, W_WEAPONS, LL_ACHIEVE, NO_MINVENT, MM_ADJACENTOK,
@@ -100,15 +101,16 @@ import { obj_is_burning } from './light.js';
 import { container_contents } from './end.js';
 import { docrt, canspotmon } from './display.js';
 import { tty_create_nhwindow, tty_putstr, tty_display_nhwindow,
-         tty_next_page, tty_destroy_nhwindow, NHW_MENU, NHW_TEXT } from './tty/wintty.js';
+         tty_next_page, tty_destroy_nhwindow, NHW_MENU, NHW_TEXT,
+         tty_start_menu, tty_add_menu, tty_end_menu, tty_select_menu, ATR_NONE } from './tty/wintty.js';
 import { xwaitforspace } from './tty/getline.js';
-import { getlin, paranoid_ynq } from './cmd.js';
+import { getlin, paranoid_ynq, get_adjacent_loc, cmdq_add_ec } from './cmd.js';
 import { shop_keeper, stolen_value, pick_pick, check_unpaid_usage, subfrombill, Shk_Your } from './shk.js';
 import { is_pick } from './mon.js';
 import { uhis } from './mhitu.js';
 import { get_obj_location } from './zap.js';
 import { makemon, set_malign } from './makemon.js';
-import { christen_monst, Monnam, rndmonnam, oname } from './do_name.js';
+import { christen_monst, Monnam, rndmonnam, oname, hliquid } from './do_name.js';
 import { more_experienced, newexplevel } from './exper.js';
 import { Hallucination } from './youprop.js';
 import { STONE, BY_NEXTHERE, FEEL_COCKATRICE, PICK_ONE,
@@ -119,11 +121,15 @@ import { newsym_force, temporary_object_glyph, mon_to_glyph } from './display.js
 import { which_armor, extract_from_minvent } from './worn.js';
 import { nolimbs } from './mondata.js';
 import { x_monnam, mon_nam } from './do_name.js';
-import { W_SADDLE, ARTICLE_THE, SUPPRESS_SADDLE } from './const.js';
+import { W_SADDLE, ARTICLE_THE, SUPPRESS_SADDLE, IS_GRAVE, IS_THRONE,
+         T_LOOTED, CQ_CANNED, NO_MM_FLAGS } from './const.js';
 
-
-
-
+import { rider_cant_reach } from './steed.js';
+import { autokey, pick_lock, doforce, u_have_forceable_weapon, boxlock } from './lock.js';
+import { remove_worn_item } from './steal.js';
+import { dropx } from './do.js';
+import { courtmon } from './mkroom.js';
+import { distu } from './hacklib.js';
 
 function note_unported_pickup(what) {
     (game.unported ||= new Set()).add(what);
@@ -1029,59 +1035,89 @@ export async function pickup_prinv(obj, count, verb) {
 }
 
 
-// src/pickup.c:2075 do_loot_cont() / loot_container() — open one container.
-//
-// The locked arm is what a chest the hero has not opened before hits: the
-// message differs by whether its locked state was already known, and either
-// way lknown becomes set. autounlock, the chest trap and use_container's
-// menu are recorded.
-async function do_loot_cont(cobj, ccount, ci) {
-    if (!cobj)
+// src/pickup.c:2041 able_to_loot(), floor reach and manipulation guards.
+export async function able_to_loot(x, y, looting) {
+    const verb = looting ? 'loot' : 'tip', t = t_at(x, y);
+    if (!can_reach_floor(!!(t && is_pit(t.ttyp)))) {
+        if (game.u.usteed && P_SKILL(P_RIDING) < P_BASIC)
+            await rider_cant_reach();
+        else
+            await cant_reach_floor(x, y, false, true, false);
         return false;
+    } else if ((is_pool(x, y) && (looting || !Underwater())) || is_lava(x, y)) {
+        await You(`cannot ${verb} things that are deep in the ${
+            hliquid(is_lava(x, y) ? 'lava' : 'water')}.`);
+        return false;
+    } else if (nolimbs(game.youmonst.data)) {
+        await pline(`Without limbs, you cannot ${verb} anything.`);
+        return false;
+    } else if (looting && !freehand()) {
+        await pline(`Without a free ${body_part(HAND)}, you cannot loot anything.`);
+        return false;
+    }
+    return true;
+}
+
+// src/pickup.c:2072 mon_beside().
+export function mon_beside(x, y) {
+    for (let i = -1; i <= 1; i++)
+        for (let j = -1; j <= 1; j++) {
+            const nx = x + i, ny = y + j;
+            if (isok(nx, ny) && m_at(nx, ny))
+                return true;
+        }
+    return false;
+}
+
+// src/pickup.c:2088 do_loot_cont(), including abort and deleted-container state.
+export async function do_loot_cont(cobjp, cindex, ccount) {
+    const cobj = cobjp.o;
+    if (!cobj)
+        return ECMD_OK;
     if (cobj.olocked) {
-        let res = false;
+        let res = ECMD_OK;
         if (cobj.lknown)
             await pline(`${The(xname(cobj))} is locked.`);
         else
             await pline(`Hmmm, ${the(xname(cobj))} turns out to be locked.`);
         cobj.lknown = 1;
-
-        /* src/pickup.c:2112 — flags.autounlock defaults to APPLY_KEY */
-        const autounlock = game.flags?.autounlock ?? AUTOUNLOCK_APPLY_KEY;
+        const autounlock = game.flags.autounlock;
         if (autounlock) {
-            const { autokey, pick_lock } = await import('./lock.js');
-            const ox = cobj.ox, oy = cobj.oy;
             let unlocktool = null;
-
-            game.u.dz = 0; /* #loot isn't a move command; pick_lock cares */
+            const ox = cobj.ox, oy = cobj.oy;
+            game.u.dz = 0;
             if (((autounlock & AUTOUNLOCK_APPLY_KEY) !== 0
-                 && (unlocktool = autokey(true)) != null)
+                 && (unlocktool = autokey(true)) !== null)
                 || (autounlock & AUTOUNLOCK_UNTRAP) !== 0) {
-                /* pass ox and oy to avoid direction prompt */
                 if (await pick_lock(unlocktool, ox, oy, cobj))
-                    res = true;
+                    res = ECMD_TIME;
+                if (!obj_here(cobj, ox, oy))
+                    cobjp.o = null;
                 return res;
             }
-            if ((autounlock & AUTOUNLOCK_FORCE) !== 0)
-                note_unported_pickup('do_loot_cont:autounlock_force');
+            if ((autounlock & AUTOUNLOCK_FORCE) !== 0
+                && res !== ECMD_TIME && ccount === 1 && u_have_forceable_weapon()) {
+                cmdq_add_ec(CQ_CANNED, doforce);
+                game.abort_looting = true;
+            }
         }
         return res;
     }
-    cobj.lknown = 1; /* floor container, so no need for update_inventory() */
-
+    cobj.lknown = 1;
     if (cobj.otyp === ONAMES.BAG_OF_TRICKS) {
-        /* "It develops a huge set of teeth and bites you!" rnd(10) losehp */
-        note_unported_pickup('do_loot_cont:bag_of_tricks');
-        return true;
+        await You(`carefully open ${the(xname(cobj))}...`);
+        await pline('It develops a huge set of teeth and bites you!');
+        const tmp = rnd(10);
+        await losehp(Half_physical_damage() ? Math.trunc((tmp + 1) / 2) : tmp,
+                     'carnivorous bag', KILLED_BY_AN);
+        makeknown(ONAMES.BAG_OF_TRICKS);
+        game.abort_looting = true;
+        return ECMD_TIME;
     }
-    return ((await use_container({ o: cobj }, false, ci < ccount)) !== ECMD_OK);
+    return await use_container(cobjp, false, cindex < ccount);
 }
 
-// src/pickup.c:2166 doloot() — the #loot command.
-//
-// The container-underfoot path and ordinary directional tail are ported. The
-// confused arm, blind cockatrice check, multi-container menu, grave digging,
-// and saddle removal are recorded.
+// src/pickup.c:2166 doloot(), reset pickup history only for this command.
 export async function doloot() {
     game.loot_reset_justpicked = true;
     try {
@@ -1091,59 +1127,195 @@ export async function doloot() {
     }
 }
 
-async function doloot_core() {
+// src/pickup.c:2178 doloot_core(), containers followed by directional looting.
+export async function doloot_core() {
+    let c = -1, timepassed = 0, underfoot = true;
+    const cc = { x: 0, y: 0 }, prev_inquiry = { v: 0 }, prev_loot = { v: false };
+    const dont_find_anything = "don't find anything";
+    game.abort_looting = false;
     if (await check_capacity(null))
         return ECMD_OK;
-
     if (nohands(game.youmonst.data)) {
         await You('have no hands!');
         return ECMD_OK;
     }
-
-    if (game.u.uprops?.CONFUSION) {
-        note_unported_pickup('doloot:confused');
-        return ECMD_OK;
+    if (Confusion()) {
+        if (rn2(6) && await reverse_loot())
+            return ECMD_TIME;
+        if (rn2(2)) {
+            await pline('Being confused, you find nothing to loot.');
+            return ECMD_TIME;
+        }
     }
-
-    const here = (game.level?.objects || [])
-        .filter(o => o.ox === game.u.ux && o.oy === game.u.uy
-                     && Is_container(o));
-
-    if (here.length > 1) {
-        note_unported_pickup('doloot:multiple_containers');
-        return ECMD_OK;
-    }
-    if (here.length === 1) {
-        const timepassed = await do_loot_cont(here[0], 1, 1);
+    cc.x = game.u.ux;
+    cc.y = game.u.uy;
+    let lootcont = !game.iflags.menu_requested;
+    for (;;) {
+        if (lootcont) {
+            const num_conts = container_at(cc.x, cc.y, true);
+            if (num_conts > 0) {
+                let anyfound = false;
+                if (!await able_to_loot(cc.x, cc.y, true))
+                    return ECMD_OK;
+                if (Blind() && !worn(W_ARMG)) {
+                    for (let obj = sobj_at(ONAMES.CORPSE, cc.x, cc.y); obj;
+                         obj = nxtobj(obj, ONAMES.CORPSE, true)) {
+                        if (will_feel_cockatrice(obj, false)) {
+                            await feel_cockatrice(obj, false);
+                            return ECMD_TIME;
+                        }
+                    }
+                }
+                if (num_conts > 1) {
+                    const win = tty_create_nhwindow(NHW_MENU);
+                    tty_start_menu(win, MENU_BEHAVE_STANDARD);
+                    for (const obj of game.level.objects)
+                        if (obj.ox === cc.x && obj.oy === cc.y && Is_container(obj))
+                            tty_add_menu(win, null, obj, 0, 0, ATR_NONE, NO_COLOR,
+                                         doname(obj), MENU_ITEMFLAGS_NONE);
+                    tty_end_menu(win, 'Loot which containers?');
+                    const picks = await tty_select_menu(win, PICK_ANY);
+                    const n = picks.cancelled ? -1 : picks.length;
+                    tty_destroy_nhwindow(win);
+                    for (let i = 1; i <= n; i++) {
+                        const cobj = { o: picks[i - 1] };
+                        timepassed |= await do_loot_cont(cobj, i, n);
+                        if (game.abort_looting)
+                            return timepassed ? ECMD_TIME : ECMD_OK;
+                    }
+                    if (n !== 0)
+                        c = 'y';
+                } else {
+                    for (const obj of [...game.level.objects]) {
+                        if (obj.ox !== cc.x || obj.oy !== cc.y)
+                            continue;
+                        if (Is_container(obj)) {
+                            anyfound = true;
+                            timepassed |= await do_loot_cont({ o: obj }, 1, 1);
+                            if (game.abort_looting)
+                                return timepassed ? ECMD_TIME : ECMD_OK;
+                        }
+                    }
+                    if (anyfound)
+                        c = 'y';
+                }
+            } else if (IS_GRAVE(game.level.at(cc.x, cc.y).typ)) {
+                await You('need to dig up the grave to effectively loot it...');
+            }
+        }
+        if (c !== 'y' && (mon_beside(game.u.ux, game.u.uy) || game.iflags.menu_requested)) {
+            let looted_mon = false;
+            if (!await get_adjacent_loc('Loot in what direction?',
+                                        'Invalid loot location', game.u.ux, game.u.uy, cc))
+                return ECMD_OK;
+            underfoot = cc.x === game.u.ux && cc.y === game.u.uy;
+            if (underfoot && container_at(cc.x, cc.y, false)) {
+                lootcont = true;
+                continue;
+            }
+            if (game.u.dz < 0) {
+                await You(`${dont_find_anything} to loot on the ${ceiling(cc.x, cc.y)}.`);
+                return ECMD_TIME;
+            }
+            const mtmp = m_at(cc.x, cc.y);
+            if (mtmp) {
+                timepassed = await loot_mon(mtmp, prev_inquiry, prev_loot);
+                if (timepassed)
+                    looted_mon = true;
+            }
+            if (Confusion() || Stunned())
+                timepassed = 1;
+            if (!looted_mon) {
+                if (!underfoot && container_at(cc.x, cc.y, false)) {
+                    if (mtmp) {
+                        await You_cant(`loot anything ${prev_inquiry.v ? 'else ' : ''}there with ${
+                            mon_nam(mtmp)} in the way.`);
+                        return timepassed ? ECMD_TIME : ECMD_OK;
+                    } else {
+                        await You('have to be at a container to loot it.');
+                    }
+                } else {
+                    await You(`${dont_find_anything} ${prev_inquiry.v || prev_loot.v ? 'else ' : ''}${
+                        !underfoot ? 't' : ''}here to loot.`);
+                    return timepassed ? ECMD_TIME : ECMD_OK;
+                }
+            }
+        } else if (c !== 'y' && c !== 'n') {
+            await You(`${dont_find_anything} ${underfoot ? 'here' : 'there'} to loot.`);
+        }
         return timepassed ? ECMD_TIME : ECMD_OK;
     }
+}
 
-    let monBeside = false;
-    for (let dx = -1; dx <= 1 && !monBeside; ++dx)
-        for (let dy = -1; dy <= 1; ++dy)
-            if (m_at(game.u.ux + dx, game.u.uy + dy)) {
-                monBeside = true;
-                break;
+// src/pickup.c:2350 reverse_loot(), confused discoveries and gold contributions.
+export async function reverse_loot() {
+    const x = game.u.ux, y = game.u.uy;
+    if (!rn2(3)) {
+        let n = inv_cnt(true);
+        for (const otmp of game.invent) {
+            if (!rn2(n + 1)) {
+                await prinv('You find old loot:', otmp, 0);
+                return true;
             }
-
-    if (monBeside || game.iflags.menu_requested) {
-        const cc = { x: game.u.ux, y: game.u.uy };
-        const { get_adjacent_loc } = await import('./cmd.js');
-        if (!await get_adjacent_loc('Loot in what direction?',
-                                    'Invalid loot location',
-                                    game.u.ux, game.u.uy, cc))
-            return ECMD_OK;
-
-        const underfoot = cc.x === game.u.ux && cc.y === game.u.uy;
-        const mtmp = m_at(cc.x, cc.y);
-        if (mtmp)
-            note_unported_pickup('doloot:loot_mon_saddle');
-        await You(`don't find anything ${underfoot ? 'here' : 'there'} to loot.`);
-        return ECMD_OK;
+            --n;
+        }
+        return false;
     }
-
-    await You("don't find anything here to loot.");
-    return ECMD_OK;
+    let goldob = null;
+    for (const obj of game.invent) {
+        if (obj.oclass === OCLASSES.COIN_CLASS) {
+            goldob = obj;
+            const contribution = Math.trunc((rnd(5) * goldob.quan + 4) / 5);
+            if (contribution < goldob.quan)
+                goldob = splitobj(goldob, contribution);
+            break;
+        }
+    }
+    if (!goldob)
+        return false;
+    await remove_worn_item(goldob, false);
+    if (!IS_THRONE(game.level.at(x, y).typ)) {
+        await dropx(goldob);
+        if (g_at(x, y))
+            await pline('Ok, now there is loot here.');
+    } else {
+        let coffers = null, otmp = null;
+        for (const obj of game.level.objects) {
+            if (obj.otyp === ONAMES.CHEST) {
+                if (obj.spe === 2) {
+                    coffers = obj;
+                    break;
+                }
+                if (!otmp || distu(obj.ox, obj.oy) < distu(otmp.ox, otmp.oy))
+                    otmp = obj;
+            }
+        }
+        if (!coffers)
+            coffers = otmp;
+        if (coffers) {
+            await verbalize('Thank you for your contribution to reduce the debt.');
+            freeinv(goldob);
+            add_to_container(coffers, goldob);
+            coffers.owt = weight(coffers);
+            coffers.cknown = 0;
+            if (!coffers.olocked)
+                await boxlock(coffers, { otyp: ONAMES.SPE_WIZARD_LOCK });
+        } else {
+            let mon;
+            if (game.level.at(x, y).looted !== T_LOOTED
+                && (mon = await makemon(courtmon(), x, y, NO_MM_FLAGS))) {
+                freeinv(goldob);
+                add_to_minv(mon, goldob);
+                await pline('The exchequer accepts your contribution.');
+                if (!rn2(10))
+                    game.level.at(x, y).looted = T_LOOTED;
+            } else {
+                await You(`drop ${doname(goldob)}.`);
+                await dropx(goldob);
+            }
+        }
+    }
+    return true;
 }
 
 function tip_ok(obj) {

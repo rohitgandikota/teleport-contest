@@ -988,6 +988,11 @@ async function execute_extcmd(name) {
     }
     if (name === 'terrain')
         return await doterrain();
+    // src/cmd.c:1780..1784, the named options commands share the O handlers.
+    if (name === 'options' || name === 'optionsfull') {
+        const { doset_simple, doset } = await import('./options.js');
+        return await (name === 'options' ? doset_simple() : doset());
+    }
     if (name === 'adjust') {
         const { doorganize } = await import('./invent.js');
         return await doorganize();

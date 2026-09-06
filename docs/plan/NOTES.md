@@ -11,6 +11,32 @@ Newest first within each section.
 
 ---
 
+## Looting, automatic unlocking and magic keys
+
+C autounlock is a bitmask, not the configuration string. Its parser accepts
+abbreviations and either spaces or plus signs, but not mixed separators.
+Uppercase NONE works; uppercase action initials fail in C's switch. The
+live menu distinguishes no selected rows from Escape. #options and
+#optionsfull must share O's handlers, including the m-prefix behavior.
+
+A locked-container message can add More before the key, force or trap
+question. Pin the native question and its next key before calling a case
+an accepted attempt. Wished graves cannot replace stairs; move onto floor.
+The saddle probes' pony is northeast, not east. A no-hands aquatic form
+cannot demonstrate the later pool guard.
+
+The generated artifact_otyps table holds names. Convert through ONAMES
+before passing a type to nxtobj. Checking a magic key first in inventory
+hides a bad traversal type. Test a preceding ordinary object and multiple
+keys. C skips both trap chance calls for qualifying keys, which verifies
+forcing independently of whether the disarm happens to succeed.
+
+Reverse looting must update coffer weight and clear cknown after gold
+transfer. A missing weight update passes this native corpus but fails the
+state gate. Full and split gold transfers also need separate quiver and
+ownership checks. Forced disarming skips its chance roll; the later
+exercise call can still draw RNG.
+
 ## Inventory types and unpaid display
 
 Traditional and combination I use a single-character prompt. Full and

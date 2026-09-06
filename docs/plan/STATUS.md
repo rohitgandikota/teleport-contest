@@ -12,47 +12,59 @@ Continue the authorized work; do not mark it complete or recreate it.
 Current-corpus success is not the stopping criterion. Track unreviewed,
 untested, missing, and unreachable source paths explicitly.
 
-### Active checkpoint: inventory type queries and unpaid display
+### Active checkpoint: looting entry, autounlock and container traps
 
-Local HEAD33dbd65a; inventory pass ready for local commit. Five runtime
-modules invent,cmd,pickup,mkobj,objnam. Full C dotypeinv,dounpaid,find_unpaid,
-unknwn_contnr_contents,distant_name read and ported. See inventory-types-audit.
-Work .cache/inventory-types. No C or frozen edits.
+Looting pass complete and verified, pending local commit. Seven runtime modules:
+pickup, lock, options, jsmain, trap, artifact and cmd. Full source scope and
+remaining partial functions are in looting-entry-audit.md. Work .cache/looting-entry.
+No C or frozen edits. Full untrap and remaining pick_lock/autokey paths are open.
 
-Two permanent recipes91cases: inventory-type-queries82,unpaid-inventory-display9.
-All22779screens/cursors276003RNGmatch. C repeat2/2exact, separateassertions/
-integritypass. Ledger2757/2757,99covered7partial. Cunion+114outcomes,+3records
-reaches55938/108268,4379/5491. dotypeinv112/128,dounpaid34/54,find_unpaid9/10,
-unknownparent3/4,distant_name7/10. remaining.json preservesexactgaps.
+Five permanent recipes, 144 native scenarios: looting-entry59, confused-looting15,
+container-autounlock40, autounlock-options18 and magic-key-looting12. All34,714
+screens/cursors,350,480 RNG and22 animations match. Instrumented C repeat5/5
+exact; separate integrity and branch assertions pass. Ledger2901/2901,
+99 categories covered and7 partial. C union adds268 outcomes and6 entered records,
+reaching56206/108268 and4385/5491. remaining.json preserves exact gaps.
 
-State91native19Cpriceobservations29constructedgroupspass. Initialstate25007
-failedonlyundefinedvs0suppress_price; corrected90652passes. All4mutantsfail
-constructedchecks. No-traditional78screens64cursors, no-unpaid14screens4cursors,
-allRNGmatch. No-location/no-identitypassnativebutfailstate. Exact33dbd65a
-across5modulesfailsbothfixtures92screens68cursors,allRNG. NODE_OPTIONSworkers.
+State gate checks144 native replays,55 C inventory observations,144 HP values,
+10 gold balances and52 constructed groups. All six deliberate regressions fail
+state checks. Skipping coffer weight passes every native comparison but fails
+state. Native key-order pairs catch artifact type names passed to numeric
+nxtobj; converting through ONAMES fixes the new helper. Exact prior cc43b3fa
+across7 modules fails5/5 fixtures,2594 screens896 cursors269976 positional RNG.
 
-Final558/558=44public514supplemental,442076screens/cursors11133577RNGmatch.
-Supplemental430671screens10340739RNG21704animationsmatch. Public21oldanimation
-missesremain. Twelve relatedstate gates46hang80freshroles14tooltestsledger
-source0/268pass. Fuzz101/102knownfixed-date screenmissall491759RNG. Jobs39194,
-25007,90652,99770,29799,53924,27403,44399finishedandcollected. verification-exits
-andregression-final/totalscontainresults. Prior556pre-promotionjob80340passes.
+Final full sweep563/563:44 public519 supplemental. All476790 screens/cursors
+and11484057 RNG match. Supplemental465385 screens/cursors10691219 RNG21726
+animations match. Public21 old animation misses remain. Twelve related state
+gates,49 hang cases,80 fresh roles,14 tool tests and source audit0/268 pass.
+Fuzz101/102 has the known fixed-date screen miss; all491759 RNG match.
+verification-exits.json and totals.json preserve completed results. All known
+jobs, including final sweep53061 and verifier65496, are finished and collected.
 
-Shop0/2setupinvalidbecausemenustylechangedbeforelooting; excluded. Corrected
-traditionalprobeschangeitlive. OriginalextraduplicatemenustylecausedCstartup
-errors, retainedextra-duplicate-options, nocredit. CurrentknownstartuperrorUIgap.
+Probe setup corrections, excluded lava/grave/saddle attempts and duplicate
+startup options are preserved in the audit. Do not promote invalid probes or
+claim C branch credit for constructed states. Live #options exposed missing
+named dispatch; cmd.js now connects both options and optionsfull.
 
-Next pass.cache/looting-entry,60Cprobesrecorded82772collected0. Before scorer
-23511running. Full Ccontainer_at2024..2038,able_to_loot2041..2069,
-mon_beside2072..2085,do_loot_cont2088..2162,doloot2166..2174,
-doloot_core2178..2346,reverse_loot2350..2426,loot_mon2431..2483read.
-Cforceableweapon660..671read; JShelperalreadycompletebutneeds export.
-No nextpassruntimeeditsyet. Nativeprobesconfirmbagbite,multimenu,freehand,
-levitation,pool,ceiling,forceandconfused contributions. Grave20didnotcreate
-terrainonstairs; underwater26nohands; lava27containerburned; saddle34..36
-missedactualmonlocation. These needcorrectionbeforecoveragecredit. Firstmulti
-boxislocked so addunlocked/morecontainers scenarios. Continuefullportgoal.
-Do notpush; prior publication authorization remains unanswered.
+Next pass: full #untrap. C untrap5848..6096 and all helper bodies5289..5789
+have been read. Re-read the body before implementing. JS already has cnv_trap_obj
+and into_vs_onto near5309; inspect those before adding helpers. No next-pass
+runtime edits or probe directory yet. Connect automatic container untrapping
+through the full wrapper once ported. Continue C oracles, state checks, source
+coverage, mutations and regression. Do not push; publication authorization
+remains unanswered. Current corpus success does not complete the goal.
+
+### Checkpoint: inventory type queries and unpaid display
+
+Committed locally as cc43b3fa. Five runtime modules invent,cmd,pickup,mkobj,objnam.
+Full C dotypeinv,dounpaid,find_unpaid,unknwn_contnr_contents,distant_name ported.
+See inventory-types-audit.md and .cache/inventory-types. No C or frozen edits.
+Two permanent recipes91 cases,22779 screens/cursors276003 RNG match. C repeat2/2
+exact; ledger2757/2757. C union55938/108268,4379/5491. State91 native queries,
+19 prices29 constructed groups; all4 mutants fail state. Final558/558,
+442076 screens/cursors11133577 RNG match with21 old public animation misses.
+All jobs collected. Invalid traditional shop setup and duplicate menustyle
+probes remain excluded; startup configuration-error UI is still incomplete.
 
 ### Checkpoint: category selection and menu symbols
 

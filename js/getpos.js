@@ -362,7 +362,7 @@ export async function getpos(ccp, force, goal) {
                 }
             } else {
                 if (!garr[gloc]) {
-                    garr[gloc] = gather_locs(gloc);
+                    garr[gloc] = await gather_locs(gloc);
                     gcount[gloc] = garr[gloc].length;
                     gidx[gloc] = 0; /* garr[][0] is hero's spot */
                 }
@@ -600,7 +600,7 @@ function IS_UNEXPLORED_LOC(x, y) {
 }
 
 // src/getpos.c:438 gather_locs_interesting()
-function gather_locs_interesting(x, y, gloc) {
+async function gather_locs_interesting(x, y, gloc) {
     const filter = game.iflags?.getloc_filter | 0;
     if (filter === GFILTER_VIEW && !cansee(x, y))
         return false;
@@ -644,10 +644,10 @@ function gather_locs_interesting(x, y, gloc) {
                     || IS_UNEXPLORED_LOC(x, y - 1)));
     case GLOC_VALID:
         if (getpos_getvalid)
-            return !!getpos_getvalid(x, y);
+            return !!(await getpos_getvalid(x, y));
         /*FALLTHRU*/
     case GLOC_INTERESTING:
-        return (gather_locs_interesting(x, y, GLOC_DOOR)
+        return ((await gather_locs_interesting(x, y, GLOC_DOOR))
                 || !((sym !== -1
                       && (is_cmap_wall(sym)
                           || sym === CM.S_tree
@@ -669,13 +669,13 @@ function gather_locs_interesting(x, y, gloc) {
 // src/getpos.c:513 gather_locs() — every interesting spot of the requested
 // kind plus the hero's own, sorted by distance from the hero. The hero's
 // spot always sorts to [0] (distance 0).
-function gather_locs(gloc) {
+async function gather_locs(gloc) {
     gloc_filter_init();
     const arr = [];
     for (let x = 1; x < COLNO; x++)
         for (let y = 0; y < ROWNO; y++)
             if ((x === game.u.ux && y === game.u.uy)
-                || gather_locs_interesting(x, y, gloc))
+                || await gather_locs_interesting(x, y, gloc))
                 arr.push({ x, y });
     arr.sort(cmp_coord_distu);
     gloc_filter_done();
@@ -757,7 +757,7 @@ const gloc_filtertxt = ['', ' in view', ' in this area'];
 
 // src/getpos.c:665 getpos_menu() — pick a gathered target from a menu
 async function getpos_menu(ccp, gloc) {
-    const garr = gather_locs(gloc);
+    const garr = await gather_locs(gloc);
     const gcount = garr.length;
     const filter = game.iflags?.getloc_filter | 0;
 

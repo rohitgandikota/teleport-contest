@@ -2444,17 +2444,16 @@ export async function create_particular() {
 
     do {
         const buf = await getlin(prompt);
-        if (buf === null || buf === '\x1b')
+        const bufp = mungspaces(buf === null ? '' : buf);
+        if (bufp[0] === '\x1b')
             return false;
-        /* C's getlin prompt separates this command from the preceding Norep
-           message. Our prompt renderer does not feed _prevmsg, so clear it
-           before the first creation announcement. */
-        game._prevmsg = null;
-        const parsed = await parse_create_particular(buf);
+
+        const parsed = await parse_create_particular(bufp);
         if (parsed.valid)
             return create_particular_creation(parsed.data);
 
-        if (parsed.text || altmsg || tryct < 2) {
+        /* no good; try again... */
+        if (bufp || altmsg || tryct < 2) {
             await pline("I've never heard of such monsters.");
         } else {
             await pline('Try again (type * for random, ESC to cancel).');
@@ -2463,6 +2462,9 @@ export async function create_particular() {
         if (tryct === CP_TRYLIM)
             prompt += ' [type name or symbol]';
     } while (--tryct > 0);
+
+    if (!tryct)
+        await pline("That's enough tries!"); /* thats_enough_tries */
 
     return false;
 }

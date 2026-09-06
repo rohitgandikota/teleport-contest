@@ -5208,3 +5208,111 @@ tipping. Its original extended segment 33 is retained for the pickup pass.
 Corrected unpaid horn cases use a shop that buys tools and native-observed
 pickup responses. Do not change a failing setup into a passing label and
 then claim it exercised the original behavior.
+
+## Longer fuzz games find what the 250-key corpus cannot (2026-09-06)
+
+The 102-game corpus was 102/102 RNG-perfect and still the private score
+was 81%. `fuzz.mjs --games 40 --keys 700 --seed 11` produced 9 failures out
+of 40, all real bugs, none reachable in 140-step games: wizard-mode deaths,
+`^V` to negative levels, five-try prompt limits, getpos `z`, travel to
+unexplored squares, achievements in the conduct window. Longer games and
+fresh seeds are the cheapest held-out estimator we have; run a new batch
+before porting by note count.
+
+## Rush and run keys after g, G and F prefixes are refused
+
+src/cmd.c:2024: the rush and run table entries carry CMD_M_PREFIX only
+("accept m prefix but not g/G/F"). `g` followed by ^J, `G` + `J`, `F` + a
+control direction all print "The 'g' prefix should be followed by a movement
+command." and take no time. Ours translated the control/shift key to its
+base direction first and ran. Diverge blamed readobjnam 94 steps later
+because C drew nothing between the two; the "divergent call occurs at" line
+is C's index, not the step where our stream went wrong.
+
+## Inhell is dungeons[].flags.hellish, not hell_dnum
+
+`game.hell_dnum` was never assigned, so `u.uz.dnum === game.hell_dnum` was
+always false. Vlad's Tower and Gehennom are both hellish. Use
+`Inhell()` from makemon.js (include/dungeon.h:140).
+
+## getpos gathering must await async validators
+
+`get_valid_jump_position()` is async (is_valid_jump_pos awaits messages).
+`gather_locs_interesting()` tested the promise, so every square was "valid"
+for the `z`/`Z` keys and the cursor jumped to the nearest square. Both
+gather functions are async now; `getpos_menu()` and the key loop await them.
+
+## SYMBOLS= overrides sit on top of the symset
+
+src/symbols.c parsesymbols()/match_sym() and src/options.c sym_val()/
+escapes() are ported into js/symbols.js with C's `ov_primary_syms[]`
+table (SYM_OFF_P/O/M/W/X layout). `assign_graphics()` applies the
+overrides after copying the set and before the dark_room copy, and fills
+`gs_showsyms.O/M/X` for object classes, monster classes and the "other"
+symbols; display.js, detect.js and pager.js read them through
+`showsym_oc()`, `showsym_mon()`, `showsym_other(SYM_BOULDER)`. The
+`boulder` option is stored as the S_boulder override, as optfn_boulder()
+does. `OPTIONS=S_pool:~` works through parseoptions' "Is it a symbol?"
+arm. One public rc carries `SYMBOLS=S_pool:~,S_fountain:{` next to
+symset:DECgraphics; the C shows '~' pools, the DEC diamond is wrong.
+Under DEC handling a value with the high bit set is a line-drawing
+character (win/tty/wintty.c g_putch), matching defsyms' `dec` flag.
+
+## tty prompts are the previous message for Norep
+
+win/tty/topl.c tty_yn_function() and win/tty/getline.c hooked_tty_getlin()
+show their prompt through custompline(OVERRIDE_MSGTYPE | SUPPRESS_HISTORY),
+and src/pline.c:282 vpline() copies it into gp.prevmsg. A Norep() of the
+message shown before the prompt is therefore printed again in C
+("You already found a monster." after "Really save? [yn]"). Menus and text
+windows do not touch prevmsg. Verified with recipes/probe-norep.json. Ours
+now sets `game._prevmsg` in tty_yn_function() and getlin(); the read.js
+create_particular hack that nulled it is gone.
+
+## create_particular retries and the try limit
+
+src/read.c:3389 tests `*bufp` after mungspaces(), the raw input, so "25"
+(a count with no name) says "I've never heard of such monsters." and only a
+blank line gets "Try again (type * for random, ESC to cancel)." After five
+failures C prints "That's enough tries!" (thats_enough_tries). makewish has
+the same limit and the same message.
+
+## doquiver_core prints "You ready:" before setuqwep for f
+
+src/wield.c:652: `Q` places the item first so the line reads "(at the
+ready)"; refilling during `f` prints prinv("You ready:", ...) and then
+quivers, so no "(at the ready)". The function is now the full C form:
+count splits through objsplit, wielded/alternate weapon confirmation,
+ECMD_TIME when a wielded weapon was unwielded.
+
+## level_tele beyond the dungeon
+
+Negative levels: shop bills are settled (u_left_shop), then heaven
+(<= -10), Cloud 9 (-9) or "high above the clouds"; without Levitation or
+Flying the hero plummets, killer "teleported out of the dungeon and fell
+to his death", and done(DIED) is called with u.uz set to the surface; a
+wizard who declines to die "finds yourself back on the surface" and
+escapes via newlevel {0,0}. Level 0 asks "Go to Nowhere.  Are you sure?"
+and commits suicide. Knox refuses positive levels, Gehennom's last level is
+"Sorry..." before the invocation, quest levels are floored at qstart.
+
+## Conduct window achievements
+
+src/insight.c:2243 show_achievements() lists every recorded achievement in
+recording order (Amulet then ascension moved last), present tense while
+alive. Ours listed six of them. The wizard-mode death sequence shows the
+window, so "You entered the Big Room." was missing from the end screens.
+
+## is_valid_travelpt: unexplored is not a cmap glyph
+
+include/display.h:543 puts GLYPH_UNEXPLORED after the statue glyphs, so
+`glyph_is_cmap()` is false for a never-seen square and only a remembered
+S_stone with seenv 0 is rejected before findtravelpath(). Ours also
+rejected 'unexplored' glyphs, so a corridor square just outside a known
+doorway said "(no travel path)" while C found the path through the
+doorway (couldsee() is enough for the neighbor test).
+
+## "No such command" uses visctrl()
+
+src/pager.c:2711 formats the key with visctrl(), so a space prints as
+' '. key2txt() ("<space>") is only for dowhatdoes_core's key column.

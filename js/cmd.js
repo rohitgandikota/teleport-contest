@@ -505,6 +505,10 @@ export async function getlin(query, hook) {
     // Replace any physical no-history description left by getpos().
     game._win_stop = false;
     game._topline_physical_prefix = '';
+    /* custompline(OVERRIDE_MSGTYPE | SUPPRESS_HISTORY, "%s ", query) goes
+       through src/pline.c:282 vpline(), which records the prompt as the
+       previous message for Norep() */
+    game._prevmsg = query + ' ';
 
     for (;;) {
         /* win/tty/getline.c hooked_tty_getlin():
@@ -1703,8 +1707,13 @@ export async function rhack(key) {
        so reject a known nonmovement command before its normal dispatch. An
        unbound key falls through to bad_command, and another prefix is allowed
        through, matching PREFIXCMD. */
-    if ((game.domove_attempting & DOMOVE_RUSH) && !isMovementKey(ch)
-            && !'gGmF'.includes(ch) && prefixCommand) {
+    /* src/cmd.c:2024 the rush and run table entries carry CMD_M_PREFIX
+       only ("accept m prefix but not g/G/F"), so a shifted or control
+       direction after g/G/F is refused like any other bound non-movement
+       command. */
+    if ((game.domove_attempting & DOMOVE_RUSH)
+        && (movemode !== 0
+            || (!isMovementKey(ch) && !'gGmF'.includes(ch) && prefixCommand))) {
         const prefix = game.context.run === 3 ? 'G' : 'g';
         const vertical = ch === '<' || ch === '>';
         game.context.run = 0;
@@ -1717,8 +1726,9 @@ export async function rhack(key) {
     /* src/cmd.c:3693-3723 applies the same prefix validation to do_fight.
        A nonmovement key is consumed by the rejected F command rather than
        dispatched as its ordinary command. */
-    if (game.context.forcefight && !isMovementKey(ch)
-            && !'gGmF'.includes(ch) && prefixCommand) {
+    if (game.context.forcefight
+        && (movemode !== 0
+            || (!isMovementKey(ch) && !'gGmF'.includes(ch) && prefixCommand))) {
         const vertical = ch === '<' || ch === '>';
         game.context.forcefight = 0;
         game.context.move = 0;

@@ -22,7 +22,7 @@ import { allopt, findOption } from './optlist.js';
 import { condtests } from './botl.js';
 import {
     assign_graphics, gs_symset, gc_currentgraphics, known_handling,
-    primary_symsets, PRIMARYSET,
+    primary_symsets, PRIMARYSET, ROGUESET, parsesymbols, switch_symbols,
 } from './symbols.js';
 import { def_char_to_objclass } from './sp_lev.js';
 import { OCLASSES } from './objects_data.js';
@@ -188,6 +188,13 @@ export function parseoptions(opts, tinitial, tfrom_file, result) {
 
     const opt = findOption(name);
     if (!opt) {
+        /* src/options.c:663 — Is it a symbol? */
+        if (opts.startsWith('S_') && parsesymbols(opts, PRIMARYSET)) {
+            switch_symbols(true);
+            /* check_gold_symbol() only re-derives the status line's gold
+               symbol, which this tty model reads at display time */
+            return true;
+        }
         /* An unrecognised option is reported, never silently dropped — a
            held-out session may legitimately set something we have not wired
            up yet, and we want to see it. */
@@ -434,7 +441,16 @@ export function parseNethackrc(rc) {
             parseoptions(rest, true, true, result);
             break;
         case 'SYMBOLS':
+            /* src/cfgfiles.c:1202 cnf_line_SYMBOLS() */
             result.symbols.push(rest);
+            if (!parsesymbols(rest, PRIMARYSET))
+                config_error_add(result, `Error in SYMBOLS definition '${rest}'`);
+            break;
+        case 'ROGUESYMBOLS':
+            /* src/cfgfiles.c:1191 cnf_line_ROGUESYMBOLS() */
+            result.symbols.push(rest);
+            if (!parsesymbols(rest, ROGUESET))
+                config_error_add(result, `Error in ROGUESYMBOLS definition '${rest}'`);
             break;
         case 'BIND':
         case 'BINDI':

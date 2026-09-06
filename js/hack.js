@@ -2188,10 +2188,10 @@ export async function is_valid_travelpt(x, y) {
 
     const glyph = glyph_at(x, y);
     const loc = game.level?.at(x, y);
-    if (isok(x, y)
-        && (glyph?.kind === 'unexplored'
-            || (glyph?.kind === 'cmap'
-                && glyph.cmap === cmap_names.S_stone))
+    /* include/display.h:543 GLYPH_UNEXPLORED lies outside the cmap range,
+       so glyph_is_cmap() is false for a never-seen square and only a
+       remembered S_stone is rejected here */
+    if (isok(x, y) && glyph?.kind === 'cmap' && glyph.cmap === cmap_names.S_stone
         && !loc?.seenv)
         return false;
 

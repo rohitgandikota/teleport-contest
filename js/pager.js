@@ -76,6 +76,8 @@ import { tty_create_nhwindow, tty_putstr, tty_display_nhwindow,
 import { ok_to_quest } from './quest.js';
 import { costly_spot, doname_with_price } from './shk.js';
 import { trapname } from './trap.js';
+import { showsym_other, SYM_BOULDER } from './symbols.js';
+import { visctrl } from './hacklib.js';
 
 function note_unported_pager(what) {
     (game.unported ||= new Set()).add('pager:' + what);
@@ -982,8 +984,7 @@ export function do_screen_description(cc, looked, sym) {
     }
 
     /* Now check for objects */
-    const boulderSym = game.boulder_symbol
-                       || def_oc_syms[OCLASSES.ROCK_CLASS];
+    const boulderSym = showsym_other(SYM_BOULDER);
     for (let i = 1; i < def_oc_syms.length; i++) {
         const matched = (i !== OCLASSES.ROCK_CLASS)
             ? (sympair.ch === def_oc_syms[i] && !sympair.dec)
@@ -1667,7 +1668,7 @@ export async function dowhatdoes() {
         }
     } else {
         const cc = q.charCodeAt(0);
-        await pline(`No such command '${key2txt(cc)}', char code ${cc} `
+        await pline(`No such command '${visctrl(cc)}', char code ${cc} `
             + `(0${cc.toString(8).padStart(3, '0')} or `
             + `0x${cc.toString(16).padStart(2, '0')}).`);
     }

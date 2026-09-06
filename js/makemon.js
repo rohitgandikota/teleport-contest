@@ -1628,9 +1628,8 @@ export function set_mimic_sym(mtmp) {
         game.flags.made_fruit = true;
     } else if (ap_type === M_AP_FURNITURE && appear === MONSYMS.S_altar) {
         const algn = rn2(3) - 1; /* -1 chaos, 0 neutral, +1 law */
-        const inhell = game.u?.uz?.dnum === game.hell_dnum;
         /* include/align.h:50 Align2amask */
-        mtmp.mcorpsenm = (inhell && rn2(3)) ? 0 /* AM_NONE */
+        mtmp.mcorpsenm = (Inhell() && rn2(3)) ? 0 /* AM_NONE */
             : (algn === 1) ? 4 /* AM_LAWFUL */ : algn + 2;
     } else if (mtmp.mcorpsenm !== undefined) {
         /* don't retain stale value from a previously mimicked shape */

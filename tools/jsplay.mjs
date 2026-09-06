@@ -138,6 +138,15 @@ if (flag('--eval')) {
     console.log('EVAL', new Function('game', 'dungeon', 'C', 'symbols',
         `return (${opt('--eval')});`)(game, dungeon, C, symbols));
 }
+if (flag('--aeval')) {
+    /* like --eval, but the expression may await; 'h' is the hack.js namespace */
+    const game = gstate.game;
+    const dungeon = await import(pathToFileURL(join(ROOT, 'js/dungeon.js')).href);
+    const h = await import(pathToFileURL(join(ROOT, 'js/hack.js')).href);
+    const AsyncFunction = Object.getPrototypeOf(async function () {}).constructor;
+    console.log('AEVAL', await new AsyncFunction('game', 'dungeon', 'C', 'symbols', 'h',
+        `return (${opt('--aeval')});`)(game, dungeon, C, symbols, h));
+}
 if (flag('--dumptrap')) {
     const game=gstate.game; for (const t of (game.level?.traps||[])) console.log(`TRAP (${t.tx},${t.ty}) ttyp=${t.ttyp} tseen=${t.tseen}`); console.log(`hero ${game.u.ux},${game.u.uy}`);
 }

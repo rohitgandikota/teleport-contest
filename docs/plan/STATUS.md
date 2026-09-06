@@ -9,7 +9,38 @@ loop until complete. The user requested an unbudgeted goal. The goal tracker now
 Current-corpus success is not the stopping criterion. Track unreviewed,
 untested, missing, and unreachable source paths explicitly.
 
-### Active checkpoint: Minetown map flags and shop annotations
+### Active pass: divergence-driven fixes from longer fuzz games
+
+Method: `node tools/gen-sessions/fuzz.mjs --games 40 --keys 700 --seed 11`
+recorded 40 games up to 700 keys (the old corpus averages 140 steps). Nine
+failed; every one was a real port bug and every one is now fixed. The
+census `bash <scratch>/tally.sh <root> <label>` (diverge.mjs --screens over
+tools/gen-sessions/fuzz/*.session.json) reads 142/142 RNG-perfect; the only
+screen misses left are the two recording-timezone cases (s2-27, s11-18, see
+NOTES "Fixed datetime and DST").
+
+Fixed this pass (details in NOTES, entries dated 2026-09-06):
+rush/run keys after g/G/F prefixes (cmd.js); mimic altar In_hell() and
+onscary In_hell() (makemon.js, monmove.js); async getpos validators awaited
+by gather_locs (getpos.js); SYMBOLS= overrides ported (symbols.js
+parsesymbols/match_sym/sym_val/escapes, ov_primary_syms, class symbol
+tables, jsmain/options wiring); tty yn prompts and getlin prompts set the
+Norep previous message (tty/topl.js, cmd.js); create_particular retry text
+and "That's enough tries!" (read.js); unknown command uses visctrl
+(pager.js); doquiver_core in C form (wield.js); level_tele Nowhere, Knox,
+above-the-dungeon, deepest-level and quest bounds (teleport.js);
+show_achievements in the conduct window (insight.js); is_valid_travelpt no
+longer rejects unexplored squares (hack.js). Also committed: the previous
+agent's mkmaze.c get_level_extends clamps and bound_digging W_NONPASSWALL
+(mklev.js) with tools/map-boundary-state-gate.mjs, verified against the C.
+
+Next: record more long batches with new seeds (`--seed 12`, `--keys 1000`,
+`--debug`/`--normal` splits), fix what diverges, and only then go back to
+the note_unported list (411 notes; hack.js 19, spell.js 20, shk.js 19).
+tools/jsplay.mjs has a new `--aeval "<await expr>"` flag with the hack.js
+namespace as `h` for state probes.
+
+### Checkpoint: Minetown map flags and shop annotations
 
 Work .cache/minetown-map. Last checkpoint f168e862 is pushed to origin/main.
 The user authorizes all future verified checkpoint pushes without asking.

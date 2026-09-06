@@ -82,7 +82,7 @@ import { billable, costly_spot, stolen_value, unpaid_cost, subfrombill,
          shop_keeper, addtobill, alter_cost } from './shk.js';
 import { copy_mextra } from './mon.js';
 import { ONAME, has_oname, has_omid, OMID, free_omid, ONAME_SKIP_INVUPD,
-         COST_SINGLEOBJ, OBJ_DELETED } from './const.js';
+         COST_SINGLEOBJ, OBJ_DELETED, OBJ_LUAFREE, OBJ_ONBILL } from './const.js';
 import { in_rooms } from './hack.js';
 import { impossible, verbalize } from './pline.js';
 import { simpleonames } from './objnam.js';
@@ -206,18 +206,11 @@ function nextoid(oldobj, newobj) {
 }
 
 
-// src/mkobj.c:457 splitobj() — split num items off obj into a new object.
-//
-// Draws nothing. Ported for dog_eat(), which splits a single item off a food
-// stack so a pet eats one ration rather than the whole pile.
-//
-// Not ported, each recorded rather than faked: splitbill (shops), the timer
-// and light-source splits, and the Lua reference bookkeeping. copy_oextra is
-// approximated by carrying the fields our object model actually has.
+// src/mkobj.c:457 splitobj(); insert the split child after its parent.
 export function splitobj(obj, num) {
     /* can't split containers; C panics here */
-    if (obj.cobj || num <= 0 || obj.quan <= num)
-        note_unported_obj('splitobj:panic');
+    if (obj.cobj?.length || num <= 0 || obj.quan <= num)
+        throw new Error(`splitobj [cobj=${obj.cobj?.length ? 'non-empty container' : '(null)'} num=${num} quan=${obj.quan}]`);
 
     const otmp = { ...obj };        /* *otmp = *obj -- copies whole structure */
     otmp.oextra = null;
@@ -229,27 +222,34 @@ export function splitobj(obj, num) {
     obj.owt = weight(obj);
     otmp.quan = num;
     otmp.owt = weight(otmp);
+    otmp.lua_ref_cnt = 0;
     otmp.pickup_prev = 0;
 
     game.context.objsplit = game.context.objsplit || {};
     game.context.objsplit.parent_oid = obj.o_id;
     game.context.objsplit.child_oid = otmp.o_id;
 
-    /* C inserts the child immediately after the parent in both floor chains.
-     * The port represents those chains with one level object array. */
-    if (obj.where === OBJ_FLOOR) {
-        const objects = game.level?.objects;
-        const index = objects?.indexOf(obj) ?? -1;
-        if (index >= 0)
-            objects.splice(index + 1, 0, otmp);
-    } else if (obj.where === OBJ_INVENT) {
-        const index = (game.invent || []).indexOf(obj);
-        if (index >= 0)
-            game.invent.splice(index + 1, 0, otmp);
+    let chain;
+    switch (obj.where) {
+    case OBJ_FLOOR: chain = game.level?.objects; break;
+    case OBJ_INVENT: chain = game.invent; break;
+    case OBJ_MINVENT: chain = obj.ocarry?.minvent; break;
+    case OBJ_CONTAINED: chain = obj.ocontainer?.cobj; break;
+    case OBJ_MIGRATING: chain = game.migrating_objs; break;
+    case OBJ_BURIED: chain = game.level?.buriedobjs; break;
+    case OBJ_ONBILL: chain = game.billobjs; break;
     }
+    const index = chain?.indexOf(obj) ?? -1;
+    if (index >= 0)
+        chain.splice(index + 1, 0, otmp);
+    if (otmp.where === OBJ_LUAFREE)
+        otmp.where = OBJ_FREE;
 
     if (obj.unpaid)
         splitbill(obj, otmp);
+    copy_oextra(otmp, obj);
+    if (has_omid(otmp))
+        free_omid(otmp);
     if (obj.timed)
         obj_split_timers(obj, otmp);
     if (obj_sheds_light(obj))

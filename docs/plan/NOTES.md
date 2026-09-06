@@ -11,6 +11,30 @@ Newest first within each section.
 
 ---
 
+## Container transfer probes
+
+A wished stack can merge into one of several existing stacks. Eight wishes
+of 30 +0 daggers produce stacks of 210 and 30 in this setup. Read the actual
+C menu before selecting a count: 120b reaches the large stack, while 120a
+only takes the 30-stack and never asks about encumbrance. A preceding More
+can consume the planned yes/no answer. Pin the Continue prompt and inspect
+the resulting contents before claiming a confirmation branch.
+
+splitobj inserts its child into every owner chain before returning. Porting
+monster linkage exposed money2u leaving the paid child in minvent while
+adding it to invent. Always use obj_extract_self, including after a split.
+Total gold alone misses duplicate ownership; check the object identities.
+
+The status before yn_function follows dirty flags. An unconditional bot
+refresh exposes capacity too early during container removal. Newly held gold
+sets botl, so suppressing every capacity repaint is also wrong. Preserve the
+C flush timing and test both large item stacks and large gold stacks.
+
+sortloot is stored as a full option string in this port. Native contents
+sorting checks its first character. Test loot/full with !sortpack; the
+pack grouping can hide a missing loot-sort flag. Traditional P filtering
+can match every wished object, since these wishes retain pickup_prev.
+
 ## Traditional inventory selection probes
 
 identify_pack repeats ggetobj when category selection returns zero. Escape

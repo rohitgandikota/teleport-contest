@@ -41,7 +41,8 @@ import { cmdq_pop, cmdq_clear, cmdq_add_key, cmdq_add_int, get_count } from './c
 import { GC_SAVEHIST } from './const.js';
 import { GC_ECHOFIRST, GC_CONDHIST, GETOBJ_NOFLAGS, ECMD_FAIL, ECMD_CANCEL } from './const.js';
 import { delobj, t_at, is_pool, is_lava } from './mon.js';
-import { addtobill, costly_spot, doname_with_price, obfree_bill, same_price } from './shk.js';
+import { addtobill, costly_spot, doname_with_price, obfree_bill, same_price,
+         shop_keeper, inside_shop, inhishop } from './shk.js';
 import { ONAME, has_oname, ONAME_SKIP_INVUPD } from './const.js';
 import { u_at, CMDQ_KEY, CMDQ_INT, CQ_CANNED, CQ_REPEAT, FOUNTAIN, THRONE, SINK, GRAVE, ALTAR, TREE,
          ICE, DRAWBRIDGE_DOWN, IRONBARS, Never_mind, LOST_NONE, LOST_THROWN, LOST_EXPLODING, LOOKHERE_PICKED_SOME, LOOKHERE_SKIP_DFEATURE, IS_DOOR, D_NODOOR, D_ISOPEN, D_BROKEN,
@@ -400,6 +401,30 @@ export async function feel_cockatrice(otmp, force_touch = false) {
     return true;
 }
 
+// src/invent.c:775 merge_choice(); predict merging after pickup billing.
+export function merge_choice(objlist, obj) {
+    if (!objlist?.length || obj.otyp === ONAMES.SCR_SCARE_MONSTER)
+        return null;
+    const save_nocharge = obj.no_charge;
+    let shkp;
+    if (objlist === game.invent && obj.where === OBJ_FLOOR
+        && (shkp = shop_keeper(inside_shop(obj.ox, obj.oy))) !== null) {
+        if (obj.no_charge)
+            obj.no_charge = 0;
+        else if (inhishop(shkp))
+            return null;
+    }
+    let candidate = null;
+    for (const item of objlist) {
+        if (mergable(item, obj)) {
+            candidate = item;
+            break;
+        }
+    }
+    obj.no_charge = save_nocharge;
+    return candidate;
+}
+
 /* src/invent.c:735 inv_rank() — invlet ^ 040, which sorts '$' (gold) before
    'a'..'z' before 'A'..'Z'. */
 const inv_rank = (o) => ((o.invlet ? o.invlet.charCodeAt(0) : 0) ^ 0o40);
@@ -657,6 +682,26 @@ export function count_buc(list, type, filterfunc = null) {
             ++count;
     }
     return count;
+}
+
+// src/invent.c:3580 tally_BUCX(); lists already carry the requested chain order.
+export function tally_BUCX(list, by_nexthere, bcp, ucp, ccp, xcp, ocp, jcp) {
+    bcp.v = ucp.v = ccp.v = xcp.v = ocp.v = jcp.v = 0;
+    for (const obj of list || []) {
+        if (Role_if(PM_CLERIC))
+            obj.bknown = obj.oclass !== OCLASSES.COIN_CLASS ? 1 : 0;
+        if (obj.pickup_prev)
+            ++jcp.v;
+        if (obj.oclass === OCLASSES.COIN_CLASS) {
+            if (game.flags.goldX) ++xcp.v;
+            else ++ucp.v;
+            continue;
+        }
+        if (!obj.bknown) ++xcp.v;
+        else if (obj.blessed) ++bcp.v;
+        else if (obj.cursed) ++ccp.v;
+        else ++ucp.v;
+    }
 }
 
 // src/invent.c:3620 count_contents()
@@ -2322,10 +2367,10 @@ export async function hold_another_object(obj, drop_fmt, drop_arg, hold_msg) {
                 obj = splitobj(obj, oquan);
             drop_it = true;
         } else {
-            if (near_capacity() !== old_encumbr) {
-                /* C does not repaint the new capacity condition until
-                   encumber_msg() has announced it. Keep the pre-add status
-                   while prinv() is blocked at a More prompt. */
+            if (near_capacity() !== old_encumbr
+                && !game.disp?.botl && !game.disp?.botlx) {
+                /* prinv() flushes dirty status, including newly added gold.
+                   Otherwise the old condition lasts until encumber_msg(). */
                 game._encumber_status_stale = true;
                 game._deferred_status_capacity = old_encumbr;
             }
@@ -3532,6 +3577,14 @@ export async function display_minventory(mon,    /* monster whose minvent we're 
     else
         ret = null;
     return ret;
+}
+
+// src/invent.c:1602 obj_here()
+export function obj_here(obj, x, y) {
+    for (const otmp of game.level?.objects || [])
+        if (otmp.ox === x && otmp.oy === y && obj === otmp)
+            return true;
+    return false;
 }
 
 // src/invent.c g_at(); the gold on the floor at <x,y>, if any

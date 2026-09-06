@@ -87,6 +87,15 @@ export const Is_pudding = (o) =>
 export const Is_container = (o) =>
     o.otyp >= ONAMES.LARGE_BOX && o.otyp <= ONAMES.BAG_OF_TRICKS;
 
+// include/obj.h:340 SchroedingersBox()
+export const SchroedingersBox = (o) => o.otyp === ONAMES.LARGE_BOX && o.spe === 1;
+
+// include/obj.h:388 age_is_relative(); magic lamps use absolute age.
+export const age_is_relative = (o) => o.otyp === ONAMES.BRASS_LANTERN
+    || o.otyp === ONAMES.OIL_LAMP || o.otyp === ONAMES.CANDELABRUM_OF_INVOCATION
+    || o.otyp === ONAMES.TALLOW_CANDLE || o.otyp === ONAMES.WAX_CANDLE
+    || o.otyp === ONAMES.POT_OIL;
+
 // include/obj.h:382 Is_candle()
 export const Is_candle = (o) =>
     o.otyp === ONAMES.TALLOW_CANDLE || o.otyp === ONAMES.WAX_CANDLE;

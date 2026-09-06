@@ -1,0 +1,930 @@
+{
+  "name": "container-selection",
+  "description": "Container actions across all menu styles, traditional class order, counts, filters, retries and menu handoff.",
+  "coverage": [
+    "mode.debug",
+    "object.tools-containers",
+    "ui.menus",
+    "ui.getlin",
+    "ui.cancel-invalid"
+  ],
+  "branches": [
+    "container-selection.traditional-food-roundtrip",
+    "container-selection.traditional-all-roundtrip",
+    "container-selection.traditional-look",
+    "container-selection.traditional-help",
+    "container-selection.traditional-menu",
+    "container-selection.combination-roundtrip",
+    "container-selection.partial-roundtrip",
+    "container-selection.full-count-roundtrip",
+    "container-selection.in-default",
+    "container-selection.in-ask-all",
+    "container-selection.in-quit",
+    "container-selection.in-item-all",
+    "container-selection.in-count-zero",
+    "container-selection.in-count-one",
+    "container-selection.in-count-excess",
+    "container-selection.in-reverse-class",
+    "container-selection.in-duplicate-class",
+    "container-selection.in-container-only",
+    "container-selection.in-invalid",
+    "container-selection.in-absent",
+    "container-selection.in-all-absent",
+    "container-selection.in-unknown",
+    "container-selection.in-uncursed-absent",
+    "container-selection.in-picked",
+    "container-selection.in-class-unknown",
+    "container-selection.in-class-uncursed-absent",
+    "container-selection.in-filtered-menu",
+    "container-selection.in-all-menu",
+    "container-selection.in-inventory-retry",
+    "container-selection.in-look-retry",
+    "container-selection.in-menu-look-retry",
+    "container-selection.in-filter-look-retry",
+    "container-selection.in-cancel",
+    "container-selection.out-count-zero",
+    "container-selection.out-count-one",
+    "container-selection.out-count-excess",
+    "container-selection.out-quit",
+    "container-selection.out-cancel",
+    "container-selection.out-absent",
+    "container-selection.out-look-retry",
+    "container-selection.out-default",
+    "container-selection.out-reverse-class",
+    "container-selection.out-filtered-menu",
+    "container-selection.help-hidden",
+    "container-selection.known-empty-hidden-out",
+    "container-selection.both-out-first",
+    "container-selection.both-in-first",
+    "container-selection.stash-count-one",
+    "container-selection.stash-self",
+    "container-selection.long-container-name",
+    "container-selection.combination-count-out",
+    "container-selection.combination-cancel",
+    "container-selection.partial-count-out",
+    "container-selection.partial-cancel",
+    "container-selection.full-count-out",
+    "container-selection.full-cancel"
+  ],
+  "requireBranchAssertions": true,
+  "segments": [
+    {
+      "name": "traditional-food-roundtrip",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed sack\r\u00173 uncursed apples\r\u0017uncursed dagger\r\u0017uncursed potion of healing\rabi%\ry     \u001b\u001b\u001b\u001b\u001b\u001babo%\ry     \u001b\u001b\u001b\u001b\u001b\u001bi \u001b     \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "traditional-all-roundtrip",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed sack\r\u00173 uncursed apples\r\u0017uncursed dagger\r\u0017uncursed potion of healing\rabia\r     \u001b\u001b\u001b\u001b\u001b\u001baboa\r     \u001b\u001b\u001b\u001b\u001b\u001bi \u001b     \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "traditional-look",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed sack\r\u00173 uncursed apples\r\u0017uncursed dagger\r\u0017uncursed potion of healing\rabi%\ry     \u001b\u001b\u001b\u001b\u001b\u001bab: q     \u001b\u001b\u001b\u001b\u001b\u001bi \u001b     \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "traditional-help",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed sack\r\u00173 uncursed apples\r\u0017uncursed dagger\r\u0017uncursed potion of healing\rab? q     \u001b\u001b\u001b\u001b\u001b\u001bi \u001b     \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "traditional-menu",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed sack\r\u00173 uncursed apples\r\u0017uncursed dagger\r\u0017uncursed potion of healing\rabim\rc\r     \u001b\u001b\u001b\u001b\u001b\u001babom\ra\r     \u001b\u001b\u001b\u001b\u001b\u001bi \u001b     \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "combination-roundtrip",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:combination\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed sack\r\u00173 uncursed apples\r\u0017uncursed dagger\r\u0017uncursed potion of healing\rabic\r     \u001b\u001b\u001b\u001b\u001b\u001baboa\r     \u001b\u001b\u001b\u001b\u001b\u001bi \u001b     \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "partial-roundtrip",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:partial\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed sack\r\u00173 uncursed apples\r\u0017uncursed dagger\r\u0017uncursed potion of healing\rabic\r     \u001b\u001b\u001b\u001b\u001b\u001baboa\r     \u001b\u001b\u001b\u001b\u001b\u001bi \u001b     \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "full-count-roundtrip",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:full\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed sack\r\u00173 uncursed apples\r\u0017uncursed dagger\r\u0017uncursed potion of healing\rabi%\r1c\r     \u001b\u001b\u001b\u001b\u001b\u001baboa\r     \u001b\u001b\u001b\u001b\u001b\u001bi \u001b     \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "in-default",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed sack\r     \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed apples\r     \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed dagger\r     \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed potion of healing\r     \u001b\u001b\u001b\u001b\u001b\u001babi\rnnn     \u001b\u001b\u001b\u001b\u001b\u001bi      \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "in-ask-all",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed sack\r     \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed apples\r     \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed dagger\r     \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed potion of healing\r     \u001b\u001b\u001b\u001b\u001b\u001babiA\rnnn     \u001b\u001b\u001b\u001b\u001b\u001bi      \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "in-quit",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed sack\r     \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed apples\r     \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed dagger\r     \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed potion of healing\r     \u001b\u001b\u001b\u001b\u001b\u001babi%\rq     \u001b\u001b\u001b\u001b\u001b\u001bi      \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "in-item-all",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed sack\r     \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed apples\r     \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed dagger\r     \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed potion of healing\r     \u001b\u001b\u001b\u001b\u001b\u001babiA\ra     \u001b\u001b\u001b\u001b\u001b\u001bi      \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "in-count-zero",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed sack\r     \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed apples\r     \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed dagger\r     \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed potion of healing\r     \u001b\u001b\u001b\u001b\u001b\u001babi%\r0\r     \u001b\u001b\u001b\u001b\u001b\u001bi      \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "in-count-one",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed sack\r     \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed apples\r     \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed dagger\r     \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed potion of healing\r     \u001b\u001b\u001b\u001b\u001b\u001babi%\r1\r     \u001b\u001b\u001b\u001b\u001b\u001bi      \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "in-count-excess",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed sack\r     \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed apples\r     \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed dagger\r     \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed potion of healing\r     \u001b\u001b\u001b\u001b\u001b\u001babi%\r9\r     \u001b\u001b\u001b\u001b\u001b\u001bi      \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "in-reverse-class",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed sack\r     \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed apples\r     \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed dagger\r     \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed potion of healing\r     \u001b\u001b\u001b\u001b\u001b\u001babi!%)\ra     \u001b\u001b\u001b\u001b\u001b\u001bi      \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "in-duplicate-class",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed sack\r     \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed apples\r     \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed dagger\r     \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed potion of healing\r     \u001b\u001b\u001b\u001b\u001b\u001babi%%\rny     \u001b\u001b\u001b\u001b\u001b\u001bi      \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "in-container-only",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed sack\r     \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed apples\r     \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed dagger\r     \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed potion of healing\r     \u001b\u001b\u001b\u001b\u001b\u001babi(\ry     \u001b\u001b\u001b\u001b\u001b\u001bi      \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "in-invalid",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed sack\r     \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed apples\r     \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed dagger\r     \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed potion of healing\r     \u001b\u001b\u001b\u001b\u001b\u001babi~\r nnn     \u001b\u001b\u001b\u001b\u001b\u001bi      \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "in-absent",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed sack\r     \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed apples\r     \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed dagger\r     \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed potion of healing\r     \u001b\u001b\u001b\u001b\u001b\u001babi/\r nnn     \u001b\u001b\u001b\u001b\u001b\u001bi      \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "in-all-absent",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed sack\r     \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed apples\r     \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed dagger\r     \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed potion of healing\r     \u001b\u001b\u001b\u001b\u001b\u001babia/\r nnn     \u001b\u001b\u001b\u001b\u001b\u001bi      \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "in-unknown",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed sack\r     \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed apples\r     \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed dagger\r     \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed potion of healing\r     \u001b\u001b\u001b\u001b\u001b\u001babiX\ra     \u001b\u001b\u001b\u001b\u001b\u001bi      \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "in-uncursed-absent",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed sack\r     \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed apples\r     \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed dagger\r     \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed potion of healing\r     \u001b\u001b\u001b\u001b\u001b\u001babiU\ra     \u001b\u001b\u001b\u001b\u001b\u001bi      \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "in-picked",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed sack\r     \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed apples\r     \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed dagger\r     \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed potion of healing\r     \u001b\u001b\u001b\u001b\u001b\u001babiP\ra     \u001b\u001b\u001b\u001b\u001b\u001bi      \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "in-class-unknown",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed sack\r     \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed apples\r     \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed dagger\r     \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed potion of healing\r     \u001b\u001b\u001b\u001b\u001b\u001babi%X\ry     \u001b\u001b\u001b\u001b\u001b\u001bi      \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "in-class-uncursed-absent",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed sack\r     \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed apples\r     \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed dagger\r     \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed potion of healing\r     \u001b\u001b\u001b\u001b\u001b\u001babi%U\ry     \u001b\u001b\u001b\u001b\u001b\u001bi      \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "in-filtered-menu",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed sack\r     \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed apples\r     \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed dagger\r     \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed potion of healing\r     \u001b\u001b\u001b\u001b\u001b\u001babi%m\rc\r     \u001b\u001b\u001b\u001b\u001b\u001bi      \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "in-all-menu",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed sack\r     \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed apples\r     \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed dagger\r     \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed potion of healing\r     \u001b\u001b\u001b\u001b\u001b\u001babiam\rc\r     \u001b\u001b\u001b\u001b\u001b\u001bi      \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "in-inventory-retry",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed sack\r     \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed apples\r     \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed dagger\r     \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed potion of healing\r     \u001b\u001b\u001b\u001b\u001b\u001babii\r\u001b%\ry     \u001b\u001b\u001b\u001b\u001b\u001bi      \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "in-look-retry",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed sack\r     \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed apples\r     \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed dagger\r     \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed potion of healing\r     \u001b\u001b\u001b\u001b\u001b\u001babi:\r %\ry     \u001b\u001b\u001b\u001b\u001b\u001bi      \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "in-menu-look-retry",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed sack\r     \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed apples\r     \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed dagger\r     \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed potion of healing\r     \u001b\u001b\u001b\u001b\u001b\u001babim:\r %\rc\r     \u001b\u001b\u001b\u001b\u001b\u001bi      \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "in-filter-look-retry",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed sack\r     \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed apples\r     \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed dagger\r     \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed potion of healing\r     \u001b\u001b\u001b\u001b\u001b\u001babiU:\r %\ry     \u001b\u001b\u001b\u001b\u001b\u001bi      \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "in-cancel",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed sack\r     \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed apples\r     \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed dagger\r     \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed potion of healing\r     \u001b\u001b\u001b\u001b\u001b\u001babi\u001b     \u001b\u001b\u001b\u001b\u001b\u001bi      \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "out-count-zero",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed sack\r     \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed apples\r     \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed dagger\r     \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed potion of healing\r     \u001b\u001b\u001b\u001b\u001b\u001babia\r     \u001b\u001b\u001b\u001b\u001b\u001babo%\r0\r     \u001b\u001b\u001b\u001b\u001b\u001bi      \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "out-count-one",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed sack\r     \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed apples\r     \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed dagger\r     \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed potion of healing\r     \u001b\u001b\u001b\u001b\u001b\u001babia\r     \u001b\u001b\u001b\u001b\u001b\u001babo%\r1\r     \u001b\u001b\u001b\u001b\u001b\u001bi      \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "out-count-excess",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed sack\r     \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed apples\r     \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed dagger\r     \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed potion of healing\r     \u001b\u001b\u001b\u001b\u001b\u001babia\r     \u001b\u001b\u001b\u001b\u001b\u001babo%\r9\r     \u001b\u001b\u001b\u001b\u001b\u001bi      \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "out-quit",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed sack\r     \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed apples\r     \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed dagger\r     \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed potion of healing\r     \u001b\u001b\u001b\u001b\u001b\u001babia\r     \u001b\u001b\u001b\u001b\u001b\u001babo%\rq     \u001b\u001b\u001b\u001b\u001b\u001bi      \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "out-cancel",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed sack\r     \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed apples\r     \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed dagger\r     \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed potion of healing\r     \u001b\u001b\u001b\u001b\u001b\u001babia\r     \u001b\u001b\u001b\u001b\u001b\u001babo\u001b     \u001b\u001b\u001b\u001b\u001b\u001bi      \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "out-absent",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed sack\r     \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed apples\r     \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed dagger\r     \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed potion of healing\r     \u001b\u001b\u001b\u001b\u001b\u001babia\r     \u001b\u001b\u001b\u001b\u001b\u001babo/\r nnn     \u001b\u001b\u001b\u001b\u001b\u001bi      \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "out-look-retry",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed sack\r     \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed apples\r     \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed dagger\r     \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed potion of healing\r     \u001b\u001b\u001b\u001b\u001b\u001babia\r     \u001b\u001b\u001b\u001b\u001b\u001babo:\r a\r     \u001b\u001b\u001b\u001b\u001b\u001bi      \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "out-default",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed sack\r     \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed apples\r     \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed dagger\r     \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed potion of healing\r     \u001b\u001b\u001b\u001b\u001b\u001babia\r     \u001b\u001b\u001b\u001b\u001b\u001babo\rnnn     \u001b\u001b\u001b\u001b\u001b\u001bi      \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "out-reverse-class",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed sack\r     \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed apples\r     \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed dagger\r     \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed potion of healing\r     \u001b\u001b\u001b\u001b\u001b\u001babia\r     \u001b\u001b\u001b\u001b\u001b\u001babo!)%\ra     \u001b\u001b\u001b\u001b\u001b\u001bi      \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "out-filtered-menu",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed sack\r     \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed apples\r     \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed dagger\r     \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed potion of healing\r     \u001b\u001b\u001b\u001b\u001b\u001babia\r     \u001b\u001b\u001b\u001b\u001b\u001babo%m\ra\r     \u001b\u001b\u001b\u001b\u001b\u001bi      \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "help-hidden",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\nOPTIONS=!cmdassist\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed sack\r     \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed apples\r     \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed dagger\r     \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed potion of healing\r     \u001b\u001b\u001b\u001b\u001b\u001bab? q     \u001b\u001b\u001b\u001b\u001b\u001bi      \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "known-empty-hidden-out",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed sack\r     \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed apples\r     \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed dagger\r     \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed potion of healing\r     \u001b\u001b\u001b\u001b\u001b\u001bab: o     \u001b\u001b\u001b\u001b\u001b\u001bi      \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "both-out-first",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed sack\r     \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed apples\r     \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed dagger\r     \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed potion of healing\r     \u001b\u001b\u001b\u001b\u001b\u001babb %\ry     \u001b\u001b\u001b\u001b\u001b\u001bi      \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "both-in-first",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed sack\r     \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed apples\r     \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed dagger\r     \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed potion of healing\r     \u001b\u001b\u001b\u001b\u001b\u001babr%\ry %\ry     \u001b\u001b\u001b\u001b\u001b\u001bi      \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "stash-count-one",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed sack\r     \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed apples\r     \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed dagger\r     \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed potion of healing\r     \u001b\u001b\u001b\u001b\u001b\u001babs1c     \u001b\u001b\u001b\u001b\u001b\u001bi      \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "stash-self",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed sack\r     \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed apples\r     \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed dagger\r     \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed potion of healing\r     \u001b\u001b\u001b\u001b\u001b\u001babsb     \u001b\u001b\u001b\u001b\u001b\u001bi      \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "long-container-name",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:traditional\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed sack named container name container name container name container name container name \r     \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed apples\r     \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed dagger\r     \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed potion of healing\r     \u001b\u001b\u001b\u001b\u001b\u001babq     \u001b\u001b\u001b\u001b\u001b\u001bi      \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "combination-count-out",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:combination\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed sack\r     \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed apples\r     \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed dagger\r     \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed potion of healing\r     \u001b\u001b\u001b\u001b\u001b\u001babic\r     \u001b\u001b\u001b\u001b\u001b\u001babo1a\r     \u001b\u001b\u001b\u001b\u001b\u001bi      \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "combination-cancel",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:combination\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed sack\r     \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed apples\r     \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed dagger\r     \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed potion of healing\r     \u001b\u001b\u001b\u001b\u001b\u001babi\u001b     \u001b\u001b\u001b\u001b\u001b\u001bi      \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "partial-count-out",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:partial\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed sack\r     \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed apples\r     \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed dagger\r     \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed potion of healing\r     \u001b\u001b\u001b\u001b\u001b\u001babic\r     \u001b\u001b\u001b\u001b\u001b\u001babo1a\r     \u001b\u001b\u001b\u001b\u001b\u001bi      \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "partial-cancel",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:partial\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed sack\r     \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed apples\r     \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed dagger\r     \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed potion of healing\r     \u001b\u001b\u001b\u001b\u001b\u001babi\u001b     \u001b\u001b\u001b\u001b\u001b\u001bi      \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "full-count-out",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:full\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed sack\r     \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed apples\r     \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed dagger\r     \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed potion of healing\r     \u001b\u001b\u001b\u001b\u001b\u001babi%\rc\r     \u001b\u001b\u001b\u001b\u001b\u001babo1a\r     \u001b\u001b\u001b\u001b\u001b\u001bi      \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "full-cancel",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!confirm\nOPTIONS=menustyle:full\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed sack\r     \u001b\u001b\u001b\u001b\u001b\u001b\u00173 uncursed apples\r     \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed dagger\r     \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed potion of healing\r     \u001b\u001b\u001b\u001b\u001b\u001babi\u001b     \u001b\u001b\u001b\u001b\u001b\u001bi      \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b"
+    }
+  ],
+  "branchAssertions": [
+    {
+      "branch": "container-selection.traditional-food-roundtrip",
+      "segment": 0,
+      "screenIncludes": [
+        "Do what with"
+      ]
+    },
+    {
+      "branch": "container-selection.traditional-all-roundtrip",
+      "segment": 1,
+      "screenIncludes": [
+        "Do what with"
+      ]
+    },
+    {
+      "branch": "container-selection.traditional-look",
+      "segment": 2,
+      "screenIncludes": [
+        "Do what with"
+      ]
+    },
+    {
+      "branch": "container-selection.traditional-help",
+      "segment": 3,
+      "screenIncludes": [
+        "Do what with",
+        "Container actions:"
+      ]
+    },
+    {
+      "branch": "container-selection.traditional-menu",
+      "segment": 4,
+      "screenIncludes": [
+        "Do what with"
+      ]
+    },
+    {
+      "branch": "container-selection.combination-roundtrip",
+      "segment": 5,
+      "screenIncludes": [
+        "Do what with"
+      ]
+    },
+    {
+      "branch": "container-selection.partial-roundtrip",
+      "segment": 6,
+      "screenIncludes": [
+        "Do what with"
+      ]
+    },
+    {
+      "branch": "container-selection.full-count-roundtrip",
+      "segment": 7,
+      "screenIncludes": [
+        "Do what with"
+      ]
+    },
+    {
+      "branch": "container-selection.in-default",
+      "segment": 8,
+      "screenIncludes": [
+        "Do what with",
+        "What kinds of thing do you want to put in?"
+      ]
+    },
+    {
+      "branch": "container-selection.in-ask-all",
+      "segment": 9,
+      "screenIncludes": [
+        "Do what with",
+        "What kinds of thing do you want to put in?"
+      ]
+    },
+    {
+      "branch": "container-selection.in-quit",
+      "segment": 10,
+      "screenIncludes": [
+        "Do what with",
+        "What kinds of thing do you want to put in?"
+      ]
+    },
+    {
+      "branch": "container-selection.in-item-all",
+      "segment": 11,
+      "screenIncludes": [
+        "Do what with",
+        "What kinds of thing do you want to put in?"
+      ]
+    },
+    {
+      "branch": "container-selection.in-count-zero",
+      "segment": 12,
+      "screenIncludes": [
+        "Do what with",
+        "What kinds of thing do you want to put in?",
+        "#0",
+        "That was all."
+      ]
+    },
+    {
+      "branch": "container-selection.in-count-one",
+      "segment": 13,
+      "screenIncludes": [
+        "Do what with",
+        "What kinds of thing do you want to put in?",
+        "You put an apple into the bag."
+      ]
+    },
+    {
+      "branch": "container-selection.in-count-excess",
+      "segment": 14,
+      "screenIncludes": [
+        "Do what with",
+        "What kinds of thing do you want to put in?",
+        "#9",
+        "You put 3 apples into the bag."
+      ]
+    },
+    {
+      "branch": "container-selection.in-reverse-class",
+      "segment": 15,
+      "screenIncludes": [
+        "Do what with",
+        "What kinds of thing do you want to put in?",
+        "Put in: e - a brown potion?"
+      ]
+    },
+    {
+      "branch": "container-selection.in-duplicate-class",
+      "segment": 16,
+      "screenIncludes": [
+        "Do what with",
+        "What kinds of thing do you want to put in?",
+        "c - 3 apples?"
+      ]
+    },
+    {
+      "branch": "container-selection.in-container-only",
+      "segment": 17,
+      "screenIncludes": [
+        "Do what with",
+        "What kinds of thing do you want to put in?",
+        "No applicable objects."
+      ]
+    },
+    {
+      "branch": "container-selection.in-invalid",
+      "segment": 18,
+      "screenIncludes": [
+        "Do what with",
+        "What kinds of thing do you want to put in?",
+        "You have no ~'s."
+      ]
+    },
+    {
+      "branch": "container-selection.in-absent",
+      "segment": 19,
+      "screenIncludes": [
+        "Do what with",
+        "What kinds of thing do you want to put in?",
+        "You have no /'s."
+      ]
+    },
+    {
+      "branch": "container-selection.in-all-absent",
+      "segment": 20,
+      "screenIncludes": [
+        "Do what with",
+        "What kinds of thing do you want to put in?",
+        "You have no /'s."
+      ]
+    },
+    {
+      "branch": "container-selection.in-unknown",
+      "segment": 21,
+      "screenIncludes": [
+        "Do what with",
+        "What kinds of thing do you want to put in?"
+      ]
+    },
+    {
+      "branch": "container-selection.in-uncursed-absent",
+      "segment": 22,
+      "screenIncludes": [
+        "Do what with",
+        "What kinds of thing do you want to put in?",
+        "No applicable objects."
+      ]
+    },
+    {
+      "branch": "container-selection.in-picked",
+      "segment": 23,
+      "screenIncludes": [
+        "Do what with",
+        "What kinds of thing do you want to put in?"
+      ]
+    },
+    {
+      "branch": "container-selection.in-class-unknown",
+      "segment": 24,
+      "screenIncludes": [
+        "Do what with",
+        "What kinds of thing do you want to put in?"
+      ]
+    },
+    {
+      "branch": "container-selection.in-class-uncursed-absent",
+      "segment": 25,
+      "screenIncludes": [
+        "Do what with",
+        "What kinds of thing do you want to put in?",
+        "No applicable objects."
+      ]
+    },
+    {
+      "branch": "container-selection.in-filtered-menu",
+      "segment": 26,
+      "screenIncludes": [
+        "Do what with",
+        "What kinds of thing do you want to put in?",
+        "Put in what?"
+      ]
+    },
+    {
+      "branch": "container-selection.in-all-menu",
+      "segment": 27,
+      "screenIncludes": [
+        "Do what with",
+        "What kinds of thing do you want to put in?",
+        "Put in what?"
+      ]
+    },
+    {
+      "branch": "container-selection.in-inventory-retry",
+      "segment": 28,
+      "screenIncludes": [
+        "Do what with",
+        "What kinds of thing do you want to put in?"
+      ]
+    },
+    {
+      "branch": "container-selection.in-look-retry",
+      "segment": 29,
+      "screenIncludes": [
+        "Do what with",
+        "What kinds of thing do you want to put in?"
+      ]
+    },
+    {
+      "branch": "container-selection.in-menu-look-retry",
+      "segment": 30,
+      "screenIncludes": [
+        "Do what with",
+        "What kinds of thing do you want to put in?",
+        "Put in what?"
+      ]
+    },
+    {
+      "branch": "container-selection.in-filter-look-retry",
+      "segment": 31,
+      "screenIncludes": [
+        "Do what with",
+        "What kinds of thing do you want to put in?",
+        "No applicable objects."
+      ]
+    },
+    {
+      "branch": "container-selection.in-cancel",
+      "segment": 32,
+      "screenIncludes": [
+        "Do what with",
+        "What kinds of thing do you want to put in?"
+      ]
+    },
+    {
+      "branch": "container-selection.out-count-zero",
+      "segment": 33,
+      "screenIncludes": [
+        "Do what with",
+        "What kinds of thing do you want to take out?",
+        "#0"
+      ]
+    },
+    {
+      "branch": "container-selection.out-count-one",
+      "segment": 34,
+      "screenIncludes": [
+        "Do what with",
+        "What kinds of thing do you want to take out?",
+        "c - an apple."
+      ]
+    },
+    {
+      "branch": "container-selection.out-count-excess",
+      "segment": 35,
+      "screenIncludes": [
+        "Do what with",
+        "What kinds of thing do you want to take out?",
+        "#9",
+        "c - 3 apples."
+      ]
+    },
+    {
+      "branch": "container-selection.out-quit",
+      "segment": 36,
+      "screenIncludes": [
+        "Do what with",
+        "What kinds of thing do you want to take out?"
+      ]
+    },
+    {
+      "branch": "container-selection.out-cancel",
+      "segment": 37,
+      "screenIncludes": [
+        "Do what with",
+        "What kinds of thing do you want to take out?"
+      ]
+    },
+    {
+      "branch": "container-selection.out-absent",
+      "segment": 38,
+      "screenIncludes": [
+        "Do what with",
+        "What kinds of thing do you want to take out?",
+        "There are no /'s inside."
+      ]
+    },
+    {
+      "branch": "container-selection.out-look-retry",
+      "segment": 39,
+      "screenIncludes": [
+        "Do what with",
+        "What kinds of thing do you want to take out?"
+      ]
+    },
+    {
+      "branch": "container-selection.out-default",
+      "segment": 40,
+      "screenIncludes": [
+        "Do what with",
+        "What kinds of thing do you want to take out?"
+      ]
+    },
+    {
+      "branch": "container-selection.out-reverse-class",
+      "segment": 41,
+      "screenIncludes": [
+        "Do what with",
+        "What kinds of thing do you want to take out?",
+        "Take out: a brown potion?",
+        "e - a brown potion.  d - a dagger.  c - 3 apples."
+      ]
+    },
+    {
+      "branch": "container-selection.out-filtered-menu",
+      "segment": 42,
+      "screenIncludes": [
+        "Do what with",
+        "What kinds of thing do you want to take out?",
+        "Take out what?"
+      ]
+    },
+    {
+      "branch": "container-selection.help-hidden",
+      "segment": 43,
+      "screenIncludes": [
+        "Do what with",
+        "Container actions:"
+      ]
+    },
+    {
+      "branch": "container-selection.known-empty-hidden-out",
+      "segment": 44,
+      "screenIncludes": [
+        "Do what with",
+        "Your bag is empty."
+      ]
+    },
+    {
+      "branch": "container-selection.both-out-first",
+      "segment": 45,
+      "screenIncludes": [
+        "Do what with",
+        "Your bag is empty.",
+        "You put 3 apples into the bag."
+      ]
+    },
+    {
+      "branch": "container-selection.both-in-first",
+      "segment": 46,
+      "screenIncludes": [
+        "Do what with",
+        "You put 3 apples into the bag.",
+        "c - 3 apples."
+      ]
+    },
+    {
+      "branch": "container-selection.stash-count-one",
+      "segment": 47,
+      "screenIncludes": [
+        "Do what with",
+        "You put an apple into the bag."
+      ]
+    },
+    {
+      "branch": "container-selection.stash-self",
+      "segment": 48,
+      "screenIncludes": [
+        "Do what with",
+        "That would be an interesting topological exercise."
+      ]
+    },
+    {
+      "branch": "container-selection.long-container-name",
+      "segment": 49,
+      "screenIncludes": [
+        "Do what with"
+      ]
+    },
+    {
+      "branch": "container-selection.combination-count-out",
+      "segment": 50,
+      "screenIncludes": [
+        "Do what with",
+        "c - an apple."
+      ]
+    },
+    {
+      "branch": "container-selection.combination-cancel",
+      "segment": 51,
+      "screenIncludes": [
+        "Do what with"
+      ]
+    },
+    {
+      "branch": "container-selection.partial-count-out",
+      "segment": 52,
+      "screenIncludes": [
+        "Do what with",
+        "c - an apple."
+      ]
+    },
+    {
+      "branch": "container-selection.partial-cancel",
+      "segment": 53,
+      "screenIncludes": [
+        "Do what with"
+      ]
+    },
+    {
+      "branch": "container-selection.full-count-out",
+      "segment": 54,
+      "screenIncludes": [
+        "Do what with",
+        "c - an apple."
+      ]
+    },
+    {
+      "branch": "container-selection.full-cancel",
+      "segment": 55,
+      "screenIncludes": [
+        "Do what with"
+      ]
+    }
+  ]
+}

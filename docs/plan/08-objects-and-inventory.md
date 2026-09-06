@@ -51,8 +51,8 @@ plausible-but-wrong names that are hard to spot in a diff.
       takeoff. Eighty-nine C cases, native state checks and constructed
       controls cover class order, filters, counts, retries and changing
       object chains. See [inventory-selection-audit.md](inventory-selection-audit.md).
-      Traditional container callers and the remaining sorting/menu integration
-      remain open; source coverage is 106/126 ggetobj and 100/124 askchain
+      Container callers are now connected; remaining sorting/menu integration
+      is open. Earlier source coverage was 106/126 ggetobj and 100/124 askchain
       direct outcomes, not complete function execution coverage.
 - [x] September `#adjust` source pass: count handling, split rollback,
       collect/merge/name rules, bumping and full-pack refusal, used-letter menus,
@@ -71,6 +71,14 @@ plausible-but-wrong names that are hard to spot in a diff.
       single-slot reports
 
 ### 8.3 Pickup, drop, containers
+
+- [x] Container selection and carrying pass: complete relevant query_classes,
+      traditional_loot, menu_loot, use_container and transfer callbacks, with
+      counted-stack restoration, carrying limits, gold rounding and contents
+      sorting. The 114 C cases and state controls pass. See
+      [container-selection-audit.md](container-selection-audit.md) for exact
+      coverage and the native quantum/shop gaps. Full pickup and looting
+      workflows remain open.
 
 - [ ] `src/pickup.c`: `dopickup`, `pickup_object`, autopickup rules and the
       `pickup_types` option, `#loot`, `#tip`, container in and out

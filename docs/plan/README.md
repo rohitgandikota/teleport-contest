@@ -17,28 +17,21 @@ and persistent gameplay state. Continue source review, measured C branches,
 independent oracles, implementation, and regression checks until that goal is
 met. Current corpus success is not the stopping criterion.
 
-The latest pass adds 89 C cases for traditional identification, dropping
-and takeoff. All 44 public and 490 supplemental fixtures pass. The C union
-has 55,059/108,268 direct outcomes and 4,357/5,491 entered function records.
-The assertion ledger is 2,154/2,154. Shared ggetobj and askchain selection
-preserves class order, counts, retries and changing object chains. Disabling
-the next-class loop fails both native output and the state gate. The earlier
-spell-memory pass reaches every backfire switch value, 20/20 direct outcomes.
-The published held-out result recorded during the earlier audit is 78.39%,
-distinct from the local result.
+The latest container pass adds 114 C cases. All 44 public and 494
+supplemental fixtures pass, matching 321,154 screens/cursors and 9,769,782
+RNG calls. The C union reaches 55,303/108,268 direct outcomes and
+4,362/5,491 entered records. The assertion ledger is 2,268/2,268.
+Disabling stack restoration fails native output and persistent state.
 
-See [STATUS.md](STATUS.md) for checkpoint and next-action details,
-[inventory-selection-audit.md](inventory-selection-audit.md) for the current review, and
-[gameplay-gap-audit.md](gameplay-gap-audit.md) for measurement limits.
-Shop billing and used-up inventory are pushed as `9ceac165`; their review is
-[shop-billing-copy-audit.md](shop-billing-copy-audit.md). The
-[compiled constant audit](c-constant-audit.md) compares 1,666 values with zero
-different values and one reviewed signed-mask representation. The shared
-creation tail, theft body and monster acquisition are verified on their
-expanded corpora. The next source pass ports traditional container
-selection, including query_classes and the askchain callbacks,
-then continues the remaining sorting, spell effects, timeout, inventory,
-monster and Lua paths.
+See [STATUS.md](STATUS.md) for the checkpoint and next action,
+[container-selection-audit.md](container-selection-audit.md) for the current
+review and [gameplay-gap-audit.md](gameplay-gap-audit.md) for measurement
+limits. The earlier published held-out result was 78.39%; the local suite
+does not establish a newer held-out score. The complete shared selection,
+container callbacks and carrying calculations are now integrated. Native
+coverage still lacks quantum-cat observation and concealed-pick reactions.
+The remaining object menus, floor pickup, multiple-container looting,
+disclosure, inventory lifecycle, spell, monster and Lua paths remain open.
 The full-port goal remains active.
 
 ## Previous focus, 2026-09-03

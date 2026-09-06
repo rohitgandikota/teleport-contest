@@ -3914,7 +3914,13 @@ export function Doname2(obj) {
 export function ysimple_name(obj) {
     const s = shk_your(obj);
 
-    return s + minimal_xname(obj);
+    return s + minimal_xname(obj).slice(0, BUFSZ - 1 - s.length);
+}
+
+// src/objnam.c:2403 Ysimple_name2(), capitalized ysimple_name().
+export function Ysimple_name2(obj) {
+    const s = ysimple_name(obj);
+    return s ? s[0].toUpperCase() + s.slice(1) : s;
 }
 
 // src/objnam.c:5624 safe_qbuf(), build "<qprefix><object name><qsuffix>"

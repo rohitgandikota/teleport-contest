@@ -378,14 +378,6 @@ export async function tty_yn_function(query, resp, def, addcmdq = false) {
         return q;
     };
 
-    /* src/botl.c — a status field dirtied this turn (Pw after a cast's
-       energy deduction) repaints before the prompt blocks for input; C gets
-       this from the pre-input flush's `if (disp.botl) bot()`. */
-    {
-        const { bot } = await import('../display.js');
-        await bot();
-    }
-
     /* win/tty/topl.c:430 — with a resp string the answer is lowercased
        unless the allowed responses contain an uppercase letter; ESC picks
        'q' or 'n' when allowed and the default otherwise; space, return and

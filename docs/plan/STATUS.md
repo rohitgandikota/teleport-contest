@@ -12,9 +12,60 @@ Continue the authorized work; do not mark it complete or recreate it.
 Current-corpus success is not the stopping criterion. Track unreviewed,
 untested, missing, and unreachable source paths explicitly.
 
-### Active checkpoint: traditional inventory selection
+### Active checkpoint: container selection and carrying
 
-Work in .cache/inventory-selection is verified and ready for local commit.
+Work in .cache/container-selection is verified and awaiting a local commit.
+Nine runtime modules port the relevant container selection, transfer and
+carrying bodies, end.container_contents, linked stack splitting, money2u,
+tally_BUCX and related helpers. See container-selection-audit.md for the
+exact scope and remaining integration gaps. No C or frozen edits.
+
+Four permanent recipes add 114 C cases: container-selection56,
+container-transfers35, container-capacity17, container-contents-order6.
+They match44588 screens/cursors and275696 RNG. Instrumented C repeats are
+exact4/4, and assertions/integrity pass separately. Ledger2268/2268,
+99 covered and seven partial categories. The C union gains244 outcomes
+and five entered records, reaching55303/108268 and4362/5491. remaining.json
+has exact gaps. No new unreachable claims.
+
+The final regression passes538/538,44public+494supplemental,321154screens
+and cursors,9769782RNG. Supplemental309749screens/cursors,8976944RNG and
+21679/21679animations. Public retains21old animation misses. totals.json
+and regression-final.log hold complete results. The state gate replays114
+and passes25constructed groups. Twelve related gates,48hang checks,
+80role controls,16tool tests and source audit0/268 pass. Fuzz101/102 with
+the known fixed-date miss and all491759RNG matching. All jobs completed,
+all exits collected. Nothing is running.
+
+The no-unsplit loader fails2/2 native fixtures:11screens,6cursors,allRNG
+matching. The state gate rejects [30,90,120] after refusing120daggers,
+where C restores [30,210]. The exact f8f0f7cf runtime across all9changed
+modules fails4/4fixtures:8446screens,1441cursors,231038positionalRNG entries.
+Final scorer controls use NODE_OPTIONS to reach worker processes. Initial
+parent-only --loader controls were invalid apparent passes and are not
+credited. Do not forget the worker inheritance rule in NOTES.md.
+
+The split linkage regression exposed money2u's duplicate gold ownership;
+it now extracts all payments canonically. Large bag tests exposed the
+unconditional tty_yn_function bot and a gold dirty-status deferral, both
+fixed. Contents sorting must read the first character of the stored
+sortloot string. Two incorrect extended probes (unworn ring and uncounted
+wand) were excluded; corrected ring and menu count cases were promoted.
+The 360000gold case is warning/default refusal, not confirmed acceptance.
+
+Next: commit this reviewed pass, then reach the remaining native quantum
+cat and concealed-pick paths, and finish query_objlist/query_category and
+normal floor-pickup/multiple-container looting. observe_quantum_cat is
+source-ported with constructed live/dead/no-create controls but0nativecalls.
+pick_pick has0nativecalls. container_contents has native loot-view cases;
+recursive identified disclosure has only constructed controls and remains
+unconnected to the existing death workflow. Broader deleted-object lifecycle
+is still open. Do not push; publication authorization remains unanswered.
+Continue the full-port loop without marking the goal complete.
+
+### Checkpoint: traditional inventory selection
+
+Work in .cache/inventory-selection is committed locally as f8f0f7cf.
 Seven runtime modules: invent (ggetobj/askchain, helpers, full sortloot
 comparator, noarmor), pickup (class/filter state, canonical BUC counts,
 container_gone), worn (bypass iteration/cleanup), do (all menu_drop control
@@ -58,7 +109,7 @@ initial probe inputs are documented in the audit and were not promoted.
 The first retry assertion used the wrong dagger enchantment; it was
 corrected to C's minus-four value before promotion.
 
-Next: local commit, then continue traditional container selection. Full C
+Next: continue traditional container selection. Full C
 traditional_loot (pickup.c3218..3261) and query_classes (140..263) have now
 been read. No next-pass edits or cache directory yet. in_container,
 out_container, ck_bag, simple_look and use_container need complete review.

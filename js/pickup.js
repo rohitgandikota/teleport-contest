@@ -22,13 +22,18 @@ import { game } from './gstate.js';
 import { addinv, prinv, obj_extract_self, inv_order, let_to_name,
          freeinv, getobj, update_inventory, loot_classify, weight, mergable, merged, money_cnt,
          useup, useupf, obfree, stackobj, count_unpaid, count_buc, is_worn,
+         tally_BUCX, askchain, display_pickinv, currency, obj_here,
+         carrying, merge_choice, nxtobj,
          GETOBJ_ALLOWCNT, GETOBJ_DOWNPLAY, GETOBJ_EXCLUDE,
          GETOBJ_EXCLUDE_SELECTABLE, GETOBJ_PROMPT, GETOBJ_SUGGEST }
     from './invent.js';
 import { observe_object } from './o_init.js';
 import { doname, xname, cxname, the, yname, singular, an, corpse_xname,
-         CXN_ARTICLE, CXN_SINGULAR, otense, vtense } from './objnam.js';
-import { Is_container, Has_contents, carried } from './obj.js';
+         CXN_ARTICLE, CXN_SINGULAR, otense, vtense, safe_qbuf,
+         ysimple_name, Ysimple_name2, Yname2, Tobjnam, thesimpleoname,
+         ansimpleoname } from './objnam.js';
+import { Is_container, Has_contents, carried, SchroedingersBox,
+         age_is_relative } from './obj.js';
 import { AUTOUNLOCK_UNTRAP, AUTOUNLOCK_APPLY_KEY,
          AUTOUNLOCK_FORCE } from './const.js';
 import { check_capacity, in_rooms, losehp } from './hack.js';
@@ -55,7 +60,7 @@ import { Is_mbag, splitobj, unbless, place_object, add_to_container,
          start_corpse_timeout, start_glob_timeout, set_bknown }
     from './mkobj.js';
 import { PARANOID_AUTOALL } from './const.js';
-import { paranoia_bits } from './options.js';
+import { paranoia_bits, boolean_option } from './options.js';
 import { PMNAMES } from './monst_data.js';
 import { def_char_to_objclass } from './sp_lev.js';
 import { read_engr_at } from './engrave.js';
@@ -83,6 +88,28 @@ import { body_part } from './polyself.js';
 import { tty_yn_function } from './tty/topl.js';
 import { inv_cnt } from './hack.js';
 import { freehand } from './engrave.js';
+import { Norep, impossible, pline_The, livelog_printf } from './pline.js';
+import { MENU_TRADITIONAL, MENU_FULL, MENU_PARTIAL, OBJ_CONTAINED,
+         W_ARMOR, W_ACCESSORY, LL_ACHIEVE, NO_MINVENT, MM_ADJACENTOK,
+         MM_NOMSG, FOOT, ONAME_NO_FLAGS, has_omonst, OMONST } from './const.js';
+import { unsplitobj, get_mtraits, set_corpsenm } from './mkobj.js';
+import { setuwep_with_feedback, setuswapwep, setuqwep, welded, weldmsg } from './wield.js';
+import { bigmonst } from './mondata.js';
+import { obj_is_burning } from './light.js';
+import { container_contents } from './end.js';
+import { docrt, canspotmon } from './display.js';
+import { tty_create_nhwindow, tty_putstr, tty_display_nhwindow,
+         tty_next_page, tty_destroy_nhwindow, NHW_MENU, NHW_TEXT } from './tty/wintty.js';
+import { xwaitforspace } from './tty/getline.js';
+import { getlin } from './cmd.js';
+import { shop_keeper, stolen_value, pick_pick } from './shk.js';
+import { is_pick } from './mon.js';
+import { uhis } from './mhitu.js';
+import { get_obj_location } from './zap.js';
+import { makemon, set_malign } from './makemon.js';
+import { christen_monst, Monnam, rndmonnam, oname } from './do_name.js';
+import { more_experienced, newexplevel } from './exper.js';
+import { Hallucination } from './youprop.js';
 
 
 
@@ -121,6 +148,121 @@ export function can_reach_floor(check_pit) {
     if (check_pit && (t = t_at(u.ux, u.uy)) != null
         && (uteetering_at_seen_pit(t) || uescaped_shaft(t)))
         return false;
+    return true;
+}
+
+// src/pickup.c:75 simple_look(); preserve the unsorted chain order.
+export async function simple_look(otmp, here) {
+    if (!otmp?.length) {
+        await impossible('simple_look(null)');
+    } else if (otmp.length === 1) {
+        await pline(doname(otmp[0]));
+    } else {
+        const tmpwin = tty_create_nhwindow(NHW_MENU);
+        tty_putstr(tmpwin, 0, '');
+        for (const obj of otmp)
+            tty_putstr(tmpwin, 0, doname(obj));
+        await tty_display_nhwindow(tmpwin);
+        do {
+            await xwaitforspace(' \r\n\x1b');
+        } while (game.morc !== '\x1b' && tty_next_page(tmpwin));
+        tty_destroy_nhwindow(tmpwin);
+        await docrt();
+    }
+}
+
+// src/pickup.c:101 collect_obj_classes(); lists carry nobj/nexthere order.
+export function collect_obj_classes(ilets, otmp, here, filter, itemcount) {
+    let iletct = 0;
+    itemcount.v = 0;
+    ilets.length = 0;
+    for (const obj of otmp || []) {
+        const c = def_oc_syms[obj.oclass];
+        if (!ilets.includes(c) && (!filter || filter(obj)))
+            ilets[iletct++] = c;
+        itemcount.v += 1;
+    }
+    return iletct;
+}
+
+// src/pickup.c:141 query_classes(); traditional pickup and container selection.
+export async function query_classes(oclasses, one_at_a_time, everything,
+                                    action, objs, here, menu_on_demand) {
+    const ilets = [], itemcount = { v: 0 };
+    const bcnt = {}, ucnt = {}, ccnt = {}, xcnt = {}, ocnt = {}, jcnt = {};
+    let m_seen = false;
+    oclasses.length = 0;
+    one_at_a_time.v = everything.v = false;
+    if (menu_on_demand) menu_on_demand.v = 0;
+    let iletct = collect_obj_classes(ilets, objs, here, null, itemcount);
+    if (iletct === 0) return false;
+    if (iletct === 1) {
+        oclasses[0] = def_char_to_objclass(ilets[0]);
+    } else {
+        ilets[iletct++] = ' ';
+        ilets[iletct++] = 'a';
+        ilets[iletct++] = 'A';
+        ilets[iletct++] = objs === game.invent ? 'i' : ':';
+    }
+    if (itemcount.v && menu_on_demand) ilets[iletct++] = 'm';
+    if (count_unpaid(objs)) ilets[iletct++] = 'u';
+    tally_BUCX(objs, here, bcnt, ucnt, ccnt, xcnt, ocnt, jcnt);
+    if (bcnt.v) ilets[iletct++] = 'B';
+    if (ucnt.v) ilets[iletct++] = 'U';
+    if (ccnt.v) ilets[iletct++] = 'C';
+    if (xcnt.v) ilets[iletct++] = 'X';
+    if (jcnt.v) ilets[iletct++] = 'P';
+    if (iletct > 1) {
+        let where = null;
+        ask_again: for (;;) {
+            oclasses.length = 0;
+            one_at_a_time.v = everything.v = false;
+            let not_everything = false, filtered = false;
+            const inbuf = await getlin(`What kinds of thing do you want to ${action}? [${ilets.join('')}]`);
+            if (inbuf[0] === '\x1b') return false;
+            for (const sym of inbuf) {
+                if (sym === ' ') continue;
+                else if (sym === 'A') one_at_a_time.v = true;
+                else if (sym === 'a') everything.v = true;
+                else if (sym === ':') {
+                    await simple_look(objs, here);
+                    if (objs[0].where === OBJ_CONTAINED)
+                        objs[0].ocontainer.cknown = 1;
+                    continue ask_again;
+                } else if (sym === 'i') {
+                    await display_pickinv(null, null, null, false);
+                    continue ask_again;
+                } else if (sym === 'm') {
+                    m_seen = true;
+                } else if ('uBUCXP'.includes(sym)) {
+                    add_valid_menu_class(sym);
+                    filtered = true;
+                } else {
+                    const oc_of_sym = def_char_to_objclass(sym);
+                    if (ilets.includes(sym)) {
+                        add_valid_menu_class(oc_of_sym);
+                        oclasses.push(oc_of_sym);
+                    } else {
+                        if (where === null)
+                            where = action === 'pick up' ? 'here'
+                                : action === 'take out' ? 'inside' : '';
+                        if (where) await There(`are no ${sym}'s ${where}.`);
+                        else await You(`have no ${sym}'s.`);
+                        not_everything = true;
+                    }
+                }
+            }
+            if (m_seen && menu_on_demand) {
+                menu_on_demand.v = (everything.v || !oclasses.length) && !filtered ? -2 : -3;
+                return false;
+            }
+            if (!oclasses.length && (!everything.v || not_everything)) {
+                one_at_a_time.v = true;
+                everything.v = false;
+            }
+            break;
+        }
+    }
     return true;
 }
 
@@ -544,127 +686,157 @@ export async function query_objlist(qstr,   /* query string */
 
 const gold_weight = (amount) => Math.trunc((amount + 50) / 100);
 
-// src/pickup.c:1580 carry_count(), for a floor object. It finds the largest
-// liftable prefix of a stack without changing the stack while it measures.
-async function carry_count_floor(obj, count) {
-    const savequan = obj.quan;
-    const saveowt = obj.owt;
-    const isGold = obj.oclass === OCLASSES.COIN_CLASS;
+// src/pickup.c:1544 delta_cwt(); measure the carried container's weight change.
+export function delta_cwt(container, obj) {
+    if (container.otyp !== ONAMES.BAG_OF_HOLDING) return obj.owt;
+    const owt = container.owt;
+    const index = container.cobj.indexOf(obj);
+    if (index < 0) throw new Error('delta_cwt: obj not inside container?');
+    container.cobj.splice(index, 1);
+    const nwt = weight(container);
+    container.cobj.splice(index, 0, obj);
+    return owt - nwt;
+}
+
+// src/pickup.c:1570 carry_count()
+export async function carry_count(obj, container, count, telekinesis, wt_before, wt_after) {
+    const adjust_wt = container && carried(container);
+    const is_gold = obj.oclass === OCLASSES.COIN_CLASS;
+    const savequan = obj.quan, saveowt = obj.owt;
     const umoney = money_cnt(game.invent);
     let iw = max_capacity();
-    const oldWeight = iw;
-
     if (count !== savequan) {
         obj.quan = count;
         obj.owt = weight(obj);
     }
     let wt = iw + obj.owt;
-    if (isGold) {
-        wt -= gold_weight(umoney) + gold_weight(count)
-              - gold_weight(umoney + count);
-    }
-    obj.quan = savequan;
-    obj.owt = saveowt;
-
-    if (wt < 0)
-        return { count, oldWeight, newWeight: wt };
-
-    let canLift = 0;
-    if (isGold) {
-        iw -= gold_weight(umoney);
-        canLift = (iw * -100) - (umoney + 50) - 1;
-        canLift = Math.max(0, Math.min(canLift, count));
-        wt = iw + gold_weight(umoney + canLift);
-    } else if (count > 1 || count < savequan) {
-        let q;
-        for (q = 1; q <= count; ++q) {
-            obj.quan = q;
-            obj.owt = weight(obj);
-            const candidate = iw + obj.owt;
-            if (candidate >= 0)
-                break;
-            wt = candidate;
-        }
-        canLift = q - 1;
+    if (adjust_wt) wt -= delta_cwt(container, obj);
+    if (is_gold) wt -= gold_weight(umoney) + gold_weight(count) - gold_weight(umoney + count);
+    if (count !== savequan) {
         obj.quan = savequan;
         obj.owt = saveowt;
     }
-
-    if (canLift < count) {
-        const objName = doname(obj);
-        if (canLift > 0) {
-            await You(`can only lift ${canLift === 1 ? 'one' : 'some'} of the ${
-                objName} lying here.`);
-        } else if ((game.invent || []).length || umoney) {
-            await There(`${otense(obj, 'are')} ${objName} here, but you cannot lift any more.`);
+    wt_before.v = iw;
+    wt_after.v = wt;
+    if (wt < 0) return count;
+    let qq;
+    if (is_gold) {
+        iw -= gold_weight(umoney);
+        if (!adjust_wt) {
+            qq = iw * -100 - (umoney + 50) - 1;
         } else {
-            await There(`${otense(obj, 'are')} ${objName} here, but ${
-                obj.quan === 1 ? 'it ' : 'even one '}is too heavy for you to lift.`);
+            let oow = 0;
+            qq = 50 - (umoney % 100) - 1;
+            if (qq < 0) qq += 100;
+            for (; qq <= count; qq += 100) {
+                obj.quan = qq;
+                obj.owt = gold_weight(qq);
+                let ow = gold_weight(umoney + qq);
+                ow -= delta_cwt(container, obj);
+                if (iw + ow >= 0) break;
+                oow = ow;
+            }
+            iw -= oow;
+            qq -= 100;
+        }
+        if (qq < 0) qq = 0;
+        else if (qq > count) qq = count;
+        wt = iw + gold_weight(umoney + qq);
+    } else if (count > 1 || count < obj.quan) {
+        for (qq = 1; qq <= count; ++qq) {
+            obj.quan = qq;
+            let ow = obj.owt = weight(obj);
+            if (adjust_wt) ow -= delta_cwt(container, obj);
+            if (iw + ow >= 0) break;
+            wt = iw + ow;
+        }
+        --qq;
+    } else qq = 0;
+    obj.quan = savequan;
+    obj.owt = saveowt;
+    let obj_nambuf = '', where = '', verb = '';
+    if (qq < count) {
+        obj_nambuf = doname(obj);
+        if (container) {
+            where = `in ${the(xname(container))}`;
+            verb = 'carry';
+        } else {
+            where = 'lying here';
+            verb = telekinesis ? 'acquire' : 'lift';
         }
     }
-    return { count: canLift, oldWeight, newWeight: wt };
+    if (qq > 0) {
+        if (qq < count)
+            await You(`can only ${verb} ${qq === 1 ? 'one' : 'some'} of the ${obj_nambuf} ${where}.`);
+        wt_after.v = wt;
+        return qq;
+    }
+    if (!container) where = 'here';
+    let prefx1, prefx2, suffx;
+    if (game.invent?.length || umoney) {
+        prefx1 = 'you cannot ';
+        prefx2 = '';
+        suffx = ' any more';
+    } else {
+        prefx1 = obj.quan === 1 ? 'it ' : 'even one ';
+        prefx2 = 'is too heavy for you to ';
+        suffx = '';
+    }
+    await There(`${otense(obj, 'are')} ${obj_nambuf} ${where}, but ${prefx1}${prefx2}${verb}${suffx}.`);
+    return 0;
 }
 
-// src/pickup.c:1705 lift_object(), floor-object slice. Loadstones bypass
-// weight, ordinary objects can ask before worsening the configured burden,
-// and objects beyond the absolute limit stay on the floor.
-async function lift_floor_object(obj, count, telekinesis) {
+// src/pickup.c:1705 lift_object()
+export async function lift_object(obj, container, cnt_p, telekinesis) {
+    let result;
     if (obj.otyp === ONAMES.BOULDER && In_sokoban(game.u.uz)) {
         await You(`cannot get your ${body_part(HAND)} around this ${xname(obj)}.`);
-        return { result: -1, count };
+        return -1;
     }
-
     if (obj.otyp === ONAMES.LOADSTONE
-        || (obj.otyp === ONAMES.BOULDER
-            && throws_rocks(game.youmonst.data))) {
-        const canMerge = (game.invent || []).some((carriedObj) =>
-            mergable(carriedObj, obj));
-        const alreadyCarrying = (game.invent || []).some((carriedObj) =>
-            carriedObj.otyp === obj.otyp);
-        if (inv_cnt(false) < invlet_basic || !alreadyCarrying || canMerge)
-            return { result: 1, count };
-        await You(`are carrying too much stuff to pick up ${
-            obj.quan === 1 ? 'another' : 'more'} ${xname(obj)}.`);
-        return { result: -1, count };
+        || (obj.otyp === ONAMES.BOULDER && throws_rocks(game.youmonst.data))) {
+        if (inv_cnt(false) < invlet_basic || !carrying(obj.otyp) || merge_choice(game.invent, obj))
+            return 1;
+        await You(`are carrying too much stuff to pick up ${obj.quan === 1 ? 'another' : 'more'} ${xname(obj)}.`);
+        return -1;
     }
-
-    const carried = await carry_count_floor(obj, count);
-    count = carried.count;
-    if (count < 1)
-        return { result: -1, count };
-
-    const canMerge = (game.invent || []).some((carriedObj) =>
-        mergable(carriedObj, obj));
-    if (obj.oclass !== OCLASSES.COIN_CLASS
-        && inv_cnt(false) >= invlet_basic && !canMerge) {
-        await Your('knapsack cannot accommodate any more items.');
-        return { result: -1, count };
-    }
-
-    let result = 1;
-    const previous = Math.max(near_capacity(),
-                              game.flags?.pickup_burden ?? MOD_ENCUMBER);
-    const next = calc_capacity(carried.newWeight - carried.oldWeight);
-    if (next > previous) {
-        if (telekinesis) {
-            result = 0;
-        } else {
-            const prefix = next >= EXT_ENCUMBER ? 'You have extreme difficulty'
-                         : next >= HVY_ENCUMBER ? 'You have much trouble'
-                           : next >= MOD_ENCUMBER ? 'You have trouble'
-                             : 'You have a little trouble';
-            const savequan = obj.quan;
-            obj.quan = count;
-            const query = `${prefix} lifting ${doname(obj)}.  Continue?`;
-            obj.quan = savequan;
-            const answer = await tty_yn_function(query, 'ynq', 'q');
-            tty_clear_nhwindow_message(game._topl_cury || 0);
-            game._pending_message = '';
-            if (answer === 'q') result = -1;
-            else if (answer === 'n') result = 0;
+    const old_wt = {}, new_wt = {};
+    cnt_p.v = await carry_count(obj, container, cnt_p.v, telekinesis, old_wt, new_wt);
+    if (cnt_p.v < 1) {
+        result = -1;
+    } else if (obj.oclass !== OCLASSES.COIN_CLASS && inv_cnt(false) >= invlet_basic
+               && !merge_choice(game.invent, obj)) {
+        await Your(`knapsack cannot accommodate any more items${
+            nxtobj(obj, ONAMES.GOLD_PIECE, obj.where === OBJ_FLOOR) ? ' (except gold)' : ''}.`);
+        result = -1;
+    } else {
+        result = 1;
+        let prev_encumbr = near_capacity();
+        if (prev_encumbr < (game.flags.pickup_burden ?? MOD_ENCUMBER))
+            prev_encumbr = game.flags.pickup_burden ?? MOD_ENCUMBER;
+        const next_encumbr = calc_capacity(new_wt.v - old_wt.v);
+        if (next_encumbr > prev_encumbr) {
+            if (telekinesis) result = 0;
+            else {
+                const savequan = obj.quan;
+                obj.quan = cnt_p.v;
+                const prefix = next_encumbr >= EXT_ENCUMBER ? 'You have extreme difficulty'
+                    : next_encumbr >= HVY_ENCUMBER ? 'You have much trouble'
+                    : next_encumbr >= MOD_ENCUMBER ? 'You have trouble' : 'You have a little trouble';
+                const qbuf = safe_qbuf(`${prefix} ${!container ? 'lifting' : 'removing'} `,
+                    '.  Continue?', obj, doname, ansimpleoname, 'something');
+                obj.quan = savequan;
+                const answer = await tty_yn_function(qbuf, 'ynq', 'q');
+                if (answer === 'q') result = -1;
+                else if (answer === 'n') result = 0;
+                tty_clear_nhwindow_message(game._topl_cury || 0);
+                game._pending_message = '';
+            }
         }
     }
-    return { result, count };
+    if (obj.otyp === ONAMES.SCR_SCARE_MONSTER && result <= 0 && !container)
+        obj.spe = 0;
+    return result;
 }
 
 // src/pickup.c:1803 pickup_object() -- take one object off the floor.
@@ -682,9 +854,8 @@ export async function pickup_object(obj, count, telekinesis) {
     if (obj.oartifact && !await touch_artifact(obj, game.youmonst))
         return 0;
     if (obj.otyp === ONAMES.SCR_SCARE_MONSTER) {
-        const carried = await carry_count_floor(
-            obj, count ? count : obj.quan);
-        count = carried.count;
+        count = await carry_count(obj, null, count ? count : obj.quan,
+                                  telekinesis, {}, {});
         if (count < 1)
             return -1;
         if (count < obj.quan)
@@ -709,15 +880,15 @@ export async function pickup_object(obj, count, telekinesis) {
             || await rider_corpse_revival(obj, telekinesis)))
         return -1;
 
-    const lifted = await lift_floor_object(obj, count, telekinesis);
-    if (lifted.result <= 0)
-        return lifted.result;
-    count = lifted.count;
+    const cnt_p = { v: count };
+    const res = await lift_object(obj, null, cnt_p, telekinesis);
+    if (res <= 0) return res;
+    count = cnt_p.v;
 
     if (obj.quan !== count && obj.otyp !== ONAMES.LOADSTONE)
         obj = splitobj(obj, count);
     obj = await pick_obj(obj);
-    await pickup_prinv(obj, count);
+    await pickup_prinv(obj, count, 'lifting');
     return 1;
 }
 
@@ -752,7 +923,7 @@ async function pick_obj(otmp) {
 
 // src/pickup.c:1948 pickup_prinv() limits encumbrance feedback to the first
 // item in one pickup operation that changes the current load category.
-async function pickup_prinv(obj, count) {
+export async function pickup_prinv(obj, count, verb) {
     const nearload = near_capacity();
     let prefix = '';
     if (nearload !== game.pickup_encumbrance) {
@@ -763,7 +934,7 @@ async function pickup_prinv(obj, count) {
                      : '';
         game.pickup_encumbrance = nearload;
     }
-    await prinv(prefix ? `${prefix} lifting` : null, obj, count);
+    await prinv(prefix ? `${prefix} ${verb}` : null, obj, count);
 }
 
 
@@ -812,7 +983,7 @@ async function do_loot_cont(cobj, ccount, ci) {
         note_unported_pickup('do_loot_cont:bag_of_tricks');
         return true;
     }
-    return ((await use_container(cobj, false, ci < ccount)) !== ECMD_OK);
+    return ((await use_container({ o: cobj }, false, ci < ccount)) !== ECMD_OK);
 }
 
 // src/pickup.c:2166 doloot() — the #loot command.
@@ -968,53 +1139,6 @@ async function trigger_tip_trap(box) {
         game.multi_reason = 'tipping a container';
         game.nomovemsg = '';
     }
-}
-
-function age_is_relative(obj) {
-    return obj.otyp === ONAMES.BRASS_LANTERN
-        || obj.otyp === ONAMES.OIL_LAMP
-        || obj.otyp === ONAMES.CANDELABRUM_OF_INVOCATION
-        || obj.otyp === ONAMES.TALLOW_CANDLE
-        || obj.otyp === ONAMES.WAX_CANDLE
-        || obj.otyp === ONAMES.POT_OIL;
-}
-
-async function freeze_in_icebox(obj) {
-    if (age_is_relative(obj))
-        return;
-
-    obj.age = (game.moves ?? 0) - (obj.age ?? 0);
-    const { stop_timer, ROT_CORPSE, REVIVE_MON, SHRINK_GLOB }
-        = await import('./timeout.js');
-    if (obj.otyp === ONAMES.CORPSE) {
-        if (obj.timed) {
-            stop_timer(ROT_CORPSE, obj);
-            stop_timer(REVIVE_MON, obj);
-        }
-        if (obj.corpsenm === PMNAMES.PM_ICE_TROLL) {
-            const saved = obj.omonst || obj.oextra?.omonst;
-            if (saved)
-                saved.mcan = 0;
-        }
-    } else if (obj.globby && obj.timed) {
-        stop_timer(SHRINK_GLOB, obj);
-    }
-}
-
-export async function removed_from_icebox(obj) {
-    if (age_is_relative(obj))
-        return;
-
-    obj.age = (game.moves ?? 0) - (obj.age ?? 0);
-    if (obj.otyp === ONAMES.CORPSE) {
-        const saved = obj.omonst || obj.oextra?.omonst;
-        const iceTroll = saved
-            ? saved.mnum === PMNAMES.PM_ICE_TROLL
-            : obj.corpsenm === PMNAMES.PM_ICE_TROLL;
-        obj.norevive = iceTroll ? 0 : 1;
-        start_corpse_timeout(obj);
-    } else if (obj.globby)
-        start_glob_timeout(obj, 0);
 }
 
 async function tip_bag_of_tricks(box) {
@@ -1221,22 +1345,6 @@ export async function dotip() {
  * Container interaction: src/pickup.c:2558-3480.
  * ================================================================== */
 
-/* C keeps the container being looted in gc.current_container */
-let current_container = null;
-
-// src/pickup.c:101 collect_obj_classes(); lists carry nobj/nexthere order.
-export function collect_obj_classes(ilets, otmp, here, filter, itemcount) {
-    let iletct = 0;
-    itemcount.v = 0;
-    ilets.length = 0;
-    for (const obj of otmp || []) {
-        const c = def_oc_syms[obj.oclass];
-        if (!ilets.includes(c) && (!filter || filter(obj)))
-            ilets[iletct++] = c;
-        itemcount.v += 1;
-    }
-    return iletct;
-}
 
 // src/pickup.c:469 menu_class_present()
 export function menu_class_present(c) {
@@ -1496,15 +1604,6 @@ export async function query_drop_categories(olist) {
         | BUC_UNCURSED | BUC_UNKNOWN | JUSTPICKED | INCLUDE_VENOM);
 }
 
-// src/pickup.c:1705 lift_object() — the reachable slice: ordinary items
-// within carrying capacity lift cleanly; the encumbrance confirmations
-// and knapsack-full refusals record.
-function lift_object(obj) {
-    if (near_capacity() > (game.flags?.pickup_burden ?? 2))
-        note_unported_pickup('lift_object:encumbrance_query');
-    return 1;
-}
-
 // src/pickup.c:2488 mbag_explodes() -- recursively decide whether an object
 // placed into a magical bag triggers an explosion.
 function mbag_explodes(obj, depthin) {
@@ -1525,43 +1624,17 @@ function mbag_explodes(obj, depthin) {
 }
 
 
-// src/pickup.c:2803 mbag_item_gone() -- finish deleting one object lost from
-// a cursed or exploding magical bag. Shop billing remains explicit.
-async function mbag_item_gone(held, item, silent) {
-    if (!silent) {
-        if (item.dknown) {
-            await pline(`${upstart(doname(item))} ${otense(item, 'have')} vanished!`);
-        } else {
-            await You(`${Blind() ? 'notice' : 'see'} ${doname(item)} disappear!`);
-        }
-    }
-    if (item.unpaid || (!held && costly_spot(game.u.ux, game.u.uy)))
-        note_unported_pickup('mbag_item_gone:shop-billing');
-    obfree(item);
-    return 0;
+// src/pickup.c:2510 is_boh_item_gone()
+export function is_boh_item_gone() {
+    return !rn2(13);
 }
 
-// src/pickup.c:2537 boh_loss() -- opening a cursed magical bag gives every
-// contained object an independent one-in-thirteen chance to vanish.
-async function boh_loss(container, held) {
-    let loss = 0;
-    if (Is_mbag(container) && container.cursed && Has_contents(container)) {
-        for (const item of [...container.cobj]) {
-            if (!rn2(13)) {
-                obj_extract_self(item);
-                loss += await mbag_item_gone(held, item, false);
-            }
-        }
-    }
-    return loss;
-}
-
-// src/pickup.c:2515 do_boh_explosion() -- remove a magical bag's contents,
+// src/pickup.c:2518 do_boh_explosion() -- remove a magical bag's contents,
 // destroying a small random fraction and scattering everything else.
 async function do_boh_explosion(boh, onFloor) {
     boh.in_use = 1;
     for (const obj of [...(boh.cobj || [])]) {
-        if (!rn2(13)) {
+        if (is_boh_item_gone()) {
             obj_extract_self(obj);
             await mbag_item_gone(!onFloor, obj, true);
         } else {
@@ -1572,153 +1645,495 @@ async function do_boh_explosion(boh, onFloor) {
     }
 }
 
-// src/pickup.c:2558 in_container() — put obj into current_container.
-async function in_container(obj) {
-    const floor_container = obj !== current_container
-                            && current_container.where === 1 /* OBJ_FLOOR */;
-
-    if (!current_container) {
-        return 0;
-    } else if (obj === current_container) {
-        await pline('That would be an interesting topological exercise.');
-        return 0;
-    } else if (obj.owornmask) {
-        note_unported_pickup('in_container:worn');
-        return 0;
-    } else if (obj.otyp === ONAMES.AMULET_OF_YENDOR
-               || obj.otyp === ONAMES.CANDELABRUM_OF_INVOCATION
-               || obj.otyp === ONAMES.BELL_OF_OPENING
-               || obj.otyp === ONAMES.SPE_BOOK_OF_THE_DEAD) {
-        await pline(`${The(xname(obj))} cannot be confined in such trappings.`);
-        return 0;
-    } else if (obj.otyp === ONAMES.ICE_BOX || Is_box_p(obj)
-               || obj.otyp === ONAMES.BOULDER) {
-        await You(`cannot fit ${the(xname(obj))} into ${
-            the(xname(current_container))}.`);
-        return 0;
-    }
-
-    freeinv(obj);
-
-    if (floor_container && costly_spot(game.u.ux, game.u.uy)
-        && obj.oclass !== OCLASSES.COIN_CLASS) {
-        if (game.sellobj_first) {
-            sellobj_state(current_container.no_charge
-                          ? 2 /* SELL_DONTSELL */
-                          : 1 /* SELL_DELIBERATE */);
-            game.sellobj_first = false;
+// src/pickup.c:2537 boh_loss() -- opening a cursed magical bag gives every
+// contained object an independent one-in-thirteen chance to vanish.
+async function boh_loss(container, held) {
+    let loss = 0;
+    if (Is_mbag(container) && container.cursed && Has_contents(container)) {
+        for (const item of [...container.cobj]) {
+            if (is_boh_item_gone()) {
+                obj_extract_self(item);
+                loss += await mbag_item_gone(held, item, false);
+            }
         }
-        await sellobj(obj, game.u.ux, game.u.uy);
     }
-    if (current_container.otyp === ONAMES.ICE_BOX) {
-        await freeze_in_icebox(obj);
-    } else if (Is_mbag(current_container) && mbag_explodes(obj, 0)) {
-        await urgent_pline(`As you put ${doname(obj)} inside, you are blasted by a magical explosion!`);
-        if (obj.otyp === ONAMES.BAG_OF_HOLDING)
-            await do_boh_explosion(obj, obj.where === 1 /* OBJ_FLOOR */);
-        obfree(obj);
-
-        await do_boh_explosion(current_container, floor_container);
-        if (floor_container)
-            await useupf(current_container, current_container.quan);
-        else
-            useup(current_container);
-
-        await losehp(d(6, 6), 'magical explosion', KILLED_BY_AN);
-        current_container = null;
-    }
-
-    if (!current_container)
-        return -1;
-
-    current_container.cknown = 1;
-
-    await You(`put ${doname(obj)} into ${the(xname(current_container))}.`);
-    if (floor_container && obj.oclass === OCLASSES.COIN_CLASS)
-        await sellobj(obj, current_container.ox, current_container.oy);
-
-    /* src/mkobj.c add_to_container() prepends and merges like the C chain. */
-    add_to_container(current_container, obj);
-    current_container.owt = weight(current_container);
-
-    update_inventory();
-    return current_container ? 1 : -1;
+    return loss;
 }
 
-// src/pickup.c:2727 out_container() — take obj out of current_container.
-async function out_container(obj) {
-    const is_gold = (obj.oclass === OCLASSES.COIN_CLASS);
+// src/pickup.c:2558 in_container()
+export async function in_container(obj) {
+    const floor_container = !game.current_container || !carried(game.current_container);
+    let was_unpaid = false;
+    if (!game.current_container) {
+        await impossible('<in> no gc.current_container?');
+        return 0;
+    } else if (obj === game.uball || obj === game.uchain) {
+        await You('must be kidding.');
+        return 0;
+    } else if (obj === game.current_container) {
+        await pline('That would be an interesting topological exercise.');
+        return 0;
+    } else if (obj.owornmask & (W_ARMOR | W_ACCESSORY)) {
+        await Norep(`You cannot ${game.current_container.otyp === ONAMES.ICE_BOX ? 'refrigerate' : 'stash'} something you are wearing.`);
+        return 0;
+    } else if (obj.otyp === ONAMES.LOADSTONE && obj.cursed) {
+        set_bknown(obj, 1);
+        await pline_The(`stone${obj.quan === 1 ? '' : 's'} won't leave your person.`);
+        return 0;
+    } else if (obj.otyp === ONAMES.AMULET_OF_YENDOR
+        || obj.otyp === ONAMES.CANDELABRUM_OF_INVOCATION
+        || obj.otyp === ONAMES.BELL_OF_OPENING
+        || obj.otyp === ONAMES.SPE_BOOK_OF_THE_DEAD) {
+        await pline(`${The(xname(obj))} cannot be confined in such trappings.`);
+        return 0;
+    } else if (obj.otyp === ONAMES.LEASH && obj.leashmon) {
+        await pline(`${Tobjnam(obj, 'are')} attached to your pet.`);
+        return 0;
+    } else if (obj === game.u.uwep) {
+        if (welded(obj)) {
+            await weldmsg(obj);
+            return 0;
+        }
+        await setuwep_with_feedback(null);
+        if (game.u.uwep) return 0;
+    } else if (obj === game.u.uswapwep) {
+        setuswapwep(null);
+    } else if (obj === game.u.uquiver) {
+        setuqwep(null);
+    }
+    if (await fatal_corpse_mistake(obj, false)) return -1;
+    if (obj.otyp === ONAMES.ICE_BOX || Is_box_p(obj) || obj.otyp === ONAMES.BOULDER
+        || (obj.otyp === ONAMES.STATUE && bigmonst(game.mons[obj.corpsenm]))) {
+        const buf = the(xname(obj));
+        await You(`cannot fit ${buf} into ${the(xname(game.current_container))}.`);
+        return 0;
+    }
+    freeinv(obj);
+    if (obj_is_burning(obj)) {
+        const { snuff_lit } = await import('./apply.js');
+        await snuff_lit(obj);
+    }
+    if (floor_container && costly_spot(game.u.ux, game.u.uy)) {
+        if (obj.oclass !== OCLASSES.COIN_CLASS) {
+            was_unpaid = !!obj.unpaid;
+            if (game.sellobj_first) {
+                sellobj_state(game.current_container.no_charge ? 2 : 1);
+                game.sellobj_first = false;
+            }
+            await sellobj(obj, game.u.ux, game.u.uy);
+        }
+    }
+    if (game.current_container.otyp === ONAMES.ICE_BOX && !age_is_relative(obj)) {
+        obj.age = game.moves - obj.age;
+        const { stop_timer, ROT_CORPSE, REVIVE_MON, SHRINK_GLOB } = await import('./timeout.js');
+        if (obj.otyp === ONAMES.CORPSE) {
+            if (obj.timed) {
+                stop_timer(ROT_CORPSE, obj);
+                stop_timer(REVIVE_MON, obj);
+            }
+            if (obj.corpsenm === PMNAMES.PM_ICE_TROLL && has_omonst(obj))
+                OMONST(obj).mcan = 0;
+        } else if (obj.globby && obj.timed) {
+            stop_timer(SHRINK_GLOB, obj);
+        }
+    } else if (Is_mbag(game.current_container) && mbag_explodes(obj, 0)) {
+        livelog_printf(LL_ACHIEVE, `just blew up ${uhis()} bag of holding`);
+        await urgent_pline(`As you put ${doname(obj)} inside, you are blasted by a magical explosion!`);
+        if (was_unpaid) await addtobill(obj, false, false, true);
+        if (obj.otyp === ONAMES.BAG_OF_HOLDING)
+            await do_boh_explosion(obj, obj.where === OBJ_FLOOR);
+        obfree(obj);
+        if (floor_container && costly_spot(game.current_container.ox, game.current_container.oy)) {
+            const save_no_charge = game.current_container.no_charge;
+            await addtobill(game.current_container, false, false, false);
+            game.current_container.no_charge = save_no_charge;
+        }
+        await do_boh_explosion(game.current_container, floor_container);
+        if (!floor_container) useup(game.current_container);
+        else if (obj_here(game.current_container, game.u.ux, game.u.uy))
+            await useupf(game.current_container, game.current_container.quan);
+        else throw new Error('in_container:  bag not found.');
+        await losehp(d(6, 6), 'magical explosion', KILLED_BY_AN);
+        game.current_container = null;
+    }
+    if (game.current_container) {
+        const buf = the(xname(game.current_container));
+        await You(`put ${doname(obj)} into ${buf}.`);
+        if (floor_container && obj.oclass === OCLASSES.COIN_CLASS)
+            await sellobj(obj, game.current_container.ox, game.current_container.oy);
+        add_to_container(game.current_container, obj);
+        game.current_container.owt = weight(game.current_container);
+    }
+    await bot();
+    return game.current_container ? 1 : -1;
+}
 
-    if (!current_container)
+// src/pickup.c:2721 ck_bag()
+export function ck_bag(obj) {
+    return !!game.current_container && obj !== game.current_container;
+}
+
+// src/pickup.c:2727 out_container()
+export async function out_container(obj) {
+    const is_gold = obj.oclass === OCLASSES.COIN_CLASS;
+    if (!game.current_container) {
+        await impossible('<out> no gc.current_container?');
         return -1;
-    else if (is_gold)
-        obj.owt = weight(obj);
-
-    /* touch_artifact / fatal_corpse_mistake: no artifacts, and corpses
-       of dangerous species record inside pickup_object too */
-    if (obj.otyp === ONAMES.CORPSE)
-        note_unported_pickup('out_container:corpse_checks');
-
-    const count = obj.quan;
-    const res = lift_object(obj);
-    if (res <= 0)
-        return res;
-
-    /* Remove the object from the container's list. */
+    } else if (is_gold) obj.owt = weight(obj);
+    if (obj.oartifact && !await touch_artifact(obj, game.youmonst)) return 0;
+    if (await fatal_corpse_mistake(obj, false)) return -1;
+    const count = { v: obj.quan };
+    const res = await lift_object(obj, game.current_container, count, false);
+    if (res <= 0) return res;
+    if (obj.quan !== count.v && obj.otyp !== ONAMES.LOADSTONE)
+        obj = splitobj(obj, count.v);
     obj_extract_self(obj);
-    current_container.owt = weight(current_container);
-
-    if (current_container.otyp === ONAMES.ICE_BOX)
-        await removed_from_icebox(obj);
-
-    if (!obj.unpaid && !carried(current_container)
-        && costly_spot(current_container.ox, current_container.oy)) {
-        obj.ox = current_container.ox;
-        obj.oy = current_container.oy;
+    game.current_container.owt = weight(game.current_container);
+    if (game.current_container.otyp === ONAMES.ICE_BOX) await removed_from_icebox(obj);
+    if (!obj.unpaid && !carried(game.current_container)
+        && costly_spot(game.current_container.ox, game.current_container.oy)) {
+        obj.ox = game.current_container.ox;
+        obj.oy = game.current_container.oy;
         await addtobill(obj, false, false, false);
     }
-
+    if (is_pick(obj)) await pick_pick(obj);
     const otmp = await addinv(obj);
-    await prinv(null, otmp, count);
-
-    if (is_gold)
-        await bot(); /* update character's gold piece count immediately */
+    await pickup_prinv(otmp, count.v, 'removing');
+    if (is_gold) await bot();
     return 1;
+}
+
+// src/pickup.c:2781 removed_from_icebox()
+export async function removed_from_icebox(obj) {
+    if (!age_is_relative(obj)) {
+        obj.age = game.moves - obj.age;
+        if (obj.otyp === ONAMES.CORPSE) {
+            const m = get_mtraits(obj, false);
+            const iceT = m ? m.data === game.mons[PMNAMES.PM_ICE_TROLL]
+                : obj.corpsenm === PMNAMES.PM_ICE_TROLL;
+            obj.norevive = iceT ? 0 : 1;
+            start_corpse_timeout(obj);
+        } else if (obj.globby) start_glob_timeout(obj, 0);
+    }
+}
+
+// src/pickup.c:2803 mbag_item_gone() -- finish deleting one object lost from
+// a cursed or exploding magical bag. Shop billing remains explicit.
+async function mbag_item_gone(held, item, silent) {
+    let loss = 0;
+    if (!silent) {
+        if (item.dknown) {
+            await pline(`${upstart(doname(item))} ${otense(item, 'have')} vanished!`);
+        } else {
+            await You(`${Blind() ? 'notice' : 'see'} ${doname(item)} disappear!`);
+        }
+    }
+    const shkp = game.u.ushops && shop_keeper(game.u.ushops.charCodeAt(0));
+    if (shkp && (held ? !!item.unpaid : costly_spot(game.u.ux, game.u.uy)))
+        loss = await stolen_value(item, game.u.ux, game.u.uy, !!shkp.mpeaceful, true);
+    obfree(item);
+    return loss;
+}
+
+// src/pickup.c:2826 observe_quantum_cat()
+export async function observe_quantum_cat(box, makecat, givemsg) {
+    const sc = "Schroedinger's Cat", cc = {};
+    let livecat = null;
+    const itsalive = !rn2(2);
+    if (get_obj_location(box, cc, 0)) {
+        box.ox = cc.x;
+        box.oy = cc.y;
+    }
+    let deadcat = box.cobj?.[0];
+    if (itsalive) {
+        if (makecat)
+            livecat = makemon(game.mons[PMNAMES.PM_HOUSECAT], box.ox, box.oy,
+                              NO_MINVENT | MM_ADJACENTOK | MM_NOMSG);
+        if (livecat) {
+            livecat.mpeaceful = 1;
+            set_malign(livecat);
+            if (givemsg) {
+                if (!canspotmon(livecat)) await You(`think something brushed your ${body_part(FOOT)}.`);
+                else await pline(`${Monnam(livecat)} inside the box is still alive!`);
+            }
+            christen_monst(livecat, sc);
+            if (deadcat) {
+                obj_extract_self(deadcat);
+                obfree(deadcat);
+                deadcat = null;
+            }
+            box.owt = weight(box);
+            box.spe = 0;
+            if (!game.context.mon_moving) {
+                more_experienced(10, 20);
+                await newexplevel();
+            }
+        }
+    } else {
+        box.spe = 0;
+        if (givemsg) await pline_The(`${Hallucination() ? rndmonnam(null) : 'housecat'} inside the box is dead!`);
+        if (deadcat) {
+            deadcat.age = game.moves;
+            set_corpsenm(deadcat, PMNAMES.PM_HOUSECAT);
+            deadcat = oname(deadcat, sc, ONAME_NO_FLAGS);
+            if (!game.context.mon_moving) {
+                more_experienced(20, 10);
+                await newexplevel();
+            }
+        }
+    }
 }
 
 // src/pickup.c:2903 container_gone()
 export function container_gone(fn) {
-    return (fn === in_container || fn === out_container) && !current_container;
+    return (fn === in_container || fn === out_container) && !game.current_container;
 }
 
 /* include/obj.h Is_box() — the local ONAMES spelling */
 const Is_box_p = (o) => o.otyp === ONAMES.LARGE_BOX
                         || o.otyp === ONAMES.CHEST;
 
-// src/pickup.c:3265 menu_loot() — MENU_FULL: category query, then either
-// autopick everything or the item menu.
-async function menu_loot(retry, put_in) {
-    let n_looted = 0;
-    let all_categories = true, loot_everything = false, autopick = false;
-    const action = put_in ? 'Put in' : 'Take out';
+// src/pickup.c:2911 explain_container_prompt()
+export async function explain_container_prompt(more_containers) {
+    const explaintext = [
+        'Container actions:', '',
+        ' : -- Look: examine contents',
+        ' o -- Out: take things out',
+        ' i -- In: put things in',
+        ' b -- Both: first take things out, then put things in',
+        ' r -- Reversed: put things in, then take things out',
+        ' s -- Stash: put one item in', '',
+        ' n -- Next: loot next selected container',
+        ' q -- Quit: finished',
+        ' ? -- Help: display this text.', '',
+    ];
+    const win = tty_create_nhwindow(NHW_TEXT);
+    for (const text of explaintext) {
+        if (!more_containers && text.startsWith(' n ')) continue;
+        tty_putstr(win, 0, text);
+    }
+    await tty_display_nhwindow(win);
+    do {
+        await xwaitforspace(' \r\n\x1b');
+    } while (game.morc !== '\x1b' && tty_next_page(win));
+    tty_destroy_nhwindow(win);
+    await docrt();
+}
 
+// src/pickup.c:2943 u_handsy(); the hero has hands and one of them is free
+export async function u_handsy() {
+    if (nohands(game.youmonst.data)) {
+        await You('have no hands!'); /* not `body_part(HAND)' */
+        return false;
+    } else if (!freehand()) {
+        await You(`have no free ${body_part(HAND)}.`);
+        return false;
+    }
+    return true;
+}
+
+// src/pickup.c:2957 stash_ok()
+function stash_ok(obj) {
+    if (!obj)
+        return GETOBJ_EXCLUDE;
+    if (!ck_bag(obj))
+        return GETOBJ_EXCLUDE_SELECTABLE;
+    return GETOBJ_SUGGEST;
+}
+
+// src/pickup.c:2972 use_container(); objp.o can be cleared by an explosion.
+export async function use_container(objp, held, more_containers) {
+    const obj = objp.o;
+    let used = ECMD_OK, emptymsg = '';
+    game.abort_looting = false;
+    game.sellobj_first = true;
+    if (!await u_handsy()) return ECMD_OK;
+    if (!obj.lknown) {
+        obj.lknown = 1;
+        if (held) update_inventory();
+    }
+    if (obj.olocked) {
+        await pline(`${Tobjnam(obj, 'are')} locked.`);
+        if (held) await You('must put it down to unlock.');
+        return ECMD_OK;
+    } else if (obj.otrapped) {
+        if (held) await You(`open ${the(xname(obj))}...`);
+        const { chest_trap } = await import('./trap.js');
+        await chest_trap(obj, HAND, false);
+        if ((game.multi ?? 0) >= 0) {
+            nomul(-1);
+            game.multi_reason = 'opening a container';
+            game.nomovemsg = '';
+        }
+        game.abort_looting = true;
+        return ECMD_TIME;
+    }
+    game.current_container = obj;
+    const quantum_cat = SchroedingersBox(game.current_container);
+    if (quantum_cat) {
+        await observe_quantum_cat(game.current_container, true, true);
+        used = ECMD_TIME;
+    }
+    const cursed_mbag = Is_mbag(game.current_container)
+        && game.current_container.cursed && Has_contents(game.current_container);
+    let loss;
+    if (cursed_mbag && (loss = await boh_loss(game.current_container, held)) !== 0) {
+        used = ECMD_TIME;
+        await You(`owe ${loss} ${currency(loss)} for lost merchandise.`);
+        game.current_container.owt = weight(game.current_container);
+    }
+    let inokay = !!(game.invent?.length
+        && (game.invent[0] !== game.current_container || game.invent.length > 1));
+    const outokay = Has_contents(game.current_container);
+    if (!outokay)
+        emptymsg = `${Ysimple_name2(game.current_container)} is ${quantum_cat || cursed_mbag ? 'now ' : ''}empty.`;
+    let c;
+    for (;;) {
+        const outmaybe = outokay || !game.current_container.cknown;
+        const qbuf = !outmaybe
+            ? safe_qbuf(null, ' is empty.  Do what with it?', game.current_container,
+                        Yname2, Ysimple_name2, 'This')
+            : safe_qbuf('Do what with ', '?', game.current_container,
+                        yname, ysimple_name, 'it');
+        if (game.flags.menu_style === MENU_PARTIAL || game.flags.menu_style === MENU_FULL) {
+            if (!inokay && !outmaybe) c = 'b';
+            else c = await in_or_out_menu(qbuf, game.current_container, outmaybe,
+                                          inokay, used !== ECMD_OK, more_containers);
+        } else {
+            let pbuf = ':', xbuf = '';
+            if (outmaybe) pbuf += 'o'; else xbuf += 'o';
+            if (inokay) pbuf += 'i'; else xbuf += 'i';
+            if (outmaybe) pbuf += 'b'; else xbuf += 'b';
+            if (inokay) pbuf += 'rs'; else xbuf += 'rs';
+            pbuf += ' ';
+            if (more_containers) pbuf += 'n'; else xbuf += 'n';
+            pbuf += 'q';
+            if (boolean_option('cmdassist')) pbuf += ' or ?';
+            else xbuf += '?';
+            if (xbuf) pbuf += '\x1b' + xbuf;
+            c = await tty_yn_function(qbuf, pbuf, more_containers ? 'n' : 'q', true);
+        }
+        if (c === '?') {
+            await explain_container_prompt(more_containers);
+        } else if (c === ':') {
+            if (!game.current_container.cknown) used = ECMD_TIME;
+            await container_contents([game.current_container], false, false, true);
+        } else break;
+    }
+    if (c === 'q') game.abort_looting = true;
+    containerdone: {
+        if (c === 'n' || c === 'q') break containerdone;
+        let loot_out = c === 'o' || c === 'b' || c === 'r';
+        let loot_in = c === 'i' || c === 'b' || c === 'r';
+        const loot_in_first = c === 'r';
+        let stash_one = c === 's';
+        if (loot_out && !loot_in_first) {
+            if (!Has_contents(game.current_container)) {
+                await pline(emptymsg);
+                if (!game.current_container.cknown) used = ECMD_TIME;
+                game.current_container.cknown = 1;
+            } else {
+                add_valid_menu_class(0);
+                if (game.flags.menu_style === MENU_TRADITIONAL)
+                    used |= await traditional_loot(false);
+                else used |= (await menu_loot(0, false)) > 0 ? 1 : 0;
+                add_valid_menu_class(0);
+            }
+            inokay = !!(game.invent?.length
+                && (game.invent[0] !== game.current_container || game.invent.length > 1));
+        }
+        if ((loot_in || stash_one) && !inokay) {
+            await You(`don't have anything${game.invent?.length ? ' else' : ''} to ${stash_one ? 'stash' : 'put in'}.`);
+            loot_in = stash_one = false;
+        }
+        if (loot_in) {
+            add_valid_menu_class(0);
+            if (game.flags.menu_style === MENU_TRADITIONAL)
+                used |= await traditional_loot(true);
+            else used |= (await menu_loot(0, true)) > 0 ? 1 : 0;
+            add_valid_menu_class(0);
+        } else if (stash_one) {
+            const otmp = await getobj('stash', stash_ok, GETOBJ_PROMPT | GETOBJ_ALLOWCNT);
+            if (otmp) {
+                if (await in_container(otmp)) used = 1;
+                else await unsplitobj(otmp);
+            }
+        }
+        if (!game.current_container) loot_out = false;
+        if (loot_out && loot_in_first) {
+            if (!Has_contents(game.current_container)) {
+                await pline(emptymsg);
+                if (!game.current_container.cknown) used = 1;
+                game.current_container.cknown = 1;
+            } else {
+                add_valid_menu_class(0);
+                if (game.flags.menu_style === MENU_TRADITIONAL)
+                    used |= await traditional_loot(false);
+                else used |= (await menu_loot(0, false)) > 0 ? 1 : 0;
+                add_valid_menu_class(0);
+            }
+        }
+    }
+    if (used) {
+        if (game.current_container) game.current_container.cknown = 1;
+        update_inventory();
+    }
+    sellobj_state(0); /* SELL_NORMAL */
+    objp.o = game.current_container;
+    if (game.current_container) game.current_container = null;
+    else game.abort_looting = true;
+    return used;
+}
+
+// src/pickup.c:3230 traditional_loot()
+export async function traditional_loot(put_in) {
+    let action, objlist, actionfunc, checkfunc;
+    const selection = [], one_by_one = {}, allflag = {}, menu_on_request = { v: 0 };
+    let used = ECMD_OK;
+    if (put_in) {
+        action = 'put in';
+        objlist = game.invent;
+        actionfunc = in_container;
+        checkfunc = ck_bag;
+    } else {
+        action = 'take out';
+        objlist = game.current_container.cobj;
+        actionfunc = out_container;
+        checkfunc = null;
+        game.pickup_encumbrance = 0;
+    }
+    if (await query_classes(selection, one_by_one, allflag, action, objlist, false, menu_on_request)) {
+        if (await askchain(objlist, one_by_one.v ? null : selection, allflag.v,
+                           actionfunc, checkfunc, 0, action))
+            used = ECMD_TIME;
+    } else if (menu_on_request.v < 0) {
+        used = (await menu_loot(menu_on_request.v, put_in)) > 0 ? 1 : 0;
+    }
+    return used;
+}
+
+// src/pickup.c:3265 menu_loot()
+export async function menu_loot(retry, put_in) {
+    let n_looted = 0, all_categories = true, loot_everything = false, autopick = false;
+    let loot_justpicked = false, count = 0;
+    const action = put_in ? 'Put in' : 'Take out';
+    game.pickup_encumbrance = 0;
     if (retry) {
-        all_categories = (retry === -2);
-    } else { /* flags.menu_style === MENU_FULL (the default) */
+        all_categories = retry === -2;
+    } else if (game.flags.menu_style === MENU_FULL) {
         all_categories = false;
-        const mflags = (ALL_TYPES | UNPAID_TYPES | BUCX_TYPES | CHOOSE_ALL
-                        | JUSTPICKED);
-        const olist = put_in ? (game.invent || [])
-                             : (current_container.cobj || []);
-        const picks = await query_category(
-            `${action} what type of objects?`, olist, mflags);
-        if (!picks.length)
-            return ECMD_OK;
+        const picks = await query_category(`${action} what type of objects?`,
+            put_in ? game.invent : game.current_container.cobj,
+            ALL_TYPES | UNPAID_TYPES | BUCX_TYPES | CHOOSE_ALL | JUSTPICKED);
+        if (!picks.length) return ECMD_OK;
         for (const pick of picks) {
             if (pick === 'A'.charCodeAt(0)) {
                 loot_everything = autopick = true;
             } else if (put_in && pick === 'P'.charCodeAt(0)) {
-                note_unported_pickup('menu_loot:justpicked');
+                loot_justpicked = true;
+                count = Math.max(0, picks.counts?.get(pick) ?? -1);
+                add_valid_menu_class(pick);
+                loot_everything = false;
             } else if (pick === ALL_TYPES_SELECTED) {
                 all_categories = true;
             } else {
@@ -1727,45 +2142,53 @@ async function menu_loot(retry, put_in) {
             }
         }
     }
-
     if (autopick) {
-        const firstlist = put_in ? (game.invent || []).slice()
-                                 : (current_container.cobj || []).slice();
-        if (!put_in)
-            current_container.cknown = 1;
-        for (const otmp of firstlist) {
-            if (!current_container)
-                break;
+        let inout_func, firstobj;
+        if (!put_in) {
+            game.current_container.cknown = 1;
+            inout_func = out_container;
+            firstobj = game.current_container.cobj;
+        } else {
+            inout_func = in_container;
+            firstobj = game.invent;
+        }
+        let otmp = firstobj?.[0];
+        while (otmp && game.current_container) {
+            const otmp2 = firstobj[firstobj.indexOf(otmp) + 1];
             if (loot_everything || all_categories || allow_category(otmp)) {
-                const res = put_in ? await in_container(otmp)
-                                   : await out_container(otmp);
-                if (res < 0)
-                    break;
+                const res = await inout_func(otmp);
+                if (res < 0) break;
                 n_looted += res;
             }
+            otmp = otmp2;
+        }
+    } else if (put_in && loot_justpicked && count_justpicked(game.invent) === 1) {
+        let otmp = find_justpicked(game.invent);
+        if (otmp) {
+            n_looted = 1;
+            if (count > 0 && count < otmp.quan) otmp = splitobj(otmp, count);
+            await in_container(otmp);
         }
     } else {
-        if (!put_in)
-            current_container.cknown = 1;
-        const src = put_in ? (game.invent || [])
-                           : (current_container.cobj || []);
-        const eligible = src.filter(o => all_categories || allow_category(o));
-        const picks = await query_objlist(`${action} what?`, eligible,
-                                          INVORDER_SORT | ((put_in && game.flags?.fixinv !== false) ? USE_INVLET : 0),
-                                          PICK_ANY, allow_all);
+        let mflags = INVORDER_SORT | INCLUDE_VENOM;
+        if (put_in && game.flags.fixinv !== false) mflags |= USE_INVLET;
+        if (put_in && loot_justpicked) mflags |= JUSTPICKED;
+        if (!put_in) game.current_container.cknown = 1;
+        const picks = await query_objlist(`${action} what?`,
+            put_in ? game.invent : game.current_container.cobj, mflags,
+            PICK_ANY, all_categories ? allow_all : allow_category);
         if (picks.length) {
             n_looted = picks.length;
-            for (let otmp of picks) {
-                const original = otmp;
-                const count = picks.counts?.get(otmp) ?? otmp.quan;
-                if (count > 0 && count < otmp.quan)
-                    otmp = splitobj(otmp, count);
-                const res = put_in ? await in_container(otmp)
-                                   : await out_container(otmp);
-                if (res <= 0 && current_container && otmp !== original)
-                    merged({ o: original }, { o: otmp });
-                if (res < 0)
-                    break;
+            for (const selected of picks) {
+                let otmp = selected;
+                count = picks.counts?.get(selected) ?? otmp.quan;
+                if (count > 0 && count < otmp.quan) otmp = splitobj(otmp, count);
+                const res = put_in ? await in_container(otmp) : await out_container(otmp);
+                if (res <= 0) {
+                    if (!game.current_container) otmp = null;
+                    else if (otmp && otmp !== selected) await unsplitobj(otmp);
+                    if (res < 0) break;
+                }
             }
         }
     }
@@ -1832,196 +2255,7 @@ async function in_or_out_menu(prompt, obj, outokay, inokay, alreadyused,
             k = picks[1];
         return lootchars[k]; /* :,o,i,b,r,s,n,q */
     }
-    return more_containers ? 'n' : 'q';
-}
-
-/* src/objnam.c thesimpleoname() — "the <simple name>" */
-function thesimpleoname(obj) {
-    return `the ${xname(obj)}`;
-}
-
-/* src/pickup.c stash_ok() - allow every inventory item except the
-   container currently receiving the stashed object. */
-function stash_ok(obj) {
-    if (!obj)
-        return GETOBJ_EXCLUDE;
-    if (!current_container || obj === current_container)
-        return GETOBJ_EXCLUDE_SELECTABLE;
-    return GETOBJ_SUGGEST;
-}
-
-// src/pickup.c:2972 use_container() — the "Do what with <container>?" loop.
-export async function use_container(obj, held, more_containers) {
-    let used = ECMD_OK;
-
-    game.sellobj_first = true;
-
-    /* u_handsy() always true un-polymorphed */
-    if (!obj.lknown) { /* do this in advance */
-        obj.lknown = 1;
-        if (held)
-            update_inventory();
-    }
-    if (obj.olocked) {
-        await pline(`${The(xname(obj))} ${obj.quan > 1 ? 'are' : 'is'} locked.`);
-        if (held)
-            await You('must put it down to unlock.');
-        return ECMD_OK;
-    } else if (obj.otrapped) {
-        if (held)
-            await You(`open ${the(xname(obj))}...`);
-        const { chest_trap } = await import('./trap.js');
-        const { HAND } = await import('./const.js');
-        await chest_trap(obj, HAND, false);
-        if ((game.multi ?? 0) >= 0) {
-            nomul(-1);
-            game.multi_reason = 'opening a container';
-            game.nomovemsg = '';
-        }
-        return ECMD_TIME;
-    }
-
-    current_container = obj; /* for use by in/out_container */
-
-    /* Schroedinger's box remains unavailable. */
-    const cursedMbag = Is_mbag(obj) && obj.cursed && Has_contents(obj);
-    if (cursedMbag) {
-        const loss = await boh_loss(obj, held);
-        if (loss) {
-            used = ECMD_TIME;
-            note_unported_pickup('use_container:cursed_mbag_shop_loss');
-        }
-    }
-
-    let inokay = (game.invent || []).some(o => o !== current_container);
-    const outokay0 = Has_contents(current_container);
-    const emptymsg = `${upstart(yname(current_container))} is ${
-        cursedMbag ? 'now ' : ''}empty.`;
-
-    let c;
-    for (;;) { /* repeats iff '?' or ':' gets chosen */
-        const outmaybe = (outokay0 || !current_container.cknown);
-        const qbuf = !outmaybe
-            ? `${emptymsg}  Do what with it?`
-            : `Do what with ${yname(current_container)}?`;
-        /* flags.menu_style defaults to MENU_FULL -> the menu variant */
-        c = await in_or_out_menu(qbuf, current_container, outmaybe, inokay,
-                                 used !== ECMD_OK, more_containers);
-
-        if (c === ':') { /* note: will set obj->cknown */
-            if (!current_container.cknown)
-                used = ECMD_TIME; /* gaining info */
-            await container_contents(current_container);
-        } else
-            break;
-    }
-
-    if (c === 'q' || c === 'n') {
-        /* 'q' would set abort_looting for multi-container loops */
-    } else {
-        const loot_out = (c === 'o' || c === 'b' || c === 'r');
-        let loot_in = (c === 'i' || c === 'b' || c === 'r');
-        const loot_in_first = (c === 'r'); /* both, reversed */
-        let stash_one = (c === 's');
-
-        /* out-only or out before in */
-        if (loot_out && !loot_in_first) {
-            if (!Has_contents(current_container)) {
-                await pline(emptymsg); /* <whatever> is empty. */
-                if (!current_container.cknown)
-                    used = ECMD_TIME;
-                current_container.cknown = 1;
-            } else {
-                add_valid_menu_class(0); /* reset */
-                if ((await menu_loot(0, false)) !== ECMD_OK)
-                    used = ECMD_TIME;
-                add_valid_menu_class(0);
-            }
-            inokay = (game.invent || [])
-                .some(o => o !== current_container);
-        }
-
-        if ((loot_in || stash_one) && !inokay) {
-            await You(`don't have anything${game.invent?.length ? ' else' : ''} to ${
-                stash_one ? 'stash' : 'put in'}.`);
-            loot_in = stash_one = false;
-        }
-
-        if (loot_in) {
-            add_valid_menu_class(0); /* reset */
-            if ((await menu_loot(0, true)) !== ECMD_OK)
-                used = ECMD_TIME;
-            add_valid_menu_class(0);
-        } else if (stash_one) {
-            const stashed = await getobj('stash', stash_ok,
-                                         GETOBJ_PROMPT | GETOBJ_ALLOWCNT);
-            if (stashed) {
-                if (await in_container(stashed))
-                    used = ECMD_TIME;
-                else
-                    note_unported_pickup('use_container:stash_one_unsplit');
-            }
-        }
-
-        /* out after in */
-        if (loot_out && loot_in_first && current_container) {
-            if (!Has_contents(current_container)) {
-                await pline(emptymsg);
-                if (!current_container.cknown)
-                    used = ECMD_TIME;
-                current_container.cknown = 1;
-            } else {
-                add_valid_menu_class(0);
-                if ((await menu_loot(0, false)) !== ECMD_OK)
-                    used = ECMD_TIME;
-                add_valid_menu_class(0);
-            }
-        }
-    }
-
-    if (used !== ECMD_OK) {
-        if (current_container)
-            current_container.cknown = 1;
-        update_inventory();
-    }
-    sellobj_state(0);
-    current_container = null; /* avoid hanging on to stale pointer */
-    return used;
-}
-
-// src/invent.c container_contents() — the ':' look-inside listing: a
-// plain text window (putstr lines, --More--), sorted in loot order, with
-// no class headings and no selectors.
-async function container_contents(obj) {
-    const { tty_create_nhwindow, tty_putstr, tty_display_nhwindow,
-            tty_dismiss_nhwindow, tty_destroy_nhwindow, ATR_NONE, NHW_MENU }
-        = await import('./tty/wintty.js');
-    const { nhgetch } = await import('./input.js');
-    const { docrt } = await import('./display.js');
-
-    obj.cknown = 1;
-    if (!Has_contents(obj)) {
-        /* pline("%s is empty.", upstart(thesimpleoname(box))) */
-        await pline(`${upstart(thesimpleoname(obj))} is empty.`);
-        return;
-    }
-    const win = tty_create_nhwindow(NHW_MENU);
-    tty_putstr(win, 0, `Contents of ${the(xname(obj))}:`);
-    tty_putstr(win, 0, '');
-    /* buf[0] = buf[1] = ' ' — two leading spaces on every item line */
-    for (const oclass of inv_order()) {
-        for (const o of sortloot_items(
-                 (obj.cobj || []).filter(c => c.oclass === oclass))) {
-            if (!game.u?.ublind)
-                observe_object(o);
-            tty_putstr(win, 0, `  ${doname(o)}`);
-        }
-    }
-    await tty_display_nhwindow(win);
-    await nhgetch();            /* the --More-- acknowledgement */
-    tty_dismiss_nhwindow(win);
-    tty_destroy_nhwindow(win);
-    await docrt();
+    return !picks.cancelled && more_containers ? 'n' : 'q';
 }
 
 // src/invent.c:403 sortloot_cmp(), the slice active for container and
@@ -2068,16 +2302,4 @@ export function container_at(x, y, countem) {
         }
     }
     return container_count;
-}
-
-// src/pickup.c:2943 u_handsy(); the hero has hands and one of them is free
-export async function u_handsy() {
-    if (nohands(game.youmonst.data)) {
-        await You('have no hands!'); /* not `body_part(HAND)' */
-        return false;
-    } else if (!freehand()) {
-        await You(`have no free ${body_part(HAND)}.`);
-        return false;
-    }
-    return true;
 }

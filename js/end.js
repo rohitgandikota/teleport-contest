@@ -42,6 +42,17 @@ import { unstuck } from './mon.js';
 import { sticks } from './mondata.js';
 import { mon_nam, Monnam } from './do_name.js';
 import { flush_screen } from './display.js';
+import { Is_container, Has_contents, SchroedingersBox } from './obj.js';
+import { update_inventory, sortloot, unsortloot } from './invent.js';
+import { the, xname, thesimpleoname } from './objnam.js';
+import { doname_with_price } from './shk.js';
+import { discover_object } from './o_init.js';
+import { upstart } from './do_name.js';
+import { SORTLOOT_LOOT, SORTLOOT_PACK } from './const.js';
+import { boolean_option } from './options.js';
+import { tty_next_page } from './tty/wintty.js';
+import { xwaitforspace } from './tty/getline.js';
+import { docrt, display_nhwindow_message } from './display.js';
 
 function note_unported_end(what) {
     (game.unported ||= new Set()).add('end:' + what);
@@ -217,6 +228,60 @@ export function formatkiller(how, incl_helpless) {
     case 1:
     default:
         return prefix + name;
+    }
+}
+
+// src/end.c:1596 container_contents(); disclosure and the loot ':' choice.
+export async function container_contents(list, identified, all_containers, reportempty) {
+    const dumping = !!game.iflags?.in_dumplog;
+    for (const box of list || []) {
+        if (Is_container(box) || box.otyp === ONAMES.STATUE) {
+            if (!box.cknown || (identified && !box.lknown)) {
+                box.cknown = 1;
+                if (identified) box.lknown = 1;
+                update_inventory();
+            }
+            if (box.otyp === ONAMES.BAG_OF_TRICKS) {
+                continue;
+            } else if (Has_contents(box)) {
+                const tmpwin = tty_create_nhwindow(NHW_MENU);
+                const cat = SchroedingersBox(box);
+                tty_putstr(tmpwin, 0, `Contents of ${the(xname(box))}:`);
+                if (!dumping) tty_putstr(tmpwin, 0, '');
+                if (!cat) {
+                    const sortloot_option = String(game.flags.sortloot ?? 'l').charAt(0);
+                    const sortflags = ((sortloot_option === 'l' || sortloot_option === 'f')
+                        ? SORTLOOT_LOOT : 0) | (boolean_option('sortpack') ? SORTLOOT_PACK : 0);
+                    const sortedcobj = sortloot(box.cobj, sortflags, false, null);
+                    for (const { obj } of sortedcobj) {
+                        if (!obj) break;
+                        if (identified) {
+                            discover_object(obj.otyp, true, true, false);
+                            obj.dknown = obj.known = obj.bknown = obj.rknown = 1;
+                            if (Is_container(obj) || obj.otyp === ONAMES.STATUE)
+                                obj.cknown = obj.lknown = 1;
+                        }
+                        tty_putstr(tmpwin, 0, `  ${doname_with_price(obj)}`);
+                    }
+                    unsortloot(sortedcobj);
+                } else {
+                    tty_putstr(tmpwin, 0, "  Schroedinger's cat!");
+                }
+                if (dumping) tty_putstr(0, 0, '');
+                await tty_display_nhwindow(tmpwin);
+                do {
+                    await xwaitforspace(' \r\n\x1b');
+                } while (game.morc !== '\x1b' && tty_next_page(tmpwin));
+                tty_destroy_nhwindow(tmpwin);
+                await docrt();
+                if (all_containers)
+                    await container_contents(box.cobj, identified, true, reportempty);
+            } else if (reportempty) {
+                await pline(`${upstart(thesimpleoname(box))} is empty.`);
+                await display_nhwindow_message();
+            }
+        }
+        if (!all_containers) break;
     }
 }
 

@@ -3674,7 +3674,9 @@ export async function doapply() {
     case ONAMES.BAG_OF_HOLDING:
     case ONAMES.OILSKIN_SACK: {
         const { use_container } = await import('./pickup.js');
-        res = await use_container(obj, true, false);
+        const objp = { o: obj };
+        res = await use_container(objp, true, false);
+        obj = objp.o;
         break;
     }
     case ONAMES.BAG_OF_TRICKS:

@@ -7,7 +7,7 @@ import { obj_ice_effects } from './mkobj.js';
 import { spot_time_left, spot_stop_timers, MELT_ICE_AWAY } from './timeout.js';
 import { float_vs_flight } from './polyself.js';
 import { float_up } from './trap.js';
-import { You_cant } from './pline.js';
+import { You_cant, pline_dir } from './pline.js';
 import { FROMOUTSIDE, DRAWBRIDGE_UP, DB_UNDER, DB_ICE, MAX_TYPE, OBJ_FLOOR } from './const.js';
 import { obj_extract_self } from './invent.js';
 import { place_object } from './mkobj.js';
@@ -37,7 +37,7 @@ import { dist2, distmin } from './hacklib.js';
 import { Levitation, Flying, Fire_resistance, Underwater,
          Hallucination, Deaf, Passes_walls, Stealth, Swimming,
          Amphibious, Breathless } from './youprop.js';
-import { is_pool_or_lava } from './dbridge.js';
+import { is_pool_or_lava, is_db_wall } from './dbridge.js';
 import { is_pool, is_lava, t_at, m_at, is_pick, seemimic,
          wake_msg } from './mon.js';
 import { hliquid } from './do_name.js';
@@ -49,7 +49,7 @@ import { dotrap, immune_to_trap, into_vs_onto } from './trap.js';
 import { is_pit, EXT_ENCUMBER, HVY_ENCUMBER, IS_FURNITURE, STAIRS, ECMD_OK, ECMD_TIME, OBJ_AT, GOLD_SYM, TT_BEARTRAP, TT_PIT, TT_WEB, TT_LAVA, TT_INFLOOR, TT_BURIEDBALL } from './const.js';
 import { near_capacity } from './attrib.js';
 import { gethungry } from './eat.js';
-import { cmdq_clear, closed_door, paranoid_query } from './cmd.js';
+import { cmdq_clear, closed_door, paranoid_query, xytodir } from './cmd.js';
 import { paranoia_bits, boolean_option } from './options.js';
 import { PARANOID_TRAP, PARANOID_CONFIRM, TRAPNUM, TRAP_CLEARLY_IMMUNE } from './const.js';
 import { Blind, Stunned, Confusion } from './youprop.js';
@@ -367,8 +367,27 @@ export async function test_move(ux, uy, dx, dy, mode) {
             return false;
         } else {
             if (mode === DO_MOVE) {
-                /* is_db_wall/Sokoban-passwall/mention_walls flavor */
-                note_unported_hack('test_move:do_move_wall_msg');
+                if (is_db_wall(x, y)) {
+                    await pline('That drawbridge is up!');
+                } else if (passesWalls && !may_passwall(x, y)
+                           && In_sokoban(game.u.uz)) {
+                    /* soko restriction stays even after puzzle is solved */
+                    await pline_The('Sokoban walls resist your ability.');
+                } else if (game.flags?.mention_walls) {
+                    /* back_to_glyph() here yields a cmap glyph descriptor;
+                       glyph_is_cmap(glyph) ? glyph_to_cmap(glyph) : -1 */
+                    const glyph = back_to_glyph(tmpr, x, y);
+                    const sym = Number.isInteger(glyph?.cmap) ? glyph.cmap : -1;
+                    let buf;
+
+                    if (sym === cmap_names.S_stone)
+                        buf = 'solid stone';
+                    else if (sym >= 0)
+                        buf = an(defsyms[sym].explain);
+                    else
+                        buf = `impossible [background glyph=${sym}]`;
+                    await pline_dir(xytodir(dx, dy), `It's ${buf}.`);
+                }
             }
             return false;
         }

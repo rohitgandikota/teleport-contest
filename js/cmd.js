@@ -207,12 +207,13 @@ async function blocksMove(x, y, dx, dy) {
     game.context.door_opened = false;
     const loc = game.level?.at(x, y);
     if (!loc) return true;
-    if (loc.typ === IRONBARS) {
+    /* src/hack.c:1010 — every obstruction (walls, bars, boulders in rock)
+       goes through test_move's DO_MOVE arm: it feels the location when
+       blind and prints the drawbridge/Sokoban/mention_walls feedback */
+    if (IS_OBSTRUCTED(loc.typ) || loc.typ === IRONBARS) {
         const { test_move } = await import('./hack.js');
         return !(await test_move(game.u.ux, game.u.uy, dx, dy, DO_MOVE));
     }
-    if (IS_OBSTRUCTED(loc.typ)
-        && !(Passes_walls() && may_passwall(x, y))) return true;
     if (closed_door(x, y)) {
         if (Passes_walls() || can_ooze(game.youmonst)) {
             const { test_move } = await import('./hack.js');
@@ -2826,18 +2827,6 @@ async function domove_core() {
                 nomul(0);
             } else {
                 await pline('That door is closed.');
-            }
-        } else if (bloc?.typ === DBWALL) {
-            await pline('That drawbridge is up!');
-        } else if (game.flags?.mention_walls && !game.context.door_opened) {
-            const glyph = bloc ? back_to_glyph(bloc, newx, newy) : null;
-            const cmap = glyph?.cmap;
-            if (!bloc || cmap === cmap_names.S_stone) {
-                await pline("It's solid stone.");
-            } else if (Number.isInteger(cmap) && defsyms[cmap]?.explain) {
-                await pline(`It's ${an(defsyms[cmap].explain)}.`);
-            } else {
-                note_unported_cmd('test_move:mention_walls_other');
             }
         }
         if (!game.context.door_opened) {

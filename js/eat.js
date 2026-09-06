@@ -1324,6 +1324,10 @@ async function eatcorpse(otmp) {
 }
 
 export async function doeat() {
+    if (game.u.intrinsic?.HStrangled) { /* Strangled */
+        await pline("If you can't breathe air, how can you consume solids?");
+        return ECMD_OK;
+    }
     let otmp = await floorfood('eat', 0);
 
     if (!otmp)

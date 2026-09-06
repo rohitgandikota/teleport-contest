@@ -1118,6 +1118,12 @@ function print_branch(win, dnum, lower_bound, upper_bound, bymenu, lchoices) {
     }
 }
 
+// include/dungeon.h Is_bigroom(x) — on_level(x, &bigroom_level)
+export function Is_bigroom(lev) {
+    return !!(game.bigroom_level && lev.dnum === game.bigroom_level.dnum
+              && lev.dlevel === game.bigroom_level.dlevel);
+}
+
 // src/dungeon.c:2290 print_dungeon() — the wizard-mode dungeon overview.
 //
 // Returns the picked destination's player-visible depth (0 if cancelled)

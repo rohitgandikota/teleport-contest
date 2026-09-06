@@ -89,7 +89,19 @@ Throwing calls u_wipe_engr(2) and the bare-handed cockatrice arm. Open:
 s14-23 (priest, centaur appr differs in m_move with no RNG difference;
 same class as s13-31, needs the recorder instrumented for positions).
 
-Next: record `--seed 15` (mix `--debug`/`--normal`), fix what diverges,
+Sixth round, `--seed 15` (3 failures in 40, all fixed; s15-26 is the
+recording-timezone ^X "It is nighttime."): the Rogue level had no
+rogue_vision(), so a lit room's doorways (drawn '+' by the Rogue symset)
+stayed unseen; cmd_safety_prevention() lacked the danger_uprops() arm, so
+"Waiting doesn't feel like a good idea right now." never fired and a
+strangled hero's '.' spent a turn C never spent (the following level
+teleport then ran a turn late); doeat() refuses while strangled; blocked
+moves go through test_move's DO_MOVE arm (a blind rush into a wall now
+feel_location()s it, and the drawbridge/Sokoban/mention_walls feedback
+lives in hack.js instead of an inline copy in domove_core); the ^X
+location line carries ", a primitive area" / ", a very big room".
+
+Next: record `--seed 16` (mix `--debug`/`--normal`), fix what diverges,
 then return to the note_unported
 list (hack.js 19, spell.js 20, shk.js 19). tools/jsplay.mjs has a new
 `--aeval "<await expr>"` flag with the hack.js namespace as `h` for state

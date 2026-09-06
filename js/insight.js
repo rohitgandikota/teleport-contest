@@ -17,7 +17,7 @@ import { upstart } from './do_name.js';
 import { monexplain } from './drawing_data.js';
 import { is_rider } from './mondata.js';
 import { NUMMONS, PMNAMES } from './monst_data.js';
-import { VANQ_MLVL_MNDX, VANQ_MSTR_MNDX, VANQ_ALPHA_SEP, VANQ_ALPHA_MIX, VANQ_MCLS_HTOL, VANQ_MCLS_LTOH, VANQ_COUNT_H_L, VANQ_COUNT_L_H, MENU_BEHAVE_STANDARD, MENU_ITEMFLAGS_SELECTED, MENU_ITEMFLAGS_NONE, PICK_ONE, ECMD_OK, LOW_PM, NEUTRAL, G_UNIQ, G_GENOD, G_GONE, G_EXTINCT, LL_ACHIEVE, LL_UMONST, LL_MINORAC, LL_SPOILER, LL_DUMP } from './const.js';
+import { VANQ_MLVL_MNDX, VANQ_MSTR_MNDX, VANQ_ALPHA_SEP, VANQ_ALPHA_MIX, VANQ_MCLS_HTOL, VANQ_MCLS_LTOH, VANQ_COUNT_H_L, VANQ_COUNT_L_H, MENU_BEHAVE_STANDARD, MENU_ITEMFLAGS_SELECTED, MENU_ITEMFLAGS_NONE, PICK_ONE, ECMD_OK, LOW_PM, NEUTRAL, G_UNIQ, G_GENOD, G_GONE, G_EXTINCT, LL_ACHIEVE, LL_UMONST, LL_MINORAC, LL_SPOILER, LL_DUMP, Is_rogue_level } from './const.js';
 import { NO_COLOR } from './terminal.js';
 import { docrt } from './display.js';
 import { tty_yn_function } from './tty/topl.js';
@@ -25,7 +25,7 @@ import { xwaitforspace } from './tty/getline.js';
 import { tty_create_nhwindow, tty_destroy_nhwindow, tty_putstr, tty_display_nhwindow, tty_next_page, tty_start_menu, tty_add_menu, tty_end_menu, tty_select_menu, NHW_MENU, ATR_NONE, ATR_INVERSE } from './tty/wintty.js';
 import { MONSYMS } from './monst_data.js';
 import { You, livelog_printf } from './pline.js';
-import { ceiling, surface } from './dungeon.js';
+import { ceiling, surface, Is_bigroom } from './dungeon.js';
 import { hides_under, is_clinger } from './mondata.js';
 import { waterbody_name } from './pager.js';
 import { is_pool, t_at } from './mon.js';
@@ -566,8 +566,14 @@ function background_enlightenment() {
         let dgnbuf = game.dungeons[u.uz.dnum].dname;
         if (/^the /i.test(dgnbuf))
             dgnbuf = dgnbuf[0].toLowerCase() + dgnbuf.slice(1);
-        you_are(`in ${dgnbuf}, on level ${
-            In_quest(u.uz) ? dunlev(u.uz) : depth(u.uz)}`);
+        let tmpbuf = `level ${In_quest(u.uz) ? dunlev(u.uz) : depth(u.uz)}`;
+        /* TODO? maybe extend this bit to include various other automatic
+           annotations from the dungeon overview code */
+        if (Is_rogue_level(u.uz))
+            tmpbuf += ', a primitive area';
+        else if (Is_bigroom(u.uz) && !Blind())
+            tmpbuf += ', a very big room';
+        you_are(`in ${dgnbuf}, on ${tmpbuf}`);
     }
 
     if (game.moves === 1)

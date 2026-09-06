@@ -5562,3 +5562,41 @@ message, so a quarterstaff "write" spent a turn and the prompt never came.
 wand_explode (read.js) and the towel helpers (apply.js) are exported for
 it. throw_obj's u_wipe_engr(2) and its bare-handed cockatrice arm were
 placeholders too.
+
+## The Rogue level has its own vision
+
+vision.c:584: after the swallowed and Blind arms, vision_recalc() calls
+rogue_vision() on the Rogue level instead of view_from(): a lit room is
+seen out to its walls (doorways included) and the eight neighbours are
+always seen. Ours ran the normal scan, which cannot reach a doorway cell
+in the wall row when the Bresenham path to it crosses that wall, so the
+doorway ('+' in the Rogue symset) stayed blank. A wizard-mode level
+teleport to "rogue: 17" is how the fuzz found it.
+
+## cmd_safety_prevention() has a second refusal
+
+do.c:2325: with safe_wait, a no-op command is refused next to a hostile
+("Are you waiting to get hit?") OR while Stoned/Slimed/Strangled/Sick
+("Waiting doesn't feel like a good idea right now.", Norep). Ours only had
+the first, so a strangled hero's '.' took a turn, moves advanced, and the
+level teleport scheduled next ran after the monsters had moved instead of
+before. The flag counter increments only when cmdassist is off
+(`iflags.cmdassist || !(*flagcounter)++`). doeat() has its own Strangled
+refusal ("If you can't breathe air, how can you consume solids?").
+
+## Blocked moves belong to test_move()
+
+domove_core() used a JS-only blocksMove() that returned "blocked" for walls
+without test_move's DO_MOVE side effects: a blind hero rushing into a wall
+never feel_location()ed it, so C remembered the wall and ours did not.
+Obstructions and bars now go through test_move(DO_MOVE), whose wall arm is
+the C one (drawbridge up, Sokoban walls, mention_walls naming the
+background glyph via back_to_glyph/defsyms); the duplicate inline arms in
+domove_core are gone. Closed doors are still handled inline there.
+
+## ^X location annotations
+
+insight.c:625: the "You are in <dungeon>, on level N" line appends ", a
+primitive area" on the Rogue level and ", a very big room" on the big room
+(when not blind). Is_bigroom() is the dungeon.h Lcheck against
+bigroom_level; it lives in js/dungeon.js.

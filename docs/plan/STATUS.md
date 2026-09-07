@@ -307,7 +307,14 @@ u_init (s43-07); getpos's feature search probing the seen terrain and the
 vibrating square (s43-22); done() running keepdogs(TRUE) before the
 escape summary (s43-26).
 
-Next: triage `--seed 44` (recording), then `--seed 45`. Then return to the
+Twenty-ninth round, `--seed 44`: four failures in 40, one the DST class
+(s44-18). Fixed: execute_extcmd() arms for the number_pad letter
+commands and a binding-driven cmdassist direction panel (s44-12);
+resists_magm()'s wielded, worn and carried item checks (s44-16); an
+explicit GLYPH_NOTHING memory record so reglyph_darkroom() leaves
+never-mapped squares alone (s44-23).
+
+Next: triage `--seed 45` (recording), then `--seed 46`. Then return to the
 note_unported list (hack.js 18, spell.js 20, shk.js 19). tools/jsplay.mjs has a new
 `--aeval "<await expr>"` flag with the hack.js namespace as `h` for state
 probes. The census script is `tally.sh` in the scratchpad (diverge.mjs

@@ -835,6 +835,14 @@ function dark_room_color() {
     return game.flags?.dark_room !== false && use_color();
 }
 
+// GLYPH_NOTHING as a remembered cell: the C's levl[x][y].glyph can hold
+// GLYPH_NOTHING (magic_map_background() and reglyph_darkroom() put it
+// there) as distinct from GLYPH_UNEXPLORED, which is an absent record here.
+export const GLYPH_NOTHING_CELL = Object.freeze({
+    ch: ' ', color: NO_COLOR, decgfx: false,
+    glyph: Object.freeze({ kind: 'nothing' }),
+});
+
 // include/display.h DARKROOMSYM — S_darkroom when dark_room+color, else
 // S_stone. S_darkroom renders through the active symset, where
 // assign_graphics() has copied S_room's symbol into its slot
@@ -886,13 +894,14 @@ export function reglyph_darkroom() {
                         loc.remembered_glyph = { ch: tg.ch, color: tg.color, decgfx: tg.dec,
                                                  glyph: { kind: 'cmap', cmap: tg.cmap } };
                     } else {
-                        loc.remembered_glyph = undefined; /* GLYPH_NOTHING */
+                        loc.remembered_glyph = GLYPH_NOTHING_CELL;
                     }
                 }
             } else {
                 if (remcmap === CM.S_room && loc.seenv && loc.waslit && !cansee(x, y))
                     loc.remembered_glyph = darkroomsym_cell();
-                else if (!rg && loc.typ === ROOM && loc.seenv && !cansee(x, y))
+                else if (rg?.glyph?.kind === 'nothing' /* GLYPH_NOTHING */
+                         && loc.typ === ROOM && loc.seenv && !cansee(x, y))
                     loc.remembered_glyph = darkroomsym_cell();
             }
         }
@@ -3063,7 +3072,7 @@ export function magic_map_background(x, y, show) {
         loc.remembered_glyph = tg
             ? { ch: tg.ch, color: tg.color, decgfx: tg.dec,
                 glyph: { kind: 'cmap', cmap: tg.cmap } }
-            : undefined;
+            : GLYPH_NOTHING_CELL;
     if (show && tg)
         show_glyph_cell(x, y, tg.ch, tg.color, tg.dec, 0,
                         { kind: 'cmap', cmap: tg.cmap });

@@ -312,21 +312,27 @@ export function u_maybe_impaired() {
 // keybindings put the plain letters on the movement commands, so visctrl of
 // each is the letter itself; rebinding is not ported.
 function show_direction_keys(win, centerchar, nodiag) {
+    /* visctrl(cmd_from_func(do_move_<dir>)): the key currently bound to
+       each movement command, i.e. Cmd.dirchars in sdir order (h y k u l n
+       j b with letters, 4 7 8 9 6 3 2 1 with number_pad) */
+    const dc = game.Cmd?.dirchars || 'hykulnjb><';
+    const [W, NW, N, NE, E, SE, S, SW] = [...dc.slice(0, 8)].map(visctrl);
+
     if (!centerchar)
         centerchar = ' ';
 
     if (nodiag) {
-        tty_putstr(win, 0, "             k   ");
+        tty_putstr(win, 0, `             ${N}   `);
         tty_putstr(win, 0, "             |   ");
-        tty_putstr(win, 0, `          h- ${centerchar} -l`);
+        tty_putstr(win, 0, `          ${W}- ${centerchar} -${E}`);
         tty_putstr(win, 0, "             |   ");
-        tty_putstr(win, 0, "             j   ");
+        tty_putstr(win, 0, `             ${S}   `);
     } else {
-        tty_putstr(win, 0, "          y  k  u");
+        tty_putstr(win, 0, `          ${NW}  ${N}  ${NE}`);
         tty_putstr(win, 0, "           \\ | / ");
-        tty_putstr(win, 0, `          h- ${centerchar} -l`);
+        tty_putstr(win, 0, `          ${W}- ${centerchar} -${E}`);
         tty_putstr(win, 0, "           / | \\ ");
-        tty_putstr(win, 0, "          b  j  n");
+        tty_putstr(win, 0, `          ${SW}  ${S}  ${SE}`);
     }
 }
 
@@ -354,9 +360,13 @@ async function help_dir(sym, msg) {
     tty_putstr(win, 0, "");
     tty_putstr(win, 0, "          <  up");
     tty_putstr(win, 0, "          >  down");
-    /* C: "       %4s  direct at yourself" with visctrl(NHKF_GETDIR_SELF),
-       which is "." under the default bindings */
-    tty_putstr(win, 0, "          .  direct at yourself");
+    {
+        /* src/cmd.c:4279 — Cmd.spkeys[NHKF_GETDIR_SELF] is '.' and
+           NHKF_GETDIR_SELF2 is 's' (cmd.c:3163); number_pad shows the
+           latter. "       %4s  direct at yourself" */
+        const self = visctrl(game.Cmd?.num_pad ? 's' : '.');
+        tty_putstr(win, 0, `       ${self.padStart(4)}  direct at yourself`);
+    }
 
     if (msg) {
         /* non-null msg means that this wasn't an explicit user request */
@@ -999,6 +1009,20 @@ async function execute_extcmd(name) {
     }
     if (name === 'wait')
         return await donull();
+    /* src/cmd.c commands_init(): with number_pad the letter keys land on
+       these entries instead of on movement */
+    if (name === 'help')
+        return await dohelp();
+    if (name === 'kick') {
+        const res = await dokick();
+        game._cmd_was_kick = true;
+        return res;
+    }
+    if (name === 'redraw') {
+        /* src/display.c doredraw() */
+        await docrt();
+        return ECMD_OK;
+    }
     if (name === 'exploremode')
         return await enter_explore_mode();
     if (name === 'enhance') {

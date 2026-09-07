@@ -4313,13 +4313,12 @@ export function newcham(mtmp, mdat, ncflags) {
         check_gear_next_turn(mtmp);
 
         /* former giants can't continue carrying boulders */
-        if (mtmp.minvent && !throws_rocks(mdat)) {
-            let otmp2;
+        if (mtmp.minvent?.length && !throws_rocks(mdat)) {
             /* DEADMONSTER(): it is possible for flooreffects() to kill mtmp;
                the rest of its inventory would be dropped making otmp2 stale */
-            for (let otmp = mtmp.minvent; otmp && !DEADMONSTER(mtmp);
-                 otmp = otmp2) {
-                otmp2 = otmp.nobj;
+            for (const otmp of [...mtmp.minvent]) {
+                if (DEADMONSTER(mtmp))
+                    break;
                 if (otmp.otyp === ONAMES.BOULDER) {
                     /* this keeps otmp from being polymorphed in the
                        same zap that the monster that held it is polymorphed */

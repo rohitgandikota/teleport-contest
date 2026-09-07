@@ -6708,3 +6708,40 @@ onto gm.mydogs so the summary can say "You and the little dog escaped
 ..." and add each tame pet's mhpmax to u.urexp. Our done() read
 game.mydogs, which nothing had filled on a wizard-mode level teleport out
 of the dungeon, so the summary named no pet and scored 0 (s43-26).
+
+## number_pad letters run their commands, and cmdassist draws the digits
+
+cmd.c commands_init(): with number_pad on, h/j/k/l/u/N/^L/^N and the
+digit 5 land on help, jump, kick, loot, untrap, name, redraw, annotate
+and run. Ours bound them but execute_extcmd() had no arm for help, kick
+or redraw, so 'h' silently did nothing where the C opens the '?' menu
+(s44-12). cmd.c:4122 show_direction_keys() prints visctrl() of the key
+bound to each do_move_*, and help_dir() (cmd.c:4279) prints
+Cmd.spkeys[NHKF_GETDIR_SELF2] ('s') instead of '.' under number_pad, so
+the "Invalid direction key!" panel shows 7 8 9 / 4 6 / 1 2 3 and "s
+direct at yourself"; ours had the letters hard-coded.
+
+## resists_magm() looks at the monster's gear
+
+mondata.c:215: after the species checks, magic resistance comes from a
+wielded artifact that defends against AD_MAGM, any worn item whose
+oc_oprop is ANTIMAGIC (W_ARMOR | W_ACCESSORY, plus W_WEP for monsters)
+and carried artifacts with defends_when_carried(). Ours stopped at the
+species checks. An aligned cleric in a cloak of magic resistance treats
+an anti-magic field as harmless (m_harmless_trap), so mfndpos() keeps
+that square even though the cleric knows the trap type, which changed
+its candidate count and the mtrack rn2(4 * (cnt - j)) roll (s44-16).
+
+## GLYPH_NOTHING is not GLYPH_UNEXPLORED
+
+display.c: levl[x][y].glyph starts as GLYPH_UNEXPLORED and becomes
+GLYPH_NOTHING only from magic_map_background() (an unlit room square with
+dark_room off or no color) and reglyph_darkroom() (S_darkroom with
+dark_room off). reglyph_darkroom()'s dark_room arm turns GLYPH_NOTHING
+room squares with seenv into S_darkroom on arrival, never unexplored
+ones. This port kept both as an absent record, so a square that had
+been in view only under a gas cloud's region glyph (seenv set, never
+mapped: show_region() returns before _map_location()) came back as
+S_darkroom on a return visit where the C shows nothing (s44-23).
+display.js now has GLYPH_NOTHING_CELL, a blank record of kind 'nothing',
+written at the two C sites and tested for in reglyph_darkroom().

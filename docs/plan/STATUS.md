@@ -237,7 +237,11 @@ tty_putstr(BASE_WINDOW) without cl_end and the askname retry cl_end
 (s26-10); the PICK_ONE ':' search and its cursor in the selection menus
 (s24-03). s26-12 (a spider's web roll after moving) is open, see NOTES.
 
-Next: triage `--seed 27` (recording), then `--seed 28`. Then return to the
+Nineteenth round, `--seed 27` (2 failures in 40, both fixed):
+key2extcmddesc() strips " (##)" (s27-11); mount_steed() checks wounded legs
+and the polymorphed form and tests sight the C way (s27-23).
+
+Next: triage `--seed 28` (recording), then `--seed 29`. Then return to the
 note_unported list (hack.js 19, spell.js 20, shk.js 19). tools/jsplay.mjs has a new
 `--aeval "<await expr>"` flag with the hack.js namespace as `h` for state
 probes. The census script is `tally.sh` in the scratchpad (diverge.mjs

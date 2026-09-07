@@ -6264,3 +6264,21 @@ trap position (a mktrap web with a spider generated on it at level
 creation, step 154) are shared since the RNG matches through them. Not
 resolved; the recorder would need a debug print of maybe_spin_web()'s
 condition values to settle which one differs.
+
+## key2extcmddesc() strips " (##)"
+
+cmd.c key2extcmddesc() appends " (#<extcmd>)" to a bound command's
+description, then removes the literal " (##)" so the '#' key reads "enter
+and perform an extended command." rather than "... command (##)."; ours
+kept the suffix (s27-11, the '?' "What command?" viewer).
+
+## mount_steed(): wounded legs, polymorphed form, and seeing the steed
+
+steed.c mount_steed() refuses a hero with Wounded_legs before anything
+else about the steed: legs_in_no_shape("riding") ("Your right leg is in no
+shape for riding."), and in wizard mode with force a "Heal your leg(s)?"
+question; a polymorphed hero that is not humanoid, or is very small, big or
+slithy, "won't fit on a saddle."; and the visibility test is (Blind &&
+!Blind_telepat) || mundetected || mimicking furniture or an object. Ours
+skipped the first two (s27-23 went straight to "I see nobody there.") and
+read a `u.ublind` field that does not exist.

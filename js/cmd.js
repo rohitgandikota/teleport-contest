@@ -4205,7 +4205,9 @@ export function key2extcmddesc(key) {
                 + ' move without autopickup and without attacking'
                 + '\n'
                 + 'non-movement prefix:' + buf.slice(7);
-        return buf;
+        /* another special case: 'txt' for '#' is "#" and showing that as
+           "perform an extended command (##)" looks silly; strip "(##)" off */
+        return buf.replace(' (##)', '');
     }
     return key2cmdbuf || null;
 }

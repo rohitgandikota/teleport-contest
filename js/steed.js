@@ -39,6 +39,9 @@ import { distu } from './hacklib.js';
 import { sobj_at, fully_identify_obj } from './invent.js';
 import { an } from './objnam.js';
 import { throws_rocks } from './mondata.js';
+import { Blind, Blind_telepat } from './youprop.js';
+import { slithy } from './mondata.js';
+import { M_AP_TYPE, M_AP_FURNITURE, M_AP_OBJECT, BOTH_SIDES } from './const.js';
 import { grounded, sokoban_guilt } from './trap.js';
 import { is_pole } from './mhitu.js';
 import { PMNAMES } from './monst_data.js';
@@ -361,16 +364,37 @@ export async function mount_steed(mtmp, force) {
         await pline('Maybe you should find a designated driver.');
         return false;
     }
-    if (Upolyd(game.u))
-        note_unported_steed('mount:upolyd_form');
+    /* While riding, Wounded_legs refers to the steed's legs, not the
+       hero's legs; a hero with Wounded_legs may not mount (src/steed.c) */
+    if ((game.u.intrinsic?.HWounded_legs | 0) || (game.u.EWounded_legs | 0)) {
+        const { legs_in_no_shape, heal_legs } = await import('./do.js');
+        await legs_in_no_shape('riding', false);
+        const qbuf = `Heal your leg${
+            ((game.u.EWounded_legs | 0) & BOTH_SIDES) === BOTH_SIDES ? 's' : ''}?`;
+        if (force && game.wizard) {
+            const { tty_yn_function } = await import('./tty/topl.js');
+            if ((await tty_yn_function(qbuf, 'yn', 'n')) === 'y')
+                await heal_legs(0);
+            else
+                return false;
+        } else
+            return false;
+    }
+    if (Upolyd(game.u) && (!humanoid(game.youmonst.data)
+                           || verysmall(game.youmonst.data)
+                           || bigmonst(game.youmonst.data)
+                           || slithy(game.youmonst.data))) {
+        await You("won't fit on a saddle.");
+        return false;
+    }
     if (!force && near_capacity() > SLT_ENCUMBER) {
         await You_cant('do that while carrying so much stuff.');
         return false;
     }
-    if (!mtmp || (!force && ((game.u.ublind && !game.u.uprops?.TELEPAT)
-                             || mtmp.mundetected || mtmp.m_ap_type
-                             || (mtmp.minvis
-                                 && !game.u.uprops?.SEE_INVIS)))) {
+    /* Can the player reach and see the monster? */
+    if (!mtmp || (!force && ((Blind() && !Blind_telepat()) || mtmp.mundetected
+                             || M_AP_TYPE(mtmp) === M_AP_FURNITURE
+                             || M_AP_TYPE(mtmp) === M_AP_OBJECT))) {
         await pline('I see nobody there.');
         return false;
     }

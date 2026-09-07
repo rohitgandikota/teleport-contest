@@ -4594,7 +4594,8 @@ it by guessing. s22-25 (the `^X` moon/night line) and s29-24 ("It is
 nighttime." where our clock reads the midnight hour) are more instances.
 s30-13 (an undead monster's midnight() extra damage roll at
 mhitu.c:1189), s31-03 and s31-09 (the ^X "It is nighttime." and "There is
-a full moon in effect." lines) are the same class.
+a full moon in effect." lines) are the same class, as is s33-31 (^X,
+"It is nighttime." missing on our side).
 
 ## Fuzz divergence census (2026-09-01, second pass)
 
@@ -6384,3 +6385,78 @@ with one piece of glass was short a line (s31-29). The Schroedinger
 resolution (`observe_quantum_cat(obj, FALSE, FALSE)` in the pre-disclosure
 identification loop, end.c:1266) is ported with it because the final score
 counts the same cat.
+
+## flip_level() flips the monster grid as a grid
+
+sp_lev.c:835 swaps `level.monsters[x][y]` cell by cell alongside the
+terrain, so only a monster that is on the grid moves on it. A detached
+monster (a statue's mongone() template from create_object(), still on
+fmon until dmonsfree()) keeps its stale mx,my, has them flipped like any
+other fmon entry, and stays off the grid. Our re-key loop inserted every
+flipped monster into level.monAt, so the dead dragon template landed on
+the nymph's square and the nymph lost its grid slot (s32-12, Medusa's
+level: no 'n' on our map, and the dragon later walked onto it). The loop
+now takes the on-grid monsters off first, flips everyone, and re-keys only
+those.
+
+## throw_ok(): slings suggest gems
+
+`uslinging()` (obj.h:269, the wielded weapon's skill is P_SLING) decides
+which classes `t` suggests: weapons when not slinging, gems when slinging
+(s32-15: `[cd or ?*]` for a hero wielding a sling, ours offered the
+dagger). The `bknown && welded` downplay arm was missing too. Both ported.
+
+## number_pad: handler, reset_commands() and the freed vi keys
+
+`O` > number_pad opens `handler_number_pad()`'s six-mode menu (s32-35).
+The mode writes iflags.num_pad and iflags.num_pad_mode, and cmd.c:3343
+`reset_commands()` derives Cmd.num_pad, Cmd.swap_yz, Cmd.pcHack_compat,
+Cmd.phone_layout and Cmd.dirchars ("41236987" for the phone layout) from
+them; the same runs from the rc's number_pad:N (optfn_number_pad's do_set
+arm, now parsed in parseoptions and wired in jsmain) and from the O
+menu's compound value path. Consequences the port had missed: with
+number_pad on, rhack() recognises movement through the key's binding
+(cmdbind_table() per Cmd.dirchars), so digits walk, M-digit runs, and the
+vi letters reach the commands_init() alternates 'h' help, 'j' jump, 'k'
+kick, 'l' loot, 'u' untrap, 'N' name, ^L redraw, ^N annotate (all now
+bound); a count needs the 'n' prefix (parse(), cmd.c:5087); and any other
+bound key runs its command through execute_extcmd() instead of "Unknown
+command". swap_yz and the phone layout's own key swaps are recorded as
+unported when they turn on. tty_number_pad() only emits termcap keypad
+strings, which have no cells.
+
+## The color option gates every glyph color
+
+include/flag.h:507 makes iflags.use_color the `color` boolean itself, and
+map_glyphinfo() (display.c:3078) turns every glyph color into NO_COLOR
+when it is off; flags.dark_room needs it too. Our glyph builders never
+looked at it, so a game that toggled `color` off in the O menu kept
+painting colors after the next docrt (s32-35, cell attributes only).
+show_glyph_cell() now applies the gate and dark_room_color() includes it.
+The tty's inverse substitutes for lava/ice/sink/engraving when color is
+off (MG_BW_*, wintty.c:3932) are only ported for the corridor engraving.
+
+## Graveyard levels: has_morgue sets level.flags.graveyard
+
+mklev.c:1560, at the end of makelevel(): a level that got a morgue sets
+`graveyard`, which LEVEL_SPECIFIC_NOCORPSE() reads as a `rn2(3)` chance
+of no undead corpse in xkilled(). Ours only set it inside mkzoo(MORGUE)
+via mkroom.c:474 (which the C also does), but this end-of-level line was
+missing, so a zombie killed on such a level skipped the roll (s33-32).
+
+## getpos: '*' skips same glyphs on shifted moves
+
+With iflags.getloc_moveskip on (the '*' toggle, or whatis_moveskip), a
+shifted or control direction walks the cursor while the glyph under it
+stays the same instead of jumping 8 squares (getpos.c:922); across
+unexplored area that is the map edge (s33-13). Ported with record
+equality standing in for glyph equality.
+
+## Menu dismissal leaves disp.botlx up
+
+windows.c:1860 select_menu() disables bot() for the whole window-port
+call, so the docrt() inside tty_dismiss_nhwindow() cannot repaint the
+status rows; docrt sets disp.botlx and the next flush_screen(1) paints
+them once select_menu has returned. Our erase_menu_or_text() called bot()
+directly without raising botlx, so a full-screen inventory menu dismissed
+with RET left rows 22-23 blank until the next status change (s33-11).

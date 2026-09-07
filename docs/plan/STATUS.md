@@ -259,7 +259,16 @@ enlightenment "trapped in" line via trap_predicament() (s30-18);
 optfn_disclose parsing (s30-37); the escape summary's valuables, artifact
 and pet listing with Schroedinger's cat resolution (s31-29).
 
-Next: triage `--seed 32` (recording), then `--seed 33`. Then return to the
+Twenty-third round, `--seed 32` and `--seed 33`: seven failures in 80, one
+the timezone class (s33-31). Fixed: flip_level() re-keys only on-grid
+monsters (s32-12); throw_ok() uslinging and welded arms (s32-15); the
+number_pad handler, reset_commands(), the commands_init() alternates,
+binding-table movement in rhack, 'n'-prefixed counts and the color option
+gate (s32-35); has_morgue -> graveyard at the end of makelevel (s33-32);
+getpos moveskip stepping (s33-13); disp.botlx through menu dismissal
+(s33-11).
+
+Next: triage `--seed 34` (recording), then `--seed 35`. Then return to the
 note_unported list (hack.js 18, spell.js 20, shk.js 19). tools/jsplay.mjs has a new
 `--aeval "<await expr>"` flag with the hack.js namespace as `h` for state
 probes. The census script is `tally.sh` in the scratchpad (diverge.mjs

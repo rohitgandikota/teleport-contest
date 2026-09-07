@@ -3674,6 +3674,11 @@ function level_finalize_topology() {
     // src/mklev.c:1550 — mineralize() runs here, while in_mklev is still set.
     mineralize(-1, -1, -1, -1, false);
     game.in_mklev = false;
+    /* has_morgue gets cleared once morgue is entered; graveyard stays
+       set (graveyard might already be set even when has_morgue is clear
+       [see fixup_special()], so don't update it unconditionally) */
+    if (game.level.flags.has_morgue)
+        game.level.flags.graveyard = 1;
     if (!game.level?.flags?.is_maze_lev) {
         const nroom = game.level?.nroom ?? 0;
         for (let i = 0; i < nroom; i++)

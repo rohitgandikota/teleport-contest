@@ -1086,6 +1086,11 @@ function erase_menu_or_text(cw, display, clear) {
             display.clearScreen();
             for (let y = 0; y < ROWNO; y++)
                 row_refresh(1, COLNO - 1, y);
+            /* docrt() forces the bottom lines (disp.botlx) and flush_screen(1)
+               calls bot(); inside select_menu() bot() is disabled
+               (windows.c:1860), so the flag stays up and the next flush
+               repaints the status rows once the menu call has returned */
+            (game.disp ||= {}).botlx = true;
             bot();
             if (game.u?.ux > 0)
                 display.setCursor(game.u.ux - 1, game.u.uy + 1);

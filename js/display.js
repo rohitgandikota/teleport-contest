@@ -823,10 +823,16 @@ export function back_to_glyph(loc, x, y) {
     }
 }
 
+// include/flag.h:507 iflags.use_color is wc_color, the boolean 'color'
+// option (optlist.h:236, default On).
+function use_color() {
+    return boolean_option('color');
+}
+
 // include/flag.h flags.dark_room && iflags.use_color — dark_room defaults ON
-// in 5.0 (optlist.h:264) and the tty runs in color.
+// in 5.0 (optlist.h:264).
 function dark_room_color() {
-    return game.flags?.dark_room !== false;
+    return game.flags?.dark_room !== false && use_color();
 }
 
 // include/display.h DARKROOMSYM — S_darkroom when dark_room+color, else
@@ -861,6 +867,10 @@ export function gbuf_at(x, y) {
 export function show_glyph_cell(x, y, ch, color = NO_COLOR, decgfx = false, attr = 0, glyph = undefined) {
     const loc = game.level?.at(x, y);
     if (!loc) return;
+    /* src/display.c:3078 map_glyphinfo(): turn off color if no color
+       defined, or rogue level w/o PC graphics, or the color option is off */
+    if (!use_color())
+        color = NO_COLOR;
     if (Is_rogue_level(game.u?.uz)) {
         color = NO_COLOR;
         decgfx = false;

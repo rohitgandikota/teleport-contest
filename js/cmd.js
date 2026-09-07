@@ -164,8 +164,23 @@ import { trapname, feeltrap } from './trap.js';
 const KEY_TO_DIR = { h: DIR_W, y: DIR_NW, k: DIR_N, u: DIR_NE,
                      l: DIR_E, n: DIR_SE, j: DIR_S, b: DIR_SW };
 
+/* src/cmd.c:3760 rhack(): a key is a movement key when the command bound
+   to it is one of the do_move_/do_run_/do_rush_ entries (MOVEMENTCMD).
+   cmdbind_table() binds those per Cmd.dirchars, so digits move only under
+   number_pad and the vi keys only without it. */
+function movement_binding(ch) {
+    const cmd = cmdbind_table().get(ch.charCodeAt(0));
+    if (!cmd)
+        return null;
+    for (let dir = 0; dir < 8; dir++)
+        for (let mode = MV_WALK; mode <= MV_RUSH; mode++)
+            if (move_funcs[dir][mode] === cmd.ef_txt)
+                return { dir, mode };
+    return null;
+}
+
 function isMovementKey(ch) {
-    return 'hjklyubn'.includes(ch);
+    return movement_binding(ch) !== null;
 }
 
 // Keys src/cmd.c dispatches to real commands that this port has not reached
@@ -1564,8 +1579,16 @@ export async function rhack(key) {
        (`cnt > 9`), each time on a cleared topline with no history. ESC
        cancels the count and the command read. parse() then sets
        gm.multi = count - 1 and remembers gc.cmd_key for the repeat arm. */
-    if (live_input && !game.in_doagain && ch0 >= '0' && ch0 <= '9') {
+    /* src/cmd.c:5087 parse(): with number_pad on, a count is introduced by
+       the NHKF_COUNT key ('n') and the digits themselves are movement */
+    const num_pad_count = !!game.Cmd?.num_pad;
+    if (live_input && !game.in_doagain
+        && (num_pad_count ? ch0 === 'n' : (ch0 >= '0' && ch0 <= '9'))) {
         let cnt = 0;
+        if (num_pad_count) {
+            key = await nhgetch();
+            ch0 = String.fromCharCode(key);
+        }
         while (ch0 >= '0' && ch0 <= '9') {
             cnt = 10 * cnt + (ch0.charCodeAt(0) - 48);
             if (cnt > 9) {
@@ -1663,18 +1686,18 @@ export async function rhack(key) {
        is the MV_RUN form (set_move_cmd(dir, 1)) and the C(dirchar) control
        form is MV_RUSH (set_move_cmd(dir, 3)), the ^J/^L/^N bindings that
        override redraw and annotate under !num_pad. */
-    const CTRL_DIR = { '\x08': 'h', '\x19': 'y', '\x0b': 'k', '\x15': 'u',
-                       '\x0c': 'l', '\x0e': 'n', '\x0a': 'j', '\x02': 'b' };
     let movemode = 0;
-    let ch = ch0;
-    if ('HJKLYUBN'.includes(ch0)) {
-        ch = ch0.toLowerCase();
+    const ch = ch0;
+    /* the key's binding decides (Cmd.dirchars via cmdbind_table()): the
+       shifted letter or M(digit) is the MV_RUN form, the control letter the
+       MV_RUSH form */
+    const moveBinding = movement_binding(ch0);
+    if (moveBinding && moveBinding.mode === MV_RUN)
         movemode = 1;
-    } else if (CTRL_DIR[ch0] !== undefined) {
-        ch = CTRL_DIR[ch0];
+    else if (moveBinding && moveBinding.mode === MV_RUSH)
         movemode = 3;
-    }
     const prefixCommand = cmdbind_table().get(ch0.charCodeAt(0));
+    let boundCommand;
 
     /* src/cmd.c:3693-3723 -- g/G only modify movement commands.  C loops
        for the second key inside one rhack() call; this port spans two calls,
@@ -1728,7 +1751,7 @@ export async function rhack(key) {
            prefix is pending, context.run. Keeping the direction on `u` is
            what lets moveloop's run branch call domove() again without
            re-reading a key. */
-        set_move_cmd(KEY_TO_DIR[ch], movemode);
+        set_move_cmd(moveBinding.dir, movemode);
         /* src/cmd.c:3792 rhack's DOMOVE_RUSH arm — seed multi with
            max(COLNO, ROWNO) as the upper bound on how far one command can
            carry the hero. The run does NOT end by counting down: moveloop's
@@ -2113,6 +2136,11 @@ export async function rhack(key) {
         // actively wrong — C never says that for these — so produce no
         // message and consume no turn until the real command lands.
         game.context.move = 0;
+    } else if ((boundCommand = cmdbind_table().get(ch.charCodeAt(0)))) {
+        /* src/cmd.c:3800 rhack(): any other bound key runs its command;
+           under number_pad the freed vi keys reach #jump, #kick, #loot and
+           friends this way */
+        useResult(await execute_extcmd(boundCommand.ef_txt));
     } else {
         // src/cmd.c rhack() — genuinely unrecognised key.
         game.context.move = 0;
@@ -3975,9 +4003,19 @@ function cmdbind_table() {
         if (e.key)
             binds.set(e.key, e);
     const by_txt = (t) => extcmdlist.find(e => e.ef_txt === t);
+    /* src/cmd.c commands_init(): number_pad */
+    binds.set('l'.charCodeAt(0) & 0x1f, by_txt('redraw'));
+    binds.set('h'.charCodeAt(0), by_txt('help'));
+    binds.set('j'.charCodeAt(0), by_txt('jump'));
+    binds.set('k'.charCodeAt(0), by_txt('kick'));
+    binds.set('l'.charCodeAt(0), by_txt('loot'));
+    binds.set('n'.charCodeAt(0) & 0x1f, by_txt('annotate'));
+    binds.set('N'.charCodeAt(0), by_txt('name'));
+    binds.set('u'.charCodeAt(0), by_txt('untrap'));
     binds.set('5'.charCodeAt(0), by_txt('run'));
     binds.set(0x80 | '5'.charCodeAt(0), by_txt('rush'));
     binds.set('-'.charCodeAt(0), by_txt('fight'));
+    /* alt keys: */
     binds.set(0x80 | 'O'.charCodeAt(0), by_txt('overview'));
     binds.set(0x80 | '2'.charCodeAt(0), by_txt('twoweapon'));
     binds.set(0x80 | 'N'.charCodeAt(0), by_txt('name'));
@@ -3987,7 +4025,10 @@ function cmdbind_table() {
        with it. swap_yz and the phone layout are not modelled. */
     {
         const num_pad = !!game.iflags?.num_pad;
-        const dirchars = num_pad ? '47896321' : 'hykulnjb';
+        /* Cmd.dirchars from reset_commands(); the defaults cover callers
+           that run before initoptions */
+        const dirchars = (game.Cmd?.dirchars
+                          ?? (num_pad ? '47896321><' : 'hykulnjb><')).slice(0, 8);
         for (let i = 0; i < 8; i++) {
             const di = dirchars.charCodeAt(i);
             const up = String.fromCharCode(di).toUpperCase().charCodeAt(0);
@@ -4183,10 +4224,10 @@ export function key2extcmddesc(key) {
         if (!num_pad)
             key2cmdbuf = 'start of, or continuation of, a count';
         else if (key === '5'.charCodeAt(0) || key === (0x80 | '5'.charCodeAt(0)))
-            key2cmdbuf = `${(!!game.iflags?.pcHack_compat ^ (key === (0x80 | '5'.charCodeAt(0))))
+            key2cmdbuf = `${(!!game.Cmd?.pcHack_compat ^ (key === (0x80 | '5'.charCodeAt(0))))
                             ? 'run' : 'rush'} prefix`;
         else if (key === '0'.charCodeAt(0)
-                 || (game.iflags?.pcHack_compat && key === (0x80 | '0'.charCodeAt(0))))
+                 || (game.Cmd?.pcHack_compat && key === (0x80 | '0'.charCodeAt(0))))
             key2cmdbuf = "synonym for 'i'";
         if (key2cmdbuf)
             return key2cmdbuf;
@@ -4253,6 +4294,69 @@ const MOVE_DEFAULT_KEYS = { movewest: 'h', movenorthwest: 'y', movenorth: 'k',
                             movesoutheast: 'n', movesouth: 'j',
                             movesouthwest: 'b' };
 
+// src/cmd.c:3343 reset_commands() — the Cmd state derived from the
+// number_pad setting. Key lookups in this port (cmdbind_table(), movecmd())
+// read game.iflags.num_pad and game.Cmd live instead of a rebound
+// Cmd.commands[] table, so only the flags and direction strings are kept
+// here; swap_yz, the phone layout and the MSDOS M-0 binding have no key
+// tables of their own and are recorded as unported when they turn on.
+export function reset_commands(initial) {
+    const sdir = 'hykulnjb><',
+          sdir_swap_yz = 'hzkulnjb><',
+          ndir = '47896321><',
+          ndir_phone_layout = '41236987><';
+    const Cmd = (game.Cmd ||= {});
+    let flagtemp;
+    let updated = 0;
+
+    if (initial) {
+        updated = 1;
+        Cmd.num_pad = false;
+        Cmd.pcHack_compat = Cmd.phone_layout = Cmd.swap_yz = false;
+    } else {
+        const iflags = game.iflags || {};
+        /* basic num_pad */
+        flagtemp = !!iflags.num_pad;
+        if (flagtemp !== !!Cmd.num_pad) {
+            Cmd.num_pad = flagtemp;
+            ++updated;
+        }
+        /* swap_yz mode (only applicable for !num_pad); intended for
+           QWERTZ keyboard used in Central Europe, particularly Germany */
+        flagtemp = ((iflags.num_pad_mode | 0) & 1) ? !Cmd.num_pad : false;
+        if (flagtemp !== !!Cmd.swap_yz) {
+            Cmd.swap_yz = flagtemp;
+            ++updated;
+            if (flagtemp)
+                note_unported_cmd('reset_commands:swap_yz');
+        }
+        /* MSDOS compatibility mode (only applicable for num_pad) */
+        flagtemp = ((iflags.num_pad_mode | 0) & 1) ? Cmd.num_pad : false;
+        if (flagtemp !== !!Cmd.pcHack_compat) {
+            Cmd.pcHack_compat = flagtemp;
+            ++updated;
+            if (flagtemp)
+                note_unported_cmd('reset_commands:pcHack_compat');
+        }
+        /* phone keypad layout (only applicable for num_pad) */
+        flagtemp = ((iflags.num_pad_mode | 0) & 2) ? Cmd.num_pad : false;
+        if (flagtemp !== !!Cmd.phone_layout) {
+            Cmd.phone_layout = flagtemp;
+            ++updated;
+            if (flagtemp)
+                note_unported_cmd('reset_commands:phone_layout');
+        }
+    } /*?initial*/
+
+    /* choose updated movement keys */
+    if (updated)
+        Cmd.serialno = (Cmd.serialno | 0) + 1;
+    Cmd.dirchars = !Cmd.num_pad
+                   ? (!Cmd.swap_yz ? sdir : sdir_swap_yz)
+                   : (!Cmd.phone_layout ? ndir : ndir_phone_layout);
+    Cmd.alphadirchars = !Cmd.num_pad ? Cmd.dirchars : sdir;
+}
+
 // src/cmd.c:3029 cmd_from_dir(); the key bound to the movement command for
 // direction 'dir' in mode 'mode'
 export function cmd_from_dir(dir, mode) {
@@ -4271,22 +4375,24 @@ export function movecmd(sym, mode) {
            override their default commands); with number_pad the digits
            walk and M(digit) runs ("can't bind highc() or C() of digits") */
         const num_pad = !!game.iflags?.num_pad;
-        const ndir = '47896321', sdir = 'hykulnjb';
+        /* Cmd.dirchars from reset_commands() (the phone layout and swap_yz
+           reorder it); KEY_TO_DIR is keyed by the sdir letters */
+        const dirchars = (game.Cmd?.dirchars
+                          ?? (num_pad ? '47896321><' : 'hykulnjb><')).slice(0, 8);
+        const sdir = 'hykulnjb';
         const code = sym.length === 1 ? sym.charCodeAt(0) : -1;
         const letter_of = (ch) => {
-            if (!num_pad)
-                return ch;
-            const i = ndir.indexOf(ch);
+            const i = dirchars.indexOf(ch);
             return i >= 0 ? sdir[i] : null;
         };
         let dk = KEY_TO_DIR[letter_of(sym)];
         if (dk !== undefined)
             bound = move_funcs[dk][MV_WALK];
         else if (!num_pad && code >= 0x41 && code <= 0x5a
-                 && (dk = KEY_TO_DIR[sym.toLowerCase()]) !== undefined)
+                 && (dk = KEY_TO_DIR[letter_of(sym.toLowerCase())]) !== undefined)
             bound = move_funcs[dk][MV_RUN];     /* highc(dirchar) */
         else if (!num_pad && code >= 0 && code < 0x20
-                 && (dk = KEY_TO_DIR[String.fromCharCode(code | 0x60)]) !== undefined)
+                 && (dk = KEY_TO_DIR[letter_of(String.fromCharCode(code | 0x60))]) !== undefined)
             bound = move_funcs[dk][MV_RUSH];    /* C(dirchar) */
         else if (num_pad && code >= 0x80
                  && (dk = KEY_TO_DIR[letter_of(String.fromCharCode(code & 0x7f))]) !== undefined)

@@ -3,6 +3,7 @@
 // include/optlist.h into js/optlist.js by tools/gen-optlist.mjs.
 
 import { game } from './gstate.js';
+import { reset_commands } from './cmd.js';
 import { pline, docrt, bot } from './display.js';
 import {
     NHW_MENU, ATR_NONE, ATR_INVERSE,
@@ -214,7 +215,8 @@ export function parseoptions(opts, tinitial, tfrom_file, result) {
         && opt.name !== 'menu_objsyms' && opt.name !== 'autounlock'
         && !(opt.name === 'menustyle' && (negated || opts.length <= 5))
         && !(opt.name === 'whatis_coord' && negated)
-        && !(opt.name === 'paranoid_confirmation' && negated)) {
+        && !(opt.name === 'paranoid_confirmation' && negated)
+        && !(opt.name === 'number_pad' && (opts.length <= 10 || negated || tinitial))) {
         config_error_add(result, `Missing value for '${opt.name}'`);
         return false;
     }
@@ -401,6 +403,47 @@ export function parseoptions(opts, tinitial, tfrom_file, result) {
             return false;
         }
         result.opts.statuslines = itmp;
+    } else if (opt.name === 'number_pad') {
+        /* src/options.c:2622 optfn_number_pad(), the do_set arm. A bare
+           "number_pad" is number_pad:1 for backwards compatibility; -1..4
+           set iflags.num_pad and the num_pad_mode bits (1 = MSDOS
+           compatible or y/z swapped, 2 = phone layout). */
+        const compat = (opts.length <= 10);
+        const op = value ?? '';    /* string_for_opt(opts, compat || !opt_initial) */
+        if (op === '') {
+            if (compat || negated || tinitial) {
+                /* for backwards compatibility, "number_pad" without a
+                   value is a synonym for number_pad:1 */
+                result.opts.num_pad = !negated;
+                result.opts.num_pad_mode = 0;
+            }
+        } else if (negated) {
+            config_error_add(result, `The ${opt.name} option may not both have a value and be negated.`);
+            return false;
+        } else {
+            const mode = parseInt(op, 10) || 0;     /* atoi() */
+            if (mode < -1 || mode > 4 || (mode === 0 && op[0] !== '0')) {
+                config_error_add(result, `Illegal ${opt.name} parameter '${op}'`);
+                return false;
+            } else if (mode <= 0) {
+                result.opts.num_pad = false;
+                /* German keyboard; y and z keys swapped */
+                result.opts.num_pad_mode = (mode < 0) ? 1 : 0; /* 0 or 1 */
+            } else {                              /* mode > 0 */
+                result.opts.num_pad = true;
+                result.opts.num_pad_mode = 0;
+                /* PC Hack / MSDOS compatibility */
+                if (mode === 2 || mode === 4)
+                    result.opts.num_pad_mode |= 1;
+                /* phone keypad layout */
+                if (mode === 3 || mode === 4)
+                    result.opts.num_pad_mode |= 2;
+            }
+        }
+        /* reset_commands(FALSE) runs once the live iflags hold these (see
+           jsmain and parseoptions_interactive()); number_pad() only emits
+           the terminal's keypad-mode strings, which have no screen cells */
+        result.opts[opt.name] = negated ? null : value;
     } else if (opt.name === 'disclose') {
         /* src/options.c:1447 optfn_disclose(), the do_set arm: the value is a
            run of category letters (iavgco; k->v and d->o) each optionally
@@ -1473,6 +1516,8 @@ async function doset_simple_menu() {
                 await handler_msg_window();
             } else if (allopt[k].name === 'runmode') {
                 await handler_runmode();
+            } else if (allopt[k].name === 'number_pad') {
+                await handler_number_pad();
             } else if (allopt[k].name === 'autounlock') {
                 await handler_autounlock();
             } else if (allopt[k].name === 'menu_objsyms') {
@@ -2033,6 +2078,8 @@ export async function doset() {
                 await handler_msg_window();
             } else if (o.hasHandler === 'Yes' && o.name === 'runmode') {
                 await handler_runmode();
+            } else if (o.hasHandler === 'Yes' && o.name === 'number_pad') {
+                await handler_number_pad();
             } else if (o.hasHandler === 'Yes' && o.name === 'autounlock') {
                 await handler_autounlock();
             } else if (o.hasHandler === 'Yes' && o.name === 'menu_objsyms') {
@@ -2193,6 +2240,59 @@ export async function handler_whatis_coord() {
 }
 
 // src/options.c:5544 handler_menustyle().
+// src/options.c handler_number_pad()
+async function handler_number_pad() {
+    const npchoices = [
+        ' 0 (off)', ' 1 (on)', ' 2 (on, MSDOS compatible)',
+        ' 3 (on, phone-style digit layout)',
+        ' 4 (on, phone-style layout, MSDOS compatible)',
+        "-1 (off, 'z' to move upper-left, 'y' to zap wands)",
+    ];
+    const tmpwin = tty_create_nhwindow(NHW_MENU);
+    tty_start_menu(tmpwin, MENU_BEHAVE_STANDARD);
+    for (let i = 0; i < npchoices.length; i++)
+        tty_add_menu(tmpwin, null, i + 1, String.fromCharCode(97 + i),
+                     String.fromCharCode(48 + i), ATR_NONE, NO_COLOR,
+                     npchoices[i], MENU_ITEMFLAGS_NONE);
+    tty_end_menu(tmpwin, 'Select number_pad mode:');
+    const mode_pick = await tty_select_menu(tmpwin, PICK_ONE);
+    if (mode_pick.length > 0) {
+        const iflags = (game.iflags ||= {});
+        switch (mode_pick[0] - 1) {
+        case 0:
+            iflags.num_pad = false;
+            iflags.num_pad_mode = 0;
+            break;
+        case 1:
+            iflags.num_pad = true;
+            iflags.num_pad_mode = 0;
+            break;
+        case 2:
+            iflags.num_pad = true;
+            iflags.num_pad_mode = 1;
+            break;
+        case 3:
+            iflags.num_pad = true;
+            iflags.num_pad_mode = 2;
+            break;
+        case 4:
+            iflags.num_pad = true;
+            iflags.num_pad_mode = 3;
+            break;
+        /* last menu choice: number_pad == -1 */
+        case 5:
+            iflags.num_pad = false;
+            iflags.num_pad_mode = 1;
+            break;
+        }
+        reset_commands(false);
+        /* number_pad(iflags.num_pad ? 1 : 0): tty_number_pad() only writes
+           the termcap keypad strings, which have no screen cells */
+    }
+    tty_destroy_nhwindow(tmpwin);
+    return 0;
+}
+
 // src/options.c handler_runmode()
 async function handler_runmode() {
     const win = tty_create_nhwindow(NHW_MENU);
@@ -2335,6 +2435,9 @@ async function parseoptions_interactive(buf) {
     for (const [name, value] of Object.entries(result.opts)) {
         if (name === 'fruit') {
             set_fruit_name(value);
+        } else if (name === 'num_pad' || name === 'num_pad_mode') {
+            /* optfn_number_pad() writes iflags */
+            (game.iflags ||= {})[name] = value;
         } else if (name === 'statuslines') {
             /* iflags.wc2_statuslines; the 3-line status layout itself is
                not ported, so a changed value is only recorded */
@@ -2345,6 +2448,8 @@ async function parseoptions_interactive(buf) {
             game.flags[name] = value;
         }
     }
+    if ('num_pad' in result.opts)
+        reset_commands(false);      /* optfn_number_pad() do_set tail */
     for (const error of result.errors) {
         await pline(error + (/[.!?]$/.test(error) ? '' : '.'));
         await tty_wait_synch();

@@ -446,8 +446,21 @@ potion.js is complete: drink_ok_extra, dipsink(), polymorph_sink() and the
 last peffect arms (NOTES "potion.js is complete: drink_ok_extra, the sink
 dip, burning oil").
 
-Next: triage `--seed 61`, then continue the
-note_unported list (read.js 10, cmd.js 10, wield.js 10, mhitu.js 10). tools/jsplay.mjs has a new
+Fifty-first round: `--seed 61` had three failures: two recording-timezone
+instances (s61-25, s61-35) and one RNG divergence, postmov() not
+re-reading the species after a polymorph trap (NOTES "postmov() re-reads
+the monster's species after the trap"). Also ported the confused
+enchant-weapon arm, remove curse's saddle and buried-ball arms, and two
+cmd.js messages (NOTES "Confused enchant weapon rustproofs, remove curse
+reaches the saddle").
+
+`--seed 62` had two failures: s62-11 is a recording-timezone instance and
+s62-05 was help_dir() receiving the pressed key for an ordinary prompt
+(the C passes it only for '^' key-hint prompts; NOTES "'?' at the
+direction prompt shows the help and asks again", last paragraph).
+
+Next: triage `--seed 63`, then continue the
+note_unported list (wield.js 10, mhitu.js 10, timeout.js 9, dothrow.js 9). tools/jsplay.mjs has a new
 `--aeval "<await expr>"` flag with the hack.js namespace as `h` for state
 probes. The census script is `tally.sh` in the scratchpad (diverge.mjs
 --screens over tools/gen-sessions/fuzz/*.session.json, 4 at a time).

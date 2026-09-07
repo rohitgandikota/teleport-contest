@@ -501,7 +501,7 @@ export async function getdir(s) {
                 let did_help = false;
                 const help_requested = (dirsym === '?');
                 if (help_requested || boolean_option('cmdassist')) {
-                    did_help = await help_dir((s && s[0] !== '^') ? dirsym : '\0',
+                    did_help = await help_dir((s && s[0] === '^') ? dirsym : '\0',
                                               help_requested
                                                   ? null
                                                   : "Invalid direction key!");
@@ -2116,9 +2116,12 @@ export async function rhack(key) {
                autopickup-exception suffix needs an apelist, which no
                recorded rc defines. */
             const ocl = game.flags.pickup_types || '';
-            if (game.apelist)
-                note_unported_cmd('dotogglepickup:exceptions');
-            await pline(`Autopickup: ON, for ${ocl || 'all'} objects.`);
+            await pline(`Autopickup: ON, for ${ocl || 'all'} objects${
+                        (game.apelist?.length)
+                            ? ((game.apelist.length === 1)
+                                   ? ', with one exception'
+                                   : ', with some exceptions')
+                            : ''}.`);
         } else {
             await pline('Autopickup: OFF.');
         }
@@ -2872,7 +2875,7 @@ async function domove_core() {
             if (u.ublind || game.u.uprops?.STUNNED || ACURR(A_DEX) < 10
                 || game.u.uprops?.FUMBLING) {
                 if (u.usteed) {
-                    note_unported_cmd('test_move:steed_into_door');
+                    await You_cant(`lead ${y_monnam(u.usteed)} through that closed door.`);
                 } else {
                     await pline('Ouch!  You bump into a door.');
                     exercise(A_DEX, false);

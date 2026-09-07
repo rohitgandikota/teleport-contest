@@ -4616,8 +4616,9 @@ recording does not carry (see "ubirthday"). Seed 51 added s51-18 (the C's
 and s51-02 is the recorder rc path class (the options help shows
 /var/folders/.../nh-rec-*/home/.nethackrc). Seed 55 added s55-06 (^X "It
 is nighttime." where our clock says the midnight hour; the only miss left
-in seed 55), and seed 56 added s56-31 and seed 59 added s59-19 (the same
-^X line).
+in seed 55), and seed 56 added s56-31, seed 59 added s59-19, and seed 61
+added s61-25 and s61-35 (the same ^X line), and seed 62 added s62-11 (ours
+prints "It is nighttime." where the C's local hour printed no line).
 
 ## Fuzz divergence census (2026-09-01, second pass)
 
@@ -7342,7 +7343,12 @@ one (not a '^' key hint) and the bad key is a letter or '[', it asks "Are
 you trying to use ^X as specified in the Guidebook?" with the command's
 description from pager.c dowhatdoes_core() (now a real function in
 pager.js that dowhatdoes() shares), wizard-only letters EFGIVW only in
-wizard mode. getdir(NULL), the common caller, passes sym 0 and skips it.
+wizard mode. The key reaches help_dir() only when the caller's prompt
+starts with '^' (cmd.c:4102, `(s && *s == '^') ? dirsym : '\0'`), that is
+for key-hint callers; getdir(NULL) and every ordinary prompt such as
+dochat's "Talk to whom? (in what direction)" pass NUL, so the hint never
+shows there (s62-05: a stray 'a' at the chat prompt printed "Are you
+trying to use ^A ..." in ours and only the direction panel in the C).
 
 ## The sacrifice arms: conversion, desecration, blood stains, gifts
 
@@ -7476,3 +7482,31 @@ your face." with d(4 or 2, 4) damage and burn_away_slime(),
 peffect_paralysis() says "You are motionlessly suspended." when
 levitating or on the Planes of Air/Water and "You are frozen in place!"
 on a steed, and peffects()' default is the C's impossible().
+
+## postmov() re-reads the monster's species after the trap
+
+monmove.c:1509 postmov(): after mintrap(), a monster that is now off the
+map returns MMOVE_DONE, and `ptr = mtmp->data` is refreshed "in case
+mintrap() caused polymorph". The rest of postmov() (door handling,
+hides_under()/S_EEL hiding with its rn2(5), shopkeeper and priest arms)
+then runs for the NEW form. Ours kept the cached pre-move species, so a
+monster polymorphed by a trap into a hider skipped the rn2(5) hide roll
+(s61-18: a soldier ant became something that hides under objects, and
+every draw after that turn was one position early).
+
+## Confused enchant weapon rustproofs, remove curse reaches the saddle
+
+read.c:1627 seffect_enchant_weapon()'s confused arm is ported: the wielded
+weapon's oerodeproof is set from !cursed after "Your weapon feels warm for
+a moment." (blind, rknown cleared) or "Your <weapon> is covered by a
+shimmering golden shield!" / "... a mottled purple glow!" (rknown set),
+existing erosion is repaired with "Your <weapon> looks/feels as good as
+new!", and losing an existing proofing to a cursed scroll charges the shop
+through costly_alteration(COST_DEGRD) first. seffect_remove_curse() treats
+a ridden steed's saddle as inventory (blessorcurse when confused, else
+uncurse with "Your saddle glows amber." and bknown unless hallucinating)
+and frees a hero chained to a buried ball with buried_ball_to_freedom()
+and "The clasp on your leg vanishes.". cmd.js: a mounted hero bumping a
+closed door hears "You can't lead <steed> through that closed door."
+(hack.c:1116), and toggling autopickup with exceptions defined says ",
+with one exception" or ", with some exceptions" (options.c dotogglepickup()).

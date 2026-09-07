@@ -95,6 +95,11 @@ import { dochug } from './monmove.js';
 import { noit_mhis } from './mondata.js';
 import { plur, EYE } from './const.js';
 import { makeknown } from './o_init.js';
+import { yelp } from './sounds.js';
+import { getpos } from './getpos.js';
+import { ARTICLE_THE, ECMD_CANCEL } from './const.js';
+import { There } from './pline.js';
+import { Monnam, x_monnam } from './do_name.js';
 
 // src/shk.c:139 angrytexts[]
 const angrytexts = ['quite upset', 'ticked off', 'furious'];
@@ -2424,14 +2429,44 @@ export async function dopay() {
         shkp = resident;
     } else if (!shkp && seen === 1) {
         shkp = keepers.find(keeper => canspotmon(keeper));
-        if (shkp !== resident && distu(shkp.mx, shkp.my) > 2) {
+        if (shkp !== resident && !m_next2u(shkp)) {
             await pline(`${shopkeeper_name(shkp)} is not near enough to receive your payment.`);
             return ECMD_OK;
         }
     }
     if (!shkp) {
-        note_unported_shk('dopay:select-among-shopkeepers');
-        return ECMD_OK;
+        await pline('Pay whom?');
+        const cc = { x: game.u.ux, y: game.u.uy };
+        if (await getpos(cc, true, 'the creature you want to pay') < 0)
+            return ECMD_CANCEL; /* player pressed ESC */
+        const cx = cc.x;
+        const cy = cc.y;
+        if (cx < 0) {
+            await pline('Try again...');
+            return ECMD_OK;
+        }
+        if (u_at(cx, cy)) {
+            await You('are generous to yourself.');
+            return ECMD_OK;
+        }
+        const mtmp = m_at(cx, cy);
+        if (!cansee(cx, cy) && (!mtmp || !canspotmon(mtmp))) {
+            await You(`can't ${!Blind() ? 'see' : 'sense'} anyone there.`);
+            return ECMD_OK;
+        }
+        if (!mtmp) {
+            await There('is no one there to receive your payment.');
+            return ECMD_OK;
+        }
+        if (!mtmp.isshk) {
+            await pline(`${Monnam(mtmp)} is not interested in your payment.`);
+            return ECMD_OK;
+        }
+        if (mtmp !== resident && !m_next2u(mtmp)) {
+            await pline(`${shopkeeper_name(mtmp)} is too far to receive your payment.`);
+            return ECMD_OK;
+        }
+        shkp = mtmp;
     }
 
     const eshk = shkp.eshk || ESHK(shkp);
@@ -2501,8 +2536,25 @@ export async function dopay() {
             await pay_shk(Math.min(cash, robbed), shkp);
             await make_happy_shk(shkp, false);
         } else {
-            note_unported_shk('dopay:appease-angry-unrobbed');
-            return ECMD_OK;
+            /* shopkeeper is angry, but has not been robbed --
+             * door broken, attacked, etc. */
+            await pline(`${shopkeeper_name(shkp)} is after your hide, not your gold!`);
+            if (cash < 1000) {
+                if (!cash)
+                    await pline(`Moreover, you${stashedGold ? ' seem to' : ''} have no gold.`);
+                else
+                    await pline(`Besides, you don't have enough to interest ${pronouns.him}.`);
+                return ECMD_TIME;
+            }
+            await You(`try to appease ${
+                canspotmon(shkp)
+                    ? x_monnam(shkp, ARTICLE_THE, 'angry', 0, false)
+                    : shopkeeper_name(shkp)} by giving ${pronouns.him} 1000 gold pieces.`);
+            await pay_shk(1000, shkp);
+            if ((eshk.customer || '') !== (game.plname || '') || rn2(3))
+                await make_happy_shk(shkp, false);
+            else
+                await pline(`But ${shopkeeper_name(shkp)} is as angry as ever.`);
         }
         return ECMD_TIME;
     }
@@ -2703,28 +2755,29 @@ function cad(altusage) {
 }
 
 async function getcad(shkp, dmgstr, x, y, uinshp, animal, pursue) {
-    const dugwall = dmgstr === 'dig into' || dmgstr === 'damage';
-    const target = dugwall ? 'shop' : 'door';
+    const dugwall = (dmgstr === 'dig into'    /* wand */
+                     || dmgstr === 'damage'); /* pick-axe */
 
     if (muteshk(shkp)) {
         if (animal && !helpless(shkp))
-            note_unported_shk('getcad:yelp');
-    } else if (pursue || uinshp
-               || distmin(game.u.ux, game.u.uy, x, y) <= 1) {
+            await yelp(shkp);
+    } else if (pursue || uinshp || !um_dist(x, y, 1)) {
         if (!Deaf()) {
-            await pline(`"How dare you ${dmgstr} my ${target}?"`);
+            await verbalize(`How dare you ${dmgstr} my ${dugwall ? 'shop' : 'door'}?`);
         } else {
-            note_unported_shk('getcad:deaf_angrytext');
-            await pline(`${shopkeeper_name(shkp)} is furious that you decided to ${
-                dmgstr} ${shk_pronouns(shkp).his} ${target}!`);
+            await pline(`${shopkeeper_name(shkp)} is ${
+                angrytexts[rn2(angrytexts.length)]} that you decided to ${
+                dmgstr} ${noit_mhis(shkp)} ${dugwall ? 'shop' : 'door'}!`);
         }
-    } else if (!Deaf()) {
-        await pline(`${shopkeeper_name(shkp)} shouts:`);
-        await pline(`"Who dared ${dmgstr} my ${target}?"`);
     } else {
-        note_unported_shk('getcad:deaf_angrytext');
-        await pline(`${shopkeeper_name(shkp)} is furious that someone decided to ${
-            dmgstr} ${shk_pronouns(shkp).his} ${target}!`);
+        if (!Deaf()) {
+            await pline(`${shopkeeper_name(shkp)} shouts:`);
+            await verbalize(`Who dared ${dmgstr} my ${dugwall ? 'shop' : 'door'}?`);
+        } else {
+            await pline(`${shopkeeper_name(shkp)} is ${
+                angrytexts[rn2(angrytexts.length)]} that someone decided to ${
+                dmgstr} ${noit_mhis(shkp)} ${dugwall ? 'shop' : 'door'}!`);
+        }
     }
     hot_pursuit(shkp);
 }

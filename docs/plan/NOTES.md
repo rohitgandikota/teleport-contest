@@ -7021,3 +7021,20 @@ Inside the default arm gacc is checked before the per-item selectors.
 Ours mapped the menu command first, so ',' in the #name menu did nothing
 where the C opened namefloorobj()'s getpos (s50-04 step 221). The
 group-accelerator branch now comes first in tty_select_menu().
+
+## cursed_book() and the Book of the Dead's raise/pacify arms
+
+spell.c:130 cursed_book() is now the C switch verbatim: blindness through
+make_blinded(BlindedTimeout + rn1(100,250)), gold through take_gold(),
+contact poison through erode_obj(uarmg, "gloves", ERODE_CORRODE,
+EF_GREASE|EF_VERBOSE) or poison_strdmg() with the in_use guard, the
+exploding rune through Antimagic/shieldeff and Maybe_Half_Phys, and the
+default arm rndcurse(), which ours had dropped (a level 8+ book's rn2(lev)
+of 7 or more cursed the inventory in the C and did nothing here).
+deadbook() (spell.c:231) gains the raise_dead arm shared by the failed
+invocation and a cursed book (1 in 3 master lich or nalfeshnee made
+hostile with set_malign, unturn_dead on the inventory, mkundead around the
+hero) and the blessed arm, deadbook_pacify_undead() over every on-map
+monster: undead or vampshifters in view become peaceful, and are tamed or
+gain tameness when their alignment sign matches the hero's within
+mdistu 4, otherwise monflee(0, FALSE, TRUE).

@@ -73,6 +73,24 @@ import { getpos, getpos_sethilite } from './getpos.js';
 import { walk_path } from './dothrow.js';
 import { showsym } from './symbols.js';
 import { defsyms, cmap_names } from './drawing_data.js';
+import { make_blinded } from './potion.js';
+import { take_gold, rndcurse } from './sit.js';
+import { erode_obj } from './trap.js';
+import { poison_strdmg } from './attrib.js';
+import { Antimagic, Poison_resistance } from './youprop.js';
+import { shieldeff } from './display.js';
+import { set_malign, makemon } from './makemon.js';
+import { mkundead } from './mkroom.js';
+import { tamedog } from './dog.js';
+import { monflee, mdistu } from './monmove.js';
+import { is_undead } from './mondata.js';
+import { is_vampshifter, mon_offmap } from './monst.js';
+import { NO_MINVENT, EF_GREASE, EF_VERBOSE, ERODE_CORRODE, FACE, something } from './const.js';
+import { sgn } from './hacklib.js';
+import { unturn_dead } from './zap.js';
+import { Maybe_Half_Phys } from './do.js';
+import { tele } from './teleport.js';
+import { aggravate } from './wizard.js';
 
 // src/spell.c — NO_SPELL sentinel and the spell list accessor.
 const NO_SPELL = 0;
@@ -125,88 +143,67 @@ export function initialspell(obj) {
     }
 }
 
+/* src/spell.c:111 */
+const explodes = 'radiates explosive energy';
+
 // src/spell.c:130 cursed_book()
-async function cursed_book(book) {
-    const lev = game.objects[book.otyp].oc_level;
+async function cursed_book(bp) {
+    const lev = game.objects[bp.otyp].oc_level;
+    let dmg = 0;
 
     switch (rn2(lev)) {
-    case 0: {
+    case 0:
         await You_feel('a wrenching sensation.');
-        const { tele } = await import('./teleport.js');
-        await tele();
+        await tele(); /* teleport him */
         break;
-    }
-    case 1: {
+    case 1:
         await You_feel('threatened.');
-        const { aggravate } = await import('./wizard.js');
         aggravate();
         break;
-    }
-    case 2: {
-        const intr = (game.u.intrinsic ||= {});
-        const was_blind = !!game.u.ublind;
-        intr.HBlinded = (intr.HBlinded | 0) + rn1(100, 250);
-        game.u.ublind = 1;
-        (game.disp ||= {}).botl = true;
-        game.vision_full_recalc = 1;
-        if (!was_blind)
-            await pline('A cloud of darkness falls upon you.');
+    case 2:
+        await make_blinded(((game.u.intrinsic?.HBlinded | 0) & TIMEOUT)
+                           + rn1(100, 250), true);
         break;
-    }
-    case 3: {
-        const coins = (game.invent || [])
-            .filter((obj) => obj.oclass === OCLASSES.COIN_CLASS);
-        if (!coins.length) {
-            await You_feel('a strange sensation.');
-        } else {
-            const { useupall } = await import('./invent.js');
-            for (const coin of coins)
-                useupall(coin);
-            await You('notice you have no gold!');
-            (game.disp ||= {}).botl = true;
-        }
+    case 3:
+        await take_gold();
         break;
-    }
-    case 4: {
+    case 4:
         await pline('These runes were just too much to comprehend.');
-        const { make_confused } = await import('./potion.js');
         await make_confused((game.u.intrinsic?.HConfusion | 0) + rn1(7, 16),
                             false);
         break;
-    }
-    case 5: {
+    case 5:
         await pline_The('book was coated with contact poison!');
         if (game.u.uarmg) {
-            note_unported_spell('cursed_book:corrode_gloves');
+            await erode_obj(game.u.uarmg, 'gloves', ERODE_CORRODE,
+                            EF_GREASE | EF_VERBOSE);
             break;
         }
-        const poison_resistant = !!(game.u.intrinsic?.HPoison_resistance
-                                    || game.u.uprops?.POISON_RES);
-        const strloss = poison_resistant ? rn1(2, 1) : rn1(4, 3);
-        const damage = rnd(poison_resistant ? 6 : 10);
-        const { adjattrib } = await import('./attrib.js');
-        const { losehp } = await import('./hack.js');
-        const was_in_use = book.in_use;
-        book.in_use = false;
-        await adjattrib(A_STR, -strloss, 1);
-        note_unported_spell('cursed_book:losestr_killer');
-        await losehp(damage, 'contact-poisoned spellbook', KILLED_BY_AN);
-        book.in_use = was_in_use;
+        {
+            /* temp disable in_use; death should not destroy the book */
+            const was_in_use = bp.in_use;
+            bp.in_use = false;
+            await poison_strdmg(Poison_resistance() ? rn1(2, 1) : rn1(4, 3),
+                                rnd(Poison_resistance() ? 6 : 10),
+                                'contact-poisoned spellbook', KILLED_BY_AN);
+            bp.in_use = was_in_use;
+        }
         break;
-    }
-    case 6: {
-        if (game.u.uprops?.ANTIMAGIC || game.u.uprops?.MAGIC_RES) {
-            await pline_The('book radiates explosive energy, but you are unharmed!');
+    case 6:
+        if (Antimagic()) {
+            await shieldeff(game.u.ux, game.u.uy);
+            await pline_The(`book ${explodes}, but you are unharmed!`);
         } else {
-            await pline('As you read the book, it radiates explosive energy in your face!');
-            let damage = 2 * rnd(10) + 5;
-            if (game.u.uprops?.HALF_PHDAM)
-                damage = Math.ceil(damage / 2);
+            await pline(`As you read the book, it ${explodes} in your ${
+                body_part(FACE)}!`);
+            dmg = 2 * rnd(10) + 5;
             const { losehp } = await import('./hack.js');
-            await losehp(damage, 'exploding rune', KILLED_BY_AN);
+            await losehp(Maybe_Half_Phys(dmg), 'exploding rune', KILLED_BY_AN);
         }
         return true;
-    }
+    default:
+        await rndcurse();
+        break;
     }
     return false;
 }
@@ -239,10 +236,51 @@ function on_stairs_at_u() {
     return false;
 }
 
+// src/spell.c:210 deadbook_pacify_undead() — pacify or tame an undead
+// monster
+async function deadbook_pacify_undead(mtmp) {
+    if ((is_undead(mtmp.data) || is_vampshifter(mtmp))
+        && cansee(mtmp.mx, mtmp.my)) {
+        mtmp.mpeaceful = 1;
+        if (sgn(mtmp.data.maligntyp) === sgn(game.u.ualign.type)
+            && mdistu(mtmp) < 4) {
+            if (mtmp.mtame) {
+                if (mtmp.mtame < 20)
+                    mtmp.mtame++;
+            } else
+                await tamedog(mtmp, null, true);
+        } else
+            await monflee(mtmp, 0, false, true);
+    }
+}
+
 // src/spell.c:231 deadbook(). The successful invocation path is complete.
 // Raising or pacifying undead away from a prepared ritual remains recorded
 // until those monster effects are ported.
 async function deadbook(book) {
+    /* the raise_dead: label of the cursed arm below; the invocation arm
+       jumps there when a relic is not prepared properly */
+    const raise_dead = async () => {
+        let mtmp;
+
+        await You('raised the dead!');
+        /* first maybe place a dangerous adversary */
+        if (!rn2(3) && ((mtmp = await makemon(game.mons[PMNAMES.PM_MASTER_LICH],
+                                              game.u.ux, game.u.uy,
+                                              NO_MINVENT)) != null
+                        || (mtmp = await makemon(game.mons[PMNAMES.PM_NALFESHNEE],
+                                                 game.u.ux, game.u.uy,
+                                                 NO_MINVENT)) != null)) {
+            mtmp.mpeaceful = 0;
+            set_malign(mtmp);
+        }
+        /* next handle the affect on things you're carrying */
+        await unturn_dead(game.youmonst);
+        /* last place some monsters around you */
+        const mm = { x: game.u.ux, y: game.u.uy };
+        await mkundead(mm, true, NO_MINVENT);
+    };
+
     await You('turn the pages of the Book of the Dead...');
     makeknown(ONAMES.SPE_BOOK_OF_THE_DEAD);
     observe_object(book);
@@ -295,17 +333,23 @@ async function deadbook(book) {
             record_achievement(ACH_INVK);
             if (!game.u.udg_cnt || game.u.udg_cnt > soon)
                 game.u.udg_cnt = soon;
-        } else {
-            await You('have a feeling that something is amiss...');
-            note_unported_spell('deadbook:raise_dead');
+        } else { /* at least one relic not prepared properly */
+            await You(`have a feeling that ${something} is amiss...`);
+            await raise_dead();
         }
         return;
     }
 
+    /* when not an invocation situation */
     if (book.cursed) {
-        note_unported_spell('deadbook:raise_dead');
+        await raise_dead();
     } else if (book.blessed) {
-        note_unported_spell('deadbook:pacify_undead');
+        /* iter_mons(deadbook_pacify_undead), awaiting each visit */
+        for (const mtmp of [...(game.level.monsters || [])]) {
+            if (DEADMONSTER(mtmp) || mon_offmap(mtmp))
+                continue;
+            await deadbook_pacify_undead(mtmp);
+        }
     } else {
         switch (rn2(3)) {
         case 0:

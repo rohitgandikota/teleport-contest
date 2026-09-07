@@ -365,6 +365,12 @@ Thirty-fifth round: passivemm()'s defender-alive switch (NOTES
 precedence (NOTES "Menu group accelerators beat mapped menu commands")
 make s50-04 match all 1001 screens.
 
+Thirty-sixth round: cursed_book() and deadbook()'s raise-dead and pacify
+arms (NOTES "cursed_book() and the Book of the Dead's raise/pacify arms").
+spell.js keeps 8 note_unported calls (initialspell overflow/duplicate,
+learn overflow, the novel, tport_spell overflow, spell sort menu,
+impossible()).
+
 Next: triage `--seed 51`, then continue the
 note_unported list (hack.js 18, spell.js 20, shk.js 19). tools/jsplay.mjs has a new
 `--aeval "<await expr>"` flag with the hack.js namespace as `h` for state

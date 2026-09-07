@@ -68,10 +68,18 @@ import { Blind, Flying, Glib, Hallucination, Invis, Levitation, Stone_resistance
          Protection_from_shape_changers, See_invisible, Detect_monsters } from './youprop.js';
 import { body_part, change_sex, poly_gender, float_vs_flight } from './polyself.js';
 import { surface } from './dungeon.js';
-
-
-
-
+import { region_danger } from './region.js';
+import { make_slimed } from './potion.js';
+import { can_be_strangled, cant_drown } from './mondata.js';
+import { livelog_newform } from './polyself.js';
+import { trycall, hliquid } from './do_name.js';
+import { set_mimic_blocking } from './display.js';
+import { restartcham, rescham } from './mon.js';
+import { drown } from './trap.js';
+import { Swimming, Breathless, Underwater, Unchanging } from './youprop.js';
+import { NECK, Is_waterlevel, Is_airlevel } from './const.js';
+import { is_pool_or_lava } from './dbridge.js';
+import { pline_The } from './pline.js';
 
 const OCLASSES_ARMOR = OCLASSES.ARMOR_CLASS;
 const OCLASSES_RING = OCLASSES.RING_CLASS;
@@ -1045,10 +1053,12 @@ export async function Boots_off() {
 
 // src/do_wear.c:963 Amulet_on() — setworn and on_msg are its own business.
 export async function Amulet_on(amul) {
-    const was_flying = Flying();
-    const was_strangled = !!game.u.uprops?.STRANGLED;
-    setworn(amul, W_AMUL);
     let on_msg_done = false;
+
+    /* make sure amulet isn't wielded/alt-wielded/quivered, before wearing */
+    remove_worn_item(amul, false);
+    setworn(amul, W_AMUL);
+
     switch (amul.otyp) {
     case ONAMES.AMULET_OF_ESP:
     case ONAMES.AMULET_OF_LIFE_SAVING:
@@ -1056,9 +1066,67 @@ export async function Amulet_on(amul) {
     case ONAMES.AMULET_OF_REFLECTION:
     case ONAMES.FAKE_AMULET_OF_YENDOR:
         break;
+    case ONAMES.AMULET_OF_MAGICAL_BREATHING: {
+        /* amulet is already on; we need to check hero's gas-cloud status
+           when it was off */
+        const props = (game.u.uprops ||= {});
+        props.MAGICAL_BREATHING = (props.MAGICAL_BREATHING | 0) & ~W_AMUL;
+        const was_in_poison_gas = region_danger();
+        props.MAGICAL_BREATHING = (props.MAGICAL_BREATHING | 0) | W_AMUL;
+        if (was_in_poison_gas) {
+            makeknown(ONAMES.AMULET_OF_MAGICAL_BREATHING);
+            await on_msg(amul);
+            on_msg_done = true;
+            await You('are no longer bothered by the poison gas.');
+        }
+        /* no need to check for becoming able to breathe underwater;
+           if we are underwater, we already can or we would have drowned */
+        break;
+    }
+    case ONAMES.AMULET_OF_UNCHANGING:
+        if (game.u.uprops?.SLIMED)
+            await make_slimed(0, null);
+        break;
+    case ONAMES.AMULET_OF_CHANGE: {
+        let call_it = false;
+        const orig_sex = poly_gender();
+
+        /* in normal play it's not possible to put on an amulet of change
+           while already wearing an amulet of unchanging, but in wizard
+           mode the Unchanging attribute can be set via #wizintrinsic */
+        if (!Unchanging())
+            change_sex();
+
+        const new_sex = poly_gender();
+        if (new_sex !== orig_sex)
+            makeknown(ONAMES.AMULET_OF_CHANGE);
+        await on_msg(amul); /* show 'z - amulet of change (being worn)' */
+        on_msg_done = true;
+
+        /* Don't use same message as polymorph */
+        if (new_sex !== orig_sex) {
+            newsym(game.u.ux, game.u.uy); /* glyphmon flag and tile have changed */
+            (game.disp ||= {}).botl = true; /* role name or rank title might have changed */
+            await You(`are suddenly very ${
+                game.flags.female ? 'feminine' : 'masculine'}!`);
+        } else {
+            /* already polymorphed into single-gender monster; only
+               changed the character's base sex */
+            await You("don't feel like yourself.");
+            /* checking dknown is redundant--amulets always have dknown set */
+            call_it = (amul.dknown !== 0);
+        }
+        livelog_newform(false, orig_sex, new_sex);
+        await pline_The('amulet disintegrates!');
+        if (call_it)
+            await trycall(amul);
+        useup(amul);
+        break;
+    }
     case ONAMES.AMULET_OF_STRANGULATION:
-        if (!was_strangled) {
-            makeknown(amul.otyp);
+        /* note: might already be Strangled (via #wizintrinsic) */
+        if (can_be_strangled(game.youmonst) && !game.u.intrinsic?.HStrangled) {
+            makeknown(ONAMES.AMULET_OF_STRANGULATION);
             (game.u.intrinsic ||= {}).HStrangled = 6;
             (game.disp ||= {}).botl = true;
             await on_msg(amul);
@@ -1068,51 +1136,42 @@ export async function Amulet_on(amul) {
         break;
     case ONAMES.AMULET_OF_RESTFUL_SLEEP: {
         const intrinsic = (game.u.intrinsic ||= {});
-        const oldnap = (intrinsic.HSleepy || 0) & TIMEOUT;
-        const newnap = rnd(98) + 2;
+        const newnap = rnd(98) + 2, oldnap = ((intrinsic.HSleepy || 0) & TIMEOUT);
+
         if (newnap < oldnap || oldnap === 0)
-            intrinsic.HSleepy = ((intrinsic.HSleepy || 0) & ~TIMEOUT)
-                                | newnap;
+            /* avoid clobbering FROMOUTSIDE bit, which might have
+               gotten set by previously eating one of these amulets */
+            intrinsic.HSleepy = ((intrinsic.HSleepy || 0) & ~TIMEOUT) | newnap;
         break;
     }
     case ONAMES.AMULET_OF_FLYING:
-        if (Flying() && !was_flying) {
-            makeknown(amul.otyp);
-            await on_msg(amul);
-            on_msg_done = true;
-            (game.disp ||= {}).botl = true;
-            await You('are now in flight.');
+        /* setworn() has already set extrinsic flying */
+        float_vs_flight(); /* block flying if levitating */
+        if (Flying()) {
+            /* to determine whether this flight is new we have to muck
+               about in the Flying intrinsic (actually extrinsic) */
+            const props = (game.u.uprops ||= {});
+            props.FLYING = (props.FLYING | 0) & ~W_AMUL;
+            const already_flying = !!Flying();
+            props.FLYING = (props.FLYING | 0) | W_AMUL;
+
+            if (!already_flying) {
+                makeknown(ONAMES.AMULET_OF_FLYING);
+                await on_msg(amul);
+                on_msg_done = true;
+                (game.disp ||= {}).botl = true; /* status: 'Fly' On */
+                await You('are now in flight.');
+            }
         }
         break;
     case ONAMES.AMULET_OF_GUARDING:
-        makeknown(amul.otyp);
+        makeknown(ONAMES.AMULET_OF_GUARDING);
         find_ac();
         break;
-    case ONAMES.AMULET_OF_CHANGE: {
-        const old_sex = poly_gender();
-        if (!(game.u.intrinsic?.HUnchanging || game.u.uprops?.UNCHANGING))
-            change_sex();
-        const new_sex = poly_gender();
-        if (new_sex !== old_sex)
-            makeknown(amul.otyp);
-        await on_msg(amul);
-        on_msg_done = true;
-        if (new_sex !== old_sex) {
-            newsym(game.u.ux, game.u.uy);
-            (game.disp ||= {}).botl = true;
-            await You(`are suddenly very ${
-                game.flags.female ? 'feminine' : 'masculine'}!`);
-        } else {
-            await You("don't feel like yourself.");
-        }
-        await pline('The amulet disintegrates!');
-        useup(amul);
+    case ONAMES.AMULET_OF_YENDOR:
         break;
     }
-    default:
-        note_unported_do_wear(`Amulet_on:otyp=${amul.otyp}`);
-        break;
-    }
+
     if (!on_msg_done)
         await on_msg(amul);
 }
@@ -1208,50 +1267,104 @@ export async function Armor_gone() {
 }
 
 export async function Amulet_off() {
-    const uamul = worn(W_AMUL);
-    if (!uamul) return;
-    const was_flying = Flying();
-    const was_strangled = !!game.u.uprops?.STRANGLED;
-    setworn(null, W_AMUL);   /* src/do_wear.c:1100 */
-    await off_msg(uamul);
-    switch (uamul.otyp) {
+    const amul = worn(W_AMUL); /* for off_msg() after setworn(NULL,W_AMUL) */
+    let mkn = false, early_off_msg = false;
+
+    if (!amul)
+        return;
+    (game.context_takeoff ||= {}).mask &= ~W_AMUL;
+
+    switch (amul.otyp) {
     case ONAMES.AMULET_OF_ESP:
+        /* need to update ability before calling see_monsters() */
+        setworn(null, W_AMUL);
+        await off_msg(amul);
+        early_off_msg = true;
+
         see_monsters();
         break;
     case ONAMES.AMULET_OF_LIFE_SAVING:
     case ONAMES.AMULET_VERSUS_POISON:
     case ONAMES.AMULET_OF_REFLECTION:
+    case ONAMES.AMULET_OF_CHANGE:
+    case ONAMES.AMULET_OF_UNCHANGING:
     case ONAMES.FAKE_AMULET_OF_YENDOR:
         break;
+    case ONAMES.AMULET_OF_MAGICAL_BREATHING:
+        /* amulet is currently still on; take it off before calling drown()
+           and region_danger(); call off_msg() before specific messages */
+        setworn(null, W_AMUL);
+        await off_msg(amul); /* 'uamul' has been set to Null */
+        early_off_msg = true;
+
+        if (Underwater()) {
+            if (!cant_drown(game.youmonst.data) && !Swimming()) {
+                await You(`suddenly inhale an unhealthy amount of ${hliquid('water')}!`);
+                mkn = true; /* in case of life-saving */
+                await drown();
+            }
+        }
+        if (region_danger()) {
+            /* "breathing": wouldn't get here otherwise */
+            await You('are breathing poison gas!');
+            mkn = true;
+        }
+        break;
     case ONAMES.AMULET_OF_STRANGULATION:
-        if (was_strangled) {
-            (game.u.intrinsic ||= {}).HStrangled = 0;
+        setworn(null, W_AMUL);
+        await off_msg(amul);
+        early_off_msg = true;
+
+        if (game.u.intrinsic?.HStrangled) {
+            game.u.intrinsic.HStrangled = 0;
             (game.disp ||= {}).botl = true;
-            await You('can breathe more easily!');
-            makeknown(uamul.otyp);
+            if (Breathless())
+                await Your(`${body_part(NECK)} is no longer constricted!`);
+            else
+                await You('can breathe more easily!');
+            mkn = true;
         }
         break;
     case ONAMES.AMULET_OF_RESTFUL_SLEEP:
+        setworn(null, W_AMUL);
+        /* HSleepy = 0L; -- avoid clobbering FROMOUTSIDE bit */
         if (!game.u.uprops?.SLEEPY
             && !((game.u.intrinsic?.HSleepy || 0) & ~TIMEOUT))
-            game.u.intrinsic.HSleepy &= ~TIMEOUT;
+            (game.u.intrinsic ||= {}).HSleepy &= ~TIMEOUT; /* clear timeout bits */
         break;
-    case ONAMES.AMULET_OF_FLYING:
+    case ONAMES.AMULET_OF_FLYING: {
+        const was_flying = !!Flying();
+
+        /* remove amulet 'early' to determine whether Flying changes;
+           also in case spoteffects() does something with the amulet */
+        setworn(null, W_AMUL);
+        await off_msg(amul);
+        early_off_msg = true;
+
+        float_vs_flight(); /* probably not needed here */
         if (was_flying && !Flying()) {
-            (game.disp ||= {}).botl = true;
-            await You('land.');
-            makeknown(uamul.otyp);
+            (game.disp ||= {}).botl = true; /* status: 'Fly' Off */
+            await You(`${(is_pool_or_lava(game.u.ux, game.u.uy)
+                          || Is_waterlevel(game.u.uz) || Is_airlevel(game.u.uz))
+                            ? 'stop flying'
+                            : 'land'}.`);
+            mkn = true; /* makeknown(AMULET_OF_FLYING) */
             await spoteffects(true);
         }
         break;
+    }
     case ONAMES.AMULET_OF_GUARDING:
         find_ac();
         break;
-    default:
-        note_unported_do_wear(`Amulet_off:otyp=${uamul.otyp}`);
+    case ONAMES.AMULET_OF_YENDOR:
         break;
     }
-    find_ac();
+
+    setworn(null, W_AMUL);
+    if (!early_off_msg)
+        await off_msg(amul); /* (not 'uamul'; it's Null now) */
+    if (mkn)
+        makeknown(amul.otyp);
 }
 
 // src/do_wear.c:1193 learnring(): reveal an observed effect and, once the
@@ -1345,33 +1458,59 @@ export async function self_invis_message() {
 }
 
 // src/do_wear.c Ring_on()/Ring_off().
-const PASSIVE_RING_TYPES = new Set([
-    ONAMES.RIN_TELEPORTATION, ONAMES.RIN_REGENERATION,
-    ONAMES.RIN_SEARCHING, ONAMES.RIN_HUNGER,
-    ONAMES.RIN_AGGRAVATE_MONSTER, ONAMES.RIN_POISON_RESISTANCE,
-    ONAMES.RIN_FIRE_RESISTANCE, ONAMES.RIN_COLD_RESISTANCE,
-    ONAMES.RIN_SHOCK_RESISTANCE, ONAMES.RIN_CONFLICT,
-    ONAMES.RIN_TELEPORT_CONTROL, ONAMES.RIN_POLYMORPH,
-    ONAMES.RIN_POLYMORPH_CONTROL, ONAMES.RIN_FREE_ACTION,
-    ONAMES.RIN_SLOW_DIGESTION, ONAMES.RIN_SUSTAIN_ABILITY,
-    ONAMES.MEAT_RING,
-]);
 
 export async function Ring_on(obj) {
     const ringmask = W_RINGL | W_RINGR;
     const prop = PROP_KEYS[objects[obj.otyp].oc_oprop];
     let oldprop = prop ? (game.u.uprops?.[prop] || 0) : 0;
-    /* setworn() has already added this ring.  Unless both hands carry the
-       same property, strip the ring bits to recover the previous state. */
+    let observable;
+
+    /* make sure ring isn't wielded; can't use remove_worn_item()
+       here because it has already been set worn in a ring slot */
+    if (obj === game.uwep)
+        setuwep(null);
+    else if (obj === game.uswapwep)
+        setuswapwep(null);
+    else if (obj === game.uquiver)
+        setuqwep(null);
+
+    /* only mask out W_RING when we don't have both
+       left and right rings of the same type */
     if ((oldprop & ringmask) !== ringmask)
         oldprop &= ~ringmask;
 
     switch (obj.otyp) {
+    case ONAMES.RIN_TELEPORTATION:
+    case ONAMES.RIN_REGENERATION:
+    case ONAMES.RIN_SEARCHING:
+    case ONAMES.RIN_HUNGER:
+    case ONAMES.RIN_AGGRAVATE_MONSTER:
+    case ONAMES.RIN_POISON_RESISTANCE:
+    case ONAMES.RIN_FIRE_RESISTANCE:
+    case ONAMES.RIN_COLD_RESISTANCE:
+    case ONAMES.RIN_SHOCK_RESISTANCE:
+    case ONAMES.RIN_CONFLICT:
+    case ONAMES.RIN_TELEPORT_CONTROL:
+    case ONAMES.RIN_POLYMORPH:
+    case ONAMES.RIN_POLYMORPH_CONTROL:
+    case ONAMES.RIN_FREE_ACTION:
+    case ONAMES.RIN_SLOW_DIGESTION:
+    case ONAMES.RIN_SUSTAIN_ABILITY:
+        break;
+    case ONAMES.MEAT_RING:
+        /* wearing a meat ring does not affect vegan conduct */
+        break;
+    case ONAMES.RIN_STEALTH:
+        await toggle_stealth(obj, oldprop, true);
+        break;
     case ONAMES.RIN_WARNING:
         see_monsters();
         break;
     case ONAMES.RIN_SEE_INVISIBLE:
+        /* can now see invisible monsters */
+        set_mimic_blocking(); /* do special mimic handling */
         see_monsters();
+
         if (Invis() && !oldprop && !game.u.intrinsic?.HSee_invisible
             && !Blind()) {
             newsym(game.u.ux, game.u.uy);
@@ -1387,6 +1526,17 @@ export async function Ring_on(obj) {
             await self_invis_message();
         }
         break;
+    case ONAMES.RIN_LEVITATION:
+        if (!oldprop && !game.u.intrinsic?.HLevitation
+            && !((game.u.blocked?.LEVITATION | 0) & FROMOUTSIDE)) {
+            await float_up();
+            learnring(obj, true);
+            if (Levitation())
+                await spoteffects(false); /* for sinks */
+        } else {
+            float_vs_flight(); /* maybe toggle (BFlying & I_SPECIAL) */
+        }
+        break;
     case ONAMES.RIN_GAIN_STRENGTH:
         adjust_ring_attribute(obj, A_STR, obj.spe);
         break;
@@ -1396,104 +1546,128 @@ export async function Ring_on(obj) {
     case ONAMES.RIN_ADORNMENT:
         adjust_ring_attribute(obj, A_CHA, obj.spe);
         break;
-    case ONAMES.RIN_INCREASE_ACCURACY:
+    case ONAMES.RIN_INCREASE_ACCURACY: /* KMH */
         game.u.uhitinc = (game.u.uhitinc || 0) + obj.spe;
         break;
     case ONAMES.RIN_INCREASE_DAMAGE:
         game.u.udaminc = (game.u.udaminc || 0) + obj.spe;
         break;
-    case ONAMES.RIN_LEVITATION:
-        if (!oldprop && !game.u.intrinsic?.HLevitation
-            && !((game.u.blocked?.LEVITATION | 0) & FROMOUTSIDE)) {
-            await float_up();
-            learnring(obj, true);
-            if (Levitation())
-                await spoteffects(false);
-        } else {
-            float_vs_flight();
-        }
-        break;
-    case ONAMES.RIN_STEALTH:
-        await toggle_stealth(obj, oldprop, true);
+    case ONAMES.RIN_PROTECTION_FROM_SHAPE_CHAN:
+        await rescham();
         break;
     case ONAMES.RIN_PROTECTION:
-        learnring(obj, obj.spe !== 0);
+        /* usually learn enchantment and discover type;
+           won't happen if ring is unseen or if it's +0
+           and the type hasn't been discovered yet */
+        observable = (obj.spe !== 0);
+        learnring(obj, observable);
         if (obj.spe)
-            find_ac();
-        break;
-    case ONAMES.RIN_PROTECTION_FROM_SHAPE_CHAN:
-        {
-            const { rescham } = await import('./mon.js');
-            await rescham();
-        }
-        break;
-    default:
-        if (!PASSIVE_RING_TYPES.has(obj.otyp))
-            note_unported_do_wear(`Ring_on:otyp=${obj.otyp}`);
+            find_ac(); /* updates botl */
         break;
     }
 }
 
 // src/do_wear.c:1300 Ring_off_or_gone() — the ring leaves its finger: taken
 // off (setworn) or gone entirely (setnotworn, e.g. destroyed or stolen).
+// src/do_wear.c:1336 Ring_off_or_gone()
 async function Ring_off_or_gone(obj, gone) {
-    const mask = obj.owornmask & (W_RINGL | W_RINGR);
-    const oldprop = (game.u.uprops?.STEALTH || 0) & ~mask;
-    const observable = obj.otyp === ONAMES.RIN_PROTECTION && obj.spe !== 0;
+    const mask = (obj.owornmask & (W_RINGL | W_RINGR));
+    const prop = PROP_KEYS[objects[obj.otyp].oc_oprop];
+    let observable;
+
     (game.context_takeoff ||= {}).mask &= ~mask;
+    if (!((prop ? (game.u.uprops?.[prop] || 0) : 0) & mask))
+        void impossible("Strange... I didn't know you had that ring.");
     if (gone)
         setnotworn(obj);
     else
         setworn(null, obj.owornmask);
-    if (obj.otyp === ONAMES.RIN_PROTECTION) {
-        learnring(obj, observable);
-        if (obj.spe)
-            find_ac();
-    } else if (obj.otyp === ONAMES.RIN_GAIN_STRENGTH) {
-        adjust_ring_attribute(obj, A_STR, -obj.spe);
-    } else if (obj.otyp === ONAMES.RIN_GAIN_CONSTITUTION) {
-        adjust_ring_attribute(obj, A_CON, -obj.spe);
-    } else if (obj.otyp === ONAMES.RIN_ADORNMENT) {
-        adjust_ring_attribute(obj, A_CHA, -obj.spe);
-    } else if (obj.otyp === ONAMES.RIN_INCREASE_ACCURACY) {
-        game.u.uhitinc = (game.u.uhitinc || 0) - obj.spe;
-    } else if (obj.otyp === ONAMES.RIN_INCREASE_DAMAGE) {
-        game.u.udaminc = (game.u.udaminc || 0) - obj.spe;
-    } else if (obj.otyp === ONAMES.RIN_LEVITATION) {
-        if (!game.u.blocked?.LEVITATION) {
-            await float_down(0, 0);
-            if (!Levitation())
-                learnring(obj, true);
-        }
-    } else if (obj.otyp === ONAMES.RIN_STEALTH) {
-        await toggle_stealth(obj, oldprop, false);
-    } else if (obj.otyp === ONAMES.RIN_SEE_INVISIBLE) {
-        if (!See_invisible())
+
+    switch (obj.otyp) {
+    case ONAMES.RIN_TELEPORTATION:
+    case ONAMES.RIN_REGENERATION:
+    case ONAMES.RIN_SEARCHING:
+    case ONAMES.RIN_HUNGER:
+    case ONAMES.RIN_AGGRAVATE_MONSTER:
+    case ONAMES.RIN_POISON_RESISTANCE:
+    case ONAMES.RIN_FIRE_RESISTANCE:
+    case ONAMES.RIN_COLD_RESISTANCE:
+    case ONAMES.RIN_SHOCK_RESISTANCE:
+    case ONAMES.RIN_CONFLICT:
+    case ONAMES.RIN_TELEPORT_CONTROL:
+    case ONAMES.RIN_POLYMORPH:
+    case ONAMES.RIN_POLYMORPH_CONTROL:
+    case ONAMES.RIN_FREE_ACTION:
+    case ONAMES.RIN_SLOW_DIGESTION:
+    case ONAMES.RIN_SUSTAIN_ABILITY:
+    case ONAMES.MEAT_RING:
+        break;
+    case ONAMES.RIN_STEALTH:
+        await toggle_stealth(obj, ((game.u.uprops?.STEALTH || 0) & ~mask), false);
+        break;
+    case ONAMES.RIN_WARNING:
+        see_monsters();
+        break;
+    case ONAMES.RIN_SEE_INVISIBLE:
+        /* Make invisible monsters go away */
+        if (!See_invisible()) {
+            set_mimic_blocking(); /* do special mimic handling */
             see_monsters();
-        if ((game.u.intrinsic?.HInvis || game.u.uprops?.INVIS)
-            && !Blind()) {
+        }
+
+        if (Invis() && !See_invisible() /* Invisible */ && !Blind()) {
             newsym(game.u.ux, game.u.uy);
             await pline('Suddenly you cannot see yourself.');
             learnring(obj, true);
         }
-    } else if (obj.otyp === ONAMES.RIN_INVISIBILITY) {
+        break;
+    case ONAMES.RIN_INVISIBILITY:
         if (!Invis() && !game.u.blocked?.INVIS && !Blind()) {
             newsym(game.u.ux, game.u.uy);
             await Your(`body seems to unfade${
                 See_invisible() ? ' completely.' : '...'}`);
             learnring(obj, true);
         }
-    } else if (obj.otyp === ONAMES.RIN_WARNING) {
-        see_monsters();
-    } else if (obj.otyp === ONAMES.RIN_PROTECTION_FROM_SHAPE_CHAN) {
-        if (!Protection_from_shape_changers()) {
-            const { restartcham } = await import('./mon.js');
-            restartcham();
+        break;
+    case ONAMES.RIN_LEVITATION:
+        if (!((game.u.blocked?.LEVITATION | 0) & FROMOUTSIDE)) {
+            await float_down(0, 0);
+            if (!Levitation())
+                learnring(obj, true);
+        } else {
+            float_vs_flight(); /* maybe toggle (BFlying & I_SPECIAL) */
         }
-    } else if (PASSIVE_RING_TYPES.has(obj.otyp)) {
-        /* setworn() already removed the ring's ordinary property. */
-    } else {
-        note_unported_do_wear(`Ring_off:otyp=${obj.otyp}`);
+        break;
+    case ONAMES.RIN_GAIN_STRENGTH:
+        adjust_ring_attribute(obj, A_STR, -obj.spe);
+        break;
+    case ONAMES.RIN_GAIN_CONSTITUTION:
+        adjust_ring_attribute(obj, A_CON, -obj.spe);
+        break;
+    case ONAMES.RIN_ADORNMENT:
+        adjust_ring_attribute(obj, A_CHA, -obj.spe);
+        break;
+    case ONAMES.RIN_INCREASE_ACCURACY: /* KMH */
+        game.u.uhitinc = (game.u.uhitinc || 0) - obj.spe;
+        break;
+    case ONAMES.RIN_INCREASE_DAMAGE:
+        game.u.udaminc = (game.u.udaminc || 0) - obj.spe;
+        break;
+    case ONAMES.RIN_PROTECTION:
+        /* might have been put on while blind and we can now see
+           or perhaps been forgotten due to amnesia */
+        observable = (obj.spe !== 0);
+        learnring(obj, observable);
+        if (obj.spe)
+            find_ac(); /* updates botl */
+        break;
+    case ONAMES.RIN_PROTECTION_FROM_SHAPE_CHAN:
+        /* if you're no longer protected, let the chameleons change
+           shape again; however, might still be protected if wearing
+           2nd ring of this type (or via #wizintrinsic) */
+        if (!Protection_from_shape_changers())
+            restartcham();
+        break;
     }
 }
 

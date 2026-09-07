@@ -7155,3 +7155,27 @@ u.uinvulnerable = TRUE need p_type == 3 AND !Inhell. Ours checked only
 p_type, so a wizard-mode hero forcing the gods on Dlvl 48 became
 invulnerable: no regen_hp() rn2(100), no gethungry() rn2(20), HP not
 regained (s53-25, the only failure in seed 53).
+
+## Ring_on/Ring_off and Amulet_on/Amulet_off are the C switches
+
+do_wear.c:1250 Ring_on() first unwields a ring that was wielded, alt-
+wielded or quivered (the slot was already set), masks W_RING out of the
+old property unless both hands carry the same ring, and for see
+invisible calls set_mimic_blocking() before see_monsters(); Ring_off_or_
+gone() (1336) reports impossible() when the property lacks the ring's
+bit, uses Invisible (Invis && !See_invisible) for "Suddenly you cannot see
+yourself.", keeps floating when BLevitation has FROMOUTSIDE (else
+float_vs_flight()), and restartcham() when protection from shape
+changers ends. Amulet_on() (895) starts with remove_worn_item(), and
+carries magical breathing (region_danger() with the amulet temporarily
+masked off: "You are no longer bothered by the poison gas."), unchanging
+(make_slimed(0)), change (livelog_newform, "The amulet disintegrates!",
+trycall when the sex did not change), strangulation gated on
+can_be_strangled(), and flying (float_vs_flight, then EFlying masked off
+to see whether flight is new). Amulet_off() (1030) does off_msg() early
+for ESP, magical breathing (drown() underwater, "You are breathing
+poison gas!"), strangulation ("Your neck is no longer constricted!" when
+Breathless) and flying ("You stop flying." over water/air, else "You
+land.", then spoteffects()), and makeknown() at the end when an effect
+was observed. The ring and amulet "unknown otyp" notes are gone; the
+switches list every type as the C does.

@@ -391,7 +391,11 @@ last shopkeeper arms"), and `--seed 53`'s one failure, prayer
 invulnerability in Gehennom (NOTES "Praying in Gehennom never grants
 invulnerability").
 
-Next: triage `--seed 54`, then continue the
+Forty-second round: `--seed 54` passed 40/40 without changes. Ported
+Ring_on/Ring_off_or_gone and Amulet_on/Amulet_off in full (NOTES
+"Ring_on/Ring_off and Amulet_on/Amulet_off are the C switches").
+
+Next: triage `--seed 55`, then continue the
 note_unported list (hack.js 18, spell.js 20, shk.js 19). tools/jsplay.mjs has a new
 `--aeval "<await expr>"` flag with the hack.js namespace as `h` for state
 probes. The census script is `tally.sh` in the scratchpad (diverge.mjs

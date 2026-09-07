@@ -4607,7 +4607,8 @@ s46-25 (the midnight undead damage doubling of hitmu, like s30-13), and
 s47-07 (ours prints the new-moon startup warning from the recording date
 where the C's local date did not), and s48-00 and s48-33 ("It is
 nighttime." where our clock says the midnight hour) and s48-34 (ours prints
-"It is nighttime." in ^X where the C's local hour printed no line).
+"It is nighttime." in ^X where the C's local hour printed no line), and
+s49-07 (nighttime vs midnight hour again; the only miss in seed 49).
 
 ## Fuzz divergence census (2026-09-01, second pass)
 
@@ -6901,3 +6902,56 @@ the hero printed "wall" where the C prints "unexplored area" (s48-29).
 clear_glyph_buffer() now resets each cell's disp_* fields to the blank
 unexplored record with gnew = 0 (the physical map was just cleared). The
 same applies to docrt()'s cls(), which redraws everything afterwards.
+
+## The last spelleffects() arms: protection, chain lightning, cures, familiar
+
+spell.c:1385 spelleffects() now covers every case. cast_protection()
+(spell.c:1104) computes loglev = floor(log2(ulevel)) + 1, natac from
+u.uac + u.uspellprot, gain = loglev - uspellprot / (4 - min(3, natac)),
+prints the golden-haze message (atmosphere by engulfer type, water, cloud,
+tree, stone or air) and sets u.uspellprot/u.uspmtime (20 at Expert, else
+10)/u.usptime, then find_ac(); the decay lives in timeout.c:652 nh_timeout
+(usptime countdown, "The golden haze around you becomes less dense" or
+"disappears" via Norep) and is now in timeout.js too. cast_chain_lightning()
+(spell.c:1003) is the 5.0 queue of zaps: eight initial directions with
+strength 2, each hit non-resistant monster restores strength 3, peacefuls
+are avoided, zhitm(BZ_U_SPELL(AD_ELEC - 1), 2) damages, "You shock <mon>!",
+forcefight++ around wakeup(), diagonal spread via DIR_LEFT/DIR_RIGHT2 (the
+hack.h macro is now in const.js), drawn through tmp_at(DISP_BEAM/CHANGE)
+with zapdir_to_glyph, and Pw drained by one per propagation past a
+monster. SPE_CURE_BLINDNESS is healup(0,0,FALSE,TRUE); SPE_CURE_SICKNESS
+is healup(0,0,TRUE,FALSE) then "You are no longer/not ill." and
+make_slimed(0, "The slime disappears!"); SPE_CREATE_FAMILIAR is
+make_familiar(). Skilled fireball/cone of cold go through throwspell()
+(spell.c:1655: "Where do you want to cast the spell?", getpos with
+can_center_spell_location, "The spell dissipates over the distance!",
+"Your mind fails to lock onto that location!", walk_path with
+spell_aim_step) and then rnd(8)+1 explosions of
+spell_damage_bonus(ulevel/2 + 1) at rnd(3)-2 offsets, reflected back to
+the center when the offset is unseen, in stone or the hero is swallowed.
+spell_damage_bonus() and BZ_U_SPELL are exported from zap.js, their C
+home. Not exercised by any recorded session yet; the arms were the last
+note_unported entries in spelleffects().
+
+## still_chewing(), autodig and the boulder push run inside test_move()
+
+hack.c:1216 test_move()'s DO_MOVE arm is where a boulder gets pushed:
+tunnelers without a pick chew (still_chewing) and everyone else calls
+moverock(), whose negative return blocks the move like terrain. Ours
+pushed from a separate block in cmd.js domove_core() before the generic
+blocked-move test, and test_move() itself recorded the arm as unported.
+blocksMove() in cmd.js now routes boulder squares (Sokoban or not
+Passes_walls) through test_move(DO_MOVE), the inline block is gone, and
+test_move() carries the C arm, including pline_dir() for "A boulder blocks
+your path." still_chewing() (hack.c:647) is ported: teeth on
+non-diggable rock/bars, "too full to eat the bars", the chew context
+(svc.context.digging: dig.js exports digging_context() and
+clear_digging_context()), effort 30/60 + udaminc and +30 per turn to 100,
+the first-food conduct livelog, rnd(20) nutrition, and the terrain
+outcomes (wall -> ROOM in mazes, CORR in caverns outside town, else a
+doorless DOOR with shop damage; tree -> ROOM; iron bars dissolve with
+HEAVY_IRON_BALL nutrition for metallivores; secret door and door traps
+b_trapped; stone -> CORR), then recalc_block_point/newsym and
+pay_for_damage. The autodig arm calls use_pick_axe2(uwep) as the C does.
+Only a polymorphed tunneler or an autodig rc reaches these; the boulder
+routing is exercised by every session that pushes one.

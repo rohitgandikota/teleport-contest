@@ -50,6 +50,16 @@ import { is_pit, EXT_ENCUMBER, HVY_ENCUMBER, IS_FURNITURE, STAIRS, ECMD_OK, ECMD
 import { near_capacity } from './attrib.js';
 import { gethungry } from './eat.js';
 import { cmdq_clear, closed_door, paranoid_query, xytodir } from './cmd.js';
+import { delobj } from './mon.js';
+import { block_point, recalc_block_point } from './vision.js';
+import { add_damage, pay_for_damage } from './shk.js';
+import { IS_WALL, SDOOR, NO_PART, LL_CONDUCT, SHOP_DOOR_COST } from './const.js';
+import { dissolve_bars } from './monmove.js';
+import { morehungry } from './eat.js';
+import { b_trapped } from './trap.js';
+import { livelog_printf } from './pline.js';
+import { watch_dig, digging_context, clear_digging_context, SHOP_WALL_DMG } from './dig.js';
+import { on_level } from './dungeon.js';
 import { paranoia_bits, boolean_option } from './options.js';
 import { PARANOID_TRAP, PARANOID_CONFIRM, TRAPNUM, TRAP_CLEARLY_IMMUNE } from './const.js';
 import { Blind, Stunned, Confusion, Cold_resistance, Fumbling } from './youprop.js';
@@ -200,6 +210,184 @@ export async function invocation_message() {
     }
 }
 
+// src/hack.c:647 still_chewing() — the hero, as a tunneling monster, chews
+// through rock, a boulder, a tree, iron bars or a door at <x,y>; 1 while
+// still chewing, 0 once through
+export async function still_chewing(x, y) {
+    const u = game.u;
+    const lev = game.level.at(x, y);
+    const boulder = sobj_at(ONAMES.BOULDER, x, y);
+    let digtxt = null, dmgtxt = null;
+    const dig = digging_context();
+
+    if (dig.down) /* not continuing prev dig (w/ pick-axe) */
+        clear_digging_context();
+
+    if (!boulder
+        && ((IS_OBSTRUCTED(lev.typ) && !may_dig(x, y))
+            /* may_dig() checks W_NONDIGGABLE but doesn't handle iron bars */
+            || (lev.typ === IRONBARS && (lev.wall_info & W_NONDIGGABLE)))) {
+        await You(`hurt your teeth on the ${
+            (lev.typ === IRONBARS)
+                ? 'bars'
+                : IS_TREE(lev.typ)
+                    ? 'tree'
+                    : 'hard stone'}.`);
+        nomul(0);
+        return 1;
+    } else if (lev.typ === IRONBARS
+               && metallivorous(game.youmonst.data) && u.uhunger > 1500) {
+        /* finishing eating via 'morehungry()' doesn't handle choking */
+        await You('are too full to eat the bars.');
+        nomul(0);
+        return 1;
+    } else if (!dig.chew
+               || dig.pos.x !== x
+               || dig.pos.y !== y
+               || !dig.level || !on_level(dig.level, u.uz)) {
+        dig.down = false;
+        dig.chew = true;
+        dig.warned = false;
+        dig.pos.x = x;
+        dig.pos.y = y;
+        dig.level = { dnum: u.uz.dnum, dlevel: u.uz.dlevel }; /* assign_level() */
+        /* solid rock takes more work & time to dig through */
+        dig.effort =
+            (IS_OBSTRUCTED(lev.typ) && !IS_TREE(lev.typ) ? 30 : 60) + (u.udaminc | 0);
+        await You(`start chewing ${
+            (boulder || IS_TREE(lev.typ) || lev.typ === IRONBARS)
+                ? 'on a'
+                : 'a hole in the'} ${
+            boulder
+                ? 'boulder'
+                : IS_TREE(lev.typ)
+                    ? 'tree'
+                    : IS_OBSTRUCTED(lev.typ)
+                        ? 'rock'
+                        : (lev.typ === IRONBARS)
+                            ? 'bar'
+                            : 'door'}.`);
+        await watch_dig(null, x, y, false);
+        return 1;
+    } else if ((dig.effort += (30 + (u.udaminc | 0))) <= 100) {
+        if (game.flags?.verbose !== false)
+            await You(`${dig.chew ? 'continue' : 'begin'} chewing on the ${
+                boulder
+                    ? 'boulder'
+                    : IS_TREE(lev.typ)
+                        ? 'tree'
+                        : IS_OBSTRUCTED(lev.typ)
+                            ? 'rock'
+                            : (lev.typ === IRONBARS)
+                                ? 'bars'
+                                : 'door'}.`);
+        dig.chew = true;
+        await watch_dig(null, x, y, false);
+        return 1;
+    }
+
+    /* Okay, you've chewed through something */
+    if (!(u.uconduct.food | 0))
+        livelog_printf(LL_CONDUCT,
+                       `ate for the first time, by chewing through ${
+                       boulder ? 'a boulder'
+                       : IS_TREE(lev.typ) ? 'a tree'
+                         : IS_OBSTRUCTED(lev.typ) ? 'rock'
+                           : (lev.typ === IRONBARS) ? 'iron bars'
+                             : 'a door'}`);
+    u.uconduct.food = (u.uconduct.food | 0) + 1;
+    u.uhunger += rnd(20);
+
+    if (boulder) {
+        delobj(boulder);         /* boulder goes bye-bye */
+        await You('eat the boulder.'); /* yum */
+
+        /*
+         *  The location could still block because of
+         *      1. More than one boulder
+         *      2. Boulder stuck in a wall/stone/door.
+         *
+         *  [perhaps use does_block() below (from vision.c)]
+         */
+        if (IS_OBSTRUCTED(lev.typ) || closed_door(x, y)
+            || sobj_at(ONAMES.BOULDER, x, y)) {
+            block_point(x, y); /* delobj will unblock the point */
+            /* reset dig state */
+            clear_digging_context();
+            return 1;
+        }
+
+    } else if (IS_WALL(lev.typ)) {
+        if (in_rooms(x, y, SHOPBASE)) {
+            add_damage(x, y, SHOP_WALL_DMG());
+            dmgtxt = 'damage';
+        }
+        digtxt = 'chew a hole in the wall.';
+        if (game.level.flags?.is_maze_lev) {
+            lev.typ = ROOM;
+        } else if (game.level.flags?.is_cavernous_lev && !in_town(x, y)) {
+            lev.typ = CORR;
+        } else {
+            lev.typ = DOOR;
+            lev.doormask = D_NODOOR;
+        }
+    } else if (IS_TREE(lev.typ)) {
+        digtxt = 'chew through the tree.';
+        lev.typ = ROOM;
+    } else if (lev.typ === IRONBARS) {
+        if (metallivorous(game.youmonst.data)) { /* should always be True here */
+            /* arbitrary amount; unlike proper eating, nutrition is
+               bestowed in a lump sum at the end */
+            const nut = game.objects[ONAMES.HEAVY_IRON_BALL].oc_weight;
+
+            /* lesshungry() requires that victual be set up, so skip it;
+               morehungry() of a negative amount will increase nutrition
+               without any possibility of choking to death on the meal;
+               updates hunger state and requests status update if changed */
+            await morehungry(-nut);
+        }
+        digtxt = u_at(x, y)
+                 ? 'devour the iron bars.'
+                 : 'eat through the bars.';
+        await dissolve_bars(x, y);
+    } else if (lev.typ === SDOOR) {
+        if (lev.doormask & D_TRAPPED) {
+            lev.doormask = D_NODOOR;
+            await b_trapped('secret door', NO_PART);
+        } else {
+            digtxt = 'chew through the secret door.';
+            lev.doormask = D_BROKEN;
+        }
+        lev.typ = DOOR;
+
+    } else if (IS_DOOR(lev.typ)) {
+        if (in_rooms(x, y, SHOPBASE)) {
+            add_damage(x, y, SHOP_DOOR_COST);
+            dmgtxt = 'break';
+        }
+        if (lev.doormask & D_TRAPPED) {
+            lev.doormask = D_NODOOR;
+            await b_trapped('door', NO_PART);
+        } else {
+            digtxt = 'chew through the door.';
+            lev.doormask = D_BROKEN;
+        }
+
+    } else { /* STONE or SCORR */
+        digtxt = 'chew a passage through the rock.';
+        lev.typ = CORR;
+    }
+
+    recalc_block_point(x, y); /* vision */
+    newsym(x, y);
+    if (digtxt)
+        await You(digtxt); /* after newsym */
+    if (dmgtxt)
+        await pay_for_damage(dmgtxt, false);
+    clear_digging_context();
+    return 0;
+}
+
 // src/hack.c:825 movobj()
 export function movobj(obj, ox, oy) {
     /* optimize by leaving on the fobj chain? */
@@ -318,7 +506,6 @@ export function doorless_door(x, y) {
 
 // src/hack.c:991 test_move() — is (ux+dx,uy+dy) an OK place to move? mode is
 // DO_MOVE, TEST_MOVE, TEST_TRAV or TEST_TRAP. The DO_MOVE message/side-effect
-// arms whose subsystems are not ported yet (still_chewing, autodig, moverock)
 // record themselves; nothing reaches them today because domove_core in
 // js/cmd.js still carries its own inline blocked-move test.
 export async function test_move(ux, uy, dx, dy, mode) {
@@ -349,8 +536,8 @@ export async function test_move(ux, uy, dx, dy, mode) {
             if (mode === DO_MOVE
                 && (dmgtype(game.youmonst.data, ATTKS.AD_RUST)
                     || dmgtype(game.youmonst.data, ATTKS.AD_CORR)
-                    || metallivorous(game.youmonst.data))) {
-                note_unported_hack('test_move:chew_ironbars');
+                    || metallivorous(game.youmonst.data))
+                && await still_chewing(x, y)) {
                 return false;
             }
             if (!(passesWalls || passes_bars(game.youmonst.data))) {
@@ -361,16 +548,14 @@ export async function test_move(ux, uy, dx, dy, mode) {
         } else if (tunnels(game.youmonst.data)
                    && !needspick(game.youmonst.data)) {
             /* Eat the rock. */
-            if (mode === DO_MOVE) {
-                note_unported_hack('test_move:still_chewing');
+            if (mode === DO_MOVE && await still_chewing(x, y))
                 return false;
-            }
         } else if (game.flags?.autodig && !game.context.run
                    && !game.context.nopick
                    && game.u.uwep && is_pick(game.u.uwep)) {
             /* MRKR: Automatic digging when wielding the appropriate tool */
             if (mode === DO_MOVE)
-                note_unported_hack('test_move:autodig');
+                await use_pick_axe2(game.u.uwep);
             return false;
         } else {
             if (mode === DO_MOVE) {
@@ -414,10 +599,8 @@ export async function test_move(ux, uy, dx, dy, mode) {
             } else if (tunnels(game.youmonst.data)
                        && !needspick(game.youmonst.data)) {
                 /* Eat the door. */
-                if (mode === DO_MOVE) {
-                    note_unported_hack('test_move:still_chewing');
+                if (mode === DO_MOVE && await still_chewing(x, y))
                     return false;
-                }
             } else {
                 let through_testdiag = false;
                 if (mode === DO_MOVE) {
@@ -545,19 +728,17 @@ export async function test_move(ux, uy, dx, dy, mode) {
             && !(game.u.ublind || Hallucination())
             && !could_move_onto_boulder(x, y)) {
             if (mode === DO_MOVE && game.flags?.mention_walls)
-                await pline('A boulder blocks your path.');
+                await pline_dir(xytodir(dx, dy), 'A boulder blocks your path.');
             return false;
         }
         if (mode === DO_MOVE) {
             /* tunneling monsters will chew before pushing */
             if (tunnels(game.youmonst.data) && !needspick(game.youmonst.data)
                 && !In_sokoban(game.u.uz)) {
-                note_unported_hack('test_move:still_chewing');
+                if (await still_chewing(x, y))
+                    return false;
+            } else if ((await moverock()) < 0)
                 return false;
-            } else {
-                note_unported_hack('test_move:moverock');
-                return false;
-            }
         } else if (mode === TEST_TRAV) {
             /* never travel through boulders in Sokoban */
             if (In_sokoban(game.u.uz))

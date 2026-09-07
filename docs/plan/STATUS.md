@@ -342,7 +342,16 @@ m_throw() tethers a wielded aklys and runs return_from_mtoss() (s48-25),
 and clear_glyph_buffer() resets every cell so glyph_at() reads unexplored
 after cls(), which is what monster detection's browse describes (s48-29).
 
-Next: triage `--seed 49`, then return to the
+Thirty-third round: `--seed 49` had one failure in 40, the recording
+class (s49-07). Ported from the note_unported list: the last
+spelleffects() arms (cast_protection with its timeout.c decay,
+cast_chain_lightning, cure blindness/sickness, create familiar, skilled
+fireball/cone of cold with throwspell) and hack.c still_chewing(); the
+boulder push and autodig now run inside test_move(DO_MOVE) as in the C,
+routed from cmd.js blocksMove() (NOTES "still_chewing(), autodig and the
+boulder push run inside test_move()").
+
+Next: triage `--seed 50`, then continue the
 note_unported list (hack.js 18, spell.js 20, shk.js 19). tools/jsplay.mjs has a new
 `--aeval "<await expr>"` flag with the hack.js namespace as `h` for state
 probes. The census script is `tally.sh` in the scratchpad (diverge.mjs

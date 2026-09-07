@@ -48,7 +48,6 @@ import { PMNAMES, MFLAGS, MONSYMS } from './monst_data.js';
 import { hides_under, is_hider, verysmall, sticks } from './mondata.js';
 import { bad_rock, cant_squeeze_thru, nomul, domove_attackmon_at, spoteffects,
          domove_bump_mon, dopickup, trapmove, doorless_door,
-         could_move_onto_boulder,
          disturb_buried_zombies, may_passwall,
          runmode_delay_output, avoid_trap_andor_region } from './hack.js';
 import { In_sokoban, surface } from './dungeon.js';
@@ -252,6 +251,13 @@ async function blocksMove(x, y, dx, dy) {
     const ust = game.level?.at(game.u.ux, game.u.uy);
     if (dx && dy && !Passes_walls() && ust && IS_DOOR(ust.typ)
         && !doorless_door(game.u.ux, game.u.uy)) return true;
+    /* src/hack.c:1216 — a boulder is pushed (moverock) or chewed inside
+       test_move's DO_MOVE arm; a failed push blocks the move like terrain */
+    if (sobj_at(ONAMES.BOULDER, x, y)
+        && (In_sokoban(game.u.uz) || !Passes_walls())) {
+        const { test_move } = await import('./hack.js');
+        return !(await test_move(game.u.ux, game.u.uy, dx, dy, DO_MOVE));
+    }
     return false;
 }
 
@@ -2869,35 +2875,6 @@ async function domove_core() {
             nomul(0);
             return;
         }
-    }
-
-    /* src/hack.c:1230 — test_move()'s boulder arm, the DO_MOVE slice:
-       walking into a boulder tries to push it (moverock, hack.c:336), and
-       a failed push blocks the move exactly like terrain. */
-    if (sobj_at(ONAMES.BOULDER, newx, newy)
-        && (In_sokoban(game.u.uz) || !Passes_walls())) {
-        if (!(u.ublind || Hallucination()) && (game.context.run | 0) >= 2
-            && !could_move_onto_boulder(newx, newy)) {
-            if (game.flags?.mention_walls)
-                await pline('A boulder blocks your path.');
-            game.context.move = 0;
-            nomul(0);
-            return;
-        }
-        /* tunneling monsters chew before pushing; the un-polymorphed hero
-           never tunnels */
-        const { moverock } = await import('./hack.js');
-        if ((await moverock()) < 0) {
-            if (!game.context.door_opened) {
-                game.context.move = 0;
-                nomul(0);
-            }
-            return;
-        }
-        /* push succeeded (or squeezed): if a boulder still remains on the
-           target square after moverock() returned 0, C's test_move lets
-           the move proceed only for could_move_onto_boulder cases; the
-           vacated-square case just walks on */
     }
 
     /* src/hack.c:2860. drag_ball() removes both floor pieces before the hero

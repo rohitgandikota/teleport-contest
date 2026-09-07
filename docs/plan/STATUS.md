@@ -395,6 +395,12 @@ Forty-second round: `--seed 54` passed 40/40 without changes. Ported
 Ring_on/Ring_off_or_gone and Amulet_on/Amulet_off in full (NOTES
 "Ring_on/Ring_off and Amulet_on/Amulet_off are the C switches").
 
+Forty-third round: do_wear.js is down to one note (Armor_on's gold
+dragon light before the artifact check); canwearobj(), the ring-finger
+refusals, set_wear() wiring, the helm of opposite alignment's furies and
+retouch (NOTES "canwearobj(), the ring-finger refusals, set_wear() and the
+helm of opposite alignment").
+
 Next: triage `--seed 55`, then continue the
 note_unported list (hack.js 18, spell.js 20, shk.js 19). tools/jsplay.mjs has a new
 `--aeval "<await expr>"` flag with the hack.js namespace as `h` for state

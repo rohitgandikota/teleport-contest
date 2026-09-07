@@ -153,7 +153,7 @@ export async function newgame_moveloop_preamble(resuming = false) {
 
     if (!resuming) {
         g.context.rndencode = rnd(9000);
-        set_wear(null);
+        await set_wear(null);
         for (const obj of (g.invent || []))
             obj.pickup_prev = 0;
         await pickup(1);

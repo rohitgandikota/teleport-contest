@@ -2836,3 +2836,14 @@ export function newmcorpsenm(mtmp) {
         mtmp.mextra = {};
     mtmp.mextra.mcorpsenm = NON_PM; /* not initialized yet */
 }
+
+// src/makemon.c:2605 summon_furies() — create some or all remaining erinyes
+// around the player; limit 0 creates until extinct
+export async function summon_furies(limit) {
+    let i = 0;
+    while (mk_gen_ok(PMNAMES.PM_ERINYS, G_GONE, 0) && (i < limit || !limit)) {
+        await makemon(game.mons[PMNAMES.PM_ERINYS], game.u.ux, game.u.uy,
+                      MM_ADJACENTOK | MM_NOWAIT);
+        i++;
+    }
+}

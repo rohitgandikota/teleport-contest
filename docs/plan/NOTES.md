@@ -7179,3 +7179,30 @@ Breathless) and flying ("You stop flying." over water/air, else "You
 land.", then spoteffects()), and makeknown() at the end when an effect
 was observed. The ring and amulet "unknown otyp" notes are gone; the
 switches list every type as the C does.
+
+## canwearobj(), the ring-finger refusals, set_wear() and the helm of opposite alignment
+
+do_wear.c:1911 canwearobj() is now the C's full test list: no armor in a
+form that is verysmall or has no hands; a cloak, shirt or suit that will
+not fit a form that cantweararm() (mummy wrapping and small forms
+excepted, racial_exception() honoured); "already wearing that"; a welded
+two-handed weapon blocks suits and shirts; helmets over horns; shields
+against a two-handed weapon ("two-handed sword|axe|weapon") or two-weapon
+combat; boots for slithy forms, centaurs ("too many hooves"), a bear trap
+("Your foot is trapped!"), the floor or lava ("Your feet are stuck in the
+floor!") and a buried ball; gloves over a welded weapon or with Glib
+fingers; the shirt, cloak and suit layering; and silly_thing("wear")
+(invent.c:1755, now exported and used by getobj too) for anything else.
+accessory_or_armor_on()'s ring arm gains the C refusals: slippery gloves
+("... are too slippery to remove, so you cannot put on the ring." and a
+turn passes), cursed gloves (set_bknown, "You cannot remove your gloves to
+put on the ring.", a turn only when the curse was just learned) and a
+welded weapon in the ring hand ("You cannot free your weapon hand(s) to
+put on the ring."). set_wear() calls Blindf_on/Ring_on/Amulet_on for the
+worn accessories (it is async now). Armor_on() uses artifact_light()/
+begin_burn()/arti_light_description() ("Your gold dragon scale mail begins
+to shine ...!") instead of a gold-dragon special case, and updates the
+inventory when the suit's enchantment becomes known. The helm of
+opposite alignment summons the furies (makemon.c:2605 summon_furies(),
+ported) on the Astral Plane or with rn2(50) < abuse, logs "used a helm to
+turn <align>", and retouch_equipment(0) runs when the alignment changed.

@@ -850,6 +850,56 @@ function darkroomsym_cell() {
              glyph: { kind: 'cmap', cmap: cmap_names.S_darkroom } };
 }
 
+// src/display.c:1818 reglyph_darkroom() — after a level change or a
+// dark_room/color change, bring the remembered floor and corridor glyphs
+// in line with the options: out-of-sight lit floor is S_darkroom while
+// dark_room and color are on, S_room (or nothing) otherwise. Called
+// before vision_reset() on arrival, so cansee() still answers for the
+// level being left, exactly as in the C.
+export function reglyph_darkroom() {
+    if (!game.level)
+        return;
+    const CM = cmap_names;
+    const dark_room = game.flags?.dark_room !== false;
+    for (let x = 1; x < COLNO; x++)
+        for (let y = 0; y < ROWNO; y++) {
+            const loc = game.level.at(x, y);
+            if (!loc)
+                continue;
+            let rg = loc.remembered_glyph;
+            let remcmap = rg?.glyph?.kind === 'cmap' ? rg.glyph.cmap : undefined;
+            if (!dark_room) {
+                if (remcmap === CM.S_corr && loc.waslit)
+                    loc.remembered_glyph = { ch: '#', color: CLR_WHITE, decgfx: false,
+                                             glyph: { kind: 'cmap', cmap: CM.S_litcorr } };
+            } else {
+                if (remcmap === CM.S_litcorr && !cansee(x, y))
+                    loc.remembered_glyph = { ch: '#', color: NO_COLOR, decgfx: false,
+                                             glyph: { kind: 'cmap', cmap: CM.S_corr } };
+            }
+            rg = loc.remembered_glyph;
+            remcmap = rg?.glyph?.kind === 'cmap' ? rg.glyph.cmap : undefined;
+            if (!dark_room || !use_color() || Is_rogue_level(game.u?.uz)) {
+                if (remcmap === CM.S_darkroom) {
+                    if (loc.waslit) {
+                        const tg = terrain_glyph(loc, x, y);
+                        loc.remembered_glyph = { ch: tg.ch, color: tg.color, decgfx: tg.dec,
+                                                 glyph: { kind: 'cmap', cmap: tg.cmap } };
+                    } else {
+                        loc.remembered_glyph = undefined; /* GLYPH_NOTHING */
+                    }
+                }
+            } else {
+                if (remcmap === CM.S_room && loc.seenv && loc.waslit && !cansee(x, y))
+                    loc.remembered_glyph = darkroomsym_cell();
+                else if (!rg && loc.typ === ROOM && loc.seenv && !cansee(x, y))
+                    loc.remembered_glyph = darkroomsym_cell();
+            }
+        }
+    /* showsyms[S_darkroom] tracks S_room (or S_stone) — darkroomsym_cell()
+       derives that on every call */
+}
+
 // ── show_glyph_cell ──
 // `glyph` is the provenance of what is displayed — C keeps a glyph NUMBER in
 // its buffer (gbuf) and every classifier (glyph_is_monster & friends) reads

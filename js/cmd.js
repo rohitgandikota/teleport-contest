@@ -1719,7 +1719,10 @@ export async function rhack(key) {
        only ("accept m prefix but not g/G/F"), so a shifted or control
        direction after g/G/F is refused like any other bound non-movement
        command. */
-    if ((game.domove_attempting & DOMOVE_RUSH)
+    /* C keys this on prefix_seen, a local of the rhack() call that read the
+       prefix; domove_attempting and context.run outlive that call (an
+       unknown command after 'g' leaves them for the next move) */
+    if (continuedPrefix && (game.domove_attempting & DOMOVE_RUSH)
         && (movemode !== 0
             || (!isMovementKey(ch) && !'gGmF-'.includes(ch) && prefixCommand))) {
         const prefix = game.context.run === 3 ? 'G' : 'g';
@@ -1734,7 +1737,7 @@ export async function rhack(key) {
     /* src/cmd.c:3693-3723 applies the same prefix validation to do_fight.
        A nonmovement key is consumed by the rejected F command rather than
        dispatched as its ordinary command. */
-    if (game.context.forcefight
+    if (continuedPrefix && game.context.forcefight
         && (movemode !== 0
             || (!isMovementKey(ch) && !'gGmF-'.includes(ch) && prefixCommand))) {
         const vertical = ch === '<' || ch === '>';
@@ -2153,11 +2156,20 @@ export async function rhack(key) {
            friends this way */
         useResult(await execute_extcmd(boundCommand.ef_txt));
     } else {
-        // src/cmd.c rhack() — genuinely unrecognised key.
-        game.context.move = 0;
-        await pline(`Unknown command '${ch}'.`);
+        /* src/cmd.c:3833 rhack(), bad_command: the message is kept out of
+           the history, both queues are dropped, and only context.move and
+           multi are cleared; reset_cmd_vars() does NOT run, so a rush or
+           run prefix typed just before survives into the next command */
+        await pline_nohistory(`Unknown command '${ch}'.`);
         cmdq_clear(CQ_CANNED);
         cmdq_clear(CQ_REPEAT);
+        /* didn't move */
+        game.context.move = 0;
+        game.multi = 0;
+        /* C's prefix_seen is local to rhack() and dies here; context.run
+           and domove_attempting are globals and stay */
+        game._cmd_prefix_pending = false;
+        return;
     }
 
     /* src/cmd.c:3820-3825 — "hero did something else than kicking a

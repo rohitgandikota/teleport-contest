@@ -4598,7 +4598,8 @@ a full moon in effect." lines) are the same class, as is s33-31 (^X,
 "It is nighttime." missing on our side) and s34-09 (a 20260220000058
 recording: the C's shifted clock lands on the 19th, whose phase says
 "Be careful!  New moon tonight." at startup, so every later screen sits
-behind that --More--; ours computes the 20th).
+behind that --More--; ours computes the 20th). s37-20 (^X "It is
+nighttime.") is another.
 
 ## Fuzz divergence census (2026-09-01, second pass)
 
@@ -6522,3 +6523,32 @@ insight.c:2216 prints "You did not violate any of the special Sokoban
 rules." (or "violated ... N times") only when sokoban_in_play(), i.e. the
 entered-Sokoban achievement is set; ours never printed it, so the
 conduct window came out a line short and narrower (s35-35).
+
+## An unknown command does not cancel a rush prefix
+
+cmd.c:3833, the bad_command tail of rhack(): the message goes out with
+SUPPRESS_HISTORY, both command queues are dropped, context.move and multi
+are cleared, and that is all. reset_cmd_vars() does NOT run, so the
+context.run and domove_attempting a 'g' or 'G' prefix set stay for the
+next command; only prefix_seen, a local of that rhack() call, is gone.
+Two visible consequences (s36-17, s36-20): a direction key typed after
+"g<space>" rushes ("It's a wall." at the far end), and any other command
+typed then runs normally but the T: field is not refreshed, because
+allmain.c:262 sets time_botl only while !context.run. Ours ran
+reset_cmd_vars() from rhack's tail for every no-time command and then, once
+that was fixed, still keyed the "The 'g' prefix should be followed by a
+movement command" refusal on domove_attempting; both now follow the C
+(refusals key on the pending-prefix marker only).
+
+## reglyph_darkroom() on arrival and on redraw
+
+display.c:1818: after a level is in place (do.c:1715, before
+vision_reset(), so cansee() still answers for the level being left) and
+after an option change that needs a redraw (options.c:8999), every
+remembered floor and corridor glyph is re-derived from dark_room and
+color: out-of-sight lit floor becomes S_darkroom, S_litcorr reverts to
+S_corr, and with dark_room off S_darkroom goes back to S_room or
+nothing. Ours never ran it, so a Sokoban level's premapped floor stayed
+S_room out of sight and autodescribe said "floor of a room" where the C
+says "dark part of a room" (s37-26). Ported into display.js and called
+from both sites.

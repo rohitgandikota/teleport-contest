@@ -5,7 +5,7 @@
 import { game } from './gstate.js';
 import { reset_commands } from './cmd.js';
 import { set_vanq_order } from './insight.js';
-import { pline, docrt, bot } from './display.js';
+import { pline, docrt, bot, reglyph_darkroom } from './display.js';
 import {
     NHW_MENU, ATR_NONE, ATR_INVERSE,
     tty_create_nhwindow, tty_destroy_nhwindow, tty_start_menu, tty_add_menu,
@@ -2130,6 +2130,7 @@ export async function doset() {
 // refreshes the option changes queued up.
 async function reset_needed_visuals() {
     if (game.opt_need_redraw) {
+        reglyph_darkroom(); /* src/options.c:8999, with check_gold_symbol() */
         await docrt();
         game.opt_need_redraw = false;
     }

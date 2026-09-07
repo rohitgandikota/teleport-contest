@@ -60,7 +60,7 @@ import { freeinv, getobj, any_obj_ok, obj_extract_self, useup }
     from './invent.js';
 import { place_object, rider_revival_time, set_bknown, set_corpsenm,
          splitobj, zombie_form, obj_nexto_xy } from './mkobj.js';
-import { canseemon, cls, docrt, pline, newsym } from './display.js';
+import { canseemon, cls, docrt, pline, newsym, reglyph_darkroom } from './display.js';
 import { Norep, pline_The, There, You, You_cant, You_feel, You_hear, Your }
     from './pline.js';
 import { near_capacity } from './attrib.js';
@@ -1235,6 +1235,7 @@ export async function goto_level(newlevel, at_stairs, falling, portal) {
         await mklev_fn();
     }
 
+    reglyph_darkroom(); /* src/do.c:1715 */
     /* src/do.c:1716-1720 — do this prior to level-change pline messages:
        clear the old level's line-of-sight and POSTPONE all map flushes.
        Every pline between here and the closing flush_screen(-1) paints its

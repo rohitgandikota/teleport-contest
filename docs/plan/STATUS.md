@@ -276,7 +276,13 @@ stairs/ladder/portal arms and wander step with stairs.c's finders
 cmd_before #save refusal via can_do_extcmd() (s34-26); the O menu's
 sortvanquished handler (s34-34); the Sokoban conduct line (s35-35).
 
-Next: triage `--seed 36` (recording), then `--seed 37`. Then return to the
+Twenty-fifth round, `--seed 36` and `--seed 37`: four failures in 80, one
+the DST class (s37-20). Fixed: rhack's bad-command tail no longer resets
+the rush prefix state and the prefix refusals key on the pending-prefix
+marker (s36-17, s36-20); reglyph_darkroom() on arrival and on option
+redraws (s37-26).
+
+Next: triage `--seed 38` (recording), then `--seed 39`. Then return to the
 note_unported list (hack.js 18, spell.js 20, shk.js 19). tools/jsplay.mjs has a new
 `--aeval "<await expr>"` flag with the hack.js namespace as `h` for state
 probes. The census script is `tally.sh` in the scratchpad (diverge.mjs

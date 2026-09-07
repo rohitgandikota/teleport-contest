@@ -351,7 +351,16 @@ boulder push and autodig now run inside test_move(DO_MOVE) as in the C,
 routed from cmd.js blocksMove() (NOTES "still_chewing(), autodig and the
 boulder push run inside test_move()").
 
-Next: triage `--seed 50`, then continue the
+Thirty-fourth round: hack.js is free of note_unported calls
+(overexert_hp, pooleffects steed dismount, spoteffects ice warning and
+surprise-monster arm, the displacer beast swap in cmd.js, moverock/
+cannot_push/dopush fidelity; NOTES "hack.c's last recorded arms").
+`--seed 50`: two failures in 40, s50-13 the ubirthday class (Hawaiian
+shirt design) and s50-04 a real one: passivemm()'s defender-alive switch
+(stun, cold, fire, elec, paralysis, acid, disenchant) is ported in round
+35.
+
+Next: triage `--seed 51`, then continue the
 note_unported list (hack.js 18, spell.js 20, shk.js 19). tools/jsplay.mjs has a new
 `--aeval "<await expr>"` flag with the hack.js namespace as `h` for state
 probes. The census script is `tally.sh` in the scratchpad (diverge.mjs

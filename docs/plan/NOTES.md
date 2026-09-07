@@ -4609,6 +4609,9 @@ where the C's local date did not), and s48-00 and s48-33 ("It is
 nighttime." where our clock says the midnight hour) and s48-34 (ours prints
 "It is nighttime." in ^X where the C's local hour printed no line), and
 s49-07 (nighttime vs midnight hour again; the only miss in seed 49).
+s50-13 belongs to the ubirthday class: reading a Tourist's Hawaiian shirt
+prints a design hashed from o_id ^ ubirthday (read.c:190), which the
+recording does not carry (see "ubirthday").
 
 ## Fuzz divergence census (2026-09-01, second pass)
 
@@ -6955,3 +6958,52 @@ b_trapped; stone -> CORR), then recalc_block_point/newsym and
 pay_for_damage. The autodig arm calls use_pick_axe2(uwep) as the C does.
 Only a polymorphed tunneler or an autodig rc reaches these; the boulder
 routing is exercised by every session that pushes one.
+
+## hack.c's last recorded arms: overexertion, steed pools, surprise monsters, displacer swaps, boulder details
+
+hack.js has no note_unported calls left. overexert_hp() (hack.c:3040)
+takes one HP (u.mh when polymorphed) or "You pass out from exertion!"
+with exercise(A_CON) and fall_asleep(-10). pooleffects() (hack.c:3277): a
+steed that is not grounded() keeps the hero out of the water; otherwise
+dismount_steed(DISMOUNT_FELL when Underwater, else GENERIC), and on a
+normal level check_special_room() before returning TRUE. spoteffects()
+(hack.c:3396) now warns about thin ice under Warning (spot_time_left of
+MELT_ICE_AWAY below 15/10/5) and handles a hidden monster on the hero's
+square: a piercer drops from the ceiling (glances off a hard helmet, or
+uac+3 <= rnd(20) misses, else d(4,6) halved by Half_physical_damage), a
+tame one "jumps near you", a peaceful one is surprised and turns hostile,
+a hostile one "attacks you by surprise!", then mnexto(RLOC_NOMSG).
+domove_attackmon_at() (hack.c:1972) carries the full displacer beast
+test (helpless, meating, mtrapped, utrap/ustuck/usteed, diagonal squeeze
+rules, goodpos with GP_ALLOW_U) and cmd.js domove_core() performs the
+swap (hack.c:2887: remove/place monster, "<Mon> swaps places with you..."
+or Something when unnoticed, map_invisible, minliquid/mintrap under
+mon_moving) ahead of the pet-swap arm. moverock_core() gained the blind
+"That feels like a boulder." arm (glyph at the square is not the boulder:
+map_object, nomul, -1), the m<dir> giant "step over" and the door_opened
+learn-something rule, Levitation || Is_airlevel, the verysmall arm,
+costly = costly_spot && shop_keeper, Blind feel_location() before each
+refusal, surface() in the Sokoban diagonal message, revive_nasty() and
+y_monnam(usteed). cannot_push() has the giant arms (inv_cnt/invlet_basic,
+carrying(BOULDER), autopickup && !nopick, autopick_testobj, riding skill)
+and the "squeeze yourself into a small opening" arm every small or lightly
+loaded hero can reach. dopush() uses movobj(), feels both squares when
+blind, and adjusts the shop bill (addtobill when pushed out of a costly
+spot, subfrombill when pushed back onto the bill, stolen_value once the
+boulder leaves the shop).
+
+## passivemm()'s defender-alive arms
+
+mhitm.c:1361: when the defender survives, rn2(3) gates a switch on its
+passive attack type: AD_PLYS (a floating eye's gaze reflected or freezing
+the attacker via paralyze_monst, a gelatinous cube freezing it), AD_COLD
+("mildly chilly" + golemeffects for the resistant, else "suddenly very
+cold!", healmon(mdef, tmp/2) and split_mon above (m_lev+1)*8), AD_STUN
+(sets magr->mstun once with "<Mon> staggers..."), AD_FIRE and AD_ELEC
+(resistant: mild message + golemeffects; else the hot/jolted message), and
+the acid/enchantment arms that run even when the defender died (splash,
+erode_armor 1/30, acid_damage 1/6, drain_item). Ours only handled AD_PHYS,
+so a monster that hit a passive-stun defender never became stunned and the
+later dochug() "stunned monsters get un-stunned" rn2(10) never fired
+(s50-04, seed 50's one real failure). assess_dmg is an inner closure that
+applies tmp to the attacker and returns M_ATTK_AGR_DIED via monkilled().

@@ -51,6 +51,10 @@ import { bad_rock, cant_squeeze_thru, nomul, domove_attackmon_at, spoteffects,
          disturb_buried_zombies, may_passwall,
          runmode_delay_output, avoid_trap_andor_region } from './hack.js';
 import { In_sokoban, surface } from './dungeon.js';
+import { canspotmon, map_invisible, glyph_at } from './display.js';
+import { Something, NO_TRAP_FLAGS } from './const.js';
+import { minliquid } from './mon.js';
+import { mintrap } from './trap.js';
 import { Blind, Flying, Hallucination, Levitation, Passes_walls, Stealth }
     from './youprop.js';
 import { u_on_newpos } from './teleport.js';
@@ -2751,6 +2755,8 @@ async function domove_core() {
      * Unlike hack.c:2766 this is NOT gated on context.run and does NOT
      * return -- it only clears multi and lets the rest of domove proceed.
      * This sits before the blocked-move test, matching C's order. */
+    /* src/hack.c:2785 — the destination's glyph before anything moves */
+    const glyph = glyph_at(newx, newy);
     {
         const mtmp_bump = m_at(newx, newy);
         if (mtmp_bump && (!is_safemon(mtmp_bump) || game.context.forcefight))
@@ -2763,10 +2769,10 @@ async function domove_core() {
        square, for a hostile target as well as a safe one. do_attack's combat
        tail runs attack_checks(), the overexertion() hunger tick, u_wipe_engr
        and hitum(), so the whole hero-attacks-monster chain is live. */
+    const displaceu = { value: false };
     {
         const mtmp_atk = m_at(newx, newy);
         if (mtmp_atk) {
-            const displaceu = { value: false };
             if (await domove_attackmon_at(mtmp_atk, newx, newy, displaceu)) {
                 /* the move was used up; C's domove returns here */
                 return;
@@ -2904,13 +2910,50 @@ async function domove_core() {
        tentatively setting the hero's position, and puts the hero back if the
        swap is refused. */
     const mtmp = m_at(newx, newy);
-    if (mtmp && is_safemon(mtmp)
-        && !(is_hider(game.mons[mtmp.mnum]) && mtmp.mundetected)) {
-        if (!(await domove_swap_with_pet(mtmp, newx, newy))) {
-            game.u.ux = game.u.ux0;     /* didn't move after all */
-            game.u.uy = game.u.uy0;
+    if (mtmp) {
+        if (displaceu.value) {
+            const noticed_it = (canspotmon(mtmp)
+                                || glyph?.kind === 'invis'
+                                || glyph?.kind === 'warn');
+
+            remove_monster(u.ux, u.uy);
+            place_monster(mtmp, u.ux0, u.uy0);
+            newsym(u.ux, u.uy);
+            newsym(u.ux0, u.uy0);
+            /* monst still knows where hero is */
+            mtmp.mux = u.ux, mtmp.muy = u.uy;
+
+            await pline(`${!noticed_it ? Something : YMonnam(mtmp)} swaps places with you...`);
+            if (!canspotmon(mtmp))
+                map_invisible(u.ux0, u.uy0);
+            /* monster chose to swap places; hero doesn't get any credit
+               or blame if something bad happens to it */
+            game.context.mon_moving = 1;
+            if (!(await minliquid(mtmp)))
+                await mintrap(mtmp, NO_TRAP_FLAGS);
+            game.context.mon_moving = 0;
+
+        /*
+         * If safepet at destination then move the pet to the hero's
+         * previous location using the same conditions as in do_attack().
+         * there are special extenuating circumstances:
+         * (1) if the pet dies then your god angers,
+         * (2) if the pet gets trapped then your god may disapprove.
+         *
+         * Ceiling-hiding pets are skipped by this section of code, to
+         * be caught by the normal falling-monster code.
+         */
+        } else if (is_safemon(mtmp)
+                   && !(is_hider(game.mons[mtmp.mnum]) && mtmp.mundetected)) {
+            if (!(await domove_swap_with_pet(mtmp, newx, newy))) {
+                game.u.ux = game.u.ux0;     /* didn't move after all */
+                game.u.uy = game.u.uy0;
+                /* could skip this since we're about to call u_on_newpos() */
+                if (u.usteed)
+                    u.usteed.mx = u.ux, u.usteed.my = u.uy;
+            }
         }
-    }
+    }  /* mtmp != NULL */
 
     /* src/hack.c:2934 — full re-position after the tentative move; this is
        where a ridden steed's mx,my get synced to the hero. */

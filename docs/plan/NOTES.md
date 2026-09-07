@@ -7420,3 +7420,59 @@ the water demon roll calls dowaterdemon(), and "You see coins" drops
 mkgold(rnd((dunlevs_in_dungeon - dunlev + 1) * 2) + 5) into a not yet
 looted fountain with "Far below you, you see coins glistening in the
 water.".
+
+## Runs stop with a message at traps and liquid edges
+
+hack.c:2444 avoid_moving_on_trap() and hack.c:2463 avoid_moving_on_liquid()
+print, under mention_walls, "You stop in front of <a trap>." (an(trapname()))
+and "You stop at the edge of the water/lava." (hliquid()) after
+set_msg_xy(); ours recorded both arms as gaps. s60-38's travel command ended
+next to lava: the C printed the edge message after "The imp suddenly
+disappears!" and ours stayed silent. The two functions and
+avoid_running_into_trap_or_liquid() are async now and awaited from
+lookaround() and domove.
+
+## runmode is stored as its RUN_* index
+
+options.c:3627 optfn_runmode() do_set maps the option text onto
+RUN_TPORT/RUN_LEAP/RUN_STEP/RUN_CRAWL with str_start_is() (any prefix of
+"teleport", "run", "walk", "crawl"), "Unknown runmode parameter '<op>'" for
+anything else and "Value is mandatory for runmode" for an empty value; a
+negation is RUN_TPORT. get_val prints runmodes[flags.runmode]. Ours kept
+the raw string from the rc, so the 'O' menu printed "[unknown]" where the
+C printed "[walk]" (s60-38, a "normal-legacy" session whose rc sets
+runmode:walk). The conversion lives in parseoptions(), which both the rc
+and the interactive 'O' path go through; runmode_delay_output() reads the
+index directly.
+
+## potion.js is complete: drink_ok_extra, the sink dip, burning oil
+
+potion.c:52 drink_ok_extra now exists (in potion.js with drink_ok(), its C
+home; cmd.js imports it): dodrink(), dodip() and dip_into() zero it, every
+declined fountain/sink/water prompt increments it, and drink_ok(NULL)
+returns GETOBJ_EXCLUDE_NONINVENT when it is set so getobj says "You don't
+have anything else to drink" after a passed-up fountain. dodrink() also
+asks "Drink the water around you?" underwater ("Do you know what lives in
+this water?") and honours can_reach_floor(). dodip()'s sink arm calls
+fountain.c:716 dipsink() (ported: the 1-in-25, or 1-in-15 after the ring
+was found, pipe break through breaksink(), washing hands, holding a
+non-potion under the tap, and the potion drain effects: polymorph_sink()
+(do.c:404, ported into do.js: fountain, throne, altar with a random or
+Moloch alignment in Gehennom, or a grave/floor with "The sink transforms
+into <a fountain>!"), the oily film, the drain cleaner, sink_backs_up()
+for levitation, "You sense a ring lost down the drain." for object
+detection, "Nothing seems to happen." for the effectless potions, and "A
+wisp of vapor rises up..." plus potionbreathe() for the rest, then
+trycall() and useup()). The pool arm has floating_above(),
+rider_cant_reach() for an unskilled rider on a non-swimmer, wash_hands()
+for hands or gloves, and water_damage() with the acid special case.
+potionbreathe()'s sleeping arm calls monstseesu(M_SEEN_SLEEP) on a yawn;
+its and potionhit()'s default arms are gone (the C has none: the remaining
+potions do nothing there). peffect_sickness() and peffect_extra_healing()
+call make_hallucinated() as the C does (the latter unconditionally, and it
+heals wounded legs from a blessed potion unless riding), peffect_oil()'s
+burning arm is "Ahh, a refreshing drink." for fire lovers or "You burn
+your face." with d(4 or 2, 4) damage and burn_away_slime(),
+peffect_paralysis() says "You are motionlessly suspended." when
+levitating or on the Planes of Air/Water and "You are frozen in place!"
+on a steed, and peffects()' default is the C's impossible().

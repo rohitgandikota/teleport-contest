@@ -438,8 +438,16 @@ conversion, desecration, blood stains, gifts"). pray.js has no notes left.
 Forty-ninth round: fountain.js is complete (NOTES "The last fountain
 arms: watchmen, wishes, Excalibur, washing hands, coins").
 
-Next: triage `--seed 60`, then continue the
-note_unported list (potion.js 10, read.js 10, cmd.js 10, wield.js 10). tools/jsplay.mjs has a new
+Fiftieth round: `--seed 60` had two failures, both port bugs, now fixed:
+the mention_walls stop messages at traps and liquid edges (NOTES "Runs
+stop with a message at traps and liquid edges") and the runmode option
+stored as its RUN_* index (NOTES "runmode is stored as its RUN_* index").
+potion.js is complete: drink_ok_extra, dipsink(), polymorph_sink() and the
+last peffect arms (NOTES "potion.js is complete: drink_ok_extra, the sink
+dip, burning oil").
+
+Next: triage `--seed 61`, then continue the
+note_unported list (read.js 10, cmd.js 10, wield.js 10, mhitu.js 10). tools/jsplay.mjs has a new
 `--aeval "<await expr>"` flag with the hack.js namespace as `h` for state
 probes. The census script is `tally.sh` in the scratchpad (diverge.mjs
 --screens over tools/gen-sessions/fuzz/*.session.json, 4 at a time).

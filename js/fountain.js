@@ -63,6 +63,13 @@ import { hands_obj } from './invent.js';
 import { fingers_or_gloves } from './do_wear.js';
 import { dunlevs_in_dungeon, dunlev } from './dungeon.js';
 import { uhim } from './mhitu.js';
+import { nothing_seems_to_happen } from './const.js';
+import { the, xname } from './objnam.js';
+import { breathless, haseyes } from './mondata.js';
+import { potionbreathe } from './potion.js';
+import { trycall } from './do_name.js';
+import { useup } from './invent.js';
+import { polymorph_sink } from './do.js';
 
 
 
@@ -859,6 +866,94 @@ export async function dipfountain(obj) {
     }
     update_inventory();
     await dryup(game.u.ux, game.u.uy, true);
+}
+
+// src/fountain.c:716 dipsink()
+export async function dipsink(obj) {
+    let try_call = false;
+    const loc = game.level.at(game.u.ux, game.u.uy);
+    const not_looted_yet = (loc.looted & S_LRING) === 0;
+    const is_hands = (obj === hands_obj
+                      || (game.u.uarmg && obj === game.u.uarmg));
+
+    if (!rn2(not_looted_yet ? 25 : 15)) {
+        /* can't rely on using sink for unlimited scroll blanking; however,
+           since sink will be converted into a fountain, hero can dip again */
+        await breaksink(game.u.ux, game.u.uy); /* "The pipes break!  Water spurts out!" */
+        if (Glib() && is_hands)
+            await Your(`${fingers_or_gloves(true)} are still slippery.`);
+        return;
+    } else if (is_hands) {
+        await wash_hands();
+        return;
+    } else if (obj.oclass !== OCLASSES.POTION_CLASS) {
+        await You(`hold ${the(xname(obj))} under the tap.`);
+        if ((await water_damage(obj, null, true)) === ER_NOTHING)
+            await pline(nothing_seems_to_happen);
+        return;
+    }
+
+    /* at this point the object must be a potion */
+    await You(`pour ${(obj.quan > 1 ? 'one of ' : '')}${the(xname(obj))
+              } down the drain.`);
+    switch (obj.otyp) {
+    case ONAMES.POT_POLYMORPH:
+        await polymorph_sink();
+        try_call = true;
+        break;
+    case ONAMES.POT_OIL:
+        if (!Blind()) {
+            await pline('It leaves an oily film on the basin.');
+            try_call = true;
+        } else {
+            await pline(nothing_seems_to_happen);
+        }
+        break;
+    case ONAMES.POT_ACID:
+        /* acts like a drain cleaner product */
+        try_call = true;
+        if (!Blind()) {
+            await pline_The('drain seems less clogged.');
+        } else if (!Deaf()) {
+            await You_hear('a sucking sound.');
+        } else {
+            await pline(nothing_seems_to_happen);
+            try_call = false;
+        }
+        break;
+    case ONAMES.POT_LEVITATION:
+        await sink_backs_up(game.u.ux, game.u.uy);
+        try_call = true;
+        break;
+    case ONAMES.POT_OBJECT_DETECTION:
+        if (!(loc.looted & S_LRING)) {
+            await You('sense a ring lost down the drain.');
+            try_call = true;
+            break;
+        }
+        /* FALLTHRU */
+    case ONAMES.POT_GAIN_LEVEL:
+    case ONAMES.POT_GAIN_ENERGY:
+    case ONAMES.POT_MONSTER_DETECTION:
+    case ONAMES.POT_FRUIT_JUICE:
+    case ONAMES.POT_WATER:
+        /* potions with no potionbreathe() effects, plus water.  if effects
+           are added to potionbreathe these should go to that instead (except
+           for water). */
+        await pline(nothing_seems_to_happen);
+        break;
+    default:
+        /* hero can feel the vapor on her skin, so no need to check Blind or
+           breathless for this message */
+        await pline('A wisp of vapor rises up...');
+        /* NB: potionbreathe calls trycall or makeknown as appropriate */
+        if (!breathless(game.youmonst.data) || haseyes(game.youmonst.data))
+            await potionbreathe(obj);
+        break;
+    }
+    if (try_call && obj.dknown)
+        await trycall(obj);
+    useup(obj);
 }
 
 // src/fountain.c sink_backs_up(); a kicked sink spits out a ring, once

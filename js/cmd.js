@@ -130,7 +130,7 @@ import { doopen, doopen_indir, doclose } from './lock.js';
 import { ECMD_OK, getobj } from './invent.js';
 import { doeat } from './eat.js';
 import { doread, wiz_genesis } from './read.js';
-import { dodrink } from './potion.js';
+import { dodrink, drink_ok } from './potion.js';
 import { doapply } from './apply.js';
 import { dochat } from './sounds.js';
 import { dothrow, dofire } from './dothrow.js';
@@ -786,18 +786,6 @@ async function get_ext_cmd() {
     return buf;
 }
 
-/* src/potion.c drink_ok() — only potions are suggested for 'q'. The !obj arm
-   returns GETOBJ_EXCLUDE; C's EXCLUDE_NONINVENT case needs drink_ok_extra,
-   which tracks whether the hero already passed up a fountain, and is not
-   modelled. */
-export function drink_ok(obj) {
-    if (!obj)
-        return GETOBJ_EXCLUDE;
-    if (obj.oclass === OCLASSES.POTION_CLASS)
-        return GETOBJ_SUGGEST;
-    return GETOBJ_EXCLUDE;
-}
-
 /* src/read.c:315 read_ok() — scrolls and spellbooks. Note the else arm is
    GETOBJ_DOWNPLAY, not GETOBJ_EXCLUDE: C distinguishes "not a sensible
    choice" from "not allowed", and only SUGGEST puts a letter in the prompt,
@@ -1286,7 +1274,7 @@ async function doherecmdmenu() {
     const typ = loc?.typ;
     if ((typ === FOUNTAIN || typ === SINK) && can_reach_floor(false)) {
         add(`Drink from the ${typ === FOUNTAIN ? 'fountain' : 'sink'}`,
-            () => dodrink(drink_ok), 'y');
+            () => dodrink(), 'y');
     }
     if (typ === FOUNTAIN && can_reach_floor(false)) {
         const { dodip } = await import('./potion.js');
@@ -2032,7 +2020,7 @@ export async function rhack(key) {
         if (ch === 'r')
             game.context.move = ((await doread(read_ok)) === ECMD_TIME ? 1 : 0);
         else if (ch === 'q')
-            game.context.move = ((await dodrink(drink_ok)) === ECMD_TIME ? 1 : 0);
+            game.context.move = ((await dodrink()) === ECMD_TIME ? 1 : 0);
         else if (ch === 'W')
             game.context.move = ((await dowear()) === ECMD_TIME ? 1 : 0);
         else if (ch === 'P')
@@ -2690,7 +2678,7 @@ async function domove_core() {
         return;
 
     /* src/hack.c:2762 — before the sticky monster check */
-    if (avoid_running_into_trap_or_liquid(newx, newy))
+    if (await avoid_running_into_trap_or_liquid(newx, newy))
         return;
 
     if (await escape_from_sticky_mon(newx, newy))
@@ -3786,7 +3774,7 @@ function queue_item_action(action, obj) {
         /* m-prefix to skip fountain or sink if present and drink a potion
            from invent */
         cmdq_add_ec(CQ_CANNED, do_reqmenu);
-        push(() => dodrink(drink_ok), obj.invlet);
+        push(() => dodrink(), obj.invlet);
         break;
     case 'Q': push(dowieldquiver, obj.invlet); break;
     case 'r': push(() => doread(read_ok), obj.invlet); break;

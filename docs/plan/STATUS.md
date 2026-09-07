@@ -268,7 +268,15 @@ gate (s32-35); has_morgue -> graveyard at the end of makelevel (s33-32);
 getpos moveskip stepping (s33-13); disp.botlx through menu dismissal
 (s33-11).
 
-Next: triage `--seed 34` (recording), then `--seed 35`. Then return to the
+Twenty-fourth round, `--seed 34` and `--seed 35`: six failures in 80, one
+the DST class (s34-09, a new-moon startup). Fixed: mon_arrive()'s
+stairs/ladder/portal arms and wander step with stairs.c's finders
+(s34-13); magic_map_background()'s memory rule so 'I' survives ^F
+(s34-27); rest_on_space <space> = #wait (s34-34); the tutorial's
+cmd_before #save refusal via can_do_extcmd() (s34-26); the O menu's
+sortvanquished handler (s34-34); the Sokoban conduct line (s35-35).
+
+Next: triage `--seed 36` (recording), then `--seed 37`. Then return to the
 note_unported list (hack.js 18, spell.js 20, shk.js 19). tools/jsplay.mjs has a new
 `--aeval "<await expr>"` flag with the hack.js namespace as `h` for state
 probes. The census script is `tally.sh` in the scratchpad (diverge.mjs

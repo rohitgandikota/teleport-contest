@@ -4,6 +4,7 @@
 
 import { game } from './gstate.js';
 import { reset_commands } from './cmd.js';
+import { set_vanq_order } from './insight.js';
 import { pline, docrt, bot } from './display.js';
 import {
     NHW_MENU, ATR_NONE, ATR_INVERSE,
@@ -1518,6 +1519,8 @@ async function doset_simple_menu() {
                 await handler_runmode();
             } else if (allopt[k].name === 'number_pad') {
                 await handler_number_pad();
+            } else if (allopt[k].name === 'sortvanquished') {
+                await optfn_sortvanquished();
             } else if (allopt[k].name === 'autounlock') {
                 await handler_autounlock();
             } else if (allopt[k].name === 'menu_objsyms') {
@@ -2080,6 +2083,8 @@ export async function doset() {
                 await handler_runmode();
             } else if (o.hasHandler === 'Yes' && o.name === 'number_pad') {
                 await handler_number_pad();
+            } else if (o.hasHandler === 'Yes' && o.name === 'sortvanquished') {
+                await optfn_sortvanquished();
             } else if (o.hasHandler === 'Yes' && o.name === 'autounlock') {
                 await handler_autounlock();
             } else if (o.hasHandler === 'Yes' && o.name === 'menu_objsyms') {
@@ -2240,6 +2245,20 @@ export async function handler_whatis_coord() {
 }
 
 // src/options.c:5544 handler_menustyle().
+// src/options.c optfn_sortvanquished(), the do_handler arm
+async function optfn_sortvanquished() {
+    const optname = 'sortvanquished';
+    const prev_sortmode = game.flags.vanq_sortmode ?? 0;
+
+    /* return handler_sortvanquished(); */
+    await set_vanq_order(true); /* insight.c */
+    const mode = game.flags.vanq_sortmode ?? 0;
+    await pline(`'${optname}' ${(mode === prev_sortmode)
+                                 ? 'not changed, still' : 'changed to'} "${
+                vanqorders[mode][0]}: ${vanqorders[mode][1]}".`);
+    return 0;
+}
+
 // src/options.c handler_number_pad()
 async function handler_number_pad() {
     const npchoices = [

@@ -4595,7 +4595,10 @@ nighttime." where our clock reads the midnight hour) are more instances.
 s30-13 (an undead monster's midnight() extra damage roll at
 mhitu.c:1189), s31-03 and s31-09 (the ^X "It is nighttime." and "There is
 a full moon in effect." lines) are the same class, as is s33-31 (^X,
-"It is nighttime." missing on our side).
+"It is nighttime." missing on our side) and s34-09 (a 20260220000058
+recording: the C's shifted clock lands on the 19th, whose phase says
+"Be careful!  New moon tonight." at startup, so every later screen sits
+behind that --More--; ours computes the 20th).
 
 ## Fuzz divergence census (2026-09-01, second pass)
 
@@ -6460,3 +6463,62 @@ status rows; docrt sets disp.botlx and the next flush_screen(1) paints
 them once select_menu has returned. Our erase_menu_or_text() called bot()
 directly without raising botlx, so a full-screen inventory menu dismissed
 with RET left rows 22-23 blank until the next status change (s33-11).
+
+## mon_arrive(): stairs, ladders, portals and the wander step
+
+dog.c:500-612 places an arriving monster from its migration record:
+MIGR_STAIRS_UP/DOWN and MIGR_LADDER_UP/DOWN through
+`stairway_find_from(&fromdlev, isladder)`, MIGR_SSTAIRS through
+`stairway_find()`, MIGR_PORTAL at the level's magic portal (or an endgame
+updest rn1 pair), and then, when the monster spent turns in limbo
+(`wander`), a nearby spot: `somexy()` of the room it lands in, else
+`rn1(j - i, i)` on each axis. Ours had only APPROX/EXACT/WITH_HERO and
+left the wander block as note_unported, so a pet arriving after a level
+teleport was rloc'd instead of nudged (s34-13, `rnd(79)` for the C's
+`rn2(15)`). stairs.c's two finders now live in js/stairs.js; the record
+keeps fromdlev in mtrack[2].
+
+## magic_map_background() keeps non-background memory
+
+display.c:243 overwrites `lev->glyph` only when it is unexplored or a
+cmap glyph; an object, a trap, a warning or the remembered 'I' of an
+unseen monster survives magic mapping, and newsym() then re-shows the
+'I' through map_invisible(). Ours guessed "object memory" from the symbol
+and overwrote everything else, so a wizard ^F wiped an 'I' next to the
+hero (s34-27). Records that name their glyph kind now decide directly.
+
+## rest_on_space binds <space> to #wait
+
+cmd.c update_rest_on_space(): with the option On, <space> runs a clone of
+the '.' entry named "wait"; Off, it is unbound and prints "Unknown
+command ' '." A game that toggled the option in the O menu kept getting
+the message from us while the C rested (s34-34). cmdbind_table() now
+binds it, execute_extcmd() runs donull for "wait", and the key listing
+skips <space> only while the option is Off.
+
+## The tutorial refuses #save through cmd_before
+
+nhlib.lua registers `tutorial_cmd_before` (blacklist: save) on entering
+the tutorial and removes it on leaving; cmd.c:461 can_do_extcmd() runs
+the cmd_before callbacks before any command and silently refuses when one
+returns false (rhack: reset_cmd_vars, no time). Ours prompted "Really
+save?" inside the tutorial (s34-26). nhlua.js now carries nh_callback()
+and nh_callback_run() with the tutorial's callback, and rhack applies
+can_do_extcmd() to the key's bound command, which also brings the
+wizard-only and buried refusals to one place.
+
+## The O menu's sortvanquished handler
+
+optfn_sortvanquished's do_handler arm runs insight.c set_vanq_order(TRUE)
+(the seven-way sort menu) and reports "'sortvanquished' changed to /
+not changed, still \"t: traditional: ...\"". The full O menu processes
+every pick in order, so a session that had selected pickup_types and
+sortvanquished got the sort menu right after cancelling the autopickup
+prompt; ours stopped (s34-34). Both doset chains dispatch it now.
+
+## Conduct: the Sokoban line
+
+insight.c:2216 prints "You did not violate any of the special Sokoban
+rules." (or "violated ... N times") only when sokoban_in_play(), i.e. the
+entered-Sokoban achievement is set; ours never printed it, so the
+conduct window came out a line short and narrower (s35-35).

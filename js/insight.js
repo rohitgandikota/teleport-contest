@@ -1675,6 +1675,21 @@ export async function show_conduct(final) {
             cmsg('have not wished ', 'did not wish ', 'for any artifacts');
     }
 
+    /* only report Sokoban conduct if the Sokoban branch has been entered */
+    if (sokoban_in_play()) {
+        let presentverb = 'have violated', pastverb = 'violated';
+        let buf;
+
+        if (!c.sokocheat) {
+            presentverb = 'have not violated';
+            pastverb = 'did not violate';
+            buf = 'any of the special Sokoban rules';
+        } else {
+            buf = 'the special Sokoban rules ' + N_times(c.sokocheat);
+        }
+        cmsg(presentverb + ' ', pastverb + ' ', buf);
+    }
+
     show_achievements_into(put, cmsg, have_X, fin);
 
     await tty_display_nhwindow(win);
@@ -1686,6 +1701,15 @@ export async function show_conduct(final) {
     return 0;
 }
 
+
+// src/insight.c:2517 sokoban_in_play() — relies on the entered-sokoban
+// achievement
+function sokoban_in_play() {
+    for (let achidx = 0; (game.u.uachieved || [])[achidx]; ++achidx)
+        if (game.u.uachieved[achidx] === ACH_SOKO)
+            return true;
+    return false;
+}
 
 // src/insight.c:362 N_times()
 function N_times(n) {

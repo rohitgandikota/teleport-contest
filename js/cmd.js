@@ -1,7 +1,8 @@
 import { NODIAG, handle_tip, TIP_UNTRAP_MON, avoid_running_into_trap_or_liquid,
          air_turbulence, slippery_ice_fumbling } from './hack.js';
-import { MV_ANY, MV_RUN, MV_RUSH, MV_WALK, CMDQ_INT, CMDQ_DIR, DIR_DOWN, DIR_UP, IRONBARS, DO_MOVE } from './const.js';
+import { IFBURIED, NOFUZZERCMD, MV_ANY, MV_RUN, MV_RUSH, MV_WALK, CMDQ_INT, CMDQ_DIR, DIR_DOWN, DIR_UP, IRONBARS, DO_MOVE } from './const.js';
 import { impossible } from './pline.js';
+import { nh_callback_run } from './nhlua.js';
 import { can_ooze } from './monmove.js';
 import { Confusion, Stunned, Fumbling, Underwater } from './youprop.js';
 import { tunnels, needspick, amorphous } from './mondata.js';
@@ -996,6 +997,8 @@ async function execute_extcmd(name) {
         const { done2 } = await import('./end.js');
         return await done2();
     }
+    if (name === 'wait')
+        return await donull();
     if (name === 'exploremode')
         return await enter_explore_mode();
     if (name === 'enhance') {
@@ -1698,6 +1701,14 @@ export async function rhack(key) {
         movemode = 3;
     const prefixCommand = cmdbind_table().get(ch0.charCodeAt(0));
     let boundCommand;
+
+    /* src/cmd.c:3689 — use key to directly index cmdlist array */
+    if (prefixCommand && !(await can_do_extcmd(prefixCommand))) {
+        /* can_do_extcmd() already gave a message */
+        reset_cmd_vars(true);
+        game.context.move = 0;
+        return;
+    }
 
     /* src/cmd.c:3693-3723 -- g/G only modify movement commands.  C loops
        for the second key inside one rhack() call; this port spans two calls,
@@ -3997,6 +4008,13 @@ function visctrl_key(c) {
    forms), and '5'/M-5/'-' land on MOVEMENTCMD entries the key lists
    exclude. The two that survive visibly are M-O overview and M-N name —
    exactly the pair the recorded '?j' listing shows. */
+/* src/cmd.c update_rest_on_space(): cloned from extcmdlist['.'], then
+   slightly modified to be distinct */
+const restonspace = {
+    ef_txt: 'wait', ef_desc: "rest one move via 'rest_on_space' option",
+    key: ' '.charCodeAt(0), flags: IFBURIED | CMD_M_PREFIX,
+};
+
 function cmdbind_table() {
     const binds = new Map();
     for (const e of extcmdlist)
@@ -4019,6 +4037,11 @@ function cmdbind_table() {
     binds.set(0x80 | 'O'.charCodeAt(0), by_txt('overview'));
     binds.set(0x80 | '2'.charCodeAt(0), by_txt('twoweapon'));
     binds.set(0x80 | 'N'.charCodeAt(0), by_txt('name'));
+    /* src/cmd.c update_rest_on_space(): when 'rest_on_space' is On, <space>
+       runs the #wait command through a clone of the '.' entry; when it is
+       Off, <space> is unbound and elicits "Unknown command ' '." */
+    if (game.flags?.rest_on_space)
+        binds.set(' '.charCodeAt(0), restonspace);
     /* src/cmd.c:3462 reset_commands(): the direction characters (and their
        run/rush forms) replace whatever commands_init() had on those keys,
        so cmdbind_get('l') is "moveeast" without number_pad and "loot"
@@ -4064,7 +4087,7 @@ function keylist_putcmds(putline, docount, incl_flags, excl_flags, keys_used) {
 
     for (let i = 0; i < 256; i++) {
         if (keys_used[i]) continue;
-        if (i === 32 /* && !flags.rest_on_space */) continue;
+        if (i === 32 && !game.flags?.rest_on_space) continue;
         const cmd = binds.get(i);
         if (!cmd) continue;
         if ((incl_flags && !(cmd.flags & incl_flags))
@@ -4355,6 +4378,28 @@ export function reset_commands(initial) {
                    ? (!Cmd.swap_yz ? sdir : sdir_swap_yz)
                    : (!Cmd.phone_layout ? ndir : ndir_phone_layout);
     Cmd.alphadirchars = !Cmd.num_pad ? Cmd.dirchars : sdir;
+}
+
+// src/cmd.c:461 can_do_extcmd() — the Lua cmd_before callbacks (the
+// tutorial refuses #save), wizard-only commands, being buried, and the
+// debug fuzzer's exclusions
+async function can_do_extcmd(extcmd) {
+    const ecflags = extcmd.flags | 0;
+
+    if ((game.nhcb?.cmd_before || []).length) {
+        if (!nh_callback_run('cmd_before', extcmd.ef_txt))
+            return false;
+    }
+    if (!game.wizard && (ecflags & WIZMODECMD)) {
+        await pline(`Unavailable command '${extcmd.ef_txt}'.`);
+        return false;
+    } else if (game.u.uburied && !(ecflags & IFBURIED)) {
+        await You_cant('do that while you are buried!');
+        return false;
+    } else if (game.iflags?.debug_fuzzer && (ecflags & NOFUZZERCMD)) {
+        return false;
+    }
+    return true;
 }
 
 // src/cmd.c:3029 cmd_from_dir(); the key bound to the movement command for

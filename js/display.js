@@ -3003,7 +3003,13 @@ export function magic_map_background(x, y, show) {
     /* object glyphs are never DEC; the door's own '+' is background */
     const is_obj_memory = rg && !rg.decgfx && objsyms.includes(rg.ch)
                           && !(rg.ch === '+' && IS_DOOR(loc.typ));
-    if (game.level?.flags?.hero_memory && !is_obj_memory)
+    /* a memory record that names its glyph kind decides directly: only
+       unexplored memory and cmap memory are background; an 'I' marker
+       (kind 'invis'), an object, a trap or a monster stays put */
+    const kind = rg?.glyph?.kind;
+    const is_background = !rg || kind === 'cmap'
+                          || (kind === undefined && !is_obj_memory);
+    if (game.level?.flags?.hero_memory && is_background)
         loc.remembered_glyph = tg
             ? { ch: tg.ch, color: tg.color, decgfx: tg.dec,
                 glyph: { kind: 'cmap', cmap: tg.cmap } }

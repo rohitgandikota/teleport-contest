@@ -7093,3 +7093,33 @@ getloc_moveskip in getpos while the whatis_menu and whatis_moveskip
 options were stored under their names; both now live in game.iflags under
 the option names (iflag_boolean_options), so toggling whatis_menu in the O
 menu makes 'a'/'m'/'o'/'d'/'x' open the "Pick an interesting thing" menu.
+
+## dodown() and doup() carry every C arm; a held hero cannot use the stairs
+
+do.c:1110 u_stuck_cannot_go(updn): a held or engulfed hero gets "You are
+being held|swallowed|engulfed, and cannot go down|up." and the command
+still takes a turn (ECMD_TIME); a hero who is the one sticking releases
+the monster instead. Ours had no such check, so '>' while a lichen held
+the hero printed nothing and took no time, and the monsters' next moves
+came a turn later than the C's (s52-14). dodown() (do.c:1130) and doup()
+(do.c:1298) are now the C functions in full: u_rooted() (hack.c:1693, a
+form that cannot move: "You are rooted in place|to the ground"),
+stucksteed(), the controlled-levitation arm (float_down with I_SPECIAL|
+TIMEOUT|W_ARTI, artifact ages bumped by rnz(100), "Your latent levitation
+ceases.", the blind stair-knowledge check, "You are floating in the
+air|water|a bubble of air" or fountain.c floating_above()), the ceiling
+hider drop, the Can_fall_thru() hole test, autodig through use_pick_axe2,
+the Valley of the Dead gate question, "You are held back by your pet!",
+the trap descent with the MZ_HUGE squeeze prompt and its rnd(4) contusion,
+goto_hell() from the Castle, clamp_hole_destination(), and at_ladder
+around next_level()/prev_level(). doup() adds climb_pit() for "up" in a
+pit, "Your load is too heavy to climb the stairs|ladder." and ledger_no()
+for the level-1 warning. artifact_has_invprop() (artifact.c:2299) and
+goto_hell() (dungeon.c:1957) were ported for these.
+
+## Enlightenment's encumbrance line is past tense at game end
+
+insight.c:1236: "; movement %s %s slowed" prints "is" during play and
+"was" in the final disclosure (the `final` flag). Ours always said "is",
+so the end-of-game attributes read "You were burdened; movement is
+slightly slowed." (s52-06).

@@ -378,7 +378,15 @@ validation plus handler_disclose and the whatis_menu storage (s51-04).
 Also from the shk.js list: the shop entry dialogue and blocking section,
 rile_shk wiring, and block_entry() (NOTES entries of 2026-09-07).
 
-Next: triage `--seed 52`, then continue the
+Thirty-eighth and thirty-ninth rounds: shk.js getcad()'s angry texts and
+dopay()'s "Pay whom?" and appeasement arms; `--seed 52` had two failures,
+both real: dodown()/doup() are now the complete C functions with
+u_stuck_cannot_go() (s52-14) and the enlightenment encumbrance line uses
+past tense at game end (s52-06); NOTES entries of 2026-09-07. shk.js keeps
+10 note_unported calls (billing corner cases, pay_for_damage's doorway
+appearance and growl, repair_damage's trap and litter arms).
+
+Next: triage `--seed 53`, then continue the
 note_unported list (hack.js 18, spell.js 20, shk.js 19). tools/jsplay.mjs has a new
 `--aeval "<await expr>"` flag with the hack.js namespace as `h` for state
 probes. The census script is `tally.sh` in the scratchpad (diverge.mjs

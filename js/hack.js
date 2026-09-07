@@ -2094,6 +2094,19 @@ export function notice_mon_on() {
     }
 }
 
+// src/hack.c:1693 u_rooted() — a hero in a form that cannot move
+export async function u_rooted() {
+    if (!game.youmonst.data.mmove) {
+        await You(`are rooted ${
+            Levitation() || Is_airlevel(game.u.uz) || Is_waterlevel(game.u.uz)
+                ? 'in place'
+                : 'to the ground'}.`);
+        nomul(0);
+        return true;
+    }
+    return false;
+}
+
 // src/hack.c:1707 notice_mon() — a11y.mon_notices is the spot_monsters
 // option; mspotted records that the hero has already been told. The
 // mspotted update happens here, at C's moment; the message text is

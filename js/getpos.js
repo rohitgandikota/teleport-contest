@@ -486,21 +486,37 @@ export async function getpos(ccp, force, goal) {
                             const hi_x = (pass === 1 && ty === hi_y) ? c.x
                                                                      : COLNO - 1;
                             for (let tx = lo_x; tx <= hi_x; tx++) {
-                                /* first, what is currently displayed */
+                                /* first, look at what is currently visible
+                                   (might be monster) */
                                 const g = glyph_at(tx, ty);
+                                const lev = game.level.at(tx, ty);
                                 if (g.kind === 'cmap' && matching[g.cmap]) {
                                     foundc = true;
-                                } else if (game.level?.flags?.hero_memory) {
-                                    /* then the remembered glyph */
-                                    const rg = game.level.at(tx, ty)
-                                        ?.remembered_glyph?.glyph;
+                                } else if (game.level?.flags?.hero_memory
+                                           /* !terrainmode: don't move to
+                                              remembered trap or object if
+                                              not currently shown */
+                                           && !game.iflags?.terrainmode) {
+                                    /* next, try glyph that's remembered here
+                                       (might be trap or object) */
+                                    const rg = lev?.remembered_glyph?.glyph;
                                     if (rg && rg.kind === 'cmap'
                                         && matching[rg.cmap])
                                         foundc = true;
                                 }
-                                /* last, actual terrain when seen — the
-                                   back_to_glyph probe only matters for
-                                   memory the display doesn't carry */
+                                /* FIXME: check player-specified vib.sq trap
+                                   symbol rather than or in addition to '~' */
+                                if (!foundc && ch === '~'
+                                    && known_vibrating_square_at(tx, ty))
+                                    foundc = true;
+                                /* last, try actual terrain here (shouldn't
+                                   we be using svl.lastseentyp[][] instead?) */
+                                if (!foundc && lev?.seenv) {
+                                    const k = back_to_glyph(lev, tx, ty);
+                                    if (k && k.cmap !== undefined
+                                        && matching[k.cmap])
+                                        foundc = true;
+                                }
                                 if (foundc) {
                                     c.x = tx;
                                     c.y = ty;

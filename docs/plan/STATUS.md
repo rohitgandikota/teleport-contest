@@ -301,7 +301,13 @@ Elbereth re-test) ported (s42-03); the O menu's "menu colors" handler,
 MENUCOLOR= rc lines, menu coloring in tty_add_menu and a POSIX ERE
 validator in js/posixregex.js (s42-11).
 
-Next: triage `--seed 43` (recording), then `--seed 44`. Then return to the
+Twenty-eighth round, `--seed 43`: four failures in 40, one the DST class
+(s43-12). Fixed: the Samurai's Japanese-name pre-discovery loop in
+u_init (s43-07); getpos's feature search probing the seen terrain and the
+vibrating square (s43-22); done() running keepdogs(TRUE) before the
+escape summary (s43-26).
+
+Next: triage `--seed 44` (recording), then `--seed 45`. Then return to the
 note_unported list (hack.js 18, spell.js 20, shk.js 19). tools/jsplay.mjs has a new
 `--aeval "<await expr>"` flag with the hack.js namespace as `h` for state
 probes. The census script is `tally.sh` in the scratchpad (diverge.mjs

@@ -4599,8 +4599,9 @@ a full moon in effect." lines) are the same class, as is s33-31 (^X,
 recording: the C's shifted clock lands on the 19th, whose phase says
 "Be careful!  New moon tonight." at startup, so every later screen sits
 behind that --More--; ours computes the 20th). s37-20 (^X "It is
-nighttime.") is another, as are s39-16, s39-28 and s42-10 ("It is the
-midnight hour." where our clock says nighttime).
+nighttime.") is another, as are s39-16, s39-28, s42-10 and s44-18 ("It is
+the midnight hour." where our clock says nighttime) and s43-12 (the C says
+nighttime, ours prints no time-of-day line).
 
 ## Fuzz divergence census (2026-09-01, second pass)
 
@@ -6676,3 +6677,34 @@ recorded on glibc would differ in that error text only. Bad values typed
 at these prompts go through config_error_add()'s interactive arm
 (cfgfiles.c:1544: pline plus wait_synch), so options.js now keeps C's
 config_error_data around each parse instead of threading the result.
+
+## A Samurai pre-discovers every Japanese-named item
+
+u_init.c:744: after knows_class(WEAPON_CLASS) and knows_class(ARMOR_CLASS)
+the Samurai arm walks objects[MAXOCLASSES..NUM_OBJECTS) and calls
+knows_object(i, FALSE) for everything Japanese_item_name() renames,
+skipping oc_magic (the magic koto). That is what puts "gunyoki [food
+ration]", "potion of sake [booze]" and "osaku [lock pick]" on the '\'
+discoveries list under Comestibles, Potions and Tools. Ours had replaced
+the loop with a comment saying it draws nothing; it draws nothing but it
+lengthens the list by a page (s43-07).
+
+## getpos feature search: the third probe is the terrain itself
+
+getpos.c:1050, the '<' '>' '_' '{' ... feature keys: for each square the
+C checks the displayed glyph, then (with hero_memory and not in a
+#terrain view) the remembered glyph, then '~' against
+known_vibrating_square_at(), and last, when the square has ever been
+seen (levl[x][y].seenv), back_to_glyph() of the actual terrain. Ours
+stopped after the remembered glyph, so '>' in the travel prompt could not
+find stairs lying under a corpse and said "Can't find dungeon feature
+'>'." where the C moved the cursor and autodescribed the corpse (s43-22).
+
+## done() collects the pets before the escape summary
+
+end.c:1293: for ESCAPED and ASCENDED, keepdogs(TRUE) runs after
+dump_everything() and before finish_paybill(), moving the adjacent pets
+onto gm.mydogs so the summary can say "You and the little dog escaped
+..." and add each tame pet's mhpmax to u.urexp. Our done() read
+game.mydogs, which nothing had filled on a wizard-mode level teleport out
+of the dungeon, so the summary named no pet and scored 0 (s43-26).

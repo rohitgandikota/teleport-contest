@@ -4592,6 +4592,9 @@ output (night(), midnight(), moon/Friday-13th at hour 0) will disagree with
 oracles recorded in a DST-observing zone during DST; expect it, do not fix
 it by guessing. s22-25 (the `^X` moon/night line) and s29-24 ("It is
 nighttime." where our clock reads the midnight hour) are more instances.
+s30-13 (an undead monster's midnight() extra damage roll at
+mhitu.c:1189), s31-03 and s31-09 (the ^X "It is nighttime." and "There is
+a full moon in effect." lines) are the same class.
 
 ## Fuzz divergence census (2026-09-01, second pass)
 
@@ -6019,7 +6022,8 @@ background.") is the ubirthday class from the entry above and stays a
 note_unported; a local fuzz recording shows `/var/folders/.../nh-rec-XXXX/home/.nethackrc`
 instead (s22-10). The held-out sessions come from the same harness as the
 public ones, so the judge path is the right one and the local miss is
-expected. Do not switch it for the fuzz corpus.
+expected. Do not switch it for the fuzz corpus. s30-24 (`?` then `g`,
+the options help intro) is another local `/var/folders` instance.
 
 ## A "silent monster drift" can be a missing message that moves the --More--
 
@@ -6315,3 +6319,68 @@ message is "You hear a loud crash as one boulder sets another in motion!"
 unless the square beyond is off the map, the roll has no range left, or
 that square is obstructed, in which case it is "... as one boulder hits
 another!". Ours always said "sets another in motion" (s28-30).
+
+## getmattk(): elementals on their home plane double their dice
+
+A fire elemental on the Plane of Fire hit for `d(6,6)` at
+`hitmu(mhitu.c:1187)` while ours rolled `d(3,6)`; the monster table is
+3d6 on both sides (s30-21). mhitu.c:436 doubles `damn` when
+`is_home_elemental(mptr)` and no alternate attack buffer was used. Our
+getmattk() returned early from each substitution arm, so the doubling had
+nowhere to go; it is now the C's `if / else if` chain with the elemental
+arm after it, and the mhitu.c:399 arm (barrow wight, Nazgul, erinys weapon
+attacks forced to AD_PHYS when cancelled or wielding a cockatrice corpse,
+Stormbringer or Vorpal Blade) is ported in its place in the chain.
+
+## rnd_misc_item(): See_invisible, and demon princes start out peaceful
+
+Two makemon.js bugs behind one miss (s30-04, a level teleport onto
+Asmodeus' lair). `rnd_misc_item()` case 1 returns 0 for a peaceful monster
+when the hero lacks see invisible; ours tested `game.u.uprops?.SEE_INVIS`,
+which is a property record, so the branch never fired and m_initinv drew
+an extra `rn2(6)`. It now calls youprop.js `See_invisible()`. Second,
+makemon.c:1397 makes a bribable demon prince (`is_dprince && MS_BRIBE`)
+peaceful and invisible at creation unless the hero wields Excalibur or
+Demonbane, and makemon.c:1403 makes a raven peaceful when the hero wields
+a bec de corbin; both arms sit between the peace_minded() assignment and
+m_initinv(), so they decide what the prince carries. Ported.
+
+## hitmu(): rust and decay arms
+
+`mhitm_ad_rust()` and `mhitm_ad_dcay()` had no mhitu arm, so a brown
+pudding's bite printed nothing and skipped `erode_armor()`'s `rn2(5)`
+slot loop (s31-20: the C rolled two `rn2(5)` there, ours went straight to
+the knockback rolls). Both arms are now in hitmu's chain: hitmsg, cancelled
+monsters do nothing, a hero polymorphed into something that completely
+rusts or rots gets "You rust!"/"You rot!" and rehumanize(), otherwise
+erode_armor(youmonst, ERODE_RUST/ERODE_ROT).
+
+## Enlightenment reports the hero's trap
+
+insight.c:1086 prints "You are trapped in a bear trap." (or the steed's
+predicament) after the Punished line; `trap_predicament()` (insight.c:233)
+builds it, with `{n}` escape counters in wizard mode. Ours lacked the whole
+block, so the ^X page had one line too few (s30-18).
+
+## disclose is parsed when the option is set
+
+`optfn_disclose()`'s do_set arm writes `flags.end_disclose` while the rc is
+read, and the `O` menu's compound value is that array: an rc with
+`disclose:yi ya yv yg yc yo` shows exactly that, ours showed the default
+`ni na nv ng nc no` (s30-37). parseoptions() now ports the arm (prefix
+settings y/n/?/+/-/#, category letters iavgco with k->v and d->o, "all",
+"none", and the "Unknown disclose parameter" error); end.js keeps its lazy
+fallback for rcs that never set the option.
+
+## The escape summary lists valuables, artifacts and pets
+
+end.c's `done()` block for ESCAPED/ASCENDED counts gems and amulets
+(`get_valuables`, points added with `nowrap_add`), scores artifacts
+(`artifact_score`, counting then listing), prints "You and <pet>" when
+`gm.mydogs` is non-empty or Schroedinger's cat was resolved live, and
+then lists the valuables sorted by count, "worthless pieces of colored
+glass" included. Ours printed only the points line, so a wizard who left
+with one piece of glass was short a line (s31-29). The Schroedinger
+resolution (`observe_quantum_cat(obj, FALSE, FALSE)` in the pre-disclosure
+identification loop, end.c:1266) is ported with it because the final score
+counts the same cat.

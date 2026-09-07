@@ -401,6 +401,64 @@ export function parseoptions(opts, tinitial, tfrom_file, result) {
             return false;
         }
         result.opts.statuslines = itmp;
+    } else if (opt.name === 'disclose') {
+        /* src/options.c:1447 optfn_disclose(), the do_set arm: the value is a
+           run of category letters (iavgco; k->v and d->o) each optionally
+           preceded by one of the y/n/?/+/-/# settings; a bare "disclose" or
+           "all" prompts for everything, "none" disables it all. */
+        const op = value ?? '';  /* string_for_opt(opts, TRUE) */
+        if (op !== '' && negated) {
+            /* bad_negation(allopt[optidx].name, TRUE) */
+            config_error_add(result, `The ${opt.name} option may not both have a value and be negated.`);
+            return false;
+        }
+        const disclosure_options = 'iavgco';        /* decl.c:54 */
+        /* "disclose" without a value means "all with prompting"
+           and negated means "none without prompting" */
+        if (op === '' || op.toLowerCase() === 'all'
+            || op.toLowerCase() === 'none') {
+            if (op !== '' && op.toLowerCase() === 'none')
+                negated = true;
+            result.opts.end_disclose = (negated ? '-' : 'y')
+                                       .repeat(disclosure_options.length);
+            result.opts[opt.name] = negated ? null : value;
+            return retval;
+        }
+        /* flags.end_disclose is edited in place; options.c:7211 starts it
+           at DISCLOSE_PROMPT_DEFAULT_NO for every category */
+        const end = (result.opts.end_disclose ?? game.flags?.end_disclose
+                     ?? 'nnnnnn').split('');
+        let prefix_val = -1;
+        for (const ch of op) {
+            let c = ch.toLowerCase();
+            if (c === 'k')
+                c = 'v'; /* killed -> vanquished */
+            if (c === 'd')
+                c = 'o'; /* dungeon -> overview */
+            const idx = disclosure_options.indexOf(c);
+            if (idx >= 0) {
+                if (prefix_val !== -1) {
+                    if (c !== 'v' && c !== 'g') {
+                        if (prefix_val === '?')
+                            prefix_val = 'y';
+                        if (prefix_val === '#')
+                            prefix_val = '+';
+                    }
+                    end[idx] = prefix_val;
+                    prefix_val = -1;
+                } else
+                    end[idx] = '+';
+            } else if ('yn?+-#'.includes(c)) {
+                prefix_val = c;
+            } else if (c === ' ') {
+                ; /* do nothing */
+            } else {
+                config_error_add(result, `Unknown ${opt.name} parameter '${ch}'`);
+                return false;
+            }
+        }
+        result.opts.end_disclose = end.join('');
+        result.opts[opt.name] = value;
     } else {
         result.opts[opt.name] = negated ? null : value;
     }

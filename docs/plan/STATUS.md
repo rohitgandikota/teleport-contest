@@ -249,7 +249,17 @@ keeps pile-top boulders (s28-30); dosdoor() makes the trapped-door mimic
 Twenty-first round, `--seed 29`: one failure in 40, s29-24, the ^X
 nighttime/DST class; nothing to port.
 
-Next: triage `--seed 30` (recording), then `--seed 31`. Then return to the
+Twenty-second round, `--seed 30` and `--seed 31`: ten failures in 80, four
+are the timezone/recorder-path classes (s30-13 midnight, s30-24 rc path,
+s31-03 and s31-09 ^X night/moon). Fixed: getmattk() home-plane elemental
+dice doubling and the weapon-attack AD_PHYS arm (s30-21); rnd_misc_item()
+See_invisible plus makemon's demon-prince and raven peacefulness arms
+(s30-04); hitmu rust/decay arms calling erode_armor (s31-20); the
+enlightenment "trapped in" line via trap_predicament() (s30-18);
+optfn_disclose parsing (s30-37); the escape summary's valuables, artifact
+and pet listing with Schroedinger's cat resolution (s31-29).
+
+Next: triage `--seed 32` (recording), then `--seed 33`. Then return to the
 note_unported list (hack.js 18, spell.js 20, shk.js 19). tools/jsplay.mjs has a new
 `--aeval "<await expr>"` flag with the hack.js namespace as `h` for state
 probes. The census script is `tally.sh` in the scratchpad (diverge.mjs

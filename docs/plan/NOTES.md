@@ -7274,3 +7274,33 @@ the out-of arm also picks up block_entry() (a shopkeeper blocking a
 diagonal entry through a broken door). s56-11: a shifted 'N' from an open
 door square with mention_walls set printed the message in the C and
 nothing in ours.
+
+## litroom() in full: darkness, artifact lights, gremlins, the Rogue room
+
+read.c:2491 litroom() now carries every arm. Darkening (a cursed scroll)
+snuffs each lamplit inventory item with snuff_lit() unless it is an
+artifact light, which instead goes through potion.c:1595
+impact_arti_light() (ported into potion.js): unless already cursed or
+obj_resists(obj, 25, 75), a temporary potion of water is made with
+mksobj(POT_WATER, TRUE, FALSE), cursed, and dipped onto the object with
+H2Opotion_dip() for the "<obj> glows <color>" message; a blessed scroll
+does the same with a blessed potion to raise the BUC state. The messages
+follow the C: "The ambient light seems dimmer." when something is still
+lit, "It seems even darker in here than before." when swallowed, else
+"You are surrounded by darkness!"; when lighting while swallowed, the
+engulfer's stomach "is lit", a whirly one "shines briefly", anything else
+"glistens". On the Rogue level the whole room (walls included) is set
+through set_lit() and the room's rlit follows; a Sunsword invoke lights
+only the hero's square; otherwise do_clear_area() with radius 5 or 9.
+set_lit() (read.c:2471) collects gremlins standing in newly lit squares
+and snuff_light_source()s a darkened square; after the vision_recalc(2)
+redraw and vision_full_recalc, each collected gremlin takes
+light_hits_gremlin(mon, rnd(5)) after an immediate vision_recalc(0). The
+only remaining gap is the ball-and-chain move_bc() dance (ball.c is not
+ported), recorded as litroom:move_bc. seffect_light() also gains its
+confused arm: three or four (plus two if blessed) cancelled tame yellow
+lights, black lights for a cursed scroll, made with MM_EDOG | NO_MINVENT |
+MM_NOMSG and initedog(mon, TRUE); "Lights appear all around you!" when any
+is spotted, "Tiny lights sparkle in the air momentarily." when the species
+is gone; and the uncursed scroll's lightdamage(sobj, TRUE, 5) is the real
+zap.c call (a gremlin hero takes rnd damage).

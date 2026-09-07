@@ -65,7 +65,7 @@ import { bless, curse, mkobj, splitobj, unbless, uncurse } from './mkobj.js';
 import { distu, s_suffix } from './hacklib.js';
 import { pluslvl } from './exper.js';
 import { heal_legs } from './do.js';
-import { speed_up } from './zap.js';
+import { speed_up, obj_resists } from './zap.js';
 import { INTRINSIC, FROMOUTSIDE } from './const.js';
 import { monstseesu, monstunseesu } from './mondata.js';
 import { fall_asleep } from './timeout.js';
@@ -109,6 +109,7 @@ import { ARTICLE_THE, SUPPRESS_IT, SUPPRESS_SADDLE, W_SADDLE,
 import { float_vs_flight } from './polyself.js';
 import { delayed_killer, find_delayed_killer, dealloc_killer } from './end.js';
 import { can_reach_floor } from './pickup.js';
+import { mksobj } from './mkobj.js';
 const G_GONE = MFLAGS.G_GENOD | MFLAGS.G_EXTINCT;
 
 function note_unported_potion(what) {
@@ -471,6 +472,28 @@ export async function H2Opotion_dip(potion, targobj, useeit, objphrase) {
         res = true;
     }
     return res;
+}
+
+/* src/potion.c:1595 impact_arti_light() — used when blessed or cursed scroll
+   of light interacts with artifact light; if the lit object (Sunsword or
+   gold dragon scales/mail) doesn't resist, treat like dipping it in holy or
+   unholy water (BUC change, glow message) */
+export async function impact_arti_light(obj, worsen, seeit) {
+    let otmp;
+
+    /* if already worst/best BUC it can be, or if it resists, do nothing */
+    if ((worsen ? obj.cursed : obj.blessed) || obj_resists(obj, 25, 75))
+        return;
+
+    /* curse() and bless() take care of maybe_adjust_light() */
+    otmp = mksobj(ONAMES.POT_WATER, true, false);
+    if (worsen)
+        curse(otmp);
+    else
+        bless(otmp);
+    await H2Opotion_dip(otmp, obj, seeit, seeit ? Yobjnam2(obj, 'glow') : '');
+    /* dealloc_obj(otmp) */
+    return;
 }
 
 // src/potion.c:1624 potionhit(). The bottle name and impact damage are drawn

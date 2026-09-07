@@ -4603,7 +4603,9 @@ nighttime.") is another, as are s39-16, s39-28, s42-10 and s44-18 ("It is
 the midnight hour." where our clock says nighttime), s43-12, s46-13 and
 s46-18 (the C says nighttime, ours prints no time-of-day line; s46-13 also
 has the C's "There is a full moon in effect." from its local date), and
-s46-25 (the midnight undead damage doubling of hitmu, like s30-13).
+s46-25 (the midnight undead damage doubling of hitmu, like s30-13), and
+s47-07 (ours prints the new-moon startup warning from the recording date
+where the C's local date did not).
 
 ## Fuzz divergence census (2026-09-01, second pass)
 
@@ -6793,6 +6795,20 @@ in that moveloop pass is still unidentified. s46-03: the status
 highlight rule editor beyond the behavior menu (botl.c:3890
 status_hilite_menu_add: threshold value, comparison, color and attribute
 dialogs) is not ported; the simple menu now reaches it.
+
+## A mimic's appearance object must be freed (crash class)
+
+makemon.c:2505 set_mimic_sym(): an object mimic takes its appearance from
+a throwaway mkobj() and then obfree()s it, which frees the contents too.
+Ours kept only the otyp and dropped the object, so a mimic posing as an
+ice box left six contained corpses whose rot timers still pointed at a
+container in no list; the next level change's save_timers() asked
+timer_is_local() about them and obj_is_local() hit the C's panic case
+("obj_is_local"), aborting the whole session (s47-27, Juiblex's swamp).
+mkobj.c:1300 mkbox_cnts() also stops the ROT_CORPSE and REVIVE_MON
+timers of the corpses it generates inside an ice box; ours only zeroed
+their age. A thrown exception loses the entire session under the judge,
+so this class matters more than its screen count.
 
 ## number_pad letters run their commands, and cmdassist draws the digits
 

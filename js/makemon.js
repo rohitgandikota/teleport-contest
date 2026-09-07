@@ -784,6 +784,7 @@ export function mongets(mtmp, otyp) {
    merging; this file re-imports it for mongets. */
 import { mpickobj } from './steal.js';
 import { in_town } from './hack.js';
+import { obfree } from './invent.js';
 export { mpickobj };
 
 export const DF_NONE = 0, DF_RANDOM = 1, DF_ALL = 2;
@@ -1614,8 +1615,10 @@ export function set_mimic_sym(mtmp) {
             } else if (s_sym === OCLASSES.COIN_CLASS) {
                 appear = ONAMES.GOLD_PIECE;
             } else {
-                /* C frees this object again; only its otyp is kept */
-                appear = mkobj(s_sym, false).otyp;
+                const otmp = mkobj(s_sym, false);
+                appear = otmp.otyp;
+                /* make sure container contents are free'ed */
+                obfree(otmp, null);
             }
         }
     }

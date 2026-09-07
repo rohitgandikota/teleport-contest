@@ -326,7 +326,12 @@ apply.js with the jumping spell (s46-04). Open: s45-00's status repaint
 timing and s46-03's status highlight rule editor (see NOTES "Open from
 seeds 45 and 46").
 
-Next: triage `--seed 47` (recording), then port botl.c
+Thirty-first round, `--seed 47`: two failures in 40, one the recording
+class (s47-07 new-moon warning). Fixed: set_mimic_sym() frees its
+appearance object and ice-box corpses stop their timers, which removes a
+session-aborting exception (s47-27).
+
+Next: triage `--seed 48` (recording), then port botl.c
 status_hilite_menu_add. Then return to the
 note_unported list (hack.js 18, spell.js 20, shk.js 19). tools/jsplay.mjs has a new
 `--aeval "<await expr>"` flag with the hack.js namespace as `h` for state

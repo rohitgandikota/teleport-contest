@@ -8,7 +8,7 @@ import { spot_time_left, spot_stop_timers, MELT_ICE_AWAY } from './timeout.js';
 import { float_vs_flight } from './polyself.js';
 import { float_up, blow_up_landmine, fill_pit, deltrap, seetrap, feeltrap, launch_obj } from './trap.js';
 import { You_cant, pline_dir } from './pline.js';
-import { FROMOUTSIDE, DRAWBRIDGE_UP, DB_UNDER, DB_ICE, MAX_TYPE, OBJ_FLOOR, IN_SIGHT, MIGR_RANDOM, ROLL, LAUNCH_KNOWN, xFLOOR, xGROUND, xOPENDOOR, xSHUTDOOR, xSWAMP, xSUBMERGED, xSEA, xWATERWALL, TREE, DOOR, D_TRAPPED, MOAT, Is_earthlevel, Is_juiblex_level } from './const.js';
+import { FROMOUTSIDE, TIMEOUT, A_DEX, Is_airlevel, DRAWBRIDGE_UP, DB_UNDER, DB_ICE, MAX_TYPE, OBJ_FLOOR, IN_SIGHT, MIGR_RANDOM, ROLL, LAUNCH_KNOWN, xFLOOR, xGROUND, xOPENDOOR, xSHUTDOOR, xSWAMP, xSUBMERGED, xSEA, xWATERWALL, TREE, DOOR, D_TRAPPED, MOAT, Is_earthlevel, Is_juiblex_level } from './const.js';
 import { obj_extract_self, useupf } from './invent.js';
 import { place_object } from './mkobj.js';
 import { exercise } from './attrib.js';
@@ -37,7 +37,7 @@ import { dist2, distmin } from './hacklib.js';
 import { Levitation, Flying, Fire_resistance, Underwater,
          Hallucination, Deaf, Passes_walls, Stealth, Swimming,
          Amphibious, Breathless } from './youprop.js';
-import { is_pool_or_lava, is_db_wall, db_under_typ } from './dbridge.js';
+import { is_pool_or_lava, is_db_wall, db_under_typ, is_ice } from './dbridge.js';
 import { is_pool, is_lava, t_at, m_at, is_pick, seemimic,
          wake_msg } from './mon.js';
 import { hliquid } from './do_name.js';
@@ -52,7 +52,7 @@ import { gethungry } from './eat.js';
 import { cmdq_clear, closed_door, paranoid_query, xytodir } from './cmd.js';
 import { paranoia_bits, boolean_option } from './options.js';
 import { PARANOID_TRAP, PARANOID_CONFIRM, TRAPNUM, TRAP_CLEARLY_IMMUNE } from './const.js';
-import { Blind, Stunned, Confusion } from './youprop.js';
+import { Blind, Stunned, Confusion, Cold_resistance } from './youprop.js';
 import { visible_region_at, reg_damg } from './region.js';
 import { defsyms } from './drawing_data.js';
 // hack.js — the hero's movement and the terrain predicates that go with it.
@@ -105,7 +105,8 @@ import { INTRINSIC } from './const.js';
 import { start_timer, stop_timer, peek_timer, TIMER_OBJECT, ZOMBIFY_MON }
     from './timeout.js';
 import { Hello } from './role.js';
-import { digests, is_floater, is_clinger, likes_lava } from './mondata.js';
+import { digests, is_floater, is_clinger, likes_lava, resists_cold } from './mondata.js';
+import { objdescr_is } from './o_init.js';
 import { Wwalking } from './youprop.js';
 import { s_suffix } from './hacklib.js';
 import { uteetering_at_seen_pit } from './trap.js';
@@ -1439,6 +1440,53 @@ export async function handle_tip(tip) {
         return true;
     }
     return false;
+}
+
+// src/hack.c:2342 air_turbulence() — on the Plane of Air a hero who is
+// neither levitating nor flying loses 3 moves in 4 to the wind.
+export async function air_turbulence() {
+    if (Is_airlevel(game.u.uz) && rn2(4) && !Levitation() && !Flying()) {
+        switch (rn2(3)) {
+        case 0:
+            await You('tumble in place.');
+            exercise(A_DEX, false);
+            break;
+        case 1:
+            await You_cant('control your movements very well.');
+            break;
+        case 2:
+            await pline("It's hard to walk in thin air.");
+            exercise(A_DEX, true);
+            break;
+        }
+        return true;
+    }
+    return false;
+}
+
+// src/hack.c:2396 slippery_ice_fumbling() — standing on ice without snow
+// boots, cold resistance, flight or a floating/clinging/whirly form gives
+// a 1 in 2 (1 in 3 when cold resistant) chance of fumbling on the next
+// move; leaving the ice drops the FROMOUTSIDE fumbling again.
+export function slippery_ice_fumbling() {
+    const u = game.u;
+    let on_ice = !Levitation() && is_ice(u.ux, u.uy);
+    const iceskater = u.usteed ? u.usteed : game.youmonst;
+
+    if (on_ice) {
+        if ((u.uarmf && objdescr_is(u.uarmf, 'snow boots'))
+            || resists_cold(iceskater) || Flying()
+            || is_floater(iceskater.data) || is_clinger(iceskater.data)
+            || is_whirly(iceskater.data)) {
+            on_ice = false;
+        } else if (!rn2(Cold_resistance() ? 3 : 2)) {
+            u.intrinsic.HFumbling |= FROMOUTSIDE;
+            u.intrinsic.HFumbling &= ~TIMEOUT;
+            u.intrinsic.HFumbling += 1; /* slip on next move */
+        }
+    }
+    if (!on_ice && (u.intrinsic.HFumbling & FROMOUTSIDE))
+        u.intrinsic.HFumbling &= ~FROMOUTSIDE;
 }
 
 // src/hack.c:2444 avoid_moving_on_trap() — stop a run at a known trap.

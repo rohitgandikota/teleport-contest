@@ -1363,6 +1363,35 @@ export async function doeat() {
         return ECMD_OK;
     }
 
+    /* src/eat.c:2922 — picking the interrupted meal again resumes it */
+    if (otmp === game.context.victual?.piece) {
+        const v = game.context.victual;
+        const one_bite_left = ((v.usedtime | 0) + 1 >= (v.reqtime | 0));
+        /* If they weren't able to choke, they don't suddenly become able to
+         * choke just because they were interrupted.  On the other hand, if
+         * they were able to choke before, if they lost food it's possible
+         * they shouldn't be able to choke now.
+         */
+        if (game.u.uhs !== SATIATED)
+            v.canchoke = 0;
+        v.o_id = 0;
+        otmp = await touchfood(otmp);
+        if (otmp) {
+            v.piece = otmp;
+            v.o_id = otmp.o_id;
+        } else {
+            await do_reset_eat();
+        }
+        /* if there's only one bite left, there sometimes won't be any
+           "you finish eating" message when done; use different wording
+           for resuming with one bite remaining instead of trying to
+           determine whether or not "you finish" is going to be given */
+        await You(`${!one_bite_left ? 'resume' : 'consume the last bite of'} your meal.`);
+        if (otmp)
+            await start_eating(otmp, false);
+        return ECMD_TIME;
+    }
+
     /* src/eat.c doeat() tail. Tins have their own opening occupation; the
        remaining arms continue through corpse or ordinary-food handling. */
     if (otmp.otyp === ONAMES.TIN) {

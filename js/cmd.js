@@ -1,4 +1,5 @@
-import { NODIAG, handle_tip, TIP_UNTRAP_MON, avoid_running_into_trap_or_liquid } from './hack.js';
+import { NODIAG, handle_tip, TIP_UNTRAP_MON, avoid_running_into_trap_or_liquid,
+         air_turbulence, slippery_ice_fumbling } from './hack.js';
 import { MV_ANY, MV_RUN, MV_RUSH, MV_WALK, CMDQ_INT, CMDQ_DIR, DIR_DOWN, DIR_UP, IRONBARS, DO_MOVE } from './const.js';
 import { impossible } from './pline.js';
 import { can_ooze } from './monmove.js';
@@ -2607,6 +2608,12 @@ async function domove_core() {
         return;
     }
 
+    /* src/hack.c:2739 */
+    if (await air_turbulence())
+        return;
+    /* check slippery ice */
+    slippery_ice_fumbling();
+
     /* src/hack.c:2747 impaired_movement() — a stunned (always) or confused
        (4 in 5) hero moves in a random viable direction; the rn2(5) inside
        u_maybe_impaired() draws on EVERY move while merely confused, and
@@ -3904,6 +3911,7 @@ async function dotravel_target() {
     game.context.travel1 = 1;
     game.context.run = 8;
     game.context.nopick = 1;
+    game.domove_attempting |= DOMOVE_RUSH;   /* src/cmd.c:5366 */
 
     if (!game.multi)
         game.multi = Math.max(COLNO, ROWNO);

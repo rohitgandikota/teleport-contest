@@ -139,7 +139,7 @@ function rogue_cmap_sym(cmap) {
 // index and a colour; this applies gs.showsyms[] on top, which is what makes a
 // configuration without OPTIONS=symset:DECgraphics draw '-', '|' and '.'
 // instead of the DEC line-drawing set.
-function terrain_glyph(loc, x, y) {
+export function terrain_glyph(loc, x, y) {
     const g = back_to_glyph(loc, x, y);
     const sym = (g.cmap !== undefined) ? showsym(g.cmap) : null;
     return sym ? { ...g, ch: sym.ch, dec: sym.dec } : g;
@@ -3116,7 +3116,7 @@ export async function flash_glyph_at(x, y, tg, rpt) {
     if (game.level?.flags?.hero_memory && loc?.remembered_glyph) {
         back = loc.remembered_glyph;
     } else {
-        const b = back_to_glyph(loc, x, y);
+        const b = terrain_glyph(loc, x, y);
         back = { ch: b.ch, color: b.color, decgfx: !!b.dec,
                  glyph: b.glyph ?? { kind: 'cmap', cmap: b.cmap } };
     }

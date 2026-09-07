@@ -10,6 +10,7 @@ import { obfree, weight } from './invent.js';
 import { extract_from_minvent } from './worn.js';
 import { MFLAGS } from './monst_data.js';
 import { ARM_GLOVES, PET_MISSILE_RANGE2, M_AP_NOTHING, M_AP_TYPE, POTHIT_OTHER_THROW } from './const.js';
+import { TIMEOUT } from './const.js';
 import { WT_IRON_BALL_INCR } from './const.js';
 import { BRK_MELEE } from './const.js';
 import { BRK_BY_HERO } from './const.js';
@@ -58,7 +59,7 @@ import { dmgval } from './weapon.js';
 import { resists_acid, resists_poison, resists_ston, noncorporeal,
          amorphous, nonliving } from './mondata.js';
 import { mon_nam, Monnam, hliquid } from './do_name.js';
-import { mhim } from './mondata.js';
+import { mhim, eyecount, can_blnd } from './mondata.js';
 import { s_suffix } from './hacklib.js';
 import { mon_hates_silver, touch_petrifies } from './dog.js';
 import { stone_missile, is_poisonable } from './obj.js';
@@ -90,7 +91,7 @@ import { lined_up, mdistu } from './monmove.js';
 import { is_pole } from './u_init.js';
 import { rn2 } from './rng.js';
 import { ATTKS } from './monst_data.js';
-import { Deaf, Hallucination, Sleep_resistance } from './youprop.js';
+import { Deaf, Hallucination, Sleep_resistance, Blind } from './youprop.js';
 import { You_hear } from './pline.js';
 
 // src/mthrowu.c:31 hallublasts[]
@@ -451,7 +452,7 @@ async function u_catch_thrown_obj(otmp) {
         - ((roleName === 'Monk' || roleName === 'Rogue')
            ? 20 : 0);
 
-    const impaired = game.u.ublind
+    const impaired = Blind()
         || game.u.intrinsic?.HConfusion || game.u.uprops?.CONFUSION
         || game.u.intrinsic?.HStun || game.u.uprops?.STUNNED
         || game.u.uprops?.FUMBLING;
@@ -630,22 +631,26 @@ export async function m_throw(mon, x, y, dx, dy, range, obj) {
                 await poisoned(name, A_STR, killer,
                     (game.u.umortality ?? 0) > oldumort ? 0 : 10, true);
             }
-            if (hitu && (singleobj.otyp === ONAMES.BLINDING_VENOM
-                         || singleobj.otyp === ONAMES.CREAM_PIE)) {
+            if (hitu && can_blnd(null, game.youmonst,
+                                 (singleobj.otyp === ONAMES.BLINDING_VENOM)
+                                     ? ATTKS.AT_SPIT : ATTKS.AT_WEAP,
+                                 singleobj)) {
                 blindinc = rnd(25);
                 if (singleobj.otyp === ONAMES.CREAM_PIE) {
-                    if (!game.u.ublind)
+                    if (!Blind())
                         await pline("Yecch!  You've been creamed.");
                     else
                         await pline(`There's something sticky all over `
                                     + `your ${body_part(FACE)}.`);
-                } else { /* venom in the eyes */
-                    if (!game.u.ublind)
+                } else if (singleobj.otyp === ONAMES.BLINDING_VENOM) {
+                    let eyes = body_part(EYE);
+                    if (eyecount(game.youmonst.data) !== 1)
+                        eyes = makeplural(eyes);
+                    /* venom in the eyes */
+                    if (!Blind())
                         await pline_The('venom blinds you.');
-                    else {
-                        const eyes = makeplural(body_part(EYE));
+                    else
                         await Your(`${eyes} ${vtense(eyes, 'sting')}.`);
-                    }
                 }
             }
             if (hitu && singleobj.otyp === ONAMES.EGG) {
@@ -682,8 +687,12 @@ export async function m_throw(mon, x, y, dx, dy, range, obj) {
     game.mesg_given = 0; /* reset */
 
     if (blindinc) {
+        const { make_blinded } = await import('./potion.js');
         game.u.ucreamed = (game.u.ucreamed ?? 0) + blindinc;
-        note_unported_mthrowu('m_throw:make_blinded');
+        await make_blinded(((game.u.intrinsic?.HBlinded | 0) & TIMEOUT)
+                           + blindinc, false);
+        if (!Blind())
+            await Your('vision quickly clears.'); /* Your1(vision_clears) */
     }
     game.thrownobj = null;
 }

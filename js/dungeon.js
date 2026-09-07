@@ -856,6 +856,11 @@ export function Invocation_lev(lev) {
     return !!(lev && dgn?.flags?.hellish
               && lev.dlevel === dgn.num_dunlevs - 1);
 }
+// src/dungeon.c In_hell(): the level's dungeon carries the hellish flag.
+export function In_hell(lev) {
+    const dgn = lev && game.dungeons?.[lev.dnum];
+    return !!(lev && dgn?.flags?.hellish);
+}
 function Is_stronghold(lev) {
     return !!(game.stronghold_level && lev
               && lev.dnum === game.stronghold_level.dnum

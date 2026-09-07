@@ -192,14 +192,34 @@ fountain or sink); getpos_help() gated on iflags.terrainmode with the
 "a monster" goto. s22-10 is the options-help rc path (judge's path, kept)
 and s22-25 the ^X moon/night class; both unfixable by design.
 
-Next: triage `--seed 23` (recording), then `--seed 24`; the drift class
-needs the C recorder instrumented to log monster positions per turn: add a
-patch under nethack-c/patches that writes each monster's position after
-movemon() to the file named by a new env var, set it in
-scripts/record-session.mjs:445 next to NETHACK_RNGLOG, rebuild with
-nethack-c/build-recorder.sh, re-record the three recipes, and compare
-against a jsplay dump. Then return to the note_unported list (hack.js 19,
-spell.js 20, shk.js 19). tools/jsplay.mjs has a new
+Fourteenth round, `--seed 23` (4 failures in 40, all fixed):
+slippery_ice_fumbling() and air_turbulence() before every move (s23-11
+diverged at the ice rn2); terrain view and flash_glyph_at cells through the
+active symbol set (s23-25, hardcoded DEC dot on a non-DEC recipe); grow_up()
+growth messages, now async and awaited at every caller (s23-27: the "ogre
+drift" was the C's third message forcing its --More-- earlier in the sweep,
+see NOTES "A silent monster drift can be a missing message"); mattackm()
+unhide messages and doeat()'s "You resume your meal." branch plus
+reset_eat() in the main loop (s23-20). Round 13's getobj hands edit had
+referenced the C's `buf` name and took the public score to 40/44 before the
+push; the census caught it as step-0 misses.
+
+Fifteenth round, `--seed 24` (5 failures in 40, 4 fixed): dotravel() sets
+DOMOVE_RUSH so the first travel step smudges engravings (s24-39);
+makemon()'s location-based trap knowledge and wand experience, with
+mon_learns_traps() getting its ALL_TRAPS/NO_TRAP arms and dungeon.js an
+In_hell() (s24-36, first-zap miss on a quest level); m_throw() blinding
+venom through can_blnd()/make_blinded() and the stray `u.ublind` reads
+replaced by Blind() (s24-31). s24-23 reads a Hawaiian shirt (ubirthday
+class, unfixable).
+
+Next: triage `--seed 25` (recording), then `--seed 26`. Re-test the three
+old drifts (s13-31, s14-23, s17-03) with the message-timing checklist from
+the NOTES entry before instrumenting the recorder; if they still drift, do
+the recorder patch (env var next to NETHACK_RNGLOG in
+scripts/record-session.mjs:445, rebuild with nethack-c/build-recorder.sh,
+re-record the recipes, compare against a jsplay dump). Then return to the
+note_unported list (hack.js 19, spell.js 20, shk.js 19). tools/jsplay.mjs has a new
 `--aeval "<await expr>"` flag with the hack.js namespace as `h` for state
 probes. The census script is `tally.sh` in the scratchpad (diverge.mjs
 --screens over tools/gen-sessions/fuzz/*.session.json, 4 at a time).

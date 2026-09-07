@@ -32,6 +32,7 @@ import { add_damage } from './shk.js';
 import { ECMD_TIME, TEST_MOVE, WT_TOOMUCH_DIAGONAL, P_RIDING, P_BASIC,
          A_LAWFUL, M_AP_TYPE, M_AP_FURNITURE, M_AP_OBJECT,
          D_NODOOR, D_ISOPEN, D_TRAPPED, DISP_FLASH, DISP_END, POTHIT_OTHER_THROW, M_SEEN_ACID } from './const.js';
+import { ALL_TRAPS } from './const.js';
 import { t_at, mon_to_stone } from './mon.js';
 import { mon_adjust_speed } from './worn.js';
 import { pline_mon } from './pline.js';
@@ -2429,7 +2430,12 @@ function mon_knows_traps(mtmp, ttyp) {
 
 // src/mondata.c:1629 mon_learns_traps()
 export function mon_learns_traps(mtmp, ttyp) {
-    mtmp.mtrapseen = (mtmp.mtrapseen | 0) | (1 << (ttyp - 1));
+    if (ttyp === ALL_TRAPS)
+        mtmp.mtrapseen = ~0;
+    else if (ttyp === NO_TRAP)
+        mtmp.mtrapseen = 0;
+    else
+        mtmp.mtrapseen = (mtmp.mtrapseen | 0) | (1 << (ttyp - 1));
 }
 
 // src/mon.c:2130 m_in_air()

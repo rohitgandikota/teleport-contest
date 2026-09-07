@@ -6013,7 +6013,112 @@ The options help intro prints get_configfile(), the C process's HOME rc
 path. The public sessions carry the judge harness's
 `/Users/davidbau/git/mazesofmenace/teleport/maud/test/comparison/c-harness/resul`
 (cut at the terminal width) and options.js OPT_INTRO_CONFIG reproduces
-that; a local fuzz recording shows `/var/folders/.../nh-rec-XXXX/home/.nethackrc`
+that; reading a Hawaiian shirt (s24-23, "The design features ... on a ...
+background.") is the ubirthday class from the entry above and stays a
+note_unported; a local fuzz recording shows `/var/folders/.../nh-rec-XXXX/home/.nethackrc`
 instead (s22-10). The held-out sessions come from the same harness as the
 public ones, so the judge path is the right one and the local miss is
 expected. Do not switch it for the fuzz corpus.
+
+## A "silent monster drift" can be a missing message that moves the --More--
+
+s23-27 showed ogres at different squares with the RNG stream identical, the
+same footprint as the open drifts. It was not movement at all. The C's
+grow_up() prints "The ogre grows up into an ogre lord." (pline_mon, before
+set_mon_data/newsym, so the screen flushed for that message still shows the
+old colour), and that third message forces a --More-- while the drinker is
+acting, before the ogres later in the fmon sweep have moved. Our grow_up()
+had the message stubbed, so our --More-- came from a later monster's
+message, after those ogres had moved: same state, different snapshot. Rule:
+when a drift's first bad screen carries a --More--, compare which message
+produced it before instrumenting movement. Checklist first: what message is
+pending in the C, does our port print it, and does the C flush before or
+after the state change (pline_mon then newsym in grow_up).
+
+## grow_up() messages and the awaited call chain
+
+makemon.c grow_up(): "As X grows up into Y, he dies!" for a genocided grown
+form (then mondied), otherwise "<Y monnam> grows up into / becomes
+(humanoid) / changes into (gender flipped) an <buf>", where buf prefixes
+"male "/"female " when the new form forces the other gender (is_male,
+is_female of the new permonst decide fem). is_mplayer caps lev_limit at 30;
+a shapeshifter's cham index follows the new type; a leashed monster refreshes
+the persistent inventory. grow_up() is now async, so every caller awaits it:
+muse.js (gain level potion), mhitm.js and the six uhitm.js kill sites use
+`(await grow_up(magr, mdef)) ? 0 : M_ATTK_AGR_DIED`, mon.js and do.js
+already awaited.
+
+## mattackm(): unhiding a hidden defender speaks
+
+mhitm.c mattackm(): a hidden (mundetected) defender that gets attacked is
+revealed, and when the hero can see but not sense it the C prints one of:
+"You dream of <plural noname>." (Unaware), "<Mon> emerges from hiding."
+(iflags.last_msg == PLNMSG_HIDE_UNDER and the same last_hider), "You notice
+<mon>." (last_hider), or "Suddenly, you notice <a mon>." (s23-20, a kitten
+biting a hidden garter snake).
+
+## doeat() resumes an interrupted meal
+
+eat.c doeat(): choosing the object that is still context.victual.piece
+prints "You resume your meal." (or "You consume the last bite of your
+meal." when usedtime + 1 >= reqtime), clears canchoke unless Satiated,
+re-touches the food (touchfood, do_reset_eat when it vanishes) and calls
+start_eating(otmp, FALSE); it never says "You begin eating". Ours restarted
+the meal (s23-20). The main loop's occupation arm also calls reset_eat()
+after stop_occupation() when a monster comes into view (allmain.c:507); it
+was a note_unported.
+
+## slippery_ice_fumbling() and air_turbulence() run before every move
+
+hack.c domove_core(), non-engulfed arm: air_turbulence() (Plane of Air,
+rn2(4) then rn2(3) for the message, returns before moving) and then
+slippery_ice_fumbling(): on ice without snow boots, cold resistance,
+flight or a floater/clinger/whirly form, !rn2(Cold_resistance ? 3 : 2) sets
+HFumbling FROMOUTSIDE with timeout 1; off the ice the FROMOUTSIDE bit is
+cleared. Neither existed in the port; s23-11's RNG diverged at the rn2(2)
+on an ice square.
+
+## Terrain cells go through the active symbol set
+
+detect.c reveal_terrain_getglyph() and display.c flash_glyph_at() return
+glyphs that show_glyph() maps through the active symset. Our
+back_to_glyph() returns a hardcoded DEC middle dot for ROOM (and DEC line
+symbols for walls), which is right only under symset:DECgraphics; the
+recipes without it draw '.' in the C. detect.js (btg_cell, back_cell) and
+flash_glyph_at now use display.js terrain_glyph(), which looks the cmap up
+in gs.showsyms like the normal newsym path (s23-25, a #terrain view of a
+spot that remembered an object).
+
+## Travel is a rush: dotravel() sets DOMOVE_RUSH before its first domove()
+
+cmd.c dotravel() sets `gd.domove_attempting |= DOMOVE_RUSH` next to
+context.travel/run = 8/nopick. domove() only calls maybe_smudge_engr()
+when domove_succeeded carries a RUSH or WALK bit, so without that flag the
+travel's first step never wipes the engraving the hero leaves (rnd(5) in
+wipe_engr_at). Ours had no flag for travel; s24-39 diverged on a tutorial
+level, which is carpeted with engravings. Continuation moves keep
+attempting == 0 in both, so only the first step of a travel smudges.
+
+## makemon(): trap knowledge and wand experience by location
+
+makemon.c right before place_monster(): non-mindless monsters born in
+Sokoban learn PIT and HOLE, in the castle TRAPDOOR, quest leaders and
+nemeses know ALL_TRAPS; and monsters born in the castle, Fort Ludios, the
+endgame, Gehennom, Vlad's tower or the quest get mwandexp = TRUE, so their
+first attack-wand zap uses buzz() instead of buzz_force_miss(). s24-36 (a
+wizard-mode hero on a quest level) diverged at zap_hit because our monster
+was a first-time zapper. mon_learns_traps() in trap.js now has the C's
+ALL_TRAPS (~0) and NO_TRAP (0) arms; mondata.js keeps its private copy for
+mons_see_trap. dungeon.js gained In_hell() (the dungeon's hellish flag).
+
+## m_throw(): venom and cream pies blind through can_blnd() and make_blinded()
+
+mthrowu.c m_throw(): a hit by BLINDING_VENOM or CREAM_PIE (or POT_BLINDNESS)
+rolls rnd(25) only when can_blnd(NULL, &youmonst, AT_SPIT/AT_WEAP, obj)
+allows it (blindfold, lenses and an existing cream coating protect), prints
+"The venom blinds you." or "Your eyes sting." by eyecount, and at the end
+of m_throw() adds the roll to u.ucreamed and make_blinded(BlindedTimeout +
+inc, FALSE), with "Your vision quickly clears." if still not blind. Ours
+had make_blinded as a note_unported, so the hero stayed sighted (s24-31:
+the C hid the monsters and showed Blind on the status line). The port also
+read a non-existent `game.u.ublind`; the accessor is Blind().

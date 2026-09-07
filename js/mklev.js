@@ -3272,15 +3272,38 @@ export function mktrap(num, mktrapflags, croom, tm) {
     }
 }
 
+// src/mklev.c:2285 mkfount(). set_levltyp() recounts every fountain and
+// sink on the level when one appears (so a themed room's des.feature()
+// fountain, written without a count, is picked up here), and then the C
+// increments once more; the double count is the C's.
 function mkfount(croom) {
-    const pos = { x: 0, y: 0 };
-    if (!find_okay_roompos(croom, pos)) return;
-    const loc = game.level?.at(pos.x, pos.y);
-    if (loc) {
-        loc.typ = FOUNTAIN;
-        if (!rn2(7)) loc.blessedftn = 1;
-        game.level.flags.nfountains++;
-    }
+    const m = { x: 0, y: 0 };
+
+    if (!find_okay_roompos(croom, m))
+        return;
+
+    /* Put a fountain at m.x, m.y */
+    if (!set_levltyp(m.x, m.y, FOUNTAIN))
+        return;
+    /* Is it a "blessed" fountain? (affects drinking from fountain) */
+    if (!rn2(7))
+        game.level.at(m.x, m.y).blessedftn = 1;
+
+    game.level.flags.nfountains++;
+}
+
+// src/mklev.c:2317 mksink()
+function mksink(croom) {
+    const m = { x: 0, y: 0 };
+
+    if (!find_okay_roompos(croom, m))
+        return;
+
+    /* Put a sink at m.x, m.y */
+    if (!set_levltyp(m.x, m.y, SINK))
+        return;
+
+    game.level.flags.nsinks++;
 }
 
 function mkaltar(croom) {
@@ -3362,12 +3385,8 @@ async function fill_ordinary_room(croom, bonus_items) {
     // Fountain
     if (!rn2(10)) mkfount(croom);
     // Sink
-    if (!rn2(60)) {
-        if (find_okay_roompos(croom, pos)) {
-            const loc = g.level?.at(pos.x, pos.y);
-            if (loc) { loc.typ = SINK; g.level.flags.nsinks = (g.level.flags.nsinks || 0) + 1; }
-        }
-    }
+    if (!rn2(60))
+        mksink(croom);
     // Altar
     if (!rn2(60)) mkaltar(croom);
     // Grave

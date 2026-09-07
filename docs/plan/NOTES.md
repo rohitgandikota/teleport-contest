@@ -5904,3 +5904,44 @@ on (its default). Applied in show_glyph_cell(), which is where a glyph
 becomes a cell for both fresh and remembered renders. fuzz-s20-28 step 47
 (wizard ^F magic mapping showed the engraving).
 
+## Fountain and sink counters go through set_levltyp()
+
+Bug class: RNG argument (dosounds). level.flags.nfountains gates the
+rn2(400) fountain-sound roll and nsinks the rn2(300) one. The C keeps them
+in three ways: mkfount()/mksink() call set_levltyp(), which recounts the
+whole level whenever a square becomes or stops being a fountain or sink,
+and THEN increment once more (so one mkfount() fountain reads as 2 in the
+C; the double count is the C's and only truthiness is ever tested);
+dryup()/breaksink()/the Excalibur gift also go through set_levltyp(); and a
+themed room's des.feature("fountain") writes the terrain directly with no
+count at all, so it is counted only when a later mkfount()/mksink() on the
+same level recounts. Ours had mkfount() and an inline sink placement
+writing typ directly with manual +1, and dryup()/breaksink() doing manual
+-1/+1; the Garden fountain never got counted, and after the first fix the
+manual decrement in dryup() left a dried fountain counted (three public
+sessions regressed until fountain.js was moved to set_levltyp too).
+fuzz-s21-03 step 8; sessions seed0007/0012/0014.
+
+## thitu(): the full hit branch
+
+Bug class: missing message. mthrowu.c:75 thitu() after "You are hit by
+%s": acid venom with Acid_resistance says "It doesn't seem to hurt you."
+(monstseesu M_SEEN_ACID); a stone missile through a rock-passing hero
+"passes harmlessly through"/"doesn't harm"; a potion runs potionhit() and
+is used up; otherwise a silver missile "sears your flesh" for a hero that
+Hate_silver (u.ulycn or hates_silver(youmonst.data)), acid venom says "It
+burns!" (monstunseesu), then losehp with the killer name (killer_xname and
+KILLED_BY when the missile is formatted, KILLED_BY for names starting
+the/an/a) and exercise(A_STR). Ours went straight to losehp. Added
+mondata.js hates_silver()/is_were and youprop.js Hate_silver. fuzz-s21-15
+step 125.
+
+## The Hawaiian shirt motif decides a menu's placement
+
+The recording-birthday class (hawaiian_design) reaches further than the
+shirt's name: "an uncursed +0 Hawaiian shirt with a hibiscus flower motif
+(being worn)" is 76 columns, so the tty's offx = max(10, cols - maxcol - 1)
+hits 10 and the identified-inventory menu is drawn full screen at column 0;
+our shorter name overlays it at column 32 and 769 cells differ. Not
+fixable; fuzz-s21-27 step 54.
+

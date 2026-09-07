@@ -6,8 +6,8 @@
 // holds the pieces of src/trap.c it calls into, so that a grep for a C symbol
 // finds it in the file its C twin lives in.
 
-import { Is_box } from './obj.js';
-import { Confusion, Stunned } from './youprop.js';
+import { Is_box, stone_missile } from './obj.js';
+import { Confusion, Stunned, Acid_resistance, Hate_silver } from './youprop.js';
 import { has_magic_key, u_wield_art, attacks } from './artifact.js';
 import { ART_STING } from './artilist_data.js';
 import { test_move, bad_rock, check_capacity } from './hack.js';
@@ -22,16 +22,16 @@ import { rider_cant_reach } from './steed.js';
 import { abuse_dog } from './dog.js';
 import { maketrap } from './mklev.js';
 import { There, You_cant } from './pline.js';
-import { bare_artifactname, safe_qbuf, ansimpleoname } from './objnam.js';
+import { bare_artifactname, safe_qbuf, ansimpleoname, killer_xname, obj_is_pname } from './objnam.js';
 import { mon_pmname } from './do_name.js';
 import { getobj, GETOBJ_EXCLUDE, GETOBJ_SUGGEST, GETOBJ_DOWNPLAY, GETOBJ_PROMPT } from './invent.js';
 import { stumble_on_door_mimic } from './lock.js';
-import { stumble_onto_mimic } from './uhitm.js';
+import { stumble_onto_mimic, passes_rocks } from './uhitm.js';
 import { unblock_point } from './vision.js';
 import { add_damage } from './shk.js';
 import { ECMD_TIME, TEST_MOVE, WT_TOOMUCH_DIAGONAL, P_RIDING, P_BASIC,
          A_LAWFUL, M_AP_TYPE, M_AP_FURNITURE, M_AP_OBJECT,
-         D_NODOOR, D_ISOPEN, D_TRAPPED, DISP_FLASH, DISP_END } from './const.js';
+         D_NODOOR, D_ISOPEN, D_TRAPPED, DISP_FLASH, DISP_END, POTHIT_OTHER_THROW, M_SEEN_ACID } from './const.js';
 import { t_at, mon_to_stone } from './mon.js';
 import { mon_adjust_speed } from './worn.js';
 import { pline_mon } from './pline.js';
@@ -99,7 +99,7 @@ import { ice_descr } from './pager.js';
 import { Passes_walls } from './youprop.js';
 import { Wwalking } from './youprop.js';
 import { Teleportation } from './youprop.js';
-import { split_mon } from './potion.js';
+import { split_mon, potionhit } from './potion.js';
 import { reset_faint } from './eat.js';
 import { is_fainted } from './eat.js';
 import { domagicportal } from './teleport.js';
@@ -1621,41 +1621,80 @@ async function trapeffect_rocktrap(mtmp, trap, trflags) {
         ? Trap_Caught_Mon : Trap_Effect_Finished;
 }
 
-// src/mthrowu.c:96 thitu() — does a trap's or monster's missile hit the hero?
-//
-// The rnd(20) is spent whatever the outcome; everything after it is message
-// and damage. Returns 1 on a hit.
+// src/mthrowu.c:75 thitu() — does a trap's or monster's missile hit the
+// hero? Returns 1 on a hit. The rnd(20) is spent whatever the outcome.
 export async function thitu(tlev, dam, objp, name) {
-    const obj = objp ? objp.obj : null;
+    let obj = objp ? objp.obj : null;
+    let onm, knm;
+    const named = (name != null);
+    let kprefix = KILLED_BY_AN;
+    let onmbuf = '';
 
-    /* src/mthrowu.c:87 — a null name comes from m_throw; format the missile
-       itself, "the Nth arrow" during a volley. C panics when both are null. */
-    if (!name)
-        name = (obj && obj.quan > 1) ? doname(obj) : mshot_xname(obj);
-    const onm = (obj && obj.oartifact) ? the(name)
-                : (obj && obj.quan > 1) ? name
-                  : an(name);
+    if (!name) {
+        if (!obj)
+            throw new Error('thitu: name & obj both null?'); /* panic() */
+        name = onmbuf = (obj.quan > 1) ? doname(obj) : mshot_xname(obj);
+        knm = killer_xname(obj);
+        kprefix = KILLED_BY; /* killer_name supplies "an" if warranted */
+    } else {
+        knm = name;
+        /* [perhaps ought to check for plural here too] */
+        if (/^the /i.test(name) || /^an /i.test(name) || /^a /i.test(name))
+            kprefix = KILLED_BY;
+    }
+    onm = (obj && obj_is_pname(obj)) ? the(name)
+          : (obj && obj.quan > 1) ? name
+            : an(name);
+    const is_acid = !!(obj && obj.otyp === ONAMES.ACID_VENOM);
+
     const dieroll = rnd(20);
-
     if (game.u.uac + tlev <= dieroll) {
         game.mesg_given = (game.mesg_given | 0) + 1;
-        if (game.u.ublind || game.flags?.verbose === false)
+        if (Blind() || game.flags?.verbose === false) {
             await pline('It misses.');
-        else if (game.u.uac + tlev <= dieroll - 2)
-            await pline(`${upstart(onm)} misses you.`);
-        else
+        } else if (game.u.uac + tlev <= dieroll - 2) {
+            onmbuf = onm; /* [modifiable buffer for upstart()] */
+            await pline(`${upstart(onmbuf)} ${vtense(onmbuf, 'miss')} you.`);
+        } else
             await You(`are almost hit by ${onm}.`);
         return 0;
+    } else {
+        if (Blind() || game.flags?.verbose === false)
+            await You(`are hit${exclam(dam)}`);
+        else
+            await You(`are hit by ${onm}${exclam(dam)}`);
+
+        if (is_acid && Acid_resistance()) {
+            await pline("It doesn't seem to hurt you.");
+            monstseesu(M_SEEN_ACID);
+        } else if (obj && stone_missile(obj)
+                   && passes_rocks(game.youmonst.data)) {
+            /* use 'named' as an approximation for "hitting from above";
+               we avoid "passes through you" for horizontal flight path
+               because missile stops and that wording would suggest that
+               it should keep going */
+            await pline(`It ${named ? 'passes harmlessly through' : "doesn't harm"} you.`);
+        } else if (obj && obj.oclass === OCLASSES.POTION_CLASS) {
+            /* an explosion which scatters objects might hit hero with one
+               (potions deliberately thrown at hero are handled by m_throw) */
+            await potionhit(game.youmonst, obj, POTHIT_OTHER_THROW);
+            objp.obj = obj = null; /* potionhit() uses up the potion */
+        } else {
+            if (obj && game.objects[obj.otyp].oc_material === MATERIALS.SILVER
+                && Hate_silver()) {
+                /* extra damage already applied by dmgval() */
+                await pline_The('silver sears your flesh!');
+                exercise(A_CON, false);
+            }
+            if (is_acid) {
+                await pline('It burns!');
+                monstunseesu(M_SEEN_ACID);
+            }
+            await losehp(dam, knm, kprefix); /* acid damage */
+            exercise(A_STR, false);
+        }
+        return 1;
     }
-
-    if (game.u.ublind || game.flags?.verbose === false)
-        await You(`are hit${exclam(dam)}`);
-    else
-        await You(`are hit by ${onm}${exclam(dam)}`);
-
-    await losehp(dam, name, KILLED_BY_AN);
-    exercise(A_STR, false);
-    return 1;
 }
 
 // src/trap.c:7100 trapname()

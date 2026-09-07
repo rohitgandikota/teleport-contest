@@ -172,7 +172,17 @@ use; the simple 'O' menu dispatches symset and whatis_coord; a corridor
 engraving draws inverse (MG_BW_ENGR). Census 499/502; s19-09 now passes and
 the three misses are the old silent drifts (s13-31, s14-23, s17-03).
 
-Next: triage `--seed 21` (recorded), then `--seed 22`; the drift class
+Twelfth round, `--seed 21` (3 failures in 40): fountain and sink counters
+now follow the C's set_levltyp() recount (mkfount/mksink/dryup/breaksink),
+which is what counts a themed room's des.feature("fountain") for the
+dosounds rolls, and a first version that left dryup() on a manual decrement
+regressed three public sessions before fountain.js moved over too;
+thitu()'s whole hit branch (acid "It burns!" and resistance, potion hits,
+silver, killer names) with hates_silver()/Hate_silver added; s21-27 is the
+Hawaiian shirt ubirthday class widening a menu to full screen. Census
+539/542, the three old drifts.
+
+Next: triage `--seed 22` (recorded), then `--seed 23`; the drift class
 needs the C recorder instrumented to log monster positions per turn: add a
 patch under nethack-c/patches that writes each monster's position after
 movemon() to the file named by a new env var, set it in

@@ -142,6 +142,7 @@ import { has_mgivenname, SUPPRESS_SADDLE, ARTICLE_YOUR, ARTICLE_A, ARTICLE_NONE 
 import { distu } from './hacklib.js';
 import { type_is_pname } from './mondata.js';
 import { impossible } from './pline.js';
+import { directionname } from './cmd.js';
 
 // src/hack.c:2996 runmode_delay_output(). Multi-turn actions and running
 // periodically expose their intermediate screen. The default "run" mode
@@ -2092,6 +2093,34 @@ export function notice_mon_on() {
         impossible('mon_notices_blocked<0');
         a11y.mon_notices_blocked = 0;
     }
+}
+
+// src/hack.c:2589 move_out_of_bounds() — trying to move out-of-bounds?
+export async function move_out_of_bounds(x, y) {
+    if (!isok(x, y)) {
+        if (game.context.forcefight)
+            return domove_fight_empty(x, y);
+
+        if (game.flags?.mention_walls) {
+            let dx = game.u.dx, dy = game.u.dy;
+
+            if (dx && dy) { /* diagonal */
+                /* only as far as possible diagonally if in very
+                   corner; otherwise just report whichever of the
+                   cardinal directions has reached its limit */
+                if (isok(x, game.u.uy))
+                    dx = 0;
+                else if (isok(game.u.ux, y))
+                    dy = 0;
+            }
+            await You(`have already gone as far ${
+                directionname(xytodir(dx, dy))} as possible.`);
+        }
+        nomul(0);
+        game.context.move = 0;
+        return true;
+    }
+    return false;
 }
 
 // src/hack.c:1693 u_rooted() — a hero in a form that cannot move

@@ -401,8 +401,16 @@ refusals, set_wear() wiring, the helm of opposite alignment's furies and
 retouch (NOTES "canwearobj(), the ring-finger refusals, set_wear() and the
 helm of opposite alignment").
 
-Next: triage `--seed 55`, then continue the
-note_unported list (hack.js 18, spell.js 20, shk.js 19). tools/jsplay.mjs has a new
+Forty-fourth round: `--seed 55` had three failures; two were port bugs,
+now fixed: monkilled() leaves no corpse for a digested or disintegrated
+victim (NOTES "No corpse when a monster is digested or disintegrated"),
+move_out_of_bounds() with its mention_walls message (NOTES "You have
+already gone as far <dir> as possible."), and newsym()'s hero arm goes
+through feel_location() while blind (NOTES "A blind hero's own square is
+mapped by touch"). s55-06 is a recording-timezone instance.
+
+Next: triage `--seed 56`, then continue the
+note_unported list (read.js 14, potion.js 14, pray.js 13, fountain.js 12). tools/jsplay.mjs has a new
 `--aeval "<await expr>"` flag with the hack.js namespace as `h` for state
 probes. The census script is `tally.sh` in the scratchpad (diverge.mjs
 --screens over tools/gen-sessions/fuzz/*.session.json, 4 at a time).

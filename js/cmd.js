@@ -159,6 +159,7 @@ import { dozap } from './zap.js';
 import { dist2, distmin } from './hacklib.js';
 import { place_object } from './mkobj.js';
 import { trapname, feeltrap } from './trap.js';
+import { move_out_of_bounds } from './hack.js';
 
 // Direction deltas: y u k
 //                   h . l
@@ -2650,8 +2651,10 @@ async function domove_core() {
     const newx = u.ux + dx;
     const newy = u.uy + dy;
 
-    /* src/hack.c:2762 — after move_out_of_bounds(), before the sticky
-       monster check */
+    if (await move_out_of_bounds(newx, newy))
+        return;
+
+    /* src/hack.c:2762 — before the sticky monster check */
     if (avoid_running_into_trap_or_liquid(newx, newy))
         return;
 

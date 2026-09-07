@@ -1366,6 +1366,18 @@ export function newsym(x, y) {
     }
 
     if (game.u?.ux === x && game.u?.uy === y) {
+        /* src/display.c:1043 — out of sight (blind), the hero's own square
+           is mapped by touch: feel_location() applies its own dark-floor
+           rule, `flags.dark_room ? S_darkroom : S_stone`, rather than
+           DARKROOMSYM. The difference shows on the Rogue level, where
+           DARKROOMSYM is S_stone but the Rogue symset draws S_darkroom as
+           '.', so the vacated square stays a dot behind a blind hero. */
+        if (!cansee(x, y)) {
+            feel_location(game.u.ux, game.u.uy); /* forces an update */
+            if (canspotself())
+                display_self();
+            return;
+        }
         /* Hero. Map memory keeps the topmost non-monster layer, so an object
            underfoot is what the cell reverts to after stepping off —
            src/display.c _map_location() sets lev->glyph to the object glyph,

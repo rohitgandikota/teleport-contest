@@ -4614,7 +4614,9 @@ prints a design hashed from o_id ^ ubirthday (read.c:190), which the
 recording does not carry (see "ubirthday"). Seed 51 added s51-18 (the C's
 "There is a full moon in effect." line) and s51-24 ("It is nighttime."),
 and s51-02 is the recorder rc path class (the options help shows
-/var/folders/.../nh-rec-*/home/.nethackrc).
+/var/folders/.../nh-rec-*/home/.nethackrc). Seed 55 added s55-06 (^X "It
+is nighttime." where our clock says the midnight hour; the only miss left
+in seed 55).
 
 ## Fuzz divergence census (2026-09-01, second pass)
 
@@ -7206,3 +7208,40 @@ inventory when the suit's enchantment becomes known. The helm of
 opposite alignment summons the furies (makemon.c:2605 summon_furies(),
 ported) on the Astral Plane or with rn2(50) < abuse, logs "used a helm to
 turn <align>", and retouch_equipment(0) runs when the alignment changed.
+
+## No corpse when a monster is digested or disintegrated
+
+mon.c:2779 monkilled() is now the C body. It first decides
+`disintegested = (how == AD_DGST || how == -AD_RBRE || (how == AD_FIRE &&
+completelyburns(mdef->data)))`, records whether a worm's death was already
+known and whether a pet's death should sadden the hero, and then calls
+mondead() for a disintegested victim (no corpse, no drops) and mondied()
+otherwise. If the victim was life-saved it returns at once. A pet golem that
+dies this way still gets its farewell, "May <name> roast/rust/rot in
+peace.", with the verb chosen by the golem's type. s55-33 diverged here: a
+gas spore's explosion (AD_FIRE) burning a paper golem left a corpse in ours
+and none in the C, so every RNG draw after the death was offset.
+
+## "You have already gone as far <dir> as possible."
+
+hack.c:2130 move_out_of_bounds() is called from domove_core() before the
+trap and liquid avoidance checks. An off-map destination with forcefight set
+goes to domove_fight_empty(); otherwise, with mention_walls on, it prints
+"You have already gone as far <direction> as possible." with the diagonal
+collapsed to the axis that is actually blocked (isok() on the other axis),
+then nomul(0) and context.move = 0 so no time passes. Ours simply ignored
+the key, which desynchronised the turn counter in s55-13 at step 254 when a
+fuzz game pressed 'h' on column 1 with mention_walls set.
+
+## A blind hero's own square is mapped by touch
+
+display.c:1043 newsym(): when the hero's square is NOT in sight (blind), the
+C calls feel_location(u.ux, u.uy) and then display_self(); only the in-sight
+arm uses _map_location(). feel_location() ends with its own dark-floor rule,
+`lev->glyph = flags.dark_room ? S_darkroom : S_stone` for a ROOM square
+remembered as S_room, which is not DARKROOMSYM. On ordinary levels the two
+rules agree, but on the Rogue level DARKROOMSYM is S_stone while the Rogue
+symset draws S_darkroom with the default '.', so behind a blind hero the
+vacated floor stays a dot in the C and went blank in ours (s55-13 step 474:
+arrival by level teleport on the Rogue level while wearing a blindfold, then
+one step west). newsym()'s hero arm now takes the C's out-of-sight path.

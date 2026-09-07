@@ -6013,7 +6013,7 @@ The options help intro prints get_configfile(), the C process's HOME rc
 path. The public sessions carry the judge harness's
 `/Users/davidbau/git/mazesofmenace/teleport/maud/test/comparison/c-harness/resul`
 (cut at the terminal width) and options.js OPT_INTRO_CONFIG reproduces
-that; reading a Hawaiian shirt (s24-23, "The design features ... on a ...
+that; s25-21 is another ^X moon/nighttime instance; reading a Hawaiian shirt (s24-23, "The design features ... on a ...
 background.") is the ubirthday class from the entry above and stays a
 note_unported; a local fuzz recording shows `/var/folders/.../nh-rec-XXXX/home/.nethackrc`
 instead (s22-10). The held-out sessions come from the same harness as the
@@ -6143,3 +6143,74 @@ the goal (gg) of the monster whose track roll differs; a goal that is not
 the hero's mux/muy is an item search result, so compare m_search_items()
 line by line before instrumenting the recorder. The recorder monster-log
 patch was not needed.
+
+## Temple priests: shralign is A_NONE on an unaligned altar
+
+priest.c priestini() sets EPRI(priest)->shralign = Amask2align(altarmask),
+and align.h's Amask2align maps AM_NONE to A_NONE (-128), not to neutral.
+priest.js carried a private Amask2align that returned 0 for "no
+alignment", so a Valley priest (Moloch's unaligned shrine) looked neutral:
+has_shrine() then failed (monmove.js compares against the real helper),
+inhistemple() was false, and temple_priest_sound() never rolled its rn2(3)
+(s25-25). The private helper is gone; priest.js imports const.js's. The
+sanctum Amulet arm ("shralign == A_NONE && on sanctum level") had been
+written as `=== 0` to match the private helper; it now compares against
+A_NONE. That arm was the regression the census caught (s22-12, seed0360:
+wizard-mode games that reach the sanctum): with the helper fixed and the
+arm still `=== 0`, the high priest lost the Amulet and the RNG shifted by
+the amulet's mksobj draws. Lesson: when a local copy of a C macro is
+replaced, grep for every comparison written against the copy's wrong
+outputs.
+
+## dochug(): killer bees eat royal jelly, gelatinous cubes digest
+
+monmove.c dochug() PHASE THREE opens with two 5.0 arms: a killer bee
+standing on a lump of royal jelly with no queen on the level eats it
+(splitobj/delobj, m_lev raised to queen-1, grow_up(), then mfrozen for
+3/5/7 turns by BUC), and a gelatinous cube digests the first organic,
+non-artifact, non-prize object in its inventory (eaten_stat, extract from
+minvent, m_consume_obj). Neither existed in the port (s25-24: delobj's
+obj_resists rn2(100) then grow_up's rnd(8)). bee_eat_jelly() and
+gelcube_digests() live in monmove.js with a local find_pmmonst() and
+is_organic(); their helpers are imported dynamically (static imports of
+mkobj/mon/makemon/objnam/invent/worn from monmove.js were tried first and
+were harmless, but the dynamic form keeps the module graph as it was).
+
+## Status conditions shrink before they truncate
+
+wintty.c tty_status_update(): the second status row must fit in cols - 1
+cells; when it does not, condition names fall back to their second and
+then third text (botl.c conditions[] txt2/txt3: Strngl/Stngl/Str,
+Slime/Slim/Slm, Stone/Ston/Sto, TermIll/Ill/Ill, FoodPois/Fpois/Poi,
+Blind/Blnd/Bl, Conf/Cnf/Cf, Deaf/Def/Df, Fly/Fly/Fl, Hallu/Hal/Hl,
+Lev/Lev/Lv, Ride/Rid/Rd, Stun/Stun/St, InLava/Lav/La) before anything
+else is shrunk. Ours printed the long names and let the terminal clip
+them (s25-34, a wizintrinsic pile-up). Conditions are ordered by the
+conditions[] ranking with a case-insensitive useroption tie-break (Strngl
+4; FoodPois/Slime/Stone/TermIll 6; InLava 8; the rest 10). bot_conditions()
+now takes the shrink level and _statusLine2() tries 0, 1, 2. The
+encumbrance-word and Dlvl shrinking that follows level 2 is not ported.
+
+## #wizintrinsic writes the canonical fields and calls float_vs_flight()
+
+wizcmds.c wiz_intrinsic(): every property goes through
+incr_itimeout(&u.uprops[p].intrinsic); afterwards LEVITATION and FLYING
+call float_vs_flight() (Levitation blocks Fly on the status line via
+BFlying's I_SPECIAL), PROT_FROM_SHAPE_CHANGERS calls rescham(), and
+WWALKING/LEVITATION/FLYING run pooleffects() when in water. Our default
+arm stored a side table plus uprops[key]; STRANGLED now increments
+intrinsic.HStrangled (timeout.js and botl.js read it) and the tail is
+ported (s25-34: "Strngl" missing, "Fl" shown).
+
+## Character selection menus: RET means random, capitals are group keys
+
+role.c genl_player_setup(): at each of the four PICK_ONE menus a <return>
+or <space> with nothing selected makes select_menu() return 0 and the C
+uses ROLE_RANDOM ("choice = (n == 0) ? ROLE_RANDOM : ROLE_NONE"); ours
+returned ROLE_NONE and quit (s12-31, s17-07, s21-37, s24-03). The
+setup_*menu() entries carry the capital of their letter as the group
+accelerator (add_menu gch = highc(this_ch)), and tty PICK_ONE accepts a
+group accelerator that matches exactly one entry (invert_all, then
+finished), so 'N' picks neutral and 'C' chaotic while 'X' is ignored;
+verified by recording three probes with the recorder. plselect.js's
+select_menu_pick_one() now honours both rules.

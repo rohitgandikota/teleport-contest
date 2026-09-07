@@ -6,6 +6,7 @@
 
 import { ATTKS } from './monst_data.js';
 import { BZ_OFS_AD } from './const.js';
+import { Amask2align } from './const.js';
 import { IS_DOOR } from './const.js';
 import { u_at } from './const.js';
 import { EPRI } from './const.js';
@@ -102,7 +103,7 @@ export function priestini(lvl, sroom, sx, sy, sanctum) {
            itself (fake towers pass sanctum=FALSE) */
         {
             const sl = game.special_levels?.sanctum_level;
-            if (sanctum && priest.epri.shralign === 0
+            if (sanctum && priest.epri.shralign === A_NONE
                 && sl && game.u.uz.dnum === sl.dnum
                 && game.u.uz.dlevel === sl.dlevel)
                 mongets(priest, ONAMES.AMULET_OF_YENDOR);
@@ -120,12 +121,6 @@ export function priestini(lvl, sroom, sx, sy, sanctum) {
     }
 }
 
-/* include/align.h Amask2align() */
-function Amask2align(amask) {
-    const AM_LAWFUL = 4, AM_NEUTRAL = 2, AM_CHAOTIC = 1;
-    return (amask & AM_LAWFUL) ? 1 : (amask & AM_NEUTRAL) ? 0
-         : (amask & AM_CHAOTIC) ? -1 : 0 /* A_NONE-ish */;
-}
 
 // src/priest.c:280 mon_aligntyp(); special alignments override the species.
 export function mon_aligntyp(mon) {

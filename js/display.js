@@ -1880,7 +1880,18 @@ function _statusLine2() {
         if (f.showexp) s += `/${u.uexp || 0}`;
     }
     if (f.time) s += ` T:${game.moves || 1}`;
-    s += bot_conditions();
+    /* win/tty/wintty.c:4585 tty_status_update()/check_fields(): the row
+       must fit in cols - 1 cells; when it does not, the condition names
+       shrink to their second and then third form (cond_shrinklvl 1, 2)
+       before anything else is tried.  (The further encumbrance/dlvl
+       shrinking that follows level 2 is not ported.) */
+    {
+        const cols = game.nhDisplay?.cols ?? 80;
+        let conds = bot_conditions(0);
+        for (let lvl = 1; lvl <= 2 && (s + conds).length > cols - 1; lvl++)
+            conds = bot_conditions(lvl);
+        s += conds;
+    }
     /* src/botl.c:1259 bot_via_windowport(), BL_TERRAIN: " %s" of
        terrain_descr[iflags.terrain_typ]; an unset type is classified first.
        (BL_WEAPON and BL_ARMOR, the 'weaponstatus'/'armorstatus' fields that

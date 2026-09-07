@@ -219,11 +219,18 @@ can_touch_safely() filters (NOTES "The silent monster drifts were
 m_search_items() filters"); with them s13-31, s14-23 and s17-03 match every
 screen and the recorder monster log was never needed.
 
-Next: triage `--seed 25` (recorded: s25-24 obj_resists, s25-25
-temple_priest_sound in the census), then `--seed 26`. The remaining census
-miss class is the tty character-selection menu (s12-31, s17-07, s21-37,
-s24-03: pick_role/pick_align at the "Pick a role" menus; compare role.c's
-menu code from role.c:2280 with js/plselect.js). Then return to the
+Seventeenth round, `--seed 25` (4 failures in 40, 3 fixed) and the
+character-selection class: killer bees eat royal jelly and gelatinous
+cubes digest (s25-24); priest shralign through the real Amask2align with
+the sanctum arm compared to A_NONE (s25-25, and the census-caught
+regression on s22-12/seed0360); status conditions shrink to their short
+names and #wizintrinsic writes HStrangled and calls float_vs_flight()
+(s25-34); s25-21 is the nighttime class. The four "anyrole-menu" census
+misses were <return> on an empty PICK_ONE menu (ROLE_RANDOM in C) and the
+capital-letter group accelerators; s24-03 still differs in its last three
+screens (':' menu search then ESC, see NOTES).
+
+Next: triage `--seed 26` (recording), then `--seed 27`. Then return to the
 note_unported list (hack.js 19, spell.js 20, shk.js 19). tools/jsplay.mjs has a new
 `--aeval "<await expr>"` flag with the hack.js namespace as `h` for state
 probes. The census script is `tally.sh` in the scratchpad (diverge.mjs

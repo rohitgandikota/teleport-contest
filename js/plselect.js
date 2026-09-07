@@ -1,4 +1,5 @@
 import { PL_NSIZ, PICK_ONE } from './const.js';
+import { pmatchi } from './hacklib.js';
 // plselect.js — interactive character selection.
 // C ref: src/role.c genl_player_setup() (:2206) and tty_askname().
 //
@@ -482,10 +483,46 @@ async function select_menu_pick_one(win) {
         if (c === ' ' || c === '\n' || c === '\r') {
             for (let it = cw.mlist; it; it = it.next)
                 if (it.identifier && it.selected) return it.identifier;
-            return ROLE_NONE;
+            /* src/role.c:2341 — select_menu() returned n == 0 (nothing
+               chosen): "choice = (n == 0) ? ROLE_RANDOM : ROLE_NONE" */
+            return ROLE_RANDOM;
+        }
+        if (c === ':') {
+            /* win/tty/wintty.c MENU_SEARCH: prompt on the top line, then
+               the first entry whose text matches *pattern* is chosen
+               (toggle_menu_curr, and PICK_ONE finishes); an empty or
+               escaped line leaves the menu waiting */
+            const { getlin } = await import('./cmd.js');
+            const tmpbuf = await getlin('Search for:', null);
+            if (!tmpbuf || tmpbuf[0] === '\x1b') continue;
+            const searchbuf = `*${tmpbuf}*`;
+            for (let it = cw.mlist; it; it = it.next)
+                if (it.identifier && pmatchi(searchbuf, it.str))
+                    return it.identifier;
+            /* back to the menu: dmore() parks the cursor after the footer */
+            {
+                const items = menu_page_items(win, cw.curr_page || 0);
+                const morestr = (cw.npages > 1)
+                    ? `(${cw.curr_page + 1} of ${cw.npages})` : cw.morestr;
+                game?.nhDisplay?.setCursor(cw.offx + 1 + morestr.length,
+                                           cw.offy + items.length);
+            }
+            continue;
         }
         for (let it = cw.mlist; it; it = it.next)
             if (it.identifier && it.selector === c) return it.identifier;
+        /* win/tty/wintty.c:1348 — group accelerators (the capital letters
+           setup_*menu() pass as gch) are accepted for PICK_ONE only when
+           they match exactly one entry; invert_all() then selects it and
+           the menu finishes */
+        let match = null, nmatch = 0;
+        for (let it = cw.mlist; it; it = it.next)
+            if (it.identifier && it.gselector && it.gselector !== it.selector
+                && it.gselector === c) {
+                match = it;
+                nmatch++;
+            }
+        if (nmatch === 1) return match.identifier;
         /* anything else is ignored and the menu waits for another key */
     }
 }

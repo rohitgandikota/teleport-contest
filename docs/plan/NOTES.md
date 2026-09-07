@@ -4616,7 +4616,7 @@ recording does not carry (see "ubirthday"). Seed 51 added s51-18 (the C's
 and s51-02 is the recorder rc path class (the options help shows
 /var/folders/.../nh-rec-*/home/.nethackrc). Seed 55 added s55-06 (^X "It
 is nighttime." where our clock says the midnight hour; the only miss left
-in seed 55).
+in seed 55), and seed 56 added s56-31 (the same ^X line).
 
 ## Fuzz divergence census (2026-09-01, second pass)
 
@@ -7245,3 +7245,32 @@ symset draws S_darkroom with the default '.', so behind a blind hero the
 vacated floor stays a dot in the C and went blank in ours (s55-13 step 474:
 arrival by level teleport on the Rogue level while wearing a blindfold, then
 one step west). newsym()'s hero arm now takes the C's out-of-sight path.
+
+## A vampire's fog shift flushes the message window even when unseen
+
+monmove.c:2377 vamp_shift() wraps the newcham() that turns a vampshifter
+into a fog cloud so it can pass under a closed door. After the change it
+calls display_nhwindow(WIN_MESSAGE, FALSE) unconditionally, so a topline
+that still needs acknowledgement gets its --More-- right there, in the
+middle of the monster phase, even when the vampire was never in sight and
+no message was printed. s56-09 showed it: two out-of-sight sounds ("You
+hear a masticating sound.  You hear a chugging sound.") were followed by a
+--More-- with the map and turn counter still at their pre-move state, and
+nothing on the top line after it. postmov() now carries the C's seenflgs
+(canseemon | canspotmon << 1, computed in m_move() before the move) and,
+when set, moves the monster back to its old square around the shift so
+the message lands at the right time; newcham() gets NC_SHOW_MSG only when
+the monster was actually seen (seenflgs & 1).
+
+## Diagonal doorway refusals come from test_move, with their message
+
+cmd.js's blocksMove() pre-screens the destination before domove(). Its
+diagonal doorway arms (into an intact doorway, hack.c:1140; out of one,
+hack.c:1208) returned "blocked" on their own, so the C's DO_MOVE feedback
+never ran: feel_location() when blind and "You can't move diagonally
+into/out of an intact doorway." under Underwater or mention_walls. Both
+arms now call test_move(DO_MOVE) like the obstruction and boulder arms, and
+the out-of arm also picks up block_entry() (a shopkeeper blocking a
+diagonal entry through a broken door). s56-11: a shifted 'N' from an open
+door square with mention_walls set printed the message in the C and
+nothing in ours.

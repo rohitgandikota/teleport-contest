@@ -244,18 +244,16 @@ async function blocksMove(x, y, dx, dy) {
         return true;
     }
     /* src/hack.c:1140 test_move() — diagonal moves into an intact doorway
-       are not allowed (block_door boulder check needs Sokoban state) */
-    if (dx && dy && !Passes_walls() && IS_DOOR(loc.typ)) {
-        if (!doorless_door(x, y))
-            return true;
-        const { block_door } = await import('./shk.js');
-        if (await block_door(x, y))
-            return true;
-    }
-    /* src/hack.c:1208 — nor diagonal moves OUT of one */
+       are not allowed, and src/hack.c:1208 nor diagonal moves OUT of one.
+       Both refusals are test_move's DO_MOVE arms: they feel the location
+       when blind and print "You can't move diagonally into/out of an
+       intact doorway." under Underwater or mention_walls. */
     const ust = game.level?.at(game.u.ux, game.u.uy);
-    if (dx && dy && !Passes_walls() && ust && IS_DOOR(ust.typ)
-        && !doorless_door(game.u.ux, game.u.uy)) return true;
+    if (dx && dy && !Passes_walls()
+        && (IS_DOOR(loc.typ) || (ust && IS_DOOR(ust.typ)))) {
+        const { test_move } = await import('./hack.js');
+        return !(await test_move(game.u.ux, game.u.uy, dx, dy, DO_MOVE));
+    }
     /* src/hack.c:1216 — a boulder is pushed (moverock) or chewed inside
        test_move's DO_MOVE arm; a failed push blocks the move like terrain */
     if (sobj_at(ONAMES.BOULDER, x, y)

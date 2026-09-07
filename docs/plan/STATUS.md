@@ -409,7 +409,15 @@ already gone as far <dir> as possible."), and newsym()'s hero arm goes
 through feel_location() while blind (NOTES "A blind hero's own square is
 mapped by touch"). s55-06 is a recording-timezone instance.
 
-Next: triage `--seed 56`, then continue the
+Forty-fifth round: `--seed 56` had three failures; s56-31 is a
+recording-timezone instance, the other two were port bugs, now fixed:
+vamp_shift() with its unconditional message-window flush and the seenflgs
+plumbing through postmov() (NOTES "A vampire's fog shift flushes the
+message window even when unseen"), and blocksMove()'s diagonal doorway arms
+routed through test_move(DO_MOVE) for the mention_walls message (NOTES
+"Diagonal doorway refusals come from test_move, with their message").
+
+Next: triage `--seed 57`, then continue the
 note_unported list (read.js 14, potion.js 14, pray.js 13, fountain.js 12). tools/jsplay.mjs has a new
 `--aeval "<await expr>"` flag with the hack.js namespace as `h` for state
 probes. The census script is `tally.sh` in the scratchpad (diverge.mjs

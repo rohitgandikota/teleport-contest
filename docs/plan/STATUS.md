@@ -428,8 +428,15 @@ and asks again"); also ported ghost_from_bottle, djinni_from_bottle,
 mongrantswish and dodrink's worn-stack arm (NOTES "Milky and smoky
 potions: ghost_from_bottle, djinni_from_bottle, the worn stack").
 
-Next: triage `--seed 59`, then continue the
-note_unported list (pray.js 13, fountain.js 12, potion.js 10, read.js 10). tools/jsplay.mjs has a new
+Forty-eighth round: `--seed 59` had one failure, a recording-timezone
+instance (s59-19). Ported the rest of #offer: eval_offering, offer_corpse,
+offer_different_alignment_altar's conversion arm, sacrifice_your_race's
+desecration and stain arms, bestow_artifact, sacrifice_value, prayer_done's
+-2/-1 arms, and attrib.c's uchangealign (NOTES "The sacrifice arms:
+conversion, desecration, blood stains, gifts"). pray.js has no notes left.
+
+Next: triage `--seed 60`, then continue the
+note_unported list (fountain.js 12, potion.js 10, read.js 10, cmd.js 10). tools/jsplay.mjs has a new
 `--aeval "<await expr>"` flag with the hack.js namespace as `h` for state
 probes. The census script is `tally.sh` in the scratchpad (diverge.mjs
 --screens over tools/gen-sessions/fuzz/*.session.json, 4 at a time).

@@ -4616,7 +4616,8 @@ recording does not carry (see "ubirthday"). Seed 51 added s51-18 (the C's
 and s51-02 is the recorder rc path class (the options help shows
 /var/folders/.../nh-rec-*/home/.nethackrc). Seed 55 added s55-06 (^X "It
 is nighttime." where our clock says the midnight hour; the only miss left
-in seed 55), and seed 56 added s56-31 (the same ^X line).
+in seed 55), and seed 56 added s56-31 and seed 59 added s59-19 (the same
+^X line).
 
 ## Fuzz divergence census (2026-09-01, second pass)
 
@@ -7342,3 +7343,50 @@ you trying to use ^X as specified in the Guidebook?" with the command's
 description from pager.c dowhatdoes_core() (now a real function in
 pager.js that dowhatdoes() shares), wizard-only letters EFGIVW only in
 wizard mode. getdir(NULL), the common caller, passes sym 0 and skips it.
+
+## The sacrifice arms: conversion, desecration, blood stains, gifts
+
+pray.c's #offer is now complete except for nothing that draws. eval_offering()
+(pray.c:1900) is the undead and unicorn valuation: +1 for undead (a wraith
+also for a chaotic who eats meat), the unicorn insult ("Such an action is an
+insult to law/balance/chaos!", -1 Wis, value -1), the coaligned bonus ("You
+feel appropriately <align>." below ALIGNLIM, else "thoroughly on the right
+path", adjalign(5), +3), the own-alignment unicorn on a foreign altar
+(record set to -1, value 1) and the cross-aligned +3. offer_corpse()
+(pray.c:1959) logs the first gnostic conduct break with the corpse name,
+feels a cockatrice corpse, lets a Rider revive, sends a former pet's corpse
+("So this is how you repay loyalty?", adjalign(-3), intrinsic aggravate)
+through offer_negative_valued(), and has the C's hallucinatory variants
+("groovy", "cosmic (not a new fact)", "The gods seem tall.", "You realize
+that the gods are not like you and I.", "Overall, there is a smell of fried
+onions.") plus the "brushed your foot"/"crabgrass"/"four-leaf clover" luck
+messages with body_part(FOOT). offer_different_alignment_altar()
+(pray.c:1631) gains the angry-god arm: with an unconverted alignment base
+the hero converts ("... accepts your allegiance.", uchangealign(altaralign,
+A_CG_CONVERT), luck -3, ublesscnt +300), otherwise ugangr +3, adjalign(-5),
+"rejects your sacrifice!", "Suffer, infidel!", luck -5, Wis -2 and
+angrygods() outside Gehennom; the conflict arm now summons a minion
+(summon_minion(altaralign, TRUE)) on the C's rnl/rnd test and angers the
+temple priest only when one is present and not coaligned
+(findpriest(temple_occupied(u.urooms)), now exported from priest.js).
+sacrifice_your_race() (pray.c:1698) desecrates a high altar through
+desecrate_altar() and stains a lawful or neutral altar ("The altar is
+stained with <race> blood.", altarmask AM_CHAOTIC, angry priest) and then
+falls through to the common alignment penalty, which ours skipped.
+bestow_artifact() (pray.c:1781) is the C gift: chance !rn2(6 + 2 * ugifts
+* nartifact_exist()) (debug mode asks), mk_artifact(NULL, a_align(), value,
+TRUE), artifact_origin(ONAME_GIFT | ONAME_KNOW_ARTI), spe floored at 0,
+uncursed, erodeproof, "<An object> named <Name> appears at your feet!",
+dropy(), "Use my gift wisely!", ugifts++, ublesscnt = rnz(300 + 50 *
+nartifacts), the LL_DIVINEGIFT log, unrestrict_weapon_skill(weapon_type()),
+and the observe/makeknown/discover trio when the hero can see.
+sacrifice_value() (pray.c:1839) uses peek_at_iced_corpse_age() and
+eaten_stat(). prayer_done() (pray.c:2276) gains its p_type -2 arm
+(unaligned altar: "You hear/intuit diabolical laughter all around you...",
+wake_nearby, adjalign(-2), "Nothing else happens." outside Gehennom) and -1
+arm (undead form: the god's rebuke, rehumanize(), losehp(rnd(20)), Con
+abuse). attrib.c:1320 uchangealign() now lives in attrib.js with all three
+reasons (A_CG_CONVERT logs "permanently converted to <align>", sets
+ualignbase[A_CURRENT], lets a worn helm of opposite alignment block the
+type change, and says "You have a (sudden) sense of a new direction.");
+do_wear.js's helm arms call it instead of a local copy.

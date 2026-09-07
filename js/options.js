@@ -45,6 +45,11 @@ import { fruit_from_name, makesingular, makeplural, OBJ_NAME } from './objnam.js
 import { name_to_mon } from './mondata.js';
 import { sanitize_name } from './bones.js';
 import { rnd } from './rng.js';
+import { def_char_to_monclass } from './drawing.js';
+import { visctrl } from './hacklib.js';
+import { MAXMCLASSES, SYM_OFF_X, go_ov_primary_syms, go_ov_rogue_syms, escapes } from './symbols.js';
+import { WARNCOUNT, SYM_BOULDER } from './const.js';
+import { NUM_DISCLOSURE_OPTIONS, DISCLOSE_PROMPT_DEFAULT_YES, DISCLOSE_PROMPT_DEFAULT_NO, DISCLOSE_PROMPT_DEFAULT_SPECIAL, DISCLOSE_YES_WITHOUT_PROMPT, DISCLOSE_NO_WITHOUT_PROMPT, DISCLOSE_SPECIAL_WITHOUT_PROMPT } from './const.js';
 
 function note_unported_options(what) {
     (game.unported ||= new Set()).add('options:' + what);
@@ -507,6 +512,43 @@ export function parseoptions(opts, tinitial, tfrom_file, result) {
             }
         }
         result.opts.end_disclose = end.join('');
+        result.opts[opt.name] = value;
+    } else if (opt.name === 'boulder') {
+        /* src/options.c:1171 optfn_boulder(), the do_set arm: boulder:symbol */
+        let op = value ?? '';   /* string_for_opt(opts, FALSE) */
+        if (op === '')
+            return false;
+        op = escapes(op);
+        /* note: dummy monclass #0 has symbol value '\0'; we allow that--
+           attempting to set bouldersym to '^@'/'\0' will reset to default */
+        const c0 = op.length ? op.charCodeAt(0) : 0;
+        let clash = 0;
+        if (def_char_to_monclass(op[0] ?? '\0') !== MAXMCLASSES)
+            clash = c0 ? 1 : 0;
+        else if (c0 >= 0x31 /* '1' */ && c0 < WARNCOUNT + 0x30 /* '0' */)
+            clash = 2;
+        if (c0 < 0x20) {
+            config_error_add('boulder symbol cannot be a control character');
+            return true;        /* optn_ok */
+        } else if (clash) {
+            /* symbol chosen matches a used monster or warning
+               symbol which is not good - reject it */
+            config_error_add(`Badoption - boulder symbol '${visctrl(op[0])}' would conflict `
+                             + `with a ${(clash === 1) ? 'monster' : 'warning'} symbol`);
+        } else {
+            /*
+             * Override the default boulder symbol.
+             */
+            go_ov_primary_syms[SYM_BOULDER + SYM_OFF_X] = c0;
+            go_ov_rogue_syms[SYM_BOULDER + SYM_OFF_X] = c0;
+            game.boulder_symbol = op[0];
+            /* for 'initial', update of BOULDER symbol is done in
+               initoptions_finish(), after all symset options
+               have been processed; gs.showsyms[SYM_BOULDER + SYM_OFF_X] is
+               read through get_othersym() in this port */
+            if (!tinitial)
+                game.opt_need_redraw = true;
+        }
         result.opts[opt.name] = value;
     } else if (opt.name === 'scores') {
         /* src/options.c:3669 optfn_scores(), the do_set arm:
@@ -1092,6 +1134,8 @@ export const iflag_boolean_options = new Set([
     'autodescribe', 'cmdassist', 'fireassist', 'menu_overlay', 'menu_tab_sep',
     'debug_hunger', 'debug_mongen', 'debug_overwrite_stairs',
     'menucolors', /* iflags.use_menu_color */
+    'whatis_menu', /* iflags.getloc_usemenu */
+    'whatis_moveskip', /* iflags.getloc_moveskip */
 ]);
 
 function bool_opt_store(name) {
@@ -1306,8 +1350,12 @@ function get_option_value(o) {
     }
     case 'soundlib':                /* src/options.c:3824 optfn_soundlib */
         return 'nosound';           /* get_soundlib_name(): no soundlib built */
-    case 'boulder':                 /* src/options.c optfn_boulder */
-        return game.boulder_symbol || '`';
+    case 'boulder':                 /* src/options.c:1240 optfn_boulder */
+        /* go.ov_primary_syms[SYM_BOULDER + SYM_OFF_X] else
+           gs.showsyms[objects[BOULDER].oc_class + SYM_OFF_O] */
+        return go_ov_primary_syms[SYM_BOULDER + SYM_OFF_X]
+               ? String.fromCharCode(go_ov_primary_syms[SYM_BOULDER + SYM_OFF_X])
+               : def_oc_syms[OCLASSES.ROCK_CLASS];
     case 'crash_urlmax':            /* src/options.c optfn_crash_urlmax */
         return String(game.crash_urlmax ?? -1);     /* decl.c:261 default */
     case 'disclose': {              /* src/options.c optfn_disclose */
@@ -1619,6 +1667,9 @@ async function doset_simple_menu() {
                        whose option handler validates the typed value */
                     await parseoptions_interactive(`${allopt[k].name}:${abuf}`);
                 }
+            } else if (allopt[k].name === 'disclose') {
+                /* src/options.c optfn_disclose() do_handler */
+                await handler_disclose();
             } else if (allopt[k].name === 'pickup_types') {
                 /* compound option with a handler: src/options.c:6114
                    handler_pickup_types() just re-enters parseoptions with a
@@ -1861,6 +1912,90 @@ async function cond_menu() {
     }
 }
 
+/* src/options.c handler_disclose() — the disclose option's do_handler:
+   pick categories, then a prompt style for each */
+async function handler_disclose() {
+    /* order of disclose_names[] must correspond to
+       disclosure_options in decl.c */
+    const disclosure_names = [
+        'inventory', 'attributes', 'vanquished',
+        'genocides', 'conduct',    'overview',
+    ];
+    const disclosure_options = 'iavgco';        /* decl.c:54 */
+    const disc_cat = new Array(NUM_DISCLOSURE_OPTIONS).fill(0);
+    const clr = NO_COLOR;
+    const end_disclose = (game.flags.end_disclose || 'nnnnnn').split('');
+
+    let tmpwin = tty_create_nhwindow(NHW_MENU);
+    tty_start_menu(tmpwin, MENU_BEHAVE_STANDARD);
+    for (let i = 0; i < NUM_DISCLOSURE_OPTIONS; i++) {
+        const buf = `${disclosure_names[i].padEnd(12)}[${end_disclose[i]}${
+            disclosure_options[i]}]`;
+        tty_add_menu(tmpwin, null, i + 1, disclosure_options[i],
+                     0, ATR_NONE, clr, buf, MENU_ITEMFLAGS_NONE);
+        disc_cat[i] = 0;
+    }
+    tty_end_menu(tmpwin, 'Change which disclosure options categories:');
+    const picks = await tty_select_menu(tmpwin, PICK_ANY);
+    for (const pick of picks)
+        disc_cat[pick - 1] = 1;
+    tty_destroy_nhwindow(tmpwin);
+
+    for (let i = 0; i < NUM_DISCLOSURE_OPTIONS; i++) {
+        if (disc_cat[i]) {
+            const c = end_disclose[i];
+            const buf = `Disclosure options for ${disclosure_names[i]}:`;
+            tmpwin = tty_create_nhwindow(NHW_MENU);
+            tty_start_menu(tmpwin, MENU_BEHAVE_STANDARD);
+            /* 'y','n',and '+' work as alternate selectors; '-' doesn't */
+            let a_char = DISCLOSE_NO_WITHOUT_PROMPT;
+            tty_add_menu(tmpwin, null, a_char, 0, a_char, ATR_NONE, clr,
+                         'Never disclose, without prompting',
+                         (c === a_char) ? MENU_ITEMFLAGS_SELECTED
+                                        : MENU_ITEMFLAGS_NONE);
+            a_char = DISCLOSE_YES_WITHOUT_PROMPT;
+            tty_add_menu(tmpwin, null, a_char, 0, a_char, ATR_NONE, clr,
+                         'Always disclose, without prompting',
+                         (c === a_char) ? MENU_ITEMFLAGS_SELECTED
+                                        : MENU_ITEMFLAGS_NONE);
+            if (disclosure_names[i][0] === 'v' || disclosure_names[i][0] === 'g') {
+                a_char = DISCLOSE_SPECIAL_WITHOUT_PROMPT; /* '#' */
+                tty_add_menu(tmpwin, null, a_char, 0, a_char, ATR_NONE, clr,
+                             'Always disclose, pick sort order from menu',
+                             (c === a_char) ? MENU_ITEMFLAGS_SELECTED
+                                            : MENU_ITEMFLAGS_NONE);
+            }
+            a_char = DISCLOSE_PROMPT_DEFAULT_NO;
+            tty_add_menu(tmpwin, null, a_char, 0, a_char, ATR_NONE, clr,
+                         'Prompt, with default answer of "No"',
+                         (c === a_char) ? MENU_ITEMFLAGS_SELECTED
+                                        : MENU_ITEMFLAGS_NONE);
+            a_char = DISCLOSE_PROMPT_DEFAULT_YES;
+            tty_add_menu(tmpwin, null, a_char, 0, a_char, ATR_NONE, clr,
+                         'Prompt, with default answer of "Yes"',
+                         (c === a_char) ? MENU_ITEMFLAGS_SELECTED
+                                        : MENU_ITEMFLAGS_NONE);
+            if (disclosure_names[i][0] === 'v' || disclosure_names[i][0] === 'g') {
+                a_char = DISCLOSE_PROMPT_DEFAULT_SPECIAL; /* '?' */
+                tty_add_menu(tmpwin, null, a_char, 0, a_char, ATR_NONE, clr,
+                             'Prompt, with default answer of "Ask" to request sort menu',
+                             (c === a_char) ? MENU_ITEMFLAGS_SELECTED
+                                            : MENU_ITEMFLAGS_NONE);
+            }
+            tty_end_menu(tmpwin, buf);
+            const npicks = await tty_select_menu(tmpwin, PICK_ONE);
+            if (npicks.length > 0) {
+                end_disclose[i] = npicks[0];
+                if (npicks.length > 1 && end_disclose[i] === c)
+                    end_disclose[i] = npicks[1];
+                game.flags.end_disclose = end_disclose.join('');
+            }
+            tty_destroy_nhwindow(tmpwin);
+        }
+    }
+    return true; /* optn_ok */
+}
+
 /* src/windows.c:1816 add_menu_heading() — non-selectable line in
    iflags.menu_headings style (ATR_INVERSE + NO_COLOR by default). */
 export function add_menu_heading(tmpwin, buf) {
@@ -2094,6 +2229,9 @@ export async function doset() {
                 await handler_whatis_coord();
             } else if (o.hasHandler === 'Yes' && o.name === 'petattr') {
                 await handler_petattr();
+            } else if (o.hasHandler === 'Yes' && o.name === 'disclose') {
+                /* src/options.c optfn_disclose() do_handler */
+                await handler_disclose();
             } else if (o.name === 'menu colors') {
                 /* src/options.c:8383 optfn_o_menu_colors() do_handler */
                 await handler_menu_colors();

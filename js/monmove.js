@@ -2154,14 +2154,22 @@ async function postmov(mtmp, ptr, omx, omy, mmoved, can_tunnel) {
         if (here && DOOR === here.typ /* IS_DOOR */
             && !passes_walls(ptr) && !can_tunnel) {
             const btrapped = (here.doormask & D_TRAPPED) !== 0;
-            const canseeit = cansee(mtmp.mx, mtmp.my);
+            /* src/monmove.c:1467 — canseeit is taken before the door
+               changes; UnblockDoor() below refreshes it */
+            let canseeit = cansee(mtmp.mx, mtmp.my);
+            const didseeit = canseeit;
 
             /* magic-key disarm: no monster carries the Key yet */
+            /* src/monmove.c:1528 UnblockDoor(): used after monster 'who'
+               has been moved to closed door spot 'where' which will now be
+               changed to door state 'what' with map update */
             const openit = async (what) => {
                 here.doormask = what;
                 newsym(mtmp.mx, mtmp.my);
                 recalc_block_point(mtmp.mx, mtmp.my);
                 vision_recalc(0);
+                /* update cached value since it might change */
+                canseeit = didseeit || cansee(mtmp.mx, mtmp.my);
             };
             if ((here.doormask & (D_LOCKED | D_CLOSED)) !== 0
                 && amorphous(ptr)) {

@@ -728,7 +728,7 @@ export async function test_move(ux, uy, dx, dy, mode) {
 
     /* Now see if other things block our way . . */
     if (dx && dy && !passesWalls && IS_DOOR(ust.typ)
-        && (!doorless_door(ux, uy) || block_entry(x, y))) {
+        && (!doorless_door(ux, uy) || await block_entry(x, y))) {
         /* Can't move at a diagonal out of a doorway with door. */
         if (mode === DO_MOVE && game.flags?.mention_walls)
             await pline("You can't move diagonally out of an intact doorway.");

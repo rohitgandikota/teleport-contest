@@ -4611,7 +4611,10 @@ nighttime." where our clock says the midnight hour) and s48-34 (ours prints
 s49-07 (nighttime vs midnight hour again; the only miss in seed 49).
 s50-13 belongs to the ubirthday class: reading a Tourist's Hawaiian shirt
 prints a design hashed from o_id ^ ubirthday (read.c:190), which the
-recording does not carry (see "ubirthday").
+recording does not carry (see "ubirthday"). Seed 51 added s51-18 (the C's
+"There is a full moon in effect." line) and s51-24 ("It is nighttime."),
+and s51-02 is the recorder rc path class (the options help shows
+/var/folders/.../nh-rec-*/home/.nethackrc).
 
 ## Fuzz divergence census (2026-09-01, second pass)
 
@@ -7038,3 +7041,55 @@ hero) and the blessed arm, deadbook_pacify_undead() over every on-map
 monster: undead or vampshifters in view become peaceful, and are tamed or
 gain tameness when their alignment sign matches the hero's within
 mdistu 4, otherwise monflee(0, FALSE, TRUE).
+
+## Shopkeeper entry dialogue, blocking, and block_entry()'s door test
+
+shk.c u_entered_shop(): after the customer/visitct bookkeeping the
+greeting has four arms: an angry keeper ("So, <name>, you dare return to
+<shk>'s <shop>?!", or when deaf/mute "<Shk> seems <quite upset|ticked
+off|furious> over your return to <his> <shop>!", which draws rn2(3)), a
+surcharged one ("Back again, <name>?  I've got my eye on you." / "The
+atmosphere at <shk>'s <shop> seems unwelcoming."), a robbed one ("<Shk>
+mutters imprecations against shoplifters." / "is combing through <his>
+inventory list."), and the welcome with visitct++. Then, unless the hero
+teleported inside, a pick-axe or mattock ("Will you please leave your
+<tool>s outside?" / "Leave the ... outside." when surcharged; the mattock
+becomes known), a steed ("Will you please leave <steed> outside?"), or
+(Fast with a pick on the floor) sets should_block and gives the keeper
+dochug(). Ours returned before the angry/surcharge/robbed arms and never
+had the blocking section. shop_keeper() now riles an angry keeper without
+a surcharge (rile_shk was ported but never called). block_entry()
+compared the hero's doormask with 4 (D_CLOSED) for "broken door"; D_BROKEN
+is 1, so it never fired; it now carries the C test (keeper on post, next
+to the target square, hero Invis or carrying a pick/mattock or riding)
+with "<Shk> senses your motion and blocks your way!".
+
+## A monster opening a door can become visible by opening it
+
+monmove.c:1528 UnblockDoor() refreshes canseeit = didseeit ||
+cansee(mx, my) after the door state changes and vision is recalculated:
+opening the door lets light through, so the kobold that was unseen behind
+a closed door is seen once it is open, and the message is "The kobold
+opens a door." rather than "You hear a door open." Ours cached canseeit
+before the change (s51-22).
+
+## boulder:symbol validation, the disclose handler, and whatis_menu
+
+options.c:1171 optfn_boulder do_set: escapes() the value, rejects a
+control character ("boulder symbol cannot be a control character"), and
+rejects a clash with a monster class symbol or a warning digit
+("Badoption - boulder symbol 'j' would conflict with a monster symbol");
+otherwise it sets both ov_primary_syms and ov_rogue_syms and, once the
+game is running, opt_need_redraw. Ours had no set arm, only the startup
+shortcut. handler_disclose() (the O menu's disclose entry) is ported: the
+category menu "Change which disclosure options categories:" with
+"<name>       [<mode><letter>]" rows and, per chosen category, the
+"Disclosure options for <name>:" menu (never/always/prompt-no/prompt-yes,
+plus '#' and '?' for vanquished and genocides). It matters beyond the
+option: the menu's display flushes a pending message with --More--, which
+is how the C shows "Badoption ...--More--" when boulder and disclose were
+picked together (s51-04). Ours also read iflags.getloc_usemenu and
+getloc_moveskip in getpos while the whatis_menu and whatis_moveskip
+options were stored under their names; both now live in game.iflags under
+the option names (iflag_boolean_options), so toggling whatis_menu in the O
+menu makes 'a'/'m'/'o'/'d'/'x' open the "Pick an interesting thing" menu.

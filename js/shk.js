@@ -91,6 +91,13 @@ import { tty_putstr, tty_display_nhwindow, tty_next_page } from './tty/wintty.js
 import { xwaitforspace } from './tty/getline.js';
 import { is_pick } from './mon.js';
 import { haseyes } from './mondata.js';
+import { dochug } from './monmove.js';
+import { noit_mhis } from './mondata.js';
+import { plur, EYE } from './const.js';
+import { makeknown } from './o_init.js';
+
+// src/shk.c:139 angrytexts[]
+const angrytexts = ['quite upset', 'ticked off', 'furious'];
 
 // src/shk.c:921 pick_pick(); one reaction per turn to a concealed pick.
 export async function pick_pick(obj) {
@@ -344,7 +351,7 @@ export function shop_keeper(roomno) {
     if (!shkp || !(shkp.eshk || ESHK(shkp)))
         return null;
     if (!shkp.mpeaceful && !(shkp.eshk || ESHK(shkp)).surcharge)
-        note_unported_shk('shop_keeper:rile_shk');
+        rile_shk(shkp);
     return shkp;
 }
 
@@ -480,25 +487,101 @@ export async function u_entered_shop(enterstring) {
         }
         return;
     }
-    if (!shkp.mpeaceful || eshk.surcharge || eshk.robbed) {
-        note_unported_shk('u_entered_shop:special_dialogue');
-        return;
-    }
-
     const roomidx = roomno - ROOMOFFSET;
     const room = game.level?.rooms?.[roomidx]
         || (game.level?.subrooms || [])
             .find(candidate => candidate.roomnoidx === roomidx);
     const rt = room?.rtype ?? SHOPBASE;
     const shopname = shtypes[rt - SHOPBASE]?.name || 'shop';
-    const again = (eshk.visitct | 0) ? ' again' : '';
-    if (!Deaf()) {
-        await pline(`"${Hello(shkp)}, ${game.plname}!  Welcome${again} to `
-                    + `${s_suffix(shopkeeper_name(shkp))} ${shopname}!"`);
+
+    if (!shkp.mpeaceful) { /* ANGRY(shkp) */
+        if (!Deaf() && !muteshk(shkp)) {
+            await verbalize(`So, ${game.plname}, you dare return to ${
+                s_suffix(shopkeeper_name(shkp))} ${shopname}?!`);
+        } else {
+            await pline(`${shopkeeper_name(shkp)} seems ${
+                angrytexts[rn2(angrytexts.length)]} over your return to ${
+                noit_mhis(shkp)} ${shopname}!`);
+        }
+    } else if (eshk.surcharge) {
+        if (!Deaf() && !muteshk(shkp)) {
+            await verbalize(`Back again, ${game.plname}?  I've got my ${
+                mbodypart(shkp, EYE)} on you.`);
+        } else {
+            await pline_The(`atmosphere at ${s_suffix(shopkeeper_name(shkp))} ${
+                shopname} seems unwelcoming.`);
+        }
+    } else if (eshk.robbed) {
+        if (!Deaf()) {
+            /* Soundeffect(se_mutter_imprecations, 50); */
+            await pline(`${shopkeeper_name(shkp)} mutters imprecations against shoplifters.`);
+        } else {
+            await pline(`${shopkeeper_name(shkp)} is combing through ${
+                noit_mhis(shkp)} inventory list.`);
+        }
     } else {
-        await pline(`You enter ${s_suffix(shopkeeper_name(shkp))} ${shopname}${again}!`);
+        const again = (eshk.visitct | 0) ? ' again' : ''; /* eshkp->visitct++ */
+        eshk.visitct = (eshk.visitct | 0) + 1;
+        if (!Deaf() && !muteshk(shkp)) {
+            await verbalize(`${Hello(shkp)}, ${game.plname}!  Welcome${again} to ${
+                s_suffix(shopkeeper_name(shkp))} ${shopname}!`);
+        } else {
+            await You(`enter ${s_suffix(shopkeeper_name(shkp))} ${shopname}${again}!`);
+        }
     }
-    eshk.visitct = (eshk.visitct | 0) + 1;
+    /* can't do anything about blocking if teleported in */
+    if (!inside_shop(game.u.ux, game.u.uy)) {
+        let should_block;
+        const not_upset = !eshk.surcharge;
+        let cnt;
+        let tool;
+        const pick = carrying(ONAMES.PICK_AXE),
+              mattock = carrying(ONAMES.DWARVISH_MATTOCK);
+
+        if (pick || mattock) {
+            cnt = 1;               /* so far */
+            if (pick && mattock) { /* carrying both types */
+                tool = 'digging tool';
+                cnt = 2; /* `more than 1' is all that matters */
+            } else if (pick) {
+                tool = 'pick-axe';
+                /* hack: `pick' already points somewhere into inventory */
+                cnt = (game.invent || []).filter(o => o.otyp === ONAMES.PICK_AXE).length;
+            } else { /* assert(mattock != 0) */
+                tool = 'mattock';
+                cnt = (game.invent || []).filter(o => o.otyp === ONAMES.DWARVISH_MATTOCK).length;
+                /* [ALI] Shopkeeper identifies mattock(s) */
+                if (!Blind())
+                    makeknown(ONAMES.DWARVISH_MATTOCK);
+            }
+            if (!Deaf() && !muteshk(shkp)) {
+                await verbalize(not_upset
+                                ? `Will you please leave your ${tool}${plur(cnt)} outside?`
+                                : `Leave the ${tool}${plur(cnt)} outside.`);
+            } else {
+                await pline(`${shopkeeper_name(shkp)} ${
+                    not_upset ? 'is hesitant' : 'refuses'} to let you in with your ${
+                    tool}${plur(cnt)}.`);
+            }
+            should_block = true;
+        } else if (game.u.usteed) {
+            if (!Deaf() && !muteshk(shkp)) {
+                await verbalize(not_upset ? `Will you please leave ${y_monnam(game.u.usteed)} outside?`
+                                          : `Leave ${y_monnam(game.u.usteed)} outside.`);
+            } else {
+                await pline(`${shopkeeper_name(shkp)} ${
+                    not_upset ? "doesn't want" : 'refuses'} to let you in while you're riding ${
+                    y_monnam(game.u.usteed)}.`);
+            }
+            should_block = true;
+        } else {
+            should_block =
+                !!(Fast() && (sobj_at(ONAMES.PICK_AXE, game.u.ux, game.u.uy)
+                              || sobj_at(ONAMES.DWARVISH_MATTOCK, game.u.ux, game.u.uy)));
+        }
+        if (should_block)
+            await dochug(shkp); /* shk gets extra move */
+    }
 }
 
 // src/shk.c:5350 costly_spot(), is (x,y) a square this shopkeeper charges
@@ -2530,11 +2613,11 @@ export async function block_door(x, y) {
     return false;
 }
 
-// src/shk.c:5826 block_entry() — an angry shopkeeper blocks diagonal entry
-// through a broken shop door. Same porting state as block_door() above.
-export function block_entry(x, y) {
+// src/shk.c:5826 block_entry() — used in domove to block diagonal
+// shop-entry; u.ux, u.uy should always be a door
+export async function block_entry(x, y) {
     const ust = game.level.at(game.u.ux, game.u.uy);
-    if (!(IS_DOOR(ust.typ) && ust.doormask === 4 /* D_BROKEN */))
+    if (!(IS_DOOR(ust.typ) && ust.doormask === D_BROKEN))
         return false;
 
     const rooms = in_rooms(x, y, SHOPBASE);
@@ -2543,8 +2626,25 @@ export function block_entry(x, y) {
     const roomno = rooms.charCodeAt(0);
     if (roomno < 0 || !IS_SHOP(roomno))
         return false;
+    const shkp = shop_keeper(roomno);
+    if (!shkp || !inhishop(shkp))
+        return false;
 
-    note_unported_shk('block_entry:shk_on_post');
+    const eshk = shkp.eshk || ESHK(shkp);
+    if (eshk.shd.x !== game.u.ux || eshk.shd.y !== game.u.uy)
+        return false;
+
+    const sx = eshk.shk.x;
+    const sy = eshk.shk.y;
+
+    if (shkp.mx === sx && shkp.my === sy && !helpless(shkp)
+        && (x === sx - 1 || x === sx + 1 || y === sy - 1 || y === sy + 1)
+        && (Invis() || carrying(ONAMES.PICK_AXE) || carrying(ONAMES.DWARVISH_MATTOCK)
+            || game.u.usteed)) {
+        await pline(`${shopkeeper_name(shkp)}${
+            Invis() ? ' senses your motion and' : ''} blocks your way!`);
+        return true;
+    }
     return false;
 }
 

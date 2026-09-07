@@ -371,7 +371,14 @@ spell.js keeps 8 note_unported calls (initialspell overflow/duplicate,
 learn overflow, the novel, tport_spell overflow, spell sort menu,
 impossible()).
 
-Next: triage `--seed 51`, then continue the
+Thirty-seventh round: `--seed 51` had five failures, three the recording
+classes (s51-02 rc path, s51-18 moon, s51-24 nighttime). Fixed: the
+monster door-opening visibility refresh (s51-22), the boulder option's
+validation plus handler_disclose and the whatis_menu storage (s51-04).
+Also from the shk.js list: the shop entry dialogue and blocking section,
+rile_shk wiring, and block_entry() (NOTES entries of 2026-09-07).
+
+Next: triage `--seed 52`, then continue the
 note_unported list (hack.js 18, spell.js 20, shk.js 19). tools/jsplay.mjs has a new
 `--aeval "<await expr>"` flag with the hack.js namespace as `h` for state
 probes. The census script is `tally.sh` in the scratchpad (diverge.mjs

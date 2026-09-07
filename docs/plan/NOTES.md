@@ -6122,3 +6122,24 @@ inc, FALSE), with "Your vision quickly clears." if still not blind. Ours
 had make_blinded as a note_unported, so the hero stayed sighted (s24-31:
 the C hid the monsters and showed Blind on the status line). The port also
 read a non-existent `game.u.ublind`; the accessor is Blind().
+
+## The silent monster drifts were m_search_items() filters
+
+s13-31, s14-23 and s17-03 (RNG identical, monsters elsewhere, no message
+gap) all came from monmove.c m_search_items(): the C skips an object that
+lies under a helpless (sleeping or paralysed) monster, a mines or Sokoban
+prize, an unpaid item on a shop square (costly_spot() && !no_charge), and
+anything the monster cannot touch safely (can_touch_safely()); ours only
+skipped hidden/mimicking/immobile monsters. In s14-23 a forest centaur on a
+shortsighted Gehennom level walked toward a corpse under a sleeping wraith
+(appr 1, track roll rn2(24)) where the C, with no goal but the far hero,
+went to appr 0 (the !rn2(++chcnt) chain). A hostile monster approaching
+a goal draws no RNG in m_move, so a wrong goal shows up only as positions,
+and every later RNG draw still lines up until a monster that moved
+differently reaches an RNG-bearing branch, often thousands of calls later.
+Triage rule for a drift: run the MMPROBE hook in monmove.js
+(`globalThis.__mm_probe = 1` before importing tools/jsplay.mjs) and dump
+the goal (gg) of the monster whose track roll differs; a goal that is not
+the hero's mux/muy is an item search result, so compare m_search_items()
+line by line before instrumenting the recorder. The recorder monster-log
+patch was not needed.

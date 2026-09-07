@@ -213,12 +213,17 @@ venom through can_blnd()/make_blinded() and the stray `u.ublind` reads
 replaced by Blind() (s24-31). s24-23 reads a Hawaiian shirt (ubirthday
 class, unfixable).
 
-Next: triage `--seed 25` (recording), then `--seed 26`. Re-test the three
-old drifts (s13-31, s14-23, s17-03) with the message-timing checklist from
-the NOTES entry before instrumenting the recorder; if they still drift, do
-the recorder patch (env var next to NETHACK_RNGLOG in
-scripts/record-session.mjs:445, rebuild with nethack-c/build-recorder.sh,
-re-record the recipes, compare against a jsplay dump). Then return to the
+Sixteenth round, the three old drifts: m_search_items() lacked the C's
+helpless(mtoo), mines/Sokoban prize, costly_spot()/no_charge and
+can_touch_safely() filters (NOTES "The silent monster drifts were
+m_search_items() filters"); with them s13-31, s14-23 and s17-03 match every
+screen and the recorder monster log was never needed.
+
+Next: triage `--seed 25` (recorded: s25-24 obj_resists, s25-25
+temple_priest_sound in the census), then `--seed 26`. The remaining census
+miss class is the tty character-selection menu (s12-31, s17-07, s21-37,
+s24-03: pick_role/pick_align at the "Pick a role" menus; compare role.c's
+menu code from role.c:2280 with js/plselect.js). Then return to the
 note_unported list (hack.js 19, spell.js 20, shk.js 19). tools/jsplay.mjs has a new
 `--aeval "<await expr>"` flag with the hack.js namespace as `h` for state
 probes. The census script is `tally.sh` in the scratchpad (diverge.mjs

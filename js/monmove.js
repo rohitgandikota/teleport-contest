@@ -98,6 +98,9 @@ import { mon_wield_item } from './weapon.js';
 import { mattacku, gazemu } from './mhitu.js';
 import { noattacks } from './mondata.js';
 import { helpless } from './monst.js';
+import { is_mines_prize, is_soko_prize } from './obj.js';
+import { costly_spot } from './shk.js';
+import { can_touch_safely } from './mon.js';
 import { is_axe, is_pick } from './mon.js';
 import { MSOUND } from './monst_data.js';
 import { pline_mon } from './pline.js';
@@ -460,7 +463,7 @@ function m_search_items(mtmp, goal, st) {
                 /* don't get stuck circling an object underneath an immobile
                    or hidden monster */
                 const mtoo = m_at(xx, yy);
-                if (mtoo && (mtoo.mundetected
+                if (mtoo && (helpless(mtoo) || mtoo.mundetected
                              || (mtoo.mappearance && !mtoo.iswiz)
                              || !game.mons[mtoo.mnum].mmove))
                     continue;
@@ -484,6 +487,7 @@ function m_search_items(mtmp, goal, st) {
                 if (!clear_path(omx, omy, xx, yy))
                     continue;
 
+                const costly = costly_spot(xx, yy);
                 /* look through the items on this location */
                 for (const otmp of objects_at(xx, yy)) {
                     /* monsters may pick rocks up, but won't go out of their
@@ -491,9 +495,16 @@ function m_search_items(mtmp, goal, st) {
                     if (otmp.otyp === ONAMES.ROCK)
                         continue;
 
+                    /* avoid special items; once hero picks them up, they'll
+                       cease being special */
+                    if (is_mines_prize(otmp) || is_soko_prize(otmp))
+                        continue;
+                    if (costly && !otmp.no_charge)
+                        continue;
                     if (((mon_would_take_item(mtmp, otmp)
                           && (can_carry(mtmp, otmp) > 0))
-                         || mon_would_consume_item(mtmp, otmp))) {
+                         || mon_would_consume_item(mtmp, otmp))
+                        && can_touch_safely(mtmp, otmp)) {
                         minr = distmin(omx, omy, xx, yy);
                         goal.x = otmp.ox;
                         goal.y = otmp.oy;

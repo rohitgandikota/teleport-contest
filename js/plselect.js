@@ -41,6 +41,7 @@ import {
     tty_get_nhwindow, tty_start_menu, tty_add_menu, tty_add_menu_str,
     tty_end_menu, tty_display_nhwindow, set_item_state, menu_page_items,
     NHW_MENU, ATR_NONE, tty_select_menu } from './tty/wintty.js';
+import { tty_cl_end_base } from './tty/wintty.js';
 import { NO_COLOR } from './terminal.js';
 
 const ROWS = 24;
@@ -85,8 +86,7 @@ async function tty_askname() {
             tty_curs_base(1, tty_base_pos().y - 1);
             tty_putstr_base('Enter a name for your character...');
             tty_curs_base(1, tty_base_pos().y);
-            tty_putstr_base(''); /* cl_end() */
-            tty_curs_base(1, tty_base_pos().y - 1);
+            tty_cl_end_base();
         }
         tty_putstr_base(WHO_ARE_YOU);
         tty_curs_base(WHO_ARE_YOU.length + 1, tty_base_pos().y - 1);
@@ -494,11 +494,6 @@ async function select_menu_pick_one(win) {
                escaped line leaves the menu waiting */
             const { getlin } = await import('./cmd.js');
             const tmpbuf = await getlin('Search for:', null);
-            if (!tmpbuf || tmpbuf[0] === '\x1b') continue;
-            const searchbuf = `*${tmpbuf}*`;
-            for (let it = cw.mlist; it; it = it.next)
-                if (it.identifier && pmatchi(searchbuf, it.str))
-                    return it.identifier;
             /* back to the menu: dmore() parks the cursor after the footer */
             {
                 const items = menu_page_items(win, cw.curr_page || 0);
@@ -507,6 +502,11 @@ async function select_menu_pick_one(win) {
                 game?.nhDisplay?.setCursor(cw.offx + 1 + morestr.length,
                                            cw.offy + items.length);
             }
+            if (!tmpbuf || tmpbuf[0] === '\x1b') continue;
+            const searchbuf = `*${tmpbuf}*`;
+            for (let it = cw.mlist; it; it = it.next)
+                if (it.identifier && pmatchi(searchbuf, it.str))
+                    return it.identifier;
             continue;
         }
         for (let it = cw.mlist; it; it = it.next)

@@ -6214,3 +6214,53 @@ group accelerator that matches exactly one entry (invert_all, then
 finished), so 'N' picks neutral and 'C' chaotic while 'X' is ignored;
 verified by recording three probes with the recorder. plselect.js's
 select_menu_pick_one() now honours both rules.
+
+## find_trap() shows the trap glyph through map_trap(), not newsym()
+
+detect.c find_trap(): when the remembered glyph at the found trap is not
+the trap (an object lies on it), the C does cls(), map_trap(trap, 1),
+display_self(), prints "You find a ..." and only redraws after the
+--More--. Ours substituted newsym() for map_trap(), which put the object
+back on top (s26-31: '%' where the C shows '^'). map_trap() is exported
+from display.js and used directly.
+
+## makeplural(): man/men
+
+objnam.c makeplural(): a word ending in "man" that badman() does not
+exclude becomes "men" with Strcasecpy ("Caveman" -> "Cavemen", used by
+wield.c's "%s aren't able to use two weapons at once."); ours appended
+"s" (s26-13). The rule sits before the s/x/z/ch/sh and y rules.
+
+## tty_putstr(BASE_WINDOW) writes only its characters
+
+wintty.c tty_putstr(), NHW_BASE arm: the string goes to the window cursor
+with no cl_end(), wrapping at the last column, then curx = 0 and cury++.
+Ours padded the rest of the row with spaces. It showed at the rename
+prompt: after 'a' on "Is this ok?", docorner() has left the base cursor on
+the menu's last row and askname() prints "Who are you? " over the row that
+still holds the first prompt and the old name, so the C screen reads
+"Who are you? Hextru___..." with the cursor after the prompt (s26-33).
+tty_askname()'s retry arm now uses an explicit tty_cl_end_base() where the
+C calls cl_end().
+
+## Option handlers: msg_window and runmode
+
+options.c handler_msg_window() ("Select message history display type:",
+entries "%-12.12s%c%.60s" from msgwind[] with the second description line
+on a following text row, current setting preselected, then "'msg_window'
+changed to/is still ...") and handler_runmode() ("Select run/travel display
+mode:", teleport/run/walk/crawl) were missing; the doset dispatch skipped
+them, so the next selected handler's menu appeared in their place (s26-10).
+
+## Open: s26-12, a giant spider's web roll after moving
+
+monmove.c postmov(): maybe_spin_web() runs for a moved or done monster.
+In s26-12 turn 17 the C's first giant spider takes its track roll, moves,
+and does NOT roll rn2(1000); ours rolls after the same move. mfndpos,
+m_harmless_trap (webs are harmless to webmakers), mspec_used, helpless,
+t_at, the postmov block, the track ring and the m_move tail (mdisplacem /
+m_in_out_region / boulder returns) all match the C; the level and the web
+trap position (a mktrap web with a spider generated on it at level
+creation, step 154) are shared since the RNG matches through them. Not
+resolved; the recorder would need a debug print of maybe_spin_web()'s
+condition values to settle which one differs.

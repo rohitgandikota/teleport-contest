@@ -1411,6 +1411,10 @@ async function doset_simple_menu() {
                 await choose_disco_sort(0);
             } else if (allopt[k].name === 'menustyle') {
                 await handler_menustyle();
+            } else if (allopt[k].name === 'msg_window') {
+                await handler_msg_window();
+            } else if (allopt[k].name === 'runmode') {
+                await handler_runmode();
             } else if (allopt[k].name === 'autounlock') {
                 await handler_autounlock();
             } else if (allopt[k].name === 'menu_objsyms') {
@@ -1967,6 +1971,10 @@ export async function doset() {
                 await choose_disco_sort(0);
             } else if (o.hasHandler === 'Yes' && o.name === 'menustyle') {
                 await handler_menustyle();
+            } else if (o.hasHandler === 'Yes' && o.name === 'msg_window') {
+                await handler_msg_window();
+            } else if (o.hasHandler === 'Yes' && o.name === 'runmode') {
+                await handler_runmode();
             } else if (o.hasHandler === 'Yes' && o.name === 'autounlock') {
                 await handler_autounlock();
             } else if (o.hasHandler === 'Yes' && o.name === 'menu_objsyms') {
@@ -2127,6 +2135,70 @@ export async function handler_whatis_coord() {
 }
 
 // src/options.c:5544 handler_menustyle().
+// src/options.c handler_runmode()
+async function handler_runmode() {
+    const win = tty_create_nhwindow(NHW_MENU);
+    tty_start_menu(win, MENU_BEHAVE_STANDARD);
+    for (let i = 0; i < runmodes.length; i++) {
+        const mode_name = runmodes[i];
+        tty_add_menu(win, null, i + 1, mode_name[0], 0, ATR_NONE, NO_COLOR,
+                     mode_name, MENU_ITEMFLAGS_NONE);
+    }
+    tty_end_menu(win, 'Select run/travel display mode:');
+    const picks = await tty_select_menu(win, PICK_ONE);
+    if (picks.length)
+        game.flags.runmode = picks[0] - 1;
+    tty_destroy_nhwindow(win);
+    return 0;
+}
+
+// src/options.c handler_msg_window() — by Christian W. Cooper
+async function handler_msg_window() {
+    const msgwind = [ /* 'msg_window' settings */
+        ['single',      '[show one old message at a time,',
+                        ' most recent first]'],
+        ['combination', '[for consecutive ^P requests, use',
+                        " 'single' for first two, then 'full']"],
+        ['full',        '[show all available messages,',
+                        ' oldest first and most recent last]'],
+        ['reversed',    '[show all available messages,',
+                        ' most recent first]'],
+    ];
+    const sep = game.iflags?.menu_tab_sep ? '\t' : ' ';
+    const old_prevmsg_window = game.iflags?.prevmsg_window ?? 's';
+    const win = tty_create_nhwindow(NHW_MENU);
+    tty_start_menu(win, MENU_BEHAVE_STANDARD);
+    for (const [name, d1, d2] of msgwind) {
+        /* Sprintf(buf, "%-12.12s%c%.60s", ...) */
+        const buf = name.slice(0, 12).padEnd(12) + sep + d1.slice(0, 60);
+        const c = name[0];
+        tty_add_menu(win, null, c, buf[0], 0, ATR_NONE, NO_COLOR, buf,
+                     (c === old_prevmsg_window) ? MENU_ITEMFLAGS_SELECTED
+                                               : MENU_ITEMFLAGS_NONE);
+        /* second line is prefixed by spaces that "c - " would use */
+        tty_add_menu_str(win, ' '.repeat(4) + ' '.repeat(12) + sep
+                              + d2.slice(0, 60));
+    }
+    tty_end_menu(win, 'Select message history display type:');
+    const picks = await tty_select_menu(win, PICK_ONE);
+    if (picks.length) {
+        let c = picks[0];
+        /* if there are two picks, use the one that wasn't pre-selected */
+        if (picks.length > 1 && c === old_prevmsg_window)
+            c = picks[1];
+        (game.iflags ||= {}).prevmsg_window = c;
+    }
+    tty_destroy_nhwindow(win);
+    const now = game.iflags?.prevmsg_window ?? 's';
+    const chngd = now !== old_prevmsg_window;
+    if (chngd || game.flags.verbose !== false) {
+        const buf = (now === 's') ? 'single' : (now === 'c') ? 'combination'
+                    : (now === 'f') ? 'full' : 'reversed';
+        await pline(`'msg_window' ${chngd ? 'changed to' : 'is still'} "${buf}".`);
+    }
+    return 0;
+}
+
 async function handler_menustyle() {
     const old_menu_style = game.flags.menu_style ?? 2;
     const descriptions = [

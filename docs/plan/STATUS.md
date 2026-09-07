@@ -230,7 +230,14 @@ misses were <return> on an empty PICK_ONE menu (ROLE_RANDOM in C) and the
 capital-letter group accelerators; s24-03 still differs in its last three
 screens (':' menu search then ESC, see NOTES).
 
-Next: triage `--seed 26` (recording), then `--seed 27`. Then return to the
+Eighteenth round, `--seed 26` (5 failures in 40, 4 fixed) plus the s24-03
+tail: find_trap() via map_trap() (s26-31); makeplural() man/men (s26-13);
+tty_putstr(BASE_WINDOW) without cl_end and the askname retry cl_end
+(s26-33); handler_msg_window()/handler_runmode() in the doset dispatch
+(s26-10); the PICK_ONE ':' search and its cursor in the selection menus
+(s24-03). s26-12 (a spider's web roll after moving) is open, see NOTES.
+
+Next: triage `--seed 27` (recording), then `--seed 28`. Then return to the
 note_unported list (hack.js 19, spell.js 20, shk.js 19). tools/jsplay.mjs has a new
 `--aeval "<await expr>"` flag with the hack.js namespace as `h` for state
 probes. The census script is `tally.sh` in the scratchpad (diverge.mjs

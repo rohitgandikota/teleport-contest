@@ -66,11 +66,28 @@ export function tty_putstr_base(str, attr = 0) {
     const display = game?.nhDisplay;
     if (!display) return;
     const s = String(str ?? '');
-    for (let i = 0, col = 0; col < COLS; i++, col++)
-        display.setCell(col, base.cury, i < s.length ? s[i] : ' ', NO_COLOR,
-                        i < s.length ? attr : 0);
+    /* win/tty/wintty.c tty_putstr(), NHW_BASE: the characters are put at the
+       window cursor and nothing past them is touched (no cl_end), wrapping
+       to the next row at the last column; then curx = 0, cury++ */
+    let col = base.curx;
+    for (let i = 0; i < s.length; i++) {
+        if (col >= COLS - 1) {
+            col = 0;
+            base.cury++;
+        }
+        display.setCell(col, base.cury, s[i], NO_COLOR, attr);
+        col++;
+    }
     base.curx = 0;
     base.cury++;
+}
+
+/* win/tty/termcap.c cl_end() on the base window's row */
+export function tty_cl_end_base() {
+    const display = game?.nhDisplay;
+    if (!display) return;
+    for (let c = base.curx; c < COLS; c++)
+        display.setCell(c, base.cury, ' ', NO_COLOR, 0);
 }
 
 // win/tty/wintty.c tty_raw_print_bold() — standout raw line.

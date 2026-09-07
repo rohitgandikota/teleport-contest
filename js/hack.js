@@ -1499,6 +1499,24 @@ export function avoid_moving_on_liquid(x, y, msg) {
     return false;
 }
 
+// src/hack.c:2495 avoid_running_into_trap_or_liquid() — a run (run >= 2)
+// stops short of a known trap or, while blind, a known liquid; a walk-style
+// run (run == 1) only clears multi and lets the move go on
+export function avoid_running_into_trap_or_liquid(x, y) {
+    const would_stop = ((game.context.run | 0) >= 2);
+
+    if (!game.context.run)
+        return false;
+    if (avoid_moving_on_trap(x, y, would_stop)
+        || (Blind() && avoid_moving_on_liquid(x, y, would_stop))) {
+        nomul(0);
+        if (would_stop)
+            game.context.move = 0;
+        return would_stop;
+    }
+    return false;
+}
+
 // include/hack.h:1414 NODIAG() — only grid bugs cannot move diagonally.
 export const NODIAG = (monnum) => monnum === PMNAMES.PM_GRID_BUG;
 

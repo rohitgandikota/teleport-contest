@@ -182,7 +182,17 @@ silver, killer names) with hates_silver()/Hate_silver added; s21-27 is the
 Hawaiian shirt ubirthday class widening a menu to full screen. Census
 539/542, the three old drifts.
 
-Next: triage `--seed 22` (recorded), then `--seed 23`; the drift class
+Thirteenth round, `--seed 22` (6 failures in 40, 4 fixed): the four
+domove_swap_with_pet() refusal messages (s22-16 had been filed as a silent
+drift); avoid_running_into_trap_or_liquid() before the sticky-monster check;
+ohitmon() breaking a thrown potion through potionhit(); dopay()'s blind
+condition with Blind_telepat; getobj '?'/'*' listing the hands
+(display_pickinv usextra, getobj_hands_txt, dip_hands_ok at a pool,
+fountain or sink); getpos_help() gated on iflags.terrainmode with the
+"a monster" goto. s22-10 is the options-help rc path (judge's path, kept)
+and s22-25 the ^X moon/night class; both unfixable by design.
+
+Next: triage `--seed 23` (recording), then `--seed 24`; the drift class
 needs the C recorder instrumented to log monster positions per turn: add a
 patch under nethack-c/patches that writes each monster's position after
 movemon() to the file named by a new env var, set it in

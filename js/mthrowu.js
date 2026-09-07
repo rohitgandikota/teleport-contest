@@ -9,7 +9,7 @@ import { sobj_at } from './invent.js';
 import { obfree, weight } from './invent.js';
 import { extract_from_minvent } from './worn.js';
 import { MFLAGS } from './monst_data.js';
-import { ARM_GLOVES, PET_MISSILE_RANGE2, M_AP_NOTHING, M_AP_TYPE } from './const.js';
+import { ARM_GLOVES, PET_MISSILE_RANGE2, M_AP_NOTHING, M_AP_TYPE, POTHIT_OTHER_THROW } from './const.js';
 import { WT_IRON_BALL_INCR } from './const.js';
 import { BRK_MELEE } from './const.js';
 import { BRK_BY_HERO } from './const.js';
@@ -254,7 +254,12 @@ export async function ohitmon(mtmp, otmp, range, verbose) {
         if (ismimic)
             seemimic(mtmp);
         mtmp.msleeping = 0;
-        note_unported_mthrowu('ohitmon:potionhit');
+        /* probably thrown by a monster rather than 'other', but the
+           distinction only matters when hitting the hero */
+        {
+            const { potionhit } = await import('./potion.js');
+            await potionhit(mtmp, otmp, POTHIT_OTHER_THROW);
+        }
         return 1;
     } else {
         const material = game.objects[otmp.otyp].oc_material;

@@ -1,4 +1,4 @@
-import { NODIAG } from './hack.js';
+import { NODIAG, handle_tip, TIP_UNTRAP_MON, avoid_running_into_trap_or_liquid } from './hack.js';
 import { MV_ANY, MV_RUN, MV_RUSH, MV_WALK, CMDQ_INT, CMDQ_DIR, DIR_DOWN, DIR_UP, IRONBARS, DO_MOVE } from './const.js';
 import { impossible } from './pline.js';
 import { can_ooze } from './monmove.js';
@@ -64,7 +64,7 @@ import { ACURR, exercise, near_capacity } from './attrib.js';
 import { is_pit, GETOBJ_EXCLUDE, GETOBJ_SUGGEST, GETOBJ_NOFLAGS, GETOBJ_PROMPT, GETOBJ_ALLOWCNT, GETOBJ_DOWNPLAY, W_ARMOR, W_ACCESSORY, GETOBJ_EXCLUDE_INACCESS, ARTICLE_YOUR, ARTICLE_THE, CQ_CANNED, CQ_REPEAT, CMDQ_EXTCMD, CMDQ_KEY, PIT, HOLE, WEB } from './const.js';
 import { ONAMES, OCLASSES } from './objects_data.js';
 import { an, cxname, simpleonames, the, makeplural, singular, xname,
-         the_unique_obj, armor_simple_name } from './objnam.js';
+         the_unique_obj, armor_simple_name, just_an } from './objnam.js';
 import { is_edible } from './eat.js';
 import { donull } from './do.js';
 import { shop_keeper, dopay } from './shk.js';
@@ -153,6 +153,7 @@ import { dowieldquiver, dowield, doswapweapon, dotwoweapon } from './wield.js';
 import { dozap } from './zap.js';
 import { dist2, distmin } from './hacklib.js';
 import { place_object } from './mkobj.js';
+import { trapname, feeltrap } from './trap.js';
 
 // Direction deltas: y u k
 //                   h . l
@@ -2628,6 +2629,11 @@ async function domove_core() {
     const newx = u.ux + dx;
     const newy = u.uy + dy;
 
+    /* src/hack.c:2762 — after move_out_of_bounds(), before the sticky
+       monster check */
+    if (avoid_running_into_trap_or_liquid(newx, newy))
+        return;
+
     if (await escape_from_sticky_mon(newx, newy))
         return;
 
@@ -3023,22 +3029,33 @@ async function domove_swap_with_pet(mtmp, x, y) {
         && sobj_at(ONAMES.BOULDER, trap.tx, trap.ty)) {
         didnt_move = true;              /* pinned in a pit by a boulder */
     } else if (game.u.ux0 !== x && game.u.uy0 !== y
-               && mtmp.mnum === PMNAMES.PM_GRID_BUG) {
-        note_unported_cmd('domove_swap_with_pet:nodiag_msg');
+               && mtmp.mnum === PMNAMES.PM_GRID_BUG) { /* NODIAG() */
+        /* can't swap places when pet can't move to your spot */
+        await You(`stop.  ${YMonnam(mtmp)} can't move diagonally.`);
         didnt_move = true;
     } else if (u_with_boulder
                && !(verysmall(mdat)
                     && (!mtmp.minvent?.length || curr_mon_load(mtmp) <= 600))) {
-        note_unported_cmd('domove_swap_with_pet:boulder_msg');
+        /* can't swap places when pet won't fit there with the boulder */
+        await You(`stop.  ${YMonnam(mtmp)} won't fit into the same spot that you're at.`);
         didnt_move = true;
     } else if (game.u.ux0 !== x && game.u.uy0 !== y
                && bad_rock(mdat, x, game.u.uy0)
                && bad_rock(mdat, game.u.ux0, y)
                && (bigmonst(mdat) || curr_mon_load(mtmp) > 600)) {
-        note_unported_cmd('domove_swap_with_pet:wont_fit_msg');
+        /* can't swap places when pet won't fit thru the opening */
+        await You(`stop.  ${YMonnam(mtmp)} won't fit through.`);
         didnt_move = true;
     } else if (mtmp.mpeaceful && mtmp.mtrapped) {
-        note_unported_cmd('domove_swap_with_pet:trapped_msg');
+        /* all mtame are also mpeaceful, so this affects pets too */
+        const what = trapname(trap.ttyp, false);
+        let which = 'that ';
+        if (!trap.tseen) {
+            feeltrap(trap); /* show on map once mtmp is out of the way */
+            which = just_an(what); /* "a " or "an " */
+        }
+        await You(`stop.  ${YMonnam(mtmp)} can't move out of ${which}${what}.`);
+        await handle_tip(TIP_UNTRAP_MON);
         didnt_move = true;
     } else if (mtmp.mpeaceful
                && (!goodpos(game.u.ux0, game.u.uy0, mtmp, 0)

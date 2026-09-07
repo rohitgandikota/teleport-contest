@@ -4590,7 +4590,7 @@ recording-timezone input as ubirthday (entry above); the judge's TZ is not
 knowable from the corpus, so it is deliberately NOT fitted. Hour-dependent
 output (night(), midnight(), moon/Friday-13th at hour 0) will disagree with
 oracles recorded in a DST-observing zone during DST; expect it, do not fix
-it by guessing.
+it by guessing. s22-25 (the `^X` moon/night line) is another instance.
 
 ## Fuzz divergence census (2026-09-01, second pass)
 
@@ -5945,3 +5945,75 @@ hits 10 and the identified-inventory menu is drawn full screen at column 0;
 our shorter name overlays it at column 32 and 769 cells differ. Not
 fixable; fuzz-s21-27 step 54.
 
+## Pet swap refusals are messages, not silent stops
+
+hack.c domove_swap_with_pet() has four refusal arms and every one prints:
+"You stop.  Fido can't move diagonally.", "... won't fit into the same spot
+that you're at.", "... won't fit through.", and for a trapped pet "You
+stop.  Fido can't move out of that bear trap." (feeltrap() first and
+just_an() instead of "that " when the trap was unseen, then
+handle_tip(TIP_UNTRAP_MON)). Ours stopped silently. s22-16 had been filed as
+a "silent monster drift" because the footprint looked the same: the hero
+does not move and no RNG differs. When a drift's C log shows a "You stop."
+the gap is a message, not movement; check the swap arms before
+instrumenting the recorder.
+
+## avoid_running_into_trap_or_liquid() runs before the sticky-monster check
+
+hack.c domove_core() calls avoid_running_into_trap_or_liquid(x, y) right
+before escape_from_sticky_mon(). It only acts while context.run is set:
+avoid_moving_on_trap() (and, blind, avoid_moving_on_liquid()) with
+would_stop = (context.run >= 2); on a hit it nomul(0)s, and when would_stop
+it also clears context.move and returns true so the move is abandoned
+(s22-39, a running hero stopping short of a known trap where we walked on).
+
+## ohitmon(): a thrown potion hits through potionhit()
+
+mthrowu.c ohitmon() breaks a POTION_CLASS missile on the monster with
+potionhit(mtmp, otmp, POTHIT_OTHER_THROW) and returns 1 before the damage
+arm. Ours fell through to the generic hit (s22-39).
+
+## dopay() for a blind hero
+
+shk.c dopay(): "There appears to be no shopkeeper here" needs
+`(!nshopkeepers && (!Blind || Blind_telepat)) || (!Blind && !seen)`; a blind
+hero without telepathy on a level with no shopkeeper at all gets "You can't
+see..." instead. Blind_telepat (HTelepat || ETelepat) added to youprop.js
+(s22-39).
+
+## getobj '?'/'*' lists the hands when they are allowed
+
+invent.c getobj(): when the "hands" choice is allowed (allownone, from a
+leading HANDS_SYM in the allowed list or a callback that DOWNPLAYs hands),
+the '?'/'*' inventory menu appends a Miscellaneous heading and a
+"- - your hands." row; display_pickinv() counts that row in its item count
+(usextra), and the single-item shortcut goes through tty_message_menu with
+"- - <handsbuf>.". getobj_hands_txt(action) picks the hands wording per
+action. dodip() standing at a pool, fountain or sink (and not
+menu_requested) uses dip_hands_ok(), which suggests the hands when Glib and
+able to reach the floor, instead of dip_ok() (s22-02).
+
+## getpos help: terrain views and the "a monster" goto
+
+getpos.c getpos_help(): the #terrain views set iflags.terrainmode and the
+help window drops what the view filtered out: TER_MON gates the m/M line,
+TER_OBJ the o/O line, TER_MAP the d/D, x/X and a/A lines, TER_DETECT (set
+for every #terrain view) drops the '!' and '"' menu lines, and the whole
+tail (z/Z valid locations, '#' autodescribe, "Type a '.' when you are at
+the right place." and the dowhatis key lines) sits in `if
+(!iflags.terrainmode)`; only "Type Space or Escape when you're done." is
+outside. The "a monster" goal gotos into that block at skip_non_mons, so
+it skips '*', '!', '"', z/Z and '#' but prints the pick-key lines even in
+a terrain view. The cmdassist whatis_coord hint is Sprintf'd into sbuf and
+never putstr'd, so it prints nothing; do not add it (s22-30).
+
+## The options help path is the judge's rc file, not the local recorder's
+
+The options help intro prints get_configfile(), the C process's HOME rc
+path. The public sessions carry the judge harness's
+`/Users/davidbau/git/mazesofmenace/teleport/maud/test/comparison/c-harness/resul`
+(cut at the terminal width) and options.js OPT_INTRO_CONFIG reproduces
+that; a local fuzz recording shows `/var/folders/.../nh-rec-XXXX/home/.nethackrc`
+instead (s22-10). The held-out sessions come from the same harness as the
+public ones, so the judge path is the right one and the local miss is
+expected. Do not switch it for the fuzz corpus.

@@ -220,3 +220,7 @@ export const Infravision = () => !!(game.u?.intrinsic?.HInfravision
 // include/youprop.h:401 Hate_silver
 export const Hate_silver = () => (game.u?.ulycn ?? -1) >= 0
     || hates_silver(game.youmonst.data);
+
+// include/youprop.h:156 Blind_telepat (HTelepat || ETelepat)
+export const Blind_telepat = () => !!(game.u?.intrinsic?.HTelepat
+                                     || game.u?.uprops?.TELEPAT);

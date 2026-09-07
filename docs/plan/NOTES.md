@@ -4590,7 +4590,8 @@ recording-timezone input as ubirthday (entry above); the judge's TZ is not
 knowable from the corpus, so it is deliberately NOT fitted. Hour-dependent
 output (night(), midnight(), moon/Friday-13th at hour 0) will disagree with
 oracles recorded in a DST-observing zone during DST; expect it, do not fix
-it by guessing. s22-25 (the `^X` moon/night line) is another instance.
+it by guessing. s22-25 (the `^X` moon/night line) and s29-24 ("It is
+nighttime." where our clock reads the midnight hour) are more instances.
 
 ## Fuzz divergence census (2026-09-01, second pass)
 
@@ -6282,3 +6283,35 @@ slithy, "won't fit on a saddle."; and the visibility test is (Blind &&
 !Blind_telepat) || mundetected || mimicking furniture or an object. Ours
 skipped the first two (s27-23 went straight to "I see nobody there.") and
 read a `u.ublind` field that does not exist.
+
+## getpos 'o': a boulder on a pile is still an object target
+
+getpos.c gather_locs_interesting(GLOC_OBJS) excludes objnum_to_glyph(BOULDER)
+and (ROCK), the plain object glyphs; a boulder or rock drawn as the top of a
+pile carries the 5.0 piletop glyph offset and passes, so 'o' visits that
+square and autodescribe says "a boulder". Ours excluded boulders by type
+regardless of the pile flag and skipped to the next object (s28-30).
+
+## dosdoor(): trapped doors can be mimics
+
+mklev.c dosdoor(): a door that came out D_TRAPPED becomes, at
+level_difficulty() >= 9 with a 1 in 5 roll and while any mimic species
+survives, a doorway with a mimic created by makemon(mkclass(S_MIMIC, 0))
+and set_mimic_sym(). Ours rolled the rn2(5) but never made the monster
+(s28-25: mkclass_aligned's rolls and the mimic's makemon missing from the
+level-creation stream).
+
+## dodown() at a seen pit or escaped shaft plunges
+
+do.c dodown(): standing on a seen pit after climbing to its edge
+(uteetering_at_seen_pit) or on an escaped hole (uescaped_shaft), '>' calls
+dotrap(trap, TOOKPLUNGE) ("You plunge into a pit!" with rn1(6,2) trapped
+turns). Ours had that arm as a note_unported (s28-16).
+
+## launch_obj(): "hits another" vs "sets another in motion"
+
+trap.c launch_obj(): when a rolling boulder meets another boulder the
+message is "You hear a loud crash as one boulder sets another in motion!"
+unless the square beyond is off the map, the roll has no range left, or
+that square is obstructed, in which case it is "... as one boulder hits
+another!". Ours always said "sets another in motion" (s28-30).

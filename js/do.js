@@ -1,4 +1,5 @@
 import { allow_all } from './pickup.js';
+import { TOOKPLUNGE } from './const.js';
 import { PICK_ANY, In_endgame, ESCAPED } from './const.js';
 import { USE_INVLET, MENU_TRADITIONAL, MENU_COMBINATION, ALL_FINISHED, INCLUDE_VENOM, SELL_DELIBERATE, SELL_NORMAL } from './const.js';
 import { INVORDER_SORT } from './const.js';
@@ -860,9 +861,9 @@ export async function dodown() {
        in C; none is reachable without those subsystems */
     if (!stairs_down && !ladder_down) {
         const trap = t_at(game.u.ux, game.u.uy);
-        if (trap && is_pit(trap.ttyp) && trap.tseen) {
-            /* C: uteetering_at_seen_pit/uescaped_shaft -> dotrap(TOOKPLUNGE) */
-            note_unported_do('dodown:pit_plunge');
+        if (trap && (uteetering_at_seen_pit(trap) || uescaped_shaft(trap))) {
+            const { dotrap } = await import('./trap.js');
+            await dotrap(trap, TOOKPLUNGE);
             return ECMD_TIME;
         } else if (!trap || !is_hole(trap.ttyp) || !trap.tseen) {
             if (game.flags.autodig && !game.context?.nopick

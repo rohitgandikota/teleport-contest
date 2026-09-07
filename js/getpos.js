@@ -656,9 +656,12 @@ async function gather_locs_interesting(x, y, gloc) {
         return (glyph.kind === 'mon'
                 && glyph.mon?.mnum !== PMNAMES.PM_LONG_WORM_TAIL);
     case GLOC_OBJS:
+        /* objnum_to_glyph(BOULDER)/(ROCK) are the plain object glyphs; a
+           boulder or rock shown as the top of a pile carries the piletop
+           glyph offset and so is not excluded */
         return (glyph.kind === 'obj'
-                && glyph.otyp !== ONAMES.BOULDER
-                && glyph.otyp !== ONAMES.ROCK);
+                && !(glyph.otyp === ONAMES.BOULDER && !glyph.pile)
+                && !(glyph.otyp === ONAMES.ROCK && !glyph.pile));
     case GLOC_DOOR:
         return (sym !== -1
                 && (is_cmap_door(sym)

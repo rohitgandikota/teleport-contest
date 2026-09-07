@@ -241,8 +241,16 @@ Nineteenth round, `--seed 27` (2 failures in 40, both fixed):
 key2extcmddesc() strips " (##)" (s27-11); mount_steed() checks wounded legs
 and the polymorphed form and tests sight the C way (s27-23).
 
-Next: triage `--seed 28` (recording), then `--seed 29`. Then return to the
-note_unported list (hack.js 19, spell.js 20, shk.js 19). tools/jsplay.mjs has a new
+Twentieth round, `--seed 28` (3 failures in 40, all fixed): getpos 'o'
+keeps pile-top boulders (s28-30); dosdoor() makes the trapped-door mimic
+(s28-25); dodown() plunges into a seen pit (s28-16); launch_obj()'s
+"hits another" wording (s28-30).
+
+Twenty-first round, `--seed 29`: one failure in 40, s29-24, the ^X
+nighttime/DST class; nothing to port.
+
+Next: triage `--seed 30` (recording), then `--seed 31`. Then return to the
+note_unported list (hack.js 18, spell.js 20, shk.js 19). tools/jsplay.mjs has a new
 `--aeval "<await expr>"` flag with the hack.js namespace as `h` for state
 probes. The census script is `tally.sh` in the scratchpad (diverge.mjs
 --screens over tools/gen-sessions/fuzz/*.session.json, 4 at a time).

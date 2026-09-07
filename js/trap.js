@@ -32,6 +32,7 @@ import { add_damage } from './shk.js';
 import { ECMD_TIME, TEST_MOVE, WT_TOOMUCH_DIAGONAL, P_RIDING, P_BASIC,
          A_LAWFUL, M_AP_TYPE, M_AP_FURNITURE, M_AP_OBJECT,
          D_NODOOR, D_ISOPEN, D_TRAPPED, DISP_FLASH, DISP_END, POTHIT_OTHER_THROW, M_SEEN_ACID } from './const.js';
+import { IS_OBSTRUCTED } from './const.js';
 import { ALL_TRAPS } from './const.js';
 import { t_at, mon_to_stone } from './mon.js';
 import { mon_adjust_speed } from './worn.js';
@@ -5574,8 +5575,12 @@ export async function launch_obj(otyp, x1, y1, x2, y2, style) {
             const otmp2 = otyp === ONAMES.BOULDER
                 ? sobj_at(ONAMES.BOULDER, x, y) : null;
             if (otmp2) {
-                await You_hear(`a loud crash${cansee(x, y)
-                    ? ' as one boulder sets another in motion' : ''}!`);
+                let bmsg = ' as one boulder sets another in motion';
+                const fx = x + dx, fy = y + dy;
+                if (!isok(fx, fy) || !dist
+                    || IS_OBSTRUCTED(game.level.at(fx, fy).typ))
+                    bmsg = ' as one boulder hits another';
+                await You_hear(`a loud crash${cansee(x, y) ? bmsg : ''}!`);
                 obj_extract_self(otmp2);
                 otmp2.otrapped = singleobj.otrapped;
                 singleobj.otrapped = 0;

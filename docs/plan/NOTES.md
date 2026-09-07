@@ -7123,3 +7123,35 @@ insight.c:1236: "; movement %s %s slowed" prints "is" during play and
 "was" in the final disclosure (the `final` flag). Ours always said "is",
 so the end-of-game attributes read "You were burdened; movement is
 slightly slowed." (s52-06).
+
+## The last shopkeeper arms: bills, the doorway, trap and litter repair
+
+shk.c sub_one_frombill() (3654): when a stack on the bill is only partly
+used up, the remainder gets a fresh o_id from next_ident() (svc.context.
+ident++, which shifts every later object id) and goes on the used-up list
+with bp->useup; a fully used entry is removed by copying the LAST entry
+into its slot, not by shifting (bill order matters for the pay menu).
+splitbill() (3623) keeps the C's impossible() checks and BILLSZ limit.
+after_shk_move() (4998) resets bill_p and re-runs check_special_room().
+contained_cost() (usell) sums set_cost() of saleable, unpaid-free contents
+(no balls, no partly eaten food, no nearly burnt candles). pay_for_damage()
+(5174): when the keeper is inside the shop and the hero outside, a monster
+in the doorway gets "You hear an angry voice:" / "Out of my way, scum!"
+and wait_synch(), or growl(), then mnearto(shkp, x, y, TRUE, RLOC_MSG); an
+animal keeper that refuses payment growls. repair_damage() (4733) untraps
+a land mine or bear trap into the keeper's inventory ("<Shk> untraps a
+beartrap."), fills pits and holes, deletes other traps (each with its
+message when the hero saw the trap), then restores the wall or door and
+scatters floor items into the shop with litter_getpos()/litter_scatter()
+(rn2(9) start, up to 10 tries for an in-shop spot, boulders and rocks
+merge into the wall, unpaid items leave the bill when they land on a costly
+spot) and litter_newsyms(). shk.js keeps one note: dopay's non-ordinary
+bill entries.
+
+## Praying in Gehennom never grants invulnerability
+
+pray.c dopray(): "You are surrounded by a shimmering light." and
+u.uinvulnerable = TRUE need p_type == 3 AND !Inhell. Ours checked only
+p_type, so a wizard-mode hero forcing the gods on Dlvl 48 became
+invulnerable: no regen_hp() rn2(100), no gethungry() rn2(20), HP not
+regained (s53-25, the only failure in seed 53).

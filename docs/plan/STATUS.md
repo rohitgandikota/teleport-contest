@@ -386,7 +386,12 @@ past tense at game end (s52-06); NOTES entries of 2026-09-07. shk.js keeps
 10 note_unported calls (billing corner cases, pay_for_damage's doorway
 appearance and growl, repair_damage's trap and litter arms).
 
-Next: triage `--seed 53`, then continue the
+Fortieth and forty-first rounds: the remaining shk.js arms (NOTES "The
+last shopkeeper arms"), and `--seed 53`'s one failure, prayer
+invulnerability in Gehennom (NOTES "Praying in Gehennom never grants
+invulnerability").
+
+Next: triage `--seed 54`, then continue the
 note_unported list (hack.js 18, spell.js 20, shk.js 19). tools/jsplay.mjs has a new
 `--aeval "<await expr>"` flag with the hack.js namespace as `h` for state
 probes. The census script is `tally.sh` in the scratchpad (diverge.mjs

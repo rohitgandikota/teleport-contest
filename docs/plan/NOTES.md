@@ -4605,7 +4605,9 @@ s46-18 (the C says nighttime, ours prints no time-of-day line; s46-13 also
 has the C's "There is a full moon in effect." from its local date), and
 s46-25 (the midnight undead damage doubling of hitmu, like s30-13), and
 s47-07 (ours prints the new-moon startup warning from the recording date
-where the C's local date did not).
+where the C's local date did not), and s48-00 and s48-33 ("It is
+nighttime." where our clock says the midnight hour) and s48-34 (ours prints
+"It is nighttime." in ^X where the C's local hour printed no line).
 
 ## Fuzz divergence census (2026-09-01, second pass)
 
@@ -6846,3 +6848,56 @@ mapped: show_region() returns before _map_location()) came back as
 S_darkroom on a return visit where the C shows nothing (s44-23).
 display.js now has GLYPH_NOTHING_CELL, a blank record of kind 'nothing',
 written at the two C sites and tested for in reglyph_darkroom().
+
+## The status hilite rule editor lives in botl.js
+
+botl.c's STATUS_HILITES half is now ported: initblstats[] (indexed by
+table position, so version/weapon/armor/terrain sit at 23..26 while their
+BL_* ids are 26/23/24/25), conditions[] and condition_aliases[],
+status_hilite_menu(), status_hilite_menu_fld(), status_hilite_menu_add()
+(the C's choose_field/behavior/value/color gotos as one state loop, with
+the exact prompt and rejection strings), choose_updownboth, the text-match
+arrays (enc_stat, alignment, hunger, the role's rank titles split on " or "
+into two rules), query_conditions, status_hilite_remove,
+status_hilites_viewall ("OPTIONS=hilite_status: ..."), and the linestr
+gather/count helpers behind count_status_hilites(). Rules live on
+game.blstats_thresholds[fld] (C gb.blstats[0][fld].thresholds) and
+game.cond_hilites[] (C gc.cond_hilites), and status_hilite_menu() sets
+iflags.hilite_delta = 3 when any rule exists, as the C does. options.js
+lost its status_fields stand-in and imports status_hilite_menu and
+count_status_hilites; both get_val arms count the real rules. Not ported:
+applying the rules to the status rows (the renderer, botl.c's
+status_hilite_at/render half, bl_hilite timers) and the hilite_status rc
+parser (parse_status_hl1). With no rule set they change nothing; once a
+session adds a rule and then looks at the status line, the rendering will
+diverge until that half is ported. s46-03 (menu editor exercised by the
+fuzzer) now matches every screen.
+
+## A wielded aklys thrown by a monster is tethered
+
+mthrowu.c:584 m_throw() computes arw = autoreturn_weapon(obj) and
+tethered_weapon = (obj == MON_WEP(mon) && arw->tethered) before
+setmnotwielded(), then: skips u_catch_thrown_obj() for a tethered weapon
+(so no rn2(100 - Dex) draw), uses tmp_at(DISP_TETHER) for the flight,
+sets return_flightpath instead of drop_throw() when the missile hits the
+hero or ends its path, and calls return_from_mtoss() (rn2(100) made it
+back, rn2(100) caught unless the monster is confused/stunned/blind, rn2(2)
++ rnd(3) when it hits the thrower, "returns to <mon>'s hand", "a loud
+snap!", the static do_not_annoy 500-move throttle) instead of
+tmp_at(DISP_END). Ours dropped the aklys and rolled the hero catch, so a
+gnome's "thonged club" throw diverged at the catch roll (s48-25).
+u_catch_thrown_obj() now tests Blind/Confusion/Stunned/Fumbling through
+the property accessors and Role_if(PM_MONK/PM_ROGUE).
+
+## cls() must leave glyph_at() reading unexplored
+
+display.c:2107 clear_glyph_buffer() sets every gbuf entry to
+GLYPH_UNEXPLORED, so after cls() glyph_at() reports unexplored everywhere
+until newsym() redraws a spot. Ours only emptied the repaint list;
+glyph_at() reads the per-cell disp_glyph, which kept the last drawn glyph.
+monster_detection() calls cls() before map_monst() and then browse_map()
+with autodescribe on, so moving the cursor onto the (cleared) wall next to
+the hero printed "wall" where the C prints "unexplored area" (s48-29).
+clear_glyph_buffer() now resets each cell's disp_* fields to the blank
+unexplored record with gnew = 0 (the physical map was just cleared). The
+same applies to docrt()'s cls(), which redraws everything afterwards.

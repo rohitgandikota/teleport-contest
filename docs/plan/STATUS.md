@@ -331,8 +331,18 @@ class (s47-07 new-moon warning). Fixed: set_mimic_sym() frees its
 appearance object and ice-box corpses stop their timers, which removes a
 session-aborting exception (s47-27).
 
-Next: triage `--seed 48` (recording), then port botl.c
-status_hilite_menu_add. Then return to the
+Thirty-second round: botl.c's status hilite rule editor is ported into
+js/botl.js (status_hilite_menu and everything under it; options.js hands
+its two menu entries and both get_val counts to it), so s46-03 matches
+every screen; the renderer half (applying rules to the status rows) and
+the hilite_status rc parser are still unported (NOTES "The status hilite
+rule editor lives in botl.js"). `--seed 48`: five failures in 40, three
+the recording class (s48-00, s48-33, s48-34 time-of-day lines). Fixed:
+m_throw() tethers a wielded aklys and runs return_from_mtoss() (s48-25),
+and clear_glyph_buffer() resets every cell so glyph_at() reads unexplored
+after cls(), which is what monster detection's browse describes (s48-29).
+
+Next: triage `--seed 49`, then return to the
 note_unported list (hack.js 18, spell.js 20, shk.js 19). tools/jsplay.mjs has a new
 `--aeval "<await expr>"` flag with the hack.js namespace as `h` for state
 probes. The census script is `tally.sh` in the scratchpad (diverge.mjs

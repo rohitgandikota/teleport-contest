@@ -20,7 +20,7 @@ import {
 } from './const.js';
 import { NO_COLOR } from './terminal.js';
 import { allopt, findOption } from './optlist.js';
-import { condtests } from './botl.js';
+import { condtests, status_hilite_menu, count_status_hilites } from './botl.js';
 import {
     assign_graphics, gs_symset, gc_currentgraphics, known_handling,
     primary_symsets, PRIMARYSET, ROGUESET, parsesymbols, switch_symbols,
@@ -1326,7 +1326,7 @@ function get_option_value(o) {
     case 'traps':
         return opt_to_be_done;
     case 'hilite_status':           /* src/options.c optfn_hilite_status */
-        return (game.status_hilites || []).length
+        return count_status_hilites()
                ? '(see "status highlight rules" below)' : opt_none;
     case 'menu_headings':           /* src/options.c:2183 optfn_menu_headings */
         /* iflags.menu_headings defaults to NO_COLOR + ATR_INVERSE
@@ -1484,7 +1484,7 @@ function get_option_value(o) {
     case 'status condition fields':
         return n_currently_set(count_cond());
     case 'status highlight rules':
-        return n_currently_set((game.status_hilites || []).length);
+        return n_currently_set(count_status_hilites());
     default:
         return null;            /* optn_err -> "unknown" */
     }
@@ -1858,134 +1858,6 @@ async function cond_menu() {
         if (changed)
             (game.disp ||= {}).botl = true;
         return changed;
-    }
-}
-
-/* src/botl.c:703 initblstats[]. Most array indices match BL_* values. The
-   final version, weapon, armor, and terrain entries do not, so `fld` keeps
-   the enum identifier that status_hilite_menu() stores in its menu item. */
-const status_fields = [
-    { name: 'title', type: 'str' },
-    { name: 'strength', type: 'int' },
-    { name: 'dexterity', type: 'int' },
-    { name: 'constitution', type: 'int' },
-    { name: 'intelligence', type: 'int' },
-    { name: 'wisdom', type: 'int' },
-    { name: 'charisma', type: 'int' },
-    { name: 'alignment', type: 'str' },
-    { name: 'score', type: 'long', score: true },
-    { name: 'carrying-capacity', type: 'int', enumerated: true },
-    { name: 'gold', type: 'long' },
-    { name: 'power', type: 'int', percentage: true },
-    { name: 'power-max', type: 'int' },
-    { name: 'experience-level', type: 'int', percentage: true },
-    { name: 'armor-class', type: 'int' },
-    { name: 'HD', type: 'int' },
-    { name: 'time', type: 'long' },
-    { name: 'hunger', type: 'int', enumerated: true },
-    { name: 'hitpoints', type: 'int', percentage: true, critical: true },
-    { name: 'hitpoints-max', type: 'int' },
-    { name: 'dungeon-level', type: 'str' },
-    { name: 'experience', type: 'long', percentage: true },
-    { name: 'condition', type: 'mask' },
-    { name: 'version', type: 'str', fld: 26 },
-    { name: 'weapon', type: 'str', fld: 23 },
-    { name: 'armor', type: 'str', fld: 24 },
-    { name: 'terrain', type: 'str', fld: 25 },
-];
-
-const BL_TH_NONE = 0, BL_TH_VAL_PERCENTAGE = 1,
-      BL_TH_UPDOWN = 2, BL_TH_VAL_ABSOLUTE = 3,
-      BL_TH_TEXTMATCH = 4, BL_TH_CONDITION = 5,
-      BL_TH_ALWAYS_HILITE = 6, BL_TH_CRITICALHP = 7;
-
-// src/botl.c:3707 status_hilite_menu_choose_behavior().
-async function status_hilite_menu_choose_behavior(fld) {
-    const field = status_fields[fld];
-    if (!field)
-        return BL_TH_NONE;
-
-    const win = tty_create_nhwindow(NHW_MENU);
-    tty_start_menu(win, MENU_BEHAVE_STANDARD);
-    const add = (id, selector, text) => tty_add_menu(
-        win, null, id, selector, 0, ATR_NONE, NO_COLOR, text,
-        MENU_ITEMFLAGS_NONE);
-
-    let only = BL_TH_NONE, count = 0;
-    if (field.type !== 'mask') {
-        add(only = BL_TH_ALWAYS_HILITE, 'a',
-            `Always highlight ${field.name}`);
-        count++;
-    } else {
-        add(only = BL_TH_CONDITION, 'b', 'Bitmask of conditions');
-        count++;
-    }
-    if (field.type !== 'mask' && field.name !== 'version') {
-        add(only = BL_TH_UPDOWN, 'c', `${field.name} value changes`);
-        count++;
-    }
-    if (!field.enumerated && (field.type === 'int' || field.type === 'long')) {
-        add(only = BL_TH_VAL_ABSOLUTE, 'n', 'Number threshold');
-        count++;
-    }
-    if (field.percentage) {
-        add(only = BL_TH_VAL_PERCENTAGE, 'p', 'Percentage threshold');
-        count++;
-    }
-    if (field.critical) {
-        add(only = BL_TH_CRITICALHP, 'C',
-            `Highlight critically low ${field.name}`);
-        count++;
-    }
-    if (field.type === 'str' || field.enumerated) {
-        add(only = BL_TH_TEXTMATCH, 't', `${field.name} text match`);
-        count++;
-    }
-
-    tty_end_menu(win, `Select ${field.name} field hilite behavior:`);
-    let behavior = only;
-    if (count > 1) {
-        const picks = await tty_select_menu(win, PICK_ONE);
-        behavior = picks.length ? picks[0]
-                   : picks.cancelled ? BL_TH_NONE - 1 : BL_TH_NONE;
-    }
-    tty_destroy_nhwindow(win);
-    return behavior;
-}
-
-// src/botl.c:4498 status_hilite_menu(), including its retry loop after a
-// field was opened. Rule creation beyond the behavior picker is kept visible
-// as pending until its value, color, and attribute dialogs are ported.
-async function status_hilite_menu() {
-    for (;;) {
-        const win = tty_create_nhwindow(NHW_MENU);
-        tty_start_menu(win, MENU_BEHAVE_STANDARD);
-        for (let fld = 0; fld < status_fields.length; fld++) {
-            const field = status_fields[fld];
-            if (field.score)
-                continue;
-            const fieldId = field.fld ?? fld;
-            const count = (game.status_hilites || [])
-                .filter(rule => rule.fld === fieldId).length;
-            let text = field.name.padEnd(18);
-            if (count)
-                text += ` (${count} defined)`;
-            tty_add_menu(win, null, fieldId + 1, 0, 0, ATR_NONE, NO_COLOR,
-                         text, MENU_ITEMFLAGS_NONE);
-        }
-        tty_end_menu(win, 'Status hilites:');
-        const picks = await tty_select_menu(win, PICK_ONE);
-        tty_destroy_nhwindow(win);
-        if (!picks.length)
-            return true;
-
-        const fld = picks[0] - 1;
-        const behavior = await status_hilite_menu_choose_behavior(fld);
-        if (behavior > BL_TH_NONE)
-            note_unported_options(`status-hilite:${status_fields[fld].name}`);
-        /* With no existing rule, status_hilite_menu_fld() attempts one add
-           and then the outer menu is shown again whether it succeeds or is
-           cancelled. */
     }
 }
 

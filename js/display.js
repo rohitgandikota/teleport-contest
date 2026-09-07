@@ -975,9 +975,30 @@ export function show_glyph_cell(x, y, ch, color = NO_COLOR, decgfx = false, attr
     loc.gnew = 1;
 }
 
-// src/display.c:2159 clear_glyph_buffer()
+/* the glyph buffer's unexplored entry, what glyph_at() reads after cls() */
+const GLYPH_UNEXPLORED_GLYPH = Object.freeze({ kind: 'unexplored' });
+
+// src/display.c:2107 clear_glyph_buffer() — every gbuf entry becomes the
+// unexplored glyph. The physical map was just cleared, so nothing is flagged
+// for repaint; glyph_at() reports unexplored until something redraws a spot.
 export function clear_glyph_buffer() {
     game.gbuf = [];
+    const lev = game.level;
+    if (!lev)
+        return;
+    for (let x = 1; x < COLNO; x++) {
+        for (let y = 0; y < ROWNO; y++) {
+            const loc = lev.at(x, y);
+            if (!loc)
+                continue;
+            loc.disp_ch = ' ';
+            loc.disp_color = NO_COLOR;
+            loc.disp_decgfx = false;
+            loc.disp_attr = 0;
+            loc.disp_glyph = GLYPH_UNEXPLORED_GLYPH;
+            loc.gnew = 0;
+        }
+    }
 }
 
 // C glyph_at() (display.h:200) — what the glyph buffer holds for the spot.

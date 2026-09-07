@@ -5,7 +5,7 @@
 import { game } from './gstate.js';
 import { reset_commands } from './cmd.js';
 import { set_vanq_order } from './insight.js';
-import { pline, docrt, bot, reglyph_darkroom } from './display.js';
+import { pline, docrt, bot, reglyph_darkroom, flush_screen } from './display.js';
 import {
     NHW_MENU, ATR_NONE, ATR_INVERSE,
     tty_create_nhwindow, tty_destroy_nhwindow, tty_start_menu, tty_add_menu,
@@ -508,6 +508,75 @@ export function parseoptions(opts, tinitial, tfrom_file, result) {
         }
         result.opts.end_disclose = end.join('');
         result.opts[opt.name] = value;
+    } else if (opt.name === 'scores') {
+        /* src/options.c:3669 optfn_scores(), the do_set arm:
+           scores:5t[op] 5a[round] o[wn] */
+        let op = value ?? '';   /* string_for_opt(opts, FALSE) */
+        if (op === '')
+            return false;       /* optn_err */
+
+        /* 5.0: earlier versions left old values for unspecified arguments
+           if player's scores:foo option only specified some of the three;
+           in particular, attempting to use 'scores:own' rather than
+           'scores:0 top/0 around/own' didn't work as intended */
+        result.opts.end_top = result.opts.end_around = 0;
+        result.opts.end_own = false;
+
+        if (negated)
+            op = '';            /* op = eos(op) */
+
+        const digit = (c) => c !== undefined && c >= '0' && c <= '9';
+        const letter = (c) => c !== undefined && /[A-Za-z]/.test(c);
+        while (op.length) {
+            let inum = 1;
+
+            let neg = (op[0] === '!') || op.slice(0, 2).toLowerCase() === 'no';
+            if (neg)
+                op = op.slice((op[0] === '!') ? 1 : (op[2] !== '-') ? 2 : 3);
+
+            if (digit(op[0])) {
+                inum = parseInt(op, 10);
+                while (digit(op[0]))
+                    op = op.slice(1);
+            }
+            while (op[0] === ' ')
+                op = op.slice(1);
+
+            switch ((op[0] ?? '').toLowerCase()) {
+            case 't':
+                result.opts.end_top = neg ? 0 : inum;
+                break;
+            case 'a':
+                result.opts.end_around = neg ? 0 : inum;
+                break;
+            case 'o':
+                result.opts.end_own = (neg || !inum) ? false : true;
+                break;
+            case 'n': /* none */
+                result.opts.end_top = result.opts.end_around = 0;
+                result.opts.end_own = false;
+                break;
+            case '-':
+                if (digit(op[1])) {
+                    config_error_add(`Values for ${opt.name}:top and ${
+                        opt.name}:around must not be negative`);
+                    return false; /* optn_silenterr */
+                }
+                /*FALLTHRU*/
+            default:
+                config_error_add(`Unknown ${opt.name} parameter '${op}'`);
+                return false; /* optn_silenterr */
+            }
+            /* "3a" is sufficient but accept "3around" (or "3abracadabra") */
+            while (letter(op[0]))
+                op = op.slice(1);
+            /* t, a, and o can be separated by space(s) or slash or both */
+            while (op[0] === ' ')
+                op = op.slice(1);
+            if (op[0] === '/')
+                op = op.slice(1);
+        }
+        result.opts[opt.name] = negated ? null : value;
     } else {
         result.opts[opt.name] = negated ? null : value;
     }
@@ -1525,6 +1594,19 @@ async function doset_simple_menu() {
                    left the menu showing the old value. */
                 set_bool_optval(allopt[k].name, !bool_optval(allopt[k]));
                 boolopt_side_effects(allopt[k].name);
+            } else if (allopt[k].type === 'OthrOpt') {
+                /* optlist.h's "other" entries all have handlers:
+                   optfn_o_menu_colors etc., do_handler arms */
+                if (allopt[k].name === 'menu colors')
+                    await handler_menu_colors();
+                else if (allopt[k].name === 'bind keys')
+                    await handler_rebind_keys();
+                else if (allopt[k].name === 'status condition fields')
+                    await cond_menu();
+                else if (allopt[k].name === 'status highlight rules')
+                    await status_hilite_menu();
+                else
+                    note_unported_options(`doset_simple:other=${allopt[k].name}`);
             } else if (allopt[k].hasHandler !== 'Yes') {
                 /* src/options.c:8672 — a compound option with no handler
                    asks for its value outright. C then re-enters
@@ -1564,6 +1646,8 @@ async function doset_simple_menu() {
                 await do_symset();
             } else if (allopt[k].name === 'whatis_coord') {
                 await handler_whatis_coord();
+            } else if (allopt[k].name === 'petattr') {
+                await handler_petattr();
             } else {
                 note_unported_options(`doset_simple:set=${allopt[k].name}`);
             }
@@ -1600,9 +1684,15 @@ export async function doset_simple() {
     game.give_opt_msg = false;
     do {
         pickedone = await doset_simple_menu();
+        const flush = game.opt_need_redraw;
+
+        /* src/options.c:8726 — after every pass, so a toggle's disp.botl
+           repaints the status rows before the menu is put up again */
+        await reset_needed_visuals();
+        if (flush)
+            await flush_screen(1);
     } while (pickedone > 0);
     game.give_opt_msg = true;
-    await reset_needed_visuals();
     return ECMD_OK;
 }
 
@@ -2130,6 +2220,8 @@ export async function doset() {
                 await handler_menu_objsyms();
             } else if (o.hasHandler === 'Yes' && o.name === 'whatis_coord') {
                 await handler_whatis_coord();
+            } else if (o.hasHandler === 'Yes' && o.name === 'petattr') {
+                await handler_petattr();
             } else if (o.name === 'menu colors') {
                 /* src/options.c:8383 optfn_o_menu_colors() do_handler */
                 await handler_menu_colors();
@@ -2285,6 +2377,20 @@ export async function handler_whatis_coord() {
     }
     tty_destroy_nhwindow(win);
     return 0;
+}
+
+// src/options.c handler_petattr() — optfn_petattr()'s do_handler arm
+async function handler_petattr() {
+    const tmp = await query_attr('Select pet highlight attribute',
+                                 game.iflags?.wc2_petattr ?? ATR_INVERSE);
+
+    if (tmp !== -1) {
+        (game.iflags ||= {}).wc2_petattr = tmp;
+        set_bool_optval('hilite_pet', game.iflags.wc2_petattr !== ATR_NONE); /* iflags.hilite_pet */
+        if (!game.opt_initial)
+            game.opt_need_redraw = true;
+    }
+    return 0; /* optn_ok */
 }
 
 // src/options.c:6407 handler_menu_colors()

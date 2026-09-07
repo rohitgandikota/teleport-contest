@@ -52,7 +52,7 @@ import { DEC_TO_UNICODE, NO_COLOR } from './terminal.js';
 import { m_at, t_at } from './mon.js';
 import { is_obj_mappear } from './monst.js';
 import { engr_at } from './engrave.js';
-import { x_monnam, upstart, pmname, hliquid } from './do_name.js';
+import { x_monnam, upstart, pmname, hliquid, coyotename, distant_monnam } from './do_name.js';
 import { ARTICLE_NONE, MAXTCHARS } from './const.js';
 import { an, the, makesingular, singular, xname, distant_name,
          doname_vague_quan, simpleonames, OBJ_NAME } from './objnam.js';
@@ -252,9 +252,11 @@ function look_at_object(x, y, glyph) {
 
 // src/pager.c:422 look_at_monster()
 function look_at_monster(mtmp, x, y) {
-    const accurate = true; /* !Hallucination */
-    /* coyotename applies to PM_COYOTE only */
-    const name = x_monnam(mtmp, ARTICLE_NONE, null, 0, true);
+    const accurate = !Hallucination();
+
+    const name = (mtmp.data === game.mons[PMNAMES.PM_COYOTE] && accurate)
+                 ? coyotename(mtmp)
+                 : distant_monnam(mtmp, ARTICLE_NONE);
     let buf = `${(mtmp.mx !== x || mtmp.my !== y) ? 'tail of a ' : ''}`
         + `${monhealthdescr(mtmp)}`
         + `${(mtmp.mtame && accurate) ? 'tame '

@@ -102,6 +102,7 @@ import { newcham, healmon, mcureblindness, delobj } from './mon.js';
 import { minstapetrify } from './trap.js';
 import { grow_up } from './makemon.js';
 import { ledger_no, dunlevs_in_dungeon } from './dungeon.js';
+import { notice_mon_off, notice_mon_on, notice_all_mons, notice_all_mons_flush } from './hack.js';
 
 
 
@@ -579,7 +580,7 @@ export async function boulder_hits_pool(obj, x, y, pushing) {
 // takes no arm, draws nothing, and returns false.
 //
 // include/hack.h Maybe_Half_Phys()
-const Maybe_Half_Phys = (dmg) =>
+export const Maybe_Half_Phys = (dmg) =>
     (game.u.intrinsic?.HHalf_physical_damage || game.u.uprops?.HALF_PHDAM)
         ? Math.trunc((dmg + 1) / 2) : dmg;
 const the_your = ['the', 'your'];
@@ -1378,8 +1379,12 @@ export async function goto_level(newlevel, at_stairs, falling, portal) {
     const { docrt, flush_screen } = await import('./display.js');
     vision_reset();
     game.vision_full_recalc = 1;
-    await docrt();
+    notice_mon_off(); /* not noticing monsters yet! */
+    await docrt(); /* does a full vision recalc */
     await flush_screen(-1);
+    notice_mon_on();
+    notice_all_mons(true);
+    await notice_all_mons_flush();
 
     /* src/do.c:1850 — the deferred arrival message for level teleport looks
        odd if given after the various messages below, so give it before

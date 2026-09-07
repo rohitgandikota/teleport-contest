@@ -123,6 +123,7 @@ import { Blind, Hallucination, Invisible, Confusion } from './youprop.js';
 import { make_confused } from './potion.js';
 
 import { ART_ORB_OF_FATE } from './artilist_data.js';
+import { notice_mon_off, notice_mon_on } from './hack.js';
 function note_unported_read(what) {
     (game.unported ||= new Set()).add('read:' + what);
 }
@@ -2506,7 +2507,9 @@ async function seffect_magic_mapping(sobj) {
         (game.u.intrinsic ||= {}).HConfusion = 1; /* to screw up map */
     /* notice_mon_off() / notice_mon_on() wrap the mapping so newly drawn
        monsters are not announced */
+    notice_mon_off();
     await do_mapping();
+    notice_mon_on();
     if (cval) {
         game.u.intrinsic.HConfusion = 0; /* restore */
         await pline("Unfortunately, you can't grasp the details.");

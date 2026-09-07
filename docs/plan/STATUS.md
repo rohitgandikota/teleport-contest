@@ -314,7 +314,20 @@ resists_magm()'s wielded, worn and carried item checks (s44-16); an
 explicit GLYPH_NOTHING memory record so reglyph_darkroom() leaves
 never-mapped squares alone (s44-23).
 
-Next: triage `--seed 45` (recording), then `--seed 46`. Then return to the
+Thirtieth round, `--seed 45` and `--seed 46`: nine failures in 80, three
+the recording classes (s46-13, s46-18, s46-25). Fixed: the 5.0
+spot_monsters/mon_movement notices with their blocking brackets, the
+doset_simple per-pass reset_needed_visuals(), the petattr handler, the
+scores parser and the simple menu's other-entry handlers (s45-00 to 699
+of 714 screens, s46-03 to 207); coyotename() in farlook (s45-01); the
+locked shop's "Closed for inventory" sign (s45-23); orig_rtype on
+subrooms for #overview's Oracle line (s45-38); jump() ported into
+apply.js with the jumping spell (s46-04). Open: s45-00's status repaint
+timing and s46-03's status highlight rule editor (see NOTES "Open from
+seeds 45 and 46").
+
+Next: triage `--seed 47` (recording), then port botl.c
+status_hilite_menu_add. Then return to the
 note_unported list (hack.js 18, spell.js 20, shk.js 19). tools/jsplay.mjs has a new
 `--aeval "<await expr>"` flag with the hack.js namespace as `h` for state
 probes. The census script is `tally.sh` in the scratchpad (diverge.mjs

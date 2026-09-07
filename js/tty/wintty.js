@@ -29,6 +29,7 @@ import { MENU_ITEMFLAGS_NONE, MENU_ITEMFLAGS_SELECTED,
          MENU_SEARCH, PICK_ONE, PICK_ANY, GOLD_SYM, ROWNO, COLNO } from './../const.js';
 import { pmatch } from './../hacklib.js';
 import { get_menu_coloring } from './../windows.js';
+import { notice_all_mons_flush } from './../hack.js';
 import { gc_currentgraphics, gs_symset, H_UTF8 } from './../symbols.js';
 
 // include/wintype.h:128-137 — NetHack's attribute numbers. These are NOT the
@@ -639,6 +640,7 @@ export async function tty_wait_synch() {
 }
 
 export async function tty_display_nhwindow(window) {
+    await notice_all_mons_flush(); /* queued by the previous window's erase */
     const cw = windows[window];
     const display = game?.nhDisplay;
     if (!cw || !display) return;
@@ -1036,6 +1038,9 @@ export async function tty_select_menu(window, how) {
        erase_menu_or_text() handles the repaint (its offx==0 arm is C's
        `docrt(); flush_screen(1);` restructured for a sync context). */
     tty_dismiss_nhwindow(window);
+    /* erase_menu_or_text()'s docrt() ends with vision_recalc(), whose
+       notice_all_mons(TRUE) this port queues; run it here, in C's order */
+    await notice_all_mons_flush();
     game.bot_disabled = oldBotDisabled;
 
     const picks = [];

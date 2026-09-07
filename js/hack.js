@@ -113,6 +113,12 @@ import { uteetering_at_seen_pit } from './trap.js';
 import { P_SKILL } from './weapon.js';
 import { P_RIDING, P_BASIC } from './const.js';
 import { rider_cant_reach } from './steed.js';
+import { canseemon } from './display.js';
+import { x_monnam } from './do_name.js';
+import { has_mgivenname, SUPPRESS_SADDLE, ARTICLE_YOUR, ARTICLE_A, ARTICLE_NONE } from './const.js';
+import { distu } from './hacklib.js';
+import { type_is_pname } from './mondata.js';
+import { impossible } from './pline.js';
 
 // src/hack.c:2996 runmode_delay_output(). Multi-turn actions and running
 // periodically expose their intermediate screen. The default "run" mode
@@ -1804,6 +1810,109 @@ export async function lookaround() {
             u.dx = x0 - u.ux;
             u.dy = y0 - u.uy;
         }
+    }
+}
+
+// include/flag.h:233 notice_mon_off() — temporarily disable the a11y
+// monster notices (nested)
+export function notice_mon_off() {
+    const a11y = (game.a11y ||= {});
+    a11y.mon_notices_blocked = (a11y.mon_notices_blocked | 0) + 1;
+}
+
+// include/flag.h:234 notice_mon_on()
+export function notice_mon_on() {
+    const a11y = (game.a11y ||= {});
+    if (--a11y.mon_notices_blocked < 0) {
+        impossible('mon_notices_blocked<0');
+        a11y.mon_notices_blocked = 0;
+    }
+}
+
+// src/hack.c:1707 notice_mon() — a11y.mon_notices is the spot_monsters
+// option; mspotted records that the hero has already been told. The
+// mspotted update happens here, at C's moment; the message text is
+// composed now too but queued on game.a11y.notices, because pline() is
+// asynchronous here and this is reached from synchronous vision_recalc().
+// notice_all_mons_flush() delivers the queue.
+export function notice_mon(mtmp) {
+    if (game.flags?.spot_monsters && !(game.a11y?.mon_notices_blocked)) {
+        const spot = canspotmon(mtmp)
+            && !(is_hider(mtmp.data)
+                 && (mtmp.mundetected
+                     || M_AP_TYPE(mtmp) === M_AP_FURNITURE
+                     || M_AP_TYPE(mtmp) === M_AP_OBJECT));
+
+        if (spot && !mtmp.mspotted && !DEADMONSTER(mtmp)) {
+            mtmp.mspotted = true;
+            ((game.a11y ||= {}).notices ||= []).push({
+                x: mtmp.mx, y: mtmp.my,
+                text: `${canseemon(mtmp) ? 'see' : 'notice'} ${
+                    x_monnam(mtmp,
+                             mtmp.mtame ? ARTICLE_YOUR
+                             : (!has_mgivenname(mtmp)
+                                && !type_is_pname(mtmp.data)) ? ARTICLE_A
+                             : ARTICLE_NONE,
+                             (mtmp.mpeaceful && !mtmp.mtame) ? 'peaceful' : null,
+                             has_mgivenname(mtmp) ? SUPPRESS_SADDLE : 0,
+                             false)}.`,
+            });
+        } else if (!spot) {
+            mtmp.mspotted = false;
+        }
+    }
+}
+
+// src/hack.c:1735 notice_mons_cmp()
+function notice_mons_cmp(m1, m2) {
+    return distu(m1.mx, m1.my) - distu(m2.mx, m2.my);
+}
+
+// src/hack.c:1744 notice_all_mons() — C walks fmon (newest first, as
+// game.level.monsters is) and qsorts by distance; ties keep list order here
+export function notice_all_mons(reset) {
+    if (game.flags?.spot_monsters && !(game.a11y?.mon_notices_blocked)) {
+        const arr = [];
+        let cnt = 0;
+
+        for (const mtmp of game.level?.monsters || []) {
+            if (DEADMONSTER(mtmp))
+                continue;
+            if (canspotmon(mtmp))
+                cnt++;
+            else if (reset)
+                mtmp.mspotted = false;
+        }
+        if (!cnt)
+            return;
+
+        for (const mtmp of game.level.monsters) {
+            if (DEADMONSTER(mtmp))
+                continue;
+            if (!canspotmon(mtmp))
+                mtmp.mspotted = false;
+            else if (arr.length < cnt)
+                arr.push(mtmp);
+        }
+
+        if (arr.length) {
+            arr.sort(notice_mons_cmp);
+            for (const mtmp of arr)
+                notice_mon(mtmp);
+        }
+    }
+}
+
+/* deliver the notices queued by notice_mon(); C printed them on the spot */
+export async function notice_all_mons_flush() {
+    const a11y = game.a11y;
+    if (!a11y?.notices?.length)
+        return;
+    const list = a11y.notices;
+    a11y.notices = [];
+    for (const n of list) {
+        set_msg_xy(n.x, n.y);
+        await You(n.text);
     }
 }
 

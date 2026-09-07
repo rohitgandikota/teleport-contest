@@ -50,6 +50,7 @@ import { can_chant } from './mondata.js';
 import { freehand } from './engrave.js';
 import { check_capacity } from './hack.js';
 import { make_confused, make_stunned } from './potion.js';
+import { jump } from './apply.js';
 
 // src/spell.c — NO_SPELL sentinel and the spell list accessor.
 const NO_SPELL = 0;
@@ -785,7 +786,8 @@ export async function spelleffects(spell_otyp, atme, force) {
         note_unported_spell('spelleffects:protection');
         break;
     case ONAMES.SPE_JUMPING:
-        note_unported_spell('spelleffects:jumping');
+        if (!((await jump(Math.max(role_skill, 1))) & ECMD_TIME))
+            await pline('Nothing happens.'); /* pline1(nothing_happens) */
         break;
     case ONAMES.SPE_CHAIN_LIGHTNING:
         note_unported_spell('spelleffects:chain_lightning');

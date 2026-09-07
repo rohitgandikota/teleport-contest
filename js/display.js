@@ -66,6 +66,7 @@ import { NO_COLOR, CLR_GRAY, CLR_BROWN, CLR_WHITE, CLR_YELLOW, CLR_BRIGHT_BLUE,
          DEC_TO_UNICODE, ATR_INVERSE as TERM_INVERSE,
          ATR_BOLD as TERM_BOLD,
          ATR_UNDERLINE as TERM_UNDERLINE } from './terminal.js';
+import { notice_all_mons_flush } from './hack.js';
 
 // ── ANSI color codes ──
 // Maps CLR_* constants (0-15) to ANSI SGR color codes.
@@ -1750,6 +1751,7 @@ export async function docrt() {
        but the endgame planes keep a one-glyph backdrop as memory and only
        this pass shows the hero's actual surroundings. */
     vision_recalc(0);
+    await notice_all_mons_flush(); /* vision.c:856, queued by vision_recalc */
 
     /* C overlays monsters and calls newsym on an unmounted hero too. That
        also updates the object beneath the hero, including display RNG. */
@@ -2402,6 +2404,9 @@ export function message_with_location(msg) {
 }
 
 export async function pline(msg) {
+    /* a monster notice queued by a synchronous docrt() (window erase) is
+       an earlier pline in C; deliver it before this message */
+    await notice_all_mons_flush();
     msg = message_with_location(msg);
     if (!msg) return;
     await prepare_pline();

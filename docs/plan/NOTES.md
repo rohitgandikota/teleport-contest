@@ -4600,8 +4600,10 @@ recording: the C's shifted clock lands on the 19th, whose phase says
 "Be careful!  New moon tonight." at startup, so every later screen sits
 behind that --More--; ours computes the 20th). s37-20 (^X "It is
 nighttime.") is another, as are s39-16, s39-28, s42-10 and s44-18 ("It is
-the midnight hour." where our clock says nighttime) and s43-12 (the C says
-nighttime, ours prints no time-of-day line).
+the midnight hour." where our clock says nighttime), s43-12, s46-13 and
+s46-18 (the C says nighttime, ours prints no time-of-day line; s46-13 also
+has the C's "There is a full moon in effect." from its local date), and
+s46-25 (the midnight undead damage doubling of hitmu, like s30-13).
 
 ## Fuzz divergence census (2026-09-01, second pass)
 
@@ -6708,6 +6710,89 @@ onto gm.mydogs so the summary can say "You and the little dog escaped
 ..." and add each tame pet's mhpmax to u.urexp. Our done() read
 game.mydogs, which nothing had filled on a wizard-mode level teleport out
 of the dungeon, so the summary named no pet and scored 0 (s43-26).
+
+## spot_monsters and mon_movement: the 5.0 accessibility notices
+
+hack.c:1707 notice_mon() prints "You see <mon>." (or "notice", when only
+sensed) the first time a monster is spotted, marking mtmp->mspotted;
+notice_all_mons() (hack.c:1744) runs it for every spotted monster
+nearest-first and clears mspotted on the unspotted ones, and vision.c:856
+calls it at the end of every vision_recalc(). Because docrt() runs
+vision_recalc(2) (nothing visible: everything unspotted) and then
+vision_recalc(0), every redraw re-announces the monsters in view, which
+is why an options menu that changes anything visible ends with "You see
+your little dog." Blocks (notice_mon_off/on, flag.h:233) bracket the
+level change, teleds(), the welcome messages, magic mapping and wiz_map,
+each followed by an explicit notice_all_mons(TRUE). msg_mon_movement()
+(monmove.c:33, the mon_movement option) reports a spotted monster's move
+after place_monster(). None of it existed here (s45-00); the options are
+game.flags.spot_monsters / mon_movement. This port's vision_recalc() is
+synchronous, so notice_mon() composes the text and marks mspotted at the
+C's moment but queues the pline; notice_all_mons_flush() delivers the
+queue at the next asynchronous point: docrt() after its vision_recalc,
+the pline prologue (a queued notice is an earlier message), a tty menu's
+dismissal in tty_select_menu, tty_display_nhwindow's start, the moveloop
+after each command, and the explicit C call sites.
+
+## doset_simple runs reset_needed_visuals() after every pass
+
+options.c:8726: the simple options loop calls reset_needed_visuals()
+(and flush_screen(1) when a redraw was needed) after each
+doset_simple_menu(), so a toggle that sets disp.botl (showexp) repaints
+the status rows before the menu is put up again. Ours called it once
+after the loop, leaving blank status rows under the next --More--
+(s45-00).
+
+## petattr, scores and the simple menu's "other" entries
+
+optfn_petattr's do_handler (options.c:3138) is handler_petattr():
+query_attr("Select pet highlight attribute", iflags.wc2_petattr), then
+hilite_pet follows the attribute and a redraw is requested. optfn_scores
+(options.c:3669) parses "5t 3a o" style values with the '!'/"no" prefix,
+"none" and the "Unknown scores parameter '...'" error, and 5.0 resets all
+three fields first. The simple options menu's "other" entries (OthrOpt:
+menu colors, bind keys, status condition fields, status highlight rules)
+dispatch to their handlers; ours fell into the no-handler getlin
+("Set ... to what?") for all of them (s45-00, s46-03).
+
+## Coyotes, the locked shop's dust sign, and a subroom's orig_rtype
+
+do_name.c:1526 coyotename() names a coyote "coyote - <Latin name>" by
+m_id (pager.c:431, farlook) unless hallucinating (s45-01). shknam.c:750
+stock_room() writes "Closed for inventory" in the dust outside a locked
+shop door and fixes the square's terrain to ROOM or CORR (s45-23: #wizmap
+showed the C's engraving glyph where ours had a bare corridor).
+mklev.c:1573 level_finalize_topology() records orig_rtype for all of
+svr.rooms[], subrooms included; ours only covered the top-level rooms, so
+the Oracle's Delphi subroom never satisfied recalc_mapseen()'s
+orig_rtype == DELPHI test and #overview lacked "Oracle of Delphi."
+(s45-38).
+
+## jump() lives in apply.c and the jumping spell casts it
+
+apply.c:1988 jump(magic): the whole prologue (the jumping spell when the
+hero lacks Jumping, no legs, "can't jump very far", stuck steed,
+swallowed, underwater, held, levitating, encumbered, weak or hungry,
+wounded legs, trapped steed), the trap escapes (bear trap, pit, web,
+lava, buried ball/floor), jumping in place onto a trap, then walk_path()
+with hurtle_jump(), teleds(), nomul(-1) and morehungry(rnd(25)).
+spell.c:1584 casts SPE_JUMPING as jump(max(role_skill, 1)) and says
+"Nothing happens." if no time passed. Ours had only a partial dojump()
+in cmd.js and a note_unported for the spell, so a wizard casting jumping
+lost a turn to the monsters instead of getting the prompt (s46-04).
+stucksteed() (steed.c:878) and the Jumping, Conflict and Wounded_legs
+property accessors came with it.
+
+## Open from seeds 45 and 46
+
+s45-00 step 651: after a pickup that makes the hero Stressed, the C's
+status rows already show Stressed under the "--More--" that precedes
+"You rebalance your load."; ours repaints one message later. The C's
+encumber_msg() sets disp.botl after its pline, so some other botl setter
+in that moveloop pass is still unidentified. s46-03: the status
+highlight rule editor beyond the behavior menu (botl.c:3890
+status_hilite_menu_add: threshold value, comparison, color and attribute
+dialogs) is not ported; the simple menu now reaches it.
 
 ## number_pad letters run their commands, and cmdassist draws the digits
 

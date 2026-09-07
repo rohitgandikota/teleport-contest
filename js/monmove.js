@@ -117,6 +117,10 @@ import { is_digging, watch_dig } from './dig.js';
 import { angry_guards } from './mon.js';
 import { stop_occupation } from './allmain.js';
 import { IS_DOOR, D_WARNED } from './const.js';
+import { notice_mon, notice_all_mons_flush } from './hack.js';
+import { pline_xy } from './pline.js';
+import { vtense } from './objnam.js';
+import { locomotion } from './mondata.js';
 
 
 
@@ -1663,6 +1667,24 @@ async function m_move_aggress(mtmp, x, y) {
     }
     return MMOVE_DONE;
 }
+// src/monmove.c:33 msg_mon_movement() — a11y: give a message when monster
+// moved (the mon_movement option); next2u() is you.h:558 distu() <= 2
+async function msg_mon_movement(mtmp, omx, omy) {
+    if (game.flags?.mon_movement && canspotmon(mtmp) && mtmp.mspotted) {
+        const nix = mtmp.mx, niy = mtmp.my;
+        const n2u = distu(nix, niy) <= 2,
+              close = !n2u && (distu(nix, niy) <= (BOLT_LIM * BOLT_LIM)),
+              closer = !n2u && (distu(nix, niy) <= distu(omx, omy));
+
+        await pline_xy(nix, niy, `${Monnam(mtmp)} ${
+            vtense(null, locomotion(mtmp.data, 'move'))}${
+            n2u ? ' next to you'
+            : (close && closer) ? ' closer'
+            : (close && !closer) ? ' further away'
+            : ' in the distance'}.`);
+    }
+}
+
 
 // src/monmove.c:1720 m_move() — a non-tame monster's turn. The tame case is
 // dispatched to dog_move() above, exactly as C does at :1773.
@@ -1979,6 +2001,7 @@ export async function m_move(mtmp, after) {
            square. */
         remove_monster(omx, omy);
         place_monster(mtmp, nix, niy);
+        await msg_mon_movement(mtmp, omx, omy);
         // src/monmove.c:2057, reconnect the moved head to its tail.
         if (mtmp.wormno)
             worm_move(mtmp);
@@ -2081,6 +2104,9 @@ function should_displace(mtmp, data, ggx, ggy, cnt) {
 // on the paths that mattered. :1773 is the pet path, so dog_move()'s result
 // goes through here too.
 async function postmov(mtmp, ptr, omx, omy, mmoved, can_tunnel) {
+    notice_mon(mtmp); /* src/monmove.c:1470 */
+    await notice_all_mons_flush();
+
     /* src/monmove.c:1478. A vampshifter which selected a closed doorway
        changes into fog before the ordinary door handling runs. */
     if (mmoved === MMOVE_MOVED && is_vampshifter(mtmp) && !amorphous(ptr)) {

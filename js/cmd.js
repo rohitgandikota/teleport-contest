@@ -132,7 +132,7 @@ import { doapply } from './apply.js';
 import { dochat } from './sounds.js';
 import { dothrow, dofire } from './dothrow.js';
 import { getpos, getpos_sethilite } from './getpos.js';
-import { get_valid_jump_position, is_valid_jump_pos } from './apply.js';
+import { dojump } from './apply.js';
 import { dowear, doputon, dotakeoff, doremring, doddoremarm,
          canwearobj_core } from './do_wear.js';
 import { boolean_option, show_menu_controls, paranoia_bits,
@@ -1388,77 +1388,6 @@ export async function doterrain() {
     return ECMD_OK; /* no time elapses */
 }
 
-// src/apply.c:1847 dojump() -> jump(0). The jump itself needs the movement and
-// trap plumbing; what is ported is the getpos() call at src/apply.c:2063, which
-// is where a session's cursor keys and pick go.
-async function dojump() {
-    const has_jumping = !!game.u.intrinsic?.HJumping
-                        || !!game.u.uprops?.JUMPING;
-
-    /* src/apply.c:1979. Physical #jump casts a fresh jumping spell when the
-       hero lacks the ability, then rejects the command before getpos when no
-       such spell is available. */
-    if (!has_jumping
-        && known_spell(ONAMES.SPE_JUMPING) >= spe_Fresh)
-        return await spelleffects(ONAMES.SPE_JUMPING, false, false);
-
-    if (!has_jumping) {
-        await You_cant('jump very far.');
-        return ECMD_OK;
-    }
-
-    await pline('Where do you want to jump?');
-
-    const cc = { x: game.u.ux, y: game.u.uy };
-    /* src/apply.c:2062 — the cursor marks squares the jump cannot reach.
-       display_jump_positions (the tmp_at beam) is not ported; the validator
-       is, because getpos' auto-describe prints "(invalid target)" from it. */
-    await getpos_sethilite(null, get_valid_jump_position);
-
-    if (await getpos(cc, true, 'the desired position') < 0)
-        return ECMD_CANCEL; /* user pressed ESC */
-
-    /* src/apply.c:2065 — the same validator again, this time with its
-       messages; a rejected target ends the command without a turn. */
-    if (!(await is_valid_jump_pos(cc.x, cc.y, game.jumping_is_magic, true)))
-        return ECMD_FAIL;
-
-    /* src/apply.c:2116 — jumping onto your own square never moves you */
-    if (cc.x === game.u.ux && cc.y === game.u.uy) {
-        if (t_at(cc.x, cc.y)) {
-            note_unported_cmd('jump:in_place_trap');
-            return ECMD_TIME;
-        }
-        /* jumping in place takes no time and doesn't exercise anything */
-        await You('decide not to jump after all.');
-        return ECMD_OK;
-    }
-
-    /*
-     * Check the path from uc to cc, calling hurtle_step at each location.
-     * The final position actually reached will be in cc.
-     */
-    const uc = { x: game.u.ux, y: game.u.uy };
-    let range = cc.x - uc.x;
-    if (range < 0) range = -range;
-    let temp = cc.y - uc.y;
-    if (temp < 0) temp = -temp;
-    if (range < temp) range = temp;
-
-    const { walk_path, hurtle_jump } = await import('./dothrow.js');
-    const { teleds, TELEDS_NO_FLAGS } = await import('./teleport.js');
-    await walk_path(uc, cc, hurtle_jump, { range });
-    /* hurtle_jump -> hurtle_step results in <u.ux,u.uy> == <cc.x,cc.y> and
-     * usually moves the ball if punished, but does not handle all the
-     * effects of landing on the final position.
-     */
-    await teleds(cc.x, cc.y, TELEDS_NO_FLAGS);
-    nomul(-1);
-    game.multi_reason = 'jumping around';
-    game.nomovemsg = '';
-    await morehungry(rnd(25));
-    return ECMD_TIME;
-}
 
 // src/pager.c doidtrap(), the '^' command. Ordinary seen floor traps are the
 // common path; trapped-door and trapped-chest glyph overlays remain separate

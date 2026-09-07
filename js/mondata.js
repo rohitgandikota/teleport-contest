@@ -1295,3 +1295,6 @@ export function hates_silver(ptr) {
            || ptr === game.mons[PMNAMES.PM_SHADE]
            || (ptr.mlet === MONSYMS.S_IMP && ptr !== game.mons[PMNAMES.PM_TENGU]);
 }
+
+// include/mondata.h helpless() — asleep or paralyzed
+export const helpless = (mon) => !!(mon.msleeping || !mon.mcanmove);

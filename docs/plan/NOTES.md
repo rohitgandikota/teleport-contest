@@ -5760,3 +5760,87 @@ also excludes a browse made while engulfed (save_uswallow and the
 engulfer's glyph on the hero's square). Ported into js/pager.js lookat().
 fuzz-s18-28 step 74.
 
+## Racial volley bonus: gnomes and crossbows, elves and orcs and their bows
+
+Bug class: RNG argument. dothrow.c:190 adds one multishot for an elf firing
+elven arrows from an elven bow, an orc with orcish arrows and bow, a GNOME
+with any crossbow (skill == -P_CROSSBOW, no gnomish gear needed), and one
+more when the launcher is the hero's quest artifact; the crossbow strength
+gate is 16 for gnomes, 18 for everyone else. Ours noted these arms as
+unported, so a gnomish Ranger rolled rnd(2) where the C rolled rnd(3)
+("You shoot 3 crossbow bolts"). Ported in js/dothrow.js throw_obj().
+fuzz-s19-12 step 49.
+
+## Prayer fixes every trouble the C fixes
+
+Bug class: state drift found through an RNG argument. moveloop rolls
+rn2(40 + ACURR(A_DEX) * 3) every turn, so the argument tracks Dexterity;
+it went 73 -> 70 when a wall kick wounded a leg (set_wounded_legs does
+ATEMP(A_DEX)--) and back to 73 in the C only, at a prayer. pleased() ->
+fix_worst_trouble(TROUBLE_WOUNDED_LEGS) -> heal_legs(0) ("Your leg feels
+better." queued behind the prayer --More--). Our fix_worst_trouble() had
+only the TROUBLE_HIT arm and a note_unported default. Now js/pray.js has the
+whole pray.c switch (stoned, slimed, strangled, lava, hunger, sick, region,
+hit, collapsing, stuck in wall, cursed levitation, unuseable hands, cursed
+blindfold, lycanthropy, punished, fumbling, cursed items, poisoned, blind
+and deaf, wounded legs, stunned, confused, hallucination, saddle) plus
+worst_cursed_item(), fix_curse_trouble(), stuck_in_wall(), blocked_boulder()
+and in_trouble() in C form with the C's TROUBLE_ values; helpers added:
+do_wear.js stuck_ring()/unchanger(), region.js region_danger()/
+region_safety(), youprop.js Fixed_abil, attrib.js ABASE/AMAX/setABASE
+exported, trap.js rescued_from_terrain exported. fuzz-s19-38 step 519.
+
+## Boolean options that live in iflags
+
+Bug class: two stores for one option. optlist.h homes autodescribe,
+cmdassist, fireassist, menu_overlay and menu_tab_sep in iflags; getpos's
+'#' toggled game.iflags.autodescribe while the 'O' menu read and wrote
+game.flags.autodescribe, so the menu showed [true] after three toggles left
+the C at [false]. options.js iflag_boolean_options now lists them (and is
+exported), and jsmain routes rc values for those names into g.iflags.
+fuzz-s19-07 step 256.
+
+## Status line: 'showvers' version field and 'terrainstatus' terrain field
+
+Bug class: missing status fields. With showvers on, the tty render_status()
+right-justifies BL_VERS (" %s" of status_version()) at the end of the
+second row: vstart = cols - lth in tty_curs() columns, which count from 1,
+so "5.0.0" ends one cell before the last column. With terrainstatus on,
+BL_TERRAIN (" %s" of terrain_descr[iflags.terrain_typ]) precedes it;
+classify_terrain() (hack.c:3090) maps room/corridor to "Floor", doors to
+"Doorway"/"Open-door"/"Shut-door", etc., runs from switch_terrain() and
+from end_running() (after resetting terrain_typ to MAX_TYPE), and
+u_on_newpos()'s level-change arm (dungeon.c:1586: map_location + terrain_typ
+= MAX_TYPE) is now ported in teleport.js. Ported: version.js
+status_version(), botl.js terrain_descr[], hack.js classify_terrain(),
+display.js _statusLine2. BL_WEAPON/BL_ARMOR (weaponstatus/armorstatus) are
+still absent. fuzz-s19-07 steps 289 and 292.
+
+## Reading a scroll logs the literacy conduct break
+
+Bug class: missing chronicle line. read.c:498 `if (!u.uconduct.literate++)
+livelog_printf(LL_CONDUCT, "became literate by reading %s", book/scroll/
+something)` for everything but the Book of the Dead, novels and blank
+paper; the fortune cookie arm logs "a fortune cookie" when not blind. Ours
+incremented the counter without the livelog, so #chronicle lacked
+"1: became literate by reading a scroll". fuzz-s19-30 step 28.
+
+## A rolling boulder is only drawn where the hero can see it
+
+Bug class: stray glyph. display.c tmp_at()'s DISP_FLASH arm returns before
+show_glyph() when !cansee(x, y) (unless DISP_ALWAYS). Our launch_obj()
+used a JS-only display_object_at() that painted the boulder on every square
+of its path, so an unlit square kept a boulder glyph after the crash
+--More--. launch_obj() now uses the tmp_at() port (display.js) the way
+trap.c does: DISP_FLASH with the object's glyph, tmp_at(x, y) at the top
+of each step, DISP_END at the end. fuzz-s19-22 step 734.
+
+## Import aliases: check the name you call exists in that file
+
+monmove.js imports Is_rogue_level as IRL_const. A new call written as
+Is_rogue_level() passed node --check and a module import (references are
+resolved at call time) and took the public score from 44/44 to 5/44 with
+"Is_rogue_level is not defined" on the first monster move. After adding a
+call, run at least one session before the full gates, and grep the file's
+import list for the exact identifier.
+

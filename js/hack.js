@@ -8,7 +8,7 @@ import { spot_time_left, spot_stop_timers, MELT_ICE_AWAY } from './timeout.js';
 import { float_vs_flight } from './polyself.js';
 import { float_up, blow_up_landmine, fill_pit, deltrap, seetrap, feeltrap, launch_obj } from './trap.js';
 import { You_cant, pline_dir } from './pline.js';
-import { FROMOUTSIDE, DRAWBRIDGE_UP, DB_UNDER, DB_ICE, MAX_TYPE, OBJ_FLOOR, IN_SIGHT, MIGR_RANDOM, ROLL, LAUNCH_KNOWN } from './const.js';
+import { FROMOUTSIDE, DRAWBRIDGE_UP, DB_UNDER, DB_ICE, MAX_TYPE, OBJ_FLOOR, IN_SIGHT, MIGR_RANDOM, ROLL, LAUNCH_KNOWN, xFLOOR, xGROUND, xOPENDOOR, xSHUTDOOR, xSWAMP, xSUBMERGED, xSEA, xWATERWALL, TREE, DOOR, D_TRAPPED, MOAT, Is_earthlevel, Is_juiblex_level } from './const.js';
 import { obj_extract_self, useupf } from './invent.js';
 import { place_object } from './mkobj.js';
 import { exercise } from './attrib.js';
@@ -37,13 +37,13 @@ import { dist2, distmin } from './hacklib.js';
 import { Levitation, Flying, Fire_resistance, Underwater,
          Hallucination, Deaf, Passes_walls, Stealth, Swimming,
          Amphibious, Breathless } from './youprop.js';
-import { is_pool_or_lava, is_db_wall } from './dbridge.js';
+import { is_pool_or_lava, is_db_wall, db_under_typ } from './dbridge.js';
 import { is_pool, is_lava, t_at, m_at, is_pick, seemimic,
          wake_msg } from './mon.js';
 import { hliquid } from './do_name.js';
 import { Is_waterlevel, WATER, LAVAPOOL, POOL, AIR } from './const.js';
 import { waterbody_name } from './pager.js';
-import { surface, recalc_mapseen, depth, get_level } from './dungeon.js';
+import { surface, recalc_mapseen, depth, get_level, Is_medusa_level } from './dungeon.js';
 import { pickup, can_reach_floor, loot_mon } from './pickup.js';
 import { dotrap, immune_to_trap, into_vs_onto } from './trap.js';
 import { is_pit, EXT_ENCUMBER, HVY_ENCUMBER, IS_FURNITURE, STAIRS, ECMD_OK, ECMD_TIME, OBJ_AT, GOLD_SYM, TT_BEARTRAP, TT_PIT, TT_WEB, TT_LAVA, TT_INFLOOR, TT_BURIEDBALL } from './const.js';
@@ -1302,12 +1302,12 @@ export function end_running(and_travel) {
         ctx.run = 0;
         if (game.flags?.time)
             (game.disp ||= {}).time_botl = true;
-        /* classify_terrain() suppresses setting disp.botl while running, so C
-           recomputes here. The terrainstatus option defaults to Off
-           (js/optlist.js:219) and classify_terrain is not ported, so this arm
-           cannot fire yet; recorded rather than guessed. */
+        /* classify_terrain() suppresses setting disp.botl when
+           running; after that, it can no longer compare current terrain
+           against iflaga.terrain_typ to detect a change, so recompute */
         if (game.flags?.terrainstatus) {
-            (game.unported ||= new Set()).add('hack:end_running:classify_terrain');
+            game.iflags.terrain_typ = MAX_TYPE; /* "none of the above" value */
+            classify_terrain();
         }
     }
 
@@ -2547,6 +2547,68 @@ function end_running_hack(and_travel) {
     }
 }
 
+// src/hack.c:3090 classify_terrain() — the terrain type under the hero
+// for the 'terrainstatus' status field; some types need fixing up
+export function classify_terrain() {
+    const lev = game.level.at(game.u.ux, game.u.uy);
+    let typ = lev.lastseentyp ?? lev.typ; /* svl.lastseentyp[u.ux][u.uy] */
+
+    /*
+     * If the terrain under the hero is different now from what it
+     * was on the previous check, bring iflags.terrain_typ up to date
+     * and request a status update.  Unless hero is running--then the
+     * update request will be suppressed.
+     */
+    if (Underwater()) {
+        typ = xSUBMERGED;
+    } else {
+        switch (typ) {
+        case STONE:
+            if (game.level.flags?.arboreal)
+                typ = TREE;
+            break;
+        case CORR:
+        case ROOM:
+            /* this matches surface() but 'floor' is odd in many places */
+            typ = !Is_earthlevel(game.u.uz) ? xFLOOR : xGROUND;
+            break;
+        case DOOR:
+            /* defaults to "doorway" (door-less or broken) */
+            if ((lev.doormask & D_ISOPEN) !== 0)
+                typ = xOPENDOOR;
+            else if ((lev.doormask & (D_CLOSED | D_LOCKED | D_TRAPPED)) !== 0)
+                typ = xSHUTDOOR;
+            break;
+        case DRAWBRIDGE_UP:
+            /* ICE, MOAT, LAVA, or 'STONE' (which ought to be 'room') */
+            typ = db_under_typ(lev.drawbridgemask);
+            if (typ === STONE || typ === ROOM)
+                typ = xGROUND;
+            break;
+        case MOAT:
+            /* moat and swamp handling match waterbody_name()'s result */
+            if (Is_medusa_level(game.u.uz))
+                typ = xSEA;
+            else if (Is_juiblex_level(game.u.uz))
+                typ = xSWAMP;
+            break;
+        case WATER:
+            if (!Is_waterlevel(game.u.uz))
+                typ = xWATERWALL;
+            break;
+        default:
+            break;
+        }
+    }
+    if (typ !== game.iflags.terrain_typ) {
+        /* terrain at hero's spot is different */
+        game.iflags.terrain_typ = typ;
+        /* request a status update unless hero is running */
+        if (game.flags?.terrainstatus && !game.context.run)
+            (game.disp ||= {}).botl = true;
+    }
+}
+
 // src/hack.c:3178 switch_terrain(); when the hero's location changes to or
 // from solid rock, levitation and flight are blocked or restored
 export async function switch_terrain() {
@@ -2586,8 +2648,9 @@ export async function switch_terrain() {
     }
     if ((!!Levitation() ^ was_levitating) || (!!Flying() ^ was_flying))
         (game.disp ||= {}).botl = true; /* update Lev/Fly status condition */
-    /* if (flags.terrainstatus) classify_terrain(): the terrain status
-       condition is a windowport status-hilite feature */
+
+    if (game.flags?.terrainstatus)
+        classify_terrain();
 }
 
 // src/hack.c:4525 spot_checks(); a location's terrain changed; anything

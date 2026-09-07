@@ -1,7 +1,7 @@
 // display.js — Map rendering and terminal output.
 // C ref: display.c — newsym, show_glyph, docrt, cls, flush_screen.
 
-import { PLNMSG_UNKNOWN } from './const.js';
+import { PLNMSG_UNKNOWN, MAX_TYPE } from './const.js';
 import { DISP_BEAM, DISP_ALL, DISP_TETHER, DISP_FLASH, DISP_ALWAYS,
          DISP_CHANGE, DISP_END, DISP_FREEMEM, BACKTRACK, HI_ZAP,
          NUM_ZAP } from './const.js';
@@ -18,7 +18,7 @@ import { ONAMES, OCLASSES } from './objects_data.js';
 import { update_topl, show_topl_nohistory } from './tty/topl.js';
 import { xwaitforspace } from './tty/getline.js';
 import { term_start_color } from './tty/termcap.js';
-import { rank, rank_of, bot_conditions } from './botl.js';
+import { rank, rank_of, bot_conditions, terrain_descr } from './botl.js';
 import { Upolyd, WARNCOUNT, IS_OBSTRUCTED, IS_ROOM, IS_POOL,
          OBJ_FLOOR, BC_CHAIN, BC_BALL } from './const.js';
 import { cansee, couldsee, vision_recalc } from './vision.js';
@@ -58,6 +58,8 @@ import { showsym, showsym_mon, showsym_oc, showsym_other, SYM_BOULDER } from './
 import { boolean_option } from './options.js';
 import { coord_desc } from './getpos.js';
 import { GPCOORDS_NONE, GPCOORDS_COMFULL } from './const.js';
+import { status_version } from './version.js';
+import { classify_terrain } from './hack.js';
 import { NO_COLOR, CLR_GRAY, CLR_BROWN, CLR_WHITE, CLR_YELLOW, CLR_BRIGHT_BLUE,
          CLR_GREEN, CLR_BLUE, CLR_RED, CLR_ORANGE, CLR_CYAN, CLR_BLACK,
          CLR_MAGENTA, CLR_BRIGHT_MAGENTA, CLR_BRIGHT_GREEN,
@@ -1868,6 +1870,29 @@ function _statusLine2() {
     }
     if (f.time) s += ` T:${game.moves || 1}`;
     s += bot_conditions();
+    /* src/botl.c:1259 bot_via_windowport(), BL_TERRAIN: " %s" of
+       terrain_descr[iflags.terrain_typ]; an unset type is classified first.
+       (BL_WEAPON and BL_ARMOR, the 'weaponstatus'/'armorstatus' fields that
+       precede it in the row, are not ported.) */
+    if (f.terrainstatus) {
+        if ((game.iflags.terrain_typ ?? MAX_TYPE) === MAX_TYPE)
+            classify_terrain();
+        s += ` ${terrain_descr[game.iflags.terrain_typ]}`;
+    }
+    /* win/tty/wintty.c:5185 render_status() — BL_VERS is the last field of
+       the row and is right justified: the row is padded with spaces up to
+       cols - strlen(field) and the field (" %s" of status_version()) is
+       written there; when the row is already longer, the field simply
+       follows it. */
+    if (f.showvers) {
+        const vers = ` ${status_version(false)}`;
+        /* tty_status[][].x and vstart are tty_curs() columns, which count
+           from 1, so the field starts one cell left of cols - lth here */
+        const vstart = (game.nhDisplay?.cols ?? 80) - vers.length - 1;
+        if (s.length < vstart)
+            s = s.padEnd(vstart);
+        s += vers;
+    }
     return s;
 }
 

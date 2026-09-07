@@ -1124,6 +1124,12 @@ export function Is_bigroom(lev) {
               && lev.dlevel === game.bigroom_level.dlevel);
 }
 
+// include/dungeon.h Is_medusa_level() — Lcheck against medusa_level
+export function Is_medusa_level(lev) {
+    return !!(game.medusa_level && lev.dnum === game.medusa_level.dnum
+              && lev.dlevel === game.medusa_level.dlevel);
+}
+
 // src/dungeon.c:2290 print_dungeon() — the wizard-mode dungeon overview.
 //
 // Returns the picked destination's player-visible depth (0 if cancelled)

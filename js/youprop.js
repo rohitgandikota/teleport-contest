@@ -66,6 +66,9 @@ export const Stone_resistance = () =>
 export const Fumbling = () => !!(game.u?.intrinsic?.HFumbling
                                  || game.u?.uprops?.FUMBLING);
 
+// include/youprop.h:385 Fixed_abil — extrinsic only (ring of sustain ability)
+export const Fixed_abil = () => !!game.u?.uprops?.FIXED_ABIL;
+
 // include/youprop.h:132 Glib, the timed slippery-fingers property.
 export const Glib = () => !!(game.u?.intrinsic?.HGlib
                              || game.u?.uprops?.GLIB);

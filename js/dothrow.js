@@ -158,7 +158,7 @@ import { doswapweapon, dowield, doquiver_core, is_ammo, setuwep,
          setuswapwep, setuqwep, set_twoweap } from './wield.js';
 import { greatest_erosion } from './do_wear.js';
 import { rnl } from './rng.js';
-import { is_pole, is_spear } from './u_init.js';
+import { is_pole, is_spear, Race_if } from './u_init.js';
 import { You, You_cant, You_hear, Your } from './pline.js';
 import { ammo_and_launcher } from './wield.js';
 import { ECMD_OK, ECMD_TIME, ECMD_CANCEL, CQ_CANNED } from './const.js';
@@ -181,6 +181,7 @@ import { ceiling } from './dungeon.js';
 import { body_part } from './polyself.js';
 
 import { u_wipe_engr } from './engrave.js';
+import { is_quest_artifact } from './questpgr.js';
 // include/mondata.h:255 befriend_with_obj(). This predicate is checked before
 // dogfood(), so a domestic monster offered normal food does not spend
 // dogfood()'s obj_resists draw until tamedog() inspects the meal.
@@ -322,17 +323,33 @@ export async function throw_obj(obj, shotlimit) {
         /* ...or is using a special weapon for their role... */
         multishot += multishot_class_bonus(mnum, obj, game.u.uwep);
 
-        /* the racial-bow arms need launcher matching that the reachable
-           races do not trigger; the Elf/Orc bows and gnomish crossbows are
-           recorded when they arise */
-        if (!weakmultishot
-            && (game.urace?.mnum === 'PM_ELF' || game.urace?.mnum === 'PM_ORC'
-                || game.urace?.mnum === 'PM_GNOME'))
-            note_unported_dothrow('throw_obj:racial_multishot');
+        /* ...or using their race's special bow; no bonus for spears */
+        if (!weakmultishot) {
+            if (Race_if('PM_ELF')) {
+                if (obj.otyp === ONAMES.ELVEN_ARROW && game.u.uwep
+                    && game.u.uwep.otyp === ONAMES.ELVEN_BOW)
+                    multishot++;
+            } else if (Race_if('PM_ORC')) {
+                if (obj.otyp === ONAMES.ORCISH_ARROW && game.u.uwep
+                    && game.u.uwep.otyp === ONAMES.ORCISH_BOW)
+                    multishot++;
+            } else if (Race_if('PM_GNOME')) {
+                /* arbitrary; there isn't any gnome-specific gear */
+                if (skill === -SKILLS.P_CROSSBOW)
+                    multishot++;
+            }
+            /* when launcher is own quest artifact, give extra +1 with any
+               type of ammo appropriate for that launcher (compensates for
+               elven and orcish rangers loss of bonus for use of racial bow
+               plus racial arrows if they switch to the Longbow of Diana) */
+            if (game.u.uwep && is_quest_artifact(game.u.uwep)
+                && ammo_and_launcher(obj, game.u.uwep))
+                ++multishot;
+        }
 
         if (multishot > 1 && skill === -SKILLS.P_CROSSBOW
             && ammo_and_launcher(obj, game.u.uwep)
-            && acurrstr() < 18)
+            && acurrstr() < (Race_if('PM_GNOME') ? 16 : 18))
             multishot = rnd(multishot);
 
         multishot = rnd(multishot);

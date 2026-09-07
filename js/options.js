@@ -878,7 +878,12 @@ function longest_option_name(startpass, endpass) {
     return longest_name_len;
 }
 
-const iflag_boolean_options = new Set([
+/* include/optlist.h — booleans whose address is an iflags field, not a
+   flags one; the code that reads them (getpos autodescribe, cmdassist,
+   fireassist, the menu layout switches) reads game.iflags, so the option
+   menu and the rc must write the same place. */
+export const iflag_boolean_options = new Set([
+    'autodescribe', 'cmdassist', 'fireassist', 'menu_overlay', 'menu_tab_sep',
     'debug_hunger', 'debug_mongen', 'debug_overwrite_stairs',
 ]);
 

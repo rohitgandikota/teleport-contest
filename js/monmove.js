@@ -1722,7 +1722,7 @@ export async function m_move(mtmp, after) {
     /* src/monmove.c:1891 — the pickup branch. The rn2(10) fires for every
        PEACEFUL monster whether or not it then picks anything up. */
     let getitems = false;
-    if ((!mtmp.mpeaceful || !rn2(10))) {
+    if ((!mtmp.mpeaceful || !rn2(10)) && !IRL_const(game.u.uz)) {
         const in_line = lined_up(mtmp)
             && (distmin(mtmp.mx, mtmp.my, mtmp.mux, mtmp.muy)
                 <= (throws_rocks(game.mons[game.u.umonnum]) ? 20

@@ -31,7 +31,7 @@ import { unblock_point } from './vision.js';
 import { add_damage } from './shk.js';
 import { ECMD_TIME, TEST_MOVE, WT_TOOMUCH_DIAGONAL, P_RIDING, P_BASIC,
          A_LAWFUL, M_AP_TYPE, M_AP_FURNITURE, M_AP_OBJECT,
-         D_NODOOR, D_ISOPEN, D_TRAPPED } from './const.js';
+         D_NODOOR, D_ISOPEN, D_TRAPPED, DISP_FLASH, DISP_END } from './const.js';
 import { t_at, mon_to_stone } from './mon.js';
 import { mon_adjust_speed } from './worn.js';
 import { pline_mon } from './pline.js';
@@ -57,7 +57,7 @@ import { Is_stronghold } from './const.js';
 import { sticks } from './mondata.js';
 import { hits_bars } from './mthrowu.js';
 import { linedup } from './mthrowu.js';
-import { tty_clear_nhwindow_message } from './display.js';
+import { tty_clear_nhwindow_message, tmp_at } from './display.js';
 import { burn_away_slime } from './timeout.js';
 import { bimanual } from './obj.js';
 import { can_reach_floor } from './pickup.js';
@@ -177,7 +177,7 @@ import { mksobj, place_object, splitobj } from './mkobj.js';
 import { weight } from './invent.js';
 import { dmgval } from './weapon.js';
 import { makeknown, observe_object } from './o_init.js';
-import { canspotmon, display_nhwindow_message, display_object_at, feel_newsym,
+import { canspotmon, display_nhwindow_message, feel_newsym,
          newsym, pline, temporary_object_glyph, under_water,
          urgent_pline } from './display.js';
 import { You, You_hear, You_feel, You_see, Your, Norep } from './pline.js';
@@ -4279,7 +4279,7 @@ async function back_on_ground(rescued) {
 }
 
 // src/trap.c:5014 rescued_from_terrain()
-async function rescued_from_terrain(how) {
+export async function rescued_from_terrain(how) {
     const find_yourself = 'find yourself';
     const lev = game.level.at(game.u.ux, game.u.uy);
     let mesggiven = false;
@@ -5428,19 +5428,14 @@ export async function launch_obj(otyp, x1, y1, x2, y2, style) {
         obj_extract_self(singleobj);
     }
     newsym(x1, y1);
-    /* src/trap.c:3321 tmp_at(DISP_FLASH, obj_to_glyph(...)); tmp_at(x,y).
-       The temporary boulder is visible while a later hit message pauses on
-       --More--, even though it has already been unlinked from the floor.
-       Removing a boulder schedules a vision update, so settle that first or
-       pline() would repaint the floor over this temporary glyph. */
+    /* Removing a boulder schedules a vision update; C's flush_screen()
+       settles it before the tmp_at() flash below is drawn, so do the same
+       here or pline() would repaint the floor over the temporary glyph. */
     if (game.vision_full_recalc)
         vision_recalc(0);
-    const launchedGlyph = temporary_object_glyph(singleobj);
-    display_object_at(singleobj, x1, y1, launchedGlyph);
 
     let dist = Math.max(Math.abs(x2 - x1), Math.abs(y2 - y1));
     let x = x1, y = y1;
-    let tmpx = x1, tmpy = y1;
     let finalx = x2, finaly = y2;
     const dx = Math.sign(x2 - x1), dy = Math.sign(y2 - y1);
     const rolling = (style & ROLL) !== 0;
@@ -5473,17 +5468,24 @@ export async function launch_obj(otyp, x1, y1, x2, y2, style) {
     default:
         break;
     }
+    /* src/trap.c:3316 `roll:` / `default:` — delaycnt is animation timing
+       and curs_on_u() for an unseen launch point only moves the cursor.
+       tmp_at(DISP_FLASH, obj_to_glyph(singleobj, rn2_on_display_rng)) keeps
+       one glyph for the whole flight; tmp_at(x, y) draws it only on squares
+       the hero can see (display.c tmp_at(), the DISP_FLASH arm). */
+    {
+        const og = temporary_object_glyph(singleobj);
+        await tmp_at(DISP_FLASH, { ch: og.ch, color: og.color, decgfx: !!og.dec,
+                                   attr: og.attr,
+                                   glyph: og.glyph ?? { kind: 'cmap', cmap: og.cmap } });
+        await tmp_at(x, y);
+    }
+    /* launch_drop_spot(singleobj, x, y) marks a bones-file spot only */
 
+    /* Set the object in motion */
     while (dist-- > 0 && !used_up) {
-        /* C advances tmp_at at the start of each animation iteration. If a
-           collision message pauses, the glyph remains one square behind the
-           object being tested for impact. */
-        if (x !== tmpx || y !== tmpy) {
-            newsym(tmpx, tmpy);
-            display_object_at(singleobj, x, y, launchedGlyph);
-            tmpx = x;
-            tmpy = y;
-        }
+        await tmp_at(x, y);
+        /* the nh_delay_output() frames while cansee(x, y) are timing only */
         if (!isok(game.bhitpos.x + dx, game.bhitpos.y + dy)) {
             finalx = x;
             finaly = y;
@@ -5571,8 +5573,8 @@ export async function launch_obj(otyp, x1, y1, x2, y2, style) {
         }
     }
 
-    /* End the tmp_at display; the final placement is redrawn below. */
-    newsym(tmpx, tmpy);
+    await tmp_at(DISP_END, 0);
+    /* launch_drop_spot((struct obj *) 0, 0, 0) */
     if (!used_up) {
         singleobj.otrapped = 0;
         place_object(singleobj, finalx, finaly);

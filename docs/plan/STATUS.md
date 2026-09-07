@@ -145,9 +145,27 @@ describes the terrain under the hero unless TER_MON is set. s18-09 is the
 ^X time-of-day timezone case. Census 419/422 RNG-and-screen perfect; the
 three misses are the open silent monster drifts (s13-31, s14-23, s17-03).
 
-Next: record `--seed 19` (mix `--debug`/`--normal`), fix what diverges,
-then return to the note_unported
-list (hack.js 19, spell.js 20, shk.js 19). tools/jsplay.mjs has a new
+Tenth round, `--seed 19` (6 failures in 40): the racial volley bonus
+(gnome crossbows, elven and orcish bows, quest-artifact launcher) and the
+gnome crossbow strength gate; prayer's fix_worst_trouble() in full with
+in_trouble(), worst_cursed_item(), fix_curse_trouble(), stuck_in_wall(),
+blocked_boulder() and their helpers (found through the DEX-dependent
+rn2(40 + DEX*3) roll after a wall kick wounded a leg and a prayer healed it
+in the C only); iflags-homed boolean options (autodescribe, cmdassist,
+fireassist, menu_overlay, menu_tab_sep) written where their readers look;
+the 'showvers' version field and the 'terrainstatus' terrain field on the
+second status row with classify_terrain() and u_on_newpos()'s level-change
+arm; the literacy livelog for scrolls, books and fortune cookies; the
+rolling boulder flash through the tmp_at() port, which skips unseen
+squares. s19-09 is a fourth silent monster drift (one fewer dochug before
+the mcalcmove loop, no RNG difference before it). Census 458/462; the four
+misses are the drifts (s13-31, s14-23, s17-03, s19-09).
+
+Next: triage `--seed 20` (4 screen-only misses recorded: s20-01 @10,
+s20-02 @231, s20-08 @162, s20-28 @47), then record `--seed 21`; the drift
+class needs the C recorder instrumented to log monster positions per turn
+(nethack-c/patches, see NOTES). Then return to the note_unported list
+(hack.js 19, spell.js 20, shk.js 19). tools/jsplay.mjs has a new
 `--aeval "<await expr>"` flag with the hack.js namespace as `h` for state
 probes. The census script is `tally.sh` in the scratchpad (diverge.mjs
 --screens over tools/gen-sessions/fuzz/*.session.json, 4 at a time).

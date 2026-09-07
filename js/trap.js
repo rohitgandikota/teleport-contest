@@ -2222,7 +2222,7 @@ async function trapeffect_poly_trap(mtmp, trap, trflags) {
         } else if (resists_magm(mtmp)) {
             await shieldeff_mon(mtmp);
         } else if (!await resist(mtmp, OCLASSES.WAND_CLASS, 0, NOTELL)) {
-            newcham(mtmp, null, NC_SHOW_MSG);
+            await newcham(mtmp, null, NC_SHOW_MSG);
             if (in_sight)
                 seetrap(trap);
         }
@@ -5831,7 +5831,7 @@ export async function steedintrap(trap, otmp) {
         break;
     case POLY_TRAP:
         if (!resists_magm(steed) && !await resist(steed, OCLASSES.WAND_CLASS, 0, NOTELL)) {
-            newcham(steed, null, NC_SHOW_MSG);
+            await newcham(steed, null, NC_SHOW_MSG);
         }
         steedhit = true;
         break;

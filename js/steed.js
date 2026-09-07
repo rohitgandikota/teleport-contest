@@ -24,6 +24,9 @@ import { OBJ_MINVENT, is_metallic } from './obj.js';
 import { rn2, rnd, rn1 } from './rng.js';
 import { newsym, pline } from './display.js';
 import { You, You_cant, Your } from './pline.js';
+import { x_monnam } from './do_name.js';
+import { ARTICLE_YOUR, SUPPRESS_SADDLE } from './const.js';
+import { strsubst } from './hacklib.js';
 import { Monnam, mon_nam, pmname, hliquid, y_monnam } from './do_name.js';
 import { m_at, is_pool, is_lava, t_at, killed, monkilled } from './mon.js';
 import { remove_monster, place_monster } from './makemon.js';
@@ -783,4 +786,22 @@ export async function dismount_steed(reason) {
     if (game.u.uwep && is_pole(game.u.uwep))
         game.unweapon = true;
     return;
+}
+
+// src/steed.c:850 poly_steed() — steed has just changed shape
+export async function poly_steed(steed, oldshape) {
+    if (!can_saddle(steed) || !can_ride(steed)) {
+        /* can't get here; newcham() -> mon_break_armor() -> m_lose_armor()
+           removes saddle and/or forces hero to dismount, if applicable,
+           before newcham() calls us */
+        await dismount_steed(DISMOUNT_FELL);
+    } else {
+        let buf = x_monnam(steed, ARTICLE_YOUR, null, SUPPRESS_SADDLE, false);
+        if (oldshape !== steed.data)
+            buf = strsubst(buf, 'your ', 'your new ');
+        await You(`adjust yourself in the saddle on ${buf}.`);
+
+        /* riding blocks stealth unless hero+steed fly */
+        steed_vs_stealth();
+    }
 }

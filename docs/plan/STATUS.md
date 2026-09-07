@@ -293,7 +293,15 @@ leaves (s40-33); tele_trap()'s settrack() and destination-occupant
 relocation, in trap.js where the hero's trap effect runs (s41-01); and
 test_move()'s closed-door bump arm, which was a note_unported.
 
-Next: triage `--seed 42`, then `--seed 43`. Then return to the
+Twenty-seventh round, `--seed 42`: three failures in 40, one the DST
+class (s42-10). Fixed: newcham()'s post-change tail runs unconditionally
+and synchronously enough for makemon()'s creation-time call, with the
+missing C tail (mselftouch, gear check, boulder drop, poly_steed,
+Elbereth re-test) ported (s42-03); the O menu's "menu colors" handler,
+MENUCOLOR= rc lines, menu coloring in tty_add_menu and a POSIX ERE
+validator in js/posixregex.js (s42-11).
+
+Next: triage `--seed 43` (recording), then `--seed 44`. Then return to the
 note_unported list (hack.js 18, spell.js 20, shk.js 19). tools/jsplay.mjs has a new
 `--aeval "<await expr>"` flag with the hack.js namespace as `h` for state
 probes. The census script is `tally.sh` in the scratchpad (diverge.mjs

@@ -24,9 +24,11 @@ import { nhgetch } from './../input.js';
 import { NO_COLOR, ATR_INVERSE as TERM_INVERSE, ATR_BOLD as TERM_BOLD,
          ATR_UNDERLINE as TERM_UNDERLINE } from './../terminal.js';
 import { MENU_ITEMFLAGS_NONE, MENU_ITEMFLAGS_SELECTED,
+         MENU_ITEMFLAGS_SKIPMENUCOLORS,
          MENU_ITEMFLAGS_SKIPINVERT, MENU_NEXT_PAGE, MENU_PREVIOUS_PAGE,
          MENU_SEARCH, PICK_ONE, PICK_ANY, GOLD_SYM, ROWNO, COLNO } from './../const.js';
 import { pmatch } from './../hacklib.js';
+import { get_menu_coloring } from './../windows.js';
 import { gc_currentgraphics, gs_symset, H_UTF8 } from './../symbols.js';
 
 // include/wintype.h:128-137 — NetHack's attribute numbers. These are NOT the
@@ -198,6 +200,22 @@ export function tty_add_menu(window, glyphinfo, identifier, ch, gch,
                              attr, clr, str, itemflags) {
     const cw = windows[window];
     if (!cw || str == null) return;
+
+    /* src/windows.c:1805 add_menu(): the core wrapper applies the menu
+       colorings before handing the entry to the window port's add_menu().
+       This port's callers reach tty_add_menu() directly, so the wrapper's
+       work is done here. */
+    if (game.iflags?.menucolors) { /* iflags.use_menu_color */
+        if ((itemflags & MENU_ITEMFLAGS_SKIPMENUCOLORS) === 0) {
+            const mc = get_menu_coloring(str);
+            if (mc) {
+                clr = mc.color;
+                attr = mc.attr;
+            }
+        }
+    }
+    /* this is the only function that cared about this flag; remove it now */
+    itemflags &= ~MENU_ITEMFLAGS_SKIPMENUCOLORS;
 
     cw.nitems = (cw.nitems | 0) + 1;
     let newstr = String(str);

@@ -4599,8 +4599,8 @@ a full moon in effect." lines) are the same class, as is s33-31 (^X,
 recording: the C's shifted clock lands on the 19th, whose phase says
 "Be careful!  New moon tonight." at startup, so every later screen sits
 behind that --More--; ours computes the 20th). s37-20 (^X "It is
-nighttime.") is another, as are s39-16 and s39-28 ("It is the midnight
-hour." where our clock says nighttime).
+nighttime.") is another, as are s39-16, s39-28 and s42-10 ("It is the
+midnight hour." where our clock says nighttime).
 
 ## Fuzz divergence census (2026-09-01, second pass)
 
@@ -6632,3 +6632,47 @@ the trap square and ours found nothing there and aimed elsewhere
 (s41-01). dotele() (teleport.c:1034), the hero-invoked ^T onto a vault
 trap, keeps its plain teleds(); the arm lives in trap.js's
 trapeffect_telep_trap, which is where the hero's trap effect runs here.
+
+## newcham()'s tail runs even without a message, and in order
+
+mon.c:5484: after the optional "turns into" message, newcham() always
+runs the vampshifter marking, possibly_unwield(), mon_break_armor(),
+mselftouch() without gloves, check_gear_next_turn(), the ex-giant boulder
+drop, poly_steed() and the Elbereth flee re-test. mon_break_armor()
+(worn.c:1177) computes mhim() and mhis() on entry, so while hallucinating
+it draws rn2(4) twice whether or not anything is worn. Ours ran that tail
+only when a message was shown, and as a detached promise: makemon()
+gives a shapeshifter its starting form through newcham() from
+synchronous level creation, and mon_break_armor() opened with an awaited
+dynamic import, so the two rolls landed after the next des.monster()'s
+induced_align() (s42-03, a hallucinating hero level-teleporting into the
+Valley). Now the tail always runs, possibly_unwield() is awaited only
+when something is wielded (a monster still being created wields
+nothing), mon_break_armor() imports statically, the nine newcham() calls
+in async callers await it, and poly_steed() is ported.
+
+## The O menu's "menu colors" handler and MENUCOLOR
+
+options.c:6407 handler_menu_colors(): handle_add_list_remove() (:9208)
+puts up "Do what?" with add/list/remove/exit (list and remove only once
+there are entries, exit preselected); add asks "What new menucolor
+pattern?", validates it with test_regex_pattern() (:7871), then
+query_color() and query_attr() (coloratt.c:475, :396) pick from menus
+whose color entries are shown in their own colors because
+basic_menu_colors() temporarily swaps in name-matching patterns; list
+and remove show `"pattern"=color[&attr]` lines. The coloring itself is
+applied by the core add_menu() (windows.c:1805, get_menu_coloring()) to
+every menu entry not flagged MENU_ITEMFLAGS_SKIPMENUCOLORS (headings);
+this port's callers reach tty_add_menu() directly, so that hook lives
+there. MENUCOLOR= rc lines go through cfgfiles.c:1164 add_menu_coloring().
+Ours fell into the no-handler "Set menu colors to what?" getlin (s42-11).
+iflags.use_menu_color is game.iflags.menucolors. Regular expressions:
+sys/share/posixregex.c hands patterns to libc regcomp(REG_EXTENDED), so
+js/posixregex.js validates the POSIX ERE with the error codes and
+regerror() strings of the recorder's libc (macOS, probed with a small C
+program: "repetition-operator operand invalid", "parentheses not
+balanced", ...) and matches with an equivalent JS RegExp. A reference
+recorded on glibc would differ in that error text only. Bad values typed
+at these prompts go through config_error_add()'s interactive arm
+(cfgfiles.c:1544: pline plus wait_synch), so options.js now keeps C's
+config_error_data around each parse instead of threading the result.

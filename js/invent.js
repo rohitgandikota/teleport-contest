@@ -1024,7 +1024,13 @@ export async function display_binventory(x, y, as_if_seen = false) {
         const items = sortloot_items(buried.filter(o => o.oclass === oclass));
         if (!items.length)
             continue;
-        tty_add_menu(win, null, 0, 0, 0, ATR_INVERSE, NO_COLOR,
+        /* src/windows.c:1816 add_menu_heading(): iflags.menu_headings style,
+           suppressed during end-of-game disclosure */
+        tty_add_menu(win, null, 0, 0, 0,
+                     game.program_state_gameover ? ATR_NONE
+                     : (game.iflags?.menu_headings?.attr ?? ATR_INVERSE),
+                     game.program_state_gameover ? NO_COLOR
+                     : (game.iflags?.menu_headings?.color ?? NO_COLOR),
                      let_to_name(oclass), MENU_ITEMFLAGS_NONE);
         let first = true;
         for (const obj of items) {
@@ -1065,12 +1071,15 @@ export function display_pickinv_entries(allowed_choices = null, want_reply = fal
                  && (!allowed_choices || allowed_choices.includes(o.invlet))
                  && (!wizid || not_fully_identified(o)));
         if (!items.length) continue;
-        /* add_menu_heading(win, class_header) — iflags.menu_headings */
+        /* add_menu_heading(win, class_header) — iflags.menu_headings style,
+           and src/windows.c:1822 suppresses the highlighting during
+           end-of-game disclosure */
         if (sortpack)
             out.push({ heading: true,
                        str: let_to_name(oclass, false,
                            want_reply && game.iflags.menu_head_objsym),
-                       attr: ATR_INVERSE });
+                       attr: game.program_state_gameover ? ATR_NONE
+                             : (game.iflags?.menu_headings?.attr ?? ATR_INVERSE) });
         for (const o of items) {
             /* src/invent.c:1039 — displaying the item observes its type */
             if (!Blind())
@@ -1402,7 +1411,11 @@ export async function display_pickinv(allowed_choices, handsbuf, menuquery,
         if (allowed_choices && !allowed_choices.includes(e.invlet))
             continue;
         if (pending_heading) {
-            tty_add_menu(win, null, 0, 0, 0, A_INV, NO_COLOR,
+            /* add_menu_heading(): iflags.menu_headings style, suppressed
+               during end-of-game disclosure (src/windows.c:1822) */
+            tty_add_menu(win, null, 0, 0, 0, pending_heading.attr,
+                         game.program_state_gameover ? NO_COLOR
+                         : (game.iflags?.menu_headings?.color ?? NO_COLOR),
                          pending_heading.str, MENU_ITEMFLAGS_NONE);
             pending_heading = null;
         }

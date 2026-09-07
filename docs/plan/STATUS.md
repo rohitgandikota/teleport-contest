@@ -161,11 +161,25 @@ squares. s19-09 is a fourth silent monster drift (one fewer dochug before
 the mcalcmove loop, no RNG difference before it). Census 458/462; the four
 misses are the drifts (s13-31, s14-23, s17-03, s19-09).
 
-Next: triage `--seed 20` (4 screen-only misses recorded: s20-01 @10,
-s20-02 @231, s20-08 @162, s20-28 @47), then record `--seed 21`; the drift
-class needs the C recorder instrumented to log monster positions per turn
-(nethack-c/patches, see NOTES). Then return to the note_unported list
-(hack.js 19, spell.js 20, shk.js 19). tools/jsplay.mjs has a new
+Eleventh round, `--seed 20` (4 screen-only misses in 40, all fixed):
+dofire() with an empty quiver applies a wielded polearm or bullwhip
+(use_pole/use_whip); the "ate for the first time" chronicle entries for
+ordinary food, tinned monsters and spinach; from_what()'s blindfold and
+cream-pie arms; disclose() shows possessions through
+display_inventory(NULL, TRUE) plus container_contents(), with heading
+highlighting suppressed at game over on the one game-over flag the setters
+use; the simple 'O' menu dispatches symset and whatis_coord; a corridor
+engraving draws inverse (MG_BW_ENGR). Census 499/502; s19-09 now passes and
+the three misses are the old silent drifts (s13-31, s14-23, s17-03).
+
+Next: triage `--seed 21` (recorded), then `--seed 22`; the drift class
+needs the C recorder instrumented to log monster positions per turn: add a
+patch under nethack-c/patches that writes each monster's position after
+movemon() to the file named by a new env var, set it in
+scripts/record-session.mjs:445 next to NETHACK_RNGLOG, rebuild with
+nethack-c/build-recorder.sh, re-record the three recipes, and compare
+against a jsplay dump. Then return to the note_unported list (hack.js 19,
+spell.js 20, shk.js 19). tools/jsplay.mjs has a new
 `--aeval "<await expr>"` flag with the hack.js namespace as `h` for state
 probes. The census script is `tally.sh` in the scratchpad (diverge.mjs
 --screens over tools/gen-sessions/fuzz/*.session.json, 4 at a time).

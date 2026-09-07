@@ -1082,14 +1082,30 @@ async function violated_vegetarian() {
     }
 }
 
-// src/eat.c:568 eating_conducts(), shared by ordinary meals and brain eating.
+// src/eat.c:575 eating_conducts(), shared by tinned monsters and brain eating.
 export async function eating_conducts(pd) {
     const conduct = (game.u.uconduct ||= {});
+    let ll_conduct = 0;
+    const pdname = pd.pmnames?.[NEUTRAL] ?? pd.pmnames?.[0];
+
+    if (!(conduct.food | 0)) {
+        livelog_printf(LL_CONDUCT, `ate for the first time - ${pdname}`);
+        ll_conduct++;
+    }
     conduct.food = (conduct.food | 0) + 1;
-    if (!vegan(pd))
+    if (!vegan(pd)) {
+        if (!(conduct.unvegan | 0) && !ll_conduct) {
+            livelog_printf(LL_CONDUCT,
+                           `consumed animal products (${pdname}) for the first time`);
+            ll_conduct++;
+        }
         conduct.unvegan = (conduct.unvegan | 0) + 1;
-    if (!vegetarian(pd))
+    }
+    if (!vegetarian(pd)) {
+        if (!(conduct.unvegetarian | 0) && !ll_conduct)
+            livelog_printf(LL_CONDUCT, `tasted meat (${pdname}) for the first time`);
         await violated_vegetarian();
+    }
 }
 
 /* src/eat.c:2491 foodwords[]; indices are enum obj_material_types. */
@@ -1354,7 +1370,12 @@ export async function doeat() {
         return ECMD_TIME;
     }
 
-    (game.u.uconduct ||= {}).food = (game.u.uconduct.food | 0) + 1;
+    /* KMH, conduct */
+    game.u.uconduct ||= {};
+    if (!(game.u.uconduct.food | 0))
+        livelog_printf(LL_CONDUCT,
+                       `ate for the first time - ${food_xname(otmp, false)}`);
+    game.u.uconduct.food = (game.u.uconduct.food | 0) + 1;
 
     let dont_start = false;
     if (otmp.otyp === ONAMES.CORPSE || otmp.globby) {
@@ -2013,7 +2034,10 @@ async function consume_tin(mesg) {
         await use_up_tin(tin);
         return;
     }
+    /* don't need vegetarian checks for spinach */
     const conduct = game.u.uconduct ||= {};
+    if (!(conduct.food | 0))
+        livelog_printf(LL_CONDUCT, 'ate for the first time (spinach)');
     conduct.food = (conduct.food | 0) + 1;
     if (!tin.cursed) {
         await pline(`This makes you feel like ${Hallucination()

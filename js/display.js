@@ -877,6 +877,17 @@ export function show_glyph_cell(x, y, ch, color = NO_COLOR, decgfx = false, attr
         && globalThis.__cell_watch.cells.some(([wx, wy]) => wx === x && wy === y))
         console.error(`CELLWATCH (${x},${y}) ch=${JSON.stringify(ch)} dec=${!!decgfx}\n`
             + (new Error().stack || '').split('\n').slice(2, 6).join('\n'));
+    /* src/display.c:2938 map_glyphinfo(), CMAP_A arm: an engraving in a
+       corridor whose symbol is the corridor's (or lit corridor's) symbol
+       gets MG_BW_ENGR, which win/tty/wintty.c:3934 tty_print_glyph() draws
+       inverse while iflags.use_inverse is on */
+    if (glyph?.kind === 'cmap' && glyph.cmap === CM.S_engrcorr
+        && game.flags?.use_inverse !== false) {
+        const symof = (c) => { const sy = showsym(c) || defsyms[c]; return sy?.ch ?? sy?.sym; };
+        const sym = symof(CM.S_engrcorr);
+        if (sym === symof(CM.S_corr) || sym === symof(CM.S_litcorr))
+            attr = (attr | 0) | TERM_INVERSE;
+    }
     const rows = (game.gbuf ||= []);
     (rows[y] ||= [])[x] = {
         disp_ch: ch,

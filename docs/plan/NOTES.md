@@ -5844,3 +5844,63 @@ resolved at call time) and took the public score from 44/44 to 5/44 with
 call, run at least one session before the full gates, and grep the file's
 import list for the exact identifier.
 
+## Firing with an empty quiver applies a wielded polearm or bullwhip
+
+Bug class: missing prompt. dothrow.c:508 dofire(): with nothing quivered
+and autoquiver off, a wielded polearm goes to use_pole(uwep, TRUE) and a
+wielded bullwhip to use_whip(uwep) (both then ask "In what direction?");
+with fireassist and a quivered missile, a wielded polearm that could reach
+a monster is applied instead. Ours noted the three arms as unported, so
+an Archeologist's 'f' printed nothing and the next key ran as a command.
+Now wired to apply.js use_pole()/use_whip()/could_pole_mon(), exported for
+it. fuzz-s20-01 step 10.
+
+## The first meal is a chronicle entry
+
+Bug class: missing chronicle line. Every place the C bumps
+u.uconduct.food logs LL_CONDUCT the first time: eat.c:2963 "ate for the
+first time - %s" (food_xname) for ordinary food, eat.c:575
+eating_conducts() "ate for the first time - %s" (monster name) for tinned
+and brain meals with "consumed animal products (%s)" / "tasted meat (%s)"
+follow-ups gated by ll_conduct, eat.c:1670 "(spinach)", and the non-food
+and chewing arms. Ours counted without logging in three of them; ported
+into eat.js doeat(), eating_conducts() and the spinach tin. fuzz-s20-01
+step 64.
+
+## from_what(): the blindfold and cream-pie arms
+
+Bug class: wizard-mode ^X text. attrib.c:962 — when nothing extrinsic
+gives blindness, "because of your blindfold" follows for Blindfolded_only,
+and "due to goop covering your face" when the timeout equals u.ucreamed.
+Added to js/insight.js from_what(). fuzz-s20-02 step 231.
+
+## Disclosed possessions come from display_inventory(NULL, TRUE)
+
+Bug class: menu semantics. end.c disclose(): the identified inventory is
+display_inventory(NULL, TRUE), a PICK_ONE menu (want_reply), followed by
+container_contents(invent, TRUE, TRUE, FALSE). An item letter closes it,
+any other key rings the bell and waits; our hand-built PICK_NONE menu
+closed on any key and ran that key as the next answer. Also,
+windows.c:1822 add_menu_heading() suppresses heading highlighting while
+program_state.gameover is set; our display_pickinv used a hardcoded
+inverse and the suppression checked a flag name nothing set
+(game.program_state.gameover vs game.program_state_gameover — the setter
+form is the one everything else reads). fuzz-s20-02 steps 269-270.
+
+## The simple options menu dispatches symset and whatis_coord too
+
+doset_simple_menu() calls allopt[k].optfn(do_handler) for any compound
+option with a handler; our chain lacked symset (do_symset) and
+whatis_coord (handler_whatis_coord), so picking symset from the 'O' menu
+redisplayed the menu instead of "Select symbol set:". fuzz-s20-08 step
+162.
+
+## An engraving in a corridor is drawn inverse
+
+Bug class: attribute. display.c:2938 map_glyphinfo(): S_engrcorr whose
+symbol equals S_corr's or S_litcorr's gets MG_BW_ENGR, and wintty.c
+tty_print_glyph() draws MG_BW_* glyphs inverse when iflags.use_inverse is
+on (its default). Applied in show_glyph_cell(), which is where a glyph
+becomes a cell for both fresh and remembered renders. fuzz-s20-28 step 47
+(wizard ^F magic mapping showed the engraving).
+

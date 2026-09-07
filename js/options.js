@@ -1415,6 +1415,11 @@ async function doset_simple_menu() {
                 await handler_autounlock();
             } else if (allopt[k].name === 'menu_objsyms') {
                 await handler_menu_objsyms();
+            } else if (allopt[k].name === 'symset') {
+                /* src/options.c handler_symset() via allopt[k].optfn */
+                await do_symset();
+            } else if (allopt[k].name === 'whatis_coord') {
+                await handler_whatis_coord();
             } else {
                 note_unported_options(`doset_simple:set=${allopt[k].name}`);
             }
@@ -1755,7 +1760,7 @@ async function status_hilite_menu() {
 export function add_menu_heading(tmpwin, buf) {
     let attr = game.iflags?.menu_headings?.attr ?? ATR_INVERSE;
     let color = game.iflags?.menu_headings?.color ?? NO_COLOR;
-    if (game.program_state?.gameover)
+    if (game.program_state_gameover)
         attr = ATR_NONE, color = NO_COLOR;
     tty_add_menu(tmpwin, null, 0, 0, 0, attr, color, buf,
                  MENU_ITEMFLAGS_NONE);

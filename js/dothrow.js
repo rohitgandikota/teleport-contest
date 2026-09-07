@@ -99,7 +99,7 @@ import { BRK_KNOWN_OUTCOME } from './const.js';
 import { BRK_FROM_INV } from './const.js';
 import { IS_ALTAR, TRAPDOOR, HOLE, PIT, SPIKED_PIT } from './const.js';
 import { ship_object, container_impact_dmg } from './dokick.js';
-import { snuff_candle } from './apply.js';
+import { snuff_candle, use_whip, use_pole, could_pole_mon } from './apply.js';
 import { is_flammable } from './mkobj.js';
 import { obj_sheds_light } from './light.js';
 import { is_pick } from './mon.js';
@@ -1918,12 +1918,10 @@ export async function dofire() {
         if (!game.flags.autoquiver) {
             /* if we're wielding a polearm, apply it */
             if (game.u.uwep && is_pole(game.u.uwep)) {
-                note_unported_dothrow('dofire:use_pole');
-                return ECMD_OK;
+                return use_pole(game.u.uwep, true);
             /* if we're wielding a bullwhip, apply it */
             } else if (game.u.uwep && game.u.uwep.otyp === ONAMES.BULLWHIP) {
-                note_unported_dothrow('dofire:use_whip');
-                return ECMD_OK;
+                return use_whip(game.u.uwep);
             } else if ((game.iflags.fireassist !== false)
                        && game.u.uswapwep && is_pole(game.u.uswapwep)
                        && !(game.u.uswapwep.cursed && game.u.uswapwep.bknown)) {
@@ -1955,10 +1953,8 @@ export async function dofire() {
         && !skip_fireassist) {
         let olauncher;
 
-        if (game.u.uwep && is_pole(game.u.uwep)) {
-            note_unported_dothrow('dofire:use_pole');
-            return ECMD_OK;
-        }
+        if (game.u.uwep && is_pole(game.u.uwep) && (await could_pole_mon()))
+            return use_pole(game.u.uwep, true);
         /* Try to find a launcher */
         if (ammo_and_launcher(game.u.uquiver, game.u.uwep)) {
             obj = game.u.uquiver;

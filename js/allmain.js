@@ -1140,7 +1140,7 @@ export async function moveloop(resuming) {
 
     for (;;) {
         await moveloop_core();
-        if (game.program_state?.gameover) break;
+        if (game.program_state_gameover) break;
     }
 }
 

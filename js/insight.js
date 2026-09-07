@@ -17,7 +17,7 @@ import { upstart } from './do_name.js';
 import { monexplain } from './drawing_data.js';
 import { is_rider, haseyes } from './mondata.js';
 import { NUMMONS, PMNAMES } from './monst_data.js';
-import { VANQ_MLVL_MNDX, VANQ_MSTR_MNDX, VANQ_ALPHA_SEP, VANQ_ALPHA_MIX, VANQ_MCLS_HTOL, VANQ_MCLS_LTOH, VANQ_COUNT_H_L, VANQ_COUNT_L_H, MENU_BEHAVE_STANDARD, MENU_ITEMFLAGS_SELECTED, MENU_ITEMFLAGS_NONE, PICK_ONE, ECMD_OK, LOW_PM, NEUTRAL, G_UNIQ, G_GENOD, G_GONE, G_EXTINCT, LL_ACHIEVE, LL_UMONST, LL_MINORAC, LL_SPOILER, LL_DUMP, Is_rogue_level, FROMOUTSIDE } from './const.js';
+import { VANQ_MLVL_MNDX, VANQ_MSTR_MNDX, VANQ_ALPHA_SEP, VANQ_ALPHA_MIX, VANQ_MCLS_HTOL, VANQ_MCLS_LTOH, VANQ_COUNT_H_L, VANQ_COUNT_L_H, MENU_BEHAVE_STANDARD, MENU_ITEMFLAGS_SELECTED, MENU_ITEMFLAGS_NONE, PICK_ONE, ECMD_OK, LOW_PM, NEUTRAL, G_UNIQ, G_GENOD, G_GONE, G_EXTINCT, LL_ACHIEVE, LL_UMONST, LL_MINORAC, LL_SPOILER, LL_DUMP, Is_rogue_level, FROMOUTSIDE, FACE } from './const.js';
 import { NO_COLOR } from './terminal.js';
 import { docrt } from './display.js';
 import { tty_yn_function } from './tty/topl.js';
@@ -29,7 +29,7 @@ import { ceiling, surface, Is_bigroom } from './dungeon.js';
 import { hides_under, is_clinger } from './mondata.js';
 import { waterbody_name } from './pager.js';
 import { is_pool, t_at } from './mon.js';
-import { simple_typename, ansimpleoname, OBJ_NAME } from './objnam.js';
+import { simple_typename, ansimpleoname, OBJ_NAME, ysimple_name } from './objnam.js';
 import { M_AP_TYPE, M_AP_NOTHING, M_AP_OBJECT, M_AP_FURNITURE, M_AP_MONSTER, TT_PIT, SPIKED_PIT } from './const.js';
 import { game } from './gstate.js';
 import { P_NONE, P_UNSKILLED, P_SKILLED, P_ISRESTRICTED, FULL_MOON, NEW_MOON, WEAK,
@@ -136,8 +136,20 @@ function from_what(abilKey) {
     if (!obj && (mask & W_ART))
         obj = (game.invent || []).find(
             (candidate) => carried_artifact_conveys(candidate, propKey));
-    if (!obj)
+    if (!obj) {
+        /* src/attrib.c:962 — a blindfold is not an extrinsic source, so
+           what_gives() finds nothing; the blindfold arm comes next, then
+           cream-pie goop over the eyes */
+        if (abilKey === 'HBlinded' && Blindfolded_only())
+            return ` because of ${ysimple_name(game.u.ublindf)}`;
+        if (abilKey === 'HBlinded') {
+            const HBlinded = game.u.intrinsic?.HBlinded | 0;
+            if (game.u.ucreamed && (HBlinded & TIMEOUT) === game.u.ucreamed
+                && !mask && !(HBlinded & ~TIMEOUT))
+                return `due to goop covering your ${body_part(FACE)}`;
+        }
         return '';
+    }
 
     const name = obj.oartifact ? artifact_names[obj.oartifact].replace(/^The /, 'the ')
                                : minimal_xname(obj).replace(/\bpair of /i, '');

@@ -4617,8 +4617,10 @@ and s51-02 is the recorder rc path class (the options help shows
 /var/folders/.../nh-rec-*/home/.nethackrc). Seed 55 added s55-06 (^X "It
 is nighttime." where our clock says the midnight hour; the only miss left
 in seed 55), and seed 56 added s56-31, seed 59 added s59-19, and seed 61
-added s61-25 and s61-35 (the same ^X line), and seed 62 added s62-11 (ours
-prints "It is nighttime." where the C's local hour printed no line).
+added s61-25 and s61-35 (the same ^X line), seed 62 added s62-11 (ours
+prints "It is nighttime." where the C's local hour printed no line), and
+seed 63 added s63-24 (the C printed "It is nighttime." above the shared
+"Bad things can happen on Friday the 13th." line).
 
 ## Fuzz divergence census (2026-09-01, second pass)
 
@@ -7510,3 +7512,42 @@ and "The clasp on your leg vanishes.". cmd.js: a mounted hero bumping a
 closed door hears "You can't lead <steed> through that closed door."
 (hack.c:1116), and toggling autopickup with exceptions defined says ",
 with one exception" or ", with some exceptions" (options.c dotogglepickup()).
+
+## The status line shows the live load; the "stale encumbrance" hack is gone
+
+The port carried a non-C mechanism (`_encumber_status_stale`,
+`_deferred_status_capacity`, set in pick_obj(), dropx(), throwit()'s
+caller and addinv's prinv path, consumed by bot_conditions() and
+encumber_msg()) that kept the previous capacity on the status line until
+encumber_msg() ran, to emulate a C tty that had not yet redrawn. The C has
+no such thing: bot() prints near_capacity() whenever it runs, and it runs
+at every flush while disp.botl is set. s63-03 showed the hack wrong: a
+run east ended on a statue that autopickup lifted with "You have a little
+trouble lifting f - a statue of a lichen.--More--", botl was already set,
+so the C's status already read Burdened under the --More--; ours kept the
+old load for the next twenty screens. The mechanism is removed from
+pickup.js, attrib.js, botl.js, do.js, dothrow.js, invent.js and shk.js; the
+44 public sessions and the fuzz census stayed perfect without it.
+
+## The starting pony's saddle is "a saddle", not "an uncursed saddle"
+
+steed.c:141 put_saddle_on_mon() fully identifies a saddle it creates and
+then hands it to mpickobj(). makedog() saddles the pony BEFORE initedog()
+tames it, and steal.c mpickobj() unknow_object()s anything a non-tame
+monster picks up out of the hero's view, so the identification is undone
+again: when the pony dies its saddle lists as "a saddle" (s64-14, "Things
+that are here: a pony corpse, a saddle"). Ours inserted the saddle into
+minvent by hand and kept bknown; put_saddle_on_mon() now calls mpickobj()
+like the C (a saddle never merges, so the return value is ignored).
+
+## dofire fills the quiver with autoquiver
+
+dothrow.c:1520 autoquiver() is ported: with the autoquiver option on and
+an empty quiver, 'f' scans the inventory (unworn, non-artifact, dknown
+items; rocks and known flint/glass become ammo for a slinger or misc
+otherwise, matched ammo beats missiles, which beat alternate-launcher ammo
+and ordinary throwing weapons, daggers count as missiles, aklyses are
+skipped) and setuqwep()s the best choice, then dofire prints "You ready:
+<item>" with the quiver bit briefly cleared for a shorter name, or "You
+have nothing appropriate for your quiver." (s64-08, a "normal-legacy" rc
+with autoquiver on) before falling through to doquiver_core("fire").

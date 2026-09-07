@@ -148,9 +148,7 @@ export async function encumber_msg() {
     const newcap = near_capacity();
     const oldcap = game.oldcap;
 
-    if (game._encumber_status_stale && oldcap !== newcap)
-        game._deferred_status_capacity = oldcap;
-    try {
+    {
         if (oldcap < newcap) {
             switch (newcap) {
             case 1:
@@ -187,9 +185,6 @@ export async function encumber_msg() {
             }
             (game.disp ||= {}).botl = true;
         }
-    } finally {
-        delete game._deferred_status_capacity;
-        delete game._encumber_status_stale;
     }
 
     game.oldcap = newcap;

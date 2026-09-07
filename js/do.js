@@ -2124,10 +2124,7 @@ export async function polymorph_sink() {
 // nothing reaches the floor there; doaltarobj sets bknown when it lands on
 // an altar.
 export async function dropx(obj) {
-    const oldcap = near_capacity();
     freeinv(obj);
-    if (near_capacity() !== oldcap)
-        game._encumber_status_stale = true;
     if (!game.u.uswallow) {
         /* src/do.c:298 — ship_object() sends the object down a hole or
            stairs and returns TRUE when it did, in which case dropy() must

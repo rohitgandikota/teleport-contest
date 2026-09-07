@@ -459,8 +459,16 @@ s62-05 was help_dir() receiving the pressed key for an ordinary prompt
 (the C passes it only for '^' key-hint prompts; NOTES "'?' at the
 direction prompt shows the help and asks again", last paragraph).
 
-Next: triage `--seed 63`, then continue the
-note_unported list (wield.js 10, mhitu.js 10, timeout.js 9, dothrow.js 9). tools/jsplay.mjs has a new
+Fifty-second round: `--seed 63` had two failures (s63-24 timezone; s63-03
+the status line kept a stale load: the port-only "stale encumbrance"
+mechanism is removed, NOTES "The status line shows the live load; the
+\"stale encumbrance\" hack is gone"). `--seed 64` had two: the starting
+pony's saddle keeping its identification (NOTES "The starting pony's
+saddle is \"a saddle\", not \"an uncursed saddle\"") and dofire's missing
+autoquiver arm (NOTES "dofire fills the quiver with autoquiver").
+
+Next: triage `--seed 65`, then continue the
+note_unported list (wield.js 10, mhitu.js 10, timeout.js 9, dothrow.js 8). tools/jsplay.mjs has a new
 `--aeval "<await expr>"` flag with the hack.js namespace as `h` for state
 probes. The census script is `tally.sh` in the scratchpad (diverge.mjs
 --screens over tools/gen-sessions/fuzz/*.session.json, 4 at a time).

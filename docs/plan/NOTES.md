@@ -4620,7 +4620,8 @@ in seed 55), and seed 56 added s56-31, seed 59 added s59-19, and seed 61
 added s61-25 and s61-35 (the same ^X line), seed 62 added s62-11 (ours
 prints "It is nighttime." where the C's local hour printed no line), and
 seed 63 added s63-24 (the C printed "It is nighttime." above the shared
-"Bad things can happen on Friday the 13th." line).
+"Bad things can happen on Friday the 13th." line), and seed 65 added
+s65-16 (ours prints "It is nighttime." where the C's local hour did not).
 
 ## Fuzz divergence census (2026-09-01, second pass)
 
@@ -7551,3 +7552,34 @@ skipped) and setuqwep()s the best choice, then dofire prints "You ready:
 <item>" with the quiver bit briefly cleared for a shorter name, or "You
 have nothing appropriate for your quiver." (s64-08, a "normal-legacy" rc
 with autoquiver on) before falling through to doquiver_core("fire").
+
+## wield.js is complete: shop warnings, Shk_Your, restrict_name, Magicbane
+
+The last wield.c arms: ready_weapon() has the shopkeeper's "<Shk> says
+\"You be careful with my <weapon>!\"" for an unpaid wield
+(shop_keeper(inside_shop(u.ux, u.uy))); dowield() undoes a count split
+that could not be wielded with unsplitobj() and prefixes the "remain
+readied" refusal with Shk_Your() so shop goods read "<Shk>'s ..."; chwepon()
+bills a crysknife dulling through costly_alteration(COST_DEGRD) and a
+negative enchantment through costly_alteration(COST_DECHNT), re-prices an
+unpaid sharpened or enchanted weapon with alter_cost(uwep, 0), gives the
+"faintly glow" refusal when a cursed enchant scroll hits an artifact whose
+name restrict_name() protects (artifact.c:575 restrict_name() is ported
+into artifact.js: undiscovered types sharing a description or shuffle range
+count as the same type, and SPFX_NOGEN|SPFX_RESTR artifacts or a stack of
+more than one make the name restricted), and gives Magicbane's clue "Your
+right hand itches!/flinches!" when its enchantment stays non-negative.
+
+## Grabs on an unsolid hero fail, and ^X names the blindfold in wizard mode
+
+mhitu.c:808/827 mattacku(): a claw-type hit on an unsolid hero (ghost,
+vortex, light, most elementals) that is a hug, wrap, stick or digestion
+attack goes through mhitm.c:597 failed_grab() ("<Foo>'s grab passes
+through you!") and is skipped, and an AT_HUGS attack lands only when
+failed_grab() says no; ours recorded both arms. attrib.c:905 from_what()'s
+wizard-mode arm asks what_gives() for the object conveying the extrinsic;
+ours keys the extrinsic word by property, and the table lacked BLINDED
+(plus INVIS, TELEPORT, LEVITATION, FLYING, SWIMMING, PASSES_WALLS), so a
+blindfolded wizard's ^X said "You are temporarily blind." where the C says
+"... because of your blindfold." (s65-34; the blindfold sets EBlinded's
+W_TOOL bit through setworn(), which is exactly what what_gives() finds).

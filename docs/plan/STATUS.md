@@ -467,8 +467,17 @@ pony's saddle keeping its identification (NOTES "The starting pony's
 saddle is \"a saddle\", not \"an uncursed saddle\"") and dofire's missing
 autoquiver arm (NOTES "dofire fills the quiver with autoquiver").
 
-Next: triage `--seed 65`, then continue the
-note_unported list (wield.js 10, mhitu.js 10, timeout.js 9, dothrow.js 8). tools/jsplay.mjs has a new
+Fifty-third round: wield.js is complete (NOTES "wield.js is complete: shop
+warnings, Shk_Your, restrict_name, Magicbane"); artifact.c's restrict_name()
+is ported.
+
+`--seed 65` had two failures: s65-16 is a recording-timezone instance and
+s65-34 was the missing BLINDED entry in from_what()'s extrinsic table
+(NOTES "Grabs on an unsolid hero fail, and ^X names the blindfold in wizard
+mode", which also covers mattacku()'s failed_grab() arms).
+
+Next: triage `--seed 66`, then continue the
+note_unported list (mhitu.js 8, timeout.js 9, dothrow.js 8, do.js 9). tools/jsplay.mjs has a new
 `--aeval "<await expr>"` flag with the hack.js namespace as `h` for state
 probes. The census script is `tally.sh` in the scratchpad (diverge.mjs
 --screens over tools/gen-sessions/fuzz/*.session.json, 4 at a time).

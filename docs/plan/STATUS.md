@@ -435,8 +435,11 @@ desecration and stain arms, bestow_artifact, sacrifice_value, prayer_done's
 -2/-1 arms, and attrib.c's uchangealign (NOTES "The sacrifice arms:
 conversion, desecration, blood stains, gifts"). pray.js has no notes left.
 
+Forty-ninth round: fountain.js is complete (NOTES "The last fountain
+arms: watchmen, wishes, Excalibur, washing hands, coins").
+
 Next: triage `--seed 60`, then continue the
-note_unported list (fountain.js 12, potion.js 10, read.js 10, cmd.js 10). tools/jsplay.mjs has a new
+note_unported list (potion.js 10, read.js 10, cmd.js 10, wield.js 10). tools/jsplay.mjs has a new
 `--aeval "<await expr>"` flag with the hack.js namespace as `h` for state
 probes. The census script is `tally.sh` in the scratchpad (diverge.mjs
 --screens over tools/gen-sessions/fuzz/*.session.json, 4 at a time).

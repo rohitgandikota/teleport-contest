@@ -2466,7 +2466,7 @@ async function peffect_object_detection(otmp) {
 // src/potion.c:2796 mongrantswish() — *monp grants a wish and then leaves
 // the game. `monp` is a holder object whose .mon is cleared, the C's
 // pointer-to-pointer.
-async function mongrantswish(monp) {
+export async function mongrantswish(monp) {
     const mon = monp.mon;
     const mx = mon.mx, my = mon.my, glyph = glyph_at(mx, my);
 

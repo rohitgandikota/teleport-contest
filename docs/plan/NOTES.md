@@ -7390,3 +7390,33 @@ reasons (A_CG_CONVERT logs "permanently converted to <align>", sets
 ualignbase[A_CURRENT], lets a worn helm of opposite alignment block the
 type change, and says "You have a (sudden) sense of a new direction.");
 do_wear.js's helm arms call it instead of a local copy.
+
+## The last fountain arms: watchmen, wishes, Excalibur, washing hands, coins
+
+fountain.c is now fully ported. dryup() (fountain.c:201) warns through
+get_iter_mons(watchman_warn_fountain): the first peaceful watchman in line
+of sight yells "Hey, stop using that fountain!" through verbalize(), or, to
+a deaf hero, "earnestly shakes/waves his head/arms!" (nolimbs picks the
+verb and body part); only when no watchman objects does "The flow reduces
+to a trickle." print. dowatersnakes() names the stream with
+makeplural(rndmonnam()) while hallucinating. dowaterdemon() grants the
+wish on rnd(100) > 80 + level_difficulty(): "Grateful for his release, he
+grants you a wish!" then mongrantswish() (now exported from potion.js).
+gush() runs minliquid() on a monster standing where the pool forms.
+drinkfountain() and dipfountain() call floating_above("fountain") under
+Levitation (the accessor, not a uprops lookup that never fired), the
+see-invisible draught has its "feel transparent"/"very self-conscious"/
+"image of someone stalking you" messages and grants HSee_invisible from
+outside, and dipfountain() gains the Lady of the Lake: a long sword at
+level 5+ on !rn2(6 for a Knight, else 30), unique and not yet an artifact
+while Excalibur does not exist, is cursed and possibly de-enchanted by a
+freezing mist for a non-lawful ("was denied Excalibur! ..."), or named
+Excalibur with oname(ONAME_VIA_DIP | ONAME_KNOW_ARTI), blessed, repaired
+and made erodeproof for a lawful, and the fountain vanishes either way
+(angry guards in town). '-' or worn gloves go through wash_hands()
+(fountain.c:558: "You wash your gloved hands in the water.", Glib removal,
+water_damage on the gloves, ER_GREASED when the fingers were slippery),
+the water demon roll calls dowaterdemon(), and "You see coins" drops
+mkgold(rnd((dunlevs_in_dungeon - dunlev + 1) * 2) + 5) into a not yet
+looted fountain with "Far below you, you see coins glistening in the
+water.".

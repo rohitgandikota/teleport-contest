@@ -7007,3 +7007,17 @@ so a monster that hit a passive-stun defender never became stunned and the
 later dochug() "stunned monsters get un-stunned" rn2(10) never fired
 (s50-04, seed 50's one real failure). assess_dmg is an inner closure that
 applies tmp to the attacker and returns M_ATTK_AGR_DIED via monkilled().
+
+## Menu group accelerators beat mapped menu commands
+
+win/tty/wintty.c:1498-1533 builds resp[] from the page's selectors, then
+the group accelerators (resp_len marks the end of the explicit choices),
+then ' ', digits, ESC and RET. process_menu_window() tests the typed key
+against that explicit prefix before map_menu_cmd(), so a key that is both
+a group accelerator and a menu command (',' for "the type of an object
+upon the floor" in the #name menu, which is also menu_select_page; '\\'
+for the discoveries entry, also menu_unselect_page) selects the entry.
+Inside the default arm gacc is checked before the per-item selectors.
+Ours mapped the menu command first, so ',' in the #name menu did nothing
+where the C opened namefloorobj()'s getpos (s50-04 step 221). The
+group-accelerator branch now comes first in tty_select_menu().

@@ -360,6 +360,11 @@ shirt design) and s50-04 a real one: passivemm()'s defender-alive switch
 (stun, cold, fire, elec, paralysis, acid, disenchant) is ported in round
 35.
 
+Thirty-fifth round: passivemm()'s defender-alive switch (NOTES
+"passivemm()'s defender-alive arms") and the tty menu's group-accelerator
+precedence (NOTES "Menu group accelerators beat mapped menu commands")
+make s50-04 match all 1001 screens.
+
 Next: triage `--seed 51`, then continue the
 note_unported list (hack.js 18, spell.js 20, shk.js 19). tools/jsplay.mjs has a new
 `--aeval "<await expr>"` flag with the hack.js namespace as `h` for state

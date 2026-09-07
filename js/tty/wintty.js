@@ -887,9 +887,20 @@ export async function tty_select_menu(window, how) {
             continue;
         }
 
-        /* wintty.c checks the page's response characters before mapping menu
-           commands, so ':' selects a ':' entry instead of opening search. */
-        if (explicitIndex >= 0) {
+        /* win/tty/wintty.c:1528 — resp[] holds the page's selectors and then
+           the group accelerators, and resp_len marks that boundary: a key
+           found there is MENU_EXPLICIT_CHOICE before map_menu_cmd() runs, so
+           ':' selects a ':' entry instead of opening search and ',' picks
+           the entry whose group accelerator is ',' instead of selecting the
+           page. The default arm tests gacc before the selectors. */
+        if (gacc.includes(morc)) {
+            /* group accelerator; for the PICK_ONE case, we know that it
+               matches exactly one item in order to be in gacc[] */
+            invert_all(window, cw.curr_page, morc,
+                       counting ? count : -1);
+            if (how === PICK_ONE)
+                finished = true;
+        } else if (explicitIndex >= 0) {
             const curr = explicitItems[explicitIndex];
             if (curr.selected) {
                 if (counting && count > 0)
@@ -1000,13 +1011,6 @@ export async function tty_select_menu(window, how) {
                 game?.nhDisplay?.setCursor(
                     cw.offx + 1 + morestr.length, cw.offy + items.length);
             }
-        } else if (gacc.includes(morc)) {
-            /* group accelerator; for the PICK_ONE case, we know that it
-               matches exactly one item in order to be in gacc[] */
-            invert_all(window, cw.curr_page, morc,
-                       counting ? count : -1);
-            if (how === PICK_ONE)
-                finished = true;
         } else {
             /* find, toggle, and possibly update */
             const items = menu_page_items(window, cw.curr_page);

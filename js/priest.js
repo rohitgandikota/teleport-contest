@@ -16,6 +16,7 @@ import { buzz } from './zap.js';
 import { linedup } from './mthrowu.js';
 import { a_gname_at, halu_gname } from './pray.js';
 import { game } from './gstate.js';
+import { impossible } from './pline.js';
 import { rn2, rn1, d } from './rng.js';
 import { makemon, remove_monster, place_monster,
          set_malign, mongets } from './makemon.js';
@@ -253,6 +254,19 @@ function incr_intrinsic_timeout(name, increment) {
 }
 
 // src/priest.c:558 priest_talk(), including ordinary temple donations.
+// src/priest.c:545 forget_temple_entry() — reset the priest's temple
+// entry timers; leaving the level and then returning yields a fresh start
+export function forget_temple_entry(priest) {
+    const epri_p = priest.ispriest ? priest.epri : null;
+
+    if (!epri_p) {
+        impossible('attempting to manipulate shrine data for non-priest?');
+        return;
+    }
+    epri_p.intone_time = epri_p.enter_time = epri_p.peaceful_time =
+        epri_p.hostile_time = 0;
+}
+
 export async function priest_talk(priest) {
     const { currency, money_cnt } = await import('./invent.js');
     const coaligned = p_coaligned(priest);

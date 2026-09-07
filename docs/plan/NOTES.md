@@ -4599,7 +4599,8 @@ a full moon in effect." lines) are the same class, as is s33-31 (^X,
 recording: the C's shifted clock lands on the 19th, whose phase says
 "Be careful!  New moon tonight." at startup, so every later screen sits
 behind that --More--; ours computes the 20th). s37-20 (^X "It is
-nighttime.") is another.
+nighttime.") is another, as are s39-16 and s39-28 ("It is the midnight
+hour." where our clock says nighttime).
 
 ## Fuzz divergence census (2026-09-01, second pass)
 
@@ -6024,7 +6025,9 @@ path. The public sessions carry the judge harness's
 (cut at the terminal width) and options.js OPT_INTRO_CONFIG reproduces
 that; s25-21 is another ^X moon/nighttime instance; reading a Hawaiian shirt (s24-23, "The design features ... on a ...
 background.") is the ubirthday class from the entry above and stays a
-note_unported; a local fuzz recording shows `/var/folders/.../nh-rec-XXXX/home/.nethackrc`
+note_unported, and so is the shirt's own name once it is fully identified
+("with a tropical fish motif": read.c:190 hawaiian_motif() indexes its
+table by `o_id ^ ubirthday`, s38-23); a local fuzz recording shows `/var/folders/.../nh-rec-XXXX/home/.nethackrc`
 instead (s22-10). The held-out sessions come from the same harness as the
 public ones, so the judge path is the right one and the local miss is
 expected. Do not switch it for the fuzz corpus. s30-24 (`?` then `g`,
@@ -6552,3 +6555,80 @@ nothing. Ours never ran it, so a Sokoban level's premapped floor stayed
 S_room out of sight and autodescribe said "floor of a room" where the C
 says "dark part of a room" (s37-26). Ported into display.js and called
 from both sites.
+
+## test_move(): walking into a closed door without autoopen
+
+hack.c:1097, the DO_MOVE arm for a closed door: an amorphous hero is told
+it can't squeeze its possessions through; with autoopen on and the hero
+not running, confused, stunned or fumbling, doopen_indir() opens it (this
+port runs that arm before domove(), js/cmd.js's closed-door pre-check, so
+test_move() never sees it); otherwise an orthogonal bump while Blind,
+Stunned, Fumbling or with Dex below 10 prints "Ouch!  You bump into a
+door." (or "You can't lead <steed> through that closed door."), exercises
+Dex, marks door_opened and move so the turn is spent, and nomul(0)s;
+anyone else just hears "That door is closed." The whole else-branch was a
+note_unported; it is reachable by any game that toggles autoopen off or
+walks into a door while confused.
+
+## Menu keys outside the response set are ignored, count and all
+
+win/tty/wintty.c:1329 process_menu_window() collects every selector and
+group accelerator into a response string and hands it to
+win/tty/getline.c:230 xwaitforspace(), which returns only those keys plus
+space, digits, ESC, newline, carriage return, the menu commands
+`^|><.-@,\~:` and the dismiss_more key; anything else rings the bell
+and is dropped before the loop's count logic runs. Ours fed every key to
+the loop, so a stray letter typed while a count was pending ended the
+count and a non-selector could act as a selection (s39-07). The
+tty_select_menu loop now applies the same filter.
+
+## forget_temple_entry() when a level is saved
+
+priest.c:545 forget_temple_entry() zeroes a priest's intone, enter,
+peaceful and hostile timestamps; save.c:894 savelev() calls it for every
+temple priest as the level is put away and mkobj.c:2160 save_mtraits()
+does the same for one that migrates in a corpse or statue. Coming back
+to the level then re-runs the temple entry ("You experience a strange
+sense of peace", the intoning) as if for the first time. Ours kept the
+times, so the return visit was silent (s39-11). Both call sites ported.
+
+## put_lregion_here() removes a trap under a one-shot placement
+
+mkmaze.c:413, the oneshot arm: when a level region with exactly one
+candidate square (a branch stairs or portal placed by place_lregion)
+lands on a square that already holds a destroyable trap, the trap is
+deleted (clearing any monster trapped in it) before the stairs go down.
+Ours left the trap in place, and the extra trap shifted every later trap
+lookup on that level (s39-39).
+
+## mdrop_obj() calls distant_name() even when nobody sees it
+
+steal.c:823: mdrop_obj() evaluates distant_name(obj, doname) before
+deciding whether to print, "for its possible side-effects" (doname marks
+dknown and friends). Ours only named the object inside the message arm,
+so a pet dropping something out of sight left it unidentified in a way
+the C does not (s40-01).
+
+## launch_obj() does not recalc vision when the boulder leaves
+
+trap.c:3260 launch_obj(): removing the boulder from the launch square
+only schedules a vision update (unblock_point sets vision_full_recalc),
+and flush_screen() never recalcs, so the boulder's flight and the
+flooreffects() at the far end see the map as it was with the boulder
+still blocking the line: a pit behind it gives "You hear a boulder
+fall." rather than the seen message (s40-33). Ours called vision_recalc
+right after the removal; the moveloop does it in the C.
+
+## tele_trap() puts the departure square on the hero's trail
+
+teleport.c:1492 tele_trap(): for a trap with a fixed destination the C
+calls settrack() first (the hero is still on the trap, so the trap square
+becomes the newest trail entry), moves any monster standing on the
+destination aside with enexto()/rloc_to() ("You shudder for a moment."
+if the level is too full), and only then teleds(). settrack() is called
+from exactly two places in the C, allmain.c:242 and this one. Ours went
+straight to teleds(), so the pet's dog_move() trail search in the C found
+the trap square and ours found nothing there and aimed elsewhere
+(s41-01). dotele() (teleport.c:1034), the hero-invoked ^T onto a vault
+trap, keeps its plain teleds(); the arm lives in trap.js's
+trapeffect_telep_trap, which is where the hero's trap effect runs here.

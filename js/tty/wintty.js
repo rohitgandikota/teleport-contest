@@ -842,6 +842,22 @@ export async function tty_select_menu(window, how) {
         const explicitIndex = explicitItems.findIndex(
             item => item.identifier && item.selector === morc);
 
+        /* win/tty/wintty.c:1548 dmore()/xwaitforspace(resp): only the page's
+           selectors, the group accelerators, ' ', digits, ESC, RET, the menu
+           commands and the dismiss_more letter come back to the menu loop;
+           any other key rings the bell and keeps waiting, so it leaves a
+           pending count untouched (after "9s" an ESC only stops the count,
+           and a second ESC is needed to cancel the menu) */
+        {
+            const dm = game.ttyDisplay?.dismiss_more;
+            if (!(explicitIndex >= 0 || gacc.includes(morc) || morc === ' '
+                  || /^[0-9]$/.test(morc) || morc === '\x1b'
+                  || morc === '\n' || morc === '\r' || c === 0
+                  || '^|><.-@,\\~:'.includes(morc)
+                  || (dm && morc === dm) || (dm === '\n' && morc === '\r')))
+                continue;
+        }
+
         if (/^[0-9]$/.test(morc) && explicitIndex < 0
             && !(!counting && gacc.includes(morc))) {
             count = Math.min(Number.MAX_SAFE_INTEGER,

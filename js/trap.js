@@ -3347,8 +3347,9 @@ async function trapeffect_telep_trap(mtmp, trap, trflags) {
     }
 
     seetrap(trap);
-    const { noteleport_level, tele, vault_tele } =
+    const { noteleport_level, tele, vault_tele, enexto, rloc_to } =
         await import('./teleport.js');
+    const { settrack } = await import('./track.js');
     if (In_endgame(game.u.uz) || game.u.uprops?.ANTIMAGIC
         || noteleport_level(game.youmonst)) {
         if (game.u.uprops?.ANTIMAGIC)
@@ -3359,7 +3360,25 @@ async function trapeffect_telep_trap(mtmp, trap, trflags) {
         newsym(game.u.ux, game.u.uy);
         await vault_tele();
     } else if (isok(trap.teledest?.x ?? 0, trap.teledest?.y ?? 0)) {
-        await teleds(trap.teledest.x, trap.teledest.y, TELEDS_TELEPORT);
+        /* src/teleport.c:1512 tele_trap(): the departure square goes on the
+           hero's trail, and a monster on the fixed destination is moved
+           aside first */
+        const cc = { x: 0, y: 0 };
+        let mtmp = m_at(trap.teledest.x, trap.teledest.y);
+
+        settrack();
+        if (mtmp) {
+            if (!enexto(cc, mtmp.mx, mtmp.my, mtmp.data)) {
+                /* could not find some other place to put mtmp; the level must
+                 * be nearly or completely full */
+                await You('shudder for a moment.');
+            } else {
+                await rloc_to(mtmp, cc.x, cc.y);
+                mtmp = null; /* no longer a monster at dest */
+            }
+        }
+        if (!mtmp)
+            await teleds(trap.teledest.x, trap.teledest.y, TELEDS_TELEPORT);
     } else {
         await tele();
     }
@@ -5474,11 +5493,11 @@ export async function launch_obj(otyp, x1, y1, x2, y2, style) {
         obj_extract_self(singleobj);
     }
     newsym(x1, y1);
-    /* Removing a boulder schedules a vision update; C's flush_screen()
-       settles it before the tmp_at() flash below is drawn, so do the same
-       here or pline() would repaint the floor over the temporary glyph. */
-    if (game.vision_full_recalc)
-        vision_recalc(0);
+    /* Removing the boulder only schedules a vision update (unblock_point
+       sets vision_full_recalc); C's flush_screen() does not recalc, so
+       the flight and flooreffects() below see the map as it was with the
+       boulder still blocking the view: a pit it falls into behind that
+       line is "You hear a boulder fall." (s40-33). The moveloop recalcs. */
 
     let dist = Math.max(Math.abs(x2 - x1), Math.abs(y2 - y1));
     let x = x1, y = y1;

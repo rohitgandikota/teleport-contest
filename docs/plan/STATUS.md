@@ -282,7 +282,18 @@ the rush prefix state and the prefix refusals key on the pending-prefix
 marker (s36-17, s36-20); reglyph_darkroom() on arrival and on option
 redraws (s37-26).
 
-Next: triage `--seed 38` (recording), then `--seed 39`. Then return to the
+Twenty-sixth round, `--seed 38` through `--seed 41`: nine failures in
+160, five the recording classes (s38-23 shirt motif via ubirthday;
+s39-16, s39-28 DST). Fixed: menu keys outside the tty response set are
+dropped before the count logic (s39-07); forget_temple_entry() on
+savelev and save_mtraits (s39-11); put_lregion_here()'s one-shot trap
+removal (s39-39); mdrop_obj() evaluating distant_name() for its side
+effects (s40-01); launch_obj() no longer recalcs vision as the boulder
+leaves (s40-33); tele_trap()'s settrack() and destination-occupant
+relocation, in trap.js where the hero's trap effect runs (s41-01); and
+test_move()'s closed-door bump arm, which was a note_unported.
+
+Next: triage `--seed 42`, then `--seed 43`. Then return to the
 note_unported list (hack.js 18, spell.js 20, shk.js 19). tools/jsplay.mjs has a new
 `--aeval "<await expr>"` flag with the hack.js namespace as `h` for state
 probes. The census script is `tally.sh` in the scratchpad (diverge.mjs

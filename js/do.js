@@ -52,6 +52,7 @@ import { obfree, stackobj, useupf } from './invent.js';
 // the first draw the new level makes; the missing piece is everything above it.
 
 import { game } from './gstate.js';
+import { forget_temple_entry } from './priest.js';
 import { paranoid_ynq, reset_occupations, set_move_cmd } from './cmd.js';
 import { welded } from './wield.js';
 import { ONAMES } from './objects_data.js';
@@ -1102,6 +1103,11 @@ export async function goto_level(newlevel, at_stairs, falling, portal) {
             game.level._saved_timers = save_timers(RANGE_LEVEL, true);
             game.level._saved_lights = save_light_sources(RANGE_LEVEL, true);
         }
+        /* src/save.c:893 savemonchn(): a priest forgets its temple entry
+           timers when its level is saved */
+        for (const mtmp of game.level.monsters || [])
+            if (mtmp.ispriest)
+                forget_temple_entry(mtmp);
         (game.saved_levels ||= new Map())
             .set(`${game.u.uz.dnum}:${game.u.uz.dlevel}`, game.level);
         (game.visited_ledgers ||= new Set())

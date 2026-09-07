@@ -35,7 +35,7 @@ import { COLNO, ROWNO, BOLT_LIM, STONE, SCORR, SDOOR, GRAVE, CORR,
          D_TRAPPED, D_BROKEN, IS_WALL,
          POOL, MOAT, WATER, LAVAPOOL, LAVAWALL, ICE,
          MENU_ITEMFLAGS_NONE, MENU_BEHAVE_STANDARD, ECMD_OK,
-         TER_DETECT, TER_MAP, M_AP_TYPE, M_AP_FURNITURE,
+         TER_DETECT, TER_MAP, TER_MON, M_AP_TYPE, M_AP_FURNITURE,
          M_AP_OBJECT, M_AP_FLAG, M_AP_F_DKNOWN, OBJ_FLOOR,
          AM_MASK, AM_SANCTUM, Amask2align, Is_astralevel,
          A_LAWFUL, A_NEUTRAL, A_CHAOTIC, STRAT_WAITMASK,
@@ -476,7 +476,17 @@ function lookat(x, y) {
     const glyph = glyph_at(x, y);
     const loc = game.level?.at(x, y);
 
-    if (game.u.ux === x && game.u.uy === y && canspotself()) {
+    /* src/pager.c:661 — in a terrain view (#terrain, or the browse after a
+       detection) the hero is described only when the view includes monsters;
+       otherwise the cursor on the hero's square reads the terrain there. The
+       glyph test covers a browse while engulfed: browse_map() clears
+       u.uswallow into iflags.save_uswallow, and the hero's square then shows
+       the engulfer, not the hero. */
+    if (game.u.ux === x && game.u.uy === y && canspotself()
+        && !(game.iflags?.save_uswallow
+             && glyph.kind === 'mon' && glyph.mon === game.u.ustuck)
+        && (!game.iflags?.terrainmode
+            || (game.iflags.terrainmode & TER_MON) !== 0)) {
         buf = self_lookat();
         /* pm stays null for self: file lookup uses the name string.
            The only exception is a gnomish wizard, forced to the generic

@@ -1079,13 +1079,17 @@ async function makerooms() {
                shrinking and retrying, and what makes lspo_map() re-roll its
                placement. It was read in four places and never set. */
             g.in_mk_themerooms = true;
-            const made = await themerooms_generate(difficulty);
+            g.themeroom_failed = false;
+            await themerooms_generate(difficulty);
             g.in_mk_themerooms = false;
-            if (!made) {
-                if (themeroom_tries++ > 10
-                    || g.level.nroom >= Math.trunc(MAXNROFROOMS / 6))
-                    break;
-            }
+            /* src/mklev.c:418 — the FLAG decides, not whether the outer room
+               stood: a nested des.room that fails (create_subroom on a parent
+               narrower than 4x4) sets it after the outer room was added, and
+               with six or more rooms that ends room generation. */
+            if (g.themeroom_failed
+                && (themeroom_tries++ > 10
+                    || g.level.nroom >= Math.trunc(MAXNROFROOMS / 6)))
+                break;
         }
     }
 }
@@ -1357,6 +1361,9 @@ async function themerooms_generate(difficulty) {
             }
             add_doors_to_room(aroom);
         }
+    } else if (game.in_mk_themerooms) {
+        /* src/sp_lev.c:4104 lspo_room() */
+        game.themeroom_failed = true;
     }
     return ok;
 }

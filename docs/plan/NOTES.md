@@ -5697,3 +5697,66 @@ S_room again by the time of the farlook, with no further newsym on that
 square: magic_map_background() writes back_to_glyph() (S_room for a
 waslit square) in both C and the port, so C must re-darken it on a path
 the port lacks (level return or docrt). Not resolved.
+
+## makerooms() stops on the themeroom_failed flag, not on the outer room
+
+Bug class: level generation. `mklev.c:418` breaks the room loop when
+`gt.themeroom_failed` is set and there are already MAXNROFROOMS/6 rooms
+(or eleven failed tries). The flag is raised by `lspo_room()` for ANY
+des.room that fails, including a nested one: "Room in a room" creates its
+outer room, then the inner `des.room` goes through `build_room` with a
+parent and `create_subroom()` refuses a parent narrower than 4x4. The
+outer room stands, the flag is set, and with seven rooms the C stops
+generating. Our themerooms_generate() returned whether the OUTER room was
+built, so makerooms() kept going: one more rnd_rect() draw and a vault
+attempt, and generate_stairs_find_room() saw 3 candidates where the C had
+7. Fixed in js/mklev.js: makerooms() clears and tests game.themeroom_failed
+around the call, and the inline default-room path sets the flag when
+create_room() fails (sp_lev.c:4104). fuzz-s18-37 step 0.
+
+## Typed option values go through parseoptions, and their errors block
+
+Bug class: input consumption (a whole key stream shifted by one). In the
+'O' menu a compound option without a handler asks "Set NAME to what?" and
+then calls `parseoptions("NAME:value", FALSE, FALSE)` (options.c:8686 in
+doset_simple_menu, the same in doset). The option's optfn validates the
+text; `optfn_statuslines` rejects anything but 2 or 3 with
+`config_error_add("'statuslines:de' is invalid; must be 2 or 3")`. In play
+`config_erradd()` (cfgfiles.c:1554) prints that with pline(), adding a
+period, and calls wait_synch(). The pline leaves the top line in
+TOPLINE_NEED_MORE, so when doset_simple() redisplays the menu,
+tty_display_nhwindow() runs more() first and the --More-- swallows every
+key until a space, return or ESC. Our port stored the raw string with no
+validation and no message, so the menu came straight back and consumed the
+keys the C's --More-- ate; the RET that closed the C's menu reached rhack
+as ^J (rush south) in ours. Fixed in js/options.js: parseoptions() gained
+the optfn_statuslines arm, both 'O' paths call parseoptions_interactive(),
+which applies the parsed values to the live store and prints the collected
+errors as config_erradd does, and js/tty/wintty.js gained tty_wait_synch().
+fuzz-s18-02 step 83.
+
+## An ESC'd --More-- also skips the more() before a menu
+
+Bug class: extra prompt. wintty.c tty_display_nhwindow() begins with
+`if (cw->flags & WIN_CANCEL) return;` and, for the message window,
+WIN_CANCEL is the same bit as WIN_STOP. So the recursive
+`tty_display_nhwindow(WIN_MESSAGE, TRUE)` that a menu or text window makes
+to flush an unacknowledged top line returns at once after an ESC at the
+previous --More--: no second --More--, and the menu's own clearing erases
+the pending text. Our menu path called more() whenever toplin was
+NEED_MORE. Seen at game start: the moon-phase message queued behind the
+welcome line, ESC at that --More--, then the tutorial query. Our
+ask_do_tutorial() also had a JS-only more() before its menu, which the C
+does not have. Both fixed (js/tty/wintty.js, js/options.js). fuzz-s18-11
+step 16.
+
+## Terrain view: the cursor on the hero reads the terrain
+
+Bug class: autodescribe text. pager.c:661 lookat() describes the hero only
+when `!iflags.terrainmode || (iflags.terrainmode & TER_MON)`; #terrain's
+browse_map() sets terrainmode without TER_MON, so the hero's square is
+"floor of a room", not "human ranger called ricky". The same condition
+also excludes a browse made while engulfed (save_uswallow and the
+engulfer's glyph on the hero's square). Ported into js/pager.js lookat().
+fuzz-s18-28 step 74.
+

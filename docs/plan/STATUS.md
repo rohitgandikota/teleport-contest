@@ -131,7 +131,21 @@ after a corpse eater's meal, no RNG difference before it), s17-30 step 790
 of a room" after magic mapping and a level return), s17-15 is the moon
 phase timezone case.
 
-Next: record `--seed 18` (mix `--debug`/`--normal`), fix what diverges,
+Ninth round, `--seed 18` (5 failures in 40): makerooms() now stops on
+the themeroom_failed flag the way mklev.c:418 does, so a "Room in a room"
+whose inner room cannot fit ends room generation with the outer room in
+place (generate_stairs saw 3 candidate rooms where the C had 7); typed 'O'
+menu values go through parseoptions() with optfn_statuslines validation and
+config_erradd's in-play pline + wait_synch, which is what makes the C block
+on --More-- before redrawing the options menu (ours let nine keys through
+and then ran the menu-closing RET as a rush south); the pre-menu more() in
+tty_display_nhwindow honours WIN_STOP after an ESC'd --More--, and
+ask_do_tutorial() lost a JS-only more(); lookat() in a terrain view
+describes the terrain under the hero unless TER_MON is set. s18-09 is the
+^X time-of-day timezone case. Census 419/422 RNG-and-screen perfect; the
+three misses are the open silent monster drifts (s13-31, s14-23, s17-03).
+
+Next: record `--seed 19` (mix `--debug`/`--normal`), fix what diverges,
 then return to the note_unported
 list (hack.js 19, spell.js 20, shk.js 19). tools/jsplay.mjs has a new
 `--aeval "<await expr>"` flag with the hack.js namespace as `h` for state

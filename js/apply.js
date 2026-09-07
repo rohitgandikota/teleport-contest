@@ -148,7 +148,7 @@ import { something } from './const.js';
 import { OBJ_FLOOR } from './const.js';
 import { costly_spot } from './shk.js';
 import { bill_dummy_object } from './shk.js';
-import { make_glib } from './potion.js';
+import { make_glib, djinni_from_bottle } from './potion.js';
 import { On_stairs } from './stairs.js';
 import { mkclass } from './makemon.js';
 import { MONSYMS } from './monst_data.js';
@@ -1900,54 +1900,6 @@ async function use_tinning_kit(obj) {
                                   doname(can), null);
     } else {
         /* impossible("Tinning failed.") */
-    }
-}
-
-// src/potion.c:2815 djinni_from_bottle().
-async function djinni_from_bottle(obj) {
-    const mtmp = await makemon(game.mons[PMNAMES.PM_DJINNI],
-                         game.u.ux, game.u.uy, MM_NOMSG);
-    if (!mtmp) {
-        await pline('It turns out to be empty.');
-        return;
-    }
-
-    if (!Blind()) {
-        await pline(`In a cloud of smoke, ${a_monnam(mtmp)} emerges!`);
-        await pline(`${Monnam(mtmp)} speaks.`);
-    } else {
-        await You('smell acrid fumes.');
-        await pline('Something speaks.');
-    }
-
-    let chance = rn2(5);
-    if (obj.blessed)
-        chance = chance === 4 ? rnd(4) : 0;
-    else if (obj.cursed)
-        chance = chance === 0 ? rn2(4) : 4;
-
-    if (chance === 0) {
-        await pline('"I am in your debt.  I will grant one wish!"');
-        mongone(mtmp);
-        const { makewish } = await import('./zap.js');
-        await makewish();
-    } else if (chance === 1) {
-        await pline('"Thank you for freeing me!"');
-        const { initedog } = await import('./dog.js');
-        initedog(mtmp, true);
-    } else if (chance === 2) {
-        await pline('"You freed me!"');
-        mtmp.mpeaceful = 1;
-        set_malign(mtmp);
-    } else if (chance === 3) {
-        await pline('"It is about time!"');
-        if (canspotmon(mtmp))
-            await pline(`${Monnam(mtmp)} vanishes.`);
-        mongone(mtmp);
-    } else {
-        await pline('"You disturbed me, fool!"');
-        mtmp.mpeaceful = 0;
-        set_malign(mtmp);
     }
 }
 

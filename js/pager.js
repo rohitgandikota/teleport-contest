@@ -1597,6 +1597,19 @@ export async function dohistory() {
     return await display_file(DAT.history);
 }
 
+// src/pager.c:2577 dowhatdoes_core() — "%-8s%s." with key2txt of the key,
+// or null when the key is not bound to a command.
+export function dowhatdoes_core(q) {
+    const ec_desc = key2extcmddesc(q);
+
+    if (ec_desc !== null) {
+        /* note: if "%-8s" gets changed, the "%8.8s" in dowhatdoes() will
+           need a comparable change */
+        return `${key2txt(q).padEnd(8)}${ec_desc}.`;
+    }
+    return null;
+}
+
 // src/pager.c:2658 dowhatdoes() — the '?f' viewer: read one key and say
 // what it is bound to.
 let dowhatdoes_once = false;
@@ -1608,10 +1621,8 @@ export async function dowhatdoes() {
         dowhatdoes_once = true;
     }
     const q = await tty_yn_function('What command?', null, '\0');
-    const reslt = key2extcmddesc(q.charCodeAt(0));
-    if (reslt !== null) {
-        /* dowhatdoes_core: "%-8s%s." with key2txt of the key */
-        const line = `${key2txt(q.charCodeAt(0)).padEnd(8)}${reslt}.`;
+    const line = dowhatdoes_core(q.charCodeAt(0));
+    if (line !== null) {
         const p = line.indexOf('\n');
         if (p < 0) {
             await pline(line);

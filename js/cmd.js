@@ -151,7 +151,7 @@ import { doengrave, engr_at, wipe_engr_at } from './engrave.js';
 import { rnd, rn2 } from './rng.js';
 import { ACCESSIBLE } from './const.js';
 import { morehungry } from './eat.js';
-import { dohelp, dowhatis, doquickwhatis, dowhatdoes } from './pager.js';
+import { dohelp, dowhatis, doquickwhatis, dowhatdoes, dowhatdoes_core } from './pager.js';
 import { dolook, ECMD_TIME, display_pickinv_entries } from './invent.js';
 import { dovspell, docast, known_spell, spe_Fresh, spelleffects } from './spell.js';
 import { dowieldquiver, dowield, doswapweapon, dotwoweapon } from './wield.js';
@@ -363,6 +363,27 @@ async function help_dir(sym, msg) {
         tty_putstr(win, 0, "");
     }
 
+    /* src/cmd.c:4243 — hacklib.h letter(): '@'..'Z' or 'a'..'z' */
+    if (('@' <= sym && sym <= 'Z') || ('a' <= sym && sym <= 'z')
+        || sym === '[') {
+        /* '[': old 'cmdhelp' showed ESC as ^[ */
+        sym = sym.toUpperCase(); /* highc(): @A-Z[ (letter() accepts '@') */
+        const ctrl = (sym.charCodeAt(0) - 'A'.charCodeAt(0)) + 1; /* 0-27 */
+        const wiz_only = 'EFGIVW'.includes(sym); /* wiz_only_list */
+        const explain = dowhatdoes_core(ctrl);
+        if (explain !== null && (!wiz_only || game.wizard)) {
+            tty_putstr(win, 0, `Are you trying to use ^${sym}${
+                       wiz_only ? '' : ' as specified in the Guidebook'}?`);
+            tty_putstr(win, 0, "");
+            tty_putstr(win, 0, explain);
+            tty_putstr(win, 0, "");
+            tty_putstr(win, 0,
+                  "To use that command, hold down the <Ctrl> key as a shift");
+            tty_putstr(win, 0, `and press the <${sym}> key.`);
+            tty_putstr(win, 0, "");
+        }
+    }
+
     tty_putstr(win, 0, `Valid direction keys${nodiag ? " in your current form" : ""} are:`);
     show_direction_keys(win, '.', nodiag);
 
@@ -425,58 +446,74 @@ export async function getdir(s) {
        key is consumed. A caller-supplied string starting with '^' is a
        key-hint, not a prompt, and is ignored here as C ignores it. */
     let dirsym;
-    const queued = cmdq_pop();
-    if (queued) {
-        if (queued.typ === CMDQ_DIR) {
-            dirsym = cmd_from_dir(queued.dirz
-                ? (queued.dirz > 0 ? DIR_DOWN : DIR_UP)
-                : xytodir(queued.dirx, queued.diry), MV_WALK);
-        } else if (queued.typ === CMDQ_KEY) {
-            dirsym = queued.key;
-        } else {
-            /* src/cmd.c:3974, a non-direction entry is a broken canned
-               command. C discards the canned tail and treats it as NUL. */
-            cmdq_clear(CQ_CANNED);
-            dirsym = '\0';
-            await impossible('getdir: command queue had no dir?');
-        }
-    } else {
-        dirsym = await tty_yn_function(
-            (s && s[0] !== '^') ? s : 'In what direction?', null, '\0', false);
-        tty_clear_nhwindow_message(game._topl_cury || 0);
-        game._pending_message = '';
-        /* src/cmd.c:4017, getdir records the literal answer itself. Its
-           yn_function call uses addcmdq=FALSE so the key appears once. */
-        if (!game.in_doagain)
-            cmdq_add_key(CQ_REPEAT, dirsym);
-    }
+    let is_mov;
+    let cmdq = cmdq_pop();
 
-    if (dirsym === '.' || dirsym === 's') {
-        game.u.dx = game.u.dy = game.u.dz = 0;
-        /* src/cmd.c:4116 — getdir's tail runs confdir(FALSE) for every
-           !u.dz result, INCLUDING the self-direction: while confused the
-           rn2(5) inside u_maybe_impaired still draws here. */
-        confdir(false);
-        return true;
-    }
-    const is_mov = movecmd(dirsym, MV_ANY);
-    if (!is_mov && !game.u.dz) {
-        /* src/cmd.c:4095-4110 — a key in quitchars (" \r\n\033",
-           src/decl.c:96) cancels quietly; anything else gets the cmdassist
-           help panel (iflags.cmdassist is opt_out, default On) or the
-           "What a strange direction!" pline when assistance is off. The
-           '?' help-request retry is recorded; no recorded session asks. */
-        if (!"\0 \r\n\x1b".includes(dirsym)) {
-            let did_help = false;
-            if (dirsym === '?' || boolean_option('cmdassist')) {
-                did_help = await help_dir('\0', "Invalid direction key!");
-                if (dirsym === '?')
-                    note_unported_cmd('getdir:help_retry');
+    /* src/cmd.c:3984 retry: — a '?' at the prompt shows help_dir() and
+       comes back here to read another key. A queued direction is used once
+       (the C's goto got_dirsym); any retry reads live. */
+    for (;;) {
+        if (cmdq) {
+            const queued = cmdq;
+            cmdq = null;
+            if (queued.typ === CMDQ_DIR) {
+                dirsym = cmd_from_dir(queued.dirz
+                    ? (queued.dirz > 0 ? DIR_DOWN : DIR_UP)
+                    : xytodir(queued.dirx, queued.diry), MV_WALK);
+            } else if (queued.typ === CMDQ_KEY) {
+                dirsym = queued.key;
+            } else {
+                /* src/cmd.c:3974, a non-direction entry is a broken canned
+                   command. C discards the canned tail and treats it as NUL. */
+                cmdq_clear(CQ_CANNED);
+                dirsym = '\0';
+                await impossible('getdir: command queue had no dir?');
             }
-            if (!did_help)
-                await pline("What a strange direction!");
+        } else {
+            dirsym = await tty_yn_function(
+                (s && s[0] !== '^') ? s : 'In what direction?', null, '\0', false);
+            tty_clear_nhwindow_message(game._topl_cury || 0);
+            game._pending_message = '';
+            /* src/cmd.c:4017, getdir records the literal answer itself. Its
+               yn_function call uses addcmdq=FALSE so the key appears once. */
+            if (!game.in_doagain)
+                cmdq_add_key(CQ_REPEAT, dirsym);
         }
-        return false;
+
+        /* got_dirsym: */
+        if (dirsym === '.' || dirsym === 's') {
+            game.u.dx = game.u.dy = game.u.dz = 0;
+            /* src/cmd.c:4116 — getdir's tail runs confdir(FALSE) for every
+               !u.dz result, INCLUDING the self-direction: while confused the
+               rn2(5) inside u_maybe_impaired still draws here. */
+            confdir(false);
+            return true;
+        }
+        is_mov = movecmd(dirsym, MV_ANY);
+        if (!is_mov && !game.u.dz) {
+            /* src/cmd.c:4095-4110 — a key in quitchars (" \r\n\033",
+               src/decl.c:96) cancels quietly; anything else gets the
+               cmdassist help panel (iflags.cmdassist is opt_out, default On)
+               or the "What a strange direction!" pline when assistance is
+               off. '?' (Cmd.spkeys[NHKF_GETDIR_HELP]) asks for the panel
+               without the cmdassist line and then retries the prompt. */
+            if (!"\0 \r\n\x1b".includes(dirsym)) {
+                let did_help = false;
+                const help_requested = (dirsym === '?');
+                if (help_requested || boolean_option('cmdassist')) {
+                    did_help = await help_dir((s && s[0] !== '^') ? dirsym : '\0',
+                                              help_requested
+                                                  ? null
+                                                  : "Invalid direction key!");
+                    if (help_requested)
+                        continue; /* goto retry */
+                }
+                if (!did_help)
+                    await pline("What a strange direction!");
+            }
+            return false;
+        }
+        break;
     }
     if (is_mov && !dxdy_moveok()) {
         await You_cant('orient yourself that direction.');

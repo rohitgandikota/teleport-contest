@@ -7304,3 +7304,41 @@ MM_NOMSG and initedog(mon, TRUE); "Lights appear all around you!" when any
 is spotted, "Tiny lights sparkle in the air momentarily." when the species
 is gone; and the uncursed scroll's lightdamage(sobj, TRUE, 5) is the real
 zap.c call (a gremlin hero takes rnd damage).
+
+## Milky and smoky potions: ghost_from_bottle, djinni_from_bottle, the worn stack
+
+potion.c:481 ghost_from_bottle() and potion.c:2815 djinni_from_bottle()
+are ported into potion.js, with potion.c:2796 mongrantswish() (the
+monster is removed first, its glyph kept on the map with
+tmp_at(DISP_ALWAYS, glyph) while makewish() prompts, then tmp_at(DISP_END)).
+The ghost: "This bottle turns out to be empty." when makemon fails, "As
+you open the bottle, something emerges." when blind, otherwise "an
+enormous ghost" (a random monster name when hallucinating), the verbose
+"You are frightened to death, and unable to move.", nomul(-3) with
+multi_reason "being frightened to death" and nomovemsg "You regain your
+composure.". The djinni's chance table is the C's (rn2(5), remapped for a
+blessed or cursed bottle) and its arms use verbalize(), tamedog(mtmp, 0,
+FALSE) for "Thank you for freeing me!" (which wields a weapon and draws),
+set_malign() for the peaceful and hostile arms, and mongone() after "It
+is about time!". apply.js had grown its own copy of djinni_from_bottle for
+the magic lamp; it now imports the potion.js one, since the copy used
+initedog() where the C tames through tamedog() and skipped the wish-time
+glyph. dodrink()'s worn-potion arm is the 5.0 rule: a worn stack of more
+than one is split with splitobj(otmp, 1) and the single potion cleared of
+its owornmask, a single worn potion goes through remove_worn_item().
+
+## '?' at the direction prompt shows the help and asks again
+
+cmd.c:3958 getdir(): an invalid key opens help_dir() with "cmdassist:
+Invalid direction key!" only when cmdassist is on, but '?'
+(Cmd.spkeys[NHKF_GETDIR_HELP]) is a help request: the panel comes without
+the cmdassist line and without the "(Suppress this message with
+!cmdassist in config file.)" footer, and getdir goes back to `retry:` and
+reads another direction. Ours showed the cmdassist form and returned
+failure (s58-12 step 266, a '?' at "In what direction?" for a throw).
+help_dir() also gets its key-hint arm: when the caller's prompt is a real
+one (not a '^' key hint) and the bad key is a letter or '[', it asks "Are
+you trying to use ^X as specified in the Guidebook?" with the command's
+description from pager.c dowhatdoes_core() (now a real function in
+pager.js that dowhatdoes() shares), wizard-only letters EFGIVW only in
+wizard mode. getdir(NULL), the common caller, passes sym 0 and skips it.

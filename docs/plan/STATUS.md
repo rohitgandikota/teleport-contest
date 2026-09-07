@@ -422,8 +422,14 @@ of light in full, with potion.c's impact_arti_light() (NOTES "litroom() in
 full: darkness, artifact lights, gremlins, the Rogue room"); read.js is
 down to 10 notes. `--seed 57` passed 40/40 without changes.
 
-Next: triage `--seed 58`, then continue the
-note_unported list (potion.js 13, pray.js 13, fountain.js 12, read.js 10). tools/jsplay.mjs has a new
+Forty-seventh round: `--seed 58` had one failure, the '?' help request
+at the direction prompt (NOTES "'?' at the direction prompt shows the help
+and asks again"); also ported ghost_from_bottle, djinni_from_bottle,
+mongrantswish and dodrink's worn-stack arm (NOTES "Milky and smoky
+potions: ghost_from_bottle, djinni_from_bottle, the worn stack").
+
+Next: triage `--seed 59`, then continue the
+note_unported list (pray.js 13, fountain.js 12, potion.js 10, read.js 10). tools/jsplay.mjs has a new
 `--aeval "<await expr>"` flag with the hack.js namespace as `h` for state
 probes. The census script is `tally.sh` in the scratchpad (diverge.mjs
 --screens over tools/gen-sessions/fuzz/*.session.json, 4 at a time).

@@ -2150,7 +2150,7 @@ export async function rhack(key) {
            the history, both queues are dropped, and only context.move and
            multi are cleared; reset_cmd_vars() does NOT run, so a rush or
            run prefix typed just before survives into the next command */
-        await pline_nohistory(`Unknown command '${ch}'.`);
+        await pline_nohistory(`Unknown command '${visctrl(ch)}'.`);
         cmdq_clear(CQ_CANNED);
         cmdq_clear(CQ_REPEAT);
         /* didn't move */
@@ -3952,18 +3952,73 @@ export async function paranoid_query(be_paranoid, prompt) {
     return (await paranoid_ynq(be_paranoid, prompt, false)) === 'y';
 }
 
-// src/cmd.c cmd_from_func(), the key a command is bound to.  The JS
+// src/cmd.c:3083 cmd_from_func(), the key a command is bound to.  The JS
 // dispatch is by command name, so this takes the name: a BIND line in the
-// rc file wins, else the command's default key.
+// rc file wins, else the lowest key of the live Cmd.commands[] table
+// (cmdbind_table(): number_pad rebinding and the direction keys included).
 export function cmd_from_func(name) {
     for (const [key, bound] of Object.entries(game.rc_key_bindings || {}))
         if (bound === name)
             return key;
-    const e = extcmdlist.find((x) => x.ef_txt === name);
-    if (e && e.key)
-        return String.fromCharCode(e.key);
-    /* movement commands get their keys from Cmd.move[] in reset_commands() */
-    return MOVE_DEFAULT_KEYS[name] ?? '\0';
+    const binds = cmdbind_table();
+    for (let i = 0; i < 256; ++i) {
+        const e = binds.get(i);
+        if (e && e.ef_txt === name)
+            return String.fromCharCode(i);
+    }
+    return '\0';
+}
+
+// src/cmd.c:3106 cmdname_from_func() — the command name for a function; as
+// with cmd_from_func() the JS dispatch is by name, so 'name' is the
+// extcmdlist ef_txt.  fullname false: just enough to disambiguate.
+export function cmdname_from_func(name, fullname) {
+    let cmdptr = null;
+    let res = null;
+    let outbuf;
+
+    for (const extcmd of extcmdlist)
+        if (extcmd.ef_txt === name) {
+            cmdptr = extcmd;
+            res = cmdptr.ef_txt;
+            break;
+        }
+
+    if (!res) {
+        /* make sure output buffer doesn't contain junk or stale data;
+           return Null below */
+        outbuf = '';
+    } else if (fullname) {
+        /* easy; the entire command name */
+        res = outbuf = res;
+    } else {
+        let matchcmd = 0, i = 0;
+        let len = 0;
+        const maxlen = res.length;
+
+        /* find the shortest leading substring which is unambiguous */
+        do {
+            if (++len >= maxlen)
+                break;
+            for (i = matchcmd; i < extcmdlist.length; ++i) {
+                const extcmd = extcmdlist[i];
+
+                if (extcmd === cmdptr)
+                    continue;
+                if ((extcmd.flags & EXTCMD_FLAGS.CMD_NOT_AVAILABLE) !== 0
+                    || ((extcmd.flags & EXTCMD_FLAGS.WIZMODECMD) !== 0
+                        && !game.wizard))
+                    continue;
+                if (res.slice(0, len) === extcmd.ef_txt.slice(0, len)) {
+                    matchcmd = i;
+                    break;
+                }
+            }
+        } while (i < extcmdlist.length);
+        outbuf = res.slice(0, len); /* copynchars(outbuf, res, len) */
+        res = outbuf;
+    }
+    return res;
 }
 
 /* src/cmd.c move_funcs[][]: the movement command names by direction and
@@ -3980,14 +4035,6 @@ const move_funcs = [
     ['down', 'down', 'down'],
     ['up', 'up', 'up'],
 ];
-/* src/cmd.c reset_commands() binds Cmd.move[] ("hjklyubn", or the number
-   pad digits) and Cmd.rush/run to the movement commands; this port keeps
-   the default vi-key layout, in sdir order */
-const MOVE_DEFAULT_KEYS = { movewest: 'h', movenorthwest: 'y', movenorth: 'k',
-                            movenortheast: 'u', moveeast: 'l',
-                            movesoutheast: 'n', movesouth: 'j',
-                            movesouthwest: 'b' };
-
 // src/cmd.c:3343 reset_commands() — the Cmd state derived from the
 // number_pad setting. Key lookups in this port (cmdbind_table(), movecmd())
 // read game.iflags.num_pad and game.Cmd live instead of a rebound

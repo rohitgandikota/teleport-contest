@@ -1253,6 +1253,11 @@ export const WC_POPUP_DIALOG = 0x01000000;
 export const WC_SCROLL_AMOUNT = 0x02000000;
 export const WC_EIGHT_BIT_IN = 0x04000000;
 export const WC_PERM_INVENT = 0x08000000;
+// include/wintype.h:181 enum inv_modes and :194 the 'perminv_mode' settings
+export const InvNormal = 1, InvShowGold = 2, InvSparse = 4, InvInUse = 8;
+export const InvOptNone = 0, InvOptOn = InvNormal, InvOptFull = InvShowGold,
+             InvOptOn_grid = InvNormal | InvSparse,
+             InvOptFull_grid = InvShowGold | InvSparse, InvOptInUse = InvInUse;
 export const WC_MAP_MODE = 0x10000000;
 export const WC_WINDOWCOLORS = 0x20000000;
 export const WC_PLAYER_SELECTION = 0x40000000;

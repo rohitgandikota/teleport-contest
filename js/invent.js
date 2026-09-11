@@ -2995,18 +2995,35 @@ async function display_inuse_inventory(objs, altLabel) {
     }
 }
 
-// src/invent.c:2963 dispinv_with_action().
+// src/invent.c:2964 dispinv_with_action() — display a subset of inventory
+// (the callers pass the objects rather than the C's invlet string) and, in
+// menu mode, let the player pick one for a context-sensitive item action.
 async function dispinv_with_action(objs, useInuseOrdering = false,
                                    altLabel = null) {
     const len = objs?.length ?? 0;
     const menumode = len !== 1 || !!game.iflags?.menu_requested;
+    const save_force_invmenu = game.iflags?.force_invmenu;
+
+    (game.iflags ||= {}).force_invmenu = false;
+    let c = 0;
     if (!menumode) {
+        /* display_inventory(lets, FALSE) with a single letter: the one line */
         const o = objs[0];
         await pline(`${o.invlet} - ${doname(o)}.`);
     } else if (useInuseOrdering) {
+        /* flags.sortloot = 'i' and the alternate "Accessories" label */
         await display_inuse_inventory(objs, altLabel);
     } else {
-        note_unported_invent('dispinv_with_action:menu');
+        const lets = (objs || []).map(o => o.invlet).join('');
+        c = await display_inventory(lets, menumode);
+    }
+    game.iflags.force_invmenu = save_force_invmenu;
+
+    if (c && c !== '\x1b') {
+        for (const otmp of [...(game.invent || [])]) {
+            if (otmp.invlet === c)
+                return await itemactions(otmp);
+        }
     }
     return ECMD_OK;
 }

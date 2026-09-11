@@ -560,9 +560,22 @@ magic trap fates") and s75-19, the missing domagictrap() fates 12, 15,
 19 and 20 with the hallucination variants of 14 and 17; s75-20 and
 s75-29 are the recording-timezone class.
 
-Next: triage `--seed 76`, then continue the
-note_unported list (invent.js dispinv, cmd.js extended commands through
-the extcmdlist table, options.js handlers). tools/jsplay.mjs has a new
+Sixty-fourth round: the options.c handlers that were still notes
+(align_message/align_status, menu_headings, paranoid_confirmation,
+perminv_mode, pickup_burden, sortloot, whatis_filter, versinfo,
+windowborders, autopickup exceptions, message types) with their
+consumers: the MSGTYPE gate in pline() and Norep() through
+PLINE_NOREPEAT, and check_autopickup_exceptions() in autopick_testobj()
+(NOTES "The remaining option handlers, message types and autopickup
+exceptions"); dispinv_with_action()'s menu branch; `--seed 76` had
+s76-09 (a number_pad game: "Unknown command" goes through visctrl(),
+and cmd_from_func() now scans the live command table so getpos's
+"use '4', '2', '8', '6'" note follows number_pad).
+
+Next: triage `--seed 77`, then continue the
+note_unported list (cmd.js extended commands through the extcmdlist
+table, the remaining options.js notes, steal.js, priest.js, mthrowu.js,
+mkroom.js, insight.js). tools/jsplay.mjs has a new
 `--aeval "<await expr>"` flag with the hack.js namespace as `h` for state
 probes. The census script is `tally.sh` in the scratchpad (diverge.mjs
 --screens over tools/gen-sessions/fuzz/*.session.json, 4 at a time).

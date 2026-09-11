@@ -4627,7 +4627,8 @@ undead damage doubling of hitmu, like s30-13 and s46-25), seed 68 added
 s68-03 (^X nighttime), seed 72 added s72-10 (ours prints "It is
 nighttime." where the C's local hour did not) and s72-21 (the reverse),
 seed 73 added s73-17 (the C's "It is nighttime."), and seed 75 added
-s75-20 (midnight hour vs nighttime) and s75-29 (the C's nighttime line).
+s75-20 (midnight hour vs nighttime), s75-29 and s77-26 (the C's
+nighttime line).
 
 A related census-only artifact: s67-00 ends while the C blocks at wizard
 mode's "Dump core? [ynq] (q)" after #quit. Every recorded screen matches,
@@ -7977,3 +7978,52 @@ HInvis with FROMOUTSIDE and uses self_invis_message(), pm_invisible()
 and the "a little more obvious/hidden" line; the roar goes through
 incr_itimeout(HDeaf) and the flash reads Blind() rather than the old
 ublind field.
+
+## The remaining option handlers, message types and autopickup exceptions
+
+options.js now carries every handler the C's `O` menu can reach that was
+still a note: handler_align_misc() (align_message/align_status),
+handler_menu_headings() through a ported coloratt.c query_color_attr()
+and wintty's adjust_menu_promptstyle(), handler_paranoid_confirmation()
+(the paranoia[] table gained the C's explain column, and the 'm' prefix
+text is rewritten through cmd_from_func()/cmdname_from_func() as the C
+does), handler_perminv_mode() over the perminv_modes[][3] table (rows 5
+and 6 are NULL because TTY_PERM_INVENT is not defined in the reference
+build, and can_set_perm_invent() answers FALSE for the same reason),
+handler_pickup_burden(), handler_sortloot(), handler_whatis_filter(),
+handler_versinfo() with optfn_versinfo()'s "changed to" line,
+handler_windowborders(), handler_autopickup_exception() and
+handler_msgtype(). The inv_modes enum is in const.js.
+
+Message types live on gp.plinemsg_types (newest first, as the C prepends)
+with msgtype_add()/free_one_msgtype()/msgtype_type()/msgtype_count();
+pline() runs the C's vpline() gate: OVERRIDE_MSGTYPE skips it, NOSHOW
+drops the line, NOREP drops it when it equals gp.prevmsg (the previous
+individual message), STOP forces --More-- after it, and URGENT_MESSAGE
+only bypasses the first two. Norep() is now pline() with PLINE_NOREPEAT
+in game.pline_flags, which is what the C does, so a "show" pattern lets
+a Norep'd line repeat. display.js reaches msgtype_type() through a
+dynamic import: a static import back into options.js reordered module
+evaluation and tripped the tty tables' ATR_NONE before const.js had
+initialised it.
+
+Autopickup exceptions live on game.apelist (newest first) through
+add_autopickup_exception() (the three sscanf forms are mirrored by
+scan_ape(), including the quirk that a `">foo" #x` line matches the
+third form with the '>' kept in the pattern) and
+remove_autopickup_exception(); pickup.js check_autopickup_exceptions()
+matches makesingular(doname(obj)) against them and autopick_testobj()
+takes the exception's grab flag over pickup_types.
+
+s76-09 was a number_pad game. Its RET at the command prompt is
+"Unknown command '^J'." in the C (the pty's ICRNL turns CR into LF
+before the game sees it, input.js already mirrors that) and rhack()
+prints the key through visctrl(); ours printed the raw newline. The same
+game's getpos error read "use '4', '2', '8', '6' or '.'": the C builds
+it from cmd_from_func(do_move_west) etc., which scan Cmd.commands[], so
+cmd_from_func() now scans cmdbind_table() (number_pad rebinding and the
+direction keys included) instead of a fixed vi-key map.
+
+dispinv_with_action() (invent.c:2964) shows the letters through
+display_inventory() with force_invmenu off and, when the player picks a
+letter from that menu, runs itemactions() on the object.

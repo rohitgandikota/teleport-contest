@@ -2,6 +2,7 @@
 // C ref: display.c — newsym, show_glyph, docrt, cls, flush_screen.
 
 import { PLNMSG_UNKNOWN, MAX_TYPE } from './const.js';
+import { MSGTYP_NORMAL, MSGTYP_NOREP, MSGTYP_NOSHOW, MSGTYP_STOP, PLINE_NOREPEAT, OVERRIDE_MSGTYPE, URGENT_MESSAGE } from './const.js';
 import { DISP_BEAM, DISP_ALL, DISP_TETHER, DISP_FLASH, DISP_ALWAYS,
          DISP_CHANGE, DISP_END, DISP_FREEMEM, BACKTRACK, HI_ZAP,
          NUM_ZAP } from './const.js';
@@ -2506,6 +2507,21 @@ export async function pline(msg) {
     await notice_all_mons_flush();
     msg = message_with_location(msg);
     if (!msg) return;
+    let msgtyp = MSGTYP_NORMAL;
+
+    /* src/pline.c:244 vpline(): the MSGTYPE gate, before the vision
+       recalculation and the screen flush */
+    const no_repeat = ((game.pline_flags | 0) & PLINE_NOREPEAT) !== 0;
+    if (((game.pline_flags | 0) & OVERRIDE_MSGTYPE) === 0) {
+        /* options.js imports this module; a static import back would put
+           the tty tables ahead of const.js in the load order */
+        const { msgtype_type } = await import('./options.js');
+        msgtyp = msgtype_type(msg, no_repeat);
+        if (((game.pline_flags | 0) & URGENT_MESSAGE) === 0
+            && (msgtyp === MSGTYP_NOSHOW
+                || (msgtyp === MSGTYP_NOREP && msg === (game._prevmsg || ''))))
+            return; /* pline_done */
+    }
     await prepare_pline();
 
     /* src/pline.c vpline() -> putstr(WIN_MESSAGE) -> tty_putstr() ->
@@ -2519,6 +2535,8 @@ export async function pline(msg) {
        the tty has accepted it. Norep compares against this, not against the
        combined top line that update_topl may have built. */
     game._prevmsg = msg;
+    if (msgtyp === MSGTYP_STOP)
+        await display_nhwindow_message(); /* --more-- */
 }
 
 // custompline(SUPPRESS_HISTORY | OVERRIDE_MSGTYPE | NO_CURS_ON_U).
@@ -2560,6 +2578,10 @@ export async function pline_nohistory_no_cursor(msg) {
 export async function urgent_pline(msg) {
     msg = message_with_location(msg);
     if (!msg) return;
+    /* custompline(URGENT_MESSAGE, ...): the message type still applies,
+       though URGENT_MESSAGE keeps NOSHOW and NOREP from suppressing it */
+    const { msgtype_type } = await import('./options.js');
+    const msgtyp = msgtype_type(msg, false);
     await prepare_pline();
     if (game._win_stop) {
         tty_clear_nhwindow_message(game._topl_cury || 0);
@@ -2570,6 +2592,8 @@ export async function urgent_pline(msg) {
     game._win_nostop = false; /* tty_putstr: one message only */
     (game.iflags ||= {}).last_msg = PLNMSG_UNKNOWN;
     game._prevmsg = msg;
+    if (msgtyp === MSGTYP_STOP)
+        await display_nhwindow_message(); /* --more-- */
 }
 
 // win/tty/topl.c more() — draw the suffix, block for a key, clear the top line.

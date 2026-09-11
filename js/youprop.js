@@ -45,9 +45,13 @@ export const Deaf = () => !!game.u?.intrinsic?.HDeaf
 
 // include/youprop.h:103 Blind. An eyeless polymorph form contributes the
 // FROMFORM half of HBlinded in C, alongside timed and equipment blindness.
-export const Blind = () => !!game.u?.ublind
-                         || !!(Upolyd(game.u) && game.youmonst?.data
-                               && !haseyes(game.youmonst.data));
+// include/youprop.h:103 Blind — ((HBlinded || EBlinded) && !BBlinded). Read
+// from the property words, not from the cached u.ublind: nh_timeout() tests
+// Blind right after decrementing HBlinded to zero, and the C sees no
+// blindness there (so a rush is not interrupted by "You can see again.").
+// An eyeless polymorph form carries the FROMFORM bit (set_uasmon()).
+export const Blind = () => !game.u?.blocked?.BLINDED
+    && (!!game.u?.intrinsic?.HBlinded || Blindfolded());
 
 // include/youprop.h:92 Blinded, :96 Blindfolded, :97 Blindfolded_only.
 export const Blinded = () => !game.u?.blocked?.BLINDED
@@ -107,6 +111,14 @@ export const Invisible = () => Invis() && !See_invisible();
 // include/youprop.h:205 Displaced
 export const Displaced = () => !!(game.u?.intrinsic?.HDisplaced
                                   || game.u?.uprops?.DISPLACED);
+
+// include/youprop.h:143 Sleepy — (HSleepy || ESleepy).
+export const Sleepy = () => !!(game.u?.intrinsic?.HSleepy
+                               || game.u?.uprops?.SLEEPY);
+
+// include/youprop.h:170 Warn_of_mon — (HWarn_of_mon || EWarn_of_mon).
+export const Warn_of_mon = () => !!(game.u?.intrinsic?.HWarn_of_mon
+                                    || game.u?.uprops?.WARN_OF_MON);
 
 // include/youprop.h:240 Levitation — ((HLevitation || ELevitation) && !BLevitation).
 export const Levitation = () =>

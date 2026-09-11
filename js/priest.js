@@ -5,7 +5,7 @@
 // anger are implemented here.
 
 import { ATTKS } from './monst_data.js';
-import { BZ_OFS_AD } from './const.js';
+import { BZ_OFS_AD, BZ_M_SPELL } from './const.js';
 import { Amask2align } from './const.js';
 import { IS_DOOR } from './const.js';
 import { u_at } from './const.js';
@@ -738,9 +738,6 @@ export function temple_occupied(array) {
             return ch;
     return '';
 }
-
-/* include/hack.h:1486 BZ_M_SPELL() */
-const BZ_M_SPELL = (bztyp) => (-10 - (bztyp));
 
 // src/priest.c ghod_hitsu(); the temple's god retaliates against a hero
 // who hits its priest

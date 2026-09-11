@@ -775,7 +775,7 @@ function cmp_coord_distu(c1, c2) {
 }
 
 // src/getpos.c:561 dxdy_to_dist_descr()
-function dxdy_to_dist_descr(dx, dy, fulldir) {
+export function dxdy_to_dist_descr(dx, dy, fulldir) {
     let dst;
     if (!dx && !dy)
         return 'here';

@@ -7687,3 +7687,89 @@ s68-12: an Archeologist reading a scroll label on pickup counts as
 becoming literate, and the first time logs "became literate by
 deciphering a scroll label" (invent.c:1047, LL_CONDUCT), which shows in
 the dumplog and the ^X achievements.
+
+## timeout.js: every nh_timeout() case, slip_or_trip(), burn_object(), storms
+
+nh_timeout() (timeout.c:588) now has the C's whole property switch. The
+eleven cases that used to fall into a note were INVIS ("You are no longer
+invisible." / "can no longer see through yourself."), SLEEPY (the yawn at
+four turns, then "You fall asleep." with fall_asleep(-rnd(20)) and the
+next nap rnd(100) later, or a rnd(100) deferral while unconscious or
+sleep resistant), LEVITATION (float_down(I_SPECIAL | TIMEOUT), ending a
+one-turn Flying first), FLYING ("You land." and spoteffects), FIRE_RES
+and WWALKING (the lava life-saving grants ending), DISPLACED
+(toggle_displacement), WARN_OF_MON, PASSES_WALLS ("You feel hemmed in
+again." via pray.c stuck_in_wall(), now exported from pray.js, or "You're
+back to your normal self again."), MAGICAL_BREATHING (the cough in a gas
+cloud) and PROT_FROM_SHAPE_CHANGERS (restartcham). The most important of
+these for the fuzz corpus was LEVITATION: a potion of levitation timing
+out never called float_down() before, so the hero stayed aloft with no
+"You float gently to the floor." SEE_INVIS gained set_mimic_blocking().
+CONFUSION, STUNNED, HALLUC and BLINDED use set_itimeout(…, 1) and the
+stop_occupation() the C has when the condition really ended. Before the
+loop, the polymorph countdown `u.mtimedone && !--u.mtimedone` (Unchanging
+re-rolls rnd(100*mlevel+1), a were form calls you_unwere(), anything else
+rehumanize()) and `u.ugallop` ("<Steed> stops galloping.") were missing
+entirely; so were levitation_dialogue() ("You float slightly lower.",
+"You wobble unsteadily in the air." or "over the water"), phaze_dialogue(),
+region_dialogue() and sleep_dialogue(), all in the C's order.
+youprop.js gained Sleepy() and Warn_of_mon().
+
+slip_or_trip() (timeout.c:1222) is the C: tripping over a cockatrice
+corpse barefoot sets the killer "tripping over a cockatrice corpse" and
+instapetrify()s; the ice line is "<Steed> slips on the ice." when
+mounted; the mounted rider loses balance and dismount_steed(DISMOUNT_FELL)s
+unless the saddle is cursed, with the !ice_only || !rn2(3) gate; the
+!rn2(10 + DEX) hurtle uses confdir(TRUE) except for grid bugs and skips a
+hurtle back to the square the move started on; and the mounted rn2(4)
+stirrup/reins/saddle-horn/slide messages dismount.
+
+burn_object() (timeout.c:1383) is rewritten in the C's shape: the
+timeout-while-away branch frees a burnt-out candle or oil potion
+wherever it is and maybe_unhide_at()s a monster standing on it, the
+live branch takes x,y from get_obj_location(), the owner prefix from
+Shk_Your() ("Your ", "Izchak's ") so an unpaid lamp is named by its
+owner, and monster-carried lights (OBJ_MINVENT) get the same lines the
+hero's do, with lantern_message() ("<Mon>'s lantern is getting dim.",
+and "Batteries have not been invented yet." when hallucinating) and
+see_lamp_flicker() as helpers; the unexpected-object default is the
+C's impossible(). do_storms() (timeout.c:1847) fires the lightning as
+buzz(BZ_M_SPELL(BZ_OFS_AD(AD_ELEC)), 8, …) with buzzer cleared;
+BZ_M_SPELL moved to const.js (hack.h:1486) and priest.js imports it.
+timeout.js has no note_unported sites left.
+
+## ^X while engulfed: "You are engulfed by the dust vortex (3)."
+
+s70-08 read ^X from inside a dust vortex and the C's attributes ran to
+three pages where ours had two: status_enlightenment() (insight.c:1100)
+names the engulfer, "swallowed by" when it digests, "engulfed by"
+otherwise, adds " and are being digested" (or " and got totally
+digested" in a final dump with the swallow timer at 0) for an AD_DGST
+engulfer, and in wizard mode appends the remaining swallow time
+"(u.uswldtim)". heldmon is computed once for both the engulfed and the
+held-by lines, with the C's has_mgivenname() test for a monster named
+"it". The held-by distance now comes from getpos.c dxdy_to_dist_descr()
+(exported from getpos.js; the insight-only full_direction() copy is
+gone), and the C's "stuck to <steed>'s saddle" line for a cursed saddle
+is ported, with the C's local Riding (false for a riding-accident death
+dump) and steedname computed at the top of the function as insight.c:946
+does.
+
+## Blind() reads the property words, and why a rush survives regaining sight
+
+The census caught s14-36 after the timeout.js round: a rush ("B") while
+blind ran on for ten squares in the C but stopped after seven in ours. The
+C's nh_timeout() BLINDED case is `was_blind = !!Blind; set_itimeout(
+&HBlinded, 1); make_blinded(0, TRUE); if (was_blind && !Blind)
+stop_occupation();`, and Blind is the macro `((HBlinded || EBlinded) &&
+!BBlinded)` (youprop.h:103). The loop has already decremented HBlinded to
+zero when the case runs, so was_blind is false unless a blindfold or a
+source bit (FROMOUTSIDE, FROMFORM) is set, and the rush is never
+interrupted by "You can see again." Ours' Blind() returned the cached
+u.ublind flag that make_blinded() maintains, so was_blind was true and
+stop_occupation() ended the rush. Blind() is now the macro: `!blocked.
+BLINDED && (HBlinded || Blindfolded())`; eyeless polymorph forms are
+covered by the FROMFORM bit set_uasmon() sets. The one place that used
+the cache as a stand-in, lock.c chest_shatter_msg()'s temporary
+HBlinded=1 for singular(), now sets the property words like the C.
+u.ublind stays as a cache for the direct reads that remain.

@@ -497,8 +497,26 @@ shkgone()) and fixed toss_wsegs(), whose guard never removed a segment
 square (NOTES "A discarded long worm takes its tail with it"; "Seed 68: the
 first-move death line, W-tower disorientation, scroll labels").
 
-Next: triage `--seed 69`, then continue the
-note_unported list (timeout.js 9, do.js 9, dothrow.js 6, spell.js 8). tools/jsplay.mjs has a new
+Fifty-sixth round: `--seed 69` passed 40/40. timeout.js is complete
+(NOTES "timeout.js: every nh_timeout() case, slip_or_trip(),
+burn_object(), storms"): the eleven missing nh_timeout() cases
+(LEVITATION's float_down() above all), the polymorph and gallop
+countdowns, the four dialogues, slip_or_trip()'s petrifying corpse, ice
+and mounted arms, burn_object() in the C's shape with owner prefixes and
+monster-carried lights, and the storm lightning buzz().
+
+Fifty-seventh round: `--seed 70` had one failure, s70-08, the ^X
+"You are engulfed by the dust vortex (3)." status line (NOTES "^X while
+engulfed"); the held-by line uses getpos.c dxdy_to_dist_descr() and the
+cursed-saddle line is ported. The timeout.js round also needed vobj_at
+imported (score.sh caught it: seed0014 threw at the first fumble), and the
+census caught s14-36: Blind() is now the youprop.h macro over the property
+words rather than the cached u.ublind, because the C's BLINDED timeout case
+sees no blindness after the decrement and never interrupts a rush (NOTES
+"Blind() reads the property words").
+
+Next: triage `--seed 71`, then continue the
+note_unported list (do.js 9, dothrow.js 6, spell.js 8). tools/jsplay.mjs has a new
 `--aeval "<await expr>"` flag with the hack.js namespace as `h` for state
 probes. The census script is `tally.sh` in the scratchpad (diverge.mjs
 --screens over tools/gen-sessions/fuzz/*.session.json, 4 at a time).

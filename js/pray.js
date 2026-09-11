@@ -202,7 +202,7 @@ function blocked_boulder(dx, dy) {
 
 // src/pray.c:180 stuck_in_wall() — every neighbouring square is rock, wall
 // or an immovable boulder
-function stuck_in_wall() {
+export function stuck_in_wall() {
     const u = game.u;
     let count = 0;
     if (Passes_walls())

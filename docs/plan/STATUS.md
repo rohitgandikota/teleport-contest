@@ -584,11 +584,16 @@ m_break_boulder()/m_move_aggress()/check_special_room(), fill_zoo()'s
 maze throne scan, mkswamp()'s del_engr_at() and do_mkroom()'s
 impossible().
 
-Next: triage `--seed 78`, then the insight.c round
-(attributes_enlightenment() in full, ustatusline(), in_trouble() and
-can_pray() shared with pray.js), then the remaining note_unported list
-(cmd.js extended commands, pager.js, objnam.js, muse.js, mklev.js,
-artifact.js). tools/jsplay.mjs has a new
+Sixty-sixth round: `--seed 78` had s78-09 and s78-30, both the
+recording-timezone class (the new-moon startup warning, and a shifted
+vampire bat's midnight() damage roll); looking at the second one found
+the inline AD_LEGS arm of hitmu() returning out of hitmu() for a scratched
+boot, which skipped the knockback rolls; mhitm_ad_legs() is now a real
+uhitm.js function. The insight.c round is done (NOTES "insight.c in full:
+attributes, the status line, and prayer state shared with pray.js").
+
+Next: triage `--seed 79`, then the remaining note_unported list (cmd.js
+extended commands, pager.js, objnam.js, muse.js, mklev.js, artifact.js). tools/jsplay.mjs has a new
 `--aeval "<await expr>"` flag with the hack.js namespace as `h` for state
 probes. The census script is `tally.sh` in the scratchpad (diverge.mjs
 --screens over tools/gen-sessions/fuzz/*.session.json, 4 at a time).

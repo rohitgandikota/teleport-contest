@@ -4628,7 +4628,10 @@ s68-03 (^X nighttime), seed 72 added s72-10 (ours prints "It is
 nighttime." where the C's local hour did not) and s72-21 (the reverse),
 seed 73 added s73-17 (the C's "It is nighttime."), and seed 75 added
 s75-20 (midnight hour vs nighttime), s75-29 and s77-26 (the C's
-nighttime line).
+nighttime line), and s78-09 (a 20261109004511 recording: ours prints the
+new-moon startup warning from the 9th, the C's shifted clock read the 8th),
+and s78-30 (a 20261114004959 recording: a shifted vampire bat's midnight()
+extra damage roll at mhitu.c:1189, like s30-13).
 
 A related census-only artifact: s67-00 ends while the C blocks at wizard
 mode's "Dump core? [ynq] (q)" after #quit. Every recorded screen matches,
@@ -8071,3 +8074,46 @@ throne before placing one (a labeled break stands in for the C's goto
 so tx/ty keep the found square), mkswamp() deletes the engraving under a
 new pool, and do_mkroom() reports an unknown room type through
 impossible().
+
+## insight.c in full: attributes, the status line, and prayer state shared with pray.js
+
+attributes_enlightenment() (insight.c:1487) is now the C's whole function
+rather than the common subset plus a note for any set property: the Hand
+of Elbereth titles, Invulnerable, the temporary acid/stone resistance
+prefix through a ported eat.c temp_resist(), item_resistance_message()
+in its C form over zap.c u_adtyp_resistance_obj()/adtyp_to_prop()/
+item_what() (all three ported into zap.js), uedibility, the blocked
+blindness/invisibility/clairvoyance lines with from_what()'s negative
+index arm (the Eyes of the Overworld, a mummy wrapping, a cornuthaum), the
+PermaBlind variants of "see invisible", Warn_of_mon's three sources from
+context.warntype, Undead_warning, Detect_monsters with its wizard timeout,
+u.umconf, Adornment, Aggravate_monster, Conflict, the blocked levitation
+and flight lines (the blocked word is zeroed around the test as the C
+does), clingers, walking_on_water(), the to-hit/damage/defense lines
+through enlght_combatinc() (with the Monk suit penalty text),
+enlght_halfdmg(), Half_gas_damage, the spellcasting armor line off
+spellid(0), Unchanging/Polymorph/Polymorph_control, the vampshifted
+polymorph form, egg laying, lycanthropy, Hate_silver, Fixed_abil and the
+mortality tail through N_times()/ordin(). youprop.js gained the accessors
+the C macros need (Invulnerable, PermaBlind, Telepat, Blnd_resist,
+Undead_warning, Clairvoyant, Adornment, Aggravate_monster,
+Half_spell_damage, Protection, Polymorph, Lifesaved). The intrinsic word
+for blindness resistance is HBlnd_resist everywhere now; polyself.js had
+been setting HBlnd_resistance while timeout.js aged HBlnd_resist.
+
+The "you can safely pray" line uses pray.js's can_pray(FALSE) and
+in_trouble() (both exported now, together with u_gname()) instead of the
+approximations insight.js carried; can_pray() gained the C's demon
+repugnance arm and the undead turning arm (the neutral case's rn2(10)),
+and returns p_type == 3 && !Inhell when not actually praying, which the
+old port got wrong (it always answered TRUE).
+
+ustatusline() (the "Status of <name>" line from farlooking at yourself)
+is the C's: illness by type, nausea, the sticky-goop blindness suffix,
+injured leg(s), slippery fingers, "disguised", "invisible", the engulfer
+or holder, a gas cloud, and the polymorphed level and hit points.
+
+mhitm_ad_legs() (uhitm.c:4425) is a function again: ours had the
+hero-target arm inline in hitmu() with `return M_ATTK_HIT` for the
+scratched-boot case, which left hitmu() before mhitm_knockback()'s two
+unconditional rolls.

@@ -190,6 +190,10 @@ import { DIED } from './const.js';
 import { CORR } from './const.js';
 import { W_ARMU } from './const.js';
 import { W_ARMC } from './const.js';
+import { W_ARMF, W_TOOL, W_RINGL } from './const.js';
+import { cloak_simple_name, helm_simple_name } from './do_wear.js';
+import { suit_simple_name, shirt_simple_name, gloves_simple_name, boots_simple_name, shield_simple_name } from './objnam.js';
+import { simpleonames } from './objnam.js';
 import { IS_FOUNTAIN } from './const.js';
 import { In_mines } from './const.js';
 import { Is_rogue_level } from './const.js';
@@ -6256,6 +6260,93 @@ export async function mon_spell_hits_spot(caster, adtyp, x, y) {
 
         await zap_over_floor(x, y, zapdmgtyp, true);
     } /* else impossible("Unsupported damage type (%d) for mon_spell_hits_spot.") */
+}
+
+// src/zap.c:5655 adtyp_to_prop() — the resistance property (its uprops
+// word) for a damage type; 0 when there is none.
+export function adtyp_to_prop(dmgtyp) {
+    switch (dmgtyp) {
+    case ATTKS.AD_COLD:
+        return 'COLD_RES';
+    case ATTKS.AD_FIRE:
+        return 'FIRE_RES';
+    case ATTKS.AD_ELEC:
+        return 'SHOCK_RES';
+    case ATTKS.AD_ACID:
+        return 'ACID_RES';
+    case ATTKS.AD_DISN:
+        return 'DISINT_RES';
+    default:
+        break;
+    }
+    return 0; /* prop_types start at 1 */
+}
+
+// src/zap.c:5676 u_adtyp_resistance_obj() — the chance (percent) that the
+// hero's carried items resist a damage type.
+export function u_adtyp_resistance_obj(dmgtyp) {
+    const prop = adtyp_to_prop(dmgtyp);
+
+    if (!prop)
+        return 0;
+
+    /* worn or wielded armor, accessories and artifacts give 99% protection
+       to your items */
+    if (((game.u.uprops?.[prop] | 0) & (W_ARMOR | W_ACCESSORY | W_WEP | W_ART))
+        !== 0)
+        return 99;
+
+    /* a dwarvish cloak protects carried items from cold and fire */
+    if (game.u.uarmc && game.u.uarmc.otyp === ONAMES.DWARVISH_CLOAK
+        && (dmgtyp === ATTKS.AD_COLD || dmgtyp === ATTKS.AD_FIRE))
+        return 90;
+
+    return 0;
+}
+
+// src/zap.c:5722 item_what() — " by your <item>" naming the worn item that
+// protects the hero's inventory from a damage type (wizard mode only).
+export function item_what(dmgtyp) {
+    let what = null;
+    const prop = adtyp_to_prop(dmgtyp);
+    const xtrinsic = prop ? (game.u.uprops?.[prop] | 0) : 0;
+    let whatbuf = '';
+
+    if (game.wizard) {
+        if (!prop || !xtrinsic) {
+            ; /* 'what' stays Null */
+        } else if (xtrinsic & W_ARMC) {
+            what = cloak_simple_name(game.u.uarmc);
+        } else if (xtrinsic & W_ARM) {
+            what = suit_simple_name(game.u.uarm); /* "dragon {scales,mail}" */
+        } else if (xtrinsic & W_ARMU) {
+            what = shirt_simple_name(game.u.uarmu);
+        } else if (xtrinsic & W_ARMH) {
+            what = helm_simple_name(game.u.uarmh);
+        } else if (xtrinsic & W_ARMG) {
+            what = gloves_simple_name(game.u.uarmg);
+        } else if (xtrinsic & W_ARMF) {
+            what = boots_simple_name(game.u.uarmf);
+        } else if (xtrinsic & W_ARMS) {
+            what = shield_simple_name(game.u.uarms);
+        } else if (xtrinsic & (W_AMUL | W_TOOL)) {
+            what = simpleonames((xtrinsic & W_AMUL) ? game.u.uamul
+                                                    : game.u.ublindf);
+        } else if (xtrinsic & W_RING) {
+            if ((xtrinsic & W_RING) === W_RING) /* both */
+                what = 'rings';
+            else
+                what = simpleonames((xtrinsic & W_RINGL) ? game.u.uleft
+                                                         : game.u.uright);
+        } else if (xtrinsic & W_WEP) {
+            what = simpleonames(game.u.uwep);
+        }
+        /* the result will be used as a suffix for
+           "Your items {are,were} protected against <damage-type>" */
+        if (what) /* strlen(what) will be less than 30 */
+            whatbuf = ` by your ${what.slice(0, 40)}`;
+    }
+    return whatbuf;
 }
 
 // src/zap.c:5537 fracture_rock(), a boulder or statue turns into rocks.

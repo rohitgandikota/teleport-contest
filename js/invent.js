@@ -37,6 +37,7 @@ import { Has_contents } from './obj.js';
 import { get_obj_location } from './zap.js';
 import { unpunish } from './read.js';
 import { game } from './gstate.js';
+import { wc_supported } from './options.js';
 import { visible_region_at, reg_damg } from './region.js';
 import { read_engr_at } from './engrave.js';
 import { stairway_at, stairs_description } from './stairs.js';
@@ -3014,7 +3015,8 @@ async function dispinv_with_action(objs, useInuseOrdering = false,
         /* flags.sortloot = 'i' and the alternate "Accessories" label */
         await display_inuse_inventory(objs, altLabel);
     } else {
-        const lets = (objs || []).map(o => o.invlet).join('');
+        /* a Null 'lets' shows everything */
+        const lets = objs ? objs.map(o => o.invlet).join('') : null;
         c = await display_inventory(lets, menumode);
     }
     game.iflags.force_invmenu = save_force_invmenu;
@@ -3025,6 +3027,39 @@ async function dispinv_with_action(objs, useInuseOrdering = false,
                 return await itemactions(otmp);
         }
     }
+    return ECMD_OK;
+}
+
+// src/invent.c:3006 ddoinv() — the 'i' command.
+export async function ddoinv() {
+    return await dispinv_with_action(null, false, null);
+}
+
+// src/invent.c:2814 doperminv() — the #perminv command; the tty interface
+// has no WC_PERM_INVENT (TTY_PERM_INVENT is not defined in the reference
+// build).
+export async function doperminv() {
+    if (!wc_supported('perm_invent')) { /* windowprocs.wincap & WC_PERM_INVENT */
+        /* [TODO? perhaps this should be "Persistent inventory display is
+           not supported" but that could confuse users into thinking the
+           interface itself doesn't support it when the option is just
+           not compiled in] */
+        await pline("Persistent inventory display is not supported by 'tty'.");
+
+    } else if (!game.iflags?.perm_invent) {
+        await pline(
+     "Persistent inventory ('perm_invent' option) is not presently enabled.");
+
+    } else if (!(game.invent || []).length) {
+        await pline('Persistent inventory display is empty.');
+
+    } else {
+        /* the tty window port's update_inventory(1) would scroll the
+           persistent inventory window; there is none here */
+        update_inventory();
+
+    } /* iflags.perm_invent */
+
     return ECMD_OK;
 }
 

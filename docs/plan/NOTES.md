@@ -8117,3 +8117,151 @@ mhitm_ad_legs() (uhitm.c:4425) is a function again: ours had the
 hero-target arm inline in hitmu() with `return M_ATTK_HIT` for the
 scratched-boot case, which left hitmu() before mhitm_knockback()'s two
 unconditional rolls.
+
+## Every extended command with a function, and #lookaround
+
+execute_extcmd() (the JS twin of extcmdlist[].ef_funct) used to know only
+the commands that consume further input; every other `#name` fell to a
+note and did nothing while the C ran the command, which put the keys that
+followed out of step whenever the fuzz completed a name. It now dispatches
+every extcmdlist entry whose function exists in this port: a table keyed
+by ef_txt naming the module and function (dynamic imports, since cmd.js
+sits under nearly every module), plus the entries that already answer a
+key in rhack(). ddoinv() (dispinv_with_action(NULL), and
+dispinv_with_action() now passes a Null letter list through so the whole
+inventory shows), dotogglepickup() (options.js, the '@' arm moved out of
+rhack), doversion() (version.js; 'V' and #versionshort), doperminv() (the
+tty has no WC_PERM_INVENT), dotoggleoption() (#toggle without a BIND
+parameter just points at #optionsfull) and dolookaround() are ported.
+#lookaround describes the room the hero is in (or the rooms around a
+doorway) through selection_floodfill() with dolookaround_floodfill_findroom()
+and the u_have_seen_whole/bounds_selection() and
+u_can_see_whole_selection() tests, then every interesting location in
+view through do_screen_description(); selvar.js gained selection_free(),
+selection_is_irregular() and selection_size_description(). Still notes:
+#therecmdmenu (the there_cmd_menu family) and the wizard-mode wiz_*
+commands, #saveoptions, #suspend, #bugreport.
+
+## Seed 79: bow bonus, buried grave goods, and monsters passing iron bars
+
+s79-14 (a Samurai firing ya from a yumi at the pet): thitmonst() lacked
+the C's elf/Samurai bow block (dothrow.c:2168): +1 to hit for a bow skill
+launcher, +2 with the racial/role bow; ours rolled a miss where the C
+hit, and the damage roll never happened.
+
+s79-26 (a Knight level-teleporting away from a level with a grave):
+mkgrave() (mklev.c:1462) buries its gold and cursed objects with
+add_to_buried(); ours created them and dropped the references. An egg
+among them had a hatch timer, so the timer list held an object that was
+nowhere (where undefined), and the next level change's save_timers() hit
+obj_is_local()'s panic arm. The grave goods are buried now and the gold
+uses level_difficulty() as the C does.
+
+s79-02: a giant ant walked through iron bars and the C printed "The giant
+ant passes between the iron bars." (monmove.c:1637, Norep, with
+locomotion() and "through" for wall-passers), which needed a --More--
+before the grid bug's bite; the same block dissolves the bars for rust
+monsters, xorns and rock moles ("eats through the iron bars."). Ours had
+no message, so the two lines joined and the turn ran on.
+
+## Seed 80: priests know every trap, and the round of small notes
+
+s80-26 matched every screen but diverged in the RNG at a monster's move:
+the C rolled mintrap()'s rn2(4) "monster avoids a trap it knows" for an
+aligned priest stepping onto a magic trap, ours ran the trap (rn2(21)).
+priestini() (priest.c:220) calls mon_learns_traps(priest, ALL_TRAPS) and
+set_malign(priest); ours had replaced both with a "state only" comment,
+so its temple priest knew no traps until it walked into one. The same
+comment stood in for mk_roamer()'s call (it set mtrapseen by hand) and
+shkinit() (shknam.c:669) never taught the shopkeeper at all; all three
+go through mon_learns_traps() now.
+
+The rest of the round is the note_unported list:
+- dochug() (monmove.c:930-975): a confused grabber that has wandered off
+  releases the hero through unstuck() (with m_next2u(), not a distance
+  test); a long worm attacks with every adjacent tail segment through a
+  ported worm.c wormhitu(); a trapped weapon-user out of melee range
+  runs weapon.c select_rwep() instead of a "throwing subsystem absent"
+  stand-in.
+- mattackm() (mhitm.c:492-560): AT_GAZE through a ported gazemm() (the
+  Medusa reflection exchange, the Archon's blinding and stunning gaze),
+  AT_EXPL through explmm() (mon_explodes() for fire/cold/shock, otherwise
+  mdamagem(), the slack-leash and melancholy lines), AT_BREA through the
+  existing breamm() with the C's point-blank refusal; AT_MAGC is the C's
+  default arm (no attack). gulpmm() snuffs every lit object the swallowed
+  monster carries; mdamagem()'s unknown damage type does no damage, as
+  the C's mhitm_adtyping() default does.
+- clone_mon() (makemon.c:850) is asynchronous and complete: a cloned
+  shopkeeper keeps its name through shkname(), a cloned minion gets a
+  fresh emin copied from the parent with the renegade flag recomputed,
+  and a tame clone is re-tamed through tamedog() and given the parent's
+  edog; its four callers await it.
+- muse.js: the three worm_move() notes call worm.js worm_move(), and a
+  monster's wand of striking beam smashes a drawbridge through
+  find_drawbridge()/destroy_drawbridge() as mbhit() does in the C.
+- pager.js: self_lookat() in full (invisible, mounted on, the hidden or
+  regioned description, chained to, the trap predicament),
+  look_at_monster()'s "swallowing/engulfing/holding you/being held" arm,
+  and lookat()'s trap arm through a ported trap_description() (trapped
+  chest, trapped door, trapname()); glyph_is_trap()/glyph_to_trap() read
+  this port's cmap trap glyphs (S_arrow_trap + ttyp - 1).
+- mon.c genus() is ported and readobjnam() uses it for a quest
+  guardian's corpse; the "remaining wizterrainwish paths" note was
+  spurious (the C just goes on to parse an object) and is gone;
+  senseself() joined youprop.js.
+- pickup.c encumber_msg() says "stagger"/"wobble"/... through stagger()
+  as the C does; poisoned() flashes shieldeff() for a resisted blast.
+- The full options menu's '?' pick shows dat/optmenu through
+  display_file() (it was already embedded); the here-menu's "Sacrifice
+  something on the altar" and #offer run pray.js dosacrifice().
+
+## The round of remaining notes: traps, the top ten, death attribution, names and the wizard commands
+
+- trap.js: trapeffect_selector() and dotrap() reach a ported
+  trapeffect_vibrating_square() (feeltrap() for the hero, the "strange
+  vibration beneath <its feet>" / "the ground vibrate nearby" lines for a
+  monster) and report an unknown trap type through impossible() as the C
+  does. animate_statue() (trap.c:726) has the C's head: cant_revive()
+  turns forbidden types into a doppelganger, a golem statue hit by the
+  spell becomes a flesh golem, a statue with saved traits is restored
+  through zap.js montraits() (exported) and a tame one wary_dog()ed, a
+  quest guardian's statue of the wrong role or a doppelganger stand-in
+  is made with MM_NOCOUNTBIRTH and newcham()ed to the statue's form.
+- topten.js: "escaped the dungeon [max level N]" with the Amulet's
+  parenthetical cut the way the C cuts it, the elemental planes and the
+  Astral Plane in place of a dungeon name, and a doppelganger from the
+  top ten is christened when the hero can see it.
+- end.js done_in_by(): the shopkeeper's honorific through
+  shkname_is_pname() and shkname(), priests and minions through
+  m_monnam() (both ported), "of" for a bones ghost's name, and the
+  helplessness reason is cut to its verb when the killer is the monster
+  that caused it (game.multireasonbuf's "mid:reason" prefix, as in the C).
+- do_name.js oname(): naming an artifact unwields it as a second weapon,
+  turns on its warning as the wielded weapon, raises the shop bill, and
+  logs the literacy conduct; untwoweapon() is synchronous in this port,
+  as its message goes out without a wait.
+- uhitm.js: a polymorphed kobold, orc or gnome with a spell attack uses
+  its weapon instead (the C's goto use_weapon); any other AT_MAGC, like
+  AT_NONE and AT_BOOM, skips the attack; damageum()'s unknown damage
+  type does no damage.
+- wizard.js tactics(): the Wizard expels the hero when swallowed and
+  rloc()s away to heal; steed.js kick_steed(): a helpless steed stirs,
+  rouses itself or does not respond, and a kicked-untame steed drops its
+  leash through m_unleash().
+- pickup.js: stepping back off water, lava or ice says "You are back on
+  solid ground." through trap.js back_on_ground() (exported); picking
+  up shop goods from outside the shop (telekinesis) runs shk.c
+  remote_burglary() (ported: rob_shop() then call_kops()).
+- mondata.js Resists_Elem(): DRAIN_RES and BLND_RES answer through
+  resists_drli() and resists_blnd(). dungeon.js: deepest_lev_reached()
+  is ported and level_difficulty() uses it while the hero carries the
+  Amulet; u_on_rndspot() keeps a hero in the Wizard's tower inside its
+  exclusion region.
+- The wizard commands outside debug mode (wizwish, wizkill, wizmap,
+  wizgenesis) print the C's "Unavailable command '<name>'." through
+  cmd.js unavailcmd and ecname_from_fn() (by name, as cmd_from_func()).
+
+With the grave goods buried, s79-26 runs to its recorded end and joins
+s34-09 and s67-00 in the census as a session whose last key leaves our
+turn one monster-movement draw past the recording's final draw (every
+screen matches); it is not a divergence.

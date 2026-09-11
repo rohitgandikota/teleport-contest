@@ -315,3 +315,7 @@ export const Polymorph = () => !!(game.u?.intrinsic?.HPolymorph
 
 // include/youprop.h:387 Lifesaved — u.uprops[LIFESAVED].extrinsic
 export const Lifesaved = () => !!game.u?.uprops?.LIFESAVED;
+
+// include/display.h:175 senseself() — (Unblind_telepat || Detect_monsters);
+// Unblind_telepat is ETelepat alone
+export const senseself = () => !!(game.u?.uprops?.TELEPAT || Detect_monsters());

@@ -1480,6 +1480,13 @@ export async function hmonas(mon) {
                 && !cantwield(game.youmonst.data) && !weapon_used)
             || (aatyp === ATTKS.AT_TUCH && game.u.uwep
                 && game.youmonst.data.mlet === MONSYMS.S_LICH
+                && !weapon_used)
+            /* AT_MAGC: no check for uwep; if wielding nothing we want to
+               do the normal 1-2 points bare hand damage... */
+            || (aatyp === ATTKS.AT_MAGC
+                && (game.youmonst.data.mlet === MONSYMS.S_KOBOLD
+                    || game.youmonst.data.mlet === MONSYMS.S_ORC
+                    || game.youmonst.data.mlet === MONSYMS.S_GNOME)
                 && !weapon_used);
 
         if (aatyp === ATTKS.AT_BREA || aatyp === ATTKS.AT_SPIT
@@ -1654,7 +1661,9 @@ export async function hmonas(mon) {
                 }
             }
         } else {
-            note_unported_uhitm(`hmonas:aatyp=${aatyp}`);
+            /* AT_MAGC for anyone else falls through to the AT_NONE and
+               AT_BOOM arm: continue, not break, to avoid passive attacks
+               from the enemy */
             continue;
         }
 
@@ -1789,7 +1798,8 @@ export async function damageum(mon, mattk, specialdmg) {
             if (mhm.done)
                 return mhm.hitflags;
         } else {
-            note_unported_uhitm(`damageum:adtyp=${mattk[1]}`);
+            /* src/uhitm.c mhitm_adtyping() default */
+            damage = 0;
         }
     }
 
@@ -2387,7 +2397,7 @@ export async function hmon_hitmon(mon, obj, thrown, dieroll) {
             /* but not bashing with darts, arrows or ya */
             && !(is_ammo(obj) || is_missile(obj)))
         && hmd.hand_to_hand) {
-        const mclone = clone_mon(mon, 0, 0);
+        const mclone = await clone_mon(mon, 0, 0);
 
         if (mclone) {
             let withwhat = '';

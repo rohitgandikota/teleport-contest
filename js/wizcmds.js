@@ -9,6 +9,7 @@
 import { POLY_CONTROLLED } from './const.js';
 import { polyself } from './polyself.js';
 import { game } from './gstate.js';
+import { unavailcmd, ecname_from_fn } from './cmd.js';
 import { makewish } from './zap.js';
 import { encumber_msg } from './attrib.js';
 import { ECMD_OK, MENU_BEHAVE_STANDARD, MENU_ITEMFLAGS_NONE, PICK_ANY,
@@ -57,7 +58,7 @@ export async function wiz_wish() {
         game.flags.verbose = save_verbose;
         await encumber_msg();
     } else {
-        note_unported_wizcmds('wiz_wish:unavailcmd');
+        await pline(unavailcmd.replace('%s', ecname_from_fn('wizwish')));
     }
     return ECMD_OK;
 }
@@ -84,7 +85,7 @@ export async function wiz_identify() {
 // turn. The ordinary hero-credited path is the one exposed by #wizkill.
 export async function wiz_kill() {
     if (!game.wizard) {
-        note_unported_wizcmds('wiz_kill:unavailcmd');
+        await pline(unavailcmd.replace('%s', ecname_from_fn('wizkill')));
         return ECMD_OK;
     }
 
@@ -158,7 +159,7 @@ export async function wiz_telekinesis() {
 // src/wizcmds.c:176 wiz_map(): reveal the level, traps, and engravings.
 export async function wiz_map() {
     if (!game.wizard) {
-        note_unported_wizcmds('wiz_map:unavailcmd');
+        await pline(unavailcmd.replace('%s', ecname_from_fn('wizmap')));
         return ECMD_OK;
     }
 

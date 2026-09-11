@@ -681,7 +681,7 @@ function IS_UNEXPLORED_LOC(x, y) {
 }
 
 // src/getpos.c:438 gather_locs_interesting()
-async function gather_locs_interesting(x, y, gloc) {
+export async function gather_locs_interesting(x, y, gloc) {
     const filter = game.iflags?.getloc_filter | 0;
     if (filter === GFILTER_VIEW && !cansee(x, y))
         return false;

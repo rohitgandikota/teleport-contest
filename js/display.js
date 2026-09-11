@@ -2,6 +2,7 @@
 // C ref: display.c — newsym, show_glyph, docrt, cls, flush_screen.
 
 import { PLNMSG_UNKNOWN, MAX_TYPE } from './const.js';
+import { TRAPNUM } from './const.js';
 import { MSGTYP_NORMAL, MSGTYP_NOREP, MSGTYP_NOSHOW, MSGTYP_STOP, PLINE_NOREPEAT, OVERRIDE_MSGTYPE, URGENT_MESSAGE } from './const.js';
 import { DISP_BEAM, DISP_ALL, DISP_TETHER, DISP_FLASH, DISP_ALWAYS,
          DISP_CHANGE, DISP_END, DISP_FREEMEM, BACKTRACK, HI_ZAP,
@@ -654,6 +655,17 @@ const trap_cmap_color = {
     69: CLR_BRIGHT_BLUE, 70: CLR_BRIGHT_GREEN, 71: CLR_MAGENTA,
     72: CLR_ORANGE, 73: CLR_ORANGE,
 };
+
+// include/display.h glyph_is_trap()/glyph_to_trap() — trap glyphs are the
+// cmap entries S_arrow_trap + ttyp - 1 in this port (trap_glyph() below)
+export function glyph_is_trap(glyph) {
+    return !!glyph && glyph.kind === 'cmap'
+           && glyph.cmap >= CM.S_arrow_trap
+           && glyph.cmap < CM.S_arrow_trap + TRAPNUM - 1;
+}
+export function glyph_to_trap(glyph) {
+    return glyph.cmap - CM.S_arrow_trap + 1;
+}
 
 // include/rm.h:497 trap_to_defsym() — S_arrow_trap + ttyp - 1.
 export function trap_glyph(trap) {

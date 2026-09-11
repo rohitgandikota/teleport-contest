@@ -981,7 +981,7 @@ export function get_obj_location(obj, cc, locflags) {
 // a corpse or statue; the C makes a fresh monster then swaps the saved one
 // into its place with replmon(); this port keeps the fresh monster's
 // identity and copies the saved traits onto it, which is the same result
-async function montraits(obj, cc, adjacentok) {
+export async function montraits(obj, cc, adjacentok) {
     /* adjacentok: False: at obj's spot only, True: nearby is allowed */
     let mtmp = null;
     const mtmp2 = has_omonst(obj) ? get_mtraits(obj, true) : null;

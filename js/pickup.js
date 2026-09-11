@@ -19,6 +19,9 @@ import { MAY_HIT, MAY_DESTROY } from './const.js';
 import { scatter } from './explode.js';
 import { def_oc_syms } from './drawing_data.js';
 import { game } from './gstate.js';
+import { back_on_ground } from './trap.js';
+import { remote_burglary } from './shk.js';
+import { PLNMSG_BACK_ON_GROUND } from './const.js';
 import { makesingular } from './objnam.js';
 import { regex_match } from './posixregex.js';
 import { addinv, prinv, obj_extract_self, inv_order, let_to_name,
@@ -401,9 +404,11 @@ export async function describe_decor() {
             await pline(`${dfeature[0].toUpperCase()}${dfeature.slice(1)}.`);
         }
     } else if (!game.u.uprops?.UNDERWATER) {
-        /* the back-on-ground arm keys on prev_decor being pool/lava/ice */
-        if (is_pool_typ(prev) || prev === LAVAPOOL_TYP || prev === ICE)
-            note_unported_pickup('describe_decor:back_on_ground');
+        if (is_pool_typ(prev) || prev === LAVAPOOL_TYP || prev === ICE) {
+            if (game.iflags?.last_msg !== PLNMSG_BACK_ON_GROUND) {
+                await back_on_ground(false);
+            }
+        }
     }
     /* only adapt the next describe_decor() when the option is On */
     game.iflags.prev_decor = game.flags?.mention_decor ? ltyp : 0;
@@ -1042,7 +1047,7 @@ async function pick_obj(otmp) {
 
     const result = await addinv(otmp);
     if (robshop)
-        note_unported_pickup('pick_obj:remote_burglary');
+        await remote_burglary(ox, oy);
     return result;
 }
 

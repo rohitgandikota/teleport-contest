@@ -30,6 +30,15 @@ import { seemimic } from './mon.js';
 // wear, wield, drop, throw, pray, cast, and all other commands.
 
 import { game } from './gstate.js';
+import { dotogglepickup } from './options.js';
+import { doversion } from './version.js';
+import { ddoinv, doperminv } from './invent.js';
+import { selection_new, set_selection_floodfillchk, selection_floodfill, selection_getpoint, selection_getbounds, selection_free, selection_size_description } from './selvar.js';
+import { gather_locs_interesting } from './getpos.js';
+import { do_screen_description } from './pager.js';
+import { set_msg_xy, pline_xy } from './pline.js';
+import { cansee } from './vision.js';
+import { IS_STWALL, IS_TREE, IS_WATERWALL, LAVAWALL, SCORR, SDOOR, DRAWBRIDGE_UP, ROOMOFFSET, u_at, CORR, IS_ROOM, GFILTER_NONE, GFILTER_VIEW, GLOC_INTERESTING } from './const.js';
 import { dodrop, doddrop } from './do.js';
 import { any_obj_ok, doprwep, doprarm, doprring, dopramulet, doprtool,
          doprinuse, doprgold, obj_extract_self, dotypeinv } from './invent.js';
@@ -1240,7 +1249,259 @@ async function execute_extcmd(name) {
     if (name === '?')
         return await doextlist();
 
+    /* src/cmd.c:1667 extcmdlist[] ef_funct: the entries whose function
+       also answers a key in rhack() above */
+    if (name === 'attributes') { /* doattributes(): enlightenment window */
+        await show_attributes();
+        return ECMD_OK;
+    }
+    if (name === 'inventory')
+        return await ddoinv();
+    if (name === 'autopickup')
+        return await dotogglepickup();
+    if (name === 'versionshort')
+        return await doversion();
+    if (name === 'perminv')
+        return await doperminv();
+    if (name === 'toggle')
+        return await dotoggleoption();
+    if (name === 'lookaround')
+        return await dolookaround();
+    if (name === 'read')
+        return await doread(read_ok);
+    if (name === 'repeat')
+        return await do_repeat();
+    if (name === 'retravel')
+        return await dotravel_target();
+    if (name === 'showtrap')
+        return await doidtrap();
+    if (name === 'reqmenu')
+        return await do_reqmenu();
+    if (name === 'travel')
+        return await dotravel();
+    const ef = EXTCMD_FUNCS[name];
+    if (ef) {
+        const mod = await import(ef[0]);
+        return await mod[ef[1]]();
+    }
+
     note_unported_cmd(`extcmd:${name}`);
+    return ECMD_OK;
+}
+
+/* src/cmd.c:1667 extcmdlist[] ef_funct — the command functions that live in
+   other modules, keyed by the ef_txt name: [module, function] */
+const EXTCMD_FUNCS = {
+    apply: ['./apply.js', 'doapply'],
+    call: ['./do_name.js', 'docallcmd'],
+    cast: ['./spell.js', 'docast'],
+    close: ['./lock.js', 'doclose'],
+    drop: ['./do.js', 'dodrop'],
+    droptype: ['./do.js', 'doddrop'],
+    eat: ['./eat.js', 'doeat'],
+    engrave: ['./engrave.js', 'doengrave'],
+    fire: ['./dothrow.js', 'dofire'],
+    glance: ['./pager.js', 'doquickwhatis'],
+    history: ['./pager.js', 'dohistory'],
+    inventtype: ['./invent.js', 'dotypeinv'],
+    known: ['./o_init.js', 'dodiscovered'],
+    knownclass: ['./o_init.js', 'doclassdisco'],
+    look: ['./invent.js', 'dolook'],
+    offer: ['./pray.js', 'dosacrifice'],
+    open: ['./lock.js', 'doopen'],
+    pay: ['./shk.js', 'dopay'],
+    puton: ['./do_wear.js', 'doputon'],
+    quaff: ['./potion.js', 'dodrink'],
+    quiver: ['./wield.js', 'dowieldquiver'],
+    remove: ['./do_wear.js', 'doremring'],
+    save: ['./save.js', 'dosave'],
+    search: ['./detect.js', 'dosearch'],
+    seeall: ['./invent.js', 'doprinuse'],
+    seeamulet: ['./invent.js', 'dopramulet'],
+    seearmor: ['./invent.js', 'doprarm'],
+    seerings: ['./invent.js', 'doprring'],
+    seetools: ['./invent.js', 'doprtool'],
+    seeweapon: ['./invent.js', 'doprwep'],
+    showgold: ['./invent.js', 'doprgold'],
+    showspells: ['./spell.js', 'dovspell'],
+    swap: ['./wield.js', 'doswapweapon'],
+    takeoff: ['./do_wear.js', 'dotakeoff'],
+    takeoffall: ['./do_wear.js', 'doddoremarm'],
+    teleport: ['./teleport.js', 'dotelecmd'],
+    throw: ['./dothrow.js', 'dothrow'],
+    wear: ['./do_wear.js', 'dowear'],
+    whatdoes: ['./pager.js', 'dowhatdoes'],
+    whatis: ['./pager.js', 'dowhatis'],
+    wield: ['./wield.js', 'dowield'],
+    wizlevelport: ['./wizcmds.js', 'wiz_level_tele'],
+    zap: ['./zap.js', 'dozap'],
+};
+
+// src/cmd.c:1376 dotoggleoption() — the #toggle command; a key BIND with a
+// parameter is what gives it an option to flip
+async function dotoggleoption() {
+    if (game.cmd_bind?.param) {
+        /* toggle_bool_option(gc.cmd_bind->param): BIND lines with a
+           parameter are not modelled */
+        note_unported_cmd('dotoggleoption:param');
+        return ECMD_OK;
+    } else {
+        await pline('Use #optionsfull to set any option instead.');
+        return ECMD_OK;
+    }
+}
+
+// src/cmd.c:1195 u_have_seen_whole_selection()
+function u_have_seen_whole_selection(sel) {
+    const rect = { lx: 0, ly: 0, hx: 0, hy: 0 };
+
+    selection_getbounds(sel, rect);
+
+    for (let x = rect.lx; x <= rect.hx; x++)
+        for (let y = rect.ly; y <= rect.hy; y++)
+            if (isok(x, y) && selection_getpoint(x, y, sel)
+                && glyph_at(x, y).kind === 'unexplored') /* GLYPH_UNEXPLORED */
+                return false;
+
+    return true;
+}
+
+// src/cmd.c:1213 u_have_seen_bounds_selection()
+function u_have_seen_bounds_selection(sel) {
+    const rect = { lx: 0, ly: 0, hx: 0, hy: 0 };
+    let x, y;
+
+    selection_getbounds(sel, rect);
+
+    for (x = rect.lx; x <= rect.hx; x++) {
+        y = rect.ly;
+        if (isok(x, y) && selection_getpoint(x, y, sel)
+            && glyph_at(x, y).kind === 'unexplored')
+            return false;
+        y = rect.hy;
+        if (isok(x, y) && selection_getpoint(x, y, sel)
+            && glyph_at(x, y).kind === 'unexplored')
+            return false;
+    }
+    for (y = rect.ly; y <= rect.hy; y++) {
+        x = rect.lx;
+        if (isok(x, y) && selection_getpoint(x, y, sel)
+            && glyph_at(x, y).kind === 'unexplored')
+            return false;
+        x = rect.hx;
+        if (isok(x, y) && selection_getpoint(x, y, sel)
+            && glyph_at(x, y).kind === 'unexplored')
+            return false;
+    }
+
+    return true;
+}
+
+// src/cmd.c:1246 u_can_see_whole_selection()
+function u_can_see_whole_selection(sel) {
+    const rect = { lx: 0, ly: 0, hx: 0, hy: 0 };
+
+    selection_getbounds(sel, rect);
+
+    for (let x = rect.lx; x <= rect.hx; x++)
+        for (let y = rect.ly; y <= rect.hy; y++)
+            if (isok(x, y) && selection_getpoint(x, y, sel) && !cansee(x, y))
+                return false;
+
+    return true;
+}
+
+// src/cmd.c:1263 dolookaround_floodfill_findroom()
+function dolookaround_floodfill_findroom(x, y) {
+    const typ = game.level.at(x, y).typ;
+
+    if (IS_STWALL(typ) || IS_DOOR(typ) || IS_TREE(typ)
+        || IS_WATERWALL(typ) || typ === LAVAWALL || typ === IRONBARS
+        || typ === SCORR || typ === SDOOR || typ === DRAWBRIDGE_UP)
+        return false;
+    return true;
+}
+
+// src/cmd.c:1276 lookaround_known_room()
+async function lookaround_known_room(x, y) {
+    const sel = selection_new();
+    const rmno = (game.u.urooms || '\0').charCodeAt(0) - ROOMOFFSET;
+
+    set_selection_floodfillchk(dolookaround_floodfill_findroom);
+    selection_floodfill(sel, x, y, true);
+
+    if (!u_at(x, y))
+        set_msg_xy(x, y);
+
+    if (u_have_seen_whole_selection(sel)) {
+        const u_in = !!selection_getpoint(x, y, sel);
+
+        await You(`${
+            u_at(x, y) && u_in && u_can_see_whole_selection(sel) ? 'are in'
+            : (u_at(x, y)) ? 'remember this as' : 'remember that as'} ${
+            an(selection_size_description(sel))} ${
+            rmno >= 0 ? 'room' : 'area'}.`);
+    } else if (u_have_seen_bounds_selection(sel)) {
+        await You(`guess ${u_at(x, y) ? 'this' : 'that'} to be ${
+            an(selection_size_description(sel))} ${
+            rmno >= 0 ? 'room' : 'area'}.`);
+    } else {
+        await You(`can't guess the size of ${
+            u_at(x, y) ? 'this' : 'that'} area.`);
+    }
+    selection_free(sel, true);
+}
+
+// src/cmd.c:1310 dolookaround() — the #lookaround command: describe the
+// room and every interesting map location in view.
+async function dolookaround() {
+    let x, y;
+    const tmp_getloc_filter = game.iflags?.getloc_filter ?? GFILTER_NONE;
+    const a11y = (game.a11y ||= {});
+    const tmp_accessiblemsg = !!a11y.accessiblemsg;
+    let corr_next2u = false;
+
+    a11y.accessiblemsg = true;
+    if (game.level.at(game.u.ux, game.u.uy).typ === CORR) {
+        corr_next2u = true;
+        /* TODO: how to describe the corridor the hero is in,
+           perhaps by describing the rooms? */
+    } else if (IS_DOOR(game.level.at(game.u.ux, game.u.uy).typ)) {
+        for (let i = DIR_W; i < N_DIRS; i += 2) {
+            x = game.u.ux + xdir[i];
+            y = game.u.uy + ydir[i];
+            if (isok(x, y) && IS_ROOM(game.level.at(x, y).typ))
+                await lookaround_known_room(x, y);
+        }
+        corr_next2u = true;
+    } else {
+        await lookaround_known_room(game.u.ux, game.u.uy);
+    }
+
+
+    (game.iflags ||= {}).getloc_filter = GFILTER_VIEW;
+    for (y = 0; y < ROWNO; y++)
+        for (x = 1; x < COLNO; x++) {
+            let glyph, mapsym;
+            const iscorr = (corr_next2u
+                            && (glyph = glyph_at(x, y)).kind === 'cmap'
+                            && ((mapsym = glyph.cmap) === cmap_names.S_corr
+                                || mapsym === cmap_names.S_litcorr));
+
+            if (!u_at(x, y)
+                && (await gather_locs_interesting(x, y, GLOC_INTERESTING)
+                    || iscorr)) {
+                const cc = { x, y };
+                const sym = 0;
+
+                const { firstmatch } = do_screen_description(cc, true, sym);
+                await pline_xy(x, y, `${firstmatch}.`);
+            }
+        }
+
+    game.iflags.getloc_filter = tmp_getloc_filter;
+    a11y.accessiblemsg = tmp_accessiblemsg;
+
     return ECMD_OK;
 }
 
@@ -1286,7 +1547,7 @@ async function doherecmdmenu() {
     }
     if (typ === ALTAR)
         add('Sacrifice something on the altar',
-            () => doextcmd_named_offer());
+            async () => (await import('./pray.js')).dosacrifice());
 
     const stway = stairway_at(u.ux, u.uy);
     if (stway) {
@@ -1333,16 +1594,6 @@ async function doherecmdmenu() {
                 cmdq_add_key(CQ_CANNED, key);
         }
     }
-    return ECMD_OK;
-}
-
-async function doextcmd_named_offer() {
-    const loc = game.level?.at(game.u.ux, game.u.uy);
-    if (!loc || loc.typ !== (await import('./const.js')).ALTAR) {
-        await You('are not on an altar.');
-        return ECMD_OK;
-    }
-    note_unported_cmd('cmd:doextcmd:offer_rite');
     return ECMD_OK;
 }
 
@@ -1897,10 +2148,8 @@ export async function rhack(key) {
             cmdq_clear(CQ_REPEAT);
         }
     } else if (ch === 'V') {
-        // src/version.c doversion() prints the build's short version string.
-        const { VERSION_BANNER_LINE } = await import('./version_data.js');
-        await pline(VERSION_BANNER_LINE);
-        game.context.move = 0;
+        /* src/version.c:156 doversion() returns ECMD_OK */
+        useResult(await doversion());
     } else if (ch === '&') {
         // src/pager.c dowhatdoes() reads one key and describes its binding.
         game.context.move = ((await dowhatdoes()) === ECMD_TIME ? 1 : 0);
@@ -2104,28 +2353,8 @@ export async function rhack(key) {
         // src/cmd.c:1868 cmdlist — GOLD_SYM is doprgold.
         game.context.move = ((await doprgold()) === ECMD_TIME ? 1 : 0);
     } else if (ch === '@') {
-        /* src/options.c:9256 dotogglepickup — flips flags.pickup and says
-           so. C's FIELD is flags.pickup but the rc OPTION is named
-           "autopickup", and our option parser stores it under the option
-           name, so flags.autopickup is the one field; toggling a separate
-           flags.pickup left pickup() reading the untouched rc value. */
-        game.flags.autopickup = !game.flags.autopickup;
-        if (game.flags.autopickup) {
-            /* src/options.c:9262 — oc_to_str(flags.pickup_types) is empty
-               when no types are configured, and C then says "all". The
-               autopickup-exception suffix needs an apelist, which no
-               recorded rc defines. */
-            const ocl = game.flags.pickup_types || '';
-            await pline(`Autopickup: ON, for ${ocl || 'all'} objects${
-                        (game.apelist?.length)
-                            ? ((game.apelist.length === 1)
-                                   ? ', with one exception'
-                                   : ', with some exceptions')
-                            : ''}.`);
-        } else {
-            await pline('Autopickup: OFF.');
-        }
-        game.context.move = 0;
+        /* src/options.c:9256 dotogglepickup() returns ECMD_OK */
+        useResult(await dotogglepickup());
     } else if (ch === ':') {
         // src/cmd.c cmdlist — ':' is dolook. It returns ECMD_OK when not
         // blind, so looking does not consume a turn.
@@ -3967,6 +4196,19 @@ export function cmd_from_func(name) {
             return String.fromCharCode(i);
     }
     return '\0';
+}
+
+// src/cmd.c:157 unavailcmd — for rejecting a command that this build or
+// this game mode does not offer
+export const unavailcmd = "Unavailable command '%s'.";
+
+// src/cmd.c:3092 ecname_from_fn() — the extended command name of a command
+// function; by name here, as with cmd_from_func()
+export function ecname_from_fn(name) {
+    for (const extcmd of extcmdlist)
+        if (extcmd.ef_txt === name)
+            return extcmd.ef_txt;
+    return null;
 }
 
 // src/cmd.c:3106 cmdname_from_func() — the command name for a function; as

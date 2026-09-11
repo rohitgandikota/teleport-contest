@@ -592,8 +592,51 @@ boot, which skipped the knockback rolls; mhitm_ad_legs() is now a real
 uhitm.js function. The insight.c round is done (NOTES "insight.c in full:
 attributes, the status line, and prayer state shared with pray.js").
 
-Next: triage `--seed 79`, then the remaining note_unported list (cmd.js
-extended commands, pager.js, objnam.js, muse.js, mklev.js, artifact.js). tools/jsplay.mjs has a new
+Sixty-seventh round: the extended-command dispatcher now reaches every
+extcmdlist entry whose function exists (a name-keyed table of the C's
+ef_funct pointers), plus ddoinv(), dotogglepickup(), doversion(),
+doperminv(), dotoggleoption() and a full #lookaround with its selection
+helpers (NOTES "Every extended command with a function, and #lookaround").
+`--seed 79` had three real bugs: the Samurai/elf bow to-hit bonus missing
+from thitmonst() (s79-14), mkgrave()'s grave goods never buried so a
+hatching egg's timer pointed at a free object and the next level change
+threw (s79-26), and the "passes between the iron bars" message (s79-02);
+all three are ported (NOTES "Seed 79: bow bonus, buried grave goods, and
+monsters passing iron bars").
+
+Sixty-eighth round: `--seed 80` had s80-26, an RNG-only miss: the
+temple priest walked onto a magic trap it knew about in the C (priests,
+roamers and shopkeepers are created knowing every trap) and did not in
+ours, because priestini() and shkinit() had skipped mon_learns_traps()
+as "state only" (NOTES "Seed 80: priests know every trap, and the round
+of small notes"). The same round ported the dochug() arms (unstuck,
+wormhitu, select_rwep), the monster-vs-monster gaze, explosion and
+breath attacks (gazemm, explmm, breamm), clone_mon() in full, the
+muse.js worm_move and drawbridge notes, self_lookat() and the held/trap
+arms of lookat(), genus(), the encumbrance stagger verb, poisoned()'s
+shieldeff, the options-menu '?' help text, #offer from the here menu,
+and dropped the spurious wizterrainwish note.
+
+Sixty-ninth round (no new fuzz seed): the note_unported list again
+(NOTES "The round of remaining notes: traps, the top ten, death
+attribution, names and the wizard commands"): the vibrating square's
+own trap effect and the C's impossible() for an unknown trap type,
+animate_statue()'s saved-traits head (cant_revive, golem transforms,
+montraits(), doppelganger stand-ins), the top-ten "escaped" and
+elemental-plane lines and the named doppelganger, done_in_by()'s
+shopkeeper/priest/minion/bones names and the helplessness reason cut,
+oname()'s artifact arms (untwoweapon, warning, shop cost, the literacy
+livelog), m_monnam() and shkname_is_pname(), the polymorphed hero's
+spell attack arm and damage-type default, the Wizard's tactics
+(expels, rloc), kick_steed()'s helpless steed and leash, the "back on
+solid ground" line and remote shop burglary, Resists_Elem's drain and
+blindness arms, deepest_lev_reached() and the Wizard's tower spot, and
+"Unavailable command" for the wizard commands outside debug mode.
+
+Next: triage `--seed 81`, then the remaining note_unported list
+(cmd.js #therecmdmenu, the wizard extended commands and doterrain's
+debug views, objnam.js lookup_novel, symbols.js glyph parsing, light.js
+transient light, mkmaze.js portals). tools/jsplay.mjs has a new
 `--aeval "<await expr>"` flag with the hack.js namespace as `h` for state
 probes. The census script is `tally.sh` in the scratchpad (diverge.mjs
 --screens over tools/gen-sessions/fuzz/*.session.json, 4 at a time).

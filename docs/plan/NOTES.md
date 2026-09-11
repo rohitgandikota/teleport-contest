@@ -7946,3 +7946,34 @@ ball; rloc() has the steed arm (tele()), the Wizard of Yendor's
 staircase arm through stairway_find_forwiz() (teleport.c:1786) and the
 mon_telecontrol arm, plus impossible() for RLOC_ERR; rloc_to_core()
 removes and re-lays a long worm's tail.
+
+## Farlook looks up a pet's given name first, and the magic trap fates
+
+s75-17 used ';' on the hero's little dog, which chargen had named Slasher.
+The C's do_look() (pager.c:1673) resets its `pm` to NULL at the top of
+the loop and passes that NULL to checkfile(); lookat()'s permonst only
+reaches `supplemental_pm`, which feeds do_supplemental_info() (the orc
+marauder texts, pager.c:2253) and, being declared outside the loop, keeps
+its value across iterations. With a null pm, checkfile() lowercases the
+whole description, "tame little dog called slasher", strips "tame ",
+splits at " called " so alt is the given name, and runs pass 1 on the
+name before pass 0 on the species. dat/data.base has a "slasher" entry
+(the dog entry lists it as an excluded ~slasher key), so the C asked
+'More info about "slasher"?' and then, on 'n', about "little dog". Ours
+passed lookat()'s pm, which made dbase_str "little dog" from the start:
+one prompt instead of two, and the keys the C consumed at its prompt ran
+as commands here, a whole turn early. do_look() now mirrors the C: null
+pm to checkfile(), a supplemental_name box, and do_supplemental_info()
+with the suptext tables ported.
+
+s75-19 stepped on a magic trap with fate 19: adjattrib(A_CHA, 1, FALSE)
+and tamedog() on every adjacent monster. domagictrap() (trap.c:4317) is
+now complete: fate 12 dofiretrap(NULL), 15 the prodigal son line on the
+quest start level (oddly for a female or neuter hero) or the yearning
+for a nearby or distant homeland, 19 as above, 20 a pseudo spellbook of
+remove curse run through seffects() with HConfusion zeroed for the call,
+and the hallucination variants of 14 and 17. The case-11 toggle flips
+HInvis with FROMOUTSIDE and uses self_invis_message(), pm_invisible()
+and the "a little more obvious/hidden" line; the roar goes through
+incr_itimeout(HDeaf) and the flash reads Blind() rather than the old
+ublind field.

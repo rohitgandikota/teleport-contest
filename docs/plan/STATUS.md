@@ -552,7 +552,15 @@ while trapped or engulfed"); the same round ported teleds()'s trap,
 engulfer and mimic handling, rloc()'s steed/Wizard/mon_telecontrol arms
 and rloc_to_core()'s worm tail.
 
-Next: triage `--seed 75`, then continue the
+Sixty-third round: `--seed 75` had s75-17, farlook on a named pet (the
+C's do_look() hands checkfile() a null pm, so the pet's given name is
+looked up before its species; do_supplemental_info() and the marauder
+texts ported, NOTES "Farlook looks up a pet's given name first, and the
+magic trap fates") and s75-19, the missing domagictrap() fates 12, 15,
+19 and 20 with the hallucination variants of 14 and 17; s75-20 and
+s75-29 are the recording-timezone class.
+
+Next: triage `--seed 76`, then continue the
 note_unported list (invent.js dispinv, cmd.js extended commands through
 the extcmdlist table, options.js handlers). tools/jsplay.mjs has a new
 `--aeval "<await expr>"` flag with the hack.js namespace as `h` for state

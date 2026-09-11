@@ -2,10 +2,6 @@
 // C ref: src/mhitu.c
 //
 // mattacku() and its message/damage helpers are ported in full for the melee
-// attack types; the special attack forms (gaze, explosion, engulf, breath,
-// spit, cast) and the seduction/disease substitution arms need subsystems
-// that are absent and are recorded through note_unported_mhitu() at the
-// exact C decision point, so game.unported names what a divergence wanted.
 
 import { unmul, losehp, showdamage } from './hack.js';
 import { mimic_obj_name } from './objnam.js';
@@ -20,7 +16,8 @@ import { pline_The, pline_mon, verbalize } from './pline.js';
 import { update_inventory } from './invent.js';
 import { cloak_simple_name, helm_simple_name, Ring_gone, Ring_on,
          stop_donning } from './do_wear.js';
-import { mhitm_ad_poly, mhitm_ad_deth, mhitm_ad_tlpt, mhitm_ad_curs, mhitm_ad_acid, mhitm_ad_drin, mhitm_ad_dren, mhitm_ad_slow } from './uhitm.js';
+import { mhitm_ad_poly, mhitm_ad_deth, mhitm_ad_tlpt, mhitm_ad_curs, mhitm_ad_acid, mhitm_ad_drin, mhitm_ad_dren, mhitm_ad_slow,
+         mhitm_ad_corr, mhitm_ad_sgld, mhitm_ad_conf, mhitm_ad_halu, mhitm_ad_dgst, mhitm_ad_dise } from './uhitm.js';
 import { monsndx, is_home_elemental } from './makemon.js';
 import { split_mon } from './potion.js';
 import { Your } from './pline.js';
@@ -122,10 +119,6 @@ import { burn_away_slime } from './timeout.js';
 
 
 
-
-function note_unported_mhitu(what) {
-    (game.unported ||= new Set()).add(what);
-}
 
 /* include/monst.h:71 U_AP_TYPE; include/you.h:555 Ugender */
 const U_AP_TYPE = () => (game.youmonst.m_ap_type & M_AP_TYPMASK);
@@ -1610,11 +1603,21 @@ async function hitmu(mtmp, mattk, indx) {
                 await erode_armor(game.youmonst, ERODE_ROT);
             }
         }
+    } else if (mattk[1] === A.AD_CORR) {
+        await mhitm_ad_corr(mtmp, mattk, game.youmonst, mhm);
+    } else if (mattk[1] === A.AD_SGLD) {
+        await mhitm_ad_sgld(mtmp, mattk, game.youmonst, mhm);
+    } else if (mattk[1] === A.AD_CONF) {
+        await mhitm_ad_conf(mtmp, mattk, game.youmonst, mhm);
+    } else if (mattk[1] === A.AD_HALU) {
+        await mhitm_ad_halu(mtmp, mattk, game.youmonst, mhm);
+    } else if (mattk[1] === A.AD_DGST) {
+        await mhitm_ad_dgst(mtmp, mattk, game.youmonst, mhm);
+    } else if (mattk[1] === A.AD_DISE) {
+        await mhitm_ad_dise(mtmp, mattk, game.youmonst, mhm);
     } else {
-        note_unported_mhitu(`hitmu:adtyp=${mattk[1]}`);
-        /* the generic arms still print the plain hit message */
-        await hitmsg(mtmp, mattk, indx);
-        mhm.hitflags |= M_ATTK_HIT;
+        /* src/uhitm.c mhitm_adtyping() default */
+        mhm.damage = 0;
     }
 
     await mhitm_knockback(mtmp, game.youmonst, mattk, mhm,

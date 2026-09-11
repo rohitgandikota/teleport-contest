@@ -1541,7 +1541,7 @@ async function do_class_genocide() {
                 for (const mtmp of [...(game.level.monsters || [])]) {
                     if (DEADMONSTER(mtmp))
                         continue;
-                    mongone(mtmp);
+                    await mongone(mtmp);
                     gonecnt++;
                 }
                 await pline(`Eliminated ${gonecnt} monster${plur(gonecnt)}.`);

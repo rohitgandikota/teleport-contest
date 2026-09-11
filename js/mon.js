@@ -36,6 +36,9 @@ import { poly_steed } from './steed.js';
 import { possibly_unwield } from './weapon.js';
 import { Protection_from_shape_changers } from './youprop.js';
 import { remove_worm, wormgone } from './worm.js';
+import { grddead } from './vault.js';
+import { wizdeadorgone } from './wizard.js';
+import { MON_ENDGAME_FREE } from './const.js';
 import { mon_offmap, is_lightblocker_mappear } from './monst.js';
 import { dist2 } from './hacklib.js';
 import { m_dowear, mon_break_armor } from './worn.js';
@@ -2123,12 +2126,8 @@ export function m_detach(mtmp, mptr, due_to_death) {
 
     if (mtmp.mleashed)
         (game.unported ||= new Set()).add('mon:m_detach:m_unleash');
-    if (mtmp.iswiz)
-        (game.unported ||= new Set()).add('mon:m_detach:wizdeadorgone');
     if (due_to_death)
         (game.unported ||= new Set()).add('mon:m_detach:due_to_death');
-    if (In_endgame(game.u.uz))
-        (game.unported ||= new Set()).add('mon:m_detach:endgame_free');
     if (mtmp === game.u.usteed)
         (game.unported ||= new Set()).add('mon:m_detach:dismount_steed');
 
@@ -2170,6 +2169,11 @@ export function m_detach(mtmp, mptr, due_to_death) {
 
     mtmp.mhp = 0;               /* simplify some tests: force mhp to 0 */
 
+    /* death of the Wizard of Yendor or leaving the dungeon alive rather
+       than dying */
+    if (mtmp.iswiz)
+        wizdeadorgone();
+
     if (mtmp.m_id === game.stealmid)
         thiefdead();
 
@@ -2178,6 +2182,8 @@ export function m_detach(mtmp, mptr, due_to_death) {
         shkgone(mtmp);
     if (mtmp.wormno)
         wormgone(mtmp);
+    if (In_endgame(game.u.uz))
+        mtmp.mstate = (mtmp.mstate | 0) | MON_ENDGAME_FREE;
 
     mtmp.mstate = (mtmp.mstate || 0) | MON_DETACH;
     game.iflags = game.iflags || {};
@@ -2192,11 +2198,18 @@ export function m_detach(mtmp, mptr, due_to_death) {
 //
 // discard_minvent() removes the pack FROM THE GAME rather than dropping it,
 // which is why mk_trap_statue moves the objects into the statue first.
-export function mongone(mdef) {
+export async function mongone(mdef) {
     mdef.mhp = 0;               /* can skip some inventory bookkeeping */
 
-    if (mdef.isgd)
-        (game.unported ||= new Set()).add('mon:mongone:grddead');
+    /* dead vault guard is actually kept at coordinate <0,0> until
+       his temporary corridor to/from the vault has been removed */
+    if (mdef.isgd && !await grddead(mdef))
+        return;
+    /* unstuck() is a no-op unless mdef holds the hero; the test keeps
+       mongone() synchronous for create_object() and mk_trap_statue(),
+       whose freshly made monsters never do */
+    if (game.u.ustuck === mdef)
+        await unstuck(mdef);
     /* src/mon.c mdrop_special_objs() checks every carried object. Ordinary
        objects fail obj_resists(obj, 0, 0), but each check still draws
        rn2(100). Orcus-town removes its two shopkeepers after stocking their
@@ -4473,10 +4486,10 @@ export async function wake_nearto(x, y, distance) {
 }
 
 // src/mon.c:4649 restore_cham() — reloaded shapechanger bookkeeping.
-export function restore_cham(mon) {
-    if (/* Protection_from_shape_changers: no source yet || */ mon.mcan) {
+export async function restore_cham(mon) {
+    if (Protection_from_shape_changers() || mon.mcan) {
         /* force chameleon or mimic to revert to its natural shape */
-        (game.unported ||= new Set()).add('mon:restore_cham:normal_shape');
+        await normal_shape(mon);
     } else if ((mon.cham ?? NON_PM) === NON_PM) {
         /* chameleon doesn't change shape here, just gets allowed to do so;
            pm_to_cham: only M2_SHAPESHIFTER species map to themselves */

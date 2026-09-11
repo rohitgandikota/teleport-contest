@@ -3053,26 +3053,78 @@ export async function doprinuse() {
 }
 
 
-// src/invent.c:1546 currency() — "zorkmid"/"zorkmids"; the hallucinatory
-// currency roll is recorded because it DRAWS.
+// src/invent.c:1521 currencies[] — other worlds' money, for a hallucinating
+// hero counting zorkmids.
+const currencies = [
+    'Altarian Dollar',       /* The Hitchhiker's Guide to the Galaxy */
+    'Ankh-Morpork Dollar',   /* Discworld */
+    'auric',                 /* The Domination of Draka */
+    'buckazoid',             /* Space Quest */
+    'cirbozoid',             /* Starslip */
+    'credit chit',           /* Deus Ex */
+    'cubit',                 /* Battlestar Galactica */
+    'Flanian Pobble Bead',   /* The Hitchhiker's Guide to the Galaxy */
+    'fretzer',               /* Jules Verne */
+    'imperial credit',       /* Star Wars */
+    'Hong Kong Luna Dollar', /* The Moon is a Harsh Mistress */
+    'kongbuck',              /* Snow Crash */
+    'nanite',                /* System Shock 2 */
+    'quatloo',               /* Star Trek, Sim City */
+    'simoleon',              /* Sim City */
+    'solari',                /* Spaceballs */
+    'spacebuck',             /* Spaceballs */
+    'sporebuck',             /* Spore */
+    'Triganic Pu',           /* The Hitchhiker's Guide to the Galaxy */
+    'woolong',               /* Cowboy Bebop */
+    'zorkmid',               /* Zork, NetHack */
+];
+
+// src/invent.c:1546 currency() — "zorkmid"/"zorkmids", or ROLL_FROM(currencies)
+// when hallucinating (hack.h:1493: array[rn2(SIZE(array))]).
 export function currency(amount) {
-    if (game.u.uprops?.HALLUC)
-        note_unported_invent('currency:hallucinatory');
-    return amount !== 1 ? 'zorkmids' : 'zorkmid';
+    let res;
+
+    res = Hallucination() ? currencies[rn2(currencies.length)] : 'zorkmid';
+    if (amount !== 1)
+        res = makeplural(res);
+    return res;
 }
 
-// src/invent.c doprgold() — the '$' command. No draws.
+// src/invent.c:4560 doprgold() — the '$' command.
 export async function doprgold() {
     const umoney = money_cnt(game.invent || []);
-    /* hidden_gold(FALSE) — gold inside carried containers; containers are
-       not carried on this tree, so it is zero */
+    /* Include gold stashed in containers, but not in the hero's pack;
+       the player can somehow tell if there is any gold anywhere on your
+       person, but you have no such preternatural gold-sense. */
+    const hmoney = hidden_gold(game.invent || [], false);
+
     if (game.flags?.verbose !== false) {
-        const buf = !umoney ? 'Your wallet is empty'
-                            : `Your wallet contains ${umoney} ${currency(umoney)}`;
+        let buf;
+
+        if (!umoney) {
+            buf = 'Your wallet is empty';
+        } else {
+            buf = `Your wallet contains ${umoney} ${currency(umoney)}`;
+        }
+        if (hmoney) {
+            buf += `, ${umoney ? 'and' : 'but'} you have ${hmoney} ${
+                umoney ? 'more' : currency(hmoney)} stashed away in your pack`;
+        }
         await pline(`${buf}.`);
     } else {
-        note_unported_invent('doprgold:terse');
+        const total = umoney + hmoney;
+        if (total)
+            await You(`are carrying a total of ${total} ${currency(total)}.`);
+        else
+            await You('have no money.');
     }
+    await shopper_financial_report();
+
+    if (umoney && game.iflags?.menu_requested) {
+        await dispinv_with_action((game.invent || []).filter(o => o.oclass === OCLASSES.COIN_CLASS),
+                                  false, null);
+    }
+
     return ECMD_OK;
 }
 
@@ -3434,6 +3486,8 @@ import { welded } from './wield.js';
 import { pline_The } from './pline.js';
 import { livelog_printf } from './pline.js';
 import { LL_CONDUCT } from './const.js';
+import { shopper_financial_report } from './shk.js';
+import { rn2 } from './rng.js';
 
 
 

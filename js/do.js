@@ -122,6 +122,9 @@ import { make_grave } from './mklev.js';
 import { Align2amask, AM_NONE, T_LOOTED, FOUNTAIN, THRONE, ALTAR, SINK } from './const.js';
 import { Inhell } from './makemon.js';
 import { defsyms } from './drawing_data.js';
+import { burn_away_slime } from './timeout.js';
+import { selftouch, deltrap } from './trap.js';
+import { container_impact_dmg } from './dokick.js';
 
 
 
@@ -574,8 +577,7 @@ export async function boulder_hits_pool(obj, x, y, pushing) {
                                Math.abs(game.u.uy - y)) <= 1) {
             await You('are hit by molten ' + hliquid('lava')
                 + (Fire_resistance() ? '.' : '!'));
-            if (game.u.uprops?.SLIMED)
-                note_unported_do('boulder_hits_pool:burn_away_slime');
+            await burn_away_slime();
             let damage = d(Fire_resistance() ? 1 : 3, 6);
             if (game.u.uprops?.HALF_PHDAM)
                 damage = Math.trunc((damage + 1) / 2);
@@ -1398,7 +1400,7 @@ export async function goto_level(newlevel, at_stairs, falling, portal) {
                 await mon_catchup_elapsed_time(mtmp, elapsed);
             /* update shape-changers in case protection against them is
                different now than when the level was saved */
-            restore_cham(mtmp);
+            await restore_cham(mtmp);
             /* give hiders a chance to hide before their next move */
             if (elapsed > 0 && elapsed > rnd(10))
                 hide_monst(mtmp);
@@ -1502,12 +1504,7 @@ export async function goto_level(newlevel, at_stairs, falling, portal) {
                              'tumbling down a flight of stairs',
                              KILLED_BY);
             }
-            /* selftouch("Falling, you") draws nothing unless a petrifying
-               corpse is wielded; that fatal branch remains explicit. */
-            if (game.u.uwep?.otyp === ONAMES.CORPSE
-                || (game.u.twoweap
-                    && game.u.uswapwep?.otyp === ONAMES.CORPSE))
-                note_unported_do('goto_level:selftouch');
+            await selftouch('Falling, you');
         } else { /* ordinary descent */
             if (game.flags?.verbose)
                 await You('descend the stairs.');
@@ -1517,11 +1514,8 @@ export async function goto_level(newlevel, at_stairs, falling, portal) {
         await u_on_rndspot(up ? 1 : 0);
         if (falling) {
             if (game.u.uball)
-                note_unported_do('goto_level:ballfall');
-            if (game.u.uwep?.otyp === ONAMES.CORPSE
-                || (game.u.twoweap
-                    && game.u.uswapwep?.otyp === ONAMES.CORPSE))
-                note_unported_do('goto_level:selftouch');
+                note_unported_do('goto_level:ballfall'); /* ballfall() is ball.c */
+            await selftouch('Falling, you');
             do_fall_dmg = true;
         }
     }
@@ -1799,9 +1793,10 @@ export async function goto_level(newlevel, at_stairs, falling, portal) {
 // monster is moved next to the hero (mnexto draws). The fallback rloc/limbo
 // arm is recorded.
 async function u_collide_m(mtmp, m_at, mnexto) {
-    const { enexto_core } = await import('./teleport.js');
+    const { enexto_core, rloc } = await import('./teleport.js');
     const { goodpos } = await import('./makemon.js');
-    const { GP_CHECKSCARY } = await import('./const.js');
+    const { m_into_limbo } = await import('./mon.js');
+    const { GP_CHECKSCARY, RLOC_NOMSG } = await import('./const.js');
     const { game: g } = await import('./gstate.js');
 
     const cc = { x: 0, y: 0 };
@@ -1820,8 +1815,16 @@ async function u_collide_m(mtmp, m_at, mnexto) {
         await mnexto(mtmp);
     }
 
-    if (m_at(g.u.ux, g.u.uy))
-        note_unported_do('u_collide_m:rloc_limbo');
+    if ((mtmp = m_at(g.u.ux, g.u.uy)) != null) {
+        /* there was an unconditional impossible("mnexto failed")
+           here, but it's not impossible and we're prepared to cope
+           with the situation, so only say something when debugging */
+        if (g.wizard)
+            await pline("(monster in hero's way)");
+        if (!await rloc(mtmp, RLOC_NOMSG) || (mtmp = m_at(g.u.ux, g.u.uy)) != null)
+            /* no room to move it; send it away, to return later */
+            await m_into_limbo(mtmp);
+    }
 }
 
 /* src/dungeon.c depth() — local copy to keep this module's import graph
@@ -1927,8 +1930,14 @@ export async function deferred_goto() {
                          !!(typmask & UTOTYPE_FALLING),
                          !!(typmask & UTOTYPE_PORTAL));
 
-        if (typmask & UTOTYPE_RMPORTAL)
-            note_unported_do('deferred_goto:remove portal');
+        if (typmask & UTOTYPE_RMPORTAL) { /* remove portal */
+            const t = t_at(game.u.ux, game.u.uy);
+
+            if (t) {
+                deltrap(t);
+                newsym(game.u.ux, game.u.uy);
+            }
+        }
 
         if (game.dfr_post_msg
             && !(game.u.uz.dnum === oldlev.dnum
@@ -1976,7 +1985,7 @@ export async function dropz(obj, with_impact) {
             return;
         place_object(obj, game.u.ux, game.u.uy);
         if (with_impact)
-            note_unported_do('dropz:container_impact_dmg');
+            await container_impact_dmg(obj, game.u.ux, game.u.uy);
         impact_disturbs_zombies(obj, with_impact);
         if (obj === game.u.uball)
             note_unported_do('dropz:drop_ball');

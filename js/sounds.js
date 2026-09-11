@@ -730,8 +730,20 @@ export async function domonnoise(mtmp) {
         }
         break;
     }
-    default:
-        note_unported_sounds(`domonnoise:msound=${msound}`);
+    case MSOUND.MS_DJINNI:
+        if (mtmp.mtame) {
+            verbl_msg = "Sorry, I'm all out of wishes.";
+        } else if (mtmp.mpeaceful) {
+            if (ptr === game.mons[PMNAMES.PM_WATER_DEMON])
+                pline_msg = 'gurgles.';
+            else
+                verbl_msg = "I'm free!";
+        } else {
+            if (ptr !== game.mons[PMNAMES.PM_PRISONER])
+                verbl_msg = 'This will teach you not to disturb me!';
+            else /* vague because prisoner might already be out of cell */
+                verbl_msg = 'Get me out of here.';
+        }
         break;
     }
 

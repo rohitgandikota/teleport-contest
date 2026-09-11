@@ -48,6 +48,16 @@ import { o_unleash } from './apply.js';
 import { openholdingtrap, minstapetrify } from './trap.js';
 import { touch_artifact } from './artifact.js';
 import { HAND, OBJ_INVENT } from './const.js';
+import { g_at, money_cnt } from './invent.js';
+import { findgold } from './makemon.js';
+import { y_monnam } from './do_name.js';
+import { s_suffix } from './hacklib.js';
+import { mbodypart } from './polyself.js';
+import { slithy } from './mondata.js';
+import { Levitation, Flying } from './youprop.js';
+import { FOOT } from './const.js';
+import { splitobj } from './mkobj.js';
+import { Your } from './pline.js';
 
 // src/steal.c:120 thiefdead()
 export function thiefdead() {
@@ -179,6 +189,65 @@ export async function remove_worn_item(obj, unchain_ball) {
 
 function note_unported_steal(what) {
     (game.unported ||= new Set()).add(what);
+}
+
+// src/steal.c:58 stealgold() — a leprechaun grabs gold from the floor
+// under the hero or from the hero's purse, then usually teleports away.
+export async function stealgold(mtmp) {
+    let fgold = g_at(game.u.ux, game.u.uy);
+    let ygold;
+    let tmp;
+    let who;
+    let whose, what;
+
+    while (fgold && fgold.otyp !== ONAMES.GOLD_PIECE)
+        fgold = fgold.nexthere;
+
+    ygold = findgold(game.invent);
+
+    if (fgold && (!ygold || fgold.quan > ygold.quan || !rn2(5))) {
+        obj_extract_self(fgold);
+        add_to_minv(mtmp, fgold);
+        newsym(game.u.ux, game.u.uy);
+        if (game.u.usteed) {
+            who = game.u.usteed;
+            whose = s_suffix(y_monnam(who));
+            what = makeplural(mbodypart(who, FOOT));
+        } else {
+            who = game.youmonst;
+            whose = 'your';
+            what = makeplural(body_part(FOOT));
+        }
+        /* [ avoid "between your rear regions" :-] */
+        if (slithy(who.data))
+            what = 'coils';
+        /* reduce "rear hooves/claws" to "hooves/claws" */
+        if (what.startsWith('rear '))
+            what = what.slice(5);
+        await pline(`${Monnam(mtmp)} quickly snatches some gold from ${
+            (Levitation() || Flying()) ? 'beneath' : 'between'} ${whose} ${what}!`);
+        if (!ygold || !rn2(5)) {
+            if (!tele_restrict(mtmp))
+                await rloc(mtmp, RLOC_MSG);
+            await monflee(mtmp, 0, false, false);
+        }
+    } else if (ygold) {
+        const gold_price = game.objects[ONAMES.GOLD_PIECE].oc_cost;
+
+        tmp = Math.trunc((somegold(money_cnt(game.invent)) + gold_price - 1) / gold_price);
+        tmp = Math.min(tmp, ygold.quan);
+        if (tmp < ygold.quan)
+            ygold = splitobj(ygold, tmp);
+        else
+            setnotworn(ygold);
+        freeinv(ygold);
+        add_to_minv(mtmp, ygold);
+        await Your('purse feels lighter.');
+        if (!tele_restrict(mtmp))
+            await rloc(mtmp, RLOC_MSG);
+        await monflee(mtmp, 0, false, false);
+        (game.disp ||= {}).botl = true;
+    }
 }
 
 // src/steal.c:14 somegold() — choose the proportional amount used by theft

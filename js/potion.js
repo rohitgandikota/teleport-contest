@@ -2571,7 +2571,7 @@ export async function mongrantswish(monp) {
 
     /* remove the monster first in case wish proves to be fatal
        (blasted by artifact), to keep it out of resulting bones file */
-    mongone(mon);
+    await mongone(mon);
     monp.mon = null; /* inform caller that monster is gone */
     /* hide that removal from player--map is visible during wish prompt */
     await tmp_at(DISP_ALWAYS, glyph);
@@ -2631,7 +2631,7 @@ export async function djinni_from_bottle(obj) {
         await verbalize('It is about time!');
         if (canspotmon(mtmp))
             await pline(`${Monnam(mtmp)} vanishes.`);
-        mongone(mtmp);
+        await mongone(mtmp);
         break;
     default:
         await verbalize('You disturbed me, fool!');

@@ -200,6 +200,7 @@ import { rn1 } from './rng.js';
 import { hit } from './zap.js';
 import { thesimpleoname } from './objnam.js';
 import { dropy } from './do.js';
+import { spec_abon } from './artifact.js';
 // include/mondata.h:255 befriend_with_obj(). This predicate is checked before
 // dogfood(), so a domestic monster offered normal food does not spend
 // dogfood()'s obj_resists draw until tamedog() inspects the meal.
@@ -413,12 +414,15 @@ export async function throw_obj(obj, shotlimit) {
     m_shot.s = false;
 
     /* src/dothrow.c:290 — undo a pre-existing object split if the leftover
-       stack is one of its halves; unsplitobj is not ported and no current
-       flow leaves this true. */
+       stack is one of its halves */
     if (obj && obj !== game.u.uquiver && save_osplit
         && (obj.o_id === save_osplit.parent_oid
-            || obj.o_id === save_osplit.child_oid))
-        note_unported_dothrow('throw_obj:unsplitobj');
+            || obj.o_id === save_osplit.child_oid)) {
+        /* futureproofing: objsplit will have been affected if partial stack
+           was thrown; objects will have been split off stack to throw. */
+        (game.context ||= {}).objsplit = save_osplit;
+        await unsplitobj(obj);
+    }
     return res;
 }
 
@@ -652,10 +656,13 @@ export async function throwit(obj, wep_mask, twoweap = false,
     if ((obj.cursed || obj.greased) && (u.dx || u.dy) && !rn2(7)) {
         let slipok = true;
         if (ammo_and_launcher(obj, game.u.uwep)) {
-            note_unported_dothrow('throwit:misfire_msg');
+            await pline(`${Tobjnam(obj, 'misfire')}!`);
         } else {
+            /* only slip if it's greased or meant to be thrown */
             if (obj.greased || throwing_weapon(obj))
-                note_unported_dothrow('throwit:slip_msg');
+                /* BUG: this message is grammatically incorrect if obj has
+                   a plural name; greased gloves or boots for instance. */
+                await pline(`${Tobjnam(obj, 'slip')} as you throw it!`);
             else
                 slipok = false;
         }
@@ -1116,7 +1123,7 @@ export async function thitmonst(mon, obj) {
                 tmp += (u.uwep.spe || 0) - greatest_erosion(u.uwep);
                 tmp += weapon_hit_bonus(u.uwep);
                 if (u.uwep.oartifact)
-                    note_unported_dothrow('thitmonst:launcher_artifact');
+                    tmp += spec_abon(u.uwep, mon);
             }
         } else {
             if (obj.otyp === ONAMES.BOOMERANG)

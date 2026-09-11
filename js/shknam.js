@@ -424,7 +424,7 @@ export async function stock_room(shp_indx, sroom) {
     const orcus = game.special_levels?.orcus_level;
     if (orcus && game.u.uz.dnum === orcus.dnum
         && game.u.uz.dlevel === orcus.dlevel) {
-        mongone(sroom.resident);
+        await mongone(sroom.resident);
         sroom.resident = null;
     }
 

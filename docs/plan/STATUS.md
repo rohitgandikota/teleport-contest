@@ -515,8 +515,25 @@ words rather than the cached u.ublind, because the C's BLINDED timeout case
 sees no blindness after the decrement and never interrupts a rush (NOTES
 "Blind() reads the property words").
 
-Next: triage `--seed 71`, then continue the
-note_unported list (do.js 9, dothrow.js 6, spell.js 8). tools/jsplay.mjs has a new
+Fifty-eighth round: `--seed 71` passed 40/40. Four note_unported groups
+ported in one tree: do.js and dothrow.js (burn_away_slime, selftouch,
+u_collide_m rloc/limbo, portal removal, container_impact_dmg, unsplitobj,
+misfire/slip messages, artifact launchers) with spell.js's impossible()
+arms and the whole spell-sort menu (NOTES "do.js, dothrow.js and spell.js
+notes"); hitmu()'s last six damage types through new uhitm.js
+mhitm_ad_corr/sgld/conf/halu/dgst/dise and steal.c stealgold() (NOTES
+"hitmu() dispatches every damage type the C does"); mongone() with
+grddead() and unstuck(), wizdeadorgone(), MON_ENDGAME_FREE and
+restore_cham()'s normal_shape() (NOTES "mongone() is asynchronous"); the
+hallucinatory currency roll, the full '$' report with
+shopper_financial_report(), and the djinni's chat (NOTES "Hallucinatory
+currency"). Remaining ball.c-shaped notes (ballfall, drop_ball, drag_ball,
+move_bc) wait for ball.js.
+
+Next: triage `--seed 72`, then continue the
+note_unported list (sounds.js dochat arms, mkmaze.js portals and bubbles,
+invent.js getobj/dispinv, cmd.js extended commands, steed.js mount arms,
+read.js seffects default, options.js handlers). tools/jsplay.mjs has a new
 `--aeval "<await expr>"` flag with the hack.js namespace as `h` for state
 probes. The census script is `tally.sh` in the scratchpad (diverge.mjs
 --screens over tools/gen-sessions/fuzz/*.session.json, 4 at a time).

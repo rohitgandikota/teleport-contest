@@ -2356,7 +2356,7 @@ async function kops_gone(silent) {
     for (const kop of kops) {
         if (canspotmon(kop))
             ++seen;
-        mongone(kop);
+        await mongone(kop);
     }
     if (seen && !silent) {
         await pline(seen === 1
@@ -3652,6 +3652,51 @@ export function shk_your(obj) {
 
 /* include/hack.h um_dist() */
 const um_dist = (x, y, n) => (Math.abs(game.u.ux - x) > n || Math.abs(game.u.uy - y) > n);
+
+// src/shk.c:992 shop_debt() — what the hero owes: the running debit plus
+// every unpaid item on the bill.
+function shop_debt(eshkp) {
+    let debt = eshkp.debit | 0;
+
+    for (const bp of (eshkp.bill_p || []))
+        debt += bp.price * bp.bquan;
+    return debt;
+}
+
+// src/shk.c:1003 shopper_financial_report() — the '$' command's credit and
+// debt summary, this shop first and then every other shop on the level.
+export async function shopper_financial_report() {
+    let shkp, this_shkp = shop_keeper(inside_shop(game.u.ux, game.u.uy));
+    let eshkp;
+    let amt;
+    let pass;
+    const mons = game.level?.monsters || [];
+
+    eshkp = this_shkp ? ESHK(this_shkp) : null;
+    if (eshkp && !(eshkp.credit || shop_debt(eshkp))) {
+        await You('have no credit or debt in here.');
+        this_shkp = null; /* skip first pass */
+    }
+
+    /* pass 0: report for the shop we're currently in, if any;
+       pass 1: report for all other shops on this level. */
+    for (pass = this_shkp ? 0 : 1; pass <= 1; pass++)
+        for (shkp = next_shkp(mons[0] ?? null, false); shkp;
+             shkp = next_shkp(mons[mons.indexOf(shkp) + 1] ?? null, false)) {
+            if ((shkp !== this_shkp) ^ pass)
+                continue;
+            eshkp = ESHK(shkp);
+            if ((amt = eshkp.credit | 0) !== 0)
+                await You(`have ${amt} ${currency(amt)} credit at ${
+                    s_suffix(shkname(shkp))} ${shtypes[eshkp.shoptype - SHOPBASE].name}.`);
+            else if (shkp === this_shkp)
+                await You('have no credit in here.');
+            if ((amt = shop_debt(eshkp)) !== 0)
+                await You(`owe ${shkname(shkp)} ${amt} ${currency(amt)}.`);
+            else if (shkp === this_shkp)
+                await You("don't owe any gold here.");
+        }
+}
 
 // src/shk.c:5019 shopdig(); the hero digs in a shop: warning (fall==0) or,
 // when the hole opens (fall==1), the shopkeeper grabs the pack

@@ -274,7 +274,7 @@ export async function lose_guardian_angel(mon) {
                 await pline(`${Monnam(mon)} vanishes!`);
             }
         }
-        mongone(mon);
+        await mongone(mon);
     }
     /* create 2 to 4 hostile angels to replace the lost guardian */
     for (let i = rn1(3, 2); i > 0; --i) {

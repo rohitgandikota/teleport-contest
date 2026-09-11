@@ -4623,8 +4623,9 @@ seed 63 added s63-24 (the C printed "It is nighttime." above the shared
 "Bad things can happen on Friday the 13th." line), seed 65 added s65-16
 (ours prints "It is nighttime." where the C's local hour did not), and
 seed 66 added s66-12 (^X nighttime vs midnight) and s66-09 (the midnight
-undead damage doubling of hitmu, like s30-13 and s46-25), and seed 68 added
-s68-03 (^X nighttime).
+undead damage doubling of hitmu, like s30-13 and s46-25), seed 68 added
+s68-03 (^X nighttime), and seed 72 added s72-10 (ours prints "It is
+nighttime." where the C's local hour did not) and s72-21 (the reverse).
 
 A related census-only artifact: s67-00 ends while the C blocks at wizard
 mode's "Dump core? [ynq] (q)" after #quit. Every recorded screen matches,
@@ -7773,3 +7774,67 @@ covered by the FROMFORM bit set_uasmon() sets. The one place that used
 the cache as a stand-in, lock.c chest_shatter_msg()'s temporary
 HBlinded=1 for singular(), now sets the property words like the C.
 u.ublind stays as a cache for the direct reads that remain.
+
+## do.js, dothrow.js and spell.js notes: portals, boulders, slips, spell sorting
+
+do.js: boulder_hits_pool() calls burn_away_slime() when lava splashes
+the hero; goto_level() calls selftouch("Falling, you") after a stairs
+tumble and a trap-door fall (ballfall() stays a note, ball.c is not
+ported); u_collide_m() ends as the C's mon.c-style arm: a monster still on
+the hero's square gets "(monster in hero's way)" in wizard mode, rloc(
+RLOC_NOMSG), and m_into_limbo() when no room is found; deferred_goto()
+removes a UTOTYPE_RMPORTAL portal with deltrap() and newsym(); dropz()
+calls container_impact_dmg() for an impact drop. dothrow.js: throw_obj()
+restores context.objsplit and unsplitobj()s a thrown half; throwit()
+prints "<Obj> misfires!" for launcher ammo and "<Obj> slips as you throw
+it!" for greased or throwing weapons; thitmonst() adds spec_abon() of an
+artifact launcher. spell.js: the four impossible() arms ("Too many spells
+memorized!", "Spell X already known.", "Unknown spell N attempted.",
+"tport_spell: spellbook full") and the whole spell sort: spl_sortchoices,
+spell_cmp() (letter, alphabetical, level low/high, skill group with three
+orderings, current, or reassigning letters), sortspells() over a
+spl_orderindx that dospellmenu() displays through, and spellsortmenu()
+(letters a..h, 'z' after a blank line for "reassign casting letters",
+the current mode preselected, "View known spells list sorted"); dovspell()
+frees the index and resets the mode on exit like the C. hacklib.js gained
+lowc(), strncmpi() and strcmpi() (global.h:113) for the alphabetical
+compare.
+
+## hitmu() dispatches every damage type the C does
+
+uhitm.js gained mhitm_ad_corr() (armor corrosion), mhitm_ad_sgld()
+(gold theft: the hero's arm through steal.c stealgold(), now ported in
+steal.js with the floor-gold snatch "quickly snatches some gold from
+between your feet" and the purse split through somegold(), and the
+monster-vs-monster theft with the thief teleporting away), mhitm_ad_conf()
+(the !rn2(4) confusion touch with mspec_used = damage + rn2(6)),
+mhitm_ad_halu(), mhitm_ad_dgst() (a pet's meal of a swallowed monster,
+"Burrrrp!", Riders killing the engulfer) and mhitm_ad_dise() (diseasemu()
+for the hero, fungus/ghoul/defended() immunity for monsters). hitmu()'s
+fallback is the C's mhitm_adtyping() default, damage 0; mhitu.js has no
+note_unported sites left.
+
+## mongone() is asynchronous: vault guards and shape restoration
+
+mongone() now does what mon.c:3267 does before m_detach(): a vault guard
+goes through grddead() (vault.c:175, ported: clear_fcorr(), relobj(),
+parkguard() and a second attempt), and unstuck() releases a hero the
+monster held, tested first so the two synchronous level-generation
+callers (create_object()'s statue template, mk_trap_statue()) never
+suspend. Every other caller awaits it. m_detach() calls wizdeadorgone()
+(wizard.c:815, ported: one fewer Wizard, udemigod and udg_cnt = rn1(250,
+50)) and sets MON_ENDGAME_FREE. restore_cham() reverts a cancelled
+shapeshifter, or any while the hero has protection from shape changers,
+through normal_shape() and is awaited by its three callers.
+
+## Hallucinatory currency, the full '$' report, and the djinni's chat
+
+currency() rolls ROLL_FROM(currencies) while hallucinating (invent.c:1521,
+twenty-one names, one rn2 per call) and makeplural()s it; every "Your
+wallet contains N <currency>" line and shop price drew nothing before.
+doprgold() reports gold stashed in containers (hidden_gold()), has the
+terse "You are carrying a total of ..." form, and ends with shk.c
+shopper_financial_report() (credit and debt in this shop, then in the
+others on the level; shop_debt() sums the debit and the bill), ported in
+shk.js. domonnoise() has the C's MS_DJINNI lines and no default: sounds
+the C ignores stay silent.

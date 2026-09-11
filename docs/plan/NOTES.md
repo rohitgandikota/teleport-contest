@@ -4625,8 +4625,9 @@ seed 63 added s63-24 (the C printed "It is nighttime." above the shared
 seed 66 added s66-12 (^X nighttime vs midnight) and s66-09 (the midnight
 undead damage doubling of hitmu, like s30-13 and s46-25), seed 68 added
 s68-03 (^X nighttime), seed 72 added s72-10 (ours prints "It is
-nighttime." where the C's local hour did not) and s72-21 (the reverse), and
-seed 73 added s73-17 (the C's "It is nighttime.").
+nighttime." where the C's local hour did not) and s72-21 (the reverse),
+seed 73 added s73-17 (the C's "It is nighttime."), and seed 75 added
+s75-20 (midnight hour vs nighttime) and s75-29 (the C's nighttime line).
 
 A related census-only artifact: s67-00 ends while the C blocks at wizard
 mode's "Dump core? [ynq] (q)" after #quit. Every recorded screen matches,
@@ -7919,3 +7920,29 @@ tree's flat floor list keeps the same newest-first order because
 place_object() unshifts, so the first entry at the square is the top of
 the pile. A first port reversed it and the knight coverage session drew
 the ball over the chain after every step (seed4500 step 512).
+
+## The rogue-level symbol set menu, and teleds() while trapped or engulfed
+
+s74-26 chose "roguesymset" in the options menu: the C's optfn_roguesymset
+do_handler is handler_symset(opt_roguesymset), i.e. symbols.c do_symset(
+TRUE), which lists dat/symbols minus the "Restrictions: primary" sets
+(curses, DECgraphics, Enhanced1, Enhanced2) and MAC-handled sets, under
+"Select rogue level symbol set:". Ours had no roguesymset handler, so the
+menu never opened and the keys meant for it ('n', then movement) became
+commands: a whole extra turn that the C never took, found by comparing
+the C's per-step RNG counts (each session step carries its own rng[]
+array in the JSON) with ours. do_symset(rogueflag) is now the C's shape
+over the full symset table (the three Rogue* sets and MACgraphics added
+with their restrictions); a rogue-set choice records
+gs_symset[ROGUESET] and only the Rogue level's own graphics assignment
+stays a note. The primary menu skips the rogue-restricted sets as the C
+does.
+
+teleds() (teleport.c:487) now reset_utrap()s, releases the engulfer or
+holder with set_ustuck(NULL) after remembering was_swallowed, drops a
+mimicking hero's disguise, and for a hero teleported out of an engulfer
+marks the ball and chain active and docrt()s, all before dragging the
+ball; rloc() has the steed arm (tele()), the Wizard of Yendor's
+staircase arm through stairway_find_forwiz() (teleport.c:1786) and the
+mon_telecontrol arm, plus impossible() for RLOC_ERR; rloc_to_core()
+removes and re-lays a long worm's tail.

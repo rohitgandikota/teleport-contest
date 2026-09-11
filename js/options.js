@@ -51,6 +51,8 @@ import { MAXMCLASSES, SYM_OFF_X, go_ov_primary_syms, go_ov_rogue_syms, escapes }
 import { WARNCOUNT, SYM_BOULDER } from './const.js';
 import { NUM_DISCLOSURE_OPTIONS, DISCLOSE_PROMPT_DEFAULT_YES, DISCLOSE_PROMPT_DEFAULT_NO, DISCLOSE_PROMPT_DEFAULT_SPECIAL, DISCLOSE_YES_WITHOUT_PROMPT, DISCLOSE_NO_WITHOUT_PROMPT, DISCLOSE_SPECIAL_WITHOUT_PROMPT } from './const.js';
 import { RUN_TPORT, RUN_LEAP, RUN_STEP, RUN_CRAWL } from './const.js';
+import { Is_rogue_level, H_MAC, H_UNK } from './const.js';
+import { There } from './pline.js';
 
 function note_unported_options(what) {
     (game.unported ||= new Set()).add('options:' + what);
@@ -1720,7 +1722,9 @@ async function doset_simple_menu() {
                 await handler_menu_objsyms();
             } else if (allopt[k].name === 'symset') {
                 /* src/options.c handler_symset() via allopt[k].optfn */
-                await do_symset();
+                await do_symset(false);
+            } else if (allopt[k].name === 'roguesymset') {
+                await do_symset(true);
             } else if (allopt[k].name === 'whatis_coord') {
                 await handler_whatis_coord();
             } else if (allopt[k].name === 'petattr') {
@@ -1811,49 +1815,103 @@ function doset_add_menu(tmpwin, o, fmtstr, indexoffset) {
 }
 
 // src/symbols.c:909 do_symset(), primary-set path for the pinned tty build.
-async function do_symset() {
-    const current = gs_symset[PRIMARYSET]?.name || null;
+// src/symbols.c:909 do_symset() — the symbol set menu for the primary set
+// or, with rogueflag, for the rogue level's set. The list is dat/symbols
+// (primary_symsets, read at build time); sets restricted to the other level
+// and MAC-handled sets are left out as the C does.
+async function do_symset(rogueflag) {
+    let ready_to_switch = false, nothing_to_do = false;
+    let chosen = -2, defindx = 0;
+    const which_set = rogueflag ? ROGUESET : PRIMARYSET;
+    const symset_name = gs_symset[which_set]?.name || null;
+    const symset_list = primary_symsets.filter(sl => sl.name);
+    let setcount = 0;
+
+    let biggest = 'Default Symbols'.length;
+    for (const sl of symset_list) {
+        if (rogueflag ? sl.primary : sl.rogue)
+            continue;
+        if (sl.handling === H_MAC)
+            continue;
+        setcount++;
+        const thissize = sl.name ? sl.name.length : 0;
+        if (thissize > biggest)
+            biggest = thissize;
+    }
+    if (!setcount) {
+        await There(`are no appropriate ${rogueflag ? 'rogue level' : 'primary'} symbol sets available.`);
+        return true;
+    }
+
     const tmpwin = tty_create_nhwindow(NHW_MENU);
     tty_start_menu(tmpwin, MENU_BEHAVE_STANDARD);
-
-    let defindx = current ? 0 : 1;
-    tty_add_menu(tmpwin, null, 1, 0, 0, ATR_NONE, NO_COLOR,
-                 'Default Symbols', defindx === 1
-                     ? MENU_ITEMFLAGS_SELECTED : MENU_ITEMFLAGS_NONE);
-
-    const width = Math.max('Default Symbols'.length,
-                           ...primary_symsets.filter(s => s.name)
-                               .map(s => s.name.length)) + 2;
-    for (const entry of primary_symsets) {
-        if (!entry.name)
+    let any = 1; /* -1 + 2 [see 'if (sl->name) {' below]*/
+    if (!symset_name)
+        defindx = any;
+    tty_add_menu(tmpwin, null, any, 0, 0, ATR_NONE, NO_COLOR, 'Default Symbols',
+                 (any === defindx) ? MENU_ITEMFLAGS_SELECTED : MENU_ITEMFLAGS_NONE);
+    for (const sl of symset_list) {
+        if (rogueflag ? sl.primary : sl.rogue)
             continue;
-        const id = entry.index + 2;
-        if (entry.name.toLowerCase() === current?.toLowerCase())
-            defindx = id;
-        const text = `${entry.name.padEnd(width)} ${entry.description}`;
-        tty_add_menu(tmpwin, null, id, 0, 0, ATR_NONE, NO_COLOR, text,
-                     id === defindx ? MENU_ITEMFLAGS_SELECTED
-                                    : MENU_ITEMFLAGS_NONE);
+        if (sl.handling === H_MAC)
+            continue;
+        if (sl.name) {
+            /* +2: both symset index and dynamic subindex
+               +1 because Defaults are implicitly in slot [0];
+               +1 again so that valid data is never 0 */
+            any = sl.index + 2;
+            if (symset_name && sl.name.toLowerCase() === symset_name.toLowerCase())
+                defindx = any;
+            const text = `${sl.name.padEnd(biggest + 2)} ${sl.description ? sl.description : ''}`;
+            tty_add_menu(tmpwin, null, any, 0, 0, ATR_NONE, NO_COLOR, text,
+                         (any === defindx) ? MENU_ITEMFLAGS_SELECTED
+                                           : MENU_ITEMFLAGS_NONE);
+        }
     }
-    tty_end_menu(tmpwin, 'Select symbol set:');
+    tty_end_menu(tmpwin, `Select ${rogueflag ? 'rogue level ' : ''}symbol set:`);
     const picks = await tty_select_menu(tmpwin, PICK_ONE);
-
-    let chosen = -2;
-    if (picks.length) {
+    if (picks.length > 0) {
         chosen = picks[0];
+        /* if picking the preselected entry yields 2, make sure
+           that we're going with the non-preselected one */
         if (picks.length === 2 && chosen === defindx)
             chosen = picks[1];
-        chosen -= 2;
-    } else if (!picks.cancelled && defindx > 0) {
+        chosen -= 2; /* convert menu index to symset index;
+                      * "Default symbols" have index -1 */
+    } else if (picks.length === 0 && !picks.cancelled && defindx > 0) {
         chosen = defindx - 2;
     }
     tty_destroy_nhwindow(tmpwin);
 
-    if (chosen >= -1) {
-        const entry = primary_symsets.find(s => s.index === chosen);
-        assign_graphics(entry?.name || false);
-    }
+    if (chosen > -1) {
+        /* chose an actual symset name from file */
+        const sl = symset_list.find(e => e.index === chosen);
+        if (sl) {
+            /* free the old one */
+            gs_symset[which_set] = { name: sl.name, handling: sl.handling };
+            ready_to_switch = true;
+        }
+    } else if (chosen === -1) {
+        /* explicit selection of defaults */
+        /* free the old symset name if there is one */
+        gs_symset[which_set] = { name: null, handling: H_UNK };
+    } else
+        nothing_to_do = true;
+
+    if (nothing_to_do)
+        return true;
+
+    /* init_rogue_symbols()/init_primary_symbols(), read_sym_file(which_set)
+       and switch_symbols(): the loaded sets are the build-time tables */
+    if (ready_to_switch && !rogueflag)
+        switch_symbols(true);
+    if (Is_rogue_level(game.u.uz)) {
+        if (rogueflag)
+            note_unported_options('do_symset:assign_graphics(ROGUESET)');
+    } else if (!rogueflag)
+        assign_graphics(gs_symset[PRIMARYSET]?.name || false);
     game.opt_need_redraw = true;
+    return true;
 }
 
 // src/cmd.c:2408 handler_rebind_keys(), the outer action picker.
@@ -2234,7 +2292,9 @@ export async function doset() {
                 /* compound option with a handler: optfn's do_handler arm */
                 await optfn_pickup_types();
             } else if (o.hasHandler === 'Yes' && o.name === 'symset') {
-                await do_symset();
+                await do_symset(false);
+            } else if (o.hasHandler === 'Yes' && o.name === 'roguesymset') {
+                await do_symset(true);
             } else if (o.hasHandler === 'Yes' && o.name === 'sortdiscoveries') {
                 await choose_disco_sort(0);
             } else if (o.hasHandler === 'Yes' && o.name === 'menustyle') {

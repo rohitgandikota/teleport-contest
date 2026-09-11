@@ -112,6 +112,14 @@ import { drag_ball, move_bc } from './ball.js';
 import { Punished } from './youprop.js';
 import { carried } from './obj.js';
 import { fill_pit } from './trap.js';
+import { remove_worm, place_worm_tail_randomly } from './worm.js';
+import { impossible } from './pline.js';
+import { In_W_tower } from './dungeon.js';
+import { set_ustuck } from './mon.js';
+import { reset_utrap } from './trap.js';
+import { docrt } from './display.js';
+import { hideunder } from './makemon.js';
+import { M_AP_NOTHING } from './const.js';
 
 
 
@@ -737,17 +745,20 @@ export async function rloc_to_core(mtmp, x, y, rlocflags) {
             appearmsg = false;
         }
         if (mtmp.wormno) {
-            note_unported_teleport('rloc:worm');
+            remove_worm(mtmp);
         } else {
             remove_monster(oldx, oldy);
-            newsym(oldx, oldy);
+            newsym(oldx, oldy); /* update old location */
         }
     }
 
     const { mon_track_clear, set_apparxy } = await import('./monmove.js');
     mon_track_clear(mtmp);
-    place_monster(mtmp, x, y);
+    place_monster(mtmp, x, y); /* put monster down */
     update_monster_region(mtmp);
+
+    if (mtmp.wormno) /* now put down tail */
+        place_worm_tail_randomly(mtmp, x, y);
     newsym(x, y);
     set_apparxy(mtmp);
 
@@ -777,7 +788,58 @@ export async function rloc_to_flag(mtmp, x, y, rlocflags) {
 
 // src/teleport.c:1802 rloc(). Try 50 random coordinates first, then use the
 // same shuffled exhaustive fallback as C.
+function stairway_find_forwiz(isladder, up) {
+    let stway = game.stairs;
+
+    while (stway && !(!!stway.isladder === !!isladder
+                      && !!stway.up === !!up
+                      && stway.tolev.dnum === game.u.uz.dnum))
+        stway = stway.next;
+    return stway;
+}
+
+// src/teleport.c:1799 rloc() — place a monster at a random location, or
+// where the Wizard of Yendor wants to be; returns false when no spot exists
 export async function rloc(mtmp, rlocflags = 0) {
+    let x, y;
+
+    if (mtmp === game.u.usteed) {
+        await tele();
+        return true;
+    }
+
+    if (mtmp.iswiz && mtmp.mx) { /* Wizard, not just arriving */
+        let stway;
+
+        if (!In_W_tower(game.u.ux, game.u.uy, game.u.uz)) {
+            stway = stairway_find_forwiz(false, true);
+        } else if (!stairway_find_forwiz(true, false)) { /* bottom of tower */
+            stway = stairway_find_forwiz(true, true);
+        } else {
+            stway = stairway_find_forwiz(true, false);
+        }
+        x = stway ? stway.sx : 0;
+        y = stway ? stway.sy : 0;
+
+        /* if the wiz teleports away to heal, try the up staircase,
+           to block the player's escaping before he's healed
+           (deliberately use `goodpos' rather than `rloc_pos_ok' here) */
+        if (goodpos(x, y, mtmp, NO_MM_FLAGS)) {
+            await rloc_to_core(mtmp, x, y, rlocflags);
+            return true;
+        }
+    }
+
+    /* mon_telecontrol is a debugging option; ignored if/when this is
+       arrival of a migrating monster */
+    if (game.iflags?.mon_telecontrol && mtmp.mx) {
+        const cc = { x: mtmp.mx, y: mtmp.my };
+        if (await control_mon_tele(mtmp, cc, rlocflags, true)) {
+            await rloc_to_core(mtmp, cc.x, cc.y, rlocflags);
+            return true;
+        }
+    }
+
     for (let trycount = 0; trycount < 50; ++trycount) {
         const x = rnd(COLNO - 1);
         const y = rn2(ROWNO);
@@ -813,7 +875,7 @@ export async function rloc(mtmp, rlocflags = 0) {
         return true;
     }
     if (rlocflags & RLOC_ERR)
-        note_unported_teleport('rloc:no_destination');
+        void impossible("rloc(): couldn't relocate monster");
     return false;
 }
 
@@ -875,9 +937,6 @@ export async function teleds(nux, nuy, teleds_flags) {
             vaultGuard = vaultFns.findgd();
     }
 
-    if (game.u.uswallow || game.u.utrap)
-        note_unported_teleport('teleds:ball_or_swallow');
-
     /* If they have to move the ball, then drag if allow_drag is true;
      * otherwise they are teleporting, so unplacebc().
      * If they don't have to move the ball, then always "drag" whether or
@@ -900,9 +959,25 @@ export async function teleds(nux, nuy, teleds_flags) {
             unplacebc(); /* have to move the ball */
     }
 
+    await reset_utrap(false);
+    const was_swallowed = game.u.uswallow; /* set_ustuck(Null) clears uswallow */
+    set_ustuck(null);
     const ux0 = game.u.ux, uy0 = game.u.uy;
     game.u.ux0 = ux0;
     game.u.uy0 = uy0;
+
+    if (!hideunder(game.youmonst) && game.youmonst.data.mlet === MONSYMS.S_MIMIC) {
+        /* mimics stop being unnoticed */
+        game.youmonst.m_ap_type = M_AP_NOTHING;
+    }
+
+    if (was_swallowed) {
+        if (Punished()) { /* ball&chain are off map while swallowed */
+            ballActive = true; /* to put chain and non-carried ball on map */
+            ballStillInRange = allowDrag = false; /* (redundant) */
+        }
+        await docrt();
+    }
     if (ballActive && (ballStillInRange || allowDrag)) {
         const bc = { bc_control: 0, ballx: 0, bally: 0, chainx: 0, chainy: 0,
                      cause_delay: false };

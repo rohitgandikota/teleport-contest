@@ -546,9 +546,15 @@ Sixty-first round: js/ball.js is src/ball.c in full and the do.js/cmd.js
 stand-ins are gone (NOTES "ball.js: src/ball.c in full"); the ball.c
 notes in do.js, dothrow.js, read.js and mkmaze.js are ported calls.
 
-Next: triage `--seed 74`, then continue the
+Sixty-second round: `--seed 74` had s74-26, the missing roguesymset
+option handler (NOTES "The rogue-level symbol set menu, and teleds()
+while trapped or engulfed"); the same round ported teleds()'s trap,
+engulfer and mimic handling, rloc()'s steed/Wizard/mon_telecontrol arms
+and rloc_to_core()'s worm tail.
+
+Next: triage `--seed 75`, then continue the
 note_unported list (invent.js dispinv, cmd.js extended commands through
-the extcmdlist table, options.js handlers, teleds() while swallowed). tools/jsplay.mjs has a new
+the extcmdlist table, options.js handlers). tools/jsplay.mjs has a new
 `--aeval "<await expr>"` flag with the hack.js namespace as `h` for state
 probes. The census script is `tally.sh` in the scratchpad (diverge.mjs
 --screens over tools/gen-sessions/fuzz/*.session.json, 4 at a time).

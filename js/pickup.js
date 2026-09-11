@@ -42,7 +42,7 @@ import { Is_container, Has_contents, carried, SchroedingersBox,
          age_is_relative } from './obj.js';
 import { AUTOUNLOCK_UNTRAP, AUTOUNLOCK_APPLY_KEY,
          AUTOUNLOCK_FORCE } from './const.js';
-import { check_capacity, in_rooms, losehp } from './hack.js';
+import { check_capacity, in_rooms, losehp, notice_all_mons_flush } from './hack.js';
 import { ECMD_OK, ECMD_TIME, ECMD_CANCEL, IS_FURNITURE, ICE, POOL, MOAT, WATER,
          LAVAPOOL, nothing_happens, nothing_seems_to_happen } from './const.js';
 import { upstart, trycall } from './do_name.js';
@@ -187,7 +187,7 @@ export async function simple_look(otmp, here) {
             await xwaitforspace(' \r\n\x1b');
         } while (game.morc !== '\x1b' && tty_next_page(tmpwin));
         tty_destroy_nhwindow(tmpwin);
-        await docrt();
+        await notice_all_mons_flush();
     }
 }
 
@@ -2239,7 +2239,7 @@ export async function explain_container_prompt(more_containers) {
         await xwaitforspace(' \r\n\x1b');
     } while (game.morc !== '\x1b' && tty_next_page(win));
     tty_destroy_nhwindow(win);
-    await docrt();
+    await notice_all_mons_flush();
 }
 
 // src/pickup.c:2943 u_handsy(); the hero has hands and one of them is free
@@ -2569,7 +2569,7 @@ async function in_or_out_menu(prompt, obj, outokay, inokay, alreadyused,
     await tty_display_nhwindow(win);
     const picks = await tty_select_menu(win, PICK_ONE);
     tty_destroy_nhwindow(win);
-    await docrt();
+    await notice_all_mons_flush();
     if (picks.length > 0) {
         let k = picks[0];
         /* preselected 'q'/'n' comes back alongside a real pick */

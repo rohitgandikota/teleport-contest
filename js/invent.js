@@ -37,6 +37,8 @@ import { Has_contents } from './obj.js';
 import { get_obj_location } from './zap.js';
 import { unpunish } from './read.js';
 import { game } from './gstate.js';
+import { suppress_map_output } from './display.js';
+import { tty_update_inventory } from './tty/wintty.js';
 import { wc_supported } from './options.js';
 import { visible_region_at, reg_damg } from './region.js';
 import { read_engr_at } from './engrave.js';
@@ -79,7 +81,7 @@ import { Fumbling } from './youprop.js';
 import { st_all, MOD_ENCUMBER, invlet_basic } from './const.js';
 import { u_safe_from_fatal_corpse, can_reach_floor } from './pickup.js';
 import { near_capacity, encumber_msg } from './attrib.js';
-import { in_rooms, inv_cnt } from './hack.js';
+import { in_rooms, inv_cnt, notice_all_mons_flush } from './hack.js';
 import { place_object } from './mkobj.js';
 import { touch_artifact } from './mon.js';
 import { dropy, dropx } from './do.js';
@@ -1051,7 +1053,7 @@ export async function display_binventory(x, y, as_if_seen = false) {
     tty_end_menu(win, 'Things that are buried here:');
     await tty_select_menu(win, PICK_NONE);
     tty_destroy_nhwindow(win);
-    await docrt();
+    await notice_all_mons_flush();
     return buried.length;
 }
 
@@ -2882,26 +2884,20 @@ export function any_obj_ok(obj) {
     return GETOBJ_EXCLUDE;
 }
 
-// src/invent.c update_inventory() — refresh the persistent inventory window.
-//
-// Two early returns first: nothing happens before the move loop starts, and
-// nothing happens while map output is suppressed. Both matter here, because
-// freeinv and useup call this during level generation and restore, when the
-// window does not exist yet.
-//
-// The body brackets the windowport call with iflags.suppress_price forced to
-// 0, because a perm_invent refresh can fire from inside code that is
-// deliberately hiding shop prices while formatting a message, and the window
-// should still show normal names. That is recorded along with the windowport
-// call itself -- the tty port only does real work when perm_invent is on, and
-// no recorded session turns it on.
+// src/invent.c:5570 update_inventory() — refresh the persistent inventory
+// window through the window port; the tty port has no such window here.
 export function update_inventory() {
-    if (!game.program_state?.in_moveloop)
+    if (!game.program_state?.in_moveloop) /* not covered by suppress_map_output */
         return;
-    if (note_unported_invent('update_inventory:suppress_map_output'))
+    if (suppress_map_output()) /* despite name, used for perm_invent too */
         return;
 
-    note_unported_invent('update_inventory:win_update_inventory');
+    /* prices should be displayed in the perm_invent window; the price
+       suppression is for a message being formatted */
+    const save_suppress_price = game.iflags?.suppress_price;
+    (game.iflags ||= {}).suppress_price = 0;
+    tty_update_inventory(0);
+    game.iflags.suppress_price = save_suppress_price;
 }
 
 
@@ -3937,7 +3933,7 @@ export async function invdisp_nothing(hdr, txt) {
     await tty_display_nhwindow(win);
     await tty_select_menu(win, PICK_NONE);
     tty_destroy_nhwindow(win);
-    await docrt();
+    await notice_all_mons_flush();
     return;
 }
 

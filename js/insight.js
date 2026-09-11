@@ -33,6 +33,7 @@ import { simple_typename, ansimpleoname, OBJ_NAME, ysimple_name, the } from './o
 import { M_AP_TYPE, M_AP_NOTHING, M_AP_OBJECT, M_AP_FURNITURE, M_AP_MONSTER, TT_PIT, SPIKED_PIT, TT_BURIEDBALL, TT_LAVA, TT_INFLOOR } from './const.js';
 import { trapname } from './trap.js';
 import { game } from './gstate.js';
+import { notice_all_mons_flush } from './hack.js';
 import { in_trouble, can_pray, u_gname } from './pray.js';
 import { Invulnerable, PermaBlind, Blnd_resist, Undead_warning, Clairvoyant, Adornment, Aggravate_monster, Protection, Polymorph, Lifesaved, Half_spell_damage, Blind_telepat, Warn_of_mon, Detect_monsters, Conflict, Displaced, Jumping, Wwalking, Slow_digestion, Underwater, Free_action, Half_gas_damage, Half_physical_damage, Invisible, Hate_silver, Fixed_abil, Unchanging, Polymorph_control, Protection_from_shape_changers, Wounded_legs, Confusion, Stunned, Glib } from './youprop.js';
 import { temp_resist } from './eat.js';
@@ -1964,7 +1965,7 @@ export async function do_gamelog() {
         while (game.morc !== '\x1b' && tty_next_page(win))
             await xwaitforspace(' \r\n\x1b');
         tty_destroy_nhwindow(win);
-        await docrt();
+        await notice_all_mons_flush();
     } else {
         await pline('No chronicled events.');
     }
@@ -2094,7 +2095,7 @@ export async function show_conduct(final) {
     while (tty_next_page(win))
         await xwaitforspace(' \r\n\x1b');
     tty_destroy_nhwindow(win);
-    await docrt();
+    await notice_all_mons_flush();
     return 0;
 }
 
@@ -2441,7 +2442,7 @@ export async function list_vanquished(defquery, ask) {
             }
             await display_menu_window_blocking(klwin);
             tty_destroy_nhwindow(klwin);
-            await docrt();
+            await notice_all_mons_flush();
         }
     } else if (!game.program_state_gameover) {
         await pline('No creatures have been vanquished.');
@@ -2601,7 +2602,7 @@ export async function list_genocided(defquery, ask) {
 
             await display_menu_window_blocking(klwin);
             tty_destroy_nhwindow(klwin);
-            await docrt();
+            await notice_all_mons_flush();
         }
     } else if (!game.program_state_gameover) {
         /* #genocided or #polyself prompt; if 'both', the (unlikely)

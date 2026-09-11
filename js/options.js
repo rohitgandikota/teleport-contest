@@ -3,6 +3,7 @@
 // include/optlist.h into js/optlist.js by tools/gen-optlist.mjs.
 
 import { game } from './gstate.js';
+import { notice_all_mons_flush } from './hack.js';
 import { display_file } from './pager.js';
 import { optmenu } from './dat_files.js';
 import { reset_commands } from './cmd.js';
@@ -1114,7 +1115,7 @@ export async function option_help() {
             break;
     }
     tty_destroy_nhwindow(win);
-    await docrt();
+    await notice_all_mons_flush();
 }
 
 /* src/options.c:114 OptS_type[] — section headings, indexed by OptSection. */

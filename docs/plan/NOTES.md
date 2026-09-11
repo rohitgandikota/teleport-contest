@@ -4631,7 +4631,9 @@ s75-20 (midnight hour vs nighttime), s75-29 and s77-26 (the C's
 nighttime line), and s78-09 (a 20261109004511 recording: ours prints the
 new-moon startup warning from the 9th, the C's shifted clock read the 8th),
 and s78-30 (a 20261114004959 recording: a shifted vampire bat's midnight()
-extra damage roll at mhitu.c:1189, like s30-13).
+extra damage roll at mhitu.c:1189, like s30-13), and seed 81 added s81-29
+(a 20261214220828 recording: were_change()'s `rn2(night() ? 30 : 50)`,
+night at our local hour 22 and not at the C's shifted one).
 
 A related census-only artifact: s67-00 ends while the C blocks at wizard
 mode's "Dump core? [ynq] (q)" after #quit. Every recorded screen matches,
@@ -8265,3 +8267,64 @@ With the grave goods buried, s79-26 runs to its recorded end and joins
 s34-09 and s67-00 in the census as a session whose last key leaves our
 turn one monster-movement draw past the recording's final draw (every
 screen matches); it is not a divergence.
+
+## Seed 81: one docrt() per closed window, and the transient light, portal, terrain-view and inventory notes
+
+`--seed 81` had two failures. s81-29 is the recording-timezone class:
+were_change() rolls `rn2(night() ? 30 : 50)`, and in that 20261214220828
+recording ours' local hour 22 is night while the C's shifted clock was
+not; it joins the list under "Fixed datetime and DST".
+
+s81-10 turned spot_monsters on in the options menu and later read the
+"Menu control keys" help. On RET the C printed "You see your little
+dog." once; ours printed it twice. The C's tty_dismiss_nhwindow() erases
+a full-width text or menu window through erase_menu_or_text(), whose arm
+is `docrt(); flush_screen(1);` (wintty.c:978). docrt() first shuts vision
+down with vision_recalc(2), and that call's notice_all_mons(TRUE) clears
+mspotted for every monster (nothing can be spotted while vision is off);
+the vision_recalc(0) that follows notices them all again. So with the
+option on every docrt() re-announces every monster in view, and the C
+runs exactly one docrt() per dismissed window. Ours ran two: the dismiss
+path's docrt_sync_rebuild() (the synchronous port of that docrt, which
+queues the notices because pline() is asynchronous there), and then an
+`await docrt()` in the window-closing function itself, a leftover from
+before docrt_sync_rebuild() existed. The second docrt cleared mspotted
+and queued the same notice again. Twenty-five such sites (checkfile,
+do_look, look_all, look_traps, look_engrs, do_supplemental_info,
+doextversion, display_file, domenucontrols, docontact, dokeylist,
+display_binventory, invdisp_nothing, simple_look,
+explain_container_prompt, in_or_out_menu, do_enlightenment_effect,
+invoke_enlightening, drinkfountain, do_gamelog, show_conduct,
+list_vanquished, list_genocided, container_contents, option_help) now do
+what tty_select_menu() already did: destroy the window, then flush the
+queued notices with notice_all_mons_flush(). The rule: ours calls docrt()
+only where the C calls docrt(), and no C window function does; the
+redraw lives inside tty_dismiss_nhwindow(). A narrow window (offx > 0)
+is erased with docorner() in the C and never re-notices at all; the
+extra docrt made ours announce there too. One known limit stays: when
+the notices need a --More--, the C shows it over a screen that cls()
+has just cleared and the map is painted afterwards, while ours paints
+the map first.
+
+The note_unported list in the same round:
+
+- objnam.js doname(): a leash whose monster is dead, or missing, is an
+  impossible() naming the monster or its id, as in the C.
+- light.js show_transient_light() in full: a camera flash has no object
+  and gets a light source with a Null id through new_light_core() (the
+  only case where range 0 is accepted), a thrown or kicked lamp that is
+  not a light source or is not free is an impossible(), the flash's
+  source is placed directly instead of through place_object(), and
+  discard_flashes() drops the object-less sources afterwards.
+- mkmaze.js put_lregion_here() and fixup_special() call mkportal() and
+  find_level() the way the C does; the "no destination" arms were the
+  port's own.
+- cmd.js levltyp[] (cmd.c:118) and doterrain's views 5 and 6, which
+  reach wizcmds.js wiz_map_levltyp() and wiz_levltyp_legend()
+  (wizcmds.c:693 and :841): the base-36 map of every levl[][].typ with
+  its stairs, ladders, portal and vibrating square legend line, and the
+  legend text window.
+- invent.js update_inventory() in C form (invent.c:5570): the
+  in_moveloop and suppress_map_output() gates, the suppress_price
+  bracket, and tty_update_inventory(), which does nothing because the
+  reference build has no TTY_PERM_INVENT.

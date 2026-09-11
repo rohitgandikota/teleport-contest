@@ -8,6 +8,7 @@
 // swallowed and the next segment starts a fresh game.
 
 import { game } from './gstate.js';
+import { notice_all_mons_flush } from './hack.js';
 import { shkname, shkname_is_pname } from './shknam.js';
 import { m_monnam } from './do_name.js';
 import { has_ebones } from './const.js';
@@ -297,7 +298,7 @@ export async function container_contents(list, identified, all_containers, repor
                     await xwaitforspace(' \r\n\x1b');
                 } while (game.morc !== '\x1b' && tty_next_page(tmpwin));
                 tty_destroy_nhwindow(tmpwin);
-                await docrt();
+                await notice_all_mons_flush();
                 if (all_containers)
                     await container_contents(box.cobj, identified, true, reportempty);
             } else if (reportempty) {

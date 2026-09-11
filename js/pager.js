@@ -32,6 +32,7 @@ import { obj_stop_timers } from './timeout.js';
 import { db_under_typ } from './dbridge.js';
 import { doextlist } from './cmd.js';
 import { game } from './gstate.js';
+import { notice_all_mons_flush } from './hack.js';
 import { Invis, senseself, Punished } from './youprop.js';
 import { Upolyd, M_AP_TYPMASK } from './const.js';
 import { y_monnam } from './do_name.js';
@@ -810,7 +811,7 @@ export async function checkfile(inp, pm, chkflags, supplemental_box) {
                 await tty_display_nhwindow(datawin);
                 await xwaitforspace(quitchars);
                 tty_destroy_nhwindow(datawin);
-                await docrt();
+                await notice_all_mons_flush();
             }
         } else if (user_typed_name && pass === 0 && !pass1found_in_file) {
             await pline("You don't have any information on those things.");
@@ -1250,7 +1251,7 @@ export async function do_look(mode) {
         if (picks.length > 0)
             i = picks[0];
         tty_destroy_nhwindow(win);
-        await docrt();
+        await notice_all_mons_flush();
     } else {
         i = 'y';
     }
@@ -1448,7 +1449,7 @@ async function look_all(nearby, do_mons) {
         while (tty_next_page(win))
             await xwaitforspace(quitchars);
         tty_destroy_nhwindow(win);
-        await docrt();
+        await notice_all_mons_flush();
     } else {
         await pline(`No ${do_mons ? 'monsters' : 'objects'} are currently `
             + `shown ${nearby ? 'nearby' : 'on the map'}.`);
@@ -1512,7 +1513,7 @@ async function look_traps(nearby) {
         while (tty_next_page(win))
             await xwaitforspace(quitchars);
         tty_destroy_nhwindow(win);
-        await docrt();
+        await notice_all_mons_flush();
     } else {
         await pline(`No traps seen or remembered${nearby ? ' nearby' : ''}.`);
         tty_destroy_nhwindow(win);
@@ -1568,7 +1569,7 @@ async function look_engrs(nearby) {
         await tty_display_nhwindow(win);
         await xwaitforspace(quitchars);
         tty_destroy_nhwindow(win);
-        await docrt();
+        await notice_all_mons_flush();
     } else {
         await pline('No engravings seen or remembered'
             + `${nearby ? ' nearby' : ''}.`);
@@ -1647,7 +1648,7 @@ async function do_supplemental_info(name, pm, without_asking) {
                 await tty_display_nhwindow(datawin);
                 await xwaitforspace(quitchars);
                 tty_destroy_nhwindow(datawin);
-                await docrt();
+                await notice_all_mons_flush();
             }
         }
     }
@@ -1673,7 +1674,7 @@ export async function doextversion() {
     while (game.morc !== '\x1b' && tty_next_page(win))
         await xwaitforspace(quitchars);
     tty_destroy_nhwindow(win);
-    await docrt();
+    await notice_all_mons_flush();
     return ECMD_OK;
 }
 
@@ -1704,7 +1705,7 @@ export async function display_file(text) {
             break;
     }
     tty_destroy_nhwindow(win);
-    await docrt();
+    await notice_all_mons_flush();
     return ECMD_OK;
 }
 
@@ -1763,7 +1764,7 @@ async function domenucontrols() {
     await tty_display_nhwindow(cwin);
     await xwaitforspace(quitchars);
     tty_destroy_nhwindow(cwin);
-    await docrt();
+    await notice_all_mons_flush();
 }
 
 // src/pager.c:2694 docontact() — the support window. sysopt.support and
@@ -1780,7 +1781,7 @@ async function docontact() {
     await tty_display_nhwindow(win);
     await xwaitforspace(quitchars);
     tty_destroy_nhwindow(win);
-    await docrt();
+    await notice_all_mons_flush();
 }
 
 /* src/pager.c:2830 help_menu_items[] — texts exactly as the reference

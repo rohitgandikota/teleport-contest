@@ -126,7 +126,7 @@ import { inside_shop } from './shk.js';
 import { add_damage } from './shk.js';
 import { pay_for_damage } from './shk.js';
 import { stop_occupation } from './allmain.js';
-import { set_uinwater } from './hack.js';
+import { set_uinwater, notice_all_mons_flush } from './hack.js';
 import { test_move } from './hack.js';
 import { nomul } from './hack.js';
 import { xytodir } from './cmd.js';
@@ -1831,7 +1831,7 @@ export async function do_enlightenment_effect() {
         while (game.morc !== '\x1b' && tty_next_page(win))
             await xwaitforspace(' \r\n\x1b');
         tty_destroy_nhwindow(win);
-        await docrt();
+        await notice_all_mons_flush();
     }
     await pline_The('feeling subsides.');
     exercise(A_WIS, true);

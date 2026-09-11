@@ -633,10 +633,29 @@ solid ground" line and remote shop burglary, Resists_Elem's drain and
 blindness arms, deepest_lev_reached() and the Wizard's tower spot, and
 "Unavailable command" for the wizard commands outside debug mode.
 
-Next: triage `--seed 81`, then the remaining note_unported list
-(cmd.js #therecmdmenu, the wizard extended commands and doterrain's
-debug views, objnam.js lookup_novel, symbols.js glyph parsing, light.js
-transient light, mkmaze.js portals). tools/jsplay.mjs has a new
+Seventieth round: `--seed 81` had s81-10 (real) and s81-29 (the
+recording timezone, were_change()'s night() roll). s81-10: with
+spot_monsters on, closing a full-width text window announced every
+visible monster twice, because the window-closing functions called
+docrt() after tty_destroy_nhwindow() had already redrawn through
+tty_dismiss_nhwindow(); the C runs one docrt() per dismissed window and
+each docrt() re-notices every monster in view (NOTES "Seed 81: one
+docrt() per closed window"). Twenty-five sites now flush the queued
+notices instead, as tty_select_menu() already did. Also ported:
+doname()'s leash impossible() arms, show_transient_light() in full
+(camera flash, discard_flashes), the portal destinations in
+put_lregion_here() and fixup_special(), levltyp[] with doterrain's
+map-internals and legend views (wiz_map_levltyp, wiz_levltyp_legend),
+and update_inventory() in C form with the tty's no-op
+tty_update_inventory().
+
+Next: triage `--seed 82`, then port the there_cmd_menu family in the
+C's form (cmd.js doherecmdmenu/dotherecmdmenu, there_cmd_menu_self,
+_next2u, _far, _common, act_on_act with the do_move_* functions the
+canned queue needs), then the remaining note_unported list (objnam.js
+lookup_novel, symbols.js glyph parsing, options.js do_symset and the
+key-binding actions, mon.js m_detach arms, priest.js and mplayer.js
+rloc squatters, the wizard extended commands). tools/jsplay.mjs has a new
 `--aeval "<await expr>"` flag with the hack.js namespace as `h` for state
 probes. The census script is `tally.sh` in the scratchpad (diverge.mjs
 --screens over tools/gen-sessions/fuzz/*.session.json, 4 at a time).

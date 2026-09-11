@@ -82,7 +82,7 @@ import { an, cxname, simpleonames, the, makeplural, singular, xname,
 import { is_edible } from './eat.js';
 import { donull } from './do.js';
 import { shop_keeper, dopay } from './shk.js';
-import { in_rooms } from './hack.js';
+import { in_rooms, notice_all_mons_flush } from './hack.js';
 import { inhishop } from './monmove.js';
 import { IS_ALTAR, FINGER, HAND, SHOPBASE, W_AMUL, W_RING, W_TOOL, ONAME,
          has_oname, GC_ECHOFIRST, GC_CONDHIST, GC_SAVEHIST } from './const.js';
@@ -1663,9 +1663,11 @@ export async function doterrain() {
     case 4: /* full map */
         await reveal_terrain(TER_MAP | TER_FULL);
         break;
-    case 5: /* map internals: wiz_map_levltyp() */
-    case 6: /* internal details: wiz_levltyp_legend() */
-        note_unported_cmd('doterrain:wiz_levltyp');
+    case 5: /* map internals */
+        await (await import('./wizcmds.js')).wiz_map_levltyp();
+        break;
+    case 6: /* internal details */
+        await (await import('./wizcmds.js')).wiz_levltyp_legend();
         break;
     default:
         break;
@@ -4122,7 +4124,7 @@ export async function dokeylist() {
             break;
     }
     tty_destroy_nhwindow(win);
-    await docrt();
+    await notice_all_mons_flush();
     return 0; /* ECMD_OK */
 }
 
@@ -4197,6 +4199,24 @@ export function cmd_from_func(name) {
     }
     return '\0';
 }
+
+// src/cmd.c:118 levltyp[] — the names of the levl[][].typ values, for the
+// debug-mode #terrain views (wizcmds.c wiz_map_levltyp() and its legend)
+export const levltyp = [
+    'stone', 'vertical wall', 'horizontal wall', 'top-left corner wall',
+    'top-right corner wall', 'bottom-left corner wall',
+    'bottom-right corner wall', 'cross wall', 'tee-up wall', 'tee-down wall',
+    'tee-left wall', 'tee-right wall', 'drawbridge wall', 'tree',
+    'secret door', 'secret corridor', 'pool', 'moat', 'water',
+    'drawbridge up', 'lava pool', 'lava wall', 'iron bars', 'door',
+    'corridor', 'room', 'stairs', 'ladder', 'fountain', 'throne', 'sink',
+    'grave', 'altar', 'ice', 'drawbridge down', 'air', 'cloud',
+    /* not a real terrain type, but used for undiggable stone
+       by wiz_map_levltyp() */
+    'unreachable/undiggable',
+    /* padding in case the number of entries above is odd */
+    '',
+];
 
 // src/cmd.c:157 unavailcmd — for rejecting a command that this build or
 // this game mode does not offer

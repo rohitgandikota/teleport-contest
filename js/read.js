@@ -31,8 +31,8 @@ import { actualoname, suit_simple_name, simpleonames, singular } from './objnam.
 import { TIMEOUT } from './const.js';
 import { make_stunned } from './potion.js';
 import { disintegrate_arm, any_worn_armor_ok, destroy_arm, greatest_erosion } from './do_wear.js';
-import { set_bc } from './cmd.js';
-import { dropy, placebc } from './do.js';
+import { set_bc, placebc, move_bc } from './ball.js';
+import { dropy } from './do.js';
 import { is_whirly } from './mondata.js';
 import { WT_IRON_BALL_INCR } from './const.js';
 import { game } from './gstate.js';
@@ -2536,7 +2536,7 @@ export async function litroom(on, obj) {
      *  that we don't remember them if they are out of sight.
      */
     if (game.u.uball && !on && !Blind())
-        note_unported_read('litroom:move_bc'); /* ball.c move_bc() */
+        move_bc(1, 0, game.u.uball.ox, game.u.uball.oy, game.u.uchain.ox, game.u.uchain.oy);
 
     if (Is_rogue_level(game.u.uz)) {
         /* Can't use do_clear_area because MAX_RADIUS is too small */
@@ -2571,7 +2571,7 @@ export async function litroom(on, obj) {
 
         /* replace ball&chain */
         if (game.u.uball && !on)
-            note_unported_read('litroom:move_bc'); /* ball.c move_bc() */
+            move_bc(0, 0, game.u.uball.ox, game.u.uball.oy, game.u.uchain.ox, game.u.uchain.oy);
     }
 
     game.vision_full_recalc = 1; /* delayed vision recalculation */

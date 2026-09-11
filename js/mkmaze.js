@@ -59,6 +59,8 @@ import { obj_ice_effects } from './mkobj.js';
 import { spot_stop_timers } from './timeout.js';
 import { count_level_features } from './mklev.js';
 import { impossible } from './pline.js';
+import { unplacebc_and_covet_placebc, lift_covet_and_placebc } from './ball.js';
+import { Punished } from './youprop.js';
 
 
 
@@ -1071,6 +1073,7 @@ export function reset_mkmaze() {
 }
 
 export async function movebubbles() {
+    let bcpin = 0;
     const g = game;
 
     /* set up the portal the first time bubbles are moved */
@@ -1083,8 +1086,8 @@ export async function movebubbles() {
 
     if (Is_waterlevel(g.u.uz)) {
         /* keep attached ball&chain separate from bubble objects */
-        if (g.uball)
-            note_unported_mkmaze('movebubbles:unplacebc');
+        if (Punished())
+            bcpin = unplacebc_and_covet_placebc();
 
         /*
          * Pick up everything inside of a bubble then fill all bubble
@@ -1177,8 +1180,8 @@ export async function movebubbles() {
     }
 
     /* put attached ball&chain back */
-    if (Is_waterlevel(g.u.uz) && g.uball)
-        note_unported_mkmaze('movebubbles:placebc');
+    if (Is_waterlevel(g.u.uz) && Punished())
+        await lift_covet_and_placebc(bcpin);
     g.vision_full_recalc = 1;
 }
 

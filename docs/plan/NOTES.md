@@ -7886,3 +7886,36 @@ first, and W_ACCESSORY (prop.h:122) includes W_TOOL, so a worn blindfold
 answers "You are already wearing that!"; ours listed the ring, amulet and
 armor bits by hand and fell through to the eyewear arm's "You are already
 wearing a blindfold." The mask is the C's now.
+
+## ball.js: src/ball.c in full, and the stand-ins it replaces
+
+The iron ball and chain used to be spread over do.js (placebc,
+unplacebc, litter, drag_down, ballrelease) and cmd.js (set_bc,
+punishmentOrder for bc_order, chainRock/chainInMiddle and the
+preparePunishmentMove/finishPunishmentMove pair standing in for
+drag_ball/move_bc). js/ball.js now mirrors ball.c function for function:
+ballrelease, ballfall, placebc_core, unplacebc_core, check_restriction
+with bcrestriction and hack.h's override_restriction (const.js), placebc,
+unplacebc, unplacebc_and_covet_placebc, lift_covet_and_placebc, bc_order,
+set_bc, move_bc, drag_ball, drop_ball, litter, drag_down and
+bc_sanity_check; BCPOS_DIFFER/CHAIN/BALL stay file-local as in the C.
+drag_ball() takes a record `bc` for the C's out-parameters (bc_control,
+ballx, bally, chainx, chainy, cause_delay), the `{ v }` idiom used
+elsewhere. Its callers are the C's: domove_core() (drag before
+in_out_region(), move_bc(0, ...) before spoteffects(), nomul(-2) with
+"dragging an iron ball" when cause_delay), teleds() (ball_still_in_range,
+allow_drag, the unplacebc()/placebc() pairing, fill_pit() on the old
+square), move_into_trap() and hurtle_step(). goto_level() calls
+ballfall() through a trap door and ballrelease(FALSE) after a stairs
+tumble, dropz() and throwit() call drop_ball(), litroom() brackets a
+darkening with move_bc(1, 0, ...)/move_bc(0, 0, ...), and movebubbles()
+keeps the pieces off the Plane of Water's bubbles with
+unplacebc_and_covet_placebc()/lift_covet_and_placebc(). youprop.js gained
+Punished() (youprop.h:77) and Luck() (you.h:464); objnam.js gained
+safe_typename(). `levl[x][y].glyph` is this tree's remembered_glyph and
+remove_object() is obj_extract_self() for a floor object. One trap in
+bc_order(): the C walks level.objects[x][y] from its head, and this
+tree's flat floor list keeps the same newest-first order because
+place_object() unshifts, so the first entry at the square is the top of
+the pile. A first port reversed it and the knight coverage session drew
+the ball over the chain after every step (seed4500 step 512).

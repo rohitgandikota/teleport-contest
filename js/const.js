@@ -1972,6 +1972,9 @@ export const A_CG_HELM_OFF = 2;
 // Runtime fields:
 // - drag_ball control mask in punishment movement
 // - map rectangle generation limits in room splitting
+// include/hack.h:110 enum bcargs
+export const override_restriction = -1;
+
 export const BC_BALL = 0x01;
 export const BC_CHAIN = 0x02;
 export const XLIM = 4;

@@ -25,7 +25,7 @@ import { ugolemeffects } from './polyself.js';
 import { make_blinded, make_hallucinated, make_stunned, incr_itimeout } from './potion.js';
 import { snuff_lit, number_leashed, unleash_all } from './apply.js';
 import { engulf_target, failed_grab } from './mhitm.js';
-import { unplacebc, placebc } from './do.js';
+import { unplacebc, placebc } from './ball.js';
 import { dismount_steed } from './steed.js';
 import { reset_occupations } from './cmd.js';
 import { mondead, wake_nearto } from './mon.js';

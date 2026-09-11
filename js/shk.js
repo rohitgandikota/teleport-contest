@@ -106,7 +106,7 @@ import { trapname, deltrap } from './trap.js';
 import { picking_at } from './lock.js';
 import { stop_occupation } from './allmain.js';
 import { tty_wait_synch } from './tty/wintty.js';
-import { unplacebc, placebc } from './do.js';
+import { unplacebc, placebc } from './ball.js';
 import { next_ident, mksobj, place_object } from './mkobj.js';
 import { ansimpleoname } from './objnam.js';
 import { check_special_room } from './hack.js';

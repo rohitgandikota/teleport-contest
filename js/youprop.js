@@ -259,3 +259,9 @@ export const Jumping = () =>
 // include/youprop.h Conflict — HConflict || EConflict
 export const Conflict = () =>
     !!(game.u?.intrinsic?.HConflict || game.u?.uprops?.CONFLICT);
+
+// include/youprop.h:77 Punished — (uball != 0).
+export const Punished = () => !!game.u?.uball;
+
+// include/you.h:464 Luck — (u.uluck + u.moreluck).
+export const Luck = () => (game.u?.uluck | 0) + (game.u?.moreluck | 0);

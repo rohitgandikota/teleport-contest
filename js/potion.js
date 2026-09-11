@@ -994,7 +994,7 @@ export async function make_blinded(xtime, talk) {
     /* src/potion.c:308: capture the glyphs under an attached ball and chain
        before the blindness flag changes. */
     if (!was_blind && blind_now && u.uball && u.uchain) {
-        const { set_bc } = await import('./cmd.js');
+        const { set_bc } = await import('./ball.js');
         set_bc(false);
     }
 

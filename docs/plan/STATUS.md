@@ -542,9 +542,13 @@ worn-blindfold "already wearing" mask (NOTES "The scroll of fire, and
 'You are already wearing that!'"), which also brought seffect_fire() and
 mkmaze.js's impossible() arms.
 
+Sixty-first round: js/ball.js is src/ball.c in full and the do.js/cmd.js
+stand-ins are gone (NOTES "ball.js: src/ball.c in full"); the ball.c
+notes in do.js, dothrow.js, read.js and mkmaze.js are ported calls.
+
 Next: triage `--seed 74`, then continue the
 note_unported list (invent.js dispinv, cmd.js extended commands through
-the extcmdlist table, options.js handlers, the ball.c family). tools/jsplay.mjs has a new
+the extcmdlist table, options.js handlers, teleds() while swallowed). tools/jsplay.mjs has a new
 `--aeval "<await expr>"` flag with the hack.js namespace as `h` for state
 probes. The census script is `tally.sh` in the scratchpad (diverge.mjs
 --screens over tools/gen-sessions/fuzz/*.session.json, 4 at a time).

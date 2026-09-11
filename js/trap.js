@@ -11,7 +11,7 @@ import { Confusion, Stunned, Acid_resistance, Hate_silver } from './youprop.js';
 import { has_magic_key, u_wield_art, attacks } from './artifact.js';
 import { ART_STING } from './artilist_data.js';
 import { test_move, bad_rock, check_capacity } from './hack.js';
-import { getdir, preparePunishmentMove, finishPunishmentMove } from './cmd.js';
+import { getdir } from './cmd.js';
 import { u_on_newpos } from './teleport.js';
 import { check_leash, consume_obj_charge } from './apply.js';
 import { inv_weight, weight_cap, calc_capacity, adjalign } from './attrib.js';
@@ -114,8 +114,7 @@ import { strongmonst } from './mondata.js';
 import { digests } from './mondata.js';
 import { can_teleport } from './mondata.js';
 import { schedule_goto } from './do.js';
-import { unplacebc } from './do.js';
-import { placebc } from './do.js';
+import { unplacebc, placebc } from './ball.js';
 import { maybe_dunk_boulders } from './apply.js';
 import { next_to_u } from './apply.js';
 import { unleash_all } from './apply.js';
@@ -696,9 +695,15 @@ export function untrap_prob(ttmp) {
 // src/trap.c:5393 move_into_trap(), including punishment and forced triggering.
 export async function move_into_trap(ttmp) {
     const u = game.u, x = ttmp.tx, y = ttmp.ty;
-    let punishmentMove = null;
+    const bc = { bc_control: 0, ballx: 0, bally: 0, chainx: 0, chainy: 0,
+                 cause_delay: false };
+
+    /* we know there's no monster in the way and we're not trapped, but
+       need to make sure the move is not diagonally into or out of a
+       doorway; the sgn() calls are redundant since ttmp is adjacent */
     if (await test_move(u.ux, u.uy, Math.sign(x - u.ux), Math.sign(y - u.uy), TEST_MOVE)
-        && (!Punished() || (punishmentMove = await preparePunishmentMove(x, y, true)))) {
+        && (!Punished()
+            || await drag_ball(x, y, bc, true))) {
         u.ux0 = u.ux;
         u.uy0 = u.uy;
         u_on_newpos(x, y);
@@ -706,7 +711,8 @@ export async function move_into_trap(ttmp) {
         newsym(u.ux0, u.uy0);
         vision_recalc(1);
         await check_leash(u.ux0, u.uy0);
-        if (Punished()) finishPunishmentMove(punishmentMove);
+        if (Punished())
+            move_bc(0, bc.bc_control, bc.ballx, bc.bally, bc.chainx, bc.chainy);
         ttmp.tseen = 0;
         game.iflags.failing_untrap = (game.iflags.failing_untrap || 0) + 1;
         await spoteffects(true);
@@ -5357,6 +5363,7 @@ import { closed_door } from './cmd.js';
 import { is_pool_or_lava } from './dbridge.js';
 import { stackobj } from './invent.js';
 import { isok } from './hacklib.js';
+import { drag_ball, move_bc } from './ball.js';
 
 // src/trap.c:3695 isclearpath() — may a boulder roll `distance` squares
 // from cc along (dx,dy)? Walks the squares; on success cc is advanced to

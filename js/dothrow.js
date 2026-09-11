@@ -201,6 +201,8 @@ import { hit } from './zap.js';
 import { thesimpleoname } from './objnam.js';
 import { dropy } from './do.js';
 import { spec_abon } from './artifact.js';
+import { drag_ball, move_bc, drop_ball } from './ball.js';
+import { Punished } from './youprop.js';
 // include/mondata.h:255 befriend_with_obj(). This predicate is checked before
 // dogfood(), so a domestic monster offered normal food does not spend
 // dogfood()'s obj_resists draw until tamedog() inspects the meal.
@@ -935,7 +937,7 @@ export async function throwit(obj, wep_mask, twoweap = false,
 
     stackobj(obj);
     if (obj === u.uball)
-        note_unported_dothrow('throwit:drop_ball'); /* drop_ball(bx, by) */
+        await drop_ball(bx, by);
     if (cansee(bx, by))
         newsym(bx, by);
     if (obj_sheds_light(obj))
@@ -1622,7 +1624,6 @@ const Maybe_Half_Phys = (dmg) =>
     (game.u.intrinsic?.HHalf_physical_damage || game.u.uprops?.HALF_PHDAM)
         ? Math.trunc((dmg + 1) / 2) : dmg;
 /* include/youprop.h */
-const Punished = () => !!game.u.uball;
 const Wwalking = () => !!(game.u.intrinsic?.HWwalking || game.u.uprops?.WWALKING);
 const Swimming = () => !!(game.u.intrinsic?.HSwimming || game.u.uprops?.SWIMMING);
 const Passes_walls = () => !!(game.u.intrinsic?.HPasses_walls || game.u.uprops?.WALLWALK);
@@ -1743,8 +1744,11 @@ export async function hurtle_step(arg, x, y) {
     /* caller has already determined that dragging the ball is allowed;
        if ball is carried we might still need to drag the chain */
     if (Punished()) {
-        /* drag_ball()/move_bc() are ball.c, not ported */
-        note_unported_dothrow('hurtle_step:drag_ball');
+        const bc = { bc_control: 0, ballx: 0, bally: 0, chainx: 0, chainy: 0,
+                     cause_delay: false };
+
+        if (await drag_ball(x, y, bc, true))
+            move_bc(0, bc.bc_control, bc.ballx, bc.bally, bc.chainx, bc.chainy);
     }
 
     ox = game.u.ux;

@@ -648,6 +648,9 @@ export function addinv_core2(obj) {
                scrolls */
             game.u.uconduct ||= {};
             game.u.uconduct.literate = (game.u.uconduct.literate || 0) + 1;
+            if (game.u.uconduct.literate === 1)
+                livelog_printf(LL_CONDUCT,
+                               'became literate by deciphering a scroll label');
         });
     }
     return null;
@@ -3429,6 +3432,8 @@ export async function identify_pack(id_limit, learning_id) {
 // src/invent.c:1664 splittable() — can this stack be split off from?
 import { welded } from './wield.js';
 import { pline_The } from './pline.js';
+import { livelog_printf } from './pline.js';
+import { LL_CONDUCT } from './const.js';
 
 
 

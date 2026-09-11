@@ -4620,8 +4620,19 @@ in seed 55), and seed 56 added s56-31, seed 59 added s59-19, and seed 61
 added s61-25 and s61-35 (the same ^X line), seed 62 added s62-11 (ours
 prints "It is nighttime." where the C's local hour printed no line), and
 seed 63 added s63-24 (the C printed "It is nighttime." above the shared
-"Bad things can happen on Friday the 13th." line), and seed 65 added
-s65-16 (ours prints "It is nighttime." where the C's local hour did not).
+"Bad things can happen on Friday the 13th." line), seed 65 added s65-16
+(ours prints "It is nighttime." where the C's local hour did not), and
+seed 66 added s66-12 (^X nighttime vs midnight) and s66-09 (the midnight
+undead damage doubling of hitmu, like s30-13 and s46-25), and seed 68 added
+s68-03 (^X nighttime).
+
+A related census-only artifact: s67-00 ends while the C blocks at wizard
+mode's "Dump core? [ynq] (q)" after #quit. Every recorded screen matches,
+but the census's diverge run answers the prompt when the key list runs out
+and our done(QUIT) then draws (the disclosure and bones bookkeeping), so
+the census reports extra RNG calls "C never made". A recording that ends
+at a prompt that leads into done() will always show this; it is not an
+over-read (the C needed the same key).
 
 ## Fuzz divergence census (2026-09-01, second pass)
 
@@ -7583,3 +7594,96 @@ ours keys the extrinsic word by property, and the table lacked BLINDED
 blindfolded wizard's ^X said "You are temporarily blind." where the C says
 "... because of your blindfold." (s65-34; the blindfold sets EBlinded's
 W_TOOL bit through setworn(), which is exactly what what_gives() finds).
+
+## toss_up(): an object thrown at the ceiling comes back down
+
+dothrow.c:1620 toss_up() is ported (throwit() used an inline potion-only
+sketch and recorded everything else). Without a ceiling the object "flies
+up into" the sky; with hitsroof (rn2(5) and not underwater) a breakable
+object "hits the ceiling", breakmsg()s and breakobj()s, a crackable one
+that survives lands with hitfloor(); otherwise it "hits" or "almost hits"
+the ceiling "then falls back on top of your head": a potion goes through
+potionhit(), a breakable one (egg, cream pie, venom) breaks on the face,
+with the petrifying egg's stoning, the blinding increments and "You've got
+it all over your face!"; a harmless missile "doesn't hurt"; anything else
+does dmgval() damage, or a weight-based rnd() for non-weapons with the
+silver and blessed bonuses, artifact_hit() with a fake rn1(18, 2) roll,
+hard-helmet reduction to 1 ("Fortunately, you are wearing a hard helmet."
+or "Unfortunately, you are wearing a hat." for a rock against a xorn),
+"Your helmet does not protect you.", the petrifying corpse's
+"elementary physics" stoning, "The silver sears you!", hitfloor(obj, TRUE)
+and losehp(dmg, "falling object"). s66-20 threw a stack upward: the three
+obj_resists() rolls of breaktest() were missing.
+
+## The tty hit-point bar, and the recorder's five-space rule
+
+The hitpointbar option (s66-38 turned it on through 'O') wraps the status
+title in '[' and ']' at a forced width of 30 (wintty.c:4562, "%-30.30s",
+repad_with_dashes() when critically_low_hp(TRUE)) and draws the first
+(30 * percent / 100) characters in inverse, all 30 at full HP, at least
+one when injured and at most 29 while not at full HP (wintty.c:5117;
+percentage() rounds a non-zero HP up to 1%). The recorded reference, though,
+shows the inverse only over the title text: scripts/record-session.mjs
+compressAnsiLine() turns every run of five or more spaces in the tty's
+output line into a cursor-forward regardless of the SGR state in effect,
+and screen-decode.mjs restores such a run as plain cells. The status
+painter therefore drops the inverse attribute on any run of five or more
+padding spaces inside the bar and keeps it on shorter runs, which is what
+the scorer will see for the C. Remember this rule for any other inverse
+region that can contain long space runs.
+
+## mhitu.js: falling hiders, seduction substitution, protects()
+
+mattacku()'s hider arms are the C's (mhitu.c:1050): a hidden ceiling
+hider "falls from the ceiling", the attacker is taken off the map so
+enexto() can find the hero a spot (an eel in water refuses to trade with
+a hero over land: "<Mon> draws back as you drop!"), the monster takes the
+hero's square, a long worm's tail is re-checked, teleds() moves the hero,
+and a piercer then hits the monster for d(3,6) unless its hard helmet
+deflects ("Your blow glances off <its> helmet."); a surface hider is
+told "Wait, <mon>!  There's a <form> named <name> hiding under <object>!"
+(or "... a hidden <form> named <name> there!" for eels and trappers, with an
+egg's "laid by you" suppressed) or "It tries to move where you are
+hiding." getmattk() carries the SYSOPT_SEDUCE=0 substitution table
+(monsters.h SEDUCTION_ATTACKS_NO) even though sysconf leaves seduce on;
+wildmiss() has its impossible(); magic_negation() consults artifact.c:698
+protects() (ported) for a monster's worn or wielded protection sources and
+gives aligned priests and minions the intrinsic minimum of 1, as the C
+does.
+
+## A discarded long worm takes its tail with it (m_detach, wormgone)
+
+s68-22 diverged during Medusa's level: sp_lev.c create_object() makes a
+monster only to source a statue's inventory and throws it away with
+mongone(). When that monster is a long worm, makemon has already given it
+rn2(5) tail segments, and the C's m_detach() calls mon_leaving_level(),
+which uses remove_worm() instead of remove_monster() for a worm, then
+wormgone(), which frees the segments and the worm slot. Ours removed only
+the head square, so the tail squares stayed in the level's monster grid;
+a later des.monster() at one of them failed goodpos() and drew extra
+rndmonst() calls. m_detach() now inlines mon_leaving_level() (it is
+synchronous because create_object() and mk_trap_statue() are): mtrapped
+cleared, remove_worm()/remove_monster() including the vault guard at
+<0,0>, mundetected, seemimic(), newsym() and the polearm target, with
+notes for unstuck() and fill_pit(), which need the message loop; and it
+calls wormgone() after shkgone() as mon.c:2787 does. Two worm.c fixes
+came with it: toss_wsegs() now calls remove_monster() for every segment
+with a square, as worm.c:146 does. It used to delete a square only when
+the monster there still had a wormno, but wormgone() clears wormno before
+calling it, so the guard never fired and keepdogs()' pet worm left its tail
+squares behind on the old level. remove_worm() is synchronous now
+(worm.js already imports remove_monster statically).
+
+## Seed 68: the first-move death line, W-tower disorientation, scroll labels
+
+s68-01: dying on move 1 prints "Do not pass Go.  Do not collect 200
+zorkmids." (end.c:1187, `svm.moves <= 1 && how < PANICKED &&
+!done_stopprint`) after the achievement and dump-log lines and before the
+bones decision. s68-34: scrolltele()'s "You feel disoriented for a
+moment." fires for `u.uhave.amulet || On_W_tower_level(&u.uz)` with the
+same !rn2(3) (teleport.c:865); ours only tested the Amulet, so a scroll
+of teleportation read on a Wizard's Tower level drew one call fewer.
+s68-12: an Archeologist reading a scroll label on pickup counts as
+becoming literate, and the first time logs "became literate by
+deciphering a scroll label" (invent.c:1047, LL_CONDUCT), which shows in
+the dumplog and the ^X achievements.

@@ -139,7 +139,7 @@ const DEVOUT = 14, STRIDENT = 4, PIOUS = 20;
 const Role_if = (pm) => game.urole?.mnum === pm;
 
 // src/pray.c:116 critically_low_hp()
-function critically_low_hp(only_if_injured) {
+export function critically_low_hp(only_if_injured) {
     const curhp = Upolyd(game.u) ? game.u.mh : game.u.uhp;
     let maxhp = Upolyd(game.u) ? game.u.mhmax : game.u.uhpmax;
 

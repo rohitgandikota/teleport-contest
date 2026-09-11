@@ -476,8 +476,29 @@ s65-34 was the missing BLINDED entry in from_what()'s extrinsic table
 (NOTES "Grabs on an unsolid hero fail, and ^X names the blindfold in wizard
 mode", which also covers mattacku()'s failed_grab() arms).
 
-Next: triage `--seed 66`, then continue the
-note_unported list (mhitu.js 8, timeout.js 9, dothrow.js 8, do.js 9). tools/jsplay.mjs has a new
+Fifty-fourth round: `--seed 66` had four failures: s66-12 (timezone) and
+s66-09 (midnight undead damage) are recording-clock instances; s66-20 was
+toss_up() (NOTES "toss_up(): an object thrown at the ceiling comes back
+down") and s66-38 the hitpointbar option (NOTES "The tty hit-point bar,
+and the recorder's five-space rule"). `--seed 67` passed 40/40. mhitu.js is
+down to the hitmu damage types the C dispatches through mhitm_adtyping()
+that uhitm.js does not have yet (AD_CONF, AD_CORR, AD_DGST, AD_DISE,
+AD_HALU, AD_SGLD); its hider, seduction and protects() arms are ported
+(NOTES "mhitu.js: falling hiders, seduction substitution, protects()").
+
+Fifty-fifth round: `--seed 68` had five failures: s68-03 (timezone, ^X
+nighttime); s68-01 the first-move death line "Do not pass Go." (end.c:1187);
+s68-34 scrolltele()'s W-tower disorientation test (teleport.c:865); s68-12
+the literacy livelog for deciphering a scroll label (invent.c:1047); and
+s68-22 a statue's discarded long worm leaving its tail squares in the
+monster grid. That last one reworked m_detach() into the C's
+mon_leaving_level() form (remove_worm() for worms, wormgone() after
+shkgone()) and fixed toss_wsegs(), whose guard never removed a segment
+square (NOTES "A discarded long worm takes its tail with it"; "Seed 68: the
+first-move death line, W-tower disorientation, scroll labels").
+
+Next: triage `--seed 69`, then continue the
+note_unported list (timeout.js 9, do.js 9, dothrow.js 6, spell.js 8). tools/jsplay.mjs has a new
 `--aeval "<await expr>"` flag with the hack.js namespace as `h` for state
 probes. The census script is `tally.sh` in the scratchpad (diverge.mjs
 --screens over tools/gen-sessions/fuzz/*.session.json, 4 at a time).

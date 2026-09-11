@@ -939,7 +939,7 @@ export const TELEDS_NO_FLAGS = 0, TELEDS_ALLOW_DRAG = 1, TELEDS_TELEPORT = 2;
 export async function scrolltele(scroll) {
     const cc = { x: 0, y: 0 };
 
-    if ((game.u.uhave?.amulet) && !rn2(3)) {
+    if ((game.u.uhave?.amulet || On_W_tower_level(game.u.uz)) && !rn2(3)) {
         await You_feel('disoriented for a moment.');
         if (!game.wizard) return;
         const { tty_yn_function } = await import('./tty/topl.js');

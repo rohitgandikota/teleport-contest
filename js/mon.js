@@ -9,7 +9,7 @@ import { monmax_difficulty } from './makemon.js';
 import { simple_typename } from './objnam.js';
 import { The } from './objnam.js';
 import { pline_mon } from './pline.js';
-import { MON_LIMBO } from './const.js';
+import { MON_LIMBO, is_hole } from './const.js';
 import { MIGR_APPROX_XY } from './const.js';
 import { NATTK } from './const.js';
 import { c_obj_colors } from './const.js';
@@ -35,7 +35,7 @@ import { fill_pit, mselftouch } from './trap.js';
 import { poly_steed } from './steed.js';
 import { possibly_unwield } from './weapon.js';
 import { Protection_from_shape_changers } from './youprop.js';
-import { remove_worm } from './worm.js';
+import { remove_worm, wormgone } from './worm.js';
 import { mon_offmap, is_lightblocker_mappear } from './monst.js';
 import { dist2 } from './hacklib.js';
 import { m_dowear, mon_break_armor } from './worn.js';
@@ -2116,15 +2116,15 @@ import { worm_known } from './worm.js';
 // identifies the actual missing behavior.
 export function m_detach(mtmp, mptr, due_to_death) {
     const mx = mtmp.mx, my = mtmp.my;
-    const onmap = mx > 0
+    /* mon_leaving_level()'s test: the raw grid, which still holds a
+       monster whose mhp is already zero */
+    const onmap = isok(mx, my)
         && game.level?.monAt?.get(`${mx},${my}`) === mtmp;
 
     if (mtmp.mleashed)
         (game.unported ||= new Set()).add('mon:m_detach:m_unleash');
     if (mtmp.iswiz)
         (game.unported ||= new Set()).add('mon:m_detach:wizdeadorgone');
-    if (mtmp.wormno)
-        (game.unported ||= new Set()).add('mon:m_detach:wormgone');
     if (due_to_death)
         (game.unported ||= new Set()).add('mon:m_detach:due_to_death');
     if (In_endgame(game.u.uz))
@@ -2136,12 +2136,37 @@ export function m_detach(mtmp, mptr, due_to_death) {
     if (mx > 0 && emits_light(mptr))
         del_light_source(LS_MONSTER, mtmp.m_id);
 
-    /* mon_leaving_level() — off the map, but still on the fmon chain */
+    /* src/mon.c:2696 mon_leaving_level() — off the map, but still on the
+       fmon chain. m_detach() is synchronous, so the body is inlined without
+       its unstuck() and fill_pit() calls, which both need the message loop;
+       mongone() has already called unstuck() in the C */
+    mtmp.mtrapped = 0;
+    if (game.u.ustuck === mtmp)
+        (game.unported ||= new Set()).add('mon:m_detach:unstuck');
+    /* vault guard might be at <0,0> */
+    if (onmap || mtmp === game.level?.monAt?.get('0,0')) {
+        if (mtmp.wormno)
+            remove_worm(mtmp);
+        else
+            remove_monster(mx, my);
+    }
     if (onmap) {
-        remove_monster(mx, my);
-        mtmp.mundetected = 0;
+        mtmp.mundetected = 0; /* for migration; doesn't matter for death */
+        /* mimic must be revealed if it is going to migrate to another level
+           or it is accompanying the hero to another level */
+        if (M_AP_TYPE(mtmp) !== M_AP_NOTHING && M_AP_TYPE(mtmp) !== M_AP_MONSTER)
+            seemimic(mtmp);
+        /* fill_pit(mx, my): a boulder settling into a pit here */
+        {
+            const t = t_at(mx, my);
+            if (t && (is_pit(t.ttyp) || is_hole(t.ttyp))
+                && sobj_at(ONAMES.BOULDER, mx, my))
+                (game.unported ||= new Set()).add('mon:m_detach:fill_pit');
+        }
         newsym(mx, my);
     }
+    if (mtmp === game.context?.polearm?.hitmon)
+        game.context.polearm.hitmon = null;
 
     mtmp.mhp = 0;               /* simplify some tests: force mhp to 0 */
 
@@ -2151,6 +2176,8 @@ export function m_detach(mtmp, mptr, due_to_death) {
     /* src/mon.c:2790, a removed shopkeeper no longer owns a shop */
     if (mtmp.isshk)
         shkgone(mtmp);
+    if (mtmp.wormno)
+        wormgone(mtmp);
 
     mtmp.mstate = (mtmp.mstate || 0) | MON_DETACH;
     game.iflags = game.iflags || {};

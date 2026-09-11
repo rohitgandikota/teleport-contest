@@ -138,6 +138,11 @@ export function tabexpand(s) {
 
 // src/hacklib.c mungspaces() — expand tabs to spaces, squeeze runs of
 // spaces to one, strip leading and trailing space, truncate at newline.
+// src/hacklib.c:69 letter() — is 'c' a letter (or '@')?
+export function letter(c) {
+    return ('@' <= c && c <= 'Z') || ('a' <= c && c <= 'z');
+}
+
 // src/hacklib.c highc()
 export function highc(c) {
     return ('a' <= c && c <= 'z') ? c.toUpperCase() : c;

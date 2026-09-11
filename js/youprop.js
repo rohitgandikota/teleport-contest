@@ -20,6 +20,7 @@ import { Upolyd } from './const.js';
 import { unconscious } from './trap.js';
 import { is_fainted } from './eat.js';
 import { ONAMES } from './objects_data.js';
+import { I_SPECIAL, TIMEOUT, W_ARTI } from './const.js';
 
 // include/youprop.h:116 HHallucination — u.uprops[HALLUC].intrinsic.
 // The C comment above it reads "Hallucination is solely a timeout", which is
@@ -124,6 +125,16 @@ export const Warn_of_mon = () => !!(game.u?.intrinsic?.HWarn_of_mon
 export const Levitation = () =>
     !!(game.u?.intrinsic?.HLevitation || game.u?.uprops?.LEVITATION)
     && !game.u?.blocked?.LEVITATION;
+
+// include/youprop.h:242 Lev_at_will — levitation the hero can end at will:
+// the I_SPECIAL bit (a blessed potion, a spell) or an artifact, with no
+// other source in either word.
+export const Lev_at_will = () => {
+    const h = game.u?.intrinsic?.HLevitation | 0, e = game.u?.uprops?.LEVITATION | 0;
+    return ((h & I_SPECIAL) !== 0 || (e & W_ARTI) !== 0)
+        && (h & ~(I_SPECIAL | TIMEOUT)) === 0
+        && (e & ~W_ARTI) === 0;
+};
 
 // include/youprop.h:253 Flying — note the steed term: riding a flying mount
 // counts, which is why this cannot be a plain uprops read.

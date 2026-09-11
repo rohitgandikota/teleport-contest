@@ -530,10 +530,21 @@ shopper_financial_report(), and the djinni's chat (NOTES "Hallucinatory
 currency"). Remaining ball.c-shaped notes (ballfall, drop_ball, drag_ball,
 move_bc) wait for ball.js.
 
-Next: triage `--seed 72`, then continue the
-note_unported list (sounds.js dochat arms, mkmaze.js portals and bubbles,
-invent.js getobj/dispinv, cmd.js extended commands, steed.js mount arms,
-read.js seffects default, options.js handlers). tools/jsplay.mjs has a new
+Fifty-ninth round: `--seed 72` had three failures: s72-10 and s72-21 are
+recording-clock ^X lines (NOTES "Fixed datetime and DST"), and s72-30 was
+getobj()'s '-' answer, now mime_action() (NOTES "Miming, shopkeeper and
+demon chat, mounting a trapped steed"); that entry also covers the
+sounds.js dochat/shk_chat/demon_talk arms and the steed.js mount arms
+ported in the same round.
+
+Sixtieth round: `--seed 73` had s73-17 (recording clock) and s73-09, the
+worn-blindfold "already wearing" mask (NOTES "The scroll of fire, and
+'You are already wearing that!'"), which also brought seffect_fire() and
+mkmaze.js's impossible() arms.
+
+Next: triage `--seed 74`, then continue the
+note_unported list (invent.js dispinv, cmd.js extended commands through
+the extcmdlist table, options.js handlers, the ball.c family). tools/jsplay.mjs has a new
 `--aeval "<await expr>"` flag with the hack.js namespace as `h` for state
 probes. The census script is `tally.sh` in the scratchpad (diverge.mjs
 --screens over tools/gen-sessions/fuzz/*.session.json, 4 at a time).

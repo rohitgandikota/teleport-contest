@@ -58,6 +58,7 @@ import { is_ice } from './dbridge.js';
 import { obj_ice_effects } from './mkobj.js';
 import { spot_stop_timers } from './timeout.js';
 import { count_level_features } from './mklev.js';
+import { impossible } from './pline.js';
 
 
 
@@ -120,7 +121,7 @@ export async function makemaz(s) {
                           && protofile === 'minetn-1');
         if (await load_special(protofile))
             return true;
-        note_unported_mkmaze(`makemaz:${protofile}`);
+        void impossible(`Couldn't load "${protofile}" - making a maze.`);
     }
 
     game.level.flags.is_maze_lev = 1;
@@ -261,7 +262,7 @@ export async function place_lregion(lx, ly, hx, hy, nlx, nly, nhx, nhy, rtype, l
                                        rtype, true, lev))
                 return;
 
-    note_unported_mkmaze('place_lregion:failed');
+    void impossible(`Couldn't place lregion type ${rtype}!`);
 }
 
 /* mkstairs/place_branch live in js/mklev.js, which imports this file;
@@ -956,8 +957,7 @@ export function mkportal(x, y, todnum, todlevel) {
     const ttmp = mkmaze_mklev_fns?.maketrap?.(x, y, MAGIC_PORTAL);
 
     if (!ttmp) {
-        /* impossible("portal on top of portal?") */
-        note_unported_mkmaze('mkportal:refused');
+        void impossible('portal on top of portal?');
         return;
     }
     ttmp.dst = { dnum: todnum, dlevel: todlevel };

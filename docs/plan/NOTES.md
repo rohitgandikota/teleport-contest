@@ -4624,8 +4624,9 @@ seed 63 added s63-24 (the C printed "It is nighttime." above the shared
 (ours prints "It is nighttime." where the C's local hour did not), and
 seed 66 added s66-12 (^X nighttime vs midnight) and s66-09 (the midnight
 undead damage doubling of hitmu, like s30-13 and s46-25), seed 68 added
-s68-03 (^X nighttime), and seed 72 added s72-10 (ours prints "It is
-nighttime." where the C's local hour did not) and s72-21 (the reverse).
+s68-03 (^X nighttime), seed 72 added s72-10 (ours prints "It is
+nighttime." where the C's local hour did not) and s72-21 (the reverse), and
+seed 73 added s73-17 (the C's "It is nighttime.").
 
 A related census-only artifact: s67-00 ends while the C blocks at wizard
 mode's "Dump core? [ynq] (q)" after #quit. Every recorded screen matches,
@@ -7838,3 +7839,50 @@ shopper_financial_report() (credit and debt in this shop, then in the
 others on the level; shop_debt() sums the debit and the bill), ported in
 shk.js. domonnoise() has the C's MS_DJINNI lines and no default: sounds
 the C ignores stay silent.
+
+## Miming, shopkeeper and demon chat, mounting a trapped steed
+
+s72-30 answered "What do you want to use or apply?" with '-': the C's
+getobj() calls mime_action(word) when the command does not accept
+bare hands (invent.c:1678) and returns hands_obj only when it does.
+mime_action() picks one of the "X or Y" verbs with rn2(2) after cutting
+the word at " or " (a `*bp = '\0'` that a comment-stripping read of the
+C hides: filtering lines that start with `*` also drops pointer writes,
+so read those functions unfiltered), strips a trailing " on the ..."
+into a suffix, and keeps the "rub the ..."/"dip ... into" prefix:
+"You mime using something." dochat(): a blind hero talking to a wall
+that is not yet mapped as a wall (lastseentyp) gets no message; a deaf
+hero gets "Any response from <mon> falls on deaf ears." (or "is
+inaudible" for a non-humanoid form). domonnoise(): MS_SELL runs shk.c
+shk_chat() (ported, with addupbill(), is_izchak() in shknam.js and the
+Izchak_speaks roll) and MS_BRIBE runs minion.c demon_talk() (ported with
+bribe()'s getlin and money2mon(), now exported from shk.js; Athome is
+minion.c's local macro). MS_ORACLE stays a note: rumors.c outoracle()
+reads dat/oracles, which this tree does not carry. steed.js: mounting a
+trapped steed says "You can't mount <mon> while he's trapped in a pit.",
+levitation without Lev_at_will (youprop.h:242, new in youprop.js) says
+"You cannot reach <mon>.", mounting runs steed_vs_stealth() with the
+"You aren't stealthy anymore." feedback, and exercise_steed() calls
+use_skill(P_RIDING, 1). hacklib.js gained letter().
+
+## The scroll of fire, and "You are already wearing that!" for a worn blindfold
+
+seffects() had no SCR_FIRE arm: reading a scroll of fire fell into a
+note. read.c:1850 seffect_fire() is ported: bcsign-scaled d((2*(rn1(3,3)
++ 2*cval) + 1)/3) damage, the scroll used up first and the type learned,
+the confused arms (water vaporizing, "Oh, look, what a pretty fire in your
+hands." with monstseesu(M_SEEN_FIRE) when fire resistant, or a burnt hand
+for 1 HP), the blessed getpos() for the explosion's center falling back
+to the hero when can_center_cloud() refuses, "The scroll erupts in a
+tower of flame!" with PLNMSG_TOWER_OF_FLAME and burn_away_slime() when
+centered on the hero, and explode(ZT_SPELL_O_FIRE, dam, SCROLL_CLASS,
+EXPL_FIERY). seffects()'s default is the C's impossible(). mkmaze.js's
+three impossible() arms (a level file that fails to load, an lregion
+that cannot be placed, a portal on a portal) are the C's messages.
+
+s73-09 put on the blindfold it was already wearing: the C's
+accessory_or_armor_on() tests `obj->owornmask & (W_ACCESSORY | W_ARMOR)`
+first, and W_ACCESSORY (prop.h:122) includes W_TOOL, so a worn blindfold
+answers "You are already wearing that!"; ours listed the ring, amulet and
+armor bits by hand and fell through to the eyewear arm's "You are already
+wearing a blindfold." The mask is the C's now.

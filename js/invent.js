@@ -1511,6 +1511,36 @@ export async function display_inventory(lets, want_reply) {
 // src/decl.c:96 quitchars — the keys that abandon a prompt.
 const quitchars = ' \r\n\x1b';
 
+// src/invent.c:1678 mime_action() — "You mime <verb>ing something." when the
+// hero picks '-' for a command that needs an object.
+async function mime_action(word) {
+    let buf = word;
+    let bp = null, pfx = null, sfx = null;
+    let i;
+
+    if ((i = buf.indexOf(' on the ')) >= 0) {
+        /* rub on the stone[s] */
+        sfx = buf.slice(i + 1); /* "something <sfx>" */
+        buf = buf.slice(0, i);
+    }
+    if ((buf.startsWith('rub the ') && buf.slice(8).includes(' on'))
+        || (buf.startsWith('dip ') && buf.slice(4).includes(' into'))) {
+        /* "rub the royal jelly on" -> "rubbing the royal jelly on", or
+           "dip <foo> into" => "dipping <foo> into" */
+        pfx = buf.slice(3 + 1); /* "<pfx> something" */
+        buf = buf.slice(0, 3);
+    }
+    if ((i = buf.indexOf(' or ')) >= 0) {
+        const alt = buf.slice(i + 4);
+        buf = buf.slice(0, i);
+        bp = (rn2(2) ? buf : alt);
+    } else
+        bp = buf;
+
+    await You(`mime ${ing_suffix(bp)}${pfx ? ' ' : ''}${pfx ? pfx : ''} something${
+        sfx ? ' ' : ''}${sfx ? sfx : ''}.`);
+}
+
 // src/invent.c:1752 getobj() — ask which carried object a command applies to.
 //
 // The whole point of porting this is key consumption. C reads ONE key here for
@@ -1774,15 +1804,10 @@ export async function getobj(word, obj_ok_func, ctrlflags) {
                 cmdq_clear(CQ_REPEAT);
             return null;
         }
-        if (ilet === '-') {
-            /* HANDS_SYM — "your hands" as the object; C returns &hands_obj
-               when the filter allows the no-object choice */
-            const v = obj_ok_func ? await obj_ok_func(null) : GETOBJ_EXCLUDE;
-            if (v === GETOBJ_SUGGEST || v === GETOBJ_DOWNPLAY
-                || v === GETOBJ_EXCLUDE_INACCESS || v === GETOBJ_EXCLUDE_SELECTABLE)
-                return hands_obj;
-            note_unported_invent('getobj:hands');
-            return null;
+        if (ilet === HANDS_SYM) { /* '-' */
+            if (!allownone)
+                await mime_action(word);
+            return (allownone ? hands_obj : null);
         }
         if (ilet === '?' || ilet === '*') {
             /* src/invent.c:1963 — '?' lists only the letters this command
@@ -3488,6 +3513,7 @@ import { livelog_printf } from './pline.js';
 import { LL_CONDUCT } from './const.js';
 import { shopper_financial_report } from './shk.js';
 import { rn2 } from './rng.js';
+import { ing_suffix } from './hacklib.js';
 
 
 

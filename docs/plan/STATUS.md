@@ -572,10 +572,23 @@ s76-09 (a number_pad game: "Unknown command" goes through visctrl(),
 and cmd_from_func() now scans the live command table so getpos's
 "use '4', '2', '8', '6'" note follows number_pad).
 
-Next: triage `--seed 77`, then continue the
-note_unported list (cmd.js extended commands through the extcmdlist
-table, the remaining options.js notes, steal.js, priest.js, mthrowu.js,
-mkroom.js, insight.js). tools/jsplay.mjs has a new
+Sixty-fifth round: `--seed 77` had only s77-26 (the recording-timezone
+class). The steal.c, mthrowu.c, priest.c and mkroom.c notes are ported
+(NOTES "steal.c, mthrowu.c, priest.c and mkroom.c: the last notes"):
+stealamulet()'s subfrombill, mdrop_obj() through extract_from_minvent()
+with the saddle no_charge test and update_mon_extrinsics(),
+mdrop_special_objs()'s rescue arm, relobj()'s vault-guard gold,
+ohitmon()'s spec_abon() and egg petrification, m_throw()'s hits_bars(),
+shade_miss(), egg stoning and "onto the sink" line, move_special()'s
+m_break_boulder()/m_move_aggress()/check_special_room(), fill_zoo()'s
+maze throne scan, mkswamp()'s del_engr_at() and do_mkroom()'s
+impossible().
+
+Next: triage `--seed 78`, then the insight.c round
+(attributes_enlightenment() in full, ustatusline(), in_trouble() and
+can_pray() shared with pray.js), then the remaining note_unported list
+(cmd.js extended commands, pager.js, objnam.js, muse.js, mklev.js,
+artifact.js). tools/jsplay.mjs has a new
 `--aeval "<await expr>"` flag with the hack.js namespace as `h` for state
 probes. The census script is `tally.sh` in the scratchpad (diverge.mjs
 --screens over tools/gen-sessions/fuzz/*.session.json, 4 at a time).

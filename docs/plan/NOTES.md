@@ -8027,3 +8027,47 @@ direction keys included) instead of a fixed vi-key map.
 dispinv_with_action() (invent.c:2964) shows the letters through
 display_inventory() with force_invmenu off and, when the player picks a
 letter from that menu, runs itemactions() on the object.
+
+## steal.c, mthrowu.c, priest.c and mkroom.c: the last notes
+
+steal.js: stealamulet() takes a stolen unpaid item off the bill through
+subfrombill(); mdrop_obj() now goes through worn.js extract_from_minvent()
+(do_extrinsics FALSE, so the steed's saddle removal can throw the rider
+after the object is on the floor), tests the shop membership of the drop
+square with in_rooms(u.ux, u.uy, SHOPBASE) for the dead steed's saddle,
+and runs update_mon_extrinsics() at the end as the C does;
+mdrop_special_objs() is async and really drops (or rloco()s, off the
+map) the Amulet, invocation items, Rider corpses and the quest artifact;
+relobj() destroys a vault guard's gold with the "gold vanishes" line.
+The one caller that cannot await it is sp_lev.js create_monster() (a
+synchronous Lua binding): only the obj_resists() draws run before the
+rescue arm, and no des monster with a custom inventory gets a unique
+object from makemon (the nemesis' Bell, Vlad's Candelabrum and the
+Wizard's wand of digging all come with the default inventory), so the
+arm is unreachable there; the call site says so.
+
+mthrowu.js: ohitmon() adds spec_abon() for an artifact launcher and
+petrifies (munstone() then minstapetrify()) a monster hit by a cockatrice
+egg; m_throw()'s flight check calls hits_bars() with the C's forcehit
+(!rn2(5)) through a { obj } box so a missile broken on the bars is gone
+for the rest of the flight, uses uhitm.js shade_miss() instead of a
+ghost special case, stones the hero hit by a cockatrice egg, and prints
+"<missile> drops onto the sink." (plops when hallucinating) when the
+path ends over a sink.
+
+priest.js: move_special() breaks a boulder in the way through a ported
+monmove.js m_break_boulder() (mutters a prayer or an incantation, the
+boulder falls apart, bill_dummy_object() for an unpaid one), attacks a
+displaced or real monster on the chosen square through m_move_aggress()
+(exported; -2 when the aggressor dies, which m_move already turns into
+MMOVE_DIED), and runs check_special_room(FALSE) when a shopkeeper walks
+back into its shop. The two "rloc squatter" notes in priestini() and
+mk_roamer() stay: rloc() is asynchronous and both run inside synchronous
+level creation; the squatter case needs every square around the altar
+occupied before any monster is placed there.
+
+mkroom.js: fill_zoo() on a maze level scans the court for an existing
+throne before placing one (a labeled break stands in for the C's goto
+so tx/ty keep the found square), mkswamp() deletes the engraving under a
+new pool, and do_mkroom() reports an unknown room type through
+impossible().

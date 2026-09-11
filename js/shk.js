@@ -2407,7 +2407,7 @@ export async function make_happy_shk(shkp, silentkops) {
                 vanished = true;
             const { mdrop_special_objs } = await import('./steal.js');
             const { migrate_monster } = await import('./trap.js');
-            mdrop_special_objs(shkp);
+            await mdrop_special_objs(shkp);
             const oldx = shkp.mx, oldy = shkp.my;
             migrate_monster(shkp, eshk.shoplevel || game.u.uz,
                             MIGR_APPROX_XY, eshk.shd);

@@ -9176,3 +9176,44 @@ alone and `u.ublind` instead of Blind. youprop.js gained Unblind_telepat
   display_pickinv_entries() filtered first; it now sorts first, as the
   C does. Found by bisecting C recordings of the recipe prefix plus
   `\` until the marker flipped.
+
+## Tour seed 112 (12 Sep)
+
+37/40 recorded; after the fixes 40/40:
+
+- s112-00: use_misc()'s MUSE_WAN_SPEED_MONSTER arm printed its own "zaps
+  himself" text; it is mzapwand(mtmp, otmp, TRUE) + mon_adjust_speed()
+  (muse.c), whose monverbself() gives "itself" for a tengu.
+- s112-36: a wizard-mode ^V back into the tutorial. nhlua.c:1837's
+  tutorial() runs nhcore's enter/leave callbacks only while
+  nhcore_call_available[] allows them, and leaving turns both off, so a
+  re-entry keeps the hero's inventory (game.nhcore_call_available).
+  goto_level() now frees rather than saves a level that can't be reached
+  again (entering the endgame from another dungeon, leaving the
+  tutorial; do.c:1640), deletes the discarded saved levels, marks their
+  #overview entries notreachable (remdun_mapseen) and drops migrations to
+  them (discard_migrations, dog.c:938); returning to a visited but
+  discarded level says "goto_level: returning to discarded level?" and
+  regenerates it. The C then diverges again at the next ^V inside the
+  tutorial (it regenerates Tutorial:2 where ours restores the saved copy);
+  the C is in its "Program in disorder" state there and the reason its
+  level file is gone was not found.
+- s112-03: a caster's summon nasties created a vampire whose creation-time
+  newcham() (makemon.c:1355) reaches the mon_moving arm, set_apparxy()
+  (rn2(4) for a displaced hero), before nasty() rolls mspec_used. In the
+  port makemon() is synchronous (level generation calls it from
+  synchronous code) and newcham() is async, so newcham()'s tail after
+  mon_break_armor() ran a microtask later and its draws landed after
+  nasty()'s. Fixed the way possibly_unwield() already was: the tail waits
+  for mon_break_armor() only when the monster wears something (or is the
+  steed) and for mselftouch() only when it wields something, since the C
+  does no output otherwise; mon_break_armor() rolls its pronouns before
+  any await for the same reason. Making makemon() async instead would
+  cascade into every level generator.
+- s110-12 (from seed 110) is closed: dropz() (do.c:838) maps the dropped
+  object into memory when the hero is blind and levitating, a hallucinated
+  object glyph draw that the port skipped.
+- impossible()'s second line is "Program in disorder!  (Saving and
+  reloading may fix this problem.)" once program_state.something_worth_saving
+  is set, which newgame() does (allmain.c:840); the port only toggled it in
+  simpleonames().

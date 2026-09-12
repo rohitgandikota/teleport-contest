@@ -4421,10 +4421,20 @@ export function newcham(mtmp, mdat, ncflags) {
         const unwield = possibly_unwield(mtmp, polyspot); /* might lose use of weapon */
         if (had_wep)
             await unwield;
-        await mon_break_armor(mtmp, polyspot);
-        if (!(mtmp.misc_worn_check & W_ARMG))
-            await mselftouch(mtmp, 'No longer petrify-resistant, ',
-                             !game.context?.mon_moving);
+        /* likewise mon_break_armor() rolls its pronouns on entry and only
+           has asynchronous work (messages, m_useup, dismounting) when the
+           monster wears something or is the steed; mselftouch() does
+           nothing without a wielded weapon */
+        const had_worn = !!mtmp.misc_worn_check || mtmp === game.u.usteed;
+        const broke = mon_break_armor(mtmp, polyspot);
+        if (had_worn)
+            await broke;
+        if (!(mtmp.misc_worn_check & W_ARMG)) {
+            const touch = mselftouch(mtmp, 'No longer petrify-resistant, ',
+                                     !game.context?.mon_moving);
+            if (MON_WEP(mtmp))
+                await touch;
+        }
         check_gear_next_turn(mtmp);
 
         /* former giants can't continue carrying boulders */

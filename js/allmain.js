@@ -532,6 +532,10 @@ export async function newgame() {
         const { livelog_add } = await import('./pline.js');
         livelog_add(`${g.plname} the${buf} entered the dungeon`);
     }
+    /* src/allmain.c:840 — useful data now exists; impossible() adds its
+       "Saving and reloading may fix this problem" clause from here on */
+    (g.program_state ||= {}).something_worth_saving =
+        ((g.program_state.something_worth_saving | 0) + 1);
     notice_mon_on(); /* now we can notice monsters */
     if (g.flags?.mention_map) /* a11y.glyph_updates */
         await dolookaround();

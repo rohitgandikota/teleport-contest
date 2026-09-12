@@ -18,7 +18,7 @@ import { pudding_merge_message, obj_meld } from './mkobj.js';
 import { WT_SPLASH_THRESHOLD, ER_DESTROYED, HMON_THROWN, TRAPDOOR, HOLE, NO_TRAP } from './const.js';
 import { weight, ggetobj } from './invent.js';
 import { bypass_objlist, nxt_unbypassed_obj } from './worn.js';
-import { map_background } from './display.js';
+import { map_background , map_object } from './display.js';
 import { bury_objs } from './dig.js';
 import { Passes_walls, Underwater, Flying } from './youprop.js';
 import { is_vampshifter } from './monst.js';
@@ -966,6 +966,7 @@ export async function goto_level(newlevel, at_stairs, falling, portal) {
     let up = (depth_do(newlevel) < depth_do(game.u.uz));
     let do_fall_dmg = false;
     const newdungeon = (game.u.uz.dnum !== newlevel.dnum);
+    let leaving_tutorial = false;
 
     /* src/do.c:1492: the mysterious force must keep a hero who starts
        inside the Wizard's Tower inside it. The tower boundary is the
@@ -1002,6 +1003,7 @@ export async function goto_level(newlevel, at_stairs, falling, portal) {
             } else if (game.u.uz.dnum === game.tutorial_dnum) {
                 await tutorial(false); /* leaving tutorial */
                 up = false; /* re-enter level 1 as if starting new game */
+                leaving_tutorial = true;
             }
         }
     }
@@ -1159,10 +1161,31 @@ export async function goto_level(newlevel, at_stairs, falling, portal) {
         for (const mtmp of game.level.monsters || [])
             if (mtmp.ispriest)
                 forget_temple_entry(mtmp);
-        (game.saved_levels ||= new Map())
-            .set(`${game.u.uz.dnum}:${game.u.uz.dlevel}`, game.level);
+        /* src/do.c:1640 — an outgoing level that can't be reached any more
+           is freed rather than saved: entering the endgame from another
+           dungeon, or leaving the tutorial */
+        const cant_go_back = (newdungeon && In_endgame(newlevel)) || leaving_tutorial;
+        (game.saved_levels ||= new Map());
+        if (!cant_go_back)
+            game.saved_levels.set(`${game.u.uz.dnum}:${game.u.uz.dlevel}`, game.level);
         (game.visited_ledgers ||= new Set())
             .add(`${game.u.uz.dnum}:${game.u.uz.dlevel}`);
+        if (cant_go_back) {
+            /* discard unreachable levels; keep #0 */
+            for (const key of [...game.saved_levels.keys()]) {
+                const dnum = Number(key.split(':')[0]);
+                if (!leaving_tutorial || dnum === game.tutorial_dnum)
+                    game.saved_levels.delete(key);
+            }
+            /* mark #overview data for all dungeon branches as uninteresting */
+            const { remdun_mapseen } = await import('./dungeon.js');
+            for (let l_idx = 0; l_idx < (game.dungeons?.length ?? 0); ++l_idx)
+                if (!leaving_tutorial || l_idx === game.tutorial_dnum)
+                    remdun_mapseen(l_idx);
+            /* get rid of mons & objs scheduled to migrate to discarded levels */
+            const { discard_migrations } = await import('./dog.js');
+            discard_migrations();
+        }
         /* src/save.c savelev() — leaving a Plane of Water/Air parks the
            bubble/cloud list with the level (and frees the live copy) */
         {
@@ -1292,6 +1315,11 @@ export async function goto_level(newlevel, at_stairs, falling, portal) {
     } else {
         familiar_level = false;         /* src/do.c "new" is the inverse */
         /* entering this level for the first time; make it now */
+        if (game.visited_ledgers.has(ledger)) {
+            const { impossible } = await import('./pline.js');
+            await impossible('goto_level: returning to discarded level?');
+            game.visited_ledgers.delete(ledger);
+        }
         await mklev_fn();
     }
 
@@ -1885,6 +1913,8 @@ export async function dropz(obj, with_impact) {
             await sellobj(obj, game.u.ux, game.u.uy);
         }
         stackobj(obj);
+        if (Blind() && Levitation())
+            map_object(obj, 0);
         newsym(game.u.ux, game.u.uy);   /* remap location under self */
     }
     await encumber_msg();

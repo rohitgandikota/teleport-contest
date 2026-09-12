@@ -1966,3 +1966,12 @@ export function single_level_branch(lev) {
      */
     return Is_knox_level(lev);
 }
+
+// src/dungeon.c:2811 remdun_mapseen() — mark #overview data for every level of
+// a dungeon branch as no longer reachable
+export function remdun_mapseen(dnum) {
+    for (const mptr of Object.values(game.mapseen || {})) {
+        if (mptr.dnum === dnum)
+            (mptr.flags ||= {}).notreachable = 1;
+    }
+}

@@ -839,9 +839,21 @@ rolling-boulder ship_object() arm, flags.beginner, getlev's level
 timestamp, and display_pickinv()'s whole-inventory sortloot() (which also
 closed s109-04). 38/40 after the fixes. Public 44/44.
 
-Next: tour seed 112, the s110-12 step-247 hallucinated object glyph, the
-symbols.js glyph arms and the remaining debug commands. The mapped-monster display class (s102-21, s102-36) needs the C's
-redraw path found; the probes so far are in NOTES.
+Ninety-first round (12 Sep): tour seed 112 (NOTES "Tour seed 112"):
+MUSE_WAN_SPEED_MONSTER through mzapwand()/mon_adjust_speed(), the
+nhcore_call_available[] gate on the tutorial callbacks, goto_level()'s
+discard of levels that can't be reached again (remdun_mapseen(),
+discard_migrations()), program_state.something_worth_saving set at game
+start (impossible()'s second line), dropz()'s blind-and-levitating
+map_object() (closed s110-12), and newcham()'s tail running in C order
+at creation time (mon_break_armor()/mselftouch() awaited only when the
+monster has gear). 40/40 after the fixes. Public 44/44.
+
+Next: tour seed 113, the symbols.js glyph arms and the remaining debug
+commands (#stats, #wizrumorcheck, #wizdispmacros, #wizcustom,
+#wizloaddes, #wizmakemap), altkeyhandling. The mapped-monster display
+class (s102-21, s102-36) needs the C's redraw path found; the probes so
+far are in NOTES.
 tools/jsplay.mjs has `--aeval "<await expr>"` (game, dungeon, C, symbols,
 h in scope; `await import('file:///.../js/x.js')` reaches any module) for
 state probes at `--until STEP`. The census script is `tally.sh` in the

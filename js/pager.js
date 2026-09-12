@@ -495,9 +495,9 @@ export function mhidden_description(mon, mhid_flags) {
 
         /* at present, hero must be next to the monster; ... */
         if (distu(x, y) <= r * (r + 1) || force_region) {
-            const rglyph = reg.glyph;
-            const poison_gas = (rglyph?.kind === 'cmap'
-                                && rglyph.cmap === cmap_names.S_poisoncloud);
+            /* reg->glyph is the region's cmap glyph (region.js glyph_cmap):
+               glyph_is_cmap(rglyph) && glyph_to_cmap(rglyph) == S_poisoncloud */
+            const poison_gas = (reg.glyph_cmap === cmap_names.S_poisoncloud);
 
             outbuf += `, in a cloud of ${poison_gas ? 'poison gas' : 'vapor'}`;
         }

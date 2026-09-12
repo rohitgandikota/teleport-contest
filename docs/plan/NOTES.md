@@ -8930,3 +8930,28 @@ delicatessen (a used-up unpaid ration paid through the menu, the itemized
 "A tin for 5 zorkmids.  Pay?" path, no gold, too little gold for the
 potion, and 'm p' turning the menu into the ynq prompt) match every
 screen.
+
+## The debug listing commands, and a level flip that forgot vision (12 Sep)
+
+#wizborn (insight.c doborn(): the totals line is formatted but never
+shown, as in the C), #wizseenv, #vision, #wmode, #wizmondiff (with
+mondata.c mstrength()/mstrength_ranged_attk() in mondata.js),
+#wizfliplevel, #wizsmell and #migratemons (list_migrating_mons() with
+migrsort_cmp()) are ported and wired through EXTCMD_FUNCS. Text windows
+in this port are shown with tty_display_nhwindow() and then paged with
+xwaitforspace()/tty_next_page() (the C's display_nhwindow(win, TRUE)
+does that inside); a new listing must follow the same pattern or its
+window never appears on the screen the recorder captures. flip_level()
+now ends with vision_reset() like the C: without it #wizfliplevel left
+the could-see arrays of the old geometry, so a lichen three squares away
+was drawn nowhere after the flip (goto_level() resets vision itself, so
+level creation never noticed). A 125-screen C probe of all eight
+commands matches. Not ported: #timeout and #lightsources print C
+pointer values (fmt_ptr) that no recording can reproduce; #stats prints
+struct sizes; #wizrumorcheck, #wizdispmacros, #wizcustom, #wizloaddes/
+#wizloadlua and #wizmakemap remain.
+
+Tour `--seed 107` (40 games): 38 pass, s107-08 is the ^X clock, s107-31
+was farlook on a gas cloud: pager.js tested reg.glyph but region.js
+stores the cloud's cmap as glyph_cmap, so every cloud was "vapor"
+instead of "poison gas".

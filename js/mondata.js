@@ -17,6 +17,7 @@ import { monsndx, is_golem } from './makemon.js';
 import { M_SEEN_MAGR, M_SEEN_FIRE, M_SEEN_COLD, M_SEEN_SLEEP, M_SEEN_DISINT, M_SEEN_ELEC, M_SEEN_POISON, M_SEEN_ACID } from './const.js';
 import { PMNAMES, MONSYMS, MFLAGS, MSOUND, ATTKS, GROWNUPS, mons as MONS_INIT } from './monst_data.js';
 import { game } from './gstate.js';
+import { NEUTRAL } from './const.js';
 import { rn2, rnd } from './rng.js';
 import { Hallucination, Invis, Underwater, Unaware } from './youprop.js';
 import { defends, defends_when_carried } from './artifact.js';
@@ -1406,4 +1407,90 @@ export function same_race(pm1, pm2) {
         assorted bugs and blobs with their closest variants] */
     /* didn't match */
     return false;
+}
+
+// src/mondata.c:501 mstrength_ranged_attk() — returns True if monster can
+// attack at range
+function mstrength_ranged_attk(ptr) {
+    let i, j;
+    const atk_mask = (1 << ATTKS.AT_BREA) | (1 << ATTKS.AT_SPIT) | (1 << ATTKS.AT_GAZE);
+
+    for (i = 0; i < NATTK; i++) {
+        if ((j = ptr.mattk[i][0]) >= ATTKS.AT_WEAP
+            || (j < 32 && (atk_mask & (1 << j)) !== 0))
+            return true;
+    }
+    return false;
+}
+
+// src/mondata.c:428 mstrength() — the calculated difficulty of a monster
+// type (mattk[i] is [aatyp, adtyp, damn, damd])
+export function mstrength(ptr) {
+    let i, tmp2, n, tmp = ptr.mlevel;
+
+    if (tmp > 49) /* special fixed hp monster */
+        tmp = Math.trunc(2 * (tmp - 6) / 4);
+
+    /* for creation in groups */
+    n = ((ptr.geno & MFLAGS.G_SGROUP) ? 1 : 0);
+    n += ((ptr.geno & MFLAGS.G_LGROUP) ? 1 : 0) << 1;
+
+    /* for ranged attacks */
+    if (mstrength_ranged_attk(ptr))
+        n++;
+
+    /* for higher ac values */
+    n += (ptr.ac < 4) ? 1 : 0;
+    n += (ptr.ac < 0) ? 1 : 0;
+
+    /* for very fast monsters */
+    n += (ptr.mmove >= 18) ? 1 : 0;
+
+    /* for each attack and "special" attack */
+    for (i = 0; i < NATTK; i++) {
+        tmp2 = ptr.mattk[i][0];
+        n += (tmp2 > 0) ? 1 : 0;
+        n += (tmp2 === ATTKS.AT_MAGC) ? 1 : 0;
+        n += (tmp2 === ATTKS.AT_WEAP && (ptr.mflags2 & MFLAGS.M2_STRONG)) ? 1 : 0;
+        if (tmp2 === ATTKS.AT_EXPL) {
+            const tmp3 = ptr.mattk[i][1];
+            /* {freezing,flaming,shocking} spheres are fairly weak but
+               can destroy equipment; {yellow,black} lights can't */
+            n += ((tmp3 === ATTKS.AD_COLD || tmp3 === ATTKS.AD_FIRE) ? 3
+                  : (tmp3 === ATTKS.AD_ELEC) ? 5
+                    : 0);
+        }
+    }
+
+    /* for each "special" damage type */
+    for (i = 0; i < NATTK; i++) {
+        tmp2 = ptr.mattk[i][1];
+        if ((tmp2 === ATTKS.AD_DRLI) || (tmp2 === ATTKS.AD_STON) || (tmp2 === ATTKS.AD_DRST)
+            || (tmp2 === ATTKS.AD_DRDX) || (tmp2 === ATTKS.AD_DRCO) || (tmp2 === ATTKS.AD_WERE))
+            n += 2;
+        else if (ptr.pmnames[NEUTRAL] !== 'grid bug')
+            n += (tmp2 !== ATTKS.AD_PHYS) ? 1 : 0;
+        n += ((ptr.mattk[i][3] * ptr.mattk[i][2]) > 23) ? 1 : 0;
+    }
+
+    /* Leprechauns are a special case.  They have many hit dice so they can
+       hit and are hard to kill, but they don't really do much damage. */
+    if (ptr.pmnames[NEUTRAL] === 'leprechaun')
+        n -= 2;
+
+    /* despite group and poison increments, soldier ants and killer bees are
+       underestimated by the formula, so have an artificial +1 difficulty */
+    if (ptr.pmnames[NEUTRAL] === 'killer bee'
+        || ptr.pmnames[NEUTRAL] === 'soldier ant')
+        n += 2; /* +1 after 'tmp += n/2' below */
+
+    /* finally, adjust the monster level  0 <= n <= 24 (approx.) */
+    if (n === 0)
+        tmp -= 1;
+    else if (n < 6)
+        tmp += (Math.trunc(n / 3) + 1);
+    else
+        tmp += Math.trunc(n / 2);
+
+    return (tmp >= 0) ? tmp : 0;
 }

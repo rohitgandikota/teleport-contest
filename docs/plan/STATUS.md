@@ -792,10 +792,17 @@ pins"), and the shop bill payment family in C form (NOTES "The shop bill
 is paid the C's way"). Nine C probes match. Public 44/44, broad tally
 unchanged, hang gate OK.
 
-Next: the debug listing extended commands (wizborn, timeout, vision,
-wmode, lightsources, migratemons, wizseenv, wizmondiff, wizfliplevel,
-wizsmell), then the options handlers (altkeyhandling, cond_) and the
-symbols.js glyph arms. The mapped-monster display class (s102-21, s102-36) needs the C's
+Eighty-fourth round (12 Sep): eight debug listing commands ported
+(NOTES "The debug listing commands, and a level flip that forgot
+vision"); flip_level() ends with vision_reset(); the farlook gas-cloud
+name fix from tour seed 107 (39/40 with the clock case). The options
+handlers are all wired (cond_ through cond_menu(); altkeyhandling is
+Windows-only). Public 44/44, broad tally unchanged, hang gate OK.
+
+Next: the tty status machinery in C form (botl.c bot_via_windowport /
+status_update and wintty.c tty_status_update / render_status /
+check_fields) so statushilites, hitpointbar, statuslines:3 and the
+field shrinking follow the C; then the symbols.js glyph arms. The mapped-monster display class (s102-21, s102-36) needs the C's
 redraw path found; the probes so far are in NOTES.
 tools/jsplay.mjs has `--aeval "<await expr>"` (game, dungeon, C, symbols,
 h in scope; `await import('file:///.../js/x.js')` reaches any module) for

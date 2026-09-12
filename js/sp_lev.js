@@ -11,6 +11,7 @@
 import { create_drawbridge } from './dbridge.js';
 import { bury_an_obj } from './dig.js';
 import { game } from './gstate.js';
+import { vision_reset } from './vision.js';
 import { mk_mplayer } from './mplayer.js';
 import { get_level_extends, fix_wall_spines, stairway_add,
          stairway_find_dir, occupied } from './mklev.js';
@@ -2794,7 +2795,7 @@ function flip_vault_guard(flp, grd, minx, miny, maxx, maxy) {
 }
 
 // src/sp_lev.c:967 flip_level_rnd() — one rn2(2) per allowed axis.
-async function flip_level_rnd(flp) {
+export async function flip_level_rnd(flp) {
     let c = 0;
     if ((flp & 1) && rn2(2))
         c |= 1;
@@ -3116,8 +3117,7 @@ export async function flip_level(flp, extras) {
         /* after wall_spines; flips seenv and wall joins */
         flip_visuals(flp, minx, miny, maxx, maxy);
     }
-    /* C ends with vision_reset(); goto_level() already does one right after
-       the level is built, so it is left to that caller. */
+    vision_reset();
 }
 
 /* SpLev_Map — which map squares the special level explicitly touched. */

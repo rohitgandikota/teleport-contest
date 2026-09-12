@@ -4164,7 +4164,7 @@ export function mon_wire_cham(fns) { mon_fns_cham = fns; }
 // src/mon.c:5796 usmellmon(), used when a monster changes into an unseen
 // form. The species exclusions prevent a unicorn or jellyfish from falling
 // through to the generic class message.
-async function usmellmon(mdat) {
+export async function usmellmon(mdat) {
     if (!mdat || !olfaction(game.youmonst.data))
         return false;
 

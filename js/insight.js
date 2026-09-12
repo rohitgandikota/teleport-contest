@@ -49,6 +49,8 @@ import { M_AP_TYPE, M_AP_NOTHING, M_AP_OBJECT, M_AP_FURNITURE, M_AP_MONSTER, TT_
 import { trapname } from './trap.js';
 
 import { game } from './gstate.js';
+const quitchars = ' \r\n\x1b';
+import { NHW_TEXT } from './const.js';
 
 import { notice_all_mons_flush } from './hack.js';
 
@@ -2542,5 +2544,49 @@ export async function list_genocided(defquery, ask) {
 // src/insight.c:3138 dogenocided(); #genocided command
 export async function dogenocided() {
     await list_genocided(game.iflags?.menu_requested ? 'a' : 'y', false);
+    return ECMD_OK;
+}
+
+// src/insight.c:3145 doborn() — #wizborn extended command
+export async function doborn() {
+    const fmt = (died, born, c, name) => `${String(died).padStart(4)} ${
+                String(born).padStart(4)} ${c} ${name.padEnd(30)}`;
+    let i;
+    const datawin = tty_create_nhwindow(NHW_TEXT);
+    let buf;
+    let nborn = 0, ndied = 0;
+
+    tty_putstr(datawin, 0, 'died born');
+    for (i = LOW_PM; i < NUMMONS; i++) {
+        const mv = game.mvitals?.[i] || {};
+        if (mv.born || mv.died
+            || ((mv.mvflags | 0) & G_GONE) !== 0) {
+            buf = fmt(mv.died | 0, mv.born | 0,
+                      (((mv.mvflags | 0) & G_GONE) === G_EXTINCT) ? 'E'
+                      : (((mv.mvflags | 0) & G_GONE) === G_GENOD) ? 'G'
+                        : (((mv.mvflags | 0) & G_GONE) !== 0) ? 'X'
+                          : ' ',
+                      game.mons[i].pmnames[NEUTRAL]);
+            tty_putstr(datawin, 0, buf);
+            nborn += mv.born | 0;
+            ndied += mv.died | 0;
+        }
+    }
+
+    tty_putstr(datawin, 0, '');
+    buf = fmt(ndied, nborn, ' ', ''); /* formatted but never shown, as in the C */
+
+    /* display_nhwindow(win, FALSE): page through the text window, ESC
+       cancelling the remaining pages */
+    await tty_display_nhwindow(datawin);
+    for (;;) {
+        await xwaitforspace(quitchars);
+        if (game.morc === '\x1b')
+            break; /* cancel remaining pages */
+        if (!tty_next_page(datawin))
+            break;
+    }
+    tty_destroy_nhwindow(datawin);
+
     return ECMD_OK;
 }

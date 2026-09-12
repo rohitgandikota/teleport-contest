@@ -263,6 +263,12 @@ async function blocksMove(x, y, dx, dy) {
             const { test_move } = await import('./hack.js');
             return !(await test_move(game.u.ux, game.u.uy, dx, dy, DO_MOVE));
         }
+        /* src/hack.c:1085 — the DOOR arm feels the square first when blind,
+           so the door the hero bumps into is mapped */
+        if (Blind()) {
+            const { feel_location } = await import('./display.js');
+            feel_location(x, y);
+        }
         return true;
     }
     /* src/hack.c:1140 test_move() — diagonal moves into an intact doorway

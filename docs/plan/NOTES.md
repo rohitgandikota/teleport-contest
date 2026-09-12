@@ -8624,3 +8624,36 @@ spot that is bad for it, the retry loop calls goodpos() with the caller's
 gpflags (GP_CHECKSCARY | GP_AVOID_MONPOS). Ours passed no flags, so a
 spot inside a monster-generation exclusion zone was accepted on the
 first roll and the C's rndmonst() re-roll never happened (tour-s104-33).
+
+## dog.js has no note_unported arms left (12 Sep)
+
+The thirteen recorded gaps are ported from the C: mhitm.c:179 mdisplacem()
+(a pet barging a monster out of its way; the 1-in-7 miss, the grid bug
+angle rule, seemimic/wake/finish_meating on the displaced monster, the
+cockatrice arm, the remove/place/tail/region shuffle and "moves X out of
+his way!") lives in mhitm.js; monmove.c:2277 undesirable_disp() (pets
+avoid seen traps with rn2(40) and cursed spots, others avoid known trap
+types with rn2(40), nobody swaps into rock, a door or water) lives in
+monmove.js and should_displace() now consults it like the C; worm.c:990
+redraw_worm() lives in worm.js. dog_eat() runs bee_eat_jelly() (already
+in monmove.js, now exported), the unpaid arms (suppress_price around the
+"eats" message, the xname snapshot, costly_alteration(COST_DEGRD) for a
+rust monster's rustproof meal and "That %s will cost you N zorkmids.")
+and the "spits %s out in disgust!" message; score_targ() carries the
+priest/minion alignment arms and the Is_qstart() breathing clause;
+pet_ranged_attk(forced) calls domonnoise(); a conflicted steed throws its
+rider with dismount_steed(DISMOUNT_THROWN) and a conflicted guardian angel
+leaves through lose_guardian_angel(); newdogpos prints "breaks loose of
+his leash!" and m_unleash()es before attacking the hero; dog_invent()
+wields the picked-up weapon; abuse_dog() unleashes and redraws a worm;
+stale_egg() is the obj.h macro. Conflict and Aggravate_monster are read
+through youprop.js instead of raw uprops bits.
+
+## More recording-clock cases (12 Sep)
+
+tour-s102-13 (an elf zombie's midnight() extra d(1,7) at mhitu.c:1188,
+the recorder's clock not at midnight), fuzz-s84-10 (a 20260214003955
+recording: the C's DST-shifted clock lands on Friday the 13th and prints
+the warning, ours reads the 14th), fuzz-s84-19 and s84-25 (^X midnight
+hour vs nighttime) and s84-21 (were_change night roll) are the class
+described in "Fixed datetime and DST"; not fixable from the corpus.

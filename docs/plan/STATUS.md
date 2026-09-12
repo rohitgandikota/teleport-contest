@@ -712,8 +712,21 @@ display_nhwindow_message() so an ESCaped message stays suppressed. Seed
 104 is at 38/40, the two left are were_change night rolls (recording
 clock). Seeds 101-103 re-tallied unchanged.
 
-Next: a trigram seed, then `--seed 105` tours, then the remaining
-note_unported list (dog.js 13, sp_lev.js 13, insight.js 1). The mapped-monster display class (s102-21, s102-36) needs the C's
+Seventy-fifth round (12 Sep): dog.js is note_unported-free (NOTES "dog.js
+has no note_unported arms left"): mdisplacem() in mhitm.js,
+undesirable_disp() in monmove.js (should_displace() consults it),
+redraw_worm() in worm.js, bee_eat_jelly() exported, the dog_eat() unpaid
+and rustproof arms, score_targ() faith arms, the conflicted steed and
+guardian angel, the leash break at newdogpos, dog_invent() wielding,
+abuse_dog() unleash/redraw, stale_egg(). Trigram `--seed 84` (35/40): four
+of the five are the recording clock (NOTES "More recording-clock cases");
+s84-16 was the blind door bump in cmd.js not feeling the square first
+(fixed). tour-s102-13 turned out to be the elf zombie midnight roll (clock
+class), not a regression. Broad re-tally of seeds 101-104 + s84 shows only
+the known cases.
+
+Next: `--seed 105` tours, then a trigram seed, then the remaining
+note_unported list (sp_lev.js 13, insight.js 1). The mapped-monster display class (s102-21, s102-36) needs the C's
 redraw path found; the probes so far are in NOTES.
 tools/jsplay.mjs has `--aeval "<await expr>"` (game, dungeon, C, symbols,
 h in scope; `await import('file:///.../js/x.js')` reaches any module) for

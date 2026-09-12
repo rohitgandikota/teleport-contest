@@ -1334,7 +1334,7 @@ const is_organic = (o) => game.objects[o.otyp].oc_material <= MATERIALS.WOOD;
 // containing lump of royal jelly 'obj' and will eat it if there is no queen
 // bee on the level; return 1: mon died, 0: mon ate jelly and lived, -1: mon
 // didn't eat jelly to use its move
-async function bee_eat_jelly(mon, obj) {
+export async function bee_eat_jelly(mon, obj) {
     const { splitobj } = await import('./mkobj.js');
     const { delobj } = await import('./mon.js');
     const { grow_up } = await import('./makemon.js');
@@ -2154,17 +2154,54 @@ async function m_digweapon_check(mtmp, nix, niy) {
     return false;
 }
 
+// src/monmove.c:2277 undesirable_disp() — is <x,y> a bad spot for 'mtmp'
+// to barge into? Pets avoid seen traps (rn2(40)) and cursed objects; other
+// monsters avoid trap types they know (rn2(40)); nobody swaps into rock,
+// a closed door or water unless already in water.
+export function undesirable_disp(mtmp, x, y) {
+    const is_pet = (mtmp.mtame && !mtmp.isminion);
+    const trap = t_at(x, y);
+
+    if (is_pet) {
+        /* Pets avoid a trap if you've seen it usually. */
+        if (trap && trap.tseen && rn2(40))
+            return true;
+        /* Pets avoid cursed locations */
+        if (cursed_object_at(x, y))
+            return true;
+
+    /* Monsters avoid a trap if they've seen that type before */
+    } else if (trap && rn2(40)
+               && mon_knows_traps(mtmp, trap.ttyp)) {
+        return true;
+    }
+
+    /* oversimplification:  creatures that bargethrough can't swap places
+       when target monster is in rock or closed door or water (in particular,
+       avoid moving to spots where mondied() won't leave a corpse; doesn't
+       matter whether barger is capable of moving to such a target spot if
+       it were unoccupied) */
+    if (!accessible(x, y)
+        /* mondied() allows is_pool() as an exception to !accessible(),
+           but we'll only do that if 'mtmp' is already at a water location
+           so that we don't swap a water critter onto land */
+        && !(is_pool(x, y) && is_pool(mtmp.mx, mtmp.my)))
+        return true;
+
+    return false;
+}
+
 // src/monmove.c:1070 should_displace() — is displacing a monster the only
-// way (or the shortest way) toward the goal? undesirable_disp is recorded
-// through the same gate C reads it in.
-function should_displace(mtmp, data, ggx, ggy, cnt) {
+// way (or the shortest way) toward the goal?
+export function should_displace(mtmp, data, ggx, ggy, cnt) {
     let shortest_with = -1, shortest_without = -1, count_without = 0;
 
     for (let i = 0; i < cnt; i++) {
         const nx = data.poss[i].x, ny = data.poss[i].y;
         const ndist = dist2(nx, ny, ggx, ggy);
         if (m_at(nx, ny) && (data.info[i] & ALLOW_MDISP)
-            && !(data.info[i] & ALLOW_M)) {
+            && !(data.info[i] & ALLOW_M)
+            && !undesirable_disp(mtmp, nx, ny)) {
             if (shortest_with === -1 || ndist < shortest_with)
                 shortest_with = ndist;
         } else {

@@ -8692,3 +8692,25 @@ function, '$' toggles it through getpos_toggle_hilite_state(), ^R goes
 through getpos_refresh(), and the '?' help lists "Use '$' to toggle
 marking of valid locations." when a marker is installed (tour-s105-25,
 #jump; the C's display_jump_positions() marker is the next piece).
+
+## getpos markers draw through tmp_at, and the hero's square is drawn once (12 Sep)
+
+display_jump_positions() (apply.c:2027), display_stinking_cloud_positions()
+(read.c:1850), display_polearm_positions() and display_grapple_positions()
+now draw the S_goodpos '$' beam with tmp_at(DISP_BEAM, ...) like
+spell.js's display_spell_target_positions(); #jump and the two cloud
+prompts install them through getpos_sethilite(), which is what makes the
+'?' help list the '$' line (tour-s105-25).
+
+hack.c:2968 domove_core() ends a successful move with newsym(u.ux0, u.uy0)
+and vision_recalc(1); vision.c:850 is what draws the hero's new square.
+Ours added a newsym(newx, newy) after the recalc, harmless except under
+hallucination: map_object() of the object under the hero drew a random
+statue glyph (383, 2) plus the remembered random object (463) from the
+display RNG, so every later hallucinated glyph on the screen came from
+the wrong draw (tour-s105-31). The display RNG can now be logged like the
+C recorder's NETHACK_RNGLOG_DISP: set `globalThis.__rng_log_disp = 1`
+before importing jsplay.mjs and the log carries `~drn2(n)=v` entries with
+sites (`__rng_stack_at` prints a stack at one of them); a scratchpad
+probe of the session recorded with NETHACK_RNGLOG_DISP=1 gives the C
+side, and comparing per-step counts found the step in one pass.

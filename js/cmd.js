@@ -3583,10 +3583,10 @@ async function domove_core() {
 
     await check_leash(game.u.ux0, game.u.uy0);
 
-    // Update display
+    /* Clean old position -- vision_recalc() will print our new one. */
     newsym(oldx, oldy);
-    vision_recalc(1);
-    newsym(newx, newy);
+    /* Since the hero has moved, adjust what can be seen/unseen. */
+    vision_recalc(1); /* Do the work now in the recover time. */
 
     /* src/hack.c:2964 — position changed: mark success for domove()'s
        smudge/bubble tail and set u.umoved, read by u_calc_moveamt (steed

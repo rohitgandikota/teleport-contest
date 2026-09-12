@@ -735,9 +735,14 @@ display_jump_positions() so #jump installs a marker; s105-31 is a
 hallucinated-glyph display-RNG order difference (a NETHACK_RNGLOG_DISP
 probe of the session is in the scratchpad).
 
-Next: display_jump_positions()/display_stinking_cloud_positions() and the
-tmp_at markers, the s105-31 display-RNG order, then a trigram seed and
-`--seed 106` tours. The mapped-monster display class (s102-21, s102-36) needs the C's
+Seventy-seventh round (12 Sep): the getpos '$' markers (jump, polearm,
+grapple, stinking cloud) draw through tmp_at, and domove_core() no longer
+redraws the hero's square after vision_recalc() (a duplicated
+map_object() under hallucination consumed display-RNG draws; NOTES
+"getpos markers draw through tmp_at, and the hero's square is drawn
+once"). Seed 105 is at 40/40.
+
+Next: a trigram seed, then `--seed 106` tours, then keep alternating. The mapped-monster display class (s102-21, s102-36) needs the C's
 redraw path found; the probes so far are in NOTES.
 tools/jsplay.mjs has `--aeval "<await expr>"` (game, dungeon, C, symbols,
 h in scope; `await import('file:///.../js/x.js')` reaches any module) for

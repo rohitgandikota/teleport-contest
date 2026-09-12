@@ -9291,3 +9291,12 @@ game) and #debugfuzzer (NOFUZZERCMD).
 
 39/40: the one miss, s113-23, is the ^X "It is nighttime." / "It is the
 midnight hour." recording-clock line.
+
+## Tour seed 114 (12 Sep)
+
+39/40 recorded, 40/40 after the fix: s114-07's m_move() never displaced
+another monster. mfndpos() already set ALLOW_MDISP, and dog_move() had
+its arm, but m_move()'s (monmove.c:2025: mdisplacem(), MMOVE_DIED /
+MMOVE_MOVED / MMOVE_DONE by the result bits) was missing, so a displacer
+that had picked an occupied square just stood still and skipped
+mdisplacem()'s rn2(7).

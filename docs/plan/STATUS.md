@@ -861,9 +861,13 @@ two migratemons misses fixed after it.
 
 Tour seed 113: 39/40 (s113-23 is the ^X clock line).
 
-Next: tour seed 114 (recorded, sweep running), #wizcustom (dat/symbols,
-symbols.c file parsing, glyphs.c naming and the custom colour pipeline),
-trigram seed 86, altkeyhandling.
+Ninety-third round (12 Sep): tour seed 114, 40/40 after m_move()'s
+monster displacement arm (NOTES "Tour seed 114"). Public 44/44, hang
+gate OK.
+
+Next: trigram seed 86 (recording), #wizcustom (dat/symbols, symbols.c
+file parsing, glyphs.c naming and the custom colour pipeline),
+altkeyhandling, tour seed 115.
 The mapped-monster display class (s102-21, s102-36) needs the C's redraw
 path found; the probes so far are in NOTES.
 tools/jsplay.mjs has `--aeval "<await expr>"` (game, dungeon, C, symbols,

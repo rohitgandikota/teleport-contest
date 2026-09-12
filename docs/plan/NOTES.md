@@ -8574,3 +8574,53 @@ and "An alarm sounds!" and wakes every monster on the level. Ours had no
 Knox arm in the arrival chain, so the garrison stayed asleep and the next
 turns' draws came in a different order (tour-s103-14, which had looked
 like a wish-parsing divergence).
+
+## A monster that teleports next to a busy hero interrupts the occupation (12 Sep)
+
+teleport.c:1762 rloc_to_core() ends with `if (go.occupation) dochugw(mtmp,
+FALSE)`, the same "stop fiddling while Rome burns" check makemon() makes.
+Our rloc_to_core() stopped after the arrival message, so when a covetous
+master lich's tactics() dropped it next to a hero mid-meal, the C printed
+"You stop eating the food ration." before the lich's first touch and ours
+kept chewing (tour-s104-30). The same tail also carries the u.ustuck
+re-anchoring (teleporting together, or unstuck when the engulfer lands
+elsewhere), maybe_unhide_at(), set_msg_xy(), the wand-of-teleportation
+discovery, the resident-shopkeeper anger arm and the stolen_value()
+walk over shop goods a monster carries out of the shop, and the mintrap()
+for a trapped monster that teleported; all ported now.
+
+## paybill() and inherits() are the C's, not a shortcut (12 Sep)
+
+really_done() called a hand-rolled "one local keeper" sketch in end.js
+instead of shk.c:2485 paybill(). The sketch had no `croaked < 0` arm, so a
+wizard-mode hero who level-teleported out of the dungeon and answered "n"
+to "Die?" got "<shk> gratefully inherits all your possessions." where the
+C (escaped: shopkeepers can't reach you) went straight to the disclosure
+prompt (tour-s104-32). shk.js now carries paybill(), inherits() (the
+numsk>1 corpse-glance, the clean inheritance, the "takes the N zorkmids
+owed you" settlement, and the goto skip/clear structure as two flags),
+set_repo_loc() (gear dumped one step inside the door when the hero died
+in the doorway or a wall gap) and finish_paybill(); end.js also gained
+the two neighbours the C calls in the same block, vault.c paygd() (gold
+into the Magic Memory Vault, or a hostile guard "remits your gold to the
+vault" with a grave for Croesus) and priest.c clearpriests().
+
+## The Amulet's wish flushes through display_nhwindow (12 Sep)
+
+allmain.c:448 flushes the message window with display_nhwindow(WIN_MESSAGE,
+TRUE) before the urgent "The Amulet is bestowing a wish upon you!". Ours
+tested toplin and called more() directly, which repainted a message the
+player had already ESCaped: on a wizard-mode levelport to the Plane of
+Fire the ESC at resurrect()'s "So thou thought thou couldst kill me" set
+WIN_STOP, the C then buffered "It is hot here." unpainted and urgent_pline
+cleared the line, while ours showed "It is hot here.--More--" first
+(tour-s104-33). Use display_nhwindow_message() wherever the C flushes the
+message window; it returns early under WIN_STOP like the tty arm does.
+
+## goodpos() re-rolls the random monster with the caller's flags (12 Sep)
+
+makemon.c:1180: when makemon() picks a random monster for a caller-chosen
+spot that is bad for it, the retry loop calls goodpos() with the caller's
+gpflags (GP_CHECKSCARY | GP_AVOID_MONPOS). Ours passed no flags, so a
+spot inside a monster-generation exclusion zone was accepted on the
+first roll and the C's rndmonst() re-roll never happened (tour-s104-33).

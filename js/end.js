@@ -610,7 +610,6 @@ async function really_done(how) {
     let corpse = null;
     let umoney;
     let taken = false;
-    let repos = null;
     let endtime;
 
     /* src/end.c:1144 — the game is now over; disclosure windows read this
@@ -637,7 +636,7 @@ async function really_done(how) {
     if ((game.moves | 0) <= 1 && how < PANICKED && !game.done_stopprint)
         await pline(`Do not pass Go.  Do not collect 200 ${currency(200)}.`);
 
-    const { can_make_bones, savebones, drop_upon_death } = await import('./bones.js');
+    const { can_make_bones, savebones } = await import('./bones.js');
     const bones_ok = (how < GENOCIDED) && can_make_bones();
 
     /* maintain ugrave_arise even for !bones_ok */
@@ -656,47 +655,21 @@ async function really_done(how) {
     if (how === QUIT || how === ESCAPED || how === PANICKED)
         game.killer.format = 2; /* NO_KILLER_PREFIX */
 
-    /* src/shk.c paybill()/inherits(): the resident or pursuing shopkeeper
-       gets first claim on a dead hero's inventory.  The full billing walk
-       reduces to these two early-game cases when there is one local keeper:
-       peaceful inheritance inside the shop, or confiscation by an angry or
-       unpaid keeper. */
-    if (how !== PANICKED && (game.invent || []).length) {
-        const ushops = u.ushops || '';
-        const shks = (game.level?.monsters || []).filter(m => m.isshk);
-        const priority = (shkp) => {
-            const eshk = shkp.eshk || shkp.mextra?.eshk || {};
-            const inside = ushops.includes(String.fromCharCode(eshk.shoproom || 0));
-            const owed = !!((eshk.billct | 0) || eshk.bill_p?.length
-                            || (eshk.debit | 0) || (eshk.robbed | 0));
-            if (inside && owed) return 0;
-            if (inside) return 1;
-            if (owed) return 2;
-            if (eshk.following || !shkp.mpeaceful) return 3;
-            return 4;
-        };
-        shks.sort((a, b) => priority(a) - priority(b));
-        const shkp = shks[0];
-        if (shkp) {
-            const eshk = shkp.eshk || shkp.mextra?.eshk || {};
-            const inside = ushops.includes(String.fromCharCode(eshk.shoproom || 0));
-            const owed = !!((eshk.billct | 0) || eshk.bill_p?.length
-                            || (eshk.debit | 0) || (eshk.robbed | 0));
-            const raw = shkp.shknam || eshk.shknam || 'the shopkeeper';
-            const shkname = /^[-+_|]/.test(raw) ? raw.slice(1) : raw;
-            const cleanInheritance = inside && shkp.mpeaceful
-                && !owed && !eshk.following && u.ugrave_arise < LOW_PM;
-            if (cleanInheritance) {
-                await pline(`${shkname} gratefully inherits all your possessions.`);
-                taken = true;
-            } else if (inside || owed || eshk.following || !shkp.mpeaceful) {
-                await pline(`${shkname} takes all your possessions.`);
-                taken = true;
-            }
-            if (taken)
-                repos = { x: u.ux || u.ux0, y: u.uy || u.uy0 };
-        }
-    }
+    if (how !== PANICKED) {
+        const silently = game.done_stopprint ? true : false;
+        const { paybill } = await import('./shk.js');
+        const { paygd } = await import('./vault.js');
+        const { clearpriests } = await import('./priest.js');
+
+        /* these affect score and/or bones, but avoid them during panic */
+        taken = await paybill((how === ESCAPED) ? -1 : (how !== QUIT) ? 1 : 0,
+                              silently);
+        await paygd(silently);
+        await clearpriests();
+    } else
+        taken = false; /* lint; assert( !bones_ok ); */
+
+    /* clearlocks() — file lock housekeeping (files.c), nothing to port */
 
     // src/end.c really_done(), acknowledge the message window before
     // disclosure. An already-read prompt keeps its pixels until overwritten.
@@ -744,8 +717,11 @@ async function really_done(how) {
     if (how === ESCAPED || how === ASCENDED)
         await keepdogs(true);
 
-    if (bones_ok && taken)
-        await drop_upon_death(null, null, repos.x, repos.y);
+    /* finish_paybill should be called after disclosure but before bones */
+    if (bones_ok && taken) {
+        const { finish_paybill } = await import('./shk.js');
+        await finish_paybill();
+    }
 
     /* grave creation after disclosure */
     if (bones_ok && u.ugrave_arise === -1

@@ -16,6 +16,14 @@ import { rn1 } from './rng.js';
 import { update_player_regions, update_monster_region, in_out_region } from './region.js';
 import { m_into_limbo } from './mon.js';
 import { unstuck } from './mon.js';
+import { maybe_unhide_at } from './mon.js';
+import { set_msg_xy } from './pline.js';
+import { makeknown } from './o_init.js';
+import { inhishop, dochugw } from './monmove.js';
+import { make_angry_shk, onshopbill } from './shk.js';
+import { mintrap } from './trap.js';
+import { NO_TRAP_FLAGS } from './const.js';
+import { check_special_room } from './hack.js';
 import { engulfing_u, In_mines, NO_KILLER_PREFIX, DIED, MAX_TYPE } from './const.js';
 import { place_object } from './mkobj.js';
 import { stolen_value, u_left_shop } from './shk.js';
@@ -737,6 +745,7 @@ function rloc_pos_ok(x, y, mtmp) {
 // src/teleport.c:1648 rloc_to_core(), ordinary non-worm relocation path.
 export async function rloc_to_core(mtmp, x, y, rlocflags) {
     const oldx = mtmp.mx, oldy = mtmp.my;
+    const resident_shk = mtmp.isshk && inhishop(mtmp);
     const preventmsg = (rlocflags & RLOC_NOMSG) !== 0;
     const vanishmsg = (rlocflags & RLOC_MSG) !== 0;
     let appearmsg = ((mtmp.mstrategy | 0) & STRAT_APPEARMSG) !== 0;
@@ -770,26 +779,84 @@ export async function rloc_to_core(mtmp, x, y, rlocflags) {
 
     if (mtmp.wormno) /* now put down tail */
         place_worm_tail_randomly(mtmp, x, y);
-    newsym(x, y);
-    set_apparxy(mtmp);
 
-    if (domsg && (canspotmon(mtmp) || appearmsg
-                  || mtmp === game.u.ustuck)) {
-        const du = distu(x, y);
-        const suffix = du <= 2 ? ' next to you'
-            : du <= BOLT_LIM * BOLT_LIM ? ' close by'
-            : telemsg && distu(oldx, oldy) !== du
-                ? (du < distu(oldx, oldy)
-                    ? ' closer to you' : ' farther away')
-                : '';
-        mtmp.mstrategy = (mtmp.mstrategy | 0) & ~STRAT_APPEARMSG;
-        if (telemsg && (couldsee(x, y) || sensemon(mtmp)))
-            await pline(`${Monnam(mtmp)} vanishes and reappears${suffix}.`);
-        else
-            await pline(`${appearmsg ? Amonnam(mtmp) : Monnam(mtmp)} ${
-                appearmsg ? 'suddenly ' : ''}${Blind() ? 'arrives' : 'appears'
-            }${suffix}!`);
+    if (game.u.ustuck === mtmp) {
+        if (game.u.uswallow) {
+            u_on_newpos(mtmp.mx, mtmp.my);
+            await check_special_room(false);
+            await docrt();
+        } else if (!m_next2u(mtmp)) {
+            await unstuck(mtmp);
+        }
     }
+
+    maybe_unhide_at(x, y);
+    newsym(x, y);      /* update new location */
+    set_apparxy(mtmp); /* orient monster */
+    if (domsg && (canspotmon(mtmp) || appearmsg || mtmp === game.u.ustuck)) {
+        const du = distu(x, y);
+        let olddu;
+        const next = (du <= 2) ? ' next to you' : null, /* next2u() */
+              nearu = (du <= BOLT_LIM * BOLT_LIM) ? ' close by' : null;
+
+        set_msg_xy(x, y);
+        mtmp.mstrategy = (mtmp.mstrategy | 0) & ~STRAT_APPEARMSG; /* one chance only */
+        if (mtmp === game.u.ustuck && !u_at(game.u.ux0, game.u.uy0)) {
+            await You(`and ${mon_nam(mtmp)} teleport together.`);
+        } else if (telemsg && (couldsee(x, y) || sensemon(mtmp))) {
+            await pline(`${Monnam(mtmp)} vanishes and reappears${
+                next ? next
+                : nearu ? nearu
+                  : ((olddu = distu(oldx, oldy)) === du) ? ''
+                    : (du < olddu) ? ' closer to you'
+                      : ' farther away'}.`);
+        } else {
+            await pline(`${appearmsg ? Amonnam(mtmp) : Monnam(mtmp)} ${
+                appearmsg ? 'suddenly ' : ''}${
+                !Blind() ? 'appears' : 'arrives'}${
+                next ? next : nearu ? nearu : ''}!`);
+        }
+        /* wand discovery only happens if a messaage is delivered (bug?);
+           if spell or q.mechanic attack or artifact #invoke for banish
+           then current_wand will be Null */
+        if (game.current_wand
+            && game.current_wand.otyp === ONAMES.WAN_TELEPORTATION)
+            makeknown(ONAMES.WAN_TELEPORTATION);
+    }
+
+    /* shopkeepers will only teleport if you zap them with a wand of
+       teleportation or if they've been transformed into a jumpy monster;
+       the latter only happens if you've attacked them with polymorph
+       [FIXME? or they've been hit by a genetic engineer, which won't
+       necessarily be due to Conflict by hero] */
+    if (resident_shk && !inhishop(mtmp))
+        await make_angry_shk(mtmp, oldx, oldy);
+
+    /* if a monster carrying shop goods teleports out of the shop, blame
+       it on the hero; chance of an unpaid item is vanishingly small, but
+       no_charge is easily possible and needs to be cleared if not in shop;
+       a for-sale item is ordinary here--shk won't notice it leaving; if
+       mtmp teleports from one shop into another, no_charge status sticks
+       and an item on the first shk's bill stays there */
+    if (mtmp.minvent?.length && !costly_spot(x, y)) {
+        const shkp = find_objowner(mtmp.minvent[0], oldx, oldy);
+        const peaceful = !shkp || shkp.mpeaceful;
+
+        for (const otmp of [...mtmp.minvent]) {
+            if (otmp.no_charge)
+                otmp.no_charge = 0;
+            else if (shkp && onshopbill(otmp, shkp, true))
+                await stolen_value(otmp, oldx, oldy, peaceful, false);
+        }
+    }
+
+    /* if hero is busy, maybe stop occupation */
+    if (game.occupation)
+        await dochugw(mtmp, false);
+
+    /* trapped monster teleported away */
+    if (mtmp.mtrapped && !mtmp.wormno)
+        await mintrap(mtmp, NO_TRAP_FLAGS);
 }
 
 // src/teleport.c:1777 rloc_to_flag().

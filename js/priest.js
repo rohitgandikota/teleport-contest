@@ -31,7 +31,10 @@ import { ROOMOFFSET, W_ARMC, IS_ROOM, NOTONL, ALLOW_M,
          ALLOW_ROCK, SPINE, AM_MASK, AM_SHRINE, IS_ALTAR,
          In_endgame, A_WIS, FROMOUTSIDE, INTRINSIC, OBJ_FREE,
          PRONOUN_HALLU, TEMPLE, TIMEOUT } from './const.js';
-import { mfndpos, mon_allowflags, m_at, setmangry, wakeup, m_next2u } from './mon.js';
+import { mfndpos, mon_allowflags, m_at, setmangry, wakeup, m_next2u,
+         mongone } from './mon.js';
+import { DEADMONSTER } from './monst.js';
+import { on_level } from './dungeon.js';
 import { monnear, m_canseeu, histemple_at, inhishop,
          inhistemple } from './monmove.js';
 import { dist2, online2 } from './hacklib.js';
@@ -730,6 +733,20 @@ export async function angry_priest() {
         delete priest.epri;
         priest.ispriest = 0;
         priest.isminion = 1;
+    }
+}
+
+// src/priest.c:919 clearpriests() — when saving bones, find priests that
+// aren't on their shrine level and remove them. This avoids big problems
+// when restoring bones.
+export async function clearpriests() {
+    for (const mtmp of [...(game.level?.monsters || [])]) {
+        if (DEADMONSTER(mtmp))
+            continue;
+        /* priestini() stores the record on the monster itself (priest.epri) */
+        const epri = mtmp.epri || EPRI(mtmp);
+        if (mtmp.ispriest && !on_level(epri?.shrlevel, game.u.uz))
+            await mongone(mtmp);
     }
 }
 

@@ -2325,9 +2325,15 @@ export function makemon(ptr, x, y, mmflags) {
             if (!(ptr = rndmonst()))
                 return null;
         } while (++tryct <= 50
+                 /* in Sokoban, don't accept a giant on first try;
+                    after that, boulder carriers are fair game */
                  && ((tryct === 1 && throws_rocks(ptr)
                       && In_sokoban(game.u.uz))
-                     || !goodpos(x, y, { data: ptr, wormno: 0 })));
+                     /* goodpos() with the caller's gpflags: a spot that
+                        already holds a monster (GP_AVOID_MONPOS) or is
+                        scary to the pick (GP_CHECKSCARY) re-rolls
+                        rndmonst() like the C (tour-s104-33) */
+                     || !goodpos(x, y, { data: ptr, wormno: 0 }, gpflags)));
         mndx = monsndx(ptr);
     }
     propagate(mndx, countbirth, false);

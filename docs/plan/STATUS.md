@@ -700,9 +700,20 @@ the tutorial..."). Open from seed 102: s102-21 (a bugbear on an
 engraving after ^F, same class as s102-36's spider on its web: the C
 shows the monster after mapping, ours the engraving/trap).
 
-Next: triage `--seed 104` tours (recording), then a trigram seed, then
-the remaining note_unported list (dog.js 13, sp_lev.js 13, insight.js
-1). The mapped-monster display class (s102-21, s102-36) needs the C's
+Seventy-fourth round (12 Sep): tour `--seed 104` (5 failures in 40).
+Fixed: goodpos() with the caller's gpflags in makemon()'s random re-roll;
+rloc_to_core()'s full tail (dochugw() occupation interrupt after a
+monster teleports next to the hero, u.ustuck re-anchoring, shopkeeper
+and stolen-goods arms, wand discovery, mintrap); paybill()/inherits()/
+set_repo_loc()/finish_paybill() ported into shk.js replacing end.js's
+one-keeper sketch (the escaped-dungeon `croaked < 0` arm was the miss),
+plus paygd() and clearpriests(); the Amulet wish flushes through
+display_nhwindow_message() so an ESCaped message stays suppressed. Seed
+104 is at 38/40, the two left are were_change night rolls (recording
+clock). Seeds 101-103 re-tallied unchanged.
+
+Next: a trigram seed, then `--seed 105` tours, then the remaining
+note_unported list (dog.js 13, sp_lev.js 13, insight.js 1). The mapped-monster display class (s102-21, s102-36) needs the C's
 redraw path found; the probes so far are in NOTES.
 tools/jsplay.mjs has `--aeval "<await expr>"` (game, dungeon, C, symbols,
 h in scope; `await import('file:///.../js/x.js')` reaches any module) for

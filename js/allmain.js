@@ -989,13 +989,13 @@ export async function moveloop_core() {
        triggers it too) */
     if (g.u.uhave?.amulet && !g.u.uevent?.amulet_wish) {
         (g.u.uevent ||= {}).amulet_wish = 1;
-        /* display_nhwindow(WIN_MESSAGE, TRUE) — a BLOCKING flush: an
-           unacknowledged topline ("It is hot here." on the fire-plane
-           arrival) gets its --More-- and eats a key BEFORE the wish text;
-           skipping it glued both messages onto one line */
-        const { urgent_pline, more, TOPLINE_NEED_MORE } = await import('./display.js');
-        if (g._toplin === TOPLINE_NEED_MORE)
-            await more();
+        /* display_nhwindow(WIN_MESSAGE, TRUE): a blocking flush, so an
+           unacknowledged topline gets its --More-- BEFORE the wish text.
+           The tty arm returns early under WIN_STOP (ESC at the previous
+           --More--), leaving a buffered message unpainted; urgent_pline
+           then clears the line and lifts the suppression itself. */
+        const { urgent_pline, display_nhwindow_message } = await import('./display.js');
+        await display_nhwindow_message();
         await urgent_pline('The Amulet is bestowing a wish upon you!');
         const { makewish } = await import('./zap.js');
         await makewish();

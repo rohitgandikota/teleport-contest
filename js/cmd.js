@@ -18,7 +18,7 @@ import { IS_FOUNTAIN } from './const.js';
 import { ATTKS, MSOUND } from './monst_data.js';
 import { is_were } from './were.js';
 import { webmaker, can_breathe, attacktype, is_mind_flayer, is_unicorn, is_vampire } from './mondata.js';
-import { PICK_ONE, CMD_M_PREFIX, AUTOCOMPLETE, CMD_NOT_AVAILABLE, INTERNALCMD, WIZMODECMD, GENERALCMD, QBUFSZ } from './const.js';
+import { PICK_ONE, CMD_M_PREFIX, PREFIXCMD, AUTOCOMPLETE, CMD_NOT_AVAILABLE, INTERNALCMD, WIZMODECMD, GENERALCMD, QBUFSZ } from './const.js';
 import { add_menu_heading } from './options.js';
 import { pmatchi, visctrl, strstri, strsubst } from './hacklib.js';
 import { seemimic } from './mon.js';
@@ -2585,6 +2585,11 @@ export async function rhack(key) {
     else if (moveBinding && moveBinding.mode === MV_RUSH)
         movemode = 3;
     const prefixCommand = cmdbind_table().get(ch0.charCodeAt(0));
+    /* src/cmd.c:3689 rhack() dispatches the bound command (tlist), so the
+       prefixes are recognized by the command a key is bound to: 'g'/'G'/
+       'F'/'m' by default, '5'/M-5/'-' as well under number_pad */
+    const prefixTxt = prefixCommand ? prefixCommand.ef_txt : null;
+    const is_prefixcmd = !!(prefixCommand && (prefixCommand.flags & PREFIXCMD));
     let boundCommand;
 
     /* src/cmd.c:3689 — use key to directly index cmdlist array */
@@ -2609,8 +2614,9 @@ export async function rhack(key) {
        unknown command after 'g' leaves them for the next move) */
     if (continuedPrefix && (game.domove_attempting & DOMOVE_RUSH)
         && (movemode !== 0
-            || (!isMovementKey(ch) && !'gGmF-'.includes(ch) && prefixCommand))) {
-        const prefix = game.context.run === 3 ? 'G' : 'g';
+            || (!isMovementKey(ch) && !is_prefixcmd && prefixCommand))) {
+        /* visctrl(cmd_from_func(prefix_seen->ef_funct)) */
+        const prefix = visctrl_key(cmd_from_func(game.context.run === 3 ? 'run' : 'rush').charCodeAt(0));
         const vertical = ch === '<' || ch === '>';
         game.context.run = 0;
         game.domove_attempting = 0;
@@ -2624,11 +2630,11 @@ export async function rhack(key) {
        dispatched as its ordinary command. */
     if (continuedPrefix && game.context.forcefight
         && (movemode !== 0
-            || (!isMovementKey(ch) && !'gGmF-'.includes(ch) && prefixCommand))) {
+            || (!isMovementKey(ch) && !is_prefixcmd && prefixCommand))) {
         const vertical = ch === '<' || ch === '>';
         game.context.forcefight = 0;
         game.context.move = 0;
-        await pline("The 'F' prefix should be followed by a movement command"
+        await pline(`The '${visctrl_key(cmd_from_func('fight').charCodeAt(0))}' prefix should be followed by a movement command`
                     + `${vertical ? ' other than up or down' : ''}.`);
         return;
     }
@@ -2637,7 +2643,7 @@ export async function rhack(key) {
        selected nonmovement commands. Reject a known command whose cmdlist
        entry lacks CMD_M_PREFIX instead of dispatching it normally. */
     if (continuedPrefix && game.iflags.menu_requested
-        && !isMovementKey(ch) && !'gGmF-'.includes(ch)) {
+        && !isMovementKey(ch) && !is_prefixcmd) {
         if (prefixCommand && !accept_menu_prefix(prefixCommand)) {
             await pline_nohistory(`The ${prefixCommand.ef_txt} command does not accept 'm' prefix.`);
             reset_cmd_vars(true);
@@ -2832,29 +2838,29 @@ export async function rhack(key) {
     } else if (ch === '^') {
         // src/pager.c doidtrap() describes a seen trap in one direction.
         game.context.move = ((await doidtrap()) === ECMD_TIME ? 1 : 0);
-    } else if (ch === 'g' || ch === 'G') {
+    } else if (prefixTxt === 'rush' || prefixTxt === 'run') {
         // src/cmd.c:1588 do_rush()/do_run(): PREFIX commands. Lowercase g
         // sets context.run = 2 and uppercase G sets it to 3; the following
         // direction then carries the hero until something interesting stops
         // the run. Neither prefix consumes game time by itself.
         if (game.domove_attempting & DOMOVE_RUSH) {
-            await pline(`Double ${ch === 'g' ? 'rush' : 'run'} prefix, canceled.`);
+            await Norep(`Double ${prefixTxt} prefix, canceled.`);
             game.context.run = 0;
             game.domove_attempting = 0;
             commandResult = ECMD_CANCEL;
         } else {
-            game.context.run = (ch === 'g') ? 2 : 3;
+            game.context.run = (prefixTxt === 'rush') ? 2 : 3;
             game.domove_attempting |= DOMOVE_RUSH;
             game._cmd_prefix_pending = true;
         }
         game.context.move = 0;
-    } else if (ch === 'm') {
+    } else if (prefixTxt === 'reqmenu') {
         // src/cmd.c:1829 do_reqmenu — a PREFIX setting iflags.menu_requested.
         // For a movement command it means "move without picking up", which is
         // a no-op while every recorded rc sets !autopickup; for others it asks
         // for a menu. Reads no extra key.
         if (game.iflags.menu_requested) {
-            await pline('Double m prefix, canceled.');
+            await Norep(`Double ${visctrl_key(cmd_from_func('reqmenu').charCodeAt(0))} prefix, canceled.`);
             game.iflags.menu_requested = false;
             commandResult = ECMD_CANCEL;
         } else {
@@ -2862,7 +2868,7 @@ export async function rhack(key) {
             game._cmd_prefix_pending = true;
         }
         game.context.move = 0;
-    } else if (ch === 'F' || ch === '-') {
+    } else if (prefixTxt === 'fight') {
         // src/cmd.c:1622 do_fight — a PREFIX. It sets context.forcefight and
         // returns WITHOUT reading another key. commands_init() (cmd.c:2772)
         // also binds '-' to it, in both number_pad modes; the prefix message
@@ -2872,7 +2878,7 @@ export async function rhack(key) {
         // unhandled therefore did not misalign keys, it displaced the HERO:
         // C attacks and stays put where we walked into the square.
         if (game.context.forcefight) {
-            await pline('Double fight prefix, canceled.');
+            await Norep('Double fight prefix, canceled.');
             game.context.forcefight = 0;
             game.context.move = 0;
             commandResult = ECMD_CANCEL;
@@ -4591,10 +4597,55 @@ function cmdbind_table() {
        Off, <space> is unbound and elicits "Unknown command ' '." */
     if (game.flags?.rest_on_space)
         binds.set(' '.charCodeAt(0), restonspace);
+    /* src/cmd.c:2195 cmdbind_swapkeys(): two keys trade bindings, and only
+       when both are bound */
+    const cmdbind_swapkeys = (key1, key2) => {
+        const bind1 = binds.get(key1);
+        const bind2 = binds.get(key2);
+
+        if (bind1 && bind2) {
+            binds.set(key1, bind2);
+            binds.set(key2, bind1);
+        }
+    };
+    /* src/cmd.c:3389 reset_commands(): the swap_yz, pcHack_compat and
+       phone_layout remaps act on the table as it stands before the
+       direction keys are (re)bound.  This table is rebuilt from Cmd's
+       flags on every lookup, so each remap is applied whenever its mode
+       is on (the C toggles them in place; the results agree because a
+       reversed toggle undoes the same swaps on the restored table). */
+    {
+        const Cmd = game.Cmd || {};
+        if (Cmd.swap_yz) {
+            /* FIXME? should Cmd.spkeys[] be scanned for y and/or z to swap? */
+            const ylist = [
+                'y'.charCodeAt(0), 'Y'.charCodeAt(0), 'y'.charCodeAt(0) & 0x1f,
+                0x80 | 'y'.charCodeAt(0), 0x80 | 'Y'.charCodeAt(0),
+                0x80 | ('y'.charCodeAt(0) & 0x1f),
+            ];
+            for (let i = 0; i < ylist.length; i++) {
+                const c = ylist[i] & 0xff;
+                cmdbind_swapkeys(c, c + 1);
+            }
+        }
+        if (Cmd.pcHack_compat) {
+            /* FIXME: NHKF_DOINV2 ought to be implemented instead of this */
+            binds.set(0x80 | '0'.charCodeAt(0),
+                      by_txt('inventtype')); /* ext_func_tab_from_func(dotypeinv) */
+        }
+        if (Cmd.phone_layout) {
+            for (let i = 0; i < 3; i++) {
+                let c = '1'.charCodeAt(0) + i;             /* 1,2,3 <-> 7,8,9 */
+                cmdbind_swapkeys(c, c + 6);
+                c = (0x80 | '1'.charCodeAt(0)) + i; /* M-1,M-2,M-3 <-> M-7,M-8,M-9 */
+                cmdbind_swapkeys(c, c + 6);
+            }
+        }
+    }
     /* src/cmd.c:3462 reset_commands(): the direction characters (and their
        run/rush forms) replace whatever commands_init() had on those keys,
        so cmdbind_get('l') is "moveeast" without number_pad and "loot"
-       with it. swap_yz and the phone layout are not modelled. */
+       with it. */
     {
         const num_pad = !!game.iflags?.num_pad;
         /* Cmd.dirchars from reset_commands(); the defaults cover callers
@@ -4845,16 +4896,40 @@ export function ext_func_tab_from_func(fn) {
 }
 
 export function cmd_from_func(name) {
+    let i;
+    let ret = '\0';
+
     for (const [key, bound] of Object.entries(game.rc_key_bindings || {}))
         if (bound === name)
             return key;
     const binds = cmdbind_table();
-    for (let i = 0; i < 256; ++i) {
+    /* the C walks its binding list newest-first; this table has no
+       history, so the keys are scanned in order (the two agree for every
+       key commands_init() and number_pad bind twice) */
+    for (i = 1; i < 256; ++i) {
+        /* skip space; we'll use it below as last resort if no other
+           keystroke invokes space's command */
+        if (i === ' '.charCodeAt(0))
+            continue;
+        /* skip digits if number_pad is Off; also skip '-' unless it has
+           been bound to something other than what number_pad assigns */
+        if (((i >= '0'.charCodeAt(0) && i <= '9'.charCodeAt(0))
+             || (i === '-'.charCodeAt(0) && name === 'fight'))
+            && !game.Cmd?.num_pad)
+            continue;
+
         const e = binds.get(i);
-        if (e && e.ef_txt === name)
-            return String.fromCharCode(i);
+        if (e && e.ef_txt === name) {
+            if (i >= ' '.charCodeAt(0) && i <= '~'.charCodeAt(0))
+                return String.fromCharCode(i);
+            else
+                ret = String.fromCharCode(i);
+        }
     }
-    return '\0';
+    const sp = binds.get(' '.charCodeAt(0));
+    if (sp && sp.ef_txt === name)
+        return ' ';
+    return ret;
 }
 
 // src/cmd.c:118 levltyp[] — the names of the levl[][].typ values, for the
@@ -4960,8 +5035,8 @@ const move_funcs = [
 // number_pad setting. Key lookups in this port (cmdbind_table(), movecmd())
 // read game.iflags.num_pad and game.Cmd live instead of a rebound
 // Cmd.commands[] table, so only the flags and direction strings are kept
-// here; swap_yz, the phone layout and the MSDOS M-0 binding have no key
-// tables of their own and are recorded as unported when they turn on.
+// here; cmdbind_table() applies the swap_yz, phone layout and MSDOS M-0
+// remaps from these flags.
 export function reset_commands(initial) {
     const sdir = 'hykulnjb><',
           sdir_swap_yz = 'hzkulnjb><',
@@ -4989,24 +5064,18 @@ export function reset_commands(initial) {
         if (flagtemp !== !!Cmd.swap_yz) {
             Cmd.swap_yz = flagtemp;
             ++updated;
-            if (flagtemp)
-                note_unported_cmd('reset_commands:swap_yz');
         }
         /* MSDOS compatibility mode (only applicable for num_pad) */
         flagtemp = ((iflags.num_pad_mode | 0) & 1) ? Cmd.num_pad : false;
         if (flagtemp !== !!Cmd.pcHack_compat) {
             Cmd.pcHack_compat = flagtemp;
             ++updated;
-            if (flagtemp)
-                note_unported_cmd('reset_commands:pcHack_compat');
         }
         /* phone keypad layout (only applicable for num_pad) */
         flagtemp = ((iflags.num_pad_mode | 0) & 2) ? Cmd.num_pad : false;
         if (flagtemp !== !!Cmd.phone_layout) {
             Cmd.phone_layout = flagtemp;
             ++updated;
-            if (flagtemp)
-                note_unported_cmd('reset_commands:phone_layout');
         }
     } /*?initial*/
 

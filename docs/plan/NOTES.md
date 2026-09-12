@@ -8811,3 +8811,37 @@ invoke_storm_spell() (the snow/fire storm through explode() at the target)
 and invoke_blinding_ray() (do_blinding_ray in apply.js, now exported).
 An unknown power hits the C's impossible(); a property already present
 takes nothing_special(); the crystal ball arm calls use_crystal_ball().
+
+## from_what() reads what_gives(), and the ^X sources are the C's (12 Sep)
+
+attrib.c from_what() and is_innate() are now ported in full in attrib.js
+(the lycanthropy, Knight-jumping and eyeless arms of is_innate(); the
+"from birth", FROM_LYCN, Very_fast, what_gives(), blindfold and cream-pie
+arms of from_what(); the negative-propidx blocked arms; the " pair of "
+and " of strangulation" trims), and insight.js imports it instead of its
+own copy. artifact.c what_gives()/abil_to_adtyp()/abil_to_spfx() live in
+artifact.js; the JS property key ('FIRE_RES', ...) stands in for the C's
+&EFoo pointer, and the H-name to key table (EXTRINSIC_KEYS, from
+youprop.h) sits beside from_what(). Verified against a C recording:
+"You are fire resistant because of the Mitre of Holiness.", "You aren't
+subject to light-induced blindness because of Sunsword." (the uwep
+BLND_RES arm) and "You are very fast because of your speed boots." are
+byte-identical; the only ^X difference in that probe is the nighttime
+clock line.
+
+## Prefix commands are dispatched by their binding (12 Sep)
+
+rhack() runs the command a key is bound to, so under number_pad the '5'
+key is the run prefix, M-5 the rush prefix and '-' fight. Our dispatcher
+matched the literal keys ('g', 'G', 'F', '-', 'm'), so "5" then "8" under
+number_pad ran no command at all (recorded probe with number_pad:3: the
+C ran south, we stood still). The prefix arms now key on the bound
+command's ef_txt and PREFIXCMD flag, the double-prefix messages are
+Norep() like the C, and the "The '%s' prefix should be followed by a
+movement command" text names visctrl(cmd_from_func(prefix)) — '5' under
+number_pad, 'G' without. cmd_from_func() carries the C's skip rules
+(space last, digits and '-'-for-fight skipped without number_pad,
+printable keys preferred). reset_commands()' swap_yz, pcHack_compat and
+phone_layout arms are applied in cmdbind_table() (cmdbind_swapkeys()
+only trades two bound keys; the M-0 inventtype binding for pcHack); C
+probes with number_pad:-1 and number_pad:3 match screen for screen.

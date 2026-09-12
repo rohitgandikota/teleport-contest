@@ -94,6 +94,7 @@ import { ONAME_VIA_NAMING, ONAME_WISH, ONAME_GIFT, ONAME_VIA_DIP,
          nothing_happens, A_CON, A_WIS, KILLED_BY, W_ARM, W_WEP, W_ART, W_ARTI,
          SICK_ALL,
          I_SPECIAL, TIMEOUT, W_SWAPWEP, W_QUIVER, W_BALL, W_SADDLE,
+         W_ARMC, W_ARMH, W_ARMS, W_ARMG, W_ARMF, W_ARMU, W_AMUL, W_RINGL, W_RINGR, W_TOOL,
          DISMOUNT_THROWN, IS_ALTAR } from './const.js';
 import { obj_shuffle_range } from './o_init.js';
 import { OBJ_DESCR } from './objnam.js';
@@ -494,6 +495,106 @@ export function arti_cost(obj) {
     return get_artifact(obj).cost || 100 * base;
 }
 
+// src/artifact.c:2320 abil_to_adtyp() — the damage type an artifact must
+// defend against to convey this extrinsic property (the JS property key
+// stands in for the C's &EFoo pointer).
+function abil_to_adtyp(abil) {
+    const abil2adtyp = [
+        ['FIRE_RES', ADTYPES.AD_FIRE],
+        ['COLD_RES', ADTYPES.AD_COLD],
+        ['SHOCK_RES', ADTYPES.AD_ELEC],
+        ['ANTIMAGIC', ADTYPES.AD_MAGM],
+        ['DISINT_RES', ADTYPES.AD_DISN],
+        ['POISON_RES', ADTYPES.AD_DRST],
+        ['DRAIN_RES', ADTYPES.AD_DRLI],
+    ];
+    let k;
+
+    for (k = 0; k < abil2adtyp.length; k++) {
+        if (abil2adtyp[k][0] === abil)
+            return abil2adtyp[k][1];
+    }
+    return 0;
+}
+
+// src/artifact.c:2344 abil_to_spfx() — the SPFX flag that conveys this
+// extrinsic property.
+function abil_to_spfx(abil) {
+    const abil2spfx = [
+        ['SEARCHING', SPFX_SEARCH],
+        ['HALLUC_RES', SPFX_HALRES],
+        ['TELEPAT', SPFX_ESP],
+        ['STEALTH', SPFX_STLTH],
+        ['REGENERATION', SPFX_REGEN],
+        ['TELEPORT_CONTROL', SPFX_TCTRL],
+        ['WARN_OF_MON', SPFX_WARN],
+        ['WARNING', SPFX_WARN],
+        ['ENERGY_REGENERATION', SPFX_EREGEN],
+        ['HALF_SPDAM', SPFX_HSPDAM],
+        ['HALF_PHDAM', SPFX_HPHDAM],
+        ['REFLECTING', SPFX_REFLECT],
+    ];
+    let k;
+
+    for (k = 0; k < abil2spfx.length; k++) {
+        if (abil2spfx[k][0] === abil)
+            return abil2spfx[k][1];
+    }
+    return 0;
+}
+
+// src/artifact.c:2376 what_gives() — the inventory object conveying an
+// extrinsic property: an artifact whose carried/worn defense or special
+// flag matches, or the non-artifact worn in the property's slot.
+export function what_gives(abil) {
+    let obj;
+    let dtyp;
+    let spfx;
+    let wornbits;
+    let wornmask = (W_ARM | W_ARMC | W_ARMH | W_ARMS
+                    | W_ARMG | W_ARMF | W_ARMU
+                    | W_AMUL | W_RINGL | W_RINGR | W_TOOL
+                    | W_ART | W_ARTI);
+
+    if (game.u.twoweap)
+        wornmask |= W_SWAPWEP;
+    dtyp = abil_to_adtyp(abil);
+    spfx = abil_to_spfx(abil);
+    wornbits = (wornmask & (game.u.uprops?.[abil] | 0));
+
+    for (obj of (game.invent || [])) {
+        if (obj.oartifact
+            && (abil !== 'WARN_OF_MON' || game.context?.warntype?.obj)) {
+            const art = get_artifact(obj);
+
+            if (art !== artifact_records[ART_NONARTIFACT]) {
+                if (dtyp) {
+                    if (arti_adtyp(art.cary) === dtyp /* carried */
+                        || (arti_adtyp(art.defn) === dtyp /* defends while worn */
+                            && ((obj.owornmask | 0) & ~(W_ART | W_ARTI))))
+                        return obj;
+                }
+                if (spfx) {
+                    /* property conferred when carried */
+                    if (((art.cspfx | 0) & spfx) === spfx)
+                        return obj;
+                    /* property conferred when wielded or worn */
+                    if (((art.spfx | 0) & spfx) === spfx && obj.owornmask)
+                        return obj;
+                }
+                if (obj === game.u.uwep && abil === 'BLND_RES'
+                    && ((game.u.uprops?.BLND_RES | 0) & W_WEP) !== 0) {
+                    return obj; /* Sunsword */
+                }
+            }
+        } else {
+            if (wornbits && wornbits === (wornmask & (obj.owornmask | 0)))
+                return obj;
+        }
+    }
+    return null;
+}
+
 // src/artifact.c:2264 artifact_light(). Sunsword is always a light source;
 // gold dragon armor emits light only while worn as the suit.
 export function artifact_light(obj) {
@@ -566,21 +667,6 @@ const ARTIFACT_SPFX_PROPS = [
     [SPFX_TCTRL, 'TELEPORT_CONTROL'], [SPFX_HSPDAM, 'HALF_SPDAM'],
     [SPFX_HPHDAM, 'HALF_PHDAM'], [SPFX_PROTECT, 'PROTECTION'],
 ];
-
-// src/attrib.c what_gives(), carried-artifact arm used by debug attributes.
-export function carried_artifact_conveys(obj, key) {
-    const art = get_artifact(obj);
-    if (art === artifact_records[0])
-        return false;
-    if (ARTIFACT_DEFENSE_PROPS.get(arti_adtyp(art.cary)) === key)
-        return true;
-    const spfx = art.cspfx | 0;
-    if (ARTIFACT_SPFX_PROPS.some(([bit, prop]) => prop === key && (spfx & bit)))
-        return true;
-    if (spfx & SPFX_WARN)
-        return (mtype_value(art) ? 'WARN_OF_MON' : 'WARNING') === key;
-    return false;
-}
 
 // src/artifact.c:524 confers_luck(), SPFX_LUCK applies while carried.
 export function artifact_confers_luck(obj) {

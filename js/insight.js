@@ -9,9 +9,8 @@
 // applied (" are not " -> " aren't " and friends). The menu layer adds a second
 // leading space, which is why body lines are indented two and headings one.
 //
-// Only the branches a level-1 hero on dlvl 1 reaches are ported. Everything
-// else records itself through note_unported() rather than guessing, because a
-// spurious line shifts every row below it and costs the whole frame.
+// A spurious line shifts every row below it and costs the whole frame, so
+// every branch is the C's.
 
 import { upstart } from './do_name.js';
 import { monexplain } from './drawing_data.js';
@@ -67,9 +66,6 @@ import { weapon_descr, weapon_type, skill_name, skill_level_name, P_SKILL, can_a
 import { empty_handed, is_ammo } from './wield.js';
 import { magic_negation } from './mhitu.js';
 
-function note_unported_insight(what) {
-    (game.unported ||= new Set()).add('insight:' + what);
-}
 import { depth, dunlev, endgamelevelname } from './dungeon.js';
 import { In_endgame, In_quest, Is_knox_level } from './const.js';
 import { aligns } from './role_data.js';
@@ -602,10 +598,6 @@ function align_gname(a) {
     /* src/pray.c align_gname(): a leading '_' marks a name that already has
        its article ("_The Lady") and is stripped before display. */
     return gnam && gnam[0] === '_' ? gnam.slice(1) : gnam;
-}
-
-function note_unported(what) {
-    (game.unported ||= new Set()).add(what);
 }
 
 // src/insight.c:280 background_enlightenment()

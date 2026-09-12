@@ -841,7 +841,7 @@ async function kick_monster(mon, x, y) {
 // src/dokick.c:295 ghitm(); gold hits a monster.  Return TRUE if caught
 // (the gold taken care of), FALSE otherwise.  The gold object is *not*
 // attached to the fobj chain!
-async function ghitm(mtmp, gold) {
+export async function ghitm(mtmp, gold) {
     let msg_given = false;
 
     if (!likes_gold(mtmp.data) && !mtmp.isshk && !mtmp.ispriest

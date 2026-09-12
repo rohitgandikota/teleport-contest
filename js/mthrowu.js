@@ -1098,7 +1098,8 @@ export async function breamm(mtmp, mattk, mtarg) {
             }
             game.buzzer = mtmp;
             await dobuzz(-20 - ((typ - ATTKS.AD_MAGM) % 10), mattk[2],
-                         mtmp.mx, mtmp.my, sgn(game.tbx), sgn(game.tby));
+                         mtmp.mx, mtmp.my, sgn(game.tbx), sgn(game.tby),
+                         utarget, utarget, false);
             game.buzzer = null;
             nomul(0);
 

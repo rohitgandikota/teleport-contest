@@ -32,7 +32,7 @@ import { obj_extract_self, stackobj } from './invent.js';
 import { stop_timer, ROT_ORGANIC } from './timeout.js';
 import { PMNAMES, MONSYMS } from './monst_data.js';
 import { bury_an_obj, fill_special_room, sp_lev_wire_mklev,
-         sp_lev_wire_walkfrom, sp_lev_wire_priest, sp_lev_wire_roamer,
+         sp_lev_wire_walkfrom, sp_lev_wire_priest,
          reset_xystart_size } from './sp_lev.js';
 import { walkfrom, mazexy, mkmaze_wire_mklev, mkportal } from './mkmaze.js';
 import { enexto_core } from './teleport.js';
@@ -1035,7 +1035,7 @@ mkroom_wire({ topologize });
 sp_lev_wire_mktrap(mktrap);
 sp_lev_wire_okdoor(okdoor);
 sp_lev_wire_subroom(create_subroom);
-sp_lev_wire_mklev({ mkstairs, makecorridors, wallification,
+sp_lev_wire_mklev({ mkstairs, makecorridors, wallification, makeroguerooms,
                     count_level_features: recount_level_features,
                     create_room, topologize,
                     /* src/teleport.c:196 enexto() — CHECKSCARY pass, then
@@ -1054,8 +1054,7 @@ sp_lev_wire_mklev({ mkstairs, makecorridors, wallification,
                     maketrap });
 sp_lev_wire_walkfrom(walkfrom);
 mkmaze_wire_mklev({ mkstairs, place_branch, wallification, maketrap, mktrap });
-import('./priest.js').then(m => { sp_lev_wire_priest(m.priestini);
-                                  sp_lev_wire_roamer(m.mk_roamer); });
+import('./priest.js').then(m => { sp_lev_wire_priest(m.priestini); });
 
 // C ref: mklev.c makerooms()
 async function makerooms() {

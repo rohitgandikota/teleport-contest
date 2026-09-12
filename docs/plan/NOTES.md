@@ -8657,3 +8657,38 @@ recording: the C's DST-shifted clock lands on Friday the 13th and prints
 the warning, ours reads the 14th), fuzz-s84-19 and s84-25 (^X midnight
 hour vs nighttime) and s84-21 (were_change night roll) are the class
 described in "Fixed datetime and DST"; not fixable from the corpus.
+
+## sp_lev.js has no note_unported arms left (12 Sep)
+
+create_object() saddles a carrying monster (can_saddle/put_saddle_on_mon),
+uncreates a random artifact whose container vanished through
+artifact_exists() before obfree(), and reports the containment overflow
+with impossible() like the C; create_monster() calls priest.c mk_roamer()
+directly (the async wiring seam through mklev.js could lose the race on a
+level that made an aligned monster before priest.js finished loading) and
+an unknown appear_as kind is the C's impossible(); an unknown room type,
+level flag or feature name is the C's nhl_error(), reported through
+impossible(); the mkstairs/makecorridors/wallification seams are called
+without fallbacks; LVLINIT_ROGUE runs makeroguerooms(). flip_level() now
+carries the #wizfliplevel `extras` arms (ball and chain, the vault guard's
+egd through flip_vault_guard(), pets' ogoal, migrating shopkeepers and
+priests, the hero, travelcc and the digging position, then
+set_wall_state() and flip_visuals() for seen vectors and remembered wall
+glyphs), which made flip_level()/flip_level_rnd() async because placebc()
+is. insight.js's two dead recording helpers are gone.
+
+## Seed 105 tours: Rogue-level weapons, breath misses, thrown gold (12 Sep)
+
+m_initweap() returns at once on the Rogue level (makemon.c:168); ours
+tested a level flag nobody sets, so an ogre generated there drew rn2(12)
+for its club (tour-s105-03). breamm() passes `utarget, utarget, FALSE` to
+dobuzz() (mthrowu.c:1125): a breath aimed at the hero reports its misses
+on unseen monsters ("The blast of missiles misses it.", tour-s105-08).
+throw_obj() hands gold to throw_gold() (dothrow.c:112) before any
+splitting: the whole stack flies, and the next_ident draw ours made for a
+one-coin split never happens in the C (tour-s105-11). getpos keeps the C's
+hilite state (getpos.c:27-95): getpos_sethilite() stores the marker
+function, '$' toggles it through getpos_toggle_hilite_state(), ^R goes
+through getpos_refresh(), and the '?' help lists "Use '$' to toggle
+marking of valid locations." when a marker is installed (tour-s105-25,
+#jump; the C's display_jump_positions() marker is the next piece).

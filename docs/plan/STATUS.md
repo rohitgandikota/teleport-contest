@@ -725,8 +725,19 @@ s84-16 was the blind door bump in cmd.js not feeling the square first
 class), not a regression. Broad re-tally of seeds 101-104 + s84 shows only
 the known cases.
 
-Next: `--seed 105` tours, then a trigram seed, then the remaining
-note_unported list (sp_lev.js 13, insight.js 1). The mapped-monster display class (s102-21, s102-36) needs the C's
+Seventy-sixth round (12 Sep): sp_lev.js and insight.js are
+note_unported-free (NOTES "sp_lev.js has no note_unported arms left"),
+including flip_level()'s #wizfliplevel extras. Tour `--seed 105` (5
+failures in 40): fixed the Rogue-level m_initweap() guard, breamm()'s
+dobuzz() saymiss, throw_gold(), and the getpos hilite state with its '$'
+toggle and help line (NOTES "Seed 105 tours"). Open: s105-25 still needs
+display_jump_positions() so #jump installs a marker; s105-31 is a
+hallucinated-glyph display-RNG order difference (a NETHACK_RNGLOG_DISP
+probe of the session is in the scratchpad).
+
+Next: display_jump_positions()/display_stinking_cloud_positions() and the
+tmp_at markers, the s105-31 display-RNG order, then a trigram seed and
+`--seed 106` tours. The mapped-monster display class (s102-21, s102-36) needs the C's
 redraw path found; the probes so far are in NOTES.
 tools/jsplay.mjs has `--aeval "<await expr>"` (game, dungeon, C, symbols,
 h in scope; `await import('file:///.../js/x.js')` reaches any module) for

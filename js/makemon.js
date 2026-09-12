@@ -1859,7 +1859,7 @@ function m_initweap(mtmp) {
     const P = PMNAMES, O = ONAMES;
     let otmp, bias, w1, w2;
 
-    if (game.level?.flags?.is_rogue_level)
+    if (Is_rogue_level(game.u.uz))
         return;
 
     switch (ptr.mlet) {

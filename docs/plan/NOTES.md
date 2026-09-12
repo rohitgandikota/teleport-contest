@@ -9217,3 +9217,77 @@ alone and `u.ublind` instead of Blind. youprop.js gained Unblind_telepat
   reloading may fix this problem.)" once program_state.something_worth_saving
   is set, which newgame() does (allmain.c:840); the port only toggled it in
   simpleonames().
+
+## The remaining debug listings: #wizmakemap, #wizrumorcheck, #wizdispmacros, #stats, #timeout, #lightsources (12 Sep)
+
+A C probe (wizard mode, Valkyrie, DECgraphics; scratchpad probe-wizlist4)
+records each command after the legacy --More-- is dismissed with a space:
+a recipe whose first key is '#' loses it to that prompt and types the
+rest of the command name as ordinary commands, which is what the first
+probe of the day silently did.
+
+- #wizmakemap: wizcmds.c makemap_unmakemon()/makemap_remove_mons()/
+  wiz_makemap() and cmd.c makemap_prepost() are ported. The "savelev()
+  with a freeing nhfp" half of the pre-work drops the level-local timers
+  and light sources, the regions, the engravings and a Plane's bubbles
+  the same way goto_level() would have saved them; mklev() then builds
+  the replacement in place and the post-work places the hero with
+  u_on_rndspot(), brings the kept pets back and redraws. The regenerated
+  level matched the C draw for draw (RNG 2419/2419 in the probe).
+  dungeon.c rm_mapseen() and mkobj.c dobjsfree() came with it (the latter
+  is empty: this port frees an object when it is deleted).
+- #wizrumorcheck: rumors.c rumor_check()/others_check()/couldnt_open_file()
+  over the embedded dlb files; the offsets are the recorded ones and the
+  first/last lines keep their '_' padding, as the C prints them.
+- #wizdispmacros: DEBUG is defined by include/patchlevel.h, so the
+  release build has it (and #wizobjprobs, #wizmondiff, #wizbury). The
+  port walks its cmap, zap, monster and object glyph records with the
+  C's bounds checks; MAX_GLYPH (9624) is in const.js for the messages.
+- #stats: wizcmds.c size_obj()/count_obj()/obj_chain()/mon_invent_chain()/
+  contained_stats()/size_monst()/mon_chain()/misc_stats()/wiz_show_stats()
+  plus engrave.c engr_stats(), light.c light_stats(), timeout.c
+  timer_stats(), region.c region_stats(), dungeon.c overview_stats() and
+  worm.c size_wseg(). The byte counts are sizeof()s of the recorder build
+  (macOS arm64): tools/struct-sizes.c prints them and js/const.js keeps
+  them as SIZEOF_*. Engravings need engr_alloc (three text buffers of the
+  longer of text and pristine text, engrave.c:418) and regions need
+  gm.max_regions (the slot count grows by ten; free_regions() zeroes it,
+  rest_regions() sets it to the count restored), both now tracked. The
+  probe's two pages match exactly.
+- #timeout and #lightsources: timeout.c print_queue()/wiz_timeout_queue()
+  with the full propertynames[] table and light.c wiz_light_sources().
+  Their per-entry lines end in fmt_ptr() of the timer's or light's owner,
+  a heap address in the C; hacklib.js fmt_ptr() numbers the JS object the
+  first time it is shown, so everything on such a line but the address
+  matches. Timer ids start at 1 (decl.c:976), which the port had at 0.
+- tools/gen-extcmd.mjs now resolves "#ifdef X ... #else ... #endif" inside
+  a table entry with the recorder build's defines. DEBUG (patchlevel.h)
+  brings DEBUG_MIGRATING_MONS (config.h:620) with it, so "migratemons" is
+  "show migrating monsters and migrate N random ones" (the tally caught
+  a first version of the fix that dropped it: two tour games list `#?`)
+  and wiz_migrate_mons() has the "How many random monsters to migrate to
+  next level? [0]" arm. The entry used to lose its function name. The
+  ATR_* attribute constants moved to const.js (wintype.h) so
+  coloratt.js's top-level attrnames[] table no longer re-enters
+  js/tty/wintty.js.
+- #wizloaddes: wiz_load_splua() with sp_lev.c lspo_reset_level() and
+  lspo_finalize_level() around load_special() (which, as in the C, also
+  runs the finalize steps itself, so they run twice); the loader now
+  takes the C's "<name>.lua" spelling and prints nhl_loadlua()'s "Error
+  opening (<name>)" through impossible() for an unknown file. A probe
+  loading bigrm-1, minetn-1 and oracle in turn matches call for call
+  (8492 draws, 72 screens).
+
+Left: #wizcustom (the DECgraphics and IBMgraphics symsets carry G_*
+custom wall colours per dungeon, which the listing shows; it needs
+dat/symbols embedded, symbols.c read_sym_file()/parse_sym_line(), the
+glyphs.c glyph-id naming and the customization pipeline; colours are
+not compared by the scorer, only the listing text is), #panic (in
+wizard mode the C's panic() ends in NH_abort(), which kills the
+process after the raw "Oops..." lines), #wiznhuuid (a random uuid per
+game) and #debugfuzzer (NOFUZZERCMD).
+
+## Tour seed 113 (12 Sep)
+
+39/40: the one miss, s113-23, is the ^X "It is nighttime." / "It is the
+midnight hour." recording-clock line.

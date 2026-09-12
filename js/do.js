@@ -1139,6 +1139,7 @@ export async function goto_level(newlevel, at_stairs, falling, portal) {
         game.level._saved_regions = game.regions || [];
         game.level._saved_regions_moves = game.moves;
         game.regions = [];
+        game.max_regions = 0; /* free_regions() */
         /* src/save.c savelev() stores both special-level arrival regions
            alongside the map. Restoring only the terrain made revisits use
            the whole level instead of the scripted destination area. */
@@ -1237,6 +1238,7 @@ export async function goto_level(newlevel, at_stairs, falling, portal) {
     const ledger = `${newlevel.dnum}:${newlevel.dlevel}`;
     let familiar_level = true;
     game.regions = [];
+    game.max_regions = 0;
     /* C's test is "does the level file exist" (do.c:1706); the in-memory
        map is that file store. (visited_ledgers alone is wrong for the
        FIRST level, which newgame's mklev creates without registering.) */
@@ -1711,7 +1713,7 @@ export async function maybe_lvltport_feedback() {
 // square: half the time the hero steps aside (enexto draw), otherwise the
 // monster is moved next to the hero (mnexto draws). The fallback rloc/limbo
 // arm is recorded.
-async function u_collide_m(mtmp, m_at, mnexto) {
+export async function u_collide_m(mtmp, m_at, mnexto) {
     const { enexto_core, rloc } = await import('./teleport.js');
     const { goodpos } = await import('./makemon.js');
     const { m_into_limbo } = await import('./mon.js');

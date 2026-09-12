@@ -12,6 +12,8 @@ import {
 import {
     ATR_NONE, ATR_BOLD, ATR_DIM, ATR_ITALIC, ATR_ULINE, ATR_BLINK,
     ATR_INVERSE, NHW_MENU,
+} from './const.js';
+import {
     tty_create_nhwindow, tty_destroy_nhwindow, tty_start_menu, tty_add_menu,
     tty_end_menu, tty_select_menu,
 } from './tty/wintty.js';

@@ -849,11 +849,23 @@ map_object() (closed s110-12), and newcham()'s tail running in C order
 at creation time (mon_break_armor()/mselftouch() awaited only when the
 monster has gear). 40/40 after the fixes. Public 44/44.
 
-Next: tour seed 113, the symbols.js glyph arms and the remaining debug
-commands (#stats, #wizrumorcheck, #wizdispmacros, #wizcustom,
-#wizloaddes, #wizmakemap), altkeyhandling. The mapped-monster display
-class (s102-21, s102-36) needs the C's redraw path found; the probes so
-far are in NOTES.
+Ninety-second round (12 Sep): the debug listings (NOTES "The remaining
+debug listings"): #wizmakemap in full (makemap_prepost(),
+makemap_remove_mons(), rm_mapseen()), #wizrumorcheck, #wizdispmacros,
+#stats with the recorder build's struct sizes (tools/struct-sizes.c),
+#timeout and #lightsources (their fmt_ptr() addresses can't match),
+timer ids from 1, the migratemons table entry and its migrate-N arm,
+#wizloaddes (lspo_reset_level()/lspo_finalize_level()), ATR_* in
+const.js. Public 44/44, hang gate OK, broad tally r35 3534/90 with the
+two migratemons misses fixed after it.
+
+Tour seed 113: 39/40 (s113-23 is the ^X clock line).
+
+Next: tour seed 114 (recorded, sweep running), #wizcustom (dat/symbols,
+symbols.c file parsing, glyphs.c naming and the custom colour pipeline),
+trigram seed 86, altkeyhandling.
+The mapped-monster display class (s102-21, s102-36) needs the C's redraw
+path found; the probes so far are in NOTES.
 tools/jsplay.mjs has `--aeval "<await expr>"` (game, dungeon, C, symbols,
 h in scope; `await import('file:///.../js/x.js')` reaches any module) for
 state probes at `--until STEP`. The census script is `tally.sh` in the

@@ -335,3 +335,23 @@ export function swapbits(val, bita, bitb) {
 
     return (val ^ ((tmp << bita) | (tmp << bitb)));
 }
+
+// src/hacklib.c fmt_ptr() — a pointer as "%p" text. JS values have no
+// address, so the port numbers each argument the first time it is shown
+// (stable within a game). A C recording's addresses can never be matched:
+// this text is in the same class as the wall-clock fields.
+const fmt_ptr_ids = new WeakMap();
+let fmt_ptr_next = 0x100000000;
+export function fmt_ptr(ptr) {
+    if (ptr === null || ptr === undefined)
+        return '0x0';
+    if (typeof ptr !== 'object' && typeof ptr !== 'function')
+        return `0x${Number(ptr).toString(16)}`;
+    let id = fmt_ptr_ids.get(ptr);
+    if (id === undefined) {
+        id = fmt_ptr_next;
+        fmt_ptr_next += 0x10;
+        fmt_ptr_ids.set(ptr, id);
+    }
+    return `0x${id.toString(16)}`;
+}

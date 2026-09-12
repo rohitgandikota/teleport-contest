@@ -81,7 +81,20 @@ const out = [];
 for (const eRaw of entries) {
     /* strip block comments first: the "down" entry's comment says the word
        MOVEMENTCMD, which the flag scrape below must not read as a flag */
-    const e = eRaw.replace(/\/\*[\s\S]*?\*\//g, ' ');
+    /* then resolve the "#ifdef X ... [#else ...] #endif" and "#ifndef X"
+       blocks inside an entry the way the recorder's build does: it is a
+       UNIX build with SHELL and SUSPEND defined (include/unixconf.h), so an
+       entry's "#ifndef SHELL | CMD_NOT_AVAILABLE #endif" block is not
+       compiled in; DEBUG comes from include/patchlevel.h and brings
+       DEBUG_MIGRATING_MONS (include/config.h:620) with it, so "migratemons"
+       takes the description of that branch */
+    const DEFINED = new Set(['SHELL', 'SUSPEND', 'UNIX', 'MAIL', 'MAIL_STRUCTURES',
+                             'DEBUG', 'DEBUG_MIGRATING_MONS']);
+    const e = eRaw.replace(/\/\*[\s\S]*?\*\//g, ' ')
+        .replace(/#ifdef\s+(\w+)[^\n]*\n([\s\S]*?)(?:#else[^\n]*\n([\s\S]*?))?#endif[^\n]*\n?/g,
+                 (m, name, a, b) => DEFINED.has(name) ? a : (b ?? ''))
+        .replace(/#ifndef\s+(\w+)[^\n]*\n([\s\S]*?)(?:#else[^\n]*\n([\s\S]*?))?#endif[^\n]*\n?/g,
+                 (m, name, a, b) => DEFINED.has(name) ? (b ?? '') : a);
     // ef_txt is the second field: a string literal after the key.
     const strs = [...e.matchAll(/"((?:[^"\\]|\\.)*)"/g)].map(m => m[1]);
     if (strs.length < 1) continue;
@@ -115,17 +128,7 @@ for (const eRaw of entries) {
     // flags is the field after the function pointer; collect the ALL_CAPS
     // identifiers that name known bits.
     let flags = 0;
-    /* the recorder is a UNIX build with SHELL and SUSPEND defined
-       (include/unixconf.h), so an entry's "#ifndef SHELL | CMD_NOT_AVAILABLE
-       #endif" block is not compiled in; drop such blocks before collecting
-       flag names, and keep "#ifdef X" blocks only for defined X */
-    const DEFINED = new Set(['SHELL', 'SUSPEND', 'UNIX', 'MAIL', 'MAIL_STRUCTURES']);
-    const flagsrc = e
-        .replace(/#ifndef\s+(\w+)[\s\S]*?#endif[^\n]*/g,
-                 (m, name) => DEFINED.has(name) ? '' : m)
-        .replace(/#ifdef\s+(\w+)[\s\S]*?#endif[^\n]*/g,
-                 (m, name) => DEFINED.has(name) ? m : '');
-    for (const m of flagsrc.matchAll(/\b([A-Z][A-Za-z0-9_]{2,})\b/g))
+    for (const m of e.matchAll(/\b([A-Z][A-Za-z0-9_]{2,})\b/g))
         if (FLAGS[m[1]] !== undefined) flags |= FLAGS[m[1]];
 
     /* ef_desc is the third field, the human description dowhatdoes,

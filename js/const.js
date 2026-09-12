@@ -284,8 +284,11 @@ export const PICK_ONE = 1;
 export const PICK_ANY = 2;
 export const MENU_BEHAVE_STANDARD = 0;
 export const MENU_BEHAVE_PERMINV = 1;
+export const ATR_NONE = 0;
+export const ATR_BOLD = 1;
 export const ATR_ULINE = 4;
 export const ATR_BLINK = 5;
+export const ATR_INVERSE = 7;
 export const ATR_URGENT = 16;
 export const ATR_NOHISTORY = 32;
 
@@ -2536,6 +2539,41 @@ export const MAXTCHARS = TRAPNUM - 1;
 // ==========================================================================
 
 export const WARNCOUNT = 6;
+/* sizeof() of the recorder build's structures (macOS arm64, LP64), measured
+   with tools/struct-sizes.c; #stats (wizcmds.c wiz_show_stats()) and the
+   per-file *_stats() helpers print them */
+export const SIZEOF_STRUCT_OBJ = 112;
+export const SIZEOF_STRUCT_OEXTRA = 32;
+export const SIZEOF_STRUCT_MONST = 192;
+export const SIZEOF_STRUCT_MEXTRA = 64;
+export const SIZEOF_STRUCT_EGD = 640;
+export const SIZEOF_STRUCT_EPRI = 56;
+export const SIZEOF_STRUCT_ESHK = 4960;
+export const SIZEOF_STRUCT_EMIN = 8;
+export const SIZEOF_STRUCT_EDOG = 64;
+export const SIZEOF_STRUCT_EBONES = 28;
+export const SIZEOF_MAPSEEN = 384;
+export const SIZEOF_STRUCT_CEMETERY = 184;
+export const SIZEOF_STRUCT_TRAP = 32;
+export const SIZEOF_STRUCT_ENGR = 64;
+export const SIZEOF_LIGHT_SOURCE = 32;
+export const SIZEOF_TIMER_ELEMENT = 48;
+export const SIZEOF_STRUCT_DAMAGE = 32;
+export const SIZEOF_NHREGION = 96;
+export const SIZEOF_NHRECT = 8;
+export const SIZEOF_STRUCT_KINFO = 272;
+export const SIZEOF_STRUCT_WSEG = 16;
+export const SIZEOF_REGION_MONSTER_ID = 4; /* sizeof *NhRegion.monsters */
+/* include/display.h:500 the glyph offset enum ends in MAX_GLYPH; the port's
+   glyphs are records rather than these integers, so only the total is
+   kept: 9 monster sets and the objects before the cmap block, the cmap
+   block (stone, 5 wall sets of 11, 21 features, 5 altars, 40 features and
+   traps, NUM_ZAP*4 zaps, 10 more), 8 swallow sets, 7 explosion sets of
+   MAXEXPCHARS, WARNCOUNT, 2 statue sets, the piletop objects, corpses and
+   statues, unexplored and nothing */
+export const MAX_GLYPH = 9 * 383 + 1 + 481
+    + 1 + 5 * 11 + 21 + 5 + 40 + (8 << 2) + 10
+    + (383 << 3) + 7 * 9 + 6 + 2 * 383 + 481 + 3 * 383 + 1 + 1;
 
 export const def_warnsyms = [
     // level 0: white warning

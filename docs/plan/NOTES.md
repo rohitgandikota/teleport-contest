@@ -9300,3 +9300,39 @@ its arm, but m_move()'s (monmove.c:2025: mdisplacem(), MMOVE_DIED /
 MMOVE_MOVED / MMOVE_DONE by the result bits) was missing, so a displacer
 that had picked an occupied square just stood still and skipped
 mdisplacem()'s rn2(7).
+
+## #wizcustom and the symset customization pipeline (12 Sep)
+
+glyphs.c is ported (js/glyphs.js) with the integer glyph numbering of
+include/display.h (const.js GLYPH_*_OFF; MAX_GLYPH = 9624 and, for
+instance, GLYPH_CMAP_MINES_OFF = 3941 match the C's listing). parse_id()
+names every glyph ("G_vwall_mines", "G_male_giant_ant", "G_fire_zap_vbeam",
+monster names from the PM_ enum names in js/monst_data.js PMNAMES, object
+names from obj_descr[]), the cache is a Map, glyph_find_core() and
+glyphrep_to_custom_map_entries() resolve "G_x:U+xxxx/colour" lines into
+custom colour (add_custom_nhcolor_entry) and unicode entries (utf8map.c
+in js/utf8map.js), apply_customizations() writes them into display.c's
+glyphmap[] (display.js glyphmap(), with reset_glyphmap() ported in full
+and called where the C calls it: new game, level change, symset change).
+coloratt.c's rgbstr_to_int32()/check_enhanced_colors()/closest_color()
+came with it, over tables tools/gen-colortable.mjs extracts from
+coloratt.c (js/coloratt_data.js).
+
+dat/symbols is embedded now (tools/gen-datafiles.mjs, `symbols` in
+js/dat_files.js) and symbols.c parse_sym_line()/files.c read_sym_file()
+read the chosen set's lines: the control lines, the S_ entries into the
+C's gp.primary_syms[] table (assign_graphics() still carries the sets the
+port draws with), and the G_ entries through match_glyph(). DECgraphics
+gives the Mines, Gehennom, Fort Ludios and Sokoban wall glyphs custom
+colours; the port's map colours don't change (the scorer's screen decoder
+strips every escape sequence, so colours are never compared) but
+#wizcustom lists them as the C does, with the DEC meta character
+('\248' for S_vwall) and CLR_GRAY (07) from reset_glyphmap()'s
+wallcolors[]. iflags.colorcount is 256, the recorder terminal's count.
+
+One cell can't match: the heading is 90 characters, tty_end_menu() cuts
+entries to 78, and the 78th is the space before "unicode", drawn in the
+heading's inverse video. The recorder emits that trailing inverse space;
+the frozen js/terminal.js serializer drops trailing spaces whatever their
+attribute, so the decoded cell comes back plain. Every other cell of the
+three DECgraphics pages and of the default set's "(end)" listing matches.

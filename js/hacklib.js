@@ -355,3 +355,31 @@ export function fmt_ptr(ptr) {
     }
     return `0x${id.toString(16)}`;
 }
+
+// src/hacklib.c:882 unicodeval_to_utf8str() — a code point as its UTF-8
+// bytes (an array of byte values, the C's NUL-terminated buffer); null when
+// the value can't be encoded
+export function unicodeval_to_utf8str(uval) {
+    const b = [];
+
+    if (uval < 0x80) {
+        b.push(uval);
+    } else if (uval < 0x800) {
+        b.push(192 + Math.trunc(uval / 64));
+        b.push(128 + uval % 64);
+    } else if ((uval - 0xd800) >>> 0 < 0x800) {
+        return null;
+    } else if (uval < 0x10000) {
+        b.push(224 + Math.trunc(uval / 4096));
+        b.push(128 + Math.trunc(uval / 64) % 64);
+        b.push(128 + uval % 64);
+    } else if (uval < 0x110000) {
+        b.push(240 + Math.trunc(uval / 262144));
+        b.push(128 + Math.trunc(uval / 4096) % 64);
+        b.push(128 + Math.trunc(uval / 64) % 64);
+        b.push(128 + uval % 64);
+    } else {
+        return null;
+    }
+    return b;
+}

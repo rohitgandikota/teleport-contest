@@ -1587,6 +1587,7 @@ const EXTCMD_FUNCS = {
     wizlevelport: ['./wizcmds.js', 'wiz_level_tele'],
     wizmakemap: ['./wizcmds.js', 'wiz_makemap'],
     wizloaddes: ['./wizcmds.js', 'wiz_load_splua'],
+    wizcustom: ['./wizcmds.js', 'wiz_custom'],
     stats: ['./wizcmds.js', 'wiz_show_stats'],
     timeout: ['./timeout.js', 'wiz_timeout_queue'],
     lightsources: ['./light.js', 'wiz_light_sources'],

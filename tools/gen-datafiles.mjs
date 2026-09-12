@@ -29,12 +29,16 @@ const OUT = join(PROJECT_ROOT, 'js/dat_files.js');
    and dowhatdoes() greps cmdhelp for a key's description. */
 const FILES = ['rumors', 'engrave', 'epitaph', 'bogusmon', 'data', 'tribute', 'oracles',
                'help', 'hh', 'history', 'opthelp', 'optmenu', 'usagehlp',
-               'license', 'cmdhelp', 'keyhelp', 'wizhelp'];
+               'license', 'cmdhelp', 'keyhelp', 'wizhelp', 'symbols'];
 
 function readDat(name) {
     const path = join(RECORDER, 'dat', name);
     if (!existsSync(path)) return null;
     const buf = readFileSync(path);
+    /* dat/symbols is parsed line by line (src/symbols.c parse_sym_line());
+       its comments carry UTF-8 samples, and no byte offsets are taken */
+    if (name === 'symbols')
+        return buf.toString('utf8');
     /* Byte offsets must equal string indices, so anything non-ASCII would
        silently shift every fseek. Check rather than assume. */
     for (const b of buf)

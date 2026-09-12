@@ -865,9 +865,15 @@ Ninety-third round (12 Sep): tour seed 114, 40/40 after m_move()'s
 monster displacement arm (NOTES "Tour seed 114"). Public 44/44, hang
 gate OK.
 
-Next: trigram seed 86 (recording), #wizcustom (dat/symbols, symbols.c
-file parsing, glyphs.c naming and the custom colour pipeline),
-altkeyhandling, tour seed 115.
+Ninety-fourth round (12 Sep): #wizcustom with glyphs.c, utf8map.c,
+the display.h glyph numbering, reset_glyphmap(), dat/symbols embedded
+and parsed for the chosen set's G_ lines, coloratt.c's colour parsing
+(NOTES "#wizcustom and the symset customization pipeline"). Public
+44/44, hang gate OK.
+
+Next: trigram seed 86 (recorded, sweep pending), tour seed 115,
+altkeyhandling (WIN32CON only in the C: nothing to port), the DEC class
+symbol note in symbols.js.
 The mapped-monster display class (s102-21, s102-36) needs the C's redraw
 path found; the probes so far are in NOTES.
 tools/jsplay.mjs has `--aeval "<await expr>"` (game, dungeon, C, symbols,

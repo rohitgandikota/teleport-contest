@@ -1453,9 +1453,11 @@ export async function goto_level(newlevel, at_stairs, falling, portal) {
     /* src/do.c:1837 — reset the screen: vision blockages for the new
        map, then a full redraw with vision recalc */
     const { vision_reset } = await import('./vision.js');
-    const { docrt, flush_screen } = await import('./display.js');
+    const { docrt, flush_screen, reset_glyphmap } = await import('./display.js');
+    const { gm_levelchange } = await import('./const.js');
     vision_reset();
     game.vision_full_recalc = 1;
+    reset_glyphmap(gm_levelchange);
     notice_mon_off(); /* not noticing monsters yet! */
     await docrt(); /* does a full vision recalc */
     await flush_screen(-1);

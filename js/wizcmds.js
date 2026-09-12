@@ -31,7 +31,7 @@ import { makewish } from './zap.js';
 import { encumber_msg } from './attrib.js';
 import { ECMD_OK, MENU_BEHAVE_STANDARD, MENU_ITEMFLAGS_NONE, PICK_ANY,
          TIMEOUT, ARTICLE_THE, ARTICLE_A, ARTICLE_YOUR, XKILL_NOMSG,
-         ECMD_CANCEL, UTOTYPE_NONE, SICK_VOMITABLE, SICK_NONVOMITABLE,
+         ECMD_CANCEL, UTOTYPE_NONE, SICK_VOMITABLE, SICK_NONVOMITABLE, PICK_NONE, PRIMARYSET,
          SUPPRESS_IT, SUPPRESS_HALLUCINATION, SUPPRESS_SADDLE,
          has_mgivenname }
     from './const.js';
@@ -73,6 +73,9 @@ import { timer_stats } from './timeout.js';
 import { region_stats } from './region.js';
 import { overview_stats } from './dungeon.js';
 import { on_level, In_W_tower, ledger_no } from './dungeon.js';
+import { gs_symset, gc_currentgraphics, known_handling, showsyms_at } from './symbols.js';
+import { add_menu_heading } from './options.js';
+import { glyphmap } from './display.js';
 import { setpaid } from './shk.js';
 import { mongone, dmonsfree } from './mon.js';
 import { keepdogs, migrate_to_level } from './dog.js';
@@ -1768,4 +1771,71 @@ export async function wiz_migrate_mons() {
         game.iflags.debug_mongen = mongen_saved;
     }
     return ECMD_OK;
+}
+
+// src/wizcmds.c:1934 wiz_custom() — #wizcustom: the glyphs the active
+// symset (or a SYMBOLS= line) customized, with their symbol, colour,
+// custom colour and unicode representation
+export async function wiz_custom() {
+    if (game.wizard) {
+        const wizcustom = '#wizcustom';
+        let buf, bufa;
+        let n;
+        const { glyphid_cache_status, fill_glyphid_cache, free_glyphid_cache,
+                wizcustom_glyphids } = await import('./glyphs.js');
+
+        if (!glyphid_cache_status())
+            fill_glyphid_cache();
+
+        const win = tty_create_nhwindow(NHW_MENU);
+        tty_start_menu(win, MENU_BEHAVE_STANDARD);
+        add_menu_heading(win,
+                         '    glyph  glyph identifier                        '
+                         + '     sym   clr customcolor unicode utf8');
+        bufa = `${wizcustom}: colorcount=${game.iflags?.colorcount | 0} ${
+            gs_symset[PRIMARYSET]?.name ? gs_symset[PRIMARYSET].name : 'default'}`;
+        if (gc_currentgraphics.set === PRIMARYSET && gs_symset[PRIMARYSET]?.name)
+            bufa += ', active';
+        if (gs_symset[PRIMARYSET]?.handling) {
+            bufa += `, handler=${known_handling[gs_symset[PRIMARYSET].handling]}`;
+        }
+        buf = bufa;
+        await wizcustom_glyphids(win);
+        tty_end_menu(win, bufa);
+        n = (await tty_select_menu(win, PICK_NONE)).length;
+        tty_destroy_nhwindow(win);
+        if (glyphid_cache_status())
+            free_glyphid_cache();
+        await docrt();
+    } else
+        await pline(unavailcmd.replace('%s', ecname_from_fn('wizcustom')));
+    return ECMD_OK;
+}
+
+// src/wizcmds.c:1979 wizcustom_callback() — one #wizcustom menu line
+export function wizcustom_callback(win, glyphnum, id) {
+    let buf, bufa, bufb, bufc, bufd, bufu;
+    const clr = NO_COLOR;
+
+    if (win && id) {
+        const cgm = glyphmap()[glyphnum];
+        if (cgm.u || cgm.customcolor !== 0) {
+            bufa = `[${String(glyphnum).padStart(4, '0')}] ${id.padEnd(44)}`;
+            bufb = `'\\${String(showsyms_at(cgm.sym.symidx)).padStart(3, '0')}' ${
+                String(cgm.sym.color).padStart(2, '0')}`;
+            bufc = (cgm.customcolor >>> 0).toString(16).padStart(11, '0');
+            bufu = '';
+            if (cgm.u && cgm.u.utf8str) {
+                bufu = `U+${(cgm.u.utf32ch >>> 0).toString(16).padStart(4, '0')}`;
+                for (const cp of cgm.u.utf8str) {
+                    bufd = ` <${cp}>`;
+                    bufu += bufd;
+                }
+            }
+            buf = `${bufa} ${bufb} ${bufc} ${bufu}`;
+            tty_add_menu(win, null, glyphnum + 1 /* avoid 0 */, 0, 0, ATR_NONE, clr, buf,
+                         MENU_ITEMFLAGS_NONE);
+        }
+    }
+    return;
 }

@@ -178,7 +178,10 @@ export class NethackGame {
         /* MENUCOLOR= lines in the rc have already set iflags.use_menu_color
            (coloratt.js add_menu_coloring_parsed()); keep what the parse left */
         g.iflags = { ...(g.iflags || {}),
-                     getpos_coords: rc.opts.getpos_coords ?? 'n' };
+                     getpos_coords: rc.opts.getpos_coords ?? 'n',
+                     /* win/tty/termcap.c:944 iflags.colorcount = tgetnum("Co"):
+                        the recorder's terminal reports 256 colours */
+                     colorcount: 256 };
         /* optlist.h homes some booleans in iflags; keep them where their
            readers and the 'O' menu look (see iflag_boolean_options) */
         for (const name of iflag_boolean_options) {

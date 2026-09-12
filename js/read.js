@@ -616,7 +616,7 @@ async function p_glow3(otmp, color) {
 }
 
 // src/read.c:689 charge_ok() — getobj callback for charging.
-function charge_ok(obj) {
+export function charge_ok(obj) {
     if (!obj)
         return GETOBJ_EXCLUDE;
 

@@ -145,6 +145,7 @@ import { type_is_pname } from './mondata.js';
 import { impossible } from './pline.js';
 import { directionname } from './cmd.js';
 import { trapname } from './trap.js';
+import { Is_rogue_level } from './const.js';
 
 // src/hack.c:2996 runmode_delay_output(). Multi-turn actions and running
 // periodically expose their intermediate screen. The default "run" mode
@@ -496,7 +497,12 @@ export function cant_squeeze_thru(mon) {
 // rogue level itself is not modelled yet.
 export function doorless_door(x, y) {
     const lev_p = game.level?.at(x, y);
+
     if (!lev_p || !IS_DOOR(lev_p.typ))
+        return false;
+    /* all rogue level doors are doorless but disallow diagonal access, so
+       we treat them as if their non-existent doors were actually present */
+    if (Is_rogue_level(game.u.uz))
         return false;
     return !(lev_p.doormask & ~(D_NODOOR | D_BROKEN));
 }

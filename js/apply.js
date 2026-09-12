@@ -2229,7 +2229,7 @@ export async function consume_obj_charge(obj, maybe_unpaid) /* false if caller h
 }
 
 // src/apply.c:60 do_blinding_ray() / :80 use_camera().
-async function do_blinding_ray(obj) {
+export async function do_blinding_ray(obj) {
     const ref = { obj };
     const mtmp = await bhit(game.u.dx, game.u.dy, COLNO, FLASHED_LIGHT,
                             null, null, ref);

@@ -8777,3 +8777,37 @@ the C's impossible(); the u_init role default, themeroom transcription
 gaps and mktrap_victim's candle (begin_burn) follow the C; the dead
 getobj-only command fallback in cmd.js is gone (every key it covered was
 already dispatched to its real command).
+
+## Seed 106 tours: the retreat anchor, doname word order, Rogue doorways (12 Sep)
+
+Three real cases in tour `--seed 106`. (1) domove_core() records
+u.ux0/u.uy0 at hack.c:2775, right after the run-into-a-visible-monster
+check and before the fight-empty-square, door, bump, attack, trap, liquid
+and blocked-terrain exits; ours set them only after those exits, so a
+hero whose move ended early (a closed door, an F into nothing) left a
+stale anchor and URETREATING (which monmulti()/m_lined_up() read for
+the multishot count and the "retreating" fire decision) went the other
+way (s106-14, s106-19, s106-26). (2) doname_base() strips the "poisoned "
+that xname() put in front of a weapon, appends the bless state and
+"greased " to the prefix, and only inside the WEAPON_CLASS arm (armor
+falls through into it) adds "poisoned ", then add_erosion_words(), then
+the enchantment; the BALL/CHAIN arm gets add_erosion_words() too. Ours
+built the erosion words before the switch and left "poisoned " inside
+xname's text, so a blessed poisoned +0 stack came out in the wrong order
+(s106-07). (3) doorless_door() is false on the Rogue level: every door
+there is doorless but still forbids diagonal entry, so test_move() treats
+it as a real doorway (s106-28). Seed 106 is 39/40 with s106-08 the clock.
+
+## Artifact invoke special powers (12 Sep)
+
+arti_invoke()'s recorded arms are ported from artifact.c: invoke_taming()
+(the tame-everything-in-range loop with resist checks), invoke_charge_obj()
+(role-restricted recharge through getobj/recharge, "nothing_special" when
+the artifact's role is not ours), invoke_create_portal() (the dungeon menu
+built from the dungeons list and the level_tele_trap portal placement),
+invoke_banish() (rloc every hostile in view with the level's rloc
+messages), invoke_fling_poison() (the getdir + buzz poison ray),
+invoke_storm_spell() (the snow/fire storm through explode() at the target)
+and invoke_blinding_ray() (do_blinding_ray in apply.js, now exported).
+An unknown power hits the C's impossible(); a property already present
+takes nothing_special(); the crystal ball arm calls use_crystal_ball().

@@ -3217,6 +3217,31 @@ async function domove_core() {
     if (await escape_from_sticky_mon(newx, newy))
         return;
 
+    /* src/hack.c:2763 -- a run into a visible monster that is not currently
+       safe stops before attacking and costs no turn.  Confusion can make a
+       tame monster temporarily unsafe, so this guard must precede the normal
+       bump/attack path. */
+    {
+        const mtmp_run = m_at(newx, newy);
+        if (mtmp_run && !is_safemon(mtmp_run) && game.context.run
+            && ((!u.ublind && mon_visible(mtmp_run)
+                 && M_AP_TYPE(mtmp_run) !== M_AP_FURNITURE
+                 && M_AP_TYPE(mtmp_run) !== M_AP_OBJECT)
+                || sensemon(mtmp_run))) {
+            nomul(0);
+            game.context.move = 0;
+            return;
+        }
+    }
+
+    /* src/hack.c:2775 -- record the start of this move before the fight,
+       door, bump, attack, trap, liquid, and blocked-terrain exits.  Missile
+       AI later compares this position with the current one to decide
+       whether the hero is retreating, so updating it only after a
+       successful step leaves stale state. */
+    u.ux0 = u.ux;
+    u.uy0 = u.uy;
+
     /* src/hack.c:2242: force-fighting an empty square, or walking into a stale
        invisible-monster marker without nopick, attacks the square instead of
        moving onto it. */
@@ -3254,30 +3279,6 @@ async function domove_core() {
         return;
     }
 
-    /* src/hack.c:2763 -- a run into a visible monster that is not currently
-       safe stops before attacking and costs no turn.  Confusion can make a
-       tame monster temporarily unsafe, so this guard must precede the normal
-       bump/attack path. */
-    {
-        const mtmp_run = m_at(newx, newy);
-        if (mtmp_run && !is_safemon(mtmp_run) && game.context.run
-            && ((!u.ublind && mon_visible(mtmp_run)
-                 && M_AP_TYPE(mtmp_run) !== M_AP_FURNITURE
-                 && M_AP_TYPE(mtmp_run) !== M_AP_OBJECT)
-                || sensemon(mtmp_run))) {
-            nomul(0);
-            game.context.move = 0;
-            return;
-        }
-    }
-
-    /* src/hack.c:2775 -- record the start of this move before bump, attack,
-       trap, liquid, and blocked-terrain exits.  Missile AI later compares
-       this position with the current one to decide whether the hero is
-       retreating, so updating it only after a successful step leaves stale
-       state. */
-    u.ux0 = u.ux;
-    u.uy0 = u.uy;
 
     /* src/hack.c's domove_attackmon_at() call is NOT wired here yet.
        js/hack.js now holds that function (it was missing entirely; the C

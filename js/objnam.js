@@ -1158,9 +1158,38 @@ function billed_cost(obj) {
     return { price, found };
 }
 
+// src/objnam.c:1150 add_erosion_words() — the eroded words come first:
+// "very burnt", "thoroughly rusty", &c, then the -proof word once known.
+function add_erosion_words(obj, prefix) {
+    const override = !!game.iflags?.override_ID;
+
+    if (obj.oeroded) {
+        prefix += (obj.oeroded === 2) ? 'very '
+                  : (obj.oeroded === 3) ? 'thoroughly ' : '';
+        prefix += is_rustprone(obj, game.objects) ? 'rusty '
+                  : is_crackable(obj, game.objects) ? 'cracked '
+                    : 'burnt ';
+    }
+    if (obj.oeroded2) {
+        prefix += (obj.oeroded2 === 2) ? 'very '
+                  : (obj.oeroded2 === 3) ? 'thoroughly ' : '';
+        prefix += is_corrodeable(obj, game.objects) ? 'corroded '
+                  : 'rotted ';
+    }
+    if ((obj.rknown || override) && obj.oerodeproof)
+        prefix += is_rustprone(obj, game.objects) ? 'rustproof '
+                  : is_corrodeable(obj, game.objects) ? 'corrodeproof '
+                    : is_flammable(obj, game.objects) ? 'fireproof '
+                      : is_crackable(obj, game.objects) ? 'tempered '
+                        : is_rottable(obj, game.objects) ? 'rotproof '
+                          : '';
+    return prefix;
+}
+
 export function doname(obj, vague_quan = false) {
     const ocl = game.objects[obj.otyp];
     let bp = xname(obj);
+    let ispoisoned = false;
     /* xname() can update the object's observed and Priest-known flags. */
     const override = !!game.iflags?.override_ID;
     const known = override || obj.known, bknown = override || obj.bknown;
@@ -1224,33 +1253,14 @@ export function doname(obj, vague_quan = false) {
             prefix += 'unlocked ';
     }
 
+    /* must check opoisoned--someone can have a weirdly-named fruit */
+    if (bp.startsWith('poisoned ') && obj.opoisoned) {
+        bp = bp.slice(9); /* doesn't affect bp_eos or bpspaceleft */
+        ispoisoned = true;
+    }
+
     if (obj.greased)
         prefix += 'greased ';
-
-    /* src/objnam.c:1150 add_erosion_words — the eroded words come first:
-       "very burnt", "thoroughly rusty", &c. (is_damageable gate: every
-       reachable eroded item passes it, and !is_damageable items never
-       gain oeroded bits in this port) */
-    if (obj.oeroded) {
-        prefix += (obj.oeroded === 2) ? 'very '
-                  : (obj.oeroded === 3) ? 'thoroughly ' : '';
-        prefix += is_rustprone(obj, game.objects) ? 'rusty '
-                  : is_crackable(obj, game.objects) ? 'cracked '
-                    : 'burnt ';
-    }
-    if (obj.oeroded2) {
-        prefix += (obj.oeroded2 === 2) ? 'very '
-                  : (obj.oeroded2 === 3) ? 'thoroughly ' : '';
-        prefix += is_corrodeable(obj, game.objects) ? 'corroded '
-                  : 'rotted ';
-    }
-    if ((obj.rknown || override) && obj.oerodeproof)
-        prefix += is_rustprone(obj, game.objects) ? 'rustproof '
-                  : is_corrodeable(obj, game.objects) ? 'corrodeproof '
-                    : is_flammable(obj, game.objects) ? 'fireproof '
-                      : is_crackable(obj, game.objects) ? 'tempered '
-                        : is_rottable(obj, game.objects) ? 'rotproof '
-                          : '';
 
     /* src/objnam.c:1373 -- once a container's contents are known, doname()
        reports the number of separate stacks it holds. */
@@ -1275,6 +1285,9 @@ export function doname(obj, vague_quan = false) {
         }
         /* FALLTHRU */
     case WEAPON_CLASS:
+        if (ispoisoned)
+            prefix += 'poisoned ';
+        prefix = add_erosion_words(obj, prefix);
         if (known) prefix += `${obj.spe >= 0 ? '+' : ''}${obj.spe} `;
         break;
     case TOOL_CLASS:
@@ -1357,6 +1370,7 @@ export function doname(obj, vague_quan = false) {
         break;
     case BALL_CLASS:
     case CHAIN_CLASS:
+        prefix = add_erosion_words(obj, prefix);
         if (obj.owornmask & (W_BALL | W_CHAIN))
             bp += ` (${obj.owornmask & W_BALL ? 'chained' : 'attached'} to you)`;
         break;

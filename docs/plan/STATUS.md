@@ -757,8 +757,18 @@ what_gives() arm, reset_commands' swap_yz/pcHack/phone remaps, dopay's
 itemized bill, do_improvisation for non-drums, plselect's partial prompt,
 the options/symbols menu handlers, and the ubirthday clock arms.
 
-Next: the three seed-106 cases, then the artifact powers and what_gives,
-then reset_commands and do_improvisation. The mapped-monster display class (s102-21, s102-36) needs the C's
+Seventy-ninth round (12 Sep): the three seed-106 cases are fixed (NOTES
+"Seed 106 tours: the retreat anchor, doname word order, Rogue doorways"):
+u.ux0/u.uy0 are set at the C's point in domove_core(), doname_base()'s
+poisoned/erosion/enchantment order, and doorless_door() on the Rogue
+level. The artifact invoke special powers are ported (NOTES "Artifact
+invoke special powers"). Tour `--seed 106` is 39/40 (s106-08 clock),
+seed 105 40/40, seed 104 38/40 (two clock), trigram 85 40/40, 84 36/40
+(four clock). Public 44/44, hang gate OK.
+
+Next: what_gives()/abil_to_adtyp()/abil_to_spfx() and from_what()'s
+equipment arm, then reset_commands' remaps, do_improvisation, plselect,
+dopay's itemized bill and the options/symbols handlers. The mapped-monster display class (s102-21, s102-36) needs the C's
 redraw path found; the probes so far are in NOTES.
 tools/jsplay.mjs has `--aeval "<await expr>"` (game, dungeon, C, symbols,
 h in scope; `await import('file:///.../js/x.js')` reaches any module) for

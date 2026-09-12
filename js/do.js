@@ -1,6 +1,6 @@
 import { allow_all } from './pickup.js';
 import { TOOKPLUNGE } from './const.js';
-import { PICK_ANY, In_endgame, ESCAPED } from './const.js';
+import { PICK_ANY, In_endgame, ESCAPED, Is_knox_level } from './const.js';
 import { USE_INVLET, MENU_TRADITIONAL, MENU_COMBINATION, ALL_FINISHED, INCLUDE_VENOM, SELL_DELIBERATE, SELL_NORMAL } from './const.js';
 import { INVORDER_SORT } from './const.js';
 import { Has_contents, bimanual } from './obj.js';
@@ -1507,6 +1507,18 @@ export async function goto_level(newlevel, at_stairs, falling, portal) {
         } else if (game.u.uz.dnum === game.quest_dnum) { /* In_quest() */
             const { onquest } = await import('./quest.js');
             await onquest();
+        } else if (Is_knox_level(game.u.uz)) {
+            /* alarm stops working once Croesus has died */
+            if (!familiar_level
+                || !game.mvitals?.[PMNAMES.PM_CROESUS]?.died) {
+                await You('have penetrated a high security area!');
+                await pline('An alarm sounds!');
+                for (const mtmp of game.level?.monsters || []) {
+                    if (DEADMONSTER(mtmp))
+                        continue;
+                    mtmp.msleeping = 0;
+                }
+            }
         } else if (game.u.uz.dnum === game.mines_dnum) {
             if (newdungeon) {
                 const { ACH_MINE, record_achievement } =

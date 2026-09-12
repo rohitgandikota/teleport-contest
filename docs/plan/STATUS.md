@@ -684,9 +684,26 @@ the monster, ours the trap; NOTES "Magic mapping keeps remembered
 traps..." has the probes). s102-21 (one map cell 'h' vs '`' on a zoo-like
 room) is untriaged.
 
-Next: s102-21, then s102-36, then `--seed 103` tours; keep alternating
-tour and trigram seeds, then the remaining note_unported list (dog.js 14,
-sp_lev.js 13, insight.js 1).
+Seventy-third round (12 Sep): tour `--seed 103` (8 failures in 40, two
+of them recorder collisions, NOTES "Never run two recorders at once")
+and trigram `--seed 83` (37/40, two collisions and one moon-phase
+recording-clock case). Fixed: des.object() containers empty their
+random contents through delete_contents() (a chest egg's hatch timer
+made relink_timers() throw on the next visit) and that_is_a_mimic()
+frees its fake object through object_from_map()/obfree(); a Samurai's
+shopkeeper says "Irasshaimase"; #quit in the tutorial asks to switch
+back first; farlook on the Rogue level compares against the Rogue
+symbols; arriving at Fort Ludios sounds the alarm and wakes the
+garrison. Seed 103 is at 36/38: s103-13 is the recording clock and
+s103-25 the final map after the tutorial escape (open, NOTES "#quit in
+the tutorial..."). Open from seed 102: s102-21 (a bugbear on an
+engraving after ^F, same class as s102-36's spider on its web: the C
+shows the monster after mapping, ours the engraving/trap).
+
+Next: triage `--seed 104` tours (recording), then a trigram seed, then
+the remaining note_unported list (dog.js 13, sp_lev.js 13, insight.js
+1). The mapped-monster display class (s102-21, s102-36) needs the C's
+redraw path found; the probes so far are in NOTES.
 tools/jsplay.mjs has `--aeval "<await expr>"` (game, dungeon, C, symbols,
 h in scope; `await import('file:///.../js/x.js')` reaches any module) for
 state probes at `--until STEP`. The census script is `tally.sh` in the

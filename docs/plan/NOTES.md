@@ -8512,3 +8512,65 @@ include/sym.h:96. magic_map_background() copied the dark-room cell but
 hard-coded its cmap as S_darkroom, so on the Rogue level a mapped dark
 room showed floor dots where the C shows nothing (tour-s102-19).
 darkroomsym_cell() now answers S_stone there.
+
+## Never run two recorders at once (12 Sep)
+
+Every C recorder run plays as the same user, in the same playground, so
+two batches recording in parallel collide on the level files and the
+lock: the recording then carries "Cannot open file "501wizard.0" for
+level 0" or "There is already a game in progress under your name" and
+diverges for no port reason (fuzz-s83-02, -33, tour-s103-08, -12). Scan
+new batches for those texts before triaging, delete the hits, and record
+one batch at a time. Scoring (diverge.mjs) can run in parallel with a
+recording; a second recording cannot.
+
+## des.object() containers empty their random contents through delete_contents() (12 Sep)
+
+sp_lev.c:2344: a container with a `contents` function first loses the
+contents mkbox_cnts() rolled, one obfree() at a time, which stops their
+timers. Ours cleared the array, so an egg rolled into one of Vlad's
+tower chests kept its hatch timer; when the hero came back to the level,
+relink_timers() could not find object 273 and the session threw
+(tour-s103-07). that_is_a_mimic() had the same shape of bug: it made the
+fake object with mksobj() (timers included) and never freed it; it now
+goes through object_from_map() and obfree()s the copy like the C.
+
+## A Samurai's shopkeeper says "Irasshaimase" (12 Sep)
+
+role.c:2127 Hello(mtmp): for a Samurai the greeting is "Irasshaimase"
+when the speaker is a shopkeeper and "Konnichi wa" otherwise; the
+shop-entry verbalize() passes the shopkeeper (tour-s103-27).
+
+## #quit in the tutorial asks to switch back first (12 Sep)
+
+end.c:94: In_tutorial, done2() first asks "Switch from the tutorial back
+to regular play?"; 'y' skips the quit question and schedules a goto to
+u.ucamefrom with UTOTYPE_ATSTAIRS and "Resuming regular play.". A
+wizard-mode ^V into the tutorial never set ucamefrom, so the C leaves for
+{0,0} and the hero escapes the dungeon (tour-s103-25, which then differs
+on the final map: the C still shows the pet from the pre-restore
+viewpoint, ours redraws from the restored hero position; open).
+
+Open from the seed 103 tours: s103-14 (a ^W wish prompt whose junk input
+interleaves with level teleports; the C creates Fort Ludios inside the
+same step as the fifth "Nothing fitting" answer, ours in a different
+order) and s103-17 (travel autodescribe on the Rogue level says "wall"
+where ours says "unexplored area" for the same displayed cell).
+
+## Farlook on the Rogue level compares against the Rogue symbols (12 Sep)
+
+pager.c:1262 do_screen_description() matches the looked-at cell's symbol
+against gs.showsyms[], and switch_symbols() swaps those to the Rogue set
+while the hero is on the Rogue level. The port keeps the active symset
+and maps at draw time through rogue_cmap_sym(), so the description loop
+now consults the same mapping there; a travel cursor on a room wall said
+"unexplored area" instead of "wall" (tour-s103-17).
+
+## Arriving at Fort Ludios sounds the alarm (12 Sep)
+
+do.c:1893: on Fort Ludios, unless Croesus is dead and the level was seen
+before, goto_level() prints "You have penetrated a high security area!"
+and "An alarm sounds!" and wakes every monster on the level. Ours had no
+Knox arm in the arrival chain, so the garrison stayed asleep and the next
+turns' draws came in a different order (tour-s103-14, which had looked
+like a wish-parsing divergence).

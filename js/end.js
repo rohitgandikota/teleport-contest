@@ -11,7 +11,7 @@ import { game } from './gstate.js';
 import { notice_all_mons_flush } from './hack.js';
 import { shkname, shkname_is_pname } from './shknam.js';
 import { m_monnam } from './do_name.js';
-import { has_ebones } from './const.js';
+import { In_tutorial, UTOTYPE_ATSTAIRS, has_ebones } from './const.js';
 import { pline, canspotmon, tty_clear_nhwindow_message } from './display.js';
 import { You, Your, You_feel, pline_The } from './pline.js';
 import { carrying, hidden_gold, money_cnt, useup, obfree, currency } from './invent.js';
@@ -1152,16 +1152,36 @@ function Goodbye() {
 // src/end.c:89 done2() — the #quit command.
 export async function done2() {
     const { tty_yn_function } = await import('./tty/topl.js');
-    /* In_tutorial arm: the tutorial switch-back question */
+    let abandon_tutorial = false;
+
+    if (In_tutorial(game.u.uz)
+        && (await tty_yn_function(
+                'Switch from the tutorial back to regular play?', 'yn', 'n'))
+           === 'y')
+        abandon_tutorial = true;
+
     /* ParanoidQuit is not in the default paranoid_confirmation set, so
        this is a plain single-key yn with default 'n' */
-    const c0 = await tty_yn_function('Really quit without saving?', 'yn', 'n');
-    if (c0 !== 'y') {
+    if (abandon_tutorial
+        || (await tty_yn_function('Really quit without saving?', 'yn', 'n'))
+           !== 'y') {
         /* clear_nhwindow(WIN_MESSAGE); nomul(0) */
         tty_clear_nhwindow_message(game._topl_cury || 0);
         const { nomul } = await import('./hack.js');
         if ((game.multi ?? 0) > 0)
             nomul(0);
+        if ((game.multi ?? 0) === 0) {
+            game.u.uinvulnerable = false; /* avoid ctrl-C bug -dlc */
+            game.u.usleep = 0;
+        }
+
+        if (abandon_tutorial) {
+            const { schedule_goto } = await import('./do.js');
+            /* struct u is zeroed at start: a wizard-mode ^V into the
+               tutorial never set ucamefrom, so the C schedules {0,0} */
+            schedule_goto(game.u.ucamefrom ?? { dnum: 0, dlevel: 0 },
+                          UTOTYPE_ATSTAIRS, 'Resuming regular play.', null);
+        }
         return 0; /* ECMD_OK */
     }
 

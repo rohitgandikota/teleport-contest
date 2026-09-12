@@ -130,7 +130,7 @@ rogue_obj_syms[OCLASSES.AMULET_CLASS] = ',';
 rogue_obj_syms[OCLASSES.FOOD_CLASS] = ':';
 rogue_obj_syms[OCLASSES.COIN_CLASS] = def_oc_syms[OCLASSES.GEM_CLASS];
 
-function rogue_cmap_sym(cmap) {
+export function rogue_cmap_sym(cmap) {
     if (cmap === CM.S_ndoor || cmap === CM.S_vodoor
         || cmap === CM.S_hodoor)
         return '+';

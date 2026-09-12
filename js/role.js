@@ -608,7 +608,10 @@ export function algnmenu_letters() {
 export function Hello(mtmp) {
     switch (game.urole?.mnum) {
     case PMNAMES.PM_KNIGHT:   return 'Salutations';   /* Olde English */
-    case PMNAMES.PM_SAMURAI:  return 'Konnichi wa';   /* Japanese */
+    case PMNAMES.PM_SAMURAI:
+        return (mtmp && mtmp.data === game.mons[PMNAMES.PM_SHOPKEEPER])
+                    ? 'Irasshaimase'
+                    : 'Konnichi wa'; /* Japanese */
     case PMNAMES.PM_TOURIST:  return 'Aloha';         /* Hawaiian */
     case PMNAMES.PM_VALKYRIE: return 'Velkommen';     /* Norse */
     default:                  return 'Hello';

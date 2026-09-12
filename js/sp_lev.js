@@ -35,6 +35,7 @@ import { new_light_source, LS_OBJECT } from './light.js';
 import { make_engr_at, engr_at, del_engr } from './engrave.js';
 import { oname, christen_monst } from './do_name.js';
 import { ONAME_LEVEL_DEF, is_pit, LR_TELE, LR_UPTELE, LR_DOWNTELE, LR_MONGEN, LR_PORTAL, LR_BRANCH, LR_UPSTAIR, LR_DOWNSTAIR } from './const.js';
+import { delete_contents } from './shk.js';
 import { DUST, ENGRAVE, BURN, MARK, ENGR_BLOOD, STRAT_WAITFORU,
          MM_NOCOUNTBIRTH, MM_NOMSG, G_UNIQ, G_EXTINCT, G_GONE } from './const.js';
 
@@ -1103,7 +1104,11 @@ export function create_object(o, croom) {
     }
 
     if (o.containment & SP_OBJ_CONTAINER) {
-        otmp.cobj = [];                 /* delete_contents(otmp) */
+        /* shk.c:1175 delete_contents(): the random contents mkbox_cnts()
+           rolled are obfree()d one by one, which stops their timers; an
+           egg's hatch timer left behind here tripped relink_timers() on
+           the next visit (tour-s103-07) */
+        delete_contents(otmp);
         if (container_obj.length < MAX_CONTAINMENT)
             container_obj.push(otmp);
         else

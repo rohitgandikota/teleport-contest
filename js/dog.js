@@ -30,6 +30,7 @@ import { COST_DEGRD, COST_CONTENTS, A_NONE, MAX_EGG_HATCH_TIME } from './const.j
 import { picked_container, set_residency } from './shk.js';
 import { Has_contents, MAX_NUM_WORMS, W_ARMS } from './const.js';
 import { game } from './gstate.js';
+import { MON_STILL_ARRIVING } from './const.js';
 import { impossible } from './pline.js';
 import { which_armor } from './worn.js';
 import { DEADMONSTER, is_vampshifter, MON_WEP } from './monst.js';
@@ -2254,7 +2255,6 @@ function levl_follower(mtmp) {
 }
 
 const Before_you = 0, With_you = 1, After_you = 2, Wiz_arrive = -1;
-const MON_STILL_ARRIVING = 0x100;
 
 // src/dog.c:304 losedogs(). Restore exact-position residents first, then
 // companions, then independent migrants scheduled for this level.

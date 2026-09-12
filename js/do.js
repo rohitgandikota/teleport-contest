@@ -1434,10 +1434,7 @@ export async function goto_level(newlevel, at_stairs, falling, portal) {
        odd if given after the various messages below, so give it before
        them; maybe_lvltport_feedback() clears dfr_post_msg so
        deferred_goto() won't repeat it */
-    if (game.dfr_post_msg && /^You materialize/i.test(game.dfr_post_msg)) {
-        await pline(game.dfr_post_msg);
-        game.dfr_post_msg = null;
-    }
+    await maybe_lvltport_feedback();
 
     /* src/do.c:1858 — special levels can have a custom arrival message */
     {
@@ -1666,6 +1663,16 @@ export async function goto_level(newlevel, at_stairs, falling, portal) {
     {
         const { pickup } = await import('./pickup.js');
         await pickup(1);
+    }
+}
+
+// src/do.c:2032 maybe_lvltport_feedback() — deliver a pending level teleport
+// arrival message so that messages which follow it come after it
+export async function maybe_lvltport_feedback() {
+    if (game.dfr_post_msg && /^You materialize/i.test(game.dfr_post_msg)) {
+        /* "You materialize on a different level." */
+        await pline(game.dfr_post_msg);
+        game.dfr_post_msg = null;
     }
 }
 

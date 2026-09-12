@@ -63,7 +63,7 @@ const tags = [];
 const otyps = [];
 const spfxs = [], cspfxs = [], mtypes = [], attks = [], defns = [], carys = [],
       invProps = [], aligns = [], roles = [], races = [], genSpes = [],
-      giftValues = [], costs = [];
+      giftValues = [], costs = [], colors = [];
 for (let i = src.indexOf('A("'); i !== -1; i = src.indexOf('A("', i + 1)) {
     /* Skip A( appearing inside a longer identifier, e.g. NO_CARY. */
     if (/\w/.test(src[i - 1] || '')) continue;
@@ -111,6 +111,7 @@ for (let i = src.indexOf('A("'); i !== -1; i = src.indexOf('A("', i + 1)) {
     genSpes.push(Number(clean(fields[12] ?? '0')) || 0);
     giftValues.push(Number(clean(fields[13] ?? '0')) || 0);
     costs.push(Number(clean(fields[14] ?? '0').replace(/[lL]$/, '')) || 0);
+    colors.push(clean(fields[15] ?? 'NO_COLOR'));
 }
 
 if (names.length < 20) {
@@ -158,6 +159,7 @@ export const artifact_records = ${JSON.stringify(names.map((n, i) => ({
     cary: carys[i],
     inv_prop: invProps[i] === '0' ? 0 : invProps[i],
     align: aligns[i],
+    acolor: colors[i],
     role: roles[i],
     race: races[i],
     gen_spe: genSpes[i],

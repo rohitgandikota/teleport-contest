@@ -369,76 +369,9 @@ function leppie_avoidance(mtmp) {
     return lepgold.quan > (ygold ? ygold.quan : 0);
 }
 
-// src/mthrowu.c:1398 lined_up() — needs m_lined_up's line-of-fire geometry.
-// It only ever suppresses the item search for a monster already in position to
-// shoot, and it draws nothing.
-// src/mthrowu.c:1398 lined_up() = m_lined_up(&youmonst, mtmp)
-//
-// The hero-concealment arm draws rn2(25) whenever the hero is polymorphed.
-// It suppresses the shot only when the hero is also concealed.
-export function lined_up(mtmp) {
-    const tx = mtmp.mux, ty = mtmp.muy;
-    const ignore_boulders = throws_rocks(game.mons[mtmp.mnum])
-                         || m_carrying(mtmp, ONAMES.WAN_STRIKING);
-
-    if (game.u.umonnum !== game.u.umonster) {
-        const concealment_roll = rn2(25);
-        const appearance = M_AP_TYPE(game.youmonst);
-        if (concealment_roll
-            && (game.u.uundetected
-                || (appearance !== M_AP_NOTHING
-                    && appearance !== M_AP_MONSTER)))
-            return false;
-    }
-
-    return linedup(tx, ty, mtmp.mx, mtmp.my, ignore_boulders ? 1 : 2);
-}
-
-// src/mthrowu.c linedup() — a straight orthogonal or diagonal line within
-// BOLT_LIM, with a clear path along it. The boulder-tolerant modes walk the
-// line counting boulders; mode 2 then draws rn2(2 + boulderspots).
-function linedup(ax, ay, bx, by, boulderhandling) {
-    const tbx = ax - bx, tby = ay - by;
-    /* C stores the deltas in gt.tbx/gt.tby; monshoot reads their signs */
-    game.tbx = tbx;
-    game.tby = tby;
-
-    /* displacement can make a monster think you are at its own location */
-    if (!tbx && !tby)
-        return false;
-
-    if ((!tbx || !tby || Math.abs(tbx) === Math.abs(tby))
-        && distmin(tbx, tby, 0, 0) < BOLT_LIM) {
-        if (game.u.ux === ax && game.u.uy === ay
-            ? couldsee(bx, by)
-            : clear_path(ax, ay, bx, by))
-            return true;
-        if (boulderhandling === 0)
-            return false;
-
-        /* No line of sight, but it may still be lined up if the ONLY things in
-           the way are boulders. Note the draw at the end: rn2(2 +
-           boulderspots), so more boulders make a clear shot less likely, and
-           boulderhandling == 1 skips the roll entirely. */
-        const dx = sgn(ax - bx), dy = sgn(ay - by);
-        let boulderspots = 0;
-        let cx = bx, cy = by;
-        do {
-            /* <cx,cy> is guaranteed to eventually converge with <ax,ay> */
-            cx += dx; cy += dy;
-            if (blocking_terrain(cx, cy))
-                return false;
-            if (sobj_at(ONAMES.BOULDER, cx, cy))
-                ++boulderspots;
-        } while (cx !== ax || cy !== ay);
-
-        /* reached target position without encountering an obstacle */
-        if (boulderhandling === 1 || rn2(2 + boulderspots) < 2)
-            return true;
-        return false;
-    }
-    return false;
-}
+/* src/mthrowu.c:1398 lined_up() lives in js/mthrowu.js with linedup() */
+import { lined_up } from './mthrowu.js';
+export { lined_up };
 
 
 // src/monmove.c:1330 m_search_items() — look for an object worth walking to,
@@ -2707,19 +2640,6 @@ const mwelded = (obj) =>
 
 /* acidic and slimeproof come from js/dog.js. */
 
-// src/mthrowu.c:1282 blocking_terrain() — does this square stop a missile?
-//
-// is_waterwall needs the water-level terrain, which no ordinary level has, so
-// it is recorded rather than assumed false.
-function blocking_terrain(x, y) {
-    if (!isok(x, y))
-        return true;
-    const lev = game.level.at(x, y);
-    if (!lev || IS_OBSTRUCTED(lev.typ) || closed_door_mm(x, y)
-        || lev.typ === LAVAWALL)
-        return true;
-    return false;
-}
 
 // src/dogmove.c:1448 finish_meating() — the meal ends.
 function finish_meating(mtmp) {

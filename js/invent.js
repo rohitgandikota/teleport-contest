@@ -3482,6 +3482,37 @@ export async function askchain(objchn, olets, allflag, fn, ckfn, mx, word) {
 
 // src/invent.c:2673 fully_identify_obj() and :2687 identify().
 // identify() gives immediate feedback after updating every object-level flag.
+// src/invent.c:2750 learn_unseen_invent() — update dknown flag for inventory
+// picked up while blind
+export function learn_unseen_invent() {
+    let invupdated = false;
+
+    if (heroBlind())
+        return; /* sanity check */
+
+    const cleric = game.urole?.mnum === 'PM_CLERIC'
+        || game.urole?.mnum === PMNAMES.PM_CLERIC;
+    const archeologist = game.urole?.mnum === 'PM_ARCHEOLOGIST'
+        || game.urole?.mnum === PMNAMES.PM_ARCHEOLOGIST;
+    for (const otmp of (game.invent || [])) {
+        if (otmp.dknown && (otmp.bknown || !cleric)
+            && (otmp.oclass !== OCLASSES.SCROLL_CLASS || !archeologist))
+            continue; /* already seen */
+        invupdated = true;
+        /* xname() will set dknown, perhaps bknown (for priest[ess]);
+           result from xname() is immediately released for re-use */
+        xname(otmp);
+        addinv_core2(otmp); /* you react to seeing the object */
+
+        /*
+         * If object->eknown gets implemented (see learnwand(zap.c)),
+         * handle deferred discovery here.
+         */
+    }
+    if (invupdated)
+        update_inventory();
+}
+
 export function fully_identify_obj(otmp) {
     makeknown(otmp.otyp);
     if (otmp.oartifact)

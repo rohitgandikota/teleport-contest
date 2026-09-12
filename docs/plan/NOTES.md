@@ -9086,3 +9086,60 @@ observe_object() caller was compared. Clock/ubirthday: s109-09 and s109-34
 328 and s109-07 (Hawaiian shirt design: o_id ^ ubirthday matches the
 recording's DST-shifted mktime at UTC+4h for a November datetime recorded
 in EDT, which is exactly the unmodelled recording-timezone input).
+
+## Tour seed 110 (12 Sep)
+
+35/40 recorded; the five: 
+
+- s110-30: m_move's lined_up() gate drew rn2(2) for a horse six squares
+  away across a WATER band. js/monmove.js carried its own linedup() and
+  blocking_terrain() copies, and that blocking_terrain() lacked the
+  is_waterwall() arm of mthrowu.c:1282, so the boulder walk reached the
+  hero and rolled. lined_up() now lives in js/mthrowu.js with linedup()
+  (monmove.js re-exports it); the copies are gone.
+- s110-04: watch_on_duty()'s in_town(u.ux + u.dx, u.uy + u.dy) read an
+  undefined u.dx on a hero who had never moved on foot (level teleports
+  only), so the watchman's rn2(3) never drew. u.dx/u.dy/u.dz start at 0
+  in the hero record as the C's zeroed struct does.
+- s110-03: a chameleon that turned into a stalker was drawn as 'E'.
+  newcham() (mon.c:5406) sets perminvis from pm_invisible() of the new
+  form, minvis from that unless invis_blkd, and re-hides an mundetected
+  monster; the port had only the light-source arm of that block.
+- s110-12: a hallucinating hero's warning digit ('4' vs '1') comes from
+  rn2_on_display_rng in display_warning(); a display-RNG order case for
+  the NETHACK_RNGLOG_DISP procedure, not yet traced.
+- s110-25: "You are lucky!  Full moon tonight." from the C's local date
+  (recording-clock class).
+
+The broad tally (every fuzz session plus the public 44, 3504 games) has
+88 failures, none new: a worktree of the previous commit reproduces all
+88 at the same first-miss step. Baselines for a change now come from
+`git worktree add <dir> <commit>` plus the scratchpad tally with its cd
+swapped, run over the current failure list only.
+
+## Blindness toggles redraw sensed monsters; Sting's glow (12 Sep)
+
+make_blinded() ends in toggle_blindness() (potion.c:336): botl, a full
+vision_recalc(0), then see_monsters() when the hero has Blind_telepat,
+Infravision or a wielded warning artifact, Sting_effects(-1) for the
+"is quivering/glowing" continuation message, and learn_unseen_invent()
+(invent.c:2750) on regaining sight. The port had an inline copy without
+the see_monsters() call, so an Elf blinded while hallucinating did not
+redraw a Warning digit with the display RNG (s110-12's step-219 draw);
+do_wear.js's blindfold arms use the same function. see_monsters()
+(display.c:1487) now skips MON_STILL_ARRIVING monsters, redraws worm
+segments and counts Warn_of_mon monsters, and Sting_effects() with
+glow_color()/glow_strength()/glow_verb() (artifact.c:2427) is ported;
+artilist_data.js carries the artilist.h colour column as `acolor`
+(tools/gen-artifacts.mjs). see_monsters() stays synchronous like the C,
+so the Sting message is the one deferred piece. maybe_lvltport_feedback()
+(do.c:2032) is a function now, used by goto_level() and Sting_effects().
+
+Display-RNG procedure refresher, since it worked here: rerun the recipe
+with NETHACK_RNGLOG_DISP=1 (a v5 recipe: add `version: 5` to the fuzz
+recipe), pull the `~drn2` entries per step from the session's steps[].rng,
+and on our side run jsplay with `globalThis.__rng_log_disp = 1` plus
+`--rng-at <index>` (the index in getRngLog()) to get the JS stack of any
+display draw. s110-12 still misses at step 247: the C draws a hallucinated
+object glyph (rn2(463)) between u_calc_moveamt() and see_monsters() where
+ours draws a monster glyph as the first of see_monsters(); not yet traced.

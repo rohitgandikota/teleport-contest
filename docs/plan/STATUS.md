@@ -822,8 +822,21 @@ obj_delivery() ported and wired, attack_checks' hider arms, the
 flash_hits_mon --More--, u_on_newpos() consolidated (ux0 reset on level
 change), water_turbulence(), print_dungeon's portal tail. Public 44/44.
 
-Next: tour seed 110, the s109-04 wakizashi "encountered" marker, the
-symbols.js glyph arms and the remaining debug commands. The mapped-monster display class (s102-21, s102-36) needs the C's
+Eighty-eighth round (12 Sep): tour seed 110 (NOTES "Tour seed 110"):
+lined_up()/linedup() consolidated into mthrowu.js with the waterwall
+arm, u.dx/dy/dz zero-initialised, newcham()'s perminvis/minvis block.
+38/40 after the fixes (a display-RNG warning digit and a full-moon
+message remain). Broad tally 3504 games: 88 failures, all pre-existing.
+Public 44/44.
+
+Eighty-ninth round (12 Sep): toggle_blindness() in C form with
+see_monsters(), Sting_effects() and the glow helpers, learn_unseen_invent(),
+maybe_lvltport_feedback(); see_monsters() counts warned monsters (NOTES
+"Blindness toggles redraw sensed monsters"). Public 44/44.
+
+Next: tour seed 111, the s110-12 step-247 hallucinated object glyph, the
+s109-04 wakizashi "encountered" marker, the symbols.js glyph arms and the
+remaining debug commands. The mapped-monster display class (s102-21, s102-36) needs the C's
 redraw path found; the probes so far are in NOTES.
 tools/jsplay.mjs has `--aeval "<await expr>"` (game, dungeon, C, symbols,
 h in scope; `await import('file:///.../js/x.js')` reaches any module) for

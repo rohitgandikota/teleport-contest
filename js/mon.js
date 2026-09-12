@@ -48,7 +48,7 @@ import { mon_offmap, is_lightblocker_mappear } from './monst.js';
 import { dist2 } from './hacklib.js';
 import { m_dowear, mon_break_armor } from './worn.js';
 import { is_hider, perceives, is_human, is_unicorn , regenerates, hides_under } from './mondata.js';
-import { ceiling_hider, emits_light, resist_conflict, resists_fire } from './mondata.js';
+import { ceiling_hider, emits_light, resist_conflict, resists_fire, pm_invisible } from './mondata.js';
 import { new_light_source, del_light_source, any_light_source,
          LS_OBJECT, LS_MONSTER } from './light.js';
 import { sensemon } from './display.js';
@@ -4342,6 +4342,11 @@ export function newcham(mtmp, mdat, ncflags) {
                 new_light_source(mtmp.mx, mtmp.my, emits_light(mdat),
                                  LS_MONSTER, mtmp.m_id);
         }
+        if (!mtmp.perminvis || pm_invisible(olddata))
+            mtmp.perminvis = pm_invisible(mdat);
+        mtmp.minvis = mtmp.invis_blkd ? 0 : mtmp.perminvis;
+        if (mtmp.mundetected)
+            hideunder(mtmp);
 
         if (game.u.ustuck === mtmp) {
             return (async () => {

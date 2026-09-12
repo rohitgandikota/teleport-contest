@@ -13,7 +13,7 @@
 // is placed.
 
 import { rn1 } from './rng.js';
-import { update_player_regions, update_monster_region } from './region.js';
+import { update_player_regions, update_monster_region, in_out_region } from './region.js';
 import { m_into_limbo } from './mon.js';
 import { unstuck } from './mon.js';
 import { engulfing_u, In_mines, NO_KILLER_PREFIX, DIED, MAX_TYPE } from './const.js';
@@ -104,7 +104,7 @@ import { m_next2u } from './mon.js';
 import { DEADMONSTER } from './monst.js';
 import { noit_mon_nam } from './do_name.js';
 import { uhis } from './mhitu.js';
-import { Levitation, Flying } from './youprop.js';
+import { Levitation, Flying, Passes_walls } from './youprop.js';
 import { done } from './end.js';
 import { tty_yn_function } from './tty/topl.js';
 import { notice_mon_off, notice_mon_on, notice_all_mons, notice_all_mons_flush } from './hack.js';
@@ -294,25 +294,36 @@ export async function level_tele() {
         let trycnt = 0;
 
         do {
-            if (++trycnt === 2)
-                qbuf += game.wizard ? ' [type a number, name, or ? for a menu]'
-                                    : ' [type a number or name]';
-            /* EDIT_GETLIN: a previous answer was invalid, so it is NOT
-               offered back as the default */
-            buf = await getlin(qbuf);
+            let via_menu = false;
+            if (game.iflags?.menu_requested) {
+                /* wizard mode 'm ^V' skips prompting on first pass
+                   (note: level Tport via menu won't have any second pass) */
+                game.iflags.menu_requested = false;
+                if (game.wizard)
+                    via_menu = true; /* goto levTport_menu */
+            }
+            if (!via_menu) {
+                if (++trycnt === 2)
+                    qbuf += game.wizard
+                            ? ' [type a number, name, or ? for a menu]'
+                            : ' [type a number or name]';
+                /* EDIT_GETLIN: a previous answer was invalid, so it is NOT
+                   offered back as the default */
+                buf = await getlin(qbuf);
 
-            if (buf === '*') {
-                random_port = true;
-                break;
-            } else if (Confusion() && rnl(5)) {
-                await pline('Oops...');
-                random_port = true;
-                break;
-            } else if (buf === '\x1b') {        /* cancelled */
-                return;
+                if (buf === '*') {
+                    random_port = true;
+                    break;
+                } else if (Confusion() && rnl(5)) {
+                    await pline('Oops...');
+                    random_port = true;
+                    break;
+                } else if (buf === '\x1b') {        /* cancelled */
+                    return;
+                }
             }
 
-            if (game.wizard && buf === '?') {
+            if (via_menu || (game.wizard && buf === '?')) {
                 const dest = { lev: 0, dnum: 0 };
 
                 newlev = await print_dungeon(true, dest);
@@ -889,7 +900,7 @@ export async function tele_restrict(mon) {
 }
 
 // src/teleport.c teleok() — may the hero teleport onto <x,y>?
-function teleok(x, y, trapok) {
+async function teleok(x, y, trapok) {
     if (!trapok) {
         /* allow teleportation onto vibrating square, it's not a real trap;
            also allow pits and holes if levitating or flying */
@@ -900,7 +911,7 @@ function teleok(x, y, trapok) {
         else if (trap.ttyp === VIBRATING_SQUARE)
             trapok = true;
         else if ((is_pit(trap.ttyp) || is_hole(trap.ttyp))
-                 && game.u.uprops?.LEVITATION)
+                 && (Levitation() || Flying()))
             trapok = true;
 
         if (!trapok)
@@ -908,8 +919,10 @@ function teleok(x, y, trapok) {
     }
     if (!goodpos(x, y, game.youmonst, 0))
         return false;
-    /* the caller's remaining tests (in_mklev, sokoban, vault guard) need
-       state no reachable teleport has yet */
+    if (!tele_jump_ok(game.u.ux, game.u.uy, x, y))
+        return false;
+    if (!await in_out_region(x, y))
+        return false;
     return true;
 }
 
@@ -1073,7 +1086,7 @@ export async function scrolltele(scroll) {
                 return;             /* abort */
             /* possible extensions: introduce a small error if magic power
                is low; allow transfer to solid rock */
-            if (teleok(cc.x, cc.y, false)) {
+            if (await teleok(cc.x, cc.y, false)) {
                 await teleds(cc.x, cc.y, TELEDS_TELEPORT);
                 if (game.iflags?.travelcc
                     && game.u.ux === game.iflags.travelcc.x
@@ -1102,7 +1115,7 @@ export async function safe_teleds(teleds_flags) {
     for (let tcnt = 0; tcnt < 40; ++tcnt) {
         nux = rnd(COLNO - 1);
         nuy = rn2(ROWNO);
-        if (teleok(nux, nuy, false)) {
+        if (await teleok(nux, nuy, false)) {
             await teleds(nux, nuy, teleds_flags);
             return true;
         }
@@ -1111,18 +1124,18 @@ export async function safe_teleds(teleds_flags) {
     /* get a shuffled list of candidate locations, starting with spots
        1 or 2 steps from hero, then 3 or 4, on up */
     let cc_flags = CC_RING_PAIRS | CC_SKIP_MONS;
-    if (!game.u.uprops?.PASSES_WALLS)
+    if (!Passes_walls())
         cc_flags |= CC_SKIP_INACCS;
     const candy = collect_coords(game.u.ux, game.u.uy, 0, cc_flags, null);
     let backupspot = null;
     /* skip trap locations but remember the first acceptable trap spot */
     for (let tcnt = 0; tcnt < candy.length; ++tcnt) {
         nux = candy[tcnt].x; nuy = candy[tcnt].y;
-        if (teleok(nux, nuy, false)) {
+        if (await teleok(nux, nuy, false)) {
             await teleds(nux, nuy, teleds_flags);
             return true;
         }
-        if (!backupspot && teleok(nux, nuy, true))
+        if (!backupspot && await teleok(nux, nuy, true))
             backupspot = { x: nux, y: nuy };
     }
     if (backupspot) {
@@ -1140,7 +1153,7 @@ export async function vault_tele() {
     const croom = search_special(VAULT);
     const c = { x: 0, y: 0 };
 
-    if (croom && somexyspace(croom, c) && teleok(c.x, c.y, false)) {
+    if (croom && somexyspace(croom, c) && await teleok(c.x, c.y, false)) {
         await teleds(c.x, c.y, TELEDS_TELEPORT);
         return;
     }
@@ -1698,7 +1711,7 @@ export async function tele_to_rnd_pet() {
         const tx = pet.mx + rn2(3) - 1,
               ty = pet.my + rn2(3) - 1;
 
-        if (isok(tx, ty) && teleok(tx, ty, false))
+        if (isok(tx, ty) && await teleok(tx, ty, false))
             await teleds(tx, ty, TELEDS_TELEPORT);
     }
 }

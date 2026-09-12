@@ -649,16 +649,50 @@ map-internals and legend views (wiz_map_levltyp, wiz_levltyp_legend),
 and update_inventory() in C form with the tty's no-op
 tty_update_inventory().
 
-Next: triage `--seed 82`, then port the there_cmd_menu family in the
-C's form (cmd.js doherecmdmenu/dotherecmdmenu, there_cmd_menu_self,
-_next2u, _far, _common, act_on_act with the do_move_* functions the
-canned queue needs), then the remaining note_unported list (objnam.js
-lookup_novel, symbols.js glyph parsing, options.js do_symset and the
-key-binding actions, mon.js m_detach arms, priest.js and mplayer.js
-rloc squatters, the wizard extended commands). tools/jsplay.mjs has a new
-`--aeval "<await expr>"` flag with the hack.js namespace as `h` for state
-probes. The census script is `tally.sh` in the scratchpad (diverge.mjs
---screens over tools/gen-sessions/fuzz/*.session.json, 4 at a time).
+Seventy-first round (12 Sep): the there_cmd_menu family, clicklook and the
+weapon/armor status fields landed; then the new fuzz strategy,
+`node tools/gen-sessions/fuzz.mjs --strategy tour --games 40 --seed N`
+(NOTES "The wizard-mode level tours"): debug-mode games that hop through
+the ^V level menu so every special level and branch gets played. Seed 101
+had 7 failures in 42, all real except the timezone one: disturb() lacked
+the Stealth, Aggravate_monster and mimic tests (three tours); losexp()
+never logged "lost experience level N" and skipped resists_drli(), which
+shortened the #chronicle by a page and desynchronised every later key;
+teleok() lacked tele_jump_ok() and in_out_region(); des.exclusion() zones
+were recorded but never consulted, not flipped with the level and not kept
+per level (is_exclusion_zone() ported into goodpos() and
+put_lregion_here(); the LR_* numbering unified on js/const.js); the
+in-play ^X window is a select_menu(PICK_NONE) menu, so RET closes it on
+any page. All in NOTES under the 12 Sep entries. Public 44/44 after each.
+
+Seventy-second round (12 Sep): tour `--seed 102` (11 failures in 40)
+and the full trigram census (2906/2982, three regressions inherited from
+the there_cmd_menu commit, all fixed). Fixed, each with a NOTES entry
+dated 12 Sep: the tty menu's group-accelerator precedence (PICK_ONE only);
+#quit's "Dump core?" 'y' ends the process; getlin() disables bot() while
+tty_get_ext_cmd() bypasses the wrapper (the '#' prompt repaints the
+status rows, "Set fruit to what?" does not); magic mapping keeps a
+remembered trap and re-shows stale trap/object memory; the six monmove.c
+arms (flees_light, release_hero, leppie_stash, shop damage, see_wsegs);
+meverseen set by display_monster() and same_race() ported (mreadmsg names
+a seen lich); 'm' before ^V goes straight to the level menu;
+domove_bump_mon() stumbles onto a mimic; minimal_xname() names through
+distant_name(); DARKROOMSYM is S_stone on the Rogue level. Seed 102 is
+at 38/40: s102-13 is the recording-clock class (midnight undead damage)
+and s102-36 is open (a giant spider on its seen web after ^F: the C shows
+the monster, ours the trap; NOTES "Magic mapping keeps remembered
+traps..." has the probes). s102-21 (one map cell 'h' vs '`' on a zoo-like
+room) is untriaged.
+
+Next: s102-21, then s102-36, then `--seed 103` tours; keep alternating
+tour and trigram seeds, then the remaining note_unported list (dog.js 14,
+sp_lev.js 13, insight.js 1).
+tools/jsplay.mjs has `--aeval "<await expr>"` (game, dungeon, C, symbols,
+h in scope; `await import('file:///.../js/x.js')` reaches any module) for
+state probes at `--until STEP`. The census script is `tally.sh` in the
+scratchpad (diverge.mjs --screens over session files, 8 at a time, one
+PASS/FAIL line each); `cscreen.mjs` and `crows.mjs` there print the C
+screens and chosen rows around a step.
 
 ### Checkpoint: Minetown map flags and shop annotations
 

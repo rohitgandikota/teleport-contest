@@ -1170,10 +1170,13 @@ export async function done2() {
            default, ESC included) suppresses the end-of-game printout */
         const c = await tty_yn_function('Dump core?', 'ynq', 'q');
         if (c === 'y') {
-            /* exit_nhwindows + abort: the session ends here */
-            game.program_state = game.program_state || {};
-            game.program_state.done = true;
-            return 0;
+            /* exit_nhwindows() + NH_abort(): the process ends here without
+               any further screen; the segment's remaining keys reach a dead
+               terminal (allmain.js moveloop_core's gameover arm) */
+            game.program_state_gameover = true;
+            const sig = new Error('nh_terminate');
+            sig.__nh_gameover = true;
+            throw sig;
         } else if (c === 'q')
             game.done_stopprint = (game.done_stopprint | 0) + 1;
     }

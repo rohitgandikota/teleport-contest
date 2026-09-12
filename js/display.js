@@ -866,7 +866,8 @@ export const GLYPH_NOTHING_CELL = Object.freeze({
 // defsym.h's CLR_BLACK collapses to the default foreground, so the cell
 // records identically to a plain floor except for its memory identity.
 function darkroomsym_cell() {
-    if (!dark_room_color())
+    /* include/sym.h:96 DARKROOMSYM is S_stone on the Rogue level */
+    if (!dark_room_color() || Is_rogue_level(game.u?.uz))
         return { ch: ' ', color: NO_COLOR, decgfx: false,
                  glyph: { kind: 'cmap', cmap: cmap_names.S_stone } };
     const s = showsym(cmap_names.S_darkroom);
@@ -1542,6 +1543,7 @@ export function newsym(x, y) {
             show_glyph_cell(x, y, showsym_mon(shown.mlet) || '?',
                             shown.mcolor ?? NO_COLOR, false, attr,
                             { kind: 'mon', mon });
+            mon.meverseen = 1; /* display.c:620 display_monster() */
             return;
         }
 
@@ -1570,6 +1572,7 @@ export function newsym(x, y) {
             show_glyph_cell(x, y, showsym_mon(shown.mlet) || '?',
                             shown.mcolor ?? NO_COLOR, false, attr,
                             { kind: 'mon', mon });
+            mon.meverseen = 1; /* display.c:620 display_monster() */
             return;
         }
     }
@@ -2838,6 +2841,15 @@ export function canspotmon(mon) {
 // src/display.c:1487 see_monsters() redraws every live monster, then the
 // hero. Callers use this when a sensing property changes or needs refreshing.
 export function see_monsters() {
+    /* steed and unseen engulfer/holder/holdee are recognized via touch
+       even if they aren't going to be rendered; other monsters
+       may get flagged as having been seen by display_monster() if it's
+       called by newsym() */
+    if (game.u?.usteed)
+        game.u.usteed.meverseen = 1;
+    if (game.u?.ustuck)
+        game.u.ustuck.meverseen = 1;
+
     for (const mon of game.level?.monsters || []) {
         if (mon.mhp > 0)
             newsym(mon.mx, mon.my);
@@ -3186,9 +3198,9 @@ export function magic_map_background(x, y, show) {
     if (!cansee(x, y) && !loc.waslit) {
         if (loc.typ === ROOM && tg.cmap === cmap_names.S_room) {
             if (dark_room_color()) {
-                const dr = darkroomsym_cell();
+                const dr = darkroomsym_cell(); /* DARKROOMSYM */
                 tg = { ch: dr.ch, color: dr.color, dec: dr.decgfx,
-                       cmap: cmap_names.S_darkroom };
+                       cmap: dr.glyph.cmap };
             } else {
                 tg = null;                      /* GLYPH_NOTHING */
             }
@@ -3210,8 +3222,10 @@ export function magic_map_background(x, y, show) {
     /* a memory record that names its glyph kind decides directly: only
        unexplored memory and cmap memory are background; an 'I' marker
        (kind 'invis'), an object, a trap or a monster stays put */
+    /* trap glyphs live in the cmap range in this port (trap_glyph()), but
+       C's glyph_is_cmap() is false for them: remembered traps stay put */
     const kind = rg?.glyph?.kind;
-    const is_background = !rg || kind === 'cmap'
+    const is_background = !rg || (kind === 'cmap' && !glyph_is_trap(rg.glyph))
                           || (kind === undefined && !is_obj_memory);
     if (game.level?.flags?.hero_memory && is_background)
         loc.remembered_glyph = tg

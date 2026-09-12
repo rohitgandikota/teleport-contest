@@ -737,6 +737,7 @@ function clear_level_structures() {
     g.level.nroom = 0;
     g.level.rooms = [];
     g.made_branch = false;
+    g.exclusion_zones = []; /* free_exclusions() */
     g.smeq = new Array(MAXNROFROOMS + 1).fill(0);
     g.level.doorindex = 0;
     g.level.doors = [];

@@ -899,8 +899,13 @@ export async function tty_select_menu(window, how) {
            found there is MENU_EXPLICIT_CHOICE before map_menu_cmd() runs, so
            ':' selects a ':' entry instead of opening search and ',' picks
            the entry whose group accelerator is ',' instead of selecting the
-           page. The default arm tests gacc before the selectors. */
-        if (gacc.includes(morc)) {
+           page. The boundary covers the group accelerators only for a
+           PICK_ONE menu (wintty.c:1530); in a PICK_ANY menu a group
+           accelerator that is also a menu command is the command ('.' with
+           a venom entry selects everything), and one that is not reaches
+           the default arm, which tests gacc before the selectors. */
+        if (gacc.includes(morc)
+            && (how === PICK_ONE || !'^|><.-@,\\~:'.includes(morc))) {
             /* group accelerator; for the PICK_ONE case, we know that it
                matches exactly one item in order to be in gacc[] */
             invert_all(window, cw.curr_page, morc,

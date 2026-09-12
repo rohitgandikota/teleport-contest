@@ -23,6 +23,7 @@ import { add_menu_heading } from './options.js';
 import { pmatchi, visctrl, strstri, strsubst } from './hacklib.js';
 import { seemimic } from './mon.js';
 // cmd.js — Command dispatch and movement.
+import { PICK_NONE } from './const.js';
 // C ref: cmd.c rhack(), hack.c domove().
 //
 // Minimal skeleton: only hjklyubn movement is implemented.
@@ -721,7 +722,11 @@ function note_unported_cmd(what) {
 // which keys are consumed. Consumption is what matters here: a command line
 // left unread turns its own letters into commands, which is what "#jump\n"
 // was doing — j and u moved the hero and the rest were swallowed.
-export async function getlin(query, hook) {
+// win/tty/getline.c:43 hooked_tty_getlin() — the tty's line reader; the
+// core's getlin() wrapper below disables bot() around it, but
+// tty_get_ext_cmd() (getline.c:292) calls this directly for the '#' prompt,
+// so that prompt's flush repaints the status rows.
+export async function hooked_tty_getlin(query, hook) {
     /* C tracks two things: obufp, the buffer, and bufp, the insertion point
        inside it. They come apart under NEWAUTOCOMP (win/tty/getline.c:11,
        always defined) because a completion extends the buffer while leaving
@@ -748,7 +753,14 @@ export async function getlin(query, hook) {
     game._topline_physical_prefix = '';
     /* custompline(OVERRIDE_MSGTYPE | SUPPRESS_HISTORY, "%s ", query) goes
        through src/pline.c:282 vpline(), which records the prompt as the
-       previous message for Norep() */
+       previous message for Norep() and, first (pline.c:266), settles any
+       pending vision recalc and flushes the screen: that flush is what
+       repaints the status rows a just-dismissed full-width window (the
+       extended-command list behind '#') left blank */
+    if (game.vision_full_recalc)
+        vision_recalc(0);
+    if (game.u?.ux)
+        await flush_screen(1);
     game._prevmsg = query + ' ';
 
     for (;;) {
@@ -848,6 +860,19 @@ export async function getlin(query, hook) {
     return buf;
 }
 
+// src/windows.c:1868 getlin() — the core wrapper: bot() is disabled for the
+// duration of the prompt, so the status rows are not repainted by the
+// prompt's flush ("Set fruit to what?" over a blank status stays blank).
+export async function getlin(query, hook) {
+    const old_bot_disabled = !!game.bot_disabled;
+    game.bot_disabled = true;
+    try {
+        return await hooked_tty_getlin(query, hook);
+    } finally {
+        game.bot_disabled = old_bot_disabled;
+    }
+}
+
 // src/cmd.c:5588 paranoid_ynq(). A paranoid question requires the full word
 // "yes". PARANOID_CONFIRM also requires the full word "no" and retries an
 // invalid answer up to five times after the first prompt.
@@ -938,7 +963,7 @@ async function get_ext_cmd() {
     /* mungspaces(): leading and trailing blanks go, and runs of blanks
        collapse to one before matching and before the unknown-command
        message echoes the text */
-    const buf = mungspaces(await getlin('#', ext_cmd_getlin_hook));
+    const buf = mungspaces(await hooked_tty_getlin('#', ext_cmd_getlin_hook));
 
     if (buf === '' || buf === '\x1b')
         return null;
@@ -3703,14 +3728,11 @@ async function show_attributes() {
     for (const l of enlightenment())
         tty_add_menu(win, null, 0, 0, 0, ATR_NONE, NO_COLOR, l,
                      MENU_ITEMFLAGS_NONE);
+    /* src/insight.c:456 — en_via_menu: end_menu() and select_menu(PICK_NONE),
+       so the tty's process_menu_window() reads the keys: RET finishes on any
+       page, space and '>' turn pages, other keys are ignored. */
     tty_end_menu(win, null);
-    await tty_display_nhwindow(win);
-
-    /* dmore() blocks once per page and accepts ONLY the quitchars: any
-       other key (a ^O pressed early) is swallowed while the window stays */
-    await xwaitforspace(' \r\n\x1b');
-    while (game.morc !== '\x1b' && tty_next_page(win))
-        await xwaitforspace(' \r\n\x1b');
+    await tty_select_menu(win, PICK_NONE);
 
     tty_destroy_nhwindow(win);
 }

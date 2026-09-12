@@ -34,7 +34,7 @@ import { start_timer, TIMER_OBJECT, ROT_ORGANIC,
 import { new_light_source, LS_OBJECT } from './light.js';
 import { make_engr_at, engr_at, del_engr } from './engrave.js';
 import { oname, christen_monst } from './do_name.js';
-import { ONAME_LEVEL_DEF, is_pit } from './const.js';
+import { ONAME_LEVEL_DEF, is_pit, LR_TELE, LR_UPTELE, LR_DOWNTELE, LR_MONGEN, LR_PORTAL, LR_BRANCH, LR_UPSTAIR, LR_DOWNSTAIR } from './const.js';
 import { DUST, ENGRAVE, BURN, MARK, ENGR_BLOOD, STRAT_WAITFORU,
          MM_NOCOUNTBIRTH, MM_NOMSG, G_UNIQ, G_EXTINCT, G_GONE } from './const.js';
 
@@ -2938,6 +2938,28 @@ export function flip_level(flp, extras) {
             }
     }
 
+    /* exclusion zones (sp_lev.c:877) */
+    for (const ez of (game.exclusion_zones || [])) {
+        if (flp & 1) {
+            ez.ly = FlipY(ez.ly);
+            ez.hy = FlipY(ez.hy);
+            if (ez.ly > ez.hy) {
+                const itmp = ez.ly;
+                ez.ly = ez.hy;
+                ez.hy = itmp;
+            }
+        }
+        if (flp & 2) {
+            ez.lx = FlipX(ez.lx);
+            ez.hx = FlipX(ez.hx);
+            if (ez.lx > ez.hx) {
+                const itmp = ez.lx;
+                ez.lx = ez.hx;
+                ez.hx = itmp;
+            }
+        }
+    }
+
     /* src/sp_lev.c:915 — the swap moves wall SQUARES but leaves their corner
        and T-junction types pointing the old way; this recomputes them from
        the neighbours. Without it every corner glyph comes out mirrored. */
@@ -3322,19 +3344,20 @@ function l_get_lregion(opts) {
 }
 
 export function lspo_teleport_region(opts) {
-    const dirs = { both: 0 /* LR_TELE */, down: 2 /* LR_DOWNTELE */,
-                   up: 1 /* LR_UPTELE */ };
+    const dirs = { both: LR_TELE, down: LR_DOWNTELE, up: LR_UPTELE };
     const tmpl = l_get_lregion(opts);
-    tmpl.rtype = dirs[opts.dir ?? 'both'] ?? 0;
+    tmpl.rtype = dirs[opts.dir ?? 'both'] ?? LR_TELE;
     tmpl.padding = 0;
     levregion_add(tmpl);
 }
 
 export function lspo_levregion(opts) {
-    const types = { 'stair-down': 6, 'stair-up': 5, 'portal': 3, 'branch': 4,
-                    'teleport': 0, 'teleport-up': 1, 'teleport-down': 2 };
+    const types = { 'stair-down': LR_DOWNSTAIR, 'stair-up': LR_UPSTAIR,
+                    'portal': LR_PORTAL, 'branch': LR_BRANCH,
+                    'teleport': LR_TELE, 'teleport-up': LR_UPTELE,
+                    'teleport-down': LR_DOWNTELE };
     const tmpl = l_get_lregion(opts);
-    tmpl.rtype = types[opts.type ?? 'stair-down'] ?? 6;
+    tmpl.rtype = types[opts.type ?? 'stair-down'] ?? LR_DOWNSTAIR;
     tmpl.padding = opts.padding ?? 0;
     tmpl.rname = opts.name ?? null;
     levregion_add(tmpl);
@@ -3541,8 +3564,8 @@ export function lspo_non_passwall(x1, y1, x2, y2) {
    on sve.exclusion_zones and consults them when placing monsters, teleport
    destinations and so on (sp_lev.c:877). Draws nothing; the region corners go
    through get_location_coord, i.e. the map's xstart/ystart offset. */
-const EZ_TYPES = { teleport: 0, 'teleport-up': 1, 'teleport-down': 2,
-                   'monster-generation': 3 };
+const EZ_TYPES = { teleport: LR_TELE, 'teleport-up': LR_UPTELE,
+                   'teleport-down': LR_DOWNTELE, 'monster-generation': LR_MONGEN };
 
 export function lspo_exclusion(opts) {
     const r = opts.region || [];

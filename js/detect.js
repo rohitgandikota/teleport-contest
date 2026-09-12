@@ -38,7 +38,8 @@ import { wake_nearto } from './mon.js';
 import { Your, You_see, pline_The, There, Norep, set_msg_xy } from './pline.js';
 import { rnd, rn2_on_display_rng } from './rng.js';
 import { I_SPECIAL, A_INT, u_at, OBJ_AT, Has_contents, TRAPPED_CHEST, TRAPPED_DOOR, BEAR_TRAP, D_BROKEN, D_ISOPEN, DRAWBRIDGE_UP, IS_DOOR, M_AP_OBJECT, M_AP_MONSTER, ARTICLE_YOUR, ARTICLE_THE, SUPPRESS_SADDLE, FOOT, NOSE, TOE, TIMEOUT, KILLED_BY_AN, BURIED_TOO, CONTAINED_TOO, NO_PART, BOLT_LIM, TOPLINE_EMPTY, TOPLINE_NEED_MORE } from './const.js';
-import { display_self, more, unmap_object, glyph_at, see_monsters, covers_objects, flash_glyph_at, map_engraving } from './display.js';
+import { display_self, more, unmap_object, glyph_at, see_monsters, covers_objects, flash_glyph_at, map_engraving, glyph_is_trap } from './display.js';
+import { engr_at } from './engrave.js';
 import { OCLASSES, MATERIALS } from './objects_data.js';
 import { PMNAMES, NUMMONS } from './monst_data.js';
 import { Deaf } from './youprop.js';
@@ -603,24 +604,45 @@ export function show_map_spot(x, y, cnf) {
     loc.seenv = SVALL;
 
     /* Secret corridors are found, but not secret doors. */
-    if (loc.typ === SCORR)
+    if (loc.typ === SCORR) {
         loc.typ = CORR;
+        unblock_point(x, y);
+    }
 
-    magic_map_background(x, y, 0);
-    newsym(x, y);
-
+    /*
+     * Force the real background, then if it's not furniture and there's
+     * a known trap there, display the trap, else if there was an object
+     * shown there, redisplay the object.  So during mapping, furniture
+     * takes precedence over traps, which take precedence over objects,
+     * opposite to how normal vision behaves.
+     */
+    const oldglyph = glyph_at(x, y);
+    /* C's show_glyph(x, y, oldglyph) repaints the glyph buffer's entry; the
+       cell fields hold what that entry painted */
+    const oldcell = { ch: loc.disp_ch, color: loc.disp_color,
+                      decgfx: loc.disp_decgfx, attr: loc.disp_attr,
+                      glyph: loc.disp_glyph };
+    if (game.level?.flags?.hero_memory) {
+        magic_map_background(x, y, 0);
+        newsym(x, y); /* show it, if not blocked */
+    } else {
+        magic_map_background(x, y, 1); /* display it */
+    }
     if (!IS_FURNITURE(loc.typ)) {
         const t = t_at(x, y);
         let ep;
         if (t && t.tseen) {
             map_trap(t, 1);
-        } else if ((ep = (game.level?.lev_engr || [])
-                            .find(e => e.x === x && e.y === y)) && !cnf) {
+        } else if ((ep = engr_at(x, y)) && !cnf) {
             map_engraving(ep, 1);
+        } else if (glyph_is_trap(oldglyph) || oldglyph?.kind === 'obj') {
+            show_glyph_cell(x, y, oldcell.ch, oldcell.color, oldcell.decgfx,
+                            oldcell.attr, oldcell.glyph);
+            if (game.level?.flags?.hero_memory)
+                loc.remembered_glyph = { ch: oldcell.ch, color: oldcell.color,
+                                         decgfx: oldcell.decgfx,
+                                         glyph: oldcell.glyph };
         }
-        /* the remembered-object re-show is already handled: memory keeps
-           object glyphs (magic_map_background skips them) and newsym shows
-           remembered glyphs for unseen cells */
     }
     if (!cnf && loc.roomno >= ROOMOFFSET)
         room_discovered(loc.roomno - ROOMOFFSET);

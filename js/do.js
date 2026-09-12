@@ -1140,6 +1140,8 @@ export async function goto_level(newlevel, at_stairs, falling, portal) {
            the whole level instead of the scripted destination area. */
         game.level._saved_updest = { ...(game.updest || {}) };
         game.level._saved_dndest = { ...(game.dndest || {}) };
+        /* save.c:552 save_exclusions() */
+        game.level._saved_exclusion_zones = game.exclusion_zones || [];
         const { save_engravings } = await import('./engrave.js');
         game.level._saved_engravings = save_engravings();
         // src/save.c savelev(), local timers and lights remain on this level.
@@ -1233,6 +1235,8 @@ export async function goto_level(newlevel, at_stairs, falling, portal) {
         }
         game.updest = { ...(game.level._saved_updest || game.updest) };
         game.dndest = { ...(game.level._saved_dndest || game.dndest) };
+        /* restore.c:1227 load_exclusions() */
+        game.exclusion_zones = game.level._saved_exclusion_zones || [];
         const { rest_engravings } = await import('./engrave.js');
         rest_engravings(game.level._saved_engravings);
         {

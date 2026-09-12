@@ -688,7 +688,10 @@ export function minimal_xname(obj) {
         spe: (obj.otyp === ONAMES.SLIME_MOLD) ? obj.spe : 0,
     };
 
-    let bufp = xname(bareobj);
+    /* distant_name(): the bare object has no map location, so xname() runs
+       with distantname set and does not observe it; a dknown==0 scroll
+       stays "scroll" instead of picking up its label here */
+    let bufp = distant_name(bareobj, xname);
     /* undo forced setting of bareobj.blessed for cleric (priest[ess]) */
     if (bufp.startsWith('uncursed '))
         bufp = bufp.slice(9);

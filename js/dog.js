@@ -10,7 +10,7 @@
 // from enexto() to place it.
 
 import { vision_recalc } from './vision.js';
-import { emits_light } from './mondata.js';
+import { emits_light, same_race } from './mondata.js';
 import { ledger_to_dnum, ledger_to_dlev, depth, In_W_tower, builds_up, Is_qstart } from './dungeon.js';
 import { relmon, mondied } from './mon.js';
 import { m_unleash } from './apply.js';
@@ -376,10 +376,9 @@ function polyfood(obj) {
               || dmgtype(ptr, ATTKS.AD_POLY));
 }
 
-export function same_race(pm1, pm2) {
-    note_unported('same_race');
-    return pm1 === pm2;
-}
+// src/mondata.c:771 same_race() lives in js/mondata.js; eat.js imports it
+// from here.
+export { same_race };
 
 function find_pmmonst(pm) {
     return (game.level?.monsters || []).find(m => m.mnum === pm) || null;

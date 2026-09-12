@@ -61,7 +61,7 @@ import { livelog_printf } from './pline.js';
 import { watch_dig, digging_context, clear_digging_context, SHOP_WALL_DMG } from './dig.js';
 import { on_level } from './dungeon.js';
 import { d } from './rng.js';
-import { Warning, Half_physical_damage } from './youprop.js';
+import { Warning, Half_physical_damage, Protection_from_shape_changers } from './youprop.js';
 import { ESHK, RLOC_NOMSG, something, DISMOUNT_FELL, DISMOUNT_GENERIC, invlet_basic, GP_ALLOW_U, A_CON } from './const.js';
 import { hard_helmet, helm_simple_name } from './do_wear.js';
 import { fall_asleep } from './timeout.js';
@@ -88,7 +88,7 @@ import { defsyms } from './drawing_data.js';
 // None of them draws.
 
 import { game } from './gstate.js';
-import { do_attack, explum } from './uhitm.js';
+import { do_attack, explum, stumble_onto_mimic } from './uhitm.js';
 import { rehumanize } from './polyself.js';
 import { wake_nearto } from './mon.js';
 import { attacktype, attacktype_fordmg } from './mondata.js';
@@ -1384,8 +1384,9 @@ export async function domove_bump_mon(mtmp, x, y) {
     if (game.context?.nopick && !game.context?.travel
         && (canspotmon(mtmp) || glyph?.kind === 'invis'
             || glyph?.kind === 'warn')) {
-        if (M_AP_TYPE(mtmp) && !sensemon(mtmp)) {
-            seemimic(mtmp);
+        if (M_AP_TYPE(mtmp) && !Protection_from_shape_changers()
+            && !sensemon(mtmp)) {
+            await stumble_onto_mimic(mtmp);
         } else if (mtmp.mpeaceful && !Hallucination()) {
             await pline(`Pardon me, ${m_monnam(mtmp)}.`);
         } else {

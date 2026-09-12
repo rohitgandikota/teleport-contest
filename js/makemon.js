@@ -62,7 +62,8 @@ import { t_at, is_pool, is_lava, m_in_air, resists_ston } from './mon.js';
 import { touch_petrifies, mhe, nonliving } from './mondata.js';
 import { can_hide_under_obj, dochugw, set_apparxy } from './monmove.js';
 import { couldsee } from './vision.js';
-import { is_pit, OBJ_FLOOR, PLNMSG_HIDE_UNDER, Mgender } from './const.js';
+import { is_pit, OBJ_FLOOR, PLNMSG_HIDE_UNDER, Mgender, LR_MONGEN } from './const.js';
+import { is_exclusion_zone } from './mkmaze.js';
 import { ACCESSIBLE, POOL, LAVAPOOL,
     BLCORNER, CROSSWALL, DELPHI, FODDERSHOP, HWALL, IS_DOOR, IS_WALL, M_AP_FURNITURE, M_AP_OBJECT, OBJ_AT, OBJ_MINVENT, SCORR, SDOOR, SHOPBASE, TDWALL, TLCORNER, TRWALL, TUWALL, TEMPLE, VAULT, ZOO, ROOMOFFSET, GP_ALLOW_U, GP_CHECKSCARY, GP_AVOID_MONPOS, MM_IGNORELAVA,
     IS_WATERWALL, IS_ALTAR, Is_waterlevel, Is_airlevel, Is_firelevel,
@@ -1337,6 +1338,10 @@ export function goodpos(x, y, mtmp, gpflags = 0) {
     /* skip boulder locations for most creatures */
     if (sobj_at(ONAMES.BOULDER, x, y) && (!ptr || !throws_rocks(ptr)))
         return false;
+    /* pretend GP_AVOID_MONPOS == monster creation */
+    if ((gpflags & GP_AVOID_MONPOS) && is_exclusion_zone(LR_MONGEN, x, y))
+        return false;
+
     return true;
 }
 

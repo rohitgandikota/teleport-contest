@@ -8338,3 +8338,177 @@ step 281 showed the kitten one square on from the C. Every port of a
 `char`-returning function whose result the C tests for truth needs an
 explicit `ch !== '\0'`. The same class as the truthy-Promise entries above:
 grep for `'\0'` in a boolean position before trusting a char-returning port.
+
+## The wizard-mode level tours (12 Sep)
+
+`node tools/gen-sessions/fuzz.mjs --strategy tour --games 40 --seed N`
+records debug-mode games that hop through print_dungeon()'s ^V level menu
+(a probe recording reads the lettered pages first, since the letters vary
+with the seed), so the Quest, Sokoban, the Mines' towns, Ludios, Vlad's
+tower, the Wizard's tower and the Planes get played and scored. The first
+batch (seed 101) failed 7 of 42; every failure was a real port bug and each
+is in the entries below. The recording-timezone class shows up here too
+(tour-s101-26 has the ^X "It is nighttime." line).
+
+## disturb() tests Stealth, Aggravate_monster and the mimic's disguise (12 Sep)
+
+monmove.c:327 disturb() wakes a sleeping monster only when the hero is not
+Stealthy (an ettin still wakes 9/10), and the last arm is
+`Aggravate_monster || dog/human || (!rn2(7) && not mimicking furniture or
+an object)`. Ours skipped the Stealth test with a comment saying Stealth was
+not implemented yet; a Monk past XL 5, a Barbarian at XL 15 (#levelchange)
+or any Rogue has it, and every sleeping monster in view then drew rn2(50)
+or rn2(7) that the C never drew (tour-s101-06, -09, -26). The port is now
+the C's single condition, verbatim.
+
+## losexp() logs "lost experience level N", and honours drain resistance (12 Sep)
+
+exper.c:230 records `lost experience level %d` (LL_MINORAC) after
+adjabil(); ours never did, so a hero drained by Vlad had a #chronicle one
+page shorter than the C's. The window then closed on the first RET where
+the C turned a page, and the next twenty keys were read as commands (the
+hero died of the extra turns). Same function: `#levelchange` is the only
+drainer that bypasses resists_drli(); every other caller returns without a
+message when the hero resists.
+
+## teleok() runs tele_jump_ok() and in_out_region() (12 Sep)
+
+teleport.c:420 teleok() rejects a spot outside the hero's side of the
+level's updest/dndest boundary and asks in_out_region() (which has side
+effects: it fires the region enter/leave callbacks for a spot the hero may
+never land on; the C does that too). Ours stopped at goodpos(), so on
+Asmodeus' lair a ^T "Sorry..." fallback accepted the first random spot
+while the C drew forty pairs and then walked the collect_coords() rings
+(tour-s101-23). teleok() is async now; the pit/hole arm reads
+Levitation() || Flying() and safe_teleds() reads Passes_walls().
+
+## Exclusion zones: is_exclusion_zone(), flipped with the level, per level (12 Sep)
+
+des.exclusion() zones were recorded by lspo_exclusion() and never read.
+mkmaze.c:317 is_exclusion_zone() is ported (mkmaze.js) and consulted where
+the C consults it: goodpos() with GP_AVOID_MONPOS (monster creation stays
+out of "monster-generation" zones, which is how a Sokoban level keeps its
+hole column clear, tour-s101-28) and put_lregion_here() for teleport
+arrival regions. flip_level() flips the zones with the map (sp_lev.c:877;
+ours left them on the unflipped side). The zones are per level: mklev's
+clear_level_structures() empties them (free_exclusions()) and do.js saves
+and restores them with the level like updest/dndest (save_exclusions /
+load_exclusions).
+
+The lev_region type numbers had two scales: js/const.js follows
+include/dungeon.h (LR_DOWNSTAIR 0 ... LR_TELE 4, LR_UPTELE 5, LR_DOWNTELE 6,
+LR_MONGEN 7) while mkmaze.js defined its own (LR_TELE 0, LR_PORTAL 3 ...)
+and sp_lev.js used those numbers as literals. With LR_MONGEN == 3 == the
+old LR_PORTAL a portal placement would have honoured monster zones. Every
+file now uses the const.js values; mkmaze.js re-exports them for its
+importers, and lspo_levregion/lspo_teleport_region/lspo_exclusion name the
+constants.
+
+## ^X during play is a menu: RET closes it on any page (12 Sep)
+
+insight.c:390 sets en_via_menu for an in-progress ^X, so the window is a
+real menu (add_menu_str per line, end_menu, select_menu PICK_NONE) and
+process_menu_window() reads the keys: RET finishes on any page, space and
+'>' page. Ours paged it with dmore() keys, so RET on page 1 of 2 showed
+page 2 where the C had already closed the window (tour-s101-22). The
+game-over path (en_via_menu false, display_nhwindow) is unchanged.
+
+## Menu group accelerators are explicit choices only in PICK_ONE menus (12 Sep)
+
+wintty.c:1528 builds resp[] from the page's selectors and then the group
+accelerators, but resp_len (the MENU_EXPLICIT_CHOICE boundary) is
+extended over the group accelerators only when `cw->how == PICK_ONE`
+(wintty.c:1530). In a PICK_ANY menu a group accelerator that is also a
+menu command goes through map_menu_cmd(): '.' selects everything in the
+wizard-mode "Autopickup what?" class menu even though the venom class '.'
+is a group accelerator there; one that is not a command reaches the
+default arm, which tests gacc before the selectors. Ours took the group
+arm first for every menu (fuzz-s16-33, inherited from the there_cmd_menu
+commit).
+
+## #quit's "Dump core?" answered 'y' ends the process (12 Sep)
+
+end.c:129: in wizard mode `y` runs exit_nhwindows() and NH_abort(); no
+further screen is drawn and the segment's remaining keys go nowhere. Ours
+set a flag nobody read and kept playing, drawing thousands of calls the C
+never made (fuzz-s67-00). done2() now raises the nh_terminate signal the
+way really_done() does; moveloop_core's gameover arm swallows the keys.
+
+## getlin() disables bot(); tty_get_ext_cmd() bypasses that wrapper (12 Sep)
+
+windows.c:1868 getlin() sets gb.bot_disabled around the tty reader, so the
+prompt's custompline() flush (pline.c:266) does not repaint the status
+rows ("Set fruit to what?" straight after the options menu keeps them
+blank, seed4500). But getline.c:292 tty_get_ext_cmd() calls
+hooked_tty_getlin() directly for the '#' prompt, and that flush does
+repaint the rows the extended-command list had covered (tour-s102-03,
+-10). cmd.js: hooked_tty_getlin() is the reader (with the vpline flush)
+and getlin() the bot-disabling wrapper; doextcmd() uses the reader.
+
+## Magic mapping keeps remembered traps and re-shows stale trap/object memory (12 Sep)
+
+detect.c:1372 show_map_spot() reads the displayed glyph first and, for a
+non-furniture square with no seen trap and no engraving, re-shows a
+remembered trap or object glyph after the background is forced, memory
+included. Our port had dropped that arm, and magic_map_background()'s
+"is this memory background?" test treated our cmap-range trap glyphs as
+background (C's glyph_is_cmap() is false for traps): #wizmap wiped a
+remembered web '"' on a Gehennom maze (fuzz-s24-29). Both are ported;
+show_map_spot() also unblock_point()s a found secret corridor.
+
+Open: tour-s102-36. A giant spider standing on its (seen) web: after ^F
+the C shows the monster and ours the trap. The C's own #terrain view
+confirms the web is known there, and show_map_spot()'s trap arm paints
+the trap last, so something in the C repaints the monster before the
+next key read; not found yet.
+
+## monmove.c: flees_light, release_hero, leppie_stash, shop damage, see_wsegs (12 Sep)
+
+flees_light() (monmove.c:450) is the real macro: a gremlin flees a lit
+Sunsword or worn gold dragon scales/mail when it can see and the hero is
+in line of sight. release_hero() (monmove.c:362) is called from monflee()
+and from dochug()'s "conflict ended" arm. leppie_stash() (monmove.c:1154)
+runs after every successful flee-teleport rloc(); it draws rn2(4) only
+for a leprechaun the hero cannot see on plain floor outside a shop.
+maybe_spin_web() and the door-busting arm add_damage() a shop square;
+the door arm's check sits after the trapped/else block, for any mask.
+An invisible long worm's tail is redrawn with see_wsegs(). The local
+Conflict stub in monmove.js is gone; youprop.js's accessor is used.
+
+## Monsters are marked meverseen when displayed; same_race() is real (12 Sep)
+
+display.c:620 display_monster() sets mon->meverseen, and see_monsters()
+marks the steed and u.ustuck. Ours never set it, so mreadmsg()'s
+"recognize" test always failed and an unseen master lich reading a scroll
+was "someone" instead of "a master lich" (tour-s102-23). mondata.c:771
+same_race() is ported into mondata.js (with is_minion and is_longworm);
+dog.js re-exports it for eat.js and muse.js uses it in place of the
+is_human pair.
+
+## 'm' before ^V opens the level menu without the prompt (12 Sep)
+
+teleport.c:1195: with iflags.menu_requested the wizard-mode level teleport
+skips getlin() on its first pass and goes straight to the print_dungeon()
+menu. Ours prompted, read the next keys as the level number and teleported
+the hero to a level the C never visited (tour-s102-16).
+
+## Bumping a disguised mimic with the 'm' prefix is stumble_onto_mimic() (12 Sep)
+
+hack.c:1939 domove_bump_mon() calls stumble_onto_mimic() (its message and
+the object_from_map() fake object's rnd(2)) when the hero is not protected
+from shape changers; ours called seemimic() silently (tour-s102-29).
+
+## minimal_xname() names through distant_name() (12 Sep)
+
+objnam.c:1073: the bare copy has no location, so distant_name() runs
+xname() with distantname set and no observe_object() happens; a scroll the
+hero has never seen up close stays "scroll". Ours called xname() directly,
+which observed the bare copy and printed the label ("the snake slithers
+under a scroll labeled ...", tour-s102-29).
+
+## DARKROOMSYM is S_stone on the Rogue level (12 Sep)
+
+include/sym.h:96. magic_map_background() copied the dark-room cell but
+hard-coded its cmap as S_darkroom, so on the Rogue level a mapped dark
+room showed floor dots where the C shows nothing (tour-s102-19).
+darkroomsym_cell() now answers S_stone there.

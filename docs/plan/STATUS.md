@@ -742,7 +742,23 @@ map_object() under hallucination consumed display-RNG draws; NOTES
 "getpos markers draw through tmp_at, and the hero's square is drawn
 once"). Seed 105 is at 40/40.
 
-Next: a trigram seed, then `--seed 106` tours, then keep alternating. The mapped-monster display class (s102-21, s102-36) needs the C's
+Seventy-eighth round (12 Sep): the census of remaining note_unported /
+game.unported arms (138 lines) is being cleared file by file. Landed:
+m_detach() in full (NOTES "m_detach() is the C's"), ship_object() and the
+drop/throw shipping path, the Oracle and tribute data files with
+doconsult()/read_tribute()/Death_quote(), and two dozen smaller arms
+(NOTES "Smaller arms cleared this round"). Trigram `--seed 85` is 40/40;
+tour `--seed 106` is 36/40 with s106-08 the clock and three real cases
+open: s106-26 (monmulti multishot count), s106-28 (an exercise() call the
+C makes on a level teleport), s106-07 ("blessed poisoned +0 arrows" word
+order in doname). Still recorded: artifact invoke special powers (taming,
+charge, portal, banish, poison, storms, blinding ray), from_what()'s
+what_gives() arm, reset_commands' swap_yz/pcHack/phone remaps, dopay's
+itemized bill, do_improvisation for non-drums, plselect's partial prompt,
+the options/symbols menu handlers, and the ubirthday clock arms.
+
+Next: the three seed-106 cases, then the artifact powers and what_gives,
+then reset_commands and do_improvisation. The mapped-monster display class (s102-21, s102-36) needs the C's
 redraw path found; the probes so far are in NOTES.
 tools/jsplay.mjs has `--aeval "<await expr>"` (game, dungeon, C, symbols,
 h in scope; `await import('file:///.../js/x.js')` reaches any module) for

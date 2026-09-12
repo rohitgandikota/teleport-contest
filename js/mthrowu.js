@@ -216,7 +216,7 @@ export async function drop_throw(obj, ohit, x, y) {
         delobj(obj);
     } else {
         if (down_gate(x, y) !== -1)
-            broken = !!ship_object(obj, x, y, false);
+            broken = !!(await ship_object(obj, x, y, false));
         if (!broken) {
             let mtmp = m_at(x, y);
             if (!(broken = await flooreffects(obj, x, y, 'fall'))) {
@@ -854,7 +854,7 @@ async function return_from_mtoss(magr, otmp, tethered_weapon) {
         }
         if (notcaught) {
             await snuff_candle(otmp);
-            if (!ship_object(otmp, x, y, false)) {
+            if (!(await ship_object(otmp, x, y, false))) {
                 if (await flooreffects(otmp, x, y, 'drop')) {
                     if (cansee(x, y))
                         newsym(x, y);

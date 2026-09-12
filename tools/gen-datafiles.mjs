@@ -27,7 +27,7 @@ const OUT = join(PROJECT_ROOT, 'js/dat_files.js');
    The rest are the '?' help-menu viewers: display_file() pages them as
    NHW_TEXT verbatim (help/hh/history/opthelp/optmenu/usagehlp/license),
    and dowhatdoes() greps cmdhelp for a key's description. */
-const FILES = ['rumors', 'engrave', 'epitaph', 'bogusmon', 'data',
+const FILES = ['rumors', 'engrave', 'epitaph', 'bogusmon', 'data', 'tribute', 'oracles',
                'help', 'hh', 'history', 'opthelp', 'optmenu', 'usagehlp',
                'license', 'cmdhelp', 'keyhelp', 'wizhelp'];
 

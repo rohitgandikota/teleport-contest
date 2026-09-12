@@ -98,6 +98,7 @@ import { ONAME_VIA_NAMING, ONAME_WISH, ONAME_GIFT, ONAME_VIA_DIP,
 import { obj_shuffle_range } from './o_init.js';
 import { OBJ_DESCR } from './objnam.js';
 import { PROTECTION } from './const.js';
+import { use_crystal_ball } from './detect.js';
 
 /* include/artilist.h — artilist[i].otyp, resolved from the generated
    ONAMES-key table. Index 0 is the dummy (STRANGE_OBJECT == 0). */
@@ -1253,7 +1254,6 @@ async function invoke_property(obj, prop) {
             await Your('body seems to unfade...');
         break;
     default:
-        note_unported_art(`arti_invoke:property=${prop}`);
         break;
     }
     return ECMD_TIME;
@@ -1284,7 +1284,7 @@ export async function doinvoke() {
     const oart = get_artifact(obj);
     if (!obj.oartifact || !oart.inv_prop) {
         if (obj.otyp === ONAMES.CRYSTAL_BALL)
-            note_unported_art('arti_invoke:crystal_ball');
+            await use_crystal_ball(obj);
         else {
             const { pline } = await import('./display.js');
             await pline(nothing_happens);

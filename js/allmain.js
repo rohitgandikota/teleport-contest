@@ -70,7 +70,7 @@ import { ROLE_GENDMASK, ROLE_MALE, ROLE_FEMALE, A_CURRENT, In_endgame,
          Upolyd, Is_waterlevel, Is_airlevel, FROMFORM, TT_LAVA, NON_PM, RLOC_NOMSG }
          from './const.js';
 import { mklev, l_nhcore_init, u_on_upstairs } from './mklev.js';
-import { rhack, domove, enter_explore_mode } from './cmd.js';
+import { rhack, domove, enter_explore_mode, dolookaround } from './cmd.js';
 import { clear_bypasses } from './worn.js';
 import { lookaround, end_running, unmul, nomul,
          monster_nearby, in_rooms, runmode_delay_output, check_special_room } from './hack.js';
@@ -521,7 +521,7 @@ export async function newgame() {
     }
     notice_mon_on(); /* now we can notice monsters */
     if (g.flags?.mention_map) /* a11y.glyph_updates */
-        (game.unported ||= new Set()).add('allmain:dolookaround');
+        await dolookaround();
     else
         notice_all_mons(true);
     await notice_all_mons_flush();

@@ -79,6 +79,8 @@ import { TER_MAP, TER_TRP, TER_OBJ, TER_MON, TER_FULL, TER_DETECT, IS_WALL,
 import { NO_COLOR, CLR_GREEN, CLR_WHITE } from './terminal.js';
 import { cansee, couldsee } from './vision.js';
 import { getpos } from './getpos.js';
+import { under_water } from './display.js';
+import { under_ground } from './display.js';
 const CM = cmap_names;
 
 // src/detect.c:65 unconstrain_map() — lift the swallowed/underwater/buried
@@ -116,10 +118,10 @@ function reconstrain_map() {
 async function map_redisplay() {
     reconstrain_map();
     await docrt(); /* redraw the screen to remove unseen traps from the map */
-    if (game.u.uinwater || game.u.uburied)
-        /* under_water(2) / under_ground(2) — the constrained-view repaint;
-           no session reaches the terrain browser while submerged */
-        note_unported_detect('map_redisplay:constrained');
+    if (game.u.uinwater)
+        await under_water(2);
+    else if (game.u.uburied)
+        await under_ground(2);
 }
 
 // src/detect.c:106 browse_map() — use getpos()'s 'autodescribe' to view
@@ -761,8 +763,7 @@ function reveal_terrain_getglyph(x, y, swallowed, default_cell, which_subset) {
         let was_mon = false;
         const kind = () => cell.glyph?.kind;
         if (keep_mons && x === game.u.ux && y === game.u.uy && swallowed) {
-            /* mon_to_glyph(u.ustuck) — detection while engulfed */
-            note_unported_detect('reveal_terrain:swallowed_keepmons');
+            cell = mon_cell(game.u.ustuck); /* mon_to_glyph(u.ustuck, rn2_on_display_rng) */
         } else if ((!keep_mons && (kind() === 'mon' || kind() === 'hero'
                                    || kind() === 'warn'))
                    || kind() === 'swallow') {

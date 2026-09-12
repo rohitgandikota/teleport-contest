@@ -71,6 +71,7 @@ import { NO_COLOR, CLR_GRAY, CLR_BROWN, CLR_WHITE, CLR_YELLOW, CLR_BRIGHT_BLUE,
          ATR_UNDERLINE as TERM_UNDERLINE } from './terminal.js';
 import { notice_all_mons_flush } from './hack.js';
 import { critically_low_hp } from './pray.js';
+import { worm_known } from './worm.js';
 
 // ── ANSI color codes ──
 // Maps CLR_* constants (0-15) to ANSI SGR color codes.
@@ -1250,6 +1251,30 @@ export async function swallowed(first) {
    when a swimming-only form first enters a pool. */
 let underwater_lastx = 0, underwater_lasty = 0;
 let underwater_delayed = false;
+
+// src/display.c:1490 under_ground() — very restricted display: you can
+// only see yourself. Swallowing has a higher precedence than under ground.
+let underground_delayed = false;
+
+export async function under_ground(mode) {
+    if (game.u?.uswallow)
+        return;
+
+    /* full update */
+    if (mode === 1 || underground_delayed) {
+        await cls();
+        underground_delayed = false;
+
+    /* delayed full update */
+    } else if (mode === 2) {
+        underground_delayed = true;
+        return;
+
+    /* limited update */
+    } else {
+        newsym(game.u.ux, game.u.uy);
+    }
+}
 
 export async function under_water(mode) {
     const u = game.u;
@@ -2827,9 +2852,8 @@ const infravisible = (ptr) => !!(ptr
 
 // include/display.h:117 _canseemon()
 export function canseemon(mon) {
-    if (mon.wormno)
-        (game.unported ||= new Set()).add('display:canseemon:worm_known');
-    return (cansee(mon.mx, mon.my) || see_with_infrared(mon))
+    return (mon.wormno ? worm_known(mon)
+            : (cansee(mon.mx, mon.my) || see_with_infrared(mon)))
            && mon_visible(mon);
 }
 

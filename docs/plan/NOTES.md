@@ -8714,3 +8714,66 @@ before importing jsplay.mjs and the log carries `~drn2(n)=v` entries with
 sites (`__rng_stack_at` prints a stack at one of them); a scratchpad
 probe of the session recorded with NETHACK_RNGLOG_DISP=1 gives the C
 side, and comparing per-step counts found the step in one pass.
+
+## m_detach() is the C's, and mongone() must still finish synchronously (12 Sep)
+
+mondead() and mongone() both go through mon.c:2734 m_detach() now: m_unleash,
+the light source, mon_leaving_level() (unstuck, the map removal, seemimic,
+fill_pit), mhp = 0, wizdeadorgone, the due_to_death arms (nemdead and the
+stinking nemesis, leaddead, an unconditional relobj), thiefdead, shkgone,
+wormgone, MON_ENDGAME_FREE, the MON_DETACH flag and dismount_steed. Two
+JS constraints: create_object() and mk_trap_statue() are synchronous and
+call mongone() without awaiting, so every await on that path is taken only
+when there is work (unstuck only when the hero is stuck to it, fill_pit only
+when a boulder sits on a pit), and mhp/MON_DETACH are set before the one
+unconditional await so the statue template is already detached when the
+caller continues. Deferring them cost five tour sessions a level-creation
+divergence (rndmonst() saw the template still on the map).
+
+## Objects that fall to the next level, and what drops when they are ours (12 Sep)
+
+dokick.c:1400 ship_object() is ported in full (drop_to, the nodrop rn2(3),
+impact_drop, otransit_msg(), the shop stolen_value arms, breaking glass and
+eggs, add_to_migration); it used to return false so nothing ever fell down
+stairs or holes. It is async, so every caller awaits it, including dropx()
+(a non-awaited promise there read as "shipped" and lost every dropped
+object). down_gate() refuses the quest start level before ok_to_quest().
+useupf() charges a shop for an object used up outside the hero's room
+(stolen_value), trapmove() carries the TT_INFLOOR/TT_BURIEDBALL arms, and
+pooleffects() leaves water through set_uinwater() with the docrt() of a
+formerly underwater view.
+
+## The Oracle, the novels and Death's quotes read their data files (12 Sep)
+
+tools/gen-datafiles.mjs now embeds dat/oracles (makedefs' header, count and
+offsets) and dat/tribute. rumors.js carries init_oracles(), outoracle() and
+doconsult() (the minor/major consultation, money2mon, ACH_ORCL, the
+experience bonus) and outrumor()'s BY_ORACLE arm; domonnoise() routes
+MS_ORACLE to doconsult(). js/files.js is new: read_tribute() (the %section
+/%title/%passage scanner with choose_passage()'s reservoir) and
+Death_quote(); study_book() reads a novel through it (literate conduct,
+ACH_NOVL, the 20 xp bonus) and Death's quotes come from the file instead
+of a hand copy. lookup_novel() (do_name.c:1627) resolves wished novel
+titles.
+
+## Smaller arms cleared this round (12 Sep)
+
+under_ground() (display.c) with map_redisplay()'s constrained arms and
+reveal_terrain()'s engulfer glyph; experience() +1000 for an eel's AD_WRAP
+without Amphibious; canseemon() uses worm_known() for long worms;
+welcome()'s dolookaround() for mention_map; wallify_vault() sends an
+unplaceable occupant to limbo and a vault guard shatters boulders in its
+way ("You see a boulder shatter."); select_hwep() prefers a wieldable
+artifact; mon_break_armor() petrifies a rider falling off a cockatrice
+steed; stairs_description() names the Elemental Planes; find_quest_artifact()
+picks goal_next vs goal_alt; priestini()/mk_roamer()/mk_mplayer() move a
+squatter with rloc() (not awaited: those creators are synchronous and the
+RLOC_NOMSG path changes state before any await); mkcorpstat() re-places a
+<0,0> object with rloco(); themerms' melt-ice timers start (TIMER_LEVEL,
+MELT_ICE_AWAY, zap.c melt_ice_away()); a monster on a magic portal takes
+trapeffect_level_telep(); arti_invoke() uses the crystal ball and treats
+an unknown toggled property like the C (no arm); use_misc()'s default is
+the C's impossible(); the u_init role default, themeroom transcription
+gaps and mktrap_victim's candle (begin_burn) follow the C; the dead
+getobj-only command fallback in cmd.js is gone (every key it covered was
+already dispatched to its real command).

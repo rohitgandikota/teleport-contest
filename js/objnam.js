@@ -82,6 +82,7 @@ import { tty_yn_function } from './tty/topl.js';
 import { Blind, Flying, Glib, Levitation } from './youprop.js';
 import { DEADMONSTER } from './monst.js';
 import { impossible } from './pline.js';
+import { lookup_novel } from './do_name.js';
 
 const {
     COIN_CLASS, POTION_CLASS, SCROLL_CLASS, WAND_CLASS, SPBOOK_CLASS,
@@ -3611,9 +3612,12 @@ export async function readobjnam(bp, no_wish) {
 
         /* 3.6 tribute - fix up novel */
         if (d.otmp.otyp === ONAMES.SPE_NOVEL) {
-            /* lookup_novel() and sv.novels are not ported; the name is
-               kept as given */
-            note_unported_objnam('readobjnam:lookup_novel');
+            const idx = { idx: d.otmp.novelidx ?? -1 };
+            const novelname = lookup_novel(d.name, idx);
+            if (novelname != null) {
+                d.otmp.novelidx = idx.idx;
+                d.name = novelname;
+            }
         }
 
         d.otmp = oname(d.otmp, d.name, ONAME_WISH);

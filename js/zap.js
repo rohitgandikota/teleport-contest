@@ -4637,6 +4637,21 @@ export async function melt_ice(x, y, msg = null) {
     }
 }
 
+// src/zap.c:5119 melt_ice_away() — the melt-ice timer callback for the spot
+// packed into the timer's argument.
+export async function melt_ice_away(arg, timeout) {
+    const where = arg;
+    const save_mon_moving = !!game.context?.mon_moving; /* will be False */
+
+    /* melt_ice -> minliquid -> mondead|xkilled shouldn't credit/blame hero */
+    (game.context ||= {}).mon_moving = true; /* hero isn't causing this ice to melt */
+    const y = where & 0xFFFF;
+    const x = (where >> 16) & 0xFFFF;
+    /* melt_ice does newsym when appropriate */
+    await melt_ice(x, y, 'Some ice melts away.');
+    game.context.mon_moving = save_mon_moving;
+}
+
 // src/zap.c:5141 zap_over_floor(); terrain effects of a ray at <x,y>
 export async function zap_over_floor(
     x, y,                /* location */

@@ -38,6 +38,12 @@ import {
     BRCORNER, RLOC_MSG, TLCORNER, TRCORNER,
 } from './const.js';
 import { relobj } from './steal.js';
+import { m_into_limbo } from './mon.js';
+import { fracture_rock } from './zap.js';
+import { simpleonames } from './objnam.js';
+import { an } from './objnam.js';
+import { You_see } from './pline.js';
+import { Blind } from './youprop.js';
 
 
 export function vault_occupied(urooms) {
@@ -194,7 +200,7 @@ async function wallify_vault(guard) {
             if (occupant && occupant !== guard) {
                 const { rloc } = await import('./teleport.js');
                 if (!await rloc(occupant, RLOC_MSG))
-                    (game.unported ||= new Set()).add('vault:wallify_limbo');
+                    await m_into_limbo(occupant);
             }
             if (gold) {
                 move_gold(gold, egd.vroom);
@@ -687,8 +693,24 @@ export async function invault() {
     });
     u.uinvault++;
 
-    if (sobj_at(ONAMES.BOULDER, guard.mx, guard.my))
-        (game.unported ||= new Set()).add('vault:guard_entry_boulder');
+    /* if there are any boulders in the guard's way, destroy them;
+       perhaps the guard knows a touch equivalent of force bolt;
+       otherwise the hero wouldn't be able to push one to follow the
+       guard out of the vault because that guard would be in its way */
+    let otmp;
+    if ((otmp = sobj_at(ONAMES.BOULDER, guard.mx, guard.my)) != null) {
+        const bname = simpleonames(otmp);
+        let bcnt = 0;
+
+        do {
+            ++bcnt;
+            await fracture_rock(otmp);
+            otmp = sobj_at(ONAMES.BOULDER, guard.mx, guard.my);
+        } while (otmp);
+        /* You_hear() will handle Deaf/!Deaf */
+        const func = !Blind() ? You_see : You_hear;
+        await func(`${(bcnt === 1) ? an(bname) : makeplural(bname)} shatter.`);
+    }
 
     if (canspotmon(guard)) {
         await pline(`Suddenly one of the Vault's ${

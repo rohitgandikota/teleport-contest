@@ -98,6 +98,7 @@ import { DEADMONSTER, helpless, MON_WEP } from './monst.js';
 import { canletgo } from './do.js';
 import { def_monsyms } from './drawing_data.js';
 import { genders as genders_tbl } from './role_data.js';
+import { impossible } from './pline.js';
 
 // src/muse.c:1272 — the offensive MUSE_* selection codes.
 const MUSE_WAN_DEATH = 1;
@@ -2429,10 +2430,13 @@ export async function use_misc(mtmp) {
         }
         return 1;
     }
+    case 0:
+        return 0; /* i.e. an exploded wand */
     default:
-        (game.unported ||= new Set()).add(`use_misc:${game.m?.has_misc || 0}`);
-        return game.m?.has_misc ? 2 : 0;
+        impossible(`${Monnam(mtmp)} wanted to perform action ${game.m?.has_misc}?`);
+        break;
     }
+    return 0;
 }
 
 // src/muse.c:1597 mbhitm(), a monster's wand hits a monster (or the hero).

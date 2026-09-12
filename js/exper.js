@@ -14,6 +14,7 @@ import { find_mac } from './worn.js';
 import { Goodbye } from './role.js';
 import { resists_drli } from './mondata.js';
 import { livelog_printf } from './pline.js';
+import { Amphibious } from './youprop.js';
 
 // src/exper.c enermod() — role-based energy multiplier. Only reached above
 // level 0, so not exercised at character creation.
@@ -424,8 +425,8 @@ export function experience(mtmp, nk) {
         /* extra heavy damage bonus */
         if (ptr.mattk[i][3] * ptr.mattk[i][2] > 23)
             tmp += mtmp.m_lev;
-        if (tmp2 === A.AD_WRAP && ptr.mlet === MONSYMS.S_EEL)
-            note_unported_exper('experience:amphibious_eel');
+        if (tmp2 === A.AD_WRAP && ptr.mlet === MONSYMS.S_EEL && !Amphibious())
+            tmp += 1000;
     }
 
     /*  For certain "extra nasty" monsters, give even more */

@@ -584,7 +584,7 @@ export async function flooreffects(obj, x, y, verb) {
             } else {
                 await pline(`${Tobjnam(obj, 'tumble')} into ${the_your[t.madeby_u ? 1 : 0]} pit.`);
             }
-        } else if (ship_object_fn && ship_object_fn(obj, x, y, false)) {
+        } else if (ship_object_fn && await ship_object_fn(obj, x, y, false)) {
             /* ship_object will print an appropriate "the item falls
              * through the hole" message, so no need to do it here. */
             res = true;
@@ -2015,7 +2015,7 @@ export async function dropx(obj) {
         /* src/do.c:298 — ship_object() sends the object down a hole or
            stairs and returns TRUE when it did, in which case dropy() must
            not also place it. */
-        if (ship_object_fn && ship_object_fn(obj, game.u.ux, game.u.uy, false))
+        if (ship_object_fn && await ship_object_fn(obj, game.u.ux, game.u.uy, false))
             return;
         if (IS_ALTAR(game.level.at(game.u.ux, game.u.uy)?.typ))
             await doaltarobj(obj);

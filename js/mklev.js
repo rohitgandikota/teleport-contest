@@ -273,6 +273,8 @@ import { obj_ice_effects } from './mkobj.js';
 import { spot_stop_timers } from './timeout.js';
 import { set_levltyp } from './mkmaze.js';
 import { recalc_block_point } from './vision.js';
+import { begin_burn } from './timeout.js';
+import { impossible } from './pline.js';
 
 
 
@@ -1330,7 +1332,7 @@ async function themerooms_generate(difficulty) {
         };
         break;
     default:
-        note_unported_lev(`themeroom ${pick.name}`); break;
+        impossible(`themeroom ${pick.name} is not transcribed`); break;
     }
 
     rn2(100);
@@ -1396,7 +1398,7 @@ function fill_eligible(fill, rm, difficulty) {
     if (rm != null && fill.eligible) {
         if (fill.eligible === 'return rm.lit == true;') return !!rm.lit;
         if (fill.eligible === 'return rm.lit == false;') return !rm.lit;
-        note_unported_lev(`fill eligible ${fill.name}`);
+        impossible(`themeroom fill ${fill.name}: eligible() not transcribed`);
         return true;
     }
     return true;
@@ -1426,7 +1428,7 @@ function themeroom_fill(rm) {
     if (contents)
         contents(rm);                   /* sp_lev.c:5704, already a Lua table */
     else
-        note_unported_lev(`themeroom_fill ${pick.name}`);
+        impossible(`themeroom_fill ${pick.name} is not transcribed`);
 }
 
 // src/nhlobj.c l_obj_new_readobjnam(), for the four exact names used by the
@@ -3180,7 +3182,7 @@ function mktrap_victim(trap) {
             curse(otmp);
             place_object(otmp, x, y);
             if (!game.level.at(x, y)?.lit)
-                note_unported_lev('mktrap_victim:begin_burn');
+                begin_burn(otmp, false);
         }
         break;
     default: victim_mnum = PMNAMES.PM_HUMAN; break;

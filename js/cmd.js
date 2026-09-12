@@ -1081,32 +1081,6 @@ export const takeoff_ok = (o) => equip_ok(o, true,  false);
    is offered. A missing filter offers the WHOLE inventory, which is what
    js/cmd.js used to do by passing null.
 
-   'q', 'r' and 'd' carry their real filters. 'w' is dispatched to dowield()
-   and no longer routes through here. */
-const GETOBJ_CMD = {
-    q: { word: 'drink',   ok: drink_ok, flags: GETOBJ_NOFLAGS },
-    r: { word: 'read',    ok: read_ok,  flags: GETOBJ_PROMPT },
-    W: { word: 'wear',    ok: wear_ok,   flags: GETOBJ_NOFLAGS },
-    P: { word: 'put on',  ok: puton_ok,  flags: GETOBJ_NOFLAGS },
-    R: { word: 'remove',  ok: remove_ok, flags: GETOBJ_NOFLAGS },
-    d: { word: 'drop',    ok: any_obj_ok, flags: GETOBJ_NOFLAGS },
-};
-
-/* The commands whose first act is getobj() and which read nothing further.
-   Their effects need the use/wear/drop subsystems; what is ported is the
-   object prompt, because that is what decides where the next keystroke goes. */
-async function docmd_getobj(ch) {
-    const spec = GETOBJ_CMD[ch];
-    const obj = await getobj(spec ? spec.word : ch,
-                            spec ? spec.ok : null,
-                            spec ? spec.flags : 0);
-
-    if (!obj)
-        return ECMD_OK;   /* Never mind */
-
-    note_unported_cmd(`cmd:${ch}`);
-    return ECMD_TIME;
-}
 /* dofire() lives in js/dothrow.js, its C home (src/dothrow.c:469), with the
    fireassist launcher-wielding chain. The local stub that only reached
    getdir() was replaced when the command queue landed. */
@@ -1646,7 +1620,7 @@ async function lookaround_known_room(x, y) {
 
 // src/cmd.c:1310 dolookaround() — the #lookaround command: describe the
 // room and every interesting map location in view.
-async function dolookaround() {
+export async function dolookaround() {
     let x, y;
     const tmp_getloc_filter = game.iflags?.getloc_filter ?? GFILTER_NONE;
     const a11y = (game.a11y ||= {});
@@ -2954,8 +2928,6 @@ export async function rhack(key) {
         else if (ch === 'w')
             // src/cmd.c cmdlist — 'w' is dowield.
             game.context.move = ((await dowield()) === ECMD_TIME ? 1 : 0);
-        else
-            game.context.move = (await docmd_getobj(ch) === ECMD_TIME ? 1 : 0);
     } else if (ch === '.') {
         // src/cmd.c:1930 — '.' is "wait", donull. cmd_safety_prevention
         // (flags.safe_wait, default On) refuses the rest next to a spottable

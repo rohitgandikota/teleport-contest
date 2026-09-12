@@ -110,6 +110,7 @@ import { obj_merge_light_sources } from './light.js';
 import { def_char_to_objclass } from './sp_lev.js';
 import { cxname_singular } from './objnam.js';
 import { greatest_erosion } from './do_wear.js';
+import { stolen_value } from './shk.js';
 
 // src/invent.c:70 inuse_classify()
 function inuse_classify(sort_item, obj) {
@@ -1973,7 +1974,7 @@ export async function useupf(obj, numused) {
         if (rooms && (game.u.urooms || '').includes(rooms[0]))
             await addtobill(otmp, false, false, false);
         else
-            (game.unported ||= new Set()).add('useupf:stolen_value');
+            await stolen_value(otmp, otmp.ox, otmp.oy, false, false);
     }
     delobj(otmp);
     if (otmp.where === OBJ_FREE)

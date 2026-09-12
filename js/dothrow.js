@@ -652,7 +652,7 @@ export async function hitfloor(obj, verbosely) {
     }
     if (await hero_breaks(obj, u.ux, u.uy, BRK_FROM_INV))
         return;
-    if (ship_object(obj, u.ux, u.uy, false))
+    if (await ship_object(obj, u.ux, u.uy, false))
         return;
     await dropz(obj, true);
 }
@@ -935,7 +935,7 @@ export async function throwit(obj, wep_mask, twoweap = false,
         return;
     }
     await snuff_candle(obj);
-    if (!mon && ship_object(obj, bx, by, false)) {
+    if (!mon && await ship_object(obj, bx, by, false)) {
         throwit_return(true);
         return;
     }

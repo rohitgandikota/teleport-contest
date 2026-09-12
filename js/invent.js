@@ -50,7 +50,7 @@ import { delobj, t_at, is_pool, is_lava } from './mon.js';
 import { addtobill, costly_spot, doname_with_price, obfree_bill, same_price,
          shop_keeper, inside_shop, inhishop, unpaid_cost, doinvbill } from './shk.js';
 import { ONAME, has_oname, ONAME_SKIP_INVUPD } from './const.js';
-import { u_at, CMDQ_KEY, CMDQ_INT, CQ_CANNED, CQ_REPEAT, FOUNTAIN, THRONE, SINK, GRAVE, ALTAR, TREE,
+import { u_at, CMDQ_KEY, CMDQ_INT, CMDQ_USER_INPUT, CQ_CANNED, CQ_REPEAT, FOUNTAIN, THRONE, SINK, GRAVE, ALTAR, TREE,
          ICE, DRAWBRIDGE_DOWN, IRONBARS, Never_mind, LOST_NONE, LOST_THROWN, LOST_EXPLODING, LOOKHERE_PICKED_SOME, LOOKHERE_SKIP_DFEATURE, IS_DOOR, D_NODOOR, D_ISOPEN, D_BROKEN,
          AM_SANCTUM, AM_SHRINE, Amask2align, A_NONE, A_LAWFUL,
          A_NEUTRAL, A_CHAOTIC, OBJ_DELETED } from './const.js';
@@ -1717,6 +1717,10 @@ export async function getobj(word, obj_ok_func, ctrlflags) {
     for (;;) {   /* need_more_cq: */
         const cmdq = cmdq_pop();
         if (!cmdq)
+            break;
+        /* src/invent.c:1785 — a CMDQ_USER_INPUT placeholder leaves the
+           choice to the prompt below; anything else has to be a key */
+        if (cmdq.typ === CMDQ_USER_INPUT)
             break;
         let otmp = null;
         if (cmdq.typ === CMDQ_KEY) {

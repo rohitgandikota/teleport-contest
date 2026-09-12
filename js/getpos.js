@@ -194,7 +194,7 @@ function curs_map(x, y) {
 // src/getpos.c:640 auto_describe() — describe what the cursor sits on, on
 // the top line, with no --More-- (the key that moved the cursor has already
 // acknowledged the previous line).
-async function auto_describe(cx, cy) {
+export async function auto_describe(cx, cy) {
     const cc = { x: cx, y: cy };
     const res = do_screen_description(cc, true, 0);
     if (res.found) {

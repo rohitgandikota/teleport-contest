@@ -8328,3 +8328,13 @@ The note_unported list in the same round:
   in_moveloop and suppress_map_output() gates, the suppress_price
   bracket, and tty_update_inventory(), which does nothing because the
   reference build has no TTY_PERM_INVENT.
+
+## A C `char` of '\0' is false; the JS string '\0' is true (12 Sep)
+
+`here_cmd_menu()` returns '\0' and `doherecmdmenu()` tests
+`(ch && ch != '\033')`. Ported literally with strings, '\0' is a non-empty
+string, so the test passed and #herecmdmenu cost a turn on ESC: seed0108
+step 281 showed the kitten one square on from the C. Every port of a
+`char`-returning function whose result the C tests for truth needs an
+explicit `ch !== '\0'`. The same class as the truthy-Promise entries above:
+grep for `'\0'` in a boolean position before trusting a char-returning port.

@@ -778,10 +778,18 @@ Eighty-first round (12 Sep): music.c in full (NOTES "music.c is ported
 in full"); two instrument probes match. Public 44/44, broad tally
 unchanged, hang gate OK.
 
-Next: the extended-command names that still fall through execute_extcmd
-(#moveeast &c, #fight/#run/#rush, #up/#down, #pickup, #prevmsg, #?, and
-the debug listings), then plselect, dopay's itemized bill and the
-options/symbols handlers. The mapped-monster display class (s102-21, s102-36) needs the C's
+Eighty-second round (12 Sep): the movement, prefix, up/down, pickup,
+prevmsg and help extended-command names dispatch like the C, with
+do_fight/do_run/do_rush in C form, one prefix-rejection check, the
+getlin toplines/suppress_history handling and tty_doprev_message in all
+four modes (NOTES "Extended-command names run through the C's prefix
+and movement machinery"). A 172-screen C probe matches. Public 44/44,
+broad tally unchanged, hang gate OK.
+
+Next: the debug listing extended commands (wizborn, timeout, vision,
+wmode, stats, lightsources, migratemons, wizseenv, ...), dopay's
+itemized bill in C form (make_itemized_bill/pay_billed_items/dopayobj/
+buy_container), plselect and the options/symbols handlers. The mapped-monster display class (s102-21, s102-36) needs the C's
 redraw path found; the probes so far are in NOTES.
 tools/jsplay.mjs has `--aeval "<await expr>"` (game, dungeon, C, symbols,
 h in scope; `await import('file:///.../js/x.js')` reaches any module) for

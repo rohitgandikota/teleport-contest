@@ -8863,3 +8863,32 @@ before awaken_monsters(); the drum-of-earthquake-with-no-charges riff
 wished and played; a fire-horn ray east and a frost-horn self-zap that
 kills the hero into the wizard-mode "Die?" prompt) match all 266
 screens; seed0002 (the public drummer) is unchanged.
+
+## Extended-command names run through the C's prefix and movement machinery (12 Sep)
+
+rhack() executes the command bound to a key and, for '#', the command
+doextcmd() reports through ext_tlist; a PREFIXCMD result makes rhack wait
+for the next key and a MOVEMENTCMD result walks or rushes at once. Ours
+now does the same for `#moveeast` &c (the move_funcs entry by name),
+`#fight`/`#run`/`#rush`/`#reqmenu` (do_fight()/do_run()/do_rush() are
+ported in C form and the key arms call them too), `#up`/`#down`,
+`#pickup`, `#prevmsg`, `#?` (doextlist) and `##`. The three prefix
+rejection blocks are one C-form check: `prefix_seen && !(flags &
+PREFIXCMD) && !(flags & (was_m_prefix ? CMD_M_PREFIX : CMD_gGF_PREFIX))`
+with the message keyed on the prefix that was seen (game._prefix_seen)
+and reset_cmd_vars(TRUE) afterwards. A C quirk is preserved: after
+`#reqmenu` the C's func is doextcmd, not do_reqmenu, so was_m_prefix
+stays false and a following non-movement command gets "The 'm' prefix
+should be followed by a movement command." rather than the "does not
+accept 'm' prefix" line. CMD_gGF_PREFIX (func_tab.h 0x0100) is in
+const.js now.
+
+The extended-command prompt is history-suppressed: hooked_tty_getlin()
+keeps gt.toplines = "<query> <answer>" while reading (so ^P recalls a
+plain getlin's prompt and answer) and clears it when suppress_history is
+set (tty_get_ext_cmd), and ESC over typed text resets cw->maxcol. ^P
+itself (tty_doprev_message) is ported with all four msg_window modes;
+the single mode repaints even an empty toplines and loops while ^P is
+pressed at its --More-- (dismiss_more/morc). The probe with
+`#prevmsg` right after an extended command shows a blank top line in
+the C, and now here.

@@ -37,6 +37,7 @@ import { Has_contents } from './obj.js';
 import { get_obj_location } from './zap.js';
 import { unpunish } from './read.js';
 import { game } from './gstate.js';
+import { OBJ_ONBILL } from './const.js';
 import { suppress_map_output } from './display.js';
 import { tty_update_inventory } from './tty/wintty.js';
 import { wc_supported } from './options.js';
@@ -2470,6 +2471,14 @@ export function obj_extract_self(obj) {
         break;
     case OBJ_BURIED: {
         const objs = game.level?.buriedobjs;
+        if (objs) {
+            const i = objs.indexOf(obj);
+            if (i >= 0) objs.splice(i, 1);
+        }
+        break;
+    }
+    case OBJ_ONBILL: {  /* src/mkobj.c:2585 extract_nobj(obj, &gb.billobjs) */
+        const objs = game.billobjs;
         if (objs) {
             const i = objs.indexOf(obj);
             if (i >= 0) objs.splice(i, 1);

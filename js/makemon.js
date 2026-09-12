@@ -1166,8 +1166,13 @@ const nonliving_mm = (ptr) =>
     || ptr.mlet === MONSYMS.S_GOLEM
     || ptr.mlet === MONSYMS.S_VORTEX;
 
-export function findgold(minvent) {
-    return (minvent || []).some(o => o.oclass === OCLASSES.COIN_CLASS);
+// src/steal.c:45 findgold() — the first gold stack in a chain (null when
+// there is none); callers that only test it read it as a boolean
+export function findgold(argchain) {
+    for (const chain of (argchain || []))
+        if (chain.otyp === ONAMES.GOLD_PIECE)
+            return chain;
+    return null;
 }
 
 // src/mon.c mkmonmoney()

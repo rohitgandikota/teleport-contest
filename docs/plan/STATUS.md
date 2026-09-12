@@ -786,10 +786,16 @@ four modes (NOTES "Extended-command names run through the C's prefix
 and movement machinery"). A 172-screen C probe matches. Public 44/44,
 broad tally unchanged, hang gate OK.
 
+Eighty-third round (12 Sep): the character-selection prompt and picks
+with partially pinned facets (NOTES "Character selection with partial
+pins"), and the shop bill payment family in C form (NOTES "The shop bill
+is paid the C's way"). Nine C probes match. Public 44/44, broad tally
+unchanged, hang gate OK.
+
 Next: the debug listing extended commands (wizborn, timeout, vision,
-wmode, stats, lightsources, migratemons, wizseenv, ...), dopay's
-itemized bill in C form (make_itemized_bill/pay_billed_items/dopayobj/
-buy_container), plselect and the options/symbols handlers. The mapped-monster display class (s102-21, s102-36) needs the C's
+wmode, lightsources, migratemons, wizseenv, wizmondiff, wizfliplevel,
+wizsmell), then the options handlers (altkeyhandling, cond_) and the
+symbols.js glyph arms. The mapped-monster display class (s102-21, s102-36) needs the C's
 redraw path found; the probes so far are in NOTES.
 tools/jsplay.mjs has `--aeval "<await expr>"` (game, dungeon, C, symbols,
 h in scope; `await import('file:///.../js/x.js')` reaches any module) for

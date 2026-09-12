@@ -4017,6 +4017,50 @@ export function Doname2(obj) {
     return s ? s[0].toUpperCase() + s.slice(1) : s;
 }
 
+// src/objnam.c:2313 paydoname() — doname() for the shop bill: no
+// invent-style price, no wizweight, a container's contents hidden and
+// "your <container>"/"an unpaid <container>" phrasing.
+export function paydoname(obj) {
+    const and_contents = ' and its contents';
+    let p;
+    const save_cknown = obj.cknown;
+    const save_wizweight = game.iflags?.wizweight;
+
+    if (Has_contents(obj))
+        obj.cknown = 0;
+    /* avoid showing item weights to unclutter billing's pay-menu a bit */
+    (game.iflags ||= {}).wizweight = false;
+    /* suppress invent-style price; caller will add billing-style price */
+    game.iflags.suppress_price = (game.iflags.suppress_price | 0) + 1;
+    p = doname(obj); /* doname_base(obj, 0U) */
+    game.iflags.suppress_price--;
+    game.iflags.wizweight = save_wizweight;
+
+    if (Has_contents(obj)) {
+        /* buy_container() sets no_charge for a container that has just
+           been purchased so that when paydoname() is called by
+           shk_names_obj(), we'll provide "a/an <container>" instead of
+           "your <container>" */
+        if (!obj.no_charge) {
+            if (p.startsWith('a '))
+                p = p.slice(2);
+            else if (p.startsWith('an '))
+                p = p.slice(3);
+            p = (obj.unpaid ? 'an unpaid ' : 'your ') + p; /* strprepend */
+        }
+
+        if (!obj.cknown) {
+            if (obj.unpaid) {
+                p += and_contents;
+            } else {
+                p = 'the contents of ' + p; /* strprepend */
+            }
+        }
+    }
+    obj.cknown = save_cknown;
+    return p;
+}
+
 // src/objnam.c:2391 ysimple_name(), "your <simple name>" (or "the", or the
 // owner's).
 export function ysimple_name(obj) {

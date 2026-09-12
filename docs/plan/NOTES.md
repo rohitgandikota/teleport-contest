@@ -8892,3 +8892,41 @@ the single mode repaints even an empty toplines and loops while ^P is
 pressed at its --More-- (dismiss_more/morc). The probe with
 `#prevmsg` right after an extended command shows a blank top line in
 the C, and now here.
+
+## Character selection with partial pins, and the C's own prompt (12 Sep)
+
+role.c build_plselection_prompt()/root_plselection_prompt()/promptsep()
+are ported in role.js with the gr.role_pa[]/role_post_attribs state
+(game.role_pa/game.role_post_attribs), plus validrole()/validrace()/
+validgend()/validalign(), race_alignmentcount(), role_gendercount() and
+randrace()/randgend()/randalign(); hacklib trimspaces() is new. Seven C
+probes pinning one or two facets ("Shall I pick your Valkyrie's race and
+alignment for you?", "...your human Priest/Priestess's gender and
+alignment...", "...a chaotic character's race, role and gender...")
+match. Two bugs came with them: the 'y'/'a' answer re-rolled facets the
+rc had pinned (the C picks only a facet that is still ROLE_NONE, printing
+"Incompatible role!" and using randrole()/randrace()/... when pick_*()
+fails), and the prompt's cursor: yn_function() paints "<prompt> " through
+the top line, which wraps at column 79, so a 79-column prompt parks the
+cursor at row 1 column 1; plselect's yn_prompt() now wraps the same way.
+
+## The shop bill is paid the C's way (12 Sep)
+
+shk.c's payment family is ported in C form: make_itemized_bill() (the
+ibill[] entries with the FullyUsedUp..UndisclosedContainer status and
+sortbill_cmp()), cheapest_item(), menu_pick_pay_items() (add_menu_heading
+for "Used up item(s):"/"Unpaid item(s):"), dopay(), pay_billed_items()
+(menustyle:traditional's "Itemized billing? [ynq m]" and the 'm' prefix
+inversion), update_bill() (the last bill_p[] entry moves into the paid
+slot), dopayobj(), buy_container(), reject_purchase(),
+insufficient_funds(), shk_names_obj() (the "Scroll labeled FOO; you bought
+it for 20 gold pieces." form when the purchase identifies the item) and
+pay(); paydoname() lives in objnam.js; money2mon() is the C's (findgold
+from steal.c now returns the gold object as the C does, which the
+leprechaun and vault-guard code also relied on); obj_extract_self() takes
+an OBJ_ONBILL object off billobjs. The "nods appreciatively" line for a
+deaf hero uses noit_mhis(shkp) rather than "the". Two C probes in a
+delicatessen (a used-up unpaid ration paid through the menu, the itemized
+"A tin for 5 zorkmids.  Pay?" path, no gold, too little gold for the
+potion, and 'm p' turning the menu into the ynq prompt) match every
+screen.

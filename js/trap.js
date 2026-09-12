@@ -5718,6 +5718,17 @@ export async function launch_obj(otyp, x1, y1, x2, y2, style) {
                         { obj: singleobj }, null);
         }
 
+        if (style === ROLL) {
+            const { down_gate, ship_object } = await import('./dokick.js');
+            if (down_gate(x, y) !== -1) {
+                if (await ship_object(singleobj, x, y, false)) {
+                    used_up = true;
+                    launch_drop_spot(null, 0, 0);
+                    break;
+                }
+            }
+        }
+
         if (rolling) {
             const floorfx = await import('./do.js');
             if (await floorfx.flooreffects(singleobj, x, y, 'fall')) {

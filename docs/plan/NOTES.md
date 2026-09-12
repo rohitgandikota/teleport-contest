@@ -9143,3 +9143,36 @@ and on our side run jsplay with `globalThis.__rng_log_disp = 1` plus
 display draw. s110-12 still misses at step 247: the C draws a hallucinated
 object glyph (rn2(463)) between u_calc_moveamt() and see_monsters() where
 ours draws a monster glyph as the first of see_monsters(); not yet traced.
+
+## The once-per-input redraw condition (12 Sep)
+
+moveloop_core()'s "redo monsters" block (allmain.c:455) redraws sensed
+monsters when the hero has Unblind_telepat, Warning, Warn_of_mon or
+any_visible_region() (region.c:660) is true; the port tested Warning
+alone and `u.ublind` instead of Blind. youprop.js gained Unblind_telepat
+(ETelepat only) and region.js any_visible_region().
+
+## Tour seed 111, and the wakizashi marker solved (12 Sep)
+
+36/40 recorded (s111-08 and s111-32 are ^X nighttime, clock class):
+
+- s111-16: a rolling boulder (launch_obj, trap.c:3423) passing over a
+  hole, trap door or staircase goes through ship_object() first, whose
+  nodrop roll is rn2(3); the port only had the flooreffects() call.
+- s111-39: strange_feeling()'s "You have a strange feeling for a moment,
+  then it passes." depends on flags.beginner, which u_init() sets TRUE
+  (u_init.c:950) and newexplevel() clears at 2000 (Wizard 1000) score
+  points (exper.c:201). The port never set it, so every early-game
+  strange_feeling() gave the specific text ("Your hands twitch."). Also
+  getlev()'s catchup elapsed time is moves minus the level's saved
+  timestamp (restore.c:1111, `_saved_omoves` on the level record), not
+  each monster's mlstmv.
+- s109-04 (from seed 109): display_pickinv() calls sortloot() over the
+  whole inventory before filtering by the offered letters
+  (invent.c:3207), and with sortpack on the sort's loot_classify()
+  observes every carried object (invent.c:171). A `?` inventory menu
+  inside any getobj prompt therefore marks the Samurai's starting
+  wakizashi "encountered" for the discoveries list. The port's
+  display_pickinv_entries() filtered first; it now sorts first, as the
+  C does. Found by bisecting C recordings of the recipe prefix plus
+  `\` until the marker flipped.

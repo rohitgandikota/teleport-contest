@@ -1116,6 +1116,8 @@ export async function goto_level(newlevel, at_stairs, falling, portal) {
     if (game.level) {
         for (const mtmp of game.level.monsters || [])
             mtmp.mlstmv = game.moves;
+        /* src/save.c:515 — svm.moves is read back into svo.omoves */
+        game.level._saved_omoves = game.moves;
         /* src/save.c:553 save_track() — the hero's track is saved WITH
            the level and cleared (track.c:88); getlev's rest_track()
            restores it on a return visit. Trackers (jackals, pets) read
@@ -1253,10 +1255,11 @@ export async function goto_level(newlevel, at_stairs, falling, portal) {
         const { DEADMONSTER } = await import('./monst.js');
         const { mon_catchup_elapsed_time } = await import('./dog.js');
         const { restore_cham, hide_monst } = await import('./mon.js');
+        /* src/restore.c:1111 elapsed = (svm.moves - svo.omoves) */
+        const elapsed = game.moves - (game.level._saved_omoves ?? game.moves);
         for (const mtmp of game.level.monsters || []) {
             if (DEADMONSTER(mtmp))
                 continue;
-            const elapsed = game.moves - (mtmp.mlstmv ?? game.moves);
             /* ghostly (bones) monsters go through the peacefulness reset
                instead; a reloaded live level takes the elapsed arm */
             if (elapsed > 0)

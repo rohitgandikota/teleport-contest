@@ -83,7 +83,8 @@ import {
     see_traps, swallowed, newsym,
     TOPLINE_EMPTY,
 } from './display.js';
-import { Glib, Hallucination, Teleportation, Underwater } from './youprop.js';
+import { Glib, Hallucination, Teleportation, Underwater, Blind, Unblind_telepat,
+         Warning, Warn_of_mon } from './youprop.js';
 import { vision_recalc, vision_reset, init_vision_globals } from './vision.js';
 import { init_objects } from './o_init.js';
 import { init_dungeons } from './dungeon.js';
@@ -117,7 +118,7 @@ import { m_everyturn_effect } from './monmove.js';
 import { u_wipe_engr } from './engrave.js';
 import { dosounds } from './sounds.js';
 import { dosearch0, warnreveal } from './detect.js';
-import { run_regions } from './region.js';
+import { run_regions, any_visible_region } from './region.js';
 import { nh_timeout, do_storms } from './timeout.js';
 import { age_spells } from './spell.js';
 import { gethungry } from './eat.js';
@@ -1022,15 +1023,20 @@ export async function moveloop_core() {
     find_ac();
 
     // Vision + display
-    const Warning = !!(g.u.uprops?.WARNING || g.u.intrinsic?.HWarning);
-    if (!g.context.mv || g.u.ublind) {
-        if (Hallucination()) {
+    if (!g.context.mv || Blind()) {
+        /* redo monsters if hallu or wearing a helm of telepathy */
+        if (Hallucination()) { /* update screen randomly */
             see_monsters();
             see_objects();
             see_traps();
             if (g.u.uswallow)
                 await swallowed(0);
-        } else if (Warning) {
+        } else if (Unblind_telepat() || Warning() || Warn_of_mon()
+                   /* this is needed for the case where you saw a monster
+                      due to being next to it while it's in a gas cloud
+                      and then you moved away; it should no longer be seen
+                      when that happens, even if it hasn't moved */
+                   || any_visible_region()) { /* TODO: optimize this */
             see_monsters();
         }
         /* src/allmain.c:470. During an uninterrupted run, defer this until

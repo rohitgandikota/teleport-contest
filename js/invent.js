@@ -1073,32 +1073,47 @@ export function display_pickinv_entries(allowed_choices = null, want_reply = fal
     const out = [];
     const wizid = game.wizard && game.iflags?.override_ID;
     const sortpack = game.flags.sortpack !== false;
+
+    /* src/invent.c:3176 — the whole inventory is sorted first; with
+       sortpack on, sortloot_cmp()'s loot_classify() observes every carried
+       object (invent.c:171) whether or not the menu then lists it */
+    let sortflags = (game.flags.sortloot === 'f') ? SORTLOOT_LOOT : SORTLOOT_INVLET;
+    if (sortpack)
+        sortflags |= SORTLOOT_PACK;
+    const sortedinvent = sortloot(game.invent || [], sortflags, false, null);
+
     for (const oclass of sortpack ? [...inv_order(), OCLASSES.VENOM_CLASS] : [0]) {
-        const items = (game.invent || []).filter(
-            o => (!sortpack || o.oclass === oclass)
-                 && (!allowed_choices || allowed_choices.includes(o.invlet))
-                 && (!wizid || not_fully_identified(o)));
-        if (!items.length) continue;
-        /* add_menu_heading(win, class_header) — iflags.menu_headings style,
-           and src/windows.c:1822 suppresses the highlighting during
-           end-of-game disclosure */
-        if (sortpack)
-            out.push({ heading: true,
-                       str: let_to_name(oclass, false,
-                           want_reply && game.iflags.menu_head_objsym),
-                       attr: game.program_state_gameover ? ATR_NONE
-                             : (game.iflags?.menu_headings?.attr ?? ATR_INVERSE) });
-        for (const o of items) {
-            /* src/invent.c:1039 — displaying the item observes its type */
-            if (!Blind())
-                observe_object(o);
-            /* src/invent.c:3320. obj_to_glyph() precedes doname(), even when
-               the tty window never renders the supplied glyph. */
-            const glyphinfo = temporary_object_glyph(o);
-            out.push({ heading: false, str: doname(o), attr: ATR_NONE,
-                       invlet: o.invlet, glyphinfo });
+        /* nextclass: */
+        let classcount = 0;
+        for (const srtinv of sortedinvent) {
+            const otmp = srtinv.obj;
+            if (!otmp)
+                break;
+            if (allowed_choices && !allowed_choices.includes(otmp.invlet))
+                continue;
+            if (!sortpack || otmp.oclass === oclass) {
+                if (wizid && !not_fully_identified(otmp))
+                    continue;
+                if (sortpack && !classcount) {
+                    /* add_menu_heading(win, class_header) — iflags.menu_headings
+                       style, and src/windows.c:1822 suppresses the highlighting
+                       during end-of-game disclosure */
+                    out.push({ heading: true,
+                               str: let_to_name(oclass, false,
+                                   want_reply && game.iflags.menu_head_objsym),
+                               attr: game.program_state_gameover ? ATR_NONE
+                                     : (game.iflags?.menu_headings?.attr ?? ATR_INVERSE) });
+                    classcount++;
+                }
+                /* src/invent.c:3320. obj_to_glyph() precedes doname(), even when
+                   the tty window never renders the supplied glyph. */
+                const glyphinfo = temporary_object_glyph(otmp);
+                out.push({ heading: false, str: doname(otmp), attr: ATR_NONE,
+                           invlet: otmp.invlet, glyphinfo });
+            }
         }
     }
+    unsortloot(sortedinvent);
     return out;
 }
 

@@ -834,9 +834,13 @@ see_monsters(), Sting_effects() and the glow helpers, learn_unseen_invent(),
 maybe_lvltport_feedback(); see_monsters() counts warned monsters (NOTES
 "Blindness toggles redraw sensed monsters"). Public 44/44.
 
-Next: tour seed 111, the s110-12 step-247 hallucinated object glyph, the
-s109-04 wakizashi "encountered" marker, the symbols.js glyph arms and the
-remaining debug commands. The mapped-monster display class (s102-21, s102-36) needs the C's
+Ninetieth round (12 Sep): tour seed 111 (NOTES "Tour seed 111"): the
+rolling-boulder ship_object() arm, flags.beginner, getlev's level
+timestamp, and display_pickinv()'s whole-inventory sortloot() (which also
+closed s109-04). 38/40 after the fixes. Public 44/44.
+
+Next: tour seed 112, the s110-12 step-247 hallucinated object glyph, the
+symbols.js glyph arms and the remaining debug commands. The mapped-monster display class (s102-21, s102-36) needs the C's
 redraw path found; the probes so far are in NOTES.
 tools/jsplay.mjs has `--aeval "<await expr>"` (game, dungeon, C, symbols,
 h in scope; `await import('file:///.../js/x.js')` reaches any module) for

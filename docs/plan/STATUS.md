@@ -808,8 +808,22 @@ probes (hitpointbar, statuslines:3, statushilites rules, overflow
 shrinking) match. Tour seed 107 is 39/40 (clock). Public 44/44, broad
 tally unchanged, hang gate OK.
 
-Next: tour seed 108 (38/40: s108-02 distfleeck, s108-16 dog_move), then
-the symbols.js glyph arms and the remaining debug commands. The mapped-monster display class (s102-21, s102-36) needs the C's
+Eighty-sixth round (12 Sep): tour seed 108 is 40/40 (NOTES "Tour seed
+108"): every wake_nearto() call is awaited, the one-line stubs
+(is_quest_artifact in dog.js, dmgval's predicates, is_poisonable's
+permapoisoned, healup's Upolyd arm, shk.js holetime, show_direction_keys)
+are the real functions, and quest_stat_check()/nemesis_speaks() are
+ported and wired into dochug(). Public 44/44.
+
+Eighty-seventh round (12 Sep): the un-awaited async call audit
+(tools/unawaited.mjs; 59 awaits added, meatmetal/untwoweapon async) and
+tour seed 109 (NOTES "Un-awaited async calls, and tour seed 109"):
+obj_delivery() ported and wired, attack_checks' hider arms, the
+flash_hits_mon --More--, u_on_newpos() consolidated (ux0 reset on level
+change), water_turbulence(), print_dungeon's portal tail. Public 44/44.
+
+Next: tour seed 110, the s109-04 wakizashi "encountered" marker, the
+symbols.js glyph arms and the remaining debug commands. The mapped-monster display class (s102-21, s102-36) needs the C's
 redraw path found; the probes so far are in NOTES.
 tools/jsplay.mjs has `--aeval "<await expr>"` (game, dungeon, C, symbols,
 h in scope; `await import('file:///.../js/x.js')` reaches any module) for

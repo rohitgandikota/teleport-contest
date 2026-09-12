@@ -51,6 +51,7 @@ import { may_dig, in_rooms } from './hack.js';
 import { stairway_find_dir, somexy } from './mklev.js';
 import { is_metallic, OBJ_FLOOR } from './obj.js';
 import { obj_resists } from './zap.js';
+import { is_quest_artifact } from './questpgr.js';
 import { newsym, canspotmon, mon_visible, pline, canseemon } from './display.js';
 import { splitobj, peek_at_iced_corpse_age, place_object } from './mkobj.js';
 import { yelp, growl, whimper, beg } from './sounds.js';
@@ -724,10 +725,6 @@ export async function tamedog(mtmp, obj, givemsg) {
     }
     return true;
 }
-
-/* src/artifact.c is not ported; no session generates a quest artifact this
-   early, and the call draws nothing either way. */
-function is_quest_artifact(obj) { return false; }
 
 /* include/monst.h:277 resists_poison(). This read mon.data.mresists, but our
    monsters carry mnum indexing game.mons rather than a data pointer, so it

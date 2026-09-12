@@ -751,10 +751,6 @@ function mon_would_consume_item(mtmp, otmp) {
     return false;
 }
 
-/* in_rooms(SHOPBASE) needs the shop subsystem; no shop exists on a level
-   before it lands. */
-function in_shop(x, y) { return false; }
-
 // src/monmove.c:76 mon_track_add() — push a coordinate onto the monster's
 // memory of where it has just been. m_move() consults it to avoid pacing back
 // and forth, so the contents decide the modulus of an rn2 in the position loop.
@@ -779,12 +775,9 @@ export function monnear(mon, x, y) {
     return distance < 3;
 }
 
-// src/monmove.c onscary() — is this square one the monster refuses to stand on?
-//
-// Draws nothing, but it is what turns *scared on, and a scared monster spends
-// an rnd() in monflee(). The engraving and scare-monster-scroll branches need
-// subsystems that are not ported, so they are recorded rather than guessed:
-// answering TRUE there would invent a flee (and a draw) that C did not make.
+// src/monmove.c onscary() — is this square one the monster refuses to stand
+// on? Draws nothing, but it is what turns *scared on, and a scared monster
+// spends an rnd() in monflee().
 // src/monmove.c:133 m_can_break_boulder() — may this monster smash a boulder
 // out of its way? Riders always can; shopkeepers, priests and quest leaders
 // can while their special attack is off cooldown.
@@ -1397,22 +1390,31 @@ export async function dochug(mtmp) {
         && (m_canseeu(mtmp) || mtmp.mhp < mtmp.mhpmax))
         mtmp.mstrategy &= ~STRAT_WAITFORU;
 
+    /* update quest status flags */
+    {
+        const { quest_stat_check } = await import('./quest.js');
+        quest_stat_check(mtmp);
+    }
+
     /* src/monmove.c:717 — frozen or strategically waiting monsters do
        nothing at all this turn (BEFORE the sleep/disturb check). */
     if (!(mtmp.mcanmove ?? 1) || (mtmp.mstrategy & STRAT_WAITMASK)) {
+        if (Hallucination())
+            newsym(mtmp.mx, mtmp.my);
         if (mtmp.mcanmove && (mtmp.mstrategy & STRAT_CLOSE)
             && !mtmp.msleeping && monnear(mtmp, game.u.ux, game.u.uy)) {
             const { quest_talk } = await import('./quest.js');
-            await quest_talk(mtmp);
+            await quest_talk(mtmp); /* give the leaders a chance to speak */
         }
-        return 0;
+        return 0;             /* other frozen monsters can't do anything */
     }
 
-    /* src/monmove.c:727 — a sleeping monster still gets a chance to be woken,
-       and disturb() DRAWS on the way. Returning early here skipped both the
-       draws and the monster's whole turn when it did wake. */
-    if (mtmp.msleeping && !(await disturb(mtmp)))
+    /* there is a chance we will wake it */
+    if (mtmp.msleeping && !(await disturb(mtmp))) {
+        if (Hallucination())
+            newsym(mtmp.mx, mtmp.my);
         return 0;
+    }
 
     /* src/monmove.c:732: active monsters scuff any engraving beneath them
        before status recovery or teleport checks. */
@@ -2411,7 +2413,7 @@ async function postmov(mtmp, ptr, omx, omy, mmoved, seenflgs, can_tunnel) {
         if (OBJ_AT(mtmp.mx, mtmp.my) && mtmp.mcanmove) {
             /* Maybe a rock mole just ate some metal object */
             if (metallivorous(ptr)) {
-                if (meatmetal(mtmp) === 2)
+                if (await meatmetal(mtmp) === 2)
                     return MMOVE_DIED; /* it died */
             }
 

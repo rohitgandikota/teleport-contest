@@ -8999,3 +8999,90 @@ orange+bold at critically low HP. The judge's decoder keeps inverse,
 bold and underline and the sixteen colours but drops dim, italic and
 blink, and a run of five or more spaces is stored as plain cells;
 tty_putstatusfield() paints such runs plain.
+
+## Tour seed 108: an un-awaited wake, a stub that hid the quest artifact, and the nemesis' battle flag (12 Sep)
+
+Three port bugs that no public session reaches:
+
+- `wake_nearto()` was called without `await` in cuss(), domonnoise()
+  (trumpet, werecreature howl, giant boast), light_hits_gremlin(),
+  flash_hits_mon() and were_change(). wake_nearto_core() awaits wake_msg()
+  BEFORE clearing msleeping, so an un-awaited call woke nobody before the
+  next monster's dochug ran: a demon's cuss (wizard.c:882) left its
+  sleeping neighbours asleep and disturb() drew rn2(7) for each where the
+  C drew distfleeck's rn2(5). Any async C void function that mutates
+  state must be awaited; grep for `^\s*name(` without `await` when a
+  wake or flee goes missing.
+- js/dog.js carried `function is_quest_artifact(obj) { return false; }`
+  from before artifact.c existed. dogfood() draws obj_resists' rn2(100)
+  only when the object is NOT the quest artifact (dog.c:1004
+  short-circuits), so a pet within five squares of the Master Key drew
+  one call too many. The same sweep replaced the other one-line
+  placeholders: monmove.js in_shop (dead), mkobj.js is_poisonable without
+  permapoisoned(), weapon.js dmgval's note_dmgval_unported() stand-ins for
+  shade_glare()/artifact_light()/spec_dbon() (shade_glare is now in
+  artifact.js), potion.js healup() without its Upolyd arm, shk.js's own
+  holetime() keyed on an occupation label (dig.js has the real one), and
+  cmd.js show_direction_keys() reading Cmd.dirchars instead of
+  visctrl(cmd_from_func()). `grep -n "{ return \(false\|0\|null\); }$"
+  js/*.js` and `grep -n "not ported" js/*.js` are the audit; both are
+  clean now except for genuinely absent pieces (coloratt palettes).
+- dochug() never called quest_stat_check() (monmove.c:715), so
+  quest_status.in_battle stayed false and the nemesis adjacent to the hero
+  read nemesis_first instead of `!rn2(5)` discourage (quest.c:420).
+  quest.js now has chat_with_nemesis, nemesis_speaks, chat_with_guardian,
+  prisoner_speaks, quest_chat, quest_talk and quest_stat_check in C form,
+  and dochug has the Hallucination newsym arms of monmove.c:718/728.
+
+## Un-awaited async calls, and tour seed 109 (12 Sep)
+
+`node tools/unawaited.mjs` lists every statement call of an async function
+that lacks `await`, tagged ASYNC (enclosing function is async: add the
+await) or SYNC (enclosing function is synchronous: check the C ordering by
+hand). The ASYNC set was 59 on 12 Sep and is now empty; the 40 SYNC hits
+are creation-time curse() calls, adjattrib() at chargen, impossible(),
+bot() from tty helpers (no awaits inside) and the like, each checked: the
+callee mutates state before its first await, so the deferred tail is only
+a message that cannot be pending in that context. untwoweapon() is async
+now (its You() message); oname() is the one synchronous caller and keeps
+a `void` call. meatmetal() is async and prints its "eats"/"spits out"/
+"crunching sound" messages.
+
+Tour seed 109 (30/40 recorded, 34/40 after the fixes; the rest are the
+recording-clock and ubirthday classes):
+
+- obj_delivery() (dokick.c:1769) was missing: an object kicked or thrown
+  down the stairs waited in migrating_objs forever. It runs before
+  losedogs() on arrival and again (near_hero) after check_special_room(),
+  and its breaktest()/breaks() draw obj_resists' rn2(100) per delivered
+  object (s109-24). add_to_migration() records omigr_from_dnum/dlevel so
+  MIGR_STAIRS_UP lands on the stairs that lead back.
+- attack_checks() (uhitm.c:270) stumbling onto a hider now says "Wait!
+  There's a centipede hiding under a triangular amulet!" (with
+  tp_sensemon/Detect_monsters, Hallucination, Blind and pool arms) where
+  it always said "something there you can't see" and marked an 'I'
+  (s109-11). The mimic arms carry !Protection_from_shape_changers.
+- flash_hits_mon() (uhitm.c:6416) ends with display_nhwindow(WIN_MESSAGE)
+  when the target's square is unlit, which is the --More-- after "The
+  human zombie turns to flee." (s109-05).
+- u_on_newpos() is the one in js/teleport.js everywhere the C calls it
+  (arrival stairs, u_on_sstairs/upstairs/dnstairs, u_collide_m,
+  put_lregion_here, CONS_HERO; js/mklev.js's private copy is gone). The
+  direct `u.ux = x` assignments skipped the level-change reset of
+  u.ux0/u.uy0, so thrwmu()'s URETREATING() compared against the previous
+  level's coordinates and drew rn2(BOLT_LIM - distmin) where the C threw
+  (s109-39).
+- domove_core() has water_turbulence() (hack.c:2365) and the
+  Protection_from_shape_changers clause of the run-into-monster check.
+- print_dungeon()'s tail (dungeon.c:2396): "Invocation position @",
+  "Portal @ (x,y), hero @ (x,y)" or "No portal found." (s109-31).
+
+Open: s109-04's `\` discoveries list shows the Samurai's wakizashi as
+"* wakizashi [short sword]" where the C has it encountered ("  "). Nothing
+in that game names the item (no inventory display), so whatever sets
+oc_encountered for a starting weapon in the C has not been found; every
+observe_object() caller was compared. Clock/ubirthday: s109-09 and s109-34
+(^X nighttime, new moon), s109-19 (midnight undead damage), s109-05 at
+328 and s109-07 (Hawaiian shirt design: o_id ^ ubirthday matches the
+recording's DST-shifted mktime at UTC+4h for a November datetime recorded
+in EDT, which is exactly the unmodelled recording-timezone input).

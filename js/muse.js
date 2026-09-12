@@ -2433,7 +2433,7 @@ export async function use_misc(mtmp) {
     case 0:
         return 0; /* i.e. an exploded wand */
     default:
-        impossible(`${Monnam(mtmp)} wanted to perform action ${game.m?.has_misc}?`);
+        await impossible(`${Monnam(mtmp)} wanted to perform action ${game.m?.has_misc}?`);
         break;
     }
     return 0;

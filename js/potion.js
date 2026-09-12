@@ -205,12 +205,17 @@ export async function healup(nhp, nxtra, curesick, cureblind) {
     const u = game.u;
 
     if (nhp) {
-        /* the Upolyd arm reads u.mh; polyself is not ported */
-        u.uhp += nhp;
-        if (u.uhp > u.uhpmax) {
-            u.uhp = (u.uhpmax += nxtra);
-            if (u.uhpmax > (u.uhppeak || 0))
-                u.uhppeak = u.uhpmax;
+        if (Upolyd(u)) {
+            u.mh += nhp;
+            if (u.mh > u.mhmax)
+                u.mh = (u.mhmax += nxtra);
+        } else {
+            u.uhp += nhp;
+            if (u.uhp > u.uhpmax) {
+                u.uhp = (u.uhpmax += nxtra);
+                if (u.uhpmax > (u.uhppeak || 0))
+                    u.uhppeak = u.uhpmax;
+            }
         }
     }
     if (cureblind) {
@@ -496,7 +501,7 @@ export async function impact_arti_light(obj, worsen, seeit) {
     /* curse() and bless() take care of maybe_adjust_light() */
     otmp = mksobj(ONAMES.POT_WATER, true, false);
     if (worsen)
-        curse(otmp);
+        await curse(otmp);
     else
         bless(otmp);
     await H2Opotion_dip(otmp, obj, seeit, seeit ? Yobjnam2(obj, 'glow') : '');

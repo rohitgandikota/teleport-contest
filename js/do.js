@@ -401,7 +401,7 @@ export async function boulder_hits_pool(obj, x, y, pushing) {
             deltrap(trap);
         }
         const { bury_objs } = await import('./mklev.js');
-        bury_objs(x, y);
+        await bury_objs(x, y);
         newsym(x, y);
 
         if (pushing) {
@@ -553,7 +553,7 @@ export async function flooreffects(obj, x, y, verb) {
             if (game.u.utrap && u_at(x, y))
                 await reset_utrap(false);
         }
-        useupf(obj, 1);
+        await useupf(obj, 1);
         await bury_objs(x, y);
         newsym(x, y);
         res = true;
@@ -1326,8 +1326,8 @@ export async function goto_level(newlevel, at_stairs, falling, portal) {
            the arrival side traversed so known branch stairs turn yellow. */
         const arrival_stair = stairway_find_from(game.u.uz0, false);
         if (arrival_stair) {
-            game.u.ux = arrival_stair.sx;
-            game.u.uy = arrival_stair.sy;
+            const { u_on_newpos } = await import('./teleport.js');
+            u_on_newpos(arrival_stair.sx, arrival_stair.sy);
             arrival_stair.u_traversed = true;
         } else if (up) {
             /* src/do.c — arriving from below lands on the DOWN staircase
@@ -1386,8 +1386,10 @@ export async function goto_level(newlevel, at_stairs, falling, portal) {
     if (game.u.uball)
         await placebc();
 
-    /* C runs ordinary migrating-object delivery here before monster arrivals.
-       Species-targeted loot is delivered through makemon()/mon_arrive(). */
+    {
+        const { obj_delivery } = await import('./dokick.js');
+        await obj_delivery(false);
+    }
     await losedogs();
 
     // src/do.c:1823, expired level timers run after their owners arrive.
@@ -1647,6 +1649,10 @@ export async function goto_level(newlevel, at_stairs, falling, portal) {
     /* src/do.c:1985: deliver one-time room and shop entry messages after
        all level-specific arrival messages, before pickup feedback. */
     await check_special_room(false);
+    {
+        const { obj_delivery } = await import('./dokick.js');
+        await obj_delivery(true);
+    }
 
     /* src/do.c:1989, a trapdoor or hole inflicts impact damage only after
        the new level is drawn and its arrival messages have been handled. */
@@ -1684,8 +1690,8 @@ async function u_collide_m(mtmp, m_at, mnexto) {
                         goodpos)
             || enexto_core(cc, g.u.ux, g.u.uy, g.youmonst?.data, 0, goodpos))
         && next2u(cc.x, cc.y)) {
-        g.u.ux = cc.x; /* u_on_newpos */
-        g.u.uy = cc.y;
+        const { u_on_newpos } = await import('./teleport.js');
+        u_on_newpos(cc.x, cc.y);
     } else {
         await mnexto(mtmp);
     }
@@ -1733,11 +1739,11 @@ async function final_level() {
 
 // src/stairs.c u_on_sstairs(), u_on_upstairs(), u_on_dnstairs().
 async function u_on_sstairs(upflag) {
+    const { u_on_newpos } = await import('./teleport.js');
     for (let stway = game.stairs; stway; stway = stway.next) {
         if (stway.tolev?.dnum !== game.u.uz.dnum
             && !!stway.up !== !!upflag) {
-            game.u.ux = stway.sx;
-            game.u.uy = stway.sy;
+            u_on_newpos(stway.sx, stway.sy);
             return;
         }
     }
@@ -1746,10 +1752,10 @@ async function u_on_sstairs(upflag) {
 }
 
 async function u_on_upstairs() {
+    const { u_on_newpos } = await import('./teleport.js');
     for (let stway = game.stairs; stway; stway = stway.next) {
         if (stway.up) {
-            game.u.ux = stway.sx;
-            game.u.uy = stway.sy;
+            u_on_newpos(stway.sx, stway.sy);
             return;
         }
     }
@@ -1757,10 +1763,10 @@ async function u_on_upstairs() {
 }
 
 async function u_on_dnstairs() {
+    const { u_on_newpos } = await import('./teleport.js');
     for (let stway = game.stairs; stway; stway = stway.next) {
         if (!stway.up) {
-            game.u.ux = stway.sx;
-            game.u.uy = stway.sy;
+            u_on_newpos(stway.sx, stway.sy);
             return;
         }
     }

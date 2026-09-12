@@ -1711,6 +1711,24 @@ export function find_artifact(otmp) {
     }
 }
 
+// src/artifact.c:555 shade_glare() — decide whether this obj is effective
+// when attacking against shades; does not consider the bonus for blessed
+// objects versus undead
+export function shade_glare(obj) {
+    /* any silver object is effective */
+    if (game.objects[obj.otyp].oc_material === MATERIALS.SILVER)
+        return true;
+    /* non-silver artifacts with bonus against undead also are effective */
+    const arti = get_artifact(obj);
+    if (arti !== artifact_records[0] && (arti.spfx & SPFX_DFLAG2)
+        && mtype_value(arti) === MFLAGS.M2_UNDEAD)
+        return true;
+    /* [if there was anything with special bonus against noncorporeals,
+       it would be effective too] */
+    /* otherwise, harmless to shades */
+    return false;
+}
+
 // src/artifact.c:575 restrict_name() — returns TRUE if `name` is restricted
 // for otmp->otyp: it is the name of an artifact of the same type (or of an
 // undiscovered type sharing its description or shuffle range) that is

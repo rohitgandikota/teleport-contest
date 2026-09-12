@@ -26,6 +26,7 @@ import { dmgtype_fromattack } from './mondata.js';
 import { within_bounded_area } from './mkmaze.js';
 import { Is_wiz1_level, Is_wiz2_level, Is_wiz3_level } from './const.js';
 import { game } from './gstate.js';
+import { Is_airlevel, MAGIC_PORTAL } from './const.js';
 import { In_endgame, In_quest, Is_earthlevel, Is_firelevel, Is_waterlevel,
          ROOM, CORR, ICE, SDOOR, ALTAR, GRAVE, TREE, THRONE,
          FOUNTAIN, SINK, IRONBARS, DRAWBRIDGE_DOWN, DRAWBRIDGE_UP, IS_WALL,
@@ -1275,6 +1276,38 @@ export async function print_dungeon(bymenu, out) {
             }
             tty_putstr(win, 0, `   ${br_string(br.type)} to ${
                 game.dungeons[br.end2.dnum].dname}`);
+        }
+    }
+
+    /* I hate searching for the invocation pos while debugging. -dean */
+    if (Invocation_lev(game.u.uz)) {
+        tty_putstr(win, 0, '');
+        tty_putstr(win, 0, `Invocation position @ (${
+            game.invocation_pos?.x ?? 0},${game.invocation_pos?.y ?? 0}), hero @ (${
+            game.u.ux},${game.u.uy})`);
+    } else {
+        /* if current level has a magic portal, report its location;
+           this assumes that there is at most one magic portal on any
+           given level; quest and ft.ludios have pairs (one in main
+           dungeon matched with one in the corresponding branch), the
+           elemental planes have singletons (connection to next plane) */
+        let buf = '';
+        const trap = (game.level?.traps || []).find(t => t.ttyp === MAGIC_PORTAL);
+
+        if (trap)
+            buf = `Portal @ (${trap.tx},${trap.ty}), hero @ (${game.u.ux},${game.u.uy})`;
+
+        /* only report "no portal found" when actually expecting a portal */
+        else if (Is_earthlevel(game.u.uz) || Is_waterlevel(game.u.uz)
+                 || Is_firelevel(game.u.uz) || Is_airlevel(game.u.uz)
+                 || Is_qstart(game.u.uz) || at_dgn_entrance('The Quest')
+                 || Is_knox_level(game.u.uz))
+            buf = 'No portal found.';
+
+        /* only give output if we found a portal or expected one and didn't */
+        if (buf) {
+            tty_putstr(win, 0, '');
+            tty_putstr(win, 0, buf);
         }
     }
 

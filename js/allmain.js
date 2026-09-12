@@ -420,7 +420,7 @@ export async function newgame() {
     // starting inventory. makedog() draws (pet_type plus a whole
     // collect_coords ring shuffle from enexto), so putting it on the wrong
     // side of u_init shifts everything after it.
-    u_on_upstairs();
+    await u_on_upstairs();
     vision_reset();
     await check_special_room(false);
     const at_start = m_at(g.u.ux, g.u.uy);

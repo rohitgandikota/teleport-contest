@@ -1233,7 +1233,7 @@ export async function swallowed(first) {
 
     if (first) {
         await cls();
-        bot();
+        await bot();
     } else {
         for (let y = swallowed_lasty - 1; y <= swallowed_lasty + 1; y++)
             for (let x = swallowed_lastx - 1; x <= swallowed_lastx + 1; x++)

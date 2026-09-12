@@ -754,7 +754,7 @@ export async function set_wear(obj) {
         const o = slotobj(mask);
         if (o && (!obj || obj === o)) {
             if (arm === 'Armor_on')
-                Armor_on();
+                await Armor_on();
             else if (arm === 'Helmet_on' && o.otyp === ONAMES.FEDORA
                      && game.urole?.name?.m === 'Archeologist')
                 change_luck(1);
@@ -1042,7 +1042,7 @@ export async function Amulet_on(amul) {
     let on_msg_done = false;
 
     /* make sure amulet isn't wielded/alt-wielded/quivered, before wearing */
-    remove_worn_item(amul, false);
+    await remove_worn_item(amul, false);
     setworn(amul, W_AMUL);
 
     switch (amul.otyp) {

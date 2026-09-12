@@ -799,10 +799,17 @@ name fix from tour seed 107 (39/40 with the clock case). The options
 handlers are all wired (cond_ through cond_menu(); altkeyhandling is
 Windows-only). Public 44/44, broad tally unchanged, hang gate OK.
 
-Next: the tty status machinery in C form (botl.c bot_via_windowport /
-status_update and wintty.c tty_status_update / render_status /
-check_fields) so statushilites, hitpointbar, statuslines:3 and the
-field shrinking follow the C; then the symbols.js glyph arms. The mapped-monster display class (s102-21, s102-36) needs the C's
+Eighty-fifth round (12 Sep): the status lines are the C's field
+machinery (NOTES "The status lines are the C's field machinery"):
+botl.js/windows.js/tty/wintty.js carry bot_via_windowport, the hilite
+rules, and the tty renderer with a real status window; the deferred
+status patches are gone; Upolyd() is (umonnum != umonster). Eight C
+probes (hitpointbar, statuslines:3, statushilites rules, overflow
+shrinking) match. Tour seed 107 is 39/40 (clock). Public 44/44, broad
+tally unchanged, hang gate OK.
+
+Next: tour seed 108 (38/40: s108-02 distfleeck, s108-16 dog_move), then
+the symbols.js glyph arms and the remaining debug commands. The mapped-monster display class (s102-21, s102-36) needs the C's
 redraw path found; the probes so far are in NOTES.
 tools/jsplay.mjs has `--aeval "<await expr>"` (game, dungeon, C, symbols,
 h in scope; `await import('file:///.../js/x.js')` reaches any module) for

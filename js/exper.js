@@ -209,13 +209,7 @@ export async function losexp(drainer) {
 
     if (u.ulevel > 1) {
         u.ulevel -= 1;
-        /* adjabil() can print an intrinsic-loss message before losexp() has
-           dirtied the status fields for the new level. If that message
-           collides with a full topline, C's blocking frame still shows the
-           prior level and rank. */
-        game._deferred_status_level_until_more = u.ulevel + 1;
         await adjabil(u.ulevel + 1, u.ulevel);
-        delete game._deferred_status_level_until_more;
         livelog_printf(LL_MINORAC, `lost experience level ${u.ulevel + 1}`);
     } else { /* u.ulevel==1 */
         if (drainer) {

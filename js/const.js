@@ -2947,8 +2947,11 @@ export function MGIVENNAME(mtmp) { return mtmp?.mextra?.mgivenname || mtmp?.mgiv
 export function has_mgivenname(mtmp) { return !!(mtmp?.mextra?.mgivenname || mtmp?.mgivenname); }
 
 // C: you.h — #define Upolyd (u.mtimedone != 0)
+// include/you.h:554 Upolyd — (u.umonnum != u.umonster); polyman() calls
+// set_uasmon() after restoring umonnum but before clearing mtimedone, so the
+// timer is not the test
 export function Upolyd(player) {
-    return !!(player && player.mtimedone && player.mtimedone > 0);
+    return !!(player && player.umonnum !== player.umonster);
 }
 
 // Canonical macros — previously duplicated as local stubs in 15+ files

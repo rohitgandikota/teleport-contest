@@ -8955,3 +8955,47 @@ Tour `--seed 107` (40 games): 38 pass, s107-08 is the ^X clock, s107-31
 was farlook on a gas cloud: pager.js tested reg.glyph but region.js
 stores the cloud's cmap as glyph_cmap, so every cloud was "vapor"
 instead of "poison gas".
+
+## The status lines are the C's field machinery (12 Sep)
+
+botl.c bot()/bot_via_windowport()/eval_notify_windowport_field()/
+evaluate_and_notify_windowport()/status_initialize()/init_blstats()/
+compare_blstats()/percentage()/exp_percentage()/get_hilite()/
+status_eval_next_unhilite()/parse_status_hl1()/parse_status_hl2()/
+parse_condition() &c are ported in botl.js (gb.blstats is game.blstats,
+gv.valset game.valset, gu.update_all game.update_all); windows.c's
+genl_status_init()/genl_status_enablefield() and the status_vals[]/
+status_activefields[]/status_fieldfmt[] tables are in windows.js; the tty
+side — tty_status_init(), tty_status_update(), make_things_fit(),
+check_fields(), tty_putstatusfield(), set_condition_length(),
+shrink_enc(), shrink_dlvl(), condcolor(), condattr(), render_status(),
+new_status_window() — is in tty/wintty.js with a real NHW_STATUS window
+(game.WIN_STATUS, data rows, offy 22 or 21). display.js bot()/timebot()
+delegate to botl.js; the string builders (_statusLine1/2) and every
+game._deferred_status_* patch (exper, mhitu, fountain, do_wear, potion,
+display more()) are gone: they were compensating for status values
+painted from live state, which the field machinery reads only when
+disp.botl/botlx is set, as the C does. The rc options statushilites,
+hilite_status (parsed at option-set time as the C's optfn does),
+statuslines and hitpointbar are wired; the 'O' toggles of showexp/time/
+showscore/showvers/hitpointbar reassess the fields; set_uasmon()
+reassesses on polymorph and rehumanize (options.c:5349, polyself.c:123).
+The moveloop preamble sets disp.botlx (allmain.c:85) so the first bot()
+after context.rndencode is set consumes update_all, which the C needs
+for the gold field's encoded symbol; without it the first real change
+(a wish for gold) lost its up-hilite. Upolyd() is you.h's
+(u.umonnum != u.umonster): polyman() runs set_uasmon() after restoring
+umonnum but before clearing mtimedone, so the timer-based test kept
+showing HD:1 after "You return to human form!". A restore inside the
+same process (the save-then-restore session) rebuilds the tty status with
+new_status_window() where the C's fresh process starts over.
+
+Eight C probes match every screen: hitpointbar with statuslines:3,
+hilites for up/down/changed/percentage/absolute/text/always/criticalhp
+rules and coloured+inverse conditions, statushilites off with rules
+present, showvers right-justified on the third row, an overflowing
+condition row with the shrink levels, and the bar's dashes and
+orange+bold at critically low HP. The judge's decoder keeps inverse,
+bold and underline and the sixteen colours but drops dim, italic and
+blink, and a run of five or more spaces is stored as plain cells;
+tty_putstatusfield() paints such runs plain.

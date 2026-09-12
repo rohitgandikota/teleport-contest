@@ -8,6 +8,8 @@ import { POLY_NOFLAGS } from './const.js';
 import { set_uasmon } from './polyself.js';
 import { do_vicinity_map } from './detect.js';
 import { game } from './gstate.js';
+import { status_initialize, status_eval_next_unhilite } from './botl.js';
+import { new_status_window } from './tty/wintty.js';
 import { glibr, set_wear } from './do_wear.js';
 import { maybe_finished_meal, reset_eat } from './eat.js';
 
@@ -161,11 +163,21 @@ export async function newgame_moveloop_preamble(resuming = false) {
         g.u.umovement = NORMAL_SPEED;
         initrack();
     }
+    /* src/allmain.c:85 */
+    (g.disp ||= {}).botlx = true; /* for STATUS_HILITES */
 }
 
 // C ref: allmain.c newgame()
 export async function newgame() {
     const g = game;
+    /* src/allmain.c:721 init_sound_disp_gamewindows() — the status fields
+       are initialized when the windows are created, before a new game or a
+       restore; a restore in this process starts the tty status over as the
+       C's fresh process would */
+    if (!game.blinit)
+        status_initialize(false);
+    else
+        new_status_window();
 
     // src/allmain.c — character selection runs BEFORE newgame(), driven by
     // the session's own keystrokes when the rc pins nothing. It draws only
@@ -734,6 +746,12 @@ export async function moveloop_core() {
             let monscanmove;
 
             await encumber_msg();
+
+            /* src/allmain.c:407 */
+
+            if (game.iflags?.hilite_delta)
+
+                status_eval_next_unhilite();
 
             /* src/allmain.c:211 — monsters keep taking turns until none of
                them has movement left, or until the hero has banked enough to

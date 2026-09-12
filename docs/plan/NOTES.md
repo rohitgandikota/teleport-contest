@@ -8845,3 +8845,21 @@ printable keys preferred). reset_commands()' swap_yz, pcHack_compat and
 phone_layout arms are applied in cmdbind_table() (cmdbind_swapkeys()
 only trades two bound keys; the M-0 inventtype binding for pcHack); C
 probes with number_pad:-1 and number_pad:3 match screen for screen.
+
+## music.c is ported in full (12 Sep)
+
+do_improvisation() is the C's: the mundane-counterpart walk for an
+uncharged or impaired instrument, the PLAY_* mode messages, then the
+per-instrument arms — magic flute put_monsters_to_sleep(), wooden flute
+charm_snakes() (the C's `do_spec &= (rn2(ACURR(A_DEX)) + u.ulevel > 25)`
+always draws), fire/frost horn (getdir, zapyourself on self, ubuzz with
+BZ_U_WAND(BZ_OFS_AD(...)); BZ_U_WAND is exported from zap.js), tooled
+horn and bugle awaken, magic harp charm_monsters(), wooden harp
+calm_nymphs(), drum of earthquake do_earthquake() with do_pit() and
+generic_lvl_desc(), leather drum (incr_itimeout(HDeaf) at the C's point,
+before awaken_monsters(); the drum-of-earthquake-with-no-charges riff
+"You butcher a double shuffle."). awaken_scare() lets monflee() print
+"turns to flee" itself, as the C does. Two C probes (every instrument
+wished and played; a fire-horn ray east and a frost-horn self-zap that
+kills the hero into the wizard-mode "Die?" prompt) match all 266
+screens; seed0002 (the public drummer) is unchanged.

@@ -774,9 +774,14 @@ by their binding"). Three C probes (wizard ^X with artifacts and speed
 boots, number_pad:-1, number_pad:3) match. Public 44/44, broad tally
 unchanged (the clock class and the known display cases), hang gate OK.
 
-Next: do_improvisation and the music.c helpers (put_monsters_to_sleep,
-charm_snakes, calm_nymphs, charm_monsters, do_pit, do_earthquake),
-then plselect, dopay's itemized bill and the options/symbols handlers. The mapped-monster display class (s102-21, s102-36) needs the C's
+Eighty-first round (12 Sep): music.c in full (NOTES "music.c is ported
+in full"); two instrument probes match. Public 44/44, broad tally
+unchanged, hang gate OK.
+
+Next: the extended-command names that still fall through execute_extcmd
+(#moveeast &c, #fight/#run/#rush, #up/#down, #pickup, #prevmsg, #?, and
+the debug listings), then plselect, dopay's itemized bill and the
+options/symbols handlers. The mapped-monster display class (s102-21, s102-36) needs the C's
 redraw path found; the probes so far are in NOTES.
 tools/jsplay.mjs has `--aeval "<await expr>"` (game, dungeon, C, symbols,
 h in scope; `await import('file:///.../js/x.js')` reaches any module) for

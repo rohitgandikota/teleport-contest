@@ -17,6 +17,7 @@
 //
 // Usage:
 //   node tools/gen-sessions/fuzz.mjs --games 20 [--keys 250] [--seed 1] [--debug|--normal]
+//   node tools/gen-sessions/fuzz.mjs --strategy tour --games 20 [--seed 1]   # wizard-mode level tours
 //   node tools/gen-sessions/fuzz.mjs --score-only        # re-score every game in fuzz/
 //   node tools/gen-sessions/fuzz.mjs --report            # causes over every scored batch
 //
@@ -30,6 +31,7 @@ import { spawn, spawnSync } from 'node:child_process';
 import path from 'node:path';
 import os from 'node:os';
 import { fileURLToPath } from 'node:url';
+import { decodeScreen } from './screen-decode.mjs';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(HERE, '..', '..');
@@ -219,6 +221,137 @@ function printRows(rows) {
     }
 }
 
+
+// ------------------------------------------------------------ tour strategy
+// Wizard-mode level tours. In debug mode ^V (wiz_level_tele) asks "To what
+// level do you want to teleport?" and '?' opens print_dungeon()'s menu
+// (dungeon.c:2290): every special level and every branch of every dungeon,
+// lettered a..z then A..Z in table order, and a pick lands the hero on that
+// level in that dungeon (teleport.c:1220 sets force_dest). It is the only way
+// to reach the Quest, Sokoban, the Mines' towns, Ludios, Vlad's tower and the
+// Planes without playing there, and 109 of the 131 dat/*.lua levels had never
+// appeared in any recording when this was written (2026-09-12). The menu's
+// letters depend on the seed (bigrm and rogue are optional, Ludios may be
+// unplaced, the Quest names carry the role), so the pages are read once from
+// probe recordings and every hop is then scripted: ^V ? RET, '>' to the page,
+// the letter, sometimes ^F (wiz_map) to draw the whole level, then a burst
+// of trigram play. The endgame is a one-way trip (once there the menu lists
+// only the Planes), so a Plane ends the tour.
+
+function tourRoleTuples(segs) {
+    /* role/race/gender/align combinations the public rc files use; they are
+       valid by construction, which keeps chargen out of the menus */
+    const seen = new Map();
+    for (const { rc } of segs) {
+        const g = (k) => { const m = new RegExp(`${k}:([A-Za-z]+)`).exec(rc); return m ? m[1] : null; };
+        const t = { role: g('role'), race: g('race'), gender: g('gender'), align: g('align') };
+        if (t.role && t.race && t.gender && t.align) seen.set(Object.values(t).join(','), t);
+    }
+    return [...seen.values()];
+}
+
+async function readLastScreen(input) {
+    const tmp = await fs.mkdtemp(path.join(os.tmpdir(), 'tour-'));
+    const out = path.join(tmp, 'probe.session.json');
+    try {
+        await record(input, out);
+        const s = JSON.parse(readFileSync(out, 'utf8'));
+        const steps = s.segments[s.segments.length - 1].steps;
+        return { rows: decodeScreen(steps[steps.length - 1].screen), steps: steps.length };
+    } finally {
+        await fs.rm(tmp, { recursive: true, force: true }).catch(() => {});
+    }
+}
+
+/* one page of print_dungeon()'s menu: " c -   oracle: 7",
+   " a - * One way stair to The Elemental Planes: 1", "(1 of 3)"; an
+   unreachable level is listed with padding and no letter */
+function parseLevelMenu(rows) {
+    const entries = [];
+    let pages = 1;
+    for (const row of rows) {
+        const m = /^\s*([a-zA-Z]) - [* ] (.+?): (\d+)/.exec(row);
+        if (m) entries.push({ letter: m[1], name: m[2], depth: Number(m[3]) });
+        const p = /\((\d+) of (\d+)\)/.exec(row);
+        if (p) pages = Number(p[2]);
+    }
+    return { entries, pages };
+}
+
+async function readLevelMenu(mkInput, prefix) {
+    const all = [];
+    const first = await readLastScreen(mkInput(`${prefix}\x16?\r`));
+    const { entries, pages } = parseLevelMenu(first.rows);
+    if (!entries.length)
+        console.log(`  probe screen: ${first.rows.slice(0, 3).map((r) => JSON.stringify(r.trimEnd())).join(' / ')}`);
+    for (const e of entries) all.push({ ...e, page: 1 });
+    for (let p = 2; p <= pages; p++) {
+        const r = await readLastScreen(mkInput(`${prefix}\x16?\r${'>'.repeat(p - 1)}`));
+        for (const e of parseLevelMenu(r.rows).entries) all.push({ ...e, page: p });
+    }
+    return all;
+}
+
+/* answer whatever the game asks before its first command: the legacy blurb
+   and a welcome --More-- want a space, the tutorial question an 'n'; the
+   recording is the C's answer, so a wrong guess costs a probe, never truth */
+async function settleIntro(mkInput) {
+    let moves = '';
+    for (let i = 0; i < 6; i++) {
+        const { rows } = await readLastScreen(mkInput(moves));
+        const text = rows.join('\n');
+        if (/Do you want a tutorial\?/.test(text)) moves += 'n';
+        else if (/Dlvl:/.test(text) && !/--More--/.test(text)) return moves;
+        else moves += ' ';
+    }
+    return moves;
+}
+
+const PLANES = new Set(['earth', 'air', 'fire', 'water', 'astral']);
+
+async function tourGame(i, chains, tuples) {
+    const t = tuples[rint(tuples.length)];
+    const legacy = rand() < 0.5;
+    const tutorial = rand() < 0.4;
+    const extras = pick(['', ',showexp,time,color,lit_corridor', ',showexp,time', ',color']);
+    const rc = `OPTIONS=name:Tourer,role:${t.role},race:${t.race},gender:${t.gender},align:${t.align},playmode:debug,suppress_alert:3.4.3,symset:DECgraphics\n`
+        + `OPTIONS=!autopickup${extras}${legacy ? '' : ',!legacy'}${tutorial ? '' : ',!tutorial'}\n`;
+    const seed = 100000 + rint(900000);
+    const datetime = sampleDatetime();
+    const mkInput = (moves) => ({ version: 5, segments: [{ seed, datetime, nethackrc: rc, moves, steps: [] }], source: 'c' });
+    const style = `pinned:debug:${legacy ? 'legacy' : 'nolegacy'}`;
+    const chain = (chains.get(style) || chains.get([...chains.keys()].find((k) => k.includes(':debug:')))).chain;
+
+    let moves = await settleIntro(mkInput);
+    if (rand() < 0.7)
+        moves += `#levelchange\r${5 + rint(20)}\r${' '.repeat(30)}`;
+
+    let menu = await readLevelMenu(mkInput, moves);
+    const pool = menu.filter((e) => !PLANES.has(e.name));
+    const planes = menu.filter((e) => PLANES.has(e.name));
+    const hops = 5 + rint(7);
+    const visited = [];
+    for (let h = 0; h < hops && pool.length; h++) {
+        const last = h === hops - 1;
+        let e;
+        if (last && planes.length && rand() < 0.3) {
+            e = pick(planes);
+        } else {
+            e = pool.splice(rint(pool.length), 1)[0];
+        }
+        visited.push(e.name);
+        moves += `\x16?\r${'>'.repeat(e.page - 1)}${e.letter}`;
+        if (rand() < 0.6) moves += '\x06'; /* ^F wiz_map: the whole level */
+        if (rand() < 0.25) moves += '#overview\r\x1b'; /* the dungeon overview so far */
+        if (rand() < 0.3) moves += `\x16${1 + rint(12)}\r`; /* a numbered hop in this dungeon */
+        moves += sampleMoves(chain, 10 + rint(35));
+        if (PLANES.has(e.name)) break;
+    }
+    const name = `tour-s${batchSeed}-${String(i).padStart(2, '0')}-${t.role.toLowerCase()}`;
+    const recipe = { name, description: `wizard-mode level tour: ${visited.join(', ')}`, coverage: ['fuzz.level-tour'], segments: [{ seed, datetime, nethackrc: rc, moves }] };
+    return { name, recipe, menuEntries: menu.length };
+}
+
 // ------------------------------------------------------------ main
 async function main() {
     mkdirSync(FUZZ, { recursive: true });
@@ -259,17 +392,36 @@ async function main() {
     const styleKeys = [...styles.keys()].filter((k) => flag('--debug') ? k.includes(':debug:') : flag('--normal') ? k.includes(':normal:') : true);
     const weights = styleKeys.map((k) => styles.get(k).length);
 
+    const strategy = opt('--strategy', 'trigram');
+    const tuples = tourRoleTuples(segs);
+
     const rows = [];
     for (let i = 0; i < games; i++) {
-        let r = rand() * weights.reduce((a, b) => a + b, 0), style = styleKeys[0];
-        for (let j = 0; j < styleKeys.length; j++) { r -= weights[j]; if (r < 0) { style = styleKeys[j]; break; } }
-        const { chain, rcs } = chains.get(style);
-        const rc = pick(rcs);
-        const n = Math.max(20, Math.min(cap, pick(chain.lengths)));
-        const moves = sampleMoves(chain, n);
-        const seed = 100000 + rint(900000);
-        const name = `fuzz-s${batchSeed}-${String(i).padStart(2, '0')}-${roleOf(rc)}-${style.replace(/:/g, '-')}`;
-        const recipe = { name, description: `random play sampled from public inputs, style ${style}`, coverage: ['fuzz.random-play'], segments: [{ seed, datetime: sampleDatetime(), nethackrc: rc, moves }] };
+        let name, recipe;
+        if (strategy === 'tour') {
+            let g;
+            try {
+                g = await tourGame(i, chains, tuples);
+            } catch (e) {
+                console.log(`FAIL tour-s${batchSeed}-${String(i).padStart(2, '0')}: probe: ${e.message.split('\n')[0]}`);
+                continue;
+            }
+            ({ name, recipe } = g);
+            if (!g.menuEntries) {
+                console.log(`SKIP ${name}: the level menu did not open (a prompt ate the probe keys)`);
+                continue;
+            }
+        } else {
+            let r = rand() * weights.reduce((a, b) => a + b, 0), style = styleKeys[0];
+            for (let j = 0; j < styleKeys.length; j++) { r -= weights[j]; if (r < 0) { style = styleKeys[j]; break; } }
+            const { chain, rcs } = chains.get(style);
+            const rc = pick(rcs);
+            const n = Math.max(20, Math.min(cap, pick(chain.lengths)));
+            const moves = sampleMoves(chain, n);
+            const seed = 100000 + rint(900000);
+            name = `fuzz-s${batchSeed}-${String(i).padStart(2, '0')}-${roleOf(rc)}-${style.replace(/:/g, '-')}`;
+            recipe = { name, description: `random play sampled from public inputs, style ${style}`, coverage: ['fuzz.random-play'], segments: [{ seed, datetime: sampleDatetime(), nethackrc: rc, moves }] };
+        }
         await fs.writeFile(path.join(FUZZ, `${name}.recipe.json`), JSON.stringify(recipe, null, 1));
         const input = { version: 5, segments: recipe.segments.map((s) => ({ ...s, steps: [] })), source: 'c', recorded_with: { tool: 'tools/gen-sessions/fuzz.mjs', spec: `${name}.recipe.json` }, coverage: recipe.coverage };
         const sessionPath = path.join(FUZZ, `${name}.session.json`);

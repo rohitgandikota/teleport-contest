@@ -9336,3 +9336,44 @@ heading's inverse video. The recorder emits that trailing inverse space;
 the frozen js/terminal.js serializer drops trailing spaces whatever their
 attribute, so the decoded cell comes back plain. Every other cell of the
 three DECgraphics pages and of the default set's "(end)" listing matches.
+
+## #wizcast, #wizobjprobs, #wizloadlua, #bugreport and BIND parameters (12 Sep)
+
+- #wizcast: spell.c dowizcast(), a menu of the spellbook names into
+  spelleffects(otyp, FALSE, TRUE). The port's spelleffects() always took
+  its argument for a spellbook slot; the C's `spell = force ? spell_otyp :
+  spell_idx(spell_otyp)` is now there, so a forced cast is by object type.
+- #wizobjprobs: wiz_objprobs(), "%4d / %4d (%6.2f%%): name" per object
+  from FIRST_OBJECT (the generic placeholders before ARROW are skipped) in
+  float arithmetic (Math.fround); class totals are 1000ish so no .xx5 ties.
+- #wizloadlua: wiz_load_lua() through nhlua.js load_lua(): nhl_init()
+  loads nhlib.lua into every new state, whose top level shuffles `align`
+  (rn2(3), rn2(2)), and then the script: nhlib.lua itself shuffles again,
+  a hand-ported level script runs against the current level as the C's
+  would, the definition-only libraries do nothing, and an unknown name
+  gets nhl_loadlua()'s "Error opening (name)" through impossible(). There
+  is no Lua interpreter in this port, so a script that isn't one of those
+  can't run.
+- #bugreport: report.c dobugreport(): submit_web_report() starts the
+  platform's browser launcher (CRASHREPORT "/usr/bin/open") and reports
+  success; the recorder shows nothing, and js/report.js keeps that.
+- BIND=key:command(param): bind_key()'s parenthesised parameter is kept
+  with the binding (rc_key_params), gc.cmd_bind carries it into
+  dotoggleoption(), and toggle_bool_option() flips every in-game boolean
+  the text prefixes, the way parseoptions("[!]name") does with its
+  "'name' option toggled on/off." message. A bound key whose command has
+  no default key of its own (#toggle, #wizcustom, ...) runs the command
+  by name in rhack(); the port used to fall through to the key's default
+  command (^T teleported instead of toggling).
+- The first such toggle in a DECgraphics game ends in --More--: options.c
+  optfn_symset() sets go.opt_need_redraw and opt_need_glyph_reset even
+  while the rc is being read, nothing clears them at startup, and the
+  first reset_needed_visuals() of the game (a BIND'd #toggle) then calls
+  docrt(), whose cls() flushes the message line. doset() and
+  doset_simple_menu() clear the flags before their menus (options.c:8644,
+  8904), so the options menu never shows it. The port now sets the flags
+  when the rc names a symset, clears them in doset_simple_menu() too, and
+  reset_needed_visuals() honours opt_need_glyph_reset with
+  reset_glyphmap(gm_optionchange). Probes probe-toggle and probe-wizbatch2
+  (scratchpad) match in full.
+- Trigram seed 86: 39/40, s86-06 is the ^X clock line.

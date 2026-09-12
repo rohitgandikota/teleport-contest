@@ -871,9 +871,15 @@ and parsed for the chosen set's G_ lines, coloratt.c's colour parsing
 (NOTES "#wizcustom and the symset customization pipeline"). Public
 44/44, hang gate OK.
 
-Next: trigram seed 86 (recorded, sweep pending), tour seed 115,
-altkeyhandling (WIN32CON only in the C: nothing to port), the DEC class
-symbol note in symbols.js.
+Ninety-fifth round (12 Sep): #wizcast, #wizobjprobs, #wizloadlua,
+#bugreport, BIND=key:command(param) with #toggle, the startup symset
+redraw flags (NOTES "#wizcast, #wizobjprobs, ..."). Trigram seed 86
+39/40 (clock). Public 44/44, hang gate OK, broad tally r36 3654/90.
+
+Next: tour seed 115 (recorded, sweep running), altkeyhandling (WIN32CON
+only in the C: nothing to port), the DEC class symbol note in
+symbols.js, #saveoptions (its prompt names the recorder's temporary rc
+path), #panic, #wizshownhuuid.
 The mapped-monster display class (s102-21, s102-36) needs the C's redraw
 path found; the probes so far are in NOTES.
 tools/jsplay.mjs has `--aeval "<await expr>"` (game, dungeon, C, symbols,

@@ -141,12 +141,24 @@ export class NethackGame {
                 const ci = one.indexOf(':');
                 if (ci < 0) continue;
                 const keytxt = one.slice(0, ci).trim();
-                const cmdname = one.slice(ci + 1).trim();
+                let cmdname = one.slice(ci + 1).trim();
+                /* src/cmd.c:2680 bind_key() — "command(param)": the text in
+                   parentheses is the binding's parameter (#toggle's option),
+                   at most 30 characters */
+                let param = null;
+                const lp = cmdname.indexOf('('), rp = cmdname.lastIndexOf(')');
+                if (lp >= 0 && rp > lp) {
+                    param = cmdname.slice(lp + 1, rp).slice(0, 30);
+                    cmdname = cmdname.slice(0, lp);
+                }
                 const key = (keytxt.length === 2 && keytxt[0] === '^')
                     ? String.fromCharCode(keytxt.charCodeAt(1) & 0x1f)
                     : (keytxt.length === 1 ? keytxt : null);
-                if (key !== null)
+                if (key !== null) {
                     g.rc_key_bindings[key] = cmdname;
+                    if (param)
+                        (g.rc_key_params ||= {})[key] = param;
+                }
             }
         }
         /* src/symbols.c init_symbols() then assign_graphics(PRIMARYSET).

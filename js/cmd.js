@@ -1588,6 +1588,10 @@ const EXTCMD_FUNCS = {
     wizmakemap: ['./wizcmds.js', 'wiz_makemap'],
     wizloaddes: ['./wizcmds.js', 'wiz_load_splua'],
     wizcustom: ['./wizcmds.js', 'wiz_custom'],
+    wizcast: ['./spell.js', 'dowizcast'],
+    bugreport: ['./report.js', 'dobugreport'],
+    wizobjprobs: ['./wizcmds.js', 'wiz_objprobs'],
+    wizloadlua: ['./wizcmds.js', 'wiz_load_lua'],
     stats: ['./wizcmds.js', 'wiz_show_stats'],
     timeout: ['./timeout.js', 'wiz_timeout_queue'],
     lightsources: ['./light.js', 'wiz_light_sources'],
@@ -1600,10 +1604,8 @@ const EXTCMD_FUNCS = {
 // parameter is what gives it an option to flip
 async function dotoggleoption() {
     if (game.cmd_bind?.param) {
-        /* toggle_bool_option(gc.cmd_bind->param): BIND lines with a
-           parameter are not modelled */
-        note_unported_cmd('dotoggleoption:param');
-        return ECMD_OK;
+        const { toggle_bool_option } = await import('./options.js');
+        return await toggle_bool_option(game.cmd_bind.param);
     } else {
         await pline('Use #optionsfull to set any option instead.');
         return ECMD_OK;
@@ -2633,10 +2635,19 @@ export async function rhack(key) {
        reaches the same function C rebinds to. */
     {
         const boundname = game.rc_key_bindings?.[ch0];
+        /* src/cmd.c:4890 rhack() — gc.cmd_bind is the binding being run;
+           a "BIND=key:command(param)" line's parameter rides on it */
+        game.cmd_bind = (boundname !== undefined)
+            ? { param: game.rc_key_params?.[ch0] || null } : null;
+        game._bound_extcmd_name = null;
         if (boundname !== undefined) {
             const e = extcmdlist.find((x) => x.ef_txt === boundname);
             if (e && e.key)
                 ch0 = String.fromCharCode(e.key);
+            else if (e)
+                /* a command with no default key (#toggle, #wizcustom, ...)
+                   has no dispatch arm to reach; it runs by name below */
+                game._bound_extcmd_name = boundname;
         }
     }
 
@@ -2741,7 +2752,13 @@ export async function rhack(key) {
         return;
     }
 
-    if (isMovementKey(ch)) {
+    /* src/cmd.c:3689 — the bound command (tlist) runs; a BIND'd key whose
+       command has no default key of its own goes by name */
+    if (game._bound_extcmd_name) {
+        const name = game._bound_extcmd_name;
+        game._bound_extcmd_name = null;
+        useResult(await execute_extcmd(name));
+    } else if (isMovementKey(ch)) {
         /* src/cmd.c:1386 set_move_cmd() — sets u.dx/u.dy and, when no g/G
            prefix is pending, context.run. Keeping the direction on `u` is
            what lets moveloop's run branch call domove() again without

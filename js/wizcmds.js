@@ -73,6 +73,9 @@ import { timer_stats } from './timeout.js';
 import { region_stats } from './region.js';
 import { overview_stats } from './dungeon.js';
 import { on_level, In_W_tower, ledger_no } from './dungeon.js';
+import { OBJ_NAME } from './objnam.js';
+import { ONAMES } from './objects_data.js';
+import { MAXOCLASSES } from './symbols.js';
 import { gs_symset, gc_currentgraphics, known_handling, showsyms_at } from './symbols.js';
 import { add_menu_heading } from './options.js';
 import { glyphmap } from './display.js';
@@ -673,6 +676,24 @@ const MAXULEV = 30;
 // space and drop leading and trailing space.
 function mungspaces(bp) {
     return bp.replace(/[ \t]+/g, ' ').replace(/^ | $/g, '');
+}
+
+// src/wizcmds.c:353 wiz_load_lua() — #wizloadlua: load and execute a lua
+// script (nhlua.js load_lua() says what this port can run)
+export async function wiz_load_lua() {
+    if (game.wizard) {
+        let buf = '';
+
+        buf = await getlin('Load which lua file?');
+        if (buf[0] === '\x1b' || buf === '')
+            return ECMD_CANCEL;
+        if (!buf.includes('.'))
+            buf += '.lua';
+        const { load_lua } = await import('./nhlua.js');
+        await load_lua(buf);
+    } else
+        await pline(unavailcmd.replace('%s', ecname_from_fn('wizloadlua')));
+    return ECMD_OK;
 }
 
 // src/wizcmds.c:376 wiz_load_splua() — #wizloaddes: load and execute a
@@ -1715,6 +1736,52 @@ async function list_migrating_mons(nextlevl /* default destination for wiz_migra
         }
 
     }
+}
+
+// src/wizcmds.c:1832 wiz_objprobs() — #wizobjprobs: the object generation
+// probabilities, each as its share of its class
+export async function wiz_objprobs() {
+    let buf;
+    const probsum = new Array(MAXOCLASSES).fill(0);
+    let otyp;
+    const FIRST_OBJECT = ONAMES.FIRST_OBJECT;
+    let oclass = game.objects[FIRST_OBJECT].oc_class;
+
+    for (otyp = FIRST_OBJECT; otyp < NUM_OBJECTS; otyp++) {
+        probsum[game.objects[otyp].oc_class] += game.objects[otyp].oc_prob;
+    }
+
+    const win = tty_create_nhwindow(NHW_TEXT);
+    for (otyp = FIRST_OBJECT; otyp < NUM_OBJECTS; otyp++) {
+        /* placeholders for extra descriptions aren't generatable objects */
+        if (!OBJ_NAME(game.objects[otyp]))
+            continue;
+
+        if (game.objects[otyp].oc_class !== oclass) {
+            tty_putstr(win, 0, '');
+        }
+        oclass = game.objects[otyp].oc_class;
+
+        /* "%4d / %4d (%6.2f%%): %s" in float arithmetic */
+        const pct = Math.fround(Math.fround(game.objects[otyp].oc_prob * 100)
+                                / Math.fround(probsum[oclass]));
+        buf = `${String(game.objects[otyp].oc_prob).padStart(4)} / ${
+            String(probsum[oclass]).padStart(4)} (${pct.toFixed(2).padStart(6)}%): ${
+            OBJ_NAME(game.objects[otyp])}`;
+        tty_putstr(win, 0, buf);
+    }
+    /* display_nhwindow(win, FALSE) */
+    await tty_display_nhwindow(win);
+    for (;;) {
+        await xwaitforspace(quitchars);
+        if (game.morc === '\x1b')
+            break; /* cancel remaining pages */
+        if (!tty_next_page(win))
+            break;
+    }
+    tty_destroy_nhwindow(win);
+
+    return ECMD_OK;
 }
 
 // src/wizcmds.c:1873 wiz_migrate_mons() — #migratemons command

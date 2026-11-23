@@ -1,0 +1,65 @@
+{
+  "name": "binding-command-precedence",
+  "description": "Command binding precedence within and across BIND lines, case-insensitive commands, literal and escaped comma keys, unbinding, and parameter replacement.",
+  "recordingNote": "Use RERECORD_TZ=Etc/GMT+4 for a fixed UTC-4 recording offset.",
+  "coverage": ["mode.debug", "options.rc-bindings", "ui.count-repeat"],
+  "branches": [
+    "bindings.first-duplicate-wins", "bindings.last-line-wins",
+    "bindings.case-insensitive-command", "bindings.literal-comma",
+    "bindings.escaped-comma", "bindings.nothing-clears-repeat",
+    "bindings.parameter-replacement", "bindings.parameter-precedence"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {"branch": "bindings.first-duplicate-wins", "segment": 0, "screenIncludes": ["MacOS NetHack Version 5.0.0"], "screenExcludes": ["Not carrying anything"]},
+    {"branch": "bindings.last-line-wins", "segment": 1, "screenIncludes": ["MacOS NetHack Version 5.0.0"], "screenExcludes": ["Not carrying anything"]},
+    {"branch": "bindings.case-insensitive-command", "segment": 2, "screenIncludes": ["MacOS NetHack Version 5.0.0"], "screenExcludes": ["Unknown command"]},
+    {"branch": "bindings.literal-comma", "segment": 3, "screenIncludes": ["MacOS NetHack Version 5.0.0"], "screenExcludes": ["nothing here to pick up"]},
+    {"branch": "bindings.escaped-comma", "segment": 4, "screenIncludes": ["MacOS NetHack Version 5.0.0"], "screenExcludes": ["nothing here to pick up"]},
+    {"branch": "bindings.nothing-clears-repeat", "segment": 5, "screenIncludes": ["Unknown command 'V'", "There is no command available to repeat"], "screenExcludes": ["MacOS NetHack Version 5.0.0"]},
+    {"branch": "bindings.parameter-replacement", "segment": 6, "screenIncludes": ["MacOS NetHack Version 5.0.0"]},
+    {"branch": "bindings.parameter-precedence", "segment": 7, "screenIncludes": ["'autopickup' option toggled on."]}
+  ],
+  "segments": [
+    {
+      "seed": 31, "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nBIND=~:versionshort,~:inventory\n",
+      "moves": " ~\u0001"
+    },
+    {
+      "seed": 31, "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nBIND=~:inventory\nBIND=~:versionshort\n",
+      "moves": " ~"
+    },
+    {
+      "seed": 31, "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nBIND=~:VeRsIoNsHoRt\n",
+      "moves": " ~"
+    },
+    {
+      "seed": 31, "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nBIND=,:versionshort,~:inventory\n",
+      "moves": " ,"
+    },
+    {
+      "seed": 31, "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nBIND=\\,:versionshort,~:inventory\n",
+      "moves": " ,"
+    },
+    {
+      "seed": 31, "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nBIND=V:nOtHiNg\n",
+      "moves": " V\u0001"
+    },
+    {
+      "seed": 31, "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nBIND=~:toggle(autopickup)\nBIND=~:versionshort\n",
+      "moves": " ~"
+    },
+    {
+      "seed": 31, "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nBIND=~:toggle(autopickup),~:toggle(color)\n",
+      "moves": " ~"
+    }
+  ]
+}

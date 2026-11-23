@@ -20,17 +20,15 @@ import { IS_FOUNTAIN } from './const.js';
 import { ATTKS, MSOUND } from './monst_data.js';
 import { is_were } from './were.js';
 import { webmaker, can_breathe, attacktype, is_mind_flayer, is_unicorn, is_vampire } from './mondata.js';
-import { PICK_ONE, CMD_M_PREFIX, CMD_gGF_PREFIX, PREFIXCMD, AUTOCOMPLETE, CMD_NOT_AVAILABLE, INTERNALCMD, WIZMODECMD, GENERALCMD, QBUFSZ } from './const.js';
-import { add_menu_heading } from './options.js';
-import { pmatchi, visctrl, strstri, strsubst } from './hacklib.js';
+import { PICK_ONE, CMD_M_PREFIX, CMD_gGF_PREFIX, PREFIXCMD, AUTOCOMPLETE, CMD_NOT_AVAILABLE, INTERNALCMD, WIZMODECMD, GENERALCMD, QBUFSZ, CMD_PARAM } from './const.js';
+import { add_menu_heading, config_error_add } from './options.js';
+import { pmatchi, visctrl, strstri, strsubst, strcmpi } from './hacklib.js';
 import { seemimic } from './mon.js';
 // cmd.js — Command dispatch and movement.
 import { PICK_NONE } from './const.js';
 // C ref: cmd.c rhack(), hack.c domove().
 //
-// Minimal skeleton: only hjklyubn movement is implemented.
-// Contestants should add: search, kick, eat, drink, read, zap,
-// wear, wield, drop, throw, pray, cast, and all other commands.
+// Command bindings, input queues, movement and extended command dispatch.
 
 import { game } from './gstate.js';
 import { CLICK_1, CLICK_2, CMDQ_USER_INPUT, IS_SINK, IS_THRONE, W_SADDLE, SUPPRESS_SADDLE, VIBRATING_SQUARE, TEST_MOVE, D_ISOPEN, has_mgivenname, M_AP_MONSTER, MOVEMENTCMD } from './const.js';
@@ -2637,7 +2635,7 @@ export async function rhack(key) {
         const boundname = game.rc_key_bindings?.[ch0];
         /* src/cmd.c:4890 rhack() — gc.cmd_bind is the binding being run;
            a "BIND=key:command(param)" line's parameter rides on it */
-        game.cmd_bind = (boundname !== undefined)
+        game.cmd_bind = (boundname != null)
             ? { param: game.rc_key_params?.[ch0] || null } : null;
         game._bound_extcmd_name = null;
         if (boundname !== undefined) {
@@ -2660,6 +2658,11 @@ export async function rhack(key) {
         if (game.multi)
             game.multi--;
         game.cmd_key = parsedKey;
+    }
+
+    if (game.rc_key_bindings?.[parsedKey] === null) {
+        await bad_command(parsedKey);
+        return;
     }
 
     /* src/cmd.c:3732, keep the executable command followed by any input
@@ -3114,19 +3117,7 @@ export async function rhack(key) {
            friends this way */
         useResult(await execute_extcmd(boundCommand.ef_txt));
     } else {
-        /* src/cmd.c:3833 rhack(), bad_command: the message is kept out of
-           the history, both queues are dropped, and only context.move and
-           multi are cleared; reset_cmd_vars() does NOT run, so a rush or
-           run prefix typed just before survives into the next command */
-        await pline_nohistory(`Unknown command '${visctrl(ch)}'.`);
-        cmdq_clear(CQ_CANNED);
-        cmdq_clear(CQ_REPEAT);
-        /* didn't move */
-        game.context.move = 0;
-        game.multi = 0;
-        /* C's prefix_seen is local to rhack() and dies here; context.run
-           and domove_attempting are globals and stay */
-        game._cmd_prefix_pending = false;
+        await bad_command(ch);
         return;
     }
 
@@ -3147,6 +3138,17 @@ export async function rhack(key) {
     /* C reasserts context.move after reset_cmd_vars for TIME|CANCEL. */
     if (commandTookTime)
         game.context.move = 1;
+}
+
+// src/cmd.c:3833 rhack(), bad_command label. Keep pending movement flags;
+// reset_cmd_vars() would also clear the preceding rush or run prefix.
+async function bad_command(ch) {
+    await pline_nohistory(`Unknown command '${visctrl(ch)}'.`);
+    cmdq_clear(CQ_CANNED);
+    cmdq_clear(CQ_REPEAT);
+    game.context.move = 0;
+    game.multi = 0;
+    game._cmd_prefix_pending = false;
 }
 
 // C ref: hack.c domove — execute a movement
@@ -4705,6 +4707,44 @@ const restonspace = {
     ef_txt: 'wait', ef_desc: "rest one move via 'rest_on_space' option",
     key: ' '.charCodeAt(0), flags: IFBURIED | CMD_M_PREFIX,
 };
+
+// src/cmd.c:2667 bind_key(), the user-configured command and parameter.
+// A null entry suppresses the default binding in rhack().
+export function bind_key(key, command) {
+    const ch = String.fromCharCode(key);
+    game.rc_key_bindings ||= {};
+    game.rc_key_params ||= {};
+    if (!strcmpi(command, 'nothing')) {
+        game.rc_key_bindings[ch] = null;
+        delete game.rc_key_params[ch];
+        return true;
+    }
+
+    let buf = command, param = null;
+    const lp = buf.indexOf('('), rp = buf.lastIndexOf(')');
+    if (lp >= 0 && rp > lp) {
+        param = buf.slice(lp + 1, rp);
+        buf = buf.slice(0, lp);
+    }
+    for (const extcmd of extcmdlist) {
+        if (strcmpi(buf, extcmd.ef_txt) || (extcmd.flags & INTERNALCMD))
+            continue;
+        game.rc_key_bindings[ch] = extcmd.ef_txt;
+        delete game.rc_key_params[ch];
+        if (extcmd.flags & CMD_PARAM) {
+            if (param === null)
+                config_error_add(`'${buf}' requires a parameter`);
+            else if (!param)
+                config_error_add('Required parameter cannot be empty');
+            else
+                game.rc_key_params[ch] = String.fromCharCode(
+                    ...new TextEncoder().encode(param).slice(0, 30));
+        } else if (param)
+            config_error_add(`'${buf}' does not take a parameter`);
+        return true;
+    }
+    return false;
+}
 
 function cmdbind_table() {
     const binds = new Map();

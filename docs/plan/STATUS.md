@@ -261,16 +261,28 @@ The ten boolean-option tests still pass and source audit is empty. A final
 ASCII-trimming correction passes all 52 parser/integration tests and both
 targeted binding replays.
 
-Next: push the encoding checkpoint, then continue binding precedence and
-unbinding. Interactive key rebinding stops at its outer menu. A native probe
+Encoding checkpoint `460078c6` is pushed. Command binding parsing now follows
+C's recursive precedence, comma-key handling, case-insensitive lookup,
+internal-command exclusion, and parameter validation and replacement.
+Explicit unbinding uses the same unknown-command cleanup as an unused key,
+including clearing repeat history. Eighteen state tests pass; seventeen fail
+before the patch. The other 62 parser/option checks pass. Eight native cases
+improve from 18/26 screens to 26/26, retaining 17,568 exact RNG calls.
+All 55 selected public/command/binding replays and input-exhaustion checks
+pass: 11,878 screens/cursors and 964,270 RNG calls. The 21 known public
+animation differences remain, and source audit reports zero findings.
+
+Next: push the command-binding checkpoint, then run the entire existing
+supplemental corpus to identify remaining gameplay divergences. Special keys,
+menu aliases, mouse bindings and full command-table consumers are still
+incomplete. Config binding errors now collect on `rc.errors`; startup error
+display is a separate remaining gap. Interactive key rebinding stops at its
+outer menu. A native probe
 of binding `~` to
 `versionshort` fails in C too: `handler_rebind_keys_add` appends the command
 to an uninitialized `cmdstr` buffer for non-parameter commands. Do not infer
 portable behavior for that undefined C path. Parameter commands use Snprintf.
-The startup parser still applies duplicates in the opposite order from C's
-recursive parsebindings, and rhack falls back to the default command after
-an explicit unbind. Audit those defined
-paths and the existing table consumers next. The official snapshot still
+Continue auditing the defined paths and existing table consumers. The official snapshot still
 predates this resumed work; do not infer a new ranking from local checks.
 
 ## 2026-09-05: full faithful port is the active goal

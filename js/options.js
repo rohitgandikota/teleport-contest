@@ -8,7 +8,7 @@ import { new_status_window } from './tty/wintty.js';
 import { notice_all_mons_flush } from './hack.js';
 import { display_file } from './pager.js';
 import { optmenu } from './dat_files.js';
-import { reset_commands } from './cmd.js';
+import { reset_commands, bind_key } from './cmd.js';
 import { set_vanq_order } from './insight.js';
 import { pline, docrt, bot, reglyph_darkroom, flush_screen } from './display.js';
 import {
@@ -753,7 +753,7 @@ export function config_error_add(msg) {
 //
 // C ref: src/cfgfiles.c parse_config_line() dispatches on the leading keyword
 // (OPTIONS=, SYMBOLS=, BIND=, ...) via the config_line_stmt table at
-// cfgfiles.c:1312. BIND lines are retained for the startup command table.
+// cfgfiles.c:1312. BIND lines update the configured command bindings.
 export function parseNethackrc(rc) {
     const result = {
         opts: {},        // option name -> boolean | string | null
@@ -804,6 +804,7 @@ export function parseNethackrc(rc) {
         case 'BINDING':
         case 'BINDINGS':
             result.bindings.push(rest);
+            parsebindings(rest);
             break;
         default:
             result.unhandled.push(line);
@@ -863,6 +864,38 @@ export function txt2key(txt) {
         return key;
     }
     return 0;
+}
+
+// src/options.c:7596 parsebindings(), command-key bindings.
+// Special, mouse and menu bindings still need their separate consumers.
+export function parsebindings(bindings) {
+    let ret = true;
+    let comma = bindings.indexOf(',');
+    if (comma === 0)
+        comma = bindings.indexOf(',', comma + 1);
+    else if (comma > 0 && (bindings[comma - 1] === '\\'
+             || (bindings[comma - 1] === "'" && bindings[comma + 1] === "'")))
+        comma = bindings.indexOf(',', comma + 2);
+    if (comma >= 0) {
+        ret = parsebindings(bindings.slice(comma + 1));
+        bindings = bindings.slice(0, comma);
+    }
+
+    const colon = bindings.indexOf(':');
+    if (colon < 0)
+        return false;
+    const keytxt = bindings.slice(0, colon);
+    const command = trimspaces(bindings.slice(colon + 1));
+    const key = txt2key(keytxt);
+    if (!key) {
+        config_error_add(`Unknown key binding key '${keytxt}'`);
+        return false;
+    }
+    if (!bind_key(key, command)) {
+        config_error_add(`Unknown key binding command '${command}'`);
+        return false;
+    }
+    return ret;
 }
 
 // Convenience accessors over the parsed table, so callers do not each

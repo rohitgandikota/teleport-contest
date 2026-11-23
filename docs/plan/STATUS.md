@@ -356,6 +356,22 @@ and rerun the complete corpus.
 The worn-source review also found missing monster resistance-memory clearing
 when equipment is removed; its old "nothing sets these bits" comment is stale.
 
+Census repair checkpoint `348b3f40` is pushed. Equipment removal now calls
+C's `monstunseesu_prop` in both `setworn` and `setnotworn`, at the same point
+relative to property masks, blocked properties and artifact effects. The new
+property conversion agrees with compiled C for all 256 byte values. Thirty-eight
+source-derived state tests cover the nine remembered defenses, property zero,
+replacement, two resistance sources, observer visibility, swallowing, and the
+different alternate-weapon/quiver guards in the two removal paths. All pass;
+32 fail before the fix. These are constructed states, not newly recorded C games.
+The 17 property-zero equipment checks still pass.
+
+All 73 selected public/equipment/monster/passive replays pass: 49,264
+screens/cursors and 1,421,745 RNG calls, with the known 21 public animation
+differences. Source audit is empty and all 73 input-exhaustion checks pass.
+Next: push the resistance-memory checkpoint, then run all 617 current replay
+fixtures again.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

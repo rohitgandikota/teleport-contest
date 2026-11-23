@@ -2660,7 +2660,7 @@ async function seffect_enchant_weapon(sobj) {
     }
     s = scursed ? -1
         : !uwep ? 1                     /* guard the tests below against null */
-        : (uwep.spe >= 9) ? (rn2(uwep.spe) === 0)  /* usually 0, maybe 1 */
+        : (uwep.spe >= 9) ? Number(rn2(uwep.spe) === 0) /* usually 0, maybe 1 */
         : sblessed ? rnd(3 - Math.trunc(uwep.spe / 3)) /* >=9 prevents rnd(0) */
         : 1;                            /* uncursed */
     /* nothing enchanted: strange_feeling -> useup */

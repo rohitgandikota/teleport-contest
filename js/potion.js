@@ -2036,8 +2036,7 @@ async function peffect_paralysis(otmp) {
 // which is what lets the hero name an object that just failed to do anything.
 export async function strange_feeling(obj, txt) {
     if (game.flags?.beginner || !txt)
-        await You(`have a ${game.u?.intrinsic?.HHallucination
-                            || game.u?.uprops?.HALLUC ? 'normal' : 'strange'}`
+        await You(`have a ${Hallucination() ? 'normal' : 'strange'}`
                   + ' feeling for a moment, then it passes.');
     else
         await pline(txt);

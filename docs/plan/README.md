@@ -18,9 +18,9 @@ pushes. The latest official snapshot checked, November 23 at 13:48 UTC, has
 these repairs. Public remains 44/44; that snapshot has 936 unmatched held-out
 screens. Local verification does not establish a newer held-out score.
 
-The latest complete regression passes 683/683 fixtures: 803,881 boundary
-screens/cursors, 15,957,972 RNG calls and 30,436 scored animation frames.
-The latest potion changes also pass strict full-stream and per-input RNG
+The latest complete regression passes 691/691 fixtures: 806,921 boundary
+screens/cursors, 16,056,333 scored RNG positions and 30,597 animation frames.
+The earlier potion changes also pass strict full-stream and per-input RNG
 checks on 117 fixtures, all 39,942 boundaries and 1,718,440 calls. The complete
 strict 677-fixture audit and all 213 animation-bearing fixtures passed at the
 preceding floor checkpoint. Current-corpus parity is not completeness.
@@ -56,9 +56,10 @@ The complete 689-fixture corpus matches all 805,930 screens/cursors,
 16,027,277 scored RNG positions and 30,597 animations. Four timer consumers
 now use the numeric melt identifier. Their three native cases, 14 state
 controls and all 80 selected regressions pass, including every public fixture.
-The maintained inventory is 690; the latest complete run remains 689.
-Next: weapon enchantment, the reproduced restore-phase gap and invoked
-artifact loss. The
+Four weapon-enchantment corrections now pass seven new native cases and
+eight source controls. The complete corpus is now 691/691. Next: raised
+drawbridge predicates, object naming, the reproduced restore-phase gap and
+invoked artifact loss. The
 Linux/NFS branch collector is pushed
 and passes signal canaries plus exact save/restore, artifact and natural-exit
 pilots. The Linux census at e4504071 now covers all 678 original inputs:

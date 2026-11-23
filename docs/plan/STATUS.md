@@ -2866,11 +2866,53 @@ complete-corpus run. The last complete run remains 689/689 at the placement
 checkpoint; this new fixture brings the maintained inventory to 690.
 Source audit remains 0/276; changed-file syntax and diff checks pass.
 
-Commit and immediately push the verified timer checkpoint. Next are the
-four source-backed weapon-enchantment corrections with seven native cases,
-then full restore phases and coordinated invoked-artifact loss. A separate
-drawbridge predicate audit investigates is_pool accepting ice/floor beneath
-a raised bridge; it is not repaired or hidden by these import fixes.
+Timer checkpoint `904eb763` is pushed. The weapon-enchantment checkpoint
+fixes four source-confirmed differences in four files, five added lines and
+seven removed. chwepon and strange_feeling use canonical Hallucination,
+restrict_name indexes the existing numeric artifact-type table, and the
+scroll's high-enchantment comparison becomes numeric 0/1 before chwepon's
+strict zero test. The full C chwepon body and helper/caller contracts were
+reviewed. Existing completion and billing order are preserved.
+
+The seven-case chwepon-boundaries fixture is a byte-identical copy of
+chwepon-parent-controls-native.session.json. It contains 661 boundaries,
+19,390 calls and no animations. The separate three-case priority recording
+is an identical subset and is not promoted or counted again. Before the
+repair, the seven cases match 657 screens and 658 cursors. Afterward all
+screens, cursors, complete RNG streams and all 661 input slices match.
+All eight normal-import source controls and eight native branch assertions
+pass. Input hooks are restored; exact animation counts and the input-exhaustion
+gate pass. The fixture and recipe preserve every original input tuple.
+
+The complete 691-fixture regression passes, including all public and maintained
+generated recordings: 806,921 screens/cursors, 16,056,333 scored RNG positions
+and 30,597 animations. All paths and basenames are unique and the inventory
+matches both maintained directories. All 279 runtime hashes stayed fixed.
+Receipts are chwepon-corpus-{0,1,2,3}.log, chwepon-corpus-{paths,totals}.json
+and chwepon-runtime-before-corpus.json. Source audit is 0/276; changed-file
+syntax and diff checks pass. This is a scored corpus run; strict per-input
+RNG coverage is separately established for the new fixture.
+
+The seven enchantment and three timer cases also pass strict instrumented
+Linux C replay on NFS, both raw inputs hash-verified. Their standalone run
+enters 1,455/5,492 functions and observes 10,156/107,260 direct outcomes.
+chwepon covers 41/94 outcomes; this does not establish complete branch
+coverage. Its profiles are separate from the global census, at
+/share/NFS/u/rohit/research/contest/artifacts/2026-11-22/chwepon-coverage.EsPbv8/coverage.
+The local receipt is linux-chwepon-coverage-summary.json.
+
+Commit and immediately push this verified enchantment checkpoint. The next
+two-predicate drawbridge repair is native-confirmed across three Castle cases:
+718 boundaries, 41,250 calls and 73 animations. Baseline matches 686 screens,
+709 cursors and 17 animations. Ordinary C recordings confirm walking/digging
+raised ice, cooling raised lava and firming existing timed ice. The reviewed
+cache patch remains unapplied during the complete enchantment regression.
+The parent also recorded eight object-naming cases: current code incorrectly
+creates restricted artifacts and stacked Sting artifacts, misses canonical
+capitalization and scuffed names, and prints the wrong novel message. Their
+419 native boundaries and 22,136 calls remain a failing diagnostic, not a
+passing fixture. Naming, full restore phases and invoked-artifact loss are
+separate cache candidates under source review.
 
 ## 2026-09-05: full faithful port is the active goal
 

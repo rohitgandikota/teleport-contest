@@ -1,0 +1,155 @@
+{
+  "name": "chwepon-boundaries",
+  "description": "Seven actual wizard input cases for pinned C chwepon: resisted-hallucination beatitude knowledge and feeling, restricted artifact degradation, zero-amount soft-limit survival, sighted/blind tin openers, and both stack conversions. Native screen assertions witness the branches; the paired input gate verifies object state.",
+  "coverage": [
+    "mode.debug",
+    "object.weapons",
+    "object.artifacts",
+    "survival.timed-status",
+    "ui.more-paging"
+  ],
+  "branches": [
+    "chwepon.resisted-hallucination-bknown",
+    "chwepon.resisted-hallucination-strange-feeling",
+    "chwepon.restricted-artifact-negative",
+    "chwepon.integer-zero-soft-limit-survivor",
+    "chwepon.sighted-tin-opener-uncurse",
+    "chwepon.blind-tin-opener-uncurse",
+    "chwepon.tooth-stack-fuses-to-crysknife",
+    "chwepon.crysknife-stack-fuses-to-tooth"
+  ],
+  "requireBranchAssertions": true,
+  "segments": [
+    {
+      "name": "tin-opener-resistant-hallucination",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed gold dragon scale mail\r  \u001b\u001bWa  \u001b\u001b\u0017cursed tin opener\r  \u001b\u001bwb  \u001b\u001b\u0017uncursed scroll of enchant weapon\r  \u001b\u001b#wizintrinsic\r100h\r  \u001b\u001brc  \u001b\u001bi\u001b"
+    },
+    {
+      "name": "magicbane-negative",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed +0 Magicbane\r  \u001b\u001bwa  \u001b\u001b\u0017cursed scroll of enchant weapon\r  \u001b\u001brb  \u001b\u001bi\u001b"
+    },
+    {
+      "name": "zero-amount-survives",
+      "seed": 1,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed +9 dagger\r  \u001b\u001bwa  \u001b\u001b\u0017uncursed scroll of enchant weapon\r  \u001b\u001brb  \u001b\u001bi\u001b"
+    },
+    {
+      "name": "tin-opener-sighted",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017cursed tin opener\r  \u001b\u001bwa  \u001b\u001b\u0017uncursed scroll of enchant weapon\r  \u001b\u001brb  \u001b\u001bi\u001b"
+    },
+    {
+      "name": "tin-opener-blindfolded",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017cursed tin opener\r  \u001b\u001bwa  \u001b\u001b\u0017uncursed scroll of enchant weapon\r  \u001b\u001b\u0017uncursed blindfold\r  \u001b\u001bPc  \u001b\u001brb  \u001b\u001bi\u001b"
+    },
+    {
+      "name": "tooth-stack-positive",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00173 cursed +0 worm teeth\r  \u001b\u001bwa  \u001b\u001b\u0017uncursed scroll of enchant weapon\r  \u001b\u001brb  \u001b\u001bi\u001b"
+    },
+    {
+      "name": "crysknife-stack-negative",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00173 uncursed fixed +2 crysknives\r  \u001b\u001bwa  \u001b\u001b\u0017cursed scroll of enchant weapon\r  \u001b\u001brb  \u001b\u001bi\u001b"
+    }
+  ],
+  "branchAssertions": [
+    {
+      "branch": "chwepon.resisted-hallucination-bknown",
+      "segment": 0,
+      "screenIncludes": [
+        "Your gold dragon scale mail begins to shine brilliantly!",
+        "h # hallucinating",
+        "b - an uncursed tin opener (wielded)"
+      ]
+    },
+    {
+      "branch": "chwepon.resisted-hallucination-strange-feeling",
+      "segment": 0,
+      "screenIncludes": [
+        "You have a strange feeling for a moment, then it passes."
+      ],
+      "screenExcludes": [
+        "You have a normal feeling for a moment, then it passes."
+      ]
+    },
+    {
+      "branch": "chwepon.restricted-artifact-negative",
+      "segment": 1,
+      "screenIncludes": [
+        "Your athame named Magicbane faintly glows black.",
+        "a - an athame named Magicbane (weapon in right hand)"
+      ],
+      "screenExcludes": [
+        "Your athame named Magicbane glows black for a moment."
+      ]
+    },
+    {
+      "branch": "chwepon.integer-zero-soft-limit-survivor",
+      "segment": 2,
+      "screenIncludes": [
+        "Your dagger violently glows blue for a while.",
+        "a - a dagger (weapon in right hand)"
+      ],
+      "screenExcludes": [
+        "Your dagger glows blue for a while.",
+        "Your dagger violently glows blue for a while and then evaporates."
+      ],
+      "rngIncludes": [
+        "rn2(9)=6 @ seffect_enchant_weapon(read.c:1669)",
+        "rn2(3)=0 @ chwepon(wield.c:1000)",
+        "rn2(7)=2 @ chwepon(wield.c:1044)"
+      ]
+    },
+    {
+      "branch": "chwepon.sighted-tin-opener-uncurse",
+      "segment": 3,
+      "screenIncludes": [
+        "You have a strange feeling for a moment, then it passes.",
+        "a - an uncursed tin opener (wielded)"
+      ]
+    },
+    {
+      "branch": "chwepon.blind-tin-opener-uncurse",
+      "segment": 4,
+      "screenIncludes": [
+        "You are now wearing a blindfold.  You can't see any more.",
+        "As you pronounce the formula on it, the scroll disappears.",
+        "a - an uncursed tin opener (wielded)"
+      ]
+    },
+    {
+      "branch": "chwepon.tooth-stack-fuses-to-crysknife",
+      "segment": 5,
+      "screenIncludes": [
+        "Your worm teeth fuse, and become much sharper now.",
+        "a - an uncursed crysknife (weapon in right hand)"
+      ]
+    },
+    {
+      "branch": "chwepon.crysknife-stack-fuses-to-tooth",
+      "segment": 6,
+      "screenIncludes": [
+        "Your crysknives fuse, and become much duller now.",
+        "a - a worm tooth (weapon in right hand)"
+      ]
+    }
+  ]
+}

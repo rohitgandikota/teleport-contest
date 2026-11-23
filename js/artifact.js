@@ -1905,7 +1905,7 @@ export function restrict_name(otmp, name) {
     for (let a = 1; a < artifact_records.length; a++) {
         if (!artifact_otyps[a])
             break;
-        if (!sametype[artifact_otyps[a]])
+        if (!sametype[arti_otyp[a]])
             continue;
         let aname = artifact_names[a];
         if (aname.toLowerCase().startsWith('the '))

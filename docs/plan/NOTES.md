@@ -9326,7 +9326,8 @@ As of November 23, assign_graphics() selects the loaded primary or Rogue
 table and applies overrides. DECgraphics gives the Mines, Gehennom, Fort
 Ludios and Sokoban wall glyphs custom colours. The earlier claim that the
 scorer ignores colours was wrong: it compares decoded colours and attributes.
-The custom glyphmap colour pipeline still needs a renderer audit.
+The November renderer now reads custom metadata from buffered numeric glyphs.
+Some gameplay producers still lack those identities; see STATUS for scope.
 #wizcustom lists entries as the C does, with the DEC meta character
 ('\248' for S_vwall) and CLR_GRAY (07) from reset_glyphmap()'s
 wallcolors[]. iflags.colorcount is 256, the recorder terminal's count.
@@ -9353,7 +9354,16 @@ clear and reapply the relevant glyph metadata before redrawing. Switching
 sets must call clear_symsetentry before replacing the name: overwriting the
 handling field first loses the information needed to free old Unicode data.
 Twelve native cases and eleven state controls cover these transitions.
-Custom glyph rendering remains a separate incomplete path.
+The subsequent renderer repair snapshots custom colors and Unicode into gbuf.
+C's free_all_glyphmap_u must therefore clear buffered Unicode references too.
+The numeric glyph identifies terrain branches, altar alignment, object pile
+variants and monster gender even when the ordinary character is identical.
+The renderer retains a sampled hallucinated-statue gender instead of drawing
+again. Twelve native rendering cases and fifteen state controls verify this
+bounded path. A start-level stair uses S_brupstair, so an S_upstair override
+is not a valid control for it. Unicode output bypasses nomux_putch and leaves
+the physical cell unchanged. Basic custom colors reach the buffer; extra RGB
+and indexed escape output leaves its foreground at the reset value.
 
 November 23 native checks also establish several tty details. Control bytes
 are ignored by nomux_putch on the map, but a status glyph still occupies a

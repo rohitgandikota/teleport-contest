@@ -9,6 +9,7 @@
 import { custom_ureps, do_custom_symbols } from './const.js';
 import { gs_sym_customizations, find_matching_customization, apply_customizations } from './glyphs.js';
 import { glyphmap } from './display.js';
+import { game } from './gstate.js';
 import { gc_currentgraphics } from './symbols.js';
 
 const hexdd = '00112233445566778899aAbBcCdDeEfF';
@@ -50,6 +51,11 @@ export function set_map_u(gmap, utf32ch, utf8str) {
 export function free_all_glyphmap_u() {
     for (const gmap of glyphmap())
         gmap.u = null;
+    // Buffered glyphs also retain the shared representation.
+    for (const row of game.gbuf || [])
+        for (const cell of row || [])
+            if (cell)
+                cell.disp_u = null;
 }
 
 // src/utf8map.c:148 add_custom_urep_entry()

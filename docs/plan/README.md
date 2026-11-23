@@ -18,15 +18,16 @@ of 24,531 combined screens, 7th agentic and 11th overall. It predates the
 latest repairs. Public remains 44/44; 1,008 held-out screens remain unmatched
 in that snapshot.
 
-The full regression and new restore recording cover 652/652 fixtures with
-792,073 exact screens and 15,431,215 RNG calls. Recent fixes cover active
-monster symbols, customization option resets and symbol-set cleanup. Twelve
-new native cases cover startup, toggles, set changes and restore settings.
-Colored terminal blanks now also pass strict native cell comparisons.
-Next: custom glyph rendering and the existing animation gaps. The 21
-animation mismatches remain; current-corpus parity is not a completeness claim.
-See [STATUS.md](STATUS.md) for evidence and the next action. Historical
-milestone rows below are not a current completion audit.
+The full regression covers 653/653 fixtures with 792,211 exact screens and
+15,468,069 RNG calls. Recent fixes cover active symbols, customization option
+resets, colored blanks and buffered custom glyph metadata. Twelve new native
+cases verify the renderer, and all 85 related state controls pass.
+Next: integrate the cache animation repair, then complete remaining glyph
+producers and object customization shuffling. The candidate fixes all 21
+known animation gaps in 55 focused fixtures; its full regression is pending.
+Current-corpus parity is not a completeness claim. See [STATUS.md](STATUS.md)
+for evidence and the next action. Historical milestone rows below are not a
+current completion audit.
 
 ## Previous focus, 2026-09-06
 

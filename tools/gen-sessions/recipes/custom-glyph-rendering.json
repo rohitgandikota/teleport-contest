@@ -1,0 +1,296 @@
+{
+  "name": "custom-glyph-rendering",
+  "description": "Custom hero colors and Unicode, loaded fountain metadata, arbitrary stair Unicode and runtime option controls. Native color values are asserted by custom-glyph-state-gate.",
+  "recordingNote": "Use RERECORD_TZ=Etc/GMT+4 for a fixed UTC-4 recording offset.",
+  "coverage": [
+    "mode.debug",
+    "options.rc-bindings",
+    "ui.map-memory-vision"
+  ],
+  "branches": [
+    "custom-glyph-rendering.hero-basic-color",
+    "custom-glyph-rendering.hero-basic-color-off",
+    "custom-glyph-rendering.hero-customcolor-off",
+    "custom-glyph-rendering.hero-toggle-color",
+    "custom-glyph-rendering.hero-extra-color",
+    "custom-glyph-rendering.hero-unicode",
+    "custom-glyph-rendering.hero-unicode-off",
+    "custom-glyph-rendering.fountain-enhanced",
+    "custom-glyph-rendering.fountain-plain-control",
+    "custom-glyph-rendering.fountain-unicode-off",
+    "custom-glyph-rendering.branch-upstair-unicode",
+    "custom-glyph-rendering.branch-upstair-control"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "custom-glyph-rendering.hero-basic-color",
+      "segment": 0,
+      "screenCells": [
+        {
+          "step": 0,
+          "x": 7,
+          "y": 13,
+          "equals": "@"
+        }
+      ]
+    },
+    {
+      "branch": "custom-glyph-rendering.hero-basic-color-off",
+      "segment": 1,
+      "screenCells": [
+        {
+          "step": 0,
+          "x": 7,
+          "y": 13,
+          "equals": "@"
+        }
+      ]
+    },
+    {
+      "branch": "custom-glyph-rendering.hero-customcolor-off",
+      "segment": 2,
+      "screenCells": [
+        {
+          "step": 0,
+          "x": 7,
+          "y": 13,
+          "equals": "@"
+        }
+      ]
+    },
+    {
+      "branch": "custom-glyph-rendering.hero-toggle-color",
+      "segment": 3,
+      "screenCells": [
+        {
+          "step": 0,
+          "x": 7,
+          "y": 13,
+          "equals": "@"
+        }
+      ],
+      "screenIncludes": [
+        "'color' option toggled off.",
+        "'color' option toggled on."
+      ]
+    },
+    {
+      "branch": "custom-glyph-rendering.hero-extra-color",
+      "segment": 4,
+      "screenCells": [
+        {
+          "step": 0,
+          "x": 7,
+          "y": 13,
+          "equals": "@"
+        }
+      ]
+    },
+    {
+      "branch": "custom-glyph-rendering.hero-unicode",
+      "segment": 5,
+      "screenCells": [
+        {
+          "step": 0,
+          "x": 7,
+          "y": 13,
+          "equals": " "
+        }
+      ]
+    },
+    {
+      "branch": "custom-glyph-rendering.hero-unicode-off",
+      "segment": 6,
+      "screenCells": [
+        {
+          "step": 0,
+          "x": 7,
+          "y": 13,
+          "equals": "@"
+        }
+      ]
+    },
+    {
+      "branch": "custom-glyph-rendering.fountain-enhanced",
+      "segment": 7,
+      "screenCells": [
+        {
+          "step": 12,
+          "x": 7,
+          "y": 13,
+          "equals": "@"
+        }
+      ],
+      "screenIncludes": [
+        "A fountain."
+      ]
+    },
+    {
+      "branch": "custom-glyph-rendering.fountain-plain-control",
+      "segment": 8,
+      "screenCells": [
+        {
+          "step": 12,
+          "x": 7,
+          "y": 13,
+          "equals": "{"
+        }
+      ],
+      "screenIncludes": [
+        "A fountain."
+      ]
+    },
+    {
+      "branch": "custom-glyph-rendering.fountain-unicode-off",
+      "segment": 9,
+      "screenCells": [
+        {
+          "step": 12,
+          "x": 7,
+          "y": 13,
+          "equals": "{"
+        }
+      ],
+      "screenIncludes": [
+        "A fountain."
+      ]
+    },
+    {
+      "branch": "custom-glyph-rendering.branch-upstair-unicode",
+      "segment": 10,
+      "screenCells": [
+        {
+          "step": 2,
+          "x": 7,
+          "y": 13,
+          "equals": "@"
+        },
+        {
+          "step": 5,
+          "x": 7,
+          "y": 13,
+          "equals": "<"
+        },
+        {
+          "step": 8,
+          "x": 7,
+          "y": 13,
+          "equals": " "
+        }
+      ],
+      "screenIncludes": [
+        "'customsymbols' option toggled off.",
+        "'customsymbols' option toggled on."
+      ]
+    },
+    {
+      "branch": "custom-glyph-rendering.branch-upstair-control",
+      "segment": 11,
+      "screenCells": [
+        {
+          "step": 2,
+          "x": 7,
+          "y": 13,
+          "equals": "<"
+        },
+        {
+          "step": 8,
+          "x": 7,
+          "y": 13,
+          "equals": "<"
+        }
+      ],
+      "screenIncludes": [
+        "'customsymbols' option toggled off.",
+        "'customsymbols' option toggled on."
+      ]
+    }
+  ],
+  "segments": [
+    {
+      "name": "hero-basic-color",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\nSYMBOLS=S_human:U+0040/red\n",
+      "moves": " VjVkV\f"
+    },
+    {
+      "name": "hero-basic-color-off",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\nSYMBOLS=S_human:U+0040/red\nOPTIONS=!color\n",
+      "moves": " VjVkV\f"
+    },
+    {
+      "name": "hero-customcolor-off",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\nSYMBOLS=S_human:U+0040/red\nOPTIONS=!customcolors\n",
+      "moves": " VjVkV\f"
+    },
+    {
+      "name": "hero-toggle-color",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\nSYMBOLS=S_human:U+0040/red\nBIND=^T:toggle(color)\n",
+      "moves": " \u0014 V\u0014 V"
+    },
+    {
+      "name": "hero-extra-color",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\nSYMBOLS=S_human:U+0040/1-2-3\n",
+      "moves": " VjVkV\f"
+    },
+    {
+      "name": "hero-unicode",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:Enhanced1\nSYMBOLS=S_human:U+2603\n",
+      "moves": " VjVkV\f"
+    },
+    {
+      "name": "hero-unicode-off",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:Enhanced1\nSYMBOLS=S_human:U+2603\nOPTIONS=!customsymbols\n",
+      "moves": " VjVkV\f"
+    },
+    {
+      "name": "fountain-enhanced",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:Enhanced1\n",
+      "moves": " \u0017fountain\rlVhV?\u001b\fV"
+    },
+    {
+      "name": "fountain-plain-control",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "moves": " \u0017fountain\rlVhV?\u001b\fV"
+    },
+    {
+      "name": "fountain-unicode-off",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:Enhanced1\nOPTIONS=!customsymbols\n",
+      "moves": " \u0017fountain\rlVhV?\u001b\fV"
+    },
+    {
+      "name": "branch-upstair-unicode",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:Enhanced1\nSYMBOLS=S_brupstair:U+2603\nBIND=^T:toggle(customsymbols)\n",
+      "moves": " jV\u0014 V\u0014 V\f"
+    },
+    {
+      "name": "branch-upstair-control",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:Enhanced1\nBIND=^T:toggle(customsymbols)\n",
+      "moves": " jV\u0014 V\u0014 V\f"
+    }
+  ]
+}

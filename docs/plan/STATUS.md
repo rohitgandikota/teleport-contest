@@ -1215,6 +1215,50 @@ The 21 unmatched public animations are in seed0014-dequa-fountain-explore
 They remain a separate source-audit target; inspect their first animation
 divergence and verify against current native C before changing gameplay.
 
+Colored-blank checkpoint `97406310` is pushed. The bounded custom glyph
+renderer is now applied and verified. Buffered glyphs snapshot their numeric
+identity, custom colors and Unicode representation. Terrain retains branch
+wall and altar variants; objects retain pile, corpse and statue ranges; the
+hero retains form and gender. Hallucinated statues retain the existing
+sampled gender without adding RNG calls. Basic custom colors use tty color
+handling, while Unicode and RGB output preserve the native nomux behavior.
+Because buffered glyphs now retain Unicode pointers, free_all_glyphmap_u also
+clears those buffered references, as C does.
+
+The twelve-case native `custom-glyph-rendering` fixture improves from 99/138
+to 138/138 screens, with all 36,854 RNG calls and cursors unchanged. The
+branch-stair case uses S_brupstair: the initial S_upstair probe did not reach
+the intended glyph. Fountain controls distinguish active Unicode, disabled
+custom symbols and plain graphics. Fifteen source-state controls pass;
+thirteen fail before. Numeric partition controls verify renderer dispatch,
+not every gameplay producer. All 85 related state controls pass.
+
+Full regression passes 653/653 fixtures: 792,211 screens/cursors,
+15,468,069 RNG calls and 30,066/30,087 animations. Native assertions,
+recording integrity, input-exhaustion and source audit pass. The audit has
+zero findings across 276 non-frozen modules. Logs are
+`custom-glyph-corpus-{0..3}.log`, `custom-glyph-rendering-{before,final,native,
+hang,audit}.log`, `custom-glyph-state-{before,final}.log` and
+`custom-glyph-*-state.log` in the restart cache.
+
+Next: apply and verify the cache-only animation repair from
+`animation-audit.patch` and `animation-audit-report.md`. It changes trap.js
+and zap.js, restoring C launch delays and leaving unseen projectile
+restoration buffered. Its 55-fixture check fixes all 21 known public
+animation differences without changing screens or RNG. Full regression is
+still required. Fresh current native prefixes reproduce the original
+animation oracles. The audit also identifies 24 separate unscored transient
+cursor differences; those are not fixed by this patch. The agent is closed.
+
+Ordinary monster glyph producers remain under a separate cache-only agent
+review. Other open renderer paths include ridden heroes, swallow/effect
+identities and object appearance shuffling. A parent cache prototype for
+C's maybe_shuffle_customizations and move-loop call passes eight state
+controls, all failing before, including a real move-loop control. It has no
+native coverage claim yet and is not applied. Native recording stays
+sequential and parent-owned. Continue verified commits and immediate pushes;
+current-corpus parity does not establish full-port completion.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

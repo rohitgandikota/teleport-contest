@@ -17,7 +17,7 @@ import {
     tty_add_menu_str, tty_end_menu, tty_display_nhwindow, tty_select_menu, tty_wait_synch } from './tty/wintty.js';
 import {
     MENU_ITEMFLAGS_NONE, MENU_ITEMFLAGS_SELECTED, MENU_ITEMFLAGS_SKIPINVERT,
-    MENU_ITEMFLAGS_SKIPMENUCOLORS, MENU_BEHAVE_STANDARD, BUFSZ,
+    MENU_ITEMFLAGS_SKIPMENUCOLORS, MENU_BEHAVE_STANDARD, BUFSZ, QBUFSZ,
     PICK_NONE, PICK_ONE, PICK_ANY, ECMD_OK,
     AUTOUNLOCK_APPLY_KEY, MENU_TRADITIONAL, MENU_COMBINATION,
     GPCOORDS_NONE, GPCOORDS_COMPASS, GPCOORDS_COMFULL, GPCOORDS_MAP,
@@ -43,7 +43,7 @@ import { vision_recalc } from './vision.js';
 import { reassign, update_inventory, inv_order } from './invent.js';
 import { def_oc_syms } from './drawing_data.js';
 import { choose_disco_sort, get_sortdisco } from './o_init.js';
-import { mungspaces, strNsubst } from './hacklib.js';
+import { mungspaces, strNsubst, trimspaces } from './hacklib.js';
 import {
     regex_init, regex_compile, regex_error_desc, regex_free,
 } from './posixregex.js';
@@ -753,8 +753,7 @@ export function config_error_add(msg) {
 //
 // C ref: src/cfgfiles.c parse_config_line() dispatches on the leading keyword
 // (OPTIONS=, SYMBOLS=, BIND=, ...) via the config_line_stmt table at
-// cfgfiles.c:1312. Only OPTIONS is wired up so far; the others are recognised
-// and recorded so they are visibly pending rather than silently ignored.
+// cfgfiles.c:1312. BIND lines are retained for the startup command table.
 export function parseNethackrc(rc) {
     const result = {
         opts: {},        // option name -> boolean | string | null
@@ -813,6 +812,57 @@ export function parseNethackrc(rc) {
     }
     config_error_data = null; /* config_error_done() */
     return result;
+}
+
+// src/options.c:6971 txt2key(), decode a one-byte key from binding text.
+export function txt2key(txt) {
+    /* Config text reaches C as UTF-8 bytes, even for a non-ASCII key. */
+    txt = String.fromCharCode(...new TextEncoder().encode(txt));
+    txt = trimspaces(txt);
+    let makemeta = false;
+    if (!txt)
+        return 0;
+    if (txt.length === 1)
+        return txt.charCodeAt(0) & 0xff;
+    if (txt === '<enter>') return 10;
+    if (txt === '<space>') return 32;
+    if (txt === '<esc>') return 27;
+    if (txt[0] === '\\')
+        return escapes(txt.slice(0, QBUFSZ - 1)).charCodeAt(0) & 0xff;
+
+    /* The pinned build's M macro subtracts 128; uchar conversion wraps. */
+    if (highc(txt[0]) === 'M') {
+        txt = txt.slice(1);
+        if (txt[0] === '-' && txt.length > 1)
+            txt = txt.slice(1);
+        if (txt.length === 1)
+            return (txt.charCodeAt(0) - 128) & 0xff;
+        makemeta = true;
+    }
+    if (txt[0] === '^' || highc(txt[0]) === 'C') {
+        let uc = txt.charCodeAt(0);
+        if (txt.length === 1)
+            return (makemeta ? uc - 128 : uc) & 0xff;
+        txt = txt.slice(1);
+        if (txt[0] === '-' && txt.length > 1)
+            txt = txt.slice(1);
+        if (txt[0] === '?')
+            return makemeta ? 255 : 127;
+        uc = txt.charCodeAt(0) & 0x1f;
+        return (makemeta ? uc - 128 : uc) & 0xff;
+    }
+    if (makemeta && txt)
+        return (txt.charCodeAt(0) - 128) & 0xff;
+    if (txt[0] >= '0' && txt[0] <= '9') {
+        let key = 0;
+        for (let i = 0; i < 3; i++) {
+            if (!(txt[i] >= '0' && txt[i] <= '9'))
+                return 0;
+            key = (10 * key + txt.charCodeAt(i) - 48) & 0xff;
+        }
+        return key;
+    }
+    return 0;
 }
 
 // Convenience accessors over the parsed table, so callers do not each

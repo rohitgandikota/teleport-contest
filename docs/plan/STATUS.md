@@ -249,14 +249,27 @@ and input-exhaustion checks pass: 12,751 screens/cursors and 846,730 RNG calls,
 with the same known animation deficit. Source audit is empty. The meta-key
 fixture's original compact formatting was restored without changing data.
 
-Next: push the timeout checkpoint, then continue binding work. Interactive
-key rebinding stops at its outer menu. A native probe of binding `~` to
+Timeout checkpoint `48d62cb5` is pushed. Startup bindings now use C's
+`txt2key` decoding for meta, control, numeric and escaped keys. A compiled
+probe of the pinned C function and its string helpers agrees on all 51
+inputs, including UTF-8 input and ASCII-only trimming. The startup integration
+test passes and fails before the change. The native encoding fixture improves
+from 2/7 screens to 7/7, retaining 2,196 exact RNG calls. All 49 selected
+public/binding/recorder replays and input-exhaustion checks pass: 11,655
+screens/cursors and 872,317 RNG calls, with the known 21 animation differences.
+The ten boolean-option tests still pass and source audit is empty. A final
+ASCII-trimming correction passes all 52 parser/integration tests and both
+targeted binding replays.
+
+Next: push the encoding checkpoint, then continue binding precedence and
+unbinding. Interactive key rebinding stops at its outer menu. A native probe
+of binding `~` to
 `versionshort` fails in C too: `handler_rebind_keys_add` appends the command
 to an uninitialized `cmdstr` buffer for non-parameter commands. Do not infer
 portable behavior for that undefined C path. Parameter commands use Snprintf.
-The startup parser is independently incomplete: it recognizes only a literal
-key or ^X, omits txt2key's meta/numeric/escaped forms, and applies duplicates
-in the opposite order from C's recursive parsebindings. Audit those defined
+The startup parser still applies duplicates in the opposite order from C's
+recursive parsebindings, and rhack falls back to the default command after
+an explicit unbind. Audit those defined
 paths and the existing table consumers next. The official snapshot still
 predates this resumed work; do not infer a new ranking from local checks.
 

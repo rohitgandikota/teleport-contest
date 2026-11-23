@@ -17,7 +17,7 @@ import { pushKey, nhgetch } from './input.js';
 import { newgame, newgame_moveloop_preamble, moveloop_core,
          maybe_do_tutorial } from './allmain.js';
 import { wd_message, restore_savefile_prompt } from './unixmain.js';
-import { parseNethackrc, optValue, set_fruit_name, set_menuobjsyms_flags, iflag_boolean_options } from './options.js';
+import { parseNethackrc, optValue, set_fruit_name, set_menuobjsyms_flags, iflag_boolean_options, txt2key } from './options.js';
 import { assign_graphics, init_ov_primary_symbols, init_ov_rogue_symbols,
          savedsym_free, go_ov_primary_syms, go_ov_rogue_syms, SYM_BOULDER,
          SYM_OFF_X } from './symbols.js';
@@ -132,15 +132,14 @@ export class NethackGame {
             go_ov_primary_syms[SYM_BOULDER + SYM_OFF_X]
                 = go_ov_rogue_syms[SYM_BOULDER + SYM_OFF_X]
                 = String(optValue(rc, 'boulder')).charCodeAt(0);
-        /* src/options.c:7596 parsebindings() — BIND=key:command lines rebind
-           a command key. txt2key handles the '^X' control form; the map is
-           consulted by rhack() before its default dispatch. */
+        /* src/options.c:7596 parsebindings(). rhack() consults the parsed
+           key map before its default dispatch. */
         g.rc_key_bindings = {};
         for (const b of rc.bindings) {
             for (const one of b.split(',')) {
                 const ci = one.indexOf(':');
                 if (ci < 0) continue;
-                const keytxt = one.slice(0, ci).trim();
+                const keytxt = one.slice(0, ci);
                 let cmdname = one.slice(ci + 1).trim();
                 /* src/cmd.c:2680 bind_key() — "command(param)": the text in
                    parentheses is the binding's parameter (#toggle's option),
@@ -151,10 +150,9 @@ export class NethackGame {
                     param = cmdname.slice(lp + 1, rp).slice(0, 30);
                     cmdname = cmdname.slice(0, lp);
                 }
-                const key = (keytxt.length === 2 && keytxt[0] === '^')
-                    ? String.fromCharCode(keytxt.charCodeAt(1) & 0x1f)
-                    : (keytxt.length === 1 ? keytxt : null);
-                if (key !== null) {
+                const keycode = txt2key(keytxt);
+                if (keycode) {
+                    const key = String.fromCharCode(keycode);
                     g.rc_key_bindings[key] = cmdname;
                     if (param)
                         (g.rc_key_params ||= {})[key] = param;

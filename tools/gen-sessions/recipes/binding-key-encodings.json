@@ -1,0 +1,31 @@
+{
+  "name": "binding-key-encodings",
+  "description": "Five meta, control, numeric and escaped BIND key forms each invoke the short version command.",
+  "recordingNote": "Use RERECORD_TZ=Etc/GMT+4 for a fixed UTC-4 recording offset.",
+  "coverage": ["mode.debug", "options.rc-bindings"],
+  "branches": ["bindings.encoded-command-keys"],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "bindings.encoded-command-keys",
+      "segment": 0,
+      "screenIncludes": ["MacOS NetHack Version 5.0.0"],
+      "screenExcludes": ["Unknown command"],
+      "screenCells": [
+        {"step": 2, "x": 0, "y": 0, "equals": "M"},
+        {"step": 3, "x": 0, "y": 0, "equals": "M"},
+        {"step": 4, "x": 0, "y": 0, "equals": "M"},
+        {"step": 5, "x": 0, "y": 0, "equals": "M"},
+        {"step": 6, "x": 0, "y": 0, "equals": "M"}
+      ]
+    }
+  ],
+  "segments": [
+    {
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nBIND=M-x:versionshort,C-v:versionshort,126:versionshort,\\x21:versionshort,M-^V:versionshort\n",
+      "moves": " \u00f8\u0016~!\u0096"
+    }
+  ]
+}

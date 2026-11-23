@@ -554,6 +554,33 @@ already show nine screen differences and three cursor differences, with
 matching RNG. The compiled message parser gate fails all four groups before
 implementation. Keep these pending files out of the restore checkpoint.
 
+Restore checkpoint `31fe2053` is pushed. Configuration now dispatches
+`MSGTYPE` and `AUTOPICKUP_EXCEPTION` to their C handlers. Message rules live
+in per-process game state and, like pickup exceptions, are rebuilt rather than
+restored from serialized regex objects. The message parser preserves C's
+type aliases, prefix precedence, diagnostics and 10/255-byte scanning limits.
+The regex wrapper now uses C-locale bytes, including incomplete UTF-8 patterns
+and NUL termination. Compiled native comparisons cover 38 parser inputs and
+86 regex cases. Eight of the nine new test groups fail before the fix; the
+ASCII regex group passes before and after. All 18 selected test entries pass,
+including 36 native autopickup scenarios and existing restore/menu controls.
+
+The two new recordings contain 13 asserted scenarios and match all 124
+screens/cursors and 28,903 RNG calls. Before the fix, only 106 screens and
+118 cursors match. The full 626-fixture sweep passes 626/626: 787,865
+screens/cursors and 14,939,494 RNG calls. Animations remain 30,005/30,026.
+All 76 input-exhaustion checks pass and source audit remains empty.
+Logs are `.cache/restart-20261122/regex-corpus-{0,1,2,3}.log`,
+`regex-state-{before,final}.log` and `regex-hang.log`.
+The official fetch at November 23 08:02 UTC still serves November 22 19:45.
+
+The pending `look-message-type` fixture is outside that sweep. Its four cases
+show four differences among 52 screens, with exact cursors and 10,612 RNG
+calls. C's explicit look temporarily disables hide/norepeat rules while
+preserving stop rules; JS `dolook` currently omits that wrapper. The compiled
+mask-state gate fails all three groups before this follow-up fix. Keep its
+fixture, recipe and state gate out of the configuration checkpoint.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

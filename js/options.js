@@ -57,7 +57,7 @@ import { strsubst, highc, strstri } from './hacklib.js';
 import { regex_match } from './posixregex.js';
 import { query_color_attr } from './coloratt.js';
 import { adjust_menu_promptstyle } from './tty/wintty.js';
-import { gp, ALIGN_TOP, ALIGN_BOTTOM, ALIGN_LEFT, ALIGN_RIGHT, GFILTER_NONE, GFILTER_VIEW, GFILTER_AREA, VI_NUMBER, VI_NAME, VI_BRANCH, InvOptNone, InvOptOn, InvSparse, MSGTYP_NORMAL, MSGTYP_NOREP, MSGTYP_NOSHOW, MSGTYP_STOP } from './const.js';
+import { ALIGN_TOP, ALIGN_BOTTOM, ALIGN_LEFT, ALIGN_RIGHT, GFILTER_NONE, GFILTER_VIEW, GFILTER_AREA, VI_NUMBER, VI_NAME, VI_BRANCH, InvOptNone, InvOptOn, InvSparse, MSGTYP_NORMAL, MSGTYP_NOREP, MSGTYP_NOSHOW, MSGTYP_STOP } from './const.js';
 import { MAXMCLASSES, SYM_OFF_X, go_ov_primary_syms, go_ov_rogue_syms, escapes } from './symbols.js';
 import { WARNCOUNT, SYM_BOULDER } from './const.js';
 import { NUM_DISCLOSURE_OPTIONS, DISCLOSE_PROMPT_DEFAULT_YES, DISCLOSE_PROMPT_DEFAULT_NO, DISCLOSE_PROMPT_DEFAULT_SPECIAL, DISCLOSE_YES_WITHOUT_PROMPT, DISCLOSE_NO_WITHOUT_PROMPT, DISCLOSE_SPECIAL_WITHOUT_PROMPT } from './const.js';
@@ -822,6 +822,12 @@ export function parseNethackrc(rc) {
             /* src/cfgfiles.c:1164 cnf_line_MENUCOLOR(); parse_config_line()
                has mungspaces()d the line and stepped past '=' */
             add_menu_coloring(mungspaces(rest));
+            break;
+        case 'MSGTYPE':
+            msgtype_parse_add(mungspaces(rest));
+            break;
+        case 'AUTOPICKUP_EXCEPTION':
+            add_autopickup_exception(mungspaces(rest));
             break;
         case 'BIND':
         case 'BINDI':
@@ -2880,14 +2886,15 @@ function msgtype_add(typ, pattern) {
         config_error_add(`${re_error}: ${re_error_desc}`);
         return false;
     }
-    tmp.pattern = pattern;
-    (gp.plinemsg_types ||= []).unshift(tmp);
+    tmp.pattern = pattern instanceof Uint8Array
+        ? new TextDecoder().decode(pattern) : pattern;
+    (game.plinemsg_types ||= []).unshift(tmp);
     return true;
 }
 
 // src/options.c:7772 free_one_msgtype()
 function free_one_msgtype(idx) { /* 0 .. */
-    const list = gp.plinemsg_types || [];
+    const list = game.plinemsg_types || [];
 
     if (idx >= 0 && idx < list.length) {
         regex_free(list[idx].regex);
@@ -2897,7 +2904,7 @@ function free_one_msgtype(idx) { /* 0 .. */
 
 // src/options.c:7797 msgtype_type()
 export function msgtype_type(msg, norepeat) { /* called from Norep(via pline) */
-    for (const tmp of gp.plinemsg_types || []) {
+    for (const tmp of game.plinemsg_types || []) {
         /* we don't exclude entries with negative msgtype values
            because then the msg might end up matching a later pattern */
         if (regex_match(msg, tmp.regex))
@@ -2908,7 +2915,30 @@ export function msgtype_type(msg, norepeat) { /* called from Norep(via pline) */
 
 // src/options.c:7831 msgtype_count()
 function msgtype_count() {
-    return (gp.plinemsg_types || []).length;
+    return (game.plinemsg_types || []).length;
+}
+
+// src/options.c:7844 msgtype_parse_add(). A closing quote is optional in
+// sscanf's result: assigning the pattern already supplies the second field.
+export function msgtype_parse_add(str) {
+    const bytes = String.fromCharCode(...new TextEncoder().encode(str))
+        .split('\0', 1)[0];
+    const typeField = bytes.match(/^[ \t\r\n\f\v]*([^ \t\r\n\f\v]{1,10})/);
+    const patternField = typeField && bytes.slice(typeField[0].length)
+        .match(/^[ \t\r\n\f\v]*"([^"]{1,255})/);
+    if (!patternField) {
+        config_error_add('Malformed MSGTYPE');
+        return false;
+    }
+    const type = new TextDecoder().decode(
+        Uint8Array.from(typeField[1], ch => ch.charCodeAt(0)));
+    const pattern = Uint8Array.from(patternField[1], ch => ch.charCodeAt(0));
+    for (const [name, value] of msgtype_names) {
+        if (name.startsWith(type.toLowerCase()))
+            return msgtype_add(value, pattern);
+    }
+    config_error_add(`Unknown message type '${type}'`);
+    return false;
 }
 
 // src/options.c:7871 test_regex_pattern()
@@ -3421,7 +3451,7 @@ async function handler_msgtype() {
             const tmpwin = tty_create_nhwindow(NHW_MENU);
             tty_start_menu(tmpwin, MENU_BEHAVE_STANDARD);
             let mt_idx = 0;
-            for (const tmp of gp.plinemsg_types || []) {
+            for (const tmp of game.plinemsg_types || []) {
                 const mtype = msgtype2name(tmp.msgtype);
                 const any = ++mt_idx;
                 let mtbuf = `${String(mtype).padEnd(5)} "`; /* "%-5s \"" */

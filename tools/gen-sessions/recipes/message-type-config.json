@@ -1,0 +1,185 @@
+{
+  "name": "message-type-config",
+  "description": "Configured message suppression, precedence, extra prompts, repeat handling and process lifetime follow C.",
+  "recordingNote": "Use RERECORD_TZ=Etc/GMT+4 for a fixed UTC-4 recording offset.",
+  "coverage": [
+    "mode.normal",
+    "options.rc-bindings",
+    "ui.cancel-invalid"
+  ],
+  "branches": [
+    "message-type.hide",
+    "message-type.show-last",
+    "message-type.hide-last",
+    "message-type.stop",
+    "message-type.more-alias",
+    "message-type.norepeat",
+    "message-type.fresh-process",
+    "message-type.save-hide",
+    "message-type.restore-fresh"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "message-type.hide",
+      "segment": 0,
+      "screenIncludes": [
+        "Hello"
+      ],
+      "screenExcludes": [
+        "You sit on the stairs."
+      ],
+      "screenCells": [
+        {
+          "step": 6,
+          "x": 0,
+          "y": 0,
+          "equals": " "
+        }
+      ]
+    },
+    {
+      "branch": "message-type.show-last",
+      "segment": 1,
+      "screenIncludes": [
+        "You sit on the stairs."
+      ]
+    },
+    {
+      "branch": "message-type.hide-last",
+      "segment": 2,
+      "screenIncludes": [
+        "Hello"
+      ],
+      "screenExcludes": [
+        "You sit on the stairs."
+      ],
+      "screenCells": [
+        {
+          "step": 6,
+          "x": 0,
+          "y": 0,
+          "equals": " "
+        }
+      ]
+    },
+    {
+      "branch": "message-type.stop",
+      "segment": 3,
+      "screenIncludes": [
+        "You sit on the stairs.",
+        "--More--"
+      ]
+    },
+    {
+      "branch": "message-type.more-alias",
+      "segment": 4,
+      "screenIncludes": [
+        "You sit on the stairs.",
+        "--More--"
+      ]
+    },
+    {
+      "branch": "message-type.norepeat",
+      "segment": 5,
+      "screenIncludes": [
+        "You sit on the stairs."
+      ],
+      "screenCells": [
+        {
+          "step": 11,
+          "x": 0,
+          "y": 0,
+          "equals": "Y"
+        }
+      ]
+    },
+    {
+      "branch": "message-type.fresh-process",
+      "segment": 6,
+      "screenIncludes": [
+        "You sit on the stairs."
+      ]
+    },
+    {
+      "branch": "message-type.save-hide",
+      "segment": 7,
+      "screenIncludes": [
+        "Be seeing you"
+      ]
+    },
+    {
+      "branch": "message-type.restore-fresh",
+      "segment": 8,
+      "screenIncludes": [
+        "welcome back",
+        "You sit on the stairs."
+      ]
+    }
+  ],
+  "segments": [
+    {
+      "name": "hide",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:Msg0,role:Wizard,race:human,gender:male,align:neutral\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nMSGTYPE=hide \"^You sit on\"\n",
+      "moves": " #sit\r#sit\r\u001b"
+    },
+    {
+      "name": "show-last",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:Msg1,role:Wizard,race:human,gender:male,align:neutral\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nMSGTYPE=hide \"^You sit on\"\nMSGTYPE=show \"^You sit on\"\n",
+      "moves": " #sit\r\u001b"
+    },
+    {
+      "name": "hide-last",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:Msg2,role:Wizard,race:human,gender:male,align:neutral\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nMSGTYPE=show \"^You sit on\"\nMSGTYPE=hide \"^You sit on\"\n",
+      "moves": " #sit\r\u001b"
+    },
+    {
+      "name": "stop",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:Msg3,role:Wizard,race:human,gender:male,align:neutral\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nMSGTYPE=stop \"^You sit on\"\n",
+      "moves": " #sit\r #sit\r \u001b"
+    },
+    {
+      "name": "more-alias",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:Msg4,role:Wizard,race:human,gender:male,align:neutral\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nMSGTYPE=more \"^You sit on\"\n",
+      "moves": " #sit\r \u001b"
+    },
+    {
+      "name": "norepeat",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:Msg5,role:Wizard,race:human,gender:male,align:neutral\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nMSGTYPE=norep \"^You sit on\"\n",
+      "moves": " #sit\r#sit\r\u001b"
+    },
+    {
+      "name": "fresh-process",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:Msg6,role:Wizard,race:human,gender:male,align:neutral\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #sit\r\u001b"
+    },
+    {
+      "name": "save-hide",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:MsgSave,role:Wizard,race:human,gender:male,align:neutral\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nMSGTYPE=hide \"^You sit on\"\n",
+      "moves": " #sit\rSy"
+    },
+    {
+      "name": "restore-fresh",
+      "seed": 32,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:MsgSave,role:Wizard,race:human,gender:male,align:neutral\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": "#sit\r\u001b"
+    }
+  ]
+}

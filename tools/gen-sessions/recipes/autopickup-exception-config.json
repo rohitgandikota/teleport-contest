@@ -1,0 +1,115 @@
+{
+  "name": "autopickup-exception-config",
+  "description": "Configured pickup exceptions override class filters and are rebuilt across save and restore.",
+  "recordingNote": "Use RERECORD_TZ=Etc/GMT+4 for a fixed UTC-4 recording offset.",
+  "coverage": [
+    "mode.normal",
+    "options.rc-bindings",
+    "persistence.save-restore",
+    "object.weapons"
+  ],
+  "branches": [
+    "autopickup-exception.force-pickup",
+    "autopickup-exception.leave-item",
+    "autopickup-exception.save-ignore",
+    "autopickup-exception.restore-pickup"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "autopickup-exception.force-pickup",
+      "segment": 0,
+      "screenIncludes": [
+        "Hello",
+        "a - a blessed +1 quarterstaff."
+      ],
+      "screenCells": [
+        {
+          "step": 6,
+          "x": 0,
+          "y": 0,
+          "equals": "a"
+        }
+      ]
+    },
+    {
+      "branch": "autopickup-exception.leave-item",
+      "segment": 1,
+      "screenIncludes": [
+        "Hello",
+        "You see here a blessed +1 quarterstaff."
+      ],
+      "screenCells": [
+        {
+          "step": 6,
+          "x": 0,
+          "y": 0,
+          "equals": "Y"
+        }
+      ]
+    },
+    {
+      "branch": "autopickup-exception.save-ignore",
+      "segment": 2,
+      "screenIncludes": [
+        "Hello",
+        "You see here a blessed +1 quarterstaff.",
+        "Be seeing you"
+      ],
+      "screenCells": [
+        {
+          "step": 6,
+          "x": 0,
+          "y": 0,
+          "equals": "Y"
+        }
+      ]
+    },
+    {
+      "branch": "autopickup-exception.restore-pickup",
+      "segment": 3,
+      "screenIncludes": [
+        "welcome back",
+        "a - a blessed +1 quarterstaff."
+      ],
+      "screenCells": [
+        {
+          "step": 2,
+          "x": 0,
+          "y": 0,
+          "equals": "a"
+        }
+      ]
+    }
+  ],
+  "segments": [
+    {
+      "name": "force-pickup",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:ApeForce,role:Wizard,race:human,gender:male,align:neutral\nOPTIONS=autopickup,!tutorial,!tips,pettype:none,!dropped_nopick,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=pickup_types:$\nAUTOPICKUP_EXCEPTION=\"<quarterstaff\"\n",
+      "moves": " ldalhi\u001b"
+    },
+    {
+      "name": "leave-item",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:ApeLeave,role:Wizard,race:human,gender:male,align:neutral\nOPTIONS=autopickup,!tutorial,!tips,pettype:none,!dropped_nopick,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nAUTOPICKUP_EXCEPTION=\">quarterstaff\"\n",
+      "moves": " ldalhi\u001b"
+    },
+    {
+      "name": "save-ignore",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:ApeSave,role:Wizard,race:human,gender:male,align:neutral\nOPTIONS=autopickup,!tutorial,!tips,pettype:none,!dropped_nopick,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nAUTOPICKUP_EXCEPTION=\">quarterstaff\"\n",
+      "moves": " ldalhi\u001bSy"
+    },
+    {
+      "name": "restore-pickup",
+      "seed": 32,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:ApeSave,role:Wizard,race:human,gender:male,align:neutral\nOPTIONS=autopickup,!tutorial,!tips,pettype:none,!dropped_nopick,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=pickup_types:$\nAUTOPICKUP_EXCEPTION=\"<quarterstaff\"\n",
+      "moves": "lhi\u001b"
+    }
+  ]
+}

@@ -3589,6 +3589,59 @@ also found that its predicate ignores the existing mounted blocking field;
 four source controls pass with a one-predicate cache correction, two failing
 before. Native mount/dismount proposals are still being developed.
 
+## 2026-11-23: current blindness after nested lifesaving
+
+The new `look_here` checkpoint removes its cached blindness value. C keeps
+only the initial `verb`; every later `Blind` read uses the current property.
+Real corpse contact can complete amulet lifesaving, expulsion and a landing
+polymorph trap before inventory display and the command result. The old local
+used the blind header and returned `ECMD_TIME` after sight had returned.
+The runtime change is one function, nine additions and ten deletions.
+
+Two unchanged native cases cover actual worn-amulet lifesaving followed by
+`newman`, with and without an independent timed blindness source. They match
+all 643 screens/cursors, complete input slices and 6,201 RNG calls, with no
+animations. Baseline matches 629 screens and all cursors, but takes an extra
+turn with 23 extra calls in the restored-sight case. The paired blind control
+is unchanged. Neither native input uses wizard death refusal. Constructed
+goblin conversion and wizard refusal remain separate source controls.
+
+All 16 new and 119 retained state/input checks pass. Five focused fixtures
+cover 37 segments, 6,975 boundaries, 101,018 complete RNG calls and 25
+animations. Scoring, whole-stream/length/slice checks, exact animation counts
+and cursors, and the 60-second hang gate pass. Source audit has zero findings
+in 276 non-frozen modules. Parent read the complete C and JS `look_here`
+bodies. The promoted recipe name now matches its filename and includes
+existing coverage categories; the original agent package and native bytes
+remain unchanged. The full 720-fixture regression passes all 814,342 boundary
+screens/cursors, 16,365,073 scored RNG positions and 30,734 animations. Both
+shards finish without failures or timeouts at the default 45-second limit;
+all 279 runtime hashes and the fixture inventory stay fixed throughout.
+
+The NFS collector exactly reproduces the new two-case fixture. Its validated
+union contains 714 credited inputs, nineteen matching manifests/layouts,
+4,519/5,492 entered functions and 58,921/107,260 direct branch outcomes. The
+34 added raw inputs contribute 149 segments, plus nine independent Linux
+control segments. Bulk profiles remain in
+`/share/NFS/u/rohit/research/contest/artifacts/2026-11-22/c-coverage-compress.E84JI2/verified-look-here-lifesaving-union-20261123`.
+Local evidence is `.cache/restart-20261122/look-here-lifesaving-*` and
+`look-here-petrification-audit/`. Raw C SHA256:
+`98673865680874190170e8e090398f3d62ce3729e27663f9582f078710f6a8e9`.
+
+Next checkpoints remain cache-only: four exact native deaf-duration cases;
+the shared monster selector composed from immutable v1, readability v2 and
+prefab-completion v3; and the blocked-stealth predicate with a newly recorded
+ground-mount/flying-mount pair. The selector's first Gehennom failure is
+retained and repaired by completing the indirect prefab callback. All 143
+selector controls and twelve bounded native replays now pass. Its expanded
+120-file indirect-dispatch audit is complete; integration and full regression
+are still pending. The separate Air thunder proposal diverges before its
+intended witness and receives no parity claim. Save cleanup is also held:
+a fresh pair exposed the independent saved `lastinvnr` bug. C never saves
+that process counter. A separate correction and a fresh input that actually
+drinks the detection potion are being prepared. Do not promote the old
+JS-only detection claim as native evidence.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

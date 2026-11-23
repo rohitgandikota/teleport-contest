@@ -1,0 +1,78 @@
+{
+  "name": "look-here-lifesaving",
+  "description": "C-recorded real inputs for engulfer corpse contact, actual amulet lifesaving, expulsion onto a polymorph trap, and current Blind reads. The controlled request legitimately takes C polyself's one-in-five newman arm. The paired control retains independent timed blindness.",
+  "segments": [
+    {
+      "name": "amulet-expulsion-polytrap-sight",
+      "seed": 6202,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Look,role:Barbarian,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " h#levelchange\r20\r  \u001b\u001b\u0017uncursed amulet of life saving\r  \u001b\u001bPa  \u001b\u001b\u0017uncursed leather gloves\r  \u001b\u001bWb  \u001b\u001b\u0017uncursed ring of polymorph control\r  \u001b\u001bPcr  \u001b\u001b\u0017uncursed cockatrice corpse\r  \u001b\u001b#polyself\rsmall mimic\r  \u001b\u001b\u0017polymorph trap\r  \u001b\u001b\u0007hostile fog cloud\r  \u001b\u001bms  \u001b\u001bms  \u001b\u001bms  \u001b\u001bddyes\r  \u001b\u001b:            goblin\r            \u001b\u001b"
+    },
+    {
+      "name": "amulet-expulsion-timed-blindness-control",
+      "seed": 6202,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Look,role:Barbarian,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " h#levelchange\r20\r  \u001b\u001b\u0017uncursed amulet of life saving\r  \u001b\u001bPa  \u001b\u001b\u0017uncursed leather gloves\r  \u001b\u001bWb  \u001b\u001b\u0017uncursed ring of polymorph control\r  \u001b\u001bPcr  \u001b\u001b\u0017uncursed cockatrice corpse\r  \u001b\u001b#polyself\rsmall mimic\r  \u001b\u001b\u0017polymorph trap\r  \u001b\u001b\u0007hostile fog cloud\r  \u001b\u001bms  \u001b\u001bms  \u001b\u001bms  \u001b\u001bddyes\r  \u001b\u001b#wizintrinsic\r100i\r  \u001b\u001b:            goblin\r            \u001b\u001b"
+    }
+  ],
+  "branches": [
+    "amulet-expulsion-polytrap-restores-sight",
+    "amulet-expulsion-polytrap-timed-blindness-remains"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "amulet-expulsion-polytrap-restores-sight",
+      "segment": 0,
+      "screenIncludes": [
+        "Touching the cockatrice corpse is a fatal mistake...",
+        "Your medallion feels warm!",
+        "You get expelled from the fog cloud!",
+        "onto a polymorph trap!",
+        "You feel like a new man!",
+        "You can see again.",
+        "Contents of the fog cloud's interior:"
+      ],
+      "screenExcludes": [
+        "Die?",
+        "OK, so you don't die.",
+        "You feel:"
+      ],
+      "rngIncludes": [
+        "rn2(5)=0 @ polyself(polyself.c:712)",
+        "rn2(5)=1 @ newman(polyself.c:342)"
+      ]
+    },
+    {
+      "branch": "amulet-expulsion-polytrap-timed-blindness-remains",
+      "segment": 1,
+      "screenIncludes": [
+        "Touching the cockatrice corpse is a fatal mistake...",
+        "Your medallion feels warm!",
+        "You get expelled from the fog cloud!",
+        "onto a polymorph trap!",
+        "You feel like a new man!",
+        "You feel:"
+      ],
+      "screenExcludes": [
+        "Die?",
+        "OK, so you don't die.",
+        "You can see again.",
+        "Contents of the fog cloud's interior:"
+      ],
+      "rngIncludes": [
+        "rn2(5)=0 @ polyself(polyself.c:712)",
+        "rn2(5)=1 @ newman(polyself.c:342)"
+      ]
+    }
+  ],
+  "coverage": [
+    "mode.debug",
+    "object.amulets",
+    "object.food-corpses",
+    "forms.polymorph",
+    "survival.instant-deaths"
+  ]
+}

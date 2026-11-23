@@ -824,8 +824,7 @@ export function dfeature_at(x, y) {
 // Includes engulfer contents, visible regions, blind floor reach and
 // floor-pile cockatrice contact.
 export async function look_here(obj_cnt, lhflags) {
-    const Blind = heroBlind();
-    const verb = Blind ? 'feel' : 'see';
+    const verb = heroBlind() ? 'feel' : 'see';
     const picked_some = (lhflags & LOOKHERE_PICKED_SOME) !== 0;
     let skip_dfeature = (lhflags & LOOKHERE_SKIP_DFEATURE) !== 0;
 
@@ -836,19 +835,19 @@ export async function look_here(obj_cnt, lhflags) {
     if (game.u?.uswallow) {
         const mtmp = game.u.ustuck;
         let fbuf = `Contents of ${s_suffix(mon_nam(mtmp))} ${mbodypart(mtmp, STOMACH)}`;
-        await You(`${Blind ? 'try' : 'look around'} to ${verb} what is lying in ${fbuf.slice(12)}.`);
+        await You(`${heroBlind() ? 'try' : 'look around'} to ${verb} what is lying in ${fbuf.slice(12)}.`);
         if (mtmp.minvent?.length) {
             for (const otmp of mtmp.minvent) {
                 if (otmp.otyp === ONAMES.CORPSE)
                     await feel_cockatrice(otmp, false);
             }
-            if (Blind)
+            if (heroBlind())
                 fbuf = 'You feel';
             await display_minventory(mtmp, MINV_ALL | PICK_NONE, `${fbuf}:`);
         } else {
             await You(`${verb} no objects here.`);
         }
-        return Blind ? ECMD_TIME : ECMD_OK;
+        return heroBlind() ? ECMD_TIME : ECMD_OK;
     }
 
     if (!skip_objects) {
@@ -869,7 +868,7 @@ export async function look_here(obj_cnt, lhflags) {
         dfeature = null;
 
     /* src/invent.c:4185-4217: describe reaching before inspecting the pile. */
-    if (Blind) {
+    if (heroBlind()) {
         const drift = Is_airlevel(game.u.uz) || Is_waterlevel(game.u.uz);
         if (dfeature && dfeature.startsWith('altar ')) {
             await You('try to feel what is here.');
@@ -914,9 +913,9 @@ export async function look_here(obj_cnt, lhflags) {
         if (dfeature && !skip_dfeature)
             await pline(fbuf);
         await read_engr_at(game.u.ux, game.u.uy); /* Eric Backus */
-        if (!skip_objects && (Blind || !dfeature))
+        if (!skip_objects && (heroBlind() || !dfeature))
             await You(`${verb} no objects here.`);
-        return Blind ? ECMD_TIME : ECMD_OK;
+        return heroBlind() ? ECMD_TIME : ECMD_OK;
     }
     /* we know there is something here */
 
@@ -967,7 +966,7 @@ export async function look_here(obj_cnt, lhflags) {
             tty_putstr(tmpwin, 0, '');
         }
         tty_putstr(tmpwin, 0, `${picked_some ? 'Other things' : 'Things'} that ${
-            Blind ? 'you feel' : 'are'} here:`);
+            heroBlind() ? 'you feel' : 'are'} here:`);
         for (const otmp of pile) {
             if (will_feel_cockatrice(otmp, false)) {
                 felt_cockatrice = otmp;
@@ -989,7 +988,7 @@ export async function look_here(obj_cnt, lhflags) {
         await read_engr_at(game.u.ux, game.u.uy); /* Eric Backus */
     }
 
-    return Blind ? ECMD_TIME : ECMD_OK;
+    return heroBlind() ? ECMD_TIME : ECMD_OK;
 }
 
 // src/invent.c:4319 dolook()

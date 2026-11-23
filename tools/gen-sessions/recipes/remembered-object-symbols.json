@@ -1,0 +1,160 @@
+{
+  "name": "remembered-object-symbols",
+  "description": "Changing to the Blank symbol set redraws remembered weapons, corpses, statues and potions while blind, with a sighted control.",
+  "recordingNote": "Use RERECORD_TZ=Etc/GMT+4 for a fixed UTC-4 recording offset.",
+  "coverage": [
+    "mode.debug",
+    "options.rc-bindings",
+    "ui.map-memory-vision",
+    "object.wishing"
+  ],
+  "branches": [
+    "remembered-object-symbols.blind-dagger-blank",
+    "remembered-object-symbols.sighted-dagger-blank",
+    "remembered-object-symbols.blind-corpse-blank",
+    "remembered-object-symbols.blind-statue-blank",
+    "remembered-object-symbols.blind-potion-blank"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "remembered-object-symbols.blind-dagger-blank",
+      "segment": 0,
+      "screenIncludes": [
+        "You can't see any more."
+      ],
+      "screenCells": [
+        {
+          "step": 25,
+          "x": 7,
+          "y": 13,
+          "equals": ")"
+        },
+        {
+          "step": 44,
+          "x": 7,
+          "y": 13,
+          "equals": " "
+        }
+      ]
+    },
+    {
+      "branch": "remembered-object-symbols.sighted-dagger-blank",
+      "segment": 1,
+      "screenCells": [
+        {
+          "step": 23,
+          "x": 7,
+          "y": 13,
+          "equals": ")"
+        },
+        {
+          "step": 42,
+          "x": 7,
+          "y": 13,
+          "equals": " "
+        }
+      ]
+    },
+    {
+      "branch": "remembered-object-symbols.blind-corpse-blank",
+      "segment": 2,
+      "screenIncludes": [
+        "You can't see any more."
+      ],
+      "screenCells": [
+        {
+          "step": 32,
+          "x": 7,
+          "y": 13,
+          "equals": "%"
+        },
+        {
+          "step": 51,
+          "x": 7,
+          "y": 13,
+          "equals": " "
+        }
+      ]
+    },
+    {
+      "branch": "remembered-object-symbols.blind-statue-blank",
+      "segment": 3,
+      "screenIncludes": [
+        "You can't see any more."
+      ],
+      "screenCells": [
+        {
+          "step": 35,
+          "x": 7,
+          "y": 13,
+          "equals": ":"
+        },
+        {
+          "step": 54,
+          "x": 7,
+          "y": 13,
+          "equals": " "
+        }
+      ]
+    },
+    {
+      "branch": "remembered-object-symbols.blind-potion-blank",
+      "segment": 4,
+      "screenIncludes": [
+        "You can't see any more."
+      ],
+      "screenCells": [
+        {
+          "step": 36,
+          "x": 7,
+          "y": 13,
+          "equals": "!"
+        },
+        {
+          "step": 55,
+          "x": 7,
+          "y": 13,
+          "equals": " "
+        }
+      ]
+    }
+  ],
+  "segments": [
+    {
+      "name": "blind-dagger-blank",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "moves": " \u0017blindfold\r\u0017dagger\rdbjPamO:symset*plain\r\rcV"
+    },
+    {
+      "name": "sighted-dagger-blank",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "moves": " \u0017blindfold\r\u0017dagger\rdbjmO:symset*plain\r\rcV"
+    },
+    {
+      "name": "blind-corpse-blank",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "moves": " \u0017blindfold\r\u0017lichen corpse\rdbjPamO:symset*plain\r\rcV"
+    },
+    {
+      "name": "blind-statue-blank",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "moves": " \u0017blindfold\r\u0017statue of a newt\rdbjPamO:symset*plain\r\rcV"
+    },
+    {
+      "name": "blind-potion-blank",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "moves": " \u0017blindfold\r\u0017potion of healing\rdbjPamO:symset*plain\r\rcV"
+    }
+  ]
+}

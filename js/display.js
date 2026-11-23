@@ -1024,6 +1024,19 @@ export function show_glyph_cell(x, y, ch, color = NO_COLOR, decgfx = false, attr
             decgfx = !!sym.dec;
         }
     }
+    // src/display.c:2822, :2968, :3004 reset_glyphmap(). Object memory
+    // retains a glyph identity; its character follows the active symbol set.
+    if (glyph?.kind === 'obj') {
+        if (glyph.statue)
+            ch = showsym_mon(game.mons[glyph.corpsenm].mlet);
+        else if (glyph.body)
+            ch = showsym_oc(game.objects[ONAMES.CORPSE].oc_class);
+        else if (glyph.otyp === ONAMES.BOULDER)
+            ch = showsym_other(SYM_BOULDER);
+        else
+            ch = showsym_oc(game.objects[glyph.otyp].oc_class);
+        decgfx = false;
+    }
     // src/display.c:2774, :2778, :3030 reset_glyphmap().
     if (glyph?.kind === 'nothing' || glyph?.kind === 'unexplored'
         || glyph?.kind === 'invis') {

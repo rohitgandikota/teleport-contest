@@ -9331,7 +9331,8 @@ The custom glyphmap colour pipeline still needs a renderer audit.
 ('\248' for S_vwall) and CLR_GRAY (07) from reset_glyphmap()'s
 wallcolors[]. iflags.colorcount is 256, the recorder terminal's count.
 
-Historical September heading mismatch, repaired in the November work:
+The September heading mismatch also reproduced in November. The earlier
+leading-blank capture repair did not cover this trailing space:
 the heading is 90 characters, tty_end_menu() cuts
 entries to 78, and the 78th is the space before "unicode", drawn in the
 heading's inverse video. The recorder emits that trailing inverse space;
@@ -9365,6 +9366,14 @@ exists. C's static mons table is already available at that point, so the port
 uses its static data until the per-game copy exists. Unicode representations
 are stored for a named plain set too, but C applies them only for UTF-8
 handling. The class-glyph-startup fixture covers those valid config paths.
+
+C remembers an object's glyph identity and resolves its character again on
+redraw. Caching its old character leaves visible debris after switching to
+the Blank set while blind. Ordinary and generic objects use their displayed
+type's class; bodies use the corpse class, statues use their monster class,
+and boulders use the other-symbol slot. Do not regenerate a hallucinated
+object during redraw. The remembered-object fixture and state gate cover
+these paths, including pile attributes and unchanged RNG state.
 
 ## #wizcast, #wizobjprobs, #wizloadlua, #bugreport and BIND parameters (12 Sep)
 

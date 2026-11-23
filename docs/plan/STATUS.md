@@ -1063,6 +1063,42 @@ for generic objects, corpse and statue classes, boulders and piles. The
 renderer must resolve the stored displayed type, without sampling a new
 hallucination or using the actual object's type in place of a generic glyph.
 
+Startup checkpoint `89ecc060` is pushed. The remembered-object repair is
+applied in `show_glyph_cell`: object, body, statue and boulder descriptors
+resolve their characters through the active tables. It uses the captured
+displayed type, preserving generic and hallucinated identities without new
+RNG draws. Five native cases improve from 243/251 to exact screens and
+cursors, with all 15,443 RNG calls unchanged. Seven direct controls pass,
+all seven failing before; they include generic objects, piles and a sampled
+hallucinated object, with unchanged core and display RNG state on redraw.
+
+Full regression: 648/648 fixtures, 791,444 screens/cursors, 15,366,235 RNG
+calls and 30,010/30,031 animations. Native assertions, recording integrity,
+input-exhaustion and source audit pass. The six other-symbol, eight graphics,
+three class-startup and five vision controls pass. Logs:
+`remembered-object-corpus-{0..3}.log`, `remembered-object-v2-{before,prototype}.log`,
+`remembered-object-state-{before,final}.log`,
+`remembered-object-symbols-final-native.log`, and
+`remembered-object-{hang,source-audit,other-state,graphics-state,startup-state,
+vision-state}.log` in the restart cache.
+
+The next candidate remains cache-only: `glyph-config-values-v2-loader.mjs`
+combines the stripped G_ config-name behavior with preserving raw Enhanced
+symbol bytes and trailing attributed blanks in the display wrapper. Four
+native cases in `glyph-config-values` improve from 60/68 screens and 66/68
+cursors to exact output, with 12,116 RNG calls unchanged. The original
+G_-name-only prototype fixed cursors but left eight screen mismatches; these
+also occur in the paired no-override controls. They are raw symbol values in
+#wizcustom and a styled trailing space, not a renderer colour discrepancy.
+The first November leading-blank capture repair did not cover that trailing
+space. This candidate still needs application, broader regression and push.
+
+The source review of direct monster-symbol consumers is running read-only
+with cache-only prototypes under `monster-symbol-*`. Native recording must
+remain sequential. The latest official data fetch still returns the November
+23 08:33 UTC snapshot and our 07:48 UTC score; it has not evaluated these
+latest checkpoints. Do not claim a new rank from the local regression.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

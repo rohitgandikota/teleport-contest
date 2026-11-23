@@ -1,0 +1,115 @@
+{
+  "name": "roleplay-conduct",
+  "description": "Roleplay conduct uses its original startup state, inventory-dependent wording and final tense.",
+  "recordingNote": "Use RERECORD_TZ=Etc/GMT+4.",
+  "coverage": [
+    "mode.debug",
+    "ui.menus",
+    "ending.death-disclosure"
+  ],
+  "branches": [
+    "conduct.pauper-empty",
+    "conduct.pauper-with-item",
+    "conduct.nudist",
+    "conduct.blind-deaf",
+    "conduct.ordinary",
+    "conduct.final-pauper"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "conduct.pauper-empty",
+      "segment": 0,
+      "screenIncludes": [
+        "You are without possessions.",
+        "You have been faithfully nudist."
+      ]
+    },
+    {
+      "branch": "conduct.pauper-with-item",
+      "segment": 1,
+      "screenIncludes": [
+        "You started without possessions."
+      ]
+    },
+    {
+      "branch": "conduct.nudist",
+      "segment": 2,
+      "screenIncludes": [
+        "You have been faithfully nudist."
+      ]
+    },
+    {
+      "branch": "conduct.blind-deaf",
+      "segment": 3,
+      "screenIncludes": [
+        "You have been blind from birth.",
+        "You have been deaf from birth."
+      ]
+    },
+    {
+      "branch": "conduct.ordinary",
+      "segment": 4,
+      "screenIncludes": [
+        "Character rerolling was not enabled."
+      ],
+      "screenExcludes": [
+        "without possessions.",
+        "faithfully nudist.",
+        "from birth."
+      ]
+    },
+    {
+      "branch": "conduct.final-pauper",
+      "segment": 5,
+      "screenIncludes": [
+        "You started out without possessions.",
+        "You were faithfully nudist."
+      ]
+    }
+  ],
+  "segments": [
+    {
+      "name": "pauper-empty",
+      "seed": 9790,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,suppress_alert:3.4.3,symset:DECgraphics\nOPTIONS=pauper\n",
+      "moves": " #conduct\r \u001b"
+    },
+    {
+      "name": "pauper-with-item",
+      "seed": 9791,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,suppress_alert:3.4.3,symset:DECgraphics\nOPTIONS=pauper\n",
+      "moves": " \u0017dagger\r#conduct\r \u001b"
+    },
+    {
+      "name": "nudist",
+      "seed": 9792,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,suppress_alert:3.4.3,symset:DECgraphics\nOPTIONS=nudist\n",
+      "moves": " #conduct\r \u001b"
+    },
+    {
+      "name": "blind-deaf",
+      "seed": 9793,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,suppress_alert:3.4.3,symset:DECgraphics\nOPTIONS=blind,deaf\n",
+      "moves": " #conduct\r \u001b"
+    },
+    {
+      "name": "ordinary",
+      "seed": 9794,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,suppress_alert:3.4.3,symset:DECgraphics\nOPTIONS=!pauper,!nudist\n",
+      "moves": " #conduct\r \u001b"
+    },
+    {
+      "name": "final-pauper",
+      "seed": 9795,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,suppress_alert:3.4.3,symset:DECgraphics\nOPTIONS=pauper,disclose:-i -a -v -g +c -o\n",
+      "moves": " #quit\ryn  "
+    }
+  ]
+}

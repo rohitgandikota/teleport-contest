@@ -1,0 +1,269 @@
+{
+  "name": "nudist-starting-inventory",
+  "description": "Every role discards nudist armor without rolling the following entry quantity; ordinary Wizard inventory remains intact.",
+  "recordingNote": "Use RERECORD_TZ=Etc/GMT+4.",
+  "coverage": [
+    "mode.debug",
+    "ui.menus",
+    "object.armor"
+  ],
+  "branches": [
+    "starting-inventory.archeologist",
+    "starting-inventory.barbarian",
+    "starting-inventory.caveman",
+    "starting-inventory.healer",
+    "starting-inventory.knight",
+    "starting-inventory.monk",
+    "starting-inventory.priest",
+    "starting-inventory.ranger",
+    "starting-inventory.rogue",
+    "starting-inventory.samurai",
+    "starting-inventory.tourist",
+    "starting-inventory.valkyrie",
+    "starting-inventory.wizard",
+    "starting-inventory.ordinary-wizard"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "starting-inventory.archeologist",
+      "segment": 0,
+      "screenIncludes": [
+        "You have been faithfully nudist."
+      ],
+      "screenExcludes": [
+        "Armor"
+      ]
+    },
+    {
+      "branch": "starting-inventory.barbarian",
+      "segment": 1,
+      "screenIncludes": [
+        "You have been faithfully nudist."
+      ],
+      "screenExcludes": [
+        "Armor"
+      ]
+    },
+    {
+      "branch": "starting-inventory.caveman",
+      "segment": 2,
+      "screenIncludes": [
+        "You have been faithfully nudist."
+      ],
+      "screenExcludes": [
+        "Armor"
+      ]
+    },
+    {
+      "branch": "starting-inventory.healer",
+      "segment": 3,
+      "screenIncludes": [
+        "You have been faithfully nudist."
+      ],
+      "screenExcludes": [
+        "Armor"
+      ]
+    },
+    {
+      "branch": "starting-inventory.knight",
+      "segment": 4,
+      "screenIncludes": [
+        "You have been faithfully nudist."
+      ],
+      "screenExcludes": [
+        "Armor"
+      ]
+    },
+    {
+      "branch": "starting-inventory.monk",
+      "segment": 5,
+      "screenIncludes": [
+        "You have been faithfully nudist."
+      ],
+      "screenExcludes": [
+        "Armor"
+      ]
+    },
+    {
+      "branch": "starting-inventory.priest",
+      "segment": 6,
+      "screenIncludes": [
+        "You have been faithfully nudist."
+      ],
+      "screenExcludes": [
+        "Armor"
+      ]
+    },
+    {
+      "branch": "starting-inventory.ranger",
+      "segment": 7,
+      "screenIncludes": [
+        "You have been faithfully nudist."
+      ],
+      "screenExcludes": [
+        "Armor"
+      ]
+    },
+    {
+      "branch": "starting-inventory.rogue",
+      "segment": 8,
+      "screenIncludes": [
+        "You have been faithfully nudist."
+      ],
+      "screenExcludes": [
+        "Armor"
+      ]
+    },
+    {
+      "branch": "starting-inventory.samurai",
+      "segment": 9,
+      "screenIncludes": [
+        "You have been faithfully nudist."
+      ],
+      "screenExcludes": [
+        "Armor"
+      ]
+    },
+    {
+      "branch": "starting-inventory.tourist",
+      "segment": 10,
+      "screenIncludes": [
+        "You have been faithfully nudist."
+      ],
+      "screenExcludes": [
+        "Armor"
+      ]
+    },
+    {
+      "branch": "starting-inventory.valkyrie",
+      "segment": 11,
+      "screenIncludes": [
+        "You have been faithfully nudist."
+      ],
+      "screenExcludes": [
+        "Armor"
+      ]
+    },
+    {
+      "branch": "starting-inventory.wizard",
+      "segment": 12,
+      "screenIncludes": [
+        "You have been faithfully nudist."
+      ],
+      "screenExcludes": [
+        "Armor"
+      ]
+    },
+    {
+      "branch": "starting-inventory.ordinary-wizard",
+      "segment": 13,
+      "screenIncludes": [
+        "Armor"
+      ],
+      "screenExcludes": [
+        "faithfully nudist."
+      ]
+    }
+  ],
+  "segments": [
+    {
+      "name": "archeologist",
+      "seed": 9792,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,race:human,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,suppress_alert:3.4.3,symset:DECgraphics\nOPTIONS=role:Archeologist,align:lawful,gender:male,nudist\n",
+      "moves": " i \u001b#conduct\r \u001bV"
+    },
+    {
+      "name": "barbarian",
+      "seed": 9792,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,race:human,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,suppress_alert:3.4.3,symset:DECgraphics\nOPTIONS=role:Barbarian,align:neutral,gender:male,nudist\n",
+      "moves": " i \u001b#conduct\r \u001bV"
+    },
+    {
+      "name": "caveman",
+      "seed": 9792,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,race:human,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,suppress_alert:3.4.3,symset:DECgraphics\nOPTIONS=role:Caveman,align:lawful,gender:male,nudist\n",
+      "moves": " i \u001b#conduct\r \u001bV"
+    },
+    {
+      "name": "healer",
+      "seed": 9792,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,race:human,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,suppress_alert:3.4.3,symset:DECgraphics\nOPTIONS=role:Healer,align:neutral,gender:male,nudist\n",
+      "moves": " i \u001b#conduct\r \u001bV"
+    },
+    {
+      "name": "knight",
+      "seed": 9792,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,race:human,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,suppress_alert:3.4.3,symset:DECgraphics\nOPTIONS=role:Knight,align:lawful,gender:male,nudist\n",
+      "moves": " i \u001b#conduct\r \u001bV"
+    },
+    {
+      "name": "monk",
+      "seed": 9792,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,race:human,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,suppress_alert:3.4.3,symset:DECgraphics\nOPTIONS=role:Monk,align:neutral,gender:male,nudist\n",
+      "moves": " i \u001b#conduct\r \u001bV"
+    },
+    {
+      "name": "priest",
+      "seed": 9792,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,race:human,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,suppress_alert:3.4.3,symset:DECgraphics\nOPTIONS=role:Priest,align:neutral,gender:male,nudist\n",
+      "moves": " i \u001b#conduct\r \u001bV"
+    },
+    {
+      "name": "ranger",
+      "seed": 9792,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,race:human,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,suppress_alert:3.4.3,symset:DECgraphics\nOPTIONS=role:Ranger,align:neutral,gender:male,nudist\n",
+      "moves": " i \u001b#conduct\r \u001bV"
+    },
+    {
+      "name": "rogue",
+      "seed": 9792,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,race:human,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,suppress_alert:3.4.3,symset:DECgraphics\nOPTIONS=role:Rogue,align:chaotic,gender:male,nudist\n",
+      "moves": " i \u001b#conduct\r \u001bV"
+    },
+    {
+      "name": "samurai",
+      "seed": 9792,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,race:human,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,suppress_alert:3.4.3,symset:DECgraphics\nOPTIONS=role:Samurai,align:lawful,gender:male,nudist\n",
+      "moves": " i \u001b#conduct\r \u001bV"
+    },
+    {
+      "name": "tourist",
+      "seed": 9792,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,race:human,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,suppress_alert:3.4.3,symset:DECgraphics\nOPTIONS=role:Tourist,align:neutral,gender:male,nudist\n",
+      "moves": " i \u001b#conduct\r \u001bV"
+    },
+    {
+      "name": "valkyrie",
+      "seed": 9792,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,race:human,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,suppress_alert:3.4.3,symset:DECgraphics\nOPTIONS=role:Valkyrie,align:lawful,gender:female,nudist\n",
+      "moves": " i \u001b#conduct\r \u001bV"
+    },
+    {
+      "name": "wizard",
+      "seed": 9792,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,race:human,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,suppress_alert:3.4.3,symset:DECgraphics\nOPTIONS=role:Wizard,align:neutral,gender:male,nudist\n",
+      "moves": " i \u001b#conduct\r \u001bV"
+    },
+    {
+      "name": "ordinary-wizard",
+      "seed": 9792,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,race:human,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,suppress_alert:3.4.3,symset:DECgraphics\nOPTIONS=role:Wizard,align:neutral,gender:male,!nudist\n",
+      "moves": " i \u001b#conduct\r \u001bV"
+    }
+  ]
+}

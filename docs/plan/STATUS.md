@@ -862,6 +862,34 @@ review these separately rather than treating them as inventory-name errors.
 The official snapshot remains November 23 at 08:33 UTC and predates these
 checkpoints. It does not establish their effect on the held-out score.
 
+Strength-loss checkpoint `fb3c8839` is pushed. Conduct disclosure now reports
+pauper, nudist, blind-from-birth, deaf-from-birth and reroll state in C's
+order and tense. Seven constructed controls pass, including reroll counts
+and temporary sensory loss; five fail with the original reporting function.
+The startup reroll workflow itself has not been audited by these controls.
+
+The new conduct recording also exposed an extra quantity roll when nudist
+inventory generation skips armor. C advances the entry but retains `quan`.
+Removing that roll fixes all 13 roles; the paired ordinary Wizard control
+remains exact. The native inventory fixture improves from 83/238 screens
+and 3,908/37,659 RNG calls to exact output. With that startup fix held
+constant, the conduct fixture improves from 80/85 to 85/85 screens, with
+all 16,784 RNG calls unchanged. The two fixtures contain 20 native cases.
+
+Full regression: 640/640 fixtures, 789,800 screens/cursors, 15,145,328 RNG
+calls and 30,010/30,031 animations. Native assertions, recording integrity,
+both input-exhaustion checks and source audit pass. Logs: `roleplay-corpus-*`,
+`roleplay-conduct-isolated-before.log`, `nudist-inventory-before.log`,
+`roleplay-nudist-final.log`, `roleplay-conduct-state-*` and
+`roleplay-final-{hang,source-audit}.log` in the restart cache.
+
+The final-inventory candidate remains separate. Its five-case native fixture
+and six source-state controls pass through the cache loader. It also fixes
+all 46 independently re-recorded fourth-batch games: 4,451 screens/cursors,
+297,875 RNG calls and 21 animations. This candidate still needs application
+to the source and full regression. It covers readable item text, the
+`distant_name` game-over guard and live discovery state in smock naming.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

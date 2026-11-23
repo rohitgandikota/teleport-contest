@@ -10,14 +10,19 @@ Ground rules are in `/CLAUDE.md`. Read that first if you have not.
 
 ---
 
-## Current focus, 2026-11-22
+## Current focus, 2026-11-23
 
-Resume the faithful port with readable C-aligned code and prompt verified
-pushes. The live baseline is 95.797% combined screens, 7th agentic and 11th
-overall. The public suite still passes 44/44; 1,031 held-out screens remain
-unmatched. First repair: complete `mount_steed` and cover its decision order
-with explicit state regressions. See [STATUS.md](STATUS.md) for official
-updates, exact evidence, artifact storage, and the next action. Historical
+Continue the faithful port with readable C-aligned code and prompt verified
+pushes. The latest official snapshot, November 23 at 08:33 UTC, has 23,523
+of 24,531 combined screens, 7th agentic and 11th overall. It predates the
+latest repairs. Public remains 44/44; 1,008 held-out screens remain unmatched
+in that snapshot.
+
+The local regression now passes 640/640 fixtures with 789,800 exact screens
+and 15,145,328 RNG calls. Recent repairs cover room difficulty, ending
+vision, strength loss, roleplay conduct and nudist inventory generation.
+Next: final inventory text and the remaining graphics and lifecycle gaps.
+See [STATUS.md](STATUS.md) for evidence and the next action. Historical
 milestone rows below are not a current completion audit.
 
 ## Previous focus, 2026-09-06

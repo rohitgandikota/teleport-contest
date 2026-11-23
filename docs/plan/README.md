@@ -18,8 +18,8 @@ of 24,531 combined screens, 7th agentic and 11th overall. It predates the
 latest repairs. Public remains 44/44; 936 held-out screens remain unmatched
 in that snapshot.
 
-The full regression covers 666/666 fixtures with 795,547 exact boundary
-screens/cursors, 15,647,041 RNG calls and all 30,213 scored animation frames.
+The full regression covers 668/668 fixtures with 796,110 exact boundary
+screens/cursors, 15,673,738 matched RNG calls and all 30,213 scored animation frames.
 Glyph metadata, object appearance shuffling, monster identities and map
 cursor output are verified. The stricter public animation check now matches
 all 1,483 cursor positions, with exact cells and frame counts.
@@ -32,11 +32,11 @@ passes 79 selected fixtures and four new native cases. Beam/projectile cursor
 ordering is repaired. Pet option parsing, bound toggles and fresh-process
 settings across restore now pass six option cases and four save/restore pairs.
 Movement/exercise predicates and counted missile volleys now match their C
-contracts. The complete animation-bearing corpus matches 30,210/30,213 cursors;
-three pre-existing status-window cursor differences remain. Teleport and scroll
+contracts. The complete animation-bearing corpus now matches all 30,213 cursors, cells
+and frame counts after repairing status-field cursor advancement. Teleport and scroll
 property readers now pass 162 selected fixtures, including all public games and
-eight new C cases: 161,543 screens/cursors and 3,150,859 RNG calls. Next: the status
-cursor repair, Stormbringer attack routing and magical-breathing regeneration.
+eight new C cases: 161,543 screens/cursors and 3,150,859 RNG calls. Next: Stormbringer attack routing and its safe_pet binding, magical-breathing
+regeneration and intrinsic storage, teleport-scroll discovery and floor-pile settlement.
 Current-corpus parity is not a
 completeness claim. See [STATUS.md](STATUS.md) for evidence and next actions.
 Historical milestone rows below are not a current completion audit.

@@ -1734,6 +1734,46 @@ outcome. It needs an independent identification-state control and native failed-
 teleport case before repair. Do not treat the six predicate changes as a full
 scroll-function audit. The three strict status cursor mismatches remain open.
 
+Teleport/read checkpoint `a4b4bdae` is confirmed pushed. The status cursor
+checkpoint is now verified. `tty_curs_status` stores C's zero-based position,
+`tty_putstatusfield` advances the physical cursor for each printed character,
+and clearing preserves its position. Explicit status-window clearing uses those
+same helpers. No projectile, field-selection or core botl logic changed.
+
+Full regression: 668/668 fixtures, 796,110 exact screens/cursors, 15,673,738
+matched RNG calls and all 30,213 scored animation frames. Every metric and
+error field in all four final JSON records was checked. The separate strict
+check covers all 211 animation-bearing fixtures: 30,213/30,213 cells and
+cursor triples, exact frame counts and 352,674/352,674 boundary cursors.
+All three previous status-window cursor failures are repaired.
+
+The promoted status gate compares 54 constructed states with extracted pinned
+C functions. All pass; the old implementation fails all 54 complete-state
+comparisons, and moving only to the row end fails sixteen. The extracted
+oracle checks text, cursor and field state, not ANSI emission or core botl.
+Native replays supply the styled-cell evidence. Existing status dirty and
+suppression gates, two input-exhaustion cases and the 276-module source audit
+also pass. No frozen files or native recordings changed for this repair.
+Logs: `status-cursor-corpus-{0..3}`, `status-cursor-strict-{0,1}`,
+`status-cursor-state-final`, `status-cursor-existing-state-final`,
+`status-cursor-hang-final` and `status-cursor-source-audit-final` in the restart
+cache. Four reusable tools compile their C oracle in a temporary directory and
+remove the generated source and binary afterward.
+
+The next candidates remain outside production. Parent has a source-state
+failure and two independent native cases for teleport-scroll discovery:
+Amulet disorientation must preserve the naming prompt, while canceling a
+controlled destination still identifies the scroll. The cache prototype passes
+130 screens/cursors and 4,682 calls. A new floor-zap probe confirms the missing
+fill_pit call. Its boulder/floor control also exposed a separate nexthere-order
+error in look_here; preserve the failing original input while repairing it.
+Avicenna now owns that pile-order audit. Singer is fixing safe_pet's binding
+to safe_dog after the Stormbringer controls exposed an extra RNG tail.
+Pauli is separating wizard magical-breathing timeouts from the worn extrinsic
+mask before integrating regen_pw's bonus. Parent owns recording and pushes.
+The official snapshot remains November 23 at 13:48 UTC, not a score for these
+latest verified checkpoints.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

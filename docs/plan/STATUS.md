@@ -2901,7 +2901,7 @@ coverage. Its profiles are separate from the global census, at
 /share/NFS/u/rohit/research/contest/artifacts/2026-11-22/chwepon-coverage.EsPbv8/coverage.
 The local receipt is linux-chwepon-coverage-summary.json.
 
-Commit and immediately push this verified enchantment checkpoint. The next
+Enchantment checkpoint `06e91dd4` is pushed. The next
 two-predicate drawbridge repair is native-confirmed across three Castle cases:
 718 boundaries, 41,250 calls and 73 animations. Baseline matches 686 screens,
 709 cursors and 17 animations. Ordinary C recordings confirm walking/digging
@@ -2913,6 +2913,56 @@ capitalization and scuffed names, and prints the wrong novel message. Their
 419 native boundaries and 22,136 calls remain a failing diagnostic, not a
 passing fixture. Naming, full restore phases and invoked-artifact loss are
 separate cache candidates under source review.
+
+The drawbridge patch is now applied and verified. Only mon.js's existing
+is_pool/is_lava predicates and their imports change. They use C's bounds and
+raised-span underlay checks, including the special Juiblex moat rule, while
+preserving existing exports. All 40 source controls pass, versus 24 before.
+They include all underlays and directions, ordinary/lowered terrain, bounds,
+portcullis lookup order and fresh-pit creation with numeric timer cancellation.
+The three actual-input observations pass without replacing gameplay helpers.
+
+castle-raised-bridge-terrain preserves the original three native segments
+byte-for-byte, SHA256 6789cea329e4400f7f65c130ffe7366e02b27a719b9032600abe4ff4213b09e9.
+All 718 screens/cursors and 41,250 full-stream and per-input RNG calls match.
+All 73 animation frames match in count, cells and cursor, and the input gate
+does not over-read. All three native recipe assertions pass. The complete
+692-fixture regression matches 807,639 screens/cursors, 16,097,583 scored RNG
+positions and 30,670 animations. Its exact unique path inventory matches the
+maintained directories, and all 279 runtime hashes stayed fixed. Receipts use
+dbridge-predicate-parent-* and dbridge-predicate-corpus-{0,1,2,3,totals,paths}.
+Source audit remains 0/276; syntax and diff checks pass.
+
+The Castle fixture also passes strict instrumented C replay on NFS. The
+standalone run enters 1,573/5,492 functions and observes 10,807/107,260 direct
+outcomes. Its raw input hash matches the local recording. The coverage path is
+/share/NFS/u/rohit/research/contest/artifacts/2026-11-22/dbridge-coverage.8hGFkd/coverage;
+the exact generated path is in linux-dbridge-coverage-root.txt and the compact
+receipt is linux-dbridge-coverage-summary.json.
+
+The validated coverage union now combines 603 canonical matches, 75 separate
+ordinary Linux controls and eight additional raw inputs comprising 71 native
+segments. All 686 credited input hashes, six build manifests and ordered LLVM
+branch layouts were verified before merging. Original platform rejections
+remain rejected. Coverage rises from 4,498 to 4,504 of 5,492 functions and from
+58,379 to 58,627 of 107,260 direct outcomes. This adds six entered functions
+and 248 outcomes; it does not prove the port correct on untested paths. Both
+is_pool and is_lava reach 10/10 measured outcomes; chwepon reaches 56/94.
+The union is under c-coverage-compress.E84JI2/verified-followup-union-20261123
+on the same NFS root. Local receipts are linux-coverage-followup-union.sh,
+its log and linux-coverage-followup-union-summary.json. Large profiles remain
+on NFS. Lua, macro-internal branches and inactive configurations remain outside
+this compiled-C denominator.
+
+Commit and immediately push this bridge checkpoint. The six-consumer raw
+hallucination audit now has four unchanged parent C recordings, 386 boundaries
+and 11,538 calls, with five source-derived failing controls. Naming and these
+property decisions have bounded cache candidates in progress. Full recovery
+has a completed 61-function audit and an eight-file ownership/phase design.
+It also exposes an ordinary Air save omitting 54 live clouds, so merely loading
+floor objects twice is insufficient. Save ownership and complete phase work
+continue in cache; no restore fix is claimed. Invoked-artifact removal remains
+under its coordinated async caller review.
 
 ## 2026-09-05: full faithful port is the active goal
 

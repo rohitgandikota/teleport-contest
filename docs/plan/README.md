@@ -18,8 +18,8 @@ pushes. The latest official snapshot checked, November 23 at 13:48 UTC, has
 these repairs. Public remains 44/44; that snapshot has 936 unmatched held-out
 screens. Local verification does not establish a newer held-out score.
 
-The latest complete regression passes 691/691 fixtures: 806,921 boundary
-screens/cursors, 16,056,333 scored RNG positions and 30,597 animation frames.
+The latest complete regression passes 692/692 fixtures: 807,639 boundary
+screens/cursors, 16,097,583 scored RNG positions and 30,670 animation frames.
 The earlier potion changes also pass strict full-stream and per-input RNG
 checks on 117 fixtures, all 39,942 boundaries and 1,718,440 calls. The complete
 strict 677-fixture audit and all 213 animation-bearing fixtures passed at the
@@ -57,15 +57,18 @@ The complete 689-fixture corpus matches all 805,930 screens/cursors,
 now use the numeric melt identifier. Their three native cases, 14 state
 controls and all 80 selected regressions pass, including every public fixture.
 Four weapon-enchantment corrections now pass seven new native cases and
-eight source controls. The complete corpus is now 691/691. Next: raised
-drawbridge predicates, object naming, the reproduced restore-phase gap and
-invoked artifact loss. The
+eight source controls. Raised drawbridge predicates now match three native
+Castle cases and 40 source controls; the complete corpus is 692/692.
+Next: object naming, remaining hallucination decisions, complete restore
+ownership/phases and invoked artifact loss. The
 Linux/NFS branch collector is pushed
 and passes signal canaries plus exact save/restore, artifact and natural-exit
 pilots. The Linux census at e4504071 now covers all 678 original inputs:
 603 canonical matches and 75 independently recorded ordinary Linux controls.
-Their validated union enters 4,498/5,492 functions and observes
-58,379/107,260 direct C branch outcomes. Original platform/output rejections
+Adding eight newer raw inputs, 71 native segments, gives a validated union
+entering 4,504/5,492 functions and observing 58,627/107,260 direct C branch
+outcomes. All credited input hashes, build manifests and branch layouts were
+checked before merging. Original platform/output rejections
 remain rejected; no output was normalized. The two new sink fixtures separately
 match Linux C exactly; their validated union covers all 94/94 direct dosinkring
 outcomes in 49 cases. The teleport and polymorph helpers still have measured

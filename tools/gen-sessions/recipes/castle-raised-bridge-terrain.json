@@ -1,0 +1,65 @@
+{
+  "name": "castle-raised-bridge-terrain",
+  "description": "Castle raised-span terrain predicates: walk onto cold-created ice and dig into its moat, cool a raised lava span into floor, and firm existing timed ice with another cold beam.",
+  "coverage": [
+    "mode.debug",
+    "terrain.water-lava",
+    "turn.timers"
+  ],
+  "branches": [
+    "raised-bridge.frozen-walk-dig",
+    "raised-bridge.lava-cold",
+    "raised-bridge.timed-ice-firm"
+  ],
+  "requireBranchAssertions": true,
+  "segments": [
+    {
+      "seed": 7101,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017wand of striking\r\u0017wand of opening\r\u001626\r \u0006 \u0014lllllkkkkkk.  \u0017blessed scroll of genocide\rrp  *\r\u001b\u001b\u0017wand of cold\rzql   \u0017blessed fireproof water walking boots\rWr\u001b\u001b\u0017blessed ring of cold resistance\rPsl\u001b\u001blllll:\u0017wand of digging\rzt>\u001b\u001b:",
+      "name": "castle-frozen-bridge-walk-dig"
+    },
+    {
+      "seed": 7101,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017wand of striking\r\u0017wand of opening\r\u001626\r \u0006 \u0014lllllkkkkkk.  \u0017blessed scroll of genocide\rrp  *\r\u001b\u001b\u0017wand of cold\rzql   \u0017blessed fireproof water walking boots\rWr\u001b\u001b\u0017blessed ring of cold resistance\rPsl\u001b\u001b\u0017blessed ring of levitation\rPtr\u001b\u001blllll:\u0017lava\rh:zql\u001b\u001bl:",
+      "name": "castle-raised-lava-cold"
+    },
+    {
+      "seed": 7101,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017wand of striking\r\u0017wand of opening\r\u001626\r \u0006 \u0014lllllkkkkkk.  \u0017blessed scroll of genocide\rrp  *\r\u001b\u001b\u0017wand of cold\rzql   \u0017blessed fireproof water walking boots\rWr\u001b\u001b\u0017blessed ring of cold resistance\rPsl\u001b\u001b\u0017blessed ring of levitation\rPtr\u001b\u001blllll:hzql\u001b\u001bl:",
+      "name": "castle-raised-ice-firm"
+    }
+  ],
+  "branchAssertions": [
+    {
+      "branch": "raised-bridge.frozen-walk-dig",
+      "segment": 0,
+      "screenIncludes": [
+        "There is steady ice here.",
+        "As you dig, the hole fills with water!",
+        "There is a pool of water here."
+      ]
+    },
+    {
+      "branch": "raised-bridge.lava-cold",
+      "segment": 1,
+      "screenIncludes": [
+        "Lava in front of the drawbridge.",
+        "The lava cools and solidifies."
+      ]
+    },
+    {
+      "branch": "raised-bridge.timed-ice-firm",
+      "segment": 2,
+      "screenIncludes": [
+        "There is steady ice here.",
+        "There is sturdy ice here."
+      ]
+    }
+  ]
+}

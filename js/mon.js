@@ -190,7 +190,8 @@ import { MAX_CARR_CAP, WT_HUMAN, W_ARMG, W_ARMS, P_AXE, P_PICK_AXE, IS_TREE } fr
 // include/monflag.h:180 MZ_HUMAN is MZ_MEDIUM
 const MZ_HUMAN = MFLAGS.MZ_MEDIUM;
 
-import { COLNO, ROWNO, POOL, DRAWBRIDGE_UP, LAVAPOOL, LAVAWALL, IRONBARS,
+import { COLNO, ROWNO, POOL, MOAT, WATER, DRAWBRIDGE_UP, DB_UNDER, DB_LAVA,
+         LAVAPOOL, LAVAWALL, IRONBARS,
          D_CLOSED, D_LOCKED, D_BROKEN, IS_OBSTRUCTED, IS_DOOR, IS_WATERWALL,
          ALLOW_ALL, ALLOW_U, ALLOW_SSM, ALLOW_WALL, ALLOW_DIG, ALLOW_BARS,
          ALLOW_TRAPS, ALLOW_M, ALLOW_SANCT, ALLOW_ROCK, NOTONL, OPENDOOR,
@@ -1590,7 +1591,7 @@ import { There } from './pline.js';
 import { body_part } from './polyself.js';
 import { pmname } from './do_name.js';
 import { losehp } from './hack.js';
-import { is_waterwall } from './dbridge.js';
+import { is_waterwall, is_moat } from './dbridge.js';
 import { can_teleport } from './mondata.js';
 import { on_fire } from './mondata.js';
 import { Flying } from './youprop.js';
@@ -1928,14 +1929,23 @@ function likes_lava(ptr) {
         || ptr?.pmidx === PMNAMES.PM_SALAMANDER;
 }
 
-// include/rm.h:129-130
+// src/dbridge.c:48 is_pool()
 export function is_pool(x, y) {
-    const t = game.level?.at(x, y)?.typ;
-    return t !== undefined && t >= POOL && t <= DRAWBRIDGE_UP;
+    if (!isok(x, y))
+        return false;
+    const ltyp = game.level.at(x, y).typ;
+    // MOAT stays a pool on Juiblex's level even though is_moat is false.
+    return ltyp === POOL || ltyp === MOAT || ltyp === WATER || is_moat(x, y);
 }
+
+// src/dbridge.c:65 is_lava()
 export function is_lava(x, y) {
-    const t = game.level?.at(x, y)?.typ;
-    return t === LAVAPOOL || t === LAVAWALL;
+    if (!isok(x, y))
+        return false;
+    const lev = game.level.at(x, y);
+    return lev.typ === LAVAPOOL || lev.typ === LAVAWALL
+        || (lev.typ === DRAWBRIDGE_UP
+            && (lev.drawbridgemask & DB_UNDER) === DB_LAVA);
 }
 
 // src/mon.c:2064 mon_allowflags() — what a monster is permitted to walk into.

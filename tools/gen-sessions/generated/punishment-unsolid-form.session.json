@@ -3320,9 +3320,9 @@
     "timezone": "Etc/GMT+4"
   },
   "coverage": [
+    "forms.polymorph",
     "mode.debug",
-    "object.scrolls",
-    "status.polymorph"
+    "object.scrolls"
   ],
   "branches": [
     "punishment.unsolid-body"

@@ -1,0 +1,87 @@
+{
+  "name": "prayer-demon-luck",
+  "description": "Reproduce the pinned C demon-prayer condition and compare divine anger with blessed and cursed luckstones.",
+  "recordingNote": "Use RERECORD_TZ=Etc/GMT+4 for a fixed UTC-4 recording offset.",
+  "coverage": [
+    "mode.debug",
+    "forms.polymorph",
+    "object.gems-stones",
+    "religion.prayer",
+    "religion.luck-calendar"
+  ],
+  "branches": [
+    "prayer.neutral-demon",
+    "prayer.chaotic-demon",
+    "prayer.blessed-stone-anger",
+    "prayer.cursed-stone-anger"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "prayer.neutral-demon",
+      "segment": 0,
+      "screenIncludes": [
+        "You turn into a horned devil!",
+        "You begin praying to Thoth.",
+        "You finish your prayer."
+      ]
+    },
+    {
+      "branch": "prayer.chaotic-demon",
+      "segment": 1,
+      "screenIncludes": [
+        "You turn into a horned devil!",
+        "The very idea of praying to a lawful god is repugnant to you."
+      ],
+      "screenExcludes": [
+        "You begin praying"
+      ]
+    },
+    {
+      "branch": "prayer.blessed-stone-anger",
+      "segment": 2,
+      "screenIncludes": [
+        "Thou must relearn thy lessons!"
+      ],
+      "rngIncludes": [
+        "rn2(3)=2 @ angrygods(pray.c:"
+      ]
+    },
+    {
+      "branch": "prayer.cursed-stone-anger",
+      "segment": 3,
+      "screenIncludes": [
+        "Thou must relearn thy lessons!"
+      ],
+      "rngIncludes": [
+        "rn2(9)=2 @ angrygods(pray.c:"
+      ]
+    }
+  ],
+  "segments": [
+    {
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             #polyself\rhorned devil\r#pray\ry y "
+    },
+    {
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:chaotic,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             #polyself\rhorned devil\r#pray\ry"
+    },
+    {
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed luckstone\r#pray\ry n  "
+    },
+    {
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017cursed luckstone\r#pray\ry n  "
+    }
+  ]
+}

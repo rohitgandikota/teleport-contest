@@ -1,7 +1,7 @@
 {
   "name": "recorder-meta-keys",
   "description": "Meta-e enters the skills command as one input byte, then the player declines debug advancement and closes the menu.",
-  "coverage": ["ui.menu", "ui.meta-keys"],
+  "coverage": ["mode.debug", "ui.menus"],
   "branches": ["recorder.single-byte-meta-key"],
   "requireBranchAssertions": true,
   "branchAssertions": [

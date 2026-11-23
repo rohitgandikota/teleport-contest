@@ -224,10 +224,26 @@ All 51 selected replays pass: 13,071 screens/cursors and 920,861 RNG calls.
 Their input-exhaustion checks pass and source audit is empty. The 21 known
 public animation differences remain.
 
-Next: push the recovery checkpoint, then review prayer Luck, hallucination
-and demon-alignment predicates against the pinned C source. The official
-snapshot still predates all ten verified November 22 pushes; do not infer
-a new ranking from local checks.
+Recovery checkpoint `f78f7133` is pushed. Divine response now uses effective
+Luck, the actual STRIDENT threshold, and canonical blindness, antimagic and
+hallucination predicates. The pinned C demon-prayer condition differs from
+its own comment: neutral demons can pray, chaotic demons are rejected with
+the C's lawful-god message. Native recordings confirm both paths, so the port
+preserves the executable condition. Stale prayer-file descriptions were fixed.
+
+Sixteen divine-response tests pass; ten fail before these changes. The other
+36 selected prayer/artifact tests also pass. Four native scenarios improve
+from 209/220 screens and 2,323/9,056 RNG calls to exact output. All 52 selected
+replays pass: 13,291 screens/cursors and 929,917 RNG calls; all input-exhaustion
+checks pass and source audit is empty. The known public animation deficit is
+unchanged. Two new recipes' coverage tags were corrected to registered IDs;
+their recorded frames were not changed.
+
+Next: push the divine-response checkpoint. C's late-game prayer timeout
+increase is still missing from `pleased`. Interactive key rebinding also
+stops at its outer menu; read `handler_rebind_keys_add`, `bind_key` and the
+current binding-table consumers before porting it. The official snapshot
+still predates this resumed work; do not infer a new ranking from local checks.
 
 ## 2026-09-05: full faithful port is the active goal
 

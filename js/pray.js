@@ -1,9 +1,7 @@
-// pray.js — prayer.
+// pray.js, prayer and divine intervention.
 // C ref: src/pray.c
 //
-// The #pray command covers eligibility, delay, ordinary favors, crowning, and
-// the tested sacrifice paths. Some punishment, conversion, and artifact-gift
-// paths remain partial.
+// Prayer eligibility, divine favors and anger, altar sacrifice, and crowning.
 
 import { ureflects } from './muse.js';
 import { has_omonst, OMONST, ANIMATE_SPELL, HVY_ENCUMBER, TELEDS_NO_FLAGS, DISSOLVED, EYE, PLNMSG_OBJ_GLOWS, SICK_ALL, In_sokoban, IS_OBSTRUCTED, SDOOR, SCORR, STONE } from './const.js';
@@ -52,7 +50,7 @@ import { An, an, ansimpleoname, makeplural, OBJ_NAME, otense, vtense,
 import { a_monnam, hcolor, mon_nam, oname, upstart } from './do_name.js';
 import { attrcurse, rndcurse } from './sit.js';
 import { Blind, Deaf, Flying, Hallucination, Levitation, Reflecting,
-         Shock_resistance } from './youprop.js';
+         Shock_resistance, Antimagic, Luck } from './youprop.js';
 import { obj_resists, resist } from './zap.js';
 import { carrying, update_inventory, useup, useupf, confers_luck, sobj_at } from './invent.js';
 import { carried, bimanual } from './obj.js';
@@ -794,7 +792,10 @@ export function can_pray(praying) {
         : game.u.ualign.type;
     p_trouble = in_trouble();
 
-    if (is_demon(game.youmonst.data) && (p_aligntyp !== A_CHAOTIC)) {
+    /* Preserve the pinned C condition, which permits neutral demons
+       despite its comment about chaotic and unaligned gods. */
+    if (is_demon(game.youmonst.data)
+        && (p_aligntyp === A_LAWFUL || p_aligntyp !== A_NEUTRAL)) {
         if (praying)
             return (async () => {
                 await pline_The(`very idea of praying to a ${
@@ -831,7 +832,7 @@ function finish_can_pray(praying) {
              : (p_trouble < 0) ? (u.ublesscnt > 100)
                : (u.ublesscnt > 0))
         p_type = 0;                          /* too soon... */
-    else if ((u.uluck ?? 0) < 0 || u.ugangr || alignment < 0)
+    else if (Luck() < 0 || u.ugangr || alignment < 0)
         p_type = 1;                          /* too naughty... */
     else {
         if (on_altar() && u.ualign.type !== p_aligntyp)
@@ -860,9 +861,7 @@ function gods_upset(g_align) {
     return angrygods(g_align);
 }
 
-// src/pray.c:703 angrygods() — the god's response. The message arms are
-// live; the arms whose machinery is missing (loss of experience, Punishment,
-// random curses, minion summons, the divine lightning) record themselves.
+// src/pray.c:703 angrygods(), the god's response.
 async function angrygods(resp_god) {
     const u = game.u;
     let maxanger;
@@ -871,14 +870,14 @@ async function angrygods(resp_god) {
         resp_god = A_NONE;
     u.ublessed = 0; /* lose divine protection */
 
-    const Luck = u.uluck ?? 0;
+    const luck = Luck();
     if (resp_god !== u.ualign.type)
         maxanger = Math.trunc(u.ualign.record / 2)
-                   + (Luck > 0 ? -Math.trunc(Luck / 3) : -Luck);
+                   + (luck > 0 ? -Math.trunc(luck / 3) : -luck);
     else
         maxanger = 3 * (u.ugangr || 0)
-                   + ((Luck > 0 || u.ualign.record >= 8 /* STRIDENT */)
-                      ? -Math.trunc(Luck / 3) : -Luck);
+                   + ((luck > 0 || u.ualign.record >= STRIDENT)
+                      ? -Math.trunc(luck / 3) : -luck);
     if (maxanger < 1)
         maxanger = 1;
     else if (maxanger > 15)
@@ -887,7 +886,7 @@ async function angrygods(resp_god) {
     switch (rn2(maxanger)) {
     case 0:
     case 1:
-        await You_feel(`that ${align_gname(resp_god)} is ${game.u.uprops?.HALLUC ? 'bummed' : 'displeased'}.`);
+        await You_feel(`that ${align_gname(resp_god)} is ${Hallucination() ? 'bummed' : 'displeased'}.`);
         break;
     case 2:
     case 3: {
@@ -913,8 +912,7 @@ async function angrygods(resp_god) {
     case 4:
     case 5: {
         await gods_angry(resp_god);
-        const antimagic = !!(u.uprops?.ANTIMAGIC || u.uprops?.MAGIC_RES);
-        if (!u.ublind && !antimagic)
+        if (!Blind() && !Antimagic())
             await pline(`${An(hcolor(NH_BLACK))} glow surrounds you.`);
         if (rn2(2) || !(await attrcurse()))
             await rndcurse();
@@ -1861,7 +1859,7 @@ async function pleased(g_align) {
     const u = game.u;
     let trouble = in_trouble();
     let pat_on_head = false;
-    const hallucinating = !!u.uprops?.HALLUC;
+    const hallucinating = Hallucination();
 
     const mood = u.ualign.record >= DEVOUT
         ? (hallucinating ? 'pleased as punch' : 'well-pleased')

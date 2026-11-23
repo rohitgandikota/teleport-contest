@@ -2,7 +2,7 @@
   "name": "punishment-unsolid-form",
   "description": "Read punishment while polymorphed into a wraith. The ball and chain fall away from the unsolid body.",
   "recordingNote": "Use RERECORD_TZ=Etc/GMT+4 for a fixed UTC-4 recording offset.",
-  "coverage": ["mode.debug", "object.scrolls", "status.polymorph"],
+  "coverage": ["mode.debug", "object.scrolls", "forms.polymorph"],
   "branches": ["punishment.unsolid-body"],
   "requireBranchAssertions": true,
   "branchAssertions": [

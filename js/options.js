@@ -249,6 +249,13 @@ export function parseoptions(opts, tinitial, tfrom_file, result) {
     }
 
     if (opt.type === 'BoolOpt') {
+        // src/options.c optfn_boolean(): ignore unavailable storage, then
+        // enforce whether this option may be set at startup or during play.
+        if (opt.noaddr)
+            return retval;
+        if ((!tinitial && opt.setwhere === 'set_in_config')
+            || (tinitial && opt.setwhere === 'set_wiznofuz'))
+            return false;
         result.opts[opt.name] = !negated;
         (result.optSetInConfig ||= {})[opt.name] = true;
     } else if ((opt.name === 'symset' || opt.name === 'roguesymset')

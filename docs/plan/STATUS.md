@@ -11,8 +11,8 @@ it is unfinished. Do not mark that objective complete just to reset the tool.
 
 Restart baseline: `40f90586`, committed September 12, 2026. A fresh fetch found
 `main` equal to `origin/main`, with no queued commits. Pre-existing changes in
-`js/explode.js` and `js/shk.js` remain under review. Do not discard them or add
-the unrelated `.DS_Store` files.
+`js/explode.js` and `js/shk.js` were reviewed, verified and pushed below.
+Do not add the unrelated `.DS_Store` files.
 
 The official snapshot at `2026-11-22T19:45:50.079Z` reports 23,500/24,531
 screens, 95.797%, rank 7 among agentic entries and 11 overall by the published
@@ -105,8 +105,26 @@ directly. The corrected mounting baseline and 19-fixture comparison confirm
 the recorded pre-existing failures. This does not affect ordinary scoring or
 the Node test runner's before/after state tests.
 
-Next: publish the runtime checkpoint, investigate startup monster generation,
-and adopt the applicable official recorder updates. Continue beyond that.
+Runtime checkpoint `6c0c3a32` is pushed. The startup mismatch is now resolved:
+C's `optfn_boolean` rejects `set_wiznofuz` options at startup, while JS had
+enabled `debug_mongen` and skipped monster generation. The parser now also
+rejects config-only boolean changes during play and ignores unavailable
+storage, following the same C guard order. Seven of ten new option tests fail
+before the fix; all ten pass after. The other 38 new state tests still pass.
+A fresh native startup probe improves from 1,939/2,196 RNG calls and 0/2
+screens to exact output. The unchanged 20 supplemental recordings now all
+pass, including ten previously failing sessions. Together with public tests:
+64/64 sessions, 21,264 screens/cursors and 1,033,650 RNG calls. Animations
+are 1,528/1,549, retaining only the 21 known public differences. All 64
+input-exhaustion checks pass. No existing recording was replaced.
+
+The public GitHub Actions API reports no workflow runs for this fork; that
+does not establish the status of the separate official scoring service.
+The most recently checked leaderboard snapshot still predates these pushes.
+
+Next: push the option checkpoint, adopt the applicable official recorder
+updates, and complete the remove-curse function's billing/property branches.
+Continue beyond that.
 
 ## 2026-09-05: full faithful port is the active goal
 

@@ -1,0 +1,137 @@
+{
+  "name": "shirt-text-birthday",
+  "description": "Hawaiian motifs and backgrounds and eroded shirt and apron text use the saved game birthday.",
+  "recordingNote": "Use RERECORD_TZ=Etc/GMT+4 for a fixed UTC-4 recording offset.",
+  "coverage": [
+    "mode.debug",
+    "object.armor",
+    "object.buc-enchant-erosion"
+  ],
+  "branches": [
+    "shirt-text.hawaiian",
+    "shirt-text.hawaiian-quiet",
+    "shirt-text.hawaiian-winter",
+    "shirt-text.tshirt-intact",
+    "shirt-text.tshirt-burnt",
+    "shirt-text.tshirt-very-burnt",
+    "shirt-text.tshirt-thoroughly-burnt",
+    "shirt-text.apron-burnt"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "shirt-text.hawaiian",
+      "segment": 0,
+      "screenIncludes": [
+        "The design features"
+      ]
+    },
+    {
+      "branch": "shirt-text.hawaiian-quiet",
+      "segment": 1,
+      "screenIncludes": [
+        "It features"
+      ]
+    },
+    {
+      "branch": "shirt-text.hawaiian-winter",
+      "segment": 2,
+      "screenIncludes": [
+        "The design features"
+      ]
+    },
+    {
+      "branch": "shirt-text.tshirt-intact",
+      "segment": 3,
+      "screenIncludes": [
+        "It reads:"
+      ]
+    },
+    {
+      "branch": "shirt-text.tshirt-burnt",
+      "segment": 4,
+      "screenIncludes": [
+        "It reads:"
+      ]
+    },
+    {
+      "branch": "shirt-text.tshirt-very-burnt",
+      "segment": 5,
+      "screenIncludes": [
+        "It reads:"
+      ]
+    },
+    {
+      "branch": "shirt-text.tshirt-thoroughly-burnt",
+      "segment": 6,
+      "screenIncludes": [
+        "It reads:"
+      ]
+    },
+    {
+      "branch": "shirt-text.apron-burnt",
+      "segment": 7,
+      "screenIncludes": [
+        "It reads:"
+      ]
+    }
+  ],
+  "segments": [
+    {
+      "name": "hawaiian",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!autoquiver,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed Hawaiian shirt\rra\u001b\u001bV"
+    },
+    {
+      "name": "hawaiian-quiet",
+      "seed": 31,
+      "datetime": "20000112093001",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!autoquiver,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!verbose\n",
+      "moves": " \u0017uncursed Hawaiian shirt\rra\u001b\u001bV"
+    },
+    {
+      "name": "hawaiian-winter",
+      "seed": 31,
+      "datetime": "20261114004959",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!autoquiver,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed Hawaiian shirt\rra\u001b\u001bV"
+    },
+    {
+      "name": "tshirt-intact",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!autoquiver,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed T-shirt\rra\u001b\u001bV"
+    },
+    {
+      "name": "tshirt-burnt",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!autoquiver,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed burnt T-shirt\rra\u001b\u001bV"
+    },
+    {
+      "name": "tshirt-very-burnt",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!autoquiver,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed very burnt T-shirt\rra\u001b\u001bV"
+    },
+    {
+      "name": "tshirt-thoroughly-burnt",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!autoquiver,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed thoroughly burnt T-shirt\rra\u001b\u001bV"
+    },
+    {
+      "name": "apron-burnt",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!autoquiver,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed burnt alchemy smock\rra\u001b\u001bV"
+    }
+  ]
+}

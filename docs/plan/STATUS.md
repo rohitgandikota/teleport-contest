@@ -692,12 +692,32 @@ empty. Logs: `.cache/restart-20261122/search-corpus-{0,1,2,3}.log`,
 `search-state-final.log`, `search-hang.log`, `inventory-search-before.log`
 and `inventory-search-after.log`.
 
-Pending shirt work is outside this checkpoint. Eight new native cases expose
-seven missing Hawaiian/erosion descriptions; intact T-shirt text is a passing
-control. A separate native save pair confirms that a Hawaiian shirt retains
-its design after restoring at a different datetime. The compiled-C text gate
-covers 1,912 motif/erosion combinations plus eight fixed-time conversions.
-Implement and persist `ubirthday`, then use C's unsigned hash arithmetic.
+Menu redraw checkpoint `039e4530` is pushed. The next checkpoint stores
+`ubirthday` at game creation and preserves it in saves. Hawaiian designs,
+eroded shirt/apron text, shopkeeper names, unknown glass prices and anthole
+species use this birth time. Seeded text erosion now wraps its multiplication
+as C's unsigned arithmetic does. The C matrix also found the literal
+`Oracle(TM)` text mismatch. Obsolete comments about these missing paths and
+the newly unused read diagnostic were removed.
+
+Eight new native shirt cases and a two-segment save/restore fixture cover
+verbose/quiet designs, winter dates, intact and eroded text, and unchanged
+designs after restoring at a different time. Together with the unchanged
+s24-23 fuzz recording, they improve from 1,290/1,300 to 1,300/1,300 screens,
+retaining all 54,655 RNG calls, cursors and five animation frames. The
+compiled-C gate passes 1,912 motif/erosion combinations and eight timestamp
+conversions. All three input-exhaustion checks pass.
+
+Full regression: 633/633 fixtures, 788,987 screens/cursors, 15,019,360 RNG
+calls and 30,008/30,029 animations. Source audit remains empty. The selected
+state batch has nine passing entries and one pre-existing vault assertion
+failure, reproduced with the prior commit's modules. Its route uses magic
+mapping, which calls `room_discovered` in C and JS; the assertion incorrectly
+expects no discovery. Correct that test separately. Logs:
+`.cache/restart-20261122/birthday-corpus-{0,1,2,3}.log`,
+`birthday-state-final.log`, `birthday-special-room-before.log`,
+`birthday-source-audit.log`, `shirt-combined-before.log`, `shirt-text-after.log`
+and `shirt-hang.log`.
 
 ## 2026-09-05: full faithful port is the active goal
 

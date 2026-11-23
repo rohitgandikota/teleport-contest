@@ -64,7 +64,7 @@ import { encumber_msg, exerchk, change_luck, ACURR,
          near_capacity } from './attrib.js';
 import { init_uhunger } from './eat.js';
 import { settrack, initrack } from './track.js';
-import { phase_of_the_moon, friday_13th, night } from './calendar.js';
+import { phase_of_the_moon, friday_13th, night, getnow_seconds } from './calendar.js';
 import { ask_do_tutorial, set_playmode, optfn_playmode } from './options.js';
 import { ROLE_GENDMASK, ROLE_MALE, ROLE_FEMALE, A_CURRENT, In_endgame,
          FULL_MOON, NEW_MOON, COLNO, A_CON, A_WIS, A_INT, MOD_ENCUMBER,
@@ -377,6 +377,8 @@ export async function newgame() {
         // alignment the hero started with; convert_arg()'s %d, %G and %a all
         // read [A_ORIGINAL], so the legacy text needs it.
         g.u.ualignbase = [g.u.ualign.type, g.u.ualign.type];
+        // src/u_init.c:1010. Save the birth time, not the current restore time.
+        g.ubirthday = getnow_seconds();
         g.u.uhave = {};
 
         // src/u_init.c:1027 u_init_misc(), permanent blindness is a source

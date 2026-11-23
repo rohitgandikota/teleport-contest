@@ -1846,35 +1846,14 @@ export async function do_genocide(how) {
     }
 }
 
-// src/read.c:1976 seffect_punishment() and :3019 punish().
+// src/read.c:1976 seffect_punishment().
 async function seffect_punishment(sobj) {
     game.known = true;
-    const confused = !!(game.u.intrinsic?.HConfusion
-                         || game.u.uprops?.CONFUSION);
-    if (confused || sobj.blessed) {
-        await You('feel guilty.');
+    if (Confusion() || sobj.blessed) {
+        await You_feel('guilty.');
         return;
     }
-
-    await You('are being punished for your misbehavior!');
-    if (game.u.uball) {
-        await Your('iron ball gets heavier.');
-        game.u.uball.owt = (game.u.uball.owt || 0)
-            + 160 * (1 + (sobj.cursed ? 1 : 0));
-        return;
-    }
-
-    const chain = mkobj(OCLASSES.CHAIN_CLASS, true);
-    setworn(chain, W_CHAIN);
-    const ball = mkobj(OCLASSES.BALL_CLASS, true);
-    setworn(ball, W_BALL);
-
-    game.uchain = game.u.uchain;
-    game.uball = game.u.uball;
-    (game.u.uprops ||= {}).PUNISHED = true;
-    place_object(ball, game.u.ux, game.u.uy);
-    place_object(chain, game.u.ux, game.u.uy);
-    newsym(game.u.ux, game.u.uy);
+    await punish(sobj);
 }
 
 // src/read.c:3066 unpunish() -- destroy the attached chain while leaving the
@@ -1885,11 +1864,6 @@ export function unpunish() {
     setworn(null, W_CHAIN);
     delobj(chain);
     setworn(null, W_BALL);
-
-    game.uchain = game.u.uchain;
-    game.uball = game.u.uball;
-    if (game.u.uprops)
-        delete game.u.uprops.PUNISHED;
 }
 
 // src/read.c:1490 seffect_remove_curse(). Process eligible inventory in list

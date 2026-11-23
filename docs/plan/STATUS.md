@@ -188,10 +188,24 @@ All 54 public/artifact/sacrifice regression fixtures pass: 13,639 screens,
 906,217 RNG calls. The 55 existing artifact/public input checks and the new
 gift check pass. The known public animation deficit is unchanged.
 
-Next: push the artifact checkpoint. Then replace `seffect_punishment`'s
-partial duplicate with C's call to the already ported `punish`, and update
-its remaining stale punishment-property consumers in insight and zap.
-Continue beyond that.
+Artifact checkpoint `d579e389` is pushed. Punishment scrolls now call the
+shared `punish` function, following C's checks for amorphous, whirly and
+unsolid bodies, swallowing, blindness and existing ball weight. Enlightenment
+and object polymorph protection use the canonical ball and skin pointers.
+Eleven punishment state tests pass, seven fail before the fix. Together with
+the previous tests, all 83 new state tests pass. The native wraith recording
+improves from 98/100 screens and 2,261/2,268 RNG calls to exact output, with
+assertions requiring the transformation and falling ball messages.
+All 50 existing public/punishment/polymorph/swallowing fixtures pass, matching
+12,879 screens/cursors and 823,573 RNG calls. The new native case adds 100
+screens and 2,268 RNG calls. All 51 input-exhaustion checks pass; the 21 known
+public animation differences remain. The punishment teleport state gate
+passes and source audit is empty.
+
+Next: push this punishment checkpoint, then continue the source-driven
+gameplay audit and native regression loop. The official snapshot still
+predates all eight verified November 22 pushes so far; do not infer a new
+ranking from local checks.
 
 ## 2026-09-05: full faithful port is the active goal
 

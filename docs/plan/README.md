@@ -18,11 +18,11 @@ of 24,531 combined screens, 7th agentic and 11th overall. It predates the
 latest repairs. Public remains 44/44; 1,008 held-out screens remain unmatched
 in that snapshot.
 
-The local regression now passes 645/645 fixtures with 791,068 exact screens
-and 15,307,740 RNG calls. Recent repairs cover interactive exit, loaded symbol
-sets, custom class glyphs, Rogue graphics and save/restore transitions.
-Next: custom unexplored and blank map symbols, then the remaining glyph
-customization consumers. Current-corpus parity is not a completeness claim.
+The local regression now passes 646/646 fixtures with 791,161 exact screens
+and 15,338,476 RNG calls. Recent repairs cover loaded symbol sets, Rogue
+graphics, save/restore transitions, and custom unexplored and blank map cells.
+Next: class customization during startup, then remembered object symbols and
+remaining glyph consumers. Current-corpus parity is not a completeness claim.
 See [STATUS.md](STATUS.md) for evidence and the next action. Historical
 milestone rows below are not a current completion audit.
 

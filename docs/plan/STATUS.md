@@ -999,6 +999,48 @@ object symbols after set changes, and the retained Enhanced UTF-8 shortcut
 remain separate source-audit targets. This checkpoint does not establish a
 complete glyph customization pipeline or a new held-out score.
 
+Graphics checkpoint `7c0e7316` is pushed. The other-symbol candidate is now
+applied. `clear_glyph_buffer` marks custom unexplored symbols for repaint;
+`show_glyph_cell` resolves nothing, unexplored and invisible glyph identities
+through the active table. `magic_map_background` draws GLYPH_NOTHING when
+requested, while preserving remembered objects.
+
+The new `other-map-symbols` native fixture has ten cases and improves from
+27/93 to 93/93 screens, retaining all 30,736 RNG calls and cursors. It covers
+ASCII and DEC symbols, text-popup restoration, magic mapping, Rogue
+round trips, ordinary dark-floor controls and a verified floor boulder.
+Six source-state checks pass; four fail before the patch. The invisible
+other-symbol slot is injected only in the state check: the C parser matches
+`S_invisible` to its earlier monster-class entry, so do not claim a config
+fixture reaches that other-symbol slot.
+
+Full regression: 646/646 fixtures, 791,161 screens/cursors, 15,338,476 RNG
+calls and 30,010/30,031 animations. Native assertions, integrity and
+input-exhaustion pass. All eight graphics, five vision and four restore-option
+controls pass; source audit remains zero findings. Logs:
+`other-symbols-corpus-{0..3}.log`, `other-map-symbols-{before,prototype,native}.log`,
+`other-symbol-state-{before,final}.log` and `other-symbols-{hang,graphics-state,
+vision-state,restore-state,source-audit}.log` in the restart cache.
+
+Next isolated candidates: `glyph-startup-prototype.mjs` uses the static C
+monster data during config parsing, before `game.mons` exists. The new
+`class-glyph-startup` native recording has four cases, 32 screens and 12,316
+RNG calls; its three source-state checks pass through the loader and all fail
+before. This candidate still needs application and regression verification.
+`remembered-object-display.mjs` resolves cached object identities through
+active symbols. Five native cases in `remembered-object-v2.session.json`
+improve from 243/251 to exact screens, retaining 15,443 RNG calls. Validate
+its branch assertions and state controls before applying it.
+
+Custom glyph rendering remains incomplete. Valid UTF-8 class overrides
+reproduce the startup crash, and plain-set custom class colours still differ
+after the crash fix. Direct `SYMBOLS=G_...:value` lines are a C parsing quirk:
+C passes only the stripped glyph name to match_glyph, so their values do not
+apply. A customization without a named set reports C's unimplemented-feature
+config error. Do not promote those config-error probes with temporary file
+paths into native gameplay fixtures. Relevant cache probes are
+`custom-glyph-*`, `custom-class-glyph-*`, `utf8-class-*`, and `glyph-startup-*`.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

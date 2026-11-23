@@ -1024,6 +1024,15 @@ export function show_glyph_cell(x, y, ch, color = NO_COLOR, decgfx = false, attr
             decgfx = !!sym.dec;
         }
     }
+    // src/display.c:2774, :2778, :3030 reset_glyphmap().
+    if (glyph?.kind === 'nothing' || glyph?.kind === 'unexplored'
+        || glyph?.kind === 'invis') {
+        const index = glyph.kind === 'nothing' ? SYM_NOTHING
+            : glyph.kind === 'unexplored' ? SYM_UNEXPLORED : SYM_INVISIBLE;
+        ch = showsym_other(index);
+        color = NO_COLOR;
+        decgfx = false;
+    }
     /* Debug-only cell watch (never set during scoring): log who writes a
        watched map cell. globalThis.__cell_watch = {cells: [[x,y],...]} */
     if (globalThis.__cell_watch
@@ -1061,14 +1070,14 @@ export function show_glyph_cell(x, y, ch, color = NO_COLOR, decgfx = false, attr
 /* the glyph buffer's unexplored entry, what glyph_at() reads after cls() */
 const GLYPH_UNEXPLORED_GLYPH = Object.freeze({ kind: 'unexplored' });
 
-// src/display.c:2107 clear_glyph_buffer() — every gbuf entry becomes the
-// unexplored glyph. The physical map was just cleared, so nothing is flagged
-// for repaint; glyph_at() reports unexplored until something redraws a spot.
+// src/display.c:2107 clear_glyph_buffer(), reset to unexplored glyphs.
+// A custom unexplored symbol must repaint the cleared physical map.
 export function clear_glyph_buffer() {
     game.gbuf = [];
     const lev = game.level;
     if (!lev)
         return;
+    const sym = showsym_other(SYM_UNEXPLORED);
     for (let x = 1; x < COLNO; x++) {
         for (let y = 0; y < ROWNO; y++) {
             const loc = lev.at(x, y);
@@ -1080,6 +1089,9 @@ export function clear_glyph_buffer() {
             loc.disp_attr = 0;
             loc.disp_glyph = GLYPH_UNEXPLORED_GLYPH;
             loc.gnew = 0;
+            if (sym !== ' ')
+                show_glyph_cell(x, y, sym, NO_COLOR, false, 0,
+                                GLYPH_UNEXPLORED_GLYPH);
         }
     }
 }
@@ -3068,9 +3080,14 @@ export function magic_map_background(x, y, show) {
             ? { ch: tg.ch, color: tg.color, decgfx: tg.dec,
                 glyph: { kind: 'cmap', cmap: tg.cmap } }
             : GLYPH_NOTHING_CELL;
-    if (show && tg)
-        show_glyph_cell(x, y, tg.ch, tg.color, tg.dec, 0,
-                        { kind: 'cmap', cmap: tg.cmap });
+    if (show) {
+        if (tg)
+            show_glyph_cell(x, y, tg.ch, tg.color, tg.dec, 0,
+                            { kind: 'cmap', cmap: tg.cmap });
+        else
+            show_glyph_cell(x, y, showsym_other(SYM_NOTHING), NO_COLOR,
+                            false, 0, { kind: 'nothing' });
+    }
     update_lastseentyp(x, y); /* src/display.c:257, even when not displayed */
 }
 

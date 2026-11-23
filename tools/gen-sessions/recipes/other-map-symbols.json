@@ -1,0 +1,251 @@
+{
+  "name": "other-map-symbols",
+  "description": "Active unexplored, nothing and boulder symbols through map clearing, text overlays, magic mapping and Rogue level transitions.",
+  "recordingNote": "Use RERECORD_TZ=Etc/GMT+4 for a fixed UTC-4 recording offset.",
+  "coverage": [
+    "mode.debug",
+    "options.rc-bindings",
+    "ui.map-memory-vision",
+    "dungeon.special-levels"
+  ],
+  "branches": [
+    "other-symbols.unexplored-ascii",
+    "other-symbols.unexplored-dec",
+    "other-symbols.nothing-dark-off",
+    "other-symbols.nothing-color-off",
+    "other-symbols.nothing-default-control",
+    "other-symbols.unexplored-rogue-roundtrip",
+    "other-symbols.unexplored-version-popup",
+    "other-symbols.nothing-dec-dark-off",
+    "other-symbols.nothing-and-unexplored",
+    "other-symbols.boulder-floor-control"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "other-symbols.unexplored-ascii",
+      "segment": 0,
+      "screenCells": [
+        {
+          "step": 0,
+          "x": 0,
+          "y": 1,
+          "equals": "U"
+        },
+        {
+          "step": 3,
+          "x": 0,
+          "y": 1,
+          "equals": "U"
+        }
+      ]
+    },
+    {
+      "branch": "other-symbols.unexplored-dec",
+      "segment": 1,
+      "screenCells": [
+        {
+          "step": 0,
+          "x": 0,
+          "y": 1,
+          "equals": "─"
+        },
+        {
+          "step": 3,
+          "x": 0,
+          "y": 1,
+          "equals": "─"
+        }
+      ]
+    },
+    {
+      "branch": "other-symbols.nothing-dark-off",
+      "segment": 2,
+      "screenCells": [
+        {
+          "step": 5,
+          "x": 3,
+          "y": 3,
+          "equals": "N"
+        }
+      ]
+    },
+    {
+      "branch": "other-symbols.nothing-color-off",
+      "segment": 3,
+      "screenCells": [
+        {
+          "step": 5,
+          "x": 3,
+          "y": 3,
+          "equals": "N"
+        }
+      ]
+    },
+    {
+      "branch": "other-symbols.nothing-default-control",
+      "segment": 4,
+      "screenCells": [
+        {
+          "step": 5,
+          "x": 3,
+          "y": 3,
+          "equals": "."
+        }
+      ]
+    },
+    {
+      "branch": "other-symbols.unexplored-rogue-roundtrip",
+      "segment": 5,
+      "screenCells": [
+        {
+          "step": 18,
+          "x": 0,
+          "y": 1,
+          "equals": "Q"
+        },
+        {
+          "step": 26,
+          "x": 0,
+          "y": 1,
+          "equals": "U"
+        }
+      ]
+    },
+    {
+      "branch": "other-symbols.unexplored-version-popup",
+      "segment": 6,
+      "screenCells": [
+        {
+          "step": 12,
+          "x": 0,
+          "y": 1,
+          "equals": "U"
+        },
+        {
+          "step": 14,
+          "x": 0,
+          "y": 1,
+          "equals": "U"
+        }
+      ],
+      "screenIncludes": [
+        "Permission is hereby granted"
+      ]
+    },
+    {
+      "branch": "other-symbols.nothing-dec-dark-off",
+      "segment": 7,
+      "screenCells": [
+        {
+          "step": 5,
+          "x": 3,
+          "y": 3,
+          "equals": "─"
+        }
+      ]
+    },
+    {
+      "branch": "other-symbols.nothing-and-unexplored",
+      "segment": 8,
+      "screenCells": [
+        {
+          "step": 0,
+          "x": 0,
+          "y": 1,
+          "equals": "U"
+        },
+        {
+          "step": 5,
+          "x": 3,
+          "y": 3,
+          "equals": "N"
+        }
+      ]
+    },
+    {
+      "branch": "other-symbols.boulder-floor-control",
+      "segment": 9,
+      "screenCells": [
+        {
+          "step": 12,
+          "x": 7,
+          "y": 13,
+          "equals": "B"
+        }
+      ]
+    }
+  ],
+  "segments": [
+    {
+      "name": "unexplored-ascii",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nSYMBOLS=S_unexplored:U\n",
+      "moves": " V\f"
+    },
+    {
+      "name": "unexplored-dec",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:DECgraphics\nSYMBOLS=S_unexplored:\\xf1\n",
+      "moves": " V\f"
+    },
+    {
+      "name": "nothing-dark-off",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=!dark_room\nSYMBOLS=S_nothing:N\n",
+      "moves": " \u0006 \fV"
+    },
+    {
+      "name": "nothing-color-off",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=!color\nSYMBOLS=S_nothing:N\n",
+      "moves": " \u0006 \fV"
+    },
+    {
+      "name": "nothing-default-control",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nSYMBOLS=S_nothing:N\n",
+      "moves": " \u0006 \fV"
+    },
+    {
+      "name": "unexplored-rogue-roundtrip",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nSYMBOLS=S_unexplored:U\nROGUESYMBOLS=S_unexplored:Q\n",
+      "moves": " \u0016the rogue level\r V\u00161\r V\f"
+    },
+    {
+      "name": "unexplored-version-popup",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nSYMBOLS=S_unexplored:U\n",
+      "moves": " #version\r \u001b\fV"
+    },
+    {
+      "name": "nothing-dec-dark-off",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:DECgraphics,!dark_room\nSYMBOLS=S_nothing:\\xf1\n",
+      "moves": " \u0006 \fV"
+    },
+    {
+      "name": "nothing-and-unexplored",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=!color\nSYMBOLS=S_nothing:N,S_unexplored:U\n",
+      "moves": " \u0006 \fV"
+    },
+    {
+      "name": "boulder-floor-control",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nSYMBOLS=S_boulder:B\n",
+      "moves": " \u0017boulder\rjV"
+    }
+  ]
+}

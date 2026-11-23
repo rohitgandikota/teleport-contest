@@ -9351,6 +9351,15 @@ Rogue IBM colours depend on glyph categories, including C's uncoloured
 female monsters, pets and detected monsters. The new native fixtures and
 `tools/symbol-state-gate.mjs` preserve these distinctions.
 
+Custom unexplored symbols also change the screen-clear contract. C marks
+those cells for repaint because the cleared terminal contains spaces.
+Remembered nothing and invisible markers retain their glyph identity and
+resolve the active other-symbol slot when drawn. Magic mapping still shows
+a nothing glyph when a dark room is blank, even if object memory must remain
+unchanged. `other-map-symbols` and `other-symbol-state-gate.mjs` cover these
+cases. `S_invisible` is ambiguous in C's loadsyms table: the earlier monster
+class wins over the later other-symbol entry.
+
 ## #wizcast, #wizobjprobs, #wizloadlua, #bugreport and BIND parameters (12 Sep)
 
 - #wizcast: spell.c dowizcast(), a menu of the spellbook names into

@@ -242,6 +242,8 @@ export async function newgame() {
     {
         const { dorecover } = await import('./save.js');
         if (dorecover()) {
+            init_vision_globals();
+            vision_reset();
             l_nhcore_init();
             await docrt();
             /* src/allmain.c:914 welcome(FALSE) — align and gender words

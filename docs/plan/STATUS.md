@@ -805,6 +805,37 @@ temporary config path in Options Help, and four lose a cat map cell in
 remain untouched. Evidence: `resumed-fuzz-third-{0,1}.log`,
 `fuzz-third-time-controls-*` and `fuzz-third-screen-audit.log` in the cache.
 
+Blindness-test checkpoint `eea851c8` is pushed. The cat discrepancy came
+from `really_done` omitting C's `vision_inited = FALSE`. Disclosure rebuilt
+vision after tutorial exit moved the hero, so a visible kitten disappeared.
+Vision now respects that flag, level-generation and level-load guards;
+level reset enables it, and restoring a save initializes the process-local
+vision buffers before redrawing.
+
+A shorter native tutorial-exit fixture retains the kitten through disclosure
+and starts a subsequent game. It improves from 46/48 to 48/48 screens with
+all 5,662 RNG calls unchanged. The original fresh tour also passes all 205
+screens and 3,248 RNG calls. Five lifecycle controls and four existing
+restore-option tests pass; four of the five new controls fail before the
+patch. Native assertions, recording integrity, both input-exhaustion checks
+and source audit pass.
+
+Full regression: 637/637 fixtures, 789,334 screens/cursors, 15,083,036 RNG
+calls and 30,008/30,029 animations. The targeted public, ending and vision
+batch also passes 93/93. Logs: `vision-ending-corpus-{0,1,2,3}.log`,
+`vision-ending-regression.log`, `vision-lifecycle-state-{before,final}.log`,
+`ending-vision-freeze-{before,native}.log`, `vision-ending-hang.log` and
+`vision-ending-source-audit.log` in the restart cache.
+
+The remaining 139 older failed games have now been replayed: 93 pass and
+46 need fresh controls. Combining those unrelated games in a single native
+session carried saves and locks between them, so its later segments are
+not independent controls. Separate recordings are running per game under
+`fuzz-fourth-independent-*`; do not classify the combined run's differences
+as port defects. Source review also found ignored hero class symbols and
+missing high-bit glyph rendering, with seven native graphics probes and a
+candidate loader in `dec-class-*`. Those changes are not in this checkpoint.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

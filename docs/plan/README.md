@@ -19,11 +19,10 @@ run at 19:33 UTC predates the latest checkpoint. Public remains 44/44;
 that snapshot has 936 unmatched held-out
 screens. Local verification does not establish a newer held-out score.
 
-The latest verification passes 700/700 fixtures: 810,102 boundary
-screens/cursors, 16,183,320 scored RNG positions and 30,670 animation frames.
-Three large recordings timed out in the parallel run, then passed serially
-in 12-14 seconds under the unchanged 45-second limit. Runtime hashes stayed
-fixed throughout; the original failure receipts are retained.
+The latest verification passes 702/702 fixtures: 810,582 boundary
+screens/cursors, 16,217,844 scored RNG positions and 30,712 animation frames.
+Both shards finish without failures or timeouts under the standard 45-second
+worker limit. All 279 runtime hashes stayed fixed throughout.
 The earlier potion changes also pass strict full-stream and per-input RNG
 checks on 117 fixtures, all 39,942 boundaries and 1,718,440 calls. The complete
 strict 677-fixture audit and all 213 animation-bearing fixtures passed at the
@@ -68,16 +67,19 @@ state controls and 128 retained controls pass. Object naming now follows C's
 restrictions, canonical spelling, scuff retry and safe prompts. Thirteen native
 cases and 20 state controls pass. The native C coverage union reaches all
 18/18 direct do_oname outcomes. Six more status decisions now use C's active
-predicates; nine native cases and ten state controls pass. Next: monster shape
-and hiding guards, stun duration/lifetime and complete restore ownership/phases. The
+predicates; nine native cases and ten state controls pass. Vampire selection,
+hiding vision and protected mimic creation now pass eight native cases and
+74 source controls. This checkpoint also shares the existing special-item
+helper and removes an obsolete function-history comment. Next: stun
+duration/lifetime, complete restore ownership/phases and hideunder feedback. The
 Linux/NFS branch collector is pushed
 and passes signal canaries plus exact save/restore, artifact and natural-exit
 pilots. The Linux census at e4504071 now covers all 678 original inputs:
 603 canonical matches and 75 independently recorded ordinary Linux controls.
-Adding fourteen newer raw inputs and two independent Linux controls, 102
+Adding sixteen newer raw inputs and two independent Linux controls, 110
 native segments in total, gives a validated union entering 4,506/5,492
-functions and observing 58,696/107,260 direct C branch outcomes.
-All 694 credited input hashes, nine build manifests and branch layouts were
+functions and observing 58,710/107,260 direct C branch outcomes.
+All 696 credited input hashes, eleven build manifests and branch layouts were
 checked before merging. Original platform/output rejections
 remain rejected; no output was normalized. The two new sink fixtures separately
 match Linux C exactly; their validated union covers all 94/94 direct dosinkring

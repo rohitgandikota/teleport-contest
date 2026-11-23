@@ -1569,7 +1569,7 @@ function resists_poison(mon) {
    while this file's own callers still see a local binding. */
 import { touch_artifact, touch_artifact_mon } from './artifact.js';
 export { touch_artifact, touch_artifact_mon };
-import { pick_nasty, mon_has_amulet } from './wizard.js';
+import { pick_nasty, mon_has_amulet, mon_has_special } from './wizard.js';
 import { tt_doppel } from './topten.js';
 import { rloc_to } from './teleport.js';
 import { unique_corpstat } from './mondata.js';
@@ -1595,7 +1595,7 @@ import { There } from './pline.js';
 import { body_part } from './polyself.js';
 import { pmname } from './do_name.js';
 import { losehp } from './hack.js';
-import { is_waterwall, is_moat } from './dbridge.js';
+import { is_waterwall, is_moat, is_pool_or_lava } from './dbridge.js';
 import { can_teleport } from './mondata.js';
 import { on_fire } from './mondata.js';
 import { Flying } from './youprop.js';
@@ -3947,37 +3947,33 @@ export async function decide_to_shapeshift(mon) {
 // src/mon.c:4941 pickvampshape()
 function pickvampshape(mon) {
     let mndx = mon.cham, wolfchance = 10;
-    const PM_VLAD = PMNAMES.PM_VLAD_THE_IMPALER,
-          PM_VLORD = PMNAMES.PM_VAMPIRE_LEADER,
-          PM_VAMP = PMNAMES.PM_VAMPIRE;
+    // Rogue levels avoid lowercase wolf and fog-cloud symbols.
+    const uppercase_only = Is_rogue_level(game.u.uz);
 
     switch (mndx) {
-    case PM_VLAD:
+    case PMNAMES.PM_VLAD_THE_IMPALER:
+        // Keep Vlad in a form which can carry the Candelabrum.
+        if (mon_has_special(mon))
+            break;
         wolfchance = 3;
         /* FALLTHRU */
-    case PM_VLORD:
-        if (!rn2(wolfchance)
-            && !is_pool_or_lava_mon(mon.mx, mon.my)) {
+    case PMNAMES.PM_VAMPIRE_LEADER:
+        if (!rn2(wolfchance) && !uppercase_only
+            // Don't choose a walking form that would drown or burn.
+            && !is_pool_or_lava(mon.mx, mon.my)) {
             mndx = PMNAMES.PM_WOLF;
             break;
         }
         /* FALLTHRU */
-    case PM_VAMP:
-        mndx = !rn2(4) ? PMNAMES.PM_FOG_CLOUD : PMNAMES.PM_VAMPIRE_BAT;
+    case PMNAMES.PM_VAMPIRE:
+        mndx = (!rn2(4) && !uppercase_only) ? PMNAMES.PM_FOG_CLOUD : PMNAMES.PM_VAMPIRE_BAT;
         break;
     }
-    /* return to base form if the target is gone, or randomly when already
-       in an alternate form */
-    if (((game.mvitals?.[mndx]?.mvflags ?? 0) & 0x02 /* G_GENOD */)
-        || (mon.mnum !== mon.cham && !rn2(4)))
-        mndx = mon.cham;
+    // Genocide short-circuits the random return from an alternate form.
+    if ((game.mvitals[mndx].mvflags & G_GENOD) !== 0
+        || (mon.data !== game.mons[mon.cham] && !rn2(4)))
+        return mon.cham;
     return mndx;
-}
-
-function is_pool_or_lava_mon(x, y) {
-    const t = game.level?.at(x, y)?.typ ?? 0;
-    return t === 16 /* POOL */ || t === 17 /* MOAT */ || t === 19 /* WATER */
-        || t === 21 /* LAVAPOOL */;
 }
 
 // src/mon.c:5171 select_newcham_form() — creation-relevant arms.
@@ -4564,14 +4560,17 @@ export function hide_monst(mon) {
 
     if ((is_hider(ptr) || hider_under)
         && !(mon.mundetected || M_AP_TYPE(mon))) {
-        /* C forces the viz_array cell dark so cansee() can't block the
-           re-hide; our restrap reads cansee() live, so mask via the same
-           trick through the vision seam if present */
+        const x = mon.mx, y = mon.my;
+        const save_viz = game.viz_array[y][x];
+
+        /* override vision, forcing hero to be unable to see monster's spot */
+        game.viz_array[y][x] &= ~(IN_SIGHT | COULD_SEE);
         if (is_hider(ptr))
             restrap(mon);
         /* try again if mimic missed its 1/3 chance to hide */
         if (ptr.mlet === MONSYMS.S_MIMIC && !M_AP_TYPE(mon))
             restrap(mon);
+        game.viz_array[y][x] = save_viz;
         if (hider_under)
             hideunder(mon);
     }

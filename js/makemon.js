@@ -1520,17 +1520,10 @@ const mimic_syms = [
     OCLASSES.SPBOOK_CLASS,     MONSYMS.S_MIMIC_DEF,   MONSYMS.S_MIMIC_DEF,
 ];
 
-// src/makemon.c:2393 set_mimic_sym() — decide what a new mimic looks like.
-//
-// This was a note_unported stub, and it is reached by every mimic mkshobj_at
-// places on a shop square, which is where the 36-position shop-stocking
-// residual came from. The draws are heavily branch-dependent, so the order of
-// the tests matters as much as the tests themselves.
-//
-// Only the arms reachable from ordinary level generation are ported; the maze,
-// Delphi and rogue-level arms are recorded rather than faked.
+// src/makemon.c:2393 set_mimic_sym(): choose a mimic's disguise.
+// Shape protection leaves its current appearance untouched.
 export function set_mimic_sym(mtmp) {
-    if (!mtmp)
+    if (!mtmp || Protection_from_shape_changers())
         return;
 
     const mx = mtmp.mx, my = mtmp.my;

@@ -31,8 +31,7 @@ import { is_drawbridge_wall, is_ice } from './dbridge.js';
 import { inhishop } from './monmove.js';
 import { migrate_to_level } from './dog.js';
 import { On_W_tower_level, depth, get_level, ledger_no, Can_dig_down, Can_fall_thru, surface, ceiling, dunlev, dunlevs_in_dungeon } from './dungeon.js';
-import { any_quest_artifact } from './questpgr.js';
-import { mon_has_amulet } from './wizard.js';
+import { mon_has_amulet, mon_has_special } from './wizard.js';
 import { trapname } from './detect.js';
 import { trycall } from './do_name.js';
 import { obfree } from './invent.js';
@@ -1589,17 +1588,6 @@ async function mon_escape(mtmp, vismon) {
         await pline_mon(mtmp, `${Monnam(mtmp)} escapes the dungeon!`);
     await mongone(mtmp);
     return 2;
-}
-/* src/wizard.c:117 mon_has_special() */
-function mon_has_special(mtmp) {
-    for (const otmp of (mtmp.minvent || []))
-        if (otmp.otyp === ONAMES.AMULET_OF_YENDOR
-            || any_quest_artifact(otmp)
-            || otmp.otyp === ONAMES.BELL_OF_OPENING
-            || otmp.otyp === ONAMES.CANDELABRUM_OF_INVOCATION
-            || otmp.otyp === ONAMES.SPE_BOOK_OF_THE_DEAD)
-            return 1;
-    return 0;
 }
 /* include/hack.h Sokoban: In_sokoban(&u.uz) */
 const Sokoban = () => !!game.level?.flags?.sokoban_rules;

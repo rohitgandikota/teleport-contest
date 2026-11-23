@@ -1,0 +1,102 @@
+{
+  "name": "vampire-shape-selection",
+  "description": "Real Rogue-level vampire and vampire-lord creation suppress lowercase forms. Ordinary-level fog is retained. A peaceful invisible Vlad keeps the Candelabrum through natural shape selection.",
+  "recordingNote": "Use RERECORD_TZ=Etc/GMT+4 for the fixed UTC-4 recording offset. The invisible Vlad case is witnessed by native RNG and the read-only input state gate, not a visible transformation message.",
+  "coverage": [
+    "mode.debug",
+    "forms.polymorph",
+    "level.special-variants",
+    "monster.movement"
+  ],
+  "branches": [
+    "vampire-shape.rogue-fog-suppressed",
+    "vampire-shape.rogue-wolf-suppressed",
+    "vampire-shape.ordinary-fog-control",
+    "vampire-shape.vlad-special-retained"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "vampire-shape.rogue-fog-suppressed",
+      "segment": 0,
+      "screenIncludes": [
+        "older, more primitive world",
+        "A vampire bat appears next to you."
+      ],
+      "screenExcludes": [
+        "A fog cloud appears next to you."
+      ],
+      "rngIncludes": [
+        "rn2(4)=0 @ pickvampshape(mon.c:4967)"
+      ]
+    },
+    {
+      "branch": "vampire-shape.rogue-wolf-suppressed",
+      "segment": 1,
+      "screenIncludes": [
+        "older, more primitive world",
+        "A vampire bat appears next to you."
+      ],
+      "screenExcludes": [
+        "A wolf appears next to you."
+      ],
+      "rngIncludes": [
+        "rn2(10)=0 @ pickvampshape(mon.c:4957)",
+        "rn2(4)=1 @ pickvampshape(mon.c:4967)"
+      ]
+    },
+    {
+      "branch": "vampire-shape.ordinary-fog-control",
+      "segment": 2,
+      "screenIncludes": [
+        "A fog cloud appears next to you."
+      ],
+      "screenExcludes": [
+        "older, more primitive world"
+      ],
+      "rngIncludes": [
+        "rn2(4)=0 @ pickvampshape(mon.c:4967)"
+      ]
+    },
+    {
+      "branch": "vampire-shape.vlad-special-retained",
+      "segment": 3,
+      "screenIncludes": [
+        "force Vlad the Impaler?"
+      ],
+      "rngIncludes": [
+        "rn2(6)=0 @ decide_to_shapeshift(mon.c:4921)"
+      ]
+    }
+  ],
+  "segments": [
+    {
+      "name": "rogue-vampire-fog-roll",
+      "seed": 9771,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:DECgraphics,!safe_wait\n",
+      "moves": " \u0016the rogue level\r   \u00072 sleeping vampire\r:"
+    },
+    {
+      "name": "rogue-leader-wolf-roll",
+      "seed": 9775,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:DECgraphics,!safe_wait\n",
+      "moves": " \u0016the rogue level\r   \u0007sleeping vampire lord\r:"
+    },
+    {
+      "name": "ordinary-vampire-fog-control",
+      "seed": 9771,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:DECgraphics,!safe_wait\n",
+      "moves": " \u0007sleeping vampire\r:"
+    },
+    {
+      "name": "vlad-special-natural",
+      "seed": 9771,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:DECgraphics,!safe_wait\n",
+      "moves": " \u0007sleeping peaceful invisible Vlad the Impaler\ry............:"
+    }
+  ]
+}

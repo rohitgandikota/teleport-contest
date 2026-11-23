@@ -3143,6 +3143,56 @@ source-only. These diagnostics remain outside the passing corpus while their
 producer and consumer contracts are repaired. Full save/restore ownership
 work also continues in its separate cache candidate.
 
+The monster-shape checkpoint now applies the complete pickvampshape decision
+sequence, hide_monst's temporary vision mask and set_mimic_sym's protection
+guard. Rogue levels still consume the wolf/fog selection rolls before
+rejecting lowercase forms. Vlad retains his carrying form with a real Amulet,
+quest artifact or invocation item. The existing mon_has_special helper now
+lives in wizard.js and is shared with muse.js. Terrain and genocide checks use
+the canonical helpers and flags. The obsolete mimic function-history comment
+is replaced by its current contract. Four runtime files change by 41 added
+and 48 removed lines.
+
+All 74 source controls pass: 42 vampire, 27 hiding-mask and five protected-mimic
+controls, versus 42 passing before. Eight unchanged native cases match 480
+screens/cursors, 34,524 complete RNG calls and 42 animations. Every input RNG
+slice, animation count/cell/cursor and input-exhaustion check passes. Both
+paired recipes pass their eight branch assertions; native bytes and input
+tuples are preserved. The four level-return recordings are regression
+controls for the vision mask because goto_level already clears vision.
+Their protected-mimic case directly reproduces the separate missing creation
+guard. The native input gates restore their observation hooks. Existing
+mimic-disguise, vampire stone-reversion and drawbridge controls also pass.
+Receipts use monster-shape-hiding-promoted-*,
+monster-shape-hiding-retained-state.log and the two parent-native recordings.
+
+The full two-shard run passes 702/702 fixtures without failures or timeouts:
+810,582 screens/cursors, 16,217,844 scored RNG positions and 30,712 animation
+frames. Every result is passing with no error; all paths and unique basenames
+match the maintained inventory. All 279 runtime hashes stayed fixed. The
+worker limit remains 45 seconds. Receipts use monster-shape-hiding-corpus-*
+and monster-shape-hiding-runtime-before-corpus.json. The source audit reports
+0/276; changed-file syntax and diff checks pass.
+
+Both raw recordings also pass exact instrumented C replay on NFS. Their
+validated addition raises the union by 14 direct outcomes to 58,710/107,260;
+entered functions remain 4,506/5,492. All 696 credited input hashes, eleven
+build manifests and ordered LLVM branch layouts were checked before merging.
+The union includes 16 additional raw inputs with 101 segments and two
+independent Linux controls with nine segments beyond the original 678 inputs.
+Original platform rejections remain rejected. The union observes 22/26
+pickvampshape, 7/10 mon_has_special, 10/12 hide_monst and 51/64 hideunder
+outcomes. These measurements do not establish complete port correctness.
+Bulk profiles remain on NFS under
+c-coverage-compress.E84JI2/verified-monster-shape-union-20261123; the compact
+receipt is linux-coverage-monster-shape-union-summary.json.
+
+Next candidates remain separate: stun form/timer semantics, save/restore
+ownership and phases, hideunder feedback and Underwater handling, and debug
+control of monster polymorph. New C recordings now cover the stun chest-gas
+and AD_STUN paths, two dormant-level saves and two eel-hiding scenarios.
+They are immutable diagnostics until independently verified and promoted.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

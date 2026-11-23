@@ -2489,33 +2489,18 @@ export async function rhack(key) {
         game.context.nopick = 0;
     }
     game._cmd_prefix_pending = false;
-    /* src/cmd.c:3642 — queued commands run before any key is read. A
-       CMDQ_EXTCMD entry dispatches its function directly, exactly like the
-       doextcmd arm below; a CMDQ_KEY becomes the command key as if typed. */
-    let queuedCommand = false;
+    // src/cmd.c rhack(): a queued command keeps its identity and passes
+    // through the same permission and prefix checks as a keyboard command.
+    let queuedCommand = false, queuedEntry = null, queuedFunction = null;
     if (key === 0) {
         const cmdq = cmdq_pop();
         if (cmdq) {
-            if (cmdq.typ === CMDQ_EXTCMD && cmdq.fn) {
-                const result = await cmdq.fn();
-                game.context.move = ((result & ECMD_TIME) ? 1 : 0);
-                if (!game.in_doagain) {
-                    cmdq_clear(CQ_REPEAT);
-                    cmdq_add_ec(CQ_REPEAT, cmdq.fn);
-                }
-                if (result & (ECMD_CANCEL | ECMD_FAIL)) {
-                    cmdq_clear(CQ_CANNED);
-                    cmdq_clear(CQ_REPEAT);
-                }
-                /* src/cmd.c:3773 — a queued do_move_/do_run_/do_rush_
-                   function (MOVEMENTCMD) only set the direction; rhack()
-                   then walks or rushes, as after a movement key */
-                await rhack_movement_after(ext_func_tab_from_func(cmdq.fn));
-                return;
-            }
-            if (cmdq.typ === CMDQ_KEY) {
+            queuedCommand = true;
+            if (cmdq.typ === CMDQ_EXTCMD) {
+                queuedEntry = cmdq.ec_entry;
+                queuedFunction = cmdq.fn;
+            } else if (cmdq.typ === CMDQ_KEY) {
                 key = String(cmdq.key).charCodeAt(0);
-                queuedCommand = true;
             }
         }
     }
@@ -2527,7 +2512,7 @@ export async function rhack(key) {
         return commandResult;
     };
     let clear_before_dispatch = false;
-    if (key === 0) {
+    if (key === 0 && !queuedCommand) {
         // Read key from input
         live_input = true;
         await flush_screen(1);
@@ -2604,7 +2589,7 @@ export async function rhack(key) {
     }
 
     // src/cmd.c:3662, an absent command or escape clears both queues.
-    if (!key || key === 255 || key === 27) {
+    if (!queuedEntry && (!key || key === 255 || key === 27)) {
         reset_cmd_vars(true);
         return;
     }
@@ -2613,8 +2598,9 @@ export async function rhack(key) {
 
     // Resolve the binding once. The dispatch arms use the command's default
     // key, but movement, prefixes and parameters belong to this live binding.
-    game.cmd_bind = cmdbind_get(key & 0xff);
-    const prefixCommand = game.cmd_bind?.cmd;
+    if (!queuedEntry)
+        game.cmd_bind = cmdbind_get(key & 0xff);
+    const prefixCommand = queuedEntry || game.cmd_bind?.cmd;
     game._bound_extcmd_name = null;
     if (prefixCommand?.key)
         ch0 = String.fromCharCode(prefixCommand.key);
@@ -2645,7 +2631,7 @@ export async function rhack(key) {
         && ch0 !== '\x01' && ch0 !== '#') {
         if (!continuedPrefix)
             cmdq_clear(CQ_REPEAT);
-        cmdq_add_key(CQ_REPEAT, ch0);
+        cmdq_add_ec(CQ_REPEAT, queuedFunction || prefixCommand);
     }
 
     /* src/cmd.c:1518 do_run_west() and friends — a SHIFTED direction letter
@@ -2724,7 +2710,9 @@ export async function rhack(key) {
 
     /* src/cmd.c:3689 — the bound command (tlist) runs; a BIND'd key whose
        command has no default key of its own goes by name */
-    if (game._bound_extcmd_name) {
+    if (queuedFunction && !moveBinding && !is_prefixcmd) {
+        useResult(await queuedFunction());
+    } else if (game._bound_extcmd_name) {
         const name = game._bound_extcmd_name;
         game._bound_extcmd_name = null;
         useResult(await execute_extcmd(name));
@@ -3007,7 +2995,7 @@ export async function rhack(key) {
         useResult(await doextcmd());
         if (game._last_extcmd_name) {
             const name = game._last_extcmd_name;
-            cmdq_add_ec(CQ_REPEAT, () => execute_extcmd(name));
+            cmdq_add_ec(CQ_REPEAT, extcmdlist.find(e => e.ef_txt === name));
             cmdq_shift(CQ_REPEAT);
             /* src/cmd.c:3752 — doextcmd() reports the command it ran
                (ext_tlist): a prefix command waits for the next key, a
@@ -4415,10 +4403,10 @@ function queue_item_action(action, obj) {
         /* m-prefix to skip fountain or sink if present and drink a potion
            from invent */
         cmdq_add_ec(CQ_CANNED, do_reqmenu);
-        push(() => dodrink(), obj.invlet);
+        push(dodrink, obj.invlet);
         break;
     case 'Q': push(dowieldquiver, obj.invlet); break;
-    case 'r': push(() => doread(read_ok), obj.invlet); break;
+    case 'r': push(extcmdlist.find(e => e.ef_txt === 'read'), obj.invlet); break;
     case 'R':
         if (obj.owornmask & W_ACCESSORY)
             push(ia_dotakeoff, obj.invlet);              /* #altdotakeoff */
@@ -4495,15 +4483,16 @@ export function cmdq_clear(q) {
     (game.command_queue ||= [])[q] = null;
 }
 
-/* The queue entries mirror C's struct _cmd_queue: {typ, fn} for CMDQ_EXTCMD
-   (the function itself stands in for C's ext_func_tab lookup) and {typ, key}
-   for CMDQ_KEY (key kept as the character, converted at the consumer). The
-   backing store is an array per queue where C uses a singly-linked list with
-   tail append; push/shift preserve the same FIFO order. */
+// Queue entries keep C's command-table identity. A callable is retained for
+// canned item actions whose internal functions do not have a keyboard arm.
+// The arrays preserve the linked queues' FIFO order.
 
 // src/cmd.c:254 cmdq_add_ec() — add extended command function to the queue.
-export function cmdq_add_ec(q, fn) {
-    ((game.command_queue ||= [])[q] ||= []).push({ typ: CMDQ_EXTCMD, fn });
+export function cmdq_add_ec(q, command) {
+    const fn = typeof command === 'function' ? command : null;
+    const ec_entry = fn ? ext_func_tab_from_func(fn)
+        : extcmdlist.find(ec => ec.ef_funct === command.ef_funct) || null;
+    ((game.command_queue ||= [])[q] ||= []).push({ typ: CMDQ_EXTCMD, ec_entry, fn });
 }
 
 // src/cmd.c:274 cmdq_add_key() — add a key to the command queue.
@@ -4982,8 +4971,9 @@ export async function paranoid_query(be_paranoid, prompt) {
 // src/cmd.c:3016 ext_func_tab_from_func() — the extcmdlist entry of a
 // command function; the generated entries name their function (ef_funct)
 export function ext_func_tab_from_func(fn) {
+    const name = fn === dochat ? 'dotalk' : fn.name;
     for (const extcmd of extcmdlist)
-        if (extcmd.ef_funct === fn.name)
+        if (extcmd.ef_funct === name)
             return extcmd;
 
     return null;

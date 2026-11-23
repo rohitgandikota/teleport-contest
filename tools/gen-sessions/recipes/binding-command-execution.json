@@ -1,0 +1,181 @@
+{
+  "name": "binding-command-execution",
+  "description": "Native command execution and repeat preserve command identity when default keys are unbound or reassigned, parameter commands repeat without their original binding, and rest-on-space toggles restore a custom command.",
+  "recordingNote": "Use RERECORD_TZ=Etc/GMT+4 for a fixed UTC-4 recording offset.",
+  "coverage": [
+    "mode.debug",
+    "ui.count-repeat"
+  ],
+  "branches": [
+    "binding-execution.repeat-unbound-default",
+    "binding-execution.repeat-swapped-version",
+    "binding-execution.repeat-swapped-inventory",
+    "binding-execution.repeat-parameter",
+    "binding-execution.repeat-prefix",
+    "binding-execution.repeat-movement",
+    "binding-execution.repeat-search",
+    "binding-execution.repeat-extended-command",
+    "binding-execution.space-toggle-restoration",
+    "binding-execution.space-counted-wait"
+  ],
+  "branchAssertions": [
+    {
+      "branch": "binding-execution.repeat-unbound-default",
+      "segment": 0,
+      "screenIncludes": [
+        "NetHack Version 5.0.0"
+      ]
+    },
+    {
+      "branch": "binding-execution.repeat-swapped-version",
+      "segment": 1,
+      "screenIncludes": [
+        "NetHack Version 5.0.0"
+      ]
+    },
+    {
+      "branch": "binding-execution.repeat-swapped-inventory",
+      "segment": 2,
+      "screenIncludes": [
+        "Not carrying anything."
+      ]
+    },
+    {
+      "branch": "binding-execution.repeat-parameter",
+      "segment": 3,
+      "screenIncludes": [
+        "'autopickup' option toggled on.",
+        "Use #optionsfull to set any option instead."
+      ]
+    },
+    {
+      "branch": "binding-execution.repeat-prefix",
+      "segment": 4,
+      "screenIncludes": [
+        "You attack thin air."
+      ]
+    },
+    {
+      "branch": "binding-execution.repeat-extended-command",
+      "segment": 7,
+      "screenIncludes": [
+        "NetHack Version 5.0.0"
+      ]
+    },
+    {
+      "branch": "binding-execution.space-toggle-restoration",
+      "segment": 8,
+      "screenIncludes": [
+        "'rest_on_space' option toggled on.",
+        "'rest_on_space' option toggled off."
+      ]
+    },
+    {
+      "branch": "binding-execution.repeat-movement",
+      "segment": 5,
+      "screenCells": [
+        {
+          "step": 2,
+          "x": 60,
+          "y": 16,
+          "equals": "@"
+        },
+        {
+          "step": 3,
+          "x": 61,
+          "y": 16,
+          "equals": "@"
+        }
+      ]
+    },
+    {
+      "branch": "binding-execution.repeat-search",
+      "segment": 6,
+      "rngIncludes": [
+        "rn2(70)=45 @ maybe_generate_rnd_mon",
+        "rn2(70)=60 @ maybe_generate_rnd_mon"
+      ]
+    },
+    {
+      "branch": "binding-execution.space-counted-wait",
+      "segment": 9,
+      "rngIncludes": [
+        "rn2(70)=45 @ maybe_generate_rnd_mon",
+        "rn2(70)=60 @ maybe_generate_rnd_mon"
+      ]
+    }
+  ],
+  "segments": [
+    {
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nBIND=~:versionshort,V:nothing\n",
+      "moves": " ~\u0001\u0001",
+      "name": "repeat-unbound-default"
+    },
+    {
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nBIND=i:versionshort,V:inventory\n",
+      "moves": " i\u0001\u0001",
+      "name": "repeat-swapped-version"
+    },
+    {
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nBIND=i:versionshort,V:inventory\n",
+      "moves": " V\u0001\u0001",
+      "name": "repeat-swapped-inventory"
+    },
+    {
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nBIND=~:toggle(autopickup)\n",
+      "moves": " ~ \u0001 \u0001 ",
+      "name": "repeat-parameter"
+    },
+    {
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nBIND=~:fight,F:versionshort\n",
+      "moves": " ~l\u0001",
+      "name": "repeat-prefix"
+    },
+    {
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nBIND=~:moveeast,l:versionshort\n",
+      "moves": " ~\u0001",
+      "name": "repeat-movement"
+    },
+    {
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nBIND=~:search,s:versionshort\n",
+      "moves": " 2~\u0001",
+      "name": "repeat-search"
+    },
+    {
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nBIND=~:#,#:nothing\n",
+      "moves": " ~versionshort\r\u0001",
+      "name": "repeat-extended-command"
+    },
+    {
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nBIND=<space>:versionshort,~:toggle(rest_on_space)\n",
+      "moves": " ~ ~  ",
+      "name": "space-toggle-restoration"
+    },
+    {
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nBIND=<space>:versionshort\nOPTIONS=rest_on_space\n",
+      "moves": " 2 \u0001",
+      "name": "space-counted-wait"
+    }
+  ],
+  "requireBranchAssertions": true
+}

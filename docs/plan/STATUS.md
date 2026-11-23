@@ -428,6 +428,30 @@ expose repeat storing translated keys instead of command identity, especially
 with swapped or unbound defaults. Before that fix it matches 57/66 screens,
 all cursors, 11,118/22,101 RNG calls and three animations. Its files are pending.
 
+Checkpoint `97e52f38` is pushed. The following repeat fix stores C command-table
+identity rather than a translated key and sends queued commands through the
+same availability and prefix checks as keyboard input. Rebinding or removing
+the original key no longer changes the saved command. Queued parameter commands
+keep C's current binding pointer, and internal inventory actions use their
+named command functions. Nine source-derived state checks all fail against
+`97e52f38` and pass after this fix. All 88 binding/parser/state checks pass.
+The ten-case native execution fixture now matches all 66 screens/cursors,
+22,101 RNG calls and three animations; all ten branch assertions pass.
+
+The full 620-fixture run passes 620/620: 787,236 screens/cursors and 14,853,672
+RNG calls. Animations are 30,005/30,026, retaining the same 21 public differences.
+Logs are `.cache/restart-20261122/repeat-corpus-{0,1,2,3}.log`.
+All 70 public/command/options/save/inventory input-exhaustion checks pass;
+the larger inventory recordings use the established 30-second limit.
+Source audit reports zero findings in 276 non-frozen modules.
+
+The next inventory-heading fixture is outside that 620-session result.
+Four native cases cover both `i` and `#inventory`: default, colored, underlined
+and plain headings. Before the next fix, 58/64 screens match; all cursors and
+9,076 RNG calls match. The configuration handler is missing, and the inventory
+key has a duplicate display path that drops heading colors. Its files and
+the compiled-C option-handler gate remain uncommitted for the next checkpoint.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

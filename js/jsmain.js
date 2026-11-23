@@ -94,6 +94,17 @@ export class NethackGame {
     }
 
     async start() {
+        try {
+            await this._start();
+        } catch (error) {
+            if (!error?.__nh_gameover)
+                throw error;
+            // Character cancellation exits C before the first turn.
+            game.program_state.gameover = true;
+        }
+    }
+
+    async _start() {
         const g = resetGame();
 
         /* Give gameplay modules the universal nh_delay_output hook described
@@ -376,10 +387,6 @@ export async function runSegment(input) {
     try {
         await nhGame.start();
     } catch (e) {
-        /* win/tty/wintty.c bail(): a refused character selection exits the
-           program before the move loop; the remaining keys go nowhere */
-        if (e && e.__nh_gameover)
-            return nhGame;
         if (!String(e?.message || '').includes('Input queue empty'))
             throw e;
         return nhGame;
@@ -394,15 +401,11 @@ export async function runSegment(input) {
     const maxRepeat = repeatCounts.length ? Math.max(...repeatCounts) : 0;
     const maxIter = Math.max(moves.length * 8, maxRepeat + 1024, 1024);
     for (let iter = 0; iter < maxIter; iter++) {
+        if (game.program_state?.gameover)
+            break;
         try {
             await moveloop_core();
         } catch (e) {
-            if (e && e.__nh_gameover) {
-                // C's nh_terminate emits one final input boundary, then exits.
-                // Remaining keys cannot produce frames in this segment.
-                await game._preNhgetchHook?.();
-                break;
-            }
             if (String(e?.message || '').includes('Input queue empty')) break;
             throw e;
         }

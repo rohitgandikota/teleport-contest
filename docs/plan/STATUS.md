@@ -921,6 +921,49 @@ has Node 18 and gcc but no Clang, and `osaka` has neither Node nor Clang in
 PATH. `sendai` and `andromeda` were unreachable. NFS is available with 30 TB
 free; no large new corpus has been created locally or remotely.
 
+Inventory-disclosure checkpoint `33b78ae1` is pushed. The interactive exit
+repair is now applied to `NethackGame.start` and `moveloop_core`. Those
+public boundaries consume the internal C termination signal and expose
+completed game state to browser drivers. The replay driver uses the same
+completion state; the move-loop boundary captures the final frame once.
+Ordinary exceptions still propagate.
+
+All six direct API controls pass; four fail with the previous entry points.
+The five vision lifecycle, four restore-option and nine repeat-command
+controls also pass. Full regression remains 641/641, 789,951 screens/cursors,
+15,159,749 RNG calls and 30,010/30,031 animations. Three native ending
+input-exhaustion checks and the source audit pass. Logs:
+`interactive-exit-corpus-*`, `interactive-exit-state-{before,final}.log`,
+`interactive-exit-restore-repeat.log`, `interactive-exit-hang.log` and
+`interactive-exit-source-audit.log` in the restart cache.
+
+The next graphics candidate is cache-only under `symbols-prototype-*` and
+`dec-class-prototype-display.mjs`. It reads the loaded primary symbol table
+instead of rebuilding a few presets manually, honors the startup symset
+name, draws hero and monster class overrides, and handles high-bit map
+characters through C's tty rules. It also ports the cached
+`check_gold_symbol` flag and its three call sites. Computing that flag on
+every status update incorrectly replaced the Blank preset's initial space
+with a dollar sign.
+
+The seven class-symbol cases, twelve preset/reset cases and three racial or
+polymorphed-hero cases match all 284 screens/cursors and 67,162 RNG calls.
+Inputs and native outputs are `dec-class-probe`, `symbol-presets` and
+`hero-class-symbols` in the restart cache; results are in
+`symbols-prototype-combined.log`. Before applying this candidate, test runtime
+switches and level transitions, especially Rogue symbol sets. The current
+port has no actual Rogue table switch in `goto_level`; do not mistake the
+passing primary-set probes for coverage of that missing path. Warning
+symbols, loaded "other" symbols, case-insensitive set names and stale module
+state also need explicit review.
+
+Additional remote prerequisite check: `tokyo` has neither flex nor bison in
+PATH, and no Clang was found in its system or personal conda paths. Its apt
+cache advertises clang-14, but no packages have been installed. The recorder
+build requires Clang for deterministic argument evaluation; do not substitute
+gcc. Its current build script also sets a throwaway Git identity, which must
+be removed or avoided before a new build under the user's Git instructions.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

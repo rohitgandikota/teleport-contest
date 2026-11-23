@@ -725,6 +725,21 @@ async function maybe_generate_rnd_mon() {
 // The last one is a useful self-check: seed8000 records rn2(82), and 82 is
 // 40 + 14 * 3, so it only comes out right if the hero's Dexterity does.
 export async function moveloop_core() {
+    if (game.program_state?.gameover)
+        return;
+    try {
+        await moveloop_core_turn();
+    } catch (error) {
+        if (!error?.__nh_gameover)
+            throw error;
+        // C exits from inside the turn. Complete the browser action and
+        // record its final boundary after that turn has fully unwound.
+        game.program_state.gameover = true;
+        await game._preNhgetchHook?.();
+    }
+}
+
+async function moveloop_core_turn() {
     const g = game;
 
     /* src/end.c nh_terminate(): after really_done the process has exited;

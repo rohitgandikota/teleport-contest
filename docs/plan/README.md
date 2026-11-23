@@ -21,7 +21,8 @@ in that snapshot.
 The local regression now passes 641/641 fixtures with 789,951 exact screens
 and 15,159,749 RNG calls. Recent repairs cover room difficulty, ending
 vision, strength loss, roleplay conduct, nudist inventory and final item text.
-Next: interactive game exit and the remaining graphics gaps.
+Interactive game exit also passes the full suite. Next: loaded symbol sets,
+custom class glyphs and graphics transitions.
 See [STATUS.md](STATUS.md) for evidence and the next action. Historical
 milestone rows below are not a current completion audit.
 

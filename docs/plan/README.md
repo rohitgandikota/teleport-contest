@@ -23,8 +23,10 @@ screens/cursors, 15,492,341 RNG calls and all 30,087 scored animation frames.
 Glyph metadata, object appearance shuffling, monster identities and map
 cursor output are verified. The stricter public animation check matches
 1,478/1,483 cursor positions; five preexisting beam differences remain.
-Next: mounted-hero rendering and C's display_monster helper, then buffered
-pet attributes and remaining beam cursors. Current-corpus parity is not a
+Mounted-hero rendering now passes seven new native cases and 73 selected
+fixtures, with 21,828 exact screens/cursors and 1,324,950 RNG calls.
+Next: C's display_monster helper, then buffered pet attributes, dismount
+landing conditions and remaining beam cursors. Current-corpus parity is not a
 completeness claim. See [STATUS.md](STATUS.md) for evidence and next actions.
 Historical milestone rows below are not a current completion audit.
 

@@ -3386,11 +3386,17 @@ export function display_self() {
     const steed = game.u.usteed;
     const aptype = M_AP_TYPE(game.youmonst);
 
-    /* maybe_display_usteed(): the steed's glyph while riding */
+    /* include/display.h:246, :560, the visible steed uses a ridden glyph. */
     if (steed && mon_visible(steed)) {
-        show_glyph_cell(x, y, showsym_mon(steed.data.mlet) || '?',
-                        steed.data.mcolor ?? NO_COLOR, false, 0,
-                        { kind: 'hero', mon: steed });
+        const mnum = Hallucination() ? rn2_on_display_rng(NUMMONS)
+            : monsndx(steed.data);
+        const female = !!steed.female;
+        const shown = game.mons[mnum];
+        show_glyph_cell(x, y, showsym_mon(shown.mlet) || '?',
+                        shown.mcolor ?? NO_COLOR, false, 0,
+                        { kind: 'hero', mon: steed, mnum, female,
+                          glyphnum: mnum + (female
+                              ? GLYPH_RIDDEN_FEM_OFF : GLYPH_RIDDEN_MALE_OFF) });
     } else if (aptype === M_AP_FURNITURE) {
         const s = showsym(game.youmonst.mappearance);
         show_glyph_cell(x, y, s ? s.ch : '?',
@@ -3398,12 +3404,14 @@ export function display_self() {
                         s ? s.dec : false, 0,
                         { kind: 'cmap', cmap: game.youmonst.mappearance });
     } else if (aptype === M_AP_OBJECT) {
-        const fake = { otyp: game.youmonst.mappearance, ox: x, oy: y,
-                       oclass: OCLASSES.RANDOM_CLASS, quan: 1, dknown: 0,
-                       corpsenm: PMNAMES.PM_TENGU };
-        const g = floor_object_glyph(fake, x, y, false);
-        show_glyph_cell(x, y, g.ch, g.color, g.dec ?? false, g.attr,
-                        g.glyph ?? { kind: 'obj', otyp: fake.otyp });
+        // objnum_to_glyph() keeps the exact object type, even while
+        // hallucinating. A disguise is not a floor corpse or statue.
+        const otyp = game.youmonst.mappearance;
+        const oclass = game.objects[otyp].oc_class;
+        show_glyph_cell(x, y, showsym_oc(oclass),
+                        game.objects[otyp].oc_color, false, 0,
+                        { kind: 'obj', otyp, oclass,
+                          glyphnum: GLYPH_OBJ_OFF + otyp });
     } else if (aptype === M_AP_MONSTER) {
         const shown = game.mons[game.youmonst.mappearance];
         show_glyph_cell(x, y, showsym_mon(shown.mlet) || '?',
@@ -3427,9 +3435,9 @@ export function display_self() {
 
 /* ---------------------------------------------------------------------------
  * src/display.c:1672 glyphmap[MAX_GLYPH] and :2739 reset_glyphmap(). The
- * port draws from glyph records, not from this table; it carries the C's
- * per-glyph symbol index, colour, flags and symset customizations for
- * #wizcustom and the customization pipeline (js/glyphs.js).
+ * Base glyph metadata and symbol-set customizations. show_glyph_cell
+ * snapshots the selected entry into the map buffer. glyphs.js names
+ * these identities and applies their customizations.
  * ------------------------------------------------------------------------- */
 
 let glyphmap_table = null;

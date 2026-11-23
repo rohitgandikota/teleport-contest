@@ -5096,6 +5096,15 @@ newsym()'s hero branch used to paint '@' itself, so `youmonst.m_ap_type`
 (a mimic corpse's gold disguise, #monster mimicry) never showed. It now
 calls display_self(), which has the furniture, object and monster arms.
 
+The object arm uses objnum_to_glyph, not a floor object's rendering path.
+Corpse and statue disguises retain their generic object identities, and
+hallucination adds no draw. A visible steed instead takes priority over all
+hero disguises and uses ridden_mon_to_glyph, including its hallucination
+sample. Class overrides alone cannot distinguish ridden from pet ranges;
+the hero state gate checks numeric identity and RNG alongside native output.
+The hallucinated mimic probe needs explicit More acknowledgements before
+#polyself. Verify the disguise message and glyph, not just the input text.
+
 ## New imports go after the last import statement
 
 The edit-script helper `add_import` used to insert a new `import` line at

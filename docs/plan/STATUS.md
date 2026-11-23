@@ -1439,6 +1439,31 @@ The goal tool still reports the old full-port goal paused, with no resume
 operation available. Continue the user's authorized work without falsely
 marking that unfinished objective complete.
 
+Cursor checkpoint `7fefc02d` is pushed. The hero glyph repair is applied and
+verified. display_self now captures the visible steed's ridden range, gender
+and hallucination sample. Object disguises use objnum_to_glyph's exact object
+type, including generic corpse/statue identities and no hallucination draw.
+
+The seven native cases improve 345/358 to 358/358 screens, retaining all
+20,833 RNG calls, cursors and one animation. The final recipe, recording and
+19-check state gate are promoted. Twelve source controls fail before; all
+18 source controls and the native reach check pass afterward. The 73-fixture
+regression matches 21,828 screens/cursors, 1,324,950 RNG calls and 1,634
+animations. The 32 cursor controls, native branch assertions, recording
+integrity, input-exhaustion check and 276-module source audit pass. The last
+full 654-fixture run belongs to the preceding cursor checkpoint, not this
+bounded hero repair. Logs: `hero-glyph-regression-final`, `hero-glyph-state-final`,
+`hero-glyph-cursor-state`, `hero-glyph-audit-final`, `hero-glyph-hang-final`
+and `hero-glyph-final-native`, all `.log` in the restart cache.
+
+Next: apply and verify the already recorded display_monster helper, rebasing
+its patch onto the current hero/cursor code. The pet-attribute and steed
+agents have returned and are closed. Their cache-only reports and patches
+use prefixes `pet-glyph-attribute` and `steed-control-audit`. Review and record
+their proposed native controls before integration. Only the five beam-cursor
+audit remains active. Do not include the untracked display-monster-sensing
+recording in the hero checkpoint.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

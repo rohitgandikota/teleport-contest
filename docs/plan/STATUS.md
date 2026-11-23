@@ -2773,6 +2773,17 @@ Commit and immediately push this artifact checkpoint, keeping the separate
 three-file sink coverage addition out of that commit. The sink addition is
 already exact and can be committed next with its measured 94/94 coverage.
 
+Artifact checkpoint `0c044742` is pushed. The separate sink test addition
+brings the maintained corpus to 687 fixtures. Its exact path inventory equals
+the actual public and generated fixture directories, without duplicates.
+All results are exact: 805,116 screens/cursors, 15,995,620 scored RNG positions
+and 30,573 animations. This combines the complete 686-fixture artifact run
+and the four-case sink fixture on the same unchanged 279 runtime hashes.
+The verified totals and inventory are sink-ring-disposal-corpus-{totals,paths}.json.
+No runtime changes are needed for this test-only checkpoint. The 45 original
+sink segments remain unchanged. Commit and immediately push its three files
+and this documentation, then continue with held-object and container effects.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

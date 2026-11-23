@@ -48,8 +48,9 @@ with 305 exact native boundaries and 57 passing state controls. The complete
 685-fixture regression passes all 804,428 screens/cursors, 15,971,119 scored
 RNG positions and 30,572 animations. Artifact hallucination resistance and
 ESP refresh order now also match five new native cases. All 89 artifact/color
-controls pass, and the complete 686-fixture run matches 804,780 screens/cursors,
-15,980,380 scored RNG positions and 30,573 animations. Next: remaining floor
+controls pass. Four more native sink cases bring the complete corpus to
+687 fixtures, with 805,116 exact screens/cursors, 15,995,620 scored RNG positions
+and 30,573 animations. Next: remaining floor
 and container side effects, then the reproduced restore-phase gap. The
 Linux/NFS branch collector is pushed
 and passes signal canaries plus exact save/restore, artifact and natural-exit
@@ -57,8 +58,10 @@ pilots. The Linux census at e4504071 now covers all 678 original inputs:
 603 canonical matches and 75 independently recorded ordinary Linux controls.
 Their validated union enters 4,498/5,492 functions and observes
 58,379/107,260 direct C branch outcomes. Original platform/output rejections
-remain rejected; no output was normalized. The new sink fixture separately
-matches Linux C exactly and covers 88/94 direct dosinkring outcomes. Large
+remain rejected; no output was normalized. The two new sink fixtures separately
+match Linux C exactly; their validated union covers all 94/94 direct dosinkring
+outcomes in 49 cases. The teleport and polymorph helpers still have measured
+gaps. Large
 profiles and recordings remain on NFS. See [STATUS.md](STATUS.md) for evidence
 and next actions. Historical milestone rows below are not a current audit.
 

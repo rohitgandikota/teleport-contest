@@ -1,0 +1,145 @@
+{
+  "name": "sink-ring-disposal-boundaries",
+  "description": "Actual wizard sink inputs for punishment ball/chain guards, artifact resistance, blind teleport success, Air teleport failure, and polymorph with a zero backup draw. Native source outcomes: do.c:560:17/34, 561:20, 579:39, 645:16, and 649:21, all false.",
+  "coverage": [
+    "mode.debug",
+    "terrain.furniture",
+    "object.rings",
+    "object.artifacts",
+    "survival.timed-status"
+  ],
+  "branches": [
+    "sink-ring-disposal.hunger-ball-guard",
+    "sink-ring-disposal.hunger-chain-guard",
+    "sink-ring-disposal.hunger-artifact-resists",
+    "sink-ring-disposal.blind-teleport-no-drainpipe",
+    "sink-ring-disposal.teleport-failure",
+    "sink-ring-disposal.polymorph-no-backup-on-zero"
+  ],
+  "requireBranchAssertions": true,
+  "segments": [
+    {
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017sink\r   \u0017uncursed Magicbane\r   da  \u001b\u001b\u0017uncursed scroll of punishment\r   rb  \u001b\u001b\u0017uncursed ring of hunger\r   dc   \u001b\u001b : i \u001b",
+      "name": "hunger-punishment-artifact"
+    },
+    {
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017sink\r   \u0017uncursed ring of teleportation\r   \u0017uncursed blindfold\r   Pb  \u001b\u001bda  \u001b\u001b : i \u001b",
+      "name": "blind-teleport-success"
+    },
+    {
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0016?\r  M\r       \u0017sink\r   \u0017uncursed ring of teleportation\r   db    \u001b\u001b : i \u001b",
+      "name": "air-teleport-failure"
+    },
+    {
+      "seed": 12008,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017sink\r   \u0017uncursed ring of polymorph\r   da  \u001b\u001b : i \u001b",
+      "name": "polymorph-zero-disposition"
+    }
+  ],
+  "branchAssertions": [
+    {
+      "branch": "sink-ring-disposal.hunger-ball-guard",
+      "segment": 0,
+      "screenIncludes": [
+        "You are being punished for your misbehavior!",
+        "down the drain.",
+        "a heavy iron ball (chained to you)"
+      ],
+      "screenExcludes": [
+        "heavy iron ball vanishes from the sink!"
+      ]
+    },
+    {
+      "branch": "sink-ring-disposal.hunger-chain-guard",
+      "segment": 0,
+      "screenIncludes": [
+        "You are being punished for your misbehavior!",
+        "down the drain.",
+        "an iron chain (attached to you)"
+      ],
+      "screenExcludes": [
+        "iron chain vanishes from the sink!"
+      ]
+    },
+    {
+      "branch": "sink-ring-disposal.hunger-artifact-resists",
+      "segment": 0,
+      "screenIncludes": [
+        "down the drain.",
+        "an athame named Magicbane"
+      ],
+      "screenExcludes": [
+        "Magicbane vanishes from the sink!"
+      ],
+      "rngIncludes": [
+        "rn2(100)=79 @ obj_resists(zap.c:1469)"
+      ]
+    },
+    {
+      "branch": "sink-ring-disposal.blind-teleport-no-drainpipe",
+      "segment": 1,
+      "screenIncludes": [
+        "You are now wearing a blindfold.",
+        "You can't see any more.",
+        "down the drain.",
+        "The sink vanishes."
+      ],
+      "screenExcludes": [
+        "bouncing down the drainpipe",
+        "sink backs up",
+        "sink momentarily vanishes"
+      ],
+      "rngIncludes": [
+        "rnd(77)=29 @ teleport_sink(do.c:472)",
+        "rn2(19)=5 @ teleport_sink(do.c:473)",
+        "rn2(20)=3 @ dosinkring(do.c:649)",
+        "rn2(5)=1 @ dosinkring(do.c:653)"
+      ]
+    },
+    {
+      "branch": "sink-ring-disposal.teleport-failure",
+      "segment": 2,
+      "screenIncludes": [
+        "You notice that there is no gravity here.",
+        "down the drain.",
+        "The sink momentarily vanishes."
+      ],
+      "screenExcludes": [
+        "sink backs up"
+      ],
+      "rngIncludes": [
+        "rnd(77)=58 @ teleport_sink(do.c:472)",
+        "rnd(77)=37 @ teleport_sink(do.c:472)",
+        "rn2(20)=6 @ dosinkring(do.c:649)",
+        "rn2(5)=1 @ dosinkring(do.c:653)"
+      ]
+    },
+    {
+      "branch": "sink-ring-disposal.polymorph-no-backup-on-zero",
+      "segment": 3,
+      "screenIncludes": [
+        "down the drain.",
+        "The sink transforms into an opulent throne!"
+      ],
+      "screenExcludes": [
+        "sink backs up"
+      ],
+      "rngIncludes": [
+        "rn2(4)=1 @ polymorph_sink(do.c:416)",
+        "rn2(20)=0 @ dosinkring(do.c:649)",
+        "rn2(5)=3 @ dosinkring(do.c:653)"
+      ]
+    }
+  ]
+}

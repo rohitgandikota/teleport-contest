@@ -12,13 +12,14 @@ import {doorlock,boxlock,reset_pick} from '../js/lock.js';
 import {mb_trapped} from '../js/monmove.js';
 import {makemon} from '../js/makemon.js';
 import {mksobj,place_object} from '../js/mkobj.js';
-import {bot_conditions} from '../js/botl.js';
+import {status_window_text as bot_conditions} from './status-window-text.mjs';
 import {pline,pline_nohistory,pline_nohistory_no_cursor,urgent_pline} from '../js/display.js';
 import {set_msg_xy,Norep} from '../js/pline.js';
 import {parseoptions,handler_whatis_coord} from '../js/options.js';
 import {vision_recalc,unblock_point} from '../js/vision.js';
 import {PMNAMES as P} from '../js/monst_data.js';
 import {ONAMES as N} from '../js/objects_data.js';
+import {cmap_names as S} from '../js/drawing_data.js';
 import {Upolyd,OBJ_INVENT,OBJ_FLOOR,OBJ_MINVENT,OBJ_CONTAINED,OBJ_FREE,ROOM,DOOR,SDOOR,D_ISOPEN,D_CLOSED,D_LOCKED,D_BROKEN,D_NODOOR,D_TRAPPED,TRAPPED_DOOR,MM_NOMSG,M_AP_OBJECT,M_AP_FURNITURE} from '../js/const.js';
 const names=['door-magic','door-magic-town','door-magic-monsters','message-locations','door-magic-obstructions','eyewear-feedback'];
 let nativeReplays=0,inventoryObservations=0,healthObservations=0,feedbackObservations=0;
@@ -95,7 +96,7 @@ for(const[typ,mask,wand,want,res]of [
 ]){await setup();const d=door(mask,typ);assert.equal(await doorlock(item(wand),...location()),res);assert.equal(d.doormask,want);assert.equal(d.typ,typ===SDOOR&&wand===N.WAN_LOCKING?SDOOR:DOOR);}
 for(const kind of ['object','monster','invisible','object-mimic','furniture-mimic'])for(const known of [false,true]){
  await setup();const d=door();
- if(kind==='object')place_object(item(N.ROCK),...location());else{await monster(kind==='invisible'?{minvis:1}:kind==='object-mimic'?{m_ap_type:M_AP_OBJECT,mappearance:N.ROCK}:kind==='furniture-mimic'?{m_ap_type:M_AP_FURNITURE}:{});}
+ if(kind==='object')place_object(item(N.ROCK),...location());else{await monster(kind==='invisible'?{minvis:1}:kind==='object-mimic'?{m_ap_type:M_AP_OBJECT,mappearance:N.ROCK}:kind==='furniture-mimic'?{m_ap_type:M_AP_FURNITURE,mappearance:S.S_vcdoor}:{});}
  const wand=item(N.WAN_LOCKING);wand.dknown=+known;assert.equal(await doorlock(wand,...location()),kind==='furniture-mimic');assert.equal(d.doormask,kind==='furniture-mimic'?D_LOCKED:D_ISOPEN);
 }
 for(const wizard of [false,true])for(const locked of [false,true]){

@@ -19,8 +19,9 @@ import {t_at} from '../js/mon.js';
 import {weight,GETOBJ_EXCLUDE,GETOBJ_SUGGEST,GETOBJ_DOWNPLAY} from '../js/invent.js';
 import {untrap_prob,try_disarm,disarm_holdingtrap,disarm_landmine,disarm_shooting_trap,disarm_squeaky_board,unsqueak_ok,try_lift,help_monster_out,reward_untrap,untrap,dountrap,closeholdingtrap,set_utrap,reset_utrap,b_trapped,float_up} from '../js/trap.js';
 import {invoke_untrap} from '../js/artifact.js';
-import {bot_conditions} from '../js/botl.js';
+import {status_window_text as bot_conditions} from './status-window-text.mjs';
 import {Levitation,Flying} from '../js/youprop.js';
+import {make_blinded} from '../js/potion.js';
 import {ONAMES as N} from '../js/objects_data.js';
 import {ART_STING as STING,ART_FIRE_BRAND as FIRE} from '../js/artilist_data.js';
 import {do_screen_description} from '../js/pager.js';
@@ -93,7 +94,7 @@ for(const [condition,bound]of [['normal',3],['confused',4],['hallucinating',4],[
  await setup();const t=trap(['web','blade','Sting','Fire','Ranger-web'].includes(condition)?WEB:BEAR_TRAP);
  if(condition==='confused')game.u.intrinsic.HConfusion=10;
  if(condition==='hallucinating')game.u.uprops.HALLUC=10;
- if(condition==='blind')game.u.ublind=1;
+ if(condition==='blind')await make_blinded(10,false);
  if(condition==='stunned')game.u.intrinsic.HStun=10;
  if(condition==='fumbling')game.u.intrinsic.HFumbling=10;
  if(condition==='own')t.madeby_u=1;
@@ -166,7 +167,7 @@ for(const half of [false,true]){
  await setup();game.u.uprops.HALF_PHDAM=half?1:0;game.u.intrinsic.HStun=FROMOUTSIDE|7;const hp=game.u.uhp;seed();const damage=rnd(6);seed();await b_trapped('door',0);assert.equal(hp-game.u.uhp,half?Math.trunc((damage+1)/2):damage);assert.equal(game.u.intrinsic.HStun&TIMEOUT,7+damage);assert.equal(game.u.intrinsic.HStun&~TIMEOUT,FROMOUTSIDE);
 }
 // Combined modifiers, captive webs and minimum chance.
-await setup();const combined=trap(BEAR_TRAP,{madeby_u:1});Object.assign(game.u.intrinsic,{HConfusion:10,HStun:10,HFumbling:10});game.u.ublind=1;game.u.uprops.HALLUC=10;seed();untrap_prob(combined);assert.deepEqual(calls(),['rn2(13)']);
+await setup();const combined=trap(BEAR_TRAP,{madeby_u:1});Object.assign(game.u.intrinsic,{HConfusion:10,HStun:10,HFumbling:10});await make_blinded(10,false);game.u.uprops.HALLUC=10;seed();untrap_prob(combined);assert.deepEqual(calls(),['rn2(13)']);
 await setup();const occupiedWeb=trap(WEB);monster(occupiedWeb);game.u.uwep=item(N.DAGGER,{owornmask:W_WEP});seed();untrap_prob(occupiedWeb);assert.deepEqual(calls(),['rn2(7)']);
 await setup();const ownSting=trap(WEB,{madeby_u:1});game.u.uwep=item(N.ELVEN_DAGGER,{oartifact:STING,owornmask:W_WEP});seed();assert.equal(untrap_prob(ownSting),0);assert.deepEqual(calls(),['rn2(1)']);
 

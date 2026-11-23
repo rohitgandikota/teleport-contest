@@ -2454,6 +2454,30 @@ pure placement test. Original inputs and labels are retained in cache.
 Avicenna is mapping the synchronous placement callers before a coordinated
 held-object change. No such runtime patch is applied.
 
+Invocation checkpoint `a4747921` is pushed. The two older door-magic and
+untrapping gates now use the actual status window rather than importing a
+removed private helper. Their invalid fixtures now supply a furniture
+mimic's map-symbol appearance and establish blindness through make_blinded.
+All 204 assertion calls and their order remain byte-identical. No gameplay
+code or expected RNG output changed.
+
+Both complete gates pass again on a4747921 with the test corrections:
+174 door-magic replay segments plus 72 constructed groups, and 284
+untrapping replay segments plus 73 constructed groups. Logs are
+status-gates-door-final.log and status-gates-untrap-final.log in the restart
+cache. Scope verification and syntax checks pass. Commit and push this test
+checkpoint. Jason now audits add_to_container's separate held-object hook.
+
+The actual-input artifact-halres-knight-native probe records 62 boundaries:
+wielding Grayswandir suppresses active hallucination and unwielding restores
+it. Its valid lawful Knight role avoids the earlier Wizard/alignment
+confound. Current JS matches 51 screens, 61 cursors and all 2,279 calls.
+Pauli is repairing the source transition and its asynchronous caller order
+together. Singer owns floor timers and JSON restore's unresolved timer phase;
+Avicenna owns the placement caller design. All candidate work remains in
+cache. The Linux census has passed fixture 615/678. The fresh official
+leaderboard fetch at 18:04 UTC still reports the 13:48 UTC snapshot.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

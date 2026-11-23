@@ -46,7 +46,9 @@ and 2,431,310 RNG calls. The strict gate also handles C's blank final exit
 marker explicitly and retains negative controls for missing calls and inputs.
 Silver-hit feedback and Constitution abuse now pass 17 state controls and
 163 selected fixtures, with 93,303 screens/cursors and 2,187,863 RNG calls.
-Next: eyewear transitions, floor-pile settlement and separate local object order. Linux/NFS profiling passes its termination canary;
+Eyewear transitions pass 30 state controls, four native cases and 152 selected
+fixtures, with 82,853 screens/cursors and 2,354,331 RNG calls. Next: artifact
+acquisition after reversion, floor-pile settlement and separate local object order. Linux/NFS profiling passes its termination canary;
 fresh gameplay branch coverage has not been collected yet.
 Current-corpus parity is not a
 completeness claim. See [STATUS.md](STATUS.md) for evidence and next actions.

@@ -1,0 +1,88 @@
+{
+  "name": "eyewear-lifecycle",
+  "description": "Wearing and removing eyewear releases weapon slots, preserves punishment state, ends blind-from-birth conduct when the Eyes grant sight, and restores engulf blindness.",
+  "recordingNote": "Use RERECORD_TZ=Etc/GMT+4. Separate source-state controls inspect ball/chain bookkeeping and exact worn masks.",
+  "coverage": [
+    "mode.debug",
+    "object.tools",
+    "object.artifacts",
+    "survival.timed-status",
+    "combat.melee",
+    "ending.conduct-achievement"
+  ],
+  "branches": [
+    "eyewear.release-wielded",
+    "eyewear.punished-blindness",
+    "eyewear.first-sight-conduct",
+    "eyewear.engulf-reblinding"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "eyewear.release-wielded",
+      "segment": 0,
+      "screenIncludes": [
+        "a - a blindfold (wielded).",
+        "You are now wearing a blindfold.",
+        "You were wearing a blindfold.  You can see again."
+      ]
+    },
+    {
+      "branch": "eyewear.punished-blindness",
+      "segment": 1,
+      "screenIncludes": [
+        "You are being punished for your misbehavior!",
+        "You are now wearing a towel around your head.  You can't see any more.",
+        "You were wearing a towel.  You can see again."
+      ]
+    },
+    {
+      "branch": "eyewear.first-sight-conduct",
+      "segment": 2,
+      "screenIncludes": [
+        "For the first time in your life, you can see!",
+        "You can't see anything now!"
+      ]
+    },
+    {
+      "branch": "eyewear.engulf-reblinding",
+      "segment": 3,
+      "screenIncludes": [
+        "You were wearing a blindfold.  You can't see in here!"
+      ],
+      "screenExcludes": [
+        "You can see again."
+      ]
+    }
+  ],
+  "segments": [
+    {
+      "name": "wielded-blindfold",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!autoquiver,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed blindfold\r  \u001b\u001bwa  \u001b\u001bPa  \u001b\u001bi\u001bR  \u001b\u001bV"
+    },
+    {
+      "name": "punished-towel",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!autoquiver,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed towel\r  \u001b\u001b\u0017cursed scroll of punishment\r  \u001b\u001brb  \u001b\u001bPa  \u001b\u001bh  \u001b\u001bR  \u001b\u001bV"
+    },
+    {
+      "name": "blind-from-birth-eyes",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Monk,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!autoquiver,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=blind\n",
+      "moves": " \u0017uncursed Eyes of the Overworld\r  \u001b\u001bPa  \u001b\u001b#conduct\r  \u001b\u001bR  \u001b\u001bV"
+    },
+    {
+      "name": "dust-vortex-removal",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!autoquiver,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             \u0017uncursed blindfold\r  \u001b\u001bPa  \u001b\u001b\u0007hostile dust vortex\rmsms  \u001b\u001bR  \u001b\u001bV"
+    }
+  ]
+}

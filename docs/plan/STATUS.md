@@ -2013,6 +2013,61 @@ new implementation pass. The private NFS LLVM canary is verified, but fresh
 gameplay coverage is still waiting for recorder lifecycle repair and a Linux
 ordinary build.
 
+Silver checkpoint `e64c2980` is pushed. The reviewed Blindf_on/off candidate
+is now applied in js/do_wear.js with the promoted 30-control gate and the new
+asserted eyewear-lifecycle recipe/fixture. Four native cases match 299
+screens/cursors and exactly 11,132 calls. The final selected regression has
+152 fixtures in blindf-lifecycle-regression-{0..3}.log, 37/39/38/38 paths.
+Keep production frozen until these runs finish. Final state, source-scope,
+source-audit, strict RNG and five hang gates use the same cache prefix; the
+hang budget is 60 seconds because the existing 37-segment takeoff fixture is
+slow. Do not interpret its earlier low-budget timeout as a new regression.
+
+The recorder child-lifetime candidate is ready for review in
+linux-coverage-audit-recorder-candidate.patch: wait for process close and
+queued marker reads on success and failure, with one termination deadline.
+Its 14 mocked cases pass (12 fail before); the four old exit assertions pass
+with a realistic mock close event. Jason is preparing reusable tests, then
+a Linux collector patch. Parent is cloning a sparse, isolated public checkout
+and the pinned upstream onto NFS; linux-coverage-source-clone.log will record
+its fresh directory. No recorder build is running. The build script still
+contains a forbidden throwaway identity override; remove and verify that
+prerequisite before running it. Do not execute it against the active local
+recorder tree.
+
+The eyewear lifecycle checkpoint is verified. Blindf_on/off now follow C's
+release, worn-mask, message, punishment, first-sight conduct and engulf checks,
+using existing helpers and the canonical blindness predicate. The duplicate
+private blindness reader is removed. Only those two functions and their
+required imports change; the AST/source scope check passes against the saved
+baseline and the applied patch. The old pre-application checker initially
+rejected the already-applied file; the parent check now correctly compares
+the working file with the candidate and retains the original audit manifest.
+
+All four new native cases pass 299 screens/cursors and exactly 11,132 calls.
+The old implementation gives 293 screens, 296 cursors and 11,114 matched call
+positions. All 30 source controls pass, with 14 failures before the repair.
+The 152-fixture regression passes every result and metric: 82,853
+screens/cursors, 2,354,331 RNG positions and 1,798 animation frames. Strict
+RNG checks on the new fixture plus both existing eyewear fixtures pass all
+896 boundaries and exactly 39,457 calls. Five hang checks at 60 seconds and
+the 276-module source audit pass. Logs and totals use blindf-lifecycle-*.
+Commit and push this checkpoint now. The maintained corpus has 673 fixtures;
+the last complete-corpus verification remains the 671-fixture checkpoint.
+
+Next source work: accepted artifact blast ending polymorph in
+hold_another_object, followed by the independent local floor-chain model.
+Singer's three proposed artifact inputs and six source controls are ready;
+the parent has not recorded them yet. Avicenna's promoted pile oracle/tests
+and replacement/restore input are being prepared in cache. Pauli now reviews
+make_blinded/toggle_blindness for remaining timed-state interactions.
+
+The private Linux source checkout is ready at
+/share/NFS/u/rohit/research/contest/artifacts/2026-11-22/linux-source.aPFF5C/repo,
+currently e64c2980 with exact upstream16ff59115315917b93185d026aeefea06db9b0f4.
+It is a sparse checkout of scripts and nethack-c. The private LLVM root and
+signal canary remain under llvm18.RxU2F0. No native Linux build has run yet.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

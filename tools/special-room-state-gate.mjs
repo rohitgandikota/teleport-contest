@@ -7,6 +7,7 @@ import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { runSegment } from '../js/jsmain.js';
 import { game } from '../js/gstate.js';
+import { check_special_room } from '../js/hack.js';
 import {
     ROOMOFFSET, OROOM, THEMEROOM, COURT, SWAMP, VAULT, BEEHIVE, MORGUE,
     BARRACKS, ZOO, DELPHI, TEMPLE, LEPREHALL, COCKNEST, ANTHOLE,
@@ -70,13 +71,29 @@ await runSegment({ ...themeRecipe.segments[0], onFrame: () => {} });
 }
 
 const vaultRecipe = await readRecipe('vault-guard');
+await runSegment({ ...vaultRecipe.segments[0], moves: ' \x162\r' });
+{
+    const vault = game.level.rooms.find(room => room?.rtype === VAULT);
+    assert.ok(vault, 'level contains a vault');
+    const roomno = game.level.rooms.indexOf(vault);
+    assert.ok(!game.level._mapseen_rooms?.includes(roomno),
+              'vault starts undiscovered');
+    game.u.ux = vault.lx;
+    game.u.uy = vault.ly;
+    await check_special_room(false);
+    assert.equal(vault.rtype, VAULT, 'vault remains active after entry');
+    assert.ok(!game.level._mapseen_rooms?.includes(roomno),
+              'vault has no entry discovery');
+}
+
+// This route uses wizard magic mapping before entering the vault. C's
+// show_map_spot() discovers every mapped room, including vaults.
 await runSegment({ ...vaultRecipe.segments[0], onFrame: () => {} });
 {
     const vault = game.level.rooms.find(room => room?.rtype === VAULT);
-    assert.ok(vault, 'vault remains active after entry');
-    const roomno = game.level.rooms.indexOf(vault);
-    assert.ok(!game.level._mapseen_rooms?.includes(roomno),
-              'vault has no entry discovery');
+    assert.ok(vault, 'mapped vault remains active');
+    assert.ok(game.level._mapseen_rooms?.includes(game.level.rooms.indexOf(vault)),
+              'magic mapping discovers the vault');
 }
 
 console.log('special room state: PASS');

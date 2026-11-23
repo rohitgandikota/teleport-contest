@@ -719,6 +719,12 @@ expects no discovery. Correct that test separately. Logs:
 `birthday-source-audit.log`, `shirt-combined-before.log`, `shirt-text-after.log`
 and `shirt-hang.log`.
 
+Birthday checkpoint `36f03669` is pushed. The special-room state gate now
+tests vault entry before any magic mapping, then separately checks discovery
+on the original mapped route. Both controls pass, along with the other room
+cases. This changes only the stale test, not gameplay or native recordings.
+Log: `vault-discovery-state-final.log`.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

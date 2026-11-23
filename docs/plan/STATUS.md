@@ -1979,6 +1979,40 @@ input. Silver feedback remains a separate verified cache prototype awaiting
 its production checkpoint. Do not overwrite source with whole cached modules:
 apply the scoped changes so subsequent repairs are preserved.
 
+Input-order checkpoint `1c7a0aac` is pushed. The next verified checkpoint
+replaces mhitm_ad_phys's constant-false hates_silver_you stub with canonical
+Hate_silver and removes the stub. C uhitm.c:4075 uses that predicate for silver
+weapon feedback and Constitution abuse. The damage calculation already ran;
+this does not claim to add all silver damage. Canonical Hate_silver includes
+human lycanthropy as well as susceptible polymorphed forms. exercise correctly
+skips physical attributes while polymorphed.
+
+Three freshly recorded native cases cover a vampire struck with silver, a
+vampire struck with a long sword, and a human infected by eating a werewolf
+corpse before a silver hit. The asserted recipe matches all 330 screens/cursors
+and exactly 7,667 calls at every input boundary. The old helper gives 316/330
+screens and only 2,363 matched C call positions. Seventeen source controls
+pass; ten fail against the original helper. Controls include demon/shade/imp,
+tengu and ordinary forms, lycanthropy in an otherwise resistant form, both
+exercise limits, quiet feedback, silver daggers, iron, claw and unarmed attacks.
+
+Regression passes all 163 selected fixtures, including the 44 public games:
+93,303 screens/cursors, 2,187,863 RNG positions and 4,408 animation frames.
+Every final result and metric was checked. The new fixture has no animation.
+Four input-exhaustion checks and the 276-module source audit pass. Logs use
+silver-hit-regression-{0..3}, silver-hit-state-final, silver-hit-strict-final,
+silver-hit-hang-final, silver-hit-source-audit-final and silver-hit-final-native.
+Commit and push this checkpoint now. The maintained corpus is now 672 fixtures;
+the last complete-corpus run remains the 671-fixture Stormbringer checkpoint.
+
+Next: integrate the reviewed Blindf_on/off patch and its four exact native
+cases, then run its final lifecycle controls and selected regression. The
+local pile model remains cache-only pending the complete scoped review and
+new replacement/restore native case. No old recording is rewritten to make a
+new implementation pass. The private NFS LLVM canary is verified, but fresh
+gameplay coverage is still waiting for recorder lifecycle repair and a Linux
+ordinary build.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

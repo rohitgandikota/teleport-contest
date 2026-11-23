@@ -113,7 +113,7 @@ import { Acid_resistance, Antimagic, Blind, Cold_resistance, Deaf,
          Fire_resistance, Free_action, Fumbling, Hallucination, Flying, Levitation,
          Invisible, Shock_resistance, Swimming, Amphibious, Breathless,
          Sleep_resistance, Stone_resistance, Sick_resistance,
-         Slow_digestion, Unchanging, Teleport_control, Stunned } from './youprop.js';
+         Slow_digestion, Unchanging, Teleport_control, Stunned, Hate_silver } from './youprop.js';
 import { canseemon, canspotmon, glyph_at, sensemon, newsym, pline, shieldeff,
          flush_screen, glyph_is_invisible_at, map_invisible,
          unmap_invisible, urgent_pline, map_location, mon_to_glyph,
@@ -5120,6 +5120,7 @@ function dynamic_multi_reason(mon, verb, byGaze) {
     game.multi_reason = reason;
 }
 
+// src/uhitm.c:3981 mhitm_ad_phys()
 export async function mhitm_ad_phys(magr, mattk, mdef, mhm) {
     const A = ATTKS;
     const pa = magr.data;
@@ -5214,7 +5215,7 @@ export async function mhitm_ad_phys(magr, mattk, mdef, mhm) {
                 if (!mhm.damage)
                     return;
                 if (game.objects[otmp.otyp].oc_material === MATERIALS.SILVER
-                    && hates_silver_you()) {
+                    && Hate_silver()) {
                     await pline_The('silver sears your flesh!');
                     exercise(A_CON, false);
                 }
@@ -5389,12 +5390,6 @@ export async function mhitm_ad_legs(magr, mattk, mdef, mhm) {
         if (mhm.done)
             return;
     }
-}
-
-/* include/youprop.h Hate_silver — hero form that hates silver; base heroes
-   never do, and the polymorph state that could is recorded elsewhere. */
-function hates_silver_you() {
-    return false;
 }
 
 // src/mhitm.c:1260 rustm() — the defender's rust/corrode/burn passive

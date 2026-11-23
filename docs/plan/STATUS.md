@@ -2478,6 +2478,58 @@ Avicenna owns the placement caller design. All candidate work remains in
 cache. The Linux census has passed fixture 615/678. The fresh official
 leaderboard fetch at 18:04 UTC still reports the 13:48 UTC snapshot.
 
+Test setup checkpoint `cea88726` is pushed. The integrated corpse timer
+repair ports obj_timer_checks and calls it after floor placement and removal.
+obj_ice_effects now uses that shared C helper, including repeated explicit
+checks on already iced corpses, ROT-before-REVIVE fallback, overdue timers
+and C integer truncation. Full JSON restore converts decoded object timer
+references to IDs before rebuilding floor piles, then relinks afterward.
+This avoids applying the ice slowdown twice. It preserves queue order,
+timer IDs and owner counts without adding a restoring bypass. Equal-time
+queue ordering across the whole C save cycle is a separate follow-up audit.
+
+The five new native segments cover ice placement/pickup, ordinary floor,
+save/restore and terrain thaw. They improve from 496/505 screens, 502/505
+cursors and 167/191 animations to exact output, retaining all 13,902 calls.
+The 19 source-state controls pass, versus seven before. Five actual-input
+state observations, native branch assertions, recording integrity, complete
+RNG streams and slices, exact animation/cursor counts, and input exhaustion
+all pass. The independent floor-order gate remains 992/992; source audit
+reports zero findings. The raw native hash is
+ba4539bbe76825cc68b1adfa76083c53ca7fc57051341cc36933627eaec81641.
+The promoted floor-ice-timer-transitions fixture preserves every native step.
+
+All 682 maintained fixtures pass in four complete shards: 800,989 exact
+screens/cursors, 15,833,229 scored RNG calls and 30,436 scored animations.
+All 279 runtime source hashes remained fixed during the run. Logs and totals
+use mkobj-timer-* in the restart cache. Commit and push this checkpoint.
+
+The full Linux C census finished at 18:10 UTC: 603/678 recordings credited,
+4,355/5,492 functions entered and 55,543/107,260 direct outcomes observed.
+Its 75 first differences are 71 Unix/MacOS banners and four apple-eating
+messages, including three message-paging RNG boundary shifts. These are
+first-difference classifications, not claims that later boundaries match.
+No rejected profile contributes. Bulk results remain under NFS
+c-coverage-compress.E84JI2/full-corpus; the local compact summary is
+linux-coverage-census-summary.json. The collector exits one when any input
+is rejected, even after successfully writing its valid partial census.
+
+Independent ordinary Linux controls for these 75 inputs are running under
+NFS linux-controls.U7slK3, still using pinned e4504071 and the same Clang.
+The first 11 agree with the prior instrumented recordings. The next input
+exposes an options-help screen containing the different temporary directory;
+that mismatch is retained. The resumed run records the remaining controls
+and lets the unchanged strict collector reject any differences. Do not
+normalize paths or replace canonical recordings. Logs are
+linux-coverage-platform-controls*.log. This run has no credited result yet.
+
+Avicenna's held-placement design is reviewed and approved for cache-only
+implementation. It uses conditional completion in existing helpers,
+preserves synchronous constructors, and includes the transitive unearthing
+and trap-creation path. The 30-file review envelope and source-static
+exemptions are in held-placement-routing-audit-report.md and plan.json.
+No held-object runtime change is included in this timer checkpoint.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

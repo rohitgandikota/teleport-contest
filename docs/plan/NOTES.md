@@ -4517,6 +4517,18 @@ Clang for raw-trace comparisons. Unix/MacOS version banners remain actual
 platform differences and are rejected, never normalized. Keep the Linux
 coverage denominator separate from September's Darwin denominator.
 
+The November 23 full Linux census at e4504071 credits 603/678 recordings:
+4,355/5,492 functions and 55,543/107,260 direct outcomes. Its first rejected
+boundaries are 71 platform banners and four apple-eating messages. The
+shorter Unix apple joke can avoid a More prompt and move turn RNG to an
+earlier input boundary. The ordinary Clang control confirms that behavior.
+Full results stay on NFS under artifacts/2026-11-22/
+c-coverage-compress.E84JI2/full-corpus. Independent ordinary Linux controls
+are separate oracles, not replacements for the canonical MacOS recordings.
+Options help can also print its temporary config directory, so two Linux
+recorders can disagree there even when their surrounding RNG agrees.
+Preserve and reject such output differences rather than normalizing them.
+
 Use `llvm-cov export --skip-expansions`; exporting nested expansion regions
 produced 576 MB for this program, exceeding Node's maximum string length.
 Skipping expansion regions reduces it to about 30 MB while retaining function

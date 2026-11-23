@@ -1481,6 +1481,8 @@ export function place_object(otmp, x, y) {
         && !costly_adjacent(find_objowner(otmp, x, y), x, y))
         otmp.no_charge = 0;
     game.level.objects.unshift(otmp);
+    if (otmp.timed)
+        obj_timer_checks(otmp, x, y, 0);
 }
 
 // src/mkobj.c:2371 recreate_pile_at(). Only explicit restacking reorders fobj.
@@ -1497,12 +1499,15 @@ export function recreate_pile_at(x, y) {
 
 // src/mkobj.c:2508 remove_object(). Unlink the two independent chains.
 export function remove_object(obj) {
+    const x = obj.ox, y = obj.oy;
     if (obj.where !== OBJ_FLOOR)
         throw new Error('remove_object: object not on floor');
     extract_nexthere(obj);
     extract_nobj(obj, game.level.objects);
     if (obj.otyp === ONAMES.BOULDER)
-        recalc_block_point(obj.ox, obj.oy);
+        recalc_block_point(x, y);
+    if (obj.timed)
+        obj_timer_checks(obj, x, y, 0);
 }
 
 // src/mkobj.c:2623 extract_nexthere(). Does not change obj.where.
@@ -2133,42 +2138,58 @@ export function peek_at_iced_corpse_age(otmp) {
 // src/mkobj.c:2397 obj_ice_effects(). Corpse rot and revival timers run at
 // half speed on ice, then return to ordinary speed when the ice melts.
 export function obj_ice_effects(x, y, doBuried = false) {
-    const objects = game.level.objectsAt(x, y);
-    if (doBuried) {
-        objects.push(...(game.level?.buriedobjs || []).filter(obj =>
-            obj.where === OBJ_BURIED && obj.ox === x && obj.oy === y));
+    for (const obj of game.level.objectsAt(x, y)) {
+        if (obj.timed)
+            obj_timer_checks(obj, x, y, 0);
     }
-
-    for (const obj of objects) {
-        if (!obj.timed || obj.otyp !== ONAMES.CORPSE)
-            continue;
-
-        const onIce = is_ice(x, y);
-        if (onIce === !!obj.on_ice)
-            continue;
-
-        let action = TIMEOUT_ROT_CORPSE;
-        let remaining = stop_timer(action, obj);
-        if (!remaining) {
-            action = TIMEOUT_REVIVE_MON;
-            remaining = stop_timer(action, obj);
+    if (doBuried) {
+        for (const obj of game.level?.buriedobjs || []) {
+            if (obj.ox === x && obj.oy === y && obj.timed)
+                obj_timer_checks(obj, x, y, 0);
         }
-        if (!remaining)
-            continue;
+    }
+}
 
-        const age = (game.moves ?? 0) - (obj.age ?? 0);
-        if (onIce) {
-            obj.on_ice = 1;
-            remaining *= ROT_ICE_ADJUSTMENT;
-            obj.age = (game.moves ?? 0) - age * ROT_ICE_ADJUSTMENT;
-        } else {
-            obj.on_ice = 0;
-            remaining = Math.trunc(remaining / ROT_ICE_ADJUSTMENT);
-            obj.age += Math.trunc(age * (ROT_ICE_ADJUSTMENT - 1)
+// src/mkobj.c:2440 obj_timer_checks(). Apply ice checks to corpse timers and age.
+function obj_timer_checks(otmp, x, y, force) {
+    let tleft = 0;
+    let action = TIMEOUT_ROT_CORPSE;
+    let restart_timer = false;
+    const on_floor = otmp.where === OBJ_FLOOR;
+    const buried = otmp.where === OBJ_BURIED;
+
+    /* Check for corpses just placed on or in ice. */
+    if (otmp.otyp === ONAMES.CORPSE && (on_floor || buried) && is_ice(x, y)) {
+        tleft = stop_timer(action, otmp);
+        if (tleft === 0) {
+            action = TIMEOUT_REVIVE_MON;
+            tleft = stop_timer(action, otmp);
+        }
+        if (tleft !== 0) {
+            otmp.on_ice = 1;
+            tleft *= ROT_ICE_ADJUSTMENT;
+            restart_timer = true;
+            const age = game.moves - otmp.age;
+            otmp.age = game.moves - age * ROT_ICE_ADJUSTMENT;
+        }
+    } else if (force < 0 || (otmp.otyp === ONAMES.CORPSE && otmp.on_ice
+                           && !((on_floor || buried) && is_ice(x, y)))) {
+        tleft = stop_timer(action, otmp);
+        if (tleft === 0) {
+            action = TIMEOUT_REVIVE_MON;
+            tleft = stop_timer(action, otmp);
+        }
+        if (tleft !== 0) {
+            otmp.on_ice = 0;
+            tleft = Math.trunc(tleft / ROT_ICE_ADJUSTMENT);
+            restart_timer = true;
+            const age = game.moves - otmp.age;
+            otmp.age += Math.trunc(age * (ROT_ICE_ADJUSTMENT - 1)
                                   / ROT_ICE_ADJUSTMENT);
         }
-        start_timer(remaining, TIMER_OBJECT, action, obj);
     }
+    if (restart_timer)
+        start_timer(tleft, TIMER_OBJECT, action, otmp);
 }
 
 // src/mkobj.c:2648 add_to_minv(), give a free object to a monster; returns

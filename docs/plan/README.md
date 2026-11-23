@@ -18,8 +18,8 @@ pushes. The latest official snapshot checked, November 23 at 13:48 UTC, has
 these repairs. Public remains 44/44; that snapshot has 936 unmatched held-out
 screens. Local verification does not establish a newer held-out score.
 
-The latest complete regression passes 679/679 fixtures: 799,991 boundary
-screens/cursors, 15,783,793 RNG calls and 30,245 scored animation frames.
+The latest complete regression passes 682/682 fixtures: 800,989 boundary
+screens/cursors, 15,833,229 RNG calls and 30,436 scored animation frames.
 The latest potion changes also pass strict full-stream and per-input RNG
 checks on 117 fixtures, all 39,942 boundaries and 1,718,440 calls. The complete
 strict 677-fixture audit and all 213 animation-bearing fixtures passed at the
@@ -35,13 +35,17 @@ cleanup; 76 hallucination/blindness state controls pass.
 Mines/Sokoban prize acquisition now also passes three native cases and 29
 state controls, with all 142 selected regressions exact. Invocation-object
 achievements pass five native cases, 23 state controls and 155 selected
-regressions. The maintained corpus contains 681 fixtures. Two repaired test
+regressions. Corpse ice timers now follow placement, extraction and full
+restore ordering, passing five new native segments and 19 state controls.
+Two repaired test
 gates also pass all 458 replay segments and 145 constructed groups, with
 their 204 assertions unchanged. Next: artifact hallucination resistance and
 remaining floor-object side effects. The Linux/NFS branch collector is pushed
 and passes signal canaries plus exact save/restore, artifact and natural-exit
-pilots. A complete 678-fixture census is running from public checkpoint
-e4504071. Rejected platform/output differences earn no coverage. Large
+pilots. The 678-fixture Linux census at e4504071 credits 603 exact recordings,
+4,355/5,492 entered functions and 55,543/107,260 direct C branch outcomes.
+Rejected platform/output differences earn no coverage. Independent ordinary
+Linux controls are being checked for those inputs. Large
 profiles and recordings remain on NFS. See [STATUS.md](STATUS.md) for evidence
 and next actions. Historical milestone rows below are not a current audit.
 

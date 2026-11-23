@@ -596,9 +596,11 @@ async function recordSegment({
     });
     child.stdout.on('error', (err) => rejectDone(err));
     child.on('error', (err) => rejectDone(err));
-    child.on('close', (code, signal) => {
-        if (timeoutHandle) clearTimeout(timeoutHandle);
+    child.on('close', async (code, signal) => {
         parser.stop();
+        // stdout is closed, but its last marker may still be reading RNG.
+        await chain;
+        if (timeoutHandle) clearTimeout(timeoutHandle);
         if (signal === 'SIGTERM' || signal === 'SIGKILL') {
             // Killed by us after collecting expected steps.
             resolveDone(0);

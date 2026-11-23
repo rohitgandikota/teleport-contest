@@ -518,6 +518,20 @@ Add a deterministic recorder regression and await that queue before accepting
 natural exit. These fixtures are outside the 622-session result.
 An uncached official fetch (Age: 0) still has the November 22 19:45 snapshot.
 
+Command checkpoint `371f2cdd` is pushed. The recorder now drains its pending
+marker queue before accepting natural process exit. Its deterministic gate
+passes all four checks; three fail before the fix and the expected-step
+completion control passes both versions. The compiled native cursor gate
+still passes all seven cursor states and stream separation.
+Five serial menu-color save/restore recordings produce identical C segments
+and all 21 frames. Fresh save and death controls exactly reproduce their
+previous native segments, and replay matches all 45 screens/cursors, 6,155
+RNG calls and nine animations. Both input-exhaustion checks pass.
+Logs are `.cache/restart-20261122/recorder-exit-{before,after,repeats}.log`
+and `recorder-exit-control-{score,hang}.log`. This recorder-only fix does not
+change the 622-session gameplay result. The two new restore fixtures remain
+pending until their separate gameplay fix is verified.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

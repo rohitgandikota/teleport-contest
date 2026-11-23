@@ -1,0 +1,55 @@
+{
+  "name": "beam-transient-cursors",
+  "description": "Native prefixes exercise reflected beams, repeated bounce squares and an unseen projectile delay after a hit message.",
+  "recordingNote": "Use RERECORD_TZ=Etc/GMT+4. Transient cursor and equal frame-count assertions are in the beam state gate and strict animation comparator.",
+  "coverage": [
+    "mode.debug",
+    "object.wands",
+    "ui.map-memory-vision"
+  ],
+  "segments": [
+    {
+      "name": "reflection-and-unseen-hit",
+      "seed": 2,
+      "datetime": "20260414095828",
+      "nethackrc": "OPTIONS=symset:DECgraphics\n",
+      "moves": "David\ryy  nllk,yky,hb,nnllln,lllllluUnLnll,lln ,ac\reyq?q like slime modlld juice\rq?nyyhbbbb,rtykkkkulluuulkkyhbbbbbhhh,h,h,rv  helpig you\ri  yhHjjjbjbHHbHBhhyyyH,kk#l\rhHhhhhhhh.jjj:qyi  rm nnNllllllunn llnlllull,hbyhhh, i  i  w\u001bWxi  quhq?w bownbooze\rnLnL lLllllLsss9shHhhHhheyHhyHhhhhbhhhhhhhynnni  yYy#q\u001bqyqn?ey.> lllLlllllnby  unJ nlLjjj,  hhhklupyW\rpa\r lWykkkkkYHkkY ykhHhyHYh\u0004h\u0004hhhhhhhbbbb,uuujjbhhukkulnnhhyyHHhhhblleybHjJjnjjnUlllu_<  <.< uklLlllz?pllnnnllullyyyyhhhhhhhhhhla?cllllllao #ll\ra  #l\r#f\ryllll#f\r#f\r#\rba\ra\rike\rnnz?plunney_>._.9s> _"
+    },
+    {
+      "name": "fire-bounce",
+      "seed": 5002,
+      "datetime": "20260502120000",
+      "nethackrc": "OPTIONS=name:Cleo,role:Wizard,race:human,gender:female,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial\nOPTIONS=disclose:-i -a -v -g -c -o\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00165\n\u0017wand of fire\n\u0017wand of cold\n\u0017wand of lightning\n\u0017wand of magic missile\n\u0007gas spore\nznlz"
+    }
+  ],
+  "branches": [
+    "beam.reflection",
+    "beam.fire-bounce",
+    "projectile.unseen-hit"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "beam.reflection",
+      "segment": 0,
+      "screenIncludes": [
+        "But it reflects from your shield!"
+      ]
+    },
+    {
+      "branch": "beam.fire-bounce",
+      "segment": 1,
+      "screenIncludes": [
+        "The bolt of fire bounces!"
+      ]
+    },
+    {
+      "branch": "projectile.unseen-hit",
+      "segment": 0,
+      "screenIncludes": [
+        "It is hit."
+      ]
+    }
+  ]
+}

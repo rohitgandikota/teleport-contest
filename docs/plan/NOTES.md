@@ -5026,20 +5026,23 @@ hero's square in seed0002 after a reflected sleep ray. The C is sync, so a
 port copied line by line drops the await; grep new code for bare
 `shieldeff(` before running the gate.
 
-## Beam display: no tmp_at, and hdmgtype is a real draw
+## Beam display and the hallucinated damage-type draw
 
-dobuzz paints each beam square with display_cmap_at and restores the list
-in a finally block; that is the JS twin of tmp_at(DISP_BEAM)/DISP_END.
+dobuzz now uses tmp_at(DISP_BEAM), zapdir_to_glyph, DISP_CHANGE and DISP_END.
+The numeric beam identity lets unchanged squares stay clean. Opening a
+temporary display also flushes pending map changes before the first frame;
+physical bhit flights and returning weapons require that same opening flush.
 Under hallucination the C computes `hdmgtype = rn2(6)` in the declarations,
-before the uswallow check, so that draw must come first even though the
-JS only uses it for the beam color. The animFrames metric (frames captured
-at nh_delay_output) is not part of pass/fail: main scored 48 of 1483, the
-ray port 90.
+before the uswallow check, so that draw must remain first. The ordinary scorer
+does not check transient animation cursors; use the strict animation gate
+for cursor triples and equal frame counts as well as cell grids.
 
-## C impossible() calls become comments
+## C impossible() diagnostics need an async caller
 
-There is no `impossible` export. The convention in the tree is a comment
-(`/* impossible("...") */`) at the same spot; do not add a helper.
+The port has an async impossible adapter. Async callers must await it.
+Synchronous display paths still need separate acknowledgement-order review.
+A source-state test that replaces diagnostic I/O proves the message and
+fallthrough behavior, not that acknowledgement order.
 
 ## resist() is async; a call without await always "resists"
 
@@ -9528,12 +9531,13 @@ Unicode pointer and indexed-color changes alone do not trigger replacement.
 An absent buffer entry is already unexplored. Missing that default causes
 extra blank writes and a wrong last cursor even with identical cell grids.
 
-The normal scorer omits transient animation cursors. The new strict gate
-compares those plus frame counts and boundary cursors. The first repaired
-three games and their fresh native prefixes match completely. Expanding to
-all public games exposes five remaining beam cursor differences. All five
-also occur with the exact earlier display source; the map cursor repair
-improves both affected games without changing any cells or boundary output.
+The normal scorer omits transient animation cursors. The strict gate compares
+those plus frame counts and boundary cursors. All public cursors now match
+after preserving beam identities and the cursor left by message output.
+Message clearing must home before restoring covered map rows. Setting the
+cursor after that restoration would undo the map painter's last write.
+The three supplemental projectile cases also match. Full-corpus scored
+animation parity still does not establish full-corpus transient cursor parity.
 
 ## Intrinsic impairment in landing and trap handling (23 Nov)
 

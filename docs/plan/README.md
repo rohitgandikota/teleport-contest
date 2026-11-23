@@ -18,18 +18,19 @@ of 24,531 combined screens, 7th agentic and 11th overall. It predates the
 latest repairs. Public remains 44/44; 936 held-out screens remain unmatched
 in that snapshot.
 
-The full regression covers 656/656 fixtures with 793,245 exact boundary
-screens/cursors, 15,528,739 RNG calls and all 30,088 scored animation frames.
+The full regression covers 659/659 fixtures with 794,657 exact boundary
+screens/cursors, 15,590,417 RNG calls and all 30,203 scored animation frames.
 Glyph metadata, object appearance shuffling, monster identities and map
-cursor output are verified. The stricter public animation check matches
-1,478/1,483 cursor positions; five preexisting beam differences remain.
+cursor output are verified. The stricter public animation check now matches
+all 1,483 cursor positions, with exact cells and frame counts.
 Mounted-hero rendering now passes seven new native cases and 73 selected
 fixtures, with 21,828 exact screens/cursors and 1,324,950 RNG calls.
 C's shared display_monster helper now preserves sensed-mimic memory and unseen
 worm-tail selection. Buffered pet attributes and Rogue colors pass 151 selected
 fixtures, including six new native cases. Dismount and trap impairment now
-passes 79 selected fixtures and four new native cases. Next: beam/projectile
-cursors and pet option parsing/restore. Current-corpus parity is not a
+passes 79 selected fixtures and four new native cases. Beam/projectile cursor
+ordering is repaired. Next: pet option parsing/restore and remaining property
+predicates in movement, exercise and multishot. Current-corpus parity is not a
 completeness claim. See [STATUS.md](STATUS.md) for evidence and next actions.
 Historical milestone rows below are not a current completion audit.
 

@@ -285,7 +285,7 @@ import { is_lava, is_pool, m_at, t_at } from './mon.js';
 import { cansee, couldsee, block_point, unblock_point, recalc_block_point,
          vision_recalc } from './vision.js';
 import { display_cmap_at, display_object_at, flush_screen, map_invisible,
-         newsym, shieldeff, temporary_object_glyph,
+         newsym, shieldeff, temporary_object_glyph, tmp_at, zapdir_to_glyph,
          unmap_invisible, bot, docrt } from './display.js';
 import { closed_door } from './cmd.js';
 import { is_drawbridge_wall, is_ice, is_moat } from './dbridge.js';
@@ -295,10 +295,10 @@ import { STONE, WATER, LAVAWALL, IRONBARS, IS_SINK, POOL, MOAT, WEB, u_at,
          M_AP_NOTHING, M_AP_MONSTER, M_AP_OBJECT, ICE, DRAWBRIDGE_UP,
          DRAWBRIDGE_DOWN, DB_ICE, DB_UNDER, DB_FLOOR, ICED_POOL, ICED_MOAT,
          ROOM, PIT, VWALL, HWALL, IS_WALL, IS_WATERWALL,
-         TT_LAVA, TT_INFLOOR,
+         TT_LAVA, TT_INFLOOR, DISP_BEAM, DISP_CHANGE, DISP_END,
          Is_airlevel, Is_waterlevel, st_all, plur,
          ONAME_WISH, ONAME_KNOW_ARTI, IS_ROOM, STRAT_WAITMASK,
-         ZAP_POS, W_ARM, W_ARMS, W_ARMG, W_ARMH, W_WEP, W_AMUL, HI_ZAP,
+         ZAP_POS, W_ARM, W_ARMS, W_ARMG, W_ARMH, W_WEP, W_AMUL,
          W_RING, W_ARMOR, W_ACCESSORY, W_ART,
          A_STR, A_CON, A_CHA, A_DEX, A_INT, M_SEEN_MAGR,
          KILLED_BY_AN, KILLED_BY, NO_KILLER_PREFIX,
@@ -380,8 +380,7 @@ import { Reflecting, Sleep_resistance, Fire_resistance, Cold_resistance,
          Underwater, Levitation, Antimagic, Passes_walls, Fumbling }
     from './youprop.js';
 import { cmap_names } from './drawing_data.js';
-import { CLR_ORANGE, CLR_WHITE, CLR_BLACK, CLR_GREEN,
-         CLR_YELLOW } from './terminal.js';
+import { CLR_WHITE } from './terminal.js';
 import { create_gas_cloud } from './region.js';
 import { show_transient_light, transient_light_cleanup } from './light.js';
 import { boolean_option } from './options.js';
@@ -4473,11 +4472,6 @@ function bounce_dir(sx, sy, delta, bounceback) {
     }
 }
 
-const zap_colors = [
-    HI_ZAP, CLR_ORANGE, CLR_WHITE, HI_ZAP,
-    CLR_BLACK, CLR_WHITE, CLR_GREEN, CLR_YELLOW,
-];
-
 // src/display.c:2461 zapdir_to_glyph(). A zap type changes the color, while
 // these four cmap entries supply the active symbol-set character.
 function zapdir_cmap(dx, dy) {
@@ -5020,7 +5014,6 @@ export async function zap_over_floor(
 
 // src/zap.c:4780 dobuzz(); sayhit/saymiss: report out of sight hit/miss
 // events; forcemiss: an inexperienced monster wand user always misses.
-// tmp_at(DISP_BEAM...) is the display_cmap_at/beam_cells pair below.
 export async function dobuzz(type,     /* 0..29 (by hero) or -39..-10 (by monster) */
                              nd,       /* damage strength ('number of dice') */
                              sx, sy,   /* starting point */
@@ -5037,7 +5030,6 @@ export async function dobuzz(type,     /* 0..29 (by hero) or -39..-10 (by monste
     const otmp = { v: null };
     let spell_type;
     const hdmgtype = Hallucination() ? rn2(6) : damgtype;
-    const beam_cells = [];
 
     /* if it's a hero spell then get its SPE_TYPE */
     spell_type = is_hero_spell(type) ? ONAMES.SPE_MAGIC_MISSILE + damgtype : 0;
@@ -5157,6 +5149,7 @@ export async function dobuzz(type,     /* 0..29 (by hero) or -39..-10 (by monste
         return null;
     };
 
+    await tmp_at(DISP_BEAM, await zapdir_to_glyph(dx, dy, hdmgtype));
     try {
         while (range-- > 0) {
             lsx = sx;
@@ -5175,12 +5168,8 @@ export async function dobuzz(type,     /* 0..29 (by hero) or -39..-10 (by monste
                     else if (!mon)
                         unmap_invisible(sx, sy);
                     if (ZAP_POS(game.level.at(sx, sy).typ)
-                        || (isok(lsx, lsy) && cansee(lsx, lsy))) {
-                        display_cmap_at(zapdir_cmap(dx, dy), sx, sy,
-                                        zap_colors[hdmgtype] ?? HI_ZAP, 'zap');
-                        beam_cells.push([sx, sy]);
-                    }
-                    await flush_screen(0);
+                        || (isok(lsx, lsy) && cansee(lsx, lsy)))
+                        await tmp_at(sx, sy);
                     await game.animationFrame(); /* wait a little */
                 }
 
@@ -5275,13 +5264,11 @@ export async function dobuzz(type,     /* 0..29 (by hero) or -39..-10 (by monste
                 bounce_dir(sx, sy, delta, bchance);
                 dx = delta.dx;
                 dy = delta.dy;
-                /* tmp_at(DISP_CHANGE, zapdir_to_glyph(dx, dy, hdmgtype)) */
+                await tmp_at(DISP_CHANGE, await zapdir_to_glyph(dx, dy, hdmgtype));
             }
         }
     } finally {
-        /* tmp_at(DISP_END, 0) */
-        for (const [x, y] of beam_cells)
-            newsym(x, y);
+        await tmp_at(DISP_END, 0);
     }
     if (fireball)
         await explode(sx, sy, type, d(12, 6), 0, EXPL_FIERY);
@@ -5824,6 +5811,10 @@ export async function bhit(ddx, ddy, range,  /* direction and range */
     };
     if (tethered_weapon)
         pobj.endTether = endTether;
+
+    // src/display.c:1194 tmp_at() flushes buffered glyphs when a flight opens.
+    if (weapon !== ZAPPED_WAND && weapon !== INVIS_BEAM)
+        await flush_screen(0);
 
     while (range-- > 0) {
         let x, y;

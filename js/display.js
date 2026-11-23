@@ -2380,6 +2380,8 @@ export function paint_topline() {
             display.setCell(c, r, c < line.length ? line[c] : ' ',
                             NO_COLOR, 0);
     }
+    // win/tty/topl.c:305 putsyms()/topl_putsym() leave the cursor after the text.
+    display.setCursor(msgLines[msgLines.length - 1].length, msgLines.length - 1);
 }
 
 // src/display.c:1912 flush_screen() — push every not-yet-flushed gbuf
@@ -2741,6 +2743,8 @@ export function tty_clear_nhwindow_message(cury) {
 
     const display = game?.nhDisplay;
     if (display) {
+        // win/tty/wintty.c:1080 home() precedes clearing the message.
+        display.setCursor(0, 0);
         const CO = display.cols ?? 80;
         /* row 0 is the message window's own row: blank it */
         for (let c = 0; c < CO; c++)

@@ -1573,6 +1573,45 @@ petattr-options recording is pending its own options checkpoint and must not
 be included before that parser repair is applied. Two agents remain active
 on property readers and instance-option restore; the projectile agent is closed.
 
+Impairment checkpoint `6a82ce3b` is pushed. The combined beam/projectile
+cursor repair is applied and fully verified. dobuzz now uses tmp_at and
+zapdir_to_glyph for opening, painting, direction changes and cleanup. bhit
+and returning weapons flush pending map changes when their flight opens.
+Message painting advances the cursor; message clearing homes it before any
+wrapped-row restoration. No flight delays or RNG calls were added.
+
+The full 659-fixture regression passes: 794,657 screens/cursors, 15,590,417
+RNG calls and 30,203 animation cell frames. All four final shard results were
+parsed. The strict 48-fixture check matches 1,707 transient cursors/cell grids,
+equal frame counts and 14,334 boundary cursors. This includes all 44 public
+games with 1,483/1,483 transient cursors, the three supplemental projectile
+cases, and two fresh native prefixes. It does not establish strict transient
+cursor parity across the whole 659-fixture corpus.
+
+The 18 beam/native, 16 projectile and 32 existing map-cursor controls pass;
+14 beam and 11 projectile source controls fail before. Four input-exhaustion
+checks and the 276-module source audit pass. Logs: `beam-cursor-corpus-{0..3}`,
+`beam-cursor-state-final`, `projectile-cursor-state-final`,
+`beam-projectile-strict-final`, `beam-projectile-hang-final`,
+`beam-projectile-source-audit-final`, `beam-projectile-map-state-final`, and
+`beam-cursor-final-native`, all `.log` in the restart cache.
+
+Next: the cache-only petattr parser plus two-line save repair. Six option
+cases match 231 screens and 18,564 RNG calls. Four independently recorded
+save/restore pairs match 136 screens/cursors and 10,596 RNG calls with both
+repairs; with the parser fixed but the save bug retained they match only
+68/136 screens. The option recipe and 87-check gate are promoted but uncommitted.
+The save recipes still need final assertions and promotion. Use the individual
+`petattr-restore-audit-native-{none-bold,bold-none,saved-toggle-off,saved-toggle-on}`
+JSON files, not a nonexistent combined input file. The restore agent is closed.
+
+The attrib/cmd property candidate matches four new C cases: 154 screens/cursors,
+8,988 RNG calls and seven animations, versus 151 screens and 4,613 RNG calls
+before. Its final asserted recording and promoted gate are prepared; production
+is unchanged. Only the multishot-property audit remains active, with cache-only
+dothrow edits outside the returning-weapon helper. All pending source candidates
+must be applied as bounded patches, retaining the current cursor changes.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

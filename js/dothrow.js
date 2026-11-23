@@ -585,6 +585,8 @@ async function sho_obj_return_to_u(obj) {
     let y = game.bhitpos.y - u.dy;
     let flightPos = null;
     const glyph = temporary_object_glyph(obj);
+    // src/dothrow.c:1448 tmp_at(DISP_FLASH) flushes the outgoing flight's cleanup.
+    await flush_screen(0);
     while (isok(x, y) && (x !== u.ux || y !== u.uy)) {
         if (flightPos)
             newsym(flightPos.x, flightPos.y);

@@ -772,6 +772,26 @@ pass. Source audit and native assertion/integrity checks are empty. Logs:
 `exit-state-final.log`, `exit-hang.log` and `exit-source-audit.log` in
 `.cache/restart-20261122/`.
 
+Exit checkpoint `6b83845b` is pushed. Ordinary-room gold now always makes
+C's independent random check. Trap counts and themed-room eligibility use
+`level_difficulty()`, while grave eligibility uses absolute depth. This
+matters when the Amulet raises difficulty on a shallower, unvisited level.
+The four new C cases cover ordinary generation, the Amulet, a deeper prior
+visit, and an aggravation-ring control. They improve from 102/110 screens
+and 11,595/28,191 RNG calls to exact output. The pinned C disables the
+aggravation difficulty modifier, so that control must retain its behavior.
+
+Full regression: 636/636 fixtures, 789,286 screens/cursors, 15,077,374 RNG
+calls and 30,008/30,029 animations. Native assertions, recording integrity,
+the input-exhaustion check and source audit pass. Special-room and themed
+subroom state gates pass. The level-knowledge gate's native observations
+pass, but its constructed blindness assertion uses an obsolete cached
+flag. The same assertion fails with the previous `mklev.js`; correct that
+test separately. Logs: `room-difficulty-corpus-{0,1,2,3}.log`,
+`room-difficulty-source-audit.log`, `room-difficulty-hang.log`,
+`room-difficulty-level-knowledge-before.log` and
+`room-generation-difficulty-{before,after,native}.log` in the restart cache.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

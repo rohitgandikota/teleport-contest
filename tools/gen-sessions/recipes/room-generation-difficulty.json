@@ -1,0 +1,94 @@
+{
+  "name": "room-generation-difficulty",
+  "description": "Ordinary room generation uses independent gold rolls and level difficulty while carrying the Amulet, including themed rooms on a shallower unvisited level.",
+  "recordingNote": "Use RERECORD_TZ=Etc/GMT+4.",
+  "coverage": [
+    "mode.debug",
+    "level.ordinary",
+    "level.themed",
+    "object.amulets",
+    "traps.projectile-physical"
+  ],
+  "branches": [
+    "room.ordinary-control",
+    "room.amulet-gold",
+    "room.amulet-difficulty",
+    "room.aggravate-control"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "room.ordinary-control",
+      "segment": 0,
+      "screenIncludes": [
+        "Dlvl:2"
+      ],
+      "rngIncludes": [
+        "fill_ordinary_room(mklev.c:984)"
+      ]
+    },
+    {
+      "branch": "room.amulet-gold",
+      "segment": 1,
+      "screenIncludes": [
+        "Dlvl:2",
+        "Amulet of Yendor"
+      ],
+      "rngIncludes": [
+        "fill_ordinary_room(mklev.c:984)"
+      ]
+    },
+    {
+      "branch": "room.amulet-difficulty",
+      "segment": 2,
+      "screenIncludes": [
+        "Dlvl:2",
+        "Amulet of Yendor"
+      ],
+      "rngIncludes": [
+        "fill_ordinary_room(mklev.c:984)",
+        "nh.rn2(themerms.lua:969)"
+      ]
+    },
+    {
+      "branch": "room.aggravate-control",
+      "segment": 3,
+      "screenIncludes": [
+        "Dlvl:8"
+      ],
+      "rngIncludes": [
+        "fill_ordinary_room(mklev.c:984)"
+      ]
+    }
+  ],
+  "segments": [
+    {
+      "seed": 9760,
+      "name": "control",
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,pettype:none,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,!safe_wait,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00162\r\u0006V"
+    },
+    {
+      "seed": 9760,
+      "name": "amulet",
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,pettype:none,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,!safe_wait,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017Amulet of Yendor\r . \u001b\u00162\r\u001b\u0006V"
+    },
+    {
+      "seed": 9760,
+      "name": "amulet-deepest-level",
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,pettype:none,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,!safe_wait,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u001618\r\u001b\u0017Amulet of Yendor\r . \u001b\u00162\r\u001b\u0006V"
+    },
+    {
+      "seed": 9760,
+      "name": "aggravate",
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,pettype:none,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,!safe_wait,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017ring of aggravate monster\rPal\u001b\u00168\r\u0006V"
+    }
+  ]
+}

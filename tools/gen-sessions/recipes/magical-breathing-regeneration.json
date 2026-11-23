@@ -1,0 +1,151 @@
+{
+  "name": "magical-breathing-regeneration",
+  "description": "Energy recovery distinguishes worn magical breathing from intrinsic and monster-form breathing, including equipment changes during a timeout.",
+  "recordingNote": "Use RERECORD_TZ=Etc/GMT+4. Constructed source controls check masks and unclamped gains; native inputs require the C recovery draw and visible effects.",
+  "segments": [
+    {
+      "name": "worn-amulet",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!autoquiver,!safe_wait,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r6\r     \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u0017blessed spellbook of healing\rrb     \u001b\u001b\u0017uncursed amulet of magical breathing\rPc Za.  \u001b\u001bZa.  \u001b\u001bZa.  \u001b\u001bZa.  \u001b\u001b.................... V"
+    },
+    {
+      "name": "unworn-amulet",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!autoquiver,!safe_wait,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r6\r     \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u0017blessed spellbook of healing\rrb     \u001b\u001b\u0017uncursed amulet of magical breathing\r. Za.  \u001b\u001bZa.  \u001b\u001bZa.  \u001b\u001bZa.  \u001b\u001b.................... V"
+    },
+    {
+      "name": "breathless-form",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!autoquiver,!safe_wait,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r6\r     \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u0017blessed spellbook of healing\rrb     \u001b\u001b\u0017uncursed amulet of magical breathing\r#polyself\rvampire\r    \u001b\u001bZa.  \u001b\u001bZa.  \u001b\u001bZa.  \u001b\u001bZa.  \u001b\u001b.................... V"
+    },
+    {
+      "name": "near-max-clamp",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!autoquiver,!safe_wait,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r6\r     \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u0017blessed spellbook of healing\rrb     \u001b\u001b\u0017uncursed amulet of magical breathing\rPc Za.  \u001b\u001b.................................................. V"
+    },
+    {
+      "name": "intrinsic-only",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!autoquiver,!safe_wait,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r6\r     \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u0017blessed spellbook of healing\rrb     \u001b\u001b\u0017uncursed amulet of magical breathing\r#wizintrinsic\r>100g\r Za.  \u001b\u001bZa.  \u001b\u001bZa.  \u001b\u001bZa.  \u001b\u001b.................... V"
+    },
+    {
+      "name": "wear-during-timeout",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!autoquiver,!safe_wait,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r6\r     \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u0017blessed spellbook of healing\rrb     \u001b\u001b\u0017uncursed amulet of magical breathing\r#wizintrinsic\r>3g\r Pc Za.  \u001b\u001bZa.  \u001b\u001bZa.  \u001b\u001bZa.  \u001b\u001b.................... V"
+    },
+    {
+      "name": "remove-during-timeout",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!autoquiver,!safe_wait,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r6\r     \u0017blessed scroll of genocide\rra  *\r  \u001b\u001b\u0017blessed spellbook of healing\rrb     \u001b\u001b\u0017uncursed amulet of magical breathing\rPc #wizintrinsic\r>3g\r R Za.  \u001b\u001bZa.  \u001b\u001bZa.  \u001b\u001bZa.  \u001b\u001b.................... V"
+    }
+  ],
+  "coverage": [
+    "mode.debug",
+    "object.amulets",
+    "object.spellbooks-spells",
+    "survival.regen-exercise",
+    "ui.menus"
+  ],
+  "branches": [
+    "regen.worn-magical-breathing",
+    "regen.carried-magical-breathing",
+    "regen.breathless-form-only",
+    "regen.magical-breathing-clamp",
+    "regen.intrinsic-magical-breathing",
+    "regen.wear-during-breathing-timeout",
+    "regen.remove-during-breathing-timeout"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "regen.worn-magical-breathing",
+      "segment": 0,
+      "screenIncludes": [
+        "c - an oval amulet (being worn)."
+      ],
+      "rngIncludes": [
+        "rn2(4)=1 @ regen_pw(allmain.c:612)"
+      ]
+    },
+    {
+      "branch": "regen.carried-magical-breathing",
+      "segment": 1,
+      "screenIncludes": [
+        "Pw:30(48)"
+      ],
+      "rngIncludes": [
+        "rn2(2)=1 @ regen_pw(allmain.c:612)"
+      ]
+    },
+    {
+      "branch": "regen.breathless-form-only",
+      "segment": 2,
+      "screenIncludes": [
+        "You turn into a vampire!"
+      ],
+      "rngIncludes": [
+        "rn2(2)=1 @ regen_pw(allmain.c:612)"
+      ]
+    },
+    {
+      "branch": "regen.magical-breathing-clamp",
+      "segment": 3,
+      "screenIncludes": [
+        "Pw:47(48)",
+        "Pw:48(48)"
+      ],
+      "rngIncludes": [
+        "rn2(4)=2 @ regen_pw(allmain.c:612)",
+        "rn2(4)=0 @ regen_pw(allmain.c:612)",
+        "rn2(4)=3 @ regen_pw(allmain.c:612)"
+      ]
+    },
+    {
+      "branch": "regen.intrinsic-magical-breathing",
+      "segment": 4,
+      "screenIncludes": [
+        "Timeout for magical breathing set to 100."
+      ],
+      "rngIncludes": [
+        "rn2(2)=1 @ regen_pw(allmain.c:612)"
+      ]
+    },
+    {
+      "branch": "regen.wear-during-breathing-timeout",
+      "segment": 5,
+      "screenIncludes": [
+        "Timeout for magical breathing set to 3.",
+        "c - an oval amulet (being worn)."
+      ],
+      "rngIncludes": [
+        "rn2(4)=1 @ regen_pw(allmain.c:612)"
+      ]
+    },
+    {
+      "branch": "regen.remove-during-breathing-timeout",
+      "segment": 6,
+      "screenIncludes": [
+        "Timeout for magical breathing set to 3.",
+        "You were wearing an oval amulet."
+      ],
+      "rngIncludes": [
+        "rn2(2)=1 @ regen_pw(allmain.c:612)",
+        "rn2(2)=0 @ regen_pw(allmain.c:612)"
+      ]
+    }
+  ]
+}

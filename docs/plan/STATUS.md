@@ -1831,6 +1831,50 @@ fill_pit tail call is source-proven and its four focused native controls pass;
 the original floor-listing failure is retained separately. Singer continues the
 safe_pet/safe_dog option binding needed by the six Stormbringer native controls.
 
+Teleport discovery checkpoint `92c6c92e` is pushed. Magical-breathing
+regeneration and its wizard producer are now applied and verified. regen_pw
+adds C's two-point increase to the draw range for a nonzero extrinsic before
+drawing and clamping. wiz_intrinsic_timeout and the wizard setter use
+HMagical_breathing, preserving the actual worn equipment mask. The existing
+intrinsic countdown, warning and expiry paths in timeout.js need no changes.
+The runtime patch is ten added lines and one removed stale comment.
+
+Seven independent native cases cover worn/carried amulets, vampire form,
+near-maximum recovery, intrinsic-only breathing, and wearing/removing the
+amulet during a timeout. All 1,417 screens/cursors and 16,791 calls match;
+the strict RNG gate verifies every input slice and both stream lengths.
+The asserted recipe requires the C recovery ranges, not just displayed energy:
+several wrong ranges happen to return the same gain for these inputs.
+
+Regression passes 117/117 selected fixtures, including all 44 public games,
+with 57,483 screens/cursors, 1,562,342 matched RNG calls and 1,908 animation
+frames. All final result records and metrics were checked. The 44 promoted
+source controls pass. Eleven regeneration controls fail before the bonus;
+fourteen producer controls fail with the old producer while holding the bonus
+fixed. A test-package initialization error was corrected by using the live
+static game import instead of destructuring its mutable export. No production
+change was needed for that harness error. Five input-exhaustion checks and
+the 276-module source audit pass. The native fixture has no animation frames;
+its 1,417 boundary cursors also pass the strict animation tool.
+
+Logs are `magical-breathing-regression-{0..3}`, `magical-breathing-state-final`,
+`magical-breathing-strict-rng-final`, `magical-breathing-strict-animation-final`,
+`magical-breathing-hang-final`, `magical-breathing-source-audit-final` and
+`magical-breathing-final-native` in the restart cache. The latest full-corpus
+result remains the 668-fixture status run. Two subsequently added fixtures,
+teleport discovery and magical breathing, raise the maintained corpus to 670;
+they have targeted verification, not a new complete 670-fixture run.
+No old erroneous wizard-alias save-state migration is claimed.
+
+The next active implementation is Stormbringer with the safe_pet binding repair.
+Its cache diff now includes uhitm, options and jsmain, preserving C's live
+safe_dog field through startup and option changes. Singer owns its final
+source/native checks and promotion package. Avicenna owns the deeper nexthere
+representation review, including the two histories that a flat list cannot
+distinguish. Pauli moves to complete eyewear on/off lifecycle effects.
+Keep all production source frozen while a checkpoint's broad replay is running,
+then commit and push immediately after its final gates pass.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

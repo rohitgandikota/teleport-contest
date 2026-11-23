@@ -623,7 +623,8 @@ async function regen_pw(wtcap) {
             || u.uprops?.ENERGY_REGENERATION)) {
         let upper = Math.trunc((ACURR(A_WIS) + ACURR(A_INT)) / 15) + 1;
 
-        /* EMagical_breathing: amulet of magical breathing worn — absent */
+        if (u.uprops?.MAGICAL_BREATHING)
+            upper += 2;
 
         u.uen += rn1(upper, 1);
         if (u.uen > u.uenmax)

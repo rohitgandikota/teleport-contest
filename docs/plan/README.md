@@ -37,9 +37,10 @@ and frame counts after repairing status-field cursor advancement. Teleport and s
 property readers, plus failed-teleport discovery, pass 163 selected fixtures,
 including all public games and ten new C cases: 161,673 screens/cursors and
 3,155,541 matched RNG calls. The two-case discovery fixture postdates the
-latest complete-corpus run. Next: Stormbringer attack routing and its safe_pet binding, magical-breathing
-regeneration and intrinsic storage, floor-pile settlement and separate local
-object order.
+latest complete-corpus run. Magical-breathing regeneration and intrinsic storage now pass seven native
+cases and 117 selected fixtures, with 57,483 screens/cursors and 1,562,342
+matched RNG calls. Next: Stormbringer attack routing and its safe_pet binding,
+floor-pile settlement, separate local object order and eyewear transitions.
 Current-corpus parity is not a
 completeness claim. See [STATUS.md](STATUS.md) for evidence and next actions.
 Historical milestone rows below are not a current completion audit.

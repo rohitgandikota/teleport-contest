@@ -2993,13 +2993,69 @@ under artifact-invoke-coverage.84yPUk on NFS. A first control failed at startup
 and is retained as a diagnostic; it is not credited. The published validated
 coverage union above remains unchanged.
 
-Next, integrate the reviewed two-file object-naming candidate and its 12
-native scenarios, 824 boundaries and 33,208 calls. All candidate native
-replays and the extra prompt-state observations pass, including cancellation,
-long names and discovered versus undiscovered Eyes. Six remaining
-hallucination decisions have a separate candidate with nine native scenarios,
-686 boundaries and 25,544 calls. That audit also proves FROMFORM stun can be
-missing from flat aliases in safe-monster and peaceful-attack guards.
+Invoked-artifact checkpoint `f68920a4` is pushed. Its two independent ordinary
+Linux controls now pass exact instrumented rerecording, all nine cases. The
+first control's recorder HOME exceeded C nh_getenv's BUFSZ/2 limit; using a
+shorter NFS path restores normal configuration loading. Neither C source nor
+expected output changed. The successful controls live at
+/share/NFS/u/rohit/research/contest/artifacts/2026-11-22/invoke-linux.CaRRQf.
+They enter 1,379/5,492 functions and observe 9,247/107,260 direct outcomes in
+isolation. Original platform rejections and the failed control remain retained.
+The global union is not updated yet. The compact local receipt is
+linux-artifact-invoke-controls-summary.json.
+
+The naming checkpoint is applied and verified. Two runtime files change,
+38 added and 22 removed lines. do_oname follows C's novel handling, safe
+prompt, cancellation, artifact restrictions, canonical capitalization,
+scuff/retry and message/conduct order. Shared is_plural now reads the existing
+artifact-discovery list for the Eyes of the Overworld. No production exports
+or downstream oname completion behavior changed. All 20 state controls pass,
+versus nine before, and all 12 initial native input-state observations pass.
+
+The first 12 unchanged native cases contain 824 boundaries and 33,208 calls.
+They cover restricted and duplicate artifacts, stacks, Sting capitalization,
+wrong base types, erasure, novels, long prompts, cancellation and discovered
+versus undiscovered Eyes. The NFS census found one missing direct do_oname
+outcome: retrying after scuffing only spaces. A bounded scan of six ordinary
+inputs, seeds 99800 through 99805, found that retry. The new unchanged native
+recording has 55 boundaries and 2,738 calls. C picks positions 6, 7 and 6 in
+the eleven-character name; a single scuff permits at most two picks. The
+read-only input gate additionally checks both fresh display counts, preserved
+The prefix, final name and one literacy violation. The three native fixtures
+therefore total 13 cases, 879 exact screens/cursors, 35,946 strict RNG calls
+and no animations. Every input slice, animation count and input-exhaustion
+check passes. Recipe assertions and original bytes/input tuples are preserved.
+
+The complete 696-fixture run passes all 809,361 screens/cursors, 16,155,038
+scored RNG positions and 30,670 animations. The separately scored retry passes
+at the same unchanged 279-file runtime. Their disjoint combined inventory
+matches all 697 maintained fixtures: 809,416 screens/cursors, 16,157,776 scored
+RNG positions and 30,670 animations. Receipts are object-naming-corpus-*,
+object-naming-runtime-before-corpus.json, object-naming-retry-parent-* and
+object-naming-combined-corpus-{paths,totals}.json. Source audit is 0/276;
+changed-file syntax and diff checks pass.
+
+The 12 naming and nine upcoming status scenarios also pass exact instrumented
+C replay on NFS, all five raw input hashes verified. Their standalone coverage
+enters 1,540/5,492 functions and observes 10,607/107,260 direct outcomes. The
+separate retry recording passes strict rerecording and closes do_oname's last
+outcome, for 18/18 combined. This is function coverage, not complete naming
+subsystem coverage or proof of the entire port. These profiles remain at
+/share/NFS/u/rohit/research/contest/artifacts/2026-11-22/nh-follow.8iZQsF,
+under coverage and retry-coverage. Local receipts use
+linux-naming-hallucination-coverage-summary.json and
+linux-naming-retry-coverage-summary.json. The global union remains unchanged.
+
+The refreshed leaderboard snapshot is 2026-11-23T20:18:10.935Z; our last scored
+run is 19:33:02.838Z. It remains 7th agentic and 11th overall among 26 teams,
+44/44 public, 39/56 held-out and 23,595/24,531 combined screens. No improvement
+from the latest checkpoints is established by that snapshot.
+
+Next, integrate six remaining hallucination decisions with their nine native
+scenarios, 686 boundaries and 25,544 calls. That audit also proves FROMFORM
+stun can be missing from flat aliases in safe-monster and peaceful-attack
+guards. A separate complete vampire-shape candidate now matches four new C
+cases, 172 boundaries, 12,199 calls and 16 animations; it remains unapplied.
 
 Full recovery has a completed 61-function audit and an eight-file
 ownership/phase implementation in progress. An ordinary Air save omits 54 live
@@ -3009,6 +3065,14 @@ also remain outside the passing corpus. Save ownership, worm/region/bubble
 state and complete recovery phases continue in cache; no restore fix is
 claimed. Separate source reviews cover hide_monst's temporary vision mask
 and complete vampire shape selection.
+
+The hide_monst mask candidate passes 27 source controls, versus 15 before.
+Its four native return controls expose a separate first-case divergence:
+308 native boundaries, 22,325 calls and 26 animations, with 281 matching
+screens before and after the mask alone. They remain diagnostics outside the
+passing corpus while the protection-ring path is investigated. Additional
+hideunder feedback and Underwater predicate gaps have failing source controls
+and are being audited separately with their caller completion contracts.
 
 ## 2026-09-05: full faithful port is the active goal
 

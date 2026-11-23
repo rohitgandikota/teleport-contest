@@ -1,0 +1,145 @@
+{
+  "name": "object-artifact-naming",
+  "description": "C object naming: restricted and duplicate artifact scuffing, stack restriction, canonical Sting, wrong base type, ordinary erasure, novel feedback, and preserved The prefix. All eight parent native inputs are unchanged.",
+  "coverage": [
+    "mode.debug",
+    "ui.getlin",
+    "ui.menus",
+    "ui.cancel-invalid"
+  ],
+  "branches": [
+    "object-artifact-naming.restricted-athame",
+    "object-artifact-naming.canonical-sting",
+    "object-artifact-naming.duplicate-sting",
+    "object-artifact-naming.stack-sting",
+    "object-artifact-naming.wrong-base-type",
+    "object-artifact-naming.ordinary-erase",
+    "object-artifact-naming.published-novel",
+    "object-artifact-naming.restricted-the-name"
+  ],
+  "requireBranchAssertions": true,
+  "segments": [
+    {
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed athame\r  \u001b\u001b#name\riaMagicbane\r  \u001b\u001bi\u001b"
+    },
+    {
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed elven dagger\r  \u001b\u001b#name\riasTiNg\r  \u001b\u001bi\u001b"
+    },
+    {
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed Sting\r  \u001b\u001b\u0017uncursed elven dagger\r  \u001b\u001b#name\ribsting\r  \u001b\u001bi\u001b"
+    },
+    {
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00173 uncursed elven daggers\r  \u001b\u001b#name\riaSting\r  \u001b\u001bi\u001b"
+    },
+    {
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed dagger\r  \u001b\u001b#name\riamAgIcBaNe\r  \u001b\u001bi\u001b"
+    },
+    {
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed dagger\r  \u001b\u001b#name\riatravel knife\r  \u001b\u001b#name\ria \r  \u001b\u001bi\u001b"
+    },
+    {
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed novel\r  \u001b\u001b#name\ria  \u001b\u001bi\u001b"
+    },
+    {
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed crystal ball\r  \u001b\u001b#name\riaorb of fate\r  \u001b\u001bi\u001b"
+    }
+  ],
+  "branchAssertions": [
+    {
+      "branch": "object-artifact-naming.restricted-athame",
+      "segment": 0,
+      "screenIncludes": [
+        "While engraving, your hand slips.",
+        "You engrave: \"Magicbare\"."
+      ]
+    },
+    {
+      "branch": "object-artifact-naming.canonical-sting",
+      "segment": 1,
+      "screenIncludes": [
+        "runed dagger named Sting"
+      ]
+    },
+    {
+      "branch": "object-artifact-naming.duplicate-sting",
+      "segment": 2,
+      "screenIncludes": [
+        "You engrave: \"Stinc\"."
+      ]
+    },
+    {
+      "branch": "object-artifact-naming.stack-sting",
+      "segment": 3,
+      "screenIncludes": [
+        "What do you want to name these runed daggers?",
+        "You engrave: \"St?ng\"."
+      ]
+    },
+    {
+      "branch": "object-artifact-naming.wrong-base-type",
+      "segment": 4,
+      "screenIncludes": [
+        "dagger named mAgIcBaNe"
+      ]
+    },
+    {
+      "branch": "object-artifact-naming.ordinary-erase",
+      "segment": 5,
+      "screenIncludes": [
+        "dagger named travel knife"
+      ],
+      "screenCells": [
+        {
+          "step": 62,
+          "x": 41,
+          "y": 1,
+          "equals": "a"
+        },
+        {
+          "step": 62,
+          "x": 54,
+          "y": 1,
+          "equals": " "
+        }
+      ]
+    },
+    {
+      "branch": "object-artifact-naming.published-novel",
+      "segment": 6,
+      "screenIncludes": [
+        "Your paperback book already has a published name."
+      ]
+    },
+    {
+      "branch": "object-artifact-naming.restricted-the-name",
+      "segment": 7,
+      "screenIncludes": [
+        "You engrave: \"The (rb of Fate\"."
+      ]
+    }
+  ]
+}

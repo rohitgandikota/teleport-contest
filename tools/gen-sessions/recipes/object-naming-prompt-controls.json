@@ -1,0 +1,78 @@
+{
+  "name": "object-naming-prompt-controls",
+  "description": "Native controls for undiscovered versus scroll-identified Eyes, safe long object prompts, and existing-artifact cancellation/refusal. All four parent input tuples and native recording bytes are unchanged.",
+  "coverage": [
+    "mode.debug",
+    "ui.getlin",
+    "ui.menus",
+    "ui.cancel-invalid"
+  ],
+  "branches": [
+    "object-naming-prompt.eyes-undiscovered",
+    "object-naming-prompt.eyes-identified",
+    "object-naming-prompt.long-safe-qbuf",
+    "object-naming-prompt.artifact-cancel-resist"
+  ],
+  "requireBranchAssertions": true,
+  "segments": [
+    {
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "eyes-undiscovered",
+      "moves": " \u0017uncursed Eyes of the Overworld\r  \u001b\u001b#name\riawatchers\r  \u001b\u001bi\u001b"
+    },
+    {
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "eyes-identified",
+      "moves": " \u0017uncursed Eyes of the Overworld\r  \u001b\u001b\u0017blessed scroll of identify\rrb  \u001b\u001b#name\riawatchers\r  \u001b\u001bi\u001b"
+    },
+    {
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "long-safe-qbuf",
+      "moves": " \u0017uncursed potion of gain energy\r\u001b\u001b#name\roaMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM\r#name\riaNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN\r#name\ria\u001bi\u001b"
+    },
+    {
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "artifact-cancel-resist",
+      "moves": " \u0017uncursed Sting\r  \u001b\u001b#name\ria\r#name\ria\u001b#name\riablade\r  \u001b\u001bi\u001b"
+    }
+  ],
+  "branchAssertions": [
+    {
+      "branch": "object-naming-prompt.eyes-undiscovered",
+      "segment": 0,
+      "screenIncludes": [
+        "What do you want to name this pair of lenses named the Eyes of the Overworld?"
+      ]
+    },
+    {
+      "branch": "object-naming-prompt.eyes-identified",
+      "segment": 1,
+      "screenIncludes": [
+        "This is an identify scroll.",
+        "What do you want to name these Eyes of the Overworld?"
+      ]
+    },
+    {
+      "branch": "object-naming-prompt.long-safe-qbuf",
+      "segment": 2,
+      "screenIncludes": [
+        "potion called MMMMMMMM... named"
+      ]
+    },
+    {
+      "branch": "object-naming-prompt.artifact-cancel-resist",
+      "segment": 3,
+      "screenIncludes": [
+        "Sting resists the attempt."
+      ]
+    }
+  ]
+}

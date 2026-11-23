@@ -239,11 +239,26 @@ checks pass and source audit is empty. The known public animation deficit is
 unchanged. Two new recipes' coverage tags were corrected to registered IDs;
 their recorded frames were not changed.
 
-Next: push the divine-response checkpoint. C's late-game prayer timeout
-increase is still missing from `pleased`. Interactive key rebinding also
-stops at its outer menu; read `handler_rebind_keys_add`, `bind_key` and the
-current binding-table consumers before porting it. The official snapshot
-still predates this resumed work; do not infer a new ranking from local checks.
+Divine-response checkpoint `748e028d` is pushed. The late-game prayer timeout
+increase now matches C, including the first full hundred turns after 100,000
+and saturation at LARGEST_INT after rank penalties. Five source-derived
+boundary tests pass and all fail before this fix. These construct the turn
+counter directly; no native 100,000-turn recording was made. The other
+37 selected prayer state tests pass. All 48 public/prayer/crowning replays
+and input-exhaustion checks pass: 12,751 screens/cursors and 846,730 RNG calls,
+with the same known animation deficit. Source audit is empty. The meta-key
+fixture's original compact formatting was restored without changing data.
+
+Next: push the timeout checkpoint, then continue binding work. Interactive
+key rebinding stops at its outer menu. A native probe of binding `~` to
+`versionshort` fails in C too: `handler_rebind_keys_add` appends the command
+to an uninitialized `cmdstr` buffer for non-parameter commands. Do not infer
+portable behavior for that undefined C path. Parameter commands use Snprintf.
+The startup parser is independently incomplete: it recognizes only a literal
+key or ^X, omits txt2key's meta/numeric/escaped forms, and applies duplicates
+in the opposite order from C's recursive parsebindings. Audit those defined
+paths and the existing table consumers next. The official snapshot still
+predates this resumed work; do not infer a new ranking from local checks.
 
 ## 2026-09-05: full faithful port is the active goal
 

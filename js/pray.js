@@ -43,7 +43,7 @@ import { IS_ALTAR, Amask2align, A_NONE, A_LAWFUL, A_NEUTRAL, A_CHAOTIC,
          LUCKMAX, NON_PM, nothing_happens, NH_BLACK, NH_ORANGE, BOLT_LIM,
          MAXULEV, FROMOUTSIDE, INTRINSIC, NH_AMBER, NH_LIGHT_BLUE,
          NH_GOLDEN, ONAME_GIFT, ONAME_KNOW_ARTI, P_ISRESTRICTED,
-         P_LONG_SWORD, P_BROAD_SWORD, FOOT, STOMACH } from './const.js';
+         P_LONG_SWORD, P_BROAD_SWORD, FOOT, STOMACH, LARGEST_INT } from './const.js';
 import { ONAMES, OCLASSES } from './objects_data.js';
 import { An, an, ansimpleoname, makeplural, OBJ_NAME, otense, vtense,
          xname, yname, Yobjnam2, gloves_simple_name } from './objnam.js';
@@ -2085,6 +2085,15 @@ async function pleased(g_align) {
         kickOnButt++;
     if (kickOnButt)
         u.ublesscnt += kickOnButt * rnz(1000);
+
+    /* C limits repeated hunger prayers in very long games. */
+    if (game.moves > 100000) {
+        let incr = Math.trunc((game.moves - 100000) / 100);
+        const largest_ublesscnt_incr = LARGEST_INT - u.ublesscnt;
+        if (incr > largest_ublesscnt_incr)
+            incr = largest_ublesscnt_incr;
+        u.ublesscnt += incr;
+    }
 }
 
 // src/pray.c:2276 prayer_done()

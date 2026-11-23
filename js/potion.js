@@ -71,7 +71,7 @@ import { speed_up, obj_resists } from './zap.js';
 import { INTRINSIC, FROMOUTSIDE } from './const.js';
 import { monstseesu, monstunseesu } from './mondata.js';
 import { fall_asleep } from './timeout.js';
-import { Blindfolded_only } from './youprop.js';
+import { Blindfolded, Blindfolded_only } from './youprop.js';
 import { hands_obj, obj_extract_self, prinv } from './invent.js';
 import { near_capacity } from './attrib.js';
 import { Yobjnam2, Yname2, The, the, cxname } from './objnam.js';
@@ -1082,7 +1082,8 @@ async function peffect_confusion(otmp) {
 // src/potion.c:1073 peffect_blindness()
 async function peffect_blindness(otmp) {
     const was_blind = Blind();
-    if (was_blind)
+    if (was_blind || ((game.u.intrinsic?.HBlinded || Blindfolded())
+                     && game.u.blocked?.BLINDED))
         game.potion_nothing++;
     await make_blinded(
         itimeout_incr(game.u.intrinsic?.HBlinded,

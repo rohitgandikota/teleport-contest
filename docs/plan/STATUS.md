@@ -2262,6 +2262,26 @@ instrumented build uses the pinned private Clang, as did the first exact
 artifact pilot. Verify its save/restore recording byte-for-byte before
 crediting it. No source or platform-banner normalization is authorized.
 
+Floor checkpoint `095ae26e` is pushed. The blindness-potion predicate now
+matches potion.c:1073: a blindness source hidden by the Eyes still makes the
+next blindness potion unobservable. This preserves potion_nothing and avoids
+incorrect discovery, experience and wisdom-exercise RNG. No duration or
+blindness-transition behavior was changed.
+
+The three native cases retain every recorded step and verify existing timed,
+expired and permanent blindness. They improve from 306/313 screens/cursors
+and 4,534 matched RNG positions to all 313 boundaries and exactly 12,814
+calls. Native branch/integrity assertions, the strict full-stream/input-slice
+check and input-exhaustion check pass. The 36 new state controls and 30
+existing eyewear controls pass; five new controls failed before this repair.
+
+Selected regression passes all 116 public/potion/artifact/blindness fixtures:
+39,615 screens/cursors, 1,708,874 RNG calls and all
+1,763 animation frames. Source audit has zero findings in 276 non-frozen
+modules. Logs and totals use blindness-potion-* in the restart cache. The
+maintained corpus now has 678 fixtures; the latest complete audit remains
+677/677 from the floor checkpoint. Commit and push this potion checkpoint.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

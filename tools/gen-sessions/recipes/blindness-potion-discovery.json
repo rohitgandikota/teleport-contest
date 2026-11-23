@@ -1,0 +1,78 @@
+{
+  "name": "blindness-potion-discovery",
+  "description": "Blindness hidden by the Eyes does not identify another blindness potion; expired and permanent sources control discovery.",
+  "coverage": [
+    "mode.debug",
+    "object.potions",
+    "object.artifacts",
+    "ui.getlin",
+    "ui.more-paging"
+  ],
+  "segments": [
+    {
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Monk,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!autoquiver,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed Eyes of the Overworld\r  \u001b\u001bPa  \u001b\u001b#wizintrinsic\r100i\r  \u001b\u001b\u0017uncursed potion of blindness\r  \u001b\u001bqb  \u001b\u001b\u001b\u001bV"
+    },
+    {
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Monk,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!autoquiver,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed Eyes of the Overworld\r  \u001b\u001bPa  \u001b\u001b#wizintrinsic\r1i\r  \u001b\u001b....  \u001b\u001b\u0017uncursed potion of blindness\r  \u001b\u001bqb  \u001b\u001b\u001b\u001bV"
+    },
+    {
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Monk,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!autoquiver,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=blind\n",
+      "moves": " \u0017uncursed Eyes of the Overworld\r  \u001b\u001bPa  \u001b\u001b\u0017uncursed potion of blindness\r  \u001b\u001bqb  \u001b\u001b\u001b\u001bV"
+    }
+  ],
+  "requireBranchAssertions": true,
+  "branches": [
+    "potion.blindness.hidden-timeout",
+    "potion.blindness.expired-control",
+    "potion.blindness.hidden-permanent"
+  ],
+  "branchAssertions": [
+    {
+      "branch": "potion.blindness.hidden-timeout",
+      "segment": 0,
+      "screenIncludes": [
+        "You are now wearing a pair of lenses named the Eyes of the Overworld.",
+        "Your vision seems to dim for a moment but is normal now.",
+        "You have a peculiar feeling for a moment, then it passes.",
+        "Call a dark green potion:"
+      ],
+      "screenExcludes": [
+        "Your vision seems to brighten"
+      ]
+    },
+    {
+      "branch": "potion.blindness.expired-control",
+      "segment": 1,
+      "screenIncludes": [
+        "Your vision seems to brighten for a moment but is normal now.",
+        "Your vision seems to dim for a moment but is normal now."
+      ],
+      "screenExcludes": [
+        "You have a peculiar feeling",
+        "Call a dark green potion:"
+      ]
+    },
+    {
+      "branch": "potion.blindness.hidden-permanent",
+      "segment": 2,
+      "screenIncludes": [
+        "You are now wearing a pair of lenses named the Eyes of the Overworld.",
+        "You have a peculiar feeling for a moment, then it passes.",
+        "Call a dark green potion:"
+      ],
+      "screenExcludes": [
+        "Your vision seems to dim",
+        "Your vision seems to brighten"
+      ]
+    }
+  ],
+  "recordingNote": "Use RERECORD_TZ=Etc/GMT+4. The native steps are retained from the independent source audit."
+}

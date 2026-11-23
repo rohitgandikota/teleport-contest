@@ -1,0 +1,182 @@
+{
+  "name": "look-message-type",
+  "description": "Explicit look temporarily bypasses hide and norepeat message rules while keeping stop rules and restoring automatic-message handling.",
+  "recordingNote": "Use RERECORD_TZ=Etc/GMT+4 for a fixed UTC-4 recording offset.",
+  "coverage": [
+    "mode.normal",
+    "options.rc-bindings",
+    "ui.more-paging"
+  ],
+  "branches": [
+    "look-message-type.hide",
+    "look-message-type.norep",
+    "look-message-type.stop",
+    "look-message-type.show"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "look-message-type.hide",
+      "segment": 0,
+      "screenIncludes": [
+        "You see here a blessed +1 quarterstaff."
+      ],
+      "screenCells": [
+        {
+          "step": 6,
+          "x": 0,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 7,
+          "x": 0,
+          "y": 0,
+          "equals": "Y"
+        },
+        {
+          "step": 9,
+          "x": 0,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 10,
+          "x": 0,
+          "y": 0,
+          "equals": "Y"
+        }
+      ]
+    },
+    {
+      "branch": "look-message-type.norep",
+      "segment": 1,
+      "screenIncludes": [
+        "You see here a blessed +1 quarterstaff."
+      ],
+      "screenCells": [
+        {
+          "step": 6,
+          "x": 0,
+          "y": 0,
+          "equals": "Y"
+        },
+        {
+          "step": 7,
+          "x": 0,
+          "y": 0,
+          "equals": "Y"
+        },
+        {
+          "step": 9,
+          "x": 0,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 10,
+          "x": 0,
+          "y": 0,
+          "equals": "Y"
+        }
+      ]
+    },
+    {
+      "branch": "look-message-type.stop",
+      "segment": 2,
+      "screenIncludes": [
+        "You see here a blessed +1 quarterstaff.",
+        "quarterstaff.--More--"
+      ],
+      "screenCells": [
+        {
+          "step": 6,
+          "x": 0,
+          "y": 0,
+          "equals": "Y"
+        },
+        {
+          "step": 8,
+          "x": 0,
+          "y": 0,
+          "equals": "Y"
+        },
+        {
+          "step": 11,
+          "x": 0,
+          "y": 0,
+          "equals": "Y"
+        },
+        {
+          "step": 13,
+          "x": 0,
+          "y": 0,
+          "equals": "Y"
+        }
+      ]
+    },
+    {
+      "branch": "look-message-type.show",
+      "segment": 3,
+      "screenIncludes": [
+        "You see here a blessed +1 quarterstaff."
+      ],
+      "screenCells": [
+        {
+          "step": 6,
+          "x": 0,
+          "y": 0,
+          "equals": "Y"
+        },
+        {
+          "step": 7,
+          "x": 0,
+          "y": 0,
+          "equals": "Y"
+        },
+        {
+          "step": 9,
+          "x": 0,
+          "y": 0,
+          "equals": "Y"
+        },
+        {
+          "step": 10,
+          "x": 0,
+          "y": 0,
+          "equals": "Y"
+        }
+      ]
+    }
+  ],
+  "segments": [
+    {
+      "name": "hide",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:LookMsg0,role:Wizard,race:human,gender:male,align:neutral\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nMSGTYPE=hide \"^You see here\"\n",
+      "moves": " ldalh:lh:\u001b"
+    },
+    {
+      "name": "norep",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:LookMsg1,role:Wizard,race:human,gender:male,align:neutral\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nMSGTYPE=norep \"^You see here\"\n",
+      "moves": " ldalh:lh:\u001b"
+    },
+    {
+      "name": "stop",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:LookMsg2,role:Wizard,race:human,gender:male,align:neutral\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nMSGTYPE=stop \"^You see here\"\n",
+      "moves": " ldalh : lh : \u001b"
+    },
+    {
+      "name": "show",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:LookMsg3,role:Wizard,race:human,gender:male,align:neutral\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nMSGTYPE=show \"^You see here\"\n",
+      "moves": " ldalh:lh:\u001b"
+    }
+  ]
+}

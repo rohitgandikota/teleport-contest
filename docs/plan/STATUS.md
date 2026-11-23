@@ -581,6 +581,29 @@ preserving stop rules; JS `dolook` currently omits that wrapper. The compiled
 mask-state gate fails all three groups before this follow-up fix. Keep its
 fixture, recipe and state gate out of the configuration checkpoint.
 
+Configuration checkpoint `8c90520b` is pushed. Explicit look now wraps
+`look_here` with C's temporary message-type suppression. The compiled gate
+agrees on all 32 hide/mask combinations, including already-negative types,
+and verifies that a disabled first match still shadows later rules. All three
+groups fail before the fix; all 12 selected message/regex groups pass after it.
+The four native look cases now match all 52 screens/cursors and 10,612 RNG
+calls, including automatic suppression resuming after explicit look.
+The targeted 54-fixture regression passes all 20,945 screens/cursors and
+986,789 RNG calls, with the same 21 public animation differences. It includes
+all 44 public sessions, configuration/restore cases and floor-pickup controls.
+All three message/pickup input-exhaustion checks pass; source audit is empty.
+Logs are `.cache/restart-20261122/look-{regression,hang,source-audit}.log`
+and `look-message-state-{before,final}.log`. The full 626-fixture result above
+precedes this small follow-up; the new fixture brings the corpus to 627.
+
+Next readability target: `execute_extcmd` is still a 277-line chain alongside
+its module/function dispatch table. Most branches merely delegate to existing
+handlers. Preserve the remaining command-specific behavior and C identities
+while consolidating those delegations, then verify the command and full-corpus
+gates. Ten table names currently have no dispatch arm; four are internal-only
+item actions. Treat the other absent commands as separate porting work rather
+than silently claiming that table consolidation implements them.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

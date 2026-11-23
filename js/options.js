@@ -2913,6 +2913,18 @@ export function msgtype_type(msg, norepeat) { /* called from Norep(via pline) */
     return norepeat ? MSGTYP_NOREP : MSGTYP_NORMAL;
 }
 
+// src/options.c:7815 hide_unhide_msgtypes(). Negative types retain their
+// matching priority but temporarily disable the associated message handling.
+export function hide_unhide_msgtypes(hide, hide_mask) {
+    for (const tmp of game.plinemsg_types || []) {
+        let mt = tmp.msgtype;
+        if (!hide)
+            mt = -mt;
+        if (mt > 0 && ((1 << mt) & hide_mask))
+            tmp.msgtype = -tmp.msgtype;
+    }
+}
+
 // src/options.c:7831 msgtype_count()
 function msgtype_count() {
     return (game.plinemsg_types || []).length;

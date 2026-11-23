@@ -327,9 +327,9 @@ function worst_cursed_item() {
     let otmp = null;
     /* if strained or worse, check for loadstone first */
     if (near_capacity() >= HVY_ENCUMBER) {
-        for (otmp = game.invent; otmp; otmp = otmp.nobj)
-            if (Cursed_obj(otmp, ONAMES.LOADSTONE))
-                return otmp;
+        for (const obj of game.invent || [])
+            if (Cursed_obj(obj, ONAMES.LOADSTONE))
+                return obj;
     }
     /* weapon takes precedence if it is interfering
        with taking off a ring or putting on a shield */
@@ -371,11 +371,11 @@ function worst_cursed_item() {
         otmp = u.uswapwep;
     /* all worn items ought to be handled by now */
     } else {
-        for (otmp = game.invent; otmp; otmp = otmp.nobj) {
-            if (!otmp.cursed)
+        for (const obj of game.invent || []) {
+            if (!obj.cursed)
                 continue;
-            if (otmp.otyp === ONAMES.LOADSTONE || confers_luck(otmp))
-                break;
+            if (obj.otyp === ONAMES.LOADSTONE || confers_luck(obj))
+                return obj;
         }
     }
     return otmp;
@@ -398,7 +398,7 @@ async function fix_curse_trouble(otmp, what) {
         (game.iflags ||= {}).last_msg = PLNMSG_OBJ_GLOWS;
         otmp.bknown = !Hallucination() ? 1 : 0; /* ok to skip set_bknown() */
     }
-    uncurse(otmp);
+    await uncurse(otmp);
     update_inventory();
 }
 
@@ -1883,6 +1883,7 @@ async function pleased(g_align) {
     } else {
         const luck = Math.max((u.uluck || 0) + (u.moreluck || 0), -1);
         let action = rn1(luck + (on_altar() ? 3 + Number(on_shrine()) : 2), 1);
+        let tryct = 0;
         if (!on_altar())
             action = Math.min(action, 3);
         if (u.ualign.record < STRIDENT)
@@ -1893,29 +1894,17 @@ async function pleased(g_align) {
             pat_on_head = true;
             // Fall through to fixing every trouble.
         case 4:
-            while (trouble) {
-                if (!(await fix_worst_trouble(trouble)))
-                    break;
-                trouble = in_trouble();
-            }
+            do
+                await fix_worst_trouble(trouble);
+            while ((trouble = in_trouble()) !== 0);
             break;
-        case 3: {
+        case 3:
             await fix_worst_trouble(trouble);
-            let tryct = 0;
-            while ((trouble = in_trouble()) > 0 && ++tryct < 10) {
-                if (!(await fix_worst_trouble(trouble)))
-                    break;
-            }
+            /* FALLTHRU */
+        case 2:
+            while ((trouble = in_trouble()) > 0 && ++tryct < 10)
+                await fix_worst_trouble(trouble);
             break;
-        }
-        case 2: {
-            let tryct = 0;
-            while ((trouble = in_trouble()) > 0 && ++tryct < 10) {
-                if (!(await fix_worst_trouble(trouble)))
-                    break;
-            }
-            break;
-        }
         case 1:
             if (trouble > 0)
                 await fix_worst_trouble(trouble);

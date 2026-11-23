@@ -212,11 +212,22 @@ blind prayer. They improve from 64/91 screens and 2,329/15,760 RNG calls to
 exact output. All 50 selected public/prayer/sacrifice/repeat fixtures and their
 input-exhaustion checks pass. Source audit reports zero findings.
 
-Next: push the prayer-input checkpoint. Continue with `worst_cursed_item`,
-whose two inventory loops still treat the JS array as a C linked list, then
-review prayer Luck and hallucination predicates against the C macros.
-The official snapshot still predates all nine verified November 22 pushes;
-do not infer a new ranking from local checks.
+Prayer-input checkpoint `2af4d949` is pushed. `worst_cursed_item` now scans the
+inventory array, preserving loadstone and equipment priority. Prayer's repair
+loops no longer treat the void return from `fix_worst_trouble` as a failure;
+they repair the full C-defined sequence. Curse repair awaits light changes.
+Twelve recovery state tests pass; eight fail before this checkpoint. The
+24 selected prayer-input/artifact state tests also pass. A native case now
+repairs a helmet, T-shirt and carried loadstone in one prayer, improving from
+157/160 screens to 160/160, with 3,578 exact RNG calls and one animation.
+All 51 selected replays pass: 13,071 screens/cursors and 920,861 RNG calls.
+Their input-exhaustion checks pass and source audit is empty. The 21 known
+public animation differences remain.
+
+Next: push the recovery checkpoint, then review prayer Luck, hallucination
+and demon-alignment predicates against the pinned C source. The official
+snapshot still predates all ten verified November 22 pushes; do not infer
+a new ranking from local checks.
 
 ## 2026-09-05: full faithful port is the active goal
 

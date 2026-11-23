@@ -1,0 +1,29 @@
+{
+  "name": "prayer-multiple-curses",
+  "description": "After the quest leader's debug piety adjustment, a Valkyrie prays on a lawful altar. One prayer uncurses a worn helmet, a worn T-shirt, and a carried loadstone.",
+  "recordingNote": "Use RERECORD_TZ=Etc/GMT+4 for a fixed UTC-4 recording offset.",
+  "coverage": ["mode.debug", "level.quest", "object.armor", "religion.prayer"],
+  "branches": ["prayer.fix-all-troubles", "prayer.unworn-cursed-stone"],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "prayer.fix-all-troubles",
+      "segment": 0,
+      "screenIncludes": ["Your helmet softly glows amber.", "Your T-shirt softly glows amber."],
+      "rngIncludes": ["rn2(6)=3 @ pleased(pray.c:"]
+    },
+    {
+      "branch": "prayer.unworn-cursed-stone",
+      "segment": 0,
+      "screenIncludes": ["Your gray stone softly glows amber."]
+    }
+  ],
+  "segments": [
+    {
+      "seed": 7101,
+      "datetime": "20000114090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Valkyrie,race:human,gender:female,align:lawful,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r14\r             \u0016?\r y  \u0014klll.l\r y \u0016?\rg \u0017lawful altar\r\u0017blessed luckstone\r\u0017cursed helmet\rWf   \u0017cursed T-shirt\rWg   \u0017cursed loadstone\r.#pray\ry y  i\u001b"
+    }
+  ]
+}

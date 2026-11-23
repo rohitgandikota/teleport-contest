@@ -219,7 +219,7 @@ export async function glibr() {
                     + `${xfl ? 'also ' : ''}${otense(obj, 'slip')} `
                     + `from your ${which}${hand}.`);
         obj.quan = savequan;
-        setuwep(null);
+        await setuwep(null);
         cmdq_clear(CQ_CANNED);
         if (canletgo(obj, ''))
             await dropx(obj);
@@ -2166,7 +2166,7 @@ async function do_takeoff() {
         if (doff.what === W_WEP) {
             const uwep = worn(W_WEP);
             if (uwep && !await cursed(uwep)) {
-                setuwep(null);
+                await setuwep(null);
                 await You(was_twoweap
                     ? 'are no longer wielding either weapon.'
                     : `are ${empty_handed()}.`);

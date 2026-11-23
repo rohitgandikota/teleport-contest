@@ -2706,6 +2706,73 @@ crysknives may receive two held-loss draws. Avicenna is checking the source
 phases and a real input witness. Do not claim complete restore parity from
 the existing one-pass pile rebuild controls.
 
+Timer/ice checkpoint `1dff06e3` is now pushed. Its complete 685-fixture
+results above are verified. The next runtime candidate is applied in the
+working tree: 39 scoped edits across 15 files for artifact hallucination
+resistance, C-ordered completion, ESP refresh ownership and hcolor's exact
+null-versus-empty contract. The original candidate's single whitespace-only
+line was removed on application. Source audit is 0/276 and syntax passes.
+
+On the actual working tree, all 69 artifact controls and 20 hcolor controls
+pass. The five new native segments match all 352 boundaries and 9,261 calls,
+including one animation. Existing carry/wield fixtures bring the focused
+total to 790 boundaries and 43,042 calls. Complete streams, per-input slices,
+animation counts/cells/cursors and input exhaustion pass. The 685 existing
+fixtures are running in artifact-halres-corpus-{0,1,2,3}.log, with all 279
+runtime hashes fixed in artifact-halres-runtime-before-corpus.json.
+Do not change runtime until that run finishes. Native promotion and the
+portable state/ordering gates are being packaged separately.
+
+The four additional sink segments now have strict Linux C coverage as well
+as exact JS parity. Both runs' build/recorder/tool manifests and ordered
+LLVM branch layouts match. Their validated profile union covers all 94/94
+direct dosinkring outcomes in 49 calls. teleport_sink remains 8/14 and
+polymorph_sink 8/20; this is not complete coverage of either helper. The
+standalone union enters 1,581/5,492 functions and covers 10,958/107,260
+outcomes. It has not been merged into the separate 678-input global census.
+NFS output is sink-ring-coverage.BgV3Jx/combined-49-coverage under the recorded
+2026-11-22 artifact root. Local script/log/summary use
+linux-sink-ring-coverage-union*. The native four-segment fixture and its
+normal-import input gate are promoted but not committed as
+sink-ring-disposal-boundaries; all 336 boundaries, 15,240 calls, exact zero
+animations, six recipe assertions and four input observations pass.
+
+The 19:22 UTC official fetch still serves the 13:48 UTC snapshot and our
+13:16 UTC score: seventh agentic, eleventh overall, 936 unmatched screens.
+The current pushes therefore have no new measured leaderboard result yet.
+The next source audit identified four numeric timer cancellation consumers
+still importing a string from const.js; their bounded import-only repair
+and independent ice-replacement inputs are in preparation. The held/container
+candidate remains outside the working runtime while composition and the
+double-getlev restore question are checked.
+
+The applied artifact checkpoint now passes the complete 686-fixture corpus:
+the fixed 685-path base plus the newly promoted artifact-hallucination-resistance
+fixture. Totals are 804,780 exact screens/cursors, 15,980,380 scored RNG positions
+and 30,573 animations. All 279 runtime hashes remained unchanged. The new
+fixture preserves all five original native segments and their save/restore
+continuity. Before at exact HEAD 1dff06e3, 234/352 screens, 345/352 cursors and
+0/1 animations matched; afterward all match, with the same 9,261 core calls.
+The full streams and all 352 input slices are exact, with no extra calls.
+
+All promoted gates pass from their repository paths: 69 artifact controls,
+20 color controls and five actual-input observations. All assertions from the
+55 original artifact controls were preserved during packaging; the old alternate reference route
+was removed. Only the two ordering/return gates use a test-only loader, for a
+controlled pause and access to private tutorial helpers. Production exports
+and implementations are unchanged by that loader. Ordinary calls retain
+their synchronous results; pending artifact messages complete before slot,
+inventory, deletion or tutorial operations continue. The helper contract's
+null/empty color cases have no demonstrated empty-string gameplay caller.
+
+The native fixture, branch assertions, integrity, source audit, syntax,
+input exhaustion, exact animation counts/cells/cursors and final diff checks
+pass. Final logs use artifact-halres-promoted-*; corpus totals and paths are
+artifact-halres-corpus-totals.json and artifact-halres-corpus-complete-paths.json.
+Commit and immediately push this artifact checkpoint, keeping the separate
+three-file sink coverage addition out of that commit. The sink addition is
+already exact and can be committed next with its measured 94/94 coverage.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

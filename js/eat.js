@@ -2262,7 +2262,7 @@ export async function done_eating(message) {
        useupf's shop-billing arm records inside useupf itself. */
     if (piece) {
         if (carried(piece))
-            useup(piece);
+            await useup(piece);
         else
             await useupf(piece, 1);
     }

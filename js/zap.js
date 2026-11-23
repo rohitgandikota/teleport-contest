@@ -2407,7 +2407,7 @@ export async function poly_obj(obj, id) {
             /* if the new form can be worn in the same slot, make it so */
             if ((new_wornmask & W_WEP) !== 0) {
                 if (was_twohanded || !bimanual(otmp) || !game.u.uarms)
-                    setuwep(otmp);
+                    await setuwep(otmp);
                 if (was_twoweap && game.u.uwep && !bimanual(game.u.uwep))
                     set_twoweap(true); /* u.twoweap = TRUE */
             } else if ((new_wornmask & W_SWAPWEP) !== 0) {

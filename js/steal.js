@@ -186,7 +186,7 @@ export async function remove_worn_item(obj, unchain_ball) {
             unpunish();
     } else if (obj.owornmask) {
         /* catchall */
-        setnotworn(obj);
+        await setnotworn(obj);
     }
     /* if (obj->where == OBJ_DELETED) debugpline1("remove_worn_item() \"%s\" deleted!", ...) */
     obj.in_use = oldinuse;

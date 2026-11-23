@@ -1356,7 +1356,7 @@ export async function mon_to_stone(mtmp) {
 
 // src/mkobj.c delobj() — take the object off the floor and free it.
 export function delobj(obj) {
-    delobj_core(obj, false);
+    return delobj_core(obj, false);
 }
 
 // src/invent.c:1438 delobj_core() — destroy an object; `force` is for reviving
@@ -1378,7 +1378,7 @@ export function delobj_core(obj, force) {
     }
     if (update_map)  /* floor object's coordinates are always up to date */
         newsym(obj.ox, obj.oy);
-    obfree(obj);
+    return obfree(obj);
 }
 
 // src/mon.c:1463 meatmetal() — a rock mole or similar eats the topmost metal

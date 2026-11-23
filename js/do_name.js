@@ -606,6 +606,7 @@ export function oname(obj, name, oflgs) {
 
     if (lth)
         artifact_exists(obj, name, true, oflgs);
+    let pending;
     if (obj.oartifact) {
         /* can't dual-wield with artifact as secondary weapon */
         if (obj === game.u.uswapwep)
@@ -613,26 +614,32 @@ export function oname(obj, name, oflgs) {
                                    its You() message is deferred */
         /* activate warning if you've just named your weapon "Sting" */
         if (obj === game.u.uwep)
-            set_artifact_intrinsic(obj, true, W_WEP);
-        /* if obj is owned by a shop, increase your bill */
-        if (obj.unpaid)
-            alter_cost(obj, 0);
-        if (via_naming) {
-            const uconduct = (game.u.uconduct ||= {});
-
-            if (!uconduct.literate++)
-                livelog_printf(LL_CONDUCT | LL_ARTIFACT,
-                               `became literate by naming ${
-                                   bare_artifactname(obj)}`);
-            else
-                livelog_printf(LL_ARTIFACT,
-                               `chose ${ansimpleoname(obj)} to be named "${
-                                   bare_artifactname(obj)}"`);
-        }
+            pending = set_artifact_intrinsic(obj, true, W_WEP);
     }
-    if (carried(obj) && !skip_inv_update)
-        update_inventory();
-    return obj;
+    return pending ? pending.then(finish) : finish();
+
+    function finish() {
+        if (obj.oartifact) {
+            /* if obj is owned by a shop, increase your bill */
+            if (obj.unpaid)
+                alter_cost(obj, 0);
+            if (via_naming) {
+                const uconduct = (game.u.uconduct ||= {});
+
+                if (!uconduct.literate++)
+                    livelog_printf(LL_CONDUCT | LL_ARTIFACT,
+                                   `became literate by naming ${
+                                       bare_artifactname(obj)}`);
+                else
+                    livelog_printf(LL_ARTIFACT,
+                                   `chose ${ansimpleoname(obj)} to be named "${
+                                       bare_artifactname(obj)}"`);
+            }
+        }
+        if (carried(obj) && !skip_inv_update)
+            update_inventory();
+        return obj;
+    }
 }
 
 // src/do_name.c:467 name_ok() and :290 do_oname(), select and name one
@@ -660,7 +667,7 @@ async function do_oname(obj) {
         await pline(`${obj.oname || 'The artifact'} resists the attempt.`);
         return;
     }
-    oname(obj, name, ONAME_VIA_NAMING | ONAME_KNOW_ARTI);
+    await oname(obj, name, ONAME_VIA_NAMING | ONAME_KNOW_ARTI);
 }
 
 // src/do_name.c:499 docallcmd() — the #call / #name command: player can name a
@@ -896,7 +903,7 @@ const hcolors = [
 
 // src/do_name.c:1460 hcolor(). Use the display RNG for hallucinated colors.
 export function hcolor(colorpref) {
-    return (Hallucination() || !colorpref)
+    return (Hallucination() || colorpref === null)
         ? hcolors[rn2_on_display_rng(hcolors.length)]
         : colorpref;
 }

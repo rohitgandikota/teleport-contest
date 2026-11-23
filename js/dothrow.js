@@ -561,7 +561,7 @@ async function return_throw_to_inv(obj, wep_mask, twoweap, oldslot) {
             && ((obj.owornmask | wep_mask) & (W_WEP | W_SWAPWEP)))
             setuqwep(null);
         if ((wep_mask & W_WEP) && !game.u.uwep)
-            setuwep(obj);
+            await setuwep(obj);
         else if ((wep_mask & W_SWAPWEP) && !game.u.uswapwep)
             setuswapwep(obj);
         else if ((wep_mask & W_QUIVER) && !game.u.uquiver)
@@ -842,7 +842,7 @@ export async function throwit(obj, wep_mask, twoweap = false,
                 await encumber_msg();
                 if (obj.owornmask & W_QUIVER)
                     setuqwep(null);
-                setuwep(obj);
+                await setuwep(obj);
                 set_twoweap(twoweap);
                 if (cansee(bx, by))
                     newsym(bx, by);

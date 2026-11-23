@@ -4647,7 +4647,7 @@ export async function shopdig(fall) {
                 continue;
             if (obj === game.current_wand)
                 continue;
-            setnotworn(obj);
+            await setnotworn(obj);
             freeinv(obj);
             subfrombill(obj, shkp);
             add_to_minv(shkp, obj); /* may free obj */

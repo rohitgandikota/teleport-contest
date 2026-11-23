@@ -75,7 +75,7 @@ import { MONSYMS, NUMMONS, PMNAMES } from './monst_data.js';
 import { erosion_matters, curse, splitobj, clear_splitobjs, extract_nobj,
          start_glob_timeout, dead_species, unsplitobj, unknwn_contnr_contents } from './mkobj.js';
 import { carried, OBJ_FREE, OBJ_FLOOR, OBJ_CONTAINED, OBJ_INVENT, OBJ_MINVENT, OBJ_BURIED, Is_container, Is_candle, Is_pudding } from './obj.js';
-import { setworn, setnotworn, recalc_telepat_range, bypass_objlist,
+import { setworn, setnotworn, bypass_objlist,
          nxt_unbypassed_loot, clear_bypasses } from './worn.js';
 import { is_rider, hideunder } from './makemon.js';
 import { Fumbling } from './youprop.js';
@@ -92,8 +92,7 @@ import { ATR_NONE, ATR_INVERSE, tty_create_nhwindow, tty_putstr,
          tty_add_menu, NHW_MENU } from './tty/wintty.js';
 import { nhgetch } from './input.js';
 import { xwaitforspace } from './tty/getline.js';
-import { pline, tty_clear_nhwindow_message, display_nhwindow_message, temporary_object_glyph,
-         see_monsters } from './display.js';
+import { pline, tty_clear_nhwindow_message, display_nhwindow_message, temporary_object_glyph } from './display.js';
 import { makeknown, observe_object } from './o_init.js';
 import { tty_yn_function } from './tty/topl.js';
 import { You, You_hear, You_see, Your, impossible } from './pline.js';
@@ -540,8 +539,6 @@ export function addinv_core1(obj) {
             await artitouch(obj);
         }
         set_artifact_intrinsic(obj, true, W_ART);
-        recalc_telepat_range();
-        see_monsters();
         release_prize();
     })();
 }
@@ -2676,8 +2673,6 @@ export function freeinv_core(obj) {
         if (obj.oartifact === game.urole?.questarti)
             (game.u.uhave ||= {}).questart = 0;
         set_artifact_intrinsic(obj, false, W_ART);
-        recalc_telepat_range();
-        see_monsters();
     }
 
     if (obj.otyp === ONAMES.LOADSTONE)
@@ -2815,9 +2810,9 @@ export async function hold_another_object(obj, drop_fmt, drop_arg, hold_msg) {
     return null; /* might be gone */
 }
 
-// src/shk.c:1187 obfree(). This is synchronous in C and must remain so here:
-// many useup() callers inspect the consumed object before the current command
-// returns. Objects on a shop bill are retained there; every other object is
+// src/shk.c:1187 obfree(). Ordinary disposal remains synchronous; removing
+// a worn artifact waits for its property transition before deletion.
+// Objects on a shop bill are retained there; every other object is
 // marked deleted after its timers, light source, and transient references are
 // cleared.
 export function obfree(obj, merge = null) {
@@ -2860,40 +2855,47 @@ export function obfree(obj, merge = null) {
     if (obfree_bill(obj, merge))
         return;
 
-    if (obj.owornmask)
-        setnotworn(obj);
-    if (obj.timed)
-        obj_stop_timers(obj);
-    if (obj.lamplit) {
-        const sources = (game.light_sources ||= []);
-        const index = sources.findIndex(source => source.type === 1
-                                      && source.id === obj.o_id);
-        if (index >= 0)
-            sources.splice(index, 1);
-        obj.lamplit = 0;
+    const pending = obj.owornmask ? setnotworn(obj) : null;
+    return pending ? pending.then(finish) : finish();
+
+    function finish() {
+        if (obj.timed)
+            obj_stop_timers(obj);
+        if (obj.lamplit) {
+            const sources = (game.light_sources ||= []);
+            const index = sources.findIndex(source => source.type === 1
+                                          && source.id === obj.o_id);
+            if (index >= 0)
+                sources.splice(index, 1);
+            obj.lamplit = 0;
+        }
+        if (obj === game.thrownobj)
+            game.thrownobj = null;
+        if (obj === game.kickedobj)
+            game.kickedobj = null;
+        if (obj === game.context?.tin?.tin) {
+            game.context.tin.tin = null;
+            game.context.tin.o_id = 0;
+        }
+        const split = game.context?.objsplit;
+        if (split && (obj.o_id === split.parent_oid
+                      || obj.o_id === split.child_oid)) {
+            split.parent_oid = split.child_oid = 0;
+        }
+        obj.where = OBJ_DELETED;
     }
-    if (obj === game.thrownobj)
-        game.thrownobj = null;
-    if (obj === game.kickedobj)
-        game.kickedobj = null;
-    if (obj === game.context?.tin?.tin) {
-        game.context.tin.tin = null;
-        game.context.tin.o_id = 0;
-    }
-    const split = game.context?.objsplit;
-    if (split && (obj.o_id === split.parent_oid
-                  || obj.o_id === split.child_oid)) {
-        split.parent_oid = split.child_oid = 0;
-    }
-    obj.where = OBJ_DELETED;
 }
 
 // src/invent.c useupall(): the whole stack goes. A worn item stops being
 // worn before it leaves inventory, then obfree() owns the remaining cleanup.
 export function useupall(obj) {
-    setnotworn(obj);
-    freeinv(obj);
-    obfree(obj);
+    const pending = setnotworn(obj);
+    return pending ? pending.then(finish) : finish();
+
+    function finish() {
+        freeinv(obj);
+        return obfree(obj);
+    }
 }
 
 // src/invent.c useup() — consume ONE of a stack, or all of it.
@@ -2910,7 +2912,7 @@ export function useup(obj) {
         obj.owt = weight(obj);
         update_inventory();
     } else {
-        useupall(obj);
+        return useupall(obj);
     }
 }
 

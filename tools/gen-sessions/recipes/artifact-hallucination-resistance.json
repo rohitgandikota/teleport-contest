@@ -1,0 +1,101 @@
+{
+  "name": "artifact-hallucination-resistance",
+  "description": "Actual-input Grayswandir hallucination resistance: wield, replacement/drop, a retained armor source, and a shared save/restore pair.",
+  "coverage": [
+    "mode.debug",
+    "object.artifacts",
+    "object.armor",
+    "survival.timed-status",
+    "ui.getlin",
+    "ui.map-memory-vision",
+    "ui.more-paging",
+    "persistence.save-restore"
+  ],
+  "branches": [
+    "artifact-hallucination-resistance.wield-unwield",
+    "artifact-hallucination-resistance.replace-and-drop",
+    "artifact-hallucination-resistance.retain-gold-armor",
+    "artifact-hallucination-resistance.save-active-timer",
+    "artifact-hallucination-resistance.restore-and-unwield"
+  ],
+  "requireBranchAssertions": true,
+  "segments": [
+    {
+      "name": "wield-unwield",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Knight,race:human,gender:male,align:lawful,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed Grayswandir\r   #wizintrinsic\r100h\r  \u001b\u001bwa  \u001b\u001bw-  \u001b\u001b"
+    },
+    {
+      "name": "replace-and-drop",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Knight,race:human,gender:male,align:lawful,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed Grayswandir\r     \u001b\u001b#wizintrinsic\r100h\r  \u001b\u001bwa  \u001b\u001b\u0017uncursed dagger\r     \u001b\u001bwb  \u001b\u001bwa  \u001b\u001bda  \u001b\u001bV"
+    },
+    {
+      "name": "retain-gold-armor",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Knight,race:human,gender:male,align:lawful,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed Grayswandir\r     \u001b\u001b#wizintrinsic\r100h\r  \u001b\u001bwa  \u001b\u001b\u0017uncursed gold dragon scale mail\r     \u001b\u001bWb  \u001b\u001bw-  \u001b\u001bV"
+    },
+    {
+      "name": "save-active-timer",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Knight,race:human,gender:male,align:lawful,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed Grayswandir\r     \u001b\u001b#wizintrinsic\r100h\r  \u001b\u001bwa  \u001b\u001bSy"
+    },
+    {
+      "name": "restore-and-unwield",
+      "seed": 99813,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Knight,race:human,gender:male,align:lawful,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": "  \u001b\u001bw-  \u001b\u001bV"
+    }
+  ],
+  "branchAssertions": [
+    {
+      "branch": "artifact-hallucination-resistance.wield-unwield",
+      "segment": 0,
+      "screenIncludes": [
+        "Everything looks SO boring",
+        "Everything looks so cosmic"
+      ]
+    },
+    {
+      "branch": "artifact-hallucination-resistance.replace-and-drop",
+      "segment": 1,
+      "screenIncludes": [
+        "Everything looks SO boring",
+        "Everything looks so cosmic"
+      ]
+    },
+    {
+      "branch": "artifact-hallucination-resistance.retain-gold-armor",
+      "segment": 2,
+      "screenIncludes": [
+        "Everything looks SO boring",
+        "Everything looks so cosmic"
+      ]
+    },
+    {
+      "branch": "artifact-hallucination-resistance.save-active-timer",
+      "segment": 3,
+      "screenIncludes": [
+        "Everything looks SO boring",
+        "Be seeing you..."
+      ]
+    },
+    {
+      "branch": "artifact-hallucination-resistance.restore-and-unwield",
+      "segment": 4,
+      "screenIncludes": [
+        "welcome back",
+        "Everything looks so cosmic"
+      ]
+    }
+  ]
+}

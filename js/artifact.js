@@ -20,7 +20,8 @@ import { losehp, nomul, notice_all_mons_flush } from './hack.js';
 import { nxtobj, obj_extract_self, obfree } from './invent.js';
 import { ART_MASTER_KEY_OF_THIEVERY } from './artilist_data.js';
 import { exercise, Role_if } from './attrib.js';
-import { pline } from './display.js';
+import { pline, see_monsters } from './display.js';
+import { recalc_telepat_range } from './worn.js';
 import { map_invisible } from './display.js';
 import { canspotmon } from './display.js';
 import { shieldeff } from './display.js';
@@ -29,7 +30,7 @@ import { monflee } from './monmove.js';
 import { resist } from './zap.js';
 import { cancel_monst } from './zap.js';
 import { losexp } from './exper.js';
-import { make_confused } from './potion.js';
+import { make_confused, make_hallucinated } from './potion.js';
 import { make_stunned } from './potion.js';
 import { healup } from './potion.js';
 import { monhp_per_lvl } from './makemon.js';
@@ -780,8 +781,7 @@ const ARTIFACT_DEFENSE_PROPS = new Map([
 ]);
 
 const ARTIFACT_SPFX_PROPS = [
-    [SPFX_SEARCH, 'SEARCHING'], [SPFX_HALRES, 'HALLUC_RES'],
-    [SPFX_ESP, 'TELEPAT'], [SPFX_STLTH, 'STEALTH'],
+    [SPFX_STLTH, 'STEALTH'],
     [SPFX_REGEN, 'REGENERATION'],
     [SPFX_EREGEN, 'ENERGY_REGENERATION'],
     [SPFX_TCTRL, 'TELEPORT_CONTROL'], [SPFX_HSPDAM, 'HALF_SPDAM'],
@@ -827,27 +827,42 @@ export function set_artifact_intrinsic(obj, on, wp_mask) {
     if (dprop)
         set_artifact_prop(dprop, on, wp_mask);
 
-    for (const [bit, key] of ARTIFACT_SPFX_PROPS)
-        if (spfx & bit)
-            set_artifact_prop(key, on, wp_mask);
+    if (spfx & SPFX_SEARCH)
+        set_artifact_prop('SEARCHING', on, wp_mask);
+    if (spfx & SPFX_HALRES) {
+        return make_hallucinated(on ? 0 : 1,
+            !game.program_state?.restoring, wp_mask).then(finish);
+    }
+    return finish();
 
-    if (spfx & SPFX_WARN) {
-        const mt = mtype_value(art);
-        set_artifact_prop(mt ? 'WARN_OF_MON' : 'WARNING', on, wp_mask);
-        if (mt) {
-            const warning = ((game.context ||= {}).warntype ||= {});
-            warning.obj = on ? ((warning.obj || 0) | mt)
-                             : ((warning.obj || 0) & ~mt);
+    function finish() {
+        if (spfx & SPFX_ESP) {
+            set_artifact_prop('TELEPAT', on, wp_mask);
+            recalc_telepat_range();
+            see_monsters();
         }
+        for (const [bit, key] of ARTIFACT_SPFX_PROPS)
+            if (spfx & bit)
+                set_artifact_prop(key, on, wp_mask);
+
+        if (spfx & SPFX_WARN) {
+            const mt = mtype_value(art);
+            set_artifact_prop(mt ? 'WARN_OF_MON' : 'WARNING', on, wp_mask);
+            if (mt) {
+                const warning = ((game.context ||= {}).warntype ||= {});
+                warning.obj = on ? ((warning.obj || 0) | mt)
+                                 : ((warning.obj || 0) & ~mt);
+            }
+        }
+        if ((spfx & SPFX_REFLECT) && (wp_mask & W_WEP))
+            set_artifact_prop('REFLECTING', on, wp_mask);
+        if ((spfx & SPFX_XRAY) && wp_mask !== W_ART) {
+            game.u.xray_range = on ? 3 : -1;
+            game.vision_full_recalc = 1;
+        }
+        if ((wp_mask & W_WEP) && is_art(obj, ART_SUNSWORD))
+            set_artifact_prop('BLND_RES', on, wp_mask);
     }
-    if ((spfx & SPFX_REFLECT) && (wp_mask & W_WEP))
-        set_artifact_prop('REFLECTING', on, wp_mask);
-    if ((spfx & SPFX_XRAY) && wp_mask !== W_ART) {
-        game.u.xray_range = on ? 3 : -1;
-        game.vision_full_recalc = 1;
-    }
-    if ((wp_mask & W_WEP) && is_art(obj, ART_SUNSWORD))
-        set_artifact_prop('BLND_RES', on, wp_mask);
 }
 
 // include/obj.h:347 Is_dragon_scales() / Is_dragon_mail() / Is_dragon_armor()

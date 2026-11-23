@@ -28,6 +28,13 @@ const cases = [
     { name: 'game over with no preference still draws', gameover: true, pref: null, draw: true },
     { name: 'game over respects intrinsic resistance', timer: 20, intrinsic: FROMOUTSIDE, gameover: true, pref: 'silver' },
     { name: 'game over respects extrinsic resistance', timer: 20, extrinsic: W_ARM, gameover: true, pref: 'black' },
+    // C !colorpref checks a null pointer, not an empty pointed-to string.
+    { name: 'empty preference without hallucination is preserved', pref: '' },
+    { name: 'active hallucination replaces an empty preference', timer: 20, pref: '', draw: true },
+    { name: 'intrinsic resistance preserves an empty preference', timer: 20, intrinsic: FROMOUTSIDE, pref: '' },
+    { name: 'extrinsic resistance preserves an empty preference', timer: 20, extrinsic: W_ARM, pref: '' },
+    { name: 'game over does not suppress an active empty preference', timer: 20, gameover: true, pref: '', draw: true },
+    { name: 'game over with resistance preserves an empty preference', timer: 20, extrinsic: W_ARM, gameover: true, pref: '' },
 ];
 
 for (const sample of cases) test(sample.name, () => {

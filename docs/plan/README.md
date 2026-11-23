@@ -46,8 +46,12 @@ Full-save timer order now also matches three native egg segments and passes
 684 fixtures at that checkpoint. The ice repair adds one fixture,
 with 305 exact native boundaries and 57 passing state controls. The complete
 685-fixture regression passes all 804,428 screens/cursors, 15,971,119 scored
-RNG positions and 30,572 animations. Next: artifact hallucination resistance and
-remaining floor-object side effects. The Linux/NFS branch collector is pushed
+RNG positions and 30,572 animations. Artifact hallucination resistance and
+ESP refresh order now also match five new native cases. All 89 artifact/color
+controls pass, and the complete 686-fixture run matches 804,780 screens/cursors,
+15,980,380 scored RNG positions and 30,573 animations. Next: remaining floor
+and container side effects, then the reproduced restore-phase gap. The
+Linux/NFS branch collector is pushed
 and passes signal canaries plus exact save/restore, artifact and natural-exit
 pilots. The Linux census at e4504071 now covers all 678 original inputs:
 603 canonical matches and 75 independently recorded ordinary Linux controls.

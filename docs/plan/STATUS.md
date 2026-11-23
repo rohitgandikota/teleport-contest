@@ -2422,6 +2422,38 @@ input boundary earlier. Both C builds agree exactly. Source is eat.c:2184-
 linux-coverage-category-first-difference.log. Preserve the original fixture
 and strict rejection; do not normalize messages or RNG slices.
 
+Floor-billing checkpoint `c60dc00a` is pushed. addinv_core1 now records
+C's four invocation-object achievements immediately after each matching
+carrying flag. The fake Amulet remains excluded. Returns and the common
+prize tail are unchanged. The prize-predicate comment now names its actual
+producer and clearing point instead of claiming the state is unmodeled.
+
+The five-case native recording improves from 275/279 screens to all 279,
+retaining every cursor and exactly 13,630 calls. It handles the real Amulet's
+reward wish explicitly and verifies each chronicle event plus the fake
+control. The 23 new state controls pass, versus five before. Existing prize
+controls remain 29/29. State tests verify flags, event order, timestamps,
+reacquisition and insertion while retaining synchronous returns and zero
+new RNG draws. Duplicate-carry impossible diagnostics remain a separate gap;
+these controls do not claim to cover that helper contract.
+
+All 155 selected public/inventory/quest/ending/invocation regressions pass:
+112,558 screens/cursors, 3,390,302 RNG calls and 1,632 animations.
+Native assertions, integrity, full-stream/input-slice RNG, exact cursor/frame
+counts, input exhaustion and source audit pass. The new fixture has zero
+animations. Logs and totals use invocation-acquisition-*. Commit and push
+this checkpoint. The maintained corpus now has 681 fixtures; the most recent
+complete scored run remains 679/679. No prior native oracle was changed.
+
+Four independent held-placement probes are recorded in
+held-placement-native.session.json, 183 boundaries. C converts an ordinary
+dropped crysknife, draws once for fixed drop, and draws twice for a fixed
+throw whose first check survives. The fourth container case first reaches
+the separate missing add_to_container hook and must not be credited as a
+pure placement test. Original inputs and labels are retained in cache.
+Avicenna is mapping the synchronous placement callers before a coordinated
+held-object change. No such runtime patch is applied.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

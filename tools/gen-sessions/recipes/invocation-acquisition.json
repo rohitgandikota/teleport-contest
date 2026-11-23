@@ -1,0 +1,125 @@
+{
+  "name": "invocation-acquisition",
+  "description": "Acquiring each invocation object records its achievement immediately; a fake Amulet does not. The real Amulet reward wish is explicitly declined.",
+  "coverage": [
+    "endgame.invocation",
+    "ending.conduct-achievement",
+    "mode.debug",
+    "object.amulets",
+    "object.spellbooks-spells",
+    "object.tools-containers",
+    "ui.getlin",
+    "ui.menus",
+    "ui.more-paging"
+  ],
+  "segments": [
+    {
+      "seed": 99503,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed Amulet of Yendor\r  nothing\r   #chronicle\r   "
+    },
+    {
+      "seed": 99503,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed Candelabrum of Invocation\r   #chronicle\r   "
+    },
+    {
+      "seed": 99503,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed Bell of Opening\r   #chronicle\r   "
+    },
+    {
+      "seed": 99503,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed Book of the Dead\r   #chronicle\r   "
+    },
+    {
+      "seed": 99503,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed cheap plastic imitation of the Amulet of Yendor\r   #chronicle\r   "
+    }
+  ],
+  "requireBranchAssertions": true,
+  "branches": [
+    "achievement.acquire.amulet",
+    "achievement.acquire.candelabrum",
+    "achievement.acquire.bell",
+    "achievement.acquire.book",
+    "achievement.acquire.fake-amulet-control"
+  ],
+  "branchAssertions": [
+    {
+      "branch": "achievement.acquire.amulet",
+      "segment": 0,
+      "screenIncludes": [
+        "Logged events:",
+        "acquired The Amulet of Yendor"
+      ],
+      "screenExcludes": [
+        "acquired the Candelabrum of Invocation",
+        "acquired the Bell of Opening",
+        "acquired the Book of the Dead"
+      ]
+    },
+    {
+      "branch": "achievement.acquire.candelabrum",
+      "segment": 1,
+      "screenIncludes": [
+        "Logged events:",
+        "acquired the Candelabrum of Invocation"
+      ],
+      "screenExcludes": [
+        "acquired The Amulet of Yendor",
+        "acquired the Bell of Opening",
+        "acquired the Book of the Dead"
+      ]
+    },
+    {
+      "branch": "achievement.acquire.bell",
+      "segment": 2,
+      "screenIncludes": [
+        "Logged events:",
+        "acquired the Bell of Opening"
+      ],
+      "screenExcludes": [
+        "acquired The Amulet of Yendor",
+        "acquired the Candelabrum of Invocation",
+        "acquired the Book of the Dead"
+      ]
+    },
+    {
+      "branch": "achievement.acquire.book",
+      "segment": 3,
+      "screenIncludes": [
+        "Logged events:",
+        "acquired the Book of the Dead"
+      ],
+      "screenExcludes": [
+        "acquired The Amulet of Yendor",
+        "acquired the Candelabrum of Invocation",
+        "acquired the Bell of Opening"
+      ]
+    },
+    {
+      "branch": "achievement.acquire.fake-amulet-control",
+      "segment": 4,
+      "screenIncludes": [
+        "Logged events:",
+        "uncursed cheap plastic imitation of the Amulet of"
+      ],
+      "screenExcludes": [
+        "acquired The Amulet of Yendor",
+        "acquired the Candelabrum of Invocation",
+        "acquired the Bell of Opening",
+        "acquired the Book of the Dead",
+        "The Amulet is bestowing a wish upon you!"
+      ]
+    }
+  ],
+  "recordingNote": "Use RERECORD_TZ=Etc/GMT+4. Native steps are unchanged from the independent acquisition audit."
+}

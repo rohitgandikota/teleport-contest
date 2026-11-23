@@ -106,7 +106,8 @@ import { body_part, mbodypart } from './polyself.js';
 import { HAND, STOMACH } from './const.js';
 import { obj_stop_timers, stop_timer, SHRINK_GLOB, learn_egg_type,
          FIG_TRANSFORM, attach_fig_transform_timeout } from './timeout.js';
-import { NON_PM, ACH_MINE_PRIZE, ACH_SOKO_PRIZE } from './const.js';
+import { NON_PM, ACH_MINE_PRIZE, ACH_SOKO_PRIZE,
+         ACH_AMUL, ACH_CNDL, ACH_BELL, ACH_BOOK } from './const.js';
 import { record_achievement } from './insight.js';
 import { obj_merge_light_sources } from './light.js';
 import { def_char_to_objclass } from './sp_lev.js';
@@ -507,18 +508,22 @@ export function addinv_core1(obj) {
     const uhave = (game.u.uhave ||= {});
     if (obj.otyp === ONAMES.AMULET_OF_YENDOR) {
         uhave.amulet = 1;
+        record_achievement(ACH_AMUL);
         return release_prize();
     }
     if (obj.otyp === ONAMES.CANDELABRUM_OF_INVOCATION) {
         uhave.menorah = 1;
+        record_achievement(ACH_CNDL);
         return release_prize();
     }
     if (obj.otyp === ONAMES.BELL_OF_OPENING) {
         uhave.bell = 1;
+        record_achievement(ACH_BELL);
         return release_prize();
     }
     if (obj.otyp === ONAMES.SPE_BOOK_OF_THE_DEAD) {
         uhave.book = 1;
+        record_achievement(ACH_BOOK);
         return release_prize();
     }
 

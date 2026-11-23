@@ -1294,6 +1294,58 @@ full C display_monster control flow, unseen sensed worm-tail selection and
 buffered pet highlighting remain distinct follow-ups. Do not conflate
 class-level custom color checks with evidence for numeric range identity.
 
+Animation checkpoint `8ca0d58b` is pushed. C's object customization shuffle
+is now applied in glyphs.js and called at the start of a new C move-loop
+iteration, after the harness's command-prefix continuation. It transfers
+Unicode and both color fields by oc_descr_idx in ordinary and piletop ranges,
+clones duplicate Unicode records, discards unused descriptions, and clears
+the pending flag. No RNG calls are added.
+
+All ten source-state controls fail before and pass afterward. The standalone
+C gate extracts the pinned function bodies, compiles a small state wrapper,
+and compares 32 constructed cases with 30,784 glyph entries. It passes.
+This is constructed C-state evidence, not a native gameplay recording. The
+fixed symbol file has no object-specific G_ entries, and config G_ values
+are stripped by C before matching, so the current native interface does not
+provide an individual shuffled-object customization control. Class S_ object
+selectors preserve C's generic-object indexing quirk.
+
+The full 653-fixture regression passes with 792,211 screens/cursors,
+15,468,069 RNG calls and 30,087 animations. The 11 option, 15 renderer and
+four restore controls also pass. Three input-exhaustion checks pass. Source
+audit is clean across 276 modules. Logs: `object-custom-shuffle-corpus-{0..3}`,
+`object-custom-shuffle-state-{before,final}`, `object-custom-shuffle-c-final`,
+`object-custom-shuffle-{options,renderer,restore}-state`,
+`object-custom-shuffle-hang` and `object-custom-shuffle-audit`, all `.log` in
+the restart cache. Both new gates are under tools/ for reproducibility.
+
+The monster identity candidate is ready to apply next. Eight newly recorded
+native cases improve from 337/392 to 392/392 screens while preserving 24,272
+RNG calls and all cursors. Native branch assertions and recording integrity
+pass. The promoted state gate passes 45 checks; 38 fail before. Its loader
+exposes only two private detection helpers. Keep game as a live import when
+registering the loader; destructuring that mutable export captured the empty
+pre-replay state in a rejected test harness version. The corrected checks
+have no runtime errors. The 67-fixture prototype regression passes 17,315
+screens/cursors, 1,219,064 RNG calls and 1,632 animations. Untracked monster
+recipe, recording and gate files belong to that next checkpoint.
+
+The transient cursor agent has returned and is closed. Its cache patch
+restores map cursor advancement and C's unchanged-glyph buffer comparison.
+It fixes all 24 reported transient cursor differences, passes 32 source
+controls and 14 fixtures. Full regression after integration is still needed.
+The active monster-control-flow agent is separately porting display_monster
+for sensed mimics and unseen sensed worm tails, based on the identity patch.
+
+Parent cache-only display_self work captures ridden glyph identity and the
+missing hallucination sample, and replaces floor-object emulation with C's
+exact objnum_to_glyph disguise. Eighteen controls pass, twelve failing before.
+Five native riding cases improve from 219/231 to 231/231 screens, retaining
+14,176 RNG calls. Expanded mimic-disguise probes are still under review;
+the first hallucination probe did not reach polymorph because a More prompt
+consumed its input. Keep those rejected probes distinct from valid coverage.
+No hero or cursor candidate is applied yet.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

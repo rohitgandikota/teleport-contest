@@ -9454,3 +9454,22 @@ known public animation cell differences. Fresh native prefixes match the
 existing public oracles. The standard animation scorer omits cursors;
 24 transient cursor mismatches remain in the three audited recordings and
 must be checked separately from the now-exact boundary cursors.
+
+## Custom object appearances (23 Nov)
+
+apply_customizations marks metadata pending. C delays its description shuffle
+until the next moveloop_core iteration, after object descriptions exist. Both
+ordinary and piletop ranges use objects[i].oc_descr_idx. Gem descriptions can
+repeat, so duplicate Unicode records and their byte arrays must be copied.
+An unused source description is discarded. A color256idx value alone does
+not mark a duplicate or clear its source, matching C's predicate.
+
+A color-only or symbol-only reset still shuffles both channels afterward.
+The unchanged channel is therefore permuted again; the port preserves this
+C behavior. Ten state checks cover the mapping, duplicates, resets and real
+move-loop call. tools/object-customization-c-gate.mjs separately compiles the
+pinned C bodies and compares 32 constructed cases. It is not a gameplay
+oracle. Individual object G_ overrides are unavailable through the current
+config path because C passes only the stripped name to match_glyph; object
+S_ selectors address generic indices. Do not claim native shuffled-object
+customization coverage from those class selectors.

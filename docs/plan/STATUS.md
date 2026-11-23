@@ -67,8 +67,15 @@ All 29 shop fixtures pass: 12,920 screens/cursors, 504,472 RNG calls, and
 72 animation frames. Their 29 hang checks also pass. Two constructed
 name/RNG regressions pass and both fail against the September implementation.
 The wider source audit has 29 non-frozen findings, unchanged by mounting.
-Next: publish the shop checkpoint, finish the scatter checkpoint, then fix
-those runtime references and review recorder updates. Continue beyond that.
+Shop checkpoint `9b2d5c26` is committed for immediate push. The scatter fix
+uses thitu's `{obj}` reference contract, including clearing a consumed potion.
+Three constructed tests check potion consumption, weapon impact, and a miss;
+all pass and all fail with `thitu: name & obj both null?` before the fix.
+The earlier public and hang checks included this pre-existing edit. One test
+initially looped on an unknown potion's naming prompt because its test-only
+input callback sent spaces forever; Escape handles both naming and More.
+Next: publish the scatter checkpoint, then fix the runtime references and
+review recorder updates. Continue beyond that.
 
 ## 2026-09-05: full faithful port is the active goal
 

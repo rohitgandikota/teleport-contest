@@ -9360,6 +9360,12 @@ unchanged. `other-map-symbols` and `other-symbol-state-gate.mjs` cover these
 cases. `S_invisible` is ambiguous in C's loadsyms table: the earlier monster
 class wins over the later other-symbol entry.
 
+A config class customization can call glyph_find_core before `game.mons`
+exists. C's static mons table is already available at that point, so the port
+uses its static data until the per-game copy exists. Unicode representations
+are stored for a named plain set too, but C applies them only for UTF-8
+handling. The class-glyph-startup fixture covers those valid config paths.
+
 ## #wizcast, #wizobjprobs, #wizloadlua, #bugreport and BIND parameters (12 Sep)
 
 - #wizcast: spell.c dowizcast(), a menu of the spellbook names into

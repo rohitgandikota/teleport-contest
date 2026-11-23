@@ -1,0 +1,109 @@
+{
+  "name": "class-glyph-startup",
+  "description": "Monster class Unicode customizations are parsed before the per-game monster table exists, with ordinary tty handling and explicit symbol overrides.",
+  "recordingNote": "Use RERECORD_TZ=Etc/GMT+4 for a fixed UTC-4 recording offset.",
+  "coverage": [
+    "mode.debug",
+    "options.rc-bindings",
+    "ui.map-memory-vision"
+  ],
+  "branches": [
+    "glyph-startup.plain-human",
+    "glyph-startup.plain-human-override",
+    "glyph-startup.dec-feline",
+    "glyph-startup.plain-gnome"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "glyph-startup.plain-human",
+      "segment": 0,
+      "screenIncludes": [
+        "Hello wizard, welcome to NetHack!"
+      ],
+      "screenCells": [
+        {
+          "step": 0,
+          "x": 7,
+          "y": 13,
+          "equals": "@"
+        }
+      ]
+    },
+    {
+      "branch": "glyph-startup.plain-human-override",
+      "segment": 1,
+      "screenIncludes": [
+        "Hello wizard, welcome to NetHack!"
+      ],
+      "screenCells": [
+        {
+          "step": 0,
+          "x": 7,
+          "y": 13,
+          "equals": "H"
+        }
+      ]
+    },
+    {
+      "branch": "glyph-startup.dec-feline",
+      "segment": 2,
+      "screenIncludes": [
+        "Hello wizard, welcome to NetHack!"
+      ],
+      "screenCells": [
+        {
+          "step": 0,
+          "x": 7,
+          "y": 13,
+          "equals": "@"
+        }
+      ]
+    },
+    {
+      "branch": "glyph-startup.plain-gnome",
+      "segment": 3,
+      "screenIncludes": [
+        "Hello wizard, welcome to NetHack!"
+      ],
+      "screenCells": [
+        {
+          "step": 0,
+          "x": 7,
+          "y": 13,
+          "equals": "@"
+        }
+      ]
+    }
+  ],
+  "segments": [
+    {
+      "name": "plain-human",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\nSYMBOLS=S_human:U+2603\n",
+      "moves": " VjVkV\f"
+    },
+    {
+      "name": "plain-human-override",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\nSYMBOLS=S_human:U+2603\nSYMBOLS=S_human:H\n",
+      "moves": " VjVkV\f"
+    },
+    {
+      "name": "dec-feline",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:DECgraphics\nSYMBOLS=S_feline:U+2603\n",
+      "moves": " VjVkV\f"
+    },
+    {
+      "name": "plain-gnome",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\nSYMBOLS=S_gnome:U+2603\n",
+      "moves": " VjVkV\f"
+    }
+  ]
+}

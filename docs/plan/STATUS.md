@@ -1041,6 +1041,28 @@ config error. Do not promote those config-error probes with temporary file
 paths into native gameplay fixtures. Relevant cache probes are
 `custom-glyph-*`, `custom-class-glyph-*`, `utf8-class-*`, and `glyph-startup-*`.
 
+Other-symbol checkpoint `dcfc3b2b` is pushed. The class-customization startup
+repair is now applied: `glyph_find_core` uses C's static monster data until
+initialization creates the per-game table. The four native cases improve from
+a startup exception to all 32 screens/cursors and 12,316 RNG calls matching.
+Three state controls cover class expansion across both sexes, pets, detected
+and ridden glyphs, replacement across processes, and coexistence with a
+character override. All three fail before the fix and pass afterward.
+
+The targeted regression passes all 52 public and glyph-related fixtures:
+24,134 screens/cursors, 1,096,790 RNG calls, 1,462/1,483 animations. Native
+assertions and integrity, input-exhaustion, the eight graphics state controls,
+and source audit pass. The full 646-fixture regression above belongs to the
+preceding checkpoint; it was not rerun for this isolated null-table repair.
+Logs: `class-glyph-startup-{before,prototype,native,regression,hang,audit}.log`,
+`class-glyph-startup-state-{before,final}.log` and
+`class-glyph-startup-graphics-state.log` in the restart cache.
+
+Next: promote the five-case remembered-object fixture and add direct controls
+for generic objects, corpse and statue classes, boulders and piles. The
+renderer must resolve the stored displayed type, without sampling a new
+hallucination or using the actual object's type in place of a generic glyph.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

@@ -2282,6 +2282,35 @@ modules. Logs and totals use blindness-potion-* in the restart cache. The
 maintained corpus now has 678 fixtures; the latest complete audit remains
 677/677 from the floor checkpoint. Commit and push this potion checkpoint.
 
+Blindness checkpoint `5a408a39` is pushed. Linux/NFS collector verification
+is complete: all 35 mocked checks pass, and the actual signal canary retains
+both outcomes after normal exit, SIGTERM and SIGKILL. The new instrumented
+build at c-coverage-compress.E84JI2 under the shared artifact root uses the
+private compression dependency and Clang 18.1.3. Its binary SHA-256 is
+9113de25aea729bf3721b4143aa54d327760b91e635a31cc749759a4f764da82.
+
+Both complete native pilot recordings match byte-for-byte, including entire
+file hashes: save-restore-pair and artifact-blast-rehumanize. They enter
+1,676/5,492 functions and 10,946/107,260 direct C outcomes. The profiles include
+actual calls to dosave0, find_lev_obj, nh_terminate, touch_artifact and
+hold_another_object. A separate unchanged natural-quit segment also matches
+exactly and contributes 1,149 entered functions and 6,600 direct outcomes.
+These are separate pilot counts, not an added union or whole-game claim.
+The natural segment's NFS provenance records the original fixture hash and
+segment index; all supplied trailing keys are retained. No canonical fixture
+was rewritten. The earlier rejected profiles remain excluded and preserved.
+
+Commit and push the five collector/canary files and these infrastructure
+notes separately. Then synchronize the owned NFS source to the public commit
+and launch a fresh complete census. Keep large profiles, rerecordings and
+exports on NFS. The collector intentionally rejects any platform, trace or
+output difference; do not weaken that gate to increase the credited count.
+
+The next hallucination proposal has now been recorded with unchanged C:
+four games, 327 boundaries, 9,566 calls and eight animations. The candidate
+fixes all three mismatched screens while preserving all other output.
+Its source review and normal-import state-test promotion continue separately.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

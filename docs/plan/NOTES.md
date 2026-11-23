@@ -4484,13 +4484,38 @@ scan is cached by mtime under `tools/gen-sessions/.cache/`.
 
 ## Compiler branch coverage observes deterministic code (5 Sep)
 
-`tools/c-branch-coverage.mjs` copies the built recorder into `.cache/`, removes
-the copied game objects, and rebuilds with Clang's `-fprofile-instr-generate
--fcoverage-mapping`. Darwin's `LLVM_PROFILE_FILE=%p%c.profraw` mode is required:
+`tools/c-branch-coverage.mjs` copies the built recorder into a fresh
+`C_COVERAGE_CACHE`, removes copied game objects, and rebuilds with Clang's
+`-fprofile-instr-generate -fcoverage-mapping`. Continuous profiles are required:
 the driver kills the game at its final input, so exit-only profiles lose the
 counters. Each segment gets a separate profile; only recordings matching every
-key, RNG entry, screen, cursor, and animation frame are merged. The ordinary
-recorder is untouched. Process startup and shutdown are also measured.
+input field, key, raw RNG entry, screen, cursor and ordered animation frame
+are merged. The ordinary recorder is untouched. Startup and shutdown are
+also measured. The default local cache is retained for Darwin; new large
+runs belong on shared NFS.
+
+Linux adds `-mllvm -runtime-counter-relocation` and requires absolute paths
+for `CLANG`, `LLVM_PROFDATA`, `LLVM_COV`, `C_COVERAGE_CACHE` and
+`C_COVERAGE_CANARY`. Use one LLVM installation. First run
+`node tools/c-coverage-canary.mjs --run FRESH_NFS_DIRECTORY`; it proves both
+outcomes survive normal exit, SIGTERM and SIGKILL on the actual filesystem.
+Set `C_COVERAGE_CANARY` to that run's `validation.json`, then run the collector
+with `--build` and a fresh `--out` directory. `C_COVERAGE_RECORDER` can select
+an isolated ordinary Linux minimal build; `TELEPORT_BUILD_JOBS` bounds build
+parallelism. The collector preserves ordinary Makefile flags and refuses
+changed source, tools, canary results or binaries. Manifests pin those inputs,
+recorder source and each recording. Rejected recordings retain diagnostics
+and earn no coverage. Source inventories include unmapped C files.
+
+The November Linux pilot needed a private `ncompress` executable because the
+build's default `/usr/bin/compress` was absent. Configure its verified path
+through the ordinary build's standard `COMPRESS` and `COMPRESS_EXTENSION`
+compiler definitions; do not change game source or suppress save failures.
+Reinstall the verified `sysconf` after `make clean`/`make install`. GCC and
+Clang also annotate multiline RNG macros at different source lines, so use
+Clang for raw-trace comparisons. Unix/MacOS version banners remain actual
+platform differences and are rejected, never normalized. Keep the Linux
+coverage denominator separate from September's Darwin denominator.
 
 Use `llvm-cov export --skip-expansions`; exporting nested expansion regions
 produced 576 MB for this program, exceeding Node's maximum string length.

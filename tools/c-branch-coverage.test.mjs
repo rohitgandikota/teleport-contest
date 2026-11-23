@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { recordingDifference, summarizeFunctions } from './c-branch-coverage.mjs';
+import { recordingDifference, summarizeFunctions, summarizeSources,
+    coverageFlags, llvmCommand } from './c-branch-coverage.mjs';
 
 const session = () => ({ segments: [{ steps: [{
     key: null, rng: ['rn2(2)=1 @ f(example.c:3)'], screen: 'map',
@@ -55,4 +56,52 @@ test('functions without RNG or branches remain in the function census', () => {
     const rows = summarizeFunctions({ data: [{ functions }] }, '/build');
     assert.deepEqual(rows.map(f => f.file), ['src/cleanup.c', 'win/tty/topl.c']);
     assert.ok(rows.every(f => !f.calls && !f.outcomes));
+});
+
+test('Linux enables relocation while Darwin retains its compiler flags and xcrun', () => {
+    assert.deepEqual(coverageFlags('linux'), [...coverageFlags('darwin'), '-mllvm', '-runtime-counter-relocation']);
+    assert.deepEqual(coverageFlags('darwin'), ['-fprofile-instr-generate', '-fcoverage-mapping']);
+    assert.throws(() => coverageFlags('win32'), /Unsupported/);
+    assert.deepEqual(llvmCommand('linux', '/llvm/bin/llvm-cov', ['export']), ['/llvm/bin/llvm-cov', 'export']);
+    assert.deepEqual(llvmCommand('darwin', 'llvm-cov', ['export']), ['xcrun', 'llvm-cov', 'export']);
+});
+
+test('source rows retain duplicate branch identities, unentered functions and unmapped files', () => {
+    const functions = summarizeFunctions({ data: [{ functions: [{
+        name: 'test.c:decision', count: 2, filenames: ['/build/src/test.c'],
+        regions: [[1, 1, 8, 1, 2, 0, 0, 0]],
+        branches: [[3, 1, 3, 2, 1, 0, 0, 0, 4], [3, 1, 3, 2, 0, 1, 0, 0, 4]],
+    }, {
+        name: 'unentered', count: 0, filenames: ['/build/win/tty/topl.c'],
+        regions: [[1, 1, 3, 1, 0, 0, 0, 0]], branches: [],
+    }] }] }, '/build');
+    const rows = summarizeSources(functions, ['src/test.c', 'src/unmapped.c', 'win/tty/topl.c']);
+    assert.deepEqual(rows[0], { file: 'src/test.c', functions: 1, entered: 1,
+        outcomes: 4, covered: 2, status: 'mapped' });
+    assert.equal(rows[1].status, 'no mapped functions');
+    assert.equal(rows[2].entered, 0);
+    assert.throws(() => summarizeSources(functions, []), /absent from inventory/);
+});
+
+test('keys, trailing RNG and omitted animations cannot earn exact credit', () => {
+    for (const change of [
+        step => { step.key = 'x'; },
+        step => { step.rng.push('rn2(1)=0'); },
+        step => { delete step.animation_frames; },
+    ]) {
+        const actual = session();
+        change(actual.segments[0].steps[0]);
+        assert.notEqual(recordingDifference(session(), actual), null);
+    }
+});
+
+test('changed replay inputs, session versions and JS ground truth are rejected', () => {
+    for (const field of ['seed', 'datetime', 'nethackrc', 'moves']) {
+        const actual = session();
+        actual.segments[0][field] = 'different';
+        assert.match(recordingDifference(session(), actual), new RegExp(field));
+    }
+    assert.match(recordingDifference(session(), { ...session(), version: 4 }), /version/);
+    assert.match(recordingDifference({ ...session(), jsGroundTruth: true }, session()), /JS ground truth/);
+    assert.match(recordingDifference(session(), { ...session(), jsGroundTruth: true }), /JS ground truth/);
 });

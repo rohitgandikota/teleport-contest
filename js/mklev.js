@@ -3396,7 +3396,10 @@ async function fill_ordinary_room(croom, bonus_items) {
     /* src/mklev.c:974 — the || SHORT-CIRCUITS: carrying the Amulet skips the
        rn2(3) entirely, so spending it unconditionally is a draw C never makes. */
     if ((game.u?.uhave?.amulet || !rn2(3)) && somexyspace(croom, pos)) {
-        await makemon(null, pos.x, pos.y, MM_NOGRP);
+        const mon = await makemon(null, pos.x, pos.y, MM_NOGRP);
+        if (mon?.data === game.mons[PMNAMES.PM_GIANT_SPIDER]
+            && !occupied(pos.x, pos.y))
+            maketrap(pos.x, pos.y, WEB);
     }
     // Traps
     const u_depth = g.u?.uz?.dlevel ?? 1;

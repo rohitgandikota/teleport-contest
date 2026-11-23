@@ -725,6 +725,35 @@ on the original mapped route. Both controls pass, along with the other room
 cases. This changes only the stale test, not gameplay or native recordings.
 Log: `vault-discovery-state-final.log`.
 
+Vault-test checkpoint `14d68b49` is pushed. A second 80-game audit of older
+failures, chosen across 80 recorded causes, passes 69/80. Fresh UTC-4 native
+controls resolve ten of the remaining eleven when replayed independently.
+The last failure is a missing web: `fill_ordinary_room` created a giant
+spider but omitted C's `!occupied` check and `maketrap(..., WEB)` call.
+The short native fixture checks the web's map cell, its persistence after
+revisiting the level, and an ordinary-room control. It improves from
+158/166 to 166/166 screens, retaining all 19,551 RNG calls. The original
+fresh level tour improves from 473/492 to 492/492 screens, with all 43,690
+RNG calls unchanged.
+
+Full regression: 634/634 fixtures, 789,153 screens/cursors, 15,038,911 RNG
+calls and 30,008/30,029 animations. Both targeted input-exhaustion checks
+pass; native branch/integrity checks and source audit are empty. Logs:
+`.cache/restart-20261122/spider-corpus-{0,1,2,3}.log`, `spider-hang.log`,
+`spider-source-audit.log`, `ordinary-room-spider-web-{before,after}.log`.
+The old fuzz recordings remain untouched. Audit logs are
+`resumed-fuzz-next-{0,1}.log`; fresh controls are
+`fuzz-next-time-controls.session.json` and the isolated `fuzz-next-time-control-*`
+files in the cache directory.
+
+Two further defects have concrete native probes, outside this checkpoint.
+The replay driver keeps capturing after `nh_terminate`, so trailing keys in
+one segment shift all subsequent games. Capturing the final frame once and
+stopping fixes the 11-game control replay. Separately, ordinary-room gold
+incorrectly skips its random check when carrying the Amulet, and trap counts
+use local level number instead of difficulty. Probes and candidate loaders:
+`exit-boundaries*` and `room-generation-conditions*` in the cache directory.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

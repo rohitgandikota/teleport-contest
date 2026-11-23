@@ -1,0 +1,78 @@
+{
+  "name": "ordinary-room-spider-web",
+  "description": "Ordinary room generation leaves a web under a giant spider and keeps it when the level is revisited. A neighboring seed is a no-web control.",
+  "recordingNote": "Use RERECORD_TZ=Etc/GMT+4.",
+  "coverage": [
+    "mode.debug",
+    "level.ordinary",
+    "traps.projectile-physical"
+  ],
+  "branches": [
+    "room.spider-web",
+    "room.spider-web-revisit",
+    "room.no-web-control"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "room.spider-web",
+      "segment": 0,
+      "screenIncludes": [
+        "Dlvl:2"
+      ],
+      "screenCells": [
+        {
+          "step": 51,
+          "x": 72,
+          "y": 13,
+          "equals": "\""
+        }
+      ]
+    },
+    {
+      "branch": "room.spider-web-revisit",
+      "segment": 1,
+      "screenIncludes": [
+        "Dlvl:2"
+      ],
+      "screenCells": [
+        {
+          "step": 58,
+          "x": 72,
+          "y": 13,
+          "equals": "\""
+        }
+      ]
+    },
+    {
+      "branch": "room.no-web-control",
+      "segment": 2,
+      "screenIncludes": [
+        "Dlvl:2"
+      ]
+    }
+  ],
+  "segments": [
+    {
+      "seed": 428198,
+      "datetime": "20260227223820",
+      "nethackrc": "OPTIONS=name:Tourer,role:Rogue,race:orc,gender:male,align:chaotic,playmode:debug,suppress_alert:3.4.3,symset:DECgraphics\nOPTIONS=!autopickup,showexp,time,color,lit_corridor,!tutorial\n",
+      "name": "generated-web",
+      "moves": " #levelchange\r16\r                              \u00162\r\u0006V"
+    },
+    {
+      "seed": 428198,
+      "datetime": "20260227223820",
+      "nethackrc": "OPTIONS=name:Tourer,role:Rogue,race:orc,gender:male,align:chaotic,playmode:debug,suppress_alert:3.4.3,symset:DECgraphics\nOPTIONS=!autopickup,showexp,time,color,lit_corridor,!tutorial\n",
+      "name": "web-after-revisit",
+      "moves": " #levelchange\r16\r                              \u00162\r\u0006\u00163\r\u00162\r\u0006V"
+    },
+    {
+      "seed": 428197,
+      "datetime": "20260227223820",
+      "nethackrc": "OPTIONS=name:Tourer,role:Rogue,race:orc,gender:male,align:chaotic,playmode:debug,suppress_alert:3.4.3,symset:DECgraphics\nOPTIONS=!autopickup,showexp,time,color,lit_corridor,!tutorial\n",
+      "name": "ordinary-room-control",
+      "moves": " #levelchange\r16\r                              \u00162\r\u0006V"
+    }
+  ]
+}

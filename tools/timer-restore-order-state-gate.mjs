@@ -92,11 +92,11 @@ function ownerState(owners) {
 }
 async function recover(expected, owners, encodedIds = false) {
     const beforeRecords = records(), beforeOwners = ownerState(owners);
-    assert.equal(dosave0(), true);
+    assert.equal(await dosave0(), true);
     if (encodedIds) {
         const key = `save:${game.plname}`;
         const snap = gamestate_decode(JSON.parse(game.storage.getItem(key)));
-        for (const t of snap.timer_base) if (t.kind === TIMER_OBJECT) {
+        for (const t of snap.timer_base) if (t.kind === TIMER_OBJECT && !t.needs_fixup) {
             t.arg = t.arg.o_id; t.needs_fixup = 1;
         }
         game.storage.setItem(key, JSON.stringify(gamestate_encode(snap)));
@@ -168,12 +168,14 @@ test('dormant queues and active-level aliases are not restored as extra timers',
     const dormantOwners = dormant.objects.map(o => [o.o_id,o.timed,o.age]);
     const stale = structuredClone(game.level._saved_timers);
     const currentKey = `${game.u.uz.dnum}:${game.u.uz.dlevel}`;
-    game.saved_levels = new Map([[currentKey, game.level], ['1:99', dormant]]);
+    game.saved_levels = new Map([[currentKey, game.level], ['0:2', dormant]]);
     await recover(expectedMixed, owners);
-    assert.equal(game.saved_levels.get(currentKey), game.level);
-    assert.deepEqual(game.saved_levels.get('1:99')._saved_timers, original);
-    assert.deepEqual(game.saved_levels.get('1:99').objects.map(o => [o.o_id,o.timed,o.age]), dormantOwners);
-    assert.deepEqual(game.level._saved_timers, stale);
+    assert.notEqual(game.saved_levels.get(currentKey), game.level);
+    assert.notEqual(game.saved_levels.get(currentKey).objects[0], game.level.objects[0]);
+    assert.deepEqual(game.saved_levels.get('0:2')._saved_timers, original);
+    assert.deepEqual(game.saved_levels.get('0:2').objects.map(o => [o.o_id,o.timed,o.age]), dormantOwners);
+    assert.deepEqual(game.level._saved_timers.timers.map(timer => timer.tid), [73,64,51,32,88]);
+    assert.ok(!game.timer_base.some(timer => timer.tid === stale.timers[0].tid));
 });
 test('empty active queue remains empty with the next ID unchanged', async () => {
     const owners = await setup([]); await recover([], owners);

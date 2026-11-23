@@ -201,6 +201,18 @@ export function __debug_arrays() {
     return { viz_clear, left_ptrs, right_ptrs };
 }
 
+// JSON storage rollback: loading dormant boulders and expired regions can
+// change geometry while save output is suppressed. Preserve the live buffers.
+export function checkpoint_vision() {
+    const buffers = [viz_clear, left_ptrs, right_ptrs];
+    const saved = buffers.map(rows => rows.map(row => row.slice()));
+    return () => {
+        for (let buffer = 0; buffer < buffers.length; buffer++)
+            for (let row = 0; row < ROWNO; row++)
+                buffers[buffer][row].set(saved[buffer][row]);
+    };
+}
+
 // src/vision.c:967 dig_point() — make (row,col) clear and repair the
 // left/right run pointers around it. Note the (row,col) argument order:
 // everything in C below the pointer-update banner uses (y,x).

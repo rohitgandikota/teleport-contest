@@ -1248,9 +1248,11 @@ function mklev_is_pool(x, y) {
 
 // src/mkmaze.c:1724 save_waterlevel() — the bubble list is written with the
 // level (here: parked on the in-memory saved level) and then freed.
-export function save_waterlevel() {
-    if (!bbubbles)
+export function save_waterlevel(release = true) {
+    if (!bbubbles) {
+        delete game.level._waterlevel;
         return;
+    }
 
     const blist = [];
     for (let b = bbubbles; b; b = b.next)
@@ -1259,7 +1261,23 @@ export function save_waterlevel() {
     game.level._waterlevel = { bubbles: blist, xmin: wlev_xmin,
                                ymin: wlev_ymin, xmax: wlev_xmax,
                                ymax: wlev_ymax };
-    unsetup_waterlevel();       /* release_data() arm */
+    if (release)
+        unsetup_waterlevel();
+}
+
+// JSON storage rollback: freeing drops these headers without mutating the
+// original nodes. Restore them directly, without rebuilding clouds or RNG.
+export function checkpoint_waterlevel() {
+    const bounds = [wlev_xmin, wlev_ymin, wlev_xmax, wlev_ymax];
+    const first = bbubbles, last = ebubbles, hero = hero_bubble;
+    const up = movebubbles_up;
+    return () => {
+        [wlev_xmin, wlev_ymin, wlev_xmax, wlev_ymax] = bounds;
+        bbubbles = first;
+        ebubbles = last;
+        hero_bubble = hero;
+        movebubbles_up = up;
+    };
 }
 
 // src/mkmaze.c:1751 restore_waterlevel() — restoring air bubbles on the
@@ -1268,6 +1286,7 @@ export function save_waterlevel() {
 // rn2(6) cloud-speed gate per bubble, exactly as C's restore does).
 export async function restore_waterlevel() {
     const saved = game.level._waterlevel;
+    unsetup_waterlevel();
     if (!saved)
         return;
 

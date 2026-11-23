@@ -1642,7 +1642,7 @@ export function newsym(x, y) {
        cansee() test against the PREVIOUS level's vision array and write
        itself into the new level's map memory: seed0373's sokoban arrival
        remembered a spellbook in a dark room the hero had never seen. */
-    if (game.in_mklev)
+    if (suppress_map_output())
         return;
     const loc = game.level?.at(x, y);
     if (!loc) return;

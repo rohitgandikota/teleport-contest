@@ -78,7 +78,7 @@ for (const kind of ['form-only', 'mixed', 'cleared']) {
         }
         const expected = kind === 'cleared' ? 0 : FROMFORM | (kind === 'mixed' ? 7 : 0);
         status(expected);
-        assert.equal(dosave0(), true);
+        assert.equal(await dosave0(), true);
         const saved = gamestate_decode(JSON.parse(game.storage.getItem(`save:${game.plname}`)));
         assert.equal(saved.u.intrinsic.HStun, expected);
         assert.equal(saved.u.uprops.STUNNED || 0, expected ? 1 : 0);

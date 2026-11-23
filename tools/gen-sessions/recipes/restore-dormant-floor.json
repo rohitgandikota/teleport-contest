@@ -1,0 +1,66 @@
+{
+    "name": "restore-dormant-floor",
+    "description": "Save on level two while a fixed crysknife remains on dormant level one, then restore and return. Native RNG records its save-side release check; the final look is away from the object.",
+    "coverage": [
+        "mode.debug",
+        "object.weapons",
+        "object.buc-enchant-erosion",
+        "persistence.save-restore"
+    ],
+    "segments": [
+        {
+            "seed": 99812,
+            "datetime": "20000110090000",
+            "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+            "moves": " \u0017uncursed fixed crysknife\r   da   : \u00162\r\u001b\u001bSy",
+            "name": "save-with-floor-knife-on-dormant-one"
+        },
+        {
+            "seed": 7,
+            "datetime": "20000110090000",
+            "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+            "moves": " n\u00161\r\u001b\u001b: ",
+            "name": "restore-and-return-to-one"
+        }
+    ],
+    "recordingNote": "Use RERECORD_TZ=Etc/GMT+4. Inputs exactly match the unchanged parent native pair. No recorded output is regenerated or edited by this package. See the separate native manifest for source hashes.",
+    "branches": [
+        "restore.dormant-floor.drop-survives",
+        "restore.dormant-floor.save-release",
+        "restore.dormant-floor.return"
+    ],
+    "requireBranchAssertions": true,
+    "branchAssertions": [
+        {
+            "branch": "restore.dormant-floor.drop-survives",
+            "segment": 0,
+            "screenIncludes": [
+                "You see here a crysknife."
+            ],
+            "rngIncludes": [
+                "rn2(10)=2 @ obj_no_longer_held"
+            ]
+        },
+        {
+            "branch": "restore.dormant-floor.save-release",
+            "segment": 0,
+            "screenIncludes": [
+                "Dlvl:2",
+                "Be seeing you..."
+            ],
+            "rngIncludes": [
+                "rn2(10)=0 @ obj_no_longer_held"
+            ]
+        },
+        {
+            "branch": "restore.dormant-floor.return",
+            "segment": 1,
+            "screenIncludes": [
+                "welcome back to NetHack!",
+                "You materialize on a different level!",
+                "Dlvl:1",
+                "You see no objects here."
+            ]
+        }
+    ]
+}

@@ -218,7 +218,7 @@ mk.place_object(b, 10, 10);
 mk.place_object(d, 10, 10);
 mk.replace_object(b, r);
 await record('actual-save/dosave0-dorecover', async () => {
-    assert.ok(dosave0());
+    assert.ok(await dosave0());
     assert.ok(await dorecover());
     assert.deepEqual(view(), { global: [2, 3], piles: { '10,10': [2, 3] } });
 });

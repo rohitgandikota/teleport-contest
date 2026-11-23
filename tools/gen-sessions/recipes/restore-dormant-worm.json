@@ -1,0 +1,83 @@
+{
+    "name": "restore-dormant-worm",
+    "description": "Save on level two with a sleeping long worm on dormant level one, then restore, return and reveal its four tail cells and head with monster detection.",
+    "coverage": [
+        "mode.debug",
+        "ui.map-memory-vision",
+        "persistence.save-restore"
+    ],
+    "segments": [
+        {
+            "seed": 99826,
+            "datetime": "20000110090000",
+            "nethackrc": "OPTIONS=name:Mortician,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+            "name": "save-with-worm-on-dormant-one",
+            "moves": " \u0007sleeping hostile long worm\r\u00162\r\u001b\u001bSy"
+        },
+        {
+            "seed": 7,
+            "datetime": "20000110090000",
+            "nethackrc": "OPTIONS=name:Mortician,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+            "name": "restore-return-and-detect-worm",
+            "moves": " n\u00161\r\u001b\u001b\u0017uncursed potion of monster detection\rqa  \u001b"
+        }
+    ],
+    "recordingNote": "Use RERECORD_TZ=Etc/GMT+4. Inputs exactly match the unchanged parent native pair. No recorded output is regenerated or edited by this package. See the separate native manifest for source hashes.",
+    "branches": [
+        "restore.dormant-worm.saved-away",
+        "restore.dormant-worm.detected-chain"
+    ],
+    "requireBranchAssertions": true,
+    "branchAssertions": [
+        {
+            "branch": "restore.dormant-worm.saved-away",
+            "segment": 0,
+            "screenIncludes": [
+                "sleeping hostile long worm",
+                "Dlvl:2",
+                "Be seeing you..."
+            ]
+        },
+        {
+            "branch": "restore.dormant-worm.detected-chain",
+            "segment": 1,
+            "screenIncludes": [
+                "welcome back to NetHack!",
+                "Dlvl:1",
+                "You sense the presence of monsters."
+            ],
+            "screenCells": [
+                {
+                    "step": 47,
+                    "x": 4,
+                    "y": 14,
+                    "equals": "~"
+                },
+                {
+                    "step": 47,
+                    "x": 4,
+                    "y": 15,
+                    "equals": "~"
+                },
+                {
+                    "step": 47,
+                    "x": 3,
+                    "y": 16,
+                    "equals": "~"
+                },
+                {
+                    "step": 47,
+                    "x": 4,
+                    "y": 16,
+                    "equals": "~"
+                },
+                {
+                    "step": 47,
+                    "x": 5,
+                    "y": 16,
+                    "equals": "w"
+                }
+            ]
+        }
+    ]
+}

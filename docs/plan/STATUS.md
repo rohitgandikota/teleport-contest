@@ -3358,6 +3358,72 @@ be resolved against the untouched native output before promotion. The eighth
 underwater-decor proposal is separate and belongs to the shared terrain-helper
 review. Passing state gates alone does not establish native parity.
 
+Date-luck checkpoint `e582b0af` is pushed. The reviewed nine-file save/restore
+ownership correction is now integrated. Level records retain independent maps,
+objects, monsters, queues, worm segments and cloud data. Full recovery follows
+C's first-current, global, temporary-level, dormant-level, final-current order.
+Saving visits dormant levels in ledger order. Floor placement still runs held
+object effects, and both hiding phases complete before restore proceeds.
+The JSON version distinguishes the new owned level records from legacy saves;
+legacy records cannot recover worm/cloud state that was never serialized.
+
+The original phase candidate was held because a refused final write discarded
+live owners. The corrected adapter retains only records the save/free path
+mutates, plus module-owned cloud and vision buffers. An atomic storage refusal
+restores those same objects, core/display RNG contexts and log length. It does
+not re-run restore or clone the whole game graph. Ordinary failed S reports the
+error and remains playable. Encoding/programming errors still propagate; a
+custom storage backend that writes and then throws is outside this contract.
+No frozen runtime, RNG implementation or original oracle output changed.
+
+Eight failure controls now pass, seven of which fail on the earlier phase
+candidate. They include exact next-play comparison against no-save controls,
+a dormant crysknife conversion undone after a real draw, Air cloud continuation,
+private vision restoration, prior-save preservation, retry, the ordinary S
+command, and an encoding failure that never reaches storage. These sit within
+121 passing state/timer controls. The 18 source checks cover 63 whole pinned C
+functions. Retained checks pass 103 level-knowledge replays, 88 constructed
+groups, and 992 floor-order checks against nine extracted C functions. Syntax,
+whitespace and the 0/276 scope/import audit pass.
+
+Six new native pairs contribute 12 segments, 360 boundaries and 30,947 calls.
+With the three date pairs and two retained animated restore fixtures, all
+1,006 boundaries, 66,791 complete/per-input calls and 70 animations match.
+Boundary cursors, exact frame counts and input-exhaustion checks pass. Full
+regression passes 715/715 fixtures with no failures or timeouts: 812,435
+screens/cursors, 16,295,633 scored RNG positions and 30,722 animations. Every
+metric matches, maintained paths and unique basenames match, and all 279
+runtime hashes stayed fixed. Full-corpus scorer equality is distinct from the
+focused strict full-stream/per-input audit above.
+
+Five initial recordings inherited a proposal source label. Fresh recordings
+with source=c input metadata reproduce every complete segment unchanged;
+all original raw bytes remain in cache. The fresh raw recordings are promoted.
+Recipe labels now match the native segment names. All five input-tuple fields,
+13 branch assertions and raw-recording integrity checks pass for the six files.
+The five existing gates were adapted only for awaited save completion and the
+reviewed owned timer-record representation; date and stun assertions remain.
+Receipts use restore-storage-promoted-*, restore-storage-corpus-*,
+restore-storage-promoted-integrity.json and restore-native-provenance/manifest.json.
+The frozen review package remains held-restore-storage-promotion/.
+
+All six promoted files also match instrumented C exactly on NFS. The verified
+union now enters 4,513/5,492 functions and observes 58,818/107,260 direct
+outcomes, adding four functions and 36 outcomes. All 709 input hashes, fifteen
+matching build manifests and branch layouts were checked before merging.
+The 29 newer native inputs contain 133 segments, plus nine from the two Linux
+controls. The original rejections remain rejected. The merged profiles live at
+c-coverage-compress.E84JI2/verified-restore-storage-union-20261123 under the
+existing NFS root; compact local receipts use linux-coverage-restore-storage-union-*.
+The earlier restore-coverage profile is retained separately and not merged.
+
+The next terrain-message package now passes 133 state controls and the four
+unchanged native floor-inspection cases. The separate underwater case still
+has an earlier Swimming/pooleffects divergence; it is not promoted as passing.
+The seven-case status package also remains isolated pending underwater target
+selection and potion-discovery ordering repairs. Shared monster selector work
+continues separately. No local result is claimed as a newer official score.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

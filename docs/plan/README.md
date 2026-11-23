@@ -19,10 +19,10 @@ run at 19:33 UTC predates the latest checkpoint. Public remains 44/44;
 that snapshot has 936 unmatched held-out
 screens. Local verification does not establish a newer held-out score.
 
-The latest verification passes 709/709 fixtures: 812,075 boundary
-screens/cursors, 16,264,686 scored RNG positions and 30,722 animation frames.
-Both shards finish without failures or timeouts under the standard 45-second
-worker limit. All 279 runtime hashes stayed fixed throughout.
+The latest verification passes 715/715 fixtures: 812,435 boundary
+screens/cursors, 16,295,633 scored RNG positions and 30,722 animation frames.
+Both shards finish without failures or timeouts. All 279 runtime hashes
+stayed fixed throughout.
 The earlier potion changes also pass strict full-stream and per-input RNG
 checks on 117 fixtures, all 39,942 boundaries and 1,718,440 calls. The complete
 strict 677-fixture audit and all 213 animation-bearing fixtures passed at the
@@ -77,17 +77,20 @@ uses one C-aligned routine with ordered feedback, and ordinary polymorph
 prefers worn dragon armor. Five new native cases, 140 combined controls and
 the full regression pass. Saving now removes startup date luck before writing,
 so full-moon and Friday effects apply only once on resume. Three native pairs
-and 26 combined controls pass. Next: shared interactive polymorph selection,
-floor-inspection helpers and the remaining underwater/status decisions. Complete restore
-ownership/phases remain separate until failed-storage recovery is safe. The
+and 26 combined controls pass. Full save and restore now preserve separate
+level/global ownership, C phase order, worm segments and Air-plane clouds.
+A refused storage write restores the same live owners and RNG state, so play
+can continue. Six new native pairs, 121 state controls and the full regression
+pass. Next: shared interactive polymorph selection, floor-inspection helpers
+and the remaining underwater/status decisions. The
 Linux/NFS branch collector is pushed
 and passes signal canaries plus exact save/restore, artifact and natural-exit
 pilots. The Linux census at e4504071 now covers all 678 original inputs:
 603 canonical matches and 75 independently recorded ordinary Linux controls.
-Adding 23 newer raw inputs and two independent Linux controls, 130
-native segments in total, gives a validated union entering 4,509/5,492
-functions and observing 58,782/107,260 direct C branch outcomes.
-All 703 credited input hashes, fourteen build manifests and branch layouts were
+Adding 29 newer raw inputs and two independent Linux controls, 142
+native segments in total, gives a validated union entering 4,513/5,492
+functions and observing 58,818/107,260 direct C branch outcomes.
+All 709 credited input hashes, fifteen build manifests and branch layouts were
 checked before merging. Original platform/output rejections
 remain rejected; no output was normalized. The two new sink fixtures separately
 match Linux C exactly; their validated union covers all 94/94 direct dosinkring

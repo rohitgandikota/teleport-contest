@@ -78,6 +78,13 @@ export async function load_lua(name) {
 // src/nhlua.c l_nhcore_init() — the core state, created once in newgame().
 export function l_nhcore_init() {
     game.splev_align = nhl_init();
+    game.luacore = true;
+}
+
+// src/nhlua.c:1499 restore_luadata(). Hand-ported Lua data is in game state.
+export function restore_luadata() {
+    if (!game.luacore)
+        l_nhcore_init();
 }
 
 // dat/nhcore.lua:108 show_getpos_tip() — the NHCORE_GETPOS_TIP callback,

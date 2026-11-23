@@ -1,4 +1,5 @@
-import { find_lev_obj } from './restore.js';
+import { getlev } from './restore.js';
+import { savelev } from './save.js';
 import { assign_graphics, PRIMARYSET, ROGUESET } from './symbols.js';
 import { check_gold_symbol } from './botl.js';
 import { allow_all } from './pickup.js';
@@ -56,7 +57,6 @@ import { obfree, stackobj, useupf } from './invent.js';
 // the first draw the new level makes; the missing piece is everything above it.
 
 import { game } from './gstate.js';
-import { forget_temple_entry } from './priest.js';
 import { paranoid_ynq, reset_occupations, set_move_cmd } from './cmd.js';
 import { welded } from './wield.js';
 import { ONAMES } from './objects_data.js';
@@ -1123,57 +1123,14 @@ export async function goto_level(newlevel, at_stairs, falling, portal) {
     if (game.level) {
         for (const mtmp of game.level.monsters || [])
             mtmp.mlstmv = game.moves;
-        /* src/save.c:515 — svm.moves is read back into svo.omoves */
-        game.level._saved_omoves = game.moves;
-        /* src/save.c:553 save_track() — the hero's track is saved WITH
-           the level and cleared (track.c:88); getlev's rest_track()
-           restores it on a return visit. Trackers (jackals, pets) read
-           it via gettrack(), so both halves matter: leaving must blank
-           it, returning must bring the old points back. */
-        game.level._saved_track = {
-            utcnt: game.utcnt | 0,
-            utpnt: game.utpnt | 0,
-            utrack: (game.utrack || []).map(p => ({ x: p.x, y: p.y })),
-        };
-        /* The stairway chain belongs to this level. savelev() writes it
-           with the map, and getlev() restores it before arrival handling. */
-        game.level._saved_stairs = game.stairs;
-        /* src/save.c:550 save_regions() stores regions with this level and
-           clears the live list. Regions from one level must never block or
-           paint cells on the next one. */
-        game.level._saved_regions = game.regions || [];
-        game.level._saved_regions_moves = game.moves;
-        game.regions = [];
-        game.max_regions = 0; /* free_regions() */
-        /* src/save.c savelev() stores both special-level arrival regions
-           alongside the map. Restoring only the terrain made revisits use
-           the whole level instead of the scripted destination area. */
-        game.level._saved_updest = { ...(game.updest || {}) };
-        game.level._saved_dndest = { ...(game.dndest || {}) };
-        /* save.c:552 save_exclusions() */
-        game.level._saved_exclusion_zones = game.exclusion_zones || [];
-        const { save_engravings } = await import('./engrave.js');
-        game.level._saved_engravings = save_engravings();
-        // src/save.c savelev(), local timers and lights remain on this level.
-        {
-            const { save_timers } = await import('./timeout.js');
-            const { save_light_sources } = await import('./light.js');
-            const { RANGE_LEVEL } = await import('./const.js');
-            game.level._saved_timers = save_timers(RANGE_LEVEL, true);
-            game.level._saved_lights = save_light_sources(RANGE_LEVEL, true);
-        }
-        /* src/save.c:893 savemonchn(): a priest forgets its temple entry
-           timers when its level is saved */
-        for (const mtmp of game.level.monsters || [])
-            if (mtmp.ispriest)
-                forget_temple_entry(mtmp);
         /* src/do.c:1640 — an outgoing level that can't be reached any more
            is freed rather than saved: entering the endgame from another
            dungeon, or leaving the tutorial */
         const cant_go_back = (newdungeon && In_endgame(newlevel)) || leaving_tutorial;
         (game.saved_levels ||= new Map());
+        const record = savelev(ledger_no(game.u.uz), true);
         if (!cant_go_back)
-            game.saved_levels.set(`${game.u.uz.dnum}:${game.u.uz.dlevel}`, game.level);
+            game.saved_levels.set(`${game.u.uz.dnum}:${game.u.uz.dlevel}`, record);
         (game.visited_ledgers ||= new Set())
             .add(`${game.u.uz.dnum}:${game.u.uz.dlevel}`);
         if (cant_go_back) {
@@ -1192,17 +1149,6 @@ export async function goto_level(newlevel, at_stairs, falling, portal) {
             const { discard_migrations } = await import('./dog.js');
             discard_migrations();
         }
-        /* src/save.c savelev() — leaving a Plane of Water/Air parks the
-           bubble/cloud list with the level (and frees the live copy) */
-        {
-            const { Is_waterlevel, Is_airlevel } = await import('./const.js');
-            if (Is_waterlevel(game.u.uz) || Is_airlevel(game.u.uz)) {
-                const { save_waterlevel } = await import('./mkmaze.js');
-                save_waterlevel();
-            }
-        }
-        const { initrack } = await import('./track.js');
-        initrack();
     }
 
     if (Is_rogue_level(newlevel) || Is_rogue_level(game.u.uz))
@@ -1252,78 +1198,10 @@ export async function goto_level(newlevel, at_stairs, falling, portal) {
        map is that file store. (visited_ledgers alone is wrong for the
        FIRST level, which newgame's mklev creates without registering.) */
     if (game.saved_levels?.has(ledger)) {
-        /* src/do.c:1706 — returning to a previously visited level: C
-           getlev()s it back from its level file. The in-memory swap is
-           the same state; the visible cost is restore.c:1190's monster
-           catchup against the time spent away. */
-        game.level = game.saved_levels.get(ledger);
-        await find_lev_obj();
-        game.stairs = game.level._saved_stairs || null;
-        /* src/region.c rest_regions() subtracts the turns spent away and
-           silently drops expired regions before the restored map is shown. */
-        {
-            const elapsed = Math.max(
-                0, game.moves - (game.level._saved_regions_moves ?? game.moves));
-            game.regions = (game.level._saved_regions || []).filter(reg => {
-                if (reg.ttl >= 0)
-                    reg.ttl = reg.ttl > elapsed ? reg.ttl - elapsed : 0;
-                return reg.ttl !== 0 && reg.ttl !== -2;
-            });
-        }
-        game.updest = { ...(game.level._saved_updest || game.updest) };
-        game.dndest = { ...(game.level._saved_dndest || game.dndest) };
-        /* restore.c:1227 load_exclusions() */
-        game.exclusion_zones = game.level._saved_exclusion_zones || [];
-        const { rest_engravings } = await import('./engrave.js');
-        rest_engravings(game.level._saved_engravings);
-        {
-            const { restore_timers, relink_timers } = await import('./timeout.js');
-            const { restore_light_sources, relink_light_sources } = await import('./light.js');
-            const { RANGE_LEVEL } = await import('./const.js');
-            restore_timers(game.level._saved_timers, RANGE_LEVEL);
-            restore_light_sources(game.level._saved_lights);
-            relink_timers(false);
-            relink_light_sources(false);
-        }
+        // src/do.c:1706 getlev(), then oinit() for the restored depth.
+        await getlev(game.saved_levels.get(ledger));
         const { oinit } = await import('./o_init.js');
         oinit();
-        const { DEADMONSTER } = await import('./monst.js');
-        const { mon_catchup_elapsed_time } = await import('./dog.js');
-        const { restore_cham, hide_monst } = await import('./mon.js');
-        /* src/restore.c:1111 elapsed = (svm.moves - svo.omoves) */
-        const elapsed = game.moves - (game.level._saved_omoves ?? game.moves);
-        for (const mtmp of game.level.monsters || []) {
-            if (DEADMONSTER(mtmp))
-                continue;
-            /* ghostly (bones) monsters go through the peacefulness reset
-               instead; a reloaded live level takes the elapsed arm */
-            if (elapsed > 0)
-                await mon_catchup_elapsed_time(mtmp, elapsed);
-            /* update shape-changers in case protection against them is
-               different now than when the level was saved */
-            await restore_cham(mtmp);
-            /* give hiders a chance to hide before their next move */
-            if (elapsed > 0 && elapsed > rnd(10))
-                await hide_monst(mtmp);
-        }
-        /* restore.c:1228 rest_track() — bring back the track saved with
-           this level */
-        const st = game.level._saved_track;
-        if (st) {
-            game.utcnt = st.utcnt;
-            game.utpnt = st.utpnt;
-            game.utrack = st.utrack.map(p => ({ x: p.x, y: p.y }));
-        }
-        /* src/restore.c getlev() — a returned-to Plane of Water/Air
-           rebuilds its bubbles (mv_bubble(...,TRUE) per bubble, which on
-           the Air plane draws the rn2(6) cloud-speed gate like C) */
-        {
-            const { Is_waterlevel, Is_airlevel } = await import('./const.js');
-            if (Is_waterlevel(game.u.uz) || Is_airlevel(game.u.uz)) {
-                const { restore_waterlevel } = await import('./mkmaze.js');
-                await restore_waterlevel();
-            }
-        }
     } else {
         familiar_level = false;         /* src/do.c "new" is the inverse */
         /* entering this level for the first time; make it now */

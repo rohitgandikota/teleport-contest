@@ -1,0 +1,56 @@
+{
+  "name": "restore-current-held-control",
+  "description": "A fixed crysknife remains held over save and restore. The unchanged inventory display is a negative control for floor release, not evidence of two local loads.",
+  "coverage": [
+    "mode.debug",
+    "object.weapons",
+    "object.buc-enchant-erosion",
+    "persistence.save-restore"
+  ],
+  "recordingNote": "Use RERECORD_TZ=Etc/GMT+4. Paired fixture is a byte-for-byte copy of the original parent native recording. No C output or input is changed. Both inventories show the held knife. The actual-input gate separately requires exactly the three role/Lua startup draws and no floor-release draw.",
+  "segments": [
+    {
+      "name": "fixed-held-save",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed fixed crysknife\r   i\u001bSy"
+    },
+    {
+      "name": "fixed-held-restore-look",
+      "seed": 7,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " n: i"
+    }
+  ],
+  "branches": [
+    "restore-current-held-control.setup-observable",
+    "restore-current-held-control.restore-observable"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "restore-current-held-control.setup-observable",
+      "segment": 0,
+      "screenIncludes": [
+        "a - a crysknife",
+        "Be seeing you..."
+      ]
+    },
+    {
+      "branch": "restore-current-held-control.restore-observable",
+      "segment": 1,
+      "screenIncludes": [
+        "welcome back to NetHack!",
+        "a - a crysknife"
+      ],
+      "screenExcludes": [
+        "worm tooth"
+      ],
+      "rngIncludes": [
+        "rn2(100)=25 @ role_init"
+      ]
+    }
+  ]
+}

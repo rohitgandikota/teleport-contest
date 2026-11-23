@@ -1,0 +1,57 @@
+{
+  "name": "restore-current-first-revert",
+  "description": "Counterfactual restore seed: the first current-level copy reverts, but the freshly decoded original survives its final load as a crysknife.",
+  "coverage": [
+    "mode.debug",
+    "object.weapons",
+    "object.buc-enchant-erosion",
+    "persistence.save-restore"
+  ],
+  "recordingNote": "Use RERECORD_TZ=Etc/GMT+4. Paired fixture is a byte-for-byte copy of the original parent native recording. No C output or input is changed. Setup is identical to the seed-7 floor pair. Restore draws plus the visible final crysknife distinguish fresh original decoding from mutating one copy twice.",
+  "segments": [
+    {
+      "name": "fixed-floor-first-reverts-save",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed fixed crysknife\r   da   : Sy"
+    },
+    {
+      "name": "fixed-floor-first-reverts-restore-look",
+      "seed": 11,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " n: "
+    }
+  ],
+  "branches": [
+    "restore-current-first-revert.setup-observable",
+    "restore-current-first-revert.restore-observable"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "restore-current-first-revert.setup-observable",
+      "segment": 0,
+      "screenIncludes": [
+        "You see here a crysknife.",
+        "Be seeing you..."
+      ],
+      "rngIncludes": [
+        "rn2(10)=2 @ obj_no_longer_held"
+      ]
+    },
+    {
+      "branch": "restore-current-first-revert.restore-observable",
+      "segment": 1,
+      "screenIncludes": [
+        "welcome back to NetHack!",
+        "You see here a crysknife."
+      ],
+      "rngIncludes": [
+        "rn2(10)=0 @ obj_no_longer_held",
+        "rn2(10)=7 @ obj_no_longer_held"
+      ]
+    }
+  ]
+}

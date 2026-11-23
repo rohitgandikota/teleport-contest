@@ -771,7 +771,10 @@ export async function hooked_tty_getlin(query, hook, suppress_history = false) {
         /* what the tty has painted: typed characters as typed (the
            completion hook rewrites the buffer in canonical case, but only
            the remainder after the cursor is echoed from it) */
-        const promptText = `${query} ${shown}`;
+        // topl_putsym counts nonprinting query bytes as columns. Their cells
+        // stay blank; emitting control bytes would collapse the captured row.
+        const visibleQuery = query.replace(/[\x00-\x07\x09\x0b-\x1f]/g, ' ');
+        const promptText = `${visibleQuery} ${shown}`;
         game._toplin = TOPLINE_SPECIAL_PROMPT;
         const display = game?.nhDisplay;
         const CO = display?.cols ?? 80;
@@ -962,24 +965,19 @@ function ext_cmd_getlin_hook(base) {
 // win/tty/getline.c:292 tty_get_ext_cmd() — read an extended command name and
 // match it against extcmdlist.
 async function get_ext_cmd() {
-    /* C passes the completion hook unless replaying with in_doagain. */
-    /* mungspaces(): leading and trailing blanks go, and runs of blanks
-       collapse to one before matching and before the unknown-command
-       message echoes the text */
-    /* suppress_history = TRUE: the extended command prompt never enters
-       the ^P history */
-    const buf = mungspaces(await hooked_tty_getlin('#', ext_cmd_getlin_hook, true));
-
+    const initiator = game.Cmd.extcmd_char;
+    const hook = game.in_doagain ? null : ext_cmd_getlin_hook;
+    // The prompt is excluded from message history, including canceled input.
+    const buf = mungspaces(await hooked_tty_getlin(initiator, hook, true));
     if (buf === '' || buf === '\x1b')
         return null;
-    /* extcmds_match with ECM_IGNOREAC | ECM_EXACTMATCH: the hook has already
-       completed the text, so C matches the whole name; anything else is
-       "<initiator><input>: unknown extended command." and returns -1. */
-    if (!extcmdlist.some((e) => e.ef_txt === buf)) {
-        await pline(`#${buf.slice(0, 60)}: unknown extended command.`);
+    const matches = extcmds_match(buf,
+        EXTCMD_FLAGS.ECM_IGNOREAC | EXTCMD_FLAGS.ECM_EXACTMATCH);
+    if (matches.length !== 1) {
+        await pline(`${visctrl(initiator)}${buf.slice(0, 60)}: unknown extended command.`);
         return null;
     }
-    return buf;
+    return extcmdlist[matches[0]].ef_txt;
 }
 
 /* src/read.c:315 read_ok() — scrolls and spellbooks. Note the else arm is
@@ -1186,6 +1184,13 @@ export async function doextcmd() {
         name = await get_ext_cmd();
         if (name === null)
             return ECMD_OK; /* quit */
+        const entry = extcmdlist.find(e => e.ef_txt === name);
+        if (!(await can_do_extcmd(entry)))
+            return ECMD_OK;
+        if (game.iflags.menu_requested && !accept_menu_prefix(entry)) {
+            await pline(`'${visctrl(cmd_from_func('reqmenu'))}' prefix has no effect for the ${name} command.`);
+            game.iflags.menu_requested = false;
+        }
         /* rhack replaces the '#' initiator with this actual function in the
            repeat queue after execution. Keep the name as the stable command
            identity, then replay it without asking for the extended name
@@ -1216,6 +1221,13 @@ async function execute_extcmd(name) {
 async function dosh() {
     // The contest sysconf has no permitted shell users.
     await Norep("Unavailable command '!'.");
+    return ECMD_OK;
+}
+
+// src/cmd.c: dosuspend_core(), sys/share/ioctl.c: dosuspend().
+async function dosuspend_core() {
+    // The contest sysconf denies suspension before any OS job-control call.
+    await Norep('Suspend command not available.');
     return ECMD_OK;
 }
 
@@ -1340,6 +1352,7 @@ const EXTCMD_FUNCS = {
     showtrap: doidtrap,
     sit: ['./sit.js', 'dosit'],
     stats: ['./wizcmds.js', 'wiz_show_stats'],
+    suspend: dosuspend_core,
     swap: ['./wield.js', 'doswapweapon'],
     takeoff: ['./do_wear.js', 'dotakeoff'],
     takeoffall: ['./do_wear.js', 'doddoremarm'],
@@ -1385,6 +1398,7 @@ const EXTCMD_FUNCS = {
     wizobjprobs: ['./wizcmds.js', 'wiz_objprobs'],
     wizrumorcheck: ['./wizcmds.js', 'wiz_rumor_check'],
     wizseenv: ['./wizcmds.js', 'wiz_show_seenv'],
+    wizshownhuuid: ['./wizcmds.js', 'wiz_show_nhuuid'],
     wizsmell: ['./wizcmds.js', 'wiz_smell'],
     wiztelekinesis: ['./wizcmds.js', 'wiz_telekinesis'],
     wizwhere: wiz_where,

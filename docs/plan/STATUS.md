@@ -647,9 +647,34 @@ look, dispatch-registry and burial checkpoints. Snapshot:
 `.cache/restart-20261122/leaderboard-latest.json`; official source:
 https://mazesofmenace.ai/leaderboard/data.json.
 
-Next: native recordings reproduce two missing command responses, suspend
-denial and the pinned build's empty NHUUID display. Their pending three-case
-fixture is outside this burial checkpoint.
+Burial checkpoint `07b9a463` is pushed. The next patch implements suspend
+denial and the pinned build's empty NHUUID display. The normal-mode UUID
+control exposed a shared dispatch gap: fully typed command names skipped
+`extcmds_match`, allowing hidden wizard/internal commands. Matching now uses
+C's exact, case-insensitive filter and the configured command initiator.
+`doextcmd` also applies the existing availability and menu-prefix checks before
+dispatch, including burial, tutorial callbacks and fuzzer exclusions. The
+getlin display preserves blank columns occupied by nonprinting prompt bytes.
+
+Nine asserted native cases improve from 108/167 screens and 165/167 cursors
+to all 167 screens/cursors, retaining all 22,492 RNG calls. All three named
+availability tests fail before and pass after; their three direct-key controls
+pass unchanged. All 29 selected command tests pass. The full 630-fixture sweep
+passes 630/630: 788,344 screens/cursors and 14,986,601 RNG calls. Animations
+remain 30,008/30,029. All 67 selected input-exhaustion checks pass, and source
+audit remains empty. Logs: `.cache/restart-20261122/extended-corpus-{0,1,2,3}.log`,
+`extended-state-{before,final}.log`, `extended-hang.log`,
+`platform-expanded-before.log` and `platform-focused-final.log`.
+
+An 80-game audit of older fuzz recordings found seven failures. Fresh native
+controls with `RERECORD_TZ=Etc/GMT+4` resolve five, including the apparent
+extra midnight damage roll in s78-30. The old recordings copied the host's
+daylight-saving flag, shifting fixed winter times back one hour. Existing
+oracle files were preserved. Two real failures remain: s17-17 repaints map
+glyphs over an inventory action menu during search, and s24-23 omits the
+Hawaiian shirt description. These are the next source review targets. Logs:
+`resumed-fuzz-{0,1}.log` and `fuzz-time-controls-score.log`; fresh native
+controls are `fuzz-time-controls.session.json` in the same cache directory.
 
 ## 2026-09-05: full faithful port is the active goal
 

@@ -1,0 +1,112 @@
+{
+  "name": "extended-command-guards",
+  "description": "Typed extended commands use C matching, the active initiator and menu-prefix handling.",
+  "recordingNote": "Use RERECORD_TZ=Etc/GMT+4 for a fixed UTC-4 recording offset.",
+  "coverage": [
+    "mode.normal",
+    "options.rc-bindings",
+    "ui.count-repeat",
+    "ui.cancel-invalid"
+  ],
+  "branches": [
+    "extended-command.case-insensitive",
+    "extended-command.internal-hidden",
+    "extended-command.rebound-initiator",
+    "extended-command.menu-prefix-ignored",
+    "extended-command.menu-prefix-inventory",
+    "extended-command.rebound-control-initiator"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "extended-command.case-insensitive",
+      "segment": 0,
+      "screenIncludes": [
+        "Not carrying anything."
+      ]
+    },
+    {
+      "branch": "extended-command.internal-hidden",
+      "segment": 1,
+      "screenIncludes": [
+        "#clicklook: unknown extended command."
+      ]
+    },
+    {
+      "branch": "extended-command.rebound-initiator",
+      "segment": 2,
+      "screenIncludes": [
+        "Not carrying anything.",
+        "~unknownname: unknown extended command."
+      ]
+    },
+    {
+      "branch": "extended-command.menu-prefix-ignored",
+      "segment": 3,
+      "screenIncludes": [
+        "'m' prefix has no effect for the suspend command.",
+        "Suspend command not available."
+      ]
+    },
+    {
+      "branch": "extended-command.menu-prefix-inventory",
+      "segment": 4,
+      "screenIncludes": [
+        "'m' prefix has no effect for the inventory command.",
+        "Not carrying anything."
+      ]
+    },
+    {
+      "branch": "extended-command.rebound-control-initiator",
+      "segment": 5,
+      "screenIncludes": [
+        "Not carrying anything.",
+        "^Ounknownname: unknown extended command."
+      ]
+    }
+  ],
+  "segments": [
+    {
+      "name": "case-insensitive",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!autoquiver,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #INVENTORY\r\u0001\u001b"
+    },
+    {
+      "name": "internal-hidden",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!autoquiver,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #clicklook\r\u0001\u001b"
+    },
+    {
+      "name": "rebound-initiator",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!autoquiver,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nBIND=#:nothing,~:#\nOPTIONS=number_pad:1\n",
+      "moves": " ~inventory\r~unknownname\r\u001b"
+    },
+    {
+      "name": "menu-prefix-ignored",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!autoquiver,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " m#suspend\r\u001b\u001bV"
+    },
+    {
+      "name": "menu-prefix-inventory",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!autoquiver,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " m#inventory\r\u001b\u001bV"
+    },
+    {
+      "name": "rebound-control-initiator",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!autoquiver,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nBIND=#:nothing,^O:#\nOPTIONS=number_pad:1\n",
+      "moves": " \u000finventory\r\u000funknownname\r\u001b"
+    }
+  ]
+}

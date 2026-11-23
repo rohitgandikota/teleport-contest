@@ -485,6 +485,39 @@ against C's `rhack`, preserving count occupations and movement early returns.
 The latest official fetch still serves November 22 19:45 UTC, before these
 checkpoints were scored.
 
+Inventory checkpoint `f15ef1d4` is pushed. The command dispatcher now follows
+C's shared execution and result path instead of translating back to default
+keys and running a separate arm for each key. `rhack` shrinks from 615 to 221
+lines. The generator carries `f_text`, so counted search/wait occupations use
+the command table. The compiled-C table gate checks this metadata for every
+command alongside its binding comparisons. Seventeen newly unused imports
+and the obsolete movement lookup/unported-key table are removed.
+
+The shared path preserves combined TIME/CANCEL results, clears repeat queues
+on failure, latches the request-menu prefix across later prefixes, honors
+queued input even when `rhack` receives a key argument, and matches C's
+sanity-check and kicked-location cleanup. All eight native cases now match
+203 screens/cursors and 17,658 RNG calls. All 23 selected command-state/table
+tests pass; four of the five new state checks fail against `f15ef1d4`, with the
+direct-kick case serving as an unchanged control. Source audit stays empty,
+and an AST comparison finds no newly unused imports.
+
+The full 622-fixture sweep passes 622/622: 787,679 screens/cursors and
+14,905,365 RNG calls. Animation parity remains 30,005/30,026.
+Logs are `.cache/restart-20261122/dispatch-corpus-{0,1,2,3}.log`.
+All 72 input-exhaustion checks pass.
+
+Next pending fixtures separately test instance options and menu regex rules
+across save/restore. C's `flag.h` explicitly excludes instance flags from saves;
+JS currently restores old values and also deserializes menu regexes into plain
+objects, producing `re.re.test is not a function`. The first menu-color native
+recording intermittently lost its final save frame. Exit tracing confirmed
+normal C exit status zero, and a rerun captured the complete frame. The recorder
+resolves its child-close promise before its asynchronous marker queue drains.
+Add a deterministic recorder regression and await that queue before accepting
+natural exit. These fixtures are outside the 622-session result.
+An uncached official fetch (Age: 0) still has the November 22 19:45 snapshot.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

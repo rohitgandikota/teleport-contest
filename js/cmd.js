@@ -52,9 +52,8 @@ import { do_screen_description } from './pager.js';
 import { set_msg_xy, pline_xy } from './pline.js';
 import { cansee } from './vision.js';
 import { IS_STWALL, IS_TREE, IS_WATERWALL, LAVAWALL, SCORR, SDOOR, DRAWBRIDGE_UP, ROOMOFFSET, u_at, CORR, IS_ROOM, GFILTER_NONE, GFILTER_VIEW, GLOC_INTERESTING } from './const.js';
-import { dodrop, doddrop } from './do.js';
-import { any_obj_ok, doprwep, doprarm, doprring, dopramulet, doprtool,
-         doprinuse, doprgold, obj_extract_self, dotypeinv } from './invent.js';
+import { dodrop } from './do.js';
+import { any_obj_ok, obj_extract_self, dotypeinv } from './invent.js';
 import { dodown, doup, do_wire_mklev, do_wire_dokick, stairway_at } from './do.js';
 import { dokick_wire, ship_object, dokick } from './dokick.js';
 import { mklev, mklev_wire_mon } from './mklev.js';
@@ -138,10 +137,9 @@ do_wire_dokick(ship_object);
    do.js into the dungeon module graph */
 import { dungeon_wire_stairway_at } from './dungeon.js';
 dungeon_wire_stairway_at(stairway_at);
-import { wiz_level_change, wiz_level_tele, wiz_wish, wiz_identify } from './wizcmds.js';
+import { wiz_level_change, wiz_wish, wiz_identify } from './wizcmds.js';
 import { tty_yn_function, doprev_message } from './tty/topl.js';
 import { extcmdlist, EXTCMD_FLAGS } from './extcmd_data.js';
-import { dodiscovered, doclassdisco } from './o_init.js';
 import { enlightenment } from './insight.js';
 import { tty_create_nhwindow, tty_putstr, tty_display_nhwindow, tty_next_page,
          tty_destroy_nhwindow, tty_start_menu, tty_add_menu, tty_add_menu_str,
@@ -158,8 +156,7 @@ import { dochat } from './sounds.js';
 import { dothrow, dofire } from './dothrow.js';
 import { getpos, getpos_sethilite } from './getpos.js';
 import { dojump } from './apply.js';
-import { dowear, doputon, dotakeoff, doremring, doddoremarm,
-         canwearobj_core } from './do_wear.js';
+import { dowear, doputon, canwearobj_core } from './do_wear.js';
 import { boolean_option, show_menu_controls, paranoia_bits,
          PARANOID_CONFIRM, PARANOID_QUIT } from './options.js';
 import { xwaitforspace } from './tty/getline.js';
@@ -173,46 +170,15 @@ import { doengrave, engr_at, wipe_engr_at } from './engrave.js';
 import { rnd, rn2 } from './rng.js';
 import { ACCESSIBLE } from './const.js';
 import { morehungry } from './eat.js';
-import { dohelp, dowhatis, doquickwhatis, dowhatdoes, dowhatdoes_core } from './pager.js';
+import { dohelp, dowhatis, dowhatdoes_core } from './pager.js';
 import { dolook, ECMD_TIME } from './invent.js';
-import { dovspell, docast, known_spell, spe_Fresh, spelleffects } from './spell.js';
+import { docast, known_spell, spe_Fresh, spelleffects } from './spell.js';
 import { dowieldquiver, dowield, doswapweapon, dotwoweapon } from './wield.js';
 import { dozap } from './zap.js';
 import { dist2, distmin } from './hacklib.js';
 import { place_object } from './mkobj.js';
 import { trapname, feeltrap } from './trap.js';
 import { move_out_of_bounds } from './hack.js';
-
-// src/cmd.c rhack(): movement is determined by the bound command.
-function movement_binding(cmd) {
-    if (!cmd)
-        return null;
-    for (let dir = 0; dir < 8; dir++)
-        for (let mode = MV_WALK; mode <= MV_RUSH; mode++)
-            if (ext_func_tab_from_func(move_funcs[dir][mode]) === cmd)
-                return { dir, mode };
-    return null;
-}
-
-// Keys src/cmd.c dispatches to real commands that this port has not reached
-// yet. Listed explicitly so the set shrinks visibly as commands land, rather
-// than hiding behind a catch-all.
-const KNOWN_UNPORTED = new Set([
-    /* ESC reaches the main prompt only when no window is open — a window
-       consumes its own dismissing key inside display_nhwindow(). C's parse()
-       treats it as a count cancel and prints nothing.
-
-       SPACE used to be listed here on the same reasoning, and that was wrong.
-       src/cmd.c:2818 skips binding it:
-
-           if (key == ' ' && !flags.rest_on_space)
-               continue;
-
-       so with rest_on_space off — the default — space is bound to nothing and
-       falls through to "Unknown command ' '." C really does print that, on
-       seed0030's very first keystroke among others. */
-    '\x1b',
-]);
 
 // C ref: hack.c — check if a cell blocks movement
 // include/rm.h closed_door()
@@ -1231,10 +1197,7 @@ export async function doextcmd() {
 }
 
 async function execute_extcmd(name) {
-
-    /* src/cmd.c extcmdlist — the command's own function runs here. Only the
-       ones that consume further input are wired up so far, because those are
-       the ones whose absence puts the whole session out of step. */
+    // Shared command handlers for keyboard, named and repeated commands.
     if (name === 'shell') {
         /* sys/unix/unixunix.c:dosh — the contest sysconf has no permitted
            shell users, so both '!' and #shell are rejected here. */
@@ -1251,11 +1214,8 @@ async function execute_extcmd(name) {
        these entries instead of on movement */
     if (name === 'help')
         return await dohelp();
-    if (name === 'kick') {
-        const res = await dokick();
-        game._cmd_was_kick = true;
-        return res;
-    }
+    if (name === 'kick')
+        return await dokick();
     if (name === 'redraw') {
         /* src/display.c doredraw() */
         await docrt();
@@ -2451,33 +2411,40 @@ function reset_cmd_vars(reset_cmdq) {
    command (do_move_/do_run_/do_rush_, MOVEMENTCMD) only set the direction,
    so the hero walks or rushes here; a non-movement command after a move
    prefix does nothing more. */
-async function rhack_movement_after(tlist) {
-    if (tlist && !(tlist.flags & MOVEMENTCMD)
+async function rhack_movement_after(tlist, firsttime) {
+    if (!(tlist.flags & MOVEMENTCMD)
         && game.domove_attempting) {
-        ; /* not a movement command, but a move prefix earlier? just do nothing */
+        return false;
     } else if ((game.domove_attempting & (DOMOVE_RUSH | DOMOVE_WALK))
                && !game.context.travel && !dxdy_moveok()) {
         /* trying to move diagonally as a grid bug */
         await You_cant('get there from here...');
         reset_cmd_vars(true);
+        return true;
     } else if (game.domove_attempting & DOMOVE_WALK) {
         if (game.multi)
             game.context.mv = true;
         await domove();
         game.context.forcefight = 0;
         game.iflags.menu_requested = false;
+        return true;
     } else if (game.domove_attempting & DOMOVE_RUSH) {
         /* firsttime: the C's rhack() read this command itself */
-        if (!game.multi)
-            game.multi = Math.max(COLNO, ROWNO);
-        game.u.last_str_turn = 0;
+        if (firsttime) {
+            if (!game.multi)
+                game.multi = Math.max(COLNO, ROWNO);
+            game.u.last_str_turn = 0;
+        }
         game.context.mv = true;
         await domove();
         game.iflags.menu_requested = false;
+        return true;
     }
+    return false;
 }
 
 export async function rhack(key) {
+    const firsttime = key === 0;
     /* src/cmd.c:3635 — every command begins with the menu-request and
        no-pickup markers cleared; set_move_cmd() re-raises nopick from
        menu_requested for the m-prefix case. C's prefixes loop inside one
@@ -2492,25 +2459,17 @@ export async function rhack(key) {
     // src/cmd.c rhack(): a queued command keeps its identity and passes
     // through the same permission and prefix checks as a keyboard command.
     let queuedCommand = false, queuedEntry = null, queuedFunction = null;
-    if (key === 0) {
-        const cmdq = cmdq_pop();
-        if (cmdq) {
-            queuedCommand = true;
-            if (cmdq.typ === CMDQ_EXTCMD) {
-                queuedEntry = cmdq.ec_entry;
-                queuedFunction = cmdq.fn;
-            } else if (cmdq.typ === CMDQ_KEY) {
-                key = String(cmdq.key).charCodeAt(0);
-            }
+    const cmdq = cmdq_pop();
+    if (cmdq) {
+        queuedCommand = true;
+        if (cmdq.typ === CMDQ_EXTCMD && cmdq.ec_entry) {
+            queuedEntry = cmdq.ec_entry;
+            queuedFunction = cmdq.fn;
+        } else {
+            key = cmdq.typ === CMDQ_KEY ? String(cmdq.key).charCodeAt(0) : 0;
         }
     }
     let live_input = false;
-    let commandResult = 0;
-    const useResult = (result) => {
-        commandResult = result ?? 0;
-        game.context.move = ((commandResult & ECMD_TIME) ? 1 : 0);
-        return commandResult;
-    };
     let clear_before_dispatch = false;
     if (key === 0 && !queuedCommand) {
         // Read key from input
@@ -2590,26 +2549,18 @@ export async function rhack(key) {
 
     // src/cmd.c:3662, an absent command or escape clears both queues.
     if (!queuedEntry && (!key || key === 255 || key === 27)) {
+        if (key === 27)
+            game.iflags.sanity_no_check = game.iflags.sanity_check;
         reset_cmd_vars(true);
         return;
     }
 
     const parsedKey = ch0;
-
-    // Resolve the binding once. The dispatch arms use the command's default
-    // key, but movement, prefixes and parameters belong to this live binding.
     if (!queuedEntry)
         game.cmd_bind = cmdbind_get(key & 0xff);
-    const prefixCommand = queuedEntry || game.cmd_bind?.cmd;
-    game._bound_extcmd_name = null;
-    if (prefixCommand?.key)
-        ch0 = String.fromCharCode(prefixCommand.key);
-    else if (prefixCommand && !(prefixCommand.flags & MOVEMENTCMD))
-        game._bound_extcmd_name = prefixCommand.ef_txt;
+    let tlist = queuedEntry || game.cmd_bind?.cmd;
 
-    /* src/cmd.c:5121 parse() stores the count parsed for this input. A bare
-       Ctrl-A therefore repeats the command once, even when the original
-       command had a count. A count typed on Ctrl-A itself is still active. */
+    // parse() saves the new count, including a bare repeat command's zero.
     if (live_input) {
         game.last_command_count = game.command_count | 0;
         game.multi = game.command_count | 0;
@@ -2617,68 +2568,19 @@ export async function rhack(key) {
             game.multi--;
         game.cmd_key = parsedKey;
     }
-
-    if (!prefixCommand) {
+    if (!tlist) {
         await bad_command(parsedKey);
         return;
     }
-
-    /* src/cmd.c:3732, keep the executable command followed by any input
-       helpers record. Prefix commands append rather than replacing the
-       queue. Ctrl-A preserves the old queue and '#' replaces its initiator
-       later with the actual extended command. */
-    if (!game.in_doagain && (live_input || queuedCommand)
-        && ch0 !== '\x01' && ch0 !== '#') {
-        if (!continuedPrefix)
-            cmdq_clear(CQ_REPEAT);
-        cmdq_add_ec(CQ_REPEAT, queuedFunction || prefixCommand);
-    }
-
-    /* src/cmd.c:1518 do_run_west() and friends — a SHIFTED direction letter
-       is the run form of the move: set_move_cmd(dir, 1) puts context.run = 1
-       and the same domove/moveloop machinery carries the hero until
-       lookaround or a blocked step calls nomul(0). The rush prefix 'g' uses
-       run = 2; the only difference between the modes is how lookaround
-       decides what is interesting enough to stop at. */
-    /* src/cmd.c:1440-1567 do_move_/do_run_/do_rush_ family — the shifted letter
-       is the MV_RUN form (set_move_cmd(dir, 1)) and the C(dirchar) control
-       form is MV_RUSH (set_move_cmd(dir, 3)), the ^J/^L/^N bindings that
-       override redraw and annotate under !num_pad. */
-    let movemode = 0;
-    const ch = ch0;
-    const moveBinding = movement_binding(prefixCommand);
-    if (moveBinding && moveBinding.mode === MV_RUN)
-        movemode = 1;
-    else if (moveBinding && moveBinding.mode === MV_RUSH)
-        movemode = 3;
-    /* src/cmd.c:3689 rhack() dispatches the bound command (tlist), so the
-       prefixes are recognized by the command a key is bound to: 'g'/'G'/
-       'F'/'m' by default, '5'/M-5/'-' as well under number_pad */
-    const prefixTxt = prefixCommand ? prefixCommand.ef_txt : null;
-    const is_prefixcmd = !!(prefixCommand && (prefixCommand.flags & PREFIXCMD));
-
-    /* src/cmd.c:3689 — use key to directly index cmdlist array */
-    if (prefixCommand && !(await can_do_extcmd(prefixCommand))) {
-        /* can_do_extcmd() already gave a message */
+    if (!(await can_do_extcmd(tlist))) {
         reset_cmd_vars(true);
-        game.context.move = 0;
         return;
     }
 
-    /* src/cmd.c:3693 — a prefix was seen and the command that followed it
-       does not accept that prefix: rush/run/fight take movement commands
-       only (CMD_gGF_PREFIX; the shifted and control direction entries carry
-       CMD_M_PREFIX alone), the m prefix takes commands with CMD_M_PREFIX,
-       and another prefix (PREFIXCMD) is allowed through.  C loops for the
-       second key inside one rhack() call (prefix_seen); this port spans two
-       calls, so the check runs before the command's normal dispatch.  An
-       unbound key falls through to bad_command with the prefix state kept.
-       was_m_prefix is set only when do_reqmenu ran from its own key: through
-       #reqmenu the C's func is doextcmd, so that case takes the
-       movement-command message with 'm' as the prefix. */
-    if (continuedPrefix && prefixCommand && !(prefixCommand.flags & PREFIXCMD)
-        && !(prefixCommand.flags & (game._was_m_prefix ? CMD_M_PREFIX
-                                                        : CMD_gGF_PREFIX))) {
+    // C keeps was_m_prefix set across the entire chain, even after g/G/F.
+    if (continuedPrefix && !(tlist.flags & PREFIXCMD)
+        && !(tlist.flags & (game._was_m_prefix ? CMD_M_PREFIX
+                                             : CMD_gGF_PREFIX))) {
         const prefix_seen = game._prefix_seen || 'reqmenu';
         const pfxidx = cmd_from_func(prefix_seen);
         const which = (pfxidx !== '\0') ? visctrl_key(pfxidx.charCodeAt(0))
@@ -2693,12 +2595,12 @@ export async function rhack(key) {
          * the former call to help_dir() (for 'bad_command' below).
          */
         if (game._was_m_prefix) {
-            await pline_nohistory(`The ${prefixCommand.ef_txt} command does not accept '${which}' prefix.`);
+            await pline_nohistory(`The ${tlist.ef_txt} command does not accept '${which}' prefix.`);
         } else {
-            const up = (prefixCommand.key === '<'.charCodeAt(0)
-                        || prefixCommand.ef_txt === 'up'),
-                  down = (prefixCommand.key === '>'.charCodeAt(0)
-                          || prefixCommand.ef_txt === 'down');
+            const up = (tlist.key === '<'.charCodeAt(0)
+                        || tlist.ef_txt === 'up'),
+                  down = (tlist.key === '>'.charCodeAt(0)
+                          || tlist.ef_txt === 'down');
 
             await pline(`The '${which}' prefix should be followed by a movement command${
                         (up || down) ? ' other than up or down' : ''}.`);
@@ -2708,389 +2610,59 @@ export async function rhack(key) {
         return;
     }
 
-    /* src/cmd.c:3689 — the bound command (tlist) runs; a BIND'd key whose
-       command has no default key of its own goes by name */
-    if (queuedFunction && !moveBinding && !is_prefixcmd) {
-        useResult(await queuedFunction());
-    } else if (game._bound_extcmd_name) {
-        const name = game._bound_extcmd_name;
-        game._bound_extcmd_name = null;
-        useResult(await execute_extcmd(name));
-    } else if (moveBinding) {
-        /* src/cmd.c:1386 set_move_cmd() — sets u.dx/u.dy and, when no g/G
-           prefix is pending, context.run. Keeping the direction on `u` is
-           what lets moveloop's run branch call domove() again without
-           re-reading a key. */
-        set_move_cmd(moveBinding.dir, movemode);
-        /* src/cmd.c:3792 rhack's DOMOVE_RUSH arm — seed multi with
-           max(COLNO, ROWNO) as the upper bound on how far one command can
-           carry the hero. The run does NOT end by counting down: moveloop's
-           guard is (multi < COLNO && !--multi) and multi starts AT COLNO, so
-           it never decrements for a rush. It ends through nomul(0), from
-           lookaround or from domove bumping a monster, being blocked, or
-           stepping onto a door. */
-        if (game.context.run) {
-            if (!game.multi)
-                game.multi = Math.max(COLNO, ROWNO);
-            game.u.last_str_turn = 0;
-        }
-        /* src/cmd.c:3787 — the WALK arm sets mv only when a count is up;
-           the RUSH arm always does. run != 0 covers both rush forms. */
-        if (game.context.run || game.multi)
-            game.context.mv = true;
-        /* src/cmd.c:5103 parse() — "assume next command will take game time".
-           The flag is set BEFORE domove() runs, and domove's no-move exits
-           (blocked step, hack.c:2846) clear it. Setting it after the call
-           erased that clear, so a wall bump charged a full turn: seed0016's
-           three bumps put the whole game three turns ahead of C. */
-        game.context.move = 1;
-        const was_forcefight = !!game.context.forcefight;
-        await domove();
-        if (was_forcefight)
-            game.context.forcefight = 0;
-    } else if (ch === 'z') {
-        // src/cmd.c cmdlist — 'z' is dozap: getobj for the wand, getdir for
-        // the direction, and a self-zap of sleep knocks the hero out for
-        // rnd(50) helpless turns.
-        game.context.move = ((await dozap()) === ECMD_TIME ? 1 : 0);
-    } else if (ch === 'Q') {
-        // src/cmd.c cmdlist — 'Q' is dowieldquiver.
-        game.context.move = ((await dowieldquiver()) === ECMD_TIME ? 1 : 0);
-    } else if (ch === 'X') {
-        // src/cmd.c:1913 cmdlist — 'X' is dotwoweapon.
-        game.context.move = ((await dotwoweapon()) === ECMD_TIME ? 1 : 0);
-    } else if (ch === 'x') {
-        // src/cmd.c cmdlist: 'x' is doswapweapon.
-        game.context.move = ((await doswapweapon()) === ECMD_TIME ? 1 : 0);
-    } else if (ch === 'Z') {
-        // src/cmd.c cmdlist — 'Z' is docast.
-        useResult(await docast());
-    } else if (ch === '\x16') {
-        // src/cmd.c:1970 — C('v') is wizlevelport / wiz_level_tele.
-        game.context.move = ((await wiz_level_tele()) === ECMD_TIME ? 1 : 0);
-    } else if (ch === '\x17') {
-        // src/cmd.c:2000 — C('w') is wizwish / wiz_wish.
-        game.context.move = ((await wiz_wish()) === ECMD_TIME ? 1 : 0);
-    } else if (ch === '\x05') {
-        // src/cmd.c:1953, C('e') is wizdetect / wiz_detect.
-        if (game.wizard)
-            await findit();
-        else
-            await pline("Unavailable command 'wizdetect'.");
-        game.context.move = 0;
-    } else if (ch === ',') {
-        // src/cmd.c:1799 cmdlist — ',' is dopickup.
-        game.context.move = (await dopickup() === ECMD_TIME ? 1 : 0);
-    } else if (ch === 'p') {
-        // src/cmd.c cmdlist: 'p' is dopay.
-        const { dopay } = await import('./shk.js');
-        game.context.move = ((await dopay()) === ECMD_TIME ? 1 : 0);
-    } else if (ch === 'O') {
-        // src/cmd.c:1780 cmdlist — 'O' is doset_simple.
-        const { doset_simple } = await import('./options.js');
-        game.context.move = (await doset_simple() === ECMD_TIME ? 1 : 0);
-    } else if (ch === '\x14') {
-        // src/cmd.c:1890 cmdlist — C('t') is dotelecmd.
-        const { dotelecmd } = await import('./teleport.js');
-        game.context.move = (await dotelecmd() === ECMD_TIME ? 1 : 0);
-    } else if (ch === '\x04') {
-        // src/cmd.c cmdlist — C('d') is dokick.
-        useResult(await dokick());
-        game._cmd_was_kick = true;
-    } else if (ch === '\x07') {
-        // src/cmd.c:1962 cmdlist — C('g') is wiz_genesis.
-        game.context.move = ((await wiz_genesis()) === ECMD_TIME ? 1 : 0);
-    } else if (ch === '<') {
-        // src/cmd.c cmdlist — '<' is doup.
-        game.context.move = (await doup() === ECMD_TIME ? 1 : 0);
-    } else if (ch === '>') {
-        // src/cmd.c cmdlist — '>' is dodown.
-        game.context.move = (await dodown() === ECMD_TIME ? 1 : 0);
-    } else if (ch === '?') {
-        // src/cmd.c cmdlist — '?' is dohelp, a menu of viewers.
-        game.context.move = 0;
-        await dohelp();
-    } else if (ch === '/') {
-        // src/cmd.c cmdlist — '/' is dowhatis, the farlook chain.
-        game.context.move = 0;
-        await dowhatis();
-    } else if (ch === ';') {
-        // src/cmd.c cmdlist — ';' is doquickwhatis.
-        game.context.move = 0;
-        await doquickwhatis();
-    } else if (ch === 'E') {
-        // src/cmd.c cmdlist — 'E' is doengrave.
-        game.context.move = ((await doengrave()) === ECMD_TIME ? 1 : 0);
-    } else if (ch === '_') {
-        // src/cmd.c cmdlist — '_' is dotravel.
-        game.context.move = ((await dotravel()) === ECMD_TIME ? 1 : 0);
-    } else if (ch === '\x1f') {
-        // src/cmd.c cmdlist, C('_') resumes the cached travel destination.
-        game.context.move = ((await dotravel_target()) === ECMD_TIME ? 1 : 0);
-    } else if (ch === 's') {
-        // src/cmd.c cmdlist — 's' is dosearch, which returns ECMD_TIME.
-        /* src/cmd.c:3728 — a counted command whose cmdlist entry carries
-           f_text ("searching") becomes a TIMED OCCUPATION, so a nearby
-           monster interrupts it with "You stop searching." */
-        if (game.multi && !game.occupation) {
-            const { set_occupation } = await import('./allmain.js');
-            set_occupation(async () => { await dosearch(); }, 'searching',
-                           game.multi);
-        }
-        game.context.move = ((await dosearch()) ? 1 : 0);
-    } else if (ch === '+') {
-        // src/cmd.c cmdlist — '+' is dovspell.
-        game.context.move = ((await dovspell()) === ECMD_TIME ? 1 : 0);
-    } else if (ch === 'i') {
-        useResult(await ddoinv());
-    } else if (ch === 'I') {
-        // src/invent.c dotypeinv() filters inventory by one class or BUC state.
-        game.context.move = ((await dotypeinv()) === ECMD_TIME ? 1 : 0);
-    } else if (ch === 'v') {
-        // src/cmd.c:1693 cmdlist, 'v' is #chronicle / do_gamelog.
-        const { do_gamelog } = await import('./insight.js');
-        game.context.move = ((await do_gamelog()) === ECMD_TIME ? 1 : 0);
-    } else if (ch === '\x0f') {
-        // src/cmd.c cmdlist, C('o') is the dungeon overview.
-        const { dooverview } = await import('./dungeon.js');
-        await dooverview();
-        game.context.move = 0;
-    } else if (ch === '\x01') {
-        // src/cmd.c cmdlist, C('a') is #repeat / do_repeat.
-        const result = await do_repeat();
-        game.context.move = ((result & ECMD_TIME) ? 1 : 0);
-        if (result & (ECMD_CANCEL | ECMD_FAIL)) {
-            cmdq_clear(CQ_CANNED);
+    const func = tlist.ef_funct;
+    if (tlist.f_text && !game.occupation && game.multi) {
+        const { set_occupation } = await import('./allmain.js');
+        const name = tlist.ef_txt;
+        set_occupation(() => execute_extcmd(name), tlist.f_text, game.multi);
+    }
+    if (!game.in_doagain && func !== 'do_repeat' && func !== 'doextcmd') {
+        if (!continuedPrefix)
             cmdq_clear(CQ_REPEAT);
-        }
-    } else if (ch === 'V') {
-        /* src/version.c:156 doversion() returns ECMD_OK */
-        useResult(await doversion());
-    } else if (ch === '&') {
-        // src/pager.c dowhatdoes() reads one key and describes its binding.
-        game.context.move = ((await dowhatdoes()) === ECMD_TIME ? 1 : 0);
-    } else if (ch === 'C') {
-        // src/do_name.c docallcmd() names monsters, objects, and object types.
-        game.context.move = ((await docallcmd()) === ECMD_TIME ? 1 : 0);
-    } else if (ch === '\x12') {
-        // src/display.c doredraw() rebuilds the tty screen without time.
-        await docrt();
-        game.context.move = 0;
-    } else if (ch === '\x10') {
-        // src/cmd.c doprev_message() delegates to tty message history.
-        game.context.move = ((await doprev_message()) === ECMD_TIME ? 1 : 0);
-    } else if (ch === '|') {
-        /* src/invent.c doperminv(), tty does not advertise WC_PERM_INVENT in
-           the pinned build, so this command always follows its first arm. */
-        await pline("Persistent inventory display is not supported by 'tty'.");
-        game.context.move = 0;
-    } else if (ch === '\t') {
-        // src/cmd.c cmdlist, ^I invokes wiz_identify().
-        game.context.move = ((await wiz_identify()) === ECMD_TIME ? 1 : 0);
-    } else if (ch === '\x18') {
-        // src/cmd.c cmdlist — ^X is doattributes, which returns ECMD_OK.
-        game.context.move = 0;
-        await show_attributes();
-    } else if (ch === '\\') {
-        // src/cmd.c cmdlist — '\\' is dodiscovered, which returns ECMD_OK.
-        game.context.move = 0;
-        await dodiscovered();
-    } else if (ch === '`') {
-        // src/o_init.c doclassdisco() filters discoveries by object class.
-        game.context.move = ((await doclassdisco()) === ECMD_TIME ? 1 : 0);
-    } else if (ch === '^') {
-        // src/pager.c doidtrap() describes a seen trap in one direction.
-        game.context.move = ((await doidtrap()) === ECMD_TIME ? 1 : 0);
-    } else if (prefixTxt === 'rush' || prefixTxt === 'run'
-               || prefixTxt === 'reqmenu' || prefixTxt === 'fight') {
-        // src/cmd.c:1588 do_rush()/do_run(), :1622 do_fight(), :1575
-        // do_reqmenu(): PREFIX commands.  The function sets the prefix
-        // state and returns without reading a key; C loops for the next
-        // command inside the same rhack() (prefix_seen), this port spans
-        // two rhack() calls through _cmd_prefix_pending.  A double prefix
-        // returns ECMD_CANCEL and the C's reset_cmd_vars() follows below.
-        useResult(await (prefixTxt === 'rush' ? do_rush()
-                         : prefixTxt === 'run' ? do_run()
-                           : prefixTxt === 'fight' ? do_fight()
-                             : do_reqmenu()));
-        if (!(commandResult & ECMD_CANCEL)) {
-            game._cmd_prefix_pending = true;    /* prefix_seen = tlist */
-            game._prefix_seen = prefixTxt;
-            game._was_m_prefix = (prefixTxt === 'reqmenu');
-        }
-    } else if (ch === 't') {
-        // src/cmd.c cmdlist — 't' is dothrow: getobj() for the object, then
-        // throw_obj()'s getdir() for the direction. 133 keystrokes across the
-        // public corpus, and both reads were previously left to run as commands.
-        game.context.move = (await dothrow() === ECMD_TIME ? 1 : 0);
-    } else if (ch === 'c') {
-        // src/cmd.c cmdlist — 'c' is doclose (close a door), whose getdir()
-        // consumes a second key. Chat is reachable only as #chat (M-c); this
-        // used to dispatch dochat here, which read the same number of keys
-        // but printed chat responses where C reports about doors.
-        game.context.move = (await doclose() === ECMD_TIME ? 1 : 0);
-    } else if (ch === 'a') {
-        // src/cmd.c cmdlist — 'a' is doapply. 232 keystrokes across the corpus.
-        /* command results are flags: cancelling the tin selection after
-           auto-wielding its opener returns ECMD_TIME | ECMD_CANCEL */
-        game.context.move = ((await doapply()) & ECMD_TIME) ? 1 : 0;
-    } else if (ch === 'e') {
-        // src/cmd.c cmdlist — 'e' is doeat, which reaches floorfood() and then
-        // getobj(). 330 keystrokes across the public corpus, the most of any
-        // command we did not handle.
-        game.context.move = (await doeat() === ECMD_TIME ? 1 : 0);
-    } else if (ch === 'D') {
-        game.context.move = (await doddrop() === ECMD_TIME ? 1 : 0);
-    } else if (ch === 'd') {
-        game.context.move = (await dodrop() === ECMD_TIME ? 1 : 0);
-    } else if (ch === 'A') {
-        game.context.move = ((await doddoremarm()) === ECMD_TIME ? 1 : 0);
-    } else if ('rwqWPRT'.includes(ch)) {
-        // src/cmd.c cmdlist — read, wield, quaff, drop, wear, put on, remove.
-        // Every one of them starts with getobj(), which reads the inventory
-        // letter. Their effects are unported, but consuming that letter is what
-        // keeps the session in step: skip it and the letter runs as a command.
-        if (ch === 'r')
-            game.context.move = ((await doread(read_ok)) === ECMD_TIME ? 1 : 0);
-        else if (ch === 'q')
-            game.context.move = ((await dodrink()) === ECMD_TIME ? 1 : 0);
-        else if (ch === 'W')
-            game.context.move = ((await dowear()) === ECMD_TIME ? 1 : 0);
-        else if (ch === 'P')
-            game.context.move = ((await doputon()) === ECMD_TIME ? 1 : 0);
-        else if (ch === 'T')
-            game.context.move = ((await dotakeoff()) === ECMD_TIME ? 1 : 0);
-        else if (ch === 'R')
-            game.context.move = ((await doremring()) === ECMD_TIME ? 1 : 0);
-        else if (ch === 'w')
-            // src/cmd.c cmdlist — 'w' is dowield.
-            game.context.move = ((await dowield()) === ECMD_TIME ? 1 : 0);
-    } else if (ch === '.') {
-        // src/cmd.c:1930 — '.' is "wait", donull. cmd_safety_prevention
-        // (flags.safe_wait, default On) refuses the rest next to a spottable
-        // hostile with "Are you waiting to get hit?" and NO time passes.
-        const { donull } = await import('./do.js');
-        /* src/cmd.c:3728 — counted '.' becomes the "waiting" timed
-           occupation, same as counted 's' */
-        if (game.multi && !game.occupation) {
-            const { set_occupation } = await import('./allmain.js');
-            set_occupation(async () => { await donull(); }, 'waiting',
-                           game.multi);
-        }
-        game.context.move = ((await donull()) === ECMD_TIME ? 1 : 0);
-    } else if (ch === 'f') {
-        // src/cmd.c cmdlist — 'f' is dofire, which reaches throw_obj() and
-        // getdir(). C consumes the direction key there and the hero does NOT
-        // move; leaving 'f' unhandled let the direction run as a movement
-        // command and walked the hero one square off, which is what seed0102
-        // shows at step 21.
-        game.context.move = (await dofire() === ECMD_TIME ? 1 : 0);
-    } else if (ch === '#') {
-        // src/cmd.c cmdlist — '#' is doextcmd, which reads the command name
-        // off the input before doing anything.
+        cmdq_add_ec(CQ_REPEAT, queuedFunction || tlist);
+    } else if (func === 'doextcmd') {
         cmdq_clear(CQ_REPEAT);
+    }
+    if (tlist.flags & EXTCMD_FLAGS.CMD_INSANE)
+        game.iflags.sanity_no_check = game.iflags.sanity_check;
+
+    game._last_extcmd_name = null;
+    const res = (queuedFunction ? await queuedFunction()
+        : await execute_extcmd(tlist.ef_txt)) ?? ECMD_OK;
+    game.context.move = (res & ECMD_TIME) ? 1 : 0;
+
+    // doextcmd reports the actual command after executing it.
+    if (game._last_extcmd_name) {
+        tlist = extcmdlist.find(e => e.ef_txt === game._last_extcmd_name);
         game._last_extcmd_name = null;
-        useResult(await doextcmd());
-        if (game._last_extcmd_name) {
-            const name = game._last_extcmd_name;
-            cmdq_add_ec(CQ_REPEAT, extcmdlist.find(e => e.ef_txt === name));
-            cmdq_shift(CQ_REPEAT);
-            /* src/cmd.c:3752 — doextcmd() reports the command it ran
-               (ext_tlist): a prefix command waits for the next key, a
-               movement command walks or rushes now */
-            const tlist = extcmdlist.find((e) => e.ef_txt === name);
-            if (tlist && (tlist.flags & PREFIXCMD)) {
-                if (!(commandResult & ECMD_CANCEL)) {
-                    game._cmd_prefix_pending = true;    /* prefix_seen = tlist */
-                    game._prefix_seen = name;
-                    game._was_m_prefix = false; /* func == doextcmd, not do_reqmenu */
-                }
-            } else {
-                await rhack_movement_after(tlist);
-            }
+        cmdq_add_ec(CQ_REPEAT, tlist);
+        cmdq_shift(CQ_REPEAT);
+    }
+    if (tlist.flags & PREFIXCMD) {
+        if (res & ECMD_CANCEL) {
+            reset_cmd_vars(true);
+            return;
         }
-    } else if (ch === '!') {
-        game.context.move = ((await execute_extcmd('shell')) === ECMD_TIME
-                             ? 1 : 0);
-    } else if (ch === '\x06' && game.wizard) {
-        /* src/cmd.c:1982, debug-mode ^F is the default binding for
-           #wizmap. It reveals the level without consuming a turn. */
-        const { wiz_map } = await import('./wizcmds.js');
-        game.context.move = ((await wiz_map()) === ECMD_TIME ? 1 : 0);
-    } else if (ch === 'S') {
-        // src/cmd.c cmdlist — 'S' is dosave: "Really save?", write the
-        // state to storage, and exit the process like C's nh_terminate.
-        const { dosave } = await import('./save.js');
-        game.context.move = (await dosave() === ECMD_TIME ? 1 : 0);
-    } else if (ch === 'o') {
-        // src/cmd.c cmdlist — 'o' is doopen. It reads a direction key of its
-        // own, so skipping it would put the whole session out of step.
-        game.context.move = (await doopen() === ECMD_TIME ? 1 : 0);
-    } else if (ch === ')') {
-        // src/cmd.c cmdlist — ')' is doprwep.
-        game.context.move = ((await doprwep()) === ECMD_TIME ? 1 : 0);
-    } else if (ch === '[') {
-        // src/cmd.c cmdlist — '[' is doprarm.
-        game.context.move = ((await doprarm()) === ECMD_TIME ? 1 : 0);
-    } else if (ch === '=') {
-        // src/cmd.c cmdlist — '=' is doprring.
-        game.context.move = ((await doprring()) === ECMD_TIME ? 1 : 0);
-    } else if (ch === '"') {
-        // src/cmd.c cmdlist — '"' is dopramulet.
-        game.context.move = ((await dopramulet()) === ECMD_TIME ? 1 : 0);
-    } else if (ch === '(') {
-        // src/cmd.c cmdlist — '(' is doprtool.
-        game.context.move = ((await doprtool()) === ECMD_TIME ? 1 : 0);
-    } else if (ch === '*') {
-        // src/cmd.c cmdlist — '*' is doprinuse.
-        game.context.move = ((await doprinuse()) === ECMD_TIME ? 1 : 0);
-    } else if (ch === '$') {
-        // src/cmd.c:1868 cmdlist — GOLD_SYM is doprgold.
-        game.context.move = ((await doprgold()) === ECMD_TIME ? 1 : 0);
-    } else if (ch === '@') {
-        /* src/options.c:9256 dotogglepickup() returns ECMD_OK */
-        useResult(await dotogglepickup());
-    } else if (ch === ':') {
-        // src/cmd.c cmdlist — ':' is dolook. It returns ECMD_OK when not
-        // blind, so looking does not consume a turn.
-        game.context.move = ((await dolook()) === ECMD_TIME ? 1 : 0);
-    } else if (ch === '\x7f') {
-        /* src/cmd.c:1895 cmdlist — \177 == <del> aka <delete> aka <rubout>
-           is the default key for #terrain */
-        game.context.move = ((await doterrain()) === ECMD_TIME ? 1 : 0);
-    } else if (KNOWN_UNPORTED.has(ch)) {
-        // C recognises these keys and does real work for them; we have not
-        // ported that work yet. Emitting "Unknown command" here would be
-        // actively wrong — C never says that for these — so produce no
-        // message and consume no turn until the real command lands.
-        game.context.move = 0;
-    } else if (prefixCommand) {
-        /* src/cmd.c:3800 rhack(): any other bound key runs its command;
-           under number_pad the freed vi keys reach #jump, #kick, #loot and
-           friends this way */
-        useResult(await execute_extcmd(prefixCommand.ef_txt));
-    } else {
-        await bad_command(ch);
+        game._cmd_prefix_pending = true;
+        game._prefix_seen = tlist.ef_txt;
+        game._was_m_prefix = (continuedPrefix && game._was_m_prefix)
+                             || func === 'do_reqmenu';
         return;
     }
+    if (await rhack_movement_after(tlist, firsttime))
+        return;
 
-    /* src/cmd.c:3820-3825 — "hero did something else than kicking a
-       location; reset the location, so pets don't avoid it". Without this
-       the square of a long-ago kick stayed poisoned forever and every pet
-       pathfinding pass silently skipped it as a candidate. */
-    if (game.context.move && !game._cmd_was_kick)
-        game.kickedloc = { x: 0, y: 0 };
-    game._cmd_was_kick = false;
-    const commandTookTime = !!game.context.move
-        || !!(commandResult & ECMD_TIME);
-    if (commandResult & (ECMD_CANCEL | ECMD_FAIL))
+    if (res & (ECMD_CANCEL | ECMD_FAIL))
         reset_cmd_vars(true);
-    else if (!commandTookTime && !game._cmd_prefix_pending
-             && !moveBinding)
+    else if (!(res & ECMD_TIME))
         reset_cmd_vars(game.multi < 0);
-    /* C reasserts context.move after reset_cmd_vars for TIME|CANCEL. */
-    if (commandTookTime)
+
+    // TIME can accompany CANCEL. Restore it after reset_cmd_vars().
+    if (res & ECMD_TIME) {
         game.context.move = 1;
+        if (func !== 'dokick')
+            game.kickedloc = { x: 0, y: 0 };
+    }
 }
 
 // src/cmd.c:3833 rhack(), bad_command label. Keep pending movement flags;

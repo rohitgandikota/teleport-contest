@@ -76,8 +76,9 @@ static void snapshot(void) {
     }
     printf("],[");
     for (i = 0; i < extcmdlist_length; i++)
-        printf("%s[\\"%s\\",%u]", i ? "," : "", extcmdlist[i].ef_txt,
-            (uchar) cmd_from_func(extcmdlist[i].ef_funct));
+        printf("%s[\\"%s\\",%u,\\"%s\\"]", i ? "," : "", extcmdlist[i].ef_txt,
+            (uchar) cmd_from_func(extcmdlist[i].ef_funct),
+            extcmdlist[i].f_text ? extcmdlist[i].f_text : "");
     printf("]]\\n");
 }
 int main(void) {
@@ -112,7 +113,8 @@ function snapshot() {
     return [c.serialno, +c.num_pad, +c.swap_yz, +c.pcHack_compat, +c.phone_layout,
         c.dirchars, c.alphadirchars, c.extcmd_char.charCodeAt(0), cmd.count_bind_keys(),
         c.cmdbinds.map(b => [b.key, +b.userbind, b.cmd?.ef_txt || null, b.param]),
-        extcmdlist.map(ec => [ec.ef_txt, cmd.cmd_from_func(ec.ef_txt).charCodeAt(0)])];
+        extcmdlist.map(ec => [ec.ef_txt, cmd.cmd_from_func(ec.ef_txt).charCodeAt(0),
+            ec.f_text || ''])];
 }
 
 function compare(operations) {

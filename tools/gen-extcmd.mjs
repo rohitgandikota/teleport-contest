@@ -143,7 +143,8 @@ for (const eRaw of entries) {
         .exec(e.slice(desc.index + desc[0].length));
     const ef_funct = fm ? fm[1] : '';
 
-    out.push({ ef_txt, ef_desc, ef_funct, key, flags });
+    const f_text = strs[2] ?? null;
+    out.push({ ef_txt, ef_desc, ef_funct, key, flags, f_text });
 }
 
 const names = Object.keys(FLAGS).sort();
@@ -158,7 +159,7 @@ ${names.map(n => `    ${n}: ${FLAGS[n]},`).join('\n')}
 // src/cmd.c extcmdlist[] — ef_txt and flags, in table order. extcmds_match()
 // walks this in order and returns the indices that matched.
 export const extcmdlist = [
-${out.map(e => `    { ef_txt: ${JSON.stringify(e.ef_txt)}, ef_desc: ${JSON.stringify(e.ef_desc)}, ef_funct: ${JSON.stringify(e.ef_funct)}, key: ${e.key}, flags: ${e.flags} },`).join('\n')}
+${out.map(e => `    { ef_txt: ${JSON.stringify(e.ef_txt)}, ef_desc: ${JSON.stringify(e.ef_desc)}, ef_funct: ${JSON.stringify(e.ef_funct)}, key: ${e.key}, flags: ${e.flags}, f_text: ${JSON.stringify(e.f_text)} },`).join('\n')}
 ];
 `);
 console.log(`wrote ${out.length} extended commands, ${names.length} flag bits`);

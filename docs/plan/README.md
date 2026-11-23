@@ -32,8 +32,9 @@ New native cases also cover blindness-potion discovery and hidden
 hallucination expiry. The latter repair restores timeout limits and mimicry
 cleanup; 76 hallucination/blindness state controls pass.
 
-Next: Mines/Sokoban prize acquisition, invocation-object achievements and
-remaining floor-object side effects. The Linux/NFS branch collector is pushed
+Mines/Sokoban prize acquisition now also passes three native cases and 29
+state controls, with all 142 selected regressions exact. Next: invocation
+object achievements and remaining floor-object side effects. The Linux/NFS branch collector is pushed
 and passes signal canaries plus exact save/restore, artifact and natural-exit
 pilots. A complete 678-fixture census is running from public checkpoint
 e4504071. Rejected platform/output differences earn no coverage. Large

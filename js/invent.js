@@ -33,7 +33,7 @@ import { tty_select_menu } from './tty/wintty.js';
 import { tty_end_menu } from './tty/wintty.js';
 import { tty_add_menu_str } from './tty/wintty.js';
 import { tty_start_menu } from './tty/wintty.js';
-import { Has_contents } from './obj.js';
+import { Has_contents, is_mines_prize, is_soko_prize } from './obj.js';
 import { get_obj_location } from './zap.js';
 import { unpunish } from './read.js';
 import { game } from './gstate.js';
@@ -106,7 +106,8 @@ import { body_part, mbodypart } from './polyself.js';
 import { HAND, STOMACH } from './const.js';
 import { obj_stop_timers, stop_timer, SHRINK_GLOB, learn_egg_type,
          FIG_TRANSFORM, attach_fig_transform_timeout } from './timeout.js';
-import { NON_PM } from './const.js';
+import { NON_PM, ACH_MINE_PRIZE, ACH_SOKO_PRIZE } from './const.js';
+import { record_achievement } from './insight.js';
 import { obj_merge_light_sources } from './light.js';
 import { def_char_to_objclass } from './sp_lev.js';
 import { cxname_singular } from './objnam.js';
@@ -483,31 +484,46 @@ export function assigninvlet(otmp) {
 // port, so addinv() waits for it before assigning an inventory letter and
 // printing the ordinary pickup message.
 export function addinv_core1(obj) {
+    // src/invent.c:994-1004. Run the shared tail after carrying effects,
+    // including awaited quest-artifact text, and before addinv() can merge.
+    const release_prize = () => {
+        if (is_mines_prize(obj)) {
+            record_achievement(ACH_MINE_PRIZE);
+            game.context.achieveo.mines_prize_oid = 0;
+            obj.nomerge = 0;
+        } else if (is_soko_prize(obj)) {
+            record_achievement(ACH_SOKO_PRIZE);
+            game.context.achieveo.soko_prize_oid = 0;
+            obj.nomerge = 0;
+        }
+        return null;
+    };
+
     if (obj.oclass === OCLASSES.COIN_CLASS) {
         (game.disp ||= {}).botl = true;
-        return null;
+        return release_prize();
     }
 
     const uhave = (game.u.uhave ||= {});
     if (obj.otyp === ONAMES.AMULET_OF_YENDOR) {
         uhave.amulet = 1;
-        return null;
+        return release_prize();
     }
     if (obj.otyp === ONAMES.CANDELABRUM_OF_INVOCATION) {
         uhave.menorah = 1;
-        return null;
+        return release_prize();
     }
     if (obj.otyp === ONAMES.BELL_OF_OPENING) {
         uhave.bell = 1;
-        return null;
+        return release_prize();
     }
     if (obj.otyp === ONAMES.SPE_BOOK_OF_THE_DEAD) {
         uhave.book = 1;
-        return null;
+        return release_prize();
     }
 
     if (!obj.oartifact)
-        return null;
+        return release_prize();
 
     return (async () => {
         const { is_quest_artifact } = await import('./questpgr.js');
@@ -519,6 +535,7 @@ export function addinv_core1(obj) {
         set_artifact_intrinsic(obj, true, W_ART);
         recalc_telepat_range();
         see_monsters();
+        release_prize();
     })();
 }
 

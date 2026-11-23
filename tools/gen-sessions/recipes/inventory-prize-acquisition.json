@@ -1,0 +1,75 @@
+{
+  "name": "inventory-prize-acquisition",
+  "description": "Acquiring the real Mines and Sokoban prizes clears their special identity; the Mines luckstone merges, while ordinary lookalikes leave the actual prize untouched.",
+  "coverage": [
+    "level.mines",
+    "level.sokoban",
+    "object.gems-stones",
+    "object.tools-containers",
+    "ending.conduct-achievement",
+    "mode.debug",
+    "ui.menus",
+    "ui.more-paging"
+  ],
+  "requireBranchAssertions": true,
+  "branches": [
+    "inventory.prize.mines-acquired-and-merge",
+    "inventory.prize.sokoban-acquired",
+    "inventory.prize.ordinary-lookalike"
+  ],
+  "segments": [
+    {
+      "seed": 6602,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0016?\r w\u0006\u0016?\r x\u0006\u0014@hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhkk.  ,,\r  \u0017uncursed luckstone\r   i \u001b#chronicle\r "
+    },
+    {
+      "seed": 6701,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0016?\r B\u0006\u0014@hhhhhhhhhhjjjjj.  ,,\r \u001b\u001b i\u001b#chronicle\r "
+    },
+    {
+      "seed": 6602,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0016?\r w\u0006\u0016?\r x\u0006\u0017uncursed luckstone\r \u0017uncursed luckstone\r  i\u001b#chronicle\r "
+    }
+  ],
+  "branchAssertions": [
+    {
+      "branch": "inventory.prize.mines-acquired-and-merge",
+      "segment": 0,
+      "screenIncludes": [
+        "acquired the Mines' End luckstone",
+        "2 gray stones"
+      ],
+      "screenExcludes": [
+        "acquired the Sokoban"
+      ]
+    },
+    {
+      "branch": "inventory.prize.sokoban-acquired",
+      "segment": 1,
+      "screenIncludes": [
+        "acquired the Sokoban bag of holding"
+      ],
+      "screenExcludes": [
+        "acquired the Mines' End"
+      ]
+    },
+    {
+      "branch": "inventory.prize.ordinary-lookalike",
+      "segment": 2,
+      "screenIncludes": [
+        "2 gray stones"
+      ],
+      "screenExcludes": [
+        "acquired the Mines' End",
+        "acquired the Sokoban"
+      ]
+    }
+  ],
+  "recordingNote": "Use RERECORD_TZ=Etc/GMT+4. The Mines inventory advances to its second page before cancellation so the merged stack is visible."
+}

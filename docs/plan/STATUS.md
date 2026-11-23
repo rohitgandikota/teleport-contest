@@ -2357,6 +2357,46 @@ All 279 cursors and 13,630 calls already match JS, but four achievement
 screens fail. Keep this separate from the current prize patch until its
 source calls and state effects are covered. No invocation runtime edit yet.
 
+Hallucination checkpoint `71c08c32` is pushed. The prize-release tail now
+matches invent.c:994-1004: record achievement, clear the matching object ID,
+then clear nomerge before inventory merging. One local callback preserves
+the existing synchronous ordinary path and asynchronous artifact path;
+artifact text and intrinsics still complete before the shared tail.
+
+The promoted visible-page fixture passes all 214 boundaries and exactly
+21,904 calls. Before, 210 screens and 213 cursors match. Its three independent
+cases cover the Mines luckstone, Sokoban bag, and ordinary lookalikes while
+the actual prize remains on the floor. The earlier 213-step recording stays
+unchanged in cache and also passes the candidate. It overlaps these same
+cases and is not counted as three additional independent histories.
+
+All 29 new state controls pass, versus 9 before. They cover both Sokoban
+prize types, matching by ID, ordered side effects, synchronous return values,
+merge survivors, reacquisition and actual quest-artifact paging/rejection.
+Selected regression passes all 142 public/inventory/artifact/quest/prize/
+bones/restore fixtures: 109,558 screens/cursors, 3,189,371 RNG calls and
+1,592 animations. Strict new-fixture input slices, cursor/frame counts,
+input-exhaustion, native assertions and source audit pass. The fixture has
+zero animations and therefore adds no animation-content coverage. Logs and
+totals use inventory-prize-*. Commit and push this checkpoint; exclude the
+new uncommitted floor-billing state gate. The corpus now has 680 fixtures;
+the last complete scored regression remains 679/679.
+
+The isolated ordinary Clang control at ordinary-clang.lu5GEu under the NFS
+artifact root matches save/restore byte-for-byte. Its category-filters run
+also matches the instrumented run byte-for-byte, including the discrepancy
+at segment 34, step 60. Thus instrumentation did not cause that discrepancy;
+its specific underlying platform/environment cause remains unclassified.
+The full census continues, with rejected profiles excluded. The new ordinary
+binary hash is a4d6a28cfadfd5489bf3b4ce82108fae1860c05c542640956af51df5f0f9372d.
+
+Next cache work: invocation-object achievement calls and SPFX_HALRES routing;
+floor timer hooks with the correct unresolved-object phase during JSON
+restore; and two older test gates using the real status-window API. The
+standalone floor-billing state gate has five actual shop-boundary controls.
+Exactly two fail before the pending four-line no_charge guard, outside a
+shop and at an untended doorway. Its runtime change is not applied yet.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

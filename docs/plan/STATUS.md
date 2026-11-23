@@ -1,5 +1,69 @@
 # STATUS — live handoff board
 
+## 2026-11-22: resumed leaderboard and readability work
+
+The user resumed the full-port work and explicitly requested a new target:
+reach the top of the current leaderboard with readable, faithful code. Keep
+looping through C review, regressions, fixes, verification, commits and prompt
+public pushes. Standing push authorization remains explicit. The goal tool
+reports the previous full-port goal as paused and refuses a replacement while
+it is unfinished. Do not mark that objective complete just to reset the tool.
+
+Restart baseline: `40f90586`, committed September 12, 2026. A fresh fetch found
+`main` equal to `origin/main`, with no queued commits. Pre-existing changes in
+`js/explode.js` and `js/shk.js` remain under review. Do not discard them or add
+the unrelated `.DS_Store` files.
+
+The official snapshot at `2026-11-22T19:45:50.079Z` reports 23,500/24,531
+screens, 95.797%, rank 7 among agentic entries and 11 overall by the published
+sort. Public: 44/44 sessions, 11,405/11,405 screens. Held-out: 38/56 sessions,
+12,095/13,126 screens, 98.103% RNG calls. This is a baseline, not evidence for
+the effects of today's changes. The combined deficit is 1,031 screens.
+
+Official changes since September:
+
+- [October 25 gameplay audit](https://mazesofmenace.ai/seeing-snakes/):
+  12 additional held-out sessions. It specifically identifies missing
+  movement, petrification, tameness/leash, and underwater checks in our
+  `mount_steed`. These are the first source-driven repair target.
+- [October 31 readability evaluation](https://mazesofmenace.ai/reading-readability/):
+  500 code-comprehension questions, assessed with and without comments.
+- [November 14 follow-up, updated November 20](https://mazesofmenace.ai/rereading-readability/):
+  our readability is 65.5% without comments and 69.8% with them; the leading
+  port has 78.1% and 81.8%. Small differences are noisy. Preserve named C
+  functions, clear conditions, and relevant source comments. Avoid benchmark
+  answer comments. The follow-up also reports a recorder meta-key encoding bug.
+- [Current official rules](https://github.com/davidbau/teleport-contest#readme):
+  Phase 1 ends November 29 at 00:00 UTC; top 10 qualify. Phase 2 begins
+  November 30 and scores parity divided by the required JS change. The live
+  table still sorts by screen points, passing sessions, public RNG, then time.
+  Readability is a separate published evaluation, not a current sort key.
+- Upstream `22d0ee93b5` fixes leading styled blanks in the canonical terminal.
+  Upstream `6ee30e6f9b` fixes recorder key bytes, capture capacity, and raw-mode
+  teardown. Review and adopt applicable recorder changes separately; frozen
+  scoring files remain untouched.
+
+Local public baseline: 44/44, 11,405 screens/cursors and 792,838 RNG calls;
+animations 1,462/1,483. Small research and verification summaries are in
+`.cache/restart-20261122/`. Shared NFS is reachable via `tokyo`; new bulk
+artifacts belong at `/share/NFS/u/rohit/research/contest/artifacts/2026-11-22/`.
+The source checkout remains local. `tokyo` has Node 18 by default, so do not
+assume it can run the Node 22 contest judge. No new large corpus was generated.
+
+Current patch: `mount_steed` now follows the full C decision order and uses
+canonical property predicates. `tools/steed-mount-state-gate.mjs` passes 15
+constructed tests; 13 fail against the original September function loaded
+without changing the working tree. Expectations are source-derived, not a
+native oracle. Four existing riding fixtures match C. The older
+`steed-eroded-armor-mount` fixture already fails at frame zero before this
+patch, with 2,178/8,409 RNG calls and 0/111 screens; do not count it as a new
+regression or silently re-record it. Public remains 44/44 with identical RNG,
+screens, cursors and animation counts. All 44 hang checks pass. The mounted
+jousting state gate and saddle impact gate pass, including 23 C scenarios and
+22 shard checks in the latter.
+Next: commit/push the mounting checkpoint, then review
+the pending shop/scatter fixes and recorder updates. Continue beyond that.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

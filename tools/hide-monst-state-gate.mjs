@@ -1,4 +1,4 @@
-// C mon.c:4806-4826 through real synchronous helpers. No runtime mocks.
+// C mon.c:4806-4826 through real helpers and conditional feedback. No runtime mocks.
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import { runSegment } from '../js/jsmain.js';
@@ -53,11 +53,15 @@ async function shelter(cursed=false) {
     const obj=mksobj(ONAMES.DAGGER,false,false); obj.cursed=+cursed;
     await place_object(obj,mx,my); return obj;
 }
-function call(mon,seed,count) {
+async function call(mon,seed,count,pending=false) {
     const expected=draws(seed,count).calls;
     initRng(seed); enableRngLog();
     const vision=game.viz_array.map(row=>Array.from(row));
-    assert.equal(hide_monst(mon),undefined,'synchronous void contract');
+    const result=hide_monst(mon);
+    if(pending) assert.equal(typeof result?.then,'function','visible shelter feedback is pending');
+    else assert.equal(result,undefined,'synchronous void contract');
+    assert.deepEqual(game.viz_array.map(row=>Array.from(row)),vision,'vision restored before feedback can wait');
+    assert.equal(await result,undefined,'void completion contract');
     assert.deepEqual(game.viz_array.map(row=>Array.from(row)),vision,'restore every vision bit and leave other squares unchanged');
     assert.deepEqual(getRngLog(),expected,'only the C restrap chance draws');
 }
@@ -66,7 +70,7 @@ for (const lit of [true,false]) for (const [name,seed,count,hidden] of [
     ['first attempt',first,1,true],['second attempt',second,2,true],['both chances missed',misses,2,false],
 ]) test(`mimic ${lit?'visible':'unseen'}: ${name}`,async()=>{
     const mon=await setup(PMNAMES.PM_SMALL_MIMIC,lit); await shelter();
-    assert.equal(cansee(mx,my),lit); call(mon,seed,count);
+    assert.equal(cansee(mx,my),lit); await call(mon,seed,count);
     assert.equal(mon.m_ap_type,hidden?M_AP_OBJECT:M_AP_NOTHING);
     assert.equal(mon.mappearance,hidden?ONAMES.DAGGER:0);
     assert.equal(mon.mundetected,0);
@@ -75,7 +79,7 @@ for (const lit of [true,false]) for (const [name,seed,hidden] of [
     ['successful first chance',first,1],['failed single chance',misses,0],
 ]) test(`trapper ${lit?'visible':'unseen'}: ${name}`,async()=>{
     const mon=await setup(PMNAMES.PM_TRAPPER,lit);
-    call(mon,seed,1); assert.equal(mon.mundetected,hidden); assert.equal(mon.m_ap_type,M_AP_NOTHING);
+    await call(mon,seed,1); assert.equal(mon.mundetected,hidden); assert.equal(mon.m_ap_type,M_AP_NOTHING);
 });
 for (const mode of ['ordinary monster','already hidden','already disguised','cancelled mimic','cancelled trapper']) {
     test(`guard: ${mode}`,async()=>{
@@ -85,12 +89,12 @@ for (const mode of ['ordinary monster','already hidden','already disguised','can
         if (mode==='already disguised') {mon.m_ap_type=M_AP_OBJECT;mon.mappearance=ONAMES.DAGGER;}
         if (mode.startsWith('cancelled')) mon.mcan=1;
         const before=[mon.mundetected,mon.m_ap_type,mon.mappearance];
-        call(mon,first,0); assert.deepEqual([mon.mundetected,mon.m_ap_type,mon.mappearance],before);
+        await call(mon,first,0); assert.deepEqual([mon.mundetected,mon.m_ap_type,mon.mappearance],before);
     });
 }
 for (const field of ['msleeping','mfrozen']) test(`mimic ${field} retains both chance draws`,async()=>{
     const mon=await setup(); await shelter(); mon[field]=5;
-    call(mon,first,2); assert.equal(mon.m_ap_type,M_AP_NOTHING); assert.equal(mon[field],5);
+    await call(mon,first,2); assert.equal(mon.m_ap_type,M_AP_NOTHING); assert.equal(mon[field],5);
 });
 for (const mode of ['stuck','nonpit trap','pit','corridor','sensed adjacent']) test(`trapper late guard: ${mode}`,async()=>{
     const mon=await setup(PMNAMES.PM_TRAPPER);
@@ -100,23 +104,23 @@ for (const mode of ['stuck','nonpit trap','pit','corridor','sensed adjacent']) t
     }
     if (mode==='corridor') game.level.at(mx,my).typ=CORR;
     if (mode==='sensed adjacent') {game.u.ux=mx-1;game.u.intrinsic.HDetect_monsters=FROMOUTSIDE;}
-    call(mon,first,1); assert.equal(mon.mundetected,mode==='pit'?1:0);
+    await call(mon,first,1); assert.equal(mon.mundetected,mode==='pit'?1:0);
 });
 test('snake shelter refresh sees the restored vision before hideunder returns',async()=>{
     const mon=await setup(PMNAMES.PM_GARTER_SNAKE); await shelter();
     game.level.at(mx,my).remembered_glyph=null;
-    call(mon,first,0); assert.equal(mon.mundetected,1);
+    await call(mon,first,0,true); assert.equal(mon.mundetected,1);
     assert.equal(game.level.at(mx,my).remembered_glyph?.glyph?.otyp,ONAMES.DAGGER);
 });
 test('snake without shelter stays visible',async()=>{
     const mon=await setup(PMNAMES.PM_GARTER_SNAKE);
-    call(mon,first,0); assert.equal(mon.mundetected,0);
+    await call(mon,first,0); assert.equal(mon.mundetected,0);
 });
 test('pet snake rejects a cursed shelter',async()=>{
     const mon=await setup(PMNAMES.PM_GARTER_SNAKE); await shelter(true);mon.mtame=10;
-    call(mon,first,0); assert.equal(mon.mundetected,0);
+    await call(mon,first,0); assert.equal(mon.mundetected,0);
 });
 for (const pool of [true,false]) test(`eel ${pool?'in pool':'on dry floor'} takes no restrap draw`,async()=>{
     const mon=await setup(PMNAMES.PM_GIANT_EEL);game.level.at(mx,my).typ=pool?POOL:ROOM;
-    call(mon,first,0);assert.equal(mon.mundetected,pool?1:0);
+    await call(mon,first,0,pool);assert.equal(mon.mundetected,pool?1:0);
 });

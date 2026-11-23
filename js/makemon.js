@@ -22,7 +22,7 @@ import { newcham, mon_wire_cham } from './mon.js';
 import { weight as weight_fn, sobj_at, update_inventory } from './invent.js';
 import { In_mines, Is_rogue_level, MIGR_TO_SPECIES, OBJ_FREE,
          W_SADDLE, has_mgivenname, A_LAWFUL, ONAME_RANDOM } from './const.js';
-import { Levitation, Flying, Protection_from_shape_changers, See_invisible } from './youprop.js';
+import { Levitation, Flying, Protection_from_shape_changers, See_invisible, Underwater, Stone_resistance } from './youprop.js';
 import { u_wield_art } from './artifact.js';
 import { ART_EXCALIBUR, ART_DEMONBANE } from './artilist_data.js';
 import { closed_door } from './cmd.js';
@@ -31,8 +31,8 @@ import { sengr_at } from './engrave.js';
 import { rndghostname, christen_monst, christen_orc, oname,
          y_monnam, Amonnam, upstart } from './do_name.js';
 import { mhidden_description } from './pager.js';
-import { Norep, set_msg_xy } from './pline.js';
-import { vtense } from './objnam.js';
+import { Norep, set_msg_xy, You_see } from './pline.js';
+import { vtense, ansimpleoname } from './objnam.js';
 import { m_dowear, which_armor } from './worn.js';
 import { can_saddle, put_saddle_on_mon } from './steed.js';
 import { rn2, rnd, rn1, d } from './rng.js';
@@ -56,7 +56,7 @@ import { cansee, does_block, block_point } from './vision.js';
 import { COLNO, ROWNO, MFAST, Is_stronghold, Is_knox_level, In_V_tower, In_quest, PIT, HOLE, TRAPDOOR, ALL_TRAPS } from './const.js';
 import { attacktype, is_neuter, is_floater, emits_light, likes_lava,
          amorphous, throws_rocks, haseyes, is_flyer, is_whirly,
-         noncorporeal, locomotion } from './mondata.js';
+         noncorporeal, locomotion, hides_under } from './mondata.js';
 import { is_vampshifter } from './monst.js';
 import { t_at, is_pool, is_lava, m_in_air, resists_ston } from './mon.js';
 import { touch_petrifies, mhe, nonliving } from './mondata.js';
@@ -1414,43 +1414,40 @@ function mkobj_at(oclass, x, y, artif) {
     return otmp;
 }
 
-// src/mon.c:4726 hideunder() — try to hide the monster at its own spot.
-// No draws; the messages need seeit, which is 0 during mklev. This was a
-// stub that always set mundetected = 0, so a swamp snake created over its
-// starter object stood in plain sight where C's is hidden.
-export function hideunder(mtmp, defer_newsym = false) {
-    const isHero = mtmp === game.youmonst;
-    let undetected = false;
-    const x = isHero ? game.u.ux : mtmp.mx;
-    const y = isHero ? game.u.uy : mtmp.my;
-    const ptr = isHero ? game.youmonst.data : game.mons[mtmp.mnum];
-    let t2;
+// src/mon.c:4726 hideunder(); feedback completes before the map redraw.
+// Returns a boolean synchronously unless a visible monster's message is pending.
+export function hideunder(mtmp) {
+    let seenmon = null, seenobj = null, locomo = null;
+    const seeit = game.in_mklev ? false : canseemon(mtmp);
+    let oldundetctd, undetected = false;
+    const is_u = mtmp === game.youmonst;
+    const x = is_u ? game.u.ux : mtmp.mx;
+    const y = is_u ? game.u.uy : mtmp.my;
+    const ptr = mtmp.data;
+    let t;
 
     if (mtmp === game.u.ustuck) {
-        /* undetected==FALSE; can't hide if holding you or held by you */
-    } else if (mtmp.mtrapped
-               || ((t2 = t_at(x, y)) != null && !is_pit(t2.ttyp))) {
-        /* undetected==FALSE; can't hide while trapped or on/in/under
-           any non-pit trap when not trapped */
+        /* Can't hide while holding the hero or being held by the hero. */
+    } else if ((is_u ? game.u.utrap : mtmp.mtrapped)
+               || ((t = t_at(x, y)) != null && !is_pit(t.ttyp))) {
+        /* Can't hide while trapped or at a non-pit trap. */
     } else if (ptr.mlet === MONSYMS.S_EEL) {
-        /* aquatic creatures only hide under water, not under objects */
         undetected = (is_pool(x, y) && !Is_waterlevel(game.u.uz)
-                      && (!game.u.uprops?.UNDERWATER || !couldsee(x, y)));
-    } else if ((ptr.mflags1 & MFLAGS.M1_CONCEAL) !== 0 /* hides_under */) {
-        /* hider-underers only hide under objects */
+                      && (!Underwater() || !couldsee(x, y)));
+        if (seeit) {
+            seenobj = 'the water';
+            locomo = 'dive';
+        }
+    } else if (hides_under(ptr)) {
         const chain = game.level.objectsAt(x, y);
         let oi = 0;
         if (chain.length
             && can_hide_under_obj(chain[0])
-            /* pets won't hide under a cursed item or an item of any BUC
-               state that shares a pile with one or more cursed items */
-            && (!mtmp.mtame || !chain.some((o) => o.cursed))
-            /* aquatic creatures don't reach here; other swimmers
-               shouldn't hide beneath underwater objects */
+            && (!mtmp.mtame || !chain.some(o => o.cursed))
             && !(is_pool(x, y) || is_lava(x, y))) {
-            /* most monsters won't hide under a cockatrice corpse but they
-               can hide under a pile containing more than just such corpses */
-            if (!resists_ston(mtmp))
+            if (seeit)
+                seenobj = ansimpleoname(chain[0]);
+            if (is_u ? !Stone_resistance() : !resists_ston(mtmp))
                 while (oi < chain.length
                        && chain[oi].otyp === ONAMES.CORPSE
                        && touch_petrifies(game.mons[chain[oi].corpsenm]))
@@ -1460,44 +1457,26 @@ export function hideunder(mtmp, defer_newsym = false) {
         }
     }
 
-    const oldundetctd = !!(isHero ? game.u.uundetected : mtmp.mundetected);
-    mtmp.mundetected = undetected ? 1 : 0;
-    if (isHero)
-        game.u.uundetected = mtmp.mundetected;
-    if (undetected !== oldundetctd && !defer_newsym)
-        newsym(x, y);
-    return undetected;
-}
-
-// src/mon.c:4726 hideunder(), including its runtime visibility message.
-// Delaying newsym until after You_see() preserves the tty image beneath a
-// --More-- prompt when the new message first has to flush an older one.
-export async function hideunder_with_message(mtmp) {
-    const x = mtmp.mx, y = mtmp.my;
-    const ptr = game.mons[mtmp.mnum];
-    const seeit = !game.in_mklev && canseemon(mtmp);
-    const seenmon = seeit ? y_monnam(mtmp) : null;
-    let seenobj = null, locomo = null;
-
-    if (seeit && ptr.mlet === MONSYMS.S_EEL) {
-        seenobj = 'the water';
-        locomo = 'dive';
-    } else if (seeit && (ptr.mflags1 & MFLAGS.M1_CONCEAL) !== 0) {
-        const shelter = game.level.objectAt(x, y);
-        if (shelter) {
-            const { ansimpleoname } = await import('./objnam.js');
-            seenobj = ansimpleoname(shelter);
+    if (is_u) {
+        oldundetctd = !!game.u.uundetected;
+        game.u.uundetected = undetected ? 1 : 0;
+    } else {
+        if (seeit)
+            seenmon = y_monnam(mtmp);
+        oldundetctd = !!mtmp.mundetected;
+        mtmp.mundetected = undetected ? 1 : 0;
+        if (undetected && seenmon && seenobj) {
+            if (!locomo)
+                locomo = locomotion(ptr, 'hide');
+            set_msg_xy(mtmp.mx, mtmp.my);
+            return You_see(`${seenmon} ${locomo} under ${seenobj}.`).then(() => {
+                (game.iflags ||= {}).last_msg = PLNMSG_HIDE_UNDER;
+                (game.gl ||= {}).last_hider = mtmp.m_id;
+                if (undetected !== oldundetctd)
+                    newsym(x, y);
+                return undetected;
+            });
         }
-    }
-
-    const oldundetctd = !!mtmp.mundetected;
-    const undetected = hideunder(mtmp, true);
-    if (undetected && seenmon && seenobj) {
-        const { You_see, set_msg_xy } = await import('./pline.js');
-        set_msg_xy(x, y);
-        await You_see(`${seenmon} ${locomo || locomotion(ptr, 'hide')} under ${seenobj}.`);
-        (game.iflags ||= {}).last_msg = PLNMSG_HIDE_UNDER;
-        (game.gl ||= {}).last_hider = mtmp.m_id;
     }
     if (undetected !== oldundetctd)
         newsym(x, y);

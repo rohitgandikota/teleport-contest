@@ -2190,7 +2190,7 @@ export async function hatch_egg(egg, timeout) {
         const { m_at } = await import('./mon.js');
         const { hideunder } = await import('./makemon.js');
         const floorMon = m_at(x, y);
-        if (floorMon && !hideunder(floorMon) && cansee(x, y))
+        if (floorMon && !await hideunder(floorMon) && cansee(x, y))
             redraw = true;
     }
     if (redraw) {

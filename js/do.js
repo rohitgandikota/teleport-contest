@@ -1304,7 +1304,7 @@ export async function goto_level(newlevel, at_stairs, falling, portal) {
             await restore_cham(mtmp);
             /* give hiders a chance to hide before their next move */
             if (elapsed > 0 && elapsed > rnd(10))
-                hide_monst(mtmp);
+                await hide_monst(mtmp);
         }
         /* restore.c:1228 rest_track() — bring back the track saved with
            this level */

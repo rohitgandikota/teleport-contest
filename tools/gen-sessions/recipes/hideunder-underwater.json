@@ -1,0 +1,52 @@
+{
+  "name": "hideunder-underwater",
+  "description": "Actual-input underwater eel concealment and dry-hero control. The input gate checks live movement, sight, form and concealment. Full native parity is scored separately; retain the final underwater look command.",
+  "coverage": [
+    "mode.debug",
+    "ui.map-memory-vision"
+  ],
+  "branches": [
+    "hideunder-underwater.underwater-visible-eel",
+    "hideunder-underwater.dry-hero-eel-control"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "hideunder-underwater.underwater-visible-eel",
+      "segment": 0,
+      "screenIncludes": [
+        "But you aren't drowning",
+        "You see no objects here."
+      ],
+      "rngIncludes": [
+        "postmov("
+      ]
+    },
+    {
+      "branch": "hideunder-underwater.dry-hero-eel-control",
+      "segment": 1,
+      "screenIncludes": [
+        "You see the giant eel dive under the water."
+      ],
+      "rngIncludes": [
+        "postmov("
+      ]
+    }
+  ],
+  "segments": [
+    {
+      "name": "underwater-visible-eel",
+      "seed": 6202,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Hider,role:Barbarian,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0014h.  \u001b\u001b\u0017pool\r  \u001b\u001b\u0014j.  \u001b\u001b\u0017pool\r  \u001b\u001b\u0014u.  \u001b\u001b\u0017pool\r  \u001b\u001b#polyself\rgiant eel\r  \u001b\u001b\u0007peaceful giant eel\r  \u001b\u001b..........  \u001b\u001b:"
+    },
+    {
+      "name": "dry-hero-eel-control",
+      "seed": 6202,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Hider,role:Barbarian,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0014h.  \u001b\u001b\u0017pool\r  \u001b\u001b\u0014j.  \u001b\u001b\u0017pool\r  \u001b\u001b\u0014u.  \u001b\u001b#polyself\rgiant eel\r  \u001b\u001b\u0007peaceful giant eel\r  \u001b\u001b..........  \u001b\u001b:"
+    }
+  ]
+}

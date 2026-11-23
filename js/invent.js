@@ -63,7 +63,7 @@ import { W_ARM, W_ARMC, W_ARMH, W_ARMS, W_ARMG, W_ARMF, W_ARMU,
          W_RINGL, W_RINGR, W_AMUL, W_ART, W_TOOL, W_ACCESSORY, W_SADDLE }
     from './const.js';
 import { Blind as heroBlind, Hallucination,
-         Stone_resistance } from './youprop.js';
+         Stone_resistance, Underwater } from './youprop.js';
 import { doname, an, corpse_xname, makeplural, obj_typename, CXN_PFX_THE,
          CXN_ARTICLE, yname, xname, distant_name } from './objnam.js';
 import { OCLASSES, ONAMES, MATERIALS, SKILLS } from './objects_data.js';
@@ -867,7 +867,9 @@ export async function look_here(obj_cnt, lhflags) {
         }
     }
 
-    const dfeature = dfeature_at(game.u.ux, game.u.uy);
+    let dfeature = dfeature_at(game.u.ux, game.u.uy);
+    if (dfeature === 'pool of water' && Underwater())
+        dfeature = null;
 
     /* src/invent.c:4185-4217: a blind hero describes reaching toward the
        surface before inspecting the object pile.  A following menu flushes

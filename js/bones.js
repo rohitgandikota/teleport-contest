@@ -721,7 +721,7 @@ export async function getbones_load() {
         }
         set_malign(m);
         await restore_cham(m);
-        hide_monst(m);
+        await hide_monst(m);
     }
 
     rest_regions(snap.regions, true, idmap);

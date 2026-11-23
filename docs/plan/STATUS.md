@@ -3253,10 +3253,58 @@ linux-restore-phase-coverage-summary.json. It is not merged into the union.
 
 Three ordinary worn/unworn dragon-armor polymorph proposals and six controlled
 monster-form prompt proposals are now recorded in C, unchanged. The former
-have a separate two-file armor preference candidate under review. The shared
+are now integrated with the concealment checkpoint below. The shared
 interactive selector still needs validvamp and ordered creation completion;
 no creation or level-generation prompt bypass is acceptable. These recordings
-remain diagnostics until their respective repairs pass verification.
+for the interactive selector remain diagnostics until its repair is verified.
+
+Stun checkpoint `b994a331` is pushed. The next checkpoint consolidates
+hideunder into one C-aligned function, including hero trap/stone-resistance
+guards, canonical Underwater, object-before-monster naming, message completion
+and redraw order. All 15 unchanged synchronous calls were classified; the
+visible feedback consumers now await completion. hide_monst restores the full
+vision byte before that feedback. The existing 27 controls retain every state,
+vision and RNG assertion while permitting the two newly pending completions.
+look_here also suppresses the pool feature when the hero is underwater.
+Ordinary monster polymorph now prefers worn dragon scales or mail, while
+natural shapechangers and carried-but-unworn armor retain their C selection.
+
+All 137 combined controls and three additional armor input controls pass on
+the integrated runtime. Five new native cases match 833 screens/cursors,
+13,553 complete/per-input RNG calls and ten animations. The underwater baseline
+matched 208/222 screens and 2,682/5,770 scored RNG positions; the armor baseline
+matched 591/611 screens, 602/611 cursors and 5,257/7,783 scored RNG positions.
+With three retained fixtures, strict checks match all 1,486 boundaries,
+56,073 calls and 73 animations. Input exhaustion, all five recipe assertions,
+raw-byte/input-tuple identity, syntax and the 0/276 source audit pass.
+Receipts use monster-concealment-armor-promoted-* and
+monster-concealment-armor-source-audit.log. Full regression passes 706/706
+fixtures without failures or timeouts: 811,979 screens/cursors,
+16,256,400 scored RNG positions and 30,722 animations. Every result metric
+matches exactly; paths and unique basenames match the maintained inventory.
+Both shards used the standard 45-second worker limit, and all 279 runtime
+hashes stayed fixed. Full receipts use monster-concealment-armor-corpus-*
+and monster-concealment-armor-runtime-before-corpus.json.
+
+The two new raw inputs also pass byte-exact instrumented C replay on NFS.
+The verified union now enters 4,509/5,492 functions and observes
+58,782/107,260 direct outcomes. All 700 credited input hashes, thirteen build
+manifests and branch layouts were checked. Twenty additional raw inputs
+contribute 115 segments; the two independent Linux controls contribute nine
+more. Original platform rejections remain rejected. Focused totals include
+54/64 hideunder, 36/44 select_newcham_form and 117/154 look_here outcomes.
+The NFS union is
+c-coverage-compress.E84JI2/verified-concealment-armor-union-20261123;
+compact receipts use linux-coverage-concealment-armor-union-*.
+
+Separate date-luck diagnostics confirm another dosave0 omission: restoring on
+the same full-moon date reports luck 2 instead of 1; Friday the 13th reports
+-2 instead of -1. Each baseline misses one attribute screen while every RNG
+call and cursor matches. The ordinary-date control passes. A separate
+save-date-luck cache candidate undoes date luck through change_luck before
+encoding and restores the original luck on a refused storage write. It
+passes all three paired native files and 15 source controls in isolation.
+It is not part of the frozen concealment regression or the held restore rewrite.
 
 ## 2026-09-05: full faithful port is the active goal
 

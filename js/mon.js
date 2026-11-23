@@ -105,7 +105,8 @@ import { MON_DETACH, P_DAGGER, P_SABER, M_AP_TYPE, M_AP_NOTHING, M_AP_MONSTER, S
          M_AP_FURNITURE, M_AP_OBJECT, ROOM, is_pit, I_SPECIAL,
          XKILL_NOMSG, XKILL_NOCORPSE, MON_EXPLODE,
          PLNMSG_UNKNOWN, PLNMSG_GROWL } from './const.js';
-import { NO_MM_FLAGS } from './const.js';
+import { NO_MM_FLAGS, W_ARM } from './const.js';
+import { Is_dragon_scales, Is_dragon_mail } from './mondata.js';
 import { PMNAMES, MONSYMS, MFLAGS, ATTKS, MSOUND } from './monst_data.js';
 import { def_monsyms, cmap_names } from './drawing_data.js';
 import { visible_region_at } from './region.js';
@@ -4016,10 +4017,16 @@ function select_newcham_form(mon) {
     case PMNAMES.PM_VAMPIRE:
         mndx = pickvampshape(mon);
         break;
-    default:
+    case NON_PM: { /* ordinary */
+        const m_armr = which_armor(mon, W_ARM);
+
+        if (m_armr && Is_dragon_scales(m_armr))
+            mndx = PMNAMES.PM_GRAY_DRAGON + m_armr.otyp - ONAMES.GRAY_DRAGON_SCALES;
+        else if (m_armr && Is_dragon_mail(m_armr))
+            mndx = PMNAMES.PM_GRAY_DRAGON + m_armr.otyp - ONAMES.GRAY_DRAGON_SCALE_MAIL;
         break;
     }
-    /* the NON_PM dragon-armor arm needs worn dragon scales */
+    }
 
     /* src/mon.c:5213 — "if no form was specified above, pick one at random
        now". The modulus is the whole non-special monster table; the loop
@@ -4571,8 +4578,11 @@ export function hide_monst(mon) {
         if (ptr.mlet === MONSYMS.S_MIMIC && !M_AP_TYPE(mon))
             restrap(mon);
         game.viz_array[y][x] = save_viz;
-        if (hider_under)
-            hideunder(mon);
+        if (hider_under) {
+            const hidden = hideunder(mon);
+            if (hidden && typeof hidden.then === 'function')
+                return hidden.then(() => {});
+        }
     }
 }
 

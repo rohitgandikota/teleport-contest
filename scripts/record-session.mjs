@@ -484,6 +484,25 @@ async function recordSegment({
         env,
         stdio: ['pipe', 'pipe', 'inherit'],
     });
+    let childClosed = false;
+    let killTimeout = null;
+    const closed = new Promise(resolve => child.once('close', () => {
+        childClosed = true;
+        if (timeoutHandle) clearTimeout(timeoutHandle);
+        if (killTimeout) clearTimeout(killTimeout);
+        resolve();
+    }));
+    const stopChild = () => {
+        if (childClosed || killTimeout || !child.pid) return;
+        try { child.kill('SIGTERM'); } catch {}
+        // A sent signal does not mean the child has closed its output streams.
+        killTimeout = setTimeout(() => {
+            if (!childClosed) {
+                try { child.kill('SIGKILL'); } catch {}
+            }
+        }, 1000);
+        killTimeout.unref();
+    };
     child.stdin.on('error', () => {});
 
     armTimeout(20000, 'first marker');
@@ -510,9 +529,7 @@ async function recordSegment({
     const finish = (reason) => {
         parser.stop();
         if (timeoutHandle) clearTimeout(timeoutHandle);
-        try { child.kill('SIGTERM'); } catch {}
-        // Force close in case it ignores SIGTERM.
-        setTimeout(() => { try { child.kill('SIGKILL'); } catch {} }, 1000).unref();
+        stopChild();
         resolveDone(reason);
     };
 
@@ -560,6 +577,7 @@ async function recordSegment({
                 finish('expected steps reached');
                 return;
             }
+            if (settled || childClosed) return;
             if (nextKeyIdx < moves.length) {
                 let k = moves[nextKeyIdx++];
                 // The canonical sessions were captured under tmux, whose pty
@@ -613,7 +631,19 @@ async function recordSegment({
         resolveDone(code ?? 0);
     });
 
-    await done;
+    try {
+        await done;
+    } finally {
+        parser.stop();
+        if (timeoutHandle) clearTimeout(timeoutHandle);
+        stopChild();
+        // Cleanup and the next segment must wait for both the child and any
+        // final marker still reading RNG. onMarker must not await this promise.
+        await closed;
+        await chain;
+        if (timeoutHandle) clearTimeout(timeoutHandle);
+        if (killTimeout) clearTimeout(killTimeout);
+    }
     return steps.slice(0, expectedSteps);
 }
 

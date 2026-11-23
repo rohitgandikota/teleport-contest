@@ -49,8 +49,9 @@ Silver-hit feedback and Constitution abuse now pass 17 state controls and
 Eyewear transitions pass 30 state controls, four native cases and 152 selected
 fixtures, with 82,853 screens/cursors and 2,354,331 RNG calls. Artifact acquisition
 after reversion passes six state controls, three native cases and 186 selected
-fixtures, with 200,242 screens/cursors and 3,803,349 RNG calls. Next: recorder
-child cleanup, floor-pile settlement and separate local object order. The isolated
+fixtures, with 200,242 screens/cursors and 3,803,349 RNG calls. Recorder child
+cleanup passes 18 controls and exact native rerecordings of 17 segments.
+Next: floor-pile settlement and separate local object order. The isolated
 Linux recorder builds successfully, and NFS profiling passes its termination
 canary; fresh gameplay branch coverage has not been collected yet.
 Current-corpus parity is not a

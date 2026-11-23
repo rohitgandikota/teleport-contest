@@ -417,6 +417,16 @@ the recorded first frame — one step, then nothing.
 segments **only when `save/` is empty**, preserving bones, the scoreboard, and
 genuine save/restore pairs. Hit by `seed5002-wizard-coverage-pair`.
 
+**Wait for the recorder process to close before reusing its files.** Sending
+SIGTERM at the final input boundary does not mean the child or its output
+streams have closed. The next segment must wait for `close` and any queued
+marker/RNG reads before replacing the RNG log or clearing abandoned state.
+Error paths need the same cleanup. One SIGTERM deadline escalates to SIGKILL
+after a second and is cancelled on actual close. A final queued read must not
+send another key after close or failure. Eighteen recorder controls cover
+these cases; five unchanged native recordings match all 1,180 screens/cursors,
+67,768 RNG entries and 28 ordered animation frames after this repair.
+
 The fatal-timer probe batch also showed why padding input with repeated `y`
 is unsafe for intent: it accepted death and then `Save bones?`. Later cases
 loaded bones despite using the same seed and rc. The initial RNG count changed

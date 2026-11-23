@@ -2108,6 +2108,31 @@ bhitpile fill_pit tail call. Pauli continues make_blinded/toggle_blindness;
 Jason prepares Linux collector portability against the verified private LLVM
 18 toolchain. No fresh gameplay branch census has run yet.
 
+Artifact checkpoint `22be8c11` is pushed. The recorder lifetime repair is
+applied and verified. Both successful completion and failures now wait for
+actual child close and queued marker/RNG reads before returning. The single
+termination deadline is cancelled on close, and queued reads cannot send keys
+after failure or close. All 14 new lifetime controls and four existing exit
+controls pass. The exit mocks now emit a realistic asynchronous close event;
+their original assertions are unchanged.
+
+Five unchanged native recordings were written only to cache and compared
+exactly, without normalization: game-exit-boundaries, save-restore-pair,
+bones-persistence, the original four-case floor-pile control, and the new
+artifact fixture. Their 17 segments match all 1,180 screens/cursors, 67,768
+raw RNG entries and 28 ordered animation frames, including frame attribution.
+Seeds, datetime, options and moves also match. Logs and results use
+recorder-lifetime-native-*; no existing canonical fixture was replaced.
+
+The build-recorder.sh prerequisite is also verified by the successful isolated
+Linux build: pinned clean upstream, all six existing patches applied without
+a synthetic git commit, four build jobs and a runnable binary installed with
+sysconf. No C source or gameplay patch changes. Commit and push the recorder
+script, build script, tests and documentation as a separate checkpoint now.
+Next: record the new local-pile replacement/restore proposal, complete the
+37-file scoped consumer review, then integrate and run the complete corpus.
+Linux collector portability remains a separate cache-only review.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

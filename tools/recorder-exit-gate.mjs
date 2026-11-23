@@ -32,7 +32,17 @@ async function record(moves, batches) {
         child.stdin = new EventEmitter();
         child.stdin.write = () => { setImmediate(send); return true; };
         child.stdin.end = () => { child.stdin.writableEnded = true; };
-        child.kill = () => false;
+        child.pid = 12345;
+        let closed = false, closeScheduled = false;
+        child.once('close', () => { closed = true; });
+        child.kill = signal => {
+            if (closed || closeScheduled) return false;
+            closeScheduled = true;
+            setImmediate(() => {
+                if (!closed) child.emit('close', null, signal);
+            });
+            return true;
+        };
         setImmediate(send);
         return child;
     };

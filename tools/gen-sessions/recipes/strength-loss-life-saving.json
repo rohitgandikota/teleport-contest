@@ -1,0 +1,35 @@
+{
+  "name": "strength-loss-life-saving",
+  "description": "A weakened Knight refuses death from a lich spell, clamps restored HP to the reduced maximum, then continues through subsequent turns.",
+  "recordingNote": "Use RERECORD_TZ=Etc/GMT+4. Replays the tour-s115-32-knight input sequence.",
+  "coverage": [
+    "mode.debug",
+    "monster.special-effects"
+  ],
+  "branches": [
+    "attribute.strength-loss-life-saving"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "attribute.strength-loss-life-saving",
+      "segment": 0,
+      "screenIncludes": [
+        "OK, so you don't die.",
+        "HP:10(10)"
+      ],
+      "rngIncludes": [
+        "losestr(attrib.c:235)"
+      ]
+    }
+  ],
+  "segments": [
+    {
+      "seed": 145046,
+      "datetime": "20260503021719",
+      "nethackrc": "OPTIONS=name:Tourer,role:Knight,race:human,gender:male,align:lawful,playmode:debug,suppress_alert:3.4.3,symset:DECgraphics\nOPTIONS=!autopickup,showexp,time,color,lit_corridor,!tutorial\n",
+      "moves": "  \u0016?\rg\u00161\r    #le scalessed +3 curs saving\n\u0017\u0016?\rk\u0006  TcTd\u001b\u0017bl\u0016?\rf      \u00161\n\u00164\n\u0016?\ne\u0016?\n v telchjll\u0016?\r>t    hjk scalet o\u0016?\r>I\u0006   L          hhhhbn   ",
+      "name": "knight-survives-strength-loss"
+    }
+  ]
+}

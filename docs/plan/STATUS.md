@@ -836,6 +836,32 @@ as port defects. Source review also found ignored hero class symbols and
 missing high-bit glyph rendering, with seven native graphics probes and a
 candidate loader in `dec-class-*`. Those changes are not in this checkpoint.
 
+Vision checkpoint `3d281a36` is pushed. The 46 independent native controls
+are now complete: 42 pass, three Tourist games expose missing shirt details
+in final inventory disclosure, and one Knight game exposes strength damage
+after life-saving. The combined recording remains unsuitable for classifying
+unrelated games. Original recordings have not been replaced.
+
+`losestr` now follows C's maximum-HP floor and `setuhpmax` clamping after
+life-saving. It reduces monster HP when still polymorphed and preserves human
+HP and strength when the damage causes rehumanization. Invalid loss reports
+C's diagnostic. Six source-state tests pass; five fail before this repair.
+The new native Knight fixture improves from 121/143 screens and 7,786/7,849
+RNG calls to exact output, including both animation frames.
+
+Full regression: 638/638 fixtures, 789,477 screens/cursors, 15,090,885 RNG
+calls and 30,010/30,031 animations. Native assertions, recording integrity,
+input-exhaustion and source-audit checks pass. Logs: `strength-loss-corpus-*`,
+`strength-loss-state-{before,final}.log`, `strength-loss-hang.log` and
+`strength-loss-source-audit.log` in the restart cache.
+
+Next: port the missing final-inventory shirt and candy text from
+`xname_flags`. The cache prototype fixes all three fresh Tourist games.
+A new five-case native probe also exposes missing roleplay conduct lines;
+review these separately rather than treating them as inventory-name errors.
+The official snapshot remains November 23 at 08:33 UTC and predates these
+checkpoints. It does not establish their effect on the held-out score.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

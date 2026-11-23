@@ -1,0 +1,64 @@
+{
+  "name": "full-save-timer-order",
+  "description": "C full recovery reverses equal-deadline timer ranges. Two carried dragon eggs show the restored order, with a no-save control. Recorded with RERECORD_TZ=Etc/GMT+4.",
+  "coverage": [
+    "mode.debug",
+    "persistence.save-restore",
+    "turn.timers",
+    "object.food-corpses"
+  ],
+  "branches": [
+    "full-save-timer.no-save-hatch-order",
+    "full-save-timer.save-equal-deadline-eggs",
+    "full-save-timer.restore-reverses-hatch-order"
+  ],
+  "requireBranchAssertions": true,
+  "segments": [
+    {
+      "seed": 9220,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Timer,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,time\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": "mO aqr\r\u001b\u001b\u0017blessed scroll of genocide\rra  *\r\u001b\u001b\u0017uncursed red dragon egg\r\u0017uncursed blue dragon egg\r157.mO r\r\u001b\u001b.\u001b\u001b\u001b\u001b\u001b\u001b:i\u001b",
+      "name": "no-save-hatch-order"
+    },
+    {
+      "seed": 9220,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Timer,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,time\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": "mO aqr\r\u001b\u001b\u0017blessed scroll of genocide\rra  *\r\u001b\u001b\u0017uncursed red dragon egg\r\u0017uncursed blue dragon egg\r157.Sy",
+      "name": "save-equal-deadline-eggs"
+    },
+    {
+      "seed": 9220,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Timer,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,time\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " n mO q\r\u001b\u001b.\u001b\u001b\u001b\u001b\u001b\u001b:i\u001b",
+      "name": "restore-reverses-hatch-order"
+    }
+  ],
+  "branchAssertions": [
+    {
+      "branch": "full-save-timer.no-save-hatch-order",
+      "segment": 0,
+      "screenIncludes": [
+        "You see a baby blue dragon fly out of your pack!",
+        "You see a baby red dragon fly out of your pack!"
+      ]
+    },
+    {
+      "branch": "full-save-timer.save-equal-deadline-eggs",
+      "segment": 1,
+      "screenIncludes": [
+        "Be seeing you..."
+      ]
+    },
+    {
+      "branch": "full-save-timer.restore-reverses-hatch-order",
+      "segment": 2,
+      "screenIncludes": [
+        "welcome back",
+        "You see a baby red dragon fly out of your pack!"
+      ]
+    }
+  ]
+}

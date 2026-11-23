@@ -2615,6 +2615,48 @@ proposals are now recorded at 554 boundaries; Avicenna is checking them with
 the composed held-placement and container candidate. No such runtime change
 is included in the sink checkpoint.
 
+Sink checkpoint `5419e839` is pushed. Full-save recovery now implements C's
+net queue order through the existing save/restore timer helpers: reverse
+equal-deadline groups within each range, with local timers before global
+timers. Deadlines stay ascending; timer IDs, owner counts, unresolved-ID
+floor reconstruction and dormant queues retain their contracts. The only
+runtime change is seven lines and two imports in save.js.
+
+The promoted full-save-timer-order recording preserves all three native egg
+segments, hash
+0743e7ab1d4edf1394e969db93f59677348cd99c3372bdde4f6cf5d3378bd5ca.
+It improves from 232/242 screens and 241/242 cursors to exact output, retaining
+all 5,233 calls and 44 animations. The no-save control visibly hatches blue
+then red; restored native feedback shows red first. The restored blue message
+is not captured, so no assertion claims it is. Read-only JS observations
+separately verify both offspring and their creation order.
+
+All 29 timer state controls pass, versus 21 with the updated C-order
+expectations on the preceding runtime. Only the prior test's preserved-order
+expectation and name changed; every owner/count/ID assertion remains. The
+new controls use explicit non-monotonic expected IDs, separate deadlines,
+local/global/mixed owners, repeated saves, encoded IDs and dormant aliases.
+All 127 selected public, save/restore, timer, egg, ice, bones and floor
+fixtures pass: 107,845 screens/cursors, 2,769,360 scored RNG positions and
+6,639 scored animations. All 279 runtime hashes stayed fixed. The selection
+also includes every maintained fixture with save/restore output or a
+multi-segment save-key input. It is a selected run, not a new full corpus.
+New-fixture strict streams/slices, animation counts/cells/cursors, integrity,
+branch assertions, input exhaustion, source audit and syntax checks pass.
+Logs/totals use timer-save-order-*. Commit and push this checkpoint. Corpus
+is now 684; the last complete scored run remains 683/683 at the sink repair.
+
+The official fetch at 19:00 UTC still serves the 13:48 UTC snapshot, with
+our score last computed at 13:16 UTC. It does not measure these new pushes.
+The artifact follow-up's five map differences are now diagnosed and fixed
+in cache: inventory refreshed monsters unconditionally instead of inside
+C's SPFX_ESP branch. The combined 15-file candidate matches both native
+HALRES probes, 352 boundaries, with 69 source controls passing. Review and
+integrate it next. Its renderer and tty remain unchanged. A separate hcolor
+null/empty-string contract fix has no established route among 61 current
+callers; it is ready with 20 source controls. Held-placement/container
+composition and ice-description work continue in cache.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

@@ -11,7 +11,7 @@
 // Both can draw from the fresh process's RNG before play resumes.
 
 import { assign_graphics, ROGUESET } from './symbols.js';
-import { Is_rogue_level, gm_levelchange } from './const.js';
+import { Is_rogue_level, gm_levelchange, RANGE_LEVEL, RANGE_GLOBAL } from './const.js';
 import { reset_glyphmap, reglyph_darkroom } from './display.js';
 import { game } from './gstate.js';
 import { pline, tty_clear_nhwindow_message } from './display.js';
@@ -23,7 +23,7 @@ import { set_playmode } from './options.js';
 import { role_init } from './role.js';
 import { save_engravings, rest_engravings } from './engrave.js';
 import { loadfruitchn, find_lev_obj } from './restore.js';
-import { TIMER_OBJECT, relink_timers } from './timeout.js';
+import { TIMER_OBJECT, save_timers, restore_timers, relink_timers } from './timeout.js';
 
 // src/save.c:951 savefruitchn()
 export function savefruitchn(release = false) {
@@ -281,6 +281,13 @@ export function dorecover() {
 
     find_lev_obj();
     relink_timers(false); /* restore.c:1299, after all objects are restored */
+    // restore.c:831,898 writes the temporary level, then reloads the original
+    // current level after globals. Reverse ties within each range, local first.
+    const levelTimers = save_timers(RANGE_LEVEL, true);
+    const globalTimers = save_timers(RANGE_GLOBAL, true);
+    restore_timers(globalTimers, RANGE_GLOBAL);
+    restore_timers(levelTimers, RANGE_LEVEL);
+    relink_timers(false);
     /* restore.c:705 recalculates this process-local movement sequence from
        the restored turn. It is not carried across the save boundary. */
     game.hero_seq = game.moves * 8;

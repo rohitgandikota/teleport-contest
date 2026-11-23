@@ -11,6 +11,19 @@ Newest first within each section.
 
 ---
 
+## Full-save timer ties
+
+C recovery reloads the current level from the original full save after
+temporarily writing it to a level file. Equal-deadline timers therefore end
+up reversed within local and global ranges, with locals first. Loading the
+temporary file instead would incorrectly cancel the local reversal. Dormant
+level queues cross two reversals and keep their stored order overall.
+
+Use the existing timer transfer helpers after floor reconstruction and
+owner relinking. Do not restart timers, sort by timer ID, or reorder every
+saved level. Two carried dragon eggs with equal deadlines expose the global
+order through hatch species; matching RNG values alone misses this bug.
+
 ## Sink ring effects and resisted hallucination
 
 C sink drops precede the cannot-reach-floor branch but follow worn-item and

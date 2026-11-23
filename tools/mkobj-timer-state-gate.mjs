@@ -187,7 +187,7 @@ test('restore: extraction after JSON restore resumes ordinary corpse time', asyn
     assert.equal(restored.timed, 1); noRng();
 });
 
-test('restore: rebinding preserves queue order, IDs and non-floor owners', async () => {
+test('restore: C queue order preserves IDs and non-floor owners', async () => {
     const floor = await icedBeforeRestore();
     const held = body(HATCH_EGG, 22, ONAMES.EGG);
     held.where = OBJ_INVENT; game.invent.push(held);
@@ -208,7 +208,10 @@ test('restore: rebinding preserves queue order, IDs and non-floor owners', async
     const before = queue(), nextId = game.timer_id;
     const owners = [floor, held, contained, buried, migrating].map(obj => [obj.o_id, obj.timed, obj.age]);
     assert.equal(dosave0(), true); assert.equal(dorecover(), true);
-    assert.deepEqual(queue(), before); assert.equal(game.timer_id, nextId);
+    // restore.c:831,898 reloads original locals after globals. At 111 the
+    // order is buried, contained; at 122 it is floor, melt, held, migrating.
+    const expected = [before[0], before[1], before[5], before[2], before[4], before[3]];
+    assert.deepEqual(queue(), expected); assert.equal(game.timer_id, nextId);
     const restored = [game.level.objects[0], game.invent.find(obj => obj.o_id === held.o_id),
         game.invent.find(obj => obj.o_id === sack.o_id).cobj[0], game.level.buriedobjs[0], game.migrating_objs[0]];
     assert.deepEqual(restored.map(obj => [obj.o_id, obj.timed, obj.age]), owners);

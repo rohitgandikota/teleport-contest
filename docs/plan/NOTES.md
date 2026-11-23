@@ -9534,3 +9534,18 @@ three games and their fresh native prefixes match completely. Expanding to
 all public games exposes five remaining beam cursor differences. All five
 also occur with the exact earlier display source; the map cursor repair
 improves both affected games without changing any cells or boundary output.
+
+## Intrinsic impairment in landing and trap handling (23 Nov)
+
+landing_spot uses Stunned, Confusion and Fumbling, including intrinsic state.
+An impaired voluntary dismount starts with the pass that allows known traps.
+dotrap also tests the full Fumbling property before its escape roll. Fixing
+landing alone exposed an extra rn2(5) in trap handling, which shifted the pit's
+duration and damage. The native fumbling case loses two HP, not three.
+
+The scorer concatenates segment RNG logs. One extra call can make later,
+independently correct segments look wrong. Compare each segment and each
+input slice to locate the first source divergence. The dismount gate retains
+that stricter check alongside the ordinary scorer. Raw intrinsic setters and
+extrinsic masks are intentional in many timeout/equipment paths; do not replace
+every property field access without checking the corresponding C expression.

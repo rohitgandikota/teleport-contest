@@ -1548,6 +1548,31 @@ cursor homing. Review `projectile-cursor-audit.patch` before combining it with
 the earlier beam candidate. No beam, projectile or option production edit is
 applied yet. Property-reader and pet-restore audits remain cache-only.
 
+Pet-rendering checkpoint `a781ab0d` is pushed. The dismount/trap repair is
+applied and byte-equal to the prototype verified against 79 fixtures with
+the current pet renderer. landing_spot now uses Stunned/Confusion/Fumbling
+in C order. dotrap uses Fumbling for its known-trap escape condition, so a
+timed intrinsic cannot add the extra rn2(5) draw.
+
+All 129,534 screens/cursors, 1,960,194 RNG calls and 4,735 animations match
+in that selected regression. The 19 landing/native, ten trap and 15 existing
+mount controls pass; six landing/native checks and three trap checks fail
+before. The four new native cases match 461 screens/cursors and 10,300 RNG
+calls, including per-input slices. Three input-exhaustion checks and the
+276-module source audit pass. Logs: `steed-control-regression-prototype`,
+`steed-landing-state-final`, `steed-trap-state-final`,
+`steed-existing-mount-final`, `steed-control-hang-final`,
+`steed-control-source-audit-final` and `steed-control-final-native`.
+The full 656-fixture regression is still the earlier monster-display run.
+
+Next: integrate the beam and projectile cursor patches together, preserving
+their separate source controls, then run all 659 fixtures including the new
+pet, dismount and beam recordings. Cache script `prepare-balanced-regression.mjs`
+prepares four shards weighted by measured prior replay time. The six-case
+petattr-options recording is pending its own options checkpoint and must not
+be included before that parser repair is applied. Two agents remain active
+on property readers and instance-option restore; the projectile agent is closed.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

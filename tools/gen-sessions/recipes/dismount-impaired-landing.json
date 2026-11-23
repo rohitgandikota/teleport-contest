@@ -1,0 +1,114 @@
+{
+  "name": "dismount-impaired-landing",
+  "description": "Voluntary dismounts avoid a known pit when healthy and allow it under stun, fumbling or confusion, preserving trap RNG order.",
+  "recordingNote": "Use RERECORD_TZ=Etc/GMT+4. Intrinsic-only stun, ice-origin fumbling and timeout edge cases also have source-state controls.",
+  "segments": [
+    {
+      "seed": 6962,
+      "datetime": "20000112124000",
+      "nethackrc": "OPTIONS=name:wizard,role:Knight,race:human,gender=male,align:lawful,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             i\u001bwb \u0007tame saddled pony\r#ride\ryy\u0017pit\r\u0006 \u001bl#wizintrinsic\r\u001b #ride\r V",
+      "name": "healthy"
+    },
+    {
+      "seed": 6962,
+      "datetime": "20000112124000",
+      "nethackrc": "OPTIONS=name:wizard,role:Knight,race:human,gender=male,align:lawful,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             i\u001bwb \u0007tame saddled pony\r#ride\ryy\u0017pit\r\u0006 \u001bl#wizintrinsic\r100f\r #ride\r V",
+      "name": "intrinsic-stun"
+    },
+    {
+      "seed": 6962,
+      "datetime": "20000112124000",
+      "nethackrc": "OPTIONS=name:wizard,role:Knight,race:human,gender=male,align:lawful,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             i\u001bwb \u0007tame saddled pony\r#ride\ryy\u0017pit\r\u0006 \u001bl#wizintrinsic\r>100s\r #ride\r V",
+      "name": "intrinsic-fumbling"
+    },
+    {
+      "seed": 6962,
+      "datetime": "20000112124000",
+      "nethackrc": "OPTIONS=name:wizard,role:Knight,race:human,gender=male,align:lawful,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             i\u001bwb \u0007tame saddled pony\r#ride\ryy\u0017pit\r\u0006 \u001bl#wizintrinsic\r100g\r #ride\r V",
+      "name": "intrinsic-confusion-control"
+    }
+  ],
+  "coverage": [
+    "mode.debug",
+    "monster.steeds",
+    "terrain.traps",
+    "ui.menus"
+  ],
+  "branches": [
+    "dismount.healthy",
+    "dismount.intrinsic-stun",
+    "dismount.intrinsic-fumbling",
+    "dismount.intrinsic-confusion-control"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "dismount.healthy",
+      "segment": 0,
+      "screenCells": [
+        {
+          "step": 111,
+          "x": 48,
+          "y": 16,
+          "equals": "@"
+        }
+      ],
+      "screenIncludes": [
+        "You've been through the dungeon on a pony with no name."
+      ]
+    },
+    {
+      "branch": "dismount.intrinsic-stun",
+      "segment": 1,
+      "screenCells": [
+        {
+          "step": 115,
+          "x": 47,
+          "y": 15,
+          "equals": "@"
+        }
+      ],
+      "screenIncludes": [
+        "You've been through the dungeon on a pony with no name.",
+        "You fall into a pit!"
+      ]
+    },
+    {
+      "branch": "dismount.intrinsic-fumbling",
+      "segment": 2,
+      "screenCells": [
+        {
+          "step": 116,
+          "x": 47,
+          "y": 15,
+          "equals": "@"
+        }
+      ],
+      "screenIncludes": [
+        "You've been through the dungeon on a pony with no name.",
+        "You fall into a pit!",
+        "Timeout for fumbling set to 100."
+      ]
+    },
+    {
+      "branch": "dismount.intrinsic-confusion-control",
+      "segment": 3,
+      "screenCells": [
+        {
+          "step": 115,
+          "x": 47,
+          "y": 15,
+          "equals": "@"
+        }
+      ],
+      "screenIncludes": [
+        "You've been through the dungeon on a pony with no name.",
+        "You fall into a pit!"
+      ]
+    }
+  ]
+}

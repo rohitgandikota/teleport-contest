@@ -1887,7 +1887,7 @@ export async function dotrap(trap, trflags) {
             }
             return Trap_Effect_Finished;
         }
-        if (already_seen && !game.u.uprops?.FUMBLING
+        if (already_seen && !Fumbling()
             && !(ttype === MAGIC_PORTAL || ttype === VIBRATING_SQUARE)
             && ttype !== ANTI_MAGIC && !forcebungle && !plunged
             && !conj_pit && !adj_pit

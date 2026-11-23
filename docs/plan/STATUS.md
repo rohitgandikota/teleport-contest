@@ -754,6 +754,24 @@ incorrectly skips its random check when carrying the Amulet, and trap counts
 use local level number instead of difficulty. Probes and candidate loaders:
 `exit-boundaries*` and `room-generation-conditions*` in the cache directory.
 
+Spider checkpoint `a275c9da` is pushed. The replay driver now captures the
+final `nh_terminate` boundary once and stops. A six-segment native fixture
+deliberately supplies keys past quit, save and character-selection cancel,
+then starts or restores another game. It improves from 10/23 to 23/23
+scored screens, retaining all 10,272 RNG calls. The blank final cancel frame
+is omitted by the frozen scorer, so the already-correct startup bail path
+remains unchanged. The 11-game fresh fuzz control also now passes all 5,260
+screens and 301,385 RNG calls, including the repaired spider web.
+
+Validation covers all 44 public fixtures plus every existing fixture selected
+by quit/save inputs or final ending text, and both new controls: 85/85,
+46,313 screens/cursors, 1,945,189 RNG calls and 1,620/1,641 animations.
+All 13 selected repeat/restore state tests and both input-exhaustion checks
+pass. Source audit and native assertion/integrity checks are empty. Logs:
+`exit-regression-{0,1}.log`, `game-exit-boundaries-before.log`,
+`exit-state-final.log`, `exit-hang.log` and `exit-source-audit.log` in
+`.cache/restart-20261122/`.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

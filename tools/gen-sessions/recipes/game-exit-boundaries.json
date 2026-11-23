@@ -1,0 +1,100 @@
+{
+  "name": "game-exit-boundaries",
+  "description": "Quit, save and character-selection cancellation stop before trailing keys, then a new segment starts normally.",
+  "recordingNote": "Use RERECORD_TZ=Etc/GMT+4. Trailing keys deliberately exceed the native process lifetime.",
+  "coverage": [
+    "mode.normal",
+    "ending.topten",
+    "persistence.save-restore"
+  ],
+  "branches": [
+    "replay.exit.quit",
+    "replay.exit.save",
+    "replay.exit.cancel",
+    "replay.exit.next-game"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "replay.exit.quit",
+      "segment": 0,
+      "screenIncludes": [
+        "quit in The Dungeons"
+      ]
+    },
+    {
+      "branch": "replay.exit.save",
+      "segment": 2,
+      "screenIncludes": [
+        "Be seeing you..."
+      ]
+    },
+    {
+      "branch": "replay.exit.cancel",
+      "segment": 4,
+      "screenCells": [
+        {
+          "step": 1,
+          "x": 0,
+          "y": 0,
+          "equals": " "
+        }
+      ]
+    },
+    {
+      "branch": "replay.exit.next-game",
+      "segment": [
+        1,
+        3,
+        5
+      ],
+      "screenIncludes": [
+        "MacOS NetHack Version"
+      ]
+    }
+  ],
+  "segments": [
+    {
+      "name": "quit",
+      "seed": 9751,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:Exitnormal,role:Wizard,race:human,gender:male,align:neutral,pettype:none\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,!safe_wait\nOPTIONS=disclose:-i -a -v -g -c -o\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #quit\ry                    "
+    },
+    {
+      "name": "after-quit",
+      "seed": 9752,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:Exitnormal,role:Wizard,race:human,gender:male,align:neutral,pettype:none\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,!safe_wait\nOPTIONS=disclose:-i -a -v -g -c -o\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " V"
+    },
+    {
+      "name": "save",
+      "seed": 9753,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:Exitsave,role:Wizard,race:human,gender:male,align:neutral,pettype:none\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,!safe_wait\nOPTIONS=disclose:-i -a -v -g -c -o\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " SyVVVVVVVVVVVV"
+    },
+    {
+      "name": "restore",
+      "seed": 9754,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:Exitsave,role:Wizard,race:human,gender:male,align:neutral,pettype:none\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,!safe_wait\nOPTIONS=disclose:-i -a -v -g -c -o\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": "V"
+    },
+    {
+      "name": "cancel",
+      "seed": 9755,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:Exitcancel,pettype:none\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,!safe_wait\nOPTIONS=disclose:-i -a -v -g -c -o\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": "qVVVVVVVVVVVV"
+    },
+    {
+      "name": "after-cancel",
+      "seed": 9756,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:Exitcancel,role:Wizard,race:human,gender:male,align:neutral,pettype:none\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,!safe_wait\nOPTIONS=disclose:-i -a -v -g -c -o\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " V"
+    }
+  ]
+}

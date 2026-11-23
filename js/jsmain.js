@@ -397,7 +397,12 @@ export async function runSegment(input) {
         try {
             await moveloop_core();
         } catch (e) {
-            if (e && e.__nh_gameover) continue; /* nh_terminate unwind */
+            if (e && e.__nh_gameover) {
+                // C's nh_terminate emits one final input boundary, then exits.
+                // Remaining keys cannot produce frames in this segment.
+                await game._preNhgetchHook?.();
+                break;
+            }
             if (String(e?.message || '').includes('Input queue empty')) break;
             throw e;
         }

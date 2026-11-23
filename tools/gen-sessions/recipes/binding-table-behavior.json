@@ -1,0 +1,166 @@
+{
+  "name": "binding-table-behavior",
+  "description": "Native key descriptions and key lists track custom bindings, unbinding, number-pad option order, and rest-on-space overrides.",
+  "recordingNote": "Use RERECORD_TZ=Etc/GMT+4 for a fixed UTC-4 recording offset.",
+  "coverage": [
+    "mode.debug",
+    "ui.menus"
+  ],
+  "branches": [
+    "binding-table.alias-description",
+    "binding-table.unbound-description",
+    "binding-table.changed-key-list",
+    "binding-table.swapped-inventory-key",
+    "binding-table.swapped-version-key",
+    "binding-table.number-pad-after-binding",
+    "binding-table.number-pad-before-binding",
+    "binding-table.same-number-pad-after-binding",
+    "binding-table.space-binding-description",
+    "binding-table.rest-on-space-description"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "binding-table.alias-description",
+      "segment": 0,
+      "screenIncludes": [
+        "(#versionshort)"
+      ]
+    },
+    {
+      "branch": "binding-table.unbound-description",
+      "segment": 1,
+      "screenIncludes": [
+        "No such command 'V'"
+      ]
+    },
+    {
+      "branch": "binding-table.changed-key-list",
+      "segment": 2,
+      "screenIncludes": [
+        "versionshort"
+      ]
+    },
+    {
+      "branch": "binding-table.swapped-inventory-key",
+      "segment": 3,
+      "screenIncludes": [
+        "(#versionshort)"
+      ]
+    },
+    {
+      "branch": "binding-table.swapped-version-key",
+      "segment": 4,
+      "screenIncludes": [
+        "(#inventory)"
+      ]
+    },
+    {
+      "branch": "binding-table.number-pad-after-binding",
+      "segment": 5,
+      "screenIncludes": [
+        "(#help)"
+      ]
+    },
+    {
+      "branch": "binding-table.number-pad-before-binding",
+      "segment": 6,
+      "screenIncludes": [
+        "(#versionshort)"
+      ]
+    },
+    {
+      "branch": "binding-table.same-number-pad-after-binding",
+      "segment": 7,
+      "screenIncludes": [
+        "(#movewest)"
+      ]
+    },
+    {
+      "branch": "binding-table.space-binding-description",
+      "segment": 8,
+      "screenIncludes": [
+        "(#versionshort)"
+      ]
+    },
+    {
+      "branch": "binding-table.rest-on-space-description",
+      "segment": 9,
+      "screenIncludes": [
+        "rest_on_space"
+      ]
+    }
+  ],
+  "segments": [
+    {
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nBIND=~:versionshort,V:nothing\n",
+      "moves": " & ~",
+      "name": "alias-description"
+    },
+    {
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nBIND=~:versionshort,V:nothing\n",
+      "moves": " & V",
+      "name": "unbound-description"
+    },
+    {
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nBIND=~:versionshort,V:nothing,!:toggle(autopickup)\n",
+      "moves": " ?j      \u001b",
+      "name": "changed-key-list"
+    },
+    {
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nBIND=i:versionshort,V:inventory\n",
+      "moves": " & i",
+      "name": "swapped-inventory-key"
+    },
+    {
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nBIND=i:versionshort,V:inventory\n",
+      "moves": " & V",
+      "name": "swapped-version-key"
+    },
+    {
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nBIND=h:versionshort\nOPTIONS=number_pad:1\n",
+      "moves": " & h",
+      "name": "number-pad-after-binding"
+    },
+    {
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=number_pad:1\nBIND=h:versionshort\n",
+      "moves": " & h",
+      "name": "number-pad-before-binding"
+    },
+    {
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nBIND=h:versionshort\nOPTIONS=number_pad:0\n",
+      "moves": " & h",
+      "name": "same-number-pad-after-binding"
+    },
+    {
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nBIND=<space>:versionshort\n",
+      "moves": " &  ",
+      "name": "space-binding-description"
+    },
+    {
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nBIND=<space>:versionshort\nOPTIONS=rest_on_space\n",
+      "moves": " &  ",
+      "name": "rest-on-space-description"
+    }
+  ]
+}

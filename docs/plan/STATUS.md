@@ -369,8 +369,64 @@ The 17 property-zero equipment checks still pass.
 All 73 selected public/equipment/monster/passive replays pass: 49,264
 screens/cursors and 1,421,745 RNG calls, with the known 21 public animation
 differences. Source audit is empty and all 73 input-exhaustion checks pass.
-Next: push the resistance-memory checkpoint, then run all 617 current replay
-fixtures again.
+Resistance-memory checkpoint `853d1eb1` is pushed. A fresh full run at that
+commit passes all 617 existing public and supplemental fixtures: 787,100
+screens/cursors and 14,807,071 RNG calls. There are no worker errors. Animation
+parity is 30,002/30,023, retaining the known 21 public differences. Logs are
+`.cache/restart-20261122/final-corpus-{0,1,2,3}.log`.
+
+The next native command-table fixture is deliberately outside that 617-session
+result. `binding-table-behavior` records ten cases for descriptions, changed
+key lists, unbinding, swapped command keys, number-pad option order and
+rest-on-space overrides. All native branch assertions pass. Before the next
+fix, JS matches 27/56 screens, 40/56 cursors and all 21,960 RNG calls.
+Its recipe and generated recording are uncommitted. Recording timezone is
+explicitly `Etc/GMT+4`. The older scratch binding-table probe had insufficient
+More dismissals for its first help queries; the new fixture fixes those inputs.
+
+Current command-table gaps: `cmdbind_table()` reconstructs defaults rather
+than retaining C's ordered binding records; `reset_commands()` runs after all
+config parsing and loses line ordering; repeat stores translated keys instead
+of command identity. C restores overwritten direction bindings before each
+number-pad change, even when the mode value is unchanged. Port these shared
+paths before adding more isolated key-display workarounds.
+
+The shared binding table now follows C's insertion order, replacement and
+removal rules, direction-key backups, layout swaps, parameter ownership and
+space override. It replaces the raw configuration maps and reconstructed
+default tables. Nine compiled-C test groups compare 609 table changes and
+all command-key preferences after each change. The 70 existing parser/encoding
+checks pass. The generator also preserves the search/wait function names and
+six internal function names that it had misread. Native key help now resets
+its first-use flag per process, and the key list includes command parameters.
+The new ten-case table fixture passes all 56 screens/cursors and 21,960 RNG calls.
+
+A full 618-fixture sweep passed 617, exposing one save/restore regression:
+serialized command records lose their static command-table identities. C
+keeps these bindings, the repeat queue and first-use key help per process.
+The save layer now preserves the fresh boot's values. A new two-segment C
+fixture changes bindings across restore and checks fresh repeat/key-help state.
+Its first post-save cursor exposed a recorder defect in the recently adopted
+upstream teardown reset: it discarded the visible raw cursor before the final
+capture. The recorder now keeps that cursor until a new output stream starts.
+The compiled recorder gate checks seven cursor states and stream separation;
+it fails before the correction. The patch applies to pinned upstream, and the
+incremental recorder rebuild preserves the existing instrumentation. The new
+save fixture was regenerated from C after this correction; old fixtures stay
+unchanged. The full run logs are `binding-corpus-{0,1,2,3}.log`; the save fix
+and fresh recorder controls are checked separately before committing.
+The full sweep plus the save rerun now passes 619/619 fixtures: 787,170
+screens/cursors and 14,831,571 RNG calls. Animations remain 30,002/30,023.
+The five fresh/unchanged save and death controls pass 1,323 screens/cursors,
+25,908 RNG calls and 19 animations. The corrected recorder's save cursor is
+again `[0,1,1]`, agreeing with actual newline output and the older fixtures.
+
+All 66 public/command/options/save input-exhaustion checks pass and source audit
+is empty. The newest official fetch still returns the November 22 19:45 snapshot.
+The next execution fixture is separate from this checkpoint: ten native cases
+expose repeat storing translated keys instead of command identity, especially
+with swapped or unbound defaults. Before that fix it matches 57/66 screens,
+all cursors, 11,118/22,101 RNG calls and three animations. Its files are pending.
 
 ## 2026-09-05: full faithful port is the active goal
 

@@ -10,7 +10,7 @@
 // For browser play, see nethack.js (uses NethackGame directly).
 
 import { game, resetGame } from './gstate.js';
-import { reset_commands } from './cmd.js';
+import { reset_commands, update_rest_on_space } from './cmd.js';
 import { MENU_FULL, AUTOUNLOCK_APPLY_KEY } from './const.js';
 import { initRng, enableRngLog, getRngLog } from './rng.js';
 import { pushKey, nhgetch } from './input.js';
@@ -121,8 +121,8 @@ export class NethackGame {
         init_ov_primary_symbols();
         init_ov_rogue_symbols();
         savedsym_free();
-        g.rc_key_bindings = {};
-        g.rc_key_params = {};
+        // initoptions_init(): defaults precede each OPTIONS/BIND line.
+        reset_commands(true);
         const rc = parseNethackrc(this._nethackrc);
         g.rc = rc;
         /* src/options.c optfn_boulder() and initoptions_finish(). The active
@@ -175,17 +175,11 @@ export class NethackGame {
                 delete g.flags[name];
             }
         }
-        /* src/options.c:2622 optfn_number_pad() writes iflags.num_pad and
-           iflags.num_pad_mode; initoptions_init() ran reset_commands(TRUE)
-           beforehand and the option's do_set tail reruns it */
-        reset_commands(true);
-        if ('num_pad' in rc.opts) {
-            g.iflags.num_pad = rc.opts.num_pad;
-            g.iflags.num_pad_mode = rc.opts.num_pad_mode;
-            delete g.flags.num_pad;
-            delete g.flags.num_pad_mode;
-            reset_commands(false);
-        }
+        // optfn_number_pad() already updated the live bindings during parse.
+        delete g.flags.num_pad;
+        delete g.flags.num_pad_mode;
+        // initoptions_finish(): remember a configured space binding.
+        update_rest_on_space();
         /* src/options.c:4099 optfn_statuslines() writes
            iflags.wc2_statuslines and :4018 optfn_statushilites()
            iflags.hilite_delta (the hilite_status rules were installed by

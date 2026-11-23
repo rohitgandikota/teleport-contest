@@ -1,0 +1,51 @@
+{
+  "name": "binding-save-restore",
+  "description": "Command bindings, repeat queues and one-time key help belong to the new process when a saved game is restored with a changed configuration.",
+  "recordingNote": "Use RERECORD_TZ=Etc/GMT+4 for a fixed UTC-4 recording offset.",
+  "coverage": [
+    "mode.normal",
+    "persistence.save-restore",
+    "ui.menus",
+    "ui.count-repeat"
+  ],
+  "branches": [
+    "binding-restore.save",
+    "binding-restore.fresh-process"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "binding-restore.save",
+      "segment": 0,
+      "screenIncludes": [
+        "(#versionshort)",
+        "Be seeing you"
+      ]
+    },
+    {
+      "branch": "binding-restore.fresh-process",
+      "segment": 1,
+      "screenIncludes": [
+        "welcome back",
+        "There is no command available to repeat.",
+        "Ask about '&' or '?' to get more info.",
+        "(#inventory)",
+        "Not carrying anything."
+      ]
+    }
+  ],
+  "segments": [
+    {
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:BindSave,role:Wizard,race:human,gender:male,align:neutral\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nBIND=~:versionshort\n",
+      "moves": " & VSy"
+    },
+    {
+      "seed": 32,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:BindSave,role:Wizard,race:human,gender:male,align:neutral\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nBIND=V:inventory,~:versionshort\n",
+      "moves": "\u0001& V~V"
+    }
+  ]
+}

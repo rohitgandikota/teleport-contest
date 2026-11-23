@@ -11,7 +11,7 @@ import { test } from 'node:test';
 import * as options from '../js/options.js';
 import { runSegment } from '../js/jsmain.js';
 import { InMemoryStorage } from '../js/storage.js';
-import { game } from '../js/gstate.js';
+import { cmdbind_get } from '../js/cmd.js';
 
 const root = fileURLToPath(new URL('..', import.meta.url));
 const inputs = [
@@ -63,5 +63,5 @@ test('startup installs every encoded command key from the native recipe', async 
     await runSegment({ ...recipe.segments[0], moves: ' ',
         storage: new InMemoryStorage() });
     for (const key of [248, 22, 126, 33, 150])
-        assert.equal(game.rc_key_bindings[String.fromCharCode(key)], 'versionshort');
+        assert.equal(cmdbind_get(key).cmd.ef_txt, 'versionshort');
 });

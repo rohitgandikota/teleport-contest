@@ -96,7 +96,8 @@ for (const eRaw of entries) {
         .replace(/#ifndef\s+(\w+)[^\n]*\n([\s\S]*?)(?:#else[^\n]*\n([\s\S]*?))?#endif[^\n]*\n?/g,
                  (m, name, a, b) => DEFINED.has(name) ? (b ?? '') : a);
     // ef_txt is the second field: a string literal after the key.
-    const strs = [...e.matchAll(/"((?:[^"\\]|\\.)*)"/g)].map(m => m[1]);
+    const stringFields = [...e.matchAll(/"((?:[^"\\]|\\.)*)"/g)];
+    const strs = stringFields.map(m => m[1]);
     if (strs.length < 1) continue;
     const ef_txt = strs[0];
 
@@ -137,7 +138,9 @@ for (const eRaw of entries) {
 
     /* ef_funct is the fourth field, the command function; the port keeps
        its name so ext_func_tab_from_func() can find an entry by function */
-    const fm = /^\s*,\s*([A-Za-z_][A-Za-z0-9_]*)/.exec(e.slice(e.lastIndexOf('"') + 1));
+    const desc = stringFields[Math.min(1, stringFields.length - 1)];
+    const fm = /^\s*,\s*(?:NULL\s*,\s*)?([A-Za-z_][A-Za-z0-9_]*)/
+        .exec(e.slice(desc.index + desc[0].length));
     const ef_funct = fm ? fm[1] : '';
 
     out.push({ ef_txt, ef_desc, ef_funct, key, flags });

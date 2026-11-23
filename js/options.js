@@ -8,7 +8,7 @@ import { new_status_window } from './tty/wintty.js';
 import { notice_all_mons_flush } from './hack.js';
 import { display_file } from './pager.js';
 import { optmenu } from './dat_files.js';
-import { reset_commands, bind_key } from './cmd.js';
+import { reset_commands, bind_key, count_bind_keys, update_rest_on_space } from './cmd.js';
 import { set_vanq_order } from './insight.js';
 import { pline, docrt, bot, reglyph_darkroom, flush_screen } from './display.js';
 import {
@@ -265,6 +265,9 @@ export function parseoptions(opts, tinitial, tfrom_file, result) {
             return false;
         result.opts[opt.name] = !negated;
         (result.optSetInConfig ||= {})[opt.name] = true;
+        // Later number_pad lines call update_rest_on_space during startup.
+        if (opt.name === 'rest_on_space')
+            (game.flags ||= {}).rest_on_space = !negated;
     } else if ((opt.name === 'symset' || opt.name === 'roguesymset')
                && value !== null && value !== '') {
         /* src/options.c:4198 optfn_symset() / :3567 optfn_roguesymset()
@@ -544,9 +547,12 @@ export function parseoptions(opts, tinitial, tfrom_file, result) {
                     result.opts.num_pad_mode |= 2;
             }
         }
-        /* reset_commands(FALSE) runs once the live iflags hold these (see
-           jsmain and parseoptions_interactive()); number_pad() only emits
-           the terminal's keypad-mode strings, which have no screen cells */
+        const iflags = (game.iflags ||= {});
+        if ('num_pad' in result.opts) {
+            iflags.num_pad = result.opts.num_pad;
+            iflags.num_pad_mode = result.opts.num_pad_mode;
+        }
+        reset_commands(false);
         result.opts[opt.name] = negated ? null : value;
     } else if (opt.name === 'disclose') {
         /* src/options.c:1447 optfn_disclose(), the do_set arm: the value is a
@@ -1679,7 +1685,7 @@ function get_option_value(o) {
     case 'autocompletions':         /* src/options.c optfn_o_autocomplete */
         return n_currently_set((game.rc?.autocompletions || []).length);
     case 'bind keys':               /* src/options.c optfn_o_bind_keys */
-        return n_currently_set((game.rc?.bindings || []).length);
+        return n_currently_set(count_bind_keys());
     case 'message types':           /* src/options.c optfn_o_message_types */
         return n_currently_set(msgtype_count());
     case 'fruit':                   /* src/options.c:1769 optfn_fruit */
@@ -2128,7 +2134,7 @@ async function handler_rebind_keys() {
                      'bind key to a command', MENU_ITEMFLAGS_NONE);
         tty_add_menu(win, null, 2, 0, 0, ATR_NONE, NO_COLOR,
                      'bind command to a key', MENU_ITEMFLAGS_NONE);
-        if ((game.rc?.bindings || []).length)
+        if (count_bind_keys())
             tty_add_menu(win, null, 3, 0, 0, ATR_NONE, NO_COLOR,
                          'view changed key binds', MENU_ITEMFLAGS_NONE);
         tty_end_menu(win, 'Do what?');
@@ -2302,6 +2308,9 @@ export function add_menu_heading(tmpwin, buf) {
    machinery that has no JS counterpart. */
 function boolopt_side_effects(name) {
     switch (name) {
+    case 'rest_on_space':
+        update_rest_on_space();
+        break;
     case 'terrainstatus': case 'weaponstatus': case 'armorstatus':
     case 'showscore': case 'showvers': case 'showexp': case 'time':
         /* src/options.c:5349 — the field set is reassessed (VIA_WINDOWPORT) */
@@ -3725,8 +3734,6 @@ async function parseoptions_interactive(buf) {
             game.flags[name] = value;
         }
     }
-    if ('num_pad' in result.opts)
-        reset_commands(false);      /* optfn_number_pad() do_set tail */
     for (const error of result.errors) {
         await pline(error + (/[.!?]$/.test(error) ? '' : '.'));
         await tty_wait_synch();

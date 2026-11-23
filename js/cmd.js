@@ -183,20 +183,8 @@ import { place_object } from './mkobj.js';
 import { trapname, feeltrap } from './trap.js';
 import { move_out_of_bounds } from './hack.js';
 
-// Direction deltas: y u k
-//                   h . l
-//                   b j n
-/* include/hack.h — sdir order "hykulnjb" indexes xdir/ydir; the same DIR
-   codes set_move_cmd() receives from the do_move_/do_run_/do_rush_ family. */
-const KEY_TO_DIR = { h: DIR_W, y: DIR_NW, k: DIR_N, u: DIR_NE,
-                     l: DIR_E, n: DIR_SE, j: DIR_S, b: DIR_SW };
-
-/* src/cmd.c:3760 rhack(): a key is a movement key when the command bound
-   to it is one of the do_move_/do_run_/do_rush_ entries (MOVEMENTCMD).
-   cmdbind_table() binds those per Cmd.dirchars, so digits move only under
-   number_pad and the vi keys only without it. */
-function movement_binding(ch) {
-    const cmd = cmdbind_table().get(ch.charCodeAt(0));
+// src/cmd.c rhack(): movement is determined by the bound command.
+function movement_binding(cmd) {
     if (!cmd)
         return null;
     for (let dir = 0; dir < 8; dir++)
@@ -204,10 +192,6 @@ function movement_binding(ch) {
             if (ext_func_tab_from_func(move_funcs[dir][mode]) === cmd)
                 return { dir, mode };
     return null;
-}
-
-function isMovementKey(ch) {
-    return movement_binding(ch) !== null;
 }
 
 // Keys src/cmd.c dispatches to real commands that this port has not reached
@@ -2627,27 +2611,15 @@ export async function rhack(key) {
 
     const parsedKey = ch0;
 
-    /* src/options.c:7669 bind_key() — a BIND=key:command line replaces the
-       key's default binding. The dispatch chain below is keyed by each
-       command's DEFAULT key, so translating the bound key to that default
-       reaches the same function C rebinds to. */
-    {
-        const boundname = game.rc_key_bindings?.[ch0];
-        /* src/cmd.c:4890 rhack() — gc.cmd_bind is the binding being run;
-           a "BIND=key:command(param)" line's parameter rides on it */
-        game.cmd_bind = (boundname != null)
-            ? { param: game.rc_key_params?.[ch0] || null } : null;
-        game._bound_extcmd_name = null;
-        if (boundname !== undefined) {
-            const e = extcmdlist.find((x) => x.ef_txt === boundname);
-            if (e && e.key)
-                ch0 = String.fromCharCode(e.key);
-            else if (e)
-                /* a command with no default key (#toggle, #wizcustom, ...)
-                   has no dispatch arm to reach; it runs by name below */
-                game._bound_extcmd_name = boundname;
-        }
-    }
+    // Resolve the binding once. The dispatch arms use the command's default
+    // key, but movement, prefixes and parameters belong to this live binding.
+    game.cmd_bind = cmdbind_get(key & 0xff);
+    const prefixCommand = game.cmd_bind?.cmd;
+    game._bound_extcmd_name = null;
+    if (prefixCommand?.key)
+        ch0 = String.fromCharCode(prefixCommand.key);
+    else if (prefixCommand && !(prefixCommand.flags & MOVEMENTCMD))
+        game._bound_extcmd_name = prefixCommand.ef_txt;
 
     /* src/cmd.c:5121 parse() stores the count parsed for this input. A bare
        Ctrl-A therefore repeats the command once, even when the original
@@ -2660,7 +2632,7 @@ export async function rhack(key) {
         game.cmd_key = parsedKey;
     }
 
-    if (game.rc_key_bindings?.[parsedKey] === null) {
+    if (!prefixCommand) {
         await bad_command(parsedKey);
         return;
     }
@@ -2688,21 +2660,16 @@ export async function rhack(key) {
        override redraw and annotate under !num_pad. */
     let movemode = 0;
     const ch = ch0;
-    /* the key's binding decides (Cmd.dirchars via cmdbind_table()): the
-       shifted letter or M(digit) is the MV_RUN form, the control letter the
-       MV_RUSH form */
-    const moveBinding = movement_binding(ch0);
+    const moveBinding = movement_binding(prefixCommand);
     if (moveBinding && moveBinding.mode === MV_RUN)
         movemode = 1;
     else if (moveBinding && moveBinding.mode === MV_RUSH)
         movemode = 3;
-    const prefixCommand = cmdbind_table().get(ch0.charCodeAt(0));
     /* src/cmd.c:3689 rhack() dispatches the bound command (tlist), so the
        prefixes are recognized by the command a key is bound to: 'g'/'G'/
        'F'/'m' by default, '5'/M-5/'-' as well under number_pad */
     const prefixTxt = prefixCommand ? prefixCommand.ef_txt : null;
     const is_prefixcmd = !!(prefixCommand && (prefixCommand.flags & PREFIXCMD));
-    let boundCommand;
 
     /* src/cmd.c:3689 — use key to directly index cmdlist array */
     if (prefixCommand && !(await can_do_extcmd(prefixCommand))) {
@@ -2761,7 +2728,7 @@ export async function rhack(key) {
         const name = game._bound_extcmd_name;
         game._bound_extcmd_name = null;
         useResult(await execute_extcmd(name));
-    } else if (isMovementKey(ch)) {
+    } else if (moveBinding) {
         /* src/cmd.c:1386 set_move_cmd() — sets u.dx/u.dy and, when no g/G
            prefix is pending, context.run. Keeping the direction on `u` is
            what lets moveloop's run branch call domove() again without
@@ -3111,11 +3078,11 @@ export async function rhack(key) {
         // actively wrong — C never says that for these — so produce no
         // message and consume no turn until the real command lands.
         game.context.move = 0;
-    } else if ((boundCommand = cmdbind_table().get(ch.charCodeAt(0)))) {
+    } else if (prefixCommand) {
         /* src/cmd.c:3800 rhack(): any other bound key runs its command;
            under number_pad the freed vi keys reach #jump, #kick, #loot and
            friends this way */
-        useResult(await execute_extcmd(boundCommand.ef_txt));
+        useResult(await execute_extcmd(prefixCommand.ef_txt));
     } else {
         await bad_command(ch);
         return;
@@ -3133,7 +3100,7 @@ export async function rhack(key) {
     if (commandResult & (ECMD_CANCEL | ECMD_FAIL))
         reset_cmd_vars(true);
     else if (!commandTookTime && !game._cmd_prefix_pending
-             && !isMovementKey(ch))
+             && !moveBinding)
         reset_cmd_vars(game.multi < 0);
     /* C reasserts context.move after reset_cmd_vars for TIME|CANCEL. */
     if (commandTookTime)
@@ -4693,30 +4660,68 @@ function visctrl_key(c) {
     return out + String.fromCharCode(c);
 }
 
-/* the default key -> extended command bindings: commands_init() walks
-   extcmdlist and binds each entry's default key, later entries replacing
-   earlier ones on a collision. Its extra bind_key() calls follow; most are
-   number_pad alternates whose keys reset_commands() then rebinds to
-   movement commands for !num_pad (h/j/k/l/N/u, ^L/^N via the ctrl-rush
-   forms), and '5'/M-5/'-' land on MOVEMENTCMD entries the key lists
-   exclude. The two that survive visibly are M-O overview and M-N name —
-   exactly the pair the recorded '?j' listing shows. */
-/* src/cmd.c update_rest_on_space(): cloned from extcmdlist['.'], then
-   slightly modified to be distinct */
+// src/cmd.c update_rest_on_space(): distinct from the ordinary wait entry.
 const restonspace = {
     ef_txt: 'wait', ef_desc: "rest one move via 'rest_on_space' option",
     key: ' '.charCodeAt(0), flags: IFBURIED | CMD_M_PREFIX,
+    ef_funct: 'donull', f_text: 'waiting',
 };
 
-// src/cmd.c:2667 bind_key(), the user-configured command and parameter.
-// A null entry suppresses the default binding in rhack().
-export function bind_key(key, command) {
-    const ch = String.fromCharCode(key);
-    game.rc_key_bindings ||= {};
-    game.rc_key_params ||= {};
+// src/cmd.c cmdbind_get/add/remove/swapkeys. The array keeps C's linked-list
+// order: new bindings go first; replacing a command keeps its position.
+export function cmdbind_get(key) {
+    return key ? game.Cmd?.cmdbinds?.find(bind => bind.key === key) || null : null;
+}
+
+function cmdbind_add(key, cmd, userbind) {
+    if (!key)
+        return;
+    const bind = cmdbind_get(key);
+    if (!cmd && bind) {
+        cmdbind_remove(key);
+    } else if (bind) {
+        bind.cmd = cmd;
+        bind.userbind = userbind;
+        bind.param = null;
+    } else {
+        ((game.Cmd ||= {}).cmdbinds ||= []).unshift({ key, cmd, userbind, param: null });
+    }
+}
+
+function cmdbind_remove(key) {
+    const binds = game.Cmd?.cmdbinds;
+    const index = binds?.findIndex(bind => bind.key === key) ?? -1;
+    if (index >= 0)
+        binds.splice(index, 1);
+}
+
+function cmdbind_swapkeys(key1, key2) {
+    const bind1 = cmdbind_get(key1), bind2 = cmdbind_get(key2);
+    if (bind1 && bind2) {
+        bind1.key = key2;
+        bind2.key = key1;
+    }
+}
+
+// src/cmd.c count_bind_keys(): changed assignments and missing default keys.
+export function count_bind_keys() {
+    const keys = new Set();
+    let count = 0;
+    for (const bind of game.Cmd.cmdbinds) {
+        keys.add(bind.key);
+        if (bind.userbind && bind.cmd && bind.cmd.key !== bind.key)
+            count++;
+    }
+    for (const cmd of extcmdlist)
+        if (cmd.key && !keys.has(cmd.key))
+            count++;
+    return count;
+}
+
+// src/cmd.c bind_key(), the command and optional parameter for one key.
+export function bind_key(key, command, user = true) {
     if (!strcmpi(command, 'nothing')) {
-        game.rc_key_bindings[ch] = null;
-        delete game.rc_key_params[ch];
+        cmdbind_remove(key);
         return true;
     }
 
@@ -4729,15 +4734,14 @@ export function bind_key(key, command) {
     for (const extcmd of extcmdlist) {
         if (strcmpi(buf, extcmd.ef_txt) || (extcmd.flags & INTERNALCMD))
             continue;
-        game.rc_key_bindings[ch] = extcmd.ef_txt;
-        delete game.rc_key_params[ch];
+        cmdbind_add(key, extcmd, user);
         if (extcmd.flags & CMD_PARAM) {
             if (param === null)
                 config_error_add(`'${buf}' requires a parameter`);
             else if (!param)
                 config_error_add('Required parameter cannot be empty');
             else
-                game.rc_key_params[ch] = String.fromCharCode(
+                cmdbind_get(key).param = String.fromCharCode(
                     ...new TextEncoder().encode(param).slice(0, 30));
         } else if (param)
             config_error_add(`'${buf}' does not take a parameter`);
@@ -4746,125 +4750,41 @@ export function bind_key(key, command) {
     return false;
 }
 
-function cmdbind_table() {
-    const binds = new Map();
-    for (const e of extcmdlist)
-        if (e.key)
-            binds.set(e.key, e);
-    const by_txt = (t) => extcmdlist.find(e => e.ef_txt === t);
-    /* src/cmd.c commands_init(): number_pad */
-    binds.set('l'.charCodeAt(0) & 0x1f, by_txt('redraw'));
-    binds.set('h'.charCodeAt(0), by_txt('help'));
-    binds.set('j'.charCodeAt(0), by_txt('jump'));
-    binds.set('k'.charCodeAt(0), by_txt('kick'));
-    binds.set('l'.charCodeAt(0), by_txt('loot'));
-    binds.set('n'.charCodeAt(0) & 0x1f, by_txt('annotate'));
-    binds.set('N'.charCodeAt(0), by_txt('name'));
-    binds.set('u'.charCodeAt(0), by_txt('untrap'));
-    binds.set('5'.charCodeAt(0), by_txt('run'));
-    binds.set(0x80 | '5'.charCodeAt(0), by_txt('rush'));
-    binds.set('-'.charCodeAt(0), by_txt('fight'));
-    /* alt keys: */
-    binds.set(0x80 | 'O'.charCodeAt(0), by_txt('overview'));
-    binds.set(0x80 | '2'.charCodeAt(0), by_txt('twoweapon'));
-    binds.set(0x80 | 'N'.charCodeAt(0), by_txt('name'));
-    /* src/cmd.c update_rest_on_space(): when 'rest_on_space' is On, <space>
-       runs the #wait command through a clone of the '.' entry; when it is
-       Off, <space> is unbound and elicits "Unknown command ' '." */
-    if (game.flags?.rest_on_space)
-        binds.set(' '.charCodeAt(0), restonspace);
-    /* src/cmd.c:2195 cmdbind_swapkeys(): two keys trade bindings, and only
-       when both are bound */
-    const cmdbind_swapkeys = (key1, key2) => {
-        const bind1 = binds.get(key1);
-        const bind2 = binds.get(key2);
+// src/cmd.c commands_init(): default keys and number-pad alternatives.
+function commands_init() {
+    for (const cmd of extcmdlist)
+        if (cmd.key)
+            cmdbind_add(cmd.key, cmd, false);
+    for (const [key, name] of [
+        ['\x0c', 'redraw'], ['h', 'help'], ['j', 'jump'], ['k', 'kick'],
+        ['l', 'loot'], ['\x0e', 'annotate'], ['N', 'name'], ['u', 'untrap'],
+        ['5', 'run'], ['\xb5', 'rush'], ['-', 'fight'],
+        ['\xcf', 'overview'], ['\xb2', 'twoweapon'], ['\xce', 'name'],
+    ])
+        bind_key(key.charCodeAt(0), name, false);
+}
 
-        if (bind1 && bind2) {
-            binds.set(key1, bind2);
-            binds.set(key2, bind1);
-        }
-    };
-    /* src/cmd.c:3389 reset_commands(): the swap_yz, pcHack_compat and
-       phone_layout remaps act on the table as it stands before the
-       direction keys are (re)bound.  This table is rebuilt from Cmd's
-       flags on every lookup, so each remap is applied whenever its mode
-       is on (the C toggles them in place; the results agree because a
-       reversed toggle undoes the same swaps on the restored table). */
-    {
-        const Cmd = game.Cmd || {};
-        if (Cmd.swap_yz) {
-            /* FIXME? should Cmd.spkeys[] be scanned for y and/or z to swap? */
-            const ylist = [
-                'y'.charCodeAt(0), 'Y'.charCodeAt(0), 'y'.charCodeAt(0) & 0x1f,
-                0x80 | 'y'.charCodeAt(0), 0x80 | 'Y'.charCodeAt(0),
-                0x80 | ('y'.charCodeAt(0) & 0x1f),
-            ];
-            for (let i = 0; i < ylist.length; i++) {
-                const c = ylist[i] & 0xff;
-                cmdbind_swapkeys(c, c + 1);
-            }
-        }
-        if (Cmd.pcHack_compat) {
-            /* FIXME: NHKF_DOINV2 ought to be implemented instead of this */
-            binds.set(0x80 | '0'.charCodeAt(0),
-                      by_txt('inventtype')); /* ext_func_tab_from_func(dotypeinv) */
-        }
-        if (Cmd.phone_layout) {
-            for (let i = 0; i < 3; i++) {
-                let c = '1'.charCodeAt(0) + i;             /* 1,2,3 <-> 7,8,9 */
-                cmdbind_swapkeys(c, c + 6);
-                c = (0x80 | '1'.charCodeAt(0)) + i; /* M-1,M-2,M-3 <-> M-7,M-8,M-9 */
-                cmdbind_swapkeys(c, c + 6);
-            }
-        }
-    }
-    /* src/cmd.c:3462 reset_commands(): the direction characters (and their
-       run/rush forms) replace whatever commands_init() had on those keys,
-       so cmdbind_get('l') is "moveeast" without number_pad and "loot"
-       with it. */
-    {
-        const num_pad = !!game.iflags?.num_pad;
-        /* Cmd.dirchars from reset_commands(); the defaults cover callers
-           that run before initoptions */
-        const dirchars = (game.Cmd?.dirchars
-                          ?? (num_pad ? '47896321><' : 'hykulnjb><')).slice(0, 8);
-        for (let i = 0; i < 8; i++) {
-            const di = dirchars.charCodeAt(i);
-            const up = String.fromCharCode(di).toUpperCase().charCodeAt(0);
-            /* back up the commands & keys overwritten by new movement keys */
-            binds.delete(di);
-            if (!num_pad) {
-                binds.delete(up);
-                binds.delete(di & 0x1f);
-            } else {
-                binds.delete(di | 0x80);
-            }
-            /* bind the new keys to movement commands */
-            binds.set(di, ext_func_tab_from_func(move_funcs[i][0]));
-            if (!num_pad) {
-                binds.set(up, ext_func_tab_from_func(move_funcs[i][1]));
-                binds.set(di & 0x1f, ext_func_tab_from_func(move_funcs[i][2]));
-            } else {
-                /* M(number) works when altmeta is on */
-                binds.set(di | 0x80, ext_func_tab_from_func(move_funcs[i][1]));
-                /* can't bind highc() or C() of digits. just use the 5 prefix. */
-            }
-        }
-    }
-    return binds;
+// src/cmd.c update_rest_on_space(): remember a configured space command while
+// the option temporarily replaces it with wait.
+export function update_rest_on_space() {
+    const Cmd = game.Cmd;
+    const bind = cmdbind_get(32);
+    if (bind && bind.cmd !== restonspace)
+        Cmd.unrestonspace = bind.cmd;
+    cmdbind_add(32, game.flags?.rest_on_space ? restonspace : Cmd.unrestonspace || null,
+                false);
 }
 
 // src/cmd.c keylist_putcmds() — one category's bound keys, then the
 // commands of that category with no key at all.
 function keylist_putcmds(putline, docount, incl_flags, excl_flags, keys_used) {
-    const binds = cmdbind_table();
     const keys_already_used = keys_used.slice();
     let count = 0;
 
     for (let i = 0; i < 256; i++) {
         if (keys_used[i]) continue;
         if (i === 32 && !game.flags?.rest_on_space) continue;
-        const cmd = binds.get(i);
+        const bind = cmdbind_get(i), cmd = bind?.cmd;
         if (!cmd) continue;
         if ((incl_flags && !(cmd.flags & incl_flags))
             || (excl_flags && (cmd.flags & excl_flags)))
@@ -4873,7 +4793,10 @@ function keylist_putcmds(putline, docount, incl_flags, excl_flags, keys_used) {
             count++;
             continue;
         }
-        putline(`${key2txt(i).padEnd(7)} ${cmd.ef_txt.padEnd(13)} ${cmd.ef_desc}`);
+        let line = `${key2txt(i).padEnd(7)} ${cmd.ef_txt.padEnd(13)} ${cmd.ef_desc}`;
+        if (cmd.flags & CMD_PARAM)
+            line += ` "${bind.param ?? '(null)'}"`;
+        putline(line);
         keys_used[i] = true;
     }
     /* commands that lack key assignments */
@@ -4883,8 +4806,8 @@ function keylist_putcmds(putline, docount, incl_flags, excl_flags, keys_used) {
             continue;
         /* keylist_func_has_key: is some not-yet-listed key bound to it? */
         let has_key = false;
-        for (const [k, cmd] of binds)
-            if (!keys_already_used[k] && cmd === extcmd) {
+        for (const bind of game.Cmd.cmdbinds)
+            if (!keys_already_used[bind.key] && bind.cmd === extcmd) {
                 has_key = true;
                 break;
             }
@@ -4927,13 +4850,12 @@ export async function dokeylist() {
         /* the "(also commands with no key assignment)" subtitle shows when
            spkey_gap or any command has no key; the '#'-only commands make
            it always true here, but test it the way the C does */
-        const binds = cmdbind_table();
         let any_keyless = spkey_gap;
         for (const extcmd of extcmdlist) {
             if (any_keyless) break;
             let has_key = false;
-            for (const [k, cmd] of binds)
-                if (!keys_used[k] && cmd === extcmd) {
+            for (const bind of game.Cmd.cmdbinds)
+                if (!keys_used[bind.key] && bind.cmd === extcmd) {
                     has_key = true;
                     break;
                 }
@@ -5036,7 +4958,7 @@ export function key2extcmddesc(key) {
         if (key === mk.key)
             return mk.desc;
     /* finally, check whether 'key' is a command */
-    const cmd = cmdbind_table().get(key);
+    const cmd = cmdbind_get(key)?.cmd;
     if (cmd && cmd.ef_txt) {
         let buf = `${cmd.ef_desc} (#${cmd.ef_txt})`;
         /* reqmenu prefix gets a two-line movement/non-movement form */
@@ -5057,10 +4979,6 @@ export async function paranoid_query(be_paranoid, prompt) {
     return (await paranoid_ynq(be_paranoid, prompt, false)) === 'y';
 }
 
-// src/cmd.c:3083 cmd_from_func(), the key a command is bound to.  The JS
-// dispatch is by command name, so this takes the name: a BIND line in the
-// rc file wins, else the lowest key of the live Cmd.commands[] table
-// (cmdbind_table(): number_pad rebinding and the direction keys included).
 // src/cmd.c:3016 ext_func_tab_from_func() — the extcmdlist entry of a
 // command function; the generated entries name their function (ef_funct)
 export function ext_func_tab_from_func(fn) {
@@ -5072,17 +4990,10 @@ export function ext_func_tab_from_func(fn) {
 }
 
 export function cmd_from_func(name) {
-    let i;
     let ret = '\0';
-
-    for (const [key, bound] of Object.entries(game.rc_key_bindings || {}))
-        if (bound === name)
-            return key;
-    const binds = cmdbind_table();
-    /* the C walks its binding list newest-first; this table has no
-       history, so the keys are scanned in order (the two agree for every
-       key commands_init() and number_pad bind twice) */
-    for (i = 1; i < 256; ++i) {
+    const fn = extcmdlist.find(cmd => cmd.ef_txt === name)?.ef_funct;
+    for (const bind of game.Cmd.cmdbinds) {
+        const i = bind.key;
         /* skip space; we'll use it below as last resort if no other
            keystroke invokes space's command */
         if (i === ' '.charCodeAt(0))
@@ -5094,16 +5005,15 @@ export function cmd_from_func(name) {
             && !game.Cmd?.num_pad)
             continue;
 
-        const e = binds.get(i);
-        if (e && e.ef_txt === name) {
+        if (bind.cmd && bind.cmd.ef_funct === fn) {
             if (i >= ' '.charCodeAt(0) && i <= '~'.charCodeAt(0))
                 return String.fromCharCode(i);
             else
                 ret = String.fromCharCode(i);
         }
     }
-    const sp = binds.get(' '.charCodeAt(0));
-    if (sp && sp.ef_txt === name)
+    const sp = cmdbind_get(32);
+    if (sp?.cmd && sp.cmd.ef_funct === fn)
         return ' ';
     return ret;
 }
@@ -5327,61 +5237,93 @@ const move_funcs = [
     [dodown,            dodown,           dodown],
     [doup,              doup,             doup],
 ];
-// src/cmd.c:3343 reset_commands() — the Cmd state derived from the
-// number_pad setting. Key lookups in this port (cmdbind_table(), movecmd())
-// read game.iflags.num_pad and game.Cmd live instead of a rebound
-// Cmd.commands[] table, so only the flags and direction strings are kept
-// here; cmdbind_table() applies the swap_yz, phone layout and MSDOS M-0
-// remaps from these flags.
+// src/cmd.c reset_commands(): restore the previous direction keys before
+// installing a new layout. Even an unchanged number_pad option does this.
 export function reset_commands(initial) {
-    const sdir = 'hykulnjb><',
-          sdir_swap_yz = 'hzkulnjb><',
-          ndir = '47896321><',
-          ndir_phone_layout = '41236987><';
+    const sdir = 'hykulnjb><', sdir_swap_yz = 'hzkulnjb><',
+          ndir = '47896321><', ndir_phone_layout = '41236987><';
     const Cmd = (game.Cmd ||= {});
-    let flagtemp;
     let updated = 0;
 
     if (initial) {
         updated = 1;
         Cmd.num_pad = false;
         Cmd.pcHack_compat = Cmd.phone_layout = Cmd.swap_yz = false;
+        commands_init();
     } else {
+        for (const bind of Cmd.back_dir_cmd || [])
+            cmdbind_add(bind.key, bind.cmd, false);
+
         const iflags = game.iflags || {};
-        /* basic num_pad */
-        flagtemp = !!iflags.num_pad;
-        if (flagtemp !== !!Cmd.num_pad) {
+        let flagtemp = !!iflags.num_pad;
+        if (flagtemp !== Cmd.num_pad) {
             Cmd.num_pad = flagtemp;
             ++updated;
         }
-        /* swap_yz mode (only applicable for !num_pad); intended for
-           QWERTZ keyboard used in Central Europe, particularly Germany */
-        flagtemp = ((iflags.num_pad_mode | 0) & 1) ? !Cmd.num_pad : false;
-        if (flagtemp !== !!Cmd.swap_yz) {
+        flagtemp = (iflags.num_pad_mode & 1) ? !Cmd.num_pad : false;
+        if (flagtemp !== Cmd.swap_yz) {
             Cmd.swap_yz = flagtemp;
             ++updated;
+            // y, Y, ^Y, M-y, M-Y and M-^Y trade places with their z forms.
+            for (const c of [121, 89, 25, 249, 217, 153])
+                cmdbind_swapkeys(c, c + 1);
         }
-        /* MSDOS compatibility mode (only applicable for num_pad) */
-        flagtemp = ((iflags.num_pad_mode | 0) & 1) ? Cmd.num_pad : false;
-        if (flagtemp !== !!Cmd.pcHack_compat) {
+        flagtemp = (iflags.num_pad_mode & 1) ? Cmd.num_pad : false;
+        if (flagtemp !== Cmd.pcHack_compat) {
             Cmd.pcHack_compat = flagtemp;
             ++updated;
+            const key = '0'.charCodeAt(0) | 0x80;
+            if (flagtemp)
+                cmdbind_add(key, ext_func_tab_from_func(dotypeinv), false);
+            else
+                cmdbind_remove(key);
         }
-        /* phone keypad layout (only applicable for num_pad) */
-        flagtemp = ((iflags.num_pad_mode | 0) & 2) ? Cmd.num_pad : false;
-        if (flagtemp !== !!Cmd.phone_layout) {
+        flagtemp = (iflags.num_pad_mode & 2) ? Cmd.num_pad : false;
+        if (flagtemp !== Cmd.phone_layout) {
             Cmd.phone_layout = flagtemp;
             ++updated;
+            for (let i = 0; i < 3; i++) {
+                const c = '1'.charCodeAt(0) + i;
+                cmdbind_swapkeys(c, c + 6);
+                cmdbind_swapkeys(c | 0x80, (c | 0x80) + 6);
+            }
         }
-    } /*?initial*/
+    }
 
-    /* choose updated movement keys */
     if (updated)
         Cmd.serialno = (Cmd.serialno | 0) + 1;
     Cmd.dirchars = !Cmd.num_pad
-                   ? (!Cmd.swap_yz ? sdir : sdir_swap_yz)
-                   : (!Cmd.phone_layout ? ndir : ndir_phone_layout);
-    Cmd.alphadirchars = !Cmd.num_pad ? Cmd.dirchars : sdir;
+        ? (Cmd.swap_yz ? sdir_swap_yz : sdir)
+        : (Cmd.phone_layout ? ndir_phone_layout : ndir);
+    Cmd.alphadirchars = Cmd.num_pad ? sdir : Cmd.dirchars;
+
+    Cmd.back_dir_cmd = [];
+    for (let dir = 0; dir < N_DIRS; dir++) {
+        for (let mode = MV_WALK; mode <= MV_RUSH; mode++) {
+            let key = Cmd.dirchars.charCodeAt(dir);
+            if (Cmd.num_pad) {
+                if (mode !== MV_WALK)
+                    key |= 0x80;
+            } else if (mode === MV_RUN) {
+                key = Cmd.dirchars[dir].toUpperCase().charCodeAt(0);
+            } else if (mode === MV_RUSH) {
+                key &= 0x1f;
+            }
+            Cmd.back_dir_cmd.push({ key, cmd: cmdbind_get(key)?.cmd || null });
+            cmdbind_remove(key);
+        }
+    }
+    for (let dir = 0; dir < N_DIRS; dir++) {
+        const key = Cmd.dirchars.charCodeAt(dir);
+        cmdbind_add(key, ext_func_tab_from_func(move_funcs[dir][MV_WALK]), false);
+        const runkey = Cmd.num_pad ? key | 0x80
+            : Cmd.dirchars[dir].toUpperCase().charCodeAt(0);
+        cmdbind_add(runkey, ext_func_tab_from_func(move_funcs[dir][MV_RUN]), false);
+        if (!Cmd.num_pad)
+            cmdbind_add(key & 0x1f, ext_func_tab_from_func(move_funcs[dir][MV_RUSH]), false);
+    }
+    update_rest_on_space();
+    Cmd.extcmd_char = cmd_from_func('#');
 }
 
 // src/cmd.c:461 can_do_extcmd() — the Lua cmd_before callbacks (the
@@ -5416,52 +5358,16 @@ export function cmd_from_dir(dir, mode) {
 // within the plane of the map, after setting u.dx, u.dy, u.dz
 export function movecmd(sym, mode) {
     let d = DIR_ERR;
-    let bound = game.rc_key_bindings?.[sym];
-    const fn_txt = (fn) => ext_func_tab_from_func(fn).ef_txt;
-
-    if (bound === undefined) {
-        /* src/cmd.c:3462 reset_commands(): dirchars walk; without
-           number_pad highc(dirchar) runs and C(dirchar) rushes (^J/^L/^N
-           override their default commands); with number_pad the digits
-           walk and M(digit) runs ("can't bind highc() or C() of digits") */
-        const num_pad = !!game.iflags?.num_pad;
-        /* Cmd.dirchars from reset_commands() (the phone layout and swap_yz
-           reorder it); KEY_TO_DIR is keyed by the sdir letters */
-        const dirchars = (game.Cmd?.dirchars
-                          ?? (num_pad ? '47896321><' : 'hykulnjb><')).slice(0, 8);
-        const sdir = 'hykulnjb';
-        const code = sym.length === 1 ? sym.charCodeAt(0) : -1;
-        const letter_of = (ch) => {
-            const i = dirchars.indexOf(ch);
-            return i >= 0 ? sdir[i] : null;
-        };
-        let dk = KEY_TO_DIR[letter_of(sym)];
-        if (dk !== undefined)
-            bound = fn_txt(move_funcs[dk][MV_WALK]);
-        else if (!num_pad && code >= 0x41 && code <= 0x5a
-                 && (dk = KEY_TO_DIR[letter_of(sym.toLowerCase())]) !== undefined)
-            bound = fn_txt(move_funcs[dk][MV_RUN]);     /* highc(dirchar) */
-        else if (!num_pad && code >= 0 && code < 0x20
-                 && (dk = KEY_TO_DIR[letter_of(String.fromCharCode(code | 0x60))]) !== undefined)
-            bound = fn_txt(move_funcs[dk][MV_RUSH]);    /* C(dirchar) */
-        else if (num_pad && code >= 0x80
-                 && (dk = KEY_TO_DIR[letter_of(String.fromCharCode(code & 0x7f))]) !== undefined)
-            bound = fn_txt(move_funcs[dk][MV_RUN]);     /* M(digit) */
-        else if (sym === '<')
-            bound = 'up';
-        else if (sym === '>')
-            bound = 'down';
-    }
-    if (bound) {
+    const cmd = cmdbind_get(sym.charCodeAt(0))?.cmd;
+    if (cmd) {
+        const fn = cmd.ef_funct;
         if (mode === MV_ANY) {
             for (d = N_DIRS_Z - 1; d > DIR_ERR; d--)
-                if (bound === fn_txt(move_funcs[d][MV_WALK])
-                    || bound === fn_txt(move_funcs[d][MV_RUN])
-                    || bound === fn_txt(move_funcs[d][MV_RUSH]))
+                if (move_funcs[d].some(move => move.name === fn))
                     break;
         } else {
             for (d = N_DIRS_Z - 1; d > DIR_ERR; d--)
-                if (bound === fn_txt(move_funcs[d][mode]))
+                if (move_funcs[d][mode].name === fn)
                     break;
         }
     }

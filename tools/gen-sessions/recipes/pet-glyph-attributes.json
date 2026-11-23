@@ -1,0 +1,141 @@
+{
+  "name": "pet-glyph-attributes",
+  "description": "Pet highlighting follows captured glyph identity across hallucination, gender, disabled highlighting and blank-class monster detection.",
+  "segments": [
+    {
+      "name": "pet-highlight-male-ordinary",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\nOPTIONS=hilite_pet\n",
+      "moves": " \u0007sleeping tame male gnome\r V\f"
+    },
+    {
+      "name": "pet-highlight-male-hallucinated",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\nOPTIONS=hilite_pet\n",
+      "moves": " \u0007sleeping tame male gnome\r \u0017uncursed potion of hallucination\rqa  \u001bV\f"
+    },
+    {
+      "name": "pet-highlight-female-ordinary",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\nOPTIONS=hilite_pet\n",
+      "moves": " \u0007sleeping tame female gnome\r V\f"
+    },
+    {
+      "name": "pet-highlight-female-hallucinated",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\nOPTIONS=hilite_pet\n",
+      "moves": " \u0007sleeping tame female gnome\r \u0017uncursed potion of hallucination\rqa  \u001bV\f"
+    },
+    {
+      "name": "pet-highlight-disabled",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\nOPTIONS=!hilite_pet\n",
+      "moves": " \u0007sleeping tame female gnome\r V\f"
+    },
+    {
+      "name": "pet-highlight-tame-ghost-detection",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\nOPTIONS=hilite_pet,!use_inverse\n",
+      "moves": " \u0007sleeping tame ghost\r\u0017uncursed potion of monster detection\rqa  \u001bV\f"
+    }
+  ],
+  "recordingNote": "Use RERECORD_TZ=Etc/GMT+4. Buffered state mutations, attribute choices and Rogue color ranges have separate source-state controls.",
+  "coverage": [
+    "mode.debug",
+    "ui.map-memory-vision",
+    "ui.menus",
+    "object.potions"
+  ],
+  "branches": [
+    "pet-glyph.pet-highlight-male-ordinary",
+    "pet-glyph.pet-highlight-male-hallucinated",
+    "pet-glyph.pet-highlight-female-ordinary",
+    "pet-glyph.pet-highlight-female-hallucinated",
+    "pet-glyph.pet-highlight-disabled",
+    "pet-glyph.pet-highlight-tame-ghost-detection"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "pet-glyph.pet-highlight-male-ordinary",
+      "segment": 0,
+      "screenCells": [
+        {
+          "step": 30,
+          "x": 8,
+          "y": 13,
+          "equals": "G"
+        }
+      ]
+    },
+    {
+      "branch": "pet-glyph.pet-highlight-male-hallucinated",
+      "segment": 1,
+      "screenCells": [
+        {
+          "step": 69,
+          "x": 8,
+          "y": 13,
+          "equals": "c"
+        }
+      ]
+    },
+    {
+      "branch": "pet-glyph.pet-highlight-female-ordinary",
+      "segment": 2,
+      "screenCells": [
+        {
+          "step": 32,
+          "x": 8,
+          "y": 13,
+          "equals": "G"
+        }
+      ]
+    },
+    {
+      "branch": "pet-glyph.pet-highlight-female-hallucinated",
+      "segment": 3,
+      "screenCells": [
+        {
+          "step": 71,
+          "x": 8,
+          "y": 13,
+          "equals": "c"
+        }
+      ]
+    },
+    {
+      "branch": "pet-glyph.pet-highlight-disabled",
+      "segment": 4,
+      "screenCells": [
+        {
+          "step": 32,
+          "x": 8,
+          "y": 13,
+          "equals": "G"
+        }
+      ]
+    },
+    {
+      "branch": "pet-glyph.pet-highlight-tame-ghost-detection",
+      "segment": 5,
+      "screenCells": [
+        {
+          "step": 62,
+          "x": 8,
+          "y": 13,
+          "equals": " "
+        }
+      ],
+      "screenIncludes": [
+        "You sense the presence of monsters."
+      ]
+    }
+  ]
+}

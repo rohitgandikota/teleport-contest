@@ -1513,6 +1513,41 @@ in boomerang-flight, kick-objects-monsters and return-weapons. The pet agent
 is working on startup petattr parsing and hilite_pet option side effects.
 Both own cache-only candidates; parent owns recording and tracked integration.
 
+Monster-display checkpoint `944d46f8` is pushed. Buffered pet attributes and
+Rogue monster colors are applied and verified. The painter reads captured
+MG_PET, so live tameness changes cannot reclassify an existing cell. Rogue
+colors use the captured numeric range when available. Unresolved descriptors
+retain their prior tame hint at buffer-write time; that compatibility fallback
+does not establish identity parity for every remaining producer.
+
+All 151 selected public/monster/rendering fixtures pass: 90,672 screens/cursors,
+2,203,583 RNG calls and 4,370 animations. The applied display source is byte-equal
+to the reviewed prototype used for that run. All 44 pet, 19 Rogue and 32 cursor
+controls pass, including native color/attribute reach. The six new native cases
+improve 293/307 to 307/307 screens with 18,605 RNG calls preserved. Recording
+assertions/integrity, three input-exhaustion checks and source audit pass. The
+last full run remains the preceding 656-fixture monster-display checkpoint.
+Logs: `pet-glyph-regression-prototype`, `pet-glyph-state-final`,
+`pet-glyph-rogue-state-final`, `pet-glyph-cursor-state-final`,
+`pet-glyph-hang-final`, `pet-glyph-source-audit-final`, and
+`pet-glyph-final-native`, all `.log` in the restart cache.
+
+The dismount/trap prototype also passes its 79 selected fixtures against the
+current pet renderer: 129,534 screens/cursors, 1,960,194 RNG calls and 4,735
+animations. Its tracked integration and final gates are next. The native
+state gate treats an absent extrinsic field as zero, matching the property's
+existing representation; an earlier test-only strict undefined/zero comparison
+was corrected before accepting the gate.
+
+The options candidate now matches six fresh C cases, improving 207/231 to
+231/231 screens and preserving 18,564 RNG calls. Its broader parser changes
+still need parent integration/regression. The final asserted recipe and native
+recording are generated. The returned beam follow-up fixes the eight remaining
+projectile cursor differences with start-of-flight flushes and message-window
+cursor homing. Review `projectile-cursor-audit.patch` before combining it with
+the earlier beam candidate. No beam, projectile or option production edit is
+applied yet. Property-reader and pet-restore audits remain cache-only.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

@@ -9497,8 +9497,15 @@ The eight native monster-glyph cases use paired class overrides and controls.
 They verify output colors, Unicode bypass and ghost inverse attributes, but
 class selectors customize several ranges together. The 45-check state gate
 injects distinct metadata per range and checks buffered identity after live
-monster mutations. It deliberately disables pet highlighting: that still
-reads live tameness and requires a separate repair.
+monster mutations. It deliberately disables pet highlighting to isolate the
+producer from the separate painter controls.
+
+Pet highlighting now reads buffered MG_PET, not live tameness. Ordinary
+hallucinated pets, detected blank-class ghosts and ridden heroes are distinct
+ranges; they must not all receive pet attributes. Rogue color also follows
+captured range and gender. Only the normal male range is yellow. Six native
+cases check actual attributes, while state controls mutate the live monster
+after buffering. Descriptor fallback remains a limit for unported identities.
 
 C's display_monster processes a physically seen mimic disguise before the
 real-monster stage. Sensing can hide the first glyph, but its memory update

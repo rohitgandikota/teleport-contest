@@ -26,8 +26,9 @@ cursor output are verified. The stricter public animation check matches
 Mounted-hero rendering now passes seven new native cases and 73 selected
 fixtures, with 21,828 exact screens/cursors and 1,324,950 RNG calls.
 C's shared display_monster helper now preserves sensed-mimic memory and unseen
-worm-tail selection. Next: buffered pet attributes, dismount/trap impairment
-conditions and remaining beam cursors. Current-corpus parity is not a
+worm-tail selection. Buffered pet attributes and Rogue colors pass 151 selected
+fixtures, including six new native cases. Next: dismount/trap impairment,
+beam/projectile cursors and pet option parsing/restore. Current-corpus parity is not a
 completeness claim. See [STATUS.md](STATUS.md) for evidence and next actions.
 Historical milestone rows below are not a current completion audit.
 

@@ -1052,8 +1052,14 @@ export function show_glyph_cell(x, y, ch, color = NO_COLOR, decgfx = false, attr
                 && M_AP_TYPE(game.youmonst) === M_AP_NOTHING)
                 color = CLR_YELLOW;
         } else if (glyph?.kind === 'mon') {
-            color = glyph.detected || (glyph.mon?.mtame && !Hallucination())
-                || (glyph.female ?? glyph.mon?.female) ? NO_COLOR : CLR_YELLOW;
+            if (glyph.glyphnum !== undefined) {
+                // src/display.c:2987-3067: only normal male glyphs are yellow.
+                color = glyph.glyphnum >= GLYPH_MON_MALE_OFF
+                    && glyph.glyphnum < GLYPH_MON_FEM_OFF ? CLR_YELLOW : NO_COLOR;
+            } else {
+                color = glyph.detected || (glyph.mon?.mtame && !Hallucination())
+                    || (glyph.female ?? glyph.mon?.female) ? NO_COLOR : CLR_YELLOW;
+            }
         } else if (glyph?.kind === 'warn') {
             color = NO_COLOR;
         }
@@ -1131,6 +1137,9 @@ export function show_glyph_cell(x, y, ch, color = NO_COLOR, decgfx = false, attr
             glyphnum = GLYPH_UNEXPLORED_OFF;
     }
     const gm = glyphnum === undefined ? null : glyphmap()[glyphnum];
+    // Unresolved descriptors retain their existing tame hint until their
+    // producer supplies an identity. Capture it here, never during repaint.
+    const glyphflags = gm?.glyphflags ?? (glyph?.mon?.mtame ? MG_PET : 0);
     // src/display.c:2088 nul_gbuf: absent buffer entries are unexplored.
     const old = gbuf_at(x, y) ?? {
         disp_glyphnum: GLYPH_UNEXPLORED_OFF, disp_ch: ' ',
@@ -1144,7 +1153,7 @@ export function show_glyph_cell(x, y, ch, color = NO_COLOR, decgfx = false, attr
         || old.disp_ch !== ch || old.disp_color !== color
         || old.disp_decgfx !== !!decgfx || old.disp_attr !== (attr | 0)
         || old.disp_customcolor !== (gm?.customcolor ?? 0)
-        || old.disp_glyphflags !== (gm?.glyphflags ?? 0)
+        || old.disp_glyphflags !== glyphflags
         || old.disp_tileidx !== (gm?.tileidx ?? 0)
         || game.iflags?.use_background_glyph) {
         const rows = (game.gbuf ||= []);
@@ -1156,7 +1165,7 @@ export function show_glyph_cell(x, y, ch, color = NO_COLOR, decgfx = false, attr
             disp_glyph: glyph,
             disp_glyphnum: glyphnum,
             disp_customcolor: gm?.customcolor ?? 0,
-            disp_glyphflags: gm?.glyphflags ?? 0,
+            disp_glyphflags: glyphflags,
             disp_tileidx: gm?.tileidx ?? 0,
             disp_color256idx: gm?.color256idx ?? 0,
             disp_u: gm?.u ?? null,
@@ -2200,7 +2209,7 @@ function _paint_map_cell(display, x, y) {
     if (raw.charCodeAt(0) < 0x20)
         return;
     const ch = dec ? (CMP_DEC_MAP[raw] || raw) : raw;
-    const attr = (g.disp_attr ?? 0) | pet_terminal_attr(g.disp_glyph?.mon);
+    const attr = (g.disp_attr ?? 0) | pet_terminal_attr(g.disp_glyphflags);
     // win/tty/wintty.c:3966 tty_print_glyph(). Extra RGB/256-color
     // escapes bypass the nomux foreground buffer; basic colors use g_putch.
     let color = g.disp_color ?? NO_COLOR;
@@ -2903,8 +2912,8 @@ export function see_traps() {
 
 // win/tty/wintty.c tty_print_glyph(), MG_PET with hilite_pet. NetHack's
 // attribute numbers differ from the terminal grid's bit flags.
-function pet_terminal_attr(mon) {
-    if (!mon?.mtame || !game.flags?.hilite_pet)
+function pet_terminal_attr(glyphflags) {
+    if (!(glyphflags & MG_PET) || !game.flags?.hilite_pet)
         return 0;
     switch (game.iflags?.wc2_petattr ?? 7 /* ATR_INVERSE */) {
     case 1: return TERM_BOLD;

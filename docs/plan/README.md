@@ -18,11 +18,11 @@ of 24,531 combined screens, 7th agentic and 11th overall. It predates the
 latest repairs. Public remains 44/44; 1,008 held-out screens remain unmatched
 in that snapshot.
 
-The local regression now passes 641/641 fixtures with 789,951 exact screens
-and 15,159,749 RNG calls. Recent repairs cover room difficulty, ending
-vision, strength loss, roleplay conduct, nudist inventory and final item text.
-Interactive game exit also passes the full suite. Next: loaded symbol sets,
-custom class glyphs and graphics transitions.
+The local regression now passes 645/645 fixtures with 791,068 exact screens
+and 15,307,740 RNG calls. Recent repairs cover interactive exit, loaded symbol
+sets, custom class glyphs, Rogue graphics and save/restore transitions.
+Next: custom unexplored and blank map symbols, then the remaining glyph
+customization consumers. Current-corpus parity is not a completeness claim.
 See [STATUS.md](STATUS.md) for evidence and the next action. Historical
 milestone rows below are not a current completion audit.
 

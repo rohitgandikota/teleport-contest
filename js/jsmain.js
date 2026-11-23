@@ -18,10 +18,13 @@ import { newgame, newgame_moveloop_preamble, moveloop_core,
          maybe_do_tutorial } from './allmain.js';
 import { wd_message, restore_savefile_prompt } from './unixmain.js';
 import { parseNethackrc, optValue, set_fruit_name, set_menuobjsyms_flags, iflag_boolean_options } from './options.js';
-import { assign_graphics, init_ov_primary_symbols, init_ov_rogue_symbols,
+import { assign_graphics, init_symbols, clear_symsetentry, PRIMARYSET, ROGUESET,
+         gp_primary_syms, gr_rogue_syms, gc_currentgraphics,
          savedsym_free, go_ov_primary_syms, go_ov_rogue_syms, SYM_BOULDER,
          SYM_OFF_X } from './symbols.js';
-import { flush_screen } from './display.js';
+import { apply_customizations } from './glyphs.js';
+import { do_custom_symbols, do_custom_colors } from './const.js';
+import { flush_screen, reglyph_darkroom } from './display.js';
 import { GameDisplay } from './game_display.js';
 import { reset_windows } from './tty/wintty.js';
 import { init_rect_globals } from './rect.js';
@@ -129,8 +132,12 @@ export class NethackGame {
 
         /* src/symbols.c:85 init_symbols(): the SYMBOLS= overrides start
            empty before the config file is read */
-        init_ov_primary_symbols();
-        init_ov_rogue_symbols();
+        gp_primary_syms.fill(0);
+        gr_rogue_syms.fill(0);
+        clear_symsetentry(PRIMARYSET, true);
+        clear_symsetentry(ROGUESET, true);
+        gc_currentgraphics.set = PRIMARYSET;
+        init_symbols();
         savedsym_free();
         // initoptions_init(): defaults precede each OPTIONS/BIND line.
         reset_commands(true);
@@ -145,11 +152,7 @@ export class NethackGame {
             go_ov_primary_syms[SYM_BOULDER + SYM_OFF_X]
                 = go_ov_rogue_syms[SYM_BOULDER + SYM_OFF_X]
                 = String(optValue(rc, 'boulder')).charCodeAt(0);
-        /* src/symbols.c init_symbols() then assign_graphics(PRIMARYSET).
-           Without OPTIONS=symset:<name> the built-in ASCII defaults stand;
-           DECgraphics is the only alternate set any recorded configuration
-           asks for. */
-        assign_graphics(/^DECgraphics$/i.test(optValue(rc, 'symset') || ''));
+        assign_graphics(PRIMARYSET);
         /* Leave plname EMPTY when the rc does not set it: src/allmain.c calls
            askname() in that case, and the session's keystrokes supply the name.
            Defaulting it here made player_selection() skip askname and read the
@@ -203,6 +206,8 @@ export class NethackGame {
             g.iflags.hilite_delta = rc.opts.statushilites;
             delete g.flags.statushilites;
         }
+        reglyph_darkroom();
+        apply_customizations(PRIMARYSET, do_custom_symbols | do_custom_colors);
         set_menuobjsyms_flags(rc.opts.menuobjsyms ?? 4);
         const pettype = optValue(rc, 'pettype');
         if (pettype) g.preferred_pet = pettype[0];

@@ -9321,21 +9321,35 @@ coloratt.c (js/coloratt_data.js).
 dat/symbols is embedded now (tools/gen-datafiles.mjs, `symbols` in
 js/dat_files.js) and symbols.c parse_sym_line()/files.c read_sym_file()
 read the chosen set's lines: the control lines, the S_ entries into the
-C's gp.primary_syms[] table (assign_graphics() still carries the sets the
-port draws with), and the G_ entries through match_glyph(). DECgraphics
-gives the Mines, Gehennom, Fort Ludios and Sokoban wall glyphs custom
-colours; the port's map colours don't change (the scorer's screen decoder
-strips every escape sequence, so colours are never compared) but
-#wizcustom lists them as the C does, with the DEC meta character
+C's gp.primary_syms[] table, and the G_ entries through match_glyph().
+As of November 23, assign_graphics() selects the loaded primary or Rogue
+table and applies overrides. DECgraphics gives the Mines, Gehennom, Fort
+Ludios and Sokoban wall glyphs custom colours. The earlier claim that the
+scorer ignores colours was wrong: it compares decoded colours and attributes.
+The custom glyphmap colour pipeline still needs a renderer audit.
+#wizcustom lists entries as the C does, with the DEC meta character
 ('\248' for S_vwall) and CLR_GRAY (07) from reset_glyphmap()'s
 wallcolors[]. iflags.colorcount is 256, the recorder terminal's count.
 
-One cell can't match: the heading is 90 characters, tty_end_menu() cuts
+Historical September heading mismatch, repaired in the November work:
+the heading is 90 characters, tty_end_menu() cuts
 entries to 78, and the 78th is the space before "unicode", drawn in the
 heading's inverse video. The recorder emits that trailing inverse space;
 the frozen js/terminal.js serializer drops trailing spaces whatever their
 attribute, so the decoded cell comes back plain. Every other cell of the
 three DECgraphics pages and of the default set's "(end)" listing matches.
+
+November 23 native checks also establish several tty details. Control bytes
+are ignored by nomux_putch on the map, but a status glyph still occupies a
+cell. check_gold_symbol caches the invisible-coin flag at C's call sites;
+recomputing it on every status update changes the Blank preset's initial
+status. Gold-field invalidation compares the raw coin symbol, so a level
+transition can change the fallback flag without repainting an unchanged
+field. initoptions_finish calls reglyph_darkroom after colour and dark_room
+options are known. Omitting that startup call changes DEC dark floors.
+Rogue IBM colours depend on glyph categories, including C's uncoloured
+female monsters, pets and detected monsters. The new native fixtures and
+`tools/symbol-state-gate.mjs` preserve these distinctions.
 
 ## #wizcast, #wizobjprobs, #wizloadlua, #bugreport and BIND parameters (12 Sep)
 

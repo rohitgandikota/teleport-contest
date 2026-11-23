@@ -2,6 +2,7 @@
 // C ref: src/options.c. The option table itself is generated from
 // include/optlist.h into js/optlist.js by tools/gen-optlist.mjs.
 
+import { check_gold_symbol } from './botl.js';
 import { game } from './gstate.js';
 import { parse_status_hl1, clear_status_hilites, reset_status_hilites, status_initialize } from './botl.js';
 import { new_status_window } from './tty/wintty.js';
@@ -30,7 +31,10 @@ import { condtests, status_hilite_menu, count_status_hilites } from './botl.js';
 import {
     assign_graphics, gs_symset, gc_currentgraphics, known_handling,
     primary_symsets, PRIMARYSET, ROGUESET, parsesymbols, switch_symbols,
+    init_primary_symbols, init_rogue_symbols, read_sym_file, clear_symsetentry,
 } from './symbols.js';
+import { apply_customizations } from './glyphs.js';
+import { do_custom_symbols, do_custom_colors } from './const.js';
 import { def_char_to_objclass } from './sp_lev.js';
 import { OCLASSES } from './objects_data.js';
 import {
@@ -217,8 +221,7 @@ export function parseoptions(opts, tinitial, tfrom_file, result) {
         /* src/options.c:663 — Is it a symbol? */
         if (opts.startsWith('S_') && parsesymbols(opts, PRIMARYSET)) {
             switch_symbols(true);
-            /* check_gold_symbol() only re-derives the status line's gold
-               symbol, which this tty model reads at display time */
+            check_gold_symbol();
             return true;
         }
         /* An unrecognised option is reported, never silently dropped — a
@@ -270,6 +273,18 @@ export function parseoptions(opts, tinitial, tfrom_file, result) {
             (game.flags ||= {}).rest_on_space = !negated;
     } else if ((opt.name === 'symset' || opt.name === 'roguesymset')
                && value !== null && value !== '') {
+        // src/options.c:4158 optfn_symset(), :3548 optfn_roguesymset().
+        const which_set = opt.name === 'roguesymset' ? ROGUESET : PRIMARYSET;
+        gs_symset[which_set].name = value;
+        if (!read_sym_file(which_set)) {
+            clear_symsetentry(which_set, true);
+            config_error_add(`Unable to load symbol set "${value}" from "symbols"`);
+            return false;
+        }
+        if (which_set === PRIMARYSET)
+            switch_symbols(gs_symset[PRIMARYSET].name !== null);
+        else if (!tinitial && Is_rogue_level(game.u.uz))
+            assign_graphics(ROGUESET);
         /* src/options.c:4198 optfn_symset() / :3567 optfn_roguesymset()
            do_set: a loaded set leaves the redraw and glyph-reset flags up,
            at startup too, so the first reset_needed_visuals() of the game
@@ -2043,7 +2058,6 @@ function doset_add_menu(tmpwin, o, fmtstr, indexoffset) {
                  fmtstr(indent, o.name, value), MENU_ITEMFLAGS_SKIPINVERT);
 }
 
-// src/symbols.c:909 do_symset(), primary-set path for the pinned tty build.
 // src/symbols.c:909 do_symset() — the symbol set menu for the primary set
 // or, with rogueflag, for the rogue level's set. The list is dat/symbols
 // (primary_symsets, read at build time); sets restricted to the other level
@@ -2130,15 +2144,26 @@ async function do_symset(rogueflag) {
     if (nothing_to_do)
         return true;
 
-    /* init_rogue_symbols()/init_primary_symbols(), read_sym_file(which_set)
-       and switch_symbols(): the loaded sets are the build-time tables */
-    if (ready_to_switch && !rogueflag)
+    if (rogueflag)
+        init_rogue_symbols();
+    else
+        init_primary_symbols();
+    if (gs_symset[which_set].name) {
+        if (read_sym_file(which_set)) {
+            ready_to_switch = true;
+        } else {
+            clear_symsetentry(which_set, true);
+            return true;
+        }
+    }
+    if (ready_to_switch)
         switch_symbols(true);
     if (Is_rogue_level(game.u.uz)) {
         if (rogueflag)
-            note_unported_options('do_symset:assign_graphics(ROGUESET)');
+            assign_graphics(ROGUESET);
     } else if (!rogueflag)
-        assign_graphics(gs_symset[PRIMARYSET]?.name || false);
+        assign_graphics(PRIMARYSET);
+    apply_customizations(which_set, do_custom_symbols | do_custom_colors);
     game.opt_need_redraw = true;
     return true;
 }
@@ -2624,7 +2649,8 @@ async function reset_needed_visuals() {
         reset_glyphmap(gm_optionchange);
     }
     if (game.opt_need_redraw) {
-        reglyph_darkroom(); /* src/options.c:8999, with check_gold_symbol() */
+        check_gold_symbol();
+        reglyph_darkroom();
         await docrt();
         game.opt_need_redraw = false;
     }

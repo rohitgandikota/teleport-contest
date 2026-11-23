@@ -964,6 +964,41 @@ build requires Clang for deterministic argument evaluation; do not substitute
 gcc. Its current build script also sets a throwaway Git identity, which must
 be removed or avoided before a new build under the user's Git instructions.
 
+Interactive-exit checkpoint `98a8eb2c` is pushed. The graphics candidate is
+now applied and verified. Primary and Rogue sets use the loaded tables,
+including class and other-symbol overrides. Level changes and restore select
+the active table in C order. Map output follows the tty high-bit rules,
+hero class symbols honor race and polymorph state, and Rogue colors follow
+C's glyph categories. Gold fallback remains cached; status invalidation
+compares the raw symbol. Startup also runs `reglyph_darkroom` after options.
+
+Four native fixtures cover 49 cases: `class-symbol-graphics`,
+`loaded-symbol-sets`, `rogue-symbol-sets`, and `symbol-set-save-restore`.
+Their 1,117 screens/cursors and 147,991 RNG calls now match exactly, up from
+617 screens, 1,092 cursors and 120,950 RNG calls before this patch. Eight
+source-state controls pass; all eight fail against the previous code.
+
+Full regression: 645/645 fixtures, 791,068 screens/cursors, 15,307,740 RNG
+calls and 30,010/30,031 animations. Native branch assertions and recording
+integrity pass. The four new input-exhaustion checks, six interactive-exit,
+four restore-option and five vision-state checks pass. Source audit has zero
+findings across 276 modules. Logs: `symbols-corpus-{0..3}.log`,
+`symbols-native-before.log`, `symbol-state-{before,final}.log`,
+`symbols-{hang,exit-state,restore-state,vision-state,source-audit}.log` in
+`.cache/restart-20261122/`.
+
+Next candidate is isolated under `other-symbols-*` in the same cache.
+Custom unexplored symbols need dirty cells after clearing the glyph buffer;
+blank magic-map cells need the active nothing symbol. The six-case exploratory
+recording improves from 25/41 to 41/41 screens with all 18,230 RNG calls
+unchanged through the cache loader. Its boulder case did not actually drop a
+boulder, so exclude or repair that case before claiming branch coverage.
+Promote the valid cases with assertions, add source-state checks, and verify
+before applying this candidate. Warning and accessibility consumers, cached
+object symbols after set changes, and the retained Enhanced UTF-8 shortcut
+remain separate source-audit targets. This checkpoint does not establish a
+complete glyph customization pipeline or a new held-out score.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

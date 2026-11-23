@@ -1,0 +1,525 @@
+{
+  "name": "loaded-symbol-sets",
+  "description": "Load each tty preset, preserve overrides and case-insensitive names, switch primary and Rogue sets during play, and retain the cached gold field across Blank level transitions.",
+  "recordingNote": "Use RERECORD_TZ=Etc/GMT+4 for a fixed UTC-4 recording offset.",
+  "coverage": [
+    "mode.debug",
+    "options.rc-bindings",
+    "ui.map-memory-vision",
+    "ui.menus",
+    "level.special-variants"
+  ],
+  "branches": [
+    "loaded-symbols.default",
+    "loaded-symbols.plain",
+    "loaded-symbols.blank",
+    "loaded-symbols.ibmgraphics",
+    "loaded-symbols.ibmgraphics_1",
+    "loaded-symbols.ibmgraphics_2",
+    "loaded-symbols.curses",
+    "loaded-symbols.decgraphics",
+    "loaded-symbols.enhanced1",
+    "loaded-symbols.enhanced2",
+    "loaded-symbols.amigafont",
+    "loaded-symbols.default-after-loaded-set",
+    "loaded-symbols.blank-to-dec",
+    "loaded-symbols.dec-to-ibm",
+    "loaded-symbols.blank-level-transition",
+    "loaded-symbols.mixed-case-dec",
+    "loaded-symbols.mixed-case-enhanced",
+    "loaded-symbols.option-override-before",
+    "loaded-symbols.option-override-after",
+    "loaded-symbols.default-then-s-override",
+    "loaded-symbols.rogue-runtime"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "loaded-symbols.default",
+      "segment": 0,
+      "screenCells": [
+        {
+          "step": 16,
+          "x": 5,
+          "y": 11,
+          "equals": "-"
+        },
+        {
+          "step": 16,
+          "x": 7,
+          "y": 13,
+          "equals": ")"
+        }
+      ]
+    },
+    {
+      "branch": "loaded-symbols.plain",
+      "segment": 1,
+      "screenCells": [
+        {
+          "step": 16,
+          "x": 5,
+          "y": 11,
+          "equals": "+"
+        },
+        {
+          "step": 16,
+          "x": 7,
+          "y": 13,
+          "equals": ")"
+        }
+      ]
+    },
+    {
+      "branch": "loaded-symbols.blank",
+      "segment": 2,
+      "screenCells": [
+        {
+          "step": 16,
+          "x": 5,
+          "y": 11,
+          "equals": " "
+        },
+        {
+          "step": 16,
+          "x": 7,
+          "y": 13,
+          "equals": " "
+        }
+      ]
+    },
+    {
+      "branch": "loaded-symbols.ibmgraphics",
+      "segment": 3,
+      "screenCells": [
+        {
+          "step": 16,
+          "x": 5,
+          "y": 11,
+          "equals": "Z"
+        },
+        {
+          "step": 16,
+          "x": 7,
+          "y": 13,
+          "equals": ")"
+        }
+      ]
+    },
+    {
+      "branch": "loaded-symbols.ibmgraphics_1",
+      "segment": 4,
+      "screenCells": [
+        {
+          "step": 16,
+          "x": 5,
+          "y": 11,
+          "equals": "Z"
+        },
+        {
+          "step": 16,
+          "x": 7,
+          "y": 13,
+          "equals": ")"
+        }
+      ]
+    },
+    {
+      "branch": "loaded-symbols.ibmgraphics_2",
+      "segment": 5,
+      "screenCells": [
+        {
+          "step": 16,
+          "x": 5,
+          "y": 11,
+          "equals": "Z"
+        },
+        {
+          "step": 16,
+          "x": 7,
+          "y": 13,
+          "equals": ")"
+        }
+      ]
+    },
+    {
+      "branch": "loaded-symbols.curses",
+      "segment": 6,
+      "screenCells": [
+        {
+          "step": 16,
+          "x": 5,
+          "y": 11,
+          "equals": "┌"
+        },
+        {
+          "step": 16,
+          "x": 7,
+          "y": 13,
+          "equals": ")"
+        }
+      ]
+    },
+    {
+      "branch": "loaded-symbols.decgraphics",
+      "segment": 7,
+      "screenCells": [
+        {
+          "step": 16,
+          "x": 5,
+          "y": 11,
+          "equals": "┌"
+        },
+        {
+          "step": 16,
+          "x": 7,
+          "y": 13,
+          "equals": ")"
+        }
+      ]
+    },
+    {
+      "branch": "loaded-symbols.enhanced1",
+      "segment": 8,
+      "screenCells": [
+        {
+          "step": 16,
+          "x": 5,
+          "y": 11,
+          "equals": " "
+        },
+        {
+          "step": 16,
+          "x": 7,
+          "y": 13,
+          "equals": ")"
+        }
+      ]
+    },
+    {
+      "branch": "loaded-symbols.enhanced2",
+      "segment": 9,
+      "screenCells": [
+        {
+          "step": 16,
+          "x": 5,
+          "y": 11,
+          "equals": " "
+        },
+        {
+          "step": 16,
+          "x": 7,
+          "y": 13,
+          "equals": ")"
+        }
+      ]
+    },
+    {
+      "branch": "loaded-symbols.amigafont",
+      "segment": 10,
+      "screenCells": [
+        {
+          "step": 16,
+          "x": 5,
+          "y": 11,
+          "equals": "B"
+        },
+        {
+          "step": 16,
+          "x": 7,
+          "y": 13,
+          "equals": ")"
+        }
+      ]
+    },
+    {
+      "branch": "loaded-symbols.default-after-loaded-set",
+      "segment": 11,
+      "screenCells": [
+        {
+          "step": 16,
+          "x": 5,
+          "y": 11,
+          "equals": "-"
+        },
+        {
+          "step": 16,
+          "x": 7,
+          "y": 13,
+          "equals": ")"
+        }
+      ]
+    },
+    {
+      "branch": "loaded-symbols.blank-to-dec",
+      "segment": 12,
+      "screenIncludes": [
+        "Select symbol set:"
+      ],
+      "screenCells": [
+        {
+          "step": 65,
+          "x": 5,
+          "y": 11,
+          "equals": "-"
+        }
+      ]
+    },
+    {
+      "branch": "loaded-symbols.dec-to-ibm",
+      "segment": 13,
+      "screenIncludes": [
+        "Select symbol set:"
+      ],
+      "screenCells": [
+        {
+          "step": 52,
+          "x": 5,
+          "y": 11,
+          "equals": "-"
+        }
+      ]
+    },
+    {
+      "branch": "loaded-symbols.blank-level-transition",
+      "segment": 14,
+      "screenIncludes": [
+        "Dlvl:2",
+        "Dlvl:1"
+      ],
+      "screenCells": [
+        {
+          "step": 12,
+          "x": 7,
+          "y": 23,
+          "equals": " "
+        }
+      ]
+    },
+    {
+      "branch": "loaded-symbols.mixed-case-dec",
+      "segment": 15,
+      "screenCells": [
+        {
+          "step": 2,
+          "x": 5,
+          "y": 11,
+          "equals": "┌"
+        }
+      ]
+    },
+    {
+      "branch": "loaded-symbols.mixed-case-enhanced",
+      "segment": 16,
+      "screenCells": [
+        {
+          "step": 4,
+          "x": 5,
+          "y": 11,
+          "equals": " "
+        }
+      ]
+    },
+    {
+      "branch": "loaded-symbols.option-override-before",
+      "segment": 17,
+      "screenCells": [
+        {
+          "step": 2,
+          "x": 7,
+          "y": 13,
+          "equals": "Z"
+        }
+      ]
+    },
+    {
+      "branch": "loaded-symbols.option-override-after",
+      "segment": 18,
+      "screenCells": [
+        {
+          "step": 2,
+          "x": 7,
+          "y": 13,
+          "equals": "Z"
+        }
+      ]
+    },
+    {
+      "branch": "loaded-symbols.default-then-s-override",
+      "segment": 19,
+      "screenCells": [
+        {
+          "step": 2,
+          "x": 7,
+          "y": 13,
+          "equals": "Z"
+        }
+      ]
+    },
+    {
+      "branch": "loaded-symbols.rogue-runtime",
+      "segment": 20,
+      "screenIncludes": [
+        "Select rogue level symbol set:",
+        "RogueEpyx"
+      ],
+      "screenCells": [
+        {
+          "step": 59,
+          "x": 5,
+          "y": 11,
+          "equals": "┌"
+        }
+      ]
+    }
+  ],
+  "segments": [
+    {
+      "name": "default",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\n",
+      "moves": " \u0017dagger\ri dajV "
+    },
+    {
+      "name": "plain",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:plain\nOPTIONS=!eight_bit_tty\n",
+      "moves": " \u0017dagger\ri dajV "
+    },
+    {
+      "name": "Blank",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:Blank\nOPTIONS=!eight_bit_tty\n",
+      "moves": " \u0017dagger\ri dajV "
+    },
+    {
+      "name": "IBMgraphics",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:IBMgraphics\nOPTIONS=!eight_bit_tty\n",
+      "moves": " \u0017dagger\ri dajV "
+    },
+    {
+      "name": "IBMGraphics_1",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:IBMGraphics_1\nOPTIONS=!eight_bit_tty\n",
+      "moves": " \u0017dagger\ri dajV "
+    },
+    {
+      "name": "IBMGraphics_2",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:IBMGraphics_2\nOPTIONS=!eight_bit_tty\n",
+      "moves": " \u0017dagger\ri dajV "
+    },
+    {
+      "name": "curses",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:curses\nOPTIONS=!eight_bit_tty\n",
+      "moves": " \u0017dagger\ri dajV "
+    },
+    {
+      "name": "DECgraphics",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!eight_bit_tty\n",
+      "moves": " \u0017dagger\ri dajV "
+    },
+    {
+      "name": "Enhanced1",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:Enhanced1\nOPTIONS=!eight_bit_tty\n",
+      "moves": " \u0017dagger\ri dajV "
+    },
+    {
+      "name": "Enhanced2",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:Enhanced2\nOPTIONS=!eight_bit_tty\n",
+      "moves": " \u0017dagger\ri dajV "
+    },
+    {
+      "name": "AmigaFont",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:AmigaFont\nOPTIONS=!eight_bit_tty\n",
+      "moves": " \u0017dagger\ri dajV "
+    },
+    {
+      "name": "default-after-loaded-set",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\n",
+      "moves": " \u0017dagger\ri dajV "
+    },
+    {
+      "name": "blank-to-dec",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:Blank\n",
+      "moves": " mO:symset*Blank\r\rhllmO:symset*DECgraphics\r\rcVmO:symset*Blank\r\raV"
+    },
+    {
+      "name": "dec-to-ibm",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:DECgraphics\n",
+      "moves": " mO:symset*DECgraphics\r\rdllmO:symset*IBMgraphics\r\raV"
+    },
+    {
+      "name": "blank-level-transition",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:Blank\n",
+      "moves": " \u00162\r  \u00161\r  V"
+    },
+    {
+      "name": "mixed-case-dec",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:dEcGrApHiCs\n",
+      "moves": " V"
+    },
+    {
+      "name": "mixed-case-enhanced",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:eNhAnCeD2\n",
+      "moves": " llV"
+    },
+    {
+      "name": "option-override-before",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=S_human:Z\nOPTIONS=symset:IBMgraphics\n",
+      "moves": " V"
+    },
+    {
+      "name": "option-override-after",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:IBMgraphics\nOPTIONS=S_human:Z\n",
+      "moves": " V"
+    },
+    {
+      "name": "default-then-s-override",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:Default_symbols\nOPTIONS=S_human:Z\n",
+      "moves": " V"
+    },
+    {
+      "name": "rogue-runtime",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0016the rogue level\r mO:roguesymset\r\rhVmO:roguesymset\r\raV\u00161\rV"
+    }
+  ]
+}

@@ -1,0 +1,218 @@
+{
+  "name": "class-symbol-graphics",
+  "description": "High-bit hero, monster and object class symbols under DEC, IBM and plain handling, plus racial and polymorphed hero symbols.",
+  "recordingNote": "Use RERECORD_TZ=Etc/GMT+4 for a fixed UTC-4 recording offset.",
+  "coverage": [
+    "mode.debug",
+    "options.rc-bindings",
+    "ui.map-memory-vision",
+    "forms.polymorph"
+  ],
+  "branches": [
+    "class-symbols.dec-hero",
+    "class-symbols.dec-cat",
+    "class-symbols.dec-weapon",
+    "class-symbols.ibm-hero",
+    "class-symbols.plain-hero",
+    "class-symbols.dec-eight-low",
+    "class-symbols.dec-eight-high",
+    "class-symbols.gnome-showrace-true",
+    "class-symbols.gnome-showrace-false",
+    "class-symbols.polymorphed-hero"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "class-symbols.dec-hero",
+      "segment": 0,
+      "screenCells": [
+        {
+          "step": 3,
+          "x": 7,
+          "y": 13,
+          "equals": "─"
+        }
+      ]
+    },
+    {
+      "branch": "class-symbols.dec-cat",
+      "segment": 1,
+      "screenCells": [
+        {
+          "step": 12,
+          "x": 8,
+          "y": 13,
+          "equals": "│"
+        }
+      ]
+    },
+    {
+      "branch": "class-symbols.dec-weapon",
+      "segment": 2,
+      "screenCells": [
+        {
+          "step": 16,
+          "x": 7,
+          "y": 13,
+          "equals": "─"
+        }
+      ]
+    },
+    {
+      "branch": "class-symbols.ibm-hero",
+      "segment": 3,
+      "screenCells": [
+        {
+          "step": 3,
+          "x": 7,
+          "y": 13,
+          "equals": "q"
+        }
+      ]
+    },
+    {
+      "branch": "class-symbols.plain-hero",
+      "segment": 4,
+      "screenCells": [
+        {
+          "step": 3,
+          "x": 7,
+          "y": 13,
+          "equals": "─"
+        }
+      ]
+    },
+    {
+      "branch": "class-symbols.dec-eight-low",
+      "segment": 5,
+      "screenCells": [
+        {
+          "step": 3,
+          "x": 7,
+          "y": 13,
+          "equals": "A"
+        }
+      ]
+    },
+    {
+      "branch": "class-symbols.dec-eight-high",
+      "segment": 6,
+      "screenCells": [
+        {
+          "step": 3,
+          "x": 7,
+          "y": 13,
+          "equals": "─"
+        }
+      ]
+    },
+    {
+      "branch": "class-symbols.gnome-showrace-true",
+      "segment": 7,
+      "screenCells": [
+        {
+          "step": 3,
+          "x": 7,
+          "y": 13,
+          "equals": "│"
+        }
+      ]
+    },
+    {
+      "branch": "class-symbols.gnome-showrace-false",
+      "segment": 8,
+      "screenCells": [
+        {
+          "step": 3,
+          "x": 7,
+          "y": 13,
+          "equals": "─"
+        }
+      ]
+    },
+    {
+      "branch": "class-symbols.polymorphed-hero",
+      "segment": 9,
+      "screenCells": [
+        {
+          "step": 21,
+          "x": 7,
+          "y": 13,
+          "equals": "│"
+        }
+      ]
+    }
+  ],
+  "segments": [
+    {
+      "name": "dec-hero",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!eight_bit_tty\nSYMBOLS=S_human:\\xf1\n",
+      "moves": " V "
+    },
+    {
+      "name": "dec-cat",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!eight_bit_tty\nSYMBOLS=S_feline:\\xf8\n",
+      "moves": " \u0007kitten\r V "
+    },
+    {
+      "name": "dec-weapon",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!eight_bit_tty\nSYMBOLS=S_weapon:\\xf1\n",
+      "moves": " \u0017dagger\ri dajV "
+    },
+    {
+      "name": "ibm-hero",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:IBMgraphics\nOPTIONS=!eight_bit_tty\nSYMBOLS=S_human:\\xf1\n",
+      "moves": " V "
+    },
+    {
+      "name": "plain-hero",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:plain\nOPTIONS=!eight_bit_tty\nSYMBOLS=S_human:\\xf1\n",
+      "moves": " V "
+    },
+    {
+      "name": "dec-eight-low",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=eight_bit_tty\nSYMBOLS=S_human:\\xc1\n",
+      "moves": " V "
+    },
+    {
+      "name": "dec-eight-high",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=eight_bit_tty\nSYMBOLS=S_human:\\xf1\n",
+      "moves": " V "
+    },
+    {
+      "name": "gnome-showrace-True",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:gnome,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!eight_bit_tty\nOPTIONS=showrace\nSYMBOLS=S_gnome:\\xf8,S_human:\\xf1\n",
+      "moves": " V "
+    },
+    {
+      "name": "gnome-showrace-False",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:gnome,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!eight_bit_tty\nOPTIONS=!showrace\nSYMBOLS=S_gnome:\\xf8,S_human:\\xf1\n",
+      "moves": " V "
+    },
+    {
+      "name": "polymorphed-hero",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!eight_bit_tty\nSYMBOLS=S_feline:\\xf8\n",
+      "moves": " #polyself\rkitten\r V "
+    }
+  ]
+}

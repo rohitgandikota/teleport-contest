@@ -67,7 +67,7 @@ import {
     WM_C_OUTER, WM_C_INNER, WM_T_LONG, WM_T_BL, WM_T_BR,
     WM_X_TL, WM_X_TR, WM_X_BL, WM_X_BR, WM_X_TLBR, WM_X_BLTR,
     SV0, SV1, SV2, SV3, SV4, SV5, SV6, SV7,
-    M_AP_FURNITURE, M_AP_OBJECT, M_AP_MONSTER, M_AP_TYPE,
+    M_AP_FURNITURE, M_AP_OBJECT, M_AP_MONSTER, M_AP_NOTHING, M_AP_TYPE,
     AM_NONE, AM_CHAOTIC, AM_NEUTRAL, AM_LAWFUL, AM_MASK, AM_SANCTUM,
     ACCESSIBLE, Is_rogue_level, Is_waterlevel,
 } from './const.js';
@@ -84,12 +84,12 @@ import { nhgetch } from './input.js';
 
 import { update_lastseentyp } from './dungeon.js';
 
-import { def_monsyms, def_oc_syms, cmap_names, defsyms } from './drawing_data.js';
+import { def_oc_syms, cmap_names, defsyms } from './drawing_data.js';
 
 import { PMNAMES, mons, NUMMONS, MFLAGS, mons as MONS_DATA } from './monst_data.js';
 
 import { showsym, showsym_mon, showsym_oc, showsym_other, SYM_BOULDER,
-         showsyms_at, gs_symset, gc_currentgraphics, H_IBM, ROGUESET, symbols_wire_display,
+         showsyms_at, gs_showsyms, gs_symset, gc_currentgraphics, H_IBM, H_DEC, H_UTF8, ROGUESET, symbols_wire_display,
          go_ov_primary_syms, go_ov_rogue_syms,
          SYM_OFF_P, SYM_OFF_O, SYM_OFF_M, SYM_OFF_W, SYM_OFF_X } from './symbols.js';
 import { has_color } from './windows.js';
@@ -182,21 +182,6 @@ export function known_branch_stairs(sway) {
 }
 
 const CM = cmap_names;
-
-const rogue_obj_syms = [...def_oc_syms];
-rogue_obj_syms[OCLASSES.ARMOR_CLASS] = ']';
-rogue_obj_syms[OCLASSES.AMULET_CLASS] = ',';
-rogue_obj_syms[OCLASSES.FOOD_CLASS] = ':';
-rogue_obj_syms[OCLASSES.COIN_CLASS] = def_oc_syms[OCLASSES.GEM_CLASS];
-
-export function rogue_cmap_sym(cmap) {
-    if (cmap === CM.S_ndoor || cmap === CM.S_vodoor
-        || cmap === CM.S_hodoor)
-        return '+';
-    if (cmap === CM.S_upstair || cmap === CM.S_dnstair)
-        return '%';
-    return defsyms[cmap]?.sym;
-}
 
 // src/display.c:2938 map_glyphinfo() — a glyph becomes a symbol by looking its
 // cmap index up in the ACTIVE symbol set. back_to_glyph() below picks the cmap
@@ -941,13 +926,11 @@ function darkroomsym_cell() {
 // before vision_reset() on arrival, so cansee() still answers for the
 // level being left, exactly as in the C.
 export function reglyph_darkroom() {
-    if (!game.level)
-        return;
     const CM = cmap_names;
     const dark_room = game.flags?.dark_room !== false;
     for (let x = 1; x < COLNO; x++)
         for (let y = 0; y < ROWNO; y++) {
-            const loc = game.level.at(x, y);
+            const loc = game.level?.at(x, y);
             if (!loc)
                 continue;
             let rg = loc.remembered_glyph;
@@ -981,8 +964,10 @@ export function reglyph_darkroom() {
                     loc.remembered_glyph = darkroomsym_cell();
             }
         }
-    /* showsyms[S_darkroom] tracks S_room (or S_stone) — darkroomsym_cell()
-       derives that on every call */
+    // src/display.c:1851, keep the active dark floor symbol in sync.
+    gs_showsyms.P[CM.S_darkroom] = dark_room && use_color()
+        ? { ...gs_showsyms.P[CM.S_room] }
+        : { ch: showsym_other(SYM_NOTHING), dec: false };
 }
 
 // ── show_glyph_cell ──
@@ -1002,18 +987,41 @@ export function gbuf_at(x, y) {
 export function show_glyph_cell(x, y, ch, color = NO_COLOR, decgfx = false, attr = 0, glyph = undefined) {
     const loc = game.level?.at(x, y);
     if (!loc) return;
-    /* src/display.c:3078 map_glyphinfo(): turn off color if no color
-       defined, or rogue level w/o PC graphics, or the color option is off */
+    // src/display.c:2739 reset_glyphmap(), Rogue colors and active symbols.
+    if (Is_rogue_level(game.u?.uz)) {
+        const has_rogue_color = gc_currentgraphics.set === ROGUESET
+            && gs_symset[ROGUESET].handling === H_IBM
+            && !gs_symset[ROGUESET].nocolor;
+        if (!has_rogue_color) {
+            color = NO_COLOR;
+        } else if (glyph?.cmap !== undefined) {
+            if (glyph.cmap < CM.S_expl_tl || glyph.cmap > CM.S_expl_br)
+                color = cmap_to_roguecolor(glyph.cmap);
+        } else if (glyph?.kind === 'obj') {
+            const oclass = glyph.body ? OCLASSES.FOOD_CLASS : glyph.oclass;
+            color = glyph.statue ? CLR_RED
+                : oclass === OCLASSES.COIN_CLASS ? CLR_YELLOW
+                : oclass === OCLASSES.FOOD_CLASS ? CLR_RED : CLR_BRIGHT_BLUE;
+        } else if (glyph?.kind === 'hero') {
+            const female = Upolyd(game.u) ? game.u.mfemale : game.flags.female;
+            color = glyph.mon || female ? NO_COLOR : CLR_YELLOW;
+            if (!glyph.mon && !Upolyd(game.u)
+                && M_AP_TYPE(game.youmonst) === M_AP_NOTHING)
+                color = CLR_YELLOW;
+        } else if (glyph?.kind === 'mon') {
+            color = glyph.detected || (glyph.mon?.mtame && !Hallucination())
+                || (glyph.female ?? glyph.mon?.female) ? NO_COLOR : CLR_YELLOW;
+        } else if (glyph?.kind === 'warn') {
+            color = NO_COLOR;
+        }
+    }
     if (!use_color())
         color = NO_COLOR;
-    if (Is_rogue_level(game.u?.uz)) {
-        color = NO_COLOR;
-        decgfx = false;
-        if (glyph?.cmap !== undefined)
-            ch = rogue_cmap_sym(glyph.cmap) ?? ch;
-        else if (glyph?.kind === 'obj' && !glyph.statue) {
-            const oclass = glyph.body ? OCLASSES.FOOD_CLASS : glyph.oclass;
-            ch = rogue_obj_syms[oclass] ?? ch;
+    if (glyph?.cmap !== undefined) {
+        const sym = showsym(glyph.cmap);
+        if (sym) {
+            ch = sym.ch;
+            decgfx = !!sym.dec;
         }
     }
     /* Debug-only cell watch (never set during scoring): log who writes a
@@ -1291,7 +1299,7 @@ export async function swallowed(first) {
         if (rght_ok) put(u.ux + 1, u.uy - 1, 'S_sw_tr');
     }
     if (left_ok) put(u.ux - 1, u.uy, 'S_sw_ml');
-    show_glyph_cell(u.ux, u.uy, '@', CLR_WHITE, false, 0, { kind: 'hero' });
+    display_self();
     if (rght_ok) put(u.ux + 1, u.uy, 'S_sw_mr');
     if (isok(u.ux, u.uy + 1)) {
         if (left_ok) put(u.ux - 1, u.uy + 1, 'S_sw_bl');
@@ -1424,12 +1432,7 @@ export function newsym(x, y) {
        newsym() calls may repaint only the hero's center cell. */
     if (game.u?.uswallow) {
         if (game.u.ux === x && game.u.uy === y) {
-            const self = game.youmonst?.data;
-            show_glyph_cell(x, y,
-                            Upolyd(game.u)
-                                ? (showsym_mon(self.mlet) || '?') : '@',
-                            Upolyd(game.u) ? self.mcolor : CLR_WHITE,
-                            false, 0, { kind: 'hero' });
+            display_self();
         }
         return;
     }
@@ -1625,7 +1628,7 @@ export function newsym(x, y) {
                 ? TERM_INVERSE : 0;
             show_glyph_cell(x, y, showsym_mon(shown.mlet) || '?',
                             shown.mcolor ?? NO_COLOR, false, attr,
-                            { kind: 'mon', mon });
+                            { kind: 'mon', mon, detected: detectedOnly });
             mon.meverseen = 1; /* display.c:620 display_monster() */
             return;
         }
@@ -1654,7 +1657,7 @@ export function newsym(x, y) {
             clear_invisible_memory(x, y);
             show_glyph_cell(x, y, showsym_mon(shown.mlet) || '?',
                             shown.mcolor ?? NO_COLOR, false, attr,
-                            { kind: 'mon', mon });
+                            { kind: 'mon', mon, detected: detectedOnly });
             mon.meverseen = 1; /* display.c:620 display_monster() */
             return;
         }
@@ -2020,8 +2023,20 @@ function _paint_map_cell(display, x, y) {
     const cmap = g.disp_glyph?.cmap;
     if (cmap !== undefined && showsym(cmap)?.utf8)
         return;
-    const raw = g.disp_ch || ' ';
-    const ch = g.disp_decgfx ? (CMP_DEC_MAP[raw] || raw) : raw;
+    let raw = g.disp_ch || ' ';
+    let dec = g.disp_decgfx;
+    const code = raw.charCodeAt(0);
+    if (code >= 0x80 && code <= 0xff) {
+        const handling = gs_symset[gc_currentgraphics.set]?.handling;
+        dec = handling !== H_IBM && handling !== H_UTF8
+            && (!game.flags.eight_bit_tty
+                || (handling === H_DEC && (code & 0x7f) >= 0x60));
+        raw = String.fromCharCode(code & 0x7f);
+    }
+    // win/tty/termcap.c:755 nomux_putch() ignores control bytes.
+    if (raw.charCodeAt(0) < 0x20)
+        return;
+    const ch = dec ? (CMP_DEC_MAP[raw] || raw) : raw;
     const attr = (g.disp_attr ?? 0) | pet_terminal_attr(g.disp_glyph?.mon);
     display.setCell(x - 1, y + 1, ch,
                     term_start_color(g.disp_color ?? NO_COLOR),
@@ -2839,7 +2854,7 @@ export function map_location(x, y, show) {
 export function mon_to_glyph(mon, rng) {
     const mnum = Hallucination() ? rng(NUMMONS) : monsndx(mon.data);
     const ptr = game.mons[mnum];
-    return { ch: def_monsyms[ptr.mlet], color: ptr.mcolor, decgfx: false,
+    return { ch: showsym_mon(ptr.mlet), color: ptr.mcolor, decgfx: false,
         glyph: { kind: 'mon', mon, mnum, female: !!mon.female } };
 }
 
@@ -3208,7 +3223,7 @@ export function display_self() {
 
     /* maybe_display_usteed(): the steed's glyph while riding */
     if (steed && mon_visible(steed)) {
-        show_glyph_cell(x, y, def_monsyms[steed.data.mlet] || '?',
+        show_glyph_cell(x, y, showsym_mon(steed.data.mlet) || '?',
                         steed.data.mcolor ?? NO_COLOR, false, 0,
                         { kind: 'hero', mon: steed });
     } else if (aptype === M_AP_FURNITURE) {
@@ -3226,12 +3241,13 @@ export function display_self() {
                         g.glyph ?? { kind: 'obj', otyp: fake.otyp });
     } else if (aptype === M_AP_MONSTER) {
         const shown = game.mons[game.youmonst.mappearance];
-        show_glyph_cell(x, y, def_monsyms[shown.mlet] || '?',
+        show_glyph_cell(x, y, showsym_mon(shown.mlet) || '?',
                         shown.mcolor ?? NO_COLOR, false, 0, { kind: 'hero' });
     } else {
         const self = game.youmonst?.data;
         show_glyph_cell(x, y,
-                        Upolyd(game.u) ? (def_monsyms[self.mlet] || '?') : '@',
+                        showsym_mon((!Upolyd(game.u) && game.flags.showrace
+                            ? game.mons[game.urace.mnum] : self).mlet) || '?',
                         Upolyd(game.u) ? self.mcolor : CLR_WHITE,
                         false, 0, { kind: 'hero' });
     }

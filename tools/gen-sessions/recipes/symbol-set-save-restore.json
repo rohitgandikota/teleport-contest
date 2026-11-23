@@ -1,0 +1,65 @@
+{
+  "name": "symbol-set-save-restore",
+  "description": "Save on the Rogue level and restore under different primary and Rogue presets, then return to the main dungeon. Control-byte gold symbols retain their status column.",
+  "recordingNote": "Use RERECORD_TZ=Etc/GMT+4 for a fixed UTC-4 recording offset.",
+  "coverage": [
+    "mode.debug",
+    "persistence.save-restore",
+    "options.rc-bindings",
+    "ui.map-memory-vision"
+  ],
+  "branches": [
+    "symbol-restore.save",
+    "symbol-restore.new-process-tables"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "symbol-restore.save",
+      "segment": 0,
+      "screenIncludes": [
+        "older, more primitive world",
+        "Be seeing you"
+      ]
+    },
+    {
+      "branch": "symbol-restore.new-process-tables",
+      "segment": 1,
+      "screenIncludes": [
+        "welcome back",
+        "Dlvl:18",
+        "Dlvl:1"
+      ],
+      "screenCells": [
+        {
+          "step": 0,
+          "x": 8,
+          "y": 23,
+          "equals": " "
+        },
+        {
+          "step": 0,
+          "x": 9,
+          "y": 23,
+          "equals": ":"
+        }
+      ]
+    }
+  ],
+  "segments": [
+    {
+      "name": "save-on-rogue",
+      "seed": 9771,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:DECgraphics,roguesymset:RogueIBM\n",
+      "moves": " \u0016the rogue level\r Sy"
+    },
+    {
+      "name": "restore-on-rogue",
+      "seed": 9772,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain,roguesymset:RogueEpyx\n",
+      "moves": " nV\u00161\r  V"
+    }
+  ]
+}

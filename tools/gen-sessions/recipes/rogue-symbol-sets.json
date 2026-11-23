@@ -1,0 +1,471 @@
+{
+  "name": "rogue-symbol-sets",
+  "description": "Enter and leave the Rogue level with default, loaded and overridden graphics. Native colored frames distinguish hero, polymorphed hero, male and female monster, and pet glyphs.",
+  "recordingNote": "Use RERECORD_TZ=Etc/GMT+4 for a fixed UTC-4 recording offset.",
+  "coverage": [
+    "mode.debug",
+    "options.rc-bindings",
+    "ui.map-memory-vision",
+    "level.special-variants",
+    "forms.polymorph"
+  ],
+  "branches": [
+    "rogue-symbols.rogue-default",
+    "rogue-symbols.rogue-plain",
+    "rogue-symbols.rogue-ibm",
+    "rogue-symbols.rogue-epyx",
+    "rogue-symbols.rogue-windows",
+    "rogue-symbols.rogue-overrides",
+    "rogue-symbols.male-hero",
+    "rogue-symbols.male-polyhero",
+    "rogue-symbols.male-male-monster",
+    "rogue-symbols.male-female-monster",
+    "rogue-symbols.male-pet",
+    "rogue-symbols.female-hero",
+    "rogue-symbols.female-polyhero",
+    "rogue-symbols.female-male-monster",
+    "rogue-symbols.female-female-monster",
+    "rogue-symbols.female-pet"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "rogue-symbols.rogue-default",
+      "segment": 0,
+      "screenIncludes": [
+        "older, more primitive world",
+        "Dlvl:18",
+        "Dlvl:1"
+      ],
+      "screenCells": [
+        {
+          "step": 19,
+          "x": 43,
+          "y": 19,
+          "equals": "@"
+        },
+        {
+          "step": 42,
+          "x": 68,
+          "y": 9,
+          "equals": "┌"
+        }
+      ]
+    },
+    {
+      "branch": "rogue-symbols.rogue-plain",
+      "segment": 1,
+      "screenIncludes": [
+        "older, more primitive world",
+        "Dlvl:18",
+        "Dlvl:1"
+      ],
+      "screenCells": [
+        {
+          "step": 19,
+          "x": 43,
+          "y": 19,
+          "equals": "@"
+        },
+        {
+          "step": 42,
+          "x": 68,
+          "y": 9,
+          "equals": "┌"
+        }
+      ]
+    },
+    {
+      "branch": "rogue-symbols.rogue-ibm",
+      "segment": 2,
+      "screenIncludes": [
+        "older, more primitive world",
+        "Dlvl:18",
+        "Dlvl:1"
+      ],
+      "screenCells": [
+        {
+          "step": 19,
+          "x": 43,
+          "y": 19,
+          "equals": "@"
+        },
+        {
+          "step": 42,
+          "x": 68,
+          "y": 9,
+          "equals": "┌"
+        }
+      ]
+    },
+    {
+      "branch": "rogue-symbols.rogue-epyx",
+      "segment": 3,
+      "screenIncludes": [
+        "older, more primitive world",
+        "Dlvl:18",
+        "Dlvl:1"
+      ],
+      "screenCells": [
+        {
+          "step": 19,
+          "x": 43,
+          "y": 19,
+          "equals": " "
+        },
+        {
+          "step": 42,
+          "x": 68,
+          "y": 9,
+          "equals": "┌"
+        }
+      ]
+    },
+    {
+      "branch": "rogue-symbols.rogue-windows",
+      "segment": 4,
+      "screenIncludes": [
+        "older, more primitive world",
+        "Dlvl:18",
+        "Dlvl:1"
+      ],
+      "screenCells": [
+        {
+          "step": 19,
+          "x": 43,
+          "y": 19,
+          "equals": "@"
+        },
+        {
+          "step": 42,
+          "x": 68,
+          "y": 9,
+          "equals": "┌"
+        }
+      ]
+    },
+    {
+      "branch": "rogue-symbols.rogue-overrides",
+      "segment": 5,
+      "screenIncludes": [
+        "older, more primitive world",
+        "Dlvl:18",
+        "Dlvl:1"
+      ],
+      "screenCells": [
+        {
+          "step": 19,
+          "x": 43,
+          "y": 19,
+          "equals": "R"
+        },
+        {
+          "step": 42,
+          "x": 68,
+          "y": 9,
+          "equals": "┌"
+        }
+      ]
+    },
+    {
+      "branch": "rogue-symbols.male-hero",
+      "segment": 6,
+      "screenIncludes": [
+        "older, more primitive world"
+      ],
+      "screenCells": [
+        {
+          "step": 20,
+          "x": 43,
+          "y": 19,
+          "equals": "@"
+        }
+      ]
+    },
+    {
+      "branch": "rogue-symbols.male-polyhero",
+      "segment": 7,
+      "screenIncludes": [
+        "older, more primitive world"
+      ],
+      "screenCells": [
+        {
+          "step": 38,
+          "x": 43,
+          "y": 19,
+          "equals": "f"
+        }
+      ]
+    },
+    {
+      "branch": "rogue-symbols.male-male-monster",
+      "segment": 8,
+      "screenIncludes": [
+        "older, more primitive world"
+      ],
+      "screenCells": [
+        {
+          "step": 34,
+          "x": 43,
+          "y": 19,
+          "equals": "@"
+        },
+        {
+          "step": 34,
+          "x": 42,
+          "y": 20,
+          "equals": "f"
+        }
+      ]
+    },
+    {
+      "branch": "rogue-symbols.male-female-monster",
+      "segment": 9,
+      "screenIncludes": [
+        "older, more primitive world"
+      ],
+      "screenCells": [
+        {
+          "step": 36,
+          "x": 43,
+          "y": 19,
+          "equals": "@"
+        },
+        {
+          "step": 36,
+          "x": 42,
+          "y": 20,
+          "equals": "f"
+        }
+      ]
+    },
+    {
+      "branch": "rogue-symbols.male-pet",
+      "segment": 10,
+      "screenIncludes": [
+        "older, more primitive world"
+      ],
+      "screenCells": [
+        {
+          "step": 34,
+          "x": 43,
+          "y": 19,
+          "equals": "@"
+        },
+        {
+          "step": 34,
+          "x": 42,
+          "y": 20,
+          "equals": "f"
+        }
+      ]
+    },
+    {
+      "branch": "rogue-symbols.female-hero",
+      "segment": 11,
+      "screenIncludes": [
+        "older, more primitive world"
+      ],
+      "screenCells": [
+        {
+          "step": 20,
+          "x": 43,
+          "y": 19,
+          "equals": "@"
+        }
+      ]
+    },
+    {
+      "branch": "rogue-symbols.female-polyhero",
+      "segment": 12,
+      "screenIncludes": [
+        "older, more primitive world"
+      ],
+      "screenCells": [
+        {
+          "step": 38,
+          "x": 43,
+          "y": 19,
+          "equals": "f"
+        }
+      ]
+    },
+    {
+      "branch": "rogue-symbols.female-male-monster",
+      "segment": 13,
+      "screenIncludes": [
+        "older, more primitive world"
+      ],
+      "screenCells": [
+        {
+          "step": 34,
+          "x": 43,
+          "y": 19,
+          "equals": "@"
+        },
+        {
+          "step": 34,
+          "x": 42,
+          "y": 20,
+          "equals": "f"
+        }
+      ]
+    },
+    {
+      "branch": "rogue-symbols.female-female-monster",
+      "segment": 14,
+      "screenIncludes": [
+        "older, more primitive world"
+      ],
+      "screenCells": [
+        {
+          "step": 36,
+          "x": 43,
+          "y": 19,
+          "equals": "@"
+        },
+        {
+          "step": 36,
+          "x": 42,
+          "y": 20,
+          "equals": "f"
+        }
+      ]
+    },
+    {
+      "branch": "rogue-symbols.female-pet",
+      "segment": 15,
+      "screenIncludes": [
+        "older, more primitive world"
+      ],
+      "screenCells": [
+        {
+          "step": 34,
+          "x": 43,
+          "y": 19,
+          "equals": "@"
+        },
+        {
+          "step": 34,
+          "x": 42,
+          "y": 20,
+          "equals": "f"
+        }
+      ]
+    }
+  ],
+  "segments": [
+    {
+      "name": "rogue-default",
+      "seed": 9771,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:DECgraphics,!safe_wait\n",
+      "moves": " \u0016the rogue level\r   \u0017dagger\ri da \u00161\r   V "
+    },
+    {
+      "name": "rogue-plain",
+      "seed": 9771,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:DECgraphics,!safe_wait\nOPTIONS=roguesymset:plain\n",
+      "moves": " \u0016the rogue level\r   \u0017dagger\ri da \u00161\r   V "
+    },
+    {
+      "name": "rogue-ibm",
+      "seed": 9771,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:DECgraphics,!safe_wait\nOPTIONS=roguesymset:RogueIBM\n",
+      "moves": " \u0016the rogue level\r   \u0017dagger\ri da \u00161\r   V "
+    },
+    {
+      "name": "rogue-epyx",
+      "seed": 9771,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:DECgraphics,!safe_wait\nOPTIONS=roguesymset:RogueEpyx\n",
+      "moves": " \u0016the rogue level\r   \u0017dagger\ri da \u00161\r   V "
+    },
+    {
+      "name": "rogue-windows",
+      "seed": 9771,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:DECgraphics,!safe_wait\nOPTIONS=roguesymset:RogueWindows\n",
+      "moves": " \u0016the rogue level\r   \u0017dagger\ri da \u00161\r   V "
+    },
+    {
+      "name": "rogue-overrides",
+      "seed": 9771,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:DECgraphics,!safe_wait\nROGUESYMBOLS=S_human:R,S_room:.,S_corr:%,S_weapon:/,S_coin:G\n",
+      "moves": " \u0016the rogue level\r   \u0017dagger\ri da \u00161\r   V "
+    },
+    {
+      "name": "male-hero",
+      "seed": 9771,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:DECgraphics,roguesymset:RogueEpyx\nROGUESYMBOLS=S_human:@,S_feline:f\n",
+      "moves": " \u0016the rogue level\r V"
+    },
+    {
+      "name": "male-polyhero",
+      "seed": 9771,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:DECgraphics,roguesymset:RogueEpyx\nROGUESYMBOLS=S_human:@,S_feline:f\n",
+      "moves": " \u0016the rogue level\r #polyself\rkitten\r V"
+    },
+    {
+      "name": "male-male-monster",
+      "seed": 9771,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:DECgraphics,roguesymset:RogueEpyx\nROGUESYMBOLS=S_human:@,S_feline:f\n",
+      "moves": " \u0016the rogue level\r \u0007male kitten\r V"
+    },
+    {
+      "name": "male-female-monster",
+      "seed": 9771,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:DECgraphics,roguesymset:RogueEpyx\nROGUESYMBOLS=S_human:@,S_feline:f\n",
+      "moves": " \u0016the rogue level\r \u0007female kitten\r V"
+    },
+    {
+      "name": "male-pet",
+      "seed": 9771,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:DECgraphics,roguesymset:RogueEpyx\nROGUESYMBOLS=S_human:@,S_feline:f\n",
+      "moves": " \u0016the rogue level\r \u0007tame kitten\r V"
+    },
+    {
+      "name": "female-hero",
+      "seed": 9771,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:female,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:DECgraphics,roguesymset:RogueEpyx\nROGUESYMBOLS=S_human:@,S_feline:f\n",
+      "moves": " \u0016the rogue level\r V"
+    },
+    {
+      "name": "female-polyhero",
+      "seed": 9771,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:female,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:DECgraphics,roguesymset:RogueEpyx\nROGUESYMBOLS=S_human:@,S_feline:f\n",
+      "moves": " \u0016the rogue level\r #polyself\rkitten\r V"
+    },
+    {
+      "name": "female-male-monster",
+      "seed": 9771,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:female,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:DECgraphics,roguesymset:RogueEpyx\nROGUESYMBOLS=S_human:@,S_feline:f\n",
+      "moves": " \u0016the rogue level\r \u0007male kitten\r V"
+    },
+    {
+      "name": "female-female-monster",
+      "seed": 9771,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:female,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:DECgraphics,roguesymset:RogueEpyx\nROGUESYMBOLS=S_human:@,S_feline:f\n",
+      "moves": " \u0016the rogue level\r \u0007female kitten\r V"
+    },
+    {
+      "name": "female-pet",
+      "seed": 9771,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:female,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:DECgraphics,roguesymset:RogueEpyx\nROGUESYMBOLS=S_human:@,S_feline:f\n",
+      "moves": " \u0016the rogue level\r \u0007tame kitten\r V"
+    }
+  ]
+}

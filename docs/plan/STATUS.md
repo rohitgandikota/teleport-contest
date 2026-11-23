@@ -3424,6 +3424,64 @@ The seven-case status package also remains isolated pending underwater target
 selection and potion-discovery ordering repairs. Shared monster selector work
 continues separately. No local result is claimed as a newer official score.
 
+Restore ownership checkpoint `fa526ce7` is pushed. The three-file floor/decor
+correction is now integrated. look_here uses C's blind altar/ice/drift messages,
+pit-specific reach guard, shared feature sentence and one-item message marker.
+The complete force_decor, deferred_decor and describe_decor bodies preserve
+surface terrain, override lifetime, lastseentyp, fumbling deferral, Norep,
+canonical Underwater and back_on_ground ordering. Fumbling expiry delivers
+pending terrain feedback after renewal. Existing ice_descr already implements
+the reviewed consumer contract and is unchanged. The helpers are in C order,
+and the obsolete alternate article helper and terrain approximations are gone.
+
+All 137 normal-import controls pass: 38 floor-inspection, 71 helper, two retained
+helper regressions, 22 existing ice-description and four actual-input checks.
+Thirty-seven of the 71 helper controls fail without the helper correction.
+Both original retained failures pass without changing their assertions. These
+are source-state checks, not C execution. The four native cases cover blind
+altar/ice, shaft versus pit, one-item fumbling and Air/Water drift. Baseline
+matches 370/379 screens and 375 cursors; the correction matches all 379, all
+15,382 complete/per-input calls and 12 animations. With four retained native
+fixtures, all 7,063 boundaries, 103,190 calls and 14 animations match across
+38 segments. Exact frame counts/cursors and five input-exhaustion checks pass.
+
+Full regression passes 716/716 maintained fixtures without failures or timeouts:
+812,814 screens/cursors, 16,311,015 scored RNG positions and 30,734 animations.
+Both shards use the standard 45-second worker limit; all 279 runtime hashes
+stay fixed. Inventory, all metric totals, syntax, whitespace and the 0/276
+scope/import audit pass. The native file is byte-identical to its original C
+recording, SHA256 6d1330e00ba0fab0434e43bd24c8f4639c49bab825efb4439d6bf6eb1cbc4e13.
+All input tuples, five added native branch assertions and recording integrity
+pass. The recipe's stale pending-recording description is corrected. An initial
+local integrity helper used unsupported Python zip(strict=True); its input-tuple
+loop did not run. The corrected explicit length check and loop pass. No runtime
+or recording was changed for that harness error.
+
+This recording also matches instrumented C byte-for-byte. The verified NFS
+union now contains 710 credited inputs, sixteen matching manifests/layouts,
+4,513/5,492 entered functions and 58,842/107,260 direct outcomes, adding 24.
+The thirty newer raw inputs contain 137 segments, plus the nine Linux-control
+segments. Its directory is c-coverage-compress.E84JI2/verified-look-here-union-20261123.
+Local receipts use look-here-parent-integration.json, look-here-promoted-*,
+look-here-corpus-* and linux-coverage-look-here-union-*.
+
+Limits remain explicit. The separate underwater-decor recording is not in the
+maintained passing corpus; earlier Swimming/pooleffects gaps still block it.
+The full look_here inventory retains an unverified nested petrification/life-
+saving corner around repeated blindness reads. The underlying dfeature_at
+producer has two drawbridge omissions. A separate four-hunk cache patch now
+fixes them and passes two new native cases: 296 boundaries and 25,209 calls,
+versus 293 matching screens before. Eight source controls pass, seven failing
+before. This patch is not part of the frozen 716-fixture checkpoint.
+
+Shared monster-selection work remains cache-only pending final completion
+review. Six wand, five initial-creation and one tower-generation native cases
+are recorded unchanged. The tower case has six prompts during level creation,
+83 boundaries and 2,873 calls. The first eleven cases pass exact instrumented
+C replay on NFS but are not merged into this checkpoint's coverage union.
+The official refresh after fa526ce7 is byte-identical to the 20:18 UTC snapshot;
+no newer held-out result is claimed.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

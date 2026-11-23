@@ -1,0 +1,84 @@
+{
+  "name": "look-here-lifecycle",
+  "description": "Native C cases for blind altar and ice inspection, shaft versus pit reach, one-item fumbling feedback, and Air/Water drift.",
+  "segments": [
+    {
+      "name": "blind-altar-and-ice",
+      "seed": 6202,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Look,role:Barbarian,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!mention_decor\n",
+      "moves": " \u0014h.    \u001b\u001b\u0017lawful altar\r    \u001b\u001b#wizintrinsic\r100i\r    \u001b\u001b:    \u001b\u001b\u0017ice\r    \u001b\u001b:    \u001b\u001b"
+    },
+    {
+      "name": "blind-shaft-and-pit",
+      "seed": 6202,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Look,role:Barbarian,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0014h.    \u001b\u001b\u0017hole\r    \u001b\u001b#wizintrinsic\r100i\r    \u001b\u001b:    \u001b\u001b\u0017pit\r    \u001b\u001b\u0005    \u001b\u001b:    \u001b\u001b"
+    },
+    {
+      "name": "one-item-fumbling",
+      "seed": 6202,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Look,role:Barbarian,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0014h.    \u001b\u001b\u0017uncursed dagger\r    \u001b\u001bda    \u001b\u001b\u0014l.    \u001b\u001b#wizintrinsic\r>1s\r    \u001b\u001bh    \u001b\u001b:    \u001b\u001b"
+    },
+    {
+      "name": "blind-air-and-water-drift",
+      "seed": 6120,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Look,role:Barbarian,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r20\r    \u001b\u001b#wizintrinsic\r100a>100g\r    \u001b\u001b\u0016?\r>>M      nothing\r    \u001b\u001b#wizintrinsic\r100i\r    \u001b\u001b:    \u001b\u001b\u0016-4\r    \u001b\u001b:    \u001b\u001b"
+    }
+  ],
+  "recordingNote": "Recorded with RERECORD_TZ=Etc/GMT+4. Native output is unchanged. Separate state checks cover helper overrides, deferred feedback, terrain memory, and message completion.",
+  "branchAssertions": [
+    {
+      "branch": "look-here.blind-altar",
+      "segment": 0,
+      "screenIncludes": [
+        "You try to feel what is here."
+      ]
+    },
+    {
+      "branch": "look-here.blind-ice",
+      "segment": 0,
+      "screenIncludes": [
+        "There is solid ice here.",
+        "You try to feel what is on it."
+      ]
+    },
+    {
+      "branch": "look-here.shaft-versus-pit",
+      "segment": 1,
+      "screenIncludes": [
+        "There is a hole here.",
+        "There is a pit here.",
+        "You try to feel what is lying beneath you.",
+        "But you can't reach it!"
+      ]
+    },
+    {
+      "branch": "look-here.one-item-fumbling",
+      "segment": 2,
+      "screenIncludes": [
+        "You see here a dagger.  You trip over it."
+      ]
+    },
+    {
+      "branch": "look-here.blind-drift",
+      "segment": 3,
+      "screenIncludes": [
+        "You try to feel what is floating here."
+      ]
+    }
+  ],
+  "branches": [
+    "look-here.blind-altar",
+    "look-here.blind-ice",
+    "look-here.shaft-versus-pit",
+    "look-here.one-item-fumbling",
+    "look-here.blind-drift"
+  ],
+  "requireBranchAssertions": true
+}

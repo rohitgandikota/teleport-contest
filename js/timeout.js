@@ -1905,6 +1905,10 @@ export async function nh_timeout() {
                     (intr.HFumbling & TIMEOUT) + rnd(20));
                 intr.HFumbling = (intr.HFumbling & ~TIMEOUT) | timeout;
             }
+            if (game.iflags.defer_decor) {
+                const { deferred_decor } = await import('./pickup.js');
+                await deferred_decor(false);
+            }
             break;
         }
         case 'HSleepy':

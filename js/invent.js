@@ -13,7 +13,8 @@ import { safe_qbuf } from './objnam.js';
 import { ansimpleoname } from './objnam.js';
 import { docrt } from './display.js';
 import { add_menu_heading, hide_unhide_msgtypes } from './options.js';
-import { QBUFSZ, MSGTYP_MASK_REP_SHOW } from './const.js';
+import { QBUFSZ, MSGTYP_MASK_REP_SHOW, PLNMSG_ONE_ITEM_HERE,
+         Is_airlevel, Is_waterlevel, is_pit } from './const.js';
 import { BUFSZ, CONTAINED_SYM } from './const.js';
 import { def_oc_syms } from './drawing_data.js';
 import { MINV_PICKMASK } from './const.js';
@@ -65,7 +66,7 @@ import { W_ARM, W_ARMC, W_ARMH, W_ARMS, W_ARMG, W_ARMF, W_ARMU,
 import { Blind as heroBlind, Hallucination,
          Stone_resistance, Underwater } from './youprop.js';
 import { doname, an, corpse_xname, makeplural, obj_typename, CXN_PFX_THE,
-         CXN_ARTICLE, yname, xname, distant_name } from './objnam.js';
+         CXN_ARTICLE, yname, xname, distant_name, vtense } from './objnam.js';
 import { OCLASSES, ONAMES, MATERIALS, SKILLS } from './objects_data.js';
 import { is_pole } from './u_init.js';
 import { throwing_weapon } from './dothrow.js';
@@ -80,7 +81,7 @@ import { setworn, setnotworn, bypass_objlist,
 import { is_rider, hideunder } from './makemon.js';
 import { Fumbling } from './youprop.js';
 import { st_all, MOD_ENCUMBER, invlet_basic, Upolyd } from './const.js';
-import { u_safe_from_fatal_corpse, can_reach_floor } from './pickup.js';
+import { u_safe_from_fatal_corpse, can_reach_floor, force_decor } from './pickup.js';
 import { near_capacity, encumber_msg } from './attrib.js';
 import { in_rooms, inv_cnt, notice_all_mons_flush } from './hack.js';
 import { place_object, remove_object } from './mkobj.js';
@@ -815,13 +816,6 @@ export function dfeature_at(x, y) {
     return dfeature;
 }
 
-function dfeature_with_article(dfeature) {
-    if (dfeature === 'molten lava' || dfeature === 'ice'
-        || dfeature.startsWith('frozen ') || / ice$/i.test(dfeature))
-        return dfeature;
-    return an(dfeature);
-}
-
 // src/invent.c:4104 look_here()
 //
 // Includes engulfer contents, visible regions, blind floor reach and
@@ -871,26 +865,39 @@ export async function look_here(obj_cnt, lhflags) {
     if (dfeature === 'pool of water' && Underwater())
         dfeature = null;
 
-    /* src/invent.c:4185-4217: a blind hero describes reaching toward the
-       surface before inspecting the object pile.  A following menu flushes
-       this message through its own --More-- boundary. */
+    /* src/invent.c:4185-4217: describe reaching before inspecting the pile. */
     if (Blind) {
-        const loc = game.level?.at(game.u.ux, game.u.uy);
-        if (loc?.typ === ICE) {
+        const drift = Is_airlevel(game.u.uz) || Is_waterlevel(game.u.uz);
+        if (dfeature && dfeature.startsWith('altar ')) {
+            await You('try to feel what is here.');
+        } else if (is_ice(game.u.ux, game.u.uy)) {
+            if (!game.flags.mention_decor || game.iflags.prev_decor === ICE)
+                await force_decor(false);
             await You('try to feel what is on it.');
             skip_dfeature = true;
         } else {
-            const can_reach = can_reach_floor(true);
-            const floor = surface(game.u.ux, game.u.uy);
-            await You(`try to feel what is ${can_reach
-                ? `lying here on the ${floor}` : 'lying beneath you'}.`);
-            if (dfeature === floor)
+            const cant_reach = !can_reach_floor(true);
+            const surf = surface(game.u.ux, game.u.uy);
+            await You(`try to feel what is ${drift ? 'floating here'
+                : cant_reach ? 'lying beneath you' : `lying here on the ${surf}`}.`);
+            if (dfeature && !drift && dfeature === surf)
                 skip_dfeature = true;
         }
-        if (!can_reach_floor(true)) {
+        const trap = t_at(game.u.ux, game.u.uy);
+        if (!can_reach_floor(trap && is_pit(trap.ttyp))) {
             await pline("But you can't reach it!");
             return ECMD_OK;
         }
+    }
+
+    let fbuf;
+    if (dfeature && !skip_dfeature) {
+        const p = dfeature.indexOf(' ');
+        if (dfeature !== 'molten lava' && dfeature !== 'iron bars'
+            && dfeature !== 'ice' && !dfeature.startsWith('frozen ')
+            && !(p >= 0 && dfeature.slice(p).toLowerCase() === ' ice'))
+            dfeature = an(dfeature);
+        fbuf = `There ${vtense(dfeature, 'are')} ${dfeature} here.`;
     }
 
     /* src/invent.c:4299, display the retained local nexthere order. */
@@ -902,7 +909,7 @@ export async function look_here(obj_cnt, lhflags) {
            "There is <an feature> here." and SUPPRESS the no-objects line
            unless blind */
         if (dfeature && !skip_dfeature)
-            await pline(`There is ${dfeature_with_article(dfeature)} here.`);
+            await pline(fbuf);
         await read_engr_at(game.u.ux, game.u.uy); /* Eric Backus */
         if (!skip_objects && (Blind || !dfeature))
             await You(`${verb} no objects here.`);
@@ -912,7 +919,7 @@ export async function look_here(obj_cnt, lhflags) {
 
     if (skip_objects) {
         if (dfeature && !skip_dfeature)
-            await pline(`There is ${dfeature_with_article(dfeature)} here.`);
+            await pline(fbuf);
         await read_engr_at(game.u.ux, game.u.uy); /* Eric Backus */
         if (obj_cnt === 1 && pile[0].quan === 1)
             await pline(`There is ${picked_some ? 'another' : 'an'} object here.`);
@@ -938,9 +945,10 @@ export async function look_here(obj_cnt, lhflags) {
         /* only one object */
         const otmp = pile[0];
         if (dfeature && !skip_dfeature)
-            await pline(`There is ${dfeature_with_article(dfeature)} here.`);
+            await pline(fbuf);
         await read_engr_at(game.u.ux, game.u.uy); /* Eric Backus */
         await You(`${verb} here ${doname_with_price(otmp)}.`);
+        game.iflags.last_msg = PLNMSG_ONE_ITEM_HERE;
         if (otmp.otyp === ONAMES.CORPSE)
             await feel_cockatrice(otmp, false);
     } else {
@@ -952,8 +960,7 @@ export async function look_here(obj_cnt, lhflags) {
         await display_nhwindow_message();
         const tmpwin = tty_create_nhwindow(NHW_MENU);
         if (dfeature && !skip_dfeature) {
-            tty_putstr(tmpwin, 0,
-                       `There is ${dfeature_with_article(dfeature)} here.`);
+            tty_putstr(tmpwin, 0, fbuf);
             tty_putstr(tmpwin, 0, '');
         }
         tty_putstr(tmpwin, 0, `${picked_some ? 'Other things' : 'Things'} that ${

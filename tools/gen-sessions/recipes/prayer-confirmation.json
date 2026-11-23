@@ -1,0 +1,143 @@
+{
+  "name": "prayer-confirmation",
+  "description": "Exercise disabled, single-key and full-word prayer confirmation, repeated debug prayer, and a blind hero's protected prayer.",
+  "recordingNote": "Use RERECORD_TZ=Etc/GMT+4 for a fixed UTC-4 recording offset.",
+  "coverage": [
+    "mode.debug",
+    "ui.getlin",
+    "ui.count-repeat",
+    "ui.cancel-invalid",
+    "religion.prayer",
+    "ui.map-memory-vision"
+  ],
+  "branches": [
+    "prayer.no-confirmation",
+    "prayer.reject-short-answer",
+    "prayer.full-word-yes",
+    "prayer.single-key",
+    "prayer.repeat-saved-answer",
+    "prayer.repeat-confirmation",
+    "prayer.blind-protection"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "prayer.no-confirmation",
+      "segment": 0,
+      "screenIncludes": [
+        "You finish your prayer."
+      ],
+      "screenExcludes": [
+        "Are you sure you want to pray?"
+      ]
+    },
+    {
+      "branch": "prayer.reject-short-answer",
+      "segment": 1,
+      "screenIncludes": [
+        "\"Yes\" or \"No\": Are you sure you want to pray? [yes|no]"
+      ],
+      "screenExcludes": [
+        "You begin praying"
+      ]
+    },
+    {
+      "branch": "prayer.full-word-yes",
+      "segment": 2,
+      "screenIncludes": [
+        "Are you sure you want to pray? [yes|no] yes",
+        "You finish your prayer."
+      ]
+    },
+    {
+      "branch": "prayer.single-key",
+      "segment": 3,
+      "screenIncludes": [
+        "Are you sure you want to pray? [yn] (n)",
+        "You finish your prayer."
+      ]
+    },
+    {
+      "branch": "prayer.repeat-saved-answer",
+      "segment": 4,
+      "screenIncludes": [
+        "You begin praying to Thoth.  You are surrounded by a shimmering light."
+      ]
+    },
+    {
+      "branch": "prayer.repeat-confirmation",
+      "segment": 5,
+      "screenIncludes": [
+        "Are you sure you want to pray? [yn] (n)"
+      ],
+      "screenCells": [
+        {
+          "step": 12,
+          "x": 0,
+          "y": 0,
+          "equals": "A"
+        },
+        {
+          "step": 14,
+          "x": 0,
+          "y": 0,
+          "equals": "F"
+        }
+      ]
+    },
+    {
+      "branch": "prayer.blind-protection",
+      "segment": 6,
+      "screenIncludes": [
+        "You finish your prayer."
+      ],
+      "screenExcludes": [
+        "shimmering light"
+      ]
+    }
+  ],
+  "segments": [
+    {
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=paranoid_confirmation:none\n",
+      "moves": " #pray\r y "
+    },
+    {
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=paranoid_confirmation:pray confirm\n",
+      "moves": " #pray\ry\rno\r"
+    },
+    {
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=paranoid_confirmation:pray confirm\n",
+      "moves": " #pray\ryes\r y "
+    },
+    {
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=paranoid_confirmation:pray\n",
+      "moves": " #pray\ry y "
+    },
+    {
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=paranoid_confirmation:none\n",
+      "moves": " #pray\r y \u0001 "
+    },
+    {
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=paranoid_confirmation:pray\n",
+      "moves": " #pray\ry y \u0001y y "
+    },
+    {
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=paranoid_confirmation:none\nOPTIONS=blind\n",
+      "moves": " #pray\r y"
+    }
+  ]
+}

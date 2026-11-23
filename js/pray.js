@@ -31,6 +31,8 @@ import { rn1, rn2, rnd, rnz, rnl, rn2_on_display_rng, d } from './rng.js';
 import { newsym, pline, more, see_monsters } from './display.js';
 import { You, You_feel, You_hear, Your, pline_The } from './pline.js';
 import { tty_yn_function } from './tty/topl.js';
+import { paranoid_query } from './cmd.js';
+import { paranoia_bits, PARANOID_PRAY, PARANOID_CONFIRM } from './options.js';
 import { nomul, losehp } from './hack.js';
 import { adjalign, adjattrib, change_luck, near_capacity,
          exercise, encumber_msg, ABASE, AMAX, setABASE } from './attrib.js';
@@ -2167,12 +2169,12 @@ async function prayer_done() {
     return 1;
 }
 
-// src/pray.c:2199 dopray() — the #pray command.
+// src/pray.c:2199 dopray(), the #pray command.
 export async function dopray() {
-    /* ParanoidPray is a default-on confirmation */
-    const ans = await tty_yn_function('Are you sure you want to pray?',
-                                      'yn', 'n');
-    if (ans !== 'y')
+    const paranoidPray = !!(paranoia_bits() & PARANOID_PRAY);
+    if (paranoidPray
+        && !await paranoid_query(paranoia_bits() & PARANOID_CONFIRM,
+                                 'Are you sure you want to pray?'))
         return ECMD_OK;
 
     game.u.uconduct ||= {};
@@ -2189,8 +2191,22 @@ export async function dopray() {
 
     /* wizard-mode "Force the gods to be pleased?" — playmode:debug only */
     if (game.wizard && p_type >= 0) {
-        const ok = await tty_yn_function('Force the gods to be pleased?',
-                                         'yn', 'n');
+        let ok;
+        if (paranoidPray) {
+            /* A repeated prayer must ask again; neither confirmation
+               answer belongs in the saved command queue. */
+            const save_doagain = game.in_doagain;
+            game.in_doagain = false;
+            try {
+                ok = await tty_yn_function('Force the gods to be pleased?',
+                                           'yn', 'n', false);
+            } finally {
+                game.in_doagain = save_doagain;
+            }
+        } else {
+            ok = await tty_yn_function('Force the gods to be pleased?',
+                                       'yn', 'n', true);
+        }
         if (ok === 'y') {
             game.u.ublesscnt = 0;
             if ((game.u.uluck ?? 0) < 0)
@@ -2209,7 +2225,7 @@ export async function dopray() {
 
     if (p_type === 3 && !Inhell()) {
         /* if you've been true to your god you can't die while you pray */
-        if (!game.u.ublind)
+        if (!Blind())
             await You('are surrounded by a shimmering light.');
         game.u.uinvulnerable = true;
     }

@@ -202,10 +202,21 @@ screens and 2,268 RNG calls. All 51 input-exhaustion checks pass; the 21 known
 public animation differences remain. The punishment teleport state gate
 passes and source audit is empty.
 
-Next: push this punishment checkpoint, then continue the source-driven
-gameplay audit and native regression loop. The official snapshot still
-predates all eight verified November 22 pushes so far; do not infer a new
-ranking from local checks.
+Punishment checkpoint `81c9cb2e` is pushed. `dopray` now honors the prayer
+confirmation options, including full-word answers, and uses C's separate
+command-repeat treatment for the debug force-success prompt. It uses canonical
+blindness when displaying the protective light. Nine constructed tests pass,
+five fail before this fix; the other 33 selected artifact/runtime tests pass.
+Seven native scenarios cover the confirmation modes, both repeat paths and
+blind prayer. They improve from 64/91 screens and 2,329/15,760 RNG calls to
+exact output. All 50 selected public/prayer/sacrifice/repeat fixtures and their
+input-exhaustion checks pass. Source audit reports zero findings.
+
+Next: push the prayer-input checkpoint. Continue with `worst_cursed_item`,
+whose two inventory loops still treat the JS array as a C linked list, then
+review prayer Luck and hallucination predicates against the C macros.
+The official snapshot still predates all nine verified November 22 pushes;
+do not infer a new ranking from local checks.
 
 ## 2026-09-05: full faithful port is the active goal
 

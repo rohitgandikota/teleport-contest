@@ -18,28 +18,27 @@ pushes. The latest official snapshot checked, November 23 at 13:48 UTC, has
 these repairs. Public remains 44/44; that snapshot has 936 unmatched held-out
 screens. Local verification does not establish a newer held-out score.
 
-The latest complete regression passes 677/677 fixtures: 799,351 boundary
-screens/cursors, 15,761,413 RNG calls and 30,237 scored animation frames.
-The complete strict RNG audit also passes all 799,352 C input boundaries,
-including the explicitly checked blank exit frame, with identical complete
-streams and lengths. All 213 animation-bearing fixtures match every frame's
-cells, cursor and ordering, with exact frame counts.
+The latest complete regression passes 679/679 fixtures: 799,991 boundary
+screens/cursors, 15,783,793 RNG calls and 30,245 scored animation frames.
+The latest potion changes also pass strict full-stream and per-input RNG
+checks on 117 fixtures, all 39,942 boundaries and 1,718,440 calls. The complete
+strict 677-fixture audit and all 213 animation-bearing fixtures passed at the
+preceding floor checkpoint. Current-corpus parity is not completeness.
 
-Floor objects now retain independent global and per-square order. Placement,
+Floor objects retain independent global and per-square order. Placement,
 splitting, replacement, extraction, restacking, level flips and restore follow
 C's chain contracts. Nine extracted C functions support 992 state checks.
-Three native fixtures verify replacement/restore order and pit settlement;
-all 502 boundaries and 21,067 RNG calls match exactly. Recent artifact,
-eyewear, silver-hit and input-order repairs remain covered by the full suite.
+New native cases also cover blindness-potion discovery and hidden
+hallucination expiry. The latter repair restores timeout limits and mimicry
+cleanup; 76 hallucination/blindness state controls pass.
 
-Next: blindness-potion discovery under the Eyes, hallucination transitions,
-Mines/Sokoban prize acquisition and remaining floor-object side effects.
-Linux/NFS profiling builds and passes normal-exit/SIGTERM/SIGKILL canaries.
-The first pilot credits one exact fixture and excludes two mismatches;
-resolve its missing compression dependency before expanding the census.
-Current-corpus parity is not a completeness claim. See [STATUS.md](STATUS.md)
-for evidence and next actions. Historical milestone rows below are not a
-current completion audit.
+Next: Mines/Sokoban prize acquisition, invocation-object achievements and
+remaining floor-object side effects. The Linux/NFS branch collector is pushed
+and passes signal canaries plus exact save/restore, artifact and natural-exit
+pilots. A complete 678-fixture census is running from public checkpoint
+e4504071. Rejected platform/output differences earn no coverage. Large
+profiles and recordings remain on NFS. See [STATUS.md](STATUS.md) for evidence
+and next actions. Historical milestone rows below are not a current audit.
 
 ## Previous focus, 2026-09-06
 

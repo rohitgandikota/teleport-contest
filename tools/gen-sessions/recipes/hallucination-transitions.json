@@ -1,0 +1,95 @@
+{
+  "name": "hallucination-transitions",
+  "description": "Hallucination expiry hidden by gold armor, blind and unresisted controls, and the maximum timeout.",
+  "coverage": [
+    "mode.debug",
+    "object.armor",
+    "ui.getlin",
+    "ui.map-memory-vision",
+    "ui.more-paging"
+  ],
+  "segments": [
+    {
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!autoquiver,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!safe_wait\n",
+      "moves": " \u0017uncursed gold dragon scale mail\r  \u001b\u001bWa  \u001b\u001b#wizintrinsic\r5h\r  \u001b\u001b..........  \u001b\u001b\u001b\u001bV"
+    },
+    {
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!autoquiver,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!safe_wait\n",
+      "moves": " \u0017uncursed gold dragon scale mail\r  \u001b\u001bWa  \u001b\u001b\u0017uncursed towel\r  \u001b\u001bPb  \u001b\u001b#wizintrinsic\r5h\r  \u001b\u001b..........  \u001b\u001b\u001b\u001bV"
+    },
+    {
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!autoquiver,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!safe_wait\n",
+      "moves": " #wizintrinsic\r5h\r  \u001b\u001b..........  \u001b\u001b\u001b\u001bV"
+    },
+    {
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!autoquiver,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!safe_wait\n",
+      "moves": " \u0017uncursed gold dragon scale mail\r  \u001b\u001bWa  \u001b\u001b#wizintrinsic\r16777216h\r  \u001b\u001b#wizintrinsic\r\u001b  \u001b\u001b\u001b\u001bV"
+    }
+  ],
+  "requireBranchAssertions": true,
+  "branches": [
+    "status.hallucination.hidden-sighted-expiry",
+    "status.hallucination.hidden-blind-expiry",
+    "status.hallucination.unresisted-expiry",
+    "status.hallucination.timeout-clamp"
+  ],
+  "branchAssertions": [
+    {
+      "branch": "status.hallucination.hidden-sighted-expiry",
+      "segment": 0,
+      "screenIncludes": [
+        "Your gold dragon scale mail begins to shine brilliantly!",
+        "Your vision seems to flatten for a moment but is normal now."
+      ],
+      "screenExcludes": [
+        "Everything looks so cosmic",
+        "Everything looks SO boring"
+      ]
+    },
+    {
+      "branch": "status.hallucination.hidden-blind-expiry",
+      "segment": 1,
+      "screenIncludes": [
+        "Your gold dragon scale mail begins to shine brilliantly!",
+        "You are now wearing a towel around your head.  You can't see any more.",
+        "Your eyes momentarily itch."
+      ],
+      "screenExcludes": [
+        "Your vision seems to flatten",
+        "Everything feels SO boring"
+      ]
+    },
+    {
+      "branch": "status.hallucination.unresisted-expiry",
+      "segment": 2,
+      "screenIncludes": [
+        "Oh wow!  Everything looks so cosmic!",
+        "Everything looks SO boring now."
+      ],
+      "screenExcludes": [
+        "Your vision seems to flatten",
+        "Your eyes momentarily itch."
+      ]
+    },
+    {
+      "branch": "status.hallucination.timeout-clamp",
+      "segment": 3,
+      "screenIncludes": [
+        "Your gold dragon scale mail begins to shine brilliantly!",
+        "[16777215]"
+      ],
+      "screenExcludes": [
+        "[16777216]"
+      ]
+    }
+  ],
+  "recordingNote": "Use RERECORD_TZ=Etc/GMT+4. Native steps are retained unchanged from the independent source audit."
+}

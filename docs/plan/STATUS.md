@@ -2311,6 +2311,52 @@ four games, 327 boundaries, 9,566 calls and eight animations. The candidate
 fixes all three mismatched screens while preserving all other output.
 Its source review and normal-import state-test promotion continue separately.
 
+Coverage infrastructure checkpoint `e4504071` is pushed. The owned NFS
+checkout was synchronized to it after verifying all five temporary tool
+copies against their public hashes. A fresh full 678-fixture C census is
+running under c-coverage-compress.E84JI2/full-corpus, with a frozen input
+manifest beside it. Local progress log: linux-coverage-full-census.log.
+Do not mutate that source checkout or recorder while collection runs.
+Early rejects include actual Unix/MacOS startup/version text and the apple
+message. category-filters also has a raw RNG length difference at segment 34,
+step 60; its cause is not yet classified. All rejected profiles receive zero
+credit. These observations are not JS gameplay regressions.
+
+The hallucination repair is fully verified. make_hallucinated now uses C's
+extrinsic-only change guard, set_itimeout clamp, hidden-expiry feedback and
+eatmupdate before redraw. It captures the sight verb before effects and
+preserves mask/timeout behavior. The four unchanged-C cases improve from
+324/327 screens to all 327, retaining every cursor, 9,566 calls and eight
+ordered animations. Native branch/integrity assertions, strict animation
+counts and input-exhaustion checks pass. Forty new source controls pass,
+with eleven failing before; the 36 blindness controls remain passing.
+
+Complete scored regression passes all 679 fixtures: 799,991 screens/cursors,
+15,783,793 RNG positions and 30,245 animations. Every final result and error
+was checked; runtime hashes remain unchanged. Strict selected regression
+passes all 117 public/potion/artifact/blindness fixtures, 337 segments,
+39,942 C input boundaries and exactly 1,718,440 calls on each side. Source
+audit is empty across 276 non-frozen modules. Totals and logs use
+hallucination-corpus-*, hallucination-strict-*, hallucination-state-final.log
+and hallucination-{animation,hang,source-audit}-final.log. Commit and push the
+potion function, state gate, recipe/fixture and this checkpoint documentation.
+
+The real-prize native probe is now recorded. Its original three segments
+are preserved in inventory-prize-native.session.json. The Mines inventory
+was cancelled on page one, so the proposed merge assertion was not visible.
+A separate inventory-prize-visible-native.session.json adds one page-advance
+key before that cancellation, retains the original oracle, and passes all
+three prize assertions. It has 214 boundaries and 21,904 calls. Avicenna's
+minimal prize-release candidate and 29 state controls remain cache-only.
+
+A separate next-step invocation probe is also ready: four true invocation
+objects and a fake-Amulet control. The initial Amulet probe stopped at its
+newly bestowed wish; the corrected invocation-acquisition-reward-native
+handles that wish with 'nothing' and reaches the chronicle in every case.
+All 279 cursors and 13,630 calls already match JS, but four achievement
+screens fail. Keep this separate from the current prize patch until its
+source calls and state effects are covered. No invocation runtime edit yet.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

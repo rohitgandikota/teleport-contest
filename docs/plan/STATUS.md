@@ -2068,6 +2068,46 @@ currently e64c2980 with exact upstream16ff59115315917b93185d026aeefea06db9b0f4.
 It is a sparse checkout of scripts and nethack-c. The private LLVM root and
 signal canary remain under llvm18.RxU2F0. No native Linux build has run yet.
 
+Eyewear checkpoint `068a6bbe` is pushed. Artifact acquisition is now verified:
+hold_another_object remembers Upolyd before touch_artifact and drops an
+accepted artifact if its blast returns the hero to human form. Refusal still
+takes precedence, and the function returns the original object as C does.
+Only this missing branch and its required import change in invent.js.
+
+Three new asserted native cases cover accepted reversion, an accepted blast
+survived in monster form, and refusal after reversion. They match 184
+screens/cursors and exactly 8,309 RNG calls at every input boundary. Before
+the fix, 180 screens and 182 cursors match, despite the same complete RNG
+stream. All six promoted source controls pass, including silent drop feedback,
+human damage, floor/inventory membership and an accepted artifact without a
+blast. Two controls fail before the repair.
+
+All 186 selected regression fixtures pass every final result and metric:
+200,242 screens/cursors, 3,803,349 RNG positions and 2,244 animation frames.
+Strict checks on the new fixture and both existing artifact touch/retouch
+fixtures pass 938 input boundaries and exactly 37,584 calls. Three hang
+checks and the 276-module source audit pass. Logs and totals use
+artifact-blast-*. Commit and push this checkpoint now. The maintained corpus
+has 674 fixtures; the last full run remains the 671-fixture checkpoint.
+
+The isolated Linux ordinary recorder build completed successfully on tokyo.
+Its source root is linux-source.aPFF5C/repo under the NFS artifact directory
+above; the complete log is ../ordinary-build.log. Build script SHA-256 is
+6e9eff3612bc7369ae417a41ce25a747b811bf19e24bb4d0ff862432a86722b5; binary SHA-256
+is 2cb613602dcb0138ed548f43077629e358682154f97ed7adeebc291457438cfd. The pending
+local build-script change enforces clean pinned upstream source, removes a
+synthetic identity/commit and permits limiting build parallelism. Keep it out
+of the artifact gameplay commit. Next apply the reviewed recorder lifetime
+patch, run its 14 lifetime and four exit controls, and compare exact native
+rerecordings in cache before committing this infrastructure checkpoint.
+
+The retained local floor-chain model and its source oracle remain cache-only.
+Finish the consumer review and record the new stone-to-flesh replacement and
+restore proposal before integrating it with the independently reviewed
+bhitpile fill_pit tail call. Pauli continues make_blinded/toggle_blindness;
+Jason prepares Linux collector portability against the verified private LLVM
+18 toolchain. No fresh gameplay branch census has run yet.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

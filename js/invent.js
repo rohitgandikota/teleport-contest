@@ -79,7 +79,7 @@ import { setworn, setnotworn, recalc_telepat_range, bypass_objlist,
          nxt_unbypassed_loot, clear_bypasses } from './worn.js';
 import { is_rider, hideunder } from './makemon.js';
 import { Fumbling } from './youprop.js';
-import { st_all, MOD_ENCUMBER, invlet_basic } from './const.js';
+import { st_all, MOD_ENCUMBER, invlet_basic, Upolyd } from './const.js';
 import { u_safe_from_fatal_corpse, can_reach_floor } from './pickup.js';
 import { near_capacity, encumber_msg } from './attrib.js';
 import { in_rooms, inv_cnt, notice_all_mons_flush } from './hack.js';
@@ -2723,9 +2723,7 @@ export async function hold_another_object(obj, drop_fmt, drop_arg, hold_msg) {
         /* place_object may change these */
         const crysknife = (obj.otyp === ONAMES.CRYSKNIFE);
         const oerode = obj.oerodeproof;
-        /* wasUpolyd: hero polymorph is not modeled; touch_artifact
-           (js/mon.js) records itself and allows every touch, so the
-           lose-your-grip arm cannot trigger yet */
+        const wasUpolyd = Upolyd(game.u);
 
         /* in case touching this object turns out to be fatal */
         place_object(obj, game.u.ux, game.u.uy);
@@ -2733,6 +2731,13 @@ export async function hold_another_object(obj, drop_fmt, drop_arg, hold_msg) {
         if (!await touch_artifact(obj, game.youmonst)) {
             obj_extract_self(obj); /* remove it from the floor */
             await dropy(obj);      /* now put it back again :-) */
+            return obj;
+        } else if (wasUpolyd && !Upolyd(game.u)) {
+            /* lose your grip if you revert your form */
+            if (drop_fmt)
+                await pline(drop_fmt.replace('%s', drop_arg));
+            obj_extract_self(obj);
+            await dropy(obj);
             return obj;
         }
         obj_extract_self(obj);

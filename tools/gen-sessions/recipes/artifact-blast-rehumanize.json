@@ -1,0 +1,85 @@
+{
+  "name": "artifact-blast-rehumanize",
+  "description": "Artifact acquisition loses grip when an accepted touch blast ends polymorph, with surviving and refused-touch controls.",
+  "coverage": [
+    "forms.polymorph",
+    "mode.debug",
+    "object.artifacts",
+    "survival.regen-exercise",
+    "ui.getlin",
+    "ui.more-paging"
+  ],
+  "segments": [
+    {
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #polyself\rgrid bug\r \u0017blessed The Eyes of the Overworld\r   :i "
+    },
+    {
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #polyself\rminotaur\r \u0017blessed The Eyes of the Overworld\r   :i "
+    },
+    {
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #polyself\rgrid bug\r \u0017blessed The Orb of Detection\r   :i "
+    }
+  ],
+  "requireBranchAssertions": true,
+  "branches": [
+    "inventory.artifact-blast.rehumanize",
+    "inventory.artifact-blast.survive",
+    "inventory.artifact-blast.refuse"
+  ],
+  "branchAssertions": [
+    {
+      "branch": "inventory.artifact-blast.rehumanize",
+      "segment": 0,
+      "screenIncludes": [
+        "You turn into a grid bug!",
+        "You are blasted by",
+        "You return to human form!",
+        "Oops!  The pair of lenses named the Eyes of the Overworld drops to the floor!",
+        "You see here a pair of lenses named the Eyes of the Overworld."
+      ],
+      "screenExcludes": [
+        "evades your grasp",
+        "a - a pair of lenses named the Eyes of the Overworld."
+      ]
+    },
+    {
+      "branch": "inventory.artifact-blast.survive",
+      "segment": 1,
+      "screenIncludes": [
+        "You turn into a minotaur!",
+        "You are blasted by",
+        "a - a pair of lenses named the Eyes of the Overworld."
+      ],
+      "screenExcludes": [
+        "You return to human form!",
+        "Oops!",
+        "evades your grasp"
+      ]
+    },
+    {
+      "branch": "inventory.artifact-blast.refuse",
+      "segment": 2,
+      "screenIncludes": [
+        "You turn into a grid bug!",
+        "You are blasted by",
+        "You return to human form!",
+        "The glass orb named the Orb of Detection evades your grasp!",
+        "You see here a glass orb named the Orb of Detection."
+      ],
+      "screenExcludes": [
+        "Oops!",
+        "a - a glass orb named the Orb of Detection."
+      ]
+    }
+  ],
+  "recordingNote": "Use RERECORD_TZ=Etc/GMT+4."
+}

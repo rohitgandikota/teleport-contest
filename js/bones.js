@@ -248,7 +248,7 @@ export async function drop_upon_death(mtmp, cont, x, y) {
     let otmp;
     game.u.twoweap = false;
     while ((otmp = (game.invent || [])[0]) != null) {
-        obj_extract_self(otmp);
+        await obj_extract_self(otmp);
         if (!mtmp || is_undead(mtmp.data))
             await obj_no_longer_held(otmp);
         if ((cont || artifact_light(otmp)) && obj_is_burning(otmp))

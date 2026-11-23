@@ -1039,7 +1039,7 @@ async function touchfood(otmp) {
     }
 
     if (carried(otmp)) {
-        freeinv(otmp);
+        await freeinv(otmp);
         if (inv_cnt(false) >= invlet_basic) {
             sellobj_state(SELL_DONTSELL);
             await dropy(otmp);

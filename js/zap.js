@@ -2384,7 +2384,7 @@ export async function poly_obj(obj, id) {
          * equivalent to calling freeinv() on obj and addinv_nomerge()
          * on otmp, while doing an in-place swap of the actual objects.
          */
-        freeinv_core(obj);
+        await freeinv_core(obj);
         await addinv_core1(otmp);
         await addinv_core2(otmp);
         /*

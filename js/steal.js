@@ -480,7 +480,7 @@ export async function steal(mtmp, objnambuf = null) {
         mtmp.mavenge = 1;
     if (otmp.unpaid)
         subfrombill(otmp, shop_keeper(u.ushops?.[0]));
-    freeinv(otmp);
+    await freeinv(otmp);
     if (game.iflags.last_msg === PLNMSG_MON_TAKES_OFF_ITEM
         && mtmp.data.mlet === MONSYMS.S_NYMPH)
         named++;
@@ -546,7 +546,7 @@ export async function stealamulet(mtmp) {
     if (otmp.unpaid)
         subfrombill(otmp, shop_keeper((game.u.ushops || '').charCodeAt(0)));
 
-    freeinv(otmp);
+    await freeinv(otmp);
     const stolenName = doname(otmp);
     await mpickobj(mtmp, otmp);
     await pline(`${Some_Monnam(mtmp)} steals ${stolenName}!`);
@@ -579,7 +579,7 @@ export async function maybe_absorb_item(mon, obj, ochance, achance) {
                 hand_s = makeplural(hand_s);
             await pline(`${upstart(yname(obj))} ${otense(obj, 'are')} pulled from your ${hand_s}!`);
         }
-        freeinv(obj);
+        await freeinv(obj);
         await encumber_msg();
     } else if (canspotmon(mon)) {
         await pline(`${Monnam(mon)} absorbs ${yname(obj)}!`);

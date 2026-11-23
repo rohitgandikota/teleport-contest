@@ -3896,7 +3896,7 @@ export async function erode_obj(otmp, ostr, type, ef_flags) {
                                      * deleting a worn item) will ensue */
             }
         }
-        delobj(otmp);
+        await delobj(otmp);
         return ER_DESTROYED;
     } else {
         if (game.flags?.verbose && print) {

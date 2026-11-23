@@ -20,7 +20,7 @@ import { losehp, nomul, notice_all_mons_flush } from './hack.js';
 import { nxtobj, obj_extract_self, obfree } from './invent.js';
 import { ART_MASTER_KEY_OF_THIEVERY } from './artilist_data.js';
 import { exercise, Role_if } from './attrib.js';
-import { pline, see_monsters } from './display.js';
+import { pline, see_monsters, newsym } from './display.js';
 import { recalc_telepat_range } from './worn.js';
 import { map_invisible } from './display.js';
 import { canspotmon } from './display.js';
@@ -860,6 +860,12 @@ export function set_artifact_intrinsic(obj, on, wp_mask) {
             game.u.xray_range = on ? 3 : -1;
             game.vision_full_recalc = 1;
         }
+        if (wp_mask === W_ART && !on
+            && (art.inv_prop === 'CONFLICT' || art.inv_prop === 'LEVITATION'
+                || art.inv_prop === 'INVIS')
+            && ((game.u.uprops?.[art.inv_prop] || 0) & W_ARTI))
+            return invoke_property(obj, art.inv_prop);
+
         if ((wp_mask & W_WEP) && is_art(obj, ART_SUNSWORD))
             set_artifact_prop('BLND_RES', on, wp_mask);
     }
@@ -1189,7 +1195,7 @@ export async function retouch_object(obj, loseit) {
             const [{ freeinv }, { hitfloor }] = await Promise.all([
                 import('./invent.js'), import('./do.js'),
             ]);
-            freeinv(obj);
+            await freeinv(obj);
             await hitfloor(obj, true);
         } else {
             if (!IS_ALTAR(game.level.at(game.u.ux, game.u.uy).typ)) {
@@ -1474,6 +1480,9 @@ async function invoke_property(obj, prop) {
         props[prop] = eprop;
     else
         delete props[prop];
+    const intr = game.u.intrinsic || {};
+    const iprop = prop === 'CONFLICT' ? (intr.HConflict || 0)
+        : prop === 'LEVITATION' ? (intr.HLevitation || 0) : (intr.HInvis || 0);
     const on = (eprop & W_ARTI) !== 0;
 
     if (on && (obj.age || 0) > game.moves) {
@@ -1491,13 +1500,13 @@ async function invoke_property(obj, prop) {
     if (!on)
         obj.age = game.moves + rnz(100);
 
-    if ((eprop & ~W_ARTI) || game.u.intrinsic?.[prop]) {
+    if ((eprop & ~W_ARTI) || iprop) {
         /* you had the property from some other source too */
         await nothing_special(obj);
         return ECMD_TIME;
     }
 
-    const { You, You_feel, Your } = await import('./pline.js');
+    const { You_feel, Your } = await import('./pline.js');
     switch (prop) {
     case 'CONFLICT':
         if (on)
@@ -1507,19 +1516,23 @@ async function invoke_property(obj, prop) {
         break;
     case 'LEVITATION':
         if (on) {
-            await You('start to float in the air!');
-            const { encumber_msg } = await import('./attrib.js');
-            await encumber_msg();
+            const { float_up } = await import('./trap.js');
+            await float_up();
             const { spoteffects } = await import('./hack.js');
             await spoteffects(false);
         } else {
             const { float_down } = await import('./trap.js');
-            await float_down(0, W_ARTI);
+            await float_down(I_SPECIAL | TIMEOUT, W_ARTI);
         }
         break;
     case 'INVIS':
+        if (game.u.blocked?.INVIS || Blind()) {
+            await nothing_special(obj);
+            return ECMD_TIME;
+        }
+        newsym(game.u.ux, game.u.uy);
         if (on)
-            await Your('body takes on a strange transparency...');
+            await Your(`body takes on a ${Hallucination() ? 'normal' : 'strange'} transparency...`);
         else
             await Your('body seems to unfade...');
         break;

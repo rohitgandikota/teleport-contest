@@ -1371,15 +1371,19 @@ export function delobj_core(obj, force) {
         return;
     }
     const update_map = (obj.where === OBJ_FLOOR);
-    obj_extract_self(obj);
-    const objs = game.level?.objects;
-    if (objs) {
-        const i = objs.indexOf(obj);
-        if (i >= 0) objs.splice(i, 1);
+    const pending = obj_extract_self(obj);
+    return pending ? pending.then(finish) : finish();
+
+    function finish() {
+        const objs = game.level?.objects;
+        if (objs) {
+            const i = objs.indexOf(obj);
+            if (i >= 0) objs.splice(i, 1);
+        }
+        if (update_map)  /* floor object's coordinates are always up to date */
+            newsym(obj.ox, obj.oy);
+        return obfree(obj);
     }
-    if (update_map)  /* floor object's coordinates are always up to date */
-        newsym(obj.ox, obj.oy);
-    return obfree(obj);
 }
 
 // src/mon.c:1463 meatmetal() — a rock mole or similar eats the topmost metal

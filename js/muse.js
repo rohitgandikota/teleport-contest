@@ -2375,7 +2375,7 @@ export async function use_misc(mtmp) {
             setuswapwep(null);
         if (target === game.u.uquiver)
             setuqwep(null);
-        freeinv(target);
+        await freeinv(target);
 
         switch (where_to) {
         case 1:

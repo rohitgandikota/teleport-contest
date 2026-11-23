@@ -1,0 +1,98 @@
+{
+  "name": "artifact-invoked-property-helpers",
+  "description": "Invoked property feedback with blindness, blocked invisibility, hallucination, intrinsic overlap, and full levitation while flying.",
+  "coverage": [
+    "mode.debug",
+    "object.artifacts",
+    "survival.timed-status",
+    "ui.getlin",
+    "ui.map-memory-vision",
+    "ui.more-paging"
+  ],
+  "branches": [
+    "artifact-invoked-property-helpers.orb-blind-invoke",
+    "artifact-invoked-property-helpers.orb-blocked-invoke",
+    "artifact-invoked-property-helpers.orb-hallucinating-invoke",
+    "artifact-invoked-property-helpers.orb-intrinsic-invoke",
+    "artifact-invoked-property-helpers.heart-full-float-up"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "artifact-invoked-property-helpers.orb-blind-invoke",
+      "segment": 0,
+      "screenIncludes": [
+        "wearing a blindfold",
+        "surge of power"
+      ]
+    },
+    {
+      "branch": "artifact-invoked-property-helpers.orb-blocked-invoke",
+      "segment": 1,
+      "screenIncludes": [
+        "wearing a mummy wrapping",
+        "surge of power"
+      ]
+    },
+    {
+      "branch": "artifact-invoked-property-helpers.orb-hallucinating-invoke",
+      "segment": 2,
+      "screenIncludes": [
+        "normal transparency",
+        "body seems to unfade"
+      ]
+    },
+    {
+      "branch": "artifact-invoked-property-helpers.orb-intrinsic-invoke",
+      "segment": 3,
+      "screenIncludes": [
+        "surge of power"
+      ]
+    },
+    {
+      "branch": "artifact-invoked-property-helpers.heart-full-float-up",
+      "segment": 4,
+      "screenIncludes": [
+        "walking on air",
+        "no longer able to control your flight"
+      ]
+    }
+  ],
+  "segments": [
+    {
+      "name": "orb-blind-invoke",
+      "seed": 99831,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Archeologist,race:human,gender:male,align:lawful,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed The Orb of Detection\r       \u001b\u001b\u0017uncursed blindfold\r       \u001b\u001bPb    \u001b\u001b#invoke\ra    \u001b\u001b#invoke\ra    \u001b\u001bV"
+    },
+    {
+      "name": "orb-blocked-invoke",
+      "seed": 99831,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Archeologist,race:human,gender:male,align:lawful,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed The Orb of Detection\r       \u001b\u001b\u0017uncursed mummy wrapping\r       \u001b\u001bWb    \u001b\u001b#invoke\ra    \u001b\u001b#invoke\ra    \u001b\u001bV"
+    },
+    {
+      "name": "orb-hallucinating-invoke",
+      "seed": 99831,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Archeologist,race:human,gender:male,align:lawful,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed The Orb of Detection\r       \u001b\u001b#wizintrinsic\r100h\r    \u001b\u001b#invoke\ra    \u001b\u001b#invoke\ra    \u001b\u001bV"
+    },
+    {
+      "name": "orb-intrinsic-invoke",
+      "seed": 99831,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Archeologist,race:human,gender:male,align:lawful,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed The Orb of Detection\r       \u001b\u001b\u0017uncursed potion of invisibility\r       \u001b\u001bqb    \u001b\u001b#invoke\ra    \u001b\u001b#invoke\ra    \u001b\u001bV"
+    },
+    {
+      "name": "heart-full-float-up",
+      "seed": 6202,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Barbarian,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed The Heart of Ahriman\r       \u001b\u001b\u0017uncursed amulet of flying\r       \u001b\u001bPb    \u001b\u001b#wizintrinsic\r100h\r    \u001b\u001b#invoke\ra    \u001b\u001b#invoke\ra    \u001b\u001bV"
+    }
+  ]
+}

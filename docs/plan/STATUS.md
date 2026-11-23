@@ -2954,15 +2954,61 @@ its log and linux-coverage-followup-union-summary.json. Large profiles remain
 on NFS. Lua, macro-internal branches and inactive configurations remain outside
 this compiled-C denominator.
 
-Commit and immediately push this bridge checkpoint. The six-consumer raw
-hallucination audit now has four unchanged parent C recordings, 386 boundaries
-and 11,538 calls, with five source-derived failing controls. Naming and these
-property decisions have bounded cache candidates in progress. Full recovery
-has a completed 61-function audit and an eight-file ownership/phase design.
-It also exposes an ordinary Air save omitting 54 live clouds, so merely loading
-floor objects twice is insufficient. Save ownership and complete phase work
-continue in cache; no restore fix is claimed. Invoked-artifact removal remains
-under its coordinated async caller review.
+Bridge checkpoint `fce7883f` is pushed. The invoked-artifact checkpoint now
+repairs ordinary conflict, levitation and invisibility invocation, and removes
+an active invoked source when its artifact leaves inventory. Canonical
+intrinsics, cooldown order, overlap checks, full float_up/float_down behavior,
+blocked/blind invisibility and feedback follow C. Inventory removal sets
+OBJ_FREE before property effects and completes those effects before luck,
+figurine, tin and inventory refresh work. Ordinary removals remain synchronous.
+Eligible callers await completion, including sequential tutorial inventory
+storage. The reviewed patch changes 26 scopes in 16 runtime files, with
+85 added and 61 removed lines. The caller audit classifies all 235 removal
+calls and all 37 deletion calls without assuming artifacts cannot be destroyed.
+
+The two new fixtures preserve all nine original C recordings byte-for-byte:
+898 boundaries, 24,247 calls and no animations. Before the repair, the four
+loss cases match 307/315 screens and the five helper cases match 553/583.
+All screens, cursors, complete RNG streams and per-input slices now match.
+The nine input-state observations and nine recipe assertions pass. All 65
+constructed state controls pass, versus 32 before, and all 128 retained
+artifact/color/held-state controls pass. Private test access and completion
+pauses stay in a test loader; production exports are unchanged. Observation
+hooks are restored. Animation counts and the 60-second input-exhaustion gate
+pass. Source audit remains 0/276; syntax and diff checks pass.
+
+The complete regression passes 694/694 fixtures: 808,537 screens/cursors,
+16,121,830 scored RNG positions and 30,670 animations. Exact unique paths and
+basenames match the maintained fixture directories; all 279 runtime hashes
+stayed fixed. Receipts use artifact-invoke-corpus-{0,1,2,3,paths,totals},
+artifact-invoke-runtime-before-corpus.json and artifact-invoke-parent-*.
+The promoted state/input gates also pass directly from tools/.
+
+The original nine Mac recordings are rejected by the strict Linux collector
+at their final version-banner screen. A complete comparison confirms equal
+input tuples, boundary counts, RNG, cursors and animations, with only the
+MacOS/Unix banner line differing. The original inputs remain rejected and
+earn no coverage credit. Separate ordinary Linux controls are in progress
+under artifact-invoke-coverage.84yPUk on NFS. A first control failed at startup
+and is retained as a diagnostic; it is not credited. The published validated
+coverage union above remains unchanged.
+
+Next, integrate the reviewed two-file object-naming candidate and its 12
+native scenarios, 824 boundaries and 33,208 calls. All candidate native
+replays and the extra prompt-state observations pass, including cancellation,
+long names and discovered versus undiscovered Eyes. Six remaining
+hallucination decisions have a separate candidate with nine native scenarios,
+686 boundaries and 25,544 calls. That audit also proves FROMFORM stun can be
+missing from flat aliases in safe-monster and peaceful-attack guards.
+
+Full recovery has a completed 61-function audit and an eight-file
+ownership/phase implementation in progress. An ordinary Air save omits 54 live
+clouds. Its unchanged save/restore recording has 86 boundaries and 10,630 calls;
+current code matches 83 screens and 85 cursors. Floor-object phase diagnostics
+also remain outside the passing corpus. Save ownership, worm/region/bubble
+state and complete recovery phases continue in cache; no restore fix is
+claimed. Separate source reviews cover hide_monst's temporary vision mask
+and complete vampire shape selection.
 
 ## 2026-09-05: full faithful port is the active goal
 

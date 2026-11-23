@@ -426,7 +426,7 @@ export async function throw_obj(obj, shotlimit) {
             }
             obj = null;
         }
-        freeinv(otmp);
+        await freeinv(otmp);
         await throwit(otmp, wep_mask, twoweap, oldslot);
         await encumber_msg();
     }

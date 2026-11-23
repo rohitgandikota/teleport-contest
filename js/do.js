@@ -2238,7 +2238,7 @@ async function dosinkring(obj) {
 // nothing reaches the floor there; doaltarobj sets bknown when it lands on
 // an altar.
 export async function dropx(obj) {
-    freeinv(obj);
+    await freeinv(obj);
     if (!game.u.uswallow) {
         /* src/do.c:298 — ship_object() sends the object down a hole or
            stairs and returns TRUE when it did, in which case dropy() must
@@ -2316,7 +2316,7 @@ export async function drop(obj) {
                 (game.u.uprops ||= {}).LEVITATION = W_ART;
             if (game.flags.verbose)
                 await You(`drop ${doname(obj)}.`);
-            freeinv(obj);
+            await freeinv(obj);
             await hitfloor(obj, true);
             if (levhack)
                 await float_down(I_SPECIAL | TIMEOUT, W_ARTI | W_ART);

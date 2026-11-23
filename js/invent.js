@@ -2484,8 +2484,7 @@ export function obj_extract_self(obj) {
         break;
     }
     case OBJ_INVENT:
-        freeinv(obj);       /* src/mkobj.c:2573 -- ported at invent.js:622 */
-        break;
+        return freeinv(obj); /* freeinv sets OBJ_FREE before removing effects */
     case OBJ_BURIED: {
         const objs = game.level?.buriedobjs;
         if (objs) {
@@ -2653,6 +2652,7 @@ export function set_moreluck() {
 }
 
 export function freeinv_core(obj) {
+    let pending;
     if (obj.oclass === OCLASSES.COIN_CLASS) {
         /* src/invent.c freeinv_core() — this arm is exactly two statements in
            5.0. The 'money2mon' gap recorded here before did not correspond to
@@ -2672,20 +2672,24 @@ export function freeinv_core(obj) {
     } else if (obj.oartifact) {
         if (obj.oartifact === game.urole?.questarti)
             (game.u.uhave ||= {}).questart = 0;
-        set_artifact_intrinsic(obj, false, W_ART);
+        pending = set_artifact_intrinsic(obj, false, W_ART);
     }
 
-    if (obj.otyp === ONAMES.LOADSTONE)
-        curse(obj);
-    else if (confers_luck(obj)) {
-        set_moreluck();
-        (game.disp ||= {}).botl = true;
-    } else if (obj.otyp === ONAMES.FIGURINE && obj.timed)
-        stop_timer(FIG_TRANSFORM, obj);
+    return pending ? pending.then(finish) : finish();
 
-    if (obj === game.context?.tin?.tin) {
-        game.context.tin.tin = null;
-        game.context.tin.o_id = 0;
+    function finish() {
+        if (obj.otyp === ONAMES.LOADSTONE)
+            curse(obj);
+        else if (confers_luck(obj)) {
+            set_moreluck();
+            (game.disp ||= {}).botl = true;
+        } else if (obj.otyp === ONAMES.FIGURINE && obj.timed)
+            stop_timer(FIG_TRANSFORM, obj);
+
+        if (obj === game.context?.tin?.tin) {
+            game.context.tin.tin = null;
+            game.context.tin.o_id = 0;
+        }
     }
 }
 
@@ -2701,8 +2705,8 @@ export function freeinv(obj) {
         inv.splice(i, 1);           /* extract_nobj(obj, &gi.invent) */
     obj.where = OBJ_FREE;
     obj.pickup_prev = 0;
-    freeinv_core(obj);
-    update_inventory();
+    const pending = freeinv_core(obj);
+    return pending ? pending.then(update_inventory) : update_inventory();
 }
 
 // src/invent.c:1187 carry_obj_effects()
@@ -2803,7 +2807,7 @@ export async function hold_another_object(obj, drop_fmt, drop_arg, hold_msg) {
     if (can_reach_floor(true) || game.u.uswallow) {
         await dropx(obj);
     } else {
-        freeinv(obj);
+        await freeinv(obj);
         const { hitfloor } = await import('./do.js');
         await hitfloor(obj, false);
     }
@@ -2893,8 +2897,8 @@ export function useupall(obj) {
     return pending ? pending.then(finish) : finish();
 
     function finish() {
-        freeinv(obj);
-        return obfree(obj);
+        const removed = freeinv(obj);
+        return removed ? removed.then(() => obfree(obj)) : obfree(obj);
     }
 }
 

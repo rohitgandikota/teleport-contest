@@ -1,0 +1,83 @@
+{
+  "name": "artifact-invoked-property-loss",
+  "description": "Ordinary invoked artifact loss: Orb invisibility, Sceptre conflict, and Heart levitation with carried versus worn ring control.",
+  "coverage": [
+    "mode.debug",
+    "object.artifacts",
+    "survival.timed-status",
+    "ui.getlin",
+    "ui.map-memory-vision",
+    "ui.more-paging"
+  ],
+  "branches": [
+    "artifact-invoked-property-loss.heart-drop-ring-carried",
+    "artifact-invoked-property-loss.orb-invisibility-drop",
+    "artifact-invoked-property-loss.sceptre-conflict-drop",
+    "artifact-invoked-property-loss.heart-drop-ring-worn"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "artifact-invoked-property-loss.heart-drop-ring-carried",
+      "segment": 0,
+      "screenIncludes": [
+        "You start to float in the air!",
+        "You float gently"
+      ]
+    },
+    {
+      "branch": "artifact-invoked-property-loss.orb-invisibility-drop",
+      "segment": 1,
+      "screenIncludes": [
+        "strange transparency",
+        "body seems to unfade"
+      ]
+    },
+    {
+      "branch": "artifact-invoked-property-loss.sceptre-conflict-drop",
+      "segment": 2,
+      "screenIncludes": [
+        "rabble-rouser",
+        "tension decrease"
+      ]
+    },
+    {
+      "branch": "artifact-invoked-property-loss.heart-drop-ring-worn",
+      "segment": 3,
+      "screenIncludes": [
+        "surge of power",
+        "You drop"
+      ]
+    }
+  ],
+  "segments": [
+    {
+      "name": "heart-drop-ring-carried",
+      "seed": 6202,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Barbarian,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed The Heart of Ahriman\r     \u001b\u001b\u0017uncursed ring of levitation\r     \u001b\u001b#invoke\ra  \u001b\u001bda  \u001b\u001bV"
+    },
+    {
+      "name": "orb-invisibility-drop",
+      "seed": 99831,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Archeologist,race:human,gender:male,align:lawful,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed The Orb of Detection\r     \u001b\u001b#invoke\ra  \u001b\u001bda  \u001b\u001bV"
+    },
+    {
+      "name": "sceptre-conflict-drop",
+      "seed": 99832,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Caveman,race:human,gender:male,align:lawful,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed The Sceptre of Might\r     \u001b\u001b#invoke\ra  \u001b\u001bda  \u001b\u001bV"
+    },
+    {
+      "name": "heart-drop-ring-worn",
+      "seed": 6202,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Barbarian,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed The Heart of Ahriman\r     \u001b\u001b\u0017uncursed ring of levitation\r     \u001b\u001bPbl  \u001b\u001b#invoke\ra  \u001b\u001bda  \u001b\u001bV"
+    }
+  ]
+}

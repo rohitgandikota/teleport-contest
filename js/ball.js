@@ -810,7 +810,7 @@ async function litter() {
                 await You(`drop ${yname(otmp)} and ${(otmp.quan === 1) ? 'it' : 'they'} ${
                     otense(otmp, 'fall')} down the stairs with you.`);
                 await setnotworn(otmp);
-                freeinv(otmp);
+                await freeinv(otmp);
                 await hitfloor(otmp, false);
             }
         }

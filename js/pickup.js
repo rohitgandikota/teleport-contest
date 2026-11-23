@@ -2027,7 +2027,7 @@ export async function in_container(obj) {
         await You(`cannot fit ${buf} into ${the(xname(game.current_container))}.`);
         return 0;
     }
-    freeinv(obj);
+    await freeinv(obj);
     if (obj_is_burning(obj)) {
         const { snuff_lit } = await import('./apply.js');
         await snuff_lit(obj);

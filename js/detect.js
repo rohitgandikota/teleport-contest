@@ -1952,7 +1952,7 @@ export async function use_crystal_ball(obj) {
             if (obj.spe < 0) {
                 /* implode: destroy it when it has been cancelled */
                 await pline(`${Tobjnam(obj, 'implode')}!`);
-                useup(obj);
+                await useup(obj);
                 return;
             }
         } else {
@@ -2001,7 +2001,7 @@ export async function use_crystal_ball(obj) {
         if (obj.spe < 0) { /* destroy ball if used after being cancelled */
  /* implode: */ /* no damage to hero but 'multi' has a small negative value */
             await pline(`${Tobjnam(obj, 'implode')}!`);
-            useup(obj);
+            await useup(obj);
             return;
         }
     } else {

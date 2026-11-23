@@ -267,13 +267,16 @@ function nhl_gamestate_save() {
             const wornmask = otmp.owornmask;
             const removed = setnotworn(otmp);
             const store = () => {
-                freeinv(otmp);
-                otmp.owornmask = wornmask; /* flag for later restore */
-                invent.push(otmp);
+                const freed = freeinv(otmp);
+                const remember = () => {
+                    otmp.owornmask = wornmask; /* flag for later restore */
+                    invent.push(otmp);
+                };
+                return freed ? freed.then(remember) : remember();
             };
-            if (removed)
-                return removed.then(() => { store(); return store_inventory(); });
-            store();
+            const stored = removed ? removed.then(store) : store();
+            if (stored)
+                return stored.then(store_inventory);
         }
     }
 

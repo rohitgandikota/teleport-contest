@@ -1,0 +1,87 @@
+{
+  "name": "property-predicate-contracts",
+  "description": "Paired healthy and fumbling controls for periodic dexterity exercise and closed-door movement, including the resulting monster turn.",
+  "recordingNote": "Use RERECORD_TZ=Etc/GMT+4. Intrinsic-only stun, blindness cache and blocked-blindness cases have separate source-state controls.",
+  "segments": [
+    {
+      "name": "periodic-healthy",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!autoquiver,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!autoopen\n",
+      "moves": " #wizintrinsic\r\u001b .....V"
+    },
+    {
+      "name": "periodic-fumbling",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!autoquiver,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!autoopen\n",
+      "moves": " #wizintrinsic\r>100s\r .....V"
+    },
+    {
+      "name": "door-healthy",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!autoquiver,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!autoopen\n",
+      "moves": " \u0017iron bars\r \u0017closed door\r l#wizintrinsic\r\u001b h V"
+    },
+    {
+      "name": "door-fumbling",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!autoquiver,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!autoopen\n",
+      "moves": " \u0017iron bars\r \u0017closed door\r l#wizintrinsic\r>100s\r h V"
+    }
+  ],
+  "coverage": [
+    "mode.debug",
+    "terrain.doors-locks",
+    "ui.menus"
+  ],
+  "branches": [
+    "property.periodic-healthy",
+    "property.periodic-fumbling",
+    "property.door-healthy",
+    "property.door-fumbling"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "property.periodic-healthy",
+      "segment": 0,
+      "screenExcludes": [
+        "Timeout for fumbling set to 100."
+      ],
+      "rngIncludes": [
+        "@ maybe_generate_rnd_mon(allmain.c:166)"
+      ]
+    },
+    {
+      "branch": "property.periodic-fumbling",
+      "segment": 1,
+      "screenIncludes": [
+        "Timeout for fumbling set to 100."
+      ],
+      "rngIncludes": [
+        "rn2(2)=0 @ exercise(attrib.c:509)"
+      ]
+    },
+    {
+      "branch": "property.door-healthy",
+      "segment": 2,
+      "screenIncludes": [
+        "That door is closed."
+      ],
+      "screenExcludes": [
+        "You bump into a door."
+      ]
+    },
+    {
+      "branch": "property.door-fumbling",
+      "segment": 3,
+      "screenIncludes": [
+        "Ouch!  You bump into a door.",
+        "Timeout for fumbling set to 100."
+      ]
+    }
+  ]
+}

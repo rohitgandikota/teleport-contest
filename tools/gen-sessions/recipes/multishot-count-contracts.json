@@ -1,0 +1,137 @@
+{
+  "name": "multishot-count-contracts",
+  "description": "Skilled Ranger volleys preserve impairment checks, shot-count limits, cancellation, and single-shot messages.",
+  "segments": [
+    {
+      "name": "healthy",
+      "seed": 6001,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Robin,role:Ranger,race:elf,gender:male,align:chaotic,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " wb #enhance\ryo \u001b#wizintrinsic\r\u001b 4fl  4fl  V"
+    },
+    {
+      "name": "fumbling",
+      "seed": 6001,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Robin,role:Ranger,race:elf,gender:male,align:chaotic,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " wb #enhance\ryo \u001b#wizintrinsic\r>100s\r 4fl  4fl  V"
+    },
+    {
+      "name": "confusion-control",
+      "seed": 6001,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Robin,role:Ranger,race:elf,gender:male,align:chaotic,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " wb #enhance\ryo \u001b#wizintrinsic\r100g\r 4fl  4fl  V"
+    },
+    {
+      "name": "stun-control",
+      "seed": 6001,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Robin,role:Ranger,race:elf,gender:male,align:chaotic,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " wb #enhance\ryo \u001b#wizintrinsic\r100f\r 4fl  4fl  V"
+    },
+    {
+      "name": "fire-limit-one",
+      "seed": 6001,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Robin,role:Ranger,race:elf,gender:male,align:chaotic,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " wb #enhance\ryo \u001b#wizintrinsic\r\u001b 1fl  1fl  V"
+    },
+    {
+      "name": "throw-limit-two",
+      "seed": 6001,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Robin,role:Ranger,race:elf,gender:male,align:chaotic,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " wb #enhance\ryo \u001b#wizintrinsic\r\u001b 2tcl  2tcl  V"
+    },
+    {
+      "name": "uncounted-volley",
+      "seed": 6001,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Robin,role:Ranger,race:elf,gender:male,align:chaotic,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " wb #enhance\ryo \u001b#wizintrinsic\r\u001b fl  fl  V"
+    },
+    {
+      "name": "counted-cancellation",
+      "seed": 6001,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Robin,role:Ranger,race:elf,gender:male,align:chaotic,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " wb #enhance\ryo \u001b#wizintrinsic\r\u001b 2t\u001b2f\u001bV"
+    }
+  ],
+  "coverage": [
+    "combat.ranged",
+    "mode.debug",
+    "ui.menus"
+  ],
+  "branches": [
+    "multishot.healthy",
+    "multishot.fumbling",
+    "multishot.confusion-control",
+    "multishot.stun-control",
+    "multishot.fire-limit-one",
+    "multishot.throw-limit-two",
+    "multishot.uncounted-volley",
+    "multishot.counted-cancellation"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "multishot.healthy",
+      "segment": 0,
+      "screenIncludes": [
+        "You shoot 1 elven arrow."
+      ]
+    },
+    {
+      "branch": "multishot.fumbling",
+      "segment": 1,
+      "screenIncludes": [
+        "You shoot 1 elven arrow."
+      ]
+    },
+    {
+      "branch": "multishot.confusion-control",
+      "segment": 2,
+      "screenIncludes": [
+        "You shoot 1 elven arrow."
+      ]
+    },
+    {
+      "branch": "multishot.stun-control",
+      "segment": 3,
+      "screenIncludes": [
+        "You shoot 1 elven arrow."
+      ]
+    },
+    {
+      "branch": "multishot.fire-limit-one",
+      "segment": 4,
+      "screenIncludes": [
+        "You shoot 1 elven arrow."
+      ]
+    },
+    {
+      "branch": "multishot.throw-limit-two",
+      "segment": 5,
+      "screenIncludes": [
+        "You shoot 2 elven arrows."
+      ]
+    },
+    {
+      "branch": "multishot.uncounted-volley",
+      "segment": 6,
+      "screenIncludes": [
+        "You shoot 3 elven arrows."
+      ]
+    },
+    {
+      "branch": "multishot.counted-cancellation",
+      "segment": 7,
+      "screenIncludes": [
+        "MacOS NetHack Version 5.0.0"
+      ]
+    }
+  ],
+  "recordingNote": "Use RERECORD_TZ=Etc/GMT+4. The state gate checks the exact per-input volley rolls and messages. Confusion and stun native cases are compatibility-state controls; intrinsic-only cases are source-derived controls."
+}

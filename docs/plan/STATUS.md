@@ -1651,6 +1651,50 @@ Two cache-only audits continue: Pauli on read.js confusion predicates, Mill on
 teleport.js confusion/stun predicates. Neither may edit tracked production or
 run the native recorder. Parent owns final oracle generation and integration.
 
+Petattr checkpoint `51e8429e` is pushed. The attrib/cmd/dothrow checkpoint is
+applied and fully verified. Canonical Fumbling/Blind/Stunned/Confusion readers
+restore the missing intrinsic inputs. ok_to_throw now captures command_count
+with C's range limit before clearing repetition; fire and throw pass that count
+to throw_obj. A canceled throw returns ECMD_CANCEL. Source comments now clarify
+that C Stunned aliases HStun: flat-only JS stun entries are compatibility state,
+not a separate C extrinsic source.
+
+All 666 fixtures pass: 795,547 screens/cursors, 15,647,041 RNG calls and 30,213
+animation cell frames. Every final result and metric was parsed and checked.
+The 29 movement/exercise, 70 volley/count, nine command-repeat and 16 projectile
+cursor checks pass, 124 total. The new gates fail 12 and 28 checks before,
+respectively. Three input-exhaustion checks and the 276-module scope/import
+audit pass. New C cases add 523 screens and 27,464 RNG calls, including exact
+per-input RNG slices. Logs: `property-count-corpus-{0..3}`, `property-count-state-final`,
+`property-count-hang-final`, `property-count-source-audit-final`, and
+`multishot-count-final-native`, all `.log` in the restart cache.
+
+The expanded strict check covers all 211 fixtures with animation frames.
+It matches all 30,213 cell grids and frame counts, 352,674 boundary cursors,
+and 30,210 transient cursors. The three differences are identical before this
+checkpoint, as checked with the saved prior modules: hero-engulf-elements
+segment 1/input 125/frame 0, segment 2/input 138/frame 2; energy-drain segment
+2/input 185/frame 0. Expected cursors are on status row 23; JS leaves them on
+the message row. Observation-only traces identify unseen monster missile
+flight after status changes. No oracle was altered. Logs:
+`property-count-strict-{0,1}`, `property-count-strict-known-before`, and
+`status-animation-cursor-{trace,events}`. Avicenna owns the cache-only
+status-window audit; do not patch missile paths to force the recorded cursors.
+
+Next: Mill's teleport reader patch plus one trap-message predicate. Four fresh
+native proposals match 205 screens/cursors and 13,870 RNG calls with the
+teleport prototype, versus 201 screens and 2,262 RNG calls before. Bat form
+is a real intrinsic-only stun producer. The final asserted recipe/recording
+`teleport-property-contracts` is prepared but not committed. Mill is extending
+the source controls to the trap message. Pauli still owns read.js confusion;
+Singer is ranking substantive remaining gameplay gaps. These three audits
+and the status-window work remain cache-only until parent integration.
+
+Public GitHub API check: the Score workflow is active, but actions/runs returns
+zero runs. GitHub CLI is not authenticated. Do not claim hosted CI validation
+from local replay results. Official scoring remains its separate judge cycle;
+the latest established leaderboard result is still the 13:48 UTC snapshot.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

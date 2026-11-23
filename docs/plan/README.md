@@ -18,8 +18,8 @@ of 24,531 combined screens, 7th agentic and 11th overall. It predates the
 latest repairs. Public remains 44/44; 936 held-out screens remain unmatched
 in that snapshot.
 
-The full regression covers 664/664 fixtures with 795,024 exact boundary
-screens/cursors, 15,619,577 RNG calls and all 30,203 scored animation frames.
+The full regression covers 666/666 fixtures with 795,547 exact boundary
+screens/cursors, 15,647,041 RNG calls and all 30,213 scored animation frames.
 Glyph metadata, object appearance shuffling, monster identities and map
 cursor output are verified. The stricter public animation check now matches
 all 1,483 cursor positions, with exact cells and frame counts.
@@ -31,8 +31,10 @@ fixtures, including six new native cases. Dismount and trap impairment now
 passes 79 selected fixtures and four new native cases. Beam/projectile cursor
 ordering is repaired. Pet option parsing, bound toggles and fresh-process
 settings across restore now pass six option cases and four save/restore pairs.
-Next: property predicates in movement/exercise and counted missile volleys.
-Current-corpus parity is not a
+Movement/exercise predicates and counted missile volleys now match their C
+contracts. The complete animation-bearing corpus matches 30,210/30,213 cursors;
+three pre-existing status-window cursor differences remain. Next: teleport/read
+property checks and that status cursor repair. Current-corpus parity is not a
 completeness claim. See [STATUS.md](STATUS.md) for evidence and next actions.
 Historical milestone rows below are not a current completion audit.
 

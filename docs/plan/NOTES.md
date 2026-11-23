@@ -6259,6 +6259,15 @@ encumbrance-word and Dlvl shrinking that follows level 2 is not ported.
 
 ## #wizintrinsic writes the canonical fields and calls float_vs_flight()
 
+Property readers still need the C predicate at each call site. Fumbling
+includes HFumbling and the compatibility field; a raw FUMBLING read misses
+timed and ice-origin cases. Confusion and stun setters currently mirror their
+values into compatibility fields, so ordinary native inputs can hide a missing
+intrinsic read. Pair those inputs with intrinsic-only source controls. C's
+Stunned aliases HStun; flat-only JS stun entries are compatibility states,
+not C extrinsics. Preserve exerper's explicit HStun read while using the
+shared reader where the C calls Stunned.
+
 wizcmds.c wiz_intrinsic(): every property goes through
 incr_itimeout(&u.uprops[p].intrinsic); afterwards LEVITATION and FLYING
 call float_vs_flight() (Levitation blocks Fly on the status line via

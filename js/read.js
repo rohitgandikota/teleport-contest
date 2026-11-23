@@ -2029,7 +2029,7 @@ async function do_stinking_cloud(sobj, mention_stinking) {
         await pline('Never mind.');
         return;
     } else if (!can_center_cloud(cc.x, cc.y)) {
-        if (game.u.uprops?.HALLUC && !game.u.uprops?.HALLUC_RES)
+        if (Hallucination())
             await pline('Ugh... someone cut the cheese.');
         else
             await pline(`${sobj.oclass === OCLASSES.SCROLL_CLASS

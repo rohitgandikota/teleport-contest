@@ -1,0 +1,41 @@
+{
+  "name": "hallucination-predicate-sink",
+  "description": "Actual sink quaff with gold dragon scale mail and a 100-turn hallucination timer. Native call trace witnesses drinksink outcome 19 falling through to ordinary sip. No ring-disposal coverage claim.",
+  "coverage": [
+    "mode.debug",
+    "survival.timed-status",
+    "forms.polymorph"
+  ],
+  "branches": [
+    "drinksink.resisted-19-default-sip"
+  ],
+  "requireBranchAssertions": true,
+  "segments": [
+    {
+      "name": "resisted-sink-19",
+      "seed": 12008,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed gold dragon scale mail\r  \u001b\u001bWa  \u001b\u001b\u0017sink\r  \u001b\u001b#wizintrinsic\r100h\r  \u001b\u001bqy  \u001b\u001b"
+    }
+  ],
+  "branchAssertions": [
+    {
+      "branch": "drinksink.resisted-19-default-sip",
+      "segment": 0,
+      "screenIncludes": [
+        "Your gold dragon scale mail begins to shine brilliantly!",
+        "h # hallucinating",
+        "You take a sip of cold water."
+      ],
+      "screenExcludes": [
+        "From the murky drain, a hand reaches up"
+      ],
+      "rngIncludes": [
+        "rn2(20)=19 @ drinksink(fountain.c:604)",
+        "rn2(3)=2 @ drinksink(fountain.c:709)",
+        "rn2(2)=1 @ drinksink(fountain.c:709)"
+      ]
+    }
+  ]
+}

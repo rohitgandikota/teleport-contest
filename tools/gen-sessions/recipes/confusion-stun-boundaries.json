@@ -1,0 +1,86 @@
+{
+  "name": "confusion-stun-boundaries",
+  "description": "Actual timed confusion/stun and giant-bat FROMFORM stun inputs. First three assertions witness setup only; the paired input gate checks safe-monster queries. Final native bite witnesses an ordinary impaired attack without confirmation, with safe_pet disabled.",
+  "coverage": [
+    "mode.debug",
+    "survival.timed-status",
+    "forms.polymorph"
+  ],
+  "branches": [
+    "confusion.timed-visible-peaceful-setup",
+    "stun.timed-visible-peaceful-setup",
+    "stun.fromform-visible-peaceful-setup",
+    "stun.fromform-unconfirmed-attack"
+  ],
+  "requireBranchAssertions": true,
+  "segments": [
+    {
+      "name": "timed-confusion",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #wizintrinsic\r100g\r  \u001b\u001b\u0007peaceful acid blob\r  \u001b\u001bln  \u001b\u001b"
+    },
+    {
+      "name": "timed-stun",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #wizintrinsic\r100f\r  \u001b\u001b\u0007peaceful acid blob\r  \u001b\u001bln  \u001b\u001b"
+    },
+    {
+      "name": "bat-safe-monster",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #polyself\rgiant bat\r  \u001b\u001b\u0007peaceful acid blob\r  \u001b\u001b"
+    },
+    {
+      "name": "bat-attack-confirmation",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!safe_pet\n",
+      "moves": " #polyself\rgiant bat\r  \u001b\u001b\u0007peaceful acid blob\r  \u001b\u001bln  \u001b\u001b"
+    }
+  ],
+  "branchAssertions": [
+    {
+      "branch": "confusion.timed-visible-peaceful-setup",
+      "segment": 0,
+      "screenIncludes": [
+        "Timeout for confused set to 100.",
+        "An acid blob appears next to you."
+      ]
+    },
+    {
+      "branch": "stun.timed-visible-peaceful-setup",
+      "segment": 1,
+      "screenIncludes": [
+        "You stagger...",
+        "An acid blob appears next to you."
+      ]
+    },
+    {
+      "branch": "stun.fromform-visible-peaceful-setup",
+      "segment": 2,
+      "screenIncludes": [
+        "You turn into a giant bat!",
+        "An acid blob appears next to you."
+      ]
+    },
+    {
+      "branch": "stun.fromform-unconfirmed-attack",
+      "segment": 3,
+      "screenIncludes": [
+        "You turn into a giant bat!",
+        "You bite the acid blob."
+      ],
+      "screenExcludes": [
+        "Really attack the acid blob?"
+      ],
+      "rngIncludes": [
+        "rnd(20)=3 @ hmonas(uhitm.c:5571)"
+      ]
+    }
+  ]
+}

@@ -47,7 +47,7 @@ import { Upolyd, WARNCOUNT, IS_OBSTRUCTED, IS_ROOM, IS_POOL,
 
 import { cansee, couldsee, vision_recalc } from './vision.js';
 
-import { Blind, Infravision, Hallucination, Invis, See_invisible,
+import { Blind, Infravision, Hallucination, Confusion, Stunned, Invis, See_invisible,
          Underwater, Detect_monsters, Warn_of_mon, Protection_from_shape_changers } from './youprop.js';
 
 import { observe_object } from './o_init.js';
@@ -2967,8 +2967,7 @@ export function unmap_invisible(x, y) {
 // See NOTES, "Default-On options: read them defensively".
 export function is_safemon(mon) {
     return !!(game.flags?.safe_dog !== false && mon.mpeaceful && canspotmon(mon)
-              && !game.u.uprops?.CONFUSION && !game.u.uprops?.HALLUC
-              && !game.u.uprops?.STUNNED);
+              && !Confusion() && !Hallucination() && !Stunned());
 }
 
 // src/display.c:258 map_background() — remember and (optionally) show the

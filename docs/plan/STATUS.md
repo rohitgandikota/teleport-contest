@@ -3074,6 +3074,75 @@ passing corpus while the protection-ring path is investigated. Additional
 hideunder feedback and Underwater predicate gaps have failing source controls
 and are being audited separately with their caller completion contracts.
 
+Naming checkpoint `c35636fd` is pushed. The status-predicate checkpoint now
+changes six runtime files, nine added and 17 removed lines. Sink quaffing,
+terrain description, safe-monster handling, peaceful-attack confirmation,
+attribute exercise and stinking-cloud rejection read canonical Hallucination.
+The two monster-interaction guards also use C's Confusion and Stunned
+predicates. Real giant-bat inputs establish the missing FROMFORM stun case;
+timed confusion/stun controls already passed before this change. Raw timeout
+arithmetic, setters and the 37 intentional raw hallucination reads are retained.
+
+All ten normal-import source controls pass, versus two before. The three
+byte-identical native fixtures contain nine cases, 686 boundaries, 25,544 calls
+and no animations. All screens, cursors, complete streams and input slices
+match. Their nine recipe assertions, original input tuples and observation-hook
+restoration checks pass, as do exact animation counts and input exhaustion.
+Native setup witnesses are distinguished from the separate input-state
+assertions for pure safe-monster queries.
+
+The full inventory now has 700 fixtures. The four-shard run passed 697 and
+returned ETIMEDOUT for door-magic, inventory-type-queries and lock-operations,
+with no comparison data from those three workers. An immediate door retry
+under the same parallel load also timed out. After the shards finished, all
+three passed serially at the same runtime, in 11.7, 11.7 and 13.9 seconds.
+The standard 45-second limit, frozen runner and expected recordings were
+unchanged. The verified inventory therefore covers 700/700: 810,102
+screens/cursors, 16,183,320 scored RNG positions and 30,670 animation frames.
+All paths and basenames match the maintained directories exactly, and all
+279 runtime hashes stayed fixed. Initial failures remain in their logs.
+Receipts use hallucination-predicate-corpus-{0,1,2,3,paths,totals},
+hallucination-predicate-serial-recheck.log and
+hallucination-predicate-runtime-before-corpus.json. Source audit is 0/276;
+syntax and diff checks pass. Use two shards for the next full run to reduce
+contention instead of increasing the worker limit.
+
+The validated C union now includes nine runs and 694 exact credited inputs:
+603 original canonical matches, 75 original independent Linux controls,
+14 additional raw inputs with 93 segments, and two further Linux controls
+with nine segments. Input hashes, ordinary-control provenance, build manifests
+and ordered LLVM branch layouts were checked before merging. Original
+platform rejections remain rejected. Coverage rises by two entered functions
+and 69 direct outcomes, to 4,506/5,492 functions and 58,696/107,260 outcomes.
+do_oname reaches 18/18, arti_invoke 53/66, set_artifact_intrinsic 102/128,
+restrict_name 29/34 and drinksink 34/44. These counts do not establish full
+subsystem correctness. The NFS union is under
+c-coverage-compress.E84JI2/verified-naming-status-union-20261123 on the same
+research root; the compact local receipt is
+linux-coverage-naming-status-union-summary.json. Large profiles remain on NFS.
+
+Next, combine the reviewed vampire selection repair with the hide_monst
+vision mask and the newly isolated mimic-creation guard. The first hider
+recording diverges before departure because set_mimic_sym omits C's
+Protection_from_shape_changers guard. The independent one-line repair passes
+five source controls, versus two before. Together with the mask, all four
+unchanged hider recordings match 308 screens/cursors, 22,325 calls and 26
+animations. This candidate remains unapplied; the separate hideunder feedback
+and Underwater gaps are still under review. Vampire selection remains exact
+on its four native cases and 42 state controls. Its separate NFS run passes
+strict C replay and covers 16/26 pickvampshape outcomes; it is not yet merged
+into the global union.
+
+The next raw Confusion/Stunned audit classifies 159 lines in 30 files. Seven
+new C input proposals are now recorded unchanged: 442 boundaries, 19,651 calls
+and no animations. Current code matches 380 screens and 401 cursors. The
+findings include incorrect restore-ability feedback, liquid avoidance, terrain
+viewing, FROMFORM bits added as a duration during vomiting, and a stale stun
+alias after leaving bat form. Two further duration/feedback sites are
+source-only. These diagnostics remain outside the passing corpus while their
+producer and consumer contracts are repaired. Full save/restore ownership
+work also continues in its separate cache candidate.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

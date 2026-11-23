@@ -1,0 +1,94 @@
+{
+  "name": "hallucination-predicate-boundaries",
+  "description": "Four unchanged native input segments for canonical Hallucination under equipment or form resistance. Screen assertions witness ice naming, peaceful-monster setup, attack confirmation and cloud rejection. The paired normal-import gate checks the safe-monster decision and the absent exercise draw; setup text alone is not a C branch claim.",
+  "coverage": [
+    "mode.debug",
+    "survival.timed-status",
+    "terrain.furniture",
+    "forms.polymorph",
+    "combat.melee",
+    "object.scrolls"
+  ],
+  "branches": [
+    "pager.resisted-ice",
+    "display.resisted-peaceful-setup",
+    "attack.resisted-peaceful-confirmation",
+    "read.intrinsic-resistance-cloud-rejection"
+  ],
+  "requireBranchAssertions": true,
+  "segments": [
+    {
+      "name": "resisted-ice",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed gold dragon scale mail\r  \u001b\u001bWa  \u001b\u001b\u0017ice\r  \u001b\u001b#wizintrinsic\r100h\r  \u001b\u001b:  \u001b\u001b;.  \u001b\u001b"
+    },
+    {
+      "name": "resisted-safe-monster",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed gold dragon scale mail\r  \u001b\u001bWa  \u001b\u001b#wizintrinsic\r100h\r  \u001b\u001b\u0007peaceful acid blob\r  \u001b\u001b"
+    },
+    {
+      "name": "resisted-confirmation",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!safe_pet\n",
+      "moves": " \u0017uncursed gold dragon scale mail\r  \u001b\u001bWa  \u001b\u001b#wizintrinsic\r100h\r  \u001b\u001b\u0007peaceful acid blob\r  \u001b\u001bln  \u001b\u001b"
+    },
+    {
+      "name": "intrinsic-cloud-and-exercise",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed scroll of stinking cloud\r  \u001b\u001b#polyself\rblack light\r  \u001b\u001b#wizintrinsic\r100h\r  \u001b\u001bra  .  \u001b\u001b.....  \u001b\u001b"
+    }
+  ],
+  "branchAssertions": [
+    {
+      "branch": "pager.resisted-ice",
+      "segment": 0,
+      "screenIncludes": [
+        "Your gold dragon scale mail begins to shine brilliantly!",
+        "h # hallucinating",
+        "There is solid ice here."
+      ],
+      "screenExcludes": [
+        "There is a solid frozen water here."
+      ]
+    },
+    {
+      "branch": "display.resisted-peaceful-setup",
+      "segment": 1,
+      "screenIncludes": [
+        "Your gold dragon scale mail begins to shine brilliantly!",
+        "h # hallucinating",
+        "An acid blob appears next to you."
+      ]
+    },
+    {
+      "branch": "attack.resisted-peaceful-confirmation",
+      "segment": 2,
+      "screenIncludes": [
+        "Really attack the acid blob?"
+      ],
+      "screenExcludes": [
+        "You miss the acid blob."
+      ]
+    },
+    {
+      "branch": "read.intrinsic-resistance-cloud-rejection",
+      "segment": 3,
+      "screenIncludes": [
+        "You turn into a black light!",
+        "Oh wow!  Everything feels so cosmic!",
+        "The scroll crumbles with a whiff of rotten eggs."
+      ],
+      "screenExcludes": [
+        "Ugh... someone cut the cheese."
+      ]
+    }
+  ]
+}

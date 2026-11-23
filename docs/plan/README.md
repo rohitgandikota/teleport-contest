@@ -33,8 +33,11 @@ ordering is repaired. Pet option parsing, bound toggles and fresh-process
 settings across restore now pass six option cases and four save/restore pairs.
 Movement/exercise predicates and counted missile volleys now match their C
 contracts. The complete animation-bearing corpus matches 30,210/30,213 cursors;
-three pre-existing status-window cursor differences remain. Next: teleport/read
-property checks and that status cursor repair. Current-corpus parity is not a
+three pre-existing status-window cursor differences remain. Teleport and scroll
+property readers now pass 162 selected fixtures, including all public games and
+eight new C cases: 161,543 screens/cursors and 3,150,859 RNG calls. Next: the status
+cursor repair, Stormbringer attack routing and magical-breathing regeneration.
+Current-corpus parity is not a
 completeness claim. See [STATUS.md](STATUS.md) for evidence and next actions.
 Historical milestone rows below are not a current completion audit.
 

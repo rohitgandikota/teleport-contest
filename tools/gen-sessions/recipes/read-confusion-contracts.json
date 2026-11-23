@@ -1,0 +1,79 @@
+{
+  "name": "read-confusion-contracts",
+  "description": "Confused scroll effects cover energy, armor proofing, falling rocks, monster creation and reversed fear.",
+  "recordingNote": "Use RERECORD_TZ=Etc/GMT+4. These native inputs mirror both confusion fields and are regression controls. Separate source-state checks distinguish intrinsic-only and compatibility-only readers.",
+  "segments": [
+    {
+      "name": "charging-energy",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!autoquiver,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed scroll of charging\r\u0017cursed scroll of charging\r#wizintrinsic\r100g\r ra    \u001b\u001b rb    \u001b\u001b V"
+    },
+    {
+      "name": "enchant-armor-proof",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!autoquiver,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed rusty +0 helmet\rWa \u0017uncursed scroll of enchant armor\r#wizintrinsic\r100g\r rb    \u001b\u001b i\u001bV"
+    },
+    {
+      "name": "earth-rocks",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!autoquiver,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed scroll of earth\r#wizintrinsic\r100g\r ra   V"
+    },
+    {
+      "name": "create-and-scare",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!autoquiver,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed scroll of create monster\r\u0017uncursed scroll of scare monster\r#wizintrinsic\r100g\r ra    \u001b\u001b    rb    \u001b\u001b V"
+    }
+  ],
+  "coverage": [
+    "mode.debug",
+    "ui.menus",
+    "ui.map-memory-vision"
+  ],
+  "branches": [
+    "read.confused-charging-energy",
+    "read.confused-enchant-armor-proof",
+    "read.confused-earth-rocks",
+    "read.confused-create-and-scare"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "read.confused-charging-energy",
+      "segment": 0,
+      "screenIncludes": [
+        "You feel charged up!",
+        "You feel discharged."
+      ]
+    },
+    {
+      "branch": "read.confused-enchant-armor-proof",
+      "segment": 1,
+      "screenIncludes": [
+        "covered by a shimmering golden shield!",
+        "looks as good as new!"
+      ]
+    },
+    {
+      "branch": "read.confused-earth-rocks",
+      "segment": 2,
+      "screenIncludes": [
+        "The ceiling rumbles around you!"
+      ]
+    },
+    {
+      "branch": "read.confused-create-and-scare",
+      "segment": 3,
+      "screenIncludes": [
+        "You hear sad wailing close by."
+      ]
+    }
+  ]
+}

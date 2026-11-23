@@ -3577,7 +3577,7 @@ async function trapeffect_level_telep(mtmp, trap, trflags) {
     if (Hallucination() || Teleport_control()) {
         await You(`briefly feel ${Hallucination() ? 'oriented' : 'centered'}.`);
     } else {
-        await You_feel(`${game.u.uprops?.CONFUSION ? 'even more ' : ''}disoriented.`);
+        await You_feel(`${Confusion() ? 'even more ' : ''}disoriented.`);
     }
     if (!Teleport_control()) {
         const { make_confused } = await import('./potion.js');

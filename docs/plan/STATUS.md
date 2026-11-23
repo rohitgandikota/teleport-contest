@@ -1695,6 +1695,45 @@ zero runs. GitHub CLI is not authenticated. Do not claim hosted CI validation
 from local replay results. Official scoring remains its separate judge cycle;
 the latest established leaderboard result is still the 13:48 UTC snapshot.
 
+Property/volley checkpoint `0a9cc2f8` is pushed. The teleport/read/trap
+predicate checkpoint is applied and verified. Teleport imports the canonical
+Stunned and Confusion readers instead of two local raw-field readers. The
+level-teleport trap message and six scroll effect predicates use Confusion.
+All other effect logic, random calls, timeout updates and ordering are unchanged.
+
+The selected regression passes 162/162 fixtures, including all 44 public games:
+161,543 screens/cursors, 3,150,859 RNG calls and 4,880 animation cell frames.
+All final metric records were parsed. The complete-corpus result remains the
+previous 666-fixture run, not a new 668-fixture run. The two new fixtures add
+eight native cases, 563 screens/cursors and 26,697 RNG calls. Bat-form stun
+changes actual teleport destinations to match C. The four confused-scroll
+inputs are native regression controls: ordinary setters mirror both fields,
+so those inputs pass before too; isolated-state controls expose the omissions.
+
+The 39 scroll/native, 53 teleport/trap/native and one existing teleport-menu
+checks pass, 93 total; 24 fail before. The first promoted native teleport check
+initially retained unused Escape keys from constructed controls. Clearing that
+test-only queue before setup and native replay fixes the harness; no production
+input change was made. Four input-exhaustion checks and the 276-module source
+audit pass. Logs: `read-teleport-regression-{0..3}`, `read-teleport-state-final`,
+`read-teleport-state-promoted-before`, `read-teleport-hang-final`,
+`read-teleport-source-audit-final`, `read-confusion-final-native` and
+`teleport-property-final-native`, all `.log` in the restart cache.
+
+Mill's teleport/trap audit is complete and closed. The remaining active agents
+have disjoint cache-only scopes: Avicenna on status cursor output, Singer on
+Stormbringer routing in uhitm, Pauli on regen_pw's missing extrinsic magical-
+breathing bonus in allmain. The source-ranked follow-ups are documented in
+`remaining-gameplay-audit-report.md` in the cache: eyewear transitions, artifact
+acquisition after blast-induced rehumanization, and fill_pit after bhitpile.
+Parent owns native recording, final assertions, integration, validation and pushes.
+
+One separately identified read.c discrepancy remains: seffect_teleportation sets
+game.known after normal scrolltele, while C leaves discovery to scrolltele's
+outcome. It needs an independent identification-state control and native failed-
+teleport case before repair. Do not treat the six predicate changes as a full
+scroll-function audit. The three strict status cursor mismatches remain open.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

@@ -53,7 +53,7 @@ import { addtobill, costly_spot, doname_with_price, obfree_bill, same_price,
          shop_keeper, inside_shop, inhishop, unpaid_cost, doinvbill } from './shk.js';
 import { ONAME, has_oname, ONAME_SKIP_INVUPD } from './const.js';
 import { u_at, CMDQ_KEY, CMDQ_INT, CMDQ_USER_INPUT, CQ_CANNED, CQ_REPEAT, FOUNTAIN, THRONE, SINK, GRAVE, ALTAR, TREE,
-         ICE, DRAWBRIDGE_DOWN, IRONBARS, Never_mind, LOST_NONE, LOST_THROWN, LOST_EXPLODING, LOOKHERE_PICKED_SOME, LOOKHERE_SKIP_DFEATURE, IS_DOOR, D_NODOOR, D_ISOPEN, D_BROKEN,
+         ICE, DRAWBRIDGE_DOWN, DBWALL, IRONBARS, Never_mind, LOST_NONE, LOST_THROWN, LOST_EXPLODING, LOOKHERE_PICKED_SOME, LOOKHERE_SKIP_DFEATURE, IS_DOOR, D_NODOOR, D_ISOPEN, D_BROKEN,
          AM_SANCTUM, AM_SHRINE, Amask2align, A_NONE, A_LAWFUL,
          A_NEUTRAL, A_CHAOTIC, OBJ_DELETED } from './const.js';
 import { hides_under, touch_petrifies, poly_when_stoned } from './mondata.js';
@@ -99,7 +99,7 @@ import { tty_yn_function } from './tty/topl.js';
 import { You, You_hear, You_see, Your, impossible } from './pline.js';
 import { cansee } from './vision.js';
 import { surface } from './dungeon.js';
-import { is_ice } from './dbridge.js';
+import { is_ice, is_drawbridge_wall } from './dbridge.js';
 import { ice_descr } from './pager.js';
 import { discover_artifact, set_artifact_intrinsic,
          artifact_confers_luck } from './artifact.js';
@@ -777,7 +777,8 @@ export function dfeature_at(x, y) {
         case D_BROKEN: dfeature = 'broken door'; break;
         default:       dfeature = 'closed door'; break;
         }
-        /* open-drawbridge portcullis override needs drawbridge walls */
+        if (is_drawbridge_wall(x, y) >= 0)
+            dfeature = 'open drawbridge portcullis';
     } else if (ltyp === FOUNTAIN) {
         dfeature = 'fountain';
     } else if (ltyp === THRONE) {
@@ -806,6 +807,8 @@ export function dfeature_at(x, y) {
         dfeature = stairs_description(stway, true);
     } else if (ltyp === DRAWBRIDGE_DOWN) {
         dfeature = 'lowered drawbridge';
+    } else if (ltyp === DBWALL) {
+        dfeature = 'raised drawbridge';
     } else if (ltyp === GRAVE) {
         dfeature = 'grave';
     } else if (ltyp === TREE) {

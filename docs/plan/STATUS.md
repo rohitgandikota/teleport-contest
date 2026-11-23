@@ -3482,6 +3482,50 @@ C replay on NFS but are not merged into this checkpoint's coverage union.
 The official refresh after fa526ce7 is byte-identical to the 20:18 UTC snapshot;
 no newer held-out result is claimed.
 
+Floor/decor checkpoint `e78815d6` is pushed. The two dfeature_at omissions
+are now integrated: a door beside a correctly oriented drawbridge uses the
+open-portcullis description, and DBWALL uses the raised-drawbridge description.
+The complete C producer and existing is_drawbridge_wall helper were reviewed.
+The runtime change is six added and three removed lines in invent.js.
+
+Eight source controls pass, compared with one pass and seven failures before.
+All 145 combined floor/decor/ice controls pass. Two unchanged native cases
+contribute 296 boundaries and 25,209 calls; baseline matched 293 screens.
+The promoted runtime matches every screen, cursor, full RNG stream and input
+slice. Seven selected fixtures match 3,574 boundaries, 133,871 calls and
+86 animation frames, including exact frame counts and boundary cursors.
+Input exhaustion, two native assertions, recipe categories, syntax, whitespace
+and the 0/276 scope/import audit pass. The recipe uses the existing furniture
+and Castle categories; the initial nonexistent drawbridge category was corrected
+without changing any input or native output.
+
+Full regression passes 717/717 fixtures without failures or timeouts:
+813,110 screens/cursors, 16,336,224 scored RNG positions and 30,734 animations.
+Both shards use the standard 45-second worker limit. Maintained paths and
+unique basenames match; all 279 runtime hashes stayed fixed. Receipts use
+drawbridge-feature-promoted-*, drawbridge-feature-corpus-* and
+dfeature-drawbridge-audit/promoted-integrity.json. Native SHA256 is
+258a5e3e114fed3f6d30f7e7059d1c7e444b87cf082609360036ba21532f8d35.
+
+The recording also matches instrumented C exactly on NFS. The verified union
+now enters 4,517/5,492 functions and observes 58,858/107,260 direct outcomes,
+adding four functions and sixteen outcomes. All 711 input hashes, seventeen
+matching manifests and branch layouts were checked before merging. The newer
+raw inputs contain 139 segments, plus nine independent Linux-control segments.
+The NFS directory is c-coverage-compress.E84JI2/verified-dfeature-union-20261123;
+compact local receipts use linux-coverage-dfeature-union-*.
+
+The reviewed underwater/status candidates now match all eight new native cases
+in isolation. Their shared display/vision fixes must be applied only once.
+Their two NFS replays are exact but not yet merged into the maintained union.
+The shared-selector v1 package also passes all twelve native cases, including
+the tower's six creation-time prompts. A separate readability amendment will
+replace unnecessary manual continuations where every real caller already
+awaits completion. Saving swallowed punishment has a new native detection pair;
+its restore RNG differs from the candidate and remains under investigation.
+The official refresh after e78815d6 is byte-identical to the 20:18 UTC snapshot
+with our 19:33 UTC scoring run. No newer held-out gain is claimed.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

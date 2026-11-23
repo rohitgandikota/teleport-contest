@@ -18,10 +18,10 @@ of 24,531 combined screens, 7th agentic and 11th overall. It predates the
 latest repairs. Public remains 44/44; 1,008 held-out screens remain unmatched
 in that snapshot.
 
-The local regression now passes 640/640 fixtures with 789,800 exact screens
-and 15,145,328 RNG calls. Recent repairs cover room difficulty, ending
-vision, strength loss, roleplay conduct and nudist inventory generation.
-Next: final inventory text and the remaining graphics and lifecycle gaps.
+The local regression now passes 641/641 fixtures with 789,951 exact screens
+and 15,159,749 RNG calls. Recent repairs cover room difficulty, ending
+vision, strength loss, roleplay conduct, nudist inventory and final item text.
+Next: interactive game exit and the remaining graphics gaps.
 See [STATUS.md](STATUS.md) for evidence and the next action. Historical
 milestone rows below are not a current completion audit.
 

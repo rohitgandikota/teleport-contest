@@ -1,0 +1,103 @@
+{
+  "name": "inventory-disclosure-text",
+  "description": "Final inventory reveals shirt slogans, Hawaiian motifs and candy labels while preserving minimal equipment names and illiterate conduct.",
+  "recordingNote": "Use RERECORD_TZ=Etc/GMT+4.",
+  "coverage": [
+    "mode.debug",
+    "ui.menus",
+    "object.armor",
+    "ending.death-disclosure"
+  ],
+  "branches": [
+    "disclosure-text.hawaiian",
+    "disclosure-text.tshirt",
+    "disclosure-text.apron",
+    "disclosure-text.candy",
+    "disclosure-text.in-progress-control"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "disclosure-text.hawaiian",
+      "segment": 0,
+      "screenIncludes": [
+        "Hawaiian shirt with a parrot motif",
+        "You were illiterate."
+      ]
+    },
+    {
+      "branch": "disclosure-text.tshirt",
+      "segment": 1,
+      "screenIncludes": [
+        "T-shirt with text \"Down with pants!\" named Script",
+        "You were illiterate."
+      ]
+    },
+    {
+      "branch": "disclosure-text.apron",
+      "segment": 2,
+      "screenIncludes": [
+        "alchemy smock with text \"I'm making SCIENCE!\"",
+        "Your items were protected from acid by your smock.",
+        "You were acid resistant because of your alchemy smock.",
+        "You were illiterate."
+      ]
+    },
+    {
+      "branch": "disclosure-text.candy",
+      "segment": 3,
+      "screenIncludes": [
+        "5 uncursed candy bars labeled \"Chocolate Nuggie\"",
+        "You were illiterate."
+      ]
+    },
+    {
+      "branch": "disclosure-text.in-progress-control",
+      "segment": 4,
+      "screenIncludes": [
+        "Hawaiian shirt"
+      ],
+      "screenExcludes": [
+        "with a parrot motif",
+        "with text"
+      ]
+    }
+  ],
+  "segments": [
+    {
+      "name": "hawaiian",
+      "seed": 9785,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=disclose:+i +a -v -g +c -o\n",
+      "moves": " \u0017Hawaiian shirt\rWa#quit\ryn     "
+    },
+    {
+      "name": "tshirt",
+      "seed": 9786,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=disclose:+i +a -v -g +c -o\n",
+      "moves": " \u0017T-shirt named Script\r#quit\ryn     "
+    },
+    {
+      "name": "apron",
+      "seed": 9787,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=disclose:+i +a -v -g +c -o\n",
+      "moves": " \u0017alchemy smock\rWa#quit\ryn     "
+    },
+    {
+      "name": "candy",
+      "seed": 9788,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=disclose:+i +a -v -g +c -o\n",
+      "moves": " \u00175 candy bars\r#quit\ryn     "
+    },
+    {
+      "name": "in-progress-control",
+      "seed": 9785,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=disclose:+i +a -v -g +c -o\n",
+      "moves": " \u0017Hawaiian shirt\ri "
+    }
+  ]
+}

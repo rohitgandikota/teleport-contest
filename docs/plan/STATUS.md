@@ -890,6 +890,37 @@ all 46 independently re-recorded fourth-batch games: 4,451 screens/cursors,
 to the source and full regression. It covers readable item text, the
 `distant_name` game-over guard and live discovery state in smock naming.
 
+Roleplay checkpoint `1a0fe854` is pushed. Final inventory naming now includes
+shirt slogans, Hawaiian motifs and nonempty candy labels before personal
+names, as in C. Minimal and distant names suppress those identity-based
+details. Smock naming reads live type discovery state. The five new native
+cases improve from 146/151 screens to exact output, retaining all 14,421 RNG
+calls. Six naming controls pass; four fail before the patch. The native
+conduct pages also verify that disclosure preserves literacy conduct.
+
+Full regression: 641/641 fixtures, 789,951 screens/cursors, 15,159,749 RNG
+calls and 30,010/30,031 animations. Native assertions, recording integrity,
+input-exhaustion and source-audit checks pass. Logs: `disclosure-corpus-*`,
+`inventory-disclosure-{before,final,native,hang,source-audit}.log` and
+`disclosure-text-state-{before,final}.log` in the restart cache. The separate
+46-game native control batch is also exact with this implementation.
+
+Next candidate: public interactive entry points currently let the internal
+`nh_terminate` signal escape on quit, save and character cancellation. The
+cache `interactive-exit-prototype-*` handles it at those entry points and
+preserves replay capture. All six direct API controls pass, four failing
+before; 95 selected fixtures retain exact screens and RNG. This is still a
+prototype, not a source change. Do not confuse native empty startup-exit
+frames with scored frames: the judge omits empty C screens; the cancelled
+terminal itself is blank.
+
+The public runtime reach audit records no remaining unported markers in
+44 sessions. This is not completeness evidence. Graphics source gaps remain
+in `dec-class-*`. Remote test generation needs additional tools: `tokyo`
+has Node 18 and gcc but no Clang, and `osaka` has neither Node nor Clang in
+PATH. `sendai` and `andromeda` were unreachable. NFS is available with 30 TB
+free; no large new corpus has been created locally or remotely.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

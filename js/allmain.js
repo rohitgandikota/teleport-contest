@@ -106,7 +106,8 @@ import { NO_COLOR } from './terminal.js';
 // into the tty's menu prompt style.
 function init_sound_disp_gamewindows() {
     /* src/options.c:7188 — the default heading style */
-    adjust_menu_promptstyle({ color: NO_COLOR, attr: ATR_INVERSE });
+    adjust_menu_promptstyle(game.iflags?.menu_headings
+                            ?? { color: NO_COLOR, attr: ATR_INVERSE });
 }
 
 // include/you.h:441-442

@@ -1,0 +1,47 @@
+{
+  "name": "menu-colors-save-restore",
+  "description": "Menu-color regex rules are rebuilt from the restoring process configuration and remain executable after restore.",
+  "recordingNote": "Use RERECORD_TZ=Etc/GMT+4 for a fixed UTC-4 recording offset.",
+  "coverage": [
+    "mode.normal",
+    "persistence.save-restore",
+    "ui.menus"
+  ],
+  "branches": [
+    "menu-colors.saved",
+    "menu-colors.restored"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "menu-colors.saved",
+      "segment": 0,
+      "screenIncludes": [
+        "quarterstaff",
+        "Be seeing you"
+      ]
+    },
+    {
+      "branch": "menu-colors.restored",
+      "segment": 1,
+      "screenIncludes": [
+        "welcome back",
+        "quarterstaff"
+      ]
+    }
+  ],
+  "segments": [
+    {
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:ColorSave,role:Wizard,race:human,gender:male,align:neutral\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nMENUCOLOR=\"quarterstaff\"=red&bold\n",
+      "moves": " i\u001bSy"
+    },
+    {
+      "seed": 32,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:ColorSave,role:Wizard,race:human,gender:male,align:neutral\nOPTIONS=autopickup,!tutorial,!tips,pettype:none,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nMENUCOLOR=\"quarterstaff\"=green&underline\n",
+      "moves": "i\u001b#inventory\r\u001b"
+    }
+  ]
+}

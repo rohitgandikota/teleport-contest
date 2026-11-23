@@ -532,6 +532,28 @@ and `recorder-exit-control-{score,hang}.log`. This recorder-only fix does not
 change the 622-session gameplay result. The two new restore fixtures remain
 pending until their separate gameplay fix is verified.
 
+Recorder checkpoint `a0d13ea9` is pushed. Save/restore now keeps the restoring
+process's instance flags and compiled menu-color rules, including when reading
+older saves containing those fields. Persistent flags still come from the
+save. Startup menu prompts now use the configured heading style, and object
+symbols in menus use the same terminal color conversion as C.
+Both native restore fixtures pass all 62 screens/cursors and 5,226 RNG calls;
+before the fix they matched 41 screens and 5,223 RNG calls, with menu coloring
+crashing on a deserialized regex. All four current/legacy save state checks
+pass and all four fail before the fix. The 45 selected state/parser checks
+and 74 input-exhaustion checks pass. Source audit remains empty.
+
+The full 624-fixture sweep passes 624/624: 787,741 screens/cursors and
+14,910,591 RNG calls, with unchanged animation parity of 30,005/30,026.
+Logs are `.cache/restart-20261122/restore-corpus-{0,1,2,3}.log`,
+`restore-state-{before,final}.log` and `restore-hang.log`.
+The pending message-type and pickup-exception configuration fixtures are
+outside this sweep. `MSGTYPE` and `AUTOPICKUP_EXCEPTION` directives currently
+fall through the configuration parser. Seven asserted native message cases
+already show nine screen differences and three cursor differences, with
+matching RNG. The compiled message parser gate fails all four groups before
+implementation. Keep these pending files out of the restore checkpoint.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

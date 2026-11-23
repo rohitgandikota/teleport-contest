@@ -1,0 +1,50 @@
+{
+  "name": "instance-options-save-restore",
+  "description": "Instance options come from the restoring process configuration while persistent flags retain their saved values.",
+  "recordingNote": "Use RERECORD_TZ=Etc/GMT+4 for a fixed UTC-4 recording offset.",
+  "coverage": [
+    "mode.normal",
+    "persistence.save-restore",
+    "ui.menus"
+  ],
+  "branches": [
+    "instance-options.saved",
+    "instance-options.restored"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "instance-options.saved",
+      "segment": 0,
+      "screenIncludes": [
+        "Weapons",
+        "Be seeing you"
+      ]
+    },
+    {
+      "branch": "instance-options.restored",
+      "segment": 1,
+      "screenIncludes": [
+        "welcome back",
+        "Weapons",
+        "menu_headings",
+        "blue&underline",
+        "number_pad"
+      ]
+    }
+  ],
+  "segments": [
+    {
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:OptionSave,role:Wizard,race:human,gender:male,align:neutral\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=menu_headings:red&bold,menu_objsyms:none,number_pad:0\n",
+      "moves": " i\u001bSy"
+    },
+    {
+      "seed": 32,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:OptionSave,role:Wizard,race:human,gender:male,align:neutral\nOPTIONS=autopickup,!tutorial,!tips,pettype:none,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=menu_headings:blue&underline,menu_objsyms:both,number_pad:1\n",
+      "moves": "i\u001b#inventory\r\u001b#optionsfull\r      \u001b"
+    }
+  ]
+}

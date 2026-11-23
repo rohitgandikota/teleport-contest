@@ -611,7 +611,7 @@ function process_menu_window(cw, page, display) {
                     ch = item.count === -1 ? '*' : '#';
                 else if (show_obj_syms && item.glyphinfo?.ch) {
                     ch = item.glyphinfo.ch;
-                    color = item.glyphinfo.color;
+                    color = tty_color(item.glyphinfo.color);
                 }
             }
             display.setCell(col, row, ch, color, on);

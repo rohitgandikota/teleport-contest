@@ -2657,6 +2657,55 @@ null/empty-string contract fix has no established route among 61 current
 callers; it is ready with 20 source controls. Held-placement/container
 composition and ice-description work continue in cache.
 
+Save-order checkpoint `b999213a` is pushed. The next pending checkpoint
+finishes the reproduced ice path before the larger artifact integration.
+Four runtime files change by ten added and fourteen removed lines:
+run_timers rereads its global queue; melt_ice uses spot_stop_timers;
+ice_descr imports the numeric timer index from timeout rather than the stale
+string in const; dfeature_at calls is_ice/ice_descr instead of returning
+literal solid ice. No artifact or held-placement patch is integrated yet.
+
+The original 304-step ice oracle remains unchanged. A separate re-recording
+answers its final More prompt, exposing 'You see here a newt corpse.' after
+melting cancels the due corpse timer. All 305 boundaries, 7,914 calls and
+92 animations match. Before this checkpoint, 299 screens and 304 cursors
+matched. The promoted timer-dispatch-ice-tie fixture preserves that new
+recording, hash
+00184b523be88b387ac47d9b5d1f956a21e51048d608ef06fcf8f9ce0ec9c893.
+All three actual-input state observations pass, including the destructive
+no-save control. The full 57 timer/ice controls improve from 34/57 to 57/57.
+New-fixture strict streams/slices, exact animation/cursor counts, native
+assertions, integrity, input exhaustion and source audit pass.
+
+The complete 685-fixture regression passes all 804,428 screens/cursors,
+15,971,119 scored RNG positions and 30,572 animations. Every result is exact
+with no error, and the four disjoint shards cover the recorded path inventory
+once. All 279 runtime hashes stayed fixed. Logs are
+timer-ice-corpus-{0,1,2,3}.log; the path inventory and source hashes are
+timer-ice-corpus-paths.json and timer-ice-runtime-before-corpus.json.
+timer-ice-corpus-totals.json records the verified totals. Commit and push
+this checkpoint before integrating the next runtime change.
+
+Four further sink cases now match native C at all 336 boundaries and 15,240
+calls: hunger with actual punishment gear and Magicbane, blind relocation,
+Air-level relocation failure after 200 attempts, and polymorph with a zero
+backup roll after the sink vanished. The three original proposals use seed
+99812; the fourth uses seed 12008, found after nine bounded trials. The earlier
+64-seed teleport scan found no zero and remains recorded as an unmet search.
+Raw combined native output is sink-ring-remaining-all-native.session.json;
+it is not yet a maintained fixture. A separate NFS coverage run is being
+prepared under sink-ring-coverage.BgV3Jx/remaining-coverage. Do not claim the
+six missing outcomes as native coverage until that strict run is checked.
+
+Parent reviewed the complete 833-line HALRES combined patch and its core C
+setter/worn contracts. It is still cache-only. Its test-only pause/private
+tutorial-export loaders must remain outside production; normal promotion
+packaging is pending. The held-placement review also identified a follow-up
+question: C full recovery calls getlev/find_lev_obj twice, so fixed floor
+crysknives may receive two held-loss draws. Avicenna is checking the source
+phases and a real input witness. Do not claim complete restore parity from
+the existing one-pass pile rebuild controls.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

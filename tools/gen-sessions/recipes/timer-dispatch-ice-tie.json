@@ -1,0 +1,118 @@
+{
+  "name": "timer-dispatch-ice-tie",
+  "description": "An iced corpse and melting ice expire together. A no-save rot-first control is compared with full recovery putting melt first. Unchanged native inputs also expose steady/slushy ice descriptions. The final More prompt is answered to show the surviving corpse. Recorded with RERECORD_TZ=Etc/GMT+4.",
+  "coverage": [
+    "mode.debug",
+    "turn.timers",
+    "persistence.save-restore",
+    "object.food-corpses",
+    "terrain.water-lava"
+  ],
+  "branches": [
+    "timer-dispatch-ice.no-save-rot-first",
+    "timer-dispatch-ice.save",
+    "timer-dispatch-ice.restored-cancellation"
+  ],
+  "requireBranchAssertions": true,
+  "segments": [
+    {
+      "seed": 9211,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Timer,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,time\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "tie-without-save-control",
+      "moves": "mO aqr\r\u001b\u001b\u0017blessed scroll of genocide\rra  *\r\u001b\u001b\u0017blessed fireproof water walking boots\rWb\u0017melting ice\r\u0017uncursed newt corpse\r149.dc182.:.\u001b\u001b:\u0017floor\r:"
+    },
+    {
+      "seed": 9211,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Timer,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,time\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "tie-save",
+      "moves": "mO aqr\r\u001b\u001b\u0017blessed scroll of genocide\rra  *\r\u001b\u001b\u0017blessed fireproof water walking boots\rWb\u0017melting ice\r\u0017uncursed newt corpse\r149.dcSy"
+    },
+    {
+      "seed": 9211,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Timer,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,time\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "tie-restore-expiry",
+      "moves": " n mO qr\r\u001b\u001b182.:.\u001b\u001b:\u0017floor\r: "
+    }
+  ],
+  "branchAssertions": [
+    {
+      "branch": "timer-dispatch-ice.no-save-rot-first",
+      "segment": 0,
+      "screenIncludes": [
+        "Steady ice.",
+        "There is slushy ice here.",
+        "Some ice melts away."
+      ],
+      "screenCells": [
+        {
+          "step": 99,
+          "x": 1,
+          "y": 0,
+          "equals": "t"
+        },
+        {
+          "step": 132,
+          "x": 10,
+          "y": 0,
+          "equals": "l"
+        }
+      ]
+    },
+    {
+      "branch": "timer-dispatch-ice.save",
+      "segment": 1,
+      "screenIncludes": [
+        "Steady ice.",
+        "You drop a newt corpse.",
+        "Be seeing you..."
+      ],
+      "screenCells": [
+        {
+          "step": 99,
+          "x": 1,
+          "y": 0,
+          "equals": "t"
+        }
+      ]
+    },
+    {
+      "branch": "timer-dispatch-ice.restored-cancellation",
+      "segment": 2,
+      "screenIncludes": [
+        "welcome back",
+        "There is slushy ice here.",
+        "Some ice melts away.",
+        "You see here a newt corpse."
+      ],
+      "screenCells": [
+        {
+          "step": 16,
+          "x": 10,
+          "y": 0,
+          "equals": "l"
+        },
+        {
+          "step": 28,
+          "x": 50,
+          "y": 0,
+          "equals": "M"
+        },
+        {
+          "step": 29,
+          "x": 15,
+          "y": 0,
+          "equals": "n"
+        },
+        {
+          "step": 29,
+          "x": 20,
+          "y": 0,
+          "equals": "c"
+        }
+      ]
+    }
+  ]
+}

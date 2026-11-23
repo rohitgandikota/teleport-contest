@@ -4581,13 +4581,7 @@ export async function melt_ice(x, y, msg = null) {
         loc.icedpool = 0;
     }
 
-    const packed = ((x & 0xffff) << 16) | (y & 0xffff);
-    game.timer_base = (game.timer_base || []).filter(timer => {
-        if (timer.func_index !== MELT_ICE_AWAY)
-            return true;
-        const arg = timer.arg?.a_long ?? timer.arg;
-        return arg !== packed;
-    });
+    spot_stop_timers(x, y, MELT_ICE_AWAY); /* no more ice to melt away */
 
     const trap = t_at(x, y);
     if (trap) {

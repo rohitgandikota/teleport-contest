@@ -99,6 +99,8 @@ import { tty_yn_function } from './tty/topl.js';
 import { You, You_hear, You_see, Your, impossible } from './pline.js';
 import { cansee } from './vision.js';
 import { surface } from './dungeon.js';
+import { is_ice } from './dbridge.js';
+import { ice_descr } from './pager.js';
 import { discover_artifact, set_artifact_intrinsic,
          artifact_confers_luck } from './artifact.js';
 import { ART_MJOLLNIR } from './artilist_data.js';
@@ -784,8 +786,8 @@ export function dfeature_at(x, y) {
         dfeature = 'opulent throne';
     } else if (is_lava(x, y)) {
         dfeature = 'molten lava';
-    } else if (ltyp === ICE) {
-        dfeature = 'solid ice';
+    } else if (is_ice(x, y)) {
+        dfeature = ice_descr(x, y);
     } else if (is_pool(x, y)) {
         dfeature = 'pool of water';
     } else if (ltyp === SINK) {

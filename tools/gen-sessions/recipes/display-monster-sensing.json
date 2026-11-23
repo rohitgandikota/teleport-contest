@@ -1,0 +1,146 @@
+{
+  "name": "display-monster-sensing",
+  "description": "Sensed and hallucinated mimics reveal their monster glyphs; blind telepathy displays worm tails while detection alone displays the head.",
+  "recordingNote": "Use RERECORD_TZ=Etc/GMT+4. Monster and statue disguise sampling, shape protection with active disguise, and touch branches have separate state controls.",
+  "segments": [
+    {
+      "name": "visible-mimic-detection",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "moves": " \u0007sleeping hostile giant mimic\r#wizintrinsic\r100t\r \fV"
+    },
+    {
+      "name": "hallucinated-mimic-detection",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "moves": " \u0007sleeping hostile giant mimic\r#wizintrinsic\r100h\r #wizintrinsic\r100t\r \fV"
+    },
+    {
+      "seed": 99826,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Mortician,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0007sleeping hostile long worm\r\u0017uncursed helm of telepathy\rWa  #wizintrinsic\r100i\r \fV",
+      "name": "blind-telepathic-worm-tail"
+    },
+    {
+      "seed": 99826,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Mortician,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0007sleeping hostile long worm\r#wizintrinsic\r100t\r #wizintrinsic\r100i\r \fV",
+      "name": "blind-detected-worm-head-control"
+    }
+  ],
+  "coverage": [
+    "mode.debug",
+    "ui.map-memory-vision",
+    "ui.menus",
+    "object.armor"
+  ],
+  "branches": [
+    "display-monster.visible-mimic-detection",
+    "display-monster.hallucinated-mimic-detection",
+    "display-monster.blind-telepathic-worm-tail",
+    "display-monster.blind-detected-worm-head-control"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "display-monster.visible-mimic-detection",
+      "segment": 0,
+      "screenCells": [
+        {
+          "step": 53,
+          "x": 8,
+          "y": 13,
+          "equals": "m"
+        }
+      ]
+    },
+    {
+      "branch": "display-monster.hallucinated-mimic-detection",
+      "segment": 1,
+      "screenCells": [
+        {
+          "step": 73,
+          "x": 8,
+          "y": 13,
+          "equals": "@"
+        }
+      ]
+    },
+    {
+      "branch": "display-monster.blind-telepathic-worm-tail",
+      "segment": 2,
+      "screenCells": [
+        {
+          "step": 83,
+          "x": 4,
+          "y": 14,
+          "equals": "~"
+        },
+        {
+          "step": 83,
+          "x": 4,
+          "y": 15,
+          "equals": "~"
+        },
+        {
+          "step": 83,
+          "x": 3,
+          "y": 16,
+          "equals": "~"
+        },
+        {
+          "step": 83,
+          "x": 4,
+          "y": 16,
+          "equals": "~"
+        },
+        {
+          "step": 83,
+          "x": 5,
+          "y": 16,
+          "equals": "w"
+        }
+      ]
+    },
+    {
+      "branch": "display-monster.blind-detected-worm-head-control",
+      "segment": 3,
+      "screenCells": [
+        {
+          "step": 71,
+          "x": 4,
+          "y": 14,
+          "equals": "\u00b7"
+        },
+        {
+          "step": 71,
+          "x": 4,
+          "y": 15,
+          "equals": "\u00b7"
+        },
+        {
+          "step": 71,
+          "x": 3,
+          "y": 16,
+          "equals": "\u00b7"
+        },
+        {
+          "step": 71,
+          "x": 4,
+          "y": 16,
+          "equals": "\u00b7"
+        },
+        {
+          "step": 71,
+          "x": 5,
+          "y": 16,
+          "equals": "w"
+        }
+      ]
+    }
+  ]
+}

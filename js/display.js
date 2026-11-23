@@ -48,7 +48,7 @@ import { Upolyd, WARNCOUNT, IS_OBSTRUCTED, IS_ROOM, IS_POOL,
 import { cansee, couldsee, vision_recalc } from './vision.js';
 
 import { Blind, Infravision, Hallucination, Invis, See_invisible,
-         Underwater, Detect_monsters, Warn_of_mon } from './youprop.js';
+         Underwater, Detect_monsters, Warn_of_mon, Protection_from_shape_changers } from './youprop.js';
 
 import { observe_object } from './o_init.js';
 
@@ -86,6 +86,8 @@ import { is_pool } from './mon.js';
 import { nhgetch } from './input.js';
 
 import { update_lastseentyp } from './dungeon.js';
+import { cmap_to_type } from './mkroom.js';
+import { DETECTED, PHYSICALLY_SEEN, NON_PM } from './const.js';
 
 import { def_oc_syms, cmap_names, defsyms } from './drawing_data.js';
 
@@ -1537,6 +1539,94 @@ export function see_nearby_objects() {
         }
 }
 
+// src/display.c:483 show_mon_or_warn(), clear a stale object-layer marker.
+function show_mon_or_warn(x, y, monglyph) {
+    if (glyph_is_invisible_at(x, y)) {
+        unmap_object(x, y);
+        const obj = cansee(x, y) ? vobj_at(x, y) : null;
+        if (obj)
+            map_object(obj, false);
+    }
+    show_glyph_cell(x, y, monglyph.ch, monglyph.color, monglyph.decgfx,
+                    monglyph.attr, monglyph.glyph);
+}
+
+// src/display.c:514 display_monster(), including an overridden mimic glyph.
+function display_monster(x, y, mon, sightflags, worm_tail) {
+    const mon_mimic = M_AP_TYPE(mon) !== M_AP_NOTHING;
+    const sensed = mon_mimic && (Protection_from_shape_changers() || sensemon(mon));
+    const female = !!mon.female;
+
+    // A physically seen disguise updates memory even when sensing reveals
+    // the real monster afterward. Its hallucination draws still occur.
+    if (mon_mimic && sightflags === PHYSICALLY_SEEN) {
+        switch (M_AP_TYPE(mon)) {
+        default:
+            impossible(`display_monster:  bad m_ap_type value [ = ${mon.m_ap_type} ]`);
+            // fall through
+        case M_AP_NOTHING: {
+            const g = mon_to_glyph(mon, rn2_on_display_rng);
+            show_glyph_cell(x, y, g.ch, g.color, g.decgfx, 0, g.glyph);
+            break;
+        }
+        case M_AP_FURNITURE: {
+            const sym = mon.mappearance;
+            const s = showsym(sym);
+            const g = { ch: s.ch, color: defsyms[sym].color, decgfx: !!s.dec,
+                glyph: { kind: 'cmap', cmap: sym, glyphnum: cmap_to_glyph(sym) } };
+            const loc = game.level.at(x, y);
+            loc.remembered_glyph = g;
+            if (!sensed) {
+                show_glyph_cell(x, y, g.ch, g.color, g.decgfx, 0, g.glyph);
+                loc.lastseentyp = cmap_to_type(sym);
+            }
+            break;
+        }
+        case M_AP_OBJECT: {
+            // C starts with zeroobj, including a zero object class and gender.
+            const mcorpsenm = mon.mcorpsenm ?? mon.mextra?.mcorpsenm ?? NON_PM;
+            const obj = { ox: x, oy: y, otyp: mon.mappearance,
+                corpsenm: mcorpsenm !== NON_PM ? mcorpsenm : PMNAMES.PM_TENGU,
+                oclass: OCLASSES.RANDOM_CLASS, quan: 0, spe: 0, dknown: 0 };
+            map_object(obj, !sensed);
+            break;
+        }
+        case M_AP_MONSTER: {
+            const mnum = Hallucination() ? rn2_on_display_rng(NUMMONS) : mon.mappearance;
+            const shown = game.mons[mnum];
+            const glyphnum = mnum + (female ? GLYPH_MON_FEM_OFF : GLYPH_MON_MALE_OFF);
+            show_glyph_cell(x, y, showsym_mon(shown.mlet), shown.mcolor, false, 0,
+                { kind: 'mon', mon, mnum, female, detected: false, glyphnum });
+            break;
+        }
+        }
+    }
+
+    if (!mon_mimic || sensed) {
+        let mnum, glyphnum, detected = false;
+        // Pet glyphs take priority over detection, except during hallucination.
+        if (mon.mtame && !Hallucination()) {
+            mnum = worm_tail ? PMNAMES.PM_LONG_WORM_TAIL : monsndx(mon.data);
+            glyphnum = mnum + (female ? GLYPH_PET_FEM_OFF : GLYPH_PET_MALE_OFF);
+        } else if (sightflags === DETECTED) {
+            mnum = Hallucination() ? rn2_on_display_rng(NUMMONS)
+                : worm_tail ? PMNAMES.PM_LONG_WORM_TAIL : monsndx(mon.data);
+            glyphnum = mnum + (female ? GLYPH_DETECT_FEM_OFF : GLYPH_DETECT_MALE_OFF);
+            detected = true;
+        } else {
+            mnum = Hallucination() ? rn2_on_display_rng(NUMMONS)
+                : worm_tail ? PMNAMES.PM_LONG_WORM_TAIL : monsndx(mon.data);
+            glyphnum = mnum + (female ? GLYPH_MON_FEM_OFF : GLYPH_MON_MALE_OFF);
+        }
+        const shown = game.mons[mnum];
+        const attr = detected && game.flags?.use_inverse !== false ? TERM_INVERSE : 0;
+        show_mon_or_warn(x, y, { ch: showsym_mon(shown.mlet), color: shown.mcolor,
+            decgfx: false, attr,
+            glyph: { kind: 'mon', mon, mnum, female, detected, glyphnum } });
+        mon.meverseen = 1;
+    }
+}
+
 // src/display.c:715 suppress_map_output(), including the hangup build guard.
 export function suppress_map_output() {
     const state = game.program_state || {};
@@ -1659,13 +1749,10 @@ export function newsym(x, y) {
            but the monster's own coordinates remain at its head.  Since this
            square is visible, mon_visible() is enough to see the tail; using
            canspotmon() would incorrectly test cansee() at the distant head. */
-        const wormTail = !!(mon?.wormno
-                            && (mon.mx !== x || mon.my !== y));
-        const spotMon = !!(mon && (mon_visible(mon)
-                                   || (!wormTail && sensemon(mon))));
-        const detectedOnly = !!(spotMon && !wormTail
-            && Detect_monsters() && !mon_visible(mon)
-            && !tp_sensemon(mon) && !match_warn_of_mon(mon));
+        const wormTail = !!(mon && (mon.mx !== x || mon.my !== y));
+        const see_it = !!(mon && (mon_visible(mon)
+            || (!wormTail && (tp_sensemon(mon) || match_warn_of_mon(mon)))));
+        const spotMon = !!(mon && (see_it || (!wormTail && Detect_monsters())));
         /* src/display.c:1029, a warning glyph takes precedence over a
            remembered invisible-monster marker. */
         if (!spotMon && mon && mon_warning(mon) && !wormTail) {
@@ -1707,68 +1794,9 @@ export function newsym(x, y) {
                                          ?? { kind: 'cmap', cmap: memg.cmap } };
         update_lastseentyp(x, y);   /* _map_location(x, y, 1) */
 
-        /* src/display.c:1420 newsym() — the monster arm is gated on
-           canspotmon(): an undetected hider (snake under a corpse, eel under
-           water) shows the layer beneath it, not its letter. Disguised
-           mimics stay spottable (mundetected 0) and display_monster() draws
-           the DISGUISE (display.c:533). */
         if (spotMon) {
-            if (M_AP_TYPE(mon) === M_AP_OBJECT) {
-                /* display.c:564 — a fake object sent to map_object() */
-                const fake = { otyp: mon.mappearance, ox: x, oy: y,
-                               /* obj = zeroobj; C only fills these fields. */
-                               oclass: OCLASSES.RANDOM_CLASS,
-                               corpsenm: mon.mcorpsenm ?? PMNAMES.PM_TENGU,
-                               quan: 1, dknown: 0 };
-                const mappedFake = mapped_object_glyphs(fake, x, y, false);
-                const g = mappedFake.shown;
-                /* display_monster() maps a mimic's fake object into hero
-                   memory before drawing it. That memory survives a level
-                   change even when the terminal still holds an older cell. */
-                if (game.level?.flags?.hero_memory)
-                    loc.remembered_glyph = {
-                        ch: mappedFake.remembered.ch,
-                        color: mappedFake.remembered.color,
-                        decgfx: mappedFake.remembered.dec,
-                        glyph: mappedFake.remembered.glyph,
-                    };
-                show_glyph_cell(x, y, g.ch, g.color, g.dec ?? false, g.attr,
-                                g.glyph ?? { kind: 'obj', otyp: fake.otyp });
-                return;
-            }
-            if (M_AP_TYPE(mon) === M_AP_FURNITURE) {
-                /* display.c:543 — poor man's map_background of the S_ sym */
-                const s = showsym(mon.mappearance);
-                show_glyph_cell(x, y, s ? s.ch : '?',
-                                defsyms[mon.mappearance]?.color ?? NO_COLOR,
-                                s ? s.dec : false, 0,
-                                { kind: 'cmap', cmap: mon.mappearance });
-                return;
-            }
-            const mnum = Hallucination()
-                ? rn2_on_display_rng(NUMMONS)
-                : (wormTail ? PMNAMES.PM_LONG_WORM_TAIL
-                    : (M_AP_TYPE(mon) === M_AP_MONSTER
-                        ? mon.mappearance : mon.mnum));
-            const shown = game.mons[mnum];
-            const female = !!mon.female;
-            // src/display.c:578, :599 display_monster(): a monster disguise
-            // uses the normal range; other pets take priority outside hallucination.
-            const disguise = M_AP_TYPE(mon) === M_AP_MONSTER;
-            const pet = !disguise && mon.mtame && !Hallucination();
-            const detected = !disguise && !pet && detectedOnly;
-            const glyphnum = mnum + (pet
-                ? (female ? GLYPH_PET_FEM_OFF : GLYPH_PET_MALE_OFF)
-                : detected
-                  ? (female ? GLYPH_DETECT_FEM_OFF : GLYPH_DETECT_MALE_OFF)
-                  : (female ? GLYPH_MON_FEM_OFF : GLYPH_MON_MALE_OFF));
-            const attr = detectedOnly && !(mon.mtame && !Hallucination())
-                         && game.flags?.use_inverse !== false
-                ? TERM_INVERSE : 0;
-            show_glyph_cell(x, y, showsym_mon(shown.mlet) || '?',
-                            shown.mcolor ?? NO_COLOR, false, attr,
-                            { kind: 'mon', mon, mnum, female, detected, glyphnum });
-            mon.meverseen = 1; /* display.c:620 display_monster() */
+            display_monster(x, y, mon, see_it ? PHYSICALLY_SEEN : DETECTED,
+                            wormTail);
             return;
         }
 
@@ -1779,35 +1807,14 @@ export function newsym(x, y) {
             return;
         }
     } else {
-        /* src/display.c newsym(), the can't-see branch: a monster the hero
-           senses, or sees with infravision, is still displayed */
+        /* src/display.c:1047, sensed tails are shown by telepathy or
+           specific warning; monster detection alone shows only the head. */
         const mon = m_at(x, y);
-        const spotMon = !!(mon && (sensemon(mon)
-                    || (see_with_infrared(mon) && mon_visible(mon))));
-        const detectedOnly = !!(spotMon && Detect_monsters()
-            && !tp_sensemon(mon) && !match_warn_of_mon(mon)
-            && !(see_with_infrared(mon) && mon_visible(mon)));
-        if (spotMon) {
-            const mnum = Hallucination()
-                ? rn2_on_display_rng(NUMMONS) : mon.mnum;
-            const shown = game.mons[mnum];
-            const female = !!mon.female;
-            // src/display.c:599 display_monster(): pets precede detection.
-            const pet = mon.mtame && !Hallucination();
-            const detected = !pet && detectedOnly;
-            const glyphnum = mnum + (pet
-                ? (female ? GLYPH_PET_FEM_OFF : GLYPH_PET_MALE_OFF)
-                : detected
-                  ? (female ? GLYPH_DETECT_FEM_OFF : GLYPH_DETECT_MALE_OFF)
-                  : (female ? GLYPH_MON_FEM_OFF : GLYPH_MON_MALE_OFF));
-            const attr = detectedOnly && !(mon.mtame && !Hallucination())
-                         && game.flags?.use_inverse !== false
-                ? TERM_INVERSE : 0;
-            clear_invisible_memory(x, y);
-            show_glyph_cell(x, y, showsym_mon(shown.mlet) || '?',
-                            shown.mcolor ?? NO_COLOR, false, attr,
-                            { kind: 'mon', mon, mnum, female, detected, glyphnum });
-            mon.meverseen = 1; /* display.c:620 display_monster() */
+        const wormTail = !!(mon && (mon.mx !== x || mon.my !== y));
+        const see_it = !!(mon && (tp_sensemon(mon) || match_warn_of_mon(mon)
+            || (see_with_infrared(mon) && mon_visible(mon))));
+        if (mon && (see_it || (Detect_monsters() && !wormTail))) {
+            display_monster(x, y, mon, see_it ? 0 : DETECTED, wormTail);
             return;
         }
     }
@@ -2284,7 +2291,9 @@ export function feel_location(x, y) {
         }
         const mon = m_at(x, y);
         if ((game.u.ux !== x || game.u.uy !== y) && mon && sensemon(mon))
-            newsym(x, y);
+            display_monster(x, y, mon,
+                tp_sensemon(mon) || match_warn_of_mon(mon) ? PHYSICALLY_SEEN : DETECTED,
+                mon.mx !== x || mon.my !== y);
         return;
     }
 
@@ -2320,7 +2329,9 @@ export function feel_location(x, y) {
     }
     const mon = m_at(x, y);
     if ((game.u.ux !== x || game.u.uy !== y) && mon && sensemon(mon))
-        newsym(x, y);
+        display_monster(x, y, mon,
+            tp_sensemon(mon) || match_warn_of_mon(mon) ? PHYSICALLY_SEEN : DETECTED,
+            mon.mx !== x || mon.my !== y);
 }
 
 // src/display.c:726 feel_newsym(): use touch mapping while blind, otherwise

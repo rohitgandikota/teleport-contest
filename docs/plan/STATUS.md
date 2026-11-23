@@ -1464,6 +1464,55 @@ their proposed native controls before integration. Only the five beam-cursor
 audit remains active. Do not include the untracked display-monster-sensing
 recording in the hero checkpoint.
 
+Hero checkpoint `0fe72443` is pushed. The official snapshot has advanced to
+November 23 13:48:40 UTC, with our last score at 13:16:17 UTC. Public remains
+44/44 and now matches all 1,483 animation frames. Held-out improves to 39/56,
+12,190/13,126 screens and 98.611059% RNG. Combined screens are 23,595/24,531,
+up 72 from the previous snapshot, leaving 936 unmatched. Rank remains seventh
+agentic and eleventh overall. This score predates the object-shuffle, monster
+identity, cursor and hero checkpoints; their held-out effects remain unknown.
+
+The display_monster helper is applied from its bounded patch, rebased onto
+the current hero/cursor source. The promoted gate passes 80 checks, versus
+23 before. Native assertions and recording integrity pass for all four
+cases. The 32 cursor, 45 identity and 19 hero controls pass, as do three
+input-exhaustion checks and the 276-module source audit. Strict public output
+is unchanged: 1,483 animation cell grids, 1,478 transient cursors and all
+11,405 boundary cursors. All four full-regression shards are now parsed and
+pass 656/656 fixtures: 793,245 screens/cursors, 15,528,739 RNG calls and 30,088
+animation frames. Logs are `display-monster-corpus-{0..3}.log`. Four new native
+cases improve 272/284 to 284/284 screens with all 15,565 RNG calls preserved.
+The helper's two stages preserve mimic memory and otherwise overwritten
+hallucination draws. Unseen worm tails follow telepathy/specific warning,
+while detection alone selects the head. Diagnostic acknowledgement ordering
+for corrupt appearance state remains outside the verified legal-state scope.
+
+The buffered-pet and separate Rogue-color patches have been rebased onto
+the current helper in `pet-glyph-reviewed/js/display.js`; both remain
+cache-only. All 43 pet and 19 Rogue controls pass. Six fresh C cases improve
+293/307 to 307/307 screens, preserving 18,605 RNG calls and all cursors. The
+final asserted recording is generated. The promoted 44-check pet gate includes
+native color/attribute reach; 38 source controls fail before. The separate
+19-check Rogue gate has seven failures before. A 151-fixture prototype run
+is in progress under `pet-glyph-regression-prototype.log`.
+
+The dismount follow-up identifies a second incomplete Fumbling predicate in
+dotrap. C skips the known-trap escape draw for intrinsic fumbling; JS added
+rn2(5), shifting pit damage and the aggregate trace. Both bounded patches now
+match all four native cases: 461 screens/cursors and 10,300 RNG calls, including
+each input slice. The 19 promoted landing/native and ten trap controls pass.
+The final recipe and fixture are generated; production changes remain in cache.
+The steed agent is closed. Broader parent verification is still required.
+
+The beam candidate fixes all five public transient cursor gaps using existing
+tmp_at/zapdir_to_glyph and a two-line top-line cursor update. It is cache-only.
+Two fresh native prefixes match all 115 transient cursors and 644 boundary
+cursors with that candidate. The final asserted beam recording is generated.
+The returning agent is now tracing eight additional projectile cursor gaps
+in boomerang-flight, kick-objects-monsters and return-weapons. The pet agent
+is working on startup petattr parsing and hilite_pet option side effects.
+Both own cache-only candidates; parent owns recording and tracked integration.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

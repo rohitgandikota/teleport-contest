@@ -13,20 +13,21 @@ Ground rules are in `/CLAUDE.md`. Read that first if you have not.
 ## Current focus, 2026-11-23
 
 Continue the faithful port with readable C-aligned code and prompt verified
-pushes. The latest official snapshot, November 23 at 08:33 UTC, has 23,523
+pushes. The latest official snapshot, November 23 at 13:48 UTC, has 23,595
 of 24,531 combined screens, 7th agentic and 11th overall. It predates the
-latest repairs. Public remains 44/44; 1,008 held-out screens remain unmatched
+latest repairs. Public remains 44/44; 936 held-out screens remain unmatched
 in that snapshot.
 
-The full regression covers 654/654 fixtures with 792,603 exact boundary
-screens/cursors, 15,492,341 RNG calls and all 30,087 scored animation frames.
+The full regression covers 656/656 fixtures with 793,245 exact boundary
+screens/cursors, 15,528,739 RNG calls and all 30,088 scored animation frames.
 Glyph metadata, object appearance shuffling, monster identities and map
 cursor output are verified. The stricter public animation check matches
 1,478/1,483 cursor positions; five preexisting beam differences remain.
 Mounted-hero rendering now passes seven new native cases and 73 selected
 fixtures, with 21,828 exact screens/cursors and 1,324,950 RNG calls.
-Next: C's display_monster helper, then buffered pet attributes, dismount
-landing conditions and remaining beam cursors. Current-corpus parity is not a
+C's shared display_monster helper now preserves sensed-mimic memory and unseen
+worm-tail selection. Next: buffered pet attributes, dismount/trap impairment
+conditions and remaining beam cursors. Current-corpus parity is not a
 completeness claim. See [STATUS.md](STATUS.md) for evidence and next actions.
 Historical milestone rows below are not a current completion audit.
 

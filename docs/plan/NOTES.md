@@ -9498,8 +9498,17 @@ They verify output colors, Unicode bypass and ghost inverse attributes, but
 class selectors customize several ranges together. The 45-check state gate
 injects distinct metadata per range and checks buffered identity after live
 monster mutations. It deliberately disables pet highlighting: that still
-reads live tameness and requires a separate repair. Sensed mimic control
-flow and unseen sensed tail selection also remain separate follow-ups.
+reads live tameness and requires a separate repair.
+
+C's display_monster processes a physically seen mimic disguise before the
+real-monster stage. Sensing can hide the first glyph, but its memory update
+and hallucination draws still occur. Furniture memory is written even when
+hero_memory is disabled. Blind touch with telepathy passes PHYSICALLY_SEEN,
+while an ordinary blind redraw does not. Telepathy and specific warning show
+unseen worm tails; monster detection alone shows the head. Four native cases
+and 79 source-state controls cover these distinctions. Invalid-appearance
+controls replace diagnostic I/O, so they do not prove async acknowledgement
+ordering for corrupt state.
 
 ## Map cursor and unchanged glyph writes (23 Nov)
 

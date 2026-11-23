@@ -1,0 +1,133 @@
+{
+  "name": "stormbringer-attack-routing",
+  "description": "Stormbringer bypasses safe monster displacement and attack confirmation; ordinary weapons retain both protections.",
+  "recordingNote": "Use RERECORD_TZ=Etc/GMT+4. Source-state controls also verify safe_pet flag storage through startup, menus and restore.",
+  "segments": [
+    {
+      "name": "storm-tame-safe-confirm",
+      "seed": 8943,
+      "datetime": "20000112105000",
+      "nethackrc": "OPTIONS=name:Wielder,role:Barbarian,race:human,gender:male,align:chaotic,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,verbose\nOPTIONS=safe_pet,confirm\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed +20 Stormbringer\r\u001bwa\u001b\u0007tame sleeping wumpus\r\u001bh\u001b\u001bV\u001b"
+    },
+    {
+      "name": "storm-peaceful-safe-confirm",
+      "seed": 8943,
+      "datetime": "20000112105000",
+      "nethackrc": "OPTIONS=name:Wielder,role:Barbarian,race:human,gender:male,align:chaotic,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,verbose\nOPTIONS=safe_pet,confirm\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed +20 Stormbringer\r\u001bwa\u001b\u0007peaceful sleeping wumpus\r\u001bh\u001b\u001bV\u001b"
+    },
+    {
+      "name": "storm-peaceful-unsafe-confirm",
+      "seed": 8943,
+      "datetime": "20000112105000",
+      "nethackrc": "OPTIONS=name:Wielder,role:Barbarian,race:human,gender:male,align:chaotic,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,verbose\nOPTIONS=!safe_pet,confirm\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed +20 Stormbringer\r\u001bwa\u001b\u0007peaceful sleeping wumpus\r\u001bh\u001b\u001bV\u001b"
+    },
+    {
+      "name": "storm-peaceful-unsafe-no-confirm",
+      "seed": 8943,
+      "datetime": "20000112105000",
+      "nethackrc": "OPTIONS=name:Wielder,role:Barbarian,race:human,gender:male,align:chaotic,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,verbose\nOPTIONS=!safe_pet,!confirm\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed +20 Stormbringer\r\u001bwa\u001b\u0007peaceful sleeping wumpus\r\u001bh\u001b\u001bV\u001b"
+    },
+    {
+      "name": "ordinary-tame-safe-confirm",
+      "seed": 8943,
+      "datetime": "20000112105000",
+      "nethackrc": "OPTIONS=name:Wielder,role:Barbarian,race:human,gender:male,align:chaotic,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,verbose\nOPTIONS=safe_pet,confirm\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed +20 broadsword\r\u001bwa\u001b\u0007tame sleeping wumpus\r\u001bh\u001b\u001bV\u001b"
+    },
+    {
+      "name": "ordinary-peaceful-unsafe-confirm",
+      "seed": 8943,
+      "datetime": "20000112105000",
+      "nethackrc": "OPTIONS=name:Wielder,role:Barbarian,race:human,gender:male,align:chaotic,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,verbose\nOPTIONS=!safe_pet,confirm\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed +20 broadsword\r\u001bwa\u001b\u0007peaceful sleeping wumpus\r\u001bhn\u001b\u001bV\u001b"
+    }
+  ],
+  "coverage": [
+    "mode.debug",
+    "options.rc-bindings",
+    "monster.pets",
+    "object.artifacts",
+    "combat.melee"
+  ],
+  "branches": [
+    "combat.stormbringer-tame-safe",
+    "combat.stormbringer-peaceful-safe",
+    "combat.stormbringer-confirm-override",
+    "combat.stormbringer-without-confirm",
+    "combat.ordinary-tame-safe",
+    "combat.ordinary-peaceful-confirm"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "combat.stormbringer-tame-safe",
+      "segment": 0,
+      "screenIncludes": [
+        "Your bloodthirsty blade attacks!",
+        "The black blade draws the life from the wumpus!"
+      ],
+      "screenExcludes": [
+        "Really attack the wumpus?"
+      ]
+    },
+    {
+      "branch": "combat.stormbringer-peaceful-safe",
+      "segment": 1,
+      "screenIncludes": [
+        "Your bloodthirsty blade attacks!",
+        "The black blade draws the life from the wumpus!"
+      ],
+      "screenExcludes": [
+        "Really attack the wumpus?"
+      ]
+    },
+    {
+      "branch": "combat.stormbringer-confirm-override",
+      "segment": 2,
+      "screenIncludes": [
+        "Your bloodthirsty blade attacks!",
+        "The black blade draws the life from the wumpus!"
+      ],
+      "screenExcludes": [
+        "Really attack the wumpus?"
+      ]
+    },
+    {
+      "branch": "combat.stormbringer-without-confirm",
+      "segment": 3,
+      "screenIncludes": [
+        "The black blade draws the life from the wumpus!",
+        "You kill the wumpus!"
+      ],
+      "screenExcludes": [
+        "Your bloodthirsty blade attacks!",
+        "Really attack the wumpus?"
+      ]
+    },
+    {
+      "branch": "combat.ordinary-tame-safe",
+      "segment": 4,
+      "screenIncludes": [
+        "The wumpus doesn't seem to move!"
+      ],
+      "screenExcludes": [
+        "Really attack the wumpus?"
+      ]
+    },
+    {
+      "branch": "combat.ordinary-peaceful-confirm",
+      "segment": 5,
+      "screenIncludes": [
+        "Really attack the wumpus? [yn] (n)"
+      ],
+      "screenExcludes": [
+        "The wumpus doesn't seem to move!",
+        "You kill the wumpus!"
+      ]
+    }
+  ]
+}

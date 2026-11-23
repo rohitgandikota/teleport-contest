@@ -303,6 +303,14 @@ Compare complete per-segment lengths and every input's RNG slice as well as
 the positional counter. `tools/rng-slice-gate.mjs` checks both without changing
 the frozen runner or passing recorded answers into the port.
 
+The first full strict audit (671 fixtures, November 23) also found two draws
+shifted across More input boundaries despite identical complete streams and
+screens: monster equipment identification and a lichen's cancellation check.
+A third fixture, character-selection quit, has a missing empty slice. Compare
+new findings with the previous runtime before treating them as regressions.
+The equipment example calls makeknown before the awaited visibility message
+finishes; its exercise draw belongs after that message returns in C.
+
 **The rng comparison strips the call site** (`normalizeRng` drops everything
 from `@` on), so "rn2(5)=0" matches "rn2(5)=0" even when C drew it in
 distfleeck for monster A and we drew it in distfleeck for monster B. Two

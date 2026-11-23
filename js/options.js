@@ -1419,7 +1419,9 @@ function bool_opt_store(name) {
 }
 
 function set_bool_optval(name, value) {
-    bool_opt_store(name)[name] = value;
+    // include/optlist.h:634 binds safe_pet to flags.safe_dog.
+    const field = name === 'safe_pet' ? 'safe_dog' : name;
+    bool_opt_store(name)[field] = value;
 }
 
 /* The value of a boolean option. C reads *allopt[i].addr, a pointer straight
@@ -1429,7 +1431,8 @@ function bool_optval(o) {
     // optlist.h stores these options in u.uroleplay; pauper also sets nudist.
     if ((o.name === 'nudist' || o.name === 'pauper') && game.u?.uroleplay)
         return !!game.u.uroleplay[o.name];
-    const v = bool_opt_store(o.name)[o.name];
+    const field = o.name === 'safe_pet' ? 'safe_dog' : o.name;
+    const v = bool_opt_store(o.name)[field];
     return (v === undefined) ? (o.initval === 'On') : !!v;
 }
 
@@ -1941,14 +1944,9 @@ async function doset_simple_menu() {
                 game.simple_options_help = !game.simple_options_help;
                 toggled_help = true;
             } else if (allopt[k].type === 'BoolOpt') {
-                /* boolean option. C builds "name" or "!name" and hands it to
-                   parseoptions(), which writes straight through
-                   allopt[k].addr to the live variable. Our parseoptions only
-                   fills a config result object, and the live store is
-                   game.flags keyed by option name (see the note at
-                   js/cmd.js dotogglepickup), so the flip happens here --
-                   routing it through parseoptions() updated game.rc.opts and
-                   left the menu showing the old value. */
+                /* C flips *allopt[k].addr through parseoptions(). The JS
+                   parser collects config values, so update the live option
+                   store here. */
                 set_bool_optval(allopt[k].name, !bool_optval(allopt[k]));
                 boolopt_side_effects(allopt[k].name);
             } else if (allopt[k].type === 'OthrOpt') {
@@ -3888,6 +3886,8 @@ async function parseoptions_interactive(buf) {
                 new_status_window();
         } else if (name === 'statushilites') {
             /* iflags.hilite_delta was written by parseoptions() */
+        } else if (name === 'safe_pet') {
+            set_bool_optval(name, value);
         } else {
             game.flags[name] = value;
         }

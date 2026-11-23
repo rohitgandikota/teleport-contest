@@ -18,8 +18,8 @@ of 24,531 combined screens, 7th agentic and 11th overall. It predates the
 latest repairs. Public remains 44/44; 936 held-out screens remain unmatched
 in that snapshot.
 
-The latest full regression covers 668/668 fixtures with 796,110 exact boundary
-screens/cursors, 15,673,738 matched RNG calls and all 30,213 scored animation frames.
+The latest full regression covers 671/671 fixtures with 798,036 exact boundary
+screens/cursors, 15,713,238 matched RNG calls and all 30,213 scored animation frames.
 Glyph metadata, object appearance shuffling, monster identities and map
 cursor output are verified. The stricter public animation check now matches
 all 1,483 cursor positions, with exact cells and frame counts.
@@ -36,11 +36,16 @@ contracts. The complete animation-bearing corpus now matches all 30,213 cursors,
 and frame counts after repairing status-field cursor advancement. Teleport and scroll
 property readers, plus failed-teleport discovery, pass 163 selected fixtures,
 including all public games and ten new C cases: 161,673 screens/cursors and
-3,155,541 matched RNG calls. The two-case discovery fixture postdates the
-latest complete-corpus run. Magical-breathing regeneration and intrinsic storage now pass seven native
+3,155,541 matched RNG calls. Magical-breathing regeneration and intrinsic storage now pass seven native
 cases and 117 selected fixtures, with 57,483 screens/cursors and 1,562,342
-matched RNG calls. Next: Stormbringer attack routing and its safe_pet binding,
-floor-pile settlement, separate local object order and eyewear transitions.
+matched RNG calls. Stormbringer attack routing and the safe_pet binding pass
+six native cases and 62 routing/option controls. The first complete strict RNG
+audit confirms every stream and length, but exposes two pre-existing input
+boundary shifts and one missing empty quit slice in three fixtures. These are
+recorded separately from the passing score. Next: repair those contracts,
+silver-hit feedback, floor-pile settlement, separate local object order and
+eyewear transitions. Linux/NFS profiling passes its termination canary;
+fresh gameplay branch coverage has not been collected yet.
 Current-corpus parity is not a
 completeness claim. See [STATUS.md](STATUS.md) for evidence and next actions.
 Historical milestone rows below are not a current completion audit.

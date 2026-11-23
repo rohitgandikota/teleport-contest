@@ -1875,6 +1875,71 @@ distinguish. Pauli moves to complete eyewear on/off lifecycle effects.
 Keep all production source frozen while a checkpoint's broad replay is running,
 then commit and push immediately after its final gates pass.
 
+Magical-breathing checkpoint `334b276b` is pushed. Stormbringer and the
+safe_pet binding are applied in the working tree and undergoing the complete
+671-fixture regression. The four score shards are
+`stormbringer-corpus-{0..3}.log`, with 167/168/168/168 fixtures. A separate
+complete strict RNG audit runs in `stormbringer-rng-{0,1}.log`, with 335/336
+fixtures. Parse every final score record and every strict result before
+committing. The frozen scorer can exit successfully despite failures and can
+miss extra trailing RNG calls; the new strict gate checks both stream lengths
+and every input slice. Do not edit production JS during these runs.
+
+Stormbringer's six native cases already match all 379 screens/cursors and
+exactly 18,027 calls. All 62 routing/option controls, five input-exhaustion
+checks and the 276-module source audit pass. New tests and the native recipe
+are prepared in tools/. No new animation frames are present. Complete the
+broad verification, update this board, then commit and push immediately.
+
+Parallel source work remains cache-only: Pauli reviews Blindf_on/Blindf_off;
+Singer reviews hold_another_object after an artifact blast ends polymorph;
+Avicenna reviews independent nexthere order across mutation and save/restore;
+Jason prepares the C branch collector for Linux/NFS. The last task has only
+read-only environment evidence so far: tokyo has Node/GCC/make but no Clang,
+LLVM profiling tools, flex or bison in the inspected paths. Future SSH calls
+should set ClearAllForwardings=yes. No remote build or installation is running.
+The parent is tracing the constant-false hates_silver_you stub in mhitm_ad_phys;
+its cache prototype uses the already canonical Hate_silver property. This is
+not yet a verified production change. The separate fill_pit tail-call prototype
+and the original floor-listing counterexample remain preserved in the cache.
+
+Stormbringer and safe_pet verification is complete. The full scored corpus
+passes 671/671 fixtures, with 798,036 screens/cursors, 15,713,238 matched RNG
+positions and all 30,213 scored animation frames. Every result record, error
+and metric was checked. The final source controls pass 62/62; five hang checks
+and the 276-module source audit pass. The six native cases contribute 379
+exact screens/cursors and 18,027 calls. Commit and push this checkpoint now.
+
+The first complete strict RNG audit covers 4,319 segments across all 671
+fixtures. Every complete stream and length matches, totaling 15,713,238 calls
+on each side. It passes 668 fixtures and finds three additional contracts:
+monster-equipment-branches segment 2 shifts an exercise draw from step 189 to
+188; monster-wrap-attacks segment 1 shifts a magic-cancellation draw from 181
+to 182; game-exit-boundaries segment 4 exposes one missing empty RNG slice at
+character-selection quit. All three reproduce identically with exact
+334b276b versions of uhitm/options/jsmain. They are newly measured pre-existing
+findings, not regressions introduced by this checkpoint. Four input slices
+differ in total; the quit case has no mismatched call. Keep these findings
+visible until source/protocol review and repair. Score and strict totals are
+in stormbringer-corpus-totals.json and stormbringer-rng-totals.json.
+
+The monster-equipment timing cause is source-proven: m_dowear_type calls
+makeknown before its visibility message has finished paging. The cache-only
+monster-invisibility-identification prototype moves it into the message's
+continuation and passes all 628 strict slices. The silver-hit prototype now
+passes three fresh native cases, 330 screens/cursors and 7,667 exact calls,
+plus 17 source controls. Those fixes are not part of the Stormbringer commit.
+Production remained frozen throughout both complete audits.
+
+Linux coverage preparation now has a private extracted LLVM 18.1.3 toolchain
+and build dependencies on NFS at
+/share/NFS/u/rohit/research/contest/artifacts/2026-11-22/llvm18.RxU2F0/.
+The actual NFS canary passes normal exit, SIGTERM and SIGKILL, retaining both
+branch outcomes each time. No system packages were installed or upgraded.
+The toolchain's packages.sha256 and signal-canary/validation.json preserve
+provenance. This is infrastructure validation, not gameplay coverage. Jason
+continues the cache-only recorder child-lifetime repair before any collection.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

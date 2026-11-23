@@ -1187,6 +1187,34 @@ the existing native Blank preset recording; both fail before. It also passes
 then check the applied code and push it. The full custom glyph renderer is
 still under read-only source review with separate cache prototypes.
 
+Customization checkpoint `471831c0` is pushed. The colored-blank wrapper
+repair is applied. A shared row-boundary predicate retains meaningful
+foreground colors as well as attributes. The strict native Blank-preset
+check compares all 28,560 map cells in 17 screens, including 71 colored
+blanks. Both new state checks fail before and pass afterward. The five
+glyph-config controls and source audit also pass. The identical cache
+prototype passed 62 public/targeted fixtures, 16,092 screens/cursors and
+1,133,961 RNG calls. The preceding full 652-fixture verification belongs to
+the customization checkpoint; it was not repeated for this capture wrapper.
+Logs: `terminal-blank-state-{before,prototype,final}.log`,
+`terminal-blank-regression-prototype.log`, `terminal-blank-restore-prototype.log`,
+`terminal-blank-glyph-config-final.log` and `terminal-blank-audit.log`.
+
+The renderer source review has returned and its agent is closed. Inspect
+`custom-render-audit.patch` and `custom-render-audit-report.md` in the restart
+cache. The bounded prototype reports 64/64 native-probe screens, 21,562 RNG
+calls, 53 passing regression fixtures and 13 state controls, twelve failing
+before. Parent review, native branch assertions, application and verification
+remain required. Its explicitly remaining paths include ordinary newsym
+monsters, detection descriptors, ridden and swallow glyphs, several effects,
+and object customization shuffling. Add native Enhanced1-fountain and
+arbitrary S_upstair-Unicode controls before applying the general cmap lookup.
+
+The 21 unmatched public animations are in seed0014-dequa-fountain-explore
+(11), seed0361-archeologist-tour (6) and seed1150-caveman-explore-move (4).
+They remain a separate source-audit target; inspect their first animation
+divergence and verify against current native C before changing gameplay.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

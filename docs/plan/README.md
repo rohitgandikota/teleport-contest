@@ -22,7 +22,8 @@ The full regression and new restore recording cover 652/652 fixtures with
 792,073 exact screens and 15,431,215 RNG calls. Recent fixes cover active
 monster symbols, customization option resets and symbol-set cleanup. Twelve
 new native cases cover startup, toggles, set changes and restore settings.
-Next: colored terminal blanks and custom glyph rendering. The existing 21
+Colored terminal blanks now also pass strict native cell comparisons.
+Next: custom glyph rendering and the existing animation gaps. The 21
 animation mismatches remain; current-corpus parity is not a completeness claim.
 See [STATUS.md](STATUS.md) for evidence and the next action. Historical
 milestone rows below are not a current completion audit.

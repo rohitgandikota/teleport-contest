@@ -2838,7 +2838,7 @@ async function wiztrapwish(d) {
             continue;
         if (is_hole(actual) && !Can_fall_thru(game.u.uz))
             actual = ROCKTRAP;
-        const trap = maketrap(game.u.ux, game.u.uy, actual);
+        const trap = await maketrap(game.u.ux, game.u.uy, actual);
         if (trap) {
             name = trapname(trap.ttyp, true);
             await pline(`${An(name)}${trap.ttyp === MAGIC_PORTAL

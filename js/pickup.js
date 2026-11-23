@@ -1327,7 +1327,7 @@ export async function reverse_loot() {
         if (coffers) {
             await verbalize('Thank you for your contribution to reduce the debt.');
             freeinv(goldob);
-            add_to_container(coffers, goldob);
+            await add_to_container(coffers, goldob);
             coffers.owt = weight(coffers);
             coffers.cknown = 0;
             if (!coffers.olocked)
@@ -1536,7 +1536,7 @@ export async function tipcontainer(box) {
                 stop = true;
                 await losehp(d(6, 6), 'magical explosion', KILLED_BY_AN);
             } else {
-                add_to_container(targetbox, otmp);
+                await add_to_container(targetbox, otmp);
             }
         } else if (highdrop) {
             otmp.how_lost = LOST_DROPPED;
@@ -2080,7 +2080,7 @@ export async function in_container(obj) {
         await You(`put ${doname(obj)} into ${buf}.`);
         if (floor_container && obj.oclass === OCLASSES.COIN_CLASS)
             await sellobj(obj, game.current_container.ox, game.current_container.oy);
-        add_to_container(game.current_container, obj);
+        await add_to_container(game.current_container, obj);
         game.current_container.owt = weight(game.current_container);
     }
     await bot();

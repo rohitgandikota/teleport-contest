@@ -70,9 +70,9 @@ function view(level = game.level) {
     return { global: ids(level.objects), piles };
 }
 
-function record(label, fn) {
+async function record(label, fn) {
     try {
-        fn();
+        await fn();
         results.push({ label, passed: true });
     } catch (error) {
         results.push({ label, passed: false, error: error.message });
@@ -94,17 +94,17 @@ for (const sample of cases) {
         return obj;
     }
 
-    function compare(step) {
+    async function compare(step) {
         const c = expected[index++];
         assert.equal(c.name, sample.name);
         assert.equal(c.step, step);
-        record(`${sample.name}/${step}`, () => assert.deepEqual(
+        await record(`${sample.name}/${step}`, () => assert.deepEqual(
             { ...view(), visits },
             { global: c.global, piles: c.piles, visits: c.visits }
         ));
     }
 
-    compare(0);
+    await compare(0);
     for (const [step, a] of sample.actions.entries()) {
         try {
             if (a.op === 'put') {
@@ -123,9 +123,9 @@ for (const sample of cases) {
                 mk.extract_nexthere(objects.get(a.id));
                 mk.extract_nobj(objects.get(a.id), game.level.objects);
             } else if (a.op === 'recreate') {
-                mk.recreate_pile_at(a.x, a.y);
+                await mk.recreate_pile_at(a.x, a.y);
             } else if (a.op === 'restore') {
-                restore.find_lev_obj();
+                await restore.find_lev_obj();
             } else if (a.op === 'hit') {
                 const data = game.youmonst.data;
                 if (a.hide) {
@@ -154,7 +154,7 @@ for (const sample of cases) {
             error.message = `${sample.name}/${step + 1}: ${error.message}`;
             throw error;
         }
-        compare(step + 1);
+        await compare(step + 1);
     }
 
     const last = expected[index - 1];
@@ -171,12 +171,12 @@ for (const sample of cases) {
     } finally {
         delete globalThis.__nexthereOrderObserve;
     }
-    record(sample.name + '/look_here', () => {
+    await record(sample.name + '/look_here', () => {
         assert.deepEqual(observed, last.piles['10,10'] || []);
         assert.deepEqual(game.level.objects, before);
         assert.deepEqual([game.coreCtx, game.dispCtx, game.luaCtx], rng);
     });
-    record(sample.name + '/heads-and-search', () => {
+    await record(sample.name + '/heads-and-search', () => {
         for (const key of Object.keys(last.piles)) {
             const [x, y] = key.split(',').map(Number);
             const local = last.piles[key];
@@ -191,11 +191,11 @@ for (const sample of cases) {
             }
         }
     });
-    record(sample.name + '/codec-aliases', () => {
+    await record(sample.name + '/codec-aliases', () => {
         const decoded = gamestate_decode(JSON.parse(JSON.stringify(gamestate_encode({ level: game.level }))));
         assert.deepEqual(view(decoded.level), view());
     });
-    record(sample.name + '/removed-links', () => {
+    await record(sample.name + '/removed-links', () => {
         for (const obj of objects.values()) {
             if (obj.where === OBJ_FREE) {
                 assert.equal(obj.nexthere ?? null, null);
@@ -217,9 +217,9 @@ r.audit_id = 3;
 mk.place_object(b, 10, 10);
 mk.place_object(d, 10, 10);
 mk.replace_object(b, r);
-record('actual-save/dosave0-dorecover', () => {
+await record('actual-save/dosave0-dorecover', async () => {
     assert.ok(dosave0());
-    assert.ok(dorecover());
+    assert.ok(await dorecover());
     assert.deepEqual(view(), { global: [2, 3], piles: { '10,10': [2, 3] } });
 });
 
@@ -294,7 +294,7 @@ await test('bones-stripping-and-C-rebuild', async () => {
     assert.deepEqual(ids(JSON.parse(raw)), [2, 3]);
     game.level.objects = JSON.parse(raw);
     delete game.level.objAt;
-    find_lev_obj();
+    await find_lev_obj();
     assert.deepEqual(ids(game.level.objects), [2, 3]);
     assert.deepEqual(ids(game.level.objectsAt(10, 10)), [2, 3]);
     assert.equal(game.level.objectAt(10, 10), game.level.objects[0]);
@@ -335,7 +335,7 @@ await test('saved-level-alias-and-return-rebuild', async () => {
     assert.equal(copy.level, copy.saved_levels.get('test'));
     assert.deepEqual(ids(copy.level.objectsAt(10, 10)), [3, 2]);
     game.level = copy.saved_levels.get('test');
-    find_lev_obj();
+    await find_lev_obj();
     assert.deepEqual(ids(game.level.objectsAt(10, 10)), [2, 3]);
     assert.deepEqual(ids(game.level.objects), [2, 3]);
 });

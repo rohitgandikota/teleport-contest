@@ -942,7 +942,7 @@ export async function throwit(obj, wep_mask, twoweap = false,
         return;
     }
     game.thrownobj = null;
-    place_object(obj, bx, by);
+    await place_object(obj, bx, by);
     /* container contents might break;
        do so before turning ownership of gt.thrownobj over to shk
        (container_impact_dmg handles item already owned by shop) */

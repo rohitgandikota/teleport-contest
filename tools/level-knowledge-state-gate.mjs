@@ -87,8 +87,8 @@ await setup();game.wizard=true;relocate({dnum:game.tower_dnum,dlevel:1});const t
 
 // Edits are visible immediately; saving preserves both names and VISITED.
 await setup();resetInputState();pushKeys('New camp\r');await donamelevel();assert.equal(mseen().custom,'New camp');resetInputState();pushKeys('   \r');await donamelevel();assert.equal(mseen().custom,null);
-await setup();game.visited_ledgers=new Set();mseen().custom='Saved camp';assert.equal(dosave0(),true);assert.ok(game.visited_ledgers.has('0:1'));const snap=gamestate_decode(gamestate_encode(game));assert.ok(snap.visited_ledgers instanceof Set);assert.equal(snap.mapseen['0:1'].custom,'Saved camp');game.mapseen={};assert.equal(dorecover(),true);assert.equal(lev_by_name('Saved camp'),1);
-for(const gender of[0,1]){await setup();game.quest_nemgend=gender;assert.equal(dosave0(),true);initRng(1);assert.equal(dorecover(),true);assert.equal(game.quest_nemgend,gender,'saved quest gender overrides fresh initialization');}
+await setup();game.visited_ledgers=new Set();mseen().custom='Saved camp';assert.equal(dosave0(),true);assert.ok(game.visited_ledgers.has('0:1'));const snap=gamestate_decode(gamestate_encode(game));assert.ok(snap.visited_ledgers instanceof Set);assert.equal(snap.mapseen['0:1'].custom,'Saved camp');game.mapseen={};assert.equal(await dorecover(),true);assert.equal(lev_by_name('Saved camp'),1);
+for(const gender of[0,1]){await setup();game.quest_nemgend=gender;assert.equal(dosave0(),true);initRng(1);assert.equal(await dorecover(),true);assert.equal(game.quest_nemgend,gender,'saved quest gender overrides fresh initialization');}
 
 // Feature counters have two bits. Unknown or changed terrain must not replace
 // remembered terrain, except for the square the hero can feel underfoot.

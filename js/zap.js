@@ -2666,7 +2666,7 @@ async function stone_to_flesh_obj(obj) /* nonnull */
                 while ((item = (obj.cobj && obj.cobj[0])) != null) {
                     bypass_obj(item); /* make stone-to-flesh miss it */
                     obj_extract_self(item);
-                    place_object(item, oox, ooy);
+                    await place_object(item, oox, ooy);
                 }
                 obj = await poly_obj(obj, ONAMES.CORPSE);
             }
@@ -3031,7 +3031,7 @@ export async function bhitpile(obj, fhito, tx, ty, zz) {
     let prevotyp = ONAMES.BOULDER;
     for (let otmp = game.level.objectAt(tx, ty); otmp; otmp = otmp.nexthere) {
         if (otmp.otyp === ONAMES.BOULDER && prevotyp !== ONAMES.BOULDER) {
-            recreate_pile_at(tx, ty);
+            await recreate_pile_at(tx, ty);
             break;
         }
         prevotyp = otmp.otyp;
@@ -4594,7 +4594,7 @@ export async function melt_ice(x, y, msg = null) {
             obj.quan = 1;
             obj.owt = weight(obj);
             obj.opoisoned = 0;
-            place_object(obj, x, y);
+            await place_object(obj, x, y);
             stackobj(obj);
             deltrap(trap);
         } else if (trap.ttyp !== MAGIC_PORTAL
@@ -4717,7 +4717,7 @@ export async function zap_over_floor(
                 rangemod -= 3;
                 lev.typ = ROOM, lev.flags = 0;
                 const { maketrap } = await import('./mklev.js');
-                t = maketrap(x, y, PIT);
+                t = await maketrap(x, y, PIT);
                 /*if (t) -- this was before the vapor cloud was added --
                       t->tseen = 1;*/
                 if (see_it)
@@ -6397,7 +6397,7 @@ export async function fracture_rock(obj) /* no texts here! */
 
     if (obj.where === OBJ_FLOOR) {
         obj_extract_self(obj); /* move rocks back on top */
-        place_object(obj, obj.ox, obj.oy);
+        await place_object(obj, obj.ox, obj.oy);
         if (!does_block(obj.ox, obj.oy, game.level.at(obj.ox, obj.oy))) {
             unblock_point(obj.ox, obj.oy);
             /* immediately update the display, in case this fracturing was
@@ -6423,11 +6423,7 @@ export async function break_statue(obj) {
     /* drop any objects contained inside the statue */
     while ((item = (obj.cobj || [])[0]) != null) {
         obj_extract_self(item);
-        // C place_object applies this to each released object. The shared
-        // JS placement helper currently only updates the floor chain.
-        const { obj_no_longer_held } = await import('./do.js');
-        await obj_no_longer_held(item);
-        place_object(item, obj.ox, obj.oy);
+        await place_object(item, obj.ox, obj.oy);
     }
     if (by_you && Role_if(PMNAMES.PM_ARCHEOLOGIST)
         && (obj.spe & CORPSTAT_HISTORIC)) {

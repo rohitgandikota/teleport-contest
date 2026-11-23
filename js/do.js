@@ -261,7 +261,7 @@ export async function revive_corpse(corpse) {
         }
         case OBJ_BURIED:
             if (is_zomb) {
-                maketrap(mtmp.mx, mtmp.my, PIT);
+                await maketrap(mtmp.mx, mtmp.my, PIT);
                 if (cansee(mtmp.mx, mtmp.my)) {
                     let ttmp;
 
@@ -1257,7 +1257,7 @@ export async function goto_level(newlevel, at_stairs, falling, portal) {
            the same state; the visible cost is restore.c:1190's monster
            catchup against the time spent away. */
         game.level = game.saved_levels.get(ledger);
-        find_lev_obj();
+        await find_lev_obj();
         game.stairs = game.level._saved_stairs || null;
         /* src/region.c rest_regions() subtracts the turns spent away and
            silently drops expired regions before the restored map is shown. */
@@ -1916,7 +1916,7 @@ export async function dropz(obj, with_impact) {
     } else {
         if (await flooreffects(obj, game.u.ux, game.u.uy, 'drop'))
             return;
-        place_object(obj, game.u.ux, game.u.uy);
+        await place_object(obj, game.u.ux, game.u.uy);
         if (with_impact)
             await container_impact_dmg(obj, game.u.ux, game.u.uy);
         impact_disturbs_zombies(obj, with_impact);
@@ -2356,30 +2356,44 @@ export async function dodrop() {
 }
 
 // src/do.c:893 obj_no_longer_held()
-export async function obj_no_longer_held(obj) {
-    if (!obj) {
+export function obj_no_longer_held(obj) {
+    if (!obj)
         return;
-    } else if (Has_contents(obj)) {
-        for (const contents of obj.cobj || [])
-            await obj_no_longer_held(contents);
-    }
-    switch (obj.otyp) {
-    case ONAMES.CRYSKNIFE:
-        /* Normal crysknife reverts to worm tooth when not held by hero
-         * or monster; fixed crysknife has only 10% chance of reverting.
-         * When a stack of the latter is involved, it could be worthwhile
-         * to give each individual crysknife its own separate 10% chance,
-         * but we aren't in any position to handle stack splitting here.
-         */
-        if (!obj.oerodeproof || !rn2(10)) {
-            /* if monsters aren't moving, assume player is responsible */
-            if (!game.context?.mon_moving && !game.program_state_gameover)
-                await costly_alteration(obj, COST_DEGRD);
-            obj.otyp = ONAMES.WORM_TOOTH;
-            obj.oerodeproof = 0;
+
+    // C finishes each child before the next child and then the container.
+    function releaseContents(index) {
+        if (Has_contents(obj)) {
+            for (let i = index; i < obj.cobj.length; i++) {
+                const pending = obj_no_longer_held(obj.cobj[i]);
+                if (pending)
+                    return pending.then(() => releaseContents(i + 1));
+            }
         }
-        break;
+        switch (obj.otyp) {
+        case ONAMES.CRYSKNIFE:
+            /* Normal crysknife reverts to worm tooth when not held by hero
+             * or monster; fixed crysknife has only 10% chance of reverting.
+             * When a stack of the latter is involved, it could be worthwhile
+             * to give each individual crysknife its own separate 10% chance,
+             * but we aren't in any position to handle stack splitting here.
+             */
+            if (!obj.oerodeproof || !rn2(10)) {
+                /* if monsters aren't moving, assume player is responsible */
+                const revert = () => {
+                    obj.otyp = ONAMES.WORM_TOOTH;
+                    obj.oerodeproof = 0;
+                };
+                if (!game.context?.mon_moving && !game.program_state_gameover) {
+                    const billing = costly_alteration(obj, COST_DEGRD);
+                    if (billing)
+                        return billing.then(revert);
+                }
+                revert();
+            }
+            break;
+        }
     }
+    return releaseContents(0);
 }
 
 // src/do.c:924 doddrop() and :980 menu_drop(), the 'D' command.

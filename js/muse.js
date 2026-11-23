@@ -1006,7 +1006,7 @@ export async function mloot_container(mon, container, vismon) {
             const alreadyNomerge = !!xobj.nomerge;
             const justXobj = !Has_contents(container);
             xobj.nomerge = 1;
-            const restored = add_to_container(container, xobj);
+            const restored = await add_to_container(container, xobj);
             if (!alreadyNomerge)
                 restored.nomerge = 0;
             container.owt = weight(container);
@@ -1823,7 +1823,7 @@ export async function use_defensive(mtmp) {
             /* can't dig a hole; digging a pit fails if already one is
                here, or if pit creation fails for some reason */
             if (t_at(mtmp.mx, mtmp.my)
-                || !(t = maketrap(mtmp.mx, mtmp.my, PIT))) {
+                || !(t = await maketrap(mtmp.mx, mtmp.my, PIT))) {
                 if (vismon) {
                     await pline_The(`${surface(mtmp.mx, mtmp.my)} here is too hard to dig in.`);
                 }
@@ -1838,7 +1838,7 @@ export async function use_defensive(mtmp) {
             recalc_block_point(mtmp.mx, mtmp.my);
             return ((await mintrap(mtmp, FORCEBUNGLE)) === Trap_Killed_Mon) ? 1 : 2;
         }
-        t = maketrap(mtmp.mx, mtmp.my, HOLE);
+        t = await maketrap(mtmp.mx, mtmp.my, HOLE);
         if (!t)
             return 2;
         recalc_block_point(mtmp.mx, mtmp.my);
@@ -2380,7 +2380,7 @@ export async function use_misc(mtmp) {
         switch (where_to) {
         case 1:
             await pline(`${Monnam(mtmp)} yanks ${the_weapon} from your ${hand}!`);
-            place_object(target, mtmp.mx, mtmp.my);
+            await place_object(target, mtmp.mx, mtmp.my);
             newsym(mtmp.mx, mtmp.my);
             break;
         case 2:

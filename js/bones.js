@@ -230,8 +230,7 @@ async function give_to_nearby_mon(otmp, x, y) {
     if (selected && can_carry(selected, otmp)) {
         add_to_minv(selected, otmp);
     } else {
-        await obj_no_longer_held(otmp);
-        place_object(otmp, x, y);
+        await place_object(otmp, x, y);
     }
 }
 
@@ -264,16 +263,11 @@ export async function drop_upon_death(mtmp, cont, x, y) {
         if (mtmp) {
             add_to_minv(mtmp, otmp);
         } else if (cont) {
-            // C add_to_container repeats the held-state transition for a
-            // floor container. The shared JS helper is synchronous.
-            if (cont.where !== OBJ_INVENT && cont.where !== OBJ_MINVENT)
-                await obj_no_longer_held(otmp);
-            add_to_container(cont, otmp);
+            await add_to_container(cont, otmp);
         } else if (!rn2(8)) {
             await give_to_nearby_mon(otmp, x, y);
         } else {
-            await obj_no_longer_held(otmp);
-            place_object(otmp, x, y);
+            await place_object(otmp, x, y);
         }
     }
     if (cont)
@@ -708,11 +702,7 @@ export async function getbones_load() {
             restpriest(m, true);
     }
     await renumber(lvl.objects);
-    // find_lev_obj() rebuilds piles in reverse list order. place_object's
-    // held-state transition is relevant even to objects inside a statue.
-    for (const obj of [...lvl.objects].reverse())
-        await obj_no_longer_held(obj);
-    find_lev_obj();
+    await find_lev_obj();
     await renumber(lvl.buriedobjs);
 
     /* restore.c:1202 ghostly monsters meet a different hero, so their

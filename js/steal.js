@@ -614,7 +614,7 @@ export async function mdrop_obj(mon, obj, verbosely) {
     /* src/steal.c — flooreffects(obj, x, y, "fall") consumes the object when
        it lands in water, lava or a pit; only place it when it survived */
     if (!await flooreffects(obj, omx, omy, 'fall')) {
-        place_object(obj, omx, omy);
+        await place_object(obj, omx, omy);
         stackobj(obj);
     }
 

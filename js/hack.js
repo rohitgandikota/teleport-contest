@@ -393,7 +393,9 @@ export function movobj(obj, ox, oy) {
     obj_extract_self(obj); /* remove_object(obj) */
     maybe_unhide_at(obj.ox, obj.oy);
     newsym(obj.ox, obj.oy);
-    place_object(obj, ox, oy);
+    const placement = place_object(obj, ox, oy);
+    if (placement)
+        return placement.then(() => newsym(ox, oy));
     newsym(ox, oy);
 }
 

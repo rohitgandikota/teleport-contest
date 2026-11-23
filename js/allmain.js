@@ -242,7 +242,7 @@ export async function newgame() {
        role initialization and the fresh Lua core draw before play resumes. */
     {
         const { dorecover } = await import('./save.js');
-        if (dorecover()) {
+        if (await dorecover()) {
             init_vision_globals();
             vision_reset();
             l_nhcore_init();

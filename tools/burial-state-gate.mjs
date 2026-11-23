@@ -40,7 +40,7 @@ for (const ballFirst of [false, true]) {
         assert.equal(chain.where, OBJ_FLOOR);
         const others = game.level.objects.filter(obj => obj !== ball && obj !== chain);
         game.level.objects = [...(ballFirst ? [ball, chain] : [chain, ball]), ...others];
-        find_lev_obj();
+        await find_lev_obj();
         await bury_objs(30, 10);
         assert.equal(ball.where, OBJ_BURIED);
         assert.equal(chain.where, OBJ_DELETED);

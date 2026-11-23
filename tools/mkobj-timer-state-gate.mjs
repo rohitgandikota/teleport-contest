@@ -165,12 +165,12 @@ test('restore: unresolved timer IDs survive pile rebuilding before relinking', a
     restore_timers(saved, RANGE_LEVEL);
     assert.equal(game.timer_base[0].arg, obj.o_id);
     assert.equal(game.timer_base[0].needs_fixup, 1); seed();
-    find_lev_obj(); relink_timers(false);
+    await find_lev_obj(); relink_timers(false);
     unchanged(obj); assert.equal(game.timer_id, timerId); noRng();
 });
 test('restore: JSON full restore preserves iced age and deadline', async () => {
     const obj = await icedBeforeRestore(), id = obj.o_id, timerId = game.timer_id;
-    assert.equal(dosave0(), true); assert.equal(dorecover(), true);
+    assert.equal(dosave0(), true); assert.equal(await dorecover(), true);
     const restored = game.level.objects.find(item => item.o_id === id);
     assert.ok(restored); assert.notEqual(restored, obj);
     unchanged(restored); assert.equal(game.timer_id, timerId);
@@ -179,7 +179,7 @@ test('restore: JSON full restore preserves iced age and deadline', async () => {
 });
 test('restore: extraction after JSON restore resumes ordinary corpse time', async () => {
     const obj = await icedBeforeRestore(), id = obj.o_id;
-    assert.equal(dosave0(), true); assert.equal(dorecover(), true);
+    assert.equal(dosave0(), true); assert.equal(await dorecover(), true);
     const restored = game.level.objects.find(item => item.o_id === id); seed();
     remove_object(restored);
     assert.equal(restored.where, OBJ_FREE); assert.equal(restored.on_ice, 0);
@@ -207,7 +207,7 @@ test('restore: C queue order preserves IDs and non-floor owners', async () => {
     }));
     const before = queue(), nextId = game.timer_id;
     const owners = [floor, held, contained, buried, migrating].map(obj => [obj.o_id, obj.timed, obj.age]);
-    assert.equal(dosave0(), true); assert.equal(dorecover(), true);
+    assert.equal(dosave0(), true); assert.equal(await dorecover(), true);
     // restore.c:831,898 reloads original locals after globals. At 111 the
     // order is buried, contained; at 122 it is floor, melt, held, migrating.
     const expected = [before[0], before[1], before[5], before[2], before[4], before[3]];
@@ -228,7 +228,7 @@ test('restore: already serialized object timer IDs are not encoded twice', async
         }
     }
     game.storage.setItem(key, JSON.stringify(gamestate_encode(snap)));
-    assert.equal(dorecover(), true);
+    assert.equal(await dorecover(), true);
     unchanged(game.level.objects.find(item => item.o_id === obj.o_id));
 });
 

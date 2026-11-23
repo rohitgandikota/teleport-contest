@@ -6,14 +6,14 @@ import { place_object } from './mkobj.js';
 import { OBJ_FREE } from './const.js';
 
 // src/restore.c:71 find_lev_obj(). Local chains are rebuilt on getlev().
-export function find_lev_obj() {
+export async function find_lev_obj() {
     const reversed = [...game.level.objects].reverse();
     game.level.objects = [];
     game.level.objAt = new Map();
     for (const obj of reversed)
         obj.where = OBJ_FREE;
     for (const obj of reversed)
-        place_object(obj, obj.ox, obj.oy);
+        await place_object(obj, obj.ox, obj.oy);
 }
 
 // src/restore.c:468 loadfruitchn()

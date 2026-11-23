@@ -3907,7 +3907,7 @@ async function litter_scatter(litter, x, y, shkp) {
                 }
 
                 obj_extract_self(otmp); /* remove_object(otmp) */
-                place_object(otmp, ix, iy);
+                await place_object(otmp, ix, iy);
                 litter[i] |= LITTER_UPDATE;
             }
         } /* while level.objects[x][y] != 0 */

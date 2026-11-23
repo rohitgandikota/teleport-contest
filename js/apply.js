@@ -963,7 +963,7 @@ export async function use_whip(obj) {
                 case 2:
                     /* to floor near you */
                     await You(`yank ${yname(otmp)} to the ${surface(game.u.ux, game.u.uy)}!`);
-                    place_object(otmp, game.u.ux, game.u.uy);
+                    await place_object(otmp, game.u.ux, game.u.uy);
                     stackobj(otmp);
                     break;
                 case 3:
@@ -981,7 +981,7 @@ export async function use_whip(obj) {
                            OBJ_FREE; end of game cleanup will panic if
                            it isn't part of current level; plus it would
                            be missing from bones, so put it on the floor */
-                        place_object(otmp, game.u.ux, game.u.uy); /* but don't stack */
+                        await place_object(otmp, game.u.ux, game.u.uy); /* but don't stack */
 
                         await instapetrify(kbuf);
                         /* life-saved; free the corpse again */
@@ -995,7 +995,7 @@ export async function use_whip(obj) {
                     await You(`yank ${the(onambuf)} from ${
                         s_suffix(mon_nam(mtmp))} ${mon_hand}!`);
                     await obj_no_longer_held(otmp);
-                    place_object(otmp, mtmp.mx, mtmp.my);
+                    await place_object(otmp, mtmp.mx, mtmp.my);
                     stackobj(otmp);
                     break;
                 }

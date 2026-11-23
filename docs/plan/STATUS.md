@@ -2784,6 +2784,67 @@ No runtime changes are needed for this test-only checkpoint. The 45 original
 sink segments remain unchanged. Commit and immediately push its three files
 and this documentation, then continue with held-object and container effects.
 
+Sink coverage checkpoint `f57cf730` is pushed. The held-object and container
+checkpoint is now applied and verified, with 31 runtime files and eight
+await-only adaptations to existing tools. Shared placement and insertion
+perform C's held-state release before linking the object, changing coordinates
+or clearing billing state. Recursive contents finish in chain order. Pending
+shop messages finish before conversion and insertion; ordinary operations
+retain synchronous completion. Generic consumers await the conditional result.
+Real explicit double checks remain; the old bones/statue substitutes are
+removed only where the shared helper now owns the same C call.
+
+The promoted held-object-placement fixture preserves four native segments
+(183 boundaries, 11,116 calls, three animations); container-held-effects
+preserves five (631 boundaries, 20,541 calls, 21 animations). Their nine
+read-only input observations pass, including held versus floor bags, fixed
+survival/reversion, nested insertion and a real old-type billing copy. The
+two fixtures retain every original native segment unchanged. All 39 new state
+controls pass. Full streams and all 814 input slices are exact, with matching
+animation counts, cells, cursors and input exhaustion. No duplicate native
+comparison helper was promoted; the existing common gates cover these checks.
+
+The complete 689-fixture corpus passes: 805,930 screens/cursors, 16,027,277
+scored RNG positions and 30,597 animations. This is the fixed 687-path base
+plus the two new fixtures; its exact path inventory matches the maintained
+directories without duplicates. All 279 runtime hashes stayed fixed.
+held-container-corpus-{0,1,2,3}.log and held-container-corpus-{base-totals,totals,
+complete-paths}.json record results. The normal repository chain oracle was
+compiled and executed: all 992 checks over 68 histories and 711 snapshots pass.
+Its nine extracted C functions still stub held effects, so it establishes
+chain order separately from the new held-state tests.
+
+The other existing checks pass: 61 test-runner cases, including 19 timer and
+10 restore-order controls, the shop-copy gate's 21 C scenarios, inventory
+selection's 89 native replays and 35 groups, and level knowledge's 103 native
+replays and 88 groups. Bones passes 91 native replays, then stops at the same
+pre-existing fruit-warning assertion on both baseline and candidate. That
+assertion and its later unrun controls are not reported as passing. No
+assertion was relaxed. Source audit is 0/276, changed-file syntax and final
+diff checks pass. Logs use held-container-parent-* and held-container-promoted-*.
+
+Strict NFS C coverage credits all three raw recordings, comprising the nine
+new native cases. Local hashes match every credited input. Standalone coverage
+enters 1,713/5,492 functions and observes 12,116/107,260 direct outcomes;
+obj_no_longer_held covers 13/16 and add_to_container 7/10 in this run. These
+profiles remain separate from the 678-input global census. NFS path:
+/share/NFS/u/rohit/research/contest/artifacts/2026-11-22/held-container-coverage.mMrvpw/coverage.
+The compact local receipt is linux-held-container-coverage-summary.json.
+
+The next full-restore phase gap is independently native-confirmed. Restoring
+the saved floor with seed 7 draws 10,100,3,2,10 and leaves a worm tooth. Seed 11
+reverts the temporary first copy but reloads a fresh fixed knife, leaving a
+crysknife after the second roll. A held-inventory control has only 100,3,2
+and retains its crysknife. The extended control explicitly opens inventory;
+the earlier original is retained. These failures are not promoted into the
+passing corpus or claimed repaired by this placement checkpoint. Their logs
+use held-restore-phase-parent-*.
+
+Commit and immediately push this verified placement checkpoint. Next are the
+four timer-import fixes with a new 330-boundary oracle, source-backed weapon
+enchantment repairs with seven native cases, then full restore phases and
+the coordinated invoked-artifact loss repair. All remain separate candidates.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

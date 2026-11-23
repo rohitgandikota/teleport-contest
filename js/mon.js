@@ -1263,7 +1263,7 @@ async function meatbox(mon, otmp) {
             await mpickobj(mon, cobj);
         } else {
             if (!(await flooreffects(cobj, x, y, '')))
-                place_object(cobj, x, y);
+                await place_object(cobj, x, y);
         }
     }
 }
@@ -2297,7 +2297,9 @@ export async function mongone(mdef) {
         if (!protected_)
             continue;
         obj_extract_self(obj);
-        place_object(obj, mdef.mx, mdef.my);
+        const placement = place_object(obj, mdef.mx, mdef.my);
+        if (placement)
+            await placement;
         stackobj(obj);
     }
 
@@ -2330,7 +2332,7 @@ export async function monstone(mdef) {
             if (obj.otyp === ONAMES.BOULDER || obj_resists(obj, 0, 0)) {
                 if (await flooreffects(obj, x, y, 'fall'))
                     continue;
-                place_object(obj, x, y);
+                await place_object(obj, x, y);
             } else {
                 if (obj.lamplit)
                     end_burn(obj, true);
@@ -2351,7 +2353,7 @@ export async function monstone(mdef) {
         if (mdef.mgivenname)
             remains = oname(remains, mdef.mgivenname, ONAME_NO_FLAGS);
         for (const obj of held)
-            add_to_container(remains, obj);
+            await add_to_container(remains, obj);
         remains.owt = weight(remains);
     } else {
         remains = mksobj_at(ONAMES.ROCK, x, y, true, false);
@@ -2891,7 +2893,7 @@ export async function xkilled(mtmp, xkill_flags) /* 1: suppress mesg, 2: suppres
                                         ONAME_NO_FLAGS);
                     delobj(otmp);
                 } else if (!(await flooreffects(otmp, x, y, nomsg ? '' : 'fall'))) {
-                    place_object(otmp, x, y);
+                    await place_object(otmp, x, y);
                     stackobj(otmp);
                 }
             }

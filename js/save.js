@@ -225,7 +225,7 @@ export function dosave0() {
 // src/restore.c dorecover() — the restoring half, called from the boot
 // when a save file for this character exists. Returns true when the game
 // state was reinstalled; the caller then skips new-game initialization.
-export function dorecover() {
+export async function dorecover() {
     if (!game.storage)
         return false;
     const raw = game.storage.getItem(save_key());
@@ -279,7 +279,7 @@ export function dorecover() {
     role_init(game.flags.initrole, game.flags.initalign);
     [game.quest_ldrgend, game.quest_nemgend] = savedGenders;
 
-    find_lev_obj();
+    await find_lev_obj();
     relink_timers(false); /* restore.c:1299, after all objects are restored */
     // restore.c:831,898 writes the temporary level, then reloads the original
     // current level after globals. Reverse ties within each range, local first.

@@ -98,12 +98,12 @@ test('old save without hilite_pet does not erase the new setting',async()=>{
     assert.equal(boolean_option('hilite_pet'),true);
 });
 
-for(const raw of [null,'bad JSON']) test(`failed restore preserves fresh options: ${raw}`,()=>{
+for(const raw of [null,'bad JSON']) test(`failed restore preserves fresh options: ${raw}`,async ()=>{
     resetGame();game.plname='RestoreProbe';game.storage=new InMemoryStorage();
     game.flags={hilite_pet:true,autopickup:false};game.iflags={wc2_petattr:1};
     if(raw!==null)game.storage.setItem('save:RestoreProbe',raw);
     const flags=game.flags,iflags=game.iflags;
-    assert.equal(dorecover(),false);
+    assert.equal(await dorecover(),false);
     assert.equal(game.flags,flags);assert.equal(game.iflags,iflags);
     assert.deepEqual(game.flags,{hilite_pet:true,autopickup:false});
 });

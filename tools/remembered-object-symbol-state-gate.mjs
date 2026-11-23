@@ -44,7 +44,7 @@ for (const sample of cases) {
             Object.assign(second, {ox:x, oy:y, where:OBJ_FLOOR, dknown:1});
             game.level.objects.push(second);
         }
-        find_lev_obj();
+        await find_lev_obj();
         if (sample.hallucinated)
             game.u.uprops.HALLUC = 100;
         map_object(obj, true);

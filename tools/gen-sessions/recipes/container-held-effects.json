@@ -1,0 +1,110 @@
+{
+    "name": "container-held-effects",
+    "description": "Insert knives into a floor container: ordinary conversion, fixed survival and reversion, nested contents, and unpaid degradation billing.",
+    "coverage": [
+        "mode.debug",
+        "object.weapons",
+        "object.buc-enchant-erosion",
+        "object.tools-containers",
+        "object.scrolls",
+        "social.shops-billing",
+        "ui.menus",
+        "ui.more-paging"
+    ],
+    "segments": [
+        {
+            "seed": 99812,
+            "datetime": "20000110090000",
+            "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+            "moves": " \u0017uncursed empty sack\r   \u0017uncursed crysknife\r   da  #loot\rsb  \u001b\u001b #loot\ro  \u001b\u001b",
+            "name": "floor-insertion"
+        },
+        {
+            "seed": 99812,
+            "datetime": "20000110090000",
+            "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+            "moves": " \u0017uncursed empty sack\r   \u0017uncursed fixed crysknife\r   da  #loot\rsb  \u001b\u001b #loot\ro  \u001b\u001b",
+            "name": "fixed-survives"
+        },
+        {
+            "seed": 99825,
+            "datetime": "20000110090000",
+            "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+            "moves": " \u0017uncursed empty sack\r   \u0017uncursed fixed crysknife\r   da  #loot\rsb  \u001b\u001b #loot\ro  \u001b\u001b",
+            "name": "fixed-reverts"
+        },
+        {
+            "seed": 99812,
+            "datetime": "20000110090000",
+            "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+            "moves": " \u0017uncursed empty sack\r   \u0017uncursed empty oilskin sack\r   \u0017uncursed crysknife\r   absc  \u001b\u001b da  #loot\rsb  \u001b\u001b #loot\roa\r  abo  \u001b\u001b",
+            "name": "nested-insertion"
+        },
+        {
+            "seed": 6903,
+            "datetime": "20000110090000",
+            "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+            "moves": " \u00162\r\u0006\u0014  llllllllllllllllllll.  \u0017uncursed empty sack\r   \u0017uncursed worm tooth\r   \u0017uncursed scroll of enchant weapon\r   \u0017uncursed wand of teleportation\r   dp y ,a\r  wp  rq  #levelchange\r30\r                                   zry   y  do   #loot\rsp     \u001b\u001b #loot\ro  \u001b\u001b",
+            "name": "unpaid-insertion"
+        }
+    ],
+    "recordingNote": "Use RERECORD_TZ=Etc/GMT+4. These inputs and native segments are unchanged from the parent recordings; only fixture grouping and assertion metadata are new.",
+    "branches": [
+        "held.container.floor-insertion",
+        "held.container.fixed-survival",
+        "held.container.fixed-reversion",
+        "held.container.nested-recursion",
+        "held.container.unpaid-billing"
+    ],
+    "requireBranchAssertions": true,
+    "branchAssertions": [
+        {
+            "branch": "held.container.floor-insertion",
+            "segment": 0,
+            "screenIncludes": [
+                "You drop a bag.",
+                "You put a crysknife into the bag.",
+                "a worm tooth"
+            ]
+        },
+        {
+            "branch": "held.container.fixed-survival",
+            "segment": 1,
+            "screenIncludes": [
+                "You put a crysknife into the bag.",
+                "a crysknife"
+            ],
+            "rngIncludes": [
+                "rn2(10)=7 @ obj_no_longer_held"
+            ]
+        },
+        {
+            "branch": "held.container.fixed-reversion",
+            "segment": 2,
+            "screenIncludes": [
+                "You put a crysknife into the bag.",
+                "a worm tooth"
+            ],
+            "rngIncludes": [
+                "rn2(10)=0 @ obj_no_longer_held"
+            ]
+        },
+        {
+            "branch": "held.container.nested-recursion",
+            "segment": 3,
+            "screenIncludes": [
+                "You put a bag containing 1 item into the bag.",
+                "a worm tooth"
+            ]
+        },
+        {
+            "branch": "held.container.unpaid-billing",
+            "segment": 4,
+            "screenIncludes": [
+                "You put a crysknife (unpaid, 178 zorkmids) into the bag.",
+                "You degrade that crysknife, you pay for it!",
+                "a worm tooth (no charge)"
+            ]
+        }
+    ]
+}

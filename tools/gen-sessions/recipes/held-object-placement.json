@@ -1,0 +1,88 @@
+{
+    "name": "held-object-placement",
+    "description": "Ordinary and fixed crysknife floor release, genuine explicit-plus-placement throwing checks, and recursion when a held sack is dropped.",
+    "coverage": [
+        "mode.debug",
+        "object.weapons",
+        "object.buc-enchant-erosion",
+        "object.tools-containers",
+        "combat.ranged",
+        "ui.animation",
+        "ui.menus"
+    ],
+    "segments": [
+        {
+            "seed": 99812,
+            "datetime": "20000110090000",
+            "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+            "moves": " \u0017uncursed crysknife\r   da   : ",
+            "name": "ordinary-drop"
+        },
+        {
+            "seed": 99812,
+            "datetime": "20000110090000",
+            "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+            "moves": " \u0017uncursed fixed crysknife\r   da   : ",
+            "name": "fixed-drop"
+        },
+        {
+            "seed": 99812,
+            "datetime": "20000110090000",
+            "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+            "moves": " \u0017uncursed fixed crysknife\r   tah   : ",
+            "name": "fixed-throw"
+        },
+        {
+            "seed": 99812,
+            "datetime": "20000110090000",
+            "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+            "moves": " \u0017uncursed empty sack\r   \u0017uncursed crysknife\r   aasb  \u001b\u001b da  #loot\ryo  \u001b\u001b",
+            "name": "held-sack-drop"
+        }
+    ],
+    "recordingNote": "Use RERECORD_TZ=Etc/GMT+4. These inputs and native segments are unchanged from the parent recordings; only fixture grouping and assertion metadata are new.",
+    "branches": [
+        "held.floor.ordinary-reversion",
+        "held.floor.fixed-survival",
+        "held.throw.two-release-checks",
+        "held.floor.container-recursion"
+    ],
+    "requireBranchAssertions": true,
+    "branchAssertions": [
+        {
+            "branch": "held.floor.ordinary-reversion",
+            "segment": 0,
+            "screenIncludes": [
+                "You drop a crysknife.",
+                "You see here a worm tooth."
+            ]
+        },
+        {
+            "branch": "held.floor.fixed-survival",
+            "segment": 1,
+            "screenIncludes": [
+                "You see here a crysknife."
+            ],
+            "rngIncludes": [
+                "rn2(10)=2 @ obj_no_longer_held"
+            ]
+        },
+        {
+            "branch": "held.throw.two-release-checks",
+            "segment": 2,
+            "rngIncludes": [
+                "rn2(10)=5 @ obj_no_longer_held",
+                "rn2(10)=1 @ obj_no_longer_held"
+            ]
+        },
+        {
+            "branch": "held.floor.container-recursion",
+            "segment": 3,
+            "screenIncludes": [
+                "You put a crysknife into the bag.",
+                "You drop a bag containing 1 item.",
+                "a worm tooth"
+            ]
+        }
+    ]
+}

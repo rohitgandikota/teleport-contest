@@ -50,8 +50,11 @@ RNG positions and 30,572 animations. Artifact hallucination resistance and
 ESP refresh order now also match five new native cases. All 89 artifact/color
 controls pass. Four more native sink cases bring the complete corpus to
 687 fixtures, with 805,116 exact screens/cursors, 15,995,620 scored RNG positions
-and 30,573 animations. Next: remaining floor
-and container side effects, then the reproduced restore-phase gap. The
+and 30,573 animations. Floor and container placement now also preserve held
+effects and billing order in nine new native cases and 39 state controls.
+The complete 689-fixture corpus matches all 805,930 screens/cursors,
+16,027,277 scored RNG positions and 30,597 animations. Next: timer cancellation,
+the reproduced restore-phase gap and invoked artifact loss. The
 Linux/NFS branch collector is pushed
 and passes signal canaries plus exact save/restore, artifact and natural-exit
 pilots. The Linux census at e4504071 now covers all 678 original inputs:

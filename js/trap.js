@@ -2868,7 +2868,7 @@ async function thitm(tlev, mon, obj, d_override, nocorpse) {
     /* src/trap.c:3955 — an unfired or force-hit missile lands on the
        monster's square; a normally-striking one is used up. */
     if (obj && (!strike || d_override)) {
-        place_object(obj, mon.mx, mon.my);
+        await place_object(obj, mon.mx, mon.my);
         const { stackobj } = await import('./invent.js');
         stackobj(obj);
     } /* else dealloc_obj(obj): dropped reference is the JS equivalent */
@@ -4316,7 +4316,7 @@ export async function fire_damage(obj, force, x, y) {
             for (const item of [...obj.cobj]) {
                 obj_extract_self(item);
                 if (!await flooreffects(item, x, y, ''))
-                    place_object(item, x, y);
+                    await place_object(item, x, y);
             }
         }
         setnotworn(obj);
@@ -5763,7 +5763,7 @@ export async function launch_obj(otyp, x1, y1, x2, y2, style) {
                 obj_extract_self(otmp2);
                 otmp2.otrapped = singleobj.otrapped;
                 singleobj.otrapped = 0;
-                place_object(singleobj, x, y);
+                await place_object(singleobj, x, y);
                 singleobj = otmp2;
                 await wake_nearto(x, y, 100);
             }
@@ -5806,7 +5806,7 @@ export async function launch_obj(otyp, x1, y1, x2, y2, style) {
     /* launch_drop_spot((struct obj *) 0, 0, 0) */
     if (!used_up) {
         singleobj.otrapped = 0;
-        place_object(singleobj, finalx, finaly);
+        await place_object(singleobj, finalx, finaly);
         newsym(finalx, finaly);
         return 1;
     }

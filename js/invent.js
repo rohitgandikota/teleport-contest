@@ -2731,7 +2731,7 @@ export async function hold_another_object(obj, drop_fmt, drop_arg, hold_msg) {
         const wasUpolyd = Upolyd(game.u);
 
         /* in case touching this object turns out to be fatal */
-        place_object(obj, game.u.ux, game.u.uy);
+        await place_object(obj, game.u.ux, game.u.uy);
 
         if (!await touch_artifact(obj, game.youmonst)) {
             obj_extract_self(obj); /* remove it from the floor */

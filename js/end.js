@@ -582,7 +582,7 @@ async function done_object_cleanup() {
     for (const field of ['thrownobj', 'kickedobj']) {
         const obj = game[field];
         if (obj && (obj.where ?? OBJ_FREE) === OBJ_FREE) {
-            place_object(obj, ox, oy);
+            await place_object(obj, ox, oy);
             stackobj(obj);
             game[field] = null;
         }

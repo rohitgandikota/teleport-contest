@@ -1509,7 +1509,7 @@ async function mv_bubble(b, dx, dy, ini) {
                 /* C walks its reversed chain, prepending each; iterating
                    the head-first array in reverse restores pile order */
                 for (let k = cons.list.length - 1; k >= 0; k--) {
-                    place_object(cons.list[k], cons.x, cons.y);
+                    await place_object(cons.list[k], cons.x, cons.y);
                     stackobj(cons.list[k]);
                 }
                 break;

@@ -495,10 +495,8 @@ function choose_trapnote(ttmp) {
 export { bury_objs, unearth_objs } from './dig.js';
 
 // src/trap.c:490 maketrap()
-// NOTE: not async. C's maketrap() is an ordinary function and this one has no
-// awaits in it; the async marker was invented here and it forced every caller
-// up to lspo_region() to be async too, which is what blocked the themeroom
-// fills from calling des.trap at all.
+// Fresh level generation completes synchronously. Unearthing a live
+// unpaid object can defer completion until its billing message finishes.
 /* include/trap.h:115 unhideable_trap(); include/rm.h:320 CAN_OVERWRITE_TERRAIN();
    include/dungeon.h Sokoban */
 const unhideable_trap = (ttyp) => ((ttyp) === HOLE); /* visible traps */
@@ -614,7 +612,15 @@ export function maketrap(x, y, typ) {
             lev.looted = 0;
         }
 
-        unearth_objs(x, y);
+        {
+            const unearthed = unearth_objs(x, y);
+            if (unearthed) {
+                return unearthed.then(() => {
+                    recalc_block_point(x, y);
+                    return finishTrap();
+                });
+            }
+        }
         recalc_block_point(x, y);
         break;
     case TELEP_TRAP:
@@ -628,17 +634,21 @@ export function maketrap(x, y, typ) {
         break;
     }
 
-    if (!oldplace) {
-        if (!game.level.traps) game.level.traps = [];
-        game.level.traps.push(ttmp); /* ttmp->ntrap = gf.ftrap; gf.ftrap = ttmp */
-    } else {
-        /* oldplace;
-           it shouldn't be possible to override a sokoban pit or hole
-           with some other trap, but we'll check just to be safe */
-        if (Sokoban())
-            maybe_finish_sokoban();
+    return finishTrap();
+
+    function finishTrap() {
+        if (!oldplace) {
+            if (!game.level.traps) game.level.traps = [];
+            game.level.traps.push(ttmp); /* ttmp->ntrap = gf.ftrap; gf.ftrap = ttmp */
+        } else {
+            /* oldplace;
+               it shouldn't be possible to override a sokoban pit or hole
+               with some other trap, but we'll check just to be safe */
+            if (Sokoban())
+                maybe_finish_sokoban();
+        }
+        return ttmp;
     }
-    return ttmp;
 }
 
 // engrave stubs
@@ -3244,33 +3254,39 @@ export function mktrap(num, mktrapflags, croom, tm) {
     }
 
     const trap = maketrap(m.x, m.y, kind);
-    /* we should always get the type we asked for, but be paranoid */
-    kind = trap ? trap.ttyp : NO_TRAP;
+    if (trap?.then)
+        return trap.then(finishTrap);
+    return finishTrap(trap);
 
-    if (kind === WEB && !(mktrapflags & MKTRAP_NOSPIDERONWEB))
-        makemon(game.mons[PMNAMES.PM_GIANT_SPIDER], m.x, m.y, NO_MM_FLAGS);
-    if (trap && (mktrapflags & MKTRAP_SEEN))
-        trap.tseen = true;
-    /* src/mklev.c:2108 — a magic portal made while the hero came from
-       somewhere (the tutorial) leads back there */
-    if (kind === MAGIC_PORTAL
-        && (game.u.ucamefrom?.dnum || game.u.ucamefrom?.dlevel)) {
-        trap.dst = { dnum: game.u.ucamefrom.dnum,
-                     dlevel: game.u.ucamefrom.dlevel };
-    }
+    function finishTrap(trap) {
+        /* we should always get the type we asked for, but be paranoid */
+        kind = trap ? trap.ttyp : NO_TRAP;
 
-    if (game.in_mklev && kind !== NO_TRAP && !(mktrapflags & MKTRAP_NOVICTIM)
-        && lvl <= rnd(4)
-        && kind !== SQKY_BOARD && kind !== RUST_TRAP
-        && !(kind === ROLLING_BOULDER_TRAP
-             && trap.launch?.x === trap.tx && trap.launch?.y === trap.ty)
-        && !is_pit(kind) && (kind < HOLE || kind === MAGIC_TRAP)) {
-        if (kind === LANDMINE) {
-            /* treat as exploded: an unconcealed pit, no scattered objects */
-            trap.ttyp = PIT;
+        if (kind === WEB && !(mktrapflags & MKTRAP_NOSPIDERONWEB))
+            makemon(game.mons[PMNAMES.PM_GIANT_SPIDER], m.x, m.y, NO_MM_FLAGS);
+        if (trap && (mktrapflags & MKTRAP_SEEN))
             trap.tseen = true;
+        /* src/mklev.c:2108 — a magic portal made while the hero came from
+           somewhere (the tutorial) leads back there */
+        if (kind === MAGIC_PORTAL
+            && (game.u.ucamefrom?.dnum || game.u.ucamefrom?.dlevel)) {
+            trap.dst = { dnum: game.u.ucamefrom.dnum,
+                         dlevel: game.u.ucamefrom.dlevel };
         }
-        mktrap_victim(trap);
+
+        if (game.in_mklev && kind !== NO_TRAP && !(mktrapflags & MKTRAP_NOVICTIM)
+            && lvl <= rnd(4)
+            && kind !== SQKY_BOARD && kind !== RUST_TRAP
+            && !(kind === ROLLING_BOULDER_TRAP
+                 && trap.launch?.x === trap.tx && trap.launch?.y === trap.ty)
+            && !is_pit(kind) && (kind < HOLE || kind === MAGIC_TRAP)) {
+            if (kind === LANDMINE) {
+                /* treat as exploded: an unconcealed pit, no scattered objects */
+                trap.ttyp = PIT;
+                trap.tseen = true;
+            }
+            mktrap_victim(trap);
+        }
     }
 }
 
@@ -3459,7 +3475,7 @@ async function fill_ordinary_room(croom, bonus_items) {
                         otmp.owt = weight(otmp);
                     }
                     cursed_item = otmp?.cursed ?? false;
-                    add_to_container(supply_chest, otmp);
+                    await add_to_container(supply_chest, otmp);
                     if (++tryct2 >= 50) break;
                 } while (cursed_item || !rn2(5));
                 if (rn2(3)) {
@@ -3490,7 +3506,7 @@ async function fill_ordinary_room(croom, bonus_items) {
                             }
                         }
                     }
-                    add_to_container(supply_chest, otmp);
+                    await add_to_container(supply_chest, otmp);
                 }
                 supply_chest.owt = weight(supply_chest);
             }

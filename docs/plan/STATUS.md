@@ -122,9 +122,24 @@ The public GitHub Actions API reports no workflow runs for this fork; that
 does not establish the status of the separate official scoring service.
 The most recently checked leaderboard snapshot still predates these pushes.
 
-Next: push the option checkpoint, adopt the applicable official recorder
-updates, and complete the remove-curse function's billing/property branches.
-Continue beyond that.
+Option checkpoint `ddcc0dc9` is pushed. The previously failing
+monster-special-status-melee state gate also passes after this fix.
+
+Adopted the applicable upstream `6ee30e6f9b` recorder changes: Latin-1 input
+bytes, raw-mode reset at window teardown, and extra row-reset capacity in the
+capture buffer. Our September patch had already enlarged the per-cell buffer.
+The updated patch applies to the pinned upstream source and the native
+recorder rebuild succeeds. Its existing instrumentation is preserved.
+A short Meta-e probe improves from 2/4 matching screens/cursors to 4/4 after
+the byte fix, with the same 2,196 RNG calls. The committed five-frame recipe
+also verifies the debug prompt, skill menu and exit, with native branch
+assertions, exact replay and a passing input-exhaustion check. A fresh normal
+death recording and the unchanged older recording both match JS: 62 total
+screens/cursors, 7,230 RNG calls and 18 animations. Both input checks pass.
+Frozen files and existing oracle fixtures remain unchanged.
+
+Next: push the recorder checkpoint and complete remove-curse billing/property
+branches. Continue beyond that.
 
 ## 2026-09-05: full faithful port is the active goal
 

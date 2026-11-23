@@ -1,0 +1,23 @@
+{
+  "name": "recorder-meta-keys",
+  "description": "Meta-e enters the skills command as one input byte, then the player declines debug advancement and closes the menu.",
+  "coverage": ["ui.menu", "ui.meta-keys"],
+  "branches": ["recorder.single-byte-meta-key"],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "recorder.single-byte-meta-key",
+      "segment": 0,
+      "screenIncludes": ["Advance skills without practice?", "Current skills:"],
+      "screenExcludes": ["Unknown command"]
+    }
+  ],
+  "segments": [
+    {
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00e5n\u001b"
+    }
+  ]
+}

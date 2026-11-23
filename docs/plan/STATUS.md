@@ -676,6 +676,29 @@ Hawaiian shirt description. These are the next source review targets. Logs:
 `resumed-fuzz-{0,1}.log` and `fuzz-time-controls-score.log`; fresh native
 controls are `fuzz-time-controls.session.json` in the same cache directory.
 
+Command checkpoint `1c1e8d31` is pushed. The inventory search failure comes
+from full-screen menu teardown: its synchronous redraw substitutes for C's
+`docrt(); flush_screen(1);` but did not clear the glyph update flags. Those
+already-painted cells are now marked clean, so the next menu's search prompt
+does not repaint the map over its entries. The new four-case native fixture
+improves from 336/344 to 344/344 screens, retaining all 8,828 RNG calls. Its
+overlay controls pass before and after. The unchanged original s17-17 fuzz
+recording also now passes all 833 screens and 54,064 RNG calls.
+
+Full regression: 631/631 fixtures, 788,688 screens/cursors, 14,995,429 RNG
+calls and 30,008/30,029 animations. All six selected inventory/menu test
+entries and both targeted input-exhaustion checks pass. Source audit remains
+empty. Logs: `.cache/restart-20261122/search-corpus-{0,1,2,3}.log`,
+`search-state-final.log`, `search-hang.log`, `inventory-search-before.log`
+and `inventory-search-after.log`.
+
+Pending shirt work is outside this checkpoint. Eight new native cases expose
+seven missing Hawaiian/erosion descriptions; intact T-shirt text is a passing
+control. A separate native save pair confirms that a Hawaiian shirt retains
+its design after restoring at a different datetime. The compiled-C text gate
+covers 1,912 motif/erosion combinations plus eight fixed-time conversions.
+Implement and persist `ubirthday`, then use C's unsigned hash arithmetic.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

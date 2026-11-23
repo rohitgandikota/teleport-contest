@@ -1,0 +1,81 @@
+{
+  "name": "inventory-search-redraw",
+  "description": "Search an inventory action menu after dismissing a full-screen inventory, with overlay and selection controls.",
+  "recordingNote": "Use RERECORD_TZ=Etc/GMT+4 for a fixed UTC-4 recording offset.",
+  "coverage": [
+    "mode.debug",
+    "ui.menus",
+    "ui.getlin"
+  ],
+  "branches": [
+    "inventory-search.overlay-control",
+    "inventory-search.full-screen-cancel",
+    "inventory-search.full-screen-select",
+    "inventory-search.wide-inventory-overlay"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "inventory-search.overlay-control",
+      "segment": 0,
+      "screenIncludes": [
+        "Search for:",
+        "Study this spellbook"
+      ]
+    },
+    {
+      "branch": "inventory-search.full-screen-cancel",
+      "segment": 1,
+      "screenIncludes": [
+        "Search for:",
+        "Study this spellbook"
+      ]
+    },
+    {
+      "branch": "inventory-search.full-screen-select",
+      "segment": 2,
+      "screenIncludes": [
+        "Search for:",
+        "Study this spellbook"
+      ]
+    },
+    {
+      "branch": "inventory-search.wide-inventory-overlay",
+      "segment": 3,
+      "screenIncludes": [
+        "Search for:",
+        "Study this spellbook"
+      ]
+    }
+  ],
+  "segments": [
+    {
+      "name": "overlay-control",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!autoquiver,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed spellbook of force bolt\r\u0017uncursed wand of light\ria:\u001b\u001b\u001bV"
+    },
+    {
+      "name": "full-screen-cancel",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!autoquiver,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!menu_overlay\n",
+      "moves": " \u0017uncursed spellbook of force bolt\r\u0017uncursed wand of light\ria:\u001b\u001b\u001bV"
+    },
+    {
+      "name": "full-screen-select",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!autoquiver,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!menu_overlay\n",
+      "moves": " \u0017uncursed spellbook of force bolt\r\u0017uncursed wand of light\ria:wield\r\u001bV"
+    },
+    {
+      "name": "wide-inventory-overlay",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!autoquiver,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed spellbook of force bolt\r\u0017uncursed wand of light named A very long name that makes this inventory fill the entire screen\ria:\u001b\u001b\u001bV"
+    }
+  ]
+}

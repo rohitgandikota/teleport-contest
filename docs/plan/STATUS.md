@@ -272,8 +272,7 @@ All 55 selected public/command/binding replays and input-exhaustion checks
 pass: 11,878 screens/cursors and 964,270 RNG calls. The 21 known public
 animation differences remain, and source audit reports zero findings.
 
-Next: push the command-binding checkpoint, then run the entire existing
-supplemental corpus to identify remaining gameplay divergences. Special keys,
+Command-binding checkpoint `16a6ae17` is pushed. Special keys,
 menu aliases, mouse bindings and full command-table consumers are still
 incomplete. Config binding errors now collect on `rc.errors`; startup error
 display is a separate remaining gap. Interactive key rebinding stops at its
@@ -284,6 +283,38 @@ to an uninitialized `cmdstr` buffer for non-parameter commands. Do not infer
 portable behavior for that undefined C path. Parameter commands use Snprintf.
 Continue auditing the defined paths and existing table consumers. The official snapshot still
 predates this resumed work; do not infer a new ranking from local checks.
+
+The full supplemental census at `16a6ae17` passes 565/572 sessions. Its seven
+failures are first-bite-effects, menu-object-symbols, monster-conversations,
+passiveum-controls, ring-attribute-effects, ring-combat-bonuses, and
+theft-equipment. The ring-combat worker throws on exhausted input, so its
+zero returned counts must not be included in claims of complete frame coverage.
+Logs are in `.cache/restart-20261122/supplemental-census.log`.
+
+Noun inflection now follows C's exception tables, branch order, compound
+suffixes, pronouns and per-character case copying. Compiling the pinned C
+functions gives 10,110 input/function comparisons plus 40 verb comparisons.
+All eleven test groups pass; eight fail with the previous object-naming code.
+The new six-case native inventory fixture improves from 119/131 screens to
+131/131, with 13,194 exact RNG calls. The unchanged first-bite-effects fixture
+now passes all 3,108 screens, including the previously misspelled "humans".
+
+The full public plus supplemental sweep exposed a new empty-fruit diagnostic
+in autounlock-options. C rejects an omitted fruit option before name lookup;
+the parser now follows that guard, silently during play and with a missing
+parameter error at startup. Eight parser checks pass, seven fail before the
+guard fix. All 29 naming, fruit
+and boolean-option checks pass. The five affected native fixtures pass
+9,143 screens/cursors and 125,130 RNG calls after the guard fix.
+
+Combining the 617-session sweep with that targeted rerun yields 611/617
+passing sessions, including all 44 public sessions. Returned metrics are
+786,681/786,765 screens and 14,795,841/14,795,876 RNG calls; the failing
+ring-combat worker is excluded from those denominators. The six remaining
+failures match the earlier census. Animations retain the 21 known public
+differences. Source audit is empty and all 49 public/targeted input-exhaustion
+checks pass. Next: push this checkpoint, then repair C's property-zero worn-slot tracking,
+which the ring-removal sanity check requires.
 
 ## 2026-09-05: full faithful port is the active goal
 

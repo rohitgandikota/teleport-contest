@@ -1,0 +1,48 @@
+{
+  "name": "noun-inflection-inventory",
+  "description": "Wished stacks of custom fruit exercise human, fox, mongoose, mouse, alga, and ch-sound plural rules in inventory output.",
+  "recordingNote": "Use RERECORD_TZ=Etc/GMT+4 for a fixed UTC-4 recording offset.",
+  "coverage": ["mode.debug", "object.food-corpses"],
+  "branches": ["naming.plural-human", "naming.plural-fox", "naming.plural-mongoose", "naming.plural-uppercase-mouse", "naming.plural-alga", "naming.plural-loch"],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {"branch": "naming.plural-human", "segment": 0, "screenIncludes": ["a - 2 humans"]},
+    {"branch": "naming.plural-fox", "segment": 1, "screenIncludes": ["a - 2 foxes"]},
+    {"branch": "naming.plural-mongoose", "segment": 2, "screenIncludes": ["a - 2 mongooses"]},
+    {"branch": "naming.plural-uppercase-mouse", "segment": 3, "screenIncludes": ["a - 2 MICE"]},
+    {"branch": "naming.plural-alga", "segment": 4, "screenIncludes": ["a - 2 algae"]},
+    {"branch": "naming.plural-loch", "segment": 5, "screenIncludes": ["a - 2 lochs"]}
+  ],
+  "segments": [
+    {
+      "seed": 31, "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=fruit:human\n",
+      "moves": " \u00172 uncursed human\ri\u001b"
+    },
+    {
+      "seed": 31, "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=fruit:fox\n",
+      "moves": " \u00172 uncursed fox\ri\u001b"
+    },
+    {
+      "seed": 31, "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=fruit:mongoose\n",
+      "moves": " \u00172 uncursed mongoose\ri\u001b"
+    },
+    {
+      "seed": 31, "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=fruit:MOUSE\n",
+      "moves": " \u00172 uncursed MOUSE\ri\u001b"
+    },
+    {
+      "seed": 31, "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=fruit:alga\n",
+      "moves": " \u00172 uncursed alga\ri\u001b"
+    },
+    {
+      "seed": 31, "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=fruit:loch\n",
+      "moves": " \u00172 uncursed loch\ri\u001b"
+    }
+  ]
+}

@@ -236,6 +236,13 @@ export function parseoptions(opts, tinitial, tfrom_file, result) {
         config_error_add(`Value not allowed for '${opt.name}'`);
         return false;
     }
+    // optfn_fruit(): an omitted value is rejected before fruit_from_name().
+    // During play string_for_opt() accepts the omission without a message.
+    if (opt.name === 'fruit' && !value && !negated) {
+        if (tinitial)
+            config_error_add(`Missing parameter for '${opts}'`);
+        return false;
+    }
     if (value === null && opt.type !== 'BoolOpt' && opt.valok === 'Yes'
         && opt.name !== 'packorder' && opt.name !== 'pickup_types'
         && opt.name !== 'menu_objsyms' && opt.name !== 'autounlock'

@@ -1,0 +1,172 @@
+{
+  "name": "deaf-water-legs-boundaries",
+  "description": "Seven unchanged native command segments for effective deafness, submerged movement, boulder flight restoration and wounded-leg lifetimes. Paired input/state gates check canonical producers, expiry and message order. Native assertions include the speed potion remaining unidentified after it heals a wound.",
+  "coverage": [
+    "mode.debug",
+    "survival.timed-status",
+    "forms.polymorph"
+  ],
+  "branches": [
+    "deaf.timed-explosion",
+    "deaf.conduct-explosion",
+    "deaf.hearing-explosion-control",
+    "underwater.mixed-terrain-no-avoidance",
+    "underwater.boulder-restores-flight",
+    "wounded.wizard-canonical-kick-guard",
+    "wounded.wizard-silent-expiry",
+    "wounded.dog-body-part",
+    "wounded.speed-potion-remains-unidentified"
+  ],
+  "requireBranchAssertions": true,
+  "segments": [
+    {
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017cursed potion of fruit juice\r  \u001b\u001b\u0017uncursed potion of booze\r  \u001b\u001b#wizintrinsic\r100j\r  \u001b\u001b#dip\rab  \u001b\u001b"
+    },
+    {
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=deaf\n",
+      "moves": " \u0017cursed potion of fruit juice\r  \u001b\u001b\u0017uncursed potion of booze\r  \u001b\u001b#dip\rab  \u001b\u001b"
+    },
+    {
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017cursed potion of fruit juice\r  \u001b\u001b\u0017uncursed potion of booze\r  \u001b\u001b#dip\rab  \u001b\u001b"
+    },
+    {
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!mention_decor\n",
+      "moves": " #polyself\rwater elemental\r  \u001b\u001b\u0017pool\r  \u001b\u001b.  \u001b\u001bl  \u001b\u001b\u0017wall of water\r  \u001b\u001b.  \u001b\u001bh  \u001b\u001b"
+    },
+    {
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #polyself\rair elemental\r  \u001b\u001b\u0017wall of water\r  \u001b\u001b.  \u001b\u001b\u0017boulder\r  \u001b\u001b"
+    },
+    {
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #wizintrinsic\r3m\r  \u001b\u001b\u0004\u001b  \u001b\u001b.  \u001b\u001b.  \u001b\u001b.  \u001b\u001b"
+    },
+    {
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed potion of speed\r  \u001b\u001b#wizintrinsic\r30m\r  \u001b\u001b#polyself\rlittle dog\r  \u001b\u001bqa  \u001b\u001b"
+    }
+  ],
+  "branchAssertions": [
+    {
+      "branch": "deaf.timed-explosion",
+      "segment": 0,
+      "screenIncludes": [
+        "You are unable to hear anything.",
+        "They explode!"
+      ],
+      "screenExcludes": [
+        "BOOM!"
+      ]
+    },
+    {
+      "branch": "deaf.conduct-explosion",
+      "segment": 1,
+      "screenIncludes": [
+        "They explode!"
+      ],
+      "screenExcludes": [
+        "BOOM!"
+      ]
+    },
+    {
+      "branch": "deaf.hearing-explosion-control",
+      "segment": 2,
+      "screenIncludes": [
+        "BOOM!  They explode!"
+      ]
+    },
+    {
+      "branch": "underwater.mixed-terrain-no-avoidance",
+      "segment": 3,
+      "screenIncludes": [
+        "You turn into a water elemental!"
+      ],
+      "screenExcludes": [
+        "You avoid stepping into"
+      ],
+      "rngIncludes": [
+        "rn2(5)=4 @ drown(trap.c:5072)"
+      ],
+      "screenCells": [
+        {
+          "step": 75,
+          "x": 59,
+          "y": 7,
+          "equals": "E"
+        },
+        {
+          "step": 76,
+          "x": 58,
+          "y": 7,
+          "equals": "E"
+        }
+      ]
+    },
+    {
+      "branch": "underwater.boulder-restores-flight",
+      "segment": 4,
+      "screenIncludes": [
+        "You start flying.",
+        "You find yourself on dry land again!"
+      ],
+      "rngIncludes": [
+        "rn2(10)=3 @ boulder_hits_pool(do.c:61)"
+      ]
+    },
+    {
+      "branch": "wounded.wizard-canonical-kick-guard",
+      "segment": 5,
+      "screenIncludes": [
+        "Timeout for wounded legs set to 3.",
+        "Your leg is in no shape for kicking."
+      ]
+    },
+    {
+      "branch": "wounded.wizard-silent-expiry",
+      "segment": 5,
+      "screenIncludes": [
+        "Your leg is in no shape for kicking."
+      ],
+      "screenExcludes": [
+        "leg feels better",
+        "legs feel better"
+      ]
+    },
+    {
+      "branch": "wounded.dog-body-part",
+      "segment": 6,
+      "screenIncludes": [
+        "Timeout for wounded legs set to 30.",
+        "You turn into a little dog!",
+        "Your rear leg feels better."
+      ],
+      "screenExcludes": [
+        "Your leg feels better."
+      ]
+    },
+    {
+      "branch": "wounded.speed-potion-remains-unidentified",
+      "segment": 6,
+      "screenIncludes": [
+        "Your rear leg feels better.",
+        "Call a brilliant blue potion:"
+      ]
+    }
+  ]
+}

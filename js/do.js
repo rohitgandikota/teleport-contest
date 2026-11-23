@@ -432,7 +432,7 @@ export async function boulder_hits_pool(obj, x, y, pushing) {
 
         if (fillsUp && game.u.uinwater
             && game.u.ux === x && game.u.uy === y) {
-            game.u.uinwater = 0;
+            await set_uinwater(0); /* u.uinwater = 0 */
             await docrt();
             game.vision_full_recalc = 1;
             await You('find yourself on dry land again!');
@@ -2574,9 +2574,10 @@ export async function heal_legs(how) {
             game.u.atemp.a[A_DEX]++;
 
         if (!game.u.usteed && how !== 2) {
-            const both = (game.u.EWounded_legs & BOTH_SIDES) === BOTH_SIDES;
-            const legs = both ? 'legs' : 'leg';
-            await Your(`${legs} ${both ? 'feel' : 'feels'} better.`);
+            let legs = body_part(LEG);
+            if ((game.u.EWounded_legs & BOTH_SIDES) === BOTH_SIDES)
+                legs = makeplural(legs);
+            await Your(`${legs} ${vtense(legs, 'feel')} better.`);
         }
 
         intr.HWounded_legs = 0;

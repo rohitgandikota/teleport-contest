@@ -759,9 +759,11 @@ export function vision_recalc(control = 0) {
     }
 
     if (!u.uswallow && control !== 2) {
-        /* src/vision.c:584 — the Blind arm comes first in C (handled below
-           here), then the Rogue level gets its own room-based vision */
-        if (!Blind() && Is_rogue_level(u.uz)) {
+        if (Blind()) {
+            /* src/vision.c:548: blindness keeps ordinary line of sight,
+               including underwater and in pits, so monsters can see us. */
+            view_from(u.uy, u.ux, next, next_rmin, next_rmax);
+        } else if (Is_rogue_level(u.uz)) {
             rogue_vision(next, next_rmin, next_rmax);
         /* src/vision.c:577. Away from the Plane of Water, an underwater
            hero can only see adjacent squares which are also pools. */

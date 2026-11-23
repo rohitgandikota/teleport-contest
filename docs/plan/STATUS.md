@@ -3526,6 +3526,69 @@ its restore RNG differs from the candidate and remains under investigation.
 The official refresh after e78815d6 is byte-identical to the 20:18 UTC snapshot
 with our 19:33 UTC scoring run. No newer held-out gain is claimed.
 
+Drawbridge description checkpoint `96f6a36b` is pushed. The nine-file water
+and status correction is now integrated. water_friction uses canonical
+Swimming and pool predicates. pooleffects uses back_on_ground, preserves
+its awaited message marker, honors Wwalking and exempts hidden ceiling hiders.
+Wwalking is disabled on the Water plane. newsym suppresses dry/distant
+underwater updates, and vision_recalc gives Blind geometry priority before
+Rogue, underwater and pit restrictions. The shared display/vision dependency
+was applied once, preserving the earlier save/restore changes.
+
+Potion explosions use effective Deaf. Filling an underwater square with a
+boulder awaits set_uinwater so flight/levitation suppression is released in
+C order. Wounded-leg wizard timeouts use HWounded_legs, expiry no longer
+fabricates a live injury, and healing uses the current form's body part and
+grammar. Healing with a speed potion increments potion_unkn after feedback,
+so it remains unidentified and offers the normal naming prompt.
+
+All 262 combined state/input controls pass, including 117 new checks. The two
+unchanged native files contain eight cases, 589 boundaries and 22,648 calls.
+The seven-case status baseline matched only 507/531 screens. Nineteen focused
+fixtures, 194 segments, now match 33,011 screens/cursors, all 563,854 complete
+and per-input RNG calls, and all twenty animations with exact counts and
+cursors. Twelve native branch assertions, input exhaustion, syntax, whitespace
+and the 0/276 scope/import audit pass. The initial parent tuple check rejected
+seven descriptive recipe names absent from native segments. Only recipe
+metadata was corrected; all five tuple fields and original raw bytes now match.
+Registered coverage categories were added to the underwater recipe.
+
+Full regression passes 719/719 fixtures without failures or timeouts:
+813,699 screens/cursors, 16,358,872 scored RNG positions and 30,734 animations.
+Both shards use the standard 45-second worker limit, all maintained paths and
+unique basenames match, and all 279 runtime hashes stayed fixed. The full
+scorer result remains distinct from the focused strict stream/slice checks.
+Receipts use water-status-promoted-*, water-status-corpus-*,
+water-status-parent-verification.json and water-status-parent-promotion/.
+
+Both new recordings match instrumented C exactly. The verified NFS union now
+enters 4,519/5,492 functions and observes 58,913/107,260 direct outcomes,
+adding two functions and 55 outcomes. All 713 input hashes, eighteen manifests
+and branch layouts were checked. The 33 newer raw inputs contain 147 segments,
+plus nine from the two independent Linux controls. The NFS directory is
+c-coverage-compress.E84JI2/verified-water-status-union-20261123; local compact
+receipts use linux-coverage-water-status-union-*.
+
+Native reach is narrower than the source controls. Hidden ceiling hiders,
+Water-plane walking, raised-moat friction and swimming-mount operands remain
+constructed controls; drowning/lava/lifesaving callees are not exhaustively
+audited by this checkpoint. The shared-selector v1 candidate failed the broader
+gehennom-tour replay while current main passed. The first correction restores
+completion through indirect hell prefab callbacks and matches that replay;
+a complete indirect-dispatch review is pending before promotion. Its separate
+readability amendment restores straight C loops in three level builders.
+
+The nested-blindness candidate now matches two fresh lifesaving cases, 643
+boundaries and 6,201 calls, versus 629 screens before. It remains separate.
+The first recorder input lacked a v5 envelope and was rejected before C ran;
+the corrected input preserves all gameplay fields and both files/logs remain.
+The swallowed-punishment save candidate still fails its new native pair and
+is not promoted. Four deaf-duration inputs are now recorded, 276 boundaries
+and 10,934 calls, pending candidate verification. A parent-only Stealth audit
+also found that its predicate ignores the existing mounted blocking field;
+four source controls pass with a one-predicate cache correction, two failing
+before. Native mount/dismount proposals are still being developed.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

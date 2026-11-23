@@ -1803,7 +1803,6 @@ export async function nh_timeout() {
         case 'HWounded_legs': {
             /* src/timeout.c nh_timeout WOUNDED_LEGS arm: heal_legs(0) */
             const { heal_legs } = await import('./do.js');
-            intr.HWounded_legs = 1; /* Wounded_legs still true for the heal */
             await heal_legs(0);
             const { stop_occupation } = await import('./allmain.js');
             await stop_occupation();

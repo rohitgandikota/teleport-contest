@@ -52,7 +52,7 @@ import { Blind, Infravision, Hallucination, Confusion, Stunned, Invis, See_invis
 
 import { observe_object } from './o_init.js';
 
-import { distu } from './hacklib.js';
+import { distu, next2u } from './hacklib.js';
 
 import { m_at, t_at } from './mon.js';
 
@@ -1655,6 +1655,11 @@ export function newsym(x, y) {
         }
         return;
     }
+
+    /* src/display.c:944: underwater updates are adjacent liquid or ice. */
+    if (Underwater() && !Is_waterlevel(game.u.uz)
+        && (!(is_pool_or_lava(x, y) || is_ice(x, y)) || !next2u(x, y)))
+        return;
 
     /* src/display.c:967 — `lev->waslit = (lev->lit != 0)`, inside newsym's
        cansee() branch and BEFORE the hero-specific handling, so the hero's own

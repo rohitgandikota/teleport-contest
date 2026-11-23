@@ -22,7 +22,7 @@ import { COLNO, ROWNO, ROOM, CORR, AIR, STONE, HWALL, IS_DOOR,
 import { isok, distu, sgn } from './hacklib.js';
 import { occupied, somex, somey } from './mklev.js';
 import { deltrap } from './trap.js';
-import { t_at, m_at, mnexto, mnearto, elemental_clog, m_into_limbo }
+import { t_at, m_at, mnexto, mnearto, elemental_clog, m_into_limbo, is_pool }
     from './mon.js';
 import { goodpos, rndmonnum, remove_monster, makemon, set_malign,
          mpickobj, MM_NONAME } from './makemon.js';
@@ -59,7 +59,7 @@ import { spot_stop_timers, MELT_ICE_AWAY } from './timeout.js';
 import { count_level_features } from './mklev.js';
 import { impossible } from './pline.js';
 import { unplacebc_and_covet_placebc, lift_covet_and_placebc } from './ball.js';
-import { Punished } from './youprop.js';
+import { Punished, Swimming } from './youprop.js';
 
 
 
@@ -1206,8 +1206,7 @@ export async function water_friction() {
     const g = game;
     let eff = false;
 
-    /* Swimming — no session hero has intrinsic swimming yet */
-    if (g.u.uprops?.SWIMMING && rn2(4))
+    if (Swimming() && rn2(4))
         return; /* natural swimmers have advantage */
 
     if (g.u.dx && !rn2(!g.u.dy ? 3 : 6)) { /* 1/3 chance or half that */
@@ -1217,7 +1216,7 @@ export async function water_friction() {
         do {
             dy = rn2(3) - 1; /* -1, 0, 1 */
             y = g.u.uy + dy;
-        } while (dy && (!isok(x, y) || !mklev_is_pool(x, y)));
+        } while (dy && (!isok(x, y) || !is_pool(x, y)));
         g.u.dx = 0;
         g.u.dy = dy;
         eff = true;
@@ -1228,22 +1227,13 @@ export async function water_friction() {
         do {
             dx = rn2(3) - 1; /* -1 .. 1 */
             x = g.u.ux + dx;
-        } while (dx && (!isok(x, y) || !mklev_is_pool(x, y)));
+        } while (dx && (!isok(x, y) || !is_pool(x, y)));
         g.u.dy = 0;
         g.u.dx = dx;
         eff = true;
     }
     if (eff)
         await pline('Water turbulence affects your movements.');
-}
-
-/* is_pool() lives in js/mon.js's wire set; reach it through the same
-   mon_fns-style seam sp_lev.js uses, but locally: dynamic would be per
-   call, so resolve through the sp_lev wire helper below. */
-function mklev_is_pool(x, y) {
-    const typ = game.level.at(x, y)?.typ;
-    /* include/rm.h is_pool(): POOL, MOAT, WATER */
-    return typ === POOL || typ === MOAT || typ === WATER;
 }
 
 // src/mkmaze.c:1724 save_waterlevel() — the bubble list is written with the

@@ -1700,6 +1700,7 @@ async function peffect_speed(otmp) {
     /* using a potion of speed while wounded (not on a steed) heals legs */
     if (is_speed && wounded_legs && !otmp.cursed && !game.u.usteed) {
         await heal_legs(0);
+        game.potion_unkn++;
         return;
     }
     await speed_up(rn1(10, 100 + 60 * bcsign(otmp)));
@@ -2187,7 +2188,7 @@ async function dip_potion_explosion(obj, damage) {
         return false;
 
     obj.in_use = true;
-    await pline(`${game.u.uprops?.DEAF ? '' : 'BOOM!  '}They explode!`);
+    await pline(`${Deaf() ? '' : 'BOOM!  '}They explode!`);
     await wake_nearto(game.u.ux, game.u.uy, (BOLT_LIM + 1) * (BOLT_LIM + 1));
     exercise(A_STR, false);
     if (!breathless(game.youmonst.data) || haseyes(game.youmonst.data))

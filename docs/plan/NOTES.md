@@ -11,6 +11,24 @@ Newest first within each section.
 
 ---
 
+## Sink ring effects and resisted hallucination
+
+C sink drops precede the cannot-reach-floor branch but follow worn-item and
+engulfment guards. Searching and slow digestion return before both disposal
+draws. A vanished sink still consumes rn2(20), even though it cannot back up.
+Hunger walks the square's nexthere chain and saves the next object before
+deletion. Global floor order is not a substitute.
+
+hcolor uses the full Hallucination predicate, including resistance. Reading
+the raw timer changes messages and display RNG when hallucination is hidden.
+Unlike hliquid, hcolor has no game-over suppression. Null color preference
+still requests a random color even with resistance.
+
+To establish hallucination through ordinary wizard input, wizintrinsic avoids
+the smoky-potion djinni branch. Quaffing on a sink first asks whether to drink
+from the sink. Check the actual active condition before recording the test.
+The generated defsyms description field is explain, not C's explanation.
+
 ## Untrapping and rescue oracles
 
 A pit does not stop a hurtled monster while it is airborne. Put a wall beyond

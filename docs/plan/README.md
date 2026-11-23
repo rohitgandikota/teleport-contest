@@ -18,8 +18,8 @@ pushes. The latest official snapshot checked, November 23 at 13:48 UTC, has
 these repairs. Public remains 44/44; that snapshot has 936 unmatched held-out
 screens. Local verification does not establish a newer held-out score.
 
-The latest complete regression passes 682/682 fixtures: 800,989 boundary
-screens/cursors, 15,833,229 RNG calls and 30,436 scored animation frames.
+The latest complete regression passes 683/683 fixtures: 803,881 boundary
+screens/cursors, 15,957,972 RNG calls and 30,436 scored animation frames.
 The latest potion changes also pass strict full-stream and per-input RNG
 checks on 117 fixtures, all 39,942 boundaries and 1,718,440 calls. The complete
 strict 677-fixture audit and all 213 animation-bearing fixtures passed at the
@@ -37,15 +37,19 @@ state controls, with all 142 selected regressions exact. Invocation-object
 achievements pass five native cases, 23 state controls and 155 selected
 regressions. Corpse ice timers now follow placement, extraction and full
 restore ordering, passing five new native segments and 19 state controls.
-Two repaired test
-gates also pass all 458 replay segments and 145 constructed groups, with
-their 204 assertions unchanged. Next: artifact hallucination resistance and
-remaining floor-object side effects. The Linux/NFS branch collector is pushed
+Two repaired test gates also pass all 458 replay segments and 145 constructed
+groups, with their 204 assertions unchanged. Sink drops now match 45 native
+cases, 2,892 screens/cursors and 124,743 RNG calls. All 50 sink state controls
+and 14 color controls pass; colors now respect hallucination resistance.
+Next: full-save timer order, artifact hallucination resistance and remaining
+floor-object side effects. The Linux/NFS branch collector is pushed
 and passes signal canaries plus exact save/restore, artifact and natural-exit
-pilots. The 678-fixture Linux census at e4504071 credits 603 exact recordings,
-4,355/5,492 entered functions and 55,543/107,260 direct C branch outcomes.
-Rejected platform/output differences earn no coverage. Independent ordinary
-Linux controls are being checked for those inputs. Large
+pilots. The Linux census at e4504071 now covers all 678 original inputs:
+603 canonical matches and 75 independently recorded ordinary Linux controls.
+Their validated union enters 4,498/5,492 functions and observes
+58,379/107,260 direct C branch outcomes. Original platform/output rejections
+remain rejected; no output was normalized. The new sink fixture separately
+matches Linux C exactly and covers 88/94 direct dosinkring outcomes. Large
 profiles and recordings remain on NFS. See [STATUS.md](STATUS.md) for evidence
 and next actions. Historical milestone rows below are not a current audit.
 

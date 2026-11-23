@@ -2448,9 +2448,10 @@ complete scored run remains 679/679. No prior native oracle was changed.
 Four independent held-placement probes are recorded in
 held-placement-native.session.json, 183 boundaries. C converts an ordinary
 dropped crysknife, draws once for fixed drop, and draws twice for a fixed
-throw whose first check survives. The fourth container case first reaches
-the separate missing add_to_container hook and must not be credited as a
-pure placement test. Original inputs and labels are retained in cache.
+throw whose first check survives. The fourth case inserts into a held sack,
+then drops it. C skips the held-object hook during that insertion; the
+conversion occurs when the sack reaches the floor. This corrects the earlier
+attribution to add_to_container. Original inputs and labels remain in cache.
 Avicenna is mapping the synchronous placement callers before a coordinated
 held-object change. No such runtime patch is applied.
 
@@ -2529,6 +2530,90 @@ preserves synchronous constructors, and includes the transitive unearthing
 and trap-creation path. The 30-file review envelope and source-static
 exemptions are in held-placement-routing-audit-report.md and plan.json.
 No held-object runtime change is included in this timer checkpoint.
+
+Timer checkpoint `a5f2c9c6` is pushed. The independent ordinary Linux control
+run has finished: all 75 new controls match their instrumented re-recordings
+exactly. Source, binary, recorder, timezone and canary manifests agree with
+the 603 canonical matches. The validated union covers all 678 disjoint
+original inputs, entering 4,498/5,492 functions and observing 58,379/107,260
+direct outcomes. The original rejected recordings and the temporary-directory
+difference remain intact. These controls do not replace the canonical corpus.
+
+Bulk union profiles and exports remain under NFS
+c-coverage-compress.E84JI2/canonical-linux-control-union. Local compact
+provenance and priorities are in linux-coverage-union-priorities.json;
+linux-coverage-union.sh validates input identities and the ordered LLVM
+counter layout before merging. This is compiled Linux C execution coverage,
+not proof of port correctness or coverage of Lua, macro internals, headers,
+inactive configurations or unmapped dlb.c.
+
+Neither teleport_sink nor dosinkring ran in that union. Their complete C
+functions and drop dispatch now have a pending port in js/do.js. A native
+case also exposed polymorph_sink reading a nonexistent description field;
+the generated table uses explain. The 34 ring/sign cases and 11 blind,
+hallucinating, deaf, hunger-pile, backup and buried cases now match all
+2,892 native screens/cursors and 124,743 RNG calls. They have no animations.
+Four overlapping smoke cases also match, but will not be promoted as extra
+coverage. Source-state review and broader regression remain pending.
+
+Hallucination edge inputs use the actual wizintrinsic command. A rejected
+potion setup sometimes produced a djinni from a smoky bottle instead of
+hallucination; its original inputs remain in cache. All 11 final edge inputs
+have independently checked runtime conditions before native recording.
+Cache artifacts use sink-ring-*. No new fixture is promoted yet.
+
+Three follow-ups remain separate cache candidates: artifact hallucination
+resistance has five map differences after unwielding in an extended native
+case; held placement and container insertion require coordinated conditional
+completion through existing callers; save/restore must reverse equal-deadline
+timer ranges in C order. Native egg hatching confirms the latter difference.
+A separate timer dispatcher audit found a stale queue reference after a
+callback replaces timer_base. Do not combine these unverified changes with
+the current sink checkpoint.
+
+The sink checkpoint is verified and ready to push. It ports teleport_sink,
+dosinkring and their drop dispatch, fixes polymorph_sink's description field,
+and makes hcolor use the canonical Hallucination predicate. The last defect
+was exposed by three resisted-hallucination sink controls; active timers
+must not randomize colors when resistance suppresses the effective condition.
+
+The promoted sink-ring-effects fixture preserves all 45 native segments
+unchanged. It improves from 2,667/2,892 screens and 2,749/2,892 cursors to
+exact output, with all 124,743 core calls. Strict complete streams/input
+slices, exact boundary cursors, zero animation counts, branch assertions,
+recording integrity and input-exhaustion checks pass. All 45 actual-input
+reach observations pass. The 50 constructed sink controls improve from
+3/50 to 50/50; the separate 14 color controls improve from 9/14 to 14/14.
+The latter check both display and core RNG positions with two display seeds.
+Constructed state checks are not native coverage credit.
+
+The complete maintained corpus passes 683/683 in four shards: 803,881
+screens/cursors, 15,957,972 scored RNG positions and 30,436 scored animations.
+All 279 runtime hashes stayed fixed throughout. Source audit has zero
+findings across 276 non-frozen modules. Syntax and diff checks pass.
+Logs/totals use sink-ring-* and hcolor-state-* in the restart cache.
+
+The unchanged new fixture also matches an instrumented Linux C re-recording
+exactly on NFS, with hash
+6883ca1dcb22aa59b980380051b1301a93b2aa93686bacb019003e14c5700961.
+Its standalone coverage enters dosinkring 45 times and covers 88/94 direct
+outcomes; teleport_sink covers 7/14 and polymorph_sink 8/20. Missing native
+paths remain explicit, including protected hunger objects and teleport
+failure. The source-state suite covers additional paths without claiming
+native reach. Bulk output is under sink-ring-coverage.BgV3Jx/coverage;
+linux-sink-ring-coverage-summary.json is the compact local receipt. This
+profile is not yet merged into the earlier 678-input union.
+
+The next save-only candidate now matches all 242 native egg boundaries,
+5,233 calls and 44 animations. The newly recorded ice tie case is separate:
+save-only still matches 299/304 screens; adding the two queue-dispatch/melt
+repairs reaches 300/304, retaining all 7,914 calls, 92 animations and all
+cursors. The four remaining differences are ice descriptions, steady/slushy
+in C versus solid in JS. Singer is auditing that separate helper and caller.
+Do not promote the ice candidate as exact yet. Four extra container native
+proposals are now recorded at 554 boundaries; Avicenna is checking them with
+the composed held-placement and container candidate. No such runtime change
+is included in the sink checkpoint.
 
 ## 2026-09-05: full faithful port is the active goal
 

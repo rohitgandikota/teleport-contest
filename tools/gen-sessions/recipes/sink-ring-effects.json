@@ -1,0 +1,761 @@
+{
+  "name": "sink-ring-effects",
+  "description": "Native C sink drops for every ring type, negative enchantments, blindness, deafness, hallucination, local hunger piles and disposal. Recorded with RERECORD_TZ=Etc/GMT+4.",
+  "coverage": [
+    "mode.debug",
+    "terrain.furniture",
+    "object.rings",
+    "object.buc-enchant-erosion",
+    "ui.hallucination",
+    "survival.timed-status"
+  ],
+  "branches": [
+    "sink-ring.rin-adornment",
+    "sink-ring.rin-gain-strength",
+    "sink-ring.rin-gain-constitution",
+    "sink-ring.rin-increase-accuracy",
+    "sink-ring.rin-increase-damage",
+    "sink-ring.rin-protection",
+    "sink-ring.rin-regeneration",
+    "sink-ring.rin-searching",
+    "sink-ring.rin-stealth",
+    "sink-ring.rin-sustain-ability",
+    "sink-ring.rin-levitation",
+    "sink-ring.rin-hunger",
+    "sink-ring.rin-aggravate-monster",
+    "sink-ring.rin-conflict",
+    "sink-ring.rin-warning",
+    "sink-ring.rin-poison-resistance",
+    "sink-ring.rin-fire-resistance",
+    "sink-ring.rin-cold-resistance",
+    "sink-ring.rin-shock-resistance",
+    "sink-ring.rin-free-action",
+    "sink-ring.rin-slow-digestion",
+    "sink-ring.rin-teleportation",
+    "sink-ring.rin-teleport-control",
+    "sink-ring.rin-polymorph",
+    "sink-ring.rin-polymorph-control",
+    "sink-ring.rin-invisibility",
+    "sink-ring.rin-see-invisible",
+    "sink-ring.rin-protection-from-shape-chan",
+    "sink-ring.rin-gain-strength-negative",
+    "sink-ring.rin-gain-constitution-negative",
+    "sink-ring.rin-increase-accuracy-negative",
+    "sink-ring.rin-increase-damage-negative",
+    "sink-ring.rin-protection-negative",
+    "sink-ring.meat-ring",
+    "sink-ring.blind-visual",
+    "sink-ring.blind-physical",
+    "sink-ring.hallucinating-aggravate-monster",
+    "sink-ring.hallucinating-gain-strength",
+    "sink-ring.hallucinating-see-invisible",
+    "sink-ring.hallucinating-protection",
+    "sink-ring.hunger-pile",
+    "sink-ring.buried",
+    "sink-ring.backup",
+    "sink-ring.deaf-conflict",
+    "sink-ring.blind-hunger-pile"
+  ],
+  "requireBranchAssertions": true,
+  "segments": [
+    {
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017sink\r   \u0017uncursed ring of adornment\r   da  \u001b\u001b : i \u001b",
+      "name": "rin-adornment"
+    },
+    {
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017sink\r   \u0017uncursed ring of gain strength\r   da  \u001b\u001b : i \u001b",
+      "name": "rin-gain-strength"
+    },
+    {
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017sink\r   \u0017uncursed ring of gain constitution\r   da  \u001b\u001b : i \u001b",
+      "name": "rin-gain-constitution"
+    },
+    {
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017sink\r   \u0017uncursed ring of increase accuracy\r   da  \u001b\u001b : i \u001b",
+      "name": "rin-increase-accuracy"
+    },
+    {
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017sink\r   \u0017uncursed ring of increase damage\r   da  \u001b\u001b : i \u001b",
+      "name": "rin-increase-damage"
+    },
+    {
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017sink\r   \u0017uncursed ring of protection\r   da  \u001b\u001b : i \u001b",
+      "name": "rin-protection"
+    },
+    {
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017sink\r   \u0017uncursed ring of regeneration\r   da  \u001b\u001b : i \u001b",
+      "name": "rin-regeneration"
+    },
+    {
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017sink\r   \u0017uncursed ring of searching\r   da  \u001b\u001b : i \u001b",
+      "name": "rin-searching"
+    },
+    {
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017sink\r   \u0017uncursed ring of stealth\r   da  \u001b\u001b : i \u001b",
+      "name": "rin-stealth"
+    },
+    {
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017sink\r   \u0017uncursed ring of sustain ability\r   da  \u001b\u001b : i \u001b",
+      "name": "rin-sustain-ability"
+    },
+    {
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017sink\r   \u0017uncursed ring of levitation\r   da  \u001b\u001b : i \u001b",
+      "name": "rin-levitation"
+    },
+    {
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017sink\r   \u0017uncursed ring of hunger\r   da  \u001b\u001b : i \u001b",
+      "name": "rin-hunger"
+    },
+    {
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017sink\r   \u0017uncursed ring of aggravate monster\r   da  \u001b\u001b : i \u001b",
+      "name": "rin-aggravate-monster"
+    },
+    {
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017sink\r   \u0017uncursed ring of conflict\r   da  \u001b\u001b : i \u001b",
+      "name": "rin-conflict"
+    },
+    {
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017sink\r   \u0017uncursed ring of warning\r   da  \u001b\u001b : i \u001b",
+      "name": "rin-warning"
+    },
+    {
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017sink\r   \u0017uncursed ring of poison resistance\r   da  \u001b\u001b : i \u001b",
+      "name": "rin-poison-resistance"
+    },
+    {
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017sink\r   \u0017uncursed ring of fire resistance\r   da  \u001b\u001b : i \u001b",
+      "name": "rin-fire-resistance"
+    },
+    {
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017sink\r   \u0017uncursed ring of cold resistance\r   da  \u001b\u001b : i \u001b",
+      "name": "rin-cold-resistance"
+    },
+    {
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017sink\r   \u0017uncursed ring of shock resistance\r   da  \u001b\u001b : i \u001b",
+      "name": "rin-shock-resistance"
+    },
+    {
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017sink\r   \u0017uncursed ring of free action\r   da  \u001b\u001b : i \u001b",
+      "name": "rin-free-action"
+    },
+    {
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017sink\r   \u0017uncursed ring of slow digestion\r   da  \u001b\u001b : i \u001b",
+      "name": "rin-slow-digestion"
+    },
+    {
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017sink\r   \u0017uncursed ring of teleportation\r   da  \u001b\u001b : i \u001b",
+      "name": "rin-teleportation"
+    },
+    {
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017sink\r   \u0017uncursed ring of teleport control\r   da  \u001b\u001b : i \u001b",
+      "name": "rin-teleport-control"
+    },
+    {
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017sink\r   \u0017uncursed ring of polymorph\r   da  \u001b\u001b : i \u001b",
+      "name": "rin-polymorph"
+    },
+    {
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017sink\r   \u0017uncursed ring of polymorph control\r   da  \u001b\u001b : i \u001b",
+      "name": "rin-polymorph-control"
+    },
+    {
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017sink\r   \u0017uncursed ring of invisibility\r   da  \u001b\u001b : i \u001b",
+      "name": "rin-invisibility"
+    },
+    {
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017sink\r   \u0017uncursed ring of see invisible\r   da  \u001b\u001b : i \u001b",
+      "name": "rin-see-invisible"
+    },
+    {
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017sink\r   \u0017uncursed ring of protection from shape changers\r   da  \u001b\u001b : i \u001b",
+      "name": "rin-protection-from-shape-chan"
+    },
+    {
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017sink\r   \u0017uncursed -2 ring of gain strength\r   da  \u001b\u001b : i \u001b",
+      "name": "rin-gain-strength-negative"
+    },
+    {
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017sink\r   \u0017uncursed -2 ring of gain constitution\r   da  \u001b\u001b : i \u001b",
+      "name": "rin-gain-constitution-negative"
+    },
+    {
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017sink\r   \u0017uncursed -2 ring of increase accuracy\r   da  \u001b\u001b : i \u001b",
+      "name": "rin-increase-accuracy-negative"
+    },
+    {
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017sink\r   \u0017uncursed -2 ring of increase damage\r   da  \u001b\u001b : i \u001b",
+      "name": "rin-increase-damage-negative"
+    },
+    {
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017sink\r   \u0017uncursed -2 ring of protection\r   da  \u001b\u001b : i \u001b",
+      "name": "rin-protection-negative"
+    },
+    {
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017sink\r   \u0017meat ring\r   da  \u001b\u001b : i \u001b",
+      "name": "meat-ring"
+    },
+    {
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017sink\r   \u0017uncursed ring of adornment\r   \u0017uncursed blindfold\r   Pb  \u001b\u001bda  \u001b\u001b : i \u001b",
+      "name": "blind-visual"
+    },
+    {
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017sink\r   \u0017uncursed ring of levitation\r   \u0017uncursed blindfold\r   Pb  \u001b\u001bda  \u001b\u001b : i \u001b",
+      "name": "blind-physical"
+    },
+    {
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017sink\r   \u0017uncursed ring of aggravate monster\r   #wizintrinsic\r100h\r  \u001b\u001bda  \u001b\u001b : i \u001b",
+      "name": "hallucinating-aggravate-monster"
+    },
+    {
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017sink\r   \u0017uncursed ring of gain strength\r   #wizintrinsic\r100h\r  \u001b\u001bda  \u001b\u001b : i \u001b",
+      "name": "hallucinating-gain-strength"
+    },
+    {
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017sink\r   \u0017uncursed ring of see invisible\r   #wizintrinsic\r100h\r  \u001b\u001bda  \u001b\u001b : i \u001b",
+      "name": "hallucinating-see-invisible"
+    },
+    {
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017sink\r   \u0017uncursed ring of protection\r   #wizintrinsic\r100h\r  \u001b\u001bda  \u001b\u001b : i \u001b",
+      "name": "hallucinating-protection"
+    },
+    {
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017sink\r   \u0017uncursed 3 rocks\r   da  \u001b\u001b\u0017uncursed dagger\r   db  \u001b\u001b\u0017uncursed ring of hunger\r   dc  \u001b\u001b : i \u001b",
+      "name": "hunger-pile"
+    },
+    {
+      "seed": 12001,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017sink\r   \u0017uncursed ring of adornment\r   da  \u001b\u001b : i \u001b",
+      "name": "buried"
+    },
+    {
+      "seed": 12005,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017sink\r   \u0017uncursed ring of adornment\r   da  \u001b\u001b : i \u001b",
+      "name": "backup"
+    },
+    {
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017sink\r   \u0017uncursed ring of conflict\r   #wizintrinsic\r100j\r  \u001b\u001bda  \u001b\u001b : i \u001b",
+      "name": "deaf-conflict"
+    },
+    {
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017sink\r   \u0017uncursed 3 rocks\r   da  \u001b\u001b\u0017uncursed dagger\r   db  \u001b\u001b\u0017uncursed ring of hunger\r   \u0017uncursed blindfold\r   Pd  \u001b\u001bdc  \u001b\u001b : i \u001b",
+      "name": "blind-hunger-pile"
+    }
+  ],
+  "branchAssertions": [
+    {
+      "branch": "sink-ring.rin-adornment",
+      "segment": 0,
+      "screenIncludes": [
+        "down the drain.",
+        "The faucets flash brightly for a moment."
+      ]
+    },
+    {
+      "branch": "sink-ring.rin-gain-strength",
+      "segment": 1,
+      "screenIncludes": [
+        "down the drain.",
+        "The water flow seems stronger now."
+      ]
+    },
+    {
+      "branch": "sink-ring.rin-gain-constitution",
+      "segment": 2,
+      "screenIncludes": [
+        "down the drain.",
+        "The water flow seems greater now."
+      ]
+    },
+    {
+      "branch": "sink-ring.rin-increase-accuracy",
+      "segment": 3,
+      "screenIncludes": [
+        "down the drain.",
+        "The water flow hits the drain."
+      ]
+    },
+    {
+      "branch": "sink-ring.rin-increase-damage",
+      "segment": 4,
+      "screenIncludes": [
+        "down the drain.",
+        "The water's force seems greater now."
+      ]
+    },
+    {
+      "branch": "sink-ring.rin-protection",
+      "segment": 5,
+      "screenIncludes": [
+        "down the drain.",
+        "The sink glows silver for a moment."
+      ]
+    },
+    {
+      "branch": "sink-ring.rin-regeneration",
+      "segment": 6,
+      "screenIncludes": [
+        "down the drain.",
+        "The sink looks as good as new."
+      ]
+    },
+    {
+      "branch": "sink-ring.rin-searching",
+      "segment": 7,
+      "screenIncludes": [
+        "down the drain.",
+        "got lost in the sink, but there it is!"
+      ]
+    },
+    {
+      "branch": "sink-ring.rin-stealth",
+      "segment": 8,
+      "screenIncludes": [
+        "down the drain.",
+        "The sink seems to blend into the floor for a moment."
+      ]
+    },
+    {
+      "branch": "sink-ring.rin-sustain-ability",
+      "segment": 9,
+      "screenIncludes": [
+        "down the drain.",
+        "The water flow seems fixed."
+      ]
+    },
+    {
+      "branch": "sink-ring.rin-levitation",
+      "segment": 10,
+      "screenIncludes": [
+        "down the drain.",
+        "The sink quivers upward for a moment."
+      ]
+    },
+    {
+      "branch": "sink-ring.rin-hunger",
+      "segment": 11,
+      "screenIncludes": [
+        "down the drain.",
+        "Call a jade ring:"
+      ],
+      "screenExcludes": [
+        "vanishes from the sink!"
+      ]
+    },
+    {
+      "branch": "sink-ring.rin-aggravate-monster",
+      "segment": 12,
+      "screenIncludes": [
+        "down the drain.",
+        "Several flies buzz angrily around the sink."
+      ]
+    },
+    {
+      "branch": "sink-ring.rin-conflict",
+      "segment": 13,
+      "screenIncludes": [
+        "down the drain.",
+        "You hear loud noises coming from the drain."
+      ]
+    },
+    {
+      "branch": "sink-ring.rin-warning",
+      "segment": 14,
+      "screenIncludes": [
+        "down the drain.",
+        "The sink glows white for a moment."
+      ]
+    },
+    {
+      "branch": "sink-ring.rin-poison-resistance",
+      "segment": 15,
+      "screenIncludes": [
+        "down the drain.",
+        "You smell rotten slime molds."
+      ]
+    },
+    {
+      "branch": "sink-ring.rin-fire-resistance",
+      "segment": 16,
+      "screenIncludes": [
+        "down the drain.",
+        "The hot water faucet flashes brightly for a moment."
+      ]
+    },
+    {
+      "branch": "sink-ring.rin-cold-resistance",
+      "segment": 17,
+      "screenIncludes": [
+        "down the drain.",
+        "The cold water faucet flashes brightly for a moment."
+      ]
+    },
+    {
+      "branch": "sink-ring.rin-shock-resistance",
+      "segment": 18,
+      "screenIncludes": [
+        "down the drain.",
+        "Static electricity surrounds the sink."
+      ]
+    },
+    {
+      "branch": "sink-ring.rin-free-action",
+      "segment": 19,
+      "screenIncludes": [
+        "down the drain.",
+        "You see the ring slide right down the drain!"
+      ]
+    },
+    {
+      "branch": "sink-ring.rin-slow-digestion",
+      "segment": 20,
+      "screenIncludes": [
+        "down the drain.",
+        "The ring is regurgitated!"
+      ]
+    },
+    {
+      "branch": "sink-ring.rin-teleportation",
+      "segment": 21,
+      "screenIncludes": [
+        "down the drain.",
+        "The sink vanishes."
+      ]
+    },
+    {
+      "branch": "sink-ring.rin-teleport-control",
+      "segment": 22,
+      "screenIncludes": [
+        "down the drain.",
+        "The sink looks like it is being beamed aboard somewhere."
+      ]
+    },
+    {
+      "branch": "sink-ring.rin-polymorph",
+      "segment": 23,
+      "screenIncludes": [
+        "down the drain.",
+        "The sink transforms into an opulent throne!"
+      ]
+    },
+    {
+      "branch": "sink-ring.rin-polymorph-control",
+      "segment": 24,
+      "screenIncludes": [
+        "down the drain.",
+        "The sink momentarily looks like a regularly erupting geyser."
+      ]
+    },
+    {
+      "branch": "sink-ring.rin-invisibility",
+      "segment": 25,
+      "screenIncludes": [
+        "down the drain.",
+        "You don't see anything happen to the sink."
+      ]
+    },
+    {
+      "branch": "sink-ring.rin-see-invisible",
+      "segment": 26,
+      "screenIncludes": [
+        "down the drain.",
+        "You see some air in the sink."
+      ]
+    },
+    {
+      "branch": "sink-ring.rin-protection-from-shape-chan",
+      "segment": 27,
+      "screenIncludes": [
+        "down the drain.",
+        "The sink looks nothing like a fountain."
+      ]
+    },
+    {
+      "branch": "sink-ring.rin-gain-strength-negative",
+      "segment": 28,
+      "screenIncludes": [
+        "down the drain.",
+        "The water flow seems weaker now."
+      ]
+    },
+    {
+      "branch": "sink-ring.rin-gain-constitution-negative",
+      "segment": 29,
+      "screenIncludes": [
+        "down the drain.",
+        "The water flow seems lesser now."
+      ]
+    },
+    {
+      "branch": "sink-ring.rin-increase-accuracy-negative",
+      "segment": 30,
+      "screenIncludes": [
+        "down the drain.",
+        "The water flow misses the drain."
+      ]
+    },
+    {
+      "branch": "sink-ring.rin-increase-damage-negative",
+      "segment": 31,
+      "screenIncludes": [
+        "down the drain.",
+        "The water's force seems smaller now."
+      ]
+    },
+    {
+      "branch": "sink-ring.rin-protection-negative",
+      "segment": 32,
+      "screenIncludes": [
+        "down the drain.",
+        "The sink glows black for a moment."
+      ]
+    },
+    {
+      "branch": "sink-ring.meat-ring",
+      "segment": 33,
+      "screenIncludes": [
+        "down the drain.",
+        "Several flies buzz around the sink."
+      ]
+    },
+    {
+      "branch": "sink-ring.blind-visual",
+      "segment": 34,
+      "screenIncludes": [
+        "down the drain.",
+        "You hear the ring bouncing down the drainpipe."
+      ],
+      "screenExcludes": [
+        "faucets flash",
+        "Call a steel ring:"
+      ]
+    },
+    {
+      "branch": "sink-ring.blind-physical",
+      "segment": 35,
+      "screenIncludes": [
+        "down the drain.",
+        "The sink quivers upward for a moment."
+      ]
+    },
+    {
+      "branch": "sink-ring.hallucinating-aggravate-monster",
+      "segment": 36,
+      "screenIncludes": [
+        "down the drain.",
+        "Several lemures buzz angrily around the sink."
+      ]
+    },
+    {
+      "branch": "sink-ring.hallucinating-gain-strength",
+      "segment": 37,
+      "screenIncludes": [
+        "down the drain.",
+        "The tea flow seems stronger now."
+      ]
+    },
+    {
+      "branch": "sink-ring.hallucinating-see-invisible",
+      "segment": 38,
+      "screenIncludes": [
+        "down the drain.",
+        "You see some oxygen molecules in the sink."
+      ]
+    },
+    {
+      "branch": "sink-ring.hallucinating-protection",
+      "segment": 39,
+      "screenIncludes": [
+        "down the drain.",
+        "The sink glows reddish-green for a moment."
+      ]
+    },
+    {
+      "branch": "sink-ring.hunger-pile",
+      "segment": 40,
+      "screenIncludes": [
+        "down the drain.",
+        "Suddenly, a dagger vanishes from the sink!",
+        "Suddenly, 3 rocks vanish from the sink!"
+      ]
+    },
+    {
+      "branch": "sink-ring.buried",
+      "segment": 41,
+      "screenIncludes": [
+        "down the drain.",
+        "The faucets flash brightly for a moment."
+      ],
+      "rngIncludes": [
+        "rn2(20)=2 @ dosinkring(do.c:649)",
+        "rn2(5)=0 @ dosinkring(do.c:653)"
+      ]
+    },
+    {
+      "branch": "sink-ring.backup",
+      "segment": 42,
+      "screenIncludes": [
+        "down the drain.",
+        "The sink backs up, leaving a coral ring."
+      ]
+    },
+    {
+      "branch": "sink-ring.deaf-conflict",
+      "segment": 43,
+      "screenIncludes": [
+        "down the drain.",
+        "Call an iron ring:"
+      ],
+      "screenExcludes": [
+        "loud noises coming from the drain.",
+        "bouncing down the drainpipe."
+      ]
+    },
+    {
+      "branch": "sink-ring.blind-hunger-pile",
+      "segment": 44,
+      "screenIncludes": [
+        "down the drain.",
+        "You hear the ring bouncing down the drainpipe.",
+        "The sink backs up, leaving a jade ring."
+      ],
+      "screenExcludes": [
+        "vanishes from the sink!",
+        "vanish from the sink!",
+        "Call a jade ring:"
+      ]
+    }
+  ]
+}

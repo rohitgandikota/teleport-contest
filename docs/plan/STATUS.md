@@ -138,8 +138,39 @@ death recording and the unchanged older recording both match JS: 62 total
 screens/cursors, 7,230 RNG calls and 18 animations. Both input checks pass.
 Frozen files and existing oracle fixtures remain unchanged.
 
-Next: push the recorder checkpoint and complete remove-curse billing/property
-branches. Continue beyond that.
+Recorder checkpoint `7c96e4d3` is pushed. The remove-curse patch now follows
+C's unpaid-water billing and identification order, uses canonical confusion,
+hallucination and punishment predicates, and waits for blessing/curse effects
+on equipped objects. `blessorcurse` now returns any pending equipment effect.
+Seven of nine constructed regressions fail before the patch. All nine pass
+afterward, including unpunishment from a cursed scroll and intrinsic
+hallucination resistance. These tests also exposed missing `where: OBJ_FREE`
+initialization in `mksobj`, which prevented `punish` from placing its newly
+created ball and chain. That field now follows C's explicit initialization.
+The touched functions' stale comments were corrected.
+
+All 57 new state tests pass. Existing punishment teleport, 21 billing-copy C
+scenarios, and 12 creation C scenarios also pass. Source audit remains empty.
+All 73 existing selected replays pass, including the 44 public sessions.
+The new unpaid-water C fixture matches all 105 screens/cursors and 5,398 RNG
+calls. Across these 74 fixtures: 24,158 exact screens/cursors and 1,289,033 RNG
+calls, with the same 21 known public animation differences. Input-exhaustion
+checks pass. The new fixture's billing branch has native message assertions.
+
+Recorder caveat: a fresh November recording initially differed in two shop
+names because `time_from_yyyymmddhhmmss` inherits the recording day's DST
+flag. No JS change was made for that environmental difference. The new shop
+fixture was recorded with `RERECORD_TZ=Etc/GMT+4`, explicitly noted in its
+recipe and provenance. This preserves the original corpus's UTC-4 birthday
+calculation. A fresh recording of the older shop-fire-billing input under
+that setting also matches all 181 screens/cursors, 10,748 RNG calls and ten
+animations. Existing fixtures were not replaced. The broader winter clock
+limitation remains documented in NOTES; do not infer missing timezone inputs.
+
+Next: push the remove-curse checkpoint, then port `mk_artifact`'s alignment
+branch. It currently returns null for every divine gift despite the prayer
+caller being implemented. Review its role/race/skill selection and fallback
+draw order against C. Continue beyond that.
 
 ## 2026-09-05: full faithful port is the active goal
 

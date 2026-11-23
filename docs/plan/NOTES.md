@@ -9491,3 +9491,21 @@ injects distinct metadata per range and checks buffered identity after live
 monster mutations. It deliberately disables pet highlighting: that still
 reads live tameness and requires a separate repair. Sensed mimic control
 flow and unseen sensed tail selection also remain separate follow-ups.
+
+## Map cursor and unchanged glyph writes (23 Nov)
+
+tty_print_glyph advances its cursor once even when Unicode output bypasses
+nomux or nomux ignores a control byte. This belongs in the map painter;
+arbitrary setCell writes must not acquire terminal cursor semantics.
+C's show_glyph also leaves unchanged buffer entries clean. Compare numeric
+identity, character, custom color, glyph flags, base color and tile index;
+Unicode pointer and indexed-color changes alone do not trigger replacement.
+An absent buffer entry is already unexplored. Missing that default causes
+extra blank writes and a wrong last cursor even with identical cell grids.
+
+The normal scorer omits transient animation cursors. The new strict gate
+compares those plus frame counts and boundary cursors. The first repaired
+three games and their fresh native prefixes match completely. Expanding to
+all public games exposes five remaining beam cursor differences. All five
+also occur with the exact earlier display source; the map cursor repair
+improves both affected games without changing any cells or boundary output.

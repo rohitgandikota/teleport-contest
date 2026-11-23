@@ -1384,6 +1384,61 @@ remains cache-only and needs its final recipe, broader regression and checks
 after the cursor integration. Numeric ridden ranges are source-state
 coverage; class overrides alone cannot distinguish those ranges.
 
+Monster-identity checkpoint `7bba2ea9` is pushed. The transient cursor
+repair is applied and fully verified. Map output advances tty's cursor even
+when Unicode or ignored bytes do not reach nomux. show_glyph_cell retains
+unchanged buffer entries, compares C's glyph metadata fields, and treats an
+absent entry as the default unexplored glyph. Descriptor-only producers
+still redraw conservatively.
+
+Full regression passes 654/654 fixtures: 792,603 boundary screens/cursors,
+15,492,341 RNG calls and 30,087 scored animation frames. All 32 cursor,
+45 monster-identity and 15 renderer controls pass. Four input-exhaustion
+checks and the 276-module source audit pass. The three originally audited
+public games now match all 1,011 transient cursors; fresh native prefixes
+match 661/661. The strict comparator also verifies equal frame counts.
+
+Expanding the strict check to all 44 public games gives 1,483/1,483 animation
+cell grids, 1,478/1,483 transient cursors and 11,405/11,405 boundary cursors.
+The five remaining differences are in seed0002 steps 269 and 552 and
+seed5002 step 88. Replaying the exact pre-patch display source confirms all
+five existed before: those two games improve from 109/136 to 131/136 cursor
+matches. They are now a separate cache-only beam audit. Do not claim full
+transient cursor parity from the ordinary scorer. tools/animation-cursor-gate
+exits nonzero on cursor or frame-count differences; its all-public exit 1
+correctly represents the five known gaps.
+
+Logs: `transient-cursor-corpus-{0..3}`, `transient-cursor-state-final`,
+`transient-cursor-monster-state`, `transient-cursor-renderer-state`,
+`transient-cursor-source-audit`, `transient-cursor-strict-final`,
+`transient-cursor-public-strict`, `transient-cursor-extra-before` and
+`transient-cursor-hang-final`, all `.log` in the restart cache.
+
+Next: finish the seven-case hero glyph checkpoint. Its final native recording
+and asserted recipe are generated, but the recipe and source-state gate need
+promotion and broader checks against the cursor-adjusted prototype. The
+native cases match 358 screens, 20,833 RNG calls and one animation, versus
+345 screens before. Use `hero-glyph-reviewed-loader.mjs` for the prototype
+rebased onto current display code. Apply only `hero-glyph-audit.patch`.
+
+The display_monster helper has also been rebased into
+`display-monster-reviewed/js/`. Its 79 controls pass with the cursor changes.
+Four fresh native cases improve 272/284 to 284/284 screens, preserving 15,565
+RNG calls. Final native recipe/assertions are generated but not promoted.
+The blinded detection control's remembered floor uses DEC '~', decoded by
+the full recipe decoder as a middle dot; it is not a worm tail. Numeric color
+and inverse checks distinguish the head and tails too. The invalid-appearance
+diagnostic's async acknowledgement ordering remains unverified and outside
+legal-state coverage; preserve that limitation when promoting the helper.
+
+Active cache-only work: buffered pet highlighting, core steed control flow,
+and the five beam cursor differences. Parent owns sequential recording and
+all tracked integration. The latest public leaderboard fetch still returns
+the November 23 08:33 UTC snapshot; no newer held-out result is established.
+The goal tool still reports the old full-port goal paused, with no resume
+operation available. Continue the user's authorized work without falsely
+marking that unfinished objective complete.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

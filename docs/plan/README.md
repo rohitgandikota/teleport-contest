@@ -18,19 +18,15 @@ of 24,531 combined screens, 7th agentic and 11th overall. It predates the
 latest repairs. Public remains 44/44; 1,008 held-out screens remain unmatched
 in that snapshot.
 
-The full regression covers 653/653 fixtures with 792,211 exact boundary
-screens/cursors and 15,468,069 RNG calls. All 30,087 scored animation frames
-now match, including all 1,483 public frames. The latest repair restores
-trap launch delays and the flush order for unseen projectiles. Custom glyph
-metadata, option resets and colored blanks are also verified.
-Object customization shuffling now also passes that full suite and an
-independent compiled C-state comparison. Ordinary monster identities now
-pass 67 focused fixtures and eight new native cases, bringing the corpus to
-654. Next: full verification of transient cursor output, then mounted-hero
-rendering and the complete display_monster decision flow.
-Current-corpus parity is not a completeness claim. See [STATUS.md](STATUS.md)
-for evidence and the next action. Historical milestone rows below are not a
-current completion audit.
+The full regression covers 654/654 fixtures with 792,603 exact boundary
+screens/cursors, 15,492,341 RNG calls and all 30,087 scored animation frames.
+Glyph metadata, object appearance shuffling, monster identities and map
+cursor output are verified. The stricter public animation check matches
+1,478/1,483 cursor positions; five preexisting beam differences remain.
+Next: mounted-hero rendering and C's display_monster helper, then buffered
+pet attributes and remaining beam cursors. Current-corpus parity is not a
+completeness claim. See [STATUS.md](STATUS.md) for evidence and next actions.
+Historical milestone rows below are not a current completion audit.
 
 ## Previous focus, 2026-09-06
 

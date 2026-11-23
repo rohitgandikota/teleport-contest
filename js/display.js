@@ -1129,19 +1129,38 @@ export function show_glyph_cell(x, y, ch, color = NO_COLOR, decgfx = false, attr
             glyphnum = GLYPH_UNEXPLORED_OFF;
     }
     const gm = glyphnum === undefined ? null : glyphmap()[glyphnum];
-    const rows = (game.gbuf ||= []);
-    (rows[y] ||= [])[x] = {
-        disp_ch: ch,
-        disp_color: color,
-        disp_decgfx: !!decgfx,
-        disp_attr: attr | 0,
-        disp_glyph: glyph,
-        disp_glyphnum: glyphnum,
-        disp_customcolor: gm?.customcolor ?? 0,
-        disp_color256idx: gm?.color256idx ?? 0,
-        disp_u: gm?.u ?? null,
-        gnew: 1,       /* src/display.c gbuf_entry.gnew — not yet flushed */
+    // src/display.c:2088 nul_gbuf: absent buffer entries are unexplored.
+    const old = gbuf_at(x, y) ?? {
+        disp_glyphnum: GLYPH_UNEXPLORED_OFF, disp_ch: ' ',
+        disp_color: NO_COLOR, disp_decgfx: false, disp_attr: 0,
+        disp_customcolor: 0, disp_glyphflags: MG_UNEXPL, disp_tileidx: 0,
     };
+    /* src/display.c:2031 show_glyph(): unchanged glyph information leaves
+       the existing dirty flag and buffered metadata alone. Descriptors
+       without a numeric identity still require conservative redraws. */
+    if (glyphnum === undefined || old.disp_glyphnum !== glyphnum
+        || old.disp_ch !== ch || old.disp_color !== color
+        || old.disp_decgfx !== !!decgfx || old.disp_attr !== (attr | 0)
+        || old.disp_customcolor !== (gm?.customcolor ?? 0)
+        || old.disp_glyphflags !== (gm?.glyphflags ?? 0)
+        || old.disp_tileidx !== (gm?.tileidx ?? 0)
+        || game.iflags?.use_background_glyph) {
+        const rows = (game.gbuf ||= []);
+        (rows[y] ||= [])[x] = {
+            disp_ch: ch,
+            disp_color: color,
+            disp_decgfx: !!decgfx,
+            disp_attr: attr | 0,
+            disp_glyph: glyph,
+            disp_glyphnum: glyphnum,
+            disp_customcolor: gm?.customcolor ?? 0,
+            disp_glyphflags: gm?.glyphflags ?? 0,
+            disp_tileidx: gm?.tileidx ?? 0,
+            disp_color256idx: gm?.color256idx ?? 0,
+            disp_u: gm?.u ?? null,
+            gnew: 1,
+        };
+    }
     loc.disp_ch = ch;
     loc.disp_color = color;
     loc.disp_decgfx = !!decgfx;
@@ -2145,6 +2164,9 @@ const CMP_DEC_MAP = {
 function _paint_map_cell(display, x, y) {
     const g = gbuf_at(x, y);
     if (!g) return;
+    /* win/tty/wintty.c:3949,4042: tty_print_glyph() positions the cursor
+       and advances it once even when nomux does not capture the byte. */
+    display.setCursor(x, y + 1);
     /* tty_print_glyph() sends a UTF-8 override through g_pututf8(), which
        bypasses the recorder's nomux screen buffer. The physical recorder
        cell therefore stays unchanged. This is observable when a hero moves

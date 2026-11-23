@@ -167,10 +167,31 @@ that setting also matches all 181 screens/cursors, 10,748 RNG calls and ten
 animations. Existing fixtures were not replaced. The broader winter clock
 limitation remains documented in NOTES; do not infer missing timezone inputs.
 
-Next: push the remove-curse checkpoint, then port `mk_artifact`'s alignment
-branch. It currently returns null for every divine gift despite the prayer
-caller being implemented. Review its role/race/skill selection and fallback
-draw order against C. Continue beyond that.
+Remove-curse checkpoint `f092d737` is pushed. `mk_artifact` now implements
+alignment-based creation rather than returning null for all divine gifts.
+Its C loop preserves role preference, original alignment adjustments, hostile
+race exclusions, skill checks, and fallback-list draw order. Existing-object
+conversion now follows the role exception to the gift-value cap, canonical
+`oname` bookkeeping, and permanent poison. Unused original objects passed to
+alignment-based creation are extracted and freed as in C.
+
+Fifteen artifact state tests pass; thirteen fail against `f092d737`. They
+cover five role preferences, first/repeat gifts, fallback selection, hostile
+races, existing-object conversion and disposal, and the full sacrifice path.
+The other 57 new state tests still pass; source audit remains empty.
+The new native sacrifice fixture receives and picks up Snickersnee, with
+90 exact screens/cursors and 4,525 RNG calls. Its assertions require both
+the gift messages and C's artifact-selection RNG call. It uses a single
+wished stack of three corpses: wishing again after each sacrifice adds a
+new prayer timeout and never reaches the gift branch.
+All 54 public/artifact/sacrifice regression fixtures pass: 13,639 screens,
+906,217 RNG calls. The 55 existing artifact/public input checks and the new
+gift check pass. The known public animation deficit is unchanged.
+
+Next: push the artifact checkpoint. Then replace `seffect_punishment`'s
+partial duplicate with C's call to the already ported `punish`, and update
+its remaining stale punishment-property consumers in insight and zap.
+Continue beyond that.
 
 ## 2026-09-05: full faithful port is the active goal
 

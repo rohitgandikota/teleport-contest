@@ -1,0 +1,29 @@
+{
+  "name": "sacrifice-artifact-gift",
+  "description": "A Samurai sacrifices a stack of three dragon corpses, clears the prayer timeout, and receives and picks up Snickersnee.",
+  "recordingNote": "Use RERECORD_TZ=Etc/GMT+4 for a fixed UTC-4 recording offset.",
+  "coverage": ["mode.debug", "level.mines", "religion.sacrifice", "object.artifacts"],
+  "branches": ["sacrifice.artifact-gift", "artifact.role-first-choice"],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "sacrifice.artifact-gift",
+      "segment": 0,
+      "screenIncludes": ["Gift an artifact?", "Use my gift wisely!", "g - a katana named Snickersnee."]
+    },
+    {
+      "branch": "artifact.role-first-choice",
+      "segment": 0,
+      "screenIncludes": ["Snickersnee appears at your feet!"],
+      "rngIncludes": ["mk_artifact(artifact.c:"]
+    }
+  ],
+  "segments": [
+    {
+      "seed": 7002,
+      "datetime": "20000113090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Samurai,race:human,gender:male,align:lawful,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0016?\r w \u0006\u0014_.   :#levelchange\r5\r    \u00173 red dragon corpses\r #offer\ry #offer\ry #offer\ry y ,i\u001b"
+    }
+  ]
+}

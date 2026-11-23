@@ -1774,6 +1774,21 @@ mask before integrating regen_pw's bonus. Parent owns recording and pushes.
 The official snapshot remains November 23 at 13:48 UTC, not a score for these
 latest verified checkpoints.
 
+Status cursor checkpoint `0a93c6c0` is pushed. The separate RNG validation
+checkpoint adds `tools/rng-slice-gate.mjs`: compare full per-segment lengths,
+stream values and every input slice, with fresh storage per fixture and shared
+storage between its segments. Recorded answers are never passed to runSegment.
+All 44 public fixtures pass: 11,405 input boundaries and exactly 792,838 calls
+on both sides. This strengthens the public result, not the entire 668-fixture
+corpus claim. Two explicitly labeled copies of seed8000 are negative controls:
+remove its final C draw, or shift one startup call into the next input. The
+frozen scorer accepts both; the new gate rejects both with the expected length
+or slice error. Canonical inputs and frozen tooling remain untouched. The
+existing NOTES entry now records the trailing-call blind spot. Logs are
+`rng-slice-public`, `rng-slice-{shortened,shifted}-{strict,frozen}` in the restart
+cache. Next, use this gate on all newly recorded gameplay controls and expand
+the corpus-wide audit without equating matched counters with equal streams.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

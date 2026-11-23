@@ -296,6 +296,13 @@ divergence, later calls can coincidentally realign, so a high RNG percentage can
 hide an early break. `tools/diverge.mjs` prints both the positional count and the
 index of the first divergence — trust the first-divergence index.
 
+The frozen runner also stops at C's stream length. A full matched counter can
+hide extra JS calls at the end. The November Stormbringer control had 18,027
+matched C calls but 18,061 JS calls because an option binding skipped a prompt.
+Compare complete per-segment lengths and every input's RNG slice as well as
+the positional counter. `tools/rng-slice-gate.mjs` checks both without changing
+the frozen runner or passing recorded answers into the port.
+
 **The rng comparison strips the call site** (`normalizeRng` drops everything
 from `@` on), so "rn2(5)=0" matches "rn2(5)=0" even when C drew it in
 distfleeck for monster A and we drew it in distfleeck for monster B. Two

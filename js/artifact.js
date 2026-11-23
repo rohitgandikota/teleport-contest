@@ -77,7 +77,7 @@ import { game } from './gstate.js';
 import { fuzzymatch } from './hacklib.js';
 import { ONAMES } from './objects_data.js';
 import { artifact_names, artifact_otyps, artifact_records,
-         ART_GRIMTOOTH, ART_EXCALIBUR,
+         ART_GRIMTOOTH, ART_EXCALIBUR, ART_STING, ART_ORCRIST,
          ART_SUNSWORD } from './artilist_data.js';
 import { align_str } from './role.js';
 import { simple_typename } from './objnam.js';

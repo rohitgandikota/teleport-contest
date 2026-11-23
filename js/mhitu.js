@@ -5,7 +5,7 @@
 
 import { unmul, losehp, showdamage } from './hack.js';
 import { mimic_obj_name } from './objnam.js';
-import { set_ustuck, m_next2u } from './mon.js';
+import { set_ustuck, m_next2u, m_at } from './mon.js';
 import { m_monnam } from './do_name.js';
 import { likes_gold, completelyrots, completelyrusts } from './mondata.js';
 import { Something } from './const.js';

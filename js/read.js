@@ -19,7 +19,7 @@ import { polyself, rehumanize, udeadinside } from './polyself.js';
 import { uhis } from './mhitu.js';
 import { mongone, kill_genocided_monsters, flash_mon } from './mon.js';
 import { list_genocided, num_genocides } from './insight.js';
-import { livelog_printf, verbalize, You_cant } from './pline.js';
+import { livelog_printf, verbalize, You_cant, impossible } from './pline.js';
 import { mungspaces, upwords } from './hacklib.js';
 import { LOW_PM, NEUTRAL, G_GENOD, G_EXTINCT, LL_GENOCIDE, LL_CONDUCT, KILLED_BY, GENOCIDED, POLYMORPH, POLY_REVERT, Upolyd, plur, thats_enough_tries, MALE, FEMALE } from './const.js';
 import { NUMMONS, MSOUND } from './monst_data.js';
@@ -1897,6 +1897,7 @@ export function unpunish() {
 // disintegrates. An uncursed one processes eligible carried objects in list
 // order, which also preserves blessorcurse() draw order when confused.
 async function seffect_remove_curse(sobj) {
+    let obj;
     const otyp = sobj.otyp;
     const sblessed = !!sobj.blessed;
     const scursed = !!sobj.cursed;
@@ -1914,7 +1915,7 @@ async function seffect_remove_curse(sobj) {
     if (scursed) {
         await pline('The scroll disintegrates.');
     } else {
-        for (const obj of [...(game.invent || [])]) {
+        for (obj of [...(game.invent || [])]) {
             if (obj.oclass === OCLASSES.COIN_CLASS)
                 continue;
             if (obj === sobj && obj.quan === 1)

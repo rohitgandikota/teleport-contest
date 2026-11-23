@@ -28,7 +28,7 @@ import { W_SADDLE, ECMD_OK, ECMD_TIME, ECMD_CANCEL, isok, SLT_ENCUMBER,
 import { OBJ_MINVENT, is_metallic } from './obj.js';
 import { rn2, rnd, rn1 } from './rng.js';
 import { newsym, pline } from './display.js';
-import { You, You_cant, Your } from './pline.js';
+import { You, You_cant, Your, impossible } from './pline.js';
 import { x_monnam } from './do_name.js';
 import { ARTICLE_YOUR, SUPPRESS_SADDLE } from './const.js';
 import { strsubst } from './hacklib.js';

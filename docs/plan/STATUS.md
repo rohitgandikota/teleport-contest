@@ -74,8 +74,39 @@ all pass and all fail with `thitu: name & obj both null?` before the fix.
 The earlier public and hang checks included this pre-existing edit. One test
 initially looped on an unknown potion's naming prompt because its test-only
 input callback sent spaces forever; Escape handles both naming and More.
-Next: publish the scatter checkpoint, then fix the runtime references and
-review recorder updates. Continue beyond that.
+Scatter checkpoint `f733c1d8` is pushed. The November 22 19:45 UTC public
+snapshot has not advanced yet; its last score for us remains 19:12 UTC and
+does not evaluate any November 22 evening push.
+
+Current runtime patch resolves all 29 non-frozen scope/import findings and
+ports C's `phaze_dialogue` and `region_dialogue`. Eighteen constructed tests
+all fail on `f733c1d8` and pass after the fixes. They cover artifact warnings,
+migrating container cleanup, upward pie throws, cursed displacement squares,
+Archon gaze, sphere explosions, saddle uncursing, Death dialogue, and expiring
+prayer protection. The Archon test also caught a missing null guard in
+`mhitm_ad_blnd`; C permits a null damage record for monster-vs-monster calls.
+All 44 public plus three gaze fixtures pass, matching 12,818 screens/cursors
+and 822,941 RNG calls. Public animations retain the 21 known mismatches.
+The public and three gaze hang checks pass. All 38 newly added state tests pass.
+Source audit: zero findings; its eight parser tests pass.
+
+The selected older supplemental batch is 10/19 before and after, with every
+metric unchanged. Nine failures are pre-existing. The status-melee state gate
+also already fails at segment 0 (2,801 versus 2,874 C RNG calls). First
+startup divergence in `gas-cloud-hero` is call 1,357: C generates a monster
+through `rndmonst_adj`, JS skips it. Investigate startup `debug_mongen`
+handling with a fresh native probe; do not dismiss or re-record these failures
+without resolving the cause.
+
+Verification detail: passing `--loader` to the outer frozen scorer does not
+apply it to the scorer's spawned workers. The corrected baseline comparison
+uses `NODE_OPTIONS` to propagate the loader, or calls `--worker-session`
+directly. The corrected mounting baseline and 19-fixture comparison confirm
+the recorded pre-existing failures. This does not affect ordinary scoring or
+the Node test runner's before/after state tests.
+
+Next: publish the runtime checkpoint, investigate startup monster generation,
+and adopt the applicable official recorder updates. Continue beyond that.
 
 ## 2026-09-05: full faithful port is the active goal
 

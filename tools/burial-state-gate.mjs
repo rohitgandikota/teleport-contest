@@ -9,6 +9,7 @@ import { game } from '../js/gstate.js';
 import { InMemoryStorage } from '../js/storage.js';
 import { punish } from '../js/read.js';
 import { bury_objs } from '../js/dig.js';
+import { find_lev_obj } from '../js/restore.js';
 import { bind_key, rhack } from '../js/cmd.js';
 import { engr_at, make_engr_at } from '../js/engrave.js';
 import { ROOM, OBJ_FLOOR, OBJ_BURIED, OBJ_DELETED, TT_BURIEDBALL, DUST } from '../js/const.js';
@@ -39,6 +40,7 @@ for (const ballFirst of [false, true]) {
         assert.equal(chain.where, OBJ_FLOOR);
         const others = game.level.objects.filter(obj => obj !== ball && obj !== chain);
         game.level.objects = [...(ballFirst ? [ball, chain] : [chain, ball]), ...others];
+        find_lev_obj();
         await bury_objs(30, 10);
         assert.equal(ball.where, OBJ_BURIED);
         assert.equal(chain.where, OBJ_DELETED);

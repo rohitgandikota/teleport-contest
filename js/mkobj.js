@@ -76,7 +76,7 @@ import { oname, noveltitle } from './do_name.js';
 import { oid_price_adjustment } from './shk.js';
 import { ONAME_NO_FLAGS } from './const.js';
 import { depth } from './dungeon.js';
-import { block_point } from './vision.js';
+import { block_point, recalc_block_point } from './vision.js';
 import { obj_sheds_light, obj_split_light_source } from './light.js';
 import { splitbill } from './shk.js';
 import { billable, costly_spot, stolen_value, unpaid_cost, subfrombill,
@@ -246,6 +246,10 @@ export function splitobj(obj, num) {
     const index = chain?.indexOf(obj) ?? -1;
     if (index >= 0)
         chain.splice(index + 1, 0, otmp);
+    if (obj.where === OBJ_FLOOR) {
+        otmp.nexthere = obj.nexthere;
+        obj.nexthere = otmp;
+    }
     if (otmp.where === OBJ_LUAFREE)
         otmp.where = OBJ_FREE;
 
@@ -1423,8 +1427,7 @@ export function unknow_object(obj) {
 
 // src/mkobj.c g_at() — gold already on this square, if any.
 function g_at(x, y) {
-    return (game.level?.objects || []).find(
-        o => o.ox === x && o.oy === y && o.oclass === COIN_CLASS) ?? null;
+    return game.level.objectsAt(x, y).find(o => o.oclass === COIN_CLASS) ?? null;
 }
 
 // src/mkobj.c:2002 mkgold()
@@ -1450,44 +1453,80 @@ export function mkobj_at(oclass, x, y, artif) {
     return otmp;
 }
 
-// src/mkobj.c place_object() — C PREPENDS to fobj:
-//
-//     otmp->nobj = fobj;
-//     fobj = otmp;
-//
-// so the level's object list is newest-first, and anything that walks it in
-// order sees the most recently created object first. dog_goal()'s search walks
-// it calling dogfood() on each, and dogfood() draws, so the order is part of
-// the PRNG contract.
+// src/mkobj.c:2305 place_object(). Prepend to global fobj independently of
+// local nexthere insertion. Both traversal orders affect gameplay and RNG.
 export function place_object(otmp, x, y) {
-    /* src/mkobj.c:2328 — otmp2 is the head of the cell's pile chain; in the
-       flat floor list the first entry at (x,y) plays that role. */
-    const otmp2 = (game.level.objects || []).find(o => o.ox === x && o.oy === y);
+    if (otmp.where !== OBJ_FREE)
+        throw new Error('place_object: object not free');
+    let otmp2 = game.level.objectAt(x, y);
+    if (otmp.otyp === ONAMES.BOULDER
+        && (!otmp2 || otmp2.otyp !== ONAMES.BOULDER))
+        block_point(x, y);
 
+    // src/mkobj.c:2338, non-boulders follow all consecutive leading boulders.
+    if (otmp2?.otyp === ONAMES.BOULDER && otmp.otyp !== ONAMES.BOULDER) {
+        while (otmp2.nexthere?.otyp === ONAMES.BOULDER)
+            otmp2 = otmp2.nexthere;
+        otmp.nexthere = otmp2.nexthere;
+        otmp2.nexthere = otmp;
+    } else {
+        otmp.nexthere = otmp2;
+        game.level.objAt.set(`${x},${y}`, otmp);
+    }
     otmp.ox = x;
     otmp.oy = y;
-
-    /* src/mkobj.c:2331 — a boulder landing on a cell that doesn't already
-       show a boulder makes the point opaque. */
-    if (otmp.otyp === ONAMES.BOULDER) {
-        if (!otmp2 || otmp2.otyp !== ONAMES.BOULDER)
-            block_point(x, y); /* vision */
-    }
-
-    /* src/mkobj.c place_object() tail — without this, an object that was
-       extracted (where == OBJ_FREE) and then re-floored can't be extracted
-       again: obj_extract_self's OBJ_FREE arm leaves it in level.objects. */
     otmp.where = OBJ_FLOOR;
-    (game.level.objects ||= []).unshift(otmp);
+    game.level.objects.unshift(otmp);
+}
+
+// src/mkobj.c:2371 recreate_pile_at(). Only explicit restacking reorders fobj.
+export function recreate_pile_at(x, y) {
+    const reversed = [];
+    for (let obj = game.level.objectAt(x, y), next; obj; obj = next) {
+        next = obj.nexthere;
+        remove_object(obj);
+        reversed.unshift(obj);
+    }
+    for (const obj of reversed)
+        place_object(obj, x, y);
+}
+
+// src/mkobj.c:2508 remove_object(). Unlink the two independent chains.
+export function remove_object(obj) {
+    if (obj.where !== OBJ_FLOOR)
+        throw new Error('remove_object: object not on floor');
+    extract_nexthere(obj);
+    extract_nobj(obj, game.level.objects);
+    if (obj.otyp === ONAMES.BOULDER)
+        recalc_block_point(obj.ox, obj.oy);
+}
+
+// src/mkobj.c:2623 extract_nexthere(). Does not change obj.where.
+export function extract_nexthere(obj) {
+    const key = `${obj.ox},${obj.oy}`;
+    let curr = game.level.objAt.get(key), prev = null;
+    for (; curr; prev = curr, curr = curr.nexthere) {
+        if (curr === obj) {
+            if (prev)
+                prev.nexthere = curr.nexthere;
+            else if (curr.nexthere)
+                game.level.objAt.set(key, curr.nexthere);
+            else
+                game.level.objAt.delete(key);
+            break;
+        }
+    }
+    if (!curr)
+        throw new Error('extract_nexthere: object lost');
+    obj.nexthere = null;
 }
 
 // src/mkobj.c:3661 obj_nexto_xy(), find a mergable object on this or an
 // adjacent square. The adjacent scan always spends two draws to choose its
 // horizontal and vertical order, even when there is no matching object.
 export function obj_nexto_xy(obj, x, y, recurs) {
-    const here = (game.level.objects || []).find((otmp) =>
-        otmp !== obj && otmp.where === OBJ_FLOOR
-        && otmp.ox === x && otmp.oy === y
+    const here = game.level.objectsAt(x, y).find((otmp) =>
+        otmp !== obj
         && otmp.otyp === obj.otyp && mergable(otmp, obj));
     if (here || !recurs)
         return here || null;
@@ -2090,8 +2129,7 @@ export function peek_at_iced_corpse_age(otmp) {
 // src/mkobj.c:2397 obj_ice_effects(). Corpse rot and revival timers run at
 // half speed on ice, then return to ordinary speed when the ice melts.
 export function obj_ice_effects(x, y, doBuried = false) {
-    const objects = (game.level?.objects || []).filter(obj =>
-        obj.where === OBJ_FLOOR && obj.ox === x && obj.oy === y);
+    const objects = game.level.objectsAt(x, y);
     if (doBuried) {
         objects.push(...(game.level?.buriedobjs || []).filter(obj =>
             obj.where === OBJ_BURIED && obj.ox === x && obj.oy === y));
@@ -2348,6 +2386,9 @@ export function replace_object(obj, otmp) {
     case OBJ_FLOOR: {
         otmp.ox = obj.ox;
         otmp.oy = obj.oy;
+        otmp.nexthere = obj.nexthere;
+        obj.nexthere = otmp;
+        extract_nexthere(obj);
         const i = game.level.objects.indexOf(obj);
         if (i >= 0)
             game.level.objects.splice(i, 1, otmp);

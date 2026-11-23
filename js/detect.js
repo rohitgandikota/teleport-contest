@@ -674,9 +674,7 @@ export function premap_detect() {
             if (loc.typ === SDOOR)
                 loc.wall_info = 0; /* see rm.h for explanation */
             map_background(x, y, 1);
-            const obj = (game.level?.objects || []).find(
-                (o) => o.ox === x && o.oy === y
-                       && o.otyp === ONAMES.BOULDER);
+            const obj = game.level.objectsAt(x, y).find(o => o.otyp === ONAMES.BOULDER);
             if (obj)
                 map_object(obj, 1);
         }
@@ -1084,8 +1082,7 @@ function observe_recursively(obj) {
 function check_map_spot(x, y, oclass, material) {
     let glyph;
     let mtmp;
-    const pile_at = (px, py) => (game.level.objects || [])
-        .filter(o => o.ox === px && o.oy === py);
+    const pile_at = (px, py) => game.level.objectsAt(px, py);
 
     glyph = glyph_at(x, y);
     if (glyph?.kind === 'obj') {
@@ -1530,7 +1527,7 @@ export async function object_detect(detector, cls_) {
      */
     for (x = 1; x < COLNO; x++)
         for (y = 0; y < ROWNO; y++)
-            for (const obj of (game.level.objects || []).filter(o => o.ox === x && o.oy === y))
+            for (const obj of game.level.objectsAt(x, y))
                 if ((!cls_ && !boulder) || (otmp = o_in(obj, cls_)) != null
                     || (otmp = o_in(obj, boulder)) != null) {
                     if (cls_ || boulder) {
@@ -2098,7 +2095,7 @@ export async function do_vicinity_map(sobj) {
             if (OBJ_AT(zx, zy)) {
                 /* not vobj_at(); this is not vision-based access;
                    unlike object detection, we don't notice buried items */
-                otmp = (game.level.objects || []).find(o => o.ox === zx && o.oy === zy);
+                otmp = game.level.objectAt(zx, zy);
                 if (extended)
                     observe_object(otmp);
                 map_object(otmp, true);
@@ -2202,7 +2199,7 @@ async function openone(zx, zy, num_p) {
     let ttmp;
 
     if (OBJ_AT(zx, zy)) {
-        for (const otmp of (game.level.objects || []).filter(o => o.ox === zx && o.oy === zy)) {
+        for (const otmp of game.level.objectsAt(zx, zy)) {
             if (Is_box(otmp) && otmp.olocked) {
                 otmp.olocked = 0;
                 num_p.value++;

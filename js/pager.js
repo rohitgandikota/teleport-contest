@@ -177,8 +177,7 @@ export function object_from_map(glyph, x, y) {
         ? ((game.level?.objects || []).some(o => o.ox === x && o.oy === y
             && o.otyp === ONAMES.CHEST) ? ONAMES.CHEST : ONAMES.LARGE_BOX)
         : ONAMES.STRANGE_OBJECT;
-    let otmp = (game.level?.objects || [])
-        .find(o => o.ox === x && o.oy === y && o.otyp === glyphotyp) || null;
+    let otmp = game.level.objectsAt(x, y).find(o => o.otyp === glyphotyp) || null;
     if (!otmp)
         otmp = (game.level?.buriedobjs || [])
             .find(o => o.ox === x && o.oy === y && o.otyp === glyphotyp) || null;

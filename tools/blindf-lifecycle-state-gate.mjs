@@ -43,6 +43,7 @@ async function setup() {
     game.u.ucreamed = 0; game.multi = 0;
     game.level.monsters = []; game.level.monAt.clear();
     game.level.objects = []; game.level.traps = [];
+    game.level.objAt.clear();
     game.regions = []; game.context_takeoff = { mask: 0, what: 0 };
     game.invent = []; game.flags.verbose = true;
     for (let x = 26; x <= 36; x++) for (let y = 5; y <= 15; y++) {

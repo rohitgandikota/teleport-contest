@@ -40,6 +40,7 @@ async function setup({female=false,tame=false,hallu=false,visible=true,detected=
     game.level.monAt.clear();
     game.level.monsters=[];
     game.level.objects=[];
+    game.level.objAt.clear();
     game.level.traps=[];
     game.level.engravings=[];
     game.regions=[];

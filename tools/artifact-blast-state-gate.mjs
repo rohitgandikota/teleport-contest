@@ -36,6 +36,7 @@ async function setup({ form = PMNAMES.PM_GRID_BUG, mh = 1,
     game._preNhgetchHook = null;
     game.level.monsters = []; game.level.monAt.clear();
     game.level.objects = []; game.level.traps = []; game.regions = [];
+    game.level.objAt.clear();
     game.invent = [];
     Object.assign(game.level.at(game.u.ux, game.u.uy), { typ: ROOM, roomno: 0 });
     game.u.uhp = game.u.uhpmax = 200;

@@ -32,7 +32,7 @@ async function setup({female=false,tame=true,hallu=false,mnum=PM.PM_GNOME}={}) {
     game.u.uprops.DETECT_MONSTERS=0;
     game.u.uprops.TELEPAT=0;game.u.intrinsic.HTelepat=0;
     game.level.monAt.clear();game.level.monsters=[];
-    game.level.objects=[];game.level.traps=[];game.level.engravings=[];game.regions=[];
+    game.level.objects=[];game.level.objAt.clear();game.level.traps=[];game.level.engravings=[];game.regions=[];
     Object.assign(game.level.at(x,y),{typ:C.ROOM,seenv:255,lit:1,waslit:1,
         remembered_glyph:undefined,disp_glyph:undefined,disp_ch:undefined});
     game.viz_array[y][x]=IN_SIGHT|COULD_SEE;

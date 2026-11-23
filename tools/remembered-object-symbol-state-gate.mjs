@@ -11,6 +11,7 @@ import {PMNAMES} from '../js/monst_data.js';
 import {OBJ_FLOOR} from '../js/const.js';
 import {ATR_INVERSE} from '../js/terminal.js';
 import {mksobj} from '../js/mkobj.js';
+import {find_lev_obj} from '../js/restore.js';
 import {cansee} from '../js/vision.js';
 import {map_object, newsym, glyph_at, gbuf_at, flush_screen} from '../js/display.js';
 import {assign_graphics, go_ov_primary_syms, PRIMARYSET} from '../js/symbols.js';
@@ -43,6 +44,7 @@ for (const sample of cases) {
             Object.assign(second, {ox:x, oy:y, where:OBJ_FLOOR, dknown:1});
             game.level.objects.push(second);
         }
+        find_lev_obj();
         if (sample.hallucinated)
             game.u.uprops.HALLUC = 100;
         map_object(obj, true);

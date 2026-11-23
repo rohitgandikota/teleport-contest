@@ -9,7 +9,7 @@ import {game} from '../js/gstate.js';
 import {InMemoryStorage} from '../js/storage.js';
 import {resetInputState,pushKeys} from '../js/input.js';
 import {dotypeinv,dounpaid,find_unpaid,count_unpaid} from '../js/invent.js';
-import {mksobj,unknwn_contnr_contents} from '../js/mkobj.js';
+import {mksobj,place_object,unknwn_contnr_contents} from '../js/mkobj.js';
 import {distant_name} from '../js/objnam.js';
 import {ONAMES as N} from '../js/objects_data.js';
 import {OBJ_INVENT,OBJ_CONTAINED,OBJ_FLOOR,OBJ_BURIED,OBJ_MINVENT,OBJ_FREE,
@@ -120,7 +120,7 @@ assert.match(text(),/Unpaid Bagged\/Boxed items/);
 // Empty inventory is checked before floor-only debt. With inventory present,
 // traditional u can report unpaid objects outside the inventory.
 await setup('u');game.flags.menu_style=MENU_TRADITIONAL;
-const floorobj=obj(N.APPLE,{where:OBJ_FLOOR,unpaid:1});game.invent=[];game.level.objects.push(floorobj);
+const floorobj=obj(N.APPLE,{where:OBJ_FREE,unpaid:1});game.invent=[];place_object(floorobj,game.u.ux,game.u.uy);
 await dotypeinv();assert.match(text(),/aren't carrying anything/);
 await setup('u');game.flags.menu_style=MENU_TRADITIONAL;obj();
 game.level.buriedobjs=[{where:OBJ_BURIED,unpaid:1}];await dotypeinv();assert.match(text(),/1 under the floor/);

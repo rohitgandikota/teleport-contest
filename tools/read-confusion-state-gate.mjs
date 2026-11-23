@@ -34,7 +34,7 @@ async function setup(mode = 'none') {
     };
     game._preNhgetchHook = null;
     game.level.monsters = []; game.level.monAt.clear();
-    game.level.objects = []; game.level.traps = []; game.regions = [];
+    game.level.objects = []; game.level.objAt.clear(); game.level.traps = []; game.regions = [];
     game.u.ux = 31; game.u.uy = 10;
     game.u.uswallow = false; game.u.ustuck = null; game.u.usteed = null;
     game.u.intrinsic = {}; game.u.uprops = {}; game.u.blocked = {};

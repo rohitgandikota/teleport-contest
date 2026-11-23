@@ -22,7 +22,7 @@ import { GameMap } from './game.js';
 import { set_playmode } from './options.js';
 import { role_init } from './role.js';
 import { save_engravings, rest_engravings } from './engrave.js';
-import { loadfruitchn } from './restore.js';
+import { loadfruitchn, find_lev_obj } from './restore.js';
 
 // src/save.c:951 savefruitchn()
 export function savefruitchn(release = false) {
@@ -270,6 +270,7 @@ export function dorecover() {
     role_init(game.flags.initrole, game.flags.initalign);
     [game.quest_ldrgend, game.quest_nemgend] = savedGenders;
 
+    find_lev_obj();
     /* restore.c:705 recalculates this process-local movement sequence from
        the restored turn. It is not carried across the save boundary. */
     game.hero_seq = game.moves * 8;

@@ -1,3 +1,4 @@
+import { find_lev_obj } from './restore.js';
 import { assign_graphics, PRIMARYSET, ROGUESET } from './symbols.js';
 import { check_gold_symbol } from './botl.js';
 import { allow_all } from './pickup.js';
@@ -474,8 +475,8 @@ export async function flooreffects(obj, x, y, verb) {
     let ttyp = NO_TRAP, res = false;
 
     /* C: panic("flooreffects: obj not free") */
-    /* make sure things like water_damage() have no pointers to follow;
-       this port's objects have no nobj/nexthere chain links to clear */
+    /* src/do.c:171, water_damage() must have no floor links to follow. */
+    obj.nexthere = null;
     /* erode_obj() (called from water_damage() or lava_damage()) needs
        bhitpos, but that was screwing up wand zapping that called us from
        rloco(), so we now restore bhitpos before we return */
@@ -1254,6 +1255,7 @@ export async function goto_level(newlevel, at_stairs, falling, portal) {
            the same state; the visible cost is restore.c:1190's monster
            catchup against the time spent away. */
         game.level = game.saved_levels.get(ledger);
+        find_lev_obj();
         game.stairs = game.level._saved_stairs || null;
         /* src/region.c rest_regions() subtracts the turns spent away and
            silently drops expired regions before the restored map is shown. */

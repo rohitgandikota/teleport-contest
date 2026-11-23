@@ -29,7 +29,7 @@ async function setup({mounted=false,known=true,safe=true}={}) {
     const pony=game.level.monsters.find(m=>m.mnum===PM.PM_PONY);
     assert.ok(pony);
     remove_monster(pony.mx,pony.my);
-    game.level.monAt.clear(); game.level.objects=[]; game.level.traps=[];
+    game.level.monAt.clear(); game.level.objects=[];game.level.objAt.clear(); game.level.traps=[];
     game.level.engravings=[]; game.regions=[];
     for(let x=cx-2;x<=cx+2;x++)for(let y=cy-2;y<=cy+2;y++)
         Object.assign(game.level.at(x,y),{typ:STONE,doormask:0,seenv:255,lit:1,waslit:1});

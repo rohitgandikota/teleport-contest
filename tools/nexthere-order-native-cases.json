@@ -1,0 +1,178 @@
+{
+    "version": 1,
+    "scope": "Pinned-C chain proof and verified native floor-order and stone-to-flesh save/restore cases. The parent owns recordings and runtime integration.",
+    "cSites": [
+        {
+            "file": "nethack-c/recorder/src/mkobj.c",
+            "line": 665,
+            "behavior": "replace_object preserves both independent chain positions"
+        },
+        {
+            "file": "nethack-c/recorder/src/mkobj.c",
+            "line": 2338,
+            "behavior": "place_object inserts ordinary items below leading boulders"
+        },
+        {
+            "file": "nethack-c/recorder/src/mkobj.c",
+            "line": 2362,
+            "behavior": "global fobj prepend is independent"
+        },
+        {
+            "file": "nethack-c/recorder/src/zap.c",
+            "line": 1993,
+            "behavior": "stone_to_flesh_obj checks material and resistance"
+        },
+        {
+            "file": "nethack-c/recorder/src/zap.c",
+            "line": 2014,
+            "behavior": "boulder becomes ENORMOUS_MEATBALL through poly_obj"
+        },
+        {
+            "file": "nethack-c/recorder/src/zap.c",
+            "line": 1903,
+            "behavior": "poly_obj calls replace_object for the original and transformed objects"
+        },
+        {
+            "file": "nethack-c/recorder/src/zap.c",
+            "line": 2487,
+            "behavior": "bhitpile restacks only when a boulder survives"
+        },
+        {
+            "file": "nethack-c/recorder/src/invent.c",
+            "line": 4299,
+            "behavior": "look_here lists nexthere order"
+        },
+        {
+            "file": "nethack-c/recorder/src/restore.c",
+            "line": 71,
+            "behavior": "find_lev_obj reconstructs local order from fobj"
+        },
+        {
+            "file": "nethack-c/recorder/src/restore.c",
+            "line": 1166,
+            "behavior": "getlev invokes the rebuild after restoring fobj"
+        },
+        {
+            "file": "nethack-c/recorder/src/spell.c",
+            "line": 787,
+            "behavior": "dowizcast selects any spell and calls spelleffects with force TRUE"
+        },
+        {
+            "file": "nethack-c/recorder/win/tty/wintty.c",
+            "line": 1745,
+            "behavior": "menu search accepts the unique stone to flesh match"
+        }
+    ],
+    "cases": [
+        {
+            "id": "native-original",
+            "evidence": "retained-native-C",
+            "recipe": "nexthere-order-native-original-input.json",
+            "recording": {
+                "basename": "nexthere-native-floor-control.session.json",
+                "sha256": "6a677e461d490c76af5e732ae30d06733f5a4082c98f773fb349c6f355f4fd56",
+                "path": "gen-sessions/generated/nexthere-native-floor-control.session.json",
+                "sourceBasename": "zap-pile-settlement-pile-order-native.session.json"
+            },
+            "originalInputSha256": "fc806c654a6014e8716e39aff5024b5c919ef798e75f67a1128ce0642a88c0fd",
+            "dependency": "Parent fill_pit repair is separate. All four original segments must remain unchanged.",
+            "checkpoints": [
+                {
+                    "name": "boulder-before-thrown-dagger",
+                    "segment": 3,
+                    "step": 47,
+                    "items": [
+                        "a boulder",
+                        "a crude dagger"
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "stone-flesh-restore",
+            "evidence": "native-C-verified",
+            "recipe": "gen-sessions/recipes/nexthere-stone-flesh-restore.json",
+            "expectedRecording": "gen-sessions/generated/nexthere-stone-flesh-restore.session.json",
+            "checkpoints": [
+                {
+                    "name": "initial-boulder-order",
+                    "segment": 0,
+                    "step": 31,
+                    "items": [
+                        "a boulder",
+                        "a dagger"
+                    ],
+                    "globalTypesAtHero": [
+                        "DAGGER",
+                        "BOULDER"
+                    ],
+                    "localTypes": [
+                        "BOULDER",
+                        "DAGGER"
+                    ]
+                },
+                {
+                    "name": "replacement-retains-local-slot",
+                    "segment": 0,
+                    "step": 59,
+                    "items": [
+                        "an enormous meatball",
+                        "a dagger"
+                    ],
+                    "globalTypesAtHero": [
+                        "DAGGER",
+                        "ENORMOUS_MEATBALL"
+                    ],
+                    "localTypes": [
+                        "ENORMOUS_MEATBALL",
+                        "DAGGER"
+                    ]
+                },
+                {
+                    "name": "restore-rebuilds-local-order",
+                    "segment": 1,
+                    "step": 3,
+                    "items": [
+                        "a dagger",
+                        "an enormous meatball"
+                    ],
+                    "globalTypesAtHero": [
+                        "DAGGER",
+                        "ENORMOUS_MEATBALL"
+                    ],
+                    "localTypes": [
+                        "DAGGER",
+                        "ENORMOUS_MEATBALL"
+                    ]
+                }
+            ],
+            "limits": [
+                "Native input identity, recipe assertions and all three ordered-list checkpoints are verified. This gate does not score cross-runtime RNG, screens or animations.",
+                "Ordinary boulders have a 2 percent stone-to-flesh resistance check. Seed 2219 succeeds in both the verified native case and JS.",
+                "This proposal exercises real save/restore. It does not independently prove cached level return or bones restore.",
+                "No runtime module overrides or injected state are used by the input validation.",
+                "Replacing this local head cannot distinguish generic replacement-at-head; required C chain controls cover replacements in other local slots."
+            ],
+            "verifiedRawRecording": {
+                "basename": "nexthere-stone-flesh-restore-native.session.json",
+                "sha256": "5de29363f8a2bb57c3b05e8125f47b19b4eaac546bb507c6fe24897d8bc06b5c",
+                "inputKeys": [
+                    62,
+                    4
+                ],
+                "steps": 68,
+                "rngCalls": 3138
+            },
+            "verifiedRecording": {
+                "basename": "nexthere-stone-flesh-restore.session.json",
+                "sha256": "489a28b0ff9c1f9313a9f850650c2226265e264d7ab4ca5a30a6d9fa6c55e9c2",
+                "inputKeys": [
+                    62,
+                    4
+                ],
+                "steps": 68,
+                "rngCalls": 3138
+            }
+        }
+    ]
+}

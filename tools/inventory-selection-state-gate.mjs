@@ -15,6 +15,7 @@ import {collect_obj_classes,add_valid_menu_class,menu_class_present,
 import {bypass_obj,bypass_objlist,nxt_unbypassed_loot,
     nxt_unbypassed_obj,clear_bypasses} from '../js/worn.js';
 import {mksobj} from '../js/mkobj.js';
+import {find_lev_obj} from '../js/restore.js';
 import {ONAMES,OCLASSES} from '../js/objects_data.js';
 import {PMNAMES} from '../js/monst_data.js';
 import {OBJ_INVENT,OBJ_CONTAINED,OBJ_MINVENT,OBJ_FLOOR,
@@ -256,7 +257,7 @@ assert.deepEqual([queried[25],queried[26],queried[51],queried[52],queried[53]],
 await setup();
 const pools=['invent','migrating_objs','billobjs','objs_deleted'];const reset=[];
 for(const p of pools){const o=obj(ONAMES.SACK,{cobj:[obj()]});game[p]=[o];reset.push(o,o.cobj[0]);}
-game.level.objects=[obj()];game.level.buriedobjs=[obj()];reset.push(...game.level.objects,...game.level.buriedobjs);
+game.level.objects=[obj()];find_lev_obj();game.level.buriedobjs=[obj()];reset.push(...game.level.objects,...game.level.buriedobjs);
 const worm={data:game.mons[PMNAMES.PM_LONG_WORM],mhp:10,mextra:{mcorpsenm:PMNAMES.PM_LONG_WORM},minvent:[obj()]};
 const dead={mhp:0,minvent:[obj()]};game.level.monsters=[worm,dead];
 game.migrating_mons=[{minvent:[obj()]}];game.mydogs=[{minvent:[obj()]}];

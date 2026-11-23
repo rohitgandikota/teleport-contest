@@ -9,7 +9,7 @@ import {game} from '../js/gstate.js';
 import {InMemoryStorage} from '../js/storage.js';
 import {pushKeys,resetInputState} from '../js/input.js';
 import {initRng,rn2} from '../js/rng.js';
-import {mksobj,splitobj,unsplitobj,add_to_container,start_corpse_timeout} from '../js/mkobj.js';
+import {mksobj,place_object,splitobj,unsplitobj,add_to_container,start_corpse_timeout} from '../js/mkobj.js';
 import {weight,tally_BUCX} from '../js/invent.js';
 import {query_classes,add_valid_menu_class,menu_class_present,in_container,
     out_container,removed_from_icebox,delta_cwt,observe_quantum_cat,use_container} from '../js/pickup.js';
@@ -129,10 +129,13 @@ async function setup(keys='') {
 }
 const obj=(type=N.DAGGER,fields={})=>Object.assign(mksobj(type,false,false),{where:OBJ_INVENT,invlet:'a'},fields);
 for(const where of [OBJ_INVENT,OBJ_FLOOR,OBJ_MINVENT,OBJ_CONTAINED,OBJ_MIGRATING,OBJ_BURIED,OBJ_ONBILL]) {
-    await setup();const a=obj(N.DAGGER,{quan:5,where,pickup_prev:1,lua_ref_cnt:2,owornmask:W_QUIVER}),chain=[a];
+    await setup();const a=obj(N.DAGGER,{quan:5,where,pickup_prev:1,lua_ref_cnt:2,owornmask:W_QUIVER}),chain=where===OBJ_FLOOR?[]:[a];
     const box=obj(N.SACK,{cobj:chain}),mon={minvent:chain};
     if(where===OBJ_INVENT)game.invent=chain;
-    if(where===OBJ_FLOOR)game.level.objects=chain;
+    if(where===OBJ_FLOOR) {
+        game.level.objects=chain;game.level.objAt.clear();
+        a.where=OBJ_FREE;place_object(a,game.u.ux,game.u.uy);
+    }
     if(where===OBJ_MINVENT)a.ocarry=mon;
     if(where===OBJ_CONTAINED)a.ocontainer=box;
     if(where===OBJ_MIGRATING)game.migrating_objs=chain;

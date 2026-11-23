@@ -13,7 +13,7 @@ import {decodeScreen} from './gen-sessions/screen-decode.mjs';
 import {sanitize_name,resetobjs,bones_include_name,no_bones_level,
     can_make_bones,getbones_load,set_ghostly_objlist,fix_ghostly_obj} from '../js/bones.js';
 import {savefruitchn} from '../js/save.js';
-import {loadfruitchn,ghostfruit} from '../js/restore.js';
+import {loadfruitchn,ghostfruit,find_lev_obj} from '../js/restore.js';
 import {fruit_from_name,fruit_from_indx,doname} from '../js/objnam.js';
 import {fruitadd,set_fruit_name} from '../js/options.js';
 import {give_u_to_m_resistances} from '../js/mondata.js';
@@ -233,7 +233,7 @@ assert.deepEqual(loaded.map(o=>o.age),[100,500,135]);assert.equal(loaded[2].cobj
 
 // Local timers leave the active queue. Ties reverse on load, timestamps shift
 // only for ghostly loads, and relinking does not start/count a second timer.
-await setup();const floor=obj(ONAMES.CORPSE),held=obj(ONAMES.OIL_LAMP),nested=obj(ONAMES.EGG);floor.where=OBJ_FLOOR;held.where=OBJ_INVENT;nested.where=OBJ_CONTAINED;nested.ocontainer=held;game.level.objects=[floor];game.invent=[held];floor.timed=2;held.timed=1;
+await setup();const floor=obj(ONAMES.CORPSE),held=obj(ONAMES.OIL_LAMP),nested=obj(ONAMES.EGG);floor.where=OBJ_FLOOR;held.where=OBJ_INVENT;nested.where=OBJ_CONTAINED;nested.ocontainer=held;game.level.objects=[floor];find_lev_obj();game.invent=[held];floor.timed=2;held.timed=1;
 game.timer_id=91;game.timer_base=[{tid:1,kind:TIMER_OBJECT,arg:floor,func_index:ROT_CORPSE,timeout:100},{tid:2,kind:TIMER_OBJECT,arg:floor,func_index:BURN_OBJECT,timeout:100},{tid:3,kind:TIMER_OBJECT,arg:held,func_index:BURN_OBJECT,timeout:140}];
 assert.equal(obj_is_local(floor),true);assert.equal(obj_is_local(nested),false);const timers=save_timers(RANGE_LEVEL,true);assert.deepEqual(timers.timers.map(t=>t.tid),[1,2]);assert.deepEqual(game.timer_base.map(t=>t.tid),[3]);assert.equal(floor.timed,2);assert.equal(timers.timers[0].arg,floor.o_id);assert.equal(timers.timers[0].needs_fixup,1);
 const oldid=floor.o_id;floor.o_id=100000;restore_timers(timers,RANGE_LEVEL,true,25);relink_timers(true,new Map([[oldid,floor.o_id]]));assert.deepEqual(game.timer_base.map(t=>[t.tid,t.timeout]),[[2,125],[1,125],[3,140]]);assert.equal(game.timer_base[0].arg,floor);assert.equal(game.timer_id,91);assert.equal(floor.timed,2);
@@ -242,7 +242,7 @@ for(const[where,want]of[[OBJ_INVENT,false],[OBJ_MIGRATING,false],[OBJ_BURIED,tru
 for(const migrating of[false,true]){await setup();const m={};game.migrating_mons=migrating?[m]:[];assert.equal(obj_is_local({where:OBJ_MINVENT,ocarry:m}),!migrating);}
 
 // Lights have a separate serialized chain and need the same fresh IDs.
-await setup();const a=obj(ONAMES.OIL_LAMP),b=obj(ONAMES.OIL_LAMP);a.where=OBJ_FLOOR;b.where=OBJ_INVENT;game.level.objects=[a];game.invent=[b];game.light_sources=[{type:LS_OBJECT,id:a.o_id,x:1,y:2,range:3,flags:1},{type:LS_OBJECT,id:b.o_id,x:3,y:4,range:2,flags:0},{type:LS_OBJECT,id:0,x:3,y:4,range:0,flags:0}];const lights=save_light_sources(RANGE_LEVEL,true);assert.equal(lights.length,1);assert.equal(lights[0].flags,3);assert.equal(game.light_sources.length,1);const old=a.o_id;a.o_id=100001;restore_light_sources(lights);relink_light_sources(true,new Map([[old,a.o_id]]));assert.deepEqual(game.light_sources.map(s=>s.id),[a.o_id,b.o_id]);assert.equal(game.light_sources[0].flags,1);
+await setup();const a=obj(ONAMES.OIL_LAMP),b=obj(ONAMES.OIL_LAMP);a.where=OBJ_FLOOR;b.where=OBJ_INVENT;game.level.objects=[a];find_lev_obj();game.invent=[b];game.light_sources=[{type:LS_OBJECT,id:a.o_id,x:1,y:2,range:3,flags:1},{type:LS_OBJECT,id:b.o_id,x:3,y:4,range:2,flags:0},{type:LS_OBJECT,id:0,x:3,y:4,range:0,flags:0}];const lights=save_light_sources(RANGE_LEVEL,true);assert.equal(lights.length,1);assert.equal(lights[0].flags,3);assert.equal(game.light_sources.length,1);const old=a.o_id;a.o_id=100001;restore_light_sources(lights);relink_light_sources(true,new Map([[old,a.o_id]]));assert.deepEqual(game.light_sources.map(s=>s.id),[a.o_id,b.o_id]);assert.equal(game.light_sources[0].flags,1);
 
 // C keeps a base allocation even when its readable pointer skips spaces.
 await setup();game.moves=30;game.level.lev_engr=[{engr_txt:'mark',engr_txt_offset:2,engr_txt_remembered:'known',engr_remembered_offset:1,engr_time:1,eread:1,erevealed:1},{engr_txt:'second',engr_time:2}];const eng=save_engravings();assert.equal(game.level.lev_engr[0].engr_txt,'  mark');assert.equal(eng[0].engr_txt_remembered,' known');rest_engravings(eng);assert.deepEqual(game.level.lev_engr.map(e=>e.engr_txt),['second','mark']);assert.equal(game.level.lev_engr[1].engr_txt_offset,2);assert.equal(game.level.lev_engr[1].engr_time,30);forget_engravings();assert.ok(game.level.lev_engr.every(e=>e.eread===0&&e.erevealed===0));game.level.lev_engr[1].engr_txt='a\x1bb';game.level.lev_engr[1].engr_txt_remembered='a\x1bb';sanitize_engravings();assert.equal(game.level.lev_engr[1].engr_txt,'a.b');assert.equal(game.level.lev_engr[1].engr_txt_remembered,'a\x1bb');

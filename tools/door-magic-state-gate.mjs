@@ -53,7 +53,7 @@ const base=JSON.parse(fs.readFileSync(new URL('gen-sessions/recipes/untrapping-f
 let groups=0;
 async function setup(keys='\x1b'){
  resetInputState();await runSegment({...base,moves:pre,storage:new InMemoryStorage()});
- game.invent=[];game.level.objects=[];game.level.monsters=[];game.level.monAt=new Map();game.level.traps=[];game.occupation=null;reset_pick();game.flags.accessiblemsg=false;game.iflags.getpos_coords='n';
+ game.invent=[];game.level.objects=[];game.level.objAt.clear();game.level.monsters=[];game.level.monAt=new Map();game.level.traps=[];game.occupation=null;reset_pick();game.flags.accessiblemsg=false;game.iflags.getpos_coords='n';
  for(let x=game.u.ux-1;x<=game.u.ux+1;x++)for(let y=game.u.uy-1;y<=game.u.uy+1;y++){game.level.at(x,y).typ=ROOM;unblock_point(x,y);}
  game.u.dx=1;game.u.dy=game.u.dz=0;game._toplin=0;game._pending_message='';game._win_stop=false;game._preNhgetchHook=null;game.a11y={msg_loc:{x:0,y:0}};resetInputState();pushKeys(keys+' '.repeat(120));vision_recalc(0);groups++;
 }

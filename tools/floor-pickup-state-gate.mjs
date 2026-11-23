@@ -140,7 +140,7 @@ async function setup(keys='') {
     game._preNhgetchHook=null;game._toplin=0;game._win_stop=false;
     game.invent=[];game.u.uwep=game.u.uswapwep=game.u.uquiver=null;
     for(const m of game.level.monsters)remove_monster(m.mx,m.my);
-    game.level.monsters=[];game.level.objects=[];
+    game.level.monsters=[];game.level.objects=[];game.level.objAt.clear();
     game.level.at(game.u.ux,game.u.uy).typ=ROOM;game.flags.menu_style=MENU_FULL;
     resetInputState();pushKeys(keys+' '.repeat(120));checks++;
 }

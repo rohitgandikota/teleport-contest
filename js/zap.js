@@ -102,7 +102,7 @@ import { bimanual } from './obj.js';
 import { is_poisonable } from './obj.js';
 import { stone_object_type } from './mkobj.js';
 import { stone_furniture_type } from './mkobj.js';
-import { replace_object } from './mkobj.js';
+import { replace_object, recreate_pile_at } from './mkobj.js';
 import { fixup_oil } from './mkobj.js';
 import { is_corrodeable } from './mkobj.js';
 import { is_crackable } from './mkobj.js';
@@ -155,7 +155,7 @@ import { show_map_spot } from './detect.js';
 import { set_utrap } from './trap.js';
 import { reset_utrap } from './trap.js';
 import { acid_damage } from './trap.js';
-import { delfloortrap } from './trap.js';
+import { delfloortrap, fill_pit } from './trap.js';
 import { explode } from './explode.js';
 import { setnotworn } from './worn.js';
 import { which_armor } from './worn.js';
@@ -2467,7 +2467,8 @@ export async function poly_obj(obj, id) {
 // src/zap.c:1505 polyuse(); consume up to minwt weight of objects of
 // material mat from the pile (objhdr is the pile in nexthere order)
 async function polyuse(objhdr, mat, minwt) {
-    for (const otmp of objhdr) {
+    for (let otmp = objhdr[0], next; otmp; otmp = next) {
+        next = otmp.nexthere;
         if (!(minwt > 0))
             break;
         if (game.context?.bypasses && otmp.bypass)
@@ -2773,8 +2774,7 @@ export async function bhito(obj, otmp) {
                 await boxlock(obj, otmp);
 
             if (obj_shudders(obj)) {
-                const cover = ((obj === game.level.objects.find(o => o.where === OBJ_FLOOR
-                                                                && o.ox === game.u.ux && o.oy === game.u.uy))
+                const cover = ((obj === game.level.objectAt(game.u.ux, game.u.uy))
                                && game.u.uundetected
                                && hides_under(game.youmonst.data));
 
@@ -2993,38 +2993,52 @@ export async function bhito(obj, otmp) {
 }
 
 // src/zap.c:2428 bhitpile() — apply fhito to every object in the pile at
-// (tx,ty). The flat objects list is PREPEND-ordered, so filtering it gives
-// the same order C's per-square nexthere chain would.
+// (tx,ty), retaining the successor before each callback.
 export async function bhitpile(obj, fhito, tx, ty, zz) {
     let hitanything = 0;
-
-    const pile = (game.level.objects || [])
-        .filter(o => o.where === OBJ_FLOOR && o.ox === tx && o.oy === ty);
-    if (!pile.length)
+    if (!game.level.objectAt(tx, ty))
         return 0;
-
-    /* hidingunder — hero hiding under the top of the pile; hides_under
-       hero forms are not modelled */
-
+    const hidingunder = zz !== 0 && game.u.uundetected && hides_under(game.youmonst.data);
+    let first = true;
     if (obj.otyp === ONAMES.SPE_FORCE_BOLT
         || obj.otyp === ONAMES.WAN_STRIKING) {
+        const topofpile = game.level.objectAt(tx, ty);
         const trap = t_at(tx, ty);
         if (trap?.ttyp === STATUE_TRAP
             && await activate_statue_trap(trap, tx, ty, true))
             learnwand(obj);
+        if (game.level.objectAt(tx, ty) !== topofpile)
+            first = false;
     }
-
     poly_zapped = -1;
-    for (const otmp of pile) {
+    for (let otmp = game.level.objectAt(tx, ty), next_obj; otmp; otmp = next_obj) {
+        next_obj = otmp.nexthere;
+        if (hidingunder) {
+            if (first) {
+                first = false;
+                if (zz > 0)
+                    continue;
+            } else if (zz < 0) {
+                continue;
+            }
+        }
         if (otmp.where !== OBJ_FLOOR || otmp.ox !== tx || otmp.oy !== ty)
             continue;
         hitanything += await fhito(otmp, obj);
     }
     if (poly_zapped >= 0)
-        await create_polymon(game.level.objects.filter(o => o.where === OBJ_FLOOR && o.ox === tx && o.oy === ty), poly_zapped);
-
-    /* boulder re-stack — boulders polymorphed mid-pile; recorded */
-
+        await create_polymon(game.level.objectsAt(tx, ty), poly_zapped);
+    let prevotyp = ONAMES.BOULDER;
+    for (let otmp = game.level.objectAt(tx, ty); otmp; otmp = otmp.nexthere) {
+        if (otmp.otyp === ONAMES.BOULDER && prevotyp !== ONAMES.BOULDER) {
+            recreate_pile_at(tx, ty);
+            break;
+        }
+        prevotyp = otmp.otyp;
+    }
+    if (hidingunder)
+        maybe_unhide_at(tx, ty);
+    await fill_pit(tx, ty);
     return hitanything;
 }
 
@@ -4485,8 +4499,7 @@ function zapdir_cmap(dx, dy) {
 // src/zap.c:4598 burn_floor_objects(). Fire consumes eligible paper and slime
 // stacks, then lights every exposed fuel source left on the square.
 export async function burn_floor_objects(x, y, give_feedback, u_caused) {
-    const at = () => (game.level?.objects || []).filter(obj =>
-        obj.where === OBJ_FLOOR && obj.ox === x && obj.oy === y);
+    const at = () => game.level.objectsAt(x, y);
     let count = 0;
 
     for (const obj of [...at()]) {
@@ -5540,8 +5553,7 @@ async function zap_updown(obj) {
         if (u.uundetected && hides_under(game.youmonst.data)) {
             let hitit = 0;
 
-            otmp = (game.level.objects || []).find(
-                (o) => o.ox === u.ux && o.oy === u.uy) || null;
+            otmp = game.level.objectAt(u.ux, u.uy) || null;
             if (otmp)
                 hitit = await bhito(otmp, obj);
             if (hitit) {

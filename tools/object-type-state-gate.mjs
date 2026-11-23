@@ -9,7 +9,8 @@ import { game } from '../js/gstate.js';
 import { InMemoryStorage } from '../js/storage.js';
 import { ONAMES as O, OCLASSES, SKILLS } from '../js/objects_data.js';
 import { PMNAMES as P } from '../js/monst_data.js';
-import { ONAME, OBJ_FLOOR, OBJ_BURIED, M_AP_F_DKNOWN, NON_PM } from '../js/const.js';
+import { ONAME, OBJ_FREE, OBJ_BURIED, M_AP_F_DKNOWN, NON_PM } from '../js/const.js';
+import { place_object, remove_object } from '../js/mkobj.js';
 import { undiscover_object, observe_object } from '../js/o_init.js';
 import { find_oid, gem_learned } from '../js/shk.js';
 import { object_from_map } from '../js/pager.js';
@@ -144,13 +145,13 @@ assert.equal(object_from_map({ kind: 'obj', otyp: O.CORPSE }, x, y).otmp, buried
 assert.equal(buried.dknown, 0, 'buried object is not observed as surface loot');
 assert.equal(find_oid(buried.o_id), buried);
 const chest = { o_id: 1000002, otyp: O.CHEST, oclass: OCLASSES.TOOL_CLASS,
-    where: OBJ_FLOOR, ox: x, oy: y, cobj: [buried] };
-game.level.objects.unshift(chest);
+    where: OBJ_FREE, ox: x, oy: y, cobj: [buried] };
+place_object(chest, x, y);
 assert.equal(object_from_map({ kind: 'cmap' }, x, y).otmp, chest,
     'detected container trap prefers the chest at its location');
 game.level.buriedobjs = [];
 assert.equal(find_oid(buried.o_id), buried, 'object lookup descends into containers');
-game.level.objects.shift();
+remove_object(chest);
 for (const field of ['migrating_mons', 'mydogs']) {
     game[field] = [{ minvent: [chest] }];
     assert.equal(find_oid(buried.o_id), buried, field + ': nested inventory lookup');

@@ -1,0 +1,68 @@
+{
+    "name": "nexthere-native-floor-control",
+    "description": "Unchanged inputs of the retained four-segment native pit/hole/floor control. Segment 3 step 47 lists the boulder above the thrown crude dagger.",
+    "recordingNote": "Already recorded. Preserve the retained native file; this recipe is input provenance, not a request to record it again.",
+    "coverage": [
+        "mode.debug",
+        "ui.menus"
+    ],
+    "branches": [
+        "nexthere.native-boulder-before-thrown-dagger"
+    ],
+    "requireBranchAssertions": true,
+    "branchAssertions": [
+        {
+            "branch": "nexthere.native-boulder-before-thrown-dagger",
+            "segment": 3,
+            "screenIncludes": [
+                "Things that are here:",
+                "a boulder",
+                "a crude dagger"
+            ],
+            "screenCells": [
+                {
+                    "step": 47,
+                    "x": 43,
+                    "y": 1,
+                    "equals": "b"
+                },
+                {
+                    "step": 47,
+                    "x": 43,
+                    "y": 2,
+                    "equals": "c"
+                }
+            ]
+        }
+    ],
+    "segments": [
+        {
+            "name": "boulder-pit",
+            "seed": 31,
+            "datetime": "20000112093000",
+            "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!autoquiver,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+            "moves": " l\u0017uncursed wand of probing\r\u0017boulder\r\u0017pit\rza>    \u001b\u001b:  V"
+        },
+        {
+            "name": "boulder-hole",
+            "seed": 31,
+            "datetime": "20000112093000",
+            "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!autoquiver,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+            "moves": " l\u0017uncursed wand of probing\r\u0017boulder\r\u0017hole\rza>    \u001b\u001b:  V"
+        },
+        {
+            "name": "rock-pit",
+            "seed": 31,
+            "datetime": "20000112093000",
+            "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!autoquiver,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+            "moves": " l\u0017uncursed wand of probing\r\u0017rock\r\u0017pit\rza>    \u001b\u001b:  V"
+        },
+        {
+            "name": "boulder-floor",
+            "seed": 31,
+            "datetime": "20000112093000",
+            "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!autoquiver,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+            "moves": " l\u0017uncursed wand of probing\r\u0017boulder\rza>    \u001b\u001b:  V"
+        }
+    ]
+}

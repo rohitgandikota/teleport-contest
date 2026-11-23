@@ -2133,6 +2133,135 @@ Next: record the new local-pile replacement/restore proposal, complete the
 37-file scoped consumer review, then integrate and run the complete corpus.
 Linux collector portability remains a separate cache-only review.
 
+Recorder checkpoint `70920cb0` is pushed. The retained floor model is now
+applied across 37 runtime files, with the separate bhitpile fill_pit tail
+call. game.level.objects remains global fobj order; objAt holds each local
+head and objects retain nexthere links. Placement, split, replacement,
+extraction, restacking, flips and restore now maintain C's distinct orders.
+The parent reviewed the full scoped patch, corrected obsolete comments,
+merged new imports into existing groups and removed three newly unused
+OBJ_FLOOR imports. Runtime is frozen while the complete corpus runs; hashes
+are in nexthere-runtime-before-corpus.json.
+
+The new stone-to-flesh/save-restore recording independently verifies all
+68 screens/cursors and 3,138 exact calls. C shows boulder then dagger before
+replacement, meatball then dagger afterward, and dagger then meatball after
+restore. Before the model, two screens fail despite exact RNG. The retained
+original four-segment control is copied byte-for-byte as
+nexthere-native-floor-control.session.json, preserving its recorded hash.
+Its 217 screens/cursors, 8,957 calls and 12 animations now match. A separate
+four-case zap-pile-settlement fixture verifies a dropped rock over a pit as
+well as boulder/pit, boulder/hole and ordinary-floor controls: 217 boundaries,
+8,972 calls and 12 animations. Both new active recipes pass their native
+branch assertions. Strict new-fixture checks pass all 502 boundaries and
+21,067 calls. Four settlement state tests and 36 recent artifact/eyewear
+controls pass; their test reset now clears both floor representations.
+
+The complete 677-fixture scored regression is running in four shards,
+nexthere-corpus-{0..3}.log, with path counts 170/169/169/169. The complete
+strict RNG audit is running in nexthere-rng-{0,1}.log. At 16:59 UTC, 371
+scored fixtures and 138 strict fixtures have completed without a finding;
+these are progress counts, not final claims. The 213 animation-bearing
+fixtures are selected in nexthere-animation-paths.json but their strict
+animation run has not started. Avicenna is formatting the promoted C-oracle
+tools without changing their behavior. Jason audits old constructed floor
+test setups in cache; no production fallback is allowed for invalid states.
+
+Linux collector portability is applied separately in tools/c-branch-coverage
+and its two test files. All 35 mocked controls pass. The isolated NFS checkout
+is synchronized to 70920cb0, with these reviewed collector files copied for
+native validation. The actual instrumented build is running under
+/share/NFS/u/rohit/research/contest/artifacts/2026-11-22/c-coverage-llvm18.Bicl8O,
+using four CPU jobs and the verified private LLVM18/canary. Its local launch
+log is linux-coverage-instrumented-build-launch.log; remote build.log and
+build-driver.log retain diagnostics. No native coverage pilot has run yet.
+Keep the infrastructure and floor gameplay commits separate.
+
+Pauli found no new reachable make_blinded/toggle_blindness defect. A small
+caller defect in peffect_blindness is reproduced with 36 controls, five
+failing before: the Eyes can suppress an existing blindness source without
+making another blindness potion observable. Its patch and three input
+proposals remain in blindness-timeout-audit-* for native verification after
+the floor checkpoint. Pauli now reviews make_hallucinated and its callers.
+
+The floor model's complete verification is finished. All 677 scored fixtures
+pass, with every result/error and metric checked: 799,351 screens/cursors,
+15,761,413 RNG positions and 30,237 animation frames. The complete strict RNG
+audit passes all 4,339 segments and 799,352 C input boundaries, with exactly
+15,761,413 calls on each side and one explicitly verified blank exit frame.
+All 213 animation-bearing fixtures pass 30,237 exact cells/cursors/frames,
+zero count differences, and all 353,108 boundary cursors. Runtime hashes are
+unchanged through all three full runs. Totals are nexthere-corpus-totals.json,
+nexthere-rng-totals.json and nexthere-animation-totals.json.
+
+The promoted readable oracle gate passes 992/992 checks, including 711
+intermediate states from 68 C histories. Its JS input check and both native
+ordered-list checks pass. Six hang checks pass. The recent state set passes
+40/40 settlement/artifact/eyewear controls; silver controls also passed on
+this runtime. The seven strict-RNG gate fault controls pass. The source
+audit remains 0 findings across 276 non-frozen modules. Jason's bounded
+constructed-test setup audit is still finishing; review its scoped test-only
+patch before committing the floor checkpoint. No runtime change is pending
+from that audit. Do not mix the uncommitted Linux collector into this commit.
+
+The Linux instrumented build and first native pilot completed. Its binary
+hash is f33572db7c362dbef0a11913f80382161d4c58be70c43096de89b6df8bbe99b0.
+Only artifact-blast-rehumanize earns coverage: 1,180/5,492 entered functions
+and 7,357/107,260 direct outcomes. This is a single-fixture pilot, not the
+fresh complete census. dlb.c has no mapped functions and remains explicit in
+the source inventory. The two rejected profiles receive no credit. Version
+screens identify Unix versus MacOS. Save/restore also prints a failed exec
+diagnostic because /usr/bin/compress is absent; raw RNG remains exact. Keep
+all rejected recordings and diagnostics on NFS. Do not normalize these
+differences or modify C source to conceal them.
+
+The reusable canary tools/c-coverage-canary.{mjs,c} now passes actual NFS
+normal exit, SIGTERM and SIGKILL after promotion. The collector's 35 mocked
+controls also pass. ncompress 5.0-1 was downloaded and extracted privately
+to ncompress.Ny4AFx under the NFS artifact root, with its apt SHA-256 verified.
+A separate ordinary recorder copy, ordinary-compress.ezJY2B/recorder, was
+configured with that executable via standard COMPRESS/COMPRESS_EXTENSION
+compiler definitions. No C gameplay source or system package was changed,
+and both earlier builds are retained. Its binary hash is
+a422b8c484dc4bdc6d0c33b8469881d82c0a3f6302b376f395c8bbc980f691c6.
+The first copied-build pilot had zero steps because clean/install removed
+sysconf. The corrected cached build script now reinstalls the verified
+sysconf; linux-coverage-compress-pilot-final.log is the pending exact check.
+After success, create a fresh instrumented build from this ordinary copy.
+
+Blindness-potion native verification is complete in cache: three cases match
+313 screens/cursors and exactly 12,814 RNG calls at every input boundary
+with the proposed predicate repair. Before gives 306 screens/cursors and
+4,534 matched C call positions. An initial CLI --loader comparison did not
+reach frozen runner subprocesses; candidate-workers.log uses inherited
+NODE_OPTIONS correctly and the separate strict gate confirms exact counts.
+The normal-import 36-test promotion is ready. No potion change is applied.
+
+Pauli's next hallucination audit has a separate cache patch, 40 controls
+(11 failing before) and four JS-only native proposals. Singer's prize audit
+has three JS-validated inputs and source proof for the missing addinv_core1
+Mines/Sokoban prize-release tail; no candidate or native recording yet.
+Singer now reviews omitted place_object/remove_object side effects. Both
+follow-ups require native verification and separate scoped checkpoints.
+
+The floor test setup audit is integrated. Twenty existing gates now use the
+real placement/restore helpers or clear both floor representations. All 812
+assertion-bearing lines are preserved. Fourteen gates pass; six stop at the
+same pre-existing assertion/import on both setup versions. The five repaired
+gates pass again from their actual tracked paths (177 cases). Sixteen focused
+setup controls and eight isolated bones timer/light groups also pass. The
+cache report lists each baseline limitation; none was weakened or concealed.
+Runtime hashes remain those of the complete 677-fixture verification. Commit
+and push this floor checkpoint now, excluding the five Linux coverage files.
+
+The private-compressor ordinary pilot now has exact screens, cursors and
+animations, but its raw RNG annotations use the first line of multiline
+macros under GCC (allmain.c:164) versus Clang's last line (166). Values,
+arguments and ordering match. Keep the strict collector unchanged. The next
+instrumented build uses the pinned private Clang, as did the first exact
+artifact pilot. Verify its save/restore recording byte-for-byte before
+crediting it. No source or platform-banner normalization is authorized.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

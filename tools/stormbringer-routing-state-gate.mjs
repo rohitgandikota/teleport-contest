@@ -36,7 +36,7 @@ async function setup({ storm = true, tame = false, safe = true, confirm = true,
     };
     game._preNhgetchHook = null;
     game.level.monsters = []; game.level.monAt.clear();
-    game.level.objects = []; game.level.traps = []; game.regions = [];
+    game.level.objects = []; game.level.objAt.clear(); game.level.traps = []; game.regions = [];
     Object.assign(game.u, { ux: 31, uy: 10, dx: 1, dy: 0, uswallow: false,
         ustuck: null, usteed: null, intrinsic: {}, uprops: {}, blocked: {},
         ublind: 0, ublindf: null, uhp: 1000, uhpmax: 1000, uball: null,

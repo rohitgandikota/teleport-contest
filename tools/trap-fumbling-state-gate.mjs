@@ -21,7 +21,7 @@ async function setup({intrinsic=0,external=0,known=true}={}) {
     };
     game._preNhgetchHook=null;
     game.level.monsters=[]; game.level.monAt.clear();
-    game.level.objects=[]; game.level.engravings=[]; game.regions=[];
+    game.level.objects=[];game.level.objAt.clear(); game.level.engravings=[]; game.regions=[];
     game.u.ux=31; game.u.uy=10; game.u.ux0=30; game.u.uy0=10;
     game.u.usteed=null; game.u.utrap=0; game.u.utraptype=0;
     game.u.dx=1; game.u.dy=0; game.u.umoved=false;

@@ -13,50 +13,33 @@ Ground rules are in `/CLAUDE.md`. Read that first if you have not.
 ## Current focus, 2026-11-23
 
 Continue the faithful port with readable C-aligned code and prompt verified
-pushes. The latest official snapshot, November 23 at 13:48 UTC, has 23,595
-of 24,531 combined screens, 7th agentic and 11th overall. It predates the
-latest repairs. Public remains 44/44; 936 held-out screens remain unmatched
-in that snapshot.
+pushes. The latest official snapshot checked, November 23 at 13:48 UTC, has
+23,595 of 24,531 combined screens, 7th agentic and 11th overall. It predates
+these repairs. Public remains 44/44; that snapshot has 936 unmatched held-out
+screens. Local verification does not establish a newer held-out score.
 
-The latest full regression covers 671/671 fixtures with 798,036 exact boundary
-screens/cursors, 15,713,238 matched RNG calls and all 30,213 scored animation frames.
-Glyph metadata, object appearance shuffling, monster identities and map
-cursor output are verified. The stricter public animation check now matches
-all 1,483 cursor positions, with exact cells and frame counts.
-Mounted-hero rendering now passes seven new native cases and 73 selected
-fixtures, with 21,828 exact screens/cursors and 1,324,950 RNG calls.
-C's shared display_monster helper now preserves sensed-mimic memory and unseen
-worm-tail selection. Buffered pet attributes and Rogue colors pass 151 selected
-fixtures, including six new native cases. Dismount and trap impairment now
-passes 79 selected fixtures and four new native cases. Beam/projectile cursor
-ordering is repaired. Pet option parsing, bound toggles and fresh-process
-settings across restore now pass six option cases and four save/restore pairs.
-Movement/exercise predicates and counted missile volleys now match their C
-contracts. The complete animation-bearing corpus now matches all 30,213 cursors, cells
-and frame counts after repairing status-field cursor advancement. Teleport and scroll
-property readers, plus failed-teleport discovery, pass 163 selected fixtures,
-including all public games and ten new C cases: 161,673 screens/cursors and
-3,155,541 matched RNG calls. Magical-breathing regeneration and intrinsic storage now pass seven native
-cases and 117 selected fixtures, with 57,483 screens/cursors and 1,562,342
-matched RNG calls. Stormbringer attack routing and the safe_pet binding pass
-six native cases and 62 routing/option controls. The first complete strict RNG
-audit confirmed every stream and length and exposed two input-boundary shifts.
-Both are repaired, with 169 selected fixtures passing 110,870 screens/cursors
-and 2,431,310 RNG calls. The strict gate also handles C's blank final exit
-marker explicitly and retains negative controls for missing calls and inputs.
-Silver-hit feedback and Constitution abuse now pass 17 state controls and
-163 selected fixtures, with 93,303 screens/cursors and 2,187,863 RNG calls.
-Eyewear transitions pass 30 state controls, four native cases and 152 selected
-fixtures, with 82,853 screens/cursors and 2,354,331 RNG calls. Artifact acquisition
-after reversion passes six state controls, three native cases and 186 selected
-fixtures, with 200,242 screens/cursors and 3,803,349 RNG calls. Recorder child
-cleanup passes 18 controls and exact native rerecordings of 17 segments.
-Next: floor-pile settlement and separate local object order. The isolated
-Linux recorder builds successfully, and NFS profiling passes its termination
-canary; fresh gameplay branch coverage has not been collected yet.
-Current-corpus parity is not a
-completeness claim. See [STATUS.md](STATUS.md) for evidence and next actions.
-Historical milestone rows below are not a current completion audit.
+The latest complete regression passes 677/677 fixtures: 799,351 boundary
+screens/cursors, 15,761,413 RNG calls and 30,237 scored animation frames.
+The complete strict RNG audit also passes all 799,352 C input boundaries,
+including the explicitly checked blank exit frame, with identical complete
+streams and lengths. All 213 animation-bearing fixtures match every frame's
+cells, cursor and ordering, with exact frame counts.
+
+Floor objects now retain independent global and per-square order. Placement,
+splitting, replacement, extraction, restacking, level flips and restore follow
+C's chain contracts. Nine extracted C functions support 992 state checks.
+Three native fixtures verify replacement/restore order and pit settlement;
+all 502 boundaries and 21,067 RNG calls match exactly. Recent artifact,
+eyewear, silver-hit and input-order repairs remain covered by the full suite.
+
+Next: blindness-potion discovery under the Eyes, hallucination transitions,
+Mines/Sokoban prize acquisition and remaining floor-object side effects.
+Linux/NFS profiling builds and passes normal-exit/SIGTERM/SIGKILL canaries.
+The first pilot credits one exact fixture and excludes two mismatches;
+resolve its missing compression dependency before expanding the census.
+Current-corpus parity is not a completeness claim. See [STATUS.md](STATUS.md)
+for evidence and next actions. Historical milestone rows below are not a
+current completion audit.
 
 ## Previous focus, 2026-09-06
 

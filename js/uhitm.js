@@ -843,8 +843,7 @@ export async function attack_checks(mtmp, wep) {
                             notseen ? 'is present' : 'appears'}!`);
             else if (Blind() || (is_pool(mtmp.mx, mtmp.my) && !Underwater()))
                 await pline("Wait!  There's a hidden monster there!");
-            else if ((obj = (game.level?.objects || [])
-                          .find(o => o.ox === mtmp.mx && o.oy === mtmp.my)) != null)
+            else if ((obj = game.level.objectAt(mtmp.mx, mtmp.my)) != null)
                 await pline(`Wait!  There's ${
                             notseen ? 'something' : an(lmonbuf)} hiding under ${
                             doname(obj)}!`);

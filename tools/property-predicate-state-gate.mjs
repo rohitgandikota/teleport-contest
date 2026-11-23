@@ -24,7 +24,7 @@ async function setup() {
     game._preNhgetchHook=null;
     const pony=game.level.monsters.find(m=>m.mnum===PMNAMES.PM_PONY);
     game.level.monsters=[]; game.level.monAt.clear();
-    game.level.objects=[]; game.level.traps=[]; game.level.engravings=[]; game.regions=[];
+    game.level.objects=[];game.level.objAt.clear(); game.level.traps=[]; game.level.engravings=[]; game.regions=[];
     game.u.ux=31; game.u.uy=10; game.u.dx=1; game.u.dy=0; game.u.dz=0;
     game.u.usteed=null; game.u.utrap=0; game.u.ustuck=null;
     game.u.intrinsic={}; game.u.uprops={}; game.u.blocked={};

@@ -973,8 +973,7 @@ export async function mattacku(mtmp) {
                  * parallelism to work, we can't rephrase it, so we
                  * zap the "laid by you" momentarily instead.
                  */
-                const obj = (game.level?.objects || [])
-                    .find(o => o.ox === game.u.ux && o.oy === game.u.uy);
+                const obj = game.level.objectAt(game.u.ux, game.u.uy);
 
                 if (obj || game.u.umonnum === PMNAMES.PM_TRAPPER
                     || (game.youmonst.data.mlet === MONSYMS.S_EEL
@@ -1426,8 +1425,7 @@ async function hitmu(mtmp, mattk, indx) {
         && (hides_under(mdat) || mdat.mlet === MONSYMS.S_EEL)) {
         mtmp.mundetected = 0;
         if (!sensemon(mtmp) && !Detect_monsters()) {
-            const obj = (game.level?.objects || [])
-                .find(o => o.ox === mtmp.mx && o.oy === mtmp.my);
+            const obj = game.level.objectAt(mtmp.mx, mtmp.my);
             if (obj) {
                 const what = Blind() && !obj.dknown
                     ? 'something'

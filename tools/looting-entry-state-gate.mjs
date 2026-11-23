@@ -53,7 +53,7 @@ const rows=()=>game.nhDisplay.grid.map(r=>r.map(c=>c.ch).join(''));
 const text=()=>[...snapshots.flat(),...rows()].join('\n');
 async function setup(keys='\x1b'){
  resetInputState();await runSegment({...base,moves:pre,storage:new InMemoryStorage()});
- game.invent=[];game.level.objects=[];game.level.monsters=[];game.level.monAt=new Map();game.level.traps=[];
+ game.invent=[];game.level.objects=[];game.level.objAt.clear();game.level.monsters=[];game.level.monAt=new Map();game.level.traps=[];
  game.level.at(game.u.ux,game.u.uy).typ=ROOM;game.flags.autounlock=0;
  game._toplin=0;game._pending_message='';game._win_stop=false;snapshots=[];
  game._preNhgetchHook=()=>snapshots.push(rows());resetInputState();pushKeys(keys+' '.repeat(80));groups++;

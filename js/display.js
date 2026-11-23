@@ -1247,15 +1247,9 @@ function pile_attr(glyph) {
            && game.flags?.use_inverse !== false ? TERM_INVERSE : 0;
 }
 
-/* src/mkobj.c:2336-2348 place_object() keeps every boulder at the head of
-   its per-square nexthere chain.  The port's flat fobj-style list must remain
-   newest-first for global traversals, so derive the visible pile head here. */
+/* include/display.h: vobj_at(), the actual per-square pile head. */
 export function vobj_at(x, y) {
-    const objects = game.level?.objects || [];
-    return objects.find(o => o.ox === x && o.oy === y
-                             && o.otyp === ONAMES.BOULDER)
-           || objects.find(o => o.ox === x && o.oy === y)
-           || null;
+    return game.level?.objectAt(x, y) || null;
 }
 
 function floor_object_glyph(obj, x, y, piletop = true,
@@ -1320,8 +1314,7 @@ function floor_object_glyph(obj, x, y, piletop = true,
                     statue: obj.otyp === ONAMES.STATUE && obj.corpsenm >= 0,
                     body: obj.otyp === ONAMES.CORPSE && obj.corpsenm >= 0 };
     if (piletop && (game.level?.objects || []).includes(obj)
-        && (game.level.objects || []).filter(
-            o => o.ox === x && o.oy === y).length > 1)
+        && game.level.objectsAt(x, y).length > 1)
         gdesc.pile = true;
 
     /* include/display.h:950 statue_to_glyph() — a STATUE becomes

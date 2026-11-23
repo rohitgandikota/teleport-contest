@@ -48,7 +48,7 @@ import { W_ARMOR, W_TOOL, W_SADDLE, W_RINGR, W_RINGL, W_AMUL, W_QUIVER, W_WEP,
          LAVAPOOL, LAVAWALL, ROOM, CORR, SCORR, ICE, ICED_POOL, ICED_MOAT,
          DRAWBRIDGE_DOWN, DRAWBRIDGE_UP, DB_UNDER, DB_ICE,
          DB_MOAT, DB_LAVA, DB_FLOOR, STAIRS, LADDER, TT_LAVA,
-         MELT_ICE_AWAY, Is_rogue_level } from './const.js';
+         Is_rogue_level } from './const.js';
 import { mons, PMNAMES } from './monst_data.js';
 import { observe_object } from './o_init.js';
 import { ordin, distu, s_suffix } from './hacklib.js';
@@ -3157,7 +3157,7 @@ async function wizterrainwish(d) {
         }
         const { is_ice } = await import('./dbridge.js');
         if (!is_ice(x, y)) {
-            const { spot_stop_timers } = await import('./timeout.js');
+            const { spot_stop_timers, MELT_ICE_AWAY } = await import('./timeout.js');
             spot_stop_timers(x, y, MELT_ICE_AWAY);
         }
         if (IS_FOUNTAIN(oldtyp) || IS_GRAVE(oldtyp)

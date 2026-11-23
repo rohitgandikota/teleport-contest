@@ -2840,10 +2840,37 @@ the earlier original is retained. These failures are not promoted into the
 passing corpus or claimed repaired by this placement checkpoint. Their logs
 use held-restore-phase-parent-*.
 
-Commit and immediately push this verified placement checkpoint. Next are the
-four timer-import fixes with a new 330-boundary oracle, source-backed weapon
-enchantment repairs with seven native cases, then full restore phases and
-the coordinated invoked-artifact loss repair. All remain separate candidates.
+Placement checkpoint `cec2121f` is pushed. The next timer checkpoint changes
+four imports: terrain wishes, level terrain changes, broken digging wands and
+raised-bridge trap conversion now use timeout.js's numeric MELT_ICE_AWAY.
+Their existing calls and ordering remain unchanged. The stale const.js string
+never matched a real timer. All 14 source controls pass, versus three before;
+each of the four imports is independently necessary. The controls preserve
+other-square timers, object timers, queue identity and the next timer ID.
+
+The new melting-ice-timer-cancellation fixture preserves all three original
+native segments unchanged: 330 boundaries, 9,666 RNG calls and no animations.
+Floor and pit replacement cancel the timer; ice replacement retains it. Before
+the fix, four screens differ. All screens, cursors, complete RNG streams and
+input slices now match. All three input observations and native branch
+assertions pass, with existing observation-hook descriptors restored. Exact
+animation counts and the 60-second input-exhaustion gate pass.
+
+The selected regression passes 80/80 fixtures: all 44 public plus 36 related
+ice, timer, digging, bridge, terrain, floor and held-object recordings. It
+matches 66,627 screens/cursors, 1,691,051 scored RNG positions and 6,457
+animations. All 279 runtime hashes stayed fixed; paths are unique and match
+the selection. Receipts are timer-cancel-selection-{0,1}.log and
+timer-cancel-selection-totals.json. This is a selected regression, not a new
+complete-corpus run. The last complete run remains 689/689 at the placement
+checkpoint; this new fixture brings the maintained inventory to 690.
+Source audit remains 0/276; changed-file syntax and diff checks pass.
+
+Commit and immediately push the verified timer checkpoint. Next are the
+four source-backed weapon-enchantment corrections with seven native cases,
+then full restore phases and coordinated invoked-artifact loss. A separate
+drawbridge predicate audit investigates is_pool accepting ice/floor beneath
+a raised bridge; it is not repaired or hidden by these import fixes.
 
 ## 2026-09-05: full faithful port is the active goal
 

@@ -1,0 +1,90 @@
+{
+  "name": "melting-ice-timer-cancellation",
+  "description": "Replacing melting ice with floor or a pit cancels its numeric timer before ordinary ice is recreated. An ice-to-ice control retains the original timer. All three native input segments are unchanged.",
+  "coverage": [
+    "mode.debug",
+    "turn.timers",
+    "terrain.water-lava"
+  ],
+  "branches": [
+    "melting-ice-cancellation.terrain-wish",
+    "melting-ice-cancellation.pit-setter",
+    "melting-ice-cancellation.unchanged-ice-control"
+  ],
+  "requireBranchAssertions": true,
+  "segments": [
+    {
+      "seed": 9211,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Timer,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,time\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "wish-floor-then-permanent-ice",
+      "moves": "mO aqr\r\u001b\u001b\u0017blessed scroll of genocide\rra  *\r\u001b\u001b\u0017blessed fireproof water walking boots\rWb\u0017melting ice\r\u0017floor\r\u0017ice\r:"
+    },
+    {
+      "seed": 9211,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Timer,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,time\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "wish-pit-then-permanent-ice",
+      "moves": "mO aqr\r\u001b\u001b\u0017blessed scroll of genocide\rra  *\r\u001b\u001b\u0017blessed fireproof water walking boots\rWb\u0017melting ice\r\u0017pit\r\u0017ice\r:"
+    },
+    {
+      "seed": 9211,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Timer,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,time\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "ice-to-ice-retains-existing-timer-control",
+      "moves": "mO aqr\r\u001b\u001b\u0017blessed scroll of genocide\rra  *\r\u001b\u001b\u0017blessed fireproof water walking boots\rWb\u0017melting ice\r\u0017ice\r:"
+    }
+  ],
+  "branchAssertions": [
+    {
+      "branch": "melting-ice-cancellation.terrain-wish",
+      "segment": 0,
+      "screenIncludes": [
+        "Steady ice.",
+        "There is solid ice here.",
+        "Room floor."
+      ],
+      "screenCells": [
+        {
+          "step": 112,
+          "x": 10,
+          "y": 0,
+          "equals": "o"
+        }
+      ]
+    },
+    {
+      "branch": "melting-ice-cancellation.pit-setter",
+      "segment": 1,
+      "screenIncludes": [
+        "Steady ice.",
+        "There is solid ice here.",
+        "A pit."
+      ],
+      "screenCells": [
+        {
+          "step": 110,
+          "x": 10,
+          "y": 0,
+          "equals": "o"
+        }
+      ]
+    },
+    {
+      "branch": "melting-ice-cancellation.unchanged-ice-control",
+      "segment": 2,
+      "screenIncludes": [
+        "Steady ice.",
+        "There is steady ice here."
+      ],
+      "screenCells": [
+        {
+          "step": 105,
+          "x": 10,
+          "y": 0,
+          "equals": "t"
+        }
+      ]
+    }
+  ]
+}

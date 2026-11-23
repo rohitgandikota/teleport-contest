@@ -53,8 +53,12 @@ controls pass. Four more native sink cases bring the complete corpus to
 and 30,573 animations. Floor and container placement now also preserve held
 effects and billing order in nine new native cases and 39 state controls.
 The complete 689-fixture corpus matches all 805,930 screens/cursors,
-16,027,277 scored RNG positions and 30,597 animations. Next: timer cancellation,
-the reproduced restore-phase gap and invoked artifact loss. The
+16,027,277 scored RNG positions and 30,597 animations. Four timer consumers
+now use the numeric melt identifier. Their three native cases, 14 state
+controls and all 80 selected regressions pass, including every public fixture.
+The maintained inventory is 690; the latest complete run remains 689.
+Next: weapon enchantment, the reproduced restore-phase gap and invoked
+artifact loss. The
 Linux/NFS branch collector is pushed
 and passes signal canaries plus exact save/restore, artifact and natural-exit
 pilots. The Linux census at e4504071 now covers all 678 original inputs:

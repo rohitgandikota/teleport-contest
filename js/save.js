@@ -11,7 +11,9 @@
 // Both can draw from the fresh process's RNG before play resumes.
 
 import { assign_graphics, ROGUESET } from './symbols.js';
-import { Is_rogue_level, gm_levelchange, RANGE_LEVEL, RANGE_GLOBAL } from './const.js';
+import { change_luck } from './attrib.js';
+import { Is_rogue_level, gm_levelchange, RANGE_LEVEL, RANGE_GLOBAL,
+         FULL_MOON } from './const.js';
 import { reset_glyphmap, reglyph_darkroom } from './display.js';
 import { game } from './gstate.js';
 import { pline, tty_clear_nhwindow_message } from './display.js';
@@ -210,7 +212,13 @@ export async function dosave() {
 export function dosave0() {
     if (!game.storage)
         return false;
+    const luck = game.u.uluck;
     try {
+        // src/save.c:141-145: resume applies the new date's luck adjustment.
+        if (game.flags.moonphase === FULL_MOON)
+            change_luck(-1);
+        if (game.flags.friday13)
+            change_luck(1);
         // src/save.c:168 savelev(), also marks the current level VISITED.
         (game.visited_ledgers ||= new Set()).add(`${game.u.uz.dnum}:${game.u.uz.dlevel}`);
         save_engravings();
@@ -218,6 +226,8 @@ export function dosave0() {
         game.storage.setItem(save_key(), JSON.stringify(snap));
         return true;
     } catch (e) {
+        // A refused storage write leaves the current game playable.
+        game.u.uluck = luck;
         return false;
     }
 }

@@ -3306,6 +3306,58 @@ encoding and restores the original luck on a refused storage write. It
 passes all three paired native files and 15 source controls in isolation.
 It is not part of the frozen concealment regression or the held restore rewrite.
 
+Concealment checkpoint `d95cc62b` is pushed. The date-luck correction is now
+integrated separately in save.js. It reverses the saved session's full-moon
+and Friday adjustments through change_luck in C's order before encoding.
+A rejected storage write restores the exact original luck, including clamped
+limits. The promoted runtime passes 26 controls: 15 date/limit/storage checks,
+three actual save/resume pairs and eight retained stun-producer/save checks.
+The three untouched native fixtures contain six segments, 96 boundaries and
+8,286 calls. Baseline matches 94/96 screens; the integrated repair matches all
+screens, cursors and complete/per-input RNG. With the public cross-date save,
+full-save timer order and restored floor-chain cases, all 505 boundaries,
+21,461 calls and 54 animations match. Input exhaustion, six recipe assertions,
+original input tuples, syntax and the 0/276 source audit pass. Full regression
+passes 709/709 fixtures without failures or timeouts: 812,075 screens/cursors,
+16,264,686 scored RNG positions and 30,722 animations. Every metric matches;
+paths and unique basenames match the maintained inventory. Both shards used
+the standard 45-second worker limit, and all 279 runtime hashes stayed fixed.
+Receipts use save-date-luck-corpus-* and save-date-luck-runtime-before-corpus.json.
+
+All three date recordings also pass byte-exact instrumented C replay on NFS.
+The validated union now contains 703 credited inputs with fourteen matching
+build manifests and branch layouts. The 23 newer raw inputs contain 121
+segments, in addition to nine segments from the two independent Linux controls.
+Function/outcome totals remain 4,509/5,492 and 58,782/107,260. These cases
+exercise already-covered branches in different saved states and still expose
+real mismatches. The union is
+c-coverage-compress.E84JI2/verified-save-date-union-20261123;
+local receipts use save-date-luck-promoted-*, save-date-luck-verification.json
+and linux-coverage-save-date-union-*.
+
+The first three native recordings inherited their input proposal's source
+label. Fresh C recordings with source=c input metadata have identical complete
+segments; both raw sets remain unchanged in cache. The promoted files are the
+second recordings. An initial isolated --test/--loader invocation registered
+the strict loader twice and failed its preimage check before tests ran. That
+harness error is retained separately; normal-import promoted controls pass.
+
+The official refresh after `d95cc62b` is byte-identical to the prior snapshot,
+still dated 20:18 UTC with our 19:33 UTC scoring run. No leaderboard gain is
+claimed from the subsequent pushes. The next floor-inspection diagnostic has
+four native cases, 379 boundaries, 15,382 calls and 12 animations. Its original
+look_here-only candidate is exact, but parent review also identified shared
+terrain-message helper gaps. Those helpers remain under review before promotion.
+
+Seven separate status proposals are recorded unchanged as
+deaf-underwater-wounded-parent-native.session.json: 531 boundaries,
+19,686 calls and no animations. Baseline matches 507 screens and 511 cursors.
+The isolated candidate's prior JS reach run differs from C by eight calls in
+underwater mixed-terrain movement and one in dog-form leg healing. These must
+be resolved against the untouched native output before promotion. The eighth
+underwater-decor proposal is separate and belongs to the shared terrain-helper
+review. Passing state gates alone does not establish native parity.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

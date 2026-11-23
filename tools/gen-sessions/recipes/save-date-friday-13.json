@@ -1,0 +1,47 @@
+{
+  "name": "save-date-friday-13",
+  "description": "Save and resume on the same friday-13 date. Startup luck is removed before saving and applied once on resume.",
+  "coverage": [
+    "mode.debug",
+    "state.save-restore",
+    "hero.luck"
+  ],
+  "branches": [
+    "save-date-friday-13.save",
+    "save-date-friday-13.restore-luck"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "save-date-friday-13.save",
+      "segment": 0,
+      "screenIncludes": [
+        "Be seeing you..."
+      ]
+    },
+    {
+      "branch": "save-date-friday-13.restore-luck",
+      "segment": 1,
+      "screenIncludes": [
+        "You are unlucky (-1)."
+      ],
+      "screenExcludes": [
+        "You are unlucky (-2)."
+      ]
+    }
+  ],
+  "segments": [
+    {
+      "seed": 99812,
+      "datetime": "20261113090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": "    Sy"
+    },
+    {
+      "seed": 7,
+      "datetime": "20261113090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " n    #attributes\r    \u001b\u001b"
+    }
+  ]
+}

@@ -1,0 +1,47 @@
+{
+  "name": "save-date-ordinary",
+  "description": "Save and resume on the same ordinary date. Startup luck is removed before saving and applied once on resume.",
+  "coverage": [
+    "mode.debug",
+    "state.save-restore",
+    "hero.luck"
+  ],
+  "branches": [
+    "save-date-ordinary.save",
+    "save-date-ordinary.restore-luck"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "save-date-ordinary.save",
+      "segment": 0,
+      "screenIncludes": [
+        "Be seeing you..."
+      ]
+    },
+    {
+      "branch": "save-date-ordinary.restore-luck",
+      "segment": 1,
+      "screenIncludes": [
+        "Your luck is zero."
+      ],
+      "screenExcludes": [
+        "You are lucky (1)."
+      ]
+    }
+  ],
+  "segments": [
+    {
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": "    Sy"
+    },
+    {
+      "seed": 7,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " n    #attributes\r    \u001b\u001b"
+    }
+  ]
+}

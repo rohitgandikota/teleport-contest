@@ -1,0 +1,47 @@
+{
+  "name": "save-date-full-moon",
+  "description": "Save and resume on the same full-moon date. Startup luck is removed before saving and applied once on resume.",
+  "coverage": [
+    "mode.debug",
+    "state.save-restore",
+    "hero.luck"
+  ],
+  "branches": [
+    "save-date-full-moon.save",
+    "save-date-full-moon.restore-luck"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "save-date-full-moon.save",
+      "segment": 0,
+      "screenIncludes": [
+        "Be seeing you..."
+      ]
+    },
+    {
+      "branch": "save-date-full-moon.restore-luck",
+      "segment": 1,
+      "screenIncludes": [
+        "You are lucky (1)."
+      ],
+      "screenExcludes": [
+        "You are lucky (2)."
+      ]
+    }
+  ],
+  "segments": [
+    {
+      "seed": 99812,
+      "datetime": "20000120090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": "    Sy"
+    },
+    {
+      "seed": 7,
+      "datetime": "20000120090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " n    #attributes\r    \u001b\u001b"
+    }
+  ]
+}

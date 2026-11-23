@@ -1612,6 +1612,45 @@ is unchanged. Only the multishot-property audit remains active, with cache-only
 dothrow edits outside the returning-weapon helper. All pending source candidates
 must be applied as bounded patches, retaining the current cursor changes.
 
+Cursor checkpoint `fcfbea2f` is pushed. The petattr options and restore repair
+is applied and fully verified. Startup parsing now uses C attribute matching,
+canonical option abbreviations and boolean parameter rules. Enabling hilite_pet
+from a zero attribute selects inverse. Save recovery preserves the new process's
+hilite_pet value, just as C keeps instance_flags; other saved flags still win.
+
+All 664 fixtures pass: 795,024 screens/cursors, 15,619,577 RNG calls and 30,203
+animation cell frames. All four final result records were parsed and every
+metric checked. The 87 parser/native, six real-input menu, 16 restore/native,
+18 existing boolean/fruit and four existing restore checks pass, 131 total.
+The promoted parser gate fails 78 checks before; the restore gate fails 12
+with the option parser fixed but the old save behavior retained. All five new
+input-exhaustion checks and the 276-module source audit pass. Logs in the restart
+cache: `petattr-corpus-{0..3}`, `petattr-all-state-final`, `petattr-hang-final`,
+`petattr-source-audit-final`, `petattr-restore-promoted-before` and
+`petattr-restore-final-native`, all `.log`.
+
+The new native cases contribute 367 screens and 29,160 RNG calls. Invalid
+startup settings have source-state diagnostic tests, not complete native
+startup-error presentation coverage. Duplicate-option diagnostics and C atoi
+overflow remain outside this checkpoint. The existing strict animation result
+is still the 48-fixture beam/projectile check, not all 664 fixtures.
+
+Next: integrate the attrib/cmd property repair with the expanded dothrow patch
+`multishot-count-audit.patch`. Fresh Ranger recordings exposed an additional
+count-prefix omission: dofire and dothrow always passed zero as shotlimit.
+The candidate restores C's shared ok_to_throw count capture and clears repetition,
+passes the count through both commands and returns cancellation for no selected
+throw object. It preserves the prior return-flight cursor fix. Eight native
+volley cases now match 369 screens/cursors, 18,476 RNG calls and three animations;
+70 controls pass versus 42 before. The four movement/exercise cases match 154
+screens/cursors, 8,988 RNG calls and seven animations. Their combined candidate
+passes three input-exhaustion checks and ten strict transient cursors. Production
+attrib/cmd/dothrow remains unchanged until this petattr checkpoint is pushed.
+
+Two cache-only audits continue: Pauli on read.js confusion predicates, Mill on
+teleport.js confusion/stun predicates. Neither may edit tracked production or
+run the native recorder. Parent owns final oracle generation and integration.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

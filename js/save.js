@@ -239,6 +239,7 @@ export function dorecover() {
     }
 
     const bootWizard = !!game.wizard, bootDiscover = !!game.discover;
+    const bootHilitePet = !!game.flags.hilite_pet;
 
     /* reinstall everything except the per-process keys, which keep the
        fresh boot's values */
@@ -250,6 +251,10 @@ export function dorecover() {
         if (!SKIP_KEYS.has(k))
             game[k] = v;
     }
+
+    // include/flag.h:420 and src/restore.c:571: hilite_pet is an instance
+    // option in C, though this port stores it under flags.
+    game.flags.hilite_pet = bootHilitePet;
 
     // src/restore.c restgamestate(), startup debug mode overrides the save.
     (game.iflags ||= {}).deferred_X = bootDiscover && !game.discover;

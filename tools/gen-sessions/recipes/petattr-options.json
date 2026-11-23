@@ -1,0 +1,138 @@
+{
+  "name": "petattr-options",
+  "description": "Startup pet attributes, canonical abbreviation, comma ordering, bound toggles and menu selection/cancellation.",
+  "segments": [
+    {
+      "name": "abbreviation-fuzzy-underline",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\nOPTIONS=peta:u-line\nBIND=^T:toggle(hilite_pet)\n",
+      "moves": " \u0007sleeping tame male gnome\r V\f"
+    },
+    {
+      "name": "enable-after-zero",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\nOPTIONS=hilite_pet,petattr:none\nBIND=^T:toggle(hilite_pet)\n",
+      "moves": " \u0007sleeping tame male gnome\r V\f"
+    },
+    {
+      "name": "zero-after-enable",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\nOPTIONS=petattr:none,hilite_pet\nBIND=^T:toggle(hilite_pet)\n",
+      "moves": " \u0007sleeping tame male gnome\r V\f"
+    },
+    {
+      "name": "toggle-retains-bold",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\nOPTIONS=petattr:bold\nBIND=^T:toggle(hilite_pet)\n",
+      "moves": " \u0007sleeping tame male gnome\r \u0014 \u0014 V\f"
+    },
+    {
+      "name": "menu-selection-order",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\nOPTIONS=petattr:none\nBIND=^T:toggle(hilite_pet)\n",
+      "moves": " \u0007sleeping tame male gnome\r mO:petattr\r:hilite_pet\r\r e V\f"
+    },
+    {
+      "name": "menu-cancel-retains-underline",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\nOPTIONS=petattr:underline\nBIND=^T:toggle(hilite_pet)\n",
+      "moves": " \u0007sleeping tame male gnome\r mO:petattr\r\r\u001b V\f"
+    }
+  ],
+  "recordingNote": "Use RERECORD_TZ=Etc/GMT+4. Native color and attribute checks are separate from parser-state diagnostics; startup errors and save/restore are outside this fixture.",
+  "coverage": [
+    "mode.debug",
+    "ui.menus",
+    "options.rc-bindings",
+    "ui.map-memory-vision"
+  ],
+  "branches": [
+    "petattr.abbreviation-fuzzy-underline",
+    "petattr.enable-after-zero",
+    "petattr.zero-after-enable",
+    "petattr.toggle-retains-bold",
+    "petattr.menu-selection-order",
+    "petattr.menu-cancel-retains-underline"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "petattr.abbreviation-fuzzy-underline",
+      "segment": 0,
+      "screenCells": [
+        {
+          "step": 30,
+          "x": 8,
+          "y": 13,
+          "equals": "G"
+        }
+      ]
+    },
+    {
+      "branch": "petattr.enable-after-zero",
+      "segment": 1,
+      "screenCells": [
+        {
+          "step": 30,
+          "x": 8,
+          "y": 13,
+          "equals": "G"
+        }
+      ]
+    },
+    {
+      "branch": "petattr.zero-after-enable",
+      "segment": 2,
+      "screenCells": [
+        {
+          "step": 30,
+          "x": 8,
+          "y": 13,
+          "equals": "G"
+        }
+      ]
+    },
+    {
+      "branch": "petattr.toggle-retains-bold",
+      "segment": 3,
+      "screenCells": [
+        {
+          "step": 34,
+          "x": 8,
+          "y": 13,
+          "equals": "G"
+        }
+      ]
+    },
+    {
+      "branch": "petattr.menu-selection-order",
+      "segment": 4,
+      "screenCells": [
+        {
+          "step": 57,
+          "x": 8,
+          "y": 13,
+          "equals": "G"
+        }
+      ]
+    },
+    {
+      "branch": "petattr.menu-cancel-retains-underline",
+      "segment": 5,
+      "screenCells": [
+        {
+          "step": 44,
+          "x": 8,
+          "y": 13,
+          "equals": "G"
+        }
+      ]
+    }
+  ]
+}

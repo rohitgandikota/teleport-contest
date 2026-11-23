@@ -1,0 +1,61 @@
+{
+  "name": "petattr-restore-saved-toggle-off",
+  "description": "Fresh pet-highlight settings survive restoring a saved game: saved-toggle-off.",
+  "recordingNote": "Use RERECORD_TZ=Etc/GMT+4. Both segments share save storage. Native attribute values are asserted in the restore state gate.",
+  "segments": [
+    {
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:PetSavedOff,role:Wizard,race:human,gender:male,align:neutral\nOPTIONS=!autopickup,!tutorial,!tips,pettype:cat,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=menu_headings:red&bold,menu_objsyms:none,number_pad:0\nOPTIONS=petattr:bold\nBIND=^T:toggle(hilite_pet)\n",
+      "moves": " i\u001b\u0014 Sy",
+      "name": "save"
+    },
+    {
+      "seed": 32,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:PetSavedOff,role:Wizard,race:human,gender:male,align:neutral\nOPTIONS=autopickup,!tutorial,!tips,pettype:cat,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=menu_headings:blue&underline,menu_objsyms:both,number_pad:1\nOPTIONS=petattr:bold\nBIND=^T:toggle(hilite_pet)\n",
+      "moves": "i\u001b#optionsfull\r      \u001b\u0014 \u0014 V\f",
+      "name": "restore"
+    }
+  ],
+  "coverage": [
+    "game.save-restore",
+    "ui.menus",
+    "options.rc-bindings",
+    "ui.map-memory-vision"
+  ],
+  "branches": [
+    "petattr-restore-saved-toggle-off.save",
+    "petattr-restore-saved-toggle-off.restore"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "petattr-restore-saved-toggle-off.save",
+      "segment": 0,
+      "screenIncludes": [
+        "Be seeing you..."
+      ],
+      "screenCells": [
+        {
+          "step": 0,
+          "x": 12,
+          "y": 5,
+          "equals": "f"
+        }
+      ]
+    },
+    {
+      "branch": "petattr-restore-saved-toggle-off.restore",
+      "segment": 1,
+      "screenCells": [
+        {
+          "step": 0,
+          "x": 12,
+          "y": 5,
+          "equals": "f"
+        }
+      ]
+    }
+  ]
+}

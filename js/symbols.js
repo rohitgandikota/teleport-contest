@@ -452,9 +452,9 @@ function parsesymbols_buf(buf, opts, which_set) {
 
     symp = match_sym(symname_s);
     if (!symp && symname_s[0] === 'G' && symname_s[1] === '_') {
-        /* src/symbols.c:826 — a customised glyph: the whole "G_x:val" goes
-           to match_glyph(), colour and unicode included */
-        is_glyph = !!match_glyph(`${symname_s}:${strval_s}`);
+        // src/symbols.c:826, the delimiter has already been nulled. C
+        // validates the glyph name here without applying the saved value.
+        is_glyph = !!match_glyph(symname_s);
     }
     if (!symp && !is_glyph)
         return false;
@@ -566,7 +566,7 @@ function fill_symbol_tables(which_set) {
         for (const n of common) {
             const i = defsyms.findIndex(d => d.name === n);
             if (i >= 0)
-                gs_showsyms.P[i] = { ch: ' ', dec: false, utf8: true };
+                gs_showsyms.P[i] = { ...gs_showsyms.P[i], utf8: true };
         }
     }
 }

@@ -1,0 +1,95 @@
+{
+  "name": "glyph-config-values",
+  "description": "SYMBOLS=G_name:value saves the value but C validates only the stripped glyph name; symset file customizations still apply.",
+  "recordingNote": "Use RERECORD_TZ=Etc/GMT+4 for a fixed UTC-4 recording offset.",
+  "coverage": [
+    "mode.debug",
+    "options.rc-bindings",
+    "ui.menus"
+  ],
+  "branches": [
+    "glyph-config-values.plain-glyph-color",
+    "glyph-config-values.plain-no-glyph-control",
+    "glyph-config-values.enhanced-glyph-unicode",
+    "glyph-config-values.enhanced-no-glyph-control"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "glyph-config-values.plain-glyph-color",
+      "segment": 0,
+      "screenIncludes": [
+        "#wizcustom: colorcount=256",
+        "plain, active"
+      ],
+      "screenExcludes": [
+        "G_male_human"
+      ]
+    },
+    {
+      "branch": "glyph-config-values.plain-no-glyph-control",
+      "segment": 1,
+      "screenIncludes": [
+        "#wizcustom: colorcount=256",
+        "plain, active"
+      ],
+      "screenExcludes": [
+        "G_male_human"
+      ]
+    },
+    {
+      "branch": "glyph-config-values.enhanced-glyph-unicode",
+      "segment": 2,
+      "screenIncludes": [
+        "#wizcustom: colorcount=256",
+        "handler=UTF8",
+        "G_tlwall_mines"
+      ],
+      "screenExcludes": [
+        "G_male_human"
+      ]
+    },
+    {
+      "branch": "glyph-config-values.enhanced-no-glyph-control",
+      "segment": 3,
+      "screenIncludes": [
+        "#wizcustom: colorcount=256",
+        "handler=UTF8",
+        "G_tlwall_mines"
+      ],
+      "screenExcludes": [
+        "G_male_human"
+      ]
+    }
+  ],
+  "segments": [
+    {
+      "name": "plain-glyph-color",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\nSYMBOLS=G_male_human:/red\n",
+      "moves": " #wizcustom\r  \u001bV"
+    },
+    {
+      "name": "plain-no-glyph-control",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "moves": " #wizcustom\r  \u001bV"
+    },
+    {
+      "name": "enhanced-glyph-unicode",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:Enhanced1\nSYMBOLS=G_male_human:U+2603\n",
+      "moves": " #wizcustom\r  \u001bV"
+    },
+    {
+      "name": "enhanced-no-glyph-control",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:Enhanced1\n",
+      "moves": " #wizcustom\r  \u001bV"
+    }
+  ]
+}

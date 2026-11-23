@@ -9331,14 +9331,21 @@ The custom glyphmap colour pipeline still needs a renderer audit.
 ('\248' for S_vwall) and CLR_GRAY (07) from reset_glyphmap()'s
 wallcolors[]. iflags.colorcount is 256, the recorder terminal's count.
 
-The September heading mismatch also reproduced in November. The earlier
-leading-blank capture repair did not cover this trailing space:
-the heading is 90 characters, tty_end_menu() cuts
+The September heading mismatch also reproduced in November. The heading
+is 90 characters, tty_end_menu() cuts
 entries to 78, and the 78th is the space before "unicode", drawn in the
 heading's inverse video. The recorder emits that trailing inverse space;
 the frozen js/terminal.js serializer drops trailing spaces whatever their
 attribute, so the decoded cell comes back plain. Every other cell of the
 three DECgraphics pages and of the default set's "(end)" listing matches.
+The November 23 GameDisplay wrapper now preserves attributed blanks at
+both ends of a row and on otherwise blank rows. Five source-state controls
+and a four-case native customization fixture verify the correction without
+changing the frozen serializer. Enhanced sets also retain raw character
+codes in the symbol table, so the listing shows 124 for a vertical wall
+even when Unicode output bypasses the nomux terminal capture. Config
+`SYMBOLS=G_name:value` lines save the value but pass only the stripped name
+to match_glyph, preserving C's distinction from G_ lines in dat/symbols.
 
 November 23 native checks also establish several tty details. Control bytes
 are ignored by nomux_putch on the map, but a status glyph still occupies a

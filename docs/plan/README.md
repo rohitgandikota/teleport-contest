@@ -18,11 +18,11 @@ of 24,531 combined screens, 7th agentic and 11th overall. It predates the
 latest repairs. Public remains 44/44; 1,008 held-out screens remain unmatched
 in that snapshot.
 
-The full regression passes 648/648 fixtures with 791,444 exact screens
-and 15,366,235 RNG calls. Recent fixes cover class customization during
-startup and remembered object symbols after graphics changes.
-Next: customization listings, styled terminal blanks and direct monster
-symbol consumers. Current-corpus parity is not a completeness claim.
+The full regression passes 649/649 fixtures with 791,512 exact screens
+and 15,378,351 RNG calls. Recent fixes cover class customization during
+startup, remembered object symbols after graphics changes, customization
+listings and styled terminal blanks. Next: direct monster symbol consumers
+and customization option changes. Current-corpus parity is not a completeness claim.
 See [STATUS.md](STATUS.md) for evidence and the next action. Historical
 milestone rows below are not a current completion audit.
 

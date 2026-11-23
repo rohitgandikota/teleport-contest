@@ -1099,6 +1099,34 @@ remain sequential. The latest official data fetch still returns the November
 23 08:33 UTC snapshot and our 07:48 UTC score; it has not evaluated these
 latest checkpoints. Do not claim a new rank from the local regression.
 
+Remembered-object checkpoint `38a99951` is pushed. The glyph-config repair
+is applied and verified. Config G_ entries retain C's name-only validation;
+Enhanced sets retain their raw symbol bytes for customization listings.
+The GameDisplay wrapper preserves attributed blanks at both row boundaries,
+including otherwise blank rows, without changing the frozen serializer.
+
+Four native cases improve from 60/68 screens and 66/68 cursors to exact
+output, retaining all 12,116 RNG calls. All five new source-state checks
+fail before and pass afterward. Full regression: 649/649 fixtures,
+791,512 screens/cursors, 15,378,351 RNG calls and 30,010/30,031 animations.
+Native assertions, integrity and input-exhaustion pass. The eight graphics,
+three class-startup, seven remembered-object and six other-symbol controls
+pass; source audit remains zero findings across 276 modules. Logs:
+`glyph-config-corpus-{0..3}.log`, `glyph-config-state-{before,final}.log`,
+`glyph-config-values-{final-before,final-native,hang,audit}.log` and
+`glyph-config-{graphics,startup,object,other}-state.log` in the restart cache.
+
+Next: the six-case native `monster-class-symbols` fixture is recorded with
+assertions. Cache-only changes in `monster-symbol-changes.patch` replace
+default-table lookups in flash_mon, you_aggravate and detect_wsegs. The
+exploratory recording improves from 325/328 screens and 48/56 animations
+to exact output, with all 22,358 RNG calls unchanged. Promote its state
+controls, review and apply the patch, then verify before committing.
+The separate `customization-options-*` prototype restores C's option-reset
+lifecycle; six native cases improve from 61/84 to 84/84 screens with all
+18,384 RNG calls. It remains cache-only and needs branch assertions and
+state controls. Complete custom glyph rendering is still unaudited.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

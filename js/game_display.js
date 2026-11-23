@@ -28,16 +28,15 @@ export class GameDisplay {
             );
         }
 
-        /* The frozen terminal's serializer skips leading blank cells when it
-           chooses where a row begins. A menu heading can intentionally put
-           inverse video on that leading blank, so preserve it by making the
-           first attributed blank temporarily nonblank during serialization. */
+        /* Preserve attributed blanks at row boundaries. C's tty capture
+           keeps them, but the frozen serializer trims blank characters.
+           Temporary nonblank cells retain their real terminal attributes. */
         const terminalSerialize = this.terminal.serialize.bind(this.terminal);
         this.terminal.serialize = () => {
             const touched = [];
             for (let r = 0; r < this.terminal.rows; r++) {
                 const row = this.terminal.grid[r];
-                const last = row.findLastIndex(cell => cell.ch !== ' ');
+                const last = row.findLastIndex(cell => cell.ch !== ' ' || cell.attr);
                 if (last < 0)
                     continue;
                 const first = row.findIndex((cell, c) => c <= last
@@ -45,6 +44,10 @@ export class GameDisplay {
                 if (first >= 0 && row[first].ch === ' ') {
                     row[first].ch = '\0';
                     touched.push(row[first]);
+                }
+                if (row[last].ch === ' ') {
+                    row[last].ch = '\0';
+                    touched.push(row[last]);
                 }
             }
             try {

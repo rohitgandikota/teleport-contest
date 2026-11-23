@@ -111,7 +111,7 @@ test('display.h:159 excludes a real FROMFORM-stunned giant bat from safe monster
     const s = blobState(get('bat-safe-monster'));
     assert.equal(s.formId, PMNAMES.PM_GIANT_BAT);
     assert.equal(s.stun, FROMFORM);
-    assert.equal(s.stunAlias, 0);
+    assert.equal(s.stunAlias, 1);
     assert.ok(s.stunned && !s.confused && !s.hallucinating && s.safeDog && blob(s).visible);
     assert.equal(blob(s).expectedSafe, false);
     assert.equal(blob(s).actualSafe, false);
@@ -120,7 +120,7 @@ test('uhitm.c:309 skips confirmation for an ordinary FROMFORM-stunned bat attack
     const r = get('bat-attack-confirmation'), s = blobState(r);
     assert.equal(s.formId, PMNAMES.PM_GIANT_BAT);
     assert.equal(s.stun, FROMFORM);
-    assert.equal(s.stunAlias, 0);
+    assert.equal(s.stunAlias, 1);
     assert.ok(s.stunned && !s.confused && !s.hallucinating && !s.safeDog && s.confirm && !s.forcefight);
     assert.ok(blob(s).visible && blob(s).x === s.x + 1 && blob(s).y === s.y);
     assert.doesNotMatch(text(r), /Really attack the acid blob\?/);

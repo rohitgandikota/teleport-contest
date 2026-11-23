@@ -1,0 +1,72 @@
+{
+  "name": "stun-chest-attack-boundaries",
+  "description": "Two unchanged native inputs while in a FROMFORM-stunned stalker form. C screen/call assertions witness gas outcome 0 and the AD_STUN kick proc. The paired normal-import input gate verifies timer values, preserved form bits, suppressed feedback and per-boundary animation counts.",
+  "coverage": [
+    "mode.debug",
+    "survival.timed-status",
+    "forms.polymorph"
+  ],
+  "branches": [
+    "stun.form-chest-gas-feedback-and-duration",
+    "stun.form-abbot-kick-duration"
+  ],
+  "requireBranchAssertions": true,
+  "segments": [
+    {
+      "name": "stalker-chest-gas",
+      "seed": 12005,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017empty trapped unlocked chest\r  \u001b\u001b#polyself\rstalker\r  \u001b\u001baa  \u001b\u001b"
+    },
+    {
+      "name": "stalker-abbot-stun",
+      "seed": 12000,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #polyself\rstalker\r  \u001b\u001b\u0007hostile abbot\r  \u001b\u001b.  \u001b\u001b.  \u001b\u001b.  \u001b\u001b"
+    }
+  ],
+  "branchAssertions": [
+    {
+      "branch": "stun.form-chest-gas-feedback-and-duration",
+      "segment": 0,
+      "screenIncludes": [
+        "You turn into a stalker!",
+        "You open the chest...",
+        "You trigger a trap!",
+        "A cloud of black gas billows from the chest."
+      ],
+      "screenExcludes": [
+        "You stagger",
+        "What a groovy feeling!",
+        "your vision blurs",
+        "get dizzy"
+      ],
+      "rngIncludes": [
+        "rn2(13)=7 @ chest_trap(trap.c:6312)",
+        "rn2(20)=9 @ chest_trap(trap.c:6346)",
+        "rn2(13)=0 @ chest_trap(trap.c:6346)",
+        "rn2(7)=3 @ chest_trap(trap.c:6486)",
+        "rn2(5)=1 @ chest_trap(trap.c:6488)"
+      ]
+    },
+    {
+      "branch": "stun.form-abbot-kick-duration",
+      "segment": 1,
+      "screenIncludes": [
+        "You turn into a stalker!",
+        "An abbot appears next to you.",
+        "The abbot kicks!"
+      ],
+      "screenExcludes": [
+        "You return to human form!",
+        "You die..."
+      ],
+      "rngIncludes": [
+        "d(3,2)=6 @ hitmu(mhitu.c:1187)",
+        "rn2(4)=0 @ mhitm_ad_stun(uhitm.c:4406)"
+      ]
+    }
+  ]
+}

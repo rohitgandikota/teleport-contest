@@ -585,7 +585,7 @@ export async function chest_trap(obj, bodypart, disarm) {
             await pline(`A cloud of ${Blind() ? 'pungent' : rndcolor()
                 } gas billows from ${the(xname(obj))}.`);
             const oldStun = (game.u.intrinsic?.HStun | 0) & TIMEOUT;
-            if (!oldStun) {
+            if (!Stunned()) {
                 if (Hallucination())
                     await pline('What a groovy feeling!');
                 else

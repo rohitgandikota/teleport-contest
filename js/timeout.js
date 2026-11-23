@@ -171,7 +171,8 @@ async function vomiting_dialogue() {
         break;
     case 6: {
         const { make_stunned, make_confused } = await import('./potion.js');
-        await make_stunned((game.u.intrinsic?.HStun || 0) + d(2, 4), false);
+        await make_stunned(((game.u.intrinsic?.HStun || 0) & TIMEOUT)
+                           + d(2, 4), false);
         await stop_occupation();
         await make_confused((game.u.intrinsic?.HConfusion || 0) + d(2, 4),
                             false);
@@ -188,8 +189,8 @@ async function vomiting_dialogue() {
         break;
     }
     case 8:
-        text = game.u.uprops?.STUNNED ? "can't think straight."
-                                     : "can't seem to think straight.";
+        text = Stunned() ? "can't think straight."
+                         : "can't seem to think straight.";
         break;
     case 5:
         text = 'feel incredibly sick.';

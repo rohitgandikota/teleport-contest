@@ -42,7 +42,7 @@ import { mon_to_glyph, display_self, more, unmap_object, glyph_at, see_monsters,
 import { engr_at } from './engrave.js';
 import { OCLASSES, MATERIALS } from './objects_data.js';
 import { PMNAMES, NUMMONS } from './monst_data.js';
-import { Deaf } from './youprop.js';
+import { Deaf, Stunned } from './youprop.js';
 import { strange_feeling, make_confused, make_blinded, make_hallucinated } from './potion.js';
 import { DEADMONSTER, helpless } from './monst.js';
 import { game } from './gstate.js';
@@ -837,11 +837,8 @@ export async function reveal_terrain(which_subset) {
     /* 'full' overrides impairment and implies no-traps, no-objs, no-mons */
     const full = (which_subset & TER_FULL) !== 0;
     const u = game.u;
-    const intr = u.intrinsics || {};
-    const props = u.uprops || {};
 
-    if ((Hallucination() || intr.HStun || props.STUNNED
-         || intr.HConfusion || props.CONFUSION) && !full) {
+    if ((Hallucination() || Stunned() || Confusion()) && !full) {
         await You('are too disoriented for this.');
     } else {
         const keep_traps = (which_subset & TER_TRP) !== 0,

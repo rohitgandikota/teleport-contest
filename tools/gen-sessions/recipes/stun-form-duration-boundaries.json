@@ -1,0 +1,159 @@
+{
+  "name": "stun-form-duration-boundaries",
+  "description": "Seven unchanged ordinary native inputs. Screen assertions witness C decisions; the vomiting RNG assertion witnesses the C duration branch, with the resulting masked timer checked by the paired source-state input gate. No extra chest or AD_STUN proposal is credited here.",
+  "coverage": [
+    "mode.debug",
+    "survival.timed-status",
+    "forms.polymorph"
+  ],
+  "branches": [
+    "stun.form-unfixable-restore-ability",
+    "stun.form-vomiting-feedback",
+    "stun.vomiting-duration-addition",
+    "stun.form-liquid-wall-entry",
+    "stun.form-known-terrain-rejection",
+    "stun.form-full-terrain-bypass",
+    "confusion.timed-terrain-rejection-control",
+    "stun.expired-timer-form-removal"
+  ],
+  "requireBranchAssertions": true,
+  "segments": [
+    {
+      "name": "bat-restore-ability",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed potion of restore ability\r  \u001b\u001b#polyself\rgiant bat\r  \u001b\u001bqa  \u001b\u001b"
+    },
+    {
+      "name": "bat-vomiting",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #polyself\rgiant bat\r  \u001b\u001b#wizintrinsic\r9k\r  \u001b\u001b.  \u001b\u001b.  \u001b\u001b.  \u001b\u001b.  \u001b\u001b.  \u001b\u001b"
+    },
+    {
+      "name": "bat-water-wall",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017wall of water\r  \u001b\u001bl  \u001b\u001b#polyself\rgiant bat\r  \u001b\u001bh  \u001b\u001bh  \u001b\u001bh  \u001b\u001bh  \u001b\u001bh  \u001b\u001bh  \u001b\u001bh  \u001b\u001bh  \u001b\u001b"
+    },
+    {
+      "name": "bat-known-terrain",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #polyself\rgiant bat\r  \u001b\u001b#terrain\ra\u001b\u001b  "
+    },
+    {
+      "name": "bat-full-terrain",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #polyself\rgiant bat\r  \u001b\u001b#terrain\rd\u001b\u001b  "
+    },
+    {
+      "name": "confused-known-terrain",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #wizintrinsic\r100g\r  \u001b\u001b#terrain\ra\u001b\u001b  "
+    },
+    {
+      "name": "expired-bat-stun-to-ant",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #polyself\rgiant bat\r  \u001b\u001b#wizintrinsic\r1f\r  \u001b\u001b.  \u001b\u001b#polyself\rgiant ant\r  \u001b\u001b#terrain\ra\u001b\u001b  "
+    }
+  ],
+  "branchAssertions": [
+    {
+      "branch": "stun.form-unfixable-restore-ability",
+      "segment": 0,
+      "screenIncludes": [
+        "You turn into a giant bat!",
+        "Wow!  This makes you feel better!"
+      ],
+      "screenExcludes": [
+        "Wow!  This makes you feel great!"
+      ]
+    },
+    {
+      "branch": "stun.form-vomiting-feedback",
+      "segment": 1,
+      "screenIncludes": [
+        "You turn into a giant bat!",
+        "You can't think straight."
+      ],
+      "screenExcludes": [
+        "You can't seem to think straight."
+      ]
+    },
+    {
+      "branch": "stun.vomiting-duration-addition",
+      "segment": 1,
+      "rngIncludes": [
+        "d(2,4)=5 @ vomiting_dialogue(timeout.c:215)"
+      ]
+    },
+    {
+      "branch": "stun.form-liquid-wall-entry",
+      "segment": 2,
+      "screenIncludes": [
+        "You turn into a giant bat!",
+        "You plunge into the wall of water!"
+      ],
+      "screenExcludes": [
+        "You avoid flying into the wall of water."
+      ]
+    },
+    {
+      "branch": "stun.form-known-terrain-rejection",
+      "segment": 3,
+      "screenIncludes": [
+        "You turn into a giant bat!",
+        "You are too disoriented for this."
+      ],
+      "screenExcludes": [
+        "Showing known terrain only"
+      ]
+    },
+    {
+      "branch": "stun.form-full-terrain-bypass",
+      "segment": 4,
+      "screenIncludes": [
+        "You turn into a giant bat!",
+        "Showing underlying terrain only"
+      ],
+      "screenExcludes": [
+        "You are too disoriented for this."
+      ]
+    },
+    {
+      "branch": "confusion.timed-terrain-rejection-control",
+      "segment": 5,
+      "screenIncludes": [
+        "Timeout for confused set to 100.",
+        "You are too disoriented for this."
+      ],
+      "screenExcludes": [
+        "Showing known terrain only"
+      ]
+    },
+    {
+      "branch": "stun.expired-timer-form-removal",
+      "segment": 6,
+      "screenIncludes": [
+        "You turn into a giant bat!",
+        "You feel a bit steadier now.",
+        "You turn into a giant ant!",
+        "Showing known terrain only"
+      ],
+      "screenExcludes": [
+        "You are too disoriented for this."
+      ]
+    }
+  ]
+}

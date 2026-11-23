@@ -3193,6 +3193,71 @@ control of monster polymorph. New C recordings now cover the stun chest-gas
 and AD_STUN paths, two dormant-level saves and two eel-hiding scenarios.
 They are immutable diagnostics until independently verified and promoted.
 
+Monster-shape checkpoint `90189588` is pushed. The next stun checkpoint now
+changes seven runtime files, 16 added and 13 removed lines. Effective-status
+decisions use Stunned/Confusion; vomiting and AD_STUN add only the masked
+timeout. set_uasmon mirrors the resulting full HStun into the existing flat
+compatibility field on both form entry and departure. The producer remains
+synchronous, silent and RNG-free. No call signature, queue or damage order
+changes. The two prior Hall gate expectations for an unset bat alias now
+expect the repaired value; every behavior assertion is preserved.
+
+The actual integrated runtime passes all 29 controls: eight producer/save
+controls, nine primary input controls, two chest/attack input controls and
+ten retained Hall controls. The two new byte-identical native fixtures
+contain nine cases, 564 boundaries, 25,003 calls and no animations. Together
+with the three retained status fixtures, all 1,250 screens/cursors and 50,547
+complete/per-input RNG calls match. Animation counts and input exhaustion
+pass. The ten new recipe assertions, original input tuples and observation
+hook restoration checks pass. The chest/attack baseline matched only 118/122
+screens and 121/122 cursors despite matching every RNG call, showing why RNG
+alone is insufficient. Changed-file syntax and the 0/276 source audit pass.
+Receipts use stun-form-promoted-*, stun-extra-parent-before-score.log and
+stun-form-source-audit.log. The full two-shard run passes 704/704 fixtures
+without failures or timeouts: 811,146 screens/cursors, 16,242,847 scored RNG
+positions and 30,712 animations. All result metrics are exact, paths and
+unique basenames match the maintained inventory, and all 279 runtime hashes
+stayed fixed. The unchanged worker limit is 45 seconds. Full-run receipts
+use stun-form-corpus-* and stun-form-runtime-before-corpus.json.
+
+Both new raw recordings also pass byte-exact instrumented C rerecording on
+NFS. The validated union now enters 4,508/5,492 functions and observes
+58,747/107,260 direct outcomes, increases of two and 37 respectively. All
+698 credited input hashes, twelve build manifests and branch layouts were
+checked. Eighteen additional raw inputs contribute 110 segments; the two
+independent Linux controls contribute nine more. The original 678-input
+provenance and all platform rejections are retained. Focused coverage includes
+27/34 vomiting_dialogue, 18/22 make_stunned and 69/136 chest_trap outcomes.
+The NFS union is c-coverage-compress.E84JI2/verified-stun-form-union-20261123;
+the compact receipt is linux-coverage-stun-form-union-summary.json.
+
+An official refresh after `90189588` still returns snapshot
+2026-11-23T20:18:10.935Z and our 19:33:02.838Z scoring run. Rank and scores
+remain unchanged: seventh agentic, eleventh overall, 44/44 public and
+39/56 held-out, with 23,595/24,531 combined screens. No effect from these
+newer pushes can yet be attributed to the official score.
+
+Parent review found a storage-failure regression in the eight-file restore
+candidate before integration. The browser adapter calls localStorage.setItem
+directly. With a failing save write, current dosave0 returns false and retains
+the live level, inventory and owners. The candidate throws after replacing
+the level and freeing the inventory. The normal-import reproducer and valid
+before/candidate receipts are restore-storage-failure-parent.mjs and its
+*-v3.log files. Earlier v1/v2 runs had a stale dynamic-import game binding and
+are retained as harness errors. The candidate remains unapplied while this
+failure contract is repaired; adding a catch after freeing would not fix it.
+The six new save/restore raw files independently pass exact instrumented C
+replay on NFS, entering 1,892 functions and 13,029 direct outcomes standalone.
+Their profile is nh-follow.8iZQsF/restore-coverage and compact receipt is
+linux-restore-phase-coverage-summary.json. It is not merged into the union.
+
+Three ordinary worn/unworn dragon-armor polymorph proposals and six controlled
+monster-form prompt proposals are now recorded in C, unchanged. The former
+have a separate two-file armor preference candidate under review. The shared
+interactive selector still needs validvamp and ordered creation completion;
+no creation or level-generation prompt bypass is acceptable. These recordings
+remain diagnostics until their respective repairs pass verification.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

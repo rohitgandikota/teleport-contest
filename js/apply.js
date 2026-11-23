@@ -2390,7 +2390,7 @@ export function unfixable_trouble_count(is_horn) {
        so don't count it as a trouble which can't be fixed */
     if (props.SICK && (!is_horn || ((props.SICK | 0) & ~TIMEOUT) !== 0))
         unfixable_trbl++;
-    if (props.STUNNED && (!is_horn || ((intr.HStun | 0) & ~TIMEOUT) !== 0))
+    if (Stunned() && (!is_horn || ((intr.HStun | 0) & ~TIMEOUT) !== 0))
         unfixable_trbl++;
     if (props.CONFUSION
         && (!is_horn || ((intr.HConfusion | 0) & ~TIMEOUT) !== 0))

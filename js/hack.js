@@ -1361,7 +1361,7 @@ export async function swim_move_danger(x, y) {
 
     const loc = game.level?.at(x, y);
     if ((newtyp !== u_simple_floortyp(game.u.ux, game.u.uy))
-        && !game.u.uprops?.STUNNED && !game.u.uprops?.CONFUSION
+        && !Stunned() && !Confusion()
         && loc?.seenv
         && (is_pool(x, y) || is_lava(x, y) || liquid_wall)) {
         /* Known_wwalking / Known_lwalking need identified worn gear the

@@ -1259,6 +1259,41 @@ native coverage claim yet and is not applied. Native recording stays
 sequential and parent-owned. Continue verified commits and immediate pushes;
 current-corpus parity does not establish full-port completion.
 
+Renderer checkpoint `10d52257` is pushed. The trap/zap animation repair is
+applied and fully verified. launch_obj emits C's two visible delays for
+rolling objects and one for other launches, positioning the cursor for an
+unseen origin. bhit flushes a visible projectile before delaying, but leaves
+restoration buffered when its next square is unseen. No RNG draws or object
+movement rules changed.
+
+Full regression passes 653/653 fixtures, retaining all 792,211 boundary
+screens/cursors and 15,468,069 RNG calls. Animations improve from
+30,066/30,087 to 30,087/30,087. The public subset is now 1,483/1,483.
+Thirteen source-state controls pass; nine fail before. Three input-exhaustion
+checks and source audit pass, with zero findings across 276 modules. Strict
+comparison of the three affected public recordings verifies equal frame
+counts as well as matching cells. The 24 remaining transient cursor
+mismatches are a separate cache-only follow-up, not covered by the scored
+animation metric. Logs: `animation-corpus-{0..3}.log`,
+`animation-state-final.log`, `animation-hang-final.log`,
+`animation-audit-final.log` and the audit report's focused evidence.
+
+The object-customization shuffle prototype passes 63 public/related fixtures:
+16,230 screens/cursors, 1,170,815 RNG calls and 1,627 animations. Its ten
+source-state controls pass. A separately compiled, extracted C function
+matches 32 constructed cases and 30,784 glyph entries; this is a C-state
+probe, not a native gameplay recording. The prototype is still cache-only.
+
+The monster glyph agent has returned and is closed. Review
+`monster-glyph-audit.patch`, `monster-glyph-audit-report.md` and its proposed
+native inputs. Forty-four source-state controls pass, 38 failing before;
+eight existing fixtures match 3,288 screens and 206,981 RNG calls. Parent
+recording and broader verification remain required. The patch captures
+normal/pet/detected identities in newsym, detection and worm segments. The
+full C display_monster control flow, unseen sensed worm-tail selection and
+buffered pet highlighting remain distinct follow-ups. Do not conflate
+class-level custom color checks with evidence for numeric range identity.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

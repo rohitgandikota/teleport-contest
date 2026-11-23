@@ -18,13 +18,13 @@ of 24,531 combined screens, 7th agentic and 11th overall. It predates the
 latest repairs. Public remains 44/44; 1,008 held-out screens remain unmatched
 in that snapshot.
 
-The full regression covers 653/653 fixtures with 792,211 exact screens and
-15,468,069 RNG calls. Recent fixes cover active symbols, customization option
-resets, colored blanks and buffered custom glyph metadata. Twelve new native
-cases verify the renderer, and all 85 related state controls pass.
-Next: integrate the cache animation repair, then complete remaining glyph
-producers and object customization shuffling. The candidate fixes all 21
-known animation gaps in 55 focused fixtures; its full regression is pending.
+The full regression covers 653/653 fixtures with 792,211 exact boundary
+screens/cursors and 15,468,069 RNG calls. All 30,087 scored animation frames
+now match, including all 1,483 public frames. The latest repair restores
+trap launch delays and the flush order for unseen projectiles. Custom glyph
+metadata, option resets and colored blanks are also verified.
+Next: object customization shuffling and ordinary monster glyph identities.
+Separate transient animation cursor differences remain under source review.
 Current-corpus parity is not a completeness claim. See [STATUS.md](STATUS.md)
 for evidence and the next action. Historical milestone rows below are not a
 current completion audit.

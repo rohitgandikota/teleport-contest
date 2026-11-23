@@ -9440,3 +9440,17 @@ these paths, including pile attributes and unchanged RNG state.
   reset_glyphmap(gm_optionchange). Probes probe-toggle and probe-wizbatch2
   (scratchpad) match in full.
 - Trigram seed 86: 39/40, s86-06 is the ^X clock line.
+
+## Projectile delay and physical-screen ordering (23 Nov)
+
+C's launch_obj uses two nh_delay_output calls per visible rolling-boulder
+position and one for other launches. These calls produce recorded animation
+frames even when no input boundary occurs. The initial unseen launch moves
+the cursor to the hero. In bhit, tmp_at(DISP_FLASH) first buffers restoration
+of the old square. If the next square is unseen, tmp_at returns without
+flushing, while its caller still delays. Flushing every delay exposes the
+underlying floor or object too early. Restoring these rules fixes all 21
+known public animation cell differences. Fresh native prefixes match the
+existing public oracles. The standard animation scorer omits cursors;
+24 transient cursor mismatches remain in the three audited recordings and
+must be checked separately from the now-exact boundary cursors.

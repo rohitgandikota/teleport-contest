@@ -452,6 +452,39 @@ and plain headings. Before the next fix, 58/64 screens match; all cursors and
 key has a duplicate display path that drops heading colors. Its files and
 the compiled-C option-handler gate remain uncommitted for the next checkpoint.
 
+Repeat checkpoint `a306976f` is pushed. The inventory-heading fix now ports
+`color_attr_parse_str` and `optfn_menu_headings`'s configuration branch, including
+single values, aliases, negation, failed parsing and C's reversed-component
+diagnostics. The compiled original handler agrees on all 152 inputs in four
+test groups; all four groups fail before the fix. The ordinary inventory key
+now calls `ddoinv`, removing its duplicate menu builder. Inventory headings
+use `add_menu_heading`, which preserves their style against MENUCOLOR rules.
+The tty menu renderer previously stored item colors without drawing them;
+it now applies the existing terminal color conversion to the text after the
+selector prefix. Object-symbol colors keep their separate drawing path.
+
+The expanded native fixture has 15 cases and 240 screens/cursors, all exact,
+with 34,035 matching RNG calls. It includes black/gray conversion, dim/italic/
+blink attributes, item colors, object symbols and heading-rule precedence.
+Against `a306976f`, only 214/240 screens match. All 15 native branch assertions
+pass. The 26 selected state-test entries pass, including the 152 parser inputs,
+204 native inventory replays and 64 constructed inventory controls.
+The full 621-fixture sweep passes 621/621: 787,476 screens/cursors and
+14,887,707 RNG calls, with unchanged animation parity of 30,005/30,026.
+Logs are `.cache/restart-20261122/inventory-corpus-{0,1,2,3}.log`.
+Source audit remains empty. All 71 input-exhaustion checks pass.
+
+The new `command-result-flags` native fixture is outside that 621-session
+result and remains pending. Eight asserted cases cover failed polearm use,
+tin-opener cancellation after wielding, and mixed movement/menu prefixes.
+Before the next fix it matches 196/203 screens, all cursors and
+11,127/17,658 RNG calls. Ordinary-key dispatch drops ECMD_FAIL/ECMD_CANCEL
+in several arms, and `_was_m_prefix` is overwritten instead of latched for
+the whole prefix chain. Consolidate command execution and result handling
+against C's `rhack`, preserving count occupations and movement early returns.
+The latest official fetch still serves November 22 19:45 UTC, before these
+checkpoints were scored.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

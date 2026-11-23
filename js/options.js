@@ -34,7 +34,7 @@ import {
 import { def_char_to_objclass } from './sp_lev.js';
 import { OCLASSES } from './objects_data.js';
 import {
-    color_attr_to_str, attr2attrname, clr2colorname, count_menucolors,
+    color_attr_to_str, color_attr_parse_str, attr2attrname, clr2colorname, count_menucolors,
     add_menu_coloring, add_menu_coloring_parsed, free_one_menu_coloring,
     query_color, query_attr,
 } from './coloratt.js';
@@ -250,7 +250,7 @@ export function parseoptions(opts, tinitial, tfrom_file, result) {
         && !(opt.name === 'whatis_coord' && negated)
         && !(opt.name === 'paranoid_confirmation' && negated)
         && !(opt.name === 'number_pad' && (opts.length <= 10 || negated || tinitial))
-        && opt.name !== 'hilite_status') {
+        && opt.name !== 'hilite_status' && opt.name !== 'menu_headings') {
         config_error_add(`Missing value for '${opt.name}'`);
         return false;
     }
@@ -279,6 +279,18 @@ export function parseoptions(opts, tinitial, tfrom_file, result) {
         game.opt_need_glyph_reset = true;
         game.opt_symset_changed = true;
         result.opts[opt.name] = value;
+    } else if (opt.name === 'menu_headings') {
+        // src/options.c:2183 optfn_menu_headings(), do_set.
+        const ca = { color: NO_COLOR, attr: negated ? ATR_NONE : ATR_INVERSE };
+        if (value) {
+            if (negated) {
+                config_error_add(`The ${opt.name} option may not both have a value and be negated.`);
+                return false;
+            }
+            if (!color_attr_parse_str(ca, value))
+                return false;
+        }
+        (game.iflags ||= {}).menu_headings = ca;
     } else if (opt.name === 'statushilites') {
         /* src/options.c:4018 optfn_statushilites() do_set: control over
            whether highlights should be displayed (non-zero), and also for

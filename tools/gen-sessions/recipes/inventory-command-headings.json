@@ -1,0 +1,256 @@
+{
+  "name": "inventory-command-headings",
+  "description": "Both the inventory key and the named inventory command use the configured heading color and attribute.",
+  "recordingNote": "Use RERECORD_TZ=Etc/GMT+4 for a fixed UTC-4 recording offset.",
+  "coverage": [
+    "mode.debug",
+    "ui.menus"
+  ],
+  "branches": [
+    "inventory-headings.default",
+    "inventory-headings.red-bold",
+    "inventory-headings.blue-underline",
+    "inventory-headings.plain",
+    "inventory-headings.menu-rule",
+    "inventory-headings.bare",
+    "inventory-headings.black-bold",
+    "inventory-headings.yellow-inverse",
+    "inventory-headings.bright-blue",
+    "inventory-headings.italic",
+    "inventory-headings.dim",
+    "inventory-headings.blink",
+    "inventory-headings.colored-items",
+    "inventory-headings.gray",
+    "inventory-headings.black-no-darkgray"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "inventory-headings.default",
+      "segment": 0,
+      "screenIncludes": [
+        "Weapons",
+        "Armor"
+      ]
+    },
+    {
+      "branch": "inventory-headings.red-bold",
+      "segment": 1,
+      "screenIncludes": [
+        "Weapons",
+        "Armor"
+      ]
+    },
+    {
+      "branch": "inventory-headings.blue-underline",
+      "segment": 2,
+      "screenIncludes": [
+        "Weapons",
+        "Armor"
+      ]
+    },
+    {
+      "branch": "inventory-headings.plain",
+      "segment": 3,
+      "screenIncludes": [
+        "Weapons",
+        "Armor"
+      ]
+    },
+    {
+      "branch": "inventory-headings.menu-rule",
+      "segment": 4,
+      "screenIncludes": [
+        "Weapons",
+        "Armor"
+      ]
+    },
+    {
+      "branch": "inventory-headings.bare",
+      "segment": 5,
+      "screenIncludes": [
+        "Weapons",
+        "Armor"
+      ]
+    },
+    {
+      "branch": "inventory-headings.black-bold",
+      "segment": 6,
+      "screenIncludes": [
+        "Weapons",
+        "Armor"
+      ]
+    },
+    {
+      "branch": "inventory-headings.yellow-inverse",
+      "segment": 7,
+      "screenIncludes": [
+        "Weapons",
+        "Armor"
+      ]
+    },
+    {
+      "branch": "inventory-headings.bright-blue",
+      "segment": 8,
+      "screenIncludes": [
+        "Weapons",
+        "Armor"
+      ]
+    },
+    {
+      "branch": "inventory-headings.italic",
+      "segment": 9,
+      "screenIncludes": [
+        "Weapons",
+        "Armor"
+      ]
+    },
+    {
+      "branch": "inventory-headings.dim",
+      "segment": 10,
+      "screenIncludes": [
+        "Weapons",
+        "Armor"
+      ]
+    },
+    {
+      "branch": "inventory-headings.blink",
+      "segment": 11,
+      "screenIncludes": [
+        "Weapons",
+        "Armor"
+      ]
+    },
+    {
+      "branch": "inventory-headings.colored-items",
+      "segment": 12,
+      "screenIncludes": [
+        "Weapons",
+        "Armor"
+      ]
+    },
+    {
+      "branch": "inventory-headings.gray",
+      "segment": 13,
+      "screenIncludes": [
+        "Weapons",
+        "Armor"
+      ]
+    },
+    {
+      "branch": "inventory-headings.black-no-darkgray",
+      "segment": 14,
+      "screenIncludes": [
+        "Weapons",
+        "Armor"
+      ]
+    }
+  ],
+  "segments": [
+    {
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " i\u001b#inventory\r\u001b",
+      "name": "default"
+    },
+    {
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=menu_headings:red&bold\n",
+      "moves": " i\u001b#inventory\r\u001b",
+      "name": "red-bold"
+    },
+    {
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=menu_headings:blue&underline\n",
+      "moves": " i\u001b#inventory\r\u001b",
+      "name": "blue-underline"
+    },
+    {
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!menu_headings\n",
+      "moves": " i\u001b#inventory\r\u001b",
+      "name": "plain"
+    },
+    {
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=menu_headings:red&bold\nMENUCOLOR=\"Weapons\"=green&underline\n",
+      "moves": " i\u001b#inventory\r\u001b",
+      "name": "menu-rule"
+    },
+    {
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=menu_headings\n",
+      "moves": " i\u001b#inventory\r\u001b",
+      "name": "bare"
+    },
+    {
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=menu_headings:black&bold\n",
+      "moves": " i\u001b#inventory\r\u001b",
+      "name": "black-bold"
+    },
+    {
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=menu_headings:yellow&inverse\n",
+      "moves": " i\u001b#inventory\r\u001b",
+      "name": "yellow-inverse"
+    },
+    {
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=menu_headings:light-blue\n",
+      "moves": " i\u001b#inventory\r\u001b",
+      "name": "bright-blue"
+    },
+    {
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=menu_headings:italic\n",
+      "moves": " i\u001b#inventory\r\u001b",
+      "name": "italic"
+    },
+    {
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=menu_headings:dim\n",
+      "moves": " i\u001b#inventory\r\u001b",
+      "name": "dim"
+    },
+    {
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=menu_headings:blink\n",
+      "moves": " i\u001b#inventory\r\u001b",
+      "name": "blink"
+    },
+    {
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nMENUCOLOR=\"quarterstaff\"=light-green&bold\nMENUCOLOR=\"cloak\"=light-magenta&underline\nOPTIONS=menu_objsyms:entries\n",
+      "moves": " i\u001b#inventory\r\u001b",
+      "name": "colored-items"
+    },
+    {
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=menu_headings:gray&underline\n",
+      "moves": " i\u001b#inventory\r\u001b",
+      "name": "gray"
+    },
+    {
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=menu_headings:black&bold\nOPTIONS=!use_darkgray\n",
+      "moves": " i\u001b#inventory\r\u001b",
+      "name": "black-no-darkgray"
+    }
+  ]
+}

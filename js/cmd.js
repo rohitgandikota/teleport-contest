@@ -174,7 +174,7 @@ import { rnd, rn2 } from './rng.js';
 import { ACCESSIBLE } from './const.js';
 import { morehungry } from './eat.js';
 import { dohelp, dowhatis, doquickwhatis, dowhatdoes, dowhatdoes_core } from './pager.js';
-import { dolook, ECMD_TIME, display_pickinv_entries } from './invent.js';
+import { dolook, ECMD_TIME } from './invent.js';
 import { dovspell, docast, known_spell, spe_Fresh, spelleffects } from './spell.js';
 import { dowieldquiver, dowield, doswapweapon, dotwoweapon } from './wield.js';
 import { dozap } from './zap.js';
@@ -2842,9 +2842,7 @@ export async function rhack(key) {
         // src/cmd.c cmdlist — '+' is dovspell.
         game.context.move = ((await dovspell()) === ECMD_TIME ? 1 : 0);
     } else if (ch === 'i') {
-        // src/cmd.c cmdlist — 'i' is ddoinv, which returns ECMD_OK.
-        game.context.move = 0;
-        await show_inventory();
+        useResult(await ddoinv());
     } else if (ch === 'I') {
         // src/invent.c dotypeinv() filters inventory by one class or BUC state.
         game.context.move = ((await dotypeinv()) === ECMD_TIME ? 1 : 0);
@@ -3774,36 +3772,6 @@ async function show_attributes() {
     tty_destroy_nhwindow(win);
 }
 
-
-// src/invent.c display_inventory() -> an NHW_MENU. Its longest line decides
-// offx: 80 - (maxcol) - 1, and js/tty/wintty.js adds the +2 for the leading
-// and trailing space. seed8000 records the window at column 32 with the cursor
-// at [38,20].
-async function show_inventory() {
-    const items = display_pickinv_entries(null, true);
-    if (!items.length) {
-        await pline('Not carrying anything.');
-        return;
-    }
-    const win = tty_create_nhwindow(NHW_MENU);
-    tty_start_menu(win, MENU_BEHAVE_STANDARD);
-    for (const it of items) {
-        tty_add_menu(win, it.glyphinfo ?? null,
-                     it.heading ? 0 : it.invlet.charCodeAt(0),
-                     it.invlet || 0, 0,
-                     it.attr, NO_COLOR, it.str, MENU_ITEMFLAGS_NONE);
-    }
-    tty_end_menu(win, null);
-    const picks = await tty_select_menu(win, 1 /* PICK_ONE */);
-    tty_destroy_nhwindow(win);
-    if (!picks.length)
-        return;
-
-    const invlet = String.fromCharCode(picks[0]);
-    const obj = (game.invent || []).find(o => o.invlet === invlet);
-    if (obj)
-        await itemactions(obj);
-}
 
 function add_item_action(win, action, text) {
     tty_add_menu(win, null, action.charCodeAt(0), action, 0,

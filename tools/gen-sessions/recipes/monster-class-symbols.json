@@ -1,0 +1,156 @@
+{
+  "name": "monster-class-symbols",
+  "description": "Active monster class symbols during hidden-monster flashes, cursed invisibility aggravation and worm-tail detection, paired with default controls.",
+  "recordingNote": "Use RERECORD_TZ=Etc/GMT+4 for a fixed UTC-4 recording offset.",
+  "coverage": [
+    "mode.debug",
+    "options.rc-bindings",
+    "ui.map-memory-vision",
+    "monster.items"
+  ],
+  "branches": [
+    "monster-class-symbols.hidden-lurker-flash",
+    "monster-class-symbols.hidden-lurker-flash-default",
+    "monster-class-symbols.cursed-invisibility-aggravation",
+    "monster-class-symbols.cursed-invisibility-aggravation-default",
+    "monster-class-symbols.detected-worm-tail",
+    "monster-class-symbols.detected-worm-tail-default"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "monster-class-symbols.hidden-lurker-flash",
+      "segment": 0,
+      "screenIncludes": [
+        "You reveal a hidden monster!"
+      ],
+      "screenCells": [
+        {
+          "step": 32,
+          "x": 56,
+          "y": 14,
+          "equals": "X"
+        }
+      ]
+    },
+    {
+      "branch": "monster-class-symbols.hidden-lurker-flash-default",
+      "segment": 1,
+      "screenIncludes": [
+        "You reveal a hidden monster!"
+      ],
+      "screenCells": [
+        {
+          "step": 32,
+          "x": 56,
+          "y": 14,
+          "equals": "t"
+        }
+      ]
+    },
+    {
+      "branch": "monster-class-symbols.cursed-invisibility-aggravation",
+      "segment": 2,
+      "screenIncludes": [
+        "You feel aggravated at the stone giant."
+      ],
+      "screenCells": [
+        {
+          "step": 65,
+          "x": 39,
+          "y": 6,
+          "equals": "X"
+        }
+      ]
+    },
+    {
+      "branch": "monster-class-symbols.cursed-invisibility-aggravation-default",
+      "segment": 3,
+      "screenIncludes": [
+        "You feel aggravated at the stone giant."
+      ],
+      "screenCells": [
+        {
+          "step": 65,
+          "x": 39,
+          "y": 6,
+          "equals": "H"
+        }
+      ]
+    },
+    {
+      "branch": "monster-class-symbols.detected-worm-tail",
+      "segment": 4,
+      "screenIncludes": [
+        "You sense the presence of monsters."
+      ],
+      "screenCells": [
+        {
+          "step": 60,
+          "x": 4,
+          "y": 14,
+          "equals": "T"
+        }
+      ]
+    },
+    {
+      "branch": "monster-class-symbols.detected-worm-tail-default",
+      "segment": 5,
+      "screenIncludes": [
+        "You sense the presence of monsters."
+      ],
+      "screenCells": [
+        {
+          "step": 60,
+          "x": 4,
+          "y": 14,
+          "equals": "~"
+        }
+      ]
+    }
+  ],
+  "segments": [
+    {
+      "seed": 6969,
+      "datetime": "20000112090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Valkyrie,race:human,gender:female,align:lawful,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nSYMBOLS=S_trapper:X\n",
+      "moves": " \u0007sleeping hidden lurker above\r\u0005",
+      "name": "hidden-lurker-flash"
+    },
+    {
+      "seed": 6969,
+      "datetime": "20000112090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Valkyrie,race:human,gender:female,align:lawful,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0007sleeping hidden lurker above\r\u0005",
+      "name": "hidden-lurker-flash-default"
+    },
+    {
+      "seed": 7401,
+      "datetime": "20000112113500",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nSYMBOLS=S_giant:X\n",
+      "moves": " \u0017cursed potion of invisibility\rdo\u0007hostile stone giant\rjm.m.m.    ",
+      "name": "cursed-invisibility-aggravation"
+    },
+    {
+      "seed": 7401,
+      "datetime": "20000112113500",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017cursed potion of invisibility\rdo\u0007hostile stone giant\rjm.m.m.    ",
+      "name": "cursed-invisibility-aggravation-default"
+    },
+    {
+      "seed": 99826,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Mortician,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nSYMBOLS=S_worm:W,S_worm_tail:T\n",
+      "moves": " \u0007hostile long worm\r\u0017uncursed potion of monster detection\rqa  \u001b",
+      "name": "detected-worm-tail"
+    },
+    {
+      "seed": 99826,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Mortician,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0007hostile long worm\r\u0017uncursed potion of monster detection\rqa  \u001b",
+      "name": "detected-worm-tail-default"
+    }
+  ]
+}

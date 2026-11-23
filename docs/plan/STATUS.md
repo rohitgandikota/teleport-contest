@@ -1127,6 +1127,28 @@ lifecycle; six native cases improve from 61/84 to 84/84 screens with all
 18,384 RNG calls. It remains cache-only and needs branch assertions and
 state controls. Complete custom glyph rendering is still unaudited.
 
+Glyph-config checkpoint `6f671a7d` is pushed. The three direct monster
+consumers now use active class symbols. flash_mon and you_aggravate reuse
+mon_to_glyph, preserving C's RNG selection and sampled identity. detect_wsegs
+retains the sampled tail type, sex and detection kind for each segment.
+
+The six-case native fixture improves from 325/328 to 328/328 screens and
+48/56 to 56/56 animations, retaining all 22,358 RNG calls and cursors.
+Nineteen source-state controls pass; fourteen fail before the patch. These
+cover default, overridden, blank and high-bit characters, hallucination,
+mimics, detection, tame tails, flash timing and empty tails. The native
+worm potion case reaches use_detection_glyph=false; true is a state control.
+
+Targeted regression passes 60/60 public and related fixtures, 15,859
+screens/cursors, 1,103,455 RNG calls and 1,606/1,627 animations. Native
+assertions, recording integrity, input-exhaustion and source audit pass.
+The preceding 649-fixture full run was not repeated for these three isolated
+consumers. Logs: `monster-class-symbols-{final-before,final,regression,hang,
+audit,native}.log` and `monster-symbol-state-{final-before,final}.log` in
+the restart cache. Next: promote the customization option lifecycle repair.
+The broader renderer review is read-only with cache prototypes; native
+recording remains owned by the parent and sequential.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

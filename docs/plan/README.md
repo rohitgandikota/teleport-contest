@@ -21,8 +21,10 @@ in that snapshot.
 The full regression passes 649/649 fixtures with 791,512 exact screens
 and 15,378,351 RNG calls. Recent fixes cover class customization during
 startup, remembered object symbols after graphics changes, customization
-listings and styled terminal blanks. Next: direct monster symbol consumers
-and customization option changes. Current-corpus parity is not a completeness claim.
+listings and styled terminal blanks. A subsequent monster-symbol fix passes
+60 public and targeted fixtures, including all 328 screens and 56 animations
+in six new native cases. Next: customization option changes and custom glyph
+rendering. Current-corpus parity is not a completeness claim.
 See [STATUS.md](STATUS.md) for evidence and the next action. Historical
 milestone rows below are not a current completion audit.
 

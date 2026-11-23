@@ -1,0 +1,60 @@
+{
+  "name": "teleport-scroll-discovery",
+  "description": "Amulet disorientation leaves a teleport scroll unknown, while canceling a controlled destination still identifies it.",
+  "recordingNote": "Use RERECORD_TZ=Etc/GMT+4.",
+  "segments": [
+    {
+      "name": "disoriented-unidentified",
+      "seed": 33,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!autoquiver,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017Amulet of Yendor\r\u00172 uncursed scrolls of teleportation\rrb  n\ri\u001bV"
+    },
+    {
+      "name": "controlled-cancel-identifies",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!autoquiver,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017Amulet of Yendor\r\u00172 uncursed scrolls of teleportation\rrb \u001bi\u001bV"
+    }
+  ],
+  "coverage": [
+    "mode.debug",
+    "ui.getlin",
+    "ui.menus"
+  ],
+  "branches": [
+    "read.teleport-disorientation-keeps-unknown",
+    "read.teleport-controlled-cancel-identifies"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "read.teleport-disorientation-keeps-unknown",
+      "segment": 0,
+      "screenIncludes": [
+        "You feel disoriented for a moment.",
+        "Override?",
+        "Call a scroll labeled JUYED AWK YACC:",
+        "b - a scroll labeled JUYED AWK YACC"
+      ],
+      "screenExcludes": [
+        "b - a scroll of teleportation"
+      ],
+      "rngIncludes": [
+        "rn2(3)=0 @ scrolltele(teleport.c:865)"
+      ]
+    },
+    {
+      "branch": "read.teleport-controlled-cancel-identifies",
+      "segment": 1,
+      "screenIncludes": [
+        "Where do you want to be teleported?",
+        "b - a scroll of teleportation"
+      ],
+      "screenExcludes": [
+        "Call a scroll labeled"
+      ]
+    }
+  ]
+}

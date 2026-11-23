@@ -2727,11 +2727,9 @@ async function seffect_teleportation(sobj) {
            be a teleport scroll */
         game.known = true;
     } else {
-        /* src/read.c:2090 — scrolltele(): controlled getpos teleport when
-           Teleport_control/blessed, else a random destination */
         const { scrolltele } = await import('./teleport.js');
         await scrolltele(sobj);
-        game.known = true;
+        /* scrolltele() calls learnscroll() when the effect reveals its type. */
     }
 }
 

@@ -218,6 +218,7 @@ for (const [mode, buc] of [ ['none', 'uncursed'], ['intrinsic', 'uncursed'],
         seed(); await seffect_teleportation(obj);
         const level = mode !== 'none' || buc === 'cursed';
         assert.deepEqual(calls(), level ? [] : ['rn2(3)']);
+        assert.equal(game.known, level, 'only the level-teleport effect sets known');
         assert.match(messages(), level ? /very disoriented/ : /feel disoriented/);
         assert.deepEqual([game.u.ux, game.u.uy, game.u.uz.dnum, game.u.uz.dlevel], position);
     });

@@ -1789,6 +1789,48 @@ existing NOTES entry now records the trailing-call blind spot. Logs are
 cache. Next, use this gate on all newly recorded gameplay controls and expand
 the corpus-wide audit without equating matched counters with equal streams.
 
+Strict RNG checkpoint `a3c3c2b1` is pushed. The teleport-scroll discovery
+repair is applied and verified. C read.c:2015-2031 leaves ordinary scroll
+identification to scrolltele; the JS wrapper no longer unconditionally sets
+known afterward. Confused and cursed level teleport still set known. The
+previously incorrect provenance/comment on that touched branch was removed.
+
+Two new native cases distinguish Amulet disorientation followed by declining
+the wizard override from canceling a controlled destination. The first preserves
+the unknown-scroll naming prompt and label; the second still discovers the type.
+Both pass, 130/130 screens/cursors and exactly 4,682 calls at all input boundaries.
+The old implementation matches 125 screens and only 2,501 of C's call positions.
+The extended source-state assertion fails on the old normal-scroll branch;
+all 39 source/native scroll controls now pass.
+
+Regression passes 163/163 selected fixtures, including all 44 public games:
+161,673 screens/cursors, 3,155,541 matched RNG calls and 4,880 animation frames.
+Every final result and metric was checked. The strict RNG gate additionally
+passes the ten native read/teleport/discovery cases: all 693 input boundaries,
+31,379 calls on each side and no trailing calls. Four input-exhaustion checks
+and the 276-module source audit pass. The full-corpus baseline is still the
+668-fixture status checkpoint; this targeted run adds one new two-case fixture.
+Logs use `teleport-discovery-regression-{0..3}`, `teleport-discovery-state-final`,
+`teleport-discovery-strict-rng-final`, `teleport-discovery-hang-final` and
+`teleport-discovery-source-audit-final` in the restart cache.
+
+Magical-breathing now has seven freshly recorded native cases in the cache and
+an asserted final recording prepared for the next checkpoint. The combined
+allmain/wizcmds prototype matches all 1,417 screens/cursors and all 16,791 calls
+at their exact input boundaries. timeout.js already handles HMagical_breathing
+correctly and needs no change. The source controls cover 22 regeneration and
+22 producer/countdown cases. Pauli is packaging their reusable gates and then
+reviewing the missing Blindf_on/Blindf_off lifecycle effects.
+
+The local boulder-first look_here candidate repairs ordinary placement but
+cannot represent C's replacement histories. Two source-executed histories have
+the same final fobj order and different nexthere orders. Do not promote that
+candidate as a full pile-model repair. Avicenna is now reviewing independent
+local order across mutation, save/restore and consumers. The standalone missing
+fill_pit tail call is source-proven and its four focused native controls pass;
+the original floor-listing failure is retained separately. Singer continues the
+safe_pet/safe_dog option binding needed by the six Stormbringer native controls.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

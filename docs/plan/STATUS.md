@@ -792,6 +792,19 @@ test separately. Logs: `room-difficulty-corpus-{0,1,2,3}.log`,
 `room-difficulty-level-knowledge-before.log` and
 `room-generation-difficulty-{before,after,native}.log` in the restart cache.
 
+Room-generation checkpoint `0de1da72` is pushed. The level-knowledge state
+test now sets the canonical `HBlinded` property for its blind-memory
+controls. Its 103 native replays and 88 constructed groups all pass.
+This changes only the test. Log: `level-knowledge-blindness-final.log`.
+
+The third 80-game audit passes 59 older recordings without changes. Fresh
+UTC-4 C controls for the remaining 21 match all 218,527 RNG calls and all
+5,395 cursors. Seven screens differ: three show the native recorder's
+temporary config path in Options Help, and four lose a cat map cell in
+`tour-s103-25-monk`. The latter is an open display defect. Old recordings
+remain untouched. Evidence: `resumed-fuzz-third-{0,1}.log`,
+`fuzz-third-time-controls-*` and `fuzz-third-screen-audit.log` in the cache.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

@@ -115,7 +115,13 @@ for(const types of[[SHOPBASE,SHOPBASE],[SHOPBASE,SHOPBASE+1]]){await setup();gam
 
 // Resettable flags, retained discoveries, and cross-level annotations.
 await setup();mseen().flags={notreachable:true,knownbones:true,oracle:true,castletune:true,castle:true,valley:true,forgot:true};recalc_mapseen();for(const f of['notreachable','knownbones','oracle','castletune','forgot'])assert.equal(mseen().flags[f],false);assert.equal(mseen().flags.castle,true);assert.equal(mseen().flags.valley,true);
-for(const forgot of[false,true]){await setup();game.u.ublind=true;mseen().flags={bigroom:true,forgot};recalc_mapseen();assert.equal(mseen().flags.bigroom,!forgot);}
+for(const forgot of[false,true]){
+ await setup();
+ game.u.intrinsic.HBlinded=1;
+ mseen().flags={bigroom:true,forgot};
+ recalc_mapseen();
+ assert.equal(mseen().flags.bigroom,!forgot);
+}
 await setup();relocate(game.bigroom_level);recalc_mapseen();assert.equal(mseen().flags.bigroom,true);
 await setup();relocate(game.rogue_level);recalc_mapseen();assert.equal(mseen().flags.roguelevel,true);
 for(const rules of[false,true]){await setup();relocate({dnum:game.sokoban_dnum,dlevel:1});game.level.flags.sokoban_rules=rules;recalc_mapseen();assert.equal(mseen().flags.sokosolved,!rules);}

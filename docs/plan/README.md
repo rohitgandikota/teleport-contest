@@ -24,8 +24,10 @@ now match, including all 1,483 public frames. The latest repair restores
 trap launch delays and the flush order for unseen projectiles. Custom glyph
 metadata, option resets and colored blanks are also verified.
 Object customization shuffling now also passes that full suite and an
-independent compiled C-state comparison. Next: promote ordinary monster glyph
-identities, then verify transient cursor and mounted-hero rendering repairs.
+independent compiled C-state comparison. Ordinary monster identities now
+pass 67 focused fixtures and eight new native cases, bringing the corpus to
+654. Next: full verification of transient cursor output, then mounted-hero
+rendering and the complete display_monster decision flow.
 Current-corpus parity is not a completeness claim. See [STATUS.md](STATUS.md)
 for evidence and the next action. Historical milestone rows below are not a
 current completion audit.

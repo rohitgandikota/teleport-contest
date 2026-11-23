@@ -1346,6 +1346,44 @@ the first hallucination probe did not reach polymorph because a More prompt
 consumed its input. Keep those rejected probes distinct from valid coverage.
 No hero or cursor candidate is applied yet.
 
+Object-customization checkpoint `c3ac5b81` is pushed. The ordinary monster
+identity patch is applied. newsym captures sampled species, gender and
+normal/pet/detected range. Detection uses its separate C priority: blank
+classes precede pets, and pet detection has no hallucination veto. Detection
+flashes reuse mon_to_glyph, including the real species of a disguised mimic.
+Worm segments retain the one shared tail sample and the selected glyph range.
+
+All eight new native cases pass, improving 337/392 to 392/392 screens with
+24,272 RNG calls and all cursors preserved. The new 45-check gate passes;
+38 fail before. Existing monster-symbol and renderer gates pass 19 and 15
+checks. Branch assertions, integrity, input-exhaustion and source audit pass.
+The applied production sources are byte-equal to the prototype that passed
+67 public/targeted fixtures: 17,315 screens/cursors, 1,219,064 RNG calls and
+1,632 animations. The full 653-fixture run belongs to the preceding object
+checkpoint; it was not repeated for these bounded producers. The new native
+fixture brings the corpus to 654. Logs: `monster-glyph-{state-before,
+state-prototype,state-final,existing-state-final,renderer-state-final,
+final-native,final,hang-final,audit-final,regression-prototype}.log`.
+
+Next: integrate the transient cursor patch and run all 654 fixtures. Rebase
+its cache prototype onto the now-applied monster identities; do not overwrite
+display.js with its older full-file prototype. The returned display_monster
+follow-up is incremental over this identity patch. Its agent is closed.
+Read `display-monster-audit.patch` and `display-monster-audit-report.md`; it
+reports 79 controls, 57 failing before, and eight exact recordings. Parent
+review and native recording are still required. No active delegated tasks
+remain at this point.
+
+The hero glyph prototype now matches seven native cases, 358 screens,
+20,833 RNG calls and one animation. The corrected mimic inputs explicitly
+reach the strange-object disguise in ordinary and hallucinating forms.
+Their attack/redraw aftermath is retained in the recording and also matches.
+The first hallucinating probe failed to reach the branch due to More input;
+use `hero-glyph-native-v3` evidence, not that rejected probe. The candidate
+remains cache-only and needs its final recipe, broader regression and checks
+after the cursor integration. Numeric ridden ranges are source-state
+coverage; class overrides alone cannot distinguish those ranges.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

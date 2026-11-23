@@ -37,8 +37,8 @@ import { findgold } from './makemon.js';
 import { wake_nearto } from './mon.js';
 import { Your, You_see, pline_The, There, Norep, set_msg_xy } from './pline.js';
 import { rnd, rn2_on_display_rng } from './rng.js';
-import { I_SPECIAL, A_INT, u_at, OBJ_AT, Has_contents, TRAPPED_CHEST, TRAPPED_DOOR, BEAR_TRAP, D_BROKEN, D_ISOPEN, DRAWBRIDGE_UP, IS_DOOR, M_AP_OBJECT, M_AP_MONSTER, ARTICLE_YOUR, ARTICLE_THE, SUPPRESS_SADDLE, FOOT, NOSE, TOE, TIMEOUT, KILLED_BY_AN, BURIED_TOO, CONTAINED_TOO, NO_PART, BOLT_LIM, TOPLINE_EMPTY, TOPLINE_NEED_MORE } from './const.js';
-import { display_self, more, unmap_object, glyph_at, see_monsters, covers_objects, flash_glyph_at, map_engraving, glyph_is_trap } from './display.js';
+import { I_SPECIAL, A_INT, u_at, OBJ_AT, Has_contents, TRAPPED_CHEST, TRAPPED_DOOR, BEAR_TRAP, D_BROKEN, D_ISOPEN, DRAWBRIDGE_UP, IS_DOOR, M_AP_OBJECT, ARTICLE_YOUR, ARTICLE_THE, SUPPRESS_SADDLE, FOOT, NOSE, TOE, TIMEOUT, KILLED_BY_AN, BURIED_TOO, CONTAINED_TOO, NO_PART, BOLT_LIM, TOPLINE_EMPTY, TOPLINE_NEED_MORE } from './const.js';
+import { mon_to_glyph, display_self, more, unmap_object, glyph_at, see_monsters, covers_objects, flash_glyph_at, map_engraving, glyph_is_trap } from './display.js';
 import { engr_at } from './engrave.js';
 import { OCLASSES, MATERIALS } from './objects_data.js';
 import { PMNAMES, NUMMONS } from './monst_data.js';
@@ -75,7 +75,9 @@ import { nomul } from './hack.js';
 import { terrain_glyph, show_glyph_cell, flush_screen, trap_glyph,
          xy_set_wall_state, pline, covers_traps } from './display.js';
 import { TER_MAP, TER_TRP, TER_OBJ, TER_MON, TER_FULL, TER_DETECT, IS_WALL,
-         M_AP_FURNITURE } from './const.js';
+         M_AP_FURNITURE, GLYPH_MON_MALE_OFF, GLYPH_MON_FEM_OFF,
+         GLYPH_PET_MALE_OFF, GLYPH_PET_FEM_OFF,
+         GLYPH_DETECT_MALE_OFF, GLYPH_DETECT_FEM_OFF } from './const.js';
 import { NO_COLOR, CLR_GREEN, CLR_WHITE } from './terminal.js';
 import { cansee, couldsee } from './vision.js';
 import { getpos } from './getpos.js';
@@ -934,11 +936,7 @@ function back_cell(lev, x, y) {
              glyph: b.glyph ?? { kind: 'cmap', cmap: b.cmap } };
 }
 function mon_cell(mtmp) { /* mon_to_glyph(mtmp, rn2_on_display_rng) */
-    const shown = game.mons[Hallucination() ? rn2_on_display_rng(NUMMONS)
-                            : (M_AP_TYPE(mtmp) === M_AP_MONSTER
-                               ? mtmp.mappearance : mtmp.mnum)];
-    return { ch: showsym_mon(shown.mlet) || '?', color: shown.mcolor ?? NO_COLOR,
-             decgfx: false, glyph: { kind: 'mon', mon: mtmp } };
+    return mon_to_glyph(mtmp, rn2_on_display_rng);
 }
 function invis_cell() { /* GLYPH_INVISIBLE */
     return { ch: 'I', color: NO_COLOR, decgfx: false, glyph: { kind: 'invis' } };
@@ -959,15 +957,21 @@ async function display_nhwindow_map(blocking) {
 function map_monst(mtmp, showtail) {
     /* monsym(mtmp->data) == ' ' (ghosts, shades) uses the detected glyph;
        pets use pet_to_glyph(); the rest mon_to_glyph(), all with newsym_rn2 */
-    const shown = game.mons[Hallucination() ? rn2_on_display_rng(NUMMONS)
-                                            : mtmp.mnum];
+    const mnum = Hallucination() ? rn2_on_display_rng(NUMMONS) : mtmp.mnum;
+    const shown = game.mons[mnum];
+    const female = !!mtmp.female;
     const detected = (def_monsyms[mtmp.data.mlet] === ' ');
+    const glyphnum = mnum + (detected
+        ? (female ? GLYPH_DETECT_FEM_OFF : GLYPH_DETECT_MALE_OFF)
+        : mtmp.mtame
+          ? (female ? GLYPH_PET_FEM_OFF : GLYPH_PET_MALE_OFF)
+          : (female ? GLYPH_MON_FEM_OFF : GLYPH_MON_MALE_OFF));
     const attr = (detected && game.flags?.use_inverse !== false)
                  ? TERM_INVERSE : 0;
 
     show_glyph_cell(mtmp.mx, mtmp.my, showsym_mon(shown.mlet) || '?',
                     shown.mcolor ?? NO_COLOR, false, attr,
-                    { kind: 'mon', mon: mtmp });
+                    { kind: 'mon', mon: mtmp, mnum, female, detected, glyphnum });
     if (showtail && mtmp.data.pmidx === PMNAMES.PM_LONG_WORM)
         detect_wsegs(mtmp, 0);
 }

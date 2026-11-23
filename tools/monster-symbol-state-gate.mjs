@@ -6,6 +6,9 @@ import vm from 'node:vm';
 import {test} from 'node:test';
 import {mons, NUMMONS, PMNAMES as PM} from '../js/monst_data.js';
 import {def_monsyms} from '../js/drawing_data.js';
+import {GLYPH_MON_MALE_OFF, GLYPH_MON_FEM_OFF,
+    GLYPH_PET_MALE_OFF, GLYPH_PET_FEM_OFF,
+    GLYPH_DETECT_MALE_OFF, GLYPH_DETECT_FEM_OFF} from '../js/const.js';
 import {NO_COLOR, ATR_INVERSE as TERM_INVERSE} from '../js/terminal.js';
 
 function extract(source, name) {
@@ -31,6 +34,8 @@ function setup({hallu=false, sample=PM.PM_RED_DRAGON, visible=true, sparkle=true
     const show = (x,y,ch,color,decgfx,attr,glyph) => calls.cells.push({x,y,ch,color,decgfx,attr,glyph});
     const env = {
         game, NUMMONS, PMNAMES:PM, def_monsyms, NO_COLOR, TERM_INVERSE,
+        GLYPH_MON_MALE_OFF, GLYPH_MON_FEM_OFF, GLYPH_PET_MALE_OFF, GLYPH_PET_FEM_OFF,
+        GLYPH_DETECT_MALE_OFF, GLYPH_DETECT_FEM_OFF,
         IN_SIGHT:2, COULD_SEE:1, couldsee:()=>visible, Hallucination:()=>hallu,
         monsndx:ptr=>ptr.pmidx, showsym_mon:i=>active[i],
         rn2_on_display_rng:n=>{calls.draws.push(n); return sample;},

@@ -1726,17 +1726,29 @@ export function newsym(x, y) {
                                 { kind: 'cmap', cmap: mon.mappearance });
                 return;
             }
-            const shown = game.mons[Hallucination()
+            const mnum = Hallucination()
                 ? rn2_on_display_rng(NUMMONS)
                 : (wormTail ? PMNAMES.PM_LONG_WORM_TAIL
                     : (M_AP_TYPE(mon) === M_AP_MONSTER
-                        ? mon.mappearance : mon.mnum))];
+                        ? mon.mappearance : mon.mnum));
+            const shown = game.mons[mnum];
+            const female = !!mon.female;
+            // src/display.c:578, :599 display_monster(): a monster disguise
+            // uses the normal range; other pets take priority outside hallucination.
+            const disguise = M_AP_TYPE(mon) === M_AP_MONSTER;
+            const pet = !disguise && mon.mtame && !Hallucination();
+            const detected = !disguise && !pet && detectedOnly;
+            const glyphnum = mnum + (pet
+                ? (female ? GLYPH_PET_FEM_OFF : GLYPH_PET_MALE_OFF)
+                : detected
+                  ? (female ? GLYPH_DETECT_FEM_OFF : GLYPH_DETECT_MALE_OFF)
+                  : (female ? GLYPH_MON_FEM_OFF : GLYPH_MON_MALE_OFF));
             const attr = detectedOnly && !(mon.mtame && !Hallucination())
                          && game.flags?.use_inverse !== false
                 ? TERM_INVERSE : 0;
             show_glyph_cell(x, y, showsym_mon(shown.mlet) || '?',
                             shown.mcolor ?? NO_COLOR, false, attr,
-                            { kind: 'mon', mon, detected: detectedOnly });
+                            { kind: 'mon', mon, mnum, female, detected, glyphnum });
             mon.meverseen = 1; /* display.c:620 display_monster() */
             return;
         }
@@ -1757,15 +1769,25 @@ export function newsym(x, y) {
             && !tp_sensemon(mon) && !match_warn_of_mon(mon)
             && !(see_with_infrared(mon) && mon_visible(mon)));
         if (spotMon) {
-            const shown = game.mons[Hallucination()
-                ? rn2_on_display_rng(NUMMONS) : mon.mnum];
+            const mnum = Hallucination()
+                ? rn2_on_display_rng(NUMMONS) : mon.mnum;
+            const shown = game.mons[mnum];
+            const female = !!mon.female;
+            // src/display.c:599 display_monster(): pets precede detection.
+            const pet = mon.mtame && !Hallucination();
+            const detected = !pet && detectedOnly;
+            const glyphnum = mnum + (pet
+                ? (female ? GLYPH_PET_FEM_OFF : GLYPH_PET_MALE_OFF)
+                : detected
+                  ? (female ? GLYPH_DETECT_FEM_OFF : GLYPH_DETECT_MALE_OFF)
+                  : (female ? GLYPH_MON_FEM_OFF : GLYPH_MON_MALE_OFF));
             const attr = detectedOnly && !(mon.mtame && !Hallucination())
                          && game.flags?.use_inverse !== false
                 ? TERM_INVERSE : 0;
             clear_invisible_memory(x, y);
             show_glyph_cell(x, y, showsym_mon(shown.mlet) || '?',
                             shown.mcolor ?? NO_COLOR, false, attr,
-                            { kind: 'mon', mon, detected: detectedOnly });
+                            { kind: 'mon', mon, mnum, female, detected, glyphnum });
             mon.meverseen = 1; /* display.c:620 display_monster() */
             return;
         }

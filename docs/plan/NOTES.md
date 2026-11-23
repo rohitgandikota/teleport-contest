@@ -9473,3 +9473,21 @@ oracle. Individual object G_ overrides are unavailable through the current
 config path because C passes only the stripped name to match_glyph; object
 S_ selectors address generic indices. Do not claim native shuffled-object
 customization coverage from those class selectors.
+
+## Monster glyph identities (23 Nov)
+
+A character and monster pointer do not identify a buffered glyph. C retains
+the selected species, gender and normal/pet/detected range. newsym suppresses
+the pet range during hallucination and gives an unsensed monster disguise
+the normal range. Detection's map_monst instead gives blank default monster
+classes priority, then pets even during hallucination. Active class-symbol
+overrides do not change that blank-class test. detect_wsegs samples its tail
+once, including an empty tail, and shares that species across segments.
+
+The eight native monster-glyph cases use paired class overrides and controls.
+They verify output colors, Unicode bypass and ghost inverse attributes, but
+class selectors customize several ranges together. The 45-check state gate
+injects distinct metadata per range and checks buffered identity after live
+monster mutations. It deliberately disables pet highlighting: that still
+reads live tameness and requires a separate repair. Sensed mimic control
+flow and unseen sensed tail selection also remain separate follow-ups.

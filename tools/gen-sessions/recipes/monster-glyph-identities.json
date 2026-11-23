@@ -1,0 +1,214 @@
+{
+  "name": "monster-glyph-identities",
+  "description": "Ordinary monster colors and Unicode, blank ghost detection and tame worm-tail colors, each paired with the same native input without overrides.",
+  "recordingNote": "Use RERECORD_TZ=Etc/GMT+4. Class overrides test emitted metadata; numeric range identity is checked separately by the state gate.",
+  "segments": [
+    {
+      "name": "ordinary-female-gnome-color",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\nSYMBOLS=S_gnome:U+0067/red\n",
+      "moves": " \u0007sleeping female gnome\r V\f"
+    },
+    {
+      "name": "ordinary-female-gnome-color-control",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "moves": " \u0007sleeping female gnome\r V\f"
+    },
+    {
+      "name": "ordinary-female-gnome-unicode",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:Enhanced1\nSYMBOLS=S_gnome:U+2603\n",
+      "moves": " \u0007sleeping female gnome\r V\f"
+    },
+    {
+      "name": "ordinary-female-gnome-unicode-control",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:Enhanced1\n",
+      "moves": " \u0007sleeping female gnome\r V\f"
+    },
+    {
+      "name": "ghost-detection-color",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\nSYMBOLS=S_ghost:U+0020/red\n",
+      "moves": " \u0007sleeping ghost\r\u0017uncursed potion of monster detection\rqa  \u001bV"
+    },
+    {
+      "name": "ghost-detection-color-control",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "moves": " \u0007sleeping ghost\r\u0017uncursed potion of monster detection\rqa  \u001bV"
+    },
+    {
+      "seed": 99826,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Mortician,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:plain\nSYMBOLS=S_worm:U+0077/green,S_worm_tail:U+007E/red\n",
+      "moves": " \u0007sleeping tame female long worm\r\u0017uncursed potion of monster detection\rqa  \u001bV",
+      "name": "tame-worm-tail-color"
+    },
+    {
+      "seed": 99826,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Mortician,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:plain\n",
+      "moves": " \u0007sleeping tame female long worm\r\u0017uncursed potion of monster detection\rqa  \u001bV",
+      "name": "tame-worm-tail-color-control"
+    }
+  ],
+  "coverage": [
+    "mode.debug",
+    "options.rc-bindings",
+    "ui.map-memory-vision",
+    "monster.items"
+  ],
+  "branches": [
+    "monster-glyph.ordinary-female-gnome-color",
+    "monster-glyph.ordinary-female-gnome-color-control",
+    "monster-glyph.ordinary-female-gnome-unicode",
+    "monster-glyph.ordinary-female-gnome-unicode-control",
+    "monster-glyph.ghost-detection-color",
+    "monster-glyph.ghost-detection-color-control",
+    "monster-glyph.tame-worm-tail-color",
+    "monster-glyph.tame-worm-tail-color-control"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "monster-glyph.ordinary-female-gnome-color",
+      "segment": 0,
+      "screenIncludes": [
+        "A gnome appears next to you."
+      ],
+      "screenCells": [
+        {
+          "step": 24,
+          "x": 8,
+          "y": 13,
+          "equals": "G"
+        }
+      ]
+    },
+    {
+      "branch": "monster-glyph.ordinary-female-gnome-color-control",
+      "segment": 1,
+      "screenIncludes": [
+        "A gnome appears next to you."
+      ],
+      "screenCells": [
+        {
+          "step": 24,
+          "x": 8,
+          "y": 13,
+          "equals": "G"
+        }
+      ]
+    },
+    {
+      "branch": "monster-glyph.ordinary-female-gnome-unicode",
+      "segment": 2,
+      "screenIncludes": [
+        "A gnome appears next to you."
+      ],
+      "screenCells": [
+        {
+          "step": 24,
+          "x": 8,
+          "y": 13,
+          "equals": " "
+        }
+      ]
+    },
+    {
+      "branch": "monster-glyph.ordinary-female-gnome-unicode-control",
+      "segment": 3,
+      "screenIncludes": [
+        "A gnome appears next to you."
+      ],
+      "screenCells": [
+        {
+          "step": 24,
+          "x": 8,
+          "y": 13,
+          "equals": "G"
+        }
+      ]
+    },
+    {
+      "branch": "monster-glyph.ghost-detection-color",
+      "segment": 4,
+      "screenIncludes": [
+        "You sense the presence of monsters."
+      ],
+      "screenCells": [
+        {
+          "step": 57,
+          "x": 8,
+          "y": 13,
+          "equals": " "
+        }
+      ]
+    },
+    {
+      "branch": "monster-glyph.ghost-detection-color-control",
+      "segment": 5,
+      "screenIncludes": [
+        "You sense the presence of monsters."
+      ],
+      "screenCells": [
+        {
+          "step": 57,
+          "x": 8,
+          "y": 13,
+          "equals": " "
+        }
+      ]
+    },
+    {
+      "branch": "monster-glyph.tame-worm-tail-color",
+      "segment": 6,
+      "screenIncludes": [
+        "You sense the presence of monsters."
+      ],
+      "screenCells": [
+        {
+          "step": 73,
+          "x": 3,
+          "y": 15,
+          "equals": "~"
+        },
+        {
+          "step": 73,
+          "x": 4,
+          "y": 16,
+          "equals": "~"
+        }
+      ]
+    },
+    {
+      "branch": "monster-glyph.tame-worm-tail-color-control",
+      "segment": 7,
+      "screenIncludes": [
+        "You sense the presence of monsters."
+      ],
+      "screenCells": [
+        {
+          "step": 73,
+          "x": 3,
+          "y": 15,
+          "equals": "~"
+        },
+        {
+          "step": 73,
+          "x": 4,
+          "y": 16,
+          "equals": "~"
+        }
+      ]
+    }
+  ]
+}

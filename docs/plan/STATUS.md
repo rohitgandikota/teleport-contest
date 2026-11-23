@@ -1940,6 +1940,45 @@ The toolchain's packages.sha256 and signal-canary/validation.json preserve
 provenance. This is infrastructure validation, not gameplay coverage. Jason
 continues the cache-only recorder child-lifetime repair before any collection.
 
+Stormbringer checkpoint `0ce7701a` is pushed. The two newly exposed RNG
+input-order defects are now repaired in the working tree. m_dowear_type waits
+for its visibility message before makeknown and its Wisdom exercise draw.
+hitmu's AD_STCK branch now calls the existing C-named mhitm_ad_stck, which
+rolls magic cancellation before hitmsg. The duplicate branch and its orphaned
+set_ustuck_mh helper are removed. No C fixture was changed.
+
+The third audit finding was a tool false positive. The recorder emits a final
+marker at nh_terminate after character-selection cancellation, with blank
+screen and empty RNG. The frozen scorer intentionally omits that empty screen;
+interactive-exit-state-gate already checks the actual cleared terminal and
+unused trailing keys. rng-slice-gate now recognizes only an ended game whose
+actual terminal is blank and whose one omitted final native frame has no RNG
+or animation. It reports blankExitFrames explicitly. It does not add a fake
+input to the game. Negative controls still reject calls, animation, nonblank
+frames and missing boundaries in live games, as well as extra stream tails
+and shifted input slices.
+
+The three affected fixtures now pass all 1,612 input slices and exactly
+35,425 calls. The new equipment knowledge snapshot is [0,1] across the More
+boundary and fails as [1,1] before the repair. All 169 selected scored fixtures
+pass, including public games: 110,870 screens/cursors, 2,431,310 RNG positions
+and 4,414 animation frames. Five hang checks, six interactive-exit controls
+and the 276-module source audit pass. All seven reusable RNG-tool controls pass. Commit and push this verified
+checkpoint. Logs use
+input-boundary-* in the restart cache. The last complete 671-fixture run is
+the preceding checkpoint; the new source changes have targeted verification.
+
+Four fresh native eyewear cases are recorded in
+blindf-lifecycle-native.session.json, 299 input boundaries. Candidate replay and strict checks pass all 299 screens/cursors and exactly
+11,132 RNG calls through the cache loader. Pauli is preparing
+30 reusable lifecycle controls. The floor-order candidate now retains actual
+local nexthere chains and passes 706 extracted-C intermediate states plus
+consumer/restore tests; review its 37-file scoped diff before integration.
+Avicenna is packaging the oracle and preparing a replacement/restore native
+input. Silver feedback remains a separate verified cache prototype awaiting
+its production checkpoint. Do not overwrite source with whole cached modules:
+apply the scoped changes so subsequent repairs are preserved.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

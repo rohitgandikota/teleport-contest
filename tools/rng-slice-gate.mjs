@@ -3,6 +3,7 @@
 import {readFileSync} from 'node:fs';
 import {runSegment} from '../js/jsmain.js';
 import {InMemoryStorage} from '../js/storage.js';
+import {game} from '../js/gstate.js';
 import {normalizeSession} from '../frozen/session_loader.mjs';
 
 const paths = process.argv.slice(2);
@@ -18,7 +19,7 @@ for (const path of paths) {
     const input = normalizeSession(JSON.parse(readFileSync(path)));
     const storage = new InMemoryStorage();
     const result = {path, segments: 0, steps: 0, matchingSteps: 0,
-        expectedCalls: 0, actualCalls: 0, errors: []};
+        expectedCalls: 0, actualCalls: 0, blankExitFrames: 0, errors: []};
     for (const [segment, part] of input.segments.entries()) {
         const run = await runSegment({seed: part.seed, datetime: part.datetime,
             nethackrc: part.nethackrc, moves: part.moves, storage});
@@ -35,7 +36,19 @@ for (const path of paths) {
             result.errors.push({segment, kind: 'stream-call', index: first,
                 expected: expected[first], actual: actual[first] ?? null});
 
-        const slices = run.getRngSlices();
+        const slices = [...run.getRngSlices()];
+        // C emits a blank terminal frame after character-selection cancellation.
+        // The judge omits it. Accept only a completed game with that blank
+        // terminal and no recorded calls or animation at the omitted boundary.
+        const last = part.steps.at(-1);
+        if (slices.length + 1 === part.steps.length
+            && last?.screen === '' && calls(last.rng).length === 0
+            && !(last.animation_frames || []).length
+            && game.program_state?.gameover
+            && run._display?.terminal.serialize() === '') {
+            slices.push([]);
+            result.blankExitFrames++;
+        }
         if (slices.length !== part.steps.length)
             result.errors.push({segment, kind: 'step-count',
                 expected: part.steps.length, actual: slices.length});

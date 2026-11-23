@@ -306,10 +306,17 @@ the frozen runner or passing recorded answers into the port.
 The first full strict audit (671 fixtures, November 23) also found two draws
 shifted across More input boundaries despite identical complete streams and
 screens: monster equipment identification and a lichen's cancellation check.
-A third fixture, character-selection quit, has a missing empty slice. Compare
-new findings with the previous runtime before treating them as regressions.
-The equipment example calls makeknown before the awaited visibility message
-finishes; its exercise draw belongs after that message returns in C.
+Character-selection quit also has a final blank termination marker which
+C emits at nh_terminate, not at an input wait. The judge intentionally omits
+that empty screen. The strict gate accepts that one omitted frame only when
+the actual game has ended with a cleared terminal and C records no calls or
+animation there. It reports blankExitFrames rather than modifying the port's
+input captures. Reusable negative controls reject nonblank frames, animation,
+missing calls, extra tails, shifted slices and live-game missing boundaries.
+Compare new findings with the previous runtime before calling them regressions.
+The equipment defect was makeknown before the awaited visibility message
+finished. The lichen defect was a duplicate hitmu branch which called hitmsg
+before its cancellation roll. Reusing mhitm_ad_stck restores C's order.
 
 **The rng comparison strips the call site** (`normalizeRng` drops everything
 from `@` on), so "rn2(5)=0" matches "rn2(5)=0" even when C drew it in

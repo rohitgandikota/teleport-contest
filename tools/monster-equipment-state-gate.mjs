@@ -55,7 +55,21 @@ assert.equal(cap.cursed, 1,
 assert.ok(mon.misc_worn_check & W_ARMH,
           'autocursing does not clear the occupied head slot');
 
-await run(2);
+const visibilityKnowledge = [];
+globalThis.__step_snapshot = {
+    step: '*',
+    cb: (state, step) => {
+        if (step === 188 || step === 189)
+            visibilityKnowledge.push(state.objects[ONAMES.CLOAK_OF_INVISIBILITY].oc_name_known);
+    },
+};
+try {
+    await run(2);
+} finally {
+    delete globalThis.__step_snapshot;
+}
+assert.deepEqual(visibilityKnowledge, [0, 1],
+    'C worn.c:998 identifies the cloak after the visibility message returns');
 mon = liveMonster(PMNAMES.PM_GNOME_LEADER);
 assert.ok(mon, 'the visibility fixture keeps its gnome lord alive');
 const cloak = carried(mon, ONAMES.CLOAK_OF_INVISIBILITY)[0];

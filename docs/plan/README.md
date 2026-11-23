@@ -40,11 +40,12 @@ including all public games and ten new C cases: 161,673 screens/cursors and
 cases and 117 selected fixtures, with 57,483 screens/cursors and 1,562,342
 matched RNG calls. Stormbringer attack routing and the safe_pet binding pass
 six native cases and 62 routing/option controls. The first complete strict RNG
-audit confirms every stream and length, but exposes two pre-existing input
-boundary shifts and one missing empty quit slice in three fixtures. These are
-recorded separately from the passing score. Next: repair those contracts,
-silver-hit feedback, floor-pile settlement, separate local object order and
-eyewear transitions. Linux/NFS profiling passes its termination canary;
+audit confirmed every stream and length and exposed two input-boundary shifts.
+Both are repaired, with 169 selected fixtures passing 110,870 screens/cursors
+and 2,431,310 RNG calls. The strict gate also handles C's blank final exit
+marker explicitly and retains negative controls for missing calls and inputs.
+Next: silver-hit feedback, floor-pile settlement, separate local object order
+and eyewear transitions. Linux/NFS profiling passes its termination canary;
 fresh gameplay branch coverage has not been collected yet.
 Current-corpus parity is not a
 completeness claim. See [STATUS.md](STATUS.md) for evidence and next actions.

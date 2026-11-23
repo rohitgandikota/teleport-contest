@@ -33,7 +33,8 @@ import {
     primary_symsets, PRIMARYSET, ROGUESET, parsesymbols, switch_symbols,
     init_primary_symbols, init_rogue_symbols, read_sym_file, clear_symsetentry,
 } from './symbols.js';
-import { apply_customizations } from './glyphs.js';
+import { apply_customizations, reset_customcolors } from './glyphs.js';
+import { reset_customsymbols } from './utf8map.js';
 import { do_custom_symbols, do_custom_colors } from './const.js';
 import { def_char_to_objclass } from './sp_lev.js';
 import { OCLASSES } from './objects_data.js';
@@ -66,7 +67,7 @@ import { MAXMCLASSES, SYM_OFF_X, go_ov_primary_syms, go_ov_rogue_syms, escapes }
 import { WARNCOUNT, SYM_BOULDER } from './const.js';
 import { NUM_DISCLOSURE_OPTIONS, DISCLOSE_PROMPT_DEFAULT_YES, DISCLOSE_PROMPT_DEFAULT_NO, DISCLOSE_PROMPT_DEFAULT_SPECIAL, DISCLOSE_YES_WITHOUT_PROMPT, DISCLOSE_NO_WITHOUT_PROMPT, DISCLOSE_SPECIAL_WITHOUT_PROMPT } from './const.js';
 import { RUN_TPORT, RUN_LEAP, RUN_STEP, RUN_CRAWL } from './const.js';
-import { Is_rogue_level, H_MAC, H_UNK } from './const.js';
+import { Is_rogue_level, H_MAC } from './const.js';
 import { There } from './pline.js';
 
 function note_unported_options(what) {
@@ -1347,6 +1348,7 @@ function longest_option_name(startpass, endpass) {
    menu and the rc must write the same place. */
 export const iflag_boolean_options = new Set([
     'autodescribe', 'cmdassist', 'fireassist', 'menu_overlay', 'menu_tab_sep',
+    'customcolors', 'customsymbols',
     'debug_hunger', 'debug_mongen', 'debug_overwrite_stairs',
     'menucolors', /* iflags.use_menu_color */
     'whatis_menu', /* iflags.getloc_usemenu */
@@ -2130,14 +2132,13 @@ async function do_symset(rogueflag) {
         /* chose an actual symset name from file */
         const sl = symset_list.find(e => e.index === chosen);
         if (sl) {
-            /* free the old one */
-            gs_symset[which_set] = { name: sl.name, handling: sl.handling };
+            clear_symsetentry(which_set, true);
+            gs_symset[which_set].name = sl.name;
             ready_to_switch = true;
         }
     } else if (chosen === -1) {
         /* explicit selection of defaults */
-        /* free the old symset name if there is one */
-        gs_symset[which_set] = { name: null, handling: H_UNK };
+        clear_symsetentry(which_set, true);
     } else
         nothing_to_do = true;
 
@@ -2376,6 +2377,12 @@ function boolopt_side_effects(name) {
     case 'color':
         game.opt_need_redraw = true;
         break;
+    case 'customcolors':
+        game.opt_reset_customcolors = true;
+        break;
+    case 'customsymbols':
+        game.opt_reset_customsymbols = true;
+        break;
     case 'mention_decor':
         (game.iflags ||= {}).prev_decor = 0;    /* STONE */
         break;
@@ -2391,8 +2398,6 @@ function boolopt_side_effects(name) {
         update_inventory();
         break;
     default:
-        /* customcolors/customsymbols touch palette machinery this port
-           does not have */
         break;
     }
 }
@@ -2640,7 +2645,7 @@ export async function doset() {
     return ECMD_OK;
 }
 
-// src/options.c:9131 reset_needed_visuals() — apply whatever display
+// src/options.c:8985 reset_needed_visuals(), apply whatever display
 // refreshes the option changes queued up.
 async function reset_needed_visuals() {
     if (game.opt_need_glyph_reset) {
@@ -2648,17 +2653,26 @@ async function reset_needed_visuals() {
         const { gm_optionchange } = await import('./const.js');
         reset_glyphmap(gm_optionchange);
     }
-    if (game.opt_need_redraw) {
-        check_gold_symbol();
-        reglyph_darkroom();
+    if (game.opt_reset_customcolors || game.opt_reset_customsymbols
+        || game.opt_need_redraw) {
+        if (game.opt_reset_customcolors)
+            reset_customcolors();
+        if (game.opt_reset_customsymbols)
+            reset_customsymbols();
+        if (game.opt_need_redraw) {
+            check_gold_symbol();
+            reglyph_darkroom();
+        }
         await docrt();
-        game.opt_need_redraw = false;
     }
     if (game.disp?.botl || game.disp?.botlx) {
         await bot();
         if (game.disp) game.disp.botl = game.disp.botlx = false;
     }
+    game.opt_need_redraw = false;
     game.opt_need_glyph_reset = false;
+    game.opt_reset_customcolors = false;
+    game.opt_reset_customsymbols = false;
 }
 
 /* src/options.c:118 def_inv_order[] — the object classes in the order the

@@ -1,0 +1,216 @@
+{
+  "name": "customization-options",
+  "description": "Custom symbol and color options at startup and during play, including paired enabled controls.",
+  "recordingNote": "Use RERECORD_TZ=Etc/GMT+4 for a fixed UTC-4 recording offset.",
+  "coverage": [
+    "mode.debug",
+    "options.rc-bindings",
+    "ui.map-memory-vision"
+  ],
+  "branches": [
+    "customization-options.enhanced-symbols-off",
+    "customization-options.enhanced-symbols-on",
+    "customization-options.enhanced-toggle-symbols",
+    "customization-options.enhanced-toggle-colors",
+    "customization-options.plain-custom-colors-off",
+    "customization-options.enhanced-both-off",
+    "customization-options.enhanced-to-plain-and-back",
+    "customization-options.enhanced-to-default"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "customization-options.enhanced-symbols-off",
+      "segment": 0,
+      "screenCells": [
+        {
+          "step": 1,
+          "x": 5,
+          "y": 12,
+          "equals": "|"
+        }
+      ]
+    },
+    {
+      "branch": "customization-options.enhanced-symbols-on",
+      "segment": 1,
+      "screenCells": [
+        {
+          "step": 1,
+          "x": 5,
+          "y": 12,
+          "equals": " "
+        }
+      ]
+    },
+    {
+      "branch": "customization-options.enhanced-toggle-symbols",
+      "segment": 2,
+      "screenCells": [
+        {
+          "step": 3,
+          "x": 5,
+          "y": 12,
+          "equals": "|"
+        },
+        {
+          "step": 6,
+          "x": 5,
+          "y": 12,
+          "equals": " "
+        }
+      ],
+      "screenIncludes": [
+        "'customsymbols' option toggled off.",
+        "'customsymbols' option toggled on."
+      ]
+    },
+    {
+      "branch": "customization-options.enhanced-toggle-colors",
+      "segment": 3,
+      "screenCells": [
+        {
+          "step": 12,
+          "x": 72,
+          "y": 14,
+          "equals": "b"
+        },
+        {
+          "step": 26,
+          "x": 72,
+          "y": 14,
+          "equals": "0"
+        },
+        {
+          "step": 40,
+          "x": 72,
+          "y": 14,
+          "equals": "b"
+        }
+      ],
+      "screenIncludes": [
+        "'customcolors' option toggled off.",
+        "'customcolors' option toggled on."
+      ]
+    },
+    {
+      "branch": "customization-options.plain-custom-colors-off",
+      "segment": 4,
+      "screenCells": [
+        {
+          "step": 1,
+          "x": 7,
+          "y": 13,
+          "equals": "@"
+        }
+      ]
+    },
+    {
+      "branch": "customization-options.enhanced-both-off",
+      "segment": 5,
+      "screenCells": [
+        {
+          "step": 1,
+          "x": 5,
+          "y": 12,
+          "equals": "|"
+        }
+      ]
+    },
+    {
+      "branch": "customization-options.enhanced-to-plain-and-back",
+      "segment": 6,
+      "screenIncludes": [
+        "plain, active",
+        "Enhanced1, active, handler=UTF8"
+      ],
+      "screenCells": [
+        {
+          "step": 35,
+          "x": 1,
+          "y": 3,
+          "equals": "("
+        },
+        {
+          "step": 66,
+          "x": 1,
+          "y": 3,
+          "equals": "a"
+        }
+      ]
+    },
+    {
+      "branch": "customization-options.enhanced-to-default",
+      "segment": 7,
+      "screenIncludes": [
+        "#wizcustom: colorcount=256 default"
+      ],
+      "screenCells": [
+        {
+          "step": 35,
+          "x": 1,
+          "y": 3,
+          "equals": "("
+        }
+      ]
+    }
+  ],
+  "segments": [
+    {
+      "name": "enhanced-symbols-off",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:Enhanced1,!customsymbols\n",
+      "moves": " VjVkV\f"
+    },
+    {
+      "name": "enhanced-symbols-on",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:Enhanced1\n",
+      "moves": " VjVkV\f"
+    },
+    {
+      "name": "enhanced-toggle-symbols",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:Enhanced1\nBIND=^T:toggle(customsymbols)\n",
+      "moves": " \u0014 V\u0014 V\f"
+    },
+    {
+      "name": "enhanced-toggle-colors",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:Enhanced1\nBIND=^T:toggle(customcolors)\n",
+      "moves": " #wizcustom\r\u001b\u0014 #wizcustom\r\u001b\u0014 #wizcustom\r\u001bV"
+    },
+    {
+      "name": "plain-custom-colors-off",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain,!customcolors\nSYMBOLS=S_human:U+0040/red\n",
+      "moves": " VjVkV\f"
+    },
+    {
+      "name": "enhanced-both-off",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:Enhanced1,!customsymbols,!customcolors\n",
+      "moves": " VjVkV\f"
+    },
+    {
+      "name": "enhanced-to-plain-and-back",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:Enhanced1\n",
+      "moves": " mO:symset*Enhanced1\r\rbV#wizcustom\r\u001bmO:symset*plain\r\riV#wizcustom\r\u001bV"
+    },
+    {
+      "name": "enhanced-to-default",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:Enhanced1\n",
+      "moves": " mO:symset*Enhanced1\r\raV#wizcustom\r\u001bV"
+    }
+  ]
+}

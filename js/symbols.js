@@ -14,7 +14,8 @@ import { defsyms, def_oc_syms, def_monsyms, cmap_names } from './drawing_data.js
 import { mungspaces, fuzzymatch } from './hacklib.js';
 import { symbols as symbols_file } from './dat_files.js';
 import { match_glyph, glyphrep_to_custom_map_entries, purge_custom_entries,
-         apply_customizations } from './glyphs.js';
+         apply_customizations, clear_all_glyphmap_colors } from './glyphs.js';
+import { free_all_glyphmap_u } from './utf8map.js';
 import { def_warnsyms, do_custom_symbols, do_custom_colors, gm_symchange } from './const.js';
 import { game } from './gstate.js';
 import { config_error_add } from './options.js';
@@ -690,6 +691,8 @@ export function update_rogue_symset(symp, val) {
 // src/symbols.c:319 clear_symsetentry()
 export function clear_symsetentry(which_set, name_too) {
     const ss = (gs_symset[which_set] ||= { name: null, handling: H_UNK });
+    const other_set = which_set === PRIMARYSET ? ROGUESET : PRIMARYSET;
+    const old_handling = ss.handling;
     if (ss.desc)
         ss.desc = null;
     if (name_too && ss.name)
@@ -699,7 +702,10 @@ export function clear_symsetentry(which_set, name_too) {
     /* initialize restriction bits */
     ss.primary = 0;
     ss.rogue = 0;
+    if (old_handling === H_UTF8 && gs_symset[other_set].handling !== H_UTF8)
+        free_all_glyphmap_u();
     purge_custom_entries(which_set);
+    clear_all_glyphmap_colors();
 }
 
 // src/symbols.c:376 known_restrictions[]

@@ -1149,6 +1149,44 @@ the restart cache. Next: promote the customization option lifecycle repair.
 The broader renderer review is read-only with cache prototypes; native
 recording remains owned by the parent and sequential.
 
+Monster-symbol checkpoint `4459c359` is pushed. Customization option resets
+are now applied. customcolors/customsymbols live in iflags, reset their
+respective glyph metadata and redraw in C's order. clear_symsetentry clears
+colors and conditionally frees Unicode representations. do_symset clears
+the old attributes before transferring the new name, preserving the old
+handling value needed by cleanup. The glyph buffer retains no Unicode
+pointers, so C's freed-pointer cleanup has no separate JS counterpart.
+
+The eight-case `customization-options` native fixture improves from 165/191
+screens and 187/191 cursors to exact output, retaining 24,442 RNG calls.
+Four `customization-save-restore` cases improve from 22/42 screens and 41/42
+cursors to exact output, retaining 6,064 RNG calls. Eleven source-state
+controls pass and fail before the fix. They cover stored option values,
+reset ordering, both shared-Unicode cleanup branches and fresh settings
+across restore. Default-enabled options use boolean_option in the restore
+assertions because JS represents an unset default with undefined.
+
+The full 651-fixture run plus the new restore fixture pass all 652 fixtures:
+792,073 screens/cursors, 15,431,215 RNG calls and 30,066/30,087 animations.
+The 21 preexisting animation mismatches are unchanged. Native assertions,
+integrity and both input-exhaustion checks pass. The graphics, other-symbol,
+class-startup, remembered-object, glyph-config, monster-symbol, restore and
+vision state gates pass. Source audit has zero findings across 276 modules;
+frozen files are unchanged. Logs: `customization-options-corpus-{0..3}.log`,
+`customization-options-{final-baseline,final,final-native,state-before,
+state-final,hang,audit}.log`, `customization-restore-state-before.log`,
+`customization-save-restore-{before,recorded-final,final-native,hang}.log`
+and `customization-options-*-state.log` in the restart cache.
+
+Next candidate: `terminal-blank-game_display.mjs` is cache-only. C preserves
+colored blanks which the visual scorer ignores without inverse/underline.
+The prototype passes two strict state checks, including every map cell in
+the existing native Blank preset recording; both fail before. It also passes
+61 public/targeted fixtures and the new restore fixture: 16,092 screens and
+1,133,961 RNG calls. Apply this small wrapper change after the option commit,
+then check the applied code and push it. The full custom glyph renderer is
+still under read-only source review with separate cache prototypes.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

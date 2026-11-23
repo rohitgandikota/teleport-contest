@@ -2046,7 +2046,8 @@ function _paint_map_cell(display, x, y) {
        off a Unicode floor: the old '@' remains until some ordinary glyph or
        screen clear overwrites it. */
     const cmap = g.disp_glyph?.cmap;
-    if (cmap !== undefined && showsym(cmap)?.utf8)
+    if (cmap !== undefined && showsym(cmap)?.utf8
+        && game.iflags?.customsymbols !== false)
         return;
     let raw = g.disp_ch || ' ';
     let dec = g.disp_decgfx;

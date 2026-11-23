@@ -9347,6 +9347,14 @@ even when Unicode output bypasses the nomux terminal capture. Config
 `SYMBOLS=G_name:value` lines save the value but pass only the stripped name
 to match_glyph, preserving C's distinction from G_ lines in dat/symbols.
 
+The November customization reset repair stores customcolors/customsymbols
+in iflags, so fresh configuration wins across save/restore. Runtime toggles
+clear and reapply the relevant glyph metadata before redrawing. Switching
+sets must call clear_symsetentry before replacing the name: overwriting the
+handling field first loses the information needed to free old Unicode data.
+Twelve native cases and eleven state controls cover these transitions.
+Custom glyph rendering remains a separate incomplete path.
+
 November 23 native checks also establish several tty details. Control bytes
 are ignored by nomux_putch on the map, but a status glyph still occupies a
 cell. check_gold_symbol caches the invisible-coin flag at C's call sites;

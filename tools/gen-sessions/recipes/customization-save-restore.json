@@ -1,0 +1,122 @@
+{
+  "name": "customization-save-restore",
+  "description": "Custom symbol and color options follow the new process configuration across saves in both directions.",
+  "recordingNote": "Use RERECORD_TZ=Etc/GMT+4 for a fixed UTC-4 recording offset.",
+  "coverage": [
+    "mode.debug",
+    "persistence.save-restore",
+    "options.rc-bindings",
+    "ui.map-memory-vision"
+  ],
+  "branches": [
+    "customization-restore.save-disabled",
+    "customization-restore.restore-enabled",
+    "customization-restore.save-enabled",
+    "customization-restore.restore-disabled"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "customization-restore.save-disabled",
+      "segment": 0,
+      "screenIncludes": [
+        "Be seeing you"
+      ],
+      "screenCells": [
+        {
+          "step": 0,
+          "x": 5,
+          "y": 12,
+          "equals": "|"
+        }
+      ]
+    },
+    {
+      "branch": "customization-restore.restore-enabled",
+      "segment": 1,
+      "screenIncludes": [
+        "welcome back"
+      ],
+      "screenCells": [
+        {
+          "step": 0,
+          "x": 5,
+          "y": 12,
+          "equals": " "
+        },
+        {
+          "step": 14,
+          "x": 72,
+          "y": 14,
+          "equals": "b"
+        }
+      ]
+    },
+    {
+      "branch": "customization-restore.save-enabled",
+      "segment": 2,
+      "screenIncludes": [
+        "Be seeing you"
+      ],
+      "screenCells": [
+        {
+          "step": 0,
+          "x": 5,
+          "y": 12,
+          "equals": " "
+        }
+      ]
+    },
+    {
+      "branch": "customization-restore.restore-disabled",
+      "segment": 3,
+      "screenIncludes": [
+        "welcome back"
+      ],
+      "screenCells": [
+        {
+          "step": 0,
+          "x": 5,
+          "y": 12,
+          "equals": "|"
+        },
+        {
+          "step": 14,
+          "x": 1,
+          "y": 3,
+          "equals": "("
+        }
+      ]
+    }
+  ],
+  "segments": [
+    {
+      "name": "save-disabled",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:OffSave,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:Enhanced1,!customsymbols,!customcolors\n",
+      "moves": " Sy"
+    },
+    {
+      "name": "restore-enabled",
+      "seed": 9771,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:OffSave,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:Enhanced1\n",
+      "moves": " nV#wizcustom\r\u001bV"
+    },
+    {
+      "name": "save-enabled",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:OnSave,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:Enhanced1\n",
+      "moves": " Sy"
+    },
+    {
+      "name": "restore-disabled",
+      "seed": 9771,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:OnSave,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:Enhanced1,!customsymbols,!customcolors\n",
+      "moves": " nV#wizcustom\r\u001bV"
+    }
+  ]
+}

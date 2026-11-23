@@ -619,15 +619,37 @@ checks pass, and source audit remains empty. Logs are
 The dispatch comparison script is `command-registry-check.mjs` in that cache
 directory and compares the working source with the pre-refactor revision.
 
-Pending burial work is outside this checkpoint. C's wizard burial calls
-`bury_objs`, while the current JS body calls only `bury_an_obj`, omitting
-engraving cleanup, concealment updates and shop billing. Three native cases
-match 136/138 screens, 137/138 cursors and all 6,680 RNG calls before a fix.
-The engraving case reproduces the omission; ball/chain and protected Amulet
-cases are controls. A fourth case is being extended to drop the carried ball
-above its chain before burial. C explicitly obtains the next object after
-`unpunish` frees the chain, whereas JS bulk burial iterates a stale snapshot.
-Do not include the still-pending burial recipe or recording in this commit.
+Registry checkpoint `57bca134` is pushed. Wizard burial now calls the shared
+`bury_objs` handler, restoring engraving cleanup, concealment updates and shop
+billing. Bulk burial skips objects already removed from the floor: burying a
+ball frees its chain, so the old snapshot loop could resurrect that chain as
+a buried object and consume extra RNG. The C loop explicitly reads the next
+link after `unpunish`.
+
+Five asserted native cases cover engraving cleanup, both ball/chain pile
+orders, a protected Amulet and shop billing. Before the fix, they match
+253/260 screens, 256/260 cursors and 9,134/14,003 RNG calls. After the fix,
+all screens, cursors, RNG calls and three animation frames match. All 29
+selected state checks pass, including the freed-chain and cleanup bounds
+regressions. The full 628-fixture sweep passes 628/628: 788,177 screens/cursors
+and 14,964,109 RNG calls, with animations 30,008/30,029. All 78 input-exhaustion
+checks pass, and source audit remains empty. Logs are
+`.cache/restart-20261122/burial-corpus-{0,1,2,3}.log`, `burial-hang.log`,
+`burial-state-final.log`, `burial-command-expanded-before.log` and
+`burial-command-final.log`.
+
+The official board refreshed at 2026-11-23 08:33 UTC. Our latest evaluation,
+at 07:48 UTC, retains 11,405/11,405 public screens and increases held-out
+screens from 12,095 to 12,118 of 13,126. Held-out sessions remain 38/56;
+rank remains seventh agentic and eleventh overall, with 1,008 screens still
+missing. This evaluation predates the restore/configuration, regex, explicit
+look, dispatch-registry and burial checkpoints. Snapshot:
+`.cache/restart-20261122/leaderboard-latest.json`; official source:
+https://mazesofmenace.ai/leaderboard/data.json.
+
+Next: native recordings reproduce two missing command responses, suspend
+denial and the pinned build's empty NHUUID display. Their pending three-case
+fixture is outside this burial checkpoint.
 
 ## 2026-09-05: full faithful port is the active goal
 

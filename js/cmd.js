@@ -145,7 +145,7 @@ import { tty_create_nhwindow, tty_putstr, tty_display_nhwindow, tty_next_page,
          tty_destroy_nhwindow, tty_start_menu, tty_add_menu, tty_add_menu_str,
          tty_end_menu,
          tty_select_menu, NHW_TEXT, NHW_MENU, ATR_NONE } from './tty/wintty.js';
-import { MENU_ITEMFLAGS_NONE, MENU_BEHAVE_STANDARD, isok, HEADSTONE, xdir, ydir, zdir, N_DIRS, N_DIRS_Z, DIR_ERR, DIR_W, DIR_NW, DIR_N, DIR_NE, DIR_E, DIR_SE, DIR_S, DIR_SW, DOMOVE_WALK, DOMOVE_RUSH, BC_BALL, BC_CHAIN, SLT_ENCUMBER, OBJ_FLOOR, WT_ELF } from './const.js';
+import { MENU_ITEMFLAGS_NONE, MENU_BEHAVE_STANDARD, isok, HEADSTONE, xdir, ydir, zdir, N_DIRS, N_DIRS_Z, DIR_ERR, DIR_W, DIR_NW, DIR_N, DIR_NE, DIR_E, DIR_SE, DIR_S, DIR_SW, DOMOVE_WALK, DOMOVE_RUSH, BC_BALL, BC_CHAIN, SLT_ENCUMBER, WT_ELF } from './const.js';
 import { doopen, doopen_indir, doclose } from './lock.js';
 import { ECMD_OK, getobj } from './invent.js';
 import { doeat } from './eat.js';
@@ -1246,35 +1246,6 @@ async function wiz_detect() {
     return ECMD_OK;
 }
 
-// src/dig.c: wiz_debug_cmd_bury().
-async function wiz_debug_cmd_bury() {
-    const { bury_an_obj } = await import('./sp_lev.js');
-    let before = 0, after = 0;
-    for (let x = game.u.ux - 1; x <= game.u.ux + 1; x++) {
-        for (let y = game.u.uy - 1; y <= game.u.uy + 1; y++) {
-            if (!isok(x, y))
-                continue;
-            const pile = (game.level?.objects || []).filter(
-                o => o.where === OBJ_FLOOR && o.ox === x && o.oy === y);
-            before += pile.length;
-            for (const obj of pile)
-                await bury_an_obj(obj, null);
-            after += (game.level?.objects || []).filter(
-                o => o.where === OBJ_FLOOR && o.ox === x && o.oy === y)
-                .length;
-            newsym(x, y);
-        }
-    }
-    const buried = before - after;
-    if (!before)
-        await pline('No objects here or adjacent to bury.');
-    else if (!buried)
-        await pline('No objects buried.');
-    else
-        await pline(`${buried} object${buried === 1 ? '' : 's'} buried.`);
-    return ECMD_OK;
-}
-
 // src/insight.c: doattributes().
 async function doattributes() {
     await show_attributes();
@@ -1395,7 +1366,7 @@ const EXTCMD_FUNCS = {
     wield: ['./wield.js', 'dowield'],
     wipe: ['./do.js', 'dowipe'],
     wizborn: ['./insight.js', 'doborn'],
-    wizbury: wiz_debug_cmd_bury,
+    wizbury: ['./dig.js', 'wiz_debug_cmd_bury'],
     wizcast: ['./spell.js', 'dowizcast'],
     wizcustom: ['./wizcmds.js', 'wiz_custom'],
     wizdetect: wiz_detect,

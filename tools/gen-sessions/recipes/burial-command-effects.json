@@ -1,0 +1,116 @@
+{
+  "name": "burial-command-effects",
+  "description": "Wizard burial shares floor cleanup and object lifecycle behavior with ordinary burial.",
+  "recordingNote": "Use RERECORD_TZ=Etc/GMT+4 for a fixed UTC-4 recording offset.",
+  "coverage": [
+    "mode.debug",
+    "object.weapons",
+    "object.amulets",
+    "object.wands",
+    "social.shops-billing"
+  ],
+  "branches": [
+    "burial-command.engraving",
+    "burial-command.punishment",
+    "burial-command.protected-amulet",
+    "burial-command.ball-before-chain",
+    "burial-command.shop-merchandise"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "burial-command.engraving",
+      "segment": 0,
+      "screenIncludes": [
+        "Something is written here in the dust.",
+        "1 object buried.",
+        "You see no objects here."
+      ],
+      "screenCells": [
+        {
+          "step": 33,
+          "x": 0,
+          "y": 0,
+          "equals": "Y"
+        }
+      ]
+    },
+    {
+      "branch": "burial-command.punishment",
+      "segment": 1,
+      "screenIncludes": [
+        "The iron ball gets buried!",
+        "2 objects buried.",
+        "Things that are buried here:",
+        "a heavy iron ball"
+      ],
+      "screenExcludes": [
+        "Chains"
+      ]
+    },
+    {
+      "branch": "burial-command.protected-amulet",
+      "segment": 2,
+      "screenIncludes": [
+        "No objects buried.",
+        "You see here the Amulet of Yendor."
+      ]
+    },
+    {
+      "branch": "burial-command.ball-before-chain",
+      "segment": 3,
+      "screenIncludes": [
+        "a heavy iron ball (chained to you)",
+        "The iron ball gets buried!",
+        "Things that are buried here:"
+      ],
+      "screenExcludes": [
+        "Chains"
+      ]
+    },
+    {
+      "branch": "burial-command.shop-merchandise",
+      "segment": 4,
+      "screenIncludes": [
+        "for burying merchandise."
+      ]
+    }
+  ],
+  "segments": [
+    {
+      "name": "engraving",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!autoquiver,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " lE- Burial marker\r\u001b:\u001b#wizbury\r\u001b:\u001b"
+    },
+    {
+      "name": "punishment",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!autoquiver,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017cursed scroll of punishment\rra\u001b#wizbury\r\u001b\u0017wand of probing\rzb>\u001b"
+    },
+    {
+      "name": "protected-amulet",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!autoquiver,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017Amulet of Yendor\r\u001b\u001b\u001bda\u001b#wizbury\r\u001b:\u001b"
+    },
+    {
+      "name": "ball-before-chain",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!autoquiver,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017cursed scroll of punishment\rra\u001b,\u001bi\u001bdb\u001b#wizbury\r\u001b\u0017wand of probing\rzc>\u001b"
+    },
+    {
+      "seed": 6901,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00162\r\u0006\u0014  lllllllllllllllllllllllllk.  #wizbury\r\u001bp\u001b",
+      "name": "shop-merchandise"
+    }
+  ]
+}

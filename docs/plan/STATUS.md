@@ -61,8 +61,14 @@ regression or silently re-record it. Public remains 44/44 with identical RNG,
 screens, cursors and animation counts. All 44 hang checks pass. The mounted
 jousting state gate and saddle impact gate pass, including 23 C scenarios and
 22 shard checks in the latter.
-Next: commit/push the mounting checkpoint, then review
-the pending shop/scatter fixes and recorder updates. Continue beyond that.
+Mounting checkpoint `0b69583d` is pushed. The pending shop naming changes
+match C's `Shknam`/`shkname` call sites and remove an ad hoc name reader.
+All 29 shop fixtures pass: 12,920 screens/cursors, 504,472 RNG calls, and
+72 animation frames. Their 29 hang checks also pass. Two constructed
+name/RNG regressions pass and both fail against the September implementation.
+The wider source audit has 29 non-frozen findings, unchanged by mounting.
+Next: publish the shop checkpoint, finish the scatter checkpoint, then fix
+those runtime references and review recorder updates. Continue beyond that.
 
 ## 2026-09-05: full faithful port is the active goal
 

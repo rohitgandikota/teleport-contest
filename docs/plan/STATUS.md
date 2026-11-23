@@ -604,6 +604,31 @@ gates. Ten table names currently have no dispatch arm; four are internal-only
 item actions. Treat the other absent commands as separate porting work rather
 than silently claiming that table consolidation implements them.
 
+Look checkpoint `dd312778` is pushed. Command delegation now uses one
+registry of local functions and module/export pairs. Six command bodies with
+extra logic retain named C entry points. The dispatch section shrinks from
+345 to 225 lines without changing the behavior of those bodies. All 342
+controlled traces agree with `dd312778`, covering the 170 command names plus
+an unknown name in both wizard modes. All 41 command-state/table tests pass.
+
+The full 627-fixture sweep passes 627/627: 787,917 screens/cursors and
+14,950,106 RNG calls. Animations remain 30,005/30,026. All 77 input-exhaustion
+checks pass, and source audit remains empty. Logs are
+`.cache/restart-20261122/registry-corpus-{0,1,2,3}.log`,
+`registry-dispatch-check.log`, `registry-state-final.log` and `registry-hang.log`.
+The dispatch comparison script is `command-registry-check.mjs` in that cache
+directory and compares the working source with the pre-refactor revision.
+
+Pending burial work is outside this checkpoint. C's wizard burial calls
+`bury_objs`, while the current JS body calls only `bury_an_obj`, omitting
+engraving cleanup, concealment updates and shop billing. Three native cases
+match 136/138 screens, 137/138 cursors and all 6,680 RNG calls before a fix.
+The engraving case reproduces the omission; ball/chain and protected Amulet
+cases are controls. A fourth case is being extended to drop the carried ball
+above its chain before burial. C explicitly obtains the next object after
+`unpunish` frees the chain, whereas JS bulk burial iterates a stale snapshot.
+Do not include the still-pending burial recipe or recording in this commit.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

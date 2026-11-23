@@ -2274,7 +2274,6 @@ async function passiveum(olduasmon, mtmp, mattk) {
             game.u.mh += Math.trunc((tmp + rn2(2)) / 2);
             if (game.u.mhmax < game.u.mh)
                 game.u.mhmax = game.u.mh;
-            (game.disp ||= {}).botl = true;
             if (game.u.mhmax > (game.youmonst.data.mlevel + 1) * 8)
                 await split_mon(game.youmonst, mtmp);
             break;

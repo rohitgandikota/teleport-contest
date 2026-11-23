@@ -330,8 +330,31 @@ All 67 public/equipment regression sessions and input-exhaustion checks pass:
 animation differences. The existing resistance/armor state gate also passes
 56 native replays and its source controls. The leaderboard fetch at November
 23 05:58 UTC still returns the November 22 19:45 snapshot, before these pushes.
-Next: push the equipment checkpoint, then fix the conversation passage pool,
-debug-identification class headings, and blue-jelly status repaint.
+Equipment checkpoint `e00579f0` is pushed.
+
+The other three census failures now match C. The tribute passage pool holds
+30 entries, as declared in `context.h`; the old port copied the stale "20"
+comment from `files.c`. Twelve compiled-C test groups check 1,276 selections,
+their RNG bounds and remaining pools, including exhaustion, refill, empty
+books and switching titles. Seven groups fail before the correction.
+Wizard identification now calls `display_inventory(NULL, FALSE)`, preserving
+C's display-mode class headings and command-queue handling. Cold passive
+healing no longer marks status dirty before C does; splitting still does.
+
+The three unchanged fixtures pass 14,313 screens/cursors and 281,428 RNG calls.
+All 77 selected public/inventory/conversation/passive replays pass: 61,170
+screens/cursors and 2,026,627 RNG calls, retaining the 21 public animation
+differences. All four passive/status state gates pass and source audit is empty.
+The eight-second input gate flagged two long fixtures. Both finish normally
+before and after this patch: inventory-type-queries takes about 14/13 seconds,
+and menu-object-symbols about 8/7 seconds. The before runs use a loader, so
+these are completion checks, not evidence of a performance improvement.
+Both long fixtures pass a separate 30-second completion limit. All 77 input
+checks therefore pass with those documented per-session limits.
+Next: push, repair equipment removal's resistance-memory notification,
+and rerun the complete corpus.
+The worn-source review also found missing monster resistance-memory clearing
+when equipment is removed; its old "nothing sets these bits" comment is stale.
 
 ## 2026-09-05: full faithful port is the active goal
 

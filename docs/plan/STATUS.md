@@ -313,8 +313,25 @@ passing sessions, including all 44 public sessions. Returned metrics are
 ring-combat worker is excluded from those denominators. The six remaining
 failures match the earlier census. Animations retain the 21 known public
 differences. Source audit is empty and all 49 public/targeted input-exhaustion
-checks pass. Next: push this checkpoint, then repair C's property-zero worn-slot tracking,
-which the ring-removal sanity check requires.
+checks pass. Noun checkpoint `9e89b924` is pushed.
+
+Worn-slot bookkeeping now preserves C's `u.uprops[0].extrinsic` entry.
+The property grants no ability, but attribute/combat rings and meat rings
+require its slot mask when they are removed, destroyed or stolen. The old
+`p &&` guard discarded it and triggered a false internal-error message.
+Seventeen state tests cover both removal paths, two simultaneous rings,
+replacement, weapons, weapon-tools, quivers and non-weapon wielding. All pass;
+fourteen fail before the change. The three unchanged failing ring/theft
+fixtures now pass 1,254 screens/cursors and 30,130 RNG calls, including the
+previously crashing ring-combat worker.
+
+All 67 public/equipment regression sessions and input-exhaustion checks pass:
+44,860 screens/cursors and 1,291,280 RNG calls, with the same 21 public
+animation differences. The existing resistance/armor state gate also passes
+56 native replays and its source controls. The leaderboard fetch at November
+23 05:58 UTC still returns the November 22 19:45 snapshot, before these pushes.
+Next: push the equipment checkpoint, then fix the conversation passage pool,
+debug-identification class headings, and blue-jelly status repaint.
 
 ## 2026-09-05: full faithful port is the active goal
 

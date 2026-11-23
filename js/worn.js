@@ -145,7 +145,7 @@ export function setworn(obj, mask) {
                     oobj.owornmask &= ~wp.w_mask;
                     if (wp.w_mask & ~(W_SWAPWEP | W_QUIVER)) {
                         p = game.objects[oobj.otyp].oc_oprop;
-                        if (p && PROP_KEYS[p]) {
+                        if (PROP_KEYS[p]) {
                             const left = ((u.uprops?.[PROP_KEYS[p]] || 0)
                                           & ~wp.w_mask);
                             if (left)
@@ -173,7 +173,7 @@ export function setworn(obj, mask) {
                             || is_weptool(obj, game.objects)
                             || mask !== W_WEP) {
                             p = game.objects[obj.otyp].oc_oprop;
-                            if (p && PROP_KEYS[p])
+                            if (PROP_KEYS[p])
                                 (u.uprops ||= {})[PROP_KEYS[p]] =
                                     (u.uprops[PROP_KEYS[p]] || 0) | wp.w_mask;
                             if ((p = w_blocks(obj, mask)) !== 0)
@@ -217,7 +217,7 @@ export function setnotworn(obj) {
             u[wp.w_obj] = null;
             unworn |= wp.w_mask;
             p = game.objects[obj.otyp].oc_oprop;
-            if (p && PROP_KEYS[p]) {
+            if (PROP_KEYS[p]) {
                 const left = (u.uprops?.[PROP_KEYS[p]] || 0) & ~wp.w_mask;
                 if (left)
                     u.uprops[PROP_KEYS[p]] = left;

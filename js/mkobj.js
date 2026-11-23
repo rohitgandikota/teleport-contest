@@ -80,7 +80,7 @@ import { block_point, recalc_block_point } from './vision.js';
 import { obj_sheds_light, obj_split_light_source } from './light.js';
 import { splitbill } from './shk.js';
 import { billable, costly_spot, stolen_value, unpaid_cost, subfrombill,
-         shop_keeper, addtobill, alter_cost } from './shk.js';
+         shop_keeper, addtobill, alter_cost, costly_adjacent, find_objowner } from './shk.js';
 import { copy_mextra } from './mon.js';
 import { ONAME, has_oname, has_omid, OMID, free_omid, ONAME_SKIP_INVUPD,
          COST_SINGLEOBJ, OBJ_DELETED, OBJ_LUAFREE, OBJ_ONBILL } from './const.js';
@@ -1476,6 +1476,10 @@ export function place_object(otmp, x, y) {
     otmp.ox = x;
     otmp.oy = y;
     otmp.where = OBJ_FLOOR;
+    /* if placed outside of shop, no_charge is no longer applicable */
+    if (otmp.no_charge && !costly_spot(x, y)
+        && !costly_adjacent(find_objowner(otmp, x, y), x, y))
+        otmp.no_charge = 0;
     game.level.objects.unshift(otmp);
 }
 

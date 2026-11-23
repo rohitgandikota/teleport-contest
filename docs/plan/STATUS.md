@@ -2397,6 +2397,31 @@ standalone floor-billing state gate has five actual shop-boundary controls.
 Exactly two fail before the pending four-line no_charge guard, outside a
 shop and at an untended doorway. Its runtime change is not applied yet.
 
+Prize checkpoint `e6075848` is pushed. place_object now implements C's
+no_charge guard after setting the new floor location and before global
+insertion. The flag clears only outside both a costly square and the owning
+shopkeeper's adjacent area. Tended doorways and the free keeper post retain
+it; an untended doorway does not. No timer or held-object hook is included.
+
+The five new controls use actual shop geometry and helpers; two fail before
+and all five pass after. Both existing JSON/C-phase restore controls also
+pass. The 992 independent floor-order checks remain passing. All 100 selected
+public/shop/billing/floor/restore regressions pass: 74,505 screens/cursors,
+1,983,689 RNG calls and 2,619 animations. Source audit is empty across
+276 non-frozen modules. This repair has source-derived state tests and exact
+existing C recordings, not a new native billing observation. Logs and totals
+use floor-billing-*. Commit and push the four-line guard, its two imports,
+normal state gate and this note. No new fixture was added; corpus remains 680.
+
+The category-filters Linux rejection is now classified. At segment 34 step
+60, eating an unpaid apple prints the shorter Unix 'Core dumped.' joke. It
+fits beside the shopkeeper's payment message, while the longer Macintosh
+joke triggers More. Therefore the same subsequent turn draws occur one
+input boundary earlier. Both C builds agree exactly. Source is eat.c:2184-
+2190; the read-only boundary analysis is
+linux-coverage-category-first-difference.log. Preserve the original fixture
+and strict rejection; do not normalize messages or RNG slices.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

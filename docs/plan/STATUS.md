@@ -6363,6 +6363,60 @@ wall-phasing input adds one outcome, with all profiles kept on shared NFS.
 Current source controls and native witnesses are progress toward the whole
 port; they do not establish complete combat or held-out parity.
 
+## 2026-11-24: terminal-default foreground on full screen clear
+
+`GameDisplay.clearScreen` now clears physical cells to `NO_COLOR` and homes
+the cursor. Pinned C `term_clear_screen` is at upstream `win/tty/termcap.c:667`;
+the instrumented recorder shifts it to line 1005. The recorder's
+`nomux_clear_screen` and `nomux_capture_screen` in that same file preserve the
+terminal-default foreground through SGR 39. Delegating to the generic frozen
+terminal instead stored explicit gray, SGR 37. The adapter now follows C.
+Explicitly painted gray spaces remain gray. No frozen code, terminal
+serializer, RNG implementation or recorded C output changed.
+
+Whole clear/capture owners and seven immediate JS calls in six owners were
+reviewed. Independent traces locate the actual last writer of the projectile,
+growth and identity blank cells at startup `docrt -> cls -> clearScreen`.
+The traces preserve all five original output hashes. The 16 new controls
+exercise physical colors/attributes, cursor/input state, serialization,
+reentrance and real full/corner menu callers. All 133 retained controls pass.
+
+Parent verification closes 22 focused commands and three final checks.
+Twelve fixtures pass all 40 segments, 3,221 boundary screens/cursors, 144,454
+complete RNG calls and 44 frames. Four deferred fixtures reproduce all
+1,203 boundaries, 54,848 calls and five frames. All 44 public fixtures pass
+the contest comparator; 56 hang checks finish within 30 seconds each.
+Syntax and the 0/276 source audit pass. All 279 runtime files and two support
+files are captured. A final comment correction has an identical parsed AST;
+the native gate was strengthened to reject unrecognized RNG entries rather
+than filter them, then all four selected fixtures were rerun successfully.
+
+Five immutable native fixtures now match every glyph, color and attribute,
+including blank cells, plus cursors, complete calls, input slices and frames:
+projectile 455/455, growth 221/221, accessibility 306/306, identity 221/221,
+and artifact hallucination resistance 352/352. Together they cover 1,555
+boundaries, 64,109 calls and six frames. The two accessibility negatives
+preserve all five original JS output hashes. These are retained recordings;
+no new native input or C-coverage credit is claimed.
+
+A separate strict comparison of all public recordings improves exact styled
+boundaries from 5,545 to 11,381 of 11,405, exact styled frames from 319 to all
+1,483, and wholly exact fixtures from 18/44 to 38/44. All 792,838 calls,
+cursors and input slices match before and after. Twenty-four boundary
+failures remain: character selection in four fixtures, death-display blanks,
+and Air-plane blank foregrounds. Every remaining differing cell was compared
+with the pre-change runtime and is identical to an existing blank-cell
+difference. No previously exact boundary became inexact. The six failing
+strict results remain in the receipts and are separate follow-up work.
+Decoded style parity does not establish literal serialized-byte equality.
+
+Evidence: `.cache/restart-20261122/blank-cell-foreground-promotion-parent/`,
+`blank-cell-foreground-promotion-parent-verification.json`, and the sealed
+`blank-cell-foreground-audit/` package. The current corpus remains 783; its
+full regression follows this checkpoint. Latest completed full run remains
+781/781 before combat and display. Official score remains the separately
+published 07:21 UTC run, checked at 11:23 UTC; no held-out gain is inferred.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

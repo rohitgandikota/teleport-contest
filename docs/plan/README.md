@@ -35,9 +35,9 @@ cleanup for pet nutrition also passes 16 direct controls, 55 retained controls
 and five focused regressions. Guard corridor gold collection passes five new
 native cases, 110 controls and eight focused regressions. Digestion dispatch
 and growth now pass four new native cases under the contest comparator,
-126 combined controls and ten focused regressions. The growth fixture retains
-a pre-existing blank foreground difference from its initial frame, so this
-does not establish literal terminal-byte or all-blank-style equality.
+126 combined controls and ten focused regressions. The later screen-clear
+repair also resolves the growth fixture's pre-existing blank foreground
+difference from its initial frame.
 Monster scroll reading now also matches four native cases, including location
 feedback and hallucinated pronoun RNG, with 105 controls and seven focused
 regressions passing. The shared accessibility helper now checks the surface
@@ -46,9 +46,8 @@ and six focused regressions. Monster drinking and pickup locations now also
 match four native cases, with 100 controls and eight focused fixtures passing.
 Arrow and dart trap callers now preserve physical resistance, object disposal
 and located feedback, passing four native cases under the contest comparator,
-63 controls and five focused fixtures. Their strict styled diagnostic retains
-an independent blank foreground mismatch that was already present before the
-trap fired; no raw recording or comparator was changed.
+63 controls and five focused fixtures. The later screen-clear repair also
+resolves their independent blank foreground mismatch before the trap fires.
 Placement now uses canonical swimming, breathing, lava protection and raised
 bridge surfaces. Detailed inspection also reports ice strength. Eight new
 native cases match all 650 styled grids, 40,728 complete RNG calls and five
@@ -62,10 +61,19 @@ Hero transformations now retain live species-table identity, and monster
 damage uses the complete named C dispatch with initialized hit fields. Six
 new native cases pass the contest, cursor and complete RNG comparisons over
 411 boundaries and 17,484 calls. The three combat cases also pass every blank
-style; the three identity cases retain the independently diagnosed screen-clear
-foreground defect. All 224 controls, 12 focused fixtures, 44 public sessions
-and 56 hang checks pass. The latest full regression remains the 781-fixture
-run, before these combat changes. The display producer fix is next.
+style. All 224 controls, 12 focused fixtures, 44 public sessions and 56 hang
+checks pass.
+Screen clearing now writes the terminal's default foreground. Five retained
+native fixtures, including the three identity cases, match every cell style
+over 1,555 boundaries, 64,109 calls and six frames. All 149 controls, 12 focused
+fixtures, 44 public sessions and 56 hang checks pass. A separate public audit
+improves exact styled boundaries from 5,545 to 11,381 of 11,405 and styled
+animation frames from 319 to all 1,483. The remaining 24 boundaries in six
+fixtures contain only inherited blank styling differences, verified cell by
+cell against the baseline. Their strict failures remain recorded. No native
+fixture, frozen comparator or serialization rule was changed.
+The latest full regression remains the 781-fixture run, before the combat
+and display changes. A new 783-fixture run follows this checkpoint.
 Current-corpus parity is not completeness.
 
 Floor objects retain independent global and per-square order. Placement,

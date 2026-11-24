@@ -1141,10 +1141,12 @@ export async function touch_artifact(obj, mon) {
     }
 
     if (!decision.allowed) {
-        if (!(game.invent || []).includes(obj))
-            await pline(`${Tobjnam(obj, 'evade')} your grasp!`);
-        else
-            await pline(`${Tobjnam(obj, 'are')} beyond your control!`);
+        if (mon === game.youmonst) {
+            if (!(game.invent || []).includes(obj))
+                await pline(`${Tobjnam(obj, 'evade')} your grasp!`);
+            else
+                await pline(`${Tobjnam(obj, 'are')} beyond your control!`);
+        }
         return 0;
     }
     return 1;

@@ -7539,6 +7539,33 @@ under .cache/restart-20261122. Maintained inventory is 806; no full806 run is
 claimed. Encoded-prefix BUFSZ clipping, hidden-object cleanup and other list
 owners retain their separate limits. Commit and immediately push this checkpoint.
 
+## 2026-11-24: monster artifact rejection is silent
+
+Pushed monster lists as 6e6e9475. The artifact patch limits hero refusal messages
+to the actual hero. Rejected monster contact still returns false without hero
+blast feedback. This fixes the ordinary Master Key/mimic route, where the key
+was incorrectly reported as beyond the hero's control before its normal
+whisper. Only the existing async touch_artifact wrapper changes.
+
+All 23 parent checks and 88 source/input controls pass. Thirteen focused
+fixtures cover 53 segments, 5,359 scored boundaries, 157,649 calls and 240
+frames. All 44 public fixtures and 57 bounded workers pass. Three new C cases
+improve from 1,654/1,657 styled boundaries, 1,655 cursors and 1,653 slices to
+all 1,657, retaining 8,131 complete calls. Ordinary-key and resisted-mimic
+negatives retain all five output hashes. Seven strict native fixtures match
+3,306 styled boundaries, 87,592 calls and 64 frames. Deferred input preserves
+all five collections across 27 segments, 3,033 boundaries, 70,753 calls and
+64 frames. Source audit remains zero of 276. The parent verifier was corrected
+to read three existing JSON test reports instead of expecting TAP; test code,
+assertions, runtime and outputs were unchanged.
+
+All 279 main runtime hashes and five support files equal the tested
+artifact-feedback-parent-composition. Evidence and main integration receipt
+are under .cache/restart-20261122. Maintained inventory is 807; no full807 run
+is claimed. Eating contact and spec_* alignment remain separate. Commit and
+immediately push this checkpoint. The 17:05 UTC official board/news refresh
+is byte-identical to 16:10; the published score still predates these pushes.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

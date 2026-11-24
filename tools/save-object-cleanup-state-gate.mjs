@@ -20,8 +20,8 @@ import { wc_supported } from '../js/options.js';
 import { addtobill, costly_spot, inside_shop, onbill } from '../js/shk.js';
 import { pline } from '../js/display.js';
 import { initRng, enableRngLog, getRngLog } from '../js/rng.js';
-import { start_timer, TIMER_OBJECT, HATCH_EGG } from '../js/timeout.js';
-import { new_light_source, LS_OBJECT } from '../js/light.js';
+import { start_timer, begin_burn, TIMER_OBJECT, HATCH_EGG } from '../js/timeout.js';
+import { obj_sheds_light } from '../js/light.js';
 import { decodeScreen } from './gen-sessions/screen-decode.mjs';
 import { ONAMES as N } from '../js/objects_data.js';
 import { ROOM, STONE, POOL, OBJ_FREE, OBJ_FLOOR, OBJ_INVENT, OBJ_DELETED,
@@ -138,14 +138,17 @@ test('save consumes in-use items quietly before encoding the inventory', async (
         await addinv(obj);
     consumed.in_use = stack.in_use = true;
     const before = replay.getScreens().length;
+    const consumedId = consumed.o_id;
     seed();
     assert.equal(await dosave0(), true);
     const inventory = saved().invent;
-    assert.equal(inventory.some(obj => obj.o_id === consumed.o_id), false);
+    assert.equal(inventory.some(obj => obj.o_id === consumedId), false);
     assert.equal(inventory.find(obj => obj.o_id === stack.o_id).quan, 2);
     assert.equal(inventory.find(obj => obj.o_id === stack.o_id).in_use, false);
     assert.ok(inventory.some(obj => obj.o_id === retained.o_id));
-    assert.equal(consumed.where, OBJ_DELETED);
+    // C savelev() drains the deletion chain before writing the level.
+    assert.deepEqual(consumed, {});
+    assert.deepEqual(game.objs_deleted, []);
     assert.doesNotMatch(replay.getScreens().slice(before).flatMap(decodeScreen).join('\n'),
         /Finishing off/);
     assert.deepEqual(calls(), []);
@@ -158,8 +161,12 @@ test('quiet cleanup removes worn, timer, light and consumption-context owners', 
     setuwep(egg);
     egg.in_use = true;
     start_timer(100, TIMER_OBJECT, HATCH_EGG, egg);
-    egg.lamplit = 1;
-    new_light_source(game.u.ux, game.u.uy, 2, LS_OBJECT, egg.o_id);
+    // An egg cannot shed light in C. Use the real untimed light producer.
+    const lamp = mksobj(N.MAGIC_LAMP, true, false);
+    await addinv(lamp);
+    await begin_burn(lamp, false);
+    assert.equal(obj_sheds_light(lamp), true);
+    lamp.in_use = true;
     game.context.victual = { piece: egg, o_id: egg.o_id };
     game.context.tin = { tin: egg, o_id: egg.o_id };
     await cleanup();
@@ -168,7 +175,9 @@ test('quiet cleanup removes worn, timer, light and consumption-context owners', 
     assert.equal(game.context.victual.piece, undefined, 'food_disappears clears the victual record');
     assert.equal(game.context.tin.tin, null);
     assert.equal(game.timer_base.some(timer => timer.arg === egg), false);
-    assert.equal(game.light_sources.some(light => light.id === egg.o_id), false);
+    assert.equal(lamp.where, OBJ_DELETED);
+    assert.equal(lamp.lamplit, 0);
+    assert.equal(game.light_sources.some(light => light.id === lamp.o_id), false);
 });
 
 test('restore cleanup keeps its audible default and processes each original inventory entry', async () => {

@@ -5462,6 +5462,74 @@ C recordings, rejected probes and frozen infrastructure remain unchanged.
 Next are reviewed object-deallocation ownership and the separately recorded
 glob billing and low-stamina throw gaps.
 
+## 2026-11-24: canonical object cleanup and full regression
+
+Rolling-trigger checkpoint `ec60718f` is committed and pushed. Canonical
+`dealloc_obj`, `dealloc_obj_real` and `dobjsfree` now follow C's ownership,
+timer, light, transient-reference and deferred-release order. `obj_absorb`
+calls cleanup after billing, weight and timer averaging. `obfree` delegates
+its final resource cleanup to the same owner after its existing billing and
+worn-property branches. The main loop drains the deletion chain before
+resetting bypass flags. The runtime change is confined to three modules.
+
+Real-owner controls expose stale absorbed-object references and missing
+vision invalidation when deleting an untimed burning magic lamp. All 34 new
+controls pass, versus one before; many baseline failures reflect the absent
+canonical API rather than distinct gameplay failures. All 126 retained
+controls pass. Deferred objects retain their records until the LIFO drain.
+JS then drops record fields and references for its garbage collector; this
+does not claim native allocator or dangling-pointer equivalence. Lua retention
+and immediate freeing-data branches have source controls, but no current JS
+userdata/refcount or production freeing-data producer is claimed.
+
+Two old gates had invalid assumptions. The save gate now captures the object
+ID before C's pre-save drain and uses a real burning magic lamp instead of a
+fabricated lit egg. The legacy artifact gate extracts its object before
+calling low-level `obfree`. These separate reviewed amendments preserve the
+ownership, timer, feedback and RNG assertions. Failed original receipts remain.
+
+All sixteen focused checks pass. Six retained C fixtures match 54 segments,
+10,675 grids/cursors, all input RNG slices and 172,801 complete calls, plus
+830 animation grids/cursors/counts. Deferred input matches two fixtures,
+six segments, 577 boundaries, 24,422 calls and 446 frames. Public remains
+44/44 with 11,405 boundaries, 792,838 scored RNG positions and 1,483 frames.
+All 50 hang workers pass at 30 seconds. Syntax and the 276-module source audit
+pass. No new C fixture is introduced by this source-backed cleanup unit.
+
+The complete 764-fixture regression also passes: 831,535 boundary grids and
+cursors, 16,990,938 scored RNG positions and 31,441 scored animation frames.
+Both 382-fixture shards finish with zero failures or timeouts at the normal
+45-second worker limit. All 279 runtime hashes remain fixed across focused
+and full verification. This supersedes the 760-fixture full run at `f12cfd59`.
+Focused strict full-stream evidence remains distinct from frozen scoring.
+
+The source inventory classifies all 24 direct C deallocation sites and 58
+relevant JS sites. Remaining virtual-corpse, bill-object and private glob
+disposal paths are separate work. Sixteen controls and a two-line virtual
+corpse cleanup candidate are ready, but ordinary pet digestion also lacks
+its combat dispatch and post-kill effects. Two unchanged ordinary recordings
+now provide C evidence for that larger owner: 133 boundaries, 6,342 calls and
+three frames. Their optional names are absent; all four present input fields,
+name absence and keys are preserved. They are not yet promoted JS regressions.
+
+The new twenty-case throw matrix matches Linux C 2/2, adding 136 C outcomes
+and one entered function. Upward throwing rises from 8/112 to 87/112 observed
+direct outcomes. Pet digestion adds another 28 outcomes and one function.
+The union is now 762 inputs, sixty-three layouts, 4,541/5,492 functions and
+59,681/107,260 outcomes. The 82 added raw inputs contain 312 segments, plus
+nine independent Linux segments. Raw recordings and bulk profiles stay
+unaltered; bulk coverage remains on NFS.
+
+Evidence is `.cache/restart-20261122/object-deallocation-audit/` (74 verified
+sealed files), `object-deallocation-parent-{source-review,integration,verification}.json`,
+`object-deallocation-corpus-totals.json`, and the new
+`linux-coverage-{toss-up,monster-digestion}-*` receipts. Next are the separately
+reviewed glob sale-price/original-weight repairs, native throw confirmation,
+and complete pet-digestion dispatch. Parent capacity probes have also recorded
+a levitation-boots timing case and ordinary-boots control; that repair is not
+part of this checkpoint. Frozen code and unrelated `.DS_Store` files remain
+untouched.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

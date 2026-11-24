@@ -102,6 +102,8 @@ for (const [name, invoke] of Object.entries({
 })) test(`${name} waits before deleting a worn HALRES object`, async () => {
     await setup();
     const obj = await object(ART_GRAYSWANDIR); wield(obj);
+    // C obfree owns an already-extracted object; it does not unlink inventory.
+    if (name === 'obfree') await obj_extract_self(obj);
     let release, reached = 0, finished = false, completion;
     const pause = new Promise(resolve => { release = resolve; });
     globalThis.__artifactHalresAuditPause = (target, on, mask) => {

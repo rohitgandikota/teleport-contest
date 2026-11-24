@@ -38,8 +38,10 @@ workers. Its four native cases match all 303 styled boundaries, 16,047 calls
 and 16 frames. Polymorphed weapon selection also passes 37 parent checks,
 206 controls, 20 focused fixtures, the public suite and 64 bounded workers.
 Its six native cases match all 795 styled boundaries and 15,028 calls.
-The maintained corpus is 812; no full812 sweep has run. Pre-swap x-ray redraw
-has sealed native confirmation and awaits current-runtime composition.
+Pre-swap x-ray redraw now also passes 35 parent checks, 153 controls,
+19 focused fixtures, the public suite and 63 bounded workers. Its four native
+cases match all 360 styled boundaries and 9,688 calls. The maintained corpus
+is 813; the next full sweep will check these four additions together.
 Accepted non-food meals, glyph identity and the remaining combat and vision
 owners remain active source audits.
 The earlier potion changes also pass strict full-stream and per-input RNG

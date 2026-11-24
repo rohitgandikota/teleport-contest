@@ -1,0 +1,124 @@
+{
+  "name": "xray-preswap-redraw",
+  "description": "Native Eyes xray redraw ordering with real floor-object hallucination and sane, ordinary-lenses and Rogue negatives.",
+  "segments": [
+    {
+      "name": "ordinary-eyes-hallucinated-object",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Monk,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!cmdassist\n",
+      "moves": " \u0017blessed Eyes of the Overworld\r\u001b\u001bPa\u001b\u001b\u0017rock\r\u001b\u001bdb\u001b\u001bl\u0017cursed potion of hallucination\r\u001b\u001bqc\u001b\u001bhl\u0012"
+    },
+    {
+      "name": "ordinary-eyes-sane-object",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Monk,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!cmdassist\n",
+      "moves": " \u0017blessed Eyes of the Overworld\r\u001b\u001bPa\u001b\u001b\u0017rock\r\u001b\u001bdb\u001b\u001bl\u0017uncursed potion of water\r\u001b\u001bqc\u001b\u001bhl\u0012"
+    },
+    {
+      "name": "ordinary-lenses-hallucinated-object",
+      "seed": 99813,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Monk,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!cmdassist\n",
+      "moves": " \u0017blessed lenses\r\u001b\u001bPa\u001b\u001b\u0017rock\r\u001b\u001bdb\u001b\u001bl\u0017cursed potion of hallucination\r\u001b\u001bqc\u001b\u001bhl\u0012"
+    },
+    {
+      "name": "rogue-eyes-hallucinated-object",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Monk,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!cmdassist\n",
+      "moves": " \u0016rogue\r\u001b\u001b\u0017blessed Eyes of the Overworld\r\u001b\u001bPa\u001b\u001b\u0017rock\r\u001b\u001bdb\u001b\u001bl\u0017cursed potion of hallucination\r\u001b\u001bqc\u001b\u001bhl\u0012"
+    }
+  ],
+  "coverage": [
+    "mode.debug",
+    "ui.map-memory-vision",
+    "object.artifacts",
+    "object.potions"
+  ],
+  "branches": [
+    "vision.xray-preswap-hallucinated-object",
+    "vision.xray-preswap-sane-control",
+    "vision.xray-preswap-lenses-control",
+    "vision.xray-preswap-rogue-control"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "vision.xray-preswap-hallucinated-object",
+      "segment": 0,
+      "screenIncludes": [
+        "You drop a rock.",
+        "You are now wearing a pair of lenses named the Eyes of the Overworld.",
+        "Oh wow!  Everything looks so cosmic!"
+      ],
+      "source": "vision.c:631-654: ordinary xray calls newsym under the old active view before lighting and the buffer swap. Unchanged C wear/drop/potion messages establish the native setup; normal source/input gates verify the property and geometry producers.",
+      "screenCells": [
+        {
+          "step": 90,
+          "x": 17,
+          "y": 13,
+          "equals": ")"
+        },
+        {
+          "step": 91,
+          "x": 9,
+          "y": 14,
+          "equals": ")"
+        },
+        {
+          "step": 92,
+          "x": 9,
+          "y": 14,
+          "equals": "="
+        }
+      ]
+    },
+    {
+      "branch": "vision.xray-preswap-sane-control",
+      "segment": 1,
+      "screenIncludes": [
+        "You drop a rock.",
+        "You are now wearing a pair of lenses named the Eyes of the Overworld.",
+        "This tastes like water."
+      ],
+      "source": "vision.c:631-654: ordinary xray calls newsym under the old active view before lighting and the buffer swap. Unchanged C wear/drop/potion messages establish the native setup; normal source/input gates verify the property and geometry producers.",
+      "screenCells": [
+        {
+          "step": 85,
+          "x": 9,
+          "y": 14,
+          "equals": "*"
+        },
+        {
+          "step": 86,
+          "x": 9,
+          "y": 14,
+          "equals": "*"
+        }
+      ]
+    },
+    {
+      "branch": "vision.xray-preswap-lenses-control",
+      "segment": 2,
+      "screenIncludes": [
+        "You drop a rock.",
+        "You are now wearing a pair of lenses.",
+        "Oh wow!  Everything looks so cosmic!"
+      ],
+      "source": "vision.c:631-654: ordinary xray calls newsym under the old active view before lighting and the buffer swap. Unchanged C wear/drop/potion messages establish the native setup; normal source/input gates verify the property and geometry producers."
+    },
+    {
+      "branch": "vision.xray-preswap-rogue-control",
+      "segment": 3,
+      "screenIncludes": [
+        "You drop a rock.",
+        "You are now wearing a pair of lenses named the Eyes of the Overworld.",
+        "Oh wow!  Everything looks so cosmic!",
+        "You enter what seems to be an older, more primitive world."
+      ],
+      "source": "vision.c:631-654: ordinary xray calls newsym under the old active view before lighting and the buffer swap. Unchanged C wear/drop/potion messages establish the native setup; normal source/input gates verify the property and geometry producers."
+    }
+  ]
+}

@@ -7854,6 +7854,50 @@ composition. Accepted non-food, glyph identity, further hmonas and night-vision
 owners remain active audits. A separate parent source inventory records the
 remaining complete monster-status branches without claiming a runtime repair.
 
+## 2026-11-24: pre-swap x-ray redraw verified
+
+`vision_recalc` now performs C's x-ray circle updates before lighting and
+visibility-buffer replacement. It preserves each new-cell bit and previous
+seen-angle mask, then calls `newsym` only when C does, while the old active
+visibility is still in use. The range-zero arm marks only the hero square
+without a callback. Blind, Rogue, swallowed and control-two precedence remain
+unchanged. General night-vision range and dark-wall behavior remain a separate
+source audit.
+
+Four native cases cover hallucinated Eyes movement around a dropped rock,
+sane Eyes, ordinary lenses and Rogue Eyes. Styled grids improve from 357 to
+all 360 boundaries. All 360 cursors/slices, 9,688 complete calls and empty frame
+arrays match before and after. Three negatives retain all five original output
+hashes. The first repaired cell at boundary 90 is C's `)` where JS had `+`. Two additional display draws are JS diagnostic evidence;
+there is no native C display-RNG trace. Range zero remains source-only evidence.
+The raw fixture is unchanged, and only five observed C-cell assertions were
+added to the existing recipe's setup assertions.
+
+All 35 parent composition checks pass, including 153 controls. Nineteen focused
+fixtures, 89 segments, match 8,432 screens/cursors, 250,155 calls and 96 frames.
+Public remains 44/44, 11,405 screens/cursors, 792,838 calls and 1,483 frames.
+All 63 bounded workers pass. Eleven strict native fixtures match every styled
+cell, cursor, complete call, slice and frame array across 50 segments,
+5,681 boundaries, 143,006 calls and 96 frames. Eight deferred fixtures preserve
+all five collections over 3,202 boundaries, 96,931 calls and 16 frames. Source
+audit remains empty. All 279 runtime and five support hashes stay fixed;
+scoped reversal recovers the predecessor and main matches the tested candidate.
+The independently verified native seal covers 690 members and no links.
+
+The maintained corpus is 813. Full809 remains the latest completed broad run;
+the next full813 run will include all four subsequent patches on this fixed
+runtime. NFS native replay is byte-identical, adding three
+outcomes and no functions. The union remains 807 inputs, 97 layouts,
+4,565/5,492 functions and 60,175/107,260 outcomes, with all 96 prior run hashes
+fixed. Profiles remain on NFS and styled parity remains distinct from literal
+terminal serialization.
+
+Weapon checkpoint `7cb57eb1` is confirmed pushed. Receipts are
+`xray-preswap-parent-composition-verification.json`,
+`xray-preswap-main-integration.json`, the sealed native package and
+`linux-coverage-xray-preswap-*` under `.cache/restart-20261122/`. Continue
+accepted non-food meals, glyph identity and the remaining owner audits.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

@@ -39,7 +39,7 @@ import { ceiling, surface, Is_bigroom } from './dungeon.js';
 
 import { hides_under, is_clinger } from './mondata.js';
 
-import { waterbody_name } from './pager.js';
+import { waterbody_name, mhidden_description } from './pager.js';
 
 import { is_pool, t_at } from './mon.js';
 
@@ -73,6 +73,7 @@ import { has_ceiling } from './dungeon.js';
 import { is_pool_or_lava } from './dbridge.js';
 
 import { visible_region_at, reg_damg } from './region.js';
+import { MHID_PREFIX, MHID_ARTICLE, MHID_ALTMON, MHID_REGION } from './const.js';
 
 import { fingers_or_gloves } from './do_wear.js';
 
@@ -1685,6 +1686,10 @@ export async function mstatusline(mtmp) {
     else if (mtmp.mpeaceful)
         info += ', peaceful';
     if (mtmp.meating) info += ', eating';
+    if (mtmp.mundetected || mtmp.m_ap_type
+        || visible_region_at(game.bhitpos.x, game.bhitpos.y))
+        info += mhidden_description(mtmp,
+            MHID_PREFIX | MHID_ARTICLE | MHID_ALTMON | MHID_REGION);
     if (mtmp.mcan) info += ', cancelled';
     if (mtmp.mconf) info += ', confused';
     if (mtmp.mblinded || mtmp.mcansee === 0) info += ', blind';

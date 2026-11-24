@@ -1,0 +1,208 @@
+{
+  "name": "mstatusline-hidden",
+  "description": "Independent unchanged C recording covers probing of an object mimic and ceiling hider, ordinary visible probing, and stethoscope reveal before status. All four cases match styled grids, complete RNG, input slices, cursors and frames with the scoped mstatusline patch.",
+  "coverage": [
+    "mode.debug",
+    "level.ordinary",
+    "object.wands",
+    "object.tools-containers",
+    "ui.getlin",
+    "ui.more-paging",
+    "ui.map-memory-vision",
+    "monster.special-effects"
+  ],
+  "branches": [
+    "probing-retains-object-mimic",
+    "probing-retains-ceiling-hider",
+    "ordinary-visible-probing-negative",
+    "stethoscope-reveals-mimic-before-status"
+  ],
+  "branchAssertions": [
+    {
+      "branch": "probing-retains-object-mimic",
+      "segment": 0,
+      "screenIncludes": [
+        "Status of the giant mimic",
+        "peaceful, mimicking an egg, asleep."
+      ]
+    },
+    {
+      "branch": "probing-retains-ceiling-hider",
+      "segment": 1,
+      "screenIncludes": [
+        "Status of the lurker above",
+        "peaceful, hiding on the ceiling, asleep."
+      ]
+    },
+    {
+      "branch": "ordinary-visible-probing-negative",
+      "segment": 2,
+      "screenIncludes": [
+        "Status of the newt",
+        "AC 8, peaceful, asleep."
+      ],
+      "screenExcludes": [
+        "mimicking an egg"
+      ]
+    },
+    {
+      "branch": "stethoscope-reveals-mimic-before-status",
+      "segment": 3,
+      "screenIncludes": [
+        "That egg is really a giant mimic.",
+        "peaceful, asleep."
+      ],
+      "screenExcludes": [
+        "mimicking an egg"
+      ]
+    }
+  ],
+  "segments": [
+    {
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "name": "mimic-probing",
+      "moves": " \u0007sleeping peaceful giant mimic\r   \u0017uncursed wand of probing (0:8)\r   zal   \u001b"
+    },
+    {
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "name": "hider-probing",
+      "moves": " \u0007sleeping peaceful hidden lurker above\r   \u0017uncursed wand of probing (0:8)\r   zal   \u001b"
+    },
+    {
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "name": "newt-probing",
+      "moves": " \u0007sleeping peaceful newt\r   \u0017uncursed wand of probing (0:8)\r   zal   \u001b"
+    },
+    {
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "name": "mimic-stethoscope",
+      "moves": " \u0007sleeping peaceful giant mimic\r   \u0017uncursed stethoscope\r   aal   \u001b"
+    }
+  ],
+  "jsReach": [
+    {
+      "selectedStep": 73,
+      "commandDirectionStep": 73,
+      "boundaries": 78,
+      "calls": 4916,
+      "frames": 0,
+      "target": {
+        "id": 66,
+        "runtimeId": 72,
+        "x": 9,
+        "y": 12
+      },
+      "hero": [
+        8,
+        12
+      ],
+      "hp": 12,
+      "targetHp": 35,
+      "hidden": false,
+      "appearanceType": 2,
+      "asleep": true,
+      "peaceful": true,
+      "negative": false
+    },
+    {
+      "selectedStep": 81,
+      "commandDirectionStep": 81,
+      "boundaries": 86,
+      "calls": 3099,
+      "frames": 16,
+      "target": {
+        "id": 98,
+        "runtimeId": 72,
+        "x": 9,
+        "y": 12
+      },
+      "hero": [
+        8,
+        12
+      ],
+      "hp": 12,
+      "targetHp": 40,
+      "hidden": true,
+      "appearanceType": 0,
+      "asleep": true,
+      "peaceful": true,
+      "negative": false
+    },
+    {
+      "selectedStep": 66,
+      "commandDirectionStep": 66,
+      "boundaries": 71,
+      "calls": 3134,
+      "frames": 0,
+      "target": {
+        "id": 322,
+        "runtimeId": 72,
+        "x": 9,
+        "y": 12
+      },
+      "hero": [
+        8,
+        12
+      ],
+      "hp": 12,
+      "targetHp": 4,
+      "hidden": false,
+      "appearanceType": 0,
+      "asleep": true,
+      "peaceful": true,
+      "negative": true
+    },
+    {
+      "selectedStep": 64,
+      "commandDirectionStep": 63,
+      "boundaries": 68,
+      "calls": 4898,
+      "frames": 0,
+      "target": {
+        "id": 66,
+        "runtimeId": 72,
+        "x": 9,
+        "y": 12
+      },
+      "hero": [
+        8,
+        12
+      ],
+      "hp": 12,
+      "targetHp": 35,
+      "hidden": false,
+      "appearanceType": 0,
+      "asleep": true,
+      "peaceful": true,
+      "negative": true
+    }
+  ],
+  "limits": [
+    "Cloud, clone, blindness, borrowed-object and hit/head coordinate controls remain source-only; native coverage is the four listed ordinary cases.",
+    "Cloud, clone, blind-memory and borrowed-floor-object controls are source-only.",
+    "No wizard tame, worm segment, shapechanger, swallow wording or wounded-steed repair."
+  ],
+  "nativeProvenance": {
+    "source": "c",
+    "version": 5,
+    "rawSHA256": "4cfdd6d2321fde40c77ec7f632f564662cde6d660e90e9f0a40eaa5bbea2f1b8",
+    "unchangedInputFields": [
+      "name",
+      "seed",
+      "datetime",
+      "nethackrc",
+      "moves"
+    ],
+    "boundaries": 303,
+    "completeRngCalls": 16047,
+    "animationFrames": 16
+  }
+}

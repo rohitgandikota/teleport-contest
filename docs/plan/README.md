@@ -32,9 +32,13 @@ cancelled monster weapon substitution. Native styled parity is tracked
 separately from serialized-byte identity. Artifact eating now also passes
 30 parent checks, 125 controls, 19 focused fixtures, the public suite and 63
 bounded input workers. Its new five-case native fixture matches all 743 styled
-boundaries and 13,605 calls. The maintained corpus is 810; full810 remains
-pending. Hidden monster status, pre-swap x-ray redraw, polymorphed weapon
-selection and accepted non-food meals remain separate active candidates.
+boundaries and 13,605 calls. Hidden monster status now also passes 32 parent
+checks, 156 controls, 19 focused fixtures, the public suite and 63 bounded
+workers. Its four native cases match all 303 styled boundaries, 16,047 calls
+and 16 frames. The maintained corpus is 811; no full811 sweep has run.
+Pre-swap x-ray redraw and polymorphed weapon selection have sealed native
+confirmation and await current-runtime composition. Accepted non-food meals
+and the inventory-bearing monster glyph crash remain active source audits.
 The earlier potion changes also pass strict full-stream and per-input RNG
 checks on 117 fixtures, all 39,942 boundaries and 1,718,440 calls. The complete
 strict 677-fixture audit and all 213 animation-bearing fixtures passed at the

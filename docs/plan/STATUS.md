@@ -7758,6 +7758,53 @@ Evidence: `doeat-contact-parent-composition-verification.json`,
 `.cache/restart-20261122/`. Continue hidden status, pre-swap x-ray redraw,
 polymorphed weapon selection and accepted non-food work with prompt pushes.
 
+## 2026-11-24: hidden monster status verified
+
+`mstatusline` now uses the shared hidden-monster description after eating and
+before cancellation status, following C's raw appearance flag and visible
+region guard at the beam hit position. The description helper retains its
+own head-position lookup. This is one owner change in `insight.js`; it adds
+no alternate naming implementation or production export.
+
+Four immutable native cases cover probing a mimic and a hider, an ordinary
+newt, and the unchanged mimic stethoscope path. Styled screens, cursors and
+input slices improve from 301 to all 303 boundaries. Complete calls improve
+from 16,045 actual to the expected 16,047; all 16 animation frames match.
+The two negatives preserve all five original output hashes. Cloud, clone,
+blindness, borrowed objects and differing head/hit coordinates remain
+constructed source controls. The separate inventory-bearing monster crash
+in `zap_map` is under audit, not repaired by this patch.
+
+All 32 parent composition checks pass, including 156 controls. Nineteen
+focused fixtures, 79 segments, match 7,327 screens/cursors, 243,189 calls and
+181 frames. Public remains 44/44 with 11,405 screens/cursors, 792,838 calls and
+1,483 frames. All 63 bounded workers pass. Eleven strict native fixtures match
+every styled cell, cursor, complete call, slice and frame collection across
+49 segments, 5,488 boundaries, 147,073 calls and 96 frames. Six deferred
+fixtures preserve all five collections over 2,518 boundaries, 83,779 calls
+and 64 frames. Source audit remains empty. All 279 runtime and six support
+hashes remain fixed; scoped reversal recovers the predecessor. Main matches
+the tested candidate exactly. The initial process receipt used the wrong
+field name, then was corrected to the verifier schema with its original
+preserved; the observed process exit was zero throughout.
+
+The maintained corpus is 811. Full809 passed uninterrupted at `0eb3d090`;
+the two following changes have focused composition checks, not a full811
+sweep. Probing's NFS native replay adds three C branch outcomes. Subsequent
+weapon-selection and pre-swap x-ray native replays are also byte-identical,
+adding 22 and three outcomes respectively. The union now credits 807 inputs
+across 97 fixed layouts, 4,565/5,492 functions and 60,175/107,260 outcomes.
+All 96 preceding run hashes are unchanged. Coverage measures native reach,
+not port completeness; rendered styles do not imply serialized DEC/Unicode
+byte identity. Bulk profiles remain on NFS. Both next native packages are
+sealed and await current-runtime composition.
+
+Eating checkpoint `816695d6` is confirmed pushed. Receipts are
+`mstatusline-hidden-parent-composition-verification.json`,
+`mstatusline-hidden-main-integration.json`, the sealed native package and
+`linux-coverage-{mstatus-hidden,hmonas-slots,xray-preswap}-*` under
+`.cache/restart-20261122/`. Continue scoped porting and immediate verified pushes.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

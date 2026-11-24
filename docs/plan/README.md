@@ -29,7 +29,7 @@ checks on 117 fixtures, all 39,942 boundaries and 1,718,440 calls. The complete
 strict 677-fixture audit and all 213 animation-bearing fixtures passed at the
 preceding floor checkpoint. The subsequent monster trap-hit repair passes
 four new native cases, 65 controls and seven focused regressions. The maintained
-corpus is now 791. The following death-owner repair passes 21 direct source
+corpus is now 792. The following death-owner repair passes 21 direct source
 controls, 61 retained controls and seven focused regressions. Temporary corpse
 cleanup for pet nutrition also passes 16 direct controls, 55 retained controls
 and five focused regressions. Guard corridor gold collection passes five new
@@ -122,7 +122,14 @@ nine focused fixtures, 44 public sessions and 53 hang checks pass. Half-damage
 and monster life-saving boundaries have constructed source controls; native
 inputs cover gray dragon forms and located/plain shaman feedback. The full
 790-fixture run predates this latest effect repair. The maintained corpus
-now contains 791 recordings.
+now contains 792 recordings.
+Monster slowing now waits for speed feedback before follow-up messages, and
+monster wield/tether feedback carries the monster location. The four changed
+calls match all 155 new native styled boundaries, 8,354 calls and per-input
+slices. All 161 controls, eight focused fixtures, 44 public sessions and 52
+hang checks pass. The three separate damage-dispatch negatives preserve all
+five output hashes and match 190 native boundaries and 8,752 calls. Artifact
+light lifecycle and complete hero damage routing remain separate audits.
 Current-corpus parity is not completeness.
 
 Floor objects retain independent global and per-square order. Placement,

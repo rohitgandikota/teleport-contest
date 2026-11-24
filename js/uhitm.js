@@ -5253,7 +5253,7 @@ export async function mhitm_ad_slow(magr, mattk, mdef, mhm) {
         if (!negated && mdef.mspeed !== MSLOW) {
             const oldspeed = mdef.mspeed;
 
-            mon_adjust_speed(mdef, -1, null);
+            await mon_adjust_speed(mdef, -1, null);
             if (mdef.mspeed !== oldspeed && canseemon(mdef))
                 await pline(`${Monnam(mdef)} slows down.`);
         }
@@ -5267,7 +5267,7 @@ export async function mhitm_ad_slow(magr, mattk, mdef, mhm) {
         if (!negated && mdef.mspeed !== MSLOW) {
             const oldspeed = mdef.mspeed;
 
-            mon_adjust_speed(mdef, -1, null);
+            await mon_adjust_speed(mdef, -1, null);
             mdef.mstrategy = (mdef.mstrategy | 0) & ~STRAT_WAITFORU;
             if (mdef.mspeed !== oldspeed && game.vis && canspotmon(mdef))
                 await pline_mon(mdef, `${Monnam(mdef)} slows down.`);

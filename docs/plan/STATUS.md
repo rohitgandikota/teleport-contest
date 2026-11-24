@@ -6882,6 +6882,51 @@ unchanged. The original recipe and the failed category are preserved in
 `recipe-before-registration-fix.json`. This follow-up changes test metadata
 and validation only; it does not claim a new gameplay or leaderboard gain.
 
+## 2026-11-24: monster slowing completion and located weapon feedback
+
+The combined repair changes only four calls: two mhitm_ad_slow calls now await
+mon_adjust_speed, and the wield/tether messages in mon_wield_item now use the
+existing pline_mon helper. All ten weapon callers already await completion.
+The two complete C owners, shared speed callee and caller contracts were
+reviewed. Reversing the four call changes restores both original modules
+byte for byte; the other 277 runtime modules remain unchanged.
+
+Independent fixed-9c53738a attribution keeps the patches separate. Baseline
+matches 149/155 styled boundaries, slow-only 152, weapon-only 150, and both
+155. Every variant retains the full 8,354 calls. This isolates the missing
+message completion and location behavior without treating stream equality as
+input-timing equality. All frame arrays are empty. The physical-control native
+case is correctly classified as a weapon-feedback positive and only a slowing
+negative. The separate damage-dispatch fixture supplies three combined
+negatives, preserving all five original hashes over 190 boundaries and 8,752
+calls. Both new and negative fixtures match every blank style after repair.
+
+Normal parent checks before repair retain the expected failures: slow state
+15/24, slow input 1/4, native 2/5, wield state 9/21 and wield input 1/4. After
+repair all pass. Three source controls suspend real More input, checking
+weapon selection and strategy before the final worn bit; an actual mattackm
+caller waits without damaging its defender, then spends its turn wielding.
+The native input gate observes the corresponding selected-but-not-finally-worn
+phase at C's pending More boundary. All 161 combined controls pass.
+
+The promoted composition passes all 22 commands. Eight focused fixtures cover
+28 segments, 2,494 boundaries, 89,097 complete calls and 19 animation frames.
+Deferred input agrees over six segments, 345 boundaries, 17,106 calls and
+empty frame arrays. All 44 public sessions and 52 hang workers pass, together
+with both syntax checks and the 276-module source audit. All 279 runtime and
+seven support hashes remain fixed. The original 90-file/6-link source seal,
+prior slow packages and raw C bytes remain unchanged.
+
+Evidence: `.cache/restart-20261122/monster-wield-location-audit/`,
+`slow-wield-promotion-parent/`, `slow-wield-promotion-parent-verification.json`
+and `monster-wield-location-parent-source-seal-verification.json`.
+The NFS slow-touch recording had already added one function and fifteen
+outcomes; this promotion does not count those again. Current cumulative C
+reach remains 4,562 functions and 60,017 branch outcomes. The corpus is 792;
+full790 predates anti-magic effects and this repair. Artifact light lifecycle,
+broader welded categories and complete hero damageum routing remain separate.
+Self-sensing native confirmation is sealed and next for integration.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

@@ -1,0 +1,111 @@
+{
+  "name": "monster-slow-touch-completion",
+  "description": "Pinned C slow-touch completion and monster wield-location feedback. The historical physical-control case is a positive for located wielding and remains a negative only for slowing.",
+  "coverage": [
+    "mode.debug",
+    "ui.getlin",
+    "ui.more-paging",
+    "turn.speed-energy",
+    "monster.special-effects",
+    "monster.movement"
+  ],
+  "branches": [
+    "monster.slow-touch.plain-completion",
+    "monster.slow-touch.located-completion",
+    "monster.wield.located-without-slow"
+  ],
+  "segments": [
+    {
+      "name": "slow-visible",
+      "seed": 21020,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=pauper,nudist\nOPTIONS=!accessiblemsg\n",
+      "moves": " \u0007tame skeleton\r\u0007sleeping hostile ogre king\r2s     :"
+    },
+    {
+      "name": "slow-located",
+      "seed": 21020,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=pauper,nudist\nOPTIONS=accessiblemsg\n",
+      "moves": " \u0007tame skeleton\r\u0007sleeping hostile ogre king\r2s     :"
+    },
+    {
+      "name": "physical-control",
+      "seed": 21020,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=pauper,nudist\nOPTIONS=accessiblemsg\n",
+      "moves": " \u0007tame large cat\r\u0007sleeping hostile ogre\r2s     :"
+    }
+  ],
+  "branchAssertions": [
+    {
+      "branch": "monster.slow-touch.plain-completion",
+      "segment": 0,
+      "screenIncludes": [
+        "The skeleton touches the ogre king.",
+        "The ogre king seems to be moving slower.",
+        "The ogre king slows down."
+      ],
+      "screenExcludes": [
+        "(southwest):",
+        "You die",
+        "Die?"
+      ]
+    },
+    {
+      "branch": "monster.slow-touch.located-completion",
+      "segment": 1,
+      "screenIncludes": [
+        "(southwest): The ogre king seems to be moving slower.",
+        "(southwest): The ogre king slows down.",
+        "(southwest): The ogre king wields a club!"
+      ],
+      "screenExcludes": [
+        "You die",
+        "Die?"
+      ],
+      "screenCells": [
+        {
+          "step": 47,
+          "x": 0,
+          "y": 0,
+          "equals": "("
+        },
+        {
+          "step": 48,
+          "x": 0,
+          "y": 0,
+          "equals": "("
+        },
+        {
+          "step": 49,
+          "x": 0,
+          "y": 0,
+          "equals": "("
+        }
+      ]
+    },
+    {
+      "branch": "monster.wield.located-without-slow",
+      "segment": 2,
+      "screenIncludes": [
+        "The large cat bites the ogre.",
+        "(southeast): The ogre wields a club!"
+      ],
+      "screenExcludes": [
+        "moving slower",
+        "slows down",
+        "You die",
+        "Die?"
+      ],
+      "screenCells": [
+        {
+          "step": 42,
+          "x": 31,
+          "y": 0,
+          "equals": "("
+        }
+      ]
+    }
+  ]
+}

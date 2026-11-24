@@ -4816,6 +4816,56 @@ assertions are retained. Literal terminal serialization still differs in
 pre-existing equivalent escape/space encodings; canonical grids and cursors
 are exact. This is not a claim of full shop parity.
 
+## 2026-11-23: level flips retain region geometry
+
+Shopkeeper recovery checkpoint `e34843fb` is committed and pushed. The new
+region pass in `flip_level` mirrors each bounding box and active rectangle
+in C's order, after teleport regions and before rooms. It keeps the existing
+region objects, member arrays, callbacks, damage and lifetime. There is no
+area, visibility, attachment or extras filter in this C pass. Final vision
+reset consumes the reflected geometry. No imports, exports or RNG calls are
+added, and the scoped hunk composes with the published drawbridge helpers.
+
+The two ordinary native cases use a real stinking-cloud scroll, an iron-golem
+form, floor inspection, timeout inspection and natural cloud expiry. The old
+flipped case first differs at boundary 101, where C draws cloud at (45,7)
+and JS draws floor. C's timeout display changes bounds from [28,5..33,9] to
+[43,5..48,9] while retaining the displayed duration and damage. Baseline has
+283/307 matching screens, 306/307 cursors and 297/307 input slices; its flipped
+stream has 3,088 calls instead of 3,213. The candidate matches both cases'
+307 boundaries and all 6,394 calls and slices. The no-flip case was already
+exact. Both cases have zero animations. Raw SHA-256:
+`108851f532956d8a76bb5d0e5c0885271a03f893b7d61f8035fd1a076f6d9562`.
+
+All eighteen integrated checks pass. The 28 new and 112 enumerated retained
+controls pass, along with the existing gas gate's eighteen replays and its
+additional source controls. Nine focused fixtures match 38 segments, 8,217
+boundaries, 194,331 complete RNG calls and every input slice, plus 180
+animation grids/cursors. Deferred input matches three fixtures, seven segments,
+1,287 boundaries, 50,899 calls and eleven frames. All 44 public fixtures remain
+exact at 11,405 boundaries, 792,838 scored RNG positions and 1,483 frames.
+All 53 hang workers pass at 30 seconds. Source audit is clear across 276
+modules and syntax passes. All 279 runtime hashes stayed fixed.
+
+The complete 753-fixture regression passes all 826,059 boundary screens and
+cursors, 16,727,473 scored RNG positions and 30,953 animation frames. Both
+interleaved shards finish without failures or timeouts using default 45-second
+workers. All 279 runtime hashes stay fixed. This also verifies the recent
+drawbridge and shopkeeper recovery changes with the region pass.
+
+The validated native region run adds three entered C functions and 28 branch
+outcomes. Its union has 747 unique inputs, fifty identical layouts,
+4,537/5,492 functions and 59,372/107,260 outcomes. The 67 added raw inputs contain
+236 segments, plus nine independent Linux segments. Profiles remain at
+`/share/NFS/u/rohit/research/contest/artifacts/2026-11-22/c-coverage-compress.E84JI2/verified-flip-region-union-20261124`.
+
+Evidence is `.cache/restart-20261122/flip-region-native-confirmation/`,
+`flip-region-parent-{source-review,integration,verification}.json`,
+`flip-region-promoted-*` and `flip-region-corpus-*`. All original native bytes,
+input fields and branch assertions are retained. Vertical, creation-time,
+owner identity and save-aging claims remain source/state controls. Independent
+Air bubbles are separate. This is not complete region or game parity.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

@@ -1,0 +1,65 @@
+{
+    "name": "flip-gas-region-location",
+    "description": "Native C region-coordinate flip pair. Reading a stinking-cloud scroll creates the real cloud; an explicit horizontal flip moves its bounds and preserves lifetime. Timeout, floor look and natural expiry expose the result, with an unflipped control.",
+    "coverage": [
+        "mode.debug",
+        "forms.polymorph",
+        "survival.timed-status",
+        "ui.getlin",
+        "ui.more-paging"
+    ],
+    "branches": [
+        "flip-gas-region.mirrored-cloud",
+        "flip-gas-region.no-flip-control"
+    ],
+    "requireBranchAssertions": true,
+    "segments": [
+        {
+            "name": "horizontal-gas-region-flip",
+            "seed": 9211,
+            "datetime": "20000110090000",
+            "nethackrc": "OPTIONS=name:Region,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,time\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+            "moves": "mO aqr\r\u001b\u001b#polyself\riron golem\r \u001b\u001b\u0017uncursed scroll of stinking cloud\rra  .\u001b\u001b#timeout\r\u001b\u001b#wizfliplevel\r2\u001b\u001b#timeout\r\u001b\u001b:\u001b\u001b.\u001b\u001b.\u001b\u001b.\u001b\u001b.\u001b\u001b.\u001b\u001b.\u001b\u001b.\u001b\u001b.\u001b\u001b.\u001b\u001b.\u001b\u001b:\u001b\u001b#timeout\r\u001b\u001b"
+        },
+        {
+            "name": "unflipped-gas-region-control",
+            "seed": 9211,
+            "datetime": "20000110090000",
+            "nethackrc": "OPTIONS=name:Region,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,time\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+            "moves": "mO aqr\r\u001b\u001b#polyself\riron golem\r \u001b\u001b\u0017uncursed scroll of stinking cloud\rra  .\u001b\u001b#timeout\r\u001b\u001b#timeout\r\u001b\u001b:\u001b\u001b.\u001b\u001b.\u001b\u001b.\u001b\u001b.\u001b\u001b.\u001b\u001b.\u001b\u001b.\u001b\u001b.\u001b\u001b.\u001b\u001b.\u001b\u001b:\u001b\u001b#timeout\r\u001b\u001b"
+        }
+    ],
+    "branchAssertions": [
+        {
+            "branch": "flip-gas-region.mirrored-cloud",
+            "segment": 0,
+            "screenIncludes": [
+                "You turn into an iron golem!",
+                "You are enveloped in a cloud of noxious gas!",
+                "@[43,5..48,9]",
+                "There is a poison gas cloud here.",
+                "The gas cloud around you dissipates."
+            ],
+            "screenExcludes": [
+                "Unknown command",
+                "Never mind."
+            ]
+        },
+        {
+            "branch": "flip-gas-region.no-flip-control",
+            "segment": 1,
+            "screenIncludes": [
+                "You turn into an iron golem!",
+                "You are enveloped in a cloud of noxious gas!",
+                "@[28,5..33,9]",
+                "There is a poison gas cloud here.",
+                "The gas cloud around you dissipates."
+            ],
+            "screenExcludes": [
+                "@[43,5..48,9]",
+                "Unknown command",
+                "Never mind."
+            ]
+        }
+    ]
+}

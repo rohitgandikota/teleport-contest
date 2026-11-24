@@ -3132,7 +3132,34 @@ export async function flip_level(flp, extras) {
         }
     }
 
-    /* Region-coordinate flipping (sp_lev.c:735-763) is not ported here. */
+    /* regions (poison clouds, etc), sp_lev.c:735-763 */
+    for (const reg of (game.regions || [])) {
+        let tmp1, tmp2;
+        if (flp & 1) {
+            tmp1 = FlipY(reg.bounding_box.ly);
+            tmp2 = FlipY(reg.bounding_box.hy);
+            reg.bounding_box.ly = Math.min(tmp1, tmp2);
+            reg.bounding_box.hy = Math.max(tmp1, tmp2);
+            for (let j = 0; j < reg.nrects; j++) {
+                tmp1 = FlipY(reg.rects[j].ly);
+                tmp2 = FlipY(reg.rects[j].hy);
+                reg.rects[j].ly = Math.min(tmp1, tmp2);
+                reg.rects[j].hy = Math.max(tmp1, tmp2);
+            }
+        }
+        if (flp & 2) {
+            tmp1 = FlipX(reg.bounding_box.lx);
+            tmp2 = FlipX(reg.bounding_box.hx);
+            reg.bounding_box.lx = Math.min(tmp1, tmp2);
+            reg.bounding_box.hx = Math.max(tmp1, tmp2);
+            for (let j = 0; j < reg.nrects; j++) {
+                tmp1 = FlipX(reg.rects[j].lx);
+                tmp2 = FlipX(reg.rects[j].hx);
+                reg.rects[j].lx = Math.min(tmp1, tmp2);
+                reg.rects[j].hx = Math.max(tmp1, tmp2);
+            }
+        }
+    }
 
     /* rooms — sp_lev.c:764; subrooms flip with their parents */
     const flip_room = (sroom) => {

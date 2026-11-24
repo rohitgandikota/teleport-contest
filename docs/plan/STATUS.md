@@ -3642,6 +3642,60 @@ that process counter. A separate correction and a fresh input that actually
 drinks the detection potion are being prepared. Do not promote the old
 JS-only detection claim as native evidence.
 
+## 2026-11-23: saturated deafness duration producers
+
+The next checkpoint changes three existing functions, four additions and
+twelve deletions. `make_deaf` now uses `set_itimeout` and compares the raw
+`long` argument with the previous property word, as C does. A valid wizard
+menu addition of `INT_MAX` to an existing one-turn timer must saturate;
+JS's previous signed-32-bit cast instead cleared deafness. Rotten-food
+fainting and cloud thunder now use `incr_itimeout`, preserving source bits
+instead of carrying a full timer into `FROMEXPER`. Message, duration-draw,
+occupation and recovery order remain unchanged. The parent read complete C
+producer bodies and their timeout helper contracts.
+
+Four unchanged C cases match all 276 screens/cursors and complete input
+slices, 10,934 RNG calls and zero animations. Before the fix, screens are
+251/276 and cursors 275/276, while RNG already matches. The two negative
+controls retain all output bytes. The 28 source controls and four actual
+input controls pass, together with 117 retained controls, 149 in total.
+Five focused fixtures pass all 999 boundaries, 51,633 full RNG calls and
+four animations, including exact frame counts/cursors and the 60-second hang
+gate. Source audit has zero findings in 276 non-frozen modules. The full
+721-fixture regression passes all 814,618 boundary screens/cursors,
+16,376,007 scored RNG positions and 30,734 animation frames. Both shards
+complete at the default 45-second limit without failures or timeouts. All
+279 runtime hashes and the fixture inventory stay fixed throughout.
+
+The native fixture is byte-identical to parent recording SHA256
+`da31442f4da35176581cc27a565f298cbd2e5119e3ec2f9d45110eed5757534d`.
+All five input fields, recording integrity and four native branch assertions
+pass. The promoted recipe uses the existing `object.food-corpses` category;
+the immutable proposal's unknown `object.food` tag is retained in cache.
+The separate 916-boundary Air proposal diverges before its intended thunder
+witness. Its raw C recording remains unchanged. Positive thunder saturation
+and prayer controls are source-state evidence, not a claim of new native
+thunder coverage. That first-divergence investigation continues separately.
+
+NFS reproduces the four-case fixture exactly. The validated duration union
+has 715 credited inputs, twenty identical manifests/layouts, 4,519/5,492
+entered functions and 58,922/107,260 direct branch outcomes. The 35 added raw
+inputs contribute 153 segments, plus nine independent Linux control segments.
+Bulk data remains in
+`/share/NFS/u/rohit/research/contest/artifacts/2026-11-22/c-coverage-compress.E84JI2/verified-deaf-duration-union-20261123`.
+Local receipts are `.cache/restart-20261122/deaf-duration-parent-*`,
+`deaf-duration-producer-audit/`, and `deaf-duration-promoted-*`.
+
+The preceding lifesaving checkpoint `e09a5667` is pushed. The new leaderboard
+fetch after that push is byte-identical to the November 23 20:18 UTC snapshot;
+it does not establish a newer held-out score. Shared selection is ready as
+v1 + readability v2 + prefab-completion v3, with all 143 source controls and
+twelve focused native fixtures exact. Its parent integration/full regression
+is next. Blocked stealth is ready after that, with 21 checks and an exact
+222-boundary native pair. Save cleanup now also has a separate two-file
+`lastinvnr` amendment and a fresh native `qa` detection pair; four-way
+comparison is pending. All three original raw files remain unchanged.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

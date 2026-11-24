@@ -1,0 +1,90 @@
+{
+  "name": "deaf-duration-producers",
+  "description": "Valid-int wizard timeout addition and actual rotten-apple fainting with matched ordinary controls. Paired C output pins saturation and recovery menus. Thunder saturation remains source-state only.",
+  "coverage": [
+    "mode.debug",
+    "survival.timed-status",
+    "object.food-corpses",
+    "ui.menus"
+  ],
+  "branches": [
+    "deaf.long-sum-clamped",
+    "deaf.int-max-control",
+    "deaf.rotten-cap-after-recovery",
+    "deaf.rotten-normal-control"
+  ],
+  "requireBranchAssertions": true,
+  "segments": [
+    {
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #wizintrinsic\r1j\r  \u001b\u001b#wizintrinsic\r2147483647j\r  \u001b\u001b#wizintrinsic\r\u001b  \u001b\u001b",
+      "name": "deaf-valid-int-addition"
+    },
+    {
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #wizintrinsic\r\r  \u001b\u001b#wizintrinsic\r2147483647j\r  \u001b\u001b#wizintrinsic\r\u001b  \u001b\u001b",
+      "name": "deaf-valid-int-control"
+    },
+    {
+      "seed": 99813,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017cursed apple\r \u001b\u001b#wizintrinsic\r16777215j\r \u001b\u001bea  \u001b\u001b#wizintrinsic\r\u001b \u001b\u001b",
+      "name": "rotten-apple-deaf-cap"
+    },
+    {
+      "seed": 99813,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017cursed apple\r \u001b\u001b#wizintrinsic\r30j\r \u001b\u001bea  \u001b\u001b#wizintrinsic\r\u001b \u001b\u001b",
+      "name": "rotten-apple-deaf-normal"
+    }
+  ],
+  "branchAssertions": [
+    {
+      "branch": "deaf.long-sum-clamped",
+      "segment": 0,
+      "screenIncludes": [
+        "[16777215]",
+        "You are unable to hear anything."
+      ],
+      "screenExcludes": [
+        "You can hear again."
+      ]
+    },
+    {
+      "branch": "deaf.int-max-control",
+      "segment": 1,
+      "screenIncludes": [
+        "[16777215]"
+      ],
+      "screenExcludes": [
+        "You can hear again."
+      ]
+    },
+    {
+      "branch": "deaf.rotten-cap-after-recovery",
+      "segment": 2,
+      "screenIncludes": [
+        "Blecch!  Rotten food!",
+        "The world spins and goes dark.",
+        "You are conscious again.",
+        "[16777212]"
+      ]
+    },
+    {
+      "branch": "deaf.rotten-normal-control",
+      "segment": 3,
+      "screenIncludes": [
+        "The world spins and goes dark.",
+        "You are conscious again.",
+        "[30]"
+      ]
+    }
+  ],
+  "recordingNote": "Whole fixture byte-identical to deaf-duration-parent-native.session.json; four original name/seed/date/rc/move tuples and all raw steps unchanged. No JS screens or RNG were used as C output. Native SHA256 da31442f4da35176581cc27a565f298cbd2e5119e3ec2f9d45110eed5757534d."
+}

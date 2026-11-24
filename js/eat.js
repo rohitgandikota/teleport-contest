@@ -1183,8 +1183,7 @@ async function rottenfood(obj) {
             where = game.u.usteed ? 'saddle' : surface(game.u.ux, game.u.uy);
         }
         await pline(`The world spins and ${what} ${where}.`);
-        const intr = (game.u.intrinsic ||= {});
-        intr.HDeaf = (intr.HDeaf | 0) + duration;
+        incr_itimeout('HDeaf', duration);
         (game.disp ||= {}).botl = true;
         nomul(-duration);
         game.multi_reason = 'unconscious from rotten food';

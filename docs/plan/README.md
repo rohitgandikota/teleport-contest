@@ -19,8 +19,8 @@ run at 19:33 UTC predates the latest checkpoint. Public remains 44/44;
 that snapshot has 936 unmatched held-out
 screens. Local verification does not establish a newer held-out score.
 
-The latest verification passes 720/720 fixtures: 814,342 boundary
-screens/cursors, 16,365,073 scored RNG positions and 30,734 animation frames.
+The latest verification passes 721/721 fixtures: 814,618 boundary
+screens/cursors, 16,376,007 scored RNG positions and 30,734 animation frames.
 Both shards finish without failures or timeouts. All 279 runtime hashes
 stayed fixed throughout.
 The earlier potion changes also pass strict full-stream and per-input RNG
@@ -89,16 +89,18 @@ and eight source controls. Swimming, underwater vision, deaf explosions and
 wounded-leg lifetimes now match eight native cases and 117 new state/input
 controls. All 262 combined controls pass. Floor inspection now rechecks
 blindness after nested lifesaving and polymorph, matching two new native
-cases and all 135 related state/input checks. Next: shared interactive
-polymorph selection and the remaining save/status contracts. The
+cases and all 135 related state/input checks. Deafness duration producers
+now preserve timeout limits and source bits, matching four new native cases
+and all 149 related checks. Next: shared interactive polymorph selection,
+blocked stealth and the remaining save contracts. The
 Linux/NFS branch collector is pushed
 and passes signal canaries plus exact save/restore, artifact and natural-exit
 pilots. The Linux census at e4504071 now covers all 678 original inputs:
 603 canonical matches and 75 independently recorded ordinary Linux controls.
-Adding 34 newer raw inputs and two independent Linux controls, 158
+Adding 35 newer raw inputs and two independent Linux controls, 162
 native segments in total, gives a validated union entering 4,519/5,492
-functions and observing 58,921/107,260 direct C branch outcomes.
-All 714 credited input hashes, nineteen build manifests and branch layouts were
+functions and observing 58,922/107,260 direct C branch outcomes.
+All 715 credited input hashes, twenty build manifests and branch layouts were
 checked before merging. Original platform/output rejections
 remain rejected; no output was normalized. The two new sink fixtures separately
 match Linux C exactly; their validated union covers all 94/94 direct dosinkring

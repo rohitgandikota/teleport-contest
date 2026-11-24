@@ -841,16 +841,12 @@ export async function make_stunned(xtime, talk) {
 export async function make_deaf(xtime, talk) {
     const intr = (game.u.intrinsic ||= {});
     const old = intr.HDeaf | 0;
-    const timeout = Math.min(TIMEOUT, Math.max(0, xtime | 0));
-
     if (Unaware())
         talk = false;
 
-    intr.HDeaf = (old & ~TIMEOUT) | timeout;
-    if (!intr.HDeaf)
-        delete intr.HDeaf;
+    set_itimeout('HDeaf', xtime);
 
-    if (!!timeout !== !!old) {
+    if (!!xtime !== !!old) {
         (game.disp ||= {}).botl = true;
         if (talk)
             await You(old && !Deaf() ? 'can hear again.'

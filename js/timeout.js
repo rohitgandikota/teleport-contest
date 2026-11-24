@@ -2238,11 +2238,8 @@ export async function do_storms() {
         /* Even if already deaf, we sense the thunder's vibrations. */
         const { pline } = await import('./display.js');
         await pline('Kaboom!!!  Boom!!  Boom!!');
-        /* incr_itimeout(&HDeaf, rn1(20, 30)) — the draw is C's; the
-           deafness property linkage past the timer is not wired */
         const { rn1 } = await import('./rng.js');
-        (game.u.intrinsic ||= {}).HDeaf =
-            ((game.u.intrinsic.HDeaf | 0) + rn1(20, 30));
+        incr_itimeout('HDeaf', rn1(20, 30));
         game.botl = true;
         if (!game.u.uinvulnerable) {
             const { stop_occupation } = await import('./allmain.js');

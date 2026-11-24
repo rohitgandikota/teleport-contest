@@ -7898,6 +7898,45 @@ Weapon checkpoint `7cb57eb1` is confirmed pushed. Receipts are
 `linux-coverage-xray-preswap-*` under `.cache/restart-20261122/`. Continue
 accepted non-food meals, glyph identity and the remaining owner audits.
 
+## 2026-11-24: uninterrupted full813 regression passes
+
+All 813 maintained recordings pass on the exact runtime pushed as `75317c13`.
+Both fixed-runtime shards close with exit zero, with no failures, timeouts or
+retries. Every result matches all scored metrics: 851,510 screens/cursors,
+17,706,781 RNG positions and 32,295 animation frames. All 279 runtime hashes,
+813 raw fixture hashes and 94 protected files remain fixed. Every prior809
+raw hash is unchanged. The four additions are eating contact, hidden monster
+status, polymorphed weapon slots and pre-swap x-ray redraw.
+
+Manifests, original shard logs, process exits and independent verification
+are in `.cache/restart-20261122/xray-preswap-full813/`. The tested runtime is
+`xray-preswap-parent-composition/candidate`, byte-for-byte equal to the pushed
+279-module runtime. This broad result does not certify untested source logic,
+all inherited blank styles, literal terminal encoding, or a new held-out score.
+No oracle, timeout, frozen comparator or fixture was changed for the run.
+
+Two subsequent candidates now have independent C recordings from separately
+sealed input locks. Pit kicks: four real warhorse cases, 371 boundaries,
+9,929 calls and no frames. C skips kicks in pit and spiked pit but still
+bites; free and bear-trap negatives retain kick attempts. Glyph identity:
+three cases, 214 boundaries, 11,140 calls and no frames, including the actual
+inventory-bearing orc that crashes the baseline. Their final source/native
+packages and current-runtime composition are still pending; neither is merged.
+Parent source review also preserves the distinct lawful-altar identity issue
+and unresolved transient glyph exclusions rather than claiming full renderer
+fidelity.
+
+The pit raw replays byte-identically on NFS and adds 13 C branch outcomes,
+no functions. The union is 808 credited inputs across 98 fixed layouts,
+4,565/5,492 functions and 60,188/107,260 outcomes. All 97 prior run hashes stay
+fixed. Two pre-merge script assertions caught stale expected layout/count
+entries; both scripts and failures remain preserved. Version three adds the
+single expected input, retains every earlier assertion, and merges successfully.
+The C replay was not repeated or normalized. Only compact verified summaries
+were downloaded; profiles remain on NFS. Receipts: `linux-coverage-pit-kicks-*`.
+Continue the pending candidates, accepted non-food owner, combat contact and
+dark-wall audits, with every verified commit pushed immediately.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

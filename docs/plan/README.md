@@ -19,14 +19,15 @@ run at 13:38 UTC predates the latest checkpoints. Public remains 44/44;
 held-out remains 39/56 with 936 unmatched screens. Local verification does
 not establish a newer held-out score.
 
-The latest full regression passes all 809 fixtures on pushed checkpoint
-`0eb3d090`: 849,309 screens/cursors, 17,652,413 scored RNG positions and
-32,279 frames. Both fixed-runtime shards pass without retries or timeouts.
-All 279 runtime hashes, all 809 raw inputs and 72 protected files remain fixed.
-The earlier 804 run required two explicit timeout retries; those original
-failures and paired replay evidence remain preserved.
+The latest full regression passes all 813 fixtures on pushed checkpoint
+`75317c13`: 851,510 screens/cursors, 17,706,781 scored RNG positions and
+32,295 frames. Both fixed-runtime shards pass without retries or timeouts.
+All 279 runtime hashes, all 813 raw inputs and 94 protected files remain fixed.
+All prior809 raw hashes are unchanged. The earlier 804 run required two
+explicit timeout retries; its original failures and paired replay evidence
+remain preserved.
 
-The full809 runtime includes redraw flags, seduction feedback, monster lists,
+The full813 runtime includes redraw flags, seduction feedback, monster lists,
 artifact rejection, Rogue x-ray priority, temporary hidden-object cleanup and
 cancelled monster weapon substitution. Native styled parity is tracked
 separately from serialized-byte identity. Artifact eating now also passes
@@ -41,7 +42,7 @@ Its six native cases match all 795 styled boundaries and 15,028 calls.
 Pre-swap x-ray redraw now also passes 35 parent checks, 153 controls,
 19 focused fixtures, the public suite and 63 bounded workers. Its four native
 cases match all 360 styled boundaries and 9,688 calls. The maintained corpus
-is 813; the next full sweep will check these four additions together.
+is 813; the completed full sweep includes these four additions together.
 Accepted non-food meals, glyph identity and the remaining combat and vision
 owners remain active source audits.
 The earlier potion changes also pass strict full-stream and per-input RNG

@@ -26,7 +26,7 @@ import { mdistu } from './monmove.js';
 import { steal } from './steal.js';
 import { rloc } from './teleport.js';
 import { tele_restrict, tele, u_teleport_mon } from './teleport.js';
-import { could_seduce, doseduce, SYSOPT_SEDUCE } from './mhitu.js';
+import { could_seduce, doseduce, getmattk, SYSOPT_SEDUCE } from './mhitu.js';
 import { u_slip_free } from './mhitu.js';
 import { failed_grab, sleep_monst, slept_monst, engulf_target,
          xdrainenergym } from './mhitm.js';
@@ -1491,12 +1491,16 @@ export async function hitum(mon, uattk) {
 // hmon_hitmon() deliberately suppresses its ordinary weapon knockback while
 // the hero is polymorphed.
 export async function hmonas(mon) {
-    const attacks = game.youmonst.data.mattk;
     const sum = Array(NATTK).fill(M_ATTK_MISS);
     const roll = { attk_count: 0, role_roll_penalty: 0 };
-    const multi_claw = attacks.filter((a) =>
-        a[0] === ATTKS.AT_WEAP || a[0] === ATTKS.AT_CLAW
-        || a[0] === ATTKS.AT_TUCH).length > 1;
+    let multi_claw = 0;
+    for (let i = 0; i < NATTK; i++) {
+        const mattk = getmattk(game.youmonst, mon, i, sum);
+        if (mattk[0] === ATTKS.AT_WEAP || mattk[0] === ATTKS.AT_CLAW
+            || mattk[0] === ATTKS.AT_TUCH)
+            multi_claw++;
+    }
+    multi_claw = multi_claw > 1;
     let weapon_used = false;
     let odd_claw = true;
 
@@ -1508,7 +1512,7 @@ export async function hmonas(mon) {
                       || DEADMONSTER(mon)))
             continue;
 
-        let mattk = attacks[i];
+        let mattk = getmattk(game.youmonst, mon, i, sum);
         const aatyp = mattk[0];
         let weapon = null;
         let dhit = 0;
@@ -1558,6 +1562,15 @@ export async function hmonas(mon) {
                 ? (mhit[0] ? M_ATTK_HIT : M_ATTK_MISS)
                 : M_ATTK_DEF_DIED;
             dhit = mhit[0];
+            if (malive) {
+                /* A cut worm tail may no longer belong to this monster. */
+                if (m_at(game.u.ux + game.u.dx, game.u.uy + game.u.dy) !== mon)
+                    break;
+                /* known_hitum already gave the weapon's hit message. */
+                if (dhit && mattk[1] !== ATTKS.AD_SPEL
+                    && mattk[1] !== ATTKS.AD_PHYS)
+                    sum[i] = await damageum(mon, mattk, 0);
+            }
         } else if (aatyp === ATTKS.AT_CLAW || aatyp === ATTKS.AT_TUCH
                    || aatyp === ATTKS.AT_KICK || aatyp === ATTKS.AT_BITE
                    || aatyp === ATTKS.AT_STNG || aatyp === ATTKS.AT_BUTT
@@ -1568,32 +1581,41 @@ export async function hmonas(mon) {
             dhit = (tmp > dieroll || game.u.uswallow) ? 1 : 0;
 
             if (dhit) {
-                await wakeup(mon, true);
-                let specialdmg = 0;
-                if (aatyp === ATTKS.AT_CLAW || aatyp === ATTKS.AT_TUCH) {
-                    odd_claw = !odd_claw;
-                    const armask = W_ARMG
-                        | ((odd_claw || !multi_claw) ? W_RINGL : 0)
-                        | ((!odd_claw || !multi_claw) ? W_RINGR : 0);
-                    specialdmg = special_dmgval(
-                        game.youmonst, mon, armask);
-                } else if (aatyp === ATTKS.AT_KICK) {
-                    specialdmg = special_dmgval(
-                        game.youmonst, mon, W_ARMF);
-                }
+                const compat = !game.u.uswallow
+                    ? could_seduce(game.youmonst, mon, mattk) : 0;
+                if (compat) {
+                    await You(`${mon.mcansee && haseyes(mon.data) ? 'smile at' : 'talk to'} ${
+                        mon_nam(mon)} ${compat === 2 ? 'engagingly' : 'seductively'}.`);
+                    /* Compatible seduction does not wake or anger the target. */
+                    sum[i] = await damageum(mon, mattk, 0);
+                } else {
+                    await wakeup(mon, true);
+                    let specialdmg = 0;
+                    if (aatyp === ATTKS.AT_CLAW || aatyp === ATTKS.AT_TUCH) {
+                        odd_claw = !odd_claw;
+                        const armask = W_ARMG
+                            | ((odd_claw || !multi_claw) ? W_RINGL : 0)
+                            | ((!odd_claw || !multi_claw) ? W_RINGR : 0);
+                        specialdmg = special_dmgval(
+                            game.youmonst, mon, armask);
+                    } else if (aatyp === ATTKS.AT_KICK) {
+                        specialdmg = special_dmgval(
+                            game.youmonst, mon, W_ARMF);
+                    }
 
-                const verb = aatyp === ATTKS.AT_TUCH ? 'touch'
-                    : aatyp === ATTKS.AT_KICK ? 'kick'
-                    : aatyp === ATTKS.AT_BITE ? 'bite'
-                    : aatyp === ATTKS.AT_STNG ? 'sting'
-                    : aatyp === ATTKS.AT_BUTT ? 'head butt'
-                    : aatyp === ATTKS.AT_TENT ? 'tentacles suck'
-                    : 'hit';
-                if (aatyp === ATTKS.AT_TENT)
-                    await Your(`${verb} ${mon_nam(mon)}.`);
-                else
-                    await You(`${verb} ${mon_nam(mon)}.`);
-                sum[i] = await damageum(mon, mattk, specialdmg);
+                    const verb = aatyp === ATTKS.AT_TUCH ? 'touch'
+                        : aatyp === ATTKS.AT_KICK ? 'kick'
+                        : aatyp === ATTKS.AT_BITE ? 'bite'
+                        : aatyp === ATTKS.AT_STNG ? 'sting'
+                        : aatyp === ATTKS.AT_BUTT ? 'head butt'
+                        : aatyp === ATTKS.AT_TENT ? 'tentacles suck'
+                        : 'hit';
+                    if (aatyp === ATTKS.AT_TENT)
+                        await Your(`${verb} ${mon_nam(mon)}.`);
+                    else
+                        await You(`${verb} ${mon_nam(mon)}.`);
+                    sum[i] = await damageum(mon, mattk, specialdmg);
+                }
             } else {
                 await missum(mon, mattk_row(mattk),
                              tmp + roll.role_roll_penalty > dieroll);
@@ -1716,8 +1738,11 @@ export async function hmonas(mon) {
             game.u.mh = -1;
             await rehumanize();
         }
-        await passive(mon, weapon, sum[i] !== M_ATTK_MISS,
-                      !DEADMONSTER(mon), aatyp, false);
+        if (sum[i] === M_ATTK_DEF_DIED)
+            await passive(mon, weapon, true, false, aatyp, false);
+        else
+            await passive(mon, weapon, sum[i] !== M_ATTK_MISS,
+                          true, aatyp, false);
         const mhm = { hitflags: sum[i] };
         if (await mhitm_knockback(game.youmonst, mon, mattk, mhm,
                                  weapon_used))

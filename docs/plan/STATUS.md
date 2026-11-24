@@ -7384,6 +7384,34 @@ buried visibility, remaining source-only description alternatives and literal
 DEC/Unicode byte identity are not certified by this patch. Commit and push
 this verified checkpoint, then continue the independently prepared changes.
 
+## 2026-11-24: polymorphed attack routing verified
+
+Pushed monster descriptions as f4a16a45. The hmonas patch now uses getmattk in
+both attack-counting and execution loops, keeps C's post-weapon target check,
+and sends nonphysical weapon effects through the shared damageum owner.
+Compatible seduction is classified before wakeup and feedback. Passive attack
+survival uses the result flags. Every affected damageum call remains awaited.
+Only uhitm.js changes. The existing damageum test receives its missing direction
+setup; all 39 assertions are unchanged.
+
+All 26 checks and 208 controls pass on the exact published pager/vault runtime.
+Thirteen focused fixtures cover 50 segments, 8,726 scored boundaries/cursors,
+158,373 calls and 117 frames. All 44 public fixtures pass. The 57 ordinary and
+seven stricter 8-second workers pass. Six new C cases improve from 637/652
+styled boundaries, 648 cursors and 642 RNG slices to all 652. Complete calls
+return from 15,117 to the native 15,134. Seven strict native fixtures match
+1,841 styled boundaries, 57,945 calls and zero frames. Two ordinary negatives
+retain all five output hashes. Delayed input matches 4,099 boundaries, 73,685
+calls and 38 frames. Source audit remains zero of 276.
+
+All 279 current-main runtime hashes and six support files equal the tested
+hmonas-routing-vision-composition. Its verifier and main integration receipt
+are under .cache/restart-20261122. Maintained corpus is 802; latest full passing
+regression remains the 800-fixture d0c5098d run. Compatible miss feedback,
+alternate monster weapons and other combat omissions remain separate. Native
+styled parity is not literal DEC/Unicode screen-byte identity. Commit and
+immediately push this checkpoint, then continue the remaining reviewed fixes.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

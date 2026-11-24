@@ -1,0 +1,136 @@
+{
+  "name": "hero-polymorph-weapon-seduction",
+  "description": "Six unchanged native keyboard cases for hmonas post-weapon cold and life drain, opposite- and same-gender nymph seduction, and resistant/incompatible controls. Other constructed boundaries remain source-only.",
+  "coverage": [
+    "forms.polymorph",
+    "combat.melee"
+  ],
+  "branches": [
+    "hero.weapon.cold",
+    "hero.weapon.resistant-control",
+    "hero.weapon.life-drain",
+    "hero.seduction.opposite-gender",
+    "hero.seduction.same-gender",
+    "hero.seduction.incompatible-control"
+  ],
+  "segments": [
+    {
+      "name": "lich-weapon-cold",
+      "seed": 21100,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Hmonas,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed +0 club\r  \u001b\u001bwa #polyself\rlich\r  \u001b\u001b\u0007sleeping hostile ogre\r\u001b\u001by       : "
+    },
+    {
+      "name": "lich-weapon-resistant",
+      "seed": 21100,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Hmonas,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed +0 club\r  \u001b\u001bwa #polyself\rlich\r  \u001b\u001b\u0007sleeping hostile ice troll\r\u001b\u001by       : "
+    },
+    {
+      "name": "barrow-weapon-drain",
+      "seed": 21100,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Hmonas,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed +10 ring of increase accuracy\r  \u001b\u001bPar\u001b\u001b\u0017uncursed +0 club\r  \u001b\u001bwb #polyself\rbarrow wight\r  \u001b\u001b\u0007sleeping hostile ogre\r\u001b\u001bj       : "
+    },
+    {
+      "name": "nymph-compatible",
+      "seed": 21100,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Hmonas,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed +10 ring of increase accuracy\r  \u001b\u001bPar\u001b\u001b#polyself\rwood nymph\r  \u001b\u001b\u0007sleeping hostile male ogre\r\u001b\u001bh       : "
+    },
+    {
+      "name": "nymph-engaging",
+      "seed": 21100,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Hmonas,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed +10 ring of increase accuracy\r  \u001b\u001bPar\u001b\u001b#polyself\rwood nymph\r  \u001b\u001b\u0007sleeping hostile female ogre\r\u001b\u001bh       : "
+    },
+    {
+      "name": "incubus-incompatible",
+      "seed": 21100,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Hmonas,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed +10 ring of increase accuracy\r  \u001b\u001bPar\u001b\u001b#polyself\rincubus\r  \u001b\u001b\u0007sleeping hostile male ogre\r\u001b\u001bn       : "
+    }
+  ],
+  "branchAssertions": [
+    {
+      "branch": "hero.weapon.cold",
+      "segment": 0,
+      "screenIncludes": [
+        "You hit the ogre.",
+        "The ogre is covered in frost!"
+      ],
+      "screenExcludes": [
+        "Do you want your possessions identified?"
+      ]
+    },
+    {
+      "branch": "hero.weapon.resistant-control",
+      "segment": 1,
+      "screenIncludes": [
+        "You hit the ice troll."
+      ],
+      "screenExcludes": [
+        "The ice troll is covered in frost!",
+        "Do you want your possessions identified?"
+      ]
+    },
+    {
+      "branch": "hero.weapon.life-drain",
+      "segment": 2,
+      "screenIncludes": [
+        "The ogre becomes weaker!",
+        "You touch the ogre."
+      ],
+      "screenExcludes": [
+        "Do you want your possessions identified?"
+      ]
+    },
+    {
+      "branch": "hero.seduction.opposite-gender",
+      "segment": 3,
+      "screenIncludes": [
+        "You smile at the ogre seductively.",
+        "You steal:"
+      ],
+      "screenExcludes": [
+        "You hit the ogre.",
+        "The ogre wakes up!",
+        "You miss the ogre.",
+        "Do you want your possessions identified?"
+      ]
+    },
+    {
+      "branch": "hero.seduction.same-gender",
+      "segment": 4,
+      "screenIncludes": [
+        "You smile at the ogre engagingly.",
+        "You steal:"
+      ],
+      "screenExcludes": [
+        "You hit the ogre.",
+        "The ogre wakes up!",
+        "You miss the ogre.",
+        "Do you want your possessions identified?"
+      ]
+    },
+    {
+      "branch": "hero.seduction.incompatible-control",
+      "segment": 5,
+      "screenIncludes": [
+        "You bite the ogre.",
+        "You steal:"
+      ],
+      "screenExcludes": [
+        "You smile at",
+        "You talk to",
+        "Do you want your possessions identified?"
+      ]
+    }
+  ]
+}

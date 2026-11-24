@@ -38,6 +38,7 @@ async function prepare(form, type, victim=P.PM_OGRE) {
     assert.ok(mon); assert.equal(mon.data,game.mons[victim]);
     Object.assign(mon,{mhp:100,mhpmax:100,msleeping:0,mpeaceful:0,mstrategy:C.STRAT_WAITFORU});
     game.flags.verbose=true; game.flags.monpolycontrol=false;
+    Object.assign(game.u,{dx:1,dy:0}); // do_attack sets the attempted adjacent direction.
     game.u.udaminc=0; game.bhitpos={x:mon.mx,y:mon.my}; game.notonhead=false;
     clearMessages(); seed(19);
     return {run,mon,attack};

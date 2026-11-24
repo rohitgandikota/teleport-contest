@@ -4095,6 +4095,50 @@ Restored door ownership, worn-item polymorph callbacks, Rider boulder/door
 handling and awake tame-worm dispatch have separate source/native packages.
 They are not part of this four-line movement repair.
 
+## 2026-11-23: restore the level-owned active door count
+
+Sticky movement checkpoint `f20add2a` is committed and pushed. This checkpoint
+changes two assignment receivers in `getlev` and `getbones_load`. Restoring a
+level now writes its active door count to that level, where detection and map
+consumers read it. The existing C formula, last main room's `fdoor + doorct`
+or zero, stays intact. Array capacity and subroom tails are not counted.
+
+A new ordinary native pair leaves a trapped door in bones, loads that level,
+and detects traps. Before the repair, the level count remains zero while an
+unused game-root count becomes 24. The first missing red trap glyph is at
+boundary 132 of the second segment, followed by 23 more wrong screens.
+Baseline matches 347/371 screens; all 371 cursors, input slices and 8,550
+complete RNG calls already match. The repair matches all measures, with no
+animations. The unchanged raw SHA-256 is
+`b4ca001800ee0d122956a9721fa5051fb74c834ff845ccd3129c67adfcdb6860`.
+
+Nine state controls, fourteen source assertions over nineteen pinned C
+functions, two actual-input checks and three native assertions pass. Six
+focused fixtures cover twelve segments, 1,646 boundaries, 27,898 exact
+complete/per-input RNG calls and one animation. All six 30-second worker
+checks pass. Delayed interactive input also matches the new pair and retained
+save/restore pair, 406 boundaries, 11,792 calls and one animation. The source
+audit has zero findings in 276 non-frozen modules.
+
+The complete 732-fixture regression passes all 819,340 boundary
+screens/cursors, 16,487,903 scored RNG positions and 30,736 animation frames.
+Both shards finish without failures or timeouts at the default 45-second
+worker limit. All 279 runtime hashes stayed fixed throughout.
+
+The exact NFS union contains 726 credited inputs and twenty-nine matching
+manifests/layouts, entering 4,526/5,492 functions and reaching 59,109/107,260
+direct C branch outcomes. Its 46 added raw inputs contain 181 segments, plus
+nine independent Linux segments. Bulk profiles remain at
+`/share/NFS/u/rohit/research/contest/artifacts/2026-11-22/c-coverage-compress.E84JI2/verified-door-owner-union-20261123`.
+
+Evidence is `.cache/restart-20261122/door-owner-native-confirmation/`,
+`door-owner-parent-{source-review,integration,verification}.json`,
+`door-owner-promoted-*` and `door-owner-corpus-*`. Whole functions and relevant
+owners/consumers were reviewed. The separate flip/independent shop-coordinate
+repair remains queued, along with worn-item callbacks and Rider terrain work.
+This checkpoint does not change any other restore phase or claim complete
+save/bones coverage.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

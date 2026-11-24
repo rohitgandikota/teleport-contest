@@ -1,0 +1,65 @@
+{
+    "name": "bones-door-owner-detection",
+    "description": "Load bones containing a registered trapped door, then reveal that door through ordinary crystal-ball trap detection.",
+    "segments": [
+        {
+            "seed": 31,
+            "datetime": "20000110090000",
+            "nethackrc": "OPTIONS=name:Wielder,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=paranoid_confirmation:none\nOPTIONS=disclose:-i -a -v -g -c -o\nOPTIONS=!tombstone\n",
+            "name": "create-registered-trapped-door-and-bones",
+            "moves": " #levelchange\r30\r                             \u00166\r                  \u001b\u001b\u001b\u001b\u001b\u001b\u0014llkk.                  \u001b\u001b\u001b\u001b\u001b\u001b\u0017trapped locked door\r                  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed leather gloves\rWa\u0017uncursed cockatrice corpse\rTyes\rwb  yy"
+        },
+        {
+            "seed": 31,
+            "datetime": "20000110090000",
+            "nethackrc": "OPTIONS=name:Wielder,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=paranoid_confirmation:none\nOPTIONS=disclose:-i -a -v -g -c -o\nOPTIONS=!tombstone\n",
+            "name": "load-bones-and-detect-door-trap",
+            "moves": " #levelchange\r30\r                             \u00166\ryn                  \u001b\u001b\u001b\u001b\u001b\u001b\u0017blessed crystal ball (0:5)\r                  \u001b\u001b\u001b\u001b\u001b\u001baa ^                  \u001b\u001b\u001b\u001b\u001b\u001b"
+        }
+    ],
+    "coverage": [
+        "mode.debug",
+        "persistence.bones",
+        "traps.door-container",
+        "object.tools-containers"
+    ],
+    "branches": [
+        "bones-door-owner-detection.registered-door-save",
+        "bones-door-owner-detection.bones-load",
+        "bones-door-owner-detection.trapped-door-map"
+    ],
+    "requireBranchAssertions": true,
+    "branchAssertions": [
+        {
+            "branch": "bones-door-owner-detection.registered-door-save",
+            "segment": 0,
+            "screenIncludes": [
+                "A trapped locked door.",
+                "Save bones?"
+            ]
+        },
+        {
+            "branch": "bones-door-owner-detection.bones-load",
+            "segment": 1,
+            "screenIncludes": [
+                "Get bones?",
+                "Unlink bones?"
+            ]
+        },
+        {
+            "branch": "bones-door-owner-detection.trapped-door-map",
+            "segment": 1,
+            "screenIncludes": [
+                "You feel entrapped."
+            ],
+            "screenCells": [
+                {
+                    "step": 132,
+                    "x": 35,
+                    "y": 13,
+                    "equals": "^"
+                }
+            ]
+        }
+    ]
+}

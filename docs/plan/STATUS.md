@@ -4565,6 +4565,30 @@ Evidence is `.cache/restart-20261122/flip-melt-timer-native-confirmation/`,
 and `flip-runtime-corpus-*`. Original patch and raw hashes are unchanged.
 Region coordinates and drawbridge direction flips remain separate gaps.
 
+## 2026-11-23: correct stale port comments
+
+Timer/goal checkpoint `1dd779e1` is committed and pushed after 747/747 fixtures.
+Seven comment blocks in `makemon.js` and `sp_lev.js` now describe the current
+code. Obsolete partial-port, unreachable-callee and removed-stub history is
+deleted. The inventory tail comment reflects its conditional reach. The
+stair comment describes the cached coordinates, and the region comment names
+the still-missing transform rather than claiming no region owner exists.
+
+The existing Acorn parser proves identical token types, raw spellings and
+values, plus identical ASTs after removing source positions. This holds on
+the newly committed timer/goal composition: 19,018 tokens in `makemon.js`
+and 30,773 in `sp_lev.js`, including EOF. All changed spans contain only
+comments or whitespace, with every other byte unchanged. Both files pass
+syntax checks; the source audit has zero findings across 276 modules.
+No new gameplay replay was needed for this comment-only checkpoint.
+
+Evidence is `.cache/restart-20261122/sp-lev-makemon-comment-audit/`,
+`comment-parent-static-review.json` and `comment-parent-static/`. The scoped
+patch SHA-256 is
+`66459f83f9bbdb4d9e6964e793461f75d86686a9f95392b4f8bb8f7e4e955ca1`.
+Canonical concealment-helper reuse and region/drawbridge behavior remain
+separate changes.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

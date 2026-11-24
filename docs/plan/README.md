@@ -131,7 +131,9 @@ Six native cases, 53 new controls and 120 retained controls pass.
 Level flips now move ice-melt timers and active monster goals while preserving
 pet goal memory. Four native cases, 53 new controls and 37 retained controls
 pass, along with the full regression.
-Next are shop crawl blocking, guard feedback and reviewed readability changes.
+Stale monster-creation and flip comments are corrected, with identical runtime
+tokens and ASTs. Next are shop crawl blocking, guard feedback and canonical
+concealment-helper reuse.
 The Linux/NFS branch collector is pushed
 and passes signal canaries plus exact save/restore, artifact and natural-exit
 pilots. The Linux census at e4504071 now covers all 678 original inputs:

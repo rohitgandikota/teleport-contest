@@ -2961,10 +2961,7 @@ export async function flip_level(flp, extras) {
         if (flp & 2) st.sx = FlipX(st.sx);
     }
 
-    /* This port also records the up/down stair coordinates separately on the
-       level (js/mklev.js sets level.upstair / level.dnstair) and the display
-       keys the '<' vs '>' glyph off them, so they have to move too. C reads
-       the stairway list for that and has no such record. */
+    /* Flip the level's cached stair coordinates as well. */
     for (const key of ['upstair', 'dnstair']) {
         const st = game.level?.[key];
         if (!st || !inFlipArea(st.x, st.y)) continue;
@@ -3109,8 +3106,7 @@ export async function flip_level(flp, extras) {
         }
     }
 
-    /* regions (poison clouds, etc, sp_lev.c:735) cannot exist during level
-       creation; the port has no region list to flip. */
+    /* Region-coordinate flipping (sp_lev.c:735-763) is not ported here. */
 
     /* rooms — sp_lev.c:764; subrooms flip with their parents */
     const flip_room = (sroom) => {

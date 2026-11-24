@@ -1,0 +1,51 @@
+{
+  "name": "weight-capacity-boundaries",
+  "description": "Native C: delayed levitation boots announce completed dressing and floating before the load becomes unencumbered; ordinary low boots retain the load penalty.",
+  "coverage": [
+    "mode.debug",
+    "object.armor",
+    "survival.encumbrance"
+  ],
+  "branches": [
+    "weight-cap.levitation-boots-finish",
+    "weight-cap.ordinary-boots-negative"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "weight-cap.levitation-boots-finish",
+      "segment": 0,
+      "screenIncludes": [
+        "You finish your dressing maneuver.  You start to float in the air!",
+        "Your movements are now unencumbered."
+      ]
+    },
+    {
+      "branch": "weight-cap.ordinary-boots-negative",
+      "segment": 1,
+      "screenIncludes": [
+        "You finish your dressing maneuver."
+      ],
+      "screenExcludes": [
+        "You start to float in the air!",
+        "Your movements are now unencumbered."
+      ]
+    }
+  ],
+  "segments": [
+    {
+      "name": "levitation-boots-capacity",
+      "seed": 7341,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Capacity,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\n",
+      "moves": " \u0017heavy iron ball\r \u0017heavy iron ball\r \u0017uncursed boots of levitation\r Wc    ..:"
+    },
+    {
+      "name": "ordinary-boots-capacity",
+      "seed": 7341,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Capacity,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\n",
+      "moves": " \u0017heavy iron ball\r \u0017heavy iron ball\r \u0017uncursed low boots\r Wc    ..:"
+    }
+  ]
+}

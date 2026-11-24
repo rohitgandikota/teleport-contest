@@ -5754,6 +5754,50 @@ for this comment-only checkpoint; prior runtime evidence remains unchanged.
 The other 278 runtime files retain their hashes. Proof and the exact original
 module are in `.cache/restart-20261122/monster-comment-parent-audit/`.
 
+## 2026-11-24: carrying capacity and temporary levitation overrides
+
+Comment checkpoint `5b3170be` is committed and pushed. `weight_cap` now saves
+the levitation source and blocker words, excludes unfinished boots only while
+the exact `Boots_on` callback is pending, and temporarily clears the floor
+blocker. It calculates capacity with canonical `Levitation` and `Flying`,
+then restores both words and recomputes flight and mounted stealth. Existing
+form scaling, Air/strong-mount overrides, leg penalties and clamps stay in
+C order. The function remains synchronous; the stamina repair's `exercise`
+body is byte-identical.
+
+All 1,283 sealed package files verify. The two unchanged native cases match
+146 styled boundaries/cursors, 5,484 complete RNG calls and every input slice,
+with no frames. Before the fix, levitation boots put the unencumbered message
+before completed dressing and floating, missing two grids, one cursor and two
+slices. The complete stream already matched. The ordinary-boots negative
+retains all five complete output hashes. Raw fixture SHA is
+`a2f4e9ac9cf27b0f691656587cefa314b9d5b9651dd94cce545dd0357782eac3`.
+
+All sixteen parent checks pass. The 36 state controls improve from 28 passing;
+ten input controls improve from nine. All 95 retained stamina, stealth and
+property controls pass. Nine focused fixtures contain 45 segments, 13,841
+boundaries, 141,666 complete calls and two exact animation grids/cursors/counts.
+Four delayed-input fixtures match seven segments, 636 boundaries, 24,154 calls
+and one frame. All 44 public fixtures retain 11,405 boundaries, 792,838 scored
+RNG positions and 1,483 frames. All 53 hang workers finish within 30 seconds;
+syntax and the zero-finding 276-module source audit pass. All 279 runtime hashes
+stayed fixed. The maintained corpus is 769, with the latest full regression
+still 767/767 at `12dc0551`.
+
+The retained stealth state test initially lacked its existing private-export
+loader and failed during module instantiation. Its original log and plan remain
+in the cache. The corrected invocation uses the unchanged loader, which only
+exports `disturb`; no body, return value or assertion changed. The final check
+receipt includes the corrected invocation and all original passing checks.
+
+Evidence is `.cache/restart-20261122/weight-cap-current-parent-audit/` and
+`weight-cap-current-parent-{integration,verification}.json`. Constructed controls
+cover the remaining capacity conditions using real producers; the Air identity
+and callback-reference controls are explicitly synthetic. Existing Linux C
+coverage reaches all 24/24 direct capacity outcomes and 8/8 flight-recomputation
+outcomes, separately from these JS parity results. Next are the independently
+recorded billing-disposal and monster trap-hit fixes.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

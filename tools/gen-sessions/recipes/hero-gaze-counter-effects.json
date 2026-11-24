@@ -1,0 +1,119 @@
+{
+  "name": "hero-gaze-counter-effects",
+  "description": "Hero gaze counter-effects: floating-eye paralysis and free action, sleeping-eye and newt controls, and Medusa life saving. Five ordinary pinned-C source=c/v5 recordings; input tuples and branch assertions unchanged.",
+  "coverage": [
+    "mode.debug",
+    "forms.polymorph",
+    "monster.special-effects",
+    "object.rings",
+    "object.amulets",
+    "survival.timed-status",
+    "survival.instant-deaths",
+    "ui.getlin",
+    "ui.more-paging"
+  ],
+  "branches": [
+    "hero.gaze.floating-eye-paralysis",
+    "hero.gaze.floating-eye-free-action",
+    "hero.gaze.sleeping-eye-control",
+    "hero.gaze.medusa-lifesaving",
+    "hero.gaze.ordinary-newt-control"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "hero.gaze.floating-eye-paralysis",
+      "segment": 0,
+      "screenIncludes": [
+        "Your gaze confuses the floating eye!",
+        "You are frozen by the floating eye's gaze!"
+      ],
+      "screenExcludes": [
+        "You stiffen momentarily"
+      ]
+    },
+    {
+      "branch": "hero.gaze.floating-eye-free-action",
+      "segment": 1,
+      "screenIncludes": [
+        "Your gaze confuses the floating eye!",
+        "You stiffen momentarily under the floating eye's gaze."
+      ],
+      "screenExcludes": [
+        "You are frozen by"
+      ]
+    },
+    {
+      "branch": "hero.gaze.sleeping-eye-control",
+      "segment": 2,
+      "screenIncludes": [
+        "You gaze at no place in particular."
+      ],
+      "screenExcludes": [
+        "You are frozen by",
+        "Your gaze confuses the floating eye!"
+      ]
+    },
+    {
+      "branch": "hero.gaze.medusa-lifesaving",
+      "segment": 3,
+      "screenIncludes": [
+        "Gazing at the awake Medusa is not a very good idea.",
+        "You turn to stone...",
+        "The medallion crumbles to dust!"
+      ],
+      "screenExcludes": [
+        "Die?",
+        "OK, so you don't die."
+      ]
+    },
+    {
+      "branch": "hero.gaze.ordinary-newt-control",
+      "segment": 4,
+      "screenIncludes": [
+        "Your gaze confuses the newt!"
+      ],
+      "screenExcludes": [
+        "You are frozen by",
+        "You turn to stone..."
+      ]
+    }
+  ],
+  "segments": [
+    {
+      "name": "eye-paralysis",
+      "seed": 7341,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Gazer,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_pet,!confirm\n",
+      "moves": " #levelchange\r10\r         #polyself\rumber hulk\r  \u0007peaceful floating eye\r#monster\r  "
+    },
+    {
+      "name": "eye-free-action",
+      "seed": 7341,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Gazer,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_pet,!confirm\n",
+      "moves": " #levelchange\r10\r         \u0017uncursed ring of free action\rPal#polyself\rumber hulk\r  \u0007peaceful floating eye\r#monster\r  "
+    },
+    {
+      "name": "eye-asleep-control",
+      "seed": 7341,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Gazer,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_pet,!confirm\n",
+      "moves": " #levelchange\r10\r         #polyself\rumber hulk\r  \u0007sleeping peaceful floating eye\r#monster\r  "
+    },
+    {
+      "name": "medusa-lifesaving",
+      "seed": 7341,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Gazer,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_pet,!confirm\n",
+      "moves": " #levelchange\r10\r         \u0017uncursed amulet of life saving\rPa#polyself\rumber hulk\r  \u0007tame Medusa\ry#monster\r    "
+    },
+    {
+      "name": "newt-control",
+      "seed": 7341,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Gazer,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_pet,!confirm\n",
+      "moves": " #levelchange\r10\r         #polyself\rumber hulk\r  \u0007peaceful newt\r#monster\r  "
+    }
+  ]
+}

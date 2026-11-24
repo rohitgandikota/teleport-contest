@@ -13,7 +13,7 @@ Ground rules are in `/CLAUDE.md`. Read that first if you have not.
 ## Current focus, 2026-11-24
 
 Continue the faithful port with readable C-aligned code and prompt verified
-pushes. The latest official snapshot checked, November 24 at 11:23 UTC, has
+pushes. The latest official snapshot checked, November 24 at 12:18 UTC, has
 23,595 of 24,531 combined screens, 7th agentic and 11th overall. Our scoring
 run at 07:21 UTC predates the latest checkpoints. Public remains 44/44;
 held-out remains 39/56 with 936 unmatched screens. Local verification does
@@ -29,7 +29,7 @@ checks on 117 fixtures, all 39,942 boundaries and 1,718,440 calls. The complete
 strict 677-fixture audit and all 213 animation-bearing fixtures passed at the
 preceding floor checkpoint. The subsequent monster trap-hit repair passes
 four new native cases, 65 controls and seven focused regressions. The maintained
-corpus is now 787. The following death-owner repair passes 21 direct source
+corpus is now 788. The following death-owner repair passes 21 direct source
 controls, 61 retained controls and seven focused regressions. Temporary corpse
 cleanup for pet nutrition also passes 16 direct controls, 55 retained controls
 and five focused regressions. Guard corridor gold collection passes five new
@@ -85,9 +85,13 @@ intrinsic and consumers, including anti-magic damage and occupied shop-door
 repairs. Guard carving also preserves C's door-versus-corridor branch.
 Seven native cases match all 741 styled boundaries, 35,241 complete calls
 and 16 frames. All 130 controls, 11 focused fixtures, 44 public sessions and
-55 hang checks pass. The latest full regression is the 783-fixture run,
-before these inspection, potion and phasing additions; the maintained corpus
-is 787.
+55 hang checks pass. Hero gaze now compares floating eyes and Medusa with
+the live species table and prepares the existing killer record before death
+handling. Five native cases match all 481 styled boundaries, 14,707 complete
+calls and 19 frames. All 139 controls, ten focused fixtures, 44 public sessions
+and 54 hang checks pass. The latest full regression is the 783-fixture run,
+before these inspection, potion, phasing and gaze additions. A full run of
+the maintained 788-fixture corpus follows this checkpoint.
 Current-corpus parity is not completeness.
 
 Floor objects retain independent global and per-square order. Placement,

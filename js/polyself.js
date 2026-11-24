@@ -1891,6 +1891,7 @@ export async function dosummon() {
 
 // src/polyself.c:1642 dogaze()
 export async function dogaze() {
+    const mons = game.mons;
     const u = game.u;
     let looked = 0;
     let qbuf;
@@ -2004,7 +2005,7 @@ export async function dogaze() {
                     await pline(`Gazing at the awake ${l_monnam(mtmp)} is not a very good idea.`);
                     /* as if gazing at a sleeping anything is fruitful... */
                     await urgent_pline('You turn to stone...');
-                    game.killer.format = KILLED_BY;
+                    (game.killer ||= {}).format = KILLED_BY;
                     game.killer.name = "deliberately meeting Medusa's gaze";
                     await done(STONING);
                 }

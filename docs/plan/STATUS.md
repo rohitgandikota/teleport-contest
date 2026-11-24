@@ -6576,6 +6576,65 @@ corpus is 787. Latest full regression remains 783/783 through combat/display.
 The next checkpoint is live-species counter-gaze, followed by a new full run.
 The last checked official score still predates these commits.
 
+## 2026-11-24: live species identity in hero counter-gaze
+
+`polyself.dogaze` now binds its existing species-table name to `game.mons`.
+Floating eyes and Medusa created by the actual monster producer therefore
+satisfy C's species-pointer comparisons. Before Medusa's death call, the code
+also creates the existing killer record if it is absent, preserving any
+existing fields. C's corresponding struct always exists. These are the only
+two runtime edits. The complete C owner at polyself.c:1642-1773, its command
+caller and selected death/lifesaving closure were reviewed. No predicate,
+RNG expression, await, return or export was rewritten.
+
+The initial binding-only source prototype exposed the fresh-Medusa missing
+killer-record crash; that failure remains in the source audit. The final
+patch includes the necessary record allocation. A pending-death control
+checks that an existing record survives. A separate 279-module inventory
+finds no other direct whole-record equality against an indexed static species
+import outside the identity sites already repaired. That bounded search does
+not certify all field reads or indirect pointer flows.
+
+The five-case native fixture `hero-gaze-counter-effects.session.json` remains
+byte-identical to the C recorder, SHA-256
+`dc0bee64e6a27503b9cd6084218f08c06ec46b495d4b567979e16cadbc7dc4a8`,
+783,657 bytes. After, all 481 styled glyph/color/attribute grids, including
+blanks, all cursors, 14,707 complete recognized calls and input slices, and
+19 animation grids/cursors match. The actual cases cover eye paralysis,
+worn free-action, a sleeping eye, Medusa lifesaving and a newt. The sleeping-eye
+and newt controls preserve all five original JS output hashes. Fatal completion,
+cancellation, status guards and pending-message behavior also have explicitly
+constructed source coverage, not additional native case claims.
+
+Parent main before checks retain 13 failing source controls, three failing
+input controls and the native mismatch. After, all 16 normal commands pass:
+40 new controls including raw provenance, 99 retained identity/damage controls,
+ten fixtures with 39 segments, 3,673 boundaries, 125,189 complete calls and
+77 frames. Deferred gaze/identity input reproduces 702 boundaries, 23,439 calls
+and 19 frames. All 44 public fixtures pass; all 54 hang workers finish within
+30 seconds. Syntax and the zero-finding 276-module source audit pass.
+All 279 runtime and five promoted support hashes remain fixed.
+
+Evidence: `.cache/restart-20261122/dogaze-promotion-parent/`,
+`dogaze-promotion-parent-verification.json`, and the immutable
+`dogaze-species-identity-native-confirmation/` package, seal
+`e3da9298f90081eae1cee0beede420060400553438142e061690ea0bc2d316c4`.
+Earlier strict failures without the independently owned clearScreen repair
+remain in that package. No raw, frozen code, RNG implementation or comparison
+rule was changed. The maintained corpus is now 788; its full regression follows
+this checkpoint. Latest completed full run remains 783/783 through combat/display.
+
+The official leaderboard and news were fetched again at 12:18 UTC, both HTTP
+200 and byte-identical to the previous snapshots. Official score remains
+23,595/24,531, 7th agentic, with the last team run at 07:21 UTC and 936 unmatched
+held-out screens. It does not measure these subsequent commits. Latest NFS
+coverage is independent: 784 credited inputs over 78 identical layouts,
+4,561/5,492 functions and 59,974/107,260 branch outcomes. The next guard-exit
+raw adds six outcomes; it has not yet been promoted to JS regression.
+Remaining work includes Air and other blank-style producers, more inspection
+branches, guard exit ownership, and shared speed-effect completion. These
+remain active source/native investigations, not waived failures.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

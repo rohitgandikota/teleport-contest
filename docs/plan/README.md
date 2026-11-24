@@ -13,18 +13,26 @@ Ground rules are in `/CLAUDE.md`. Read that first if you have not.
 ## Current focus, 2026-11-24
 
 Continue the faithful port with readable C-aligned code and prompt verified
-pushes. The latest official snapshot checked, November 24 at 14:30 UTC, has
+pushes. The latest official snapshot checked, November 24 at 17:39 UTC, has
 23,595 of 24,531 combined screens, 7th agentic and 11th overall. Our scoring
 run at 13:38 UTC predates the latest checkpoints. Public remains 44/44;
 held-out remains 39/56 with 936 unmatched screens. Local verification does
 not establish a newer held-out score.
 
-The latest full regression, through squeaky-board feedback, lawful-minion
-taunts and hero natural damage dispatch, passes 796/796 fixtures: 843,512
-boundary screens/cursors, 17,498,485 scored RNG positions and 32,199 scored
-animation frames.
-Both shards finish without failures or timeouts. All 279 runtime hashes
-stayed fixed throughout, along with all 796 fixture hashes.
+The latest full inventory verification covers 804 fixtures through the redraw
+flags checkpoint: 846,207 screens/cursors, 17,594,047 scored RNG positions and
+32,215 frames. Its original sweep passed 802/804; two workers timed out at the
+unchanged 45-second limit. Both fixtures then passed sequentially on baseline
+and candidate in roughly four and two seconds. The original timeout logs remain
+preserved. This is 804 verified fixtures with explicit retries, not an
+uninterrupted full pass. The preceding full800 sweep passed without retries.
+All 279 runtime hashes, raw inputs and protected files stayed fixed.
+
+Later seduction feedback, monster lists, artifact rejection, Rogue x-ray
+priority and temporary hidden-object cleanup checkpoints have passed focused
+native, regression, public and bounded-input checks and are pushed promptly.
+The maintained corpus is 808; a full808 run remains pending. Native styled
+parity is tracked separately from serialized-byte identity.
 The earlier potion changes also pass strict full-stream and per-input RNG
 checks on 117 fixtures, all 39,942 boundaries and 1,718,440 calls. The complete
 strict 677-fixture audit and all 213 animation-bearing fixtures passed at the

@@ -7598,6 +7598,40 @@ preserving all 92 previous run hashes. Large profiles remain remote under
 verified-cancelled-weapons-union-20261124. That C reach evidence does not certify
 unmerged JS fixes. Commit and immediately push the verified Rogue checkpoint.
 
+## 2026-11-24: hidden-object description cleanup verified
+
+Restore C's temporary-object lifecycle in `mhidden_description`: after copying
+the name, reset only a reconstructed object to `OBJ_FREE` and call the existing
+`dealloc_obj`. Real floor objects and their contents remain owned by the map.
+This removes the old no-cleanup approximation. It is a source-fidelity repair,
+with no claimed output, RNG or retained-memory improvement.
+
+All 25 parent composition checks pass on the pushed Rogue-vision runtime plus
+this pager-only patch. The 14 new lifecycle controls improve from five passes
+to 14; all 117 retained controls pass. Sixteen focused fixtures, 65 segments,
+match 5,603 screens/cursors, 200,319 calls and 165 frames. Public remains 44/44,
+11,405 screens/cursors, 792,838 calls and 1,483 frames; all 60 bounded input
+workers pass. Four deferred fixtures preserve all five output collections over
+917 boundaries, 48,507 calls and 48 frames. Source audit remains zero findings.
+
+Eight selected native fixtures match every styled cell, cursor, complete RNG
+stream, input slice and frame collection: 35 segments, 3,764 boundaries,
+104,203 calls and 80 frames. The reused four-case sensing fixture is exact
+before and after, 284 boundaries and 15,565 calls. Cases 0 and 2 preserve all
+five original output hashes. The sealed ordinary observation separately proves
+that creation feedback constructs a temporary egg, queues its deletion, and
+lets the real next command loop clear it. No raw fixture was edited or added.
+All 279 runtime hashes and the new support file stay fixed through checks;
+scoped reversal recovers the predecessor. The maintained corpus remains 808.
+No full808 sweep has run. Receipts: `pager-mhidden-parent-composition-*`,
+`pager-mhidden-cleanup-reuse-confirmation-*` and
+`pager-mhidden-main-integration.json` under `.cache/restart-20261122/`.
+
+The official table and news fetched again at 17:39 UTC are byte-identical to
+17:05: 23,595/24,531 screens, 7th agentic and 11th overall. The published score
+still comes from 13:38 UTC, before these checkpoints. Rogue checkpoint
+`2d6fb82f` is confirmed equal to `origin/main`; no commits were held back.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

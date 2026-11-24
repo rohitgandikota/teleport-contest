@@ -47,7 +47,7 @@ import { COLNO, ROWNO, BOLT_LIM, STONE, SCORR, SDOOR, GRAVE, CORR,
          POOL, MOAT, WATER, LAVAPOOL, LAVAWALL, ICE,
          MENU_ITEMFLAGS_NONE, MENU_BEHAVE_STANDARD, ECMD_OK,
          TER_DETECT, TER_MAP, TER_MON, M_AP_TYPE, M_AP_FURNITURE,
-         M_AP_OBJECT, M_AP_FLAG, M_AP_F_DKNOWN, OBJ_FLOOR,
+         M_AP_OBJECT, M_AP_FLAG, M_AP_F_DKNOWN, OBJ_FREE, OBJ_FLOOR,
          AM_MASK, AM_SANCTUM, Amask2align, Is_astralevel,
          A_LAWFUL, A_NEUTRAL, A_CHAOTIC, STRAT_WAITMASK,
          WARNCOUNT, def_warnsyms, I_SPECIAL,
@@ -71,7 +71,7 @@ import { x_monnam, mon_nam, rndmonnam, upstart, pmname, hliquid, coyotename, dis
 import { ARTICLE_NONE, MAXTCHARS } from './const.js';
 import { an, the, makesingular, makeplural, singular, xname, distant_name,
          doname_vague_quan, simpleonames, OBJ_NAME } from './objnam.js';
-import { mkobj, mksobj } from './mkobj.js';
+import { mkobj, mksobj, dealloc_obj } from './mkobj.js';
 import { observe_object } from './o_init.js';
 import { Blind, Hallucination, Invisible, Infravision, Unblind_telepat,
          Detect_monsters } from './youprop.js';
@@ -495,7 +495,10 @@ export function mhidden_description(mon, mhid_flags) {
         if (incl_article && (!otmp || otmp.quan === 1))
             what = an(what);
         outbuf += what;
-        /* dealloc_obj(otmp) for a fake object: nothing to free here */
+        if (fakeobj && otmp) {
+            otmp.where = OBJ_FREE; /* object_from_map set to OBJ_FLOOR */
+            dealloc_obj(otmp); /* has no contents */
+        }
     };
 
     if (M_AP_TYPE(mon) === M_AP_FURNITURE

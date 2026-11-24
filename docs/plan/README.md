@@ -153,6 +153,9 @@ nine focused fixtures and all 44 public fixtures pass.
 Shop alarms now respect deafness and alert the watch before creating Kops.
 Four native cases, 78 normal controls, twenty preserved private source controls,
 ten focused fixtures and all 44 public fixtures pass.
+Dead-Croesus guard responses now complete anger and weapon preparation before
+the next turn. Four native cases, 268 related controls, nine focused fixtures
+and all 44 public fixtures pass.
 The Linux/NFS branch collector is pushed
 and passes signal canaries plus exact save/restore, artifact and natural-exit
 pilots. The Linux census at e4504071 now covers all 678 original inputs:
@@ -162,8 +165,8 @@ native segments in total, gives a validated union entering 4,537/5,492
 functions and observing 59,446/107,260 direct C branch outcomes.
 All 754 credited input hashes, fifty-seven build manifests and branch layouts
 were checked before merging. This C coverage census includes the integrated
-guard and shop recordings plus queued glob, dead-Croesus and floor-concealment
-recordings. Those three JS integrations remain pending. Original platform/output rejections
+guard and shop recordings plus queued glob and floor-concealment recordings.
+Those two JS integrations remain pending. Original platform/output rejections
 remain rejected; no output was normalized. The two new sink fixtures separately
 match Linux C exactly; their validated union covers all 94/94 direct dosinkring
 outcomes in 49 cases. The teleport and polymorph helpers still have measured

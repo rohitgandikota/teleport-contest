@@ -5065,6 +5065,53 @@ Evidence is `.cache/restart-20261122/shop-alarm-response-audit/`,
 `shop-alarm-parent-native-v2-receipt.json` and `shop-alarm-promoted-*`.
 Normal gates use no loader. Raw bytes and all five input fields are preserved.
 
+## 2026-11-24: dead-Croesus guards finish anger and weapon preparation
+
+Shop-alarm checkpoint `a19da904` is committed and pushed. The dead-Croesus
+branch now awaits canonical `setmangry(guard, false)` before its response.
+If the guard has no weapon, it requests and completes melee weapon selection
+before returning. Existing weapons remain untouched. This follows the full
+C branch without changing guard departure, dialogue or helper implementations.
+
+Four unchanged C cases cover hearing, deafness, deafness with blindness and
+a doppelganger appearing as Croesus. All 591 styled grids/cursors, 23,843
+complete calls and per-input slices match, with zero animation frames.
+The baseline already matches the complete call stream but resumes too early
+at the hearing and deaf message boundaries. The blind case misses the anger
+message. The native vanquished ledger identifies Croesus in true-death cases
+and a doppelganger in the negative despite identical kill messages. The
+negative's complete output remains unchanged. Raw SHA-256:
+`3af6cdad42040a889919296776e961f44a7557859a2c3412dc583b419a951738`.
+
+All 25 integrated checks pass: 36 new and 232 retained controls, nine focused
+fixtures with 44 segments, 5,153 boundaries, 235,711 complete RNG calls and
+136 animation grids/cursors. Deferred input agrees across four fixtures,
+29 segments, 3,943 boundaries, 177,414 calls and thirteen frames. All 44
+public fixtures remain exact at 11,405 boundaries, 792,838 scored RNG
+positions and 1,483 frames. All 53 hang workers pass at 30 seconds. Syntax
+passes, the source audit has zero findings across 276 modules, and all 279
+runtime hashes remain fixed. The inventory now has 758 fixtures; the latest
+full regression remains `e6353a0b` at 756/756, before the two guard/alarm fixes.
+
+The pre-promotion hash check caught a manual hunk matching an unrelated
+guard-departure assignment. That line was restored and the exact Croesus
+branch changed before any test or commit. The resulting complete module
+matches the reviewed candidate hash. No raw fixture was changed.
+
+Independent Linux replay is exact and adds ten direct outcomes, reaching
+753 inputs and 59,442 outcomes at this recording. The later floor-removal
+recording brings the validated union to 754 inputs, fifty-seven layouts,
+4,537/5,492 functions and 59,446/107,260 outcomes. Bulk artifacts remain on
+NFS. Blind native output cannot expose the weapon pointer; C source and JS
+state/input controls establish it. Later attacks, lifesaving and guard-death
+throttling remain separate work.
+
+Evidence is `.cache/restart-20261122/invault-dead-croesus-native-confirmation/`,
+`vault-dead-croesus-parent-{source-review,integration,verification}.json`
+and `vault-dead-croesus-promoted-*`. The normal gates need no loader or
+production test export. Rendered-grid acceptance keeps the frozen decoder
+contract; serialized terminal bytes are not claimed identical.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

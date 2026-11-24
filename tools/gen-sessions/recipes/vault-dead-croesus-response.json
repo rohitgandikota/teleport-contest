@@ -1,0 +1,110 @@
+{
+  "name": "vault-dead-croesus-response",
+  "description": "Four unchanged native C cases confirm dead-Croesus anger and weapon preparation, with a doppelganger death negative control.",
+  "coverage": [
+    "mode.debug",
+    "social.vault-guard",
+    "monster.death-corpse-revival",
+    "survival.timed-status"
+  ],
+  "branches": [
+    "vault.invault-dead-croesus-hearing",
+    "vault.invault-dead-croesus-deaf",
+    "vault.invault-dead-croesus-deaf-blind",
+    "vault.invault-dead-croesus-doppel-negative"
+  ],
+  "requireBranchAssertions": true,
+  "segments": [
+    {
+      "seed": 7303,
+      "datetime": "20000115090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00162\r\u0006\u0017500 gold pieces\r\u0014kkkkkkkkkkkkkhhhhh. \u0007Croesus\ry \u001b#wizkill\rm.\u001b  \u001b#vanquished\r \u001b................................... Croesus\r    \u001b\u001b",
+      "name": "invault-dead-croesus-hearing"
+    },
+    {
+      "seed": 7303,
+      "datetime": "20000115090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00162\r\u0006\u0017500 gold pieces\r\u0014kkkkkkkkkkkkkhhhhh. \u0007Croesus\ry \u001b#wizkill\rm.\u001b  \u001b#vanquished\r \u001b#wizintrinsic\r100j\r  \u001b\u001b................................... Kroisos\r    \u001b\u001b",
+      "name": "invault-dead-croesus-deaf"
+    },
+    {
+      "seed": 7303,
+      "datetime": "20000115090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00162\r\u0006\u0017500 gold pieces\r\u0014kkkkkkkkkkkkkhhhhh. \u0007Croesus\ry \u001b#wizkill\rm.\u001b  \u001b#vanquished\r \u001b#wizintrinsic\r100i100j\r  \u001b\u001b................................... Creosote\r    \u001b\u001b",
+      "name": "invault-dead-croesus-deaf-blind"
+    },
+    {
+      "seed": 7303,
+      "datetime": "20000115090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00162\r\u0006\u0017500 gold pieces\r\u0014kkkkkkkkkkkkkhhhhh. \u0007Croesus\rn \u001b#wizkill\rm.\u001b  \u001b#vanquished\r \u001b................................... Croesus\r    \u001b\u001b",
+      "name": "invault-dead-croesus-doppel-negative"
+    }
+  ],
+  "branchAssertions": [
+    {
+      "branch": "vault.invault-dead-croesus-hearing",
+      "segment": 0,
+      "screenIncludes": [
+        "Creating doppelganger instead; force Croesus?",
+        "You kill Croesus!",
+        "The guard gets angry!",
+        "Back from the dead, are you?",
+        "The guard wields a dagger!"
+      ],
+      "screenExcludes": [
+        "Sorry to have disturbed you."
+      ]
+    },
+    {
+      "branch": "vault.invault-dead-croesus-deaf",
+      "segment": 1,
+      "screenIncludes": [
+        "You kill Croesus!",
+        "You are unable to hear anything.",
+        "The guard gets angry!",
+        "The guard mouths something and looks very angry!",
+        "The guard wields a knife!",
+        "The knife welds itself"
+      ],
+      "screenExcludes": [
+        "Back from the dead, are you?",
+        "Sorry to have disturbed you."
+      ]
+    },
+    {
+      "branch": "vault.invault-dead-croesus-deaf-blind",
+      "segment": 2,
+      "screenIncludes": [
+        "You kill Croesus!",
+        "You are unable to hear anything.",
+        "Someone else has entered the Vault.",
+        "It gets angry!"
+      ],
+      "screenExcludes": [
+        "mouths something",
+        "Back from the dead, are you?",
+        "The guard wields",
+        "Sorry to have disturbed you."
+      ]
+    },
+    {
+      "branch": "vault.invault-dead-croesus-doppel-negative",
+      "segment": 3,
+      "screenIncludes": [
+        "Creating doppelganger instead; force Croesus?",
+        "You kill Croesus!",
+        "doppelganger",
+        "Sorry to have disturbed you."
+      ],
+      "screenExcludes": [
+        "gets angry!",
+        "Back from the dead, are you?",
+        "The guard wields"
+      ]
+    }
+  ]
+}

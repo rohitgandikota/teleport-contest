@@ -23,7 +23,9 @@ import { rn2 } from './rng.js';
 import { distmin, isok } from './hacklib.js';
 import { is_fainted, reset_faint } from './eat.js';
 import { ONAMES } from './objects_data.js';
-import { m_carrying, mnexto, mongone } from './mon.js';
+import { m_carrying, mnexto, mongone, setmangry } from './mon.js';
+import { MON_WEP } from './monst.js';
+import { mon_wield_item } from './weapon.js';
 import { del_engr, engr_at } from './engrave.js';
 import { place_object } from './mkobj.js';
 import { You, You_hear, Your, pline_The, verbalize } from './pline.js';
@@ -36,6 +38,7 @@ import {
     ROOM, STONE, CORR, SCORR, HWALL, VWALL, DOOR, D_NODOOR, IS_WALL,
     IS_STWALL, IS_POOL, IS_ROOM, ACCESSIBLE, ARTICLE_A, BLCORNER,
     BRCORNER, RLOC_MSG, TLCORNER, TRCORNER, M_AP_TYPE, M_AP_OBJECT,
+    NEED_HTH_WEAPON,
 } from './const.js';
 import { relobj } from './steal.js';
 import { m_into_limbo } from './mon.js';
@@ -793,12 +796,17 @@ export async function invault() {
             }
             await mongone(guard);
         } else {
-            guard.mpeaceful = 0;
+            await setmangry(guard, false);
             if (Deaf()) {
                 if (!Blind())
                     await pline(`${noit_Monnam(guard)} mouths something and looks very angry!`);
             } else {
                 await verbalize('Back from the dead, are you?  I\'ll remedy that!');
+            }
+            /* don't want guard to waste next turn wielding a weapon */
+            if (!MON_WEP(guard)) {
+                guard.weapon_check = NEED_HTH_WEAPON;
+                await mon_wield_item(guard);
             }
         }
         return;

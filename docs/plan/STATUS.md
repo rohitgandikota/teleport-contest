@@ -5161,6 +5161,65 @@ still publishes the 02:35 UTC snapshot and our 01:48 UTC score. Rank remains
 seventh agentic, eleventh overall, with 936 unmatched screens. It does not
 evaluate these latest pushes.
 
+## 2026-11-24: glob decay follows deadlines, ownership and naming
+
+Floor-removal checkpoint `a5fdc878` is committed and pushed. `shrink_glob`
+now accepts its original timer deadline, applies C's overdue-weight calculation
+before normal decay, and completes disposal through the existing owner helpers.
+The private `shrinking_glob_gone` preserves C's worn-item, occupation, inventory,
+migration, monster weapon and floor concealment cleanup. Contained extraction
+uses the existing recursive `container_weight`. Temporary partly-eaten naming
+follows the fruit exception in `xname_flags`, and a visible distant floor glob
+uses C's article after cleanup. Only three runtime modules change.
+
+Five unchanged native cases cover wielded disposal, a distant floor glob,
+partly eaten naming, overdue decay on level return and hiding cover. All 421
+styled boundary grids/cursors and slices, 23,573 complete RNG calls, and 383
+animation grids/cursors/counts match. Before the fix, 387 grids and 419 cursors
+match, with 204 extra calls and twelve extra frames. Wielded disposal first
+misses the occupation stop at boundary 76. Overdue decay first makes an extra
+restart draw at boundary 50; C later shows no timer. Concealment is witnessed
+at boundary 111 while the hero is still a snake, before the later hide command.
+Raw SHA-256:
+`250638639cebb8eda3a73e6ccd66561b71a27c74c6942b554fd11019f2f64501`.
+
+All seventeen integrated checks pass. The 61 new controls comprise 42 state,
+fourteen source-contract and five actual-input checks; 133 retained controls
+also pass. Ten focused fixtures match 36 segments, 3,452 boundaries, 117,783
+complete calls and 1,164 animation grids/cursors. Deferred input matches three
+fixtures, twelve segments, 1,268 boundaries, 49,404 calls and 816 frames.
+All 44 public fixtures remain exact at 11,405 boundaries, 792,838 scored
+RNG positions and 1,483 frames. All 54 hang workers pass at 30 seconds.
+All touched modules pass syntax; the source audit has zero findings across
+276 non-frozen modules.
+
+The complete regression passes 760/760 fixtures, all 830,300 boundary
+screens/cursors, 16,930,990 scored RNG positions and 31,349 scored animation
+frames. Both shards finish without failures or timeouts under default
+45-second workers. All 279 runtime hashes remain fixed. This full run also
+covers the preceding alarm, dead-Croesus and floor-removal checkpoints together.
+It is the frozen scorer result; the focused strict stream/slice/frame-count
+checks above have their separately stated scope.
+
+Independent Linux replay of the glob recording is byte-exact and adds 22
+direct outcomes at its earlier 751-input union. Later guard-death and boulder
+recordings bring the validated union to 756 inputs, fifty-nine layouts,
+4,539/5,492 functions and 59,486/107,260 outcomes. Its 76 added raw inputs
+contain 279 segments, plus nine independent Linux segments. Bulk artifacts
+remain on NFS. Their two JS integrations remain pending.
+
+Malformed-glob diagnostics, absorbed-object deallocation, original-weight
+billing and queued-command clearing remain separate. The billing producer
+control fails before and after this patch and is not credited as fixed.
+Defensive monster-wielded-glob states have constructed coverage only. No new
+export, alternate timer owner, oracle normalization or test-only runtime path
+was added.
+
+Evidence is `.cache/restart-20261122/glob-shrink-native-confirmation/`,
+`glob-shrink-parent-{source-review,integration,verification}.json`,
+`glob-shrink-promoted-*` and `glob-shrink-corpus-*`. The two ordered patches
+and all five promoted artifacts retain their sealed hashes.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

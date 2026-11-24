@@ -19,8 +19,8 @@ run at 01:48 UTC predates the latest checkpoint. Public remains 44/44;
 held-out remains 39/56 with 936 unmatched screens. Local verification does
 not establish a newer held-out score.
 
-The latest full regression at `e6353a0b` passes 756/756 fixtures: 828,452 boundary
-screens/cursors, 16,842,198 scored RNG positions and 30,966 animation frames.
+The latest full regression passes 760/760 fixtures: 830,300 boundary
+screens/cursors, 16,930,990 scored RNG positions and 31,349 scored animation frames.
 Both shards finish without failures or timeouts. All 279 runtime hashes
 stayed fixed throughout.
 The earlier potion changes also pass strict full-stream and per-input RNG
@@ -159,16 +159,19 @@ and all 44 public fixtures pass.
 Floor deletion now rechecks concealment after extraction and before redraw.
 Three native cases, 95 related controls, nine focused fixtures and all 44
 public fixtures pass. Two false deletion comments now describe C's behavior.
+Glob decay now catches up after level absence, completes owner cleanup and
+preserves C's naming order. Five native cases, 194 related controls, ten
+focused fixtures and the full 760-fixture regression pass.
 The Linux/NFS branch collector is pushed
 and passes signal canaries plus exact save/restore, artifact and natural-exit
 pilots. The Linux census at e4504071 now covers all 678 original inputs:
 603 canonical matches and 75 independently recorded ordinary Linux controls.
-Adding 75 newer raw inputs and two independent Linux controls, 284
+Adding 76 newer raw inputs and two independent Linux controls, 288
 native segments in total, gives a validated union entering 4,539/5,492
-functions and observing 59,481/107,260 direct C branch outcomes.
-All 755 credited input hashes, fifty-eight build manifests and branch layouts
+functions and observing 59,486/107,260 direct C branch outcomes.
+All 756 credited input hashes, fifty-nine build manifests and branch layouts
 were checked before merging. This C coverage census includes the integrated
-guard, shop and floor-concealment recordings plus queued glob and boulder recordings.
+guard, shop, floor and glob recordings plus queued boulder and guard-death recordings.
 Those two JS integrations remain pending. Original platform/output rejections
 remain rejected; no output was normalized. The two new sink fixtures separately
 match Linux C exactly; their validated union covers all 94/94 direct dosinkring

@@ -1,0 +1,106 @@
+{
+    "name": "glob-shrink-ownership",
+    "description": "Native-verified ordinary input for C glob expiry, partly-eaten feedback, dormant catch-up and concealment ownership. The input gate checks the concealment glyph at the first fade boundary.",
+    "coverage": [
+        "mode.debug",
+        "object.food-corpses",
+        "turn.timers",
+        "forms.polymorph",
+        "ui.count-repeat",
+        "ui.getlin",
+        "ui.menus"
+    ],
+    "branches": [
+        "glob-shrink.wielded-glob-disposal",
+        "glob-shrink.distant-floor-glob-fade",
+        "glob-shrink.partly-eaten-glob-name",
+        "glob-shrink.dormant-floor-glob-catchup",
+        "glob-shrink.hero-glob-concealment"
+    ],
+    "requireBranchAssertions": true,
+    "segments": [
+        {
+            "name": "wielded-glob-disposal",
+            "seed": 9211,
+            "datetime": "20000110090000",
+            "nethackrc": "OPTIONS=name:Glob,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,time\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+            "moves": "mO aqr\r\u001b\u001b\u0017blessed scroll of genocide\rra  *\r\u001b\u001b\u0017glob of gray ooze\rwb300.\u001b\u001b300.\u001b\u001b300.\u001b\u001bw-i\u001b\u001b",
+            "steps": []
+        },
+        {
+            "name": "distant-floor-glob-fade",
+            "seed": 9211,
+            "datetime": "20000110090000",
+            "nethackrc": "OPTIONS=name:Glob,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,time\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+            "moves": "mO aqr\r\u001b\u001b\u0017blessed scroll of genocide\rra  *\r\u001b\u001b\u0017glob of gray ooze\rdbh300.\u001b\u001b300.\u001b\u001b300.\u001b\u001b:\u001b\u001b",
+            "steps": []
+        },
+        {
+            "name": "partly-eaten-glob-name",
+            "seed": 9211,
+            "datetime": "20000110090000",
+            "nethackrc": "OPTIONS=name:Glob,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,time\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+            "moves": "mO aqr\r\u001b\u001b\u0017partly eaten glob of gray ooze\r50.\u001b\u001bi\u001b\u001b",
+            "steps": []
+        },
+        {
+            "name": "dormant-floor-glob-catchup",
+            "seed": 9211,
+            "datetime": "20000110090000",
+            "nethackrc": "OPTIONS=name:Glob,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,time\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+            "moves": "mO aqr\r\u001b\u001b\u0017glob of gray ooze\rda\u00162\r\u001b\u001b300.\u001b\u001b300.\u001b\u001b\u00161\r\u001b\u001b#timeout\r\u001b\u001b",
+            "steps": []
+        },
+        {
+            "name": "hero-glob-concealment",
+            "seed": 9211,
+            "datetime": "20000110090000",
+            "nethackrc": "OPTIONS=name:Glob,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,time\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+            "moves": "mO aqr\r\u001b\u001b\u0017blessed scroll of genocide\rra  *\r\u001b\u001b\u0017glob of gray ooze\rdb#polyself\rgarter snake\r\u001b\u001b#monster\r\u001b\u001b300.\u001b\u001b50.\u001b\u001b#monster\r\u001b\u001b:\u001b\u001b",
+            "steps": []
+        }
+    ],
+    "branchAssertions": [
+        {
+            "branch": "glob-shrink.wielded-glob-disposal",
+            "segment": 0,
+            "screenIncludes": [
+                "Your small glob of gray ooze dissolves completely.",
+                "You are already bare handed."
+            ]
+        },
+        {
+            "branch": "glob-shrink.distant-floor-glob-fade",
+            "segment": 1,
+            "screenIncludes": [
+                "A small glob of gray ooze fades away."
+            ]
+        },
+        {
+            "branch": "glob-shrink.partly-eaten-glob-name",
+            "segment": 2,
+            "screenIncludes": [
+                "Your partly eaten small glob of gray ooze shrinks."
+            ]
+        },
+        {
+            "branch": "glob-shrink.dormant-floor-glob-catchup",
+            "segment": 3,
+            "screenIncludes": [
+                "You materialize on a different level!"
+            ],
+            "screenExcludes": [
+                "shrink_glob"
+            ]
+        },
+        {
+            "branch": "glob-shrink.hero-glob-concealment",
+            "segment": 4,
+            "screenIncludes": [
+                "You are now hiding underneath a glob of gray ooze.",
+                "The small glob of gray ooze fades away.",
+                "There is nothing to hide under here."
+            ]
+        }
+    ]
+}

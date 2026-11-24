@@ -1,0 +1,148 @@
+{
+    "name": "doeat-artifact-contact",
+    "description": "Independent local Mac C recording confirms ordinary floor and carried artifact contact before eating. A neutral Wizard in xorn form refuses the floor Master Key. A lawful Archeologist accepts the inactive Tsurugi, wears a helm of opposite alignment, becomes a xorn, then refuses the carried sword. Both artifacts remain visible after refusal. Declined selection, ordinary apple and nonedible key controls also match. Accepted nonfood handling remains separate; no private C ownership state is claimed.",
+    "coverage": [
+        "mode.debug",
+        "ui.getlin",
+        "forms.polymorph",
+        "object.artifacts",
+        "object.food-corpses"
+    ],
+    "branches": [
+        "doeat-artifact-contact.floor-refusal",
+        "doeat-artifact-contact.carried-refusal",
+        "doeat-artifact-contact.declined-floor",
+        "doeat-artifact-contact.ordinary-food",
+        "doeat-artifact-contact.nonedible-selection"
+    ],
+    "requireBranchAssertions": true,
+    "branchAssertions": [
+        {
+            "branch": "doeat-artifact-contact.floor-refusal",
+            "segment": 0,
+            "screenIncludes": [
+                "There is a key named the Master Key of Thievery here; eat it?",
+                "The key named the Master Key of Thievery evades your grasp!",
+                "You see here a key named the Master Key of Thievery."
+            ],
+            "screenExcludes": [
+                "This key named the Master Key of Thievery is delicious!"
+            ],
+            "screenCells": [
+                {
+                    "step": 128,
+                    "x": 0,
+                    "y": 0,
+                    "equals": "Y"
+                },
+                {
+                    "step": 129,
+                    "x": 2,
+                    "y": 0,
+                    "equals": "e"
+                }
+            ]
+        },
+        {
+            "branch": "doeat-artifact-contact.carried-refusal",
+            "segment": 1,
+            "screenIncludes": [
+                "Your mind oscillates briefly.",
+                "You turn into a xorn!",
+                "The long samurai sword named the Tsurugi of Muramasa is beyond your control!",
+                "a - a long samurai sword named the Tsurugi of Muramasa"
+            ],
+            "screenExcludes": [
+                "This long samurai sword named the Tsurugi of Muramasa is delicious!"
+            ],
+            "screenCells": [
+                {
+                    "step": 234,
+                    "x": 0,
+                    "y": 0,
+                    "equals": "Y"
+                },
+                {
+                    "step": 235,
+                    "x": 2,
+                    "y": 0,
+                    "equals": "e"
+                }
+            ]
+        },
+        {
+            "branch": "doeat-artifact-contact.declined-floor",
+            "segment": 2,
+            "screenIncludes": [
+                "There is a key named the Master Key of Thievery here; eat it?",
+                "You see here a key named the Master Key of Thievery."
+            ],
+            "screenExcludes": [
+                "This key named the Master Key of Thievery is delicious!"
+            ]
+        },
+        {
+            "branch": "doeat-artifact-contact.ordinary-food",
+            "segment": 3,
+            "screenIncludes": [
+                "Delicious!",
+                "Not carrying anything."
+            ],
+            "screenExcludes": [
+                "blasted by",
+                "beyond your control",
+                "evades your grasp"
+            ]
+        },
+        {
+            "branch": "doeat-artifact-contact.nonedible-selection",
+            "segment": 4,
+            "screenIncludes": [
+                "You cannot eat that!"
+            ],
+            "screenExcludes": [
+                "Delicious!",
+                "blasted by",
+                "beyond your control",
+                "evades your grasp"
+            ]
+        }
+    ],
+    "segments": [
+        {
+            "name": "floor-master-key-refusal",
+            "seed": 99812,
+            "datetime": "20000110090000",
+            "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+            "moves": " #levelchange\r30\r                             \u0017uncursed The Master Key of Thievery\r        \u001b\u001b\u001b\u001b\u001b\u001b#polyself\rxorn\r        \u001b\u001b\u001b\u001b\u001b\u001bey        \u001b\u001b\u001b\u001b\u001b\u001b:        \u001b\u001b\u001b\u001b\u001b\u001b"
+        },
+        {
+            "name": "carried-tsurugi-refusal",
+            "seed": 99812,
+            "datetime": "20000110090000",
+            "nethackrc": "OPTIONS=name:Desired,role:Archeologist,race:human,gender:male,align:lawful,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+            "moves": " #levelchange\r30\r                                   \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed The Tsurugi of Muramasa\r        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed helm of opposite alignment\r        \u001b\u001b\u001b\u001b\u001b\u001bWb        \u001b\u001b\u001b\u001b\u001b\u001b.        \u001b\u001b\u001b\u001b\u001b\u001b#polyself\rxorn\r        \u001b\u001b\u001b\u001b\u001b\u001bi        \u001b\u001b\u001b\u001b\u001b\u001bea        \u001b\u001b\u001b\u001b\u001b\u001bi        \u001b\u001b\u001b\u001b\u001b\u001b"
+        },
+        {
+            "name": "floor-selection-declined",
+            "seed": 99812,
+            "datetime": "20000110090000",
+            "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+            "moves": " #levelchange\r30\r                             \u0017uncursed The Master Key of Thievery\r        \u001b\u001b\u001b\u001b\u001b\u001b#polyself\rxorn\r        \u001b\u001b\u001b\u001b\u001b\u001beq        \u001b\u001b\u001b\u001b\u001b\u001b:        \u001b\u001b\u001b\u001b\u001b\u001b"
+        },
+        {
+            "name": "ordinary-apple",
+            "seed": 99812,
+            "datetime": "20000110090000",
+            "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+            "moves": " \u0017uncursed apple\r        \u001b\u001b\u001b\u001b\u001b\u001bea        \u001b\u001b\u001b\u001b\u001b\u001bi        \u001b\u001b\u001b\u001b\u001b\u001b"
+        },
+        {
+            "name": "nonedible-key",
+            "seed": 99812,
+            "datetime": "20000110090000",
+            "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+            "moves": " \u0017uncursed apple\r        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed skeleton key\r        \u001b\u001b\u001b\u001b\u001b\u001beb        \u001b\u001b\u001b\u001b\u001b\u001bi        \u001b\u001b\u001b\u001b\u001b\u001b"
+        }
+    ]
+}

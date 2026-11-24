@@ -7674,6 +7674,90 @@ artifact-eating source package is sealed; its independent native recording
 preserves all five input fields and keys across five cases and 743 boundaries.
 Native confirmation and current-runtime composition remain pending.
 
+## 2026-11-24: uninterrupted full809 regression passes
+
+The full maintained 809-fixture inventory passes on the exact runtime pushed
+as `0eb3d090`, including the five newer native fixtures and temporary-object
+cleanup. Both fixed-runtime shards close with exit zero. Every returned row
+passes all scored metrics: 849,309 screens/cursors, 17,652,413 RNG positions
+and 32,279 animation frames. There are no failures, timeouts or retries.
+All 279 runtime hashes, all 809 raw fixture hashes and 72 protected files stay
+fixed. The prior804 raw hashes also remain unchanged. This supersedes the
+prior 804 verification that required explicit paired timeout retries, whose
+original logs and corrected receipt remain preserved.
+
+The runtime is the isolated `cancelled-weapon-parent-composition/candidate`.
+The full check's manifests, original shard logs, process exits and independent
+`verification.json` are in `.cache/restart-20261122/cancelled-weapon-full809/`.
+Scored equality still does not establish exact blank styling, literal terminal
+serialization, full source completeness, or a newer held-out score.
+
+The new artifact-eating native candidate matches all 743 styled boundaries and
+13,605 complete calls, with all frame arrays empty. Its sealed final package
+and parent composition are still pending. Its Mac native fixture remains
+rejected for Linux coverage: the ordinary-apple negative has the documented
+Macintosh versus Unix joke at boundary 33. The other four cases are identical.
+An independent ordinary Linux C recorder exactly matches the rejected
+instrumented Linux result, and a fresh instrumented replay matches that
+separate control. The new union credits 804 inputs across 94 fixed layouts,
+4,565/5,492 functions and 60,147/107,260 outcomes, adding 12 outcomes and no
+functions. All 93 prior run hashes are unchanged. No Mac fixture is replaced,
+normalized or credited through that Linux control. Compact receipts are
+`linux-coverage-doeat-contact-linux-*`; profiles and ordinary Linux raw outputs
+remain on NFS.
+
+Hidden monster status now has an independently recorded four-case proposal,
+303 boundaries, with all input fields and keys preserved. The parent read the
+full C and JS status owners and verified the sealed 352-member source package.
+Native confirmation and current-main composition remain pending. The x-ray
+pre-swap redraw audit has a real keyboard positive and three negatives, but
+its final source gates and native recording remain pending. A separate full
+source-owner review identifies the missing accepted non-food meal path and
+its companion helpers; no runtime repair or native claim is made for it yet.
+Continue all three scoped efforts and push each checkpoint after verification.
+
+## 2026-11-24: eating contact guard verified
+
+`doeat` now follows C's carried/floor contact guard after edibility and worn
+item rejection, before meal resumption or consumption. It awaits the existing
+`retouch_object` or `touch_artifact`, then returns `ECMD_TIME` on refusal.
+There is no new helper, pointer wrapper, artifact-only shortcut or food mutation
+before contact completes. The existing carried-object interface is sufficient:
+C's pointer-clearing paths all return false, so this owner returns immediately.
+
+Five native cases cover floor Master Key and carried Tsurugi refusal, declined
+floor selection, an ordinary apple and a nonedible key. The carried positive
+uses actual initial acceptance, helm alignment change and xorn polymorph.
+All 743 styled screens, cursors, slices, 13,605 complete RNG calls and empty
+frame collections now match. Before: 683 styled screens, 739 cursors/slices
+and 13,602 actual calls. The three negatives preserve all five original hashes.
+The new state tests include a real suspended More boundary, checking that
+ownership, nutrition and food conduct stay unchanged until contact completes.
+
+All 30 parent composition checks pass, including 125 source/state/input controls.
+Nineteen focused fixtures, 97 segments, match 21,221 screens/cursors, 283,574
+calls and 241 frames. Public remains 44/44, 11,405 screens/cursors, 792,838 calls
+and 1,483 frames. All 63 bounded input workers pass. Nine strict native fixtures
+match every styled cell, cursor, complete call, slice and frame collection:
+43 segments, 4,727 boundaries, 114,415 calls and 64 frames. Six deferred fixtures
+preserve all five output collections over 6,546 boundaries, 73,294 calls and
+one frame. Source audit remains empty. All 279 runtime hashes and six promotion
+files stay fixed; scoped reversal recovers the full809 predecessor. Those six
+files also match the final independently verified native seal, 764 files and
+six links. The recipe's only metadata change is its now-confirmed description;
+all input fields, branches, tags and assertions remain unchanged.
+
+The maintained corpus is 810. Full809 passed uninterrupted on the preceding
+checkpoint; this new fixture and patch have focused composition evidence,
+not a full810 sweep. Accepted non-food meals and other `doeat` omissions are
+separate ongoing source work. The Mac/Linux apple distinction and separately
+credited Linux control remain documented above; no oracle was normalized.
+Evidence: `doeat-contact-parent-composition-verification.json`,
+`doeat-contact-main-integration.json` and the sealed
+`doeat-artifact-contact-native-confirmation/` package under
+`.cache/restart-20261122/`. Continue hidden status, pre-swap x-ray redraw,
+polymorphed weapon selection and accepted non-food work with prompt pushes.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

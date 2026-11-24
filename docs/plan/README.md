@@ -19,21 +19,22 @@ run at 13:38 UTC predates the latest checkpoints. Public remains 44/44;
 held-out remains 39/56 with 936 unmatched screens. Local verification does
 not establish a newer held-out score.
 
-The latest full inventory verification covers 804 fixtures through the redraw
-flags checkpoint: 846,207 screens/cursors, 17,594,047 scored RNG positions and
-32,215 frames. Its original sweep passed 802/804; two workers timed out at the
-unchanged 45-second limit. Both fixtures then passed sequentially on baseline
-and candidate in roughly four and two seconds. The original timeout logs remain
-preserved. This is 804 verified fixtures with explicit retries, not an
-uninterrupted full pass. The preceding full800 sweep passed without retries.
-All 279 runtime hashes, raw inputs and protected files stayed fixed.
+The latest full regression passes all 809 fixtures on pushed checkpoint
+`0eb3d090`: 849,309 screens/cursors, 17,652,413 scored RNG positions and
+32,279 frames. Both fixed-runtime shards pass without retries or timeouts.
+All 279 runtime hashes, all 809 raw inputs and 72 protected files remain fixed.
+The earlier 804 run required two explicit timeout retries; those original
+failures and paired replay evidence remain preserved.
 
-Later seduction feedback, monster lists, artifact rejection, Rogue x-ray
-priority, temporary hidden-object cleanup and cancelled monster weapon
-substitution checkpoints have passed focused
-native, regression, public and bounded-input checks and are pushed promptly.
-The maintained corpus is 809; a full809 run remains pending. Native styled
-parity is tracked separately from serialized-byte identity.
+The full809 runtime includes redraw flags, seduction feedback, monster lists,
+artifact rejection, Rogue x-ray priority, temporary hidden-object cleanup and
+cancelled monster weapon substitution. Native styled parity is tracked
+separately from serialized-byte identity. Artifact eating now also passes
+30 parent checks, 125 controls, 19 focused fixtures, the public suite and 63
+bounded input workers. Its new five-case native fixture matches all 743 styled
+boundaries and 13,605 calls. The maintained corpus is 810; full810 remains
+pending. Hidden monster status, pre-swap x-ray redraw, polymorphed weapon
+selection and accepted non-food meals remain separate active candidates.
 The earlier potion changes also pass strict full-stream and per-input RNG
 checks on 117 fixtures, all 39,942 boundaries and 1,718,440 calls. The complete
 strict 677-fixture audit and all 213 animation-bearing fixtures passed at the

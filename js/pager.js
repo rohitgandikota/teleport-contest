@@ -31,6 +31,8 @@ import { obj_stop_timers } from './timeout.js';
 import { db_under_typ, is_drawbridge_wall } from './dbridge.js';
 import { doextlist } from './cmd.js';
 import { game } from './gstate.js';
+import { Role_if } from './attrib.js';
+import { Race_if } from './u_init.js';
 import { notice_all_mons_flush } from './hack.js';
 import { Invis, senseself, Punished } from './youprop.js';
 import { Upolyd, M_AP_TYPMASK } from './const.js';
@@ -520,9 +522,10 @@ function lookat(x, y) {
         && (!game.iflags?.terrainmode
             || (game.iflags.terrainmode & TER_MON) !== 0)) {
         buf = self_lookat();
-        /* pm stays null for self: file lookup uses the name string.
-           The only exception is a gnomish wizard, forced to the generic
-           "wizard" entry (pager.c:673) — not a reachable start. */
+        // src/pager.c:672: identify an unpolymorphed gnome Wizard by role.
+        if (Role_if(PMNAMES.PM_WIZARD) && Race_if(PMNAMES.PM_GNOME)
+            && !Upolyd(game.u))
+            pm = game.mons[PMNAMES.PM_WIZARD];
         // src/pager.c:684: normal sight, blindness and swallowing need no suffix.
         if ((Invisible() || game.u.uundetected) && !Blind()
             && !(game.u.uswallow || game.iflags?.save_uswallow)) {

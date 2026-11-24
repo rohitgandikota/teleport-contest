@@ -1,0 +1,173 @@
+{
+  "name": "pager-gnome-wizard",
+  "description": "Three normal-play starts and one actual controlled-polymorph negative for C lookat role/race identity, recorded independently from unchanged inputs. Before and after match all52 native boundaries and11913 complete calls. The repaired species pointer remains source-contract evidence, not a visible native improvement.",
+  "coverage": [
+    "mode.normal",
+    "mode.debug",
+    "options.rc-bindings",
+    "ui.getpos",
+    "ui.map-memory-vision",
+    "forms.polymorph"
+  ],
+  "branches": [
+    "pager.gnome-wizard-self",
+    "pager.human-wizard-negative",
+    "pager.gnome-healer-negative",
+    "pager.polymorphed-gnome-wizard-negative"
+  ],
+  "requireBranchAssertions": true,
+  "segments": [
+    {
+      "name": "gnome-wizard",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:gnome,gender:male,align:neutral,playmode:normal\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=symset:DECgraphics\n",
+      "moves": " ;.  \u001b\u001b"
+    },
+    {
+      "name": "human-wizard",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:normal\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=symset:DECgraphics\n",
+      "moves": " ;.  \u001b\u001b"
+    },
+    {
+      "name": "gnome-healer",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Healer,race:gnome,gender:male,align:neutral,playmode:normal\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=symset:DECgraphics\n",
+      "moves": " ;.  \u001b\u001b"
+    },
+    {
+      "name": "gnome-wizard-polymorphed",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:gnome,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #polyself\rnewt\r  \u001b\u001b ;.  \u001b\u001b"
+    }
+  ],
+  "branchAssertions": [
+    {
+      "branch": "pager.gnome-wizard-self",
+      "segment": 0,
+      "screenIncludes": [
+        "gnomish wizard called Desired"
+      ],
+      "screenExcludes": [
+        "You die...",
+        "Die?"
+      ],
+      "intent": "Normal-play gnome Wizard inspects self. The changed return pointer is source-controlled, not visible native screen evidence.",
+      "evidence": "Independent unchanged source-c/version-5 recording confirms these ordinary branch witnesses. Read-only JS observation confirms producer state; the returned species pointer is separately source-controlled."
+    },
+    {
+      "branch": "pager.human-wizard-negative",
+      "segment": 1,
+      "screenIncludes": [
+        "human wizard called Desired"
+      ],
+      "screenExcludes": [
+        "You die...",
+        "Die?"
+      ],
+      "intent": "Same Wizard role with human race excludes the special return pointer.",
+      "evidence": "Independent unchanged source-c/version-5 recording confirms these ordinary branch witnesses. Read-only JS observation confirms producer state; the returned species pointer is separately source-controlled."
+    },
+    {
+      "branch": "pager.gnome-healer-negative",
+      "segment": 2,
+      "screenIncludes": [
+        "gnomish healer called Desired"
+      ],
+      "screenExcludes": [
+        "You die...",
+        "Die?"
+      ],
+      "intent": "Same gnome race with Healer role excludes the special return pointer.",
+      "evidence": "Independent unchanged source-c/version-5 recording confirms these ordinary branch witnesses. Read-only JS observation confirms producer state; the returned species pointer is separately source-controlled."
+    },
+    {
+      "branch": "pager.polymorphed-gnome-wizard-negative",
+      "segment": 3,
+      "screenIncludes": [
+        "newt called wizard"
+      ],
+      "screenExcludes": [
+        "You die...",
+        "Die?"
+      ],
+      "intent": "Actual debug #polyself changes the gnome Wizard into a newt before self inspection.",
+      "evidence": "Independent unchanged source-c/version-5 recording confirms these ordinary branch witnesses. Read-only JS observation confirms producer state; the returned species pointer is separately source-controlled."
+    }
+  ],
+  "jsReach": [
+    {
+      "boundaries": 8,
+      "calls": 3183,
+      "frames": 0,
+      "selectedStep": 3,
+      "selectedText": "@        a human or elf or you (gnomish wizard called Desired)",
+      "hp": 11,
+      "polymorphed": false,
+      "role": 343,
+      "race": 165,
+      "umonnum": 343,
+      "umonster": 343,
+      "debug": false
+    },
+    {
+      "boundaries": 8,
+      "calls": 3183,
+      "frames": 0,
+      "selectedStep": 3,
+      "selectedText": "@        a human or elf (human wizard called Desired)",
+      "hp": 12,
+      "polymorphed": false,
+      "role": 343,
+      "race": 260,
+      "umonnum": 343,
+      "umonster": 343,
+      "debug": false
+    },
+    {
+      "boundaries": 8,
+      "calls": 2785,
+      "frames": 0,
+      "selectedStep": 3,
+      "selectedText": "@        a human or elf or you (gnomish healer called Desired)",
+      "hp": 12,
+      "polymorphed": false,
+      "role": 334,
+      "race": 165,
+      "umonnum": 334,
+      "umonster": 334,
+      "debug": false
+    },
+    {
+      "boundaries": 28,
+      "calls": 2762,
+      "frames": 0,
+      "selectedStep": 23,
+      "selectedText": ":        a lizard (newt called wizard)",
+      "hp": 11,
+      "polymorphed": true,
+      "role": 343,
+      "race": 165,
+      "umonnum": 322,
+      "umonster": 343,
+      "debug": true
+    }
+  ],
+  "nativeEvidence": {
+    "file": "pager-gnome-wizard.session.json",
+    "source": "c",
+    "version": 5,
+    "sha256": "cfa23743ee030042f25006279aeaec4fd899d35dadf09952800c2f4ed065bd0f",
+    "bytes": 518180,
+    "boundaries": 52,
+    "completeCalls": 11913,
+    "frames": 0,
+    "beforeAndAfterExact": true,
+    "visibleImprovementClaim": false
+  }
+}

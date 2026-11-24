@@ -7210,6 +7210,39 @@ per-input attribution. The maintained corpus is 797; latest full regression
 remains 796. Gnome Wizard return values, peaceful chat, hmonas caller routes
 and vault completion remain independent follow-ups. Continue verified pushes.
 
+## 2026-11-24: gnome Wizard inspection return contract
+
+Pushed swallowed/statue inspection as 1a339724. The next pager patch restores
+C's Wizard species pointer when inspecting a gnome Wizard who is not
+polymorphed. Existing Role_if, Race_if and Upolyd helpers express the exact
+condition. The C role/race tables permit this normal start, contrary to the old
+JS comment. Complete eligibility, initialization, lookat and pointer consumers
+were reviewed. The ordinary caller sends this pointer only to supplemental
+information, which emits nothing for a Wizard. No visible encyclopedia change
+or score improvement is claimed.
+
+The 15 source controls pass, versus nine before. They include both genders,
+normal/debug starts, real reversion, blindness and hallucination guards. The
+five ordinary-input and four pending-input controls pass before and after.
+The four new C cases preserve all five original JS output hashes and match
+all 52 styled boundaries, cursors and slices, 11,913 complete calls and zero
+frames. Original raw SHA256:
+`cfa23743ee030042f25006279aeaec4fd899d35dadf09952800c2f4ed065bd0f`.
+
+All 22 current-main checks pass: 88 controls; ten fixtures, 36 segments,
+3,717 scored boundaries/cursors, 112,979 calls and 85 frames; all 44 public
+fixtures; 54 hang checks; zero scope/import findings in 276 modules. Delayed
+input matches across 16 segments, 1,372 boundaries and 43,534 calls. All 279
+runtime files and six support files are fixed, with only pager changed from
+1a339724. Source/native seals verify 354/369 files and zero links. Receipt:
+`.cache/restart-20261122/gnome-wizard-promotion-parent-verification.json`.
+
+The maintained corpus is 798. Latest complete full regression remains 796.
+NFS credit is part of the shared peaceful-chat/gnome batch, without individual
+attribution. Peaceful chat has a verified native package awaiting integration;
+vault completion is still under final review. Monster description and artifact
+touch alignment are the next bounded source audits. Continue verified pushes.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

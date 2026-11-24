@@ -19,8 +19,8 @@ run at 01:48 UTC predates the latest checkpoint. Public remains 44/44;
 held-out remains 39/56 with 936 unmatched screens. Local verification does
 not establish a newer held-out score.
 
-The latest verification passes 742/742 fixtures: 822,025 boundary
-screens/cursors, 16,555,949 scored RNG positions and 30,742 animation frames.
+The latest verification passes 745/745 fixtures: 822,633 boundary
+screens/cursors, 16,574,228 scored RNG positions and 30,774 animation frames.
 Both shards finish without failures or timeouts. All 279 runtime hashes
 stayed fixed throughout.
 The earlier potion changes also pass strict full-stream and per-input RNG
@@ -125,18 +125,21 @@ Amulet removal now retains the old worn pointer after inventory replacement,
 and grid-bug crawls reject diagonal escapes. Six native cases, 54 new controls
 and 83 retained controls pass. The guarding-amulet AC read has separate source
 controls, without a claimed native guarding witness.
-Next are special-mover origin reset, fog feedback, trap concealment, timer/goal
-flips and shop doorway crawl blocking. The
+Special movers now reset their origins after fallback relocation. Fog clouds
+use C's door feedback, and fresh monster traps reveal concealed survivors.
+Six native cases, 53 new controls and 120 retained controls pass.
+Next are timer/goal flips, shop crawl blocking and guard feedback. The
 Linux/NFS branch collector is pushed
 and passes signal canaries plus exact save/restore, artifact and natural-exit
 pilots. The Linux census at e4504071 now covers all 678 original inputs:
 603 canonical matches and 75 independently recorded ordinary Linux controls.
-Adding 57 newer raw inputs and two independent Linux controls, 216
+Adding 63 newer raw inputs and two independent Linux controls, 229
 native segments in total, gives a validated union entering 4,534/5,492
-functions and observing 59,292/107,260 direct C branch outcomes.
-All 737 credited input hashes, forty build manifests and branch layouts
-were checked before merging. This C coverage census includes the queued
-melt-timer recording; it does not claim JS parity for that pending repair. Original platform/output rejections
+functions and observing 59,310/107,260 direct C branch outcomes.
+All 743 credited input hashes, forty-six build manifests and branch layouts
+were checked before merging. This C coverage census includes queued
+timer/goal, shop crawl and guard-feedback recordings; it does not claim
+integrated JS parity for those pending repairs. Original platform/output rejections
 remain rejected; no output was normalized. The two new sink fixtures separately
 match Linux C exactly; their validated union covers all 94/94 direct dosinkring
 outcomes in 49 cases. The teleport and polymorph helpers still have measured

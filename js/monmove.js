@@ -1698,7 +1698,7 @@ async function msg_mon_movement(mtmp, omx, omy) {
 
 // src/monmove.c:1715 m_move(), choose movement and resolve the arrival.
 export async function m_move(mtmp, after) {
-    const omx = mtmp.mx, omy = mtmp.my;
+    let omx = mtmp.mx, omy = mtmp.my;
 
     /* src/monmove.c:1733 — a monster that starts its turn already caught in
        a trap re-triggers it; postmov() handles the ARRIVAL case. */
@@ -1831,6 +1831,9 @@ export async function m_move(mtmp, after) {
     if (game.u.uswallow && !mtmp.mflee && game.u.ustuck !== mtmp)
         return MMOVE_MOVED;
 
+    // src/monmove.c:1853, a special mover can relocate before falling back.
+    omx = mtmp.mx;
+    omy = mtmp.my;
     let ggx = mtmp.mux, ggy = mtmp.muy;
     const prange = { min: 0, max: 0 };
     let appr = mtmp.mflee ? -1 : 1;
@@ -2286,8 +2289,9 @@ async function postmov(mtmp, ptr, omx, omy, mmoved, seenflgs,
                 && amorphous(ptr)) {
                 if (game.flags?.verbose && canseemon(mtmp))
                     await pline(`${Monnam(mtmp)} ${
-                        ptr.mlet === MONSYMS.S_LIGHT ? 'flows'
-                                                     : 'oozes'} under the door.`);
+                        (ptr === game.mons[PMNAMES.PM_FOG_CLOUD]
+                         || ptr.mlet === MONSYMS.S_LIGHT) ? 'flows'
+                                                          : 'oozes'} under the door.`);
             } else if ((here.doormask & D_LOCKED) !== 0 && can_unlock) {
                 if (btrapped) {
                     await openit(D_NODOOR);

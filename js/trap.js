@@ -34,7 +34,7 @@ import { ECMD_TIME, TEST_MOVE, WT_TOOMUCH_DIAGONAL, P_RIDING, P_BASIC,
          D_NODOOR, D_ISOPEN, D_TRAPPED, DISP_FLASH, DISP_END, POTHIT_OTHER_THROW, M_SEEN_ACID } from './const.js';
 import { IS_OBSTRUCTED } from './const.js';
 import { ALL_TRAPS } from './const.js';
-import { t_at, mon_to_stone } from './mon.js';
+import { t_at, mon_to_stone, maybe_unhide_at } from './mon.js';
 import { mon_adjust_speed } from './worn.js';
 import { pline_mon } from './pline.js';
 import { aobjnam } from './objnam.js';
@@ -193,7 +193,7 @@ import { canspotmon, display_nhwindow_message, feel_newsym,
 import { You, You_hear, You_feel, You_see, Your, Norep } from './pline.js';
 import { an, the, doname, mshot_xname, otense, xname, yname, Yname2,
          corpse_xname, CXN_PFX_THE } from './objnam.js';
-import { a_monnam, rndmonnam, upstart } from './do_name.js';
+import { a_monnam, Amonnam, rndmonnam, upstart } from './do_name.js';
 import { losehp } from './hack.js';
 import { delobj, monkilled, monstone, newcham, resists_ston, seemimic,
          vamp_stone, xkilled } from './mon.js';
@@ -3605,12 +3605,7 @@ async function trapeffect_magic_portal(mtmp, trap, trflags) {
     return Trap_Effect_Finished;
 }
 
-// src/trap.c:3733 mintrap() — a monster steps onto a trap.
-//
-// The "already caught in it" half is recorded: escaping draws rn2(40) and
-// then branches through boulders, metallivores and eels, none of which any
-// session has reached. The fresh-trigger half is live, because that is what
-// spends draws on the common path.
+// src/trap.c:3733 mintrap(), handle existing capture and newly triggered traps.
 export async function mintrap(mtmp, mintrapflags) {
     const trap = t_at_mon(mtmp.mx, mtmp.my);
     let trap_result = Trap_Effect_Finished;
@@ -3696,6 +3691,15 @@ export async function mintrap(mtmp, mintrapflags) {
             await setmangry(mtmp, false);
 
         trap_result = await trapeffect_selector(mtmp, trap, mintrapflags);
+
+        // src/trap.c:3827, a trapped monster may lose its hiding place.
+        if (!DEADMONSTER(mtmp) && mtmp.mtrapped) {
+            const alreadyspotted = canspotmon(mtmp);
+
+            maybe_unhide_at(mtmp.mx, mtmp.my);
+            if (!alreadyspotted && canseemon(mtmp))
+                await pline_mon(mtmp, `${Amonnam(mtmp)} appears.`);
+        }
     }
     return trap_result;
 }

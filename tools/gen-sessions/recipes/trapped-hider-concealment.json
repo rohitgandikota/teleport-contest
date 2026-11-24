@@ -1,0 +1,72 @@
+{
+  "name": "trapped-hider-concealment",
+  "description": "Magic locking catches a hidden pit viper under a dagger at a bear trap; a small hidden garter snake and an already visible pit viper are controls. Ordinary command inputs only.",
+  "coverage": [
+    "mode.debug",
+    "traps.monster",
+    "traps.projectile-physical",
+    "object.wands"
+  ],
+  "branches": [
+    "traps.monster.hidden-caught-revealed",
+    "traps.monster.hidden-small-not-caught",
+    "traps.monster.visible-caught-no-appearance"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "traps.monster.hidden-caught-revealed",
+      "segment": 0,
+      "screenIncludes": [
+        "A pit viper appears."
+      ],
+      "screenExcludes": [
+        "It hisses!"
+      ]
+    },
+    {
+      "branch": "traps.monster.hidden-small-not-caught",
+      "segment": 1,
+      "screenExcludes": [
+        "A garter snake appears.",
+        "The garter snake is caught in a bear trap!"
+      ]
+    },
+    {
+      "branch": "traps.monster.visible-caught-no-appearance",
+      "segment": 2,
+      "screenIncludes": [
+        "The pit viper is caught in a bear trap!"
+      ],
+      "screenExcludes": [
+        "A pit viper appears."
+      ]
+    }
+  ],
+  "segments": [
+    {
+      "name": "hidden-pit-viper-locking",
+      "seed": 7401,
+      "datetime": "20000112121000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " hb\u0017uncursed wand of locking (0:3)\r\u0017uncursed dagger\rdb\u0017bear trap trap\ru\u0007sleeping hidden hostile pit viper\rzab\u001b\u001b",
+      "steps": []
+    },
+    {
+      "name": "hidden-small-snake-control",
+      "seed": 7401,
+      "datetime": "20000112121000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " hb\u0017uncursed wand of locking (0:3)\r\u0017uncursed dagger\rdb\u0017bear trap trap\ru\u0007sleeping hidden hostile garter snake\rzab\u001b\u001b",
+      "steps": []
+    },
+    {
+      "name": "visible-pit-viper-control",
+      "seed": 7401,
+      "datetime": "20000112121000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " hb\u0017uncursed wand of locking (0:3)\r\u0017uncursed dagger\rdb\u0017bear trap trap\ru\u0007sleeping hostile pit viper\rzab\u001b\u001b",
+      "steps": []
+    }
+  ]
+}

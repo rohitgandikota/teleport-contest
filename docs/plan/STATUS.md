@@ -4438,6 +4438,74 @@ is retained. Shop blocking and travel BFS direction limits remain separate.
 Next are monster relocation/feedback, trapped concealment, and timer/goal
 behavior during level flips.
 
+## 2026-11-23: monster relocation and arrival feedback
+
+Amulet/crawl checkpoint `5ce88663` is committed and pushed. Three independent
+native failures are repaired in the movement and trap routines. `m_move`
+refreshes its previous coordinates after a special mover falls back to
+ordinary movement. `postmov` includes fog clouds in C's flowing-door wording.
+After a fresh trap catches a living monster, `mintrap` calls the existing
+concealment helper and awaits C's appearance feedback when appropriate.
+The obsolete mintrap history comment is replaced by its current role.
+
+In the vault case, a guard reaches warning seven while the hero is displaced.
+Real `gd_move` relocates it from (25,5) to (23,5), then returns fallback.
+Ordinary movement ends at (23,6). The old port cleared the original (25,5)
+index, leaving the guard indexed at two squares and storing a stale movement
+track. Native C shows gold at the vacated square. The repair raises matches
+from 129/132 screens to 132/132, while all 6,358 calls, input slices and
+cursors remain exact. Internal index/track evidence comes from real JS
+producer controls; it is not serialized native state. Raw SHA-256:
+`8b1c6881e00375725e2a65f48aa506f79b0a9cdc71a2aa32bcc54ea653ca74e3`.
+
+The fog pair checks a fog cloud and an acid blob passing a closed door.
+Only the cloud wording was wrong: C says it flows, while JS said it oozes.
+The blob remains an unchanged negative control. Both cases now match all
+144 boundaries and 4,897 calls, versus one old screen mismatch at boundary
+69. The valid serial raw SHA-256 is
+`f0c715df55b26c93f202414f9cd1cb83edee314f1db601fdf4bf731be8883030`.
+The initial shared-lock recording is retained and rejected in full.
+
+The concealment fixture uses a locking wand on a hidden pit viper, a too-small
+hidden snake and an already-visible viper. C reveals the trapped hidden viper
+and announces it before wand wakeup. The missing tail caused three screen
+mismatches. All 332 boundaries, 7,024 calls and 32 animation grids/cursors now
+match. Both negatives are unchanged. The guard snapshots sensing before
+unhiding, and preserves the trap result. The trapped helper path finishes
+state and redraw synchronously; only the appearance message can wait.
+Three real More-prompt controls cover direct trap, holding-trap and wand
+callers. Web/pit, sensed, invisible, blind and fatal states remain separate
+source controls. Raw SHA-256:
+`1eb8d20709bcfb58713255b1116379adbeed0390406a24f264505bf6fe03ad66`.
+
+All 53 new and 120 retained controls pass. Eleven focused fixtures cover
+thirty segments, 2,389 boundaries, 96,176 strict complete/per-input calls and
+65 exact animation grids/cursors. All eleven 30-second worker checks pass.
+Deferred interactive input matches four fixtures, nine segments, 731
+boundaries, 25,461 calls and 32 animations. Source audit has zero findings
+in 276 modules. The three scoped runtime patches add eight net lines.
+
+The complete 745/745-fixture regression passes all 822,633 boundary
+screens/cursors, 16,574,228 scored RNG positions and 30,774 animation frames.
+Both interleaved shards finish at the default 45-second worker limit, with
+zero failures or timeouts and all 279 runtime hashes unchanged.
+
+The corresponding validated NFS union has 740 credited inputs, forty-three
+matching manifests/layouts, 4,534/5,492 entered functions and 59,297/107,260
+direct C branch outcomes. Its 60 added raw inputs contain 213 segments,
+plus nine independent Linux segments. This C census includes the separately
+queued melt-timer recording and does not claim its JS integration. Bulk
+profiles remain at
+`/share/NFS/u/rohit/research/contest/artifacts/2026-11-22/c-coverage-compress.E84JI2/verified-mintrap-concealment-union-20261123`.
+
+Evidence is `.cache/restart-20261122/vault-origin-native-confirmation/`,
+`fog-door-native-confirmation/`, `mintrap-concealment-native-confirmation/`,
+`monster-arrival-parent-{composition,integration,verification}.json`,
+`monster-arrival-promoted-*` and `monster-arrival-corpus-*`. Raw bytes and
+original patches remain unchanged. Full vault, movement and trap parity is
+not claimed. Timer/goal flips, shop crawl blocking, guard deaf feedback and
+concealment-helper duplication remain separate work.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

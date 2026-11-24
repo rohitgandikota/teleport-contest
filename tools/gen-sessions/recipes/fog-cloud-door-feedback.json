@@ -1,0 +1,54 @@
+{
+  "name": "fog-cloud-door-feedback",
+  "description": "A fog cloud flows under a closed door; an acid blob retains the oozing message.",
+  "coverage": [
+    "mode.debug",
+    "monster.movement",
+    "terrain.doors-locks"
+  ],
+  "branches": [
+    "movement.fog-cloud-flows-under-door",
+    "movement.acid-blob-oozes-under-door"
+  ],
+  "requireBranchAssertions": true,
+  "segments": [
+    {
+      "name": "fog-cloud-closed-door",
+      "seed": 7401,
+      "datetime": "20000112121000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " hk\u0017wall\rjj\u0017wall\rk\u0017wall\r\u0017closed door\r\u0007hostile fog cloud\rhm.m.m.m.m.m.\u001b\u001b"
+    },
+    {
+      "name": "acid-blob-closed-door",
+      "seed": 7401,
+      "datetime": "20000112121000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " hk\u0017wall\rjj\u0017wall\rk\u0017wall\r\u0017closed door\r\u0007hostile acid blob\rhm.m.m.m.m.m.\u001b\u001b"
+    }
+  ],
+  "branchAssertions": [
+    {
+      "branch": "movement.fog-cloud-flows-under-door",
+      "segment": 0,
+      "screenIncludes": [
+        "The fog cloud flows under the door."
+      ],
+      "screenExcludes": [
+        "The fog cloud oozes under the door.",
+        "smashes down a door."
+      ]
+    },
+    {
+      "branch": "movement.acid-blob-oozes-under-door",
+      "segment": 1,
+      "screenIncludes": [
+        "The acid blob oozes under the door."
+      ],
+      "screenExcludes": [
+        "The acid blob flows under the door.",
+        "smashes down a door."
+      ]
+    }
+  ]
+}

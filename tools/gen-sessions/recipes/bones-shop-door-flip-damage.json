@@ -1,0 +1,56 @@
+{
+    "name": "bones-shop-door-flip-damage",
+    "description": "Native ordinary wizard inputs leave shop bones, reload and flip the level, then damage its real entrance.",
+    "segments": [
+        {
+            "seed": 6903,
+            "datetime": "20000110090000",
+            "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=paranoid_confirmation:none\nOPTIONS=disclose:-i -a -v -g -c -o\nOPTIONS=!tombstone\n",
+            "name": "save-shop-bones",
+            "moves": " \u00162\r\u0006\u0014  llllllllllllllllllll.  \u0017uncursed leather gloves\r                  \u001b\u001b\u001b\u001b\u001b\u001bWo                  \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed cockatrice corpse\r                  \u001b\u001b\u001b\u001b\u001b\u001bToyes\r                  \u001b\u001b\u001b\u001b\u001b\u001bwp  y y"
+        },
+        {
+            "seed": 6903,
+            "datetime": "20000110090000",
+            "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=paranoid_confirmation:none\nOPTIONS=disclose:-i -a -v -g -c -o\nOPTIONS=!tombstone\n",
+            "name": "flip-loaded-shop-and-damage-door",
+            "moves": " \u00162\ryn                  \u001b\u001b\u001b\u001b\u001b\u001b#wizfliplevel\r2                  \u001b\u001b\u001b\u001b\u001b\u001b\u0014hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhkkkkkkk.                  \u001b\u001b\u001b\u001b\u001b\u001b\u0017locked door\r                  \u001b\u001b\u001b\u001b\u001b\u001b\u0014l.                  \u001b\u001b\u001b\u001b\u001b\u001b\u0017blessed wand of digging (0:5)\r                  \u001b\u001b\u001b\u001b\u001b\u001b\u00171000 gold pieces\r                  \u001b\u001b\u001b\u001b\u001b\u001bzoh "
+        }
+    ],
+    "coverage": [
+        "mode.debug",
+        "persistence.bones",
+        "social.shops-billing"
+    ],
+    "branches": [
+        "bones-shop-door-flip-damage.bones-save",
+        "bones-shop-door-flip-damage.loaded-flip",
+        "bones-shop-door-flip-damage.entrance-damage"
+    ],
+    "requireBranchAssertions": true,
+    "branchAssertions": [
+        {
+            "branch": "bones-shop-door-flip-damage.bones-save",
+            "segment": 0,
+            "screenIncludes": [
+                "Save bones?"
+            ]
+        },
+        {
+            "branch": "bones-shop-door-flip-damage.loaded-flip",
+            "segment": 1,
+            "screenIncludes": [
+                "Get bones?",
+                "Flip 0=randomly, 1=vertically, 2=horizontally, 3=both:"
+            ]
+        },
+        {
+            "branch": "bones-shop-door-flip-damage.entrance-damage",
+            "segment": 1,
+            "screenIncludes": [
+                "The door is razed!",
+                "You did 600 zorkmids worth of damage!"
+            ]
+        }
+    ]
+}

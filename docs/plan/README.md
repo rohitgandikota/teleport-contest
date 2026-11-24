@@ -13,14 +13,14 @@ Ground rules are in `/CLAUDE.md`. Read that first if you have not.
 ## Current focus, 2026-11-23
 
 Continue the faithful port with readable C-aligned code and prompt verified
-pushes. The latest official snapshot checked, November 23 at 20:18 UTC, has
+pushes. The latest official snapshot checked, November 24 at 02:35 UTC, has
 23,595 of 24,531 combined screens, 7th agentic and 11th overall. Our scoring
-run at 19:33 UTC predates the latest checkpoint. Public remains 44/44;
-that snapshot has 936 unmatched held-out
-screens. Local verification does not establish a newer held-out score.
+run at 01:48 UTC predates the latest checkpoint. Public remains 44/44;
+held-out remains 39/56 with 936 unmatched screens. Local verification does
+not establish a newer held-out score.
 
-The latest verification passes 736/736 fixtures: 820,038 boundary
-screens/cursors, 16,508,606 scored RNG positions and 30,736 animation frames.
+The latest verification passes 737/737 fixtures: 820,538 boundary
+screens/cursors, 16,516,744 scored RNG positions and 30,742 animation frames.
 Both shards finish without failures or timeouts. All 279 runtime hashes
 stayed fixed throughout.
 The earlier potion changes also pass strict full-stream and per-input RNG
@@ -114,16 +114,19 @@ Monster movement now fractures blocking boulders before moving and lets Riders
 unlock doors. Two new C cases and three retained trapping controls match,
 with all 29 new controls passing. Initial trap result and form capture also
 follow C, with no additional ordinary-input failure claimed.
-Next: shop/map flips, awake tame-worm dispatch, retained amulets and movement
-capability lifetime. The
+Shop and map flips now preserve independent door coordinates, the active door
+prefix and whole-cell contents, matching a new native pair and all 25 new
+state/source/input checks plus nine retained controls.
+Next: long-worm dispatch, retained door capabilities and magic-key disarming,
+then retained amulets, crawl restrictions and melt-timer flips. The
 Linux/NFS branch collector is pushed
 and passes signal canaries plus exact save/restore, artifact and natural-exit
 pilots. The Linux census at e4504071 now covers all 678 original inputs:
 603 canonical matches and 75 independently recorded ordinary Linux controls.
-Adding 50 newer raw inputs and two independent Linux controls, 198
-native segments in total, gives a validated union entering 4,529/5,492
-functions and observing 59,177/107,260 direct C branch outcomes.
-All 730 credited input hashes, thirty-three build manifests and branch layouts were
+Adding 51 newer raw inputs and two independent Linux controls, 200
+native segments in total, gives a validated union entering 4,533/5,492
+functions and observing 59,230/107,260 direct C branch outcomes.
+All 731 credited input hashes, thirty-four build manifests and branch layouts were
 checked before merging. Original platform/output rejections
 remain rejected; no output was normalized. The two new sink fixtures separately
 match Linux C exactly; their validated union covers all 94/94 direct dosinkring

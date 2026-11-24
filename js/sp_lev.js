@@ -2910,15 +2910,9 @@ export async function flip_level_rnd(flp) {
         await flip_level(c, false);
 }
 
-// src/sp_lev.c:533 flip_level() — mirror the level on one or both axes.
-//
-// Everything positional moves: the terrain grid, objects, monsters, traps,
-// stairways, engravings and doors. The per-square object and monster maps
-// move with their coordinates, preserving each object's nexthere link.
-//
-// Recorded: the ball-and-chain repositioning, the vault guard's egd,
-// migrating monsters, timers and the level-teleport regions. `extras` is
-// false for the post-build flip, which is the only caller so far.
+// src/sp_lev.c:533 flip_level(), mirror the level on one or both axes.
+// The per-square object and monster maps move with their coordinates,
+// preserving each object's nexthere link.
 export async function flip_level(flp, extras) {
     /* extras: False: level creation; True: #wizfliplevel is altering an
        active level so more needs to be done */
@@ -3061,9 +3055,7 @@ export async function flip_level(flp, extras) {
             Flip_coord(m.epri?.shrpos);
         } else if (m.isshk) {
             Flip_coord(m.eshk?.shk);
-            /* eshk.shd ALIASES the door record in level.doors, which the
-               doors pass below already flips; C's shd is a value copy and
-               needs its own Flip_coord, ours must not flip it twice. */
+            Flip_coord(m.eshk?.shd);
         } else if (m.wormno) {
             if (flp & 1)
                 flip_worm_segs_vertical(m, miny, maxy);
@@ -3147,10 +3139,8 @@ export async function flip_level(flp, extras) {
         flip_room(sroom);
 
     /* doors */
-    for (const d of (game.level?.doors || [])) {
-        if (flp & 1) d.y = FlipY(d.y);
-        if (flp & 2) d.x = FlipX(d.x);
-    }
+    for (let i = 0; i < game.level.doorindex; i++)
+        Flip_coord(game.level.doors[i]);
 
     /* the map */
     if (flp & 1) {
@@ -3159,9 +3149,12 @@ export async function flip_level(flp, extras) {
                 const ny = FlipY(y);
                 const a = game.level.at(x, y), b = game.level.at(x, ny);
                 if (!a || !b) continue;
-                const tmp = { ...a };
-                Object.assign(a, b);
-                Object.assign(b, tmp);
+                // C copies the whole rm value, including unset fields.
+                for (const key of Object.keys({ ...a, ...b })) {
+                    const tmp = a[key];
+                    a[key] = b[key];
+                    b[key] = tmp;
+                }
             }
     }
     if (flp & 2) {
@@ -3170,9 +3163,12 @@ export async function flip_level(flp, extras) {
                 const nx = FlipX(x);
                 const a = game.level.at(x, y), b = game.level.at(nx, y);
                 if (!a || !b) continue;
-                const tmp = { ...a };
-                Object.assign(a, b);
-                Object.assign(b, tmp);
+                // C copies the whole rm value, including unset fields.
+                for (const key of Object.keys({ ...a, ...b })) {
+                    const tmp = a[key];
+                    a[key] = b[key];
+                    b[key] = tmp;
+                }
             }
     }
 

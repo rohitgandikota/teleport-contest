@@ -436,6 +436,11 @@ demotion happened. The build script now writes `WIZARDS=*`.
 segment shares one lock file (`<uid>wizard.0`) no matter what the characters are
 named. Combined with the next entry, this is what broke the one remaining
 multi-segment session.
+Run recording jobs serially when they share an install directory. Different
+output paths do not isolate the game lock. Concurrent vault/fog recordings
+produced a one-boundary lock prompt while the recorder still exited zero.
+Check that each intended segment actually ran, preserve rejected raw output,
+and repeat the unchanged input serially into a fresh output path.
 
 **Abandoned in-progress games leak a lock into the next segment.** When a
 segment's `moves` run out mid-death-sequence, the driver SIGTERMs the recorder

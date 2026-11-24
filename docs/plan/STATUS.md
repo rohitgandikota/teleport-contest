@@ -4257,6 +4257,56 @@ fixtures remain unchanged. This is bounded movement coverage. The separate
 shop/map flips, long-worm dispatch, pre-trap capability lifetime and magic-key
 disarm packages remain queued for their own integration checks.
 
+## 2026-11-23: shop coordinates and whole-cell level flips
+
+Movement checkpoint `d7144e64` is committed and pushed. Shop entrances now
+own coordinate values at creation and restore. `flip_level` transforms them
+independently and visits only the level's active door prefix, using C's
+bounds guard. Whole map-cell swaps now transfer absent fields too, preserving
+cell identity while clearing stale remembered glyphs. A misleading header
+that claimed timer support and only one caller was shortened to the actual
+contract. The runtime change removes two net lines across three modules.
+
+The unchanged native pair covers bones restore, level flipping and shop
+damage. Its 500 boundaries, 8,138 complete RNG calls and six animations are
+now exact. Four-way comparisons separate the causes: the shop-only repair
+fixes all calls and cursors but leaves stale map cells; the cell-only repair
+fixes the six animation grids but leaves shop movement and billing wrong.
+The first map difference contains twenty stale cells at segment 1, boundary
+45. The independent shop difference begins at boundary 115. C charges 600
+for the damaged door and wall; the old port charged 200. The raw SHA-256 is
+`89eadc13d6725a1eb7b4934af1f312635473989cd2d5bf259ba4c12af7be0720`.
+
+All thirteen state controls, nine source checks, nine retained door-owner
+controls and three native input assertions pass. Four focused fixtures cover
+thirty segments, 5,387 boundaries and 158,477 strict complete/per-input calls.
+All sixteen animation grids and cursors match. Four 60-second worker checks
+pass, and deferred interactive input equals immediate input on both new
+and retained bones pairs: 871 boundaries, 16,688 calls and six animations.
+Source audit reports zero findings in 276 modules.
+
+The complete 737-fixture regression passes all 820,538 boundary screens/cursors,
+16,516,744 scored RNG positions and 30,742 animation frames. Both interleaved
+shards finish without failures or timeouts at the default 45-second worker
+limit. All 279 runtime hashes stayed fixed throughout.
+
+The validated NFS union contains 731 credited inputs and thirty-four matching
+manifests/layouts, entering 4,533/5,492 functions and observing 59,230/107,260
+direct C branch outcomes. The 51 added raw inputs contain 191 segments, plus
+nine independent Linux segments. Bulk profiles remain at
+`/share/NFS/u/rohit/research/contest/artifacts/2026-11-22/c-coverage-compress.E84JI2/verified-door-flip-union-20261123`.
+
+Evidence is `.cache/restart-20261122/door-flip-native-confirmation/`,
+`door-flip-parent-{source-review,integration,verification}.json`,
+`door-flip-promoted-*` and `door-flip-corpus-*`. The original sealed patches
+and raw recordings remain unchanged. Melt timers, monster goals, regions
+and drawbridge directions remain separate audits; this is bounded flip coverage.
+
+The official snapshot at `2026-11-24T02:35:16.692Z` rescored us at
+`2026-11-24T01:48:53.638Z`. The score is still 23,595/24,531 screens, 7th
+agentic and 11th overall: 44/44 public and 39/56 held-out sessions. This
+snapshot predates the latest movement push and does not establish its effect.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

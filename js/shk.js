@@ -4268,9 +4268,11 @@ export function set_residency(shkp, zero_out) {
 
 // src/shk.c:290 restshk(). bill_p already owns the serialized bill array in JS.
 export function restshk(shkp, ghostly) {
+    const eshk = shkp.eshk || ESHK(shkp);
+    // C restores this coord by value; older JSON saves could alias a door.
+    eshk.shd = { ...eshk.shd };
     if (!game.u.uz.dlevel)
         return;
-    const eshk = shkp.eshk || ESHK(shkp);
     if (eshk.bill_p !== -1000)
         eshk.bill_p ||= [];
     if (ghostly) {

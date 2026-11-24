@@ -1192,7 +1192,7 @@ export function mon_give_prop(mtmp, prop, msgbox) {
 
 // src/mon.c:1778 mon_givit(); Maybe give an intrinsic to monster from
 // eating corpse that confers it.
-async function mon_givit(mtmp, ptr) {
+export async function mon_givit(mtmp, ptr) {
     const prop = corpse_intrinsic(ptr);
     const vis = canseemon(mtmp);
 
@@ -3634,11 +3634,6 @@ export async function mondied(mdef) {
         && (accessible(mdef.mx, mdef.my) || is_pool(mdef.mx, mdef.my)))
         await make_corpse(mdef, CORPSTAT_NONE);
 }
-
-/* js/makemon.js (grow_up) needs mondied but a static import back into this
-   file closes an eval-time cycle; publish on the shared game object, the same
-   shape hack.js uses for in_rooms. */
-game._mondied_ref = mondied;
 
 // src/mon.c:3377 monkilled() — "<Monster> is killed!" when the hero can see
 // it, then mondied(). The golem "May it rust in peace" arms and the

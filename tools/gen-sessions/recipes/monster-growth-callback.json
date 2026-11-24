@@ -1,0 +1,57 @@
+{
+  "name": "monster-growth-callback",
+  "description": "A tame killer bee eats royal jelly after a real uncursed genocide scroll. Queen-bee genocide makes growth fatal; unrelated newt genocide leaves normal queen growth unchanged. Both ordinary cases recorded unchanged from pinned C.",
+  "coverage": [
+    "mode.debug",
+    "ui.getlin",
+    "ui.more-paging",
+    "monster.movement",
+    "monster.pets",
+    "monster.death-corpse-revival",
+    "object.scrolls"
+  ],
+  "branches": [
+    "monster.growth.genocided-form",
+    "monster.growth.living-form"
+  ],
+  "segments": [
+    {
+      "seed": 21500,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Growth,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed scroll of genocide\rra  queen bee\r  \u0017uncursed lump of royal jelly\r \u0007tame killer bee\r  dbh10s          ",
+      "name": "pet-royal-jelly-genocided-queen"
+    },
+    {
+      "seed": 21500,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Growth,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed scroll of genocide\rra  newt\r  \u0017uncursed lump of royal jelly\r \u0007tame killer bee\r  dbh10s          ",
+      "name": "pet-royal-jelly-living-queen-control"
+    }
+  ],
+  "branchAssertions": [
+    {
+      "segment": 0,
+      "screenIncludes": [
+        "Wiped out all queen bees.",
+        "The killer bee eats a lump of royal jelly.",
+        "As the killer bee grows up into a queen bee, it dies!"
+      ],
+      "screenExcludes": [
+        "Your killer bee grows up into a queen bee."
+      ]
+    },
+    {
+      "segment": 1,
+      "screenIncludes": [
+        "Wiped out all newts.",
+        "The killer bee eats a lump of royal jelly.",
+        "Your killer bee grows up into a queen bee."
+      ],
+      "screenExcludes": [
+        "As the killer bee grows up into a queen bee, it dies!"
+      ]
+    }
+  ]
+}

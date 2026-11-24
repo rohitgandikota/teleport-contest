@@ -60,7 +60,7 @@ import { genders } from './role_data.js';
 import { mon_visible } from './display.js';
 import { NEED_WEAPON, NEED_HTH_WEAPON, PRONOUN_HALLU,
          P_POLEARMS, IS_OBSTRUCTED, IS_TREE, IRONBARS,
-         MM_IGNOREWATER, W_ARMG } from './const.js';
+         MM_IGNOREWATER, W_ARMG, NC_SHOW_MSG, ismnum } from './const.js';
 import { ONAMES } from './objects_data.js';
 import { dist2 } from './hacklib.js';
 import { rn2, rnd, d } from './rng.js';
@@ -77,7 +77,7 @@ import { canseemon, sensemon } from './display.js';
 import { cansee } from './vision.js';
 import { m_at, monkilled, monstone, zombie_maker } from './mon.js';
 import { zombie_form } from './mkobj.js';
-import { touch_petrifies } from './dog.js';
+import { touch_petrifies, slimeproof } from './dog.js';
 import { is_orc, unsolid, resists_ston, is_whirly, passes_walls, attacktype,
          poly_when_stoned } from './mondata.js';
 import { distmin, s_suffix } from './hacklib.js';
@@ -87,7 +87,7 @@ import { mhitm_ad_phys, mhitm_ad_fire, mhitm_ad_cold, mhitm_ad_elec,
          mhitm_ad_ston, mhitm_ad_wrap, mhitm_ad_heal,
          mhitm_ad_plys, mhitm_ad_slee, mhitm_ad_slim, attk_protection,
          mhitm_ad_were, mhitm_ad_dren, mhitm_ad_stck, mhitm_ad_slow,
-         mhitm_ad_curs, mhitm_knockback } from './uhitm.js';
+         mhitm_ad_curs, mhitm_ad_dgst, mhitm_knockback } from './uhitm.js';
 import { grow_up, goodpos, remove_monster, place_monster } from './makemon.js';
 import { M_ATTK_MISS, M_ATTK_HIT, M_ATTK_DEF_DIED, M_ATTK_AGR_DIED, M_ATTK_AGR_DONE } from './const.js';
 import { spitmm, thrwmm } from './mthrowu.js';
@@ -95,7 +95,7 @@ import { closed_door } from './cmd.js';
 import { minstapetrify } from './trap.js';
 import { paralyze_monst, split_mon } from './potion.js';
 import { mon_reflects } from './muse.js';
-import { healmon } from './mon.js';
+import { healmon, mon_givit } from './mon.js';
 import { golemeffects, erode_armor } from './uhitm.js';
 import { stagger, resists_cold, resists_fire, haseyes, perceives, resists_acid, resists_elec } from './mondata.js';
 import { acid_damage } from './trap.js';
@@ -872,12 +872,10 @@ export async function gulpmm(magr, mdef, mattk) {
     return status;
 }
 
-// src/mhitm.c:1016 mdamagem() — roll the damage, apply the damage-type
-// specials, then the hit points. The petrification arm and the non-physical
-// damage types are recorded; AD_PHYS runs the real path.
+// src/mhitm.c:1016 mdamagem(): damage dispatch, death and post-kill effects.
 export async function mdamagem(magr, mdef, mattk, mwep, dieroll) {
     const A = ATTKS;
-    const pd = game.mons[mdef.mnum];
+    const pa = magr.data, pd = mdef.data;
     const mhm = {
         damage: d(mattk[2], mattk[3]),
         hitflags: M_ATTK_MISS,
@@ -963,6 +961,8 @@ export async function mdamagem(magr, mdef, mattk, mwep, dieroll) {
         await mhitm_ad_slow(magr, mattk, mdef, mhm);
     } else if (mattk[1] === A.AD_CURS) {
         await mhitm_ad_curs(magr, mattk, mdef, mhm);
+    } else if (mattk[1] === A.AD_DGST) {
+        await mhitm_ad_dgst(magr, mattk, mdef, mhm);
     } else {
         /* src/uhitm.c mhitm_adtyping() default */
         mhm.damage = 0;
@@ -1000,6 +1000,24 @@ export async function mdamagem(magr, mdef, mattk, mwep, dieroll) {
             return mhm.hitflags;        /* mdef lifesaved */
         else if (mhm.hitflags === M_ATTK_AGR_DIED)
             return (M_ATTK_DEF_DIED | M_ATTK_AGR_DIED);
+
+        if (mattk[1] === A.AD_DGST) {
+            /* After monkilled(), for the same message order as C. */
+            if (ismnum(mdef.cham)) {
+                await newcham(magr, null, NC_SHOW_MSG);
+            } else if (pd === game.mons[PMNAMES.PM_GREEN_SLIME] && !slimeproof(pa)) {
+                await newcham(magr, game.mons[PMNAMES.PM_GREEN_SLIME], NC_SHOW_MSG);
+            } else if (pd === game.mons[PMNAMES.PM_WRAITH]) {
+                await grow_up(magr, null);
+                /* Don't grow up twice. */
+                return (M_ATTK_DEF_DIED
+                        | (!DEADMONSTER(magr) ? 0 : M_ATTK_AGR_DIED));
+            } else if (pd === game.mons[PMNAMES.PM_NURSE]) {
+                healmon(magr, magr.mhpmax, 0);
+            }
+            await mon_givit(magr, pd);
+        }
+        /* C's digestion handling leaves pa as the original form. */
 
         return (M_ATTK_DEF_DIED
                 | ((await grow_up(magr, mdef)) ? 0 : M_ATTK_AGR_DIED));

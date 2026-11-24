@@ -5968,6 +5968,54 @@ constructed-only here; native C coverage has zero `mpickgold` calls. Witness,
 destination and other corridor gaps remain separate work. The corpus is 772;
 the latest full regression remains 770/770 at `8d2d1d58`.
 
+## 2026-11-24: restore digestion effects and canonical monster growth
+
+Guard-gold checkpoint `060fe732` is committed and pushed. Monster combat now
+dispatches digestion and applies C's complete post-kill tail: shape changes,
+green slime, single wraith growth, nurse healing, intrinsics and ordinary
+growth. The original attacker and defender forms remain available through
+that sequence. The existing intrinsic helper is exported without changing
+its body. Growth calls the canonical death owner through a live import,
+removing a callback publication lost during game reset. Both growth form
+assignments now use `set_mon_data`, including its movement adjustment.
+Short C-owner comments replace obsolete implementation-history descriptions.
+
+All 20 parent checks pass. The 55 new controls cover 27 digestion states,
+three digestion inputs, 19 growth states including the original diagnostics,
+three growth inputs and three native provenance checks. All 71 retained
+virtual-corpse, deallocation and death controls pass. Ten focused fixtures
+cover 29 segments, 2,280 boundaries, 88,068 complete calls and 55 frames.
+Four deferred-input fixtures match nine segments, 621 boundaries, 28,560 calls
+and three frames. All 44 public fixtures and 54 workers under the unchanged
+30-second hang limit pass. Syntax and the 276-module source audit pass.
+
+The unchanged digestion native pair matches 133 styled boundaries, 6,342
+complete calls and three frames, including blank styles. The growth pair
+matches 221 boundaries, 5,988 complete calls and all slices under the contest
+cell comparator. Before repair, its positive crashes after 104 exact
+boundaries because the death callback is absent. The complete negative retains
+all five output hashes. Both growth cases still have a pre-existing blank
+foreground difference at (48,13) from boundary zero: C color 8 and JS color 7.
+This is preserved evidence, not literal serialized-byte or all-style parity.
+Slower-form movement is covered by four state controls; the new native growth
+case becomes faster. Some unusual digestion pairs remain source-only.
+
+The complete 774-fixture regression passes all 835,589 boundary screens and
+cursors, 17,170,529 scored RNG positions and 31,946 scored frames. Both default
+45-second shards finish without errors; all 279 runtime hashes stayed fixed.
+Evidence is `.cache/restart-20261122/digestion-growth-promotion-parent/`,
+`digestion-growth-promotion-parent-verification.json` and
+`digestion-growth-promotion-corpus-totals.json`. Three sealed source/native
+packages were independently hash-verified. Every other byte of the recently
+corrected death and guard-gold owners is preserved.
+
+The official data and news fetched at 09:24 UTC retain their previous hashes.
+Our last scored run remains 07:21 UTC, before these checkpoints. Do not infer
+a held-out gain from the local regression. The next bounded repairs are
+monster scroll feedback and the surface beneath a raised drawbridge; both
+have independently recorded native witnesses. Other damage dispatch and guard
+destination branches remain under source review.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

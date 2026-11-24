@@ -13,15 +13,15 @@ Ground rules are in `/CLAUDE.md`. Read that first if you have not.
 ## Current focus, 2026-11-24
 
 Continue the faithful port with readable C-aligned code and prompt verified
-pushes. The latest official snapshot checked, November 24 at 08:59 UTC, has
+pushes. The latest official snapshot checked, November 24 at 09:24 UTC, has
 23,595 of 24,531 combined screens, 7th agentic and 11th overall. Our scoring
 run at 07:21 UTC predates the latest checkpoints. Public remains 44/44;
 held-out remains 39/56 with 936 unmatched screens. Local verification does
 not establish a newer held-out score.
 
-The latest full regression, including guard ownership, carrying capacity and
-shop billing disposal, passes 770/770 fixtures:
-834,205 boundary screens/cursors, 17,117,691 scored RNG positions and 31,943
+The latest full regression, including the trap, death, guard gold, digestion
+and growth repairs, passes 774/774 fixtures:
+835,589 boundary screens/cursors, 17,170,529 scored RNG positions and 31,946
 scored animation frames.
 Both shards finish without failures or timeouts. All 279 runtime hashes
 stayed fixed throughout.
@@ -30,12 +30,16 @@ checks on 117 fixtures, all 39,942 boundaries and 1,718,440 calls. The complete
 strict 677-fixture audit and all 213 animation-bearing fixtures passed at the
 preceding floor checkpoint. The subsequent monster trap-hit repair passes
 four new native cases, 65 controls and seven focused regressions. The maintained
-corpus is now 772. The following death-owner repair passes 21 direct source
+corpus is now 774. The following death-owner repair passes 21 direct source
 controls, 61 retained controls and seven focused regressions. Temporary corpse
 cleanup for pet nutrition also passes 16 direct controls, 55 retained controls
 and five focused regressions. Guard corridor gold collection passes five new
-native cases, 110 controls and eight focused regressions. Current-corpus parity
-is not completeness.
+native cases, 110 controls and eight focused regressions. Digestion dispatch
+and growth now pass four new native cases under the contest comparator,
+126 combined controls and ten focused regressions. The growth fixture retains
+a pre-existing blank foreground difference from its initial frame, so this
+does not establish literal terminal-byte or all-blank-style equality.
+Current-corpus parity is not completeness.
 
 Floor objects retain independent global and per-square order. Placement,
 splitting, replacement, extraction, restacking, level flips and restore follow

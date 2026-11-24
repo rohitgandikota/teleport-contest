@@ -10,7 +10,7 @@
 import { mon_aligntyp } from './priest.js';
 import { newemin } from './minion.js';
 import { is_sword } from './wield.js';
-import { is_mplayer } from './mondata.js';
+import { is_mplayer, set_mon_data } from './mondata.js';
 import { game } from './gstate.js';
 import { shkname } from './shknam.js';
 import { tamedog } from './dog.js';
@@ -18,7 +18,7 @@ import { def_monsyms } from './drawing_data.js';
 import { new_light_source, LS_OBJECT, LS_MONSTER } from './light.js';
 import { ARM_BONUS } from './do_wear.js';
 import { get_wormno, initworm, count_wsegs, place_worm_tail_randomly, worm_wire } from './worm.js';
-import { newcham, mon_wire_cham } from './mon.js';
+import { newcham, mon_wire_cham, mondied } from './mon.js';
 import { weight as weight_fn, sobj_at, update_inventory } from './invent.js';
 import { In_mines, Is_rogue_level, MIGR_TO_SPECIES, OBJ_FREE,
          W_SADDLE, has_mgivenname, A_LAWFUL, ONAME_RANDOM } from './const.js';
@@ -2573,13 +2573,8 @@ export function makemon(ptr, x, y, mmflags) {
     }
 }
 
-// src/makemon.c:2051 grow_up() — a pet levels up from a kill (or a wraith
-// corpse/gain-level potion, which is the victim-less arm). Returns the
-// monster's (possibly new) permonst, or null if it died growing.
-//
-// The draws: rnd(victim->m_lev + 1) for the max HP gain, then
-// rn2(max_increase) when that is above 1. The genocided-growth death arm and
-// the leash bookkeeping record.
+// src/makemon.c:2051 grow_up(): advance after a kill or a gain-level effect.
+// Return the current monster form, or null if it died growing.
 export async function grow_up(mtmp, victim) {
     if (mtmp.mhp <= 0)
         return null;
@@ -2636,9 +2631,7 @@ export async function grow_up(mtmp, victim) {
                 await pline(`As ${mon_nam(mtmp)} grows up into ${
                     an(pmname(ptr, Mgender(mtmp)))}, ${mhe(mtmp)} ${
                     nonliving(ptr) ? 'expires' : 'dies'}!`);
-            mtmp.mnum = newtype;
-            mtmp.data = ptr;
-            const { mondied } = mondied_ref();
+            set_mon_data(mtmp, ptr);
             await mondied(mtmp);
             return null;
         } else if (canspotmon(mtmp)) {
@@ -2651,8 +2644,7 @@ export async function grow_up(mtmp, victim) {
                 (fem !== (mtmp.female ? 1 : 0)) ? 'changes into'
                 : humanoid(ptr) ? 'becomes' : 'grows up into'} ${an(buf)}.`);
         }
-        mtmp.mnum = newtype;
-        mtmp.data = ptr;
+        set_mon_data(mtmp, ptr);
         if (mtmp.cham === oldtype && is_shapeshifter(ptr))
             mtmp.cham = newtype; /* vampire growing into vampire lord */
         newsym(mtmp.mx, mtmp.my);      /* color may change */
@@ -2683,12 +2675,6 @@ function little_to_big(montype) {
         if (littl === montype)
             return big;
     return montype;
-}
-
-/* js/mon.js imports from this file already; a static import back would be an
-   eval-time cycle, so mondied is looked up at call time. */
-function mondied_ref() {
-    return { mondied: game._mondied_ref };
 }
 
 function note_unported_makemon(what) {

@@ -4139,6 +4139,63 @@ repair remains queued, along with worn-item callbacks and Rider terrain work.
 This checkpoint does not change any other restore phase or claim complete
 save/bones coverage.
 
+## 2026-11-23: complete worn-object replacement callbacks
+
+Door ownership checkpoint `1e9b2d26` is committed and pushed. `set_wear` now
+calls each existing slot handler directly in C order: eyewear, right ring,
+left ring, amulet, shirt, suit, cloak, boots, gloves, helmet and shield. Every
+handler is awaited before reading the next slot. The partial string dispatch
+and isolated fedora shortcut are removed. The runtime change removes eighteen
+lines overall while exposing the actual callback order.
+
+Native polymorph also exposed a removal dependency. `poly_obj` replaces the
+inventory entry before removing the old worn item. The hero's slot still
+points to that old item. Armor removal now compares those slot pointers;
+`Armor_off`, `Shield_off`, `Shirt_off` and `adj_abon` retain the same owners.
+This restores old-item feedback and attribute subtraction before the new item
+is equipped. No inventory scan helper, polymorph function or frozen file changes.
+
+The three new C cases replace speed boots with elven boots, a protection cloak
+with an invisibility cloak, and worn boots with an incompatible unworn cloak.
+Baseline matches 426/440 screens, 436 cursors and 436 input slices, with 8,219
+calls against C's 8,214. Dispatch alone restores the full stream but still
+misses three screens and two input slices because old-boot removal is skipped.
+The composed repair matches all 440 boundaries and 8,214 complete/per-input
+calls, with no animations. All five input fields and raw bytes are unchanged:
+`ec0947076ed9c59898b93fc7b02bd000d7a31b0f4f15cf6208d659c4c45220f8`.
+
+All 39 source controls, three actual-input checks and one native-provenance
+check pass. The original source package has 27 controls; twelve additional
+removal controls include nine that fail with dispatch alone. The promoted
+gates contain 43 checks, not the 45 which also count two cache diagnostics.
+All forty retained equipment-feedback controls and twenty-one mounted-stealth
+controls pass. Seven focused fixtures cover 41 segments, 4,079 boundaries,
+131,457 strict complete/per-input calls and three exact animations. All seven
+30-second worker checks pass. Delayed input preserves all outputs on the new
+three-case fixture and four-case equipment fixture, 1,236 boundaries,
+19,188 calls and one animation. Source audit: zero findings in 276 modules.
+
+The complete 733-fixture regression passes all 819,780 boundary
+screens/cursors, 16,496,117 scored RNG positions and 30,736 animation frames.
+Both shards finish without failures or timeouts at the default 45-second
+worker limit. All 279 runtime hashes stayed fixed throughout.
+
+The validated NFS union contains 727 credited inputs, thirty identical
+manifests/layouts, 4,528/5,492 entered functions and 59,156/107,260 direct
+C outcomes. Its 47 added raw inputs contain 184 segments, plus nine independent
+Linux segments. The new native cases call `set_wear` five times and reach
+35/44 direct outcomes. Bulk profiles remain at
+`/share/NFS/u/rohit/research/contest/artifacts/2026-11-22/c-coverage-compress.E84JI2/verified-set-wear-union-20261123`.
+
+Evidence is `.cache/restart-20261122/set-wear-polymorph-audit/`,
+`set-wear-native-confirmation/`, `set-wear-parent-{source-review,integration,verification}.json`,
+`set-wear-promoted-*` and `set-wear-corpus-*`. The two ordered runtime patches
+and five promoted support files match their sealed hashes. Parent review covers
+complete dispatch/removal functions and `poly_obj` ordering. The separate
+retained-amulet correction remains queued; its newly recorded native cases do
+not establish completeness of every worn-item path. Next are boulder/Rider
+terrain actions, shop/map flips and long-worm special dispatch.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

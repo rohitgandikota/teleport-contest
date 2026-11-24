@@ -321,7 +321,7 @@ import { tty_create_nhwindow, tty_putstr, tty_display_nhwindow,
 import { OCLASSES } from './objects_data.js';
 import { DEADMONSTER, is_vampshifter } from './monst.js';
 import { killed, monkilled, seemimic, shieldeff_mon, wakeup,
-         wake_nearto, healmon, newcham, validspecmon, xkilled,
+         wake_nearto, healmon, newcham, xkilled,
          set_ustuck, unstuck } from './mon.js';
 import { ONAMES } from './objects_data.js';
 import { rn2, rnd, d } from './rng.js';
@@ -349,7 +349,7 @@ import { livelog_add, Norep, pline_The, You, Your, You_feel,
 import { pline } from './display.js';
 import { An, The, distant_name, vtense, xname, Yname2, yname, makeplural,
          Tobjnam, Yobjnam2, otense } from './objnam.js';
-import { Monnam, mon_nam, noit_mon_nam, hliquid } from './do_name.js';
+import { Monnam, mon_nam, hliquid } from './do_name.js';
 import { canseemon, canspotmon } from './display.js';
 import { engulfing_u } from './const.js';
 import { nothing_happens, ECMD_OK, ECMD_TIME, ECMD_CANCEL, NODIR, IMMEDIATE,
@@ -385,7 +385,6 @@ import { create_gas_cloud } from './region.js';
 import { show_transient_light, transient_light_cleanup } from './light.js';
 import { boolean_option } from './options.js';
 import { finish_meating } from './dogmove.js';
-import { name_to_monplus } from './mondata.js';
 import { del_engr, engr_at, make_engr_at, random_engraving, rloc_engr,
          wipe_engr_at } from './engrave.js';
 import { ceiling, surface } from './dungeon.js';
@@ -3053,36 +3052,6 @@ export async function zapwrapup() {
     obj_zapped = false;
 }
 
-// src/mon.c:5077 wiz_force_cham_form(), the debug-only monster polymorph
-// selector. The ordinary path remains random. A named form is checked with
-// the same special-monster rules before newcham receives it.
-async function controlled_newcham(mtmp, ncflags) {
-    if (!(game.wizard && game.flags?.monpolycontrol))
-        return await newcham(mtmp, null, ncflags);
-
-    let prompt = `Change ${noit_mon_nam(mtmp)} @ <${mtmp.mx},${mtmp.my}> into what?`;
-    let tryct = 5;
-    do {
-        if (tryct === 4)
-            prompt = prompt.replace(/ into what\?$/, ' into what kind of monster?');
-
-        const answer = mungspaces(await getlin(prompt));
-        if (answer[0] === '\x1b' || answer === '*'
-            || answer.toLowerCase() === 'random')
-            break;
-
-        const mndx = name_to_monplus(answer, null, null);
-        if (mndx !== NON_PM && validspecmon(mtmp, mndx))
-            return await newcham(mtmp, game.mons[mndx], ncflags);
-
-        await pline("It can't become that.");
-    } while (--tryct > 0);
-
-    if (!tryct)
-        await pline("That's enough tries!");
-    return await newcham(mtmp, null, ncflags);
-}
-
 // src/zap.c:160 bhitm(); immediate wand or spell effect on a monster
 export async function bhitm(mtmp, otmp) {
     let ret = 0;
@@ -3229,7 +3198,7 @@ export async function bhitm(mtmp, otmp) {
                     ncflags |= NC_VIA_WAND_OR_SPELL;
                 if (give_msg)
                     ncflags |= NC_SHOW_MSG;
-                if ((await controlled_newcham(mtmp, ncflags)) !== 0
+                if ((await newcham(mtmp, null, ncflags)) !== 0
                            /* if shapechange failed because there aren't
                               enough eligible candidates (most likely for
                               vampshifter), try reverting to original form */

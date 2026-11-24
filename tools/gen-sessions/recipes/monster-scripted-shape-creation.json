@@ -1,0 +1,38 @@
+{
+  "name": "monster-scripted-shape-creation",
+  "description": "A real level teleport to tower1 asks for six initial vampire forms while its Lua script runs. Ordered creation precedes chest stock; the source waiting-bride path restores vampire form.",
+  "recordingNote": "Pinned C recording. Retain the original input tuples and native bytes.",
+  "coverage": [
+    "mode.debug",
+    "forms.polymorph",
+    "level.special-variants"
+  ],
+  "branches": [
+    "monster.shape.scripted-level-selection"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "monster.shape.scripted-level-selection",
+      "segment": 0,
+      "screenIncludes": [
+        "Change the vampire @ <24,6> into what?",
+        "Change the vampire lord @ <20,6> into what?",
+        "Change the vampire lady @ <28,6> into what?",
+        "Change the vampire lady @ <24,14> into what?",
+        "Change the vampire lord @ <28,14> into what?",
+        "Change the vampire lord @ <20,14> into what?",
+        "You materialize on a different level!"
+      ]
+    }
+  ],
+  "segments": [
+    {
+      "name": "level-creation-vlad-tower-script-order",
+      "seed": 9771,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:DECgraphics,!safe_wait,monpolycontrol\n",
+      "moves": " \u0016?\r Gvampire bat\rvampire bat\rvampire bat\rvampire bat\rvampire bat\rvampire bat\r   :"
+    }
+  ]
+}

@@ -455,19 +455,23 @@ function mk_trap_statue(x, y) {
                               CORPSTAT_NONE);
     const mtmp = makemon(game.mons[statue.corpsenm], 0, 0,
                          MM_NOCOUNTBIRTH | MM_NOMSG);
-    if (!mtmp)
-        return;             /* should never happen */
+    return mtmp instanceof Promise ? mtmp.then(finishStatue) : finishStatue(mtmp);
 
-    /* the monster's whole pack moves into the statue */
-    while (mtmp.minvent && mtmp.minvent.length) {
-        const otmp = mtmp.minvent[0];
-        otmp.owornmask = 0;
-        obj_extract_self(otmp);
-        add_to_container(statue, otmp);
+    function finishStatue(mtmp) {
+        if (!mtmp)
+            return;             /* should never happen */
+
+        /* the monster's whole pack moves into the statue */
+        while (mtmp.minvent && mtmp.minvent.length) {
+            const otmp = mtmp.minvent[0];
+            otmp.owornmask = 0;
+            obj_extract_self(otmp);
+            add_to_container(statue, otmp);
+        }
+        statue.owt = weight(statue);
+
+        return mongone(mtmp);
     }
-    statue.owt = weight(statue);
-
-    mongone(mtmp);
 }
 
 // include/mondata.h:149 is_unicorn()
@@ -554,9 +558,12 @@ export function maketrap(x, y, typ) {
     case SQKY_BOARD:
         ttmp.tnote = choose_trapnote(ttmp);
         break;
-    case STATUE_TRAP: /* create a "living" statue */
-        mk_trap_statue(x, y);
+    case STATUE_TRAP: { /* create a "living" statue */
+        const statue = mk_trap_statue(x, y);
+        if (statue instanceof Promise)
+            return statue.then(finishTrap);
         break;
+    }
     case ROLLING_BOULDER_TRAP: /* boulder will roll towards trigger */
         mkroll_launch(ttmp, x, y, ONAMES.BOULDER, 1);
         break;
@@ -962,7 +969,7 @@ async function makelevel() {
                  && !(g.mvitals?.[PMNAMES.PM_SOLDIER]?.mvflags & G_GONE))
             do_mkroom(BARRACKS);
         else if (u_depth > 15 && !rn2(6))
-            do_mkroom(SWAMP);
+            await do_mkroom(SWAMP);
         else if (u_depth > 16 && !rn2(8)
                  && !(g.mvitals?.[PMNAMES.PM_COCKATRICE]?.mvflags & G_GONE))
             do_mkroom(COCKNEST);
@@ -1142,7 +1149,7 @@ async function themerooms_generate(difficulty) {
     /* A room with a des.map is a SHAPE: lspo_map places and stamps it, then its
        own contents run. Everything else falls through to the `default` room. */
     const mf = pick.maps && pick.maps[0];
-    if (mf && themeroom_contents(pick, mf))
+    if (mf && await themeroom_contents(pick, mf))
         return !game.themeroom_failed;
 
     let rtype = OROOM, rlit = -1, contents = null;
@@ -1189,19 +1196,19 @@ async function themerooms_generate(difficulty) {
         roomH = 5 + rn2(3) * 2;
         rtype = THEMEROOM;
         needfill = FILL_NONE;
-        contents = (rm) => {
-            lspo_room({
+        contents = async (rm) => {
+            await lspo_room({
                 type: 'themed',
                 x: (rm.width - 1) / 2,
                 y: (rm.height - 1) / 2,
                 w: 1,
                 h: 1,
                 joined: false,
-                contents: () => {
+                contents: async () => {
                     if (percent(50)) {
                         const monsterClasses = ['M', 'V', 'L', 'Z'];
                         lua_shuffle(monsterClasses);
-                        lspo_monster({ class: monsterClasses[0], x: 0, y: 0,
+                        await lspo_monster({ class: monsterClasses[0], x: 0, y: 0,
                                       waiting: true });
                     } else {
                         lspo_object({ id: 'corpse', montype: '@',
@@ -1363,7 +1370,7 @@ async function themerooms_generate(difficulty) {
                 spo_push_room(aroom);
                 /* the closure gets the Lua-style room table, same as
                    lspo_room's own contents call (sp_lev.c:4095) */
-                contents(mkroom_table(aroom));
+                await contents(mkroom_table(aroom));
                 spo_endroom();
             }
             add_doors_to_room(aroom);
@@ -1387,7 +1394,7 @@ function filler_region(x, y) {
         rmtyp = THEMEROOM;
         func = themeroom_fill;
     }
-    lspo_region(x, y, rmtyp, true, FILL_NORMAL, func);
+    return lspo_region(x, y, rmtyp, true, FILL_NORMAL, func);
 }
 
 // dat/themerms.lua:890 is_eligible(room, mkrm) — for a FILL the room is passed
@@ -1428,7 +1435,7 @@ function themeroom_fill(rm) {
        transcribed in js/themerms.js. */
     const contents = themeroom_fill_contents[pick.name];
     if (contents)
-        contents(rm);                   /* sp_lev.c:5704, already a Lua table */
+        return contents(rm);            /* sp_lev.c:5704, already a Lua table */
     else
         impossible(`themeroom_fill ${pick.name} is not transcribed`);
 }
@@ -1454,11 +1461,11 @@ function themeroom_obj_new(otyp) {
 // from the generated table; the two that are not are spelled out here.
 // Returns false for a room whose contents are not ported, so the caller can
 // fall back rather than emit a wrong stream.
-function themeroom_contents(pick, mf) {
+async function themeroom_contents(pick, mf) {
     if (pick.name === 'Blocked center') {
         // themerms.lua:535 — this room has its own gate BEFORE filler_region,
         // and shuffle() adds an rn2(2) whenever the gate passes.
-        lspo_map(mf, () => {
+        await lspo_map(mf, async () => {
             if (percent(30)) {
                 const terr = ['-', 'P'];
                 lua_shuffle(terr);
@@ -1468,14 +1475,14 @@ function themeroom_contents(pick, mf) {
                     toterrain: terr[0],
                 });
             }
-            filler_region(1, 1);
+            await filler_region(1, 1);
         });
         return true;
     }
     if (pick.name === 'Water-surrounded vault') {
         // dat/themerms.lua:765. Keep the Lua statement order because object
         // initialization and both shuffles all draw from the game PRNG.
-        lspo_map(mf, () => {
+        await lspo_map(mf, async () => {
             lspo_region(3, 3, THEMEROOM, true, FILL_NONE, null, false);
 
             const nasty_undead = [
@@ -1506,14 +1513,14 @@ function themeroom_contents(pick, mf) {
             }
 
             lua_shuffle(nasty_undead);
-            lspo_monster(nasty_undead[0], 2, 2);
+            await lspo_monster(nasty_undead[0], 2, 2);
             lspo_exclusion({ type: 'teleport', region: [2, 2, 3, 3] });
         });
         return true;
     }
     if (mf.filler) {
         const [fx, fy] = mf.filler;
-        lspo_map(mf, () => filler_region(fx, fy));
+        await lspo_map(mf, () => filler_region(fx, fy));
         return true;
     }
     return false;
@@ -3419,7 +3426,7 @@ async function fill_ordinary_room(croom, bonus_items) {
     if (x <= 1) x = 2;
     let trycnt = 0;
     while (!rn2(x) && ++trycnt < 1000) {
-        mktrap(0, MKTRAP_NOFLAGS, croom, null);
+        await mktrap(0, MKTRAP_NOFLAGS, croom, null);
     }
     // Gold
     if (!rn2(3) && somexyspace(croom, pos)) {

@@ -1386,7 +1386,7 @@ export async function animate_statue(statue, x, y, cause) {
             /* if hero has protection from shape changers, cham field will
                be NON_PM; otherwise, set form to match the statue */
             if (mon && ismnum(mon.cham))
-                newcham(mon, mptr, NO_NC_FLAGS);
+                await newcham(mon, mptr, NO_NC_FLAGS);
         } else {
             if (cause === ANIMATE_SPELL)
                 mmflags |= MM_ADJACENTOK;

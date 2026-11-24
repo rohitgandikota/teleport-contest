@@ -1,0 +1,100 @@
+{
+  "name": "monster-initial-shape-control",
+  "description": "Initial maker selection covers changed and unchanged chameleons, basic-vampire wolf refusal and bat class, leader wolf acceptance and Vlad without an initial selector.",
+  "recordingNote": "Pinned C recording. Retain the original input tuples and native bytes.",
+  "coverage": [
+    "mode.debug",
+    "forms.polymorph"
+  ],
+  "branches": [
+    "monster.shape.initial-changed",
+    "monster.shape.initial-same-form",
+    "monster.shape.vampire-class-retry",
+    "monster.shape.leader-wolf",
+    "monster.shape.vlad-initial-exception"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "monster.shape.initial-changed",
+      "segment": 0,
+      "screenIncludes": [
+        "Change the chameleon @ <32,15> into what?",
+        "A kitten appears next to you."
+      ]
+    },
+    {
+      "branch": "monster.shape.initial-same-form",
+      "segment": 1,
+      "screenIncludes": [
+        "Change the chameleon @ <32,15> into what?",
+        "A chameleon appears next to you."
+      ]
+    },
+    {
+      "branch": "monster.shape.vampire-class-retry",
+      "segment": 2,
+      "screenIncludes": [
+        "It can't become that.",
+        "Change the vampire @ <32,15> into what kind of monster?",
+        "A vampire bat appears next to you."
+      ]
+    },
+    {
+      "branch": "monster.shape.leader-wolf",
+      "segment": 3,
+      "screenIncludes": [
+        "Change the vampire lord @ <32,15> into what?",
+        "A wolf appears next to you."
+      ]
+    },
+    {
+      "branch": "monster.shape.vlad-initial-exception",
+      "segment": 4,
+      "screenIncludes": [
+        "force Vlad the Impaler?",
+        "Vlad the Impaler appears next to you."
+      ],
+      "screenExcludes": [
+        "Change "
+      ]
+    }
+  ],
+  "segments": [
+    {
+      "name": "creation-chameleon-kitten",
+      "seed": 9771,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:DECgraphics,!safe_wait,monpolycontrol\n",
+      "moves": " \u0007sleeping peaceful chameleon\rkitten\r   :"
+    },
+    {
+      "name": "creation-chameleon-natural-form",
+      "seed": 9771,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:DECgraphics,!safe_wait,monpolycontrol\n",
+      "moves": " \u0007sleeping peaceful chameleon\rchameleon\r   :"
+    },
+    {
+      "name": "creation-vampire-reject-wolf-accept-bat-class",
+      "seed": 9771,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:DECgraphics,!safe_wait,monpolycontrol\n",
+      "moves": " \u0007sleeping peaceful vampire\rwolf\r B\r   :"
+    },
+    {
+      "name": "creation-vampire-leader-wolf",
+      "seed": 9771,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:DECgraphics,!safe_wait,monpolycontrol\n",
+      "moves": " \u0007sleeping peaceful vampire lord\rwolf\r   :"
+    },
+    {
+      "name": "creation-vlad-no-selector",
+      "seed": 9771,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:DECgraphics,!safe_wait,monpolycontrol\n",
+      "moves": " \u0007sleeping peaceful Vlad the Impaler\ry   :"
+    }
+  ]
+}

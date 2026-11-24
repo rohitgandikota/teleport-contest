@@ -629,20 +629,18 @@ export async function mdrop_obj(mon, obj, verbosely) {
 // (or, off the map, relocates) the unique objects it carries.  The DRAW is
 // obj_resists(obj, 0, 0): one rn2(100) per ordinary object even though a 0%
 // chance can never pass.
-export async function mdrop_special_objs(mon) {
-    /* C caches obj->nobj before the body because the drop unlinks obj;
-       walking a snapshot of the chain is the same traversal. */
-    for (const obj of [...(mon.minvent || [])]) {
-        /* the Amulet, invocation tools, and Rider corpses resist even when
-           artifacts and ordinary objects are given 0% resistance chance;
-           current role's quest artifact is rescued too--quest artifacts
-           for the other roles are not */
-        if (obj_resists(obj, 0, 0) || is_quest_artifact(obj)) {
-            if (mon.mx) {
-                await mdrop_obj(mon, obj, false);
-            } else { /* migrating monster not on map */
-                await extract_from_minvent(mon, obj, true, true);
-                await rloco(obj);
+export function mdrop_special_objs(mon) {
+    const inventory = [...(mon.minvent || [])];
+    let index = 0;
+    return dropNext();
+
+    function dropNext() {
+        for (; index < inventory.length; index++) {
+            const obj = inventory[index];
+            if (obj_resists(obj, 0, 0) || is_quest_artifact(obj)) {
+                const dropped = mon.mx ? mdrop_obj(mon, obj, false)
+                    : extract_from_minvent(mon, obj, true, true).then(() => rloco(obj));
+                return dropped.then(() => { ++index; return dropNext(); });
             }
         }
     }

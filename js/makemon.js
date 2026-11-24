@@ -510,7 +510,7 @@ export function reset_mvitals() {
 }
 
 // src/makemon.c:1542 mbirth_limit()
-function mbirth_limit(mndx) {
+export function mbirth_limit(mndx) {
     return mndx === PMNAMES.PM_NAZGUL ? 9
          : mndx === PMNAMES.PM_ERINYS ? 3
          : MAXMONNO;
@@ -2439,163 +2439,155 @@ export function makemon(ptr, x, y, mmflags) {
     mitem = 0; /* STRANGE_OBJECT */
     if (mndx === PMNAMES.PM_VLAD_THE_IMPALER)
         mitem = ONAMES.CANDELABRUM_OF_INVOCATION;
-    /* src/makemon.c:1374 — a ghost is NAMED at creation, and rndghostname()
-       draws: rn2(7) to decide between the table and the hero's own name, then
-       rn2(34) to pick from the table. The branch sits in the same else-if
-       chain as the mitem assignments, so it is exclusive with them. */
-    else if (mndx === PMNAMES.PM_GHOST && !(mmflags & MMFLAGS.MM_NONAME)) {
-        /* christen_monst() copies the name onto the monster; no draw */
-        christen_monst(mtmp, rndghostname());
-    }
-    else if (mndx === PMNAMES.PM_CROESUS)
-        mitem = ONAMES.TWO_HANDED_SWORD;
-    else if (ptr.msound === MS_NEMESIS)
-        mitem = ONAMES.BELL_OF_OPENING;
-    else if (mndx === PMNAMES.PM_PESTILENCE)
-        mitem = ONAMES.POT_SICKNESS;
-
-    /* pm_to_cham()/newcham() and the Wizard-of-Yendor branch sit here in C;
-       every species that reaches them is G_NOGEN or G_UNIQ and so cannot be
-       produced by rndmonst() during ordinary level generation. */
-    /* src/makemon.c:1355 — a shapechanger takes a starting form via
-       newcham(); Vlad keeps his own shape for the Candelabrum */
-    mtmp.cham = -1;
+    mtmp.cham = NON_PM;
+    let changed = 0;
     if (!Protection_from_shape_changers() && is_shapeshifter(ptr)) {
-        const mcham = mndx;    /* pm_to_cham: M2_SHAPESHIFTER means itself */
-        mtmp.cham = mcham;
-        if (mndx !== PMNAMES.PM_VLAD_THE_IMPALER
-            && newcham(mtmp, null, 0))
-            allow_minvent = false;
+        mtmp.cham = mndx;
+        /* Vlad keeps his own shape for the Candelabrum. */
+        if (mndx !== PMNAMES.PM_VLAD_THE_IMPALER)
+            changed = newcham(mtmp, null, 0);
     } else if (mndx === PMNAMES.PM_WIZARD_OF_YENDOR) {
-        /* src/makemon.c:1370 */
         mtmp.iswiz = true;
         (game.context ||= {}).no_of_wizards =
             (game.context.no_of_wizards | 0) + 1;
-        if (game.context.no_of_wizards === 1
-            && Is_earthlevel(game.u.uz))
+        if (game.context.no_of_wizards === 1 && Is_earthlevel(game.u.uz))
             mitem = ONAMES.SPE_DIG;
+    } else if (mndx === PMNAMES.PM_GHOST && !(mmflags & MMFLAGS.MM_NONAME)) {
+        christen_monst(mtmp, rndghostname());
+    } else if (mndx === PMNAMES.PM_CROESUS) {
+        mitem = ONAMES.TWO_HANDED_SWORD;
+    } else if (ptr.msound === MS_NEMESIS) {
+        mitem = ONAMES.BELL_OF_OPENING;
+    } else if (mndx === PMNAMES.PM_PESTILENCE) {
+        mitem = ONAMES.POT_SICKNESS;
     }
 
-    if (mitem && allow_minvent)
-        mongets(mtmp, mitem);
+    return changed instanceof Promise ? changed.then(finishShape)
+                                      : finishShape(changed);
 
-    if (game.in_mklev) {
-        if ((is_ndemon(ptr) || mndx === PMNAMES.PM_WUMPUS
-             || mndx === PMNAMES.PM_LONG_WORM || mndx === PMNAMES.PM_GIANT_EEL)
-            && !game.u.uhave?.amulet && rn2(5))
-            mtmp.msleeping = true;
-    } else if (byyou) {
-        /* src/makemon.c:1391. Creation beside the hero draws the monster
-           once here and again in the common arrival block below. */
-        newsym(mtmp.mx, mtmp.my);
-        set_apparxy(mtmp);
-    }
-    /* src/makemon.c:1397 — bribable demon princes start out peaceful and
-       invisible unless the hero wields Excalibur or Demonbane */
-    if (is_dprince(ptr) && ptr.msound === MS_BRIBE) {
-        mtmp.mpeaceful = mtmp.minvis = mtmp.perminvis = 1;
-        mtmp.mavenge = 0;
-        if (u_wield_art(ART_EXCALIBUR) || u_wield_art(ART_DEMONBANE))
-            mtmp.mpeaceful = mtmp.mtame = false;
-    }
-    if (mndx === PMNAMES.PM_RAVEN && game.u.uwep
-        && game.u.uwep.otyp === ONAMES.BEC_DE_CORBIN)
-        mtmp.mpeaceful = true;
+    function finishShape(changed) {
+        if (changed)
+            allow_minvent = false;
+        if (mitem && allow_minvent)
+            mongets(mtmp, mitem);
 
-    /* src/makemon.c:1404 — a long worm grows a random tail at creation */
-    if (mndx === PMNAMES.PM_LONG_WORM) {
-        worm_wire(goodpos);
-        if ((mtmp.wormno = get_wormno()) !== 0) {
-            initworm(mtmp, !(mmflags & (MMFLAGS.MM_NOTAIL ?? 0)) ? rn2(5) : 0);
-            if (count_wsegs(mtmp))
-                place_worm_tail_randomly(mtmp, x, y);
-        }
-    }
-
-    // src/makemon.c:1414: ordinary clerics and some Angels become roamers.
-    if ((mndx === PMNAMES.PM_ALIGNED_CLERIC || mndx === PMNAMES.PM_HIGH_CLERIC)
-        ? !(mmflags & (MM_EPRI | MM_EMIN))
-        : (mndx === PMNAMES.PM_ANGEL && !(mmflags & MM_EMIN) && !rn2(3))) {
-        newemin(mtmp);
-        mtmp.isminion = 1;
-        mtmp.emin.min_align = rn2(3) - 1;
-        mtmp.emin.renegade = (mmflags & MM_ANGRY) ? true : !rn2(3);
-        mtmp.mpeaceful = mtmp.emin.min_align === game.u.ualign.type
-            ? !mtmp.emin.renegade : mtmp.emin.renegade;
-    }
-    set_malign(mtmp);
-
-    let group;
-    if (anymon && !(mmflags & MM_NOGRP)) {
-        if ((ptr.geno & G_SGROUP) && rn2(2)) {
-            group = m_initsgrp(mtmp, mtmp.mx, mtmp.my, mmflags);
-        } else if (ptr.geno & G_LGROUP) {
-            if (rn2(3))
-                group = m_initlgrp(mtmp, mtmp.mx, mtmp.my, mmflags);
-            else
-                group = m_initsgrp(mtmp, mtmp.mx, mtmp.my, mmflags);
-        }
-    }
-
-    /* Creation stays synchronous during mklev. Runtime group messages
-       finish before the parent's inventory and appearance are processed. */
-    const finishCreation = () => {
-        if (allow_minvent) {
-            if (is_armed(ptr))
-                m_initweap(mtmp);
-            m_initinv(mtmp);
-            m_dowear(mtmp, true);
-
-            if (!rn2(100) && is_domestic(ptr)
-                && can_saddle(mtmp) && !which_armor(mtmp, W_SADDLE))
-                put_saddle_on_mon(null, mtmp);
-        }
-
-        if (ptr.mflags3 && !(mmflags & MM_NOWAIT)) {
-            if (ptr.mflags3 & M3_WAITFORU)
-                mtmp.mstrategy |= STRAT_WAITFORU;
-            if (ptr.mflags3 & M3_CLOSE)
-                mtmp.mstrategy |= STRAT_CLOSE;
-            if (ptr.mflags3 & (M3_WAITMASK | M3_COVETOUS))
-                mtmp.mstrategy |= STRAT_APPEARMSG;
-        }
-
-        if (allow_minvent && (game.migrating_objs || []).length)
-            deliver_obj_to_mon(mtmp, 1, DF_NONE);
-        if (!game.in_mklev) {
+        if (game.in_mklev) {
+            if ((is_ndemon(ptr) || mndx === PMNAMES.PM_WUMPUS
+                 || mndx === PMNAMES.PM_LONG_WORM || mndx === PMNAMES.PM_GIANT_EEL)
+                && !game.u.uhave?.amulet && rn2(5))
+                mtmp.msleeping = true;
+        } else if (byyou) {
+            /* src/makemon.c:1391. Creation beside the hero draws the monster
+               once here and again in the common arrival block below. */
             newsym(mtmp.mx, mtmp.my);
-            let what = null, exclaim = !(mmflags & MM_NOEXCLAM);
-            if (!(mmflags & MM_NOMSG)) {
-                if ((canseemon(mtmp) && (M_AP_TYPE(mtmp) === M_AP_NOTHING
-                                         || M_AP_TYPE(mtmp) === M_AP_MONSTER))
-                    || sensemon(mtmp)) {
-                    what = Amonnam(mtmp);
-                    if (M_AP_TYPE(mtmp) === M_AP_MONSTER)
-                        exclaim = true;
-                } else if (canseemon(mtmp)) {
-                    what = upstart(mhidden_description(mtmp,
-                        MHID_ARTICLE | MHID_ALTMON));
-                }
-            }
-            if (what || game.occupation)
-                return (async () => {
-                    if (what) {
-                        set_msg_xy(mtmp.mx, mtmp.my);
-                        await Norep(`${what}${exclaim ? ' suddenly' : ''} ${
-                            vtense(what, 'appear')}${
-                            distu(x, y) <= 2 ? ' next to you'
-                            : distu(x, y) <= BOLT_LIM * BOLT_LIM ? ' close by'
-                                : ''}${exclaim ? '!' : '.'}`);
-                    }
-                    if (game.occupation)
-                        await dochugw(mtmp, false);
-                    return mtmp;
-                })();
+            set_apparxy(mtmp);
         }
-        return mtmp;
-    };
-    return group instanceof Promise ? group.then(finishCreation)
-                                    : finishCreation();
+        /* src/makemon.c:1397 — bribable demon princes start out peaceful and
+           invisible unless the hero wields Excalibur or Demonbane */
+        if (is_dprince(ptr) && ptr.msound === MS_BRIBE) {
+            mtmp.mpeaceful = mtmp.minvis = mtmp.perminvis = 1;
+            mtmp.mavenge = 0;
+            if (u_wield_art(ART_EXCALIBUR) || u_wield_art(ART_DEMONBANE))
+                mtmp.mpeaceful = mtmp.mtame = false;
+        }
+        if (mndx === PMNAMES.PM_RAVEN && game.u.uwep
+            && game.u.uwep.otyp === ONAMES.BEC_DE_CORBIN)
+            mtmp.mpeaceful = true;
+
+        /* src/makemon.c:1404 — a long worm grows a random tail at creation */
+        if (mndx === PMNAMES.PM_LONG_WORM) {
+            worm_wire(goodpos);
+            if ((mtmp.wormno = get_wormno()) !== 0) {
+                initworm(mtmp, !(mmflags & (MMFLAGS.MM_NOTAIL ?? 0)) ? rn2(5) : 0);
+                if (count_wsegs(mtmp))
+                    place_worm_tail_randomly(mtmp, x, y);
+            }
+        }
+
+        // src/makemon.c:1414: ordinary clerics and some Angels become roamers.
+        if ((mndx === PMNAMES.PM_ALIGNED_CLERIC || mndx === PMNAMES.PM_HIGH_CLERIC)
+            ? !(mmflags & (MM_EPRI | MM_EMIN))
+            : (mndx === PMNAMES.PM_ANGEL && !(mmflags & MM_EMIN) && !rn2(3))) {
+            newemin(mtmp);
+            mtmp.isminion = 1;
+            mtmp.emin.min_align = rn2(3) - 1;
+            mtmp.emin.renegade = (mmflags & MM_ANGRY) ? true : !rn2(3);
+            mtmp.mpeaceful = mtmp.emin.min_align === game.u.ualign.type
+                ? !mtmp.emin.renegade : mtmp.emin.renegade;
+        }
+        set_malign(mtmp);
+
+        let group;
+        if (anymon && !(mmflags & MM_NOGRP)) {
+            if ((ptr.geno & G_SGROUP) && rn2(2)) {
+                group = m_initsgrp(mtmp, mtmp.mx, mtmp.my, mmflags);
+            } else if (ptr.geno & G_LGROUP) {
+                if (rn2(3))
+                    group = m_initlgrp(mtmp, mtmp.mx, mtmp.my, mmflags);
+                else
+                    group = m_initsgrp(mtmp, mtmp.mx, mtmp.my, mmflags);
+            }
+        }
+
+        /* Groups finish before the parent's inventory and appearance. */
+        const finishCreation = () => {
+            if (allow_minvent) {
+                if (is_armed(ptr))
+                    m_initweap(mtmp);
+                m_initinv(mtmp);
+                m_dowear(mtmp, true);
+
+                if (!rn2(100) && is_domestic(ptr)
+                    && can_saddle(mtmp) && !which_armor(mtmp, W_SADDLE))
+                    put_saddle_on_mon(null, mtmp);
+            }
+
+            if (ptr.mflags3 && !(mmflags & MM_NOWAIT)) {
+                if (ptr.mflags3 & M3_WAITFORU)
+                    mtmp.mstrategy |= STRAT_WAITFORU;
+                if (ptr.mflags3 & M3_CLOSE)
+                    mtmp.mstrategy |= STRAT_CLOSE;
+                if (ptr.mflags3 & (M3_WAITMASK | M3_COVETOUS))
+                    mtmp.mstrategy |= STRAT_APPEARMSG;
+            }
+
+            if (allow_minvent && (game.migrating_objs || []).length)
+                deliver_obj_to_mon(mtmp, 1, DF_NONE);
+            if (!game.in_mklev) {
+                newsym(mtmp.mx, mtmp.my);
+                let what = null, exclaim = !(mmflags & MM_NOEXCLAM);
+                if (!(mmflags & MM_NOMSG)) {
+                    if ((canseemon(mtmp) && (M_AP_TYPE(mtmp) === M_AP_NOTHING
+                                             || M_AP_TYPE(mtmp) === M_AP_MONSTER))
+                        || sensemon(mtmp)) {
+                        what = Amonnam(mtmp);
+                        if (M_AP_TYPE(mtmp) === M_AP_MONSTER)
+                            exclaim = true;
+                    } else if (canseemon(mtmp)) {
+                        what = upstart(mhidden_description(mtmp,
+                            MHID_ARTICLE | MHID_ALTMON));
+                    }
+                }
+                if (what || game.occupation)
+                    return (async () => {
+                        if (what) {
+                            set_msg_xy(mtmp.mx, mtmp.my);
+                            await Norep(`${what}${exclaim ? ' suddenly' : ''} ${
+                                vtense(what, 'appear')}${
+                                distu(x, y) <= 2 ? ' next to you'
+                                : distu(x, y) <= BOLT_LIM * BOLT_LIM ? ' close by'
+                                    : ''}${exclaim ? '!' : '.'}`);
+                        }
+                        if (game.occupation)
+                            await dochugw(mtmp, false);
+                        return mtmp;
+                    })();
+            }
+            return mtmp;
+        };
+        return group instanceof Promise ? group.then(finishCreation)
+                                        : finishCreation();
+    }
 }
 
 // src/makemon.c:2051 grow_up() — a pet levels up from a kill (or a wraith

@@ -3696,6 +3696,91 @@ is next. Blocked stealth is ready after that, with 21 checks and an exact
 `lastinvnr` amendment and a fresh native `qa` detection pair; four-way
 comparison is pending. All three original raw files remain unchanged.
 
+## 2026-11-23: shared monster selection and ordered creation
+
+The current runtime combines the immutable shared-selector v1, readability
+v2 and prefab-completion v3 patches, applied by hunks. All 131 resulting
+source hashes match the reviewed aggregate exactly. The preceding duration
+checkpoint `bd884600` is committed and pushed. Current runtime and fixture
+inventory stayed fixed for the complete 724-fixture regression. It passes all
+815,359 boundary screens/cursors, 16,408,040 scored RNG positions and 30,734
+animation frames. Both shards complete without failures or timeouts at the
+default 45-second worker limit. All 279 runtime hashes remain unchanged.
+
+`mon.select_newcham_form` and the C validation helpers now serve both
+ordinary changes and initial `makemon` selection. The private zap selector
+is removed. Wizard selection observes C's coordinates, class input, retries,
+vampire limits and protected-item rules. Initial creation completes selection
+before equipment, names, appearance, waiting-form restoration and inventory
+callbacks. Makers, statues, room builders, map contents, theme contents and
+level scripts preserve C's completion order and scope lifetimes.
+
+Most file changes are mechanical async/await propagation through 120 level
+scripts and helpers. The parent reviewed the complete selector/newcham and
+creation source paths, three core review units and the script syntax/caller
+proofs. Readability v2 restores the original straight loops in `fill_zoo`,
+`mkswamp` and `populate_maze`, removing 45 net lines of manual continuation
+code. Their complete production caller sets consume completion. APIs with
+proven synchronous scalar consumers retain their conditional return contract.
+
+A broader Gehennom replay found a real v1 error: the selected prefab's
+returned promise was discarded through `fab`/`fab.contents`. Its scoped map
+coordinates survived into stair placement. V1 and v2 match only 442/490
+screens and 460/490 cursors; the first RNG mismatch is call 36,961, segment 0
+step 35. V3 completes the prefab/style chain before stairs and whole-level
+stocking. The final candidate matches all 490 boundaries and 366,071 calls.
+The old failure and first-state diagnostics remain unchanged. The expanded
+review classifies all 6,393 member calls and 24 indirect identifier calls in
+the 120 transformed files, including returned adapters, theme callbacks,
+postprocess handlers and the external level registry. It finds no further
+proven missing completion. The earlier v1 indirect-dispatch claim was wrong;
+its correction is explicit in the retained review.
+
+All 143 source controls and twelve actual-input checks pass on the promoted
+runtime. Three unchanged new C fixtures contain twelve cases, 741 boundaries
+and 32,033 calls. All twelve native recipe assertions, all five input fields,
+source markers and whole-file hashes pass. Twelve focused fixtures cover
+40 segments, 4,298 screens/cursors and exact input slices, 533,358 complete
+RNG calls and 305 animation frames. Scoring, whole-stream/length checks,
+exact animation counts/cursors and all twelve 60-second hang checks pass.
+All 131 changed modules pass syntax checks; the source audit remains zero
+findings in 276 non-frozen modules. An initial parent input-gate command
+omitted its required fixture argument and failed before replay. The corrected
+command passes; no runtime or assertion changed for that invocation error.
+
+A separate direct-input check now suspends the actual interactive API at each
+read, supplies the next key asynchronously, and compares its complete outputs
+with the native-verified immediate replay. All twelve focused fixtures,
+40 segments, 4,298 boundaries, 533,358 calls and 305 animation frames are
+byte-equal between both input modes. Six retained interactive exit controls
+also pass. The new normal-import tool is `tools/deferred-input-gate.mjs`.
+The existing hang gate invokes the same offline scorer worker as the scorer;
+its description and console labels now correctly describe a timeout check.
+Its execution logic is unchanged. The source-backed limitation is recorded
+beside the old July timeout note, without editing any frozen file.
+
+The NFS union verifies the exact three promoted native file hashes. It now
+contains 718 credited inputs, twenty-two matching manifests/layouts,
+4,520/5,492 entered functions and 58,961/107,260 direct branch outcomes.
+The 38 added raw inputs contribute 165 segments, plus nine independent Linux
+control segments. Bulk profiles remain under
+`/share/NFS/u/rohit/research/contest/artifacts/2026-11-22/c-coverage-compress.E84JI2/verified-monster-selector-union-20261123`.
+Local evidence is `.cache/restart-20261122/controlled-shape-audit-*`,
+`monster-selector-parent-promotion/`, `monster-selector-promoted-*` and
+`monster-selector-parent-verification.json`. The original v1 recipes retain
+the invalid `monster.equipment` category in cache; promoted copies use
+existing categories, with raw recordings and input tuples unchanged.
+
+This does not finish all of `makemon` or `create_monster`. The inherited
+`!allow_minvent` discard arm, several Lua monster options and the object
+appearance boulder relocation gap remain separately recorded. The pinned C
+Lua parser itself leaves `seentraps` zero. Do not manufacture an unsupported
+Lua reproducer or call these branches covered. The next audit addresses
+actual option producers. Blocked stealth is ready next; mount equipment
+wording and the Air first-divergence investigation are separate. Save cleanup
+plus the process-only inventory counter is undergoing its four-way native
+comparison, including the fresh `qa` detection pair.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

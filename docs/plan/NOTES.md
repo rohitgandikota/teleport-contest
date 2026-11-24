@@ -4181,6 +4181,26 @@ a whole session on the board.
 
 ## THE JUDGE TIMED US OUT (900s) — and neither local gate could see it
 
+Current verification, November 23, 2026: the historical failure below is
+retained, but its driver description is outdated for this checkout.
+`tools/hang-gate.mjs` runs the same `--worker-session` offline entry point as
+`frozen/ps_test_runner.mjs`. It bounds worker runtime; pair it with scorer
+error and metric checks. Current `runSegment` handles an empty queue by
+throwing, and the frozen playability runner installs its own throwing
+sentinel. Neither establishes equivalence under delayed key delivery.
+
+`tools/deferred-input-gate.mjs` now drives `NethackGame.start` and
+`moveloop_core` with a pending promise at every empty input request. It
+supplies each real key asynchronously and captures the final pending
+boundary before stopping the test coroutine. It compares every screen,
+cursor, complete RNG call, animation slice and consumed-key count against
+ordinary replay. Run the native scorer and strict RNG/frame checks on the
+same fixtures. At the shared-selector checkpoint, all twelve focused
+fixtures and their forty segments match under both input modes. A pending
+request for the next command is normal at a recording boundary; the exact
+C boundary output determines whether an extra prompt was introduced.
+
+
 Mon 27 Jul 2026 20:50 UTC the leaderboard showed:
 
     Latest scoring run failed

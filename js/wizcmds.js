@@ -1850,7 +1850,7 @@ export async function wiz_migrate_mons() {
         while (mcount > 0) {
             if (use_random_mon) {
                 ptr = rndmonst();
-                mtmp = makemon(ptr, 0, 0, MM_NOMSG);
+                mtmp = await makemon(ptr, 0, 0, MM_NOMSG);
             } else {
                 mtmp = (game.level.monsters || [])[0] || null; /* fmon */
             }

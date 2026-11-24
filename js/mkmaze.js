@@ -153,7 +153,7 @@ export async function makemaz(s) {
     }
 
     mkmaze_mklev_fns?.place_branch?.(Is_branchlev_here(), 0, 0);
-    populate_maze();
+    await populate_maze();
     return true;
 }
 
@@ -761,7 +761,7 @@ export function mazexy(cc) {
 }
 
 // src/mkmaze.c:1092 populate_maze(); stock a generated random maze.
-function populate_maze() {
+async function populate_maze() {
     const mm = { x: 0, y: 0 };
     let i;
 
@@ -776,18 +776,18 @@ function populate_maze() {
     }
     for (i = rn2(3); i; i--) {
         mazexy(mm);
-        makemon(game.mons[PMNAMES.PM_MINOTAUR], mm.x, mm.y, NO_MM_FLAGS);
+        await makemon(game.mons[PMNAMES.PM_MINOTAUR], mm.x, mm.y, NO_MM_FLAGS);
     }
     for (i = rn1(5, 7); i; i--) {
         mazexy(mm);
-        makemon(null, mm.x, mm.y, NO_MM_FLAGS);
+        await makemon(null, mm.x, mm.y, NO_MM_FLAGS);
     }
     for (i = rn1(6, 7); i; i--) {
         mazexy(mm);
         mkgold(0, mm.x, mm.y);
     }
     for (i = rn1(6, 7); i; i--)
-        mkmaze_mklev_fns?.mktrap?.(0, MKTRAP_MAZEFLAG, null, null);
+        await mkmaze_mklev_fns?.mktrap?.(0, MKTRAP_MAZEFLAG, null, null);
 }
 
 // src/mkmaze.c:892 maze_inbounds()

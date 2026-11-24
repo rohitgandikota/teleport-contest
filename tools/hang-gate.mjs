@@ -1,22 +1,10 @@
-// tools/hang-gate.mjs — reproduce the JUDGE's end-of-input blocking behaviour.
-//
-// WHY THIS EXISTS. Neither of our other gates can see a judge hang:
-//   - frozen/score.sh runs only the 44 public sessions and lets nhgetch THROW
-//     "Input queue empty" when the queue drains, so an over-read looks benign.
-//   - tools/generalize.mjs hits the same throw path.
-// The judge runs frozen/playability_runner.mjs, which sets game.nhDisplay to a
-// js/terminal.js instance. That class HAS readKey(), so js/input.js:20 falls
-// through to `await display.readKey(...)` instead of throwing, and an
-// end-of-input --More-- BLOCKS FOREVER. One hung session eats the judge's
-// whole 900s budget and the fork goes unscored -- that is what happened on
-// Mon 27 Jul 2026 20:50 UTC.
-//
-// A hang is a DIVERGENCE SIGNAL, not just a stall: the session's key list is
-// exactly what C consumed, so asking for one more key means we emitted a
-// prompt C did not.
+// Bound the offline scorer worker's runtime for each fixture.
+// Pair this timeout check with scoring for output equality and worker errors.
+// tools/deferred-input-gate.mjs separately checks delayed input through the
+// interactive API. The July 2026 timeout history is in docs/plan/NOTES.md.
 //
 // Usage:  node tools/hang-gate.mjs [--ms=8000] [session ...]
-// Exit 1 if any session over-reads. Default: every session in sessions/.
+// Exit 1 if any worker exceeds the time limit. Default: every sessions/ file.
 
 import { readdirSync } from 'node:fs';
 import { spawnSync } from 'node:child_process';
@@ -30,7 +18,7 @@ if (!targets.length)
         .map(f => 'sessions/' + f);
 
 console.log(`hang gate: ${targets.length} session(s), ${budgetMs}ms each`);
-console.log('a session that BLOCKS asked for a key the recorded run never provided\n');
+console.log('each offline scorer worker has a separate time limit\n');
 
 const hung = [];
 for (const t of targets) {
@@ -46,9 +34,9 @@ for (const t of targets) {
 
 console.log('');
 if (hung.length) {
-    console.log(`FAIL: ${hung.length} session(s) blocked on an over-read:`);
+    console.log(`FAIL: ${hung.length} session worker(s) exceeded the time limit:`);
     for (const h of hung) console.log('  ' + h);
-    console.log('\nDo not push. Find the message we emit that C does not.');
+    console.log('\nInspect the timed-out workers and their scorer results.');
     process.exit(1);
 }
-console.log(`OK: no session over-read (${targets.length} checked).`);
+console.log(`OK: no worker exceeded the time limit (${targets.length} checked).`);

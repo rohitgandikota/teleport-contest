@@ -1,0 +1,247 @@
+{
+  "name": "docrt-flags",
+  "description": "Eight unchanged native controls for pool redraw, swallowed/dry controls, terrain-buffer refresh and live direction retry. Full styled screens, cursors, complete RNG, slices and frame arrays are exact on the sealed docrt candidate.",
+  "segments": [
+    {
+      "seed": 7401,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " j\u0017uncursed amulet of magical breathing\rPo\u001b\u001b\u0017pool\r\u001b\u001b\u0014.\u001b\u001b\u0012",
+      "name": "docrt-underwater-breathing",
+      "steps": []
+    },
+    {
+      "seed": 7401,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " j\u0017uncursed amulet of magical breathing\rPo\u001b\u001b\u0017room\r\u001b\u001b\u0014.\u001b\u001b\u0012",
+      "name": "docrt-dry-room",
+      "steps": []
+    },
+    {
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=mention_decor\n",
+      "moves": " #polyself\rwater elemental\r  \u001b\u001b\u0017pool\r  \u001b\u001b.  \u001b\u001b\u0012",
+      "name": "docrt-swimming-blind",
+      "steps": []
+    },
+    {
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             \u0017uncursed ring of fire resistance\rPar\u001b\u001b\u001b\u001b\u001b\u001b\u0007hostile fire vortex\rms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001b\u0012",
+      "name": "docrt-swallowed",
+      "steps": []
+    },
+    {
+      "seed": 7401,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "docrt-terrain-refresh",
+      "moves": " #terrain\nd\u0012\u001b",
+      "steps": []
+    },
+    {
+      "seed": 7401,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "docrt-terrain-no-refresh",
+      "moves": " #terrain\nd\u001b",
+      "steps": []
+    },
+    {
+      "seed": 7401,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "docrt-direction-refresh",
+      "moves": " o\u0012\u001b",
+      "steps": []
+    },
+    {
+      "seed": 7401,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "docrt-direction-cancel",
+      "moves": " o\u001b",
+      "steps": []
+    }
+  ],
+  "coverage": [
+    "mode.debug",
+    "ui.getpos",
+    "ui.map-memory-vision",
+    "terrain.water-lava"
+  ],
+  "branches": [
+    "docrt.pool-full-redraw",
+    "docrt.dry-full-redraw-control",
+    "docrt.blind-swimming-full-redraw",
+    "docrt.swallowed-control",
+    "docrt.terrain-buffer-refresh",
+    "docrt.terrain-without-refresh-control",
+    "docrt.live-direction-refresh",
+    "docrt.direction-cancel-control"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "docrt.pool-full-redraw",
+      "segment": 0,
+      "screenCells": [
+        {
+          "step": 57,
+          "x": 39,
+          "y": 7,
+          "equals": "@"
+        },
+        {
+          "step": 57,
+          "x": 36,
+          "y": 4,
+          "equals": " "
+        }
+      ],
+      "source": "display.c:1730-1733 under_water(1); outer remembered room stays hidden. Input gate independently proves ordinary Underwater."
+    },
+    {
+      "branch": "docrt.dry-full-redraw-control",
+      "segment": 1,
+      "screenCells": [
+        {
+          "step": 57,
+          "x": 39,
+          "y": 7,
+          "equals": "@"
+        },
+        {
+          "step": 57,
+          "x": 36,
+          "y": 4,
+          "equals": "─"
+        }
+      ],
+      "source": "display.c:1739-1761 ordinary memory/vision branch; dry control retains the room."
+    },
+    {
+      "branch": "docrt.blind-swimming-full-redraw",
+      "segment": 2,
+      "screenCells": [
+        {
+          "step": 47,
+          "x": 58,
+          "y": 7,
+          "equals": "E"
+        },
+        {
+          "step": 47,
+          "x": 36,
+          "y": 4,
+          "equals": " "
+        },
+        {
+          "step": 47,
+          "x": 54,
+          "y": 6,
+          "equals": " "
+        }
+      ],
+      "source": "display.c:under_water respects canonical blindness. Input gate independently proves real polymorph Swimming plus Underwater and Blind."
+    },
+    {
+      "branch": "docrt.swallowed-control",
+      "segment": 3,
+      "screenCells": [
+        {
+          "step": 171,
+          "x": 59,
+          "y": 16,
+          "equals": "@"
+        },
+        {
+          "step": 171,
+          "x": 58,
+          "y": 15,
+          "equals": "/"
+        }
+      ],
+      "source": "display.c:1726-1729 swallowed precedes the ordinary memory rebuild. The unchanged ordinary engulfer producer supplies the state."
+    },
+    {
+      "branch": "docrt.terrain-buffer-refresh",
+      "segment": 4,
+      "screenCells": [
+        {
+          "step": 11,
+          "x": 39,
+          "y": 6,
+          "equals": "<"
+        },
+        {
+          "step": 12,
+          "x": 39,
+          "y": 6,
+          "equals": "<"
+        }
+      ],
+      "source": "getpos.c:760 docrtRefresh preserves the terrain glyph under the hidden hero instead of repainting @. Input gate proves terrainmode and the complete visible extent."
+    },
+    {
+      "branch": "docrt.terrain-without-refresh-control",
+      "segment": 5,
+      "screenCells": [
+        {
+          "step": 11,
+          "x": 39,
+          "y": 6,
+          "equals": "<"
+        },
+        {
+          "step": 12,
+          "x": 39,
+          "y": 6,
+          "equals": "@"
+        }
+      ],
+      "source": "detect.c:2356-2414 reveal_terrain and map_redisplay restore the normal hero after Escape. No refresh command is sent."
+    },
+    {
+      "branch": "docrt.live-direction-refresh",
+      "segment": 6,
+      "screenCells": [
+        {
+          "step": 2,
+          "x": 0,
+          "y": 0,
+          "equals": "I"
+        },
+        {
+          "step": 3,
+          "x": 0,
+          "y": 0,
+          "equals": "I"
+        }
+      ],
+      "source": "cmd.c:4013-4015 retries a live redraw before CQ_REPEAT insertion. Expected full prompt is also checked by the input gate.",
+      "screenExcludes": [
+        "Invalid direction key!"
+      ]
+    },
+    {
+      "branch": "docrt.direction-cancel-control",
+      "segment": 7,
+      "screenCells": [
+        {
+          "step": 2,
+          "x": 0,
+          "y": 0,
+          "equals": "I"
+        }
+      ],
+      "source": "cmd.c:4021-4027 Escape cancels a valid live direction prompt. No redraw command is sent.",
+      "screenExcludes": [
+        "Invalid direction key!"
+      ]
+    }
+  ]
+}

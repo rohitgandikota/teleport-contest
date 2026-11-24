@@ -7438,6 +7438,58 @@ remain separate source gaps. The ordinary C recording demonstrates actual
 floor-item rejection, not observation of private C alignment fields. Commit
 and immediately push this verified checkpoint.
 
+## 2026-11-24: complete redraw owner verified across 804 fixtures
+
+Artifact alignment is pushed as e65ae65d. The next four-file patch restores
+C docrt_flags and its readiness/reentry guard, refresh/swallowed/underwater/
+buried branch order, MapOnly and Nocls behavior, and common status tail.
+Refresh resends the existing glyph buffer. Temporary terrain inspection keeps
+that buffer, and a live direction prompt retries its bound redraw key before
+recording repeat input. The queued-key path remains distinct. No older module
+was substituted: all 279 main runtime hashes equal the tested composition.
+
+All 30 parent checks pass, with 113 source/input controls, eight native witness
+cases and eight recipe assertions. Nine focused fixtures cover 64 segments,
+7,720 scored boundaries/cursors, 185,691 calls and 17 frames. All 44 public
+fixtures and 53 bounded workers pass. Five strict native fixtures match all
+1,884 styled boundaries, 64,398 calls and 16 frames; delayed input matches the
+same totals across 22 segments. The new eight-case raw improves from 368/372
+styled boundaries and 371 cursors to all 372, with all 19,120 calls unchanged.
+Four ordinary negatives retain all five output hashes. Source audit remains
+zero of 276 and all four changed modules parse.
+
+The parent initially omitted two existing required test arguments: the public
+sessions directory and the vault raw path. Both setup failures and commands
+are preserved; the corrected commands pass without changing runtime, gates,
+assertions or raw output. Evidence is docrt-flags-parent-composition and its
+verification receipt under .cache/restart-20261122.
+
+The full804 sweep under prefix docrt-flags-promotion closed with 802 passing
+fixtures and two 45-second worker timeouts: discovery-sorting-details and
+first-bite-effects. Both original failures are preserved. Sequential paired
+replays pass on baseline and candidate under the unchanged timeout, in about
+four and two seconds respectively. All 279 candidate modules equal main; all
+804 raw fixtures and 45 protected files remain unchanged. No timeout or
+comparator was relaxed. This verifies all 804 cases with two successful retries,
+not an uninterrupted passing sweep: 846,207 scored boundaries/cursors,
+17,594,047 calls and 32,215 frames. The latest uninterrupted passing full run
+remains 800 at d0c5098d. The failure closure, paired results and inventory
+verifier record the distinction explicitly. Publish this verified checkpoint.
+Signals, native MapOnly/Nocls, burial, post-bones callback and permanent
+inventory retain their source/helper limits. Styled parity is not serialized
+byte identity.
+
+Three next candidates have completed independent C confirmation and seals:
+seduction misses (401 styled boundaries, 15,387 calls, 32 frames), monster
+lists (243, 14,032, 32), and silent monster artifact rejection (1,657, 8,131, 0).
+They await current-main composition and are outside this full804 inventory.
+The latest NFS C union verifies 801 inputs across 91 identical layouts,
+4,565/5,492 functions and 60,131/107,260 branch outcomes, preserving all 90
+prior run hashes. Large profiles remain under verified-artifact-feedback-union-20261124.
+New source work covers the lost getmattk alternate, hidden-description object
+cleanup, eating artifact contact, and Rogue-level x-ray precedence. No new
+replay batches run during the full-corpus contention window.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

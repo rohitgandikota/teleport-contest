@@ -7632,6 +7632,48 @@ The official table and news fetched again at 17:39 UTC are byte-identical to
 still comes from 13:38 UTC, before these checkpoints. Rogue checkpoint
 `2d6fb82f` is confirmed equal to `origin/main`; no commits were held back.
 
+## 2026-11-24: cancelled monster weapon substitution verified
+
+`getmattk` now returns the physical alternate attack it already builds for
+cancelled monsters and the special weapon cases. C assigns the alternate
+pointer; JS had left the original attack selected. The runtime repair is one
+assignment in `mhitu.js`, with no change to the original species attack table.
+
+Five new native cases use actual cancellation wands and subsequent melee:
+barrow wight, Nazgul and erinys positives, with uncancelled wight and physical
+goblin negatives. All 678 styled screens, cursors, input slices, complete
+13,218 RNG calls and empty frame collections now match C. Before: 630 styled
+screens, 676 cursors, 668 slices and 13,201 actual calls. Both negative cases
+retain all five original output hashes. Artifact and petrifying-corpse weapon
+variants remain constructed source controls, not ordinary native witnesses.
+
+All 28 parent composition checks pass, including 24 new state, five input and
+seven native tests plus 100 retained controls. Seventeen focused fixtures,
+72 segments, match 10,300 screens/cursors, 213,696 calls and 149 frames.
+Public remains 44/44 with 11,405 screens/cursors, 792,838 calls and 1,483 frames;
+all 61 bounded input workers pass. Ten strict native fixtures match all styled
+cells, cursors, complete calls, slices and frame arrays over 40 segments,
+3,292 boundaries, 105,670 calls and 32 frames. Four deferred fixtures preserve
+all five collections over 1,886 boundaries, 52,093 calls and 32 frames.
+Source audit remains empty, scoped reversal recovers the predecessor, and all
+279 runtime files and five promotion files retain their tested hashes.
+
+The NFS replay is byte-identical and adds four C branch outcomes, no functions.
+The union is now 803 credited inputs across 93 fixed layouts, 4,565/5,492
+functions and 60,135/107,260 outcomes. All earlier coverage hashes remain fixed.
+Native profiles remain on NFS; compact receipts are local. These figures measure
+C reach, not JS completeness. DEC/Unicode serialized differences remain separate
+from styled parity. The maintained corpus is 809; no full809 sweep has run.
+Receipts: `cancelled-weapon-parent-composition-verification.json`,
+`cancelled-weapon-main-integration.json`, sealed
+`getmattk-cancelled-weapon-native-confirmation/` and
+`linux-coverage-cancelled-weapons-*` under `.cache/restart-20261122/`.
+
+The preceding lifecycle checkpoint `72820525` is confirmed pushed. The next
+artifact-eating source package is sealed; its independent native recording
+preserves all five input fields and keys across five cases and 743 boundaries.
+Native confirmation and current-runtime composition remain pending.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

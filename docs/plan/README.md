@@ -29,9 +29,10 @@ uninterrupted full pass. The preceding full800 sweep passed without retries.
 All 279 runtime hashes, raw inputs and protected files stayed fixed.
 
 Later seduction feedback, monster lists, artifact rejection, Rogue x-ray
-priority and temporary hidden-object cleanup checkpoints have passed focused
+priority, temporary hidden-object cleanup and cancelled monster weapon
+substitution checkpoints have passed focused
 native, regression, public and bounded-input checks and are pushed promptly.
-The maintained corpus is 808; a full808 run remains pending. Native styled
+The maintained corpus is 809; a full809 run remains pending. Native styled
 parity is tracked separately from serialized-byte identity.
 The earlier potion changes also pass strict full-stream and per-input RNG
 checks on 117 fixtures, all 39,942 boundaries and 1,718,440 calls. The complete

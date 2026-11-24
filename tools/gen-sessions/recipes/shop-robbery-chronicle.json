@@ -1,0 +1,81 @@
+{
+  "name": "shop-robbery-chronicle",
+  "description": "Ordinary seed-6901 armor-shop robbery by level teleport, sober and actually hallucinating, followed by the real chronicle command. A paired actual stock return excludes robbery. Independent parent C recording matches all three cases, including the separate journal currency and shop-name draws. The public JS gate also checks healthy, nonterminal reach without watchmen.",
+  "coverage": [
+    "level.ordinary",
+    "mode.debug",
+    "social.shops-billing"
+  ],
+  "segments": [
+    {
+      "seed": 6901,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00162\r\u0006\u0014  lllllllllllllllllllllllllk.  , \u00163\r        \u001b\u001b#chronicle\r         \u001b\u001b",
+      "name": "ordinary-robbery-chronicle"
+    },
+    {
+      "seed": 6901,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00162\r\u0006\u0014  lllllllllllllllllllllllllk.  , #wizintrinsic\r100h\r    \u001b\u001b\u00163\r        \u001b\u001b#chronicle\r         \u001b\u001b",
+      "name": "hallucinated-robbery-chronicle"
+    },
+    {
+      "seed": 6901,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00162\r\u0006\u0014  lllllllllllllllllllllllllk.  , dn    \u001b\u001b\u00163\r        \u001b\u001b#chronicle\r         \u001b\u001b",
+      "name": "returned-stock-no-robbery-chronicle"
+    }
+  ],
+  "requireBranchAssertions": true,
+  "branches": [
+    "shop.robbery.chronicle.normal",
+    "shop.robbery.chronicle.hallucinated",
+    "shop.robbery.chronicle.returned-negative"
+  ],
+  "branchAssertions": [
+    {
+      "branch": "shop.robbery.chronicle.normal",
+      "segment": 0,
+      "screenIncludes": [
+        "You escaped the shop without paying!",
+        "You stole 60 zorkmids worth of merchandise.",
+        "Logged events:",
+        "stole 60 zorkmids worth of merchandise from Demirci's used armor dealership"
+      ],
+      "screenExcludes": [
+        "Die?"
+      ]
+    },
+    {
+      "branch": "shop.robbery.chronicle.hallucinated",
+      "segment": 1,
+      "screenIncludes": [
+        "Everything looks so cosmic!",
+        "You escaped the shop without paying!",
+        "Logged events:",
+        "stole 60 Triganic Pus worth of merchandise from Adjama's used armor",
+        "dealership"
+      ],
+      "screenExcludes": [
+        "Die?"
+      ]
+    },
+    {
+      "branch": "shop.robbery.chronicle.returned-negative",
+      "segment": 2,
+      "screenIncludes": [
+        "Logged events:",
+        "You drop a scale mail (unpaid, 60 zorkmids)."
+      ],
+      "screenExcludes": [
+        "You escaped the shop without paying!",
+        "stole 60",
+        "An alarm sounds!",
+        "Die?"
+      ]
+    }
+  ]
+}

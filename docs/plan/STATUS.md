@@ -4954,6 +4954,60 @@ Evidence is `.cache/restart-20261122/invault-early-exit-native-confirmation/`,
 Rendered-grid acceptance retains the frozen decoder contract; serialized
 terminal bytes are not claimed identical. No oracle was normalized.
 
+## 2026-11-24: robbery records the chronicle and its naming draws
+
+Guard early-exit checkpoint `4d66dd3c` is committed and pushed. `rob_shop`
+now calls the existing achievement logger after stolen-value feedback and
+before alignment and pursuit. It independently evaluates currency and the
+possessive shopkeeper name, then uses the real shop description, following
+C. The scoped patch adds two lines and extends two imports in `shk.js`.
+
+Three unchanged native cases cover ordinary theft, hallucinated theft and
+returning the unpaid stock before departure. All 258 rendered grids/cursors,
+23,406 complete RNG calls and per-input slices match, with zero animations.
+The ordinary chronicle first diverged at boundary 63. The hallucinated case
+first missed three journal-operand draws at boundary 68: currency, then two
+shopkeeper-name calls. The old alarm continuation subsequently took a different
+path, producing 392 extra calls. Independent native text confirms the visible
+message uses spacebucks while the journal uses Triganic Pus and Adjama's name.
+This verifies the recorded evaluation order, not a general C varargs guarantee.
+Raw SHA-256:
+`c411d5c7704e7dbecdf186e6f166ec511e4e7670c7d7f8b1ff4415616fc3aad0`.
+
+All sixteen integrated checks pass. The normal gates pass seventeen new and
+44 retained controls. All twenty original private source assertions also pass
+unchanged against the current runtime through their cache-only access loader.
+Public callers discard the private return value and add alarm RNG, so their
+twelve new state controls have a distinct scope. Neither a private loader nor
+a production test export is promoted. The first extra source-test invocation
+registered its loader twice under Node 26 and failed before any test ran;
+direct module invocation fixes that packaging error. The original failure,
+gate and loader are preserved.
+
+Nine focused fixtures match seventeen segments, 2,108 boundaries, 104,153
+complete RNG calls and input slices, and 118 animation grids/cursors. Deferred
+input agrees across five fixtures, eleven segments, 1,396 boundaries, 69,449
+calls and 95 frames. All 44 public fixtures remain exact at 11,405 boundaries,
+792,838 scored RNG positions and 1,483 frames. All 53 hang workers pass at
+30 seconds. Source audit has zero findings across 276 modules, syntax passes
+and all 279 runtime hashes stay fixed. The corpus now has 756 fixtures;
+the latest completed full regression remains `5b38727c` at 753/753.
+
+Independent Linux replay is byte-exact. The recording adds eight direct C
+outcomes, reaching 750 credited inputs, fifty-three layouts, 4,537/5,492
+functions and 59,405/107,260 outcomes. `rob_shop` reaches five of six direct
+outcomes; its Rogue arm remains absent from native coverage. Bulk profiles
+remain on NFS. Alarm behavior, final/nonwizard journal filtering and external
+logfiles remain separate work.
+
+Evidence is `.cache/restart-20261122/shop-robbery-chronicle-native-confirmation/`,
+`shop-robbery-chronicle-parent-{source-review,integration,verification}.json`
+and `shop-robbery-chronicle-promoted-*`. Every native byte and input is retained.
+The fresh official fetch at 05:13 UTC still publishes 02:35 UTC data and our
+01:48 UTC score: seventh agentic, eleventh overall, 936 unmatched screens.
+The contest home page currently advertises a six-hour scoring cadence.
+These pushes do not establish a newer held-out result.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

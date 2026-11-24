@@ -14,7 +14,7 @@ import { map_invisible } from './display.js';
 import { the } from './objnam.js';
 import { mnearto } from './mon.js';
 import { OBJ_BURIED, LS_OBJECT } from './const.js';
-import { You, impossible, You_cant } from './pline.js';
+import { You, impossible, You_cant, livelog_printf } from './pline.js';
 import { angry_guards } from './mon.js';
 import { count_unpaid, count_contents, merge_choice } from './invent.js';
 import { pline_The } from './pline.js';
@@ -51,7 +51,7 @@ import { highc } from './hacklib.js';
 import { safe_qbuf } from './objnam.js';
 import { ESHK, SHOPBASE, IS_DOOR, ROOMOFFSET, NO_ROOM, A_CHA, MAXULEV,
          HUNGRY, PICK_ANY, MENU_BEHAVE_STANDARD, MENU_ITEMFLAGS_NONE,
-         ECMD_OK, ECMD_TIME, G_GONE, A_WIS,
+         ECMD_OK, ECMD_TIME, G_GONE, A_WIS, LL_ACHIEVE,
          M_AP_TYPE, M_AP_NOTHING, M_AP_MONSTER, MIGR_APPROX_XY, RLOC_NOMSG,
          NON_PM, REPAIR_DELAY, BOLT_LIM, D_BROKEN, D_CLOSED, IS_ROOM,
          IS_WALL, SVALL, u_at, HAND, PRONOUN_NO_IT, PRONOUN_HALLU }
@@ -1137,6 +1137,8 @@ async function rob_shop(shkp) {
 
     eshk.robbed = (eshk.robbed || 0) + total;
     await pline(`You stole ${total} ${currency(total)} worth of merchandise.`);
+    livelog_printf(LL_ACHIEVE, `stole ${total} ${currency(total)} worth of merchandise from ${
+        s_suffix(shkname(shkp))} ${shtypes[eshk.shoptype - SHOPBASE].name}`);
     if (game.urole?.mnum !== PMNAMES.PM_ROGUE)
         adjalign(-Math.sign(game.u.ualign?.type || 0));
     hot_pursuit(shkp);

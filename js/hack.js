@@ -2998,7 +2998,8 @@ export async function crawl_destination(x, y) {
         return false;
     if (x === game.u.ux || y === game.u.uy)
         return true;
-    /* NODIAG: poly'd into a grid bug — polyself absent */
+    if (NODIAG(game.u.umonnum))
+        return false; /* poly'd into a grid bug... */
     if (Passes_walls())
         return true;
     const loc = game.level.at(x, y);

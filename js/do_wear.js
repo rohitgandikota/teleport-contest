@@ -115,7 +115,7 @@ export function ARM_BONUS(obj) {
     return a_ac + (obj.spe || 0) - Math.min(greatest_erosion(obj), a_ac);
 }
 
-// src/do_wear.c:1500 find_ac()
+// src/do_wear.c:2473 find_ac()
 export function find_ac() {
     const u = game.u;
     let uac = mons[u.umonnum ?? 0].ac;   /* base AC for the current form */
@@ -128,7 +128,7 @@ export function find_ac() {
         const obj = worn(mask);
         if (obj && obj.otyp === ONAMES.RIN_PROTECTION) uac -= (obj.spe || 0);
     }
-    const amul = worn(W_AMUL);
+    const amul = u.uamul;
     if (amul && amul.otyp === ONAMES.AMULET_OF_GUARDING) uac -= 2;
 
     if (((u.intrinsic?.HProtection || 0) & INTRINSIC) !== 0)
@@ -1237,8 +1237,9 @@ export async function Armor_gone() {
     return 0;
 }
 
+// src/do_wear.c:1090 Amulet_off()
 export async function Amulet_off() {
-    const amul = worn(W_AMUL); /* for off_msg() after setworn(NULL,W_AMUL) */
+    const amul = game.u.uamul; /* for off_msg() after setworn(NULL,W_AMUL) */
     let mkn = false, early_off_msg = false;
 
     if (!amul)

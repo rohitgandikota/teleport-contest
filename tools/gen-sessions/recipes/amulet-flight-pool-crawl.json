@@ -1,0 +1,71 @@
+{
+  "name": "amulet-flight-pool-crawl",
+  "description": "Two independent native C cases exercise worn flying-amulet removal over a pool, as a grid bug and a giant ant. Both drop the removed amulet to shed weight and crawl out. The grid bug rejects diagonal escape; the ant retains it. Source controls separately cover phasing, blocked exits and nonhero placement.",
+  "coverage": [
+    "level.ordinary",
+    "mode.debug",
+    "object.amulets",
+    "forms.polymorph",
+    "terrain.water-lava",
+    "ui.getlin"
+  ],
+  "segments": [
+    {
+      "name": "grid-bug-flight-loss-over-pool",
+      "seed": 6977,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sir,role:Knight,race:human,gender:male,align:lawful,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                                   \u0017uncursed amulet of flying\r  \u001b\u001bPa  \u001b\u001b#polyself\rgrid bug\r  \u001b\u001b\u0017pool\r  \u001b\u001bR        \u001b\u001b:"
+    },
+    {
+      "name": "giant-ant-flight-loss-over-pool",
+      "seed": 6977,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sir,role:Knight,race:human,gender:male,align:lawful,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                                   \u0017uncursed amulet of flying\r  \u001b\u001bPa  \u001b\u001b#polyself\rgiant ant\r  \u001b\u001b\u0017pool\r  \u001b\u001bR        \u001b\u001b:"
+    }
+  ],
+  "requireBranchAssertions": true,
+  "branches": [
+    "Amulet_off.flight-pool-grid-bug",
+    "Amulet_off.flight-pool-giant-ant"
+  ],
+  "branchAssertions": [
+    {
+      "branch": "Amulet_off.flight-pool-grid-bug",
+      "segment": 0,
+      "screenIncludes": [
+        "You turn into a grid bug!",
+        "You were wearing an amulet of flying.",
+        "You stop flying.",
+        "You fall into the pool of water!",
+        "You try to crawl out of the water.",
+        "You dump some of your gear to lose weight...",
+        "Pheew!  That was close."
+      ],
+      "screenExcludes": [
+        "You drown.",
+        "Die?",
+        "You return to human form."
+      ]
+    },
+    {
+      "branch": "Amulet_off.flight-pool-giant-ant",
+      "segment": 1,
+      "screenIncludes": [
+        "You turn into a giant ant!",
+        "You were wearing an amulet of flying.",
+        "You stop flying.",
+        "You fall into the pool of water!",
+        "You try to crawl out of the water.",
+        "You dump some of your gear to lose weight...",
+        "Pheew!  That was close."
+      ],
+      "screenExcludes": [
+        "You drown.",
+        "Die?",
+        "You return to human form."
+      ]
+    }
+  ]
+}

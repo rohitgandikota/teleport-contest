@@ -4376,6 +4376,68 @@ patches and raw recordings remain unchanged. This is bounded movement
 coverage. Retained amulets, crawl restrictions, melt timers, special-mover
 origin reset, fog feedback and trap concealment remain separate work.
 
+## 2026-11-23: retained amulet removal and legal pool escape
+
+Movement checkpoint `4443fd7f` is committed and pushed. `Amulet_off` now reads
+the retained `u.uamul` pointer after polymorph has replaced the inventory
+entry. `find_ac` also reads that pointer for a guarding amulet during removal.
+These are two pointer-read changes. The amulet and armor-class comments now
+reference the correct C functions. `crawl_destination` rejects diagonal
+movement for `NODIAG` forms after the orthogonal success arm and before
+wall-passing, replacing a false comment that polymorph was absent.
+
+Four unchanged native cases cover worn ESP, sleep and flight amulets plus a
+carried flight-amulet control. Before the fix, they matched 572/580 screens,
+575 cursors and 572 input slices. Complete RNG streams already matched all
+11,283 calls. At the first ESP mismatch, boundary 133, JS skipped the old
+amulet's removal prompt and ran replacement work too early. Reading the
+retained pointer restores every boundary and the original call timing.
+All 580 screens/cursors and slices now match, with no animations. The raw
+SHA-256 is `638bb7cfbc8b755ac3d144ad6c958de8e2e7de3d2c37a06c0acc62431fa92fd6`.
+
+The guarding-amulet AC correction remains source-derived. Its direct control
+checks C's transient AC 8 before the slot is cleared and AC 10 after normal
+recalculation. None of the four native cases removes a guarding amulet;
+no native evidence is claimed for that specific branch.
+
+The pool pair removes the hero's only flight amulet while polymorphed into
+a grid bug or giant ant. Both survive through ordinary emergency disrobing
+and a crawl onto land. C rejects a diagonal exit for the grid bug; baseline
+JS takes it. At boundary 127, the C cursor is `[61,13,1]`, while JS was at
+`[63,14,1]`. The guard raises combined screen/cursor matches from 263/271 to
+271/271. All 5,662 RNG calls and slices already matched, and the giant-ant
+control is unchanged. The raw SHA-256 is
+`67f9ced058c042d42986f6aa1e61a40c3e93339ff66d773fab76d84417ed9468`.
+
+All 54 new and 83 retained controls pass. Seven focused fixtures cover sixteen
+segments, 2,400 boundaries, 65,127 strict complete/per-input calls and two
+exact animation grids/cursors. All seven 30-second worker checks pass.
+Deferred interactive input matches four fixtures, ten segments, 1,422
+boundaries and 39,043 calls, with no animations. Source audit has zero
+findings in 276 modules.
+
+The complete 742-fixture regression passes all 822,025 boundary screens/cursors,
+16,555,949 scored RNG positions and 30,742 animation frames. Both interleaved
+shards finish without failures or timeouts at the default 45-second worker
+limit. All 279 runtime hashes stayed fixed throughout.
+
+The corresponding validated NFS union has 737 credited inputs, forty matching
+manifests/layouts, 4,534/5,492 entered functions and 59,292/107,260 direct
+C branch outcomes. Its 57 added raw inputs contain 207 segments, plus nine
+independent Linux segments. This native coverage census includes the queued
+melt-timer recording; it does not establish JS parity for that pending repair.
+Bulk profiles remain at
+`/share/NFS/u/rohit/research/contest/artifacts/2026-11-22/c-coverage-compress.E84JI2/verified-crawl-destination-union-20261123`.
+
+Evidence is `.cache/restart-20261122/amulet-off-native-confirmation/`,
+`crawl-destination-native-confirmation/`, `amulet-crawl-parent-{composition,integration,verification}.json`,
+`amulet-crawl-promoted-*` and `amulet-crawl-corpus-*`. Original runtime patches
+and native bytes remain unchanged. The parent comment amendment v2 only
+updates context to apply after the amulet pointer patch; its earlier draft
+is retained. Shop blocking and travel BFS direction limits remain separate.
+Next are monster relocation/feedback, trapped concealment, and timer/goal
+behavior during level flips.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

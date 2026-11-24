@@ -9,8 +9,8 @@ import {
 import { PMNAMES } from './monst_data.js';
 import { hidden_gold, money_cnt, obj_extract_self, sobj_at,
          stackobj } from './invent.js';
-import { canspotmon, map_background, map_invisible, mon_visible, more, newsym,
-         pline } from './display.js';
+import { canspotmon, map_background, map_invisible, map_location, mon_visible,
+         more, newsym, pline, unset_seenv } from './display.js';
 import { getlin } from './cmd.js';
 import { mungspaces } from './hacklib.js';
 import { Monnam, noit_Monnam, noit_mon_nam, pmname,
@@ -23,7 +23,7 @@ import { rn2 } from './rng.js';
 import { distmin, isok } from './hacklib.js';
 import { is_fainted, reset_faint } from './eat.js';
 import { ONAMES } from './objects_data.js';
-import { m_carrying, mnexto, mongone, setmangry } from './mon.js';
+import { m_carrying, mnexto, mongone, setmangry, t_at } from './mon.js';
 import { MON_WEP } from './monst.js';
 import { mon_wield_item } from './weapon.js';
 import { del_engr, engr_at } from './engrave.js';
@@ -38,15 +38,20 @@ import {
     ROOM, STONE, CORR, SCORR, HWALL, VWALL, DOOR, D_NODOOR, IS_WALL,
     IS_STWALL, IS_POOL, IS_ROOM, ACCESSIBLE, ARTICLE_A, BLCORNER,
     BRCORNER, RLOC_MSG, TLCORNER, TRCORNER, M_AP_TYPE, M_AP_OBJECT,
-    NEED_HTH_WEAPON,
+    NEED_HTH_WEAPON, IS_OBSTRUCTED, Upolyd,
 } from './const.js';
 import { relobj } from './steal.js';
 import { m_into_limbo } from './mon.js';
+import { on_level } from './dungeon.js';
+import { mon_track_clear } from './monmove.js';
+import { carried } from './obj.js';
+import { deltrap } from './trap.js';
+import { yelp } from './sounds.js';
 import { fracture_rock } from './zap.js';
 import { simpleonames } from './objnam.js';
 import { an } from './objnam.js';
 import { You_see } from './pline.js';
-import { Blind, Deaf } from './youprop.js';
+import { Blind, Deaf, Punished } from './youprop.js';
 import { noit_mhis, sticks, is_silent, mhe } from './mondata.js';
 
 
@@ -59,9 +64,30 @@ export function vault_occupied(urooms) {
     return 0;
 }
 
+// src/vault.c:204 findgd(); a guard keeps ownership while parked or migrating.
 export function findgd() {
-    return (game.level?.monsters || []).find(
-        mon => mon.isgd && mon.mhp > 0) || null;
+    for (const mon of game.level.monsters) {
+        if (mon.isgd && on_level(mon.mextra.egd.gdlevel, game.u.uz)) {
+            if (!mon.mx && !mon.mextra.egd.gddone)
+                mon.mhp = mon.mhpmax;
+            return mon;
+        }
+    }
+    const migrating = game.migrating_mons || [];
+    for (let i = 0; i < migrating.length; ++i) {
+        const mon = migrating[i];
+        if (mon.isgd && on_level(mon.mextra.egd.gdlevel, game.u.uz)) {
+            migrating.splice(i, 1);
+            game.level.monsters.unshift(mon);
+            mon_track_clear(mon);
+            mon.mux = game.u.ux;
+            mon.muy = game.u.uy;
+            mon.mx = mon.my = 0;
+            parkguard(mon);
+            return mon;
+        }
+    }
+    return null;
 }
 
 // src/vault.c uleftvault(). A gold-carrying hero who teleports away from an
@@ -102,61 +128,94 @@ function gold_at(x, y) {
    vault end outward once neither the hero nor the guard can still see them. */
 async function clear_fcorr(guard, forceshow = false) {
     const egd = guard.mextra.egd;
+    const silently = !!game.program_state?.stopprint;
+    let sawcorridor = false;
+    if (!on_level(egd.gdlevel, game.u.uz))
+        return true;
+
     while (egd.fcbeg < egd.fcend) {
         const fc = egd.fakecorr[egd.fcbeg];
+        if ((guard.mhp <= 0 || !in_fcorridor(guard, game.u.ux, game.u.uy))
+            && egd.gddone)
+            forceshow = true;
         if ((game.u.ux === fc.fx && game.u.uy === fc.fy && guard.mhp > 0)
-            || (!forceshow && couldsee(fc.fx, fc.fy)))
+            || (!forceshow && couldsee(fc.fx, fc.fy))
+            || (Punished() && !carried(game.u.uball)
+                && game.u.uball.ox === fc.fx && game.u.uball.oy === fc.fy))
             return false;
 
         const occupant = game.level.monAt?.get(`${fc.fx},${fc.fy}`);
         if (occupant) {
             if (occupant.isgd)
                 return false;
+            if (occupant.mtame)
+                await yelp(occupant);
             const { rloc } = await import('./teleport.js');
-            if (!await rloc(occupant))
-                return false;
+            if (!await rloc(occupant, RLOC_MSG))
+                await m_into_limbo(occupant);
         }
 
         const loc = game.level.at(fc.fx, fc.fy);
+        if (loc.typ === CORR && cansee(fc.fx, fc.fy))
+            sawcorridor = true;
         loc.typ = fc.ftyp;
         loc.flags = fc.flags || 0;
         if (fc.doormask !== undefined)
             loc.doormask = fc.doormask;
-        game.level.traps = (game.level.traps || [])
-            .filter(t => t.tx !== fc.fx || t.ty !== fc.fy);
-        const engr = (game.engravings || []).find(
-            e => e.ex === fc.fx && e.ey === fc.fy);
-        if (engr) {
-            const { del_engr } = await import('./engrave.js');
-            del_engr(engr);
+        if (IS_STWALL(loc.typ)) {
+            const trap = t_at(fc.fx, fc.fy);
+            if (trap)
+                deltrap(trap);
+            if (loc.typ === STONE)
+                blackout(fc.fx, fc.fy);
         }
-        map_background(fc.fx, fc.fy, true);
+        const engr = engr_at(fc.fx, fc.fy);
+        if (engr)
+            del_engr(engr);
+        map_location(fc.fx, fc.fy, true);
         recalc_block_point(fc.fx, fc.fy);
         game.vision_full_recalc = 1;
         egd.fcbeg++;
     }
+    if (sawcorridor && !silently)
+        await pline_The('corridor disappears.');
+    if (IS_OBSTRUCTED(game.level.at(game.u.ux, game.u.uy).typ)
+        && (Upolyd() ? game.u.mh : game.u.uhp) > 0 && !silently)
+        await You('are encased in rock.');
     return true;
 }
 
-function dispose_guard(guard) {
-    if (guard.mx || guard.my)
-        remove_monster(guard.mx, guard.my);
-    guard.isgd = 0;
-    guard.mhp = 0;
-    guard.minvent = [];
+// src/vault.c:123 blackout(); forget light and views from restored stone.
+function blackout(x, y) {
+    for (let i = x - 1; i <= x + 1; ++i)
+        for (let j = y - 1; j <= y + 1; ++j) {
+            if (!isok(i, j))
+                continue;
+            const loc = game.level.at(i, j);
+            if (loc.typ === STONE)
+                loc.lit = loc.waslit = 0;
+            unset_seenv(loc, x, y, i, j);
+        }
 }
 
+// src/vault.c:144 restfakecorr(); finish through ordinary disappearance.
 async function restfakecorr(guard) {
-    if (await clear_fcorr(guard, false))
-        dispose_guard(guard);
+    if (await clear_fcorr(guard, false)) {
+        guard.isgd = 0;
+        await mongone(guard);
+    }
 }
 
+// src/vault.c:155 parkguard(); keep the same owner on fmon at <0,0>.
 function parkguard(guard) {
-    if (guard.mx || guard.my) {
+    if (game.context?.polearm?.hitmon === guard)
+        game.context.polearm.hitmon = null;
+    if (guard.mx) {
         remove_monster(guard.mx, guard.my);
         newsym(guard.mx, guard.my);
     }
-    place_monster(guard, 0, 0);
+    if (game.level.monAt.get('0,0') !== guard)
+        place_monster(guard, 0, 0);
     guard.mextra.egd.ogx = 0;
     guard.mextra.egd.ogy = 0;
 }
@@ -387,6 +446,8 @@ export async function gd_move(guard) {
     const u = game.u;
     const egd = guard.mextra?.egd;
     if (!egd)
+        return -1;
+    if (!on_level(egd.gdlevel, u.uz))
         return -1;
 
     const semi_dead = (guard.mhp || 0) < 1;
@@ -855,4 +916,9 @@ export async function invault() {
 export function vault_summon_gd() {
     if (vault_occupied(game.u.urooms || '') && !findgd())
         game.u.uinvault = (VAULT_GUARD_TIME - 1);
+}
+
+// src/vault.c:1272 gd_sound(); suppress patrol sounds while a guard owns a vault.
+export function gd_sound() {
+    return !(vault_occupied(game.u.urooms) || findgd());
 }

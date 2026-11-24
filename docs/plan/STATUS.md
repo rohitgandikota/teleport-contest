@@ -5693,6 +5693,50 @@ November 14 as its newest post; its linked readability article was already
 reviewed, including the November 20 update. No newer score or ranking gain is
 claimed. Fetches and hashes are retained under `official-*` in the cache.
 
+## 2026-11-24: guard ownership and corridor restoration
+
+Stamina checkpoint `12dc0551` is committed and pushed. Guard death now waits
+for `grddead` before death credit or detachment. Parked guards can finish their
+fake corridors on later turns. `findgd` retains the current-level owner even
+while dead, reclaims its migrating owner by home level, and restores an
+unfinished guard without reviving a completed one. Ambient guard silence uses
+the same lookup. Corridor restoration follows C's visibility, punishment-ball,
+occupant relocation, terrain, trap, engraving and vision ordering. A completed
+corridor clears guard status before canonical monster removal. Parking clears
+the polearm target and preserves the off-map owner.
+
+The three unchanged C cases now match all 514 styled boundary grids/cursors,
+18,269 complete RNG calls and input slices, with no animation frames. The
+baseline misses 42 grids, five cursors and eight slices and produces four
+extra calls. They cover unblocked death, blocked cleanup and later release.
+All 27 new state/input controls pass, versus ten before; 76 retained controls
+also pass. Migration, lifesaving, save state and light effects have constructed
+coverage, without a claimed ordinary native witness for those branches.
+
+All nineteen parent checks pass. Thirteen focused fixtures contain 62 segments,
+9,034 boundaries, 420,602 complete calls and 127 animation grids/cursors/counts.
+Deferred input is identical for four fixtures, 24 segments, 3,354 boundaries,
+146,465 calls and thirteen frames. All 44 public fixtures retain 11,405 exact
+boundaries, 792,838 scored RNG positions and 1,483 frames. All 57 hang workers
+finish within 30 seconds; four syntax checks and the 276-module source audit
+pass. All 279 runtime hashes stayed fixed. The maintained corpus is now 768;
+the latest full regression remains 767/767 at `12dc0551`.
+
+The 2,997 sealed source-package files and all four promoted support hashes
+verify. Raw ownership SHA is
+`645f1a91bb13f56e498af42dc16ccca1f397104bc991eaf59a5f419eb2519298`.
+The parent receipt checks the actual name, seed, datetime, nethackrc, moves
+and key fields; an earlier incomplete receipt is retained separately and no
+raw recording was rewritten. Evidence is `guard-ownership-parent-*`,
+`guard-ownership-promoted-*` and `guard-ownership-parent-native-confirmation/`
+under `.cache/restart-20261122/`.
+
+Remaining owners are tracked separately: `mondied` still needs its post-life-
+saving early return and post-death terrain coordinates; guard gold collection,
+witness/destination branches and other death disposal paths are not claimed
+complete. Next are capacity and trap-hit integration, with corrected misleading
+monster comments verified independently of executable code.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

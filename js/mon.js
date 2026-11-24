@@ -47,7 +47,8 @@ import { DISMOUNT_GENERIC } from './const.js';
 import { possibly_unwield } from './weapon.js';
 import { Protection_from_shape_changers } from './youprop.js';
 import { remove_worm, wormgone } from './worm.js';
-import { grddead } from './vault.js';
+import { gd_move, grddead } from './vault.js';
+import { MON_MIGRATING } from './const.js';
 import { wizdeadorgone } from './wizard.js';
 import { MON_ENDGAME_FREE } from './const.js';
 import { mon_offmap, is_lightblocker_mappear } from './monst.js';
@@ -378,7 +379,6 @@ export async function movemon() {
        A TRUE return from the per-monster body stops the sweep (C uses it
        for the hero-leaving-level abort), it does not mean "can move". */
     for (const mtmp of [...(game.level?.monsters || [])]) {
-        if (mtmp.mhp <= 0) continue;   /* died earlier in this sweep */
         if (await movemon_singlemon(mtmp)) break;
     }
     if (any_light_source())
@@ -426,6 +426,17 @@ async function movemon_singlemon(mtmp) {
         gs_somebody_can_move = false;
         return true;
     }
+
+    /* src/mon.c:1227, parked guards retain their corridor until it clears. */
+    if (mtmp.isgd && !mtmp.mx && !(mtmp.mstate & MON_MIGRATING)) {
+        if (game.moves > (mtmp.mlstmv || 0)) {
+            await gd_move(mtmp);
+            mtmp.mlstmv = game.moves;
+        }
+        return false;
+    }
+    if (DEADMONSTER(mtmp))
+        return false;
 
     /* src/mon.c:1244 — a monster that is no longer on this map does not act. */
     if (mon_offmap(mtmp))
@@ -3564,6 +3575,9 @@ export async function mondead(mdef) {
         return;
     if (be_sad)
         await You('have a sad feeling for a moment, then it passes.');
+    /* src/mon.c:3106, a guard can remain parked until his corridor clears. */
+    if (mdef.isgd && !await grddead(mdef))
+        return;
     const mptr = mdef.data; /* saved for m_detach light cleanup */
     /* src/mon.c:3113, the remains and death count use the true species. */
     if (ismnum(mdef.cham)) {

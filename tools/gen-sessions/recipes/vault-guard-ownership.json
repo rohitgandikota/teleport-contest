@@ -1,0 +1,74 @@
+{
+  "name": "vault-guard-ownership",
+  "description": "Proposed ordinary inputs, not yet native-recorded: kill a real invault escort with and without a punishment ball, then remove punishment and verify corridor retirement without death credit.",
+  "coverage": [
+    "mode.debug",
+    "social.vault-guard"
+  ],
+  "branches": [
+    "vault.guard-death-unblocked",
+    "vault.guard-death-ball-blocked",
+    "vault.guard-death-release-corridor"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "vault.guard-death-unblocked",
+      "segment": 0,
+      "screenIncludes": [
+        "You are encased in rock.",
+        "Vanquished creatures:",
+        "a guard"
+      ],
+      "screenExcludes": [
+        "You are being punished for your misbehavior!"
+      ]
+    },
+    {
+      "branch": "vault.guard-death-ball-blocked",
+      "segment": 1,
+      "screenIncludes": [
+        "You are being punished for your misbehavior!",
+        "You kill an unseen guard!",
+        "No creatures have been vanquished."
+      ],
+      "screenExcludes": [
+        "You are encased in rock."
+      ]
+    },
+    {
+      "branch": "vault.guard-death-release-corridor",
+      "segment": 2,
+      "screenIncludes": [
+        "You are being punished for your misbehavior!",
+        "You kill an unseen guard!",
+        "No creatures have been vanquished.",
+        "You are encased in rock.",
+        "The corridor disappears."
+      ]
+    }
+  ],
+  "segments": [
+    {
+      "seed": 7303,
+      "datetime": "20000115090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00162\r\u0006\u0017500 gold pieces\r\u0014kkkkkkkkkkkkkhhhhh. ................................... intruder\r  \u001b\u001bd$ll\u001b\u001b#wizkill\rll.\u001b  \u001b#vanquished\r \u001b",
+      "name": "guard-death-unblocked"
+    },
+    {
+      "seed": 7303,
+      "datetime": "20000115090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00162\r\u0006\u0017500 gold pieces\r\u0014kkkkkkkkkkkkkhhhhh. ................................... intruder\r  \u001b\u001bd$ll\u001b\u001b\u0017cursed scroll of punishment\r\u001b\u001bro\u001b\u001b#wizkill\rll.\u001b  \u001b#vanquished\r \u001b.",
+      "name": "guard-death-ball-blocked"
+    },
+    {
+      "seed": 7303,
+      "datetime": "20000115090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00162\r\u0006\u0017500 gold pieces\r\u0014kkkkkkkkkkkkkhhhhh. ................................... intruder\r  \u001b\u001bd$ll\u001b\u001b\u0017cursed scroll of punishment\r\u001b\u001bro\u001b\u001b#wizkill\rll.\u001b  \u001b#vanquished\r \u001b.\u0017blessed scroll of remove curse\r\u001b\u001brp  \u001b\u001b#vanquished\r \u001b.",
+      "name": "guard-death-release-corridor"
+    }
+  ]
+}

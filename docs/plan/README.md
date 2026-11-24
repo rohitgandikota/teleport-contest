@@ -201,6 +201,11 @@ Low-stamina throws now drop downward under C's full capacity, HP, direction
 and weight conditions, waiting for exercise feedback before changing ownership.
 Two native cases, 62 related controls, nine focused fixtures and the complete
 767-fixture regression pass. Upward-throw helper bodies remain unchanged.
+Guard death now retains corridor ownership until restoration finishes, including
+punishment-ball blocking, off-map cleanup and current-level guard lookup.
+Three native cases, 103 related controls, thirteen focused fixtures and all
+44 public fixtures pass. The maintained corpus now contains 768 fixtures;
+the latest complete regression remains the 767-fixture stamina checkpoint.
 The Linux/NFS branch collector is pushed
 and passes signal canaries plus exact save/restore, artifact and natural-exit
 pilots. The Linux census at e4504071 now covers all 678 original inputs:
@@ -211,8 +216,8 @@ functions and observing 59,800/107,260 direct C branch outcomes.
 All 766 credited input hashes, sixty-six build manifests and branch layouts
 were checked before merging. This C coverage census includes the integrated
 guard, shop, floor, glob, boulder, guard-death and cursor-description recordings.
-Upward throws and stamina are integrated. Capacity, pet digestion, guard
-ownership, bill disposal and monster trap hits have pending JS integrations.
+Upward throws, stamina and guard ownership are integrated. Capacity, pet
+digestion, bill disposal and monster trap hits have pending JS integrations.
 Original platform/output rejections
 remain rejected; no output was normalized. The two new sink fixtures separately
 match Linux C exactly; their validated union covers all 94/94 direct dosinkring

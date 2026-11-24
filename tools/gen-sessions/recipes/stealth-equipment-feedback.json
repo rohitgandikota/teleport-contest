@@ -1,0 +1,105 @@
+{
+  "name": "stealth-equipment-feedback",
+  "description": "Four C-recorded debug Knight inputs for stealth armor gain and loss. Every mount attempt explicitly declines force success. Flying steed loss wording, blind mounted feedback, blocked ground-mounted feedback and discovery, and blind levitating boots versus cloak gain wording are asserted. Native v2 is preserved byte-identically; the earlier output with an inherited js source marker is retained separately and not promoted.",
+  "coverage": [
+    "mode.debug",
+    "monster.steeds",
+    "object.armor",
+    "object.identification",
+    "survival.timed-status"
+  ],
+  "branches": [
+    "flying-mounted-boots-gain-and-loss",
+    "blind-flying-mounted-cloak-gain-and-loss",
+    "ground-mounted-armor-blocked-feedback",
+    "blind-levitating-foot-boots-and-cloak-feedback"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "flying-mounted-boots-gain-and-loss",
+      "segment": 0,
+      "screenIncludes": [
+        "You mount the saddled ki-rin.",
+        "You float imperceptibly.",
+        "You and your ki-rin are noisy."
+      ],
+      "screenExcludes": [
+        "You sure are noisy."
+      ]
+    },
+    {
+      "branch": "blind-flying-mounted-cloak-gain-and-loss",
+      "segment": 1,
+      "screenIncludes": [
+        "You mount the saddled ki-rin.",
+        "You can't see any more.",
+        "You move very quietly.",
+        "You and your ki-rin are noisy."
+      ],
+      "screenExcludes": [
+        "You sure are noisy."
+      ]
+    },
+    {
+      "branch": "ground-mounted-armor-blocked-feedback",
+      "segment": 2,
+      "screenIncludes": [
+        "You mount the saddled pony.",
+        "You finish your dressing maneuver.",
+        "You finish taking off your boots."
+      ],
+      "screenExcludes": [
+        "You move very quietly.",
+        "You walk very quietly.",
+        "You float imperceptibly.",
+        "are noisy."
+      ]
+    },
+    {
+      "branch": "blind-levitating-foot-boots-and-cloak-feedback",
+      "segment": 3,
+      "screenIncludes": [
+        "You start to float in the air!",
+        "You can't see any more.",
+        "You float imperceptibly.",
+        "You move very quietly.",
+        "You sure are noisy."
+      ],
+      "screenExcludes": [
+        "You and your",
+        "You walk very quietly."
+      ]
+    }
+  ],
+  "segments": [
+    {
+      "name": "flying-mount-boots-gain-loss",
+      "seed": 6962,
+      "datetime": "20000112124000",
+      "nethackrc": "OPTIONS=name:Sir,role:Knight,race:human,gender:male,align:lawful,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                                   \u0007tame saddled ki-rin\r  \u001b\u001b#ride\rhn        \u001b\u001b\u0017blessed elven boots\r        \u001b\u001bWa        \u001b\u001bT        \u001b\u001b"
+    },
+    {
+      "name": "blind-flying-mount-cloak-gain-loss",
+      "seed": 6962,
+      "datetime": "20000112124000",
+      "nethackrc": "OPTIONS=name:Sir,role:Knight,race:human,gender:male,align:lawful,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                                   \u0007tame saddled ki-rin\r  \u001b\u001b#ride\rhn        \u001b\u001b\u0017blessed elven cloak\r        \u001b\u001b\u0017blessed blindfold\r        \u001b\u001bPb        \u001b\u001bWa        \u001b\u001bT        \u001b\u001b"
+    },
+    {
+      "name": "ground-mount-blocked-boots-cloak",
+      "seed": 6962,
+      "datetime": "20000112124000",
+      "nethackrc": "OPTIONS=name:Sir,role:Knight,race:human,gender:male,align:lawful,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                                   \u0007tame saddled pony\r  \u001b\u001b#ride\rhn        \u001b\u001b\u0017blessed elven boots\r        \u001b\u001b\u0017blessed elven cloak\r        \u001b\u001bWa        \u001b\u001bT        \u001b\u001bWb        \u001b\u001bT        \u001b\u001b"
+    },
+    {
+      "name": "blind-levitating-foot-boots-cloak",
+      "seed": 6962,
+      "datetime": "20000112124000",
+      "nethackrc": "OPTIONS=name:Sir,role:Knight,race:human,gender:male,align:lawful,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                                   \u0017blessed elven boots\r        \u001b\u001b\u0017blessed elven cloak\r        \u001b\u001b\u0017blessed ring of levitation\r        \u001b\u001b\u0017blessed blindfold\r        \u001b\u001bPcl        \u001b\u001bPd        \u001b\u001bWa        \u001b\u001bT        \u001b\u001bWb        \u001b\u001bT        \u001b\u001b"
+    }
+  ]
+}

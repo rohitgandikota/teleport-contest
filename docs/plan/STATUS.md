@@ -3978,6 +3978,66 @@ The separate held-monster guard has a new exact C pair. Rider boulder handling
 has a fresh native recording under comparison. Mounted equipment feedback and
 restored door ownership remain separate queued checkpoints.
 
+## 2026-11-23: mounted equipment feedback follows C
+
+The covetous/thunder checkpoint `fd127e23` is committed and pushed. This
+checkpoint changes only `toggle_stealth` and its imports. Gain feedback uses
+C's boots category and flight/levitation predicates. Loss while mounted names
+the steed through `x_monnam` with C's article and suppression flags. Clear
+mounted/unmounted branches replace the old combined message expression.
+Identification still precedes feedback, and all existing callers await it.
+The parent reviewed the complete C and JS functions; the separate caller
+review covers wear, removal, destruction and polymorph continuations.
+
+Four unchanged C cases cover flying mounted boots, blind flying mounted cloak,
+ground-mounted blocking, and blind levitation on foot. Baseline matches
+794/796 screens. Its two misses say "You sure are noisy." where C names the
+ki-rin. The repair matches all 796 screens/cursors, 10,974 complete/per-input
+RNG calls and one animation. Both baseline and repair already match RNG and
+cursors. Actual mounting declines wizard force-success and then succeeds
+normally. These cases have neither invulnerability nor a declined death.
+
+All 35 source controls, four actual-input checks and the native provenance
+group pass, 40/40 versus 24/40 before. Named and hallucinated steeds and ring
+guards remain source controls. All 21 retained mounted-Stealth controls also
+pass. The parent's first combined command omitted the retained private-export
+loader, so that source file failed to import. The 40 new and three retained
+native checks passed in that run; all eighteen retained source controls passed
+with the documented loader. That invocation error is preserved, with no runtime
+change or assertion weakening.
+
+Five focused fixtures cover nine segments, 1,309 boundaries, 29,072 strict
+complete/per-input calls and two animations. Scoring, exact stream lengths,
+slices, animation counts/cursors and five 15-second worker checks pass. The
+new four-case fixture also matches delayed interactive input at every boundary.
+The source audit remains zero findings in 276 non-frozen modules.
+The complete 730-fixture regression passes all 818,642 boundary
+screens/cursors, 16,473,492 scored RNG positions and 30,736 animation frames.
+Both shards finish without failures or timeouts at the default 45-second worker
+limit. All 279 runtime hashes remain unchanged.
+
+The NFS union now has 724 credited inputs, twenty-seven matching build
+manifests/layouts, 4,525/5,492 entered functions and 59,089/107,260 direct C
+branch outcomes. Its 44 added native inputs contain 177 segments, plus nine
+independent Linux control segments. This fixture calls `toggle_stealth` twelve
+times and reaches fourteen of its eighteen direct outcomes. Profiles stay at
+`/share/NFS/u/rohit/research/contest/artifacts/2026-11-22/c-coverage-compress.E84JI2/verified-stealth-equipment-union-20261123`.
+
+The first parent C invocation inherited an incorrect `source: js` input marker.
+That raw file remains unchanged and excluded. A new input preserved all five
+fields with `source: c`, and a second C run produced the promoted v2 file.
+Its raw SHA-256 is
+`590b886515b60ab3a7d83053a85bd84e8ea45386d8375c8e374da96356a1fc35`.
+No raw metadata was relabeled. The reviewed v1 patch and separate readability
+amendment remain immutable; main uses their exact composed v2 patch.
+
+Evidence is `.cache/restart-20261122/stealth-equipment-review/`,
+`stealth-equipment-parent-{integration,verification}.json`,
+`stealth-equipment-promoted-*` and `stealth-equipment-corpus-*`.
+The held-monster guard and restored door count have separate native-confirmed
+packages. `set_wear` callback dispatch and Rider terrain actions are under
+independent native review. They are excluded from this checkpoint.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

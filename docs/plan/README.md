@@ -19,8 +19,8 @@ run at 19:33 UTC predates the latest checkpoint. Public remains 44/44;
 that snapshot has 936 unmatched held-out
 screens. Local verification does not establish a newer held-out score.
 
-The latest verification passes 729/729 fixtures: 817,846 boundary
-screens/cursors, 16,462,518 scored RNG positions and 30,735 animation frames.
+The latest verification passes 730/730 fixtures: 818,642 boundary
+screens/cursors, 16,473,492 scored RNG positions and 30,736 animation frames.
 Both shards finish without failures or timeouts. All 279 runtime hashes
 stayed fixed throughout.
 The earlier potion changes also pass strict full-stream and per-input RNG
@@ -102,16 +102,18 @@ new C pairs, all 66 state controls and nineteen source assertions.
 Covetous goal attacks now follow C, matching the new 916-boundary native
 case. A separate 989-boundary thunder continuation confirms the duration repair.
 All twelve movement source controls and nine actual-input controls pass.
-Next: mounted equipment feedback, held-monster movement and restored door
-ownership. The
+Mounted equipment feedback now follows C naming and category decisions,
+matching four native cases and all 40 controls.
+Next: held-monster movement, restored door ownership, worn-item polymorph
+callbacks and Rider terrain actions. The
 Linux/NFS branch collector is pushed
 and passes signal canaries plus exact save/restore, artifact and natural-exit
 pilots. The Linux census at e4504071 now covers all 678 original inputs:
 603 canonical matches and 75 independently recorded ordinary Linux controls.
-Adding 43 newer raw inputs and two independent Linux controls, 182
+Adding 44 newer raw inputs and two independent Linux controls, 186
 native segments in total, gives a validated union entering 4,525/5,492
-functions and observing 59,080/107,260 direct C branch outcomes.
-All 723 credited input hashes, twenty-six build manifests and branch layouts were
+functions and observing 59,089/107,260 direct C branch outcomes.
+All 724 credited input hashes, twenty-seven build manifests and branch layouts were
 checked before merging. Original platform/output rejections
 remain rejected; no output was normalized. The two new sink fixtures separately
 match Linux C exactly; their validated union covers all 94/94 direct dosinkring

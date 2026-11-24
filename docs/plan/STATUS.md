@@ -5411,6 +5411,57 @@ Evidence is `.cache/restart-20261122/cursor-description-coordinates-audit/`,
 the corresponding native receipt and `linux-coverage-location-feedback-*`.
 Raw fixtures and frozen infrastructure remain unchanged.
 
+## 2026-11-24: rolling monster triggers preserve airborne checks and feedback
+
+Cursor-description checkpoint `ba3545b3` is committed and pushed. The separate
+rolling-boulder owner now uses C's `m_in_air` predicate, independent of forced
+trap flags, and `pline_mon` for accessible monster feedback. The earlier
+`mintrap` predispatch check remains separate. The three-line runtime change
+also corrects the owner's source line. It adds no new abstraction.
+
+Four unchanged raw C cases exercise hearing and deaf accessible feedback,
+an unchanged plain-message control, and a fatal kitten impact. All 408 styled
+boundary grids/cursors and RNG slices, 11,618 complete calls and 64 animation
+frames match. With the cursor prerequisite alone, ten grids, seven cursors
+and two RNG slices differed. Complete RNG streams already matched; the
+missing message prefix shifted More boundaries and animation placement.
+The plain-message control retains identical hashes for all five output
+channels. The fatal case kills the monster, not the hero.
+
+All 21 source controls and five input controls pass, versus ten source
+controls before. Real monster creation, trap setup, concealment, hearing and
+object helpers exercise the owner. Forced flags and lethal HP are explicit
+constructed preconditions. Hidden-piercer movement probes do not demonstrate
+ordinary trap-owner execution, so flying, floating and ceiling exclusions
+are not credited as new native witnesses.
+
+All seventeen integrated checks pass: 26 new and 96 retained controls, eight
+C fixtures with 28 segments, 2,105 boundaries, 85,186 complete calls/input
+slices and 132 exact animation grids/cursors/counts. Deferred input matches
+three fixtures, fourteen segments, 743 boundaries, 37,240 calls and 92 frames.
+Public remains 44/44, with 11,405 boundaries, 792,838 scored RNG positions and
+1,483 frames. All 52 hang workers pass at 30 seconds. Syntax and the 276-module
+source audit pass, and all 279 runtime hashes remain fixed. The maintained
+inventory is 764; the latest complete run remains 760/760 at `f12cfd59`.
+
+The Linux location batch remains 2/2 exact, with 759 validated input hashes,
+sixty-one layouts, 4,539/5,492 functions and 59,517/107,260 direct outcomes.
+The trigger owner has ten observed calls and fourteen of 26 direct outcomes.
+This coverage measurement does not certify the unobserved branches.
+
+The official table fetched at 06:57 UTC still contains the 02:35 UTC snapshot
+and our 01:48 UTC scoring run: 7th agentic, 11th overall, public 44/44 and
+held-out 39/56. Its 936-screen deficit predates these later pushes. Published
+per-session diagnostics cover only the public fixtures. No newer held-out
+gain is inferred from local results.
+
+Evidence is `.cache/restart-20261122/rolling-boulder-trigger-audit/`, the
+`rolling-boulder-trigger-parent-{integration,verification,native-receipt}.json`
+receipts and `leaderboard-20261124-after-ba3545b3-receipt.json`. Original raw
+C recordings, rejected probes and frozen infrastructure remain unchanged.
+Next are reviewed object-deallocation ownership and the separately recorded
+glob billing and low-stamina throw gaps.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

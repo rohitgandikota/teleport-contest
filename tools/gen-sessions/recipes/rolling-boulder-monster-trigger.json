@@ -1,0 +1,100 @@
+{
+  "name": "rolling-boulder-monster-trigger",
+  "description": "Four unchanged C recordings verify location-aware monster rolling-trap feedback, deafness, a fatal monster hit and unchanged plain feedback. Actual tame kitten movement triggers the trap. The hero survives every case. Airborne and ceiling flags have separate constructed source controls.",
+  "coverage": [
+    "mode.debug",
+    "options.rc-bindings",
+    "monster.movement",
+    "traps.projectile-physical",
+    "ui.more-paging"
+  ],
+  "requireBranchAssertions": true,
+  "branches": [
+    "rolling.monster.accessible",
+    "rolling.monster.deaf-accessible",
+    "rolling.monster.plain-negative",
+    "rolling.monster.fatal-accessible"
+  ],
+  "segments": [
+    {
+      "name": "monster-trigger-accessible",
+      "seed": 9100,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=accessiblemsg,whatis_coord:map\n",
+      "moves": " \u0014l.\u0017rolling boulder trap trap\r \u0017blessed potion of full healing\rqa \u0014j.\u0007tame kitten\r............    \u001b:"
+    },
+    {
+      "name": "monster-trigger-deaf-accessible",
+      "seed": 9100,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=accessiblemsg,whatis_coord:map\nOPTIONS=deaf\n",
+      "moves": " \u0014l.\u0017rolling boulder trap trap\r \u0017blessed potion of full healing\rqa \u0014j.\u0007tame kitten\r............    \u001b:"
+    },
+    {
+      "name": "monster-trigger-plain-negative",
+      "seed": 9100,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!accessiblemsg,whatis_coord:map\n",
+      "moves": " \u0014l.\u0017rolling boulder trap trap\r \u0017blessed potion of full healing\rqa \u0014j.\u0007tame kitten\r............    \u001b:"
+    },
+    {
+      "name": "monster-trigger-fatal-accessible",
+      "seed": 9100,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=accessiblemsg,whatis_coord:map\n",
+      "moves": " \u0014l.\u0017rolling boulder trap trap\r \u0017blessed potion of full healing\rqa \u0014u.\u0007tame kitten\r............    \u001b:"
+    }
+  ],
+  "branchAssertions": [
+    {
+      "branch": "rolling.monster.accessible",
+      "segment": 0,
+      "screenIncludes": [
+        "<17,15>: Click!  The kitten triggers something.",
+        "The boulder hits the kitten."
+      ],
+      "screenExcludes": [
+        "Die?",
+        "OK, so you don't die."
+      ]
+    },
+    {
+      "branch": "rolling.monster.deaf-accessible",
+      "segment": 1,
+      "screenIncludes": [
+        "<17,15>: The kitten triggers something.",
+        "The boulder hits the kitten."
+      ],
+      "screenExcludes": [
+        "Die?",
+        "OK, so you don't die.",
+        "<17,15>: Click!"
+      ]
+    },
+    {
+      "branch": "rolling.monster.plain-negative",
+      "segment": 2,
+      "screenIncludes": [
+        "Click!  The kitten triggers something.",
+        "The boulder hits the kitten."
+      ],
+      "screenExcludes": [
+        "Die?",
+        "OK, so you don't die.",
+        "<17,15>: Click!"
+      ]
+    },
+    {
+      "branch": "rolling.monster.fatal-accessible",
+      "segment": 3,
+      "screenIncludes": [
+        "<17,15>: Click!  The kitten triggers something.",
+        "The kitten is killed!"
+      ],
+      "screenExcludes": [
+        "Die?",
+        "OK, so you don't die."
+      ]
+    }
+  ]
+}

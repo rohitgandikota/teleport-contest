@@ -179,6 +179,10 @@ Automatic cursor descriptions now respect the selected coordinate mode.
 Six native cases, 116 related controls, eight focused fixtures and all 44
 public fixtures pass. The default and disabled-description controls retain
 identical output.
+Monster-triggered rolling boulders now use C's airborne predicate and
+accessible monster-message prefix. Four native cases, 122 related controls,
+eight focused fixtures and all 44 public fixtures pass. Forced airborne and
+ceiling branches retain constructed coverage only.
 The Linux/NFS branch collector is pushed
 and passes signal canaries plus exact save/restore, artifact and natural-exit
 pilots. The Linux census at e4504071 now covers all 678 original inputs:
@@ -189,7 +193,7 @@ functions and observing 59,517/107,260 direct C branch outcomes.
 All 759 credited input hashes, sixty-one build manifests and branch layouts
 were checked before merging. This C coverage census includes the integrated
 guard, shop, floor, glob, boulder, guard-death and cursor-description recordings.
-Glob billing and monster-trigger feedback recordings have pending JS integrations.
+Glob billing has a pending JS integration.
 Original platform/output rejections
 remain rejected; no output was normalized. The two new sink fixtures separately
 match Linux C exactly; their validated union covers all 94/94 direct dosinkring

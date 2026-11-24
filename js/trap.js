@@ -5902,7 +5902,7 @@ export async function launch_obj(otyp, x1, y1, x2, y2, style) {
     return 2;
 }
 
-// src/trap.c trapeffect_rolling_boulder_trap().
+// src/trap.c:2661 trapeffect_rolling_boulder_trap().
 async function trapeffect_rolling_boulder_trap(mtmp, trap, trflags) {
     if (mtmp === game.youmonst) {
         const style = ROLL | (trap.tseen ? LAUNCH_KNOWN : 0);
@@ -5918,14 +5918,14 @@ async function trapeffect_rolling_boulder_trap(mtmp, trap, trflags) {
         }
         return Trap_Effect_Finished;
     }
-    if (check_in_air(mtmp, trflags))
+    if (m_in_air(mtmp))
         return Trap_Effect_Finished;
 
     const in_sight = mtmp === game.u.usteed
         || (cansee(mtmp.mx, mtmp.my) && canspotmon(mtmp));
     newsym(mtmp.mx, mtmp.my);
     if (in_sight) {
-        await pline(`${Deaf() ? '' : 'Click!  '}${Monnam(mtmp)} triggers `
+        await pline_mon(mtmp, `${Deaf() ? '' : 'Click!  '}${Monnam(mtmp)} triggers `
                     + `${trap.tseen ? 'a rolling boulder trap' : 'something'}.`);
     }
     if (await launch_obj(ONAMES.BOULDER,

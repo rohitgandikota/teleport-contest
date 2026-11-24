@@ -5359,6 +5359,58 @@ and `vault-guard-death-promoted-*`. All 1,540 sealed files, the exact candidate
 vault hash and five promoted support hashes were verified. No raw fixture or
 frozen infrastructure changed.
 
+## 2026-11-24: automatic cursor descriptions honor coordinate options
+
+Guard-death checkpoint `9ea5529b` is committed and pushed. A new ordinary
+monster-trigger recording exposed an earlier, independent cursor-description
+gap. `auto_describe` omitted `coord_desc` and assumed the default empty mode.
+The two-line repair now appends C's optional space and coordinate text before
+the existing invalid-target and no-travel-path suffixes. The formatter,
+history suppression and cursor placement are unchanged.
+
+Six separate raw C segments cover none, compass, full compass, map and screen
+coordinates, plus disabled automatic descriptions. All 42 styled grids,
+cursors and RNG slices, 15,234 complete calls and zero frames match. Before,
+four requested-coordinate cases each missed one grid. Both negative controls
+retain identical full output hashes. All twenty constructed coordinate and
+validator controls pass, versus four before. They check the physical topline,
+map cursor, suppressed history and callback short circuit through real
+description, formatter and terminal helpers.
+
+All thirteen integrated checks pass: 27 new and 89 retained controls, eight
+C fixtures with 28 segments, 1,254 exact boundaries, 109,259 complete RNG
+calls/input slices and 136 animation grids/cursors/counts. Deferred input
+matches three fixtures, twelve segments, 74 boundaries, 31,785 calls and zero
+frames. All 44 public fixtures retain 11,405 boundaries, 792,838 scored RNG
+positions and 1,483 frames. All 52 hang workers pass at 30 seconds. Syntax
+passes, the source audit is clear across 276 modules, and all 279 runtime
+hashes stay fixed. The latest full run remains `f12cfd59` at 760/760; the
+maintained inventory is now 763.
+
+The initial test driver inspected the history field for a history-suppressed
+message, then included the validator-registration redraw in its callback
+count. Both failed receipts are retained. The corrected controls inspect the
+physical output and reset the counter after registration, before the owner
+call. No runtime change was made to accommodate those test mistakes.
+
+The unchanged four monster-trigger recordings now match C with this
+prerequisite and their separately reviewed trap candidate. Their integration
+is next. Ordinary hidden-piercer creation can leave a creature over the trap,
+but standing there does not establish that the trap owner ran. Airborne and
+ceiling branches therefore retain constructed coverage only.
+
+The two location fixtures also match Linux C 2/2. Together with the new glob
+billing recording, the validated union now has 759 inputs, sixty-one layouts,
+4,539/5,492 functions and 59,517/107,260 outcomes. Its 79 added raw inputs
+contain 290 segments, plus nine independent Linux segments. Glob billing
+remains pending its separate sale-price and original-weight repairs. Bulk
+coverage stays on NFS.
+
+Evidence is `.cache/restart-20261122/cursor-description-coordinates-audit/`,
+`cursor-description-coordinates-parent-{source-review,integration,verification}.json`,
+the corresponding native receipt and `linux-coverage-location-feedback-*`.
+Raw fixtures and frozen infrastructure remain unchanged.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

@@ -175,16 +175,21 @@ Guard arrival timing now consumes C's death-dependent probability draw.
 Four native cases, 315 related controls, ten focused fixtures and all 44
 public fixtures pass. Strict RNG checks catch both positive cases, while
 only one changes a boundary screen.
+Automatic cursor descriptions now respect the selected coordinate mode.
+Six native cases, 116 related controls, eight focused fixtures and all 44
+public fixtures pass. The default and disabled-description controls retain
+identical output.
 The Linux/NFS branch collector is pushed
 and passes signal canaries plus exact save/restore, artifact and natural-exit
 pilots. The Linux census at e4504071 now covers all 678 original inputs:
 603 canonical matches and 75 independently recorded ordinary Linux controls.
-Adding 76 newer raw inputs and two independent Linux controls, 288
+Adding 79 newer raw inputs and two independent Linux controls, 299
 native segments in total, gives a validated union entering 4,539/5,492
-functions and observing 59,486/107,260 direct C branch outcomes.
-All 756 credited input hashes, fifty-nine build manifests and branch layouts
+functions and observing 59,517/107,260 direct C branch outcomes.
+All 759 credited input hashes, sixty-one build manifests and branch layouts
 were checked before merging. This C coverage census includes the integrated
-guard, shop, floor, glob, boulder and guard-death recordings, all now integrated.
+guard, shop, floor, glob, boulder, guard-death and cursor-description recordings.
+Glob billing and monster-trigger feedback recordings have pending JS integrations.
 Original platform/output rejections
 remain rejected; no output was normalized. The two new sink fixtures separately
 match Linux C exactly; their validated union covers all 94/94 direct dosinkring

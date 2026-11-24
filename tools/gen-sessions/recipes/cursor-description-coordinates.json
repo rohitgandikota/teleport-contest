@@ -1,0 +1,116 @@
+{
+  "name": "cursor-description-coordinates",
+  "description": "Six unchanged C inputs verify automatic cursor descriptions with each coordinate mode and disabled descriptions. Both default-mode and disabled controls are unchanged by the coordinate suffix repair.",
+  "coverage": [
+    "mode.debug",
+    "options.rc-bindings",
+    "ui.getpos",
+    "level.ordinary"
+  ],
+  "requireBranchAssertions": true,
+  "branches": [
+    "getpos.autodescribe.none",
+    "getpos.autodescribe.compass",
+    "getpos.autodescribe.full-compass",
+    "getpos.autodescribe.map",
+    "getpos.autodescribe.screen",
+    "getpos.autodescribe.disabled"
+  ],
+  "segments": [
+    {
+      "name": "cursor-description-none",
+      "seed": 9100,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=whatis_coord:none\n",
+      "moves": " \u0014l.\u001b:"
+    },
+    {
+      "name": "cursor-description-compass",
+      "seed": 9100,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=whatis_coord:Compass\n",
+      "moves": " \u0014l.\u001b:"
+    },
+    {
+      "name": "cursor-description-full-compass",
+      "seed": 9100,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=whatis_coord:full compass\n",
+      "moves": " \u0014l.\u001b:"
+    },
+    {
+      "name": "cursor-description-map",
+      "seed": 9100,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=whatis_coord:map\n",
+      "moves": " \u0014l.\u001b:"
+    },
+    {
+      "name": "cursor-description-screen",
+      "seed": 9100,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=whatis_coord:screen\n",
+      "moves": " \u0014l.\u001b:"
+    },
+    {
+      "name": "cursor-description-disabled",
+      "seed": 9100,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=whatis_coord:map\nOPTIONS=!autodescribe\n",
+      "moves": " \u0014l.\u001b:"
+    }
+  ],
+  "branchAssertions": [
+    {
+      "branch": "getpos.autodescribe.none",
+      "segment": 0,
+      "screenIncludes": [
+        "floor of a room",
+        "You materialize in a different location!"
+      ]
+    },
+    {
+      "branch": "getpos.autodescribe.compass",
+      "segment": 1,
+      "screenIncludes": [
+        "floor of a room (east)",
+        "You materialize in a different location!"
+      ]
+    },
+    {
+      "branch": "getpos.autodescribe.full-compass",
+      "segment": 2,
+      "screenIncludes": [
+        "floor of a room (east)",
+        "You materialize in a different location!"
+      ]
+    },
+    {
+      "branch": "getpos.autodescribe.map",
+      "segment": 3,
+      "screenIncludes": [
+        "floor of a room <17,15>",
+        "You materialize in a different location!"
+      ]
+    },
+    {
+      "branch": "getpos.autodescribe.screen",
+      "segment": 4,
+      "screenIncludes": [
+        "floor of a room [17,17]",
+        "You materialize in a different location!"
+      ]
+    },
+    {
+      "branch": "getpos.autodescribe.disabled",
+      "segment": 5,
+      "screenIncludes": [
+        "Where do you want to be teleported?",
+        "You materialize in a different location!"
+      ],
+      "screenExcludes": [
+        "floor of a room <17,15>"
+      ]
+    }
+  ]
+}

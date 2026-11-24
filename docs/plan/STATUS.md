@@ -3905,6 +3905,79 @@ released-monster control. The restored door-count candidate has a fresh bones
 recording under confirmation. Those changes remain in separate cache packages;
 this checkpoint contains only the two save contracts described above.
 
+## 2026-11-23: covetous goal attacks and native thunder confirmation
+
+The save checkpoint `c4c94667` is committed and pushed. This checkpoint
+replaces one obsolete `m_move` comment with C's missing covetous-target attack.
+A valid adjacent goal occupied by another monster triggers the existing
+`mattackm` owner. Squared distance two includes diagonal adjacency. The caller
+sets targeting fields before combat, returns death only for the attacker-death
+bit, and otherwise awaits the existing `postmov` continuation. The earlier
+long-worm skip is preserved for this added arm. Missing JS goal coordinates
+use C's zero-initialized value, verified with an actual fresh monster.
+
+The original Air recording exposed this gameplay defect while testing thunder.
+At segment 0 boundary 669, complete call 18,487, C attacks the energy vortex
+on the invisible Wizard's diagonal goal. JS skipped that attack and began
+the next monster's turn. The first visual mismatch was later, at boundary 718.
+The isolated repair changes the native comparison from 718/916 screens and
+894/916 cursors to exact 916/916, with all 21,230 complete/per-input RNG calls.
+The original C trace contains no thunder or declined death; the old divergent
+JS events are not native evidence. The raw recording remains unchanged.
+
+A separate continuation now supplies positive native thunder evidence. Its
+first 916 steps exactly preserve the original C prefix. C reaches cloud
+thunder at boundary 959, then the real declined wizard death at 960/962.
+The final timer menu at 984 shows 16,777,214. With corrected movement held
+fixed, reversing only the already-pushed duration hunks reproduces a single
+screen failure: raw addition creates a false `FROMEXPER` bit and a timer of
+27. The corrected code saturates the timeout and preserves source bits.
+Both versions have identical RNG, cursors and animations, demonstrating why
+those metrics alone cannot establish timer-state fidelity. All 989 boundaries,
+23,646 calls and the single animation now match C. The later death remains
+explicit; uninterrupted survival is not claimed.
+
+All twelve constructed source controls and nine actual-input controls pass.
+The source controls use real creation, targeting, attack and movement owners,
+including misses and defender versus attacker death. All six native recipe
+assertions, raw hashes, source/version markers and five input fields pass.
+Both new fixtures retain their whole original bytes. Five focused fixtures
+cover ten segments, 2,647 boundaries, 79,538 strict complete/per-input calls
+and 64 animations. Scoring, exact length/slices, animation counts/cursors and
+five 60-second worker checks pass. Both new fixtures also match with delayed
+interactive input, 1,905 boundaries, 44,876 calls and one animation. The source
+audit reports zero findings in 276 non-frozen modules.
+The complete 729-fixture regression passes all 817,846 boundary
+screens/cursors, 16,462,518 scored RNG positions and 30,735 animation frames.
+Both shards finish without failures or timeouts at the default 45-second worker
+limit. All 279 runtime hashes remain unchanged.
+
+The verified NFS union contains 723 credited inputs, twenty-six matching
+manifests/layouts, 4,525/5,492 entered functions and 59,080/107,260 direct
+branch outcomes. Its 43 added raw inputs contribute 173 segments, plus nine
+independent Linux control segments. Original Air reaches only one of eighteen
+direct `do_storms` outcomes; the continuation reaches twelve. `Hear_again`
+remains unentered in these recordings. Bulk data stays under
+`/share/NFS/u/rohit/research/contest/artifacts/2026-11-22/c-coverage-compress.E84JI2/verified-covetous-thunder-union-20261123`.
+
+Evidence is `.cache/restart-20261122/air-covetous-move-audit/`,
+`air-thunder-native-confirmation/`, `covetous-thunder-parent-*`,
+`covetous-thunder-promoted-*` and `covetous-thunder-corpus-*`. The parent
+reviewed the complete containing movement function and the goal/continuation
+contracts. The original manifest's hang-tool hash predates `b799db67`'s
+comment/console corrections; the recorded exception changes no execution
+logic. All other dependency hashes match. No frozen runtime or C oracle changed.
+
+This does not complete `m_move`. The trapping reach audit found source
+ordering/constant differences but no causal failure in its three ordinary
+controls: initial caught rechecks return 0/1, while real polymorph and death
+arrivals use the already-correct `postmov` path. Unusual transitive terrain
+combinations remain unproven. Earlier prose labeled the second movement caller
+`attack`; the complete follow-up correctly identifies `do_attack`.
+The separate held-monster guard has a new exact C pair. Rider boulder handling
+has a fresh native recording under comparison. Mounted equipment feedback and
+restored door ownership remain separate queued checkpoints.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

@@ -1,0 +1,133 @@
+{
+  "name": "air-thunder-after-covetous",
+  "description": "Native-confirmed Air thunder saturates an almost-capped deafness timeout before a retained declined wizard death. Requires the independent covetous goal-attack repair.",
+  "coverage": [
+    "mode.debug",
+    "survival.timed-status",
+    "level.planes",
+    "terrain.air-cloud"
+  ],
+  "branches": [
+    "air.thunder-cap",
+    "air.declined-death-after-thunder",
+    "air.post-thunder-timeout-menu"
+  ],
+  "requireBranchAssertions": true,
+  "segments": [
+    {
+      "name": "air-thunder-after-covetous-repair",
+      "seed": 6120,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Conan,role:Barbarian,race:human,gender:male,align:neutral,playmode:debug,suppress_alert:3.4.3,symset:DECgraphics\nOPTIONS=!autopickup\n",
+      "moves": "  n#levelchange\n20\n                   \u0016?\n  N       \u001bsss  \u0016-2\n      sss  \u0017cloud\r  \u001b\u001b#wizintrinsic\r16777215j\r  \u001b\u001bm.            \u001b\u001b\u0017cloud\r  \u001b\u001b#wizintrinsic\r16777215j\r  \u001b\u001bm.            \u001b\u001b\u0017cloud\r  \u001b\u001b#wizintrinsic\r16777215j\r  \u001b\u001bm.            \u001b\u001b\u0017cloud\r  \u001b\u001b#wizintrinsic\r16777215j\r  \u001b\u001bm.            \u001b\u001b\u0017cloud\r  \u001b\u001b#wizintrinsic\r16777215j\r  \u001b\u001bm.            \u001b\u001b\u0017cloud\r  \u001b\u001b#wizintrinsic\r16777215j\r  \u001b\u001bm.            \u001b\u001b\u0017cloud\r  \u001b\u001b#wizintrinsic\r16777215j\r  \u001b\u001bm.            \u001b\u001b\u0017cloud\r  \u001b\u001b#wizintrinsic\r16777215j\r  \u001b\u001bm.            \u001b\u001b\u0017cloud\r  \u001b\u001b#wizintrinsic\r16777215j\r  \u001b\u001bm.            \u001b\u001b\u0017cloud\r  \u001b\u001b#wizintrinsic\r16777215j\r  \u001b\u001bm.            \u001b\u001b\u0017cloud\r  \u001b\u001b#wizintrinsic\r16777215j\r  \u001b\u001bm.            \u001b\u001b\u0017cloud\r  \u001b\u001b#wizintrinsic\r16777215j\r  \u001b\u001bm.            \u001b\u001b\u0017cloud\r  \u001b\u001b#wizintrinsic\r16777215j\r  \u001b\u001bm.            \u001b\u001b\u0017cloud\r  \u001b\u001b#wizintrinsic\r16777215j\r  \u001b\u001bm.            \u001b\u001b\u0017cloud\r  \u001b\u001b#wizintrinsic\r16777215j\r  \u001b\u001bm.            \u001b\u001b#wizintrinsic\r\u001b \u001b\u001b\u0017cloud\r  \u001b\u001b#wizintrinsic\r16777215j\r  \u001b\u001bm.            \u001b\u001b#wizintrinsic\r\u001b \u001b\u001b"
+    }
+  ],
+  "branchAssertions": [
+    {
+      "branch": "air.thunder-cap",
+      "segment": 0,
+      "rngIncludes": [
+        "rn2(8)=0 @ do_storms(timeout.c:1855)",
+        "rn2(20)=0 @ do_storms(timeout.c:1882)"
+      ],
+      "screenIncludes": [
+        "Kaboom!!!  Boom!!  Boom!!"
+      ]
+    },
+    {
+      "branch": "air.declined-death-after-thunder",
+      "segment": 0,
+      "screenIncludes": [
+        "You die...",
+        "OK, so you don't die."
+      ],
+      "screenCells": [
+        {
+          "step": 959,
+          "x": 0,
+          "y": 0,
+          "equals": "K"
+        },
+        {
+          "step": 960,
+          "x": 0,
+          "y": 0,
+          "equals": "Y"
+        },
+        {
+          "step": 962,
+          "x": 0,
+          "y": 0,
+          "equals": "O"
+        }
+      ]
+    },
+    {
+      "branch": "air.post-thunder-timeout-menu",
+      "segment": 0,
+      "screenCells": [
+        {
+          "step": 984,
+          "x": 33,
+          "y": 12,
+          "equals": "["
+        },
+        {
+          "step": 984,
+          "x": 34,
+          "y": 12,
+          "equals": "1"
+        },
+        {
+          "step": 984,
+          "x": 35,
+          "y": 12,
+          "equals": "6"
+        },
+        {
+          "step": 984,
+          "x": 36,
+          "y": 12,
+          "equals": "7"
+        },
+        {
+          "step": 984,
+          "x": 37,
+          "y": 12,
+          "equals": "7"
+        },
+        {
+          "step": 984,
+          "x": 38,
+          "y": 12,
+          "equals": "7"
+        },
+        {
+          "step": 984,
+          "x": 39,
+          "y": 12,
+          "equals": "2"
+        },
+        {
+          "step": 984,
+          "x": 40,
+          "y": 12,
+          "equals": "1"
+        },
+        {
+          "step": 984,
+          "x": 41,
+          "y": 12,
+          "equals": "4"
+        },
+        {
+          "step": 984,
+          "x": 42,
+          "y": 12,
+          "equals": "]"
+        }
+      ]
+    }
+  ],
+  "recordingNote": "Whole-file byte copy of air-thunder-after-covetous-parent-native.session.json, SHA256 f629f7ed3897ebc160e0ef9b68b8b0534321758e2bd7f177097026004d783989. All five input fields and raw steps are unchanged. Native C reaches thunder at 959, death at 960, revival at 962, and final timer menu at 984. No NFS branch-profile count claimed."
+}

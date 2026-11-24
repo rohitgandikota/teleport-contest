@@ -19,8 +19,8 @@ run at 19:33 UTC predates the latest checkpoint. Public remains 44/44;
 that snapshot has 936 unmatched held-out
 screens. Local verification does not establish a newer held-out score.
 
-The latest verification passes 727/727 fixtures: 815,941 boundary
-screens/cursors, 16,417,642 scored RNG positions and 30,734 animation frames.
+The latest verification passes 729/729 fixtures: 817,846 boundary
+screens/cursors, 16,462,518 scored RNG positions and 30,735 animation frames.
 Both shards finish without failures or timeouts. All 279 runtime hashes
 stayed fixed throughout.
 The earlier potion changes also pass strict full-stream and per-input RNG
@@ -99,16 +99,19 @@ through the interactive API. Effective stealth now respects the riding
 blocker, matching two new native cases and all 21 source/input controls.
 Pre-save cleanup and the process inventory-letter counter now match two
 new C pairs, all 66 state controls and nineteen source assertions.
-Next: covetous movement, thunder, mounted equipment feedback, held-monster
-movement and restored door ownership. The
+Covetous goal attacks now follow C, matching the new 916-boundary native
+case. A separate 989-boundary thunder continuation confirms the duration repair.
+All twelve movement source controls and nine actual-input controls pass.
+Next: mounted equipment feedback, held-monster movement and restored door
+ownership. The
 Linux/NFS branch collector is pushed
 and passes signal canaries plus exact save/restore, artifact and natural-exit
 pilots. The Linux census at e4504071 now covers all 678 original inputs:
 603 canonical matches and 75 independently recorded ordinary Linux controls.
-Adding 41 newer raw inputs and two independent Linux controls, 180
-native segments in total, gives a validated union entering 4,523/5,492
-functions and observing 59,014/107,260 direct C branch outcomes.
-All 721 credited input hashes, twenty-four build manifests and branch layouts were
+Adding 43 newer raw inputs and two independent Linux controls, 182
+native segments in total, gives a validated union entering 4,525/5,492
+functions and observing 59,080/107,260 direct C branch outcomes.
+All 723 credited input hashes, twenty-six build manifests and branch layouts were
 checked before merging. Original platform/output rejections
 remain rejected; no output was normalized. The two new sink fixtures separately
 match Linux C exactly; their validated union covers all 94/94 direct dosinkring

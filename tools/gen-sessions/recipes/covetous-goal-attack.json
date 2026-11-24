@@ -1,0 +1,56 @@
+{
+  "name": "covetous-goal-attack",
+  "description": "An invisible Wizard attacks a diagonally adjacent energy vortex on its covetous goal square. The original Air proposal reaches this generic movement branch in C; it reaches no thunder or declined death.",
+  "coverage": [
+    "mode.debug",
+    "monster.covetous",
+    "monster.vs-monster",
+    "monster.movement",
+    "level.planes",
+    "terrain.air-cloud"
+  ],
+  "branches": [
+    "covetous.diagonal-goal-attack",
+    "covetous.passive-retaliation",
+    "air.no-thunder-control"
+  ],
+  "requireBranchAssertions": true,
+  "segments": [
+    {
+      "seed": 6120,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Conan,role:Barbarian,race:human,gender:male,align:neutral,playmode:debug,suppress_alert:3.4.3,symset:DECgraphics\nOPTIONS=!autopickup\n",
+      "moves": "  n#levelchange\n20\n                   \u0016?\n  N       \u001bsss  \u0016-2\n      sss  \u0017cloud\r  \u001b\u001b#wizintrinsic\r16777215j\r  \u001b\u001bm.            \u001b\u001b\u0017cloud\r  \u001b\u001b#wizintrinsic\r16777215j\r  \u001b\u001bm.            \u001b\u001b\u0017cloud\r  \u001b\u001b#wizintrinsic\r16777215j\r  \u001b\u001bm.            \u001b\u001b\u0017cloud\r  \u001b\u001b#wizintrinsic\r16777215j\r  \u001b\u001bm.            \u001b\u001b\u0017cloud\r  \u001b\u001b#wizintrinsic\r16777215j\r  \u001b\u001bm.            \u001b\u001b\u0017cloud\r  \u001b\u001b#wizintrinsic\r16777215j\r  \u001b\u001bm.            \u001b\u001b\u0017cloud\r  \u001b\u001b#wizintrinsic\r16777215j\r  \u001b\u001bm.            \u001b\u001b\u0017cloud\r  \u001b\u001b#wizintrinsic\r16777215j\r  \u001b\u001bm.            \u001b\u001b\u0017cloud\r  \u001b\u001b#wizintrinsic\r16777215j\r  \u001b\u001bm.            \u001b\u001b\u0017cloud\r  \u001b\u001b#wizintrinsic\r16777215j\r  \u001b\u001bm.            \u001b\u001b\u0017cloud\r  \u001b\u001b#wizintrinsic\r16777215j\r  \u001b\u001bm.            \u001b\u001b\u0017cloud\r  \u001b\u001b#wizintrinsic\r16777215j\r  \u001b\u001bm.            \u001b\u001b\u0017cloud\r  \u001b\u001b#wizintrinsic\r16777215j\r  \u001b\u001bm.            \u001b\u001b\u0017cloud\r  \u001b\u001b#wizintrinsic\r16777215j\r  \u001b\u001bm.            \u001b\u001b\u0017cloud\r  \u001b\u001b#wizintrinsic\r16777215j\r  \u001b\u001bm.            \u001b\u001b#wizintrinsic\r\u001b \u001b\u001b",
+      "name": "air-thunder-deaf-cap"
+    }
+  ],
+  "branchAssertions": [
+    {
+      "branch": "covetous.diagonal-goal-attack",
+      "segment": 0,
+      "rngIncludes": [
+        "rn2(3)=0 @ dochug(monmove.c:883)\nrnd(20)=19 @ mattackm(mhitm.c:441)\nd(2,12)=11 @ mdamagem(mhitm.c:1025)"
+      ]
+    },
+    {
+      "branch": "covetous.passive-retaliation",
+      "segment": 0,
+      "rngIncludes": [
+        "d(7,4)=16 @ passivemm(mhitm.c:1326)\nrn2(3)=2 @ passivemm(mhitm.c:1363)\nrn2(5)=2 @ distfleeck(monmove.c:538)"
+      ]
+    },
+    {
+      "branch": "air.no-thunder-control",
+      "segment": 0,
+      "rngIncludes": [
+        "rn2(8)=1 @ do_storms(timeout.c:1855)"
+      ],
+      "screenExcludes": [
+        "Kaboom!!!",
+        "You die...",
+        "OK, so you don't die."
+      ]
+    }
+  ],
+  "recordingNote": "Whole-file byte copy of deaf-air-parent-native.session.json, SHA256 60c9213b09c2861542a200f3b5d774381a0963da3f2a748b1e1c4acf21660e23. Original segment name and all other input fields retained. No native thunder saturation credit."
+}

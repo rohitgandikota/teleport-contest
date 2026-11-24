@@ -6519,6 +6519,63 @@ producer/consumer and guard-destination composition, followed by live-table
 counter-gaze. Official held-out scoring has not yet been observed on these
 commits; the last checked publication remains the 07:21 UTC scoring run.
 
+## 2026-11-24: canonical phasing and guard corridor destinations
+
+Timed wall-passing now flows through `HPasses_walls` and `incr_itimeout` in
+the wizard producer, sharing the existing magical-breathing branch. The
+anti-magic trap and shop repair eligibility both read canonical `Passes_walls`.
+Warnings, expiry, form flags and full restore therefore use the same property.
+The guard's destination carving now distinguishes its two explicit door-opening
+branches from the unconditional corridor fallback. That fallback clears every
+alias of C's shared terrain flags. Four modules change by 16 added and nine
+removed lines; no new production helper, export or property alias is added.
+
+The complete C producer and consumer owners were reviewed, including
+wizcmds.c:949, trap.c:2323-2451, shk.c:4452-4487 and vault.c:888-1200,
+with their caller/helper contracts. The guard's branch flag preserves C's
+jumps to `proceed`. Other guard exit-recording, engraving, fallback and witness
+paths remain explicit follow-ups. Anti-magic iron-shoe absorption, other
+canonical resistance reads and monster death/lifesaving handling also remain
+separate findings. No whole-owner completeness claim is made.
+
+The current-runtime comparison isolates the producer/consumer interaction.
+Before, the two wrong flat-field paths cancel in the new consumer recording,
+which passes 316/316. With only wizard/corridor fixes it drops to 310/316;
+adding both canonical consumers restores all 316. The vault recording improves
+from 408/425 styled grids and 18,580 calls to all 425 and 18,675 calls.
+All seven combined native cases match every glyph/color/attribute cell,
+including blanks, every cursor, 35,241 complete recognized calls, per-input
+slices and 16 frames. No comparator or raw output is normalized or edited.
+
+The native inputs are copied once: `vault-corridor-destination.session.json`,
+SHA-256 `e04491123e810c9a1f15693d1d9ffceb1444fe9c6bf5f2bcc07c30f9cffe30a1`,
+and `passes-walls-consumers.session.json`, SHA-256
+`a7b566e0c2a9c360c929426541beecb55feef67ba559e80c32d669c92e6be3e1`.
+Both no-phasing consumer negatives retain all five original JS output hashes.
+Magical-breathing and cancelled-menu controls also retain all five. Consumer
+changes preserve all five outputs in each retained vault case. The earlier
+314/316 styled consumer result remains in its immutable historical package;
+the separately committed screen-clear fix resolves those two blank failures.
+
+All 22 parent normal checks pass: 88 combined new controls and 42 retained
+gold controls, 11 fixtures with 46 segments, 4,012 boundaries, 178,523 complete
+calls and 54 frames, plus deferred input for both new fixtures. All 44 public
+fixtures pass; 55 hang workers finish within 30 seconds. Four syntax checks
+and the zero-finding 276-module source audit pass. All 279 runtime and 14
+support hashes stay fixed. The parent cache's 130 controls and nine fixtures
+also pass. Its first retained gold-input invocation passed a recipe where a
+raw recording was required; the unchanged gate passed with the corrected
+argument, and the original load failure remains recorded.
+
+Evidence: `.cache/restart-20261122/phasing-vault-promotion-parent/`,
+`phasing-vault-promotion-parent-verification.json`, and
+`phasing-vault-composition-parent/verification.json`. All four original sealed
+source/native/display packages remain unchanged. Both raw inputs already have
+independent NFS credit; promotion does not count them again. The maintained
+corpus is 787. Latest full regression remains 783/783 through combat/display.
+The next checkpoint is live-species counter-gaze, followed by a new full run.
+The last checked official score still predates these commits.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

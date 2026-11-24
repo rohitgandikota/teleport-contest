@@ -1,0 +1,290 @@
+{
+  "name": "vault-corridor-destination",
+  "description": "Native terminal wall carving with unchanged stone and throne-door controls; original source assertions retained, native terrain and phasing-expiry assertions appended.",
+  "coverage": [
+    "mode.debug",
+    "social.vault-guard",
+    "terrain.doors-locks",
+    "survival.timed-status"
+  ],
+  "branches": [
+    "vault.corridor-terminal-wall",
+    "vault.corridor-stone-control",
+    "vault.corridor-room-door-control",
+    "vault.corridor-terminal-wall.native-terrain-and-expiry",
+    "vault.corridor-stone-control.native-terrain-and-expiry",
+    "vault.corridor-room-door-control.native-terrain-and-expiry"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "vault.corridor-terminal-wall",
+      "segment": 0,
+      "screenIncludes": [
+        "A wall.",
+        "Please drop that gold and follow me.",
+        "You drop 500 gold pieces."
+      ],
+      "screenExcludes": [
+        "How dare you",
+        "You die",
+        "So be it, rogue!"
+      ],
+      "source": "src/vault.c:1110-1199; state gate asserts real terrain and fakecorr provenance, C recording pending"
+    },
+    {
+      "branch": "vault.corridor-stone-control",
+      "segment": 1,
+      "screenIncludes": [
+        "Timeout for pass thru walls set to 30.",
+        "Please drop that gold and follow me.",
+        "You drop 500 gold pieces."
+      ],
+      "screenExcludes": [
+        "How dare you",
+        "You die",
+        "So be it, rogue!"
+      ],
+      "source": "src/vault.c:1110-1199; state gate asserts real terrain and fakecorr provenance, C recording pending"
+    },
+    {
+      "branch": "vault.corridor-room-door-control",
+      "segment": 2,
+      "screenIncludes": [
+        "A throne.",
+        "Please drop that gold and follow me.",
+        "You drop 500 gold pieces."
+      ],
+      "screenExcludes": [
+        "How dare you",
+        "You die",
+        "So be it, rogue!"
+      ],
+      "source": "src/vault.c:1110-1199; state gate asserts real terrain and fakecorr provenance, C recording pending"
+    },
+    {
+      "branch": "vault.corridor-terminal-wall.native-terrain-and-expiry",
+      "segment": 0,
+      "screenIncludes": [
+        "Timeout for pass thru walls set to 30.",
+        "You start to feel bloated.",
+        "You are feeling rather flabby.",
+        "You're back to your normal self again.",
+        "Suddenly one of the Vault's guards enters!"
+      ],
+      "screenCells": [
+        {
+          "step": 133,
+          "x": 25,
+          "y": 6,
+          "equals": "─",
+          "color": 8,
+          "attr": 0
+        },
+        {
+          "step": 135,
+          "x": 25,
+          "y": 6,
+          "equals": "#",
+          "color": 8,
+          "attr": 0
+        },
+        {
+          "step": 136,
+          "x": 25,
+          "y": 6,
+          "equals": "@",
+          "color": 15,
+          "attr": 0
+        },
+        {
+          "step": 138,
+          "x": 27,
+          "y": 6,
+          "equals": "@",
+          "color": 15,
+          "attr": 0
+        },
+        {
+          "step": 142,
+          "x": 25,
+          "y": 6,
+          "equals": "#",
+          "color": 8,
+          "attr": 0
+        }
+      ],
+      "nativeEvidence": {
+        "grantedTimeout": 30,
+        "grantStep": 62,
+        "expiryStep": 106,
+        "clockCallsite": "@ moveloop_core(allmain.c:360)",
+        "movementSteps": [
+          134,
+          135,
+          136,
+          137,
+          138
+        ]
+      },
+      "source": "Pinned vault.c:1125-1172, timeout.c:671-674 and 874-882; immutable C raw e04491123e810c9a1f15693d1d9ffceb1444fe9c6bf5f2bcc07c30f9cffe30a1"
+    },
+    {
+      "branch": "vault.corridor-stone-control.native-terrain-and-expiry",
+      "segment": 1,
+      "screenIncludes": [
+        "Timeout for pass thru walls set to 30.",
+        "You start to feel bloated.",
+        "You are feeling rather flabby.",
+        "You're back to your normal self again.",
+        "Suddenly one of the Vault's guards enters!"
+      ],
+      "screenCells": [
+        {
+          "step": 127,
+          "x": 25,
+          "y": 6,
+          "equals": " ",
+          "color": 8,
+          "attr": 0
+        },
+        {
+          "step": 129,
+          "x": 25,
+          "y": 6,
+          "equals": "#",
+          "color": 8,
+          "attr": 0
+        },
+        {
+          "step": 130,
+          "x": 25,
+          "y": 6,
+          "equals": "@",
+          "color": 15,
+          "attr": 0
+        },
+        {
+          "step": 132,
+          "x": 27,
+          "y": 6,
+          "equals": "@",
+          "color": 15,
+          "attr": 0
+        },
+        {
+          "step": 136,
+          "x": 25,
+          "y": 6,
+          "equals": "#",
+          "color": 8,
+          "attr": 0
+        }
+      ],
+      "nativeEvidence": {
+        "grantedTimeout": 30,
+        "grantStep": 62,
+        "expiryStep": 100,
+        "clockCallsite": "@ moveloop_core(allmain.c:360)",
+        "movementSteps": [
+          128,
+          129,
+          130,
+          131,
+          132
+        ]
+      },
+      "source": "Pinned vault.c:1125-1172, timeout.c:671-674 and 874-882; immutable C raw e04491123e810c9a1f15693d1d9ffceb1444fe9c6bf5f2bcc07c30f9cffe30a1"
+    },
+    {
+      "branch": "vault.corridor-room-door-control.native-terrain-and-expiry",
+      "segment": 2,
+      "screenIncludes": [
+        "Timeout for pass thru walls set to 30.",
+        "You start to feel bloated.",
+        "You are feeling rather flabby.",
+        "You're back to your normal self again.",
+        "Suddenly one of the Vault's guards enters!"
+      ],
+      "screenCells": [
+        {
+          "step": 135,
+          "x": 25,
+          "y": 6,
+          "equals": "\\",
+          "color": 11,
+          "attr": 0
+        },
+        {
+          "step": 137,
+          "x": 25,
+          "y": 6,
+          "equals": "·",
+          "color": 8,
+          "attr": 0
+        },
+        {
+          "step": 138,
+          "x": 25,
+          "y": 6,
+          "equals": "@",
+          "color": 15,
+          "attr": 0
+        },
+        {
+          "step": 140,
+          "x": 27,
+          "y": 6,
+          "equals": "@",
+          "color": 15,
+          "attr": 0
+        },
+        {
+          "step": 144,
+          "x": 25,
+          "y": 6,
+          "equals": "·",
+          "color": 8,
+          "attr": 0
+        }
+      ],
+      "nativeEvidence": {
+        "grantedTimeout": 30,
+        "grantStep": 62,
+        "expiryStep": 108,
+        "clockCallsite": "@ moveloop_core(allmain.c:360)",
+        "movementSteps": [
+          136,
+          137,
+          138,
+          139,
+          140
+        ]
+      },
+      "source": "Pinned vault.c:1125-1172, timeout.c:671-674 and 874-882; immutable C raw e04491123e810c9a1f15693d1d9ffceb1444fe9c6bf5f2bcc07c30f9cffe30a1"
+    }
+  ],
+  "segments": [
+    {
+      "name": "corridor-destination-wall",
+      "seed": 7303,
+      "datetime": "20000115090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00162\r\u0006\u0017500 gold pieces\r\u0014kkkkkkkkkkkkkhhhhh. #wizintrinsic\r>30f\r  \u001b\u001blll\u0017wall\r  \u001b\u001bhhh................................... intruder\r  \u001b\u001bd$lllll  \u001b\u001b"
+    },
+    {
+      "name": "corridor-destination-stone",
+      "seed": 7303,
+      "datetime": "20000115090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00162\r\u0006\u0017500 gold pieces\r\u0014kkkkkkkkkkkkkhhhhh. #wizintrinsic\r>30f\r  \u001b\u001blll  \u001b\u001bhhh................................... intruder\r  \u001b\u001bd$lllll  \u001b\u001b"
+    },
+    {
+      "name": "corridor-destination-throne-door",
+      "seed": 7303,
+      "datetime": "20000115090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00162\r\u0006\u0017500 gold pieces\r\u0014kkkkkkkkkkkkkhhhhh. #wizintrinsic\r>30f\r  \u001b\u001blll\u0017throne\r  \u001b\u001bhhh................................... intruder\r  \u001b\u001bd$lllll  \u001b\u001b"
+    }
+  ]
+}

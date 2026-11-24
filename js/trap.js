@@ -2118,7 +2118,7 @@ async function trapeffect_anti_magic(mtmp, trap, trflags) {
                     && defends_when_carried(ATTKS.AD_MAGM, obj));
             if (carriedDefense)
                 dmgval2 += rnd(4);
-            if (u.uprops?.PASSES_WALLS)
+            if (Passes_walls())
                 dmgval2 = Math.trunc((dmgval2 + 3) / 4);
 
             await You_feel(dmgval2 >= hp ? 'unbearably torpid!'

@@ -29,7 +29,7 @@ checks on 117 fixtures, all 39,942 boundaries and 1,718,440 calls. The complete
 strict 677-fixture audit and all 213 animation-bearing fixtures passed at the
 preceding floor checkpoint. The subsequent monster trap-hit repair passes
 four new native cases, 65 controls and seven focused regressions. The maintained
-corpus is now 785. The following death-owner repair passes 21 direct source
+corpus is now 787. The following death-owner repair passes 21 direct source
 controls, 61 retained controls and seven focused regressions. Temporary corpse
 cleanup for pet nutrition also passes 16 direct controls, 55 retained controls
 and five focused regressions. Guard corridor gold collection passes five new
@@ -80,9 +80,14 @@ and 50 hang checks pass. Monster growth and polymorph potion effects now also
 carry the affected monster's location through the shared message helper.
 Six native cases match all 431 styled grids/cursors, 18,562 complete calls
 and empty frame arrays. All 111 controls, seven focused fixtures, 44 public
-sessions and 51 hang checks pass. The latest full regression is the
-783-fixture run, before the inspection and potion additions; the maintained
-corpus is 785.
+sessions and 51 hang checks pass. Timed wall-passing now uses the canonical
+intrinsic and consumers, including anti-magic damage and occupied shop-door
+repairs. Guard carving also preserves C's door-versus-corridor branch.
+Seven native cases match all 741 styled boundaries, 35,241 complete calls
+and 16 frames. All 130 controls, 11 focused fixtures, 44 public sessions and
+55 hang checks pass. The latest full regression is the 783-fixture run,
+before these inspection, potion and phasing additions; the maintained corpus
+is 787.
 Current-corpus parity is not completeness.
 
 Floor objects retain independent global and per-square order. Placement,

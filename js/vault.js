@@ -703,12 +703,14 @@ export async function gd_move(guard) {
             else
                 ny += dy;
 
+            let openedDoor = false;
             while ((typ = (loc = game.level.at(nx, ny)).typ) !== STONE) {
                 const ex = nx + nx - x;
                 const ey = ny + ny - y;
                 if (isok(ex, ey) && IS_ROOM(game.level.at(ex, ey).typ)) {
                     loc.typ = DOOR;
                     loc.doormask = D_NODOOR;
+                    openedDoor = true;
                     break;
                 }
                 if (dy && nx !== x) {
@@ -725,12 +727,15 @@ export async function gd_move(guard) {
                 if (IS_ROOM(typ)) {
                     loc.typ = DOOR;
                     loc.doormask = D_NODOOR;
+                    openedDoor = true;
                 }
                 break;
             }
-            if (loc.typ === STONE) {
+            if (!openedDoor) {
                 loc.typ = CORR;
-                loc.flags = 0;
+                loc.flags = loc.doormask = loc.wall_info = loc.altarmask = 0;
+                loc.looted = loc.icedpool = loc.drawbridgemask = loc.ladder = 0;
+                loc.emptygrave = 0;
             }
             newspot = true;
 

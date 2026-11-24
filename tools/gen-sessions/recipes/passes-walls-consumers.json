@@ -1,0 +1,208 @@
+{
+  "name": "passes-walls-consumers",
+  "description": "Native-confirmed canonical wall phasing quarters an anti-magic implosion and permits shop repair beneath the hero, with matched no-phasing controls. Four unchanged ordinary C segments, 316 boundaries, 16566 calls and 16 frames.",
+  "coverage": [
+    "mode.debug",
+    "traps.magical",
+    "social.shops-billing",
+    "terrain.doors-locks",
+    "level.ordinary",
+    "level.mines"
+  ],
+  "segments": [
+    {
+      "seed": 7303,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " l#wizintrinsic\r>30f\r  \u0017anti-magic field trap\r  #sit\r    ",
+      "name": "anti-magic-timed"
+    },
+    {
+      "seed": 7303,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " l\u0017anti-magic field trap\r  #sit\r    ",
+      "name": "anti-magic-none"
+    },
+    {
+      "seed": 6601,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0016?\r w\u0006\u0014  hhhhhhhhkkk.  \u0017blessed wand of digging (0:5)\r\u00171000 gold pieces\rhkzph yl, by#wizintrinsic\r>30f\r  \u0014y. .......   ",
+      "name": "shop-timed"
+    },
+    {
+      "seed": 6601,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0016?\r w\u0006\u0014  hhhhhhhhkkk.  \u0017blessed wand of digging (0:5)\r\u00171000 gold pieces\rhkzph yl, by\u0014y. .......   ",
+      "name": "shop-none"
+    }
+  ],
+  "branchAssertions": [
+    {
+      "segment": 0,
+      "branch": "trap.anti-magic.timed-phasing",
+      "screenIncludes": [
+        "An anti-magic field.",
+        "You feel sluggish.",
+        "magical energy drain away!"
+      ],
+      "screenExcludes": [
+        "You feel very lethargic."
+      ],
+      "source": "trap.c:2351-2381; canonical Passes_walls quarters final implosion damage before energy drain"
+    },
+    {
+      "segment": 1,
+      "branch": "trap.anti-magic.no-phasing",
+      "screenIncludes": [
+        "An anti-magic field.",
+        "You feel very lethargic.",
+        "magical energy drain away!"
+      ],
+      "source": "trap.c:2371 false: same four-point roll is unquartered"
+    },
+    {
+      "segment": 2,
+      "branch": "shop.repair.hero-phasing",
+      "screenIncludes": [
+        "The door is razed!",
+        "Samoe whispers an incantation.",
+        "Suddenly, the shop door reappears!"
+      ],
+      "source": "shk.c:4469 hero does not block repair while Passes_walls is effective; repair before shop movement"
+    },
+    {
+      "segment": 3,
+      "branch": "shop.repair.hero-solid",
+      "screenIncludes": [
+        "The door is razed!",
+        "You materialize in a different location!"
+      ],
+      "screenExcludes": [
+        "Suddenly, the shop door reappears!"
+      ],
+      "source": "shk.c:4469 solid hero blocks otherwise eligible doorway repair"
+    },
+    {
+      "segment": 0,
+      "branch": "trap.anti-magic.native-timed-order",
+      "screenIncludes": [
+        "You feel sluggish.",
+        "You feel your magical energy drain away!"
+      ],
+      "rngIncludes": [
+        "rnd(4)=4 @ trapeffect_anti_magic(trap.c:2353)",
+        "d(2,6)=5 @ trapeffect_anti_magic(trap.c:2386)",
+        "rnd(2)=1 @ trapeffect_anti_magic(trap.c:2387)"
+      ],
+      "nativeEvidence": {
+        "triggerStep": 53,
+        "ackStep": 54,
+        "hpBefore": 12,
+        "hpAfter": 11,
+        "pwBefore": 7,
+        "pwAfter": 3,
+        "maxPwAfter": 6,
+        "cursorAfterAck": [
+          50,
+          4,
+          1
+        ],
+        "source": "trap.c:2351-2402; same roll is quartered only while phasing, then energy loss precedes next acknowledgment"
+      }
+    },
+    {
+      "segment": 1,
+      "branch": "trap.anti-magic.native-solid-order",
+      "screenIncludes": [
+        "You feel very lethargic.",
+        "You feel your magical energy drain away!"
+      ],
+      "rngIncludes": [
+        "rnd(4)=4 @ trapeffect_anti_magic(trap.c:2353)",
+        "d(2,6)=5 @ trapeffect_anti_magic(trap.c:2386)",
+        "rnd(2)=1 @ trapeffect_anti_magic(trap.c:2387)"
+      ],
+      "nativeEvidence": {
+        "triggerStep": 32,
+        "ackStep": 33,
+        "hpBefore": 12,
+        "hpAfter": 8,
+        "pwBefore": 7,
+        "pwAfter": 3,
+        "maxPwAfter": 6,
+        "cursorAfterAck": [
+          50,
+          4,
+          1
+        ],
+        "source": "trap.c:2351-2402; same roll is quartered only while phasing, then energy loss precedes next acknowledgment"
+      }
+    },
+    {
+      "segment": 2,
+      "branch": "shop.repair.native-occupied-phase",
+      "screenIncludes": [
+        "Timeout for pass thru walls set to 30.",
+        "You materialize in a different location!",
+        "Samoe whispers an incantation.  Suddenly, the shop door reappears!"
+      ],
+      "nativeEvidence": {
+        "grantStep": 104,
+        "teleportStep": 109,
+        "occupiedStep": 110,
+        "repairStep": 111,
+        "occupiedCursor": [
+          28,
+          6,
+          1
+        ],
+        "frameStep": 78,
+        "frames": 8,
+        "source": "shk.c:4469/4556-4576/4799-4826; repaired doorway is beneath the stationary hero, incantation precedes restoration feedback"
+      }
+    },
+    {
+      "segment": 3,
+      "branch": "shop.repair.native-occupied-solid",
+      "screenIncludes": [
+        "You materialize in a different location!"
+      ],
+      "screenExcludes": [
+        "Suddenly, the shop door reappears!",
+        "Timeout for pass thru walls"
+      ],
+      "nativeEvidence": {
+        "teleportStep": 88,
+        "occupiedStep": 89,
+        "waitSteps": [
+          90,
+          91,
+          92,
+          93
+        ],
+        "occupiedCursor": [
+          28,
+          6,
+          1
+        ],
+        "frameStep": 78,
+        "frames": 8,
+        "source": "shk.c:4469; solid hero occupies the doorway and postpones repair"
+      }
+    }
+  ],
+  "branches": [
+    "trap.anti-magic.timed-phasing",
+    "trap.anti-magic.no-phasing",
+    "shop.repair.hero-phasing",
+    "shop.repair.hero-solid",
+    "trap.anti-magic.native-timed-order",
+    "trap.anti-magic.native-solid-order",
+    "shop.repair.native-occupied-phase",
+    "shop.repair.native-occupied-solid"
+  ],
+  "requireBranchAssertions": true
+}

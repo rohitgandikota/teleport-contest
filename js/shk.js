@@ -63,7 +63,7 @@ import { move_special } from './priest.js';
 import { addinv, carrying, sobj_at, currency, money_cnt, freeinv,
          contained_gold, hidden_gold, weight } from './invent.js';
 import { m_at, t_at, wake_nearto } from './mon.js';
-import { Blind, Deaf, Invis, Detect_monsters, Blind_telepat } from './youprop.js';
+import { Blind, Deaf, Invis, Detect_monsters, Blind_telepat, Passes_walls } from './youprop.js';
 import { ACURR, Fast, adjalign, exercise } from './attrib.js';
 import { ONAMES, OCLASSES, MATERIALS } from './objects_data.js';
 import { PMNAMES, MSOUND, MFLAGS } from './monst_data.js';
@@ -3801,7 +3801,7 @@ function repairable_damage(dam, shkp) {
     const { x, y } = dam;
     if (!IS_ROOM(dam.typ)) {
         const mon = m_at(x, y);
-        if ((u_at(x, y) && !game.u.uprops?.PASSES_WALLS)
+        if ((u_at(x, y) && !Passes_walls())
             || (x === shkp.mx && y === shkp.my)
             || (mon && !passes_walls(mon.data)))
             return false;

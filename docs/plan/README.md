@@ -30,7 +30,9 @@ checks on 117 fixtures, all 39,942 boundaries and 1,718,440 calls. The complete
 strict 677-fixture audit and all 213 animation-bearing fixtures passed at the
 preceding floor checkpoint. The subsequent monster trap-hit repair passes
 four new native cases, 65 controls and seven focused regressions. The maintained
-corpus is now 771. Current-corpus parity is not completeness.
+corpus is now 771. The following death-owner repair passes 21 direct source
+controls, 61 retained controls and seven focused regressions. Current-corpus
+parity is not completeness.
 
 Floor objects retain independent global and per-square order. Placement,
 splitting, replacement, extraction, restacking, level flips and restore follow

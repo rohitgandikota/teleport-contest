@@ -5867,6 +5867,40 @@ depleted-trap location feedback, and the separate `mondied` owner remain
 distinct work. The maintained corpus is 771; the latest full regression is
 770/770 at `8d2d1d58`. No new full-corpus claim is made for this checkpoint.
 
+## 2026-11-24: preserve monster death and corpse ordering
+
+Trap checkpoint `ce96e2aa` is committed and pushed. The complete `mondied`
+owner now returns after successful lifesaving, evaluates corpse chance before
+terrain, and uses the monster's post-death coordinates with canonical
+`accessible` or the pool exception. It no longer repeats the redraw already
+owned by death cleanup and corpse placement. The now-unused `ACCESSIBLE`
+import is removed. Existing guard ownership and comment corrections survive;
+the separate growth callback is unchanged.
+
+Nineteen new source controls improve from 14 passing to 19. The original two
+lifesaving controls improve from one to two, with their assertions unchanged.
+The parked-guard case now consumes the single required chance draw instead
+of creating a random-position corpse with 19 calls. Closed/locked doors reject
+corpse placement, and hallucinated remains get one display selection instead
+of two. These are constructed boundaries using real helpers, not new ordinary
+native witnesses. All 61 retained trap, guard and deallocation controls pass.
+
+All thirteen parent checks pass. Seven retained native fixtures cover 19
+segments, 1,829 boundaries, 68,431 complete RNG calls and 27 exact animation
+grids/cursors/counts. Four delayed-input fixtures match 11 segments, 1,261
+boundaries, 40,598 calls and seven frames. All 44 public fixtures remain exact;
+all 51 hang workers finish within 30 seconds. Syntax and the zero-finding
+276-module audit pass. All 279 runtime hashes stayed fixed. The maintained
+corpus remains 771, with the latest full regression 770/770 at `8d2d1d58`.
+
+Evidence is `.cache/restart-20261122/mondied-promotion-parent/` and
+`mondied-promotion-parent-verification.json`. All 348 sealed source-package
+files were verified. The full corpse/death helpers and terrain predicate were
+read, and all 14 active direct JS callers await completion. The canonical
+`accessible` helper still omits ice beneath a raised drawbridge; its failing
+diagnostic remains separate. General monster disposal, vampire revival and
+steam-vortex death are also separate work.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

@@ -191,7 +191,7 @@ import { nonliving, is_neuter, is_animal, is_mplayer, has_head, haseyes,
          olfaction, is_orc } from './mondata.js';
 import { mkcorpstat } from './mklev.js';
 import { CORPSTAT_NONE, CORPSTAT_INIT, CORPSTAT_FEMALE, CORPSTAT_MALE,
-         CORPSTAT_HISTORIC, ACCESSIBLE, TAINT_AGE,
+         CORPSTAT_HISTORIC, TAINT_AGE,
          CORPSTAT_BURIED } from './const.js';
 import { MAX_CARR_CAP, WT_HUMAN, W_ARMG, W_ARMS, P_AXE, P_PICK_AXE, IS_TREE } from './const.js';
 
@@ -3609,15 +3609,14 @@ export async function mondead(mdef) {
 
 // src/mon.c:3253 mondied() — mondead() plus, maybe, a corpse.
 export async function mondied(mdef) {
-    const mx = mdef.mx, my = mdef.my;
-
     await mondead(mdef);
+    if (!DEADMONSTER(mdef))
+        return; /* lifesaved */
 
+    /* this assumes that the dead monster's map coordinates remain accurate */
     if (await corpse_chance(mdef, null, false)
-        && (ACCESSIBLE(game.level?.at(mx, my)?.typ) || is_pool(mx, my)))
+        && (accessible(mdef.mx, mdef.my) || is_pool(mdef.mx, mdef.my)))
         await make_corpse(mdef, CORPSTAT_NONE);
-
-    newsym(mx, my);
 }
 
 /* js/makemon.js (grow_up) needs mondied but a static import back into this

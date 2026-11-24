@@ -1,0 +1,99 @@
+{
+  "name": "vault-guard-death-throttle",
+  "description": "Four unchanged native C cases confirm real guard species deaths, the 2/3-death throttle and caller ordering, with one-death and declined-creation controls.",
+  "coverage": [
+    "mode.debug",
+    "social.vault-guard"
+  ],
+  "branches": [
+    "vault.guard-history-one-death-unthrottled",
+    "vault.guard-history-two-deaths-throttled",
+    "vault.guard-history-three-deaths-throttled",
+    "vault.guard-history-declined-guard-negative"
+  ],
+  "requireBranchAssertions": true,
+  "segments": [
+    {
+      "seed": 7303,
+      "datetime": "20000115090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "one-death-unthrottled",
+      "moves": " \u00162\r\u0006\u0017500 gold pieces\r\u0014kkkkkkkkkkkkkhhhhh. \u0007guard\ry \u001b#wizkill\rm.\u001b  \u001b#vanquished\r \u001b............"
+    },
+    {
+      "seed": 7303,
+      "datetime": "20000115090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "two-deaths-throttled",
+      "moves": " \u00162\r\u0006\u0017500 gold pieces\r\u0014kkkkkkkkkkkkkhhhhh. \u0007guard\ry \u001b#wizkill\rm.\u001b  \u001b\u0007guard\ry \u001b#wizkill\rm.\u001b  \u001b#vanquished\r \u001b............"
+    },
+    {
+      "seed": 7303,
+      "datetime": "20000115090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "three-deaths-throttled",
+      "moves": " \u00162\r\u0006\u0017500 gold pieces\r\u0014kkkkkkkkkkkkkhhhhh. \u0007guard\ry \u001b#wizkill\rm.\u001b  \u001b\u0007guard\ry \u001b#wizkill\rm.\u001b  \u001b\u0007guard\ry \u001b#wizkill\rm.\u001b  \u001b#vanquished\r \u001b........................"
+    },
+    {
+      "seed": 7303,
+      "datetime": "20000115090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "declined-guard-negative",
+      "moves": " \u00162\r\u0006\u0017500 gold pieces\r\u0014kkkkkkkkkkkkkhhhhh. \u0007guard\rn \u001b#wizkill\rm.\u001b  \u001b\u0007guard\rn \u001b#wizkill\rm.\u001b  \u001b#vanquished\r \u001b............"
+    }
+  ],
+  "branchAssertions": [
+    {
+      "branch": "vault.guard-history-one-death-unthrottled",
+      "segment": 0,
+      "screenIncludes": [
+        "Vanquished creatures:",
+        "a guard"
+      ],
+      "screenExcludes": [
+        "Hello stranger, who are you?"
+      ]
+    },
+    {
+      "branch": "vault.guard-history-two-deaths-throttled",
+      "segment": 1,
+      "screenIncludes": [
+        "Vanquished creatures:",
+        "2 guards"
+      ],
+      "screenExcludes": [
+        "Hello stranger, who are you?"
+      ],
+      "rngIncludes": [
+        "rn2(4)=0 @ invault(vault.c:334)",
+        "invault(vault.c:334)"
+      ]
+    },
+    {
+      "branch": "vault.guard-history-three-deaths-throttled",
+      "segment": 2,
+      "screenIncludes": [
+        "Vanquished creatures:",
+        "3 guards"
+      ],
+      "screenExcludes": [
+        "Hello stranger, who are you?"
+      ],
+      "rngIncludes": [
+        "rn2(9)=0 @ invault(vault.c:334)",
+        "invault(vault.c:334)"
+      ]
+    },
+    {
+      "branch": "vault.guard-history-declined-guard-negative",
+      "segment": 3,
+      "screenIncludes": [
+        "Vanquished creatures:",
+        "2 human zombies"
+      ],
+      "screenExcludes": [
+        "Hello stranger, who are you?"
+      ]
+    }
+  ]
+}

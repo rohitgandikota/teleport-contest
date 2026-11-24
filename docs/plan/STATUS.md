@@ -5309,6 +5309,56 @@ Evidence is `.cache/restart-20261122/launch-obj-native-confirmation/`,
 hashes and five promoted support hashes were verified. No raw recording,
 frozen scorer or terminal implementation changed.
 
+## 2026-11-24: guard death history slows vault arrival
+
+Rolling-object checkpoint `cc2e44ae` is committed and pushed. The two-line
+`invault` repair restores C's probability condition: zero or one guard death
+increments the vault timer without a draw; two through 49 deaths increment
+only on `rn2(deaths * deaths) == 0`; fifty or more do neither. The draw stays
+before guard lookup. A failed roll does not return, so an already-due timer
+can still attempt arrival. The death counter is an unsigned byte capped at
+255; its largest actual draw range is 2,401.
+
+Four unchanged raw C segments match all 492 styled grids, cursor triples and
+RNG slices, all 22,708 complete calls, and zero frames. Baseline missed 34
+calls and 36 exact input slices, but only one boundary grid. Ordinary wizard
+creation and killing establish true guard species without the escort flag.
+Native vanquished lists establish the death ledger. Two- and three-death
+cases exercise both outcomes of the range-four and range-nine draws. The
+one-death and declined-override human-zombie controls retain identical output
+hashes. Timer values are inferred from C's draws and increment rule, then
+independently checked against real JS state at each wait boundary.
+
+All 28 integrated checks pass: 47 new and 268 retained controls, ten C
+fixtures with 48 segments, 5,645 exact boundaries, 258,419 complete RNG
+calls/input slices and 136 animation grids/cursors/counts. Deferred input
+matches five fixtures, 33 segments, 4,435 boundaries, 200,122 calls and
+thirteen frames. All 44 public fixtures retain 11,405 exact boundaries,
+792,838 scored RNG positions and 1,483 frames. All 54 hang workers pass at
+30 seconds. Syntax passes, the source audit is clear across 276 modules,
+and all 279 runtime hashes stay fixed. The latest full run remains
+`f12cfd59` at 760/760; the maintained inventory is now 762.
+
+The original nineteen source controls and thirteen input assertions remain
+intact; four native timer checks and eleven native evidence controls were
+added. Source controls cover the 49/50 cutoff, 255 saturation, successful and
+blocked arrivals, existing escorts and the real summon helper. These paths
+have no new ordinary native witness in this package. Parked or migrating
+escort lookup, deferred guard death disposal and the no-corridor fallback
+remain separate audits. The rejected pointer-bearing first proposal is
+preserved; only its already-reviewed V2 was recorded and promoted.
+
+Linux C independently matches the raw input 1/1. Its five additional direct
+outcomes bring the validated union to 756 inputs, fifty-nine layouts,
+4,539/5,492 functions and 59,486/107,260 outcomes. All newer credited native
+recordings are now integrated. Bulk profiles remain on NFS.
+
+Evidence is `.cache/restart-20261122/invault-guard-death-native-confirmation/`,
+`vault-guard-death-parent-{source-review,native-confirmation-review,integration,verification}.json`
+and `vault-guard-death-promoted-*`. All 1,540 sealed files, the exact candidate
+vault hash and five promoted support hashes were verified. No raw fixture or
+frozen infrastructure changed.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

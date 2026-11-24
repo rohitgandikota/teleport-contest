@@ -684,7 +684,8 @@ export async function invault() {
     }
 
     const deaths = game.mvitals?.[PMNAMES.PM_GUARD]?.died || 0;
-    if (deaths < 2)
+    if (deaths < 2
+        || (deaths < 50 && !rn2(deaths * deaths)))
         u.uinvault = (u.uinvault | 0) + 1;
     if ((u.uinvault | 0) < VAULT_GUARD_TIME
         || u.uinvault % (VAULT_GUARD_TIME / 2) !== 0)

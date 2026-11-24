@@ -171,6 +171,10 @@ ownership through bones placement. Four native cases, 110 related controls,
 eleven focused fixtures and all 44 public fixtures pass. The native cases
 cover land mines, both teleport traps and an unchanged projectile control;
 fatal placement remains covered by constructed state checks.
+Guard arrival timing now consumes C's death-dependent probability draw.
+Four native cases, 315 related controls, ten focused fixtures and all 44
+public fixtures pass. Strict RNG checks catch both positive cases, while
+only one changes a boundary screen.
 The Linux/NFS branch collector is pushed
 and passes signal canaries plus exact save/restore, artifact and natural-exit
 pilots. The Linux census at e4504071 now covers all 678 original inputs:
@@ -180,8 +184,8 @@ native segments in total, gives a validated union entering 4,539/5,492
 functions and observing 59,486/107,260 direct C branch outcomes.
 All 756 credited input hashes, fifty-nine build manifests and branch layouts
 were checked before merging. This C coverage census includes the integrated
-guard, shop, floor, glob and boulder recordings plus the queued guard-death recording.
-The guard-death JS integration remains pending. Original platform/output rejections
+guard, shop, floor, glob, boulder and guard-death recordings, all now integrated.
+Original platform/output rejections
 remain rejected; no output was normalized. The two new sink fixtures separately
 match Linux C exactly; their validated union covers all 94/94 direct dosinkring
 outcomes in 49 cases. The teleport and polymorph helpers still have measured

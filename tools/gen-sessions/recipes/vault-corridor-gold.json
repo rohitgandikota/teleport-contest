@@ -1,0 +1,110 @@
+{
+  "name": "vault-corridor-gold",
+  "description": "Five unchanged native C cases confirm visible corridor-gold pickup, calming feedback, blindness, outside-corridor gold and refusal.",
+  "coverage": [
+    "mode.debug",
+    "social.vault-guard",
+    "survival.timed-status"
+  ],
+  "branches": [
+    "vault.corridor-gold-under-hero",
+    "vault.corridor-gold-calms",
+    "vault.corridor-gold-blind",
+    "vault.corridor-gold-off-corridor",
+    "vault.corridor-gold-refuses"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "vault.corridor-gold-under-hero",
+      "segment": 0,
+      "screenIncludes": [
+        "The guard picks up the gold from beneath you."
+      ],
+      "screenExcludes": [],
+      "source": "src/vault.c:752-829 and 1047-1065; native fixture e50800e197c5586b84f18b7f87c6f6d8d574860231108603a950d6550f38b3b8 confirmed"
+    },
+    {
+      "branch": "vault.corridor-gold-calms",
+      "segment": 1,
+      "screenIncludes": [
+        "\"Drop all your gold, scoundrel!\"",
+        "The guard calms down and picks up the gold from beneath you."
+      ],
+      "screenExcludes": [],
+      "source": "src/vault.c:752-829 and 1047-1065; native fixture e50800e197c5586b84f18b7f87c6f6d8d574860231108603a950d6550f38b3b8 confirmed"
+    },
+    {
+      "branch": "vault.corridor-gold-blind",
+      "segment": 2,
+      "screenIncludes": [
+        "A cloud of darkness falls upon you.",
+        "You drop 50 gold pieces."
+      ],
+      "screenExcludes": [
+        "picks up the gold"
+      ],
+      "source": "src/vault.c:752-829 and 1047-1065; native fixture e50800e197c5586b84f18b7f87c6f6d8d574860231108603a950d6550f38b3b8 confirmed"
+    },
+    {
+      "branch": "vault.corridor-gold-off-corridor",
+      "segment": 3,
+      "screenIncludes": [
+        "You drop 50 gold pieces."
+      ],
+      "screenExcludes": [
+        "picks up the gold"
+      ],
+      "source": "src/vault.c:752-829 and 1047-1065; native fixture e50800e197c5586b84f18b7f87c6f6d8d574860231108603a950d6550f38b3b8 confirmed"
+    },
+    {
+      "branch": "vault.corridor-gold-refuses",
+      "segment": 4,
+      "screenIncludes": [
+        "\"Drop all your gold, scoundrel!\"",
+        "\"So be it, rogue!\""
+      ],
+      "screenExcludes": [
+        "picks up the gold"
+      ],
+      "source": "src/vault.c:752-829 and 1047-1065; native fixture e50800e197c5586b84f18b7f87c6f6d8d574860231108603a950d6550f38b3b8 confirmed"
+    }
+  ],
+  "segments": [
+    {
+      "seed": 7303,
+      "datetime": "20000115090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00162\r\u0006\u0017500 gold pieces\r\u0014kkkkkkkkkkkkkhhhhh. ................................... intruder\r  \u001b\u001bd$ll\u001b\u001b\u001750 gold pieces\rd$  \u001b\u001b",
+      "name": "corridor-gold-under-hero"
+    },
+    {
+      "seed": 7303,
+      "datetime": "20000115090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00162\r\u0006\u0017500 gold pieces\r\u0014kkkkkkkkkkkkkhhhhh. ................................... intruder\r  \u001b\u001bd$ll\u001b\u001b\u001750 gold pieces\r.  d$  \u001b\u001b",
+      "name": "corridor-gold-calms"
+    },
+    {
+      "seed": 7303,
+      "datetime": "20000115090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00162\r\u0006\u0017500 gold pieces\r\u0014kkkkkkkkkkkkkhhhhh. ................................... intruder\r  \u001b\u001bd$ll\u001b\u001b#wizintrinsic\r100i\r  \u001b\u001b\u001750 gold pieces\rd$  \u001b\u001b",
+      "name": "corridor-gold-blind"
+    },
+    {
+      "seed": 7303,
+      "datetime": "20000115090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00162\r\u0006\u0017500 gold pieces\r\u0014kkkkkkkkkkkkkhhhhh. ................................... intruder\r  \u001b\u001bd$\u001750 gold pieces\rd$  \u001b\u001b",
+      "name": "corridor-gold-off-corridor"
+    },
+    {
+      "seed": 7303,
+      "datetime": "20000115090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00162\r\u0006\u0017500 gold pieces\r\u0014kkkkkkkkkkkkkhhhhh. ................................... intruder\r  \u001b\u001bd$ll\u001b\u001b\u001750 gold pieces\r.  .  \u001b\u001b",
+      "name": "corridor-gold-refuses"
+    }
+  ]
+}

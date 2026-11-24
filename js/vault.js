@@ -7,32 +7,33 @@ import {
     makemon, set_malign, place_monster, remove_monster, MM_EGD, MM_NOMSG,
 } from './makemon.js';
 import { PMNAMES } from './monst_data.js';
-import { hidden_gold, money_cnt, obj_extract_self, sobj_at,
+import { g_at, hidden_gold, money_cnt, obj_extract_self, sobj_at,
          stackobj } from './invent.js';
 import { canspotmon, map_background, map_invisible, map_location, mon_visible,
          more, newsym, pline, unset_seenv } from './display.js';
 import { getlin } from './cmd.js';
 import { mungspaces } from './hacklib.js';
-import { Monnam, noit_Monnam, noit_mon_nam, pmname,
+import { Monnam, Some_Monnam, noit_Monnam, noit_mon_nam, pmname,
          x_monnam } from './do_name.js';
 import { makeplural, mimic_obj_name } from './objnam.js';
 import { adjalign } from './attrib.js';
 import { block_point, cansee, couldsee, recalc_block_point,
          unblock_point } from './vision.js';
 import { rn2 } from './rng.js';
-import { distmin, isok } from './hacklib.js';
+import { dist2, distu, distmin, isok } from './hacklib.js';
 import { is_fainted, reset_faint } from './eat.js';
 import { ONAMES } from './objects_data.js';
-import { m_carrying, mnexto, mongone, setmangry, t_at } from './mon.js';
+import { m_at, m_carrying, mnexto, mongone, mpickgold, setmangry, t_at } from './mon.js';
 import { MON_WEP } from './monst.js';
 import { mon_wield_item } from './weapon.js';
 import { del_engr, engr_at } from './engrave.js';
-import { place_object } from './mkobj.js';
-import { You, You_hear, Your, pline_The, verbalize } from './pline.js';
+import { add_to_minv, place_object } from './mkobj.js';
+import { You, You_hear, Your, impossible, pline_The, verbalize } from './pline.js';
 import { currency, freeinv } from './invent.js';
 import { make_grave } from './mklev.js';
 import { OCLASSES } from './objects_data.js';
-import { RLOC_NOMSG, MALE, FEMALE } from './const.js';
+import { RLOC_ERR, RLOC_NOMSG, MALE, FEMALE } from './const.js';
+import { enexto, rloc } from './teleport.js';
 import {
     A_LAWFUL, COLNO, ROWNO, ROOMOFFSET, VAULT, VAULT_GUARD_TIME,
     ROOM, STONE, CORR, SCORR, HWALL, VWALL, DOOR, D_NODOOR, IS_WALL,
@@ -308,6 +309,84 @@ async function wallify_vault(guard) {
     }
 }
 
+// src/vault.c:734 gd_mv_monaway()
+async function gd_mv_monaway(guard, nx, ny) {
+    const mon = m_at(nx, ny);
+    if (mon && mon !== guard) {
+        if (!Deaf())
+            await verbalize('Out of my way, scum!');
+        if (!await rloc(mon, RLOC_ERR | RLOC_MSG) || m_at(nx, ny))
+            await m_into_limbo(mon);
+        recalc_block_point(nx, ny);
+    }
+}
+
+// src/vault.c:752 gd_pick_corridor_gold()
+async function gd_pick_corridor_gold(guard, goldx, goldy) {
+    const guardx = guard.mx, guardy = guard.my;
+    const under_u = game.u.ux === goldx && game.u.uy === goldy;
+    const see_it = cansee(goldx, goldy);
+
+    if (under_u) {
+        const gold = g_at(goldx, goldy);
+        if (!gold) {
+            await impossible("vault guard: no gold at hero's feet?");
+            return;
+        }
+        const gdelta = distu(guardx, guardy);
+        if (gdelta > 2 && see_it) {
+            let bestdelta = gdelta;
+            let bestcc = { x: guardx, y: guardy };
+            let tryct = 9;
+            do {
+                const newcc = {};
+                if (enexto(newcc, goldx, goldy, guard.data)) {
+                    const newdelta = distu(newcc.x, newcc.y);
+                    if (newdelta < bestdelta
+                        || (newdelta === bestdelta
+                            && dist2(newcc.x, newcc.y, guardx, guardy)
+                                < dist2(bestcc.x, bestcc.y, guardx, guardy))) {
+                        bestdelta = newdelta;
+                        bestcc = newcc;
+                    }
+                }
+            } while (--tryct >= 0);
+            if (bestdelta < gdelta) {
+                remove_monster(guardx, guardy);
+                newsym(guardx, guardy);
+                place_monster(guard, bestcc.x, bestcc.y);
+                newsym(guard.mx, guard.my);
+            }
+        }
+        obj_extract_self(gold);
+        add_to_minv(guard, gold);
+        newsym(goldx, goldy);
+    } else if (goldx === guardx && goldy === guardy) {
+        await mpickgold(guard);
+    } else {
+        await gd_mv_monaway(guard, goldx, goldy);
+        if (see_it) {
+            remove_monster(guard.mx, guard.my);
+            newsym(guard.mx, guard.my);
+            place_monster(guard, goldx, goldy);
+        }
+        await mpickgold(guard);
+    }
+
+    if (see_it)
+        await pline(`${Some_Monnam(guard)}${
+            guard.mpeaceful && guard.mextra.egd.warncnt > 5
+                ? ' calms down and' : ''} picks up the gold${
+            under_u ? ' from beneath you' : ''}.`);
+
+    if (guard.mx !== guardx || guard.my !== guardy) {
+        remove_monster(guard.mx, guard.my);
+        newsym(guard.mx, guard.my);
+        place_monster(guard, guardx, guardy);
+        newsym(guardx, guardy);
+    }
+}
+
 // src/vault.c gd_letknow(). Announce the hostile guard after it relocates.
 async function gd_letknow(guard) {
     if (!cansee(guard.mx, guard.my) || !mon_visible(guard)) {
@@ -556,9 +635,10 @@ export async function gd_move(guard) {
 
     for (let i = egd.fcbeg; i < egd.fcend; i++) {
         const fc = egd.fakecorr[i];
-        if (gold_at(fc.fx, fc.fy)) {
-            /* Gold in the temporary tunnel is uncommon.  Keep the guard in
-               place and ask again rather than walking over it. */
+        if (g_at(fc.fx, fc.fy)) {
+            await gd_pick_corridor_gold(guard, fc.fx, fc.fy);
+            if (!guard.mpeaceful)
+                return -1;
             egd.warncnt = 5;
             return 0;
         }
@@ -681,6 +761,7 @@ export async function gd_move(guard) {
             newsym(nx, ny);
     }
 
+    await gd_mv_monaway(guard, nx, ny);
     if (egd.gddone)
         return gd_move_cleanup(guard, semi_dead, false);
 
@@ -688,7 +769,13 @@ export async function gd_move(guard) {
     egd.ogy = guard.my;
     remove_monster(guard.mx, guard.my);
     place_monster(guard, nx, ny);
-    newsym(guard.mx, guard.my);
+    if (newspot && g_at(nx, ny)) {
+        await mpickgold(guard);
+        if (canspotmon(guard))
+            await pline(`${Monnam(guard)} picks up some gold.`);
+    } else {
+        newsym(guard.mx, guard.my);
+    }
     await restfakecorr(guard);
     return 1;
 }

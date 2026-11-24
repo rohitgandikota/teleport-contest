@@ -90,7 +90,7 @@ import { which_armor } from './worn.js';
 import { obj_resists, destroy_items, resist } from './zap.js';
 import { mksobj_at, splitobj, mkobj, place_object, clear_splitobjs, mkgold,
          undead_to_corpse, zombie_form, discard_minvent,
-         add_to_container } from './mkobj.js';
+         add_to_container, add_to_minv } from './mkobj.js';
 import { weight, update_inventory, nxtobj } from './invent.js';
 import { newsym, canseemon, canspotmon, display_nhwindow_message, pline,
          see_monsters, unmap_invisible, flash_glyph_at, mon_to_glyph } from './display.js';
@@ -127,7 +127,7 @@ import { hastrack } from './track.js';
 // include/trap.h:125 fixed_tele_trap()
 const fixed_tele_trap = (t) => t.ttyp === TELEP_TRAP
                             && isok(t.teledest?.x, t.teledest?.y);
-import { obfree, sobj_at, obj_extract_self, stackobj } from './invent.js';
+import { g_at, obfree, sobj_at, obj_extract_self, stackobj } from './invent.js';
 import { OBJ_FLOOR } from './obj.js';
 import { online2, isok } from './hacklib.js';
 /* onscary() and in_your_sanctuary() are src/monmove.c and src/priest.c
@@ -3161,6 +3161,22 @@ export function restartcham() {
         if (mon.data?.mlet === MONSYMS.S_MIMIC && mon.msleeping) {
             set_mimic_sym(mon);
             newsym(mon.mx, mon.my);
+        }
+    }
+}
+
+// src/mon.c:1827 mpickgold()
+export async function mpickgold(mtmp) {
+    const gold = g_at(mtmp.mx, mtmp.my);
+    if (gold) {
+        const material = game.objects[gold.otyp].oc_material;
+        obj_extract_self(gold);
+        add_to_minv(mtmp, gold);
+        if (cansee(mtmp.mx, mtmp.my)) {
+            if (game.flags.verbose && !mtmp.isgd)
+                await pline_mon(mtmp, `${Monnam(mtmp)} picks up some ${
+                    material === MATERIALS.GOLD ? 'gold' : 'money'}.`);
+            newsym(mtmp.mx, mtmp.my);
         }
     }
 }

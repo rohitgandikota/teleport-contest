@@ -5931,6 +5931,43 @@ handler, corpse-chance owner, nutrition helper, corpse setup and canonical
 deallocator were reviewed. Monster-versus-monster digestion dispatch and the
 growth callback repair remain separately tested work awaiting integration.
 
+## 2026-11-24: restore guard corridor gold collection
+
+Temporary-corpse checkpoint `9fb29c64` is committed and pushed. `gd_move` now
+calls the complete corridor-gold and occupant-displacement helpers. They
+preserve C's ten placement searches, temporary movement, first-pile transfer,
+feedback suspension and restoration of the guard's original square. New
+`mpickgold` uses canonical extraction and inventory merging. Newly exposed
+gold is collected before the guard resumes the escort. The rest of `mon.js`,
+including the recently corrected death owner, is byte-identical after excluding
+the new helper and its two import additions.
+
+All five unchanged native cases now match 629 styled grids/cursors, 31,110
+complete RNG calls and all input slices, with no frames. The comparator includes
+blank styling and rejects unrecognized RNG entries. Baseline matches three
+cases; each visible positive misses 450 placement calls and pickup feedback,
+first diverging at boundary 116 or 119. Blindness, outside-corridor gold and
+refusal retain all five complete output hashes. Raw fixture SHA is
+`e50800e197c5586b84f18b7f87c6f6d8d574860231108603a950d6550f38b3b8`.
+
+All fifteen parent checks pass. Twenty-two state controls improve from three
+passing, and twenty input controls improve from fifteen. All 68 retained guard,
+death and deallocation controls pass. Eight focused fixtures cover 45 segments,
+5,944 boundaries, 271,383 complete calls and 26 exact animation grids/cursors
+and counts. Four delayed-input fixtures match 20 segments, 2,738 boundaries
+and 121,305 calls. All 44 public fixtures remain exact; all 52 hang workers
+finish within 30 seconds. Both syntax checks and the zero-finding 276-module
+audit pass, with all 279 runtime hashes fixed.
+
+Evidence is `.cache/restart-20261122/vault-gold-promotion-parent/` and
+`vault-gold-promotion-parent-verification.json`. The source and confirmation
+packages retain 1,559 and 654 verified sealed files. The full guard movement
+owner and the new helpers were read with their relocation/inventory contracts.
+Direct `mpickgold`, occupied-square displacement/limbo and mineral gold remain
+constructed-only here; native C coverage has zero `mpickgold` calls. Witness,
+destination and other corridor gaps remain separate work. The corpus is 772;
+the latest full regression remains 770/770 at `8d2d1d58`.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

@@ -13,7 +13,7 @@ Ground rules are in `/CLAUDE.md`. Read that first if you have not.
 ## Current focus, 2026-11-24
 
 Continue the faithful port with readable C-aligned code and prompt verified
-pushes. The latest official snapshot checked, November 24 at 08:21 UTC, has
+pushes. The latest official snapshot checked, November 24 at 08:59 UTC, has
 23,595 of 24,531 combined screens, 7th agentic and 11th overall. Our scoring
 run at 07:21 UTC predates the latest checkpoints. Public remains 44/44;
 held-out remains 39/56 with 936 unmatched screens. Local verification does
@@ -30,10 +30,12 @@ checks on 117 fixtures, all 39,942 boundaries and 1,718,440 calls. The complete
 strict 677-fixture audit and all 213 animation-bearing fixtures passed at the
 preceding floor checkpoint. The subsequent monster trap-hit repair passes
 four new native cases, 65 controls and seven focused regressions. The maintained
-corpus is now 771. The following death-owner repair passes 21 direct source
+corpus is now 772. The following death-owner repair passes 21 direct source
 controls, 61 retained controls and seven focused regressions. Temporary corpse
 cleanup for pet nutrition also passes 16 direct controls, 55 retained controls
-and five focused regressions. Current-corpus parity is not completeness.
+and five focused regressions. Guard corridor gold collection passes five new
+native cases, 110 controls and eight focused regressions. Current-corpus parity
+is not completeness.
 
 Floor objects retain independent global and per-square order. Placement,
 splitting, replacement, extraction, restacking, level flips and restore follow

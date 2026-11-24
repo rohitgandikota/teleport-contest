@@ -88,6 +88,7 @@ import { is_covetous, is_mplayer, defended, is_demon, resists_fire,
          resists_cold, resists_elec, resists_poison, resists_ston }
     from './mondata.js';
 import { is_vampshifter } from './monst.js';
+import { mon_aligntyp } from './priest.js';
 import { Fire_resistance, Cold_resistance, Shock_resistance,
          Poison_resistance, Stone_resistance, Antimagic } from './youprop.js';
 import { rn2, rnd, rnz, d } from './rng.js';
@@ -1103,7 +1104,7 @@ function artifact_touch_decision(obj, mon) {
                    && oart !== artifact_records[ART_EXCALIBUR];
         badalign = (oart.spfx & SPFX_RESTR) !== 0
                    && alignment !== -128
-                   && alignment !== Math.sign(mon.data.maligntyp);
+                   && alignment !== mon_aligntyp(mon);
     } else {
         badclass = badalign = false;
     }

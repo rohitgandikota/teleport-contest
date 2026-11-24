@@ -7412,6 +7412,32 @@ alternate monster weapons and other combat omissions remain separate. Native
 styled parity is not literal DEC/Unicode screen-byte identity. Commit and
 immediately push this checkpoint, then continue the remaining reviewed fixes.
 
+## 2026-11-24: artifact touch uses canonical monster alignment
+
+Pushed polymorphed attack routing as 50f31f68. The next patch replaces the
+species-sign approximation in artifact_touch_decision with mon_aligntyp.
+Priest and minion alignment records now retain C's precedence. The existing
+hero, role/race, covetous, player-like, bane and artifact exceptions remain.
+Only artifact.js changes, with no new alignment helper or species exception.
+
+All 21 checks and 88 controls pass on the exact current runtime. Nine focused
+fixtures cover 31 segments, 2,686 scored boundaries/cursors, 100,979 calls and
+176 frames. All 44 public fixtures and 53 bounded workers pass. The two new
+native cases improve from 162 to all 176 styled boundaries; calls, cursors,
+slices and empty frame arrays were already exact. The ordinary long-sword
+negative preserves all five output hashes. Six strict native fixtures match
+1,350 styled boundaries, 61,475 calls and 160 frames. Delayed input matches
+815 boundaries, 22,624 calls and 156 frames. Source audit remains zero of 276.
+
+All 279 runtime hashes and five support files match the tested
+artifact-touch-vision-composition, whose evidence and integration receipt are
+under .cache/restart-20261122. Maintained corpus is now 803. Latest full passing
+regression remains the 800-fixture d0c5098d run; final combined regression is
+pending. Monster rejection feedback and the separate eating contact guard
+remain separate source gaps. The ordinary C recording demonstrates actual
+floor-item rejection, not observation of private C alignment fields. Commit
+and immediately push this verified checkpoint.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

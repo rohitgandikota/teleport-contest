@@ -7041,6 +7041,72 @@ recorded native raws and are undergoing native confirmation. Monster footwear
 has a separate canonical alignment dependency under review. No goal completion
 or pause is requested; keep committing and pushing verified checkpoints.
 
+## 2026-11-24: canonical lawful-minion taunts; vault candidate rejected
+
+The cuss classification now uses existing `mon_aligntyp` after its species
+minion guard. The complete C macro, cuss owner, alignment owner, actual callers,
+pager, wakeup order and valid alignment producers were reviewed. The old helper
+compared raw Angel alignment12 directly with lawful1 and omitted priest
+precedence. One import and one canonical call replace that copied selection;
+all other runtime bytes remain unchanged. No Angel-specific case, new export,
+RNG implementation or test-only runtime path is added.
+
+Original raw SHA256
+`93c7a26523c64cef2938b02917a5fa23805c5fad88d932c4e9d18bdc2eba0959`
+now matches all 455 styled grids/cursors and per-input slices, 8,541 complete
+recognized calls and 156 frames. Before the helper repair, only161 grids,
+410 cursors and404 slices match, with8,569 JS calls and159 frames. The first
+incorrect draw selects the demon table instead of the lawful table. All three
+Angel cases are cuss positives. Their zero-iron and leather cases are footwear
+negatives only. The original footwear recipe's absent C stethoscope assertions
+and failing receipts remain immutable; the new cuss recipe asserts the actual
+C taunt without replacing those old claims.
+
+Twenty current-main checks pass:84 controls including18 direct source-state,
+10 source-contract and9 ordinary-input checks;8 fixtures/32segments with
+2,444 scored boundaries/cursors,118,003 calls and169 frames;all44 public with
+11,405 boundaries,792,838 calls and1,483 frames;52 hang checks;zero scope/import
+findings in276 modules. Delayed input matches across5segments/633boundaries,
+22,368calls/160frames. The two unaffected shaman/Oracle segments match178
+native styled boundaries/13,827calls/4frames and preserve all five original
+JS output hashes. Recipe tags, raw integrity, all input-field presence and
+keys, every native collection and279 runtime hashes are checked. Five support
+files are fixed. Receipt:`.cache/restart-20261122/cuss-alignment-promotion-parent-verification.json`.
+Source seal independently verifies678files/6links. The original raw already
+has byte-exact NFS credit in the self/shoes batch; no additional C coverage
+gain is attributed to this replay. Maintained corpus795;latest full run793.
+
+The vault exit/diagnostic/engraving composition was NOT committed. Parent
+verification found5 public regressions despite the frozen runner's zero
+process exit:0030 and5006 change late screens/cursors;0360,0367 and0373 fail
+with `impossible called impossible` through vision_recalc/newsym. Its168
+controls and29 selected native segments pass, but are insufficient. The full
+795 attempt was cancelled, both shards exit143, before edits. No full795
+success is claimed. All279 candidate modules and7 support files are preserved
+under `.cache/restart-20261122/vault-exit-promotion-parent/current-main-candidate`.
+Main was restored byte for byte toccc65c81 before this independent cuss patch.
+The source package, before failures, public rows and cancelled logs remain
+unchanged. Rejection receipt:`vault-exit-promotion-parent-rejection.json`.
+New checkpoint drivers inspect every scored result and metric immediately,
+before continuing after a zero scorer exit. No frozen runner was changed.
+Jason is tracing the actual vision and game-end window caller contracts in
+a new cache package; prior bounded source claims are not treated as closure.
+
+Two more source candidates now have independently verified native packages:
+swallowed/statue inspection675styled boundaries/11,066calls;hero natural
+attack dispatch283styled boundaries/13,755calls. Their main composition checks
+remain pending. NFS accepts both original raws byte for byte in one shared
+batch:792 distinct inputs across84 identical layouts,4,563/5,492 functions,
+60,042/107,260 branch outcomes. The batch adds1function and24outcomes;
+no per-input attribution is made. It now includes112 additional native files,
+427segments and9 additional Linux segments. Large profiles remain on NFS;
+only hash-verified compact summaries were downloaded. Local prefix:
+`linux-coverage-lookat-damage-union-*`.
+
+Continue verified commits and immediate pushes. Peaceful-minion chat, gnome
+Wizard inspection, complete hmonas callers and vault regression closure are
+active cache audits. Current public success is not full-port completion.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

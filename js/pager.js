@@ -20,7 +20,7 @@ import { is_orc } from './mondata.js';
 import { is_hider } from './mondata.js';
 import { hides_under } from './mondata.js';
 import { obj_descr } from './objects_data.js';
-import { IS_WATERWALL, Is_waterlevel } from './const.js';
+import { IS_WATERWALL, Is_waterlevel, Is_airlevel } from './const.js';
 import { u_at } from './const.js';
 import { DRAWBRIDGE_UP } from './const.js';
 import { Levitation, Underwater } from './youprop.js';
@@ -28,7 +28,7 @@ import { cansee } from './vision.js';
 import { distu, next2u } from './hacklib.js';
 import { spot_time_left, MELT_ICE_AWAY } from './timeout.js';
 import { obj_stop_timers } from './timeout.js';
-import { db_under_typ } from './dbridge.js';
+import { db_under_typ, is_drawbridge_wall } from './dbridge.js';
 import { doextlist } from './cmd.js';
 import { game } from './gstate.js';
 import { notice_all_mons_flush } from './hack.js';
@@ -566,14 +566,15 @@ function lookat(x, y) {
             break;
         }
         case CM.S_ndoor:
-            /* is_drawbridge_wall() needs drawbridges; no level has one */
-            if (loc && (loc.doormask & ~D_TRAPPED) === D_BROKEN)
+            if (is_drawbridge_wall(x, y) >= 0)
+                buf = 'open drawbridge portcullis';
+            else if (loc && (loc.doormask & ~D_TRAPPED) === D_BROKEN)
                 buf = 'broken door';
             else
                 buf = 'doorway';
             break;
         case CM.S_cloud:
-            buf = 'fog/vapor cloud'; /* Is_airlevel arm unreachable */
+            buf = Is_airlevel(game.u.uz) ? 'cloudy area' : 'fog/vapor cloud';
             break;
         case CM.S_pool:
         case CM.S_water:

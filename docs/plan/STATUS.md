@@ -6693,6 +6693,56 @@ slow-effect completion and enchanted iron footwear are the next bounded
 source/native repairs. Official held-out results remain the older evaluation;
 local checks do not establish a newer rank.
 
+## 2026-11-24: inspect open portcullises and Air clouds
+
+`pager.lookat` now calls `is_drawbridge_wall` before the broken-door test,
+accepting direction zero as well as the other directions. It reports an open
+drawbridge portcullis when appropriate. The cloud case now uses `Is_airlevel`
+to choose C's "cloudy area" description. Two existing helpers are imported;
+no new owner or export is added. The obsolete unreachable-arm comments are
+removed. The complete lookat owner at pager.c:657-802 and its inspection
+callers were reviewed with the drawbridge helper's full direction contract.
+
+The four-case C fixture is copied byte for byte, SHA-256
+`697396be1fec25734f8ebc5ced7e93c4b6d2531268c3728ad7cf7d36a8ff3dc5`,
+1,639,426 bytes. It covers an open portcullis, an Air cloud, an ordinary
+doorway and an ordinary cloud. All 267 contest screens, cursors, complete
+26,691 recognized RNG calls and input slices match; frame arrays are empty.
+The two ordinary negatives preserve all five original JS output hashes.
+The promoted strict native gate now asserts recognition of every RNG entry
+instead of filtering unknown entries. Diagnostic source labels remain the
+only stripped text. This strengthens validation without altering native data.
+
+The two strict native commands intentionally retain exit 1 before and after.
+Exact styled boundaries improve from 244 to 246 of 267. The 21 remaining
+failures, all in Air boundaries 61 through 81, contain 546 cyan-space color
+differences. Every remaining cell is an identical subset of the baseline.
+The independent sealed Air audit explains the loss in recorder cursor-forward
+compression; it does not waive these comparisons or recolor C-correct terrain.
+The changed cloud description is checked directly even where this existing
+blank-style mismatch prevents a whole boundary from becoming strict-exact.
+
+Main before checks preserve 15/21 state and 3/5 input passes. After, all 13
+ordinary validation commands pass, including 61 source/input controls, eight
+fixtures with 30 segments, 3,072 boundaries, 113,728 complete calls and 90
+frames. Deferred terrain/restricted input agrees over 507 boundaries and
+36,016 calls. All 44 public sessions pass; all 52 hang workers finish within
+30 seconds. Syntax and the zero-finding 276-module source audit pass. All
+279 runtime hashes and five promoted support hashes stay fixed.
+
+Evidence: `.cache/restart-20261122/pager-terrain-promotion-parent/` and
+`pager-terrain-promotion-parent-verification.json`. The 373-file native source
+package remains sealed at
+`9b28d5fca52100df8d14e0b8af9b8cc47fb7729e083aa3eb2677eb2b48decc95`.
+The source patch is unchanged, and the copied raw hash remains fixed. The
+maintained corpus is now 789. Latest full regression remains 788/788 through
+gaze, before startup and this terrain change. This checkpoint adds no new
+NFS coverage credit because this C input was already measured separately.
+The current NFS union adds the later iron-footwear hero recording instead:
+785 verified inputs, 79 layouts, 4,561/5,492 functions and 59,979/107,260
+branch outcomes. Its initial metadata and overlong-path rejections remain
+preserved and uncredited in the union. No leaderboard gain is inferred.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

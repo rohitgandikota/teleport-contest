@@ -1,0 +1,114 @@
+{
+  "name": "pager-lookat-terrain",
+  "description": "Ordinary keyboard farlook at an open Castle portcullis and a natural Air cloud, with ordinary doorway and cloud controls.",
+  "recordingNote": "Parent recorded the unchanged source-c/version-5 proposal. Raw SHA256 697396be1fec25734f8ebc5ced7e93c4b6d2531268c3728ad7cf7d36a8ff3dc5. All description assertions match C. Strict Air blank-style differences remain documented separately; no normalization or native edits.",
+  "coverage": [
+    "mode.debug",
+    "level.castle",
+    "level.planes",
+    "terrain.furniture",
+    "terrain.air-cloud",
+    "ui.map-memory-vision"
+  ],
+  "segments": [
+    {
+      "seed": 7101,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017wand of striking\r\u0017wand of opening\r\u001626\r \u0006 \u0014lllllkkkkkk.  \u0017blessed scroll of genocide\rrp  *\r\u001b\u001bzol    \u001b\u001b;llllll.\u001b\u001b",
+      "name": "open-portcullis-farlook"
+    },
+    {
+      "name": "air-cloud-farlook",
+      "seed": 6120,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Conan,role:Barbarian,race:human,gender:male,align:neutral,playmode:debug,suppress_alert:3.4.3,symset:DECgraphics\nOPTIONS=!autopickup\n",
+      "moves": "  n#levelchange\n20\n                   \u0016?\n  N       \u001bsss  \u0016-2\n      sss  ;k.\u001b\u001bk.\u001b\u001b"
+    },
+    {
+      "name": "ordinary-doorway-farlook",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017wall\r  \u001b\u001b\u0017doorless doorway\r  \u001b\u001b\u0014h.  \u001b\u001b;l.\u001b\u001b"
+    },
+    {
+      "name": "ordinary-cloud-farlook",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017cloud\r  \u001b\u001b\u0014h.  \u001b\u001b;l.\u001b\u001b"
+    }
+  ],
+  "branches": [
+    "pager.portcullis",
+    "pager.air-cloud",
+    "pager.ordinary-doorway",
+    "pager.ordinary-cloud"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "pager.portcullis",
+      "segment": 0,
+      "screenIncludes": [
+        "(open drawbridge portcullis)"
+      ]
+    },
+    {
+      "branch": "pager.air-cloud",
+      "segment": 1,
+      "screenIncludes": [
+        "(cloudy area)"
+      ]
+    },
+    {
+      "branch": "pager.ordinary-doorway",
+      "segment": 2,
+      "screenIncludes": [
+        "(doorway)"
+      ]
+    },
+    {
+      "branch": "pager.ordinary-cloud",
+      "segment": 3,
+      "screenIncludes": [
+        "(fog/vapor cloud)"
+      ]
+    }
+  ],
+  "jsReach": [
+    {
+      "target": {
+        "x": 15,
+        "y": 11
+      },
+      "description": "open drawbridge portcullis",
+      "boundaries": 114
+    },
+    {
+      "target": {
+        "x": 74,
+        "y": 6
+      },
+      "description": "cloudy area",
+      "boundaries": 82
+    },
+    {
+      "target": {
+        "x": 59,
+        "y": 6
+      },
+      "description": "doorway",
+      "boundaries": 46
+    },
+    {
+      "target": {
+        "x": 59,
+        "y": 6
+      },
+      "description": "fog/vapor cloud",
+      "boundaries": 25
+    }
+  ]
+}

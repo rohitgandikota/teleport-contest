@@ -29,7 +29,7 @@ checks on 117 fixtures, all 39,942 boundaries and 1,718,440 calls. The complete
 strict 677-fixture audit and all 213 animation-bearing fixtures passed at the
 preceding floor checkpoint. The subsequent monster trap-hit repair passes
 four new native cases, 65 controls and seven focused regressions. The maintained
-corpus is now 788. The following death-owner repair passes 21 direct source
+corpus is now 789. The following death-owner repair passes 21 direct source
 controls, 61 retained controls and seven focused regressions. Temporary corpse
 cleanup for pet nutrition also passes 16 direct controls, 55 retained controls
 and five focused regressions. Guard corridor gold collection passes five new
@@ -98,7 +98,15 @@ from 3,866 exact to 3,870. The remaining 883 differing cells in 20 boundaries
 are unchanged. Air-space source and wire audits identify recorder compression
 as the color-loss owner; C and JS both paint cyan spaces. No gameplay
 recoloring, raw rewrite or comparator exemption was introduced. The full
-788-fixture run predates only this startup clear checkpoint.
+788-fixture run predates the startup and following terrain checkpoints.
+Detailed terrain inspection now identifies an open drawbridge portcullis and
+uses the Plane of Air cloud description. Four native cases retain all 267
+scored boundaries, 26,691 complete calls and cursors. All 61 controls, eight
+focused fixtures, 44 public sessions and 52 hang checks pass. Strict styled
+boundaries improve from 244 to 246 of 267; the remaining 21 Air boundaries
+contain 546 unchanged cyan-space encoding losses. Both ordinary terrain
+negatives preserve all five original output hashes. The strict gate keeps
+its failing exit, and no output is normalized.
 Current-corpus parity is not completeness.
 
 Floor objects retain independent global and per-square order. Placement,

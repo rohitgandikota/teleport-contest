@@ -113,7 +113,7 @@ import { unplacebc, placebc } from './ball.js';
 import { maybe_dunk_boulders } from './apply.js';
 import { next_to_u } from './apply.js';
 import { unleash_all } from './apply.js';
-import { COST_BURN, COST_RUST, COST_ROT, COST_CORRODE, COST_CRACK } from './const.js';
+import { COST_BURN, COST_RUST, COST_ROT, COST_CORRODE, COST_CRACK, COST_DECHNT } from './const.js';
 import { mcarried } from './obj.js';
 import { costly_alteration } from './shk.js';
 import { s_suffix } from './hacklib.js';
@@ -2095,11 +2095,23 @@ async function trapeffect_sqky_board(mtmp, trap, trflags) {
     return Trap_Effect_Finished;
 }
 
-// src/trap.c:2323 trapeffect_anti_magic(): the hero's arm. Magic
-// resistance causes an implosion, then the field drains 2d6 Pw with half
-// (rounded down) coming from max when max exceeds the drain. The iron-shoes
-// arm still records.
+// src/trap.c:2323 trapeffect_anti_magic()
 async function trapeffect_anti_magic(mtmp, trap, trflags) {
+    if (wearing_iron_shoes(mtmp)) {
+        const shoes = which_armor(mtmp, W_ARMF);
+        // Positive enchantment absorbs the field before either wearer's effect.
+        if (shoes.spe > 0) {
+            if (mtmp === game.youmonst) {
+                seetrap(trap);
+                await pline(`A lethargic aura surrounds ${yname(shoes)}.`);
+                await costly_alteration(shoes, COST_DECHNT);
+            }
+            shoes.spe -= 1;
+            update_inventory();
+            return Trap_Effect_Finished;
+        }
+    }
+
     if (mtmp === game.youmonst) {
         const u = game.u;
         let exclaim_it = false;

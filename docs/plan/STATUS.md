@@ -6743,6 +6743,71 @@ The current NFS union adds the later iron-footwear hero recording instead:
 branch outcomes. Its initial metadata and overlong-path rejections remain
 preserved and uncredited in the union. No leaderboard gain is inferred.
 
+## 2026-11-24: enchanted iron footwear absorbs anti-magic fields
+
+`trap.trapeffect_anti_magic` now implements the missing common footwear arm
+at trap.c:2323-2345. Positive enchantment on worn iron shoes absorbs the
+activation before either wearer branch. The hero sees the field, receives
+C's aura message and completes any costly alteration before losing one
+enchantment. Monsters lose the enchantment silently. Both paths refresh
+inventory and return without damage or energy rolls. Unworn, non-iron and
+nonpositive footwear retains the existing behavior. The full owner and ten
+caller/helper bodies were reviewed. An AST comparison proves that every
+original executable node remains unchanged; only the new common block and
+one existing constant import are added. The stale unported-arm comment is
+removed. Other resistance-word, monster-message and lifesaving-result gaps
+remain separate work.
+
+Five ordinary hero cases were recorded independently by C, with depletion
+across repeated activations, iron and kicking boots, and unenchanted,
+non-iron and unworn controls. The promoted raw is byte-identical, SHA-256
+`b56fb686cb3b273a06f46c62cdd68d81f5866593e8e9df13c2752ce521e57746`,
+764,449 bytes. All five tuples and every input-boundary key are verified.
+Main before retains 328/360 exact styled grids, 357 cursors, 13,528 actual
+calls against 13,513 expected, and 352 exact input slices. After, every
+styled cell including blanks, every cursor, all 13,513 complete recognized
+calls and slices match over 360 boundaries; frame arrays are empty. All
+three ordinary negatives retain their five original JS output hashes.
+
+The 16 constructed state controls include hero blindness and blessing state,
+repeated depletion, spellcasting and resistant monster wearers, real pending
+More completion, and unpaid shop footwear. The bill copy retains the original
+enchantment while the worn object loses one, after the shop message completes.
+These monster and billing checks are source controls, not additional ordinary
+native witnesses. Parent before controls pass 6/16 state and 3/5 input cases.
+After, all 17 normal commands and 70 combined controls pass. Eight fixtures
+with 28 segments retain 2,671 boundaries, 106,913 complete calls and 71 frames.
+Deferred footwear/phasing input agrees over 676 boundaries, 30,079 calls and
+16 frames. All 44 public sessions and 52 hang workers pass. Syntax and the
+zero-finding 276-module source audit pass. All 279 runtime and four support
+hashes remain fixed.
+
+The NFS run independently replays the promoted raw exactly and adds five
+branch outcomes. A rejected earlier recorder input retained a proposal tag;
+its raw was preserved and a fresh C recording supplied the accepted source
+metadata. A later NFS retry used an overlong temporary path: C's nh_getenv
+rejects values longer than BUFSZ/2, so the recorder's 130-character HOME caused
+the intended config to be ignored. The 127-character earlier path and the
+shortened final path explain the difference. The final retry changes only
+the NFS output directory. All rejected receipts remain, no raw is rewritten,
+and neither rejected run contributes to the verified union.
+
+The later slow-touch recording adds a further function and fifteen outcomes,
+so current NFS coverage is 786 verified inputs across 80 identical layouts,
+4,562/5,492 functions and 59,994/107,260 direct branch outcomes. This is C test
+reach, independent of JS correctness. The slow-touch JS confirmation still
+requires its separately audited weapon-feedback dependency. Guard exit cleanup
+also has separate display dependencies under review.
+
+Evidence: `.cache/restart-20261122/anti-magic-iron-shoes-parent/`,
+`iron-shoes-promotion-parent/`, `iron-shoes-promotion-parent-verification.json`
+and `linux-coverage-iron-shoes-union-{summary,compact,batch}.json`.
+The maintained corpus is 790; latest completed full regression is 788/788
+through gaze, before startup, terrain and footwear. A new full run follows.
+The official leaderboard and news fetched at 12:58 UTC are byte-identical
+to 12:18: 23,595/24,531, 7th agentic, last team evaluation 07:21 UTC, with 936
+unmatched held-out screens. No newer ranking or held-out gain is claimed.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

@@ -1,0 +1,110 @@
+{
+  "name": "anti-magic-iron-shoes",
+  "description": "Enchanted iron footwear absorbs anti-magic activations until depleted, with unenchanted, non-iron and carried controls.",
+  "coverage": [
+    "mode.debug",
+    "traps.magical",
+    "object.armor",
+    "ui.getlin"
+  ],
+  "segments": [
+    {
+      "seed": 7303,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " l\u0017uncursed +2 iron shoes\r Wo   \u0017anti-magic field trap\r  #sit\r    #sit\r    #sit\r    i ",
+      "name": "hero-iron-absorbs"
+    },
+    {
+      "seed": 7303,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " l\u0017uncursed +2 kicking boots\r Wo   \u0017anti-magic field trap\r  #sit\r    i ",
+      "name": "hero-kicking-absorbs"
+    },
+    {
+      "seed": 7303,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " l\u0017uncursed +0 iron shoes\r Wo   \u0017anti-magic field trap\r  #sit\r    i ",
+      "name": "hero-zero-drains"
+    },
+    {
+      "seed": 7303,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " l\u0017uncursed +2 low boots\r Wo   \u0017anti-magic field trap\r  #sit\r    i ",
+      "name": "hero-leather-drains"
+    },
+    {
+      "seed": 7303,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " l\u0017uncursed +2 iron shoes\r \u0017anti-magic field trap\r  #sit\r    i ",
+      "name": "hero-carried-drains"
+    }
+  ],
+  "branchAssertions": [
+    {
+      "segment": 0,
+      "branch": "hero-iron-absorbs",
+      "screenIncludes": [
+        "A lethargic aura surrounds",
+        "magical energy drain away"
+      ],
+      "source": "trap.c:2323-2345, worn iron material and positive enchantment precede both wearer branches"
+    },
+    {
+      "segment": 1,
+      "branch": "hero-kicking-absorbs",
+      "screenIncludes": [
+        "A lethargic aura surrounds"
+      ],
+      "source": "trap.c:2323-2345, worn iron material and positive enchantment precede both wearer branches",
+      "screenExcludes": [
+        "magical energy drain away"
+      ]
+    },
+    {
+      "segment": 2,
+      "branch": "hero-zero-drains",
+      "screenIncludes": [
+        "magical energy drain away"
+      ],
+      "source": "trap.c:2323-2345, worn iron material and positive enchantment precede both wearer branches",
+      "screenExcludes": [
+        "A lethargic aura surrounds"
+      ]
+    },
+    {
+      "segment": 3,
+      "branch": "hero-leather-drains",
+      "screenIncludes": [
+        "magical energy drain away"
+      ],
+      "source": "trap.c:2323-2345, worn iron material and positive enchantment precede both wearer branches",
+      "screenExcludes": [
+        "A lethargic aura surrounds"
+      ]
+    },
+    {
+      "segment": 4,
+      "branch": "hero-carried-drains",
+      "screenIncludes": [
+        "magical energy drain away"
+      ],
+      "source": "trap.c:2323-2345, worn iron material and positive enchantment precede both wearer branches",
+      "screenExcludes": [
+        "A lethargic aura surrounds"
+      ]
+    }
+  ],
+  "branches": [
+    "hero-iron-absorbs",
+    "hero-kicking-absorbs",
+    "hero-zero-drains",
+    "hero-leather-drains",
+    "hero-carried-drains"
+  ],
+  "requireBranchAssertions": true
+}

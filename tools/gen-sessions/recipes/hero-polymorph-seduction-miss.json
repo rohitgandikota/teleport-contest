@@ -1,0 +1,137 @@
+{
+  "name": "hero-polymorph-seduction-miss",
+  "description": "Six unchanged native keyboard cases: compatible nymph misses with More, unseen compatible naming, and incompatible, ordinary and unseen ordinary misses. No accuracy equipment.",
+  "coverage": [
+    "forms.polymorph",
+    "combat.melee"
+  ],
+  "branches": [
+    "hero.seduction.miss.opposite-nymph",
+    "hero.seduction.miss.same-nymph",
+    "hero.seduction.miss.unseen-nymph",
+    "hero.seduction.miss.incompatible-incubus-21101",
+    "hero.seduction.miss.ordinary-gnome-21104",
+    "hero.seduction.miss.unseen-gnome-21104"
+  ],
+  "segments": [
+    {
+      "name": "opposite-nymph",
+      "seed": 21102,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Hmonas,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #polyself\rwood nymph\r  \u001b\u001b\u0007sleeping hostile male ogre\r\u001b\u001bk     : "
+    },
+    {
+      "name": "same-nymph",
+      "seed": 21102,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Hmonas,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #polyself\rwood nymph\r  \u001b\u001b\u0007sleeping hostile female ogre\r\u001b\u001bk     : "
+    },
+    {
+      "name": "unseen-nymph",
+      "seed": 21102,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Hmonas,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #polyself\rwood nymph\r  \u001b\u001b\u0007sleeping invisible hostile male ogre\r\u001b\u001bFk     : "
+    },
+    {
+      "name": "incompatible-incubus-21101",
+      "seed": 21101,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Hmonas,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #polyself\rincubus\r  \u001b\u001b\u0007sleeping hostile male ogre\r\u001b\u001bh     : "
+    },
+    {
+      "name": "ordinary-gnome-21104",
+      "seed": 21104,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Hmonas,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #polyself\rgnome\r  \u001b\u001b\u0007sleeping hostile male ogre\r\u001b\u001bb     : "
+    },
+    {
+      "name": "unseen-gnome-21104",
+      "seed": 21104,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Hmonas,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #polyself\rgnome\r  \u001b\u001b\u0007sleeping invisible hostile male ogre\r\u001b\u001bFb     : "
+    }
+  ],
+  "branchAssertions": [
+    {
+      "branch": "hero.seduction.miss.opposite-nymph",
+      "segment": 0,
+      "screenIncludes": [
+        "You pretend to be friendly to the ogre."
+      ],
+      "screenExcludes": [
+        "Do you want your possessions identified?",
+        "You miss the ogre.",
+        "You miss it.",
+        "You steal:",
+        "You hit the ogre."
+      ]
+    },
+    {
+      "branch": "hero.seduction.miss.same-nymph",
+      "segment": 1,
+      "screenIncludes": [
+        "You pretend to be friendly to the ogre."
+      ],
+      "screenExcludes": [
+        "Do you want your possessions identified?",
+        "You miss the ogre.",
+        "You miss it.",
+        "You steal:",
+        "You hit the ogre."
+      ]
+    },
+    {
+      "branch": "hero.seduction.miss.unseen-nymph",
+      "segment": 2,
+      "screenIncludes": [
+        "You pretend to be friendly to it."
+      ],
+      "screenExcludes": [
+        "Do you want your possessions identified?",
+        "You miss the ogre.",
+        "You miss it.",
+        "You steal:",
+        "You hit the ogre."
+      ]
+    },
+    {
+      "branch": "hero.seduction.miss.incompatible-incubus-21101",
+      "segment": 3,
+      "screenIncludes": [
+        "You miss the ogre."
+      ],
+      "screenExcludes": [
+        "Do you want your possessions identified?",
+        "You pretend to be friendly"
+      ]
+    },
+    {
+      "branch": "hero.seduction.miss.ordinary-gnome-21104",
+      "segment": 4,
+      "screenIncludes": [
+        "You miss the ogre."
+      ],
+      "screenExcludes": [
+        "Do you want your possessions identified?",
+        "You pretend to be friendly"
+      ]
+    },
+    {
+      "branch": "hero.seduction.miss.unseen-gnome-21104",
+      "segment": 5,
+      "screenIncludes": [
+        "You miss it."
+      ],
+      "screenExcludes": [
+        "Do you want your possessions identified?",
+        "You pretend to be friendly"
+      ]
+    }
+  ]
+}

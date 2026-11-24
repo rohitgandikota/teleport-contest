@@ -1279,9 +1279,9 @@ export async function missum(mdef, mattk, wouldhavehit) {
     if (wouldhavehit)   /* a monk missing due to the body-armour penalty */
         await Your('armor is rather cumbersome...');
 
-    /* could_seduce() needs the succubus/incubus arms; nothing ported can be
-       one, so the middle branch is recorded rather than guessed */
-    if (canspotmon(mdef) && game.flags?.verbose !== false)
+    if (could_seduce(game.youmonst, mdef, mattk))
+        await You(`pretend to be friendly to ${mon_nam(mdef)}.`);
+    else if (canspotmon(mdef) && game.flags?.verbose !== false)
         await You(`miss ${mon_nam(mdef)}.`);
     else
         await You('miss it.');
@@ -1320,7 +1320,8 @@ export async function known_hitum(mon, weapon, mhit, rollneeded, armorpenalty,
     }
 
     if (!mhit[0]) {
-        await missum(mon, uattk, (rollneeded + armorpenalty > dieroll));
+        await missum(mon, [uattk.aatyp, uattk.adtyp, uattk.damn, uattk.damd],
+                     (rollneeded + armorpenalty > dieroll));
     } else {
         const oldhp = mon.mhp;
         const oldweaphit = game.u.uconduct?.weaphit ?? 0;
@@ -1617,7 +1618,7 @@ export async function hmonas(mon) {
                     sum[i] = await damageum(mon, mattk, specialdmg);
                 }
             } else {
-                await missum(mon, mattk_row(mattk),
+                await missum(mon, mattk,
                              tmp + roll.role_roll_penalty > dieroll);
             }
         } else if (aatyp === ATTKS.AT_EXPL) {
@@ -1644,7 +1645,7 @@ export async function hmonas(mon) {
                     }
                 }
             } else {
-                await missum(mon, mattk_row(mattk), false);
+                await missum(mon, mattk, false);
             }
         } else if (aatyp === ATTKS.AT_HUGS) {
             let specialdmg;

@@ -7490,6 +7490,31 @@ New source work covers the lost getmattk alternate, hidden-description object
 cleanup, eating artifact contact, and Rogue-level x-ray precedence. No new
 replay batches run during the full-corpus contention window.
 
+## 2026-11-24: seduction miss feedback verified
+
+Pushed redraw behavior as af213271. The next uhitm patch restores C's friendly
+miss feedback before the visibility and verbose branches. The message remains
+awaited before wakeup or the next attack. Natural attacks retain their canonical
+attack array; known_hitum converts its existing named attack record at this
+boundary. No new abstraction or monster-specific exception was introduced.
+
+All 26 parent checks pass, covering 100 source/input controls and eight native
+assertions. Fifteen focused fixtures cover 64 segments, 9,499 scored boundaries,
+192,880 calls and 149 frames. All 44 public fixtures and 59 bounded workers pass.
+Six new C cases improve from 396/401 styled boundaries, 399 cursors and 397
+slices to all 401, retaining 15,387 complete calls and 32 frames. Three ordinary
+negative cases retain all five original output hashes. Nine strict native
+fixtures match 2,614 styled boundaries, 92,452 calls and 32 frames. Deferred
+input preserves all five output collections across 25 segments, 1,708 boundaries,
+63,396 calls and 32 frames. Source audit remains zero of 276.
+
+All 279 main runtime hashes and five support files equal the tested
+seduction-miss-parent-composition. Evidence and the main integration receipt
+are under .cache/restart-20261122. Maintained inventory is 805. The previous
+804-case verification required two successful retries; no full805 run is
+claimed. Serialized DEC/Unicode equality, alternate monster weapons and dual
+weapons remain separate. Commit and immediately push this checkpoint.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

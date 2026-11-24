@@ -52,6 +52,7 @@ import { COLNO, ROWNO, BOLT_LIM, STONE, SCORR, SDOOR, GRAVE, CORR,
          A_LAWFUL, A_NEUTRAL, A_CHAOTIC, STRAT_WAITMASK,
          WARNCOUNT, def_warnsyms, I_SPECIAL,
          NO_TRAP, BEAR_TRAP, WEB, is_pit,
+         GPCOORDS_NONE, GPCOORDS_COMPASS, GPCOORDS_MAP, GPCOORDS_SCREEN,
          MONSEEN_NORMAL, MONSEEN_SEEINVIS, MONSEEN_INFRAVIS,
          MONSEEN_TELEPAT, MONSEEN_XRAYVIS, MONSEEN_DETECT,
          MONSEEN_WARNMON } from './const.js';
@@ -77,7 +78,7 @@ import { Blind, Hallucination, Invisible, Infravision, Unblind_telepat,
 import { pmatch, tabexpand, mungspaces, isok, strstri } from './hacklib.js';
 import { data as DATAFILE } from './dat_files.js';
 import * as DAT from './dat_files.js';
-import { getpos, LOOK_QUICK, LOOK_ONCE, LOOK_VERBOSE } from './getpos.js';
+import { getpos, coord_desc, LOOK_QUICK, LOOK_ONCE, LOOK_VERBOSE } from './getpos.js';
 import { tty_yn_function } from './tty/topl.js';
 import { xwaitforspace } from './tty/getline.js';
 import { getlin, key2extcmddesc, key2txt } from './cmd.js';
@@ -1314,7 +1315,7 @@ export async function do_look(mode) {
                      "something you're carrying", MENU_ITEMFLAGS_NONE);
         tty_add_menu(win, null, '?', '?', 'n', ATR_NONE, NO_COLOR,
                      'something else (by symbol or name)', MENU_ITEMFLAGS_NONE);
-        if (!game.u.uswallow /* && !Hallucination */) {
+        if (!game.u.uswallow && !Hallucination()) {
             tty_add_menu_str(win, '');
             tty_add_menu(win, null, 'm', 'm', 0, ATR_NONE, NO_COLOR,
                          'nearby monsters', MENU_ITEMFLAGS_NONE);
@@ -1495,16 +1496,21 @@ async function look_all(nearby, do_mons) {
             let lookbuf = '';
             const glyph = glyph_at(x, y);
             if (do_mons) {
-                if (glyph.kind === 'hero'
-                    && game.u.ux === x && game.u.uy === y) {
-                    lookbuf = self_lookat();
-                    ++count;
-                } else if (glyph.kind === 'mon') {
-                    const mtmp = m_at(x, y);
-                    if (mtmp) {
+                if (glyph.kind === 'hero' || glyph.kind === 'mon') {
+                    let mtmp;
+                    if (u_at(x, y) && canspotself()) {
+                        lookbuf = self_lookat();
+                        ++count;
+                    } else if ((mtmp = m_at(x, y)) != null) {
                         ({ buf: lookbuf } = look_at_monster(mtmp, x, y, null));
                         ++count;
                     }
+                } else if (glyph.kind === 'invis') {
+                    lookbuf = invisexplain;
+                    ++count;
+                } else if (glyph.kind === 'warn') {
+                    lookbuf = def_warnsyms[glyph.wl].desc;
+                    ++count;
                 }
             } else {
                 if (glyph.kind === 'obj') {
@@ -1513,18 +1519,23 @@ async function look_all(nearby, do_mons) {
                 }
             }
             if (lookbuf) {
+                const cmode = game.iflags.getpos_coords !== GPCOORDS_NONE
+                    ? game.iflags.getpos_coords : GPCOORDS_MAP;
                 if (count === 1) {
                     const which = do_mons ? 'monsters' : 'objects';
                     const outbuf = nearby
                         ? `${upstart(which)} currently shown near `
-                          + `${coord_desc_map(game.u.ux, game.u.uy)}:`
+                          + `${cmode !== GPCOORDS_COMPASS
+                              ? coord_desc(game.u.ux, game.u.uy, cmode)
+                              : !canspotself() ? 'your position' : 'you'}:`
                         : `All ${which} currently shown on the map:`;
                     tty_putstr(win, 0, outbuf);
                     tty_putstr(win, 0, '    '); /* separator */
                 }
-                let coordbuf = coord_desc_map(x, y);
-                if (y < 10) coordbuf += ' ';
-                let outbuf = coordbuf.padStart(8) + '  ';
+                let coordbuf = coord_desc(x, y, cmode);
+                if (cmode === GPCOORDS_MAP && y < 10) coordbuf += ' ';
+                let outbuf = (cmode === GPCOORDS_SCREEN ? coordbuf
+                    : coordbuf.padStart(cmode === GPCOORDS_MAP ? 8 : 12)) + '  ';
                 outbuf += `${encglyph_char(x, y)}  `;
                 outbuf += lookbuf;
                 tty_putstr(win, 0, outbuf);

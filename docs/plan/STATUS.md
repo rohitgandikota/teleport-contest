@@ -7515,6 +7515,30 @@ are under .cache/restart-20261122. Maintained inventory is 805. The previous
 claimed. Serialized DEC/Unicode equality, alternate monster weapons and dual
 weapons remain separate. Commit and immediately push this checkpoint.
 
+## 2026-11-24: monster list glyphs and coordinates verified
+
+Pushed seduction misses as 3923bab9. The pager patch restores warning and
+invisible-monster rows, canonical self-glyph precedence, and coord_desc modes,
+headings and field widths. Hallucination now suppresses the list choices at
+the caller. Only pager.js changes; existing coordinate and description owners
+are reused. Adjacent trap and engraving list behavior is unchanged.
+
+All 27 parent checks and 142 source/input controls pass. Fifteen focused
+fixtures cover 62 segments, 5,480 scored boundaries, 192,721 calls and 165
+frames. All 44 public fixtures and 59 bounded workers pass. Five new C cases
+improve from 239/243 styled boundaries and 242 cursors to all 243. All 14,032
+calls, input slices and 32 frames were already exact. The ordinary visible-list
+negative retains all five output hashes. Seven strict native fixtures match
+2,415 styled boundaries, 94,060 calls and 80 frames. Deferred input preserves
+all five output collections across 23 segments, 1,283 boundaries, 59,851 calls
+and 80 frames. Source audit remains zero of 276.
+
+All 279 main runtime hashes and six support files equal the tested
+pager-look-all-parent-composition. Evidence and main integration receipt are
+under .cache/restart-20261122. Maintained inventory is 806; no full806 run is
+claimed. Encoded-prefix BUFSZ clipping, hidden-object cleanup and other list
+owners retain their separate limits. Commit and immediately push this checkpoint.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

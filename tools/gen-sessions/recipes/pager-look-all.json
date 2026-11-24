@@ -1,0 +1,247 @@
+{
+  "name": "pager-look-all",
+  "description": "Actual warning-ring, stethoscope, floor-object and hallucination inputs followed by ordinary listing commands. Independent unchanged C recording matches the sealed candidate on all styled cells, cursors, full RNG streams, input slices and animation frames.",
+  "coverage": [
+    "mode.debug",
+    "options.rc-bindings",
+    "ui.getpos",
+    "ui.map-memory-vision"
+  ],
+  "branches": [
+    "pager.list-warning-compass",
+    "pager.list-invisible-screen",
+    "pager.list-object-full-compass",
+    "pager.list-default-negative",
+    "pager.list-hallucination-menu-guard"
+  ],
+  "requireBranchAssertions": true,
+  "segments": [
+    {
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "name": "warning-compass",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=whatis_coord:compass\n",
+      "moves": " \u0017uncursed ring of warning\rPal\u0007hostile sleeping invisible red dragon\r/m \u001b"
+    },
+    {
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "name": "invisible-screen",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=whatis_coord:screen\n",
+      "moves": " \u0017uncursed stethoscope\r\u0007peaceful sleeping invisible hill orc\raab  /M \u001b"
+    },
+    {
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "name": "objects-full-compass",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=whatis_coord:fullcompass\n",
+      "moves": " \u0017uncursed rock\rdal/O \u001b"
+    },
+    {
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "name": "default-visible-negative",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\n",
+      "moves": " \u0007peaceful sleeping hill orc\r/m \u001b"
+    },
+    {
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "name": "hallucinated-menu",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\n",
+      "moves": " \u0017uncursed potion of hallucination\rqa/\u001b"
+    }
+  ],
+  "branchAssertions": [
+    {
+      "branch": "pager.list-warning-compass",
+      "segment": 0,
+      "screenIncludes": [
+        "Monsters currently shown near you:",
+        "(west)  3  unknown creature causing you disquiet"
+      ],
+      "screenExcludes": [
+        "You die...",
+        "Die?",
+        "[seen:"
+      ],
+      "intent": "A worn warning ring warns of an actual hostile unseen dragon; nearby listing preserves its warning description and compass coordinates.",
+      "evidence": "Independent unchanged C branch text and input tuples verified. Read-only JS producer observations match unobserved replay; strict native comparison includes every styled cell, call, slice, cursor and frame."
+    },
+    {
+      "branch": "pager.list-invisible-screen",
+      "segment": 1,
+      "screenIncludes": [
+        "All monsters currently shown on the map:",
+        "[09,58]  I  remembered, unseen, creature"
+      ],
+      "screenExcludes": [
+        "You die...",
+        "Die?",
+        "[seen:"
+      ],
+      "intent": "An applied stethoscope marks a real unseen orc; global listing describes remembered invisibility using screen row/column coordinates.",
+      "evidence": "Independent unchanged C branch text and input tuples verified. Read-only JS producer observations match unobserved replay; strict native comparison includes every styled cell, call, slice, cursor and frame."
+    },
+    {
+      "branch": "pager.list-object-full-compass",
+      "segment": 2,
+      "screenIncludes": [
+        "All objects currently shown on the map:",
+        "(west)  *  a rock",
+        "(2south,4west)  %  a fortune cookie"
+      ],
+      "screenExcludes": [
+        "You die...",
+        "Die?"
+      ],
+      "intent": "Dropping a wished rock creates a real floor object; global object listing uses full-compass coordinates.",
+      "evidence": "Independent unchanged C branch text and input tuples verified. Read-only JS producer observations match unobserved replay; strict native comparison includes every styled cell, call, slice, cursor and frame."
+    },
+    {
+      "branch": "pager.list-default-negative",
+      "segment": 3,
+      "screenIncludes": [
+        "Monsters currently shown near <59,6>:",
+        "peaceful hill orc, asleep"
+      ],
+      "screenExcludes": [
+        "You die...",
+        "Die?"
+      ],
+      "intent": "Default NONE falls back to map coordinates; ordinary visible-monster listing remains byte-identical before and after.",
+      "evidence": "Independent unchanged C branch text and input tuples verified. Read-only JS producer observations match unobserved replay; strict native comparison includes every styled cell, call, slice, cursor and frame."
+    },
+    {
+      "branch": "pager.list-hallucination-menu-guard",
+      "segment": 4,
+      "screenIncludes": [
+        "What do you want to look at:",
+        "i - something you're carrying"
+      ],
+      "screenExcludes": [
+        "You die...",
+        "Die?",
+        "nearby monsters",
+        "all monsters shown on map",
+        "nearby objects",
+        "all objects shown on map"
+      ],
+      "intent": "Quaffing an actual hallucination potion suppresses list menu choices but retains map, inventory and typed inspection.",
+      "evidence": "Independent unchanged C branch text and input tuples verified. Read-only JS producer observations match unobserved replay; strict native comparison includes every styled cell, call, slice, cursor and frame."
+    }
+  ],
+  "jsReach": [
+    {
+      "selectedStep": 71,
+      "boundaries": 74,
+      "calls": 2828,
+      "frames": 16,
+      "mode": "c",
+      "hp": 12,
+      "target": {
+        "id": 146,
+        "x": 58,
+        "y": 6,
+        "sleeping": true,
+        "invisible": true,
+        "peaceful": false,
+        "level": 14,
+        "warning": true,
+        "glyph": {
+          "kind": "warn",
+          "wl": 3
+        }
+      },
+      "pendingMore": true,
+      "negative": false
+    },
+    {
+      "selectedStep": 68,
+      "boundaries": 71,
+      "calls": 2824,
+      "frames": 16,
+      "mode": "s",
+      "hp": 12,
+      "target": {
+        "id": 73,
+        "x": 58,
+        "y": 7,
+        "sleeping": true,
+        "invisible": true,
+        "peaceful": true,
+        "level": 1,
+        "warning": false,
+        "glyph": {
+          "kind": "invis"
+        }
+      },
+      "pendingMore": true,
+      "negative": false
+    },
+    {
+      "selectedStep": 21,
+      "boundaries": 24,
+      "calls": 2785,
+      "frames": 0,
+      "mode": "f",
+      "hp": 12,
+      "target": null,
+      "pendingMore": true,
+      "negative": false
+    },
+    {
+      "selectedStep": 31,
+      "boundaries": 34,
+      "calls": 2819,
+      "frames": 0,
+      "mode": "n",
+      "hp": 12,
+      "target": {
+        "id": 73,
+        "x": 58,
+        "y": 6,
+        "sleeping": true,
+        "invisible": false,
+        "peaceful": true,
+        "level": 1,
+        "warning": false,
+        "glyph": {
+          "kind": "mon"
+        }
+      },
+      "pendingMore": true,
+      "negative": true
+    },
+    {
+      "selectedStep": 38,
+      "boundaries": 40,
+      "calls": 2776,
+      "frames": 0,
+      "mode": "n",
+      "hp": 12,
+      "target": null,
+      "pendingMore": false,
+      "negative": false
+    }
+  ],
+  "native": {
+    "sha256": "b22be4b59dcba8781ed7b60bbbf7817b4d0fe40a0b0fa3984c4ba118e650e76a",
+    "bytes": 704568,
+    "source": "c",
+    "version": 5,
+    "proposalSHA256": "ce012cb8375f1e3963a12bfe3e8d98fa1ec4b893c0c2e9dae57823b7d0330819",
+    "boundaries": 243,
+    "completeCalls": 14032,
+    "frames": 32,
+    "recorderExit": 0,
+    "parityStatus": "verified on exact sealed candidate",
+    "firstBeforeDivergence": [
+      71,
+      68,
+      21,
+      null,
+      38
+    ]
+  }
+}

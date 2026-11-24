@@ -19,7 +19,7 @@ run at 01:48 UTC predates the latest checkpoint. Public remains 44/44;
 held-out remains 39/56 with 936 unmatched screens. Local verification does
 not establish a newer held-out score.
 
-The latest full regression passes 753/753 fixtures: 826,059 boundary
+The latest full regression at `5b38727c` passes 753/753 fixtures: 826,059 boundary
 screens/cursors, 16,727,473 scored RNG positions and 30,953 animation frames.
 Both shards finish without failures or timeouts. All 279 runtime hashes
 stayed fixed throughout.
@@ -143,18 +143,19 @@ flips with its cell, passing 163 controls, eight focused fixtures and all
 44 public fixtures. Shopkeepers now recover before robbery settlement,
 passing 44 controls, eight focused fixtures and all 44 public fixtures.
 Region coordinates pass all eighteen focused/public checks and the full
-753-fixture regression. Random-flip forwarding is native-confirmed; guard
-early returns and shop chronicle records are under native verification.
+753-fixture regression. Random flips now retain the active-level flag,
+passing 172 controls, seven focused fixtures and all 44 public fixtures.
+Guard early returns and shop chronicle records are under native verification.
 The Linux/NFS branch collector is pushed
 and passes signal canaries plus exact save/restore, artifact and natural-exit
 pilots. The Linux census at e4504071 now covers all 678 original inputs:
 603 canonical matches and 75 independently recorded ordinary Linux controls.
-Adding 69 newer raw inputs and two independent Linux controls, 261
+Adding 70 newer raw inputs and two independent Linux controls, 264
 native segments in total, gives a validated union entering 4,537/5,492
-functions and observing 59,397/107,260 direct C branch outcomes.
-All 749 credited input hashes, fifty-two build manifests and branch layouts
-were checked before merging. This C coverage census includes queued random
-flip and guard early-return recordings; their JS integration remains pending. Original platform/output rejections
+functions and observing 59,405/107,260 direct C branch outcomes.
+All 750 credited input hashes, fifty-three build manifests and branch layouts
+were checked before merging. This C coverage census includes queued guard
+early-return and shop-chronicle recordings; their JS integration remains pending. Original platform/output rejections
 remain rejected; no output was normalized. The two new sink fixtures separately
 match Linux C exactly; their validated union covers all 94/94 direct dosinkring
 outcomes in 49 cases. The teleport and polymorph helpers still have measured

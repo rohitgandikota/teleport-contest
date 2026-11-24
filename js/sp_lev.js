@@ -2926,14 +2926,14 @@ function flip_vault_guard(flp, grd, minx, miny, maxx, maxy) {
 }
 
 // src/sp_lev.c:967 flip_level_rnd() — one rn2(2) per allowed axis.
-export async function flip_level_rnd(flp) {
+export async function flip_level_rnd(flp, extras) {
     let c = 0;
     if ((flp & 1) && rn2(2))
         c |= 1;
     if ((flp & 2) && rn2(2))
         c |= 2;
     if (c)
-        await flip_level(c, false);
+        await flip_level(c, extras);
 }
 
 // src/sp_lev.c:533 flip_level(), mirror the level on one or both axes.
@@ -3357,7 +3357,7 @@ export async function load_special(name) {
     if (!game.level.flags.corrmaze)
         mklev_fns.wallification(1, 0, COLNO - 1, ROWNO - 1);
 
-    await flip_level_rnd(game.coder?.allow_flips ?? 0);
+    await flip_level_rnd(game.coder?.allow_flips ?? 0, false);
 
     if (mklev_fns.count_level_features)
         mklev_fns.count_level_features();

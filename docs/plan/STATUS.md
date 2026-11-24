@@ -4866,6 +4866,50 @@ input fields and branch assertions are retained. Vertical, creation-time,
 owner identity and save-aging claims remain source/state controls. Independent
 Air bubbles are separate. This is not complete region or game parity.
 
+## 2026-11-24: random flips retain the active level flag
+
+Region checkpoint `5b38727c` is committed and pushed after all 753 fixtures
+pass. `flip_level_rnd` now forwards its existing caller's `extras` argument
+to `flip_level`. `load_special` supplies explicit false, matching C and the
+other generation caller. The wizard caller already supplies true. The patch
+changes three lines, retaining the permitted-axis RNG decisions and existing
+completion order. It adds no helper or production export.
+
+Three unchanged native cases cover random choice zero, explicit horizontal
+choice two and cancellation. C's random case draws zero then one and mirrors
+horizontally. The old wrapper leaves the hero at (30,7) while C moves to (46,7),
+first diverging at boundary 114. Only the random case changes. Both controls
+remain exact. All 378 native rendered screens/cursors, 9,674 complete calls
+and input slices match; RNG was already exact before the repair. The pair
+of explicit/cancelled controls each has 126 boundaries and 3,224 calls; the
+random case has 126 and 3,226. Raw SHA-256:
+`90b26bc381cc6b24793a23dc2cd5156a2f26e150f66f9773765cb6900e2bc298`.
+The recording has no animations. Existing DEC/Unicode terminal encoding
+differences remain distinct from exact rendered-grid acceptance.
+
+All nineteen integrated checks pass. The 32 new and 140 retained controls
+cover axis selection, generation and active play, regions, goals, timers and
+drawbridges. Seven focused fixtures match seventeen segments, 2,675 boundaries,
+118,848 complete RNG calls and input slices, and 184 animation grids/cursors.
+Deferred input matches three fixtures, eight segments, 1,007 boundaries,
+54,597 calls and seven frames. The 44 public fixtures remain exact at 11,405
+boundaries, 792,838 scored RNG positions and 1,483 frames. All 51 hang workers
+pass at 30 seconds. Source audit has zero findings in 276 modules, syntax
+passes and all 279 runtime hashes remain fixed. The inventory has 754 fixtures;
+the last full regression remains `5b38727c` with 753/753.
+
+Independent NFS native replay is exact. This input adds two measured outcomes;
+the cumulative C `flip_level_rnd` has 6/6 direct outcomes and `wiz_flip_level`
+has 5/6. Its union has 748 unique inputs and 59,374/107,260 outcomes. Later
+queued guard and chronicle recordings bring the validated union to 750 inputs,
+fifty-three layouts, 4,537/5,492 functions and 59,405/107,260 outcomes. Coverage
+of a helper's direct branches does not prove all active-level side effects.
+
+Evidence is `.cache/restart-20261122/flip-random-native-confirmation/`,
+`flip-random-parent-{source-review,integration,verification}.json` and
+`flip-random-promoted-*`. The original patch, fixture, input tuples and branch
+assertions remain unchanged. The normal-import gates require no cache loader.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

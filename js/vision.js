@@ -865,7 +865,7 @@ export function vision_recalc(control = 0) {
     /* src/vision.c:631, the Eyes of the Overworld see every square in a
        radius-three circle, including through walls. */
     const xray = u.xray_range ?? -1;
-    if (!u.uswallow && control !== 2 && xray >= 0) {
+    if (!u.uswallow && control !== 2 && !Is_rogue_level(u.uz) && xray >= 0) {
         const ranges = circle_data.slice(circle_start[xray]);
         for (let row = Math.max(0, uy - xray);
              row <= Math.min(ROWNO - 1, uy + xray); row++) {

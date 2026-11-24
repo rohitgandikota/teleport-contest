@@ -7566,6 +7566,38 @@ is claimed. Eating contact and spec_* alignment remain separate. Commit and
 immediately push this checkpoint. The 17:05 UTC official board/news refresh
 is byte-identical to 16:10; the published score still predates these pushes.
 
+## 2026-11-24: Rogue vision takes precedence over x-ray
+
+Pushed silent artifact rejection as 1ed5974e. The vision patch adds C's Rogue
+level exclusion to the x-ray branch. The actual Eyes remain worn and their
+range remains three; Rogue geometry retains control of the view. One condition
+in vision.js changes. No new helper, redraw, RNG call or callback is added.
+
+All 25 current-main checks and 79 source/input controls pass. Fifteen focused
+fixtures cover 70 segments, 6,231 scored boundaries, 195,787 calls and 80 frames.
+All 44 public fixtures and 59 bounded workers pass. Three independently recorded
+C cases improve from 119/123 styled boundaries to all 123, retaining all 7,598
+calls, cursors, slices and empty frame arrays. Ordinary-level Eyes and ordinary
+lenses on Rogue retain all five original output hashes. Seven strict native
+fixtures match 3,480 styled boundaries, 88,638 calls and 80 frames. Deferred
+input preserves all five collections across 14 segments, 1,001 boundaries and
+42,563 calls. Source audit remains zero of 276.
+
+All 279 main runtime hashes and five support files equal the tested
+rogue-xray-parent-composition. Its evidence and main integration receipt are
+under .cache/restart-20261122. The initial plan preflight caught a missing copied
+edge test and a wrong underwater test filename before replay; the existing
+unchanged tools were supplied. Maintained inventory is 808; no full808 sweep
+is claimed. Pre-swap x-ray updates and dark-wall fallback remain separate.
+
+The new raw is independently byte-exact on Linux and adds no C branch outcomes.
+This is a confirmed interaction failure despite unchanged branch coverage.
+The later cancelled-weapon recording brings the verified NFS union to 803
+inputs across 93 layouts, 4,565/5,492 functions and 60,135/107,260 outcomes,
+preserving all 92 previous run hashes. Large profiles remain remote under
+verified-cancelled-weapons-union-20261124. That C reach evidence does not certify
+unmerged JS fixes. Commit and immediately push the verified Rogue checkpoint.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

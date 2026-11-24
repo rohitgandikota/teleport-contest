@@ -1,0 +1,113 @@
+{
+  "name": "rogue-xray-priority",
+  "description": "Three unchanged native cases: real Eyes on Rogue, real Eyes on an ordinary level, and ordinary lenses on Rogue. Exact native confirmation with the Rogue priority patch.",
+  "segments": [
+    {
+      "name": "rogue-real-xray",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Monk,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!cmdassist\n",
+      "moves": " \u0016rogue\r\u001b\u001b\u0017blessed Eyes of the Overworld\r\u001b\u001bPa\u001b\u001b\u0012"
+    },
+    {
+      "name": "ordinary-real-xray",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Monk,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!cmdassist\n",
+      "moves": " \u0017blessed Eyes of the Overworld\r\u001b\u001bPa\u001b\u001b\u0012"
+    },
+    {
+      "name": "rogue-ordinary-lenses",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Monk,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!cmdassist\n",
+      "moves": " \u0016rogue\r\u001b\u001b\u0017blessed lenses\r\u001b\u001bPa\u001b\u001b\u0012"
+    }
+  ],
+  "coverage": [
+    "mode.debug",
+    "ui.map-memory-vision",
+    "object.artifacts",
+    "traps.movement"
+  ],
+  "branches": [
+    "vision.rogue-excludes-xray",
+    "vision.ordinary-xray-control",
+    "vision.rogue-ordinary-lenses-control"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "vision.rogue-excludes-xray",
+      "segment": 0,
+      "screenIncludes": [
+        "You enter what seems to be an older, more primitive world.",
+        "You are now wearing a pair of lenses named the Eyes of the Overworld."
+      ],
+      "source": "vision.c:575-576 chooses rogue_vision and bypasses ordinary xray at 631; input state gate additionally proves this real artifact and level. On the generated dark room, far wall (13,7) is hidden while adjacent wall (14,7) and hero (15,8) remain visible. Screen coordinates convert map x to x-1 and y to y+1. Validated against candidate JS observations and unchanged native raw 01cb679043f5d727dcc0ba531f3a05c20ee34b53814dfac228a39bb933a4d54b.",
+      "screenCells": [
+        {
+          "step": 45,
+          "x": 12,
+          "y": 8,
+          "equals": " "
+        },
+        {
+          "step": 48,
+          "x": 12,
+          "y": 8,
+          "equals": " "
+        },
+        {
+          "step": 48,
+          "x": 13,
+          "y": 8,
+          "equals": "-"
+        },
+        {
+          "step": 48,
+          "x": 14,
+          "y": 9,
+          "equals": "@"
+        }
+      ]
+    },
+    {
+      "branch": "vision.ordinary-xray-control",
+      "segment": 1,
+      "screenIncludes": [
+        "You are now wearing a pair of lenses named the Eyes of the Overworld."
+      ],
+      "screenExcludes": [
+        "You enter what seems to be an older, more primitive world."
+      ],
+      "source": "vision.c:631 ordinary xray remains enabled; input state gate proves range three and extra line-of-sight reach."
+    },
+    {
+      "branch": "vision.rogue-ordinary-lenses-control",
+      "segment": 2,
+      "screenIncludes": [
+        "You enter what seems to be an older, more primitive world.",
+        "You are now wearing a pair of lenses."
+      ],
+      "screenExcludes": [
+        "named the Eyes of the Overworld"
+      ],
+      "source": "worn.c/artifact.c ordinary lenses do not provide SPFX_XRAY; Rogue geometry is unchanged.",
+      "screenCells": [
+        {
+          "step": 33,
+          "x": 12,
+          "y": 8,
+          "equals": " "
+        },
+        {
+          "step": 33,
+          "x": 14,
+          "y": 9,
+          "equals": "@"
+        }
+      ]
+    }
+  ]
+}

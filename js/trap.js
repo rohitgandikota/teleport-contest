@@ -178,7 +178,7 @@ import { MSOUND } from './monst_data.js';
 import { strsubst } from './hacklib.js';
 import { nolimbs } from './mondata.js';
 import { rn2, rnd } from './rng.js';
-import { mksobj, place_object, splitobj, add_to_migration } from './mkobj.js';
+import { mksobj, place_object, splitobj, add_to_migration, dealloc_obj } from './mkobj.js';
 import { weight } from './invent.js';
 import { dmgval } from './weapon.js';
 import { makeknown, observe_object } from './o_init.js';
@@ -2833,10 +2833,7 @@ export function feeltrap(trap) {
     newsym(trap.tx, trap.ty);
 }
 
-// src/trap.c:3898 thitm() — a trap (or trap missile) hits a monster. Only
-// the d_override arm is live here: pits and bear traps force the hit and
-// pass no missile, so the to-hit rnd(20) and the missile bookkeeping never
-// run for them.
+// src/trap.c:6711 thitm(), a trap or trap missile hits a monster.
 async function thitm(tlev, mon, obj, d_override, nocorpse) {
     let strike;
     let trapkilled = false;
@@ -2850,12 +2847,14 @@ async function thitm(tlev, mon, obj, d_override, nocorpse) {
 
     if (!strike) {
         if (obj && cansee(mon.mx, mon.my))
-            await pline(`${Monnam(mon)} is almost hit by ${doname(obj)}!`);
+            await pline_mon(mon, `${Monnam(mon)} is almost hit by ${doname(obj)}!`);
     } else {
         let dam = 1;
+        const harmless = (obj && stone_missile(obj) && passes_rocks(mon.data));
 
         if (obj && cansee(mon.mx, mon.my))
-            await pline(`${Monnam(mon)} is hit by ${doname(obj)}!`);
+            await pline_mon(mon, `${Monnam(mon)} is hit by ${doname(obj)}${
+                harmless ? ' but is not harmed.' : '!'}`);
         if (d_override) {
             dam = d_override;
         } else if (obj) {
@@ -2863,24 +2862,28 @@ async function thitm(tlev, mon, obj, d_override, nocorpse) {
             if (dam < 1)
                 dam = 1;
         }
-        mon.mhp -= dam;
-        if (mon.mhp <= 0) {
-            const xx = mon.mx, yy = mon.my;
-
-            await monkilled(mon, '', 0 /* AD_PHYS; nocorpse callers absent */);
+        if (!harmless) {
+            mon.mhp -= dam;
             if (mon.mhp <= 0) {
-                newsym(xx, yy);
-                trapkilled = true;
+                const xx = mon.mx, yy = mon.my;
+
+                await monkilled(mon, '', nocorpse ? -ATTKS.AD_RBRE : ATTKS.AD_PHYS);
+                if (DEADMONSTER(mon)) {
+                    newsym(xx, yy);
+                    trapkilled = true;
+                }
             }
+        } else {
+            strike = 0; /* harmless; don't use up the missile */
         }
     }
-    /* src/trap.c:3955 — an unfired or force-hit missile lands on the
-       monster's square; a normally-striking one is used up. */
     if (obj && (!strike || d_override)) {
         await place_object(obj, mon.mx, mon.my);
         const { stackobj } = await import('./invent.js');
         stackobj(obj);
-    } /* else dealloc_obj(obj): dropped reference is the JS equivalent */
+    } else if (obj) {
+        dealloc_obj(obj);
+    }
 
     return trapkilled;
 }

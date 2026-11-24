@@ -28,7 +28,9 @@ stayed fixed throughout.
 The earlier potion changes also pass strict full-stream and per-input RNG
 checks on 117 fixtures, all 39,942 boundaries and 1,718,440 calls. The complete
 strict 677-fixture audit and all 213 animation-bearing fixtures passed at the
-preceding floor checkpoint. Current-corpus parity is not completeness.
+preceding floor checkpoint. The subsequent monster trap-hit repair passes
+four new native cases, 65 controls and seven focused regressions. The maintained
+corpus is now 771. Current-corpus parity is not completeness.
 
 Floor objects retain independent global and per-square order. Placement,
 splitting, replacement, extraction, restacking, level flips and restore follow

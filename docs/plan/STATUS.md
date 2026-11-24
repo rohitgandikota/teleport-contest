@@ -5832,6 +5832,41 @@ Null-keeper, freeing-data and Lua arms are source/state coverage, not additional
 native witnesses. Current-corpus parity does not establish port completeness.
 Next are the recorded monster trap-hit and digestion repairs.
 
+## 2026-11-24: complete monster trap-hit behavior
+
+Billing checkpoint `8d2d1d58` is committed and pushed. The complete `thitm`
+owner now uses monster-located feedback, preserves harmless stone missiles
+for rock-passing monsters, and still evaluates damage before that immunity
+decision. Fire immolation passes the negative fire-breath death type to
+`monkilled`, preventing corpse production. Spent missiles use canonical
+deallocation. Its obsolete header, which claimed missile callers were absent,
+now names the correct C owner.
+
+All four unchanged native cases match 401 styled grids/cursors, 9,398 complete
+RNG calls and every input slice, with no animation frames. The stronger
+comparison includes blank-cell styling and filters no RNG entries. Before the
+fix, only the ordinary-cat control was exact: 393/401 grids matched and paper
+golem death consumed two extra calls. The cat control retains all five complete
+output hashes. Raw fixture SHA is
+`cc30cf36f074d05c2b7da899686aa1118aa63cadda815a416a26d2b4dcb7979f`.
+
+All fourteen parent checks pass. Twelve state controls improve from three
+passing, and six input/provenance controls improve from three. All 47 retained
+projectile and object-deallocation controls pass. Seven focused fixtures cover
+23 segments, 2,073 boundaries, 85,202 complete calls and 84 exact animation
+grids/cursors/counts. Four delayed-input fixtures match 14 segments, 1,036
+boundaries, 48,308 calls and seven frames. All 44 public fixtures remain exact;
+all 51 hang workers finish within 30 seconds. Syntax and the zero-finding
+276-module audit pass, with all 279 runtime hashes fixed.
+
+Evidence is `.cache/restart-20261122/trap-hit-promotion-parent/` and
+`trap-hit-promotion-parent-verification.json`; the source package retains 345
+verified sealed files. All five complete trap callers were reviewed with the
+death and disposal helpers. Hero arrow/dart half-physical damage and disposal,
+depleted-trap location feedback, and the separate `mondied` owner remain
+distinct work. The maintained corpus is 771; the latest full regression is
+770/770 at `8d2d1d58`. No new full-corpus claim is made for this checkpoint.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

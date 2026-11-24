@@ -1,0 +1,936 @@
+{
+  "name": "trap-monster-hit",
+  "description": "Independently recorded C inputs for thitm harmless rocks, an ordinary cat control, accessible arrow feedback, and paper-golem immolation.",
+  "coverage": [
+    "mode.debug",
+    "ui.getlin",
+    "ui.more-paging",
+    "traps.monster",
+    "traps.projectile-physical",
+    "monster.death-corpse-revival",
+    "options.rc-bindings"
+  ],
+  "branches": [
+    "trap-monster-hit.xorn-rock",
+    "trap-monster-hit.cat-rock",
+    "trap-monster-hit.xorn-arrow",
+    "trap-monster-hit.paper-fire"
+  ],
+  "requireBranchAssertions": true,
+  "segments": [
+    {
+      "name": "xorn-rock",
+      "seed": 7401,
+      "datetime": "20000112121000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics,!accessiblemsg\n",
+      "moves": " h\u00173 blessed potions of full healing\r\u001b\u001b\u001b\u001bqa\u001b\u001b\u001b\u001bqa\u001b\u001b\u001b\u001bqa\u001b\u001b\u001b\u001b\u0017falling rock trap\r\u0007hostile xorn\rk.\u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "cat-rock",
+      "seed": 7401,
+      "datetime": "20000112121000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics,!accessiblemsg\n",
+      "moves": " h\u00173 blessed potions of full healing\r\u001b\u001b\u001b\u001bqa\u001b\u001b\u001b\u001bqa\u001b\u001b\u001b\u001bqa\u001b\u001b\u001b\u001b\u0017falling rock trap\r\u0007hostile large cat\rk.\u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "xorn-arrow",
+      "seed": 7401,
+      "datetime": "20000112121000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics,accessiblemsg\n",
+      "moves": " h\u00173 blessed potions of full healing\r\u001b\u001b\u001b\u001bqa\u001b\u001b\u001b\u001bqa\u001b\u001b\u001b\u001bqa\u001b\u001b\u001b\u001b\u0017arrow trap\r\u0007hostile xorn\rk.\u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "paper-fire",
+      "seed": 7401,
+      "datetime": "20000112121000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics,!accessiblemsg\n",
+      "moves": " h\u00173 blessed potions of full healing\r\u001b\u001b\u001b\u001bqa\u001b\u001b\u001b\u001bqa\u001b\u001b\u001b\u001bqa\u001b\u001b\u001b\u001b\u0017fire trap\r\u0007hostile paper golem\rk.\u001b\u001b\u001b\u001b\u001b\u001b"
+    }
+  ],
+  "branchAssertions": [
+    {
+      "branch": "trap-monster-hit.xorn-rock",
+      "segment": 0,
+      "intent": "Solid wall-passing xorn is unharmed by the actual falling-rock trap; rock lands.",
+      "evidence": "Parent independent source-c/version-5 recording. Message cells are native observations; model HP/ownership guards are read-only JS observations. Full native stream/slice/grid/cursor parity is separately verified.",
+      "screenCells": [
+        {
+          "step": 94,
+          "x": 0,
+          "y": 0,
+          "equals": "T"
+        },
+        {
+          "step": 94,
+          "x": 1,
+          "y": 0,
+          "equals": "h"
+        },
+        {
+          "step": 94,
+          "x": 2,
+          "y": 0,
+          "equals": "e"
+        },
+        {
+          "step": 94,
+          "x": 3,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 94,
+          "x": 4,
+          "y": 0,
+          "equals": "x"
+        },
+        {
+          "step": 94,
+          "x": 5,
+          "y": 0,
+          "equals": "o"
+        },
+        {
+          "step": 94,
+          "x": 6,
+          "y": 0,
+          "equals": "r"
+        },
+        {
+          "step": 94,
+          "x": 7,
+          "y": 0,
+          "equals": "n"
+        },
+        {
+          "step": 94,
+          "x": 8,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 94,
+          "x": 9,
+          "y": 0,
+          "equals": "i"
+        },
+        {
+          "step": 94,
+          "x": 10,
+          "y": 0,
+          "equals": "s"
+        },
+        {
+          "step": 94,
+          "x": 11,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 94,
+          "x": 12,
+          "y": 0,
+          "equals": "h"
+        },
+        {
+          "step": 94,
+          "x": 13,
+          "y": 0,
+          "equals": "i"
+        },
+        {
+          "step": 94,
+          "x": 14,
+          "y": 0,
+          "equals": "t"
+        },
+        {
+          "step": 94,
+          "x": 15,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 94,
+          "x": 16,
+          "y": 0,
+          "equals": "b"
+        },
+        {
+          "step": 94,
+          "x": 17,
+          "y": 0,
+          "equals": "y"
+        },
+        {
+          "step": 94,
+          "x": 18,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 94,
+          "x": 19,
+          "y": 0,
+          "equals": "a"
+        },
+        {
+          "step": 94,
+          "x": 20,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 94,
+          "x": 21,
+          "y": 0,
+          "equals": "r"
+        },
+        {
+          "step": 94,
+          "x": 22,
+          "y": 0,
+          "equals": "o"
+        },
+        {
+          "step": 94,
+          "x": 23,
+          "y": 0,
+          "equals": "c"
+        },
+        {
+          "step": 94,
+          "x": 24,
+          "y": 0,
+          "equals": "k"
+        },
+        {
+          "step": 94,
+          "x": 25,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 94,
+          "x": 26,
+          "y": 0,
+          "equals": "b"
+        },
+        {
+          "step": 94,
+          "x": 27,
+          "y": 0,
+          "equals": "u"
+        },
+        {
+          "step": 94,
+          "x": 28,
+          "y": 0,
+          "equals": "t"
+        },
+        {
+          "step": 94,
+          "x": 29,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 94,
+          "x": 30,
+          "y": 0,
+          "equals": "i"
+        },
+        {
+          "step": 94,
+          "x": 31,
+          "y": 0,
+          "equals": "s"
+        },
+        {
+          "step": 94,
+          "x": 32,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 94,
+          "x": 33,
+          "y": 0,
+          "equals": "n"
+        },
+        {
+          "step": 94,
+          "x": 34,
+          "y": 0,
+          "equals": "o"
+        },
+        {
+          "step": 94,
+          "x": 35,
+          "y": 0,
+          "equals": "t"
+        },
+        {
+          "step": 94,
+          "x": 36,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 94,
+          "x": 37,
+          "y": 0,
+          "equals": "h"
+        },
+        {
+          "step": 94,
+          "x": 38,
+          "y": 0,
+          "equals": "a"
+        },
+        {
+          "step": 94,
+          "x": 39,
+          "y": 0,
+          "equals": "r"
+        },
+        {
+          "step": 94,
+          "x": 40,
+          "y": 0,
+          "equals": "m"
+        },
+        {
+          "step": 94,
+          "x": 41,
+          "y": 0,
+          "equals": "e"
+        },
+        {
+          "step": 94,
+          "x": 42,
+          "y": 0,
+          "equals": "d"
+        },
+        {
+          "step": 94,
+          "x": 43,
+          "y": 0,
+          "equals": "."
+        }
+      ]
+    },
+    {
+      "branch": "trap-monster-hit.cat-rock",
+      "segment": 1,
+      "intent": "Ordinary large-cat control loses falling-rock HP and retains the rock; no accessibility prefix.",
+      "evidence": "Parent independent source-c/version-5 recording. Message cells are native observations; model HP/ownership guards are read-only JS observations. Full native stream/slice/grid/cursor parity is separately verified.",
+      "screenCells": [
+        {
+          "step": 99,
+          "x": 0,
+          "y": 0,
+          "equals": "T"
+        },
+        {
+          "step": 99,
+          "x": 1,
+          "y": 0,
+          "equals": "h"
+        },
+        {
+          "step": 99,
+          "x": 2,
+          "y": 0,
+          "equals": "e"
+        },
+        {
+          "step": 99,
+          "x": 3,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 99,
+          "x": 4,
+          "y": 0,
+          "equals": "l"
+        },
+        {
+          "step": 99,
+          "x": 5,
+          "y": 0,
+          "equals": "a"
+        },
+        {
+          "step": 99,
+          "x": 6,
+          "y": 0,
+          "equals": "r"
+        },
+        {
+          "step": 99,
+          "x": 7,
+          "y": 0,
+          "equals": "g"
+        },
+        {
+          "step": 99,
+          "x": 8,
+          "y": 0,
+          "equals": "e"
+        },
+        {
+          "step": 99,
+          "x": 9,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 99,
+          "x": 10,
+          "y": 0,
+          "equals": "c"
+        },
+        {
+          "step": 99,
+          "x": 11,
+          "y": 0,
+          "equals": "a"
+        },
+        {
+          "step": 99,
+          "x": 12,
+          "y": 0,
+          "equals": "t"
+        },
+        {
+          "step": 99,
+          "x": 13,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 99,
+          "x": 14,
+          "y": 0,
+          "equals": "i"
+        },
+        {
+          "step": 99,
+          "x": 15,
+          "y": 0,
+          "equals": "s"
+        },
+        {
+          "step": 99,
+          "x": 16,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 99,
+          "x": 17,
+          "y": 0,
+          "equals": "h"
+        },
+        {
+          "step": 99,
+          "x": 18,
+          "y": 0,
+          "equals": "i"
+        },
+        {
+          "step": 99,
+          "x": 19,
+          "y": 0,
+          "equals": "t"
+        },
+        {
+          "step": 99,
+          "x": 20,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 99,
+          "x": 21,
+          "y": 0,
+          "equals": "b"
+        },
+        {
+          "step": 99,
+          "x": 22,
+          "y": 0,
+          "equals": "y"
+        },
+        {
+          "step": 99,
+          "x": 23,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 99,
+          "x": 24,
+          "y": 0,
+          "equals": "a"
+        },
+        {
+          "step": 99,
+          "x": 25,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 99,
+          "x": 26,
+          "y": 0,
+          "equals": "r"
+        },
+        {
+          "step": 99,
+          "x": 27,
+          "y": 0,
+          "equals": "o"
+        },
+        {
+          "step": 99,
+          "x": 28,
+          "y": 0,
+          "equals": "c"
+        },
+        {
+          "step": 99,
+          "x": 29,
+          "y": 0,
+          "equals": "k"
+        },
+        {
+          "step": 99,
+          "x": 30,
+          "y": 0,
+          "equals": "!"
+        }
+      ]
+    },
+    {
+      "branch": "trap-monster-hit.xorn-arrow",
+      "segment": 2,
+      "intent": "A real wooden arrow damages the xorn; accessible message identifies its square.",
+      "evidence": "Parent independent source-c/version-5 recording. Message cells are native observations; model HP/ownership guards are read-only JS observations. Full native stream/slice/grid/cursor parity is separately verified.",
+      "screenCells": [
+        {
+          "step": 87,
+          "x": 0,
+          "y": 0,
+          "equals": "("
+        },
+        {
+          "step": 87,
+          "x": 1,
+          "y": 0,
+          "equals": "s"
+        },
+        {
+          "step": 87,
+          "x": 2,
+          "y": 0,
+          "equals": "o"
+        },
+        {
+          "step": 87,
+          "x": 3,
+          "y": 0,
+          "equals": "u"
+        },
+        {
+          "step": 87,
+          "x": 4,
+          "y": 0,
+          "equals": "t"
+        },
+        {
+          "step": 87,
+          "x": 5,
+          "y": 0,
+          "equals": "h"
+        },
+        {
+          "step": 87,
+          "x": 6,
+          "y": 0,
+          "equals": ")"
+        },
+        {
+          "step": 87,
+          "x": 7,
+          "y": 0,
+          "equals": ":"
+        },
+        {
+          "step": 87,
+          "x": 8,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 87,
+          "x": 9,
+          "y": 0,
+          "equals": "T"
+        },
+        {
+          "step": 87,
+          "x": 10,
+          "y": 0,
+          "equals": "h"
+        },
+        {
+          "step": 87,
+          "x": 11,
+          "y": 0,
+          "equals": "e"
+        },
+        {
+          "step": 87,
+          "x": 12,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 87,
+          "x": 13,
+          "y": 0,
+          "equals": "x"
+        },
+        {
+          "step": 87,
+          "x": 14,
+          "y": 0,
+          "equals": "o"
+        },
+        {
+          "step": 87,
+          "x": 15,
+          "y": 0,
+          "equals": "r"
+        },
+        {
+          "step": 87,
+          "x": 16,
+          "y": 0,
+          "equals": "n"
+        },
+        {
+          "step": 87,
+          "x": 17,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 87,
+          "x": 18,
+          "y": 0,
+          "equals": "i"
+        },
+        {
+          "step": 87,
+          "x": 19,
+          "y": 0,
+          "equals": "s"
+        },
+        {
+          "step": 87,
+          "x": 20,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 87,
+          "x": 21,
+          "y": 0,
+          "equals": "h"
+        },
+        {
+          "step": 87,
+          "x": 22,
+          "y": 0,
+          "equals": "i"
+        },
+        {
+          "step": 87,
+          "x": 23,
+          "y": 0,
+          "equals": "t"
+        },
+        {
+          "step": 87,
+          "x": 24,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 87,
+          "x": 25,
+          "y": 0,
+          "equals": "b"
+        },
+        {
+          "step": 87,
+          "x": 26,
+          "y": 0,
+          "equals": "y"
+        },
+        {
+          "step": 87,
+          "x": 27,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 87,
+          "x": 28,
+          "y": 0,
+          "equals": "a"
+        },
+        {
+          "step": 87,
+          "x": 29,
+          "y": 0,
+          "equals": "n"
+        },
+        {
+          "step": 87,
+          "x": 30,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 87,
+          "x": 31,
+          "y": 0,
+          "equals": "a"
+        },
+        {
+          "step": 87,
+          "x": 32,
+          "y": 0,
+          "equals": "r"
+        },
+        {
+          "step": 87,
+          "x": 33,
+          "y": 0,
+          "equals": "r"
+        },
+        {
+          "step": 87,
+          "x": 34,
+          "y": 0,
+          "equals": "o"
+        },
+        {
+          "step": 87,
+          "x": 35,
+          "y": 0,
+          "equals": "w"
+        },
+        {
+          "step": 87,
+          "x": 36,
+          "y": 0,
+          "equals": "!"
+        }
+      ]
+    },
+    {
+      "branch": "trap-monster-hit.paper-fire",
+      "segment": 3,
+      "intent": "Actual fire-trap immolation kills the paper golem without the paper-remains RNG path.",
+      "evidence": "Parent independent source-c/version-5 recording. Message cells are native observations; model HP/ownership guards are read-only JS observations. Full native stream/slice/grid/cursor parity is separately verified.",
+      "screenCells": [
+        {
+          "step": 94,
+          "x": 0,
+          "y": 0,
+          "equals": "T"
+        },
+        {
+          "step": 94,
+          "x": 1,
+          "y": 0,
+          "equals": "h"
+        },
+        {
+          "step": 94,
+          "x": 2,
+          "y": 0,
+          "equals": "e"
+        },
+        {
+          "step": 94,
+          "x": 3,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 94,
+          "x": 4,
+          "y": 0,
+          "equals": "p"
+        },
+        {
+          "step": 94,
+          "x": 5,
+          "y": 0,
+          "equals": "a"
+        },
+        {
+          "step": 94,
+          "x": 6,
+          "y": 0,
+          "equals": "p"
+        },
+        {
+          "step": 94,
+          "x": 7,
+          "y": 0,
+          "equals": "e"
+        },
+        {
+          "step": 94,
+          "x": 8,
+          "y": 0,
+          "equals": "r"
+        },
+        {
+          "step": 94,
+          "x": 9,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 94,
+          "x": 10,
+          "y": 0,
+          "equals": "g"
+        },
+        {
+          "step": 94,
+          "x": 11,
+          "y": 0,
+          "equals": "o"
+        },
+        {
+          "step": 94,
+          "x": 12,
+          "y": 0,
+          "equals": "l"
+        },
+        {
+          "step": 94,
+          "x": 13,
+          "y": 0,
+          "equals": "e"
+        },
+        {
+          "step": 94,
+          "x": 14,
+          "y": 0,
+          "equals": "m"
+        },
+        {
+          "step": 94,
+          "x": 15,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 94,
+          "x": 16,
+          "y": 0,
+          "equals": "i"
+        },
+        {
+          "step": 94,
+          "x": 17,
+          "y": 0,
+          "equals": "s"
+        },
+        {
+          "step": 94,
+          "x": 18,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 94,
+          "x": 19,
+          "y": 0,
+          "equals": "d"
+        },
+        {
+          "step": 94,
+          "x": 20,
+          "y": 0,
+          "equals": "e"
+        },
+        {
+          "step": 94,
+          "x": 21,
+          "y": 0,
+          "equals": "s"
+        },
+        {
+          "step": 94,
+          "x": 22,
+          "y": 0,
+          "equals": "t"
+        },
+        {
+          "step": 94,
+          "x": 23,
+          "y": 0,
+          "equals": "r"
+        },
+        {
+          "step": 94,
+          "x": 24,
+          "y": 0,
+          "equals": "o"
+        },
+        {
+          "step": 94,
+          "x": 25,
+          "y": 0,
+          "equals": "y"
+        },
+        {
+          "step": 94,
+          "x": 26,
+          "y": 0,
+          "equals": "e"
+        },
+        {
+          "step": 94,
+          "x": 27,
+          "y": 0,
+          "equals": "d"
+        },
+        {
+          "step": 94,
+          "x": 28,
+          "y": 0,
+          "equals": "!"
+        },
+        {
+          "step": 94,
+          "x": 38,
+          "y": 6,
+          "equals": "^"
+        }
+      ]
+    }
+  ]
+}

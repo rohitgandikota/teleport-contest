@@ -221,7 +221,7 @@ import { Confusion } from './youprop.js';
 import { stealgold } from './steal.js';
 import { diseasemu } from './mhitu.js';
 import { dog_nutrition } from './dog.js';
-import { add_to_minv, set_corpsenm } from './mkobj.js';
+import { add_to_minv, set_corpsenm, dealloc_obj } from './mkobj.js';
 import { merge_choice, addinv } from './invent.js';
 import { inv_cnt } from './hack.js';
 import { dropy } from './do.js';
@@ -4149,7 +4149,7 @@ export async function mhitm_ad_dgst(magr, mattk, mdef, mhm) {
 
             set_corpsenm(virtualcorpse, num);
             nutrit = dog_nutrition(magr, virtualcorpse);
-            /* dealloc_obj(virtualcorpse) */
+            dealloc_obj(virtualcorpse);
 
             /* only 50% nutrition, 25% of normal eating time */
             if (magr.meating > 1)

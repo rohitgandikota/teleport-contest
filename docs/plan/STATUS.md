@@ -5901,6 +5901,36 @@ read, and all 14 active direct JS callers await completion. The canonical
 diagnostic remains separate. General monster disposal, vampire revival and
 steam-vortex death are also separate work.
 
+## 2026-11-24: clean up temporary corpses after pet nutrition
+
+Death-owner checkpoint `4464023f` is committed and pushed. `mhitm_ad_dgst`
+now calls canonical `dealloc_obj` immediately after calculating nutrition from
+its temporary corpse, before reducing eating time and nutrition. The two-line
+change restores the existing import and commented-out C call. It preserves
+corpse construction and its RNG draws, stops the object's timers, and stages
+normal deferred deletion. The valid free-object path is synchronous.
+
+All sixteen source controls pass, compared with nine before. They cover real
+corpse timers, nutrition/eating time, timer-free species, excluded attackers
+and victims, unrelated live timers and the later deferred deletion drain.
+The troll case no longer reaches a revival callback through a discarded free
+corpse. All 55 retained deallocation, death and lifesaving controls pass.
+This is source/state evidence; no new ordinary native witness is claimed.
+
+All twelve parent checks pass. Five retained native fixtures cover 17 segments,
+2,396 boundaries, 56,150 complete RNG calls and 455 exact animation grids,
+cursors and counts. Four delayed-input fixtures match 15 segments, 2,329
+boundaries, 50,584 calls and 455 frames. All 44 public fixtures remain exact;
+all 49 hang workers finish within 30 seconds. Syntax and the zero-finding
+276-module audit pass, with all 279 runtime hashes fixed. The maintained
+corpus remains 771; the latest full regression is 770/770 at `8d2d1d58`.
+
+Evidence is `.cache/restart-20261122/virtual-corpse-promotion-parent/` and
+`virtual-corpse-promotion-parent-verification.json`. The complete digestion
+handler, corpse-chance owner, nutrition helper, corpse setup and canonical
+deallocator were reviewed. Monster-versus-monster digestion dispatch and the
+growth callback repair remain separately tested work awaiting integration.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

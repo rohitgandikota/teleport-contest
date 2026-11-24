@@ -6808,6 +6808,68 @@ The official leaderboard and news fetched at 12:58 UTC are byte-identical
 to 12:18: 23,595/24,531, 7th agentic, last team evaluation 07:21 UTC, with 936
 unmatched held-out screens. No newer ranking or held-out gain is claimed.
 
+## 2026-11-24: canonical anti-magic effects and post-lifesaving results
+
+The full run at b4089c0f verifies all 790 maintained fixtures after startup,
+terrain and enchanted footwear: 841,420 screens/cursors, 17,425,306 scored
+RNG positions and 32,039 animation frames. Both shards exit zero. All 279
+runtime hashes and the fixture inventory stay fixed through verification.
+This establishes that combined checkpoint, not full-port completeness.
+
+The next trap.c:2323-2450 review fixes four small decisions in the same owner.
+Hero resistance and half-damage now use their canonical predicates, retaining
+form and timed intrinsic sources. Monster lethargy uses pline_mon. After
+monkilled, the owner tests DEADMONSTER again before returning Trap_Killed_Mon,
+so actual life saving preserves the surviving result. AST inversion proves
+that only these four decisions and the two imports differ. The ten reviewed
+complete C owners and their hashes are recorded in source-proof.json.
+
+Twenty source checks pass versus eleven before. Real polymorph, timeout,
+blindness, equipment, mintrap and life-saving producers cover the changed
+branches and their exclusions. Terminal HP, genocide and timed half-damage
+boundaries are explicitly constructed controls. The five ordinary C cases
+cover gray and baby gray dragon forms, blue dragon as a negative, and located
+and plain shaman feedback. A failed first input sat on the dropped quarterstaff;
+it is preserved. The accepted proposal moves to a clean square before wishing
+for the field. No gameplay state assignment is used by those ordinary inputs.
+
+Fresh raw C SHA256 is
+9d502ee7adb52ec404457cb2ec0ca69ea7eb0ecf89c5d793283e0f56a2460d1b.
+All input fields and keys match the accepted proposal. Before repair, 382/398
+styled boundaries, 395 cursors and 394 RNG slices match, with 21,927 calls
+instead of C's 21,929. After repair, every styled cell including blanks,
+all 398 cursors/slices, all 21,929 calls and all four frames match. The blue
+dragon and plain shaman controls preserve all five original output hashes.
+Five normal-import input checks pass versus two before.
+
+The promoted composition passes 17 commands and 75 source/input controls.
+Nine focused fixtures cover 33 segments, 3,069 boundaries, 128,842 complete
+calls and 75 frames. Deferred input agrees over nine segments, 714 boundaries,
+38,495 calls and 20 frames. All 44 public sessions and 53 hang workers pass.
+Syntax and the 276-module scope/import audit pass. All 279 runtime and four
+support hashes remain fixed. The maintained corpus is 791; the full 790 run
+above predates this effect change.
+
+NFS independently replays the immutable self-inspection and monster-footwear
+recordings exactly, adding 21 outcomes. The anti-magic effect recording then
+replays exactly and adds two more. The cumulative union is 789 verified inputs
+across 82 identical layouts, 4,562/5,492 functions and 60,017/107,260 direct
+branch outcomes. Its 109 additional raw C files cover 414 segments; the nine
+additional ordinary Linux segments remain separate. Coverage is test reach,
+not JS correctness. All earlier rejected runs remain excluded and preserved.
+
+Evidence: `.cache/restart-20261122/anti-magic-effects-parent/`,
+`anti-magic-effects-promotion-parent/`,
+`anti-magic-effects-promotion-parent-verification.json`,
+`startup-terrain-footwear-promotion-corpus-totals.json` and
+`linux-coverage-anti-magic-effects-union-{summary,compact,batch}.json`.
+The official leaderboard and news fetched at 13:21 UTC remain byte-identical
+to 12:58: 23,595/24,531, 7th agentic, 11th overall, last team evaluation 07:21,
+with 936 unmatched held-out screens. No newer held-out gain is claimed.
+Monster slow/weapon feedback is now sealed and ready for parent integration;
+self-inspection, ordinary monster footwear and vault display closure remain
+in their separate confirmation stages.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

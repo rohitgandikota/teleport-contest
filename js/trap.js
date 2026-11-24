@@ -140,7 +140,7 @@ import { shieldeff } from './display.js';
 import { prinv } from './invent.js';
 import { poly_obj, resist, destroy_strings } from './zap.js';
 import { x_monnam } from './do_name.js';
-import { Antimagic, Unchanging } from './youprop.js';
+import { Antimagic, Unchanging, Half_physical_damage, Half_spell_damage } from './youprop.js';
 import { has_mgivenname, ARTICLE_THE, ARTICLE_NONE, SUPPRESS_SADDLE, NOTELL, NC_SHOW_MSG, DISMOUNT_POLY, POLY_NOFLAGS } from './const.js';
 import { wakeup } from './mon.js';
 import { uwepgone, uswapwepgone } from './wield.js';
@@ -2117,11 +2117,11 @@ async function trapeffect_anti_magic(mtmp, trap, trflags) {
         let exclaim_it = false;
 
         seetrap(trap);
-        if (u.uprops?.ANTIMAGIC || u.uprops?.MAGIC_RES) {
+        if (Antimagic()) {
             let dmgval2 = rnd(4);
             const hp = Upolyd(u) ? u.mh : u.uhp;
 
-            if (u.uprops?.HALF_PHDAM || u.uprops?.HALF_SPDAM)
+            if (Half_physical_damage() || Half_spell_damage())
                 dmgval2 += rnd(4);
             if (u.uwep?.oartifact === ART_MAGICBANE)
                 dmgval2 += rnd(4);
@@ -2159,7 +2159,7 @@ async function trapeffect_anti_magic(mtmp, trap, trflags) {
                 mtmp.mspec_used = (mtmp.mspec_used || 0) + d(2, 6);
                 if (in_sight) {
                     seetrap(trap);
-                    await pline(`${Monnam(mtmp)} seems lethargic.`);
+                    await pline_mon(mtmp, `${Monnam(mtmp)} seems lethargic.`);
                 }
             }
         } else {
@@ -2180,8 +2180,9 @@ async function trapeffect_anti_magic(mtmp, trap, trflags) {
                 await monkilled(mtmp,
                     in_sight ? 'compression from an anti-magic field' : null,
                     -ATTKS.AD_MAGM);
-                trapkilled = true;
             }
+            if (DEADMONSTER(mtmp))
+                trapkilled = true;
             if (see_it)
                 newsym(trap.tx, trap.ty);
         }

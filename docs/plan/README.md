@@ -13,15 +13,15 @@ Ground rules are in `/CLAUDE.md`. Read that first if you have not.
 ## Current focus, 2026-11-24
 
 Continue the faithful port with readable C-aligned code and prompt verified
-pushes. The latest official snapshot checked, November 24 at 12:58 UTC, has
+pushes. The latest official snapshot checked, November 24 at 13:21 UTC, has
 23,595 of 24,531 combined screens, 7th agentic and 11th overall. Our scoring
 run at 07:21 UTC predates the latest checkpoints. Public remains 44/44;
 held-out remains 39/56 with 936 unmatched screens. Local verification does
 not establish a newer held-out score.
 
-The latest full regression, through restricted inspection, potion effects,
-phasing and hero counter-gaze, passes 788/788 fixtures: 840,793 boundary
-screens/cursors, 17,385,102 scored RNG positions and 32,039 scored animation frames.
+The latest full regression, through startup clearing, terrain descriptions
+and enchanted iron footwear, passes 790/790 fixtures: 841,420 boundary
+screens/cursors, 17,425,306 scored RNG positions and 32,039 scored animation frames.
 Both shards finish without failures or timeouts. All 279 runtime hashes
 stayed fixed throughout.
 The earlier potion changes also pass strict full-stream and per-input RNG
@@ -29,7 +29,7 @@ checks on 117 fixtures, all 39,942 boundaries and 1,718,440 calls. The complete
 strict 677-fixture audit and all 213 animation-bearing fixtures passed at the
 preceding floor checkpoint. The subsequent monster trap-hit repair passes
 four new native cases, 65 controls and seven focused regressions. The maintained
-corpus is now 790. The following death-owner repair passes 21 direct source
+corpus is now 791. The following death-owner repair passes 21 direct source
 controls, 61 retained controls and seven focused regressions. Temporary corpse
 cleanup for pet nutrition also passes 16 direct controls, 55 retained controls
 and five focused regressions. Guard corridor gold collection passes five new
@@ -89,7 +89,7 @@ and 16 frames. All 130 controls, 11 focused fixtures, 44 public sessions and
 the live species table and prepares the existing killer record before death
 handling. Five native cases match all 481 styled boundaries, 14,707 complete
 calls and 19 frames. All 139 controls, ten focused fixtures, 44 public sessions
-and 54 hang checks pass. The full 788-fixture run now includes these additions.
+and 54 hang checks pass. The 788-fixture run first verified these additions together.
 The next startup fix clears the base window before banner output, removing
 all 60 incorrect blank styles in four character confirmations. All 38
 controls, nine focused fixtures, 44 public sessions and 46 hang checks pass.
@@ -98,7 +98,7 @@ from 3,866 exact to 3,870. The remaining 883 differing cells in 20 boundaries
 are unchanged. Air-space source and wire audits identify recorder compression
 as the color-loss owner; C and JS both paint cyan spaces. No gameplay
 recoloring, raw rewrite or comparator exemption was introduced. The full
-788-fixture run predates the startup and following terrain checkpoints.
+790-fixture run includes the startup and following terrain checkpoints.
 Detailed terrain inspection now identifies an open drawbridge portcullis and
 uses the Plane of Air cloud description. Four native cases retain all 267
 scored boundaries, 26,691 complete calls and cursors. All 61 controls, eight
@@ -113,8 +113,16 @@ branch. Five native hero cases match all 360 styled boundaries, 13,513 complete
 calls, cursors and empty frame arrays. All 70 controls, eight focused fixtures,
 44 public sessions and 52 hang checks pass. Monster and billing branches have
 constructed source controls; their ordinary input coverage remains separate.
-The full 788-fixture run predates this repair as well. The maintained corpus
-now contains 790 recordings.
+The full 790-fixture run includes this repair as well.
+Anti-magic effects now also read canonical form resistance and half-damage
+properties, locate monster spell-energy feedback and recheck life saving
+before returning a monster-death result. Five native cases match all 398
+styled boundaries, 21,929 complete calls and four frames. All 75 controls,
+nine focused fixtures, 44 public sessions and 53 hang checks pass. Half-damage
+and monster life-saving boundaries have constructed source controls; native
+inputs cover gray dragon forms and located/plain shaman feedback. The full
+790-fixture run predates this latest effect repair. The maintained corpus
+now contains 791 recordings.
 Current-corpus parity is not completeness.
 
 Floor objects retain independent global and per-square order. Placement,

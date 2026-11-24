@@ -1,0 +1,110 @@
+{
+  "name": "anti-magic-effects",
+  "description": "Gray dragon forms retain anti-magic implosion and monster spell-energy feedback retains its location, with blue-dragon and plain-message controls.",
+  "coverage": [
+    "mode.debug",
+    "traps.magical",
+    "traps.monster",
+    "hero.polymorph",
+    "ui.getlin"
+  ],
+  "segments": [
+    {
+      "name": "gray-dragon",
+      "seed": 7303,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " l#polyself\rgray dragon\r    l \u0017anti-magic field trap\r  #sit\r    : "
+    },
+    {
+      "name": "baby-gray-dragon",
+      "seed": 7303,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " l#polyself\rbaby gray dragon\r    l \u0017anti-magic field trap\r  #sit\r    : "
+    },
+    {
+      "name": "blue-dragon",
+      "seed": 7303,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " l#polyself\rblue dragon\r    l \u0017anti-magic field trap\r  #sit\r    : "
+    },
+    {
+      "seed": 6084,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=accessiblemsg\n",
+      "moves": " \u001620\r                   \u0014kkkl.\u0014ll.h:j\u0007sleeping hostile kobold shaman\r#wiztelekinesis\rh.u    \u001b: ",
+      "name": "shaman-located"
+    },
+    {
+      "seed": 6084,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u001620\r                   \u0014kkkl.\u0014ll.h:j\u0007sleeping hostile kobold shaman\r#wiztelekinesis\rh.u    \u001b: ",
+      "name": "shaman-plain"
+    }
+  ],
+  "branches": [
+    "gray-dragon",
+    "baby-gray-dragon",
+    "blue-dragon",
+    "shaman-located",
+    "shaman-plain"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "segment": 0,
+      "branch": "gray-dragon",
+      "source": "trap.c:2347-2447, canonical resistance and located monster spell-energy feedback",
+      "screenIncludes": [
+        "You land.",
+        "magical energy drain away",
+        "You feel sluggish."
+      ]
+    },
+    {
+      "segment": 1,
+      "branch": "baby-gray-dragon",
+      "source": "trap.c:2347-2447, canonical resistance and located monster spell-energy feedback",
+      "screenIncludes": [
+        "You land.",
+        "magical energy drain away",
+        "You feel sluggish."
+      ]
+    },
+    {
+      "segment": 2,
+      "branch": "blue-dragon",
+      "source": "trap.c:2347-2447, canonical resistance and located monster spell-energy feedback",
+      "screenIncludes": [
+        "You land.",
+        "magical energy drain away"
+      ],
+      "screenExcludes": [
+        "You feel sluggish."
+      ]
+    },
+    {
+      "segment": 3,
+      "branch": "shaman-located",
+      "source": "trap.c:2347-2447, canonical resistance and located monster spell-energy feedback",
+      "screenIncludes": [
+        "The kobold shaman seems lethargic.",
+        "(north): The kobold shaman seems lethargic."
+      ]
+    },
+    {
+      "segment": 4,
+      "branch": "shaman-plain",
+      "source": "trap.c:2347-2447, canonical resistance and located monster spell-energy feedback",
+      "screenIncludes": [
+        "The kobold shaman seems lethargic."
+      ],
+      "screenExcludes": [
+        "(north): The kobold shaman seems lethargic."
+      ]
+    }
+  ]
+}

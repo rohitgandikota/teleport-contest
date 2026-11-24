@@ -30,7 +30,7 @@ checks on 117 fixtures, all 39,942 boundaries and 1,718,440 calls. The complete
 strict 677-fixture audit and all 213 animation-bearing fixtures passed at the
 preceding floor checkpoint. The subsequent monster trap-hit repair passes
 four new native cases, 65 controls and seven focused regressions. The maintained
-corpus is now 798. The following death-owner repair passes 21 direct source
+corpus is now 799. The following death-owner repair passes 21 direct source
 controls, 61 retained controls and seven focused regressions. Temporary corpse
 cleanup for pet nutrition also passes 16 direct controls, 55 retained controls
 and five focused regressions. Guard corridor gold collection passes five new
@@ -123,7 +123,7 @@ nine focused fixtures, 44 public sessions and 53 hang checks pass. Half-damage
 and monster life-saving boundaries have constructed source controls; native
 inputs cover gray dragon forms and located/plain shaman feedback. The full
 793-fixture run includes this effect repair. The maintained corpus
-now contains 798 recordings.
+now contains 799 recordings.
 Monster slowing now waits for speed feedback before follow-up messages, and
 monster wield/tether feedback carries the monster location. The four changed
 calls match all 155 new native styled boundaries, 8,354 calls and per-input
@@ -174,6 +174,12 @@ All 88 controls, ten focused fixtures, 44 public sessions and 54 hang checks
 pass. Four ordinary native cases retain all five original output hashes across
 52 styled boundaries and 11,913 calls. The repaired return value is source
 evidence, with no visible native-output improvement claimed.
+Peaceful minion chat now also uses canonical alignment, so ordinary Angels
+and Archons give the lawful response. Three native cases improve from 82 to
+all 84 styled boundaries, preserving every cursor, all 8,185 complete calls
+and empty frame arrays. All 99 controls, nine focused fixtures, 44 public
+sessions and 53 hang checks pass. The imp negative retains all five output
+hashes. This small sounds change follows the full796 run.
 Current-corpus parity is not completeness.
 
 Floor objects retain independent global and per-square order. Placement,

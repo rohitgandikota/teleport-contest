@@ -7243,6 +7243,43 @@ attribution. Peaceful chat has a verified native package awaiting integration;
 vault completion is still under final review. Monster description and artifact
 touch alignment are the next bounded source audits. Continue verified pushes.
 
+## 2026-11-24: canonical alignment for peaceful minion chat
+
+Pushed the gnome Wizard repair as 1a934ea4. Peaceful `MS_CUSS` responses now
+use the existing canonical alignment helper after the species-minion guard.
+This restores priest/minion precedence and normalizes raw species alignment.
+The C peaceful branch has no renegade exclusion, so none is introduced.
+Only the private predicate and one import change. Complete domonnoise,
+alignment producers and direct callers were reviewed. Other chat omissions
+and artifact-touch alignment remain separate work.
+
+Original C raw SHA256
+`5b80c1f283d3490b17d7a0610787fcd09b04a12ce508070e142ddb1791e4af29`
+contains peaceful Angel, Archon and imp cases. Exactly two response grids
+change, bringing strict styled parity from 82/84 to 84/84. All cursors,
+8,185 complete calls, per-input slices and empty frame arrays remain exact.
+The imp preserves all five original output hashes. Every raw byte, actual
+input field, presence flag, boundary key and recipe witness is checked.
+Alignment flags in the read-only JS observer are separate source/state
+evidence; the C terminal responses establish the native branch witnesses.
+
+All 18 current-main checks pass, including 99 controls. The new state,
+source and input checks improve from 13/18, 9/11 and 4/7 to full passes.
+Nine fixtures cover 35 segments, 2,528 scored boundaries/cursors, 126,188
+calls and 169 frames. All 44 public fixtures retain their full metrics.
+Delayed input matches eight segments, 717 boundaries, 30,553 calls and 160
+frames. All 53 hang checks pass; zero scope/import findings remain in 276
+modules. The complete runtime has 279 fixed hashes, with only sounds changed
+from 1a934ea4. Five support files are fixed. Parent receipt:
+`.cache/restart-20261122/peaceful-chat-promotion-parent-verification.json`.
+
+Source/native seals independently verify 686/681 files and six links each.
+The raw's Linux byte equality and new C coverage belong to the shared
+peaceful-chat/gnome batch. The maintained corpus is 799; latest full run is
+796. The vault public-regression package is now ready for independent parent
+review and current-main composition. Its original failed candidate remains
+uncommitted and preserved. Continue verified commits and immediate pushes.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

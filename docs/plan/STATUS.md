@@ -6184,6 +6184,58 @@ layouts, 4,559/5,492 called functions and 59,914/107,260 branch outcomes.
 Those two cached candidates add 14 outcomes and are not yet promoted.
 Continue their source review, timer repair and full regression work.
 
+## 2026-11-24: canonical placement properties and detailed ice inspection
+
+The full regression at `941d2500` passes 778/778 fixtures with no errors:
+837,132 screens/cursors, 17,230,079 scored RNG positions and 31,967 scored
+animation frames. Both 389-fixture shards close successfully, and all 279
+runtime hashes remain fixed. The verified receipt is
+`.cache/restart-20261122/projectile-trap-caller-promotion-corpus-totals.json`.
+
+The next patch aligns `goodpos` with the complete `teleport.c:86-185` owner.
+It reads canonical swimming, amphibious, water-walking and fire resistance
+properties, checks the actual hero boot slot, restores lava-loving forms and
+uses the shared accessibility helper for raised bridges. Occupancy guards,
+the eel RNG order and all 29 synchronous callers remain unchanged. Obsolete
+function-history comments are replaced with the current placement contract.
+The pager caller now delegates an ice result to the existing `ice_descr`
+helper before constructing detailed output, as in `pager.c:1599-1603`.
+
+Eight untouched native cases cover cold-created bridge ice, an unfrozen
+bridge, magical breathing over pool/room, flight over a pool, a swimming form,
+a salamander on lava and fireproof water-walking boots with fire resistance.
+The raw SHA-256 is
+`3364a690a6bcbde2d2208c4a7e871689d8932360801d82e1d86b3ad46fabd574`.
+All 650 styled grids, including blank colors and attributes, all cursors,
+40,728 complete RNG calls/slices and five animation frames now match C.
+Before, only 634 grids, 635 cursors and 641 slices matched, with 41,196 actual
+calls. Placement alone leaves one ice-wording difference; the pager call fixes
+that boundary. All five raw JS output hashes remain identical in each of the
+three ordinary negative controls. This establishes decoded parity for these
+cases, not identical terminal wire serialization or complete game fidelity.
+
+All 56 new controls and 44 retained controls pass. Nineteen parent checks
+pass: eight focused fixtures cover 26 segments, 2,080 screens/cursors,
+120,069 complete RNG calls and 104 animation frames. Delayed input is identical
+on three fixtures, 14 segments, 1,126 boundaries, 60,260 calls and five frames.
+All 44 public fixtures, the 52-fixture 30-second hang check, syntax and the
+0/276 source audit pass. All 279 runtime hashes are fixed during those checks.
+The final import line wrap preserves the complete AST and all 18,988 tokens.
+
+Evidence is in `.cache/restart-20261122/goodpos-surface-property-audit/`,
+`goodpos-surface-promotion-parent/` and the parent verification JSON. The
+original two placement variants, initial harness failures, C raw bytes and
+separate ice-call evidence remain intact. Other pager source differences
+are recorded in `SOURCE-REVIEW.md` for later audits. The maintained corpus is
+779; its full regression follows this checkpoint.
+
+The November 24 10:24 UTC official refresh is unchanged: 7th agentic, 11th
+overall, with our last score still from 07:21 UTC. Local results do not prove
+new held-out gains. The Linux C union now verifies 777 credited inputs across
+73 matching layouts, 4,559/5,492 functions and 59,915/107,260 branch outcomes.
+Combat dispatch and monster speed/trap feedback remain separate candidates.
+The wall-phasing timer patch also awaits its two canonical consumer checks.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

@@ -13,16 +13,15 @@ Ground rules are in `/CLAUDE.md`. Read that first if you have not.
 ## Current focus, 2026-11-24
 
 Continue the faithful port with readable C-aligned code and prompt verified
-pushes. The latest official snapshot checked, November 24 at 09:24 UTC, has
+pushes. The latest official snapshot checked, November 24 at 10:24 UTC, has
 23,595 of 24,531 combined screens, 7th agentic and 11th overall. Our scoring
 run at 07:21 UTC predates the latest checkpoints. Public remains 44/44;
 held-out remains 39/56 with 936 unmatched screens. Local verification does
 not establish a newer held-out score.
 
-The latest full regression, including the trap, death, guard gold, digestion
-and growth repairs, passes 774/774 fixtures:
-835,589 boundary screens/cursors, 17,170,529 scored RNG positions and 31,946
-scored animation frames.
+The latest full regression, through the projectile trap caller repair,
+passes 778/778 fixtures: 837,132 boundary screens/cursors, 17,230,079 scored
+RNG positions and 31,967 scored animation frames.
 Both shards finish without failures or timeouts. All 279 runtime hashes
 stayed fixed throughout.
 The earlier potion changes also pass strict full-stream and per-input RNG
@@ -30,7 +29,7 @@ checks on 117 fixtures, all 39,942 boundaries and 1,718,440 calls. The complete
 strict 677-fixture audit and all 213 animation-bearing fixtures passed at the
 preceding floor checkpoint. The subsequent monster trap-hit repair passes
 four new native cases, 65 controls and seven focused regressions. The maintained
-corpus is now 778. The following death-owner repair passes 21 direct source
+corpus is now 779. The following death-owner repair passes 21 direct source
 controls, 61 retained controls and seven focused regressions. Temporary corpse
 cleanup for pet nutrition also passes 16 direct controls, 55 retained controls
 and five focused regressions. Guard corridor gold collection passes five new
@@ -50,7 +49,11 @@ and located feedback, passing four native cases under the contest comparator,
 63 controls and five focused fixtures. Their strict styled diagnostic retains
 an independent blank foreground mismatch that was already present before the
 trap fired; no raw recording or comparator was changed.
-The latest full regression remains the 774-fixture run.
+Placement now uses canonical swimming, breathing, lava protection and raised
+bridge surfaces. Detailed inspection also reports ice strength. Eight new
+native cases match all 650 styled grids, 40,728 complete RNG calls and five
+frames; 100 controls and eight focused regressions pass. The latest full
+regression remains the 778-fixture run, before this placement change.
 Current-corpus parity is not completeness.
 
 Floor objects retain independent global and per-square order. Placement,

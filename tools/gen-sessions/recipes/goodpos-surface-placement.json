@@ -1,0 +1,201 @@
+{
+  "name": "goodpos-surface-placement",
+  "description": "Native controlled teleport across raised bridge surfaces, magical breathing, swimming forms, lava forms and fireproof water-walking boots, with three unchanged controls.",
+  "coverage": [
+    "mode.debug",
+    "level.castle",
+    "terrain.water-lava"
+  ],
+  "branches": [
+    "goodpos.teleport-frozen-raised-span",
+    "goodpos.teleport-unfrozen-raised-span",
+    "goodpos.breathing-pool",
+    "goodpos.breathing-room-negative",
+    "goodpos.flying-pool-negative",
+    "goodpos.swimming-form-pool",
+    "goodpos.salamander-lava",
+    "goodpos.fireproof-boots-lava"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "goodpos.teleport-frozen-raised-span",
+      "segment": 0,
+      "screenIncludes": [
+        "The moat is bridged with ice!",
+        "sturdy ice"
+      ],
+      "screenExcludes": [
+        "Sorry...",
+        "You die...",
+        "Die?"
+      ],
+      "intent": "Actual controlled teleport reaches the selected surface with the form or equipment produced by ordinary input.",
+      "evidence": "Unmodified source-c/version-5 recording SHA256 3364a690a6bcbde2d2208c4a7e871689d8932360801d82e1d86b3ad46fabd574; read-only JS observations separately check capabilities and final location."
+    },
+    {
+      "branch": "goodpos.teleport-unfrozen-raised-span",
+      "segment": 1,
+      "screenIncludes": [
+        "You materialize in a different location!"
+      ],
+      "screenExcludes": [
+        "Sorry...",
+        "You die...",
+        "Die?"
+      ],
+      "intent": "Actual controlled teleport reaches the selected surface with the form or equipment produced by ordinary input.",
+      "evidence": "Unmodified source-c/version-5 recording SHA256 3364a690a6bcbde2d2208c4a7e871689d8932360801d82e1d86b3ad46fabd574; read-only JS observations separately check capabilities and final location."
+    },
+    {
+      "branch": "goodpos.breathing-pool",
+      "segment": 2,
+      "screenIncludes": [
+        "You materialize in the same location!"
+      ],
+      "screenExcludes": [
+        "Sorry...",
+        "You die...",
+        "Die?"
+      ],
+      "intent": "Actual controlled teleport reaches the selected surface with the form or equipment produced by ordinary input.",
+      "evidence": "Unmodified source-c/version-5 recording SHA256 3364a690a6bcbde2d2208c4a7e871689d8932360801d82e1d86b3ad46fabd574; read-only JS observations separately check capabilities and final location."
+    },
+    {
+      "branch": "goodpos.breathing-room-negative",
+      "segment": 3,
+      "screenIncludes": [
+        "You materialize in the same location!"
+      ],
+      "screenExcludes": [
+        "Sorry...",
+        "You die...",
+        "Die?"
+      ],
+      "intent": "Actual controlled teleport reaches the selected surface with the form or equipment produced by ordinary input.",
+      "evidence": "Unmodified source-c/version-5 recording SHA256 3364a690a6bcbde2d2208c4a7e871689d8932360801d82e1d86b3ad46fabd574; read-only JS observations separately check capabilities and final location."
+    },
+    {
+      "branch": "goodpos.flying-pool-negative",
+      "segment": 4,
+      "screenIncludes": [
+        "You materialize in the same location!"
+      ],
+      "screenExcludes": [
+        "Sorry...",
+        "You die...",
+        "Die?"
+      ],
+      "intent": "Actual controlled teleport reaches the selected surface with the form or equipment produced by ordinary input.",
+      "evidence": "Unmodified source-c/version-5 recording SHA256 3364a690a6bcbde2d2208c4a7e871689d8932360801d82e1d86b3ad46fabd574; read-only JS observations separately check capabilities and final location."
+    },
+    {
+      "branch": "goodpos.swimming-form-pool",
+      "segment": 5,
+      "screenIncludes": [
+        "You materialize in the same location!"
+      ],
+      "screenExcludes": [
+        "Sorry...",
+        "You die...",
+        "Die?"
+      ],
+      "intent": "Actual controlled teleport reaches the selected surface with the form or equipment produced by ordinary input.",
+      "evidence": "Unmodified source-c/version-5 recording SHA256 3364a690a6bcbde2d2208c4a7e871689d8932360801d82e1d86b3ad46fabd574; read-only JS observations separately check capabilities and final location."
+    },
+    {
+      "branch": "goodpos.salamander-lava",
+      "segment": 6,
+      "screenIncludes": [
+        "You materialize in the same location!"
+      ],
+      "screenExcludes": [
+        "Sorry...",
+        "You die...",
+        "Die?"
+      ],
+      "intent": "Actual controlled teleport reaches the selected surface with the form or equipment produced by ordinary input.",
+      "evidence": "Unmodified source-c/version-5 recording SHA256 3364a690a6bcbde2d2208c4a7e871689d8932360801d82e1d86b3ad46fabd574; read-only JS observations separately check capabilities and final location."
+    },
+    {
+      "branch": "goodpos.fireproof-boots-lava",
+      "segment": 7,
+      "screenIncludes": [
+        "You materialize in the same location!"
+      ],
+      "screenExcludes": [
+        "Sorry...",
+        "You die...",
+        "Die?"
+      ],
+      "intent": "Actual controlled teleport reaches the selected surface with the form or equipment produced by ordinary input.",
+      "evidence": "Unmodified source-c/version-5 recording SHA256 3364a690a6bcbde2d2208c4a7e871689d8932360801d82e1d86b3ad46fabd574; read-only JS observations separately check capabilities and final location."
+    }
+  ],
+  "segments": [
+    {
+      "name": "teleport-frozen-raised-span",
+      "seed": 7101,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017wand of striking\r\u0017wand of opening\r\u001626\r \u0006 \u0014lllllkkkkkk.  \u0017blessed scroll of genocide\rrp  *\r\u001b\u001b\u0017blessed ring of levitation\rPql\u001b\u001b\u0017wand of cold\rzrl   llll\u0014l.\u001b\u001b",
+      "steps": []
+    },
+    {
+      "name": "teleport-unfrozen-raised-span",
+      "seed": 7101,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017wand of striking\r\u0017wand of opening\r\u001626\r \u0006 \u0014lllllkkkkkk.  \u0017blessed scroll of genocide\rrp  *\r\u001b\u001b\u0017blessed ring of levitation\rPql\u001b\u001b\u0017wand of cold\rllll\u0014l.\u001b\u001b",
+      "steps": []
+    },
+    {
+      "name": "breathing-pool",
+      "seed": 7401,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " j\u0017uncursed amulet of magical breathing\rPo\u001b\u001b\u0017pool\r\u001b\u001b\u0014.\u001b\u001b",
+      "steps": []
+    },
+    {
+      "name": "breathing-room-negative",
+      "seed": 7401,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " j\u0017uncursed amulet of magical breathing\rPo\u001b\u001b\u0017room\r\u001b\u001b\u0014.\u001b\u001b",
+      "steps": []
+    },
+    {
+      "name": "flying-pool-negative",
+      "seed": 7401,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " j\u0017uncursed amulet of flying\rPo\u001b\u001b\u0017pool\r\u001b\u001b\u0014.\u001b\u001b",
+      "steps": []
+    },
+    {
+      "seed": 7401,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "swimming-form-pool",
+      "moves": " j#polyself\rgiant eel\r  \u001b\u001b\u0017pool\r\u001b\u001b\u0014.\u001b\u001b",
+      "steps": []
+    },
+    {
+      "seed": 7401,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "salamander-lava",
+      "moves": " j#polyself\rsalamander\r  \u001b\u001b\u0017lava\r\u001b\u001b\u0014.\u001b\u001b",
+      "steps": []
+    },
+    {
+      "seed": 7401,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "fireproof-boots-lava",
+      "moves": " j\u0017uncursed fireproof water walking boots\rWo     \u001b\u001b\u0017uncursed ring of fire resistance\rPpl\u001b\u001b\u0017lava\r\u001b\u001b\u0014.\u001b\u001b",
+      "steps": []
+    }
+  ]
+}

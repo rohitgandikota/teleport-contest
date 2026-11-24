@@ -1175,6 +1175,8 @@ export function do_screen_description(cc, looked, sym) {
     if (looked && (found > 1 || need_to_look)) {
         let { buf: look_buf, monbuf, pm: lookpm } = lookat(cc.x, cc.y);
         pm = lookpm;
+        if (look_buf === 'ice')
+            look_buf = ice_descr(cc.x, cc.y);
         /* src/pager.c:1603, the Quest start staircase remains visible while
            the leader's access gate is still closed. */
         if (look_buf === 'staircase down') {

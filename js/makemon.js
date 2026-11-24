@@ -22,7 +22,9 @@ import { newcham, mon_wire_cham, mondied } from './mon.js';
 import { weight as weight_fn, sobj_at, update_inventory } from './invent.js';
 import { In_mines, Is_rogue_level, MIGR_TO_SPECIES, OBJ_FREE,
          W_SADDLE, has_mgivenname, A_LAWFUL, ONAME_RANDOM } from './const.js';
-import { Levitation, Flying, Protection_from_shape_changers, See_invisible, Underwater, Stone_resistance } from './youprop.js';
+import { Levitation, Flying, Protection_from_shape_changers, See_invisible,
+         Underwater, Stone_resistance, Swimming, Amphibious, Wwalking,
+         Fire_resistance } from './youprop.js';
 import { u_wield_art } from './artifact.js';
 import { ART_EXCALIBUR, ART_DEMONBANE } from './artilist_data.js';
 import { closed_door } from './cmd.js';
@@ -60,11 +62,11 @@ import { attacktype, is_neuter, is_floater, emits_light, likes_lava,
 import { is_vampshifter } from './monst.js';
 import { t_at, is_pool, is_lava, m_in_air, resists_ston } from './mon.js';
 import { touch_petrifies, mhe, nonliving } from './mondata.js';
-import { can_hide_under_obj, dochugw, set_apparxy } from './monmove.js';
+import { can_hide_under_obj, dochugw, set_apparxy, accessible } from './monmove.js';
 import { couldsee } from './vision.js';
 import { is_pit, PLNMSG_HIDE_UNDER, Mgender, LR_MONGEN } from './const.js';
 import { is_exclusion_zone } from './mkmaze.js';
-import { ACCESSIBLE, POOL, LAVAPOOL,
+import { Upolyd, POOL, LAVAPOOL,
     BLCORNER, CROSSWALL, DELPHI, FODDERSHOP, HWALL, IS_DOOR, IS_WALL, M_AP_FURNITURE, M_AP_OBJECT, OBJ_AT, OBJ_MINVENT, SCORR, SDOOR, SHOPBASE, TDWALL, TLCORNER, TRWALL, TUWALL, TEMPLE, VAULT, ZOO, ROOMOFFSET, GP_ALLOW_U, GP_CHECKSCARY, GP_AVOID_MONPOS, MM_IGNORELAVA,
     IS_WATERWALL, IS_ALTAR, Is_waterlevel, Is_airlevel, Is_firelevel,
     Is_earthlevel, Is_astralevel, In_sokoban,
@@ -1235,30 +1237,17 @@ function goodpos_onscary(x, y, mptr) {
 }
 
 
-// src/teleport.c goodpos() — can this monster stand here?
-//
-// The only draw is the S_EEL rn2(13). Everything else is terrain and occupancy,
-// so a wrong answer costs a whole extra rndmonst() block (9 draws) rather than
-// a single call — which is exactly how a mis-ported goodpos announces itself.
+// src/teleport.c:86 goodpos(), placement for a monster or a null object.
+// Fake creation monsters need only data. Eels retain the sole rn2(13) draw.
 export function goodpos(x, y, mtmp, gpflags = 0) {
-    /* src/teleport.c:86 — C's third argument is a struct monst *, and it does
-       `mdat = mtmp->data` inside the `if (mtmp)` block. This took a permonst
-       directly, which made two of C's tests inexpressible: the identity test
-       that lets a monster be placed back at its OWN square, and the wormno
-       test that overrides it for long worms, whose every segment answers
-       m_at(). Callers now pass a monster (enexto_core builds the fakemon C
-       builds); mdat is derived here. */
     const ptr = mtmp?.data || null;
     const ignorewater = (gpflags & MM_IGNOREWATER) !== 0;
 
     if (!isok(x, y))
         return false;
 
-    /* src/teleport.c:107 — the hero's own square is rejected only when
-       GP_ALLOW_U is absent, and even then not for the hero, the engulfer
-       holding you, or your steed. C's comment says why the guard exists: the
-       same function relocates engravings and objects, which CAN be
-       co-located with you. This rejected u.ux/u.uy unconditionally. */
+    // Objects may share the hero's square; only callers with GP_ALLOW_U do so.
+    // The hero, its engulfer and its steed are also allowed here.
     if (!(gpflags & GP_ALLOW_U)) {
         if (game.u.ux === x && game.u.uy === y
             && mtmp !== game.youmonst
@@ -1266,10 +1255,6 @@ export function goodpos(x, y, mtmp, gpflags = 0) {
             && (!game.u.usteed || mtmp !== game.u.usteed))
             return false;
     }
-    /* src/teleport.c:114 — `if (MON_AT(x, y) && avoid_monpos) return FALSE;`
-       The monster test is CONDITIONAL on GP_AVOID_MONPOS. Rejecting an
-       occupied square unconditionally, as this did, makes every caller that
-       does NOT pass that flag reject squares C accepts. */
     if (m_at(x, y) && (gpflags & GP_AVOID_MONPOS))
         return false;
 
@@ -1290,11 +1275,11 @@ export function goodpos(x, y, mtmp, gpflags = 0) {
             /* src/teleport.c:135 — MOAT and WATER count, not just POOL, and
                a flyer/floater over ordinary water is a good position. */
             if (mtmp === game.youmonst)
-                return !!(game.u.uprops?.SWIMMING || game.u.uprops?.AMPHIBIOUS
+                return (Swimming() || Amphibious()
                           || (!Is_waterlevel(game.u.uz)
                               && !(IS_WATERWALL(loc.typ))
                               && (Levitation() || Flying()
-                                  || game.u.uprops?.WWALKING)));
+                                  || Wwalking())));
             else
                 return (is_swimmer(ptr)
                         || (!Is_waterlevel(game.u.uz)
@@ -1309,8 +1294,9 @@ export function goodpos(x, y, mtmp, gpflags = 0) {
                 return false;
             else if (mtmp === game.youmonst)
                 return !!(Levitation() || Flying()
-                          || (game.u.uprops?.FIRE_RES && game.u.uprops?.WWALKING
-                              && game.uarmf?.oerodeproof));
+                          || (Fire_resistance() && Wwalking()
+                              && game.u.uarmf?.oerodeproof)
+                          || (Upolyd(game.u) && likes_lava(game.youmonst.data)));
             else
                 return (m_in_air(mtmp) || likes_lava(ptr));
         }
@@ -1323,9 +1309,8 @@ export function goodpos(x, y, mtmp, gpflags = 0) {
                                                     : goodpos_onscary(x, y, ptr)))
             return false;
     }
-    /* src/monmove.c accessible(): a closed or locked door is not an
-       accessible destination even though DOOR is an accessible map type. */
-    if (!ACCESSIBLE(loc.typ) || closed_door(x, y)) {
+    // The shared predicate includes closed doors and raised bridge surfaces.
+    if (!accessible(x, y)) {
         if (!(is_pool(x, y) && ignorewater)
             && !(is_lava(x, y) && (gpflags & MM_IGNORELAVA)))
             return false;

@@ -1,0 +1,112 @@
+{
+    "name": "flip-melt-timer-location",
+    "description": "A native C horizontal level flip carries a melting-ice timer to the mirrored square without changing its deadline. The unchanged no-flip control uses the same setup and wait. Native observations show steady ice, slush, natural expiry and water at the final look.",
+    "coverage": [
+        "mode.debug",
+        "terrain.water-lava",
+        "turn.timers"
+    ],
+    "branches": [
+        "flip-melt-timer.mirrored-expiry",
+        "flip-melt-timer.no-flip-control"
+    ],
+    "requireBranchAssertions": true,
+    "segments": [
+        {
+            "seed": 9211,
+            "datetime": "20000110090000",
+            "nethackrc": "OPTIONS=name:Timer,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,time\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+            "name": "flip-expiry",
+            "moves": "mO aqr\r\u001b\u001b\u0017blessed scroll of genocide\rra  *\r\u001b\u001b\u0017blessed fireproof water walking boots\rWb\u0017melting ice\r#wizfliplevel\r2:332.:.\u001b\u001b:"
+        },
+        {
+            "seed": 9211,
+            "datetime": "20000110090000",
+            "nethackrc": "OPTIONS=name:Timer,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,time\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+            "name": "control-expiry",
+            "moves": "mO aqr\r\u001b\u001b\u0017blessed scroll of genocide\rra  *\r\u001b\u001b\u0017blessed fireproof water walking boots\rWb\u0017melting ice\r:332.:.\u001b\u001b:"
+        }
+    ],
+    "branchAssertions": [
+        {
+            "branch": "flip-melt-timer.mirrored-expiry",
+            "segment": 0,
+            "screenIncludes": [
+                "Steady ice.",
+                "There is steady ice here.",
+                "There is slushy ice here.",
+                "Some ice melts away.",
+                "There is a pool of water here."
+            ],
+            "screenExcludes": [
+                "There is solid ice here."
+            ],
+            "screenCells": [
+                {
+                    "step": 115,
+                    "x": 10,
+                    "y": 0,
+                    "equals": "t"
+                },
+                {
+                    "step": 120,
+                    "x": 10,
+                    "y": 0,
+                    "equals": "l"
+                },
+                {
+                    "step": 121,
+                    "x": 0,
+                    "y": 0,
+                    "equals": "S"
+                },
+                {
+                    "step": 124,
+                    "x": 9,
+                    "y": 0,
+                    "equals": "a"
+                }
+            ]
+        },
+        {
+            "branch": "flip-melt-timer.no-flip-control",
+            "segment": 1,
+            "screenIncludes": [
+                "Steady ice.",
+                "There is steady ice here.",
+                "There is slushy ice here.",
+                "Some ice melts away.",
+                "There is a pool of water here."
+            ],
+            "screenExcludes": [
+                "There is solid ice here."
+            ],
+            "screenCells": [
+                {
+                    "step": 100,
+                    "x": 10,
+                    "y": 0,
+                    "equals": "t"
+                },
+                {
+                    "step": 105,
+                    "x": 10,
+                    "y": 0,
+                    "equals": "l"
+                },
+                {
+                    "step": 106,
+                    "x": 0,
+                    "y": 0,
+                    "equals": "S"
+                },
+                {
+                    "step": 109,
+                    "x": 9,
+                    "y": 0,
+                    "equals": "a"
+                }
+            ]
+        }
+    ]
+}

@@ -41,7 +41,7 @@ import { fill_zoo } from './mkroom.js';
 import { OBJ_NAME, OBJ_DESCR } from './objnam.js';
 import { obj_resists } from './zap.js';
 import { OBJ_BURIED, OBJ_FREE } from './obj.js';
-import { start_timer, TIMER_OBJECT, ROT_ORGANIC,
+import { start_timer, TIMER_OBJECT, ROT_ORGANIC, MELT_ICE_AWAY,
          begin_burn_level_object } from './timeout.js';
 import { new_light_source, del_light_source, LS_OBJECT, LS_MONSTER } from './light.js';
 import { make_engr_at, engr_at, del_engr } from './engrave.js';
@@ -3050,7 +3050,7 @@ export async function flip_level(flp, extras) {
         if (flp & 1) m.my = FlipY(m.my);
         if (flp & 2) m.mx = FlipX(m.mx);
 
-        /* mgoal is not modelled. */
+        Flip_coord(m.mgoal);
         if (m.ispriest) {
             Flip_coord(m.epri?.shrpos);
         } else if (m.isshk) {
@@ -3061,10 +3061,6 @@ export async function flip_level(flp, extras) {
                 flip_worm_segs_vertical(m, miny, maxy);
             if (flp & 2)
                 flip_worm_segs_horizontal(m, minx, maxx);
-        }
-        if (extras) {
-            if (m.mtame && m.edog)
-                Flip_coord(m.edog.ogoal);
         }
     }
     for (const m of on_grid)
@@ -3170,6 +3166,20 @@ export async function flip_level(flp, extras) {
                     b[key] = tmp;
                 }
             }
+    }
+
+    /* timed effects (sp_lev.c:862) */
+    for (const timer of (game.timer_base || [])) {
+        if (timer.func_index === MELT_ICE_AWAY) {
+            let ty = timer.arg & 0xffff;
+            let tx = (timer.arg >> 16) & 0xffff;
+
+            if (flp & 1)
+                ty = FlipY(ty);
+            if (flp & 2)
+                tx = FlipX(tx);
+            timer.arg = (tx << 16) | ty;
+        }
     }
 
     /* exclusion zones (sp_lev.c:877) */

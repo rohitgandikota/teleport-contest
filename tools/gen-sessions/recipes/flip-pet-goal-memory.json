@@ -1,0 +1,92 @@
+{
+    "name": "flip-pet-goal-memory",
+    "description": "A Wizard teleports away from the starting kitten after drinking blessed monster detection. Fifteen waiting turns leave the pet with a remembered goal outside the hero sight. An explicit horizontal flip preserves that unflipped remembered goal, as pinned C does with its edog transform disabled. The independent C recording confirms the detected kitten path after two turns; a same-seed unflipped replay is the control. Independent source-c recording verified; normal-import state controls cover the retained goal and unchanged tracks.",
+    "coverage": [
+        "mode.debug",
+        "level.ordinary",
+        "monster.pets",
+        "monster.movement",
+        "ui.map-memory-vision"
+    ],
+    "branches": [
+        "level.flip.pet-goal-retained",
+        "level.flip.pet-goal-unflipped-control"
+    ],
+    "requireBranchAssertions": true,
+    "branchAssertions": [
+        {
+            "branch": "level.flip.pet-goal-retained",
+            "segment": 0,
+            "screenIncludes": [
+                "You materialize in a different location!",
+                "Flip 0=randomly, 1=vertically, 2=horizontally, 3=both:"
+            ],
+            "screenCells": [
+                {
+                    "step": 82,
+                    "x": 24,
+                    "y": 9,
+                    "equals": "f"
+                },
+                {
+                    "step": 97,
+                    "x": 50,
+                    "y": 9,
+                    "equals": "f"
+                },
+                {
+                    "step": 103,
+                    "x": 49,
+                    "y": 9,
+                    "equals": "f"
+                },
+                {
+                    "step": 103,
+                    "x": 49,
+                    "y": 8,
+                    "equals": " "
+                }
+            ]
+        },
+        {
+            "branch": "level.flip.pet-goal-unflipped-control",
+            "segment": 1,
+            "screenIncludes": [
+                "You materialize in a different location!"
+            ],
+            "screenExcludes": [
+                "Flip 0=randomly, 1=vertically, 2=horizontally, 3=both:"
+            ],
+            "screenCells": [
+                {
+                    "step": 82,
+                    "x": 24,
+                    "y": 9,
+                    "equals": "f"
+                },
+                {
+                    "step": 88,
+                    "x": 25,
+                    "y": 9,
+                    "equals": "f"
+                }
+            ]
+        }
+    ],
+    "segments": [
+        {
+            "name": "horizontal-flip-retained-pet-goal",
+            "seed": 9211,
+            "datetime": "20000110090000",
+            "nethackrc": "OPTIONS=name:Goal,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:dog,pauper,nudist,!safe_wait,time\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+            "moves": "mO aqr\r\u001b\u001b\u0017blessed potion of monster detection\rqa  \u001b\u0014hhhhhhhhhhhhhhhhhhhhkkkk.\u001b\u001b15.#wizfliplevel\r2\u001b\u001b.\u001b\u001b.\u001b\u001b.\u001b\u001b.\u001b\u001b.\u001b\u001b"
+        },
+        {
+            "name": "unflipped-retained-pet-goal-control",
+            "seed": 9211,
+            "datetime": "20000110090000",
+            "nethackrc": "OPTIONS=name:Goal,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:dog,pauper,nudist,!safe_wait,time\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+            "moves": "mO aqr\r\u001b\u001b\u0017blessed potion of monster detection\rqa  \u001b\u0014hhhhhhhhhhhhhhhhhhhhkkkk.\u001b\u001b15.\u001b\u001b.\u001b\u001b.\u001b\u001b.\u001b\u001b.\u001b\u001b.\u001b\u001b"
+        }
+    ]
+}

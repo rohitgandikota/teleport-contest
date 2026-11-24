@@ -4506,6 +4506,65 @@ original patches remain unchanged. Full vault, movement and trap parity is
 not claimed. Timer/goal flips, shop crawl blocking, guard deaf feedback and
 concealment-helper duplication remain separate work.
 
+## 2026-11-23: level-flip timers and monster goals
+
+Arrival checkpoint `3bc19ed0` is committed and pushed after 745/745 fixtures.
+`flip_level` now transforms packed ice-melt timer coordinates at C's timed
+pass, without rescheduling or changing timer identity/order. It also flips
+active monster `mgoal` coordinates and preserves pet `edog.ogoal` memory.
+The old pet transform copied code that is disabled by `#if 0` in C.
+The two repairs stay in the same function and add ten net runtime lines.
+
+The independent ice pair has 235 boundaries, 7,874 calls and 94 animations.
+A horizontal flip moves ice from (30,7) to (46,7), but the old timer kept its
+original square. C's remaining-time description and melt therefore differed
+in five screens. All streams, slices and cursors were already exact. The
+repair matches every screen, and the unflipped control remains unchanged.
+The native raw SHA-256 is
+`2d3733c50299157659426c8fc0969a25b0d78a81e68d13a50c026c701ea8103e`.
+Other axes, extras=false, mixed timer kinds and coordinate packing have
+source-derived state controls. No new timer producer is introduced.
+
+The pet pair has 215 boundaries, 6,989 calls and four animations. Normal
+input gives the kitten a remembered destination at (24,5). C leaves that
+memory unchanged during the flip. The old port mirrored it to (52,5),
+causing the first RNG difference at segment zero, call 3,367, in boundary
+100. It skipped C's `dog_move` choice and reached `distfleeck` instead.
+The first visible mismatch is boundary 103. Three screens and four input
+slices failed before the repair; both segments are now exact. The native
+raw SHA-256 is
+`af79aa3c6d3696ca0cedc5e3faaeddb8998868b2f42d9ece864ab889a167d53f`.
+The active `mgoal` transform has real producer/consumer state controls, not
+a new ordinary native witness. C often recomputes that target before use.
+
+The independent four-way check isolates both repairs: timer-only fixes ice
+but preserves the pet failure; goal-only fixes the pet but preserves the ice
+failure; their composition fixes both. All 53 new and 37 retained controls
+pass after promotion. Seven focused fixtures match 13 segments, 2,614
+boundaries, 66,645 strict complete/per-input RNG calls and 107 animation
+grids/cursors. Seven 30-second worker checks pass. Deferred input also matches
+four fixtures, nine segments, 1,280 boundaries, 32,667 calls and 104 animations.
+The source audit has zero findings across 276 modules.
+
+The complete 747/747-fixture regression passes all 823,083 boundary
+screens/cursors, 16,589,091 scored RNG positions and 30,872 animation frames.
+Both shards finish at the default 45-second worker limit with zero failures
+or timeouts. All 279 runtime hashes remain fixed.
+
+The corresponding validated native union through the goal recording has
+741 credited inputs and forty-four matching manifests/layouts. It enters
+4,534/5,492 C functions and observes 59,298/107,260 direct branch outcomes.
+Its 61 added native inputs have 215 segments, plus nine independent Linux
+segments. Later shop and guard recordings have separate C receipts and
+remain outside this JS checkpoint. Bulk profiles stay on NFS under
+`/share/NFS/u/rohit/research/contest/artifacts/2026-11-22/c-coverage-compress.E84JI2/verified-flip-goal-union-20261123`.
+
+Evidence is `.cache/restart-20261122/flip-melt-timer-native-confirmation/`,
+`flip-goal-native-confirmation/`, both parent source reviews,
+`flip-runtime-parent-{integration,verification}.json`, `flip-runtime-promoted-*`
+and `flip-runtime-corpus-*`. Original patch and raw hashes are unchanged.
+Region coordinates and drawbridge direction flips remain separate gaps.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

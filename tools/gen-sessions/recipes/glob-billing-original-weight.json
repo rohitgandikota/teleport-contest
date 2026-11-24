@@ -1,0 +1,47 @@
+{
+    "name": "glob-billing-original-weight",
+    "description": "Native-verified weighted glob sale and original-size retention on the used-up shop bill. The sale-pricing and original-weight capture repairs are independent source owners.",
+    "coverage": [
+        "mode.debug",
+        "object.food-corpses",
+        "turn.timers",
+        "ui.count-repeat",
+        "ui.getlin",
+        "ui.menus",
+        "social.shops-billing"
+    ],
+    "branches": [
+        "glob-billing.medium-glob-original-weight",
+        "glob-sale-pricing.units"
+    ],
+    "requireBranchAssertions": true,
+    "segments": [
+        {
+            "name": "medium-glob-billed-expiry",
+            "seed": 6903,
+            "datetime": "20000110233600",
+            "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!safe_wait,time\n",
+            "moves": " \u00162\r\u0006\u0014  llllllllllllllllllll.  \u001b\u001bmO aqr\r\u001b\u001b\u00173 blessed scrolls of genocide\r\u001b\u001bro  d\r\u001b\u001bro  Z\r\u001b\u001bro  :\r\u001b\u001b\u0017medium glob of gray ooze\r\u001b\u001bdp y,a\r\u001b\u001b3500.\u001b\u001b\u001b\u001b\u001b\u001bIx\u001b\u001b",
+            "steps": []
+        }
+    ],
+    "branchAssertions": [
+        {
+            "branch": "glob-billing.medium-glob-original-weight",
+            "segment": 0,
+            "screenIncludes": [
+                "p - a medium glob of gray ooze (unpaid, 48 zorkmids).",
+                "Unpaid articles already used up:",
+                "x - a medium glob of gray ooze"
+            ]
+        },
+        {
+            "branch": "glob-sale-pricing.units",
+            "segment": 0,
+            "screenIncludes": [
+                "offers 18 gold pieces for your medium glob of gray ooze",
+                "You sold a medium glob of gray ooze for 18 gold pieces."
+            ]
+        }
+    ]
+}

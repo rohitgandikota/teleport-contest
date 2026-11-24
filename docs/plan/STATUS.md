@@ -5530,6 +5530,58 @@ a levitation-boots timing case and ordinary-boots control; that repair is not
 part of this checkpoint. Frozen code and unrelated `.DS_Store` files remain
 untouched.
 
+## 2026-11-24: glob sale prices and original bill weights
+
+Canonical cleanup checkpoint `d13979a6` is committed and pushed, including
+the complete 764-fixture regression. Two independently reviewed shop-owner
+repairs now compose on that baseline. `set_cost` uses existing pricing units
+instead of quantity, so globs sell by current weight. `add_one_tobill` records
+their acquisition weight in the existing extra scalar, allowing used-up bill
+descriptions to retain the original size. Both changes stay in `shk.js`, use
+existing helpers and add source-line references. Other billing guards and
+consumer omissions remain separate.
+
+The parent's unchanged C recording distinguishes both errors. At boundary
+130 C offers 18 coins while the old port offers 3. The later gold status
+accounts for all 499 animation-grid differences. Pricing alone fixes these,
+leaving the used-up name at boundary 149: C says medium, the old metadata
+path says small. Weight capture alone already fixes that name while leaving
+the earlier payment wrong. Together the two repairs match all 152 styled
+boundaries/cursors, 25,564 complete calls and input slices, and 499 animation
+frames. All variants already had identical complete RNG streams and frame
+counts. Raw SHA is `7ac5228252975a1de204c33ac89c47d66ed36318de6f9bdaad015b8777bbfdc1`.
+
+All nineteen current-main checks pass: 76 new and 118 retained controls,
+nine C fixtures with 55 segments, 5,255 boundaries, 303,120 complete calls
+and 1,328 animation grids/cursors/counts. Deferred input matches four fixtures,
+23 segments, 2,646 boundaries, 139,867 calls and 882 frames. Public remains
+44/44 with 11,405 boundaries, 792,838 scored RNG positions and 1,483 frames.
+All 53 hang workers finish within 30 seconds. Syntax and the 276-module source
+audit pass. All 279 runtime hashes remain fixed. The new fixture brings the
+maintained inventory to 765; the latest full regression remains `d13979a6`.
+
+The state controls use real glob generation, wishes, timer expiry, clothes,
+container contents, payments and bill producers. Non-glob quantity/rounding
+and extra metadata are retained. Existing C absorption pricing multiplies
+units twice in several paths; that behavior is preserved. The weight input
+gate's two stale reporting labels now describe its JS-only producer scope
+and separate native comparison. Its assertions and observer are unchanged,
+and all six input checks pass again. The original sealed tool stays intact.
+
+The native confirmation package has 1,257 verified regular files. Evidence
+is `.cache/restart-20261122/glob-sale-pricing-native-confirmation/`,
+`glob-sale-billing-parent-{source-review,integration,verification}.json`, and
+`glob-sale-billing-input-label-receipt.json`. Its earlier NFS case is already
+included in the current 762-input, sixty-three-layout union. No new native
+output was synthesized or normalized for promotion.
+
+Next is the independent movement-destination write exposed by the crystal
+armor throw case, then the low-stamina throw repair. The capacity candidate
+also matches both freshly recorded boots cases, 146 boundaries and 5,484
+calls, while the baseline misses two grids, one cursor and two RNG slices.
+Capacity still needs constructed branch controls and integration checks.
+Pet digestion and the complete monster trap-hit owner remain in source review.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

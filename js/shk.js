@@ -1434,6 +1434,7 @@ export function get_cost(obj, shkp) {
     return tmp;
 }
 
+// src/shk.c:3309 add_one_tobill().
 function add_one_tobill(obj, dummy, shkp) {
     const eshk = shkp.eshk || ESHK(shkp);
     if (!Array.isArray(eshk.bill_p))
@@ -1442,8 +1443,12 @@ function add_one_tobill(obj, dummy, shkp) {
         return false;
 
     let price = get_cost(obj, shkp);
-    if (obj.globby)
+    if (obj.globby) {
         price *= get_pricing_units(obj);
+        // newomid/OMID: retain the weight when this glob entered the bill.
+        obj.oextra ||= {};
+        obj.oextra.omid = obj.owt;
+    }
     eshk.bill_p.push({
         bo_id: obj.o_id,
         useup: !!dummy,
@@ -1784,9 +1789,9 @@ function saleable(shkp, obj) {
     return false;
 }
 
-// src/shk.c set_cost(), the amount a shopkeeper offers for ordinary goods.
+// src/shk.c:3148 set_cost(), the amount a shopkeeper offers for ordinary goods.
 function set_cost(obj, shkp) {
-    let amount = (obj.quan || 1) * getprice(obj, true);
+    let amount = get_pricing_units(obj) * getprice(obj, true);
     let multiplier = 1;
     let divisor = 1;
     const u = game.u;

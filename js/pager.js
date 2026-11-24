@@ -61,7 +61,7 @@ import { DEC_TO_UNICODE, NO_COLOR } from './terminal.js';
 import { m_at, t_at } from './mon.js';
 import { is_obj_mappear } from './monst.js';
 import { engr_at } from './engrave.js';
-import { x_monnam, upstart, pmname, hliquid, coyotename, distant_monnam } from './do_name.js';
+import { x_monnam, mon_nam, rndmonnam, upstart, pmname, hliquid, coyotename, distant_monnam } from './do_name.js';
 import { ARTICLE_NONE, MAXTCHARS } from './const.js';
 import { an, the, makesingular, singular, xname, distant_name,
          doname_vague_quan, simpleonames, OBJ_NAME } from './objnam.js';
@@ -538,6 +538,9 @@ function lookat(x, y) {
                     (how & 3) > 2 ? ', ' : ''}${(how & 2) ? 'telepathy' : ''}${
                     (how & 7) > 4 ? ', ' : ''}${(how & 4) ? 'monster detection' : ''}]`;
         }
+    } else if (game.u.uswallow) {
+        buf = `interior of ${mon_nam(game.u.ustuck)}`;
+        pm = game.u.ustuck.data;
     } else if ((game.iflags?.terrainmode & (TER_DETECT | TER_MAP))
                === TER_DETECT
                && glyph.kind === 'cmap' && glyph.cmap === CM.S_stone) {
@@ -547,6 +550,9 @@ function lookat(x, y) {
         if (mtmp) {
             ({ buf, monbuf } = look_at_monster(mtmp, x, y));
             pm = mtmp.data;
+        } else if (Hallucination()) {
+            // C pager.c:712: a displayed monster without m_at() is a statue.
+            buf = rndmonnam(null);
         }
     } else if (glyph.kind === 'obj') {
         buf = look_at_object(x, y, glyph);
@@ -622,7 +628,7 @@ function lookat(x, y) {
     } else {
         buf = 'unexplored area';
     }
-    return { buf, monbuf, pm };
+    return { buf, monbuf, pm: pm && !Hallucination() ? pm : null };
 }
 
 // src/pager.c:830 checkfile() — look inp up in the data file; optionally ask

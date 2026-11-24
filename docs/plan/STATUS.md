@@ -7167,6 +7167,49 @@ description; the bounded parent review records the async diagnostic question
 without changing runtime. Continue scoped ports, verified commits and immediate
 pushes. The full-port objective remains unfinished.
 
+## 2026-11-24 14:50 UTC: swallowed monster and statue inspection
+
+Pushed hero dispatch as c0ec35a8 after the full796 run closed. The next scoped
+pager patch restores C's swallowed-interior description, hallucinated-statue
+name and final Hallucination guard on the returned species pointer. It uses
+the existing `mon_nam` and `rndmonnam` helpers. The complete lookat owner and
+its caller/return contracts were reviewed; other monster/object-description
+helper omissions remain separate. No new production export or async contract
+is introduced.
+
+Original native SHA256
+`ff1ca7b0841ae26deafb4343c6503fc87058f013875fb138f61a58e49678c15a`
+contains four cases with 675 boundaries, 11,066 complete RNG calls and no
+frames. Exact styled boundaries improve from 666 to all 675. Every cursor,
+per-input slice and complete call stream matches. Far-away swallowed selection
+and a sober statue preserve all five original output hashes. The final species
+pointer guard has source/state return-contract evidence; the ordinary cases
+do not claim a new supplemental-information output witness.
+
+All 21 composition checks pass: 113 controls, nine fixtures with 32 segments,
+3,665 scored screens/cursors, 101,066 calls and 85 frames. All 44 public fixtures
+retain 11,405 boundaries, 792,838 calls and 1,483 frames. The 53 hang checks
+pass. Delayed input matches across 12 segments, 1,320 boundaries and 31,621
+calls. The new native comparator includes every blank style. Source audit:
+zero findings in 276 modules.
+
+Checks ran in a fixed copy of 5e68644f plus the exact hero dispatch patch and
+this pager patch while the full796 run held main fixed. After c0ec35a8 was
+pushed, scoped integration verified that all 279 main runtime files and six
+support files equal that tested composition. Syntax and source audit also
+pass directly on main. No full797 run is claimed. The first integration
+attempt used a nonexistent cache patch path and stopped before any writes;
+the retry used the independently sealed native package. Receipts:
+`lookat-swallow-statue-parent-composition-verification.json` and
+`lookat-swallow-statue-promotion-integration.json` in `.cache/restart-20261122/`.
+
+Source and native seals verify 358 and 342 files, with zero links. The exact
+patch remains fe9afb2c75f9169de0421034dd4d80b2302388a68868ce9295a2d73951b66374.
+Its C coverage belongs to the earlier shared lookat/damage batch, without
+per-input attribution. The maintained corpus is 797; latest full regression
+remains 796. Gnome Wizard return values, peaceful chat, hmonas caller routes
+and vault completion remain independent follow-ups. Continue verified pushes.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

@@ -1,0 +1,156 @@
+{
+  "name": "pager-lookat-swallow-statue",
+  "description": "Native C cases for adjacent swallowed and hallucinated-statue inspection, with distant and sober controls. Four unchanged ordinary input tuples; complete styled-screen and RNG parity verified on the scoped candidate.",
+  "coverage": [
+    "mode.debug",
+    "ui.map-memory-vision",
+    "ui.menus",
+    "ui.more-paging",
+    "ui.hallucination",
+    "monster.hero-melee"
+  ],
+  "branches": [
+    "pager.swallowed-adjacent",
+    "pager.swallowed-distant-negative",
+    "pager.hallucinated-statue",
+    "pager.sober-statue-negative"
+  ],
+  "requireBranchAssertions": true,
+  "segments": [
+    {
+      "name": "swallowed-adjacent",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             \u0007hostile fog cloud\rkms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b;h.  \u001b\u001b\u001b"
+    },
+    {
+      "name": "swallowed-far",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             \u0007hostile fog cloud\rkms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b;H.  \u001b\u001b\u001b"
+    },
+    {
+      "name": "statue-hallucinated",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed statue of a grid bug\rda  \u001b\u001b\u001bl#wizintrinsic\r100h\r  \u001b\u001b\u001b;h.  \u001b\u001b\u001b"
+    },
+    {
+      "name": "statue-sober",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed statue of a grid bug\rda  \u001b\u001b\u001bl  \u001b\u001b\u001b;h.  \u001b\u001b\u001b"
+    }
+  ],
+  "branchAssertions": [
+    {
+      "branch": "pager.swallowed-adjacent",
+      "segment": 0,
+      "screenIncludes": [
+        "interior of the fog cloud"
+      ],
+      "screenExcludes": [
+        "You die...",
+        "Die?"
+      ],
+      "intent": "A real fog cloud swallows the hero before an adjacent inspection.",
+      "evidence": "Verified against independent source-c/version5 raw ff1ca7b0841ae26deafb4343c6503fc87058f013875fb138f61a58e49678c15a. Read-only JS observations establish producer state separately."
+    },
+    {
+      "branch": "pager.swallowed-distant-negative",
+      "segment": 1,
+      "screenIncludes": [
+        "unreconnoitered"
+      ],
+      "screenExcludes": [
+        "You die...",
+        "Die?",
+        "interior of the fog cloud"
+      ],
+      "intent": "Same swallow setup, distant inspection stays unreconnoitered.",
+      "evidence": "Verified against independent source-c/version5 raw ff1ca7b0841ae26deafb4343c6503fc87058f013875fb138f61a58e49678c15a. Read-only JS observations establish producer state separately."
+    },
+    {
+      "branch": "pager.hallucinated-statue",
+      "segment": 2,
+      "screenIncludes": [
+        "(arch-lich)"
+      ],
+      "screenExcludes": [
+        "You die...",
+        "Die?"
+      ],
+      "intent": "A wished and dropped statue displays a monster glyph while hallucinating, but no monster occupies it.",
+      "evidence": "Verified against independent source-c/version5 raw ff1ca7b0841ae26deafb4343c6503fc87058f013875fb138f61a58e49678c15a. Read-only JS observations establish producer state separately."
+    },
+    {
+      "branch": "pager.sober-statue-negative",
+      "segment": 3,
+      "screenIncludes": [
+        "a statue of a",
+        "grid bug)"
+      ],
+      "screenExcludes": [
+        "You die...",
+        "Die?"
+      ],
+      "intent": "Same statue without hallucination remains an object description.",
+      "evidence": "Verified against independent source-c/version5 raw ff1ca7b0841ae26deafb4343c6503fc87058f013875fb138f61a58e49678c15a. Read-only JS observations establish producer state separately."
+    }
+  ],
+  "jsReach": [
+    {
+      "boundaries": 274,
+      "calls": 2737,
+      "frames": 0,
+      "selectedStep": 268,
+      "selectedText": "\u2502        the interior of a monster or a wall (interior of the fog cloud)",
+      "hp": 96,
+      "swallowed": true,
+      "hallucinating": false
+    },
+    {
+      "boundaries": 274,
+      "calls": 2737,
+      "frames": 0,
+      "selectedStep": 268,
+      "selectedText": "         unreconnoitered",
+      "hp": 96,
+      "swallowed": true,
+      "hallucinating": false
+    },
+    {
+      "boundaries": 73,
+      "calls": 2796,
+      "frames": 0,
+      "selectedStep": 67,
+      "selectedText": "@        a human or elf (arch-lich)",
+      "hp": 12,
+      "swallowed": false,
+      "hallucinating": true
+    },
+    {
+      "boundaries": 54,
+      "calls": 2796,
+      "frames": 0,
+      "selectedStep": 48,
+      "selectedText": "x        a xan or other mythical/fantastic insect or a statue (a statue of a\ngrid bug)",
+      "hp": 12,
+      "swallowed": false,
+      "hallucinating": false
+    }
+  ],
+  "nativeEvidence": {
+    "rawSHA256": "ff1ca7b0841ae26deafb4343c6503fc87058f013875fb138f61a58e49678c15a",
+    "source": "c",
+    "version": 5,
+    "boundaries": 675,
+    "calls": 11066,
+    "frames": 0,
+    "scope": "Exact four recorded input sequences. Named/blind/invisible/hallucinated engulfers and final pm return-contract branches remain source-only controls."
+  }
+}

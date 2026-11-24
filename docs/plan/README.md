@@ -30,7 +30,7 @@ checks on 117 fixtures, all 39,942 boundaries and 1,718,440 calls. The complete
 strict 677-fixture audit and all 213 animation-bearing fixtures passed at the
 preceding floor checkpoint. The subsequent monster trap-hit repair passes
 four new native cases, 65 controls and seven focused regressions. The maintained
-corpus is now 796. The following death-owner repair passes 21 direct source
+corpus is now 797. The following death-owner repair passes 21 direct source
 controls, 61 retained controls and seven focused regressions. Temporary corpse
 cleanup for pet nutrition also passes 16 direct controls, 55 retained controls
 and five focused regressions. Guard corridor gold collection passes five new
@@ -123,7 +123,7 @@ nine focused fixtures, 44 public sessions and 53 hang checks pass. Half-damage
 and monster life-saving boundaries have constructed source controls; native
 inputs cover gray dragon forms and located/plain shaman feedback. The full
 793-fixture run includes this effect repair. The maintained corpus
-now contains 796 recordings.
+now contains 797 recordings.
 Monster slowing now waits for speed feedback before follow-up messages, and
 monster wield/tether feedback carries the monster location. The four changed
 calls match all 155 new native styled boundaries, 8,354 calls and per-input
@@ -160,6 +160,14 @@ cursors and empty frame arrays. All 188 controls, 12 focused fixtures, 44 public
 sessions and 56 hang checks pass. The physical negative retains all five output
 hashes. Xan proves the state and routing contract, with unchanged immediate
 native output. The remaining hmonas caller omissions stay under review.
+Detailed inspection now describes the interior of a swallowing monster and
+uses C's randomized name for a hallucinated statue. It also suppresses the
+returned species pointer while hallucinating. Four native cases improve from
+666 to all 675 exact styled boundaries, preserving all 11,066 complete calls,
+cursors and empty frame arrays. All 113 controls, nine focused fixtures,
+44 public sessions and 53 hang checks pass on the exact promoted runtime.
+The two negatives retain all five original output hashes. This inspection
+checkpoint follows the full796 run.
 Current-corpus parity is not completeness.
 
 Floor objects retain independent global and per-square order. Placement,

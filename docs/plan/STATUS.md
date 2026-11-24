@@ -6417,6 +6417,60 @@ full regression follows this checkpoint. Latest completed full run remains
 781/781 before combat and display. Official score remains the separately
 published 07:21 UTC run, checked at 11:23 UTC; no held-out gain is inferred.
 
+## 2026-11-24: restricted positional inspection and submerged land
+
+The full combat/display regression finished both shards with exit zero.
+All 783 fixtures pass: 838,900 boundary screens/cursors, 17,307,267 scored RNG
+positions and 32,004 scored frames. All 279 runtime hashes remained fixed.
+Receipt: `.cache/restart-20261122/clear-combat-promotion-corpus-totals.json`.
+This is contest-comparator parity, separate from the remaining 24 public
+blank-style boundary differences recorded by the preceding strict audit.
+
+`pager.lookat` and `do_screen_description` now use canonical `Underwater`,
+`Is_waterlevel` and `next2u`. Positional lookup outside the adjacent area when
+swallowed or submerged returns the original glyph prefix, one match and
+`unreconnoitered`, before symbol enumeration. Pure detection stone backgrounds
+follow that same early return. Typed-symbol lookup and Water-plane inspection
+retain their paths. Nearby submerged unexplored terrain is land; mapped stone
+checks the unseen guard before the submerged land/unknown distinction.
+The patch removes the obsolete claim that these states are unreachable.
+
+The complete C owners at pager.c:657-802 and 1247-1627, their helpers and all
+five direct calls were reviewed. All calls remain synchronous. The sealed
+scope proof preserves 118 of 122 top-level nodes; only two imports and two
+owners change. Nearby swallowed descriptions, self-sensing, hallucinated
+statues, species lookup, symbol overrides and further terrain branches remain
+separate source findings. Reading the owner is not a claim of full equivalence.
+
+The new immutable four-case C fixture is
+`pager-restricted-inspection.session.json`, SHA-256
+`3816327d637212dc76745ebfa00f838a0d863a0c5e8d94401db532920210c23d`.
+Before, 235/240 styled grids match. After, all 240 glyph/color/attribute grids,
+including blanks, cursors, 9,325 complete calls, input slices and empty frame
+arrays match. Dry-floor and flying controls retain all five original JS output
+hashes. Source controls cover detection/map combinations, diagonals, the Water
+plane and the distant swallowed restriction; those are not extra native cases.
+
+Parent normal verification closes all 16 commands. All 23 new and 30 retained
+controls pass. Six fixtures pass all 24 segments, 2,770 boundaries, 83,795
+complete calls and 89 frames. Deferred input reproduces the new four cases.
+All 44 public fixtures pass, all 50 hang workers finish within 30 seconds,
+syntax passes and the source audit reports zero findings in 276 modules.
+All 279 runtime and four promoted support hashes remain fixed. Parent before
+hashes equal the independently captured pre-patch current runtime.
+
+Evidence: `.cache/restart-20261122/pager-restricted-promotion-parent/`,
+`pager-restricted-promotion-parent-verification.json`, and immutable
+`pager-restricted-inspection-audit/`, seal `e9c216712f076b0296c1fe12297fa5dd8f87d22b33fafa5171ef392d7ed83a7f`.
+The independent current-runtime inspection/potion composition also passes
+164 controls and 13 fixtures; potion remains the next separate checkpoint.
+The corpus is now 784. Latest full regression remains 783/783 before this
+addition. The original raw already has NFS coverage credit, so promotion adds
+no duplicate input credit. Latest independent NFS union, including subsequent
+potion, gaze and terrain recordings, is 783 credited inputs over 77 identical
+layouts, 4,561/5,492 functions and 59,968/107,260 branch outcomes. Coverage
+inputs and the maintained JS regression inventory are distinct counts.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

@@ -1,0 +1,104 @@
+{
+  "name": "pager-restricted-inspection",
+  "description": "Native underwater inspection at adjacent and distant squares, with dry-room and flying-pool controls.",
+  "coverage": [
+    "mode.debug",
+    "ui.map-memory-vision",
+    "terrain.water-lava"
+  ],
+  "branches": [
+    "pager.submerged-far",
+    "pager.submerged-near",
+    "pager.dry-negative",
+    "pager.flying-negative"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "pager.submerged-far",
+      "segment": 0,
+      "screenIncludes": [
+        "land",
+        "unreconnoitered"
+      ],
+      "screenExcludes": [
+        "You die...",
+        "Die?"
+      ],
+      "intent": "Inspect actual terrain after ordinary controlled teleport with real magical breathing or flight equipment.",
+      "evidence": "Unmodified C recording SHA2563816327d637212dc76745ebfa00f838a0d863a0c5e8d94401db532920210c23d. State reach is observed separately."
+    },
+    {
+      "branch": "pager.submerged-near",
+      "segment": 1,
+      "screenIncludes": [
+        "land"
+      ],
+      "screenExcludes": [
+        "You die...",
+        "Die?",
+        "unreconnoitered"
+      ],
+      "intent": "Inspect actual terrain after ordinary controlled teleport with real magical breathing or flight equipment.",
+      "evidence": "Unmodified C recording SHA2563816327d637212dc76745ebfa00f838a0d863a0c5e8d94401db532920210c23d. State reach is observed separately."
+    },
+    {
+      "branch": "pager.dry-negative",
+      "segment": 2,
+      "screenIncludes": [
+        "floor of a room"
+      ],
+      "screenExcludes": [
+        "You die...",
+        "Die?",
+        "unreconnoitered"
+      ],
+      "intent": "Inspect actual terrain after ordinary controlled teleport with real magical breathing or flight equipment.",
+      "evidence": "Unmodified C recording SHA2563816327d637212dc76745ebfa00f838a0d863a0c5e8d94401db532920210c23d. State reach is observed separately."
+    },
+    {
+      "branch": "pager.flying-negative",
+      "segment": 3,
+      "screenIncludes": [
+        "floor of a room"
+      ],
+      "screenExcludes": [
+        "You die...",
+        "Die?",
+        "unreconnoitered"
+      ],
+      "intent": "Inspect actual terrain after ordinary controlled teleport with real magical breathing or flight equipment.",
+      "evidence": "Unmodified C recording SHA2563816327d637212dc76745ebfa00f838a0d863a0c5e8d94401db532920210c23d. State reach is observed separately."
+    }
+  ],
+  "segments": [
+    {
+      "seed": 7401,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " j\u0017uncursed amulet of magical breathing\rPo\u001b\u001b\u0017pool\r\u001b\u001b\u0014.\u001b\u001b;ll.\u001b\u001b",
+      "name": "underwater-far"
+    },
+    {
+      "seed": 7401,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " j\u0017uncursed amulet of magical breathing\rPo\u001b\u001b\u0017pool\r\u001b\u001b\u0014.\u001b\u001b;l.\u001b\u001b",
+      "name": "underwater-near"
+    },
+    {
+      "seed": 7401,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " j\u0017uncursed amulet of magical breathing\rPo\u001b\u001b\u0017room\r\u001b\u001b\u0014.\u001b\u001b;ll.\u001b\u001b",
+      "name": "dry-room-far"
+    },
+    {
+      "seed": 7401,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " j\u0017uncursed amulet of flying\rPo\u001b\u001b\u0017pool\r\u001b\u001b\u0014.\u001b\u001b;ll.\u001b\u001b",
+      "name": "flying-pool-far"
+    }
+  ]
+}

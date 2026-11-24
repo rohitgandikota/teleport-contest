@@ -1,0 +1,53 @@
+{
+  "name": "stealth-mount",
+  "description": "C-recorded Rogue ground-pony and flying-ki-rin mount/dismount inputs. Both use the real debug force-mount confirmation, so mount eligibility and success chance are not coverage claims. Ground riding blocks the role intrinsic; flying riding preserves it.",
+  "coverage": [
+    "mode.debug",
+    "monster.steeds"
+  ],
+  "segments": [
+    {
+      "name": "stealth-ground-mount-dismount",
+      "seed": 6962,
+      "datetime": "20000112124000",
+      "nethackrc": "OPTIONS=name:wizard,role:Rogue,race:human,gender:male,align:chaotic,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                                   \u0007tame saddled pony\r  \u001b\u001b#ride\rly        \u001b\u001b#ride\r        \u001b\u001b"
+    },
+    {
+      "name": "stealth-flying-mount-dismount",
+      "seed": 6962,
+      "datetime": "20000112124000",
+      "nethackrc": "OPTIONS=name:wizard,role:Rogue,race:human,gender:male,align:chaotic,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                                   \u0007tame saddled ki-rin\r  \u001b\u001b#ride\rly        \u001b\u001b#ride\r        \u001b\u001b"
+    }
+  ],
+  "branches": [
+    "ground-mount-blocks-and-dismount-restores-stealth",
+    "flying-mount-preserves-stealth"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "ground-mount-blocks-and-dismount-restores-stealth",
+      "segment": 0,
+      "screenIncludes": [
+        "Force the mount to succeed?",
+        "You aren't stealthy anymore.",
+        "You've been through the dungeon on a pony with no name.",
+        "You seem less noisy now."
+      ]
+    },
+    {
+      "branch": "flying-mount-preserves-stealth",
+      "segment": 1,
+      "screenIncludes": [
+        "Force the mount to succeed?",
+        "You've been through the dungeon on a ki-rin with no name."
+      ],
+      "screenExcludes": [
+        "You aren't stealthy anymore.",
+        "You seem less noisy now."
+      ]
+    }
+  ]
+}

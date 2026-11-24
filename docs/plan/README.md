@@ -19,8 +19,8 @@ run at 19:33 UTC predates the latest checkpoint. Public remains 44/44;
 that snapshot has 936 unmatched held-out
 screens. Local verification does not establish a newer held-out score.
 
-The latest verification passes 724/724 fixtures: 815,359 boundary
-screens/cursors, 16,408,040 scored RNG positions and 30,734 animation frames.
+The latest verification passes 725/725 fixtures: 815,581 boundary
+screens/cursors, 16,412,899 scored RNG positions and 30,734 animation frames.
 Both shards finish without failures or timeouts. All 279 runtime hashes
 stayed fixed throughout.
 The earlier potion changes also pass strict full-stream and per-input RNG
@@ -95,16 +95,18 @@ and all 149 related checks. Monster shape selection now shares C's selector,
 and initial/scripted creation finishes before dependent work. Twelve new
 native cases, 143 source controls and the full regression pass. Twelve
 focused fixtures also produce identical complete outputs with delayed input
-through the interactive API. Next: blocked stealth, remaining script options
-and save contracts. The
+through the interactive API. Effective stealth now respects the riding
+blocker, matching two new native cases and all 21 source/input controls.
+Next: save cleanup and counter ownership, covetous movement, mounted equipment
+feedback and remaining script options. The
 Linux/NFS branch collector is pushed
 and passes signal canaries plus exact save/restore, artifact and natural-exit
 pilots. The Linux census at e4504071 now covers all 678 original inputs:
 603 canonical matches and 75 independently recorded ordinary Linux controls.
-Adding 38 newer raw inputs and two independent Linux controls, 174
+Adding 39 newer raw inputs and two independent Linux controls, 176
 native segments in total, gives a validated union entering 4,520/5,492
-functions and observing 58,961/107,260 direct C branch outcomes.
-All 718 credited input hashes, twenty-two build manifests and branch layouts were
+functions and observing 58,965/107,260 direct C branch outcomes.
+All 719 credited input hashes, twenty-three build manifests and branch layouts were
 checked before merging. Original platform/output rejections
 remain rejected; no output was normalized. The two new sink fixtures separately
 match Linux C exactly; their validated union covers all 94/94 direct dosinkring

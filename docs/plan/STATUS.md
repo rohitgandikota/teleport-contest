@@ -3781,6 +3781,61 @@ wording and the Air first-divergence investigation are separate. Save cleanup
 plus the process-only inventory counter is undergoing its four-way native
 comparison, including the fresh `qa` detection pair.
 
+## 2026-11-23: ground riding blocks effective stealth
+
+The preceding shared-selector checkpoint `b799db67` is committed and pushed.
+The next runtime change adds C's `!BStealth` term to `youprop.Stealth`.
+The existing mount, dismount, flight and levitation producers already maintain
+that mask in C order. Their source words and unrelated blocker bits remain
+intact. The obsolete comment claiming no blocking producer existed is removed.
+
+All eighteen source controls, two actual-input controls and one native
+provenance check pass. The source controls call the actual private `disturb`
+through an idempotent test-only export, checking short-circuit RNG order,
+wake-up state, line of sight and distance limits. The loader changes no
+function body or return. All original four controls remain present. Baseline
+passes ten of the combined 21 checks; the candidate passes all 21.
+
+The unchanged C pair contains 222 boundaries and 4,859 complete RNG calls.
+A Rogue force-mounts a ground pony or flying ki-rin, then dismounts. The
+baseline matches 219 screens, 221 cursors and 220 input slices; the candidate
+matches all 222. Whole RNG streams already matched before the repair, so
+per-input comparison is essential: missing feedback shifted six calls between
+the dismount boundaries. These recordings prove the mounted property producer
+and feedback. Dedicated sleeping-monster branches remain constructed source
+controls, not native input coverage.
+
+The four focused fixtures match all 1,209 screens/cursors, 30,003 complete and
+per-input RNG calls, and one animation with exact count and cursor. All four
+10-second worker timeout checks pass. The source audit reports zero findings
+in 276 non-frozen modules. The complete 725-fixture regression passes all
+815,581 boundary screens/cursors, 16,412,899 scored RNG positions and 30,734
+animation frames. Both shards finish without failures or timeouts at the
+default 45-second worker limit. All 279 runtime hashes remain unchanged.
+
+The NFS union independently verifies the exact new raw hash. Its 719 credited
+inputs and twenty-three matching manifests/layouts enter 4,520/5,492 functions
+and observe 58,965/107,260 direct C branch outcomes. The 39 added raw inputs
+contain 167 segments, plus nine independent Linux control segments. New native
+`steed_vs_stealth` reaches both direct outcomes; `disturb` is not called by
+this pair. Bulk profiles remain under
+`/share/NFS/u/rohit/research/contest/artifacts/2026-11-22/c-coverage-compress.E84JI2/verified-stealth-mount-union-20261123`.
+
+Evidence is `.cache/restart-20261122/stealth-blocking-audit/review/`,
+`stealth-mount-parent-integration.json`, `stealth-mount-parent-verification.json`
+and `stealth-mount-corpus-*`. The five promoted support files use the original
+native bytes and exact input tuples. The latest public leaderboard response
+remains byte-identical to the November 23 20:18 UTC snapshot; it does not yet
+report a score for the latest pushes.
+
+Next is pre-save object cleanup plus the process-only inventory-letter
+counter. Its two separate frozen patches now have a four-way native comparison:
+only their composition matches both the old rejected `qb` control and the new
+`qa` object-detection recording. The covetous movement repair also matches its
+unchanged native recording. New mounted-equipment and thunder C recordings are
+under focused confirmation. Their branch profiles are exact on NFS; no new
+runtime or fixture from those follow-ups is included in this checkpoint.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

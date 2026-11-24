@@ -1654,7 +1654,7 @@ async function mreadmsg(mtmp, obj) {
     observe_object(obj);
     const onambuf = singular(obj, vismon ? doname : ansimpleoname);
     if (vismon) {
-        await pline(`${Monnam(mtmp)} reads ${onambuf}!`);
+        await pline_mon(mtmp, `${Monnam(mtmp)} reads ${onambuf}!`);
     } else {
         const mdat = mtmp.data ?? game.mons[mtmp.mnum];
         const ydat = game.youmonst?.data ?? game.mons[game.u.umonnum];
@@ -1680,7 +1680,7 @@ async function mreadmsg(mtmp, obj) {
             await flash_mon(mtmp);
     }
     if (mtmp.mconf) {
-        const who = vismon ? mon_nam(mtmp) : 'it';
+        const who = vismon ? mon_nam(mtmp) : mhe(mtmp);
         await pline(`Being confused, ${who} mispronounces the magic words...`);
     }
     return true;

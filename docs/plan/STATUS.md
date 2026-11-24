@@ -6016,6 +6016,43 @@ monster scroll feedback and the surface beneath a raised drawbridge; both
 have independently recorded native witnesses. Other damage dispatch and guard
 destination branches remain under source review.
 
+## 2026-11-24: preserve monster scroll feedback and pronoun RNG
+
+Digestion/growth checkpoint `40590e2a` is committed and pushed. Two expressions
+in private `mreadmsg` now use C's existing helpers: `pline_mon` for visible
+reading and `mhe` for an unseen confused reader. The latter preserves the
+hallucination draw before choosing the teleport destination level. A stale
+pronoun-helper comment is shortened and corrected. Its AST and all 9,719 code
+tokens are unchanged; every other top-level muse node is unchanged.
+
+The parent independently reproduced the three native failures on the current
+composition. The accessible visible case lacked coordinates at boundary 105;
+the blind sensed case said `it` instead of `he` at 129. The hallucinated case
+matched every screen but skipped `rn2(4)=2` at slice 128, before the level draw.
+Baseline had 500/502 styled grids, 501 cursors, 498 slices and 9,827 actual calls.
+The unchanged four-case raw now matches all 502 grids including blank styles,
+all cursors, 9,832 complete calls and slices, and sixteen animation grids,
+cursors and counts. The plain negative retains all five raw JS output hashes.
+Raw SHA is `d4954ee974b9ba485313dd66286c389d8a9ed862ad1eef562b01f2aeb9eafe8b`.
+
+All sixteen parent checks pass. The unchanged gates improve from 8/16 state,
+12/15 source and 4/9 input checks to all 40 passing, with 36 C functions
+fingerprinted. All 65 retained digestion, growth and death controls pass.
+Seven focused fixtures cover 23 segments, 2,425 boundaries, 63,282 complete
+calls and 23 frames. Five delayed-input fixtures match 19 segments, 2,071
+boundaries, 50,952 calls and twenty frames. All 44 public fixtures, 51 hang
+workers under 30 seconds, both syntax checks and the 276-module audit pass.
+All 279 runtime hashes and five promoted support files remain fixed.
+
+Evidence is `.cache/restart-20261122/scroll-reading-promotion-parent/` and
+`scroll-reading-promotion-parent-verification.json`. The original and native
+confirmation packages retain 671 and 646 verified sealed files. The earlier
+wrong-field animation count is retained separately; actual C `animation_frames`
+contain sixteen frames. No fixture bytes were changed. This does not establish
+all defensive-action branches or literal C/JS terminal serialization equality.
+The maintained corpus is 775; the latest complete regression remains the
+774/774 run at `40590e2a`.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

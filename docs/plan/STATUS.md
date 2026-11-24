@@ -7358,6 +7358,32 @@ the earlier fetch. Our published evaluation is still 13:38:30 UTC, before four
 recent pushes: 23,595/24,531, seventh agentic and eleventh overall. No newer
 leaderboard improvement or complete-port result is claimed.
 
+## 2026-11-24: canonical monster sensing descriptions verified
+
+Pushed the full800 vault checkpoint as d0c5098d. The next pager patch uses the
+canonical sensing-bit definitions and hidden-monster description helper,
+retains C's ordered sensing descriptions and shopkeeper tail article, and
+passes null for the optional list suffix. The closed seven-bit producer
+contract is checked explicitly; no asynchronous diagnostic is discarded.
+Only pager.js changes. All 279 current-main runtime hashes and seven support
+files equal the independently tested composition.
+
+All 27 checks and 130 controls pass on the published vault runtime. Twelve
+focused fixtures cover 43 segments, 4,464 scored boundaries/cursors, 144,182
+calls and 101 frames. All 44 public fixtures and 56 bounded workers pass.
+The four new C cases improve from 262/267 styled boundaries and 265 cursors
+to all 267, retaining 11,312 calls and 16 frames. Four strict native fixtures
+match 1,399 styled boundaries, 45,521 calls and 16 frames. Both ordinary
+negatives preserve all five output hashes. Delayed input matches 1,816
+boundaries, 58,579 calls and 16 frames. Source audit remains zero of 276.
+
+Evidence: .cache/restart-20261122/pager-description-vision-composition and its
+verification receipt. The maintained corpus is now 801; latest full passing
+regression is the 800-fixture d0c5098d run. Temporary hidden-object cleanup,
+buried visibility, remaining source-only description alternatives and literal
+DEC/Unicode byte identity are not certified by this patch. Commit and push
+this verified checkpoint, then continue the independently prepared changes.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

@@ -11,7 +11,7 @@
 
 import { Mgender, NON_PM } from './const.js';
 import { M_AP_MONSTER } from './const.js';
-import { MONSYMS } from './monst_data.js';
+import { MONSYMS, MFLAGS } from './monst_data.js';
 import { visible_region_at } from './region.js';
 import { is_pool } from './mon.js';
 import { surface } from './dungeon.js';
@@ -24,7 +24,7 @@ import { IS_WATERWALL, Is_waterlevel, Is_airlevel } from './const.js';
 import { u_at } from './const.js';
 import { DRAWBRIDGE_UP } from './const.js';
 import { Levitation, Underwater } from './youprop.js';
-import { cansee } from './vision.js';
+import { cansee, howmonseen } from './vision.js';
 import { distu, next2u } from './hacklib.js';
 import { spot_time_left, MELT_ICE_AWAY } from './timeout.js';
 import { obj_stop_timers } from './timeout.js';
@@ -51,7 +51,10 @@ import { COLNO, ROWNO, BOLT_LIM, STONE, SCORR, SDOOR, GRAVE, CORR,
          AM_MASK, AM_SANCTUM, Amask2align, Is_astralevel,
          A_LAWFUL, A_NEUTRAL, A_CHAOTIC, STRAT_WAITMASK,
          WARNCOUNT, def_warnsyms, I_SPECIAL,
-         NO_TRAP, BEAR_TRAP, WEB, is_pit } from './const.js';
+         NO_TRAP, BEAR_TRAP, WEB, is_pit,
+         MONSEEN_NORMAL, MONSEEN_SEEINVIS, MONSEEN_INFRAVIS,
+         MONSEEN_TELEPAT, MONSEEN_XRAYVIS, MONSEEN_DETECT,
+         MONSEEN_WARNMON } from './const.js';
 import { defsyms, monexplain, oc_explain, def_monsyms, def_oc_syms,
          cmap_names } from './drawing_data.js';
 import { OCLASSES, ONAMES } from './objects_data.js';
@@ -65,7 +68,7 @@ import { is_obj_mappear } from './monst.js';
 import { engr_at } from './engrave.js';
 import { x_monnam, mon_nam, rndmonnam, upstart, pmname, hliquid, coyotename, distant_monnam } from './do_name.js';
 import { ARTICLE_NONE, MAXTCHARS } from './const.js';
-import { an, the, makesingular, singular, xname, distant_name,
+import { an, the, makesingular, makeplural, singular, xname, distant_name,
          doname_vague_quan, simpleonames, OBJ_NAME } from './objnam.js';
 import { mkobj, mksobj } from './mkobj.js';
 import { observe_object } from './o_init.js';
@@ -269,14 +272,16 @@ function look_at_object(x, y, glyph) {
 }
 
 // src/pager.c:422 look_at_monster()
-function look_at_monster(mtmp, x, y) {
+function look_at_monster(mtmp, x, y, monbuf = '') {
     const accurate = !Hallucination();
 
     const name = (mtmp.data === game.mons[PMNAMES.PM_COYOTE] && accurate)
                  ? coyotename(mtmp)
                  : distant_monnam(mtmp, ARTICLE_NONE);
-    let buf = `${(mtmp.mx !== x || mtmp.my !== y) ? 'tail of a ' : ''}`
-        + `${monhealthdescr(mtmp)}`
+    let buf = '';
+    if (mtmp.mx !== x || mtmp.my !== y)
+        buf = (mtmp.isshk && accurate) ? 'tail of ' : 'tail of a ';
+    buf += `${accurate ? monhealthdescr(mtmp) : ''}`
         + `${(mtmp.mtame && accurate) ? 'tame '
             : (mtmp.mpeaceful && accurate) ? 'peaceful ' : ''}`
         + name;
@@ -304,17 +309,65 @@ function look_at_monster(mtmp, x, y) {
             t.tseen = 1;
         }
     }
-    const appearance = M_AP_TYPE(mtmp);
-    if (appearance === M_AP_FURNITURE) {
-        const what = defsyms[mtmp.mappearance]?.explain || 'something';
-        buf += `, mimicking ${an(what)}`;
-    } else if (appearance === M_AP_OBJECT) {
-        /* The detection map replaces the remembered object glyph with the
-           monster glyph, so object_from_map() has no specific object to name. */
-        buf += ', mimicking something';
+    if (mtmp.mundetected || M_AP_TYPE(mtmp) || visible_region_at(x, y))
+        buf += mhidden_description(mtmp, MHID_PREFIX | MHID_ARTICLE | MHID_REGION);
+
+    if (monbuf !== null) {
+        let how_seen = howmonseen(mtmp);
+        monbuf = '';
+        if (how_seen !== 0 && how_seen !== MONSEEN_NORMAL) {
+            if (how_seen & MONSEEN_NORMAL) {
+                monbuf += 'normal vision';
+                how_seen &= ~MONSEEN_NORMAL;
+                if (how_seen) monbuf += ', ';
+            }
+            if (how_seen & MONSEEN_SEEINVIS) {
+                monbuf += 'see invisible';
+                how_seen &= ~MONSEEN_SEEINVIS;
+                if (how_seen) monbuf += ', ';
+            }
+            if (how_seen & MONSEEN_INFRAVIS) {
+                monbuf += 'infravision';
+                how_seen &= ~MONSEEN_INFRAVIS;
+                if (how_seen) monbuf += ', ';
+            }
+            if (how_seen & MONSEEN_TELEPAT) {
+                monbuf += 'telepathy';
+                how_seen &= ~MONSEEN_TELEPAT;
+                if (how_seen) monbuf += ', ';
+            }
+            if (how_seen & MONSEEN_XRAYVIS) {
+                monbuf += 'astral vision';
+                how_seen &= ~MONSEEN_XRAYVIS;
+                if (how_seen) monbuf += ', ';
+            }
+            if (how_seen & MONSEEN_DETECT) {
+                monbuf += 'monster detection';
+                how_seen &= ~MONSEEN_DETECT;
+                if (how_seen) monbuf += ', ';
+            }
+            if (how_seen & MONSEEN_WARNMON) {
+                if (Hallucination()) {
+                    monbuf += 'paranoid delusion';
+                } else {
+                    const mW = (game.context?.warntype?.obj || 0)
+                             | (game.context?.warntype?.polyd || 0);
+                    const m2 = mtmp.data.mflags2;
+                    let whom;
+                    if (mW & MFLAGS.M2_HUMAN & m2) whom = 'human';
+                    else if (mW & MFLAGS.M2_ELF & m2) whom = 'elf';
+                    else if (mW & MFLAGS.M2_ORC & m2) whom = 'orc';
+                    else if (mW & MFLAGS.M2_DEMON & m2) whom = 'demon';
+                    else whom = pmname(mtmp.data, Mgender(mtmp));
+                    monbuf += `warned of ${makeplural(whom)}`;
+                }
+                how_seen &= ~MONSEEN_WARNMON;
+                if (how_seen) monbuf += ', ';
+            }
+            // howmonseen() returns only these seven bits; C's remainder is zero.
+        }
     }
-    /* monbuf (howmonseen beyond normal vision) needs see-invisible &c */
-    return { buf, monbuf: '' };
+    return { buf, monbuf };
 }
 
 // src/pager.c:560 waterbody_name() — 5.0 moved it here from mkmaze.c.
@@ -1449,7 +1502,7 @@ async function look_all(nearby, do_mons) {
                 } else if (glyph.kind === 'mon') {
                     const mtmp = m_at(x, y);
                     if (mtmp) {
-                        ({ buf: lookbuf } = look_at_monster(mtmp, x, y));
+                        ({ buf: lookbuf } = look_at_monster(mtmp, x, y, null));
                         ++count;
                     }
                 }

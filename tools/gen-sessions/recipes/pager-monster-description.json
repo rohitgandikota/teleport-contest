@@ -1,0 +1,223 @@
+{
+  "name": "pager-monster-description",
+  "description": "Actual debug input setup followed by ordinary blessed potion detection and inspection/list commands. Independently recorded unchanged in C; all four cases match the composed candidate on all styled cells, cursors, complete RNG streams/slices and animation frames.",
+  "coverage": [
+    "mode.debug",
+    "options.rc-bindings",
+    "ui.getpos",
+    "ui.map-memory-vision"
+  ],
+  "branches": [
+    "pager.monster-seen-suffix",
+    "pager.monster-normal-negative",
+    "pager.detected-ceiling-hider",
+    "pager.monster-list-suffix-negative"
+  ],
+  "requireBranchAssertions": true,
+  "segments": [
+    {
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\n",
+      "name": "visible-detection",
+      "moves": " \u0007peaceful sleeping hill orc\r\u0017blessed potion of monster detection\rqa;m. \u001b"
+    },
+    {
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\n",
+      "name": "visible-normal",
+      "moves": " \u0007peaceful sleeping hill orc\r;m. \u001b"
+    },
+    {
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\n",
+      "name": "hidden-detection",
+      "moves": " \u0007peaceful sleeping hidden rock piercer\r\u0017blessed potion of monster detection\rqa;m. \u001b"
+    },
+    {
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\n",
+      "name": "list-detection",
+      "moves": " \u0007peaceful sleeping hill orc\r\u0017blessed potion of monster detection\rqa/m \u001b"
+    }
+  ],
+  "branchAssertions": [
+    {
+      "branch": "pager.monster-seen-suffix",
+      "segment": 0,
+      "screenIncludes": [
+        "peaceful hill orc, asleep",
+        "[seen: normal vision, monster",
+        "detection]"
+      ],
+      "screenExcludes": [
+        "You die...",
+        "Die?"
+      ],
+      "intent": "Visible monster has normal vision plus persistent detection, in C order.",
+      "evidence": "Independent unchanged C recording verified. The read-only JS observer proves producer state; the native gate checks all cells, calls, slices, cursors and frames."
+    },
+    {
+      "branch": "pager.monster-normal-negative",
+      "segment": 1,
+      "screenIncludes": [
+        "peaceful hill orc, asleep"
+      ],
+      "screenExcludes": [
+        "You die...",
+        "Die?",
+        "[seen:"
+      ],
+      "intent": "Ordinary vision alone omits the redundant suffix.",
+      "evidence": "Independent unchanged C recording verified. The read-only JS observer proves producer state; the native gate checks all cells, calls, slices, cursors and frames."
+    },
+    {
+      "branch": "pager.detected-ceiling-hider",
+      "segment": 2,
+      "screenIncludes": [
+        "peaceful rock piercer, asleep, hiding on the ceiling",
+        "[seen: monster detection]"
+      ],
+      "screenExcludes": [
+        "You die...",
+        "Die?"
+      ],
+      "intent": "Detection reveals a hidden ceiling piercer and describes hiding.",
+      "evidence": "Independent unchanged C recording verified. The read-only JS observer proves producer state; the native gate checks all cells, calls, slices, cursors and frames."
+    },
+    {
+      "branch": "pager.monster-list-suffix-negative",
+      "segment": 3,
+      "screenIncludes": [
+        "Monsters currently shown near",
+        "peaceful hill orc, asleep"
+      ],
+      "screenExcludes": [
+        "You die...",
+        "Die?",
+        "[seen:"
+      ],
+      "intent": "The list caller passes NULL monbuf, so it never emits a sensing suffix.",
+      "evidence": "Independent unchanged C recording verified. The read-only JS observer proves producer state; the native gate checks all cells, calls, slices, cursors and frames."
+    }
+  ],
+  "jsReach": [
+    {
+      "selectedStep": 71,
+      "selectedText": "o        an orc (peaceful hill orc, asleep) [seen: normal vision, monster\ndetection]",
+      "boundaries": 74,
+      "calls": 2834,
+      "frames": 0,
+      "detect": 198,
+      "hp": 12,
+      "target": {
+        "id": 73,
+        "name": null,
+        "x": 58,
+        "y": 6,
+        "sleep": 1,
+        "peaceful": 1,
+        "mask": 33,
+        "glyph": {
+          "kind": "mon",
+          "num": 456
+        }
+      },
+      "list": false,
+      "pendingMore": true
+    },
+    {
+      "selectedStep": 32,
+      "selectedText": "o        an orc (peaceful hill orc, asleep)",
+      "boundaries": 35,
+      "calls": 2819,
+      "frames": 0,
+      "detect": 0,
+      "hp": 12,
+      "target": {
+        "id": 73,
+        "name": null,
+        "x": 58,
+        "y": 6,
+        "sleep": 1,
+        "peaceful": 1,
+        "mask": 1,
+        "glyph": {
+          "kind": "mon",
+          "num": 456
+        }
+      },
+      "list": false,
+      "pendingMore": false
+    },
+    {
+      "selectedStep": 82,
+      "selectedText": "p        a piercer (peaceful rock piercer, asleep, hiding on the ceiling)\n[seen: monster detection]",
+      "boundaries": 85,
+      "calls": 2825,
+      "frames": 16,
+      "detect": 194,
+      "hp": 12,
+      "target": {
+        "id": 78,
+        "name": null,
+        "x": 58,
+        "y": 6,
+        "hidden": 1,
+        "sleep": 1,
+        "peaceful": 1,
+        "mask": 32,
+        "glyph": {
+          "kind": "mon",
+          "num": 1611
+        }
+      },
+      "list": false,
+      "pendingMore": true
+    },
+    {
+      "selectedStep": 70,
+      "selectedText": "What do you want to drink? [a or ?*] a",
+      "boundaries": 73,
+      "calls": 2834,
+      "frames": 0,
+      "detect": 198,
+      "hp": 12,
+      "target": {
+        "id": 73,
+        "name": null,
+        "x": 58,
+        "y": 6,
+        "sleep": 1,
+        "peaceful": 1,
+        "mask": 33,
+        "glyph": {
+          "kind": "mon",
+          "num": 456
+        }
+      },
+      "list": true,
+      "pendingMore": true
+    }
+  ],
+  "native": {
+    "sha256": "e2b5ee7dfae5044b811cf75c93b51efc9ca3b5200695f98e03af7e3345f0e6c5",
+    "bytes": 599818,
+    "source": "c",
+    "version": 5,
+    "proposalSHA256": "c953f64cef8b2268e7e397a35548744361e8b319bd9f936914e487f8fd923f41",
+    "boundaries": 267,
+    "completeCalls": 11312,
+    "frames": 16,
+    "recorderExit": 0,
+    "firstBeforeDivergence": [
+      71,
+      null,
+      81,
+      null
+    ]
+  }
+}

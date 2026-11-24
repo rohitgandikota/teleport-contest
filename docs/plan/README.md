@@ -13,23 +13,24 @@ Ground rules are in `/CLAUDE.md`. Read that first if you have not.
 ## Current focus, 2026-11-24
 
 Continue the faithful port with readable C-aligned code and prompt verified
-pushes. The latest official snapshot checked, November 24 at 14:00 UTC, has
+pushes. The latest official snapshot checked, November 24 at 14:30 UTC, has
 23,595 of 24,531 combined screens, 7th agentic and 11th overall. Our scoring
-run at 07:21 UTC predates the latest checkpoints. Public remains 44/44;
+run at 13:38 UTC predates the latest checkpoints. Public remains 44/44;
 held-out remains 39/56 with 936 unmatched screens. Local verification does
 not establish a newer held-out score.
 
-The latest full regression, through anti-magic effects, monster slowing and
-self-inspection, passes 793/793 fixtures: 842,378 boundary screens/cursors,
-17,466,819 scored RNG positions and 32,043 scored animation frames.
+The latest full regression, through squeaky-board feedback, lawful-minion
+taunts and hero natural damage dispatch, passes 796/796 fixtures: 843,512
+boundary screens/cursors, 17,498,485 scored RNG positions and 32,199 scored
+animation frames.
 Both shards finish without failures or timeouts. All 279 runtime hashes
-stayed fixed throughout.
+stayed fixed throughout, along with all 796 fixture hashes.
 The earlier potion changes also pass strict full-stream and per-input RNG
 checks on 117 fixtures, all 39,942 boundaries and 1,718,440 calls. The complete
 strict 677-fixture audit and all 213 animation-bearing fixtures passed at the
 preceding floor checkpoint. The subsequent monster trap-hit repair passes
 four new native cases, 65 controls and seven focused regressions. The maintained
-corpus is now 795. The following death-owner repair passes 21 direct source
+corpus is now 796. The following death-owner repair passes 21 direct source
 controls, 61 retained controls and seven focused regressions. Temporary corpse
 cleanup for pet nutrition also passes 16 direct controls, 55 retained controls
 and five focused regressions. Guard corridor gold collection passes five new
@@ -122,20 +123,20 @@ nine focused fixtures, 44 public sessions and 53 hang checks pass. Half-damage
 and monster life-saving boundaries have constructed source controls; native
 inputs cover gray dragon forms and located/plain shaman feedback. The full
 793-fixture run includes this effect repair. The maintained corpus
-now contains 795 recordings.
+now contains 796 recordings.
 Monster slowing now waits for speed feedback before follow-up messages, and
 monster wield/tether feedback carries the monster location. The four changed
 calls match all 155 new native styled boundaries, 8,354 calls and per-input
 slices. All 161 controls, eight focused fixtures, 44 public sessions and 52
 hang checks pass. The three separate damage-dispatch negatives preserve all
 five output hashes and match 190 native boundaries and 8,752 calls. Artifact
-light lifecycle and complete hero damage routing remain separate audits.
+light lifecycle and the remaining hmonas caller routes remain separate audits.
 Self-inspection now appends C's ordered sensing explanation when an invisible
 or hidden hero is seen through other senses. Four native cases match all 405
 styled boundaries, 11,230 complete calls, cursors and empty frame arrays.
 All 93 controls, nine focused fixtures, 44 public sessions and 53 hang checks
 pass. Visible and blind controls retain all five original output hashes;
-real pending-input checks verify the two new More boundaries. The latest
+real pending-input checks verify the two new More boundaries. The earlier
 full793 run includes these three gameplay checkpoints.
 Squeaky-board feedback now carries the triggering monster location for both
 audible notes and deaf cringing messages. Four native cases match all 396
@@ -150,7 +151,15 @@ complete calls and 156 frames matching. All 84 controls, eight focused
 fixtures, 44 public sessions and 52 hang checks pass. Two shaman/Oracle
 controls retain all five output hashes. The larger vault redraw candidate
 was shelved after five public regressions; it remains under source review
-and has not been committed. The last complete full-corpus run remains 793.
+and has not been committed. The full796 run includes the three committed
+gameplay repairs and the following hero dispatch repair.
+Natural hero attacks now use the existing shared damage dispatcher, with C's
+demon-pet guard, early return and complete death tail. This removes 69 runtime
+lines. Five native cases match all 283 styled boundaries, 13,755 complete calls,
+cursors and empty frame arrays. All 188 controls, 12 focused fixtures, 44 public
+sessions and 56 hang checks pass. The physical negative retains all five output
+hashes. Xan proves the state and routing contract, with unchanged immediate
+native output. The remaining hmonas caller omissions stay under review.
 Current-corpus parity is not completeness.
 
 Floor objects retain independent global and per-square order. Placement,

@@ -7046,7 +7046,7 @@ or pause is requested; keep committing and pushing verified checkpoints.
 The cuss classification now uses existing `mon_aligntyp` after its species
 minion guard. The complete C macro, cuss owner, alignment owner, actual callers,
 pager, wakeup order and valid alignment producers were reviewed. The old helper
-compared raw Angel alignment12 directly with lawful1 and omitted priest
+compared raw Angel alignment 12 directly with lawful 1 and omitted priest
 precedence. One import and one canonical call replace that copied selection;
 all other runtime bytes remain unchanged. No Angel-specific case, new export,
 RNG implementation or test-only runtime path is added.
@@ -7054,58 +7054,118 @@ RNG implementation or test-only runtime path is added.
 Original raw SHA256
 `93c7a26523c64cef2938b02917a5fa23805c5fad88d932c4e9d18bdc2eba0959`
 now matches all 455 styled grids/cursors and per-input slices, 8,541 complete
-recognized calls and 156 frames. Before the helper repair, only161 grids,
-410 cursors and404 slices match, with8,569 JS calls and159 frames. The first
+recognized calls and 156 frames. Before the helper repair, only 161 grids,
+410 cursors and 404 slices match, with 8,569 JS calls and 159 frames. The first
 incorrect draw selects the demon table instead of the lawful table. All three
 Angel cases are cuss positives. Their zero-iron and leather cases are footwear
 negatives only. The original footwear recipe's absent C stethoscope assertions
 and failing receipts remain immutable; the new cuss recipe asserts the actual
 C taunt without replacing those old claims.
 
-Twenty current-main checks pass:84 controls including18 direct source-state,
-10 source-contract and9 ordinary-input checks;8 fixtures/32segments with
-2,444 scored boundaries/cursors,118,003 calls and169 frames;all44 public with
-11,405 boundaries,792,838 calls and1,483 frames;52 hang checks;zero scope/import
-findings in276 modules. Delayed input matches across5segments/633boundaries,
-22,368calls/160frames. The two unaffected shaman/Oracle segments match178
-native styled boundaries/13,827calls/4frames and preserve all five original
+Twenty current-main checks pass. These include 84 controls, with 18 direct
+state checks, 10 source-contract checks and nine ordinary-input checks.
+Eight fixtures cover 32 segments, 2,444 scored boundaries/cursors, 118,003 calls
+and 169 frames. All 44 public fixtures match 11,405 boundaries, 792,838 calls
+and 1,483 frames. All 52 hang checks pass, with zero scope/import findings
+in 276 modules. Delayed input matches across five segments, 633 boundaries,
+22,368 calls and 160 frames. The two unaffected shaman/Oracle segments match
+178 native styled boundaries, 13,827 calls and four frames, preserving all five original
 JS output hashes. Recipe tags, raw integrity, all input-field presence and
-keys, every native collection and279 runtime hashes are checked. Five support
-files are fixed. Receipt:`.cache/restart-20261122/cuss-alignment-promotion-parent-verification.json`.
-Source seal independently verifies678files/6links. The original raw already
+keys, every native collection and 279 runtime hashes are checked. Five support
+files are fixed. Receipt: `.cache/restart-20261122/cuss-alignment-promotion-parent-verification.json`.
+The source seal independently verifies 678 files and six links. The original raw already
 has byte-exact NFS credit in the self/shoes batch; no additional C coverage
-gain is attributed to this replay. Maintained corpus795;latest full run793.
+gain is attributed to this replay. Maintained corpus: 795. Latest full run: 793.
 
 The vault exit/diagnostic/engraving composition was NOT committed. Parent
-verification found5 public regressions despite the frozen runner's zero
-process exit:0030 and5006 change late screens/cursors;0360,0367 and0373 fail
-with `impossible called impossible` through vision_recalc/newsym. Its168
-controls and29 selected native segments pass, but are insufficient. The full
-795 attempt was cancelled, both shards exit143, before edits. No full795
-success is claimed. All279 candidate modules and7 support files are preserved
+verification found five public regressions despite the frozen runner's zero
+process exit. Seeds 0030 and 5006 change late screens/cursors. Seeds 0360, 0367
+and 0373 fail with `impossible called impossible` through vision_recalc/newsym.
+Its 168 controls and 29 selected native segments pass, but are insufficient.
+The full 795 attempt was cancelled, both shards exit 143, before edits. No
+full795 success is claimed. All 279 candidate modules and seven support files are preserved
 under `.cache/restart-20261122/vault-exit-promotion-parent/current-main-candidate`.
-Main was restored byte for byte toccc65c81 before this independent cuss patch.
+Main was restored byte for byte to ccc65c81 before this independent cuss patch.
 The source package, before failures, public rows and cancelled logs remain
-unchanged. Rejection receipt:`vault-exit-promotion-parent-rejection.json`.
+unchanged. Rejection receipt: `vault-exit-promotion-parent-rejection.json`.
 New checkpoint drivers inspect every scored result and metric immediately,
 before continuing after a zero scorer exit. No frozen runner was changed.
 Jason is tracing the actual vision and game-end window caller contracts in
 a new cache package; prior bounded source claims are not treated as closure.
 
 Two more source candidates now have independently verified native packages:
-swallowed/statue inspection675styled boundaries/11,066calls;hero natural
-attack dispatch283styled boundaries/13,755calls. Their main composition checks
+swallowed/statue inspection has 675 styled boundaries and 11,066 calls; hero
+natural attack dispatch has 283 styled boundaries and 13,755 calls. Their main composition checks
 remain pending. NFS accepts both original raws byte for byte in one shared
-batch:792 distinct inputs across84 identical layouts,4,563/5,492 functions,
-60,042/107,260 branch outcomes. The batch adds1function and24outcomes;
-no per-input attribution is made. It now includes112 additional native files,
-427segments and9 additional Linux segments. Large profiles remain on NFS;
+batch: 792 distinct inputs across 84 identical layouts, 4,563/5,492 functions,
+60,042/107,260 branch outcomes. The batch adds one function and 24 outcomes;
+no per-input attribution is made. It now includes 112 additional native files,
+427 segments and nine additional Linux segments. Large profiles remain on NFS;
 only hash-verified compact summaries were downloaded. Local prefix:
 `linux-coverage-lookat-damage-union-*`.
 
 Continue verified commits and immediate pushes. Peaceful-minion chat, gnome
 Wizard inspection, complete hmonas callers and vault regression closure are
 active cache audits. Current public success is not full-port completion.
+
+## 2026-11-24 14:48 UTC: shared hero damage dispatch; full796 passed
+
+Natural hero attacks now call the existing `mhitm_adtyping` dispatcher with
+the complete initialized hit record. The repair restores the demon-pet guard,
+shared-handler early return, Trollsbane corpse flag and C's death-feedback
+order. The complete C damageum/demonpet owners, all 42 dispatch labels,
+supporting helpers and five existing awaited callers were reviewed. The
+partial private damage chain is removed, for 69 fewer runtime lines. Two
+missing hmonas routing arms remain a separate audit. This does not certify
+every branch inside each unchanged shared handler.
+
+Five new C cases cover slowing, rust destruction, demon summoning, xan attack
+reach and a physical negative. Original raw SHA256 is
+`b4b382d91b252216360bc7dea7263086f2a0039d6a048bc211b3a78c1887812d`.
+All 283 styled grids, cursors and per-input slices now match, with 13,755
+complete calls and no frames. Before the repair, 262 grids, 280 cursors and
+275 slices matched, with only 13,654 JS calls. The physical negative preserves
+all five original output hashes. Xan is a state/routing witness; its immediate
+native output is unchanged. Every input tuple, field presence and key is checked.
+
+All 18 focused checks pass, including 188 controls, 12 fixtures with 21 segments,
+2,031 scored boundaries/cursors and 60,598 calls. The 44 public fixtures match
+all 11,405 boundaries, 792,838 calls and 1,483 frames. All 56 hang checks pass,
+and the source audit reports zero findings in 276 non-frozen modules. Delayed
+input matches across eight segments, 438 boundaries and 22,109 calls. The source
+and native seals independently verify 96 files/three links and 66 files/five
+links. Parent receipt: `hero-damageum-promotion-parent-verification.json`.
+
+The full796 run has closed with both shards at exit zero. Every result row
+and metric passes: 843,512 scored screens/cursors, 17,498,485 scored RNG calls
+and 32,199 scored frames. All 279 runtime hashes and all 796 fixture hashes
+remain unchanged. Receipts are `hero-damageum-promotion-corpus-totals.json`
+and `hero-damageum-promotion-corpus-closure.json` under
+`.cache/restart-20261122/`. The shelved vault changes are absent. Scored corpus
+parity does not claim every decoded blank style or literal serialized byte is
+identical; the previously documented recorder style losses remain unchanged.
+
+The official data refreshed at 14:24 UTC and was fetched at 14:30. Our run at
+13:38 still scores 23,595/24,531, seventh agentic and eleventh overall, with
+39/56 held-out cases and 936 unmatched screens. The JSON team list order is not
+rank order. News remains unchanged. No gain from this later checkpoint is claimed.
+
+Swallowed/statue inspection has passed 21 checks on the exact next runtime
+composition, including 113 controls, nine focused fixtures and all public
+fixtures. It is ready for scoped main integration after this push. Peaceful
+minion chat and gnome Wizard return-contract confirmation remain in separate
+cache packages. Their unchanged raw C recordings also match the Linux binary
+byte for byte. Together they add three C branch outcomes, with no per-input
+attribution: 794 verified inputs across 85 layouts, 4,563/5,492 functions and
+60,045/107,260 outcomes. The union includes 114 additional native files,
+434 segments and nine additional Linux segments. All large profiles remain
+on NFS; compact receipt prefix is `linux-coverage-chat-gnome-union-*`.
+
+Vault public regressions have traced source fixes under final verification.
+Monster inspection also lacks C's sensing explanation and canonical hidden
+description; the bounded parent review records the async diagnostic question
+without changing runtime. Continue scoped ports, verified commits and immediate
+pushes. The full-port objective remains unfinished.
 
 ## 2026-09-05: full faithful port is the active goal
 

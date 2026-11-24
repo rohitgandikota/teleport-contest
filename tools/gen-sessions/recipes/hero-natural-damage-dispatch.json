@@ -1,0 +1,106 @@
+{
+  "name": "hero-natural-damage-dispatch",
+  "description": "Polymorphed hero damage through the shared C dispatcher: slowing, rust destruction, demon summoning, xan attack reach, and an unchanged physical bite. Xan HP is a JS state witness; its immediate native output is unchanged.",
+  "coverage": [
+    "forms.polymorph",
+    "combat.melee"
+  ],
+  "branches": [
+    "hero.damage.slow",
+    "hero.damage.rust-death",
+    "hero.damage.legs",
+    "hero.damage.demonpet",
+    "hero.damage.physical-control"
+  ],
+  "segments": [
+    {
+      "name": "hero-slow-touch",
+      "seed": 21020,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:HeroDamage,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #polyself\rskeleton\r  \u001b\u001b\u0007sleeping hostile ogre\rb      :"
+    },
+    {
+      "name": "hero-rust-destruction",
+      "seed": 21020,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:HeroDamage,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #polyself\rrust monster\r  \u001b\u001b\u0007sleeping hostile iron golem\rh      :"
+    },
+    {
+      "name": "hero-xan-sting",
+      "seed": 21020,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:HeroDamage,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #polyself\rxan\r  \u001b\u001b\u0007sleeping hostile ogre\rh      :"
+    },
+    {
+      "name": "hero-demon-summon",
+      "seed": 21024,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:HeroDamage,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #polyself\rvrock\r  \u001b\u001b\u0007sleeping hostile minotaur\rk      :"
+    },
+    {
+      "name": "hero-physical-control",
+      "seed": 21020,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:HeroDamage,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #polyself\rdingo\r  \u001b\u001b\u0007sleeping hostile ogre\ru      :"
+    }
+  ],
+  "branchAssertions": [
+    {
+      "branch": "hero.damage.slow",
+      "segment": 0,
+      "screenIncludes": [
+        "You touch the ogre.",
+        "The ogre slows down."
+      ],
+      "screenExcludes": [
+        "Do you want your possessions identified?"
+      ]
+    },
+    {
+      "branch": "hero.damage.rust-death",
+      "segment": 1,
+      "screenIncludes": [
+        "You touch the iron golem.",
+        "The iron golem falls to pieces!"
+      ],
+      "screenExcludes": [
+        "Do you want your possessions identified?"
+      ]
+    },
+    {
+      "branch": "hero.damage.legs",
+      "segment": 2,
+      "screenIncludes": [
+        "You sting the ogre."
+      ],
+      "screenExcludes": [
+        "Do you want your possessions identified?"
+      ]
+    },
+    {
+      "branch": "hero.damage.demonpet",
+      "segment": 3,
+      "screenIncludes": [
+        "Some hell-p has arrived!"
+      ],
+      "screenExcludes": [
+        "Do you want your possessions identified?"
+      ]
+    },
+    {
+      "branch": "hero.damage.physical-control",
+      "segment": 4,
+      "screenIncludes": [
+        "You bite the ogre."
+      ],
+      "screenExcludes": [
+        "Do you want your possessions identified?"
+      ]
+    }
+  ]
+}

@@ -96,7 +96,8 @@ import { set_wounded_legs } from './do.js';
 import { helpless, MON_WEP } from './monst.js';
 import { rn1 } from './rng.js';
 import { dmgtype, monstseesu, monstunseesu } from './mondata.js';
-import { touch_petrifies, abuse_dog, slimeproof } from './dog.js';
+import { touch_petrifies, abuse_dog, slimeproof, tamedog } from './dog.js';
+import { ndemon } from './minion.js';
 import { munslime } from './muse.js';
 import { delayed_killer } from './end.js';
 import { SLIMED, NC_SHOW_MSG } from './const.js';
@@ -122,7 +123,7 @@ import { canseemon, canspotmon, glyph_at, sensemon, newsym, pline, shieldeff,
 import { wakeup, wake_nearto, killed, xkilled, seemimic, setmangry, mongone,
          shieldeff_mon, is_pool, m_carrying, t_at, minliquid,
          healmon, monstone, mondied, newcham, mlifesaver, corpse_chance } from './mon.js';
-import { DEADMONSTER } from './monst.js';
+import { DEADMONSTER, troll_baned } from './monst.js';
 import { is_pole } from './u_init.js';
 import { bimanual, carried, is_plural, is_flimsy, is_shield,
          is_poisonable, stone_missile } from './obj.js';
@@ -138,7 +139,7 @@ import { an, aobjnam, yname, cxname, xname, The, makeplural, simpleonames,
          doname } from './objnam.js';
 import { mintrap, instapetrify, minstapetrify, mselftouch, erode_obj,
          ignite_items, unconscious } from './trap.js';
-import { clone_mon, goodpos, place_monster, remove_monster,
+import { makemon, clone_mon, goodpos, place_monster, remove_monster,
          is_rider, grow_up, monsndx } from './makemon.js';
 import { rn2, rnd, d, rn2_on_display_rng } from './rng.js';
 import { is_safemon, tp_sensemon, display_nhwindow_message } from './display.js';
@@ -148,7 +149,7 @@ import { monflee, set_apparxy } from './monmove.js';
 import { monnear } from './monmove.js';
 import { IS_OBSTRUCTED, MON_POLE_DIST, M_ATTK_HIT, M_ATTK_MISS,
          M_ATTK_DEF_DIED, M_ATTK_AGR_DIED, M_ATTK_AGR_DONE,
-         NATTK, MM_IGNOREWATER,
+         NATTK, NO_MM_FLAGS, MM_IGNOREWATER,
          MM_IGNORELAVA, Is_airlevel, Is_waterlevel, isok,
          FORCEBUNGLE, HURTLING, IS_DOOR, SHOPBASE, ROOMOFFSET,
          TEST_MOVE, ROOM, CORR, xdir, ydir, STRAT_WAITFORU,
@@ -161,7 +162,7 @@ import { abon, hitval, weapon_hit_bonus, dmgval, weapon_dam_bonus, P_SKILL,
 import { find_mac } from './worn.js';
 import { greatest_erosion, worn, helm_simple_name,
          cloak_simple_name } from './do_wear.js';
-import { is_orc, is_elf, unsolid, noncorporeal, nonliving, amorphous,
+import { is_orc, is_elf, is_demon, unsolid, noncorporeal, nonliving, amorphous,
          thick_skinned, attacktype,
          sticks, haseyes, cantwield, is_flyer, is_floater,
          is_whirly, mon_hates_blessings, resists_blnd, has_head, mindless,
@@ -293,6 +294,18 @@ async function mhitm_really_poison(magr, mattk, mdef, mhm) {
             await pline_The('poison was deadly...');
     }
 }
+
+// src/uhitm.c:2133 demonpet(), summon a demon pet and exercise wisdom.
+async function demonpet() {
+    await pline('Some hell-p has arrived!');
+    const i = !rn2(6) ? ndemon(game.u.ualign.type) : NON_PM;
+    const pm = i !== NON_PM ? game.mons[i] : game.youmonst.data;
+    const dtmp = await makemon(pm, game.u.ux, game.u.uy, NO_MM_FLAGS);
+    if (dtmp)
+        await tamedog(dtmp, null, false);
+    exercise(A_WIS, true);
+}
+
 
 // src/uhitm.c:2148 theft_petrifies()
 async function theft_petrifies(otmp) {
@@ -1772,124 +1785,42 @@ export async function mhitm_adtyping(magr, mattk, mdef, mhm) {
     }
 }
 
-// src/uhitm.c:4819 damageum(), the damage tail for a natural hero attack.
-// The physical arm covers claws, kicks, touches, and hugs. Other damage types
-// retain their base dice while their special side effects remain explicit in
-// the unported ledger.
-export async function damageum(mon, mattk, specialdmg) {
-    let damage = d(mattk[2], mattk[3]);
-    const aatyp = mattk[0];
+// src/uhitm.c:4835 damageum(), the damage tail for a natural hero attack.
+export async function damageum(mdef, mattk, specialdmg) {
+    const mhm = { damage: d(mattk[2], mattk[3]), hitflags: M_ATTK_MISS,
+                  permdmg: 0, specialdmg, done: false };
 
-    if (mattk[1] === ATTKS.AD_PHYS) {
-        damage += specialdmg;
-        if (aatyp === ATTKS.AT_KICK || aatyp === ATTKS.AT_CLAW
-            || aatyp === ATTKS.AT_TUCH || aatyp === ATTKS.AT_HUGS) {
-            if (thick_skinned(game.mons[mon.mnum])) {
-                damage = aatyp === ATTKS.AT_KICK
-                    ? 0 : Math.trunc((damage + 1) / 2);
-            }
-            const bonus = game.u.udaminc || 0;
-            if (bonus > 0)
-                damage += bonus;
-            else if (damage > 0)
-                damage = Math.max(1, damage + bonus);
-        }
-    } else {
-        if (mattk[1] === ATTKS.AD_FIRE) {
-            const mhm = { damage, hitflags: M_ATTK_MISS, permdmg: 0,
-                          specialdmg, done: false };
-            await mhitm_ad_fire(game.youmonst, mattk, mon, mhm);
-            damage = mhm.damage;
-        } else if (mattk[1] === ATTKS.AD_COLD) {
-            const mhm = { damage, hitflags: M_ATTK_MISS, permdmg: 0,
-                          specialdmg, done: false };
-            await mhitm_ad_cold(game.youmonst, mattk, mon, mhm);
-            damage = mhm.damage;
-        } else if (mattk[1] === ATTKS.AD_ELEC) {
-            const mhm = { damage, hitflags: M_ATTK_MISS, permdmg: 0,
-                          specialdmg, done: false };
-            await mhitm_ad_elec(game.youmonst, mattk, mon, mhm);
-            damage = mhm.damage;
-        } else if (mattk[1] === ATTKS.AD_DRST || mattk[1] === ATTKS.AD_DRDX
-                   || mattk[1] === ATTKS.AD_DRCO) {
-            const mhm = { damage, hitflags: M_ATTK_MISS, permdmg: 0,
-                          specialdmg, done: false };
-            await mhitm_ad_drst(game.youmonst, mattk, mon, mhm);
-            damage = mhm.damage;
-        } else if (mattk[1] === ATTKS.AD_DRLI) {
-            const mhm = { damage, hitflags: M_ATTK_MISS, permdmg: 0,
-                          specialdmg, done: false };
-            await mhitm_ad_drli(game.youmonst, mattk, mon, mhm);
-            damage = mhm.damage;
-        } else if (mattk[1] === ATTKS.AD_DRIN) {
-            const mhm = { damage, hitflags: M_ATTK_MISS, permdmg: 0,
-                          specialdmg, done: false };
-            await mhitm_ad_drin(game.youmonst, mattk, mon, mhm);
-            damage = mhm.damage;
-        } else if (mattk[1] === ATTKS.AD_STON) {
-            const mhm = { damage, hitflags: M_ATTK_MISS, permdmg: 0,
-                          specialdmg, done: false };
-            await mhitm_ad_ston(game.youmonst, mattk, mon, mhm);
-            damage = mhm.damage;
-        } else if (mattk[1] === ATTKS.AD_WRAP) {
-            const mhm = { damage, hitflags: M_ATTK_MISS, permdmg: 0,
-                          specialdmg, done: false };
-            await mhitm_ad_wrap(game.youmonst, mattk, mon, mhm);
-            damage = mhm.damage;
-        } else if (mattk[1] === ATTKS.AD_TLPT) {
-            const mhm = { damage, hitflags: M_ATTK_MISS, permdmg: 0,
-                          specialdmg, done: false };
-            await mhitm_ad_tlpt(game.youmonst, mattk, mon, mhm);
-            damage = mhm.damage;
-        } else if (mattk[1] === ATTKS.AD_POLY) {
-            const mhm = { damage, hitflags: M_ATTK_MISS, permdmg: 0,
-                          specialdmg, done: false };
-            await mhitm_ad_poly(game.youmonst, mattk, mon, mhm);
-            damage = mhm.damage;
-            if (mhm.done)
-                return mhm.hitflags;
-        } else if (mattk[1] === ATTKS.AD_HEAL) {
-            const mhm = { damage, hitflags: M_ATTK_MISS, permdmg: 0,
-                          specialdmg, done: false };
-            await mhitm_ad_heal(game.youmonst, mattk, mon, mhm);
-            damage = mhm.damage;
-            if (mhm.done)
-                return mhm.hitflags;
-        } else if (mattk[1] === ATTKS.AD_PLYS) {
-            const mhm = { damage, hitflags: M_ATTK_MISS, permdmg: 0,
-                          specialdmg, done: false };
-            await mhitm_ad_plys(game.youmonst, mattk, mon, mhm);
-            damage = mhm.damage;
-        } else if (mattk[1] === ATTKS.AD_SLEE) {
-            const mhm = { damage, hitflags: M_ATTK_MISS, permdmg: 0,
-                          specialdmg, done: false };
-            await mhitm_ad_slee(game.youmonst, mattk, mon, mhm);
-            damage = mhm.damage;
-        } else if (mattk[1] === ATTKS.AD_SLIM) {
-            const mhm = { damage, hitflags: M_ATTK_MISS, permdmg: 0,
-                          specialdmg, done: false };
-            await mhitm_ad_slim(game.youmonst, mattk, mon, mhm);
-            damage = mhm.damage;
-            if (mhm.done)
-                return mhm.hitflags;
-        } else if (mattk[1] === ATTKS.AD_CURS) {
-            const mhm = { damage, hitflags: M_ATTK_MISS, permdmg: 0,
-                          specialdmg, done: false };
-            await mhitm_ad_curs(game.youmonst, mattk, mon, mhm);
-            damage = mhm.damage;
-            if (mhm.done)
-                return mhm.hitflags;
-        } else {
-            /* src/uhitm.c mhitm_adtyping() default */
-            damage = 0;
-        }
+    if (is_demon(game.youmonst.data) && !rn2(13) && !game.u.uwep
+        && game.u.umonnum !== PMNAMES.PM_AMOROUS_DEMON
+        && game.u.umonnum !== PMNAMES.PM_BALROG) {
+        await demonpet();
+        return M_ATTK_MISS;
     }
 
-    mon.mstrategy &= ~STRAT_WAITFORU;
-    mon.mhp -= damage;
-    if (DEADMONSTER(mon)) {
-        if (damage)
-            await killed(mon);
+    await mhitm_adtyping(game.youmonst, mattk, mdef, mhm);
+
+    if (mhm.done)
+        return mhm.hitflags;
+
+    mdef.mstrategy &= ~STRAT_WAITFORU; /* in case player is very fast */
+    mdef.mhp -= mhm.damage;
+    if (DEADMONSTER(mdef)) {
+        /* A troll killed by Trollsbane won't auto-revive. */
+        if (mattk[0] === ATTKS.AT_WEAP || mattk[0] === ATTKS.AT_CLAW)
+            game.mkcorpstat_norevive = troll_baned(mdef, game.u.uwep);
+        /* DEADMONSTER(mdef) and !mhm.damage means already killed. */
+        if (mdef.mtame && !cansee(mdef.mx, mdef.my)) {
+            await You_feel('embarrassed for a moment.');
+            if (mhm.damage)
+                await xkilled(mdef, XKILL_NOMSG);
+        } else if (!game.flags.verbose) {
+            await You('destroy it!');
+            if (mhm.damage)
+                await xkilled(mdef, XKILL_NOMSG);
+        } else if (mhm.damage) {
+            await killed(mdef);
+        }
+        game.mkcorpstat_norevive = false;
         return M_ATTK_DEF_DIED;
     }
     return M_ATTK_HIT;

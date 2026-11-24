@@ -15,13 +15,13 @@ import { getlin } from './cmd.js';
 import { mungspaces } from './hacklib.js';
 import { Monnam, noit_Monnam, noit_mon_nam, pmname,
          x_monnam } from './do_name.js';
-import { makeplural } from './objnam.js';
+import { makeplural, mimic_obj_name } from './objnam.js';
 import { adjalign } from './attrib.js';
 import { block_point, cansee, couldsee, recalc_block_point,
          unblock_point } from './vision.js';
 import { rn2 } from './rng.js';
 import { distmin, isok } from './hacklib.js';
-import { is_fainted } from './eat.js';
+import { is_fainted, reset_faint } from './eat.js';
 import { ONAMES } from './objects_data.js';
 import { m_carrying, mnexto, mongone } from './mon.js';
 import { del_engr, engr_at } from './engrave.js';
@@ -35,7 +35,7 @@ import {
     A_LAWFUL, COLNO, ROWNO, ROOMOFFSET, VAULT, VAULT_GUARD_TIME,
     ROOM, STONE, CORR, SCORR, HWALL, VWALL, DOOR, D_NODOOR, IS_WALL,
     IS_STWALL, IS_POOL, IS_ROOM, ACCESSIBLE, ARTICLE_A, BLCORNER,
-    BRCORNER, RLOC_MSG, TLCORNER, TRCORNER,
+    BRCORNER, RLOC_MSG, TLCORNER, TRCORNER, M_AP_TYPE, M_AP_OBJECT,
 } from './const.js';
 import { relobj } from './steal.js';
 import { m_into_limbo } from './mon.js';
@@ -44,7 +44,7 @@ import { simpleonames } from './objnam.js';
 import { an } from './objnam.js';
 import { You_see } from './pline.js';
 import { Blind, Deaf } from './youprop.js';
-import { noit_mhis, sticks } from './mondata.js';
+import { noit_mhis, sticks, is_silent, mhe } from './mondata.js';
 
 
 export function vault_occupied(urooms) {
@@ -709,6 +709,7 @@ export async function invault() {
     });
     u.uinvault++;
 
+    await reset_faint();
     /* if there are any boulders in the guard's way, destroy them;
        perhaps the guard knows a touch equivalent of force bolt;
        otherwise the hero wouldn't be able to push one to follow the
@@ -728,13 +729,39 @@ export async function invault() {
         await func(`${(bcnt === 1) ? an(bname) : makeplural(bname)} shatter.`);
     }
 
-    if (canspotmon(guard)) {
+    const spotted = canspotmon(guard);
+    if (spotted) {
         await pline(`Suddenly one of the Vault's ${
             makeplural(pmname(guard.data, guard.female ? 1 : 0))} enters!`);
         newsym(guard.mx, guard.my);
     } else {
         await pline('Someone else has entered the Vault.');
         map_invisible(guard.mx, guard.my);
+    }
+
+    if (u.uswallow) {
+        if (!Deaf())
+            await verbalize("What's going on here?");
+        if (!spotted)
+            await pline_The('other presence vanishes.');
+        await mongone(guard);
+        return;
+    }
+    if (M_AP_TYPE(game.youmonst) === M_AP_OBJECT || u.uundetected) {
+        if (M_AP_TYPE(game.youmonst) === M_AP_OBJECT
+            && game.youmonst.mappearance !== ONAMES.GOLD_PIECE && !Deaf())
+            await verbalize(`Hey!  Who left that ${mimic_obj_name(game.youmonst)} in here?`);
+        await pline(`Puzzled, ${mhe(guard)} turns around and leaves.`);
+        await mongone(guard);
+        return;
+    }
+    if (u.intrinsic?.HStrangled || is_silent(game.youmonst.data) || game.multi < 0) {
+        if (Deaf())
+            await pline(`${noit_Monnam(guard)} huffs and turns to leave.`);
+        else
+            await verbalize("I'll be back when you're ready to speak to me!");
+        await mongone(guard);
+        return;
     }
 
     const { stop_occupation } = await import('./allmain.js');

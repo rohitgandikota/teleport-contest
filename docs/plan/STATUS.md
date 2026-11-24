@@ -4910,6 +4910,50 @@ Evidence is `.cache/restart-20261122/flip-random-native-confirmation/`,
 `flip-random-promoted-*`. The original patch, fixture, input tuples and branch
 assertions remain unchanged. The normal-import gates require no cache loader.
 
+## 2026-11-24: guard arrivals respect the hero's ability to answer
+
+Random-flip checkpoint `0d84ae23` is committed and pushed. `invault` now calls
+the existing hunger-faint recovery helper before arrival feedback and follows
+C's ordered early returns: swallowed, object disguise or hidden, then
+strangled, silent or immobilized. It captures guard visibility once, awaits
+the existing cleanup helper and returns before interrogation or corridor
+construction. Gold disguise retains precedence over silence and immobility.
+The patch changes only `vault.js`, with no new helper or production export.
+
+Thirteen unchanged native cases cover hearing/deaf pairs for swallowed,
+mimic, hidden, silent, strangled and paralyzed heroes, plus gold disguise.
+All 1,757 rendered boundary grids/cursors, 81,645 complete RNG calls and
+input slices, and thirteen animation frames match. Before the repair, none
+of the thirteen segments passes completely: 1,423 grids and 1,610 cursors
+match, with 80,055 actual calls and ten frames. The old code asks for a name
+instead of leaving and omits the guard-disposal RNG packet. Raw SHA-256:
+`f5cc4528fe564e7634adb01706339c0ace03875e19e9b7765b4d22d3d43cac9b`.
+The raw bytes, all five input fields and every recorded key are retained.
+
+All 22 integrated checks pass: 78 new and 154 retained controls, eight
+focused fixtures with forty segments, 4,562 boundaries, 211,868 complete
+RNG calls and input slices, and 136 animation grids/cursors. Immediate and
+deferred input agree across three fixtures, 25 segments, 3,352 boundaries,
+153,571 calls and thirteen frames. All 44 public fixtures remain exact at
+11,405 boundaries, 792,838 scored RNG positions and 1,483 frames. All 52
+hang workers pass at 30 seconds. Source audit is clear across 276 modules,
+syntax passes and all 279 runtime hashes stay fixed. The corpus now has
+755 fixtures; the latest full regression remains `5b38727c` at 753/753.
+
+The independent Linux recording also matches exactly. It adds 23 direct
+C outcomes to its predecessor, reaching 749 inputs and 59,397/107,260
+outcomes. The later queued shop-chronicle recording brings the union to
+750 inputs, fifty-three layouts, 4,537/5,492 functions and 59,405 outcomes.
+Profiles remain on NFS. Hunger-faint recovery has real-producer state and
+ablation evidence only; these ordinary native inputs do not reach it.
+Death-history throttling and dead-Croesus anger remain separate work.
+
+Evidence is `.cache/restart-20261122/invault-early-exit-native-confirmation/`,
+`vault-early-exit-parent-{source-review,integration,verification}.json` and
+`vault-early-exit-promoted-*`. Normal-import gates need no cache loader.
+Rendered-grid acceptance retains the frozen decoder contract; serialized
+terminal bytes are not claimed identical. No oracle was normalized.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

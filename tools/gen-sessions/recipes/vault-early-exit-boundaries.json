@@ -1,0 +1,352 @@
+{
+  "name": "vault-early-exit-boundaries",
+  "description": "Thirteen unchanged native C cases confirm invault swallowed, object-mimic, hidden, strangled, silent and immobilized early returns, including gold-disguise precedence and ordinary recovery. Hunger-faint reset remains separately source-controlled.",
+  "coverage": [
+    "mode.debug",
+    "social.vault-guard",
+    "survival.timed-status",
+    "ui.map-memory-vision"
+  ],
+  "branches": [
+    "vault.invault-early-swallowed-hearing",
+    "vault.invault-early-swallowed-deaf",
+    "vault.invault-early-mimic-hearing",
+    "vault.invault-early-mimic-deaf",
+    "vault.invault-early-hidden-hearing",
+    "vault.invault-early-hidden-deaf",
+    "vault.invault-early-silent-hearing",
+    "vault.invault-early-silent-deaf",
+    "vault.invault-early-strangled-hearing",
+    "vault.invault-early-strangled-deaf",
+    "vault.invault-early-paralyzed-hearing",
+    "vault.invault-early-paralyzed-deaf",
+    "vault.invault-early-gold-hearing"
+  ],
+  "requireBranchAssertions": true,
+  "segments": [
+    {
+      "seed": 7303,
+      "datetime": "20000115090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00162\r\u0006\u0017500 gold pieces\r\u0014kkkkkkkkkkkkkhhhhh. #levelchange\r10\r            ........................\u0007hostile ice vortex\r   m. m. m. m. m. m. m. m. m. m. m. m.        \u001b\u001b",
+      "name": "invault-early-swallowed-hearing"
+    },
+    {
+      "seed": 7303,
+      "datetime": "20000115090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00162\r\u0006\u0017500 gold pieces\r\u0014kkkkkkkkkkkkkhhhhh. #wizintrinsic\r100j\r  \u001b\u001b#levelchange\r10\r            ........................\u0007hostile ice vortex\r   m. m. m. m. m. m. m. m. m. m. m. m.        \u001b\u001b",
+      "name": "invault-early-swallowed-deaf"
+    },
+    {
+      "seed": 7303,
+      "datetime": "20000115090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00162\r\u0006\u0017500 gold pieces\r\u0014kkkkkkkkkkkkkhhhhh. #polyself\rsmall mimic\r    \u001b\u001b#monster\r    \u001b\u001b...................................       \u001b\u001b",
+      "name": "invault-early-mimic-hearing"
+    },
+    {
+      "seed": 7303,
+      "datetime": "20000115090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00162\r\u0006\u0017500 gold pieces\r\u0014kkkkkkkkkkkkkhhhhh. #wizintrinsic\r100j\r  \u001b\u001b#polyself\rsmall mimic\r    \u001b\u001b#monster\r    \u001b\u001b...................................       \u001b\u001b",
+      "name": "invault-early-mimic-deaf"
+    },
+    {
+      "seed": 7303,
+      "datetime": "20000115090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00162\r\u0006\u0017500 gold pieces\r\u0014kkkkkkkkkkkkkhhhhh. #polyself\rtrapper\r    \u001b\u001b#monster\r    \u001b\u001b...................................       \u001b\u001b",
+      "name": "invault-early-hidden-hearing"
+    },
+    {
+      "seed": 7303,
+      "datetime": "20000115090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00162\r\u0006\u0017500 gold pieces\r\u0014kkkkkkkkkkkkkhhhhh. #wizintrinsic\r100j\r  \u001b\u001b#polyself\rtrapper\r    \u001b\u001b#monster\r    \u001b\u001b...................................       \u001b\u001b",
+      "name": "invault-early-hidden-deaf"
+    },
+    {
+      "seed": 7303,
+      "datetime": "20000115090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00162\r\u0006\u0017500 gold pieces\r\u0014kkkkkkkkkkkkkhhhhh. #polyself\rgelatinous cube\r    \u001b\u001b...................................       \u001b\u001b",
+      "name": "invault-early-silent-hearing"
+    },
+    {
+      "seed": 7303,
+      "datetime": "20000115090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00162\r\u0006\u0017500 gold pieces\r\u0014kkkkkkkkkkkkkhhhhh. #wizintrinsic\r100j\r  \u001b\u001b#polyself\rgelatinous cube\r    \u001b\u001b...................................       \u001b\u001b",
+      "name": "invault-early-silent-deaf"
+    },
+    {
+      "seed": 7303,
+      "datetime": "20000115090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00162\r\u0006\u0017500 gold pieces\r\u0014kkkkkkkkkkkkkhhhhh. \u0017uncursed amulet of strangulation\r   ...........................Po   m.    Ro\u001b\u001b       \u001b\u001b",
+      "name": "invault-early-strangled-hearing"
+    },
+    {
+      "seed": 7303,
+      "datetime": "20000115090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00162\r\u0006\u0017500 gold pieces\r\u0014kkkkkkkkkkkkkhhhhh. #wizintrinsic\r100j\r  \u001b\u001b\u0017uncursed amulet of strangulation\r   ...........................Po   m.    Ro\u001b\u001b       \u001b\u001b",
+      "name": "invault-early-strangled-deaf"
+    },
+    {
+      "seed": 7303,
+      "datetime": "20000115090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00162\r\u0006\u0017500 gold pieces\r\u0014kkkkkkkkkkkkkhhhhh. \u0017cursed potion of paralysis\r   qo       \u001b\u001b",
+      "name": "invault-early-paralyzed-hearing"
+    },
+    {
+      "seed": 7303,
+      "datetime": "20000115090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00162\r\u0006\u0017500 gold pieces\r\u0014kkkkkkkkkkkkkhhhhh. #wizintrinsic\r100j\r  \u001b\u001b\u0017cursed potion of paralysis\r   qo       \u001b\u001b",
+      "name": "invault-early-paralyzed-deaf"
+    },
+    {
+      "seed": 7303,
+      "datetime": "20000115090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00162\r\u0006\u0017500 gold pieces\r\u0014kkkkkkkkkkkkkhhhhh. \u0017blessed small mimic corpse\r   ..........eo          \u001b\u001b",
+      "name": "invault-early-gold-hearing"
+    }
+  ],
+  "branchAssertions": [
+    {
+      "branch": "vault.invault-early-swallowed-hearing",
+      "segment": 0,
+      "screenIncludes": [
+        "The ice vortex engulfs you!",
+        "Someone else has entered the Vault.",
+        "The other presence vanishes.",
+        "\"What's going on here?\""
+      ],
+      "screenExcludes": [
+        "Hello stranger",
+        "supply your name",
+        "drop that gold",
+        "follow me",
+        "\"I'll be back when you're ready to speak to me!\"",
+        "The guard huffs and turns to leave.",
+        "Puzzled,"
+      ]
+    },
+    {
+      "branch": "vault.invault-early-swallowed-deaf",
+      "segment": 1,
+      "screenIncludes": [
+        "You are unable to hear anything.",
+        "The ice vortex engulfs you!",
+        "Someone else has entered the Vault.",
+        "The other presence vanishes."
+      ],
+      "screenExcludes": [
+        "Hello stranger",
+        "supply your name",
+        "drop that gold",
+        "follow me",
+        "\"What's going on here?\"",
+        "\"I'll be back when you're ready to speak to me!\"",
+        "The guard huffs and turns to leave.",
+        "Puzzled,"
+      ]
+    },
+    {
+      "branch": "vault.invault-early-mimic-hearing",
+      "segment": 2,
+      "screenIncludes": [
+        "Puzzled,",
+        "You are now mimicking a strange object.",
+        "\"Hey!  Who left that whatcha-may-callit in here?\""
+      ],
+      "screenExcludes": [
+        "Hello stranger",
+        "supply your name",
+        "drop that gold",
+        "follow me",
+        "\"I'll be back when you're ready to speak to me!\"",
+        "The guard huffs and turns to leave."
+      ]
+    },
+    {
+      "branch": "vault.invault-early-mimic-deaf",
+      "segment": 3,
+      "screenIncludes": [
+        "You are unable to hear anything.",
+        "Puzzled,",
+        "You are now mimicking a strange object."
+      ],
+      "screenExcludes": [
+        "Hello stranger",
+        "supply your name",
+        "drop that gold",
+        "follow me",
+        "\"Hey!  Who left that whatcha-may-callit in here?\"",
+        "\"I'll be back when you're ready to speak to me!\"",
+        "The guard huffs and turns to leave."
+      ]
+    },
+    {
+      "branch": "vault.invault-early-hidden-hearing",
+      "segment": 4,
+      "screenIncludes": [
+        "Puzzled,",
+        "You are now hiding on the floor."
+      ],
+      "screenExcludes": [
+        "Hello stranger",
+        "supply your name",
+        "drop that gold",
+        "follow me",
+        "\"Hey!  Who left that whatcha-may-callit in here?\"",
+        "\"I'll be back when you're ready to speak to me!\"",
+        "The guard huffs and turns to leave."
+      ]
+    },
+    {
+      "branch": "vault.invault-early-hidden-deaf",
+      "segment": 5,
+      "screenIncludes": [
+        "You are unable to hear anything.",
+        "Puzzled,",
+        "You are now hiding on the floor."
+      ],
+      "screenExcludes": [
+        "Hello stranger",
+        "supply your name",
+        "drop that gold",
+        "follow me",
+        "\"Hey!  Who left that whatcha-may-callit in here?\"",
+        "\"I'll be back when you're ready to speak to me!\"",
+        "The guard huffs and turns to leave."
+      ]
+    },
+    {
+      "branch": "vault.invault-early-silent-hearing",
+      "segment": 6,
+      "screenIncludes": [
+        "\"I'll be back when you're ready to speak to me!\"",
+        "You turn into a gelatinous cube!"
+      ],
+      "screenExcludes": [
+        "Hello stranger",
+        "supply your name",
+        "drop that gold",
+        "follow me",
+        "The guard huffs and turns to leave.",
+        "Puzzled,"
+      ]
+    },
+    {
+      "branch": "vault.invault-early-silent-deaf",
+      "segment": 7,
+      "screenIncludes": [
+        "You are unable to hear anything.",
+        "The guard huffs and turns to leave.",
+        "You turn into a gelatinous cube!"
+      ],
+      "screenExcludes": [
+        "Hello stranger",
+        "supply your name",
+        "drop that gold",
+        "follow me",
+        "\"I'll be back when you're ready to speak to me!\"",
+        "Puzzled,"
+      ]
+    },
+    {
+      "branch": "vault.invault-early-strangled-hearing",
+      "segment": 8,
+      "screenIncludes": [
+        "\"I'll be back when you're ready to speak to me!\"",
+        "It constricts your throat!",
+        "You can breathe more easily!"
+      ],
+      "screenExcludes": [
+        "Hello stranger",
+        "supply your name",
+        "drop that gold",
+        "follow me",
+        "The guard huffs and turns to leave.",
+        "Puzzled,"
+      ]
+    },
+    {
+      "branch": "vault.invault-early-strangled-deaf",
+      "segment": 9,
+      "screenIncludes": [
+        "You are unable to hear anything.",
+        "The guard huffs and turns to leave.",
+        "It constricts your throat!",
+        "You can breathe more easily!"
+      ],
+      "screenExcludes": [
+        "Hello stranger",
+        "supply your name",
+        "drop that gold",
+        "follow me",
+        "\"I'll be back when you're ready to speak to me!\"",
+        "Puzzled,"
+      ]
+    },
+    {
+      "branch": "vault.invault-early-paralyzed-hearing",
+      "segment": 10,
+      "screenIncludes": [
+        "\"I'll be back when you're ready to speak to me!\"",
+        "Your feet are frozen to the floor!",
+        "You can move again."
+      ],
+      "screenExcludes": [
+        "Hello stranger",
+        "supply your name",
+        "drop that gold",
+        "follow me",
+        "The guard huffs and turns to leave.",
+        "Puzzled,"
+      ]
+    },
+    {
+      "branch": "vault.invault-early-paralyzed-deaf",
+      "segment": 11,
+      "screenIncludes": [
+        "You are unable to hear anything.",
+        "The guard huffs and turns to leave.",
+        "Your feet are frozen to the floor!",
+        "You can move again."
+      ],
+      "screenExcludes": [
+        "Hello stranger",
+        "supply your name",
+        "drop that gold",
+        "follow me",
+        "\"I'll be back when you're ready to speak to me!\"",
+        "Puzzled,"
+      ]
+    },
+    {
+      "branch": "vault.invault-early-gold-hearing",
+      "segment": 12,
+      "screenIncludes": [
+        "Puzzled,",
+        "You finish eating the small mimic corpse.",
+        "You can't resist the temptation to mimic a pile of gold.",
+        "You now prefer mimicking a human again."
+      ],
+      "screenExcludes": [
+        "Hello stranger",
+        "supply your name",
+        "drop that gold",
+        "follow me",
+        "\"Hey!  Who left that whatcha-may-callit in here?\"",
+        "\"I'll be back when you're ready to speak to me!\"",
+        "The guard huffs and turns to leave."
+      ]
+    }
+  ]
+}

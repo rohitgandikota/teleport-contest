@@ -10,7 +10,7 @@ Ground rules are in `/CLAUDE.md`. Read that first if you have not.
 
 ---
 
-## Current focus, 2026-11-23
+## Current focus, 2026-11-24
 
 Continue the faithful port with readable C-aligned code and prompt verified
 pushes. The latest official snapshot checked, November 24 at 02:35 UTC, has
@@ -145,7 +145,9 @@ passing 44 controls, eight focused fixtures and all 44 public fixtures.
 Region coordinates pass all eighteen focused/public checks and the full
 753-fixture regression. Random flips now retain the active-level flag,
 passing 172 controls, seven focused fixtures and all 44 public fixtures.
-Guard early returns and shop chronicle records are under native verification.
+Guard early returns now match thirteen native cases, all 232 related controls,
+eight focused fixtures and all 44 public fixtures. Shop chronicle records
+remain under native verification.
 The Linux/NFS branch collector is pushed
 and passes signal canaries plus exact save/restore, artifact and natural-exit
 pilots. The Linux census at e4504071 now covers all 678 original inputs:
@@ -154,8 +156,9 @@ Adding 70 newer raw inputs and two independent Linux controls, 264
 native segments in total, gives a validated union entering 4,537/5,492
 functions and observing 59,405/107,260 direct C branch outcomes.
 All 750 credited input hashes, fifty-three build manifests and branch layouts
-were checked before merging. This C coverage census includes queued guard
-early-return and shop-chronicle recordings; their JS integration remains pending. Original platform/output rejections
+were checked before merging. This C coverage census includes the guard
+early-return recording and queued shop-chronicle recording; the latter's JS
+integration remains pending. Original platform/output rejections
 remain rejected; no output was normalized. The two new sink fixtures separately
 match Linux C exactly; their validated union covers all 94/94 direct dosinkring
 outcomes in 49 cases. The teleport and polymorph helpers still have measured

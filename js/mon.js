@@ -487,12 +487,8 @@ async function movemon_singlemon(mtmp) {
         }
     }
 
-    /* src/mon.c:1286 — the hider and eel arms are NOT wired here.
-       js/mon.js has restrap() ported below and it is correct in isolation,
-       but wiring these two arms measured -42 screens and -5217 RNG, so the
-       gap is recorded instead. See docs/plan/STATUS.md for the measurement
-       and the leading hypothesis (our mundetected is set more liberally than
-       C's, so hiders stop moving where C moves them). */
+    /* src/mon.c:1286, hidden monsters may spend their turn staying concealed.
+       Unseen eels can hide here even when they cannot move out of a pool. */
     if (is_hider(mtmp.data)) {
         if (restrap(mtmp))
             return false;
@@ -2662,19 +2658,9 @@ async function peacefuls_respond(mtmp) {
     }
 }
 
-// src/mon.c setmangry() — turn a peaceful monster hostile.
-//
-// The order of the three early exits is what carries the behaviour:
-//   1. STRAT_WAITMASK is cleared for EVERY monster, hostile ones included,
-//      before any return. A monster waiting to ambush stops waiting even if
-//      it was already angry.
-//   2. an already-hostile monster returns; there is nothing to anger.
-//   3. a TAME monster returns too, still peaceful. Hitting your own pet does
-//      not turn it hostile here, and costs no alignment. C flags this as
-//      probably-wrong in a comment and keeps it; so do we.
-//
-// The Elbereth branch is the only source of a draw, rnd(5), and only when
-// alignment is already at or below 5.
+// src/mon.c:4265 setmangry(), turn a peaceful monster hostile.
+// Elbereth penalties precede the hostile and tame early returns. After an
+// angered monster responds, quest guardians and peaceful bystanders may react.
 export async function setmangry(mtmp, via_attack) {
     if (via_attack && sengr_at('Elbereth', game.u.ux, game.u.uy, true)
         /* only hypocritical if monster is vulnerable to Elbereth (or
@@ -3555,13 +3541,7 @@ export async function corpse_chance(mon, magr, /* killer, if swallowed */
     return !rn2(tmp);
 }
 
-// src/mon.c:3253 mondied() — monster killed by another monster: mondead()
-// plus the corpse. mondead's full detach (worm segments, shop bookkeeping,
-// vault guards, life-saving) is a slice: the map removal, so the fight's
-// survivor can occupy the square.
-// src/mon.c:3086 mondead() — the monster dies, WITHOUT a corpse. The slice
-// ported is the map and list removal plus m_detach()'s relobj (mon.c:2779),
-// which drops what the creature carried at the square it died on.
+// src/mon.c:3081 mondead(), remove a dying monster without creating its corpse.
 export async function mondead(mdef) {
     const mx = mdef.mx, my = mdef.my;
     const be_sad = !!game.iflags?.sad_feeling;

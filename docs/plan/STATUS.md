@@ -5737,6 +5737,23 @@ witness/destination branches and other death disposal paths are not claimed
 complete. Next are capacity and trap-hit integration, with corrected misleading
 monster comments verified independently of executable code.
 
+## 2026-11-24: correct obsolete monster comments
+
+Guard checkpoint `f920b3b0` is committed and pushed. Three comments in
+`js/mon.js` now describe the actual code: the hider/eel arms are present;
+Elbereth penalties precede `setmangry`'s hostile/tame returns and other
+monsters may react afterward; `mondead` removes a dying monster without
+creating a corpse. The old death header mixed up `mondead` and `mondied`
+and incorrectly described only a narrow map-removal slice. C function
+locations were checked against the pinned source.
+
+Acorn 8.18.0 confirms identical full ASTs and all 28,563 token kinds, values
+and raw spellings, excluding only source positions. Syntax and the source
+audit pass, with zero findings in 276 modules. No gameplay replay is claimed
+for this comment-only checkpoint; prior runtime evidence remains unchanged.
+The other 278 runtime files retain their hashes. Proof and the exact original
+module are in `.cache/restart-20261122/monster-comment-parent-audit/`.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

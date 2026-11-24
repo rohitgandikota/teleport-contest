@@ -206,6 +206,9 @@ punishment-ball blocking, off-map cleanup and current-level guard lookup.
 Three native cases, 103 related controls, thirteen focused fixtures and all
 44 public fixtures pass. The maintained corpus now contains 768 fixtures;
 the latest complete regression remains the 767-fixture stamina checkpoint.
+Three obsolete monster comments now describe the implemented concealment,
+anger and death routines. All 28,563 parsed tokens and the full AST are
+identical before and after this documentation change.
 The Linux/NFS branch collector is pushed
 and passes signal canaries plus exact save/restore, artifact and natural-exit
 pilots. The Linux census at e4504071 now covers all 678 original inputs:

@@ -6053,6 +6053,50 @@ all defensive-action branches or literal C/JS terminal serialization equality.
 The maintained corpus is 775; the latest complete regression remains the
 774/774 run at `40590e2a`.
 
+## 2026-11-24: use the surface beneath raised drawbridges
+
+Scroll-reading checkpoint `c6b2149c` is committed and pushed. The shared
+`accessible` predicate now follows C's `SURFACE_AT`: a raised span uses the
+existing `db_under_typ`, while ordinary terrain retains its raw type. Closed
+doors remain excluded. Only this synchronous, read-only helper and its two
+imports change. Every other top-level node and all eleven caller contracts
+remain unchanged.
+
+The parent reproduces the frozen-span failure at boundary 153: C says
+`You attack thin air.` while baseline JS says `You harmlessly attack the ice.`
+The native pair now matches all 306 styled boundaries including blank cells,
+cursors, 26,685 complete RNG calls and slices, and five animation grids,
+cursors and counts. The unfrozen moat control retains all five raw JS output
+hashes. Neither case dies or uses wizard death refusal. Raw SHA is
+`9d715e570ec7e7c007c7cb7bdcaafbab7df0d69bf86a4bf298c118ec2e4eb0ff`.
+
+All eighteen parent checks pass. Fifteen terrain/state controls improve from
+eight passing, both unchanged original diagnostics improve from one passing,
+and three input controls improve from two passing. All 92 retained death,
+lifesaving, bridge-feature and bridge-flip controls pass. Six focused fixtures
+cover sixteen segments, 2,817 boundaries, 118,089 complete calls and 82 frames.
+Four delayed-input fixtures match ten segments, 1,581 boundaries, 91,014 calls
+and 78 frames. All 44 public fixtures and fifty workers under the unchanged
+30-second hang limit pass. Syntax and the zero-finding 276-module audit pass;
+all 279 runtime hashes and five promoted support hashes remain fixed.
+
+Evidence is `.cache/restart-20261122/accessible-surface-promotion-parent/` and
+`accessible-surface-promotion-parent-verification.json`. The source and native
+confirmation packages retain 346 and 355 verified sealed files. The native
+pair proves force-fight behavior; other consumers rely on source controls or
+retained regressions. The duplicate raw-terrain predicate in `goodpos` remains
+a separate gap. DEC versus Unicode terminal serialization remains distinct
+from rendered-cell parity. The maintained corpus is 776; latest full remains
+774/774 at `40590e2a`.
+
+The independently verified guard-destination C batch adds one function and
+fourteen branch outcomes. The NFS union now has 771 credited inputs across
+seventy layouts, 4,559/5,492 functions and 59,896/107,260 outcomes. All prior
+raw hashes, run prefixes, binary and branch layouts are preserved. Its JS
+repair is still awaiting current-composition native confirmation. The earlier
+drawbridge pair added no C outcomes, despite revealing a real JS mismatch;
+branch coverage alone does not establish behavioral parity.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

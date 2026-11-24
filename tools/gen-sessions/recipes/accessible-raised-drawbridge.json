@@ -1,0 +1,368 @@
+{
+  "name": "accessible-raised-drawbridge",
+  "description": "Independently recorded C Castle force-fight against cold-created raised-span ice, paired with an unfrozen moat control. Native input bytes are unchanged.",
+  "coverage": [
+    "mode.debug",
+    "level.castle",
+    "terrain.water-lava",
+    "object.wands"
+  ],
+  "branches": [
+    "accessible.raised-ice-forcefight",
+    "accessible.raised-moat-forcefight"
+  ],
+  "requireBranchAssertions": true,
+  "segments": [
+    {
+      "seed": 7101,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017wand of striking\r\u0017wand of opening\r\u001626\r \u0006 \u0014lllllkkkkkk.  \u0017blessed scroll of genocide\rrp  *\r\u001b\u001b\u0017blessed ring of levitation\rPql\u001b\u001b\u0017wand of cold\rzrl   llllFl\u001b\u001b",
+      "name": "frozen-raised-span"
+    },
+    {
+      "seed": 7101,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017wand of striking\r\u0017wand of opening\r\u001626\r \u0006 \u0014lllllkkkkkk.  \u0017blessed scroll of genocide\rrp  *\r\u001b\u001b\u0017blessed ring of levitation\rPql\u001b\u001b\u0017wand of cold\rllllFl\u001b\u001b",
+      "name": "unfrozen-raised-span"
+    }
+  ],
+  "branchAssertions": [
+    {
+      "branch": "accessible.raised-ice-forcefight",
+      "segment": 0,
+      "screenIncludes": [
+        "The moat is bridged with ice!",
+        "You attack thin air."
+      ],
+      "intent": "A wand of cold freezes the still-raised span; force-fight uses the ice surface rather than raw DRAWBRIDGE_UP terrain.",
+      "evidence": "Parent independent source-c/version-5 recording, SHA256 9d715e570ec7e7c007c7cb7bdcaafbab7df0d69bf86a4bf298c118ec2e4eb0ff. Read-only JS state observations separately verify the raised span mask and hero position.",
+      "screenCells": [
+        {
+          "step": 153,
+          "x": 0,
+          "y": 0,
+          "equals": "Y"
+        },
+        {
+          "step": 153,
+          "x": 1,
+          "y": 0,
+          "equals": "o"
+        },
+        {
+          "step": 153,
+          "x": 2,
+          "y": 0,
+          "equals": "u"
+        },
+        {
+          "step": 153,
+          "x": 3,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 153,
+          "x": 4,
+          "y": 0,
+          "equals": "a"
+        },
+        {
+          "step": 153,
+          "x": 5,
+          "y": 0,
+          "equals": "t"
+        },
+        {
+          "step": 153,
+          "x": 6,
+          "y": 0,
+          "equals": "t"
+        },
+        {
+          "step": 153,
+          "x": 7,
+          "y": 0,
+          "equals": "a"
+        },
+        {
+          "step": 153,
+          "x": 8,
+          "y": 0,
+          "equals": "c"
+        },
+        {
+          "step": 153,
+          "x": 9,
+          "y": 0,
+          "equals": "k"
+        },
+        {
+          "step": 153,
+          "x": 10,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 153,
+          "x": 11,
+          "y": 0,
+          "equals": "t"
+        },
+        {
+          "step": 153,
+          "x": 12,
+          "y": 0,
+          "equals": "h"
+        },
+        {
+          "step": 153,
+          "x": 13,
+          "y": 0,
+          "equals": "i"
+        },
+        {
+          "step": 153,
+          "x": 14,
+          "y": 0,
+          "equals": "n"
+        },
+        {
+          "step": 153,
+          "x": 15,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 153,
+          "x": 16,
+          "y": 0,
+          "equals": "a"
+        },
+        {
+          "step": 153,
+          "x": 17,
+          "y": 0,
+          "equals": "i"
+        },
+        {
+          "step": 153,
+          "x": 18,
+          "y": 0,
+          "equals": "r"
+        },
+        {
+          "step": 153,
+          "x": 19,
+          "y": 0,
+          "equals": "."
+        }
+      ]
+    },
+    {
+      "branch": "accessible.raised-moat-forcefight",
+      "segment": 1,
+      "screenIncludes": [
+        "You harmlessly attack the water."
+      ],
+      "intent": "The still-raised unfrozen span remains inaccessible; force-fight attacks water and all five JS output hashes stay unchanged.",
+      "evidence": "Parent independent source-c/version-5 recording, SHA256 9d715e570ec7e7c007c7cb7bdcaafbab7df0d69bf86a4bf298c118ec2e4eb0ff. Read-only JS state observations separately verify the raised span mask and hero position.",
+      "screenCells": [
+        {
+          "step": 147,
+          "x": 0,
+          "y": 0,
+          "equals": "Y"
+        },
+        {
+          "step": 147,
+          "x": 1,
+          "y": 0,
+          "equals": "o"
+        },
+        {
+          "step": 147,
+          "x": 2,
+          "y": 0,
+          "equals": "u"
+        },
+        {
+          "step": 147,
+          "x": 3,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 147,
+          "x": 4,
+          "y": 0,
+          "equals": "h"
+        },
+        {
+          "step": 147,
+          "x": 5,
+          "y": 0,
+          "equals": "a"
+        },
+        {
+          "step": 147,
+          "x": 6,
+          "y": 0,
+          "equals": "r"
+        },
+        {
+          "step": 147,
+          "x": 7,
+          "y": 0,
+          "equals": "m"
+        },
+        {
+          "step": 147,
+          "x": 8,
+          "y": 0,
+          "equals": "l"
+        },
+        {
+          "step": 147,
+          "x": 9,
+          "y": 0,
+          "equals": "e"
+        },
+        {
+          "step": 147,
+          "x": 10,
+          "y": 0,
+          "equals": "s"
+        },
+        {
+          "step": 147,
+          "x": 11,
+          "y": 0,
+          "equals": "s"
+        },
+        {
+          "step": 147,
+          "x": 12,
+          "y": 0,
+          "equals": "l"
+        },
+        {
+          "step": 147,
+          "x": 13,
+          "y": 0,
+          "equals": "y"
+        },
+        {
+          "step": 147,
+          "x": 14,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 147,
+          "x": 15,
+          "y": 0,
+          "equals": "a"
+        },
+        {
+          "step": 147,
+          "x": 16,
+          "y": 0,
+          "equals": "t"
+        },
+        {
+          "step": 147,
+          "x": 17,
+          "y": 0,
+          "equals": "t"
+        },
+        {
+          "step": 147,
+          "x": 18,
+          "y": 0,
+          "equals": "a"
+        },
+        {
+          "step": 147,
+          "x": 19,
+          "y": 0,
+          "equals": "c"
+        },
+        {
+          "step": 147,
+          "x": 20,
+          "y": 0,
+          "equals": "k"
+        },
+        {
+          "step": 147,
+          "x": 21,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 147,
+          "x": 22,
+          "y": 0,
+          "equals": "t"
+        },
+        {
+          "step": 147,
+          "x": 23,
+          "y": 0,
+          "equals": "h"
+        },
+        {
+          "step": 147,
+          "x": 24,
+          "y": 0,
+          "equals": "e"
+        },
+        {
+          "step": 147,
+          "x": 25,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 147,
+          "x": 26,
+          "y": 0,
+          "equals": "w"
+        },
+        {
+          "step": 147,
+          "x": 27,
+          "y": 0,
+          "equals": "a"
+        },
+        {
+          "step": 147,
+          "x": 28,
+          "y": 0,
+          "equals": "t"
+        },
+        {
+          "step": 147,
+          "x": 29,
+          "y": 0,
+          "equals": "e"
+        },
+        {
+          "step": 147,
+          "x": 30,
+          "y": 0,
+          "equals": "r"
+        },
+        {
+          "step": 147,
+          "x": 31,
+          "y": 0,
+          "equals": "."
+        }
+      ]
+    }
+  ]
+}

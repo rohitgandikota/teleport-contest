@@ -4628,6 +4628,44 @@ Evidence is `.cache/restart-20261122/shop-crawl-door-native-confirmation/`,
 `shop-crawl-door-parent-source-review.json`, `shop-crawl-parent-*` and
 `shop-crawl-promoted-*`. Original raw and scoped patch hashes are unchanged.
 
+## 2026-11-23: share canonical concealment cleanup
+
+Shop-crawl checkpoint `996ad5c2` is committed and pushed. `m_move` and the
+polymorph-trap arm of `use_misc` now call the existing coordinate-based
+`maybe_unhide_at`, matching their C call sites. The duplicate monster-only
+helper and its dynamic import are removed, deleting fourteen net runtime
+lines. Canonical concealment and hiding implementations remain unchanged.
+
+Both callers place the live monster before cleanup, so the canonical lookup
+resolves that same monster. Its failed-shelter conditions make the underlying
+hiding attempt fail, keeping cleanup synchronous. Successful visible hiding
+elsewhere still awaits its feedback. Source review covers the monster-first
+lookup, hero fallback, coherent species/grid/floor owners, and the two complete
+caller contracts. No ordinary behavioral divergence was found for this reuse;
+it is a fidelity/readability change, not a new native defect repair.
+
+All 94 controls pass: 25 new real-helper cases, 67 retained concealment state
+cases and two retained input cases. The obsolete test of the deleted API is
+removed while its canonical assertion set remains. Before integration, all
+25 comparison controls also passed with the real old helper; 23 structured
+state/RNG/grid records were identical. An omission control detects a missing
+movement cleanup through the next RNG choice.
+
+Sixteen focused fixtures match 41 segments, 3,936 boundaries, 140,538 complete
+RNG calls and input slices, and 74 animation grids/cursors. Four deferred
+fixtures match twelve segments, 1,037 boundaries, 42,385 calls and 58 frames.
+All 44 public fixtures also pass their 11,405 boundaries, 792,838 scored RNG
+positions and 1,483 animations. All sixty focused/public hang checks pass
+at 30 seconds. Source audit is clear across 276 modules and both files pass
+syntax. No new native fixture or full-corpus run is claimed for this reuse.
+The previous full run remains `1dd779e1` with 747/747 fixtures.
+
+Evidence is `.cache/restart-20261122/monmove-unhide-canonical-audit/`,
+`canonical-unhide-parent-{source-review,integration,verification}.json` and
+`canonical-unhide-promoted-*`. All existing raw native bytes remain unchanged.
+Missing cleanup at three other object-removal sites is documented separately;
+this checkpoint does not claim complete concealment coverage.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

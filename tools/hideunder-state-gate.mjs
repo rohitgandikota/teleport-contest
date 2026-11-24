@@ -6,7 +6,6 @@ import { InMemoryStorage } from '../js/storage.js';
 import { game } from '../js/gstate.js';
 import { makemon, hideunder } from '../js/makemon.js';
 import { hide_monst, maybe_unhide_at, seemimic } from '../js/mon.js';
-import { maybe_unhide_at_mon } from '../js/monmove.js';
 import { mksobj, place_object } from '../js/mkobj.js';
 import { obj_extract_self } from '../js/invent.js';
 import { set_mon_data } from '../js/mondata.js';
@@ -183,9 +182,9 @@ for(const route of ['hideunder','hide_monst'])test(`${route}: More defers bookke
     assert.equal(game.level.at(x,y).remembered_glyph?.glyph?.otyp,ONAMES.DAGGER);
     assert.deepEqual(getRngLog(),[]);
 });
-for(const route of ['maybe_unhide_at','maybe_unhide_at_mon'])test(`${route}: hidden cover loss stays synchronous`,async()=>{
+test('maybe_unhide_at: hidden cover loss stays synchronous',async()=>{
     const {mon}=await setup();mon.mundetected=1;resetRng();
-    assert.equal(route==='maybe_unhide_at'?maybe_unhide_at(x,y):maybe_unhide_at_mon(mon),undefined);
+    assert.equal(maybe_unhide_at(x,y),undefined);
     assert.equal(mon.mundetected,0);assert.equal(game.iflags.last_msg,0);
     assert.equal(game.gl.last_hider,-1);assert.deepEqual(getRngLog(),[]);
 });

@@ -135,7 +135,10 @@ Stale monster-creation and flip comments are corrected, with identical runtime
 tokens and ASTs. Crawling now uses the existing shopkeeper blocking helper
 and removes its always-false placeholder. All 75 related controls, five focused
 fixtures and 44 public fixtures pass, with prompt-blocking checks on all 49.
-Next are guard feedback and canonical concealment-helper reuse.
+Movement and polymorph-trap use now share canonical concealment cleanup,
+removing the duplicate helper. All 94 controls, sixteen focused fixtures and
+44 public fixtures pass, including hang checks. Next are guard dialogue,
+drawbridge direction flips and region coordinates.
 The Linux/NFS branch collector is pushed
 and passes signal canaries plus exact save/restore, artifact and natural-exit
 pilots. The Linux census at e4504071 now covers all 678 original inputs:

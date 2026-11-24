@@ -81,7 +81,7 @@ import {
 } from './dog.js';
 import {
     mfndpos, mon_allowflags, can_carry, t_at, m_at,
-    curr_mon_load, max_mon_load,
+    curr_mon_load, max_mon_load, maybe_unhide_at,
 } from './mon.js';
 import { MONSYMS, MFLAGS, PMNAMES, ATTKS } from './monst_data.js';
 import { M_AP_TYPE, M_AP_NOTHING, M_AP_MONSTER, M_AP_FURNITURE,
@@ -2070,7 +2070,7 @@ export async function m_move(mtmp, after) {
         // src/monmove.c:2057, reconnect the moved head to its tail.
         if (mtmp.wormno)
             worm_move(mtmp);
-        maybe_unhide_at_mon(mtmp);
+        maybe_unhide_at(mtmp.mx, mtmp.my);
         /* the newsym for the vacated square is in postmov(), not here --
            src/monmove.c:1508 sits inside postmov so that EVERY path returning
            through it redraws, including dog_move's at :1773. */
@@ -2095,20 +2095,6 @@ export async function m_move(mtmp, after) {
 
     return await postmov(mtmp, ptr, omx, omy, mmoved,
                          seenflgs, can_tunnel, can_unlock, can_open);
-}
-
-// src/mon.c:4698 maybe_unhide_at(), monster arm. A concealed monster which
-// leaves its covering object must be revealed before postmov() decides
-// whether to roll for hiding again at the destination.
-export function maybe_unhide_at_mon(mtmp) {
-    if (!mtmp.mundetected)
-        return;
-    const ptr = game.mons[mtmp.mnum];
-    const obj = game.level.objectAt(mtmp.mx, mtmp.my);
-    if ((hides_under(ptr)
-         && (!obj || mtmp.mtrapped || !can_hide_under_obj(obj)))
-        || (ptr.mlet === MONSYMS.S_EEL && !is_pool(mtmp.mx, mtmp.my)))
-        hideunder(mtmp);
 }
 
 // src/monmove.c:1108 m_digweapon_check() lets a tunneling monster ready the

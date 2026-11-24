@@ -5,7 +5,7 @@
     "mode.debug",
     "traps.magical",
     "traps.monster",
-    "hero.polymorph",
+    "forms.polymorph",
     "ui.getlin"
   ],
   "segments": [

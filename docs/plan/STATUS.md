@@ -6870,6 +6870,18 @@ Monster slow/weapon feedback is now sealed and ready for parent integration;
 self-inspection, ordinary monster footwear and vault display closure remain
 in their separate confirmation stages.
 
+## 2026-11-24: register the anti-magic form recipe correctly
+
+After pushing 0c4dfb93, an additional category check found the recipe used
+`hero.polymorph` instead of the registered `forms.polymorph`. The category is
+corrected. The input gate now checks category registration, all five input
+fields and their presence, recording integrity, and native branch assertions.
+All six input checks pass. All 279 runtime files and the raw C recording are
+unchanged. The original recipe and the failed category are preserved in
+`anti-magic-effects-promotion-parent/registration-fix-verification.json` and
+`recipe-before-registration-fix.json`. This follow-up changes test metadata
+and validation only; it does not claim a new gameplay or leaderboard gain.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

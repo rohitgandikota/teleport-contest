@@ -10,6 +10,8 @@ import {Antimagic} from '../js/youprop.js';
 import {PMNAMES as P} from '../js/monst_data.js';
 import {ANTI_MAGIC} from '../js/const.js';
 import {decodeScreen, renderCell} from '../frozen/screen-decode.mjs';
+import {recordingIntegrityErrors, branchAssertionErrors} from './gen-sessions/assertions.mjs';
+import tags from './gen-sessions/coverage-requirements.json' with {type:'json'};
 
 const file = process.argv[2] || new URL(
     'gen-sessions/generated/anti-magic-effects.session.json', import.meta.url);
@@ -20,6 +22,21 @@ const raw = JSON.parse(bytes);
 assert.equal(raw.version, 5);
 assert.equal(raw.source, 'c');
 assert.equal(raw.segments.length, 5);
+test('recipe categories, input fields and branch witnesses match the native recording', () => {
+    const recipe = JSON.parse(fs.readFileSync(new URL(
+        'gen-sessions/recipes/anti-magic-effects.json', import.meta.url)));
+    const known = new Set(tags.requirements.map(r=>r.id));
+    for (const category of recipe.coverage) assert.ok(known.has(category), category);
+    assert.deepEqual(recordingIntegrityErrors(raw), []);
+    assert.deepEqual(branchAssertionErrors(recipe), []);
+    assert.deepEqual(branchAssertionErrors(recipe, raw), []);
+    assert.equal(recipe.segments.length, raw.segments.length);
+    for (const [i, part] of raw.segments.entries())
+        for (const key of ['name','seed','datetime','nethackrc','moves']) {
+            assert.equal(Object.hasOwn(part,key), Object.hasOwn(recipe.segments[i],key));
+            assert.deepEqual(part[key], recipe.segments[i][key]);
+        }
+});
 const text = screens => screens.map(screen => decodeScreen(screen).map(row =>
     row.map(renderCell).join('')).join('\n')).join('\n');
 for (const [index, part] of raw.segments.entries()) {

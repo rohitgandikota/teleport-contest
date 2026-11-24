@@ -192,18 +192,23 @@ have constructed coverage; no new ordinary native failure is claimed.
 Glob sale offers now use current weight, and acquisition billing retains the
 original weight for later used-up descriptions. The unchanged native sale and
 expiry case, all 194 related controls, nine focused fixtures and all 44 public
-fixtures pass. The maintained inventory is now 765.
+fixtures pass.
+Movement now records the attempted hit position before combat and blocked exits,
+restoring visible crystal-armor damage. Eighteen native cases, 24 related
+controls, eight focused fixtures and all 44 public fixtures pass. The maintained
+inventory is now 766; swallowed coordinates retain source-only evidence.
 The Linux/NFS branch collector is pushed
 and passes signal canaries plus exact save/restore, artifact and natural-exit
 pilots. The Linux census at e4504071 now covers all 678 original inputs:
 603 canonical matches and 75 independently recorded ordinary Linux controls.
-Adding 82 newer raw inputs and two independent Linux controls, 321
+Adding 83 newer raw inputs and two independent Linux controls, 323
 native segments in total, gives a validated union entering 4,541/5,492
-functions and observing 59,681/107,260 direct C branch outcomes.
-All 762 credited input hashes, sixty-three build manifests and branch layouts
+functions and observing 59,682/107,260 direct C branch outcomes.
+All 763 credited input hashes, sixty-four build manifests and branch layouts
 were checked before merging. This C coverage census includes the integrated
 guard, shop, floor, glob, boulder, guard-death and cursor-description recordings.
-Upward throwing and pet digestion have pending JS integrations.
+Upward-throw branches are integrated; stamina, capacity and pet digestion
+have pending JS integrations.
 Original platform/output rejections
 remain rejected; no output was normalized. The two new sink fixtures separately
 match Linux C exactly; their validated union covers all 94/94 direct dosinkring

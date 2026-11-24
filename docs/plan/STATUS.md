@@ -5582,6 +5582,54 @@ calls, while the baseline misses two grids, one cursor and two RNG slices.
 Capacity still needs constructed branch controls and integration checks.
 Pet digestion and the complete monster trap-hit owner remain in source review.
 
+## 2026-11-24: movement destination and visible throw damage
+
+Glob billing checkpoint `98850cb0` is committed and pushed. Movement now
+records C's hit position immediately after the starting coordinates, before
+combat and blocked-move exits. The existing swallowed arm records the engulfer's
+square. This is two state writes in `cmd.js`; throwing and erosion stay unchanged.
+The obsolete claim that monster combat was not wired is removed, and the owner
+has a source reference. Acorn proves the comment changes preserve all 29,309
+code tokens and the AST relative to the two-write candidate.
+
+The unchanged eighteen-case throw recording now matches C on all 1,376 styled
+boundaries/cursors, 60,362 complete RNG calls and input slices, with zero frames.
+Previously only the crystal-armor case failed: two grids, one cursor and two
+slices. Movement's first input had left `bhitpos` unset, suppressing visible
+cracking and its More boundary later. The other seventeen cases retain identical
+screen, cursor, complete RNG, slice and animation hashes. Raw SHA remains
+`329be290c20270867cb4614f0562d62d08abab129e86875de6e91ed776bc666d`.
+
+All eleven promoted checks pass. Four new real-helper controls cover normal,
+blocked and forced-attack destinations plus the earlier overloaded return;
+three fail before the repair. Twenty retained controls also pass. Eight focused
+fixtures contain 51 segments, 3,118 boundaries, 172,351 complete calls and 49
+animation grids/cursors/counts. Deferred input matches four fixtures with 42
+segments, 2,517 boundaries, 135,280 calls and 48 frames. Public remains 44/44,
+11,405 boundaries, 792,838 scored RNG positions and 1,483 frames. All 52 hang
+workers finish within 30 seconds. Syntax, the zero-finding 276-module audit,
+and all 279 fixed runtime hashes pass. The maintained corpus is now 766;
+the latest full regression remains 764/764 at `d13979a6`.
+
+Swallowed coordinates have source proof only. Other movement-owner differences
+are separate. The 381-file sealed throw package remains intact. Parent evidence
+is `.cache/restart-20261122/movement-hit-position-parent-audit/` and
+`movement-hit-position-parent-{source-review,integration,verification}.json`.
+An initial cache-loader path error is retained; it occurred before the candidate
+ran and was corrected to an absolute loader path.
+
+The boots-capacity recording also matches Linux C 1/1. Its one added outcome
+brings the union to 763 inputs, sixty-four layouts, 4,541/5,492 functions and
+59,682/107,260 outcomes. The 83 added raw inputs contain 314 segments, plus nine
+independent Linux segments. `weight_cap` now has observed 24/24 direct outcomes;
+that does not establish JS parity for every state. Only compact summaries were
+copied locally. Three unchanged guard-ownership cases are also recorded, 514
+boundaries and 18,269 calls, pending current-runtime confirmation.
+
+Next is the independently verified stamina guard and awaited encumbrance feedback.
+Capacity controls, pet digestion, guard cleanup and bill-object disposal remain
+separate checkpoints. Frozen files and unrelated `.DS_Store` files are untouched.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

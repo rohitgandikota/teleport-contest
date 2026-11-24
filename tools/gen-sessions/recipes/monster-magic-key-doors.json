@@ -1,0 +1,60 @@
+{
+  "name": "monster-magic-key-doors",
+  "description": "A real Master Assassin acquires the wished quest key, then crosses a trapped locked door with a blessed or uncursed key.",
+  "coverage": [
+    "mode.debug",
+    "monster.movement",
+    "monster.covetous",
+    "terrain.doors-locks",
+    "traps.door-container",
+    "object.artifacts"
+  ],
+  "branches": [
+    "magic-key.blessed-monster-disarms",
+    "magic-key.uncursed-nonrogue-triggers"
+  ],
+  "requireBranchAssertions": true,
+  "segments": [
+    {
+      "name": "magic-key-blessed-disarms-locked-door",
+      "seed": 7401,
+      "datetime": "20000112121000",
+      "nethackrc": "OPTIONS=name:wizard,role:Rogue,race:human,gender:male,align:chaotic,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " k\u0017wall\rjj\u0017wall\rkl\u0017blessed Master Key of Thievery\r dah\u0017wall\r\u0017trapped locked door\rh\u0007hostile Master Assassin\rym.m.\u001b\u001b"
+    },
+    {
+      "name": "magic-key-uncursed-keeps-door-trap",
+      "seed": 7401,
+      "datetime": "20000112121000",
+      "nethackrc": "OPTIONS=name:wizard,role:Rogue,race:human,gender:male,align:chaotic,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " k\u0017wall\rjj\u0017wall\rkl\u0017uncursed Master Key of Thievery\r dah\u0017wall\r\u0017trapped locked door\rh\u0007hostile Master Assassin\rym.m.\u001b\u001b"
+    }
+  ],
+  "branchAssertions": [
+    {
+      "branch": "magic-key.blessed-monster-disarms",
+      "segment": 0,
+      "screenIncludes": [
+        "A trapped locked door.",
+        "The Master Assassin unlocks and opens a door."
+      ],
+      "screenExcludes": [
+        "KABOOM!!  You see a door explode."
+      ]
+    },
+    {
+      "branch": "magic-key.uncursed-nonrogue-triggers",
+      "segment": 1,
+      "screenIncludes": [
+        "A trapped locked door.",
+        "KABOOM!!  You see a door explode."
+      ],
+      "screenExcludes": [
+        "The Master Assassin unlocks and opens a door."
+      ],
+      "rngIncludes": [
+        "rnd(15)="
+      ]
+    }
+  ]
+}

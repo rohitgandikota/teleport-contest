@@ -1,0 +1,121 @@
+{
+  "name": "long-worm-movement-dispatch",
+  "description": "Ordinary debug creation of a tame adult long worm, an untame peaceful adult control, and a tame baby control, followed by twelve move-without-pickup rests. Live adult worm slots use ordinary movement and tail growth; the baby uses pet movement. Native input tuples are unchanged. No special-role native coverage is claimed.",
+  "coverage": [
+    "mode.debug",
+    "monster.movement",
+    "monster.pets"
+  ],
+  "branches": [
+    "monster.movement.tame-long-worm-skips-pet-dispatch",
+    "monster.movement.peaceful-long-worm-control",
+    "monster.movement.baby-long-worm-keeps-pet-dispatch"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "monster.movement.tame-long-worm-skips-pet-dispatch",
+      "segment": 0,
+      "rngIncludes": [
+        "rnd(5)=5 @ worm_move(worm.c:224)",
+        "d(2,2)=2 @ worm_move(worm.c:257)"
+      ],
+      "screenCells": [
+        {
+          "step": 33,
+          "x": 5,
+          "y": 16,
+          "equals": "~"
+        },
+        {
+          "step": 33,
+          "x": 6,
+          "y": 16,
+          "equals": "w"
+        },
+        {
+          "step": 42,
+          "x": 7,
+          "y": 15,
+          "equals": "w"
+        }
+      ]
+    },
+    {
+      "branch": "monster.movement.peaceful-long-worm-control",
+      "segment": 1,
+      "rngIncludes": [
+        "rnd(5)=1 @ worm_move(worm.c:224)",
+        "rn2(10)=6 @ worm_move(worm.c:233)"
+      ],
+      "screenCells": [
+        {
+          "step": 37,
+          "x": 5,
+          "y": 16,
+          "equals": "~"
+        },
+        {
+          "step": 46,
+          "x": 7,
+          "y": 16,
+          "equals": "~"
+        },
+        {
+          "step": 46,
+          "x": 8,
+          "y": 16,
+          "equals": "w"
+        }
+      ]
+    },
+    {
+      "branch": "monster.movement.baby-long-worm-keeps-pet-dispatch",
+      "segment": 2,
+      "rngIncludes": [
+        "rn2(8)=4 @ dog_goal(dogmove.c:554)",
+        "rn2(1)=0 @ dog_move(dogmove.c:1255)"
+      ],
+      "screenCells": [
+        {
+          "step": 36,
+          "x": 6,
+          "y": 15,
+          "equals": "w"
+        },
+        {
+          "step": 47,
+          "x": 7,
+          "y": 15,
+          "equals": "w"
+        }
+      ]
+    }
+  ],
+  "segments": [
+    {
+      "name": "tame-long-worm-movement",
+      "seed": 99826,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Mortician,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0007tame long worm\rm.m.m.m.m.m.m.m.m.m.m.m.\u001b",
+      "steps": []
+    },
+    {
+      "name": "peaceful-long-worm-control",
+      "seed": 99826,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Mortician,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0007peaceful long worm\rm.m.m.m.m.m.m.m.m.m.m.m.\u001b",
+      "steps": []
+    },
+    {
+      "name": "tame-baby-long-worm-control",
+      "seed": 99826,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Mortician,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0007tame baby long worm\rm.m.m.m.m.m.m.m.m.m.m.m.\u001b",
+      "steps": []
+    }
+  ]
+}

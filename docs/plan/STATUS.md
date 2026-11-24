@@ -4307,6 +4307,75 @@ The official snapshot at `2026-11-24T02:35:16.692Z` rescored us at
 agentic and 11th overall: 44/44 public and 39/56 held-out sessions. This
 snapshot predates the latest movement push and does not establish its effect.
 
+## 2026-11-23: worm dispatch and retained monster door capabilities
+
+Shop-flip checkpoint `1f00e8d9` is committed and pushed. Three independently
+recorded movement repairs are now composed in `m_move` and `postmov`.
+Long worms with an allocated worm slot bypass special pet, covetous, role
+and Tengu movement, following C's common guard. Opening and unlocking
+capabilities are captured before dispatch and passed through all six arrival
+calls. Arrival traps still refresh the current form for wall-passing and
+amorphous checks. A monster carrying an effective magic Key now clears the
+door trap before passing, opening or smashing. The existing artifact helper
+and C's exact closed-door equality are retained. The obsolete postmov history
+comment is replaced by one sentence about its role.
+
+The worm fixture contains a tame adult, a peaceful adult and a tame baby.
+The baseline matched 128/138 screens and 133 input slices, with 8,929 calls
+against C's 8,936. At boundary 33 the tame adult incorrectly entered pet
+movement, missing C's worm growth and tail sequence. The common slot guard
+now matches all 138 boundaries and 8,936 complete calls. Eight source
+controls also cover exhausted slots and a head-only allocated slot; those
+constructed states are not additional native witnesses. Raw SHA-256:
+`a59ba99d9eb856d718f073ed3fd292adfe65c002520586447b46d0ff7c925b84`.
+
+The capability fixture contains two handless monsters gaining hands in an
+arrival polymorph trap, plus an unchanged amorphous control. C retains the
+old opening capability and smashes the door in the first two cases. JS
+previously recomputed it and said the monster opened the door. The repair
+raises native screens from 265/267 to 267/267. All 7,307 RNG calls, slices
+and cursors were already exact. The seventeen source controls additionally
+check opposite transitions, key types, special movers and current-form
+priority. Raw SHA-256:
+`7618a02534865d15850231a16dbfcaa622c1d7482c709583f6db5e3da605554a`.
+
+The Key fixture uses ordinary wishing, dropping and covetous acquisition.
+A blessed Key silently disarms the door before the Master Assassin opens it.
+The uncursed Key is an unchanged negative control. Previously the blessed
+case exploded, drew an extra `rnd(15)=13`, stunned the carrier and reduced
+its HP from 69 to 56. Both cases now match all 231 boundaries and 6,017
+complete calls. Eleven source, eight input and six native checks pass,
+including three in-memory oracle-corruption rejection controls. The original
+raw remains unchanged at SHA-256:
+`e0c3f1eeda6467ac605c87c1ce36897af2512b9409f6c2791cffec3b041dda4c`.
+
+The composed run passes all 58 new and 33 retained controls. Twelve focused
+fixtures cover 29 segments, 2,899 boundaries, 98,153 strict complete/per-input
+calls and sixteen exact animation grids/cursors. All twelve 30-second worker
+checks pass. Delayed input matches four fixtures, 724 boundaries and 27,302
+calls, with no animations. Source audit has zero findings in 276 modules.
+
+The complete 740-fixture regression passes all 821,174 boundary screens/cursors,
+16,539,004 scored RNG positions and 30,742 animation frames. Both interleaved
+shards finish without failures or timeouts at the default 45-second worker
+limit. All 279 runtime hashes stayed fixed throughout.
+
+The corresponding validated NFS union has 735 credited inputs, thirty-eight
+matching manifests/layouts, 4,533/5,492 entered functions and 59,261/107,260
+direct C branch outcomes. Its 55 added raw inputs contain 203 segments,
+plus nine independent Linux segments. This native coverage census also
+includes the separately queued amulet recording; it does not establish JS
+parity for that pending repair. Bulk profiles remain at
+`/share/NFS/u/rohit/research/contest/artifacts/2026-11-22/c-coverage-compress.E84JI2/verified-magic-key-union-20261123`.
+
+Evidence is `.cache/restart-20261122/worm-dispatch-candidate/`,
+`postmov-capability-candidate/`, `postmov-magic-key-native-confirmation/`,
+`movement-door-parent-{composition,integration,verification}.json`,
+`movement-door-promoted-*` and `movement-door-corpus-*`. Original scoped
+patches and raw recordings remain unchanged. This is bounded movement
+coverage. Retained amulets, crawl restrictions, melt timers, special-mover
+origin reset, fog feedback and trap concealment remain separate work.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

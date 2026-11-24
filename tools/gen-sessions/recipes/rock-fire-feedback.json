@@ -1,0 +1,113 @@
+{
+  "name": "rock-fire-feedback",
+  "description": "Independent C recording of visible/invisible monster fire feedback with accessible messages on/off. Depleted rock feedback retains source-only controls. All raw native bytes and input tuples are preserved.",
+  "coverage": [
+    "mode.debug",
+    "ui.getlin",
+    "ui.more-paging",
+    "traps.monster",
+    "monster.death-corpse-revival",
+    "options.rc-bindings"
+  ],
+  "branches": [
+    "rock-fire-feedback.fire-visible-accessible",
+    "rock-fire-feedback.fire-visible-ordinary",
+    "rock-fire-feedback.fire-invisible-accessible",
+    "rock-fire-feedback.fire-invisible-ordinary"
+  ],
+  "requireBranchAssertions": true,
+  "segments": [
+    {
+      "name": "fire-visible-accessible",
+      "seed": 7401,
+      "datetime": "20000112121000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics,accessiblemsg\n",
+      "moves": " h\u00173 blessed potions of full healing\r\u001b\u001b\u001b\u001bqa\u001b\u001b\u001b\u001bqa\u001b\u001b\u001b\u001bqa\u001b\u001b\u001b\u001b\u0017fire trap\r\u0007hostile paper golem\rk.\u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "fire-visible-ordinary",
+      "seed": 7401,
+      "datetime": "20000112121000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics,!accessiblemsg\n",
+      "moves": " h\u00173 blessed potions of full healing\r\u001b\u001b\u001b\u001bqa\u001b\u001b\u001b\u001bqa\u001b\u001b\u001b\u001bqa\u001b\u001b\u001b\u001b\u0017fire trap\r\u0007hostile paper golem\rk.\u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "fire-invisible-accessible",
+      "seed": 7401,
+      "datetime": "20000112121000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics,accessiblemsg\n",
+      "moves": " h\u00173 blessed potions of full healing\r\u001b\u001b\u001b\u001bqa\u001b\u001b\u001b\u001bqa\u001b\u001b\u001b\u001bqa\u001b\u001b\u001b\u001b\u0017fire trap\r\u0007hostile invisible paper golem\rk.\u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "fire-invisible-ordinary",
+      "seed": 7401,
+      "datetime": "20000112121000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics,!accessiblemsg\n",
+      "moves": " h\u00173 blessed potions of full healing\r\u001b\u001b\u001b\u001bqa\u001b\u001b\u001b\u001bqa\u001b\u001b\u001b\u001bqa\u001b\u001b\u001b\u001b\u0017fire trap\r\u0007hostile invisible paper golem\rk.\u001b\u001b\u001b\u001b\u001b\u001b"
+    }
+  ],
+  "branchAssertions": [
+    {
+      "branch": "rock-fire-feedback.fire-visible-accessible",
+      "segment": 0,
+      "intent": "Visible monster eruption uses pline_mon. Accessible mode exposes the missing prefix.",
+      "evidence": "Independent unchanged source-c/version-5 recording supplies the asserted message and HP screen text. Read-only JS observations separately verify invisibility, hero survival and monster death.",
+      "screenIncludes": [
+        "(south): A tower of flame erupts from the floor under the paper golem!",
+        "HP:36(36)"
+      ],
+      "screenExcludes": [
+        "Creation of",
+        "OK, so you don't die",
+        "Die? [yn]"
+      ]
+    },
+    {
+      "branch": "rock-fire-feedback.fire-visible-ordinary",
+      "segment": 1,
+      "intent": "Visible monster eruption uses pline_mon. Accessible-off output is a matched negative.",
+      "evidence": "Independent unchanged source-c/version-5 recording supplies the asserted message and HP screen text. Read-only JS observations separately verify invisibility, hero survival and monster death.",
+      "screenIncludes": [
+        "A tower of flame erupts from the floor under the paper golem!",
+        "HP:36(36)"
+      ],
+      "screenExcludes": [
+        "Creation of",
+        "OK, so you don't die",
+        "Die? [yn]",
+        "(south): A tower of flame erupts from the floor under the paper golem!"
+      ]
+    },
+    {
+      "branch": "rock-fire-feedback.fire-invisible-accessible",
+      "segment": 2,
+      "intent": "Invisible monster on visible square uses You_see with a location. Accessible mode exposes the missing prefix.",
+      "evidence": "Independent unchanged source-c/version-5 recording supplies the asserted message and HP screen text. Read-only JS observations separately verify invisibility, hero survival and monster death.",
+      "screenIncludes": [
+        "(south): You see a tower of flame erupt from the floor!",
+        "HP:36(36)"
+      ],
+      "screenExcludes": [
+        "Creation of",
+        "OK, so you don't die",
+        "Die? [yn]"
+      ]
+    },
+    {
+      "branch": "rock-fire-feedback.fire-invisible-ordinary",
+      "segment": 3,
+      "intent": "Invisible monster on visible square uses You_see with a location. Accessible-off output is a matched negative.",
+      "evidence": "Independent unchanged source-c/version-5 recording supplies the asserted message and HP screen text. Read-only JS observations separately verify invisibility, hero survival and monster death.",
+      "screenIncludes": [
+        "You see a tower of flame erupt from the floor!",
+        "HP:36(36)"
+      ],
+      "screenExcludes": [
+        "Creation of",
+        "OK, so you don't die",
+        "Die? [yn]",
+        "(south): You see a tower of flame erupt from the floor!"
+      ]
+    }
+  ]
+}

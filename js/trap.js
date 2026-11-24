@@ -1668,7 +1668,7 @@ async function trapeffect_rocktrap(mtmp, trap, trflags) {
     const see_it = cansee(mtmp.mx, mtmp.my);
     if (trap.once && trap.tseen && !rn2(15)) {
         if (in_sight && see_it)
-            await pline(`A trap door above ${mon_nam(mtmp)} opens, but nothing falls out!`);
+            await pline_mon(mtmp, `A trap door above ${mon_nam(mtmp)} opens, but nothing falls out!`);
         deltrap(trap);
         newsym(mtmp.mx, mtmp.my);
         return Trap_Is_Gone;
@@ -2303,9 +2303,10 @@ async function trapeffect_fire_trap(mtmp, trap, trflags) {
     let trapkilled = false;
 
     if (in_sight) {
-        await pline(`A tower of flame erupts from the ${
+        await pline_mon(mtmp, `A tower of flame erupts from the ${
             surface(mtmp.mx, mtmp.my)} under ${mon_nam(mtmp)}!`);
     } else if (see_it) {
+        set_msg_xy(mtmp.mx, mtmp.my);
         await You_see(`a tower of flame erupt from the ${
             surface(mtmp.mx, mtmp.my)}!`);
     }

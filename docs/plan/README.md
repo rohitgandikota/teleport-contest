@@ -19,9 +19,9 @@ run at 07:21 UTC predates the latest checkpoints. Public remains 44/44;
 held-out remains 39/56 with 936 unmatched screens. Local verification does
 not establish a newer held-out score.
 
-The latest full regression, through the projectile trap caller repair,
-passes 778/778 fixtures: 837,132 boundary screens/cursors, 17,230,079 scored
-RNG positions and 31,967 scored animation frames.
+The latest full regression, through the placement and ice inspection repair,
+passes 779/779 fixtures: 837,782 boundary screens/cursors, 17,270,807 scored
+RNG positions and 31,972 scored animation frames.
 Both shards finish without failures or timeouts. All 279 runtime hashes
 stayed fixed throughout.
 The earlier potion changes also pass strict full-stream and per-input RNG
@@ -29,7 +29,7 @@ checks on 117 fixtures, all 39,942 boundaries and 1,718,440 calls. The complete
 strict 677-fixture audit and all 213 animation-bearing fixtures passed at the
 preceding floor checkpoint. The subsequent monster trap-hit repair passes
 four new native cases, 65 controls and seven focused regressions. The maintained
-corpus is now 779. The following death-owner repair passes 21 direct source
+corpus is now 781. The following death-owner repair passes 21 direct source
 controls, 61 retained controls and seven focused regressions. Temporary corpse
 cleanup for pet nutrition also passes 16 direct controls, 55 retained controls
 and five focused regressions. Guard corridor gold collection passes five new
@@ -52,8 +52,13 @@ trap fired; no raw recording or comparator was changed.
 Placement now uses canonical swimming, breathing, lava protection and raised
 bridge surfaces. Detailed inspection also reports ice strength. Eight new
 native cases match all 650 styled grids, 40,728 complete RNG calls and five
-frames; 100 controls and eight focused regressions pass. The latest full
-regression remains the 778-fixture run, before this placement change.
+frames; 100 controls and eight focused regressions pass.
+Monster speed potions now use the shared drinking, speed and consumption
+helpers. Rock and fire trap feedback carries the affected monster location.
+Eight new native cases match all 707 styled grids, 18,976 complete RNG calls
+and 32 frames. All 140 combined controls, 13 focused fixtures, 44 public
+sessions and 57 hang checks pass. The latest full regression remains the
+779-fixture run, before these two message changes.
 Current-corpus parity is not completeness.
 
 Floor objects retain independent global and per-square order. Placement,

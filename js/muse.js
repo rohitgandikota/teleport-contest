@@ -83,7 +83,7 @@ import { xytodir, dirtocoord } from './cmd.js';
 import { isok, W_ARMH, M_SEEN_REFL, M_SEEN_MAGR, M_SEEN_SLEEP, M_SEEN_FIRE,
          M_SEEN_COLD, M_SEEN_ELEC, M_SEEN_ACID, TELEP_TRAP, N_DIRS,
          Is_rogue_level, In_endgame, Is_earthlevel, W_ARM, W_ARMS, W_ARMF,
-         W_AMUL, W_WEP, MSLOW, MFAST, NON_PM, NORMAL_SPEED, FAST,
+         W_AMUL, W_WEP, MFAST, NON_PM, NORMAL_SPEED, FAST,
          P_DAGGER, P_KNIFE, XKILL_NOMSG, XKILL_NOCONDUCT,
          POLY_TRAP, u_at, KILLED_BY_AN, ZAP_POS, IS_DOOR, D_LOCKED,
          D_CLOSED, G_GONE, ARTICLE_A, SUPPRESS_INVISIBLE,
@@ -2142,36 +2142,8 @@ export async function use_misc(mtmp) {
     case MUSE_POT_SPEED: {
         if (!obj)
             return 0;
-        const [{ canseemon, pline }, { You_hear }, { Deaf }, { Monnam },
-               { singular, doname }, { observe_object }, { learnwand }]
-            = await Promise.all([
-                import('./display.js'), import('./pline.js'),
-                import('./youprop.js'), import('./do_name.js'),
-                import('./objnam.js'), import('./o_init.js'),
-                import('./zap.js'),
-            ]);
-        const seen = canseemon(mtmp);
-
-        if (seen) {
-            observe_object(obj);
-            await pline(`${Monnam(mtmp)} drinks ${singular(obj, doname)}!`);
-        } else if (!Deaf()) {
-            await You_hear('a chugging sound.');
-        }
-
-        const oldspeed = mtmp.mspeed ?? 0;
-        mtmp.permspeed = (mtmp.permspeed === MSLOW) ? 0 : MFAST;
-        const speedBoots = (mtmp.minvent || []).some((item) =>
-            item.otyp === ONAMES.SPEED_BOOTS && item.owornmask);
-        mtmp.mspeed = speedBoots ? MFAST : mtmp.permspeed;
-        if (seen && mtmp.mspeed !== oldspeed && mtmp.data.mmove
-            && !mtmp.mfrozen && !mtmp.msleeping) {
-            const howmuch = (mtmp.mspeed + oldspeed === MFAST + MSLOW)
-                            ? 'much ' : '';
-            await pline(`${Monnam(mtmp)} is suddenly moving ${howmuch}faster.`);
-            learnwand(obj);
-        }
-
+        await mquaffmsg(mtmp, obj);
+        await mon_adjust_speed(mtmp, 1, obj);
         await m_useup(mtmp, obj);
         return 2;
     }

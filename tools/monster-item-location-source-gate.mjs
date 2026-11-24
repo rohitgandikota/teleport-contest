@@ -122,13 +122,12 @@ check('healing and invisibility callers finish feedback before effects or consum
 });
 check('mquaffmsg remains private and neither feedback owner disposes monsters', () => {
     assert.ok(quaff.startsWith('async function mquaffmsg('));
-    assert.equal((read('js/muse.js').match(/await mquaffmsg\(/g) || []).length, 8);
+    assert.equal((read('js/muse.js').match(/await mquaffmsg\(/g) || []).length, 9);
     assert.doesNotMatch(quaff + pickup, /mondead|mondied|monkilled|mongone|xkilled|make_corpse/);
 });
 
 console.log(JSON.stringify({ evidence: 'source-only', passed: checks.length,
     total: checks.length + failures.length, checks, failures, sources,
-    limits: ['The separate speed-potion use_misc branch still inlines drinking feedback.',
-        'C has nine active mquaffmsg call sites; this JS snapshot has eight.',
+    limits: ['All nine active C mquaffmsg callers route through the shared JS helper.',
         'Audio Soundeffect output is outside terminal parity.'] }, null, 4));
 process.exitCode = failures.length ? 1 : 0;

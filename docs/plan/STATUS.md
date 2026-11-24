@@ -6236,6 +6236,63 @@ new held-out gains. The Linux C union now verifies 777 credited inputs across
 Combat dispatch and monster speed/trap feedback remain separate candidates.
 The wall-phasing timer patch also awaits its two canonical consumer checks.
 
+## 2026-11-24: canonical speed-potion and trap feedback
+
+The previous placement checkpoint passes the complete 779-fixture corpus:
+837,782 screens/cursors, 17,270,807 scored RNG positions and 31,972 scored
+animation frames. Both shards exit zero; all 279 runtime hashes stay fixed.
+Receipt: `.cache/restart-20261122/goodpos-surface-promotion-corpus-totals.json`.
+
+`muse.use_misc` now follows C's speed-potion arm by awaiting `mquaffmsg`,
+`mon_adjust_speed` and `m_useup`. This removes a duplicate speed/equipment
+implementation and preserves the shared observation, location, hallucination,
+discovery and completion contracts. The obsolete MSLOW import is removed.
+The existing item-location source gate now expects all nine C helper callers;
+its other assertions remain unchanged. `trapeffect_rocktrap` uses `pline_mon`
+for visible depletion. `trapeffect_fire_trap` uses `pline_mon` for a visible
+monster and sets the actual location before feedback about an invisible one.
+No damage, random draw, dispatch or disposal logic changes in these trap arms.
+
+The parent applies only reviewed hunks from the two sealed native packages.
+All 26 checks pass: 66 new and 74 retained controls, 13 fixtures over 50
+segments with 4,981 boundaries, 126,211 complete calls and 171 frames, plus
+all 44 public sessions with 11,405 boundaries, 792,838 calls and 1,483 frames.
+Complete-call and per-input comparisons, animation/cursor comparisons, three
+deferred-input fixtures over 987 boundaries/28,566 calls/32 frames, 57 hang
+checks at 30 seconds, syntax and the zero-finding 276-module source audit pass.
+All 279 runtime hashes and 11 support hashes stay fixed during verification.
+The first parent plan preparation used a nonexistent trap gate filename; it
+stopped before post-change tests. The correct existing gate was then selected,
+with no assertion changes. The failed setup note remains in the receipt folder.
+
+Four speed cases match all 287 styled grids/cursors, 9,588 complete calls and
+slices, and zero frames. Before, 283 grids and 285 cursors matched. Four trap
+cases match all 420 styled grids/cursors, 9,388 complete calls and slices,
+and 32 frames. Before, 418 grids and cursors matched. Blank-cell colors and
+attributes are included. The two speed negatives and two trap negatives each
+preserve all five original JS output hashes. Both raw C files are immutable:
+
+- `monster-speed-potion.session.json`, SHA256
+  `39dab552551ca0e495e9f4b7cf7ff89309e4f555b9b7d69c24310fae0448d20e`.
+- `rock-fire-feedback.session.json`, SHA256
+  `64d6b72d5af7a0b53353229b99aa1057c9cba002b3bc5e49fbbf699e58e75ec4`.
+
+Parent receipt: `.cache/restart-20261122/speed-trap-feedback-promotion-parent-verification.json`.
+This checkpoint adds two fixtures, bringing the maintained inventory to 781.
+A full run of that inventory follows. The older artifact-resistance and
+projectile fixtures retain separately recorded blank-style differences; their
+passing contest comparisons do not establish strict terminal-byte equality.
+
+The separate pinned Linux C union now verifies 779 credited inputs across
+74 identical coverage layouts, including 99 additional native files with
+373 segments plus nine Linux-control segments. It covers 4,560/5,492 functions
+and 59,934/107,260 branch outcomes. The latest two inputs add one function and
+19 outcomes and include still-unpromoted hero-identity and inspection cases.
+Native coverage and JS parity remain distinct. Large profiles stay on NFS at
+`/share/NFS/u/rohit/research/contest/artifacts/2026-11-22/c-coverage-compress.E84JI2/verified-identity-inspection-union-20261124`.
+The latest official score remains the independently fetched 07:21 UTC run;
+no held-out improvement is inferred from local results or a new push.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

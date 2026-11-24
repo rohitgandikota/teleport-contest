@@ -19,7 +19,7 @@ run at 01:48 UTC predates the latest checkpoint. Public remains 44/44;
 held-out remains 39/56 with 936 unmatched screens. Local verification does
 not establish a newer held-out score.
 
-The latest full regression passes 760/760 fixtures: 830,300 boundary
+The latest full regression at `f12cfd59` passes 760/760 fixtures: 830,300 boundary
 screens/cursors, 16,930,990 scored RNG positions and 31,349 scored animation frames.
 Both shards finish without failures or timeouts. All 279 runtime hashes
 stayed fixed throughout.
@@ -162,6 +162,10 @@ public fixtures pass. Two false deletion comments now describe C's behavior.
 Glob decay now catches up after level absence, completes owner cleanup and
 preserves C's naming order. Five native cases, 194 related controls, ten
 focused fixtures and the full 760-fixture regression pass.
+Occupation interruption now always clears canned commands while preserving
+C's negative countdown and occupation text. All 90 related controls, seven
+retained C fixtures and all 44 public fixtures pass. The missing branch has
+constructed state coverage; no new ordinary native witness is claimed.
 The Linux/NFS branch collector is pushed
 and passes signal canaries plus exact save/restore, artifact and natural-exit
 pilots. The Linux census at e4504071 now covers all 678 original inputs:

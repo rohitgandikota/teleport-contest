@@ -5220,6 +5220,44 @@ Evidence is `.cache/restart-20261122/glob-shrink-native-confirmation/`,
 `glob-shrink-promoted-*` and `glob-shrink-corpus-*`. The two ordered patches
 and all five promoted artifacts retain their sealed hashes.
 
+## 2026-11-24: occupation interruption always clears canned commands
+
+Glob checkpoint `f12cfd59` is committed and pushed with its full 760/760 pass.
+`stop_occupation` now follows C's complete nesting and unconditionally clears
+`CQ_CANNED` at the end. Previously, it relied on `nomul(0)`, which returns
+without clearing anything when `multi` is negative. The repair preserves the
+negative countdown, helplessness, sleep, `afternmv` and repeat queue. It also
+keeps C's occupation text instead of clearing it after interruption.
+
+All fifteen new source-derived controls pass, versus six before. They use real
+queue producers/consumers, pick-axe reapplication, meal completion, a monster
+miss caller and pending terminal feedback. The positive pick-axe case supplies
+the negative countdown as an explicit constructed precondition. No ordinary
+input witness of that combined state is established, so no new C recording,
+recipe or native coverage credit is supplied for this branch.
+
+All fifteen integrated checks pass, including 75 retained controls. Seven
+retained C fixtures match 43 segments, 4,608 boundaries, 218,329 complete RNG
+calls/input slices and 5,575 animation grids/cursors/counts. Deferred input
+matches three fixtures, nineteen segments, 1,053 boundaries, 127,155 calls
+and 5,139 frames. All 44 public fixtures retain 11,405 exact boundaries,
+792,838 scored RNG positions and 1,483 frames. All 51 hang workers pass at
+30 seconds. Syntax passes, the source audit is clear across 276 modules,
+and all 279 runtime hashes stay fixed. The latest full run remains the
+preceding glob checkpoint at 760/760.
+
+The complete source review enumerates 58 awaited interruption calls and 91
+direct canned-queue producer calls. The `cmdq_clear` comment claiming there
+were no producers is replaced with its actual contract. Its implementation
+is unchanged: Acorn confirms identical whole-module AST and all 29,277 token
+values and spellings. No additional production export or queue abstraction
+was introduced. The unrelated anger comment remains a separate follow-up.
+
+Evidence is `.cache/restart-20261122/stop-occupation-queue-audit/`,
+`stop-occupation-parent-{source-review,integration,verification}.json`,
+`stop-occupation-parent-comment-proof.json` and `stop-occupation-promoted-*`.
+Native fixtures and all sealed source assertions are unchanged.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

@@ -42,9 +42,12 @@ Its six native cases match all 795 styled boundaries and 15,028 calls.
 Pre-swap x-ray redraw now also passes 35 parent checks, 153 controls,
 19 focused fixtures, the public suite and 63 bounded workers. Its four native
 cases match all 360 styled boundaries and 9,688 calls. The maintained corpus
-is 813; the completed full sweep includes these four additions together.
-Accepted non-food meals, glyph identity and the remaining combat and vision
-owners remain active source audits.
+is 814. The completed full813 sweep includes those four additions together.
+The subsequent pit-kick guard passes 42 parent checks, 240 controls,
+22 focused fixtures, the public suite and 66 bounded workers. Its four native
+cases match all 371 styled boundaries and 9,929 calls. No full814 sweep is
+claimed. Accepted non-food meals, glyph identity and the remaining combat and
+vision owners remain active source audits.
 The earlier potion changes also pass strict full-stream and per-input RNG
 checks on 117 fixtures, all 39,942 boundaries and 1,718,440 calls. The complete
 strict 677-fixture audit and all 213 animation-bearing fixtures passed at the
@@ -391,14 +394,13 @@ The Linux/NFS branch collector is pushed
 and passes signal canaries plus exact save/restore, artifact and natural-exit
 pilots. The Linux census at e4504071 now covers all 678 original inputs:
 603 canonical matches and 75 independently recorded ordinary Linux controls.
-Adding 86 newer raw inputs and two independent Linux controls, 332
-native segments in total, gives a validated union entering 4,555/5,492
-functions and observing 59,800/107,260 direct C branch outcomes.
-All 766 credited input hashes, sixty-six build manifests and branch layouts
-were checked before merging. This C coverage census includes the integrated
-guard, shop, floor, glob, boulder, guard-death and cursor-description recordings.
-Upward throws, stamina, capacity and guard ownership are integrated. Pet
-digestion, bill disposal and monster trap hits have pending JS integrations.
+Adding 129 newer raw inputs and three independent Linux controls, 515
+native segments in total, gives a validated union entering 4,565/5,492
+functions and observing 60,205/107,260 direct C branch outcomes.
+All 810 credited input hashes, 100 build manifests and branch layouts were
+checked before merging. All 99 preceding run hashes remain fixed. The latest
+union includes the pit-kick, probing-identity and dark-side visibility inputs.
+The last two still await JS integration; C coverage does not establish parity.
 Original platform/output rejections
 remain rejected; no output was normalized. The two new sink fixtures separately
 match Linux C exactly; their validated union covers all 94/94 direct dosinkring

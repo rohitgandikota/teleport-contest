@@ -26,7 +26,7 @@ import { mdistu } from './monmove.js';
 import { steal } from './steal.js';
 import { rloc } from './teleport.js';
 import { tele_restrict, tele, u_teleport_mon } from './teleport.js';
-import { could_seduce, doseduce, getmattk, SYSOPT_SEDUCE } from './mhitu.js';
+import { could_seduce, doseduce, getmattk, mtrapped_in_pit, SYSOPT_SEDUCE } from './mhitu.js';
 import { u_slip_free } from './mhitu.js';
 import { failed_grab, sleep_monst, slept_monst, engulf_target,
          xdrainenergym } from './mhitm.js';
@@ -1603,6 +1603,8 @@ export async function hmonas(mon) {
                    || aatyp === ATTKS.AT_KICK || aatyp === ATTKS.AT_BITE
                    || aatyp === ATTKS.AT_STNG || aatyp === ATTKS.AT_BUTT
                    || aatyp === ATTKS.AT_TENT) {
+            if (aatyp === ATTKS.AT_KICK && mtrapped_in_pit(game.youmonst))
+                continue;
             const tmp = await find_roll_to_hit(mon, aatyp, null, roll);
             mon_maybe_unparalyze(mon);
             const dieroll = rnd(20);

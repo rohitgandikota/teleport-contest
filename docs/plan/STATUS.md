@@ -7937,6 +7937,52 @@ were downloaded; profiles remain on NFS. Receipts: `linux-coverage-pit-kicks-*`.
 Continue the pending candidates, accepted non-food owner, combat contact and
 dark-wall audits, with every verified commit pushed immediately.
 
+## 2026-11-24: trapped natural kicks verified
+
+`hmonas` now skips natural kicks while the hero is trapped in a pit, before
+hit rolls, target wakeup, damage, passive effects and knockback. It uses the
+existing `mtrapped_in_pit` predicate, which checks both hero trapping state
+and the actual pit at that position. Weapon attacks keep their earlier route;
+later non-kick attacks still execute. This is one import and two guard lines.
+
+Four unchanged native cases cover a warhorse in a pit, a spiked pit, a free
+warhorse and a bear-trapped warhorse. All 371 styled grids, cursors and RNG
+slices, 9,929 complete calls and empty frame arrays match. Before: 367 styled
+grids, 369 cursors, 367 slices and 9,937 actual calls. Both negative cases
+preserve all five original output hashes and independently match C. Their
+kicks miss before a successful bite; they do not establish successful kick
+damage. Paralysis, blindness, hallucination, an earlier weapon, mismatched
+trap states and suspended input remain constructed source evidence.
+
+All 42 parent composition checks pass, including 240 controls. Twenty-two
+focused fixtures, 95 segments, match 12,872 screens/cursors, 277,993 calls and
+165 frames. Public remains 44/44 with 11,405 screens/cursors, 792,838 calls and
+1,483 frames. All 66 bounded replay workers pass. Fifteen strict native
+fixtures match every styled cell and all other outputs over 63 segments,
+5,864 boundaries, 169,967 calls and 48 frames. Nine deferred fixtures preserve
+all five output collections across 4,458 boundaries, 116,390 calls and
+48 frames. Source audit remains empty. All 279 runtime and five support hashes
+stay fixed; scoped reversal recovers the predecessor, and main equals the
+tested candidate. The native seal independently verifies 45 files and five
+links. Source and earlier seals remain unchanged.
+
+The maintained corpus is 814. Full813 at `75317c13` remains the latest complete
+sweep; no full814 run is claimed. Pit inputs reproduce byte-for-byte on Linux
+and add 13 C outcomes. Subsequent unmerged probing and dark-side visibility
+inputs also reproduce byte-for-byte, adding two and fifteen outcomes. The
+latest independent union contains 810 credited inputs over 100 fixed layouts,
+4,565/5,492 functions and 60,205/107,260 outcomes. All 99 preceding run hashes
+remain fixed. The 129 additional Mac inputs contain 501 segments; three
+independent Linux controls add fourteen. Original platform rejections remain
+rejected. Bulk profiles remain on NFS; only compact verified summaries are local.
+
+Receipts are `pit-kick-parent-composition-verification.json`,
+`pit-kick-main-integration.json`, the sealed source/native packages and
+`linux-coverage-{glyph-identity,dark-side}-*` under `.cache/restart-20261122/`.
+Rendered parity is still distinct from literal terminal byte identity. Continue
+probing identity, accepted non-food meals, natural-contact and visibility
+owners, with immediate pushes after verified commits.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

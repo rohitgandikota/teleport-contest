@@ -1,0 +1,85 @@
+{
+  "name": "polymorph-pit-kicks",
+  "description": "Warhorse natural melee while caught in a pit or spiked pit, with free and bear-trap controls. Four unchanged ordinary C recordings.",
+  "coverage": [
+    "combat.melee",
+    "forms.polymorph",
+    "traps.projectile-physical",
+    "mode.debug"
+  ],
+  "branches": [
+    "poly-pit-kick-skip",
+    "poly-spiked-pit-kick-skip",
+    "poly-free-kick-control",
+    "poly-bear-trap-kick-control"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "poly-pit-kick-skip",
+      "segment": 0,
+      "screenIncludes": [
+        "You fall into a pit!",
+        "You bite the rust monster.",
+        "There is a pit here."
+      ]
+    },
+    {
+      "branch": "poly-spiked-pit-kick-skip",
+      "segment": 1,
+      "screenIncludes": [
+        "You fall into a pit!",
+        "You bite the rust monster.",
+        "There is a spiked pit here."
+      ]
+    },
+    {
+      "branch": "poly-free-kick-control",
+      "segment": 2,
+      "screenIncludes": [
+        "You miss the rust monster.",
+        "You bite the rust monster."
+      ]
+    },
+    {
+      "branch": "poly-bear-trap-kick-control",
+      "segment": 3,
+      "screenIncludes": [
+        "A bear trap closes on your rear hoof!",
+        "You miss the rust monster.",
+        "You bite the rust monster.",
+        "There is a bear trap here."
+      ]
+    }
+  ],
+  "segments": [
+    {
+      "name": "pit-warhorse",
+      "seed": 21100,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:PitKicks,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " k#polyself\rwarhorse\r  \u001b\u001b\u0017pit trap\r  \u001b\u001b#sit\r  \u001b\u001b\u0007sleeping hostile rust monster\r\u001b\u001by        : "
+    },
+    {
+      "name": "spiked-pit-warhorse",
+      "seed": 21100,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:PitKicks,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " k#polyself\rwarhorse\r  \u001b\u001b\u0017spiked pit trap\r  \u001b\u001b#sit\r  \u001b\u001b\u0007sleeping hostile rust monster\r\u001b\u001bb        : "
+    },
+    {
+      "name": "free-warhorse",
+      "seed": 21100,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:PitKicks,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " k#polyself\rwarhorse\r  \u001b\u001b#sit\r  \u001b\u001b\u0007sleeping hostile rust monster\r\u001b\u001bh        : "
+    },
+    {
+      "name": "bear-trap-warhorse",
+      "seed": 21100,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:PitKicks,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " k#polyself\rwarhorse\r  \u001b\u001b\u0017bear trap trap\r  \u001b\u001b#sit\r  \u001b\u001b\u0007sleeping hostile rust monster\r\u001b\u001bk        : "
+    }
+  ]
+}

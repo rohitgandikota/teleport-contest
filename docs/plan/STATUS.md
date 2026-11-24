@@ -6471,6 +6471,54 @@ potion, gaze and terrain recordings, is 783 credited inputs over 77 identical
 layouts, 4,561/5,492 functions and 59,968/107,260 branch outcomes. Coverage
 inputs and the maintained JS regression inventory are distinct counts.
 
+## 2026-11-24: located monster growth and polymorph potion effects
+
+`muse.use_misc` now uses the existing `pline_mon` helper for visible upward
+migration, blocked rise, gained experience and polymorph feedback. The four
+messages retain C's completion order relative to naming, item consumption,
+growth, migration and transformation. Three imports made unused by this change
+are removed. No new helper, alias, production export or control-flow change
+is added. The complete selected owner and 18 producer/caller/helper source
+contracts were reviewed; migration ownership, deliberate polymorph-trap worm
+handling and invalid-item panics remain separate findings.
+
+The unchanged native recording has six cases, SHA-256
+`754b94e7db673e315fe272c91c47b6a0e94fabc49fe359d51d70e74516a9acc4`,
+1,008,565 bytes. The before comparison matches 425/431 styled grids. After,
+all 431 glyph/color/attribute grids, including blank cells, all cursors,
+18,562 complete recognized calls, input slices and empty frame arrays match.
+Plain-message growth and polymorph negatives preserve all five original JS
+output hashes. Passive input observers preserve those outputs too. The
+fixture and recipe input tuples, keys and original assertions are unchanged.
+
+Parent normal verification closes all 18 commands. All 49 new and 62 retained
+controls pass. Seven focused fixtures match 29 segments, 2,567 boundaries,
+78,860 complete calls and four frames. Deferred effect/speed inputs reproduce
+718 boundaries and 28,150 calls. All 44 public fixtures match 11,405 boundaries,
+792,838 scored calls and 1,483 frames; 51 hang workers finish within 30 seconds.
+Syntax and the zero-finding 276-module source audit pass. All 279 runtime and
+five promoted support files remain fixed. Their complete runtime hash set
+also equals the independently tested current inspection/potion composition,
+which passes 164 controls and 13 focused fixtures.
+
+Evidence: `.cache/restart-20261122/potion-effect-promotion-parent/`,
+`potion-effect-promotion-parent-verification.json`,
+`inspection-potion-composition-parent/verification.json`, and the immutable
+`monster-potion-effect-location-native-confirmation/` package, seal
+`880e1b1dc20641bebe1d2f8567380d6aeea509d960f6f4e1434bd451df07551b`.
+The independent NFS potion/gaze batch matches both original raw inputs and
+adds one function and 32 branch outcomes to the preceding union. That batch
+increase is not attributed to this potion input alone. Latest cumulative
+NFS coverage, after terrain inspection, remains 783 credited inputs,
+77 identical layouts, 4,561 functions and 59,968 branch outcomes.
+
+The maintained regression corpus is now 785. Latest completed full regression
+is 783/783 through combat/display; inspection and this potion checkpoint have
+focused/public verification since then. Next are the already reviewed phasing
+producer/consumer and guard-destination composition, followed by live-table
+counter-gaze. Official held-out scoring has not yet been observed on these
+commits; the last checked publication remains the 07:21 UTC scoring run.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

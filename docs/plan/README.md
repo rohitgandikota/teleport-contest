@@ -20,8 +20,8 @@ held-out remains 39/56 with 936 unmatched screens. Local verification does
 not establish a newer held-out score.
 
 The latest full regression, through combat, species identity and screen
-clearing, passes 783/783 fixtures: 838,900 boundary screens/cursors, 17,307,267 scored RNG
-positions and 32,004 scored animation frames.
+clearing, passes 783/783 fixtures: 838,900 boundary screens/cursors,
+17,307,267 scored RNG positions and 32,004 scored animation frames.
 Both shards finish without failures or timeouts. All 279 runtime hashes
 stayed fixed throughout.
 The earlier potion changes also pass strict full-stream and per-input RNG
@@ -29,7 +29,7 @@ checks on 117 fixtures, all 39,942 boundaries and 1,718,440 calls. The complete
 strict 677-fixture audit and all 213 animation-bearing fixtures passed at the
 preceding floor checkpoint. The subsequent monster trap-hit repair passes
 four new native cases, 65 controls and seven focused regressions. The maintained
-corpus is now 784. The following death-owner repair passes 21 direct source
+corpus is now 785. The following death-owner repair passes 21 direct source
 controls, 61 retained controls and seven focused regressions. Temporary corpse
 cleanup for pet nutrition also passes 16 direct controls, 55 retained controls
 and five focused regressions. Guard corridor gold collection passes five new
@@ -76,8 +76,13 @@ Positional inspection now follows C's underwater, swallowed and detection
 range restrictions, and describes nearby submerged land correctly. Four new
 native cases match all 240 styled grids/cursors, 9,325 complete calls and
 empty frame arrays. All 53 controls, six focused fixtures, 44 public sessions
-and 50 hang checks pass. The latest full regression is the 783-fixture run,
-before this inspection addition; the maintained corpus is 784.
+and 50 hang checks pass. Monster growth and polymorph potion effects now also
+carry the affected monster's location through the shared message helper.
+Six native cases match all 431 styled grids/cursors, 18,562 complete calls
+and empty frame arrays. All 111 controls, seven focused fixtures, 44 public
+sessions and 51 hang checks pass. The latest full regression is the
+783-fixture run, before the inspection and potion additions; the maintained
+corpus is 785.
 Current-corpus parity is not completeness.
 
 Floor objects retain independent global and per-square order. Placement,

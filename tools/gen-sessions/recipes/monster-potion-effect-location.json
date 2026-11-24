@@ -1,0 +1,149 @@
+{
+    "name": "monster-potion-effect-location",
+    "description": "Native-verified ordinary monster gain-level and polymorph effects retain the affected square, naming-prompt continuation, real consumption and two plain-feedback controls.",
+    "coverage": [
+        "mode.debug",
+        "ui.getlin",
+        "ui.more-paging",
+        "turn.speed-energy",
+        "level.ordinary",
+        "object.potions",
+        "monster.movement",
+        "monster.special-effects",
+        "forms.polymorph"
+    ],
+    "branches": [
+        "monster.potion-effect.growth-location",
+        "monster.potion-effect.rise-location",
+        "monster.potion-effect.blocked-location",
+        "monster.potion-effect.polymorph-location",
+        "monster.potion-effect.growth-plain",
+        "monster.potion-effect.polymorph-plain"
+    ],
+    "branchAssertions": [
+        {
+            "branch": "monster.potion-effect.growth-location",
+            "segment": 0,
+            "screenIncludes": [
+                "<57,5>: The stone giant seems more experienced."
+            ],
+            "screenCells": [
+                {
+                    "step": 94,
+                    "x": 0,
+                    "y": 0,
+                    "equals": "<"
+                }
+            ]
+        },
+        {
+            "branch": "monster.potion-effect.rise-location",
+            "segment": 1,
+            "screenIncludes": [
+                "<14,11>: The stone giant rises up, through the ceiling!"
+            ],
+            "screenCells": [
+                {
+                    "step": 30,
+                    "x": 0,
+                    "y": 0,
+                    "equals": "<"
+                }
+            ]
+        },
+        {
+            "branch": "monster.potion-effect.blocked-location",
+            "segment": 2,
+            "screenIncludes": [
+                "<40,5>: The stone giant looks uneasy."
+            ],
+            "screenCells": [
+                {
+                    "step": 61,
+                    "x": 0,
+                    "y": 0,
+                    "equals": "<"
+                }
+            ]
+        },
+        {
+            "branch": "monster.potion-effect.polymorph-location",
+            "segment": 3,
+            "screenIncludes": [
+                "<40,5>: The goblin suddenly mutates!"
+            ],
+            "screenCells": [
+                {
+                    "step": 63,
+                    "x": 0,
+                    "y": 0,
+                    "equals": "<"
+                }
+            ]
+        },
+        {
+            "branch": "monster.potion-effect.growth-plain",
+            "segment": 4,
+            "screenIncludes": [
+                "The stone giant seems more experienced."
+            ],
+            "screenExcludes": [
+                "<57,5>:"
+            ]
+        },
+        {
+            "branch": "monster.potion-effect.polymorph-plain",
+            "segment": 5,
+            "screenIncludes": [
+                "The goblin suddenly mutates!"
+            ],
+            "screenExcludes": [
+                "<40,5>:"
+            ]
+        }
+    ],
+    "segments": [
+        {
+            "seed": 6947,
+            "datetime": "20000112100000",
+            "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=accessiblemsg,whatis_coord:map\n",
+            "moves": " #levelchange\r20\r                   \u0017scroll of confuse monster\rro \u001b\u0007hostile stone giant\rj jm.  m.m.",
+            "name": "gain-experience"
+        },
+        {
+            "seed": 7331,
+            "datetime": "20000112110500",
+            "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=accessiblemsg,whatis_coord:map\n",
+            "moves": " \u00162\r\u0007hostile stone giant\rm.m.  \u001bm.",
+            "name": "gain-rise"
+        },
+        {
+            "seed": 7401,
+            "datetime": "20000112111000",
+            "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=accessiblemsg,whatis_coord:map\n",
+            "moves": " \u0017cursed potion of gain level\rdo\u0007hostile stone giant\rjm.m.m. \u001bm.\u001b\u001b",
+            "name": "gain-blocked"
+        },
+        {
+            "seed": 7401,
+            "datetime": "20000112120500",
+            "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=accessiblemsg,whatis_coord:map\n",
+            "moves": " \u0017uncursed potion of polymorph\rdo\u0007hostile goblin\rhm.m.m.m.m.m.  ",
+            "name": "potion-polymorph"
+        },
+        {
+            "seed": 6947,
+            "datetime": "20000112100000",
+            "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!accessiblemsg,whatis_coord:map\n",
+            "moves": " #levelchange\r20\r                   \u0017scroll of confuse monster\rro \u001b\u0007hostile stone giant\rj jm.  m.m.",
+            "name": "gain-plain-negative"
+        },
+        {
+            "seed": 7401,
+            "datetime": "20000112120500",
+            "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!accessiblemsg,whatis_coord:map\n",
+            "moves": " \u0017uncursed potion of polymorph\rdo\u0007hostile goblin\rhm.m.m.m.m.m. ",
+            "name": "polymorph-plain-negative"
+        }
+    ]
+}

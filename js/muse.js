@@ -2089,7 +2089,7 @@ export async function use_misc(mtmp) {
         await mquaffmsg(mtmp, obj);
         if (obj.cursed) {
             const [{ Can_rise_up, ceiling, depth, get_level },
-                   { canseemon, pline }, { Monnam, trycall }]
+                   { canseemon }, { Monnam, trycall }]
                 = await Promise.all([
                     import('./dungeon.js'), import('./display.js'),
                     import('./do_name.js'),
@@ -2101,7 +2101,7 @@ export async function use_misc(mtmp) {
                 if (tolevel.dnum !== game.u.uz.dnum
                     || tolevel.dlevel !== game.u.uz.dlevel) {
                     if (vismon) {
-                        await pline(`${Monnam(mtmp)} rises up, through the ${
+                        await pline_mon(mtmp, `${Monnam(mtmp)} rises up, through the ${
                             ceiling(mtmp.mx, mtmp.my)}!`);
                         await trycall(obj);
                     }
@@ -2112,17 +2112,17 @@ export async function use_misc(mtmp) {
                 }
             }
             if (vismon) {
-                await pline(`${Monnam(mtmp)} looks uneasy.`);
+                await pline_mon(mtmp, `${Monnam(mtmp)} looks uneasy.`);
                 await trycall(obj);
             }
             await m_useup(mtmp, obj);
             return 2;
         }
-        const { canseemon, pline } = await import('./display.js');
+        const { canseemon } = await import('./display.js');
         const { Monnam } = await import('./do_name.js');
         const vismon = canseemon(mtmp);
         if (vismon)
-            await pline(`${Monnam(mtmp)} seems more experienced.`);
+            await pline_mon(mtmp, `${Monnam(mtmp)} seems more experienced.`);
         if (vismon) {
             const { makeknown } = await import('./o_init.js');
             makeknown(ONAMES.POT_GAIN_LEVEL);
@@ -2221,7 +2221,7 @@ export async function use_misc(mtmp) {
     case MUSE_POT_POLYMORPH: {
         if (!obj)
             return 0;
-        const [{ canseemon, pline }, { Monnam }, { newcham }, { makeknown }]
+        const [{ canseemon }, { Monnam }, { newcham }, { makeknown }]
             = await Promise.all([
                 import('./display.js'), import('./do_name.js'),
                 import('./mon.js'), import('./o_init.js'),
@@ -2232,7 +2232,7 @@ export async function use_misc(mtmp) {
         await mquaffmsg(mtmp, obj);
         await m_useup(mtmp, obj);
         if (vismon)
-            await pline(`${Monnam(mtmp)} suddenly mutates!`);
+            await pline_mon(mtmp, `${Monnam(mtmp)} suddenly mutates!`);
         await newcham(mtmp, await muse_newcham_mon(mtmp), NC_SHOW_MSG);
         if (oseen)
             makeknown(ONAMES.POT_POLYMORPH);

@@ -1,0 +1,61 @@
+{
+    "name": "billing-object-disposal",
+    "description": "Native C verifies used-up bill cancellation after shopkeeper death and ordinary payment reach. The cancellation removes the billobjs statistics row; canonical paid-record staging is independently checked by source/state controls.",
+    "coverage": [
+        "level.ordinary",
+        "mode.debug",
+        "social.shops-billing",
+        "object.potions",
+        "ui.menus",
+        "ui.more-paging"
+    ],
+    "branches": [
+        "shop.billing.used-up-cancel-disposal",
+        "shop.billing.used-up-paid-reach"
+    ],
+    "requireBranchAssertions": true,
+    "segments": [
+        {
+            "seed": 6903,
+            "datetime": "20000110233600",
+            "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+            "name": "cancel-used-up-on-keeper-death",
+            "moves": " \u00162\r\u0006\u0014  llllllllllllllllllll.  \u0017uncursed potion of healing named Receipt\r\u001b\u001bdo y,a\r\u001b\u001bqo\u001b\u001bIx\u001b\u001b#stats\r\u001b\u001b\u0017wand of death (0:8)\r\u001b\u001bzpy\u001b\u001b\u001b\u001b#stats\r\u001b\u001b"
+        },
+        {
+            "seed": 6903,
+            "datetime": "20000110233600",
+            "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+            "name": "pay-used-up",
+            "moves": " \u00162\r\u0006\u0014  llllllllllllllllllll.  \u0017uncursed potion of healing named Receipt\r\u001b\u001bdo y,a\r\u001b\u001bqo\u001b\u001bIx\u001b\u001b\u00171000 gold pieces\r\u001b\u001bpa\r\u001b\u001bIx\u001b\u001b#stats\r\u001b\u001b"
+        }
+    ],
+    "branchAssertions": [
+        {
+            "branch": "shop.billing.used-up-cancel-disposal",
+            "segment": 0,
+            "screenIncludes": [
+                "Unpaid articles already used up:",
+                "a potion of healing named Receipt",
+                "You kill Upernavik!",
+                "Current memory statistics:"
+            ],
+            "screenCells": [
+                {
+                    "step": 138,
+                    "x": 0,
+                    "y": 6,
+                    "equals": "c"
+                }
+            ]
+        },
+        {
+            "branch": "shop.billing.used-up-paid-reach",
+            "segment": 1,
+            "screenIncludes": [
+                "Unpaid articles already used up:",
+                "You paid for a potion of healing named Receipt at a cost of 27 gold pieces."
+            ]
+        }
+    ]
+}

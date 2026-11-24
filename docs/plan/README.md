@@ -13,14 +13,15 @@ Ground rules are in `/CLAUDE.md`. Read that first if you have not.
 ## Current focus, 2026-11-24
 
 Continue the faithful port with readable C-aligned code and prompt verified
-pushes. The latest official snapshot checked, November 24 at 02:35 UTC, has
+pushes. The latest official snapshot checked, November 24 at 08:21 UTC, has
 23,595 of 24,531 combined screens, 7th agentic and 11th overall. Our scoring
-run at 01:48 UTC predates the latest checkpoint. Public remains 44/44;
+run at 07:21 UTC predates the latest checkpoints. Public remains 44/44;
 held-out remains 39/56 with 936 unmatched screens. Local verification does
 not establish a newer held-out score.
 
-The latest full regression, including the stamina repair, passes 767/767 fixtures:
-833,273 boundary screens/cursors, 17,083,116 scored RNG positions and 31,940
+The latest full regression, including guard ownership, carrying capacity and
+shop billing disposal, passes 770/770 fixtures:
+834,205 boundary screens/cursors, 17,117,691 scored RNG positions and 31,943
 scored animation frames.
 Both shards finish without failures or timeouts. All 279 runtime hashes
 stayed fixed throughout.

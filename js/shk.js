@@ -121,7 +121,7 @@ import { picking_at } from './lock.js';
 import { stop_occupation } from './allmain.js';
 import { tty_wait_synch } from './tty/wintty.js';
 import { unplacebc, placebc } from './ball.js';
-import { next_ident, mksobj, place_object } from './mkobj.js';
+import { next_ident, mksobj, place_object, dealloc_obj } from './mkobj.js';
 import { ansimpleoname } from './objnam.js';
 import { check_special_room } from './hack.js';
 
@@ -997,12 +997,19 @@ export function setpaid(shkp) {
     clear_no_charge(shkp, game.level?.objects);
     clear_no_charge(shkp, game.level?.buriedobjs);
 
-    const eshk = shkp.eshk || ESHK(shkp);
-    eshk.bill_p = [];
-    eshk.billct = 0;
-    eshk.credit = 0;
-    eshk.debit = 0;
-    eshk.loan = 0;
+    while (game.billobjs?.length) {
+        const obj = game.billobjs[0];
+        obj_extract_self(obj);
+        dealloc_obj(obj);
+    }
+    if (shkp) {
+        const eshk = shkp.eshk || ESHK(shkp);
+        eshk.bill_p = [];
+        eshk.billct = 0;
+        eshk.credit = 0;
+        eshk.debit = 0;
+        eshk.loan = 0;
+    }
 }
 
 // src/shk.c:1278 check_credit()
@@ -3192,7 +3199,7 @@ function update_bill(indx /* index into ibill[]; -1 for unpaid contained item */
         paiditem.unpaid = 0; /* clear before maybe deallocating */
         if (paiditem.where === OBJ_ONBILL) {
             obj_extract_self(paiditem);
-            /* dealloc_obj(paiditem) */
+            dealloc_obj(paiditem);
         }
         newebillct = (eshkp.billct | 0) - 1;
         const bidx = eshkp.bill_p.indexOf(bp);

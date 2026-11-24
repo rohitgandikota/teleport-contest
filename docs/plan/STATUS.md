@@ -5798,6 +5798,40 @@ coverage reaches all 24/24 direct capacity outcomes and 8/8 flight-recomputation
 outcomes, separately from these JS parity results. Next are the independently
 recorded billing-disposal and monster trap-hit fixes.
 
+## 2026-11-24: dispose of consumed shop billing objects
+
+Capacity checkpoint `3533068d` is committed and pushed. `setpaid` now drains
+the global billing-object chain through canonical extraction and deallocation,
+including when no keeper is supplied. `update_bill` deallocates a paid consumed
+object before compacting its bill entry. Both functions preserve synchronous
+ordering. The complete payment owner and its callers were reviewed; `dopayobj`
+is unchanged.
+
+All 45 new controls and 72 retained controls pass. The two unchanged native
+cases match 272 styled grids/cursors, 10,822 complete RNG calls and every input
+slice, plus three animation grids/cursors. This comparison includes blank-cell
+styling and filters no RNG entries. Before the repair, keeper death left a
+consumed object on the global billing chain, causing one debug-statistics row
+to differ. The payment case already matched native output; its deallocation
+ordering has additional source and state controls. Raw fixture SHA is
+`7b995cc56abf0e46ff71be9f0cfd8e5b8adb21a39a82c4caa095b8a956c81ee2`.
+
+All fifteen focused checks pass. Eight fixtures cover 26 segments, 3,219
+boundaries, 161,551 complete RNG calls and 594 animation grids/cursors/counts.
+Four delayed-input fixtures match seven segments, 1,058 boundaries, 57,760
+calls and 560 frames. All 44 public fixtures remain exact. All 52 hang workers
+finish within 30 seconds; syntax and the zero-finding 276-module audit pass.
+The complete 770-fixture regression then passes 834,205 boundary grids/cursors,
+17,117,691 scored RNG positions and 31,943 scored frames, with both shards
+finishing without errors. All 279 runtime hashes stayed fixed.
+
+Evidence is `.cache/restart-20261122/billing-disposal-current-parent-audit/`,
+`billing-disposal-current-parent-verification.json` and the two full-corpus
+logs. The source and native packages retain 649 and 626 verified sealed files.
+Null-keeper, freeing-data and Lua arms are source/state coverage, not additional
+native witnesses. Current-corpus parity does not establish port completeness.
+Next are the recorded monster trap-hit and digestion repairs.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

@@ -6097,6 +6097,49 @@ repair is still awaiting current-composition native confirmation. The earlier
 drawbridge pair added no C outcomes, despite revealing a real JS mismatch;
 branch coverage alone does not establish behavioral parity.
 
+## 2026-11-24: locate monster drinking and pickup feedback
+
+Drawbridge checkpoint `05058f1a` is committed and pushed. The complete
+`mquaffmsg` and `mpickstuff` owners now call the existing `pline_mon` at C's
+visible-message sites. The newly unused local `pline` binding is removed.
+The private drinking helper remains private. Observation, naming, message
+suspension, extraction, merging and gear scheduling keep their existing order.
+All other top-level nodes, including scroll reading, death, digestion and
+corridor-gold work, are unchanged.
+
+The parent reproduces the native failures on the latest composition. Visible
+pickup first lacks `<40,5>:` at boundary 60; visible drinking lacks it at 64,
+including the quiet-pickup case. Those are the only three differing grids.
+All four raw cases now match 280 styled boundaries and cursors, including
+blank styles, 9,590 complete RNG calls and slices, and zero-frame counts.
+Both plain and unseen negatives retain all five raw JS output hashes. The
+streams already matched before repair and remain unchanged. Raw SHA is
+`e1fddd6e48cfaa46b7807d22144c502de1018c38809ad315baa4859febe63723`.
+
+All eighteen parent checks pass. The unchanged gates improve from 10/17
+state, 8/12 source and 6/9 input checks to all 38 passing, with eighteen C
+function bodies fingerprinted. All 62 retained scroll-reading, death and
+digestion controls pass. Eight focused fixtures cover thirty segments, 3,113
+boundaries, 97,994 complete calls and 23 frames. Four delayed-input fixtures
+match sixteen segments, 1,387 boundaries, 40,148 calls and nineteen frames.
+All 44 public fixtures, 52 workers under 30 seconds, both syntax checks and
+the zero-finding 276-module audit pass. All 279 runtime hashes and five
+promoted support hashes stay fixed throughout.
+
+Evidence is `.cache/restart-20261122/monster-item-location-promotion-parent/`
+and `monster-item-location-promotion-parent-verification.json`. The source and
+native packages retain 671 and 669 verified sealed files, each with six
+unchanged symlinks. This confirms the two feedback owners, not every monster
+item-selection or speed-potion branch. The maintained corpus is 777; the latest
+complete regression remains 774/774 at `40590e2a`.
+
+The item/projectile NFS batch independently matches both raw inputs and adds
+four outcomes. The union is 773 credited inputs across 71 layouts, with
+4,559/5,492 functions and 59,900/107,260 outcomes. Earlier input hashes, run
+prefixes, binary and layouts remain unchanged. The next pending integrations
+are guard obstacle carving and projectile trap damage; placement-property
+work remains isolated in cache.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

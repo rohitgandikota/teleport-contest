@@ -3246,7 +3246,7 @@ export async function mpickstuff(mtmp) {
                    result is not printed, and does so BEFORE the extract */
                 const otmpname = distant_name(otmp, doname);
                 if (game.flags?.verbose)
-                    await pline(`${Monnam(mtmp)} picks up ${otmpname}.`);
+                    await pline_mon(mtmp, `${Monnam(mtmp)} picks up ${otmpname}.`);
             }
             obj_extract_self(otmp3);        /* remove from floor */
             /* src/steal.c:618 mpickobj() may merge and free otmp3. */

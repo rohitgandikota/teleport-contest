@@ -1429,7 +1429,7 @@ async function precheck(mon, obj) {
 }
 
 async function mquaffmsg(mtmp, obj) {
-    const [{ canseemon, pline }, { Deaf }, { You_hear }, { Monnam },
+    const [{ canseemon }, { Deaf }, { You_hear }, { Monnam },
            { singular, doname }, { observe_object }]
         = await Promise.all([
             import('./display.js'), import('./youprop.js'),
@@ -1438,7 +1438,7 @@ async function mquaffmsg(mtmp, obj) {
         ]);
     if (canseemon(mtmp)) {
         observe_object(obj);
-        await pline(`${Monnam(mtmp)} drinks ${singular(obj, doname)}!`);
+        await pline_mon(mtmp, `${Monnam(mtmp)} drinks ${singular(obj, doname)}!`);
     } else if (!Deaf()) {
         await You_hear('a chugging sound.');
     }

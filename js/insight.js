@@ -1892,7 +1892,7 @@ export async function do_gamelog() {
         await xwaitforspace(' \r\n\x1b');
         while (game.morc !== '\x1b' && tty_next_page(win))
             await xwaitforspace(' \r\n\x1b');
-        tty_destroy_nhwindow(win);
+        await tty_destroy_nhwindow(win);
         await notice_all_mons_flush();
     } else {
         await pline('No chronicled events.');
@@ -2035,7 +2035,7 @@ export async function show_conduct(final) {
     await xwaitforspace(' \r\n\x1b');
     while (tty_next_page(win))
         await xwaitforspace(' \r\n\x1b');
-    tty_destroy_nhwindow(win);
+    await tty_destroy_nhwindow(win);
     await notice_all_mons_flush();
     return 0;
 }
@@ -2382,7 +2382,7 @@ export async function list_vanquished(defquery, ask) {
                 tty_putstr(klwin, 0, buf);
             }
             await display_menu_window_blocking(klwin);
-            tty_destroy_nhwindow(klwin);
+            await tty_destroy_nhwindow(klwin);
             await notice_all_mons_flush();
         }
     } else if (!game.program_state_gameover) {
@@ -2542,7 +2542,7 @@ export async function list_genocided(defquery, ask) {
             }
 
             await display_menu_window_blocking(klwin);
-            tty_destroy_nhwindow(klwin);
+            await tty_destroy_nhwindow(klwin);
             await notice_all_mons_flush();
         }
     } else if (!game.program_state_gameover) {
@@ -2599,7 +2599,7 @@ export async function doborn() {
         if (!tty_next_page(datawin))
             break;
     }
-    tty_destroy_nhwindow(datawin);
+    await tty_destroy_nhwindow(datawin);
 
     return ECMD_OK;
 }

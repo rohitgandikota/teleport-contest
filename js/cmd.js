@@ -421,7 +421,7 @@ async function help_dir(sym, msg) {
     await xwaitforspace('\x1b ');
     while (tty_next_page(win))
         await xwaitforspace('\x1b ');
-    tty_destroy_nhwindow(win);
+    await tty_destroy_nhwindow(win);
     return true;
 }
 
@@ -4292,7 +4292,7 @@ export async function dokeylist() {
         if (!tty_next_page(win))
             break;
     }
-    tty_destroy_nhwindow(win);
+    await tty_destroy_nhwindow(win);
     await notice_all_mons_flush();
     return 0; /* ECMD_OK */
 }

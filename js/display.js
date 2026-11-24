@@ -1644,6 +1644,12 @@ export function newsym(x, y) {
        remembered a spellbook in a dark room the hero had never seen. */
     if (suppress_map_output())
         return;
+    if (!isok(x, y)) {
+        const message = `newsym: attempting screen update for <${x},${y}>`;
+        if (x < 0 || y < 0 || x > COLNO - 1 || y > ROWNO - 1)
+            throw new Error(message);
+        return impossible(message);
+    }
     const loc = game.level?.at(x, y);
     if (!loc) return;
 
@@ -1990,30 +1996,6 @@ function engraving_glyph(loc, x, y) {
 }
 
 // ── docrt ──
-// Synchronous map-buffer half of docrt(), used by the tty window port when a
-// full-screen menu is dismissed. The tty call itself is synchronous, but C
-// still performs the complete vision shutdown, memory pass, and live overlay.
-export function docrt_sync_rebuild() {
-    if (!game.level || game.u?.uswallow)
-        return;
-
-    vision_recalc(2);
-    clear_glyph_buffer();
-    for (let x = 1; x < COLNO; x++)
-        for (let y = 0; y < ROWNO; y++) {
-            const loc = game.level.at(x, y);
-            if (loc?.remembered_glyph) {
-                show_glyph_cell(x, y, loc.remembered_glyph.ch,
-                    loc.remembered_glyph.color, loc.remembered_glyph.decgfx,
-                    pile_attr(loc.remembered_glyph.glyph),
-                    loc.remembered_glyph.glyph);
-            }
-        }
-    vision_recalc(0);
-    see_monsters();
-    (game.disp ||= {}).botlx = true;
-}
-
 export async function docrt() {
     if (!game.level) return;
 
@@ -2055,7 +2037,7 @@ export async function docrt() {
 
     /* C overlays monsters and calls newsym on an unmounted hero too. That
        also updates the object beneath the hero, including display RNG. */
-    see_monsters();
+    await see_monsters();
     update_inventory();
 
     /* C's docrt() only refills the glyph buffer; the physical paint comes
@@ -2842,6 +2824,9 @@ export function canspotmon(mon) {
 // src/display.c:1487 see_monsters() redraws every live monster, then the
 // hero. Callers use this when a sensing property changes or needs refreshing.
 export function see_monsters() {
+    if (game.defer_see_monsters)
+        return;
+
     /* steed and unseen engulfer/holder/holdee are recognized via touch
        even if they aren't going to be rendered; other monsters
        may get flagged as having been seen by display_monster() if it's
@@ -2853,13 +2838,10 @@ export function see_monsters() {
 
     let new_warn_obj_cnt = 0;
 
-    /* loop through level.monsters (aka fmon) */
-    for (const mon of game.level?.monsters || []) {
-        if (DEADMONSTER(mon))
-            continue;
-        if ((mon.mstate & MON_STILL_ARRIVING) !== 0)
-            continue;
-        newsym(mon.mx, mon.my);
+    const monsters = game.level?.monsters || [];
+    return redraw_from(0);
+
+    function count_monster(mon) {
         if (mon.wormno)
             see_wsegs(mon);
         if (Warn_of_mon()
@@ -2867,19 +2849,39 @@ export function see_monsters() {
             new_warn_obj_cnt++;
     }
 
-    /*
-     * Make Sting glow blue or stop glowing if required.
-     */
-    if (new_warn_obj_cnt !== (game.warn_obj_cnt ?? 0)) {
-        /* see_monsters() is synchronous here as in the C; Sting_effects()'s
-           message is the only deferred part */
-        void import('./artifact.js').then(m => m.Sting_effects(new_warn_obj_cnt));
-        game.warn_obj_cnt = new_warn_obj_cnt;
+    function redraw_from(start) {
+        for (let i = start; i < monsters.length; i++) {
+            const mon = monsters[i];
+            if (DEADMONSTER(mon)
+                || (mon.mstate & MON_STILL_ARRIVING) !== 0)
+                continue;
+            const pending = newsym(mon.mx, mon.my);
+            if (pending) {
+                // Resume the C loop only after this diagnostic is complete.
+                return pending.then(() => {
+                    count_monster(mon);
+                    return redraw_from(i + 1);
+                });
+            }
+            count_monster(mon);
+        }
+
+        if (new_warn_obj_cnt !== (game.warn_obj_cnt ?? 0)) {
+            return import('./artifact.js')
+                .then(({ Sting_effects }) => Sting_effects(new_warn_obj_cnt))
+                .then(() => {
+                    game.warn_obj_cnt = new_warn_obj_cnt;
+                    return redraw_hero();
+                });
+        }
+        return redraw_hero();
     }
 
-    /* when mounted, hero's location gets caught by monster loop */
-    if (!game.u?.usteed)
-        newsym(game.u.ux, game.u.uy);
+    function redraw_hero() {
+        // When mounted, the monster loop already drew the hero's location.
+        if (!game.u?.usteed)
+            return newsym(game.u.ux, game.u.uy);
+    }
 }
 
 // src/display.c:1537 mimic_light_blocking()
@@ -3338,10 +3340,10 @@ export function map_engraving(ep, show) {
     const x = ep.x, y = ep.y;
     const loc = game.level?.at(x, y);
     if (!loc) return;
-    const eg = engraving_glyph(loc, x, y);
-    if (!eg) return;
-    const cell = { ch: eg.ch, color: eg.color, decgfx: !!(eg.decgfx ?? eg.dec),
-                   glyph: eg.glyph ?? { kind: 'cmap', cmap: eg.cmap } };
+    const cmap = loc.typ === CORR ? CM.S_engrcorr : CM.S_engroom;
+    const sym = showsym(cmap) || defsyms[cmap];
+    const cell = { ch: sym.ch ?? sym.sym, color: CLR_BRIGHT_BLUE,
+                   decgfx: !!sym.dec, glyph: { kind: 'cmap', cmap } };
 
     if (game.level?.flags?.hero_memory)
         loc.remembered_glyph = cell;

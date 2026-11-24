@@ -7280,6 +7280,84 @@ peaceful-chat/gnome batch. The maintained corpus is 799; latest full run is
 review and current-main composition. Its original failed candidate remains
 uncommitted and preserved. Continue verified commits and immediate pushes.
 
+## 2026-11-24: vault redraw completion and prerequisite repairs
+
+The checkpoint following 85332ef7 corrects guard
+corridor recording and engraving removal, engraving glyph mapping, and the
+completion order of sensing feedback and tty window redraws. It uses the
+canonical asynchronous redraw instead of the duplicate synchronous rebuild.
+Forty runtime modules change, mostly to await the affected operations. The
+reviewed patches retain the later hero, pager and chat repairs.
+
+Full regression exposed two additional owner gaps. An engulfer's carried item
+was redrawn using unset floor coordinates. C pick_obj resolves its location
+through get_obj_location and redraws only items extracted from the floor.
+Toss-up exposed night vision marking column zero IN_SIGHT near the left edge.
+C excludes column zero from that producer. Both repairs follow those owners;
+the invalid-coordinate diagnostic remains active. The vision transition's
+separate C column-zero guard and the message-window shutdown order are also
+restored. All seven scoped patches and their exact preimages are preserved.
+
+The original 274 controls pass with 26 constructed pickup groups, 123 pickup
+replays, 20 engulfing replays and 21 billing scenarios. Fifty focused checks
+passed before the last vision condition. Seventeen vault fixtures match 4,160
+scored boundaries/cursors, 169,182 calls and two frames. Six pickup fixtures
+match 32,473 boundaries/cursors, 307,923 calls and three frames. All 44 public
+fixtures and 67 hang checks pass. Nineteen strict native fixtures match 35,576
+fully styled boundaries, 444,531 calls and four frames. Before/after comparison
+preserves all five output hashes across 58 unaffected fixtures. Their existing
+883 blank-style differences on 20 boundaries remain unchanged strict failures.
+
+The new edge test fails three of five cases before the vision repair and
+passes all five afterwards. The five lifecycle and fourteen underwater controls
+also pass. Toss-up now matches all 1,376 scored boundaries/cursors and 60,362
+calls; all five original output hashes equal the committed baseline across its
+18 segments. Its existing 1,114 styled-cell differences on 29 Air-level
+boundaries remain unchanged. The engulfer replay again matches all 4,400
+boundaries/cursors, 52,775 calls and one frame.
+
+The first full800 was cancelled after the confirmed engulfer failure. The
+second closed with 798 passes, the confirmed vision failure and a 45-second
+untrapping worker timeout. A fresh untrapping candidate replay passed within
+the unchanged limit; the paired baseline timed out. Both original failures
+remain preserved and neither sweep receives complete-pass credit. The third
+full800, prefix vault-vision-completion-promotion, has now closed with all 800
+passing: 844,740 scored screens/cursors, 17,542,707 RNG calls and 32,199 frames.
+Both worker processes closed with zero. All 279 runtime hashes, 800 raw hashes,
+frozen files and eleven support files stayed fixed. The latest completed
+passing full regression is 800. The final source audit reports zero findings
+across 276 modules; all 40 changed modules parse. Reversing the seven scoped
+patches recovers all 40 original module hashes exactly. Publish this verified
+checkpoint immediately; this result does not certify every styled blank or
+literal serialized byte.
+
+Evidence lives under .cache/restart-20261122: vault-completion-promotion-parent,
+vault-pickup-owner-correction and toss-vision-column-zero. Their verification
+receipts retain source reviews, exact scoped patches, rejected candidates,
+strict failures, native input integrity and original-output comparisons. No
+frozen comparator, native output, diagnostic or timeout was weakened.
+
+Four further patches are prepared in separate cache compositions: monster
+descriptions, polymorphed attack routing, artifact-touch alignment and docrt
+flags. The first three passed their full focused validation before the last
+vision prerequisite and are prepared for rechecking against that exact repair.
+Docrt has eight independently recorded C cases at 372 boundaries and 19,120
+calls. It still needs parent composition checks. New seduction-miss and
+monster-list inputs are independently recorded, with native JS confirmation
+pending. None is part of the current maintained inventory or passing full800 result.
+
+The serial Linux coverage union now verifies 800 inputs across 90 identical
+layouts, 4,565/5,492 functions and 60,125/107,260 branch outcomes. The latest
+two-input batch adds 21 outcomes and preserves all 89 prior run hashes. It
+includes 120 added raw recordings with 465 segments, plus nine Linux-control
+segments. Large profiles remain on NFS in verified-seduction-lists-union-20261124.
+This is C reach evidence, separate from JS correctness and corpus counts.
+
+The official board and news fetched at 16:10:32 UTC remain byte-identical to
+the earlier fetch. Our published evaluation is still 13:38:30 UTC, before four
+recent pushes: 23,595/24,531, seventh agentic and eleventh overall. No newer
+leaderboard improvement or complete-port result is claimed.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

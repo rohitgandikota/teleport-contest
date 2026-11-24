@@ -780,14 +780,6 @@ const ARTIFACT_DEFENSE_PROPS = new Map([
     [ADTYPES.AD_DRLI, 'DRAIN_RES'],
 ]);
 
-const ARTIFACT_SPFX_PROPS = [
-    [SPFX_STLTH, 'STEALTH'],
-    [SPFX_REGEN, 'REGENERATION'],
-    [SPFX_EREGEN, 'ENERGY_REGENERATION'],
-    [SPFX_TCTRL, 'TELEPORT_CONTROL'], [SPFX_HSPDAM, 'HALF_SPDAM'],
-    [SPFX_HPHDAM, 'HALF_PHDAM'], [SPFX_PROTECT, 'PROTECTION'],
-];
-
 // src/artifact.c:524 confers_luck(), SPFX_LUCK applies while carried.
 export function artifact_confers_luck(obj) {
     const art = get_artifact(obj);
@@ -839,11 +831,19 @@ export function set_artifact_intrinsic(obj, on, wp_mask) {
         if (spfx & SPFX_ESP) {
             set_artifact_prop('TELEPAT', on, wp_mask);
             recalc_telepat_range();
-            see_monsters();
+            const pending = see_monsters();
+            return pending ? pending.then(after_esp) : after_esp();
         }
-        for (const [bit, key] of ARTIFACT_SPFX_PROPS)
-            if (spfx & bit)
-                set_artifact_prop(key, on, wp_mask);
+        return after_esp();
+    }
+
+    function after_esp() {
+        if (spfx & SPFX_STLTH)
+            set_artifact_prop('STEALTH', on, wp_mask);
+        if (spfx & SPFX_REGEN)
+            set_artifact_prop('REGENERATION', on, wp_mask);
+        if (spfx & SPFX_TCTRL)
+            set_artifact_prop('TELEPORT_CONTROL', on, wp_mask);
 
         if (spfx & SPFX_WARN) {
             const mt = mtype_value(art);
@@ -852,14 +852,28 @@ export function set_artifact_intrinsic(obj, on, wp_mask) {
                 const warning = ((game.context ||= {}).warntype ||= {});
                 warning.obj = on ? ((warning.obj || 0) | mt)
                                  : ((warning.obj || 0) & ~mt);
+                const pending = see_monsters();
+                return pending ? pending.then(after_warning) : after_warning();
             }
         }
-        if ((spfx & SPFX_REFLECT) && (wp_mask & W_WEP))
-            set_artifact_prop('REFLECTING', on, wp_mask);
+        return after_warning();
+    }
+
+    function after_warning() {
+        if (spfx & SPFX_EREGEN)
+            set_artifact_prop('ENERGY_REGENERATION', on, wp_mask);
+        if (spfx & SPFX_HSPDAM)
+            set_artifact_prop('HALF_SPDAM', on, wp_mask);
+        if (spfx & SPFX_HPHDAM)
+            set_artifact_prop('HALF_PHDAM', on, wp_mask);
         if ((spfx & SPFX_XRAY) && wp_mask !== W_ART) {
             game.u.xray_range = on ? 3 : -1;
             game.vision_full_recalc = 1;
         }
+        if ((spfx & SPFX_REFLECT) && (wp_mask & W_WEP))
+            set_artifact_prop('REFLECTING', on, wp_mask);
+        if (spfx & SPFX_PROTECT)
+            set_artifact_prop('PROTECTION', on, wp_mask);
         if (wp_mask === W_ART && !on
             && (art.inv_prop === 'CONFLICT' || art.inv_prop === 'LEVITATION'
                 || art.inv_prop === 'INVIS')
@@ -1452,7 +1466,7 @@ async function invoke_enlightening() {
     await xwaitforspace(' \r\n\x1b');
     while (tty_next_page(win))
         await xwaitforspace(' \r\n\x1b');
-    tty_destroy_nhwindow(win);
+    await tty_destroy_nhwindow(win);
     await notice_all_mons_flush();
     return ECMD_TIME;
 }

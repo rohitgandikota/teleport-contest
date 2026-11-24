@@ -836,7 +836,7 @@ export async function checkfile(inp, pm, chkflags, supplemental_box) {
                 }
                 await tty_display_nhwindow(datawin);
                 await xwaitforspace(quitchars);
-                tty_destroy_nhwindow(datawin);
+                await tty_destroy_nhwindow(datawin);
                 await notice_all_mons_flush();
             }
         } else if (user_typed_name && pass === 0 && !pass1found_in_file) {
@@ -1483,7 +1483,7 @@ async function look_all(nearby, do_mons) {
         await xwaitforspace(quitchars);
         while (tty_next_page(win))
             await xwaitforspace(quitchars);
-        tty_destroy_nhwindow(win);
+        await tty_destroy_nhwindow(win);
         await notice_all_mons_flush();
     } else {
         await pline(`No ${do_mons ? 'monsters' : 'objects'} are currently `
@@ -1547,7 +1547,7 @@ async function look_traps(nearby) {
         await xwaitforspace(quitchars);
         while (tty_next_page(win))
             await xwaitforspace(quitchars);
-        tty_destroy_nhwindow(win);
+        await tty_destroy_nhwindow(win);
         await notice_all_mons_flush();
     } else {
         await pline(`No traps seen or remembered${nearby ? ' nearby' : ''}.`);
@@ -1603,7 +1603,7 @@ async function look_engrs(nearby) {
     if (count) {
         await tty_display_nhwindow(win);
         await xwaitforspace(quitchars);
-        tty_destroy_nhwindow(win);
+        await tty_destroy_nhwindow(win);
         await notice_all_mons_flush();
     } else {
         await pline('No engravings seen or remembered'
@@ -1682,7 +1682,7 @@ async function do_supplemental_info(name, pm, without_asking) {
                 }
                 await tty_display_nhwindow(datawin);
                 await xwaitforspace(quitchars);
-                tty_destroy_nhwindow(datawin);
+                await tty_destroy_nhwindow(datawin);
                 await notice_all_mons_flush();
             }
         }
@@ -1708,7 +1708,7 @@ export async function doextversion() {
     await xwaitforspace(quitchars);
     while (game.morc !== '\x1b' && tty_next_page(win))
         await xwaitforspace(quitchars);
-    tty_destroy_nhwindow(win);
+    await tty_destroy_nhwindow(win);
     await notice_all_mons_flush();
     return ECMD_OK;
 }
@@ -1739,7 +1739,7 @@ export async function display_file(text) {
         if (!tty_next_page(win))
             break;
     }
-    tty_destroy_nhwindow(win);
+    await tty_destroy_nhwindow(win);
     await notice_all_mons_flush();
     return ECMD_OK;
 }
@@ -1797,7 +1797,7 @@ async function domenucontrols() {
     show_menu_controls((s) => tty_putstr(cwin, 0, s), false);
     await tty_display_nhwindow(cwin);
     await xwaitforspace(quitchars);
-    tty_destroy_nhwindow(cwin);
+    await tty_destroy_nhwindow(cwin);
     await notice_all_mons_flush();
 }
 
@@ -1814,7 +1814,7 @@ async function docontact() {
     tty_putstr(win, 0, 'visit our website "https://www.nethack.org/".');
     await tty_display_nhwindow(win);
     await xwaitforspace(quitchars);
-    tty_destroy_nhwindow(win);
+    await tty_destroy_nhwindow(win);
     await notice_all_mons_flush();
 }
 

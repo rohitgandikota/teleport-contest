@@ -838,8 +838,8 @@ export function vision_recalc(control = 0) {
             const loc = level?.at(col, row);
             if (!loc) continue;
 
-            // Night vision: adjacent cells always IN_SIGHT
-            if (Math.abs(col - ux) <= 1 && Math.abs(row - uy) <= 1) {
+            // C vision.c:690: night vision excludes column zero.
+            if (col > 0 && Math.abs(col - ux) <= 1 && Math.abs(row - uy) <= 1) {
                 next[row][col] |= IN_SIGHT;
                 continue;
             }
@@ -942,7 +942,9 @@ export function vision_recalc(control = 0) {
                 } else {
                     if ((ov & IN_SIGHT)
                         || ((nv & COULD_SEE) ^ (ov & COULD_SEE))) {
-                        newsym(col, row);
+                        // src/vision.c:828: this visibility transition can include column zero.
+                        if (col !== 0)
+                            newsym(col, row);
                     }
                 }
             }

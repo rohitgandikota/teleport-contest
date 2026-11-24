@@ -2786,7 +2786,7 @@ async function givit(type, ptr) {
             intr.HTelepat = (intr.HTelepat | 0) | FROMOUTSIDE;
             /* If blind, make sure monsters show up. */
             if (Blind())
-                see_monsters();
+                await see_monsters();
         }
         break;
     case ACID_RES:

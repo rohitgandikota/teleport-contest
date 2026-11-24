@@ -179,7 +179,7 @@ async function getpos_help(force, goal) {
     await xwaitforspace(quitchars);
     while (game.morc !== '\x1b' && tty_next_page(win))
         await xwaitforspace(quitchars);
-    tty_destroy_nhwindow(win);
+    await tty_destroy_nhwindow(win);
 }
 
 /* include/hack.h — quitchars */

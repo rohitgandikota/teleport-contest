@@ -4771,6 +4771,51 @@ Evidence is `.cache/restart-20261122/drawbridge-flip-native-confirmation/`,
 `drawbridge-flip-promoted-*`. Original patches, raw recordings and five-field
 input tuples remain unchanged. No complete level-flip parity is claimed.
 
+## 2026-11-23: shopkeeper recovery precedes robbery settlement
+
+Drawbridge checkpoint `08365f75` is committed and pushed. `rob_shop` now awaits
+the existing `rouse_shk(shkp, true)` immediately after capturing the account,
+before calculating or clearing debt. Both public callers already await this
+routine. The change is one executable line and its C source reference; helper
+logic is unchanged. No imports, direct RNG calls or caller signature changes
+are needed.
+
+The ordinary Minetown pair is independently native-confirmed. The positive
+case deposits enough credit, takes stock, paralyzes the keeper and leaves.
+C shows recovery at boundary 178, settlement at 179 and the keeper's reflected
+wand action at 180. The old port skips recovery, producing 5,360 calls and
+eight frames instead of 5,363 and 29. The candidate matches both cases' 410
+screens/cursors, all 10,846 calls and input slices, and 58 animations. The
+returned-stock control was already exact; paralysis expires naturally during
+that return, so it is not a persistent-paralysis control. Raw SHA-256:
+`e897159e7c8d6ce380e9a9396b46f5ebdecde71d1a984c42a88bb6d66c167f7b`.
+Hidden account/status ordering is established by source and real JS controls,
+not by invented native state observations. Full credit keeps the separate
+chronicle/alarm omissions outside these native witnesses.
+
+All thirteen integrated checks pass. The 21 new and 23 retained controls
+exercise recovery, message completion, account lifetime, door blocking and
+shop names. Eight focused fixtures match fourteen segments, 1,850 boundaries,
+80,747 complete RNG calls and input slices, and 118 animation grids/cursors.
+Deferred input matches four fixtures, eight segments, 1,138 boundaries,
+46,043 calls and 95 frames. All 44 public fixtures pass 11,405 boundaries,
+792,838 scored RNG positions and 1,483 frames. All 52 hang workers pass at
+30 seconds. Source audit has zero findings across 276 modules; syntax passes
+and all 279 runtime hashes stay fixed. The inventory now has 752 fixtures;
+the last full regression remains `f5b22bb7` with 750/750.
+
+The native NFS run adds thirteen outcomes. Its union through this input has
+746 unique inputs, forty-nine identical layouts, 4,534/5,492 functions and
+59,344/107,260 outcomes. The later queued region union adds three functions
+and 28 outcomes, as recorded separately. Large profiles remain on NFS.
+
+Evidence is `.cache/restart-20261122/shop-robbery-rouse-native-confirmation/`,
+`shop-robbery-rouse-parent-{source-review,integration,verification}.json` and
+`shop-robbery-rouse-promoted-*`. The original patch, native raw and source-state
+assertions are retained. Literal terminal serialization still differs in
+pre-existing equivalent escape/space encodings; canonical grids and cursors
+are exact. This is not a claim of full shop parity.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

@@ -1,0 +1,67 @@
+{
+  "name": "shop-robbery-wakeup",
+  "description": "Ordinary Minetown inputs deposit credit, paralyze the real shopkeeper with a thrown potion, then enter the shop boundary. Credit-covered debt reaches rob_shop recovery and settlement; returned stock skips rob_shop and retains credit. The short paralysis expires naturally in the negative. Independent C recording confirms recovery and credit-settlement More prompts, the following reflected wand action, and the returned-stock negative.",
+  "coverage": [
+    "level.mines",
+    "mode.debug",
+    "social.shops-billing",
+    "object.potions"
+  ],
+  "segments": [
+    {
+      "seed": 6601,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0016?\r w\u0006\u0014  hhhhhhhhkkk.  \u0017blessed wand of digging (0:5)\r\u00171000 gold pieces\rhkzph yl, b#levelchange\r30\r                    \u001b\u001bd$  \u001b\u001b\u0017uncursed potion of paralysis\r  \u001b\u001btrk          \u001b\u001by                    \u001b\u001b:",
+      "name": "paralyzed-shop-credit-settlement"
+    },
+    {
+      "seed": 6601,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0016?\r w\u0006\u0014  hhhhhhhhkkk.  \u0017blessed wand of digging (0:5)\r\u00171000 gold pieces\rhkzph yl, b#levelchange\r30\r                    \u001b\u001bd$  \u001b\u001b\u0017uncursed potion of paralysis\r  \u001b\u001btrk          \u001b\u001bdq  \u001b\u001by                    \u001b\u001b:",
+      "name": "returned-stock-retains-credit"
+    }
+  ],
+  "requireBranchAssertions": true,
+  "branches": [
+    "shop.robbery.wake-before-credit",
+    "shop.robbery.no-debt-retains-credit"
+  ],
+  "branchAssertions": [
+    {
+      "branch": "shop.robbery.wake-before-credit",
+      "segment": 0,
+      "screenIncludes": [
+        "You have established 600 zorkmids credit.",
+        "Samoe gets angry!",
+        "Samoe can move again.",
+        "Your credit of 600 zorkmids is used to cover your shopping bill.",
+        "Samoe can move again.--More--",
+        "Your credit of 600 zorkmids is used to cover your shopping bill.--More--",
+        "Samoe zaps an oak wand!  Boing!"
+      ],
+      "screenExcludes": [
+        "You stole",
+        "An alarm sounds!",
+        "Die?"
+      ]
+    },
+    {
+      "branch": "shop.robbery.no-debt-retains-credit",
+      "segment": 1,
+      "screenIncludes": [
+        "You have established 600 zorkmids credit.",
+        "Samoe gets angry!",
+        "You drop a fortune cookie (unpaid, 12 zorkmids)."
+      ],
+      "screenExcludes": [
+        "You stole",
+        "An alarm sounds!",
+        "Die?",
+        "can move again.",
+        "is used to cover your shopping bill."
+      ]
+    }
+  ]
+}

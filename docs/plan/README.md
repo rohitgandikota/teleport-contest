@@ -140,7 +140,9 @@ removing the duplicate helper. All 94 controls, sixteen focused fixtures and
 44 public fixtures pass, including hang checks. Guard dialogue passes all
 154 controls and the full 750-fixture regression. Drawbridge direction now
 flips with its cell, passing 163 controls, eight focused fixtures and all
-44 public fixtures. Shopkeeper recovery and region coordinates are next.
+44 public fixtures. Shopkeepers now recover before robbery settlement,
+passing 44 controls, eight focused fixtures and all 44 public fixtures.
+Region coordinates are next.
 The Linux/NFS branch collector is pushed
 and passes signal canaries plus exact save/restore, artifact and natural-exit
 pilots. The Linux census at e4504071 now covers all 678 original inputs:
@@ -149,9 +151,9 @@ Adding 67 newer raw inputs and two independent Linux controls, 245
 native segments in total, gives a validated union entering 4,537/5,492
 functions and observing 59,372/107,260 direct C branch outcomes.
 All 747 credited input hashes, fifty build manifests and branch layouts
-were checked before merging. This C coverage census includes queued
-shopkeeper-recovery and region-flip recordings; it does not claim completed
-JS integration for those pending repairs. Original platform/output rejections
+were checked before merging. This C coverage census includes the queued
+region-flip recording; it does not claim completed JS integration for that
+pending repair. Original platform/output rejections
 remain rejected; no output was normalized. The two new sink fixtures separately
 match Linux C exactly; their validated union covers all 94/94 direct dosinkring
 outcomes in 49 cases. The teleport and polymorph helpers still have measured

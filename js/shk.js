@@ -1119,8 +1119,10 @@ async function call_kops(shkp, nearshop) {
     await makekops({ x: shkp.mx, y: shkp.my });
 }
 
+// src/shk.c:687 rob_shop()
 async function rob_shop(shkp) {
     const eshk = shkp.eshk || ESHK(shkp);
+    await rouse_shk(shkp, true);
     let total = add_up_bill(shkp) + (eshk.debit || 0);
     if ((eshk.credit || 0) >= total) {
         await pline(`Your credit of ${eshk.credit} ${currency(eshk.credit)} is used to cover your shopping bill.`);

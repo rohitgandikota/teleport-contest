@@ -1,0 +1,105 @@
+{
+  "name": "squeaky-board-feedback",
+  "description": "Visible monster board sounds and deaf cringing feedback retain their locations, with plain-message controls.",
+  "coverage": [
+    "mode.debug",
+    "ui.getlin",
+    "traps.monster",
+    "options.rc-bindings"
+  ],
+  "branches": [
+    "hearing-located",
+    "hearing-plain",
+    "deaf-located",
+    "deaf-plain"
+  ],
+  "requireBranchAssertions": true,
+  "segments": [
+    {
+      "name": "hearing-located",
+      "seed": 7401,
+      "datetime": "20000112121000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics,accessiblemsg\n",
+      "moves": " h\u00173 blessed potions of full healing\r\u001b\u001b\u001b\u001bqa\u001b\u001b\u001b\u001bqa\u001b\u001b\u001b\u001bqa\u001b\u001b\u001b\u001b\u0017squeaky board\r\u0007hostile kobold\rj.\u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "hearing-plain",
+      "seed": 7401,
+      "datetime": "20000112121000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics,!accessiblemsg\n",
+      "moves": " h\u00173 blessed potions of full healing\r\u001b\u001b\u001b\u001bqa\u001b\u001b\u001b\u001bqa\u001b\u001b\u001b\u001bqa\u001b\u001b\u001b\u001b\u0017squeaky board\r\u0007hostile kobold\rj.\u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "deaf-located",
+      "seed": 7401,
+      "datetime": "20000112121000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics,accessiblemsg\nOPTIONS=deaf\n",
+      "moves": " h\u00173 blessed potions of full healing\r\u001b\u001b\u001b\u001bqa\u001b\u001b\u001b\u001bqa\u001b\u001b\u001b\u001bqa\u001b\u001b\u001b\u001b\u0017squeaky board\r\u0007hostile kobold\rk.\u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "deaf-plain",
+      "seed": 7401,
+      "datetime": "20000112121000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics,!accessiblemsg\nOPTIONS=deaf\n",
+      "moves": " h\u00173 blessed potions of full healing\r\u001b\u001b\u001b\u001bqa\u001b\u001b\u001b\u001bqa\u001b\u001b\u001b\u001bqa\u001b\u001b\u001b\u001b\u0017squeaky board\r\u0007hostile kobold\rk.\u001b\u001b\u001b\u001b\u001b\u001b"
+    }
+  ],
+  "branchAssertions": [
+    {
+      "segment": 0,
+      "branch": "hearing-located",
+      "source": "trap.c:1441-1459, visible monster feedback and deaf/mindless guards",
+      "screenIncludes": [
+        "A board beneath the kobold squeaks an F sharp loudly.",
+        "HP:36(36)",
+        "(north): A board beneath the kobold squeaks an F sharp loudly."
+      ],
+      "screenExcludes": [
+        "Die? [yn]",
+        "OK, so you don't die"
+      ]
+    },
+    {
+      "segment": 1,
+      "branch": "hearing-plain",
+      "source": "trap.c:1441-1459, visible monster feedback and deaf/mindless guards",
+      "screenIncludes": [
+        "A board beneath the kobold squeaks an F sharp loudly.",
+        "HP:36(36)"
+      ],
+      "screenExcludes": [
+        "Die? [yn]",
+        "OK, so you don't die",
+        "(north): A board beneath the kobold squeaks an F sharp loudly."
+      ]
+    },
+    {
+      "segment": 2,
+      "branch": "deaf-located",
+      "source": "trap.c:1441-1459, visible monster feedback and deaf/mindless guards",
+      "screenIncludes": [
+        "The kobold stops momentarily and appears to cringe.",
+        "HP:36(36)",
+        "(south): The kobold stops momentarily and appears to cringe."
+      ],
+      "screenExcludes": [
+        "Die? [yn]",
+        "OK, so you don't die"
+      ]
+    },
+    {
+      "segment": 3,
+      "branch": "deaf-plain",
+      "source": "trap.c:1441-1459, visible monster feedback and deaf/mindless guards",
+      "screenIncludes": [
+        "The kobold stops momentarily and appears to cringe.",
+        "HP:36(36)"
+      ],
+      "screenExcludes": [
+        "Die? [yn]",
+        "OK, so you don't die",
+        "(south): The kobold stops momentarily and appears to cringe."
+      ]
+    }
+  ]
+}

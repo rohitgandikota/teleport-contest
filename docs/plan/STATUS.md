@@ -6981,6 +6981,66 @@ not promoted as passing. A new sibling is auditing that complete dependency.
 The native recording remains valid NFS coverage evidence. Hero damageum,
 adjacent inspection and vault diagnostic caller closure continue separately.
 
+## 2026-11-24 14:03 UTC: full793 closed; located squeaky-board feedback
+
+The full793 run on b0827c3c closes with both shards at exit0: all 842,378
+boundary screens/cursors, 17,466,819 scored RNG positions and 32,043 scored
+animation frames match. All 279 runtime hashes and the fixture inventory
+remain fixed through the final verifier. This includes the anti-magic,
+slow/wield and self-sensing checkpoints, before the board repair below.
+Receipt: `.cache/restart-20261122/anti-slow-self-promotion-corpus-totals.json`.
+
+The complete C squeaky-board effect and its trap, visibility, note and wake
+contracts were reviewed. Two existing awaited monster feedback calls now use
+`pline_mon(mtmp, ...)`, as C does. The hero path and all other runtime bytes
+remain unchanged. Source proof reverses exactly those two calls to restore
+the original whole module. Constructed controls cover sight, deafness,
+mindlessness, airborne species, a blind rider, notes and real pending More
+input before reveal/wake. The hero airborne notice guard is unchanged:
+reviewed `dotrap`/air checks and all three TOOKPLUNGE producers do not establish
+an ordinary unforced route to it. No native reach is claimed for that arm.
+
+Fresh unchanged C raw SHA256
+`091912305c7db589f0c5ff328b7949e7cfe32f49c65602619903f0712a199526`
+has four hearing/deaf and located/plain cases. All 396 styled grids, cursors,
+per-input slices, 9,370 complete recognized calls and zero frames now match.
+Before the patch, 394 grids match; all other collections already match.
+The two plain controls preserve all five original output hashes. Input tests
+also verify the raw hash, source/version, registered tags, branch assertions,
+all five input fields including presence, and every key. No raw or frozen
+comparator changed. The initial prototype used the wrong pline import;
+its failure remains recorded, and the final normal-import gate uses display.
+
+Twenty current-main checks pass: 107 source/input controls; eight fixtures
+with 69 segments, 29,503 scored boundaries/cursors, 180,277 calls and 1,663
+frames; all 44 public sessions with 11,405 boundaries, 792,838 calls and
+1,483 frames; 52 hang checks; and zero scope/import findings in 276 modules.
+Delayed input matches immediate execution across eight segments, 816
+boundaries, 18,758 calls and 32 frames. All 279 runtime hashes and four
+support files stay fixed. Parent receipt:
+`.cache/restart-20261122/squeaky-board-promotion-parent-verification.json`.
+The maintained corpus is 794. Full793 predates this two-call patch.
+
+Serial NFS coverage accepts the original board raw byte for byte. The verified
+83-layout union credits 790 distinct inputs, 4,562/5,492 functions and
+60,018/107,260 branch outcomes, one additional outcome. It includes 110
+additional native files with 418 segments and nine additional Linux segments.
+Prior runs, rejected inputs, binary/layout hashes and raw bytes remain fixed.
+Only compact summaries were downloaded. Local prefixes:
+`linux-coverage-squeaky-board-union-*` and its hash-verified download receipt.
+
+The 14:00 UTC official leaderboard/news fetch is byte-identical to 13:21.
+Our published score still predates these checkpoints: 23,595/24,531 screens,
+7th agentic, 11th overall, 39/56 held-out sessions, 936 unmatched screens.
+No held-out gain is inferred from local results.
+
+Next work remains active. The sealed vault redraw caller closure is ready
+for parent review and current-main composition checks. New source packages
+for swallowed/statue inspection and hero damage dispatch have independently
+recorded native raws and are undergoing native confirmation. Monster footwear
+has a separate canonical alignment dependency under review. No goal completion
+or pause is requested; keep committing and pushing verified checkpoints.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

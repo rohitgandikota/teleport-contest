@@ -6140,6 +6140,50 @@ prefixes, binary and layouts remain unchanged. The next pending integrations
 are guard obstacle carving and projectile trap damage; placement-property
 work remains isolated in cache.
 
+## 2026-11-24: complete arrow and dart trap callers
+
+The complete hero and monster arms now follow `trap.c:1190-1321`. Hero hits
+apply `Maybe_Half_Phys` before `thitu`, retain its object pointer result and
+await disposal. Dart poison follows the completed physical hit and preserves
+the life-saving mortality boundary. Misses use canonical blindness, and
+visible depleted monster traps use located feedback. The two owner headers
+now describe their actual behavior. All other 405 top-level nodes, imports,
+exports and the four awaiting callers are unchanged.
+
+The four unmodified native cases contain 455 boundaries, 13,443 RNG calls
+and no animation frames. Gameplay screens improve from 446 to 455 matches;
+all cursors, complete RNG and per-input slices match. The Orb of Fate cases
+now finish at C's 28 HP for arrows and 25 HP for darts. Both ordinary controls
+retain all five raw JS output hashes. The raw SHA-256 is
+`44da2d8ea913186adf38595e5f15e5b7f1591ab9ceac86442a080d8033d4ca7f`.
+
+The separate `tools/projectile-trap-caller-native-gate.mjs` intentionally
+continues to report a failure: 445 boundaries contain pre-existing blank
+foreground differences, beginning at boundary 2 before the trap setup.
+The exact blank-cell mismatch sets are unchanged before and after this patch.
+Only 10 of 455 complete styled grids match. This is not literal byte or
+all-blank-style parity, and the diagnostic assertions remain intact.
+
+All 38 new and 25 retained controls pass. Fourteen normal parent checks pass:
+five focused fixtures cover 18 segments, 1,491 screens/cursors, 61,751 complete
+RNG calls and seven animation frames. The new fixture also has identical
+immediate and delayed-input outputs. All 44 public fixtures pass, as do the
+49-fixture 30-second hang check, syntax and the 0/276 source audit. All 279
+runtime hashes remained fixed during these checks. The maintained corpus is
+778; the latest completed full regression remains 774 fixtures.
+
+Parent receipts are in `.cache/restart-20261122/projectile-trap-caller-promotion-parent/`
+and `projectile-trap-caller-promotion-parent-verification.json`. The sealed
+source and native packages remain unchanged. Disposal, poison/life-saving,
+mounted dispatch and depleted feedback retain their explicitly constructed
+source evidence; the native cases witness ordinary hero damage.
+
+The independent Linux C union also verifies the new combat and placement
+recordings without normalization: 775 credited inputs across 72 matching
+layouts, 4,559/5,492 called functions and 59,914/107,260 branch outcomes.
+Those two cached candidates add 14 outcomes and are not yet promoted.
+Continue their source review, timer repair and full regression work.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

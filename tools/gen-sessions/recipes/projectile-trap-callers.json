@@ -1,0 +1,114 @@
+{
+  "name": "projectile-trap-callers",
+  "description": "Independent C recording: carried Orb of Fate versus ordinary crystal ball, arrow and dart traps triggered by sitting. Raw input tuples and all native bytes are preserved.",
+  "coverage": [
+    "mode.debug",
+    "ui.getlin",
+    "ui.more-paging",
+    "traps.projectile-physical",
+    "object.artifacts"
+  ],
+  "branches": [
+    "projectile-trap-callers.arrow-orb",
+    "projectile-trap-callers.arrow-ordinary",
+    "projectile-trap-callers.dart-orb",
+    "projectile-trap-callers.dart-ordinary"
+  ],
+  "requireBranchAssertions": true,
+  "segments": [
+    {
+      "name": "arrow-orb",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Valkyrie,race:human,gender:female,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics,accessiblemsg\n",
+      "moves": " l\u00172 blessed potions of full healing\r\u001b\u001b\u001b\u001bqa\u001b\u001b\u001b\u001bqa\u001b\u001b\u001b\u001b\u0017The Orb of Fate\r\u001b\u001b\u001b\u001b\u0017arrow trap\r\u001b\u001b\u001b\u001b#sit\r\u001b\u001b\u001b\u001b#sit\r\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "arrow-ordinary",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Valkyrie,race:human,gender:female,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics,accessiblemsg\n",
+      "moves": " l\u00172 blessed potions of full healing\r\u001b\u001b\u001b\u001bqa\u001b\u001b\u001b\u001bqa\u001b\u001b\u001b\u001b\u0017uncursed crystal ball\r\u001b\u001b\u001b\u001b\u0017arrow trap\r\u001b\u001b\u001b\u001b#sit\r\u001b\u001b\u001b\u001b#sit\r\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "dart-orb",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Valkyrie,race:human,gender:female,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics,accessiblemsg\n",
+      "moves": " l\u00172 blessed potions of full healing\r\u001b\u001b\u001b\u001bqa\u001b\u001b\u001b\u001bqa\u001b\u001b\u001b\u001b\u0017The Orb of Fate\r\u001b\u001b\u001b\u001b\u0017dart trap\r\u001b\u001b\u001b\u001b#sit\r\u001b\u001b\u001b\u001b#sit\r\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "dart-ordinary",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Valkyrie,race:human,gender:female,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics,accessiblemsg\n",
+      "moves": " l\u00172 blessed potions of full healing\r\u001b\u001b\u001b\u001bqa\u001b\u001b\u001b\u001bqa\u001b\u001b\u001b\u001b\u0017uncursed crystal ball\r\u001b\u001b\u001b\u001b\u0017dart trap\r\u001b\u001b\u001b\u001b#sit\r\u001b\u001b\u001b\u001b#sit\r\u001b\u001b\u001b\u001b#sit\r\u001b\u001b\u001b\u001b"
+    }
+  ],
+  "branchAssertions": [
+    {
+      "branch": "projectile-trap-callers.arrow-orb",
+      "segment": 0,
+      "intent": "Carried Orb supplies W_ART half physical damage; poison remains independently resolved.",
+      "evidence": "Independent unchanged source-c/version-5 recording supplies the asserted message and HP screen text. Property masks and actual trap reach are separately observed read-only in JS.",
+      "screenIncludes": [
+        "An arrow shoots out at you!",
+        "You are hit by an arrow.",
+        "HP:28(32)"
+      ],
+      "screenExcludes": [
+        "Creation of",
+        "OK, so you don't die",
+        "Die? [yn]"
+      ]
+    },
+    {
+      "branch": "projectile-trap-callers.arrow-ordinary",
+      "segment": 1,
+      "intent": "Ordinary crystal ball supplies no half physical damage; complete output remains unchanged by the caller patch.",
+      "evidence": "Independent unchanged source-c/version-5 recording supplies the asserted message and HP screen text. Property masks and actual trap reach are separately observed read-only in JS.",
+      "screenIncludes": [
+        "An arrow shoots out at you!",
+        "You are hit by an arrow.",
+        "HP:28(32)"
+      ],
+      "screenExcludes": [
+        "Creation of",
+        "OK, so you don't die",
+        "Die? [yn]"
+      ]
+    },
+    {
+      "branch": "projectile-trap-callers.dart-orb",
+      "segment": 2,
+      "intent": "Carried Orb supplies W_ART half physical damage; poison remains independently resolved.",
+      "evidence": "Independent unchanged source-c/version-5 recording supplies the asserted message and HP screen text. Property masks and actual trap reach are separately observed read-only in JS.",
+      "screenIncludes": [
+        "A little dart shoots out at you!",
+        "You are hit by a little dart.",
+        "HP:25(32)"
+      ],
+      "screenExcludes": [
+        "Creation of",
+        "OK, so you don't die",
+        "Die? [yn]"
+      ]
+    },
+    {
+      "branch": "projectile-trap-callers.dart-ordinary",
+      "segment": 3,
+      "intent": "Ordinary crystal ball supplies no half physical damage; complete output remains unchanged by the caller patch.",
+      "evidence": "Independent unchanged source-c/version-5 recording supplies the asserted message and HP screen text. Property masks and actual trap reach are separately observed read-only in JS.",
+      "screenIncludes": [
+        "A little dart shoots out at you!",
+        "You are hit by a little dart.",
+        "HP:29(32)"
+      ],
+      "screenExcludes": [
+        "Creation of",
+        "OK, so you don't die",
+        "Die? [yn]"
+      ]
+    }
+  ]
+}

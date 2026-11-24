@@ -1462,11 +1462,7 @@ function t_missile(otyp, trap) {
     return otmp;
 }
 
-// src/trap.c:1250 trapeffect_dart_trap() — the hero's arm.
-//
-// Draw order: the once/tseen rn2(15) disarm check, then t_missile's mksobj,
-// then the rn2(6) poison roll, then dmgval, then thitu's rnd(20).
-// src/trap.c trapeffect_arrow_trap()
+// src/trap.c:1190 trapeffect_arrow_trap(), hero and monster projectile effects.
 async function trapeffect_arrow_trap(mtmp, trap, trflags) {
     if (mtmp === game.youmonst) {
         if (trap.once && trap.tseen && !rn2(15)) {
@@ -1478,15 +1474,19 @@ async function trapeffect_arrow_trap(mtmp, trap, trflags) {
         trap.once = 1;
         seetrap(trap);
         await pline('An arrow shoots out at you!');
-        const otmp = t_missile(ONAMES.ARROW, trap);
+        let otmp = t_missile(ONAMES.ARROW, trap);
         const dam = dmgval(otmp, game.youmonst);
+        const objp = { obj: otmp };
         if (game.u.usteed && !rn2(2) && await steedintrap(trap, otmp)) {
             ; /* nothing */
-        } else if (await thitu(8, dam, { obj: otmp }, 'arrow')) {
-            /* obfree(otmp) — the arrow is destroyed */
+        } else if (await thitu(8, Maybe_Half_Phys(dam), objp, 'arrow')) {
+            otmp = objp.obj;
+            if (otmp)
+                await obfree(otmp, null);
         } else {
+            otmp = objp.obj;
             place_object(otmp, game.u.ux, game.u.uy);
-            if (!game.u.ublind)
+            if (!Blind())
                 observe_object(otmp);
             const { stackobj } = await import('./invent.js');
             stackobj(otmp);
@@ -1501,7 +1501,7 @@ async function trapeffect_arrow_trap(mtmp, trap, trflags) {
 
     if (trap.once && trap.tseen && !rn2(15)) {
         if (in_sight && see_it)
-            await pline(`${Monnam(mtmp)} triggers a trap but nothing happens.`);
+            await pline_mon(mtmp, `${Monnam(mtmp)} triggers a trap but nothing happens.`);
         deltrap(trap);
         newsym(mtmp.mx, mtmp.my);
         return Trap_Is_Gone;
@@ -1517,6 +1517,7 @@ async function trapeffect_arrow_trap(mtmp, trap, trflags) {
         ? Trap_Caught_Mon : Trap_Effect_Finished;
 }
 
+// src/trap.c:1251 trapeffect_dart_trap(), poison follows a completed hero hit.
 async function trapeffect_dart_trap(mtmp, trap, trflags) {
     if (mtmp !== game.youmonst) {
         /* src/trap.c dart monster arm */
@@ -1526,7 +1527,7 @@ async function trapeffect_dart_trap(mtmp, trap, trflags) {
 
         if (trap.once && trap.tseen && !rn2(15)) {
             if (in_sight && see_it)
-                await pline(`${Monnam(mtmp)} triggers a trap but nothing happens.`);
+                await pline_mon(mtmp, `${Monnam(mtmp)} triggers a trap but nothing happens.`);
             deltrap(trap);
             newsym(mtmp.mx, mtmp.my);
             return Trap_Is_Gone;
@@ -1544,13 +1545,13 @@ async function trapeffect_dart_trap(mtmp, trap, trflags) {
             ? Trap_Caught_Mon : Trap_Effect_Finished;
     }
 
+    const oldumort = game.u.umortality | 0;
     if (trap.once && trap.tseen && !rn2(15)) {
         await You_hear('a soft click.');
         deltrap(trap);
         newsym(game.u.ux, game.u.uy);
         return Trap_Is_Gone;
     }
-    const oldumort = game.u.umortality | 0;
     trap.once = 1;
     seetrap(trap);
     await pline('A little dart shoots out at you!');
@@ -1558,18 +1559,23 @@ async function trapeffect_dart_trap(mtmp, trap, trflags) {
     if (!rn2(6))
         otmp.opoisoned = 1;
     const dam = dmgval(otmp, game.youmonst);
+    const objp = { obj: otmp };
     if (game.u.usteed && !rn2(2) && await steedintrap(trap, otmp)) {
         ; /* nothing */
-    } else if (await thitu(7, dam, { obj: otmp }, 'little dart')) {
-        if (otmp.opoisoned)
-            await poisoned('dart', A_CON, 'little dart',
-                           /* if damage triggered life-saving,
-                              poison is limited to attrib loss */
-                           ((game.u.umortality | 0) > oldumort) ? 0 : 10, true);
-        obfree(otmp, null);
+    } else if (await thitu(7, Maybe_Half_Phys(dam), objp, 'little dart')) {
+        otmp = objp.obj;
+        if (otmp) {
+            if (otmp.opoisoned)
+                await poisoned('dart', A_CON, 'little dart',
+                               /* if damage triggered life-saving,
+                                  poison is limited to attrib loss */
+                               ((game.u.umortality | 0) > oldumort) ? 0 : 10, true);
+            await obfree(otmp, null);
+        }
     } else {
+        otmp = objp.obj;
         place_object(otmp, game.u.ux, game.u.uy);
-        if (!game.u.ublind)
+        if (!Blind())
             observe_object(otmp);
         /* js/invent.js is reached through a cycle from here (trap -> invent
            -> pickup -> hack -> trap), so stackobj is bound at call time. */

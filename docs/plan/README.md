@@ -30,7 +30,7 @@ checks on 117 fixtures, all 39,942 boundaries and 1,718,440 calls. The complete
 strict 677-fixture audit and all 213 animation-bearing fixtures passed at the
 preceding floor checkpoint. The subsequent monster trap-hit repair passes
 four new native cases, 65 controls and seven focused regressions. The maintained
-corpus is now 777. The following death-owner repair passes 21 direct source
+corpus is now 778. The following death-owner repair passes 21 direct source
 controls, 61 retained controls and seven focused regressions. Temporary corpse
 cleanup for pet nutrition also passes 16 direct controls, 55 retained controls
 and five focused regressions. Guard corridor gold collection passes five new
@@ -45,6 +45,11 @@ regressions passing. The shared accessibility helper now checks the surface
 beneath a raised drawbridge, passing two native cases, 112 combined controls
 and six focused regressions. Monster drinking and pickup locations now also
 match four native cases, with 100 controls and eight focused fixtures passing.
+Arrow and dart trap callers now preserve physical resistance, object disposal
+and located feedback, passing four native cases under the contest comparator,
+63 controls and five focused fixtures. Their strict styled diagnostic retains
+an independent blank foreground mismatch that was already present before the
+trap fired; no raw recording or comparator was changed.
 The latest full regression remains the 774-fixture run.
 Current-corpus parity is not completeness.
 

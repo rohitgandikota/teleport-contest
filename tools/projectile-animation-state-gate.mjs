@@ -45,6 +45,10 @@ function setup(visible, {animation = true} = {}) {
         flush_screen:async()=>{for(const [k,v] of buffer)physical.set(k,v);events.push(['flush']);},
         isok:(x,y)=>x>=1&&x<C.COLNO&&y>=0&&y<C.ROWNO,
         m_at:()=>null,t_at:()=>null,closed_door:()=>false,
+        maybe_unhide_at:()=>{},
+        digging_context:()=>({pos:{x:0,y:0}}),
+        clear_digging_context:()=>{throw Error('unmatched digging context reset');},
+        flooreffects:async()=>false,
         Hallucination:()=>false,Deaf:()=>false,
         You_see:async()=>{},You_hear:async()=>{},pline:async()=>{},
         an:x=>x,xname:()=> 'boulder',distu:()=>9,
@@ -54,6 +58,7 @@ function setup(visible, {animation = true} = {}) {
         transient_light_cleanup:async()=>{},
     });
     vm.runInContext(tmpBody,context);
+    vm.runInContext(body('trap','launch_drop_spot'),context);
     vm.runInContext(body('trap','launch_obj'),context);
     vm.runInContext(body('zap','bhit'),context);
     return {game,events,frames,buffer,physical,obj,floor,context,get samples(){return samples;}};

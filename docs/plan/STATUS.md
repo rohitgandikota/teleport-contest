@@ -5258,6 +5258,57 @@ Evidence is `.cache/restart-20261122/stop-occupation-queue-audit/`,
 `stop-occupation-parent-comment-proof.json` and `stop-occupation-promoted-*`.
 Native fixtures and all sealed source assertions are unchanged.
 
+## 2026-11-24: rolling-object trap effects and launch ownership
+
+Occupation checkpoint `5d86bfc7` is committed and pushed. The complete
+`launch_obj` review restores the omitted rolling-boulder land mine, local
+teleport, level teleport and pit/hole branches. Shipping still precedes the
+trap switch, followed by generic floor effects. Hero hits now apply half
+physical damage and await occupation interruption. Singleton extraction
+rechecks concealment, and matching boulder/statue coordinates clear the
+digging context. Feedback uses C's monster and location-aware helpers.
+
+The launch marker now retains the original object and origin through the
+flight, clears on consumption or normal completion, and survives a fatal
+unwind. `really_done` forces placement only after bones eligibility is known.
+Complete end-of-game callers and cleanup were reviewed. A later boulder
+handoff does not replace C's original marker. No unconditional cleanup or
+alternate object owner was introduced. The obsolete trap module header,
+which claimed it contained only level generation, now describes its scope.
+
+The new raw C fixture has four unchanged segments: 293 boundaries, 10,388
+complete RNG calls and 28 animation frames. Land mine, local teleport and
+level teleport cases now match every styled grid, cursor and per-input RNG
+slice. Previously, those three paths continued too far and produced twelve
+extra animation frames each. The projectile negative control retains
+identical complete output hashes. All cases finish with positive hero HP and
+zero mortality; they do not establish native fatal-placement coverage.
+
+All sixteen integrated checks pass: 38 new and 72 retained controls, eleven
+C fixtures with 39 segments, 5,908 exact boundaries, 225,700 complete RNG
+calls/input slices and 5,172 animation grids/cursors/counts. Deferred input
+matches four fixtures, fifteen segments, 2,005 boundaries, 120,195 calls and
+5,164 frames. All 44 public fixtures retain 11,405 exact boundaries, 792,838
+scored RNG positions and 1,483 frames. All 55 hang workers pass at 30 seconds.
+Syntax passes, the source audit is clear across 276 modules, and all 279
+runtime hashes stay fixed. The existing animation gate only gains helper
+registration; all thirteen prior assertions are unchanged. The latest full
+run remains `f12cfd59` at 760/760; the maintained inventory is now 761.
+
+Fatal bones placement, half-damage, digging, concealment and hit interruption
+have constructed source coverage in this package. The Linux union enters
+two additional C functions and observes 35 additional direct outcomes from
+the new ordinary inputs, but never calls `force_launch_placement`. Guard-death
+coverage brings the later union to 756 inputs and 59,486 outcomes, as recorded
+above. Its JS repair is next. The monster trap caller's separate feedback and
+air checks remain outside this checkpoint.
+
+Evidence is `.cache/restart-20261122/launch-obj-native-confirmation/`,
+`launch-obj-parent-{final-source-review,integration,verification}.json` and
+`launch-obj-promoted-*`. All 349 sealed package hashes, two runtime candidate
+hashes and five promoted support hashes were verified. No raw recording,
+frozen scorer or terminal implementation changed.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

@@ -1,0 +1,101 @@
+{
+  "name": "launch-obj-contract",
+  "description": "Four ordinary debug inputs create and trigger a rolling boulder path through a second trap. Independent unchanged C recording matches all screens, cursors, full RNG streams and input slices, and animation frames after the source-aligned owner repair. The arrow-trap negative is exact before and after, using an actual blessed full-healing potion before the hit. No case uses Wizard death recovery.",
+  "coverage": [
+    "level.ordinary",
+    "mode.debug",
+    "traps.projectile-physical",
+    "traps.movement",
+    "ui.more-paging"
+  ],
+  "requireBranchAssertions": true,
+  "branches": [
+    "launch.rolling.landmine",
+    "launch.rolling.teleport",
+    "launch.rolling.level-teleport",
+    "launch.rolling.other-trap-negative"
+  ],
+  "segments": [
+    {
+      "name": "rolling-landmine-detonation",
+      "seed": 9100,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0014l.\u0017rolling boulder trap trap\r \u0014ll.\u0017land mine trap\r \u0014h.h    \u001b:"
+    },
+    {
+      "name": "rolling-local-teleport",
+      "seed": 9100,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0014l.\u0017rolling boulder trap trap\r \u0014ll.\u0017teleportation trap\r \u0014h.h    \u001b:"
+    },
+    {
+      "name": "rolling-level-teleport",
+      "seed": 9100,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0014l.\u0017rolling boulder trap trap\r \u0014ll.\u0017level teleporter\r \u0014h.h    \u001b:"
+    },
+    {
+      "name": "rolling-arrow-trap-negative",
+      "seed": 9100,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0014l.\u0017rolling boulder trap trap\r \u0014ll.\u0017arrow trap\r \u0017blessed potion of full healing\rqa \u0014h.h    \u001b:"
+    }
+  ],
+  "branchAssertions": [
+    {
+      "branch": "launch.rolling.landmine",
+      "segment": 0,
+      "screenIncludes": [
+        "Click!  You trigger a rolling boulder trap!",
+        "KAABLAMM!!!  The rolling boulder triggers a land mine."
+      ],
+      "screenExcludes": [
+        "Die?",
+        "OK, so you don't die."
+      ]
+    },
+    {
+      "branch": "launch.rolling.teleport",
+      "segment": 1,
+      "screenIncludes": [
+        "Click!  You trigger a rolling boulder trap!",
+        "Suddenly the rolling boulder disappears!"
+      ],
+      "screenExcludes": [
+        "Die?",
+        "OK, so you don't die."
+      ]
+    },
+    {
+      "branch": "launch.rolling.level-teleport",
+      "segment": 2,
+      "screenIncludes": [
+        "Click!  You trigger a rolling boulder trap!",
+        "Suddenly the rolling boulder disappears!"
+      ],
+      "screenExcludes": [
+        "Die?",
+        "OK, so you don't die."
+      ]
+    },
+    {
+      "branch": "launch.rolling.other-trap-negative",
+      "segment": 3,
+      "screenIncludes": [
+        "Click!  You trigger a rolling boulder trap!",
+        "You feel completely healed.",
+        "You are hit by a boulder."
+      ],
+      "screenExcludes": [
+        "Die?",
+        "OK, so you don't die.",
+        "KAABLAMM!!!",
+        "Suddenly the rolling boulder disappears!"
+      ]
+    }
+  ]
+}

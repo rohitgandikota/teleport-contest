@@ -4038,6 +4038,63 @@ The held-monster guard and restored door count have separate native-confirmed
 packages. `set_wear` callback dispatch and Rider terrain actions are under
 independent native review. They are excluded from this checkpoint.
 
+## 2026-11-23: held monsters cannot flee a sticky hero
+
+The mounted-equipment checkpoint `f3ea5b6e` is committed and pushed. This
+checkpoint adds C's missing `itsstuck` guard to `m_move`, before digging,
+retargeting, combat and coordinate changes. A selected non-hero destination
+returns `MMOVE_DONE` after the existing escape-refusal message completes.
+The held-monster identity, sticky form and swallowing checks remain in the
+existing helper. No RNG draw or helper body changes.
+
+The ordinary C pair polymorphs the hero into an owlbear and grabs an iron
+golem through actual attacks. Blessed scare scrolls make it flee. Before the
+repair, boundary 150 moves the held golem and clears the hold. Its next attack
+adds an `rn2(25)` where C proceeds to `rn2(12)` in movement scheduling. The
+repair keeps the same monster at the same square. A separate opening-wand
+case releases it first and still permits actual fleeing.
+
+Baseline matches 316/327 screens, 326/327 cursors and 320/327 input slices,
+with 5,901 calls against C's 5,861. The repair matches every boundary and
+complete/per-input call, with no animations. The released-monster case remains
+166/166 boundaries and 2,957 calls before and after. Both native segments retain all five input fields, and the whole raw fixture
+is unchanged. Its SHA-256 is
+`ec2f0b3dec18295562b626aae404026f713b76d98de8266f46ff1dad706dcba0`.
+
+Seven source controls and two actual-input checks plus native provenance pass.
+The source controls use real movement candidates, a real bear trap, real scare
+scrolls and a pending More acknowledgement. Removing only the hero-square exception
+makes its source control fail. All fifteen retained covetous source/input
+controls pass. Seven focused fixtures cover ten segments, 2,914 boundaries,
+67,219 strict complete/per-input calls and one animation. Scoring, exact
+stream lengths and slices, frame counts/cursors and seven 30-second worker
+checks pass. Delayed interactive input also matches the new native pair,
+327 boundaries and 5,861 calls. Observer descriptors are restored exactly.
+The source audit reports zero findings in 276 non-frozen modules.
+The complete 731-fixture regression passes all 818,969 boundary
+screens/cursors, 16,479,353 scored RNG positions and 30,736 animation frames.
+Both shards finish without failures or timeouts at the default 45-second worker
+limit. All 279 runtime hashes remain unchanged.
+
+The exact NFS union contains 725 credited inputs, twenty-eight matching
+manifests/layouts, 4,526/5,492 entered functions and 59,106/107,260 direct
+C branch outcomes. Its 45 added raw inputs contain 179 segments, plus nine
+independent Linux control segments. The new pair enters `itsstuck` four times
+and reaches four of its six direct outcomes. Bulk profiles stay at
+`/share/NFS/u/rohit/research/contest/artifacts/2026-11-22/c-coverage-compress.E84JI2/verified-sticky-flee-union-20261123`.
+
+Evidence is `.cache/restart-20261122/sticky-move-parent-audit/`,
+`sticky-move-review/`, `sticky-move-parent-{integration,verification}.json`,
+`sticky-move-promoted-*` and `sticky-move-corpus-*`. The parent patch is
+unchanged after independent source/caller review. Both movement consumers
+already await completion and preserve the DONE return contract.
+
+This does not complete monster movement. The earlier trap-result and cached
+form differences remain unproven outside the retained trapping controls.
+Restored door ownership, worn-item polymorph callbacks, Rider boulder/door
+handling and awake tame-worm dispatch have separate source/native packages.
+They are not part of this four-line movement repair.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

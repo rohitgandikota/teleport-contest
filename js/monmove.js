@@ -1996,6 +1996,10 @@ export async function m_move(mtmp, after) {
             mmoved = MMOVE_MOVED;
         }
     }
+    // src/monmove.c:1987, a held monster cannot step away from a sticky hero.
+    if (mmoved === MMOVE_MOVED && !u_at(nix, niy) && await itsstuck(mtmp))
+        return MMOVE_DONE;
+
     if (mmoved === MMOVE_MOVED
         && await m_digweapon_check(mtmp, nix, niy)) {
         return MMOVE_DONE;

@@ -1,0 +1,173 @@
+{
+  "name": "pager-self-sensing",
+  "description": "Native self-sensing descriptions through ordinary inspection: worn ESP and timed detection append the C suffix; normal sight and blindness suppress it.",
+  "coverage": [
+    "mode.debug",
+    "ui.map-memory-vision",
+    "ui.menus",
+    "ui.more-paging",
+    "survival.timed-status",
+    "object.tools-containers"
+  ],
+  "branches": [
+    "pager.self-telepathy",
+    "pager.self-visible-negative",
+    "pager.self-combined-sensing",
+    "pager.self-blind-negative"
+  ],
+  "requireBranchAssertions": true,
+  "segments": [
+    {
+      "name": "telepathy-invisible",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Seer,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed ring of invisibility\r  \u001b\u001b\u0017uncursed amulet of ESP\r  \u001b\u001bPb  \u001b\u001bPal  \u001b\u001b;.  \u001b\u001b"
+    },
+    {
+      "name": "telepathy-visible",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Seer,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed ring of invisibility\r  \u001b\u001b\u0017uncursed amulet of ESP\r  \u001b\u001bPb  \u001b\u001b;.  \u001b\u001b"
+    },
+    {
+      "name": "combined-invisible",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Seer,role:Wizard,race:elf,gender:male,align:chaotic,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed ring of invisibility\r  \u001b\u001b\u0017uncursed amulet of ESP\r  \u001b\u001bPb  \u001b\u001bPal  \u001b\u001b#wizintrinsic\r100t\r  \u001b\u001b;.  \u001b\u001b"
+    },
+    {
+      "name": "combined-blind",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Seer,role:Wizard,race:elf,gender:male,align:chaotic,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed ring of invisibility\r  \u001b\u001b\u0017uncursed amulet of ESP\r  \u001b\u001bPb  \u001b\u001bPal  \u001b\u001b#wizintrinsic\r100t\r  \u001b\u001b\u0017uncursed blindfold\r  \u001b\u001bPc  \u001b\u001b;.  \u001b\u001b"
+    }
+  ],
+  "branchAssertions": [
+    {
+      "branch": "pager.self-telepathy",
+      "segment": 0,
+      "screenIncludes": [
+        "called wizard",
+        "telepathy]"
+      ],
+      "screenExcludes": [
+        "You die...",
+        "Die?"
+      ],
+      "intent": "Invisible human sees self using worn ESP.",
+      "evidence": "Independent unchanged C recording SHA256 49782400bfb8d95fdb012d5afad400e354bf4c850054869861dc49a71d914ee3. Effective property and equipment state is checked separately through read-only JS observations."
+    },
+    {
+      "branch": "pager.self-visible-negative",
+      "segment": 1,
+      "screenIncludes": [
+        "called wizard"
+      ],
+      "screenExcludes": [
+        "You die...",
+        "Die?",
+        "[seen:"
+      ],
+      "intent": "Visible human with same carried ring and worn ESP has no explanation.",
+      "evidence": "Independent unchanged C recording SHA256 49782400bfb8d95fdb012d5afad400e354bf4c850054869861dc49a71d914ee3. Effective property and equipment state is checked separately through read-only JS observations."
+    },
+    {
+      "branch": "pager.self-combined-sensing",
+      "segment": 2,
+      "screenIncludes": [
+        "called wizard",
+        "infravision, telepathy, monster detection]"
+      ],
+      "screenExcludes": [
+        "You die...",
+        "Die?"
+      ],
+      "intent": "Invisible elf with worn ESP and timed detection lists all three senses in C order.",
+      "evidence": "Independent unchanged C recording SHA256 49782400bfb8d95fdb012d5afad400e354bf4c850054869861dc49a71d914ee3. Effective property and equipment state is checked separately through read-only JS observations."
+    },
+    {
+      "branch": "pager.self-blind-negative",
+      "segment": 3,
+      "screenIncludes": [
+        "called wizard"
+      ],
+      "screenExcludes": [
+        "You die...",
+        "Die?",
+        "[seen:"
+      ],
+      "intent": "Same combined senses with actual worn blindfold do not append an explanation.",
+      "evidence": "Independent unchanged C recording SHA256 49782400bfb8d95fdb012d5afad400e354bf4c850054869861dc49a71d914ee3. Effective property and equipment state is checked separately through read-only JS observations."
+    }
+  ],
+  "jsReach": [
+    {
+      "boundaries": 84,
+      "calls": 2814,
+      "frames": 0,
+      "lookStep": 79,
+      "senses": {
+        "Invisible": true,
+        "Invis": true,
+        "See_invisible": false,
+        "Blind": false,
+        "telepathy": true,
+        "detect": false,
+        "infra": false
+      },
+      "suffix": "telepathy"
+    },
+    {
+      "boundaries": 77,
+      "calls": 2777,
+      "frames": 0,
+      "lookStep": 72,
+      "senses": {
+        "Invisible": false,
+        "Invis": false,
+        "See_invisible": false,
+        "Blind": false,
+        "telepathy": true,
+        "detect": false,
+        "infra": false
+      },
+      "suffix": null
+    },
+    {
+      "boundaries": 107,
+      "calls": 2807,
+      "frames": 0,
+      "lookStep": 102,
+      "senses": {
+        "Invisible": true,
+        "Invis": true,
+        "See_invisible": false,
+        "Blind": false,
+        "telepathy": true,
+        "detect": true,
+        "infra": true
+      },
+      "suffix": "infravision, telepathy, monster detection"
+    },
+    {
+      "boundaries": 137,
+      "calls": 2832,
+      "frames": 0,
+      "lookStep": 132,
+      "senses": {
+        "Invisible": true,
+        "Invis": true,
+        "See_invisible": false,
+        "Blind": true,
+        "telepathy": true,
+        "detect": true,
+        "infra": true
+      },
+      "suffix": null
+    }
+  ]
+}

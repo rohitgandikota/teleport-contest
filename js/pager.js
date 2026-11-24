@@ -67,7 +67,8 @@ import { an, the, makesingular, singular, xname, distant_name,
          doname_vague_quan, simpleonames, OBJ_NAME } from './objnam.js';
 import { mkobj, mksobj } from './mkobj.js';
 import { observe_object } from './o_init.js';
-import { Blind, Hallucination } from './youprop.js';
+import { Blind, Hallucination, Invisible, Infravision, Unblind_telepat,
+         Detect_monsters } from './youprop.js';
 import { pmatch, tabexpand, mungspaces, isok, strstri } from './hacklib.js';
 import { data as DATAFILE } from './dat_files.js';
 import * as DAT from './dat_files.js';
@@ -522,6 +523,21 @@ function lookat(x, y) {
         /* pm stays null for self: file lookup uses the name string.
            The only exception is a gnomish wizard, forced to the generic
            "wizard" entry (pager.c:673) — not a reachable start. */
+        // src/pager.c:684: normal sight, blindness and swallowing need no suffix.
+        if ((Invisible() || game.u.uundetected) && !Blind()
+            && !(game.u.uswallow || game.iflags?.save_uswallow)) {
+            let how = 0;
+            if (Infravision())
+                how |= 1;
+            if (Unblind_telepat())
+                how |= 2;
+            if (Detect_monsters())
+                how |= 4;
+            if (how)
+                buf += ` [seen: ${(how & 1) ? 'infravision' : ''}${
+                    (how & 3) > 2 ? ', ' : ''}${(how & 2) ? 'telepathy' : ''}${
+                    (how & 7) > 4 ? ', ' : ''}${(how & 4) ? 'monster detection' : ''}]`;
+        }
     } else if ((game.iflags?.terrainmode & (TER_DETECT | TER_MAP))
                === TER_DETECT
                && glyph.kind === 'cmap' && glyph.cmap === CM.S_stone) {

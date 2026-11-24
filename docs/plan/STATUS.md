@@ -6927,6 +6927,60 @@ full790 predates anti-magic effects and this repair. Artifact light lifecycle,
 broader welded categories and complete hero damageum routing remain separate.
 Self-sensing native confirmation is sealed and next for integration.
 
+## 2026-11-24: self-inspection sensing explanations
+
+The lookat self branch now follows C pager.c:678-702. An invisible or hidden,
+sighted, unswallowed hero receives the ordered infravision, telepathy and
+monster-detection suffix. The existing canonical predicates supply the senses;
+normal sight, blindness, active swallowing and saved swallowing suppress the
+suffix. The synchronous owner adds no RNG or message call. The complete owner,
+self-description helper and direct callers were reviewed. The promoted pager
+hash is the exact sealed candidate, with all 278 other modules unchanged.
+
+Four immutable C cases exercise worn ESP and invisibility, real elf infravision,
+timed detection and a worn blindfold. SHA256 is
+49782400bfb8d95fdb012d5afad400e354bf4c850054869861dc49a71d914ee3.
+All input fields, presence bits and boundary keys match the source proposal.
+Before repair 401/405 styled grids and 403 cursors match. After repair all 405
+grids including blank styles, all cursors/slices, all 11,230 complete calls and
+empty frame arrays match. Every RNG entry is recognized and retained. Visible
+and blind negatives preserve all five original output hashes. Both positives
+retain RNG, slice and frame hashes while correcting the wrapped description
+and More cursor. Four real held-input controls verify the pending boundaries
+without output or RNG advancement and resume to the unobserved hashes.
+
+Parent normal checks preserve the before failures: source 13/23, input 3/5,
+pending 2/4 and both strict native comparators nonzero. The candidate passes
+all 20 commands and 93 combined controls. Nine focused fixtures cover 34
+segments, 3,477 boundaries, 124,958 complete calls and 90 frames. Deferred input
+agrees over eight segments, 645 boundaries and 20,555 calls. All 44 public
+sessions and 53 hang checks pass. Syntax and the zero-finding 276-module source
+audit pass. All 279 runtime and six support hashes stay fixed. The original
+356-member source seal and 348-member native confirmation seal are unchanged.
+
+Evidence: `.cache/restart-20261122/pager-self-sensing-native-confirmation/`,
+`self-sensing-promotion-parent/`, `self-sensing-promotion-parent-verification.json`
+and `pager-self-sensing-parent-native-seal-verification.json`. The maintained
+corpus is 793. The latest full790 run predates anti-magic effects, slow/weapon
+feedback and this repair; the next full run will combine them. NFS already
+verified this raw byte-exactly within the two-input self/footwear batch; its
+21-outcome increment is shared batch reach and is not counted again.
+
+The death-blank audit is closed with no runtime change. C raw-score source
+prints its padded spaces while bold, and the actual JS writer does the same.
+The recorder's existing space-run compression loses those attributes. All 641
+remaining death-score cell differences are explained at nine final boundaries;
+strict failures remain. The 338-file/3-link package was independently verified.
+Its pre-encoding C attributes are source evidence, not a fresh native capture.
+No producer recoloring, fixture rewrite or comparator exemption is applied.
+
+Monster footwear's ordinary confirmation found a separate cuss alignment bug:
+Angel maligntyp 12 was compared directly to A_LAWFUL 1 instead of using
+mon_aligntyp. The fixed footwear package retains the native failures and is
+not promoted as passing. A new sibling is auditing that complete dependency.
+The native recording remains valid NFS coverage evidence. Hero damageum,
+adjacent inspection and vault diagnostic caller closure continue separately.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

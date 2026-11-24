@@ -7805,6 +7805,55 @@ Eating checkpoint `816695d6` is confirmed pushed. Receipts are
 `linux-coverage-{mstatus-hidden,hmonas-slots,xray-preswap}-*` under
 `.cache/restart-20261122/`. Continue scoped porting and immediate verified pushes.
 
+## 2026-11-24: polymorphed weapon selection verified
+
+`hmonas` now follows C's multi-weapon selection and cleanup. It skips a later
+weapon swing after a preceding two-handed hit, alternates eligible primary
+and secondary slots, counts weapon attempts, and reloads the same slot after
+`known_hitum` can destroy its object. An empty weapon falls back to gloves for
+passive erosion. Cut-worm handling skips normal passive work but reaches the
+cursed-secondary check. The existing `drop_uswapwep` runs before death,
+form-loss and paralysis loop stops, with its pending input awaited.
+
+Six native cases use real equipment selection and polymorph: alternating hit,
+two-handed hit, two-handed miss, secondary cursed through unholy-water dipping,
+a single-weapon gnome and ordinary human. All 795 styled screens, cursors,
+slices, 15,028 complete calls and empty frame arrays match. Before: 780 styled
+screens, 792 cursors, 790 slices and 15,040 actual calls. Cases 2, 4 and 5
+preserve all five original output hashes and independently match C. Weapon
+destruction, eligibility exclusions, cut-worm cleanup, death and suspended More
+remain constructed source evidence. Native call-site annotations independently
+identify the real hmonas/hitum attack rolls. Vis/kick/shade and known_hitum gaps
+remain separate source work.
+
+All 37 parent composition checks pass, including 206 controls. Twenty focused
+fixtures, 87 segments, match 12,141 screens/cursors, 258,376 calls and 165 frames.
+Public remains 44/44, 11,405 screens/cursors, 792,838 calls and 1,483 frames.
+All 64 bounded workers pass. Thirteen strict native fixtures match every
+styled cell, cursor, complete call, slice and frame array across 55 segments,
+5,133 boundaries, 150,350 calls and 48 frames. Seven deferred fixtures preserve
+all five collections over 3,727 boundaries, 96,773 calls and 48 frames. Source
+audit remains empty. All 279 runtime and five support hashes stay fixed,
+scoped reversal recovers the predecessor, and main matches the tested candidate.
+The independently checked source seal covers 424 files and four links; the
+native seal covers 52 files and five links. Neither prior package changed.
+
+The maintained corpus is 812. Full809 passed at `0eb3d090`; no full812 sweep
+has run. NFS native replay is byte-identical and adds 22 outcomes, no functions,
+as recorded in the later combined union above. Rendered parity remains distinct
+from literal terminal serialization. Receipts are
+`hmonas-selection-parent-composition-verification.json`,
+`hmonas-selection-main-integration.json` and the sealed source/native packages
+under `.cache/restart-20261122/`.
+
+The 18:22 UTC official table and news fetches are byte-identical to 17:39.
+The published score remains 23,595/24,531 screens, 7th agentic and 11th overall,
+last scored at 13:38 UTC. Probing checkpoint `7522dc3c` is confirmed pushed.
+The next x-ray native package is independently sealed and verified, ready for
+composition. Accepted non-food, glyph identity, further hmonas and night-vision
+owners remain active audits. A separate parent source inventory records the
+remaining complete monster-status branches without claiming a runtime repair.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

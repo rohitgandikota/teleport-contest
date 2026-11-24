@@ -128,7 +128,7 @@ import { is_pole } from './u_init.js';
 import { bimanual, carried, is_plural, is_flimsy, is_shield,
          is_poisonable, stone_missile } from './obj.js';
 import { is_ammo, is_missile, ammo_and_launcher, set_twoweap,
-         uwepgone } from './wield.js';
+         uwepgone, drop_uswapwep } from './wield.js';
 import { obj_extract_self, update_inventory, useup } from './invent.js';
 import { rnl } from './rng.js';
 import { ART_CLEAVER, ART_SNICKERSNEE, ART_GIANTSLAYER,
@@ -1494,15 +1494,17 @@ export async function hitum(mon, uattk) {
 export async function hmonas(mon) {
     const sum = Array(NATTK).fill(M_ATTK_MISS);
     const roll = { attk_count: 0, role_roll_penalty: 0 };
-    let multi_claw = 0;
+    let multi_claw = 0, multi_weap = 0;
     for (let i = 0; i < NATTK; i++) {
         const mattk = getmattk(game.youmonst, mon, i, sum);
+        if (mattk[0] === ATTKS.AT_WEAP)
+            multi_weap++;
         if (mattk[0] === ATTKS.AT_WEAP || mattk[0] === ATTKS.AT_CLAW
             || mattk[0] === ATTKS.AT_TUCH)
             multi_claw++;
     }
     multi_claw = multi_claw > 1;
-    let weapon_used = false;
+    let altwep = false, weapon_used = false;
     let odd_claw = true;
 
     game.twohits = 0;
@@ -1548,27 +1550,52 @@ export async function hmonas(mon) {
             sum[i] = M_ATTK_MISS;
         } else if (use_weapon) {
             odd_claw = !odd_claw;
+            /* A preceding hit with a two-handed primary uses this swing. */
+            if (weapon_used && sum[i - 1] > M_ATTK_MISS
+                && game.u.uwep && bimanual(game.u.uwep))
+                continue;
             weapon_used = true;
-            weapon = game.u.uwep;
+            /* Track the equipment slot: known_hitum may destroy its object. */
+            let originalweapon = altwep && game.u.uswapwep ? 'uswapwep' : 'uwep';
+            if (game.u.uswapwep
+                && game.u.uwep
+                && (game.u.uwep.oclass === OCLASSES.WEAPON_CLASS
+                    || is_weptool(game.u.uwep, game.objects))
+                && !bimanual(game.u.uwep)
+                && !game.u.uarms && !game.u.uswapwep.oartifact
+                && (game.u.uswapwep.oclass === OCLASSES.WEAPON_CLASS
+                    || is_weptool(game.u.uswapwep, game.objects))
+                && !(is_launcher_w(game.u.uswapwep) || is_ammo(game.u.uswapwep)
+                     || is_missile(game.u.uswapwep))
+                && !bimanual(game.u.uswapwep)
+                && !(game.objects[game.u.uswapwep.otyp].oc_material === MATERIALS.SILVER
+                     && Hate_silver()))
+                altwep = !altwep; /* toggle for the next attack */
+            weapon = game.u[originalweapon];
+            if (!weapon)
+                originalweapon = 'uarmg'; /* gloves can receive passive erosion */
             const tmp = await find_roll_to_hit(mon, ATTKS.AT_WEAP,
                                                weapon, roll);
             mon_maybe_unparalyze(mon);
             const dieroll = rnd(20);
             const mhit = [(tmp > dieroll || game.u.uswallow) ? 1 : 0];
+            if (multi_weap > 1)
+                game.twohits++;
             const malive = await known_hitum(
                 mon, weapon, mhit, tmp, roll.role_roll_penalty,
                 mattk_row(mattk), dieroll);
-            weapon = game.u.uwep;
+            weapon = game.u[originalweapon]; /* the same slot may now be empty */
             sum[i] = malive
                 ? (mhit[0] ? M_ATTK_HIT : M_ATTK_MISS)
                 : M_ATTK_DEF_DIED;
             dhit = mhit[0];
             if (malive) {
-                /* A cut worm tail may no longer belong to this monster. */
+                /* A cut worm tail skips passive handling, but still checks
+                   for a cursed secondary before ending the attack loop. */
                 if (m_at(game.u.ux + game.u.dx, game.u.uy + game.u.dy) !== mon)
-                    break;
+                    i = NATTK; /* C's goto passivedone */
                 /* known_hitum already gave the weapon's hit message. */
-                if (dhit && mattk[1] !== ATTKS.AD_SPEL
+                else if (dhit && mattk[1] !== ATTKS.AD_SPEL
                     && mattk[1] !== ATTKS.AD_PHYS)
                     sum[i] = await damageum(mon, mattk, 0);
             }
@@ -1735,20 +1762,27 @@ export async function hmonas(mon) {
             continue;
         }
 
-        if (dhit === -1) {
-            game.u.mh = -1;
-            await rehumanize();
+        if (i < NATTK) {
+            if (dhit === -1) {
+                game.u.mh = -1;
+                await rehumanize();
+            }
+            if (sum[i] === M_ATTK_DEF_DIED)
+                await passive(mon, weapon, true, false, aatyp, false);
+            else
+                await passive(mon, weapon, sum[i] !== M_ATTK_MISS,
+                              true, aatyp, false);
+            const mhm = { hitflags: sum[i] };
+            if (await mhitm_knockback(game.youmonst, mon, mattk, mhm,
+                                     weapon_used))
+                break;
+            sum[i] = mhm.hitflags;
         }
-        if (sum[i] === M_ATTK_DEF_DIED)
-            await passive(mon, weapon, true, false, aatyp, false);
-        else
-            await passive(mon, weapon, sum[i] !== M_ATTK_MISS,
-                          true, aatyp, false);
-        const mhm = { hitflags: sum[i] };
-        if (await mhitm_knockback(game.youmonst, mon, mattk, mhm,
-                                 weapon_used))
+        /* passivedone: a cursed secondary drops instead of welding. */
+        if (game.u.uswapwep && weapon === game.u.uswapwep && weapon.cursed) {
+            await drop_uswapwep();
             break;
-        sum[i] = mhm.hitflags;
+        }
         if (DEADMONSTER(mon))
             break;
         if (!Upolyd(game.u))

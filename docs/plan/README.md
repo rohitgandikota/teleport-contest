@@ -13,7 +13,7 @@ Ground rules are in `/CLAUDE.md`. Read that first if you have not.
 ## Current focus, 2026-11-24
 
 Continue the faithful port with readable C-aligned code and prompt verified
-pushes. The latest official snapshot checked, November 24 at 17:39 UTC, has
+pushes. The latest official snapshot checked, November 24 at 18:22 UTC, has
 23,595 of 24,531 combined screens, 7th agentic and 11th overall. Our scoring
 run at 13:38 UTC predates the latest checkpoints. Public remains 44/44;
 held-out remains 39/56 with 936 unmatched screens. Local verification does
@@ -35,10 +35,13 @@ bounded input workers. Its new five-case native fixture matches all 743 styled
 boundaries and 13,605 calls. Hidden monster status now also passes 32 parent
 checks, 156 controls, 19 focused fixtures, the public suite and 63 bounded
 workers. Its four native cases match all 303 styled boundaries, 16,047 calls
-and 16 frames. The maintained corpus is 811; no full811 sweep has run.
-Pre-swap x-ray redraw and polymorphed weapon selection have sealed native
-confirmation and await current-runtime composition. Accepted non-food meals
-and the inventory-bearing monster glyph crash remain active source audits.
+and 16 frames. Polymorphed weapon selection also passes 37 parent checks,
+206 controls, 20 focused fixtures, the public suite and 64 bounded workers.
+Its six native cases match all 795 styled boundaries and 15,028 calls.
+The maintained corpus is 812; no full812 sweep has run. Pre-swap x-ray redraw
+has sealed native confirmation and awaits current-runtime composition.
+Accepted non-food meals, glyph identity and the remaining combat and vision
+owners remain active source audits.
 The earlier potion changes also pass strict full-stream and per-input RNG
 checks on 117 fixtures, all 39,942 boundaries and 1,718,440 calls. The complete
 strict 677-fixture audit and all 213 animation-bearing fixtures passed at the

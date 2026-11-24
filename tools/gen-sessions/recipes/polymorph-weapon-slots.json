@@ -1,0 +1,112 @@
+{
+  "name": "polymorph-weapon-slots",
+  "description": "Actual polymorph weapon selection, two-handed hit/miss distinction and an alternate cursed by dipping in unholy water. Native C recording retained byte-for-byte.",
+  "coverage": [
+    "combat.melee",
+    "object.weapons",
+    "forms.polymorph",
+    "monster.special-effects",
+    "mode.debug"
+  ],
+  "branches": [
+    "weapon.poly-alternate",
+    "weapon.poly-two-handed-hit-skip",
+    "weapon.poly-two-handed-miss-retry",
+    "weapon.poly-cursed-secondary",
+    "weapon.poly-single-control",
+    "weapon.human-control"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "weapon.poly-alternate",
+      "segment": 0,
+      "screenIncludes": [
+        "You miss the rust monster.",
+        "Your long sword rusts!"
+      ]
+    },
+    {
+      "branch": "weapon.poly-two-handed-hit-skip",
+      "segment": 1,
+      "screenIncludes": [
+        "You hit the rust monster!",
+        "Your two-handed sword rusts!"
+      ]
+    },
+    {
+      "branch": "weapon.poly-two-handed-miss-retry",
+      "segment": 2,
+      "screenIncludes": [
+        "You miss the rust monster.",
+        "Your two-handed sword rusts!"
+      ]
+    },
+    {
+      "branch": "weapon.poly-cursed-secondary",
+      "segment": 3,
+      "screenIncludes": [
+        "Your long sword evades your grasp",
+        "You see here a cursed long sword."
+      ]
+    },
+    {
+      "branch": "weapon.poly-single-control",
+      "segment": 4,
+      "screenIncludes": [
+        "You miss the rust monster."
+      ]
+    },
+    {
+      "branch": "weapon.human-control",
+      "segment": 5,
+      "screenIncludes": [
+        "You miss the rust monster."
+      ]
+    }
+  ],
+  "segments": [
+    {
+      "name": "alternate-weapon-hit",
+      "seed": 21100,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:WeaponSlots,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed +0 dagger\r  \u001b\u001b\u0017uncursed +0 long sword\r  \u001b\u001bwb x wa #polyself\rettin\r  \u001b\u001b\u0007sleeping hostile rust monster\r\u001b\u001bl        : "
+    },
+    {
+      "name": "two-handed-hit-skip",
+      "seed": 21100,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:WeaponSlots,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed +5 two-handed sword\r  \u001b\u001b\u0017uncursed +0 long sword\r  \u001b\u001bwb x wa #polyself\rettin\r  \u001b\u001b\u0007sleeping hostile rust monster\r\u001b\u001bl        : "
+    },
+    {
+      "name": "two-handed-miss-retry",
+      "seed": 21100,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:WeaponSlots,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed +0 two-handed sword\r  \u001b\u001b\u0017uncursed +0 long sword\r  \u001b\u001bwb x wa #polyself\rettin\r  \u001b\u001b\u0007sleeping hostile rust monster\r\u001b\u001bl        : "
+    },
+    {
+      "name": "cursed-secondary-drop",
+      "seed": 21100,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:WeaponSlots,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed +0 dagger\r  \u001b\u001b\u0017uncursed +0 long sword\r  \u001b\u001bwb x wa \u0017potion of unholy water\r  \u001b\u001b#dip\rbc  \u001b\u001b#polyself\rettin\r  \u001b\u001b\u0007sleeping hostile rust monster\r\u001b\u001bk        : "
+    },
+    {
+      "name": "single-weapon-form-control",
+      "seed": 21100,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:WeaponSlots,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed +0 dagger\r  \u001b\u001b\u0017uncursed +0 long sword\r  \u001b\u001bwb x wa #polyself\rgnome\r  \u001b\u001b\u0007sleeping hostile rust monster\r\u001b\u001by        : "
+    },
+    {
+      "name": "human-weapon-control",
+      "seed": 21100,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:WeaponSlots,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed +0 dagger\r  \u001b\u001b\u0017uncursed +0 long sword\r  \u001b\u001bwb x wa \u0007sleeping hostile rust monster\r\u001b\u001by        : "
+    }
+  ]
+}

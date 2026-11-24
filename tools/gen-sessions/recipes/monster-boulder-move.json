@@ -1,0 +1,34 @@
+{
+  "name": "monster-boulder-move",
+  "description": "A Rider fractures a floor boulder instead of moving onto it.",
+  "coverage": [
+    "mode.debug",
+    "monster.movement",
+    "endgame.riders"
+  ],
+  "branches": [
+    "movement.rider-fractures-boulder"
+  ],
+  "requireBranchAssertions": true,
+  "segments": [
+    {
+      "name": "rider-boulder-break-boundary",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\n",
+      "moves": " lj\u0017blessed scroll of earth\r \u001b\u001bra   \u001b\u001b\u0007hostile Death\ry \u001b\u001bm.    \u001b\u001bm.      \u001b\u001b"
+    }
+  ],
+  "branchAssertions": [
+    {
+      "branch": "movement.rider-fractures-boulder",
+      "segment": 0,
+      "screenIncludes": [
+        "The boulder falls apart."
+      ],
+      "rngIncludes": [
+        "rn2(60)=5 @ fracture_rock(zap.c:5560)"
+      ]
+    }
+  ]
+}

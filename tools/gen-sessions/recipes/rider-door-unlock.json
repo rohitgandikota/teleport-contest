@@ -1,0 +1,223 @@
+{
+  "name": "rider-door-unlock",
+  "description": "A keyless Rider unlocks a locked door instead of smashing it.",
+  "coverage": [
+    "mode.debug",
+    "monster.movement",
+    "terrain.doors-locks",
+    "endgame.riders"
+  ],
+  "branches": [
+    "movement.rider-unlocks-door"
+  ],
+  "requireBranchAssertions": true,
+  "segments": [
+    {
+      "name": "rider-locked-door-unlock",
+      "seed": 7401,
+      "datetime": "20000112121000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " hk\u0017wall\rjj\u0017wall\rk\u0017wall\r\u0017locked door\r\u0007hostile Death\ryhm.\u001b\u001b"
+    }
+  ],
+  "branchAssertions": [
+    {
+      "branch": "movement.rider-unlocks-door",
+      "segment": 0,
+      "screenIncludes": [
+        "Death unlocks and opens a door."
+      ],
+      "screenExcludes": [
+        "Death smashes down a door."
+      ],
+      "screenCells": [
+        {
+          "step": 56,
+          "x": 0,
+          "y": 0,
+          "equals": "D"
+        },
+        {
+          "step": 56,
+          "x": 1,
+          "y": 0,
+          "equals": "e"
+        },
+        {
+          "step": 56,
+          "x": 2,
+          "y": 0,
+          "equals": "a"
+        },
+        {
+          "step": 56,
+          "x": 3,
+          "y": 0,
+          "equals": "t"
+        },
+        {
+          "step": 56,
+          "x": 4,
+          "y": 0,
+          "equals": "h"
+        },
+        {
+          "step": 56,
+          "x": 5,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 56,
+          "x": 6,
+          "y": 0,
+          "equals": "u"
+        },
+        {
+          "step": 56,
+          "x": 7,
+          "y": 0,
+          "equals": "n"
+        },
+        {
+          "step": 56,
+          "x": 8,
+          "y": 0,
+          "equals": "l"
+        },
+        {
+          "step": 56,
+          "x": 9,
+          "y": 0,
+          "equals": "o"
+        },
+        {
+          "step": 56,
+          "x": 10,
+          "y": 0,
+          "equals": "c"
+        },
+        {
+          "step": 56,
+          "x": 11,
+          "y": 0,
+          "equals": "k"
+        },
+        {
+          "step": 56,
+          "x": 12,
+          "y": 0,
+          "equals": "s"
+        },
+        {
+          "step": 56,
+          "x": 13,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 56,
+          "x": 14,
+          "y": 0,
+          "equals": "a"
+        },
+        {
+          "step": 56,
+          "x": 15,
+          "y": 0,
+          "equals": "n"
+        },
+        {
+          "step": 56,
+          "x": 16,
+          "y": 0,
+          "equals": "d"
+        },
+        {
+          "step": 56,
+          "x": 17,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 56,
+          "x": 18,
+          "y": 0,
+          "equals": "o"
+        },
+        {
+          "step": 56,
+          "x": 19,
+          "y": 0,
+          "equals": "p"
+        },
+        {
+          "step": 56,
+          "x": 20,
+          "y": 0,
+          "equals": "e"
+        },
+        {
+          "step": 56,
+          "x": 21,
+          "y": 0,
+          "equals": "n"
+        },
+        {
+          "step": 56,
+          "x": 22,
+          "y": 0,
+          "equals": "s"
+        },
+        {
+          "step": 56,
+          "x": 23,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 56,
+          "x": 24,
+          "y": 0,
+          "equals": "a"
+        },
+        {
+          "step": 56,
+          "x": 25,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 56,
+          "x": 26,
+          "y": 0,
+          "equals": "d"
+        },
+        {
+          "step": 56,
+          "x": 27,
+          "y": 0,
+          "equals": "o"
+        },
+        {
+          "step": 56,
+          "x": 28,
+          "y": 0,
+          "equals": "o"
+        },
+        {
+          "step": 56,
+          "x": 29,
+          "y": 0,
+          "equals": "r"
+        },
+        {
+          "step": 56,
+          "x": 30,
+          "y": 0,
+          "equals": "."
+        }
+      ]
+    }
+  ]
+}

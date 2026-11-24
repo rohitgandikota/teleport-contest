@@ -4196,6 +4196,67 @@ retained-amulet correction remains queued; its newly recorded native cases do
 not establish completeness of every worn-item path. Next are boulder/Rider
 terrain actions, shop/map flips and long-worm special dispatch.
 
+## 2026-11-23: resolve boulders and Rider doors during movement
+
+Worn-item checkpoint `96a610c1` is committed and pushed. Two small movement corrections
+now follow C's obstruction handling. After region admission, `m_move` checks
+`ALLOW_ROCK` and the existing `m_can_break_boulder`, awaits `m_break_boulder`,
+and returns `MMOVE_DONE` before postmove effects or coordinate changes.
+`postmov` also includes Riders in the existing unlocking condition. The
+existing helpers, exact closed-door equality and other movement branches stay
+intact. A separate comment-only hunk corrects a false claim that fracturing
+frees the object; C changes the same boulder into rocks.
+
+The native boulder case previously matched 67/76 screens and 75 input slices,
+with 2,910 calls against C's 2,911. At boundary 67, JS walked Death into the
+intact boulder. C instead calls `fracture_rock`, keeps Death at (61,8) and turns
+the same boulder at (61,7) into twelve rocks. Its first missing call is
+`rn2(60)=5`, global call 2,889. The unchanged raw SHA-256 is
+`698cdff367ee37ba4e672c326aeab11bec49e5fdad5ccf04bfffc267d9dd8142`.
+
+The independent Rider-door case previously matched 58/59 screens and input
+slices, with 2,397 calls against C's 2,396. At boundary 56, keyless Death should
+unlock and open the door. JS smashed it and inserted `rn2(2)` at call 2,389.
+The unchanged raw SHA-256 is
+`841d72c063096370db2cc832cdb00ab9840933740f181ecf8dbdb537b057c34a`.
+Both repairs now match every native screen, cursor, complete stream and slice.
+
+Three additional unchanged C trapping controls cover arrival polymorph,
+fatal pit arrival, and an already-caught cat that fails escape twice before
+moving. They match 123 boundaries and 7,182 calls. They do not prove a failure
+in the separate initial trapped-monster return comparison or cached form.
+A separate two-line `m_move` alignment uses C's killed value, 2, and captures
+its form after the initial `mintrap` call. No ordinary causal mismatch is
+claimed for those source differences. `mintrap` itself is unchanged. The
+trapping controls' raw SHA-256 is
+`15f916db1cd3db3a3fc9c197b876f825ef5e1ce87bc98912224bc526b52a3855`.
+
+All 29 new controls and 25 retained controls pass, with five native assertion
+groups. Seven focused fixtures cover fifteen segments, 2,889 boundaries,
+83,902 strict complete/per-input calls and six exact animations. Seven
+30-second worker checks pass. Delayed interactive input matches four fixtures,
+585 boundaries and 18,350 calls, with no animations. Source audit has zero
+findings in 276 modules. The misleading `m_move` header was also corrected
+to C line 1715 and its actual role; this last change affects comments only.
+
+The complete 736-fixture regression passes all 820,038 boundary
+screens/cursors, 16,508,606 scored RNG positions and 30,736 animation frames.
+Both shards finish without failures or timeouts at the default 45-second
+worker limit. All 279 runtime hashes stayed fixed throughout.
+
+The validated NFS union contains 730 credited inputs, thirty-three matching
+manifests/layouts, 4,529/5,492 entered functions and 59,177/107,260 direct
+C branch outcomes. Its 50 added raw inputs contain 189 segments, plus nine
+independent Linux segments. Bulk profiles remain at
+`/share/NFS/u/rohit/research/contest/artifacts/2026-11-22/c-coverage-compress.E84JI2/verified-rider-door-union-20261123`.
+
+Evidence is `.cache/restart-20261122/m-move-boulder-native-confirmation/`,
+`rider-door-native-confirmation/`, `terrain-parent-{source-review,integration,verification}.json`,
+`terrain-promoted-*` and `terrain-corpus-*`. Original sealed patches and raw
+fixtures remain unchanged. This is bounded movement coverage. The separate
+shop/map flips, long-worm dispatch, pre-trap capability lifetime and magic-key
+disarm packages remain queued for their own integration checks.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

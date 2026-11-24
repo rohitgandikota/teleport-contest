@@ -46,7 +46,7 @@ import { MON_POLE_DIST, OBJ_FLOOR, RAY, MFAST, NON_PM, W_ARMG, W_WEP,
     IS_OBSTRUCTED, IS_STWALL, IS_TREE, LAVAWALL, STAIRS, LADDER, IRONBARS,
     WEB,
     P_DAGGER, P_KNIFE,
-    AM_SHRINE, Amask2align, ROOMOFFSET, ALLOW_MDISP, ALLOW_M, SHOPBASE,
+    AM_SHRINE, Amask2align, ROOMOFFSET, ALLOW_MDISP, ALLOW_M, ALLOW_ROCK, SHOPBASE,
     TEMPLE, RLOC_MSG, NC_SHOW_MSG, NO_NC_FLAGS
 , STRAT_WAITFORU, STRAT_WAITMASK, STRAT_CLOSE } from './const.js';
 import { amorphous, passes_walls, is_floater, nonliving,
@@ -905,9 +905,7 @@ export async function m_break_boulder(mtmp, x, y) {
             await pline_The('boulder falls apart.');
         }
 
-        /* fracture_rock() calls obfree() which calls dealloc_obj() and
-           an item not in hero's inventory can have its unpaid flag set;
-           if the boulder isn't already on the bill, don't charge for it */
+        // A floor boulder may still be unpaid; bill it before fracturing.
         if (otmp.unpaid) {
             await bill_dummy_object(otmp);
         }
@@ -1698,10 +1696,8 @@ async function msg_mon_movement(mtmp, omx, omy) {
 }
 
 
-// src/monmove.c:1720 m_move() — a non-tame monster's turn. The tame case is
-// dispatched to dog_move() above, exactly as C does at :1773.
+// src/monmove.c:1715 m_move(), choose movement and resolve the arrival.
 export async function m_move(mtmp, after) {
-    const ptr = mtmp.data;
     const omx = mtmp.mx, omy = mtmp.my;
 
     /* src/monmove.c:1733 — a monster that starts its turn already caught in
@@ -1709,13 +1705,14 @@ export async function m_move(mtmp, after) {
     if (mtmp.mtrapped) {
         const { mintrap } = await import('./trap.js');
         const i = await mintrap(mtmp, 0 /* NO_TRAP_FLAGS */);
-        if (i === 3 /* Trap_Killed_Mon */) {
+        if (i === 2 /* Trap_Killed_Mon */) {
             newsym(mtmp.mx, mtmp.my);
             return MMOVE_DIED;
         }
         if (i === 1 /* Trap_Caught_Mon */)
             return MMOVE_NOTHING;   /* still in trap, so didn't move */
     }
+    const ptr = mtmp.data; /* mintrap can change the monster's form. */
 
     /* src/monmove.c:1745 — digest the meal. This is the ONLY per-turn
        countdown of meating, and m_move() is the common entry for pets too
@@ -2041,6 +2038,11 @@ export async function m_move(mtmp, after) {
         // src/monmove.c:2039, update the selected region membership.
         if (!(await m_in_out_region(mtmp, nix, niy)))
             return MMOVE_DONE;
+        // src/monmove.c:2042, break the obstruction before moving.
+        if ((mfp.info[chi] & ALLOW_ROCK) && m_can_break_boulder(mtmp)) {
+            await m_break_boulder(mtmp, nix, niy);
+            return MMOVE_DONE;
+        }
         /* src/monmove.c:2047 — postmove effects run BEFORE the location
            changes (monsters have no "previous location" field) */
         await m_postmove_effect(mtmp);
@@ -2256,7 +2258,7 @@ async function postmov(mtmp, ptr, omx, omy, mmoved, seenflgs, can_tunnel) {
                              && (m_carrying(mtmp, ONAMES.CREDIT_CARD)
                                  || m_carrying(mtmp, ONAMES.SKELETON_KEY)
                                  || m_carrying(mtmp, ONAMES.LOCK_PICK)))
-                            || mtmp.iswiz);
+                            || mtmp.iswiz || is_rider(ptr));
         if (here && DOOR === here.typ /* IS_DOOR */
             && !passes_walls(ptr) && !can_tunnel) {
             const btrapped = (here.doormask & D_TRAPPED) !== 0;

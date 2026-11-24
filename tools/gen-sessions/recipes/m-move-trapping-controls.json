@@ -1,0 +1,73 @@
+{
+  "name": "m-move-trapping-controls",
+  "description": "Native controls for fresh polymorph and lethal pits, plus initial caught/released movement. No trapping runtime patch.",
+  "coverage": [
+    "mode.debug",
+    "monster.movement",
+    "traps.monster",
+    "traps.magical",
+    "traps.projectile-physical"
+  ],
+  "branches": [
+    "trap.fresh-polymorph",
+    "trap.fresh-pit-death",
+    "trap.caught-then-released"
+  ],
+  "requireBranchAssertions": true,
+  "segments": [
+    {
+      "name": "ordinary-kitten-poly-trap",
+      "seed": 7401,
+      "datetime": "20000112121000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " h\u0017polymorph trap\r\u0007hostile kitten\rhm.m. m.m."
+    },
+    {
+      "name": "ordinary-kitten-fatal-pit-arrival",
+      "seed": 7401,
+      "datetime": "20000112121000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " h\u0017pit trap\r\u0007hostile kitten\rhm.m.\u001b\u001b"
+    },
+    {
+      "name": "ordinary-large-cat-caught-and-release",
+      "seed": 7401,
+      "datetime": "20000112121000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " h\u0017pit trap\r\u0007hostile large cat\rhm.hm.m.\u001b\u001b"
+    }
+  ],
+  "branchAssertions": [
+    {
+      "branch": "trap.fresh-polymorph",
+      "segment": 0,
+      "screenIncludes": [
+        "The kitten turns into a rock mole!"
+      ]
+    },
+    {
+      "branch": "trap.fresh-pit-death",
+      "segment": 1,
+      "screenIncludes": [
+        "The kitten falls into a pit!",
+        "The kitten is killed!"
+      ],
+      "rngIncludes": [
+        "rnd(6)=3 @ trapeffect_pit(trap.c:2003)"
+      ]
+    },
+    {
+      "branch": "trap.caught-then-released",
+      "segment": 2,
+      "screenIncludes": [
+        "The large cat falls into a pit!",
+        "The large cat climbs out of the pit."
+      ],
+      "rngIncludes": [
+        "rn2(40)=6 @ mintrap(trap.c:3751)",
+        "rn2(40)=12 @ mintrap(trap.c:3751)",
+        "rn2(40)=0 @ mintrap(trap.c:3751)"
+      ]
+    }
+  ]
+}

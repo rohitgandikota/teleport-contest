@@ -19,8 +19,8 @@ run at 01:48 UTC predates the latest checkpoint. Public remains 44/44;
 held-out remains 39/56 with 936 unmatched screens. Local verification does
 not establish a newer held-out score.
 
-The latest full regression at `1dd779e1` passes 747/747 fixtures: 823,083 boundary
-screens/cursors, 16,589,091 scored RNG positions and 30,872 animation frames.
+The latest full regression passes 750/750 fixtures: 825,020 boundary
+screens/cursors, 16,671,704 scored RNG positions and 30,888 animation frames.
 Both shards finish without failures or timeouts. All 279 runtime hashes
 stayed fixed throughout.
 The earlier potion changes also pass strict full-stream and per-input RNG
@@ -137,19 +137,20 @@ and removes its always-false placeholder. All 75 related controls, five focused
 fixtures and 44 public fixtures pass, with prompt-blocking checks on all 49.
 Movement and polymorph-trap use now share canonical concealment cleanup,
 removing the duplicate helper. All 94 controls, sixteen focused fixtures and
-44 public fixtures pass, including hang checks. Next are guard dialogue,
-drawbridge direction flips and region coordinates.
+44 public fixtures pass, including hang checks. Guard dialogue now passes
+all focused and public checks and is in the 750-fixture regression. Next are
+drawbridge direction flips, shopkeeper recovery and region coordinates.
 The Linux/NFS branch collector is pushed
 and passes signal canaries plus exact save/restore, artifact and natural-exit
 pilots. The Linux census at e4504071 now covers all 678 original inputs:
 603 canonical matches and 75 independently recorded ordinary Linux controls.
-Adding 64 newer raw inputs and two independent Linux controls, 232
+Adding 66 newer raw inputs and two independent Linux controls, 243
 native segments in total, gives a validated union entering 4,534/5,492
-functions and observing 59,329/107,260 direct C branch outcomes.
-All 744 credited input hashes, forty-seven build manifests and branch layouts
+functions and observing 59,344/107,260 direct C branch outcomes.
+All 746 credited input hashes, forty-nine build manifests and branch layouts
 were checked before merging. This C coverage census includes queued
-guard-feedback and drawbridge-flip recordings; it does not claim
-integrated JS parity for those pending repairs. Original platform/output rejections
+guard-dialogue, drawbridge-flip and shopkeeper-recovery recordings; it does
+not claim completed JS integration for those pending repairs. Original platform/output rejections
 remain rejected; no output was normalized. The two new sink fixtures separately
 match Linux C exactly; their validated union covers all 94/94 direct dosinkring
 outcomes in 49 cases. The teleport and polymorph helpers still have measured

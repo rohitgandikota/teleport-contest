@@ -4666,6 +4666,64 @@ Evidence is `.cache/restart-20261122/monmove-unhide-canonical-audit/`,
 Missing cleanup at three other object-removal sites is documented separately;
 this checkpoint does not claim complete concealment coverage.
 
+## 2026-11-23: vault dialogue follows hearing and sight
+
+Canonical cleanup checkpoint `2b1a663a` is committed and pushed. Two ordered
+patches in `vault.js` restore selected guard feedback. `gd_move` uses the
+canonical Deaf predicate and C's visual alternatives, preserving the warning
+counter's ownership and the held-hero condition on move-along feedback.
+`invault` selects the correct interrogation prompt, recognition, gold-request
+and departure messages, and marks the unseen guard's entrance. Both routines
+reuse existing speech and naming helpers with their original completion order.
+
+The warning fixture has hearing, deaf and recovered-hearing cases. All 519
+boundaries, 19,117 complete calls and input slices match. The old port had two
+deaf warning mismatches. Relocation, hostility and the warning-seven call
+packet still occur. Hearing and recovered-hearing cases remain unchanged.
+Other dismissal, gesture and held-feedback branches have source-state
+controls. Raw SHA-256:
+`730005734d00f945e8f7c3005e2636ae2df4c3ef989330c23f73ac85024dfdf1`.
+
+The nine interrogation cases cover hearing/deaf, visible/hidden/no gold,
+blindness and living-Croesus dismissal. Matches improve from 991/1,076 screens
+and 1,008/1,076 cursors to all 1,076. All 52,809 full-stream calls were already
+exact; six input slices now put those calls at C's message boundaries. The
+effective deaf prompt has C's cursor column 40 rather than the hearing
+prompt's column 33. Blind cases retain C's remembered invisible marker, even
+after the dismissed guard is gone. Both hearing controls are unchanged.
+Raw SHA-256:
+`4f8fe4a7f7346db9cc8cd6d8bdca102a9e7be788b5fa992e9cbc955b94efbedf`.
+Counters and EGD state have real JS input observations, not invented native
+state capture. Dead-Croesus feedback remains source-controlled; its missing
+anger/weapon effects and other early-return branches remain separate work.
+
+All 108 new and 46 retained controls pass on the composed main runtime.
+Ten focused fixtures match 28 segments, 2,999 boundaries, 121,480 complete
+RNG calls and every input slice, plus 134 animation grids/cursors. Deferred
+input matches three fixtures, thirteen segments, 1,727 boundaries and 78,284
+calls. The public 44/44 suite is also exact at 11,405 boundaries, 792,838 scored
+RNG positions and 1,483 animations. All 54 focused/public hang checks pass at
+30 seconds. Source audit has zero findings in 276 modules; syntax passes.
+
+The complete 750-fixture regression passes all 825,020 boundary screens and
+cursors, 16,671,704 scored RNG positions and 30,888 animation frames. Both
+interleaved shards finish without failures or timeouts using default 45-second
+workers. All 279 runtime hashes remain fixed. This also verifies the recent
+shop-crawl and canonical-concealment changes together.
+
+The validated NFS union through interrogation has 745 unique inputs and
+forty-eight matching manifests/layouts. It enters 4,534/5,492 functions and
+observes 59,331/107,260 C outcomes. Its 65 added raw inputs contain 232 segments,
+plus nine independent Linux segments. The union includes the queued drawbridge
+recording and does not establish its JS integration. Bulk profiles stay under
+`/share/NFS/u/rohit/research/contest/artifacts/2026-11-22/c-coverage-compress.E84JI2/verified-vault-interrogation-union-20261124`.
+
+Evidence is `.cache/restart-20261122/vault-deaf-native-confirmation/`,
+`invault-native-confirmation/`, both parent source reviews,
+`vault-dialogue-parent-{integration,verification}.json`, `vault-dialogue-promoted-*`
+and `vault-dialogue-corpus-*`. Both original runtime patches, raw fixtures
+and input tuples remain unchanged. This is not a whole-vault parity claim.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

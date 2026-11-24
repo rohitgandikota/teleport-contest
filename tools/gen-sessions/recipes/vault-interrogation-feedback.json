@@ -1,0 +1,237 @@
+{
+  "name": "vault-interrogation-feedback",
+  "description": "Nine unchanged native C cases confirm hearing/deaf name prompts, recognition, visible and concealed gold, blind gesture suppression and Croesus dismissal.",
+  "coverage": [
+    "mode.debug",
+    "social.vault-guard",
+    "survival.timed-status",
+    "ui.map-memory-vision"
+  ],
+  "branches": [
+    "vault.invault-hearing-visible",
+    "vault.invault-deaf-visible",
+    "vault.invault-hearing-hidden",
+    "vault.invault-deaf-hidden",
+    "vault.invault-deaf-none",
+    "vault.invault-deaf-blind-visible",
+    "vault.invault-deaf-blind-none",
+    "vault.invault-deaf-croesus",
+    "vault.invault-deaf-blind-croesus"
+  ],
+  "requireBranchAssertions": true,
+  "segments": [
+    {
+      "seed": 7303,
+      "datetime": "20000115090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00162\r\u0006\u0017500 gold pieces\r\u0014kkkkkkkkkkkkkhhhhh. ................................... intruder\r  \u001b\u001b",
+      "name": "invault-hearing-visible"
+    },
+    {
+      "seed": 7303,
+      "datetime": "20000115090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00162\r\u0006\u0017500 gold pieces\r\u0014kkkkkkkkkkkkkhhhhh. #wizintrinsic\r100j\r  \u001b\u001b................................... intruder\r  \u001b\u001b",
+      "name": "invault-deaf-visible"
+    },
+    {
+      "seed": 7303,
+      "datetime": "20000115090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00162\r\u0006\u0017500 gold pieces\r\u0014kkkkkkkkkkkkkhhhhh. \u0017uncursed empty sack\r   aos$\u001b\u001b................................... intruder\r  \u001b\u001b",
+      "name": "invault-hearing-hidden"
+    },
+    {
+      "seed": 7303,
+      "datetime": "20000115090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00162\r\u0006\u0017500 gold pieces\r\u0014kkkkkkkkkkkkkhhhhh. \u0017uncursed empty sack\r   aos$\u001b\u001b#wizintrinsic\r100j\r  \u001b\u001b................................... intruder\r  \u001b\u001b",
+      "name": "invault-deaf-hidden"
+    },
+    {
+      "seed": 7303,
+      "datetime": "20000115090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00162\r\u0006\u0017500 gold pieces\r\u0014kkkkkkkkkkkkkhhhhh. d$\u001b\u001b#wizintrinsic\r100j\r  \u001b\u001b................................... intruder\r  \u001b\u001b",
+      "name": "invault-deaf-none"
+    },
+    {
+      "seed": 7303,
+      "datetime": "20000115090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00162\r\u0006\u0017500 gold pieces\r\u0014kkkkkkkkkkkkkhhhhh. #wizintrinsic\r100i100j\r  \u001b\u001b................................... intruder\r  \u001b\u001b",
+      "name": "invault-deaf-blind-visible"
+    },
+    {
+      "seed": 7303,
+      "datetime": "20000115090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00162\r\u0006\u0017500 gold pieces\r\u0014kkkkkkkkkkkkkhhhhh. d$\u001b\u001b#wizintrinsic\r100i100j\r  \u001b\u001b................................... intruder\r  \u001b\u001b",
+      "name": "invault-deaf-blind-none"
+    },
+    {
+      "seed": 7303,
+      "datetime": "20000115090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00162\r\u0006\u0017500 gold pieces\r\u0014kkkkkkkkkkkkkhhhhh. #wizintrinsic\r100j\r  \u001b\u001b................................... Croesus\r  \u001b\u001b",
+      "name": "invault-deaf-croesus"
+    },
+    {
+      "seed": 7303,
+      "datetime": "20000115090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00162\r\u0006\u0017500 gold pieces\r\u0014kkkkkkkkkkkkkhhhhh. #wizintrinsic\r100i100j\r  \u001b\u001b................................... Croesus\r  \u001b\u001b",
+      "name": "invault-deaf-blind-croesus"
+    }
+  ],
+  "branchAssertions": [
+    {
+      "branch": "vault.invault-hearing-visible",
+      "segment": 0,
+      "screenIncludes": [
+        "\"Hello stranger, who are you?\" -",
+        "\"I don't know you.\"",
+        "\"Most likely all your gold was stolen from this vault.\"",
+        "\"Please drop that gold and follow me.\""
+      ],
+      "screenExcludes": []
+    },
+    {
+      "branch": "vault.invault-deaf-visible",
+      "segment": 1,
+      "screenIncludes": [
+        "You are required to supply your name. -",
+        "You are unable to hear anything.",
+        "The guard doesn't appear to recognize you.",
+        "palm and beckons with"
+      ],
+      "screenExcludes": [
+        "\"I don't know you.\"",
+        "\"Please drop that gold and follow me.\"",
+        "\"Hello stranger, who are you?\""
+      ]
+    },
+    {
+      "branch": "vault.invault-hearing-hidden",
+      "segment": 2,
+      "screenIncludes": [
+        "\"Hello stranger, who are you?\" -",
+        "\"I don't know you.\"",
+        "You put 500 gold pieces into the bag.",
+        "\"You have hidden gold.\"",
+        "\"Most likely all your gold was stolen from this vault.\"",
+        "\"Please drop that gold and follow me.\""
+      ],
+      "screenExcludes": []
+    },
+    {
+      "branch": "vault.invault-deaf-hidden",
+      "segment": 3,
+      "screenIncludes": [
+        "You are required to supply your name. -",
+        "You are unable to hear anything.",
+        "The guard doesn't appear to recognize you.",
+        "palm and beckons with",
+        "You put 500 gold pieces into the bag.",
+        "The guard glares at your stuff."
+      ],
+      "screenExcludes": [
+        "\"I don't know you.\"",
+        "\"Please drop that gold and follow me.\"",
+        "\"Hello stranger, who are you?\""
+      ]
+    },
+    {
+      "branch": "vault.invault-deaf-none",
+      "segment": 4,
+      "screenIncludes": [
+        "You are required to supply your name. -",
+        "You are unable to hear anything.",
+        "The guard doesn't appear to recognize you.",
+        "The guard stomps and beckons."
+      ],
+      "screenExcludes": [
+        "\"I don't know you.\"",
+        "\"Please drop that gold and follow me.\"",
+        "\"Hello stranger, who are you?\""
+      ]
+    },
+    {
+      "branch": "vault.invault-deaf-blind-visible",
+      "segment": 5,
+      "screenIncludes": [
+        "You are required to supply your name. -",
+        "You are unable to hear anything.",
+        "Someone else has entered the Vault.",
+        "The guard doesn't recognize you."
+      ],
+      "screenExcludes": [
+        "\"I don't know you.\"",
+        "\"Please drop that gold and follow me.\"",
+        "\"Hello stranger, who are you?\"",
+        "holds out",
+        "glares at your stuff.",
+        "waves goodbye.",
+        "stomps and beckons."
+      ]
+    },
+    {
+      "branch": "vault.invault-deaf-blind-none",
+      "segment": 6,
+      "screenIncludes": [
+        "You are required to supply your name. -",
+        "You are unable to hear anything.",
+        "Someone else has entered the Vault.",
+        "The guard doesn't recognize you.",
+        "The guard stomps."
+      ],
+      "screenExcludes": [
+        "\"I don't know you.\"",
+        "\"Please drop that gold and follow me.\"",
+        "\"Hello stranger, who are you?\"",
+        "holds out",
+        "glares at your stuff.",
+        "waves goodbye.",
+        "stomps and beckons."
+      ]
+    },
+    {
+      "branch": "vault.invault-deaf-croesus",
+      "segment": 7,
+      "screenIncludes": [
+        "You are required to supply your name. -",
+        "You are unable to hear anything.",
+        "The guard waves goodbye."
+      ],
+      "screenExcludes": [
+        "\"I don't know you.\"",
+        "\"Please drop that gold and follow me.\"",
+        "\"Hello stranger, who are you?\"",
+        "recognize you.",
+        "holds out",
+        "Oh, yes, of course."
+      ]
+    },
+    {
+      "branch": "vault.invault-deaf-blind-croesus",
+      "segment": 8,
+      "screenIncludes": [
+        "You are required to supply your name. -",
+        "You are unable to hear anything.",
+        "Someone else has entered the Vault."
+      ],
+      "screenExcludes": [
+        "\"I don't know you.\"",
+        "\"Please drop that gold and follow me.\"",
+        "\"Hello stranger, who are you?\"",
+        "holds out",
+        "glares at your stuff.",
+        "waves goodbye.",
+        "stomps and beckons.",
+        "recognize you.",
+        "holds out",
+        "Oh, yes, of course."
+      ]
+    }
+  ]
+}

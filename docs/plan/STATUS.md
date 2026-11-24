@@ -5630,6 +5630,69 @@ Next is the independently verified stamina guard and awaited encumbrance feedbac
 Capacity controls, pet digestion, guard cleanup and bill-object disposal remain
 separate checkpoints. Frozen files and unrelated `.DS_Store` files are untouched.
 
+## 2026-11-24: low-stamina throws and complete 767-fixture regression
+
+Movement checkpoint `0898211b` is committed and pushed. `throwit` now follows
+C's full stamina condition after slippery release and before thrown-object
+ownership. A sufficiently burdened, injured hero drops a heavy attempted throw
+downward. Full low HP, threshold HP, light objects, downward throws and the
+Plane of Air retain their separate conditions. The existing exercise helper
+returns its encumbrance completion so this caller waits before redirecting the
+throw. Its synchronous early returns remain synchronous. An AST inventory finds
+257 calls afterward: 255 unchanged standalone calls, the existing awaited
+polymorphed-digestion call, and the new awaited stamina call.
+
+The unchanged native positive previously missed ten grids, one cursor and
+two input slices, with three extra RNG calls. Both native cases now match all
+210 boundaries/cursors, 6,252 complete calls and input slices, with no frames.
+The HP10 negative retains all five complete output hashes. The existing
+eighteen-case branch fixture also passes. `toss_up` and `toss_up_petrify` are
+byte-identical to their pre-checkpoint bodies. Raw stamina SHA remains
+`b95919bea499c3361d6c5a2b00b5879bf7d17854fc24aeb8cfea1fd4a88f4d6b`.
+
+All thirteen focused checks pass: 45 new state/input controls, 17 retained
+controls, and nine native fixtures with 75 segments, 6,840 boundaries,
+247,466 complete RNG calls and 152 animation grids/cursors/counts. Six of the
+22 state controls fail on the preceding runtime. Deferred input matches four
+fixtures with 49 segments, 3,159 boundaries, 153,699 calls and 112 frames.
+Public remains 44/44 with all 11,405 boundaries, 792,838 scored RNG positions
+and 1,483 frames. All 53 hang workers finish within 30 seconds. Both runtime
+syntax checks and the zero-finding 276-module source audit pass.
+
+The complete maintained corpus now passes 767/767: 833,273 scored boundary
+grids/cursors, 17,083,116 scored RNG positions and 31,940 animation frames.
+Both interleaved shards, 384 and 383 fixtures, exit zero without failures or
+timeouts at the normal 45-second worker limit. All 279 runtime hashes remain
+fixed. This is corpus parity, not proof of every game branch or literal
+serialized terminal-byte equivalence. Evidence is
+`.cache/restart-20261122/toss-up-stamina-parent-audit/`,
+`toss-up-stamina-parent-{source-review,exercise-callers,integration,verification}.json`,
+and `toss-up-stamina-corpus-totals.json` with all original worker logs.
+
+The separately reviewed guard candidate now matches all three fresh native
+cases, 514 boundaries, 18,269 calls and zero frames. It repairs 42 grids,
+five cursors and eight input slices; the old complete streams had four extra
+calls in aggregate. Fifteen real-producer state and twelve input controls pass
+on current composition, versus four and six before. Its 2,997 sealed package
+files verify. Guard ownership is next, with other death/corpse gaps kept separate.
+Bill disposal also has exact native confirmation, and four monster trap-hit
+cases are recorded for confirmation. Capacity controls and monster-growth
+callback lifetime work continue in isolated cache packages.
+
+Linux C confirms the guard/billing pair and trap-hit input without normalization.
+The latest union is 766 inputs, sixty-six layouts, 4,555/5,492 functions and
+59,800/107,260 direct outcomes. The 86 added native inputs contain 323 segments,
+plus nine independent Linux segments. Guard/billing add 106 outcomes and fourteen
+entered functions; trap hits add twelve outcomes. These C measurements do not
+claim the pending JS repairs are already integrated. Bulk profiles stay on NFS.
+
+The fresh official fetch at 07:47 UTC still reports publication 02:35 and our
+01:48 run: 23,595/24,531 screens, seventh agentic and eleventh overall. It
+predates the latest pushes. The current official news index still lists
+November 14 as its newest post; its linked readability article was already
+reviewed, including the November 20 update. No newer score or ranking gain is
+claimed. Fetches and hashes are retained under `official-*` in the cache.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

@@ -19,8 +19,8 @@ run at 01:48 UTC predates the latest checkpoint. Public remains 44/44;
 held-out remains 39/56 with 936 unmatched screens. Local verification does
 not establish a newer held-out score.
 
-The latest full regression at `d13979a6` passes 764/764 fixtures:
-831,535 boundary screens/cursors, 16,990,938 scored RNG positions and 31,441
+The latest full regression, including the stamina repair, passes 767/767 fixtures:
+833,273 boundary screens/cursors, 17,083,116 scored RNG positions and 31,940
 scored animation frames.
 Both shards finish without failures or timeouts. All 279 runtime hashes
 stayed fixed throughout.
@@ -196,19 +196,23 @@ fixtures pass.
 Movement now records the attempted hit position before combat and blocked exits,
 restoring visible crystal-armor damage. Eighteen native cases, 24 related
 controls, eight focused fixtures and all 44 public fixtures pass. The maintained
-inventory is now 766; swallowed coordinates retain source-only evidence.
+inventory is now 767; swallowed coordinates retain source-only evidence.
+Low-stamina throws now drop downward under C's full capacity, HP, direction
+and weight conditions, waiting for exercise feedback before changing ownership.
+Two native cases, 62 related controls, nine focused fixtures and the complete
+767-fixture regression pass. Upward-throw helper bodies remain unchanged.
 The Linux/NFS branch collector is pushed
 and passes signal canaries plus exact save/restore, artifact and natural-exit
 pilots. The Linux census at e4504071 now covers all 678 original inputs:
 603 canonical matches and 75 independently recorded ordinary Linux controls.
-Adding 83 newer raw inputs and two independent Linux controls, 323
-native segments in total, gives a validated union entering 4,541/5,492
-functions and observing 59,682/107,260 direct C branch outcomes.
-All 763 credited input hashes, sixty-four build manifests and branch layouts
+Adding 86 newer raw inputs and two independent Linux controls, 332
+native segments in total, gives a validated union entering 4,555/5,492
+functions and observing 59,800/107,260 direct C branch outcomes.
+All 766 credited input hashes, sixty-six build manifests and branch layouts
 were checked before merging. This C coverage census includes the integrated
 guard, shop, floor, glob, boulder, guard-death and cursor-description recordings.
-Upward-throw branches are integrated; stamina, capacity and pet digestion
-have pending JS integrations.
+Upward throws and stamina are integrated. Capacity, pet digestion, guard
+ownership, bill disposal and monster trap hits have pending JS integrations.
 Original platform/output rejections
 remain rejected; no output was normalized. The two new sink fixtures separately
 match Linux C exactly; their validated union covers all 94/94 direct dosinkring

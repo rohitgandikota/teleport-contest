@@ -814,7 +814,7 @@ export function exercise(i, inc_or_dec) {
                                          : -rn2(2)));
     }
     if (game.moves > 0 && (i === A_STR || i === A_CON))
-        encumber_msg();
+        return encumber_msg();
 }
 
 // src/attrib.c exerper() — the periodic accumulations, every 10 moves for

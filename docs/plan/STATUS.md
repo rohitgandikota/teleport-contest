@@ -6635,6 +6635,64 @@ Remaining work includes Air and other blank-style producers, more inspection
 branches, guard exit ownership, and shared speed-effect completion. These
 remain active source/native investigations, not waived failures.
 
+## 2026-11-24: clear the base window before startup output
+
+The full regression through `d29bee11` passes all 788 maintained recordings,
+840,793 scored screen boundaries/cursors, 17,385,102 scored RNG calls and
+32,039 scored animation frames. Both shards exit zero. All 279 runtime
+hashes and the complete fixture inventory remain fixed throughout. Receipt:
+`.cache/restart-20261122/inspection-phasing-gaze-promotion-corpus-totals.json`.
+This result includes the restricted inspection, potion, phasing and gaze
+checkpoints. It predates the following two-statement startup repair.
+
+`plselect.tty_init_nhwindows` now clears the physical display and resets the
+base cursor before the banner or its existing disabled-banner return. C's
+complete owner at win/tty/wintty.c:511-593 clears the base window before
+printing. The existing GameDisplay clear supplies default foreground; the
+base cursor call preserves the separate logical cursor contract. No import,
+export, input operation, RNG call or other runtime owner changes.
+
+Parent normal-import before checks reproduce 2/10 state, 5/8 source and
+0/4 ordinary-input passes. After, all 12 commands and 38 controls pass.
+Nine fixtures with 21 segments retain all 3,890 scored boundaries,
+214,597 complete calls and 273 frames. Four deferred input files agree over
+1,379 boundaries, 59,328 calls and 233 frames. All 44 public fixtures pass,
+all 46 distinct hang workers finish within 30 seconds, syntax passes and
+the 276-module source audit reports zero findings. All 279 runtime hashes
+and three promoted support hashes remain fixed during verification.
+
+Independent complete styled-cell comparisons on the actual main runtime
+remove exactly 60 incorrect gray blanks from four character confirmations.
+Exact styled boundaries improve from 3,866 to 3,870 of 3,890. Complete calls,
+input slices, cursors and styled animation grids remain exact. Every one of
+the remaining 883 differing cells is an identical baseline difference;
+20 failing boundaries across three fixtures remain recorded. The before
+and after native commands retain their nonzero exits. No literal serialized
+byte identity or complete-port claim follows from these results.
+
+The separate Air audit reads the complete glyph, terminal, capture and
+encoder owners. Both C and JS paint cyan spaces. The recorder's
+`compressAnsiLine` replaces runs of at least five spaces with cursor
+movement, which leaves those decoded cells at default foreground. All 788
+Air cell observations across the old public and new terrain fixtures lie
+inside those cursor-forward spans. Twelve real producer controls and eight
+encoder diagnostics pass without a runtime patch. Strict native comparison
+remains 359/391, with all 62,077 calls, cursors and slices exact. These are
+preserved encoding losses, not a reason to recolor gameplay output. Death
+score attributes remain separately audited. No raw recording, frozen module,
+RNG implementation, encoder or comparison rule was changed.
+
+Evidence: `.cache/restart-20261122/tty-startup-promotion-parent/`,
+`tty-startup-promotion-parent-verification.json`, and the 753-file startup
+source package, seal `ea09756ab1b5e3c24c278c9a6fe4c57bce6a195caba420120b20fe87c81d5cbe`.
+The independent 331-member Air audit has seal
+`e5526181a624dee47f0f1bb493f211095d2c6c5498695c9ae9401c1c12dea5cc`.
+Both packages, their raw inputs and prior protected seals remain unchanged.
+The maintained corpus remains 788. Terrain inspection, guard exit cleanup,
+slow-effect completion and enchanted iron footwear are the next bounded
+source/native repairs. Official held-out results remain the older evaluation;
+local checks do not establish a newer rank.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

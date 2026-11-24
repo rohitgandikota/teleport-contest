@@ -19,9 +19,9 @@ run at 07:21 UTC predates the latest checkpoints. Public remains 44/44;
 held-out remains 39/56 with 936 unmatched screens. Local verification does
 not establish a newer held-out score.
 
-The latest full regression, through combat, species identity and screen
-clearing, passes 783/783 fixtures: 838,900 boundary screens/cursors,
-17,307,267 scored RNG positions and 32,004 scored animation frames.
+The latest full regression, through restricted inspection, potion effects,
+phasing and hero counter-gaze, passes 788/788 fixtures: 840,793 boundary
+screens/cursors, 17,385,102 scored RNG positions and 32,039 scored animation frames.
 Both shards finish without failures or timeouts. All 279 runtime hashes
 stayed fixed throughout.
 The earlier potion changes also pass strict full-stream and per-input RNG
@@ -89,9 +89,16 @@ and 16 frames. All 130 controls, 11 focused fixtures, 44 public sessions and
 the live species table and prepares the existing killer record before death
 handling. Five native cases match all 481 styled boundaries, 14,707 complete
 calls and 19 frames. All 139 controls, ten focused fixtures, 44 public sessions
-and 54 hang checks pass. The latest full regression is the 783-fixture run,
-before these inspection, potion, phasing and gaze additions. A full run of
-the maintained 788-fixture corpus follows this checkpoint.
+and 54 hang checks pass. The full 788-fixture run now includes these additions.
+The next startup fix clears the base window before banner output, removing
+all 60 incorrect blank styles in four character confirmations. All 38
+controls, nine focused fixtures, 44 public sessions and 46 hang checks pass.
+Independent comparison of all 3,890 selected styled boundaries improves
+from 3,866 exact to 3,870. The remaining 883 differing cells in 20 boundaries
+are unchanged. Air-space source and wire audits identify recorder compression
+as the color-loss owner; C and JS both paint cyan spaces. No gameplay
+recoloring, raw rewrite or comparator exemption was introduced. The full
+788-fixture run predates only this startup clear checkpoint.
 Current-corpus parity is not completeness.
 
 Floor objects retain independent global and per-square order. Placement,

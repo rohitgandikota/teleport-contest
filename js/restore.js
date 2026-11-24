@@ -54,11 +54,12 @@ export async function find_lev_obj() {
     }
 }
 
-// src/restore.c:113 inven_inuse(). Run only after final local billing exists.
-async function inven_inuse() {
+// src/restore.c:113 inven_inuse(), before saving or after final restore.
+export async function inven_inuse(quietly = false) {
     for (const obj of [...(game.invent || [])]) {
         if (obj.in_use) {
-            await pline(`Finishing off ${xname(obj)}...`);
+            if (!quietly)
+                await pline(`Finishing off ${xname(obj)}...`);
             await useup(obj);
         }
     }

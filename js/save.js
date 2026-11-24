@@ -27,6 +27,7 @@ import { dmonsfree } from './mon.js';
 import { dobjsfree } from './mkobj.js';
 import { checkpoint_vision } from './vision.js';
 import { getRngLog } from './rng.js';
+import { done_object_cleanup } from './end.js';
 export { dorecover } from './restore.js';
 
 // src/save.c:951 savefruitchn()
@@ -47,6 +48,8 @@ export const SAVE_SKIP_KEYS = new Set([
     '_preNhgetchHook', '_pendingDisplay', 'coder', 'rc', 'unported',
     'currentSeed', 'fixed_datetime', 'animationFrame',
     'program_state', 'luacore', 'wportal',
+    // include/decl.h:536: lastinvnr is never saved or restored.
+    'lastinvnr',
     // C rebuilds command bindings from this process's configuration. Command
     // queues and the one-time key-help message also start fresh after restore.
     'Cmd', 'cmd_bind', 'command_queue', 'dowhatdoes_once',
@@ -292,6 +295,9 @@ export async function dosave0() {
     const currentKey = `${current.dnum}:${current.dlevel}`;
     const key = save_key();
     try {
+        // save.c:98 precedes create_savefile(). Cleanup remains complete even
+        // if storage refuses: retain that playable state before writing/freeing.
+        await done_object_cleanup();
         const rollback = save_checkpoint();
         // src/save.c:141-145: resume applies the new date's luck adjustment.
         // The checkpoint retains the original luck if the final write refuses.

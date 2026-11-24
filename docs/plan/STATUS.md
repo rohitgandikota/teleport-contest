@@ -3836,6 +3836,75 @@ unchanged native recording. New mounted-equipment and thunder C recordings are
 under focused confirmation. Their branch profiles are exact on NFS; no new
 runtime or fixture from those follow-ups is included in this checkpoint.
 
+## 2026-11-23: pre-save cleanup and process inventory counter
+
+The mounted-Stealth checkpoint `3bf50d0a` is committed and pushed. This change
+applies the two separate, immutable cleanup and counter patches by their
+scoped hunks. All four runtime hashes match the reviewed composition exactly.
+
+`done_object_cleanup` now quietly consumes in-use inventory through the actual
+`useup` owner, recognizes only exact `OBJ_FREE` projectiles, and places a free
+punishment chain through the existing restriction-aware ball helper. It clears
+the inactive persistent-inventory flag. Restore still calls `inven_inuse` with
+its audible default. `dosave0` completes cleanup before its rollback checkpoint,
+so a refused storage write keeps the cleaned playable state. The process-only
+`lastinvnr` counter starts at C's value 51 and is omitted from new saves;
+restore ignores the field in legacy saves. Saved object letters and list order
+are retained, and a failed save keeps the current process counter.
+
+The original `qb` recording remains a negative control: C assigns the wished
+potion to slot `a`, rejects `qb`, and never enters object detection. A fresh
+`qa` recording supplies the positive detection case. The four-way comparison
+separates both repairs. Baseline and cleanup-only match 172/180 screens in
+each pair. Counter-only matches the old 180/180 but only 178/180 new screens.
+The remaining two new mismatches are the local chain cell `(59,16)`, where C
+shows `_` and counter-only JS shows `@`. The composition matches both files:
+360 boundary screens/cursors, 4,743 complete RNG calls, all input slices and
+zero animations. Raw bytes and all five input fields remain unchanged.
+
+All 66 state controls and nineteen source assertions pass. The TAP runner
+counts 68 entries because the two source-audit files each contain multiple
+checks. Twenty-four pinned C function records support those source assertions.
+The parent independently read complete cleanup, inventory cleanup, save,
+letter allocation and ball placement functions, retaining the earlier complete
+serialization/restore reviews. Two actual-input ownership checks and all eight
+native recipe assertions also pass. No gameplay helper or RNG is replaced.
+
+Nineteen focused fixtures cover forty segments and pass all 3,829 boundaries,
+90,076 complete/per-input RNG calls and 66 animation frames, including exact
+cursor and frame counts. All nineteen 60-second worker checks pass. Four
+save/resume fixtures also match under delayed input: nine segments, 637
+boundaries, 13,218 calls and 45 animations. The source audit remains zero
+findings in 276 non-frozen modules.
+The complete 727-fixture regression passes all 815,941 boundary
+screens/cursors, 16,417,642 scored RNG positions and 30,734 animation frames.
+Both shards finish without failures or timeouts at the default 45-second worker
+limit. All 279 runtime hashes remain unchanged.
+
+The exact NFS union now has 721 credited inputs, twenty-four identical
+manifests/layouts, 4,523/5,492 entered functions and 59,014/107,260 direct
+branch outcomes. The 41 added raw inputs contain 171 segments, plus nine
+independent Linux control segments. The new native pair reaches ball/chain
+placement, but `inven_inuse` only scans an empty list; quiet consumption and
+projectile handling remain constructed source controls. Bulk profiles stay at
+`/share/NFS/u/rohit/research/contest/artifacts/2026-11-22/c-coverage-compress.E84JI2/verified-save-cleanup-union-20261123`.
+
+Evidence is `.cache/restart-20261122/save-cleanup-combined-promotion/`,
+`save-cleanup-parent-{integration,source-review,verification}.json`,
+`save-cleanup-promoted-*` and `save-cleanup-corpus-*`. Promoted raw files retain
+their original metadata, including the old pending descriptions. Their paired
+recipes carry current assertions and valid tags. The catalog tool requires
+embedded matching metadata, so these raw copies are not claimed as catalog
+credit; their native assertions and direct C branch profiles are verified
+separately. Save compatibility flags and vision shutdown remain separate work.
+
+Next are the source-confirmed covetous goal attack and its native thunder
+continuation, followed by mounted equipment feedback. A new ordinary C pair
+also confirms the omitted sticky-hero movement guard, with an unchanged
+released-monster control. The restored door-count candidate has a fresh bones
+recording under confirmation. Those changes remain in separate cache packages;
+this checkpoint contains only the two save contracts described above.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

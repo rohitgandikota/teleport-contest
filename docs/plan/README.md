@@ -13,15 +13,15 @@ Ground rules are in `/CLAUDE.md`. Read that first if you have not.
 ## Current focus, 2026-11-24
 
 Continue the faithful port with readable C-aligned code and prompt verified
-pushes. The latest official snapshot checked, November 24 at 10:24 UTC, has
+pushes. The latest official snapshot checked, November 24 at 11:23 UTC, has
 23,595 of 24,531 combined screens, 7th agentic and 11th overall. Our scoring
 run at 07:21 UTC predates the latest checkpoints. Public remains 44/44;
 held-out remains 39/56 with 936 unmatched screens. Local verification does
 not establish a newer held-out score.
 
-The latest full regression, through the placement and ice inspection repair,
-passes 779/779 fixtures: 837,782 boundary screens/cursors, 17,270,807 scored
-RNG positions and 31,972 scored animation frames.
+The latest full regression, through speed-potion and trap feedback, passes
+781/781 fixtures: 838,489 boundary screens/cursors, 17,289,783 scored RNG
+positions and 32,004 scored animation frames.
 Both shards finish without failures or timeouts. All 279 runtime hashes
 stayed fixed throughout.
 The earlier potion changes also pass strict full-stream and per-input RNG
@@ -29,7 +29,7 @@ checks on 117 fixtures, all 39,942 boundaries and 1,718,440 calls. The complete
 strict 677-fixture audit and all 213 animation-bearing fixtures passed at the
 preceding floor checkpoint. The subsequent monster trap-hit repair passes
 four new native cases, 65 controls and seven focused regressions. The maintained
-corpus is now 781. The following death-owner repair passes 21 direct source
+corpus is now 783. The following death-owner repair passes 21 direct source
 controls, 61 retained controls and seven focused regressions. Temporary corpse
 cleanup for pet nutrition also passes 16 direct controls, 55 retained controls
 and five focused regressions. Guard corridor gold collection passes five new
@@ -57,8 +57,15 @@ Monster speed potions now use the shared drinking, speed and consumption
 helpers. Rock and fire trap feedback carries the affected monster location.
 Eight new native cases match all 707 styled grids, 18,976 complete RNG calls
 and 32 frames. All 140 combined controls, 13 focused fixtures, 44 public
-sessions and 57 hang checks pass. The latest full regression remains the
-779-fixture run, before these two message changes.
+sessions and 57 hang checks pass.
+Hero transformations now retain live species-table identity, and monster
+damage uses the complete named C dispatch with initialized hit fields. Six
+new native cases pass the contest, cursor and complete RNG comparisons over
+411 boundaries and 17,484 calls. The three combat cases also pass every blank
+style; the three identity cases retain the independently diagnosed screen-clear
+foreground defect. All 224 controls, 12 focused fixtures, 44 public sessions
+and 56 hang checks pass. The latest full regression remains the 781-fixture
+run, before these combat changes. The display producer fix is next.
 Current-corpus parity is not completeness.
 
 Floor objects retain independent global and per-square order. Placement,

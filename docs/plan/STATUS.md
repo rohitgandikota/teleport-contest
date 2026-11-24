@@ -6293,6 +6293,76 @@ Native coverage and JS parity remain distinct. Large profiles stay on NFS at
 The latest official score remains the independently fetched 07:21 UTC run;
 no held-out improvement is inferred from local results or a new push.
 
+## 2026-11-24: live hero species and complete monster damage dispatch
+
+The speed/trap checkpoint `43c89bdb` passes all 781 fixtures: 838,489 boundary
+screens/cursors, 17,289,783 scored RNG positions and 32,004 animation frames.
+Both shard processes finish zero and all 279 runtime hashes remain fixed.
+Receipt: `.cache/restart-20261122/speed-trap-feedback-promotion-corpus-totals.json`.
+A fresh official fetch at 11:23 UTC returns the same leaderboard/news hashes
+as 10:24. Our official scoring run remains 07:21 UTC, 7th agentic and 11th
+overall, with 936 unmatched held-out screens. These pushes are not scored yet.
+
+`polyself.js` now obtains the actual hero species record from `game.mons`.
+The related local table bindings, body-part comparisons and warning-species
+pointer use that same table. This preserves vampire RNG, eel hints, form
+properties and full restore. The unchanged material predicates now recognize
+iron/wood golems: rust and decay rehumanize the hero instead of choosing armor
+erosion and drawing the wrong random selector. No predicate, random call,
+index fallback or public completion API is changed by this producer repair.
+
+`mdamagem` initializes permdmg, specialdmg and dieroll, then calls the named
+C `mhitm_adtyping` switch. Its 42 case labels route through 39 shared handlers.
+The repair fills missing rust, decay, stun, Famine, Pestilence and seduction
+closures, preserves zero-damage corrosion, and awaits the existing gold-theft
+teleport restriction. The old private Rider duplicates in `mhitu.js` become
+shared four-argument calls; Famine completes exercise before hunger. Contact
+petrification, weapon ownership and unrelated knockback gaps remain separate.
+The changed mhitu import is wrapped for readability before verification;
+its entire AST and all 18,318 tokens match the sealed candidate.
+
+The current-main parent verification passes 27 checks and 224 controls,
+including both unchanged original hero-identity diagnostics. Twelve focused
+fixtures cover 46 segments, 5,189 boundaries, 137,109 complete RNG calls and
+56 frames. Strict per-input/whole-stream and animation/cursor gates pass.
+Both deferred fixtures cover six segments, 411 boundaries and 17,484 calls.
+All 44 public sessions retain 11,405 screens/cursors, 792,838 calls and 1,483
+frames. All 56 hang checks at 30 seconds, four syntax checks and the zero-
+finding 276-module source audit pass. All 279 runtime and ten support hashes
+remain fixed. The cache composition's first scorer command failed before
+replay because relative paths were resolved against its captured project
+root; absolute fixture paths fix that invocation. The failed log is retained.
+
+The three combat cases match every styled grid, including blanks, every
+cursor, all 8,752 complete calls/slices and complete empty animation arrays
+at 190 boundaries. Before, 172 grids and 185 cursors matched. The three hero
+identity cases improve from 186 to 221 matching contest grids, 215 to 221
+cursors and 206 to 221 slices; complete calls improve from 8,850 actual versus
+8,732 expected to exact 8,732. Both ordinary negative cases preserve all five
+original JS output hashes. Immutable native files:
+
+- `monster-damage-type-dispatch.session.json`, SHA256
+  `77a02731f8ad89302ac5cb2d484cda4714ee2b25f7d913f4497985af99931330`.
+- `hero-species-table-identity.session.json`, SHA256
+  `06cae818c0140935a1d61435f3b7d5d90cf05e96029c2335ea17fbf62bc69715`.
+
+The identity complete-style gate still exits one before and after. Each of
+its 221 boundaries has exactly one differing blank at zero-based (73,17),
+C foreground 8 versus JS 7. The parent compares every cell and proves the
+entire blank mismatch set unchanged. No comparator or fixture is altered.
+A separately sealed audit now traces this defect, and earlier projectile
+and growth defects, to `GameDisplay.clearScreen`. Its production repair is
+the next checkpoint; it does not require frozen changes. The broader full
+corpus will follow that display integration with both checkpoints present.
+
+Parent receipt: `.cache/restart-20261122/combat-identity-promotion-parent-verification.json`.
+The maintained inventory is 783. The latest pinned C coverage union is an
+independent measurement over 780 credited inputs and 75 identical layouts:
+4,560/5,492 functions and 59,935/107,260 branch outcomes. Its latest native
+wall-phasing input adds one outcome, with all profiles kept on shared NFS.
+Current source controls and native witnesses are progress toward the whole
+port; they do not establish complete combat or held-out parity.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

@@ -1,0 +1,80 @@
+{
+  "name": "monster-damage-type-dispatch",
+  "description": "Ordinary C-recorded pet attacks: xan AD_LEGS, disenchanter AD_ENCH damage and an unchanged little-dog physical control. The disenchanter case distinguishes native output. Xan damage is additionally checked by JS state; its short native output is unchanged. Other damage types and artifact die-roll routing have source controls.",
+  "coverage": [
+    "mode.debug",
+    "ui.getlin",
+    "ui.more-paging",
+    "level.ordinary",
+    "monster.pets",
+    "monster.vs-monster",
+    "combat.melee",
+    "monster.death-corpse-revival"
+  ],
+  "requireBranchAssertions": true,
+  "branches": [
+    "monster.damage.xan",
+    "monster.damage.disenchanter",
+    "monster.damage.ordinary-bite"
+  ],
+  "segments": [
+    {
+      "name": "xan-legs",
+      "seed": 21020,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0007tame xan\r\u0007sleeping hostile ogre\r20s        20s        :"
+    },
+    {
+      "name": "disenchanter-damage",
+      "seed": 21020,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0007tame disenchanter\r\u0007sleeping hostile ogre\r20s        20s        :"
+    },
+    {
+      "name": "ordinary-bite",
+      "seed": 21020,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0007tame little dog\r\u0007sleeping hostile newt\r20s        20s        :"
+    }
+  ],
+  "branchAssertions": [
+    {
+      "branch": "monster.damage.xan",
+      "segment": 0,
+      "screenIncludes": [
+        "The xan stings the ogre."
+      ],
+      "screenExcludes": [
+        "You die...",
+        "The ogre is regurgitated!"
+      ]
+    },
+    {
+      "branch": "monster.damage.disenchanter",
+      "segment": 1,
+      "screenIncludes": [
+        "The disenchanter hits the ogre.",
+        "The ogre is killed!"
+      ],
+      "screenExcludes": [
+        "You die...",
+        "The ogre is regurgitated!"
+      ]
+    },
+    {
+      "branch": "monster.damage.ordinary-bite",
+      "segment": 2,
+      "screenIncludes": [
+        "The little dog bites the newt.",
+        "The newt is killed!"
+      ],
+      "screenExcludes": [
+        "You die...",
+        "The ogre is regurgitated!"
+      ]
+    }
+  ]
+}

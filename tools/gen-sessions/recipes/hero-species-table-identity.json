@@ -1,0 +1,83 @@
+{
+  "name": "hero-species-table-identity",
+  "description": "Ordinary debug polymorph plus hostile rust/decay attacks, with a stone-golem rust control. Fresh native gameplay, cursors, complete RNG and frame slices verified; the full styled-grid diagnostic retains a pre-existing blank foreground difference.",
+  "coverage": [
+    "mode.debug",
+    "forms.polymorph",
+    "monster.hero-melee",
+    "combat.melee",
+    "ui.getlin",
+    "ui.more-paging"
+  ],
+  "branches": [
+    "hero-form.iron-rust-reversion",
+    "hero-form.wood-decay-reversion",
+    "hero-form.stone-rust-control"
+  ],
+  "requireBranchAssertions": true,
+  "segments": [
+    {
+      "name": "iron-rust",
+      "seed": 7341,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Identity,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #polyself\riron golem\r  \u001b\u001b\u0007hostile rust monster\r  \u001b\u001b.  \u001b\u001b.  \u001b\u001b.  \u001b\u001b.  \u001b\u001b"
+    },
+    {
+      "name": "wood-decay",
+      "seed": 7341,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Identity,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #polyself\rwood golem\r  \u001b\u001b\u0007hostile brown pudding\r  \u001b\u001b.  \u001b\u001b.  \u001b\u001b.  \u001b\u001b.  \u001b\u001b"
+    },
+    {
+      "name": "stone-rust-control",
+      "seed": 7341,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Identity,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #polyself\rstone golem\r  \u001b\u001b\u0007hostile rust monster\r  \u001b\u001b.  \u001b\u001b.  \u001b\u001b.  \u001b\u001b.  \u001b\u001b"
+    }
+  ],
+  "branchAssertions": [
+    {
+      "branch": "hero-form.iron-rust-reversion",
+      "segment": 0,
+      "screenIncludes": [
+        "You turn into an iron golem!",
+        "A rust monster appears next to you.",
+        "You rust!",
+        "You return to human form!"
+      ],
+      "screenExcludes": [
+        "You rot!"
+      ]
+    },
+    {
+      "branch": "hero-form.wood-decay-reversion",
+      "segment": 1,
+      "screenIncludes": [
+        "You turn into a wood golem!",
+        "A brown pudding appears next to you.",
+        "You rot!",
+        "You return to human form!"
+      ],
+      "screenExcludes": [
+        "You rust!"
+      ]
+    },
+    {
+      "branch": "hero-form.stone-rust-control",
+      "segment": 2,
+      "screenIncludes": [
+        "You turn into a stone golem!",
+        "A rust monster appears next to you.",
+        "The rust monster touches you!"
+      ],
+      "screenExcludes": [
+        "You rust!",
+        "You rot!",
+        "You return to human form!"
+      ]
+    }
+  ]
+}

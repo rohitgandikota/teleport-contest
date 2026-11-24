@@ -1,0 +1,85 @@
+{
+  "name": "floor-removal-concealment",
+  "description": "Native C ordinary sink ring-of-hunger inputs for removing a hiding hero's cover, retained protected cover, and a visible hero control. Deletion is checked before the later hiding command; constructed state assertions are separate.",
+  "coverage": [
+    "mode.debug",
+    "terrain.furniture",
+    "object.rings",
+    "object.artifacts"
+  ],
+  "branches": [
+    "floor-removal.last-cover",
+    "floor-removal.retained-cover",
+    "floor-removal.visible-control"
+  ],
+  "requireBranchAssertions": true,
+  "segments": [
+    {
+      "name": "hunger-removes-hiding-cover",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017sink\r   \u0017uncursed dagger\r   da  \u001b\u001b\u0017uncursed ring of hunger\r   #polyself\rpit viper\r  \u001b\u001b#monster\r  \u001b\u001bdb  \u001b\u001b#monster\r  \u001b\u001b"
+    },
+    {
+      "name": "hunger-retains-protected-cover",
+      "seed": 99813,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017sink\r   \u0017uncursed dagger\r   da  \u001b\u001b\u0017uncursed Bell of Opening\r   db  \u001b\u001b\u0017uncursed ring of hunger\r   #polyself\rpit viper\r  \u001b\u001b#monster\r  \u001b\u001bdc  \u001b\u001b#monster\r  \u001b\u001b"
+    },
+    {
+      "name": "hunger-visible-hero-control",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017sink\r   \u0017uncursed dagger\r   da  \u001b\u001b\u0017uncursed ring of hunger\r   #polyself\rpit viper\r  \u001b\u001bdb  \u001b\u001b#monster\r  \u001b\u001b"
+    }
+  ],
+  "branchAssertions": [
+    {
+      "branch": "floor-removal.last-cover",
+      "segment": 0,
+      "screenIncludes": [
+        "down the drain.",
+        "Suddenly, a dagger vanishes from the sink!",
+        "You are now hiding underneath",
+        "There is nothing to hide under here."
+      ],
+      "screenCells": [
+        {
+          "step": 104,
+          "x": 58,
+          "y": 7,
+          "equals": "S"
+        }
+      ]
+    },
+    {
+      "branch": "floor-removal.retained-cover",
+      "segment": 1,
+      "screenIncludes": [
+        "down the drain.",
+        "Suddenly, a dagger vanishes from the sink!",
+        "You are now hiding underneath",
+        "You are already hiding underneath a silver bell."
+      ],
+      "screenExcludes": [
+        "silver bell vanishes"
+      ]
+    },
+    {
+      "branch": "floor-removal.visible-control",
+      "segment": 2,
+      "screenIncludes": [
+        "down the drain.",
+        "Suddenly, a dagger vanishes from the sink!",
+        "There is nothing to hide under here."
+      ],
+      "screenExcludes": [
+        "You are now hiding",
+        "You are already hiding"
+      ]
+    }
+  ]
+}

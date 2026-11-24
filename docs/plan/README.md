@@ -156,16 +156,19 @@ ten focused fixtures and all 44 public fixtures pass.
 Dead-Croesus guard responses now complete anger and weapon preparation before
 the next turn. Four native cases, 268 related controls, nine focused fixtures
 and all 44 public fixtures pass.
+Floor deletion now rechecks concealment after extraction and before redraw.
+Three native cases, 95 related controls, nine focused fixtures and all 44
+public fixtures pass. Two false deletion comments now describe C's behavior.
 The Linux/NFS branch collector is pushed
 and passes signal canaries plus exact save/restore, artifact and natural-exit
 pilots. The Linux census at e4504071 now covers all 678 original inputs:
 603 canonical matches and 75 independently recorded ordinary Linux controls.
-Adding 74 newer raw inputs and two independent Linux controls, 280
-native segments in total, gives a validated union entering 4,537/5,492
-functions and observing 59,446/107,260 direct C branch outcomes.
-All 754 credited input hashes, fifty-seven build manifests and branch layouts
+Adding 75 newer raw inputs and two independent Linux controls, 284
+native segments in total, gives a validated union entering 4,539/5,492
+functions and observing 59,481/107,260 direct C branch outcomes.
+All 755 credited input hashes, fifty-eight build manifests and branch layouts
 were checked before merging. This C coverage census includes the integrated
-guard and shop recordings plus queued glob and floor-concealment recordings.
+guard, shop and floor-concealment recordings plus queued glob and boulder recordings.
 Those two JS integrations remain pending. Original platform/output rejections
 remain rejected; no output was normalized. The two new sink fixtures separately
 match Linux C exactly; their validated union covers all 94/94 direct dosinkring

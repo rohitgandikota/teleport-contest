@@ -5112,6 +5112,55 @@ and `vault-dead-croesus-promoted-*`. The normal gates need no loader or
 production test export. Rendered-grid acceptance keeps the frozen decoder
 contract; serialized terminal bytes are not claimed identical.
 
+## 2026-11-24: floor deletion reveals occupants when their cover disappears
+
+Dead-Croesus checkpoint `28f49796` is committed and pushed. `delobj_core`
+now calls the existing `maybe_unhide_at` after floor extraction and before
+redraw, then keeps the existing disposal continuation. Nonfloor removal and
+pending inventory effects remain unchanged. Two comments now name the right
+C owner and explain that protected objects and forced removal skip the
+resistance draw. No helper, import or production export was added.
+
+Three unchanged native cases cover a hunger ring removing hiding cover,
+protected cover that remains, and an already visible hero. All 385 styled
+grids/cursors, 8,416 complete RNG calls and input slices match, with zero
+frames. Before the fix, the positive has 104/121 matching grids and eighteen
+extra calls. Boundary 104 reveals the pit viper in C while old JS still
+shows the sink. Both negative cases remain exact with identical JS output
+hashes before and after. The later monster-ability command can independently
+clear hiding and is not the causal witness. Raw SHA-256:
+`3f719c2a2a017dc49437745e9ff4ee2cd658561e27b6ea9daeb9280f2700c6f6`.
+
+All eleven integrated checks pass: 27 new state controls, three actual-input
+controls and 65 retained controls. Nine focused fixtures match 36 segments,
+3,632 boundaries, 116,399 complete RNG calls/input slices and 554 animation
+grids/cursors. Deferred input matches three fixtures, nine segments, 943
+boundaries, 29,426 calls and zero frames. All 44 public fixtures retain
+11,405 exact boundaries, 792,838 scored RNG positions and 1,483 frames.
+All 53 hang workers pass at 30 seconds. Syntax passes, the source audit is
+clear across 276 modules and all 279 runtime hashes stay fixed. The inventory
+now has 759 fixtures; the latest full regression remains 756/756 at `e6353a0b`.
+
+Independent Linux replay is exact and adds four direct outcomes. The next
+queued boulder recording also matches Linux C and adds two entered functions
+and 35 outcomes. The validated union now has 755 inputs, fifty-eight layouts,
+4,539/5,492 functions and 59,481/107,260 outcomes. Its 75 added raw inputs
+contain 275 segments, plus nine independent Linux segments. Bulk profiles
+remain on NFS. Glob and boulder candidate integrations remain pending.
+
+The source review covers complete deletion and concealment owners plus
+37 caller edges in 31 owners. Monster hiding, forced deletion, billing and
+pending inventory completion have constructed controls, not new native cases.
+The Bell negative exits the sink's resistance guard; direct deletion protection
+is tested separately. No oracle bytes were normalized or rewritten.
+
+Evidence is `.cache/restart-20261122/concealment-removal-native-confirmation/`,
+`floor-removal-concealment-parent-{source-review,integration,verification}.json`
+and `floor-removal-concealment-promoted-*`. The fresh 05:54 UTC official fetch
+still publishes the 02:35 UTC snapshot and our 01:48 UTC score. Rank remains
+seventh agentic, eleventh overall, with 936 unmatched screens. It does not
+evaluate these latest pushes.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

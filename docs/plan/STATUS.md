@@ -4589,6 +4589,45 @@ patch SHA-256 is
 Canonical concealment-helper reuse and region/drawbridge behavior remain
 separate changes.
 
+## 2026-11-23: shopkeepers block diagonal crawls
+
+Timer/goal checkpoint `1dd779e1` and comment checkpoint `85eec4ef` are pushed.
+`crawl_destination` now awaits the existing `block_door` helper, matching C's
+shopkeeper check. The unused always-false placeholder is removed. The short
+function comment describes neighboring crawl destinations. No new helper,
+import, export, RNG draw or async signature is introduced.
+
+The native Minetown pair loses flight over a pool. In the positive case the
+hero owes the keeper and tries the shop entrance diagonally. C's keeper blocks
+that door, so the healthy hero crawls to another square. The old placeholder
+let the hero through. The repair improves 331/342 screens and 332/342 cursors
+to 342/342, with all 10,687 complete calls, 342 input slices and 16 animation
+grids/cursors exact. The unchanged negative has no debt, an off-post keeper
+and an orthogonal escape; it is not an isolated native debt-guard test.
+Source controls separately isolate bill, debit, robbed, helpless, invisible,
+hallucinated and phasing cases using the actual helper and producers.
+The raw SHA-256 is
+`8979a3bb91e9b94965d386287d4da396bc9378054ee242054ce38b8c46ba5acc`.
+
+All 21 new and 54 retained controls pass. Five focused fixtures match ten
+segments, 1,410 boundaries, 46,516 complete/per-input RNG calls and 24 animation
+grids/cursors. Deferred input matches two fixtures, four segments, 613
+boundaries, 16,349 calls and 16 animations. The 44 public fixtures also pass
+all 11,405 boundaries, 792,838 scored RNG positions and 1,483 animations.
+All 49 focused/public workers pass the 30-second hang bound. Source audit is
+clear across 276 modules, and syntax passes. This small call-site repair uses
+focused and public regression; the last full corpus remains the separately
+verified 747-fixture timer/goal checkpoint.
+
+The native NFS run is 1/1 exact. Its cumulative union has 742 distinct inputs,
+forty-five matching manifests/layouts, 4,534/5,492 entered functions and
+59,310/107,260 outcomes. This is separate from later native-only additions.
+Bulk profiles remain on NFS at
+`/share/NFS/u/rohit/research/contest/artifacts/2026-11-22/c-coverage-compress.E84JI2/verified-shop-crawl-door-union-20261123`.
+Evidence is `.cache/restart-20261122/shop-crawl-door-native-confirmation/`,
+`shop-crawl-door-parent-source-review.json`, `shop-crawl-parent-*` and
+`shop-crawl-promoted-*`. Original raw and scoped patch hashes are unchanged.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

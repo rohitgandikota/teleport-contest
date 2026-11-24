@@ -19,7 +19,7 @@ run at 01:48 UTC predates the latest checkpoint. Public remains 44/44;
 held-out remains 39/56 with 936 unmatched screens. Local verification does
 not establish a newer held-out score.
 
-The latest verification passes 747/747 fixtures: 823,083 boundary
+The latest full regression at `1dd779e1` passes 747/747 fixtures: 823,083 boundary
 screens/cursors, 16,589,091 scored RNG positions and 30,872 animation frames.
 Both shards finish without failures or timeouts. All 279 runtime hashes
 stayed fixed throughout.
@@ -132,8 +132,10 @@ Level flips now move ice-melt timers and active monster goals while preserving
 pet goal memory. Four native cases, 53 new controls and 37 retained controls
 pass, along with the full regression.
 Stale monster-creation and flip comments are corrected, with identical runtime
-tokens and ASTs. Next are shop crawl blocking, guard feedback and canonical
-concealment-helper reuse.
+tokens and ASTs. Crawling now uses the existing shopkeeper blocking helper
+and removes its always-false placeholder. All 75 related controls, five focused
+fixtures and 44 public fixtures pass, with prompt-blocking checks on all 49.
+Next are guard feedback and canonical concealment-helper reuse.
 The Linux/NFS branch collector is pushed
 and passes signal canaries plus exact save/restore, artifact and natural-exit
 pilots. The Linux census at e4504071 now covers all 678 original inputs:
@@ -143,7 +145,7 @@ native segments in total, gives a validated union entering 4,534/5,492
 functions and observing 59,329/107,260 direct C branch outcomes.
 All 744 credited input hashes, forty-seven build manifests and branch layouts
 were checked before merging. This C coverage census includes queued
-shop crawl, guard-feedback and drawbridge-flip recordings; it does not claim
+guard-feedback and drawbridge-flip recordings; it does not claim
 integrated JS parity for those pending repairs. Original platform/output rejections
 remain rejected; no output was normalized. The two new sink fixtures separately
 match Linux C exactly; their validated union covers all 94/94 direct dosinkring

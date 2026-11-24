@@ -4724,6 +4724,53 @@ Evidence is `.cache/restart-20261122/vault-deaf-native-confirmation/`,
 and `vault-dialogue-corpus-*`. Both original runtime patches, raw fixtures
 and input tuples remain unchanged. This is not a whole-vault parity claim.
 
+## 2026-11-23: drawbridge direction moves with flipped cells
+
+Vault dialogue checkpoint `f5b22bb7` is committed and pushed after the complete
+750-fixture regression. The fresh official fetch at 04:32 UTC still serves the
+02:35 UTC publication and our 01:48 UTC evaluation, so it establishes no new
+held-out score for that checkpoint.
+
+`sp_lev.js` now calls C's private horizontal and vertical drawbridge helpers
+on both cells before each existing map swap. The helpers change East/West or
+North/South direction while retaining terrain bits. They use existing constants,
+add no exports or RNG calls and preserve C's skipped center row/column behavior.
+The patch is unchanged from the reviewed native candidate and composes with
+the timer, goal and comment changes by scoped hunks.
+
+Three unchanged native Castle cases contain 322 boundaries, 38,529 complete
+RNG calls and seven animations. The old horizontal case points to the wrong
+wall after the bridge moves from (14,11) to (66,11), so opening fails at boundary
+95. Closing and destruction follow at 101 and 107. The candidate matches every
+screen, cursor, call, input slice and animation. Vertical and no-flip controls
+remain exact. The native suffixes include death prompts after the completed
+flipped cycles and a naming prompt in the control; the gates preserve those
+recorded endings. Raw SHA-256:
+`69dd4938830b80ebbffdd50247a56f10b59ebc29a16913b574eeca34ae0e276b`.
+
+All seventeen integrated checks pass. Sixty new state controls and three
+ordinary-input cases join one hundred retained controls. The state matrix
+contains 384 real producer/consumer scenarios, not additional native cases.
+Eight focused fixtures match sixteen segments, 2,513 boundaries, 154,652 full
+RNG calls and every input slice, plus 184 animation grids/cursors. Deferred
+input matches three fixtures, six segments, 918 boundaries, 59,446 calls and
+thirteen frames. The 44 public fixtures remain exact at 11,405 boundaries,
+792,838 scored RNG positions and 1,483 frames. All 52 hang workers pass at
+30 seconds; source audit is clear in 276 modules and syntax passes. All 279
+runtime hashes stay fixed during verification. The maintained inventory is
+751 fixtures; no new full-corpus run is claimed beyond `f5b22bb7`'s 750.
+
+The independent C drawbridge run adds nineteen measured outcomes. The latest
+NFS union also includes queued shopkeeper and region recordings, reaching
+747 unique inputs, fifty identical layouts, 4,537/5,492 entered functions and
+59,372/107,260 outcomes. Its 67 raw additions have 236 segments, plus nine Linux
+segments. Profiles remain on NFS; only compact summaries are copied locally.
+
+Evidence is `.cache/restart-20261122/drawbridge-flip-native-confirmation/`,
+`drawbridge-flip-parent-{source-review,integration,verification}.json` and
+`drawbridge-flip-promoted-*`. Original patches, raw recordings and five-field
+input tuples remain unchanged. No complete level-flip parity is claimed.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

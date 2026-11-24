@@ -2823,6 +2823,32 @@ function flip_encoded_dir_bits(flp, val) {
     return val;
 }
 
+// src/sp_lev.c:428 flip_dbridge_horizontal()
+function flip_dbridge_horizontal(lev) {
+    if (IS_DRAWBRIDGE(lev.typ)) {
+        if ((lev.drawbridgemask & DB_DIR) === DB_WEST) {
+            lev.drawbridgemask &= ~DB_WEST;
+            lev.drawbridgemask |= DB_EAST;
+        } else if ((lev.drawbridgemask & DB_DIR) === DB_EAST) {
+            lev.drawbridgemask &= ~DB_EAST;
+            lev.drawbridgemask |= DB_WEST;
+        }
+    }
+}
+
+// src/sp_lev.c:442 flip_dbridge_vertical()
+function flip_dbridge_vertical(lev) {
+    if (IS_DRAWBRIDGE(lev.typ)) {
+        if ((lev.drawbridgemask & DB_DIR) === DB_NORTH) {
+            lev.drawbridgemask &= ~DB_NORTH;
+            lev.drawbridgemask |= DB_SOUTH;
+        } else if ((lev.drawbridgemask & DB_DIR) === DB_SOUTH) {
+            lev.drawbridgemask &= ~DB_SOUTH;
+            lev.drawbridgemask |= DB_NORTH;
+        }
+    }
+}
+
 // src/sp_lev.c:458 flip_visuals() — for #wizfliplevel: update seen vector
 // for whole flip area and glyph for known walls.
 function flip_visuals(flp, minx, miny, maxx, maxy) {
@@ -3141,6 +3167,8 @@ export async function flip_level(flp, extras) {
                 const ny = FlipY(y);
                 const a = game.level.at(x, y), b = game.level.at(x, ny);
                 if (!a || !b) continue;
+                flip_dbridge_vertical(a);
+                flip_dbridge_vertical(b);
                 // C copies the whole rm value, including unset fields.
                 for (const key of Object.keys({ ...a, ...b })) {
                     const tmp = a[key];
@@ -3155,6 +3183,8 @@ export async function flip_level(flp, extras) {
                 const nx = FlipX(x);
                 const a = game.level.at(x, y), b = game.level.at(nx, y);
                 if (!a || !b) continue;
+                flip_dbridge_horizontal(a);
+                flip_dbridge_horizontal(b);
                 // C copies the whole rm value, including unset fields.
                 for (const key of Object.keys({ ...a, ...b })) {
                     const tmp = a[key];
@@ -3404,9 +3434,9 @@ export async function lspo_finalize_level(L) {
 /* ==== the map-based special-level verbs the castle needs ==== */
 
 import { W_NONDIGGABLE, W_NONPASSWALL, DRAWBRIDGE_UP, DRAWBRIDGE_DOWN,
-         DB_NORTH, DB_SOUTH, DB_WEST, DB_EAST, DB_MOAT, DB_LAVA,
+         DB_NORTH, DB_SOUTH, DB_WEST, DB_EAST, DB_DIR, DB_MOAT, DB_LAVA,
          IS_DOOR as C_IS_DOOR, IS_WALL as C_IS_WALL,
-         IS_TREE } from './const.js';
+         IS_TREE, IS_DRAWBRIDGE } from './const.js';
 const C_STONE = STONE, C_HWALL = HWALL, C_ROOM = ROOM, C_CORR = CORR,
       C_MAX_TYPE = MAX_TYPE;
 

@@ -1091,17 +1091,27 @@ async function makekops(origin) {
     }
 }
 
+// src/shk.c:510 call_kops(): alert the watch before creating any Kops.
 async function call_kops(shkp, nearshop) {
-    await pline('An alarm sounds!');
+    if (!shkp)
+        return;
+    if (!Deaf())
+        await pline('An alarm sounds!');
     const types = [PMNAMES.PM_KEYSTONE_KOP, PMNAMES.PM_KOP_SERGEANT,
                    PMNAMES.PM_KOP_LIEUTENANT, PMNAMES.PM_KOP_KAPTAIN];
-    if (types.every(mndx =>
-        ((game.mvitals?.[mndx]?.mvflags || 0) & G_GONE))) {
-        if (game.flags?.verbose !== false)
+    const nokops = types.every(mndx =>
+        ((game.mvitals?.[mndx]?.mvflags || 0) & G_GONE));
+    if (!await angry_guards(!!Deaf()) && nokops) {
+        if (game.flags?.verbose !== false && !Deaf())
             await pline('But no one seems to respond to it.');
         return;
     }
+    if (nokops)
+        return;
 
+    const { choose_stairs } = await import('./wizard.js');
+    const stairs = { sx: 0, sy: 0 };
+    choose_stairs(stairs, true);
     if (nearshop) {
         if (game.flags?.verbose !== false)
             await pline('The Keystone Kops appear!');
@@ -1111,9 +1121,6 @@ async function call_kops(shkp, nearshop) {
 
     if (game.flags?.verbose !== false)
         await pline('The Keystone Kops are after you!');
-    const { choose_stairs } = await import('./wizard.js');
-    const stairs = { sx: 0, sy: 0 };
-    choose_stairs(stairs, true);
     if (isok(stairs.sx, stairs.sy))
         await makekops({ x: stairs.sx, y: stairs.sy });
     await makekops({ x: shkp.mx, y: shkp.my });

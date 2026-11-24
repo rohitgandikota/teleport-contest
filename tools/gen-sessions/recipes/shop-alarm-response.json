@@ -1,0 +1,108 @@
+{
+  "name": "shop-alarm-response",
+  "description": "Ordinary shop theft with real timed deafness and a sleeping peaceful watchman; returning the stock is the negative control. The original C recording confirms alarm feedback, watch recovery and subsequent level arrival.",
+  "coverage": [
+    "level.ordinary",
+    "mode.debug",
+    "social.shops-billing",
+    "survival.timed-status",
+    "monster.movement"
+  ],
+  "segments": [
+    {
+      "seed": 6901,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00162\r\u0006\u0014  lllllllllllllllllllllllllk.  , #wizintrinsic\r100j\r    \u001b\u001b\u00163\r        \u001b\u001b#chronicle\r         \u001b\u001b",
+      "name": "deaf-alarm",
+      "steps": []
+    },
+    {
+      "seed": 6901,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00162\r\u0006\u0014  lllllllllllllllllllllllllk.  , \u0007sleeping peaceful watchman\r    \u001b\u001b\u00163\r        \u001b\u001b#chronicle\r         \u001b\u001b",
+      "name": "watch-alarm-hearing",
+      "steps": []
+    },
+    {
+      "seed": 6901,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00162\r\u0006\u0014  lllllllllllllllllllllllllk.  , \u0007sleeping peaceful watchman\r    \u001b\u001b#wizintrinsic\r100j\r    \u001b\u001b\u00163\r        \u001b\u001b#chronicle\r         \u001b\u001b",
+      "name": "watch-alarm-deaf",
+      "steps": []
+    },
+    {
+      "seed": 6901,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00162\r\u0006\u0014  lllllllllllllllllllllllllk.  , dn    \u001b\u001b#wizintrinsic\r100j\r    \u001b\u001b\u00163\r        \u001b\u001b#chronicle\r         \u001b\u001b",
+      "name": "deaf-returned-stock",
+      "steps": []
+    }
+  ],
+  "branches": [
+    "shop.alarm.deaf",
+    "shop.alarm.wakes-watch",
+    "shop.alarm.deaf-watch",
+    "shop.alarm.returned-negative"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "shop.alarm.deaf",
+      "segment": 0,
+      "screenIncludes": [
+        "You are unable to hear anything.",
+        "You escaped the shop without paying!",
+        "The Keystone Kops are after you!"
+      ],
+      "screenExcludes": [
+        "An alarm sounds!",
+        "The guard wakes up.",
+        "The guard gets angry!"
+      ]
+    },
+    {
+      "branch": "shop.alarm.wakes-watch",
+      "segment": 1,
+      "screenIncludes": [
+        "The guard wakes up.",
+        "The guard gets angry!",
+        "You escaped the shop without paying!",
+        "The Keystone Kops are after you!"
+      ],
+      "screenExcludes": []
+    },
+    {
+      "branch": "shop.alarm.deaf-watch",
+      "segment": 2,
+      "screenIncludes": [
+        "You are unable to hear anything.",
+        "You escaped the shop without paying!",
+        "The Keystone Kops are after you!"
+      ],
+      "screenExcludes": [
+        "An alarm sounds!",
+        "The guard wakes up.",
+        "The guard gets angry!"
+      ]
+    },
+    {
+      "branch": "shop.alarm.returned-negative",
+      "segment": 3,
+      "screenIncludes": [
+        "You are unable to hear anything."
+      ],
+      "screenExcludes": [
+        "You escaped the shop without paying!",
+        "The Keystone Kops are after you!",
+        "stole 60",
+        "An alarm sounds!",
+        "The guard wakes up.",
+        "The guard gets angry!"
+      ]
+    }
+  ]
+}

@@ -19,8 +19,8 @@ run at 01:48 UTC predates the latest checkpoint. Public remains 44/44;
 held-out remains 39/56 with 936 unmatched screens. Local verification does
 not establish a newer held-out score.
 
-The latest full regression at `5b38727c` passes 753/753 fixtures: 826,059 boundary
-screens/cursors, 16,727,473 scored RNG positions and 30,953 animation frames.
+The latest full regression at `e6353a0b` passes 756/756 fixtures: 828,452 boundary
+screens/cursors, 16,842,198 scored RNG positions and 30,966 animation frames.
 Both shards finish without failures or timeouts. All 279 runtime hashes
 stayed fixed throughout.
 The earlier potion changes also pass strict full-stream and per-input RNG
@@ -150,16 +150,20 @@ eight focused fixtures and all 44 public fixtures. Shop robbery now records
 the chronicle entry and its independent hallucination naming draws. Three
 native cases, 61 normal controls, twenty preserved private source controls,
 nine focused fixtures and all 44 public fixtures pass.
+Shop alarms now respect deafness and alert the watch before creating Kops.
+Four native cases, 78 normal controls, twenty preserved private source controls,
+ten focused fixtures and all 44 public fixtures pass.
 The Linux/NFS branch collector is pushed
 and passes signal canaries plus exact save/restore, artifact and natural-exit
 pilots. The Linux census at e4504071 now covers all 678 original inputs:
 603 canonical matches and 75 independently recorded ordinary Linux controls.
-Adding 70 newer raw inputs and two independent Linux controls, 264
+Adding 74 newer raw inputs and two independent Linux controls, 280
 native segments in total, gives a validated union entering 4,537/5,492
-functions and observing 59,405/107,260 direct C branch outcomes.
-All 750 credited input hashes, fifty-three build manifests and branch layouts
+functions and observing 59,446/107,260 direct C branch outcomes.
+All 754 credited input hashes, fifty-seven build manifests and branch layouts
 were checked before merging. This C coverage census includes the integrated
-guard early-return and shop-chronicle recordings. Original platform/output rejections
+guard and shop recordings plus queued glob, dead-Croesus and floor-concealment
+recordings. Those three JS integrations remain pending. Original platform/output rejections
 remain rejected; no output was normalized. The two new sink fixtures separately
 match Linux C exactly; their validated union covers all 94/94 direct dosinkring
 outcomes in 49 cases. The teleport and polymorph helpers still have measured

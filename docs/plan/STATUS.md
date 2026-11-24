@@ -5008,6 +5008,63 @@ The fresh official fetch at 05:13 UTC still publishes 02:35 UTC data and our
 The contest home page currently advertises a six-hour scoring cadence.
 These pushes do not establish a newer held-out result.
 
+## 2026-11-24: shop alarms respect hearing and alert the watch
+
+Chronicle checkpoint `e6353a0b` is committed and pushed. Its full regression
+passes 756/756 fixtures, all 828,452 rendered boundary screens/cursors,
+16,842,198 scored RNG positions and 30,966 animation frames. Both shards
+finish without failures or timeouts under default 45-second workers. All
+279 runtime files stay fixed. This verifies the random-flip, guard early-exit
+and chronicle changes together. Full-corpus evidence uses
+`shop-robbery-chronicle-corpus-*` in the restart cache.
+
+`call_kops` now follows C's complete decision order: guard null input,
+suppress audible feedback while deaf, finish the canonical watch response,
+handle unavailable Kops, then choose stairs and dispatch the near/far swarm.
+It reuses the existing helpers and adds no import or production export.
+Even with no Kops available, the watch must become hostile and wake up.
+
+Four unchanged native cases cover a deaf thief, a sleeping peaceful watchman
+with hearing/deaf heroes, and a deaf hero returning the stock before leaving.
+All 451 grids/cursors and input slices, 32,960 complete calls, and zero
+animation counts match. Before the fix, 390 grids, 447 cursors and 448 slices
+match, with 32,870 actual calls. Both watch cases leave the guard asleep and
+peaceful in the old code. The missing response also changes level arrival:
+each stream is 45 calls short. The returned-stock negative remains exact.
+Raw SHA-256:
+`5e88c2c85d5c78efabede75838678db81cf40455bef25b05ece49bbcc2dacf18`.
+
+All eighteen integrated checks pass. Seventeen new normal controls improve
+from four passing controls to seventeen. Sixty-one retained normal controls
+and twenty preserved private chronicle controls pass. Ten focused fixtures
+match 21 segments, 2,559 boundaries, 137,113 complete RNG calls/input slices
+and 118 animation grids/cursors. Deferred input matches six fixtures, fifteen
+segments, 1,847 boundaries, 102,409 calls and 95 frames. All 44 public fixtures
+remain exact at 11,405 boundaries, 792,838 scored RNG positions and 1,483
+frames. All 54 hang workers pass at 30 seconds. Source audit is clear across
+276 modules, syntax passes and all 279 runtime hashes remain fixed. The
+inventory has 757 fixtures; the latest full run remains the 756-fixture
+chronicle checkpoint, before this alarm patch.
+
+All-Kops genocide, quiet feedback and near-shop dispatch have real-producer
+public state controls, not new ordinary native cases. The first alarm
+recording lacks source metadata because the input omitted it. That raw is
+preserved and rejected. A new input with source=c was independently recorded
+to a different output path; no original recording was edited or normalized.
+
+Independent Linux replay is exact and adds five direct C outcomes. That
+union has 752 inputs and 59,432 outcomes. Subsequent queued Croesus and
+floor-concealment recordings bring the validated union to 754 inputs,
+fifty-seven layouts, 4,537/5,492 functions and 59,446/107,260 outcomes.
+The 74 added raw inputs contain 271 segments, plus nine independent Linux
+segments. Bulk profiles remain on NFS. Glob, Croesus and floor-concealment
+candidate integration remains separate.
+
+Evidence is `.cache/restart-20261122/shop-alarm-response-audit/`,
+`shop-alarm-parent-{integration,verification}.json`,
+`shop-alarm-parent-native-v2-receipt.json` and `shop-alarm-promoted-*`.
+Normal gates use no loader. Raw bytes and all five input fields are preserved.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

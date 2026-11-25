@@ -1,0 +1,194 @@
+{
+  "variant": "baseline",
+  "ownerSHA256": "a9bde8698bdf862b73b4958483c9c09e0288ab37ebff5fb995510dc81daf7791",
+  "scope": "NUL visibility within existing physical entries; byte fragment/cap closure explicitly excluded",
+  "total": 39,
+  "passed": 10,
+  "cases": [
+    {
+      "name": "OPTIONS/canonical-negative",
+      "pass": true
+    },
+    {
+      "name": "OPTIONS/invisible-value-suffix",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   \"Unknown option 'accessiblemsg\\x00invisible'\"\n+ ]\n- []\n"
+    },
+    {
+      "name": "OPTIONS/hidden-backslash-keeps-next-directive-separate",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   \"Unknown option 'accessiblemsg\\x00invisible SYMBOLS=S_room:Z'\"\n+ ]\n- []\n"
+    },
+    {
+      "name": "OPTIONS/visible-backslash-before-NUL-continues",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   \"Unknown option '\\\\\\x00invisible'\",\n+   \"Bad config line '!accessiblemsg'\"\n+ ]\n- []\n"
+    },
+    {
+      "name": "AUTOPICKUP_EXCEPTION/canonical-negative",
+      "pass": true
+    },
+    {
+      "name": "AUTOPICKUP_EXCEPTION/invisible-value-suffix",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   'syntax error in AUTOPICKUP_EXCEPTION'\n+ ]\n- []\n"
+    },
+    {
+      "name": "AUTOPICKUP_EXCEPTION/hidden-backslash-keeps-next-directive-separate",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   'syntax error in AUTOPICKUP_EXCEPTION'\n+ ]\n- []\n"
+    },
+    {
+      "name": "AUTOPICKUP_EXCEPTION/visible-backslash-before-NUL-continues",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   'syntax error in AUTOPICKUP_EXCEPTION',\n+   `Bad config line '\"<quarterstaff\"'`\n+ ]\n- []\n"
+    },
+    {
+      "name": "BINDINGS/canonical-negative",
+      "pass": true
+    },
+    {
+      "name": "BINDINGS/invisible-value-suffix",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   \"Unknown key binding command 'versionshort\\x00invisible'\"\n+ ]\n- []\n"
+    },
+    {
+      "name": "BINDINGS/hidden-backslash-keeps-next-directive-separate",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   \"Unknown key binding command 'versionshort\\x00invisible SYMBOLS=S_room:Z'\"\n+ ]\n- []\n"
+    },
+    {
+      "name": "BINDINGS/visible-backslash-before-NUL-continues",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   '~:versionshort'\n+ ]\n- []\n"
+    },
+    {
+      "name": "MSGTYPE/canonical-negative",
+      "pass": true
+    },
+    {
+      "name": "MSGTYPE/invisible-value-suffix",
+      "pass": true
+    },
+    {
+      "name": "MSGTYPE/hidden-backslash-keeps-next-directive-separate",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n... Skipped lines\n\n  {\n    ape: [],\n    bind: null,\n    bindings: [],\n    menu: [],\n...\n    presence: {},\n+   primary: [],\n-   primary: [\n-     [\n-       19,\n-       90\n-     ]\n-   ],\n    rogue: [],\n+   symbols: []\n-   symbols: [\n-     'S_room:Z'\n-   ]\n  }\n"
+    },
+    {
+      "name": "MSGTYPE/visible-backslash-before-NUL-continues",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   'Malformed MSGTYPE',\n+   `Bad config line 'hide \"^You sit on\"'`\n+ ]\n- []\n"
+    },
+    {
+      "name": "MENUCOLOR/canonical-negative",
+      "pass": true
+    },
+    {
+      "name": "MENUCOLOR/invisible-value-suffix",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   \"Unknown text attribute 'bold\\x00invisible'\"\n+ ]\n- []\n"
+    },
+    {
+      "name": "MENUCOLOR/hidden-backslash-keeps-next-directive-separate",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   \"Unknown text attribute 'bold\\x00invisible SYMBOLS=S_room:Z'\"\n+ ]\n- []\n"
+    },
+    {
+      "name": "MENUCOLOR/visible-backslash-before-NUL-continues",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   'Malformed MENUCOLOR'\n+ ]\n- []\n"
+    },
+    {
+      "name": "ROGUESYMBOLS/canonical-negative",
+      "pass": true
+    },
+    {
+      "name": "ROGUESYMBOLS/invisible-value-suffix",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n... Skipped lines\n\n  {\n    ape: [],\n    bind: null,\n    bindings: [],\n    menu: [],\n...\n    symbols: [\n+     'S_human:R\\x00invisible'\n-     'S_human:R'\n    ]\n  }\n"
+    },
+    {
+      "name": "ROGUESYMBOLS/hidden-backslash-keeps-next-directive-separate",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n... Skipped lines\n\n  {\n    ape: [],\n    bind: null,\n    bindings: [],\n    menu: [],\n...\n    presence: {},\n+   primary: [],\n-   primary: [\n-     [\n-       19,\n-       90\n-     ]\n-   ],\n    rogue: [\n      [\n        176,\n        82\n      ]\n    ],\n    symbols: [\n+     'S_human:R\\x00invisible SYMBOLS=S_room:Z'\n-     'S_human:R',\n-     'S_room:Z'\n    ]\n  }\n"
+    },
+    {
+      "name": "ROGUESYMBOLS/visible-backslash-before-NUL-continues",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   \"Error in ROGUESYMBOLS definition '\\\\\\x00invisible'\"\n+ ]\n- []\n"
+    },
+    {
+      "name": "SYMBOLS/canonical-negative",
+      "pass": true
+    },
+    {
+      "name": "SYMBOLS/invisible-value-suffix",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n... Skipped lines\n\n  {\n    ape: [],\n    bind: null,\n    bindings: [],\n    menu: [],\n...\n    symbols: [\n+     'S_unexplored:U\\x00invisible'\n-     'S_unexplored:U'\n    ]\n  }\n"
+    },
+    {
+      "name": "SYMBOLS/hidden-backslash-keeps-next-directive-separate",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n... Skipped lines\n\n  {\n    ape: [],\n    bind: null,\n    bindings: [],\n    menu: [],\n...\n      [\n-       19,\n-       90\n-     ],\n-     [\n        191,\n        85\n      ]\n    ],\n    rogue: [],\n    symbols: [\n+     'S_unexplored:U\\x00invisible SYMBOLS=S_room:Z'\n-     'S_unexplored:U',\n-     'S_room:Z'\n    ]\n  }\n"
+    },
+    {
+      "name": "SYMBOLS/visible-backslash-before-NUL-continues",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   \"Error in SYMBOLS definition '\\\\\\x00invisible'\"\n+ ]\n- []\n"
+    },
+    {
+      "name": "empty-visible-fragment-terminates-pending-statement",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   \"Unknown option 'accessiblemsg \\x00hidden SYMBOLS=S_room:Z'\"\n+ ]\n- []\n"
+    },
+    {
+      "name": "NUL-visible-empty-at-EOF-dispatches-prior-pending",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   \"Unknown option 'accessiblemsg \\x00'\"\n+ ]\n- []\n"
+    },
+    {
+      "name": "NUL-does-not-discard-later-physical-lines",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   '\\x00OPTIONS=invalid'\n+ ]\n- []\n"
+    },
+    {
+      "name": "comment-visible-backslash-retains-pending",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   'Empty statement',\n+   \"Bad config line '!accessiblemsg'\"\n+ ]\n- []\n"
+    },
+    {
+      "name": "comment-hidden-backslash-terminates-pending",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   \"Unknown option 'accessiblemsg SYMBOLS=S_room:Z'\"\n+ ]\n- []\n"
+    },
+    {
+      "name": "header-NUL-suffix-is-invisible-even-inside-skipped-section",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ {}\n- {\n-   accessiblemsg: false\n- }\n"
+    },
+    {
+      "name": "empty-header-NUL-suffix-clears-section-state",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ {}\n- {\n-   accessiblemsg: false\n- }\n"
+    },
+    {
+      "name": "CHOOSE-visible-continuation-before-NUL-uses-joined-list",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   \"Bad config line 'keep,other'\"\n+ ]\n- []\n"
+    },
+    {
+      "name": "NUL-only-and-hidden-comment-have-no-handler-effect",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n... Skipped lines\n\n  {\n    calls: [],\n    effects: {\n      ape: [],\n      bind: null,\n...\n    },\n+   errors: [\n+     \"Bad config line '\\x00hidden'\"\n+   ],\n-   errors: [],\n    sectionStateCleared: true,\n    unhandled: []\n  }\n"
+    },
+    {
+      "name": "partial-UTF8-is-not-replacement-header",
+      "pass": true
+    },
+    {
+      "name": "complete-UTF8-matches-literal-header",
+      "pass": true
+    }
+  ]
+}

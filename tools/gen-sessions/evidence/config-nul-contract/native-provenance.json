@@ -1,0 +1,18 @@
+{
+  "classification": "Parent-native scoped NUL confirmation; full byte contract remains open.",
+  "raw": "tools/gen-sessions/generated/config-nul-contract.session.json",
+  "rawSHA256": "de9db54ca299824437f0ffe66a24b99418bf68fedb980714c37a62ddf9c0a17e",
+  "originalRaw": ".cache/restart-20261122/config-nul-additional-parent-native.session.json",
+  "inputLockSHA256": "d0e9a81fac019ca0d0ce5cb10f4d5114ffd40a65150927dd59201d4eb2549205",
+  "sourcePacket": ".cache/restart-20261122/config-byte-limits-source-audit",
+  "sourceManifestSHA256": "f0a89e6d8fefeef5907745ecf3f30c3967fc1ed0d076d6f431873908c7c97117",
+  "sourceFinalPinsSHA256": "0dfa19180bfc17c9d509f80cbc68f2b24cb2f86e4cf86cae43caebd2cd2358b6",
+  "parentChecks": {
+    "path": ".cache/restart-20261122/config-nul-parent-native-checks.json",
+    "sha256": "e299880a781f938d854b6164756b9746553bfdd91abb0c9cacefd94423dd5f16"
+  },
+  "composedReport": {
+    "path": ".cache/restart-20261122/config-nul-parent-composed-additional4-native.json",
+    "sha256": "f1c8d38dab800ceaa9eb64d4ca15a327bd17056e58a7879058140bad729e5112"
+  }
+}

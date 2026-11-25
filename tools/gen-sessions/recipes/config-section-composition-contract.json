@@ -1,0 +1,167 @@
+{
+  "name": "config-section-composition-probes",
+  "classification": "Four regression-only proposals until JS evidence; C-source predictions, no fresh native recording. No runtime edits.",
+  "segments": [
+    {
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nCHOOSE=keep\\\n# dispatch pending choice\n[keep]\nSYMBOLS=S_unexplored:U\n[skip]\nSYMBOLS=S_unexplored:Z\n[]\n",
+      "moves": " V\f",
+      "name": "config-compose-choose-comment"
+    },
+    {
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nCHOOSE=two  words\n[two \\\nwords]\nSYMBOLS=S_unexplored:U\n[skip]\nSYMBOLS=S_unexplored:Z\n[]\n",
+      "moves": " V\f",
+      "name": "config-compose-header-literal-space"
+    },
+    {
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nCHOOSE=keep\n[skip]\nCHOOSE=ignored\\\n,alsoIgnored\nSYMBOLS=S_unexplored:Z\n[keep]\nSYMBOLS=S_unexplored:U\n[]\n",
+      "moves": " V\f",
+      "name": "config-compose-skipped-continued-choose"
+    },
+    {
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nSYMBOLS=S_unexplored:U\nCHOOSE=discarded\\\n",
+      "moves": " V\f",
+      "name": "config-compose-unfinished-choose-eof"
+    }
+  ],
+  "expectations": [
+    {
+      "name": "config-compose-choose-comment",
+      "symbol": "U",
+      "prefix": [
+        "rn2(1)=0"
+      ],
+      "canonicalReference": "sections-single-symbols-Z"
+    },
+    {
+      "name": "config-compose-header-literal-space",
+      "symbol": "U",
+      "prefix": [
+        "rn2(1)=0"
+      ],
+      "canonicalReference": "sections-single-symbols-Z"
+    },
+    {
+      "name": "config-compose-skipped-continued-choose",
+      "symbol": "U",
+      "prefix": [
+        "rn2(1)=0"
+      ],
+      "canonicalReference": "sections-single-symbols-Z"
+    },
+    {
+      "name": "config-compose-unfinished-choose-eof",
+      "symbol": "U",
+      "prefix": [],
+      "canonicalReference": "sections-canonical-map-negative"
+    }
+  ],
+  "derivations": [
+    {
+      "name": "config-compose-choose-comment",
+      "reference": "sections-single-symbols-Z",
+      "unchangedBaseRC": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\n",
+      "suffix": "CHOOSE=keep\\\n# dispatch pending choice\n[keep]\nSYMBOLS=S_unexplored:U\n[skip]\nSYMBOLS=S_unexplored:Z\n[]\n",
+      "outputReference": "sections-single-symbols-Z"
+    },
+    {
+      "name": "config-compose-header-literal-space",
+      "reference": "sections-single-symbols-Z",
+      "unchangedBaseRC": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\n",
+      "suffix": "CHOOSE=two  words\n[two \\\nwords]\nSYMBOLS=S_unexplored:U\n[skip]\nSYMBOLS=S_unexplored:Z\n[]\n",
+      "outputReference": "sections-single-symbols-Z"
+    },
+    {
+      "name": "config-compose-skipped-continued-choose",
+      "reference": "sections-single-symbols-Z",
+      "unchangedBaseRC": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\n",
+      "suffix": "CHOOSE=keep\n[skip]\nCHOOSE=ignored\\\n,alsoIgnored\nSYMBOLS=S_unexplored:Z\n[keep]\nSYMBOLS=S_unexplored:U\n[]\n",
+      "outputReference": "sections-single-symbols-Z"
+    },
+    {
+      "name": "config-compose-unfinished-choose-eof",
+      "reference": "sections-single-symbols-Z",
+      "unchangedBaseRC": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\n",
+      "suffix": "SYMBOLS=S_unexplored:U\nCHOOSE=discarded\\\n",
+      "outputReference": "sections-canonical-map-negative"
+    }
+  ],
+  "requireBranchAssertions": true,
+  "branches": [
+    "config-section-composition-contract.config-compose-choose-comment",
+    "config-section-composition-contract.config-compose-header-literal-space",
+    "config-section-composition-contract.config-compose-skipped-continued-choose",
+    "config-section-composition-contract.config-compose-unfinished-choose-eof"
+  ],
+  "branchAssertions": [
+    {
+      "branch": "config-section-composition-contract.config-compose-choose-comment",
+      "segment": 0,
+      "screenCells": [
+        {
+          "step": 0,
+          "x": 0,
+          "y": 1,
+          "equals": "U"
+        }
+      ],
+      "rngIncludes": [
+        "rn2(1)=0"
+      ]
+    },
+    {
+      "branch": "config-section-composition-contract.config-compose-header-literal-space",
+      "segment": 1,
+      "screenCells": [
+        {
+          "step": 0,
+          "x": 0,
+          "y": 1,
+          "equals": "U"
+        }
+      ],
+      "rngIncludes": [
+        "rn2(1)=0"
+      ]
+    },
+    {
+      "branch": "config-section-composition-contract.config-compose-skipped-continued-choose",
+      "segment": 2,
+      "screenCells": [
+        {
+          "step": 0,
+          "x": 0,
+          "y": 1,
+          "equals": "U"
+        }
+      ],
+      "rngIncludes": [
+        "rn2(1)=0"
+      ]
+    },
+    {
+      "branch": "config-section-composition-contract.config-compose-unfinished-choose-eof",
+      "segment": 3,
+      "screenCells": [
+        {
+          "step": 0,
+          "x": 0,
+          "y": 1,
+          "equals": "U"
+        }
+      ]
+    }
+  ],
+  "provenance": {
+    "originalRecipe": "tools/gen-sessions/evidence/config-section-composition-contract/original-recipe.json",
+    "originalRecipeSHA256": "0a591a546c1e7d59903220f98cc87d5eab0c07411bbfa6b22fc1d91623f2e5a6",
+    "derivation": "Only new primary metadata. Every original key/value, input, expectation, name and historical classification remains unchanged."
+  }
+}

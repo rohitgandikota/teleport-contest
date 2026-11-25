@@ -1,0 +1,220 @@
+{
+  "classification": "Additional fixed controls; UTF8 inequality/equality and NUL continuation",
+  "variant": "baseline",
+  "recipeSHA256": "2c913699672463ad044a9c09c277b92d2fee0a5af8fb30cb48ca38039dcb2775",
+  "total": 4,
+  "passed": 2,
+  "rows": [
+    {
+      "name": "config-byte-utf8-cut-header-inequality",
+      "positive": false,
+      "pass": true,
+      "checks": [
+        {
+          "name": "all keys and observer/plain/deferred all-five equality",
+          "pass": true
+        },
+        {
+          "name": "no collected parser error or unhandled statement",
+          "pass": true
+        },
+        {
+          "name": "C-predicted real symbol override state",
+          "pass": true
+        },
+        {
+          "name": "original choice prefix preserved before gameplay",
+          "pass": true
+        },
+        {
+          "name": "all-five equality to source-predicted short canonical input",
+          "pass": true
+        }
+      ],
+      "hashes": {
+        "screens": "a23ec110dace5998c43e2a4e08d51a66a2d0b216ef6654b400411b6acc9ed61c",
+        "cursors": "04b2302b82ef3d4281a185bd16013e82300d4a488c108edcacc941b2337ee1c8",
+        "calls": "c6bea4ad8c551f24f4a43d9bd405006b4bd96fd003a9a80e3207e00f6e3f35e8",
+        "slices": "245265aec9a905a2c621c538574544f0d5181d9b4fb7052a3d0d9540ae4d2c18",
+        "frames": "210e130878aabaf46f1fe72749a263f9eb71c6a262b80f13882ed08d472c0ecd"
+      },
+      "referenceHashes": {
+        "screens": "a23ec110dace5998c43e2a4e08d51a66a2d0b216ef6654b400411b6acc9ed61c",
+        "cursors": "04b2302b82ef3d4281a185bd16013e82300d4a488c108edcacc941b2337ee1c8",
+        "calls": "c6bea4ad8c551f24f4a43d9bd405006b4bd96fd003a9a80e3207e00f6e3f35e8",
+        "slices": "245265aec9a905a2c621c538574544f0d5181d9b4fb7052a3d0d9540ae4d2c18",
+        "frames": "210e130878aabaf46f1fe72749a263f9eb71c6a262b80f13882ed08d472c0ecd"
+      },
+      "changedStreams": [],
+      "boundaries": 4,
+      "calls": 2845,
+      "frames": 0,
+      "firstState": {
+        "step": 0,
+        "errors": [],
+        "unhandled": [],
+        "unexplored": 85,
+        "roomOverride": 0
+      }
+    },
+    {
+      "name": "config-byte-utf8-fit-header-equality",
+      "positive": false,
+      "pass": true,
+      "checks": [
+        {
+          "name": "all keys and observer/plain/deferred all-five equality",
+          "pass": true
+        },
+        {
+          "name": "no collected parser error or unhandled statement",
+          "pass": true
+        },
+        {
+          "name": "C-predicted real symbol override state",
+          "pass": true
+        },
+        {
+          "name": "original choice prefix preserved before gameplay",
+          "pass": true
+        },
+        {
+          "name": "all-five equality to source-predicted short canonical input",
+          "pass": true
+        }
+      ],
+      "hashes": {
+        "screens": "7995de5fb1b0fd280bff153b2dc3327f16150d248adc9a622fad5bad8d50509e",
+        "cursors": "04b2302b82ef3d4281a185bd16013e82300d4a488c108edcacc941b2337ee1c8",
+        "calls": "c6bea4ad8c551f24f4a43d9bd405006b4bd96fd003a9a80e3207e00f6e3f35e8",
+        "slices": "245265aec9a905a2c621c538574544f0d5181d9b4fb7052a3d0d9540ae4d2c18",
+        "frames": "210e130878aabaf46f1fe72749a263f9eb71c6a262b80f13882ed08d472c0ecd"
+      },
+      "referenceHashes": {
+        "screens": "7995de5fb1b0fd280bff153b2dc3327f16150d248adc9a622fad5bad8d50509e",
+        "cursors": "04b2302b82ef3d4281a185bd16013e82300d4a488c108edcacc941b2337ee1c8",
+        "calls": "c6bea4ad8c551f24f4a43d9bd405006b4bd96fd003a9a80e3207e00f6e3f35e8",
+        "slices": "245265aec9a905a2c621c538574544f0d5181d9b4fb7052a3d0d9540ae4d2c18",
+        "frames": "210e130878aabaf46f1fe72749a263f9eb71c6a262b80f13882ed08d472c0ecd"
+      },
+      "changedStreams": [],
+      "boundaries": 4,
+      "calls": 2845,
+      "frames": 0,
+      "firstState": {
+        "step": 0,
+        "errors": [],
+        "unhandled": [],
+        "unexplored": 85,
+        "roomOverride": 90
+      }
+    },
+    {
+      "name": "config-nul-visible-continuation",
+      "positive": true,
+      "pass": false,
+      "checks": [
+        {
+          "name": "all keys and observer/plain/deferred all-five equality",
+          "pass": true
+        },
+        {
+          "name": "no collected parser error or unhandled statement",
+          "pass": false,
+          "error": "The expression evaluated to a falsy value:\n\n  assert.ok(states.every(state => !state.errors.length && !state.unhandled.length))\n"
+        },
+        {
+          "name": "C-predicted real symbol override state",
+          "pass": false,
+          "error": "The expression evaluated to a falsy value:\n\n  assert.ok(states.every(state => state.roomOverride === expected.roomOverride))\n"
+        },
+        {
+          "name": "all-five equality to source-predicted short canonical input",
+          "pass": false,
+          "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n... Skipped lines\n\n  {\n    calls: [\n      'rn2(2)=1',\n      'rn2(2)=1',\n      'rn2(4)=0',\n...\n        'UUUUU-----UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU\\n' +\n+       'UUUUU|\\x1B[35mx\\x1B[95m!\\x1B[39m.|UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU\\n' +\n+       'UUUUU|\\x1B[33m(\\x1B[97m@\\x1B[39m.|UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU\\n' +\n+       'UUUUU|....UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU\\n' +\n-       'UUUUU|\\x1B[35mx\\x1B[95m!\\x1B[39mZ|UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU\\n' +\n-"
+        }
+      ],
+      "hashes": {
+        "screens": "282476f8571506b92fb9681d35e5035438694714d1beeacd076cb465a5d050b0",
+        "cursors": "51ee802e3d5290b524b6181657ab5f2507aec19ad89d3092f447a446b1c6ad04",
+        "calls": "860cfcf1eaecd7f446231c18899a60664b97fcf89acbb674e5207b78373a3ccf",
+        "slices": "336b5ea699fbb622d130038f227b78985c6ef651592acf98444ec4f8d0764ef4",
+        "frames": "210e130878aabaf46f1fe72749a263f9eb71c6a262b80f13882ed08d472c0ecd"
+      },
+      "referenceHashes": {
+        "screens": "bd1a0d42e4c1199cc017c284c3e68bc86aeebf145053e7d76c9517d01daff61d",
+        "cursors": "51ee802e3d5290b524b6181657ab5f2507aec19ad89d3092f447a446b1c6ad04",
+        "calls": "860cfcf1eaecd7f446231c18899a60664b97fcf89acbb674e5207b78373a3ccf",
+        "slices": "336b5ea699fbb622d130038f227b78985c6ef651592acf98444ec4f8d0764ef4",
+        "frames": "210e130878aabaf46f1fe72749a263f9eb71c6a262b80f13882ed08d472c0ecd"
+      },
+      "changedStreams": [
+        "screens"
+      ],
+      "boundaries": 4,
+      "calls": 3039,
+      "frames": 0,
+      "firstState": {
+        "step": 0,
+        "errors": [],
+        "unhandled": [
+          ",S_room:Z"
+        ],
+        "unexplored": 85,
+        "roomOverride": 0
+      }
+    },
+    {
+      "name": "config-nul-empty-fragment-terminates",
+      "positive": true,
+      "pass": false,
+      "checks": [
+        {
+          "name": "all keys and observer/plain/deferred all-five equality",
+          "pass": true
+        },
+        {
+          "name": "no collected parser error or unhandled statement",
+          "pass": true
+        },
+        {
+          "name": "C-predicted real symbol override state",
+          "pass": false,
+          "error": "The expression evaluated to a falsy value:\n\n  assert.ok(states.every(state => state.roomOverride === expected.roomOverride))\n"
+        },
+        {
+          "name": "all-five equality to source-predicted short canonical input",
+          "pass": false,
+          "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n... Skipped lines\n\n  {\n    calls: [\n      'rn2(2)=1',\n      'rn2(2)=1',\n      'rn2(4)=0',\n...\n        'UUUUU-----UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU\\n' +\n+       'UUUUU|\\x1B[35mx\\x1B[95m!\\x1B[39m.|UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU\\n' +\n+       'UUUUU|\\x1B[33m(\\x1B[97m@\\x1B[39m.|UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU\\n' +\n+       'UUUUU|....UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU\\n' +\n-       'UUUUU|\\x1B[35mx\\x1B[95m!\\x1B[39mZ|UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU\\n' +\n-"
+        }
+      ],
+      "hashes": {
+        "screens": "282476f8571506b92fb9681d35e5035438694714d1beeacd076cb465a5d050b0",
+        "cursors": "51ee802e3d5290b524b6181657ab5f2507aec19ad89d3092f447a446b1c6ad04",
+        "calls": "860cfcf1eaecd7f446231c18899a60664b97fcf89acbb674e5207b78373a3ccf",
+        "slices": "336b5ea699fbb622d130038f227b78985c6ef651592acf98444ec4f8d0764ef4",
+        "frames": "210e130878aabaf46f1fe72749a263f9eb71c6a262b80f13882ed08d472c0ecd"
+      },
+      "referenceHashes": {
+        "screens": "bd1a0d42e4c1199cc017c284c3e68bc86aeebf145053e7d76c9517d01daff61d",
+        "cursors": "51ee802e3d5290b524b6181657ab5f2507aec19ad89d3092f447a446b1c6ad04",
+        "calls": "860cfcf1eaecd7f446231c18899a60664b97fcf89acbb674e5207b78373a3ccf",
+        "slices": "336b5ea699fbb622d130038f227b78985c6ef651592acf98444ec4f8d0764ef4",
+        "frames": "210e130878aabaf46f1fe72749a263f9eb71c6a262b80f13882ed08d472c0ecd"
+      },
+      "changedStreams": [
+        "screens"
+      ],
+      "boundaries": 4,
+      "calls": 3039,
+      "frames": 0,
+      "firstState": {
+        "step": 0,
+        "errors": [],
+        "unhandled": [],
+        "unexplored": 85,
+        "roomOverride": 0
+      }
+    }
+  ]
+}

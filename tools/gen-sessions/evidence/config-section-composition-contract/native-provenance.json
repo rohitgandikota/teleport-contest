@@ -1,0 +1,18 @@
+{
+  "classification": "Parent-native section/continuation regression only; no NUL improvement attributed.",
+  "raw": "tools/gen-sessions/generated/config-section-composition-contract.session.json",
+  "rawSHA256": "ef77b5add50c5c8e55a8e638a3324b1f8498717238f4fa4f06f9ddbf6895e132",
+  "originalRaw": ".cache/restart-20261122/config-section-composition-parent-native.session.json",
+  "inputLockSHA256": "2e5f0b645e26320486a43c27f61792220c3d4a4ada66b38a357473d3d856e08c",
+  "sourcePacket": ".cache/restart-20261122/config-byte-limits-source-audit",
+  "sourceManifestSHA256": "f0a89e6d8fefeef5907745ecf3f30c3967fc1ed0d076d6f431873908c7c97117",
+  "sourceFinalPinsSHA256": "0dfa19180bfc17c9d509f80cbc68f2b24cb2f86e4cf86cae43caebd2cd2358b6",
+  "parentChecks": {
+    "path": ".cache/restart-20261122/config-nul-parent-native-checks.json",
+    "sha256": "e299880a781f938d854b6164756b9746553bfdd91abb0c9cacefd94423dd5f16"
+  },
+  "composedReport": {
+    "path": ".cache/restart-20261122/config-nul-parent-composed-composition4-native.json",
+    "sha256": "fbf315dc97742e71912638165b7966e4ddd25ddb7bee4ebdc78d8f05657d8c7c"
+  }
+}

@@ -1,6 +1,45 @@
 # STATUS — live handoff board
 
-## 2026-11-25: final positioning and earth sense verified
+## 2026-11-25: configuration NUL visibility verified
+
+Only options.js changes runtime, by three lines. Each existing physical line
+ends its visible text at the first NUL before continuation, trimming, section
+selection and directive dispatch. Later physical lines remain available, as
+with C's fgets plus C-string inspection. This does not implement byte limits.
+
+Source controls pass 39/39 versus 10/39. Four new ordinary and original C
+cases pass versus two before, retaining both UTF8 negative controls and all
+ten hashes: sixteen styled boundaries/cursors, 11,768 calls and ordered slices,
+zero frames. Four section/continuation cases also pass with 11,574 calls.
+These are regression-only, and their entire raw C step arrays equal their
+previous canonical references. Original assertions and inputs remain fixed.
+
+The separate six-case full-byte audit improves from 3/6 to 4/6 and still
+exits 1. Both ASCII and UTF8 merged-cap failures are unchanged, as are fifteen
+original negative hashes. The maintained `open-byte-gaps.json` records these
+failures and the original recipe/raw pins. Neither failing case was removed
+from a previously passing corpus. Partial UTF8 consumers, the merged byte
+cap, fgets fragmentation/recovery, string callers and diagnostics remain open.
+
+All 143 selected/public recordings and 143 strict eight-second workers pass:
+79,697 screens/cursors, 3,035,809 random positions and 2,020 frames. The three
+new gates, thirty retained suites, source audit and four syntax checks pass.
+All 352 source members, 38 promotion members, 23 payloads and 280 runtime
+hashes verify. All 898 prior raws and requirements remain fixed; eight
+requirements and two new raws bring the passing corpus to 900. Main receipt
+`config-nul-main-verification.json`, SHA256
+`cd7ff2cb4eac28df34dd6197f1f0ce229f31810860f6ac8b5950bc551d87c9a6`.
+
+Full900 is running with two NFS CPU workers, default budgets and no retries,
+PID 3188779. Its 1,191 files include 898 linked raws and two new raws. Root:
+/share/NFS/u/rohit/research/contest/artifacts/2026-11-22/nul-full900-js-20261125.
+All-files SHA256 `9d59aeed3efb845cfb9b9d29812a4b61d1cab0c77f6d39b9821bfa272598de16`.
+Moving-mimic feedback now matches six unchanged C cases versus three before,
+including RNG divergence; portable promotion is pending. Moving engulfers and
+the remaining byte-reader contracts are separate audits. No held-out gain or
+whole-port closure is claimed.
+
+## 2026-11-25: final positioning pushed as 71912510
 
 The private earth_sense helper now follows dungeon.c beside the existing
 u_on_newpos owner. Dwarves receive the buried-object clue on room/corridor
@@ -28,8 +67,11 @@ seven requirements and one raw bring the corpus to 898. Main receipt
 `final-position-main-verification.json`, SHA256
 `ccd54e33f9a25fc318f29c53f210439e3cf6d9e68f273495c6dcda6930a69024`.
 
-Full898 is running with two NFS CPU workers, default budgets and no retries,
-PID 3180406. Its 1,189 files include 897 linked raws and one new raw. Root:
+Full898 passed all 898 recordings: 921,893 screens/cursors, 19,718,419 random
+positions and 32,997 frames. All 1,189 tested files match published 71912510.
+Publication receipt `position-full898-publication-verification.json`, SHA256
+`341c845daef08cbde23bff07bfe3412876408085f55cb001a688a0599f803e89`.
+The run used two NFS CPU workers, default budgets and no retries. Root:
 /share/NFS/u/rohit/research/contest/artifacts/2026-11-22/position-full898-js-20261125.
 All-files SHA256 `46020812d36e2f7d233c966965cb4ced22c0a1960238e2cfd50083bcd4461e1b`.
 Invalid-coordinate diagnostics, nearby-object glyph handling, duplicate

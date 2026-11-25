@@ -1,0 +1,116 @@
+{
+  "originalRecipeSHA256": "2c913699672463ad044a9c09c277b92d2fee0a5af8fb30cb48ca38039dcb2775",
+  "primaryRecipeSHA256": "fb29aa4a94ab7ed6e57a43aa49d174a25ccf2860b3fd7560a8b465637f4ef07c",
+  "inputLockSHA256": "d0e9a81fac019ca0d0ce5cb10f4d5114ffd40a65150927dd59201d4eb2549205",
+  "preservedKeys": [
+    "name",
+    "classification",
+    "segments",
+    "expectations"
+  ],
+  "addedMetadata": {
+    "requireBranchAssertions": true,
+    "branches": [
+      "config-nul-contract.config-byte-utf8-cut-header-inequality",
+      "config-nul-contract.config-byte-utf8-fit-header-equality",
+      "config-nul-contract.config-nul-visible-continuation",
+      "config-nul-contract.config-nul-empty-fragment-terminates"
+    ],
+    "branchAssertions": [
+      {
+        "branch": "config-nul-contract.config-byte-utf8-cut-header-inequality",
+        "segment": 0,
+        "screenCells": [
+          {
+            "step": 0,
+            "x": 0,
+            "y": 1,
+            "equals": "U"
+          },
+          {
+            "step": 0,
+            "x": 3,
+            "y": 4,
+            "equals": "."
+          }
+        ],
+        "rngIncludes": [
+          "rn2(2)=1"
+        ]
+      },
+      {
+        "branch": "config-nul-contract.config-byte-utf8-fit-header-equality",
+        "segment": 1,
+        "screenCells": [
+          {
+            "step": 0,
+            "x": 0,
+            "y": 1,
+            "equals": "U"
+          },
+          {
+            "step": 0,
+            "x": 3,
+            "y": 4,
+            "equals": "Z"
+          }
+        ],
+        "rngIncludes": [
+          "rn2(2)=1"
+        ]
+      },
+      {
+        "branch": "config-nul-contract.config-nul-visible-continuation",
+        "segment": 2,
+        "screenCells": [
+          {
+            "step": 0,
+            "x": 0,
+            "y": 1,
+            "equals": "U"
+          },
+          {
+            "step": 0,
+            "x": 8,
+            "y": 12,
+            "equals": "Z"
+          }
+        ]
+      },
+      {
+        "branch": "config-nul-contract.config-nul-empty-fragment-terminates",
+        "segment": 3,
+        "screenCells": [
+          {
+            "step": 0,
+            "x": 0,
+            "y": 1,
+            "equals": "U"
+          },
+          {
+            "step": 0,
+            "x": 8,
+            "y": 12,
+            "equals": "Z"
+          }
+        ]
+      }
+    ],
+    "provenance": {
+      "originalRecipe": "tools/gen-sessions/evidence/config-nul-contract/original-recipe.json",
+      "originalRecipeSHA256": "2c913699672463ad044a9c09c277b92d2fee0a5af8fb30cb48ca38039dcb2775",
+      "derivation": "Only new primary metadata. Every original key/value, input, expectation, name and historical classification remains unchanged."
+    }
+  },
+  "rule": "Original U producer maps to (0,1). Original roomOverride maps to period or Z at a visible floor, (3,4) with CHOOSE and (8,12) without. Coordinates observed read-only in the fixed C raw. Prefix maps to rngIncludes; ordered prefix is separately checked inline.",
+  "unchangedInputFields": [
+    "seed",
+    "datetime",
+    "nethackrc",
+    "moves",
+    "name"
+  ],
+  "segments": 4,
+  "keys": 12,
+  "nativeCoordinateEvidenceSHA256": "de9db54ca299824437f0ffe66a24b99418bf68fedb980714c37a62ddf9c0a17e"
+}

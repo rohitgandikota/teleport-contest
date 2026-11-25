@@ -1,0 +1,127 @@
+{
+  "status": "INCOMPLETE: scoped NUL visibility passes; full byte contract still fails both merged-cap cases.",
+  "sourcePacket": ".cache/restart-20261122/config-byte-limits-source-audit",
+  "sourceManifestSHA256": "f0a89e6d8fefeef5907745ecf3f30c3967fc1ed0d076d6f431873908c7c97117",
+  "sourceSealSHA256": "04e47b8fb0d20eb0fcfeacaac0af837a0486afa326bfb72645ac04a9617b7fe5",
+  "originalSix": {
+    "cases": 6,
+    "baselineExact": 3,
+    "candidateExact": 4,
+    "composedExact": 4,
+    "gateExit": 1,
+    "rawVersion": 5,
+    "rawSource": "c",
+    "boundaries": 24,
+    "calls": 18234,
+    "frames": 0,
+    "keys": 18,
+    "evidence": {
+      "recipes/initial-byte-probes.json": {
+        "path": ".cache/restart-20261122/config-byte-limits-source-audit/recipes/initial-byte-probes.json",
+        "sha256": "f8776c42ecabc2ccfa67f69d81741f7422792b1db1ee42c9e0dfc603677e2a90"
+      },
+      "recipes/initial-byte-input-lock.json": {
+        "path": ".cache/restart-20261122/config-byte-limits-source-audit/recipes/initial-byte-input-lock.json",
+        "sha256": "2034168e898833c602d8613ac9bbadf802343b6cdbfed431bb26a56780ae9d16"
+      },
+      "fixtures/byte-parent-native.session.json": {
+        "path": ".cache/restart-20261122/config-byte-limits-source-audit/fixtures/byte-parent-native.session.json",
+        "sha256": "03999566888cd7958db091e323a8a827c3cc099100aba96ad1dc7664af29cbfb"
+      },
+      "tools/byte-input-gate.mjs": {
+        "path": ".cache/restart-20261122/config-byte-limits-source-audit/tools/byte-input-gate.mjs",
+        "sha256": "4f652150b7226b4160b3dd5282e050f9d3f1c99f581ad19c979ab1a25821b284"
+      },
+      "tools/initial-byte-probes.mjs": {
+        "path": ".cache/restart-20261122/config-byte-limits-source-audit/tools/initial-byte-probes.mjs",
+        "sha256": "cea401adb438746d99f72c13c36101fcb49c0fa11702cb98f163191820b820c8"
+      },
+      "reports/initial-byte-baseline.json": {
+        "path": ".cache/restart-20261122/config-byte-limits-source-audit/reports/initial-byte-baseline.json",
+        "sha256": "8d1817f330b3fac970f13f236b39a5716b946b48c710fa6d91796c21595378d0"
+      },
+      "reports/byte-candidate.json": {
+        "path": ".cache/restart-20261122/config-byte-limits-source-audit/reports/byte-candidate.json",
+        "sha256": "d33a0f5dd8ad308bcd4e204b96c3bafe828b647e4f50dce1b82d522e15452627"
+      },
+      "reports/byte-negative-hashes.json": {
+        "path": ".cache/restart-20261122/config-byte-limits-source-audit/reports/byte-negative-hashes.json",
+        "sha256": "d7e1bfea1fe774e8b736fbb119564005be1c7915f33e3c923fb71e40bd44cc35"
+      },
+      "fixtures/nul-parent-candidate-original6-native.json": {
+        "path": ".cache/restart-20261122/config-byte-limits-source-audit/fixtures/nul-parent-candidate-original6-native.json",
+        "sha256": "322c93ff63466462c50ac0377fb0bb6787ab721d168cf7f4865a750fb54f569b"
+      },
+      "fixtures/nul-parent-composed-original6-native.json": {
+        "path": ".cache/restart-20261122/config-byte-limits-source-audit/fixtures/nul-parent-composed-original6-native.json",
+        "sha256": "322c93ff63466462c50ac0377fb0bb6787ab721d168cf7f4865a750fb54f569b"
+      }
+    }
+  },
+  "expectedFailures": [
+    {
+      "name": "config-bytes-merged-ascii-cap",
+      "reason": "Silent1023-byte merged cap not implemented; JS retains S_room:Z after C truncates it.",
+      "firstGlyphDifference": {
+        "step": 0,
+        "x": 8,
+        "y": 12,
+        "c": ".",
+        "js": "Z"
+      },
+      "allFiveCandidateHashesUnchangedFromBaseline": true
+    },
+    {
+      "name": "config-bytes-merged-utf8-cap",
+      "reason": "Silent1023-byte merged cap not implemented; JS retains S_room:Z after C truncates it.",
+      "firstGlyphDifference": {
+        "step": 0,
+        "x": 8,
+        "y": 12,
+        "c": ".",
+        "js": "Z"
+      },
+      "allFiveCandidateHashesUnchangedFromBaseline": true
+    }
+  ],
+  "originalNegativeControls": [
+    {
+      "name": "config-bytes-under-cap-negative",
+      "hashes": {
+        "screens": "bd1a0d42e4c1199cc017c284c3e68bc86aeebf145053e7d76c9517d01daff61d",
+        "cursors": "51ee802e3d5290b524b6181657ab5f2507aec19ad89d3092f447a446b1c6ad04",
+        "calls": "860cfcf1eaecd7f446231c18899a60664b97fcf89acbb674e5207b78373a3ccf",
+        "slices": "336b5ea699fbb622d130038f227b78985c6ef651592acf98444ec4f8d0764ef4",
+        "frames": "210e130878aabaf46f1fe72749a263f9eb71c6a262b80f13882ed08d472c0ecd"
+      }
+    },
+    {
+      "name": "config-bytes-nul-inert-negative",
+      "hashes": {
+        "screens": "282476f8571506b92fb9681d35e5035438694714d1beeacd076cb465a5d050b0",
+        "cursors": "51ee802e3d5290b524b6181657ab5f2507aec19ad89d3092f447a446b1c6ad04",
+        "calls": "860cfcf1eaecd7f446231c18899a60664b97fcf89acbb674e5207b78373a3ccf",
+        "slices": "336b5ea699fbb622d130038f227b78985c6ef651592acf98444ec4f8d0764ef4",
+        "frames": "210e130878aabaf46f1fe72749a263f9eb71c6a262b80f13882ed08d472c0ecd"
+      }
+    },
+    {
+      "name": "config-bytes-canonical-negative",
+      "hashes": {
+        "screens": "282476f8571506b92fb9681d35e5035438694714d1beeacd076cb465a5d050b0",
+        "cursors": "51ee802e3d5290b524b6181657ab5f2507aec19ad89d3092f447a446b1c6ad04",
+        "calls": "860cfcf1eaecd7f446231c18899a60664b97fcf89acbb674e5207b78373a3ccf",
+        "slices": "336b5ea699fbb622d130038f227b78985c6ef651592acf98444ec4f8d0764ef4",
+        "frames": "210e130878aabaf46f1fe72749a263f9eb71c6a262b80f13882ed08d472c0ecd"
+      }
+    }
+  ],
+  "originalNegativeHashCount": 15,
+  "remaining": [
+    "Lossless partial-UTF8 consumers before merged cap port",
+    "fgets physical byte fragmentation and skip recovery",
+    "parse_conf_str caller integration",
+    "External diagnostic filename and timing contract"
+  ],
+  "corpusPolicy": "Original6 failing raw and complete gate stay frozen in source evidence. Neither cap case is masked, relabeled as passing or moved from a previous corpus. Only new4 and regression-only composition4 enter maintained generated fixtures."
+}

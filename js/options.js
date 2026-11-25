@@ -910,6 +910,9 @@ export function parseNethackrc(rc) {
     if (lines.at(-1) === '') lines.pop();
     let buf = null;
     for (let inbuf of lines) {
+        // src/cfgfiles.c:1697 parse_conf_buf(), C-string visibility.
+        const nul = inbuf.indexOf('\0');
+        if (nul >= 0) inbuf = inbuf.slice(0, nul);
         // src/cfgfiles.c:1693 parse_conf_buf(), ordinary physical lines.
         // Test continuation before trimming. C replaces the backslash with
         // NUL, so spaces before it survive into the merged statement.

@@ -1,0 +1,180 @@
+{
+  "classification": "Current composition, no runtime patch and no fresh native comparison",
+  "recipeSHA256": "0a591a546c1e7d59903220f98cc87d5eab0c07411bbfa6b22fc1d91623f2e5a6",
+  "total": 4,
+  "passed": 4,
+  "rows": [
+    {
+      "name": "config-compose-choose-comment",
+      "pass": true,
+      "checks": [
+        {
+          "name": "all keys and observer/plain/deferred all-five equality",
+          "pass": true
+        },
+        {
+          "name": "real selected map effect without errors",
+          "pass": true
+        },
+        {
+          "name": "all-five equality to explicit noncontinued canonical input",
+          "pass": true
+        },
+        {
+          "name": "single CHOOSE draw retained before gameplay",
+          "pass": true
+        }
+      ],
+      "hashes": {
+        "screens": "a23ec110dace5998c43e2a4e08d51a66a2d0b216ef6654b400411b6acc9ed61c",
+        "cursors": "04b2302b82ef3d4281a185bd16013e82300d4a488c108edcacc941b2337ee1c8",
+        "calls": "d35813ea630a79972a60cf2ce96022e2c4c45bd70e6a5875d93f48b75a22b735",
+        "slices": "9ea1f4baf794eb2447f73f2efdc9a41332b8ee8502ad5d7d02da3b7ff50046dd",
+        "frames": "210e130878aabaf46f1fe72749a263f9eb71c6a262b80f13882ed08d472c0ecd"
+      },
+      "boundaries": 4,
+      "calls": 2845,
+      "frames": 0,
+      "firstCalls": [
+        "rn2(1)=0",
+        "rn2(2)=1",
+        "rn2(2)=0"
+      ],
+      "firstState": {
+        "step": 0,
+        "errors": [],
+        "unhandled": [],
+        "symbol": "U"
+      }
+    },
+    {
+      "name": "config-compose-header-literal-space",
+      "pass": true,
+      "checks": [
+        {
+          "name": "all keys and observer/plain/deferred all-five equality",
+          "pass": true
+        },
+        {
+          "name": "real selected map effect without errors",
+          "pass": true
+        },
+        {
+          "name": "all-five equality to explicit noncontinued canonical input",
+          "pass": true
+        },
+        {
+          "name": "single CHOOSE draw retained before gameplay",
+          "pass": true
+        }
+      ],
+      "hashes": {
+        "screens": "a23ec110dace5998c43e2a4e08d51a66a2d0b216ef6654b400411b6acc9ed61c",
+        "cursors": "04b2302b82ef3d4281a185bd16013e82300d4a488c108edcacc941b2337ee1c8",
+        "calls": "d35813ea630a79972a60cf2ce96022e2c4c45bd70e6a5875d93f48b75a22b735",
+        "slices": "9ea1f4baf794eb2447f73f2efdc9a41332b8ee8502ad5d7d02da3b7ff50046dd",
+        "frames": "210e130878aabaf46f1fe72749a263f9eb71c6a262b80f13882ed08d472c0ecd"
+      },
+      "boundaries": 4,
+      "calls": 2845,
+      "frames": 0,
+      "firstCalls": [
+        "rn2(1)=0",
+        "rn2(2)=1",
+        "rn2(2)=0"
+      ],
+      "firstState": {
+        "step": 0,
+        "errors": [],
+        "unhandled": [],
+        "symbol": "U"
+      }
+    },
+    {
+      "name": "config-compose-skipped-continued-choose",
+      "pass": true,
+      "checks": [
+        {
+          "name": "all keys and observer/plain/deferred all-five equality",
+          "pass": true
+        },
+        {
+          "name": "real selected map effect without errors",
+          "pass": true
+        },
+        {
+          "name": "all-five equality to explicit noncontinued canonical input",
+          "pass": true
+        },
+        {
+          "name": "single CHOOSE draw retained before gameplay",
+          "pass": true
+        }
+      ],
+      "hashes": {
+        "screens": "a23ec110dace5998c43e2a4e08d51a66a2d0b216ef6654b400411b6acc9ed61c",
+        "cursors": "04b2302b82ef3d4281a185bd16013e82300d4a488c108edcacc941b2337ee1c8",
+        "calls": "d35813ea630a79972a60cf2ce96022e2c4c45bd70e6a5875d93f48b75a22b735",
+        "slices": "9ea1f4baf794eb2447f73f2efdc9a41332b8ee8502ad5d7d02da3b7ff50046dd",
+        "frames": "210e130878aabaf46f1fe72749a263f9eb71c6a262b80f13882ed08d472c0ecd"
+      },
+      "boundaries": 4,
+      "calls": 2845,
+      "frames": 0,
+      "firstCalls": [
+        "rn2(1)=0",
+        "rn2(2)=1",
+        "rn2(2)=0"
+      ],
+      "firstState": {
+        "step": 0,
+        "errors": [],
+        "unhandled": [],
+        "symbol": "U"
+      }
+    },
+    {
+      "name": "config-compose-unfinished-choose-eof",
+      "pass": true,
+      "checks": [
+        {
+          "name": "all keys and observer/plain/deferred all-five equality",
+          "pass": true
+        },
+        {
+          "name": "real selected map effect without errors",
+          "pass": true
+        },
+        {
+          "name": "all-five equality to explicit noncontinued canonical input",
+          "pass": true
+        },
+        {
+          "name": "original canonical negative all-five hashes unchanged",
+          "pass": true
+        }
+      ],
+      "hashes": {
+        "screens": "282476f8571506b92fb9681d35e5035438694714d1beeacd076cb465a5d050b0",
+        "cursors": "51ee802e3d5290b524b6181657ab5f2507aec19ad89d3092f447a446b1c6ad04",
+        "calls": "860cfcf1eaecd7f446231c18899a60664b97fcf89acbb674e5207b78373a3ccf",
+        "slices": "336b5ea699fbb622d130038f227b78985c6ef651592acf98444ec4f8d0764ef4",
+        "frames": "210e130878aabaf46f1fe72749a263f9eb71c6a262b80f13882ed08d472c0ecd"
+      },
+      "boundaries": 4,
+      "calls": 3039,
+      "frames": 0,
+      "firstCalls": [
+        "rn2(2)=1",
+        "rn2(2)=1",
+        "rn2(4)=0"
+      ],
+      "firstState": {
+        "step": 0,
+        "errors": [],
+        "unhandled": [],
+        "symbol": "U"
+      }
+    }
+  ]
+}

@@ -1,0 +1,96 @@
+{
+  "originalRecipeSHA256": "0a591a546c1e7d59903220f98cc87d5eab0c07411bbfa6b22fc1d91623f2e5a6",
+  "primaryRecipeSHA256": "6372c3ce0636f3f7e8a2e2048548f380cd5094f967e0864f23dbe650787a64b2",
+  "inputLockSHA256": "2e5f0b645e26320486a43c27f61792220c3d4a4ada66b38a357473d3d856e08c",
+  "preservedKeys": [
+    "name",
+    "classification",
+    "segments",
+    "expectations",
+    "derivations"
+  ],
+  "addedMetadata": {
+    "requireBranchAssertions": true,
+    "branches": [
+      "config-section-composition-contract.config-compose-choose-comment",
+      "config-section-composition-contract.config-compose-header-literal-space",
+      "config-section-composition-contract.config-compose-skipped-continued-choose",
+      "config-section-composition-contract.config-compose-unfinished-choose-eof"
+    ],
+    "branchAssertions": [
+      {
+        "branch": "config-section-composition-contract.config-compose-choose-comment",
+        "segment": 0,
+        "screenCells": [
+          {
+            "step": 0,
+            "x": 0,
+            "y": 1,
+            "equals": "U"
+          }
+        ],
+        "rngIncludes": [
+          "rn2(1)=0"
+        ]
+      },
+      {
+        "branch": "config-section-composition-contract.config-compose-header-literal-space",
+        "segment": 1,
+        "screenCells": [
+          {
+            "step": 0,
+            "x": 0,
+            "y": 1,
+            "equals": "U"
+          }
+        ],
+        "rngIncludes": [
+          "rn2(1)=0"
+        ]
+      },
+      {
+        "branch": "config-section-composition-contract.config-compose-skipped-continued-choose",
+        "segment": 2,
+        "screenCells": [
+          {
+            "step": 0,
+            "x": 0,
+            "y": 1,
+            "equals": "U"
+          }
+        ],
+        "rngIncludes": [
+          "rn2(1)=0"
+        ]
+      },
+      {
+        "branch": "config-section-composition-contract.config-compose-unfinished-choose-eof",
+        "segment": 3,
+        "screenCells": [
+          {
+            "step": 0,
+            "x": 0,
+            "y": 1,
+            "equals": "U"
+          }
+        ]
+      }
+    ],
+    "provenance": {
+      "originalRecipe": "tools/gen-sessions/evidence/config-section-composition-contract/original-recipe.json",
+      "originalRecipeSHA256": "0a591a546c1e7d59903220f98cc87d5eab0c07411bbfa6b22fc1d91623f2e5a6",
+      "derivation": "Only new primary metadata. Every original key/value, input, expectation, name and historical classification remains unchanged."
+    }
+  },
+  "rule": "Original symbol maps to (0,1); original nonempty prefix maps to rngIncludes. Ordered prefix checked inline. Regression-only.",
+  "unchangedInputFields": [
+    "seed",
+    "datetime",
+    "nethackrc",
+    "moves",
+    "name"
+  ],
+  "segments": 4,
+  "keys": 12,
+  "nativeCoordinateEvidenceSHA256": "ef77b5add50c5c8e55a8e638a3324b1f8498717238f4fa4f06f9ddbf6895e132"
+}

@@ -4522,6 +4522,14 @@
     {"group":"final-position-owner","id":"final-position.dwarf-stairs-return","cFile":"src/dungeon.c","cFunction":"u_on_newpos","description":"dwarf stairs return"},
     {"group":"final-position-owner","id":"final-position.dwarf-flying-return","cFile":"src/dungeon.c","cFunction":"u_on_newpos","description":"dwarf flying return"},
     {"group":"final-position-owner","id":"final-position.dwarf-levitating-return","cFile":"src/dungeon.c","cFunction":"u_on_newpos","description":"dwarf levitating return"},
-    {"group":"final-position-owner","id":"final-position.dwarf-blind-return","cFile":"src/dungeon.c","cFunction":"u_on_newpos","description":"dwarf blind return"}
+    {"group":"final-position-owner","id":"final-position.dwarf-blind-return","cFile":"src/dungeon.c","cFunction":"u_on_newpos","description":"dwarf blind return"},
+    {"group":"config-nul-contract","id":"config-nul-contract.config-byte-utf8-cut-header-inequality","cFile":"src/cfgfiles.c","cFunction":"parse_conf_buf","description":"config byte utf8 cut header inequality"},
+    {"group":"config-nul-contract","id":"config-nul-contract.config-byte-utf8-fit-header-equality","cFile":"src/cfgfiles.c","cFunction":"parse_conf_buf","description":"config byte utf8 fit header equality"},
+    {"group":"config-nul-contract","id":"config-nul-contract.config-nul-visible-continuation","cFile":"src/cfgfiles.c","cFunction":"parse_conf_buf","description":"config nul visible continuation"},
+    {"group":"config-nul-contract","id":"config-nul-contract.config-nul-empty-fragment-terminates","cFile":"src/cfgfiles.c","cFunction":"parse_conf_buf","description":"config nul empty fragment terminates"},
+    {"group":"config-section-composition-contract","id":"config-section-composition-contract.config-compose-choose-comment","cFile":"src/cfgfiles.c","cFunction":"parse_conf_buf","description":"config compose choose comment"},
+    {"group":"config-section-composition-contract","id":"config-section-composition-contract.config-compose-header-literal-space","cFile":"src/cfgfiles.c","cFunction":"parse_conf_buf","description":"config compose header literal space"},
+    {"group":"config-section-composition-contract","id":"config-section-composition-contract.config-compose-skipped-continued-choose","cFile":"src/cfgfiles.c","cFunction":"parse_conf_buf","description":"config compose skipped continued choose"},
+    {"group":"config-section-composition-contract","id":"config-section-composition-contract.config-compose-unfinished-choose-eof","cFile":"src/cfgfiles.c","cFunction":"parse_conf_buf","description":"config compose unfinished choose eof"}
   ]
 }

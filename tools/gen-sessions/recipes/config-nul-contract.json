@@ -1,0 +1,160 @@
+{
+  "name": "config-nul-utf8-additional-probes",
+  "classification": "Two UTF8 boundary regression controls and two NUL visibility producer witnesses. Source predictions only, no C recording yet.",
+  "segments": [
+    {
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nSYMBOLS=S_unexplored:U\nCHOOSE=AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\\\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA,é\n[�]\nSYMBOLS=S_room:Z\n[]\n",
+      "moves": " V\f",
+      "name": "config-byte-utf8-cut-header-inequality"
+    },
+    {
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nSYMBOLS=S_unexplored:U\nCHOOSE=AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\\\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA,é\n[é]\nSYMBOLS=S_room:Z\n[]\n",
+      "moves": " V\f",
+      "name": "config-byte-utf8-fit-header-equality"
+    },
+    {
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nSYMBOLS=S_unexplored:U\\\u0000hidden\n,S_room:Z\n",
+      "moves": " V\f",
+      "name": "config-nul-visible-continuation"
+    },
+    {
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nSYMBOLS=S_unexplored:U\\\n\u0000hidden\\\nSYMBOLS=S_room:Z\n",
+      "moves": " V\f",
+      "name": "config-nul-empty-fragment-terminates"
+    }
+  ],
+  "expectations": [
+    {
+      "name": "config-byte-utf8-cut-header-inequality",
+      "reference": "choose-miss",
+      "positive": false,
+      "roomOverride": 0,
+      "prefix": [
+        "rn2(2)=1"
+      ]
+    },
+    {
+      "name": "config-byte-utf8-fit-header-equality",
+      "reference": "choose-hit",
+      "positive": false,
+      "roomOverride": 90,
+      "prefix": [
+        "rn2(2)=1"
+      ]
+    },
+    {
+      "name": "config-nul-visible-continuation",
+      "reference": "room",
+      "positive": true,
+      "roomOverride": 90,
+      "prefix": []
+    },
+    {
+      "name": "config-nul-empty-fragment-terminates",
+      "reference": "room",
+      "positive": true,
+      "roomOverride": 90,
+      "prefix": []
+    }
+  ],
+  "requireBranchAssertions": true,
+  "branches": [
+    "config-nul-contract.config-byte-utf8-cut-header-inequality",
+    "config-nul-contract.config-byte-utf8-fit-header-equality",
+    "config-nul-contract.config-nul-visible-continuation",
+    "config-nul-contract.config-nul-empty-fragment-terminates"
+  ],
+  "branchAssertions": [
+    {
+      "branch": "config-nul-contract.config-byte-utf8-cut-header-inequality",
+      "segment": 0,
+      "screenCells": [
+        {
+          "step": 0,
+          "x": 0,
+          "y": 1,
+          "equals": "U"
+        },
+        {
+          "step": 0,
+          "x": 3,
+          "y": 4,
+          "equals": "."
+        }
+      ],
+      "rngIncludes": [
+        "rn2(2)=1"
+      ]
+    },
+    {
+      "branch": "config-nul-contract.config-byte-utf8-fit-header-equality",
+      "segment": 1,
+      "screenCells": [
+        {
+          "step": 0,
+          "x": 0,
+          "y": 1,
+          "equals": "U"
+        },
+        {
+          "step": 0,
+          "x": 3,
+          "y": 4,
+          "equals": "Z"
+        }
+      ],
+      "rngIncludes": [
+        "rn2(2)=1"
+      ]
+    },
+    {
+      "branch": "config-nul-contract.config-nul-visible-continuation",
+      "segment": 2,
+      "screenCells": [
+        {
+          "step": 0,
+          "x": 0,
+          "y": 1,
+          "equals": "U"
+        },
+        {
+          "step": 0,
+          "x": 8,
+          "y": 12,
+          "equals": "Z"
+        }
+      ]
+    },
+    {
+      "branch": "config-nul-contract.config-nul-empty-fragment-terminates",
+      "segment": 3,
+      "screenCells": [
+        {
+          "step": 0,
+          "x": 0,
+          "y": 1,
+          "equals": "U"
+        },
+        {
+          "step": 0,
+          "x": 8,
+          "y": 12,
+          "equals": "Z"
+        }
+      ]
+    }
+  ],
+  "provenance": {
+    "originalRecipe": "tools/gen-sessions/evidence/config-nul-contract/original-recipe.json",
+    "originalRecipeSHA256": "2c913699672463ad044a9c09c277b92d2fee0a5af8fb30cb48ca38039dcb2775",
+    "derivation": "Only new primary metadata. Every original key/value, input, expectation, name and historical classification remains unchanged."
+  }
+}

@@ -67,7 +67,8 @@ for (const name of ['monster-statue-containers', 'monster-lifesaving-petrificati
             assert.equal(statues().length, 1);
             assert.equal(wasLit, false);
         } else if (name === 'monster-lifesaving-petrification') {
-            assert.equal(original.where, OBJ_DELETED, label);
+            // The complete replay has already freed the consumed amulet.
+            assert.deepEqual(Object.keys(original), [], label);
             assert.equal(carrier.mhp, carrier.mhpmax);
             assert.ok(carrier.mhp >= 10);
             assert.equal(carrier.mtame, 0);

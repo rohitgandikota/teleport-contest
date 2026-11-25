@@ -7,7 +7,7 @@ import {makemon} from '../js/makemon.js';
 import {mksobj} from '../js/mkobj.js';
 import {mpickobj} from '../js/steal.js';
 import {m_dowear} from '../js/worn.js';
-import {mlifesaver} from '../js/mon.js';
+import {mlifesaver,m_at,dmonsfree} from '../js/mon.js';
 import {maketrap} from '../js/mklev.js';
 import {mintrap,Trap_Effect_Finished,Trap_Killed_Mon} from '../js/trap.js';
 import {ONAMES as O} from '../js/objects_data.js';
@@ -29,7 +29,10 @@ for(const worn of [false,true])test(`lethal falling rock, life-saving amulet ${w
     clearMessages();seed(2);
     assert.equal(await mintrap(mon,C.FORCETRAP),worn?Trap_Effect_Finished:Trap_Killed_Mon);
     assert.equal(mon.mhp>0,worn);
-    assert.equal(game.level.monsters.includes(mon),worn);
+    // src/mon.c:3174 keeps the detached monster until end-of-turn cleanup.
+    assert.equal(game.level.monsters.includes(mon),true);
+    assert.equal(!!(mon.mstate&C.MON_DETACH),!worn);
+    assert.equal(m_at(mon.mx,mon.my)===mon,worn);
     const corpses=game.level.objectsAt(mon.mx,mon.my).filter(o=>o.otyp===O.CORPSE);
     assert.equal(corpses.length,worn?0:1,'life-saved monster has no remains');
     assert.equal(game.mvitals[P.PM_TROLL].died||0,deaths+(worn?0:1));
@@ -38,4 +41,6 @@ for(const worn of [false,true])test(`lethal falling rock, life-saving amulet ${w
         assert.ok(!mon.minvent.includes(amulet));
         assert.equal(mon.mhp,mon.mhpmax);
     }
+    dmonsfree();
+    assert.equal(game.level.monsters.includes(mon),worn);
 });

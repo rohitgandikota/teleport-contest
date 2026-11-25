@@ -76,8 +76,14 @@ Their seven new
 C cases match 666 styled boundaries, 22,262 calls and 23 frames; 29 source
 controls and seven ordinary controls pass. The previous burning-oil state test
 was reading freed fields; its corrected observation passes both baseline and
-candidate. Separate monster-death and monster-fire candidates pass eight and
-eleven native cases, respectively; current-main composition is next.
+candidate. That checkpoint is pushed as `59ff3a89`. Monster death now passes
+31 source controls, eight native cases and 66 bounded workers on current main.
+All 866 maintained recordings pass the fresh NFS run without retries or timeout
+overrides: 898,368 screens/cursors, 18,969,264 random positions and 32,609 frames.
+The separately
+composed fire patch passes 32 controls and eleven native cases. The sickness
+candidate also passes thirteen new native cases; portable gates and current-main
+composition follow those checkpoints.
 Parallel source reviews continue for potion impacts, sickness and pit traps.
 These local results do not establish a newer held-out score.
 

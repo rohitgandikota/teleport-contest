@@ -1,5 +1,73 @@
 # STATUS — live handoff board
 
+## 2026-11-25: monster death passes full866; fire and sickness native-exact
+
+Ignition and empty-inventory checkpoint `59ff3a89` is pushed after all 865
+maintained recordings passed. Main now contains only the unpublished death
+runtime patch in `js/mon.js` and `js/stairs.js`. It restores complete mondead,
+vamprises and logdeadmon behavior, required m_detach ordering and the canonical
+stair lookup. The two files match the sealed candidate exactly; all other
+runtime and all 865 previous recordings remain fixed.
+
+Current-main controls pass 31/31 versus 1/31 before, and all eight ordinary
+cases pass versus three before. They include observer and deferred-input
+neutrality and three unchanged negatives. The new C recording matches all
+463 styled boundaries/cursors, 21,214 calls/slices and zero frames. Before the
+patch only four cases were fully style/RNG exact, with 415 matching styled
+boundaries and 456 cursors. The recipe now includes eight asserted branches;
+its input fields and recording remain unchanged. Corpus size is 866.
+
+Six retained suites pass after two observation fixes. The falling-rock
+life-saving control expected immediate unlinking; it now checks map removal,
+the detach flag, membership until dmonsfree, then actual unlinking. The original
+passes on baseline and fails on the corrected death behavior, as expected.
+The statue replay read a freed amulet's where field and failed identically on
+baseline and candidate. It now checks the cleared object record while retaining
+every monster life-saving check; both variants pass. Original failures remain
+in `monster-death-main-additional-checks.json` and
+`monster-death-main-followup-checks.json`; successful remaining checks are in
+`monster-death-main-final-checks.json`. All 66 bounded workers, source audit and
+seven syntax checks pass.
+
+All 866 recordings pass on tokyo with two workers, no retries and the default
+timeout: 898,368 screens/cursors, 18,969,264 scored random positions and 32,609
+animation frames. The completed run is at
+`/share/NFS/u/rohit/research/contest/artifacts/2026-11-22/monster-death-full866-js-20261125`.
+PID 2997986; all-files SHA256
+`01997c35ad5807bed16a5144eccc57d110618f406329b9a4ce9ff0f37328e6fb`.
+It links 865 prior NFS recordings and uploads one new recording. All 1,156
+input hashes still match main. Compact receipt:
+`monster-death-full866-remote/verification.json`, SHA256
+`825d306f85940665ba6441d6d88241c5887f3bebd754be629580597edbf1a5f7`.
+Main receipt `monster-death-main-verification.json`, SHA256
+`859f98271a42bcfc5d6e8e9c8eb72af4d61422b23f510ed159acc98ff02889d2`.
+Next action: commit and immediately push death, then compose and publish fire.
+
+Fire is separately composed with this main through 278 read-only source links
+and one copied uhitm.js, in `monster-fire-composed-runner`. All 32 source
+controls now pass, including the two previously blocked by empty inventory.
+All 33 assertions across eleven ordinary cases pass. Native comparison matches
+all 1,022 styled boundaries/cursors, 38,873 calls/slices and twelve frames.
+Current-main baseline has 991 matching styled boundaries, 1,008 cursors and
+seven exact RNG streams. No fire runtime changes are in main yet. Promote the
+portable tools and recipe, apply the two sealed patches in order, verify current
+runtime identity and the selected/public and bounded suites, then publish.
+
+The sickness packet is ready and its 566 source hashes and 23 C source hashes
+are verified. Parent reviewed complete make_sick, sickness_dialogue,
+done_in_by, delayed-killer helpers, done_timeout and required timeout arms.
+All thirteen fixed-candidate C cases match 1,042 styled boundaries/cursors,
+41,015 calls/slices and 93 frames. Raw SHA256:
+`2d0aab32d90c0b5366dbe31a023211d4aa3b67abe68a5c4c4c46b848ea0b00b6`.
+Files use the `sickness-owner-parent-` and `sickness-owner-fixed-candidate-native`
+prefixes. Its patch changes only make_sick, sickness dialogue, and immediate
+killer head fields in done_in_by and strangulation. Broader head replacements
+remain explicitly out of scope. Euclid prepares portable current-repository
+gates in a separate promotion directory before auditing those remaining owners.
+Leibniz continues potionhit; Sartre continues pit traps. Preserve all source
+packets. The 09:30 leaderboard fetch still shows the 07:23 row, rank 7;
+receipt `leaderboard-20261125-0930.json`. No held-out gain is inferred.
+
 ## 2026-11-25: empty inventory and ignition pass full865 verification
 
 Half-damage checkpoint `1ed5cd8b` is pushed. The latest leaderboard fetch at

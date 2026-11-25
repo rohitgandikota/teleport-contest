@@ -4240,6 +4240,14 @@
     {"group": "catch-lit-owner", "id": "catch-lit.owner.blind-carried", "cFile": "src/apply.c", "cFunction": "catch_lit", "description": "catch lit: owner: blind carried"},
     {"group": "catch-lit-owner", "id": "catch-lit.owner.shop-speech", "cFile": "src/apply.c", "cFunction": "catch_lit", "description": "catch lit: owner: shop speech"},
     {"group": "catch-lit-owner", "id": "empty-inventory.fire-trap", "cFile": "src/decl.c", "cFunction": "decl_globals_init", "description": "empty inventory: fire trap"},
-    {"group": "catch-lit-owner", "id": "empty-inventory.no-fire", "cFile": "src/decl.c", "cFunction": "decl_globals_init", "description": "empty inventory: no fire"}
+    {"group": "catch-lit-owner", "id": "empty-inventory.no-fire", "cFile": "src/decl.c", "cFunction": "decl_globals_init", "description": "empty inventory: no fire"},
+    {"group": "monster-death-owner", "id": "monster-death.owner.vampire-bat", "cFile": "src/mon.c", "cFunction": "mondead", "description": "vampire-bat: ordinary lethal damage and completed version command"},
+    {"group": "monster-death-owner", "id": "monster-death.owner.vampire-fog", "cFile": "src/mon.c", "cFunction": "mondead", "description": "vampire-fog: ordinary lethal damage and completed version command"},
+    {"group": "monster-death-owner", "id": "monster-death.owner.vampire-lord-wolf", "cFile": "src/mon.c", "cFunction": "mondead", "description": "vampire-lord-wolf: ordinary lethal damage and completed version command"},
+    {"group": "monster-death-owner", "id": "monster-death.owner.plain-bat", "cFile": "src/mon.c", "cFunction": "mondead", "description": "plain-bat: ordinary lethal damage and completed version command"},
+    {"group": "monster-death-owner", "id": "monster-death.owner.steam-vortex", "cFile": "src/mon.c", "cFunction": "mondead", "description": "steam-vortex: ordinary lethal damage and completed version command"},
+    {"group": "monster-death-owner", "id": "monster-death.owner.fog-cloud", "cFile": "src/mon.c", "cFunction": "mondead", "description": "fog-cloud: ordinary lethal damage and completed version command"},
+    {"group": "monster-death-owner", "id": "monster-death.owner.medusa", "cFile": "src/mon.c", "cFunction": "mondead", "description": "medusa: ordinary lethal damage and completed version command"},
+    {"group": "monster-death-owner", "id": "monster-death.owner.newt", "cFile": "src/mon.c", "cFunction": "mondead", "description": "newt: ordinary lethal damage and completed version command"}
   ]
 }

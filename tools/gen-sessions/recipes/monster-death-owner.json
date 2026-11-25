@@ -1,0 +1,193 @@
+{
+  "name": "monster-death-owner",
+  "description": "Monster death preserves vampire return, steam clouds, achievements and cleanup order. The ordinary C cases include three negative species.",
+  "segments": [
+    {
+      "name": "vampire-bat",
+      "seed": 9771,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:DECgraphics,!safe_wait,monpolycontrol\n",
+      "moves": " \u0007sleeping peaceful vampire\r B\r   #wizkill\rm.   \u001b\u001b\u001b\u001b   V"
+    },
+    {
+      "name": "vampire-fog",
+      "seed": 9771,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:DECgraphics,!safe_wait,monpolycontrol\n",
+      "moves": " \u0007sleeping peaceful vampire\rfog cloud\r   #wizkill\rm.   \u001b\u001b\u001b\u001b   V"
+    },
+    {
+      "name": "vampire-lord-wolf",
+      "seed": 9771,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:DECgraphics,!safe_wait,monpolycontrol\n",
+      "moves": " \u0007sleeping peaceful vampire lord\rwolf\r   #wizkill\rm.   \u001b\u001b\u001b\u001b   V"
+    },
+    {
+      "name": "plain-bat",
+      "seed": 9771,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:DECgraphics,!safe_wait,monpolycontrol\n",
+      "moves": " \u0007sleeping peaceful vampire bat\r   #wizkill\rm.   \u001b\u001b\u001b\u001b   V"
+    },
+    {
+      "name": "steam-vortex",
+      "seed": 9771,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:DECgraphics,!safe_wait,monpolycontrol\n",
+      "moves": " \u0007sleeping peaceful steam vortex\r   #wizkill\rm.   \u001b\u001b\u001b\u001b   V"
+    },
+    {
+      "name": "fog-cloud",
+      "seed": 9771,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:DECgraphics,!safe_wait,monpolycontrol\n",
+      "moves": " \u0007sleeping peaceful fog cloud\r   #wizkill\rm.   \u001b\u001b\u001b\u001b   V"
+    },
+    {
+      "name": "medusa",
+      "seed": 9771,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:DECgraphics,!safe_wait,monpolycontrol\n",
+      "moves": " \u0007sleeping peaceful Medusa\ry   #wizkill\rm.   \u001b\u001b\u001b\u001b   V"
+    },
+    {
+      "name": "newt",
+      "seed": 9771,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:DECgraphics,!safe_wait,monpolycontrol\n",
+      "moves": " \u0007sleeping peaceful newt\r   #wizkill\rm.   \u001b\u001b\u001b\u001b   V"
+    }
+  ],
+  "coverage": [
+    "monster.death-corpse-revival",
+    "level.ordinary",
+    "mode.debug",
+    "ui.more-paging"
+  ],
+  "branches": [
+    "monster-death.owner.vampire-bat",
+    "monster-death.owner.vampire-fog",
+    "monster-death.owner.vampire-lord-wolf",
+    "monster-death.owner.plain-bat",
+    "monster-death.owner.steam-vortex",
+    "monster-death.owner.fog-cloud",
+    "monster-death.owner.medusa",
+    "monster-death.owner.newt"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "monster-death.owner.vampire-bat",
+      "segment": 0,
+      "screenIncludes": [
+        "NetHack Version",
+        "rises as a vampire!"
+      ],
+      "screenExcludes": [
+        "Die?"
+      ]
+    },
+    {
+      "branch": "monster-death.owner.vampire-fog",
+      "segment": 1,
+      "screenIncludes": [
+        "NetHack Version",
+        "rises as a vampire!"
+      ],
+      "screenExcludes": [
+        "Die?"
+      ]
+    },
+    {
+      "branch": "monster-death.owner.vampire-lord-wolf",
+      "segment": 2,
+      "screenIncludes": [
+        "NetHack Version",
+        "rises as a vampire lord!"
+      ],
+      "screenExcludes": [
+        "Die?"
+      ]
+    },
+    {
+      "branch": "monster-death.owner.plain-bat",
+      "segment": 3,
+      "screenIncludes": [
+        "NetHack Version",
+        "You kill the vampire bat!"
+      ],
+      "screenExcludes": [
+        "Die?",
+        "rises as a vampire"
+      ]
+    },
+    {
+      "branch": "monster-death.owner.steam-vortex",
+      "segment": 4,
+      "screenIncludes": [
+        "NetHack Version",
+        "cloud of steam!"
+      ],
+      "screenExcludes": [
+        "Die?"
+      ]
+    },
+    {
+      "branch": "monster-death.owner.fog-cloud",
+      "segment": 5,
+      "screenIncludes": [
+        "NetHack Version",
+        "You destroy the fog cloud!"
+      ],
+      "screenExcludes": [
+        "Die?"
+      ]
+    },
+    {
+      "branch": "monster-death.owner.medusa",
+      "segment": 6,
+      "screenIncludes": [
+        "NetHack Version",
+        "You kill Medusa!"
+      ],
+      "screenExcludes": [
+        "Die?"
+      ]
+    },
+    {
+      "branch": "monster-death.owner.newt",
+      "segment": 7,
+      "screenIncludes": [
+        "NetHack Version",
+        "You kill the newt!"
+      ],
+      "screenExcludes": [
+        "Die?"
+      ]
+    }
+  ],
+  "unchangedOutputHashes": {
+    "plain-bat": {
+      "screens": "6d3c9551870cedbe74cf43ad87f459860e1d2a861797d3e912d2298b346a075d",
+      "cursors": "c6d27ee0dfece2c1caeabd3b22caf336b943cd27ba48841cb4ec99032e70aea8",
+      "calls": "32b021d55766fd1d430fe91ede70b43294d092e5d32487dbc2da319bcf3180d8",
+      "slices": "7bc4f16de3518fabfdbb3e5f8d82be820394ecc4bf9ef1f712bc26c8597879b6",
+      "frames": "912776552020eb4bdffbd2693e4267f314b0cf2bebd053b7357ab3e072765806"
+    },
+    "fog-cloud": {
+      "screens": "642346d2627cb51e52a4c2bd904526b347abed623c7b9bd3f1f754e8f6b9685d",
+      "cursors": "828eaff1a2072ef4b44326760e7fbeed45b230f802a1e1e62cdda13d02282fd4",
+      "calls": "40a7559a5617ae91e84f0e02f668b16d064073a650c5bc33a58bfff64db1a7f5",
+      "slices": "5916fa0bc8d22d765438ed1cec0adfb73354d3e94ad78a6550494ce4d13c5a79",
+      "frames": "c2f28f692055aed56f09c92ae17d40f28620e693eadddc36b360d357a1136ea6"
+    },
+    "newt": {
+      "screens": "f69479d1bcc5b60a34aae708094ebc05723279708ffceff04d246f9a4fc509b5",
+      "cursors": "0e0ca9994d4ea5b653d4e87ad959accba87c5e969180a9da5c39874e7f49552f",
+      "calls": "8f38af260b8b9a8d15aa6f0e8d46376c21737c6c2a72d3f245e51b09c1c69368",
+      "slices": "a6cc796cd8ed1cd6ab61ace181c0361d1874d43040d802e3104bad94411d140b",
+      "frames": "b88cee804dd63a0179b150c6aa14c547cd5d25aab92700534a4ea441962b180d"
+    }
+  }
+}

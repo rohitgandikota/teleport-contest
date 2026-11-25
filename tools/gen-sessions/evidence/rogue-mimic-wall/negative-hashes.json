@@ -1,0 +1,23 @@
+{
+  "normal-wall-vertical": {
+    "screens": "bea94cc6f9abda56dc8872c4c3b6ad703d870c6af4233f1a55beab55ca08030a",
+    "cursors": "1b5b0c1d9fa20d77bb95b50491073c1cc1b9541ba78dde2ede5af48a062f3aa8",
+    "calls": "1b4d7b0a67acca0989fe4a6c03f2eee20cb65c600bd3b1c038f7dacb19ee1607",
+    "slices": "eef4937ebf10ff796a04eae58d5732635546b9c2664bfa0994a11cff941d2768",
+    "frames": "49bd76e0f9eee93ae09474087cfb61c24e31ee0872a8c2867964e0550c4ea9b0"
+  },
+  "normal-wall-horizontal": {
+    "screens": "05a14942af4ff2953fefbef08155164ba45558ebedb375a8b7a55df36039335a",
+    "cursors": "38d08227c7ba8420d13a0fdc0000289f0e3aeef851780c48cd873531fef518c4",
+    "calls": "a3e01a73db014bd7e830e04aac9416b6af38457576c3003de7540af14a3fb2f5",
+    "slices": "80ea6798e96e6b224c1c301bc2c3aa0be076a24519ecab17184e1d8fa1e197a4",
+    "frames": "235e5dd95f17c97426de01639453bb14b3c9e0ef98aa0318be30681fcee3ffe9"
+  },
+  "rogue-floor-negative": {
+    "screens": "530ddaa4ad08afe31c29318432aeb724544dafefe4acee52cef27a2345b644aa",
+    "cursors": "409c3768a5a013e2baa395471364f0ecd972aba589ffba97aa395c1ad3879cb5",
+    "calls": "ebbd8290bf2829a35bdcc8ff05df5b6ced707cbf4467cfb4ad3c772d2d974be3",
+    "slices": "beab9bd4223f9c2fcbd9d1b92a3ff2895d12b6820dc63262289206fbb48756bc",
+    "frames": "c1b907fd988f1c4dbfb5f9a1348edc5d9455cd8a1f3b175d134fd4e48a607b02"
+  }
+}

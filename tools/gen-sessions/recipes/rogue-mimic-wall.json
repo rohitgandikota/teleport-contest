@@ -1,0 +1,124 @@
+{
+  "name": "rogue-mimic-wall",
+  "description": "Actual Rogue level entry, terrain wishes and figurines exercise vertical and horizontal wall disguises, with normal-level door and Rogue floor controls.",
+  "coverage": [
+    "mode.debug",
+    "level.special-variants",
+    "monster.creation",
+    "ui.map-memory-vision"
+  ],
+  "requireBranchAssertions": true,
+  "branches": [
+    "rogue-mimic.rogue-wall-vertical",
+    "rogue-mimic.rogue-wall-horizontal",
+    "rogue-mimic.normal-wall-vertical",
+    "rogue-mimic.normal-wall-horizontal",
+    "rogue-mimic.rogue-floor-negative"
+  ],
+  "segments": [
+    {
+      "seed": 9771,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:DECgraphics,!safe_wait\n",
+      "name": "rogue-wall-vertical",
+      "moves": " \u0016the rogue level\r   \u0017wall\r\u0017open door\rh\u0017blessed figurine of a small mimic\raalV "
+    },
+    {
+      "seed": 9771,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:DECgraphics,!safe_wait\n",
+      "name": "rogue-wall-horizontal",
+      "moves": " \u0016the rogue level\r   \u0017wall\rl\u0017wall\r\u0017open door\rk\u0017blessed figurine of a small mimic\raajV "
+    },
+    {
+      "seed": 9771,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:DECgraphics,!safe_wait\n",
+      "name": "normal-wall-vertical",
+      "moves": " \u0017wall\r\u0017open door\rh\u0017blessed figurine of a small mimic\raalV "
+    },
+    {
+      "seed": 9771,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:DECgraphics,!safe_wait\n",
+      "name": "normal-wall-horizontal",
+      "moves": " \u0017wall\rl\u0017wall\r\u0017open door\rk\u0017blessed figurine of a small mimic\raajV "
+    },
+    {
+      "seed": 9771,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:DECgraphics,!safe_wait\n",
+      "name": "rogue-floor-negative",
+      "moves": " \u0016the rogue level\r   \u0017blessed figurine of a small mimic\raalV "
+    }
+  ],
+  "branchAssertions": [
+    {
+      "branch": "rogue-mimic.rogue-wall-vertical",
+      "segment": 0,
+      "screenIncludes": [
+        "You set the figurine beside you and it transforms."
+      ],
+      "screenCells": [
+        {
+          "step": 77,
+          "x": 43,
+          "y": 19,
+          "equals": "|"
+        }
+      ]
+    },
+    {
+      "branch": "rogue-mimic.rogue-wall-horizontal",
+      "segment": 1,
+      "screenIncludes": [
+        "You set the figurine beside you and it transforms."
+      ],
+      "screenCells": [
+        {
+          "step": 84,
+          "x": 44,
+          "y": 19,
+          "equals": "-"
+        }
+      ]
+    },
+    {
+      "branch": "rogue-mimic.normal-wall-vertical",
+      "segment": 2,
+      "screenIncludes": [
+        "You set the figurine beside you and it transforms."
+      ],
+      "screenCells": [
+        {
+          "step": 57,
+          "x": 30,
+          "y": 16,
+          "equals": "+"
+        }
+      ]
+    },
+    {
+      "branch": "rogue-mimic.normal-wall-horizontal",
+      "segment": 3,
+      "screenIncludes": [
+        "You set the figurine beside you and it transforms."
+      ],
+      "screenCells": [
+        {
+          "step": 64,
+          "x": 31,
+          "y": 16,
+          "equals": "+"
+        }
+      ]
+    },
+    {
+      "branch": "rogue-mimic.rogue-floor-negative",
+      "segment": 4,
+      "screenIncludes": [
+        "You set the figurine beside you and it transforms."
+      ]
+    }
+  ]
+}

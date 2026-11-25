@@ -31,17 +31,22 @@ Pool is pushed as `62d1bc96`. Full888 passes on that exact published runtime:
 918,711 screens/cursors, 19,505,842 random positions and 32,997 frames. Its six
 C cases pass versus two before. All 70 selected/public and strict workers pass.
 
-The config directive patch is now verified for publication. Source controls
+The config directive patch is pushed as `6bdcff91`. Source controls
 pass 74/74 versus 34/74; all eleven ordinary and C cases pass versus three.
 All 75 selected/public recordings and strict workers, twenty retained suites,
 source audit and three syntax checks pass. The initial omitted-loader failure
 and its unchanged passing invocation are preserved. All prior 888 recordings
-remain fixed. The corpus is 889; its new full NFS run is still pending.
+remain fixed. Full889 passes on the exact published runtime: 919,096
+screens/cursors, 19,535,320 random positions and 32,997 frames.
 
-Next source work covers the cream-pie prerequisite before lookaround, floor
-object effects and physical config line assembly. The four original lookaround
-C cases remain 3/4; the earlier producer failure is retained. Two duplicate
-startup warning failures also remain unresolved. The 19:16 UTC official feed
+Rogue mimic wall symbols are verified for publication: source35/35 versus20,
+ordinary and original C5/5 versus3, all58 selected/public and strict workers,
+nine retained suites, source audit and three syntax checks. All889 prior raws
+remain fixed; the corpus is890. Cream-pie handling plus lookaround now match
+their four unchanged C cases on the composed runtime; broader checks remain.
+Config physical-line assembly awaits C recording. Floor object effects and
+shipping audits have no ordinary failure established and no runtime patch.
+Two duplicate startup warning failures remain unresolved. The 19:16 UTC feed
 is unchanged: rank 7 with 659 unmatched screens. See STATUS for exact receipts.
 
 

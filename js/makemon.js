@@ -1500,7 +1500,10 @@ export function set_mimic_sym(mtmp) {
         const connects = w === HWALL || w === TLCORNER || w === TRWALL
                       || w === BLCORNER || w === TDWALL || w === CROSSWALL
                       || w === TUWALL;
-        appear = connects ? MONSYMS.S_hcdoor : MONSYMS.S_vcdoor;
+        if (connects)
+            appear = Is_rogue_level(game.u.uz) ? MONSYMS.S_hwall : MONSYMS.S_hcdoor;
+        else
+            appear = Is_rogue_level(game.u.uz) ? MONSYMS.S_vwall : MONSYMS.S_vcdoor;
     } else if (game.level.flags.is_maze_lev
                && !(game.u?.uz?.dnum === game.mines_dnum
                     && in_town(game.u.ux, game.u.uy))

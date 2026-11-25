@@ -1,0 +1,13 @@
+{
+  "originalSHA256": "2111e93f91825a85231e35f6a7a5ca8f8306f382e84404bd357ee47e8552e5c4",
+  "derivedSHA256": "13af7a2485353e500dd5570a7f7023326fb7eb6c86c4d79b75f863b56abfbca4",
+  "changes": [
+    "/branchAssertions/0/screenCells/0: ch -> equals",
+    "/branchAssertions/1/screenCells/0: ch -> equals",
+    "/branchAssertions/2/screenCells/0: ch -> equals",
+    "/branchAssertions/3/screenCells/0: ch -> equals"
+  ],
+  "inputTuplesUnchanged": true,
+  "nativeBytesUnchanged": true,
+  "reason": "Use the existing assertion schema field name; all four character expectations and coordinates are unchanged."
+}

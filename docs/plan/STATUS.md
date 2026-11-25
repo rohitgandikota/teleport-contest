@@ -1,6 +1,41 @@
 # STATUS — live handoff board
 
-## 2026-11-25: config directive recognition verified for publication
+## 2026-11-25: Rogue mimic wall symbols verified
+
+Only makemon.js changes. On Rogue levels, a mimic beside a connecting wall
+uses the horizontal wall symbol; otherwise it uses the vertical wall symbol.
+Normal levels keep the existing door symbols. This follows the complete C
+set_mimic_sym owner. Source controls pass 35/35 versus 20/35. All five ordinary
+and original C cases pass versus three before: 356 styled boundaries/cursors,
+14,547 calls and ordered slices, zero frames. Three negative cases retain
+fifteen hashes; observer/plain/deferred EOF runs remain equal.
+
+All 58 selected/public recordings and all 58 strict eight-second workers pass:
+15,487 screens/cursors, 1,074,381 random positions and 1,674 frames. Nine
+retained suites, source audit and three syntax checks pass. The initial-shape
+gate initially lacked its required fixture argument. That failed invocation
+is preserved; the unchanged gate passes with its existing five-case fixture.
+
+All 340 sealed source-packet members verify. All 279 main runtime hashes match
+the native-tested candidate. The 889 prior recordings and branch requirements
+remain fixed. Five new requirements and one raw bring the corpus to 890.
+The primary recipe corrects four assertion keys from ch to equals; the original
+recording recipe and exact derivation remain in evidence/rogue-mimic-wall.
+No input, coordinate or recorded output changes. Main verification receipt:
+`rogue-mimic-main-verification.json`, SHA256
+`6e551bb5a831ed2cf14e8ae4c62efd9f385aec027e35a401fd641ba3a0da4f33`.
+
+Next: cream-pie handling and lookaround now match all four unchanged C cases,
+versus three before, on a fixed runtime containing this mimic change. Cream
+alone also passes all four; lookaround has separate source controls for stale
+blindness state. Broader verification and portable promotion remain pending.
+Config physical-line assembly has a sealed source80/ordinary12 packet awaiting
+parent C recording. Flooreffects and ship_object audits found constructed-state
+gaps without a proven ordinary failure, so neither has a runtime patch.
+Full889 below covers the published config checkpoint, not this mimic change.
+No newer held-out result or whole-port completion is claimed.
+
+## 2026-11-25: config directive checkpoint pushed as 6bdcff91
 
 Only options.js changes. Existing directives now use C's first ':' or '=',
 minimum prefix lengths, ASCII case comparison and value whitespace rules.
@@ -22,15 +57,19 @@ All 311 source-packet members and 26 promotion members verify. All 279 runtime
 hashes match the native-tested composition. All 888 prior raw files and prior
 branch requirements stay fixed; eleven requirements and one raw grow the
 maintained corpus to 889. Main receipt `config-directive-main-verification.json`,
-SHA256 `09eb18b1d35c0e8d9eb686832abc58966b4939f04a2eeb5881e017e5c4d6d283`. Commit and immediately push this checkpoint.
+SHA256 `09eb18b1d35c0e8d9eb686832abc58966b4939f04a2eeb5881e017e5c4d6d283`. Published as `6bdcff91`.
 
-Full889 is running with two NFS CPU workers, default budgets and no retries.
-It shares 888 old recordings and adds one. PID 3119556; 1,179 fixed files;
+Full889 passes with two NFS CPU workers, default budgets and no retries:
+919,096 screens/cursors, 19,535,320 random positions and 32,997 frames.
+It shares 888 old recordings and adds one. All 1,179 files match the published
+runtime and maintained corpus. Verification SHA256
+`3e840c3566fea19e1e131a0cbdb8774c484b87faf90d2cc2362bf738d3dc680e`;
+publication receipt SHA256
+`7a4fb08cbb3d6d26643a5cf20047fdf28adb2ca4277aadae4a03624f3dd99052`;
 all-files SHA256 `899b7bfdae6a4df8674278c86b4c5d74e76f6538f0e0c0e284ace08b73e342ef`.
 Root: /share/NFS/u/rohit/research/contest/artifacts/2026-11-22/config-full889-js-20261125.
-Full888 is the latest complete full result. Next isolated work covers cream-pie
-handling before lookaround, flooreffects, and physical config line assembly.
-The original lookaround C positive still has its earlier cream feedback failure.
+After verified NFS preservation, the duplicate 1,382,118-byte parent recording
+was replaced with a relative link to its maintained fixture.
 The official feed checked at 19:16 UTC remains the 13:55 feed, rank 7 with
 659 unmatched screens. Its row does not identify a scored commit. The official
 news feed still lists November 14 as its latest entry. No newer held-out score,

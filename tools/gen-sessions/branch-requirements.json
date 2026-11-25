@@ -4464,6 +4464,11 @@
     {"group": "config-directive-contract","id": "config-directive.autop-prefix-pickup","cFile": "src/cfgfiles.c","cFunction": "parse_config_line","description": "config directive.autop prefix pickup"},
     {"group": "config-directive-contract","id": "config-directive.canonical-options-negative","cFile": "src/cfgfiles.c","cFunction": "parse_config_line","description": "config directive.canonical options negative"},
     {"group": "config-directive-contract","id": "config-directive.canonical-symbols-negative","cFile": "src/cfgfiles.c","cFunction": "parse_config_line","description": "config directive.canonical symbols negative"},
-    {"group": "config-directive-contract","id": "config-directive.canonical-menu-negative","cFile": "src/cfgfiles.c","cFunction": "parse_config_line","description": "config directive.canonical menu negative"}
+    {"group": "config-directive-contract","id": "config-directive.canonical-menu-negative","cFile": "src/cfgfiles.c","cFunction": "parse_config_line","description": "config directive.canonical menu negative"},
+    {"group": "rogue-mimic","id": "rogue-mimic.rogue-wall-vertical","cFile": "src/makemon.c","cFunction": "set_mimic_sym","description": "rogue wall vertical"},
+    {"group": "rogue-mimic","id": "rogue-mimic.rogue-wall-horizontal","cFile": "src/makemon.c","cFunction": "set_mimic_sym","description": "rogue wall horizontal"},
+    {"group": "rogue-mimic","id": "rogue-mimic.normal-wall-vertical","cFile": "src/makemon.c","cFunction": "set_mimic_sym","description": "normal wall vertical"},
+    {"group": "rogue-mimic","id": "rogue-mimic.normal-wall-horizontal","cFile": "src/makemon.c","cFunction": "set_mimic_sym","description": "normal wall horizontal"},
+    {"group": "rogue-mimic","id": "rogue-mimic.rogue-floor-negative","cFile": "src/makemon.c","cFunction": "set_mimic_sym","description": "rogue floor negative"}
   ]
 }

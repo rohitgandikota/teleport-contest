@@ -4197,6 +4197,10 @@
     {"group":"Artifact healing invocation","id":"artifact-healing.cream-retained-negative","cFile":"src/artifact.c","cFunction":"invoke_healing","description":"cream retained negative"},
     {"group":"Artifact healing invocation","id":"artifact-healing.cream-and-extra-blindness-negative","cFile":"src/artifact.c","cFunction":"invoke_healing","description":"cream and extra blindness negative"},
     {"group":"Artifact healing invocation","id":"artifact-healing.cooldown-retains-slime-negative","cFile":"src/artifact.c","cFunction":"invoke_healing","description":"cooldown retains slime negative"},
-    {"group":"Artifact healing invocation","id":"artifact-healing.cancelled-invoke-retains-slime-negative","cFile":"src/artifact.c","cFunction":"invoke_healing","description":"cancelled invoke retains slime negative"}
+    {"group":"Artifact healing invocation","id":"artifact-healing.cancelled-invoke-retains-slime-negative","cFile":"src/artifact.c","cFunction":"invoke_healing","description":"cancelled invoke retains slime negative"},
+    {"group":"Pet swap consequences","id":"gremlin-fountain-swap","cFile":"src/hack.c","cFunction":"domove_swap_with_pet","description":"gremlin fountain swap"},
+    {"group":"Pet swap consequences","id":"dog-fountain-negative","cFile":"src/hack.c","cFunction":"domove_swap_with_pet","description":"dog fountain negative"},
+    {"group":"Pet swap consequences","id":"gremlin-floor-negative","cFile":"src/hack.c","cFunction":"domove_swap_with_pet","description":"gremlin floor negative"},
+    {"group":"Pet swap consequences","id":"gridbug-diagonal-negative","cFile":"src/hack.c","cFunction":"domove_swap_with_pet","description":"gridbug diagonal negative"}
   ]
 }

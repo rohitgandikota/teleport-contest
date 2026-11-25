@@ -9,7 +9,7 @@ import { Confusion, Stunned, Fumbling, Underwater, Swimming,
 import { MOD_ENCUMBER, Is_waterlevel } from './const.js';
 import { tunnels, needspick, amorphous } from './mondata.js';
 import { dobreathe, dospit, doremove, dogaze, dosummon, dohide, dospinweb, domindblast, dopoly } from './polyself.js';
-import { pet_ranged_attk } from './dog.js';
+import { pet_ranged_attk, abuse_dog } from './dog.js';
 import { is_vampshifter } from './monst.js';
 import { aggravate } from './wizard.js';
 import { use_unicorn_horn, check_leash } from './apply.js';
@@ -63,7 +63,7 @@ import { is_pool, is_lava, m_at, t_at, newcham, resists_ston,
 import { do_attack } from './uhitm.js';
 import { back_to_glyph, glyph_is_invisible_at, is_safemon, mon_visible,
          sensemon, unmap_invisible } from './display.js';
-import { goodpos, hideunder, place_monster, remove_monster } from './makemon.js';
+import { goodpos, hideunder, place_monster, remove_monster, monsndx } from './makemon.js';
 import { sobj_at } from './invent.js';
 import { PMNAMES, MFLAGS, MONSYMS } from './monst_data.js';
 import { hides_under, is_hider, verysmall, sticks } from './mondata.js';
@@ -75,7 +75,10 @@ import { In_sokoban, surface } from './dungeon.js';
 import { canspotmon, map_invisible, glyph_at } from './display.js';
 import { Something, NO_TRAP_FLAGS } from './const.js';
 import { minliquid } from './mon.js';
-import { mintrap } from './trap.js';
+import { mintrap, Trap_Effect_Finished, Trap_Caught_Mon, Trap_Moved_Mon,
+         Trap_Killed_Mon } from './trap.js';
+import { experience, more_experienced, newexplevel } from './exper.js';
+import { LL_CONDUCT } from './const.js';
 import { Blind, Flying, Hallucination, Levitation, Passes_walls, Stealth }
     from './youprop.js';
 import { u_on_newpos } from './teleport.js';
@@ -86,7 +89,7 @@ import { curr_mon_load } from './mon.js';
 import { ECMD_FAIL, ECMD_CANCEL, Never_mind, A_DEX, A_CON, M_AP_TYPE,
          M_AP_FURNITURE, M_AP_OBJECT, OVERLOADED, Is_airlevel,
          Upolyd } from './const.js';
-import { ACURR, exercise, near_capacity } from './attrib.js';
+import { ACURR, exercise, near_capacity, adjalign } from './attrib.js';
 import { is_pit, GETOBJ_EXCLUDE, GETOBJ_SUGGEST, GETOBJ_NOFLAGS, GETOBJ_PROMPT, GETOBJ_ALLOWCNT, GETOBJ_DOWNPLAY, W_ARMOR, W_ACCESSORY, GETOBJ_EXCLUDE_INACCESS, ARTICLE_YOUR, ARTICLE_THE, CQ_CANNED, CQ_REPEAT, CMDQ_EXTCMD, CMDQ_KEY, PIT, HOLE, WEB } from './const.js';
 import { ONAMES, OCLASSES } from './objects_data.js';
 import { an, cxname, simpleonames, the, makeplural, singular, xname,
@@ -123,7 +126,7 @@ import { is_weptool } from './mkobj.js';
 import { HANDS_SYM } from './const.js';
 import { cmap_names, defsyms } from './drawing_data.js';
 import { x_monnam, y_monnam, YMonnam, docallcmd, donamelevel } from './do_name.js';
-import { You, You_cant } from './pline.js';
+import { You, You_cant, You_feel, livelog_printf } from './pline.js';
 
 /* js/do.js needs mklev(), and js/sp_lev.js needs mon.js's terrain tests; both
    are cycles when imported directly, so cmd.js -- which already pulls in every
@@ -3121,14 +3124,8 @@ async function domove_core() {
     await runmode_delay_output();
 }
 
-// src/hack.c:2098 domove_swap_with_pet() — returns TRUE if places were
-// swapped. Draws only through goodpos(), whose S_EEL rn2(13) is its one draw,
-// so the arms must be evaluated in C's order.
-//
-// EVERY hero coordinate here goes through game.u, not a local `u`. An earlier
-// attempt used a bare `u`, which is a local inside domove and invisible from
-// module scope, so this function threw on every step onto a pet and cost 247
-// screens. It looked like a logic fault and was not.
+// src/hack.c:2098 domove_swap_with_pet(). Resolve displacement consequences
+// before returning whether the swap succeeded.
 async function domove_swap_with_pet(mtmp, x, y) {
     let didnt_move = false;
     const mdat = game.mons[mtmp.mnum];
@@ -3204,6 +3201,36 @@ async function domove_swap_with_pet(mtmp, x, y) {
                              (mtmp.mpeaceful && !mtmp.mtame) ? 'peaceful' : null,
                              0, false)
                   + '.');
+
+        // Resolve liquid first; only a survivor can trigger the trap.
+        switch (await minliquid(mtmp) ? Trap_Killed_Mon
+                : await mintrap(mtmp, NO_TRAP_FLAGS)) {
+        case Trap_Effect_Finished:
+            break;
+        case Trap_Caught_Mon:
+        case Trap_Moved_Mon:
+            await abuse_dog(mtmp);
+            adjalign(-3);
+            break;
+        case Trap_Killed_Mon: {
+            // Credit experience and finish any level gain before guilt.
+            if (!game.u.uconduct.killer++)
+                livelog_printf(LL_CONDUCT, 'killed for the first time');
+            const mndx = monsndx(mtmp.data);
+            const tmp = experience(mtmp, game.mvitals[mndx].died | 0);
+            more_experienced(tmp, 0);
+            await newexplevel();
+            if (rn2(4)) {
+                await You_feel('guilty about losing your pet like this.');
+                game.u.ugangr = (game.u.ugangr | 0) + 1;
+                adjalign(-15);
+            }
+            break;
+        }
+        default:
+            await impossible("that's strange, unknown mintrap result!");
+            break;
+        }
     }
     return !didnt_move;
 }

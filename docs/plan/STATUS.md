@@ -1,5 +1,42 @@
 # STATUS — live handoff board
 
+## 2026-11-25: pet displacement consequences verified
+
+Artifact healing checkpoint `1ddd833e` is pushed. The pet-swap patch restores
+the complete liquid/trap consequence switch after displacement feedback.
+Survivors proceed to the trap helper; caught or moved monsters trigger abuse
+before the alignment penalty. Death credit and any level gain precede the
+guilt draw and its awaited feedback. The complete C swap owner was reviewed.
+Only cmd.js imports, the stale owner comment and missing consequence block
+change. Earlier text-window work remains intact.
+
+All four native cases match 159 styled boundaries/cursors and 16,405 complete
+RNG calls/slices, with zero frames. Four styled boundaries and two cursors
+are repaired. The positive's previous first RNG mismatch was call 3,931,
+C rn2(3)=1 versus JS rn2(5)=0. All three ordinary negatives preserve all five
+output hashes. Twenty-one source controls, four ordinary cases, 25 retained
+fountain controls and 18 safe-pet option controls pass. All 68 selected/public
+fixtures and 68 bounded workers pass: 15,608 screens/cursors, 989,843 scored
+RNG positions and 1,605 frames. Source audit and syntax pass. All 861 prior
+recordings retain their hashes. The maintained corpus is 862.
+
+The portable state-test hook only appends a private-owner export; ordinary
+input checks run without it. Hostile direct-owner trap/death/guilt cases are
+constructed contracts, not ordinary caller reach. Existing floor-fire,
+migration and death-helper gaps remain separate work. No full862 or held-out
+gain is claimed. Receipt: `.cache/restart-20261122/pet-swap-main-verification.json`,
+SHA256 `f4e746e50a037f847ec2dcfaa4af7c6c2ff0472332aac8a128e88906fd92596a`.
+
+The 26 half-damage reader inputs are now recorded with unchanged fields and
+keys: 2,612 boundaries, raw SHA256
+`cd1e72e2b90fb66a3d3bfeb177d560f47afad136d50ccb06f0e30f9e97e55f7d`.
+All 683 reader-packet members verify. Parent composition and native comparison
+are pending, together with the six-case intrinsic-producer recording. Agent
+`01a211b3-ea22-7b42-8d56-0dfcb1ebc615` is first preparing portable reader
+regression gates in a separate `half-damage-reader-promotion` directory, then
+will resume monster death. The sealed proof keeps the historical before/after
+comparisons; permanent tools must run the current repo without cache trees.
+
 ## 2026-11-25: artifact healing verified on current main
 
 Fountain test checkpoint `4e06fcca` is pushed. Artifact healing now selects

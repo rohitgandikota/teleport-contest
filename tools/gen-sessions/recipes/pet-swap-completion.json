@@ -1,0 +1,99 @@
+{
+  "name": "pet-swap-completion",
+  "description": "Unrecorded ordinary wizard-input proposals for the full pet-swap consequence owner. JS reach only; parent owns native recording and parity. Caught/moved/killed owner controls are constructed, not claimed by these inputs.",
+  "coverage": [
+    "mode.debug",
+    "terrain.furniture"
+  ],
+  "requireBranchAssertions": true,
+  "branches": [
+    "gremlin-fountain-swap",
+    "dog-fountain-negative",
+    "gremlin-floor-negative",
+    "gridbug-diagonal-negative"
+  ],
+  "branchAssertions": [
+    {
+      "branch": "gremlin-fountain-swap",
+      "segment": 0,
+      "screenIncludes": [
+        "You swap places with your gremlin.",
+        "The gremlin multiplies!",
+        "The fountain dries up!"
+      ],
+      "screenExcludes": [
+        "Dry up fountain?",
+        "guilty about losing",
+        "guards' whistles"
+      ],
+      "source": "hack.c:2179-2183; actual swap invokes minliquid before the command returns. mon.c:986-993 and fountain.c:201-238 split the gremlin and dry the warned fountain without hero ownership. Scalar JS observations are supplementary until parent native validation."
+    },
+    {
+      "branch": "dog-fountain-negative",
+      "segment": 1,
+      "screenIncludes": [
+        "You swap places with your dog."
+      ],
+      "screenExcludes": [
+        "The fountain dries up!",
+        "guilty about losing"
+      ],
+      "source": "hack.c:2179-2183; dog survives a fountain swap with no trap or guilt. Unaffected negative."
+    },
+    {
+      "branch": "gremlin-floor-negative",
+      "segment": 2,
+      "screenIncludes": [
+        "You swap places with your gremlin."
+      ],
+      "screenExcludes": [
+        "The gremlin multiplies!",
+        "guilty about losing"
+      ],
+      "source": "hack.c:2179-2183; gremlin survives an actual floor swap without liquid effects. Unaffected negative."
+    },
+    {
+      "branch": "gridbug-diagonal-negative",
+      "segment": 3,
+      "screenIncludes": [
+        "Your grid bug can't move diagonally."
+      ],
+      "screenExcludes": [
+        "You swap places",
+        "The fountain dries up!",
+        "guilty about losing"
+      ],
+      "source": "hack.c:2123-2126; diagonal grid-bug refusal precedes the consequence switch. Unaffected negative."
+    }
+  ],
+  "segments": [
+    {
+      "name": "gremlin-fountain-swap",
+      "seed": 12000,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "moves": " \u0016?\n w  \u0017fountain\n#dip\n-y \u0007tame gremlin\nb.  "
+    },
+    {
+      "name": "dog-fountain-negative",
+      "seed": 12000,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "moves": " \u0016?\n w  \u0017fountain\n#dip\n-y \u0007tame dog\nb.  "
+    },
+    {
+      "name": "gremlin-floor-negative",
+      "seed": 12000,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "moves": " \u0016?\n w  \u0007tame gremlin\nn.  "
+    },
+    {
+      "name": "gridbug-diagonal-negative",
+      "seed": 12000,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "moves": " \u0016?\n w  \u0017fountain\n#dip\n-y \u0007tame grid bug\nb.  "
+    }
+  ]
+}

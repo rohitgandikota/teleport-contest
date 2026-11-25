@@ -57,8 +57,14 @@ Artifact healing now uses the active HP pool and complete slime cleanup.
 Its fifteen new C cases match 2,888 styled boundaries and 34,762 calls, repairing
 fifteen boundaries. All 225 source/ordinary/retained controls, 75 selected/public
 fixtures and 75 bounded workers pass. The corpus is 861, outside the completed
-full858 run. Next are pet-swap consequences and canonical half-damage readers;
-source reviews continue for monster death, sickness and monster fire.
+full858 run.
+
+Pet displacement now resolves liquid, traps, experience and guilt before
+returning. Four new C cases match 159 styled boundaries and 16,405 calls,
+repairing four screens, two cursors and a divergent random stream. All 68
+selected/public fixtures and 68 bounded workers pass. The maintained corpus
+is 862. Next is the combined intrinsic half-damage producer and its fourteen
+readers. Source reviews continue for monster death, sickness and monster fire.
 
 Publication resumed with `2089260a` after the earlier approval-review usage
 limit. That pushed checkpoint includes probing, dark-side visibility and the

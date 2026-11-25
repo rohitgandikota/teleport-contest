@@ -1,5 +1,46 @@
 # STATUS — live handoff board
 
+## 2026-11-25: free action verified for publication; live score improves slightly
+
+The movement checkpoint is pushed as `35e8df5c`. Its redundant parent recording
+now links to the canonical fixture, removing 1,277,384 checksum-identical bytes.
+Current main changes only youprop.js, wizcmds.js, potion.js and timeout.js for
+the scoped free-action repair. All279 runtime hashes match the tested candidate.
+All22 source controls pass versus7 before; ten ordinary cases pass25 assertions
+versus two cases before. Five negative cases retain all five output hashes.
+All ten C comparisons match969 styled boundaries/cursors,23279 calls and ordered
+slices, and eight frames, versus five exact cases before.
+
+All74 selected/public fixtures match36,556 screens/cursors,1,413,416 random
+positions and1,727 frames. All74 eight-second workers, ten retained suites,
+source audit and six syntax checks pass. All877 prior recordings and prior
+requirements remain fixed; ten requirements and one fixture are appended.
+The corpus is878, outside full877. All614 source-packet members are verified.
+Parent corrected the new branch metadata to name the actual potion message
+owners; sealed source metadata and all runtime/input bytes remain unchanged.
+Main receipt: `free-action-main-verification.json`, SHA256
+`067f8049925778d91febb5ec62f0b5bf0ed28080c57579139e2cc208cc8803fe`.
+Commit and immediately push this checkpoint.
+
+The latest official feed is November25 13:55:05 UTC. Our row was scored at
+13:20:56 UTC: public44/44, held-out43/56, combined23,872/24,531 screens.
+Unmatched screens fell from667 to659, with one more passing held-out session.
+Agentic rank remains7. Animations remain3,786/4,489. The row does not identify
+the scored commit; do not attribute this result to the latest pushes.
+Compact record: `leaderboard-20261125-1355-feed.json`.
+
+The eight mcureblindness inputs are now recorded with all input fields and
+keys unchanged. Raw SHA256:
+`6dd6e4cad1e964b564494f7cab7aed3c122051e232da1fab524d0ed8c7cdefbc`.
+Parent verified626 source members. Fixed native baseline passes4/8; the local
+candidate passes7/8, with the carrot-pet case still differing at boundary119.
+There are1,185 boundaries,21,110 calls and one frame. Preserve this failure;
+investigate its message prefix alongside the display notice-location prerequisite
+before promoting anything. No monster-cure runtime edits are on main.
+The article packet confirms the installed C binary includes DEBUG CapitalMon
+listing code; the JS diagnostic remains unported. Article and rooted/steed
+source packets are still in progress.
+
 ## 2026-11-25: test_move passes full877; ready for publication
 
 Poison is pushed as `77d106c5`. Its redundant parent recording now links to

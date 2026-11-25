@@ -1444,8 +1444,7 @@ async function peffect_full_healing(otmp) {
 
 // src/potion.c peffect_sleeping()
 async function peffect_sleeping(otmp) {
-    if (Sleep_resistance()
-        || game.u.uprops?.FREE_ACTION || game.u.intrinsic?.HFree_action) {
+    if (Sleep_resistance() || Free_action()) {
         monstseesu(M_SEEN_SLEEP);
         await You('yawn.');
     } else {

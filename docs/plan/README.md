@@ -27,11 +27,11 @@ Follow the verification-storage rules in CLAUDE.md. The cleanup receipt is
 `.cache/storage-cleanup-20261125/summary.json`.
 
 Continue the faithful port with readable C-aligned code and prompt verified
-pushes. The November 25 07:57 UTC leaderboard feed has 23,864 of 24,531
+pushes. The November 25 13:55 UTC leaderboard feed has 23,872 of 24,531
 combined screens and rank 7 among agentic entries. Public remains 44/44;
-held-out improves to 42/56, with 667 screens unmatched. Animations are
-3,786/4,489. Our row was scored at 07:23:52 UTC, adding two passing held-out
-sessions and 48 matching screens since the preceding check. The observed row
+held-out improves to 43/56, with 659 screens unmatched. Animations are
+3,786/4,489. Our row was scored at 13:20:56 UTC, adding one passing held-out
+session and eight matching screens since the preceding check. The observed row
 does not identify the exact scored commit. Local verification does not
 establish a newer held-out score.
 
@@ -127,12 +127,17 @@ fixtures, nine retained suites and source audit pass. The strict eight-second
 check passes 77/79; both large door batches finish on both fixed runtimes within
 the default 45-second budget, with exact outputs. Full877 passes on NFS without
 retries: 908,363 screens/cursors, 19,223,960 random positions and 32,811 frames.
-All 1,167 files remain fixed. The movement checkpoint is ready for publication.
-A separate free-action candidate passes 22 source controls and ten native
-cases, matching 969 styled boundaries/cursors, 23,279 calls and eight frames.
-Its ordinary delivery checks and broader regression remain pending. Further
-source reviews cover article handling, rooted and mounted movement, and monster
-blindness feedback with its shared notice-location prerequisite.
+All 1,167 files remain fixed. Movement is pushed as `35e8df5c`.
+Free action is now composed on main and passes 22 source controls, 25 assertions
+across ten ordinary cases, and ten native comparisons: 969 styled boundaries
+and cursors, 23,279 calls and eight frames. All74 selected/public fixtures and
+74 eight-second workers pass, together with ten retained suites, source audit
+and six syntax checks. The corpus is878, outside full877. Further source
+reviews cover article handling, rooted and mounted movement, and monster
+blindness feedback with its shared notice-location prerequisite. The latter
+still has a native carrot-pet difference: seven of eight cases match in its
+separate candidate. The installed C binary includes the DEBUG CapitalMon
+listing; the JS diagnostic remains unported.
 These local results do not establish a newer held-out score.
 
 Publication resumed with `2089260a` after the earlier approval-review usage

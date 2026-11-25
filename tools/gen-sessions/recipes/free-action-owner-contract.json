@@ -1,0 +1,208 @@
+{
+  "name": "free-action-owner-contract",
+  "description": "Real wizard timers, worn and removed rings, sleep resistance, quaffed potions and shattered-potion vapor. Ten locked C recordings.",
+  "coverage": [
+    "mode.debug",
+    "object.rings",
+    "object.potions"
+  ],
+  "branches": [
+    "free-action-owner.timed-sleeping",
+    "free-action-owner.timed-paralysis",
+    "free-action-owner.plain-sleeping",
+    "free-action-owner.ring-timed-sleeping",
+    "free-action-owner.ring-plain-sleeping",
+    "free-action-owner.sleep-resistant-timed-sleeping",
+    "free-action-owner.timed-sleeping-vapor",
+    "free-action-owner.timed-paralysis-vapor",
+    "free-action-owner.ring-removed-timed-sleeping",
+    "free-action-owner.ring-timed-paralysis"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "free-action-owner.timed-sleeping",
+      "segment": 0,
+      "screenIncludes": [
+        "Timeout for free action set to 400.",
+        "You suddenly fall asleep!"
+      ]
+    },
+    {
+      "branch": "free-action-owner.timed-paralysis",
+      "segment": 1,
+      "screenIncludes": [
+        "Timeout for free action set to 400.",
+        "Your feet are frozen to the stairs!"
+      ]
+    },
+    {
+      "branch": "free-action-owner.plain-sleeping",
+      "segment": 2,
+      "screenIncludes": [
+        "You suddenly fall asleep!"
+      ]
+    },
+    {
+      "branch": "free-action-owner.ring-timed-sleeping",
+      "segment": 3,
+      "screenIncludes": [
+        "Timeout for free action set to 400.",
+        "You yawn."
+      ]
+    },
+    {
+      "branch": "free-action-owner.ring-plain-sleeping",
+      "segment": 4,
+      "screenIncludes": [
+        "You yawn."
+      ]
+    },
+    {
+      "branch": "free-action-owner.sleep-resistant-timed-sleeping",
+      "segment": 5,
+      "screenIncludes": [
+        "Timeout for sleep resistance set to 400.",
+        "You yawn."
+      ]
+    },
+    {
+      "branch": "free-action-owner.timed-sleeping-vapor",
+      "segment": 6,
+      "screenIncludes": [
+        "You feel rather tired."
+      ]
+    },
+    {
+      "branch": "free-action-owner.timed-paralysis-vapor",
+      "segment": 7,
+      "screenIncludes": [
+        "Something seems to be holding you."
+      ]
+    },
+    {
+      "branch": "free-action-owner.ring-removed-timed-sleeping",
+      "segment": 8,
+      "screenIncludes": [
+        "You were wearing a wire ring",
+        "You suddenly fall asleep!"
+      ]
+    },
+    {
+      "branch": "free-action-owner.ring-timed-paralysis",
+      "segment": 9,
+      "screenIncludes": [
+        "You stiffen momentarily."
+      ]
+    }
+  ],
+  "segments": [
+    {
+      "name": "timed-sleeping",
+      "seed": 7401,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #wizintrinsic\n>>400w\r    \u001b\u001b\u0017blessed potion of sleeping\r    \u001b\u001bqa    \u001b\u001b#version\r"
+    },
+    {
+      "name": "timed-paralysis",
+      "seed": 7401,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #wizintrinsic\n>>400w\r    \u001b\u001b\u0017blessed potion of paralysis\r    \u001b\u001bqa    \u001b\u001b#version\r"
+    },
+    {
+      "name": "plain-sleeping",
+      "seed": 7401,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed potion of sleeping\r    \u001b\u001bqa    \u001b\u001b#version\r"
+    },
+    {
+      "name": "ring-timed-sleeping",
+      "seed": 7401,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #wizintrinsic\n>>400w\r    \u001b\u001b\u0017blessed ring of free action\r    \u001b\u001bPal    \u001b\u001b\u0017blessed potion of sleeping\r    \u001b\u001bqb    \u001b\u001b#version\r"
+    },
+    {
+      "name": "ring-plain-sleeping",
+      "seed": 7401,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed ring of free action\r    \u001b\u001bPal    \u001b\u001b\u0017blessed potion of sleeping\r    \u001b\u001bqb    \u001b\u001b#version\r"
+    },
+    {
+      "name": "sleep-resistant-timed-sleeping",
+      "seed": 7401,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #wizintrinsic\n>>400w\r    \u001b\u001b #wizintrinsic\n>400k\r    \u001b\u001b\u0017blessed potion of sleeping\r    \u001b\u001bqa    \u001b\u001b#version\r"
+    },
+    {
+      "name": "timed-sleeping-vapor",
+      "seed": 7401,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #wizintrinsic\n>>400w\r    \u001b\u001b\u0017blessed potion of sleeping\r    \u001b\u001bta>    \u001b\u001b#version\r"
+    },
+    {
+      "name": "timed-paralysis-vapor",
+      "seed": 7401,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #wizintrinsic\n>>400w\r    \u001b\u001b\u0017blessed potion of paralysis\r    \u001b\u001bta>    \u001b\u001b#version\r"
+    },
+    {
+      "name": "ring-removed-timed-sleeping",
+      "seed": 7401,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": "\u0017blessed ring of free action\r    \u001b\u001bPal    \u001b\u001b #wizintrinsic\n>>400w\r    \u001b\u001b#remove\ra    \u001b\u001b\u0017blessed potion of sleeping\r    \u001b\u001bqb    \u001b\u001b#version\r"
+    },
+    {
+      "name": "ring-timed-paralysis",
+      "seed": 7401,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": "\u0017blessed ring of free action\r    \u001b\u001bPal    \u001b\u001b #wizintrinsic\n>>400w\r    \u001b\u001b\u0017blessed potion of paralysis\r    \u001b\u001bqb    \u001b\u001b#version\r"
+    }
+  ],
+  "unchangedOutputHashes": {
+    "plain-sleeping": {
+      "screens": "7136e530cc23199da19e73ac976da8deed07e5ac3d62a47285cf42fa89ee870e",
+      "cursors": "c90bc3326c99960fe4394409b53628ea1903b973b0eac90ff217f7a9f0965f30",
+      "rng": "ff966fea505007c80e260b0fa2eb8e88f58dce9bd14a15ed479db8bb1f3dea27",
+      "slices": "29a65eae0c77217d0a737c21c3d9e02c246146bac077c47258a908861e68c132",
+      "frames": "f858c12572fefb582cacd5c5f2e38219d11caaadf6fa123b1f436f62065d6b51"
+    },
+    "ring-timed-sleeping": {
+      "screens": "439b92a946d175defc918d05d2a10d2923e093d186b3d7cdad0b09db7468531a",
+      "cursors": "6c02026c6ba84e80c518eb2ea7d8fe738605b90dae273046e479737c0b0d1a99",
+      "rng": "e05b8e3870bd05398817682ba0d457009208a9bf28420531a312e30ed7a65017",
+      "slices": "974a673da6735c605f841aa12243e0d04718dc45dc356dc07650123d611e1f6b",
+      "frames": "9d07a2d02a5ae9e5f75490a6379030e0ea726c589ea367382379173ed2330828"
+    },
+    "ring-plain-sleeping": {
+      "screens": "0eca477731259b4cb64351421c7068b43f492b386b448931839b49a05364ea2c",
+      "cursors": "ca259ba61c989604255b93d515997822b0c981b478aedd96a9c17887d7c39532",
+      "rng": "e05b8e3870bd05398817682ba0d457009208a9bf28420531a312e30ed7a65017",
+      "slices": "aa0a4c687f275d2a8461260853350092d9e640f4a657814bdd4941befcbaa413",
+      "frames": "c16180881835d8cce45ca7f841a3efe63dcd809f0bd273be140ba0fe5dd263dd"
+    },
+    "sleep-resistant-timed-sleeping": {
+      "screens": "d1f213cf7bf7e5adc5bf683adc482a74ecd2b27c1461eaf41926af83f8bf7c26",
+      "cursors": "8b627d2ba969d65ba82b843252c82ac6a37ce1b96f75cb2cf3163cca74fd73e2",
+      "rng": "449f47ae086d78fb2249f2705293f5a5d9bc5d57655315a3ecad65a91abf4489",
+      "slices": "3797d885116bbe1d006577e169e70f518fc4ea28a87f46180d2a99081bfa9b3c",
+      "frames": "2c2142b58c3b2f68b7268608cb691163d4378c5c75be49ed23323925f09f6b51"
+    },
+    "ring-timed-paralysis": {
+      "screens": "08130079d0b4355688c7c7302d4ddba428873f4bd72b556fc14bc98ab6f9b93e",
+      "cursors": "d0c54b3f84bc2aecb4a642df701b6254d13799ab52a4c9fff6b84af985b6c68d",
+      "rng": "e05b8e3870bd05398817682ba0d457009208a9bf28420531a312e30ed7a65017",
+      "slices": "ba91e4ed4e90a11565ed3e4d483973775cfcd199545432145d3a93548757d28d",
+      "frames": "cc9d468891b6a599b18a5cc1c2e19f4d08a5c772d4de4b7c06a2734e6772d2df"
+    }
+  }
+}

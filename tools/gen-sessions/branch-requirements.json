@@ -4342,6 +4342,16 @@
     {"group":"test-move-owner","id":"test-move-owner.rock-mole-door","cFile":"src/hack.c","cFunction":"test_move","description":"Ordinary keyboard witness: rock-mole-door"},
     {"group":"test-move-owner","id":"test-move-owner.xorn-door","cFile":"src/hack.c","cFunction":"test_move","description":"Ordinary keyboard witness: xorn-door"},
     {"group":"test-move-owner","id":"test-move-owner.open-door-negative","cFile":"src/hack.c","cFunction":"test_move","description":"Ordinary keyboard witness: open-door-negative"},
-    {"group":"test-move-owner","id":"test-move-owner.plain-floor-negative","cFile":"src/hack.c","cFunction":"test_move","description":"Ordinary keyboard witness: plain-floor-negative"}
+    {"group":"test-move-owner","id":"test-move-owner.plain-floor-negative","cFile":"src/hack.c","cFunction":"test_move","description":"Ordinary keyboard witness: plain-floor-negative"},
+    {"group":"free-action-owner","id":"free-action-owner.timed-sleeping","cFile":"src/potion.c","cFunction":"peffect_sleeping","description":"Ordinary timer and equipment witness: timed-sleeping"},
+    {"group":"free-action-owner","id":"free-action-owner.timed-paralysis","cFile":"src/potion.c","cFunction":"peffect_paralysis","description":"Ordinary timer and equipment witness: timed-paralysis"},
+    {"group":"free-action-owner","id":"free-action-owner.plain-sleeping","cFile":"src/potion.c","cFunction":"peffect_sleeping","description":"Ordinary timer and equipment witness: plain-sleeping"},
+    {"group":"free-action-owner","id":"free-action-owner.ring-timed-sleeping","cFile":"src/potion.c","cFunction":"peffect_sleeping","description":"Ordinary timer and equipment witness: ring-timed-sleeping"},
+    {"group":"free-action-owner","id":"free-action-owner.ring-plain-sleeping","cFile":"src/potion.c","cFunction":"peffect_sleeping","description":"Ordinary timer and equipment witness: ring-plain-sleeping"},
+    {"group":"free-action-owner","id":"free-action-owner.sleep-resistant-timed-sleeping","cFile":"src/potion.c","cFunction":"peffect_sleeping","description":"Ordinary timer and equipment witness: sleep-resistant-timed-sleeping"},
+    {"group":"free-action-owner","id":"free-action-owner.timed-sleeping-vapor","cFile":"src/potion.c","cFunction":"potionbreathe","description":"Ordinary timer and equipment witness: timed-sleeping-vapor"},
+    {"group":"free-action-owner","id":"free-action-owner.timed-paralysis-vapor","cFile":"src/potion.c","cFunction":"potionbreathe","description":"Ordinary timer and equipment witness: timed-paralysis-vapor"},
+    {"group":"free-action-owner","id":"free-action-owner.ring-removed-timed-sleeping","cFile":"src/potion.c","cFunction":"peffect_sleeping","description":"Ordinary timer and equipment witness: ring-removed-timed-sleeping"},
+    {"group":"free-action-owner","id":"free-action-owner.ring-timed-paralysis","cFile":"src/potion.c","cFunction":"peffect_paralysis","description":"Ordinary timer and equipment witness: ring-timed-paralysis"}
   ]
 }

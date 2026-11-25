@@ -45,13 +45,16 @@ output collections. The maintained corpus is 819; the completed full817 does
 not include this repair. Altar-glyph, hero-status, eating-prelude and engulfing
 audits continue in fixed snapshots.
 
-The altar glyph fix is verified and integrated for immediate push. Two terrain
+The altar glyph fix is pushed as `b032ceda`. Two terrain
 assignments now preserve the alignment-specific glyph in the display buffer and
 memory. All 33 checks, 197 controls, 20 focused fixtures, 44 public sessions and
 64 bounded workers pass. Four new C cases retain all 68 boundaries and 12,174
 calls; all twenty before/after output hashes are unchanged. This is a source-
 verified state repair with no new rendered-score gain claimed. The maintained
-corpus is 820; a full sweep of the combined runtime follows publication.
+corpus is 820. Its full regression passes on the exact pushed runtime in two
+fixed shards: 854,827 screens/cursors, 17,814,492 scored RNG positions and
+32,296 frames. Both shards pass without retries. All 817 earlier raw hashes
+remain unchanged; all 279 runtime files and 141 protected files stayed fixed.
 
 The latest shared-machine C coverage run accepts the status and altar recordings
 byte for byte. The union covers 4,572/5,492 functions and 60,367/107,260 branch
@@ -62,7 +65,7 @@ These figures measure C reach, not JS parity. Accessory stat increases still
 have constructed controls only; the native corpus has not reached
 `bounded_increase`.
 
-The latest full regression passes all 817 fixtures: 853,841 screens/cursors,
+The preceding full regression passes all 817 fixtures: 853,841 screens/cursors,
 17,766,231 scored RNG positions and 32,296 frames. Both fixed-runtime shards
 pass without retries or timeouts. All 279 runtime hashes, 817 raw inputs and
 125 protected files remain fixed. All prior813 raw hashes are unchanged.

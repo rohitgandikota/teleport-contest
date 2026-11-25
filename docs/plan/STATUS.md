@@ -8325,6 +8325,58 @@ compact SHA-256 is
 `wseg_at` is reached twice and covers 10/14 outcomes; `mstatusline` covers
 36/64. These are C reach measurements, not a claim of complete owner parity.
 
+## 2026-11-25: full820 regression started on the pushed altar runtime
+
+Commit `b032ceda` pushed successfully, process 20952 exit 0. Main and origin/main
+match, with no held-back commits. The full820 sweep is active in
+`.cache/restart-20261122/altar-glyph-full820`, workers 43180 and 59905. Both use
+the exact fixed `altar-glyph-parent-composition/candidate` runtime. All 279
+runtime hashes, 820 raw inputs and 141 protected support files are pinned.
+All 817 preceding raw hashes are unchanged. The sole changed prior protected
+file is the branch-intent registry, with exactly 17 appended entries and every
+old row preserved. The three additions are natural contact, complete monster
+status and altar glyph preservation. No timeout override or retry is enabled.
+Wait for both workers to close, then run `verify-altar-full820.py`; do not
+claim the full sweep passed from the focused checks or expected totals.
+
+All four source workers remain active in their isolated assigned packages.
+The goal backend still reports the old objective as paused and exposes no
+resume action; parent continues the user's explicitly requested work manually.
+No new goal activation or completed full-port claim is made.
+
+## 2026-11-25: full820 passes without retries; accessory expansion exposes three gaps
+
+Both full820 workers closed with exit 0. Independent verification passes all
+820 fixtures, 854,827 screens/cursors, 17,814,492 scored random-call positions
+and 32,296 animation frames. There were no retries or timeout overrides.
+The exact runtime is pushed `b032ceda`; all 279 runtime hashes, 820 raw hashes
+and 141 protected hashes are unchanged. Every prior817 raw hash remains fixed.
+The receipt is `.cache/restart-20261122/altar-glyph-full820/verification.json`,
+SHA-256 `f28f8a3f643f595c98d63968101f9372043e684b8dcdc713e13ae7a9e91b4cc5`.
+
+The accessory expansion seal verifies all 335 members and its unchanged
+279-file source runtime. Parent recorded all eighteen inputs with the pinned
+C binary. Original raw SHA-256 is
+`b50cc368cee1cadbd2ce71d85f7339a60d9060f3671dd82d2fa140cc9d7818a2`.
+All 1,637 keys/boundaries and five input fields are preserved. Baseline matches
+all 50,095 complete calls, all per-input slices and empty frame arrays, but
+only 1,632 styled boundaries and 1,635 cursors. The three failing cases expose
+an anatomy-independent ring prompt, omitted original sex/alignment reporting,
+and omitted Sleepy source/countdown reporting. The other fifteen cases match.
+The original failures, raw recording, sealed search and initial test-only
+composition remain preserved. No native fixture or comparator was changed.
+
+Parent owns the corresponding do_wear and background/status enlightenment
+repairs in `accessory-effects-parent-composition/candidate`. The first repair
+matches all eighteen native cases. A constructed source gate then found the
+normal empty-inventory representation in the new cause_known helper; handling
+that as C's empty list fixes the failure. Four other initial test failures
+were absent zero-valued worn masks, and their original assertions and logs
+remain preserved. The corrected gate passes all 25 controls. Public, focused,
+deferred and bounded-input verification is still pending. These changes are
+outside full820, and no new held-out score is claimed. Jason's separate
+ustatusline work remains disjoint.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

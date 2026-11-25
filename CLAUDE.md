@@ -73,6 +73,19 @@ signatures, because that changes call sites the C never changes.
 
 ---
 
+## Verification storage
+
+Keep code snapshots and compact reports locally. Do not copy the complete
+session corpus into each baseline or candidate. Reuse the maintained fixtures
+through read-only relative links and check their hashes before verification.
+Run large replay and coverage jobs on the existing NFS project storage.
+
+Remove obsolete snapshots and intermediate outputs once their fixes are
+published and the results are summarized. Keep unpublished work, maintained
+regression tests, input recipes and evidence needed for an active investigation.
+Do not accumulate historical bulk outputs or archive disposable caches by
+default. Confirm that no active job depends on a directory before removing it.
+
 ## Frozen files — never edit
 
 `js/isaac64.js`, `js/terminal.js`, `js/storage.js`.

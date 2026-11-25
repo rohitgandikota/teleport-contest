@@ -12,6 +12,20 @@ Ground rules are in `/CLAUDE.md`. Read that first if you have not.
 
 ## Current focus, 2026-11-25
 
+The storage cleanup is complete. The user explicitly authorized deleting
+unnecessary artifacts locally and on NFS. The reported checkout size fell
+from about 177 GB to 3.32 GB; available disk space rose from 8.28 GB to
+93.01 GB. APFS shared extents account for the difference between folder-size
+reduction and space recovered. Removed 535 inactive cache
+directories, 167 redundant raw recordings and 3,780 reproducible fuzz outputs.
+Their small input recipes remain. Replaced 1,622 identical fixture copies in
+the active text snapshot with relative links to the maintained recordings.
+All 279 main runtime hashes and 855 maintained recording hashes are unchanged;
+unpublished fixes remain local. The unnecessary NFS archive was stopped and
+deleted. Historical inactive cache paths in older notes no longer exist.
+Follow the verification-storage rules in CLAUDE.md. The cleanup receipt is
+`.cache/storage-cleanup-20261125/summary.json`.
+
 Continue the faithful port with readable C-aligned code and prompt verified
 pushes. The live leaderboard rechecked November 25 at 06:20 UTC has
 23,816 of 24,531 combined screens and rank 7 among agentic entries. Public
@@ -382,13 +396,20 @@ cases match 3,339 styled boundaries and 39,631 calls, fixing 319 screens,
 18,663 calls, fixing sixteen screens and two cursors. Five lava and four writer
 cases retain all five hashes. Corpus: 855. Full849 excludes this checkpoint.
 
-The coherent text/history candidate remains unpublished. Its 26 history and
-retained cases match C. One of four new caller cases has the pre-existing
-random config-path limitation, which remains visible and unnormalized.
-The terrain cancellation prerequisite restores the original public case;
-three related callers are under review before the required full sweep. All
-bounded-worker, source and seventeen syntax checks pass. The whole four-case
-caller diagnostic remains preserved outside passing-corpus admission.
+Lava and levitation checkpoint `b6c01b3e` is pushed. The coherent text/history
+v3 candidate remains unpublished. Its 36 parent checks have closed with exit
+zero; independent report verification is next. Thirty-six native history,
+follow-through, menu-cancellation and retained cases match C. One of four
+additional caller diagnostics retains the same config-path failure before
+and after the change. The whole diagnostic remains outside passing-corpus
+admission, without pruning cases or normalizing its output.
+
+The complete 858-fixture regression is running in two fixed shards on this
+candidate. It includes the current 855 fixtures and three new passing raw
+recordings. No full858 result is claimed yet. V2's menu-input invocation
+failure is preserved; v3 supplies the required report path with identical
+runtime and support bytes. A full-run preparation error from reading an
+unfinished score log is also preserved; it did not start any replay.
 
 The latest independently verified NFS union reaches 4,594/5,492 functions and
 61,397/107,260 branch outcomes across 851 credited inputs and 117 layouts.

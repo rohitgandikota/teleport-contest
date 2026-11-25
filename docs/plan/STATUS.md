@@ -10358,6 +10358,152 @@ config-path diagnostic outside passing-corpus admission and compare both
 runtimes without masking its one known failure. Then run the complete corpus
 before promoting the shared text/input owner.
 
+## 2026-11-25 06:40 UTC: text checks closed; full858 running
+
+Lava and levitation checkpoint `b6c01b3e293d9fed4ea01158a06e7b09ff5798ea`
+is pushed. Main has 855 maintained fixtures. No commits are being withheld.
+
+The three menu-cancellation callers are source-reviewed and their independent
+635-file seal verifies. Ten parent-recorded C cases match the text candidate;
+cases 4 through 8 preserve all five before/after output hashes. Together with
+history, follow-through and retained options, all 36 native cases match.
+The original four-case caller diagnostic remains whole and outside passing
+admission. Its one config-filename mismatch is identical before and after;
+no case or cell is dropped or normalized.
+
+Text v2 stopped at a missing required output-path argument in the parent
+menu-input invocation. Preserve tty-text-history-menu-invocation-failure.json
+and all v2 logs. V3 has identical 279 runtime and 22 support-file hashes and
+corrects that invocation only. All 36 candidate checks closed with exit zero
+at 06:38:46 UTC, including 44 public sessions, 78 bounded workers, source
+audit and eighteen syntax checks. The before-check exits are
+1, 0, 0, 1, 1, 0, 0, 0, 0. Independent report verification is still required;
+do not promote based on exit codes alone.
+
+The full858 regression started around 06:33 UTC in two 429-fixture shards,
+sessions 78040 and 92016. It uses a fixed clone of the unpublished text v3
+candidate, with 279 runtime files, 858 raw recordings and 375 protected files.
+Expected counts are 888,701 screens/cursors, 18,728,519 scored RNG positions
+and 32,488 frames, not completed results. Both shards remain running.
+verify-text-history-full858.py is prepared and has not run. Preserve the
+preflight failure caused by reading the active score log before its final
+JSON result; that attempt started no replay.
+
+Next: independently verify all text v3 reports, runtime/support hashes,
+reverse patch, raw preservation and append-only registry. Wait for both
+full858 shards and verify their exact totals. Only then integrate the scoped
+eighteen-module patch and 22 support files, update the corpus to 858, commit
+and push promptly. Continue fixed-source audits for canonical half-damage
+timers, town fountains, slime timeout, nonfree saving and streaming putstr.
+
+## 2026-11-25: storage audit and verification handoff after interruption
+
+The user asks why the checkout reports 177 GB. Parent measured 165 GiB for
+the checkout, 160.76 GiB for `.cache`, 156.90 GiB for restart-20261122,
+3.5 GiB for tools/data, 689 MiB for Git and 10 MiB for JS. The restart cache
+contains 511 directories; 62 packages over 1 GiB total 148.42 GiB. Repeated
+baseline/candidate snapshots with copied test corpora are the main cause.
+Some extents are APFS clones, so du is not an exclusive physical-block
+measurement. The volume had 7.6 GiB free. No files have been removed.
+Small audit receipt: `.cache/contest-storage-audit-20261125.json`.
+Stop new bulk local snapshots. Move inactive verification artifacts to the
+existing NFS artifact root, verify checksums, then remove only backed-up
+local copies. Retain distinct versions, lightweight manifests and active work.
+
+Text v3 independently verifies all 36 checks and 318 controls. Its 33 focused
+fixtures match 62,869 screens/cursors, 995,802 scored RNG positions and 1,743
+frames; 44 public and 78 bounded workers pass. The 36 passing native cases
+repair 34 styled boundaries and 36 cursors while retaining 109,006 calls and
+all 807 slices. All 855 previous raw files, 279 runtime files and 22 support
+files verify. The four-case config-path diagnostic remains whole and failed
+in one case. Verification SHA:
+`c3e1b8f22151ecda7ae06dbe45307e580a2a7e04fcb8ac327f9f02bc0782ad79`.
+The verifier's first schema assertion confused the menu report's `rng` key
+with the native report's `calls` key. The original script/failure receipt are
+preserved. Mapping only that field name verifies all five exact hashes.
+
+The local full858 run closed at 857/858 with one 45-second lock-operations
+worker timeout. Both exact baseline and candidate separately timed out under
+high local load. All runtime/raw/protected hashes stayed fixed; see
+text-history-full858/failure-verification.json. Do not call this a full pass.
+
+An independent complete run is active on tokyo at
+`/share/NFS/u/rohit/research/contest/artifacts/2026-11-22/text-history-full858-js-20261125`.
+All 1,454 transferred files were verified. Matching Node v26.3.0 was downloaded
+from nodejs.org and checked against its official SHA256 list. Both baseline
+and candidate pass lock-operations in about 11.6 seconds with the unchanged
+45-second limit: 26,675 screens/cursors, 226,750 calls and 156 frames. The last
+read found 304 and 338 of 429 fixtures complete, no failures, and no final
+verification.json yet. The remote job continued through the interruption.
+Local preparation/run scripts and receipts are under text-history-full858-remote
+and prepare-text-full858-remote.py / run-text-full858-remote.py. Download only
+compact reports and logs when complete, independently verify, then promote and
+push the text checkpoint. Main remains pushed b6c01b3e with 855 fixtures.
+
+Fresh parent C recordings, all unchanged input fields and keys verified:
+half-damage-intrinsic has six cases, 383 boundaries, raw SHA
+`074f1b3e63fc4a9b4831ca6377557070b5b78ec17aa6e42ea6913e8d6d3c470b`;
+slime-timeout-setter has eleven cases, 1,885 boundaries, raw SHA
+`8bb7d8f3e26ca25490614b399540ab076e0475765c6a1d1104a284d6d2799027`;
+fountain-town-coverage has nine cases, 611 boundaries, raw SHA
+`033be4aede2d8a60d35c8f2939350f8d269369374034351143bbfddb3c4bd114`.
+Native differential comparisons have not run. Source seals verify 685, 665
+and 375 members respectively. The nonfree save packet also verifies 727 files
+and six links; its lowercase seal.json is the same file as SEAL.json on this
+volume. Preserve that inventory correction. Do not publish the half-damage
+timer producer until its fourteen affected damage-reader omissions are fixed.
+
+Previously assigned follow-ups were canonical damage readers, pet-swap
+liquid/trap handling, artifact slime cure, elapsed-time lifecycle and streaming
+putstr. After the user's interruption, all five old agent IDs return not found.
+No fresh agents or bulk snapshots were created. Inspect their existing packages
+before resuming or archiving anything; do not assume interrupted work completed.
+
+## 2026-11-25: obsolete cache removed with explicit user authorization
+
+The reported checkout size is now 3.32 GB, down from about 177 GB. Available
+disk space increased from 8.28 GB to 93.01 GB. The difference reflects APFS
+clone sharing; directory totals did not represent exclusively owned blocks.
+
+The user clarified that unnecessary artifacts may be deleted both locally and
+on NFS. This supersedes the previous plan to archive every obsolete cache.
+The new NFS archive was stopped and its 1,259,438,080-byte partial directory
+was removed. Its absence was independently checked. No obsolete-cache backup
+was retained. Existing active NFS verification and C-reference work is separate
+and was not interrupted or deleted.
+
+Deleted all 535 inventoried inactive cache directories, with no skipped
+targets. Kept the sixteen current source/working packages and unpublished
+fixes. Deleted 167 duplicate root recordings whose exact bytes remain in the
+maintained corpus. Removed 3,780 ignored fuzz recordings only after checking
+that their retained recipes preserve every seed, datetime, nethackrc and move
+field, including presence and segment order. These recipes can regenerate the
+old outputs; no maintained regression fixture was removed.
+
+The active text v3 baseline/candidate now use relative links for 1,622 fixture
+copies that were byte-identical to the repository's maintained recordings.
+Each original and target was checked by SHA256 before replacement. All 279
+runtime files and 22 support files in each active snapshot remain byte-exact.
+All 279 main runtime hashes and 855 maintained raw hashes were checked after
+cleanup and are unchanged. These links are deliberate dependencies on the
+canonical immutable recordings, not independent copies. Hash them before
+future checks. Keep the distinct new recordings and runtime source copies.
+
+Historical inactive cache paths in older entries are intentionally gone.
+Do not recreate their full trees just to satisfy obsolete receipt paths.
+The current text patch, reports, source packages and new native recordings
+remain available. The previous full858 run's compact manifests are retained
+under text-history-full858-remote/control, and the shared-host run remains at
+its recorded NFS path. The large cleanup inventory was discarded after use;
+compact receipts are in `.cache/storage-cleanup-20261125/summary.json`.
+
+Finder recreated .DS_Store files during removal. Two attempts stopped on the
+nonempty directories; cleanup resumed after confirming that only Finder
+metadata caused each failure. No source edit or unique active work was lost.
+One new untracked tools/gen-sessions/.DS_Store remains outside the cache and
+was not staged. CLAUDE.md now requires reusing maintained inputs, retaining
+only current local work and compact reports, and removing obsolete outputs.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

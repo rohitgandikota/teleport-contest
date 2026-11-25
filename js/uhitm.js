@@ -4603,14 +4603,14 @@ export async function mhitm_ad_drst(magr, mattk, mdef, mhm) {
 // for targets without a usable brain. A tame attacker gains a separate
 // rnd(60) worth of nutrition only after an intelligent ordinary target.
 
-// src/uhitm.c:3174 mhitm_ad_drin(), mind-flayer brain drain.
+// src/uhitm.c:3168 mhitm_ad_drin(), mind-flayer brain drain.
 export async function mhitm_ad_drin(magr, mattk, mdef, mhm) {
-    const pd = game.mons[mdef.mnum];
+    const pd = mdef.data;
 
     if (magr !== game.youmonst && mdef !== game.youmonst) {
         if (game.notonhead || !has_head(pd)) {
             if (game.vis && canspotmon(mdef))
-                await pline(`${Monnam(mdef)} doesn't seem harmed.`);
+                await pline_mon(mdef, `${Monnam(mdef)} doesn't seem harmed.`);
             mhm.damage = 0;
             game.skipdrin = true;
             return;
@@ -4673,7 +4673,7 @@ export async function mhitm_ad_drin(magr, mattk, mdef, mhm) {
                 return;
         }
         /* adjattrib gives dunce cap message when appropriate */
-        await adjattrib(A_INT, -rnd(2), false);
+        await adjattrib(A_INT, -rnd(2), 0);
         if (!rn2(5)) {
             losespells();
             game.skipdrin = true;
@@ -4688,6 +4688,12 @@ export async function mhitm_ad_drin(magr, mattk, mdef, mhm) {
         await pline(`${Monnam(mdef)} doesn't seem harmed.`);
         game.skipdrin = true;
         mhm.damage = 0;
+        if (!Unchanging() && pd === game.mons[PMNAMES.PM_GREEN_SLIME]) {
+            if (!game.u.uprops?.SLIMED) {
+                await You("suck in some slime and don't feel very well.");
+                await make_slimed(10, null);
+            }
+        }
         return;
     }
 

@@ -1,0 +1,195 @@
+{
+  "name": "brain-drain-owner",
+  "description": "Six original C recordings cover fresh green-slime brain attacks, worn Unchanging and existing-slime controls, located headless-monster feedback and dunce-cap feedback. Off-head and life-saving branches retain constructed source controls.",
+  "coverage": [
+    "mode.debug",
+    "ui.getlin",
+    "ui.more-paging",
+    "level.ordinary",
+    "monster.special-effects",
+    "monster.pets",
+    "forms.polymorph"
+  ],
+  "branches": [
+    "combat.brain.hero-slime",
+    "combat.brain.unchanging-slime-negative",
+    "combat.brain.existing-slime-negative",
+    "combat.brain.monster-headless-location",
+    "combat.brain.monster-headless-ordinary-negative",
+    "combat.brain.dunce-cap-feedback"
+  ],
+  "requireBranchAssertions": true,
+  "segments": [
+    {
+      "name": "hero-slime",
+      "seed": 7401,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=accessiblemsg,whatis_coord:map\n",
+      "moves": " #polyself\rmind flayer\r   \u0007tame green slime\r   Fb           "
+    },
+    {
+      "name": "hero-slime-unchanging",
+      "seed": 7401,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=accessiblemsg,whatis_coord:map\n",
+      "moves": " #polyself\rmind flayer\r   \u0017blessed amulet of unchanging\r   Pa     \u0007tame green slime\r   Fu        "
+    },
+    {
+      "name": "hero-slime-existing",
+      "seed": 7401,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=accessiblemsg,whatis_coord:map\n",
+      "moves": " #polyself\rmind flayer\r   #wizintrinsic\r100c\r   \u0007tame green slime\r   Fb        "
+    },
+    {
+      "name": "monster-headless-ooze",
+      "seed": 7401,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=accessiblemsg,whatis_coord:map\n",
+      "moves": " #polyself\rstone golem\r   \u0007tame master mind flayer\r   \u0007hostile gray ooze\r   h       .        .     "
+    },
+    {
+      "name": "monster-headless-ordinary-negative",
+      "seed": 7401,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!accessiblemsg,whatis_coord:map\n",
+      "moves": " #polyself\rstone golem\r   \u0007tame master mind flayer\r   \u0007hostile gray ooze\r   h       .        .     "
+    },
+    {
+      "name": "hero-dunce",
+      "seed": 7401,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=accessiblemsg,whatis_coord:map\n",
+      "moves": " #polyself\rmaster mind flayer\r   \u0017blessed +5 dunce cap\r   Wa     \u0007hostile mind flayer\r   .        .        .        .        .        .        .        .        "
+    }
+  ],
+  "branchAssertions": [
+    {
+      "branch": "combat.brain.hero-slime",
+      "segment": 0,
+      "screenIncludes": [
+        "Your tentacles suck the green slime.",
+        "The green slime doesn't seem harmed.",
+        "You suck in some slime and don't feel very well."
+      ],
+      "screenExcludes": [
+        "You eat the green slime",
+        "Die?"
+      ],
+      "rngIncludes": [
+        "d(2,1)=2"
+      ],
+      "stateEvidence": "Actual mind-flayer form, force attack and headless green slime start the countdown after the harmless message; later tentacles are skipped."
+    },
+    {
+      "branch": "combat.brain.unchanging-slime-negative",
+      "segment": 1,
+      "screenIncludes": [
+        "an octagonal amulet (being worn).",
+        "Your tentacles suck the green slime.",
+        "The green slime doesn't seem harmed."
+      ],
+      "screenExcludes": [
+        "You suck in some slime",
+        "You eat the green slime",
+        "Die?"
+      ],
+      "rngIncludes": [
+        "d(2,1)=2"
+      ],
+      "stateEvidence": "A wished amulet is actually worn after polymorph; Unchanging prevents slime acquisition during the same headless attack."
+    },
+    {
+      "branch": "combat.brain.existing-slime-negative",
+      "segment": 2,
+      "screenIncludes": [
+        "You are turning into slime.",
+        "Your tentacles suck the green slime.",
+        "The green slime doesn't seem harmed."
+      ],
+      "screenExcludes": [
+        "You suck in some slime",
+        "You eat the green slime",
+        "Die?"
+      ],
+      "rngIncludes": [
+        "d(2,1)=2"
+      ],
+      "stateEvidence": "An ordinary #wizintrinsic command starts a 100-turn slime countdown which the attack does not refresh."
+    },
+    {
+      "branch": "combat.brain.monster-headless-location",
+      "segment": 3,
+      "screenIncludes": [
+        "The master mind flayer's tentacles suck the gray ooze.",
+        "<39,6>: The gray ooze doesn't seem harmed."
+      ],
+      "screenExcludes": [
+        "The gray ooze's brain is eaten",
+        "Die?"
+      ],
+      "rngIncludes": [
+        "d(2,1)=2"
+      ],
+      "stateEvidence": "A real tame master mind flayer attacks the gray ooze; accessible feedback uses the defender coordinate."
+    },
+    {
+      "branch": "combat.brain.monster-headless-ordinary-negative",
+      "segment": 4,
+      "screenIncludes": [
+        "The master mind flayer's tentacles suck the gray ooze.",
+        "The gray ooze doesn't seem harmed."
+      ],
+      "screenExcludes": [
+        "<39,6>: The gray ooze doesn't seem harmed.",
+        "Die?"
+      ],
+      "rngIncludes": [
+        "d(2,1)=2"
+      ],
+      "stateEvidence": "The same pet attack with accessiblemsg disabled retains all five output hashes."
+    },
+    {
+      "branch": "combat.brain.dunce-cap-feedback",
+      "segment": 5,
+      "screenIncludes": [
+        "The mind flayer's tentacles suck your brain",
+        "Your cap constricts briefly, then relaxes again."
+      ],
+      "screenExcludes": [
+        "Your brain is eaten!",
+        "You feel stupid",
+        "You feel very stupid",
+        "Die?"
+      ],
+      "rngIncludes": [
+        "rn2(8)=0",
+        "rnd(2)=1"
+      ],
+      "stateEvidence": "A real worn dunce cap survives a failed helmet roll; physical damage precedes constriction and both memory rolls follow its acknowledgement."
+    }
+  ],
+  "negativeOutputHashes": {
+    "1": {
+      "screens": "fadf65c7a1c5f138444c0c00b14a1e04eb8ea0a4e427dc2b7638412960ef5ada",
+      "cursors": "19713e2f4470f43db6c68b7ce20c5507b1056b1a98d5e62389c60f0011e3e3b4",
+      "calls": "a6fab6fcd73f91f80f7e72728664ed620aeb654dc0007ab42b0808ea72cee37f",
+      "slices": "c6e91ae0a93e9ff2beb0f3e5990e96f38ac0da892d8801ed9f4832b8ee7cc32d",
+      "frames": "94ab54d16ab775c1688a586b307ad8494bec4997126a9727ccaad9e1572a7e26"
+    },
+    "2": {
+      "screens": "685f672625793501f8c33e3374d80bcdb301313c8915590e802285a8f569010b",
+      "cursors": "6c09bd6ff7f374a0c29eaef173b84d5a2ab36b27751e8b1a966f8fc6ca62d33f",
+      "calls": "d6afbc8b1a90fd477451f48eef52d1f8d4981cbd1b9233de6e5af052b9664cfb",
+      "slices": "caca48cdd1d40900899fe8920570325a00793c9c2b4a83f11924921937a51061",
+      "frames": "eb76a891e7bbf373a155259f461cc74228a7a11f4adb9a1e3095777155bd7a98"
+    },
+    "4": {
+      "screens": "b367105cef3130b0d8323d640013fdc6e5a69aca4cedcb08c51cdae78a7a2c5e",
+      "cursors": "de075e99e63019156c11c82f22ba97ca01ba6a17493ac64d733a344897b52b08",
+      "calls": "33334965870a8551a27050b347d39057ddabb1265e1c873581d33841ad62bfdb",
+      "slices": "c7490c0c526bbd130c6b0599919df8a3ac8b33dc7a66ec723f3a6bcf170f0802",
+      "frames": "fc482d9dff1398983f90ceb73ffa4effb77458765e1f976f5ae5b7b76fe41780"
+    }
+  }
+}

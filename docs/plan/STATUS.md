@@ -10116,6 +10116,94 @@ Darwin sink_into_lava, Avicenna elapsed-time producers, and Singer the complete
 tty_putstr streaming contract. Singer's new audit must first establish its
 actual producer/caller completion contract, not add speculative broad awaits.
 
+## 2026-11-25 06:04 UTC: full849 complete; brain and text checks separated
+
+Basic character inspection is pushed as `0bdf1364e1889037d72f30cdd66ac6106d451a51`.
+The fixed full849 run on `d518e73e` completes without retries: 849/849 fixtures,
+881,528 screens/cursors, 18,499,004 scored RNG positions and 32,488 frames.
+All 279 runtime, 849 raw and 320 protected files stay fixed. Verification SHA:
+`825ba09c83cfb7ae9dabc455caff3b85fcdaec0b99db091445689cede078728e`.
+The verifier's original 845-versus-849 manifest-count assertion is preserved
+in verification-preflight-failure.json; only that assertion was corrected.
+No replay was repeated. This full sweep excludes basic inspection and later work.
+
+The brain-drain v2 parent composition closes all 22 checks successfully.
+Its independent verifier and integration are next. The original v1 recipe
+failure remains preserved: a literal newline between two RNG witnesses did
+not allow the C recorder's caller annotations. V2 checks each witness separately
+and still compares the complete ordered stream. No input, raw record or runtime
+was changed for that correction. Six fresh C cases match all 601 boundaries
+and 14,499 calls. Three negative cases preserve all five output hashes.
+
+The fountain package and its 688 sealed members independently verify. Its
+ten fresh C cases match all 337 boundaries and 26,227 calls on the composed
+current runtime. Parent regression and publication remain pending. The lava
+package also verifies, but only ten of twelve native cases match styled
+screens. Both failures concern the intrinsic menu's levitation timer marker;
+all original calls, cursors and input slices match. Darwin is auditing that
+producer/reader prerequisite separately. No lava runtime is in main.
+
+The text/history parent candidate remains unpublished. Native history and
+follow-up fixtures plus the retained message-window fixture pass all 26 cases.
+The four new caller cases pass three: option_help exposes the recorder's
+random temporary HOME path, which is absent from the serialized input. The
+same 75 glyph differences exist before and after the change. Jason's completed
+config-path audit preserves this input-contract limitation without a runtime
+path substitution, normalization or dropped case. Native and focused-score
+checks retain that failure explicitly.
+
+The public sweep reveals a separate real text-window regression in
+seed0106-priest-extcmd-sweep, steps 254 through 259. RNG and animation still
+match, but the terrain display leaves an extra message and cursor position.
+Singer is repairing that complete caller/window contract in a fixed candidate.
+The 77 bounded workers and source audit pass. Syntax continuation then stopped
+because its log filename contained a slash; preserve that infrastructure error
+and finish the remaining syntax checks with a safe log name. No replay rerun
+is needed for that correction. A full corpus sweep is still required before
+promoting this shared input-owner change.
+
+The latest NFS union is verified-brain-fountain-lava-basics-union-20261125:
+849 credited inputs, 116 layouts, 4,594/5,492 functions and 61,390/107,260
+branch outcomes. Summary SHA:
+`9ef869d72d28333d8ed9803f46cf35ee415dac9c3f02b6677162cffa7acbb2df`.
+Compact export SHA:
+`8d183bda010b4f41198f7c0733522f092f1bb39bbdc7a10c5669c32e312719b2`.
+All prior source, binary, input and rejection records remain fixed. C reach
+does not establish JS parity, especially for the two lava menu failures.
+
+Pauli continues the complete brain-attack half-damage caller. Jason continues
+ordinary town-fountain coverage. Avicenna is auditing the nonfree save-state
+foundation needed for elapsed playing time. Singer's streaming tty_putstr audit
+and Darwin's slime-setter audit remain preserved behind the immediate
+prerequisites. The latest observed board remains rank 7, 715 unmatched screens,
+44/44 public and 40/56 held-out; no newer held-out result is inferred.
+
+## 2026-11-25 06:06 UTC: complete brain-drain owner verified
+
+The v2 brain-drain composition independently passes all 22 checks and 135
+controls: 30 source, 92 retained, six ordinary-input and seven native controls.
+Twenty focused fixtures match all 16,207 screens/cursors, 403,745 scored RNG
+positions and 275 frames. All 44 public sessions and 64 bounded workers pass.
+Seven strict/deferred fixtures match all 53 segments, 4,168 styled boundaries,
+144,116 complete calls and zero frames.
+
+Six fresh C cases improve from 581/601 styled boundaries, 593/601 cursors and
+592/601 input slices to complete equality. All 14,499 calls match. Three
+negative cases retain all five before/after hashes. Native raw SHA:
+`8418cc6688eb0e7d08228fd63d7c642bfeeaf46f6d3cfa2513d654b7c6401a63`.
+Verification SHA:
+`a50fe05e9c7556d496e6649d1e636821739306e86e36e635e3c48e16fd5ce1f2`.
+
+Only mhitm_ad_drin changes: use the defender's canonical species data, locate
+headless-monster feedback, retain the integer feedback flag for dunce-cap
+attribute loss, and start the actual slime timer when sucking a green slime.
+The complete C owner and helper contracts were reviewed. Integration preserves
+all 850 earlier raw fixtures, fixes all 279 runtime hashes, copies seven exact
+support files and appends six registry entries. Corpus: 851. Publish promptly.
+Off-head, intrinsic, half-damage and life-saving paths retain source controls;
+the shared half-damage caller remains separate. Full849 excludes this change.
+No whole-port, literal serialized-byte or held-out improvement is claimed.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

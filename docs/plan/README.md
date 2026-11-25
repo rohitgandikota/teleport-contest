@@ -352,11 +352,31 @@ one input slice. Five unaffected cases retain all five hashes. Corpus: 850.
 This change is outside the running full849. Elapsed time and system-only
 diagnostics remain separate prerequisites.
 
-The history text-window package independently verifies 1,038 files and three
-links. Its three parent-owned caller removals are prepared for coherent
-composition; no history/window runtime change is published yet. The next
-source audits cover brain-drain handling, fountain dipping, lava sinking,
-elapsed-time producers and text production while a page is being filled.
+Basic inspection is pushed as `0bdf1364`. Full849 is now complete on the
+preceding levitation checkpoint: 881,528 screens/cursors, 18,499,004 scored RNG
+positions and 32,488 frames. All runtime, raw and protected hashes stay fixed.
+This sweep excludes basic inspection and pending changes.
+
+The complete brain-drain owner passes all 22 parent checks, 135 controls,
+twenty focused fixtures, 44 public sessions and 64 bounded workers. Six native
+cases now match all 601 styled boundaries and 14,499 calls, correcting twenty
+screens, eight cursors and nine input slices. Three unchanged cases retain all
+five hashes. Corpus: 851. This checkpoint is outside full849. The fountain
+candidate matches all ten native cases and awaits parent regression. Lava matches ten of twelve native cases; the two
+remaining styled-screen failures expose a missing intrinsic-menu timer marker.
+That prerequisite is being repaired with all original inputs preserved.
+
+The coherent text/history candidate remains unpublished. Its 26 history and
+retained cases match C. One of four new caller cases has the pre-existing
+random config-path limitation, which remains visible and unnormalized.
+A separate public terrain-display regression is being repaired before the
+required full sweep. The bounded-worker and source checks pass.
+
+The latest independently verified NFS union reaches 4,594/5,492 functions and
+61,390/107,260 branch outcomes across 849 credited inputs and 116 layouts.
+This measures C reach, not complete JS parity. Source audits continue for
+half-damage combat, town fountains, nonfree saving, elapsed time and text
+production while a page is being filled.
 
 The preceding full regression passes all 817 fixtures: 853,841 screens/cursors,
 17,766,231 scored RNG positions and 32,296 frames. Both fixed-runtime shards

@@ -4090,6 +4090,12 @@
     {"group":"Basic character inspection","id":"enlightenment-basic-characteristics.magic-disclosure-cursed-gauntlets","cFile":"src/insight.c","cFunction":"one_characteristic","description":"enlightenment basic characteristics.magic disclosure cursed gauntlets"},
     {"group":"Basic character inspection","id":"enlightenment-basic-characteristics.final-bones-disabled","cFile":"src/insight.c","cFunction":"enlightenment","description":"enlightenment basic characteristics.final bones disabled"},
     {"group":"Basic character inspection","id":"enlightenment-basic-characteristics.half-hit-die-control","cFile":"src/insight.c","cFunction":"basics_enlightenment","description":"enlightenment basic characteristics.half hit die control"},
-    {"group":"Basic character inspection","id":"enlightenment-basic-characteristics.dagger-control","cFile":"src/insight.c","cFunction":"basics_enlightenment","description":"enlightenment basic characteristics.dagger control"}
+    {"group":"Basic character inspection","id":"enlightenment-basic-characteristics.dagger-control","cFile":"src/insight.c","cFunction":"basics_enlightenment","description":"enlightenment basic characteristics.dagger control"},
+    {"group":"Brain-drain owner","id":"combat.brain.hero-slime","cFile":"src/uhitm.c","cFunction":"mhitm_ad_drin","description":"Actual mind-flayer form, force attack and headless green slime start the countdown after the harmless message; later tentacles are skipped."},
+    {"group":"Brain-drain owner","id":"combat.brain.unchanging-slime-negative","cFile":"src/uhitm.c","cFunction":"mhitm_ad_drin","description":"A wished amulet is actually worn after polymorph; Unchanging prevents slime acquisition during the same headless attack."},
+    {"group":"Brain-drain owner","id":"combat.brain.existing-slime-negative","cFile":"src/uhitm.c","cFunction":"mhitm_ad_drin","description":"An ordinary #wizintrinsic command starts a 100-turn slime countdown which the attack does not refresh."},
+    {"group":"Brain-drain owner","id":"combat.brain.monster-headless-location","cFile":"src/uhitm.c","cFunction":"mhitm_ad_drin","description":"A real tame master mind flayer attacks the gray ooze; accessible feedback uses the defender coordinate."},
+    {"group":"Brain-drain owner","id":"combat.brain.monster-headless-ordinary-negative","cFile":"src/uhitm.c","cFunction":"mhitm_ad_drin","description":"The same pet attack with accessiblemsg disabled retains all five output hashes."},
+    {"group":"Brain-drain owner","id":"combat.brain.dunce-cap-feedback","cFile":"src/uhitm.c","cFunction":"mhitm_ad_drin","description":"A real worn dunce cap survives a failed helmet roll; physical damage precedes constriction and both memory rolls follow its acknowledgement."}
   ]
 }

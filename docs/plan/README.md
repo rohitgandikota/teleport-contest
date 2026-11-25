@@ -80,10 +80,11 @@ candidate. That checkpoint is pushed as `59ff3a89`. Monster death now passes
 31 source controls, eight native cases and 66 bounded workers on current main.
 All 866 maintained recordings pass the fresh NFS run without retries or timeout
 overrides: 898,368 screens/cursors, 18,969,264 random positions and 32,609 frames.
-The separately
-composed fire patch passes 32 controls and eleven native cases. The sickness
-candidate also passes thirteen new native cases; portable gates and current-main
-composition follow those checkpoints.
+Death is pushed as `0ae78cc3`. The natural-fire patch is now composed on main;
+32 source controls, eleven native cases, all 61 selected/public fixtures and
+61 bounded workers pass. It brings the corpus to 867, outside the completed
+full866 run. The sickness candidate also passes thirteen new native cases;
+its portable gates are delivered and composition verification is underway.
 Parallel source reviews continue for potion impacts, sickness and pit traps.
 These local results do not establish a newer held-out score.
 

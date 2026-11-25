@@ -4248,6 +4248,17 @@
     {"group": "monster-death-owner", "id": "monster-death.owner.steam-vortex", "cFile": "src/mon.c", "cFunction": "mondead", "description": "steam-vortex: ordinary lethal damage and completed version command"},
     {"group": "monster-death-owner", "id": "monster-death.owner.fog-cloud", "cFile": "src/mon.c", "cFunction": "mondead", "description": "fog-cloud: ordinary lethal damage and completed version command"},
     {"group": "monster-death-owner", "id": "monster-death.owner.medusa", "cFile": "src/mon.c", "cFunction": "mondead", "description": "medusa: ordinary lethal damage and completed version command"},
-    {"group": "monster-death-owner", "id": "monster-death.owner.newt", "cFile": "src/mon.c", "cFunction": "mondead", "description": "newt: ordinary lethal damage and completed version command"}
+    {"group": "monster-death-owner", "id": "monster-death.owner.newt", "cFile": "src/mon.c", "cFunction": "mondead", "description": "newt: ordinary lethal damage and completed version command"},
+    {"group": "monster-fire-owner", "id": "monster-fire.hero-food-slime", "cFile": "src/uhitm.c", "cFunction": "mhitm_ad_fire", "description": "hero-food-slime: ordinary fire and unaffected controls"},
+    {"group": "monster-fire-owner", "id": "monster-fire.hero-wizard-slime", "cFile": "src/uhitm.c", "cFunction": "mhitm_ad_fire", "description": "hero-wizard-slime: ordinary fire and unaffected controls"},
+    {"group": "monster-fire-owner", "id": "monster-fire.hero-resistant-slime", "cFile": "src/uhitm.c", "cFunction": "mhitm_ad_fire", "description": "hero-resistant-slime: ordinary fire and unaffected controls"},
+    {"group": "monster-fire-owner", "id": "monster-fire.hero-healthy", "cFile": "src/uhitm.c", "cFunction": "mhitm_ad_fire", "description": "hero-healthy: ordinary fire and unaffected controls"},
+    {"group": "monster-fire-owner", "id": "monster-fire.hero-physical-slime", "cFile": "src/uhitm.c", "cFunction": "mhitm_ad_fire", "description": "hero-physical-slime: ordinary fire and unaffected controls"},
+    {"group": "monster-fire-owner", "id": "monster-fire.hero-slime-alone", "cFile": "src/uhitm.c", "cFunction": "mhitm_ad_fire", "description": "hero-slime-alone: ordinary fire and unaffected controls"},
+    {"group": "monster-fire-owner", "id": "monster-fire.pet-paper-golem", "cFile": "src/uhitm.c", "cFunction": "mhitm_ad_fire", "description": "pet-paper-golem: ordinary fire and unaffected controls"},
+    {"group": "monster-fire-owner", "id": "monster-fire.pet-straw-golem", "cFile": "src/uhitm.c", "cFunction": "mhitm_ad_fire", "description": "pet-straw-golem: ordinary fire and unaffected controls"},
+    {"group": "monster-fire-owner", "id": "monster-fire.pet-jackal", "cFile": "src/uhitm.c", "cFunction": "mhitm_ad_fire", "description": "pet-jackal: ordinary fire and unaffected controls"},
+    {"group": "monster-fire-owner", "id": "monster-fire.pet-paper-golem-accessible", "cFile": "src/uhitm.c", "cFunction": "mhitm_ad_fire", "description": "pet-paper-golem-accessible: ordinary fire and unaffected controls"},
+    {"group": "monster-fire-owner", "id": "monster-fire.pet-jackal-accessible", "cFile": "src/uhitm.c", "cFunction": "mhitm_ad_fire", "description": "pet-jackal-accessible: ordinary fire and unaffected controls"}
   ]
 }

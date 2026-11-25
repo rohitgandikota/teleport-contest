@@ -1,5 +1,44 @@
 # STATUS — live handoff board
 
+## 2026-11-25: natural fire attacks verified for publication
+
+Death checkpoint `0ae78cc3` is pushed after full866 passed. The only unpublished
+runtime change is now uhitm.js: the complete natural-fire owner uses canonical
+slime cleanup, original defender data, life-saving wording, located feedback
+and C's null death-message argument. Its shared cancellation prerequisite uses
+the real defender and the complete visibility gate. No adjacent damage owner
+was rewritten.
+
+All 32 source controls pass versus 16 on current baseline. The old sealed
+candidate's two inventory-helper failures are now resolved by `59ff3a89`.
+All 33 assertions across eleven ordinary cases pass versus 26 before, including
+observer and deferred-input equality and four unchanged negative outputs.
+The eleven C cases match all 1,022 styled boundaries/cursors, 38,873 complete
+calls/slices and twelve frames. This repairs 31 styled boundaries, fourteen
+cursors and four random streams. All 279 main runtime hashes match the native-
+tested composition. The raw recording remains unchanged; 866 older raw hashes
+are fixed. Eleven requirements are appended; maintained corpus size is 867.
+
+All 61 selected/public fixtures pass: 23,674 screens/cursors, 1,104,967 scored
+random positions and 2,099 frames. All 61 bounded workers, five retained suites,
+source audit and three syntax checks pass. Main receipt:
+`monster-fire-main-verification.json`, SHA256
+`0ca2ea0d9a237873d0cac1e810b0902f76f3c7db0c4668c4ef4913bc21c8b68b`.
+The latest full-corpus run remains full866 on `0ae78cc3`; no full867 sweep or
+held-out improvement is claimed. Next: commit and immediately push fire.
+
+Sickness portable tools are delivered in `sickness-owner-promotion`. Parent
+prepared `sickness-composed-runner` with 276 source links and only three copied
+runtime files, then applied the scoped patch. Its unchanged source controls
+pass 34/34; ordinary and native composition checks are running. Parent puts
+the four negative-output hashes into the recipe instead of creating a separate
+non-recipe JSON under recipes/, and requires the canonical raw recording.
+Input fields, branch assertions, source controls and raw bytes remain fixed.
+The main sickness-baseline native comparison matches 1,035 of 1,042 styled
+boundaries, all cursors, and twelve of thirteen random streams. No sickness
+runtime change is in main yet. Compose only its scoped three-file patch after
+fire publication, then run selected/public and bounded checks before pushing.
+
 ## 2026-11-25: monster death passes full866; fire and sickness native-exact
 
 Ignition and empty-inventory checkpoint `59ff3a89` is pushed after all 865

@@ -1,0 +1,239 @@
+{
+  "name": "monster-fire-owner",
+  "description": "Natural fire attacks fully clear slime and its delayed cause, preserve resistance and inventory ordering, and use located monster-death feedback.",
+  "segments": [
+    {
+      "name": "hero-food-slime",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "moves": " #levelchange\r30\r                             \u0017uncursed green slime corpse\r\u001b\u001bea    \u001b\u001b\u0007hostile fire ant\rs    s    s    s    s    s    \u001b\u001b"
+    },
+    {
+      "name": "hero-wizard-slime",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "moves": " #levelchange\r30\r                             #wizintrinsic\r100c\r\u001b\u001b\u0007hostile fire ant\rs    s    s    s    s    s    \u001b\u001b"
+    },
+    {
+      "name": "hero-resistant-slime",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "moves": " #levelchange\r30\r                             #wizintrinsic\r i\r  #wizintrinsic\r100c\r\u001b\u001b\u0007hostile fire ant\rs    s    s    s    s    s    \u001b\u001b"
+    },
+    {
+      "name": "hero-healthy",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "moves": " #levelchange\r30\r                             \u0007hostile fire ant\rs    s    s    s    s    s    \u001b\u001b"
+    },
+    {
+      "name": "hero-physical-slime",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "moves": " #levelchange\r30\r                             #wizintrinsic\r100c\r\u001b\u001b\u0007hostile giant ant\rs    s    s    s    s    s    \u001b\u001b"
+    },
+    {
+      "name": "hero-slime-alone",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "moves": " #levelchange\r30\r                             #wizintrinsic\r100c\r\u001b\u001bs    s    s    s    s    s    \u001b\u001b"
+    },
+    {
+      "seed": 21020,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0007tame fire ant\r\u0007hostile paper golem\r\u0014ll.20s        20s        :",
+      "name": "pet-paper-golem"
+    },
+    {
+      "seed": 21020,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0007tame fire ant\r\u0007hostile straw golem\r\u0014ll.20s        20s        :",
+      "name": "pet-straw-golem"
+    },
+    {
+      "seed": 21020,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0007tame fire ant\r\u0007hostile jackal\r\u0014ll.20s        20s        :",
+      "name": "pet-jackal"
+    },
+    {
+      "seed": 21020,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=accessiblemsg,whatis_coord:map\n",
+      "moves": " \u0007tame fire ant\r\u0007hostile paper golem\r\u0014ll.20s        20s        :",
+      "name": "pet-paper-golem-accessible"
+    },
+    {
+      "seed": 21020,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=accessiblemsg,whatis_coord:map\n",
+      "moves": " \u0007tame fire ant\r\u0007hostile jackal\r\u0014ll.20s        20s        :",
+      "name": "pet-jackal-accessible"
+    }
+  ],
+  "coverage": [
+    "level.ordinary",
+    "mode.debug",
+    "survival.timed-status",
+    "ui.getlin",
+    "ui.more-paging"
+  ],
+  "branches": [
+    "monster-fire.hero-food-slime",
+    "monster-fire.hero-wizard-slime",
+    "monster-fire.hero-resistant-slime",
+    "monster-fire.hero-healthy",
+    "monster-fire.hero-physical-slime",
+    "monster-fire.hero-slime-alone",
+    "monster-fire.pet-paper-golem",
+    "monster-fire.pet-straw-golem",
+    "monster-fire.pet-jackal",
+    "monster-fire.pet-paper-golem-accessible",
+    "monster-fire.pet-jackal-accessible"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "monster-fire.hero-food-slime",
+      "segment": 0,
+      "screenIncludes": [
+        "You're on fire!",
+        "The slime that covers you is burned away!",
+        "small glob of green slime"
+      ]
+    },
+    {
+      "branch": "monster-fire.hero-wizard-slime",
+      "segment": 1,
+      "screenIncludes": [
+        "You're on fire!",
+        "The slime that covers you is burned away!"
+      ]
+    },
+    {
+      "branch": "monster-fire.hero-resistant-slime",
+      "segment": 2,
+      "screenIncludes": [
+        "You're on fire!",
+        "The slime that covers you is burned away!",
+        "The fire doesn't feel hot!"
+      ]
+    },
+    {
+      "branch": "monster-fire.hero-healthy",
+      "segment": 3,
+      "screenExcludes": [
+        "The slime that covers you is burned away!"
+      ],
+      "screenIncludes": [
+        "You're on fire!"
+      ]
+    },
+    {
+      "branch": "monster-fire.hero-physical-slime",
+      "segment": 4,
+      "screenExcludes": [
+        "The slime that covers you is burned away!"
+      ],
+      "screenIncludes": [
+        "You are turning into slime."
+      ]
+    },
+    {
+      "branch": "monster-fire.hero-slime-alone",
+      "segment": 5,
+      "screenExcludes": [
+        "The slime that covers you is burned away!"
+      ],
+      "screenIncludes": [
+        "You are turning into slime."
+      ]
+    },
+    {
+      "branch": "monster-fire.pet-paper-golem",
+      "segment": 6,
+      "screenIncludes": [
+        "The paper golem is on fire!",
+        "The paper golem burns completely!"
+      ],
+      "screenExcludes": [
+        "The paper golem is destroyed!"
+      ]
+    },
+    {
+      "branch": "monster-fire.pet-straw-golem",
+      "segment": 7,
+      "screenIncludes": [
+        "The straw golem is on fire!",
+        "The straw golem burns completely!"
+      ],
+      "screenExcludes": [
+        "The straw golem is destroyed!"
+      ]
+    },
+    {
+      "branch": "monster-fire.pet-jackal",
+      "segment": 8,
+      "screenIncludes": [
+        "The jackal is on fire!"
+      ]
+    },
+    {
+      "branch": "monster-fire.pet-paper-golem-accessible",
+      "segment": 9,
+      "screenIncludes": [
+        "<54,16>: The paper golem is on fire!",
+        "<54,16>: The paper golem burns completely!"
+      ],
+      "screenExcludes": [
+        "The paper golem is destroyed!"
+      ]
+    },
+    {
+      "branch": "monster-fire.pet-jackal-accessible",
+      "segment": 10,
+      "screenIncludes": [
+        "<53,16>: The jackal is on fire!"
+      ]
+    }
+  ],
+  "unchangedOutputHashes": {
+    "hero-healthy": {
+      "screens": "9ef7f5e8b3989c4ec7704f0866aeba09e7db9d2f906bee8005bc7bfbef7ab060",
+      "cursors": "5da89811ba238080e95c0436f3140e0958a91cb0d9ffb4ed1a1327f12ece1e91",
+      "rng": "4e35fe02edd0e0f814d62da1c486b69922d48d96c302ff6d844047f7cd7e9da1",
+      "slices": "8b36ee705318b6ee3d9ac0ced9f22453027d3d6ae480fc22c3e71935386da0bf",
+      "frames": "c16180881835d8cce45ca7f841a3efe63dcd809f0bd273be140ba0fe5dd263dd"
+    },
+    "hero-physical-slime": {
+      "screens": "ca2188d12ff34385b776414359b6511d8375cb232a6315abaf9e2b1e54453d14",
+      "cursors": "4b1a03397c6e15e9d1e46ffa285d0eaaa684692dd8ba22543012ee5d1a3a1018",
+      "rng": "2d5de748e9d6475555e582e9b790ecfa722aefb9ed636f336cfb4b13803fc293",
+      "slices": "313081d97d5458db7b5b7a1cbbb62ab0bdf9d99952a7a63eeca21b6d11d52fb2",
+      "frames": "cdcd253169fd9de5ba979845ae7daead78ecf58c5defc688d2d12fce6258b396"
+    },
+    "hero-slime-alone": {
+      "screens": "496361c75c318b3fa1085183891cda626aba9de69319cac99540f97fcb883e91",
+      "cursors": "0228abaef2f99b5da1d8611aaf996b2da3a3844a7845941ddeb21b92c9bc07d8",
+      "rng": "2abe39fa6ebc4cb8788e477f19c03ea5928140898ea0afb63362d4c5dd91a48e",
+      "slices": "f29a665d8236ce59a8d727df73d9930a1715118e69778df86eaa2a8f0e8e17e4",
+      "frames": "fc482d9dff1398983f90ceb73ffa4effb77458765e1f976f5ae5b7b76fe41780"
+    },
+    "pet-jackal": {
+      "screens": "dbd7c581495c4f16f618dd5c0e2cf1e03309ff8eb530fe4e00d64bb3482fb14a",
+      "cursors": "96ab44e7447d3adaf83a6824a870e982e94eccead2d6c5e53eb84feb5cdfed2e",
+      "rng": "e269c5fa0085c7b7553d0f4881de8063a2027f5c206aa4c3acba58e4ee0e4b14",
+      "slices": "207b94c7aed368024b275fad5f624fd1139eded68b7c74814574fb9781780343",
+      "frames": "9da6ecd5f7ea314476e04cefa7ef8d7f355e8e4f1bb2850782a2253cd93f7ad8"
+    }
+  }
+}

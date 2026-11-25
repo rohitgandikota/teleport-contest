@@ -1,5 +1,45 @@
 # STATUS — live handoff board
 
+## 2026-11-25: queued message locations pass full880
+
+Rooted and mounted movement is pushed as `7e88961d`. The next runtime change
+is one hunk in display.pline: capture and consume the current message's location
+before delivering earlier monster notices. Each notice keeps its own location.
+The portable source gate passes 50 controls, versus 16 before. All 637 members
+of its source packet remain fixed. Eleven retained suites, source audit and
+two syntax checks pass. The eight retained native cases match 1,185 styled
+boundaries/cursors, 21,110 calls and ordered slices, and one frame.
+
+All 70 selected/public recordings match 50,919 screens/cursors, 1,304,084 random
+positions and 3,312 frames. The strict eight-second check passes 69/70; the
+39-segment message-locations aggregate exceeds that budget on both fixed
+runtimes. Baseline and candidate finish with exact outputs in 11.57 and 12.26
+seconds at the default 45-second budget. The original timeout remains recorded;
+this diagnostic is not a strict pass or a performance claim.
+
+Full880 passes on NFS with two workers, default budgets and no retries:
+911,757 screens/cursors, 19,290,393 random positions and 32,820 frames. All 1,170
+files match current main. The run links 877 prior recordings and uploads only
+source and three new recordings. NFS root:
+`/share/NFS/u/rohit/research/contest/artifacts/2026-11-22/notice-location-full880-js-20261125`.
+All-files SHA256: `19ba70f028ef81bf7c37e53f553782e1ee01e891c3ca5084f5aee255039533ff`.
+Full receipt SHA256: `8e558b8265415a86ec1eded183a63f159b5cc0c72be547460ae95b94c40cd62b`.
+Main receipt: `notice-location-main-verification.json`, SHA256
+`7920157d1c05e897a60edaba04f4bf0ed6a2e179c506338cdd6c0917ec61ff0e`.
+Commit and immediately push this checkpoint. All 880 recordings and prior
+branch requirements remain unchanged.
+
+Four earlier queued-notice diagnostics remain outside this hunk: three
+alternative message entry points leave notices queued, and Norep flags can
+incorrectly suppress an earlier notice. Their separate owner review continues.
+The article fruit prerequisite is sealed with 21/21 source controls versus9;
+parent native comparison is next. Its original Excalibur sit negative still
+fails the old screen hash, explicitly preserved because this separate helper
+fix changes that output. Swim danger has 52/52 source controls versus36 and
+ordinary input work underway. Parent has started complete forcefight owner
+review, with no patch yet. Latest observed leaderboard remains rank7 with659
+unmatched screens. Local corpus parity does not establish held-out parity.
+
 ## 2026-11-25: rooted and mounted movement verified; full880 running
 
 Pet and sight-recovery messages are pushed as `b5100d6e`. The redundant parent

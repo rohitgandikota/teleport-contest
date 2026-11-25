@@ -2557,10 +2557,12 @@ export function message_with_location(msg) {
 }
 
 export async function pline(msg) {
+    /* src/pline.c:162-173: save this message's location before earlier
+       queued notices set and consume their own locations. */
+    msg = message_with_location(msg);
     /* a monster notice queued by a synchronous docrt() (window erase) is
        an earlier pline in C; deliver it before this message */
     await notice_all_mons_flush();
-    msg = message_with_location(msg);
     if (!msg) return;
     let msgtyp = MSGTYP_NORMAL;
 

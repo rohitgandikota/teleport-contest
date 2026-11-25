@@ -13,31 +13,19 @@ Ground rules are in `/CLAUDE.md`. Read that first if you have not.
 ## Current focus, 2026-11-25
 
 
-The message-location checkpoint is pushed as `b5100d6e`. Rooted and mounted
-movement is now verified for publication:41 source controls,27 ordinary
-assertions, nine exact C cases,72 selected/public recordings and72 strict
-workers pass. All879 prior recordings remain fixed; the corpus is880.
-The separate queued-location candidate passes50 controls and is in a fresh
-full880 NFS run with two workers,877 reused recordings and three new recordings.
-That run is still active. Its snapshot includes the rooted/steed change but
-the display hunk remains outside main until verification completes.
-Article naming retains two native failures under a separate helper review.
-See the newest STATUS entry for publication and full-run receipts.
+The rooted and mounted movement checkpoint is pushed as `7e88961d`. The next
+verified checkpoint captures message locations before draining monster notices.
+Its 50 source controls pass versus16 before; all70 selected/public recordings,
+eleven retained suites and eight native cases pass. The strict eight-second
+check passes69/70. The large message-location batch matches both fixed runtimes
+within the scorer's default45-second budget; its original timeout remains.
 
-
-
-Free action is pushed as `a42abe34`. The next checkpoint is verified: six
-message calls in dog.js and mon.js now preserve C's monster coordinates.
-All84 source controls, eight native cases,72 selected/public recordings and72
-strict workers pass, along with nine retained suites. Two parent command
-invocation failures were corrected using existing test support; originals remain.
-The native cases match1,185 styled boundaries/cursors,21,110 calls and one frame.
-The maintained corpus is879; full877 predates the last two checkpoints.
-See the top STATUS entry for the exact receipt and immediate publication step.
-Rooted/steed comparisons pass9/9 and await composition. Article comparisons
-pass12/14; the two Excalibur-fruit failures require further source review.
-The common queued-notice location fix is sealed separately with50 passing
-source controls and four remaining diagnostic failures outside its scope.
+Fresh full880 passes on NFS with two workers and no retries or timeout overrides:
+911,757 screens/cursors,19,290,393 random positions and32,820 frames. All1,170
+snapshot files match current main. See the newest STATUS entry for exact
+receipts and immediate publication. Four separate notice-queue diagnostics
+remain open. Article naming's fruit prerequisite is sealed but awaits native
+comparison; swim danger and forced attacks remain under source review.
 
 
 The storage cleanup is complete. The user explicitly authorized deleting

@@ -1,5 +1,56 @@
 # STATUS — live handoff board
 
+## 2026-11-25: full875 passes; movement ready for publication
+
+Potion vapor is pushed as `cf5c3729`. Its main receipt is
+`breathing-main-verification.json`, SHA256
+`6da1ef0e5473900c254db07fe62643eb69147ee7fb122e64500cef0d81fc9fba`.
+All seventy selected/public fixtures match 34,701 screens/cursors, 1,442,686
+random positions and 1,626 frames. Its redundant parent recording now links
+to the canonical fixture, removing 1,772,641 bytes after checksum verification.
+
+Current main changes only cmd.js and hack.js with the scoped trapmove owner
+and caller patch. Published losehp remains intact. All 44 source controls and
+27 ordinary assertions pass, versus 28 and 22 before. All nine native cases
+match 917 styled boundaries/cursors, 21,020 calls/slices and 60 frames.
+All sixty selected/public fixtures, sixty eight-second workers, eight retained
+suites, source audit and four syntax checks pass. Prior recordings and branch
+requirements remain fixed; nine requirements and one fixture are appended.
+
+Full875 passes with two NFS workers, default 45-second budgets and no retries:
+905,488 screens/cursors, 19,178,049 random positions and 32,811 frames. Root:
+`/share/NFS/u/rohit/research/contest/artifacts/2026-11-22/movement-full875-js-20261125`.
+It links 872 prior recordings and uploads only three new recordings plus
+source. All 1,165 files are fixed. All-files SHA256:
+`740d8b1ef74799b4b9c9e6b89c9fe1f30fb18fc00363a2782c6b0ae04d95900b`.
+Compact receipt `movement-full875-remote/verification.json`, SHA256
+`ea1d2bacfe2eaac4344ac390c8139fce56d1ef423b3cb7a54253764403e6174f`.
+No bulk logs were downloaded. Setup initially confused archive and executable
+hashes; the executable is verified against the pinned archive member. Rsync
+returned 23, but all 293 transferred files were independently hash-verified
+before launch. These were setup failures, not replay retries. Final main receipt
+is `movement-main-verification.json`. Commit and immediately push movement.
+
+The separate poison composition passes 45 source controls, ten ordinary cases
+and all ten native comparisons: 2,116 styled boundaries, 25,166 calls/slices,
+zero frames. It changes only attrib.js, objnam.js and rumors.js. Parent's
+composition patch changes only a provenance comment's punctuation relative to
+the sealed patch. Portable payload hashes match the tested runner. No poison
+runtime edits are on main yet. Promote only after movement publication, then
+run the focused main checks. Its CapitalMon DEBUG listing remains explicitly
+unverified and unported; no diagnostic-branch closure is claimed.
+
+Parent also read complete wiz_intrinsic and the free-action readers. The
+wizard default writes intrinsic time into the extrinsic alias, while two
+readers accept HFree_action despite C's extrinsic-only macro. Research is in
+`free-action-source-review`; there is no runtime patch. Eight exploratory C
+cases reached final version output, including sleeping/paralysis and vapor
+effects. The amulet case has not demonstrated sleep resistance and must be
+replaced or excluded. These proposals are not maintained coverage or native
+parity claims. Monster blindness, further movement and article-owner reviews
+continue independently. Latest observed leaderboard remains rank 7; no newer
+held-out score is claimed from local verification.
+
 ## 2026-11-25: potion vapor verified for publication; movement native cases exact
 
 Death-cause preservation is pushed as `f93c8bed`. Its 62 selected/public

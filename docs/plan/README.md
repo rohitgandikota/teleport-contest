@@ -101,17 +101,23 @@ source controls and eight C cases on main: 533 styled boundaries, 18,651 calls
 and zero frames. All 62 selected/public fixtures, 62 eight-second workers,
 seven retained suites, source audit and four syntax checks pass. Its new
 fixture brings the corpus to 873, outside the completed full872 run.
-Death causes are pushed as `f93c8bed`. The sole unpublished runtime change is
-now potionbreathe. It passes 149 owner and eight ordering controls, eleven
+Death causes are pushed as `f93c8bed`. Potionbreathe is pushed as `cf5c3729`.
+It passes 149 owner and eight ordering controls, eleven
 ordinary cases, and eleven native comparisons on the current composition:
 1,342 styled boundaries, 25,373 calls and zero frames. All seventy selected/public
 fixtures, seventy eight-second workers, seven retained suites, source audit
 and four syntax checks pass. The corpus is 874, outside full872. Movement passes 44
 source controls, 27 ordinary assertions and nine native comparisons in its
 sealed source snapshot: 917 boundaries, 21,020 calls and 60 frames. Its
-current-main composition also passes, without main edits. Full875 NFS setup
-is pending transport; no replay result is claimed yet. Further source
-reviews cover poison handling, movement and monster blindness feedback.
+current-main composition is now installed and passes all sixty selected/public
+fixtures, sixty eight-second workers, eight retained suites, source audit and
+four syntax checks. Full875 passes on NFS with default budgets and no retries:
+905,488 screens/cursors, 19,178,049 random positions and 32,811 frames. All
+1,165 source, recording and scorer files remain fixed. Only the movement
+runtime changes are unpublished. Poison is separately composed with 45 source
+controls, ten ordinary cases and ten exact native comparisons, pending main
+integration. Further source reviews cover article handling, movement, monster
+blindness feedback and intrinsic free action.
 These local results do not establish a newer held-out score.
 
 Publication resumed with `2089260a` after the earlier approval-review usage

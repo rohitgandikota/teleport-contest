@@ -4314,6 +4314,15 @@
     {"group": "potion-breathing-owner", "id": "potion-breathing.owner.invisibility-see-timed", "cFile": "src/potion.c", "cFunction": "potionbreathe", "description": "timed see-invisible chooses transparent feedback"},
     {"group": "potion-breathing-owner", "id": "potion-breathing.owner.invisibility-stalker", "cFile": "src/potion.c", "cFunction": "potionbreathe", "description": "stalker invisibility suppresses flash and knowledge"},
     {"group": "potion-breathing-owner", "id": "potion-breathing.owner.invisibility-form-see", "cFile": "src/potion.c", "cFunction": "potionbreathe", "description": "Woodland-elf perception chooses transparent feedback"},
-    {"group": "potion-breathing-owner", "id": "potion-breathing.owner.invisibility-ring-blocked", "cFile": "src/potion.c", "cFunction": "potionbreathe", "description": "mummy wrapping blocks ring invisibility and allows identification"}
+    {"group": "potion-breathing-owner", "id": "potion-breathing.owner.invisibility-ring-blocked", "cFile": "src/potion.c", "cFunction": "potionbreathe", "description": "mummy wrapping blocks ring invisibility and allows identification"},
+    {"group": "Hero trap escape movement owner", "id": "movement-owner.joined-climb", "cFile": "src/hack.c", "cFunction": "domove_core / trapmove", "description": "joined-climb: You are still in a pit."},
+    {"group": "Hero trap escape movement owner", "id": "movement-owner.adjacent-climb", "cFile": "src/hack.c", "cFunction": "domove_core / trapmove", "description": "adjacent-climb: You are still in a pit."},
+    {"group": "Hero trap escape movement owner", "id": "movement-owner.joined-escape-next-step", "cFile": "src/hack.c", "cFunction": "domove_core / trapmove", "description": "joined-escape-next-step: You crawl to the edge of the pit., You fall into a pit!"},
+    {"group": "Hero trap escape movement owner", "id": "movement-owner.adjacent-escape-next-step", "cFile": "src/hack.c", "cFunction": "domove_core / trapmove", "description": "adjacent-escape-next-step: You crawl to the edge of the pit., You fall into a pit!"},
+    {"group": "Hero trap escape movement owner", "id": "movement-owner.sting-wielded", "cFile": "src/hack.c", "cFunction": "domove_core / trapmove", "description": "sting-wielded: You are caught by a spider web!, Sting cuts through the web!"},
+    {"group": "Hero trap escape movement owner", "id": "movement-owner.sting-carried", "cFile": "src/hack.c", "cFunction": "domove_core / trapmove", "description": "sting-carried: You are caught by a spider web!, You are stuck to the web."},
+    {"group": "Hero trap escape movement owner", "id": "movement-owner.plain-wielded", "cFile": "src/hack.c", "cFunction": "domove_core / trapmove", "description": "plain-wielded: You are caught by a spider web!, You are stuck to the web."},
+    {"group": "Hero trap escape movement owner", "id": "movement-owner.plain-entry-negative", "cFile": "src/hack.c", "cFunction": "domove_core / trapmove", "description": "plain-entry-negative: You fall into a pit!"},
+    {"group": "Hero trap escape movement owner", "id": "movement-owner.pick-unjoined-negative", "cFile": "src/hack.c", "cFunction": "domove_core / trapmove", "description": "pick-unjoined-negative: You swing your pick-axe, but the rubble has no place to go."}
   ]
 }

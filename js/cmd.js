@@ -179,7 +179,7 @@ import { dowieldquiver, dowield, doswapweapon, dotwoweapon } from './wield.js';
 import { dozap } from './zap.js';
 import { dist2, distmin } from './hacklib.js';
 import { place_object } from './mkobj.js';
-import { trapname, feeltrap } from './trap.js';
+import { trapname, feeltrap, reset_utrap } from './trap.js';
 import { move_out_of_bounds } from './hack.js';
 
 // C ref: hack.c — check if a cell blocks movement
@@ -2883,15 +2883,13 @@ async function domove_core() {
     if (await avoid_trap_andor_region(newx, newy))
         return;
 
-    /* src/hack.c:2831 — when u.utrap is true the struggle may consume the
-       move: trapmove() returns FALSE to stay put (time passes), TRUE when
-       the hero escaped or may proceed. */
+    /* src/hack.c:2831, a walk attempts escape from the current trap.
+       Even successful escape may consume the move without changing position. */
     if (game.u.utrap) {
-        const desttrap = t_at(newx, newy);
-        const moved = await trapmove(newx, newy, desttrap);
+        const moved = await trapmove(newx, newy, null);
         if (!game.u.utrap) {
             (game.disp ||= {}).botl = true;
-            game.u.utraptype = 0;   /* reset_utrap */
+            await reset_utrap(true); /* might resume levitation or flight */
         }
         if (!moved)
             return;

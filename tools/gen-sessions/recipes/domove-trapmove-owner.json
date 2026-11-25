@@ -1,0 +1,209 @@
+{
+  "name": "domove-trapmove-owner",
+  "description": "C-grounded ordinary keyboard proposals. JS reach is measured here; parent native recording pending.",
+  "coverage": [
+    "level.ordinary",
+    "mode.debug",
+    "ui.getlin",
+    "ui.more-paging"
+  ],
+  "segments": [
+    {
+      "seed": 7401,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "joined-climb",
+      "moves": " #levelchange\r15\r               l \u0017pit trap\r  \u001b\u001bl \u0017pit trap\r  \u001b\u001b#sit\r   \u0005   \u001b\u001b\u0017uncursed pick-axe\r  \u001b\u001bwa   \u001b\u001baah    hy      V"
+    },
+    {
+      "seed": 7401,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "adjacent-climb",
+      "moves": " #levelchange\r15\r               l \u0017pit trap\r  \u001b\u001bl \u0017pit trap\r  \u001b\u001b#sit\r   \u0005   \u001b\u001bhy       V"
+    },
+    {
+      "seed": 7401,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "joined-escape-next-step",
+      "moves": " #levelchange\r15\r               l \u0017pit trap\r  \u001b\u001bl \u0017pit trap\r  \u001b\u001b#sit\r   \u0005   \u001b\u001b\u0017uncursed pick-axe\r  \u001b\u001bwa   \u001b\u001baah    hy   hy   hy   hy   V"
+    },
+    {
+      "seed": 7401,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "adjacent-escape-next-step",
+      "moves": " #levelchange\r15\r               l \u0017pit trap\r  \u001b\u001bl \u0017pit trap\r  \u001b\u001b#sit\r   \u0005   \u001b\u001bhy   hy   hy   hy   hy   V"
+    },
+    {
+      "seed": 7401,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "sting-wielded",
+      "moves": " #levelchange\r15\r               l \u0017uncursed Sting\r  \u001b\u001bwa   \u001b\u001b\u0017web trap\r  \u001b\u001b#sit\r   \u001b\u001bl      V"
+    },
+    {
+      "seed": 7401,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "sting-carried",
+      "moves": " #levelchange\r15\r               l \u0017uncursed Sting\r  \u001b\u001b\u0017web trap\r  \u001b\u001b#sit\r   \u001b\u001bl      V"
+    },
+    {
+      "seed": 7401,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "plain-wielded",
+      "moves": " #levelchange\r15\r               l \u0017uncursed elven dagger\r  \u001b\u001bwa   \u001b\u001b\u0017web trap\r  \u001b\u001b#sit\r   \u001b\u001bl      V"
+    },
+    {
+      "seed": 7401,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "plain-entry-negative",
+      "moves": " #levelchange\r15\r               l \u0017pit trap\r  \u001b\u001b#sit\r       V"
+    },
+    {
+      "seed": 7401,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "pick-unjoined-negative",
+      "moves": " #levelchange\r15\r               l \u0017pit trap\r  \u001b\u001bl \u0017pit trap\r  \u001b\u001b#sit\r   \u0005   \u001b\u001b\u0017uncursed pick-axe\r  \u001b\u001bwa   \u001b\u001baal    V"
+    }
+  ],
+  "branches": [
+    "movement-owner.joined-climb",
+    "movement-owner.adjacent-climb",
+    "movement-owner.joined-escape-next-step",
+    "movement-owner.adjacent-escape-next-step",
+    "movement-owner.sting-wielded",
+    "movement-owner.sting-carried",
+    "movement-owner.plain-wielded",
+    "movement-owner.plain-entry-negative",
+    "movement-owner.pick-unjoined-negative"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "movement-owner.joined-climb",
+      "segment": 0,
+      "screenIncludes": [
+        "You are still in a pit."
+      ],
+      "screenExcludes": [
+        "You move into an adjacent pit.",
+        "You stumble over debris"
+      ]
+    },
+    {
+      "branch": "movement-owner.adjacent-climb",
+      "segment": 1,
+      "screenIncludes": [
+        "You are still in a pit."
+      ],
+      "screenExcludes": [
+        "You move into an adjacent pit.",
+        "You stumble over debris"
+      ]
+    },
+    {
+      "branch": "movement-owner.joined-escape-next-step",
+      "segment": 2,
+      "screenIncludes": [
+        "You crawl to the edge of the pit.",
+        "You fall into a pit!"
+      ],
+      "screenExcludes": [
+        "You move into an adjacent pit.",
+        "You stumble over debris"
+      ]
+    },
+    {
+      "branch": "movement-owner.adjacent-escape-next-step",
+      "segment": 3,
+      "screenIncludes": [
+        "You crawl to the edge of the pit.",
+        "You fall into a pit!"
+      ],
+      "screenExcludes": [
+        "You move into an adjacent pit.",
+        "You stumble over debris"
+      ]
+    },
+    {
+      "branch": "movement-owner.sting-wielded",
+      "segment": 4,
+      "screenIncludes": [
+        "You are caught by a spider web!",
+        "Sting cuts through the web!"
+      ]
+    },
+    {
+      "branch": "movement-owner.sting-carried",
+      "segment": 5,
+      "screenIncludes": [
+        "You are caught by a spider web!",
+        "You are stuck to the web."
+      ],
+      "screenExcludes": [
+        "Sting cuts through the web!"
+      ]
+    },
+    {
+      "branch": "movement-owner.plain-wielded",
+      "segment": 6,
+      "screenIncludes": [
+        "You are caught by a spider web!",
+        "You are stuck to the web."
+      ],
+      "screenExcludes": [
+        "Sting cuts through the web!"
+      ]
+    },
+    {
+      "branch": "movement-owner.plain-entry-negative",
+      "segment": 7,
+      "screenIncludes": [
+        "You fall into a pit!"
+      ]
+    },
+    {
+      "branch": "movement-owner.pick-unjoined-negative",
+      "segment": 8,
+      "screenIncludes": [
+        "You swing your pick-axe, but the rubble has no place to go."
+      ]
+    }
+  ],
+  "unchangedOutputHashes": {
+    "sting-carried": {
+      "screens": "ef865e13bb84a4eb8a9aaa135ab998a139a9c7b9686aec7e400266d11a015020",
+      "cursors": "2c4e2b8747c3a286c0781e5dccc55e2ff1d6942d40ed42dad936b3ae9eb71c4a",
+      "rng": "f6e28f52b11914aa3d77d005e9100a3260f7048381f6168fa6637fbee37dc0e1",
+      "slices": "f80bcccbcdfbfd65642ed5e326c421c264d7208b21cad00ba266f4a032b76a3b",
+      "frames": "ca4b48c4d6af158f0d9c327a0a0b4bc6fb500c36c998d54a3e66b0f7a9e0f381"
+    },
+    "plain-wielded": {
+      "screens": "84355f87408a952ce66750ef0daf2026efc9afc2e77e589e114bb7e04253977e",
+      "cursors": "7295364e0e16d9308766b33a242d24c3559964fc74c5e44cc5caabf6b1baad61",
+      "rng": "0135306950476fc77011ed30ef98771f90c06c595179c55a96fd010abfc3e2a4",
+      "slices": "ca527df7c952b3281ecbbf2d2fead11a308a6bac8269240a42c09af7d973b8ab",
+      "frames": "c6d3a06babbec7a367f9aa47e4dbc2791f83d94f1ba773cef23af4dcdd850556"
+    },
+    "plain-entry-negative": {
+      "screens": "10deb7b8a930005bd0ff8d36172e107e1c81cb2e77d338c5dfcd76463d7799a7",
+      "cursors": "2f4a0a0089f5de9782a70f70e145d617a700fb73a694ccbc4db818e226083b5b",
+      "rng": "4f0f7e284160aa0e70f80baf70cccfa6222ef3e7bfc8df9f7ab3f72b8e30dede",
+      "slices": "04b61a07b20412242847ace02a5f4f2777cb99d82ad62d1289f57f8aec5d4560",
+      "frames": "c1b907fd988f1c4dbfb5f9a1348edc5d9455cd8a1f3b175d134fd4e48a607b02"
+    },
+    "pick-unjoined-negative": {
+      "screens": "d31c0eb4477104a63235f8ca504366e4a95d2bbbad4c65ffa29ac476bbf1d07b",
+      "cursors": "cb3fc038e8fa3b567a6a80297fb5901e8ddb21b3e6781de9e67d73a2338474d1",
+      "rng": "1ef13d88ff70c235bed95ecea9ca0c79d36479872cf8bb3a994fce1af54e4ed9",
+      "slices": "8d36a660b2c3fdea32a297bbaaf0cda120615008d8a7eb8eb2589158b400eabf",
+      "frames": "2118de6a4a75dd182cabc9c7c05100cd752a1983ebc6ef80b0ca5541c2e3da18"
+    }
+  }
+}

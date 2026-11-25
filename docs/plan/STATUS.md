@@ -8475,6 +8475,65 @@ The sealed source candidate matches all six cases, 780 styled boundaries and
 verification remain next. The original six input tuples and raw outputs are
 fixed. Other source workers continue their disjoint assigned owners.
 
+## 2026-11-25: eating prelude passes; new native reach measured
+
+Golem checkpoint `83bd4830` pushed successfully; process 63150 closed with
+exit 0. Eating-prelude composition process 65269 also closed with exit 0.
+Its independent verifier passes 24 checks, 119 controls, sixteen focused
+fixtures, all 44 public sessions and sixty bounded input workers. The focused
+suite covers 107 segments, 7,625 screens/cursors, 344,403 scored random-call
+positions and 72 frames.
+
+The six fresh C cases match all five complete output collections over 780
+boundaries and 16,769 calls. This fixes 155 styled boundaries, 21 cursors and
+fifteen random-call slices. The original baseline had 16,986 calls versus C's
+16,769; no stream alignment or oracle rewriting is used. Both unaffected
+cases preserve all five hashes. The new fixture and three retained nonfood,
+accessory and artifact fixtures also match strict native and deferred output
+across 39 segments, 4,357 boundaries, 107,610 calls and one frame.
+
+Only `eat.js` and `youprop.js` change. The complete eleven-arm
+`edibility_prompts` owner follows C order and bounds; `doeat` consumes the
+one-use sense after warning completion and uses real `still_chewing` for the
+iron-bar sentinel. Four floor questions preserve C's repeat flag. The Rider
+nonrotting guard and dragon disease-defense prerequisite are restored.
+The private source loader exports existing bindings only; production adds no
+exports, stubs or substituted helper bodies. Generic long-query truncation
+and the remaining ordinary-food tail are separate recorded audits.
+
+All 279 runtime files and twelve support files are fixed. Reverse application
+recovers the baseline. All 822 prior raw files are unchanged; the registry
+only appends six rows. Source seal, failed baseline, raw C input/output,
+negative hashes and comparison rules remain fixed. Verification SHA-256:
+`e8b18df2cdddec10a88532321a8155a6cf2f5ed1446c9824afcf399cc64d2c01`.
+Integration receipt: `.cache/restart-20261122/doeat-prelude-main-integration.json`.
+The maintained corpus is 823, outside full820. Publish this checkpoint now.
+
+The CPU-only NFS golem/prelude replay and coverage union closed with exit 0,
+process 60700. Both instrumented recordings match their original Mac raw bytes.
+Four compact reports were downloaded and hash checked, process 68153 exit 0.
+The union credits 817 inputs in 104 layouts and covers 4,580/5,492 functions
+plus 60,601/107,260 branch outcomes, adding five functions and 137 outcomes.
+All 103 preceding run records and source/binary/control/rejection pins remain
+unchanged. The additional native pool contains 136 inputs and 555 segments,
+plus three Linux controls with fourteen segments. This measures C reach only.
+Bulk artifacts remain on NFS at
+`/share/NFS/u/rohit/research/contest/artifacts/2026-11-22/c-coverage-compress.E84JI2/verified-golem-prelude-union-20261125`.
+Local receipt: `.cache/restart-20261122/linux-coverage-golem-prelude-download.json`.
+Summary SHA-256:
+`f32d92dfed26f5608c1798e7c25ab156f66ee1e9292d625a93313de1fd470553`.
+Compact SHA-256:
+`cf2aea7454dcf606100a71414502b84c8e9624990df256c38ad8e702430d6bf4`.
+
+The sealed defensive-tin audit found a real curse-versus-welding error in
+`mcould_eat_tin`. Parent recorded its four original inputs successfully;
+raw SHA-256 is `c8d49d5632e456878ab4c53eb9e4e9ead31df27654f979c99ae232dabf1bfe14`.
+Native comparison and current-main composition are next. The hero-status
+source audit also arrived; its cloud bound is constructed-only and depends
+on a separately missing shared-message truncation rule. Source workers now
+continue misc monster-item use, shared message/query bounds, background
+inspection and accessory wearing in disjoint fixed snapshots.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

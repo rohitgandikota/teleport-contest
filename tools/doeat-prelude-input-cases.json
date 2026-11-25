@@ -1,0 +1,90 @@
+{
+    "negativeHashes": {
+        "3": {
+            "screens": "ab21b83b2362014fc83b29924c1cbe19830093b3ad135f50c200c9765a4272ee",
+            "cursors": "62a0bbd04e0de7f468444add58fe7bd6ff126592dbfa7e33729b34eff17a6cb0",
+            "rng": "6b612042eedced575f9c655a72c2d7b6cd671894e0a82247f9cb9400d1a9aa1a",
+            "slices": "fc8ecd04d476d0fbed2723287ec55a2002606400ed289881c69a03f2edabff9a",
+            "frames": "2d3597cad916e527a3379ecacabb0b871934eb839ca71ad8d48da33fc5afbdd5"
+        },
+        "5": {
+            "screens": "4d3f9c2f7379f4ad0ac500119b4e4c0f700d4669e0531abc2471467f17369b6a",
+            "cursors": "15b851134361292519d3b026a05f847d151748431cc8f131e1726577ba5f8aa5",
+            "rng": "2009166a4f54844b7571bcb4187acb69fdade0978abaa305ffafc5f3a29d5aed",
+            "slices": "acf808ff3f8bf07e1c3540f62891cf786af1ce0c3d9d48c6343c6ab6abf936eb",
+            "frames": "b86647c3fcd094442688a9e26f6faad8a5d26459fb781461216d57253e03d344"
+        }
+    },
+    "visible": [
+        [
+            0,
+            95,
+            "The apple smells like it might have been poisoned.  Eat it anyway?"
+        ],
+        [
+            0,
+            96,
+            "Your nose stops tingling"
+        ],
+        [
+            0,
+            111,
+            "a - an apple"
+        ],
+        [
+            1,
+            57,
+            "You start chewing on a bar.  You pause to swallow."
+        ],
+        [
+            1,
+            73,
+            "You continue chewing on the bars."
+        ],
+        [
+            1,
+            89,
+            "You devour the iron bars."
+        ],
+        [
+            2,
+            145,
+            "The dagger smells disgusting to you right now."
+        ],
+        [
+            2,
+            146,
+            "Your nose stops tingling"
+        ],
+        [
+            2,
+            161,
+            "a - a dagger"
+        ],
+        [
+            3,
+            114,
+            "Not carrying anything."
+        ],
+        [
+            4,
+            142,
+            "The apple smells like it might have been poisoned."
+        ],
+        [
+            4,
+            143,
+            "Your nose stops tingling"
+        ],
+        [
+            4,
+            158,
+            "b - an apple"
+        ],
+        [
+            5,
+            27,
+            "You don't have anything to eat."
+        ]
+    ]
+}

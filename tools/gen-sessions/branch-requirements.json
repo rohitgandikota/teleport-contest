@@ -3868,6 +3868,12 @@
     {"group":"Accessory eating effects","id":"accessory-eating-effects.wood-consumed-no-effect","cFile":"src/eat.c","cFunction":"eataccessory","description":"accessory wood consumed no effect"},
     {"group":"Polymorphed explosion golem feedback","id":"polymorph-explosion-golem-feedback.sphere-golem-located-slow","cFile":"src/mon.c","cFunction":"golemeffects","description":"sphere slow"},
     {"group":"Polymorphed explosion golem feedback","id":"polymorph-explosion-golem-feedback.sphere-golem-plain-control","cFile":"src/mon.c","cFunction":"golemeffects","description":"sphere plain"},
-    {"group":"Polymorphed explosion golem feedback","id":"polymorph-explosion-golem-feedback.sphere-ordinary-victim-control","cFile":"src/mon.c","cFunction":"golemeffects","description":"sphere goblin"}
+    {"group":"Polymorphed explosion golem feedback","id":"polymorph-explosion-golem-feedback.sphere-ordinary-victim-control","cFile":"src/mon.c","cFunction":"golemeffects","description":"sphere goblin"},
+    {"group":"Eating prelude and edibility","id":"eating-prelude-edibility-bars.blessed-apple-warning","cFile":"src/eat.c","cFunction":"edibility_prompts","description":"Decline a blessed-detection apple warning while retaining the original uneaten apple"},
+    {"group":"Eating prelude and edibility","id":"eating-prelude-edibility-bars.iron-bars-xorn","cFile":"src/eat.c","cFunction":"doeat","description":"Chew current-square iron bars across three choices and dissolve them on completion"},
+    {"group":"Eating prelude and edibility","id":"eating-prelude-edibility-bars.blessed-rustproof-warning","cFile":"src/eat.c","cFunction":"edibility_prompts","description":"Decline the rustproof-metal warning without stripping or dropping the dagger"},
+    {"group":"Eating prelude and edibility","id":"eating-prelude-edibility-bars.unblessed-carrot-negative","cFile":"src/eat.c","cFunction":"doeat","description":"Consume an ordinary carrot without blessed edibility sense"},
+    {"group":"Eating prelude and edibility","id":"eating-prelude-edibility-bars.safe-carrot-retains-warning","cFile":"src/eat.c","cFunction":"doeat","description":"Consume safe food while retaining edibility sense, then decline the later apple warning"},
+    {"group":"Eating prelude and edibility","id":"eating-prelude-edibility-bars.human-bars-negative","cFile":"src/eat.c","cFunction":"floorfood","description":"Reject eating iron bars without a metallivorous form"}
   ]
 }

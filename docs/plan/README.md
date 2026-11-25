@@ -65,7 +65,7 @@ boundaries and 50,095 calls, correcting five screens. The fifteen unaffected
 cases preserve all five original output collections. The maintained corpus is
 821. This new runtime is outside the completed full820 regression.
 
-Golem elemental feedback is verified for publication. It reuses the complete
+Golem elemental feedback is pushed as `83bd4830`. It reuses the complete
 monster speed owner and locates healing messages at the affected monster.
 All 18 checks, 41 controls, 12 focused fixtures, 44 public sessions and 56
 bounded workers pass. Three new C cases match all 297 styled boundaries,
@@ -74,13 +74,21 @@ collections. Deferred checks also pass on the new fixture and two retained
 engulfing fixtures. The maintained corpus is 822. No full822 sweep or new
 held-out result is claimed.
 
-The latest shared-machine C coverage run accepts the complete accessory
-recording byte for byte. The union covers 4,575/5,492 functions and
-60,464/107,260 branch outcomes across 815 credited inputs and 103 instrumented
-layouts. This adds three functions and 97 outcomes after the status/altar
-expansion. All 102 previous run hashes are unchanged. `bounded_increase` now
-has eight native calls and covers 20/38 outcomes; `eataccessory` covers 55/86.
-These figures measure C reach, not JS parity or complete source coverage.
+Eating warnings and iron-bar dispatch are verified for publication. The port
+now follows all eleven ordered food-warning branches, one-use sense lifetime,
+real chewing dispatch and floor-answer repeat flags. The prerequisite disease
+resistance check includes the existing dragon defense. All 24 checks, 119
+controls, 16 focused fixtures, 44 public sessions and 60 bounded workers pass.
+Six new C cases match all 780 styled boundaries and 16,769 calls, fixing 155
+styled boundaries. Both unaffected cases preserve all five output collections.
+The maintained corpus is 823, outside the completed full820 runtime.
+
+The latest shared-machine C coverage run accepts both the golem and eating
+recordings byte for byte. The union covers 4,580/5,492 functions and
+60,601/107,260 branch outcomes across 817 credited inputs and 104 instrumented
+layouts. This adds five functions and 137 outcomes after the accessory run.
+All 103 previous run records are unchanged. These figures measure C reach,
+not JS parity or complete source coverage.
 
 The preceding full regression passes all 817 fixtures: 853,841 screens/cursors,
 17,766,231 scored RNG positions and 32,296 frames. Both fixed-runtime shards

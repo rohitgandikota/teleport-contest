@@ -41,11 +41,11 @@ import { will_feel_cockatrice } from './invent.js';
 import { g_at } from './invent.js';
 import { hands_obj } from './invent.js';
 import { obj_extract_self } from './invent.js';
-import { inv_cnt } from './hack.js';
+import { inv_cnt, still_chewing } from './hack.js';
 import { an } from './objnam.js';
 import { ansimpleoname } from './objnam.js';
 import { safe_qbuf } from './objnam.js';
-import { otense } from './objnam.js';
+import { otense, Tobjnam } from './objnam.js';
 import { the_unique_pm } from './objnam.js';
 import { corpse_xname } from './objnam.js';
 import { killer_xname } from './objnam.js';
@@ -207,7 +207,7 @@ import { is_rottable, b_trapped } from './trap.js';
 import { body_part } from './polyself.js';
 import { LIGHT_HEADED, Is_airlevel, Is_astralevel, Is_waterlevel } from './const.js';
 import { surface } from './dungeon.js';
-import { FINGER, NH_GREEN, NO_PART, TIMEOUT } from './const.js';
+import { FINGER, NH_GREEN, NO_PART, NOSE, TIMEOUT, BUFSZ } from './const.js';
 import { welded } from './wield.js';
 import { remove_worn_item } from './steal.js';
 import { set_bknown } from './mkobj.js';
@@ -672,15 +672,7 @@ function tin_ok(obj) {
     return GETOBJ_SUGGEST;
 }
 
-// src/eat.c floorfood() — offer each edible thing at the hero's feet with a
-// y/n prompt, then fall through to getobj() for something carried.
-//
-// Each floor prompt reads ONE key, so the total depends on what is underfoot:
-// a bear trap, iron bars, gold and a food item each add one. That makes the
-// count data-dependent, and our floor contents are known to differ from C's on
-// some levels, so guessing it would misalign a session rather than fix it.
-// Only the clean case is ported — nothing edible underfoot, straight to
-// getobj — and anything else is recorded.
+// src/eat.c:3579 floorfood(); select floor food or a carried object.
 export async function floorfood(verb,
                                  corpsecheck) /* 0, no check, 1, corpses, 2, tinnable corpses */
 {
@@ -716,7 +708,7 @@ export async function floorfood(verb,
                then the trap would just get eaten on the _next_ turn... */
             qbuf = `There is a bear trap here (${
                 u_in_beartrap ? 'holding you' : 'armed'}); eat it?`;
-            if ((c = await tty_yn_function(qbuf, 'ynq', 'n')) === 'y') {
+            if ((c = await tty_yn_function(qbuf, 'ynq', 'n', true)) === 'y') {
                 let beartrap;
 
                 deltrap(ttmp);
@@ -752,7 +744,7 @@ export async function floorfood(verb,
                          || !on_level(digging.level || {}, game.u.uz))
                         ? '; eat them?'
                         : '; resume eating them?';
-                c = await tty_yn_function(qbuf, 'ynq', 'n');
+                c = await tty_yn_function(qbuf, 'ynq', 'n', true);
             }
             if (c === 'y')
                 return hands_obj;
@@ -766,7 +758,7 @@ export async function floorfood(verb,
                 qbuf = 'There is 1 gold piece here; eat it?';
             else
                 qbuf = `There are ${gold.quan} gold pieces here; eat them?`;
-            if ((c = await tty_yn_function(qbuf, 'ynq', 'n')) === 'y') {
+            if ((c = await tty_yn_function(qbuf, 'ynq', 'n', true)) === 'y') {
                 return gold;
             } else if (c === 'q') {
                 return null;
@@ -804,7 +796,7 @@ export async function floorfood(verb,
             qsfx = ` here; ${verb} ${one ? 'it' : 'one'}?`;
             qbuf = safe_qbuf(qbuf, qsfx, otmp, doname, ansimpleoname,
                              one ? 'something' : 'things');
-            if ((c = await tty_yn_function(qbuf, 'ynq', 'n')) === 'y')
+            if ((c = await tty_yn_function(qbuf, 'ynq', 'n', true)) === 'y')
                 return  otmp;
             else if (c === 'q')
                 return null;
@@ -1077,10 +1069,10 @@ async function touchfood(otmp) {
     return otmp;
 }
 
-// include/eat.c:58 nonrotting_corpse() — the species whose corpses never rot.
+// src/eat.c:58 nonrotting_corpse(); Rider meals must reach their fatal effect.
 const nonrotting_corpse = (mnum) =>
     mnum === PMNAMES.PM_LIZARD || mnum === PMNAMES.PM_LICHEN
-    || mnum === PMNAMES.PM_ACID_BLOB;   /* is_rider() is recorded below */
+    || is_rider(game.mons[mnum]) || mnum === PMNAMES.PM_ACID_BLOB;
 
 // src/eat.c:217 food_xname() — the name a meal is announced under. For a
 // corpse that is corpse_xname()'s singular form; for anything else the
@@ -1618,6 +1610,73 @@ async function eatcorpse(otmp) {
     return retcode;
 }
 
+// src/eat.c:2627 edibility_prompts(); 0 safe, 1 decline, 2 accept warning.
+async function edibility_prompts(otmp) {
+    const cadaver = otmp.otyp === ONAMES.CORPSE;
+    const material = game.objects[otmp.otyp].oc_material;
+    const mnum = otmp.corpsenm;
+    const foodsmell = Tobjnam(otmp, 'smell');
+    const it_or_they = otmp.quan === 1 ? 'it' : 'they';
+    let stoneorslime = false, rotted = 0;
+
+    if (cadaver || otmp.otyp === ONAMES.EGG || otmp.otyp === ONAMES.TIN
+        || otmp.otyp === ONAMES.GLOB_OF_GREEN_SLIME) {
+        stoneorslime = ismnum(mnum)
+            && flesh_petrifies(game.mons[mnum])
+            && !Stone_resistance() && !poly_when_stoned(game.youmonst.data);
+        if (mnum === PMNAMES.PM_GREEN_SLIME || otmp.otyp === ONAMES.GLOB_OF_GREEN_SLIME)
+            stoneorslime = !Unchanging() && !slimeproof(game.youmonst.data);
+        if (cadaver && !nonrotting_corpse(mnum)) {
+            const age = peek_at_iced_corpse_age(otmp);
+            rotted = Math.trunc((game.moves - age) / 10);
+            if (otmp.cursed)
+                rotted += 2;
+            else if (otmp.blessed)
+                rotted -= 2;
+        }
+    }
+
+    let buf = '';
+    if (cadaver && rotted > 5 && !Sick_resistance()) {
+        buf = `${foodsmell} like ${it_or_they} could be tainted!`;
+    } else if (stoneorslime) {
+        buf = `${foodsmell} like ${it_or_they} could be something very dangerous!`;
+    } else if (cadaver && rotted > 5 && Sick_resistance()) {
+        buf = `${foodsmell} like ${it_or_they} could be tainted.`;
+    } else if (otmp.orotten || (cadaver && rotted > 3)) {
+        buf = `${foodsmell} like ${it_or_they} could be rotten!`;
+    } else if (cadaver && poisonous(game.mons[mnum]) && !Poison_resistance()) {
+        buf = `${foodsmell} like ${it_or_they} might be poisonous!`;
+    } else if (otmp.otyp === ONAMES.APPLE && otmp.cursed && !Sleep_resistance()) {
+        buf = `${foodsmell} like ${it_or_they} might have been poisoned.`;
+    } else if (cadaver && !vegetarian(game.mons[mnum])
+               && !game.u.uconduct.unvegetarian && Role_if(PMNAMES.PM_MONK)) {
+        buf = `${foodsmell} unhealthy.`;
+    } else if (cadaver && acidic(game.mons[mnum]) && !Acid_resistance()) {
+        buf = `${foodsmell} rather acidic.`;
+    } else if (Upolyd(game.u) && game.u.umonnum === PMNAMES.PM_RUST_MONSTER
+               && is_metallic(otmp) && otmp.oerodeproof) {
+        buf = `${foodsmell} disgusting to you right now.`;
+    } else if (!game.u.uconduct.unvegan
+               && ((material === MATERIALS.LEATHER || material === MATERIALS.BONE
+                    || material === MATERIALS.DRAGON_HIDE || material === MATERIALS.WAX)
+                   || (cadaver && !vegan(game.mons[mnum])))) {
+        buf = `${foodsmell} foul and unfamiliar to you.`;
+    } else if (!game.u.uconduct.unvegetarian
+               && ((material === MATERIALS.LEATHER || material === MATERIALS.BONE
+                    || material === MATERIALS.DRAGON_HIDE)
+                   || (cadaver && !vegetarian(game.mons[mnum])))) {
+        buf = `${foodsmell} unfamiliar to you.`;
+    }
+
+    if (buf) {
+        buf = buf.slice(0, BUFSZ - 1);
+        buf = `${buf}  Eat ${otmp.quan === 1 ? 'it' : 'one'} anyway?`.slice(0, BUFSZ - 1);
+        return (await tty_yn_function(buf, 'yn', 'n', true)) === 'n' ? 1 : 2;
+    }
+    return 0;
+}
+
 // src/eat.c:2734 doeat_nonfood()
 async function doeat_nonfood(otmp) {
     const u = game.u, victual = (game.context.victual ||= {});
@@ -1693,6 +1752,23 @@ export async function doeat() {
         return ECMD_OK;
     if (await check_capacity(null))
         return ECMD_OK;
+
+    if (game.u.uedibility) {
+        const res = await edibility_prompts(otmp);
+        if (res) {
+            await Your(`${body_part(NOSE)} stops tingling and your sense of smell returns to normal.`);
+            game.u.uedibility = 0;
+            if (res === 1)
+                return ECMD_OK;
+        }
+    }
+
+    if (otmp === hands_obj) {
+        if (await still_chewing(game.u.ux, game.u.uy)
+            && game.level.at(game.u.ux, game.u.uy).typ === IRONBARS)
+            await You('pause to swallow.');
+        return ECMD_TIME;
+    }
 
     /* src/eat.c:2859: non-food meals take one move after these guards. */
     if (!is_edible(otmp)) {

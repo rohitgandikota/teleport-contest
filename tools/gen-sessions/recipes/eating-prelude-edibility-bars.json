@@ -1,0 +1,129 @@
+{
+  "name": "eating-prelude-edibility-bars",
+  "description": "Original C-recorded ordinary blessed-food-detection warnings, one-use sense lifetime and iron-bars chewing. Four positive cases and two unchanged negatives use only actual keyboard commands. Complete native output comparisons are required. Hazard branches beyond the apple and rustproof warning, Rider nonrotting and dragon disease defense retain source-state evidence only. Accessory eating is separate.",
+  "coverage": [
+    "mode.debug",
+    "ui.getlin",
+    "forms.polymorph",
+    "object.food-corpses"
+  ],
+  "branches": [
+    "eating-prelude-edibility-bars.blessed-apple-warning",
+    "eating-prelude-edibility-bars.iron-bars-xorn",
+    "eating-prelude-edibility-bars.blessed-rustproof-warning",
+    "eating-prelude-edibility-bars.unblessed-carrot-negative",
+    "eating-prelude-edibility-bars.safe-carrot-retains-warning",
+    "eating-prelude-edibility-bars.human-bars-negative"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "eating-prelude-edibility-bars.blessed-apple-warning",
+      "segment": 0,
+      "screenIncludes": [
+        "The apple smells like it might have been poisoned.",
+        "Your nose stops tingling",
+        "a - an apple"
+      ],
+      "screenExcludes": []
+    },
+    {
+      "branch": "eating-prelude-edibility-bars.iron-bars-xorn",
+      "segment": 1,
+      "screenIncludes": [
+        "You start chewing on a bar.",
+        "You continue chewing on the bars.",
+        "You devour the iron bars."
+      ],
+      "screenExcludes": []
+    },
+    {
+      "branch": "eating-prelude-edibility-bars.blessed-rustproof-warning",
+      "segment": 2,
+      "screenIncludes": [
+        "The dagger smells disgusting to you right now.",
+        "Your nose stops tingling",
+        "a - a dagger"
+      ],
+      "screenExcludes": []
+    },
+    {
+      "branch": "eating-prelude-edibility-bars.unblessed-carrot-negative",
+      "segment": 3,
+      "screenIncludes": [
+        "Your nose tingles and you smell food.",
+        "Not carrying anything."
+      ],
+      "screenExcludes": [
+        "Eat it anyway?",
+        "pause to swallow"
+      ]
+    },
+    {
+      "branch": "eating-prelude-edibility-bars.safe-carrot-retains-warning",
+      "segment": 4,
+      "screenIncludes": [
+        "The apple smells like it might have been poisoned.",
+        "Your nose stops tingling",
+        "b - an apple"
+      ],
+      "screenExcludes": []
+    },
+    {
+      "branch": "eating-prelude-edibility-bars.human-bars-negative",
+      "segment": 5,
+      "screenIncludes": [
+        "Iron bars.",
+        "You don't have anything to eat."
+      ],
+      "screenExcludes": [
+        "Eat it anyway?",
+        "pause to swallow"
+      ]
+    }
+  ],
+  "segments": [
+    {
+      "name": "blessed-apple-warning",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017cursed apple\r        \u001b\u001b\u001b\u001b\u001b\u001b\u0017blessed scroll of food detection\r        \u001b\u001b\u001b\u001b\u001b\u001brb        \u001b\u001b\u001b\u001b\u001b\u001bean        \u001b\u001b\u001b\u001b\u001b\u001bi        \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "iron-bars-xorn",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #polyself\rxorn\r        \u001b\u001b\u001b\u001b\u001b\u001b\u0017iron bars\r        \u001b\u001b\u001b\u001b\u001b\u001bey        \u001b\u001b\u001b\u001b\u001b\u001bey        \u001b\u001b\u001b\u001b\u001b\u001bey        \u001b\u001b\u001b\u001b\u001b\u001b:        \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "blessed-rustproof-warning",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed rustproof dagger\r        \u001b\u001b\u001b\u001b\u001b\u001b\u0017blessed scroll of food detection\r        \u001b\u001b\u001b\u001b\u001b\u001brb        \u001b\u001b\u001b\u001b\u001b\u001b#polyself\rrust monster\r        \u001b\u001b\u001b\u001b\u001b\u001bean        \u001b\u001b\u001b\u001b\u001b\u001bi        \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "unblessed-carrot-negative",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed carrot\r        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed scroll of food detection\r        \u001b\u001b\u001b\u001b\u001b\u001brb        \u001b\u001b\u001b\u001b\u001b\u001bea        \u001b\u001b\u001b\u001b\u001b\u001bi        \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "safe-carrot-retains-warning",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed carrot\r        \u001b\u001b\u001b\u001b\u001b\u001b\u0017cursed apple\r        \u001b\u001b\u001b\u001b\u001b\u001b\u0017blessed scroll of food detection\r        \u001b\u001b\u001b\u001b\u001b\u001brc        \u001b\u001b\u001b\u001b\u001b\u001bea        \u001b\u001b\u001b\u001b\u001b\u001bebn        \u001b\u001b\u001b\u001b\u001b\u001bi        \u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "human-bars-negative",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017iron bars\r        \u001b\u001b\u001b\u001b\u001b\u001be        \u001b\u001b\u001b\u001b\u001b\u001b:        \u001b\u001b\u001b\u001b\u001b\u001b"
+    }
+  ]
+}

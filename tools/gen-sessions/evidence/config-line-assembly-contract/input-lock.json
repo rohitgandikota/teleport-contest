@@ -1,0 +1,73 @@
+{
+  "recipeSHA256": "1bd3a156b364cc68c96c370e0d4db311e3a883297bb442863c71e181fef6d244",
+  "fields": [
+    "seed",
+    "datetime",
+    "nethackrc",
+    "moves",
+    "name"
+  ],
+  "inputFieldsSHA256": "1531c64b09c873858b57c3dfffe4303d407cf52d830d379777e871340a221273",
+  "segments": [
+    {
+      "name": "line-options-multiline-notice-off",
+      "keys": 98,
+      "inputSHA256": "68c4b69a710c508aee3fe287cca1d42bb93f4208d8b208defef8fbe6a9ff49bb"
+    },
+    {
+      "name": "line-bindings-empty-continuation",
+      "keys": 4,
+      "inputSHA256": "f17d5cc7d7d20d2816b0b2039097aa54ee5af5c7a5f5ceaaa4a9ccf68824fa25"
+    },
+    {
+      "name": "line-symbols-comment-termination",
+      "keys": 3,
+      "inputSHA256": "bff8f12c66c6f84754ae17d8259a2696c369da115ed7142a22d27358272416f3"
+    },
+    {
+      "name": "line-rogue-blank-termination",
+      "keys": 42,
+      "inputSHA256": "24d1c7aacc35bb4d6fda0277c16d5e306b90b0518255389c41348c628f3a71f5"
+    },
+    {
+      "name": "line-menucolor-multiline-inventory",
+      "keys": 4,
+      "inputSHA256": "8b1995cb1f8b4faaaee5b166a14bdac443cd1d52dbe15187247a0e3ca7028317"
+    },
+    {
+      "name": "line-msgtype-comment-continuation",
+      "keys": 12,
+      "inputSHA256": "34cac6fc1c0057b493227ab6890763b26ed60bc3bc3e461d6bd948f7e4d86067"
+    },
+    {
+      "name": "line-autopickup-exception-multiline",
+      "keys": 8,
+      "inputSHA256": "bf701a65dc816f8b0b08f95b2a0b53d62d0f1bc3b6d45232a78920e9c960e623"
+    },
+    {
+      "name": "line-eof-pending-no-lf",
+      "keys": 3,
+      "inputSHA256": "b234670b8dc6b777f00ffe1b4204916cce304db535c4749a66323d54999dadf2"
+    },
+    {
+      "name": "line-eof-pending-with-lf",
+      "keys": 3,
+      "inputSHA256": "14d99ffdb310a78fff2ed5d7999c1c476641fe0d4f7b3dec6cdb738c2245015d"
+    },
+    {
+      "name": "line-canonical-symbols-negative",
+      "keys": 3,
+      "inputSHA256": "868e685cd315743d2f85406a5bfb900e922cbdeeb21608266dff74e9e35cf730"
+    },
+    {
+      "name": "line-canonical-bindings-negative",
+      "keys": 4,
+      "inputSHA256": "10410b1e7fc119da564afa9f00857c4280f0a738d49b76a17a54363f74bb7345"
+    },
+    {
+      "name": "line-crlf-menu-negative",
+      "keys": 4,
+      "inputSHA256": "aa8f1b5db4c149cde7d9d6aebcec44372730f56ad66c1de4398b8251d2d50c2a"
+    }
+  ]
+}

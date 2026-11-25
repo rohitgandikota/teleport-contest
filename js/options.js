@@ -902,9 +902,26 @@ export function parseNethackrc(rc) {
     if (!rc) return result;
     config_error_data = result; /* src/cfgfiles.c config_error_init() */
 
-    for (const rawLine of rc.split('\n')) {
-        const line = rawLine.trim();
-        if (!line || line[0] === '#') continue;
+    // src/cfgfiles.c:1844 parse_conf_file(): EOF is not an extra empty line.
+    const lines = rc.split('\n');
+    if (lines.at(-1) === '') lines.pop();
+    let buf = null;
+    for (let inbuf of lines) {
+        // src/cfgfiles.c:1693 parse_conf_buf(), ordinary physical lines.
+        // Test continuation before trimming. C replaces the backslash with
+        // NUL, so spaces before it survive into the merged statement.
+        const morelines = inbuf.endsWith('\\');
+        inbuf = morelines ? inbuf.slice(0, -1) : inbuf.replace(/[ \t\r]+$/, '');
+        inbuf = inbuf.replace(/^[ \t]+/, '');
+        const ignoreline = !inbuf || inbuf[0] === '#';
+        const oldline = buf !== null;
+        if (!ignoreline)
+            buf = oldline ? `${buf} ${inbuf}` : inbuf;
+        if (morelines || (ignoreline && !oldline)) continue;
+
+        // is_config_section() trims space/tab even for a non-section line.
+        const line = trimspaces(buf);
+        buf = null;
 
         // src/cfgfiles.c:588 find_optparam(), first '=' or ':'.
         const eq = firstSeparator(line);

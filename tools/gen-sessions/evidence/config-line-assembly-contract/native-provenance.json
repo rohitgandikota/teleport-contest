@@ -1,0 +1,60 @@
+{
+  "rawSHA256": "22f7576060003ecaa1157b63552a74394ee8ec83a2d76e831dbce7fa9c33303d",
+  "rawBytes": 1441975,
+  "canonicalPath": "tools/gen-sessions/generated/config-line-assembly-contract.session.json",
+  "version": 5,
+  "source": "c",
+  "segments": 12,
+  "boundaries": 200,
+  "calls": 32580,
+  "frames": 0,
+  "keys": 188,
+  "parentReports": {
+    "baseline": {
+      "path": "config-line-assembly-parent-baseline-native.json",
+      "sha256": "81c86b866103e4338a69513ef7b1a0b0e181436d6d3663793645273020c436f0",
+      "passed": 4,
+      "total": 12
+    },
+    "candidate": {
+      "path": "config-line-assembly-parent-candidate-native.json",
+      "sha256": "954e6e30b4dde312edcd5cda192b72ab7a3c94814e9021ef4adeeddc7ac3608f",
+      "passed": 12,
+      "total": 12
+    },
+    "composed": {
+      "path": "config-line-assembly-parent-composed-native.json",
+      "sha256": "954e6e30b4dde312edcd5cda192b72ab7a3c94814e9021ef4adeeddc7ac3608f",
+      "passed": 12,
+      "total": 12
+    }
+  },
+  "parentRuntimeManifests": {
+    "baseline": {
+      "manifest": "config-line-assembly-parent-baseline-runtime.json",
+      "sha256": "fc7dc676e0f30b72f7f82b9c4ef1db49688fc5b684ca2a1687a5db83878dcc0a",
+      "files": 279
+    },
+    "candidate": {
+      "manifest": "config-line-assembly-parent-candidate-runtime.json",
+      "sha256": "474247f9d6b852acaa229bd9fb2fbeef4ba977e4f9409b3d6d19ed402a746cb4",
+      "files": 279
+    },
+    "composed": {
+      "manifest": "config-line-assembly-parent-composed-runtime.json",
+      "sha256": "63db8d07a960fce96ff7ac693518c59674e074df5feb54f8c775966e679a33c5",
+      "files": 279
+    }
+  },
+  "parentPreflight": {
+    "path": "config-line-assembly-native-preflight.json",
+    "sha256": "502f8073ed6f11147dc4445d3b31b4c04c4a047b2ce84c1348b0ae61727c5003"
+  },
+  "interpretation": "Native baseline4/12 differs from source ordinary baseline3/12: OPTIONS notice-off already had equal scored output, but failed parsing/presence checks. Eight scored-output cases improve. No normalization or input changes.",
+  "sourceManifestSHA256": "9366b189b6ed3de1f1d26fdd803654583cc090f36ba3aa03fbd4870f52c2f239",
+  "sourceBodyStatus": "Sealed source80 and ordinary12 assertions retained unchanged.",
+  "scopeLimits": [
+    "Sections/CHOOSE remain separate pending audit.",
+    "Byte limits, NUL/UTF-8 cuts, duplicate warnings and external filename diagnostics remain open."
+  ]
+}

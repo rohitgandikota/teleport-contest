@@ -1,0 +1,40 @@
+{
+  "source": "../config-directive-source-audit/reports/input-baseline.json",
+  "sourceSHA256": "e96482752a66cc75e0df87db1c066ea3903706abb85ba455462bb8f340d2a93b",
+  "basis": "Canonical-form runs from unchanged prior baseline. New source gate retains canonical handler controls; new baseline replay verifies these hashes including CRLF control.",
+  "controls": [
+    {
+      "name": "line-canonical-symbols-negative",
+      "priorReference": "symbols-prefix-map",
+      "hashes": {
+        "screens": "282476f8571506b92fb9681d35e5035438694714d1beeacd076cb465a5d050b0",
+        "cursors": "51ee802e3d5290b524b6181657ab5f2507aec19ad89d3092f447a446b1c6ad04",
+        "calls": "860cfcf1eaecd7f446231c18899a60664b97fcf89acbb674e5207b78373a3ccf",
+        "slices": "336b5ea699fbb622d130038f227b78985c6ef651592acf98444ec4f8d0764ef4",
+        "frames": "210e130878aabaf46f1fe72749a263f9eb71c6a262b80f13882ed08d472c0ecd"
+      }
+    },
+    {
+      "name": "line-canonical-bindings-negative",
+      "priorReference": "bindings-colon-command",
+      "hashes": {
+        "screens": "21081906a16c289bfdab5d3425972ef7dbc47b8e64771fa88e268c49299da32a",
+        "cursors": "304a8bcd03a1ca6f7fe2c4d78d48220a1825a394510f7de2e4bd5f1d30b4e6c7",
+        "calls": "e88e039ec58ec1eb540a23a4e1eb86aeb4fd2c006a7c95b80b75b4231d2dbcee",
+        "slices": "c452c98144861edebdb6390ead52dc9b8ff83059528462f781d0d2141920ba9a",
+        "frames": "be8a1bbaee025d5501a33340bd5d4e547d41835268267e671efcd939c6856fe3"
+      }
+    },
+    {
+      "name": "line-crlf-menu-negative",
+      "priorReference": "menucolor-colon-inventory",
+      "hashes": {
+        "screens": "6497e7e0126458442bdb3c66c6024a4c7ee7ace46b5195bb24d5acd72413b8d1",
+        "cursors": "1065fccf83e1071b391353f0196b6b54fd2b775040d2e2b15ef4c2aa04f84774",
+        "calls": "a437e6c542b26f9bab4be970e0f4a3b84c674f8871f5be016c8705b93674b0e9",
+        "slices": "c1c350a9207d75a503404c20e72b9a5bbf559c78a0321156d32de7377493919f",
+        "frames": "be8a1bbaee025d5501a33340bd5d4e547d41835268267e671efcd939c6856fe3"
+      }
+    }
+  ]
+}

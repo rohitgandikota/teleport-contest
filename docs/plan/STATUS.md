@@ -1,6 +1,48 @@
 # STATUS — live handoff board
 
-## 2026-11-25: cream-pie and running checkpoint verified
+## 2026-11-25: configuration line assembly verified
+
+Only options.js changes. Ordinary physical configuration lines now follow
+C's continuation, comment, blank-line and EOF rules. Continuation is tested
+before trailing whitespace is trimmed. Pending fragments join with one space;
+a terminating blank or comment can dispatch them, while unfinished EOF drops
+them. A final newline does not create an extra empty physical line.
+
+Source controls pass 80/80 versus 13/80. Ordinary assertions pass 12/12 versus
+3/12. Eight cases change scored output; one separately proves OPTIONS value
+and presence handling. All twelve original C cases match versus four before,
+including composition with the published cream and mimic fixes: 200 styled
+boundaries/cursors, 32,580 calls and ordered slices, zero frames. Observer,
+plain, deferred EOF and canonical-input comparisons pass. Fifteen negative
+stream hashes remain unchanged. Inputs, primary assertions and raw C bytes
+are unchanged from the sealed source packet.
+
+All 78 selected/public recordings and all 78 strict eight-second workers pass:
+18,526 screens/cursors, 1,491,949 random positions and 1,705 frames. Twenty-two
+retained suites, source audit and three syntax checks pass. All 308 source
+members, 24 promotion members and eleven installed payloads verify. All 279
+runtime hashes match the native-tested composition. All 891 prior recordings
+and branch requirements remain fixed; twelve requirements and one raw bring
+the corpus to 892. Main receipt `config-line-assembly-main-verification.json`,
+SHA256 `f452fb71dd2e20ec9a8f36df52ace35cc4f38563376cd8594f8954cdd48c1869`.
+
+Full892 is running after full891 completed, with two NFS CPU workers, default
+budgets and no retries. PID 3138003; 1,182 files, 891 linked raws and one new raw.
+Root: /share/NFS/u/rohit/research/contest/artifacts/2026-11-22/line-full892-js-20261125.
+All-files SHA256 `cc21ba53bd228ceac47db8180d0110afccf22d5000efca500e4e4fab9f2e2485`.
+Byte limits, NUL, sections/CHOOSE, other parser callers and duplicate-warning
+filename diagnostics remain separate work. The 19:56 UTC official check still
+shows the 13:55 feed, rank 7 and 659 unmatched screens; no newer score is claimed.
+
+Next: the run-into-monster guard has a sealed 316-member source packet and a
+one-predicate cmd.js change. Its four original C cases pass on current cream
+code with or without that reader change. The old producer and reader-only
+variants remain 3/4, with failures preserved. Source controls pass 50/50 versus
+38/50. Portable promotion will retain this attribution and all original inputs.
+A separate canonical species-delivery flag audit and configuration section
+review are active. No full port or held-out improvement is inferred.
+
+## 2026-11-25: cream-pie and running checkpoint pushed as cae25aeb
 
 Only apply.js and hack.js change runtime. use_cream_pie now follows C's
 canonical blindness predicate, can_blnd guard, shared blindness setter and
@@ -33,8 +75,13 @@ and derivation remain under tools/gen-sessions/evidence/lookaround-owner.
 Main receipt `cream-lookaround-main-verification.json`, SHA256
 `1edb3a572158fa511dde230d978425f601cdf21bb80510ba7495166a504a3814`.
 
-Full891 is running on NFS with two CPU workers, default budgets and no retries.
-PID 3129356; 1,181 fixed files, 889 linked old raws, two new raws. Root:
+Full891 passes on NFS with two CPU workers, default budgets and no retries:
+919,703 screens/cursors, 19,561,599 random positions and 32,997 frames.
+All 1,181 files match published commit cae25aeb and its maintained corpus.
+Verification SHA256 `f0363865accd14bdf046c2bd96773793a5e2d61307b50d77a883576be5868c43`;
+publication receipt SHA256
+`3cadbc6d8e855ef18fabf8a50e19506c9d687df575aa3550ffa6324a55dee2d3`.
+The run shared 889 old raws and added two. Root:
 /share/NFS/u/rohit/research/contest/artifacts/2026-11-22/cream-full891-js-20261125.
 All-files SHA256 `1dbaaa5c764e9d236737078d294fd9701437e6efc123996e032f5c3a1b4103e8`.
 Next: physical config-line assembly passes all twelve original C cases versus

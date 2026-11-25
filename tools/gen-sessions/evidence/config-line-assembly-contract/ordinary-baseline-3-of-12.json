@@ -1,0 +1,549 @@
+{
+  "variant": "baseline",
+  "recipeSHA256": "1bd3a156b364cc68c96c370e0d4db311e3a883297bb442863c71e181fef6d244",
+  "total": 12,
+  "passed": 3,
+  "nativeStatus": "not recorded; parent required",
+  "results": [
+    {
+      "name": "line-options-multiline-notice-off",
+      "checks": [
+        {
+          "name": "all keys and all-five observer/deferred equality",
+          "pass": true
+        },
+        {
+          "name": "all-five equality to explicit canonical valid RC",
+          "pass": true
+        },
+        {
+          "name": "no collected errors or unsupported statements",
+          "pass": false,
+          "error": "The expression evaluated to a falsy value:\n\n  assert.ok(states.every(s => !s.errors.length && !s.unhandled.length))\n"
+        },
+        {
+          "name": "primary gameplay branch assertion",
+          "pass": true
+        },
+        {
+          "name": "real blindness producer expires at88 with monster notices disabled",
+          "pass": false,
+          "error": "The expression evaluated to a falsy value:\n\n  assert.ok(states.every(s => s.noticeOption === false && s.noticeOptionPresent))\n"
+        }
+      ],
+      "hashes": {
+        "screens": "b48c38f00b05039cd5bdc16be6e50d6ab2b57453538676cb3c64ada35014f4e2",
+        "cursors": "a2386f6b6c938dc59060a109515fa9e77a30049ee4d41546d403f43b4df5682e",
+        "calls": "4d2d3ba47c4a5bf9adcf6b964400c40bf7842d13db2c013cb9c1305a75566f64",
+        "slices": "054a4b0ff756c2299fb43e029d1011c7f62c2dd2f54fadadf5ce5a5e84fe20d8",
+        "frames": "71efe9a25c6b42a81bb8ad8b05182d7d58b281045de1fdc4aa7562838a0fc9ee"
+      },
+      "canonicalHashes": {
+        "screens": "b48c38f00b05039cd5bdc16be6e50d6ab2b57453538676cb3c64ada35014f4e2",
+        "cursors": "a2386f6b6c938dc59060a109515fa9e77a30049ee4d41546d403f43b4df5682e",
+        "calls": "4d2d3ba47c4a5bf9adcf6b964400c40bf7842d13db2c013cb9c1305a75566f64",
+        "slices": "054a4b0ff756c2299fb43e029d1011c7f62c2dd2f54fadadf5ce5a5e84fe20d8",
+        "frames": "71efe9a25c6b42a81bb8ad8b05182d7d58b281045de1fdc4aa7562838a0fc9ee"
+      },
+      "boundaries": 99,
+      "calls": 2586,
+      "frames": 0,
+      "unaffectedControl": false,
+      "pass": false
+    },
+    {
+      "name": "line-bindings-empty-continuation",
+      "checks": [
+        {
+          "name": "all keys and all-five observer/deferred equality",
+          "pass": true
+        },
+        {
+          "name": "all-five equality to explicit canonical valid RC",
+          "pass": false,
+          "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n  {\n    calls: 'e88e039ec58ec1eb540a23a4e1eb86aeb4fd2c006a7c95b80b75b4231d2dbcee',\n    cursors: '304a8bcd03a1ca6f7fe2c4d78d48220a1825a394510f7de2e4bd5f1d30b4e6c7',\n    frames: 'be8a1bbaee025d5501a33340bd5d4e547d41835268267e671efcd939c6856fe3',\n+   screens: '97f14a7ba430a192a5506dee26c8b9a7a17b98649bca43f7a5d741b08e39a015',\n-   screens: '21081906a16c289bfdab5d3425972ef7dbc47b8e64771fa88e268c49299da32a',\n    slices: 'c452c98144861edebdb6390ead52dc9b8ff83059528462f781d0d2141920ba9a'\n  }\n"
+        },
+        {
+          "name": "no collected errors or unsupported statements",
+          "pass": false,
+          "error": "The expression evaluated to a falsy value:\n\n  assert.ok(states.every(s => !s.errors.length && !s.unhandled.length))\n"
+        },
+        {
+          "name": "primary gameplay branch assertion",
+          "pass": false,
+          "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   'config-line-assembly.line-bindings-empty-continuation: segment 0 lacks screen text \"(#versionshort)\"'\n+ ]\n- []\n"
+        }
+      ],
+      "hashes": {
+        "screens": "97f14a7ba430a192a5506dee26c8b9a7a17b98649bca43f7a5d741b08e39a015",
+        "cursors": "304a8bcd03a1ca6f7fe2c4d78d48220a1825a394510f7de2e4bd5f1d30b4e6c7",
+        "calls": "e88e039ec58ec1eb540a23a4e1eb86aeb4fd2c006a7c95b80b75b4231d2dbcee",
+        "slices": "c452c98144861edebdb6390ead52dc9b8ff83059528462f781d0d2141920ba9a",
+        "frames": "be8a1bbaee025d5501a33340bd5d4e547d41835268267e671efcd939c6856fe3"
+      },
+      "canonicalHashes": {
+        "screens": "21081906a16c289bfdab5d3425972ef7dbc47b8e64771fa88e268c49299da32a",
+        "cursors": "304a8bcd03a1ca6f7fe2c4d78d48220a1825a394510f7de2e4bd5f1d30b4e6c7",
+        "calls": "e88e039ec58ec1eb540a23a4e1eb86aeb4fd2c006a7c95b80b75b4231d2dbcee",
+        "slices": "c452c98144861edebdb6390ead52dc9b8ff83059528462f781d0d2141920ba9a",
+        "frames": "be8a1bbaee025d5501a33340bd5d4e547d41835268267e671efcd939c6856fe3"
+      },
+      "boundaries": 5,
+      "calls": 2196,
+      "frames": 0,
+      "unaffectedControl": false,
+      "pass": false
+    },
+    {
+      "name": "line-symbols-comment-termination",
+      "checks": [
+        {
+          "name": "all keys and all-five observer/deferred equality",
+          "pass": true
+        },
+        {
+          "name": "all-five equality to explicit canonical valid RC",
+          "pass": false,
+          "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n  {\n    calls: '860cfcf1eaecd7f446231c18899a60664b97fcf89acbb674e5207b78373a3ccf',\n    cursors: '51ee802e3d5290b524b6181657ab5f2507aec19ad89d3092f447a446b1c6ad04',\n    frames: '210e130878aabaf46f1fe72749a263f9eb71c6a262b80f13882ed08d472c0ecd',\n+   screens: '955b0ecc665b76eb080ebeb9b00878a14b0bc99c896011446b417aa3c574dc88',\n-   screens: '282476f8571506b92fb9681d35e5035438694714d1beeacd076cb465a5d050b0',\n    slices: '336b5ea699fbb622d130038f227b78985c6ef651592acf98444ec4f8d0764ef4'\n  }\n"
+        },
+        {
+          "name": "no collected errors or unsupported statements",
+          "pass": false,
+          "error": "The expression evaluated to a falsy value:\n\n  assert.ok(states.every(s => !s.errors.length && !s.unhandled.length))\n"
+        },
+        {
+          "name": "primary gameplay branch assertion",
+          "pass": false,
+          "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   'config-line-assembly.line-symbols-comment-termination: segment 0 step 0 cell (0,1) is \" \", expected \"U\"',\n+   'config-line-assembly.line-symbols-comment-termination: segment 0 step 3 cell (0,1) is \" \", expected \"U\"'\n+ ]\n- []\n"
+        }
+      ],
+      "hashes": {
+        "screens": "955b0ecc665b76eb080ebeb9b00878a14b0bc99c896011446b417aa3c574dc88",
+        "cursors": "51ee802e3d5290b524b6181657ab5f2507aec19ad89d3092f447a446b1c6ad04",
+        "calls": "860cfcf1eaecd7f446231c18899a60664b97fcf89acbb674e5207b78373a3ccf",
+        "slices": "336b5ea699fbb622d130038f227b78985c6ef651592acf98444ec4f8d0764ef4",
+        "frames": "210e130878aabaf46f1fe72749a263f9eb71c6a262b80f13882ed08d472c0ecd"
+      },
+      "canonicalHashes": {
+        "screens": "282476f8571506b92fb9681d35e5035438694714d1beeacd076cb465a5d050b0",
+        "cursors": "51ee802e3d5290b524b6181657ab5f2507aec19ad89d3092f447a446b1c6ad04",
+        "calls": "860cfcf1eaecd7f446231c18899a60664b97fcf89acbb674e5207b78373a3ccf",
+        "slices": "336b5ea699fbb622d130038f227b78985c6ef651592acf98444ec4f8d0764ef4",
+        "frames": "210e130878aabaf46f1fe72749a263f9eb71c6a262b80f13882ed08d472c0ecd"
+      },
+      "boundaries": 4,
+      "calls": 3039,
+      "frames": 0,
+      "unaffectedControl": false,
+      "pass": false
+    },
+    {
+      "name": "line-rogue-blank-termination",
+      "checks": [
+        {
+          "name": "all keys and all-five observer/deferred equality",
+          "pass": true
+        },
+        {
+          "name": "all-five equality to explicit canonical valid RC",
+          "pass": false,
+          "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n  {\n    calls: 'c418ee4209563377e87fecb39d87a39618dd826ac8552204e14e397c5225dcc5',\n    cursors: '8c361a5f35ed6f1973468fe7c6221ef4651954c4be2ce17346da581938feaa92',\n    frames: '15fd6cedd0c79c8681cf78223f496f2ba3c87dfcaba7ef6a60e19f5c6cb97a10',\n+   screens: 'b7b2d736c5663c5cf8beaa751c275384f989eb84e0304af19803e96b83a5a314',\n-   screens: '52ff063472453f97025375ad5c21489fdb7a6fc1dc8d75f2b96c0ee4772f7107',\n    slices: 'd6b48b345ef30bbbe3e6c258b3856598cec22894f327eb12b836bf35aeb52c73'\n  }\n"
+        },
+        {
+          "name": "no collected errors or unsupported statements",
+          "pass": false,
+          "error": "The expression evaluated to a falsy value:\n\n  assert.ok(states.every(s => !s.errors.length && !s.unhandled.length))\n"
+        },
+        {
+          "name": "primary gameplay branch assertion",
+          "pass": false,
+          "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   'config-line-assembly.line-rogue-blank-termination: segment 0 step 19 cell (43,19) is \"@\", expected \"R\"'\n+ ]\n- []\n"
+        },
+        {
+          "name": "actual Rogue-level producer selects rogue symbols",
+          "pass": true
+        }
+      ],
+      "hashes": {
+        "screens": "b7b2d736c5663c5cf8beaa751c275384f989eb84e0304af19803e96b83a5a314",
+        "cursors": "8c361a5f35ed6f1973468fe7c6221ef4651954c4be2ce17346da581938feaa92",
+        "calls": "c418ee4209563377e87fecb39d87a39618dd826ac8552204e14e397c5225dcc5",
+        "slices": "d6b48b345ef30bbbe3e6c258b3856598cec22894f327eb12b836bf35aeb52c73",
+        "frames": "15fd6cedd0c79c8681cf78223f496f2ba3c87dfcaba7ef6a60e19f5c6cb97a10"
+      },
+      "canonicalHashes": {
+        "screens": "52ff063472453f97025375ad5c21489fdb7a6fc1dc8d75f2b96c0ee4772f7107",
+        "cursors": "8c361a5f35ed6f1973468fe7c6221ef4651954c4be2ce17346da581938feaa92",
+        "calls": "c418ee4209563377e87fecb39d87a39618dd826ac8552204e14e397c5225dcc5",
+        "slices": "d6b48b345ef30bbbe3e6c258b3856598cec22894f327eb12b836bf35aeb52c73",
+        "frames": "15fd6cedd0c79c8681cf78223f496f2ba3c87dfcaba7ef6a60e19f5c6cb97a10"
+      },
+      "boundaries": 43,
+      "calls": 2963,
+      "frames": 0,
+      "unaffectedControl": false,
+      "pass": false
+    },
+    {
+      "name": "line-menucolor-multiline-inventory",
+      "checks": [
+        {
+          "name": "all keys and all-five observer/deferred equality",
+          "pass": true
+        },
+        {
+          "name": "all-five equality to explicit canonical valid RC",
+          "pass": false,
+          "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n  {\n    calls: 'a437e6c542b26f9bab4be970e0f4a3b84c674f8871f5be016c8705b93674b0e9',\n    cursors: '1065fccf83e1071b391353f0196b6b54fd2b775040d2e2b15ef4c2aa04f84774',\n    frames: 'be8a1bbaee025d5501a33340bd5d4e547d41835268267e671efcd939c6856fe3',\n+   screens: '55f9c06f22850a96ab5692bb7ee17aeeb634c3d3b2a4ff34c47b6ee0e80026f4',\n-   screens: '6497e7e0126458442bdb3c66c6024a4c7ee7ace46b5195bb24d5acd72413b8d1',\n    slices: 'c1c350a9207d75a503404c20e72b9a5bbf559c78a0321156d32de7377493919f'\n  }\n"
+        },
+        {
+          "name": "no collected errors or unsupported statements",
+          "pass": false,
+          "error": "The expression evaluated to a falsy value:\n\n  assert.ok(states.every(s => !s.errors.length && !s.unhandled.length))\n"
+        },
+        {
+          "name": "primary gameplay branch assertion",
+          "pass": true
+        },
+        {
+          "name": "real inventory renders red bold quarterstaff",
+          "pass": false,
+          "error": "The expression evaluated to a falsy value:\n\n  assert.ok(output.screens.some(screen => decodeScreen(screen).some(cells => {\n"
+        }
+      ],
+      "hashes": {
+        "screens": "55f9c06f22850a96ab5692bb7ee17aeeb634c3d3b2a4ff34c47b6ee0e80026f4",
+        "cursors": "1065fccf83e1071b391353f0196b6b54fd2b775040d2e2b15ef4c2aa04f84774",
+        "calls": "a437e6c542b26f9bab4be970e0f4a3b84c674f8871f5be016c8705b93674b0e9",
+        "slices": "c1c350a9207d75a503404c20e72b9a5bbf559c78a0321156d32de7377493919f",
+        "frames": "be8a1bbaee025d5501a33340bd5d4e547d41835268267e671efcd939c6856fe3"
+      },
+      "canonicalHashes": {
+        "screens": "6497e7e0126458442bdb3c66c6024a4c7ee7ace46b5195bb24d5acd72413b8d1",
+        "cursors": "1065fccf83e1071b391353f0196b6b54fd2b775040d2e2b15ef4c2aa04f84774",
+        "calls": "a437e6c542b26f9bab4be970e0f4a3b84c674f8871f5be016c8705b93674b0e9",
+        "slices": "c1c350a9207d75a503404c20e72b9a5bbf559c78a0321156d32de7377493919f",
+        "frames": "be8a1bbaee025d5501a33340bd5d4e547d41835268267e671efcd939c6856fe3"
+      },
+      "boundaries": 5,
+      "calls": 2610,
+      "frames": 0,
+      "unaffectedControl": false,
+      "pass": false
+    },
+    {
+      "name": "line-msgtype-comment-continuation",
+      "checks": [
+        {
+          "name": "all keys and all-five observer/deferred equality",
+          "pass": true
+        },
+        {
+          "name": "all-five equality to explicit canonical valid RC",
+          "pass": false,
+          "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n  {\n    calls: '15eb2825cfbc382f5b5e29e75cb1a74ed9a6d70bf4f15ad60c3b093ce55a3c1f',\n    cursors: '30ae40c2403b5ac5ca8ef56baa775c3349db076216a432e27d1bb4022d7a27cd',\n    frames: '5266d5e7b82a115848ed5d52a0169e1a49e6f5f4714af128c0a9cb0c2e38e4c5',\n+   screens: 'e672e7e2b8d8c62e25936926015424ae0cb07b8bbc1fce1d3085efcf26b1b0a6',\n-   screens: 'a3e57cd288654dd2949fe940389cea163e1afb443718a1fb44d1ffb9a3093051',\n    slices: '819f86cf7737a24a0652fcac5054d5208cebba89295522aabc56c069e65ee716'\n  }\n"
+        },
+        {
+          "name": "no collected errors or unsupported statements",
+          "pass": false,
+          "error": "The expression evaluated to a falsy value:\n\n  assert.ok(states.every(s => !s.errors.length && !s.unhandled.length))\n"
+        },
+        {
+          "name": "primary gameplay branch assertion",
+          "pass": false,
+          "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   'config-line-assembly.line-msgtype-comment-continuation: segment 0 unexpectedly contains \"You sit on the stairs.\"',\n+   'config-line-assembly.line-msgtype-comment-continuation: segment 0 step 6 cell (0,0) is \"Y\", expected \" \"'\n+ ]\n- []\n"
+        },
+        {
+          "name": "real sit turns advance while the matching message is hidden",
+          "pass": false,
+          "error": "The expression evaluated to a falsy value:\n\n  assert.ok(output.screens.every(screen => !text(screen).includes('You sit on the stairs.')))\n"
+        }
+      ],
+      "hashes": {
+        "screens": "e672e7e2b8d8c62e25936926015424ae0cb07b8bbc1fce1d3085efcf26b1b0a6",
+        "cursors": "30ae40c2403b5ac5ca8ef56baa775c3349db076216a432e27d1bb4022d7a27cd",
+        "calls": "15eb2825cfbc382f5b5e29e75cb1a74ed9a6d70bf4f15ad60c3b093ce55a3c1f",
+        "slices": "819f86cf7737a24a0652fcac5054d5208cebba89295522aabc56c069e65ee716",
+        "frames": "5266d5e7b82a115848ed5d52a0169e1a49e6f5f4714af128c0a9cb0c2e38e4c5"
+      },
+      "canonicalHashes": {
+        "screens": "a3e57cd288654dd2949fe940389cea163e1afb443718a1fb44d1ffb9a3093051",
+        "cursors": "30ae40c2403b5ac5ca8ef56baa775c3349db076216a432e27d1bb4022d7a27cd",
+        "calls": "15eb2825cfbc382f5b5e29e75cb1a74ed9a6d70bf4f15ad60c3b093ce55a3c1f",
+        "slices": "819f86cf7737a24a0652fcac5054d5208cebba89295522aabc56c069e65ee716",
+        "frames": "5266d5e7b82a115848ed5d52a0169e1a49e6f5f4714af128c0a9cb0c2e38e4c5"
+      },
+      "boundaries": 13,
+      "calls": 2624,
+      "frames": 0,
+      "unaffectedControl": false,
+      "pass": false
+    },
+    {
+      "name": "line-autopickup-exception-multiline",
+      "checks": [
+        {
+          "name": "all keys and all-five observer/deferred equality",
+          "pass": true
+        },
+        {
+          "name": "all-five equality to explicit canonical valid RC",
+          "pass": false,
+          "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n  {\n    calls: '7d471ce189ff736a018d59a1f1b44fbc5d2410b7aca8522f9009cbd0e37bdff6',\n+   cursors: 'b12dffa28babf4adeeea5766dcafa1a3329506cadbec50a31745d7e7574d8dc6',\n-   cursors: '87f995d728d6f7f7295383213e5f5f85298d3da190245e1f7194d5a1d437eaf6',\n    frames: '95d15e75300129c5b4dd7f324bec76f91976db7c7b6075f942e9ea82b243e0b3',\n+   screens: '53de154e9e9878bbd2090ddfa5d8db0aff6d1fabfc77b13ea8effe55d945f476',\n-   screens: '264cbab7cdb3260d0507ab20608ccfa2c1dff2c0ef2c759fbf13c082ccaac5ee',\n    slices: '43505844ef9bc618740953d8d5c91bf10c0d9479c46407761285455b27b004b5'\n  }\n"
+        },
+        {
+          "name": "no collected errors or unsupported statements",
+          "pass": false,
+          "error": "The expression evaluated to a falsy value:\n\n  assert.ok(states.every(s => !s.errors.length && !s.unhandled.length))\n"
+        },
+        {
+          "name": "primary gameplay branch assertion",
+          "pass": false,
+          "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   'config-line-assembly.line-autopickup-exception-multiline: segment 0 lacks screen text \"a - a blessed +1 quarterstaff.\"',\n+   'config-line-assembly.line-autopickup-exception-multiline: segment 0 step 6 cell (0,0) is \"Y\", expected \"a\"'\n+ ]\n- []\n"
+        },
+        {
+          "name": "real drop and pickup consumes matching exception",
+          "pass": false,
+          "error": "The expression evaluated to a falsy value:\n\n  assert.ok(states.at(-1).inventory.some(o => o.otyp === first.otyp))\n"
+        }
+      ],
+      "hashes": {
+        "screens": "53de154e9e9878bbd2090ddfa5d8db0aff6d1fabfc77b13ea8effe55d945f476",
+        "cursors": "b12dffa28babf4adeeea5766dcafa1a3329506cadbec50a31745d7e7574d8dc6",
+        "calls": "7d471ce189ff736a018d59a1f1b44fbc5d2410b7aca8522f9009cbd0e37bdff6",
+        "slices": "43505844ef9bc618740953d8d5c91bf10c0d9479c46407761285455b27b004b5",
+        "frames": "95d15e75300129c5b4dd7f324bec76f91976db7c7b6075f942e9ea82b243e0b3"
+      },
+      "canonicalHashes": {
+        "screens": "264cbab7cdb3260d0507ab20608ccfa2c1dff2c0ef2c759fbf13c082ccaac5ee",
+        "cursors": "87f995d728d6f7f7295383213e5f5f85298d3da190245e1f7194d5a1d437eaf6",
+        "calls": "7d471ce189ff736a018d59a1f1b44fbc5d2410b7aca8522f9009cbd0e37bdff6",
+        "slices": "43505844ef9bc618740953d8d5c91bf10c0d9479c46407761285455b27b004b5",
+        "frames": "95d15e75300129c5b4dd7f324bec76f91976db7c7b6075f942e9ea82b243e0b3"
+      },
+      "boundaries": 9,
+      "calls": 2639,
+      "frames": 0,
+      "unaffectedControl": false,
+      "pass": false
+    },
+    {
+      "name": "line-eof-pending-no-lf",
+      "checks": [
+        {
+          "name": "all keys and all-five observer/deferred equality",
+          "pass": true
+        },
+        {
+          "name": "all-five equality to explicit canonical valid RC",
+          "pass": false,
+          "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n  {\n    calls: '860cfcf1eaecd7f446231c18899a60664b97fcf89acbb674e5207b78373a3ccf',\n    cursors: '51ee802e3d5290b524b6181657ab5f2507aec19ad89d3092f447a446b1c6ad04',\n    frames: '210e130878aabaf46f1fe72749a263f9eb71c6a262b80f13882ed08d472c0ecd',\n+   screens: '282476f8571506b92fb9681d35e5035438694714d1beeacd076cb465a5d050b0',\n-   screens: '955b0ecc665b76eb080ebeb9b00878a14b0bc99c896011446b417aa3c574dc88',\n    slices: '336b5ea699fbb622d130038f227b78985c6ef651592acf98444ec4f8d0764ef4'\n  }\n"
+        },
+        {
+          "name": "no collected errors or unsupported statements",
+          "pass": true
+        },
+        {
+          "name": "primary gameplay branch assertion",
+          "pass": false,
+          "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   'config-line-assembly.line-eof-pending-no-lf: segment 0 step 0 cell (0,1) is \"U\", expected \" \"',\n+   'config-line-assembly.line-eof-pending-no-lf: segment 0 step 3 cell (0,1) is \"U\", expected \" \"'\n+ ]\n- []\n"
+        },
+        {
+          "name": "pending SYMBOLS never reaches the real handler",
+          "pass": false,
+          "error": "The expression evaluated to a falsy value:\n\n  assert.ok(states.every(s => s.symbolDirectives.length === 0))\n"
+        }
+      ],
+      "hashes": {
+        "screens": "282476f8571506b92fb9681d35e5035438694714d1beeacd076cb465a5d050b0",
+        "cursors": "51ee802e3d5290b524b6181657ab5f2507aec19ad89d3092f447a446b1c6ad04",
+        "calls": "860cfcf1eaecd7f446231c18899a60664b97fcf89acbb674e5207b78373a3ccf",
+        "slices": "336b5ea699fbb622d130038f227b78985c6ef651592acf98444ec4f8d0764ef4",
+        "frames": "210e130878aabaf46f1fe72749a263f9eb71c6a262b80f13882ed08d472c0ecd"
+      },
+      "canonicalHashes": {
+        "screens": "955b0ecc665b76eb080ebeb9b00878a14b0bc99c896011446b417aa3c574dc88",
+        "cursors": "51ee802e3d5290b524b6181657ab5f2507aec19ad89d3092f447a446b1c6ad04",
+        "calls": "860cfcf1eaecd7f446231c18899a60664b97fcf89acbb674e5207b78373a3ccf",
+        "slices": "336b5ea699fbb622d130038f227b78985c6ef651592acf98444ec4f8d0764ef4",
+        "frames": "210e130878aabaf46f1fe72749a263f9eb71c6a262b80f13882ed08d472c0ecd"
+      },
+      "boundaries": 4,
+      "calls": 3039,
+      "frames": 0,
+      "unaffectedControl": false,
+      "pass": false
+    },
+    {
+      "name": "line-eof-pending-with-lf",
+      "checks": [
+        {
+          "name": "all keys and all-five observer/deferred equality",
+          "pass": true
+        },
+        {
+          "name": "all-five equality to explicit canonical valid RC",
+          "pass": false,
+          "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n  {\n    calls: '860cfcf1eaecd7f446231c18899a60664b97fcf89acbb674e5207b78373a3ccf',\n    cursors: '51ee802e3d5290b524b6181657ab5f2507aec19ad89d3092f447a446b1c6ad04',\n    frames: '210e130878aabaf46f1fe72749a263f9eb71c6a262b80f13882ed08d472c0ecd',\n+   screens: '282476f8571506b92fb9681d35e5035438694714d1beeacd076cb465a5d050b0',\n-   screens: '955b0ecc665b76eb080ebeb9b00878a14b0bc99c896011446b417aa3c574dc88',\n    slices: '336b5ea699fbb622d130038f227b78985c6ef651592acf98444ec4f8d0764ef4'\n  }\n"
+        },
+        {
+          "name": "no collected errors or unsupported statements",
+          "pass": true
+        },
+        {
+          "name": "primary gameplay branch assertion",
+          "pass": false,
+          "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   'config-line-assembly.line-eof-pending-with-lf: segment 0 step 0 cell (0,1) is \"U\", expected \" \"',\n+   'config-line-assembly.line-eof-pending-with-lf: segment 0 step 3 cell (0,1) is \"U\", expected \" \"'\n+ ]\n- []\n"
+        },
+        {
+          "name": "pending SYMBOLS never reaches the real handler",
+          "pass": false,
+          "error": "The expression evaluated to a falsy value:\n\n  assert.ok(states.every(s => s.symbolDirectives.length === 0))\n"
+        }
+      ],
+      "hashes": {
+        "screens": "282476f8571506b92fb9681d35e5035438694714d1beeacd076cb465a5d050b0",
+        "cursors": "51ee802e3d5290b524b6181657ab5f2507aec19ad89d3092f447a446b1c6ad04",
+        "calls": "860cfcf1eaecd7f446231c18899a60664b97fcf89acbb674e5207b78373a3ccf",
+        "slices": "336b5ea699fbb622d130038f227b78985c6ef651592acf98444ec4f8d0764ef4",
+        "frames": "210e130878aabaf46f1fe72749a263f9eb71c6a262b80f13882ed08d472c0ecd"
+      },
+      "canonicalHashes": {
+        "screens": "955b0ecc665b76eb080ebeb9b00878a14b0bc99c896011446b417aa3c574dc88",
+        "cursors": "51ee802e3d5290b524b6181657ab5f2507aec19ad89d3092f447a446b1c6ad04",
+        "calls": "860cfcf1eaecd7f446231c18899a60664b97fcf89acbb674e5207b78373a3ccf",
+        "slices": "336b5ea699fbb622d130038f227b78985c6ef651592acf98444ec4f8d0764ef4",
+        "frames": "210e130878aabaf46f1fe72749a263f9eb71c6a262b80f13882ed08d472c0ecd"
+      },
+      "boundaries": 4,
+      "calls": 3039,
+      "frames": 0,
+      "unaffectedControl": false,
+      "pass": false
+    },
+    {
+      "name": "line-canonical-symbols-negative",
+      "checks": [
+        {
+          "name": "all keys and all-five observer/deferred equality",
+          "pass": true
+        },
+        {
+          "name": "all-five equality to explicit canonical valid RC",
+          "pass": true
+        },
+        {
+          "name": "no collected errors or unsupported statements",
+          "pass": true
+        },
+        {
+          "name": "primary gameplay branch assertion",
+          "pass": true
+        }
+      ],
+      "hashes": {
+        "screens": "282476f8571506b92fb9681d35e5035438694714d1beeacd076cb465a5d050b0",
+        "cursors": "51ee802e3d5290b524b6181657ab5f2507aec19ad89d3092f447a446b1c6ad04",
+        "calls": "860cfcf1eaecd7f446231c18899a60664b97fcf89acbb674e5207b78373a3ccf",
+        "slices": "336b5ea699fbb622d130038f227b78985c6ef651592acf98444ec4f8d0764ef4",
+        "frames": "210e130878aabaf46f1fe72749a263f9eb71c6a262b80f13882ed08d472c0ecd"
+      },
+      "canonicalHashes": {
+        "screens": "282476f8571506b92fb9681d35e5035438694714d1beeacd076cb465a5d050b0",
+        "cursors": "51ee802e3d5290b524b6181657ab5f2507aec19ad89d3092f447a446b1c6ad04",
+        "calls": "860cfcf1eaecd7f446231c18899a60664b97fcf89acbb674e5207b78373a3ccf",
+        "slices": "336b5ea699fbb622d130038f227b78985c6ef651592acf98444ec4f8d0764ef4",
+        "frames": "210e130878aabaf46f1fe72749a263f9eb71c6a262b80f13882ed08d472c0ecd"
+      },
+      "boundaries": 4,
+      "calls": 3039,
+      "frames": 0,
+      "unaffectedControl": true,
+      "pass": true
+    },
+    {
+      "name": "line-canonical-bindings-negative",
+      "checks": [
+        {
+          "name": "all keys and all-five observer/deferred equality",
+          "pass": true
+        },
+        {
+          "name": "all-five equality to explicit canonical valid RC",
+          "pass": true
+        },
+        {
+          "name": "no collected errors or unsupported statements",
+          "pass": true
+        },
+        {
+          "name": "primary gameplay branch assertion",
+          "pass": true
+        }
+      ],
+      "hashes": {
+        "screens": "21081906a16c289bfdab5d3425972ef7dbc47b8e64771fa88e268c49299da32a",
+        "cursors": "304a8bcd03a1ca6f7fe2c4d78d48220a1825a394510f7de2e4bd5f1d30b4e6c7",
+        "calls": "e88e039ec58ec1eb540a23a4e1eb86aeb4fd2c006a7c95b80b75b4231d2dbcee",
+        "slices": "c452c98144861edebdb6390ead52dc9b8ff83059528462f781d0d2141920ba9a",
+        "frames": "be8a1bbaee025d5501a33340bd5d4e547d41835268267e671efcd939c6856fe3"
+      },
+      "canonicalHashes": {
+        "screens": "21081906a16c289bfdab5d3425972ef7dbc47b8e64771fa88e268c49299da32a",
+        "cursors": "304a8bcd03a1ca6f7fe2c4d78d48220a1825a394510f7de2e4bd5f1d30b4e6c7",
+        "calls": "e88e039ec58ec1eb540a23a4e1eb86aeb4fd2c006a7c95b80b75b4231d2dbcee",
+        "slices": "c452c98144861edebdb6390ead52dc9b8ff83059528462f781d0d2141920ba9a",
+        "frames": "be8a1bbaee025d5501a33340bd5d4e547d41835268267e671efcd939c6856fe3"
+      },
+      "boundaries": 5,
+      "calls": 2196,
+      "frames": 0,
+      "unaffectedControl": true,
+      "pass": true
+    },
+    {
+      "name": "line-crlf-menu-negative",
+      "checks": [
+        {
+          "name": "all keys and all-five observer/deferred equality",
+          "pass": true
+        },
+        {
+          "name": "all-five equality to explicit canonical valid RC",
+          "pass": true
+        },
+        {
+          "name": "no collected errors or unsupported statements",
+          "pass": true
+        },
+        {
+          "name": "primary gameplay branch assertion",
+          "pass": true
+        },
+        {
+          "name": "real inventory renders red bold quarterstaff",
+          "pass": true
+        }
+      ],
+      "hashes": {
+        "screens": "6497e7e0126458442bdb3c66c6024a4c7ee7ace46b5195bb24d5acd72413b8d1",
+        "cursors": "1065fccf83e1071b391353f0196b6b54fd2b775040d2e2b15ef4c2aa04f84774",
+        "calls": "a437e6c542b26f9bab4be970e0f4a3b84c674f8871f5be016c8705b93674b0e9",
+        "slices": "c1c350a9207d75a503404c20e72b9a5bbf559c78a0321156d32de7377493919f",
+        "frames": "be8a1bbaee025d5501a33340bd5d4e547d41835268267e671efcd939c6856fe3"
+      },
+      "canonicalHashes": {
+        "screens": "6497e7e0126458442bdb3c66c6024a4c7ee7ace46b5195bb24d5acd72413b8d1",
+        "cursors": "1065fccf83e1071b391353f0196b6b54fd2b775040d2e2b15ef4c2aa04f84774",
+        "calls": "a437e6c542b26f9bab4be970e0f4a3b84c674f8871f5be016c8705b93674b0e9",
+        "slices": "c1c350a9207d75a503404c20e72b9a5bbf559c78a0321156d32de7377493919f",
+        "frames": "be8a1bbaee025d5501a33340bd5d4e547d41835268267e671efcd939c6856fe3"
+      },
+      "boundaries": 5,
+      "calls": 2610,
+      "frames": 0,
+      "unaffectedControl": true,
+      "pass": true
+    }
+  ]
+}

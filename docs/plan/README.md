@@ -43,18 +43,26 @@ Rogue mimic wall symbols are pushed as `1110bf19`: source 35/35 versus 20,
 ordinary and original C 5/5 versus 3, all 58 selected/public and strict workers,
 nine retained suites, source audit and three syntax checks.
 
-Cream-pie handling and lookaround are verified for publication. Source controls
+Cream-pie handling and lookaround are pushed as `cae25aeb`. Source controls
 pass 35/35 and 55/55; all four original C cases match versus three before.
 Cream alone also passes those four; lookaround has separate source evidence.
 All 66 selected/public recordings and strict workers, fourteen retained suites,
 source audit and six syntax checks pass. All 890 prior raws remain fixed;
-the corpus is 891. Its full NFS replay is running with two workers.
+the corpus is 891. Its full NFS replay passes on the exact published runtime:
+919,703 screens/cursors, 19,561,599 random positions and 32,997 frames.
 
 Config physical-line assembly passes all twelve original C cases versus four,
-including composition with cream and lookaround. Its portable promotion is
-being prepared. Floor object effects and
+including composition with cream and lookaround. It is verified for publication:
+source 80/80, ordinary 12/12, all 78 selected/public and strict workers,
+twenty-two retained suites, source audit and three syntax checks. All 891 prior
+raws remain fixed; full892 is running after full891 completed.
+
+The run-into-monster canonical blindness guard is next. Its four original C
+inputs already pass with the published cream fix; no independent native gain
+is claimed for the reader change. Source controls improve from 38/50 to 50/50.
+Floor object effects and
 shipping audits have no ordinary failure established and no runtime patch.
-Two duplicate startup warning failures remain unresolved. The 19:16 UTC feed
+Two duplicate startup warning failures remain unresolved. The 19:56 UTC check
 is unchanged: rank 7 with 659 unmatched screens. See STATUS for exact receipts.
 
 

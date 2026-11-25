@@ -1,0 +1,396 @@
+{
+  "variant": "baseline",
+  "ownerSHA256": "41b1cfca6d178292b15653112ad49b6bb7c878063bef6b60e66b7df5cfed0a24",
+  "total": 80,
+  "passed": 13,
+  "scope": "Ordinary short physical lines, no sections, NUL or truncation claims",
+  "cases": [
+    {
+      "name": "OPTIONS/canonical-negative",
+      "pass": true
+    },
+    {
+      "name": "OPTIONS/continued-value",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ {}\n- {\n-   accessiblemsg: false\n- }\n"
+    },
+    {
+      "name": "OPTIONS/final-no-newline",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ {}\n- {\n-   accessiblemsg: false\n- }\n"
+    },
+    {
+      "name": "OPTIONS/comment-continues",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ {}\n- {\n-   accessiblemsg: false\n- }\n"
+    },
+    {
+      "name": "OPTIONS/empty-marker-continues",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ {}\n- {\n-   accessiblemsg: false\n- }\n"
+    },
+    {
+      "name": "OPTIONS/comment-terminates",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ {}\n- {\n-   accessiblemsg: false\n- }\n"
+    },
+    {
+      "name": "OPTIONS/blank-terminates",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ {}\n- {\n-   accessiblemsg: false\n- }\n"
+    },
+    {
+      "name": "OPTIONS/discard-pending-at-EOF-no-LF",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n... Skipped lines\n\n  {\n    effects: {\n      ape: [],\n      bind: null,\n      menu: [],\n...\n    },\n+   errors: [\n+     \"Unknown option 'accessiblemsg\\\\'\"\n+   ],\n-   errors: [],\n    unhandled: []\n  }\n"
+    },
+    {
+      "name": "OPTIONS/discard-pending-at-EOF-LF",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n... Skipped lines\n\n  {\n    effects: {\n      ape: [],\n      bind: null,\n      menu: [],\n...\n    },\n+   errors: [\n+     \"Unknown option 'accessiblemsg\\\\'\"\n+   ],\n-   errors: [],\n    unhandled: []\n  }\n"
+    },
+    {
+      "name": "AUTOPICKUP_EXCEPTION/canonical-negative",
+      "pass": true
+    },
+    {
+      "name": "AUTOPICKUP_EXCEPTION/continued-value",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ []\n- [\n-   {\n-     grab: true,\n-     pattern: 'quarterstaff'\n-   }\n- ]\n"
+    },
+    {
+      "name": "AUTOPICKUP_EXCEPTION/final-no-newline",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ []\n- [\n-   {\n-     grab: true,\n-     pattern: 'quarterstaff'\n-   }\n- ]\n"
+    },
+    {
+      "name": "AUTOPICKUP_EXCEPTION/comment-continues",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ []\n- [\n-   {\n-     grab: true,\n-     pattern: 'quarterstaff'\n-   }\n- ]\n"
+    },
+    {
+      "name": "AUTOPICKUP_EXCEPTION/empty-marker-continues",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ []\n- [\n-   {\n-     grab: true,\n-     pattern: 'quarterstaff'\n-   }\n- ]\n"
+    },
+    {
+      "name": "AUTOPICKUP_EXCEPTION/comment-terminates",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ []\n- [\n-   {\n-     grab: true,\n-     pattern: 'quarterstaff'\n-   }\n- ]\n"
+    },
+    {
+      "name": "AUTOPICKUP_EXCEPTION/blank-terminates",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ []\n- [\n-   {\n-     grab: true,\n-     pattern: 'quarterstaff'\n-   }\n- ]\n"
+    },
+    {
+      "name": "AUTOPICKUP_EXCEPTION/discard-pending-at-EOF-no-LF",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n... Skipped lines\n\n  {\n    effects: {\n      ape: [],\n      bind: null,\n      menu: [],\n...\n    },\n+   errors: [\n+     'syntax error in AUTOPICKUP_EXCEPTION'\n+   ],\n-   errors: [],\n    unhandled: []\n  }\n"
+    },
+    {
+      "name": "AUTOPICKUP_EXCEPTION/discard-pending-at-EOF-LF",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n... Skipped lines\n\n  {\n    effects: {\n      ape: [],\n      bind: null,\n      menu: [],\n...\n    },\n+   errors: [\n+     'syntax error in AUTOPICKUP_EXCEPTION'\n+   ],\n-   errors: [],\n    unhandled: []\n  }\n"
+    },
+    {
+      "name": "BINDINGS/canonical-negative",
+      "pass": true
+    },
+    {
+      "name": "BINDINGS/continued-value",
+      "pass": false,
+      "error": "Expected values to be strictly equal:\n+ actual - expected\n\n+ null\n- 'versionshort'\n"
+    },
+    {
+      "name": "BINDINGS/final-no-newline",
+      "pass": false,
+      "error": "Expected values to be strictly equal:\n+ actual - expected\n\n+ null\n- 'versionshort'\n"
+    },
+    {
+      "name": "BINDINGS/comment-continues",
+      "pass": false,
+      "error": "Expected values to be strictly equal:\n+ actual - expected\n\n+ null\n- 'versionshort'\n"
+    },
+    {
+      "name": "BINDINGS/empty-marker-continues",
+      "pass": false,
+      "error": "Expected values to be strictly equal:\n+ actual - expected\n\n+ null\n- 'versionshort'\n"
+    },
+    {
+      "name": "BINDINGS/comment-terminates",
+      "pass": false,
+      "error": "Expected values to be strictly equal:\n+ actual - expected\n\n+ null\n- 'versionshort'\n"
+    },
+    {
+      "name": "BINDINGS/blank-terminates",
+      "pass": false,
+      "error": "Expected values to be strictly equal:\n+ actual - expected\n\n+ null\n- 'versionshort'\n"
+    },
+    {
+      "name": "BINDINGS/discard-pending-at-EOF-no-LF",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n... Skipped lines\n\n  {\n    effects: {\n      ape: [],\n      bind: null,\n      menu: [],\n...\n    },\n+   errors: [\n+     \"Unknown key binding command 'versionshort\\\\'\"\n+   ],\n-   errors: [],\n    unhandled: []\n  }\n"
+    },
+    {
+      "name": "BINDINGS/discard-pending-at-EOF-LF",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n... Skipped lines\n\n  {\n    effects: {\n      ape: [],\n      bind: null,\n      menu: [],\n...\n    },\n+   errors: [\n+     \"Unknown key binding command 'versionshort\\\\'\"\n+   ],\n-   errors: [],\n    unhandled: []\n  }\n"
+    },
+    {
+      "name": "MSGTYPE/canonical-negative",
+      "pass": true
+    },
+    {
+      "name": "MSGTYPE/continued-value",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ []\n- [\n-   {\n-     msgtype: 2,\n-     pattern: '^You sit on'\n-   }\n- ]\n"
+    },
+    {
+      "name": "MSGTYPE/final-no-newline",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ []\n- [\n-   {\n-     msgtype: 2,\n-     pattern: '^You sit on'\n-   }\n- ]\n"
+    },
+    {
+      "name": "MSGTYPE/comment-continues",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ []\n- [\n-   {\n-     msgtype: 2,\n-     pattern: '^You sit on'\n-   }\n- ]\n"
+    },
+    {
+      "name": "MSGTYPE/empty-marker-continues",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ []\n- [\n-   {\n-     msgtype: 2,\n-     pattern: '^You sit on'\n-   }\n- ]\n"
+    },
+    {
+      "name": "MSGTYPE/comment-terminates",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ []\n- [\n-   {\n-     msgtype: 2,\n-     pattern: '^You sit on'\n-   }\n- ]\n"
+    },
+    {
+      "name": "MSGTYPE/blank-terminates",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ []\n- [\n-   {\n-     msgtype: 2,\n-     pattern: '^You sit on'\n-   }\n- ]\n"
+    },
+    {
+      "name": "MSGTYPE/discard-pending-at-EOF-no-LF",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n  {\n    effects: {\n      ape: [],\n      bind: null,\n      menu: [],\n+     msg: [\n+       {\n+         msgtype: 2,\n+         pattern: '^You sit on'\n+       }\n+     ],\n-     msg: [],\n      opts: {},\n      presence: {},\n      primary: [],\n      rogue: []\n    },\n"
+    },
+    {
+      "name": "MSGTYPE/discard-pending-at-EOF-LF",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n  {\n    effects: {\n      ape: [],\n      bind: null,\n      menu: [],\n+     msg: [\n+       {\n+         msgtype: 2,\n+         pattern: '^You sit on'\n+       }\n+     ],\n-     msg: [],\n      opts: {},\n      presence: {},\n      primary: [],\n      rogue: []\n    },\n"
+    },
+    {
+      "name": "MENUCOLOR/canonical-negative",
+      "pass": true
+    },
+    {
+      "name": "MENUCOLOR/continued-value",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ []\n- [\n-   {\n-     attr: 1,\n-     color: 1,\n-     origstr: 'quarterstaff'\n-   }\n- ]\n"
+    },
+    {
+      "name": "MENUCOLOR/final-no-newline",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ []\n- [\n-   {\n-     attr: 1,\n-     color: 1,\n-     origstr: 'quarterstaff'\n-   }\n- ]\n"
+    },
+    {
+      "name": "MENUCOLOR/comment-continues",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ []\n- [\n-   {\n-     attr: 1,\n-     color: 1,\n-     origstr: 'quarterstaff'\n-   }\n- ]\n"
+    },
+    {
+      "name": "MENUCOLOR/empty-marker-continues",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ []\n- [\n-   {\n-     attr: 1,\n-     color: 1,\n-     origstr: 'quarterstaff'\n-   }\n- ]\n"
+    },
+    {
+      "name": "MENUCOLOR/comment-terminates",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ []\n- [\n-   {\n-     attr: 1,\n-     color: 1,\n-     origstr: 'quarterstaff'\n-   }\n- ]\n"
+    },
+    {
+      "name": "MENUCOLOR/blank-terminates",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ []\n- [\n-   {\n-     attr: 1,\n-     color: 1,\n-     origstr: 'quarterstaff'\n-   }\n- ]\n"
+    },
+    {
+      "name": "MENUCOLOR/discard-pending-at-EOF-no-LF",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n... Skipped lines\n\n  {\n    effects: {\n      ape: [],\n      bind: null,\n      menu: [],\n...\n    },\n+   errors: [\n+     \"Unknown text attribute 'bold\\\\'\"\n+   ],\n-   errors: [],\n    unhandled: []\n  }\n"
+    },
+    {
+      "name": "MENUCOLOR/discard-pending-at-EOF-LF",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n... Skipped lines\n\n  {\n    effects: {\n      ape: [],\n      bind: null,\n      menu: [],\n...\n    },\n+   errors: [\n+     \"Unknown text attribute 'bold\\\\'\"\n+   ],\n-   errors: [],\n    unhandled: []\n  }\n"
+    },
+    {
+      "name": "ROGUESYMBOLS/canonical-negative",
+      "pass": true
+    },
+    {
+      "name": "ROGUESYMBOLS/continued-value",
+      "pass": false,
+      "error": "The expression evaluated to a falsy value:\n\n  assert.ok(e.rogue.some(([, v]) => v === 82))\n"
+    },
+    {
+      "name": "ROGUESYMBOLS/final-no-newline",
+      "pass": false,
+      "error": "The expression evaluated to a falsy value:\n\n  assert.ok(e.rogue.some(([, v]) => v === 82))\n"
+    },
+    {
+      "name": "ROGUESYMBOLS/comment-continues",
+      "pass": false,
+      "error": "The expression evaluated to a falsy value:\n\n  assert.ok(e.rogue.some(([, v]) => v === 82))\n"
+    },
+    {
+      "name": "ROGUESYMBOLS/empty-marker-continues",
+      "pass": false,
+      "error": "The expression evaluated to a falsy value:\n\n  assert.ok(e.rogue.some(([, v]) => v === 82))\n"
+    },
+    {
+      "name": "ROGUESYMBOLS/comment-terminates",
+      "pass": false,
+      "error": "The expression evaluated to a falsy value:\n\n  assert.ok(e.rogue.some(([, v]) => v === 82))\n"
+    },
+    {
+      "name": "ROGUESYMBOLS/blank-terminates",
+      "pass": false,
+      "error": "The expression evaluated to a falsy value:\n\n  assert.ok(e.rogue.some(([, v]) => v === 82))\n"
+    },
+    {
+      "name": "ROGUESYMBOLS/discard-pending-at-EOF-no-LF",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n... Skipped lines\n\n  {\n    effects: {\n      ape: [],\n      bind: null,\n      menu: [],\n...\n      primary: [],\n+     rogue: [\n+       [\n+         176,\n+         82\n+       ]\n+     ]\n-     rogue: []\n    },\n    errors: [],\n    unhandled: []\n  }\n"
+    },
+    {
+      "name": "ROGUESYMBOLS/discard-pending-at-EOF-LF",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n... Skipped lines\n\n  {\n    effects: {\n      ape: [],\n      bind: null,\n      menu: [],\n...\n      primary: [],\n+     rogue: [\n+       [\n+         176,\n+         82\n+       ]\n+     ]\n-     rogue: []\n    },\n    errors: [],\n    unhandled: []\n  }\n"
+    },
+    {
+      "name": "SYMBOLS/canonical-negative",
+      "pass": true
+    },
+    {
+      "name": "SYMBOLS/continued-value",
+      "pass": false,
+      "error": "The expression evaluated to a falsy value:\n\n  assert.ok(e.primary.some(([, v]) => v === 85))\n"
+    },
+    {
+      "name": "SYMBOLS/final-no-newline",
+      "pass": false,
+      "error": "The expression evaluated to a falsy value:\n\n  assert.ok(e.primary.some(([, v]) => v === 85))\n"
+    },
+    {
+      "name": "SYMBOLS/comment-continues",
+      "pass": false,
+      "error": "The expression evaluated to a falsy value:\n\n  assert.ok(e.primary.some(([, v]) => v === 85))\n"
+    },
+    {
+      "name": "SYMBOLS/empty-marker-continues",
+      "pass": false,
+      "error": "The expression evaluated to a falsy value:\n\n  assert.ok(e.primary.some(([, v]) => v === 85))\n"
+    },
+    {
+      "name": "SYMBOLS/comment-terminates",
+      "pass": false,
+      "error": "The expression evaluated to a falsy value:\n\n  assert.ok(e.primary.some(([, v]) => v === 85))\n"
+    },
+    {
+      "name": "SYMBOLS/blank-terminates",
+      "pass": false,
+      "error": "The expression evaluated to a falsy value:\n\n  assert.ok(e.primary.some(([, v]) => v === 85))\n"
+    },
+    {
+      "name": "SYMBOLS/discard-pending-at-EOF-no-LF",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n... Skipped lines\n\n  {\n    effects: {\n      ape: [],\n      bind: null,\n      menu: [],\n...\n      presence: {},\n+     primary: [\n+       [\n+         191,\n+         85\n+       ]\n+     ],\n-     primary: [],\n      rogue: []\n    },\n    errors: [],\n    unhandled: []\n  }\n"
+    },
+    {
+      "name": "SYMBOLS/discard-pending-at-EOF-LF",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n... Skipped lines\n\n  {\n    effects: {\n      ape: [],\n      bind: null,\n      menu: [],\n...\n      presence: {},\n+     primary: [\n+       [\n+         191,\n+         85\n+       ]\n+     ],\n-     primary: [],\n      rogue: []\n    },\n    errors: [],\n    unhandled: []\n  }\n"
+    },
+    {
+      "name": "merge-space",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   \"Bad config line 'Two'\"\n+ ]\n- []\n"
+    },
+    {
+      "name": "retain-space-before-marker",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   \"Bad config line 'Two'\"\n+ ]\n- []\n"
+    },
+    {
+      "name": "retain-tab-before-marker",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   \"Bad config line 'Two'\"\n+ ]\n- []\n"
+    },
+    {
+      "name": "strip-leading-fragment-space-tab",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   \"Bad config line 'Two'\"\n+ ]\n- []\n"
+    },
+    {
+      "name": "multiple-fragments",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   \"Bad config line 'Two\\\\'\",\n+   \"Bad config line 'Three'\"\n+ ]\n- []\n"
+    },
+    {
+      "name": "comment-without-marker-dispatches",
+      "pass": false,
+      "error": "Expected values to be strictly equal:\n\n'One\\\\' !== 'One'\n"
+    },
+    {
+      "name": "blank-without-marker-dispatches",
+      "pass": false,
+      "error": "Expected values to be strictly equal:\n\n'One\\\\' !== 'One'\n"
+    },
+    {
+      "name": "spaces-after-marker-disable-continuation",
+      "pass": true
+    },
+    {
+      "name": "CRLF-after-marker-disables-continuation",
+      "pass": true
+    },
+    {
+      "name": "ordinary-CRLF-negative",
+      "pass": true
+    },
+    {
+      "name": "inline-hash-is-value-negative",
+      "pass": true
+    },
+    {
+      "name": "hash-after-continued-value-is-value",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   \"Bad config line 'Two'\"\n+ ]\n- []\n"
+    },
+    {
+      "name": "separate-statement-after-comment-termination",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n  {\n    accessiblemsg: false,\n+   name: 'One\\\\'\n-   name: 'One'\n  }\n"
+    },
+    {
+      "name": "comment-marker-with-no-pending-does-not-join-next",
+      "pass": true
+    },
+    {
+      "name": "blank-and-comment-only-negative",
+      "pass": true
+    },
+    {
+      "name": "pending-is-local-to-one-parse-call",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n  {\n    effects: {\n      ape: [],\n      bind: null,\n      menu: [],\n      msg: [],\n+     opts: {\n+       name: 'Discard\\\\'\n+     },\n-     opts: {},\n      presence: {},\n      primary: [],\n      rogue: []\n    },\n    errors: [],\n"
+    },
+    {
+      "name": "munged-quoted-pattern-after-merge",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   'MSGTYPE regex error: trailing backslash (\\\\)',\n+   `Bad config line 'Two#\"'`\n+ ]\n- []\n"
+    }
+  ]
+}

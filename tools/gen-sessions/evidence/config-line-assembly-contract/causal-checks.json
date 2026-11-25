@@ -1,0 +1,107 @@
+{
+  "baselineReportSHA256": "5f453b96d962c8cdfb24ef3d8a300108c7da22b5b2a26c6a63990b437104385f",
+  "candidateReportSHA256": "5e8d34d750da8014ca7d011c430a6bf189edc07cc88f5e34c57d629b6dd2964c",
+  "cases": [
+    {
+      "name": "line-options-multiline-notice-off",
+      "baselinePass": false,
+      "candidatePass": true,
+      "changedStreams": [],
+      "negative": false
+    },
+    {
+      "name": "line-bindings-empty-continuation",
+      "baselinePass": false,
+      "candidatePass": true,
+      "changedStreams": [
+        "screens"
+      ],
+      "negative": false
+    },
+    {
+      "name": "line-symbols-comment-termination",
+      "baselinePass": false,
+      "candidatePass": true,
+      "changedStreams": [
+        "screens"
+      ],
+      "negative": false
+    },
+    {
+      "name": "line-rogue-blank-termination",
+      "baselinePass": false,
+      "candidatePass": true,
+      "changedStreams": [
+        "screens"
+      ],
+      "negative": false
+    },
+    {
+      "name": "line-menucolor-multiline-inventory",
+      "baselinePass": false,
+      "candidatePass": true,
+      "changedStreams": [
+        "screens"
+      ],
+      "negative": false
+    },
+    {
+      "name": "line-msgtype-comment-continuation",
+      "baselinePass": false,
+      "candidatePass": true,
+      "changedStreams": [
+        "screens"
+      ],
+      "negative": false
+    },
+    {
+      "name": "line-autopickup-exception-multiline",
+      "baselinePass": false,
+      "candidatePass": true,
+      "changedStreams": [
+        "screens",
+        "cursors"
+      ],
+      "negative": false
+    },
+    {
+      "name": "line-eof-pending-no-lf",
+      "baselinePass": false,
+      "candidatePass": true,
+      "changedStreams": [
+        "screens"
+      ],
+      "negative": false
+    },
+    {
+      "name": "line-eof-pending-with-lf",
+      "baselinePass": false,
+      "candidatePass": true,
+      "changedStreams": [
+        "screens"
+      ],
+      "negative": false
+    },
+    {
+      "name": "line-canonical-symbols-negative",
+      "baselinePass": true,
+      "candidatePass": true,
+      "changedStreams": [],
+      "negative": true
+    },
+    {
+      "name": "line-canonical-bindings-negative",
+      "baselinePass": true,
+      "candidatePass": true,
+      "changedStreams": [],
+      "negative": true
+    },
+    {
+      "name": "line-crlf-menu-negative",
+      "baselinePass": true,
+      "candidatePass": true,
+      "changedStreams": [],
+      "negative": true
+    }
+  ]
+}

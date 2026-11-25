@@ -4475,6 +4475,18 @@
     {"group": "lookaround-cream", "id": "lookaround-eyes-cream-side-door", "cFile": "src/hack.c", "cFunction": "lookaround", "description": "eyes cream side door"},
     {"group": "lookaround-cream", "id": "lookaround-lenses-cream-side-door", "cFile": "src/hack.c", "cFunction": "lookaround", "description": "lenses cream side door"},
     {"group": "lookaround-cream", "id": "cream-pie.eyes-feedback", "cFile": "src/apply.c", "cFunction": "use_cream_pie", "description": "eyes feedback"},
-    {"group": "lookaround-cream", "id": "cream-pie.lenses-feedback", "cFile": "src/apply.c", "cFunction": "use_cream_pie", "description": "lenses feedback"}
+    {"group": "lookaround-cream", "id": "cream-pie.lenses-feedback", "cFile": "src/apply.c", "cFunction": "use_cream_pie", "description": "lenses feedback"},
+    {"group": "config-line-assembly-contract", "id": "config-line-assembly.line-options-multiline-notice-off", "cFile": "src/cfgfiles.c", "cFunction": "parse_conf_buf", "description": "line options multiline notice off"},
+    {"group": "config-line-assembly-contract", "id": "config-line-assembly.line-bindings-empty-continuation", "cFile": "src/cfgfiles.c", "cFunction": "parse_conf_buf", "description": "line bindings empty continuation"},
+    {"group": "config-line-assembly-contract", "id": "config-line-assembly.line-symbols-comment-termination", "cFile": "src/cfgfiles.c", "cFunction": "parse_conf_buf", "description": "line symbols comment termination"},
+    {"group": "config-line-assembly-contract", "id": "config-line-assembly.line-rogue-blank-termination", "cFile": "src/cfgfiles.c", "cFunction": "parse_conf_buf", "description": "line rogue blank termination"},
+    {"group": "config-line-assembly-contract", "id": "config-line-assembly.line-menucolor-multiline-inventory", "cFile": "src/cfgfiles.c", "cFunction": "parse_conf_buf", "description": "line menucolor multiline inventory"},
+    {"group": "config-line-assembly-contract", "id": "config-line-assembly.line-msgtype-comment-continuation", "cFile": "src/cfgfiles.c", "cFunction": "parse_conf_buf", "description": "line msgtype comment continuation"},
+    {"group": "config-line-assembly-contract", "id": "config-line-assembly.line-autopickup-exception-multiline", "cFile": "src/cfgfiles.c", "cFunction": "parse_conf_buf", "description": "line autopickup exception multiline"},
+    {"group": "config-line-assembly-contract", "id": "config-line-assembly.line-eof-pending-no-lf", "cFile": "src/cfgfiles.c", "cFunction": "parse_conf_buf", "description": "line eof pending no lf"},
+    {"group": "config-line-assembly-contract", "id": "config-line-assembly.line-eof-pending-with-lf", "cFile": "src/cfgfiles.c", "cFunction": "parse_conf_buf", "description": "line eof pending with lf"},
+    {"group": "config-line-assembly-contract", "id": "config-line-assembly.line-canonical-symbols-negative", "cFile": "src/cfgfiles.c", "cFunction": "parse_conf_buf", "description": "line canonical symbols negative"},
+    {"group": "config-line-assembly-contract", "id": "config-line-assembly.line-canonical-bindings-negative", "cFile": "src/cfgfiles.c", "cFunction": "parse_conf_buf", "description": "line canonical bindings negative"},
+    {"group": "config-line-assembly-contract", "id": "config-line-assembly.line-crlf-menu-negative", "cFile": "src/cfgfiles.c", "cFunction": "parse_conf_buf", "description": "line crlf menu negative"}
   ]
 }

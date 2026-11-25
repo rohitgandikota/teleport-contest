@@ -1,0 +1,445 @@
+{
+  "name": "config-line-assembly-contract",
+  "classification": "source-derived ordinary RC continuations and comments; no duplicate or filename diagnostic closure",
+  "coverage": [
+    "OPTIONS",
+    "BINDINGS",
+    "SYMBOLS",
+    "ROGUESYMBOLS",
+    "MENUCOLOR",
+    "MSGTYPE",
+    "AUTOPICKUP_EXCEPTION",
+    "comment and blank termination",
+    "comment and empty-marker continuation",
+    "unfinished EOF with and without LF",
+    "unaffected canonical and CRLF controls"
+  ],
+  "segments": [
+    {
+      "seed": 7600,
+      "datetime": "20260503025436",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,debug_mongen\nOPTIONS=accessiblemsg,whatis_coord:map\nOPTIONS=\\\n  !spot_monsters\n",
+      "moves": " #levelchange\r30\r                             \u0007peaceful blue jelly\r#wizintrinsic\r3i\r  3.~    \u001b\u001b  V",
+      "name": "line-options-multiline-notice-off"
+    },
+    {
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nBIND=\\\n \t\\\n~:versionshort,V:nothing\n",
+      "moves": " & ~",
+      "name": "line-bindings-empty-continuation"
+    },
+    {
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nSYMBOLS=\\\nS_unexplored:U\\\n# terminate the pending directive\n",
+      "moves": " V\f",
+      "name": "line-symbols-comment-termination"
+    },
+    {
+      "seed": 9771,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:DECgraphics,!safe_wait\nROGUESYMBOLS=\\\nS_human:R,S_room:.,S_corr:%,S_weapon:/,S_coin:G\\\n\n",
+      "moves": " \u0016the rogue level\r   \u0017dagger\ri da \u00161\r   V ",
+      "name": "line-rogue-blank-termination"
+    },
+    {
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:ColorSave,role:Wizard,race:human,gender:male,align:neutral\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nMENUCOLOR=\\\n\"quarterstaff\"=red&bold\n",
+      "moves": " i\u001bV",
+      "name": "line-menucolor-multiline-inventory"
+    },
+    {
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:Msg0,role:Wizard,race:human,gender:male,align:neutral\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nMSGTYPE=\\\n# keep the pending directive\\\nhide \"^You sit on\"\n",
+      "moves": " #sit\r#sit\r\u001b",
+      "name": "line-msgtype-comment-continuation"
+    },
+    {
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:ApeForce,role:Wizard,race:human,gender:male,align:neutral\nOPTIONS=autopickup,!tutorial,!tips,pettype:none,!dropped_nopick,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=pickup_types:$\nAUTOPICKUP_EXCEPTION=\\\n\"<quarterstaff\"\n",
+      "moves": " ldalhi\u001b",
+      "name": "line-autopickup-exception-multiline"
+    },
+    {
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nSYMBOLS=S_unexplored:U\\",
+      "moves": " V\f",
+      "name": "line-eof-pending-no-lf"
+    },
+    {
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nSYMBOLS=S_unexplored:U\\\n",
+      "moves": " V\f",
+      "name": "line-eof-pending-with-lf"
+    },
+    {
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nSYMBOLS=S_unexplored:U\n",
+      "moves": " V\f",
+      "name": "line-canonical-symbols-negative"
+    },
+    {
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nBIND=~:versionshort,V:nothing\n",
+      "moves": " & ~",
+      "name": "line-canonical-bindings-negative"
+    },
+    {
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:ColorSave,role:Wizard,race:human,gender:male,align:neutral\r\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!autoquiver\r\nOPTIONS=suppress_alert:3.4.3\r\nOPTIONS=symset:DECgraphics\r\nMENUCOLOR=\"quarterstaff\"=red&bold\r\n",
+      "moves": " i\u001bV",
+      "name": "line-crlf-menu-negative"
+    }
+  ],
+  "derivations": [
+    {
+      "name": "line-options-multiline-notice-off",
+      "sourceRecipe": "../config-directive-source-audit/recipes/config-directive-contract.json",
+      "sourceRecipeSHA256": "49dc9798aff9379f6f32960e382817fdd06a03604a4d595cbe008624e9097f8a",
+      "sourceSegment": 1,
+      "sourceCanonicalInputs": "../config-directive-source-audit/source/canonical-inputs.json",
+      "sourceCanonicalInputsSHA256": "8d07868e2e7b19c6f874b2dd76bd1c7fe9e5e934b5c7c3d4843872924c3887b8",
+      "from": "OPTIONS=!spot_monsters\n",
+      "to": "OPTIONS=\\\n  !spot_monsters\n",
+      "canonicalReferenceChange": null,
+      "unaffectedControl": false
+    },
+    {
+      "name": "line-bindings-empty-continuation",
+      "sourceRecipe": "../config-directive-source-audit/recipes/config-directive-contract.json",
+      "sourceRecipeSHA256": "49dc9798aff9379f6f32960e382817fdd06a03604a4d595cbe008624e9097f8a",
+      "sourceSegment": 2,
+      "sourceCanonicalInputs": "../config-directive-source-audit/source/canonical-inputs.json",
+      "sourceCanonicalInputsSHA256": "8d07868e2e7b19c6f874b2dd76bd1c7fe9e5e934b5c7c3d4843872924c3887b8",
+      "from": "BIND=~:versionshort,V:nothing\n",
+      "to": "BIND=\\\n \t\\\n~:versionshort,V:nothing\n",
+      "canonicalReferenceChange": null,
+      "unaffectedControl": false
+    },
+    {
+      "name": "line-symbols-comment-termination",
+      "sourceRecipe": "../config-directive-source-audit/recipes/config-directive-contract.json",
+      "sourceRecipeSHA256": "49dc9798aff9379f6f32960e382817fdd06a03604a4d595cbe008624e9097f8a",
+      "sourceSegment": 3,
+      "sourceCanonicalInputs": "../config-directive-source-audit/source/canonical-inputs.json",
+      "sourceCanonicalInputsSHA256": "8d07868e2e7b19c6f874b2dd76bd1c7fe9e5e934b5c7c3d4843872924c3887b8",
+      "from": "SYMBOLS=S_unexplored:U\n",
+      "to": "SYMBOLS=\\\nS_unexplored:U\\\n# terminate the pending directive\n",
+      "canonicalReferenceChange": null,
+      "unaffectedControl": false
+    },
+    {
+      "name": "line-rogue-blank-termination",
+      "sourceRecipe": "../config-directive-source-audit/recipes/config-directive-contract.json",
+      "sourceRecipeSHA256": "49dc9798aff9379f6f32960e382817fdd06a03604a4d595cbe008624e9097f8a",
+      "sourceSegment": 4,
+      "sourceCanonicalInputs": "../config-directive-source-audit/source/canonical-inputs.json",
+      "sourceCanonicalInputsSHA256": "8d07868e2e7b19c6f874b2dd76bd1c7fe9e5e934b5c7c3d4843872924c3887b8",
+      "from": "ROGUESYMBOLS=S_human:R,S_room:.,S_corr:%,S_weapon:/,S_coin:G\n",
+      "to": "ROGUESYMBOLS=\\\nS_human:R,S_room:.,S_corr:%,S_weapon:/,S_coin:G\\\n\n",
+      "canonicalReferenceChange": null,
+      "unaffectedControl": false
+    },
+    {
+      "name": "line-menucolor-multiline-inventory",
+      "sourceRecipe": "../config-directive-source-audit/recipes/config-directive-contract.json",
+      "sourceRecipeSHA256": "49dc9798aff9379f6f32960e382817fdd06a03604a4d595cbe008624e9097f8a",
+      "sourceSegment": 5,
+      "sourceCanonicalInputs": "../config-directive-source-audit/source/canonical-inputs.json",
+      "sourceCanonicalInputsSHA256": "8d07868e2e7b19c6f874b2dd76bd1c7fe9e5e934b5c7c3d4843872924c3887b8",
+      "from": "MENUCOLOR=\"quarterstaff\"=red&bold\n",
+      "to": "MENUCOLOR=\\\n\"quarterstaff\"=red&bold\n",
+      "canonicalReferenceChange": null,
+      "unaffectedControl": false
+    },
+    {
+      "name": "line-msgtype-comment-continuation",
+      "sourceRecipe": "../config-directive-source-audit/recipes/config-directive-contract.json",
+      "sourceRecipeSHA256": "49dc9798aff9379f6f32960e382817fdd06a03604a4d595cbe008624e9097f8a",
+      "sourceSegment": 6,
+      "sourceCanonicalInputs": "../config-directive-source-audit/source/canonical-inputs.json",
+      "sourceCanonicalInputsSHA256": "8d07868e2e7b19c6f874b2dd76bd1c7fe9e5e934b5c7c3d4843872924c3887b8",
+      "from": "MSGTYPE=hide \"^You sit on\"\n",
+      "to": "MSGTYPE=\\\n# keep the pending directive\\\nhide \"^You sit on\"\n",
+      "canonicalReferenceChange": null,
+      "unaffectedControl": false
+    },
+    {
+      "name": "line-autopickup-exception-multiline",
+      "sourceRecipe": "../config-directive-source-audit/recipes/config-directive-contract.json",
+      "sourceRecipeSHA256": "49dc9798aff9379f6f32960e382817fdd06a03604a4d595cbe008624e9097f8a",
+      "sourceSegment": 7,
+      "sourceCanonicalInputs": "../config-directive-source-audit/source/canonical-inputs.json",
+      "sourceCanonicalInputsSHA256": "8d07868e2e7b19c6f874b2dd76bd1c7fe9e5e934b5c7c3d4843872924c3887b8",
+      "from": "AUTOPICKUP_EXCEPTION=\"<quarterstaff\"\n",
+      "to": "AUTOPICKUP_EXCEPTION=\\\n\"<quarterstaff\"\n",
+      "canonicalReferenceChange": null,
+      "unaffectedControl": false
+    },
+    {
+      "name": "line-eof-pending-no-lf",
+      "sourceRecipe": "../config-directive-source-audit/recipes/config-directive-contract.json",
+      "sourceRecipeSHA256": "49dc9798aff9379f6f32960e382817fdd06a03604a4d595cbe008624e9097f8a",
+      "sourceSegment": 3,
+      "sourceCanonicalInputs": "../config-directive-source-audit/source/canonical-inputs.json",
+      "sourceCanonicalInputsSHA256": "8d07868e2e7b19c6f874b2dd76bd1c7fe9e5e934b5c7c3d4843872924c3887b8",
+      "from": "SYMBOLS=S_unexplored:U\n",
+      "to": "SYMBOLS=S_unexplored:U\\",
+      "canonicalReferenceChange": "omit unfinished SYMBOLS directive",
+      "unaffectedControl": false
+    },
+    {
+      "name": "line-eof-pending-with-lf",
+      "sourceRecipe": "../config-directive-source-audit/recipes/config-directive-contract.json",
+      "sourceRecipeSHA256": "49dc9798aff9379f6f32960e382817fdd06a03604a4d595cbe008624e9097f8a",
+      "sourceSegment": 3,
+      "sourceCanonicalInputs": "../config-directive-source-audit/source/canonical-inputs.json",
+      "sourceCanonicalInputsSHA256": "8d07868e2e7b19c6f874b2dd76bd1c7fe9e5e934b5c7c3d4843872924c3887b8",
+      "from": "SYMBOLS=S_unexplored:U\n",
+      "to": "SYMBOLS=S_unexplored:U\\\n",
+      "canonicalReferenceChange": "omit unfinished SYMBOLS directive",
+      "unaffectedControl": false
+    },
+    {
+      "name": "line-canonical-symbols-negative",
+      "sourceRecipe": "../config-directive-source-audit/recipes/config-directive-contract.json",
+      "sourceRecipeSHA256": "49dc9798aff9379f6f32960e382817fdd06a03604a4d595cbe008624e9097f8a",
+      "sourceSegment": 3,
+      "sourceCanonicalInputs": "../config-directive-source-audit/source/canonical-inputs.json",
+      "sourceCanonicalInputsSHA256": "8d07868e2e7b19c6f874b2dd76bd1c7fe9e5e934b5c7c3d4843872924c3887b8",
+      "from": null,
+      "to": null,
+      "canonicalReferenceChange": null,
+      "unaffectedControl": true
+    },
+    {
+      "name": "line-canonical-bindings-negative",
+      "sourceRecipe": "../config-directive-source-audit/recipes/config-directive-contract.json",
+      "sourceRecipeSHA256": "49dc9798aff9379f6f32960e382817fdd06a03604a4d595cbe008624e9097f8a",
+      "sourceSegment": 2,
+      "sourceCanonicalInputs": "../config-directive-source-audit/source/canonical-inputs.json",
+      "sourceCanonicalInputsSHA256": "8d07868e2e7b19c6f874b2dd76bd1c7fe9e5e934b5c7c3d4843872924c3887b8",
+      "from": null,
+      "to": null,
+      "canonicalReferenceChange": null,
+      "unaffectedControl": true
+    },
+    {
+      "name": "line-crlf-menu-negative",
+      "sourceRecipe": "../config-directive-source-audit/recipes/config-directive-contract.json",
+      "sourceRecipeSHA256": "49dc9798aff9379f6f32960e382817fdd06a03604a4d595cbe008624e9097f8a",
+      "sourceSegment": 5,
+      "sourceCanonicalInputs": "../config-directive-source-audit/source/canonical-inputs.json",
+      "sourceCanonicalInputsSHA256": "8d07868e2e7b19c6f874b2dd76bd1c7fe9e5e934b5c7c3d4843872924c3887b8",
+      "from": "\n",
+      "to": "\r\n",
+      "canonicalReferenceChange": null,
+      "unaffectedControl": true
+    }
+  ],
+  "requireBranchAssertions": true,
+  "branches": [
+    "config-line-assembly.line-options-multiline-notice-off",
+    "config-line-assembly.line-bindings-empty-continuation",
+    "config-line-assembly.line-symbols-comment-termination",
+    "config-line-assembly.line-rogue-blank-termination",
+    "config-line-assembly.line-menucolor-multiline-inventory",
+    "config-line-assembly.line-msgtype-comment-continuation",
+    "config-line-assembly.line-autopickup-exception-multiline",
+    "config-line-assembly.line-eof-pending-no-lf",
+    "config-line-assembly.line-eof-pending-with-lf",
+    "config-line-assembly.line-canonical-symbols-negative",
+    "config-line-assembly.line-canonical-bindings-negative",
+    "config-line-assembly.line-crlf-menu-negative"
+  ],
+  "branchAssertions": [
+    {
+      "branch": "config-line-assembly.line-options-multiline-notice-off",
+      "segment": 0,
+      "screenIncludes": [
+        "You can see again.",
+        "Unknown command '~'."
+      ],
+      "screenExcludes": [
+        "You see a peaceful blue jelly.",
+        "boolean option specified multiple times"
+      ]
+    },
+    {
+      "branch": "config-line-assembly.line-bindings-empty-continuation",
+      "segment": 1,
+      "screenIncludes": [
+        "(#versionshort)"
+      ]
+    },
+    {
+      "branch": "config-line-assembly.line-symbols-comment-termination",
+      "segment": 2,
+      "screenCells": [
+        {
+          "step": 0,
+          "x": 0,
+          "y": 1,
+          "equals": "U"
+        },
+        {
+          "step": 3,
+          "x": 0,
+          "y": 1,
+          "equals": "U"
+        }
+      ]
+    },
+    {
+      "branch": "config-line-assembly.line-rogue-blank-termination",
+      "segment": 3,
+      "screenIncludes": [
+        "older, more primitive world",
+        "Dlvl:18",
+        "Dlvl:1"
+      ],
+      "screenCells": [
+        {
+          "step": 19,
+          "x": 43,
+          "y": 19,
+          "equals": "R"
+        },
+        {
+          "step": 42,
+          "x": 68,
+          "y": 9,
+          "equals": "┌"
+        }
+      ]
+    },
+    {
+      "screenIncludes": [
+        "quarterstaff",
+        "NetHack Version"
+      ],
+      "segment": 4,
+      "branch": "config-line-assembly.line-menucolor-multiline-inventory"
+    },
+    {
+      "branch": "config-line-assembly.line-msgtype-comment-continuation",
+      "segment": 5,
+      "screenIncludes": [
+        "Hello"
+      ],
+      "screenExcludes": [
+        "You sit on the stairs."
+      ],
+      "screenCells": [
+        {
+          "step": 6,
+          "x": 0,
+          "y": 0,
+          "equals": " "
+        }
+      ]
+    },
+    {
+      "branch": "config-line-assembly.line-autopickup-exception-multiline",
+      "segment": 6,
+      "screenIncludes": [
+        "Hello",
+        "a - a blessed +1 quarterstaff."
+      ],
+      "screenCells": [
+        {
+          "step": 6,
+          "x": 0,
+          "y": 0,
+          "equals": "a"
+        }
+      ]
+    },
+    {
+      "screenCells": [
+        {
+          "step": 0,
+          "x": 0,
+          "y": 1,
+          "equals": " "
+        },
+        {
+          "step": 3,
+          "x": 0,
+          "y": 1,
+          "equals": " "
+        }
+      ],
+      "screenExcludes": [
+        "Line 5:",
+        "error in"
+      ],
+      "segment": 7,
+      "branch": "config-line-assembly.line-eof-pending-no-lf"
+    },
+    {
+      "screenCells": [
+        {
+          "step": 0,
+          "x": 0,
+          "y": 1,
+          "equals": " "
+        },
+        {
+          "step": 3,
+          "x": 0,
+          "y": 1,
+          "equals": " "
+        }
+      ],
+      "screenExcludes": [
+        "Line 5:",
+        "error in"
+      ],
+      "segment": 8,
+      "branch": "config-line-assembly.line-eof-pending-with-lf"
+    },
+    {
+      "branch": "config-line-assembly.line-canonical-symbols-negative",
+      "segment": 9,
+      "screenCells": [
+        {
+          "step": 0,
+          "x": 0,
+          "y": 1,
+          "equals": "U"
+        },
+        {
+          "step": 3,
+          "x": 0,
+          "y": 1,
+          "equals": "U"
+        }
+      ]
+    },
+    {
+      "branch": "config-line-assembly.line-canonical-bindings-negative",
+      "segment": 10,
+      "screenIncludes": [
+        "(#versionshort)"
+      ]
+    },
+    {
+      "screenIncludes": [
+        "quarterstaff",
+        "NetHack Version"
+      ],
+      "segment": 11,
+      "branch": "config-line-assembly.line-crlf-menu-negative"
+    }
+  ]
+}

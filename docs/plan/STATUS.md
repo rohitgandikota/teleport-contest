@@ -8182,6 +8182,48 @@ owns new native recording, composition, required checks and immediate pushes.
 NFS coverage still stops at index99 until the new native files are independently
 replayed and credited. Do not infer branch coverage from the new intent tags.
 
+## 2026-11-25: natural contact pushed and C coverage expanded
+
+Commit `e766caac` pushed successfully, process 66297 exit 0. Main and origin/main
+match; only the unrelated .DS_Store files remain untracked. The previous quota
+blocker is resolved. No local commits are being withheld.
+
+The shared-machine nonfood/contact run closed successfully, native and union
+both exit 0. Its two original native recordings match the instrumented C
+replay byte for byte. The union now credits 812 inputs in 101 layouts, covering
+4,571/5,492 functions and 60,349/107,260 branch outcomes. Compared with index99,
+this adds six functions and 144 outcomes. All 100 preceding run records and
+hashes are unchanged, including the original platform rejection evidence.
+The additional native pool is 131 inputs and 518 segments; the separate three
+ordinary Linux controls still cover 14 segments.
+
+Parent downloaded and independently checked four compact reports, each under
+1 MB, against remote SHA-256 values. Bulk coverage exports and profiles remain
+on NFS at
+`/share/NFS/u/rohit/research/contest/artifacts/2026-11-22/c-coverage-compress.E84JI2/verified-nonfood-contact-union-20261125`.
+The local receipt is
+`.cache/restart-20261122/linux-coverage-nonfood-contact-download.json`.
+Summary SHA-256 is
+`d4e15ab418be829b566fa8d94af00fb6b6949aaf4066073985b15214edb0e4db`;
+compact SHA-256 is
+`f3209332d8c23fe4ada73e5f0a91a11249df3d982b0063f15297d58b3af3962a`.
+The parent verified the original input hashes, uploaded script hashes,
+successful driver exits, unchanged binary/source/control pins and exact union
+prefix. C coverage is reach evidence, not proof of JS parity. In particular,
+`bounded_increase` still has no native invocation. The single native
+`eataccessory` effect is the previously recorded free-action ring case; other
+accessory effects retain their constructed-state evidence only.
+
+Source work continues in isolated fixed candidates. Pauli owns the complete
+monster-status owner, Jason owns altar-glyph preservation, Singer now owns
+engulf/explosion dispatch and its complete helper closure, and Avicenna now
+owns doeat's prelude and edibility/iron-bars omissions. The latter two start
+from the exact natural-contact candidate, matching `e766caac`. Their previous
+natural-contact and nonfood work is already published and must not be repeated.
+Parent owns fresh C recording, independent composition and prompt verified
+pushes. The latest official rank observation remains the November 24 23:40 UTC
+snapshot; no new held-out score is claimed.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

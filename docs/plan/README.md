@@ -25,9 +25,9 @@ limit. That pushed checkpoint includes probing, dark-side visibility and the
 nonfood port. The full817 run passes on that exact runtime. Its nonfood
 composition passes 55 checks, 447 controls, 23 focused fixtures and all
 44 public sessions. The ten new nonfood C cases match all 1,197 styled
-boundaries, 27,141 random calls and one frame. No new NFS coverage is claimed.
+boundaries, 27,141 random calls and one frame.
 
-Natural contact is now separately verified and integrated for immediate push.
+Natural contact is separately verified and pushed as `e766caac`.
 It restores shade and unsolid rejection, silver-ring feedback, blessed helmet
 contact and combat visibility lifetime. All 29 checks, 136 controls, 19 focused
 fixtures and 44 public sessions pass. Its seven new C cases match all 587
@@ -35,6 +35,14 @@ styled boundaries and 17,744 calls. The maintained corpus is 818. This natural
 contact change is outside the completed full817 runtime; no full818 sweep is
 claimed. Two parallel source audits have resumed for complete monster-status
 feedback and altar-glyph preservation.
+
+The new shared-machine C coverage run accepts both native recordings byte for
+byte. The union now covers 4,571/5,492 functions and 60,349/107,260 branch
+outcomes across 812 credited inputs and 101 instrumented layouts. This adds
+six functions and 144 outcomes. All 100 previous run hashes are unchanged.
+These figures measure C reach, not JS parity. Accessory stat increases still
+have constructed controls only; the native corpus has not reached
+`bounded_increase`.
 
 The latest full regression passes all 817 fixtures: 853,841 screens/cursors,
 17,766,231 scored RNG positions and 32,296 frames. Both fixed-runtime shards
@@ -414,13 +422,13 @@ The Linux/NFS branch collector is pushed
 and passes signal canaries plus exact save/restore, artifact and natural-exit
 pilots. The Linux census at e4504071 now covers all 678 original inputs:
 603 canonical matches and 75 independently recorded ordinary Linux controls.
-Adding 129 newer raw inputs and three independent Linux controls, 515
-native segments in total, gives a validated union entering 4,565/5,492
-functions and observing 60,205/107,260 direct C branch outcomes.
-All 810 credited input hashes, 100 build manifests and branch layouts were
-checked before merging. All 99 preceding run hashes remain fixed. The latest
-union includes the pit-kick, probing-identity and dark-side visibility inputs.
-Dark-side visibility still awaits JS integration; C coverage does not establish parity.
+Adding 131 newer raw inputs and three independent Linux controls, 532
+native segments in total, gives a validated union entering 4,571/5,492
+functions and observing 60,349/107,260 direct C branch outcomes.
+All 812 credited input hashes, 101 build manifests and branch layouts were
+checked before merging. All 100 preceding run hashes remain fixed. The latest
+union includes nonfood meals and natural contact, adding six functions and
+144 outcomes. C coverage does not establish JS parity.
 Original platform/output rejections
 remain rejected; no output was normalized. The two new sink fixtures separately
 match Linux C exactly; their validated union covers all 94/94 direct dosinkring

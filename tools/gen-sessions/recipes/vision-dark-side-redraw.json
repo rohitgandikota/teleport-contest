@@ -1,0 +1,171 @@
+{
+  "segments": [
+    {
+      "name": "dark-side-door-loses-sleeping-xorn",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Monk,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!cmdassist\n",
+      "moves": " \u0017blessed ring of stealth\r\u001b\u001bPal\u001b\u001bl\u0017wall\r\u001b\u001b\u0017closed door\r\u001b\u001bl\u0017cursed scroll of light\r\u001b\u001b\u00078 sleeping peaceful xorn\r\u001b\u001b\u0014lllllk.\u001b\u001brb\u001b\u001b\u0014hhhhhj.\u001b\u001b\u0014llk.\u001b\u001b\u0012"
+    },
+    {
+      "name": "lit-front-door-keeps-sleeping-xorn",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Monk,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!cmdassist\n",
+      "moves": " \u0017blessed ring of stealth\r\u001b\u001bPal\u001b\u001bl\u0017wall\r\u001b\u001b\u0017closed door\r\u001b\u001bl\u0017uncursed scroll of light\r\u001b\u001b\u00078 sleeping peaceful xorn\r\u001b\u001b\u0014lllllk.\u001b\u001brb\u001b\u001b\u0014hhhhhj.\u001b\u001b\u0014llk.\u001b\u001b\u0012"
+    },
+    {
+      "name": "lit-floor-with-dark-front-stays-visible",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Monk,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!cmdassist\n",
+      "moves": " \u0017blessed ring of stealth\r\u001b\u001bPal\u001b\u001bll\u0017cursed scroll of light\r\u001b\u001b\u00078 sleeping peaceful xorn\r\u001b\u001b\u0014lllllk.\u001b\u001brb\u001b\u001b\u0014hhhhhj.\u001b\u001b\u0014llk.\u001b\u001b\u0012"
+    },
+    {
+      "name": "dark-door-without-new-near-sight",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Monk,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!cmdassist\n",
+      "moves": " \u0017blessed ring of stealth\r\u001b\u001bPal\u001b\u001bl\u0017wall\r\u001b\u001b\u0017closed door\r\u001b\u001bl\u0017cursed scroll of light\r\u001b\u001b\u00078 sleeping peaceful xorn\r\u001b\u001b\u0014lllllk.\u001b\u001brb\u001b\u001b\u0014hhh.\u001b\u001b\u0012"
+    }
+  ],
+  "name": "vision-dark-side-redraw",
+  "description": "Directional-light redraw using unchanged native input tuples, with lit-front, passable-floor and unchanged-visibility controls.",
+  "coverage": [
+    "mode.debug",
+    "ui.map-memory-vision",
+    "object.scrolls"
+  ],
+  "branches": [
+    "vision.dark-side-old-sight",
+    "vision.dark-side-lit-front-negative",
+    "vision.dark-side-floor-negative",
+    "vision.dark-side-no-transition-negative"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "vision.dark-side-old-sight",
+      "segment": 0,
+      "screenIncludes": [
+        "A closed door.",
+        "A xorn appears next to you.",
+        "You materialize in a different location!",
+        "You are surrounded by darkness!"
+      ],
+      "source": "vision.c:754-839: directional-light failure uses the not_in_sight redraw predicate. Original real-producer setup assertions retained. Native terminal cells verify the departure consequence and three negative controls; native gate also checks exact color/attributes and all output collections.",
+      "screenCells": [
+        {
+          "step": 140,
+          "x": 10,
+          "y": 14,
+          "equals": "X"
+        },
+        {
+          "step": 141,
+          "x": 10,
+          "y": 14,
+          "equals": "+"
+        },
+        {
+          "step": 144,
+          "x": 10,
+          "y": 14,
+          "equals": "+"
+        }
+      ]
+    },
+    {
+      "branch": "vision.dark-side-lit-front-negative",
+      "segment": 1,
+      "screenIncludes": [
+        "A closed door.",
+        "A xorn appears next to you.",
+        "You materialize in a different location!",
+        "A lit field surrounds you!"
+      ],
+      "source": "vision.c:754-839: directional-light failure uses the not_in_sight redraw predicate. Original real-producer setup assertions retained. Native terminal cells verify the departure consequence and three negative controls; native gate also checks exact color/attributes and all output collections.",
+      "screenCells": [
+        {
+          "step": 142,
+          "x": 10,
+          "y": 14,
+          "equals": "X"
+        },
+        {
+          "step": 143,
+          "x": 10,
+          "y": 14,
+          "equals": "X"
+        },
+        {
+          "step": 146,
+          "x": 10,
+          "y": 14,
+          "equals": "X"
+        }
+      ]
+    },
+    {
+      "branch": "vision.dark-side-floor-negative",
+      "segment": 2,
+      "screenIncludes": [
+        "A xorn appears next to you.",
+        "You materialize in a different location!",
+        "You are surrounded by darkness!"
+      ],
+      "source": "vision.c:754-839: directional-light failure uses the not_in_sight redraw predicate. Original real-producer setup assertions retained. Native terminal cells verify the departure consequence and three negative controls; native gate also checks exact color/attributes and all output collections.",
+      "screenCells": [
+        {
+          "step": 117,
+          "x": 10,
+          "y": 14,
+          "equals": "X"
+        },
+        {
+          "step": 118,
+          "x": 10,
+          "y": 14,
+          "equals": "X"
+        },
+        {
+          "step": 121,
+          "x": 10,
+          "y": 14,
+          "equals": "X"
+        }
+      ]
+    },
+    {
+      "branch": "vision.dark-side-no-transition-negative",
+      "segment": 3,
+      "screenIncludes": [
+        "A closed door.",
+        "A xorn appears next to you.",
+        "You materialize in a different location!",
+        "You are surrounded by darkness!"
+      ],
+      "source": "vision.c:754-839: directional-light failure uses the not_in_sight redraw predicate. Original real-producer setup assertions retained. Native terminal cells verify the departure consequence and three negative controls; native gate also checks exact color/attributes and all output collections.",
+      "screenCells": [
+        {
+          "step": 130,
+          "x": 10,
+          "y": 14,
+          "equals": "+"
+        },
+        {
+          "step": 131,
+          "x": 10,
+          "y": 14,
+          "equals": "+"
+        },
+        {
+          "step": 134,
+          "x": 10,
+          "y": 14,
+          "equals": "+"
+        }
+      ]
+    }
+  ]
+}

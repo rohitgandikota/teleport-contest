@@ -13,17 +13,32 @@ Ground rules are in `/CLAUDE.md`. Read that first if you have not.
 ## Current focus, 2026-11-24
 
 Continue the faithful port with readable C-aligned code and prompt verified
-pushes. The latest official snapshot checked, November 24 at 18:22 UTC, has
-23,595 of 24,531 combined screens, 7th agentic and 11th overall. Our scoring
-run at 13:38 UTC predates the latest checkpoints. Public remains 44/44;
-held-out remains 39/56 with 936 unmatched screens. Local verification does
-not establish a newer held-out score.
+pushes. The live leaderboard checked November 24 at 23:40 UTC has
+23,779 of 24,531 combined screens, 7th agentic and 11th overall. Public remains
+44/44, held-out remains 39/56, and 752 screens are unmatched. Animations are
+3,776/4,489. This is 184 more matching screens than the 19:01 snapshot. The
+observed row does not identify the exact scored commit. Local verification
+does not establish a newer held-out score.
 
-The latest full regression passes all 813 fixtures on pushed checkpoint
-`75317c13`: 851,510 screens/cursors, 17,706,781 scored RNG positions and
-32,295 frames. Both fixed-runtime shards pass without retries or timeouts.
-All 279 runtime hashes, all 813 raw inputs and 94 protected files remain fixed.
-All prior809 raw hashes are unchanged. The earlier 804 run required two
+The last successful push is `1f02e718`. The next probing checkpoint is verified
+and present in the working tree. Its commit and push did not execute because
+automatic approval review hit the account usage limit. The user already
+authorized these pushes. All four parallel workers also stopped at that limit.
+Local porting and validation continue. The verified dark-side visibility and
+nonfood changes are now in the working tree after probing. Dark-side passes
+42 combined checks, 216 controls, the 44 public sessions and all 549 new native
+boundaries. Nonfood meals pass all 55 combined checks, 447 controls, 23 focused
+fixtures and 44 public sessions. Its ten new C cases match all 1,197 styled
+boundaries, 27,141 random calls and one frame. The maintained corpus is 817.
+The full817 run now passes all 817 fixtures on that exact snapshot with two
+workers, no retries and no timeout override. No new NFS coverage is claimed.
+Publication is being retried after the user offered to restore account usage.
+
+The latest full regression passes all 817 fixtures: 853,841 screens/cursors,
+17,766,231 scored RNG positions and 32,296 frames. Both fixed-runtime shards
+pass without retries or timeouts. All 279 runtime hashes, 817 raw inputs and
+125 protected files remain fixed. All prior813 raw hashes are unchanged.
+The preceding full813 pass was on pushed checkpoint `75317c13`. The earlier 804 run required two
 explicit timeout retries; its original failures and paired replay evidence
 remain preserved.
 
@@ -45,9 +60,12 @@ cases match all 360 styled boundaries and 9,688 calls. The maintained corpus
 is 814. The completed full813 sweep includes those four additions together.
 The subsequent pit-kick guard passes 42 parent checks, 240 controls,
 22 focused fixtures, the public suite and 66 bounded workers. Its four native
-cases match all 371 styled boundaries and 9,929 calls. No full814 sweep is
-claimed. Accepted non-food meals, glyph identity and the remaining combat and
-vision owners remain active source audits.
+cases match all 371 styled boundaries and 9,929 calls. The probing crash fix
+also passes 42 parent checks, 243 controls, 23 focused fixtures, the public suite
+and 67 bounded workers. Its three native cases match all 214 styled boundaries
+and 11,140 calls. The maintained corpus is now 815; no full815 sweep is claimed.
+Accepted non-food meals and remaining combat, status, altar and vision owners
+remain active source audits.
 The earlier potion changes also pass strict full-stream and per-input RNG
 checks on 117 fixtures, all 39,942 boundaries and 1,718,440 calls. The complete
 strict 677-fixture audit and all 213 animation-bearing fixtures passed at the
@@ -400,7 +418,7 @@ functions and observing 60,205/107,260 direct C branch outcomes.
 All 810 credited input hashes, 100 build manifests and branch layouts were
 checked before merging. All 99 preceding run hashes remain fixed. The latest
 union includes the pit-kick, probing-identity and dark-side visibility inputs.
-The last two still await JS integration; C coverage does not establish parity.
+Dark-side visibility still awaits JS integration; C coverage does not establish parity.
 Original platform/output rejections
 remain rejected; no output was normalized. The two new sink fixtures separately
 match Linux C exactly; their validated union covers all 94/94 direct dosinkring

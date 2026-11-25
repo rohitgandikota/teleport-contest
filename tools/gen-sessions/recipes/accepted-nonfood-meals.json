@@ -1,0 +1,207 @@
+{
+    "name": "accepted-nonfood-meals",
+    "description": "Native C cases for accepted nonfood meals, carried stacks, floor trident and gold, rustproof and slow-digestion rejection, paper, a wooden free-action ring and accepted Excalibur. Xorn wood and cube iron selections are negatives. All original inputs are preserved. Accessory branches beyond free action, vault witness and glass, potion and flint boundaries have constructed source controls only.",
+    "coverage": [
+        "mode.debug",
+        "ui.getlin",
+        "forms.polymorph",
+        "object.artifacts",
+        "object.food-corpses"
+    ],
+    "branches": [
+        "accepted-nonfood-meals.xorn-carried-dagger-stack",
+        "accepted-nonfood-meals.xorn-floor-trident",
+        "accepted-nonfood-meals.xorn-floor-gold",
+        "accepted-nonfood-meals.rust-monster-proof-stack",
+        "accepted-nonfood-meals.xorn-slow-digestion-rejection",
+        "accepted-nonfood-meals.fire-elemental-scare-scroll",
+        "accepted-nonfood-meals.cube-free-action-ring",
+        "accepted-nonfood-meals.xorn-wood-negative",
+        "accepted-nonfood-meals.cube-iron-negative",
+        "accepted-nonfood-meals.lawful-xorn-accepted-excalibur"
+    ],
+    "requireBranchAssertions": true,
+    "branchAssertions": [
+        {
+            "branch": "accepted-nonfood-meals.xorn-carried-dagger-stack",
+            "segment": 0,
+            "screenIncludes": [
+                "This dagger is delicious!",
+                "a - a dagger"
+            ],
+            "screenExcludes": []
+        },
+        {
+            "branch": "accepted-nonfood-meals.xorn-floor-trident",
+            "segment": 1,
+            "screenIncludes": [
+                "This trident is delicious!",
+                "That was pure chewing satisfaction!",
+                "Not carrying anything."
+            ],
+            "screenExcludes": []
+        },
+        {
+            "branch": "accepted-nonfood-meals.xorn-floor-gold",
+            "segment": 2,
+            "screenIncludes": [
+                "This gold is delicious!",
+                "Your wallet is empty."
+            ],
+            "screenExcludes": []
+        },
+        {
+            "branch": "accepted-nonfood-meals.rust-monster-proof-stack",
+            "segment": 3,
+            "screenIncludes": [
+                "Ulch - that dagger was rustproofed!",
+                "You spit the dagger out onto the stairs.",
+                "a - a rustproof dagger"
+            ],
+            "screenExcludes": [
+                "is delicious!"
+            ]
+        },
+        {
+            "branch": "accepted-nonfood-meals.xorn-slow-digestion-rejection",
+            "segment": 4,
+            "screenIncludes": [
+                "This ring is indigestible!",
+                "Blecch!  Awful metal!",
+                "a - an engagement ring"
+            ],
+            "screenExcludes": [
+                "Magic spreads"
+            ]
+        },
+        {
+            "branch": "accepted-nonfood-meals.fire-elemental-scare-scroll",
+            "segment": 5,
+            "screenIncludes": [
+                "Yuck!",
+                "Not carrying anything."
+            ],
+            "screenExcludes": [
+                "is delicious!"
+            ]
+        },
+        {
+            "branch": "accepted-nonfood-meals.cube-free-action-ring",
+            "segment": 6,
+            "screenIncludes": [
+                "Magic spreads through your body as you digest the ring.",
+                "You are sleep resistant intrinsically."
+            ],
+            "screenExcludes": []
+        },
+        {
+            "branch": "accepted-nonfood-meals.xorn-wood-negative",
+            "segment": 7,
+            "screenIncludes": [
+                "You cannot eat that!",
+                "a - a staff",
+                "b - an apple"
+            ],
+            "screenExcludes": [
+                "is delicious!"
+            ]
+        },
+        {
+            "branch": "accepted-nonfood-meals.cube-iron-negative",
+            "segment": 8,
+            "screenIncludes": [
+                "You cannot eat that!",
+                "a - a dagger",
+                "b - an apple"
+            ],
+            "screenExcludes": [
+                "is delicious!"
+            ]
+        },
+        {
+            "branch": "accepted-nonfood-meals.lawful-xorn-accepted-excalibur",
+            "segment": 9,
+            "screenIncludes": [
+                "This long sword named Excalibur is delicious!",
+                "Not carrying anything."
+            ],
+            "screenExcludes": [
+                "blasted by",
+                "evades your grasp",
+                "beyond your control"
+            ]
+        }
+    ],
+    "segments": [
+        {
+            "name": "xorn-carried-dagger-stack",
+            "seed": 99812,
+            "datetime": "20000110090000",
+            "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+            "moves": " \u00172 uncursed +0 daggers\r        \u001b\u001b\u001b\u001b\u001b\u001b#polyself\rxorn\r        \u001b\u001b\u001b\u001b\u001b\u001bea        \u001b\u001b\u001b\u001b\u001b\u001bi        \u001b\u001b\u001b\u001b\u001b\u001b"
+        },
+        {
+            "name": "xorn-floor-trident",
+            "seed": 99812,
+            "datetime": "20000110090000",
+            "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+            "moves": " \u0017uncursed +0 trident\r        \u001b\u001b\u001b\u001b\u001b\u001bda        \u001b\u001b\u001b\u001b\u001b\u001b#polyself\rxorn\r        \u001b\u001b\u001b\u001b\u001b\u001bey        \u001b\u001b\u001b\u001b\u001b\u001b:        \u001b\u001b\u001b\u001b\u001b\u001bi        \u001b\u001b\u001b\u001b\u001b\u001b"
+        },
+        {
+            "name": "xorn-floor-gold",
+            "seed": 99812,
+            "datetime": "20000110090000",
+            "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+            "moves": " \u00171000 gold pieces\r        \u001b\u001b\u001b\u001b\u001b\u001bd$        \u001b\u001b\u001b\u001b\u001b\u001b#polyself\rxorn\r        \u001b\u001b\u001b\u001b\u001b\u001bey        \u001b\u001b\u001b\u001b\u001b\u001b:        \u001b\u001b\u001b\u001b\u001b\u001b$        \u001b\u001b\u001b\u001b\u001b\u001b"
+        },
+        {
+            "name": "rust-monster-proof-stack",
+            "seed": 99812,
+            "datetime": "20000110090000",
+            "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+            "moves": " \u00172 uncursed rustproof +0 daggers\r        \u001b\u001b\u001b\u001b\u001b\u001b#polyself\rrust monster\r        \u001b\u001b\u001b\u001b\u001b\u001bea        \u001b\u001b\u001b\u001b\u001b\u001b:        \u001b\u001b\u001b\u001b\u001b\u001bi        \u001b\u001b\u001b\u001b\u001b\u001b"
+        },
+        {
+            "name": "xorn-slow-digestion-rejection",
+            "seed": 3,
+            "datetime": "20000110090000",
+            "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+            "moves": " \u0017uncursed ring of slow digestion\r        \u001b\u001b\u001b\u001b\u001b\u001b#polyself\rxorn\r        \u001b\u001b\u001b\u001b\u001b\u001bea        \u001b\u001b\u001b\u001b\u001b\u001bi        \u001b\u001b\u001b\u001b\u001b\u001b"
+        },
+        {
+            "name": "fire-elemental-scare-scroll",
+            "seed": 99812,
+            "datetime": "20000110090000",
+            "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+            "moves": " \u0017blessed scroll of scare monster\r        \u001b\u001b\u001b\u001b\u001b\u001b#polyself\rfire elemental\r        \u001b\u001b\u001b\u001b\u001b\u001bea        \u001b\u001b\u001b\u001b\u001b\u001bi        \u001b\u001b\u001b\u001b\u001b\u001b"
+        },
+        {
+            "name": "cube-free-action-ring",
+            "seed": 99812,
+            "datetime": "20000110090000",
+            "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+            "moves": " \u0017uncursed ring of free action\r        \u001b\u001b\u001b\u001b\u001b\u001b#polyself\rgelatinous cube\r        \u001b\u001b\u001b\u001b\u001b\u001bea        \u001b\u001b\u001b\u001b\u001b\u001b\u0018        \u001b\u001b\u001b\u001b\u001b\u001b"
+        },
+        {
+            "name": "xorn-wood-negative",
+            "seed": 99812,
+            "datetime": "20000110090000",
+            "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+            "moves": " \u0017uncursed +0 quarterstaff\r        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed apple\r        \u001b\u001b\u001b\u001b\u001b\u001b#polyself\rxorn\r        \u001b\u001b\u001b\u001b\u001b\u001bea        \u001b\u001b\u001b\u001b\u001b\u001bi        \u001b\u001b\u001b\u001b\u001b\u001b"
+        },
+        {
+            "name": "cube-iron-negative",
+            "seed": 99812,
+            "datetime": "20000110090000",
+            "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+            "moves": " \u0017uncursed +0 dagger\r        \u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed apple\r        \u001b\u001b\u001b\u001b\u001b\u001b#polyself\rgelatinous cube\r        \u001b\u001b\u001b\u001b\u001b\u001bea        \u001b\u001b\u001b\u001b\u001b\u001bi        \u001b\u001b\u001b\u001b\u001b\u001b"
+        },
+        {
+            "name": "lawful-xorn-accepted-excalibur",
+            "seed": 99812,
+            "datetime": "20000110090000",
+            "nethackrc": "OPTIONS=name:Desired,role:Archeologist,race:human,gender:male,align:lawful,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+            "moves": " \u0017uncursed +0 Excalibur\r        \u001b\u001b\u001b\u001b\u001b\u001b#polyself\rxorn\r        \u001b\u001b\u001b\u001b\u001b\u001bea        \u001b\u001b\u001b\u001b\u001b\u001bi        \u001b\u001b\u001b\u001b\u001b\u001b"
+        }
+    ]
+}

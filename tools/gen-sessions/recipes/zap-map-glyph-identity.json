@@ -1,0 +1,238 @@
+{
+  "name": "zap-map-glyph-identity",
+  "description": "Independent unchanged C recording of inventory-bearing hill orc probing, inventory-free newt probing and stethoscope negative. Baseline orc replay throws in glyph serialization; the buffered-number candidate is compared without synthesizing missing baseline output.",
+  "coverage": [
+    "mode.debug",
+    "level.ordinary",
+    "object.wands",
+    "object.tools-containers",
+    "ui.getlin",
+    "ui.more-paging",
+    "ui.map-memory-vision",
+    "monster.special-effects"
+  ],
+  "branches": [
+    "inventory-bearing-orc-probing",
+    "inventory-free-newt-probing-negative",
+    "stethoscope-bypasses-zap-map-negative"
+  ],
+  "branchAssertions": [
+    {
+      "branch": "inventory-bearing-orc-probing",
+      "segment": 0,
+      "screenIncludes": [
+        "Status of the hill orc",
+        "The hill orc's possessions:",
+        "an iron skull cap (being worn)"
+      ],
+      "screenExcludes": [
+        "The hill orc is not carrying anything."
+      ]
+    },
+    {
+      "branch": "inventory-free-newt-probing-negative",
+      "segment": 1,
+      "screenIncludes": [
+        "Status of the newt",
+        "The newt is not carrying anything."
+      ],
+      "screenExcludes": [
+        "The hill orc's possessions:"
+      ]
+    },
+    {
+      "branch": "stethoscope-bypasses-zap-map-negative",
+      "segment": 2,
+      "screenIncludes": [
+        "That egg is really a giant mimic.",
+        "peaceful, asleep."
+      ],
+      "screenExcludes": [
+        "mimicking an egg"
+      ]
+    }
+  ],
+  "segments": [
+    {
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "name": "orc-probing",
+      "moves": " \u0007sleeping peaceful hill orc\r   \u0017uncursed wand of probing (0:8)\r   zal   \u001b"
+    },
+    {
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "name": "newt-probing",
+      "moves": " \u0007sleeping peaceful newt\r   \u0017uncursed wand of probing (0:8)\r   zal   \u001b"
+    },
+    {
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "name": "mimic-stethoscope",
+      "moves": " \u0007sleeping peaceful giant mimic\r   \u0017uncursed stethoscope\r   aal   \u001b"
+    }
+  ],
+  "jsReach": [
+    {
+      "selectedStep": 70,
+      "commandDirectionStep": 70,
+      "inventoryStep": 71,
+      "boundaries": 75,
+      "calls": 3108,
+      "frames": 0,
+      "target": {
+        "id": 72,
+        "species": 73,
+        "xy": [
+          9,
+          12
+        ],
+        "visible": true,
+        "asleep": true,
+        "peaceful": true,
+        "hp": 4,
+        "inventory": [
+          {
+            "id": 73,
+            "type": 90,
+            "where": 4,
+            "carrierIsMonster": true,
+            "dknown": true
+          }
+        ],
+        "glyphKind": "mon",
+        "glyphNumber": 456,
+        "descriptorCarriesMonster": true,
+        "appearance": 0
+      },
+      "hero": [
+        8,
+        12
+      ],
+      "hp": 12,
+      "negative": false,
+      "originalOutputHashes": {
+        "screens": "350cf485d68324190f54e9f2ecf402b951b44ec96ccb323f62bd87b94101f135",
+        "cursors": "7980272cf406ce16adfee04ef1d81728c9ffe26aa6751ff3572d5550e043e2d7",
+        "calls": "6baa44d5b132925c4c56ecea1ccdfb91a6057b3d42b436e7f3ad45c32739020a",
+        "slices": "8ecf2ef90da85e2f45acac440cc77703b733c10e1c6843031c7a5c7b59859413",
+        "frames": "3faa4e5cdf09446d7d8b04f15df88044c36defdb6ddf7cba66c797361f979799"
+      },
+      "baselineNegativeHashes": null
+    },
+    {
+      "selectedStep": 66,
+      "commandDirectionStep": 66,
+      "inventoryStep": null,
+      "boundaries": 71,
+      "calls": 3134,
+      "frames": 0,
+      "target": {
+        "id": 72,
+        "species": 322,
+        "xy": [
+          9,
+          12
+        ],
+        "visible": true,
+        "asleep": true,
+        "peaceful": true,
+        "hp": 4,
+        "inventory": [],
+        "glyphKind": "mon",
+        "glyphNumber": 705,
+        "descriptorCarriesMonster": true,
+        "appearance": 0
+      },
+      "hero": [
+        8,
+        12
+      ],
+      "hp": 12,
+      "negative": true,
+      "originalOutputHashes": {
+        "screens": "c3a85417a98c6bf72fb242e09a8e23c72a1c73ebe2486a9710522d4319bc56e7",
+        "cursors": "75e74a0890f3e40a53fd43e1afc0762036ba14467ae50a49362eaf37200ff3c0",
+        "calls": "fe8d122de55c3f14d76eb89c64cebd857057c724628d4f787219d8e2364403e0",
+        "slices": "d5ffa5e09be913cc0981b5661a1631a516e7b22a891f6641af6bf3f1725f5048",
+        "frames": "7760da97b89ee5cf29410a68bb84c0b6f5b477f6b909c675ca52256006d86466"
+      },
+      "baselineNegativeHashes": {
+        "screens": "c3a85417a98c6bf72fb242e09a8e23c72a1c73ebe2486a9710522d4319bc56e7",
+        "cursors": "75e74a0890f3e40a53fd43e1afc0762036ba14467ae50a49362eaf37200ff3c0",
+        "calls": "fe8d122de55c3f14d76eb89c64cebd857057c724628d4f787219d8e2364403e0",
+        "slices": "d5ffa5e09be913cc0981b5661a1631a516e7b22a891f6641af6bf3f1725f5048",
+        "frames": "7760da97b89ee5cf29410a68bb84c0b6f5b477f6b909c675ca52256006d86466"
+      }
+    },
+    {
+      "selectedStep": 64,
+      "commandDirectionStep": 63,
+      "inventoryStep": null,
+      "boundaries": 68,
+      "calls": 4898,
+      "frames": 0,
+      "target": {
+        "id": 72,
+        "species": 66,
+        "xy": [
+          9,
+          12
+        ],
+        "visible": true,
+        "asleep": true,
+        "peaceful": true,
+        "hp": 35,
+        "appearance": 0,
+        "inventory": [],
+        "glyphKind": "mon",
+        "glyphNumber": 66,
+        "descriptorCarriesMonster": true
+      },
+      "hero": [
+        8,
+        12
+      ],
+      "hp": 12,
+      "negative": true,
+      "originalOutputHashes": {
+        "screens": "1a8d0a37eebb165a114228872d1d402e7ae107e7b7f8537ebea26748a2d0b054",
+        "cursors": "479b5d5e97292590c64f8e052d18f62cadd110b62720105fa7052b2acdef85b3",
+        "calls": "aae0505f95dca1d552d016880b6b1d59d7e464038b170486cab5ae348a471763",
+        "slices": "ef1a637f34a2954e83c3e5d01a0402420d8e4a1b85d83caf69407dc4f20a4589",
+        "frames": "9cff06d5a2a0095c86ac6c0e5e54cd9475a4eb865c2f95ab0e978b5853d6a5ef"
+      },
+      "baselineNegativeHashes": {
+        "screens": "1a8d0a37eebb165a114228872d1d402e7ae107e7b7f8537ebea26748a2d0b054",
+        "cursors": "479b5d5e97292590c64f8e052d18f62cadd110b62720105fa7052b2acdef85b3",
+        "calls": "aae0505f95dca1d552d016880b6b1d59d7e464038b170486cab5ae348a471763",
+        "slices": "ef1a637f34a2954e83c3e5d01a0402420d8e4a1b85d83caf69407dc4f20a4589",
+        "frames": "9cff06d5a2a0095c86ac6c0e5e54cd9475a4eb865c2f95ab0e978b5853d6a5ef"
+      }
+    }
+  ],
+  "limits": [
+    "Only the inventory-bearing orc is a new ordinary positive. Glyph-range, hallucination, false discovery, pet and detected controls are source-state evidence.",
+    "An unchanged altar display-producer mismatch and unresolved transient effect descriptors remain separate owner limits."
+  ],
+  "nativeProvenance": {
+    "source": "c",
+    "version": 5,
+    "rawSHA256": "3d07af8fffbe4ac790ac03d2f6c365031283c8b5dec477b518add84179c49851",
+    "rawBytes": 543199,
+    "unchangedInputFields": [
+      "name",
+      "seed",
+      "datetime",
+      "nethackrc",
+      "moves"
+    ],
+    "allInputKeysExact": true,
+    "boundaries": 214,
+    "completeRngCalls": 11140,
+    "animationFrames": 0
+  }
+}

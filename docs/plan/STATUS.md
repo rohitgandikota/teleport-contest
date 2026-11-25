@@ -7983,6 +7983,171 @@ Rendered parity is still distinct from literal terminal byte identity. Continue
 probing identity, accepted non-food meals, natural-contact and visibility
 owners, with immediate pushes after verified commits.
 
+## 2026-11-24: probing glyph identity verified
+
+`zap_map` now compares the display buffer's stored glyph numbers before and
+after mapping, as C `glyph_at` does. It preserves the old-terrain short circuit
+and removes the private JSON descriptor comparison. No monster inventory,
+live species, tame state or hallucination draw is traversed or recomputed.
+Other descriptor users retain their existing `glyph_at` contract.
+
+An actual hill orc owns an iron skull cap whose ownership pointer returns to
+the monster. Probing it previously raised a circular-JSON TypeError before
+status and inventory display. The original exception and absent completed
+output are preserved, not converted into invented baseline metrics. All three
+new C cases now match: 214 styled grids including blanks, cursors, slices,
+11,140 complete recognized calls and all empty frame arrays. Both negative
+cases complete independently against C before and after, with all five original
+JS output hashes unchanged. Status appears at boundary 70 and real possessions
+at 71. Pending status, inventory and exhausted-input controls also pass.
+
+All 42 parent checks pass, including 243 controls. Twenty-three focused
+fixtures, 96 segments, match 9,067 screens/cursors, 288,974 calls and 181 frames.
+Public remains 44/44, 11,405 screens/cursors, 792,838 calls and 1,483 frames.
+All 67 bounded workers pass. Fifteen strict native fixtures match every styled
+cell and all other outputs across 66 segments, 7,228 boundaries, 192,858 calls
+and 96 frames. Ten deferred fixtures preserve all five collections across
+4,258 boundaries, 129,564 calls and 64 frames. Source audit is empty. All 279
+runtime and six support hashes stay fixed; reverse application recovers the
+predecessor, and main equals the candidate. The native seal independently
+verifies 411 members and no links.
+
+The maintained corpus is 815; full813 remains the latest complete sweep. The
+independent Linux replay is byte-identical and adds two C outcomes, not a
+whole-renderer proof. The lawful-altar producer and unrelated transient glyphs
+remain separate findings. Native styled equality remains distinct from literal
+terminal serialization. Receipts are `glyph-identity-parent-composition-*`,
+`glyph-identity-main-integration.json` and the sealed source/native packages
+under `.cache/restart-20261122/`.
+
+Pit checkpoint `1f02e718` is confirmed pushed. The 19:01 UTC official table and
+news fetches are byte-identical to 18:22. Our published score remains
+23,595/24,531, 7th agentic and 11th overall, last scored at 13:38 UTC. Continue
+the confirmed dark-side visibility candidate, accepted non-food owner family,
+complete monster-status, contact and altar audits. Push every verified commit.
+
+## 2026-11-24: live rank check and publication quota blocker
+
+The user renewed the rank-one and complete-port objective. At 23:40 UTC the
+live official board shows 23,779/24,531 screens, 752 unmatched, rank 7 agentic
+and 11 overall, 44 public plus 39 held-out sessions, and 3,776/4,489 animations.
+This improves by 184 screens and 12 animations over the 19:01 raw snapshot.
+The row does not identify its exact scored commit. The compact browser receipt
+is `.cache/restart-20261122/official-live-board-20261124T2340Z.json`.
+
+HEAD and origin/main remain `1f02e718`, with no unpushed local commits. The
+19:04 attempt to commit and push the fully verified probing fix did not
+execute: automatic approval review reached the account usage limit, with a
+reported reset November 27 at 20:29. This was a review failure, not a safety
+rejection. The user already authorized pushes. Do not bypass the required
+review through another tool or an unreviewed git invocation. A pending user
+question requests restored usage or guidance. All four parallel agents now
+report the same usage-limit error. Parent continues available local work.
+
+Dark-side visibility composition finished with process exit 0 and independent
+verification: 42 checks, 216 controls, 22 focused fixtures, 44 public sessions,
+and 66 bounded workers. The four fresh native cases now match all 549 styled
+boundaries, cursors, slices and 11,240 calls; before, three screens differed.
+All three negative cases preserve all five output hashes. Fourteen strict
+native fixtures cover 61 segments, 6,815 boundaries and 175,315 calls. All
+279 runtime files, five support files and scoped patch reversal are checked.
+The candidate is cached after verified probing, not installed or published.
+Receipt: `dark-side-parent-composition-verification.json` under the same cache.
+
+Parent reviewed the complete accepted nonfood and accessory owners and their
+attribute/vault prerequisites against the pinned C. The source package seal
+`0b9df1076b62d229dcf01eb8d3e49684f67681258628e63783519e964059902f`
+is independently verified. The unchanged ten input cases were recorded at
+23:45 UTC; raw SHA-256 is
+`b396be79443eeeaf5dd3b05c9b23a61182cb28609e1f0bffe719ee5ae724256a`.
+All five input fields, their presence and every key are preserved. The source
+candidate matches all 1,197 styled boundaries/cursors/slices, 27,141 calls and
+one frame. Seven baseline cases diverged; two material negatives and accepted
+Excalibur already matched. This is rendered parity, not literal DEC/Unicode
+serialization equality, and not a private-score claim.
+
+The parent nonfood composition follows cached dark-side plus probing. It
+changes only eat.js, attrib.js and vault.js, and reverses to all 279 baseline
+hashes. Its 55-check run is active, session 91145. Source tests cover the full
+accessory switch, but only free action has a new ordinary accessory-effect
+witness. Vault witness, glass, potion, flint and integer extremes remain
+constructed-state evidence. No NFS upload was attempted after the quota error.
+Do not claim new coverage credit or a full817 sweep. Preflight inventory
+mistakes are retained separately and did not start a replay. Main still holds
+only the verified probing runtime change and its support files.
+
+Next: finish and verify nonfood composition, retain all raw C bytes, and prepare
+reviewable sequential checkpoints while publication remains blocked. The
+natural-contact combat draft has seven JS-valid ordinary cases and a scoped
+patch, but lacks a completed source package and C confirmation. Status and
+altar drafts also remain incomplete. Do not treat stopped agents as running.
+
+## 2026-11-24: nonfood composition verified and full817 started
+
+The nonfood parent run closed successfully. Independent verification confirms
+55 checks, 447 controls, 23 focused fixtures and all 44 public sessions. The
+new ten-case C fixture improves from 1,130/1,197 styled grids, 1,181 cursors and
+1,187 slices to all 1,197 exact, with all 27,141 calls and its one frame exact.
+Fifteen strict native fixtures cover 71 segments, 8,012 boundaries, 202,456
+calls and 97 frames. Deferred completion preserves all five output collections
+on 54 segments, 5,533 boundaries, 156,381 calls and 17 frames. All 67 bounded
+workers complete. Runtime/support and scoped reverse checks pass.
+
+At 23:54 UTC parent integrated the already verified dark-side and nonfood
+changes into main's working tree after probing. All 279 runtime hashes equal
+the combined nonfood candidate. This makes the full pending result reviewable
+while commit/push review remains blocked. There are still no unpushed commits.
+Integration receipts are `dark-side-main-integration.json` and
+`nonfood-meals-main-integration.json`; the latter verification hash is
+`de88cf54958a5b7ec0924ceb2dd28ac225aa555a076e7f5a2ad7a7fac1f9893f`.
+All named cache paths are under `.cache/restart-20261122/`.
+
+The full817 regression is active in `nonfood-meals-full817`, workers 10163 and
+81847. Runtime is the fixed `nonfood-meals-parent-composition/candidate`, with
+279 runtime hashes, 817 raw hashes and 125 protected files. All previous813
+raw hashes are unchanged. The sole changed old support file is the reviewed
+contact-source extraction boundary; its assertions are unchanged. No retry or
+timeout override was requested. Do not claim a completed full817 until both
+processes close and `verify.py` passes.
+
+Parent took over natural-contact combat in a fresh sibling after all workers
+reported quota errors. `natural-contact-parent-review` preserves the original
+worker patch and drafts. Parent additionally restores C's hmonas visibility
+initialization and cleanup, using existing canseemon and m_next2u. Twelve real
+helper state tests pass, including a blind adjacent target while More is
+pending, and seven ordinary input tests pass. Baseline failures are retained.
+An independent unobserved replay comparison was added for all five outputs.
+Seven unchanged C inputs were locked and recorded at 23:58 UTC, raw hash
+`35fc4d7012501eee56bee95d863af109e014ea3295481e1b5eaf8464b27f67d6`,
+587 boundaries. Native and observation-neutrality checks are active in process
+62937. This combat candidate is not installed. The frozen full817 excludes it.
+
+## 2026-11-24: uninterrupted full817 passes before publication retry
+
+Both full817 workers closed with exit zero. Independent verification passes:
+817/817 fixtures, 853,841 screens/cursors, 17,766,231 scored random-call
+positions and 32,296 animation frames. No retry or timeout override was used.
+All 279 runtime hashes, 817 original raw hashes and 125 protected file hashes
+remain fixed. All previous813 raw hashes are unchanged. The result is at
+`.cache/restart-20261122/nonfood-meals-full817/verification.json`.
+
+The user replied that they will restore account usage. Two source workers have
+resumed. Parent is retrying the ordinary reviewed commit-and-push path for the
+34 explicitly selected nonfood, probing and dark-side files. No commit or push
+success is claimed before the command returns. Unrelated .DS_Store files stay
+untracked. Git identity and attribution rules remain unchanged.
+
+Natural-contact verification also completed: 29 checks, 136 controls,
+19 focused fixtures, all 44 public sessions and 63 bounded workers pass. The
+seven new native cases improve from 550/587 styled grids, 567 cursors and
+565 slices to all 587 exact. All 17,744 native calls match, with no extra frame.
+Two ordinary negatives preserve all five original output hashes. Twelve strict
+native fixtures cover 54 segments, 5,192 boundaries, 143,174 calls and 33 frames;
+all deferred/immediate collections match. The candidate has 279 fixed runtime
+files, six fixed support files and an exact patch reversal. It is still cached
+and excluded from the completed full817. Parent will integrate and push it as
+a separate verified checkpoint after publishing the full817 runtime.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

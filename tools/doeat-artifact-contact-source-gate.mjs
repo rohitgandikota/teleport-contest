@@ -54,8 +54,8 @@ check('refused contact costs time before resuming or creating a meal', () => {
         'otmp === game.context.victual?.piece', 'await touchfood(otmp)');
 });
 check('contact is not restricted to artifact-marked objects', () => {
-    const block = port.slice(port.indexOf('} else if (!(carried(otmp)'),
-        port.indexOf('/* src/eat.c:2922'));
+    const start = port.indexOf('} else if (!(carried(otmp)');
+    const block = port.slice(start, port.indexOf('\n    }', start) + 6);
     assert.match(block, /retouch_object/);
     assert.doesNotMatch(block, /oartifact|is_metallic|PM_XORN|PM_RUST_MONSTER/);
 });

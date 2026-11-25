@@ -1,0 +1,53 @@
+{
+  "classification": "parent native execution, independently verified immutable raw and report hashes",
+  "rawPath": "../config-directive-parent-native.session.json",
+  "rawSHA256": "11969c506804f7ee408c5c65ae65bff670d1185d4b358e51275d69a4d6852430",
+  "rawBytes": 1382118,
+  "canonicalPath": "tools/gen-sessions/generated/config-directive-contract.session.json",
+  "checksSHA256": "fad377306385e1537567028f0622f2698ea7652e9ab12ac9d7095f980d899389",
+  "checks": [
+    {
+      "kind": "baseline",
+      "exit": 1,
+      "seconds": 1.69,
+      "report": "config-directive-parent-baseline-native.json",
+      "exact": 3,
+      "cases": 11,
+      "boundaries": 385,
+      "calls": 29478,
+      "frames": 0,
+      "sha256": "2a84047bdb53eef7817edb1dc69be1c1eab72eb1351d1a5eda500d7d4b5fef4f"
+    },
+    {
+      "kind": "candidate",
+      "exit": 0,
+      "seconds": 1.38,
+      "report": "config-directive-parent-candidate-native.json",
+      "exact": 11,
+      "cases": 11,
+      "boundaries": 385,
+      "calls": 29478,
+      "frames": 0,
+      "sha256": "0a4289ad0848cab5865f5578e068748e5f8098e3d220bc2f6e8b6ae7966f01ef"
+    },
+    {
+      "kind": "composed",
+      "exit": 0,
+      "seconds": 1.38,
+      "report": "config-directive-parent-composed-native.json",
+      "exact": 11,
+      "cases": 11,
+      "boundaries": 385,
+      "calls": 29478,
+      "frames": 0,
+      "sha256": "0a4289ad0848cab5865f5578e068748e5f8098e3d220bc2f6e8b6ae7966f01ef"
+    }
+  ],
+  "parentInputLocks": [
+    {
+      "path": "config-directive-parent-input-lock.json",
+      "sha256": "726a63f6aa04041c6ae0dfbbb3084e404bcd83de4d5473061a76dd95e0df45f7"
+    }
+  ],
+  "originalHandoffSHA256": "8c82f0b10511493861529530a4ebaf509f2d671c60af54bafd4980d8953535b7"
+}

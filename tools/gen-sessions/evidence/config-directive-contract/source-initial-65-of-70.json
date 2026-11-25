@@ -1,0 +1,293 @@
+{
+  "variant": "candidate",
+  "ownerSHA256": "aca89defb6f6a3bd3a7583a91f9ba65f820e568d5168b3f401e39f7cdc9dd466",
+  "total": 70,
+  "passed": 65,
+  "cases": [
+    {
+      "name": "OPTIONS/canonical-real-handler",
+      "pass": true
+    },
+    {
+      "name": "OPTIONS/accepted-0",
+      "pass": true
+    },
+    {
+      "name": "OPTIONS/accepted-1",
+      "pass": true
+    },
+    {
+      "name": "OPTIONS/accepted-2",
+      "pass": true
+    },
+    {
+      "name": "OPTIONS/accepted-3",
+      "pass": true
+    },
+    {
+      "name": "OPTIONS/accepted-4",
+      "pass": true
+    },
+    {
+      "name": "OPTIONS/reject-short",
+      "pass": true
+    },
+    {
+      "name": "OPTIONS/reject-overlong",
+      "pass": true
+    },
+    {
+      "name": "OPTIONS/reject-unrelated",
+      "pass": true
+    },
+    {
+      "name": "AUTOPICKUP_EXCEPTION/canonical-real-handler",
+      "pass": true
+    },
+    {
+      "name": "AUTOPICKUP_EXCEPTION/accepted-0",
+      "pass": true
+    },
+    {
+      "name": "AUTOPICKUP_EXCEPTION/accepted-1",
+      "pass": true
+    },
+    {
+      "name": "AUTOPICKUP_EXCEPTION/accepted-2",
+      "pass": true
+    },
+    {
+      "name": "AUTOPICKUP_EXCEPTION/accepted-3",
+      "pass": true
+    },
+    {
+      "name": "AUTOPICKUP_EXCEPTION/accepted-4",
+      "pass": true
+    },
+    {
+      "name": "AUTOPICKUP_EXCEPTION/reject-short",
+      "pass": true
+    },
+    {
+      "name": "AUTOPICKUP_EXCEPTION/reject-overlong",
+      "pass": true
+    },
+    {
+      "name": "AUTOPICKUP_EXCEPTION/reject-unrelated",
+      "pass": true
+    },
+    {
+      "name": "BINDINGS/canonical-real-handler",
+      "pass": true
+    },
+    {
+      "name": "BINDINGS/accepted-0",
+      "pass": true
+    },
+    {
+      "name": "BINDINGS/accepted-1",
+      "pass": true
+    },
+    {
+      "name": "BINDINGS/accepted-2",
+      "pass": true
+    },
+    {
+      "name": "BINDINGS/accepted-3",
+      "pass": true
+    },
+    {
+      "name": "BINDINGS/accepted-4",
+      "pass": true
+    },
+    {
+      "name": "BINDINGS/reject-short",
+      "pass": true
+    },
+    {
+      "name": "BINDINGS/reject-overlong",
+      "pass": true
+    },
+    {
+      "name": "BINDINGS/reject-unrelated",
+      "pass": true
+    },
+    {
+      "name": "MSGTYPE/canonical-real-handler",
+      "pass": true
+    },
+    {
+      "name": "MSGTYPE/accepted-0",
+      "pass": true
+    },
+    {
+      "name": "MSGTYPE/accepted-1",
+      "pass": true
+    },
+    {
+      "name": "MSGTYPE/accepted-2",
+      "pass": true
+    },
+    {
+      "name": "MSGTYPE/accepted-3",
+      "pass": true
+    },
+    {
+      "name": "MSGTYPE/reject-short",
+      "pass": true
+    },
+    {
+      "name": "MSGTYPE/reject-overlong",
+      "pass": true
+    },
+    {
+      "name": "MSGTYPE/reject-unrelated",
+      "pass": true
+    },
+    {
+      "name": "MENUCOLOR/canonical-real-handler",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n  [\n    {\n      attr: 1,\n+     color: 1,\n-     color: undefined,\n      origstr: 'quarterstaff'\n    }\n  ]\n"
+    },
+    {
+      "name": "MENUCOLOR/accepted-0",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n  [\n    {\n      attr: 1,\n+     color: 1,\n-     color: undefined,\n      origstr: 'quarterstaff'\n    }\n  ]\n"
+    },
+    {
+      "name": "MENUCOLOR/accepted-1",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n  [\n    {\n      attr: 1,\n+     color: 1,\n-     color: undefined,\n      origstr: 'quarterstaff'\n    }\n  ]\n"
+    },
+    {
+      "name": "MENUCOLOR/accepted-2",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n  [\n    {\n      attr: 1,\n+     color: 1,\n-     color: undefined,\n      origstr: 'quarterstaff'\n    }\n  ]\n"
+    },
+    {
+      "name": "MENUCOLOR/accepted-3",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n  [\n    {\n      attr: 1,\n+     color: 1,\n-     color: undefined,\n      origstr: 'quarterstaff'\n    }\n  ]\n"
+    },
+    {
+      "name": "MENUCOLOR/reject-short",
+      "pass": true
+    },
+    {
+      "name": "MENUCOLOR/reject-overlong",
+      "pass": true
+    },
+    {
+      "name": "MENUCOLOR/reject-unrelated",
+      "pass": true
+    },
+    {
+      "name": "ROGUESYMBOLS/canonical-real-handler",
+      "pass": true
+    },
+    {
+      "name": "ROGUESYMBOLS/accepted-0",
+      "pass": true
+    },
+    {
+      "name": "ROGUESYMBOLS/accepted-1",
+      "pass": true
+    },
+    {
+      "name": "ROGUESYMBOLS/accepted-2",
+      "pass": true
+    },
+    {
+      "name": "ROGUESYMBOLS/accepted-3",
+      "pass": true
+    },
+    {
+      "name": "ROGUESYMBOLS/accepted-4",
+      "pass": true
+    },
+    {
+      "name": "ROGUESYMBOLS/reject-short",
+      "pass": true
+    },
+    {
+      "name": "ROGUESYMBOLS/reject-overlong",
+      "pass": true
+    },
+    {
+      "name": "ROGUESYMBOLS/reject-unrelated",
+      "pass": true
+    },
+    {
+      "name": "SYMBOLS/canonical-real-handler",
+      "pass": true
+    },
+    {
+      "name": "SYMBOLS/accepted-0",
+      "pass": true
+    },
+    {
+      "name": "SYMBOLS/accepted-1",
+      "pass": true
+    },
+    {
+      "name": "SYMBOLS/accepted-2",
+      "pass": true
+    },
+    {
+      "name": "SYMBOLS/accepted-3",
+      "pass": true
+    },
+    {
+      "name": "SYMBOLS/accepted-4",
+      "pass": true
+    },
+    {
+      "name": "SYMBOLS/reject-short",
+      "pass": true
+    },
+    {
+      "name": "SYMBOLS/reject-overlong",
+      "pass": true
+    },
+    {
+      "name": "SYMBOLS/reject-unrelated",
+      "pass": true
+    },
+    {
+      "name": "OPTIONS/value-keeps-internal-spaces",
+      "pass": true
+    },
+    {
+      "name": "OPTIONS/earliest-equals-keeps-later-colon",
+      "pass": true
+    },
+    {
+      "name": "OPTIONS/earliest-colon-keeps-later-equals",
+      "pass": true
+    },
+    {
+      "name": "MSGTYPE/munged-pattern",
+      "pass": true
+    },
+    {
+      "name": "MENUCOLOR/value-equals-not-directive-delimiter",
+      "pass": true
+    },
+    {
+      "name": "OPTIONS/false-is-present-absent-is-not",
+      "pass": true
+    },
+    {
+      "name": "OPTIONS/statement-order-and-final-line",
+      "pass": true
+    },
+    {
+      "name": "unsupported-directive-keeps-existing-unhandled-path",
+      "pass": true
+    },
+    {
+      "name": "missing-delimiter-keeps-existing-error-path",
+      "pass": true
+    }
+  ]
+}

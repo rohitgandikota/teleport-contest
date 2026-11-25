@@ -4453,6 +4453,17 @@
     {"group": "pool-floortrap", "id": "pool-floortrap.web-drop", "cFile": "src/do.c", "cFunction": "boulder_hits_pool", "description": "web drop"},
     {"group": "pool-floortrap", "id": "pool-floortrap.bear-levitation-drop", "cFile": "src/do.c", "cFunction": "boulder_hits_pool", "description": "bear levitation drop"},
     {"group": "pool-floortrap", "id": "pool-floortrap.plain-push", "cFile": "src/do.c", "cFunction": "boulder_hits_pool", "description": "plain push"},
-    {"group": "pool-floortrap", "id": "pool-floortrap.blind-known", "cFile": "src/do.c", "cFunction": "boulder_hits_pool", "description": "blind known"}
+    {"group": "pool-floortrap", "id": "pool-floortrap.blind-known", "cFile": "src/do.c", "cFunction": "boulder_hits_pool", "description": "blind known"},
+    {"group": "config-directive-contract","id": "config-directive.options-colon-blindness","cFile": "src/cfgfiles.c","cFunction": "parse_config_line","description": "config directive.options colon blindness"},
+    {"group": "config-directive-contract","id": "config-directive.opti-prefix-notice-off","cFile": "src/cfgfiles.c","cFunction": "parse_config_line","description": "config directive.opti prefix notice off"},
+    {"group": "config-directive-contract","id": "config-directive.bindings-colon-command","cFile": "src/cfgfiles.c","cFunction": "parse_config_line","description": "config directive.bindings colon command"},
+    {"group": "config-directive-contract","id": "config-directive.symbols-prefix-map","cFile": "src/cfgfiles.c","cFunction": "parse_config_line","description": "config directive.symbols prefix map"},
+    {"group": "config-directive-contract","id": "config-directive.rogue-prefix-map","cFile": "src/cfgfiles.c","cFunction": "parse_config_line","description": "config directive.rogue prefix map"},
+    {"group": "config-directive-contract","id": "config-directive.menucolor-colon-inventory","cFile": "src/cfgfiles.c","cFunction": "parse_config_line","description": "config directive.menucolor colon inventory"},
+    {"group": "config-directive-contract","id": "config-directive.msgtype-colon-sit","cFile": "src/cfgfiles.c","cFunction": "parse_config_line","description": "config directive.msgtype colon sit"},
+    {"group": "config-directive-contract","id": "config-directive.autop-prefix-pickup","cFile": "src/cfgfiles.c","cFunction": "parse_config_line","description": "config directive.autop prefix pickup"},
+    {"group": "config-directive-contract","id": "config-directive.canonical-options-negative","cFile": "src/cfgfiles.c","cFunction": "parse_config_line","description": "config directive.canonical options negative"},
+    {"group": "config-directive-contract","id": "config-directive.canonical-symbols-negative","cFile": "src/cfgfiles.c","cFunction": "parse_config_line","description": "config directive.canonical symbols negative"},
+    {"group": "config-directive-contract","id": "config-directive.canonical-menu-negative","cFile": "src/cfgfiles.c","cFunction": "parse_config_line","description": "config directive.canonical menu negative"}
   ]
 }

@@ -27,21 +27,22 @@ budget on both versions; fixed baseline and candidate are exact under the
 normal 45-second budget. Eighteen retained suites pass. See STATUS for the
 preserved failure, paired timing result and stronger raw-grid death assertion.
 
-The pool floor-trap fix is verified for publication. Six original C cases pass
-versus two before, source58 versus46, all70 selected/public and strict workers,
-and20 retained suites. Full888 passes on the exact composition with default
-budgets and no retries:918,711 screens/cursors,19,505,842 random positions and
-32,997 frames. The primary recipe's six terminal-coordinate errors are corrected
-with its original metadata preserved as evidence. See STATUS for the receipts.
+Pool is pushed as `62d1bc96`. Full888 passes on that exact published runtime:
+918,711 screens/cursors, 19,505,842 random positions and 32,997 frames. Its six
+C cases pass versus two before. All 70 selected/public and strict workers pass.
 
-The next config parser patch passes all eleven C cases versus three, including
-composition with pool. Main integration follows the pool push. Lookaround's
-four C cases remain3/4 due to an earlier cream-pie feedback mismatch; its source
-fix restores the positive random stream. The unchanged failure is preserved
-while the producer is reviewed separately. Two duplicate-option startup
-failures also remain explicit because C's temporary filename is absent from
-replay inputs. The latest verified official feed is still rank7 with659
-unmatched screens; no new held-out score is inferred.
+The config directive patch is now verified for publication. Source controls
+pass 74/74 versus 34/74; all eleven ordinary and C cases pass versus three.
+All 75 selected/public recordings and strict workers, twenty retained suites,
+source audit and three syntax checks pass. The initial omitted-loader failure
+and its unchanged passing invocation are preserved. All prior 888 recordings
+remain fixed. The corpus is 889; its new full NFS run is still pending.
+
+Next source work covers the cream-pie prerequisite before lookaround, floor
+object effects and physical config line assembly. The four original lookaround
+C cases remain 3/4; the earlier producer failure is retained. Two duplicate
+startup warning failures also remain unresolved. The 19:16 UTC official feed
+is unchanged: rank 7 with 659 unmatched screens. See STATUS for exact receipts.
 
 
 The storage cleanup is complete. The user explicitly authorized deleting

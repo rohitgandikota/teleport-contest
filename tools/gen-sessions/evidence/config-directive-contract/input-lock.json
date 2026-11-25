@@ -1,0 +1,69 @@
+{
+  "recipeSHA256": "49dc9798aff9379f6f32960e382817fdd06a03604a4d595cbe008624e9097f8a",
+  "fields": [
+    "seed",
+    "datetime",
+    "nethackrc",
+    "moves",
+    "name"
+  ],
+  "inputFieldsSHA256": "fb317bf70d1b81ec25f3554b5348f5d032090d66d8910624d4dfc100a240ff31",
+  "segments": [
+    {
+      "name": "options-colon-blindness",
+      "keys": 98,
+      "inputSHA256": "4ab979569dceb84f226b0756748f2e59b766dbc9d6432b509dea9d9d6c68ed12"
+    },
+    {
+      "name": "opti-prefix-notice-off",
+      "keys": 98,
+      "inputSHA256": "28f27048603e8bd1f99bb98a1538001c9f3a3ab7900651e9c4913dc399101d62"
+    },
+    {
+      "name": "bindings-colon-command",
+      "keys": 4,
+      "inputSHA256": "c0bd22a56f8c0f9360ec0401fdf50b02b115bdcb86e699a9f2a6983c4fe4f821"
+    },
+    {
+      "name": "symbols-prefix-map",
+      "keys": 3,
+      "inputSHA256": "e9540a07d44d91c0e54b7415228c7855ae63c086a99b4750745cc9cb3299f614"
+    },
+    {
+      "name": "rogue-prefix-map",
+      "keys": 42,
+      "inputSHA256": "996d2339038b8bfffab5fe80bee57288614395cf37713f81deaad5beb851a54b"
+    },
+    {
+      "name": "menucolor-colon-inventory",
+      "keys": 4,
+      "inputSHA256": "df12438a35f8cdc539baea6e006ef71edfa7e7cf3f9a9502b569476689817569"
+    },
+    {
+      "name": "msgtype-colon-sit",
+      "keys": 12,
+      "inputSHA256": "8bb39f794f20328e236578e754024f62cd35a2a984e8b631b4d74361015147aa"
+    },
+    {
+      "name": "autop-prefix-pickup",
+      "keys": 8,
+      "inputSHA256": "ee8534e128739d162de199d1e61d8ae244142daccc93130a73e18ba1007e8337"
+    },
+    {
+      "name": "canonical-options-negative",
+      "keys": 98,
+      "inputSHA256": "b6cc45c8eda0404b35d31003642241ab60844c78915802f6cf747bab112f26ef"
+    },
+    {
+      "name": "canonical-symbols-negative",
+      "keys": 3,
+      "inputSHA256": "e65ea54aece43b141e29f87df6cabb920c131ea0eeb2974fe5534d6c868beb64"
+    },
+    {
+      "name": "canonical-menu-negative",
+      "keys": 4,
+      "inputSHA256": "1a327f7c0510101537968904350fba287a68b3d82cc20d372d201b38c39d0f2e"
+    }
+  ],
+  "branchAssertions": 11
+}

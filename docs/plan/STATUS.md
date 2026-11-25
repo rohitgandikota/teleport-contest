@@ -1,6 +1,42 @@
 # STATUS — live handoff board
 
-## 2026-11-25: pool floor-trap fix verified for publication
+## 2026-11-25: config directive recognition verified for publication
+
+Only options.js changes. Existing directives now use C's first ':' or '=',
+minimum prefix lengths, ASCII case comparison and value whitespace rules.
+The handlers stay unchanged. The twelve portable payloads retain their source,
+input and C-recording locks. Source controls pass 74/74 versus 34/74. All eleven
+ordinary and original C cases pass versus three before. Composition with the
+published pool fix also matches: 385 styled boundaries/cursors, 29,478 calls
+and ordered slices, zero frames. All eleven preserve observer/plain/deferred
+EOF equality and canonical-form equality; three negatives retain fifteen hashes.
+
+All 75 selected/public recordings and all 75 strict eight-second workers pass:
+17,719 screens/cursors, 1,433,090 random positions and 1,705 frames. Twenty retained suites,
+source audit and three syntax checks pass. One initial safe-pet invocation
+omitted the loader documented on the test's first line and failed its import.
+That failure is preserved; the unchanged test passes with its existing loader.
+No assertion or runtime change was made for this invocation correction.
+
+All 311 source-packet members and 26 promotion members verify. All 279 runtime
+hashes match the native-tested composition. All 888 prior raw files and prior
+branch requirements stay fixed; eleven requirements and one raw grow the
+maintained corpus to 889. Main receipt `config-directive-main-verification.json`,
+SHA256 `09eb18b1d35c0e8d9eb686832abc58966b4939f04a2eeb5881e017e5c4d6d283`. Commit and immediately push this checkpoint.
+
+Full889 is running with two NFS CPU workers, default budgets and no retries.
+It shares 888 old recordings and adds one. PID 3119556; 1,179 fixed files;
+all-files SHA256 `899b7bfdae6a4df8674278c86b4c5d74e76f6538f0e0c0e284ace08b73e342ef`.
+Root: /share/NFS/u/rohit/research/contest/artifacts/2026-11-22/config-full889-js-20261125.
+Full888 is the latest complete full result. Next isolated work covers cream-pie
+handling before lookaround, flooreffects, and physical config line assembly.
+The original lookaround C positive still has its earlier cream feedback failure.
+The official feed checked at 19:16 UTC remains the 13:55 feed, rank 7 with
+659 unmatched screens. Its row does not identify a scored commit. The official
+news feed still lists November 14 as its latest entry. No newer held-out score,
+full configuration closure or whole-port completion is claimed.
+
+## 2026-11-25: pool floor-trap checkpoint pushed as 62d1bc96
 
 The pool checkpoint changes only do.js. It calls the existing delfloortrap so
 filling water removes floor traps, releases trapped occupants and preserves
@@ -26,7 +62,11 @@ Verification SHA256: 652861e0c45480449b74b05340d42c24164d1c3222a5f62b5d0cbfc2b19
 All 887 prior raw files and branch requirements remain unchanged. Six branch
 requirements and one raw grow the corpus to 888. Main receipt:
 `pool-floortrap-main-verification.json`, SHA256 `95d3263f5f033c3e472102b3c60826f870d1287336c138b3a23ed29f37570417`.
-Commit and immediately push this verified checkpoint.
+Published as `62d1bc96`. The exact published runtime and full888 snapshot match;
+publication receipt SHA256
+`ed34475c0903b5011c4ee3d2d45d33ff47283e5e83fe2ab87cff226f345cf13d`.
+After verified NFS preservation, the 849,472-byte duplicate parent raw was
+atomically replaced by a link to its maintained fixture.
 
 Next: config directive recognition passes eleven C cases versus three before,
 including composition with pool. Its source74/74 and ordinary11/11 need installed

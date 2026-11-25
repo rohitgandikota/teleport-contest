@@ -1,0 +1,11 @@
+{
+  "canonicalFixture": "tools/gen-sessions/generated/menu-colors-save-restore.session.json",
+  "sha256": "47f35fd179567ac02a6673ac50426677ef9f8aa19f1f0b5a97e0aef32b8b8930",
+  "segment": 0,
+  "step": 2,
+  "text": "quarterstaff",
+  "verifiedCells": 12,
+  "nativeAndCandidateColor": 1,
+  "nativeAndCandidateAttr": 2,
+  "finding": "terminal bold is bit2; ATR_BOLD in menu rule state is1; initial test used the wrong bit; no runtime change"
+}

@@ -1,0 +1,35 @@
+{
+  "controls": [
+    {
+      "name": "canonical-options-negative",
+      "hashes": {
+        "screens": "b7a0bb368a203874c3d8e2e0c48819f96df2610243d666a3aa9a1986d990bce6",
+        "cursors": "bfbed3849006120ed4bb60ce4ad69e40ac9b5c4222c245bd10ac6a43e41c67f5",
+        "calls": "4d2d3ba47c4a5bf9adcf6b964400c40bf7842d13db2c013cb9c1305a75566f64",
+        "slices": "054a4b0ff756c2299fb43e029d1011c7f62c2dd2f54fadadf5ce5a5e84fe20d8",
+        "frames": "71efe9a25c6b42a81bb8ad8b05182d7d58b281045de1fdc4aa7562838a0fc9ee"
+      }
+    },
+    {
+      "name": "canonical-symbols-negative",
+      "hashes": {
+        "screens": "282476f8571506b92fb9681d35e5035438694714d1beeacd076cb465a5d050b0",
+        "cursors": "51ee802e3d5290b524b6181657ab5f2507aec19ad89d3092f447a446b1c6ad04",
+        "calls": "860cfcf1eaecd7f446231c18899a60664b97fcf89acbb674e5207b78373a3ccf",
+        "slices": "336b5ea699fbb622d130038f227b78985c6ef651592acf98444ec4f8d0764ef4",
+        "frames": "210e130878aabaf46f1fe72749a263f9eb71c6a262b80f13882ed08d472c0ecd"
+      }
+    },
+    {
+      "name": "canonical-menu-negative",
+      "hashes": {
+        "screens": "6497e7e0126458442bdb3c66c6024a4c7ee7ace46b5195bb24d5acd72413b8d1",
+        "cursors": "1065fccf83e1071b391353f0196b6b54fd2b775040d2e2b15ef4c2aa04f84774",
+        "calls": "a437e6c542b26f9bab4be970e0f4a3b84c674f8871f5be016c8705b93674b0e9",
+        "slices": "c1c350a9207d75a503404c20e72b9a5bbf559c78a0321156d32de7377493919f",
+        "frames": "be8a1bbaee025d5501a33340bd5d4e547d41835268267e671efcd939c6856fe3"
+      }
+    }
+  ],
+  "allFiveHashesUnchanged": true
+}

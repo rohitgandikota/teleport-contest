@@ -1,0 +1,371 @@
+{
+  "name": "config-directive-contract",
+  "classification": "separately named ordinary valid-RC proposals; no original tuple mutation",
+  "coverage": [
+    "config-line-delimiter",
+    "config-line-prefix",
+    "config-line-known-directives",
+    "config-line-original-versus-munged"
+  ],
+  "segments": [
+    {
+      "seed": 7600,
+      "datetime": "20260503025436",
+      "nethackrc": "OPTIONS:name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS:!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,debug_mongen\nOPTIONS:whatis_coord:map\nOPTIONS:spot_monsters\nOPTIONS:!accessiblemsg\n",
+      "moves": " #levelchange\r30\r                             \u0007peaceful blue jelly\r#wizintrinsic\r3i\r  3.~    \u001b\u001b  V",
+      "name": "options-colon-blindness"
+    },
+    {
+      "seed": 7600,
+      "datetime": "20260503025436",
+      "nethackrc": "OPTI=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTI=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,debug_mongen\nOPTI=accessiblemsg,whatis_coord:map\nOPTI=!spot_monsters\n",
+      "moves": " #levelchange\r30\r                             \u0007peaceful blue jelly\r#wizintrinsic\r3i\r  3.~    \u001b\u001b  V",
+      "name": "opti-prefix-notice-off"
+    },
+    {
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nBINDINGS:~:versionshort,V:nothing\n",
+      "moves": " & ~",
+      "name": "bindings-colon-command"
+    },
+    {
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nsYmB:S_unexplored:U\n",
+      "moves": " V\f",
+      "name": "symbols-prefix-map"
+    },
+    {
+      "seed": 9771,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:DECgraphics,!safe_wait\nROGU:S_human:R,S_room:.,S_corr:%,S_weapon:/,S_coin:G\n",
+      "moves": " \u0016the rogue level\r   \u0017dagger\ri da \u00161\r   V ",
+      "name": "rogue-prefix-map"
+    },
+    {
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:ColorSave,role:Wizard,race:human,gender:male,align:neutral\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nMENUCOLOR:\"quarterstaff\"=red&bold\n",
+      "moves": " i\u001bV",
+      "name": "menucolor-colon-inventory"
+    },
+    {
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:Msg0,role:Wizard,race:human,gender:male,align:neutral\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nMSGTYPE:hide \"^You sit on\"\n",
+      "moves": " #sit\r#sit\r\u001b",
+      "name": "msgtype-colon-sit"
+    },
+    {
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:ApeForce,role:Wizard,race:human,gender:male,align:neutral\nOPTIONS=autopickup,!tutorial,!tips,pettype:none,!dropped_nopick,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=pickup_types:$\nAuToP:\"<quarterstaff\"\n",
+      "moves": " ldalhi\u001b",
+      "name": "autop-prefix-pickup"
+    },
+    {
+      "seed": 7600,
+      "datetime": "20260503025436",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,debug_mongen\nOPTIONS=whatis_coord:map\nOPTIONS=spot_monsters\nOPTIONS=!accessiblemsg\n",
+      "moves": " #levelchange\r30\r                             \u0007peaceful blue jelly\r#wizintrinsic\r3i\r  3.~    \u001b\u001b  V",
+      "name": "canonical-options-negative"
+    },
+    {
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nSYMBOLS=S_unexplored:U\n",
+      "moves": " V\f",
+      "name": "canonical-symbols-negative"
+    },
+    {
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:ColorSave,role:Wizard,race:human,gender:male,align:neutral\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nMENUCOLOR=\"quarterstaff\"=red&bold\n",
+      "moves": " i\u001bV",
+      "name": "canonical-menu-negative"
+    }
+  ],
+  "derivations": [
+    {
+      "name": "options-colon-blindness",
+      "recipe": ".cache/restart-20261122/config-duplicate-source-audit/fixtures/nonduplicate-rc.recipe.json",
+      "segment": 0,
+      "recipeSHA256": "b38cbf9443dce4319e74c974e86fe3ecda3503254dcf8cad672e3ea40d777bc2",
+      "headerFrom": "OPTIONS=",
+      "headerTo": "OPTIONS:",
+      "movesOverride": null,
+      "unaffectedControl": false
+    },
+    {
+      "name": "opti-prefix-notice-off",
+      "recipe": ".cache/restart-20261122/config-duplicate-source-audit/fixtures/nonduplicate-rc.recipe.json",
+      "segment": 1,
+      "recipeSHA256": "b38cbf9443dce4319e74c974e86fe3ecda3503254dcf8cad672e3ea40d777bc2",
+      "headerFrom": "OPTIONS=",
+      "headerTo": "OPTI=",
+      "movesOverride": null,
+      "unaffectedControl": false
+    },
+    {
+      "name": "bindings-colon-command",
+      "recipe": "tools/gen-sessions/recipes/binding-table-behavior.json",
+      "segment": 0,
+      "recipeSHA256": "6001e82d198a19f3c44edddff357846bfe0686da9dcfb3853909eafd98e2fb10",
+      "headerFrom": "BIND=",
+      "headerTo": "BINDINGS:",
+      "movesOverride": null,
+      "unaffectedControl": false
+    },
+    {
+      "name": "symbols-prefix-map",
+      "recipe": "tools/gen-sessions/recipes/other-map-symbols.json",
+      "segment": 0,
+      "recipeSHA256": "d6f15236c29085401399834c97015649a07065d6ac87623a7572693c8273a108",
+      "headerFrom": "SYMBOLS=",
+      "headerTo": "sYmB:",
+      "movesOverride": null,
+      "unaffectedControl": false
+    },
+    {
+      "name": "rogue-prefix-map",
+      "recipe": "tools/gen-sessions/recipes/rogue-symbol-sets.json",
+      "segment": 5,
+      "recipeSHA256": "761af5ed0b38c3a29b2a375e2196afd3832b703ac91f647e10123faf967e7633",
+      "headerFrom": "ROGUESYMBOLS=",
+      "headerTo": "ROGU:",
+      "movesOverride": null,
+      "unaffectedControl": false
+    },
+    {
+      "name": "menucolor-colon-inventory",
+      "recipe": "tools/gen-sessions/recipes/menu-colors-save-restore.json",
+      "segment": 0,
+      "recipeSHA256": "09a04359c222e139467ab500a0adf1af233273f2f1820f4f602e23a9d8060916",
+      "headerFrom": "MENUCOLOR=",
+      "headerTo": "MENUCOLOR:",
+      "movesOverride": " i\u001bV",
+      "unaffectedControl": false
+    },
+    {
+      "name": "msgtype-colon-sit",
+      "recipe": "tools/gen-sessions/recipes/message-type-config.json",
+      "segment": 0,
+      "recipeSHA256": "d54cc5498ca52bc61ed553cd05d57083094294507ecfa8c8dca7fcd029b2e169",
+      "headerFrom": "MSGTYPE=",
+      "headerTo": "MSGTYPE:",
+      "movesOverride": null,
+      "unaffectedControl": false
+    },
+    {
+      "name": "autop-prefix-pickup",
+      "recipe": "tools/gen-sessions/recipes/autopickup-exception-config.json",
+      "segment": 0,
+      "recipeSHA256": "fa3b801ca23f841b2ca3d2f203c90ef8760d60611ed77c9a6ae789921a741498",
+      "headerFrom": "AUTOPICKUP_EXCEPTION=",
+      "headerTo": "AuToP:",
+      "movesOverride": null,
+      "unaffectedControl": false
+    },
+    {
+      "name": "canonical-options-negative",
+      "recipe": ".cache/restart-20261122/config-duplicate-source-audit/fixtures/nonduplicate-rc.recipe.json",
+      "segment": 0,
+      "recipeSHA256": "b38cbf9443dce4319e74c974e86fe3ecda3503254dcf8cad672e3ea40d777bc2",
+      "headerFrom": null,
+      "headerTo": null,
+      "movesOverride": null,
+      "unaffectedControl": true
+    },
+    {
+      "name": "canonical-symbols-negative",
+      "recipe": "tools/gen-sessions/recipes/other-map-symbols.json",
+      "segment": 0,
+      "recipeSHA256": "d6f15236c29085401399834c97015649a07065d6ac87623a7572693c8273a108",
+      "headerFrom": null,
+      "headerTo": null,
+      "movesOverride": null,
+      "unaffectedControl": true
+    },
+    {
+      "name": "canonical-menu-negative",
+      "recipe": "tools/gen-sessions/recipes/menu-colors-save-restore.json",
+      "segment": 0,
+      "recipeSHA256": "09a04359c222e139467ab500a0adf1af233273f2f1820f4f602e23a9d8060916",
+      "headerFrom": null,
+      "headerTo": null,
+      "movesOverride": " i\u001bV",
+      "unaffectedControl": true
+    }
+  ],
+  "requireBranchAssertions": true,
+  "branches": [
+    "config-directive.options-colon-blindness",
+    "config-directive.opti-prefix-notice-off",
+    "config-directive.bindings-colon-command",
+    "config-directive.symbols-prefix-map",
+    "config-directive.rogue-prefix-map",
+    "config-directive.menucolor-colon-inventory",
+    "config-directive.msgtype-colon-sit",
+    "config-directive.autop-prefix-pickup",
+    "config-directive.canonical-options-negative",
+    "config-directive.canonical-symbols-negative",
+    "config-directive.canonical-menu-negative"
+  ],
+  "branchAssertions": [
+    {
+      "branch": "config-directive.options-colon-blindness",
+      "segment": 0,
+      "screenIncludes": [
+        "You can see again.",
+        "You see a peaceful blue jelly.",
+        "Unknown command '~'."
+      ],
+      "screenExcludes": [
+        "<8,5>: You see a peaceful blue jelly.",
+        "boolean option specified multiple times"
+      ]
+    },
+    {
+      "branch": "config-directive.opti-prefix-notice-off",
+      "segment": 1,
+      "screenIncludes": [
+        "You can see again.",
+        "Unknown command '~'."
+      ],
+      "screenExcludes": [
+        "You see a peaceful blue jelly.",
+        "boolean option specified multiple times"
+      ]
+    },
+    {
+      "branch": "config-directive.bindings-colon-command",
+      "segment": 2,
+      "screenIncludes": [
+        "(#versionshort)"
+      ]
+    },
+    {
+      "branch": "config-directive.symbols-prefix-map",
+      "segment": 3,
+      "screenCells": [
+        {
+          "step": 0,
+          "x": 0,
+          "y": 1,
+          "equals": "U"
+        },
+        {
+          "step": 3,
+          "x": 0,
+          "y": 1,
+          "equals": "U"
+        }
+      ]
+    },
+    {
+      "branch": "config-directive.rogue-prefix-map",
+      "segment": 4,
+      "screenIncludes": [
+        "older, more primitive world",
+        "Dlvl:18",
+        "Dlvl:1"
+      ],
+      "screenCells": [
+        {
+          "step": 19,
+          "x": 43,
+          "y": 19,
+          "equals": "R"
+        },
+        {
+          "step": 42,
+          "x": 68,
+          "y": 9,
+          "equals": "\u250c"
+        }
+      ]
+    },
+    {
+      "screenIncludes": [
+        "quarterstaff",
+        "NetHack Version"
+      ],
+      "segment": 5,
+      "branch": "config-directive.menucolor-colon-inventory"
+    },
+    {
+      "branch": "config-directive.msgtype-colon-sit",
+      "segment": 6,
+      "screenIncludes": [
+        "Hello"
+      ],
+      "screenExcludes": [
+        "You sit on the stairs."
+      ],
+      "screenCells": [
+        {
+          "step": 6,
+          "x": 0,
+          "y": 0,
+          "equals": " "
+        }
+      ]
+    },
+    {
+      "branch": "config-directive.autop-prefix-pickup",
+      "segment": 7,
+      "screenIncludes": [
+        "Hello",
+        "a - a blessed +1 quarterstaff."
+      ],
+      "screenCells": [
+        {
+          "step": 6,
+          "x": 0,
+          "y": 0,
+          "equals": "a"
+        }
+      ]
+    },
+    {
+      "branch": "config-directive.canonical-options-negative",
+      "segment": 8,
+      "screenIncludes": [
+        "You can see again.",
+        "You see a peaceful blue jelly.",
+        "Unknown command '~'."
+      ],
+      "screenExcludes": [
+        "<8,5>: You see a peaceful blue jelly.",
+        "boolean option specified multiple times"
+      ]
+    },
+    {
+      "branch": "config-directive.canonical-symbols-negative",
+      "segment": 9,
+      "screenCells": [
+        {
+          "step": 0,
+          "x": 0,
+          "y": 1,
+          "equals": "U"
+        },
+        {
+          "step": 3,
+          "x": 0,
+          "y": 1,
+          "equals": "U"
+        }
+      ]
+    },
+    {
+      "screenIncludes": [
+        "quarterstaff",
+        "NetHack Version"
+      ],
+      "segment": 10,
+      "branch": "config-directive.canonical-menu-negative"
+    }
+  ]
+}

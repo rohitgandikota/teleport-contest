@@ -1,0 +1,230 @@
+{
+  "name": "queued-notice-input-boundary",
+  "classification": "Six exact original tuples plus two distinct nonduplicate RC tuples. Original eight evidence remains required and its two startup failures unresolved.",
+  "segments": [
+    {
+      "seed": 7600,
+      "datetime": "20260503025436",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,debug_mongen\nOPTIONS=accessiblemsg,whatis_coord:map\nOPTIONS=spot_monsters\n",
+      "name": "unknown-location",
+      "moves": " #levelchange\r30\r                             \u0007peaceful blue jelly\r#wizintrinsic\r3i\r  3.~    \u001b\u001b  V"
+    },
+    {
+      "seed": 7600,
+      "datetime": "20260503025436",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,debug_mongen\nOPTIONS=whatis_coord:map\nOPTIONS=spot_monsters\nOPTIONS=!accessiblemsg\n",
+      "name": "unknown-plain-nonduplicate-rc",
+      "moves": " #levelchange\r30\r                             \u0007peaceful blue jelly\r#wizintrinsic\r3i\r  3.~    \u001b\u001b  V"
+    },
+    {
+      "seed": 7600,
+      "datetime": "20260503025436",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,debug_mongen\nOPTIONS=accessiblemsg,whatis_coord:map\nOPTIONS=spot_monsters\nMSGTYPE=stop \"You see a peaceful blue jelly\"\n",
+      "name": "unknown-stop",
+      "moves": " #levelchange\r30\r                             \u0007peaceful blue jelly\r#wizintrinsic\r3i\r  3.~    \u001b\u001b  V"
+    },
+    {
+      "seed": 7600,
+      "datetime": "20260503025436",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,debug_mongen\nOPTIONS=accessiblemsg,whatis_coord:map\nOPTIONS=spot_monsters\nMSGTYPE=hide \"Unknown command\"\n",
+      "name": "unknown-hide",
+      "moves": " #levelchange\r30\r                             \u0007peaceful blue jelly\r#wizintrinsic\r3i\r  3.~    \u001b\u001b  V"
+    },
+    {
+      "seed": 7600,
+      "datetime": "20260503025436",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,debug_mongen\nOPTIONS=accessiblemsg,whatis_coord:map\nOPTIONS=!spot_monsters\n",
+      "name": "notice-option-off-nonduplicate-rc",
+      "moves": " #levelchange\r30\r                             \u0007peaceful blue jelly\r#wizintrinsic\r3i\r  3.~    \u001b\u001b  V"
+    },
+    {
+      "seed": 7600,
+      "datetime": "20260503025436",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,debug_mongen\nOPTIONS=accessiblemsg,whatis_coord:map\nOPTIONS=spot_monsters\n",
+      "name": "target-inspection",
+      "moves": " #levelchange\r30\r                             \u0007peaceful blue jelly\r#wizintrinsic\r3i\r  3.;l.    \u001b\u001b  V"
+    },
+    {
+      "seed": 7600,
+      "datetime": "20260503025436",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,debug_mongen\nOPTIONS=accessiblemsg,whatis_coord:map\nOPTIONS=spot_monsters\n",
+      "name": "blindfold-removal",
+      "moves": " #levelchange\r30\r                             \u0017uncursed blindfold\r\u0007peaceful newt\rPa   Ra   \u001b\u001b  V"
+    },
+    {
+      "seed": 7600,
+      "datetime": "20260503025436",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,debug_mongen\nOPTIONS=accessiblemsg,whatis_coord:map\nOPTIONS=spot_monsters\n",
+      "name": "eyeless-reversion",
+      "moves": " #levelchange\r30\r                             \u0007peaceful newt\r#polyself\rfog cloud\r   #polyself\rhuman\r   \u001b\u001b  V"
+    }
+  ],
+  "requireBranchAssertions": true,
+  "branches": [
+    "located-timeout-before-input",
+    "plain-timeout-before-input",
+    "stop-timeout-before-input",
+    "hidden-unknown-after-sighting",
+    "notices-disabled-after-timeout",
+    "inspection-after-sighting",
+    "blindfold-removal-control",
+    "eyeless-reversion-control"
+  ],
+  "branchAssertions": [
+    {
+      "branch": "located-timeout-before-input",
+      "segment": 0,
+      "screenIncludes": [
+        "You can see again.",
+        "<8,5>: You see a peaceful blue jelly.",
+        "Unknown command '~'."
+      ],
+      "screenExcludes": [
+        "boolean option specified multiple times"
+      ]
+    },
+    {
+      "branch": "plain-timeout-before-input",
+      "segment": 1,
+      "screenIncludes": [
+        "You can see again.",
+        "You see a peaceful blue jelly.",
+        "Unknown command '~'."
+      ],
+      "screenExcludes": [
+        "<8,5>: You see a peaceful blue jelly.",
+        "boolean option specified multiple times"
+      ]
+    },
+    {
+      "branch": "stop-timeout-before-input",
+      "segment": 2,
+      "screenIncludes": [
+        "You can see again.",
+        "<8,5>: You see a peaceful blue jelly.--More--"
+      ],
+      "screenExcludes": [
+        "Unknown command '~'.",
+        "boolean option specified multiple times"
+      ]
+    },
+    {
+      "branch": "hidden-unknown-after-sighting",
+      "segment": 3,
+      "screenIncludes": [
+        "You can see again.",
+        "<8,5>: You see a peaceful blue jelly."
+      ],
+      "screenExcludes": [
+        "Unknown command",
+        "boolean option specified multiple times"
+      ]
+    },
+    {
+      "branch": "notices-disabled-after-timeout",
+      "segment": 4,
+      "screenIncludes": [
+        "You can see again.",
+        "Unknown command '~'."
+      ],
+      "screenExcludes": [
+        "You see a peaceful blue jelly.",
+        "boolean option specified multiple times"
+      ]
+    },
+    {
+      "branch": "inspection-after-sighting",
+      "segment": 5,
+      "screenIncludes": [
+        "You can see again.",
+        "<8,5>: You see a peaceful blue jelly."
+      ],
+      "screenExcludes": [
+        "boolean option specified multiple times"
+      ]
+    },
+    {
+      "branch": "blindfold-removal-control",
+      "segment": 6,
+      "screenIncludes": [
+        "You were wearing a blindfold.",
+        "You see a peaceful newt."
+      ],
+      "screenExcludes": [
+        "boolean option specified multiple times"
+      ]
+    },
+    {
+      "branch": "eyeless-reversion-control",
+      "segment": 7,
+      "screenIncludes": [
+        "You feel like a new man!"
+      ],
+      "screenExcludes": [
+        "boolean option specified multiple times"
+      ]
+    }
+  ],
+  "unchangedOutputHashes": {
+    "notice-option-off-nonduplicate-rc": {
+      "screens": "b48c38f00b05039cd5bdc16be6e50d6ab2b57453538676cb3c64ada35014f4e2",
+      "cursors": "a2386f6b6c938dc59060a109515fa9e77a30049ee4d41546d403f43b4df5682e",
+      "calls": "4d2d3ba47c4a5bf9adcf6b964400c40bf7842d13db2c013cb9c1305a75566f64",
+      "slices": "054a4b0ff756c2299fb43e029d1011c7f62c2dd2f54fadadf5ce5a5e84fe20d8",
+      "frames": "71efe9a25c6b42a81bb8ad8b05182d7d58b281045de1fdc4aa7562838a0fc9ee"
+    },
+    "blindfold-removal": {
+      "screens": "913caeafce275d0a11f26396bab9eeff843db598aa90ebe8802540c3f4973f76",
+      "cursors": "06572c5e1f15ae6923c7793338fca2b77c45a6d7e109881885b5bff84eb4d365",
+      "calls": "ce1cdc5102aa57e2e9f9b49422ce31b9be5f68cdab24a25063590bffa2eab516",
+      "slices": "c23bb119174867fad23744d4cc34f067b85c437d79a3d4bb8d0709a65f08b9bd",
+      "frames": "c16180881835d8cce45ca7f841a3efe63dcd809f0bd273be140ba0fe5dd263dd"
+    },
+    "eyeless-reversion": {
+      "screens": "ad1c45521165d59c9b6fb3f423917cfa45245c05234050fb85c1475599919bc6",
+      "cursors": "baedb96b4cb1413ed83065aa3b3101e0354cac7b42bbd70b3587d650dd7ad65c",
+      "calls": "bbb5f244345c89b640d95008d1d3916455cdc5cd02522bff99fb4371a7cceaa4",
+      "slices": "5954ad4a23836beabc6641687d53a7efafa04615af7148ac3bc26ce61ecd830a",
+      "frames": "c0fa1324bec386e794f3daab20f65d7b28d7d021e9d11d44587213390c34f127"
+    }
+  },
+  "nativeSources": [
+    {
+      "recording": "original-eight",
+      "segment": 0
+    },
+    {
+      "recording": "nonduplicate-rc",
+      "segment": 0
+    },
+    {
+      "recording": "original-eight",
+      "segment": 2
+    },
+    {
+      "recording": "original-eight",
+      "segment": 3
+    },
+    {
+      "recording": "nonduplicate-rc",
+      "segment": 1
+    },
+    {
+      "recording": "original-eight",
+      "segment": 5
+    },
+    {
+      "recording": "original-eight",
+      "segment": 6
+    },
+    {
+      "recording": "original-eight",
+      "segment": 7
+    }
+  ],
+  "unresolvedOriginalInputs": [
+    "unknown-plain",
+    "notice-option-off"
+  ],
+  "formerNegativeNowPrerequisitePositive": "target-inspection"
+}

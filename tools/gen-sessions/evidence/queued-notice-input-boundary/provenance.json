@@ -1,0 +1,19 @@
+{
+  "combinedSHA256": "83dea13c2e2945eaab0916ae9d0b083450b3154db4f4a35ccfa3dbfcb7c0ef51",
+  "bytes": 1157306,
+  "recipeSHA256": "15dda3a4d80a1b3729a83aa0dcd35cfd1eb67f396c87361f6272ec633835e4f6",
+  "sourceRawSHA256": [
+    "dfce373f5410e4caf4a7b806fed09cec78be14ca1e763fb0711f71e2986568cd",
+    "47b56614f28cbd50d0b807fffcc3cddf799373c308e4b0be3ebf2f56e5a836e0"
+  ],
+  "segments": 8,
+  "boundaries": 802,
+  "calls": 20732,
+  "frames": 0,
+  "segmentsDeepEqualToUnchangedSource": true,
+  "unresolvedOriginalCases": [
+    "unknown-plain",
+    "notice-option-off"
+  ],
+  "reason": "Separate duplicate-option startup diagnostic differences remain in original raw and comparisons; they are not normalized or declared passing."
+}

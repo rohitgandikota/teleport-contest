@@ -13,20 +13,21 @@ Ground rules are in `/CLAUDE.md`. Read that first if you have not.
 ## Current focus, 2026-11-25
 
 
-The string-helper checkpoint is pushed as `0efe51fe`. Forced attacks on iron
-bars and visible webs now pass 85 source controls, sixteen ordinary/native
-cases and all 62 selected/public recordings. All public strict workers pass;
-three large untrapping aggregates exceed eight seconds on both fixed baseline
-and candidate, while matching under the standard 45-second budget. Eight
-retained suites pass. See STATUS for the immediate publication receipt.
+`c6139692` is pushed and passes all 883 maintained recordings on NFS. The next
+verified checkpoint preserves queued-notice flags and finishes blindness
+sightings before command input. It passes seventy source controls, eight native
+cases, all 68 selected/public recordings and all 68 strict workers. Sixteen
+retained suites pass. Two obsolete pending-queue test premises were corrected
+against C, with their original failures preserved. See STATUS for the receipt.
 
-The corpus is 883. A fresh full883 NFS run uses two CPU workers, reuses 881
-recordings and uploads two new fixtures. It includes swimming, the helper fix
-and force-fight integration. Full881 remains the latest completed full run.
-Queued-notice timing passes six original and two separately locked new C cases;
-two original duplicate-option startup failures remain preserved. Boulder
-pushing and travel pathfinding are under source review. The latest observed
-official rank remains 7 with 659 unmatched screens; no newer score is inferred.
+The maintained corpus is 884. Full884 is running with two NFS CPU workers;
+full883 is the latest completed result. Two original duplicate-option startup
+failures remain explicit in preserved C evidence and a separate configuration
+audit. The boulder candidate passes twelve C cases, fixing two baseline crashes
+and two Sokoban divergences; its naming prerequisite is still under review.
+Travel pathfinding has twelve recorded inputs awaiting candidate comparison.
+The latest official feed remains rank 7 with 659 unmatched screens and does
+not identify a newer scored commit.
 
 
 The storage cleanup is complete. The user explicitly authorized deleting

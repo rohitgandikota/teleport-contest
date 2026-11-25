@@ -1,0 +1,48 @@
+{
+  "originalRawSHA256": "dfce373f5410e4caf4a7b806fed09cec78be14ca1e763fb0711f71e2986568cd",
+  "comparisonSHA256": "53cd1b1a78e4c48d5a40e9d3671a4367d988d6f6028b7cfeb35ca2d849958241",
+  "checksSHA256": "8aeaae0580d6dc031390f253d27ee14a63beff8f088bc4f3411ddfbb119d645c",
+  "parentNative": {
+    "variant": "queued-boundary-candidate",
+    "exit": 1,
+    "seconds": 0.75,
+    "exact": 6,
+    "total": 8,
+    "boundaries": 802,
+    "calls": 20630,
+    "frames": 0,
+    "failures": [
+      {
+        "name": "unknown-plain",
+        "screens": 96,
+        "first": 0,
+        "rngExact": false,
+        "cursorsExact": false,
+        "framesExact": true
+      },
+      {
+        "name": "notice-option-off",
+        "screens": 96,
+        "first": 0,
+        "rngExact": false,
+        "cursorsExact": false,
+        "framesExact": true
+      }
+    ]
+  },
+  "exactNames": [
+    "unknown-location",
+    "unknown-stop",
+    "unknown-hide",
+    "target-inspection",
+    "blindfold-removal",
+    "eyeless-reversion"
+  ],
+  "sealedOldSourceFailure": {
+    "path": "../queued-notice-input-boundary-source-audit/review/retained-source-candidate.json",
+    "sha256": "59165f94e2b853c9a52098aaa729a1dfb203f724a3d8cd949ce05445bff80566",
+    "passed": 59,
+    "total": 60
+  },
+  "unresolved": "Two original duplicate-RC startup failures remain. New RC tuples do not replace or repair those failures."
+}

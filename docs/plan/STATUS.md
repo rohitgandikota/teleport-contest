@@ -1,5 +1,81 @@
 # STATUS — live handoff board
 
+## 2026-11-25: queued notice flags and blindness completion verified
+
+The current checkpoint routes urgent and no-history messages through the
+shared pline path, preserves each notice's production flags, drains notices
+created during vision before output, and completes blindness sightings before
+the setter returns. Runtime scope is display.js, hack.js, pline.js and potion.js.
+The two source groups pass 60/60 and 10/10, versus 17/60 and 4/10 on the published
+baseline. All eight maintained ordinary/native cases pass, versus three before:
+802 styled boundaries/cursors, 20,732 calls and ordered slices, zero frames.
+Three unaffected inputs preserve all fifteen output hashes; all eight pass
+observer/deferred/held-EOF equality.
+
+The maintained recording combines six unchanged original C segments and two
+separately recorded nonduplicate-RC segments. Both complete original raws and
+provenance are installed under evidence/queued-notice-input-boundary. The
+original eight-input result stays 6/8: two startup-warning failures remain
+unresolved, without path or warning normalization. They are not counted as
+passing or silently replaced. The maintained corpus grows from 883 to 884,
+with eight new branch requirements and all prior raw/requirements fixed.
+
+All 68 selected/public recordings and all 68 strict eight-second workers pass:
+53,103 screens/cursors, 1,329,347 random positions and 3,205 frames. Sixteen
+retained suites, source audit and eight syntax checks pass. Two old test
+premises expected a queued sighting after awaited make_blinded, contrary to C.
+Their 59/60 and 49/50 failures are retained. The corrected checks require
+completed delivery at return and preserve the subsequent message assertions.
+The corrected location gate passes 50/50 versus 49/50 on the fixed baseline.
+All 644 and 603 original packet members and 55 promotion members verify.
+Main receipt `queued-main-verification.json`, SHA256
+`c28a069719b7a11db02d85bede22ef1cabe01062be7868ce104afbd61781b7ed`.
+Commit and immediately push this verified checkpoint.
+
+Full884 is running on the identical runtime with two NFS CPU workers, default
+budgets and no retries. It links 883 fixtures and uploads one new recording.
+Root: `/share/NFS/u/rohit/research/contest/artifacts/2026-11-22/queued-full884-js-20261125`.
+All 1,174 snapshot files are fixed; all-files SHA256
+`931309976bba3f3c9f71687c9092fd74e28f5fba9d9f17e83e1c716e8bd39994`.
+Full883 remains the latest completed result on published `c6139692`.
+
+The twelve boulder cases pass the candidate; baseline has eight exact cases,
+two level-teleport crashes and two completed-Sokoban divergences. Its separate
+next-boulder naming prerequisite remains under source review. Twelve travel
+inputs are now recorded; native parity awaits the candidate. Duplicate-option
+configuration diagnostics have a separate read-only source audit. Other
+synchronous vision callers, typed counts and DEBUG CapitalMon remain open.
+
+## 2026-11-25: published force-fight checkpoint passes full883
+
+`c6139692` is pushed. Its full883 NFS run passes with default budgets, two
+workers and no retries: 914,711 screens/cursors, 19,400,849 random positions
+and 32,821 frames. All 1,173 snapshot files still match the published checkout.
+Verification SHA256 `9f375ccb1be8952c5ec4945364e8b392d4c9a51675d9b5fd2eed28afc368be69`;
+publication receipt SHA256 `2a71dd804f90907746347eca659744c0e1e46182a1285dab1b315821956d24e4`.
+The two duplicate parent recordings now link to maintained fixtures, removing
+4,407,874 bytes after local and NFS checksum verification. No NFS job remains.
+
+Queued notices are composed against the published runtime in a fixed snapshot.
+All eight valid-configuration C cases match 802 styled boundaries/cursors,
+20,732 calls and ordered slices, zero frames, versus three cases before.
+Six cases preserve original segments; two separately locked cases remove an
+earlier duplicate option. Original eight-input raw and its two startup-warning
+failures remain unchanged. The combined fixture is a transparent derivation,
+not a rerecording or normalization: SHA256
+`83dea13c2e2945eaab0916ae9d0b083450b3154db4f4a35ccfa3dbfcb7c0ef51`.
+Portable companion and broader regression checks are next; main is unchanged.
+
+The twelve boulder inputs are recorded as C5, SHA256
+`cb597ffbce6b3ca9d191c129f2eb75af6b5f58bda1d560bcd6c346fe7ce20edd`.
+A fixed two-owner candidate matches all 2,081 boundaries, 29,693 calls and
+thirteen frames. Baseline crashes on the first level-teleport case because
+get_level receives a number where its output object belongs. Per-case baseline
+comparison is running. The one-shot next-boulder naming prerequisite and
+source controls remain under review. Travel pathfinding review is active.
+The official feed checked again at 18:02 UTC is unchanged from 13:55 UTC:
+rank 7, 659 unmatched; it does not identify a new scored commit.
+
 ## 2026-11-25: force-fight owners verified; full883 running
 
 The string helper is pushed as `0efe51fe`. The next checkpoint ports

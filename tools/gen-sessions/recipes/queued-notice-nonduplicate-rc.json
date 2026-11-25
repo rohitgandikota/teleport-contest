@@ -1,0 +1,92 @@
+{
+  "name": "queued-notice-nonduplicate-rc",
+  "classification": "Two separately locked RC prerequisites. The original eight recipes and their two startup failures remain unchanged.",
+  "segments": [
+    {
+      "seed": 7600,
+      "datetime": "20260503025436",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,debug_mongen\nOPTIONS=whatis_coord:map\nOPTIONS=spot_monsters\nOPTIONS=!accessiblemsg\n",
+      "name": "unknown-plain-nonduplicate-rc",
+      "moves": " #levelchange\r30\r                             \u0007peaceful blue jelly\r#wizintrinsic\r3i\r  3.~    \u001b\u001b  V"
+    },
+    {
+      "seed": 7600,
+      "datetime": "20260503025436",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,debug_mongen\nOPTIONS=accessiblemsg,whatis_coord:map\nOPTIONS=!spot_monsters\n",
+      "name": "notice-option-off-nonduplicate-rc",
+      "moves": " #levelchange\r30\r                             \u0007peaceful blue jelly\r#wizintrinsic\r3i\r  3.~    \u001b\u001b  V"
+    }
+  ],
+  "requireBranchAssertions": true,
+  "branches": [
+    "plain-sighting-before-command",
+    "disabled-notices-after-blindness"
+  ],
+  "branchAssertions": [
+    {
+      "branch": "plain-sighting-before-command",
+      "segment": 0,
+      "screenIncludes": [
+        "You can see again.",
+        "You see a peaceful blue jelly.",
+        "Unknown command '~'."
+      ],
+      "screenExcludes": [
+        "<8,5>: You see a peaceful blue jelly.",
+        "boolean option specified multiple times"
+      ]
+    },
+    {
+      "branch": "disabled-notices-after-blindness",
+      "segment": 1,
+      "screenIncludes": [
+        "You can see again.",
+        "Unknown command '~'."
+      ],
+      "screenExcludes": [
+        "You see a peaceful blue jelly.",
+        "boolean option specified multiple times"
+      ]
+    }
+  ],
+  "originalInputChanges": [
+    {
+      "originalName": "unknown-plain",
+      "newName": "unknown-plain-nonduplicate-rc",
+      "removedDirectiveText": "OPTIONS=accessiblemsg,whatis_coord:map\n",
+      "replacementText": "OPTIONS=whatis_coord:map\n",
+      "otherInputFieldsUnchanged": [
+        "seed",
+        "datetime",
+        "moves"
+      ]
+    },
+    {
+      "originalName": "notice-option-off",
+      "newName": "notice-option-off-nonduplicate-rc",
+      "removedDirectiveText": "OPTIONS=spot_monsters\n",
+      "replacementText": "",
+      "otherInputFieldsUnchanged": [
+        "seed",
+        "datetime",
+        "moves"
+      ]
+    }
+  ],
+  "sameEffectiveJSOutputHashes": {
+    "unknown-plain-nonduplicate-rc": {
+      "screens": "b7a0bb368a203874c3d8e2e0c48819f96df2610243d666a3aa9a1986d990bce6",
+      "cursors": "bfbed3849006120ed4bb60ce4ad69e40ac9b5c4222c245bd10ac6a43e41c67f5",
+      "calls": "4d2d3ba47c4a5bf9adcf6b964400c40bf7842d13db2c013cb9c1305a75566f64",
+      "slices": "054a4b0ff756c2299fb43e029d1011c7f62c2dd2f54fadadf5ce5a5e84fe20d8",
+      "frames": "71efe9a25c6b42a81bb8ad8b05182d7d58b281045de1fdc4aa7562838a0fc9ee"
+    },
+    "notice-option-off-nonduplicate-rc": {
+      "screens": "b48c38f00b05039cd5bdc16be6e50d6ab2b57453538676cb3c64ada35014f4e2",
+      "cursors": "a2386f6b6c938dc59060a109515fa9e77a30049ee4d41546d403f43b4df5682e",
+      "calls": "4d2d3ba47c4a5bf9adcf6b964400c40bf7842d13db2c013cb9c1305a75566f64",
+      "slices": "054a4b0ff756c2299fb43e029d1011c7f62c2dd2f54fadadf5ce5a5e84fe20d8",
+      "frames": "71efe9a25c6b42a81bb8ad8b05182d7d58b281045de1fdc4aa7562838a0fc9ee"
+    }
+  }
+}

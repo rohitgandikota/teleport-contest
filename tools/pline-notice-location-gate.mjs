@@ -158,9 +158,12 @@ check('producer/vision-recalc',async()=>{
 check('producer/vision-reveal-after-real-blindness',async()=>{
     await fresh();await make_blinded(20,false);const n=await spawn(P.PM_NEWT,-2);
     vision_recalc(0);assert.equal(game.a11y?.notices?.length||0,0);
+    // C toggle_blindness finishes its sighting before make_blinded returns.
+    begin();
     await make_blinded(0,false);vision_recalc(0);assert.ok(n.mspotted);
-    assert.ok(game.a11y.notices?.some(m=>m.x===29));
-    begin();await pline_xy(33,10,'A bell rings.');textIsLocated('A bell rings.');priorNotice('A bell rings.');
+    assert.equal(game.a11y.notices?.length||0,0);
+    assert.match(messages(),/<29,10>: You see a newt\./);
+    await pline_xy(33,10,'A bell rings.');textIsLocated('A bell rings.');priorNotice('A bell rings.');
 });
 for(const hide of ['incoming','notice'])check(`filter/hide-${hide}`,async()=>{
     await fresh();await queue();begin();

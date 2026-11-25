@@ -4411,6 +4411,14 @@
     {"group": "forcefight-owner", "id": "forcefight-owner.floor-negative", "cFile": "src/hack.c", "cFunction": "domove_fight_empty", "description": "You harmlessly attack the branch staircase up."},
     {"group": "forcefight-owner", "id": "forcefight-owner.bars-unforced-negative", "cFile": "src/hack.c", "cFunction": "domove_fight_ironbars", "description": "Iron bars."},
     {"group": "forcefight-owner", "id": "forcefight-owner.bars-unarmed-negative", "cFile": "src/hack.c", "cFunction": "domove_fight_ironbars", "description": "You harmlessly attack the iron bars."},
-    {"group": "forcefight-owner", "id": "forcefight-owner.web-unseen-negative", "cFile": "src/hack.c", "cFunction": "domove_fight_web", "description": "You attack thin air."}
+    {"group": "forcefight-owner", "id": "forcefight-owner.web-unseen-negative", "cFile": "src/hack.c", "cFunction": "domove_fight_web", "description": "You attack thin air."},
+    {"group": "queued-notice-input-boundary", "id": "queued-notice-input-boundary.located-timeout-before-input", "cFile": "src/potion.c", "cFunction": "toggle_blindness", "description": "located timeout before input"},
+    {"group": "queued-notice-input-boundary", "id": "queued-notice-input-boundary.plain-timeout-before-input", "cFile": "src/potion.c", "cFunction": "toggle_blindness", "description": "plain timeout before input"},
+    {"group": "queued-notice-input-boundary", "id": "queued-notice-input-boundary.stop-timeout-before-input", "cFile": "src/potion.c", "cFunction": "toggle_blindness", "description": "stop timeout before input"},
+    {"group": "queued-notice-input-boundary", "id": "queued-notice-input-boundary.hidden-unknown-after-sighting", "cFile": "src/potion.c", "cFunction": "toggle_blindness", "description": "hidden unknown after sighting"},
+    {"group": "queued-notice-input-boundary", "id": "queued-notice-input-boundary.notices-disabled-after-timeout", "cFile": "src/potion.c", "cFunction": "toggle_blindness", "description": "notices disabled after timeout"},
+    {"group": "queued-notice-input-boundary", "id": "queued-notice-input-boundary.inspection-after-sighting", "cFile": "src/potion.c", "cFunction": "toggle_blindness", "description": "inspection after sighting"},
+    {"group": "queued-notice-input-boundary", "id": "queued-notice-input-boundary.blindfold-removal-control", "cFile": "src/potion.c", "cFunction": "toggle_blindness", "description": "blindfold removal control"},
+    {"group": "queued-notice-input-boundary", "id": "queued-notice-input-boundary.eyeless-reversion-control", "cFile": "src/potion.c", "cFunction": "toggle_blindness", "description": "eyeless reversion control"}
   ]
 }

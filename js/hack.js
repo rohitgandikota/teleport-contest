@@ -2330,6 +2330,8 @@ export function notice_mon(mtmp) {
             mtmp.mspotted = true;
             ((game.a11y ||= {}).notices ||= []).push({
                 x: mtmp.mx, y: mtmp.my,
+                /* C calls You now, possibly within a flagged vpline. */
+                flags: game.pline_flags | 0,
                 text: `${canseemon(mtmp) ? 'see' : 'notice'} ${
                     x_monnam(mtmp,
                              mtmp.mtame ? ARTICLE_YOUR
@@ -2393,9 +2395,15 @@ export async function notice_all_mons_flush() {
         return;
     const list = a11y.notices;
     a11y.notices = [];
-    for (const n of list) {
-        set_msg_xy(n.x, n.y);
-        await You(n.text);
+    const saved_flags = game.pline_flags;
+    try {
+        for (const n of list) {
+            game.pline_flags = n.flags;
+            set_msg_xy(n.x, n.y);
+            await You(n.text);
+        }
+    } finally {
+        game.pline_flags = saved_flags;
     }
 }
 

@@ -1,0 +1,110 @@
+{
+  "originalRecipeSHA256": "b0900fa34686550f62599a47c5c8d08851c14de2f07f07725530931ca80ce066",
+  "derivedRecipeSHA256": "2267069f9bbba2992c79cfb81736fe7eb99c0bcd5a7034a46ac33049dc7804f2",
+  "originalNamePreserved": true,
+  "addedMetadata": [
+    "coverage",
+    "branches",
+    "requireBranchAssertions",
+    "branchAssertions"
+  ],
+  "changedOriginalFields": [],
+  "allInputTuplesAndKeysUnchanged": true,
+  "tupleSHA256": "16d96f9ccc426fed46601076d2e4c6c3416b40ad283ad94e93659150f15ed976",
+  "nativeRawSHA256": "1ba082a2d26b3b1460abd1e8150b2616ab51c5b9c31aafaf6e1b2e964aac7265",
+  "nativeRawBytes": 910014,
+  "evidence": "Parent C5 destination regression output only. No species flag ordinary causality.",
+  "coordinateConvention": "Decoded terminal cells, zero-based x/y. No change to input coordinates.",
+  "assertions": [
+    {
+      "branch": "deliver-object-owner.stairs-dagger-arrival",
+      "segment": 0,
+      "screenIncludes": [
+        "The dagger falls down the stairs.",
+        "You descend the stairs.",
+        "Dlvl:2"
+      ],
+      "screenCells": [
+        {
+          "step": 97,
+          "x": 6,
+          "y": 5,
+          "equals": "@"
+        },
+        {
+          "step": 114,
+          "x": 72,
+          "y": 9,
+          "equals": "@"
+        }
+      ]
+    },
+    {
+      "branch": "deliver-object-owner.stairs-stack-arrival",
+      "segment": 1,
+      "screenIncludes": [
+        "The daggers fall down the stairs.",
+        "You descend the stairs.",
+        "Dlvl:2"
+      ],
+      "screenCells": [
+        {
+          "step": 100,
+          "x": 6,
+          "y": 5,
+          "equals": "@"
+        },
+        {
+          "step": 117,
+          "x": 72,
+          "y": 9,
+          "equals": "@"
+        }
+      ]
+    },
+    {
+      "branch": "deliver-object-owner.stairs-potion",
+      "segment": 2,
+      "screenIncludes": [
+        "You drop a clear potion.",
+        "Dlvl:1"
+      ],
+      "screenCells": [
+        {
+          "step": 106,
+          "x": 6,
+          "y": 5,
+          "equals": "@"
+        }
+      ],
+      "screenExcludes": [
+        "falls down the stairs",
+        "fall down the stairs",
+        "You descend the stairs.",
+        "Dlvl:2"
+      ]
+    },
+    {
+      "branch": "deliver-object-owner.dry-potion",
+      "segment": 3,
+      "screenIncludes": [
+        "You drop a clear potion.",
+        "Dlvl:1"
+      ],
+      "screenCells": [
+        {
+          "step": 65,
+          "x": 40,
+          "y": 6,
+          "equals": "@"
+        }
+      ],
+      "screenExcludes": [
+        "falls down the stairs",
+        "fall down the stairs",
+        "You descend the stairs.",
+        "Dlvl:2"
+      ]
+    }
+  ]
+}

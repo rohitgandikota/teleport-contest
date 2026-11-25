@@ -1,6 +1,38 @@
 # STATUS — live handoff board
 
-## 2026-11-25: run-into-monster blindness guard verified
+## 2026-11-25: canonical species-delivery flags verified
+
+Only makemon.js changes runtime. It imports and re-exports the existing
+DF_NONE, DF_RANDOM and DF_ALL constants instead of defining a conflicting
+DF_ALL value of 2. C and const.js define DF_ALL as 4. The delivery owner and
+its callers stay unchanged. This is a canonical-interface repair; no ordinary
+gameplay improvement is attributed to these constants.
+
+Flag controls pass 31/31 versus 20/31. Four ordinary inputs retain all twelve
+assertions, twenty output hashes, ten negative hashes and observer/plain/
+deferred EOF equality. All four original C delivery cases and five Rogue mimic
+regressions match on the composition: 776 styled boundaries/cursors, 30,184
+calls and ordered slices, zero frames. The complete delivery source audit
+remains 28/29; its known-item metadata discrepancy is unchanged and explicit.
+
+All 62 selected/public recordings and 62 strict eight-second workers pass:
+16,613 screens/cursors, 1,146,130 random positions and 1,674 frames. Eleven
+retained suites, source audit and three syntax checks pass. The 319-member
+source packet, 25-member promotion, seven installed payloads and 279 runtime
+hashes verify. All 893 prior raws and requirements stay fixed; four destination
+requirements and one raw bring the corpus to 894. Both portable gates require
+the original C recording before running their unchanged controls.
+Main receipt `species-flag-main-verification.json`, SHA256
+`24346e90c6661f14546ec0aeae9b37d5d09c7e7b260124e9a18bceb391c1fb5f`.
+
+Configuration sections/CHOOSE now match all ten original C cases versus three
+before, including the composition with this change and the published line
+parser. Source61/61 and ordinary10/10 pass with all fifteen negative hashes.
+Portable promotion and broader verification remain pending. The official
+20:26 UTC check shows a new 20:15 feed and our 19:31 row, still rank 7 with
+659 unmatched screens. The feed identifies no scored commit.
+
+## 2026-11-25: run-into-monster guard pushed as d73302cc
 
 Only cmd.js changes runtime. The running guard now uses Blind() rather than
 the cached u.ublind field, matching C's predicate and existing guard order.
@@ -23,8 +55,13 @@ assertions; the original recipe and derivation remain in evidence.
 Main receipt `run-into-monster-main-verification.json`, SHA256
 `d22ebc2bf9872712064b6f90b7ffd46beba56eda6c1107eb821685a171b84373`.
 
-Full893 is running on two NFS CPU workers with default budgets and no retries.
-PID 3146125; 1,183 files, 892 linked raws and one new raw. Root:
+Full893 passes on two NFS CPU workers with default budgets and no retries:
+920,158 screens/cursors, 19,605,979 random positions and 32,997 frames.
+All 1,183 files match published commit d73302cc and its maintained corpus.
+Verification SHA256 `464e13a30ec702d467dd3373cbc2b13be15dc2e996978d2887bf835075314c99`;
+publication receipt SHA256
+`13283a9dc9dcd53ebeb8ad4e771f5ec2e1f54c05a475b8d6bf752c49c1e1f76f`.
+The run shared 892 old raws and added one. Root:
 /share/NFS/u/rohit/research/contest/artifacts/2026-11-22/guard-full893-js-20261125.
 All-files SHA256 `cc4b2d75cb4efa16cac2dddc022b51042c55f807ec4395720cd1c74270fcf80f`.
 Next are canonical species-delivery flags, configuration sections/CHOOSE,

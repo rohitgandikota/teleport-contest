@@ -4491,6 +4491,10 @@
     {"group": "run-into-monster-owner", "id": "run-into-monster.sighted-run-newt", "cFile": "src/hack.c", "cFunction": "domove_core", "description": "sighted run newt"},
     {"group": "run-into-monster-owner", "id": "run-into-monster.eyes-run-newt", "cFile": "src/hack.c", "cFunction": "domove_core", "description": "eyes run newt"},
     {"group": "run-into-monster-owner", "id": "run-into-monster.cream-run-newt", "cFile": "src/hack.c", "cFunction": "domove_core", "description": "cream run newt"},
-    {"group": "run-into-monster-owner", "id": "run-into-monster.blind-run-newt", "cFile": "src/hack.c", "cFunction": "domove_core", "description": "blind run newt"}
+    {"group": "run-into-monster-owner", "id": "run-into-monster.blind-run-newt", "cFile": "src/hack.c", "cFunction": "domove_core", "description": "blind run newt"},
+    {"group": "deliver-object-owner", "id": "deliver-object-owner.stairs-dagger-arrival", "cFile": "src/dokick.c", "cFunction": "obj_delivery", "description": "Destination regression only: stairs-dagger-arrival"},
+    {"group": "deliver-object-owner", "id": "deliver-object-owner.stairs-stack-arrival", "cFile": "src/dokick.c", "cFunction": "obj_delivery", "description": "Destination regression only: stairs-stack-arrival"},
+    {"group": "deliver-object-owner", "id": "deliver-object-owner.stairs-potion", "cFile": "src/dokick.c", "cFunction": "ship_object", "description": "Destination regression only: stairs-potion"},
+    {"group": "deliver-object-owner", "id": "deliver-object-owner.dry-potion", "cFile": "src/dokick.c", "cFunction": "ship_object", "description": "Destination regression only: dry-potion"}
   ]
 }

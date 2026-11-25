@@ -1,0 +1,32 @@
+{
+  "recipe": "review/ordinary-inputs.json",
+  "recipeSHA256": "b0900fa34686550f62599a47c5c8d08851c14de2f07f07725530931ca80ce066",
+  "tupleFields": [
+    "name",
+    "seed",
+    "datetime",
+    "nethackrc",
+    "moves"
+  ],
+  "tupleSHA256": "16d96f9ccc426fed46601076d2e4c6c3416b40ad283ad94e93659150f15ed976",
+  "cases": 4,
+  "keys": 416,
+  "boundaries": 420,
+  "negativeHashes": {
+    "stairs-potion": {
+      "screens": "d745b6c42d60c3f9f12bfa5b51acc42196f0dab09105aa0833ab5d553ac23069",
+      "cursors": "b2a6eec709de0f685a9bfaec3e541a8a1233fa8672e83bdbb88aca5b964ea432",
+      "rng": "77c7404907309c37a5edcde78433e8818d3d6aadb2f599ead98ca48a3fdb5bd2",
+      "slices": "f7e24b9e6fa06ff3b19471177647aca25788bf6b6bfc46eef301421bc95d0948",
+      "frames": "56754c8f6cdac2f09585cc31a128343728075799b8f6b3414cfdc9364c4134d9"
+    },
+    "dry-potion": {
+      "screens": "33576024ef7ec9f1bbb98b7a5527e6faa1f53e063edebb053be4c139f01d2f1e",
+      "cursors": "d3fce83be729bfceab6544be17bf26cbcd8b2d016aa7c4122ba2640a579a7b8b",
+      "rng": "648db42b4b51022e06166606859f6f63d2d52750331dfad04bdb86b6e39ee07d",
+      "slices": "3a39f3d141e5ea30412f24304c933b8b461d46255f8e61b29bcfd350da1642b2",
+      "frames": "6ebaa05e83879cdab661dfc02e802b1708c8aaa63ce8aa180024b67c7c225e3b"
+    }
+  },
+  "native": false
+}

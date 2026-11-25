@@ -1,0 +1,150 @@
+{
+  "name": "deliver-object-owner",
+  "evidence": "JS-only normal debug startup input proposals; no native evidence",
+  "segments": [
+    {
+      "name": "stairs-dagger-arrival",
+      "seed": 7401,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r15\r               l\u0014hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhk.  \u001b\u001b\u0017uncursed dagger\r  \u001b\u001bda    \u001b\u001b>     \u001b\u001bV  "
+    },
+    {
+      "name": "stairs-stack-arrival",
+      "seed": 7401,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r15\r               l\u0014hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhk.  \u001b\u001b\u00173 uncursed daggers\r  \u001b\u001bda    \u001b\u001b>     \u001b\u001bV  "
+    },
+    {
+      "name": "stairs-potion",
+      "seed": 7401,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r15\r               l\u0014hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhk.  \u001b\u001b\u0017uncursed potion of water\r  \u001b\u001bda    \u001b\u001bv"
+    },
+    {
+      "name": "dry-potion",
+      "seed": 7401,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r15\r               l\u0017uncursed potion of water\r  \u001b\u001bda    \u001b\u001bv"
+    }
+  ],
+  "negativeHashes": {
+    "stairs-potion": {
+      "screens": "d745b6c42d60c3f9f12bfa5b51acc42196f0dab09105aa0833ab5d553ac23069",
+      "cursors": "b2a6eec709de0f685a9bfaec3e541a8a1233fa8672e83bdbb88aca5b964ea432",
+      "rng": "77c7404907309c37a5edcde78433e8818d3d6aadb2f599ead98ca48a3fdb5bd2",
+      "slices": "f7e24b9e6fa06ff3b19471177647aca25788bf6b6bfc46eef301421bc95d0948",
+      "frames": "56754c8f6cdac2f09585cc31a128343728075799b8f6b3414cfdc9364c4134d9"
+    },
+    "dry-potion": {
+      "screens": "33576024ef7ec9f1bbb98b7a5527e6faa1f53e063edebb053be4c139f01d2f1e",
+      "cursors": "d3fce83be729bfceab6544be17bf26cbcd8b2d016aa7c4122ba2640a579a7b8b",
+      "rng": "648db42b4b51022e06166606859f6f63d2d52750331dfad04bdb86b6e39ee07d",
+      "slices": "3a39f3d141e5ea30412f24304c933b8b461d46255f8e61b29bcfd350da1642b2",
+      "frames": "6ebaa05e83879cdab661dfc02e802b1708c8aaa63ce8aa180024b67c7c225e3b"
+    }
+  },
+  "coverage": [],
+  "branches": [
+    "deliver-object-owner.stairs-dagger-arrival",
+    "deliver-object-owner.stairs-stack-arrival",
+    "deliver-object-owner.stairs-potion",
+    "deliver-object-owner.dry-potion"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "deliver-object-owner.stairs-dagger-arrival",
+      "segment": 0,
+      "screenIncludes": [
+        "The dagger falls down the stairs.",
+        "You descend the stairs.",
+        "Dlvl:2"
+      ],
+      "screenCells": [
+        {
+          "step": 97,
+          "x": 6,
+          "y": 5,
+          "equals": "@"
+        },
+        {
+          "step": 114,
+          "x": 72,
+          "y": 9,
+          "equals": "@"
+        }
+      ]
+    },
+    {
+      "branch": "deliver-object-owner.stairs-stack-arrival",
+      "segment": 1,
+      "screenIncludes": [
+        "The daggers fall down the stairs.",
+        "You descend the stairs.",
+        "Dlvl:2"
+      ],
+      "screenCells": [
+        {
+          "step": 100,
+          "x": 6,
+          "y": 5,
+          "equals": "@"
+        },
+        {
+          "step": 117,
+          "x": 72,
+          "y": 9,
+          "equals": "@"
+        }
+      ]
+    },
+    {
+      "branch": "deliver-object-owner.stairs-potion",
+      "segment": 2,
+      "screenIncludes": [
+        "You drop a clear potion.",
+        "Dlvl:1"
+      ],
+      "screenCells": [
+        {
+          "step": 106,
+          "x": 6,
+          "y": 5,
+          "equals": "@"
+        }
+      ],
+      "screenExcludes": [
+        "falls down the stairs",
+        "fall down the stairs",
+        "You descend the stairs.",
+        "Dlvl:2"
+      ]
+    },
+    {
+      "branch": "deliver-object-owner.dry-potion",
+      "segment": 3,
+      "screenIncludes": [
+        "You drop a clear potion.",
+        "Dlvl:1"
+      ],
+      "screenCells": [
+        {
+          "step": 65,
+          "x": 40,
+          "y": 6,
+          "equals": "@"
+        }
+      ],
+      "screenExcludes": [
+        "falls down the stairs",
+        "fall down the stairs",
+        "You descend the stairs.",
+        "Dlvl:2"
+      ]
+    }
+  ]
+}

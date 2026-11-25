@@ -21,6 +21,7 @@ import { get_wormno, initworm, count_wsegs, place_worm_tail_randomly, worm_wire 
 import { newcham, mon_wire_cham, mondied } from './mon.js';
 import { weight as weight_fn, sobj_at, update_inventory } from './invent.js';
 import { In_mines, Is_rogue_level, MIGR_TO_SPECIES, OBJ_FREE,
+         DF_NONE, DF_RANDOM, DF_ALL,
          W_SADDLE, has_mgivenname, A_LAWFUL, ONAME_RANDOM } from './const.js';
 import { Levitation, Flying, Protection_from_shape_changers, See_invisible,
          Underwater, Stone_resistance, Swimming, Amphibious, Wwalking,
@@ -789,7 +790,7 @@ import { in_town } from './hack.js';
 import { obfree } from './invent.js';
 export { mpickobj };
 
-export const DF_NONE = 0, DF_RANDOM = 1, DF_ALL = 2;
+export { DF_NONE, DF_RANDOM, DF_ALL };
 const DELIVER_PM = MFLAGS.M2_UNDEAD | MFLAGS.M2_WERE | MFLAGS.M2_HUMAN
                  | MFLAGS.M2_ELF | MFLAGS.M2_DWARF | MFLAGS.M2_GNOME
                  | MFLAGS.M2_ORC | MFLAGS.M2_DEMON | MFLAGS.M2_GIANT;

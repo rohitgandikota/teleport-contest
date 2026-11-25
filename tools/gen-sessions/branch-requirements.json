@@ -3874,6 +3874,10 @@
     {"group":"Eating prelude and edibility","id":"eating-prelude-edibility-bars.blessed-rustproof-warning","cFile":"src/eat.c","cFunction":"edibility_prompts","description":"Decline the rustproof-metal warning without stripping or dropping the dagger"},
     {"group":"Eating prelude and edibility","id":"eating-prelude-edibility-bars.unblessed-carrot-negative","cFile":"src/eat.c","cFunction":"doeat","description":"Consume an ordinary carrot without blessed edibility sense"},
     {"group":"Eating prelude and edibility","id":"eating-prelude-edibility-bars.safe-carrot-retains-warning","cFile":"src/eat.c","cFunction":"doeat","description":"Consume safe food while retaining edibility sense, then decline the later apple warning"},
-    {"group":"Eating prelude and edibility","id":"eating-prelude-edibility-bars.human-bars-negative","cFile":"src/eat.c","cFunction":"floorfood","description":"Reject eating iron bars without a metallivorous form"}
+    {"group":"Eating prelude and edibility","id":"eating-prelude-edibility-bars.human-bars-negative","cFile":"src/eat.c","cFunction":"floorfood","description":"Reject eating iron bars without a metallivorous form"},
+    {"group":"Monster defensive selection","id":"monster-defensive-tin-opening.cursed-corpse","cFile":"src/muse.c","cFunction":"find_defensive","description":"cursed-corpse-lizard-tin; native pending"},
+    {"group":"Monster defensive selection","id":"monster-defensive-tin-opening.uncursed-corpse","cFile":"src/muse.c","cFunction":"find_defensive","description":"uncursed-corpse-control; native pending"},
+    {"group":"Monster defensive selection","id":"monster-defensive-tin-opening.non-lizard","cFile":"src/muse.c","cFunction":"find_defensive","description":"non-lizard-tin-control; native pending"},
+    {"group":"Monster defensive selection","id":"monster-defensive-tin-opening.innate-horn","cFile":"src/muse.c","cFunction":"use_defensive","description":"innate-unicorn-horn; native pending"}
   ]
 }

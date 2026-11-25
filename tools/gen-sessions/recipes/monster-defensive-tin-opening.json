@@ -1,0 +1,92 @@
+{
+  "name": "monster-defensive-tin-opening",
+  "description": "Ordinary floor acquisition, monster wielding and a thrown confusion potion reach lizard-tin use with a cursed non-welding corpse. Uncursed corpse, non-lizard tin and innate unicorn horn controls. JS reach verified; independent C recording pending.",
+  "coverage": [
+    "mode.debug",
+    "ui.getlin",
+    "ui.more-paging",
+    "forms.polymorph",
+    "object.food-corpses",
+    "object.potions",
+    "monster.movement"
+  ],
+  "branches": [
+    "monster-defensive-tin-opening.cursed-corpse",
+    "monster-defensive-tin-opening.uncursed-corpse",
+    "monster-defensive-tin-opening.non-lizard",
+    "monster-defensive-tin-opening.innate-horn"
+  ],
+  "branchAssertions": [
+    {
+      "branch": "monster-defensive-tin-opening.cursed-corpse",
+      "segment": 0,
+      "screenIncludes": [
+        "The orc puts on a pair of padded gloves.",
+        "The orc wields a cockatrice corpse!",
+        "The orc opens and eats the contents of a tin.",
+        "The orc seems steadier now."
+      ]
+    },
+    {
+      "branch": "monster-defensive-tin-opening.uncursed-corpse",
+      "segment": 1,
+      "screenIncludes": [
+        "The orc puts on a pair of padded gloves.",
+        "The orc wields a cockatrice corpse!",
+        "The orc opens and eats the contents of a tin.",
+        "The orc seems steadier now."
+      ]
+    },
+    {
+      "branch": "monster-defensive-tin-opening.non-lizard",
+      "segment": 2,
+      "screenIncludes": [
+        "The orc puts on a pair of padded gloves.",
+        "The orc wields a cockatrice corpse!"
+      ],
+      "screenExcludes": [
+        "opens and eats the contents",
+        "seems steadier now"
+      ]
+    },
+    {
+      "branch": "monster-defensive-tin-opening.innate-horn",
+      "segment": 3,
+      "screenIncludes": [
+        "The tip of the white unicorn's horn glows!",
+        "The white unicorn seems steadier now."
+      ]
+    }
+  ],
+  "requireBranchAssertions": true,
+  "segments": [
+    {
+      "name": "cursed-corpse-lizard-tin",
+      "seed": 7401,
+      "moves": " #polyself\rstone golem\r   \u001b\u0017uncursed dagger\rda\u0017uncursed tin of lizard meat\rdb\u0017cursed cockatrice corpse\rdc\u0017uncursed leather gloves\rdd\u0007hostile orc\rjjhhh. . . .      \u001b\u0017uncursed potion of confusion\r      \u001b.      \u001b.      \u001btel      \r\u001b        \u001b",
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n"
+    },
+    {
+      "name": "uncursed-corpse-control",
+      "seed": 7401,
+      "moves": " #polyself\rstone golem\r   \u001b\u0017uncursed dagger\rda\u0017uncursed tin of lizard meat\rdb\u0017uncursed cockatrice corpse\rdc\u0017uncursed leather gloves\rdd\u0007hostile orc\rjjhhh. . . .      \u001b\u0017uncursed potion of confusion\r      \u001b.      \u001b.      \u001btel      \r\u001b        \u001b",
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n"
+    },
+    {
+      "name": "non-lizard-tin-control",
+      "seed": 7401,
+      "moves": " #polyself\rstone golem\r   \u001b\u0017uncursed dagger\rda\u0017uncursed tin of newt meat\rdb\u0017cursed cockatrice corpse\rdc\u0017uncursed leather gloves\rdd\u0007hostile orc\rjjhhh. . . .      \u001b\u0017uncursed potion of confusion\r      \u001b.      \u001b.      \u001btel      \r\u001b        \u001b",
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n"
+    },
+    {
+      "name": "innate-unicorn-horn",
+      "seed": 7401,
+      "moves": " \u0017uncursed potion of confusion\r\u0007peaceful sleeping white unicorn\rtau   \u001b...         \u001b",
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n"
+    }
+  ]
+}

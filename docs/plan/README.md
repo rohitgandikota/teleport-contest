@@ -13,10 +13,10 @@ Ground rules are in `/CLAUDE.md`. Read that first if you have not.
 ## Current focus, 2026-11-24
 
 Continue the faithful port with readable C-aligned code and prompt verified
-pushes. The live leaderboard checked November 24 at 23:40 UTC has
+pushes. The live leaderboard rechecked November 25 at 01:26 UTC has
 23,779 of 24,531 combined screens, 7th agentic and 11th overall. Public remains
 44/44, held-out remains 39/56, and 752 screens are unmatched. Animations are
-3,776/4,489. This is 184 more matching screens than the 19:01 snapshot. The
+3,776/4,489. This is 184 more matching screens than the November 24 19:01 snapshot. The
 observed row does not identify the exact scored commit. Local verification
 does not establish a newer held-out score.
 
@@ -74,7 +74,7 @@ collections. Deferred checks also pass on the new fixture and two retained
 engulfing fixtures. The maintained corpus is 822. No full822 sweep or new
 held-out result is claimed.
 
-Eating warnings and iron-bar dispatch are verified for publication. The port
+Eating warnings and iron-bar dispatch are pushed as `04ada306`. The port
 now follows all eleven ordered food-warning branches, one-use sense lifetime,
 real chewing dispatch and floor-answer repeat flags. The prerequisite disease
 resistance check includes the existing dragon defense. All 24 checks, 119
@@ -82,6 +82,14 @@ controls, 16 focused fixtures, 44 public sessions and 60 bounded workers pass.
 Six new C cases match all 780 styled boundaries and 16,769 calls, fixing 155
 styled boundaries. Both unaffected cases preserve all five output collections.
 The maintained corpus is 823, outside the completed full820 runtime.
+
+Monster tin opening is verified for publication. The existing welding predicate
+now distinguishes cursed corpses from weapons that actually weld. All nineteen
+checks, forty new controls, seventeen retained source controls, sixteen focused
+fixtures, 44 public sessions and sixty bounded workers pass. Four fresh C cases
+match all 799 styled boundaries and 10,337 calls, correcting eleven boundaries.
+All three unaffected cases preserve all five output collections. The maintained
+corpus is 824. A new full regression on this composition is next.
 
 The latest shared-machine C coverage run accepts both the golem and eating
 recordings byte for byte. The union covers 4,580/5,492 functions and

@@ -8534,6 +8534,61 @@ on a separately missing shared-message truncation rule. Source workers now
 continue misc monster-item use, shared message/query bounds, background
 inspection and accessory wearing in disjoint fixed snapshots.
 
+## 2026-11-25: monster tin opening verified for publication
+
+Eating-prelude checkpoint `04ada306` pushed successfully, process 65955 exit 0.
+The defensive-tin composition process 21892 closed with exit 0. Independent
+verification passes nineteen checks, forty new controls, seventeen retained
+source controls, sixteen focused fixtures, all 44 public sessions and sixty
+bounded input workers. Focused totals: 87 segments, 9,060 screens/cursors,
+236,841 scored random-call positions and 75 animation frames.
+
+All four fresh C cases match every styled cell, cursor, complete call,
+per-input slice and empty frame array across 799 boundaries and 10,337 calls.
+Baseline failed eleven styled boundaries, one cursor and two slices; it made
+10,340 calls instead of 10,337. Three unaffected controls retain all five
+hashes. The new fixture plus three retained monster item/petrification
+fixtures pass strict native and deferred checks across seventeen segments,
+2,232 boundaries, 47,295 calls and four frames.
+
+The runtime change is confined to `mcould_eat_tin` in `muse.js` and its import.
+It uses canonical `mwelded` so a cursed cockatrice corpse does not block a
+separate tin-opening tool. The ordinary positive uses actual floor pickup,
+glove wear, corpse wielding and a thrown confusion potion. Constructed
+controls include real welded swords/daggers, selection priorities and pending
+message completion. No helper body is substituted and no new production
+export is added.
+
+All 279 runtime files and seven support files are fixed. Reverse application
+recovers the baseline. All 823 prior raw recordings remain unchanged, and the
+registry only appends four rows. The sealed source package, raw C output and
+baseline failures are preserved. The first parent preparation stopped on a
+stale metadata key before any tests; its original builder and error receipt
+are retained. Finishing preparation corrected only that metadata lookup and
+verified the already-applied runtime patch. No replay or timeout retry occurred.
+Verification SHA-256:
+`ab531885127081e3859961781f8e173bf4b54e791cecb193b5b8ec7349da0446`.
+Integration receipt: `.cache/restart-20261122/muse-defensive-main-integration.json`.
+The maintained corpus is 824, outside the completed full820. Publish now,
+then start a fixed full824 regression spanning the four new checkpoints.
+
+The live board was refreshed at 01:26 UTC. It still shows 23,779/24,531
+screens, 752 unmatched, agentic rank seven and 39/56 held-out sessions.
+Global Last Scored is still November 24 at 15:16:25 Eastern, before these
+latest pushes. No scored team commit is exposed. The latest visible news is
+still Rereading Readability dated November 14. Receipt:
+`.cache/restart-20261122/official-live-board-20261125T0128Z.json`.
+
+The six hero-status controls also recorded successfully and match the sealed
+candidate: 311 boundaries, 18,263 calls and no frames. Raw SHA-256 is
+`838fe36b34bb994881f2ad87ce5144d9ad162cd8f5e01202f69501fb7b18a099`.
+Their cloud-bound patch is not integrated yet. Its positive is constructed-only,
+and shared-message truncation plus byte/code-unit boundary semantics remain a
+separate audit. Background inspection is being sealed; after sealing, that
+worker proceeds to the complete ordinary-food tail with the confirmed conduct,
+partial-meal timing and destroyed-food guard gaps. Other workers continue
+accessory wearing, monster miscellaneous items and shared message/query bounds.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

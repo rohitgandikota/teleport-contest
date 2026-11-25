@@ -41,7 +41,7 @@ try {
             globs: [...game.invent, ...game.level.objects, ...(game.billobjs || [])]
                 .filter(obj => obj.globby).map(obj => ({ id: obj.o_id,
                     weight: obj.owt, quantity: obj.quan, unpaid: obj.unpaid || 0 })),
-            bills: (keeper?.eshk.bill_p || []).map(row => ({ id: row.bo_id,
+            bills: (keeper?.eshk.bill_p || []).slice(0, keeper?.eshk.billct || 0).map(row => ({ id: row.bo_id,
                 price: row.price, quantity: row.bquan, useup: row.useup })),
         };
     }};

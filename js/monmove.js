@@ -11,7 +11,7 @@ import { mon_aligntyp } from './priest.js';
 import { is_obj_mappear } from './monst.js';
 import { Invis, Displaced, Underwater, Stealth, Aggravate_monster } from './youprop.js';
 import { artifact_light, has_magic_key } from './artifact.js';
-import { add_damage } from './shk.js';
+import { add_damage, after_shk_move } from './shk.js';
 import { g_at } from './invent.js';
 import { bury_an_obj } from './dig.js';
 import { mdrop_obj } from './steal.js';
@@ -2416,6 +2416,8 @@ async function postmov(mtmp, ptr, omx, omy, mmoved, seenflgs,
                 await hideunder(mtmp);
             newsym(mtmp.mx, mtmp.my);
         }
+        if (mtmp.isshk)
+            await after_shk_move(mtmp);
     }
     return mmoved;
 }

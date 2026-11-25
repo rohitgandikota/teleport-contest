@@ -1,6 +1,58 @@
 # STATUS — live handoff board
 
-## 2026-11-25: Tower random arrival verified for publication
+## 2026-11-25: shopkeeper re-entry verified for publication
+
+Normal monster movement now restores shop occupancy after a pursuing keeper
+returns. Absent entry marks the bill pointer invalid before feedback; the
+post-move tail awaits after_shk_move in C order. The storage prerequisite keeps
+a fixed 200-entry bill, a separate active pointer and a live count. Bill
+operations preserve slot identities and C's stale-slot behavior. Five runtime
+owners change: makemon, shknam, shk, objnam and monmove.
+
+All four original C cases match on isolated and current compositions versus
+three before: 633 styled boundaries/cursors, 21,612 calls and slices, 66 frames.
+The positive previously triggered false burglary after pickup. All three
+negative reports and fifteen ordinary negative hashes remain fixed. Bill
+mutation controls pass 8/8 versus 1/8, pending-message ordering 2/2 versus 0/2,
+and ordinary state 4/4 versus 2/4. Source diagnostics improve 6/19 to 18/19;
+the same get_mtraits pointer-copy failure remains explicit.
+
+Six retained tests now observe billct live records or its capacity guard.
+Their inputs, expected prices and gameplay assertions are unchanged. Originals,
+paired results and source rationale remain recorded. The existing billing
+removal diagnostic stays 7/8 on both versions with an identical full report.
+Thirty retained checks and nine new/audit/syntax checks pass; the two diagnostic
+failures above remain failed, not counted as passes.
+
+All 145 selected/public recordings pass: 126,371 screens/cursors, 2,754,251
+random positions and 3,750 frames. The initial strict batch passes 142/145;
+container-autounlock, container-selection and untrapping-containers exceed
+eight seconds. A paired baseline/current check preserves that failure. The
+first and third finish within eight seconds on both. Container-selection
+exceeds eight seconds on both, then passes the normal scorer in 9.335/8.952
+seconds with identical metrics. No timeout override or full-batch retry.
+
+Full906 passes all 906 recordings with two NFS CPU workers, default budgets
+and no retries: 924,506 screens/cursors, 19,921,247 random positions and 33,095
+frames. All 1,197 files remain fixed. Root:
+/share/NFS/u/rohit/research/contest/artifacts/2026-11-22/shopkeeper-reentry-full906-js-20261125.
+All-files SHA256 `14cfc3b2ee73fea2b47f966c2acd89a84e4173e394d19d63ad3bfe3c22e2b4f1`.
+Verification SHA256 `dbd5cda90a78dd4656a7df0360c943b031aae97a29d39b4f2361f30c8b3094ab`.
+All 905 prior raws and requirements remain fixed; four requirements and one
+raw bring the corpus to 906. Source394, promotion45, ten payloads and all280
+runtime hashes verify. Main receipt `shopkeeper-reentry-main-verification.json`,
+SHA256 `483cc2686fb9e9647d2eeac90b1faf4bff11de840ddd3f4c8a8e35bd8fde8cfa`. Compact public evidence is
+`tools/gen-sessions/evidence/shopkeeper-reentry-owner/verification.json`.
+
+Next: push this checkpoint, verify its published file map, then integrate the
+sealed row-refresh repair. Its seven C cases pass versus three on three fixed
+compositions. The original nine-case audit improves to 8/9 with symbol+row;
+the old 123-cell failed negative is repaired without input changes. Fruit UTF8
+remains. Five new fruit-byte C inputs establish a 1/5 baseline; no byte runtime
+candidate exists yet. The saved-monster-traits audit is separate work. These
+results do not establish a newer held-out score or whole-port completion.
+
+## 2026-11-25: Tower random arrival pushed as b392a883
 
 Only do.js changes runtime, by one line. goto_level now passes its existing
 inside-tower flag to u_on_rndspot, in C order. The helper already handles the
@@ -23,18 +75,16 @@ prior raws and requirements remain fixed; seven requirements and one raw
 bring the corpus to 905. Main receipt `tower-arrival-main-verification.json`,
 SHA256 `8b7534c42884e9f27329a33d261a30727f6078659860235012a501ed317352f9`.
 
-Full905 is running on two NFS CPU workers with default budgets and no retries.
-All 1,196 files were pinned before launch. Root:
+Full905 passed all 905 recordings on two NFS CPU workers with default budgets
+and no retries: 923,873 screens/cursors, 19,899,635 random positions and 33,029
+frames. All 1,196 files match published b392a883. Publication receipt
+`tower-arrival-full905-publication-verification.json`, SHA256
+`b146efdf35b1ac7d6faa647ee032ce9776916cea07a1a379424e55a80897fbe9`. Root:
 /share/NFS/u/rohit/research/contest/artifacts/2026-11-22/tower-arrival-full905-js-20261125.
 All-files SHA256 `35dd04ecf23ba04b5710f05d5402351d20f1c63d7c8801e45943764db32d1491`.
 The prior full904 run is verified against published 2807b1b5 below.
 
-The separate shopkeeper re-entry candidate now matches all four original C
-cases versus three on both isolated and composed graphs: 633 boundaries,
-21,612 calls and 66 frames. The three negative reports are identical. Its
-billing storage prerequisite and retained test premise still need parent
-review before main integration. The source diagnostic retains its unchanged
-get_mtraits failure. Row restoration and the full byte reader remain separate.
+The subsequent shopkeeper and row-restoration work is tracked above.
 At 23:10 UTC the official feed still shows rank 7 and 659 unmatched screens;
 our row remains dated 19:31. No newer held-out result is inferred.
 

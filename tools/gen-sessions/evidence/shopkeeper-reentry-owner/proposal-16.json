@@ -1,0 +1,12 @@
+{
+  "classification": "ordinary debug keyboard startup/level-map survey; not locked",
+  "segments": [
+    {
+      "seed": 6903,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00162\r\u0006\u0014  llllllllllllllllllll.  \u001b\u001b#levelchange\r10\r  \u001b\u001b  \u001b\u001b  \u001b\u001b  \u001b\u001b  \u001b\u001b  \u001b\u001b  \u001b\u001b  \u001b\u001b  \u001b\u001b  \u001b\u001b  \u001b\u001b  \u001b\u001b\u0014  hhhk.  \u001b\u001b  \u001b\u001b  \u001b\u001b  \u001b\u001btal  \u001b\u001b  \u001b\u001b  \u001b\u001b  \u001b\u001bj  \u001b\u001b  \u001b\u001b  \u001b\u001b  \u001b\u001bj  \u001b\u001b  \u001b\u001b  \u001b\u001b  \u001b\u001b",
+      "name": "seed6903-following-keeper-outside"
+    }
+  ]
+}

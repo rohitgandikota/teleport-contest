@@ -1,0 +1,255 @@
+{
+  "baselineCommit": "b392a88321e3f24b3c8b398a00fae49f9fb85948",
+  "runtimeChanged": [
+    "js/makemon.js",
+    "js/monmove.js",
+    "js/objnam.js",
+    "js/shk.js",
+    "js/shknam.js"
+  ],
+  "runtimeSHA256": "6a906c3d4b273d580585553289ad07a65457e2772a5d58111f2e79df7a0e911f",
+  "native": {
+    "baseline": 3,
+    "candidate": 4,
+    "composed": 4,
+    "cases": 4,
+    "keys": 629,
+    "boundaries": 633,
+    "calls": 21612,
+    "frames": 66,
+    "unchangedNegativeReports": 3,
+    "rawSHA256": "fe782df3f2a31af72f27db6ac37e6f092780b2714ce609dcf9b35229c675e05b",
+    "graphs": [
+      {
+        "kind": "baseline",
+        "runtimeSHA256": "a22d3be80f5fabcb541e4e5a3d1aff3ec451844e91469c747a140dbe2fe7db3c",
+        "reportSHA256": "0a06624478f2656615fb88549439346b257f6a8bf12209226a077583a6fef9bb",
+        "exact": 3,
+        "total": 4
+      },
+      {
+        "kind": "candidate",
+        "runtimeSHA256": "ea2f6d2623bfeef806d435e473efb3f0c4ea85b6c1fb729910724075acbc1f12",
+        "reportSHA256": "1208427614207c509c2f33b6e01e07f175b41015c4c813231e8b142dec20dbfe",
+        "exact": 4,
+        "total": 4
+      },
+      {
+        "kind": "composed",
+        "runtimeSHA256": "6a906c3d4b273d580585553289ad07a65457e2772a5d58111f2e79df7a0e911f",
+        "reportSHA256": "1208427614207c509c2f33b6e01e07f175b41015c4c813231e8b142dec20dbfe",
+        "exact": 4,
+        "total": 4
+      }
+    ]
+  },
+  "sourceDiagnostics": {
+    "baselinePassed": 6,
+    "candidatePassed": 18,
+    "total": 19,
+    "unchangedFailedOwner": "get_mtraits"
+  },
+  "billMutations": {
+    "baseline": 1,
+    "candidate": 8,
+    "total": 8
+  },
+  "messageOrdering": {
+    "baseline": 0,
+    "candidate": 2,
+    "total": 2
+  },
+  "ordinary": {
+    "baseline": 2,
+    "candidate": 4,
+    "total": 4,
+    "unchangedNegativeHashes": 15
+  },
+  "selectedPublic": {
+    "passed": 145,
+    "screens": 126371,
+    "cursors": 126371,
+    "rngCalls": 2754251,
+    "animFrames": 3750
+  },
+  "focusedChecksPassed": 39,
+  "unchangedFailedDiagnostics": [
+    "billing-disposal-input: 7/8 on baseline and candidate, identical full report; death predicate remains open.",
+    "storage-diagnostic: 18/19 candidate, get_mtraits pointer copy failure unchanged."
+  ],
+  "retainedTestCorrections": [
+    {
+      "path": "tools/shop-billing-copy-state-gate.mjs",
+      "originalSHA256": "66197517a23eb592755f47229e2c2f2b51daf1d00e41d1d5287d1ef30a152ff0",
+      "correctedSHA256": "d1af2aeacff9d66f80d4fa89eb243493a00f7e681a2df801ebfc6d653ff2e033",
+      "scope": "Use billct for unchanged live count and price-total assertions."
+    },
+    {
+      "path": "tools/billing-disposal-input-gate.mjs",
+      "originalSHA256": "d5cf4b5eb23337880bc40a1d5482cbb17f7b4b91223b315cda273473c4626360",
+      "correctedSHA256": "24c5c3eff126f671a479d5177af621d90115a1eaa330ab06d1f108659a6c5d79",
+      "change": "Read only billct live entries; unchanged expected gameplay and all assertion bodies."
+    },
+    {
+      "path": "tools/glob-billing-weight-input-gate.mjs",
+      "originalSHA256": "4e5d9823a66efd06eb1a40649073c75b44f3f3cfb51d01376d55c9da2045773b",
+      "correctedSHA256": "dda70bdf75edc52842b9d2cc6b425a94dd3c61af99367b2802ce98b9aefd3d56",
+      "change": "Read only billct live entries; unchanged expected gameplay and all assertion bodies."
+    },
+    {
+      "path": "tools/glob-sale-pricing-input-gate.mjs",
+      "originalSHA256": "d3540992704d97afbaf569194ae9d3f81b84a8ffe80cce793daa1b44e81fbaf8",
+      "correctedSHA256": "d5bf7f4ff8d3da21cf5fa136517df3ec3e44425118e528840f28e589aba87069",
+      "change": "Read only billct live entries; unchanged expected gameplay and all assertion bodies."
+    },
+    {
+      "path": "tools/shop-fire-billing-state-gate.mjs",
+      "originalSHA256": "cd5f4332770ef4eed7be2f816281a60eb71d9b0e0b23d3d90bd284f90f793247",
+      "correctedSHA256": "948a23d54fa720829fdb665f7c4ec3cbfb5f37883253e0a6d89e651f77dbd02e",
+      "change": "Read only billct live entries; unchanged expected gameplay and all assertion bodies."
+    },
+    {
+      "path": "tools/glob-billing-weight-source-gate.mjs",
+      "originalSHA256": "47ddc368518f5e21f12e4d36dd8b4120edc3a92b44a3bf873c992c40d76ad46f",
+      "correctedSHA256": "1eebd78f10fd7807158b66e0a34d0e5ca15d961980b21f0294871bd11d8acc6d",
+      "change": "Update the existing capacity source audit from array length to C live count; C guard and ordering checks unchanged."
+    }
+  ],
+  "sourceSealSHA256": "acaf1c352079ab7cc0969feb25a2767dc8e2dfa6216d03d1c0bb9bd3a9759903",
+  "promotionSealSHA256": "55459e9072abbd58d70832f10027d840529ff81715c46f8b9ba9c28a0705d40b",
+  "full906": {
+    "root": "/share/NFS/u/rohit/research/contest/artifacts/2026-11-22/shopkeeper-reentry-full906-js-20261125",
+    "passed": 906,
+    "sessions": 906,
+    "totals": {
+      "screens": 924506,
+      "cursors": 924506,
+      "rngCalls": 19921247,
+      "animFrames": 33095
+    },
+    "allFilesFixed": 1197,
+    "allFilesSHA256": "14cfc3b2ee73fea2b47f966c2acd89a84e4173e394d19d63ad3bfe3c22e2b4f1",
+    "verificationSHA256": "dbd5cda90a78dd4656a7df0360c943b031aae97a29d39b4f2361f30c8b3094ab",
+    "workers": 2,
+    "timeoutOverride": false,
+    "retries": 0
+  },
+  "limits": [
+    "Normal return is ordinary-proven; no independent ordinary DONE or special-move return witness.",
+    "Saved monster traits/replacement, older JS save migration, and listed adjacent billing gaps remain open.",
+    "Two pre-existing diagnostic failures and the original strict-batch timeouts remain preserved.",
+    "No new held-out, literal serialized-byte or whole-port closure claimed."
+  ],
+  "cSourcePin": "16ff59115315917b93185d026aeefea06db9b0f4",
+  "testObservationSource": [
+    "include/mextra.h:115-148 declares bill[200] and live count billct.",
+    "src/shk.c:3309-3363 checks billct against BILLSZ before allocation.",
+    "src/shk.c:4197-4272 iterates billct live records."
+  ],
+  "strict8s": {
+    "initialPassed": 142,
+    "total": 145,
+    "originalTimeoutsPreserved": true,
+    "paired": [
+      {
+        "session": "container-autounlock",
+        "runtime": "baseline",
+        "mode": "strict8s",
+        "exit": 0,
+        "seconds": 6.23,
+        "logSHA256": "3d8325bd31e031fb260b0d1ae80019d4bedc41cd87cd88cb131de91d35f97ffb"
+      },
+      {
+        "session": "container-autounlock",
+        "runtime": "baseline",
+        "mode": "normal",
+        "exit": 0,
+        "seconds": 6.116,
+        "logSHA256": "ade3e03578b4e3ffd9941f921243132c34d5ccfea5a02723a015f7632ab91feb"
+      },
+      {
+        "session": "container-autounlock",
+        "runtime": "candidate",
+        "mode": "strict8s",
+        "exit": 0,
+        "seconds": 6.136,
+        "logSHA256": "3d8325bd31e031fb260b0d1ae80019d4bedc41cd87cd88cb131de91d35f97ffb"
+      },
+      {
+        "session": "container-autounlock",
+        "runtime": "candidate",
+        "mode": "normal",
+        "exit": 0,
+        "seconds": 7.6,
+        "logSHA256": "40a6633424091618bc36676b33dae3097d3df9a42096b3c3502c4584004f2886"
+      },
+      {
+        "session": "container-selection",
+        "runtime": "baseline",
+        "mode": "strict8s",
+        "exit": 1,
+        "seconds": 8.105,
+        "logSHA256": "f5c7a6f9e61931a69268960afd998210c3e5ed20d2f2d349a4477d493194fc18"
+      },
+      {
+        "session": "container-selection",
+        "runtime": "baseline",
+        "mode": "normal",
+        "exit": 0,
+        "seconds": 9.335,
+        "logSHA256": "32eb4fdee351d3346c21338f2369990f63e86ada51baa2a805dcfe4ab3d8c27e"
+      },
+      {
+        "session": "container-selection",
+        "runtime": "candidate",
+        "mode": "strict8s",
+        "exit": 1,
+        "seconds": 8.092,
+        "logSHA256": "f5c7a6f9e61931a69268960afd998210c3e5ed20d2f2d349a4477d493194fc18"
+      },
+      {
+        "session": "container-selection",
+        "runtime": "candidate",
+        "mode": "normal",
+        "exit": 0,
+        "seconds": 8.952,
+        "logSHA256": "8f3b0df3babd915d41aff2b447d10f5f4c87c9ba18aedc117ad0ff9b1ab752b2"
+      },
+      {
+        "session": "untrapping-containers",
+        "runtime": "baseline",
+        "mode": "strict8s",
+        "exit": 0,
+        "seconds": 7.594,
+        "logSHA256": "3d8325bd31e031fb260b0d1ae80019d4bedc41cd87cd88cb131de91d35f97ffb"
+      },
+      {
+        "session": "untrapping-containers",
+        "runtime": "baseline",
+        "mode": "normal",
+        "exit": 0,
+        "seconds": 6.149,
+        "logSHA256": "f3ee53377f95d2221ec5baf3102f9cd7f1b8a3f682cdfc2d940bb41ab79e3e1d"
+      },
+      {
+        "session": "untrapping-containers",
+        "runtime": "candidate",
+        "mode": "strict8s",
+        "exit": 0,
+        "seconds": 6.001,
+        "logSHA256": "3d8325bd31e031fb260b0d1ae80019d4bedc41cd87cd88cb131de91d35f97ffb"
+      },
+      {
+        "session": "untrapping-containers",
+        "runtime": "candidate",
+        "mode": "normal",
+        "exit": 0,
+        "seconds": 6.093,
+        "logSHA256": "883721b8b30854a7bd0f4abb57c68e180dc7df7cd0e3b75b31636836ce24dd17"
+      }
+    ],
+    "timeoutOverride": false,
+    "fullBatchRetry": false
+  },
+  "retainedTestScope": "Only live-entry observation/count/sum and the capacity source token changed. Inputs, price totals and gameplay expectations remain unchanged; original files are available at baselineCommit."
+}

@@ -16,7 +16,7 @@ function shopkeeperState() {
     const eshk = shkp?.eshk || shkp?.mextra?.eshk;
     return {
         debit: eshk?.debit | 0,
-        bills: (eshk?.bill_p || []).map(bp => ({
+        bills: (eshk?.bill_p || []).slice(0, eshk?.billct || 0).map(bp => ({
             quantity: bp.bquan | 0,
             price: bp.price | 0,
             useup: !!bp.useup,

@@ -4558,6 +4558,10 @@
     {"group":"tower-arrival-owner","id":"tower-arrival.inside-to-main-dungeon","cFile":"src/do.c","cFunction":"goto_level","description":"inside to main dungeon"},
     {"group":"tower-arrival-owner","id":"tower-arrival.outside-to-middle","cFile":"src/do.c","cFunction":"goto_level","description":"outside to middle"},
     {"group":"tower-arrival-owner","id":"tower-arrival.inside-cancel","cFile":"src/do.c","cFunction":"goto_level","description":"inside cancel"},
-    {"group":"tower-arrival-owner","id":"tower-arrival.inside-entry-only","cFile":"src/do.c","cFunction":"goto_level","description":"inside entry only"}
+    {"group":"tower-arrival-owner","id":"tower-arrival.inside-entry-only","cFile":"src/do.c","cFunction":"goto_level","description":"inside entry only"},
+    {"group":"shopkeeper-reentry-owner","id":"shopkeeper-reentry.normal-return-pickup","cFile":"src/monmove.c","cFunction":"postmov","description":"normal return pickup"},
+    {"group":"shopkeeper-reentry-owner","id":"shopkeeper-reentry.tended-entry","cFile":"src/shk.c","cFunction":"u_entered_shop","description":"tended entry"},
+    {"group":"shopkeeper-reentry-owner","id":"shopkeeper-reentry.outside-no-reentry","cFile":"src/shk.c","cFunction":"u_entered_shop","description":"outside no reentry"},
+    {"group":"shopkeeper-reentry-owner","id":"shopkeeper-reentry.absent-special-no-return","cFile":"src/shk.c","cFunction":"u_entered_shop","description":"absent special no return"}
   ]
 }

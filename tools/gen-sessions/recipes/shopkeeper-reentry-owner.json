@@ -1,0 +1,244 @@
+{
+  "name": "shopkeeper-reentry-owner",
+  "classification": "Locked ordinary debug keyboard proposals before runtime change; native comparison pending parent",
+  "segments": [
+    {
+      "seed": 6903,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00162\r\u0006\u0014  llllllllllllllllllll.  \u001b\u001b#levelchange\r10\r  \u001b\u001b  \u001b\u001b  \u001b\u001b  \u001b\u001b  \u001b\u001b  \u001b\u001b  \u001b\u001b  \u001b\u001b  \u001b\u001b  \u001b\u001b  \u001b\u001b  \u001b\u001b\u0014  hhhk.  \u001b\u001b  \u001b\u001b  \u001b\u001b  \u001b\u001btal  \u001b\u001b  \u001b\u001b  \u001b\u001b  \u001b\u001bj  \u001b\u001b  \u001b\u001b  \u001b\u001b  \u001b\u001bj  \u001b\u001b  \u001b\u001b  \u001b\u001b  \u001b\u001b\u0014  llllkk.  \u001b\u001b  \u001b\u001b  \u001b\u001b  \u001b\u001b,  \u001b\u001b  \u001b\u001b  \u001b\u001b  \u001b\u001b  \u001b\u001b  \u001b\u001b",
+      "name": "seed6903-normal-return-and-pickup"
+    },
+    {
+      "seed": 6903,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00162\r\u0006\u0014  llllllllllllllllllll.  \u001b\u001b",
+      "name": "seed6903-first-entry"
+    },
+    {
+      "seed": 6903,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00162\r\u0006\u0014  llllllllllllllllllll.  \u001b\u001b#levelchange\r10\r  \u001b\u001b  \u001b\u001b  \u001b\u001b  \u001b\u001b  \u001b\u001b  \u001b\u001b  \u001b\u001b  \u001b\u001b  \u001b\u001b  \u001b\u001b  \u001b\u001b  \u001b\u001b\u0014  hhhk.  \u001b\u001b  \u001b\u001b  \u001b\u001b  \u001b\u001btal  \u001b\u001b  \u001b\u001b  \u001b\u001b  \u001b\u001bj  \u001b\u001b  \u001b\u001b  \u001b\u001b  \u001b\u001bj  \u001b\u001b  \u001b\u001b  \u001b\u001b  \u001b\u001b",
+      "name": "seed6903-following-keeper-outside"
+    },
+    {
+      "seed": 6903,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00162\r\u0006\u0014  llllllllllllllllllll.  \u001b\u001b#levelchange\r10\r  \u001b\u001b  \u001b\u001b  \u001b\u001b  \u001b\u001b  \u001b\u001b  \u001b\u001b  \u001b\u001b  \u001b\u001b  \u001b\u001b  \u001b\u001b  \u001b\u001b  \u001b\u001b\u0014  hhhk.  \u001b\u001b  \u001b\u001b  \u001b\u001b  \u001b\u001btal  \u001b\u001b  \u001b\u001b  \u001b\u001b  \u001b\u001bj  \u001b\u001b  \u001b\u001b  \u001b\u001b  \u001b\u001bj  \u001b\u001b  \u001b\u001b  \u001b\u001b  \u001b\u001b\u0014  llk.  \u001b\u001b  \u001b\u001b  \u001b\u001b  \u001b\u001b",
+      "name": "seed6903-special-route-return"
+    }
+  ],
+  "branchRequirements": [
+    {
+      "name": "seed6903-normal-return-and-pickup",
+      "branch": "normal-return-pickup",
+      "keeperID": 97,
+      "heroLevel": 2,
+      "room": "\n",
+      "minimumHP": 1,
+      "mortality": 0
+    },
+    {
+      "name": "seed6903-first-entry",
+      "branch": "tended-entry",
+      "keeperID": 97,
+      "heroLevel": 2,
+      "room": "\n",
+      "minimumHP": 1,
+      "mortality": 0
+    },
+    {
+      "name": "seed6903-following-keeper-outside",
+      "branch": "outside-no-reentry",
+      "keeperID": 97,
+      "heroLevel": 2,
+      "room": "\n",
+      "minimumHP": 1,
+      "mortality": 0
+    },
+    {
+      "name": "seed6903-special-route-return",
+      "branch": "absent-special-no-return",
+      "keeperID": 97,
+      "heroLevel": 2,
+      "room": "\n",
+      "minimumHP": 1,
+      "mortality": 0
+    }
+  ],
+  "unchangedOutputHashes": {
+    "seed6903-first-entry": {
+      "screens": "067f9bee3d50bbee5260e7e30e723792e3c1772c415327bf0cbad523e9c84992",
+      "cursors": "9aec998ccab995fb777e7a0004f45c0a71158fbff9a7567917d6df9330b1462f",
+      "calls": "f4901b2d34740ab37b1e6d6716b3ccee41408111721161ecfbbd58487973ccad",
+      "slices": "87e60405da13bbbe9d6a3d0910be33b353aaad08e5fb5019679a4312baad0830",
+      "frames": "ca69e417b3351040835f2d3151f03209ed6dacfb0421d1027996f9d7048a263a"
+    },
+    "seed6903-following-keeper-outside": {
+      "screens": "3ea58b8100d9bf0fa98f854e38db788f2a4a7b0543f00c87df5452808b0f5cab",
+      "cursors": "3d1ae14d13c126ac8590dd15688db234671bea943630cf666b7d63a9766ab30b",
+      "calls": "5d00a7d8faf0a1c788a6aedb7347f02e10ebe032a604753aad63eac7b24be400",
+      "slices": "acdd6b3e11b4fbd3e7e0404d3715beb0667d34bf6359ff63b24f425c203b7827",
+      "frames": "6487aac8501ea0c4c9aa9f59f30920cb7c36bf765a7b5c26374f744e0db95b63"
+    },
+    "seed6903-special-route-return": {
+      "screens": "9a2630ecd92c8c894fc7d35618eafea169dd59639c957e84be78d838d220a4f0",
+      "cursors": "33ba1e8bd08bbf6facee79b2eecc83a82454775f86601b9c9b486318c9fdfe0f",
+      "calls": "68ab66f3d0abf09e82b9a5be6f343994fc90e0c3aa9c81422107a1003d4d7fc8",
+      "slices": "ad6997f9b24e0dc477da2acf55fa1758c5decff42f4a074a8625899ef780d51f",
+      "frames": "050f9d1eda675bfae6fef51cdeb30c5ea6a90e3ad29c47316c6f42f5363135ee"
+    }
+  },
+  "provenance": [
+    {
+      "proposal": "recipes/proposal-19.json",
+      "sha256": "78ec93fd59f62acd9ede1e447d2835859d6bf11cf4e50294e01cf1f6724e04da"
+    },
+    {
+      "proposal": "recipes/proposal-02.json",
+      "sha256": "fe394a3245b20831fd5d0370f2113aa263c6baf34980dec89ea290a2d02c058f"
+    },
+    {
+      "proposal": "recipes/proposal-16.json",
+      "sha256": "1b875a64639b0afd35f9468e5019f91cb2cf8fed418d8ebe6c9bcafb198a89a9"
+    },
+    {
+      "proposal": "recipes/proposal-18.json",
+      "sha256": "461b71638c80324edbb9afc8174a3d1e7ebc4e3df80c855eabcf4abb4d0b5f96"
+    }
+  ],
+  "requireBranchAssertions": true,
+  "branches": [
+    "shopkeeper-reentry.normal-return-pickup",
+    "shopkeeper-reentry.tended-entry",
+    "shopkeeper-reentry.outside-no-reentry",
+    "shopkeeper-reentry.absent-special-no-return"
+  ],
+  "branchAssertions": [
+    {
+      "branch": "shopkeeper-reentry.normal-return-pickup",
+      "segment": 0,
+      "screenIncludes": [
+        "This shop is deserted.",
+        "36 zorkmids for this leash.",
+        "a leash (unpaid, 36 zorkmids)."
+      ],
+      "screenExcludes": [
+        "escaped the shop without paying"
+      ],
+      "screenCells": [
+        {
+          "step": 174,
+          "x": 71,
+          "y": 11,
+          "equals": "@"
+        },
+        {
+          "step": 184,
+          "x": 75,
+          "y": 10,
+          "equals": "@"
+        },
+        {
+          "step": 185,
+          "x": 72,
+          "y": 10,
+          "equals": "@"
+        },
+        {
+          "step": 202,
+          "x": 73,
+          "y": 10,
+          "equals": "@"
+        },
+        {
+          "step": 202,
+          "x": 0,
+          "y": 0,
+          "equals": "o"
+        }
+      ]
+    },
+    {
+      "branch": "shopkeeper-reentry.tended-entry",
+      "segment": 1,
+      "screenIncludes": [
+        "Welcome"
+      ],
+      "screenExcludes": [
+        "This shop is deserted.",
+        "escaped the shop without paying"
+      ],
+      "screenCells": [
+        {
+          "step": 33,
+          "x": 74,
+          "y": 11,
+          "equals": "@"
+        },
+        {
+          "step": 33,
+          "x": 73,
+          "y": 10,
+          "equals": "@"
+        }
+      ]
+    },
+    {
+      "branch": "shopkeeper-reentry.outside-no-reentry",
+      "segment": 2,
+      "screenExcludes": [
+        "This shop is deserted.",
+        "escaped the shop without paying"
+      ],
+      "screenCells": [
+        {
+          "step": 174,
+          "x": 71,
+          "y": 11,
+          "equals": "@"
+        },
+        {
+          "step": 174,
+          "x": 71,
+          "y": 12,
+          "equals": "@"
+        }
+      ]
+    },
+    {
+      "branch": "shopkeeper-reentry.absent-special-no-return",
+      "segment": 3,
+      "screenIncludes": [
+        "This shop is deserted."
+      ],
+      "screenExcludes": [
+        "escaped the shop without paying",
+        "a leash (unpaid, 36 zorkmids)."
+      ],
+      "screenCells": [
+        {
+          "step": 174,
+          "x": 71,
+          "y": 11,
+          "equals": "@"
+        },
+        {
+          "step": 197,
+          "x": 73,
+          "y": 11,
+          "equals": "@"
+        },
+        {
+          "step": 197,
+          "x": 72,
+          "y": 10,
+          "equals": "▒"
+        }
+      ]
+    }
+  ]
+}

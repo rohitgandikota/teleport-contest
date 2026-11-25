@@ -1,0 +1,140 @@
+{
+  "recipeSHA256": "e14c7ed6a103bf51af69675b083197f3bf4bbdbb010b1b151fe04637df4eb813",
+  "inputFieldsSHA256": "182db55d431161efbd545209837c19571d9a999f919b6446e2c2d4fc847ac2a2",
+  "branchRequirementsSHA256": "945a0e7f5b6b0e6368041ba846e206ac85dc6ed62be45ae35f6ec98b645c603d",
+  "negativeHashesSHA256": "92a4ea2ee713c9227bb3a5d7968fa652a5794619f982211dcacd31fcf0b6c14c",
+  "cases": [
+    {
+      "name": "seed6903-normal-return-and-pickup",
+      "fieldsSHA256": "f8a320c6de76b78d523a1d7240be31abc3e401475bebb6c35943e67193513733",
+      "movesSHA256": "2f6fea77b97dfd8ffedfc0e26f685ec85816c4494fd61b28ee0755a23d4f6205",
+      "keys": 225,
+      "fiveFields": [
+        {
+          "field": "name",
+          "present": true,
+          "value": "seed6903-normal-return-and-pickup"
+        },
+        {
+          "field": "seed",
+          "present": true,
+          "value": 6903
+        },
+        {
+          "field": "datetime",
+          "present": true,
+          "value": "20000110090000"
+        },
+        {
+          "field": "nethackrc",
+          "present": true,
+          "value": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n"
+        },
+        {
+          "field": "moves",
+          "present": true,
+          "value": " \u00162\r\u0006\u0014  llllllllllllllllllll.  \u001b\u001b#levelchange\r10\r  \u001b\u001b  \u001b\u001b  \u001b\u001b  \u001b\u001b  \u001b\u001b  \u001b\u001b  \u001b\u001b  \u001b\u001b  \u001b\u001b  \u001b\u001b  \u001b\u001b  \u001b\u001b\u0014  hhhk.  \u001b\u001b  \u001b\u001b  \u001b\u001b  \u001b\u001btal  \u001b\u001b  \u001b\u001b  \u001b\u001b  \u001b\u001bj  \u001b\u001b  \u001b\u001b  \u001b\u001b  \u001b\u001bj  \u001b\u001b  \u001b\u001b  \u001b\u001b  \u001b\u001b\u0014  llllkk.  \u001b\u001b  \u001b\u001b  \u001b\u001b  \u001b\u001b,  \u001b\u001b  \u001b\u001b  \u001b\u001b  \u001b\u001b  \u001b\u001b  \u001b\u001b"
+        }
+      ]
+    },
+    {
+      "name": "seed6903-first-entry",
+      "fieldsSHA256": "20b724d45e5cbdf29f7d740527cc9f375cf546bc24844d3ffe39394879ce74e0",
+      "movesSHA256": "6bf1d20bc9bf8c8ac14d5745c3f4715abfc28669a84b249cdd57e405d62c7387",
+      "keys": 33,
+      "fiveFields": [
+        {
+          "field": "name",
+          "present": true,
+          "value": "seed6903-first-entry"
+        },
+        {
+          "field": "seed",
+          "present": true,
+          "value": 6903
+        },
+        {
+          "field": "datetime",
+          "present": true,
+          "value": "20000110090000"
+        },
+        {
+          "field": "nethackrc",
+          "present": true,
+          "value": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n"
+        },
+        {
+          "field": "moves",
+          "present": true,
+          "value": " \u00162\r\u0006\u0014  llllllllllllllllllll.  \u001b\u001b"
+        }
+      ]
+    },
+    {
+      "name": "seed6903-following-keeper-outside",
+      "fieldsSHA256": "61b9e1a56f739dfff88f00f2d5e1130a42cc5766504d0d566531e1586a368561",
+      "movesSHA256": "38c3f08519e0bb798e32d45f1a9c67197b4cbbddc189327e42a38b70bbd9eed2",
+      "keys": 174,
+      "fiveFields": [
+        {
+          "field": "name",
+          "present": true,
+          "value": "seed6903-following-keeper-outside"
+        },
+        {
+          "field": "seed",
+          "present": true,
+          "value": 6903
+        },
+        {
+          "field": "datetime",
+          "present": true,
+          "value": "20000110090000"
+        },
+        {
+          "field": "nethackrc",
+          "present": true,
+          "value": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n"
+        },
+        {
+          "field": "moves",
+          "present": true,
+          "value": " \u00162\r\u0006\u0014  llllllllllllllllllll.  \u001b\u001b#levelchange\r10\r  \u001b\u001b  \u001b\u001b  \u001b\u001b  \u001b\u001b  \u001b\u001b  \u001b\u001b  \u001b\u001b  \u001b\u001b  \u001b\u001b  \u001b\u001b  \u001b\u001b  \u001b\u001b\u0014  hhhk.  \u001b\u001b  \u001b\u001b  \u001b\u001b  \u001b\u001btal  \u001b\u001b  \u001b\u001b  \u001b\u001b  \u001b\u001bj  \u001b\u001b  \u001b\u001b  \u001b\u001b  \u001b\u001bj  \u001b\u001b  \u001b\u001b  \u001b\u001b  \u001b\u001b"
+        }
+      ]
+    },
+    {
+      "name": "seed6903-special-route-return",
+      "fieldsSHA256": "6a59be95d94ea920c30461fdf4cee1d5531dcd0ba771ff067de3b0bcdcae8322",
+      "movesSHA256": "01713f5292f92e3c03c4d550bbd791cd6f1acab28674b41db1be1fdbcf48fe0b",
+      "keys": 197,
+      "fiveFields": [
+        {
+          "field": "name",
+          "present": true,
+          "value": "seed6903-special-route-return"
+        },
+        {
+          "field": "seed",
+          "present": true,
+          "value": 6903
+        },
+        {
+          "field": "datetime",
+          "present": true,
+          "value": "20000110090000"
+        },
+        {
+          "field": "nethackrc",
+          "present": true,
+          "value": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n"
+        },
+        {
+          "field": "moves",
+          "present": true,
+          "value": " \u00162\r\u0006\u0014  llllllllllllllllllll.  \u001b\u001b#levelchange\r10\r  \u001b\u001b  \u001b\u001b  \u001b\u001b  \u001b\u001b  \u001b\u001b  \u001b\u001b  \u001b\u001b  \u001b\u001b  \u001b\u001b  \u001b\u001b  \u001b\u001b  \u001b\u001b\u0014  hhhk.  \u001b\u001b  \u001b\u001b  \u001b\u001b  \u001b\u001btal  \u001b\u001b  \u001b\u001b  \u001b\u001b  \u001b\u001bj  \u001b\u001b  \u001b\u001b  \u001b\u001b  \u001b\u001bj  \u001b\u001b  \u001b\u001b  \u001b\u001b  \u001b\u001b\u0014  llk.  \u001b\u001b  \u001b\u001b  \u001b\u001b  \u001b\u001b"
+        }
+      ]
+    }
+  ]
+}

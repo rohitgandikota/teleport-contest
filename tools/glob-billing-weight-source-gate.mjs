@@ -79,7 +79,7 @@ check('ordinary already-billed and partly-eaten guards precede the private owner
 });
 check('the capacity guard precedes metadata allocation', () => {
     ordered(c('shk.add_one_tobill'), 'eshkp->billct == BILLSZ', 'if (unbilled)', 'newomid(obj)');
-    ordered(owner, 'eshk.bill_p.length >= 200', 'return false', 'obj.oextra ||= {}');
+    ordered(owner, 'eshk.billct === BILLSZ', 'return false', 'obj.oextra ||= {}');
 });
 check('rebilling uses the then-current weight and bill removal leaves metadata intact', () => {
     assert.match(owner, /obj\.oextra\.omid = obj\.owt/);

@@ -13,6 +13,7 @@ import { is_sword } from './wield.js';
 import { is_mplayer, set_mon_data } from './mondata.js';
 import { game } from './gstate.js';
 import { shkname } from './shknam.js';
+import { BILLSZ } from './const.js';
 import { tamedog } from './dog.js';
 import { def_monsyms } from './drawing_data.js';
 import { new_light_source, LS_OBJECT, LS_MONSTER } from './light.js';
@@ -2299,7 +2300,11 @@ export function makemon(ptr, x, y, mmflags) {
         mtmp.mextra = { mcorpsenm: NON_PM };
         if (mmflags & MM_EGD)  mtmp.mextra.egd = {};
         if (mmflags & MM_EPRI) mtmp.mextra.epri = {};
-        if (mmflags & MM_ESHK) mtmp.mextra.eshk = {};
+        if (mmflags & MM_ESHK) mtmp.mextra.eshk = {
+            // src/shknam.c:557 neweshk(); bill storage is separate from bill_p.
+            bill: Array.from({length: BILLSZ}, () => ({bo_id: 0, useup: false, price: 0, bquan: 0})),
+            bill_p: null, billct: 0,
+        };
         if (mmflags & MM_EMIN) mtmp.mextra.emin = {};
         if (mmflags & MM_EDOG) mtmp.mextra.edog = {};
     }

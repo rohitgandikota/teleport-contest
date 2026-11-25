@@ -1,0 +1,54 @@
+{
+  "originalRecipeSHA256": "e14c7ed6a103bf51af69675b083197f3bf4bbdbb010b1b151fe04637df4eb813",
+  "primaryRecipeSHA256": "957d5155e32bba8097cb1f356729b044942e8feda15d364206a2d4c02683ad7a",
+  "rawSHA256": "fe782df3f2a31af72f27db6ac37e6f092780b2714ce609dcf9b35229c675e05b",
+  "metadataSHA256": "4307c4d6645d32a7ae4e2578070b0381524af743aab8f4a8a2db71b74d314bef",
+  "onlyAddedFields": [
+    "requireBranchAssertions",
+    "branches",
+    "branchAssertions"
+  ],
+  "originalFieldsUnchanged": true,
+  "inputsAndKeyBytesUnchanged": true,
+  "ordinaryStateAssertionsUnchanged": true,
+  "negativeOutputHashesUnchanged": 15,
+  "provenance": "Read-only concrete observations from parent original C raw; metadata is integrity/branch evidence, not an independent native replay. Original sealed JS state requirements remain authoritative for hidden keeper state.",
+  "branches": [
+    {
+      "branch": "shopkeeper-reentry.normal-return-pickup",
+      "segment": 0,
+      "steps": [
+        174,
+        184,
+        185,
+        202
+      ],
+      "reason": "Keeper outside at174, hero absent-entry at184, keeper visible at door185 then inside202; real pickup displays unpaid leash36, without remote-burglary message. Source assertions separately prove normal m_move routing and bill pointer/occupancy."
+    },
+    {
+      "branch": "shopkeeper-reentry.tended-entry",
+      "segment": 1,
+      "steps": [
+        33
+      ],
+      "reason": "Initial tended entry has welcome, hero and keeper in shop, with no deserted/robbery text."
+    },
+    {
+      "branch": "shopkeeper-reentry.outside-no-reentry",
+      "segment": 2,
+      "steps": [
+        174
+      ],
+      "reason": "Hero and keeper remain outside at174 without absent reentry; actual following state is asserted by original JS controls."
+    },
+    {
+      "branch": "shopkeeper-reentry.absent-special-no-return",
+      "segment": 3,
+      "steps": [
+        174,
+        197
+      ],
+      "reason": "Absent-entry feedback occurs; final hero is inside and shop door remains empty. The keeper is not visible at that time, so continued outside state and special-route non-return are established by unchanged JS assertions, not inferred from a hidden C glyph."
+    }
+  ]
+}

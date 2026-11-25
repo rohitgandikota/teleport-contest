@@ -44,7 +44,7 @@ try {
                 unpaid: obj.unpaid || 0, timed: obj.timed || 0,
             })),
             bills: (game.level.monsters || []).filter(mon => mon.isshk)
-                .flatMap(mon => (mon.eshk.bill_p || []).map(entry => ({
+                .flatMap(mon => (mon.eshk.bill_p || []).slice(0, mon.eshk.billct).map(entry => ({
                     id: entry.bo_id, quantity: entry.bquan,
                     price: entry.price, useup: entry.useup,
                 }))),

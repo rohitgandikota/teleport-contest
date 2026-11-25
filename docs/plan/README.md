@@ -12,23 +12,26 @@ Ground rules are in `/CLAUDE.md`. Read that first if you have not.
 
 ## Current focus, 2026-11-25
 
-The symbol-byte checkpoint is pushed as `2807b1b5`. All 904 maintained recordings
-pass on that exact 280-module runtime with default budgets and no retries:
-922,895 screens/cursors, 19,808,235 random positions and 33,029 frames. All
-1,195 tested files remain fixed. See STATUS for receipts and prior checkpoints.
+Tower arrival is pushed as `b392a883`. Full905 passes on that exact published
+runtime: 923,873 screens/cursors, 19,899,635 random positions and 33,029 frames.
+The symbol, random-arrival terrain and engulfer checkpoints are also pushed.
 
-Moving engulfer positioning and random-arrival terrain restoration are pushed.
-The latter matches all seven original C cases versus three before, with all
-59 focused checks, 219 selected/public recordings and 219 strict workers passing.
-Only dungeon.js changed runtime in that checkpoint.
+Shopkeeper re-entry and its fixed billing storage are verified for publication.
+All four new C cases match versus three. All 906 maintained recordings pass on
+NFS with default budgets and no retries: 924,506 screens/cursors, 19,921,247
+random positions and 33,095 frames. All 145 selected/public recordings pass.
+Thirty-nine focused checks pass; two pre-existing diagnostics remain failed.
+The original strict batch is 142/145. Paired baseline/current runs identify
+three long container cases: two finish within eight seconds on both, and the
+largest passes the normal scorer in about nine seconds on both. See STATUS
+for preserved failures, test-observation corrections and exact receipts.
 
-Tower arrival is verified for publication. Its one-line flag repair passes
-seven C cases versus four, all 68 ordinary controls, seventeen focused checks,
-87 selected/public recordings and 87 strict workers. Full905 is running on NFS.
-The isolated shopkeeper re-entry candidate now matches all four C cases versus
-three, with storage and retained-test review still pending. Row restoration
-and the full byte reader remain separate. Both original merged-byte-cap and
-fruit/menu failures stay open.
+Next is the sealed row-refresh repair, with seven native matches versus three.
+It also repairs the old 123-cell menu-dismissal failure. The original nine-case
+byte audit reaches 8/9 with the composed symbol and row changes; fruit UTF8
+remains. Five new fruit-byte inputs establish a 1/5 C baseline. Saved monster
+traits and both merged-byte-cap failures remain separate work.
+
 The latest leaderboard check, 23:10 UTC, still shows rank 7 and 659 unmatched
 screens. Its 19:31 row predates the recent checkpoints and does not identify
 the scored commit. Local parity does not establish a new held-out score.

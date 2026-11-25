@@ -40,7 +40,7 @@ try {
             const shkp = game.level.monsters.find(mon => mon.isshk);
             steps[step] = {
                 gold: money_cnt(game.invent), keeper: !!shkp,
-                bills: (shkp?.eshk.bill_p || []).map(bp => ({ id: bp.bo_id,
+                bills: (shkp?.eshk.bill_p || []).slice(0, shkp?.eshk.billct || 0).map(bp => ({ id: bp.bo_id,
                     quantity: bp.bquan, price: bp.price, useup: bp.useup })),
                 billobjs: (game.billobjs || []).map(obj => ({ id: obj.o_id,
                     where: obj.where, quantity: obj.quan })),

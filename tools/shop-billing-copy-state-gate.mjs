@@ -164,7 +164,7 @@ for (const [i, segment] of itemization.segments.entries()) {
     assert.deepEqual(quantities(game), before, segment.name + ': displaying a bill preserves quantities');
     const shkp = game.level.monsters.find(m => m.isshk), bill = shkp.eshk.bill_p;
     const copies = game.billobjs || [], many = segment.name.startsWith('bill-paging');
-    assert.equal(bill.length, many ? 25 : 1);
+    assert.equal(shkp.eshk.billct, many ? 25 : 1);
     const remaining = { 'partially-drunk-once': 2, 'partially-drunk-twice': 1 }[segment.name];
     if (remaining) {
         assert.equal(game.invent.find(o => o.invlet === 'o').quan, remaining);
@@ -180,7 +180,7 @@ for (const [i, segment] of itemization.segments.entries()) {
         assert.ok(!game.invent.some(o => o.invlet === 'o'));
     } else if (many) {
         assert.equal(copies.length, 25);
-        assert.equal(bill.reduce((sum, bp) => sum + bp.bquan * bp.price, 0), 675);
+        assert.equal(bill.slice(0, shkp.eshk.billct).reduce((sum, bp) => sum + bp.bquan * bp.price, 0), 675);
         for (const copy of copies) {
             assert.equal(copy.quan, 1);
             assert.equal(copy.where, OBJ_ONBILL);

@@ -3843,6 +3843,10 @@
     {"group":"Complete monster status","id":"mstatusline-complete-owner.worm-tail-status","cFile":"src/insight.c","cFunction":"mstatusline","description":"long worm tail"},
     {"group":"Complete monster status","id":"mstatusline-complete-owner.changed-form-status","cFile":"src/insight.c","cFunction":"mstatusline","description":"shapechanger"},
     {"group":"Complete monster status","id":"mstatusline-complete-owner.ordinary-untamed-negative","cFile":"src/insight.c","cFunction":"mstatusline","description":"plain newt"},
-    {"group":"Complete monster status","id":"mstatusline-complete-owner.nonwizard-pet-negative","cFile":"src/insight.c","cFunction":"mstatusline","description":"normal starting pet"}
+    {"group":"Complete monster status","id":"mstatusline-complete-owner.nonwizard-pet-negative","cFile":"src/insight.c","cFunction":"mstatusline","description":"normal starting pet"},
+    {"group":"Altar glyph preservation","id":"altar-glyph-preservation.lawful-altar-number","cFile":"src/display.c","cFunction":"newsym","description":"lawful altar number"},
+    {"group":"Altar glyph preservation","id":"altar-glyph-preservation.chaotic-altar-number","cFile":"src/display.c","cFunction":"newsym","description":"chaotic altar number"},
+    {"group":"Altar glyph preservation","id":"altar-glyph-preservation.neutral-altar-control","cFile":"src/display.c","cFunction":"newsym","description":"neutral altar control"},
+    {"group":"Altar glyph preservation","id":"altar-glyph-preservation.ordinary-floor-control","cFile":"src/display.c","cFunction":"newsym","description":"ordinary floor control"}
   ]
 }

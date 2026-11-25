@@ -8273,6 +8273,58 @@ property handling. Pauli moved to ordinary accessory-effect input expansion;
 the initial parent attempts that ate without receiving an effect remain
 preserved. Avicenna and Singer retain the eating-prelude and engulfing audits.
 
+## 2026-11-25: altar glyph identity verified after status publication
+
+Complete monster-status commit `fe74cf01` pushed successfully, process 94134
+exit 0. Parent then composed the sealed altar fix on that exact runtime. The
+two visible-terrain assignments now preserve the glyph already produced by
+`back_to_glyph`, including lawful and chaotic altar identities, while retaining
+the generic fallback needed by engravings. Memory uses the same descriptor.
+Object/trap/hero priority, out-of-sight handling and message timing are unchanged.
+Other magic-map and terrain-view descriptor losses remain separate findings.
+
+The parent run passes 33 checks, 197 controls, 20 focused fixtures and all 44
+public sessions. Focused output totals 6,514 screens/cursors, 308,465 scored
+random-call positions and 332 frames across 81 segments. All four new C cases
+match 68 styled boundaries, 12,174 calls and empty frame arrays both before and
+after. All twenty original output hashes are unchanged. Source and real-input
+state controls establish the internal glyph correction; native output does not
+show a new visible improvement. Twelve strict native fixtures cover 56 segments,
+3,701 boundaries, 164,003 calls and 64 frames; deferred completion preserves all
+five collections. All 64 bounded workers finish. The 279 runtime hashes, six
+support hashes and patch reversal are fixed and independently checked.
+
+Parent integrated only the two display assignments and six support files.
+The integration receipt is `.cache/restart-20261122/altar-glyph-main-integration.json`;
+the independent verification SHA-256 is
+`46d0ba1a080b5e5104e2c1718089199fc5f5b2261a6af5506af8d28d4663db2d`.
+The maintained corpus is 820. The complete full817 result remains attached to
+its earlier runtime. Publish this verified checkpoint now, then run the full
+820 corpus with all original inputs and protected test files pinned.
+
+The shared-machine status/altar native replay succeeded. Its first union script
+failed before profile merging because the expected layout count still read
+101 after adding layout 102. Original script, log and driver failure remain
+unchanged. A new v2 script changes only that count and reuses the original
+native profiles; its union closed with exit 0 at 00:40 UTC. Parent independently
+verified five downloaded compact reports against remote SHA-256 values. Both
+native recordings match byte for byte. The union credits 814 inputs and 102
+layouts, covers 4,572/5,492 functions and 60,367/107,260 branch outcomes, and
+adds one function plus 18 outcomes. All 101 earlier run hashes, original
+rejection records and source/binary/control pins are unchanged. The additional
+native pool has 133 inputs and 528 segments, plus three Linux controls with
+14 segments. The retry changes only the stale layout-count assertion.
+
+Bulk artifacts remain on NFS at
+`/share/NFS/u/rohit/research/contest/artifacts/2026-11-22/c-coverage-compress.E84JI2/verified-status-altar-union-20261125`.
+The local receipt is `.cache/restart-20261122/linux-coverage-status-altar-download.json`.
+Summary SHA-256 is
+`0e2005c1d2272d663b8ddc136066a25f371608f3edeba369c302a5f3001cd1a4`;
+compact SHA-256 is
+`96f7a255062db0c0b242f1b1e9d2b573f9a0443ffbfcea47503172009861c008`.
+`wseg_at` is reached twice and covers 10/14 outcomes; `mstatusline` covers
+36/64. These are C reach measurements, not a claim of complete owner parity.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

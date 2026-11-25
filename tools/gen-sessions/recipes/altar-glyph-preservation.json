@@ -1,0 +1,111 @@
+{
+  "name": "altar-glyph-preservation",
+  "description": "Ordinary wizard terrain wishes preserve altar glyph identity when the hero steps off. Internal state proof; native messages and cells only prove terrain setup, not a new rendered-score difference.",
+  "coverage": [
+    "mode.debug",
+    "ui.map-memory-vision"
+  ],
+  "segments": [
+    {
+      "name": "lawful-altar-number",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "moves": " \u0017lawful altar\rl\u0012"
+    },
+    {
+      "name": "chaotic-altar-number",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "moves": " \u0017chaotic altar\rl\u0012"
+    },
+    {
+      "name": "neutral-altar-control",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "moves": " \u0017neutral altar\rl\u0012"
+    },
+    {
+      "name": "ordinary-floor-control",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "moves": " l\u0017floor\rh\u0012"
+    }
+  ],
+  "branches": [
+    "altar-glyph-preservation.lawful-altar-number",
+    "altar-glyph-preservation.chaotic-altar-number",
+    "altar-glyph-preservation.neutral-altar-control",
+    "altar-glyph-preservation.ordinary-floor-control"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "altar-glyph-preservation.lawful-altar-number",
+      "segment": 0,
+      "screenIncludes": [
+        "A lawful altar."
+      ],
+      "screenCells": [
+        {
+          "step": 17,
+          "x": 7,
+          "y": 13,
+          "equals": "_"
+        }
+      ],
+      "source": "objnam.c:3554-3915 wizterrainwish -> feel_newsym; display.c:917-1097 newsym -> _map_location -> map_background -> back_to_glyph. Screen assertions prove visible terrain only; glyph-number fidelity is JS state plus pinned C source, not native trace."
+    },
+    {
+      "branch": "altar-glyph-preservation.chaotic-altar-number",
+      "segment": 1,
+      "screenIncludes": [
+        "A chaotic altar."
+      ],
+      "screenCells": [
+        {
+          "step": 18,
+          "x": 7,
+          "y": 13,
+          "equals": "_"
+        }
+      ],
+      "source": "objnam.c:3554-3915 wizterrainwish -> feel_newsym; display.c:917-1097 newsym -> _map_location -> map_background -> back_to_glyph. Screen assertions prove visible terrain only; glyph-number fidelity is JS state plus pinned C source, not native trace."
+    },
+    {
+      "branch": "altar-glyph-preservation.neutral-altar-control",
+      "segment": 2,
+      "screenIncludes": [
+        "A neutral altar."
+      ],
+      "screenCells": [
+        {
+          "step": 18,
+          "x": 7,
+          "y": 13,
+          "equals": "_"
+        }
+      ],
+      "source": "objnam.c:3554-3915 wizterrainwish -> feel_newsym; display.c:917-1097 newsym -> _map_location -> map_background -> back_to_glyph. Screen assertions prove visible terrain only; glyph-number fidelity is JS state plus pinned C source, not native trace."
+    },
+    {
+      "branch": "altar-glyph-preservation.ordinary-floor-control",
+      "segment": 3,
+      "screenIncludes": [
+        "Room floor."
+      ],
+      "screenCells": [
+        {
+          "step": 11,
+          "x": 8,
+          "y": 13,
+          "equals": "."
+        }
+      ],
+      "source": "objnam.c:3554-3915 wizterrainwish -> feel_newsym; display.c:917-1097 newsym -> _map_location -> map_background -> back_to_glyph. Screen assertions prove visible terrain only; glyph-number fidelity is JS state plus pinned C source, not native trace."
+    }
+  ]
+}

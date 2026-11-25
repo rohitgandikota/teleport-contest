@@ -35,8 +35,8 @@ styled boundaries and 17,744 calls. The maintained corpus is 818. This natural
 contact change is outside the completed full817 runtime; no full818 sweep is
 claimed.
 
-Complete monster-status feedback is now verified and integrated for immediate
-push. Wizard pet details, worm ordinals, shapechanger status, held and swallowed
+Complete monster-status feedback is pushed as `fe74cf01`.
+Wizard pet details, worm ordinals, shapechanger status, held and swallowed
 relations, steed injuries and gigantic size follow the C owner. All 34 checks,
 216 controls, 20 focused fixtures and 44 public sessions pass, including 64
 bounded workers. Six new C cases match all 331 styled boundaries and 18,343
@@ -45,10 +45,19 @@ output collections. The maintained corpus is 819; the completed full817 does
 not include this repair. Altar-glyph, hero-status, eating-prelude and engulfing
 audits continue in fixed snapshots.
 
-The new shared-machine C coverage run accepts both native recordings byte for
-byte. The union now covers 4,571/5,492 functions and 60,349/107,260 branch
-outcomes across 812 credited inputs and 101 instrumented layouts. This adds
-six functions and 144 outcomes. All 100 previous run hashes are unchanged.
+The altar glyph fix is verified and integrated for immediate push. Two terrain
+assignments now preserve the alignment-specific glyph in the display buffer and
+memory. All 33 checks, 197 controls, 20 focused fixtures, 44 public sessions and
+64 bounded workers pass. Four new C cases retain all 68 boundaries and 12,174
+calls; all twenty before/after output hashes are unchanged. This is a source-
+verified state repair with no new rendered-score gain claimed. The maintained
+corpus is 820; a full sweep of the combined runtime follows publication.
+
+The latest shared-machine C coverage run accepts the status and altar recordings
+byte for byte. The union covers 4,572/5,492 functions and 60,367/107,260 branch
+outcomes across 814 credited inputs and 102 instrumented layouts. This adds
+one function and 18 outcomes after the nonfood/contact expansion. All 101
+previous run hashes are unchanged.
 These figures measure C reach, not JS parity. Accessory stat increases still
 have constructed controls only; the native corpus has not reached
 `bounded_increase`.
@@ -431,13 +440,13 @@ The Linux/NFS branch collector is pushed
 and passes signal canaries plus exact save/restore, artifact and natural-exit
 pilots. The Linux census at e4504071 now covers all 678 original inputs:
 603 canonical matches and 75 independently recorded ordinary Linux controls.
-Adding 131 newer raw inputs and three independent Linux controls, 532
-native segments in total, gives a validated union entering 4,571/5,492
-functions and observing 60,349/107,260 direct C branch outcomes.
-All 812 credited input hashes, 101 build manifests and branch layouts were
-checked before merging. All 100 preceding run hashes remain fixed. The latest
-union includes nonfood meals and natural contact, adding six functions and
-144 outcomes. C coverage does not establish JS parity.
+Adding 133 newer raw inputs and three independent Linux controls, 542
+native segments in total, gives a validated union entering 4,572/5,492
+functions and observing 60,367/107,260 direct C branch outcomes.
+All 814 credited input hashes, 102 build manifests and branch layouts were
+checked before merging. All 101 preceding run hashes remain fixed. The latest
+union includes complete monster-status and altar inputs, adding one function
+and 18 outcomes. C coverage does not establish JS parity.
 Original platform/output rejections
 remain rejected; no output was normalized. The two new sink fixtures separately
 match Linux C exactly; their validated union covers all 94/94 direct dosinkring

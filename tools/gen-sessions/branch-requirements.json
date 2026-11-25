@@ -3830,6 +3830,13 @@
     {"group":"Accepted nonfood meals","id":"accepted-nonfood-meals.cube-free-action-ring","cFile":"src/eat.c","cFunction":"eataccessory","description":"Consume a wooden free-action ring as a cube and add intrinsic sleep resistance after the effect message"},
     {"group":"Accepted nonfood meals","id":"accepted-nonfood-meals.xorn-wood-negative","cFile":"src/eat.c","cFunction":"is_edible","description":"Reject a wooden staff as a xorn and retain both the staff and unrelated apple"},
     {"group":"Accepted nonfood meals","id":"accepted-nonfood-meals.cube-iron-negative","cFile":"src/eat.c","cFunction":"is_edible","description":"Reject an iron dagger as a gelatinous cube and retain both the dagger and unrelated apple"},
-    {"group":"Accepted nonfood meals","id":"accepted-nonfood-meals.lawful-xorn-accepted-excalibur","cFile":"src/eat.c","cFunction":"doeat_nonfood","description":"Consume accepted Excalibur as a lawful xorn after artifact contact succeeds"}
+    {"group":"Accepted nonfood meals","id":"accepted-nonfood-meals.lawful-xorn-accepted-excalibur","cFile":"src/eat.c","cFunction":"doeat_nonfood","description":"Consume accepted Excalibur as a lawful xorn after artifact contact succeeds"},
+    {"group":"Polymorphed natural contact","id":"polymorph-natural-contact.shade-bite-without-contact-bonus","cFile":"src/uhitm.c","cFunction":"hmonas","description":"shade bite without contact bonus"},
+    {"group":"Polymorphed natural contact","id":"polymorph-natural-contact.unsolid-fog-rejects-mimic-adhesion","cFile":"src/uhitm.c","cFunction":"hmonas","description":"unsolid fog rejects mimic adhesion"},
+    {"group":"Polymorphed natural contact","id":"polymorph-natural-contact.silver-ring-claw-and-shade-miss","cFile":"src/uhitm.c","cFunction":"hmonas","description":"silver ring claw and shade miss"},
+    {"group":"Polymorphed natural contact","id":"polymorph-natural-contact.silver-ring-shade-grasp","cFile":"src/uhitm.c","cFunction":"hmonas","description":"silver ring shade grasp"},
+    {"group":"Polymorphed natural contact","id":"polymorph-natural-contact.blessed-flimsy-helmet-head-butt","cFile":"src/uhitm.c","cFunction":"hmonas","description":"blessed flimsy helmet head butt"},
+    {"group":"Polymorphed natural contact","id":"polymorph-natural-contact.ordinary-wolf-miss-control","cFile":"src/uhitm.c","cFunction":"hmonas","description":"ordinary wolf miss control"},
+    {"group":"Polymorphed natural contact","id":"polymorph-natural-contact.solid-rust-monster-adhesion-control","cFile":"src/uhitm.c","cFunction":"hmonas","description":"solid rust monster adhesion control"}
   ]
 }

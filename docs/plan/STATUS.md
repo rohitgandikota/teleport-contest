@@ -8148,6 +8148,40 @@ files, six fixed support files and an exact patch reversal. It is still cached
 and excluded from the completed full817. Parent will integrate and push it as
 a separate verified checkpoint after publishing the full817 runtime.
 
+## 2026-11-24: publication resumed and natural contact integrated
+
+Commit `2089260a` was pushed successfully to origin/main, process 87897 exit 0.
+It contains the full817-tested nonfood, probing and dark-side runtime, native
+recordings and controls. HEAD and origin/main matched immediately afterward;
+there was no unpushed-commit backlog. The ordinary approval path succeeded
+after the user's usage-restoration reply. Preserve the earlier quota-failure
+record as history; it is no longer the active publication blocker.
+
+Parent integrated the separately verified natural-contact candidate on top of
+`2089260a`. All 279 main runtime hashes and six support hashes match the fixed
+candidate. `natural-contact-main-integration.json` records that equality and
+the independent verification hash
+`4b616247c6e1d82e69339641edf4532b5eb2bbdc478976857339651ed09a2206`.
+The patch changes only uhitm.hmonas and its humanoid import. It preserves C
+ordering: shade immunity, failed grabbing, ordinary feedback, silver feedback,
+then damage. The head-butt slot uses the existing special-damage helper. All
+three hug paths read the same silver-mask output. Visibility is initialized
+before the attack loop and cleared after it; a pending More test checks that
+lifetime for a blind adjacent target.
+
+The maintained corpus is now 818. Full817 remains evidence for the preceding
+pushed runtime. Natural contact has its independent 29-check, 136-control,
+19-focused plus 44-public validation, strict native and deferred evidence;
+no full818 claim is made. The latest official observation is still 23:40 UTC,
+23,779/24,531 screens and agentic rank 7. No private-score improvement is
+inferred from these local tests.
+
+Pauli and Jason resumed their status and altar audits after the user's reply.
+Their exact fixed baselines and cache-only ownership remain in force. Parent
+owns new native recording, composition, required checks and immediate pushes.
+NFS coverage still stops at index99 until the new native files are independently
+replayed and credited. Do not infer branch coverage from the new intent tags.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

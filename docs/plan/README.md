@@ -20,19 +20,21 @@ pushes. The live leaderboard checked November 24 at 23:40 UTC has
 observed row does not identify the exact scored commit. Local verification
 does not establish a newer held-out score.
 
-The last successful push is `1f02e718`. The next probing checkpoint is verified
-and present in the working tree. Its commit and push did not execute because
-automatic approval review hit the account usage limit. The user already
-authorized these pushes. All four parallel workers also stopped at that limit.
-Local porting and validation continue. The verified dark-side visibility and
-nonfood changes are now in the working tree after probing. Dark-side passes
-42 combined checks, 216 controls, the 44 public sessions and all 549 new native
-boundaries. Nonfood meals pass all 55 combined checks, 447 controls, 23 focused
-fixtures and 44 public sessions. Its ten new C cases match all 1,197 styled
-boundaries, 27,141 random calls and one frame. The maintained corpus is 817.
-The full817 run now passes all 817 fixtures on that exact snapshot with two
-workers, no retries and no timeout override. No new NFS coverage is claimed.
-Publication is being retried after the user offered to restore account usage.
+Publication resumed with `2089260a` after the earlier approval-review usage
+limit. That pushed checkpoint includes probing, dark-side visibility and the
+nonfood port. The full817 run passes on that exact runtime. Its nonfood
+composition passes 55 checks, 447 controls, 23 focused fixtures and all
+44 public sessions. The ten new nonfood C cases match all 1,197 styled
+boundaries, 27,141 random calls and one frame. No new NFS coverage is claimed.
+
+Natural contact is now separately verified and integrated for immediate push.
+It restores shade and unsolid rejection, silver-ring feedback, blessed helmet
+contact and combat visibility lifetime. All 29 checks, 136 controls, 19 focused
+fixtures and 44 public sessions pass. Its seven new C cases match all 587
+styled boundaries and 17,744 calls. The maintained corpus is 818. This natural
+contact change is outside the completed full817 runtime; no full818 sweep is
+claimed. Two parallel source audits have resumed for complete monster-status
+feedback and altar-glyph preservation.
 
 The latest full regression passes all 817 fixtures: 853,841 screens/cursors,
 17,766,231 scored RNG positions and 32,296 frames. Both fixed-runtime shards

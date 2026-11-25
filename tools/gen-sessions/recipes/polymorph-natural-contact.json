@@ -1,0 +1,125 @@
+{
+  "name": "polymorph-natural-contact",
+  "description": "Native C natural-contact cases for shades, unsolid adhesion, alternating silver rings, a silver grasp and a blessed flimsy helmet. Two ordinary controls preserve normal misses and solid adhesion. Visibility lifetime, gloves and verbose-message boundaries have separate constructed controls.",
+  "coverage": [
+    "combat.melee",
+    "forms.polymorph",
+    "object.armor",
+    "mode.debug"
+  ],
+  "branches": [
+    "polymorph-natural-contact.shade-bite-without-contact-bonus",
+    "polymorph-natural-contact.unsolid-fog-rejects-mimic-adhesion",
+    "polymorph-natural-contact.silver-ring-claw-and-shade-miss",
+    "polymorph-natural-contact.silver-ring-shade-grasp",
+    "polymorph-natural-contact.blessed-flimsy-helmet-head-butt",
+    "polymorph-natural-contact.ordinary-wolf-miss-control",
+    "polymorph-natural-contact.solid-rust-monster-adhesion-control"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "polymorph-natural-contact.shade-bite-without-contact-bonus",
+      "segment": 0,
+      "screenIncludes": [
+        "Your bite passes harmlessly through the shade."
+      ]
+    },
+    {
+      "branch": "polymorph-natural-contact.unsolid-fog-rejects-mimic-adhesion",
+      "segment": 1,
+      "screenIncludes": [
+        "Your adhere attempt passes right through it!"
+      ]
+    },
+    {
+      "branch": "polymorph-natural-contact.silver-ring-claw-and-shade-miss",
+      "segment": 2,
+      "screenIncludes": [
+        "Your silver ring sears the shade!",
+        "Your attack passes harmlessly through the shade."
+      ]
+    },
+    {
+      "branch": "polymorph-natural-contact.silver-ring-shade-grasp",
+      "segment": 3,
+      "screenIncludes": [
+        "You grasp the shade.",
+        "Your silver ring sears the shade!"
+      ]
+    },
+    {
+      "branch": "polymorph-natural-contact.blessed-flimsy-helmet-head-butt",
+      "segment": 4,
+      "screenIncludes": [
+        "Your attack passes harmlessly through the shade.",
+        "You head butt the shade."
+      ]
+    },
+    {
+      "branch": "polymorph-natural-contact.ordinary-wolf-miss-control",
+      "segment": 5,
+      "screenIncludes": [
+        "You miss the rust monster."
+      ]
+    },
+    {
+      "branch": "polymorph-natural-contact.solid-rust-monster-adhesion-control",
+      "segment": 6,
+      "screenIncludes": [
+        "You hit it."
+      ]
+    }
+  ],
+  "segments": [
+    {
+      "name": "shade-bite-without-contact-bonus",
+      "seed": 21100,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Contact,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #polyself\rwolf\r  \u001b\u001b\u0007sleeping hostile shade\r\u001b\u001bFh            : "
+    },
+    {
+      "name": "unsolid-fog-rejects-mimic-adhesion",
+      "seed": 21102,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Contact,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #polyself\rlarge mimic\r  \u001b\u001b\u0007sleeping hostile fog cloud\r\u001b\u001bFu            : "
+    },
+    {
+      "name": "silver-ring-claw-and-shade-miss",
+      "seed": 21100,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Contact,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed silver ring\r  \u001b\u001bPar  \u001b\u001b#polyself\rflesh golem\r  \u001b\u001b\u0007sleeping hostile shade\r\u001b\u001bFl            : "
+    },
+    {
+      "name": "silver-ring-shade-grasp",
+      "seed": 21100,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Contact,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed silver ring\r  \u001b\u001bPar  \u001b\u001b#polyself\rrope golem\r  \u001b\u001b\u0007sleeping hostile shade\r\u001b\u001bFb            : "
+    },
+    {
+      "name": "blessed-flimsy-helmet-head-butt",
+      "seed": 21100,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Contact,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed cornuthaum\r  \u001b\u001bWa   \u001b\u001b#polyself\rminotaur\r  \u001b\u001b\u0007sleeping hostile shade\r\u001b\u001bFy            : "
+    },
+    {
+      "name": "ordinary-wolf-miss-control",
+      "seed": 21100,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Contact,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #polyself\rwolf\r  \u001b\u001b\u0007sleeping hostile rust monster\r\u001b\u001bFh            : "
+    },
+    {
+      "name": "solid-rust-monster-adhesion-control",
+      "seed": 21100,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Contact,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #polyself\rlarge mimic\r  \u001b\u001b\u0007sleeping hostile rust monster\r\u001b\u001bFl            : "
+    }
+  ]
+}

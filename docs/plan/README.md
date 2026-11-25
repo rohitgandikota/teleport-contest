@@ -13,19 +13,20 @@ Ground rules are in `/CLAUDE.md`. Read that first if you have not.
 ## Current focus, 2026-11-25
 
 
-Queued message locations are pushed as `d810959e`, with full880 passing.
-The next verified checkpoint fixes article selection, artifact-named fruit and
-corpse meal names. All67 source controls,14 ordinary cases and14 full C
-comparisons pass. All75 selected/public recordings and75 strict workers pass,
-together with twelve retained suites. One stale test flag was corrected after
-proving the runtime owner unchanged; its original failure remains recorded.
-The corpus is881. A fresh full881 run is active on NFS, reusing880 recordings.
+Article and fruit naming is pushed as `4a8e688e`. Its fresh full881 NFS run
+passes with no retries or timeout overrides: 912,219 screens/cursors,
+19,330,853 random positions and 32,820 frames. The next verified checkpoint
+restores swimming guards for known boots, form-specific wording and grounded
+floor classification. All 52 source controls, 36 ordinary assertions, twelve
+native cases, 71 selected/public recordings and 71 strict workers pass.
+Ten retained suites also pass. The corpus is 882; swimming is outside full881.
 See the newest STATUS entry for receipts and immediate publication.
 
-Queued-notice flag/entry repairs, their earlier input-boundary prerequisite,
-swim guards and forced attacks remain independent active reviews. The current
-official feed is unchanged from13:55 UTC: rank7,659 unmatched. Local results
-do not establish a newer held-out score.
+Queued-notice timing is still unpromoted: its original eight C cases pass 2/8,
+with earlier input delivery and duplicate-option diagnostics under separate
+review. Forced attacks and boulder pushing remain active source audits. The
+uppercase ing_suffix discrepancy is a separate helper lead. The official feed
+is unchanged from 13:55 UTC: rank 7, 659 unmatched screens.
 
 
 The storage cleanup is complete. The user explicitly authorized deleting

@@ -4383,6 +4383,18 @@
     {"group":"article-owner","id":"artifact-card-sit","cFile":"src/objnam.c","cFunction":"the","description":"Actually identified Express Card receives the article in sit feedback."},
     {"group":"article-owner","id":"apple-sit-negative","cFile":"src/objnam.c","cFunction":"the","description":"An ordinary apple retains its existing sit article."},
     {"group":"article-owner","id":"artifact-excalibur-sit-negative","cFile":"src/objnam.c","cFunction":"the","description":"Actually identified Excalibur retains its proper name in sit feedback."},
-    {"group":"article-owner","id":"twoflower-corpse-eat","cFile":"src/eat.c","cFunction":"food_xname","description":"Actual Twoflower corpse retains its personal possessive without an article."}
+    {"group":"article-owner","id":"twoflower-corpse-eat","cFile":"src/eat.c","cFunction":"food_xname","description":"Actual Twoflower corpse retains its personal possessive without an article."},
+    {"group":"swim-move-danger","id":"swim-move-danger.pool-unknown","cFile":"src/hack.c","cFunction":"swim_move_danger","description":"Ordinary keyboard proposal: pool-unknown"},
+    {"group":"swim-move-danger","id":"swim-move-danger.pool-known","cFile":"src/hack.c","cFunction":"swim_move_danger","description":"Ordinary keyboard proposal: pool-known"},
+    {"group":"swim-move-danger","id":"swim-move-danger.pool-bare","cFile":"src/hack.c","cFunction":"swim_move_danger","description":"Ordinary keyboard proposal: pool-bare"},
+    {"group":"swim-move-danger","id":"swim-move-danger.pool-m-prefix","cFile":"src/hack.c","cFunction":"swim_move_danger","description":"Ordinary keyboard proposal: pool-m-prefix"},
+    {"group":"swim-move-danger","id":"swim-move-danger.known-floor","cFile":"src/hack.c","cFunction":"swim_move_danger","description":"Ordinary keyboard proposal: known-floor"},
+    {"group":"swim-move-danger","id":"swim-move-danger.lava-known-proof","cFile":"src/hack.c","cFunction":"swim_move_danger","description":"Ordinary keyboard proposal: lava-known-proof"},
+    {"group":"swim-move-danger","id":"swim-move-danger.lava-unknown","cFile":"src/hack.c","cFunction":"swim_move_danger","description":"Ordinary keyboard proposal: lava-unknown"},
+    {"group":"swim-move-danger","id":"swim-move-danger.cobra-pool","cFile":"src/hack.c","cFunction":"swim_move_danger","description":"Ordinary keyboard proposal: cobra-pool"},
+    {"group":"swim-move-danger","id":"swim-move-danger.blob-pool","cFile":"src/hack.c","cFunction":"swim_move_danger","description":"Ordinary keyboard proposal: blob-pool"},
+    {"group":"swim-move-danger","id":"swim-move-danger.clinger-breathing-pool","cFile":"src/hack.c","cFunction":"swim_move_danger","description":"Ordinary keyboard proposal: clinger-breathing-pool"},
+    {"group":"swim-move-danger","id":"swim-move-danger.lava-known-type-unknown-proof","cFile":"src/hack.c","cFunction":"swim_move_danger","description":"Ordinary keyboard proposal: lava-known-type-unknown-proof"},
+    {"group":"swim-move-danger","id":"swim-move-danger.lava-known-no-fire","cFile":"src/hack.c","cFunction":"swim_move_danger","description":"Ordinary keyboard proposal: lava-known-no-fire"}
   ]
 }

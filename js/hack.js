@@ -39,7 +39,7 @@ import { carrying } from './invent.js';
 import { a_monnam, upstart, pmname } from './do_name.js';
 import { an } from './objnam.js';
 import { is_door_mappear, helpless, DEADMONSTER } from './monst.js';
-import { dist2, distmin } from './hacklib.js';
+import { dist2, distmin, ing_suffix } from './hacklib.js';
 import { Levitation, Flying, Fire_resistance, Underwater,
          Hallucination, Deaf, Passes_walls, Stealth, Swimming,
          Amphibious, Breathless } from './youprop.js';
@@ -1402,7 +1402,7 @@ const note_unported_hack = (w) => {
 // src/hack.c:1832 u_simple_floortyp() — floor solid/liquid state for the
 // hero: walls of water/lava always count; pools only when grounded.
 function u_simple_floortyp(x, y) {
-    const u_in_air = Levitation() || Flying();
+    const u_in_air = Levitation() || Flying() || !grounded(game.youmonst.data);
     const typ = game.level?.at(x, y)?.typ;
     if (typ === WATER)
         return WATER;
@@ -1432,19 +1432,16 @@ export async function swim_move_danger(x, y) {
         && !Stunned() && !Confusion()
         && loc?.seenv
         && (is_pool(x, y) || is_lava(x, y) || liquid_wall)) {
-        /* Known_wwalking / Known_lwalking need identified worn gear the
-           sessions lack; both read false here */
-        if ((is_pool(x, y))
-            || (is_lava(x, y) && !is_lava(game.u.ux, game.u.uy))
+        if ((is_pool(x, y) && !Known_wwalking())
+            || (is_lava(x, y) && !Known_lwalking()
+                && !is_lava(game.u.ux, game.u.uy))
             || liquid_wall) {
             if (game.context.nopick) {
                 /* moving with m-prefix */
                 game.context.tips = (game.context.tips | 0) | (1 << TIP_SWIM);
                 return false;
             } else if (paranoid_swim() || liquid_wall) {
-                await You(`avoid ${
-                    Levitation() ? 'floating'
-                    : Flying() ? 'flying' : 'stepping'} into the ${
+                await You(`avoid ${ing_suffix(u_locomotion('step'))} into the ${
                     waterbody_name(x, y)}.`);
                 await handle_tip(TIP_SWIM);
                 return true;

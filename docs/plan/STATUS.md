@@ -1,5 +1,49 @@
 # STATUS — live handoff board
 
+## 2026-11-25: swimming guards verified; published naming passes full881
+
+Article and fruit naming is pushed as `4a8e688e`. Its fresh full881 NFS run
+passes with two workers, default budgets and no retries: 912,219 screens and
+cursors, 19,330,853 random positions and 32,820 frames. All 1,171 snapshot files
+remain fixed. Receipt `article-full881-remote/verification.json`, SHA256
+`d8d722d782447b4e67584c50e8ae853ee5bdba662e941322628456b6663626aa`.
+Published-runtime verification receipt SHA256:
+`a7f64c89278c915cdc39921ba004f77fea0d9a6b7fa3fd31ccdad1348a13b702`.
+The duplicate article parent raw now links to the maintained fixture, removing
+1,844,081 identical bytes after checksum verification.
+
+Current main changes only hack.js for swimming guards: use the existing known
+boot predicates, canonical locomotion wording and grounded floor classification.
+All 52 source controls pass versus 36 before. All 36 assertions across twelve
+ordinary inputs pass versus 26 before, with seven negatives retaining all 35
+output hashes. Observer/plain/deferred/exhausted-input checks pass. All twelve
+C cases match 1,727 styled boundaries/cursors, 28,145 calls and ordered slices,
+and one frame, versus seven exact cases before. Guard permission is distinct
+from surviving subsequent liquid effects; the clinger case proves that with
+an actual breathing amulet.
+
+All 71 selected/public recordings match 34,829 screens/cursors, 1,266,817 random
+positions and 1,757 frames. All 71 strict eight-second workers, ten retained
+suites, source audit and three syntax checks pass. All 17 focused checks pass.
+All 682 source-packet members remain fixed. All 881 prior recordings and prior
+requirements remain unchanged; one C fixture and twelve requirements bring
+the corpus to 882. This swimming change is outside the completed full881 run.
+Main receipt `swim-main-verification.json`, SHA256
+`5d4aaaa865d7e757c8ad26d786808fdd1beb1637a1b1711aea031fadf8504b04`.
+Commit and immediately push this verified checkpoint.
+
+The queued-notice follow-up remains unpromoted. Its unchanged eight C inputs
+pass only 2/8 on both fixed baseline and candidate. Several differences start
+at boundary 88, where notices crossed an earlier input boundary. Two other
+cases start with real C duplicate-option warnings that JS omits; those original
+failures and inputs remain fixed. A separate prerequisite review is underway.
+Forced iron-bar/web attacks and boulder pushing are also under source review.
+The uppercase ing_suffix helper mismatch is a separate lead: C's vowel and
+final-e checks preserve case, while JS lowercases them. The swim caller supplies
+lowercase verbs, so its verified behavior is unaffected. No helper-wide or
+whole-port closure is claimed. Latest official feed remains rank 7 with 659
+unmatched screens and does not identify the latest scored commit.
+
 ## 2026-11-25: article and fruit naming verified for publication
 
 Queued message locations are pushed as `d810959e`; full880 passed on that

@@ -1,0 +1,358 @@
+{
+  "name": "swim-move-danger",
+  "description": "Locked normal debug-startup keyboard proposals with real boots, identification, ring removal and polymorph. Guard knowledge precedes separate liquid effects. Native recording and comparison remain parent work.",
+  "coverage": [
+    "level.ordinary",
+    "mode.debug",
+    "ui.getlin",
+    "ui.more-paging"
+  ],
+  "branches": [
+    "swim-move-danger.pool-unknown",
+    "swim-move-danger.pool-known",
+    "swim-move-danger.pool-bare",
+    "swim-move-danger.pool-m-prefix",
+    "swim-move-danger.known-floor",
+    "swim-move-danger.lava-known-proof",
+    "swim-move-danger.lava-unknown",
+    "swim-move-danger.cobra-pool",
+    "swim-move-danger.blob-pool",
+    "swim-move-danger.clinger-breathing-pool",
+    "swim-move-danger.lava-known-type-unknown-proof",
+    "swim-move-danger.lava-known-no-fire"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "swim-move-danger.pool-unknown",
+      "segment": 0,
+      "screenIncludes": [
+        "MacOS NetHack Version 5.0.0",
+        "You avoid stepping into the pool of water."
+      ],
+      "screenExcludes": [],
+      "screenCells": [
+        {
+          "step": 105,
+          "x": 40,
+          "y": 6,
+          "equals": "@"
+        }
+      ]
+    },
+    {
+      "branch": "swim-move-danger.pool-known",
+      "segment": 1,
+      "screenIncludes": [
+        "MacOS NetHack Version 5.0.0"
+      ],
+      "screenExcludes": [
+        "You avoid"
+      ],
+      "screenCells": [
+        {
+          "step": 114,
+          "x": 41,
+          "y": 6,
+          "equals": "@"
+        }
+      ]
+    },
+    {
+      "branch": "swim-move-danger.pool-bare",
+      "segment": 2,
+      "screenIncludes": [
+        "MacOS NetHack Version 5.0.0",
+        "You avoid stepping into the pool of water."
+      ],
+      "screenExcludes": [],
+      "screenCells": [
+        {
+          "step": 113,
+          "x": 40,
+          "y": 6,
+          "equals": "@"
+        }
+      ]
+    },
+    {
+      "branch": "swim-move-danger.pool-m-prefix",
+      "segment": 3,
+      "screenIncludes": [
+        "MacOS NetHack Version 5.0.0"
+      ],
+      "screenExcludes": [
+        "You avoid"
+      ],
+      "screenCells": [
+        {
+          "step": 106,
+          "x": 41,
+          "y": 6,
+          "equals": "@"
+        }
+      ]
+    },
+    {
+      "branch": "swim-move-danger.known-floor",
+      "segment": 4,
+      "screenIncludes": [
+        "MacOS NetHack Version 5.0.0"
+      ],
+      "screenExcludes": [
+        "You avoid"
+      ],
+      "screenCells": [
+        {
+          "step": 100,
+          "x": 41,
+          "y": 6,
+          "equals": "@"
+        }
+      ]
+    },
+    {
+      "branch": "swim-move-danger.lava-known-proof",
+      "segment": 5,
+      "screenIncludes": [
+        "MacOS NetHack Version 5.0.0"
+      ],
+      "screenExcludes": [
+        "You avoid"
+      ],
+      "screenCells": [
+        {
+          "step": 161,
+          "x": 41,
+          "y": 6,
+          "equals": "@"
+        }
+      ]
+    },
+    {
+      "branch": "swim-move-danger.lava-unknown",
+      "segment": 6,
+      "screenIncludes": [
+        "MacOS NetHack Version 5.0.0",
+        "You avoid stepping into the molten lava."
+      ],
+      "screenExcludes": [],
+      "screenCells": [
+        {
+          "step": 152,
+          "x": 40,
+          "y": 6,
+          "equals": "@"
+        }
+      ]
+    },
+    {
+      "branch": "swim-move-danger.cobra-pool",
+      "segment": 7,
+      "screenIncludes": [
+        "MacOS NetHack Version 5.0.0",
+        "You turn into a cobra!",
+        "You avoid slithering into the pool of water."
+      ],
+      "screenExcludes": [
+        "You avoid stepping"
+      ]
+    },
+    {
+      "branch": "swim-move-danger.blob-pool",
+      "segment": 8,
+      "screenIncludes": [
+        "MacOS NetHack Version 5.0.0",
+        "You turn into an acid blob!",
+        "You avoid oozing into the pool of water."
+      ],
+      "screenExcludes": [
+        "You avoid stepping"
+      ]
+    },
+    {
+      "branch": "swim-move-danger.clinger-breathing-pool",
+      "segment": 9,
+      "screenIncludes": [
+        "MacOS NetHack Version 5.0.0",
+        "You turn into a rock piercer!",
+        "But you aren't drowning.",
+        "You touch bottom."
+      ],
+      "screenExcludes": [
+        "You avoid"
+      ]
+    },
+    {
+      "branch": "swim-move-danger.lava-known-type-unknown-proof",
+      "segment": 10,
+      "screenIncludes": [
+        "MacOS NetHack Version 5.0.0",
+        "You avoid stepping into the molten lava."
+      ],
+      "screenExcludes": [],
+      "screenCells": [
+        {
+          "step": 220,
+          "x": 40,
+          "y": 6,
+          "equals": "@"
+        }
+      ]
+    },
+    {
+      "branch": "swim-move-danger.lava-known-no-fire",
+      "segment": 11,
+      "screenIncludes": [
+        "MacOS NetHack Version 5.0.0",
+        "You avoid stepping into the molten lava."
+      ],
+      "screenExcludes": [],
+      "screenCells": [
+        {
+          "step": 168,
+          "x": 40,
+          "y": 6,
+          "equals": "@"
+        }
+      ]
+    }
+  ],
+  "segments": [
+    {
+      "seed": 7401,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "pool-unknown",
+      "moves": " #levelchange\r15\r               l \u0017blessed fireproof water walking boots\r  \u001b\u001bWa    \u001b\u001bl \u0017pool\r  \u001b\u001bh l    V"
+    },
+    {
+      "seed": 7401,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "pool-known",
+      "moves": " #levelchange\r15\r               l \u0017blessed fireproof water walking boots\r  \u001b\u001bWa    \u001b\u001bl \u0017pool\r  \u001b\u001bh \ta\r    \u001b\u001bl    V"
+    },
+    {
+      "seed": 7401,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "pool-bare",
+      "moves": " #levelchange\r15\r               l \u0017blessed fireproof water walking boots\r  \u001b\u001bWa    \u001b\u001bl \u0017pool\r  \u001b\u001bh Ta    \u001b\u001bl    V"
+    },
+    {
+      "seed": 7401,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "pool-m-prefix",
+      "moves": " #levelchange\r15\r               l \u0017blessed fireproof water walking boots\r  \u001b\u001bWa    \u001b\u001bl \u0017pool\r  \u001b\u001bh ml    V"
+    },
+    {
+      "seed": 7401,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "known-floor",
+      "moves": " #levelchange\r15\r               l \u0017blessed fireproof water walking boots\r  \u001b\u001bWa    \u001b\u001b\ta\r    \u001b\u001bl    V"
+    },
+    {
+      "seed": 7401,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "lava-known-proof",
+      "moves": " #levelchange\r15\r               l \u0017blessed fireproof water walking boots\r  \u001b\u001bWa    \u001b\u001b\u0017uncursed ring of fire resistance\r  \u001b\u001bPbl    \u001b\u001bl \u0017lava\r  \u001b\u001bh \ta\r    \u001b\u001bl    V"
+    },
+    {
+      "seed": 7401,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "lava-unknown",
+      "moves": " #levelchange\r15\r               l \u0017blessed fireproof water walking boots\r  \u001b\u001bWa    \u001b\u001b\u0017uncursed ring of fire resistance\r  \u001b\u001bPbl    \u001b\u001bl \u0017lava\r  \u001b\u001bh l    V"
+    },
+    {
+      "seed": 7401,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "cobra-pool",
+      "moves": " #levelchange\r15\r               l \u0017blessed fireproof water walking boots\r  \u001b\u001bWa    \u001b\u001bl \u0017pool\r  \u001b\u001bh #polyself\rcobra\r   \u001b\u001bl    V"
+    },
+    {
+      "seed": 7401,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "blob-pool",
+      "moves": " #levelchange\r15\r               l \u0017blessed fireproof water walking boots\r  \u001b\u001bWa    \u001b\u001bl \u0017pool\r  \u001b\u001bh #polyself\racid blob\r   \u001b\u001bl    V"
+    },
+    {
+      "seed": 7401,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "clinger-breathing-pool",
+      "moves": " #levelchange\r15\r               l \u0017blessed fireproof water walking boots\r  \u001b\u001bWa    \u001b\u001bl \u0017pool\r  \u001b\u001bh \u0017uncursed amulet of magical breathing\r  \u001b\u001bPb    \u001b\u001b\u0017blessed potion of speed\r  \u001b\u001bqc    \u001b\u001b#polyself\rrock piercer\r   \u001b\u001bl    V"
+    },
+    {
+      "seed": 7401,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "lava-known-type-unknown-proof",
+      "moves": " #levelchange\r15\r               l \u0017blessed fireproof water walking boots\r  \u001b\u001bWa    \u001b\u001b\u0017uncursed ring of fire resistance\r  \u001b\u001bPbl    \u001b\u001bl \u0017lava\r  \u001b\u001bh \ta\r    \u001b\u001b\u0017blessed fireproof water walking boots\r  \u001b\u001bTa    \u001b\u001bWc    \u001b\u001bl    V"
+    },
+    {
+      "seed": 7401,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "lava-known-no-fire",
+      "moves": " #levelchange\r15\r               l \u0017blessed fireproof water walking boots\r  \u001b\u001bWa    \u001b\u001b\u0017uncursed ring of fire resistance\r  \u001b\u001bPbl    \u001b\u001bl \u0017lava\r  \u001b\u001bh \ta\r    \u001b\u001bR    \u001b\u001bl    V"
+    }
+  ],
+  "unchangedOutputHashes": {
+    "pool-unknown": {
+      "screens": "603a1595f11323d75c90fb9d48cda68a6e93f157bfa74ed93b8395ad8f698655",
+      "cursors": "9b65b46cae762e69f31bfa6e7d259fa5ddf2cc571c269c312a881a68d770b097",
+      "rng": "6340e42915c11515416e8c3d5d23047230f6a44ef0844a6e3f34156adf93987e",
+      "slices": "e9700ad25742c18acd4e80d59b84214c2e4d94c429279460a5ca62b3cffb4a44",
+      "frames": "b46fa7dce74b8dec3ee4265685c06bbb819b419c77fe6e9870f7b789adfb4ec9"
+    },
+    "pool-bare": {
+      "screens": "c47bc24c75b578452422dcf38434a9fdb119445e8476316b82aad32153a94aa7",
+      "cursors": "6b962f23bbe7f0862cfd2edffa3b0749bbc1e3c81366cad4552443c8bbb44bb0",
+      "rng": "447386e4f8c4fac498850615350f426a067c9ed9229227457c673da9b8a8ca02",
+      "slices": "dd1e1f2bab88134f794a1642819abd3c24c4c9e332305e710fff374aa835898b",
+      "frames": "b3f9f5946dbe20bdbc86cbec0928cda6c2a2f3ae87f3dab14c144dae9d78832d"
+    },
+    "pool-m-prefix": {
+      "screens": "a8cf69df4d55f118f57148f5656c65b9e8aca9c6baa461774ea233ba4e33c896",
+      "cursors": "ebf1fe557e18ec0a1e3acc72f156db6bd2a6ea7abcff31440edc944199c73f4a",
+      "rng": "cbbb2a69200330257c62dbe4072c598b99b2d1696dbfee1a69937f65477abe0f",
+      "slices": "4fb9ce7b959049bfbadb00c79d2c65e83b2e298c0c28024a25518c0ddbc132ef",
+      "frames": "2c2142b58c3b2f68b7268608cb691163d4378c5c75be49ed23323925f09f6b51"
+    },
+    "known-floor": {
+      "screens": "04cb9e13c3cf9003b8489851467025966e8a9b0af33972dc50c31b5f12e11c49",
+      "cursors": "7fcd807eaa7c2c47c13d81401d92c480b838b459753afe9be55b2e8194707d4b",
+      "rng": "ec0b1bdeb4f279106246fbc239083f3f11893ab47aa5901120e21b9c5b1f1b12",
+      "slices": "4350af8e670986bb9bf2bfff2197e4d53f80f4203ced480ef010dd378317eb83",
+      "frames": "c6d3a06babbec7a367f9aa47e4dbc2791f83d94f1ba773cef23af4dcdd850556"
+    },
+    "lava-unknown": {
+      "screens": "b7d19bb1dcd27337e6d6b3a5d25801b8bc1c154dd60df128f48ad765f7aeaa68",
+      "cursors": "919f95088b705781e3c822932f91f45ca2c8aecc9e76c5b9177f2440094da3d6",
+      "rng": "692c7ebb58e466dda596d48c44b1e7eea279b50eca69116a02a55e6a1d2805a6",
+      "slices": "bbe0fc703ec5e001fcd2d4effe95851419e134cb29c2e2c77071c581cd26bd50",
+      "frames": "f64e5a9a7839e91b65c9a2b7a071f1d9dfe91025de9c63a3973c06dafa62e40e"
+    },
+    "lava-known-type-unknown-proof": {
+      "screens": "7af740837d0b8f9f6aa8d4e63ac7ecae2f92bd9161b8b16e031578303a051e41",
+      "cursors": "bb72b3964460a45481ce52f66178f361e8d6eb436f477641a93c955ba8de6367",
+      "rng": "357dd3ffd6b359ed3e944bc04794a8c48429dbdb9a2fa1494649c0ab2cfcbe28",
+      "slices": "d81b778cefe289ebc77fe8096d03f4ea930d59c1e2a7137a0df641fd8c63a68f",
+      "frames": "6bc07bf008078f83c792c965b5fb80a94d30aec398ef0f34c3a0e37f2ab6eacb"
+    },
+    "lava-known-no-fire": {
+      "screens": "71e0ab102ba9e716cb8ce7bf2abba196a3b1a1a5696bdccc4b3b61b60818dd7a",
+      "cursors": "d67fd3a70081a6b62b69e7e8e0c9cbffcbde89b32845cdcf582c108ed2100b66",
+      "rng": "84830ba8754e15dad623cf87423005ff46915897e8e3cb0cf0ce7d43988bb51e",
+      "slices": "b3d9bcf91db2f0f15ac3e6e0265cda278f10759a1b4aeaa6b57ee0eed5560ad8",
+      "frames": "17c069b7fc77bd757bffbe729cd1d5e470ec629448b2bdd9642ef2d7645638a4"
+    }
+  }
+}

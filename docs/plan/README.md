@@ -13,7 +13,7 @@ Ground rules are in `/CLAUDE.md`. Read that first if you have not.
 ## Current focus, 2026-11-25
 
 Continue the faithful port with readable C-aligned code and prompt verified
-pushes. The live leaderboard rechecked November 25 at 04:36 UTC has
+pushes. The live leaderboard rechecked November 25 at 06:20 UTC has
 23,816 of 24,531 combined screens and rank 7 among agentic entries. Public
 remains 44/44; held-out improves to 40/56, with 715 screens unmatched.
 Animations are 3,776/4,489. The row was scored at 02:36:49 UTC, adding one
@@ -374,9 +374,13 @@ repair passes all 22 parent checks, 64 controls, twenty focused fixtures,
 and 9,356 calls, fixing twelve screens. Three negatives retain all five hashes.
 Corpus: 853. Full849 excludes this checkpoint.
 
-The lava menu prerequisite restores all twelve original cases in its fixed
-candidate. Six new levitation writer cases independently match 1,052 boundaries
-and 18,663 calls. Their joint parent regression is next.
+Half-damage checkpoint `aad91cad` is pushed. Lava sinking and its levitation
+menu prerequisite pass all 32 parent checks, 102 controls, twenty focused
+fixtures, 44 public sessions and 64 bounded workers. Twelve original lava
+cases match 3,339 styled boundaries and 39,631 calls, fixing 319 screens,
+146 cursors and 99 input slices. Six writer cases match 1,052 boundaries and
+18,663 calls, fixing sixteen screens and two cursors. Five lava and four writer
+cases retain all five hashes. Corpus: 855. Full849 excludes this checkpoint.
 
 The coherent text/history candidate remains unpublished. Its 26 history and
 retained cases match C. One of four new caller cases has the pre-existing
@@ -387,7 +391,7 @@ bounded-worker, source and seventeen syntax checks pass. The whole four-case
 caller diagnostic remains preserved outside passing-corpus admission.
 
 The latest independently verified NFS union reaches 4,594/5,492 functions and
-61,390/107,260 branch outcomes across 849 credited inputs and 116 layouts.
+61,397/107,260 branch outcomes across 851 credited inputs and 117 layouts.
 This measures C reach, not complete JS parity. Source audits continue for
 half-damage combat, town fountains, nonfree saving, elapsed time and text
 production while a page is being filled.

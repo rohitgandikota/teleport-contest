@@ -10295,6 +10295,69 @@ The text/history candidate will follow with its terrain and remaining menu
 cancellation prerequisites plus the full regression. No held-out gain is
 inferred from these local results.
 
+## 2026-11-25 06:27 UTC: lava and levitation verified; live board unchanged
+
+The half-damage checkpoint is pushed as
+`aad91cad50031c9aa9e9a3edac5e646703f81862`. The live browser recheck around
+06:20 UTC still shows rank 7, 715/24,531 unmatched, 44/44 public, 40/56 held-out
+and 3,776/4,489 animations. Its last scoring time remains 02:36:49 UTC, before
+these latest commits; no scored commit is exposed. The latest visible news is
+still the November 14 readability follow-up. Search-index text is older than
+the live page and was not used for current standings. Receipt:
+leaderboard-20261125-0620.json.
+
+The lava/levitation v2 composition independently passes all 32 checks and
+102 controls: 21 lava source, 23 intrinsic source, 25 lava input, thirteen
+writer input, thirteen lava native and seven writer native controls. Twenty
+focused fixtures match 25,019 screens/cursors, 557,785 scored RNG positions
+and 129 frames. All 44 public sessions and 64 bounded workers pass. Eight
+strict/deferred fixtures retain 93 segments, 17,294 styled boundaries,
+296,634 complete calls and 129 frames.
+
+Twelve original lava cases improve from 3,020/3,339 styled boundaries,
+3,193/3,339 cursors and 3,240/3,339 slices to complete equality. The complete
+39,631-call C stream matches; the old runtime emitted 39,885 calls. Six
+levitation writer cases improve from 1,036/1,052 styled boundaries and
+1,050/1,052 cursors to complete equality, retaining all 18,663 calls.
+Five lava cases and four writer cases retain all five output hashes. Two of
+the writer cases change canonical state while preserving those outputs.
+Lava case 10 is not an unchanged-output negative after this composition:
+its intrinsic-menu grids are legitimately repaired.
+
+Only trap.js::sink_into_lava and the levitation reader/writer in wizcmds.js
+change. Integration preserves all 853 earlier raw files, fixes all 279
+runtime hashes, copies eleven exact support files and appends eighteen
+registry entries. Corpus: 855. Verification SHA:
+`c750f4d5e8341a9539bbc96714ffd2f3570bd333f9014fa5c7b5abf4c71bbfbe`.
+Publish promptly. Full849 excludes this change. Unrescued death, exhausted
+teleport destinations and unusual slime flags remain source-inspection
+limits; no whole-port or literal ANSI-byte parity is claimed.
+
+The first parent composition stopped because the new state gate, as well as
+the input gate, needed the packet decoder. Its original failure is preserved
+in lava-levitation-parent-import-failure.json. V2 redirects both test imports
+to the byte-identical existing frozen decoder. It changes no runtime, C raw,
+comparison rule or original log. All original source seals remain unchanged.
+
+The NFS half-damage/levitation union independently verifies: 851 credited
+inputs, 117 layouts, 4,594/5,492 functions and 61,397/107,260 outcomes. The
+seven additional outcomes retain all 116 previous run records and platform
+rejection/control hashes. Summary SHA:
+`7b58ed80c110967b034b50e578ed3a5f8108ab4fc11ac5d9c7fdc264c0cf3bdd`.
+Compact SHA:
+`cb0a4d0acb146465276cbeb4b17974987ecd96394b0dba99e8af7b0d2420595c`.
+Bulk LLVM data remains on NFS; only seven compact JSON files were downloaded.
+This is C branch reach, distinct from maintained-corpus counts and JS parity.
+
+The text v2 runtime/check builders are prepared, not yet executed. They add
+the terrain and three menu-cancellation caller repairs after this checkpoint.
+Parent has read all three complete C/JS callers and the source report. The
+new ten-case menu proposal is still awaiting the final source seal and parent
+recording. Preserve the original text v1 failures. Keep the entire four-case
+config-path diagnostic outside passing-corpus admission and compare both
+runtimes without masking its one known failure. Then run the complete corpus
+before promoting the shared text/input owner.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

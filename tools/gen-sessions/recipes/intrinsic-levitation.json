@@ -1,0 +1,121 @@
+{
+  "name": "intrinsic-levitation-prerequisite",
+  "description": "Unchanged original C recordings for lava sinking and its canonical levitation menu prerequisite. All input fields, keys and native outputs remain original. Constructed state controls are separate.",
+  "segments": [
+    {
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "name": "fresh-levitation-selection",
+      "moves": " #levelchange\r30\r                             l    \u001b\u001b\u0017blessed scroll of genocide\r    \u001b\u001bra  *\r    \u001b\u001b#wizintrinsic\r7q\r    \u001b\u001b.    \u001b\u001b#wizintrinsic\r\u001b    \u001b\u001bi    \u001b\u001b",
+      "steps": []
+    },
+    {
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "name": "potion-levitation-increment",
+      "moves": " #levelchange\r30\r                             l    \u001b\u001b\u0017blessed scroll of genocide\r    \u001b\u001bra  *\r    \u001b\u001b\u0017blessed potion of levitation\r    \u001b\u001bqb    \u001b\u001b#wizintrinsic\r7q\r    \u001b\u001b.    \u001b\u001b#wizintrinsic\r\u001b    \u001b\u001bi    \u001b\u001b",
+      "steps": []
+    },
+    {
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "name": "ring-levitation-increment",
+      "moves": " #levelchange\r30\r                             l    \u001b\u001b\u0017blessed scroll of genocide\r    \u001b\u001bra  *\r    \u001b\u001b\u0017uncursed ring of levitation\r    \u001b\u001bPbl    \u001b\u001b#wizintrinsic\r7q\r    \u001b\u001b.    \u001b\u001b#wizintrinsic\r\u001b    \u001b\u001bi    \u001b\u001b",
+      "steps": []
+    },
+    {
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "name": "potion-levitation-clamp",
+      "moves": " #levelchange\r30\r                             l    \u001b\u001b\u0017blessed scroll of genocide\r    \u001b\u001bra  *\r    \u001b\u001b\u0017blessed potion of levitation\r    \u001b\u001bqb    \u001b\u001b#wizintrinsic\r16777215q\r    \u001b\u001b.    \u001b\u001b#wizintrinsic\r\u001b    \u001b\u001bi    \u001b\u001b",
+      "steps": []
+    },
+    {
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "name": "empty-menu-negative",
+      "moves": " #levelchange\r30\r                             l    \u001b\u001b\u0017blessed scroll of genocide\r    \u001b\u001bra  *\r    \u001b\u001b#wizintrinsic\r\u001b    \u001b\u001bi    \u001b\u001b",
+      "steps": []
+    },
+    {
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "name": "slime-menu-negative",
+      "moves": " #levelchange\r30\r                             l    \u001b\u001b\u0017blessed scroll of genocide\r    \u001b\u001bra  *\r    \u001b\u001b#wizintrinsic\r100c\r    \u001b\u001b#wizintrinsic\r\u001b    \u001b\u001bi    \u001b\u001b",
+      "steps": []
+    }
+  ],
+  "coverage": [
+    "level.ordinary",
+    "mode.debug",
+    "object.armor",
+    "survival.timed-status",
+    "ui.getlin",
+    "ui.menus",
+    "ui.more-paging"
+  ],
+  "requireBranchAssertions": true,
+  "branches": [
+    "intrinsic-levitation.fresh-levitation-selection",
+    "intrinsic-levitation.potion-levitation-increment",
+    "intrinsic-levitation.ring-levitation-increment",
+    "intrinsic-levitation.potion-levitation-clamp",
+    "intrinsic-levitation.empty-menu-negative",
+    "intrinsic-levitation.slime-menu-negative"
+  ],
+  "branchAssertions": [
+    {
+      "branch": "intrinsic-levitation.fresh-levitation-selection",
+      "segment": 0,
+      "screenIncludes": [
+        "Which intrinsics?",
+        "Timeout for levitating set to 7."
+      ]
+    },
+    {
+      "branch": "intrinsic-levitation.potion-levitation-increment",
+      "segment": 1,
+      "screenIncludes": [
+        "Which intrinsics?",
+        "Timeout for levitating increased by 7."
+      ]
+    },
+    {
+      "branch": "intrinsic-levitation.ring-levitation-increment",
+      "segment": 2,
+      "screenIncludes": [
+        "Which intrinsics?",
+        "Timeout for levitating set to 7."
+      ]
+    },
+    {
+      "branch": "intrinsic-levitation.potion-levitation-clamp",
+      "segment": 3,
+      "screenIncludes": [
+        "Which intrinsics?",
+        "Timeout for levitating increased by 16777215."
+      ]
+    },
+    {
+      "branch": "intrinsic-levitation.empty-menu-negative",
+      "segment": 4,
+      "screenIncludes": [
+        "Which intrinsics?"
+      ]
+    },
+    {
+      "branch": "intrinsic-levitation.slime-menu-negative",
+      "segment": 5,
+      "screenIncludes": [
+        "Which intrinsics?",
+        "You are turning into slime."
+      ]
+    }
+  ]
+}

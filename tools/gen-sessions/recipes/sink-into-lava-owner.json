@@ -1,0 +1,257 @@
+{
+  "name": "sink-into-lava-owner",
+  "description": "Unchanged original C recordings for lava sinking and its canonical levitation menu prerequisite. All input fields, keys and native outputs remain original. Constructed state controls are separate.",
+  "coverage": [
+    "level.ordinary",
+    "mode.debug",
+    "object.armor",
+    "terrain.water-lava",
+    "survival.timed-status",
+    "ui.getlin",
+    "ui.menus",
+    "ui.more-paging"
+  ],
+  "requireBranchAssertions": true,
+  "branches": [
+    "sink-into-lava.stationary-short-slime",
+    "sink-into-lava.stationary-long-slime",
+    "sink-into-lava.fatal-slime-lifesaving",
+    "sink-into-lava.fatal-delayed-killer-chain",
+    "sink-into-lava.fatal-blocked-levitation",
+    "sink-into-lava.fatal-blocked-flight",
+    "sink-into-lava.moving-slime-negative",
+    "sink-into-lava.stationary-no-slime-negative",
+    "sink-into-lava.fatal-no-slime-negative",
+    "sink-into-lava.floor-slime-negative",
+    "sink-into-lava.terrain-caller-reset-negative",
+    "sink-into-lava.moving-no-slime-negative"
+  ],
+  "branchAssertions": [
+    {
+      "branch": "sink-into-lava.stationary-short-slime",
+      "segment": 0,
+      "screenIncludes": [
+        "You sink deeper into the lava.",
+        "The slime that covers you is burned away!"
+      ]
+    },
+    {
+      "branch": "sink-into-lava.stationary-long-slime",
+      "segment": 1,
+      "screenIncludes": [
+        "You are turning into slime.",
+        "You sink deeper into the lava."
+      ],
+      "screenExcludes": [
+        "The slime that covers you is burned away!"
+      ]
+    },
+    {
+      "branch": "sink-into-lava.fatal-slime-lifesaving",
+      "segment": 2,
+      "screenIncludes": [
+        "You sink below the surface and die.",
+        "The slime that covers you is burned away!",
+        "The medallion crumbles to dust!"
+      ]
+    },
+    {
+      "branch": "sink-into-lava.fatal-delayed-killer-chain",
+      "segment": 3,
+      "screenIncludes": [
+        "You are turning into stone.",
+        "You sink below the surface and die.",
+        "The slime that covers you is burned away!",
+        "The medallion crumbles to dust!"
+      ]
+    },
+    {
+      "branch": "sink-into-lava.fatal-blocked-levitation",
+      "segment": 4,
+      "screenIncludes": [
+        "Your body pulls upward, but your legs are still stuck.",
+        "The slime that covers you is burned away!",
+        "The medallion crumbles to dust!"
+      ],
+      "screenExcludes": [
+        "You materialize in a different location!"
+      ]
+    },
+    {
+      "branch": "sink-into-lava.fatal-blocked-flight",
+      "segment": 5,
+      "screenIncludes": [
+        "You sink below the surface and die.",
+        "The slime that covers you is burned away!",
+        "OK, so you don't die."
+      ],
+      "screenExcludes": [
+        "You materialize in a different location!"
+      ]
+    },
+    {
+      "branch": "sink-into-lava.moving-slime-negative",
+      "segment": 6,
+      "screenIncludes": [
+        "You are turning into slime.",
+        "You are stuck in the lava."
+      ],
+      "screenExcludes": [
+        "The slime that covers you is burned away!",
+        "You sink deeper into the lava."
+      ]
+    },
+    {
+      "branch": "sink-into-lava.stationary-no-slime-negative",
+      "segment": 7,
+      "screenIncludes": [
+        "You sink deeper into the lava."
+      ],
+      "screenExcludes": [
+        "The slime that covers you is burned away!"
+      ]
+    },
+    {
+      "branch": "sink-into-lava.fatal-no-slime-negative",
+      "segment": 8,
+      "screenIncludes": [
+        "You sink below the surface and die.",
+        "The medallion crumbles to dust!"
+      ],
+      "screenExcludes": [
+        "The slime that covers you is burned away!"
+      ]
+    },
+    {
+      "branch": "sink-into-lava.floor-slime-negative",
+      "segment": 9,
+      "screenIncludes": [
+        "You are turning into slime."
+      ],
+      "screenExcludes": [
+        "The slime that covers you is burned away!",
+        "You sink deeper into the lava."
+      ]
+    },
+    {
+      "branch": "sink-into-lava.terrain-caller-reset-negative",
+      "segment": 10,
+      "screenIncludes": [
+        "Room floor.",
+        "You are turning into slime."
+      ],
+      "screenExcludes": [
+        "The slime that covers you is burned away!"
+      ]
+    },
+    {
+      "branch": "sink-into-lava.moving-no-slime-negative",
+      "segment": 11,
+      "screenIncludes": [
+        "You are stuck in the lava."
+      ],
+      "screenExcludes": [
+        "The slime that covers you is burned away!",
+        "You sink deeper into the lava."
+      ]
+    }
+  ],
+  "segments": [
+    {
+      "name": "stationary-short-slime",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "moves": " #levelchange\r30\r                             l    \u001b\u001b\u0017blessed scroll of genocide\r    \u001b\u001bra  *\r    \u001b\u001b\u0017uncursed ring of fire resistance\r    \u001b\u001bPbl    \u001b\u001b\u0017lava\r    \u001b\u001b#wizintrinsic\r2c\r    \u001b\u001b.    \u001b\u001bi    \u001b\u001b",
+      "steps": []
+    },
+    {
+      "name": "stationary-long-slime",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "moves": " #levelchange\r30\r                             l    \u001b\u001b\u0017blessed scroll of genocide\r    \u001b\u001bra  *\r    \u001b\u001b\u0017uncursed ring of fire resistance\r    \u001b\u001bPbl    \u001b\u001b\u0017lava\r    \u001b\u001b#wizintrinsic\r100c\r    \u001b\u001b.    \u001b\u001b.    \u001b\u001b.    \u001b\u001bi    \u001b\u001b",
+      "steps": []
+    },
+    {
+      "name": "fatal-slime-lifesaving",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "moves": " #levelchange\r30\r                             l    \u001b\u001b\u0017blessed scroll of genocide\r    \u001b\u001bra  *\r    \u001b\u001b\u0017uncursed ring of fire resistance\r    \u001b\u001bPbl    \u001b\u001b\u0017lava\r    \u001b\u001b\u0017uncursed amulet of life saving\r    \u001b\u001bPc    \u001b\u001b#wizintrinsic\r100c\r    \u001b\u001b.    \u001b\u001b.    \u001b\u001b.    \u001b\u001b.    \u001b\u001b.    \u001b\u001b.    \u001b\u001b.    \u001b\u001b.    \u001b\u001b.    \u001b\u001b.    \u001b\u001b.    \u001b\u001b.    \u001b\u001b.    \u001b\u001b.    \u001b\u001b.    \u001b\u001b.    \u001b\u001b.    \u001b\u001b.    \u001b\u001b.    \u001b\u001b.    \u001b\u001bi    \u001b\u001b",
+      "steps": []
+    },
+    {
+      "name": "fatal-delayed-killer-chain",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "moves": " #levelchange\r30\r                             l    \u001b\u001b\u0017blessed scroll of genocide\r    \u001b\u001bra  *\r    \u001b\u001b\u0017uncursed ring of fire resistance\r    \u001b\u001bPbl    \u001b\u001b\u0017lava\r    \u001b\u001b\u0017uncursed amulet of life saving\r    \u001b\u001bPc    \u001b\u001b#wizintrinsic\r100b100c\r    \u001b\u001b.    \u001b\u001b.    \u001b\u001b.    \u001b\u001b.    \u001b\u001b.    \u001b\u001b.    \u001b\u001b.    \u001b\u001b.    \u001b\u001b.    \u001b\u001b.    \u001b\u001b.    \u001b\u001b.    \u001b\u001b.    \u001b\u001b.    \u001b\u001b.    \u001b\u001b.    \u001b\u001b.    \u001b\u001b.    \u001b\u001b.    \u001b\u001b.    \u001b\u001bi    \u001b\u001b",
+      "steps": []
+    },
+    {
+      "name": "fatal-blocked-levitation",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "moves": " #levelchange\r30\r                             l    \u001b\u001b\u0017blessed scroll of genocide\r    \u001b\u001bra  *\r    \u001b\u001b\u0017uncursed ring of fire resistance\r    \u001b\u001bPbl    \u001b\u001b\u0017lava\r    \u001b\u001b\u0017uncursed amulet of life saving\r    \u001b\u001bPc    \u001b\u001b\u0017blessed potion of levitation\r    \u001b\u001bqd    \u001b\u001b#wizintrinsic\r100b100c\r    \u001b\u001b.    \u001b\u001b.    \u001b\u001b.    \u001b\u001b.    \u001b\u001b.    \u001b\u001b.    \u001b\u001b.    \u001b\u001b.    \u001b\u001b.    \u001b\u001b.    \u001b\u001b.    \u001b\u001b.    \u001b\u001b.    \u001b\u001b.    \u001b\u001b.    \u001b\u001b.    \u001b\u001b.    \u001b\u001b.    \u001b\u001b.    \u001b\u001b.    \u001b\u001bi    \u001b\u001b",
+      "steps": []
+    },
+    {
+      "name": "fatal-blocked-flight",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "moves": " #levelchange\r30\r                             l    \u001b\u001b\u0017blessed scroll of genocide\r    \u001b\u001bra  *\r    \u001b\u001b\u0017uncursed ring of fire resistance\r    \u001b\u001bPbl    \u001b\u001b\u0017lava\r    \u001b\u001b\u0017uncursed amulet of flying\r    \u001b\u001bPc    \u001b\u001b#wizintrinsic\r100b100c\r    \u001b\u001b.    \u001b\u001b.    \u001b\u001b.    \u001b\u001b.    \u001b\u001b.    \u001b\u001b.    \u001b\u001b.    \u001b\u001b.    \u001b\u001b.    \u001b\u001b.    \u001b\u001b.    \u001b\u001b.    \u001b\u001b.    \u001b\u001b.    \u001b\u001b.    \u001b\u001b.    \u001b\u001b.    \u001b\u001b.    \u001b\u001b.    \u001b\u001b.    \u001b\u001bi    \u001b\u001b",
+      "steps": []
+    },
+    {
+      "name": "moving-slime-negative",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "moves": " #levelchange\r30\r                             l    \u001b\u001b\u0017blessed scroll of genocide\r    \u001b\u001bra  *\r    \u001b\u001b\u0017uncursed ring of fire resistance\r    \u001b\u001bPbl    \u001b\u001b\u0017lava\r    \u001b\u001b#wizintrinsic\r100c\r    \u001b\u001bh    \u001b\u001bi    \u001b\u001b",
+      "steps": []
+    },
+    {
+      "name": "stationary-no-slime-negative",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "moves": " #levelchange\r30\r                             l    \u001b\u001b\u0017blessed scroll of genocide\r    \u001b\u001bra  *\r    \u001b\u001b\u0017uncursed ring of fire resistance\r    \u001b\u001bPbl    \u001b\u001b\u0017lava\r    \u001b\u001b.    \u001b\u001b.    \u001b\u001b.    \u001b\u001bi    \u001b\u001b",
+      "steps": []
+    },
+    {
+      "name": "fatal-no-slime-negative",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "moves": " #levelchange\r30\r                             l    \u001b\u001b\u0017blessed scroll of genocide\r    \u001b\u001bra  *\r    \u001b\u001b\u0017uncursed ring of fire resistance\r    \u001b\u001bPbl    \u001b\u001b\u0017lava\r    \u001b\u001b\u0017uncursed amulet of life saving\r    \u001b\u001bPc    \u001b\u001b.    \u001b\u001b.    \u001b\u001b.    \u001b\u001b.    \u001b\u001b.    \u001b\u001b.    \u001b\u001b.    \u001b\u001b.    \u001b\u001b.    \u001b\u001b.    \u001b\u001b.    \u001b\u001b.    \u001b\u001b.    \u001b\u001b.    \u001b\u001b.    \u001b\u001b.    \u001b\u001b.    \u001b\u001b.    \u001b\u001b.    \u001b\u001b.    \u001b\u001bi    \u001b\u001b",
+      "steps": []
+    },
+    {
+      "name": "floor-slime-negative",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "moves": " #levelchange\r30\r                             l    \u001b\u001b\u0017blessed scroll of genocide\r    \u001b\u001bra  *\r    \u001b\u001b#wizintrinsic\r100c\r    \u001b\u001b.    \u001b\u001bi    \u001b\u001b",
+      "steps": []
+    },
+    {
+      "name": "terrain-caller-reset-negative",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "moves": " #levelchange\r30\r                             l    \u001b\u001b\u0017blessed scroll of genocide\r    \u001b\u001bra  *\r    \u001b\u001b\u0017uncursed ring of fire resistance\r    \u001b\u001bPbl    \u001b\u001b\u0017lava\r    \u001b\u001b\u0017uncursed amulet of life saving\r    \u001b\u001bPc    \u001b\u001b\u0017blessed potion of levitation\r    \u001b\u001bqd    \u001b\u001b\u0017floor\r    \u001b\u001b#wizintrinsic\r100c\r    \u001b\u001b.    \u001b\u001bi    \u001b\u001b",
+      "steps": []
+    },
+    {
+      "name": "moving-no-slime-negative",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "moves": " #levelchange\r30\r                             l    \u001b\u001b\u0017blessed scroll of genocide\r    \u001b\u001bra  *\r    \u001b\u001b\u0017uncursed ring of fire resistance\r    \u001b\u001bPbl    \u001b\u001b\u0017lava\r    \u001b\u001bh    \u001b\u001bi    \u001b\u001b",
+      "steps": []
+    }
+  ]
+}

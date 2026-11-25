@@ -18,6 +18,7 @@ import { make_glib, make_hallucinated, toggle_blindness } from './potion.js';
 import { end_burn } from './timeout.js';
 import { setnotworn, which_armor } from './worn.js';
 import { game } from './gstate.js';
+import { shk_your } from './shk.js';
 import { mons } from './monst_data.js';
 import { objects, ONAMES, OCLASSES } from './objects_data.js';
 import { W_ARM, W_ARMC, W_ARMH, W_ARMS, W_ARMG, W_ARMF, W_ARMU, W_TOOL,
@@ -47,7 +48,7 @@ import { ERODE_BURN, ERODE_RUST, ERODE_CRACK, ERODE_ROT, ERODE_CORRODE,
 import { set_occupation, stop_occupation } from './allmain.js';
 import { newsym, pline, see_monsters } from './display.js';
 import { There, You, You_feel, You_cant, Your, impossible } from './pline.js';
-import { an, ansimpleoname, xname, doname, the, safe_typename, Tobjnam, gloves_simple_name,
+import { an, ansimpleoname, xname, yname, doname, the, safe_typename, Tobjnam, gloves_simple_name,
          boots_simple_name, suit_simple_name, Yname2, makeplural,
          makesingular, otense, corpse_xname, CXN_NOCORPSE,
          CXN_NOARTICLE, CXN_SINGULAR, CXN_ARTICLE, thesimpleoname,
@@ -2787,6 +2788,48 @@ export function adj_abon(otmp, delta) {
         }
         (game.disp ||= {}).botl = true;
     }
+}
+
+// src/do_wear.c:3342 inaccessible_equipment(), covered worn equipment.
+// Silent selection checks return a boolean; feedback completes before true.
+export function inaccessible_equipment(obj, verb, only_if_known_cursed) {
+    const anycovering = !only_if_known_cursed;
+    const { uarm, uarmc, uarmu, uarmg, uleft, uright } = game.u;
+
+    if (!obj || !obj.owornmask)
+        return false;
+
+    if (obj === uarm && uarmc
+        && (anycovering || (uarmc.cursed && uarmc.bknown))) {
+        if (verb)
+            return You(`need to take off ${yname(uarmc)} to ${verb} ${yname(obj)}.`)
+                .then(() => true);
+        return true;
+    }
+    if (obj === uarmu
+        && ((uarm && (anycovering || (uarm.cursed && uarm.bknown)))
+            || (uarmc && (anycovering || (uarmc.cursed && uarmc.bknown))))) {
+        if (verb) {
+            const sameprefix = uarm && uarmc
+                && shk_your(uarmc) === shk_your(uarm);
+            let buf = uarmc ? yname(uarmc) : '';
+            if (uarm && uarmc)
+                buf += ' and ';
+            if (uarm)
+                buf += sameprefix ? xname(uarm) : yname(uarm);
+            return You(`need to take off ${buf} to ${verb} ${yname(obj)}.`)
+                .then(() => true);
+        }
+        return true;
+    }
+    if ((obj === uleft || obj === uright) && uarmg
+        && (anycovering || (uarmg.cursed && uarmg.bknown))) {
+        if (verb)
+            return You(`need to take off ${yname(uarmg)} to ${verb} ${yname(obj)}.`)
+                .then(() => true);
+        return true;
+    }
+    return false;
 }
 
 // src/do_wear.c:3144 wornarm_destroyed(), take a destroyed piece of worn

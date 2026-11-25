@@ -1,0 +1,259 @@
+{
+  "name": "dodip-query-owner",
+  "description": "Fifteen original C recordings cover covered-equipment refusal, floor-feature reach and bypass, queued dipping confirmations, repeat and potion fallback. Existing effect owners remain unchanged.",
+  "coverage": [
+    "mode.debug",
+    "terrain.furniture",
+    "object.potions",
+    "object.armor",
+    "object.rings",
+    "ui.count-repeat"
+  ],
+  "requireBranchAssertions": true,
+  "branches": [
+    "potion.dodip.context-menu-confirmation",
+    "potion.dodip.declined-fountain",
+    "potion.dodip.menu-prefix-bypass",
+    "potion.dodip.levitation-bypass",
+    "potion.dodip.covered-suit",
+    "potion.dodip.covered-shirt",
+    "potion.dodip.covered-ring",
+    "potion.dodip.item-action-covered-suit",
+    "potion.dodip.sink-repeat-confirmation",
+    "potion.dodip.declined-pool",
+    "potion.dodip.cancel-target-negative",
+    "potion.dodip.no-feature-negative",
+    "potion.dodip.ordinary-fountain-negative",
+    "potion.dodip.cancel-potion-negative",
+    "potion.dodip.ordinary-pool-negative"
+  ],
+  "branchAssertions": [
+    {
+      "branch": "potion.dodip.context-menu-confirmation",
+      "segment": 0,
+      "screenIncludes": [
+        "Your dagger rusts!"
+      ],
+      "source": "cmd.c MCMD_DIP supplies [dodip, USER_INPUT, y]; y_n consumes it. Queue identity is separately JS-observed."
+    },
+    {
+      "branch": "potion.dodip.declined-fountain",
+      "segment": 1,
+      "screenIncludes": [
+        "You don't have anything else to dip a dagger into."
+      ],
+      "source": "potion.c:2322 increments drink_ok_extra; the real drink_ok callback supplies GETOBJ_EXCLUDE_NONINVENT."
+    },
+    {
+      "branch": "potion.dodip.menu-prefix-bypass",
+      "segment": 2,
+      "screenIncludes": [
+        "You don't have anything to dip a dagger into."
+      ],
+      "source": "potion.c:2297 menu_requested bypasses all floor queries."
+    },
+    {
+      "branch": "potion.dodip.levitation-bypass",
+      "segment": 3,
+      "screenIncludes": [
+        "You don't have anything to dip a dagger into."
+      ],
+      "source": "engrave.c:187 rejects worn-ring Levitation on the ordinary dungeon; potion.c:2298 skips the floor."
+    },
+    {
+      "branch": "potion.dodip.covered-suit",
+      "segment": 4,
+      "screenIncludes": [
+        "You need to take off your cloak of protection to dip your leather armor."
+      ],
+      "source": "do_wear.c:3358 requires cloak removal before dipping a worn suit."
+    },
+    {
+      "branch": "potion.dodip.covered-shirt",
+      "segment": 5,
+      "screenIncludes": [
+        "You need to take off your cloak of protection and leather armor to dip your"
+      ],
+      "source": "do_wear.c:3367 names cloak then suit with one common ownership prefix."
+    },
+    {
+      "branch": "potion.dodip.covered-ring",
+      "segment": 6,
+      "screenIncludes": [
+        "You need to take off your pair of riding gloves to dip your wooden ring."
+      ],
+      "source": "do_wear.c:3393 gloves block the worn ring."
+    },
+    {
+      "branch": "potion.dodip.item-action-covered-suit",
+      "segment": 7,
+      "screenIncludes": [
+        "You need to take off your cloak of protection to dip your leather armor."
+      ],
+      "source": "iactions.c:159 queues dip_into plus potion invlet; potion.c:2406 uses the same post-selection access feedback."
+    },
+    {
+      "branch": "potion.dodip.sink-repeat-confirmation",
+      "segment": 8,
+      "screenIncludes": [
+        "Your dagger rusts further!"
+      ],
+      "source": "potion.c:2327 y_n records y in CQ_REPEAT; Ctrl-A repeats without a fresh confirmation."
+    },
+    {
+      "branch": "potion.dodip.declined-pool",
+      "segment": 9,
+      "screenIncludes": [
+        "You don't have anything else to dip a dagger into."
+      ],
+      "source": "potion.c:2362 increments the same declined-feature state for a pool."
+    },
+    {
+      "branch": "potion.dodip.cancel-target-negative",
+      "segment": 10,
+      "screenIncludes": [
+        "Never mind."
+      ],
+      "source": "potion.c:2280 returns ECMD_CANCEL at target selection."
+    },
+    {
+      "branch": "potion.dodip.no-feature-negative",
+      "segment": 11,
+      "screenIncludes": [
+        "You don't have anything to dip a dagger into."
+      ],
+      "source": "potion.c:2369 falls through to the ordinary potion selector with no floor alternative."
+    },
+    {
+      "branch": "potion.dodip.ordinary-fountain-negative",
+      "segment": 12,
+      "screenIncludes": [
+        "Your dagger rusts!"
+      ],
+      "source": "Unchanged ordinary physical fountain yes; fixing queue recording changes internal repeat state without changing these five visible/recorded outputs."
+    },
+    {
+      "branch": "potion.dodip.cancel-potion-negative",
+      "segment": 13,
+      "screenIncludes": [
+        "Never mind."
+      ],
+      "source": "Unchanged second-selection Escape before potion_dip."
+    },
+    {
+      "branch": "potion.dodip.ordinary-pool-negative",
+      "segment": 14,
+      "screenIncludes": [
+        "Your dagger rusts!"
+      ],
+      "source": "Unchanged ordinary water-walking pool yes invokes water_damage."
+    }
+  ],
+  "segments": [
+    {
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "name": "context-menu-confirmation",
+      "moves": " \u0017dagger\n\u0017apple\n\u0017fountain\n#herecmdmenu\nb?:dagger\n"
+    },
+    {
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "name": "declined-fountain",
+      "moves": " \u0017dagger\n\u0017fountain\n#dip\nan"
+    },
+    {
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "name": "menu-prefix-bypass",
+      "moves": " \u0017dagger\n\u0017fountain\nm#dip\na"
+    },
+    {
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "name": "levitation-bypass",
+      "moves": " \u0017dagger\n\u0017fountain\n\u0017ring of levitation\nPbl #dip\na"
+    },
+    {
+      "seed": 9771,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "name": "covered-suit",
+      "moves": " \u0017leather armor\nWa \u0017cloak of protection\nWb #dip\na"
+    },
+    {
+      "seed": 9771,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "name": "covered-shirt",
+      "moves": " \u0017Hawaiian shirt\nWa \u0017leather armor\nWb \u0017cloak of protection\nWc #dip\na "
+    },
+    {
+      "seed": 9771,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "name": "covered-ring",
+      "moves": " \u0017ring of searching\nPal\u0017leather gloves\nWb #dip\na"
+    },
+    {
+      "seed": 9771,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "name": "item-action-covered-suit",
+      "moves": " \u0017leather armor\nWa \u0017cloak of protection\nWb \u0017potion of water\nicaa"
+    },
+    {
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "name": "sink-repeat-confirmation",
+      "moves": " \u0017dagger\n\u0017sink\n#dip\nay\u0001"
+    },
+    {
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "name": "declined-pool",
+      "moves": " \u0017dagger\n\u0017water walking boots\nWb \u0017pool\n#dip\nan"
+    },
+    {
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "name": "cancel-target-negative",
+      "moves": " \u0017dagger\n\u0017fountain\n#dip\n\u001b"
+    },
+    {
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "name": "no-feature-negative",
+      "moves": " \u0017dagger\n#dip\na"
+    },
+    {
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "name": "ordinary-fountain-negative",
+      "moves": " \u0017dagger\n\u0017fountain\n#dip\nay"
+    },
+    {
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "name": "cancel-potion-negative",
+      "moves": " \u0017potion of water\n\u0017dagger\n#dip\nb\u001b"
+    },
+    {
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "name": "ordinary-pool-negative",
+      "moves": " \u0017dagger\n\u0017water walking boots\nWb \u0017pool\n#dip\nay"
+    }
+  ]
+}

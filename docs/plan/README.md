@@ -10,7 +10,7 @@ Ground rules are in `/CLAUDE.md`. Read that first if you have not.
 
 ---
 
-## Current focus, 2026-11-24
+## Current focus, 2026-11-25
 
 Continue the faithful port with readable C-aligned code and prompt verified
 pushes. The live leaderboard rechecked November 25 at 04:36 UTC has
@@ -304,6 +304,25 @@ parent checks, 165 controls, eighteen focused fixtures, 44 public sessions and
 unaffected cases retain all five hashes. Maintained corpus: 846. Full845 is
 fixed on the preceding option checkpoint and excludes this change. The live
 board rechecked at 05:11 UTC still reports rank 7 and 715 unmatched screens.
+
+The full845 sweep is now complete on `5f92f089`: all 845 fixtures pass without
+retries, matching 875,622 screens/cursors, 18,353,916 scored RNG positions and
+32,487 frames. All 279 runtime, 845 raw and 298 protected hashes stay fixed.
+The subsequent role-title checkpoint `ed17aa04` is pushed.
+
+Dipping now follows the full selection/refusal and floor-query contracts,
+including covered equipment, menu prefix, floor reach and repeat answers.
+All 26 parent checks, 131 controls, twenty focused fixtures, 44 public sessions
+and 64 bounded workers pass. Fifteen C cases match all 609 boundaries and
+44,294 complete calls, correcting eleven screens, five cursors and two input
+slices. Five unaffected cases retain all five hashes. Corpus: 847. This change
+and the role-title fix are outside the completed full845 runtime.
+
+Twenty fresh levitation-descent cases match C without a runtime correction.
+They raise measured float_down coverage from 25/74 to 37/74 branch outcomes.
+The preserved NFS union now reaches 4,592/5,492 functions and 61,305/107,260
+outcomes across 845 credited inputs and 115 layouts. Test integration remains
+pending; these coverage figures alone do not establish JS parity.
 
 The preceding full regression passes all 817 fixtures: 853,841 screens/cursors,
 17,766,231 scored RNG positions and 32,296 frames. Both fixed-runtime shards

@@ -9936,6 +9936,57 @@ attribute candidate is running in worker 17835. Darwin continues the separate
 sink_into_lava owner. Dodip's scoped parent builder is prepared for the next
 verified baseline, with complete owner/helper and queue-contract review.
 
+## 2026-11-25 05:20 UTC: dipping owner verified, full845 complete
+
+Role-title checkpoint `ed17aa04` is pushed. Both full845 shards closed with
+exit 0 and the independent verifier passes. All 845 fixtures pass without
+retries: 875,622 screens/cursors, 18,353,916 scored RNG positions and 32,487
+frames. All 279 runtime, 845 raw and 298 protected hashes remain fixed, and
+all 839 predecessor raw files remain unchanged. Runtime is exact option
+checkpoint `5f92f089`; later role-title and dipping repairs are excluded.
+Verification: option-full845/verification.json, SHA
+`867fbd21c7e7fc42204c0fbb19749a23e6beb837da4ca6e2ad2507c54607a177`.
+
+Dipping parent worker 24624 closed with exit 0. All 26 checks, 131 controls
+and twenty focused fixtures pass: 232 segments, 23,130 screens/cursors,
+720,779 scored RNG positions and 135 frames. All 44 public sessions and 64
+bounded workers pass. Seven strict-native and all-five deferred fixtures
+match 73 segments, 9,350 boundaries, 225,902 complete calls and 128 frames.
+Fifteen new C cases match all 609 boundaries and 44,294 complete calls,
+no frames. Before: 598 styled screens, 604 cursors, 607 exact slices and
+44,259 complete calls. All five unaffected cases retain all five hashes.
+Both before and candidate preserve 75 observer and 75 deferred hashes.
+The fifteen canonical recipe assertions also match C and JS.
+
+The two-file patch completes the real inaccessible_equipment helper in
+its C-named module and restores dodip's guard order, floor reach, menu-prefix
+bypass, queued confirmations, drink_ok sentinel and conditional disposal wait.
+Silent selector checks remain synchronous; feedback awaits the real message.
+No effect-specific fountain/sink rewrite is bundled. All 279 runtime and six
+support hashes equal the tested candidate; 846 prior raw fixtures remain
+unchanged. Fifteen namespaced registry entries append only. Corpus: 847.
+Verification SHA `976dd68dce426c9429ce7b2bda37bbb5cbd8674bd2aac0412b1fb4e0069774f8`.
+Publish now. Integration: dodip-query-owner-main-integration.json.
+Known-curse/right-ring and pending-message branches have constructed controls;
+special-plane pools and mixed ownership feedback remain separately qualified.
+
+The twenty float_down C recordings independently match all 3,787 boundaries,
+65,762 complete calls and one frame on the exact attribute candidate. No
+runtime change is proposed. New NFS coverage preserves all 114 prior run
+records and source/binary pins. It credits 845 inputs across 115 layouts,
+reaching 4,592/5,492 functions and 61,305/107,260 branch outcomes, adding
+one function and 23 outcomes. float_down reaches 37/74 outcomes, up from
+25/74. Original platform rejections remain rejected. Summary SHA
+`3e65a9578a6d193441ac7913a6ec760e81160199438907adfa686a4824a8bb6c`.
+Receipt: linux-coverage-float-down-owner-parent-verification.json. Bulk stays
+on NFS; only seven compact files were downloaded. Test integration is pending.
+
+Monster slippery-helmet parent builder is prepared for the verified dipping
+baseline. Text-window source work has a complete 59-call inventory, with 42
+caller waits that must move to the C owner. Parent owns the three cmd/options
+removals; Singer owns the other 39 and the real wait_synch interrupt producer.
+The coherent migration must be composed and fully tested before publication.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

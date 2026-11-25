@@ -4040,6 +4040,21 @@
     {"group":"Attribute enlightenment and original role title","id":"attribute-enlightenment.healthy-control","cFile":"src/insight.c","cFunction":"attributes_enlightenment","description":"attribute enlightenment.healthy control"},
     {"group":"Attribute enlightenment and original role title","id":"attribute-enlightenment.ordinary-dagger-control","cFile":"src/insight.c","cFunction":"attributes_enlightenment","description":"attribute enlightenment.ordinary dagger control"},
     {"group":"Attribute enlightenment and original role title","id":"attribute-enlightenment.male-priest-forced-female-form","cFile":"src/insight.c","cFunction":"enlightenment","description":"attribute enlightenment.male priest forced female form"},
-    {"group":"Attribute enlightenment and original role title","id":"attribute-enlightenment.female-elf-priest-forced-male-form","cFile":"src/insight.c","cFunction":"enlightenment","description":"attribute enlightenment.female elf priest forced male form"}
+    {"group":"Attribute enlightenment and original role title","id":"attribute-enlightenment.female-elf-priest-forced-male-form","cFile":"src/insight.c","cFunction":"enlightenment","description":"attribute enlightenment.female elf priest forced male form"},
+    {"group":"Dipping selection and floor queries","id":"potion.dodip.context-menu-confirmation","cFile":"src/potion.c","cFunction":"dodip","description":"context menu confirmation"},
+    {"group":"Dipping selection and floor queries","id":"potion.dodip.declined-fountain","cFile":"src/potion.c","cFunction":"dodip","description":"declined fountain"},
+    {"group":"Dipping selection and floor queries","id":"potion.dodip.menu-prefix-bypass","cFile":"src/potion.c","cFunction":"dodip","description":"menu prefix bypass"},
+    {"group":"Dipping selection and floor queries","id":"potion.dodip.levitation-bypass","cFile":"src/potion.c","cFunction":"dodip","description":"levitation bypass"},
+    {"group":"Dipping selection and floor queries","id":"potion.dodip.covered-suit","cFile":"src/potion.c","cFunction":"dodip","description":"covered suit"},
+    {"group":"Dipping selection and floor queries","id":"potion.dodip.covered-shirt","cFile":"src/potion.c","cFunction":"dodip","description":"covered shirt"},
+    {"group":"Dipping selection and floor queries","id":"potion.dodip.covered-ring","cFile":"src/potion.c","cFunction":"dodip","description":"covered ring"},
+    {"group":"Dipping selection and floor queries","id":"potion.dodip.item-action-covered-suit","cFile":"src/potion.c","cFunction":"dip_into","description":"item action covered suit"},
+    {"group":"Dipping selection and floor queries","id":"potion.dodip.sink-repeat-confirmation","cFile":"src/potion.c","cFunction":"dodip","description":"sink repeat confirmation"},
+    {"group":"Dipping selection and floor queries","id":"potion.dodip.declined-pool","cFile":"src/potion.c","cFunction":"dodip","description":"declined pool"},
+    {"group":"Dipping selection and floor queries","id":"potion.dodip.cancel-target-negative","cFile":"src/potion.c","cFunction":"dodip","description":"cancel target negative"},
+    {"group":"Dipping selection and floor queries","id":"potion.dodip.no-feature-negative","cFile":"src/potion.c","cFunction":"dodip","description":"no feature negative"},
+    {"group":"Dipping selection and floor queries","id":"potion.dodip.ordinary-fountain-negative","cFile":"src/potion.c","cFunction":"dodip","description":"ordinary fountain negative"},
+    {"group":"Dipping selection and floor queries","id":"potion.dodip.cancel-potion-negative","cFile":"src/potion.c","cFunction":"dodip","description":"cancel potion negative"},
+    {"group":"Dipping selection and floor queries","id":"potion.dodip.ordinary-pool-negative","cFile":"src/potion.c","cFunction":"dodip","description":"ordinary pool negative"}
   ]
 }

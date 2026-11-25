@@ -35,7 +35,7 @@ import { setworn } from './worn.js';
 import { welded, is_sword, setuwep, setuswapwep, setuqwep, empty_handed }
     from './wield.js';
 import { bimanual, is_metallic } from './obj.js';
-import { nolimbs, nohands, touch_petrifies, verysmall, humanoid, has_head } from './mondata.js';
+import { nolimbs, nohands, touch_petrifies, verysmall, humanoid, has_head, is_clinger } from './mondata.js';
 import { sgn } from './hacklib.js';
 import { erode_obj, float_up, float_down, is_flammable, is_rustprone, is_crackable, is_rottable,
          is_corrodeable, is_damageable } from './trap.js';
@@ -69,14 +69,14 @@ import { paranoia_bits, PARANOID_REMOVE } from './options.js';
 import { Blind, Flying, Glib, Hallucination, Invis, Levitation, Stone_resistance,
          Protection_from_shape_changers, See_invisible, Detect_monsters, Punished } from './youprop.js';
 import { body_part, change_sex, poly_gender, float_vs_flight } from './polyself.js';
-import { surface } from './dungeon.js';
+import { surface, has_ceiling } from './dungeon.js';
 import { region_danger } from './region.js';
 import { make_slimed } from './potion.js';
 import { can_be_strangled, cant_drown } from './mondata.js';
 import { livelog_newform } from './polyself.js';
 import { trycall, hliquid } from './do_name.js';
 import { set_mimic_blocking } from './display.js';
-import { restartcham, rescham } from './mon.js';
+import { restartcham, rescham, is_pool, is_lava } from './mon.js';
 import { drown } from './trap.js';
 import { Swimming, Breathless, Underwater, Unchanging } from './youprop.js';
 import { NECK, Is_waterlevel, Is_airlevel } from './const.js';
@@ -985,18 +985,28 @@ export async function Boots_on() {
 // src/do_wear.c:262 Boots_off()
 export async function Boots_off() {
     const otmp = game.u.uarmf;
-    const prop = PROP_KEYS[objects[otmp.otyp].oc_oprop];
+    const otyp = otmp.otyp;
+    const prop = PROP_KEYS[objects[otyp].oc_oprop];
     const oldprop = prop
         ? (game.u.uprops?.[prop] || 0) & ~WORN_BOOTS : 0;
+    (game.context_takeoff ||= {}).mask &= ~W_ARMF;
     setworn(null, W_ARMF);
-    switch (otmp.otyp) {
+    switch (otyp) {
     case ONAMES.SPEED_BOOTS:
         if (!Very_fast() && !game.context_takeoff?.cancelled_don) {
-            makeknown(otmp.otyp);
+            makeknown(otyp);
             await You_feel(`yourself slow down${Fast() ? ' a bit' : ''}.`);
         }
         break;
     case ONAMES.WATER_WALKING_BOOTS:
+        if ((is_pool(game.u.ux, game.u.uy) || is_lava(game.u.ux, game.u.uy))
+            && !Levitation() && !Flying()
+            && !(is_clinger(game.youmonst.data) && has_ceiling(game.u.uz))
+            && !game.context_takeoff?.cancelled_don
+            && !game.iflags?.in_lava_effects) {
+            makeknown(otyp);
+            await spoteffects(true);
+        }
         break;
     case ONAMES.ELVEN_BOOTS:
         await toggle_stealth(otmp, oldprop, false);
@@ -1011,11 +1021,13 @@ export async function Boots_off() {
         break;
     case ONAMES.LEVITATION_BOOTS:
         if (!oldprop && !game.u.intrinsic?.HLevitation
-            && !game.u.blocked?.LEVITATION
+            && !((game.u.blocked?.LEVITATION || 0) & FROMOUTSIDE)
             && !game.context_takeoff?.cancelled_don) {
-            await float_down(0, 0);
-            makeknown(otmp.otyp);
-        }
+            if (!game.iflags?.in_lava_effects)
+                await float_down(0, 0);
+            makeknown(otyp);
+        } else
+            float_vs_flight();
         break;
     case ONAMES.LOW_BOOTS:
     case ONAMES.IRON_SHOES:
@@ -1023,8 +1035,11 @@ export async function Boots_off() {
     case ONAMES.JUMPING_BOOTS:
     case ONAMES.KICKING_BOOTS:
         break;
+    default:
+        await impossible(`Unknown type of boots (${otyp})`);
     }
     (game.context_takeoff ||= {}).cancelled_don = false;
+    return 0;
 }
 
 // src/do_wear.c:963 Amulet_on() — setworn and on_msg are its own business.

@@ -1,0 +1,292 @@
+{
+  "name": "boots-off",
+  "description": "Fifteen original C cases cover boot removal, terrain effects, levitation blockers and unchanged equipment controls.",
+  "coverage": [
+    "level.ordinary",
+    "mode.debug",
+    "object.armor",
+    "terrain.water-lava",
+    "survival.timed-status",
+    "ui.getlin",
+    "ui.menus",
+    "ui.more-paging"
+  ],
+  "branches": [
+    "boots-off.water-pool",
+    "boots-off.water-lava",
+    "boots-off.water-lava-burn",
+    "boots-off.water-dry",
+    "boots-off.water-levitation-guard",
+    "boots-off.water-flight-guard",
+    "boots-off.water-clinger-guard",
+    "boots-off.levitation-web",
+    "boots-off.levitation-floor",
+    "boots-off.levitation-other-ring",
+    "boots-off.levitation-flight",
+    "boots-off.low-boots",
+    "boots-off.speed-boots",
+    "boots-off.elven-boots",
+    "boots-off.fumble-boots"
+  ],
+  "requireBranchAssertions": true,
+  "segments": [
+    {
+      "name": "water-pool",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "moves": " #levelchange\r30\r                             l    \u001b\u001b\u0017uncursed amulet of magical breathing\r    \u001b\u001bPa    \u001b\u001b\u0017uncursed water walking boots\r    \u001b\u001bWb    \u001b\u001b\u0017pool\r    \u001b\u001bTb    \u001b\u001bi    \u001b\u001b",
+      "steps": []
+    },
+    {
+      "name": "water-lava",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "moves": " #levelchange\r30\r                             l    \u001b\u001b\u0017uncursed ring of fire resistance\r    \u001b\u001bPal    \u001b\u001b\u0017uncursed fireproof water walking boots\r    \u001b\u001bWb    \u001b\u001b\u0017lava\r    \u001b\u001bTb    \u001b\u001bi    \u001b\u001b",
+      "steps": []
+    },
+    {
+      "name": "water-lava-burn",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "moves": " #levelchange\r30\r                             l    \u001b\u001b\u0017uncursed ring of fire resistance\r    \u001b\u001bPal    \u001b\u001b\u0017uncursed water walking boots\r    \u001b\u001bWb    \u001b\u001b\u0017lava\r    \u001b\u001bi    \u001b\u001b",
+      "steps": []
+    },
+    {
+      "name": "water-dry",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "moves": " #levelchange\r30\r                             l    \u001b\u001b\u0017uncursed water walking boots\r    \u001b\u001bWa    \u001b\u001bTa    \u001b\u001bi    \u001b\u001b",
+      "steps": []
+    },
+    {
+      "name": "water-levitation-guard",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "moves": " #levelchange\r30\r                             l    \u001b\u001b\u0017uncursed ring of levitation\r    \u001b\u001bPal    \u001b\u001b\u0017uncursed water walking boots\r    \u001b\u001bWb    \u001b\u001b\u0017pool\r    \u001b\u001bTb    \u001b\u001bi    \u001b\u001b",
+      "steps": []
+    },
+    {
+      "name": "water-flight-guard",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "moves": " #levelchange\r30\r                             l    \u001b\u001b\u0017uncursed amulet of flying\r    \u001b\u001bPa    \u001b\u001b\u0017uncursed water walking boots\r    \u001b\u001bWb    \u001b\u001b\u0017pool\r    \u001b\u001bTb    \u001b\u001bi    \u001b\u001b",
+      "steps": []
+    },
+    {
+      "name": "water-clinger-guard",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "moves": " #levelchange\r30\r                             l    \u001b\u001b\u0017uncursed amulet of magical breathing\r    \u001b\u001bPa    \u001b\u001b\u0017uncursed water walking boots\r    \u001b\u001bWb    \u001b\u001b\u0017pool\r    \u001b\u001b#polyself\rlarge mimic\r    \u001b\u001bi    \u001b\u001b",
+      "steps": []
+    },
+    {
+      "name": "levitation-web",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "moves": " #levelchange\r30\r                             l    \u001b\u001b\u0017uncursed levitation boots\r    \u001b\u001b\u0017web trap\r    \u001b\u001b#sit\r    \u001b\u001bWa    \u001b\u001bTa    \u001b\u001bi    \u001b\u001b",
+      "steps": []
+    },
+    {
+      "name": "levitation-floor",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "moves": " #levelchange\r30\r                             l    \u001b\u001b\u0017uncursed levitation boots\r    \u001b\u001bWa    \u001b\u001bTa    \u001b\u001bi    \u001b\u001b",
+      "steps": []
+    },
+    {
+      "name": "levitation-other-ring",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "moves": " #levelchange\r30\r                             l    \u001b\u001b\u0017uncursed ring of levitation\r    \u001b\u001bPal    \u001b\u001b\u0017uncursed levitation boots\r    \u001b\u001bWb    \u001b\u001bTb    \u001b\u001bi    \u001b\u001b",
+      "steps": []
+    },
+    {
+      "name": "levitation-flight",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "moves": " #levelchange\r30\r                             l    \u001b\u001b\u0017uncursed amulet of flying\r    \u001b\u001bPa    \u001b\u001b\u0017uncursed levitation boots\r    \u001b\u001bWb    \u001b\u001bTb    \u001b\u001bi    \u001b\u001b",
+      "steps": []
+    },
+    {
+      "name": "low-boots",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "moves": " #levelchange\r30\r                             l    \u001b\u001b\u0017uncursed low boots\r    \u001b\u001bWa    \u001b\u001bTa    \u001b\u001bi    \u001b\u001b",
+      "steps": []
+    },
+    {
+      "name": "speed-boots",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "moves": " #levelchange\r30\r                             l    \u001b\u001b\u0017uncursed speed boots\r    \u001b\u001bWa    \u001b\u001bTa    \u001b\u001bi    \u001b\u001b",
+      "steps": []
+    },
+    {
+      "name": "elven-boots",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "moves": " #levelchange\r30\r                             l    \u001b\u001b\u0017uncursed elven boots\r    \u001b\u001bWa    \u001b\u001bTa    \u001b\u001bi    \u001b\u001b",
+      "steps": []
+    },
+    {
+      "name": "fumble-boots",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "moves": " #levelchange\r30\r                             l    \u001b\u001b\u0017uncursed fumble boots\r    \u001b\u001bWa    \u001b\u001bTa    \u001b\u001bi    \u001b\u001b",
+      "steps": []
+    }
+  ],
+  "branchAssertions": [
+    {
+      "branch": "boots-off.water-pool",
+      "segment": 0,
+      "screenIncludes": [
+        "You fall into the pool of water.",
+        "You touch bottom."
+      ]
+    },
+    {
+      "branch": "boots-off.water-lava",
+      "segment": 1,
+      "screenIncludes": [
+        "You sink into the molten lava, but it only burns slightly!"
+      ]
+    },
+    {
+      "branch": "boots-off.water-lava-burn",
+      "segment": 2,
+      "screenIncludes": [
+        "Your pair of combat boots bursts into flame!",
+        "You sink into the molten lava"
+      ]
+    },
+    {
+      "branch": "boots-off.water-dry",
+      "segment": 3,
+      "screenIncludes": [
+        "You finish taking off your boots."
+      ],
+      "screenExcludes": [
+        "You fall into",
+        "You sink into"
+      ]
+    },
+    {
+      "branch": "boots-off.water-levitation-guard",
+      "segment": 4,
+      "screenIncludes": [
+        "You start to float in the air!",
+        "You finish taking off your boots."
+      ],
+      "screenExcludes": [
+        "You fall into",
+        "You sink into"
+      ]
+    },
+    {
+      "branch": "boots-off.water-flight-guard",
+      "segment": 5,
+      "screenIncludes": [
+        "You are now in flight.",
+        "You finish taking off your boots."
+      ],
+      "screenExcludes": [
+        "You fall into",
+        "You sink into"
+      ]
+    },
+    {
+      "branch": "boots-off.water-clinger-guard",
+      "segment": 6,
+      "screenIncludes": [
+        "You turn into a large mimic!",
+        "Your boots are pushed off your feet!"
+      ]
+    },
+    {
+      "branch": "boots-off.levitation-web",
+      "segment": 7,
+      "screenIncludes": [
+        "You are caught by a spider web!",
+        "You are no longer trying to float up from the web."
+      ]
+    },
+    {
+      "branch": "boots-off.levitation-floor",
+      "segment": 8,
+      "screenIncludes": [
+        "You start to float in the air!",
+        "You float gently to the floor."
+      ]
+    },
+    {
+      "branch": "boots-off.levitation-other-ring",
+      "segment": 9,
+      "screenIncludes": [
+        "a - a ring of levitation (on left hand).",
+        "You finish taking off your boots."
+      ],
+      "screenExcludes": [
+        "You float gently"
+      ]
+    },
+    {
+      "branch": "boots-off.levitation-flight",
+      "segment": 10,
+      "screenIncludes": [
+        "You have stopped levitating and are now flying."
+      ]
+    },
+    {
+      "branch": "boots-off.low-boots",
+      "segment": 11,
+      "screenIncludes": [
+        "You finish taking off your shoes."
+      ],
+      "screenExcludes": [
+        "You fall into",
+        "You sink into"
+      ]
+    },
+    {
+      "branch": "boots-off.speed-boots",
+      "segment": 12,
+      "screenIncludes": [
+        "You feel yourself slow down."
+      ]
+    },
+    {
+      "branch": "boots-off.elven-boots",
+      "segment": 13,
+      "screenIncludes": [
+        "You sure are noisy."
+      ]
+    },
+    {
+      "branch": "boots-off.fumble-boots",
+      "segment": 14,
+      "screenIncludes": [
+        "You finish taking off your boots."
+      ],
+      "screenExcludes": [
+        "You fall into",
+        "You sink into"
+      ]
+    }
+  ]
+}

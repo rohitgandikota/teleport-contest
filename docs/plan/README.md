@@ -13,11 +13,12 @@ Ground rules are in `/CLAUDE.md`. Read that first if you have not.
 ## Current focus, 2026-11-24
 
 Continue the faithful port with readable C-aligned code and prompt verified
-pushes. The live leaderboard rechecked November 25 at 01:26 UTC has
-23,779 of 24,531 combined screens, 7th agentic and 11th overall. Public remains
-44/44, held-out remains 39/56, and 752 screens are unmatched. Animations are
-3,776/4,489. This is 184 more matching screens than the November 24 19:01 snapshot. The
-observed row does not identify the exact scored commit. Local verification
+pushes. The live leaderboard rechecked November 25 at 02:40 UTC has
+23,816 of 24,531 combined screens and rank 7 among agentic entries. Public
+remains 44/44; held-out improves to 40/56, with 715 screens unmatched.
+Animations are 3,776/4,489. The row was scored at 02:36:49 UTC, adding one
+passing held-out session and 37 matching screens since the preceding check.
+The observed row does not identify the exact scored commit. Local verification
 does not establish a newer held-out score.
 
 Publication resumed with `2089260a` after the earlier approval-review usage
@@ -144,6 +145,17 @@ message fixes one screen/cursor pair; nine unaffected cases retain all five
 output hashes. Long-query and cloud-limit positives have constructed evidence.
 The maintained corpus is 831. Completed full828 excludes combat and these
 message changes. Separate non-ASCII capture and producer issues remain open.
+
+Boot removal now passes all 29 parent checks and 148 controls. The complete
+owner restores water/lava effects, exact levitation blocker handling, recursion
+guards and flight restoration. Fifteen fresh C cases match all 2,143 styled
+boundaries, 48,265 complete calls and seven frames, fixing six screens.
+Twelve unaffected cases retain all five output hashes. Eighteen focused
+fixtures, all 44 public sessions and 62 bounded workers pass. The maintained
+corpus is 832. Completed full828 excludes this change, combat and message
+bounds. The next strangulation candidate passes five of six fresh native
+cases; two inspection screens still differ in the sixth. That failure remains
+preserved and is being traced before promotion.
 
 The latest shared-machine C union credits 826 inputs across 108 layouts,
 reaching 4,582/5,492 functions and 60,750/107,260 branch outcomes. It adds

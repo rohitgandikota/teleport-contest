@@ -3928,6 +3928,21 @@
     {"group":"Hero status canonical properties","id":"ustatusline-slimed","cFile":"src/insight.c","cFunction":"ustatusline","description":"insight.c:3402-3502 ustatusline; apply.c:318-471 self-stethoscope or zap.c:2960-2965 self-probing. Native terminal witness when recorded; no native internal-state or cloud-truncation claim."},
     {"group":"Hero status canonical properties","id":"ustatusline-vomiting","cFile":"src/insight.c","cFunction":"ustatusline","description":"insight.c:3402-3502 ustatusline; apply.c:318-471 self-stethoscope or zap.c:2960-2965 self-probing. Native terminal witness when recorded; no native internal-state or cloud-truncation claim."},
     {"group":"Hero status canonical properties","id":"ustatusline-healthy","cFile":"src/insight.c","cFunction":"ustatusline","description":"insight.c:3402-3502 ustatusline; apply.c:318-471 self-stethoscope or zap.c:2960-2965 self-probing. Native terminal witness when recorded; no native internal-state or cloud-truncation claim."},
-    {"group":"Hero status canonical properties","id":"ustatusline-stethoscope","cFile":"src/insight.c","cFunction":"ustatusline","description":"insight.c:3402-3502 ustatusline; apply.c:318-471 self-stethoscope or zap.c:2960-2965 self-probing. Native terminal witness when recorded; no native internal-state or cloud-truncation claim."}
+    {"group":"Hero status canonical properties","id":"ustatusline-stethoscope","cFile":"src/insight.c","cFunction":"ustatusline","description":"insight.c:3402-3502 ustatusline; apply.c:318-471 self-stethoscope or zap.c:2960-2965 self-probing. Native terminal witness when recorded; no native internal-state or cloud-truncation claim."},
+    {"group":"Boot removal","id":"boots-off.water-pool","cFile":"src/do_wear.c","cFunction":"Boots_off","description":"water pool"},
+    {"group":"Boot removal","id":"boots-off.water-lava","cFile":"src/do_wear.c","cFunction":"Boots_off","description":"water lava"},
+    {"group":"Boot removal","id":"boots-off.water-lava-burn","cFile":"src/do_wear.c","cFunction":"Boots_off","description":"water lava burn"},
+    {"group":"Boot removal","id":"boots-off.water-dry","cFile":"src/do_wear.c","cFunction":"Boots_off","description":"water dry"},
+    {"group":"Boot removal","id":"boots-off.water-levitation-guard","cFile":"src/do_wear.c","cFunction":"Boots_off","description":"water levitation guard"},
+    {"group":"Boot removal","id":"boots-off.water-flight-guard","cFile":"src/do_wear.c","cFunction":"Boots_off","description":"water flight guard"},
+    {"group":"Boot removal","id":"boots-off.water-clinger-guard","cFile":"src/do_wear.c","cFunction":"Boots_off","description":"water clinger guard"},
+    {"group":"Boot removal","id":"boots-off.levitation-web","cFile":"src/do_wear.c","cFunction":"Boots_off","description":"levitation web"},
+    {"group":"Boot removal","id":"boots-off.levitation-floor","cFile":"src/do_wear.c","cFunction":"Boots_off","description":"levitation floor"},
+    {"group":"Boot removal","id":"boots-off.levitation-other-ring","cFile":"src/do_wear.c","cFunction":"Boots_off","description":"levitation other ring"},
+    {"group":"Boot removal","id":"boots-off.levitation-flight","cFile":"src/do_wear.c","cFunction":"Boots_off","description":"levitation flight"},
+    {"group":"Boot removal","id":"boots-off.low-boots","cFile":"src/do_wear.c","cFunction":"Boots_off","description":"low boots"},
+    {"group":"Boot removal","id":"boots-off.speed-boots","cFile":"src/do_wear.c","cFunction":"Boots_off","description":"speed boots"},
+    {"group":"Boot removal","id":"boots-off.elven-boots","cFile":"src/do_wear.c","cFunction":"Boots_off","description":"elven boots"},
+    {"group":"Boot removal","id":"boots-off.fumble-boots","cFile":"src/do_wear.c","cFunction":"Boots_off","description":"fumble boots"}
   ]
 }

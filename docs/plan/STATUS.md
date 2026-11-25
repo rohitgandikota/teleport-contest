@@ -9075,6 +9075,61 @@ handles that narrow input owner in a new cache package; config/save-key and
 capture representation work remains separate. Original inputs, raw failures,
 frozen files and recorder remain unchanged.
 
+## 2026-11-25 02:51 UTC: boot removal verified; official held-out score improves
+
+Message bounds checkpoint `09d218c1` is pushed; process 13246 closed with exit 0.
+The live official row reloaded around 02:40 UTC shows rank 7 agentic, 715
+unmatched screens out of 24,531, public 44/44, held-out 40/56, and animations
+3,776/4,489. Its scoring timestamp is November 24 9:36:49 PM Eastern,
+November 25 02:36:49 UTC. This adds 37 matching screens and one passing held-out
+session. The row does not expose the scored commit, so no particular new
+checkpoint is credited with that change. The latest visible news remains the
+November 14 readability follow-up, updated November 20.
+
+Boot parent worker 82320 closed with exit 0 at 02:47:06 UTC. All 29 checks pass:
+148 controls, eighteen focused fixtures with 115 segments, all 44 public
+sessions, and 62 bounded workers. Focused totals are 9,722 screens/cursors,
+361,552 scored RNG positions and twenty frames. Five strict/deferred fixtures
+cover 37 segments, 3,981 boundaries, 118,057 complete calls and eight frames.
+The fifteen new native cases match all 2,143 styled grids, cursors and slices,
+48,265 complete calls and seven frames. Before the fix, 2,137 grids,
+2,141 cursors and 2,138 slices matched, with 48,262 JS calls. All twelve
+unaffected cases retain all five output hashes.
+
+Only Boots_off and three imports change. The complete C owner restores pool
+and lava effects, ceiling-clinger and active-lava guards, the FROMOUTSIDE
+levitation blocker test, conditional float_down, flight reconciliation, saved
+type and cleanup order. The parent read the full owner and helper/caller review.
+No-ceiling clinger, drawbridge subcases and illegal-type diagnostics remain
+source-only; the rare levitation/lava callback uses a constructed real helper.
+Broader spoteffects recursion and trap ordering are a separate active audit.
+All 279 runtime hashes and six support files match the tested candidate.
+All 831 preceding raw recordings remain unchanged; fifteen intent rows are
+appended. Maintained corpus: 832. Publish now, then run full832 in fixed shards.
+Completed full828 remains at 0540b75e and excludes combat, message and boots.
+
+Verification SHA-256:
+`c52f7bedd2683b992a8166e6f762923085cd1b40fa28608b2ed2ccf125c638d2`.
+Integration: `.cache/restart-20261122/boots-off-main-integration.json`.
+Raw SHA-256:
+`6be1bec3338663a668cfc6e6d48fc71ab1cc3171c8ac426e85ca7b87972be04c`.
+
+The six-case strangulation proposal was recorded unchanged, raw SHA
+`9fc813652b7f473ee32777911478c5357bacb21d4e41590388125960442163f5`.
+Its fixed boots prerequisite candidate applies only the sealed polyself hunk.
+Five cases match every output collection. Wizard-timer-breath segment 3 has
+styled-grid differences at steps 96 and 97 and a cursor difference at 97;
+all complete calls, slices and frames match. Across six cases there are 750
+boundaries and 16,922 calls. The failure is preserved in
+`strangulation-form-transitions-parent-first-native-details.json`. Avicenna
+is diagnosing the exact inspection owner in a new packet, leaving the original
+sealed candidate and inputs unchanged. Do not promote the fixture as passing.
+
+Other fixed-snapshot work continues in monster-physical-hit-feedback,
+eating-helper-contract, line-input-eof and spoteffects-owner source packets.
+No full832 or additional C-coverage completion is claimed yet. The NFS union
+remains at 826 credited inputs, 108 layouts and 60,750 branch outcomes.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

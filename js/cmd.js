@@ -38,7 +38,7 @@ import { can_reach_floor } from './pickup.js';
 import { which_armor } from './worn.js';
 import { test_move, u_rooted, domove_fight_ironbars, domove_fight_web,
          domove_fight_empty } from './hack.js';
-import { stucksteed } from './steed.js';
+import { stucksteed, exercise_steed } from './steed.js';
 import { vobj_at } from './display.js';
 import { auto_describe } from './getpos.js';
 import { dountrap } from './trap.js';
@@ -2851,6 +2851,13 @@ async function domove_core() {
 
     // src/hack.c:2877 m_postmove_effect()
     await m_postmove_effect(game.youmonst);
+
+    // src/hack.c:2879, train even if a later pet swap refuses the move.
+    if (u.usteed) {
+        u.usteed.mx = u.ux;
+        u.usteed.my = u.uy;
+        await exercise_steed();
+    }
 
     /* src/hack.c:2919 — with a safe monster at the destination, move it to
        the hero's previous square. This is the ELSE-IF arm of the

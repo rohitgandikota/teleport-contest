@@ -1,6 +1,44 @@
 # STATUS — live handoff board
 
-## 2026-11-25: configuration sections and CHOOSE verified
+## 2026-11-25: mounted movement training verified
+
+Only cmd.js changes runtime. After m_postmove_effect, movement now updates the
+steed's tentative position and awaits exercise_steed before displacement, as
+C does. A later refused pet swap retains the training. Earlier blockers do
+not train. The existing skill and mounting helper bodies stay unchanged.
+
+Source controls pass 25/25 versus 12/25. Six ordinary keyboard cases pass
+versus three, with observer/plain/deferred EOF equality and all fifteen
+negative hashes fixed. All six original C cases match versus four before,
+including composition with published sections and delivery flags: 756 styled
+boundaries/cursors, 18,196 calls and ordered slices, zero frames. The native
+gains are the 100/101-step riding-practice menu digits, one instead of zero.
+The 99-step case remains state-only evidence, with native output already equal.
+
+All 80 selected/public recordings and 80 strict eight-second workers pass:
+34,790 screens/cursors, 1,506,324 random positions and 1,763 frames. Twenty
+retained suites, source audit and three syntax checks pass. All 337 source
+members, 29 promotion members, six payloads and 280 runtime hashes verify.
+All 895 prior raws and requirements stay fixed; six requirements and one raw
+bring the corpus to 896. Source and ordinary assertion bodies remain exact;
+the input gate requires the original C raw and six primary branch assertions.
+Main receipt `mounted-movement-main-verification.json`, SHA256
+`ca89760e03c4644dccb1786c9d2bd74a6e038e922f315daab00e517c7579d249`.
+
+Full896 scripts are prepared; launch waits for full895 completion and
+verification to retain the two-worker NFS limit. Skill-tip helper omissions
+remain separate, and these inputs disable tips. Invocation-message and
+final-position/earth-sense audits continue. No full-movement closure or
+held-out improvement is claimed.
+
+Four additional locked section/continuation probes now match original C on
+the published configuration runtime: sixteen styled boundaries/cursors,
+11,574 calls and ordered slices, zero frames. Every raw C step array also
+equals its earlier canonical-input reference. This is regression-only;
+no runtime patch was needed. The new raw and input lock remain in the byte
+audit pending portable promotion, separate from the unchanged prior corpus.
+
+## 2026-11-25: configuration sections pushed as 340f6887
 
 New cfgfiles.js follows C's choose_random_part, free_config_sections and
 handle_config_section owners. options.js applies section filtering before

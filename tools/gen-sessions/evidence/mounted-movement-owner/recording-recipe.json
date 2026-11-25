@@ -1,0 +1,170 @@
+{
+  "name": "mounted-movement-owner",
+  "description": "Locked ordinary debug keyboard mount, movement and #enhance proposals; no native parity claimed.",
+  "coverage": [
+    "level.ordinary",
+    "mode.debug",
+    "ui.getlin",
+    "ui.menu",
+    "movement.mounted"
+  ],
+  "segments": [
+    {
+      "name": "mounted-99",
+      "seed": 7401,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0007tame saddled pony\r#ride\rky\u001b\u001b\u001bjkjkjkjkjkjkjkjkjkjkjkjkjkjkjkjkjkjkjkjkjkjkjkjkjkjkjkjkjkjkjkjkjkjkjkjkjkjkjkjkjkjkjkjkjkjkjkjkjkj#enhance\rn\u001b\u001b\u001bV"
+    },
+    {
+      "name": "mounted-100",
+      "seed": 7401,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0007tame saddled pony\r#ride\rky\u001b\u001b\u001bjkjkjkjkjkjkjkjkjkjkjkjkjkjkjkjkjkjkjkjkjkjkjkjkjkjkjkjkjkjkjkjkjkjkjkjkjkjkjkjkjkjkjkjkjkjkjkjkjkjk#enhance\rn\u001b\u001b\u001bV"
+    },
+    {
+      "name": "mounted-101",
+      "seed": 7401,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0007tame saddled pony\r#ride\rky\u001b\u001b\u001bjkjkjkjkjkjkjkjkjkjkjkjkjkjkjkjkjkjkjkjkjkjkjkjkjkjkjkjkjkjkjkjkjkjkjkjkjkjkjkjkjkjkjkjkjkjkjkjkjkjkj#enhance\rn\u001b\u001b\u001bV"
+    },
+    {
+      "name": "mounted-wait-negative",
+      "seed": 7401,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0007tame saddled pony\r#ride\rky\u001b\u001b\u001b..........#enhance\rn\u001b\u001b\u001bV"
+    },
+    {
+      "name": "mounted-wall-negative",
+      "seed": 7401,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0007tame saddled pony\r#ride\rky\u001b\u001b\u001byyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy#enhance\rn\u001b\u001b\u001bV"
+    },
+    {
+      "name": "unmounted-walk-negative",
+      "seed": 7401,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " jkjkjkjkjkjkjkjkjkjkjkjkjkjkjkjkjkjkjkjkjkjkjkjkjkjkjkjkjkjkjkjkjkjkjkjkjkjkjkjkjkjkjkjkjkjkjkjkjkjk#enhance\rn\u001b\u001b\u001bV"
+    }
+  ],
+  "branchRequirements": [
+    {
+      "name": "mounted-99",
+      "mounted": true,
+      "movementSteps": 99,
+      "startStep": 31,
+      "commandCount": 99,
+      "endXY": [
+        40,
+        5
+      ],
+      "endTurn": 73,
+      "ride": 99,
+      "practice": 0,
+      "negative": false
+    },
+    {
+      "name": "mounted-100",
+      "mounted": true,
+      "movementSteps": 100,
+      "startStep": 31,
+      "commandCount": 100,
+      "endXY": [
+        40,
+        4
+      ],
+      "endTurn": 74,
+      "ride": 0,
+      "practice": 1,
+      "negative": false
+    },
+    {
+      "name": "mounted-101",
+      "mounted": true,
+      "movementSteps": 101,
+      "startStep": 31,
+      "commandCount": 101,
+      "endXY": [
+        40,
+        5
+      ],
+      "endTurn": 74,
+      "ride": 1,
+      "practice": 1,
+      "negative": false
+    },
+    {
+      "name": "mounted-wait-negative",
+      "mounted": true,
+      "movementSteps": 0,
+      "startStep": 31,
+      "commandCount": 10,
+      "endXY": [
+        40,
+        4
+      ],
+      "endTurn": 12,
+      "ride": 0,
+      "practice": 0,
+      "negative": true
+    },
+    {
+      "name": "mounted-wall-negative",
+      "mounted": true,
+      "movementSteps": 0,
+      "startStep": 31,
+      "commandCount": 100,
+      "endXY": [
+        40,
+        4
+      ],
+      "endTurn": 2,
+      "ride": 0,
+      "practice": 0,
+      "negative": true
+    },
+    {
+      "name": "unmounted-walk-negative",
+      "mounted": false,
+      "movementSteps": 100,
+      "startStep": 1,
+      "commandCount": 100,
+      "endXY": [
+        40,
+        5
+      ],
+      "endTurn": 101,
+      "ride": 0,
+      "practice": 0,
+      "negative": true
+    }
+  ],
+  "unchangedOutputHashes": {
+    "mounted-wait-negative": {
+      "screens": "83cf94bb484c1715b0b83816f20b6bc9426458efe5fd36913990f7877821e09c",
+      "cursors": "9d060aad50bf3ff0bc418ab4909652245d763bb9fe44804fe26c85694ad7807a",
+      "calls": "ed73208b0e267f9c6f5ae1341f691ba7cdebc9f129b5eaab4f47703a0d029553",
+      "slices": "26caa29f22a93e7554a6b416b29ef702a4c17aec94c6025a79ad53eb098a1a62",
+      "frames": "c2f28f692055aed56f09c92ae17d40f28620e693eadddc36b360d357a1136ea6"
+    },
+    "mounted-wall-negative": {
+      "screens": "db62dddcb5815a7896a1185d8e20b7d8bd4fe975b7e7f253173519125d9902a3",
+      "cursors": "4b0e453457d823c6862140ca99a610289bef13fbe5e528cf6f16f7152e72b3ca",
+      "calls": "fd827bcbb002b3be909e3cf11bde472992277e085e150266e2bf854bbce2c996",
+      "slices": "0e453279b4ffaf6088c56a9ff107bcbbf7dc20f4809631bcbac1be1732496a92",
+      "frames": "3a7de094933a5fb7586718e1a517844fa944fb5a5d5d8ed44755e68137eab937"
+    },
+    "unmounted-walk-negative": {
+      "screens": "98eb811e6e856730adf2882569ada4b27e8170e3224f9008c455e3c8120009ec",
+      "cursors": "c01926f6fcd5399764e16a6e50b7029dc1ffef36f20b85025aa3062c30901497",
+      "calls": "e0783647723c422259f55fa116e772d6a3f8497f4cc27e2fa1226d9dd45128ed",
+      "slices": "4a0d8758fdfe0a8278e828df795bfff6dfb071803b7f2d740e755ab89fdbce00",
+      "frames": "ddaab7c03aba3125a3bd9c03df89d4e825586b2c7a9ff34665555d8160aeb15b"
+    }
+  }
+}

@@ -1,0 +1,412 @@
+{
+  "schema": 1,
+  "originalRecipe": "/Users/rohit/research/code/contest/.cache/restart-20261122/mounted-movement-source-audit/recipes/mounted-movement-owner.json",
+  "originalRecipeSHA256": "4a6028dd869dbcb273341fd64f7bed0ea9ce79a0ef02580bee5afc8a4e1eeaf8",
+  "derivedRecipeSHA256": "7c9b882f45abf37a25e909631f13f245cf43b035eed07dbb651943b04aa32651",
+  "addedFields": [
+    "requireBranchAssertions",
+    "branches",
+    "branchAssertions"
+  ],
+  "changes": "Only these three additive root metadata fields. Every original input tuple, state requirement, negative hash and other original root field remains unchanged.",
+  "branchMetadataSHA256": "46c9df5a4d92492d74e2a0a389405dd4cc3842de3b425fee2513399fb44deebb",
+  "raw": {
+    "path": "/Users/rohit/research/code/contest/.cache/restart-20261122/mounted-movement-parent-native.session.json",
+    "canonicalPath": "tools/gen-sessions/generated/mounted-movement-owner.session.json",
+    "sha256": "2aa599996e5ce54c8214eb94b1c4b0e1e02e0030710d8734324e954975e5e295",
+    "bytes": 1154194,
+    "source": "c",
+    "version": 5,
+    "keys": 750,
+    "boundaries": 756
+  },
+  "observations": [
+    {
+      "name": "mounted-99",
+      "menuStep": 140,
+      "menuRow": "  riding             Unskilled        0(  20)",
+      "practiceCell": {
+        "x": 38,
+        "y": 4,
+        "value": "0"
+      },
+      "screenCells": [
+        {
+          "step": 28,
+          "x": 39,
+          "y": 5,
+          "equals": "u"
+        },
+        {
+          "step": 31,
+          "x": 39,
+          "y": 5,
+          "equals": "u"
+        },
+        {
+          "step": 32,
+          "x": 39,
+          "y": 6,
+          "equals": "u"
+        },
+        {
+          "step": 130,
+          "x": 39,
+          "y": 6,
+          "equals": "u"
+        },
+        {
+          "step": 144,
+          "x": 39,
+          "y": 6,
+          "equals": "u"
+        },
+        {
+          "step": 140,
+          "x": 2,
+          "y": 4,
+          "equals": "r"
+        },
+        {
+          "step": 140,
+          "x": 38,
+          "y": 4,
+          "equals": "0"
+        }
+      ],
+      "attribution": "state-only: native output already exact on baseline"
+    },
+    {
+      "name": "mounted-100",
+      "menuStep": 141,
+      "menuRow": "  riding             Unskilled        1(  20)",
+      "practiceCell": {
+        "x": 38,
+        "y": 4,
+        "value": "1"
+      },
+      "screenCells": [
+        {
+          "step": 28,
+          "x": 39,
+          "y": 5,
+          "equals": "u"
+        },
+        {
+          "step": 31,
+          "x": 39,
+          "y": 5,
+          "equals": "u"
+        },
+        {
+          "step": 32,
+          "x": 39,
+          "y": 6,
+          "equals": "u"
+        },
+        {
+          "step": 131,
+          "x": 39,
+          "y": 5,
+          "equals": "u"
+        },
+        {
+          "step": 145,
+          "x": 39,
+          "y": 5,
+          "equals": "u"
+        },
+        {
+          "step": 141,
+          "x": 2,
+          "y": 4,
+          "equals": "r"
+        },
+        {
+          "step": 141,
+          "x": 38,
+          "y": 4,
+          "equals": "1"
+        }
+      ],
+      "attribution": "native practice digit repaired, zero to one"
+    },
+    {
+      "name": "mounted-101",
+      "menuStep": 142,
+      "menuRow": "  riding             Unskilled        1(  20)",
+      "practiceCell": {
+        "x": 38,
+        "y": 4,
+        "value": "1"
+      },
+      "screenCells": [
+        {
+          "step": 28,
+          "x": 39,
+          "y": 5,
+          "equals": "u"
+        },
+        {
+          "step": 31,
+          "x": 39,
+          "y": 5,
+          "equals": "u"
+        },
+        {
+          "step": 32,
+          "x": 39,
+          "y": 6,
+          "equals": "u"
+        },
+        {
+          "step": 132,
+          "x": 39,
+          "y": 6,
+          "equals": "u"
+        },
+        {
+          "step": 146,
+          "x": 39,
+          "y": 6,
+          "equals": "u"
+        },
+        {
+          "step": 142,
+          "x": 2,
+          "y": 4,
+          "equals": "r"
+        },
+        {
+          "step": 142,
+          "x": 38,
+          "y": 4,
+          "equals": "1"
+        }
+      ],
+      "attribution": "native practice digit repaired, zero to one"
+    },
+    {
+      "name": "mounted-wait-negative",
+      "menuStep": 51,
+      "menuRow": "  riding             Unskilled        0(  20)",
+      "practiceCell": {
+        "x": 38,
+        "y": 4,
+        "value": "0"
+      },
+      "screenCells": [
+        {
+          "step": 28,
+          "x": 39,
+          "y": 5,
+          "equals": "u"
+        },
+        {
+          "step": 31,
+          "x": 39,
+          "y": 5,
+          "equals": "u"
+        },
+        {
+          "step": 32,
+          "x": 39,
+          "y": 5,
+          "equals": "u"
+        },
+        {
+          "step": 41,
+          "x": 39,
+          "y": 5,
+          "equals": "u"
+        },
+        {
+          "step": 55,
+          "x": 39,
+          "y": 5,
+          "equals": "u"
+        },
+        {
+          "step": 51,
+          "x": 2,
+          "y": 4,
+          "equals": "r"
+        },
+        {
+          "step": 51,
+          "x": 38,
+          "y": 4,
+          "equals": "0"
+        }
+      ],
+      "attribution": "unchanged negative"
+    },
+    {
+      "name": "mounted-wall-negative",
+      "menuStep": 141,
+      "menuRow": "  riding             Unskilled        0(  20)",
+      "practiceCell": {
+        "x": 38,
+        "y": 4,
+        "value": "0"
+      },
+      "screenCells": [
+        {
+          "step": 28,
+          "x": 39,
+          "y": 5,
+          "equals": "u"
+        },
+        {
+          "step": 31,
+          "x": 39,
+          "y": 5,
+          "equals": "u"
+        },
+        {
+          "step": 32,
+          "x": 39,
+          "y": 5,
+          "equals": "u"
+        },
+        {
+          "step": 131,
+          "x": 39,
+          "y": 5,
+          "equals": "u"
+        },
+        {
+          "step": 145,
+          "x": 39,
+          "y": 5,
+          "equals": "u"
+        },
+        {
+          "step": 141,
+          "x": 2,
+          "y": 4,
+          "equals": "r"
+        },
+        {
+          "step": 141,
+          "x": 38,
+          "y": 4,
+          "equals": "0"
+        }
+      ],
+      "attribution": "unchanged negative"
+    },
+    {
+      "name": "unmounted-walk-negative",
+      "menuStep": 111,
+      "menuRow": "  riding             Unskilled        0(  20)",
+      "practiceCell": {
+        "x": 38,
+        "y": 4,
+        "value": "0"
+      },
+      "screenCells": [
+        {
+          "step": 1,
+          "x": 39,
+          "y": 6,
+          "equals": "@"
+        },
+        {
+          "step": 2,
+          "x": 39,
+          "y": 7,
+          "equals": "@"
+        },
+        {
+          "step": 101,
+          "x": 39,
+          "y": 6,
+          "equals": "@"
+        },
+        {
+          "step": 115,
+          "x": 39,
+          "y": 6,
+          "equals": "@"
+        },
+        {
+          "step": 111,
+          "x": 2,
+          "y": 4,
+          "equals": "r"
+        },
+        {
+          "step": 111,
+          "x": 38,
+          "y": 4,
+          "equals": "0"
+        }
+      ],
+      "attribution": "unchanged negative"
+    }
+  ],
+  "coordinateConvention": "C map (x,y) becomes decoded terminal (x-1,y+1). The ridden pony glyph is u; the unmounted hero glyph is @. Practice is terminal cell38,4 at the #enhance n boundary.",
+  "parentNativeReports": {
+    "baseline": {
+      "path": "/Users/rohit/research/code/contest/.cache/restart-20261122/mounted-movement-parent-baseline-native.json",
+      "sha256": "ace7cbb77f4cb024572b50160bb4c37ad7f4e0c766605c51b68e8a421b0434d8",
+      "cases": 6,
+      "exactCases": 4,
+      "firstDifferences": [
+        {
+          "name": "mounted-100",
+          "step": 141,
+          "cell": {
+            "x": 38,
+            "y": 4,
+            "c": {
+              "ch": "1",
+              "color": 8,
+              "attr": 0
+            },
+            "js": {
+              "ch": "0",
+              "color": 8,
+              "attr": 0
+            }
+          }
+        },
+        {
+          "name": "mounted-101",
+          "step": 142,
+          "cell": {
+            "x": 38,
+            "y": 4,
+            "c": {
+              "ch": "1",
+              "color": 8,
+              "attr": 0
+            },
+            "js": {
+              "ch": "0",
+              "color": 8,
+              "attr": 0
+            }
+          }
+        }
+      ]
+    },
+    "candidate": {
+      "path": "/Users/rohit/research/code/contest/.cache/restart-20261122/mounted-movement-parent-candidate-native.json",
+      "sha256": "af656eaf700526234b13672b101869dd174f36ca187b61274895781f169dd9a5",
+      "cases": 6,
+      "exactCases": 6,
+      "firstDifferences": []
+    },
+    "composed": {
+      "path": "/Users/rohit/research/code/contest/.cache/restart-20261122/mounted-movement-parent-composed-native.json",
+      "sha256": "af656eaf700526234b13672b101869dd174f36ca187b61274895781f169dd9a5",
+      "cases": 6,
+      "exactCases": 6,
+      "firstDifferences": []
+    }
+  },
+  "attribution": "Parent baseline4/6 versus candidate6/6 and composed6/6. Only mounted100 at boundary141 and mounted101 at142 gain native exactness from the menu practice digit0 to1. Mounted99 is source/ordinary-state evidence only; its native output was already exact. No tips coverage or helper closure claim.",
+  "workerNativeReplayPerformed": false
+}

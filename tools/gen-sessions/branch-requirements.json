@@ -4505,6 +4505,12 @@
     {"group": "config-sections-contract", "id": "config-sections.sections-two-choice-R", "cFile": "src/cfgfiles.c", "cFunction": "parse_conf_buf", "description": "two choice R"},
     {"group": "config-sections-contract", "id": "config-sections.sections-canonical-map-negative", "cFile": "src/cfgfiles.c", "cFunction": "parse_conf_buf", "description": "canonical map negative"},
     {"group": "config-sections-contract", "id": "config-sections.sections-canonical-bind-negative", "cFile": "src/cfgfiles.c", "cFunction": "parse_conf_buf", "description": "canonical bind negative"},
-    {"group": "config-sections-contract", "id": "config-sections.sections-comment-choice-negative", "cFile": "src/cfgfiles.c", "cFunction": "parse_conf_buf", "description": "comment choice negative"}
+    {"group": "config-sections-contract", "id": "config-sections.sections-comment-choice-negative", "cFile": "src/cfgfiles.c", "cFunction": "parse_conf_buf", "description": "comment choice negative"},
+    {"group": "mounted-movement-owner", "id": "mounted-movement.mounted-99", "cFile": "src/hack.c", "cFunction": "domove_core", "description": "mounted 99"},
+    {"group": "mounted-movement-owner", "id": "mounted-movement.mounted-100", "cFile": "src/hack.c", "cFunction": "domove_core", "description": "mounted 100"},
+    {"group": "mounted-movement-owner", "id": "mounted-movement.mounted-101", "cFile": "src/hack.c", "cFunction": "domove_core", "description": "mounted 101"},
+    {"group": "mounted-movement-owner", "id": "mounted-movement.mounted-wait-negative", "cFile": "src/hack.c", "cFunction": "domove_core", "description": "mounted wait negative"},
+    {"group": "mounted-movement-owner", "id": "mounted-movement.mounted-wall-negative", "cFile": "src/hack.c", "cFunction": "domove_core", "description": "mounted wall negative"},
+    {"group": "mounted-movement-owner", "id": "mounted-movement.unmounted-walk-negative", "cFile": "src/hack.c", "cFunction": "domove_core", "description": "unmounted walk negative"}
   ]
 }

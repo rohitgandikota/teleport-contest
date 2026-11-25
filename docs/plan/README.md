@@ -161,10 +161,22 @@ Hunger exhaustion now checks the active form's HP. All twenty parent checks,
 59 controls, eighteen focused fixtures, all public sessions and 62 bounded
 workers pass. Three fresh C cases match 431 styled boundaries and 8,439
 complete calls, correcting fourteen screens. Both unaffected cases retain
-all five output hashes. Maintained corpus: 833. Full832 is running on pushed
-boot checkpoint `81ad0594`; this subsequent hunger repair is outside it.
-Fresh-read killer initialization and the zero-nutrition helper guard remain
-separate recorded failures.
+all five output hashes. Hunger checkpoint `66d0e922` is pushed. Full832 is
+being rerun on boot checkpoint `81ad0594` after the first attempt lost its
+completion records to a disk-space failure. Original logs remain preserved;
+no full832 pass is claimed. Independent clone copies now avoid corpus
+duplication, after checksum-verified NFS archival. This hunger repair is
+outside that fixed runtime. Fresh-read killer initialization and the
+zero-nutrition helper guard remain separate recorded failures.
+
+Physical combat feedback now passes all twenty parent checks, 82 controls,
+eighteen focused fixtures, all public sessions and 62 bounded workers. Four
+fresh C cases match 292 styled boundaries and 9,756 complete calls, correcting
+six screens/cursors. Both unaffected cases retain all five hashes. Three
+message calls use the existing attacker-location helper. Artifact fallback has
+constructed evidence only. Maintained corpus: 834. The subsequent EOF candidate
+matches all six fresh C cases, 52 boundaries and 18,174 calls, but still needs
+its current-runtime regression before promotion.
 
 The latest shared-machine C union credits 829 inputs across 109 layouts,
 reaching 4,583/5,492 functions and 60,806/107,260 branch outcomes. It adds

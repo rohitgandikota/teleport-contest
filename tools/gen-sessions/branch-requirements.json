@@ -3946,6 +3946,10 @@
     {"group":"Boot removal","id":"boots-off.fumble-boots","cFile":"src/do_wear.c","cFunction":"Boots_off","description":"fumble boots"},
     {"group":"Hunger in the active form","id":"polymorphed-self-genocide-meal","cFile":"src/eat.c","cFunction":"newuhs","description":"polymorphed self genocide meal"},
     {"group":"Hunger in the active form","id":"polymorphed-cancelled-genocide-control","cFile":"src/eat.c","cFunction":"newuhs","description":"polymorphed cancelled genocide control"},
-    {"group":"Hunger in the active form","id":"human-meal-control","cFile":"src/eat.c","cFunction":"newuhs","description":"human meal control"}
+    {"group":"Hunger in the active form","id":"human-meal-control","cFile":"src/eat.c","cFunction":"newuhs","description":"human meal control"},
+    {"group":"Physical attack feedback","id":"monster.physical.grab-located","cFile":"src/uhitm.c","cFunction":"mhitm_ad_phys","description":"Actual hostile owlbear, successful grab and hero holder identity. Accessible location on."},
+    {"group":"Physical attack feedback","id":"monster.physical.grab-plain","cFile":"src/uhitm.c","cFunction":"mhitm_ad_phys","description":"Actual hostile owlbear, successful grab and hero holder identity. Accessible location off."},
+    {"group":"Physical attack feedback","id":"monster.physical.corpse-located","cFile":"src/uhitm.c","cFunction":"mhitm_ad_phys","description":"Actual skeleton picks up and wields the wished cockatrice corpse. Accessible location on."},
+    {"group":"Physical attack feedback","id":"monster.physical.corpse-plain","cFile":"src/uhitm.c","cFunction":"mhitm_ad_phys","description":"Actual skeleton picks up and wields the wished cockatrice corpse. Accessible location off."}
   ]
 }

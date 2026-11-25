@@ -9201,6 +9201,83 @@ u_slip_free separately. Avicenna traces the missing status_enlightenment line;
 Jason handles byte-FF line input; Darwin handles spoteffects; Singer handles
 fresh genocide killer initialization. Original seals and failures stay fixed.
 
+## 2026-11-25 03:16 UTC: physical-hit feedback verified; disk recovery preserved
+
+Hunger checkpoint `66d0e922` is pushed; process 18756 closed with exit 0.
+Its verification SHA is
+`a5e7e22d817bbbc1173f9a7084236ede52c1e540a1a556b2c5f28eeeb18e16d6`.
+
+The first physical-hit composition preparation ran out of local disk space
+while copying existing tools and raw fixtures. No verification check ran in
+that incomplete directory. Original builder is retained as
+`prepare-physical-hit-composition-pre-space-failure.py`. The failed snapshot
+was copied to NFS and every file hash and literal symlink target independently
+verified before local removal: 3,814 files, three links, 1,759,393,212 bytes.
+Archive: `/share/NFS/u/rohit/research/contest/artifacts/2026-11-22/physical-hit-failed-preparation-20261125`.
+Manifest SHA `eaaf82798f4c82c7ab44764effb04848e4650cfe0cc4024565bfde2e5c99cdb4`.
+Receipt: `physical-hit-failed-preparation-archive.json` in the restart cache.
+A first local manifest write and clone probe also failed for lack of space;
+those attempts did not modify source or a tested snapshot.
+
+The original full832 workers 37717 and 23414 exited with wrapper failures
+while writing completion receipts, explicitly Errno 28. Their truncated logs
+retain 375 and 377 PASS lines; neither contains usable final results. No
+subprocess exit or complete pass is inferred. Both logs and their hashes remain
+in `boots-full832/disk-space-failure.json`; no synthetic success receipt exists.
+This is an infrastructure-failed attempt, not a passed uninterrupted run.
+
+After NFS verification, four completed boots/message corpus copies were
+replaced by independent APFS clones of identical files, preserving every hash.
+This recovered another 5,233,537,024 bytes, leaving about 6.7 GiB free. Active
+runs and distinct versions were untouched. Receipt:
+`verified-corpus-clone-deduplication.json`. A clone write probe verified that
+source bytes stay unchanged. New snapshots use cp -cR, not hard links.
+
+`boots-full832-recovery` now runs the same exact 81ad0594 runtime, 279 runtime,
+832 raw and 217 protected hashes, two 416-fixture shards, workers 54782 and
+6620. It is attempt 2 with the first failure pinned. No input, timeout or
+comparison changed. Expected totals remain 864,786 screens/cursors,
+18,095,911 scored RNG positions and 32,366 frames. Its verifier reports the
+prior infrastructure retry explicitly. Completion is pending.
+
+The recreated physical-hit composition used independent clones and completed
+all twenty checks, process 13315 exit 0: 82 controls, eighteen focused fixtures
+with 143 segments, all public sessions and 62 bounded workers. Focused totals
+are 20,516 screens/cursors, 479,781 scored RNG positions and 4,875 frames.
+Six strict/deferred native fixtures cover 33 segments, 3,734 boundaries and
+88,350 complete calls, with zero frames. The four new C cases match all
+292 styled grids/cursors/slices and 9,756 complete calls, with zero frames.
+Before the repair, 286 grids and cursors matched. Both negative cases preserve
+all five hashes. The full source owner and helper/caller contracts were read.
+Only three awaited message calls in mhitm_ad_phys change to pline_mon.
+
+The recipe's prose-only branch descriptions were retained and strengthened
+with four executable source-text assertions and two accessibility-negative
+assertions before testing. All input fields and raw bytes remain fixed; no
+expected output was weakened. Artifact fallback and pending waits have
+constructed real-helper controls only. Separate slipping, monster-stoning,
+hallucinated operand order and shade-diagnostic reach remain outside scope.
+All 279 runtime and seven support files match the tested candidate; all 833
+preceding raw recordings remain unchanged. Four intent rows are appended.
+Maintained corpus: 834. Publish now. Active full832 excludes hunger and this fix.
+Verification SHA `a9d9053e742a371a87f84493d72e21198ae8aa3d35b0b62645e139eaed6ef506`.
+Integration: `physical-hit-main-integration.json` in the restart cache.
+
+Parent independently verified the 975-file EOF packet, read the complete C
+line owner and scoped loop/consumer contracts, and recorded all six inputs
+unchanged. Raw `6be4ec39575d15709c0f3279ad03975fad6e651d63b8f22b7d3f3d5abdd4c094`
+matches all five output collections on the fixed physical-hit prerequisite:
+52 boundaries, 18,174 complete calls and zero frames. Source seal is
+`81c9f293c7b69c6c9082eaf920b01dbc890e0f842ee546ee291e4d1c29131a07`.
+The two scoped hunks cancel signed-byte FF in tty line input and resume an
+interrupted wish at C's existing moveloop position. End-of-replay exceptions,
+other high bytes and global input semantics are untouched. This is native
+qualification only; current-runtime parent gates are next. Jason proceeds to
+the separate core getlin queued-line owner. Avicenna is sealing the inspection
+prerequisite; Singer continues killer initialization; Darwin continues
+spoteffects; Pauli continues u_slip_free. Latest NFS C coverage remains the
+829-input, 109-layout union. No physical/EOF C-coverage addition is claimed yet.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

@@ -5376,7 +5376,7 @@ export async function mhitm_ad_phys(magr, mattk, mdef, mhm) {
                     mhm.hitflags |= M_ATTK_MISS;
                 } else {
                     set_ustuck(magr);
-                    await pline(`${Monnam(magr)} grabs you!`);
+                    await pline_mon(magr, `${Monnam(magr)} grabs you!`);
                     mhm.hitflags |= M_ATTK_HIT;
                 }
             } else if (game.u.ustuck === magr) {
@@ -5395,7 +5395,7 @@ export async function mhitm_ad_phys(magr, mattk, mdef, mhm) {
                 if (otmp.otyp === ONAMES.CORPSE
                     && touch_petrifies(game.mons[otmp.corpsenm])) {
                     mhm.damage = 1;
-                    await pline(`${Monnam(magr)} hits you with the ${
+                    await pline_mon(magr, `${Monnam(magr)} hits you with the ${
                               game.mons[otmp.corpsenm].pmnames[NEUTRAL]} corpse.`);
                     if (!Stoned()) {
                         if (await do_stone_u(magr)) {
@@ -5514,7 +5514,7 @@ export async function mhitm_ad_phys(magr, mattk, mdef, mhm) {
                 mhm.damage = dmgbox.v;
                 if (!arti) {
                     if (game.vis)
-                        await pline(`${Monnam(magr)} hits ${mon_nam_too(mdef, magr)}.`);
+                        await pline_mon(magr, `${Monnam(magr)} hits ${mon_nam_too(mdef, magr)}.`);
                     mhm.hitflags |= M_ATTK_HIT;
                 }
                 /* artifact_hit updates 'tmp' but doesn't inflict any

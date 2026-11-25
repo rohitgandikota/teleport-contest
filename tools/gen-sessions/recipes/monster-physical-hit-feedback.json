@@ -1,0 +1,126 @@
+{
+  "name": "monster-physical-hit-feedback",
+  "description": "Four original C cases cover located grab and petrifying-corpse hit feedback, paired with accessibility disabled.",
+  "coverage": [
+    "mode.debug",
+    "ui.getlin",
+    "ui.more-paging",
+    "level.ordinary",
+    "monster.hero-melee",
+    "monster.special-effects",
+    "object.weapons",
+    "object.food-corpses",
+    "forms.polymorph"
+  ],
+  "branches": [
+    "monster.physical.grab-located",
+    "monster.physical.grab-plain",
+    "monster.physical.corpse-located",
+    "monster.physical.corpse-plain"
+  ],
+  "segments": [
+    {
+      "name": "owlbear-grab-located",
+      "seed": 7401,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=accessiblemsg,whatis_coord:map\n",
+      "moves": " #polyself\rstone golem\r   \u001b\u0007hostile owlbear\r. . . . "
+    },
+    {
+      "name": "owlbear-grab-plain",
+      "seed": 7401,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!accessiblemsg,whatis_coord:map\n",
+      "moves": " #polyself\rstone golem\r   \u001b\u0007hostile owlbear\r. . . . "
+    },
+    {
+      "name": "skeleton-corpse-located",
+      "seed": 7401,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=accessiblemsg,whatis_coord:map\n",
+      "moves": " #polyself\rstone golem\r   \u001b\u0017uncursed cockatrice corpse\rda\u0007hostile skeleton\rjjhhh. . . . . . "
+    },
+    {
+      "name": "skeleton-corpse-plain",
+      "seed": 7401,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!accessiblemsg,whatis_coord:map\n",
+      "moves": " #polyself\rstone golem\r   \u001b\u0017uncursed cockatrice corpse\rda\u0007hostile skeleton\rjjhhh. . . . . . "
+    }
+  ],
+  "branchAssertions": [
+    {
+      "branch": "monster.physical.grab-located",
+      "segment": 0,
+      "evidence": "Fresh C recording plus read-only state assertions for the actual grab or corpse-wielding producer.",
+      "assertions": [
+        "Actual hostile owlbear, successful grab and hero holder identity.",
+        "Feedback prefix follows accessiblemsg."
+      ],
+      "screenIncludes": [
+        "<40,6>: The owlbear grabs you!"
+      ]
+    },
+    {
+      "branch": "monster.physical.grab-plain",
+      "segment": 1,
+      "evidence": "Fresh C recording plus read-only state assertions for the actual grab or corpse-wielding producer.",
+      "assertions": [
+        "Actual hostile owlbear, successful grab and hero holder identity.",
+        "Feedback prefix follows accessiblemsg."
+      ],
+      "screenIncludes": [
+        "The owlbear grabs you!"
+      ],
+      "screenExcludes": [
+        "<40,6>: The owlbear grabs you!"
+      ]
+    },
+    {
+      "branch": "monster.physical.corpse-located",
+      "segment": 2,
+      "evidence": "Fresh C recording plus read-only state assertions for the actual grab or corpse-wielding producer.",
+      "assertions": [
+        "Actual skeleton picks up and wields the wished cockatrice corpse.",
+        "Corpse hit feedback, stone-golem hero, no stoning timeout.",
+        "Feedback prefix follows accessiblemsg."
+      ],
+      "screenIncludes": [
+        "<40,6>: The skeleton hits you with the cockatrice corpse."
+      ]
+    },
+    {
+      "branch": "monster.physical.corpse-plain",
+      "segment": 3,
+      "evidence": "Fresh C recording plus read-only state assertions for the actual grab or corpse-wielding producer.",
+      "assertions": [
+        "Actual skeleton picks up and wields the wished cockatrice corpse.",
+        "Corpse hit feedback, stone-golem hero, no stoning timeout.",
+        "Feedback prefix follows accessiblemsg."
+      ],
+      "screenIncludes": [
+        "The skeleton hits you with the cockatrice corpse."
+      ],
+      "screenExcludes": [
+        "<40,6>: The skeleton hits you with the cockatrice corpse."
+      ]
+    }
+  ],
+  "negativeOutputHashes": {
+    "1": {
+      "screens": "96eccb8a21b9856fc19f1f52b85ac9c41836aa3da4b7d0a17aef97030e80db7e",
+      "cursors": "bb855f0403992d4b906af8924aad0faad018eadbf2f10861531bb0deba4c7c26",
+      "calls": "03807c404080455ff3283fe9acd2185886f69442cc7946fafa4a1b2f667b9244",
+      "slices": "f4fad516332d40cd526e283ae51351e91e12c5f7b4517908c61438e14078de5b",
+      "frames": "39ce026aeb3998a77b5bd9bd68921ff7fca2475f7d976b73074c8965ab08fa77"
+    },
+    "3": {
+      "screens": "40a7a97abfd8e75811b22c22e64ed1468bedb789fc41e11dc813c77e4b8280c8",
+      "cursors": "1f1bd4ff469be4ad913226b1cf11a2f82e27f7dfb6f6db18a0c973b546dd55b4",
+      "calls": "62c37f00a4652d252640d649da2d828e91b675fb814eb945226b8d3c096b7c68",
+      "slices": "f787ea9ebc5e430174de3c6cfc374716d7e4254054d60bcb69256cbaf5d969db",
+      "frames": "a03fd2f8811ce412428854e40f9ee5c02874f3d2e3aa28c219784f5a99fc6b74"
+    }
+  },
+  "requireBranchAssertions": true
+}

@@ -10,7 +10,6 @@ import { runSegment } from '../js/jsmain.js';
 import { game } from '../js/gstate.js';
 import { ONAMES } from '../js/objects_data.js';
 import { PMNAMES } from '../js/monst_data.js';
-import { LOST_EXPLODING, LOST_THROWN, OBJ_DELETED } from '../js/const.js';
 
 const recipe = JSON.parse(await readFile(new URL(
     'gen-sessions/recipes/potion-burning-oil-impact.json', import.meta.url),
@@ -52,6 +51,7 @@ const cases = [];
 for (let index = 0; index < recipe.segments.length; ++index) {
     let before = null;
     let oil = null;
+    let oilId;
     globalThis.__step_snapshot = {
         step: '*',
         cb: (state, step) => {
@@ -60,6 +60,10 @@ for (let index = 0; index < recipe.segments.length; ++index) {
             before = stateSummary(state);
             oil = (state.invent || []).find(obj =>
                 obj.otyp === ONAMES.POT_OIL) || null;
+            if (oil) {
+                before.oilDiluted = !!oil.odiluted;
+                oilId = oil.o_id;
+            }
         },
     };
     try {
@@ -69,16 +73,11 @@ for (let index = 0; index < recipe.segments.length; ++index) {
     }
 
     assert.ok(before && oil, `segment ${index} reaches its oil impact setup`);
-    const oilId = oil.o_id;
     cases.push({
         before,
         after: stateSummary(game),
-        consumedOil: {
-            diluted: !!oil.odiluted,
-            lit: !!oil.lamplit,
-            where: oil.where,
-            howLost: oil.how_lost,
-        },
+        // src/mkobj.c:2815 clears the record when deferred deletion finishes.
+        consumedOilFields: Object.keys(oil),
         oilLightRemains: (game.light_sources || []).some(source =>
             source.type === 1 && source.id === oilId),
         oilTimerRemains: (game.timer_base || []).some(timer =>
@@ -100,10 +99,10 @@ assert.equal(ordinary.after.cloakErosion, 1,
              'ordinary burning oil scorches the hero cloak');
 assert.equal(diluted.after.cloakErosion, 1,
              'diluted burning oil still scorches the hero cloak');
-assert.equal(ordinary.consumedOil.diluted, false,
+assert.equal(ordinary.before.oilDiluted, false,
              'the ordinary-oil case is not diluted');
-assert.equal(diluted.consumedOil.diluted, true,
-             'the diluted-oil case retains its dilution flag through impact');
+assert.equal(diluted.before.oilDiluted, true,
+             'the diluted-oil case is diluted before impact');
 
 assert.deepEqual(floorBlast.before.giant, {
     hp: 65, hpmax: 65, peaceful: true, inventoryCount: 19,
@@ -158,13 +157,8 @@ for (const [index, state] of cases.entries()) {
                  `segment ${index} begins with one potion of oil`);
     assert.equal(state.after.oilCount, 0,
                  `segment ${index} consumes its potion of oil`);
-    assert.equal(state.consumedOil.where, OBJ_DELETED,
-                 `segment ${index} deletes the consumed potion`);
-    assert.equal(state.consumedOil.howLost,
-                 index === 5 ? LOST_THROWN : LOST_EXPLODING,
-                 `segment ${index} records the correct loss reason`);
-    assert.equal(state.consumedOil.lit, false,
-                 `segment ${index} leaves no lit consumed potion`);
+    assert.deepEqual(state.consumedOilFields, [],
+                     `segment ${index} clears the consumed potion record`);
     assert.equal(state.oilLightRemains, false,
                  `segment ${index} removes the oil light source`);
     assert.equal(state.oilTimerRemains, false,

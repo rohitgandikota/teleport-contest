@@ -1,5 +1,95 @@
 # STATUS — live handoff board
 
+## 2026-11-25: empty inventory and ignition pass full865 verification
+
+Half-damage checkpoint `1ed5cd8b` is pushed. The latest leaderboard fetch at
+09:08 UTC still returns the 07:57 feed and our 07:23 scored row: agentic rank
+7, public 44/44, held-out 42/56, 667 unmatched screens. It predates the recent
+pushes. Receipt: `.cache/restart-20261122/leaderboard-20261125-0908.json`.
+
+The verified catch-lit checkpoint is ready to publish: resetGame initializes
+the empty inventory chain; apply.js owns the complete catch_lit function;
+trap.js imports it and drops duplicate location/fuel helpers. Source review
+verified C decl.c:411 and hack.h's UNDEFINED_PTR=NULL, complete catch_lit,
+get_obj_location, ignition/fuel macros, begin_burn, discovery and speech.
+The actual empty-inventory fire-trap input first exposed burnarmor's filter
+exception, in addition to the earlier floor-gold includes exception. The
+shared initialization fixes the producer without adding scattered null guards.
+
+All 29 constructed controls pass versus one before. Seven ordinary cases
+pass versus six before, including an actual empty-inventory fire trap and
+located floor-oil feedback. All five negatives retain every output hash.
+Portable main tools also verify observer and deferred-input neutrality and
+the unchanged native recipe assertions. The seven fresh C cases match all
+666 styled boundaries/cursors, 22,262 complete RNG calls/slices and 23 styled
+animation frames. Raw SHA256:
+`0fa54378b2a2950eea37e195c7f24347165a5815fc565c32d0c69c11e08a8173`.
+Main's 279 runtime hashes exactly match the locked candidate. The corpus is
+865. Scoped patch SHA256:
+`d54cc80cc71d3be4163015a8bbfa0fc73058db59c8f52842f3082ace019de33b`.
+
+The six retained fire suites initially passed five; burning-oil impact failed
+identically on pushed baseline and candidate. That old test read dilution,
+loss reason, object ID and deletion fields after dealloc_obj_real had cleared
+the object. C mkobj.c:2815 also clears and frees it. The test now captures
+dilution and ID before impact, checks the entire consumed record is cleared,
+and keeps the damage, inventory, timer and light checks. Corrected baseline
+and candidate both pass. Original failures remain in the source packet.
+The new shop proposal initially died while completing its final command;
+the locked recipe raises level after entering the shop and before ignition.
+Its prior proposal/failure remains, and all seven final cases survive normally.
+
+All 865 maintained recordings pass in the fresh two-worker NFS run with
+default timeouts and no retries: 897,905 screens/cursors, 18,948,050 scored
+random positions and 32,609 animation frames. The completed run is at
+`/share/NFS/u/rohit/research/contest/artifacts/2026-11-22/catch-lit-full865-js-20261125`.
+It reuses 864 canonical NFS recordings and uploads only one new recording.
+Local control manifests are in `catch-lit-full865-remote`; all-files SHA256 is
+`29cbbda2543c632c6bda25002a8a6e280c9d5e951925fe78392020d5403c57d2`.
+All 1,155 remote input hashes remain fixed and match main. The compact receipt
+is `catch-lit-full865-remote/verification.json`, SHA256
+`0800bdc3f0c031bbfb346a9c2c748c7c6ba65ac0c53ac47af5eefafaa07a1846`.
+All 864 prior recording hashes remain unchanged. The local 55-fixture hang
+gate, source audit and six syntax checks pass. Main verification receipt:
+`catch-lit-main-verification.json`, SHA256
+`7c753acd0d5db873f23f1cc276b424c8e3664c82b0f436de1d6ff7bea6df951f`.
+
+The parent source packet is `catch-lit-owner-source-audit`; its input/runtime
+lock is fixed. Main verification files use the `catch-lit-main-` prefix.
+Next: commit and immediately push, then compose the sealed monster-death and
+fire packets and verify their portable gates on current main.
+Monster death has 31 source controls and eight ordinary cases; fire has 30/32
+source controls, with the two remaining failures caused by the inventory
+helper now repaired. Both packets now have native proof described below. Agent
+`01a211b3-ea22-7b42-8d56-0dfcb1ebc615` now audits complete potionhit in
+`potion-impact-owner-source-audit`; agent
+`01a211b3-eb50-7871-b36f-3a7b7c1f978b` now audits complete trapeffect_pit in
+`pit-owner-source-audit`. Agent `01a211b3-ead8-7022-8128-26c0bf2d48ef` continues
+sickness. All source packets remain small; no local corpus copies were made.
+
+Parent has now verified all 597 monster-death manifest members, including
+twelve link targets, and all 629 monster-fire member hashes. The complete C
+mondead, vamprises, logdeadmon, m_detach, stair lookup, fire owner and shared
+cancellation helper were read against both scoped patches. Both fixed source
+candidates pass fresh native comparison: eight death cases match all 463
+boundaries, and eleven fire cases match all 1,022 boundaries, with exact full
+RNG streams, per-input slices and animation output. Current-main composition
+still waits for the inventory checkpoint and portable gate delivery.
+
+Death raw is `monster-death-owner-v2-parent-native.session.json`, SHA256
+`7428f32031dca878775b5cf8b6bcffdf184688cb878f4e4540d9225cead5803b`.
+The first recorder input retained its proposal source/nativeRecorded metadata;
+the recorder copied that header and the parent's source=c check rejected it.
+A corrected parent input changed only metadata. Every recorded segment and
+output is identical between the two runs; the original remains preserved.
+Fire raw is `monster-fire-owner-parent-native.session.json`, SHA256
+`61a50db029bec3bd238067367504697fad592fa8397aa4d6c654ea2c84ae7e2c`.
+The native runner directories contain one small comparison tool and source
+links, not corpus copies. Comparison reports use `*-fixed-candidate-native`.
+The agents are preparing portable death/fire gates in separate promotion
+directories before resuming potionhit and pit audits; their sealed source
+packets remain unchanged.
+
 ## 2026-11-25: half-damage producer and readers pass the full864 run
 
 Pet checkpoint `c3f5aef8` is pushed. The half-damage composition changes only

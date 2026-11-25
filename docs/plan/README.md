@@ -69,9 +69,17 @@ Its 32 new C cases match 2,995 styled boundaries and 77,064 calls. All 864
 maintained fixtures pass in a fresh NFS run on the exact candidate, without
 retries or timeout overrides: 897,239 screens/cursors, 18,925,788 scored
 random positions and 32,586 frames. All 64 bounded workers also pass.
-The next source review addresses empty-inventory fire handling and the complete
-external-ignition owner. Parallel reviews continue for monster death, sickness
-and monster fire. These local results do not establish a newer held-out score.
+The empty-inventory initialization and complete external-ignition owner now
+pass all 865 recordings in a fresh NFS run with default timeouts and no retries:
+897,905 screens/cursors, 18,948,050 scored random positions and 32,609 frames.
+Their seven new
+C cases match 666 styled boundaries, 22,262 calls and 23 frames; 29 source
+controls and seven ordinary controls pass. The previous burning-oil state test
+was reading freed fields; its corrected observation passes both baseline and
+candidate. Separate monster-death and monster-fire candidates pass eight and
+eleven native cases, respectively; current-main composition is next.
+Parallel source reviews continue for potion impacts, sickness and pit traps.
+These local results do not establish a newer held-out score.
 
 Publication resumed with `2089260a` after the earlier approval-review usage
 limit. That pushed checkpoint includes probing, dark-side visibility and the

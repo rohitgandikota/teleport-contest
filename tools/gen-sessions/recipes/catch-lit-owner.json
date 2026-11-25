@@ -1,0 +1,189 @@
+{
+  "name": "catch-lit-owner",
+  "description": "External ignition uses real object locations and complete feedback; empty inventory survives ordinary fire-trap handling.",
+  "coverage": [
+    "level.ordinary",
+    "mode.debug",
+    "object.potions",
+    "object.tools-containers",
+    "social.shops-billing",
+    "turn.timers",
+    "ui.more-paging"
+  ],
+  "segments": [
+    {
+      "seed": 7611,
+      "datetime": "20260503030100",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align=neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=accessiblemsg\n",
+      "moves": " #levelchange\r30\r                             \u0017uncursed potion of oil\r dfl\u0017blessed wand of fire\rzoh      \u001b\u001b\u001b#version\r",
+      "name": "floor-oil-accessible"
+    },
+    {
+      "seed": 7611,
+      "datetime": "20260503030100",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align=neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             \u0017uncursed potion of oil\r dfl\u0017blessed wand of fire\rzoh      \u001b\u001b\u001b#version\r",
+      "name": "floor-oil-plain"
+    },
+    {
+      "seed": 7610,
+      "datetime": "20260503030000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align=neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=accessiblemsg\n",
+      "moves": " #levelchange\r30\r                             \u0017uncursed oil lamp\r\u0017blessed wand of fire\rzp.      \u001b\u001b\u001b#version\r",
+      "name": "carried-lamp-accessible"
+    },
+    {
+      "seed": 7614,
+      "datetime": "20260503030400",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align=neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             \u0017uncursed oil lamp\r\u0017uncursed blindfold\rPq\u0017blessed wand of fire\rzr.      \u001b\u001b\u001b#version\r",
+      "name": "blind-carried-lamp"
+    },
+    {
+      "seed": 6903,
+      "datetime": "20260901080000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00162\r\u0006\u0014  llllllllllllllllllll.  \u0017uncursed oil lamp\rdo y,a\r \u0017blessed wand of fire\r#levelchange\r30\r                                   zpl   \u001b\u001b#version\r",
+      "name": "shop-lamp-speech"
+    },
+    {
+      "name": "empty-inventory-fire",
+      "seed": 12001,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "moves": " l\u0017fire trap\rhl\u001b\u001b#version\r"
+    },
+    {
+      "name": "empty-inventory-no-fire",
+      "seed": 12001,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "moves": " l\u001b\u001b#version\r"
+    }
+  ],
+  "branches": [
+    "catch-lit.owner.floor-accessible",
+    "catch-lit.owner.floor-plain",
+    "catch-lit.owner.carried-accessible",
+    "catch-lit.owner.blind-carried",
+    "catch-lit.owner.shop-speech",
+    "empty-inventory.fire-trap",
+    "empty-inventory.no-fire"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "catch-lit.owner.floor-accessible",
+      "segment": 0,
+      "screenIncludes": [
+        "NetHack Version",
+        "catch light!"
+      ],
+      "screenExcludes": [
+        "Die?"
+      ]
+    },
+    {
+      "branch": "catch-lit.owner.floor-plain",
+      "segment": 1,
+      "screenIncludes": [
+        "NetHack Version",
+        "catch light!"
+      ],
+      "screenExcludes": [
+        "Die?"
+      ]
+    },
+    {
+      "branch": "catch-lit.owner.carried-accessible",
+      "segment": 2,
+      "screenIncludes": [
+        "NetHack Version",
+        "catches light!"
+      ],
+      "screenExcludes": [
+        "Die?"
+      ]
+    },
+    {
+      "branch": "catch-lit.owner.blind-carried",
+      "segment": 3,
+      "screenIncludes": [
+        "NetHack Version",
+        "feels warm."
+      ],
+      "screenExcludes": [
+        "Die?"
+      ]
+    },
+    {
+      "branch": "catch-lit.owner.shop-speech",
+      "segment": 4,
+      "screenIncludes": [
+        "NetHack Version",
+        "in addition to the cost"
+      ],
+      "screenExcludes": [
+        "Die?"
+      ]
+    },
+    {
+      "branch": "empty-inventory.fire-trap",
+      "segment": 5,
+      "screenIncludes": [
+        "NetHack Version",
+        "tower of flame erupts"
+      ],
+      "screenExcludes": [
+        "Die?"
+      ]
+    },
+    {
+      "branch": "empty-inventory.no-fire",
+      "segment": 6,
+      "screenIncludes": [
+        "NetHack Version"
+      ],
+      "screenExcludes": [
+        "Die?"
+      ]
+    }
+  ],
+  "unchangedOutputHashes": {
+    "floor-oil-plain": {
+      "screens": "f9be210e8b29d52d729f43f9d9da740fff171195e9bd8e46f338eafa06c7652e",
+      "cursors": "137657d15d2c76311ac75db6bee8e010fd89a44395fb065b306326aa200c76f2",
+      "calls": "b3adde5326871fc388c8b1889976e8d127aaea807937ef8ac96109e487927166",
+      "slices": "44871f83a4c01f0aa9b8fc51e4f29e3f5f5b68112dfef57e936c8ff9fb9f2508",
+      "frames": "9ea743a57cd37f456ba5385aee88490059e933de3ee3baa15a78cfe299fed364"
+    },
+    "carried-lamp-accessible": {
+      "screens": "56c31722f1950d2249ed860aaa8740a5d41b4bf17a7d5556fb38f1fbb86502f3",
+      "cursors": "8fee1b352a8795f70e507b3c47d599fcf12964fafcfe6f8213b4aaa7a502a924",
+      "calls": "b4195921397ca467c3ff6357d22d93c1805ca33e41029b7e287e4beb32747651",
+      "slices": "339a9560b627d4e5d232a74adb56b51da1a57168144deda40f28353760c64800",
+      "frames": "c0fa1324bec386e794f3daab20f65d7b28d7d021e9d11d44587213390c34f127"
+    },
+    "blind-carried-lamp": {
+      "screens": "e99797530b268ca6fecc536966ff2e187c13d1d19c679c32c552b6c89d72937c",
+      "cursors": "beda4490029b346a3d96fade475e3cb3ac6a13e6d4d9a827a5ef6bbd52a9017d",
+      "calls": "9d4ce73304911152972d5cfc39a13ea45a86435d381c3e811f43dc9818180769",
+      "slices": "ad0bdcf95080d21c4b24bd6fefd62dbe78f8a67ea85fa287239116d54ec40771",
+      "frames": "501b0d684c2a8ee5abdda6c0f4065e0d85c102e25566793269d1fbc45df59d29"
+    },
+    "shop-lamp-speech": {
+      "screens": "57d80be46babe54b438833b09da5fc88da6a8715bd76beacf690610dec7dca98",
+      "cursors": "5fae7b083c774091fd93a6ec31de6f090362ff36ee39397e9406a069b6bff801",
+      "calls": "fdbd1fed7faef948a51a3903cc724c0db48f5ca0cb7bc8e4d8c737ac89555565",
+      "slices": "c0d052cefabb16b92447d2bb02a16d81e55e9fc6afc36957cde39196b8d954c1",
+      "frames": "6caf972327b6dd7466aeaf3d562428ee120faff38fc411fcce2c3d908f92952b"
+    },
+    "empty-inventory-no-fire": {
+      "screens": "a5716209afdd80cc8f36d890292d6ddd7a4e9918a78a5c0bf3844065e8ec68e6",
+      "cursors": "d97440a50cdbf57d0eda09ee16af433c21a780aa728eb27228d9229a9d6f5509",
+      "calls": "c7bc5d81364639768740a92277e77dd246b2b1ea9bf8d283df560b999dd5e9cb",
+      "slices": "7983b8af693143990d28525d504920fff463a26e8e822afc7035b05929a7ad08",
+      "frames": "5fbc149764c7a24393bf72a60a2d102b6e6076c13e51b165e1230f3d49c5b7e6"
+    }
+  }
+}

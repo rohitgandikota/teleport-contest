@@ -4233,6 +4233,13 @@
     {"group": "half-damage-reader", "id": "half-damage.reader.lava.timed", "cFile": "src/do.c", "cFunction": "boulder_hits_pool", "description": "lava: ordinary input with timed half physical damage"},
     {"group": "half-damage-reader", "id": "half-damage.reader.lava.none", "cFile": "src/do.c", "cFunction": "boulder_hits_pool", "description": "lava: ordinary input with no half-damage source"},
     {"group": "half-damage-reader", "id": "half-damage.reader.eel.timed", "cFile": "src/allmain.c", "cFunction": "regen_hp", "description": "eel: ordinary input with timed half physical damage"},
-    {"group": "half-damage-reader", "id": "half-damage.reader.eel.none", "cFile": "src/allmain.c", "cFunction": "regen_hp", "description": "eel: ordinary input with no half-damage source"}
+    {"group": "half-damage-reader", "id": "half-damage.reader.eel.none", "cFile": "src/allmain.c", "cFunction": "regen_hp", "description": "eel: ordinary input with no half-damage source"},
+    {"group": "catch-lit-owner", "id": "catch-lit.owner.floor-accessible", "cFile": "src/apply.c", "cFunction": "catch_lit", "description": "catch lit: owner: floor accessible"},
+    {"group": "catch-lit-owner", "id": "catch-lit.owner.floor-plain", "cFile": "src/apply.c", "cFunction": "catch_lit", "description": "catch lit: owner: floor plain"},
+    {"group": "catch-lit-owner", "id": "catch-lit.owner.carried-accessible", "cFile": "src/apply.c", "cFunction": "catch_lit", "description": "catch lit: owner: carried accessible"},
+    {"group": "catch-lit-owner", "id": "catch-lit.owner.blind-carried", "cFile": "src/apply.c", "cFunction": "catch_lit", "description": "catch lit: owner: blind carried"},
+    {"group": "catch-lit-owner", "id": "catch-lit.owner.shop-speech", "cFile": "src/apply.c", "cFunction": "catch_lit", "description": "catch lit: owner: shop speech"},
+    {"group": "catch-lit-owner", "id": "empty-inventory.fire-trap", "cFile": "src/decl.c", "cFunction": "decl_globals_init", "description": "empty inventory: fire trap"},
+    {"group": "catch-lit-owner", "id": "empty-inventory.no-fire", "cFile": "src/decl.c", "cFunction": "decl_globals_init", "description": "empty inventory: no fire"}
   ]
 }

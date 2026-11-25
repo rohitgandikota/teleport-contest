@@ -1258,7 +1258,7 @@ function wearing_any_armor() {
               || u.uarmg || u.uarmf || u.uarmh);
 }
 
-// src/insight.c:200 enlightenment() — returns the lines for the caller to put
+// src/insight.c:383 enlightenment() — returns the lines for the caller to put
 // into a window.
 export function enlightenment(mode, final) {
     /* the ^X caller passes nothing: BASIC (+MAGIC for wizard/discover),
@@ -1270,7 +1270,7 @@ export function enlightenment(mode, final) {
     lines.length = 0;
 
     const tmpbuf = highc(game.plname || '');
-    const female = !!game.flags.female;
+    const female = Upolyd(game.u) ? game.u.mfemale : game.flags.female;
     out(`${tmpbuf} the ${(female && game.urole.name.f) ? game.urole.name.f
                                                        : game.urole.name.m}'s attributes:`);
 

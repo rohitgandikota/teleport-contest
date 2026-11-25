@@ -9869,6 +9869,73 @@ tty text-window/wait contracts; Darwin continues float_down. No unpushed
 verified checkpoint is intentionally held. Latest live board and completed
 NFS coverage figures remain those recorded above.
 
+## 2026-11-25 05:06 UTC: full regression and next native comparisons
+
+Message-history configuration checkpoint `5f92f089` is pushed. The fixed
+full845 sweep is running on that exact runtime in workers 72006 and 28876,
+with no retries or timeout override. Runtime, 845 raw inputs and 298 protected
+files are locked. The last completed full sweep remains full839 until both
+workers close and verify-option-full845.py passes.
+
+The five-input stone/option/follow-up C batch completed on NFS. Its independent
+parent verification preserves all 113 preceding run records, binary/source
+pins and original platform rejections. It credits 844 inputs across 114
+layouts, reaching 4,591/5,492 functions and 61,282/107,260 branch outcomes,
+adding four functions and 122 outcomes. The five fresh inputs contain 38
+segments; all match the instrumented recorder exactly. Summary SHA
+`868dbca214e3872269dfffed6de25ac5034a72990300c3b9efa4cede9ccac079`.
+Receipt: linux-coverage-stone-option-followups-parent-verification.json.
+Only seven compact files were downloaded; coverage bulk remains on NFS.
+These are C reachability figures, not JS parity or a held-out score.
+
+All three fresh native comparisons pass on independently composed current
+runtime prerequisites: attribute nine cases, dodip fifteen, monster slip four.
+Attribute parent composition now runs in worker 12553. It applies only the
+original-role-sex selection in insight.js to the exact option candidate,
+keeping all 279 runtime hashes fixed during testing. Its 26 planned checks
+include 165 controls, eighteen focused fixtures, seven strict-native and
+all-five deferred fixtures, all public sessions and bounded workers. Full845
+excludes this candidate. Parent review of complete dodip and covered-equipment
+owners continues before their separate composition. No new checkpoint is
+claimed before all checks complete.
+
+## 2026-11-25 05:12 UTC: original role title verified for polymorph
+
+Attribute parent worker 12553 closed with exit 0. All 26 checks, 165 controls
+and eighteen focused fixtures pass: 121 segments, 15,399 screens/cursors,
+363,590 scored RNG positions and 128 frames. All 44 public sessions and 62
+bounded workers pass. Seven strict-native and all-five deferred fixtures
+match 62 segments, 8,628 boundaries, 186,586 complete calls and 121 frames.
+Nine new C cases match all 944 styled boundaries and 25,260 complete calls,
+no frames. Before: 940 styled screens; all cursors, RNG and slices already
+matched. Seven unaffected cases preserve all five output hashes.
+
+The sole runtime change selects the saved original sex for the role title
+while polymorphed, following C enlightenment's complete owner. All 278 other
+modules are unchanged. Source controls improve 40/46 to 46/46; the 76 retained
+status controls pass. All 279 runtime and seven support hashes equal the
+tested candidate; all 845 prior raw fixtures remain unchanged. Nine registry
+entries append only. Maintained corpus: 846. Publish immediately. Verification
+SHA `5a909d3dae60466568a121d63e134d62f8356852885807280ceab3ac3f265d4e`.
+Integration receipt: attribute-enlightenment-main-integration.json. Full845
+is still running on the preceding option runtime and excludes this change.
+System-only DEBUGFILES fruit diagnostics retain their separately documented
+configuration/debug/reordering prerequisites; no complete diagnostic claim.
+
+The live leaderboard recheck at 05:11 UTC still shows rank 7, 715 unmatched
+of 24,531 screens, 44 public plus 40 held-out sessions, and 3,776/4,489 frames.
+The row does not identify a scored commit. No score gain is inferred from
+these local tests. The last observed scoring timestamp remains 02:36:49 UTC.
+
+The zero-runtime-change float_down package independently verifies all 668
+members and its preserved earlier audit. Twenty unchanged proposals recorded
+successfully against pinned C: 3,787 boundaries, raw SHA
+`1ec842468256e96d5a4f20ffa0fc91fbd20659b11bbde4ece664fa7db543cefa`.
+All five input fields and keys remain fixed. Its comparison on the exact
+attribute candidate is running in worker 17835. Darwin continues the separate
+sink_into_lava owner. Dodip's scoped parent builder is prepared for the next
+verified baseline, with complete owner/helper and queue-contract review.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

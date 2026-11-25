@@ -281,10 +281,29 @@ parameter, negation, default and instance-lifetime rules. All 24 parent checks,
 workers pass. Six C cases match all 138 boundaries and 18,174 complete calls,
 fixing six styled screens. Three unaffected cases retain all five output
 hashes. Petrification checkpoint `f00e849e` is pushed. Maintained corpus: 845.
-A full845 sweep will cover these six checkpoints beyond the completed full839.
+The full845 sweep is running on pushed checkpoint `5f92f089`, covering these
+six changes beyond the completed full839. Both shards must close and verify
+before a full845 pass is claimed.
 The unpublished line-history patch passes 19 source controls, compared with
 six before. Full/reversed history still needs a separate text-window wait.
 Original seven-case and thirteen-case history recordings remain fixed.
+
+The newest C coverage union credits 844 inputs across 114 layouts, reaching
+4,591/5,492 functions and 61,282/107,260 branch outcomes. Five fresh inputs
+add four functions and 122 outcomes. All 113 prior run records, source/binary
+pins and original platform rejections remain preserved. Attribute, dipping
+and slippery-helmet native comparisons pass on current runtime prerequisites.
+The attribute role-title fix is in parent regression; dipping and helmet
+slippage remain separate pending checkpoints. These measurements do not
+establish whole-port completeness or a newer held-out score.
+
+Polymorphed heroes now retain the role title of their original sex. All 26
+parent checks, 165 controls, eighteen focused fixtures, 44 public sessions and
+62 bounded workers pass. Nine C cases match all 944 styled boundaries and
+25,260 complete calls, correcting four screens with unchanged RNG. Seven
+unaffected cases retain all five hashes. Maintained corpus: 846. Full845 is
+fixed on the preceding option checkpoint and excludes this change. The live
+board rechecked at 05:11 UTC still reports rank 7 and 715 unmatched screens.
 
 The preceding full regression passes all 817 fixtures: 853,841 screens/cursors,
 17,766,231 scored RNG positions and 32,296 frames. Both fixed-runtime shards

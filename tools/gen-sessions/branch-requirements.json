@@ -4031,6 +4031,15 @@
     {"group":"Message history configuration","id":"options.msg-window.combination","cFile":"src/options.c","cFunction":"optfn_msg_window","description":"options.msg window.combination"},
     {"group":"Message history configuration","id":"options.msg-window.single","cFile":"src/options.c","cFunction":"optfn_msg_window","description":"options.msg window.single"},
     {"group":"Message history configuration","id":"options.msg-window.default","cFile":"src/options.c","cFunction":"optfn_msg_window","description":"options.msg window.default"},
-    {"group":"Message history configuration","id":"options.msg-window.negated","cFile":"src/options.c","cFunction":"optfn_msg_window","description":"options.msg window.negated"}
+    {"group":"Message history configuration","id":"options.msg-window.negated","cFile":"src/options.c","cFunction":"optfn_msg_window","description":"options.msg window.negated"},
+    {"group":"Attribute enlightenment and original role title","id":"attribute-enlightenment.partial-and-full-item-protection","cFile":"src/insight.c","cFunction":"attributes_enlightenment","description":"attribute enlightenment.partial and full item protection"},
+    {"group":"Attribute enlightenment and original role title","id":"attribute-enlightenment.invisibility-self-sight-and-blocker","cFile":"src/insight.c","cFunction":"attributes_enlightenment","description":"attribute enlightenment.invisibility self sight and blocker"},
+    {"group":"Attribute enlightenment and original role title","id":"attribute-enlightenment.specific-and-class-form-warning","cFile":"src/insight.c","cFunction":"attributes_enlightenment","description":"attribute enlightenment.specific and class form warning"},
+    {"group":"Attribute enlightenment and original role title","id":"attribute-enlightenment.locked-polymorph","cFile":"src/insight.c","cFunction":"attributes_enlightenment","description":"attribute enlightenment.locked polymorph"},
+    {"group":"Attribute enlightenment and original role title","id":"attribute-enlightenment.timed-monster-detection","cFile":"src/insight.c","cFunction":"attributes_enlightenment","description":"attribute enlightenment.timed monster detection"},
+    {"group":"Attribute enlightenment and original role title","id":"attribute-enlightenment.healthy-control","cFile":"src/insight.c","cFunction":"attributes_enlightenment","description":"attribute enlightenment.healthy control"},
+    {"group":"Attribute enlightenment and original role title","id":"attribute-enlightenment.ordinary-dagger-control","cFile":"src/insight.c","cFunction":"attributes_enlightenment","description":"attribute enlightenment.ordinary dagger control"},
+    {"group":"Attribute enlightenment and original role title","id":"attribute-enlightenment.male-priest-forced-female-form","cFile":"src/insight.c","cFunction":"enlightenment","description":"attribute enlightenment.male priest forced female form"},
+    {"group":"Attribute enlightenment and original role title","id":"attribute-enlightenment.female-elf-priest-forced-male-form","cFile":"src/insight.c","cFunction":"enlightenment","description":"attribute enlightenment.female elf priest forced male form"}
   ]
 }

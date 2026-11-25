@@ -87,7 +87,7 @@ import { m_postmove_effect } from './monmove.js';
 import { doloot, dotip } from './pickup.js';
 import { curr_mon_load } from './mon.js';
 import { ECMD_FAIL, ECMD_CANCEL, Never_mind, A_CON, M_AP_TYPE,
-         M_AP_FURNITURE, M_AP_OBJECT, OVERLOADED, Is_airlevel,
+         M_AP_FURNITURE, M_AP_OBJECT, M_AP_NOTHING, OVERLOADED, Is_airlevel,
          Upolyd } from './const.js';
 import { exercise, near_capacity, adjalign } from './attrib.js';
 import { is_pit, GETOBJ_EXCLUDE, GETOBJ_SUGGEST, GETOBJ_NOFLAGS, GETOBJ_PROMPT, GETOBJ_ALLOWCNT, GETOBJ_DOWNPLAY, W_ARMOR, W_ACCESSORY, GETOBJ_EXCLUDE_INACCESS, ARTICLE_YOUR, ARTICLE_THE, CQ_CANNED, CQ_REPEAT, CMDQ_EXTCMD, CMDQ_KEY, PIT, HOLE, WEB } from './const.js';
@@ -2949,6 +2949,11 @@ async function domove_core() {
     if (hides_under(game.youmonst.data)
         || game.youmonst.data.mlet === MONSYMS.S_EEL || u.dx || u.dy)
         hideunder(game.youmonst);
+
+    /* src/hack.c:2958. Moving reveals a disguise as an immobile object. */
+    if ((u.dx || u.dy) && (M_AP_TYPE(game.youmonst) === M_AP_OBJECT
+                          || M_AP_TYPE(game.youmonst) === M_AP_FURNITURE))
+        game.youmonst.m_ap_type = M_AP_NOTHING;
 
     await check_leash(game.u.ux0, game.u.uy0);
 

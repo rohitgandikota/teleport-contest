@@ -1,0 +1,182 @@
+{
+  "final": true,
+  "recipe": "tools/gen-sessions/recipes/movement-mimic-owner.json",
+  "recipeSHA256": "aa9fc270ed88c59fd263e3472e7c7ca2206b1f7a286df10ebc4bb36b5ef465de",
+  "tupleFields": [
+    "name",
+    "seed",
+    "datetime",
+    "nethackrc",
+    "moves"
+  ],
+  "tupleSHA256": "693b1c294721626f8cef8261ea8bea799a8a7ea7e62a4753dd8b3fa238857ecf",
+  "cases": 6,
+  "keys": 216,
+  "boundaries": 222,
+  "branchRequirements": [
+    {
+      "name": "east-clear",
+      "beforeXY": [
+        31,
+        15
+      ],
+      "finalXY": [
+        32,
+        15
+      ],
+      "actionKey": 35,
+      "disguisedBefore": true,
+      "clearOnMove": true,
+      "negative": false,
+      "rehide": false
+    },
+    {
+      "name": "south-clear",
+      "beforeXY": [
+        31,
+        15
+      ],
+      "finalXY": [
+        31,
+        16
+      ],
+      "actionKey": 35,
+      "disguisedBefore": true,
+      "clearOnMove": true,
+      "negative": false,
+      "rehide": false
+    },
+    {
+      "name": "east-rehide",
+      "beforeXY": [
+        31,
+        15
+      ],
+      "finalXY": [
+        32,
+        15
+      ],
+      "actionKey": 35,
+      "disguisedBefore": true,
+      "clearOnMove": true,
+      "negative": false,
+      "rehide": true
+    },
+    {
+      "name": "wait-preserve",
+      "beforeXY": [
+        31,
+        15
+      ],
+      "finalXY": [
+        31,
+        15
+      ],
+      "actionKey": 35,
+      "disguisedBefore": true,
+      "clearOnMove": false,
+      "negative": true,
+      "rehide": false
+    },
+    {
+      "name": "blocked-preserve",
+      "beforeXY": [
+        67,
+        14
+      ],
+      "finalXY": [
+        67,
+        14
+      ],
+      "actionKey": 35,
+      "disguisedBefore": true,
+      "clearOnMove": false,
+      "negative": true,
+      "rehide": false
+    },
+    {
+      "name": "unhidden-move",
+      "beforeXY": [
+        31,
+        15
+      ],
+      "finalXY": [
+        32,
+        15
+      ],
+      "actionKey": 25,
+      "disguisedBefore": false,
+      "clearOnMove": false,
+      "negative": true,
+      "rehide": false
+    }
+  ],
+  "negativeHashes": {
+    "wait-preserve": {
+      "screens": "6de6b77c6e53bad2ae0d698ad78d89222174fba86c5c9d6ae969bd04b4e25976",
+      "cursors": "3f4deba9f9487e885b95e6158bb4ed905a9a01677b76bd4de424a7de96049684",
+      "calls": "7b6d501f8a7f7c2a597289ae734d9a1c8ee6311dd6fe2c6640ba44842a986783",
+      "slices": "645ee9dcb29133488dc55f4ae43ed74dedde993578113ff18b7ea462cd3365f5",
+      "frames": "bf84363005bb97747024844387bf0a1be9b6e40939beb0a026cfd533f74e250b"
+    },
+    "blocked-preserve": {
+      "screens": "6723731e368165e7aa2e6a59e799330f068963c9570b4deab92baa99280c555d",
+      "cursors": "535aa10d7a6b7bc8df75743c46357066c73bac83f01fab040deb9f9cc964bbe7",
+      "calls": "866bc388e20da6cfcaaa5af39a6d3c334bc3fbb7565862fd73c3a9187e4febe2",
+      "slices": "e7e15080c3af2a0708aa687edba30c3b2ceac40f3293fa7745dbd0c7b02935f4",
+      "frames": "bf84363005bb97747024844387bf0a1be9b6e40939beb0a026cfd533f74e250b"
+    },
+    "unhidden-move": {
+      "screens": "9e79e4057057ea12acc7da77b784b473300633776232e999c66579de6ba864c9",
+      "cursors": "69adeff9bc018f4c1e96f1cf37fbb427cc74c535dc9d810ef401c36568ab320d",
+      "calls": "669ac53d8f38062b6c8ac0809666509f10c57be10e8351e1eee6fd8f88e4fde5",
+      "slices": "3540fcb7e43a05396e621c191db79999f709cf99bbab625e6fa820c7b2950e60",
+      "frames": "eb6998029085529de57bad77afaba926c6b41aa400526407721b45c77a78c59a"
+    }
+  },
+  "segments": [
+    {
+      "name": "east-clear",
+      "seed": 9771,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\nOPTIONS=!debug_mongen\n",
+      "moves": " #polyself\rsmall mimic\r #monster\r l\u0012"
+    },
+    {
+      "name": "south-clear",
+      "seed": 9771,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\nOPTIONS=!debug_mongen\n",
+      "moves": " #polyself\rsmall mimic\r #monster\r j\u0012"
+    },
+    {
+      "name": "east-rehide",
+      "seed": 9771,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\nOPTIONS=!debug_mongen\n",
+      "moves": " #polyself\rsmall mimic\r #monster\r l#monster\r \u0012"
+    },
+    {
+      "name": "wait-preserve",
+      "seed": 9771,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\nOPTIONS=!debug_mongen\n",
+      "moves": " #polyself\rsmall mimic\r #monster\r .\u0012"
+    },
+    {
+      "name": "blocked-preserve",
+      "seed": 9772,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\nOPTIONS=!debug_mongen\n",
+      "moves": " #polyself\rsmall mimic\r #monster\r l\u0012"
+    },
+    {
+      "name": "unhidden-move",
+      "seed": 9771,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\nOPTIONS=!debug_mongen\n",
+      "moves": " #polyself\rsmall mimic\r l\u0012"
+    }
+  ],
+  "nativeEvidence": "Parent only; worker has not run C."
+}

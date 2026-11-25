@@ -1,0 +1,321 @@
+{
+  "name": "movement-mimic-owner",
+  "description": "Six ordinary debug keyboard inputs on generated levels. Controlled small-mimic polymorph and #monster precede east/south movement or re-hiding. Waiting, a wall block, and unhidden movement are negative controls. Source-derived C expectations, not a worker native recording.",
+  "coverage": [
+    "mode.debug",
+    "forms.polymorph",
+    "movement.basic",
+    "ui.map-memory-vision"
+  ],
+  "segments": [
+    {
+      "name": "east-clear",
+      "seed": 9771,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\nOPTIONS=!debug_mongen\n",
+      "moves": " #polyself\rsmall mimic\r #monster\r l\u0012"
+    },
+    {
+      "name": "south-clear",
+      "seed": 9771,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\nOPTIONS=!debug_mongen\n",
+      "moves": " #polyself\rsmall mimic\r #monster\r j\u0012"
+    },
+    {
+      "name": "east-rehide",
+      "seed": 9771,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\nOPTIONS=!debug_mongen\n",
+      "moves": " #polyself\rsmall mimic\r #monster\r l#monster\r \u0012"
+    },
+    {
+      "name": "wait-preserve",
+      "seed": 9771,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\nOPTIONS=!debug_mongen\n",
+      "moves": " #polyself\rsmall mimic\r #monster\r .\u0012"
+    },
+    {
+      "name": "blocked-preserve",
+      "seed": 9772,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\nOPTIONS=!debug_mongen\n",
+      "moves": " #polyself\rsmall mimic\r #monster\r l\u0012"
+    },
+    {
+      "name": "unhidden-move",
+      "seed": 9771,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\nOPTIONS=!debug_mongen\n",
+      "moves": " #polyself\rsmall mimic\r l\u0012"
+    }
+  ],
+  "requireBranchAssertions": true,
+  "branches": [
+    "movement-mimic.east-clear",
+    "movement-mimic.south-clear",
+    "movement-mimic.east-rehide",
+    "movement-mimic.wait-preserve",
+    "movement-mimic.blocked-preserve",
+    "movement-mimic.unhidden-move"
+  ],
+  "branchAssertions": [
+    {
+      "branch": "movement-mimic.east-clear",
+      "segment": 0,
+      "screenIncludes": [
+        "You turn into a small mimic!",
+        "You are now mimicking a strange object."
+      ],
+      "screenCells": [
+        {
+          "step": 33,
+          "x": 30,
+          "y": 16,
+          "equals": "]"
+        },
+        {
+          "step": 35,
+          "x": 31,
+          "y": 16,
+          "equals": "m"
+        }
+      ]
+    },
+    {
+      "branch": "movement-mimic.south-clear",
+      "segment": 1,
+      "screenIncludes": [
+        "You turn into a small mimic!",
+        "You are now mimicking a strange object."
+      ],
+      "screenCells": [
+        {
+          "step": 33,
+          "x": 30,
+          "y": 16,
+          "equals": "]"
+        },
+        {
+          "step": 35,
+          "x": 30,
+          "y": 17,
+          "equals": "m"
+        }
+      ]
+    },
+    {
+      "branch": "movement-mimic.east-rehide",
+      "segment": 2,
+      "screenIncludes": [
+        "You turn into a small mimic!",
+        "You are now mimicking a strange object."
+      ],
+      "screenCells": [
+        {
+          "step": 33,
+          "x": 30,
+          "y": 16,
+          "equals": "]"
+        },
+        {
+          "step": 35,
+          "x": 31,
+          "y": 16,
+          "equals": "m"
+        },
+        {
+          "step": 44,
+          "x": 31,
+          "y": 16,
+          "equals": "]"
+        }
+      ],
+      "screenExcludes": [
+        "You are already mimicking a strange object."
+      ]
+    },
+    {
+      "branch": "movement-mimic.wait-preserve",
+      "segment": 3,
+      "screenIncludes": [
+        "You turn into a small mimic!",
+        "You are now mimicking a strange object."
+      ],
+      "screenCells": [
+        {
+          "step": 33,
+          "x": 30,
+          "y": 16,
+          "equals": "]"
+        },
+        {
+          "step": 35,
+          "x": 30,
+          "y": 16,
+          "equals": "]"
+        }
+      ]
+    },
+    {
+      "branch": "movement-mimic.blocked-preserve",
+      "segment": 4,
+      "screenIncludes": [
+        "You turn into a small mimic!",
+        "You are now mimicking a strange object."
+      ],
+      "screenCells": [
+        {
+          "step": 33,
+          "x": 66,
+          "y": 15,
+          "equals": "]"
+        },
+        {
+          "step": 35,
+          "x": 66,
+          "y": 15,
+          "equals": "]"
+        }
+      ]
+    },
+    {
+      "branch": "movement-mimic.unhidden-move",
+      "segment": 5,
+      "screenIncludes": [
+        "You turn into a small mimic!"
+      ],
+      "screenCells": [
+        {
+          "step": 25,
+          "x": 31,
+          "y": 16,
+          "equals": "m"
+        }
+      ]
+    }
+  ],
+  "branchRequirements": [
+    {
+      "name": "east-clear",
+      "beforeXY": [
+        31,
+        15
+      ],
+      "finalXY": [
+        32,
+        15
+      ],
+      "actionKey": 35,
+      "disguisedBefore": true,
+      "clearOnMove": true,
+      "negative": false,
+      "rehide": false
+    },
+    {
+      "name": "south-clear",
+      "beforeXY": [
+        31,
+        15
+      ],
+      "finalXY": [
+        31,
+        16
+      ],
+      "actionKey": 35,
+      "disguisedBefore": true,
+      "clearOnMove": true,
+      "negative": false,
+      "rehide": false
+    },
+    {
+      "name": "east-rehide",
+      "beforeXY": [
+        31,
+        15
+      ],
+      "finalXY": [
+        32,
+        15
+      ],
+      "actionKey": 35,
+      "disguisedBefore": true,
+      "clearOnMove": true,
+      "negative": false,
+      "rehide": true
+    },
+    {
+      "name": "wait-preserve",
+      "beforeXY": [
+        31,
+        15
+      ],
+      "finalXY": [
+        31,
+        15
+      ],
+      "actionKey": 35,
+      "disguisedBefore": true,
+      "clearOnMove": false,
+      "negative": true,
+      "rehide": false
+    },
+    {
+      "name": "blocked-preserve",
+      "beforeXY": [
+        67,
+        14
+      ],
+      "finalXY": [
+        67,
+        14
+      ],
+      "actionKey": 35,
+      "disguisedBefore": true,
+      "clearOnMove": false,
+      "negative": true,
+      "rehide": false
+    },
+    {
+      "name": "unhidden-move",
+      "beforeXY": [
+        31,
+        15
+      ],
+      "finalXY": [
+        32,
+        15
+      ],
+      "actionKey": 25,
+      "disguisedBefore": false,
+      "clearOnMove": false,
+      "negative": true,
+      "rehide": false
+    }
+  ],
+  "unchangedOutputHashes": {
+    "wait-preserve": {
+      "screens": "6de6b77c6e53bad2ae0d698ad78d89222174fba86c5c9d6ae969bd04b4e25976",
+      "cursors": "3f4deba9f9487e885b95e6158bb4ed905a9a01677b76bd4de424a7de96049684",
+      "calls": "7b6d501f8a7f7c2a597289ae734d9a1c8ee6311dd6fe2c6640ba44842a986783",
+      "slices": "645ee9dcb29133488dc55f4ae43ed74dedde993578113ff18b7ea462cd3365f5",
+      "frames": "bf84363005bb97747024844387bf0a1be9b6e40939beb0a026cfd533f74e250b"
+    },
+    "blocked-preserve": {
+      "screens": "6723731e368165e7aa2e6a59e799330f068963c9570b4deab92baa99280c555d",
+      "cursors": "535aa10d7a6b7bc8df75743c46357066c73bac83f01fab040deb9f9cc964bbe7",
+      "calls": "866bc388e20da6cfcaaa5af39a6d3c334bc3fbb7565862fd73c3a9187e4febe2",
+      "slices": "e7e15080c3af2a0708aa687edba30c3b2ceac40f3293fa7745dbd0c7b02935f4",
+      "frames": "bf84363005bb97747024844387bf0a1be9b6e40939beb0a026cfd533f74e250b"
+    },
+    "unhidden-move": {
+      "screens": "9e79e4057057ea12acc7da77b784b473300633776232e999c66579de6ba864c9",
+      "cursors": "69adeff9bc018f4c1e96f1cf37fbb427cc74c535dc9d810ef401c36568ab320d",
+      "calls": "669ac53d8f38062b6c8ac0809666509f10c57be10e8351e1eee6fd8f88e4fde5",
+      "slices": "3540fcb7e43a05396e621c191db79999f709cf99bbab625e6fa820c7b2950e60",
+      "frames": "eb6998029085529de57bad77afaba926c6b41aa400526407721b45c77a78c59a"
+    }
+  },
+  "recordingNote": "Inputs locked before parent C recording. No map or state injection. Based on hero-glyph-identities RC/date; new bounded seeds 9771/9772. Final control-R is redraw. Parent records and compares original C; no native parity claimed by worker."
+}

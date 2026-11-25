@@ -1,6 +1,37 @@
 # STATUS — live handoff board
 
-## 2026-11-25: configuration NUL visibility verified
+## 2026-11-25: moving mimic disguise verified
+
+Only cmd.js changes runtime. Movement clears object or furniture disguises
+after hideunder and before leash feedback, at the same point as C. It uses
+the masked appearance type and clears the complete field. Early blockers
+preserve the disguise; moving and then hiding again works normally.
+
+Source controls pass 23/23 versus 11/23. Six ordinary cases pass all eighteen
+assertions versus fifteen before. All fifteen negative hashes and twenty-three
+source RNG pairs stay fixed. All six original C cases match versus three:
+222 styled boundaries/cursors, 16,289 calls and ordered slices, zero frames.
+The three gains repair both the hero glyph and later RNG divergence. Furniture
+and late refused movement have source controls, without an ordinary native gain.
+
+All 190 selected/public recordings and 190 strict eight-second workers pass:
+91,664 screens/cursors, 3,473,740 random positions and 2,176 frames. Both new
+gates, 49 retained suites, source audit and three syntax checks pass. All 317
+source members, 25 promotion members, five payloads and 280 runtime hashes
+verify. All 900 prior raws and requirements stay fixed; six requirements and
+one raw bring the corpus to 901. Receipt `movement-mimic-main-verification.json`,
+SHA256 `1f5b8d2ad285e6912876295f114ea8107db6c63b77b9f5aa771c4257a1d57a13`.
+
+Full901 is running with two NFS CPU workers, default budgets and no retries,
+PID 3197053. Its 1,192 files include 900 linked raws and one new raw. Root:
+/share/NFS/u/rohit/research/contest/artifacts/2026-11-22/mimic-full901-js-20261125.
+All-files SHA256 `8408efc90c86097bb1ef5336975c569f0ce79e3a634912ba3f702e2aa5e03e68`.
+The next moving-engulfer candidate now matches all four original C cases
+versus three before, including RNG and animations; portable promotion is
+pending. Byte-reader and random-position terrain audits continue separately.
+No held-out gain or whole-port closure is claimed.
+
+## 2026-11-25: configuration NUL visibility pushed as 9d618039
 
 Only options.js changes runtime, by three lines. Each existing physical line
 ends its visible text at the first NUL before continuation, trimming, section
@@ -30,14 +61,14 @@ requirements and two new raws bring the passing corpus to 900. Main receipt
 `config-nul-main-verification.json`, SHA256
 `cd7ff2cb4eac28df34dd6197f1f0ce229f31810860f6ac8b5950bc551d87c9a6`.
 
-Full900 is running with two NFS CPU workers, default budgets and no retries,
-PID 3188779. Its 1,191 files include 898 linked raws and two new raws. Root:
+Full900 passed all 900 recordings: 921,925 screens/cursors, 19,741,761 random
+positions and 32,997 frames. All 1,191 tested files match published 9d618039.
+Publication receipt `nul-full900-publication-verification.json`, SHA256
+`f54a01b581b8aac28902408d6e07f5bea1162d7c38e6e9d8f4b441141182af93`.
+The run used two NFS CPU workers, default budgets and no retries. Root:
 /share/NFS/u/rohit/research/contest/artifacts/2026-11-22/nul-full900-js-20261125.
 All-files SHA256 `9d59aeed3efb845cfb9b9d29812a4b61d1cab0c77f6d39b9821bfa272598de16`.
-Moving-mimic feedback now matches six unchanged C cases versus three before,
-including RNG divergence; portable promotion is pending. Moving engulfers and
-the remaining byte-reader contracts are separate audits. No held-out gain or
-whole-port closure is claimed.
+The two original byte-cap failures remain open and unchanged.
 
 ## 2026-11-25: final positioning pushed as 71912510
 

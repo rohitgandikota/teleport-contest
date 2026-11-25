@@ -4530,6 +4530,12 @@
     {"group":"config-section-composition-contract","id":"config-section-composition-contract.config-compose-choose-comment","cFile":"src/cfgfiles.c","cFunction":"parse_conf_buf","description":"config compose choose comment"},
     {"group":"config-section-composition-contract","id":"config-section-composition-contract.config-compose-header-literal-space","cFile":"src/cfgfiles.c","cFunction":"parse_conf_buf","description":"config compose header literal space"},
     {"group":"config-section-composition-contract","id":"config-section-composition-contract.config-compose-skipped-continued-choose","cFile":"src/cfgfiles.c","cFunction":"parse_conf_buf","description":"config compose skipped continued choose"},
-    {"group":"config-section-composition-contract","id":"config-section-composition-contract.config-compose-unfinished-choose-eof","cFile":"src/cfgfiles.c","cFunction":"parse_conf_buf","description":"config compose unfinished choose eof"}
+    {"group":"config-section-composition-contract","id":"config-section-composition-contract.config-compose-unfinished-choose-eof","cFile":"src/cfgfiles.c","cFunction":"parse_conf_buf","description":"config compose unfinished choose eof"},
+    {"group":"movement-mimic-owner","id":"movement-mimic.east-clear","cFile":"src/hack.c","cFunction":"domove_core","description":"east clear"},
+    {"group":"movement-mimic-owner","id":"movement-mimic.south-clear","cFile":"src/hack.c","cFunction":"domove_core","description":"south clear"},
+    {"group":"movement-mimic-owner","id":"movement-mimic.east-rehide","cFile":"src/hack.c","cFunction":"domove_core","description":"east rehide"},
+    {"group":"movement-mimic-owner","id":"movement-mimic.wait-preserve","cFile":"src/hack.c","cFunction":"domove_core","description":"wait preserve"},
+    {"group":"movement-mimic-owner","id":"movement-mimic.blocked-preserve","cFile":"src/hack.c","cFunction":"domove_core","description":"blocked preserve"},
+    {"group":"movement-mimic-owner","id":"movement-mimic.unhidden-move","cFile":"src/hack.c","cFunction":"domove_core","description":"unhidden move"}
   ]
 }

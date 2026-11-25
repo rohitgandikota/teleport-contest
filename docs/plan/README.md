@@ -12,58 +12,25 @@ Ground rules are in `/CLAUDE.md`. Read that first if you have not.
 
 ## Current focus, 2026-11-25
 
+The latest pushed runtime is `9d618039`, verified against all 900 maintained
+recordings on NFS with default budgets and no retries. All 1,191 tested files
+match that commit: 921,925 screens/cursors, 19,741,761 random positions and
+32,997 frames. See STATUS for the publication receipt and prior checkpoints.
 
-`a7dae0ed` is pushed and passes all 887 maintained recordings on NFS with
-default budgets and no retries. The complete run covers 918,206 screens/cursors,
-19,492,010 random positions and 32,997 frames. All 1,177 snapshot hashes match
-the published runtime and maintained recordings. See STATUS for the receipts.
+Moving mimic disguises are verified for publication. All six original C cases
+match versus three before, all 190 selected/public and strict timeout checks
+pass, and 55 focused checks pass. Only cmd.js changes runtime. The corpus is
+901, and its full NFS replay is running with two CPU workers.
 
-`3bb53bcb` is pushed. Its boulder fixes pass sixteen C cases, all 74
-selected/public recordings, all 74 strict workers and 21 retained suites.
-Travel is pushed as `a7dae0ed`: source54, ordinary12 and native12 pass,
-versus source37 and six ordinary/native cases before. All 68 selected/public
-recordings pass. One large inventory recording exceeds the strict eight-second
-budget on both versions; fixed baseline and candidate are exact under the
-normal 45-second budget. Eighteen retained suites pass. See STATUS for the
-preserved failure, paired timing result and stronger raw-grid death assertion.
+Moving engulfers are next: all four original C cases match versus three
+before, including styles, cursors, RNG and animations. Portable promotion is
+pending. Configuration byte limits and random-position terrain transitions
+remain separate source audits. The two original byte-cap failures remain
+documented; the NUL checkpoint does not claim to fix them.
 
-Pool is pushed as `62d1bc96`. Full888 passes on that exact published runtime:
-918,711 screens/cursors, 19,505,842 random positions and 32,997 frames. Its six
-C cases pass versus two before. All 70 selected/public and strict workers pass.
-
-The config directive patch is pushed as `6bdcff91`. Source controls
-pass 74/74 versus 34/74; all eleven ordinary and C cases pass versus three.
-All 75 selected/public recordings and strict workers, twenty retained suites,
-source audit and three syntax checks pass. The initial omitted-loader failure
-and its unchanged passing invocation are preserved. All prior 888 recordings
-remain fixed. Full889 passes on the exact published runtime: 919,096
-screens/cursors, 19,535,320 random positions and 32,997 frames.
-
-Rogue mimic wall symbols are pushed as `1110bf19`: source 35/35 versus 20,
-ordinary and original C 5/5 versus 3, all 58 selected/public and strict workers,
-nine retained suites, source audit and three syntax checks.
-
-Cream-pie handling and lookaround are pushed as `cae25aeb`. Source controls
-pass 35/35 and 55/55; all four original C cases match versus three before.
-Cream alone also passes those four; lookaround has separate source evidence.
-All 66 selected/public recordings and strict workers, fourteen retained suites,
-source audit and six syntax checks pass. All 890 prior raws remain fixed;
-the corpus is 891. Its full NFS replay passes on the exact published runtime:
-919,703 screens/cursors, 19,561,599 random positions and 32,997 frames.
-
-Config physical-line assembly passes all twelve original C cases versus four,
-including composition with cream and lookaround. It is verified for publication:
-source 80/80, ordinary 12/12, all 78 selected/public and strict workers,
-twenty-two retained suites, source audit and three syntax checks. All 891 prior
-raws remain fixed; full892 is running after full891 completed.
-
-The run-into-monster canonical blindness guard is next. Its four original C
-inputs already pass with the published cream fix; no independent native gain
-is claimed for the reader change. Source controls improve from 38/50 to 50/50.
-Floor object effects and
-shipping audits have no ordinary failure established and no runtime patch.
-Two duplicate startup warning failures remain unresolved. The 19:56 UTC check
-is unchanged: rank 7 with 659 unmatched screens. See STATUS for exact receipts.
+The latest leaderboard check, 21:27 UTC, still shows rank 7 and 659 unmatched
+screens. Its 19:31 row predates the recent checkpoints and does not identify
+the scored commit. Local parity does not establish a new held-out score.
 
 
 The storage cleanup is complete. The user explicitly authorized deleting

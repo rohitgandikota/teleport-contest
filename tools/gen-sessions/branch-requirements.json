@@ -4323,6 +4323,16 @@
     {"group": "Hero trap escape movement owner", "id": "movement-owner.sting-carried", "cFile": "src/hack.c", "cFunction": "domove_core / trapmove", "description": "sting-carried: You are caught by a spider web!, You are stuck to the web."},
     {"group": "Hero trap escape movement owner", "id": "movement-owner.plain-wielded", "cFile": "src/hack.c", "cFunction": "domove_core / trapmove", "description": "plain-wielded: You are caught by a spider web!, You are stuck to the web."},
     {"group": "Hero trap escape movement owner", "id": "movement-owner.plain-entry-negative", "cFile": "src/hack.c", "cFunction": "domove_core / trapmove", "description": "plain-entry-negative: You fall into a pit!"},
-    {"group": "Hero trap escape movement owner", "id": "movement-owner.pick-unjoined-negative", "cFile": "src/hack.c", "cFunction": "domove_core / trapmove", "description": "pick-unjoined-negative: You swing your pick-axe, but the rubble has no place to go."}
+    {"group": "Hero trap escape movement owner", "id": "movement-owner.pick-unjoined-negative", "cFile": "src/hack.c", "cFunction": "domove_core / trapmove", "description": "pick-unjoined-negative: You swing your pick-axe, but the rubble has no place to go."},
+    {"group": "poisoned-owner", "id": "gas-wet-13", "cFile": "src/attrib.c", "cFunction": "poisoned", "description": "Trapped chest gas applies reduced HP damage with an actually worn wet towel and leaves attributes unchanged."},
+    {"group": "poisoned-owner", "id": "gas-wet-15", "cFile": "src/attrib.c", "cFunction": "poisoned", "description": "A second chest gas HP roll uses rounded half damage from an actually worn wet towel."},
+    {"group": "poisoned-owner", "id": "poly-severe-needle", "cFile": "src/attrib.c", "cFunction": "poisoned", "description": "Severe chest needle poison while polymorphed applies constitution loss and adjuhploss once."},
+    {"group": "poisoned-owner", "id": "poison-egg-expiry", "cFile": "src/attrib.c", "cFunction": "poisoned", "description": "Actual amulet survival after chest poison preserves the eaten egg cause until stoning expiry."},
+    {"group": "poisoned-owner", "id": "poison-egg-cure", "cFile": "src/attrib.c", "cFunction": "poisoned", "description": "Actual amulet survival after chest poison preserves the eaten egg cause until a lizard corpse cures it."},
+    {"group": "poisoned-owner", "id": "needle-hp-negative", "cFile": "src/attrib.c", "cFunction": "poisoned", "description": "A worn wet towel leaves ordinary chest needle poison HP damage unchanged."},
+    {"group": "poisoned-owner", "id": "needle-attribute-negative", "cFile": "src/attrib.c", "cFunction": "poisoned", "description": "A worn wet towel leaves chest needle poison constitution loss unchanged."},
+    {"group": "poisoned-owner", "id": "amulet-resistance-negative", "cFile": "src/attrib.c", "cFunction": "poisoned", "description": "An actually worn amulet versus poison prevents the poison consequence through extrinsic resistance."},
+    {"group": "poisoned-owner", "id": "natural-bite-negative", "cFile": "src/attrib.c", "cFunction": "poisoned", "description": "An actual hostile giant spider bite keeps the ordinary poison caller behavior unchanged."},
+    {"group": "poisoned-owner", "id": "carried-gas-attribute-negative", "cFile": "src/attrib.c", "cFunction": "poisoned", "description": "A carried wet towel gives no gas protection and leaves the chest gas strength loss unchanged."}
   ]
 }

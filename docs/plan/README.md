@@ -113,11 +113,18 @@ current-main composition is now installed and passes all sixty selected/public
 fixtures, sixty eight-second workers, eight retained suites, source audit and
 four syntax checks. Full875 passes on NFS with default budgets and no retries:
 905,488 screens/cursors, 19,178,049 random positions and 32,811 frames. All
-1,165 source, recording and scorer files remain fixed. Only the movement
-runtime changes are unpublished. Poison is separately composed with 45 source
-controls, ten ordinary cases and ten exact native comparisons, pending main
-integration. Further source reviews cover article handling, movement, monster
-blindness feedback and intrinsic free action.
+1,165 source, recording and scorer files remain fixed. Movement is pushed as
+`e21f4fa8`. Poison is now composed on main with 45 source controls, 25 assertions
+across ten ordinary cases and ten exact native comparisons: 2,116 styled
+boundaries/cursors and 25,166 calls, with zero frames. All 73 selected/public
+fixtures and 73 eight-second workers pass, together with eight retained suites,
+source audit and five syntax checks. Its new fixture brings the corpus to 876,
+outside full875. CapitalMon's DEBUG listing is explicitly unported and unverified.
+The next test_move candidate passes nine fixed native cases versus five before,
+matching 759 styled boundaries/cursors and 20,745 calls. Its composition and
+full877 verification remain pending. Further source reviews cover article
+handling, rooted and mounted movement, monster blindness feedback and intrinsic
+free action.
 These local results do not establish a newer held-out score.
 
 Publication resumed with `2089260a` after the earlier approval-review usage

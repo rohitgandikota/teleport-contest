@@ -29,7 +29,9 @@ import { money_cnt } from './invent.js';
 import { currency } from './invent.js';
 import { There } from './pline.js';
 import { You } from './pline.js';
-import { Monnam } from './do_name.js';
+import { Monnam, bogon_is_pname } from './do_name.js';
+import { the_unique_pm } from './objnam.js';
+import { G_UNIQ } from './const.js';
 import { tty_yn_function } from './tty/topl.js';
 import { money2mon } from './shk.js';
 import { record_achievement } from './insight.js';
@@ -593,4 +595,43 @@ export async function couldnt_open_file(filename) {
 
     await impossible(`Can't open '${filename}' file.`);
     state.something_worth_saving = save_something;
+}
+
+let CapMons = null;
+
+// src/rumors.c:791 CapitalMon(); full words and possessives, case sensitive.
+export function CapitalMon(word) {
+    if (!word || word[0] === word[0].toLowerCase())
+        return false;
+    if (!CapMons)
+        init_CapMons();
+    for (const nam of CapMons) {
+        const next = word[nam.length];
+        if (word.startsWith(nam) && (!next || next === ' ' || next === "'"))
+            return true;
+    }
+    return false;
+}
+
+// src/rumors.c:829 init_CapMons(); compiled names and decoded bogusmon types.
+function init_CapMons() {
+    CapMons = [];
+    for (const ptr of game.mons) {
+        if ((ptr.geno & G_UNIQ) && !the_unique_pm(ptr))
+            continue;
+        for (const nam of ptr.pmnames)
+            if (nam && nam[0] !== nam[0].toLowerCase())
+                CapMons.push(nam);
+    }
+    const file = dlb_fopen('bogusmon');
+    dlb_fgets(file); // generated-file header
+    for (let line; (line = dlb_fgets(file)) !== null;) {
+        let nam = unpadline(xcrypt(line.replace(/\n$/, ''))), code = '';
+        if (nam && '-_+|='.includes(nam[0])) {
+            code = nam[0];
+            nam = nam.slice(1);
+        }
+        if (nam && nam[0] !== nam[0].toLowerCase() && !bogon_is_pname(code))
+            CapMons.push(nam);
+    }
 }

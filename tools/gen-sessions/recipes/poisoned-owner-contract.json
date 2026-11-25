@@ -1,0 +1,218 @@
+{
+  "name": "poisoned-owner-contract",
+  "description": "Ordinary wishes, mirror breakage, actual trapped chests, poison protection, polymorph and real amulet survival. Candidate JS proposals; parent native recording required.",
+  "coverage": [
+    "mode.debug",
+    "survival.poison",
+    "object.containers",
+    "object.tools",
+    "object.amulets",
+    "object.food-corpses",
+    "forms.polymorph",
+    "monster.hero-melee"
+  ],
+  "branches": [
+    "gas-wet-13",
+    "gas-wet-15",
+    "poly-severe-needle",
+    "poison-egg-expiry",
+    "poison-egg-cure",
+    "needle-hp-negative",
+    "needle-attribute-negative",
+    "amulet-resistance-negative",
+    "natural-bite-negative",
+    "carried-gas-attribute-negative"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "gas-wet-13",
+      "segment": 0,
+      "screenIncludes": [
+        "A cloud of noxious gas billows from the chest.",
+        "The gas cloud was poisoned!"
+      ]
+    },
+    {
+      "branch": "gas-wet-15",
+      "segment": 1,
+      "screenIncludes": [
+        "A cloud of noxious gas billows from the chest.",
+        "The gas cloud was poisoned!"
+      ]
+    },
+    {
+      "branch": "poly-severe-needle",
+      "segment": 2,
+      "screenIncludes": [
+        "You turn into an ogre!",
+        "You feel a needle prick your hand.",
+        "You feel very sick!"
+      ]
+    },
+    {
+      "branch": "poison-egg-expiry",
+      "segment": 3,
+      "screenIncludes": [
+        "The poison was deadly...",
+        "The medallion crumbles to dust!",
+        "petrified by a"
+      ]
+    },
+    {
+      "branch": "poison-egg-cure",
+      "segment": 4,
+      "screenIncludes": [
+        "The poison was deadly...",
+        "The medallion crumbles to dust!",
+        "limber"
+      ]
+    },
+    {
+      "branch": "needle-hp-negative",
+      "segment": 5,
+      "screenIncludes": [
+        "The needle was poisoned!"
+      ]
+    },
+    {
+      "branch": "needle-attribute-negative",
+      "segment": 6,
+      "screenIncludes": [
+        "The needle was poisoned!",
+        "You feel very sick!"
+      ]
+    },
+    {
+      "branch": "amulet-resistance-negative",
+      "segment": 7,
+      "screenIncludes": [
+        "The poison doesn't seem to affect you."
+      ]
+    },
+    {
+      "branch": "natural-bite-negative",
+      "segment": 8,
+      "screenIncludes": [
+        "The giant spider's bite was poisoned!"
+      ]
+    },
+    {
+      "branch": "carried-gas-attribute-negative",
+      "segment": 9,
+      "screenIncludes": [
+        "The gas cloud was poisoned!",
+        "You feel weaker!"
+      ]
+    }
+  ],
+  "segments": [
+    {
+      "name": "gas-wet-13",
+      "seed": 17002,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:Poison,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,debug_mongen\nOPTIONS=symset:plain\n",
+      "moves": " #levelchange\r30\r                                        \u0017uncursed wet towel\rPa  \u0017cursed luckstone\r\u0017uncursed mirror\r\u0017uncursed mirror\r\u0017uncursed mirror\rtc>   td>   te>   \u0017empty unlocked trapped chest\r#tip\rf\r      i\u001b"
+    },
+    {
+      "name": "gas-wet-15",
+      "seed": 17007,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:Poison,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,debug_mongen\nOPTIONS=symset:plain\n",
+      "moves": " #levelchange\r30\r                                        \u0017uncursed wet towel\rPa  \u0017cursed luckstone\r\u0017uncursed mirror\r\u0017uncursed mirror\r\u0017uncursed mirror\rtc>   td>   te>   \u0017empty unlocked trapped chest\r#tip\rf\r      i\u001b"
+    },
+    {
+      "name": "poly-severe-needle",
+      "seed": 17140,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:Poison,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,debug_mongen\nOPTIONS=symset:plain\n",
+      "moves": " #levelchange\r30\r                                        \u0017uncursed wet towel\rPa  \u0017cursed luckstone\r\u0017uncursed mirror\r\u0017uncursed mirror\r\u0017uncursed mirror\rtc>   td>   te>    #polyself\rogre\r   \u0017empty unlocked trapped chest\r#tip\rf\r      i\u001b"
+    },
+    {
+      "name": "poison-egg-expiry",
+      "seed": 18019,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:Poison,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,debug_mongen\nOPTIONS=symset:plain\n",
+      "moves": " \u0017uncursed wet towel\rPa  \u0017cursed luckstone\r\u0017uncursed mirror\r\u0017uncursed mirror\r\u0017uncursed mirror\rtc>   td>   te>   \u0017empty unlocked trapped chest\r\u0017amulet of life saving\rPg  \u0017cockatrice egg\reh #tip\rf\r    .  yn n n"
+    },
+    {
+      "name": "poison-egg-cure",
+      "seed": 18019,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:Poison,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,debug_mongen\nOPTIONS=symset:plain\n",
+      "moves": " \u0017uncursed wet towel\rPa  \u0017cursed luckstone\r\u0017uncursed mirror\r\u0017uncursed mirror\r\u0017uncursed mirror\rtc>   td>   te>   \u0017empty unlocked trapped chest\r\u0017amulet of life saving\rPg  \u0017cockatrice egg\reh #tip\rf\r    \u0017uncursed lizard corpse\rei      i\u001b"
+    },
+    {
+      "name": "needle-hp-negative",
+      "seed": 17003,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:Poison,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,debug_mongen\nOPTIONS=symset:plain\n",
+      "moves": " #levelchange\r30\r                                        \u0017uncursed wet towel\rPa  \u0017cursed luckstone\r\u0017uncursed mirror\r\u0017uncursed mirror\r\u0017uncursed mirror\rtc>   td>   te>   \u0017empty unlocked trapped chest\r#tip\rf\r      i\u001b"
+    },
+    {
+      "name": "needle-attribute-negative",
+      "seed": 17008,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:Poison,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,debug_mongen\nOPTIONS=symset:plain\n",
+      "moves": " #levelchange\r30\r                                        \u0017uncursed wet towel\rPa  \u0017cursed luckstone\r\u0017uncursed mirror\r\u0017uncursed mirror\r\u0017uncursed mirror\rtc>   td>   te>   \u0017empty unlocked trapped chest\r#tip\rf\r      i\u001b"
+    },
+    {
+      "name": "amulet-resistance-negative",
+      "seed": 17203,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:Poison,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,debug_mongen\nOPTIONS=symset:plain\n",
+      "moves": " #levelchange\r30\r                                        \u0017uncursed wet towel\rPa  \u0017cursed luckstone\r\u0017uncursed mirror\r\u0017uncursed mirror\r\u0017uncursed mirror\rtc>   td>   te>   \u0017empty unlocked trapped chest\r\u0017amulet versus poison\rPg  #tip\rf\r      i\u001b"
+    },
+    {
+      "name": "natural-bite-negative",
+      "seed": 16002,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:Poison,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,debug_mongen\nOPTIONS=symset:plain\n",
+      "moves": " #levelchange\r30\r                                        \u0007hostile giant spider\r .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . i\u001b"
+    },
+    {
+      "name": "carried-gas-attribute-negative",
+      "seed": 17011,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:Poison,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,debug_mongen\nOPTIONS=symset:plain\n",
+      "moves": " #levelchange\r30\r                                        \u0017uncursed wet towel\raa  \u0017cursed luckstone\r\u0017uncursed mirror\r\u0017uncursed mirror\r\u0017uncursed mirror\rtc>   td>   te>   \u0017empty unlocked trapped chest\r#tip\rf\r      i\u001b"
+    }
+  ],
+  "unchangedOutputHashes": {
+    "needle-hp-negative": {
+      "screens": "c668f39fa70ebcdd540cce1f9282f52d380c20139f5224b9de192fb68dd6dbcc",
+      "cursors": "d116c2645b48463fa6e5d019367a1ada0d25a635a1e28901dbf806fa62722edb",
+      "rng": "5092e87747ec53bd576a3bc5ff6dc6ce3acbcb84e8e317b5ce79a5e0c610e28c",
+      "slices": "ffa0a300b87de880d4ae7bed7cd73bfce9239673e3620ef3c38d6896ea69403b",
+      "frames": "9de70ba891f0bc5ea6a98c86d677e1f5204f32030da0c45255cda193b0722d79"
+    },
+    "needle-attribute-negative": {
+      "screens": "c22281589e1381a78753749447a39ff7d24869a0819d6d20a492dc9b7dd2290e",
+      "cursors": "37f9ce6f277fd2625d083cc2e0a49b5d6e5c66fdb099bb91aae4818fb0c203fe",
+      "rng": "531509c5aee67dfe839d67cdb896730b330d02e259ab56c40f019a818908a8f6",
+      "slices": "81b4dbf98ed009362ba4978a0f0ff3863f65ea63eaf1fa2bc19471676191cfb9",
+      "frames": "9de70ba891f0bc5ea6a98c86d677e1f5204f32030da0c45255cda193b0722d79"
+    },
+    "amulet-resistance-negative": {
+      "screens": "333c10931e6e71c3fcd66aa7faf40c8cda32f2ed21b603639e8de57dbf2df46a",
+      "cursors": "a2bd55826f46348cf4dffbcf3e2933c8c77445ce2ac46d91a4ce46e38899f8d1",
+      "rng": "2c18cc61d7f7a116102572732b860bdfb29dff5a0e880622123b57973824109d",
+      "slices": "92432dd8efb9e1d561bf039c4d20cf048df2c11ac7e2b095de756092c3446df6",
+      "frames": "959414ca4640e733f0b3f3167bc8fe1eec751dd88ae397e47260a63058f72764"
+    },
+    "natural-bite-negative": {
+      "screens": "ac8a476ee9684db1f2bb2224fb0f479b50a40fb384e419aa7dbb6dceda2fc607",
+      "cursors": "a93297a279932b7c46083d479d8484ade6ff123eaa60cebba14fbf2426387677",
+      "rng": "8d94cec9895a8a2672b015045ed2ee81899f54f4e3ffccdfea5c7f6fbcb37488",
+      "slices": "fe1c3100c14131058f23442d37d404d1bbc0e6774bbbc1db5bb68526ab642404",
+      "frames": "fe58a32386a26d4d7560975abcffc6de897c81f09c22be55703143098da803fd"
+    },
+    "carried-gas-attribute-negative": {
+      "screens": "33767b7b6322c809faf265cad0f5358d2a641a759131712fde9fb3f171712e45",
+      "cursors": "7aeddeee140096261c2601f6cf218b7e4d0623bf8d7c7a068c7fcaa2dfa72912",
+      "rng": "4f745e46684fe30122017263eae8e4f8a7bba7e8a09f8f6af16fb7bd8068bd8c",
+      "slices": "8ee29bfd0380d483a6cea845b75a4f450074a256b77e9684d3b48abbaaed6f7d",
+      "frames": "9de70ba891f0bc5ea6a98c86d677e1f5204f32030da0c45255cda193b0722d79"
+    }
+  }
+}

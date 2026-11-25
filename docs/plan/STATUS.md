@@ -1,5 +1,40 @@
 # STATUS — live handoff board
 
+## 2026-11-25: poison verified for publication; test_move native comparisons pass
+
+Trap movement is pushed as `e21f4fa8`, including the completed full875
+verification. Its redundant parent recording now links to the checksum-identical
+canonical fixture, removing 1,431,906 bytes. Poison handling is the only new
+runtime change on main, scoped to attrib.js, objnam.js and rumors.js.
+All 279 runtime hashes match the tested composition. Its 45 source controls,
+25 assertions across ten ordinary cases, and ten native comparisons pass.
+Before the patch, 34 source controls, five ordinary cases and six native cases
+passed. The native comparison matches 2,116 styled boundaries/cursors and
+25,166 calls with ordered slices; there are no frames. All random streams,
+slices, cursors and frames remain unchanged in the ordinary paired controls.
+Five negative cases retain all five output hashes.
+
+All 73 selected/public fixtures match 39,153 screens/cursors, 1,416,280 random
+positions and 1,675 frames. All 73 eight-second workers, eight retained suites,
+source audit and five syntax checks pass. All 875 prior raw recordings and
+prior requirements remain fixed; ten requirements and one fixture are appended.
+The corpus is 876. Full875 predates this poison checkpoint. Main receipt:
+`poison-main-verification.json`, SHA256
+`12111ce7fa094f3a237b5547625047309ea4ffd64f52c9bb40de24e5f7f1aa5d`.
+Commit and immediately push this checkpoint. CapitalMon's DEBUG listing is
+explicitly unported and unverified. Other the() branches remain under review.
+
+The separate test_move packet now passes all nine fixed native cases, versus
+five before: 759 styled boundaries/cursors, 20,745 calls and zero frames.
+Source controls pass 54/54 and ordinary assertions 27/27 in the sealed packet.
+Parent will review its portable gates, compose the scoped cmd.js/hack.js/monmove.js
+patch on published poison, then run focused checks and full877 on NFS.
+The source review also found a display notice-location prerequisite for
+mcureblindness; that prerequisite remains under investigation. Free-action
+research still has no runtime patch. The unverified amulet proposal must be
+replaced or excluded. Latest observed leaderboard remains rank 7; no new
+held-out result is inferred from these local checks.
+
 ## 2026-11-25: full875 passes; movement ready for publication
 
 Potion vapor is pushed as `cf5c3729`. Its main receipt is

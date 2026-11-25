@@ -154,12 +154,15 @@ import { rider_cant_reach } from './steed.js';
 import { canseemon } from './display.js';
 import { x_monnam } from './do_name.js';
 import { has_mgivenname, SUPPRESS_SADDLE, ARTICLE_YOUR, ARTICLE_A, ARTICLE_NONE } from './const.js';
-import { distu } from './hacklib.js';
+import { distu, next2u } from './hacklib.js';
 import { type_is_pname } from './mondata.js';
 import { impossible } from './pline.js';
 import { directionname } from './cmd.js';
 import { trapname } from './trap.js';
 import { Is_rogue_level } from './const.js';
+import { tmp_at } from './display.js';
+import { DISP_ALL, DISP_END, def_warnsyms } from './const.js';
+import { showsyms_at, SYM_OFF_W } from './symbols.js';
 
 // src/hack.c:2996 runmode_delay_output(). Multi-turn actions and running
 // periodically expose their intermediate screen. The default "run" mode
@@ -3244,17 +3247,16 @@ export async function crawl_destination(x, y) {
 // src/hack.c:1266 findtravelpath() — pick u.dx/u.dy for the next travel
 // step: a breadth-first flood from the destination back to the hero over
 // squares the hero has seen (TEST_TRAV), preferring paths without closed
-// doors, boulders or seen traps. Draws nothing.
+// doors, boulders or seen traps. DEBUG travel displays each search frontier.
 export async function findtravelpath(mode) {
     const u = game.u;
     (game.travelmap ||= new Set());
 
     /* if travel to adjacent, reachable location, use normal movement rules */
     if ((mode === TRAVP_TRAVEL || mode === TRAVP_VALID) && game.context.travel1
-        && (Math.abs(u.tx - u.ux) <= 1 && Math.abs(u.ty - u.uy) <= 1
-            && !(u.tx === u.ux && u.ty === u.uy)) /* next2u */
+        && next2u(u.tx, u.ty)
         && await crawl_destination(u.tx, u.ty)) {
-        end_running_hack(false);
+        end_running(false);
         if (await test_move(u.ux, u.uy, u.tx - u.ux, u.ty - u.uy, TEST_MOVE)) {
             if (mode === TRAVP_TRAVEL) {
                 u.dx = u.tx - u.ux;
@@ -3290,7 +3292,7 @@ export async function findtravelpath(mode) {
                 travelstep[1 - set] = [];
                 for (let i = 0; i < n; i++) {
                     const x = travelstep[set][i].x, y = travelstep[set][i].y;
-                    const dirmax = N_DIRS; /* NODIAG needs polyself */
+                    const dirmax = NODIAG(u.umonnum) ? 4 : N_DIRS;
                     let alreadyrepeated = false;
 
                     for (let dir = 0; dir < dirmax; ++dir) {
@@ -3300,7 +3302,7 @@ export async function findtravelpath(mode) {
                         if (!isok(nx, ny)
                             || (mode === TRAVP_GUESS && !couldsee(nx, ny)))
                             continue;
-                        if ((!Passes_walls()
+                        if ((!Passes_walls() && !can_ooze(game.youmonst)
                              && closed_door_hack(x, y))
                             || (sobj_at(ONAMES.BOULDER, x, y)
                                 && !could_move_onto_boulder(x, y))
@@ -3320,7 +3322,7 @@ export async function findtravelpath(mode) {
                         const nloc = game.level.at(nx, ny);
                         if (await test_move(x, y, nx - x, ny - y, TEST_TRAV)
                             && (nloc.seenv
-                                || (!game.u.ublind && couldsee(nx, ny)))) {
+                                || (!Blind() && couldsee(nx, ny)))) {
                             if (nx === ux && ny === uy) {
                                 if (mode === TRAVP_TRAVEL
                                     || mode === TRAVP_VALID) {
@@ -3357,6 +3359,24 @@ export async function findtravelpath(mode) {
                         }
                     }
                 }
+                // src/hack.c:1430 DEBUG: warning glyph 1 marks the frontier.
+                if (boolean_option('travel_debug')) {
+                    await tmp_at(DISP_ALL, {
+                        ch: String.fromCharCode(showsyms_at(SYM_OFF_W + 1)),
+                        color: def_warnsyms[1].color, decgfx: false,
+                        glyph: { kind: 'warn', wl: 1 },
+                    });
+                    for (let i = 0; i < nn; i++)
+                        await tmp_at(travelstep[1 - set][i].x,
+                                     travelstep[1 - set][i].y);
+                    await game.animationFrame?.();
+                    if (game.flags.runmode === RUN_CRAWL) {
+                        await game.animationFrame?.();
+                        await game.animationFrame?.();
+                    }
+                    await tmp_at(DISP_END, 0);
+                }
+
                 n = nn;
                 set = 1 - set;
                 radius++;
@@ -3398,6 +3418,23 @@ export async function findtravelpath(mode) {
                     }
                     break; /* goto found */
                 }
+                // src/hack.c:1491 DEBUG: warning glyph 2 marks the guess.
+                if (boolean_option('travel_debug')) {
+                    await tmp_at(DISP_ALL, {
+                        ch: String.fromCharCode(showsyms_at(SYM_OFF_W + 2)),
+                        color: def_warnsyms[2].color, decgfx: false,
+                        glyph: { kind: 'warn', wl: 2 },
+                    });
+                    await tmp_at(px, py);
+                    await game.animationFrame?.();
+                    if (game.flags.runmode === RUN_CRAWL) {
+                        await game.animationFrame?.();
+                        await game.animationFrame?.();
+                        await game.animationFrame?.();
+                        await game.animationFrame?.();
+                    }
+                    await tmp_at(DISP_END, 0);
+                }
                 tx = px; ty = py; ux = u.ux; uy = u.uy;
                 mode = TRAVP_TRAVEL;
                 continue; /* goto noguess */
@@ -3422,15 +3459,6 @@ function closed_door_hack(x, y) {
     const loc = game.level?.at(x, y);
     return !!(loc && IS_DOOR(loc.typ)
               && (loc.doormask & (D_CLOSED | D_LOCKED)));
-}
-
-/* src/hack.c end_running(FALSE) — the flag-clearing half */
-function end_running_hack(and_travel) {
-    game.context.run = 0;
-    if (and_travel) {
-        game.context.travel = game.context.travel1 = 0;
-        game.context.mv = 0;
-    }
 }
 
 // src/hack.c:3090 classify_terrain() — the terrain type under the hero

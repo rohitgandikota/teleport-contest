@@ -1,0 +1,585 @@
+{
+  "name": "travel-owner",
+  "description": "Twelve fixed keyboard inputs cover grid-bug travel, pass-under door routing, adjacent termination, negatives and both DEBUG display blocks. Parent native comparison remains separate.",
+  "segments": [
+    {
+      "name": "grid-mapped-diagonal",
+      "seed": 855315,
+      "datetime": "20260327071407",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3,symset:DECgraphics,time,terrainstatus\n",
+      "moves": " h#polyself\rgrid bug\r   \u001b\u001b_uu.    \u001b\u001bV"
+    },
+    {
+      "name": "ooze-door-direct",
+      "seed": 855315,
+      "datetime": "20260327071407",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3,symset:DECgraphics,time,terrainstatus\n",
+      "moves": " l\u0017wall\r\u0017closed door\rh#polyself\rgray ooze\r   \u001b\u001b_ll.    \u001b\u001bV"
+    },
+    {
+      "name": "human-diagonal-negative",
+      "seed": 855315,
+      "datetime": "20260327071407",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3,symset:DECgraphics,time,terrainstatus\n",
+      "moves": " h_uu.    \u001b\u001bV"
+    },
+    {
+      "name": "bulky-ooze-negative",
+      "seed": 855315,
+      "datetime": "20260327071407",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3,symset:DECgraphics,time,terrainstatus\n",
+      "moves": " l\u0017long sword\r\u0017wall\r\u0017closed door\rh#polyself\rgray ooze\r   \u001b\u001b_ll.    \u001b\u001bV"
+    },
+    {
+      "name": "human-door-negative",
+      "seed": 855315,
+      "datetime": "20260327071407",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3,symset:DECgraphics,time,terrainstatus\n",
+      "moves": " l\u0017wall\r\u0017closed door\rh_ll.    \u001b\u001bV"
+    },
+    {
+      "name": "adjacent-status",
+      "seed": 855315,
+      "datetime": "20260327071407",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3,symset:DECgraphics,time,terrainstatus\n",
+      "moves": " h_l.    \u001b\u001bV"
+    },
+    {
+      "name": "same-position-negative",
+      "seed": 855315,
+      "datetime": "20260327071407",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3,symset:DECgraphics,time,terrainstatus\n",
+      "moves": " h_@.    \u001b\u001bV"
+    },
+    {
+      "name": "cancel-negative",
+      "seed": 855315,
+      "datetime": "20260327071407",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3,symset:DECgraphics,time,terrainstatus\n",
+      "moves": " h_\u001b    \u001b\u001bV"
+    },
+    {
+      "name": "debug-frontier",
+      "seed": 855315,
+      "datetime": "20260327071407",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3,symset:DECgraphics,time,terrainstatus\nOPTIONS=travel_debug,runmode:teleport\n",
+      "moves": " h_uu.    \u001b\u001bV"
+    },
+    {
+      "name": "debug-frontier-crawl",
+      "seed": 855315,
+      "datetime": "20260327071407",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3,symset:DECgraphics,time,terrainstatus\nOPTIONS=travel_debug,runmode:crawl\n",
+      "moves": " h_uu.    \u001b\u001bV"
+    },
+    {
+      "name": "debug-guess",
+      "seed": 855315,
+      "datetime": "20260327071407",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3,symset:DECgraphics,time,terrainstatus\nOPTIONS=travel_debug,runmode:teleport\n",
+      "moves": " h_yy.    \u001b\u001bV"
+    },
+    {
+      "name": "debug-guess-crawl",
+      "seed": 855315,
+      "datetime": "20260327071407",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3,symset:DECgraphics,time,terrainstatus\nOPTIONS=travel_debug,runmode:crawl\n",
+      "moves": " h_yy.    \u001b\u001bV"
+    }
+  ],
+  "coverage": {
+    "constructed": "Complete selected owner with source contracts; see source gate and review for helper limitations.",
+    "ordinary": "Two route positives, four DEBUG frontier/fallback cases, adjacent status and five unchanged negatives. Warning glyph 2 chosen-target drawing is constructed-only; the original debug-guess inputs reach the no-guess fallback.",
+    "native": "Parent C recording fixed; portable preflight verifies integrity and branch evidence, not native output parity."
+  },
+  "branches": [
+    "travel-owner.grid-mapped-diagonal",
+    "travel-owner.ooze-door-direct",
+    "travel-owner.human-diagonal-negative",
+    "travel-owner.bulky-ooze-negative",
+    "travel-owner.human-door-negative",
+    "travel-owner.adjacent-status",
+    "travel-owner.same-position-negative",
+    "travel-owner.cancel-negative",
+    "travel-owner.debug-frontier",
+    "travel-owner.debug-frontier-crawl",
+    "travel-owner.debug-guess",
+    "travel-owner.debug-guess-crawl"
+  ],
+  "requireBranchAssertions": true,
+  "branchRequirements": [
+    {
+      "name": "grid-mapped-diagonal",
+      "branch": "travel-owner.grid-mapped-diagonal",
+      "message": "You turn into a grid bug!",
+      "finalXY": [
+        53,
+        16
+      ],
+      "finalGlyph": "x",
+      "negative": false,
+      "debug": false,
+      "crawl": false,
+      "guessFallback": false,
+      "frames": 0,
+      "warningFrames": {
+        "one": 0,
+        "two": 0
+      }
+    },
+    {
+      "name": "ooze-door-direct",
+      "branch": "travel-owner.ooze-door-direct",
+      "message": "You ooze under the door.",
+      "finalXY": [
+        54,
+        18
+      ],
+      "finalGlyph": "P",
+      "negative": false,
+      "debug": false,
+      "crawl": false,
+      "guessFallback": false,
+      "frames": 0,
+      "warningFrames": {
+        "one": 0,
+        "two": 0
+      }
+    },
+    {
+      "name": "human-diagonal-negative",
+      "branch": "travel-owner.human-diagonal-negative",
+      "message": "Where do you want to travel to?",
+      "finalXY": [
+        53,
+        16
+      ],
+      "finalGlyph": "@",
+      "negative": true,
+      "debug": false,
+      "crawl": false,
+      "guessFallback": false,
+      "frames": 0,
+      "warningFrames": {
+        "one": 0,
+        "two": 0
+      }
+    },
+    {
+      "name": "bulky-ooze-negative",
+      "branch": "travel-owner.bulky-ooze-negative",
+      "message": "A closed door.",
+      "finalXY": [
+        54,
+        18
+      ],
+      "finalGlyph": "P",
+      "negative": true,
+      "debug": false,
+      "crawl": false,
+      "guessFallback": false,
+      "frames": 0,
+      "warningFrames": {
+        "one": 0,
+        "two": 0
+      }
+    },
+    {
+      "name": "human-door-negative",
+      "branch": "travel-owner.human-door-negative",
+      "message": "A closed door.",
+      "finalXY": [
+        54,
+        18
+      ],
+      "finalGlyph": "@",
+      "negative": true,
+      "debug": false,
+      "crawl": false,
+      "guessFallback": false,
+      "frames": 0,
+      "warningFrames": {
+        "one": 0,
+        "two": 0
+      }
+    },
+    {
+      "name": "adjacent-status",
+      "branch": "travel-owner.adjacent-status",
+      "message": "Where do you want to travel to?",
+      "finalXY": [
+        52,
+        18
+      ],
+      "finalGlyph": "@",
+      "negative": false,
+      "debug": false,
+      "crawl": false,
+      "guessFallback": false,
+      "frames": 0,
+      "warningFrames": {
+        "one": 0,
+        "two": 0
+      }
+    },
+    {
+      "name": "same-position-negative",
+      "branch": "travel-owner.same-position-negative",
+      "message": "You are already here.",
+      "finalXY": [
+        51,
+        18
+      ],
+      "finalGlyph": "@",
+      "negative": true,
+      "debug": false,
+      "crawl": false,
+      "guessFallback": false,
+      "frames": 0,
+      "warningFrames": {
+        "one": 0,
+        "two": 0
+      }
+    },
+    {
+      "name": "cancel-negative",
+      "branch": "travel-owner.cancel-negative",
+      "message": "Where do you want to travel to?",
+      "finalXY": [
+        51,
+        18
+      ],
+      "finalGlyph": "@",
+      "negative": true,
+      "debug": false,
+      "crawl": false,
+      "guessFallback": false,
+      "frames": 0,
+      "warningFrames": {
+        "one": 0,
+        "two": 0
+      }
+    },
+    {
+      "name": "debug-frontier",
+      "branch": "travel-owner.debug-frontier",
+      "message": "Where do you want to travel to?",
+      "finalXY": [
+        53,
+        16
+      ],
+      "finalGlyph": "@",
+      "negative": false,
+      "debug": true,
+      "crawl": false,
+      "guessFallback": false,
+      "frames": 2,
+      "warningFrames": {
+        "one": 2,
+        "two": 0
+      }
+    },
+    {
+      "name": "debug-frontier-crawl",
+      "branch": "travel-owner.debug-frontier-crawl",
+      "message": "Where do you want to travel to?",
+      "finalXY": [
+        53,
+        16
+      ],
+      "finalGlyph": "@",
+      "negative": false,
+      "debug": true,
+      "crawl": true,
+      "guessFallback": false,
+      "frames": 21,
+      "warningFrames": {
+        "one": 6,
+        "two": 0
+      }
+    },
+    {
+      "name": "debug-guess",
+      "branch": "travel-owner.debug-guess",
+      "message": "That door is closed.",
+      "finalXY": [
+        51,
+        16
+      ],
+      "finalGlyph": "@",
+      "negative": false,
+      "debug": true,
+      "crawl": false,
+      "guessFallback": true,
+      "frames": 30,
+      "warningFrames": {
+        "one": 28,
+        "two": 0
+      }
+    },
+    {
+      "name": "debug-guess-crawl",
+      "branch": "travel-owner.debug-guess-crawl",
+      "message": "That door is closed.",
+      "finalXY": [
+        51,
+        16
+      ],
+      "finalGlyph": "@",
+      "negative": false,
+      "debug": true,
+      "crawl": true,
+      "guessFallback": true,
+      "frames": 110,
+      "warningFrames": {
+        "one": 84,
+        "two": 0
+      }
+    }
+  ],
+  "branchAssertions": [
+    {
+      "branch": "travel-owner.grid-mapped-diagonal",
+      "segment": 0,
+      "screenIncludes": [
+        "You turn into a grid bug!",
+        "MacOS NetHack Version 5.0.0"
+      ],
+      "screenExcludes": [
+        "You cannot move diagonally."
+      ],
+      "screenCells": [
+        {
+          "step": 37,
+          "x": 52,
+          "y": 17,
+          "equals": "x"
+        }
+      ]
+    },
+    {
+      "branch": "travel-owner.ooze-door-direct",
+      "segment": 1,
+      "screenIncludes": [
+        "You ooze under the door.",
+        "MacOS NetHack Version 5.0.0"
+      ],
+      "screenExcludes": [],
+      "screenCells": [
+        {
+          "step": 58,
+          "x": 53,
+          "y": 19,
+          "equals": "P"
+        }
+      ]
+    },
+    {
+      "branch": "travel-owner.human-diagonal-negative",
+      "segment": 2,
+      "screenIncludes": [
+        "Where do you want to travel to?",
+        "MacOS NetHack Version 5.0.0"
+      ],
+      "screenExcludes": [],
+      "screenCells": [
+        {
+          "step": 13,
+          "x": 52,
+          "y": 17,
+          "equals": "@"
+        }
+      ]
+    },
+    {
+      "branch": "travel-owner.bulky-ooze-negative",
+      "segment": 3,
+      "screenIncludes": [
+        "A closed door.",
+        "MacOS NetHack Version 5.0.0"
+      ],
+      "screenExcludes": [],
+      "screenCells": [
+        {
+          "step": 70,
+          "x": 53,
+          "y": 19,
+          "equals": "P"
+        }
+      ]
+    },
+    {
+      "branch": "travel-owner.human-door-negative",
+      "segment": 4,
+      "screenIncludes": [
+        "A closed door.",
+        "MacOS NetHack Version 5.0.0"
+      ],
+      "screenExcludes": [],
+      "screenCells": [
+        {
+          "step": 33,
+          "x": 53,
+          "y": 19,
+          "equals": "@"
+        }
+      ]
+    },
+    {
+      "branch": "travel-owner.adjacent-status",
+      "segment": 5,
+      "screenIncludes": [
+        "Where do you want to travel to?",
+        "MacOS NetHack Version 5.0.0"
+      ],
+      "screenExcludes": [],
+      "screenCells": [
+        {
+          "step": 12,
+          "x": 51,
+          "y": 19,
+          "equals": "@"
+        }
+      ]
+    },
+    {
+      "branch": "travel-owner.same-position-negative",
+      "segment": 6,
+      "screenIncludes": [
+        "You are already here.",
+        "MacOS NetHack Version 5.0.0"
+      ],
+      "screenExcludes": [],
+      "screenCells": [
+        {
+          "step": 12,
+          "x": 50,
+          "y": 19,
+          "equals": "@"
+        }
+      ]
+    },
+    {
+      "branch": "travel-owner.cancel-negative",
+      "segment": 7,
+      "screenIncludes": [
+        "Where do you want to travel to?",
+        "MacOS NetHack Version 5.0.0"
+      ],
+      "screenExcludes": [],
+      "screenCells": [
+        {
+          "step": 11,
+          "x": 50,
+          "y": 19,
+          "equals": "@"
+        }
+      ]
+    },
+    {
+      "branch": "travel-owner.debug-frontier",
+      "segment": 8,
+      "screenIncludes": [
+        "Where do you want to travel to?",
+        "MacOS NetHack Version 5.0.0"
+      ],
+      "screenExcludes": [],
+      "screenCells": [
+        {
+          "step": 13,
+          "x": 52,
+          "y": 17,
+          "equals": "@"
+        }
+      ]
+    },
+    {
+      "branch": "travel-owner.debug-frontier-crawl",
+      "segment": 9,
+      "screenIncludes": [
+        "Where do you want to travel to?",
+        "MacOS NetHack Version 5.0.0"
+      ],
+      "screenExcludes": [],
+      "screenCells": [
+        {
+          "step": 13,
+          "x": 52,
+          "y": 17,
+          "equals": "@"
+        }
+      ]
+    },
+    {
+      "branch": "travel-owner.debug-guess",
+      "segment": 10,
+      "screenIncludes": [
+        "That door is closed.",
+        "MacOS NetHack Version 5.0.0"
+      ],
+      "screenExcludes": [],
+      "screenCells": [
+        {
+          "step": 13,
+          "x": 50,
+          "y": 17,
+          "equals": "@"
+        }
+      ]
+    },
+    {
+      "branch": "travel-owner.debug-guess-crawl",
+      "segment": 11,
+      "screenIncludes": [
+        "That door is closed.",
+        "MacOS NetHack Version 5.0.0"
+      ],
+      "screenExcludes": [],
+      "screenCells": [
+        {
+          "step": 13,
+          "x": 50,
+          "y": 17,
+          "equals": "@"
+        }
+      ]
+    }
+  ],
+  "unchangedOutputHashes": {
+    "human-diagonal-negative": {
+      "screens": "bf63c773c1db70c6f09f201c2a9fd1f0c2cdd0535db5d8be6a484673d13d41a6",
+      "cursors": "c4c41886ed47be43e416138d5c0f3405ffc74c4194c8c5a1dd10b201995622e9",
+      "calls": "fa037d7e84c01b837b3463fbdcf0bb93e7246504c48875c04bc4a97b61a7268c",
+      "slices": "86c73a3d4732742e5efe8e69c1e1b62078b571a60169171205ee9cebf4e5e2a5",
+      "frames": "5fbc149764c7a24393bf72a60a2d102b6e6076c13e51b165e1230f3d49c5b7e6"
+    },
+    "bulky-ooze-negative": {
+      "screens": "c3c76150c87903555674c7bd6de21090673cb3e047b887e1d9dd4db8632af9b7",
+      "cursors": "ba18dfd42da929e2c214d047f8d46bf4076e4cc673ee805c7217c311ef0742e1",
+      "calls": "ab392b14f2e361c0f2502d7434aa05842870be14f518c22329aef0d9fc5ad59b",
+      "slices": "486f9c55972cf506a2e4a75b9bd8c6c4c73c2435410bcd1779e26fef5369a0b0",
+      "frames": "7760da97b89ee5cf29410a68bb84c0b6f5b477f6b909c675ca52256006d86466"
+    },
+    "human-door-negative": {
+      "screens": "71bc715b6945b04cc82e89e4910ee6374a159e79e4b1cf2ea45b0aff7efdc7d1",
+      "cursors": "5fe9f53f672dac784155378dc32737623d3d6dc5be8ade6a3c1aaeee712f2a8e",
+      "calls": "c88e81c809d34523e61efd4fe631711015ba25314fa25f6088449e4c1cfa8f7b",
+      "slices": "0853ae5a9f1582da2450b69e11e0ff054f58a8671b8f3b14643ed26a2e995711",
+      "frames": "ca69e417b3351040835f2d3151f03209ed6dacfb0421d1027996f9d7048a263a"
+    },
+    "same-position-negative": {
+      "screens": "aef69d1acfdb2624dd71dc0ba9d0e8b9bed01ee3526dcfd3574e4699bc09ea97",
+      "cursors": "6b005eb35630fc0f0e6c85abfe869c0f1c1cc9206fb4e67ecc27c307acbd60b5",
+      "calls": "943c07340c9e6f83adc5938aac81e2be86d043a910add1bc395f83470f113ea3",
+      "slices": "64d6442f0a13860a4b63d0f3cb29674e4f4d364c3f141450e49fb7b4f2ce5b61",
+      "frames": "5266d5e7b82a115848ed5d52a0169e1a49e6f5f4714af128c0a9cb0c2e38e4c5"
+    },
+    "cancel-negative": {
+      "screens": "7476cc718f5a2b31df6da3bc675d658bd177b9d9e7a1ba48aeb1ccb7db0bbac1",
+      "cursors": "eb9fe181562c927cafaf58046eed2acdf45e5fb26c172dd07b9f8487eafd06b5",
+      "calls": "943c07340c9e6f83adc5938aac81e2be86d043a910add1bc395f83470f113ea3",
+      "slices": "bd502f3205c8fa009ecb97e4b3b75fb2e3756d5ab037d94f4a76d4cd094ca5f8",
+      "frames": "5307a86f889f9084bce219e5ca004cc5cb1a0fc50740d1c92d0bc61fe2c50786"
+    }
+  }
+}

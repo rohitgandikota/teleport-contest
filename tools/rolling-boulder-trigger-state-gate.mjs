@@ -101,9 +101,12 @@ test('a visible trigger without ammunition does not mark the trap seen',async()=
 test('a fatal launched hit returns the monster-death result',async()=>{
     const {trap,ammo,mon}=await setup();mon.mhp=1;
     const pending=game.iflags.purge_monsters||0;
+    const position=`${mon.mx},${mon.my}`;
+    assert.equal(game.level.monAt.get(position),mon);
     assert.equal(await mintrap(mon,C.FORCETRAP),Trap_Killed_Mon);
     // C mon.c:2734 detaches from the map; dmonsfree unlinks from fmon later.
     assert.equal(mon.mhp,0);assert.notEqual(m_at(mon.mx,mon.my),mon);
+    assert.equal(game.level.monAt.has(position),false);
     assert.equal(game.level.monsters.includes(mon),true);
     assert.ok(mon.mstate&C.MON_DETACH);
     assert.equal(game.iflags.purge_monsters,pending+1);

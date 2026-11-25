@@ -4435,6 +4435,18 @@
     {"group": "moverock-next-boulder", "id": "moverock-next-boulder.two-boulders", "cFile": "src/objnam.c", "cFunction": "xname_flags", "description": "two boulders"},
     {"group": "moverock-next-boulder", "id": "moverock-next-boulder.two-boulders-blind", "cFile": "src/objnam.c", "cFunction": "xname_flags", "description": "two boulders blind"},
     {"group": "moverock-next-boulder", "id": "moverock-next-boulder.plain-push", "cFile": "src/objnam.c", "cFunction": "xname_flags", "description": "plain push"},
-    {"group": "moverock-next-boulder", "id": "moverock-next-boulder.blind-known", "cFile": "src/objnam.c", "cFunction": "xname_flags", "description": "blind known"}
+    {"group": "moverock-next-boulder", "id": "moverock-next-boulder.blind-known", "cFile": "src/objnam.c", "cFunction": "xname_flags", "description": "blind known"},
+    {"group": "travel-owner", "id": "travel-owner.grid-mapped-diagonal", "cFile": "src/hack.c", "cFunction": "findtravelpath", "description": "grid mapped diagonal"},
+    {"group": "travel-owner", "id": "travel-owner.ooze-door-direct", "cFile": "src/hack.c", "cFunction": "findtravelpath", "description": "ooze door direct"},
+    {"group": "travel-owner", "id": "travel-owner.human-diagonal-negative", "cFile": "src/hack.c", "cFunction": "findtravelpath", "description": "human diagonal negative"},
+    {"group": "travel-owner", "id": "travel-owner.bulky-ooze-negative", "cFile": "src/hack.c", "cFunction": "findtravelpath", "description": "bulky ooze negative"},
+    {"group": "travel-owner", "id": "travel-owner.human-door-negative", "cFile": "src/hack.c", "cFunction": "findtravelpath", "description": "human door negative"},
+    {"group": "travel-owner", "id": "travel-owner.adjacent-status", "cFile": "src/hack.c", "cFunction": "findtravelpath", "description": "adjacent status"},
+    {"group": "travel-owner", "id": "travel-owner.same-position-negative", "cFile": "src/hack.c", "cFunction": "findtravelpath", "description": "same position negative"},
+    {"group": "travel-owner", "id": "travel-owner.cancel-negative", "cFile": "src/hack.c", "cFunction": "findtravelpath", "description": "cancel negative"},
+    {"group": "travel-owner", "id": "travel-owner.debug-frontier", "cFile": "src/hack.c", "cFunction": "findtravelpath", "description": "debug frontier"},
+    {"group": "travel-owner", "id": "travel-owner.debug-frontier-crawl", "cFile": "src/hack.c", "cFunction": "findtravelpath", "description": "debug frontier crawl"},
+    {"group": "travel-owner", "id": "travel-owner.debug-guess", "cFile": "src/hack.c", "cFunction": "findtravelpath", "description": "debug guess"},
+    {"group": "travel-owner", "id": "travel-owner.debug-guess-crawl", "cFile": "src/hack.c", "cFunction": "findtravelpath", "description": "debug guess crawl"}
   ]
 }

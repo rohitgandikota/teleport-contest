@@ -1,5 +1,56 @@
 # STATUS — live handoff board
 
+## 2026-11-25: travel pathfinding verified on the published boulder port
+
+`3bb53bcb` is pushed. The next checkpoint changes only hack.js runtime code:
+use complete end_running and next2u, restrict grid-bug search to cardinal
+directions, remove door delay for forms that can ooze, read canonical Blind,
+and reproduce both C DEBUG path displays. The obsolete private flag-only
+end_running wrapper is removed. Other movement owners remain unchanged.
+
+The twelve original C recordings now match, versus six before: 310 styled
+boundaries/cursors, 31,537 calls and ordered slices, 163 frames. Source checks
+pass 54/54 versus 37/54; ordinary cases pass 12/12 versus 6/12. All five outputs
+match under observation, plain execution and deferred keys through held EOF.
+Five negative inputs retain 25 hashes. Warning glyph 2 has constructed source
+coverage only; the original debug-guess inputs exercise C's no-guess fallback.
+Separate menu-requested travel, getpos and broader movement gaps remain open.
+
+All 68 selected/public recordings pass: 45,248 screens/cursors, 1,419,643 random
+positions and 1,842 frames. The strict eight-second run passes 67/68; the large
+inventory-type-queries recording exceeds that budget. Its original failure is
+retained. Fixed baseline and candidate each pass all 21,429 screens/cursors and
+228,214 random positions under the normal 45-second budget. Replay times are
+10.46 and 10.72 seconds. This demonstrates bounded completion on both versions,
+not a speed improvement. Paired receipt: travel-inventory-default45-pair.json.
+
+Eighteen retained suites, source audit and four syntax checks pass. The fatal
+rolling-boulder test now also checks the raw map entry: m_at alone filters dead
+monsters and cannot prove grid removal. Both fixed baseline and current main
+pass all 21 controls. No runtime change was needed for this stronger assertion.
+The source review is rolling-boulder-deferred-purge-review; original failures
+and the pre-correction test remain fixed. All 617 travel packet members verify.
+
+The corpus grows to 887 with twelve new branch requirements; all 886 prior
+raw files and requirements are unchanged. All 279 runtime hashes match the
+reviewed composition. Receipt `travel-main-verification.json`, SHA256
+`ead8405335de2df8f9c86791bdfa74c4994e03304153db2d2ad5c10d8cf05799`.
+Commit and immediately push this verified checkpoint.
+
+Full887 is running on that exact composition with two NFS CPU workers, default
+budgets and no retries. It shares 884 old fixtures and uploads three new raws.
+Root: `/share/NFS/u/rohit/research/contest/artifacts/2026-11-22/travel-full887-js-20261125`.
+PID 3102977; 1,177 files fixed; all-files SHA256
+`7e5846deb627ca2a98883e2ad8052bcd32be7402f834546cef18b2105742bcb9`.
+Full884 on `1814d670` remains the latest completed full result.
+
+Next isolated audits cover pool floor-trap cleanup, valid configuration
+directive forms and lookaround. The configuration review confirmed that exact
+startup warning filenames are external input absent from the replay API.
+Neither original warning failure is normalized away. The 18:43 UTC leaderboard
+check has the same 13:55 feed and rank 7 with 659 unmatched screens; no newer
+held-out result is claimed.
+
 ## 2026-11-25: boulder movement and one-use pile naming verified
 
 The current composition changes only hack.js, trap.js and objnam.js. It fixes

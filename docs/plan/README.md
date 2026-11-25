@@ -18,19 +18,21 @@ default budgets and no retries. The complete run covers 915,513 screens/cursors,
 19,421,581 random positions and 32,821 frames. All snapshot hashes still match
 the published runtime and maintained recordings. See STATUS for the receipts.
 
-The verified boulder checkpoint passes sixteen C cases, fixing two baseline
-crashes, completed-Sokoban behavior and one-use pile naming. All 74
-selected/public recordings, all 74 strict workers and 21 retained suites pass.
-The stale fatal-hit test now checks C's immediate map detachment and later list
-purge; both baseline and candidate pass. Original failures remain preserved.
-Both new raw fixtures are mandatory in the portable input gates. The corpus is
-886, with sixteen new requirements and all prior raw recordings unchanged.
-Commit and immediately push this checkpoint. Full887 is prepared for the
-following travel composition and will include both changes.
-Travel pathfinding passes twelve C recordings versus six before. Its composition
-on the boulder candidate passes source54, ordinary12 and native12; main follows
-the boulder push. Two original duplicate-option startup failures remain explicit
-in preserved C evidence and a separate configuration audit.
+`3bb53bcb` is pushed. Its boulder fixes pass sixteen C cases, all 74
+selected/public recordings, all 74 strict workers and 21 retained suites.
+Travel is the next verified checkpoint: source54, ordinary12 and native12 pass,
+versus source37 and six ordinary/native cases before. All 68 selected/public
+recordings pass. One large inventory recording exceeds the strict eight-second
+budget on both versions; fixed baseline and candidate are exact under the
+normal 45-second budget. Eighteen retained suites pass. See STATUS for the
+preserved failure, paired timing result and stronger raw-grid death assertion.
+
+Commit and immediately push the verified travel checkpoint. The corpus is 887,
+and full887 is running on the exact composition with two NFS workers. It shares
+884 existing fixtures and adds three recordings. The next isolated audits cover
+pool floor-trap cleanup, valid config directive forms and lookaround. Two
+original duplicate-option startup failures remain explicit: the C warning uses
+a temporary filename absent from replay inputs. No path normalization is used.
 The latest official feed remains rank 7 with 659 unmatched screens and does
 not identify a newer scored commit.
 

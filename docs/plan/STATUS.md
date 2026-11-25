@@ -1,5 +1,35 @@
 # STATUS — live handoff board
 
+## 2026-11-25: ing_suffix matches the original C helper
+
+Swimming guards are pushed as `18daa6f0`. The next checkpoint changes only
+hacklib.ing_suffix: preserve C's case-sensitive vowel and final-e conditions,
+stop at the first NUL, and avoid doubling a final UTF-8 multibyte character.
+A direct test compiles the actual four C owners and their header macros.
+All 22,869 fixed inputs match, versus 18,235 before. All original differences
+remain in the baseline report. This is bounded helper evidence; the ordinary
+callers found use lowercase verbs and the Lua bridge remains outside scope.
+
+All 52 selected/public recordings pass: 16,298 screens/cursors, 918,914 random
+positions and 1,484 frames. All 52 strict eight-second workers, 52 retained
+swimming source controls, 36 swimming input assertions, source audit and two
+syntax checks pass. All 882 recordings and branch requirements stay fixed.
+The initial installed-gate launch preceded copy completion and failed to find
+the file; that log is preserved. The unchanged command passes after readiness.
+Main receipt `ing-main-verification.json`, SHA256
+`6603f999cff3c4d3059b1af83d549a7e8cccdb437329390deecaf71d756106c8`.
+Commit and immediately push this checkpoint. Full881 remains evidence for
+`4a8e688e`, excluding swimming and this helper change.
+
+Forced attacks now match all sixteen original C inputs, versus four before:
+765 styled boundaries/cursors, 41,851 calls and ordered slices, zero frames.
+The source packet remains sealed; current-main composition is next. Queued
+notices plus the blindness-completion prerequisite now match six of eight C
+inputs, versus two. STOP at boundaries 88/89 is exact. The two unchanged
+failures start with duplicate-option warnings. A separate promotion companion
+will preserve those failures and reconcile the old queued-at-return test premise.
+Boulder pushing remains under source review. No newer held-out score is claimed.
+
 ## 2026-11-25: swimming guards verified; published naming passes full881
 
 Article and fruit naming is pushed as `4a8e688e`. Its fresh full881 NFS run

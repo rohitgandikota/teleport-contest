@@ -42,8 +42,16 @@ scored RNG positions and 32,488 animation frames. Both fixed shards pass with
 no retries and the default timeout. Focused verification adds 318 controls,
 36 passing native cases and 78 bounded workers. The earlier local timeout and
 the separate config-filename diagnostic remain documented failures. This is
-corpus verification, not whole-port completion. The three next source targets
-are canonical half-damage readers, artifact healing and pet-swap consequences.
+corpus verification, not whole-port completion.
+
+The slime timeout setter now clamps counts while preserving flags and uses
+the masked appearance type. Eleven new C cases match all 1,885 styled
+boundaries and 34,206 calls, fixing two count displays. All 172 controls,
+56 selected/public replays and 56 bounded workers pass. The corpus is 859;
+this setter change is outside the completed full858 run. Fountain-town native
+coverage is ready for its separate test checkpoint. The three next runtime
+targets are canonical half-damage readers, artifact healing and pet-swap
+consequences.
 
 Publication resumed with `2089260a` after the earlier approval-review usage
 limit. That pushed checkpoint includes probing, dark-side visibility and the

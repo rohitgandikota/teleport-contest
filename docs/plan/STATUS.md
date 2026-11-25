@@ -1,5 +1,49 @@
 # STATUS — live handoff board
 
+## 2026-11-25: slime timeout clamp and flag preservation verified
+
+Text checkpoint `aef18d5a` is pushed. The next three-line runtime change
+restores C's `make_slimed`: clamp the timeout, retain non-timeout bits, and
+use the masked appearance type during cleanup. The complete C owner and
+immediate timeout helpers were reviewed again against current main. The
+existing helper is reused; no helper storage contract or caller is changed.
+
+The exact eleven recorded C cases match all 1,885 styled boundaries, cursors
+and RNG slices, with 34,206 calls and zero frames. Two previously wrong
+count displays are repaired. All eight negative cases preserve every JS
+screen, cursor, RNG, slice and frame hash. The maximum-int positive corrects
+internal flags without changing its output; this distinction remains explicit.
+All 33 source controls, 23 ordinary-input controls and 116 retained controls
+pass. The same source controls passed 23/33 on current main before the patch.
+The 56 selected replays, including all 44 public sessions, match 22,123
+screens/cursors, 982,746 scored RNG positions and 1,703 frames. All 56 bounded
+workers, source audit and syntax checks pass. All 858 prior raw recordings
+and unrelated protected files retain their hashes. The corpus is now 859.
+
+The first native recipe-text check failed because it searched C's serialized
+cursor movement as literal spaces. The visible C row already matched the
+expected count. The corrected check decodes whole native grids before applying
+the unchanged text assertion. All raw bytes, keys and full native comparisons
+remain unchanged. Both new test tools reuse the existing frozen decoder,
+which is byte-identical to the source packet's private copy. No extra decoder
+or test corpus snapshot was introduced. The source packet and failed report
+are preserved. Receipt:
+`.cache/restart-20261122/slime-timeout-main-verification.json`, SHA256
+`74a4d12cceac2ffb98885c2f35ddd6af609e9bcbfd707e362e0630a260221f3d`.
+No full859 sweep or new held-out result is claimed.
+
+The pending fountain-town recording also passes all nine native cases on
+`aef18d5a`: 611 styled boundaries/cursors, 34,832 calls and 98 frames. Its
+375-member source packet seal verifies. Promote its ordinary controls and
+fixture next, separately from the pet-swap repair. The half-damage intrinsic
+recording exposes three styled and two cursor differences across six cases;
+all RNG and animations match. Finish its fourteen damage-reader prerequisites
+before promoting the producer. The earlier full858 test-launch hold has been
+explicitly released for all three agents, with one worker per packet.
+
+The official news feed was checked again. Its latest listed post remains
+November 14, Rereading Readability; no newer listed article changes the plan.
+
 ## 2026-11-25: text windows verified across the full maintained corpus
 
 Storage cleanup checkpoint `2f657a17` is pushed. The user explicitly renewed

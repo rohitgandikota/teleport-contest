@@ -1,0 +1,227 @@
+{
+  "name": "slime-timeout-setter",
+  "description": "Source-derived unrecorded ordinary proposals; C recording remains parent-owned.",
+  "segments": [
+    {
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "name": "oversize-zero-low",
+      "moves": " #levelchange\r30\r                             l    \u001b\u001b\u0017blessed scroll of genocide\r    \u001b\u001bra  *\r    \u001b\u001b#wizintrinsic\r16777216c\r    \u001b\u001b.    \u001b\u001b#wizintrinsic\r\u001b    \u001b\u001bi    \u001b\u001b",
+      "steps": []
+    },
+    {
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "name": "oversize-short-low",
+      "moves": " #levelchange\r30\r                             l    \u001b\u001b\u0017blessed scroll of genocide\r    \u001b\u001bra  *\r    \u001b\u001b#wizintrinsic\r16777222c\r    \u001b\u001b.    \u001b\u001b#wizintrinsic\r\u001b    \u001b\u001bi    \u001b\u001b",
+      "steps": []
+    },
+    {
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "name": "signed-int-maximum",
+      "moves": " #levelchange\r30\r                             l    \u001b\u001b\u0017blessed scroll of genocide\r    \u001b\u001bra  *\r    \u001b\u001b#wizintrinsic\r2147483647c\r    \u001b\u001b.    \u001b\u001b#wizintrinsic\r\u001b    \u001b\u001bi    \u001b\u001b",
+      "steps": []
+    },
+    {
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "name": "timeout-limit-negative",
+      "moves": " #levelchange\r30\r                             l    \u001b\u001b\u0017blessed scroll of genocide\r    \u001b\u001bra  *\r    \u001b\u001b#wizintrinsic\r16777215c\r    \u001b\u001b.    \u001b\u001b#wizintrinsic\r\u001b    \u001b\u001bi    \u001b\u001b",
+      "steps": []
+    },
+    {
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "name": "ordinary-timeout-negative",
+      "moves": " #levelchange\r30\r                             l    \u001b\u001b\u0017blessed scroll of genocide\r    \u001b\u001bra  *\r    \u001b\u001b#wizintrinsic\r100c\r    \u001b\u001b.    \u001b\u001b#wizintrinsic\r\u001b    \u001b\u001bi    \u001b\u001b",
+      "steps": []
+    },
+    {
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "name": "already-slimed-no-extension-negative",
+      "moves": " #levelchange\r30\r                             l    \u001b\u001b\u0017blessed scroll of genocide\r    \u001b\u001bra  *\r    \u001b\u001b#wizintrinsic\r100c\r    \u001b\u001b#wizintrinsic\r16777216c\r    \u001b\u001b.    \u001b\u001b#wizintrinsic\r\u001b    \u001b\u001bi    \u001b\u001b",
+      "steps": []
+    },
+    {
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "name": "absent-negative",
+      "moves": " #levelchange\r30\r                             l    \u001b\u001b\u0017blessed scroll of genocide\r    \u001b\u001bra  *\r    \u001b\u001b#wizintrinsic\r\u001b    \u001b\u001bi    \u001b\u001b",
+      "steps": []
+    },
+    {
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "name": "amulet-cure-negative",
+      "moves": " #levelchange\r30\r                             l    \u001b\u001b\u0017blessed scroll of genocide\r    \u001b\u001bra  *\r    \u001b\u001b\u0017uncursed amulet of unchanging\r    \u001b\u001b#wizintrinsic\r100c\r    \u001b\u001bPb    \u001b\u001b#wizintrinsic\r\u001b    \u001b\u001bi    \u001b\u001b",
+      "steps": []
+    },
+    {
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "name": "unrelated-delayed-killer-negative",
+      "moves": " #levelchange\r30\r                             l    \u001b\u001b\u0017blessed scroll of genocide\r    \u001b\u001bra  *\r    \u001b\u001b\u0017uncursed amulet of unchanging\r    \u001b\u001b#wizintrinsic\r100b100c\r    \u001b\u001bPb    \u001b\u001b#wizintrinsic\r\u001b    \u001b\u001bi    \u001b\u001b",
+      "steps": []
+    },
+    {
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "name": "expiry-glyph-negative",
+      "moves": " #levelchange\r30\r                             l    \u001b\u001b\u0017blessed scroll of genocide\r    \u001b\u001bra  *\r    \u001b\u001b#wizintrinsic\r1c\r    \u001b\u001b.    \u001b\u001b          i    \u001b\u001b",
+      "steps": []
+    },
+    {
+      "name": "lava-burn-negative",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "moves": " #levelchange\r30\r                             l    \u001b\u001b\u0017blessed scroll of genocide\r    \u001b\u001bra  *\r    \u001b\u001b\u0017uncursed ring of fire resistance\r    \u001b\u001bPbl    \u001b\u001b\u0017lava\r    \u001b\u001b#wizintrinsic\r2c\r    \u001b\u001b.    \u001b\u001bi    \u001b\u001b",
+      "steps": []
+    }
+  ],
+  "coverage": [
+    "level.ordinary",
+    "mode.debug",
+    "survival.timed-status",
+    "ui.getlin",
+    "ui.menus",
+    "ui.more-paging",
+    "object.armor",
+    "terrain.water-lava"
+  ],
+  "requireBranchAssertions": true,
+  "branches": [
+    "slime-timeout.oversize-zero-low",
+    "slime-timeout.oversize-short-low",
+    "slime-timeout.signed-int-maximum",
+    "slime-timeout.timeout-limit-negative",
+    "slime-timeout.ordinary-timeout-negative",
+    "slime-timeout.already-slimed-no-extension-negative",
+    "slime-timeout.absent-negative",
+    "slime-timeout.amulet-cure-negative",
+    "slime-timeout.unrelated-delayed-killer-negative",
+    "slime-timeout.expiry-glyph-negative",
+    "slime-timeout.lava-burn-negative"
+  ],
+  "branchAssertions": [
+    {
+      "branch": "slime-timeout.oversize-zero-low",
+      "segment": 0,
+      "screenIncludes": [
+        "Which intrinsics?",
+        "You are turning into slime.",
+        "becoming slime              [16777214]"
+      ]
+    },
+    {
+      "branch": "slime-timeout.oversize-short-low",
+      "segment": 1,
+      "screenIncludes": [
+        "Which intrinsics?",
+        "You are turning into slime.",
+        "becoming slime              [16777214]"
+      ]
+    },
+    {
+      "branch": "slime-timeout.signed-int-maximum",
+      "segment": 2,
+      "screenIncludes": [
+        "Which intrinsics?",
+        "You are turning into slime.",
+        "becoming slime              [16777214]"
+      ]
+    },
+    {
+      "branch": "slime-timeout.timeout-limit-negative",
+      "segment": 3,
+      "screenIncludes": [
+        "Which intrinsics?",
+        "You are turning into slime.",
+        "becoming slime              [16777214]"
+      ]
+    },
+    {
+      "branch": "slime-timeout.ordinary-timeout-negative",
+      "segment": 4,
+      "screenIncludes": [
+        "Which intrinsics?",
+        "You are turning into slime.",
+        "becoming slime              [99]"
+      ]
+    },
+    {
+      "branch": "slime-timeout.already-slimed-no-extension-negative",
+      "segment": 5,
+      "screenIncludes": [
+        "Which intrinsics?",
+        "You are turning into slime.",
+        "becoming slime              [99]"
+      ]
+    },
+    {
+      "branch": "slime-timeout.absent-negative",
+      "segment": 6,
+      "screenIncludes": [
+        "Which intrinsics?"
+      ],
+      "screenExcludes": [
+        "You are turning into slime.",
+        "Slime"
+      ]
+    },
+    {
+      "branch": "slime-timeout.amulet-cure-negative",
+      "segment": 7,
+      "screenIncludes": [
+        "Which intrinsics?",
+        "You are turning into slime.",
+        "b - a perforated amulet (being worn)"
+      ]
+    },
+    {
+      "branch": "slime-timeout.unrelated-delayed-killer-negative",
+      "segment": 8,
+      "screenIncludes": [
+        "Which intrinsics?",
+        "You are turning into slime.",
+        "b - a perforated amulet (being worn)",
+        "turning into stone"
+      ]
+    },
+    {
+      "branch": "slime-timeout.expiry-glyph-negative",
+      "segment": 9,
+      "screenIncludes": [
+        "Which intrinsics?",
+        "You are turning into slime.",
+        "You have become a green slime.",
+        "You turn into a green slime!",
+        "Die?",
+        "OK, so you don't die."
+      ]
+    },
+    {
+      "branch": "slime-timeout.lava-burn-negative",
+      "segment": 10,
+      "screenIncludes": [
+        "Which intrinsics?",
+        "You are turning into slime.",
+        "The slime that covers you is burned away!",
+        "You sink deeper into the lava.",
+        "--More--"
+      ]
+    }
+  ]
+}

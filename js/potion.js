@@ -13,7 +13,7 @@ import { clone_mon } from './makemon.js';
 import { cloneu } from './mhitu.js';
 import { object_detect } from './detect.js';
 import { mon_set_minvis, mon_adjust_speed, which_armor } from './worn.js';
-import { SLIMED, M_AP_MONSTER, M_AP_NOTHING } from './const.js';
+import { SLIMED, M_AP_TYPE, M_AP_MONSTER, M_AP_NOTHING } from './const.js';
 import { fruitname, makeplural, xname, vtense } from './objnam.js';
 import { hliquid, trycall } from './do_name.js';
 import { newuhs } from './eat.js';
@@ -2551,7 +2551,7 @@ export async function make_slimed(xtime, msg) {
     const props = (game.u.uprops ||= {});
     const old = props.SLIMED || 0;
 
-    props.SLIMED = xtime; /* set_itimeout(&Slimed, xtime) */
+    props.SLIMED = (old & ~TIMEOUT) | itimeout(xtime); /* set_itimeout(&Slimed, xtime) */
     if ((xtime !== 0) !== (old !== 0)) {
         (game.disp ||= {}).botl = true;
         if (msg)
@@ -2560,7 +2560,7 @@ export async function make_slimed(xtime, msg) {
     if (!props.SLIMED) {
         dealloc_killer(find_delayed_killer(SLIMED));
         /* fake appearance is set late in turn-to-slime countdown */
-        if (game.youmonst.m_ap_type === M_AP_MONSTER
+        if (M_AP_TYPE(game.youmonst) === M_AP_MONSTER
             && game.youmonst.mappearance === PMNAMES.PM_GREEN_SLIME) {
             game.youmonst.m_ap_type = M_AP_NOTHING;
             game.youmonst.mappearance = 0;

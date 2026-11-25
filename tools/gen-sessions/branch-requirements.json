@@ -4162,6 +4162,17 @@
     {"group":"Tty text and history input","id":"tty-menu-cancellation-callers.adjust-empty","cFile":"src/invent.c","cFunction":"display_used_invlets","description":"adjust empty"},
     {"group":"Tty text and history input","id":"tty-menu-cancellation-callers.adjust-select","cFile":"src/invent.c","cFunction":"display_used_invlets","description":"adjust select"},
     {"group":"Tty text and history input","id":"tty-menu-cancellation-callers.inventory-cancel","cFile":"src/invent.c","cFunction":"display_pickinv","description":"inventory cancel"},
-    {"group":"Tty text and history input","id":"tty-menu-cancellation-callers.drop-category-cancel","cFile":"src/invent.c","cFunction":"display_pickinv","description":"drop category cancel"}
+    {"group":"Tty text and history input","id":"tty-menu-cancellation-callers.drop-category-cancel","cFile":"src/invent.c","cFunction":"display_pickinv","description":"drop category cancel"},
+    {"group":"Slimed timeout setter","id":"slime-timeout.oversize-zero-low","cFile":"src/potion.c","cFunction":"make_slimed","description":"oversize zero low"},
+    {"group":"Slimed timeout setter","id":"slime-timeout.oversize-short-low","cFile":"src/potion.c","cFunction":"make_slimed","description":"oversize short low"},
+    {"group":"Slimed timeout setter","id":"slime-timeout.signed-int-maximum","cFile":"src/potion.c","cFunction":"make_slimed","description":"signed int maximum"},
+    {"group":"Slimed timeout setter","id":"slime-timeout.timeout-limit-negative","cFile":"src/potion.c","cFunction":"make_slimed","description":"timeout limit negative"},
+    {"group":"Slimed timeout setter","id":"slime-timeout.ordinary-timeout-negative","cFile":"src/potion.c","cFunction":"make_slimed","description":"ordinary timeout negative"},
+    {"group":"Slimed timeout setter","id":"slime-timeout.already-slimed-no-extension-negative","cFile":"src/potion.c","cFunction":"make_slimed","description":"already slimed no extension negative"},
+    {"group":"Slimed timeout setter","id":"slime-timeout.absent-negative","cFile":"src/potion.c","cFunction":"make_slimed","description":"absent negative"},
+    {"group":"Slimed timeout setter","id":"slime-timeout.amulet-cure-negative","cFile":"src/potion.c","cFunction":"make_slimed","description":"amulet cure negative"},
+    {"group":"Slimed timeout setter","id":"slime-timeout.unrelated-delayed-killer-negative","cFile":"src/potion.c","cFunction":"make_slimed","description":"unrelated delayed killer negative"},
+    {"group":"Slimed timeout setter","id":"slime-timeout.expiry-glyph-negative","cFile":"src/potion.c","cFunction":"make_slimed","description":"expiry glyph negative"},
+    {"group":"Slimed timeout setter","id":"slime-timeout.lava-burn-negative","cFile":"src/potion.c","cFunction":"make_slimed","description":"lava burn negative"}
   ]
 }

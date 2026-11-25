@@ -135,6 +135,16 @@ bounded workers pass. Nine C cases match 1,098 boundaries and 27,705 calls,
 fixing seventy styled boundaries. The maintained corpus is 829. The completed
 full828 run excludes this checkpoint.
 
+Message and query limits, plus the hero-status cloud buffer, are verified for
+publication. Long messages retain C's beginning, ellipsis and final three bytes;
+queries and cloud suffixes use their distinct C capacities. All 31 checks,
+83 controls, eighteen focused fixtures, all public sessions and 62 bounded
+workers pass. Ten new C cases match 988 boundaries and 30,709 calls. The long
+message fixes one screen/cursor pair; nine unaffected cases retain all five
+output hashes. Long-query and cloud-limit positives have constructed evidence.
+The maintained corpus is 831. Completed full828 excludes combat and these
+message changes. Separate non-ASCII capture and producer issues remain open.
+
 The latest shared-machine C union credits 826 inputs across 108 layouts,
 reaching 4,582/5,492 functions and 60,750/107,260 branch outcomes. It adds
 18 outcomes. All 106 preceding run records remain unchanged. The new amulet

@@ -66,7 +66,7 @@ import { strsubst, ordin } from './hacklib.js';
 
 import { impossible } from './pline.js';
 
-import { INTRINSIC, I_SPECIAL, NON_PM, SICK_VOMITABLE, SICK_NONVOMITABLE, M_AP_TYPMASK, NO_SPELL, ismnum } from './const.js';
+import { INTRINSIC, I_SPECIAL, NON_PM, SICK_VOMITABLE, SICK_NONVOMITABLE, M_AP_TYPMASK, NO_SPELL, ismnum, BUFSZ } from './const.js';
 
 import { has_ceiling } from './dungeon.js';
 
@@ -1857,8 +1857,7 @@ export async function ustatusline() {
 
         if (legs === BOTH_SIDES)
             what = makeplural(what);
-        /* mstatusline() uses "injured %s" so we do too even though
-           ustatusline() doesn't, in order to keep the output a bit shorter */
+        /* For one leg, ^X reports which side; ustatusline() keeps it short. */
         info += `, injured ${what}`;
     }
     if (Glib())
@@ -1888,8 +1887,11 @@ export async function ustatusline() {
         info += a_monnam(u.ustuck);
     }
     if (!u.uswallow
-        && (reg = visible_region_at(u.ux, u.uy)) != null)
-        info += `, in a cloud of ${reg_damg(reg) ? 'poison gas' : 'vapor'}`;
+        && (reg = visible_region_at(u.ux, u.uy)) != null
+        && info.length < BUFSZ) {
+        const cloud = `, in a cloud of ${reg_damg(reg) ? 'poison gas' : 'vapor'}`;
+        info += cloud.slice(0, BUFSZ - info.length - 1);
+    }
 
     await pline(`Status of ${game.plname} (${
         piousness(false, align_str(u.ualign?.type ?? 0))}):  Level ${

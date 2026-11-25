@@ -9012,6 +9012,69 @@ files remain unchanged. The three long-cloud test migrations were reviewed
 in full and preserve actual producers and local capacity assertions. No
 publication or completed current-runtime result is claimed while it runs.
 
+## 2026-11-25 02:39 UTC: message/query/cloud bounds verified
+
+The full828 verification record is pushed as `eecaa3b9`; process 35461 closed
+with exit 0. Message parent worker 55853 closed with exit 0. All 31 checks
+pass: 83 controls, eighteen focused fixtures and 154 segments, all 44 public
+sessions, and 62 bounded workers. Focused totals are 33,230 screens/cursors,
+420,781 scored RNG positions and 1,622 frames. Six strict/deferred native
+fixtures cover forty segments, 3,350 boundaries, 118,542 complete calls and
+zero frames. The two new native files have ten cases, 988 boundaries and
+30,709 calls. All five outputs match. The one long-message mismatch is fixed;
+its four-case file improves from 676/677 grids/cursors to 677/677. All calls,
+slices and frames already matched. Nine unaffected message/status cases retain
+all forty-five before/after output hashes.
+
+The runtime applies only the three reviewed source hunks: vpline's 255-byte
+formatted-message cap after the location prefix, yn_function's 127-byte query
+cap before queued answers and choice suffixes, and ustatusline's remaining
+local cloud-suffix capacity. Existing constants, owners and helper paths are
+retained. No global UTF-8 conversion or capture normalization is added. The
+new conduct-length fix remains intact. Full C panic teardown is outside the
+message-size guard; the guard throws a JS error for oversized messages.
+Long-query and cloud-limit positives remain constructed real-producer evidence,
+not native coverage. The generic long message has the recorded native witness.
+
+The three long-cloud test migrations preserve all thirty tests, actual
+producers, and 239/255-byte local capacity assertions. They apply the independent
+outer message cap to the expected complete text. The message-only candidate
+still fails the three cloud cases. No oracle, key, negative expectation,
+comparator or timeout was relaxed. All 279 runtime and ten support hashes match
+the tested candidate; all 829 preceding raw files remain fixed. The registry
+appends ten intent rows. Maintained corpus: 831. Completed full828 excludes
+this checkpoint and combat. Publish now; Boots_off is the next bounded parent
+composition before the next full run.
+
+Verification SHA-256:
+`5cb0da383e7418415dea54c21b11caa1db0ecd95b7c7438e9288554a0db8a700`.
+Integration: `.cache/restart-20261122/message-cloud-main-integration.json`.
+Source seal: `a3dc6cbcbb72d31b1950fb452f0149ab1e1adb67ddff916df6c464018aea60c2`.
+Raw hashes remain `7d45afa6c026724b5a16573e9fb3f812bc48b31697ee0b9406630c31265a1eca`
+and `838fe36b34bb994881f2ad87ce5144d9ad162cd8f5e01202f69501fb7b18a099`.
+
+Boots_off source package is independently sealed and verified, 647 files and
+no symlinks, seal `3432d63025b60db30f29e76a262b24cc32d7539184293efff54d83a6e3109252`.
+Parent read the complete C owner, scoped patch and helper/caller review. Fresh
+C recording 79361 closed with exit 0: raw
+`6be1bec3338663a668cfc6e6d48fc71ab1cc3171c8ac426e85ca7b87972be04c`,
+15 cases and 2,143 boundaries. Because the sealed candidate lacks the frozen
+decoder, parent made a separate fixed message candidate plus the scoped boots
+patch and unchanged decoder support. Its first strict native comparison,
+process 65052, passes all fifteen cases, 48,265 complete calls, seven frames,
+and every output collection. This is qualification only; no main boots change
+or public/full result yet. Files are under `boots-off-message-prerequisite`
+and `boots-off-parent-first-native-details.json` in the restart cache.
+
+The independent name-encoding audit proposes no runtime patch. It reproduces
+the two existing failures and traces the first high-byte rendering loss to the
+selected recorder's signed-byte shadow-capture hook. Config-name UTF-8 storage
+and its 31-byte cap are separate producer findings, not grounds for masking
+cells. Byte FF has a distinct signed pgetchar/EOF consumer finding. Jason now
+handles that narrow input owner in a new cache package; config/save-key and
+capture representation work remains separate. Original inputs, raw failures,
+frozen files and recorder remain unchanged.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

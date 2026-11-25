@@ -1,0 +1,83 @@
+{
+  "name": "message-query-bounds",
+  "description": "Real long self-status with a named mimic holder, short-name negative, healthy negative and short prayer query. Generic long yn query has constructed boundary proof only.",
+  "coverage": [
+    "mode.debug",
+    "survival.timed-status"
+  ],
+  "requireBranchAssertions": true,
+  "branches": [
+    "message-long-holder",
+    "message-short-holder",
+    "message-healthy",
+    "query-short-prayer"
+  ],
+  "branchAssertions": [
+    {
+      "branch": "message-long-holder",
+      "segment": 0,
+      "screenIncludes": [
+        "Status of wizard",
+        "held by",
+        "...89."
+      ],
+      "source": "pline.c:218-235 vpline; insight.c:3402-3502 ustatusline, actual named-holder status over 255 bytes."
+    },
+    {
+      "branch": "message-short-holder",
+      "segment": 1,
+      "screenIncludes": [
+        "Status of wizard",
+        "held by Bob."
+      ],
+      "source": "pline.c:218-235; same status with short name stays below the bound."
+    },
+    {
+      "branch": "message-healthy",
+      "segment": 2,
+      "screenIncludes": [
+        "Status of wizard",
+        "AC 10."
+      ],
+      "source": "pline.c:218-235; ordinary short status stays unchanged."
+    },
+    {
+      "branch": "query-short-prayer",
+      "segment": 3,
+      "screenIncludes": [
+        "Are you sure you want to pray?"
+      ],
+      "source": "cmd.c:5489 yn_function; ordinary short query stays unchanged."
+    }
+  ],
+  "segments": [
+    {
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "name": "message-long-holder",
+      "moves": " #levelchange\r30\r\u001b\u001b\u0017uncursed wand of probing\r\u001b\u001b#wizgenesis\rlarge mimic\r\u001b\u001bh\u001b\u001b#name\rmh.abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789\r\u001b\u001b#wizintrinsic\r100e\r\u001b\u001b#wizintrinsic\r100e\r\u001b\u001b#wizintrinsic\r100b\r\u001b\u001b#wizintrinsic\r100c\r\u001b\u001b#wizintrinsic\r100d\r\u001b\u001b#wizintrinsic\r100k\r\u001b\u001b#wizintrinsic\r100l\r\u001b\u001b#wizintrinsic\r100m\r\u001b\u001b#wizintrinsic\r100r\r\u001b\u001bza.\u001b\u001b"
+    },
+    {
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "name": "message-short-holder",
+      "moves": " #levelchange\r30\r\u001b\u001b\u0017uncursed wand of probing\r\u001b\u001b#wizgenesis\rlarge mimic\r\u001b\u001bh\u001b\u001b#name\rmh.Bob\r\u001b\u001b#wizintrinsic\r100e\r\u001b\u001b#wizintrinsic\r100e\r\u001b\u001b#wizintrinsic\r100b\r\u001b\u001b#wizintrinsic\r100c\r\u001b\u001b#wizintrinsic\r100d\r\u001b\u001b#wizintrinsic\r100k\r\u001b\u001b#wizintrinsic\r100l\r\u001b\u001b#wizintrinsic\r100m\r\u001b\u001b#wizintrinsic\r100r\r\u001b\u001bza.\u001b\u001b"
+    },
+    {
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "name": "message-healthy",
+      "moves": " \u0017uncursed wand of probing\r\u001b\u001bza.\u001b\u001b"
+    },
+    {
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "name": "query-short-prayer",
+      "moves": " #pray\rn\u001b\u001b"
+    }
+  ]
+}

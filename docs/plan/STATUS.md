@@ -9810,6 +9810,65 @@ correction. The separate text-window source audit continues. The prepared
 msg_window parent-composition builder uses this verified petrification runtime
 as its next baseline. Full839 remains the latest complete full-corpus sweep.
 
+## 2026-11-25 04:56 UTC: message-history configuration verified
+
+Petrification checkpoint `f00e849ece7d8c5c052caf4b5e4abc0f9685cfd9` is
+pushed. Msg_window parent worker 77084 closed with exit 0. All 24 checks,
+88 controls and eighteen focused fixtures pass: 134 segments, 13,182 screens/
+cursors, 390,022 scored RNG positions and 121 frames. All 44 public sessions
+and 62 bounded workers pass. Seven strict-native and all-five deferred
+fixtures match 59 segments, 7,736 boundaries, 179,500 complete calls and
+121 frames. Six new C cases match all 138 boundaries and 18,174 complete
+calls, no frames. Before: 132 styled screens; all cursors, random streams
+and slices already matched. Three negative cases preserve all five hashes.
+Source controls improve 1/33 to 33/33, input controls 0/6 to 6/6; ten boolean
+and 32 getlin controls remain passing.
+
+Three scoped options.js hunks implement optfn_msg_window's tty do_set contract,
+allow its omitted parameter and initialize the single-message default before
+rc parsing. The raw leading parameter byte, validation order and negation
+semantics follow C. Existing interactive menu and save lifetime are preserved.
+No command or history-window owner changes. All 279 runtime and seven support
+hashes equal the tested candidate; all 844 prior raw fixtures remain fixed.
+Six namespaced registry entries append only. Maintained corpus: 845. Publish
+now. Verification SHA
+`8d4d048875a533b5dd8354d238334c191ef6157d5aac9bcdbc0f0698bb10ea31`.
+Integration: `msg-window-option-main-integration.json`. The prepared
+prepare-option-full845.py and verify-option-full845.py will start a fixed,
+two-shard full sweep after this checkpoint is committed and pushed.
+
+Parent history state gate version three passes 19/19, versus 6/19 on the exact
+baseline. All 279 hashes stay fixed. It uses genuine line/message producers,
+the actual private autocomplete hook through ordinary keys and read-only
+input observations. Wrapped recalled More observes inread zero during message
+input and restored one afterward. The v1 observer failure and v2 results are
+preserved; state-v3-verification.json records the source evidence. History
+full/reversed completion and the real interrupt producer remain separate.
+No cmd history patch is promoted.
+
+Three source seals independently verify. Attribute enlightenment: 709 files,
+six links, seal 4a7678af6e42e44b63089dfeda692c8c4afefe14c1b27f857b6e7986d29c08b6.
+Dodip query: 658 manifest members, zero links, seal
+21a8f39b500bb8e6c2bb853fa5c2834f28359550bc1079d0e23bcb4490419570.
+Monster slip: 710 files, zero links, seal
+6d54be8ccae3f9fc1ebe62e359222ace39bacbacb9b34853faca91da010f81b6.
+Fresh unchanged C proposals all record successfully, preserving five fields
+and every key. Attribute: nine cases/944 boundaries, raw
+6a382b2a0bcdff48c7b77fd8f19263de81e72f6a5c2b6b8573a41f3209297209.
+Dodip: fifteen cases/609 boundaries, raw
+96d174d5206ee3eba5d82e247ed7cc8343215d954f8fde6d625634cf0bd88703.
+Monster slip: four cases/566 boundaries, raw
+a06fbb26a0b2ea3d8e9c64f16251beee54b85c06b6368517b651a854c88c0182.
+Their independent current-main native comparisons and source review are next.
+
+Avicenna continues enlightenment's caller/basic/characteristic owners on his
+fixed attribute candidate. Jason continues dipfountain on his fixed dodip
+candidate. Pauli continues the full mhitm_ad_drin owner on his fixed monster-
+slip candidate. Their sealed predecessors remain immutable. Singer continues
+tty text-window/wait contracts; Darwin continues float_down. No unpushed
+verified checkpoint is intentionally held. Latest live board and completed
+NFS coverage figures remain those recorded above.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

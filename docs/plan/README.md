@@ -275,12 +275,16 @@ matches both instrumented executions and is credited separately. Earlier
 platform rejections and controls remain preserved. These figures measure C
 reach, not JS parity.
 
-Six new msg_window configuration recordings match all 138 boundaries and
-18,174 complete calls on an isolated normal-import candidate. Its startup
-option assignment is ready for parent regression. Combining it with the
-unpublished line-history patch exposes a separate text-window dismissal wait.
-The original seven-case and thirteen-case history recordings remain fixed;
-no history or option patch is in main yet.
+Message-history configuration now reaches the live tty option with C's
+parameter, negation, default and instance-lifetime rules. All 24 parent checks,
+88 controls, eighteen focused fixtures, 44 public sessions and 62 bounded
+workers pass. Six C cases match all 138 boundaries and 18,174 complete calls,
+fixing six styled screens. Three unaffected cases retain all five output
+hashes. Petrification checkpoint `f00e849e` is pushed. Maintained corpus: 845.
+A full845 sweep will cover these six checkpoints beyond the completed full839.
+The unpublished line-history patch passes 19 source controls, compared with
+six before. Full/reversed history still needs a separate text-window wait.
+Original seven-case and thirteen-case history recordings remain fixed.
 
 The preceding full regression passes all 817 fixtures: 853,841 screens/cursors,
 17,766,231 scored RNG positions and 32,296 frames. Both fixed-runtime shards

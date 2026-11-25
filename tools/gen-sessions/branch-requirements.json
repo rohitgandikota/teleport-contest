@@ -4025,6 +4025,12 @@
     {"group":"Active monster petrification","id":"monster.stoning.active-located","cFile":"src/uhitm.c","cFunction":"do_stone_mon","description":"Actual tame cockatrice AT_TUCH contacts hostile orc before the owner message. Orc location appears with accessiblemsg; corpse-free statue is on the same tile; defender removed and pet grows."},
     {"group":"Active monster petrification","id":"monster.stoning.active-plain","cFile":"src/uhitm.c","cFunction":"do_stone_mon","description":"Same actual attack and statue with accessiblemsg off. All five output hashes unchanged against fixed baseline."},
     {"group":"Active monster petrification","id":"monster.stoning.golem-conversion","cFile":"src/uhitm.c","cFunction":"do_stone_mon","description":"Cockatrice touches actual straw golem before it solidifies. Same monster id becomes a living stone golem, no statue; all five output hashes unchanged."},
-    {"group":"Active monster petrification","id":"monster.stoning.innate-resistance","cFile":"src/uhitm.c","cFunction":"do_stone_mon","description":"Cockatrice touches innate stone-resistant lizard, whose HP is unchanged across the first touch. Lizard survives later combat; no petrification or conversion; all five output hashes unchanged."}
+    {"group":"Active monster petrification","id":"monster.stoning.innate-resistance","cFile":"src/uhitm.c","cFunction":"do_stone_mon","description":"Cockatrice touches innate stone-resistant lizard, whose HP is unchanged across the first touch. Lizard survives later combat; no petrification or conversion; all five output hashes unchanged."},
+    {"group":"Message history configuration","id":"options.msg-window.full","cFile":"src/options.c","cFunction":"optfn_msg_window","description":"options.msg window.full"},
+    {"group":"Message history configuration","id":"options.msg-window.reversed","cFile":"src/options.c","cFunction":"optfn_msg_window","description":"options.msg window.reversed"},
+    {"group":"Message history configuration","id":"options.msg-window.combination","cFile":"src/options.c","cFunction":"optfn_msg_window","description":"options.msg window.combination"},
+    {"group":"Message history configuration","id":"options.msg-window.single","cFile":"src/options.c","cFunction":"optfn_msg_window","description":"options.msg window.single"},
+    {"group":"Message history configuration","id":"options.msg-window.default","cFile":"src/options.c","cFunction":"optfn_msg_window","description":"options.msg window.default"},
+    {"group":"Message history configuration","id":"options.msg-window.negated","cFile":"src/options.c","cFunction":"optfn_msg_window","description":"options.msg window.negated"}
   ]
 }

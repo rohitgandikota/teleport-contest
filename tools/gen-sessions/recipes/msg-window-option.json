@@ -1,0 +1,117 @@
+{
+  "name": "msg-window-option",
+  "description": "Six original C recordings cover message-history configuration and the actual menu selection, including default and negated forms. Source controls cover parser errors, startup reset and instance-state lifetime. History-window completion is a separate owner.",
+  "coverage": [
+    "options.rc-bindings",
+    "mode.debug"
+  ],
+  "branches": [
+    "options.msg-window.full",
+    "options.msg-window.reversed",
+    "options.msg-window.combination",
+    "options.msg-window.single",
+    "options.msg-window.default",
+    "options.msg-window.negated"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "options.msg-window.full",
+      "segment": 0,
+      "screenIncludes": [
+        "Select message history display type:",
+        "f * full",
+        "'msg_window' is still \"full\"."
+      ]
+    },
+    {
+      "branch": "options.msg-window.reversed",
+      "segment": 1,
+      "screenIncludes": [
+        "Select message history display type:",
+        "r * reversed",
+        "'msg_window' is still \"reversed\"."
+      ]
+    },
+    {
+      "branch": "options.msg-window.combination",
+      "segment": 2,
+      "screenIncludes": [
+        "Select message history display type:",
+        "c * combination",
+        "'msg_window' is still \"combination\"."
+      ]
+    },
+    {
+      "branch": "options.msg-window.single",
+      "segment": 3,
+      "screenIncludes": [
+        "Select message history display type:",
+        "s * single",
+        "'msg_window' is still \"single\"."
+      ]
+    },
+    {
+      "branch": "options.msg-window.default",
+      "segment": 4,
+      "screenIncludes": [
+        "Select message history display type:",
+        "s * single",
+        "'msg_window' is still \"single\"."
+      ]
+    },
+    {
+      "branch": "options.msg-window.negated",
+      "segment": 5,
+      "screenIncludes": [
+        "Select message history display type:",
+        "s * single",
+        "'msg_window' is still \"single\"."
+      ]
+    }
+  ],
+  "segments": [
+    {
+      "name": "full",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:plain\nOPTIONS=msg_window:full\n",
+      "moves": " mO:msg_window\r\r\u001b   \u001b\u001b"
+    },
+    {
+      "name": "reversed",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:plain\nOPTIONS=msg_window:reversed\n",
+      "moves": " mO:msg_window\r\r\u001b   \u001b\u001b"
+    },
+    {
+      "name": "combination",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:plain\nOPTIONS=msg_window:combination\n",
+      "moves": " mO:msg_window\r\r\u001b   \u001b\u001b"
+    },
+    {
+      "name": "single",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:plain\nOPTIONS=msg_window:single\n",
+      "moves": " mO:msg_window\r\r\u001b   \u001b\u001b"
+    },
+    {
+      "name": "default",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:plain\n",
+      "moves": " mO:msg_window\r\r\u001b   \u001b\u001b"
+    },
+    {
+      "name": "negated",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:plain\nOPTIONS=!msg_window\n",
+      "moves": " mO:msg_window\r\r\u001b   \u001b\u001b"
+    }
+  ]
+}

@@ -83,19 +83,28 @@ Six new C cases match all 780 styled boundaries and 16,769 calls, fixing 155
 styled boundaries. Both unaffected cases preserve all five output collections.
 The maintained corpus is 823, outside the completed full820 runtime.
 
-Monster tin opening is verified for publication. The existing welding predicate
+Monster tin opening is pushed as `34b1e6b3`. The existing welding predicate
 now distinguishes cursed corpses from weapons that actually weld. All nineteen
 checks, forty new controls, seventeen retained source controls, sixteen focused
 fixtures, 44 public sessions and sixty bounded workers pass. Four fresh C cases
 match all 799 styled boundaries and 10,337 calls, correcting eleven boundaries.
 All three unaffected cases preserve all five output collections. The maintained
-corpus is 824. A new full regression on this composition is next.
+corpus is 824. A fixed full824 regression on this composition is running in two shards.
 
-The latest shared-machine C coverage run accepts both the golem and eating
-recordings byte for byte. The union covers 4,580/5,492 functions and
-60,601/107,260 branch outcomes across 817 credited inputs and 104 instrumented
-layouts. This adds five functions and 137 outcomes after the accessory run.
-All 103 previous run records are unchanged. These figures measure C reach,
+Background inspection is verified for publication. Shifted vampire wording,
+final tense, anatomy-based handedness and C long XP display now match their
+source owner. All nineteen checks, 69 controls, twelve focused fixtures,
+44 public sessions and 56 bounded workers pass. Five new C cases match all
+150 styled boundaries and 13,818 calls, fixing three screens. Both unchanged
+controls retain all five hashes. The maintained corpus is 825; this patch is
+outside the active full824 runtime.
+
+The latest shared-machine C coverage run accepts the tin-opening, background
+and hero-status recordings byte for byte. The union covers 4,580/5,492
+functions and 60,649/107,260 branch outcomes across 820 credited inputs and
+105 instrumented layouts. It adds 48 outcomes; all 104 preceding run records
+remain unchanged. The hero-status recording contributes C reach while its
+cloud-bound runtime patch remains pending. These figures measure C reach,
 not JS parity or complete source coverage.
 
 The preceding full regression passes all 817 fixtures: 853,841 screens/cursors,

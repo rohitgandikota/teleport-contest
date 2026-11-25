@@ -3878,6 +3878,11 @@
     {"group":"Monster defensive selection","id":"monster-defensive-tin-opening.cursed-corpse","cFile":"src/muse.c","cFunction":"find_defensive","description":"cursed-corpse-lizard-tin; native pending"},
     {"group":"Monster defensive selection","id":"monster-defensive-tin-opening.uncursed-corpse","cFile":"src/muse.c","cFunction":"find_defensive","description":"uncursed-corpse-control; native pending"},
     {"group":"Monster defensive selection","id":"monster-defensive-tin-opening.non-lizard","cFile":"src/muse.c","cFunction":"find_defensive","description":"non-lizard-tin-control; native pending"},
-    {"group":"Monster defensive selection","id":"monster-defensive-tin-opening.innate-horn","cFile":"src/muse.c","cFunction":"use_defensive","description":"innate-unicorn-horn; native pending"}
+    {"group":"Monster defensive selection","id":"monster-defensive-tin-opening.innate-horn","cFile":"src/muse.c","cFunction":"use_defensive","description":"innate-unicorn-horn; native pending"},
+    {"group":"Background polymorph enlightenment","id":"background-polymorph-enlightenment.humanoid-polymorph-hands","cFile":"src/insight.c","cFunction":"background_enlightenment","description":"ogre hands"},
+    {"group":"Background polymorph enlightenment","id":"background-polymorph-enlightenment.vampire-alternate-form","cFile":"src/insight.c","cFunction":"background_enlightenment","description":"vampire alternate"},
+    {"group":"Background polymorph enlightenment","id":"background-polymorph-enlightenment.final-polymorph-disclosure","cFile":"src/insight.c","cFunction":"background_enlightenment","description":"ogre final"},
+    {"group":"Background polymorph enlightenment","id":"background-polymorph-enlightenment.plain-bat-control","cFile":"src/insight.c","cFunction":"background_enlightenment","description":"plain bat control"},
+    {"group":"Background polymorph enlightenment","id":"background-polymorph-enlightenment.natural-human-control","cFile":"src/insight.c","cFunction":"background_enlightenment","description":"human control"}
   ]
 }

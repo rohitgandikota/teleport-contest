@@ -1,0 +1,95 @@
+{
+  "name": "background-polymorph-enlightenment",
+  "description": "Real polymorph and attribute/disclosure inputs exercise anatomy and vampire background phrasing. Original C recording with complete output checks.",
+  "coverage": [
+    "forms.polymorph",
+    "mode.debug",
+    "ending.death-disclosure"
+  ],
+  "branches": [
+    "background-polymorph-enlightenment.humanoid-polymorph-hands",
+    "background-polymorph-enlightenment.vampire-alternate-form",
+    "background-polymorph-enlightenment.final-polymorph-disclosure",
+    "background-polymorph-enlightenment.plain-bat-control",
+    "background-polymorph-enlightenment.natural-human-control"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "background-polymorph-enlightenment.humanoid-polymorph-hands",
+      "segment": 0,
+      "screenIncludes": [
+        "You are currently in male ogre form.",
+        "You are right-handed."
+      ]
+    },
+    {
+      "branch": "background-polymorph-enlightenment.vampire-alternate-form",
+      "segment": 1,
+      "screenIncludes": [
+        "You are currently a male vampire in vampire bat form.",
+        "You are normally right-handed."
+      ]
+    },
+    {
+      "branch": "background-polymorph-enlightenment.final-polymorph-disclosure",
+      "segment": 2,
+      "screenIncludes": [
+        "You were in male ogre form.",
+        "You were right-handed."
+      ]
+    },
+    {
+      "branch": "background-polymorph-enlightenment.plain-bat-control",
+      "segment": 3,
+      "screenIncludes": [
+        "You are currently in male vampire bat form.",
+        "You are normally right-handed."
+      ]
+    },
+    {
+      "branch": "background-polymorph-enlightenment.natural-human-control",
+      "segment": 4,
+      "screenIncludes": [
+        "You are right-handed."
+      ]
+    }
+  ],
+  "segments": [
+    {
+      "name": "ogre-hands",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Background,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=disclose:-i +a -v -g -c -o\n",
+      "moves": " #polyself\rogre\r  \u001b\u001b\u0018  \u001b\u001b"
+    },
+    {
+      "name": "vampire-alternate",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Background,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=disclose:-i +a -v -g -c -o\n",
+      "moves": " #polyself\rvampire\r  \u001b\u001b#polyself\rvampire bat\r  \u001b\u001b\u0018  \u001b\u001b"
+    },
+    {
+      "name": "ogre-final",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Background,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=disclose:-i +a -v -g -c -o\n",
+      "moves": " #polyself\rogre\r  \u001b\u001b#quit\ryn"
+    },
+    {
+      "name": "plain-bat-control",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Background,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=disclose:-i +a -v -g -c -o\n",
+      "moves": " #polyself\rvampire bat\r  \u001b\u001b\u0018  \u001b\u001b"
+    },
+    {
+      "name": "human-control",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Background,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=disclose:-i +a -v -g -c -o\n",
+      "moves": " \u0018  \u001b\u001b"
+    }
+  ]
+}

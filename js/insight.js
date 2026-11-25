@@ -43,7 +43,7 @@ import { waterbody_name, mhidden_description } from './pager.js';
 
 import { is_pool, t_at } from './mon.js';
 
-import { simple_typename, ansimpleoname, OBJ_NAME, the } from './objnam.js';
+import { simple_typename, ansimpleoname, OBJ_NAME, the, just_an } from './objnam.js';
 import { M_AP_TYPE, M_AP_NOTHING, M_AP_OBJECT, M_AP_FURNITURE, M_AP_MONSTER, TT_PIT, SPIKED_PIT, TT_BURIEDBALL, TT_LAVA, TT_INFLOOR } from './const.js';
 
 import { trapname } from './trap.js';
@@ -83,7 +83,7 @@ import { is_vampshifter } from './monst.js';
 
 import { is_vampire, lays_eggs } from './mondata.js';
 
-import { P_NONE, P_UNSKILLED, P_SKILLED, P_ISRESTRICTED, FULL_MOON, NEW_MOON, WEAK, P_TWO_WEAPON_COMBAT, ROLE_GENDMASK, ROLE_MALE, ROLE_FEMALE, ARTICLE_YOUR, ARTICLE_THE, SUPPRESS_IT, SUPPRESS_INVISIBLE, STRAT_WAITMASK, SUPPRESS_SADDLE, SUPPRESS_HALLUCINATION, MSLOW, MFAST, A_CURRENT, A_ORIGINAL, TIMEOUT, W_ARM, W_ARMS, W_ARMG, W_ARMU, W_AMUL, W_RINGL, W_RINGR, W_WEP, W_TOOL, W_ARMOR, W_ACCESSORY, W_ART, LEFT_SIDE, RIGHT_SIDE, BOTH_SIDES, LEG, Upolyd, FROMFORM } from './const.js';
+import { P_NONE, P_UNSKILLED, P_SKILLED, P_ISRESTRICTED, FULL_MOON, NEW_MOON, WEAK, P_TWO_WEAPON_COMBAT, ROLE_GENDMASK, ROLE_MALE, ROLE_FEMALE, ARTICLE_YOUR, ARTICLE_THE, SUPPRESS_IT, SUPPRESS_INVISIBLE, STRAT_WAITMASK, SUPPRESS_SADDLE, SUPPRESS_HALLUCINATION, MSLOW, MFAST, A_CURRENT, A_ORIGINAL, TIMEOUT, W_ARM, W_ARMS, W_ARMG, W_ARMU, W_AMUL, W_RINGL, W_RINGR, W_WEP, W_TOOL, W_ARMOR, W_ACCESSORY, W_ART, LEFT_SIDE, RIGHT_SIDE, BOTH_SIDES, LEG, HANDED, Upolyd, FROMFORM } from './const.js';
 import { makeplural, simpleonames, suit_simple_name } from './objnam.js';
 import { weapon_descr, weapon_type, skill_name, skill_level_name, P_SKILL, can_advance } from './weapon.js';
 
@@ -543,7 +543,7 @@ function align_gname(a) {
     return gnam && gnam[0] === '_' ? gnam.slice(1) : gnam;
 }
 
-// src/insight.c:280 background_enlightenment()
+// src/insight.c:468 background_enlightenment()
 function background_enlightenment() {
     const u = game.u;
     const polymorphed = Upolyd(u);
@@ -559,8 +559,12 @@ function background_enlightenment() {
         const mdat = game.youmonst.data;
         const fixedGender = mdat.mflags2
             & (MFLAGS.M2_MALE | MFLAGS.M2_FEMALE | MFLAGS.M2_NEUTER);
-        const gender = fixedGender ? '' : `${game.flags.female ? 'female' : 'male'} `;
-        you_are(`currently in ${gender}${pmname(mdat, game.flags.female ? 1 : 0)} form`);
+        const altphrasing = vampshifted(game.youmonst);
+        let tmpbuf = fixedGender ? '' : `${genders[game.flags.female ? 1 : 0].adj} `;
+        if (altphrasing)
+            tmpbuf += `${pmname(game.mons[game.youmonst.cham], game.flags.female ? 1 : 0)} in `;
+        you_are(`${en_final ? '' : 'currently '}${altphrasing ? just_an(tmpbuf) : 'in '}${
+            tmpbuf}${pmname(mdat, game.flags.female ? 1 : 0)} form`);
     }
 
     /* "%s, a level %d %s%s %s" — an(rank), level, gender adj, race adj, role */
@@ -614,7 +618,7 @@ function background_enlightenment() {
         out(` You started out ${difgend ? genders[game.flags.initgend].adj : ''}${
             difgend && difalgn ? ' and ' : ''}${difalgn ? align_str(originalAlign) : ''}.`);
 
-    you_are(`${polymorphed ? 'normally ' : ''}${
+    you_are(`${body_part(HANDED) === 'handed' ? '' : 'normally '}${
         (u.uhandedness === RIGHT_HANDED) ? 'right-handed' : 'left-handed'}`);
 
     /* src/insight.c:604 — dungeon level, so that ^X really has all status
@@ -672,12 +676,12 @@ function background_enlightenment() {
               : 'happened'} on Friday the 13th.`);
 
     if (!polymorphed) {
-        let buf = `${u.uexp | 0} experience point${plur(u.uexp | 0)}`;
+        let buf = `${u.uexp} experience point${plur(u.uexp)}`;
         /* src/insight.c:702 — wizard mode (or final disclosure) appends the
            delta to the next level; "to attain" below 18, "for" above */
         const ulvl = u.ulevel | 0;
         if (ulvl < 30 && (en_final || game.wizard)) {
-            const nxtlvl = newuexp(ulvl), delta = nxtlvl - (u.uexp | 0);
+            const nxtlvl = newuexp(ulvl), delta = nxtlvl - u.uexp;
             buf += `, ${delta} ${(u.uexp > 0) ? 'more ' : ''}${
                 !en_final ? '' : (delta === 1) ? 'was ' : 'were '}needed ${
                 (ulvl < 18) ? 'to attain' : 'for'} level ${ulvl + 1}`;

@@ -8589,6 +8589,90 @@ worker proceeds to the complete ordinary-food tail with the confirmed conduct,
 partial-meal timing and destroyed-food guard gaps. Other workers continue
 accessory wearing, monster miscellaneous items and shared message/query bounds.
 
+## 2026-11-25: full824 running; background owner composed for review
+
+Monster tin-opening commit `34b1e6b3` pushed successfully, process 8022 exit 0.
+The full824 regression runs in `.cache/restart-20261122/muse-defensive-full824`
+on the exact fixed `muse-defensive-parent-composition/candidate` runtime.
+Workers 72293 and 40689 are active. All 279 runtime files, 824 raw recordings
+and 172 protected files are pinned. Every preceding820 raw hash is unchanged.
+The sole changed prior protected file is the registry, with exactly 31 appended
+rows and all earlier rows intact. The expected totals are 858,340 screens,
+17,899,210 scored RNG positions and 32,359 frames, not yet verified results.
+Wait for both workers to close, then run `verify-muse-full824.py`.
+
+Background source seal `07647af0b6730a8ad3046c4bc35aca2f4b271adc98a664bace2a70ffe8aab4ef`
+verifies 342 files and four link targets. Parent recorded its five original
+inputs, preserving all fields/keys: raw
+`b1cd483e68ebdf1fdcca5e619c9728b4ae6edae31d8fa9ed1cb829f0e01c2426`,
+150 boundaries. Parent read the complete C background owner and immediate
+article/vampire contracts. The scoped candidate changes vampire alternate
+phrasing, final tense, anatomy-based handedness and C long XP display.
+The original-sex/alignment and Sleepy repairs remain untouched. Its current-main
+composition is `.cache/restart-20261122/background-enlightenment-parent-composition`,
+worker 52574. No publication or full825 result is claimed yet.
+
+## 2026-11-25: background inspection verified and integrated
+
+Background composition process 52574 closed with exit 0. Independent
+verification passes nineteen checks, 69 controls, twelve focused fixtures,
+all 44 public sessions and 56 bounded input workers. Focused totals are
+55 segments, 4,687 screens/cursors, 158,489 scored random-call positions
+and 88 frames. The five fresh C cases match all 150 styled boundaries,
+cursors, 13,818 complete calls, slices and empty animation arrays. Three
+styled boundaries are repaired; every other output collection is unchanged.
+Both unaffected cases preserve all five output hashes. Strict native and
+deferred completion also pass on the new fixture plus retained accessory,
+debug death and inventory disclosure over 29 segments, 2,001 boundaries
+and 84,368 calls. Real attributes-menu and final-More suspension controls pass.
+
+Only the background owner in `insight.js` and its imports change. It preserves
+parent original-sex/alignment and Sleepy fixes, adds shifted-vampire wording,
+uses final-dependent tense and actual hand anatomy, and removes signed32
+coercions from C long experience display. Its helper and caller contracts remain
+unchanged. The caller title's saved-gender issue is separate. Non-default
+SCORE_ON_BOTL and unbounded 64-bit precision are not claimed.
+
+All 279 runtime hashes and seven support hashes are fixed. Patch reversal
+recovers the baseline. All 824 earlier raw hashes remain unchanged; the
+registry only appends five rows. Failed drafts and source seal are preserved.
+Verification SHA-256:
+`5c18bf6de8bb1cf064bc980c98c7ef34b735caf85bef05d9f1eddd90d3319097`.
+Integration receipt: `.cache/restart-20261122/background-enlightenment-main-integration.json`.
+Publish this checkpoint now. The maintained corpus is 825. Active full824
+workers 72293 and 40689 use preceding `34b1e6b3` and exclude this change.
+Neither full824 nor full825 completion is claimed yet.
+
+The CPU-only NFS tin/background/status replay and union closed with exit 0,
+process 77550. Four compact reports were downloaded and hash checked,
+process 70491 exit 0. All three instrumented C outputs are byte-identical to
+the original Mac recordings. The union now credits 820 inputs in 105 layouts,
+covering 4,580/5,492 functions and 60,649/107,260 branch outcomes, adding
+48 outcomes. All 104 prior run records and source/binary/control/rejection
+pins remain unchanged. The additional native pool has 139 inputs and
+570 segments, plus three Linux controls with fourteen segments. The pending
+hero-status fixture adds source reach only, not runtime publication.
+`background_enlightenment` covers 90/116 outcomes, `mcould_eat_tin` 13/18,
+and `use_defensive` 80/250. These are measured C reach, not owner completion.
+
+Bulk artifacts:
+`/share/NFS/u/rohit/research/contest/artifacts/2026-11-22/c-coverage-compress.E84JI2/verified-tin-background-status-union-20261125`.
+Local receipt: `.cache/restart-20261122/linux-coverage-tin-background-status-download.json`.
+Summary SHA-256:
+`9aaef5a89a3c57bccd8ef1fcefd0efe70c9d1bf890950ff7ebcfe34fe7ea02e1`.
+Compact SHA-256:
+`babc916d63a8df99ab5b662bb91cc59a0304a7976ce85eac66e3daa3e0b55908`.
+A local attempted builder transformation failed its exact-string preflight
+before writing or starting a remote run; the explicit builder then prepared
+the immutable inputs. No native replay or union retry was needed.
+
+The parent source review also confirmed two stale Slimed readers in artifact
+fire contact and trapped-lava sitting. Darwin is auditing those complete
+owners in a separate cache package, with no main writes. Singer now audits
+the ordinary-food tail; Pauli covers miscellaneous monster items; Avicenna
+covers accessory wearing; Jason covers shared message/query bounds. All work
+uses assigned fixed runtime snapshots, with parent-owned C and integration.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

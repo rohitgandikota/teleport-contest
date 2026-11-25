@@ -1,0 +1,75 @@
+{
+  "name": "tty-text-window-callers",
+  "description": "Four unchanged C diagnostic recordings exercise option help, keyboard help, version help and inventory. Three match fully; option help retains a known environment-path mismatch because the resolved config filename is absent from replay input. The whole file remains outside passing-corpus admission.",
+  "coverage": [
+    "ui.menus",
+    "mode.debug"
+  ],
+  "branches": [
+    "tty-text-window-callers.option-help",
+    "tty-text-window-callers.key-help",
+    "tty-text-window-callers.version-help",
+    "tty-text-window-callers.inventory-control"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "tty-text-window-callers.option-help",
+      "segment": 0,
+      "screenIncludes": [
+        "Not carrying anything."
+      ]
+    },
+    {
+      "branch": "tty-text-window-callers.key-help",
+      "segment": 1,
+      "screenIncludes": [
+        "Not carrying anything."
+      ]
+    },
+    {
+      "branch": "tty-text-window-callers.version-help",
+      "segment": 2,
+      "screenIncludes": [
+        "Not carrying anything."
+      ]
+    },
+    {
+      "branch": "tty-text-window-callers.inventory-control",
+      "segment": 3,
+      "screenIncludes": [
+        "Not carrying anything."
+      ]
+    }
+  ],
+  "segments": [
+    {
+      "name": "option-help",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:plain\n",
+      "moves": " ?g\u001bi "
+    },
+    {
+      "name": "key-help",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:plain\n",
+      "moves": " ?j\u001bi "
+    },
+    {
+      "name": "version-help",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:plain\n",
+      "moves": " ?a\u001bi "
+    },
+    {
+      "name": "inventory-control",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:plain\n",
+      "moves": " i "
+    }
+  ]
+}

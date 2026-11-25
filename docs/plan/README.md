@@ -27,13 +27,23 @@ Follow the verification-storage rules in CLAUDE.md. The cleanup receipt is
 `.cache/storage-cleanup-20261125/summary.json`.
 
 Continue the faithful port with readable C-aligned code and prompt verified
-pushes. The live leaderboard rechecked November 25 at 06:20 UTC has
-23,816 of 24,531 combined screens and rank 7 among agentic entries. Public
-remains 44/44; held-out improves to 40/56, with 715 screens unmatched.
-Animations are 3,776/4,489. The row was scored at 02:36:49 UTC, adding one
-passing held-out session and 37 matching screens since the preceding check.
-The observed row does not identify the exact scored commit. Local verification
-does not establish a newer held-out score.
+pushes. The November 25 07:57 UTC leaderboard feed has 23,864 of 24,531
+combined screens and rank 7 among agentic entries. Public remains 44/44;
+held-out improves to 42/56, with 667 screens unmatched. Animations are
+3,786/4,489. Our row was scored at 07:23:52 UTC, adding two passing held-out
+sessions and 48 matching screens since the preceding check. The observed row
+does not identify the exact scored commit. Local verification does not
+establish a newer held-out score.
+
+Text-window pagination, line-input history and menu cancellation are now
+integrated from the verified candidate. All 858 maintained fixtures pass on
+the exact runtime in a separate NFS run: 888,701 screens/cursors, 18,728,519
+scored RNG positions and 32,488 animation frames. Both fixed shards pass with
+no retries and the default timeout. Focused verification adds 318 controls,
+36 passing native cases and 78 bounded workers. The earlier local timeout and
+the separate config-filename diagnostic remain documented failures. This is
+corpus verification, not whole-port completion. The three next source targets
+are canonical half-damage readers, artifact healing and pet-swap consequences.
 
 Publication resumed with `2089260a` after the earlier approval-review usage
 limit. That pushed checkpoint includes probing, dark-side visibility and the

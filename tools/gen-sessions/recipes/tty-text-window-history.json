@@ -1,0 +1,121 @@
+{
+  "name": "tty-text-window-history",
+  "description": "Unchanged original C recordings for the complete line-history and text-window input-owner composition. Interrupt production has separate constructed source controls.",
+  "coverage": [
+    "ui.menus",
+    "options.rc-bindings",
+    "mode.debug"
+  ],
+  "branches": [
+    "tty-text-window-history.single-history",
+    "tty-text-window-history.combination-history",
+    "tty-text-window-history.full-history",
+    "tty-text-window-history.reversed-history",
+    "tty-text-window-history.kill-line",
+    "tty-text-window-history.erase-control",
+    "tty-text-window-history.plain-control"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "tty-text-window-history.single-history",
+      "segment": 0,
+      "screenIncludes": [
+        "What do you want to name this dagger?"
+      ]
+    },
+    {
+      "branch": "tty-text-window-history.combination-history",
+      "segment": 1,
+      "screenIncludes": [
+        "Message History"
+      ]
+    },
+    {
+      "branch": "tty-text-window-history.full-history",
+      "segment": 2,
+      "screenIncludes": [
+        "Message History"
+      ]
+    },
+    {
+      "branch": "tty-text-window-history.reversed-history",
+      "segment": 3,
+      "screenIncludes": [
+        "Message History"
+      ]
+    },
+    {
+      "branch": "tty-text-window-history.kill-line",
+      "segment": 4,
+      "screenIncludes": [
+        "What do you want to name this dagger?"
+      ]
+    },
+    {
+      "branch": "tty-text-window-history.erase-control",
+      "segment": 5,
+      "screenIncludes": [
+        "What do you want to name this dagger?"
+      ]
+    },
+    {
+      "branch": "tty-text-window-history.plain-control",
+      "segment": 6,
+      "screenIncludes": [
+        "What do you want to name this dagger?"
+      ]
+    }
+  ],
+  "segments": [
+    {
+      "name": "single-history",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\nOPTIONS=msg_window:single\n",
+      "moves": " \u0017dagger\n\u0017apple\niacEd\u0010"
+    },
+    {
+      "name": "combination-history",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\nOPTIONS=msg_window:combination\n",
+      "moves": " \u0017dagger\n\u0017apple\niacEd\u0010\u0010"
+    },
+    {
+      "name": "full-history",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\nOPTIONS=msg_window:full\n",
+      "moves": " \u0017dagger\n\u0017apple\niacEd\u0010"
+    },
+    {
+      "name": "reversed-history",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\nOPTIONS=msg_window:reversed\n",
+      "moves": " \u0017dagger\n\u0017apple\niacEd\u0010"
+    },
+    {
+      "name": "kill-line",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\nOPTIONS=msg_window:single\n",
+      "moves": " \u0017dagger\n\u0017apple\niacEdge\u0015New\n#\u001b"
+    },
+    {
+      "name": "erase-control",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\nOPTIONS=msg_window:single\n",
+      "moves": " \u0017dagger\n\u0017apple\niacEdge\u007f\n#\u001b"
+    },
+    {
+      "name": "plain-control",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\nOPTIONS=msg_window:single\n",
+      "moves": " \u0017dagger\n\u0017apple\niacEdge\n#\u001b"
+    }
+  ]
+}

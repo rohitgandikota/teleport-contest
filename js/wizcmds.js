@@ -19,8 +19,7 @@ import { body_part } from './polyself.js';
 import { minimal_monnam } from './do_name.js';
 import { strsubst } from './hacklib.js';
 import { get_level, depth } from './dungeon.js';
-import { tty_putstr, tty_display_nhwindow, tty_next_page } from './tty/wintty.js';
-import { xwaitforspace } from './tty/getline.js';
+import { tty_putstr, tty_display_nhwindow } from './tty/wintty.js';
 import { may_dig, notice_all_mons_flush } from './hack.js';
 import { Is_special, Invocation_lev, On_W_tower_level, In_sokoban } from './dungeon.js';
 import { NHW_TEXT, STONE, COLNO, ROWNO, In_endgame, Is_knox_level } from './const.js';
@@ -755,8 +754,6 @@ export async function wiz_polyself() {
     return ECMD_OK;
 }
 
-/* include/hack.h — quitchars */
-const quitchars = ' \r\n\x1b';
 
 // src/wizcmds.c:693 wiz_map_levltyp() — the '#terrain' debug view: every
 // levl[][].typ as a base-36 digit, then a line describing the level
@@ -889,13 +886,6 @@ export async function wiz_map_levltyp() {
        cancelling the remaining pages; destroy_nhwindow(win) redraws the
        map through tty_dismiss_nhwindow() */
     await tty_display_nhwindow(win);
-    for (;;) {
-        await xwaitforspace(quitchars);
-        if (game.morc === '\x1b')
-            break; /* cancel remaining pages */
-        if (!tty_next_page(win))
-            break;
-    }
     await tty_destroy_nhwindow(win);
     await notice_all_mons_flush();
     return;
@@ -936,13 +926,6 @@ export async function wiz_levltyp_legend() {
        cancelling the remaining pages; destroy_nhwindow(win) redraws the
        map through tty_dismiss_nhwindow() */
     await tty_display_nhwindow(win);
-    for (;;) {
-        await xwaitforspace(quitchars);
-        if (game.morc === '\x1b')
-            break; /* cancel remaining pages */
-        if (!tty_next_page(win))
-            break;
-    }
     await tty_destroy_nhwindow(win);
     await notice_all_mons_flush();
     return;
@@ -1020,13 +1003,6 @@ export async function wiz_show_seenv() {
     /* display_nhwindow(win, TRUE): page through the text window, ESC
        cancelling the remaining pages */
     await tty_display_nhwindow(win);
-    for (;;) {
-        await xwaitforspace(quitchars);
-        if (game.morc === '\x1b')
-            break; /* cancel remaining pages */
-        if (!tty_next_page(win))
-            break;
-    }
     await tty_destroy_nhwindow(win);
     return ECMD_OK;
 }
@@ -1060,13 +1036,6 @@ export async function wiz_show_vision() {
     /* display_nhwindow(win, TRUE): page through the text window, ESC
        cancelling the remaining pages */
     await tty_display_nhwindow(win);
-    for (;;) {
-        await xwaitforspace(quitchars);
-        if (game.morc === '\x1b')
-            break; /* cancel remaining pages */
-        if (!tty_next_page(win))
-            break;
-    }
     await tty_destroy_nhwindow(win);
     return ECMD_OK;
 }
@@ -1103,13 +1072,6 @@ export async function wiz_show_wmodes() {
     /* display_nhwindow(win, TRUE): page through the text window, ESC
        cancelling the remaining pages */
     await tty_display_nhwindow(win);
-    for (;;) {
-        await xwaitforspace(quitchars);
-        if (game.morc === '\x1b')
-            break; /* cancel remaining pages */
-        if (!tty_next_page(win))
-            break;
-    }
     await tty_destroy_nhwindow(win);
     return ECMD_OK;
 }
@@ -1489,13 +1451,6 @@ export async function wiz_show_stats() {
 
     /* display_nhwindow(win, FALSE) */
     await tty_display_nhwindow(win);
-    for (;;) {
-        await xwaitforspace(quitchars);
-        if (game.morc === '\x1b')
-            break; /* cancel remaining pages */
-        if (!tty_next_page(win))
-            break;
-    }
     await tty_destroy_nhwindow(win);
     return ECMD_OK;
 }
@@ -1572,13 +1527,6 @@ export async function wiz_display_macros() {
         tty_putstr(win, 0, 'No display macro issues detected.');
     /* display_nhwindow(win, FALSE) */
     await tty_display_nhwindow(win);
-    for (;;) {
-        await xwaitforspace(quitchars);
-        if (game.morc === '\x1b')
-            break; /* cancel remaining pages */
-        if (!tty_next_page(win))
-            break;
-    }
     await tty_destroy_nhwindow(win);
     return ECMD_OK;
 }
@@ -1627,13 +1575,6 @@ export async function wiz_mon_diff() {
     /* display_nhwindow(win, FALSE): page through the text window, ESC
        cancelling the remaining pages */
     await tty_display_nhwindow(win);
-    for (;;) {
-        await xwaitforspace(quitchars);
-        if (game.morc === '\x1b')
-            break; /* cancel remaining pages */
-        if (!tty_next_page(win))
-            break;
-    }
     await tty_destroy_nhwindow(win);
     return ECMD_OK;
 }
@@ -1751,13 +1692,6 @@ async function list_migrating_mons(nextlevl /* default destination for wiz_migra
             /* display_nhwindow(win, FALSE): page through the text window, ESC
        cancelling the remaining pages */
     await tty_display_nhwindow(win);
-    for (;;) {
-        await xwaitforspace(quitchars);
-        if (game.morc === '\x1b')
-            break; /* cancel remaining pages */
-        if (!tty_next_page(win))
-            break;
-    }
             await tty_destroy_nhwindow(win);
         } else if (c !== 'q') {
             await pline('None.');
@@ -1800,13 +1734,6 @@ export async function wiz_objprobs() {
     }
     /* display_nhwindow(win, FALSE) */
     await tty_display_nhwindow(win);
-    for (;;) {
-        await xwaitforspace(quitchars);
-        if (game.morc === '\x1b')
-            break; /* cancel remaining pages */
-        if (!tty_next_page(win))
-            break;
-    }
     await tty_destroy_nhwindow(win);
 
     return ECMD_OK;

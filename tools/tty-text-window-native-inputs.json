@@ -1,0 +1,205 @@
+[
+  {
+    "name": "history",
+    "nativeSHA256": "bf9dbac8a21dd799d335fb41d9de725c52aa19905348c30fb4987c9a7a30a7b2",
+    "inputSHA256": "ba1b2920dab7597a595bd274cd27e40e45cd0b5e089d346929707e3d0e7592e8",
+    "segments": [
+      {
+        "name": "single-history",
+        "seed": 9770,
+        "datetime": "20000112093000",
+        "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\nOPTIONS=msg_window:single\n",
+        "moves": " \u0017dagger\n\u0017apple\niacEd\u0010"
+      },
+      {
+        "name": "combination-history",
+        "seed": 9770,
+        "datetime": "20000112093000",
+        "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\nOPTIONS=msg_window:combination\n",
+        "moves": " \u0017dagger\n\u0017apple\niacEd\u0010\u0010"
+      },
+      {
+        "name": "full-history",
+        "seed": 9770,
+        "datetime": "20000112093000",
+        "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\nOPTIONS=msg_window:full\n",
+        "moves": " \u0017dagger\n\u0017apple\niacEd\u0010"
+      },
+      {
+        "name": "reversed-history",
+        "seed": 9770,
+        "datetime": "20000112093000",
+        "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\nOPTIONS=msg_window:reversed\n",
+        "moves": " \u0017dagger\n\u0017apple\niacEd\u0010"
+      },
+      {
+        "name": "kill-line",
+        "seed": 9770,
+        "datetime": "20000112093000",
+        "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\nOPTIONS=msg_window:single\n",
+        "moves": " \u0017dagger\n\u0017apple\niacEdge\u0015New\n#\u001b"
+      },
+      {
+        "name": "erase-control",
+        "seed": 9770,
+        "datetime": "20000112093000",
+        "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\nOPTIONS=msg_window:single\n",
+        "moves": " \u0017dagger\n\u0017apple\niacEdge\u007f\n#\u001b"
+      },
+      {
+        "name": "plain-control",
+        "seed": 9770,
+        "datetime": "20000112093000",
+        "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\nOPTIONS=msg_window:single\n",
+        "moves": " \u0017dagger\n\u0017apple\niacEdge\n#\u001b"
+      }
+    ]
+  },
+  {
+    "name": "followthrough",
+    "nativeSHA256": "2d09a3598357fc3bd6fab5f64d14b3993912ec4fd54fda65ed174e2fe4baf578",
+    "inputSHA256": "1164a82b8684205f2eb3e4705c34c7c87b478851692d3dc456c25d8ff360e0e2",
+    "segments": [
+      {
+        "name": "history-single-resume",
+        "seed": 9770,
+        "datetime": "20000112093000",
+        "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\nOPTIONS=msg_window:single\n",
+        "moves": " \u0017dagger\n\u0017apple\niacEd\u0010ge\n#\u001b"
+      },
+      {
+        "name": "history-single-erase",
+        "seed": 9770,
+        "datetime": "20000112093000",
+        "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\nOPTIONS=msg_window:single\n",
+        "moves": " \u0017dagger\n\u0017apple\niacEd\u0010\u007fX\n#\u001b"
+      },
+      {
+        "name": "history-single-cancel",
+        "seed": 9770,
+        "datetime": "20000112093000",
+        "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\nOPTIONS=msg_window:single\n",
+        "moves": " \u0017dagger\n\u0017apple\niacEd\u0010\u001b\u001b#\u001b"
+      },
+      {
+        "name": "history-combination-resume",
+        "seed": 9770,
+        "datetime": "20000112093000",
+        "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\nOPTIONS=msg_window:combination\n",
+        "moves": " \u0017dagger\n\u0017apple\niacEd\u0010\u0010 ge\n#\u001b"
+      },
+      {
+        "name": "history-full-resume",
+        "seed": 9770,
+        "datetime": "20000112093000",
+        "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\nOPTIONS=msg_window:full\n",
+        "moves": " \u0017dagger\n\u0017apple\niacEd\u0010 ge\n#\u001b"
+      },
+      {
+        "name": "history-reversed-resume",
+        "seed": 9770,
+        "datetime": "20000112093000",
+        "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\nOPTIONS=msg_window:reversed\n",
+        "moves": " \u0017dagger\n\u0017apple\niacEd\u0010 ge\n#\u001b"
+      },
+      {
+        "name": "history-single-repeated",
+        "seed": 9770,
+        "datetime": "20000112093000",
+        "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\nOPTIONS=msg_window:single\n",
+        "moves": " \u0017dagger\n\u0017apple\niacEd\u0010\u0010\u0010ge\n#\u001b"
+      },
+      {
+        "name": "history-kill-replace",
+        "seed": 9770,
+        "datetime": "20000112093000",
+        "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\nOPTIONS=msg_window:single\n",
+        "moves": " \u0017dagger\n\u0017apple\niacEdge\u0015New\n#\u001b"
+      },
+      {
+        "name": "history-kill-empty",
+        "seed": 9770,
+        "datetime": "20000112093000",
+        "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\nOPTIONS=msg_window:single\n",
+        "moves": " \u0017dagger\n\u0017apple\niac\u0015Arrow\n#\u001b"
+      },
+      {
+        "name": "history-autocomplete-single",
+        "seed": 9770,
+        "datetime": "20000112093000",
+        "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\nOPTIONS=msg_window:single\n",
+        "moves": " \u0017dagger\n\u0017apple\n#ENH\u0010a\u001b\u001b"
+      },
+      {
+        "name": "history-autocomplete-full",
+        "seed": 9770,
+        "datetime": "20000112093000",
+        "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\nOPTIONS=msg_window:full\n",
+        "moves": " \u0017dagger\n\u0017apple\n#ENH\u0010 a\u001b\u001b"
+      },
+      {
+        "name": "history-backspace-control",
+        "seed": 9770,
+        "datetime": "20000112093000",
+        "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\nOPTIONS=msg_window:single\n",
+        "moves": " \u0017dagger\n\u0017apple\niacEdge\b\n#\u001b"
+      },
+      {
+        "name": "history-plain-control",
+        "seed": 9770,
+        "datetime": "20000112093000",
+        "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\nOPTIONS=msg_window:single\n",
+        "moves": " \u0017dagger\n\u0017apple\niacNamed\n#\u001b"
+      }
+    ]
+  },
+  {
+    "name": "options",
+    "nativeSHA256": "70605c93c8eccb5e529d799cd436b3e6a7ba6c085c6ae9b2e4c57009011436ff",
+    "inputSHA256": "394b87fa4751834ed91fcb37bc3fe586abd2ceb8af7bf41f14274647c8a65090",
+    "segments": [
+      {
+        "name": "full",
+        "seed": 9770,
+        "datetime": "20000112093000",
+        "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:plain\nOPTIONS=msg_window:full\n",
+        "moves": " mO:msg_window\r\r\u001b   \u001b\u001b"
+      },
+      {
+        "name": "reversed",
+        "seed": 9770,
+        "datetime": "20000112093000",
+        "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:plain\nOPTIONS=msg_window:reversed\n",
+        "moves": " mO:msg_window\r\r\u001b   \u001b\u001b"
+      },
+      {
+        "name": "combination",
+        "seed": 9770,
+        "datetime": "20000112093000",
+        "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:plain\nOPTIONS=msg_window:combination\n",
+        "moves": " mO:msg_window\r\r\u001b   \u001b\u001b"
+      },
+      {
+        "name": "single",
+        "seed": 9770,
+        "datetime": "20000112093000",
+        "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:plain\nOPTIONS=msg_window:single\n",
+        "moves": " mO:msg_window\r\r\u001b   \u001b\u001b"
+      },
+      {
+        "name": "default",
+        "seed": 9770,
+        "datetime": "20000112093000",
+        "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:plain\n",
+        "moves": " mO:msg_window\r\r\u001b   \u001b\u001b"
+      },
+      {
+        "name": "negated",
+        "seed": 9770,
+        "datetime": "20000112093000",
+        "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:plain\nOPTIONS=!msg_window\n",
+        "moves": " mO:msg_window\r\r\u001b   \u001b\u001b"
+      }
+    ]
+  }
+]

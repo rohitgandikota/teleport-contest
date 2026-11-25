@@ -1,5 +1,62 @@
 # STATUS — live handoff board
 
+## 2026-11-25: text windows verified across the full maintained corpus
+
+Storage cleanup checkpoint `2f657a17` is pushed. The user explicitly renewed
+the rank-1 goal and regular verified pushes after cleanup. The goal API still
+reports the unfinished full-port goal as paused and refuses a replacement.
+Continue the authorized work; do not mark that unfinished objective complete.
+
+The live public feed at `2026-11-25T07:57:37.402Z` shows rank 7 among agentic
+entries, 23,864/24,531 screens and 667 unmatched. Public remains 44/44;
+held-out is now 42/56, improving by two sessions and 48 screens since the
+06:20 check. Animations are 3,786/4,489. Our row was scored at 07:23:52 UTC;
+it does not identify the scored commit. The leader has zero unmatched screens.
+Compact receipt: `.cache/restart-20261122/leaderboard-20261125-0757.json`.
+
+Integrated the exact text v3 runtime and its 22 support files. Text display now
+owns pagination, acknowledgement and dismissal, replacing 42 duplicate caller
+waits. Line input preserves C's Ctrl-P history, interrupt and kill-character
+behavior. Terrain and inventory callers use the cancellation result saved
+before window cleanup. Eighteen JS modules change; the three frozen modules
+and frozen test tools are unchanged. The regression registry appends 34 rows
+without changing any existing row. Three new passing fixtures raise the
+maintained corpus from 855 to 858. The whole four-case config-filename
+diagnostic remains separate, with the same one failing case before and after.
+
+The earlier focused verification remains exact: 36 checks, 318 controls,
+33 focused fixtures, all 44 public sessions and 78 input-exhaustion workers.
+The 36 passing native cases match all 807 styled boundaries, cursors and RNG
+slices, repairing 34 styled boundaries and 36 cursors. They retain 109,006
+calls. All 48 supporting log hashes were checked again before integration.
+
+The separate NFS full858 run completed both 429-fixture shards with exit 0.
+Every session passes all four metrics: 888,701 screens/cursors, 18,728,519
+scored RNG positions and 32,488 animation frames. There were no retries or
+timeout overrides. Both lock-operations diagnostics also passed under the
+default 45-second worker limit. The original local timeout remains a failed
+run and is not relabeled. The remote driver left complete shard receipts but
+no final verification file; its exact interruption point is unconfirmed.
+The parent independently checked every row, exact shard membership, exit and
+log hashes, expected totals, all 1,454 candidate payload hashes and all 279
+baseline runtime hashes. No game replay was repeated during recovery.
+
+Recovered receipt SHA256:
+`6f87d476e82979ba46afd9a8e3e0ca2657a301a0d70525d15350524590c9c4f2`.
+Local receipt: `.cache/restart-20261122/text-history-full858-remote/verification-recovered.json`.
+NFS root:
+`/share/NFS/u/rohit/research/contest/artifacts/2026-11-22/text-history-full858-js-20261125`.
+After integration all 1,454 main payload files match that verified remote run.
+This establishes maintained-corpus parity, not literal serialized ANSI-byte
+identity, new held-out results, or whole-port completion.
+
+Three agents continue the existing half-damage reader, artifact healing and
+pet-swap completion packets without new corpus snapshots. Parent retains
+native comparison and publication responsibility. Pending raw recordings for
+half-damage intrinsic, slime timeout setter and fountain town remain intact.
+Next: push this text checkpoint promptly, then compare those native recordings
+and finish their source prerequisites before publishing the next change.
+
 ## 2026-11-22: resumed leaderboard and readability work
 
 The user resumed the full-port work and explicitly requested a new target:

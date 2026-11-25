@@ -644,8 +644,7 @@ export async function wiz_timeout_queue() {
     let intrinsic;
     let i, p, count, longestlen, ln, specindx = 0;
     const { tty_create_nhwindow, tty_destroy_nhwindow, tty_putstr,
-            tty_display_nhwindow, tty_next_page } = await tty();
-    const { xwaitforspace } = await import('./tty/getline.js');
+            tty_display_nhwindow } = await tty();
     const { any_visible_region, visible_region_summary } = await import('./region.js');
 
     const win = tty_create_nhwindow(NHW_MENU); /* corner text window */
@@ -723,9 +722,6 @@ export async function wiz_timeout_queue() {
     }
     /* display_nhwindow(win, FALSE) */
     await tty_display_nhwindow(win);
-    await xwaitforspace(' \r\n\x1b');
-    while (game.morc !== '\x1b' && tty_next_page(win))
-        await xwaitforspace(' \r\n\x1b');
     await tty_destroy_nhwindow(win);
 
     return ECMD_OK;

@@ -23,8 +23,7 @@ import { rnd } from './rng.js';
 import { tty_create_nhwindow } from './tty/wintty.js';
 import { tty_putstr } from './tty/wintty.js';
 import { tty_display_nhwindow } from './tty/wintty.js';
-import { tty_destroy_nhwindow, tty_next_page } from './tty/wintty.js';
-import { xwaitforspace } from './tty/getline.js';
+import { tty_destroy_nhwindow } from './tty/wintty.js';
 import { NHW_TEXT } from './const.js';
 import { money_cnt } from './invent.js';
 import { currency } from './invent.js';
@@ -153,8 +152,6 @@ export function get_rnd_text(fname, rng, padlength) {
     return get_rnd_line(fh, rng, starttxt, 0, padlength);
 }
 
-/* include/hack.h — quitchars */
-const quitchars = ' \r\n\x1b';
 
 const COOKIE_MARKER = '[cookie] ';
 
@@ -301,13 +298,6 @@ export async function rumor_check() {
         /* display_nhwindow(tmpwin, TRUE): page through the text window,
            ESC cancelling the remaining pages */
         await tty_display_nhwindow(tmpwin);
-        for (;;) {
-            await xwaitforspace(quitchars);
-            if (game.morc === '\x1b')
-                break;
-            if (!tty_next_page(tmpwin))
-                break;
-        }
         await tty_destroy_nhwindow(tmpwin);
     }
 }

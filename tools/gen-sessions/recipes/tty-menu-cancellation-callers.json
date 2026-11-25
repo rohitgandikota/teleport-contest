@@ -1,0 +1,176 @@
+{
+  "name": "tty-menu-cancellation-callers",
+  "description": "Ten unchanged original C recordings distinguish menu cancellation from explicit empty selection in object-class, inventory and used-letter callers.",
+  "coverage": [
+    "ui.menus",
+    "options.rc-bindings",
+    "mode.debug"
+  ],
+  "branches": [
+    "tty-menu-cancellation-callers.pickup-cancel",
+    "tty-menu-cancellation-callers.wield-cancel",
+    "tty-menu-cancellation-callers.adjust-cancel",
+    "tty-menu-cancellation-callers.split-cancel",
+    "tty-menu-cancellation-callers.pickup-clear",
+    "tty-menu-cancellation-callers.wield-empty",
+    "tty-menu-cancellation-callers.adjust-empty",
+    "tty-menu-cancellation-callers.adjust-select",
+    "tty-menu-cancellation-callers.inventory-cancel",
+    "tty-menu-cancellation-callers.drop-category-cancel"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "tty-menu-cancellation-callers.pickup-cancel",
+      "segment": 0,
+      "screenIncludes": [
+        "Autopickup what?",
+        "Autopickup: ON, for $ objects."
+      ]
+    },
+    {
+      "branch": "tty-menu-cancellation-callers.wield-cancel",
+      "segment": 1,
+      "screenIncludes": [
+        "What do you want to wield?",
+        "quarterstaff",
+        "Weapons"
+      ]
+    },
+    {
+      "branch": "tty-menu-cancellation-callers.adjust-cancel",
+      "segment": 2,
+      "screenIncludes": [
+        "Inventory letters used:",
+        "Never mind."
+      ]
+    },
+    {
+      "branch": "tty-menu-cancellation-callers.split-cancel",
+      "segment": 3,
+      "screenIncludes": [
+        "Split 1 to what",
+        "Inventory letters used:",
+        "Never mind."
+      ]
+    },
+    {
+      "branch": "tty-menu-cancellation-callers.pickup-clear",
+      "segment": 4,
+      "screenIncludes": [
+        "Autopickup: ON, for all objects."
+      ]
+    },
+    {
+      "branch": "tty-menu-cancellation-callers.wield-empty",
+      "segment": 5,
+      "screenIncludes": [
+        "What do you want to wield?",
+        "Miscellaneous"
+      ]
+    },
+    {
+      "branch": "tty-menu-cancellation-callers.adjust-empty",
+      "segment": 6,
+      "screenIncludes": [
+        "Inventory letters used:",
+        "Never mind."
+      ]
+    },
+    {
+      "branch": "tty-menu-cancellation-callers.adjust-select",
+      "segment": 7,
+      "screenIncludes": [
+        "Inventory letters used:",
+        "Swapping: b -"
+      ]
+    },
+    {
+      "branch": "tty-menu-cancellation-callers.inventory-cancel",
+      "segment": 8,
+      "screenIncludes": [
+        "Weapons"
+      ]
+    },
+    {
+      "branch": "tty-menu-cancellation-callers.drop-category-cancel",
+      "segment": 9,
+      "screenIncludes": [
+        "What kinds of thing do you want to drop?",
+        "Weapons"
+      ]
+    }
+  ],
+  "segments": [
+    {
+      "name": "pickup-cancel",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,!verbose,pettype:none\nOPTIONS=suppress_alert:3.4.3,symset:plain,menustyle:full,pickup_types:$\n",
+      "moves": "O:pickup_types\n\u001b\u001b@@"
+    },
+    {
+      "name": "wield-cancel",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,!verbose,pettype:none\nOPTIONS=suppress_alert:3.4.3,symset:plain,menustyle:full,pickup_types:$\n",
+      "moves": "w?\u001bi\u001b"
+    },
+    {
+      "name": "adjust-cancel",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,!verbose,pettype:none\nOPTIONS=suppress_alert:3.4.3,symset:plain,menustyle:full,pickup_types:$\n",
+      "moves": "#adjust\na?\u001bi\u001b"
+    },
+    {
+      "name": "split-cancel",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Ranger,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,!verbose,pettype:none\nOPTIONS=suppress_alert:3.4.3,symset:plain,menustyle:full,pickup_types:$\n",
+      "moves": "#adjust\n1c?\u001bi\u001b"
+    },
+    {
+      "name": "pickup-clear",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,!verbose,pettype:none\nOPTIONS=suppress_alert:3.4.3,symset:plain,menustyle:full,pickup_types:$\n",
+      "moves": "O:pickup_types\n-\n\u001b@@"
+    },
+    {
+      "name": "wield-empty",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,!verbose,pettype:none\nOPTIONS=suppress_alert:3.4.3,symset:plain,menustyle:full,pickup_types:$\n",
+      "moves": "w?\n\u001bi\u001b"
+    },
+    {
+      "name": "adjust-empty",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,!verbose,pettype:none\nOPTIONS=suppress_alert:3.4.3,symset:plain,menustyle:full,pickup_types:$\n",
+      "moves": "#adjust\na?\n\u001bi\u001b"
+    },
+    {
+      "name": "adjust-select",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,!verbose,pettype:none\nOPTIONS=suppress_alert:3.4.3,symset:plain,menustyle:full,pickup_types:$\n",
+      "moves": "#adjust\na?bi\u001b"
+    },
+    {
+      "name": "inventory-cancel",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,!verbose,pettype:none\nOPTIONS=suppress_alert:3.4.3,symset:plain,menustyle:full,pickup_types:$\n",
+      "moves": "i\u001b"
+    },
+    {
+      "name": "drop-category-cancel",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,!verbose,pettype:none\nOPTIONS=suppress_alert:3.4.3,symset:plain,menustyle:traditional,pickup_types:$\n",
+      "moves": "Di\n\u001bi\u001b"
+    }
+  ]
+}

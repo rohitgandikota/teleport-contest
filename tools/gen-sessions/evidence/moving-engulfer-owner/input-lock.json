@@ -1,0 +1,31 @@
+{
+  "recipeSHA256": "30d516914e33451b429ef1d18a26b6f18b0ba80169f2104e0b36a2d8a610aeac",
+  "fieldsPresenceSHA256": "df719db22a119d8f79df03d788bdf220a91b77d6545d41aa790997536ff29060",
+  "branchRequirementsSHA256": "0d55528250b580ad7ce4d6afd00bcb6d4b6c38782873395547213cfb0cc7bcb3",
+  "negativeHashesSHA256": "4daf51f97a3dca34811d2611d1afd07c2a4d818c06b06ed1ac8b487125aa3605",
+  "segments": 4,
+  "keys": 204,
+  "boundaries": 208,
+  "segmentsSHA256": [
+    {
+      "name": "invisible-hostile",
+      "fieldsSHA256": "ab6f01a1a80af4d9fb3694971181150031d9e408bf9784037649f6cb7b91d78d",
+      "movesSHA256": "bdba352abf18dd0a9cf8f00f16421be84acdbfa66d0191a241c301bc383ecc3a"
+    },
+    {
+      "name": "visible-hostile",
+      "fieldsSHA256": "31c87477755e8be8340681da607b612ebe3b203db22af9a704d357007020fd7e",
+      "movesSHA256": "408c829fb8101b6da77576ecf216960666572eb95feaf5ea15a5e6b14b8a7ce9"
+    },
+    {
+      "name": "invisible-peaceful",
+      "fieldsSHA256": "1dca55d5c28fcf9f51794905e09d8154f3bef8a54e7d65c3efb664b959d6b30c",
+      "movesSHA256": "6ecd8ce181e0dff7f470100de4d320d7ac7ced94fbcc34046d4bc63491d17cee"
+    },
+    {
+      "name": "no-engulfer",
+      "fieldsSHA256": "8f06f7708be34ee08861aee806dbdaa23d086e55b31d0c2f7b370b7a59a7a2f7",
+      "movesSHA256": "c8d59142d82d03668dae135d92be17a7d458245703bdf467213c86ae19b590bd"
+    }
+  ]
+}

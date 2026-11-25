@@ -1,0 +1,155 @@
+{
+  "description": "Moving engulfing monster carries hero and translates swallowed view. Four ordinary debug keyboard cases, no injected map or runtime helpers.",
+  "segments": [
+    {
+      "name": "invisible-hostile",
+      "seed": 7401,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Archeologist,race:dwarf,gender:male,align:lawful,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0007invisible hostile dust vortex\r  \u001b\u001b.  \u001b\u001b.  \u001b\u001b.  \u001b\u001b.  \u001b\u001b.  \u001b\u001bV"
+    },
+    {
+      "name": "visible-hostile",
+      "seed": 7401,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Archeologist,race:dwarf,gender:male,align:lawful,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0007hostile dust vortex\r  \u001b\u001b.  \u001b\u001b.  \u001b\u001b.  \u001b\u001b.  \u001b\u001b.  \u001b\u001bV"
+    },
+    {
+      "name": "invisible-peaceful",
+      "seed": 7401,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Archeologist,race:dwarf,gender:male,align:lawful,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0007invisible peaceful dust vortex\r  \u001b\u001b.  \u001b\u001b.  \u001b\u001b.  \u001b\u001b.  \u001b\u001b.  \u001b\u001bV"
+    },
+    {
+      "name": "no-engulfer",
+      "seed": 7401,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Archeologist,race:dwarf,gender:male,align:lawful,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " .  \u001b\u001b.  \u001b\u001b.  \u001b\u001b.  \u001b\u001b.  \u001b\u001bV"
+    }
+  ],
+  "branchRequirements": [
+    {
+      "name": "invisible-hostile",
+      "positive": true,
+      "monsterID": 52,
+      "monsterSpecies": 107,
+      "invisible": true,
+      "peaceful": false,
+      "swallowedRequired": true,
+      "firstSwallowedStep": 43,
+      "moveStep": 47,
+      "origin": [
+        16,
+        10
+      ],
+      "destination": [
+        16,
+        9
+      ],
+      "endTurn": 6,
+      "hp": 15
+    },
+    {
+      "name": "visible-hostile",
+      "positive": false,
+      "monsterID": 52,
+      "monsterSpecies": 107,
+      "invisible": false,
+      "peaceful": false,
+      "swallowedRequired": true,
+      "firstSwallowedStep": 33,
+      "moveStep": null,
+      "origin": [
+        16,
+        10
+      ],
+      "destination": [
+        16,
+        10
+      ],
+      "endXY": [
+        16,
+        10
+      ],
+      "endTurn": 6,
+      "hp": 15
+    },
+    {
+      "name": "invisible-peaceful",
+      "positive": false,
+      "monsterID": 52,
+      "monsterSpecies": 107,
+      "invisible": true,
+      "peaceful": true,
+      "swallowedRequired": false,
+      "firstSwallowedStep": null,
+      "moveStep": null,
+      "origin": [
+        16,
+        10
+      ],
+      "destination": [
+        16,
+        10
+      ],
+      "endXY": [
+        16,
+        10
+      ],
+      "endTurn": 6,
+      "hp": 15
+    },
+    {
+      "name": "no-engulfer",
+      "positive": false,
+      "monsterID": null,
+      "monsterSpecies": null,
+      "invisible": false,
+      "peaceful": false,
+      "swallowedRequired": false,
+      "firstSwallowedStep": null,
+      "moveStep": null,
+      "origin": [
+        16,
+        10
+      ],
+      "destination": [
+        16,
+        10
+      ],
+      "endXY": [
+        16,
+        10
+      ],
+      "endTurn": 6,
+      "hp": 15
+    }
+  ],
+  "unchangedOutputHashes": {
+    "visible-hostile": {
+      "screens": "57124b3a0297f84eb01a75893c45f28eed1d8e824d0b34579b3264529916188f",
+      "cursors": "7c4f9943aed5f68bf5fd751182e313ec9eaf62c70cb488f3ec15f8220f180690",
+      "calls": "ca5cc97e9f901047732df4ffb2311befb9e36b77cdfa3f0a58aca05d312585b9",
+      "slices": "c09906e26f3d4926b42a30dc467bdc69b7833572f5a2c5ec8059b3f122bc20fa",
+      "frames": "39ce026aeb3998a77b5bd9bd68921ff7fca2475f7d976b73074c8965ab08fa77"
+    },
+    "invisible-peaceful": {
+      "screens": "cc74675129c6d5d6a0359e14ed106109f7b94cbb45c9b2ebda3bf51716b19301",
+      "cursors": "332ec47766ef320cb1249afd9a5906d8d7179485c3feb92704430af8a0516353",
+      "calls": "8f70c65584b4233d79022334ffb7e0e7854a97f3168630aa526ba55dbedc6ab4",
+      "slices": "b5e1e49625d915f92e98189d238407312fcd17076cb93ac64cee172c08b9337e",
+      "frames": "1e6344da050464cf275850b75feeae3ae20875e454e83d46619fe894ba7f8769"
+    },
+    "no-engulfer": {
+      "screens": "e48eb59bef0e6c7ddf118c5a3bae447c487c9267fb803fdee374f57625f3a4a3",
+      "cursors": "6ab025fb5632b84d20ab47f4a85813313587469109421e8024f15274168607be",
+      "calls": "1d9b669c0834f857b31838b1b15319ae41a782d187d1bd1e702b94787334ef2d",
+      "slices": "35fb1ae810913c50a91ec134b1caa0148e0b3d888d0c634932384bf1131cd74c",
+      "frames": "9aa92b0f2f1ba756d6634452b816f3133a257db87e3150792ec784e09bc2514d"
+    }
+  },
+  "attribution": "Parent native recording/comparison required. The positive changes RNG after moving the hero; only negative full outputs and the positive pre-move prefix are baseline-equality evidence. Source/JS evidence alone is not native parity."
+}

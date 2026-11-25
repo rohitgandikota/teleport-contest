@@ -12,23 +12,22 @@ Ground rules are in `/CLAUDE.md`. Read that first if you have not.
 
 ## Current focus, 2026-11-25
 
-The latest pushed runtime is `9d618039`, verified against all 900 maintained
-recordings on NFS with default budgets and no retries. All 1,191 tested files
-match that commit: 921,925 screens/cursors, 19,741,761 random positions and
-32,997 frames. See STATUS for the publication receipt and prior checkpoints.
+The latest pushed runtime is `0179abf9`, verified against all 901 maintained
+recordings on NFS with default budgets and no retries. All 1,192 tested files
+match that commit: 922,147 screens/cursors, 19,758,050 random positions and
+32,997 frames. See STATUS for publication receipts and prior checkpoints.
 
-Moving mimic disguises are verified for publication. All six original C cases
-match versus three before, all 190 selected/public and strict timeout checks
-pass, and 55 focused checks pass. Only cmd.js changes runtime. The corpus is
-901, and its full NFS replay is running with two CPU workers.
+Moving engulfer positioning is verified for publication. All four original C
+cases match versus three before, all 207 selected/public recordings pass,
+and 57 focused checks pass. The initial strict batch passed 206/207; its
+level-names timeout remains recorded. The unchanged eight-second check passes
+on both fixed old and new snapshots, with exact scorer output. Only monmove.js
+changes runtime. The corpus is 902; its full NFS replay is running.
 
-Moving engulfers are next: all four original C cases match versus three
-before, including styles, cursors, RNG and animations. Portable promotion is
-pending. Configuration byte limits and random-position terrain transitions
-remain separate source audits. The two original byte-cap failures remain
-documented; the NUL checkpoint does not claim to fix them.
-
-The latest leaderboard check, 21:27 UTC, still shows rank 7 and 659 unmatched
+Random arrival terrain restoration is next, with seven locked original C
+inputs. Byte consumers, menu map restoration and shopkeeper re-entry remain
+separate source audits. The two original merged-byte-cap failures stay open.
+The latest leaderboard check, 22:06 UTC, still shows rank 7 and 659 unmatched
 screens. Its 19:31 row predates the recent checkpoints and does not identify
 the scored commit. Local parity does not establish a new held-out score.
 

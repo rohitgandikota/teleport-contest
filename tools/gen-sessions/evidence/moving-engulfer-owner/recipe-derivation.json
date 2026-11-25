@@ -1,0 +1,62 @@
+{
+  "originalRecipeSHA256": "30d516914e33451b429ef1d18a26b6f18b0ba80169f2104e0b36a2d8a610aeac",
+  "primaryRecipeSHA256": "e71b70f072fda3d65a8f0a1ba9eb872583537df6aeca8d1560b2ad3288646114",
+  "rawSHA256": "a61a564baa15cbd43f63f8440c2420bbb8de671b8390a50d9bc76d299827f229",
+  "metadataSHA256": "ccb188022c3d16db1ae90478efdcdfa30ee5f78959a061b2cf1907d57f48445c",
+  "onlyAddedFields": [
+    "requireBranchAssertions",
+    "branches",
+    "branchAssertions"
+  ],
+  "originalFieldsUnchanged": true,
+  "inputsAndKeyBytesUnchanged": true,
+  "ordinaryStateAssertionsUnchanged": true,
+  "negativeOutputHashesUnchanged": 15,
+  "provenance": "Read-only observations of the unchanged original C recording plus original sealed JS state requirements. Integrity and branch checks are not a native replay.",
+  "branches": [
+    {
+      "branch": "moving-engulfer.invisible-hostile",
+      "segment": 0,
+      "name": "invisible-hostile",
+      "observedSteps": [
+        46,
+        47
+      ],
+      "screenCells": 21,
+      "reason": "Actual C swallowed view shifts one row upward at47; its old bottom row clears. Original JS state assertions require the real invisible hostile holder and matching hero/monster positions."
+    },
+    {
+      "branch": "moving-engulfer.visible-hostile",
+      "segment": 1,
+      "name": "visible-hostile",
+      "observedSteps": [
+        33,
+        36
+      ],
+      "screenCells": 18,
+      "reason": "C stationary swallowed view at the same position at33 and36; unchanged JS assertions require real visible hostile swallowing and no holder movement."
+    },
+    {
+      "branch": "moving-engulfer.invisible-peaceful",
+      "segment": 2,
+      "name": "invisible-peaceful",
+      "observedSteps": [
+        38,
+        62
+      ],
+      "screenCells": 10,
+      "reason": "C retains the hero and ordinary room view after actual invisible peaceful creation, with no engulf feedback. Real monster movement is established by unchanged JS state assertions, not inferred from invisible C screen cells."
+    },
+    {
+      "branch": "moving-engulfer.no-engulfer",
+      "segment": 3,
+      "name": "no-engulfer",
+      "observedSteps": [
+        1,
+        26
+      ],
+      "screenCells": 10,
+      "reason": "C retains the same hero and ordinary room view without creation or engulf feedback; matched no-engulfer negative."
+    }
+  ]
+}

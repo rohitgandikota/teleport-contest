@@ -1,6 +1,52 @@
 # STATUS — live handoff board
 
-## 2026-11-25: moving mimic disguise verified
+## 2026-11-25: moving engulfer positioning verified
+
+Only monmove.js changes runtime. After a moved monster survives arrival traps
+and terrain effects, an engulfer that changed coordinates now carries the
+hero through u_on_newpos and redraws the swallowed view. Both calls are awaited
+in C order, before floor-object interactions. The ordinary newsym path remains
+the else arm.
+
+Source controls pass 14/14 versus 3/14. Four ordinary and original C cases
+pass versus three before: 208 styled boundaries/cursors, 8,516 calls and
+ordered slices, 32 animation frames and frame cursors. All fifteen negative
+hashes, observer/plain/deferred EOF checks and pre-move prefixes stay fixed.
+The positive repairs stale hero coordinates, twelve initial glyph differences
+and later RNG divergence. Earth-sense ordering has constructed source proof.
+
+All 207 selected/public recordings pass: 112,298 screens/cursors, 3,712,774
+random positions and 2,315 frames. Both new gates, 51 retained suites, source
+audit and three syntax checks pass. The initial strict eight-second batch
+passed 206/207; level-names timed out. That failure remains preserved. A paired
+check on physical, fixed baseline/candidate graphs passes the unchanged
+eight-second limit in 6.109/5.709 seconds. Both also match all 7,633 screens and
+213,307 RNG positions under the default scorer budget. No timeout override or
+full-batch retry was used to replace the original result.
+
+All 335 source members, 32 promotion members, six payloads and 280 runtime
+hashes verify. All 901 prior raws and requirements remain fixed. Four new
+requirements and one raw bring the corpus to 902. Main receipt
+`moving-engulfer-main-verification.json`, SHA256
+`ca91a73f7c61b10f40c16887fb96d0b7b954ac1fa6839ccb06589a4dd8df2211`.
+
+Full902 is running with two NFS CPU workers, default budgets and no retries,
+PID 3205200. Root:
+/share/NFS/u/rohit/research/contest/artifacts/2026-11-22/engulfer-full902-js-20261125.
+Its 1,193 files contain 901 linked raws and one new raw; all-files SHA256
+`313754a81b193e3816f802591afa6400132cc53c5dab8e1e685ceda0789bb0c2`.
+
+Random-position inputs are locked at seven cases; original C shows four
+missing terrain-restoration messages, with all RNG already exact. Candidate
+source verification is pending. The byte-consumer audit has five of nine
+original C cases exact, including an unexpected inventory-dismissal failure.
+The latter clears 123 unexplored cells in C but repaints them in JS; a separate
+row-refresh/force/frame review is recorded without a runtime patch. Shopkeeper
+re-entry needs its missing billing-state producer reviewed before a hook fix.
+The latest 22:06 UTC leaderboard check remains rank 7 with 659 unmatched screens
+and a 19:31 row. No newer held-out score or whole-port closure is claimed.
+
+## 2026-11-25: moving mimic disguise pushed as 0179abf9
 
 Only cmd.js changes runtime. Movement clears object or furniture disguises
 after hideunder and before leash feedback, at the same point as C. It uses
@@ -22,14 +68,14 @@ verify. All 900 prior raws and requirements stay fixed; six requirements and
 one raw bring the corpus to 901. Receipt `movement-mimic-main-verification.json`,
 SHA256 `1f5b8d2ad285e6912876295f114ea8107db6c63b77b9f5aa771c4257a1d57a13`.
 
-Full901 is running with two NFS CPU workers, default budgets and no retries,
-PID 3197053. Its 1,192 files include 900 linked raws and one new raw. Root:
+Full901 passed all 901 recordings: 922,147 screens/cursors, 19,758,050 random
+positions and 32,997 frames. All 1,192 tested files match published 0179abf9.
+Publication receipt `mimic-full901-publication-verification.json`, SHA256
+`76f74621243106866664e4d08862a37e389c5a6047aaf671c45c5ca26ae8fd1e`.
+The run used two NFS CPU workers, default budgets and no retries. Root:
 /share/NFS/u/rohit/research/contest/artifacts/2026-11-22/mimic-full901-js-20261125.
 All-files SHA256 `8408efc90c86097bb1ef5336975c569f0ce79e3a634912ba3f702e2aa5e03e68`.
-The next moving-engulfer candidate now matches all four original C cases
-versus three before, including RNG and animations; portable promotion is
-pending. Byte-reader and random-position terrain audits continue separately.
-No held-out gain or whole-port closure is claimed.
+Other movement branches and wrapper ordering remain separate work.
 
 ## 2026-11-25: configuration NUL visibility pushed as 9d618039
 

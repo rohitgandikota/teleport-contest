@@ -1,5 +1,52 @@
 # STATUS — live handoff board
 
+## 2026-11-25: artifact healing verified on current main
+
+Fountain test checkpoint `4e06fcca` is pushed. Artifact healing now selects
+the active human or polymorph HP pool, follows both C message decisions, and
+uses the slime setter for cause/appearance cleanup. Only `js/artifact.js` and
+its necessary imports change. The complete C owner and cure/helper contracts
+were reviewed. Current main already includes the required slime setter fix.
+
+Fifteen fresh C cases match 2,888 styled boundaries/cursors, 34,762 complete
+RNG calls and every per-input slice, with zero frames. Fifteen styled
+boundaries are repaired. All eleven ordinary negatives keep all five output
+hashes. Food-slime positives correct observed cleanup state without changing
+their captured output. All 26 source, 45 ordinary and 154 retained controls
+pass. All 75 selected/public fixtures and 75 bounded workers pass: 26,662
+screens/cursors, 1,184,261 scored RNG positions and 1,702 frames. Source audit
+and syntax pass. All 860 previous recordings and 279 candidate runtime files
+remain fixed. The corpus is 861. No full861 or held-out gain is claimed.
+
+The first retained command omitted the existing private-export loader required
+by artifact-invoke-loss-state-gate. Its module import failed; the other 89
+controls passed. That file's 65 controls passed with the original loader.
+No production export, runtime helper or retained assertion was changed.
+Verification receipt:
+`.cache/restart-20261122/artifact-healing-main-verification.json`, SHA256
+`daa91dfe5acd2ed2cf57813c04e1cd8c2047736145f475b0c21ffda3e582ebd4`.
+
+Parent recorded the four pet-swap inputs with unchanged tuple fields and keys:
+159 boundaries, raw SHA256
+`bc3b2cd40cc966811e8bb13cd78ae03a8e04887249de762d0a35ce666dc1cd44`.
+The 613-file parent seal is `.cache/restart-20261122/pet-swap-parent-seal.json`,
+SHA256 `fbdfa3034594da74ce4e388988518e72ac1a95ee7bece08d246f2047085b180d`.
+The recipe omits the proposal's empty steps field; all five actual input
+fields and their presence match. Native comparison and scoped composition
+are next. Do not overwrite the text-window changes in cmd.js.
+
+The half-damage reader packet is sealed: 425 source controls, 28 inherited
+controls, 26 ordinary/deferred cases, and exact patch roundtrip. Its fourteen
+reader repairs and six immediate canonical guards span seven modules. Parent
+must review, record the locked inputs, and compose with the intrinsic producer.
+Broader owner gaps remain explicitly outside that patch.
+
+Active follow-up agents use small source-only packets, not corpus copies:
+`01a211b3-ea22-7b42-8d56-0dfcb1ebc615` reviews monster death;
+`01a211b3-ead8-7022-8128-26c0bf2d48ef` reviews sickness and its killer consumers;
+`01a211b3-eb50-7871-b36f-3a7b7c1f978b` reviews monster fire.
+Their previous half-damage, pet-swap and artifact packets remain unchanged.
+
 ## 2026-11-25: town fountain coverage ready for publication
 
 Slime checkpoint `78f78796` is pushed. The fountain checkpoint changes only

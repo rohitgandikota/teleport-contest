@@ -51,8 +51,14 @@ boundaries and 34,206 calls, fixing two count displays. All 172 controls,
 this setter change is outside the completed full858 run. Nine additional
 fountain-town C cases match 611 styled boundaries, 34,832 calls and 98 frames;
 all thirteen ordinary controls pass. That test-only checkpoint brings the
-maintained corpus to 860. The three next runtime targets are canonical
-half-damage readers, artifact healing and pet-swap consequences.
+maintained corpus to 860.
+
+Artifact healing now uses the active HP pool and complete slime cleanup.
+Its fifteen new C cases match 2,888 styled boundaries and 34,762 calls, repairing
+fifteen boundaries. All 225 source/ordinary/retained controls, 75 selected/public
+fixtures and 75 bounded workers pass. The corpus is 861, outside the completed
+full858 run. Next are pet-swap consequences and canonical half-damage readers;
+source reviews continue for monster death, sickness and monster fire.
 
 Publication resumed with `2089260a` after the earlier approval-review usage
 limit. That pushed checkpoint includes probing, dark-side visibility and the

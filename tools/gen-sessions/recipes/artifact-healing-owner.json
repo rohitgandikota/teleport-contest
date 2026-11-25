@@ -1,0 +1,282 @@
+{
+  "name": "artifact-healing-owner",
+  "description": "Source-derived ordinary keyboard proposals verified in fixed JS baseline/candidate; native recording and parity remain parent-owned.",
+  "coverage": [
+    "mode.debug",
+    "ui.getlin",
+    "ui.menus",
+    "ui.more-paging",
+    "level.ordinary",
+    "object.artifacts",
+    "survival.timed-status"
+  ],
+  "requireBranchAssertions": true,
+  "branches": [
+    "artifact-healing.food-slime-cure",
+    "artifact-healing.food-slime-stone-retained",
+    "artifact-healing.polymorphed-injured-pool",
+    "artifact-healing.polymorphed-full-inactive-human-injured",
+    "artifact-healing.healthy-no-effect-negative",
+    "artifact-healing.human-healing-negative",
+    "artifact-healing.wizard-slime-cure-negative",
+    "artifact-healing.sickness-cure-negative",
+    "artifact-healing.temporary-blindness-negative",
+    "artifact-healing.permanent-blindness-negative",
+    "artifact-healing.permanent-and-timed-blindness-negative",
+    "artifact-healing.cream-retained-negative",
+    "artifact-healing.cream-and-extra-blindness-negative",
+    "artifact-healing.cooldown-retains-slime-negative",
+    "artifact-healing.cancelled-invoke-retains-slime-negative"
+  ],
+  "branchAssertions": [
+    {
+      "branch": "artifact-healing.food-slime-cure",
+      "segment": 0,
+      "screenIncludes": [
+        "The Staff of Aesculapius",
+        "You don't feel very well.",
+        "You feel better."
+      ]
+    },
+    {
+      "branch": "artifact-healing.food-slime-stone-retained",
+      "segment": 1,
+      "screenIncludes": [
+        "The Staff of Aesculapius",
+        "You don't feel very well.",
+        "You feel better."
+      ]
+    },
+    {
+      "branch": "artifact-healing.polymorphed-injured-pool",
+      "segment": 2,
+      "screenIncludes": [
+        "The Staff of Aesculapius",
+        "You turn into a minotaur!",
+        "You bash yourself!",
+        "You feel better."
+      ]
+    },
+    {
+      "branch": "artifact-healing.polymorphed-full-inactive-human-injured",
+      "segment": 3,
+      "screenIncludes": [
+        "The Staff of Aesculapius",
+        "You turn into a minotaur!",
+        "You bash yourself!",
+        "a surge of power, but nothing seems to happen."
+      ]
+    },
+    {
+      "branch": "artifact-healing.healthy-no-effect-negative",
+      "segment": 4,
+      "screenIncludes": [
+        "The Staff of Aesculapius",
+        "a surge of power, but nothing seems to happen."
+      ]
+    },
+    {
+      "branch": "artifact-healing.human-healing-negative",
+      "segment": 5,
+      "screenIncludes": [
+        "The Staff of Aesculapius",
+        "You feel better."
+      ]
+    },
+    {
+      "branch": "artifact-healing.wizard-slime-cure-negative",
+      "segment": 6,
+      "screenIncludes": [
+        "The Staff of Aesculapius",
+        "You feel better."
+      ]
+    },
+    {
+      "branch": "artifact-healing.sickness-cure-negative",
+      "segment": 7,
+      "screenIncludes": [
+        "The Staff of Aesculapius",
+        "You feel better."
+      ]
+    },
+    {
+      "branch": "artifact-healing.temporary-blindness-negative",
+      "segment": 8,
+      "screenIncludes": [
+        "The Staff of Aesculapius",
+        "You feel better."
+      ]
+    },
+    {
+      "branch": "artifact-healing.permanent-blindness-negative",
+      "segment": 9,
+      "screenIncludes": [
+        "The Staff of Aesculapius",
+        "You feel better."
+      ]
+    },
+    {
+      "branch": "artifact-healing.permanent-and-timed-blindness-negative",
+      "segment": 10,
+      "screenIncludes": [
+        "The Staff of Aesculapius",
+        "You feel slightly better."
+      ]
+    },
+    {
+      "branch": "artifact-healing.cream-retained-negative",
+      "segment": 11,
+      "screenIncludes": [
+        "The Staff of Aesculapius",
+        "a surge of power, but nothing seems to happen."
+      ]
+    },
+    {
+      "branch": "artifact-healing.cream-and-extra-blindness-negative",
+      "segment": 12,
+      "screenIncludes": [
+        "The Staff of Aesculapius",
+        "You feel better."
+      ]
+    },
+    {
+      "branch": "artifact-healing.cooldown-retains-slime-negative",
+      "segment": 13,
+      "screenIncludes": [
+        "The Staff of Aesculapius",
+        "You are turning into slime.",
+        "ignoring you."
+      ]
+    },
+    {
+      "branch": "artifact-healing.cancelled-invoke-retains-slime-negative",
+      "segment": 14,
+      "screenIncludes": [
+        "The Staff of Aesculapius",
+        "You are turning into slime."
+      ]
+    }
+  ],
+  "segments": [
+    {
+      "name": "food-slime-cure",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:healer,role:Healer,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\r    \u001b\u001bra  *\r    \u001b\u001b\u0017blessed The Staff of Aesculapius\r    \u001b\u001b\u0017uncursed green slime corpse\r    \u001b\u001bec    \u001b\u001b#invoke\rb    \u001b\u001bi    \u001b\u001b",
+      "steps": []
+    },
+    {
+      "name": "food-slime-stone-retained",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:healer,role:Healer,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\r    \u001b\u001bra  *\r    \u001b\u001b\u0017blessed The Staff of Aesculapius\r    \u001b\u001b\u0017uncursed green slime corpse\r    \u001b\u001bec    \u001b\u001b#wizintrinsic\r100b\r    \u001b\u001b#invoke\rb    \u001b\u001bi    \u001b\u001b",
+      "steps": []
+    },
+    {
+      "name": "polymorphed-injured-pool",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:healer,role:Healer,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\r    \u001b\u001bra  *\r    \u001b\u001b\u0017blessed The Staff of Aesculapius\r    \u001b\u001b#polyself\rminotaur\r    \u001b\u001b\u0017uncursed wand of striking (0:3)\r    \u001b\u001bzc.    \u001b\u001b#invoke\rb    \u001b\u001bi    \u001b\u001b",
+      "steps": []
+    },
+    {
+      "name": "polymorphed-full-inactive-human-injured",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:healer,role:Healer,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\r    \u001b\u001bra  *\r    \u001b\u001b\u0017blessed The Staff of Aesculapius\r    \u001b\u001b\u0017uncursed wand of striking (0:3)\r    \u001b\u001bzc.    \u001b\u001b#polyself\rminotaur\r    \u001b\u001b#invoke\rb    \u001b\u001bi    \u001b\u001b",
+      "steps": []
+    },
+    {
+      "name": "healthy-no-effect-negative",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:healer,role:Healer,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\r    \u001b\u001bra  *\r    \u001b\u001b\u0017blessed The Staff of Aesculapius\r    \u001b\u001b#invoke\rb    \u001b\u001bi    \u001b\u001b",
+      "steps": []
+    },
+    {
+      "name": "human-healing-negative",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:healer,role:Healer,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\r    \u001b\u001bra  *\r    \u001b\u001b\u0017blessed The Staff of Aesculapius\r    \u001b\u001b\u0017uncursed wand of striking (0:3)\r    \u001b\u001bzc.    \u001b\u001b#invoke\rb    \u001b\u001bi    \u001b\u001b",
+      "steps": []
+    },
+    {
+      "name": "wizard-slime-cure-negative",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:healer,role:Healer,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\r    \u001b\u001bra  *\r    \u001b\u001b\u0017blessed The Staff of Aesculapius\r    \u001b\u001b#wizintrinsic\r100c\r    \u001b\u001b#invoke\rb    \u001b\u001bi    \u001b\u001b",
+      "steps": []
+    },
+    {
+      "name": "sickness-cure-negative",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:healer,role:Healer,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\r    \u001b\u001bra  *\r    \u001b\u001b\u0017blessed The Staff of Aesculapius\r    \u001b\u001b#wizintrinsic\r100e\r    \u001b\u001b#invoke\rb    \u001b\u001bi    \u001b\u001b",
+      "steps": []
+    },
+    {
+      "name": "temporary-blindness-negative",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:healer,role:Healer,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\r    \u001b\u001bra  *\r    \u001b\u001b\u0017blessed The Staff of Aesculapius\r    \u001b\u001b#wizintrinsic\r100i\r    \u001b\u001b#invoke\rb    \u001b\u001bi    \u001b\u001b",
+      "steps": []
+    },
+    {
+      "name": "permanent-blindness-negative",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:healer,role:Healer,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\nOPTIONS=blind\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\r    \u001b\u001bra  *\r    \u001b\u001b\u0017blessed The Staff of Aesculapius\r    \u001b\u001b#invoke\rb    \u001b\u001bi    \u001b\u001b",
+      "steps": []
+    },
+    {
+      "name": "permanent-and-timed-blindness-negative",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:healer,role:Healer,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\nOPTIONS=blind\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\r    \u001b\u001bra  *\r    \u001b\u001b\u0017blessed The Staff of Aesculapius\r    \u001b\u001b#wizintrinsic\r100i\r    \u001b\u001b#invoke\rb    \u001b\u001bi    \u001b\u001b",
+      "steps": []
+    },
+    {
+      "name": "cream-retained-negative",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:healer,role:Healer,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\r    \u001b\u001bra  *\r    \u001b\u001b\u0017blessed The Staff of Aesculapius\r    \u001b\u001b\u0017uncursed cream pie\r    \u001b\u001bac    \u001b\u001b#invoke\rb    \u001b\u001bi    \u001b\u001b",
+      "steps": []
+    },
+    {
+      "name": "cream-and-extra-blindness-negative",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:healer,role:Healer,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\r    \u001b\u001bra  *\r    \u001b\u001b\u0017blessed The Staff of Aesculapius\r    \u001b\u001b\u0017uncursed cream pie\r    \u001b\u001bac    \u001b\u001b#wizintrinsic\r100i\r    \u001b\u001b#invoke\rb    \u001b\u001bi    \u001b\u001b",
+      "steps": []
+    },
+    {
+      "name": "cooldown-retains-slime-negative",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:healer,role:Healer,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\r    \u001b\u001bra  *\r    \u001b\u001b\u0017blessed The Staff of Aesculapius\r    \u001b\u001b#invoke\rb    \u001b\u001b#wizintrinsic\r100c\r    \u001b\u001b#invoke\rb    \u001b\u001bi    \u001b\u001b",
+      "steps": []
+    },
+    {
+      "name": "cancelled-invoke-retains-slime-negative",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:healer,role:Healer,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of genocide\r    \u001b\u001bra  *\r    \u001b\u001b\u0017blessed The Staff of Aesculapius\r    \u001b\u001b#wizintrinsic\r100c\r    \u001b\u001b#invoke\r\u001b    \u001b\u001bi    \u001b\u001b",
+      "steps": []
+    }
+  ]
+}

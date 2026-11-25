@@ -4182,6 +4182,21 @@
     {"group":"Town fountain consequences","id":"blind-nonhero-walking-gremlin","cFile":"src/fountain.c","cFunction":"dryup","description":"blind nonhero walking gremlin"},
     {"group":"Town fountain consequences","id":"steam-drying-accept","cFile":"src/fountain.c","cFunction":"dryup","description":"steam drying accept"},
     {"group":"Town fountain consequences","id":"steam-drying-decline","cFile":"src/fountain.c","cFunction":"dryup","description":"steam drying decline"},
-    {"group":"Town fountain consequences","id":"deaf-visible-watch-warning","cFile":"src/fountain.c","cFunction":"dryup","description":"deaf visible watch warning"}
+    {"group":"Town fountain consequences","id":"deaf-visible-watch-warning","cFile":"src/fountain.c","cFunction":"dryup","description":"deaf visible watch warning"},
+    {"group":"Artifact healing invocation","id":"artifact-healing.food-slime-cure","cFile":"src/artifact.c","cFunction":"invoke_healing","description":"food slime cure"},
+    {"group":"Artifact healing invocation","id":"artifact-healing.food-slime-stone-retained","cFile":"src/artifact.c","cFunction":"invoke_healing","description":"food slime stone retained"},
+    {"group":"Artifact healing invocation","id":"artifact-healing.polymorphed-injured-pool","cFile":"src/artifact.c","cFunction":"invoke_healing","description":"polymorphed injured pool"},
+    {"group":"Artifact healing invocation","id":"artifact-healing.polymorphed-full-inactive-human-injured","cFile":"src/artifact.c","cFunction":"invoke_healing","description":"polymorphed full inactive human injured"},
+    {"group":"Artifact healing invocation","id":"artifact-healing.healthy-no-effect-negative","cFile":"src/artifact.c","cFunction":"invoke_healing","description":"healthy no effect negative"},
+    {"group":"Artifact healing invocation","id":"artifact-healing.human-healing-negative","cFile":"src/artifact.c","cFunction":"invoke_healing","description":"human healing negative"},
+    {"group":"Artifact healing invocation","id":"artifact-healing.wizard-slime-cure-negative","cFile":"src/artifact.c","cFunction":"invoke_healing","description":"wizard slime cure negative"},
+    {"group":"Artifact healing invocation","id":"artifact-healing.sickness-cure-negative","cFile":"src/artifact.c","cFunction":"invoke_healing","description":"sickness cure negative"},
+    {"group":"Artifact healing invocation","id":"artifact-healing.temporary-blindness-negative","cFile":"src/artifact.c","cFunction":"invoke_healing","description":"temporary blindness negative"},
+    {"group":"Artifact healing invocation","id":"artifact-healing.permanent-blindness-negative","cFile":"src/artifact.c","cFunction":"invoke_healing","description":"permanent blindness negative"},
+    {"group":"Artifact healing invocation","id":"artifact-healing.permanent-and-timed-blindness-negative","cFile":"src/artifact.c","cFunction":"invoke_healing","description":"permanent and timed blindness negative"},
+    {"group":"Artifact healing invocation","id":"artifact-healing.cream-retained-negative","cFile":"src/artifact.c","cFunction":"invoke_healing","description":"cream retained negative"},
+    {"group":"Artifact healing invocation","id":"artifact-healing.cream-and-extra-blindness-negative","cFile":"src/artifact.c","cFunction":"invoke_healing","description":"cream and extra blindness negative"},
+    {"group":"Artifact healing invocation","id":"artifact-healing.cooldown-retains-slime-negative","cFile":"src/artifact.c","cFunction":"invoke_healing","description":"cooldown retains slime negative"},
+    {"group":"Artifact healing invocation","id":"artifact-healing.cancelled-invoke-retains-slime-negative","cFile":"src/artifact.c","cFunction":"invoke_healing","description":"cancelled invoke retains slime negative"}
   ]
 }

@@ -1,0 +1,225 @@
+{
+  "name": "tower-arrival-contract",
+  "description": "Preserve the Wizard tower interior across random level arrival after real portal entry.",
+  "coverage": [
+    "level.arrival",
+    "level.wizard-tower",
+    "mode.debug"
+  ],
+  "requireBranchAssertions": true,
+  "segments": [
+    {
+      "seed": 6801,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\nOPTIONS=!debug_mongen\n",
+      "name": "inside-up-middle",
+      "moves": " #polyself\rxorn\r  \u001b\u001b\u0017uncursed amulet of flying\r  \u001b\u001bPa  \u001b\u001b\u0016?\r u\u001b\u0006\u0014llllllllllllllllljjjjj.  \u001b\u001b#wizkill\rhh.\u001b  \u001b\u001b#wizkill\rhhh.\u001b  \u001b\u001bh  \u001b\u001bhy  \u001b\u001bhy  \u001b\u001b\u0016?\rr\u001b\u0006"
+    },
+    {
+      "seed": 6801,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\nOPTIONS=!debug_mongen\n",
+      "name": "inside-up-top",
+      "moves": " #polyself\rxorn\r  \u001b\u001b\u0017uncursed amulet of flying\r  \u001b\u001bPa  \u001b\u001b\u0016?\r u\u001b\u0006\u0014llllllllllllllllljjjjj.  \u001b\u001b#wizkill\rhh.\u001b  \u001b\u001b#wizkill\rhhh.\u001b  \u001b\u001bh  \u001b\u001bhy  \u001b\u001bhy  \u001b\u001b\u0016?\rq\u001b\u0006"
+    },
+    {
+      "seed": 6801,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\nOPTIONS=!debug_mongen\n",
+      "name": "inside-up-then-down",
+      "moves": " #polyself\rxorn\r  \u001b\u001b\u0017uncursed amulet of flying\r  \u001b\u001bPa  \u001b\u001b\u0016?\r u\u001b\u0006\u0014llllllllllllllllljjjjj.  \u001b\u001b#wizkill\rhh.\u001b  \u001b\u001b#wizkill\rhhh.\u001b  \u001b\u001bh  \u001b\u001bhy  \u001b\u001bhy  \u001b\u001b\u0016?\rr\u001b\u0006\u0016?\rs\u001b\u0006"
+    },
+    {
+      "seed": 6801,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\nOPTIONS=!debug_mongen\n",
+      "name": "inside-to-main-dungeon",
+      "moves": " #polyself\rxorn\r  \u001b\u001b\u0017uncursed amulet of flying\r  \u001b\u001bPa  \u001b\u001b\u0016?\r u\u001b\u0006\u0014llllllllllllllllljjjjj.  \u001b\u001b#wizkill\rhh.\u001b  \u001b\u001b#wizkill\rhhh.\u001b  \u001b\u001bh  \u001b\u001bhy  \u001b\u001bhy  \u001b\u001b\u00161\r\u001b\u0006"
+    },
+    {
+      "seed": 6801,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\nOPTIONS=!debug_mongen\n",
+      "name": "outside-to-middle",
+      "moves": " #polyself\rxorn\r  \u001b\u001b\u0017uncursed amulet of flying\r  \u001b\u001bPa  \u001b\u001b\u0016?\rs\u001b\u0006\u001b\u001b\u001b  \u001b\u001b\u0016?\rr\u001b\u0006"
+    },
+    {
+      "seed": 6801,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\nOPTIONS=!debug_mongen\n",
+      "name": "inside-cancel",
+      "moves": " #polyself\rxorn\r  \u001b\u001b\u0017uncursed amulet of flying\r  \u001b\u001bPa  \u001b\u001b\u0016?\r u\u001b\u0006\u0014llllllllllllllllljjjjj.  \u001b\u001b#wizkill\rhh.\u001b  \u001b\u001b#wizkill\rhhh.\u001b  \u001b\u001bh  \u001b\u001bhy  \u001b\u001bhy  \u001b\u001b\u0016\u001b"
+    },
+    {
+      "seed": 6801,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\nOPTIONS=!debug_mongen\n",
+      "name": "inside-entry-only",
+      "moves": " #polyself\rxorn\r  \u001b\u001b\u0017uncursed amulet of flying\r  \u001b\u001bPa  \u001b\u001b\u0016?\r u\u001b\u0006\u0014llllllllllllllllljjjjj.  \u001b\u001b#wizkill\rhh.\u001b  \u001b\u001b#wizkill\rhhh.\u001b  \u001b\u001bh  \u001b\u001bhy  \u001b\u001bhy  \u001b\u001b"
+    }
+  ],
+  "branches": [
+    "tower-arrival.inside-up-middle",
+    "tower-arrival.inside-up-top",
+    "tower-arrival.inside-up-then-down",
+    "tower-arrival.inside-to-main-dungeon",
+    "tower-arrival.outside-to-middle",
+    "tower-arrival.inside-cancel",
+    "tower-arrival.inside-entry-only"
+  ],
+  "branchAssertions": [
+    {
+      "branch": "tower-arrival.inside-up-middle",
+      "segment": 0,
+      "screenIncludes": [
+        "You activated a magic portal!"
+      ]
+    },
+    {
+      "branch": "tower-arrival.inside-up-top",
+      "segment": 1,
+      "screenIncludes": [
+        "You activated a magic portal!"
+      ]
+    },
+    {
+      "branch": "tower-arrival.inside-up-then-down",
+      "segment": 2,
+      "screenIncludes": [
+        "You activated a magic portal!"
+      ]
+    },
+    {
+      "branch": "tower-arrival.inside-to-main-dungeon",
+      "segment": 3,
+      "screenIncludes": [
+        "You activated a magic portal!"
+      ]
+    },
+    {
+      "branch": "tower-arrival.outside-to-middle",
+      "segment": 4,
+      "screenIncludes": [
+        "You materialize on a different level!"
+      ]
+    },
+    {
+      "branch": "tower-arrival.inside-cancel",
+      "segment": 5,
+      "screenIncludes": [
+        "You activated a magic portal!"
+      ]
+    },
+    {
+      "branch": "tower-arrival.inside-entry-only",
+      "segment": 6,
+      "screenIncludes": [
+        "You activated a magic portal!"
+      ]
+    }
+  ],
+  "stateRequirements": [
+    {
+      "name": "inside-up-middle",
+      "level": [
+        1,
+        17
+      ],
+      "inside": true,
+      "positive": true,
+      "actionBoundary": 148,
+      "unchangedHashes": null
+    },
+    {
+      "name": "inside-up-top",
+      "level": [
+        1,
+        16
+      ],
+      "inside": true,
+      "positive": true,
+      "actionBoundary": 148,
+      "unchangedHashes": null
+    },
+    {
+      "name": "inside-up-then-down",
+      "level": [
+        1,
+        18
+      ],
+      "inside": true,
+      "positive": true,
+      "actionBoundary": 148,
+      "unchangedHashes": null
+    },
+    {
+      "name": "inside-to-main-dungeon",
+      "level": [
+        0,
+        1
+      ],
+      "inside": false,
+      "positive": false,
+      "actionBoundary": null,
+      "unchangedHashes": {
+        "screens": "3187cd8f7a8b5d3b0b3e4e4789c618bd7e50c52c0ee4741d0f956e48c5d53b2f",
+        "cursors": "981efa730615ff7f150b1419ba51ccf08997b30da279acdfb8df615700f847fe",
+        "calls": "829d4dfe83741a897116b5544b339bbc6f2207fd38f0dd1469b2fbf0975fecff",
+        "slices": "d7cb87eb11892ecef29299250250550e53e91aec8d127d0f4a2b163d31342ae3",
+        "frames": "2b42d7de36a189bc47c57bea468f955d10f1c67505a58e654190ca4726d4bf7d"
+      }
+    },
+    {
+      "name": "outside-to-middle",
+      "level": [
+        1,
+        17
+      ],
+      "inside": false,
+      "positive": false,
+      "actionBoundary": null,
+      "unchangedHashes": {
+        "screens": "938ab4b2f3103245380e222fe9ebb5ae2be1e4bbe01d8b17163ae8ab07821139",
+        "cursors": "71724e43fd58b2e7d9cb2a94ec179ff89d0f2c0df32478120d12ca55b8e1c19c",
+        "calls": "2916f4da819e6166ca66118437bd6d0989af879caff81d53c0a2ad05a5572bd5",
+        "slices": "a2cfbad291472bd7454fc8e9ad84299b181e28e0aff32881a3d71029d26fb58c",
+        "frames": "07589e93566c34eb2de862d02c085b2605fdbb58d42ab45f096e06c1852a731b"
+      }
+    },
+    {
+      "name": "inside-cancel",
+      "level": [
+        1,
+        18
+      ],
+      "inside": true,
+      "positive": false,
+      "actionBoundary": null,
+      "unchangedHashes": {
+        "screens": "1c1b6a4c05a7e97a97f24d675733457eb521d7e10b729bd90bf6fd19a8eb7e09",
+        "cursors": "3bc9067dc7707e0112a57381f4f11eb0d49a3cba73cf2447f76523c3af1ae3c2",
+        "calls": "afa6c80003066728fe0c4ad73b3ae1210f9f88ea6b35c73c56e434c6cdd03b55",
+        "slices": "f0f5072dbd9014bb8769b9519725b13017ab44be5a8694a4b5123a494f4028a8",
+        "frames": "fd331dce7a25bcf0dbbeff0f74846e08676871f53a7f8457b4d8bbe0f8c079ac"
+      }
+    },
+    {
+      "name": "inside-entry-only",
+      "level": [
+        1,
+        18
+      ],
+      "inside": true,
+      "positive": false,
+      "actionBoundary": null,
+      "unchangedHashes": {
+        "screens": "061d823ea86bc3b6000874ec0a293671b08c6398f875363c23b3d28868d270b4",
+        "cursors": "ee2e00ba06e63cde365bac113e12d5b189db9f7c4b3a02076ff4de4fc3396ec2",
+        "calls": "afa6c80003066728fe0c4ad73b3ae1210f9f88ea6b35c73c56e434c6cdd03b55",
+        "slices": "aaff3d10b3eaa6e18cabdc17f4f2e9d7682c28140beefee9d95ab74a76398ebd",
+        "frames": "92d41b9f7c881cec4c231375aaf4f24aefc574798ecc5af912d2d73dd456e7aa"
+      }
+    }
+  ],
+  "recordingNote": "Original inputs locked before candidate. Three positive traces, four unaffected negatives. Inside-up-then-down also executes a downward return after its first upward repair; not an independent baseline down-only witness."
+}

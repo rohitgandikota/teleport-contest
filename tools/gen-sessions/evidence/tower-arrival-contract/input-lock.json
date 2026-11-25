@@ -1,0 +1,121 @@
+{
+  "recipeSHA256": "5af0b3c936091eeb42982686138907f63705c2d289399d5f70ec9fdccf4c8342",
+  "fields": [
+    "name",
+    "seed",
+    "datetime",
+    "nethackrc",
+    "moves"
+  ],
+  "tupleSHA256": "c47bc7581fe118ff608bba58df3e5a9fcaed6a66d3cbbdb887bea3fdcaa2da55",
+  "cases": 7,
+  "keys": 971,
+  "negativeHashes": 20,
+  "baselineReports": {
+    "proposals-09-baseline.json": "1d4c7f487249800dfbba52596fdd88a862d9a44829292034a236c3a552d361f2",
+    "proposals-10-baseline.json": "a9a256158f004ebe12d5e4a254e390d8ade55e4534be7a1ce39446b3dba520a0"
+  },
+  "controls": [
+    {
+      "name": "inside-up-middle",
+      "level": [
+        1,
+        17
+      ],
+      "inside": true,
+      "positive": true,
+      "actionBoundary": 148,
+      "unchangedHashes": null
+    },
+    {
+      "name": "inside-up-top",
+      "level": [
+        1,
+        16
+      ],
+      "inside": true,
+      "positive": true,
+      "actionBoundary": 148,
+      "unchangedHashes": null
+    },
+    {
+      "name": "inside-up-then-down",
+      "level": [
+        1,
+        18
+      ],
+      "inside": true,
+      "positive": true,
+      "actionBoundary": 148,
+      "unchangedHashes": null
+    },
+    {
+      "name": "inside-to-main-dungeon",
+      "level": [
+        0,
+        1
+      ],
+      "inside": false,
+      "positive": false,
+      "actionBoundary": null,
+      "unchangedHashes": {
+        "screens": "3187cd8f7a8b5d3b0b3e4e4789c618bd7e50c52c0ee4741d0f956e48c5d53b2f",
+        "cursors": "981efa730615ff7f150b1419ba51ccf08997b30da279acdfb8df615700f847fe",
+        "calls": "829d4dfe83741a897116b5544b339bbc6f2207fd38f0dd1469b2fbf0975fecff",
+        "slices": "d7cb87eb11892ecef29299250250550e53e91aec8d127d0f4a2b163d31342ae3",
+        "frames": "2b42d7de36a189bc47c57bea468f955d10f1c67505a58e654190ca4726d4bf7d"
+      }
+    },
+    {
+      "name": "outside-to-middle",
+      "level": [
+        1,
+        17
+      ],
+      "inside": false,
+      "positive": false,
+      "actionBoundary": null,
+      "unchangedHashes": {
+        "screens": "938ab4b2f3103245380e222fe9ebb5ae2be1e4bbe01d8b17163ae8ab07821139",
+        "cursors": "71724e43fd58b2e7d9cb2a94ec179ff89d0f2c0df32478120d12ca55b8e1c19c",
+        "calls": "2916f4da819e6166ca66118437bd6d0989af879caff81d53c0a2ad05a5572bd5",
+        "slices": "a2cfbad291472bd7454fc8e9ad84299b181e28e0aff32881a3d71029d26fb58c",
+        "frames": "07589e93566c34eb2de862d02c085b2605fdbb58d42ab45f096e06c1852a731b"
+      }
+    },
+    {
+      "name": "inside-cancel",
+      "level": [
+        1,
+        18
+      ],
+      "inside": true,
+      "positive": false,
+      "actionBoundary": null,
+      "unchangedHashes": {
+        "screens": "1c1b6a4c05a7e97a97f24d675733457eb521d7e10b729bd90bf6fd19a8eb7e09",
+        "cursors": "3bc9067dc7707e0112a57381f4f11eb0d49a3cba73cf2447f76523c3af1ae3c2",
+        "calls": "afa6c80003066728fe0c4ad73b3ae1210f9f88ea6b35c73c56e434c6cdd03b55",
+        "slices": "f0f5072dbd9014bb8769b9519725b13017ab44be5a8694a4b5123a494f4028a8",
+        "frames": "fd331dce7a25bcf0dbbeff0f74846e08676871f53a7f8457b4d8bbe0f8c079ac"
+      }
+    },
+    {
+      "name": "inside-entry-only",
+      "level": [
+        1,
+        18
+      ],
+      "inside": true,
+      "positive": false,
+      "actionBoundary": null,
+      "unchangedHashes": {
+        "screens": "061d823ea86bc3b6000874ec0a293671b08c6398f875363c23b3d28868d270b4",
+        "cursors": "ee2e00ba06e63cde365bac113e12d5b189db9f7c4b3a02076ff4de4fc3396ec2",
+        "calls": "afa6c80003066728fe0c4ad73b3ae1210f9f88ea6b35c73c56e434c6cdd03b55",
+        "slices": "aaff3d10b3eaa6e18cabdc17f4f2e9d7682c28140beefee9d95ab74a76398ebd",
+        "frames": "92d41b9f7c881cec4c231375aaf4f24aefc574798ecc5af912d2d73dd456e7aa"
+      }
+    }
+  ]
+}

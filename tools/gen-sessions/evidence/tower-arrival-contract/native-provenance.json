@@ -1,0 +1,283 @@
+{
+  "recording": {
+    "startedAt": "2026-11-25T22:55:35.420490+00:00",
+    "input": ".cache/restart-20261122/tower-arrival-parent-input.session.json",
+    "inputSha256": "aa397f8b09b0da2bebc4275b94a7c1ac49c3da7a4a802da4717432eb7c6e4513",
+    "sourceInput": ".cache/restart-20261122/tower-arrival-locked-input.session.json",
+    "sealReference": ".cache/restart-20261122/tower-arrival-parent-audit/input-lock.json",
+    "sealSha256": "895c139c1ddebd0df77bc6e82448eb1a89a798276e059510fcd53f7e3bfd364a",
+    "binarySha256": "ba4dbc1c823f8d4b0cfb6fd594d00ff0ff5754daaaa2036bee15baeffdf85aa7",
+    "recorderSha256": "b129caee2ca3941b30c36f5c26644bd37ff610344332eb511c474b8709b70648",
+    "cPin": "16ff59115315917b93185d026aeefea06db9b0f4",
+    "timezone": "Etc/GMT+4",
+    "raw": ".cache/restart-20261122/tower-arrival-parent-native.session.json",
+    "exit": 0,
+    "closedAt": "2026-11-25T22:55:36.277864+00:00",
+    "rawSha256": "ae78c9e81d91eedfe642ca09094bb91be3188305ad9ac61a3e91ccbb45972d54",
+    "bytes": 7697547,
+    "segments": 7,
+    "boundaries": 978,
+    "fiveInputFieldsAndPresencePreserved": true,
+    "allKeysExact": true
+  },
+  "recordingReceiptSHA256": "12f48f7624248b5f6d5806cc2338a46c258a18f664c9b9335a3f2691662ecf9e",
+  "nativeComparison": [
+    {
+      "exit": 1,
+      "seconds": 1.65,
+      "exact": 4,
+      "total": 7,
+      "boundaries": 978,
+      "calls": 91400,
+      "frames": 0,
+      "report": ".cache/restart-20261122/tower-arrival-parent-baseline-native.json",
+      "reportSHA256": "369283e77065590ad2ed6452c6c05eb6fdf3d56b062cb8b325d5da1009bab7c6",
+      "rawSHA256": "ae78c9e81d91eedfe642ca09094bb91be3188305ad9ac61a3e91ccbb45972d54",
+      "cases": [
+        {
+          "name": "inside-up-middle",
+          "exact": false,
+          "firstScreenDifference": [
+            {
+              "step": 148,
+              "frozenEqual": false,
+              "fullStyleEqual": false,
+              "totalCells": 1920,
+              "matchingStyleCells": 1878,
+              "blankStyleMismatches": 0,
+              "nonblankStyleMismatches": 0,
+              "glyphMismatches": 42,
+              "firstFullStyleDifference": {
+                "x": 37,
+                "y": 0,
+                "c": {
+                  "ch": "-",
+                  "color": 8,
+                  "attr": 0
+                },
+                "js": {
+                  "ch": " ",
+                  "color": 8,
+                  "attr": 0
+                }
+              },
+              "firstFrozenDifference": {
+                "x": 37,
+                "y": 0,
+                "kind": "ch",
+                "c": {
+                  "ch": "-",
+                  "color": 8,
+                  "attr": 0
+                },
+                "js": {
+                  "ch": " ",
+                  "color": 8,
+                  "attr": 0
+                }
+              }
+            }
+          ],
+          "firstRngDifference": {
+            "index": 19110,
+            "c": "rn2(28)=3",
+            "js": "rn2(79)=33"
+          }
+        },
+        {
+          "name": "inside-up-top",
+          "exact": false,
+          "firstScreenDifference": [
+            {
+              "step": 148,
+              "frozenEqual": false,
+              "fullStyleEqual": false,
+              "totalCells": 1920,
+              "matchingStyleCells": 1902,
+              "blankStyleMismatches": 0,
+              "nonblankStyleMismatches": 0,
+              "glyphMismatches": 18,
+              "firstFullStyleDifference": {
+                "x": 5,
+                "y": 12,
+                "c": {
+                  "ch": " ",
+                  "color": 8,
+                  "attr": 0
+                },
+                "js": {
+                  "ch": "|",
+                  "color": 8,
+                  "attr": 0
+                }
+              },
+              "firstFrozenDifference": {
+                "x": 5,
+                "y": 12,
+                "kind": "ch",
+                "c": {
+                  "ch": " ",
+                  "color": 8,
+                  "attr": 0
+                },
+                "js": {
+                  "ch": "|",
+                  "color": 8,
+                  "attr": 0
+                }
+              }
+            }
+          ],
+          "firstRngDifference": {
+            "index": 10816,
+            "c": "rn2(28)=2",
+            "js": "rn2(79)=6"
+          }
+        },
+        {
+          "name": "inside-up-then-down",
+          "exact": false,
+          "firstScreenDifference": [
+            {
+              "step": 148,
+              "frozenEqual": false,
+              "fullStyleEqual": false,
+              "totalCells": 1920,
+              "matchingStyleCells": 1878,
+              "blankStyleMismatches": 0,
+              "nonblankStyleMismatches": 0,
+              "glyphMismatches": 42,
+              "firstFullStyleDifference": {
+                "x": 37,
+                "y": 0,
+                "c": {
+                  "ch": "-",
+                  "color": 8,
+                  "attr": 0
+                },
+                "js": {
+                  "ch": " ",
+                  "color": 8,
+                  "attr": 0
+                }
+              },
+              "firstFrozenDifference": {
+                "x": 37,
+                "y": 0,
+                "kind": "ch",
+                "c": {
+                  "ch": "-",
+                  "color": 8,
+                  "attr": 0
+                },
+                "js": {
+                  "ch": " ",
+                  "color": 8,
+                  "attr": 0
+                }
+              }
+            }
+          ],
+          "firstRngDifference": {
+            "index": 19110,
+            "c": "rn2(28)=3",
+            "js": "rn2(79)=33"
+          }
+        },
+        {
+          "name": "inside-to-main-dungeon",
+          "exact": true,
+          "firstScreenDifference": [],
+          "firstRngDifference": null
+        },
+        {
+          "name": "outside-to-middle",
+          "exact": true,
+          "firstScreenDifference": [],
+          "firstRngDifference": null
+        },
+        {
+          "name": "inside-cancel",
+          "exact": true,
+          "firstScreenDifference": [],
+          "firstRngDifference": null
+        },
+        {
+          "name": "inside-entry-only",
+          "exact": true,
+          "firstScreenDifference": [],
+          "firstRngDifference": null
+        }
+      ]
+    },
+    {
+      "kind": "candidate",
+      "exit": 0,
+      "seconds": 1.63,
+      "exact": 7,
+      "total": 7,
+      "runtimeSHA256": "89c3dd4b96c308dd06d00bf847aa999c1838d64855b1234a1820d2770d633278",
+      "report": ".cache/restart-20261122/tower-arrival-parent-candidate-native.json",
+      "reportSHA256": "585a44124d547838a75ace9441a0877f07b0393faec2bf444fc2487ea8ba0a21",
+      "failures": []
+    },
+    {
+      "kind": "composed",
+      "exit": 0,
+      "seconds": 1.45,
+      "exact": 7,
+      "total": 7,
+      "runtimeSHA256": "28a13e1b055b5a94a0cace3223bc49417cdd63ff8acb4d9f1a4b98339afd4f54",
+      "report": ".cache/restart-20261122/tower-arrival-parent-composed-native.json",
+      "reportSHA256": "585a44124d547838a75ace9441a0877f07b0393faec2bf444fc2487ea8ba0a21",
+      "failures": []
+    }
+  ],
+  "ordinaryComparison": [
+    {
+      "kind": "baseline",
+      "exit": 1,
+      "seconds": 2.18,
+      "logSHA256": "7894a8c8455e6c8956ea01c84b85464e01fa36ace5264f6d2b52fc28f3702b5c",
+      "passed": 64,
+      "total": 68,
+      "reportSHA256": "f416d8e4c2ecca568b64fe399ce3e68c650d60ea55140026077fb421b72bf15d",
+      "failures": [
+        "inside-up-middle/inside",
+        "inside-up-top/inside",
+        "inside-up-then-down/inside",
+        "inside-up-then-down/interior-middle-stop"
+      ]
+    },
+    {
+      "kind": "candidate",
+      "exit": 0,
+      "seconds": 2.1,
+      "logSHA256": "4007f0e385dd2094a4ccad8d1a5f15137007c170fe7a9c14cf8dc599bf7aa76b",
+      "passed": 68,
+      "total": 68,
+      "reportSHA256": "df9cd180cd5a3c2a2f2899fc781f54022689fccb7d9949bbedcc191d03a1a62e",
+      "failures": []
+    },
+    {
+      "kind": "composed",
+      "exit": 0,
+      "seconds": 1.98,
+      "logSHA256": "4007f0e385dd2094a4ccad8d1a5f15137007c170fe7a9c14cf8dc599bf7aa76b",
+      "passed": 68,
+      "total": 68,
+      "reportSHA256": "df9cd180cd5a3c2a2f2899fc781f54022689fccb7d9949bbedcc191d03a1a62e",
+      "failures": []
+    }
+  ],
+  "runtimePatchSHA256": "f5b91a820496c437452dc95947cdbdd302d653c310c9e91dc3cdde16af175f50",
+  "runtimeFileSHA256": "b0e7e220d9dfeb2a1772dedcff9124519dc5bd345079c340458e49647821a60f",
+  "reviewSHA256": "b1434aec31db5b6375d82dfe1f4744bc95784249f3ffcec1a768d0ff7099f47b",
+  "inputLockSHA256": "895c139c1ddebd0df77bc6e82448eb1a89a798276e059510fcd53f7e3bfd364a",
+  "recipeSHA256": "5af0b3c936091eeb42982686138907f63705c2d289399d5f70ec9fdccf4c8342",
+  "limits": [
+    "Round-trip down follows the repaired upward step; it is not an independent baseline down-only witness.",
+    "Seven primary branch assertions prove ordinary route messages. The separate input gate verifies actual tower membership and destination state.",
+    "No full goto_level, held-out or literal serialized-byte closure claimed."
+  ]
+}

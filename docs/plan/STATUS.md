@@ -1,6 +1,44 @@
 # STATUS — live handoff board
 
-## 2026-11-25: symbol byte handling verified for publication
+## 2026-11-25: Tower random arrival verified for publication
+
+Only do.js changes runtime, by one line. goto_level now passes its existing
+inside-tower flag to u_on_rndspot, in C order. The helper already handles the
+destination rectangle and terrain restoration. No new placement logic is added.
+
+Seven original C cases now match versus four: 978 styled boundaries/cursors,
+91,400 calls and ordered slices, zero frames. The three positive traces enter
+through the real portal, then travel between tower floors. C selects within
+the 28-column interior where baseline selected across the 79-column level.
+All four negative cases and twenty output hashes remain fixed. Ordinary state
+checks improve from 64/68 to 68/68, with observer and deferred-input equality.
+The downward leg follows the repaired upward arrival, rather than establishing
+an independent baseline down-only witness. Other goto_level gaps remain open.
+
+All 87 selected/public recordings and 87 strict eight-second workers pass:
+57,127 screens/cursors, 1,976,938 random positions and 2,085 frames. The new
+gate, thirteen retained suites, source audit and two syntax checks pass.
+All 74 packet members, six payloads and 280 runtime hashes verify. All 904
+prior raws and requirements remain fixed; seven requirements and one raw
+bring the corpus to 905. Main receipt `tower-arrival-main-verification.json`,
+SHA256 `8b7534c42884e9f27329a33d261a30727f6078659860235012a501ed317352f9`.
+
+Full905 is running on two NFS CPU workers with default budgets and no retries.
+All 1,196 files were pinned before launch. Root:
+/share/NFS/u/rohit/research/contest/artifacts/2026-11-22/tower-arrival-full905-js-20261125.
+All-files SHA256 `35dd04ecf23ba04b5710f05d5402351d20f1c63d7c8801e45943764db32d1491`.
+The prior full904 run is verified against published 2807b1b5 below.
+
+The separate shopkeeper re-entry candidate now matches all four original C
+cases versus three on both isolated and composed graphs: 633 boundaries,
+21,612 calls and 66 frames. The three negative reports are identical. Its
+billing storage prerequisite and retained test premise still need parent
+review before main integration. The source diagnostic retains its unchanged
+get_mtraits failure. Row restoration and the full byte reader remain separate.
+At 23:10 UTC the official feed still shows rank 7 and 659 unmatched screens;
+our row remains dated 19:31. No newer held-out result is inferred.
+
+## 2026-11-25: symbol byte handling pushed as 2807b1b5
 
 Only symbols.js changes runtime. sym_val reads UTF8 bytes into its local C
 character buffer and returns the recorder's signed char value. The four symbol
@@ -30,16 +68,11 @@ frames. All 1,195 tested files remain fixed. Root:
 /share/NFS/u/rohit/research/contest/artifacts/2026-11-22/symbol-value-full904-js-20261125.
 All-files SHA256 `2e23c40b1ed5cf57e70cb94f7ff373c387270bf9542eef07dae658290234bf68`.
 Verification SHA256 `b448f94af6f82952d1e90ccbc6e5b8ac4be4cef74c7289aac87064f384fa6f84`.
-The publication receipt is next, after committing and pushing this exact graph.
-
-The separate Tower arrival candidate preserves the existing inside-tower flag
-at goto_level's random-placement call. All seven locked original C cases now
-match versus four; all 68 ordinary controls pass versus 64. Its four negative
-cases retain all twenty output hashes. It is not installed yet. The seven
-row-refresh C cases establish a 3/7 baseline; that candidate remains separate,
-as do the full byte reader and shopkeeper billing storage audits. The latest
-leaderboard check, 22:41 UTC, is still rank 7 and 659 unmatched screens, with
-the row dated 19:31. No newer held-out score or whole-port closure is claimed.
+All 1,195 tested files match published 2807b1b5. Publication receipt
+`symbol-value-full904-publication-verification.json`, SHA256
+`afac752ffc80cb3028b171ae8e5ba4d2da3a5aa9c5d6979e35055e733115aa66`.
+The seven row-refresh C cases establish a 3/7 baseline. That candidate, the
+full byte reader and the remaining fruit failures stay separate work.
 
 ## 2026-11-25: random placement terrain restoration pushed as e2a36e32
 

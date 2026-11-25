@@ -1297,7 +1297,7 @@ export async function goto_level(newlevel, at_stairs, falling, portal) {
         }
     } else { /* trap door or level_tele or In_endgame */
         const { u_on_rndspot } = await import('./dungeon.js');
-        await u_on_rndspot(up ? 1 : 0);
+        await u_on_rndspot((up ? 1 : 0) | (wasInWTower ? 2 : 0));
         if (falling) {
             if (Punished() && !welded(game.u.uball))
                 await ballfall();

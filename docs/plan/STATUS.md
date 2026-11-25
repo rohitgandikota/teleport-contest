@@ -1,5 +1,77 @@
 # STATUS — live handoff board
 
+## 2026-11-25: boulder movement and one-use pile naming verified
+
+The current composition changes only hack.js, trap.js and objnam.js. It fixes
+level-teleport destination output parameters, active Sokoban rules, conjoined
+pit cleanup, last-pit completion, canonical blindness, floor-chain ordering and
+the exact one-use next_boulder naming flag. Existing force-fight imports and
+all later notice/swimming changes remain intact. The separate pool/floortrap
+helper defect remains open; this checkpoint does not claim complete xname or
+shared-helper coverage.
+
+All sixteen C cases pass: 2,383 styled boundaries/cursors, 38,892 random calls
+and ordered slices, thirteen frames. The original twelve improve from eight
+exact cases, two crashes and two Sokoban divergences to twelve exact. The four
+supplemental cases improve from two to four with the naming prerequisite; two
+are reused negative controls. Source controls pass 56/56 and 17/17, versus
+39/56 and 8/17. Ordinary assertions pass 36/36 and 12/12, with all-five-output
+observer/plain/deferred-EOF equality and retained negative hashes.
+
+All 74 selected/public recordings and all 74 eight-second workers pass:
+32,640 screens/cursors, 1,376,904 random positions and 1,982 frames. Twenty-one
+retained suites, source audit and eight syntax checks pass. The rolling-boulder
+fatal-hit test originally passed 20/21 on both baseline and candidate. C
+mon.c:2734 leaves the detached monster in fmon until dmonsfree. The corrected
+test preserves the original trap/ammunition assertions and additionally checks
+zero HP, absent map occupancy, retained list membership, MON_DETACH, the pending
+purge count and eventual removal. It passes 21/21 on both; no runtime changed
+to satisfy it. Original gate and both failures remain in the compact review.
+
+All 953 original source-packet members and 17 supplemental promotion members
+verify. Both portable input gates require their exact original C recordings,
+input fields, key sequence, recording integrity and branch assertions. The
+supplemental gate rejects missing and wrong recordings. Its initial isolated
+8/12 run without preserve-symlinks remains documented; the complete fixed
+composition and installed gate pass without changing assertion bodies.
+
+All 279 current runtime hashes and all 884 prior raw recordings remain fixed
+against the reviewed composition and old corpus. Sixteen requirements and two
+raw files grow the corpus to 886. Main receipt `moverock-main-verification.json`,
+SHA256 `2fc67f6c9fb64a165839058b630f4a953f5974c1e0a9e442c56ad62d19e0f148`.
+Commit and immediately push this verified checkpoint. Travel follows as a
+separate checkpoint; a prepared full887 NFS run will include both changes.
+
+## 2026-11-25: pushed notice checkpoint passes full884
+
+`1814d670` is pushed. Its full884 run passes with two NFS CPU workers,
+default budgets and no retries: 915,513 screens/cursors, 19,421,581 random
+positions and 32,821 frames. All 1,174 snapshot files remain fixed. The parent
+also checked all 279 runtime files against the published commit and all 884
+recordings against the maintained corpus. Verification SHA256
+`3c56bc613a4fea1889f20d12417456d851e6e86a5fe43ddfbfc47705f2429d60`;
+publication receipt SHA256
+`f21d1c9fa360d57734086150cd602ff9e3c9867bcecd9674c3dfc865ffb39fad`.
+The verified combined-notice raw duplicate was replaced by a relative link,
+removing 1,157,306 local bytes. Original warning evidence stays unchanged.
+
+The boulder composition passes sixteen native cases, 74 selected/public
+recordings and all 74 eight-second checks. Its separate supplemental preflight
+is being packaged. The retained rolling-boulder state gate passes 20/21 on
+both published baseline and candidate: its fatal-hit test expects immediate
+removal from the monster list. A separate source review is checking that
+premise against the deferred death/purge contract before any test correction.
+The original failure is preserved in moverock-main-check-16.log and the fixed
+baseline result in moverock-baseline-rolling-boulder-state.log.
+
+The travel patch passes all twelve original C recordings, versus six before:
+310 styled boundaries/cursors, 31,537 calls and ordered slices, 163 frames.
+Its composition on the boulder candidate also passes native12, source54 and
+ordinary12. The initial isolated source/input launches lacked the unchanged
+half-damage-reader-observe support module and failed before gameplay; both
+original logs remain. After verifying and linking the complete support lock,
+the unchanged gates pass. Main travel promotion follows the boulder push.
+
 ## 2026-11-25: queued notice flags and blindness completion verified
 
 The current checkpoint routes urgent and no-history messages through the

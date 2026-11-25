@@ -13,19 +13,24 @@ Ground rules are in `/CLAUDE.md`. Read that first if you have not.
 ## Current focus, 2026-11-25
 
 
-`c6139692` is pushed and passes all 883 maintained recordings on NFS. The next
-verified checkpoint preserves queued-notice flags and finishes blindness
-sightings before command input. It passes seventy source controls, eight native
-cases, all 68 selected/public recordings and all 68 strict workers. Sixteen
-retained suites pass. Two obsolete pending-queue test premises were corrected
-against C, with their original failures preserved. See STATUS for the receipt.
+`1814d670` is pushed and passes all 884 maintained recordings on NFS with
+default budgets and no retries. The complete run covers 915,513 screens/cursors,
+19,421,581 random positions and 32,821 frames. All snapshot hashes still match
+the published runtime and maintained recordings. See STATUS for the receipts.
 
-The maintained corpus is 884. Full884 is running with two NFS CPU workers;
-full883 is the latest completed result. Two original duplicate-option startup
-failures remain explicit in preserved C evidence and a separate configuration
-audit. The boulder candidate passes twelve C cases, fixing two baseline crashes
-and two Sokoban divergences; its naming prerequisite is still under review.
-Travel pathfinding has twelve recorded inputs awaiting candidate comparison.
+The verified boulder checkpoint passes sixteen C cases, fixing two baseline
+crashes, completed-Sokoban behavior and one-use pile naming. All 74
+selected/public recordings, all 74 strict workers and 21 retained suites pass.
+The stale fatal-hit test now checks C's immediate map detachment and later list
+purge; both baseline and candidate pass. Original failures remain preserved.
+Both new raw fixtures are mandatory in the portable input gates. The corpus is
+886, with sixteen new requirements and all prior raw recordings unchanged.
+Commit and immediately push this checkpoint. Full887 is prepared for the
+following travel composition and will include both changes.
+Travel pathfinding passes twelve C recordings versus six before. Its composition
+on the boulder candidate passes source54, ordinary12 and native12; main follows
+the boulder push. Two original duplicate-option startup failures remain explicit
+in preserved C evidence and a separate configuration audit.
 The latest official feed remains rank 7 with 659 unmatched screens and does
 not identify a newer scored commit.
 

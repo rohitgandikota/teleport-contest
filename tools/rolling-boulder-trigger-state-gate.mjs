@@ -4,7 +4,7 @@ import {test} from 'node:test';
 import {setImmediate} from 'node:timers/promises';
 import {game} from '../js/gstate.js';
 import {makemon} from '../js/makemon.js';
-import {hide_monst,m_in_air} from '../js/mon.js';
+import {hide_monst,m_in_air,m_at,dmonsfree} from '../js/mon.js';
 import {maketrap} from '../js/mklev.js';
 import {mintrap,seetrap,Trap_Effect_Finished,Trap_Killed_Mon} from '../js/trap.js';
 import {obj_extract_self,obfree} from '../js/invent.js';
@@ -100,10 +100,17 @@ test('a visible trigger without ammunition does not mark the trap seen',async()=
 
 test('a fatal launched hit returns the monster-death result',async()=>{
     const {trap,ammo,mon}=await setup();mon.mhp=1;
+    const pending=game.iflags.purge_monsters||0;
     assert.equal(await mintrap(mon,C.FORCETRAP),Trap_Killed_Mon);
-    assert.ok(mon.mhp<=0);assert.equal(game.level.monsters.includes(mon),false);
+    // C mon.c:2734 detaches from the map; dmonsfree unlinks from fmon later.
+    assert.equal(mon.mhp,0);assert.notEqual(m_at(mon.mx,mon.my),mon);
+    assert.equal(game.level.monsters.includes(mon),true);
+    assert.ok(mon.mstate&C.MON_DETACH);
+    assert.equal(game.iflags.purge_monsters,pending+1);
     assert.equal(!!trap.tseen,true);
     assert.deepEqual(location(ammo),[trap.launch2.x,trap.launch2.y,C.OBJ_FLOOR]);
+    dmonsfree();assert.equal(game.level.monsters.includes(mon),false);
+    assert.equal(game.iflags.purge_monsters,0);
 });
 
 test('trigger feedback finishes before the real launch extracts ammunition',async()=>{

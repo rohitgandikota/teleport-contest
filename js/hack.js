@@ -14,7 +14,7 @@ import { ART_STING } from './artilist_data.js';
 import { TT_NONE } from './const.js';
 import { FROMOUTSIDE, FROMFORM, I_SPECIAL, W_ARTI, NO_KILLER_PREFIX, TIMEOUT, A_DEX, Is_airlevel, DRAWBRIDGE_UP, DB_UNDER, DB_ICE, MAX_TYPE, IN_SIGHT, MIGR_RANDOM, ROLL, LAUNCH_KNOWN, xFLOOR, xGROUND, xOPENDOOR, xSHUTDOOR, xSWAMP, xSUBMERGED, xSEA, xWATERWALL, TREE, DOOR, D_TRAPPED, MOAT, Is_earthlevel, Is_juiblex_level } from './const.js';
 import { obj_extract_self, useupf, freeinv } from './invent.js';
-import { place_object, splitobj } from './mkobj.js';
+import { place_object, splitobj, remove_object } from './mkobj.js';
 import { exercise, ACURR, acurrstr } from './attrib.js';
 import { breaktest } from './dothrow.js';
 import { hit_bars } from './mthrowu.js';
@@ -2847,14 +2847,14 @@ async function cannot_push_msg(otmp, sx, sy) {
         await pline(`${YMonnam(game.u.usteed)} tries to move ${what}, but cannot.`);
     else
         await You(`try to move ${what}, but in vain.`);
-    if (game.u.ublind)
+    if (Blind())
         await feel_location(sx, sy);
 }
 
 // src/hack.c:262 cannot_push()
 async function cannot_push(otmp, sx, sy) {
     if (throws_rocks(game.youmonst.data)) {
-        const canpickup = (!In_sokoban(game.u.uz)
+        const canpickup = (!Sokoban()
                          /* similar exception as in can_lift():
                             when poly'd into a giant, you can
                             pick up a boulder if you have a free
@@ -2898,19 +2898,19 @@ async function cannot_push(otmp, sx, sy) {
     }
 }
 
-// src/hack.c:327 moverock_done()
-function moverock_done(sx, sy) {
-    for (let otmp = game.level.objectAt(sx, sy); otmp; otmp = otmp.nexthere)
-        if (otmp.ox === sx && otmp.oy === sy && otmp.otyp === ONAMES.BOULDER)
-            otmp.next_boulder = 0; /* resume normal xname() */
-}
-
 // src/hack.c:315 rock_disappear_msg()
 async function rock_disappear_msg(otmp) {
     if (game.u.usteed)
         await pline(`${YMonnam(game.u.usteed)} pushes ${the(xname(otmp))} and suddenly it disappears!`);
     else
         await You(`push ${the(xname(otmp))} and suddenly it disappears!`);
+}
+
+// src/hack.c:327 moverock_done()
+function moverock_done(sx, sy) {
+    for (let otmp = game.level.objectAt(sx, sy); otmp; otmp = otmp.nexthere)
+        if (otmp.ox === sx && otmp.oy === sy && otmp.otyp === ONAMES.BOULDER)
+            otmp.next_boulder = 0; /* resume normal xname() */
 }
 
 // src/hack.c:336 moverock()
@@ -3014,7 +3014,7 @@ async function moverock_core(sx, sy) {
                             && !!shop_keeper((in_rooms(sx, sy, SHOPBASE) || '\0').charCodeAt(0)));
 
             /* KMH -- Sokoban doesn't let you push boulders diagonally */
-            if (In_sokoban(game.u.uz) && game.u.dx && game.u.dy) {
+            if (Sokoban() && game.u.dx && game.u.dy) {
                 if (Blind())
                     await feel_location(sx, sy);
                 await pline(`${The(xname(otmp))} won't roll diagonally on this ${
@@ -3143,7 +3143,8 @@ async function moverock_core(sx, sy) {
                             await stolen_value(otmp, rx, ry, !ttmp.tseen, false);
                         obj_extract_self(otmp);
                         add_to_migration(otmp);
-                        const dest = get_level(newlev);
+                        const dest = {};
+                        get_level(dest, newlev);
                         otmp.ox = dest.dnum;
                         otmp.oy = dest.dlevel;
                         otmp.owornmask = MIGR_RANDOM;
@@ -3179,6 +3180,11 @@ async function moverock_core(sx, sy) {
                     continue;
             }
 
+            /* Re-link at top of fobj so pile order survives level restore. */
+            if (game.level.objects[0] !== otmp) {
+                remove_object(otmp);
+                place_object(otmp, otmp.ox, otmp.oy);
+            }
             await dopush(sx, sy, rx, ry, otmp, costly);
         } else {
             await cannot_push_msg(otmp, sx, sy);

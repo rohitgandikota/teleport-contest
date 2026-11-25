@@ -566,11 +566,15 @@ export function xname_flags(obj, cxn_flags) {
         /* src/objnam.c:844 — a statue names the monster it depicts:
            "statue of a grid bug". The historic prefix needs an
            Archeologist; the unique/pname article refinements need those
-           monsters to be turned to stone. next_boulder needs pushing. */
+           monsters to be turned to stone. */
         if (obj.otyp === ONAMES.STATUE && obj.corpsenm >= 0) {
             const statue_pmname = game.mons?.[obj.corpsenm]?.pmnames?.[2]
                 ?? game.mons?.[obj.corpsenm]?.pmnames?.[0] ?? 'monster';
             buf = `${actualn} of ${just_an(statue_pmname)}${statue_pmname}`;
+        } else if (obj.otyp === ONAMES.BOULDER && obj.next_boulder === 1) {
+            /* src/objnam.c:814: only the first naming uses "next boulder". */
+            buf = `next ${actualn}`;
+            obj.next_boulder = 0;
         } else {
             buf = actualn; /* "boulder" or "statue" */
         }

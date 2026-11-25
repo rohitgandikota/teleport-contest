@@ -4419,6 +4419,22 @@
     {"group": "queued-notice-input-boundary", "id": "queued-notice-input-boundary.notices-disabled-after-timeout", "cFile": "src/potion.c", "cFunction": "toggle_blindness", "description": "notices disabled after timeout"},
     {"group": "queued-notice-input-boundary", "id": "queued-notice-input-boundary.inspection-after-sighting", "cFile": "src/potion.c", "cFunction": "toggle_blindness", "description": "inspection after sighting"},
     {"group": "queued-notice-input-boundary", "id": "queued-notice-input-boundary.blindfold-removal-control", "cFile": "src/potion.c", "cFunction": "toggle_blindness", "description": "blindfold removal control"},
-    {"group": "queued-notice-input-boundary", "id": "queued-notice-input-boundary.eyeless-reversion-control", "cFile": "src/potion.c", "cFunction": "toggle_blindness", "description": "eyeless reversion control"}
+    {"group": "queued-notice-input-boundary", "id": "queued-notice-input-boundary.eyeless-reversion-control", "cFile": "src/potion.c", "cFunction": "toggle_blindness", "description": "eyeless reversion control"},
+    {"group": "moverock-owner", "id": "moverock-owner.level-migration", "cFile": "src/hack.c", "cFunction": "moverock_core", "description": "level migration"},
+    {"group": "moverock-owner", "id": "moverock-owner.level-migration-later", "cFile": "src/hack.c", "cFunction": "moverock_core", "description": "level migration later"},
+    {"group": "moverock-owner", "id": "moverock-owner.plain-push", "cFile": "src/hack.c", "cFunction": "moverock_core", "description": "plain push"},
+    {"group": "moverock-owner", "id": "moverock-owner.pit-fill", "cFile": "src/hack.c", "cFunction": "moverock_core", "description": "pit fill"},
+    {"group": "moverock-owner", "id": "moverock-owner.hole-fill", "cFile": "src/hack.c", "cFunction": "moverock_core", "description": "hole fill"},
+    {"group": "moverock-owner", "id": "moverock-owner.local-teleport", "cFile": "src/hack.c", "cFunction": "moverock_core", "description": "local teleport"},
+    {"group": "moverock-owner", "id": "moverock-owner.levitate", "cFile": "src/hack.c", "cFunction": "moverock_core", "description": "levitate"},
+    {"group": "moverock-owner", "id": "moverock-owner.blind-known", "cFile": "src/hack.c", "cFunction": "moverock_core", "description": "blind known"},
+    {"group": "moverock-owner", "id": "moverock-owner.soko-active", "cFile": "src/hack.c", "cFunction": "moverock_core", "description": "soko active"},
+    {"group": "moverock-owner", "id": "moverock-owner.soko-finish-diagonal", "cFile": "src/hack.c", "cFunction": "moverock_core", "description": "soko finish diagonal"},
+    {"group": "moverock-owner", "id": "moverock-owner.soko-finish-giant", "cFile": "src/hack.c", "cFunction": "moverock_core", "description": "soko finish giant"},
+    {"group": "moverock-owner", "id": "moverock-owner.conjoined-pit-fill", "cFile": "src/hack.c", "cFunction": "moverock_core", "description": "conjoined pit fill"},
+    {"group": "moverock-next-boulder", "id": "moverock-next-boulder.two-boulders", "cFile": "src/objnam.c", "cFunction": "xname_flags", "description": "two boulders"},
+    {"group": "moverock-next-boulder", "id": "moverock-next-boulder.two-boulders-blind", "cFile": "src/objnam.c", "cFunction": "xname_flags", "description": "two boulders blind"},
+    {"group": "moverock-next-boulder", "id": "moverock-next-boulder.plain-push", "cFile": "src/objnam.c", "cFunction": "xname_flags", "description": "plain push"},
+    {"group": "moverock-next-boulder", "id": "moverock-next-boulder.blind-known", "cFile": "src/objnam.c", "cFunction": "xname_flags", "description": "blind known"}
   ]
 }

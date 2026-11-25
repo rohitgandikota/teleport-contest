@@ -1,0 +1,266 @@
+{
+  "name": "moverock-owner",
+  "description": "Twelve fixed normal debug-startup keyboard proposals. Actual source owners/producers; native recording and comparison belong to parent. Seven baseline negatives retain all five outputs.",
+  "coverage": [
+    "mode.debug",
+    "level.sokoban",
+    "level.ordinary",
+    "ui.getlin",
+    "ui.more-paging"
+  ],
+  "segments": [
+    {
+      "seed": 7401,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "level-migration",
+      "moves": " #levelchange\r15\r               lll\u0017level teleporter\r  \u001b\u001bh\u0017boulder\r  \u001b\u001bhl    V"
+    },
+    {
+      "seed": 7401,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "level-migration-later",
+      "moves": " #levelchange\r15\r               lll\u0017level teleporter\r  \u001b\u001bh\u0017boulder\r  \u001b\u001bh. . . l    V"
+    },
+    {
+      "seed": 7401,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "plain-push",
+      "moves": " #levelchange\r15\r               l\u0017boulder\r  \u001b\u001bhl    V"
+    },
+    {
+      "seed": 7401,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "pit-fill",
+      "moves": " #levelchange\r15\r               ll\u0017pit trap\r  \u001b\u001bh\u0017boulder\r  \u001b\u001bhl    V"
+    },
+    {
+      "seed": 7401,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "hole-fill",
+      "moves": " #levelchange\r15\r               ll\u0017hole\r  \u001b\u001bh\u0017boulder\r  \u001b\u001bhl    V"
+    },
+    {
+      "seed": 7401,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "local-teleport",
+      "moves": " #levelchange\r15\r               lll\u0017teleportation trap\r  \u001b\u001bh\u0017boulder\r  \u001b\u001bhl    V"
+    },
+    {
+      "seed": 7401,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "levitate",
+      "moves": " #levelchange\r15\r               l\u0017boulder\r  \u001b\u001bh\u0017blessed potion of levitation\r  \u001b\u001bqb    l    V"
+    },
+    {
+      "seed": 7401,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "blind-known",
+      "moves": " #levelchange\r15\r               l\u0017boulder\r  \u001b\u001bh\u0017uncursed blindfold\r  \u001b\u001bPb    l    V"
+    },
+    {
+      "seed": 7401,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "soko-active",
+      "moves": " #levelchange\r15\r               \u0016?\r E\u0006    \u001b\u001bhu    V"
+    },
+    {
+      "seed": 7401,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "soko-finish-diagonal",
+      "moves": " #levelchange\r15\r               \u0016?\r E\u0006    \u001b\u001b#levelchange\r30\r               l    \u001b\u001bl    \u001b\u001bl    \u001b\u001bl    \u001b\u001bl    \u001b\u001bl    \u001b\u001bml    \u001b\u001bml    \u001b\u001bml    \u001b\u001bj    \u001b\u001bmh    \u001b\u001bj    \u001b\u001bj    \u001b\u001bl    \u001b\u001bj    \u001b\u001bj    \u001b\u001bj    \u001b\u001bj    \u001b\u001bmh    \u001b\u001bmh    \u001b\u001bmh    \u001b\u001bmh    \u001b\u001bmh    \u001b\u001b\u0017boulder\r    \u001b\u001bmh    \u001b\u001b\u0017boulder\r    \u001b\u001bmh    \u001b\u001b\u0017boulder\r    \u001b\u001bmh    \u001b\u001b\u0017boulder\r    \u001b\u001bmh    \u001b\u001b\u0017boulder\r    \u001b\u001bmk    \u001b\u001bmk    \u001b\u001b\u0017boulder\r    \u001b\u001bmk    \u001b\u001b\u0017boulder\r    \u001b\u001bmk    \u001b\u001b\u0017boulder\r    \u001b\u001bl    \u001b\u001b\u0017boulder\r    \u001b\u001bh    \u001b\u001bl    \u001b\u001bh    \u001b\u001bj    \u001b\u001bj    \u001b\u001bj    \u001b\u001bj    \u001b\u001bl    \u001b\u001bl    \u001b\u001bl    \u001b\u001bl    \u001b\u001bl    \u001b\u001bml    \u001b\u001bml    \u001b\u001bml    \u001b\u001bml    \u001b\u001bk    \u001b\u001bk    \u001b\u001bk    \u001b\u001bk    \u001b\u001bh    \u001b\u001bk    \u001b\u001bmk    \u001b\u001bk    \u001b\u001bmh    \u001b\u001bmh    \u001b\u001bmh    \u001b\u001bmh    \u001b\u001bmh    \u001b\u001bmh    \u001b\u001bmh    \u001b\u001bmh    \u001b\u001bmh    \u001b\u001bu    \u001b\u001bV"
+    },
+    {
+      "seed": 7401,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "soko-finish-giant",
+      "moves": " #levelchange\r15\r               \u0016?\r E\u0006    \u001b\u001b#levelchange\r30\r               l    \u001b\u001bl    \u001b\u001bl    \u001b\u001bl    \u001b\u001bl    \u001b\u001bl    \u001b\u001bml    \u001b\u001bml    \u001b\u001bml    \u001b\u001bj    \u001b\u001bmh    \u001b\u001bj    \u001b\u001bj    \u001b\u001bl    \u001b\u001bj    \u001b\u001bj    \u001b\u001bj    \u001b\u001bj    \u001b\u001bmh    \u001b\u001bmh    \u001b\u001bmh    \u001b\u001bmh    \u001b\u001bmh    \u001b\u001b\u0017boulder\r    \u001b\u001bmh    \u001b\u001b\u0017boulder\r    \u001b\u001bmh    \u001b\u001b\u0017boulder\r    \u001b\u001bmh    \u001b\u001b\u0017boulder\r    \u001b\u001bmh    \u001b\u001b\u0017boulder\r    \u001b\u001bmk    \u001b\u001bmk    \u001b\u001b\u0017boulder\r    \u001b\u001bmk    \u001b\u001b\u0017boulder\r    \u001b\u001bmk    \u001b\u001b\u0017boulder\r    \u001b\u001bl    \u001b\u001b\u0017boulder\r    \u001b\u001bh    \u001b\u001bl    \u001b\u001bh    \u001b\u001bj    \u001b\u001bj    \u001b\u001bj    \u001b\u001bj    \u001b\u001bl    \u001b\u001bl    \u001b\u001bl    \u001b\u001bl    \u001b\u001bl    \u001b\u001b#polyself\rhill giant\r    \u001b\u001bl    \u001b\u001bl    \u001b\u001bV"
+    },
+    {
+      "name": "conjoined-pit-fill",
+      "seed": 7401,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r15\r               l \u0017pit trap\r  \u001b\u001bl \u0017pit trap\r  \u001b\u001b#sit\r   \u0005   \u001b\u001b\u0017uncursed wand of digging\r  \u001b\u001bzah     \u0017boulder\r    \u001b\u001bV"
+    }
+  ],
+  "branches": [
+    "moverock-owner.level-migration",
+    "moverock-owner.level-migration-later",
+    "moverock-owner.plain-push",
+    "moverock-owner.pit-fill",
+    "moverock-owner.hole-fill",
+    "moverock-owner.local-teleport",
+    "moverock-owner.levitate",
+    "moverock-owner.blind-known",
+    "moverock-owner.soko-active",
+    "moverock-owner.soko-finish-diagonal",
+    "moverock-owner.soko-finish-giant",
+    "moverock-owner.conjoined-pit-fill"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "moverock-owner.level-migration",
+      "segment": 0,
+      "screenIncludes": [
+        "MacOS NetHack Version 5.0.0",
+        "You push the boulder and suddenly it disappears!"
+      ]
+    },
+    {
+      "branch": "moverock-owner.level-migration-later",
+      "segment": 1,
+      "screenIncludes": [
+        "MacOS NetHack Version 5.0.0",
+        "You push the boulder and suddenly it disappears!"
+      ]
+    },
+    {
+      "branch": "moverock-owner.plain-push",
+      "segment": 2,
+      "screenIncludes": [
+        "MacOS NetHack Version 5.0.0",
+        "With great effort you move the boulder."
+      ]
+    },
+    {
+      "branch": "moverock-owner.pit-fill",
+      "segment": 3,
+      "screenIncludes": [
+        "MacOS NetHack Version 5.0.0",
+        "The boulder fills a pit."
+      ]
+    },
+    {
+      "branch": "moverock-owner.hole-fill",
+      "segment": 4,
+      "screenIncludes": [
+        "MacOS NetHack Version 5.0.0",
+        "The boulder falls into and plugs a hole in the floor!"
+      ]
+    },
+    {
+      "branch": "moverock-owner.local-teleport",
+      "segment": 5,
+      "screenIncludes": [
+        "MacOS NetHack Version 5.0.0",
+        "You push the boulder and suddenly it disappears!"
+      ]
+    },
+    {
+      "branch": "moverock-owner.levitate",
+      "segment": 6,
+      "screenIncludes": [
+        "MacOS NetHack Version 5.0.0",
+        "You don't have enough leverage to push the boulder."
+      ]
+    },
+    {
+      "branch": "moverock-owner.blind-known",
+      "segment": 7,
+      "screenIncludes": [
+        "MacOS NetHack Version 5.0.0",
+        "You are now wearing a blindfold.",
+        "With great effort you move the boulder."
+      ]
+    },
+    {
+      "branch": "moverock-owner.soko-active",
+      "segment": 8,
+      "screenIncludes": [
+        "MacOS NetHack Version 5.0.0",
+        "The boulder won't roll diagonally on this floor."
+      ]
+    },
+    {
+      "branch": "moverock-owner.soko-finish-diagonal",
+      "segment": 9,
+      "screenIncludes": [
+        "MacOS NetHack Version 5.0.0",
+        "The boulder fills a pit.",
+        "With great effort you move the boulder."
+      ]
+    },
+    {
+      "branch": "moverock-owner.soko-finish-giant",
+      "segment": 10,
+      "screenIncludes": [
+        "MacOS NetHack Version 5.0.0",
+        "The boulder fills a pit.",
+        "You turn into a hill giant!",
+        "However, you maneuver over it and could pick it up."
+      ]
+    },
+    {
+      "branch": "moverock-owner.conjoined-pit-fill",
+      "segment": 11,
+      "screenIncludes": [
+        "MacOS NetHack Version 5.0.0",
+        "You fall into a pit!",
+        "The boulder drops into the pit with you."
+      ]
+    }
+  ],
+  "unchangedOutputHashes": {
+    "plain-push": {
+      "screens": "e97ce884a43c6c21b63401b603bff40c7d70b25f0cf452f4643d23e12585993c",
+      "cursors": "6870545f21f1ce13eedd95fe01c2bbbf05e2148f714e6bc1c73435eea7fada6e",
+      "rng": "1d92cf23e477259ce5ddf6a3dd21795a7f896b0e43e1e2c866df77df0dfff6a2",
+      "slices": "9de204e5a1fe241eadfde0fb7b3df80da26ee658cea297f1bd194a149cab3e21",
+      "frames": "40b562827d4106f549ef757157290919f3573b7cc415b7acf131dd48f86a1587"
+    },
+    "pit-fill": {
+      "screens": "39de876bf5de498d311a732dbcfddbed5f680062dbcbf2882149cb296af67204",
+      "cursors": "a173e0c5766d6d5f2c1d215723ceb52fd4b5a2fc12835d0c1baff473cbe12d11",
+      "rng": "59879d4d7b2f6cec87773d0c4b6513227cb993188c6579c0d48e28d4ff631a89",
+      "slices": "af730b1c91d1c8d412878e491038988b13098341bf8c2a10caaed95c4e387a11",
+      "frames": "e6419fb900f4b9fa1b2dd274822c473368fd6fafdba3bf504f262984addaa3b6"
+    },
+    "hole-fill": {
+      "screens": "5e56687361ed819af9421caa800c0c2908f533f770a12e4a3ac91e8c2af97b6e",
+      "cursors": "c1bf9780c8e8023a4798ab52199f1d70527d4a70a25e8e58750bb39b1c684f84",
+      "rng": "d91bbcf51ca651c9e4065cbf95372fb146954cf5885841c63b1f3aafae85d1e2",
+      "slices": "eff257cbaf2803d7b317a189dad4d0e3105171d106d7d184ecc07007e229a2ce",
+      "frames": "2bfadcb5ce122d308aa99f3b659a5ee16fb1fc0c1e88bd183cb21c4695ba1de2"
+    },
+    "local-teleport": {
+      "screens": "6fdbe45bfb49a21b527be376edd21ff10d42d7f104ef0b4bb0ff1d57e5a7ca7b",
+      "cursors": "1b6f5b46cdb183f5117688a79028fbcc7e3abe843551f30205e3d73374ed98fc",
+      "rng": "e69091530f7c99a9fc0d6a3025e7f8deafde1e9350454113f31533ac12eabeb6",
+      "slices": "74ea2b2eec5b7e7aa1f7ac931f9bd24055070f0beef1cf7b9fcf57ddd1ee6f2d",
+      "frames": "47c4fe8b1bc42b97a057d845e0a0afa95df533d679cf7f1981389b602f86de3b"
+    },
+    "levitate": {
+      "screens": "9c01385118adab98c31b9c2191db158f4cdf01514507dad380d0f573a0814c97",
+      "cursors": "33419b47a7aa39b4e51c37b902f51eb7904185f966ae9332f001cc6bb8e2d434",
+      "rng": "d2dac2b8249b1090f5f0f6e7c3fec3e76be898268c4bfdd65022be497f4df28c",
+      "slices": "ddd1b0a1cc436db2e7f3e7a005918096d1d2e5e05f67d459bd03f1b21ad1edb7",
+      "frames": "43772b957697bdfa27d15a9320020b130b9529b0184c8b8e1bd746b0806215e4"
+    },
+    "blind-known": {
+      "screens": "c5127e83af925fc405da9401c90b7d90117ecc5605fba30e1d22edf0b5362a08",
+      "cursors": "3b73729e292ffbfc377d99cce9ecf980460077d6d69a618ad02cf4accc2a375f",
+      "rng": "ef1864f361c7da2d43889290546ac75f3f09395f57c2222c609491a17385e125",
+      "slices": "f8179d3a2a2897bf3299bc6fe9c5f83b426c6b5a80f001c46ce3d6699f9b5add",
+      "frames": "ada4d7e97a3be8882abf41a06ea80f7404eaa28cbceb0a993ccbda9b92f57b09"
+    },
+    "soko-active": {
+      "screens": "bb993b975970e41b3aa1c1b8684ea6f05f445b9487e62c145952381535c7a4ef",
+      "cursors": "516005587d1d138ae7d8927155dcad5beb540d87d1d48d64e4779d3fe514b78a",
+      "rng": "2a3229ade4659aee7205c3f64176e5af4cad8d6e5f6a32a505dbb169f9d4ec96",
+      "slices": "298f842c4a7df9518a2398239bdfa7b98e3eec2a014a6ad59a6b6b9f4b46834e",
+      "frames": "fbe834c0b4f316033b2a2c03cc76018cc6d88b54f91079ea347c02f630fdc438"
+    }
+  }
+}

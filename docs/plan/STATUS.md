@@ -1,5 +1,36 @@
 # STATUS — live handoff board
 
+## 2026-11-25: death-cause preservation verified for publication
+
+Trap checkpoint `135a55c5` is pushed after full872 passed. The only unpublished
+runtime changes are now the scoped losehp and losexp cause-field updates in
+hack.js and exper.js. All 279 runtime hashes match the separately tested
+composition. Twenty source controls pass versus eleven before; eight ordinary
+cases pass versus four before. All eight C cases match 533 styled boundaries,
+18,651 calls and zero frames. The new raw fixture and all input tuples remain
+unchanged. All 62 selected/public fixtures and all 62 eight-second workers
+pass. Seven retained suites, source audit and four syntax checks pass.
+All 872 prior raw hashes and prior requirements are unchanged; eight branch
+requirements are appended. `death-causes-main-verification.json` records the
+exact source, native and regression evidence. Commit and immediately push.
+Full872 does not cover these two new owner edits or the 873rd fixture.
+
+The eleven potion-vapor inputs are now recorded without changes. Raw:
+`potion-breathing-owner-parent-native.session.json`, SHA256
+`26442f594516d515810d74803225c1bbdef02bfb086746b12213cd0462683a8b`;
+1,342 boundaries. The original recipe is pinned by
+`potion-breathing-owner-parent-input-lock.json`. Its three required CON
+exercise awaits now pass all eight ordering controls, alongside all 149 owner
+controls and eleven ordinary cases. No native comparison is claimed yet.
+The sealed movement packet passes 44 source controls versus 28 before and
+27 ordinary assertions across nine proposals. Parent native recording and
+composition remain pending. Poisoned owner review continues separately.
+
+Removed 4,254,689 more redundant local bytes after trap publication. Four
+parent native copies now link to checksum-identical published canonical
+fixtures; `trap-publication-dedup.json` records every path and hash. Active
+source snapshots and NFS fixture dependencies remain intact.
+
 ## 2026-11-25: traps pass full872; death causes ready next
 
 Potion-impact checkpoint `50f6ce67` is pushed. Main's only unpublished runtime

@@ -96,11 +96,16 @@ default timeouts, no retries: 902,696 screens/cursors, 19,113,005 random positio
 and 32,751 frames. Nine retained suites pass. The strict eight-second check
 passes 75 fixtures; four large batches pass at the scorer's 45-second budget
 after all eight paired baseline/candidate replays finish in 6 to 13 seconds.
-The separate death-cause
-composition passes twenty source controls and eight C cases, ready after trap
-publication. Current main contains only the trap runtime changes.
-Parallel source reviews continue for potion vapors, immediate death causes and
-the pit caller.
+Traps are pushed as `135a55c5`. Death-cause preservation now passes twenty
+source controls and eight C cases on main: 533 styled boundaries, 18,651 calls
+and zero frames. All 62 selected/public fixtures, 62 eight-second workers,
+seven retained suites, source audit and four syntax checks pass. Its new
+fixture brings the corpus to 873, outside the completed full872 run.
+The two unpublished runtime changes preserve delayed causes in losehp and
+losexp. Parallel source reviews continue for potion vapors, poison handling
+and movement. Potion vapors pass 149 owner and eight ordering controls;
+movement passes 44 source controls and 27 ordinary assertions. Their parent
+native comparisons and composition remain pending.
 These local results do not establish a newer held-out score.
 
 Publication resumed with `2089260a` after the earlier approval-review usage

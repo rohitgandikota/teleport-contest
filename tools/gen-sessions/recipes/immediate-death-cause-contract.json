@@ -1,0 +1,367 @@
+{
+  "name": "immediate-death-cause-contract",
+  "description": "Ordinary keys establish a cockatrice egg cause, consume a real amulet during unrelated HP or level-drain death, then expire or cure stoning. No native recording yet.",
+  "coverage": [
+    "mode.debug",
+    "object.food-corpses",
+    "object.amulets",
+    "survival.death",
+    "object.wands",
+    "spell.self-target"
+  ],
+  "branches": [
+    "hp-egg-expiry",
+    "xp-egg-expiry",
+    "hp-egg-cure",
+    "xp-egg-cure",
+    "hp-healthy-negative",
+    "xp-healthy-negative",
+    "hp-nonfatal-negative",
+    "xp-nonfatal-negative"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "hp-egg-expiry",
+      "segment": 0,
+      "screenIncludes": [
+        "medallion crumbles to dust",
+        "petrified by a"
+      ],
+      "screenCells": [
+        {
+          "step": 77,
+          "x": 21,
+          "y": 10,
+          "equals": "c"
+        },
+        {
+          "step": 77,
+          "x": 22,
+          "y": 10,
+          "equals": "o"
+        },
+        {
+          "step": 77,
+          "x": 23,
+          "y": 10,
+          "equals": "c"
+        },
+        {
+          "step": 77,
+          "x": 24,
+          "y": 10,
+          "equals": "k"
+        },
+        {
+          "step": 77,
+          "x": 25,
+          "y": 10,
+          "equals": "a"
+        },
+        {
+          "step": 77,
+          "x": 26,
+          "y": 10,
+          "equals": "t"
+        },
+        {
+          "step": 77,
+          "x": 27,
+          "y": 10,
+          "equals": "r"
+        },
+        {
+          "step": 77,
+          "x": 28,
+          "y": 10,
+          "equals": "i"
+        },
+        {
+          "step": 77,
+          "x": 29,
+          "y": 10,
+          "equals": "c"
+        },
+        {
+          "step": 77,
+          "x": 30,
+          "y": 10,
+          "equals": "e"
+        },
+        {
+          "step": 77,
+          "x": 31,
+          "y": 10,
+          "equals": " "
+        },
+        {
+          "step": 77,
+          "x": 32,
+          "y": 10,
+          "equals": "e"
+        },
+        {
+          "step": 77,
+          "x": 33,
+          "y": 10,
+          "equals": "g"
+        },
+        {
+          "step": 77,
+          "x": 34,
+          "y": 10,
+          "equals": "g"
+        }
+      ]
+    },
+    {
+      "branch": "xp-egg-expiry",
+      "segment": 1,
+      "screenIncludes": [
+        "medallion crumbles to dust",
+        "petrified by a"
+      ],
+      "screenCells": [
+        {
+          "step": 71,
+          "x": 21,
+          "y": 10,
+          "equals": "c"
+        },
+        {
+          "step": 71,
+          "x": 22,
+          "y": 10,
+          "equals": "o"
+        },
+        {
+          "step": 71,
+          "x": 23,
+          "y": 10,
+          "equals": "c"
+        },
+        {
+          "step": 71,
+          "x": 24,
+          "y": 10,
+          "equals": "k"
+        },
+        {
+          "step": 71,
+          "x": 25,
+          "y": 10,
+          "equals": "a"
+        },
+        {
+          "step": 71,
+          "x": 26,
+          "y": 10,
+          "equals": "t"
+        },
+        {
+          "step": 71,
+          "x": 27,
+          "y": 10,
+          "equals": "r"
+        },
+        {
+          "step": 71,
+          "x": 28,
+          "y": 10,
+          "equals": "i"
+        },
+        {
+          "step": 71,
+          "x": 29,
+          "y": 10,
+          "equals": "c"
+        },
+        {
+          "step": 71,
+          "x": 30,
+          "y": 10,
+          "equals": "e"
+        },
+        {
+          "step": 71,
+          "x": 31,
+          "y": 10,
+          "equals": " "
+        },
+        {
+          "step": 71,
+          "x": 32,
+          "y": 10,
+          "equals": "e"
+        },
+        {
+          "step": 71,
+          "x": 33,
+          "y": 10,
+          "equals": "g"
+        },
+        {
+          "step": 71,
+          "x": 34,
+          "y": 10,
+          "equals": "g"
+        }
+      ]
+    },
+    {
+      "branch": "hp-egg-cure",
+      "segment": 2,
+      "screenIncludes": [
+        "medallion crumbles to dust",
+        "You feel limber!"
+      ],
+      "screenExcludes": [
+        "You are a statue."
+      ]
+    },
+    {
+      "branch": "xp-egg-cure",
+      "segment": 3,
+      "screenIncludes": [
+        "medallion crumbles to dust",
+        "You feel limber!"
+      ],
+      "screenExcludes": [
+        "You are a statue."
+      ]
+    },
+    {
+      "branch": "hp-healthy-negative",
+      "segment": 4,
+      "screenIncludes": [
+        "medallion crumbles to dust"
+      ],
+      "screenExcludes": [
+        "You are slowing down.",
+        "OK, so you don't die."
+      ]
+    },
+    {
+      "branch": "xp-healthy-negative",
+      "segment": 5,
+      "screenIncludes": [
+        "medallion crumbles to dust"
+      ],
+      "screenExcludes": [
+        "You are slowing down.",
+        "OK, so you don't die."
+      ]
+    },
+    {
+      "branch": "hp-nonfatal-negative",
+      "segment": 6,
+      "screenIncludes": [
+        "You imitate a popsicle!"
+      ],
+      "screenExcludes": [
+        "medallion",
+        "You die..."
+      ]
+    },
+    {
+      "branch": "xp-nonfatal-negative",
+      "segment": 7,
+      "screenIncludes": [
+        "Goodbye level 2."
+      ],
+      "screenExcludes": [
+        "medallion",
+        "You die..."
+      ]
+    }
+  ],
+  "segments": [
+    {
+      "name": "hp-egg-expiry",
+      "seed": 13001,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:Cause,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:plain\n",
+      "moves": " \u0017amulet of life saving\rPa  \u0017wand of cold\r\u0017cockatrice egg\rec zb.    .  yn n n"
+    },
+    {
+      "name": "xp-egg-expiry",
+      "seed": 13001,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:Cause,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:plain\n",
+      "moves": " \u0017amulet of life saving\rPa  \u0017cockatrice egg\reb #wizcast\rn.    .  yn n n"
+    },
+    {
+      "name": "hp-egg-cure",
+      "seed": 13001,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:Cause,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:plain\n",
+      "moves": " \u0017amulet of life saving\rPa  \u0017wand of cold\r\u0017cockatrice egg\r\u0017lizard corpse\rec zb.    ed   i\u001b"
+    },
+    {
+      "name": "xp-egg-cure",
+      "seed": 13001,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:Cause,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:plain\n",
+      "moves": " \u0017amulet of life saving\rPa  \u0017cockatrice egg\r\u0017lizard corpse\reb #wizcast\rn.    ec   i\u001b"
+    },
+    {
+      "name": "hp-healthy-negative",
+      "seed": 13001,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:Cause,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:plain\n",
+      "moves": " \u0017amulet of life saving\rPa  \u0017wand of cold\rzb.    i\u001b"
+    },
+    {
+      "name": "xp-healthy-negative",
+      "seed": 13001,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:Cause,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:plain\n",
+      "moves": " \u0017amulet of life saving\rPa  #wizcast\rn.    i\u001b"
+    },
+    {
+      "name": "hp-nonfatal-negative",
+      "seed": 13001,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:Cause,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:plain\n",
+      "moves": " #levelchange\r30\r                                \u0017wand of cold\rza.    i\u001b"
+    },
+    {
+      "name": "xp-nonfatal-negative",
+      "seed": 13001,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:Cause,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:plain\n",
+      "moves": " #levelchange\r2\r  #wizcast\rn.    i\u001b"
+    }
+  ],
+  "unchangedOutputHashes": {
+    "hp-healthy-negative": {
+      "screens": "5eb5605e98a80c32af1302499a15f0a1f76d208678955af5304327ac8c974cf8",
+      "cursors": "b14758276db1afb1a6872df325b855cbc87393976cb7b01c89edf98b02f71e51",
+      "rng": "d1fb2420919c214ef8417c357aaf9d0dbeb613f4f91ffc817af2ad7b07adc4da",
+      "slices": "aeb4668261dd936a64cba8477b5718624b2048e127937ccc0ae051d0cb4ae66d",
+      "frames": "fbe834c0b4f316033b2a2c03cc76018cc6d88b54f91079ea347c02f630fdc438"
+    },
+    "xp-healthy-negative": {
+      "screens": "160b7b36d05edc71d49f5485c4073a6b8439447f143deb9890ba1510f6202308",
+      "cursors": "40b532bc977448bf26d03fc4d8484aea3dce8f659d2fc3f5b6be462494f01370",
+      "rng": "ffccda877fae5246d8495a34caa7046ad13ae931775b3d5366bf82f5672cbf0d",
+      "slices": "359e19757e3f2df776b943f847adafdc70797fc9a86609f07c084f808cdf9929",
+      "frames": "9e364c33ed6e25c0bb677d9712046c6555c904e1f42c13ca2db4e7d22a6c7509"
+    },
+    "hp-nonfatal-negative": {
+      "screens": "2a26c9289b73b884ea6ee6d8d18e5bc4409f93131095936839589b2d5281323f",
+      "cursors": "7943893cc197d1ce58cda7a89c23f340af68b033cf1559e55363ac921e961772",
+      "rng": "b5f79e407b516e5aab272fe3df8c406e0a0814542e01e92c97c7724ba3a3efaa",
+      "slices": "9d4652f0537e066ac5c5bc9d7b24d43572dac465a22e5cab6c346743d4bad693",
+      "frames": "6ebaa05e83879cdab661dfc02e802b1708c8aaa63ce8aa180024b67c7c225e3b"
+    },
+    "xp-nonfatal-negative": {
+      "screens": "be2aa1844ce9d04ad84b6a246e20f80eeb3611c98b676d7409db574622cee402",
+      "cursors": "c2c6c7a9539eaa968893278a461bc6996d533021dbcfdd99a1e05c7bdab7bcda",
+      "rng": "004eea0ef6a94f2c758d496eb3d1e07bc44f59bfa6088b5c2225b62f7a9f85d4",
+      "slices": "10a97e97bf984edbb4783693bf5c671cd134e026f77a025ee8397f341799d1d4",
+      "frames": "d7e05d62119e6c5eb0f72a659df5eabe0a9c28413e532b84dc2b1acd8f02d171"
+    }
+  }
+}

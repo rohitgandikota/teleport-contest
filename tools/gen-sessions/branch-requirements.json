@@ -4295,6 +4295,14 @@
     {"group": "dotrap-prior-state-producers", "id": "dotrap-prior.pick-producer", "cFile": "src/trap.c", "cFunction": "dotrap", "description": "pick-producer: ordinary trap owner or producer control"},
     {"group": "dotrap-prior-state-producers", "id": "dotrap-prior.wand-producer", "cFile": "src/trap.c", "cFunction": "dotrap", "description": "wand-producer: ordinary trap owner or producer control"},
     {"group": "dotrap-prior-state-producers", "id": "dotrap-prior.plain-entry-negative", "cFile": "src/trap.c", "cFunction": "dotrap", "description": "plain-entry-negative: ordinary trap owner or producer control"},
-    {"group": "dotrap-prior-state-producers", "id": "dotrap-prior.pick-unjoined-negative", "cFile": "src/trap.c", "cFunction": "dotrap", "description": "pick-unjoined-negative: ordinary trap owner or producer control"}
+    {"group": "dotrap-prior-state-producers", "id": "dotrap-prior.pick-unjoined-negative", "cFile": "src/trap.c", "cFunction": "dotrap", "description": "pick-unjoined-negative: ordinary trap owner or producer control"},
+    {"group": "immediate-death-cause-contract", "id": "hp-egg-expiry", "cFile": "src/hack.c", "cFunction": "losehp", "description": "hp-egg-expiry: survive immediate damage while preserving delayed death causes"},
+    {"group": "immediate-death-cause-contract", "id": "xp-egg-expiry", "cFile": "src/exper.c", "cFunction": "losexp", "description": "xp-egg-expiry: survive immediate damage while preserving delayed death causes"},
+    {"group": "immediate-death-cause-contract", "id": "hp-egg-cure", "cFile": "src/hack.c", "cFunction": "losehp", "description": "hp-egg-cure: survive immediate damage while preserving delayed death causes"},
+    {"group": "immediate-death-cause-contract", "id": "xp-egg-cure", "cFile": "src/exper.c", "cFunction": "losexp", "description": "xp-egg-cure: survive immediate damage while preserving delayed death causes"},
+    {"group": "immediate-death-cause-contract", "id": "hp-healthy-negative", "cFile": "src/hack.c", "cFunction": "losehp", "description": "hp-healthy-negative: survive immediate damage while preserving delayed death causes"},
+    {"group": "immediate-death-cause-contract", "id": "xp-healthy-negative", "cFile": "src/exper.c", "cFunction": "losexp", "description": "xp-healthy-negative: survive immediate damage while preserving delayed death causes"},
+    {"group": "immediate-death-cause-contract", "id": "hp-nonfatal-negative", "cFile": "src/hack.c", "cFunction": "losehp", "description": "hp-nonfatal-negative: survive immediate damage while preserving delayed death causes"},
+    {"group": "immediate-death-cause-contract", "id": "xp-nonfatal-negative", "cFile": "src/exper.c", "cFunction": "losexp", "description": "xp-nonfatal-negative: survive immediate damage while preserving delayed death causes"}
   ]
 }

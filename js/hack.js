@@ -923,7 +923,8 @@ export async function losehp(n, knam, k_format) {
         game.u.uhpmax = game.u.uhp;     /* perhaps n was negative */
 
     if (game.u.uhp < 1) {
-        game.killer = { format: k_format, name: knam || '' };
+        game.killer.format = k_format;
+        game.killer.name = knam || '';
         await urgent_pline('You die...');
         await done(DIED);
     } else if (n > 0 && game.u.uhp * 10 < game.u.uhpmax) {

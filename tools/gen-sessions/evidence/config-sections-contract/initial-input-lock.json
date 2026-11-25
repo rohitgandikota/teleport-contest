@@ -1,0 +1,63 @@
+{
+  "recipeSHA256": "a0d882c6fea50b0a3b25f9d3137d86b85eb815d005054ae04c5aaf92f00c1df8",
+  "fields": [
+    "seed",
+    "datetime",
+    "nethackrc",
+    "moves",
+    "name"
+  ],
+  "inputFieldsSHA256": "76ecc10e7c062626bfc5d20ea8ff2dc5e88ba1d6203e264b69db5e6843548923",
+  "segments": [
+    {
+      "name": "sections-single-symbols-Z",
+      "keys": 3,
+      "inputSHA256": "e939b1db8e976c14fa67bb040d8b18deeaff29bba380a8be926f4bf86ee6b121"
+    },
+    {
+      "name": "sections-single-symbols-Y",
+      "keys": 3,
+      "inputSHA256": "925deddb4dd262f3d561b38d550ccf5ed067312f76c1fb60c335263e4ab317e7"
+    },
+    {
+      "name": "sections-single-binding",
+      "keys": 4,
+      "inputSHA256": "ebc0696d27b1562b9f8b9151de3ce233a1a1ff2b9eebb6de2d7eb834cd4261ea"
+    },
+    {
+      "name": "sections-skipped-choose",
+      "keys": 3,
+      "inputSHA256": "798980a101365ebf23d98eaf1f6a780dea3d34401b40d9cde6726d392cf41fa2"
+    },
+    {
+      "name": "sections-symset-clears-state",
+      "keys": 4,
+      "inputSHA256": "dafd5e651bc63a712b62afcb51c5bd146c8b39f34411cb2b89f222123b230cef"
+    },
+    {
+      "name": "sections-two-choice-L",
+      "keys": 3,
+      "inputSHA256": "6c6bb488767a66954665612aa0820ac1be4a4b67c043fc162c6798977c87c34a"
+    },
+    {
+      "name": "sections-two-choice-R",
+      "keys": 3,
+      "inputSHA256": "914d2d7c039cc6264c7930393a4fc7df2f8b1fe3ce4026b5bdb6b58c2d53f0fd"
+    },
+    {
+      "name": "sections-canonical-map-negative",
+      "keys": 3,
+      "inputSHA256": "f52d623cf8386966d6ccd157d31f285e18446fb71156d90007bccb9cbde677bc"
+    },
+    {
+      "name": "sections-canonical-bind-negative",
+      "keys": 4,
+      "inputSHA256": "a06ee4fe592453aff16cdb408730d3d0291e573d83d78d5624660bf6d85be466"
+    },
+    {
+      "name": "sections-comment-choice-negative",
+      "keys": 3,
+      "inputSHA256": "011baa40d80d265d6f76c41f52379060477fc6bc8dd9391578d2b34005bec1fb"
+    }
+  ]
+}

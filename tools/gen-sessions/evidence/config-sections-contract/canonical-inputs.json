@@ -1,0 +1,79 @@
+{
+  "options-colon-blindness": {
+    "seed": 7600,
+    "datetime": "20260503025436",
+    "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,debug_mongen\nOPTIONS=whatis_coord:map\nOPTIONS=spot_monsters\nOPTIONS=!accessiblemsg\n",
+    "moves": " #levelchange\r30\r                             \u0007peaceful blue jelly\r#wizintrinsic\r3i\r  3.~    \u001b\u001b  V",
+    "name": "options-colon-blindness-canonical-reference"
+  },
+  "opti-prefix-notice-off": {
+    "seed": 7600,
+    "datetime": "20260503025436",
+    "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,debug_mongen\nOPTIONS=accessiblemsg,whatis_coord:map\nOPTIONS=!spot_monsters\n",
+    "moves": " #levelchange\r30\r                             \u0007peaceful blue jelly\r#wizintrinsic\r3i\r  3.~    \u001b\u001b  V",
+    "name": "opti-prefix-notice-off-canonical-reference"
+  },
+  "bindings-colon-command": {
+    "seed": 31,
+    "datetime": "20000112093000",
+    "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nBIND=~:versionshort,V:nothing\n",
+    "moves": " & ~",
+    "name": "bindings-colon-command-canonical-reference"
+  },
+  "symbols-prefix-map": {
+    "seed": 9770,
+    "datetime": "20000112093000",
+    "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nSYMBOLS=S_unexplored:U\n",
+    "moves": " V\f",
+    "name": "symbols-prefix-map-canonical-reference"
+  },
+  "rogue-prefix-map": {
+    "seed": 9771,
+    "datetime": "20000112093000",
+    "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:DECgraphics,!safe_wait\nROGUESYMBOLS=S_human:R,S_room:.,S_corr:%,S_weapon:/,S_coin:G\n",
+    "moves": " \u0016the rogue level\r   \u0017dagger\ri da \u00161\r   V ",
+    "name": "rogue-prefix-map-canonical-reference"
+  },
+  "menucolor-colon-inventory": {
+    "seed": 31,
+    "datetime": "20000112093000",
+    "nethackrc": "OPTIONS=name:ColorSave,role:Wizard,race:human,gender:male,align:neutral\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nMENUCOLOR=\"quarterstaff\"=red&bold\n",
+    "moves": " i\u001bV",
+    "name": "menucolor-colon-inventory-canonical-reference"
+  },
+  "msgtype-colon-sit": {
+    "seed": 31,
+    "datetime": "20000112093000",
+    "nethackrc": "OPTIONS=name:Msg0,role:Wizard,race:human,gender:male,align:neutral\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nMSGTYPE=hide \"^You sit on\"\n",
+    "moves": " #sit\r#sit\r\u001b",
+    "name": "msgtype-colon-sit-canonical-reference"
+  },
+  "autop-prefix-pickup": {
+    "seed": 31,
+    "datetime": "20000112093000",
+    "nethackrc": "OPTIONS=name:ApeForce,role:Wizard,race:human,gender:male,align:neutral\nOPTIONS=autopickup,!tutorial,!tips,pettype:none,!dropped_nopick,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=pickup_types:$\nAUTOPICKUP_EXCEPTION=\"<quarterstaff\"\n",
+    "moves": " ldalhi\u001b",
+    "name": "autop-prefix-pickup-canonical-reference"
+  },
+  "canonical-options-negative": {
+    "seed": 7600,
+    "datetime": "20260503025436",
+    "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,debug_mongen\nOPTIONS=whatis_coord:map\nOPTIONS=spot_monsters\nOPTIONS=!accessiblemsg\n",
+    "moves": " #levelchange\r30\r                             \u0007peaceful blue jelly\r#wizintrinsic\r3i\r  3.~    \u001b\u001b  V",
+    "name": "canonical-options-negative-canonical-reference"
+  },
+  "canonical-symbols-negative": {
+    "seed": 9770,
+    "datetime": "20000112093000",
+    "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nSYMBOLS=S_unexplored:U\n",
+    "moves": " V\f",
+    "name": "canonical-symbols-negative-canonical-reference"
+  },
+  "canonical-menu-negative": {
+    "seed": 31,
+    "datetime": "20000112093000",
+    "nethackrc": "OPTIONS=name:ColorSave,role:Wizard,race:human,gender:male,align:neutral\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nMENUCOLOR=\"quarterstaff\"=red&bold\n",
+    "moves": " i\u001bV",
+    "name": "canonical-menu-negative-canonical-reference"
+  }
+}

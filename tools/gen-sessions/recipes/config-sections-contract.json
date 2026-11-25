@@ -1,0 +1,392 @@
+{
+  "classification": "Pre-candidate ordinary probes. Expectations are C-source predictions; no fresh native recording.",
+  "segments": [
+    {
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nCHOOSE=keep\n[keep]\nSYMBOLS=S_unexplored:U\n[skip]\nSYMBOLS=S_unexplored:Z\n[]\n",
+      "moves": " V\f",
+      "name": "sections-single-symbols-Z"
+    },
+    {
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nCHOOSE=keep\n[keep]\nSYMBOLS=S_unexplored:U\n[skip]\nSYMBOLS=S_unexplored:Y\n[]\n",
+      "moves": " V\f",
+      "name": "sections-single-symbols-Y"
+    },
+    {
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nCHOOSE=keep\n[keep]\nBIND=~:versionshort,V:nothing\n[skip]\nBIND=~:inventory\n[]\n",
+      "moves": " & ~",
+      "name": "sections-single-binding"
+    },
+    {
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nCHOOSE=keep\n[skip]\nCHOOSE=ignored\nSYMBOLS=S_unexplored:Z\n[keep]\nSYMBOLS=S_unexplored:U\n[]\n",
+      "moves": " V\f",
+      "name": "sections-skipped-choose"
+    },
+    {
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nCHOOSE=keep\n[keep]\nOPTIONS=symset:DECgraphics\nCHOOSE=next\nBIND=~:versionshort,V:nothing\n",
+      "moves": " & ~",
+      "name": "sections-symset-clears-state"
+    },
+    {
+      "seed": 9771,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nCHOOSE=left,right\n[left]\nSYMBOLS=S_unexplored:L\n[right]\nSYMBOLS=S_unexplored:R\n[]\n",
+      "moves": " V\f",
+      "name": "sections-two-choice-L"
+    },
+    {
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nCHOOSE=left,right\n[left]\nSYMBOLS=S_unexplored:L\n[right]\nSYMBOLS=S_unexplored:R\n[]\n",
+      "moves": " V\f",
+      "name": "sections-two-choice-R"
+    },
+    {
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nSYMBOLS=S_unexplored:U\n",
+      "moves": " V\f",
+      "name": "sections-canonical-map-negative"
+    },
+    {
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nBIND=~:versionshort,V:nothing\n",
+      "moves": " & ~",
+      "name": "sections-canonical-bind-negative"
+    },
+    {
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nSYMBOLS=S_unexplored:U\n# CHOOSE=left,right\n# [left]\n# SYMBOLS=S_unexplored:Z\n# []\n",
+      "moves": " V\f",
+      "name": "sections-comment-choice-negative"
+    }
+  ],
+  "expectations": [
+    {
+      "name": "sections-single-symbols-Z",
+      "prefix": [
+        "rn2(1)=0"
+      ],
+      "symbol": "U",
+      "inactivePair": null,
+      "negative": false
+    },
+    {
+      "name": "sections-single-symbols-Y",
+      "prefix": [
+        "rn2(1)=0"
+      ],
+      "symbol": "U",
+      "inactivePair": "sections-single-symbols-Z",
+      "negative": false
+    },
+    {
+      "name": "sections-single-binding",
+      "prefix": [
+        "rn2(1)=0"
+      ],
+      "binding": "versionshort",
+      "message": "(#versionshort)",
+      "negative": false
+    },
+    {
+      "name": "sections-skipped-choose",
+      "prefix": [
+        "rn2(1)=0"
+      ],
+      "symbol": "U",
+      "negative": false
+    },
+    {
+      "name": "sections-symset-clears-state",
+      "prefix": [
+        "rn2(1)=0",
+        "rn2(1)=0"
+      ],
+      "binding": "versionshort",
+      "message": "(#versionshort)",
+      "negative": false
+    },
+    {
+      "name": "sections-two-choice-L",
+      "prefix": [
+        "rn2(2)=0"
+      ],
+      "symbol": "L",
+      "negative": false
+    },
+    {
+      "name": "sections-two-choice-R",
+      "prefix": [
+        "rn2(2)=1"
+      ],
+      "symbol": "R",
+      "negative": false
+    },
+    {
+      "name": "sections-canonical-map-negative",
+      "canonicalReference": "symbols-prefix-map",
+      "symbol": "U",
+      "negative": true
+    },
+    {
+      "name": "sections-canonical-bind-negative",
+      "canonicalReference": "bindings-colon-command",
+      "binding": "versionshort",
+      "message": "(#versionshort)",
+      "negative": true
+    },
+    {
+      "name": "sections-comment-choice-negative",
+      "canonicalReference": "symbols-prefix-map",
+      "symbol": "U",
+      "negative": true
+    }
+  ],
+  "derivations": [
+    {
+      "name": "sections-single-symbols-Z",
+      "reference": "symbols-prefix-map",
+      "removedLines": [
+        "SYMBOLS=S_unexplored:U\n"
+      ],
+      "suffix": "CHOOSE=keep\n[keep]\nSYMBOLS=S_unexplored:U\n[skip]\nSYMBOLS=S_unexplored:Z\n[]\n",
+      "seedOverride": null
+    },
+    {
+      "name": "sections-single-symbols-Y",
+      "reference": "symbols-prefix-map",
+      "removedLines": [
+        "SYMBOLS=S_unexplored:U\n"
+      ],
+      "suffix": "CHOOSE=keep\n[keep]\nSYMBOLS=S_unexplored:U\n[skip]\nSYMBOLS=S_unexplored:Y\n[]\n",
+      "seedOverride": null
+    },
+    {
+      "name": "sections-single-binding",
+      "reference": "bindings-colon-command",
+      "removedLines": [
+        "BIND=~:versionshort,V:nothing\n"
+      ],
+      "suffix": "CHOOSE=keep\n[keep]\nBIND=~:versionshort,V:nothing\n[skip]\nBIND=~:inventory\n[]\n",
+      "seedOverride": null
+    },
+    {
+      "name": "sections-skipped-choose",
+      "reference": "symbols-prefix-map",
+      "removedLines": [
+        "SYMBOLS=S_unexplored:U\n"
+      ],
+      "suffix": "CHOOSE=keep\n[skip]\nCHOOSE=ignored\nSYMBOLS=S_unexplored:Z\n[keep]\nSYMBOLS=S_unexplored:U\n[]\n",
+      "seedOverride": null
+    },
+    {
+      "name": "sections-symset-clears-state",
+      "reference": "bindings-colon-command",
+      "removedLines": [
+        "BIND=~:versionshort,V:nothing\n",
+        "OPTIONS=symset:DECgraphics\n"
+      ],
+      "suffix": "CHOOSE=keep\n[keep]\nOPTIONS=symset:DECgraphics\nCHOOSE=next\nBIND=~:versionshort,V:nothing\n",
+      "seedOverride": null
+    },
+    {
+      "name": "sections-two-choice-L",
+      "reference": "symbols-prefix-map",
+      "removedLines": [
+        "SYMBOLS=S_unexplored:U\n"
+      ],
+      "suffix": "CHOOSE=left,right\n[left]\nSYMBOLS=S_unexplored:L\n[right]\nSYMBOLS=S_unexplored:R\n[]\n",
+      "seedOverride": 9771
+    },
+    {
+      "name": "sections-two-choice-R",
+      "reference": "symbols-prefix-map",
+      "removedLines": [
+        "SYMBOLS=S_unexplored:U\n"
+      ],
+      "suffix": "CHOOSE=left,right\n[left]\nSYMBOLS=S_unexplored:L\n[right]\nSYMBOLS=S_unexplored:R\n[]\n",
+      "seedOverride": 9770
+    },
+    {
+      "name": "sections-canonical-map-negative",
+      "reference": "symbols-prefix-map",
+      "removedLines": [],
+      "suffix": "",
+      "seedOverride": null
+    },
+    {
+      "name": "sections-canonical-bind-negative",
+      "reference": "bindings-colon-command",
+      "removedLines": [],
+      "suffix": "",
+      "seedOverride": null
+    },
+    {
+      "name": "sections-comment-choice-negative",
+      "reference": "symbols-prefix-map",
+      "removedLines": [],
+      "suffix": "# CHOOSE=left,right\n# [left]\n# SYMBOLS=S_unexplored:Z\n# []\n",
+      "seedOverride": null
+    }
+  ],
+  "name": "config-sections-contract",
+  "requireBranchAssertions": true,
+  "branches": [
+    "config-sections.sections-single-symbols-Z",
+    "config-sections.sections-single-symbols-Y",
+    "config-sections.sections-single-binding",
+    "config-sections.sections-skipped-choose",
+    "config-sections.sections-symset-clears-state",
+    "config-sections.sections-two-choice-L",
+    "config-sections.sections-two-choice-R",
+    "config-sections.sections-canonical-map-negative",
+    "config-sections.sections-canonical-bind-negative",
+    "config-sections.sections-comment-choice-negative"
+  ],
+  "branchAssertions": [
+    {
+      "branch": "config-sections.sections-single-symbols-Z",
+      "segment": 0,
+      "screenCells": [
+        {
+          "step": 0,
+          "x": 0,
+          "y": 1,
+          "equals": "U"
+        }
+      ],
+      "rngIncludes": [
+        "rn2(1)=0"
+      ]
+    },
+    {
+      "branch": "config-sections.sections-single-symbols-Y",
+      "segment": 1,
+      "screenCells": [
+        {
+          "step": 0,
+          "x": 0,
+          "y": 1,
+          "equals": "U"
+        }
+      ],
+      "rngIncludes": [
+        "rn2(1)=0"
+      ]
+    },
+    {
+      "branch": "config-sections.sections-single-binding",
+      "segment": 2,
+      "screenIncludes": [
+        "(#versionshort)"
+      ],
+      "rngIncludes": [
+        "rn2(1)=0"
+      ]
+    },
+    {
+      "branch": "config-sections.sections-skipped-choose",
+      "segment": 3,
+      "screenCells": [
+        {
+          "step": 0,
+          "x": 0,
+          "y": 1,
+          "equals": "U"
+        }
+      ],
+      "rngIncludes": [
+        "rn2(1)=0"
+      ]
+    },
+    {
+      "branch": "config-sections.sections-symset-clears-state",
+      "segment": 4,
+      "screenIncludes": [
+        "(#versionshort)"
+      ],
+      "rngIncludes": [
+        "rn2(1)=0",
+        "rn2(1)=0"
+      ]
+    },
+    {
+      "branch": "config-sections.sections-two-choice-L",
+      "segment": 5,
+      "screenCells": [
+        {
+          "step": 0,
+          "x": 0,
+          "y": 1,
+          "equals": "L"
+        }
+      ],
+      "rngIncludes": [
+        "rn2(2)=0"
+      ]
+    },
+    {
+      "branch": "config-sections.sections-two-choice-R",
+      "segment": 6,
+      "screenCells": [
+        {
+          "step": 0,
+          "x": 0,
+          "y": 1,
+          "equals": "R"
+        }
+      ],
+      "rngIncludes": [
+        "rn2(2)=1"
+      ]
+    },
+    {
+      "branch": "config-sections.sections-canonical-map-negative",
+      "segment": 7,
+      "screenCells": [
+        {
+          "step": 0,
+          "x": 0,
+          "y": 1,
+          "equals": "U"
+        }
+      ]
+    },
+    {
+      "branch": "config-sections.sections-canonical-bind-negative",
+      "segment": 8,
+      "screenIncludes": [
+        "(#versionshort)"
+      ]
+    },
+    {
+      "branch": "config-sections.sections-comment-choice-negative",
+      "segment": 9,
+      "screenCells": [
+        {
+          "step": 0,
+          "x": 0,
+          "y": 1,
+          "equals": "U"
+        }
+      ]
+    }
+  ],
+  "provenance": {
+    "originalRecipe": "tools/gen-sessions/evidence/config-sections-contract/initial-ordinary-probes.json",
+    "originalRecipeSHA256": "a0d882c6fea50b0a3b25f9d3137d86b85eb815d005054ae04c5aaf92f00c1df8",
+    "derivation": "Metadata additions only. Every original key/value, segment, expectation and derivation is unchanged. The original classification remains historical."
+  }
+}

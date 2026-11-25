@@ -19,6 +19,7 @@ import { free_all_glyphmap_u } from './utf8map.js';
 import { def_warnsyms, do_custom_symbols, do_custom_colors, gm_symchange } from './const.js';
 import { game } from './gstate.js';
 import { config_error_add } from './options.js';
+import { free_config_sections } from './cfgfiles.js';
 
 /* src/decl.c gs.showsyms[], grouped by terrain, object, monster, warning
    and other symbols for the display's character and charset representation. */
@@ -882,6 +883,7 @@ export function read_sym_file(which_set) {
     gc_chosen_symset.start = gc_chosen_symset.end = false;
     gs_symset_which_set.v = which_set;
     /* parse_conf_file(fp, proc_symset_line): comment and blank lines skipped */
+    free_config_sections();
     for (const raw of symbols_file.split('\n')) {
         const line = raw.replace(/\r$/, '');
         if (!line.trim() || line.trimStart()[0] === '#')
@@ -889,6 +891,7 @@ export function read_sym_file(which_set) {
         if (!parse_sym_line(line, which_set))
             break;
     }
+    free_config_sections();
     if (!gc_chosen_symset.start && !gc_chosen_symset.end) {
         /* name caller put in symset[which_set].name was not found;
            if it looks like "Default symbols", null it out and return

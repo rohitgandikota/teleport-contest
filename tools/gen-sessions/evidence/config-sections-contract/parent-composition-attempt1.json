@@ -1,0 +1,7 @@
+{
+  "stage": "pre-native parent composition",
+  "failure": "Options addition extraction stopped at the inner CHOOSE delimiter check; exact sealed-addition assertion rejected it.",
+  "partialWrites": "Only new fixed parent runner links and exact cfgfiles/jsmain/symbols candidate copies; options remains a baseline symlink.",
+  "mainOrSourceMutation": false,
+  "nativeRun": false
+}

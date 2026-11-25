@@ -1,0 +1,8 @@
+{
+  "originalToolSHA256": "0b06c5d6e2cb1cfaf2a83934e27a9f4124a34516778b60effa9116f90663ef6f",
+  "originalReportSHA256": "5a974c0cd05759d0a56840ec6f88860f7d610c3f6b94bb449971c4b7bc545794",
+  "unchangedRecipeSHA256": "a0d882c6fea50b0a3b25f9d3137d86b85eb815d005054ae04c5aaf92f00c1df8",
+  "reason": "Counting rn2(1) across all gameplay cannot attribute calls to CHOOSE. The first gameplay draw is also rn2(2), so a two-choice first-prefix match alone cannot establish the config draw.",
+  "correction": "Keep prefix assertions only for single-choice config draws, which precede the known first gameplay rn2(2). Preserve two-choice real selected-branch effects and report first calls without attributing them. Full native RNG comparison remains a parent prerequisite.",
+  "unchangedNegativeHashesSHA256": "a34972ada8c10d2daa11b16361182e53b6878517da6a8d5b0406b4428a2e6e32"
+}

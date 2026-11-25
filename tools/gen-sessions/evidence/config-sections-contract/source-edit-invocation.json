@@ -1,0 +1,5 @@
+{
+  "action": "Initial multi-file apply_patch",
+  "result": "Rejected before any hunks applied: symbols.js import context was incomplete.",
+  "correction": "Read actual import header and apply exact contexts. No runtime tests were run on this rejected edit."
+}

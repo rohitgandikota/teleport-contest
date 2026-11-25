@@ -4495,6 +4495,16 @@
     {"group": "deliver-object-owner", "id": "deliver-object-owner.stairs-dagger-arrival", "cFile": "src/dokick.c", "cFunction": "obj_delivery", "description": "Destination regression only: stairs-dagger-arrival"},
     {"group": "deliver-object-owner", "id": "deliver-object-owner.stairs-stack-arrival", "cFile": "src/dokick.c", "cFunction": "obj_delivery", "description": "Destination regression only: stairs-stack-arrival"},
     {"group": "deliver-object-owner", "id": "deliver-object-owner.stairs-potion", "cFile": "src/dokick.c", "cFunction": "ship_object", "description": "Destination regression only: stairs-potion"},
-    {"group": "deliver-object-owner", "id": "deliver-object-owner.dry-potion", "cFile": "src/dokick.c", "cFunction": "ship_object", "description": "Destination regression only: dry-potion"}
+    {"group": "deliver-object-owner", "id": "deliver-object-owner.dry-potion", "cFile": "src/dokick.c", "cFunction": "ship_object", "description": "Destination regression only: dry-potion"},
+    {"group": "config-sections-contract", "id": "config-sections.sections-single-symbols-Z", "cFile": "src/cfgfiles.c", "cFunction": "parse_conf_buf", "description": "single symbols Z"},
+    {"group": "config-sections-contract", "id": "config-sections.sections-single-symbols-Y", "cFile": "src/cfgfiles.c", "cFunction": "parse_conf_buf", "description": "single symbols Y"},
+    {"group": "config-sections-contract", "id": "config-sections.sections-single-binding", "cFile": "src/cfgfiles.c", "cFunction": "parse_conf_buf", "description": "single binding"},
+    {"group": "config-sections-contract", "id": "config-sections.sections-skipped-choose", "cFile": "src/cfgfiles.c", "cFunction": "parse_conf_buf", "description": "skipped choose"},
+    {"group": "config-sections-contract", "id": "config-sections.sections-symset-clears-state", "cFile": "src/cfgfiles.c", "cFunction": "parse_conf_buf", "description": "symset clears state"},
+    {"group": "config-sections-contract", "id": "config-sections.sections-two-choice-L", "cFile": "src/cfgfiles.c", "cFunction": "parse_conf_buf", "description": "two choice L"},
+    {"group": "config-sections-contract", "id": "config-sections.sections-two-choice-R", "cFile": "src/cfgfiles.c", "cFunction": "parse_conf_buf", "description": "two choice R"},
+    {"group": "config-sections-contract", "id": "config-sections.sections-canonical-map-negative", "cFile": "src/cfgfiles.c", "cFunction": "parse_conf_buf", "description": "canonical map negative"},
+    {"group": "config-sections-contract", "id": "config-sections.sections-canonical-bind-negative", "cFile": "src/cfgfiles.c", "cFunction": "parse_conf_buf", "description": "canonical bind negative"},
+    {"group": "config-sections-contract", "id": "config-sections.sections-comment-choice-negative", "cFile": "src/cfgfiles.c", "cFunction": "parse_conf_buf", "description": "comment choice negative"}
   ]
 }

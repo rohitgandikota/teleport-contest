@@ -1,6 +1,48 @@
 # STATUS — live handoff board
 
-## 2026-11-25: canonical species-delivery flags verified
+## 2026-11-25: configuration sections and CHOOSE verified
+
+New cfgfiles.js follows C's choose_random_part, free_config_sections and
+handle_config_section owners. options.js applies section filtering before
+CHOOSE or directive dispatch, retaining the published physical-line loop.
+jsmain.js initializes the seeded RNG and log before the RC and removes the
+later reset. symbols.js clears shared section state around its nested read,
+as C does. Only these four runtime files change, bringing the runtime to 280.
+
+Source controls pass 61/61 versus 11/61. All ten ordinary inputs pass versus
+three before; observer/plain/deferred EOF comparisons and fifteen negative
+hashes remain fixed. Changing an ignored section's symbol from Z to Y now
+changes no output stream. All ten original C cases match versus three before,
+both on the source candidate and the current composition: 43 styled
+boundaries/cursors, 26,547 calls and ordered slices, zero frames. The original
+input tuples and C bytes stay fixed. No new recording was needed for promotion.
+
+All 81 selected/public recordings and 81 strict eight-second workers pass:
+19,244 screens/cursors, 1,545,933 random positions and 1,705 frames. Twenty-four
+retained suites, source audit and six syntax checks pass. All 321 source
+members, 31 promotion members, eighteen payloads and 280 runtime hashes verify.
+All 894 prior raws and requirements remain fixed; ten requirements and one
+raw bring the corpus to 895. Primary metadata additions preserve the original
+recipe, control bodies and negative assertions. Earlier baseline failures,
+the corrected RNG-count premise and a rejected pre-write composition attempt
+remain explicit evidence. Main receipt `config-sections-main-verification.json`,
+SHA256 `f8a07dfd038632f54e76e117177f024af66a12c67e13c35da79174602f659ed5`.
+
+Full895 is running with two NFS CPU workers, default budgets and no retries.
+PID 3155139; 1,186 files, 893 linked raws and two new raws. Root:
+/share/NFS/u/rohit/research/contest/artifacts/2026-11-22/sections-full895-js-20261125.
+All-files SHA256 `0c84a8fd7d026650f333965fd13f7feaab67dcb1c656b3de8d41dab09962d20d`.
+Byte/NUL limits, section-continuation interaction coverage, DEBUGFILES timing,
+other parser callers and malformed/duplicate filename diagnostics remain open.
+
+Next: mounted movement now matches all six unchanged C inputs versus four
+before. Source25/25 and ordinary6/6 pass; only the 100/101-step skill menus
+change scored output, while the 99-step case is state evidence. The candidate
+adds C's steed positioning/training call before displacement. Its portable
+promotion is pending. Invocation-message and final-position hooks are separate
+audits. No held-out improvement or whole-port completion is claimed.
+
+## 2026-11-25: canonical species flags pushed as 66619e1d
 
 Only makemon.js changes runtime. It imports and re-exports the existing
 DF_NONE, DF_RANDOM and DF_ALL constants instead of defining a conflicting

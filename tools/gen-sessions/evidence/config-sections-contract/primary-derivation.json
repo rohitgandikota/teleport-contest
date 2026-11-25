@@ -1,0 +1,171 @@
+{
+  "originalRecipeSHA256": "a0d882c6fea50b0a3b25f9d3137d86b85eb815d005054ae04c5aaf92f00c1df8",
+  "primaryRecipeSHA256": "7f0f481a3c02a7639f6ceb95275562952a8b09aa3d1d2275eae076b7739d974b",
+  "inputLockSHA256": "a9ce72b466f6a5f66f009c4722b0e595ba1f0bac7d7fd8a90a01fe943a32e0ce",
+  "preservedKeys": [
+    "classification",
+    "segments",
+    "expectations",
+    "derivations"
+  ],
+  "addedMetadata": {
+    "name": "config-sections-contract",
+    "requireBranchAssertions": true,
+    "branches": [
+      "config-sections.sections-single-symbols-Z",
+      "config-sections.sections-single-symbols-Y",
+      "config-sections.sections-single-binding",
+      "config-sections.sections-skipped-choose",
+      "config-sections.sections-symset-clears-state",
+      "config-sections.sections-two-choice-L",
+      "config-sections.sections-two-choice-R",
+      "config-sections.sections-canonical-map-negative",
+      "config-sections.sections-canonical-bind-negative",
+      "config-sections.sections-comment-choice-negative"
+    ],
+    "branchAssertions": [
+      {
+        "branch": "config-sections.sections-single-symbols-Z",
+        "segment": 0,
+        "screenCells": [
+          {
+            "step": 0,
+            "x": 0,
+            "y": 1,
+            "equals": "U"
+          }
+        ],
+        "rngIncludes": [
+          "rn2(1)=0"
+        ]
+      },
+      {
+        "branch": "config-sections.sections-single-symbols-Y",
+        "segment": 1,
+        "screenCells": [
+          {
+            "step": 0,
+            "x": 0,
+            "y": 1,
+            "equals": "U"
+          }
+        ],
+        "rngIncludes": [
+          "rn2(1)=0"
+        ]
+      },
+      {
+        "branch": "config-sections.sections-single-binding",
+        "segment": 2,
+        "screenIncludes": [
+          "(#versionshort)"
+        ],
+        "rngIncludes": [
+          "rn2(1)=0"
+        ]
+      },
+      {
+        "branch": "config-sections.sections-skipped-choose",
+        "segment": 3,
+        "screenCells": [
+          {
+            "step": 0,
+            "x": 0,
+            "y": 1,
+            "equals": "U"
+          }
+        ],
+        "rngIncludes": [
+          "rn2(1)=0"
+        ]
+      },
+      {
+        "branch": "config-sections.sections-symset-clears-state",
+        "segment": 4,
+        "screenIncludes": [
+          "(#versionshort)"
+        ],
+        "rngIncludes": [
+          "rn2(1)=0",
+          "rn2(1)=0"
+        ]
+      },
+      {
+        "branch": "config-sections.sections-two-choice-L",
+        "segment": 5,
+        "screenCells": [
+          {
+            "step": 0,
+            "x": 0,
+            "y": 1,
+            "equals": "L"
+          }
+        ],
+        "rngIncludes": [
+          "rn2(2)=0"
+        ]
+      },
+      {
+        "branch": "config-sections.sections-two-choice-R",
+        "segment": 6,
+        "screenCells": [
+          {
+            "step": 0,
+            "x": 0,
+            "y": 1,
+            "equals": "R"
+          }
+        ],
+        "rngIncludes": [
+          "rn2(2)=1"
+        ]
+      },
+      {
+        "branch": "config-sections.sections-canonical-map-negative",
+        "segment": 7,
+        "screenCells": [
+          {
+            "step": 0,
+            "x": 0,
+            "y": 1,
+            "equals": "U"
+          }
+        ]
+      },
+      {
+        "branch": "config-sections.sections-canonical-bind-negative",
+        "segment": 8,
+        "screenIncludes": [
+          "(#versionshort)"
+        ]
+      },
+      {
+        "branch": "config-sections.sections-comment-choice-negative",
+        "segment": 9,
+        "screenCells": [
+          {
+            "step": 0,
+            "x": 0,
+            "y": 1,
+            "equals": "U"
+          }
+        ]
+      }
+    ],
+    "provenance": {
+      "originalRecipe": "tools/gen-sessions/evidence/config-sections-contract/initial-ordinary-probes.json",
+      "originalRecipeSHA256": "a0d882c6fea50b0a3b25f9d3137d86b85eb815d005054ae04c5aaf92f00c1df8",
+      "derivation": "Metadata additions only. Every original key/value, segment, expectation and derivation is unchanged. The original classification remains historical."
+    }
+  },
+  "rule": "Map each original symbol to first screen cell (0,1); message to screenIncludes; prefix to rngIncludes. Prefix includes is a presence condition, not an ordering claim.",
+  "unchangedInputFields": [
+    "seed",
+    "datetime",
+    "nethackrc",
+    "moves",
+    "name"
+  ],
+  "segments": 10,
+  "keys": 33
+}

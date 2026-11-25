@@ -1,0 +1,40 @@
+{
+  "sourcePacketManifestSHA256": "193580f5cdcea9e98ca45a0574ecde171f11cac359a54b5086a65765650f3abb",
+  "rawSHA256": "bf8ea773b316f2b3543f72b13ba9cd9850d707c85b10a46e0c2c3cc530b04955",
+  "rawBytes": 1158103,
+  "version": 5,
+  "source": "c",
+  "segments": 10,
+  "boundaries": 43,
+  "calls": 26547,
+  "frames": 0,
+  "keys": 33,
+  "originalRecipeSHA256": "a0d882c6fea50b0a3b25f9d3137d86b85eb815d005054ae04c5aaf92f00c1df8",
+  "inputLockSHA256": "a9ce72b466f6a5f66f009c4722b0e595ba1f0bac7d7fd8a90a01fe943a32e0ce",
+  "parentNative": {
+    "publishedLineBaseline": {
+      "passed": 3,
+      "total": 10
+    },
+    "fixedSource": {
+      "passed": 10,
+      "total": 10
+    },
+    "composed": {
+      "passed": 10,
+      "total": 10
+    }
+  },
+  "reports": {
+    "config-sections-initial-native-preflight.json": "c188fe3ba5279fe78daaf00bd2b5460dfa7bcd8b303b1357dc234c8196603b50",
+    "config-sections-initial-current-native.json": "31bc701eb2d93237255ec23ff2802c89452ad68e2a21f2b1867a46c4fc1bdcb0",
+    "config-sections-initial-current-native-checks.json": "98e8f39f66e550aacef2bb01b4006a72d433fff097b0b11879eee1600aa70211",
+    "config-sections-parent-source-native.json": "1aa9f87cec81531d341d9201318aa508783516c13f23119a55b9be9153aa1863",
+    "config-sections-parent-composed-native.json": "1aa9f87cec81531d341d9201318aa508783516c13f23119a55b9be9153aa1863",
+    "config-sections-parent-composition.json": "82fcc1fd6ea1401344c01192b424fd15d6e602d8392eafcb591ed8fe66cf2901",
+    "config-sections-parent-composition-attempt1.json": "b71b82daa75da8257a54861195e739dde91f7ce764d6c257c0ea5c1655cf613c"
+  },
+  "composedRuntimeManifestSHA256": "2de017e6e17e851820fab64ba388fba9f90306135f09668c873ae513ef912aea",
+  "composedRuntimeFiles": 280,
+  "scope": "Parent supplied native results. This companion performs no native replay or recording. Failed composition extraction is retained."
+}

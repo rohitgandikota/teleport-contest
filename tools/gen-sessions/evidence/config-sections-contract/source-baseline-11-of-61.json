@@ -1,0 +1,307 @@
+{
+  "variant": "baseline",
+  "ownerSHA256": {
+    "options.js": "41b1cfca6d178292b15653112ad49b6bb7c878063bef6b60e66b7df5cfed0a24",
+    "jsmain.js": "c891dd35621051c6ca617e5f73fb52faf70925bc47d25c0d1e7eb70a3c331c9e",
+    "symbols.js": "69966461d791e2149fa1452a290678dd0192dc3745b33315c3652445eadfa5de"
+  },
+  "total": 61,
+  "passed": 11,
+  "scope": "Real parser and handlers; source-only malformed edges do not assert diagnostic rendering",
+  "cases": [
+    {
+      "name": "OPTIONS/canonical-negative",
+      "pass": true
+    },
+    {
+      "name": "OPTIONS/selected-and-invalid-inactive-body",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   \"Bad config line '[keep]'\",\n+   \"Bad config line '[skip]'\",\n+   \"Unknown option 'invalid'\",\n+   \"Bad config line '[]'\"\n+ ]\n- []\n"
+    },
+    {
+      "name": "OPTIONS/skipped-handler-has-no-effect",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   \"Bad config line '[skip]'\",\n+   \"Bad config line '[]'\"\n+ ]\n- []\n"
+    },
+    {
+      "name": "AUTOPICKUP_EXCEPTION/canonical-negative",
+      "pass": true
+    },
+    {
+      "name": "AUTOPICKUP_EXCEPTION/selected-and-invalid-inactive-body",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   \"Bad config line '[keep]'\",\n+   \"Bad config line '[skip]'\",\n+   'syntax error in AUTOPICKUP_EXCEPTION',\n+   \"Bad config line '[]'\"\n+ ]\n- []\n"
+    },
+    {
+      "name": "AUTOPICKUP_EXCEPTION/skipped-handler-has-no-effect",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   \"Bad config line '[skip]'\",\n+   \"Bad config line '[]'\"\n+ ]\n- []\n"
+    },
+    {
+      "name": "BINDINGS/canonical-negative",
+      "pass": true
+    },
+    {
+      "name": "BINDINGS/selected-and-invalid-inactive-body",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   \"Bad config line '[keep]'\",\n+   \"Bad config line '[skip]'\",\n+   \"Bad config line '[]'\"\n+ ]\n- []\n"
+    },
+    {
+      "name": "BINDINGS/skipped-handler-has-no-effect",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   \"Bad config line '[skip]'\",\n+   \"Bad config line '[]'\"\n+ ]\n- []\n"
+    },
+    {
+      "name": "MSGTYPE/canonical-negative",
+      "pass": true
+    },
+    {
+      "name": "MSGTYPE/selected-and-invalid-inactive-body",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   \"Bad config line '[keep]'\",\n+   \"Bad config line '[skip]'\",\n+   'Malformed MSGTYPE',\n+   \"Bad config line '[]'\"\n+ ]\n- []\n"
+    },
+    {
+      "name": "MSGTYPE/skipped-handler-has-no-effect",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   \"Bad config line '[skip]'\",\n+   \"Bad config line '[]'\"\n+ ]\n- []\n"
+    },
+    {
+      "name": "MENUCOLOR/canonical-negative",
+      "pass": true
+    },
+    {
+      "name": "MENUCOLOR/selected-and-invalid-inactive-body",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   \"Bad config line '[keep]'\",\n+   \"Bad config line '[skip]'\",\n+   'Malformed MENUCOLOR',\n+   \"Bad config line '[]'\"\n+ ]\n- []\n"
+    },
+    {
+      "name": "MENUCOLOR/skipped-handler-has-no-effect",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   \"Bad config line '[skip]'\",\n+   \"Bad config line '[]'\"\n+ ]\n- []\n"
+    },
+    {
+      "name": "ROGUESYMBOLS/canonical-negative",
+      "pass": true
+    },
+    {
+      "name": "ROGUESYMBOLS/selected-and-invalid-inactive-body",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   \"Bad config line '[keep]'\",\n+   \"Bad config line '[skip]'\",\n+   \"Error in ROGUESYMBOLS definition 'invalid'\",\n+   \"Bad config line '[]'\"\n+ ]\n- []\n"
+    },
+    {
+      "name": "ROGUESYMBOLS/skipped-handler-has-no-effect",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   \"Bad config line '[skip]'\",\n+   \"Bad config line '[]'\"\n+ ]\n- []\n"
+    },
+    {
+      "name": "SYMBOLS/canonical-negative",
+      "pass": true
+    },
+    {
+      "name": "SYMBOLS/selected-and-invalid-inactive-body",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   \"Bad config line '[keep]'\",\n+   \"Bad config line '[skip]'\",\n+   \"Error in SYMBOLS definition 'invalid'\",\n+   \"Bad config line '[]'\"\n+ ]\n- []\n"
+    },
+    {
+      "name": "SYMBOLS/skipped-handler-has-no-effect",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   \"Bad config line '[skip]'\",\n+   \"Bad config line '[]'\"\n+ ]\n- []\n"
+    },
+    {
+      "name": "choice/two-left",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   \"Bad config line '[left]'\",\n+   \"Bad config line '[]'\"\n+ ]\n- []\n"
+    },
+    {
+      "name": "choice/two-right",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   \"Bad config line '[right]'\",\n+   \"Bad config line '[]'\"\n+ ]\n- []\n"
+    },
+    {
+      "name": "choice/leading-comma-walk",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   \"Bad config line '[left]'\",\n+   \"Bad config line '[]'\"\n+ ]\n- []\n"
+    },
+    {
+      "name": "choice/trailing-comma-first",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   \"Bad config line '[left]'\",\n+   \"Bad config line '[]'\"\n+ ]\n- []\n"
+    },
+    {
+      "name": "choice/literal-leading-space",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   \"Bad config line '[keep]'\",\n+   \"Bad config line '[]'\"\n+ ]\n- []\n"
+    },
+    {
+      "name": "choice/literal-space-before-comma",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   \"Bad config line '[left]'\",\n+   \"Bad config line '[]'\"\n+ ]\n- []\n"
+    },
+    {
+      "name": "choice/literal-case",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   \"Bad config line '[keep]'\",\n+   \"Bad config line '[]'\"\n+ ]\n- []\n"
+    },
+    {
+      "name": "choice/literal-internal-spaces",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   \"Bad config line '[two  words]'\",\n+   \"Bad config line '[]'\"\n+ ]\n- []\n"
+    },
+    {
+      "name": "choice/literal-hash",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   \"Bad config line '[left#comment]'\",\n+   \"Bad config line '[]'\"\n+ ]\n- []\n"
+    },
+    {
+      "name": "source-only-error/empty",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ []\n- [\n-   'rn2(1)=0'\n- ]\n"
+    },
+    {
+      "name": "source-only-error/leading-comma-second",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ []\n- [\n-   'rn2(2)=1'\n- ]\n"
+    },
+    {
+      "name": "source-only-error/trailing-comma-second",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ []\n- [\n-   'rn2(2)=1'\n- ]\n"
+    },
+    {
+      "name": "keyword/ascii-case",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   \"Bad config line '[keep]'\"\n+ ]\n- []\n"
+    },
+    {
+      "name": "keyword/space-before-delimiter",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   \"Bad config line '[keep]'\"\n+ ]\n- []\n"
+    },
+    {
+      "name": "keyword/colon-before-equals",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   'CHOOSE:left=tail',\n+   '[left=tail]'\n+ ]\n- []\n"
+    },
+    {
+      "name": "keyword/equals-before-colon",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   'CHOOSE=left:tail',\n+   '[left:tail]'\n+ ]\n- []\n"
+    },
+    {
+      "name": "keyword/reject-CHOOS",
+      "pass": true
+    },
+    {
+      "name": "keyword/reject-CHOOSES",
+      "pass": true
+    },
+    {
+      "name": "keyword/reject-CHOOſE",
+      "pass": true
+    },
+    {
+      "name": "source-only-error/missing-delimiter-does-not-draw",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n  [\n+   \"Bad config line 'CHOOSE'\"\n-   'Format is CHOOSE=section1,section2,...'\n  ]\n"
+    },
+    {
+      "name": "inactive-choose-and-invalid-line-do-not-run",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   \"Bad config line '[skip]'\",\n+   \"Bad config line 'not a directive'\",\n+   \"Bad config line '[keep]'\"\n+ ]\n- []\n"
+    },
+    {
+      "name": "active-rechoose-retains-current-until-new-header",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   \"Bad config line '[first]'\",\n+   \"Bad config line '[second]'\"\n+ ]\n- []\n"
+    },
+    {
+      "name": "source-only-error/empty-rechoose-skips-until-header-clears-current",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ []\n- [\n-   'rn2(1)=0',\n-   'rn2(1)=0'\n- ]\n"
+    },
+    {
+      "name": "source-only-error/missing-delimiter-retains-prior-choice",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ []\n- [\n-   'rn2(1)=0'\n- ]\n"
+    },
+    {
+      "name": "unsectioned-body-after-choose-is-active",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   'CHOOSE=keep'\n+ ]\n- []\n"
+    },
+    {
+      "name": "empty-header-in-ignored-section-restores-unsectioned-body",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   \"Bad config line '[skip]'\",\n+   \"Bad config line '[]'\"\n+ ]\n- []\n"
+    },
+    {
+      "name": "empty-header-clears-chosen-as-well-as-current",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ []\n- [\n-   'rn2(1)=0'\n- ]\n"
+    },
+    {
+      "name": "empty-header-without-choose-is-recognized-error",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n  [\n+   \"Bad config line '[]'\"\n-   'Section \"[]\" without CHOOSE'\n  ]\n"
+    },
+    {
+      "name": "header/valid-[keep]",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   \"Bad config line '[skip]'\",\n+   \"Bad config line '[keep]'\"\n+ ]\n- []\n"
+    },
+    {
+      "name": "header/valid-[ keep \t]",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   \"Bad config line '[skip]'\",\n+   \"Bad config line '[ keep \\t]'\"\n+ ]\n- []\n"
+    },
+    {
+      "name": "header/valid-[keep]#comment",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   \"Bad config line '[skip]'\",\n+   \"Bad config line '[keep]#comment'\"\n+ ]\n- []\n"
+    },
+    {
+      "name": "header/valid-[keep]  #comment",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   \"Bad config line '[skip]'\",\n+   \"Bad config line '[keep]  #comment'\"\n+ ]\n- []\n"
+    },
+    {
+      "name": "header/invalid-stays-in-skipped-body-[keep",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   \"Bad config line '[skip]'\",\n+   \"Bad config line '[keep'\"\n+ ]\n- []\n"
+    },
+    {
+      "name": "header/invalid-stays-in-skipped-body-[keep]tail",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   \"Bad config line '[skip]'\",\n+   \"Bad config line '[keep]tail'\"\n+ ]\n- []\n"
+    },
+    {
+      "name": "header/invalid-stays-in-skipped-body-[keep]\t#comment",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   \"Bad config line '[skip]'\",\n+   \"Bad config line '[keep]\\t#comment'\"\n+ ]\n- []\n"
+    },
+    {
+      "name": "header/invalid-stays-in-skipped-body-[keep]]",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   \"Bad config line '[skip]'\",\n+   \"Bad config line '[keep]]'\"\n+ ]\n- []\n"
+    },
+    {
+      "name": "nested-read/symset-clears-both-shared-fields",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   \"Bad config line '[keep]'\"\n+ ]\n- []\n"
+    },
+    {
+      "name": "nested-read/roguesymset-clears-both-shared-fields",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   \"Bad config line '[keep]'\"\n+ ]\n- []\n"
+    },
+    {
+      "name": "parse-return-clears-state-before-next-nonempty-or-empty-call",
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   \"Bad config line '[skip]'\"\n+ ]\n- []\n"
+    },
+    {
+      "name": "comments-do-not-select-or-draw-negative",
+      "pass": true
+    }
+  ]
+}

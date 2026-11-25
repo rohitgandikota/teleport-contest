@@ -1,0 +1,532 @@
+{
+  "classification": "Unchanged JS baseline versus C-source predicates, not native comparison",
+  "recipeSHA256": "a0d882c6fea50b0a3b25f9d3137d86b85eb815d005054ae04c5aaf92f00c1df8",
+  "total": 10,
+  "passed": 3,
+  "inactiveSectionIntervention": {
+    "cases": [
+      "sections-single-symbols-Z",
+      "sections-single-symbols-Y"
+    ],
+    "changedStreams": [
+      "screens"
+    ]
+  },
+  "rows": [
+    {
+      "name": "sections-single-symbols-Z",
+      "pass": false,
+      "checks": [
+        {
+          "name": "observer/plain/deferred all five streams and every key",
+          "pass": true
+        },
+        {
+          "name": "C-valid section input has no parse errors or unhandled directives",
+          "pass": false,
+          "error": "The expression evaluated to a falsy value:\n\n  assert.ok(states.every(s => !s.errors.length && !s.unhandled.length))\n"
+        },
+        {
+          "name": "C-source CHOOSE draws precede gameplay and survive in first slice",
+          "pass": false,
+          "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n  [\n+   'rn2(2)=1'\n-   'rn2(1)=0'\n  ]\n"
+        },
+        {
+          "name": "selected section reaches real map symbol producer and consumer",
+          "pass": false,
+          "error": "The expression evaluated to a falsy value:\n\n  assert.ok(states.every(s => s.symbol === expected.symbol))\n"
+        }
+      ],
+      "negative": false,
+      "hashes": {
+        "screens": "1324dae133ceaa24764cbe8ba264a28536c6ae3a37d5b3b89ad1dcc16202c31c",
+        "cursors": "51ee802e3d5290b524b6181657ab5f2507aec19ad89d3092f447a446b1c6ad04",
+        "calls": "860cfcf1eaecd7f446231c18899a60664b97fcf89acbb674e5207b78373a3ccf",
+        "slices": "336b5ea699fbb622d130038f227b78985c6ef651592acf98444ec4f8d0764ef4",
+        "frames": "210e130878aabaf46f1fe72749a263f9eb71c6a262b80f13882ed08d472c0ecd"
+      },
+      "boundaries": 4,
+      "calls": 3039,
+      "frames": 0,
+      "firstCalls": [
+        "rn2(2)=1",
+        "rn2(2)=1",
+        "rn2(4)=0"
+      ],
+      "firstObservedState": {
+        "step": 0,
+        "errors": [
+          "Bad config line '[keep]'",
+          "Bad config line '[skip]'",
+          "Bad config line '[]'"
+        ],
+        "unhandled": [
+          "CHOOSE=keep"
+        ],
+        "symbol": "Z",
+        "binding": null
+      }
+    },
+    {
+      "name": "sections-single-symbols-Y",
+      "pass": false,
+      "checks": [
+        {
+          "name": "observer/plain/deferred all five streams and every key",
+          "pass": true
+        },
+        {
+          "name": "C-valid section input has no parse errors or unhandled directives",
+          "pass": false,
+          "error": "The expression evaluated to a falsy value:\n\n  assert.ok(states.every(s => !s.errors.length && !s.unhandled.length))\n"
+        },
+        {
+          "name": "C-source CHOOSE draws precede gameplay and survive in first slice",
+          "pass": false,
+          "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n  [\n+   'rn2(2)=1'\n-   'rn2(1)=0'\n  ]\n"
+        },
+        {
+          "name": "selected section reaches real map symbol producer and consumer",
+          "pass": false,
+          "error": "The expression evaluated to a falsy value:\n\n  assert.ok(states.every(s => s.symbol === expected.symbol))\n"
+        },
+        {
+          "name": "changing only inactive section has no effect on all five streams",
+          "pass": false,
+          "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n... Skipped lines\n\n  {\n    calls: [\n      'rn2(2)=1',\n      'rn2(2)=1',\n      'rn2(4)=0',\n...\n      'Hello wizard, welcome to NetHack!  You are a neutral male human Wizard.\\n' +\n+       'YYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY\\n' +\n+       'YYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY\\n' +\n+       'YYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY\\n' +\n+       'YYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY\\n' +\n+       'YYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY"
+        }
+      ],
+      "negative": false,
+      "hashes": {
+        "screens": "dc18d443e1e554fbe9b1ab2eea69f33409b830c804f6a23174198588687b2020",
+        "cursors": "51ee802e3d5290b524b6181657ab5f2507aec19ad89d3092f447a446b1c6ad04",
+        "calls": "860cfcf1eaecd7f446231c18899a60664b97fcf89acbb674e5207b78373a3ccf",
+        "slices": "336b5ea699fbb622d130038f227b78985c6ef651592acf98444ec4f8d0764ef4",
+        "frames": "210e130878aabaf46f1fe72749a263f9eb71c6a262b80f13882ed08d472c0ecd"
+      },
+      "boundaries": 4,
+      "calls": 3039,
+      "frames": 0,
+      "firstCalls": [
+        "rn2(2)=1",
+        "rn2(2)=1",
+        "rn2(4)=0"
+      ],
+      "firstObservedState": {
+        "step": 0,
+        "errors": [
+          "Bad config line '[keep]'",
+          "Bad config line '[skip]'",
+          "Bad config line '[]'"
+        ],
+        "unhandled": [
+          "CHOOSE=keep"
+        ],
+        "symbol": "Y",
+        "binding": null
+      }
+    },
+    {
+      "name": "sections-single-binding",
+      "pass": false,
+      "checks": [
+        {
+          "name": "observer/plain/deferred all five streams and every key",
+          "pass": true
+        },
+        {
+          "name": "C-valid section input has no parse errors or unhandled directives",
+          "pass": false,
+          "error": "The expression evaluated to a falsy value:\n\n  assert.ok(states.every(s => !s.errors.length && !s.unhandled.length))\n"
+        },
+        {
+          "name": "C-source CHOOSE draws precede gameplay and survive in first slice",
+          "pass": false,
+          "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n  [\n+   'rn2(2)=1'\n-   'rn2(1)=0'\n  ]\n"
+        },
+        {
+          "name": "selected section reaches real key binding and description",
+          "pass": false,
+          "error": "The expression evaluated to a falsy value:\n\n  assert.ok(states.every(s => s.binding === expected.binding))\n"
+        }
+      ],
+      "negative": false,
+      "hashes": {
+        "screens": "d2d9d5e626b648f68abf71bfb466e7b3902052a37d8c83848c23a80c10198806",
+        "cursors": "304a8bcd03a1ca6f7fe2c4d78d48220a1825a394510f7de2e4bd5f1d30b4e6c7",
+        "calls": "e88e039ec58ec1eb540a23a4e1eb86aeb4fd2c006a7c95b80b75b4231d2dbcee",
+        "slices": "c452c98144861edebdb6390ead52dc9b8ff83059528462f781d0d2141920ba9a",
+        "frames": "be8a1bbaee025d5501a33340bd5d4e547d41835268267e671efcd939c6856fe3"
+      },
+      "boundaries": 5,
+      "calls": 2196,
+      "frames": 0,
+      "firstCalls": [
+        "rn2(2)=1",
+        "rn2(2)=0",
+        "rn2(4)=1"
+      ],
+      "firstObservedState": {
+        "step": 0,
+        "errors": [
+          "Bad config line '[keep]'",
+          "Bad config line '[skip]'",
+          "Bad config line '[]'"
+        ],
+        "unhandled": [
+          "CHOOSE=keep"
+        ],
+        "symbol": " ",
+        "binding": "inventory"
+      }
+    },
+    {
+      "name": "sections-skipped-choose",
+      "pass": false,
+      "checks": [
+        {
+          "name": "observer/plain/deferred all five streams and every key",
+          "pass": true
+        },
+        {
+          "name": "C-valid section input has no parse errors or unhandled directives",
+          "pass": false,
+          "error": "The expression evaluated to a falsy value:\n\n  assert.ok(states.every(s => !s.errors.length && !s.unhandled.length))\n"
+        },
+        {
+          "name": "C-source CHOOSE draws precede gameplay and survive in first slice",
+          "pass": false,
+          "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n  [\n+   'rn2(2)=1'\n-   'rn2(1)=0'\n  ]\n"
+        },
+        {
+          "name": "selected section reaches real map symbol producer and consumer",
+          "pass": true
+        }
+      ],
+      "negative": false,
+      "hashes": {
+        "screens": "282476f8571506b92fb9681d35e5035438694714d1beeacd076cb465a5d050b0",
+        "cursors": "51ee802e3d5290b524b6181657ab5f2507aec19ad89d3092f447a446b1c6ad04",
+        "calls": "860cfcf1eaecd7f446231c18899a60664b97fcf89acbb674e5207b78373a3ccf",
+        "slices": "336b5ea699fbb622d130038f227b78985c6ef651592acf98444ec4f8d0764ef4",
+        "frames": "210e130878aabaf46f1fe72749a263f9eb71c6a262b80f13882ed08d472c0ecd"
+      },
+      "boundaries": 4,
+      "calls": 3039,
+      "frames": 0,
+      "firstCalls": [
+        "rn2(2)=1",
+        "rn2(2)=1",
+        "rn2(4)=0"
+      ],
+      "firstObservedState": {
+        "step": 0,
+        "errors": [
+          "Bad config line '[skip]'",
+          "Bad config line '[keep]'",
+          "Bad config line '[]'"
+        ],
+        "unhandled": [
+          "CHOOSE=keep",
+          "CHOOSE=ignored"
+        ],
+        "symbol": "U",
+        "binding": null
+      }
+    },
+    {
+      "name": "sections-symset-clears-state",
+      "pass": false,
+      "checks": [
+        {
+          "name": "observer/plain/deferred all five streams and every key",
+          "pass": true
+        },
+        {
+          "name": "C-valid section input has no parse errors or unhandled directives",
+          "pass": false,
+          "error": "The expression evaluated to a falsy value:\n\n  assert.ok(states.every(s => !s.errors.length && !s.unhandled.length))\n"
+        },
+        {
+          "name": "C-source CHOOSE draws precede gameplay and survive in first slice",
+          "pass": false,
+          "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n  [\n+   'rn2(2)=1',\n+   'rn2(2)=0'\n-   'rn2(1)=0',\n-   'rn2(1)=0'\n  ]\n"
+        },
+        {
+          "name": "selected section reaches real key binding and description",
+          "pass": true
+        }
+      ],
+      "negative": false,
+      "hashes": {
+        "screens": "21081906a16c289bfdab5d3425972ef7dbc47b8e64771fa88e268c49299da32a",
+        "cursors": "304a8bcd03a1ca6f7fe2c4d78d48220a1825a394510f7de2e4bd5f1d30b4e6c7",
+        "calls": "e88e039ec58ec1eb540a23a4e1eb86aeb4fd2c006a7c95b80b75b4231d2dbcee",
+        "slices": "c452c98144861edebdb6390ead52dc9b8ff83059528462f781d0d2141920ba9a",
+        "frames": "be8a1bbaee025d5501a33340bd5d4e547d41835268267e671efcd939c6856fe3"
+      },
+      "boundaries": 5,
+      "calls": 2196,
+      "frames": 0,
+      "firstCalls": [
+        "rn2(2)=1",
+        "rn2(2)=0",
+        "rn2(4)=1"
+      ],
+      "firstObservedState": {
+        "step": 0,
+        "errors": [
+          "Bad config line '[keep]'"
+        ],
+        "unhandled": [
+          "CHOOSE=keep",
+          "CHOOSE=next"
+        ],
+        "symbol": " ",
+        "binding": "versionshort"
+      }
+    },
+    {
+      "name": "sections-two-choice-L",
+      "pass": false,
+      "checks": [
+        {
+          "name": "observer/plain/deferred all five streams and every key",
+          "pass": true
+        },
+        {
+          "name": "C-valid section input has no parse errors or unhandled directives",
+          "pass": false,
+          "error": "The expression evaluated to a falsy value:\n\n  assert.ok(states.every(s => !s.errors.length && !s.unhandled.length))\n"
+        },
+        {
+          "name": "C-source CHOOSE draws precede gameplay and survive in first slice",
+          "pass": false,
+          "error": "Expected values to be strictly equal:\n\n245 !== 0\n"
+        },
+        {
+          "name": "selected section reaches real map symbol producer and consumer",
+          "pass": false,
+          "error": "The expression evaluated to a falsy value:\n\n  assert.ok(states.every(s => s.symbol === expected.symbol))\n"
+        }
+      ],
+      "negative": false,
+      "hashes": {
+        "screens": "1e5626cb1bf9a69a72103ff0505ba7cee841e50244dec17eb8d8b40d7be4712e",
+        "cursors": "b7c1b518ca7ea09f0fa8a3dd259c2ad58298e6a9dbdee54d30e2906073d65674",
+        "calls": "c7205e6b48eccab17f274d1ee5deaceb05a1cc8bf88ea017520a3d3c10343c45",
+        "slices": "4c6f70d189ac944bd9789fbd7eb476ea6a61fd50a2cc1e992d62ae1184a0eff6",
+        "frames": "15927b2bd1a8e61fe3e8a5928cc8c9fbd2f979b8525b7161aad27811e76fa84f"
+      },
+      "boundaries": 4,
+      "calls": 2717,
+      "frames": 2,
+      "firstCalls": [
+        "rn2(2)=0",
+        "rn2(2)=1",
+        "rn2(4)=1"
+      ],
+      "firstObservedState": {
+        "step": 0,
+        "errors": [
+          "Bad config line '[left]'",
+          "Bad config line '[right]'",
+          "Bad config line '[]'"
+        ],
+        "unhandled": [
+          "CHOOSE=left,right"
+        ],
+        "symbol": "R",
+        "binding": null
+      }
+    },
+    {
+      "name": "sections-two-choice-R",
+      "pass": false,
+      "checks": [
+        {
+          "name": "observer/plain/deferred all five streams and every key",
+          "pass": true
+        },
+        {
+          "name": "C-valid section input has no parse errors or unhandled directives",
+          "pass": false,
+          "error": "The expression evaluated to a falsy value:\n\n  assert.ok(states.every(s => !s.errors.length && !s.unhandled.length))\n"
+        },
+        {
+          "name": "C-source CHOOSE draws precede gameplay and survive in first slice",
+          "pass": false,
+          "error": "Expected values to be strictly equal:\n\n41 !== 0\n"
+        },
+        {
+          "name": "selected section reaches real map symbol producer and consumer",
+          "pass": true
+        }
+      ],
+      "negative": false,
+      "hashes": {
+        "screens": "cd8b95b6cabcc1812365e2cbee8f520480cd5c5fdaf7dcaef4ed6630e41e118f",
+        "cursors": "51ee802e3d5290b524b6181657ab5f2507aec19ad89d3092f447a446b1c6ad04",
+        "calls": "860cfcf1eaecd7f446231c18899a60664b97fcf89acbb674e5207b78373a3ccf",
+        "slices": "336b5ea699fbb622d130038f227b78985c6ef651592acf98444ec4f8d0764ef4",
+        "frames": "210e130878aabaf46f1fe72749a263f9eb71c6a262b80f13882ed08d472c0ecd"
+      },
+      "boundaries": 4,
+      "calls": 3039,
+      "frames": 0,
+      "firstCalls": [
+        "rn2(2)=1",
+        "rn2(2)=1",
+        "rn2(4)=0"
+      ],
+      "firstObservedState": {
+        "step": 0,
+        "errors": [
+          "Bad config line '[left]'",
+          "Bad config line '[right]'",
+          "Bad config line '[]'"
+        ],
+        "unhandled": [
+          "CHOOSE=left,right"
+        ],
+        "symbol": "R",
+        "binding": null
+      }
+    },
+    {
+      "name": "sections-canonical-map-negative",
+      "pass": true,
+      "checks": [
+        {
+          "name": "observer/plain/deferred all five streams and every key",
+          "pass": true
+        },
+        {
+          "name": "C-valid section input has no parse errors or unhandled directives",
+          "pass": true
+        },
+        {
+          "name": "selected section reaches real map symbol producer and consumer",
+          "pass": true
+        },
+        {
+          "name": "unaffected negative all five canonical hashes",
+          "pass": true
+        }
+      ],
+      "negative": true,
+      "hashes": {
+        "screens": "282476f8571506b92fb9681d35e5035438694714d1beeacd076cb465a5d050b0",
+        "cursors": "51ee802e3d5290b524b6181657ab5f2507aec19ad89d3092f447a446b1c6ad04",
+        "calls": "860cfcf1eaecd7f446231c18899a60664b97fcf89acbb674e5207b78373a3ccf",
+        "slices": "336b5ea699fbb622d130038f227b78985c6ef651592acf98444ec4f8d0764ef4",
+        "frames": "210e130878aabaf46f1fe72749a263f9eb71c6a262b80f13882ed08d472c0ecd"
+      },
+      "boundaries": 4,
+      "calls": 3039,
+      "frames": 0,
+      "firstCalls": [
+        "rn2(2)=1",
+        "rn2(2)=1",
+        "rn2(4)=0"
+      ],
+      "firstObservedState": {
+        "step": 0,
+        "errors": [],
+        "unhandled": [],
+        "symbol": "U",
+        "binding": null
+      }
+    },
+    {
+      "name": "sections-canonical-bind-negative",
+      "pass": true,
+      "checks": [
+        {
+          "name": "observer/plain/deferred all five streams and every key",
+          "pass": true
+        },
+        {
+          "name": "C-valid section input has no parse errors or unhandled directives",
+          "pass": true
+        },
+        {
+          "name": "selected section reaches real key binding and description",
+          "pass": true
+        },
+        {
+          "name": "unaffected negative all five canonical hashes",
+          "pass": true
+        }
+      ],
+      "negative": true,
+      "hashes": {
+        "screens": "21081906a16c289bfdab5d3425972ef7dbc47b8e64771fa88e268c49299da32a",
+        "cursors": "304a8bcd03a1ca6f7fe2c4d78d48220a1825a394510f7de2e4bd5f1d30b4e6c7",
+        "calls": "e88e039ec58ec1eb540a23a4e1eb86aeb4fd2c006a7c95b80b75b4231d2dbcee",
+        "slices": "c452c98144861edebdb6390ead52dc9b8ff83059528462f781d0d2141920ba9a",
+        "frames": "be8a1bbaee025d5501a33340bd5d4e547d41835268267e671efcd939c6856fe3"
+      },
+      "boundaries": 5,
+      "calls": 2196,
+      "frames": 0,
+      "firstCalls": [
+        "rn2(2)=1",
+        "rn2(2)=0",
+        "rn2(4)=1"
+      ],
+      "firstObservedState": {
+        "step": 0,
+        "errors": [],
+        "unhandled": [],
+        "symbol": " ",
+        "binding": "versionshort"
+      }
+    },
+    {
+      "name": "sections-comment-choice-negative",
+      "pass": true,
+      "checks": [
+        {
+          "name": "observer/plain/deferred all five streams and every key",
+          "pass": true
+        },
+        {
+          "name": "C-valid section input has no parse errors or unhandled directives",
+          "pass": true
+        },
+        {
+          "name": "selected section reaches real map symbol producer and consumer",
+          "pass": true
+        },
+        {
+          "name": "unaffected negative all five canonical hashes",
+          "pass": true
+        }
+      ],
+      "negative": true,
+      "hashes": {
+        "screens": "282476f8571506b92fb9681d35e5035438694714d1beeacd076cb465a5d050b0",
+        "cursors": "51ee802e3d5290b524b6181657ab5f2507aec19ad89d3092f447a446b1c6ad04",
+        "calls": "860cfcf1eaecd7f446231c18899a60664b97fcf89acbb674e5207b78373a3ccf",
+        "slices": "336b5ea699fbb622d130038f227b78985c6ef651592acf98444ec4f8d0764ef4",
+        "frames": "210e130878aabaf46f1fe72749a263f9eb71c6a262b80f13882ed08d472c0ecd"
+      },
+      "boundaries": 4,
+      "calls": 3039,
+      "frames": 0,
+      "firstCalls": [
+        "rn2(2)=1",
+        "rn2(2)=1",
+        "rn2(4)=0"
+      ],
+      "firstObservedState": {
+        "step": 0,
+        "errors": [],
+        "unhandled": [],
+        "symbol": "U",
+        "binding": null
+      }
+    }
+  ]
+}

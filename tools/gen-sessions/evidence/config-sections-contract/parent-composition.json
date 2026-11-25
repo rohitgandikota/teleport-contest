@@ -1,0 +1,23 @@
+{
+  "sourceMembersVerified": 321,
+  "sourceManifestSHA256": "193580f5cdcea9e98ca45a0574ecde171f11cac359a54b5086a65765650f3abb",
+  "sourceHandoffSHA256": "ee654de6abd335db08dc02f8742f55fe8ee9ac74baffe2ab9e1a0fda40a20296",
+  "sourceCandidateRuntimeSHA256": "d6103414f717ac77eb59232565ece425b279c3e40e0a3a098d3bd44ddfc98480",
+  "composedBaselineRuntimeSHA256": "f04b00dbab1f15a632ae8adc8a1767e3014cd80b10a33621836c329473f7e3f4",
+  "optionsHooksReconstructSealedCandidate": true,
+  "optionsHooksReverseToPublishedPhysicalLoop": true,
+  "variants": [
+    {
+      "kind": "source",
+      "runtimeFiles": 280,
+      "runtimeManifest": ".cache/restart-20261122/config-sections-parent-source-runtime.json",
+      "sha256": "b7f966e2cf38ec158b115300e64306bb3f8a024e9cb8cc528b6e46c62a09e158"
+    },
+    {
+      "kind": "composed",
+      "runtimeFiles": 280,
+      "runtimeManifest": ".cache/restart-20261122/config-sections-parent-composed-runtime.json",
+      "sha256": "2de017e6e17e851820fab64ba388fba9f90306135f09668c873ae513ef912aea"
+    }
+  ]
+}

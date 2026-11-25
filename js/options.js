@@ -4,6 +4,7 @@
 
 import { check_gold_symbol } from './botl.js';
 import { game } from './gstate.js';
+import { choose_random_part, free_config_sections, handle_config_section } from './cfgfiles.js';
 import { parse_status_hl1, clear_status_hilites, reset_status_hilites, status_initialize } from './botl.js';
 import { new_status_window } from './tty/wintty.js';
 import { notice_all_mons_flush } from './hack.js';
@@ -888,6 +889,8 @@ const config_line_stmt = [
 // (OPTIONS=, SYMBOLS=, BIND=, ...) via the config_line_stmt table at
 // cfgfiles.c:1312. BIND lines update the configured command bindings.
 export function parseNethackrc(rc) {
+    // src/cfgfiles.c:1844 parse_conf_file(), shared state is cleared per read.
+    free_config_sections();
     const result = {
         opts: {},        // option name -> boolean | string | null
         symbols: [],     // pending SYMBOLS= directives
@@ -923,8 +926,25 @@ export function parseNethackrc(rc) {
         const line = trimspaces(buf);
         buf = null;
 
+        // src/cfgfiles.c:1768 parse_conf_buf(), sections precede CHOOSE.
+        if (handle_config_section(line)) continue;
+
         // src/cfgfiles.c:588 find_optparam(), first '=' or ':'.
         const eq = firstSeparator(line);
+        // src/cfgfiles.c:1775 parse_conf_buf(), the literal choice value.
+        const choiceName = eq < 0 ? line : line.slice(0, eq)
+            .replace(/[ \t\r\n\v\f]+$/, '');
+        if (choiceName.length === 6 && !strncmpi(choiceName, 'CHOOSE', 6)) {
+            if (eq < 0) {
+                config_error_add('Format is CHOOSE=section1,section2,...');
+                continue;
+            }
+            game.config_section_chosen = null;
+            const section = choose_random_part(line.slice(eq + 1), ',');
+            if (section !== null) game.config_section_chosen = section;
+            else config_error_add('No config section to choose');
+            continue;
+        }
         if (eq < 0) {
             result.errors.push(`Bad config line '${line}'`);
             continue;
@@ -974,6 +994,7 @@ export function parseNethackrc(rc) {
             break;
         }
     }
+    free_config_sections();
     config_error_data = null; /* config_error_done() */
     return result;
 }

@@ -3982,6 +3982,19 @@
     {"group":"Core line input and direct tty menu callers","id":"queued-dip-menu-search","cFile":"win/tty/wintty.c","cFunction":"process_menu_window","description":"queued dip menu search"},
     {"group":"Core line input and direct tty menu callers","id":"ordinary-dip-menu-search","cFile":"win/tty/wintty.c","cFunction":"process_menu_window","description":"ordinary dip menu search"},
     {"group":"Core line input and direct tty menu callers","id":"queued-item-name-physical-line","cFile":"src/windows.c","cFunction":"getlin","description":"queued item name physical line"},
-    {"group":"Core line input and direct tty menu callers","id":"chargen-menu-direct-tty-search","cFile":"win/tty/wintty.c","cFunction":"process_menu_window","description":"chargen menu direct tty search"}
+    {"group":"Core line input and direct tty menu callers","id":"chargen-menu-direct-tty-search","cFile":"win/tty/wintty.c","cFunction":"process_menu_window","description":"chargen menu direct tty search"},
+    {"group":"Complete status enlightenment","id":"status-enlightenment-completion.acute-troubles","cFile":"src/insight.c","cFunction":"status_enlightenment","description":"status enlightenment completion.acute troubles"},
+    {"group":"Complete status enlightenment","id":"status-enlightenment-completion.slippery-worn-causes","cFile":"src/insight.c","cFunction":"status_enlightenment","description":"status enlightenment completion.slippery worn causes"},
+    {"group":"Complete status enlightenment","id":"status-enlightenment-completion.at-will-levitation","cFile":"src/insight.c","cFunction":"status_enlightenment","description":"status enlightenment completion.at will levitation"},
+    {"group":"Complete status enlightenment","id":"status-enlightenment-completion.underwater-form","cFile":"src/insight.c","cFunction":"status_enlightenment","description":"status enlightenment completion.underwater form"},
+    {"group":"Complete status enlightenment","id":"status-enlightenment-completion.active-water-walking","cFile":"src/insight.c","cFunction":"status_enlightenment","description":"status enlightenment completion.active water walking"},
+    {"group":"Complete status enlightenment","id":"status-enlightenment-completion.mimic-and-ceiling-hiding","cFile":"src/insight.c","cFunction":"status_enlightenment","description":"status enlightenment completion.mimic and ceiling hiding"},
+    {"group":"Complete status enlightenment","id":"status-enlightenment-completion.genocided-transformation","cFile":"src/insight.c","cFunction":"status_enlightenment","description":"status enlightenment completion.genocided transformation"},
+    {"group":"Complete status enlightenment","id":"status-enlightenment-completion.mounted-wounded-status","cFile":"src/insight.c","cFunction":"status_enlightenment","description":"status enlightenment completion.mounted wounded status"},
+    {"group":"Complete status enlightenment","id":"status-enlightenment-completion.monk-suit-penalty","cFile":"src/insight.c","cFunction":"status_enlightenment","description":"status enlightenment completion.monk suit penalty"},
+    {"group":"Complete status enlightenment","id":"status-enlightenment-completion.shield-and-wet-towel","cFile":"src/insight.c","cFunction":"status_enlightenment","description":"status enlightenment completion.shield and wet towel"},
+    {"group":"Complete status enlightenment","id":"status-enlightenment-completion.wielded-glob","cFile":"src/insight.c","cFunction":"status_enlightenment","description":"status enlightenment completion.wielded glob"},
+    {"group":"Complete status enlightenment","id":"status-enlightenment-completion.healthy-control","cFile":"src/insight.c","cFunction":"status_enlightenment","description":"status enlightenment completion.healthy control"},
+    {"group":"Complete status enlightenment","id":"status-enlightenment-completion.dagger-control","cFile":"src/insight.c","cFunction":"status_enlightenment","description":"status enlightenment completion.dagger control"}
   ]
 }

@@ -9564,6 +9564,70 @@ Darwin traces four preserved spoteffects native RNG failures; no terrain
 promotion is allowed before they close. Pauli and Singer continue their fixed
 do_stone_mon and breath/chant audits. No remote coverage job is active.
 
+## 2026-11-25 04:15 UTC: complete status display verified; full839 passed
+
+Queued line-input checkpoint `464333b5dde33ed5311bce4bbb43bd5e17e8276b`
+is pushed. Both fixed full839 workers closed with exit 0. The independent
+verifier passes all 839 fixtures on exact killer runtime `4f704164`: 867,938
+screens/cursors, 18,192,590 scored RNG positions and 32,366 frames. The run
+was uninterrupted, with zero retries. All 279 runtime, 839 raw and 261
+protected hashes remain fixed, including every prior full832 recording.
+Verification: `killer-full839/verification.json`, SHA
+`58b9a494c9862633005ca8646e0e04a72222820ceb21d7c0946d725b36c83147`.
+This sweep excludes queued line input and all subsequent source candidates.
+
+Status completion worker 20207 closed with exit 0. All 23 checks pass:
+196 controls, eighteen focused fixtures with 92 segments, 8,560 screens and
+cursors, 276,358 scored RNG positions and eight frames. All public sessions
+and 62 bounded workers pass. Seven strict native and all-five deferred
+fixtures cover 56 segments, 5,447 boundaries, 162,203 complete calls and
+seven frames. Thirteen new C cases match 1,249 styled boundaries/cursors/
+slices and 36,304 calls, zero frames. Before: 1,228 styled grids and 1,240
+cursors matched; all random calls and slices already matched. Both negative
+cases retain all five output hashes. New source controls improve 30/76 to
+76/76; ordinary assertions improve 15/38 to 38/38 including two native checks.
+
+Parent reviewed the complete C status_enlightenment, weapon_insight and
+weapon_descr owners, scoped patch and helper/caller contracts. Only insight.js
+and one weapon.js conditional change. The existing strangulation block is
+unchanged. Status now covers transformed condition, riding, movement, hiding,
+ailments, known causes, injuries and Monk armor. The extracted private weapon
+owner follows C's overrides and final tense. All 279 main runtime and nine
+support hashes equal the tested candidate; all 840 earlier raw files remain
+fixed. Thirteen intent entries appended. Maintained corpus: 841. Publish now.
+Verification SHA
+`d5aa16b7200dbc2377642502ee5417ce10fed6d49454b7feb0e628d0b6fc7de6`.
+Integration: `status-enlightenment-completion-main-integration.json`.
+Final and uncommon combinations remain constructed proof. Attribute
+enlightenment is now Avicenna's separate fixed-snapshot owner audit.
+
+Parent history follow-up is in `line-history-parent-source`, fixed to the
+getlin candidate, cache only. Version one added Ctrl-P, Ctrl-U and inread/intr
+handling; its first failure revealed the missing remember_topl call before
+the no-history prompt. Version two restores that complete putmesg/tty_putstr
+contract. The original seven C inputs stay fixed; single history, kill and
+both negatives now match. Three remaining mode cases expose the missing
+msg_window configuration assignment. Singer owns that separate prerequisite
+in `msg-window-option-source-audit`; parent retains cmd.js ownership.
+All prior failures and runtime versions remain preserved.
+
+Singer's breath/chant packet is independently sealed: 373 files, four links,
+seal `f952db4c278672cb7ebce9929fbf8deaeb24c82e8c25583883416af357ac1d1d`.
+Six exact C proposals recorded unchanged, raw
+`c06945079438cfbc5c9266dbbb5d63194c83b103dd2ad75597aba00909382972`,
+781 boundaries. Native current-status comparison is next. Darwin's terrain
+prerequisite fixes one absent monster-size alias; his preserved evidence is
+20/20 C-exact. Parent verified its 682-file seal
+`9b7f0d856f138aa344c5ccb5bb5a727f3fd97db94254080d4abcb3ceb6253537`.
+Its first direct parent comparison could not load a frozen decoder omitted
+from the intentionally small source snapshot; no gameplay ran. New independent
+`mondata-status-prerequisite` and `spoteffects-status-prerequisite` snapshots
+provide the unchanged decoder and current status dependencies. Native compare
+there is next. The old terrain input assertion remains 40/41: the historical
+deferred case actually takes C's early arm. Darwin is preparing a separately
+reviewable source-derived assertion correction, preserving the old failure and
+every input/raw byte, then resuming float_down. No remote coverage job is active.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

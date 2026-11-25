@@ -209,8 +209,9 @@ negative cases preserve every output hash. Two old gaze-test assertions now
 expect C's blank record; gameplay checks are unchanged. Existing JSON saves
 that lack the record remain a separate compatibility limit. Maintained corpus:
 839. Slippery-armor checkpoint `026ccf81` and killer checkpoint `4f704164` are
-pushed. The fixed full839 run is active on the exact killer runtime; the latest
-completed full sweep remains full832.
+pushed. The full839 run passes on the exact killer runtime without retries:
+867,938 screens/cursors, 18,192,590 scored RNG positions and 32,366 frames.
+All 279 runtime, 839 raw and 261 protected hashes remain fixed.
 
 Core line input now consumes queued answers and preserves C's physical-input
 state lifetime. Menu searches call the tty reader directly, as their C callers
@@ -218,11 +219,22 @@ do. All 27 checks, 104 controls, eighteen focused fixtures, 44 public sessions
 and 62 bounded workers pass. Four new C retention cases preserve all 116
 boundaries, 9,117 calls and every output hash. Arbitrary queued text has
 constructed real-helper coverage; no ordinary Lua producer reach is claimed.
-Maintained corpus: 840. This checkpoint is outside the active full839 runtime.
+Maintained corpus: 840. Checkpoint `464333b5` is pushed and is outside full839.
 Seven separate history diagnostics now reproduce missing Ctrl-P and Ctrl-U
 behavior, with nine styled/cursor differences and an unchanged complete random
-stream. The complete status-display candidate has thirteen freshly recorded C
-cases; parent comparison and current-runtime verification are pending.
+stream. Its first repair now matches single-history and line-kill behavior.
+The remaining modes expose a separate missing configuration assignment.
+
+The complete status owner now follows C's transformed condition, riding,
+movement, ailments, known causes, injuries and Monk armor penalty. The private
+weapon owner includes shield/towel names and final enhancement tense; the
+shared weapon-description helper names initialized globs correctly. All 23
+checks, 196 controls, eighteen focused fixtures, 44 public sessions and 62
+bounded workers pass. Thirteen fresh C cases match all 1,249 boundaries and
+36,304 complete calls, fixing 21 styled screens and nine cursors. Both negative
+cases preserve all five hashes. Maintained corpus: 841. This status checkpoint
+is outside full839. Final and uncommon combinations have constructed controls;
+complete attribute enlightenment remains a separate audit.
 
 The latest shared-machine C union credits 834 inputs across 111 layouts,
 reaching 4,584/5,492 functions and 60,961/107,260 branch outcomes. It adds

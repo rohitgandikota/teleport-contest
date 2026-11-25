@@ -1,0 +1,145 @@
+{
+    "visible": [
+        [
+            0,
+            80,
+            "You are turning to stone."
+        ],
+        [
+            0,
+            80,
+            "You are turning into slime."
+        ],
+        [
+            0,
+            80,
+            "You are being strangled (100)."
+        ],
+        [
+            0,
+            80,
+            "You are terminally sick from illness."
+        ],
+        [
+            0,
+            80,
+            "You are nauseated."
+        ],
+        [
+            0,
+            80,
+            "You are confused."
+        ],
+        [
+            1,
+            144,
+            "You have a wounded right leg."
+        ],
+        [
+            1,
+            144,
+            "You have slippery gloves (30)."
+        ],
+        [
+            1,
+            144,
+            "You fumble because of your old gloves."
+        ],
+        [
+            1,
+            144,
+            "You hunger rapidly because of your jade ring."
+        ],
+        [
+            2,
+            72,
+            "You are levitating, at will."
+        ],
+        [
+            3,
+            80,
+            "You are underwater."
+        ],
+        [
+            4,
+            93,
+            "You are walking on water because of your riding boots."
+        ],
+        [
+            5,
+            90,
+            "You are mimicking a strange object."
+        ],
+        [
+            5,
+            144,
+            "You are hiding on the ceiling."
+        ],
+        [
+            6,
+            130,
+            "You are transformed and feel condemned inside."
+        ],
+        [
+            7,
+            95,
+            "You are riding your pony."
+        ],
+        [
+            7,
+            95,
+            "You and your pony are levitating."
+        ],
+        [
+            7,
+            95,
+            "Your pony has a wounded right rear leg."
+        ],
+        [
+            8,
+            66,
+            "You have a huge penalty to hit (-20) due to your suit."
+        ],
+        [
+            9,
+            73,
+            "You are wielding a silver shield."
+        ],
+        [
+            9,
+            108,
+            "You are wielding a wet towel."
+        ],
+        [
+            10,
+            61,
+            "You are wielding a glob."
+        ],
+        [
+            11,
+            26,
+            "You are bare handed."
+        ],
+        [
+            12,
+            59,
+            "You are wielding a dagger."
+        ]
+    ],
+    "negativeHashes": {
+        "11": {
+            "screens": "e8886f0dbcb0c48cc1466c09a872e16fa7c69acaa0f81b49030f386c0bd08b56",
+            "cursors": "1685b5e57bd4a3668dcfd0f9f0a4ae5e4e2e01202145c956ebade256a8234eca",
+            "rng": "ca28b63147881ccc2eb13cdc05dd195f5dde92aa03b92833aa0e9f56069e88df",
+            "slices": "4726e1da7cd33c19ee8cf4a7247a74ee2785b0c578c67e2a6c0640f95387880e",
+            "frames": "ba3a1dbda7521fc175cc7ea8b04f1d61a74268d3a43a5e30c3ee86ae6ff797d0"
+        },
+        "12": {
+            "screens": "1b893403fee13bc75b3b28fc921237f53fdc9dc75ba2445602111739efd82ab0",
+            "cursors": "b8ad022a3595b1d7a62b4f46bfbe48c22736fe7cb0567e10a16d36f150da0f8a",
+            "rng": "94cd4f234c25b537b84029ae38f1576c5859e0851f6eafe3964f1837261bedd7",
+            "slices": "5cf526f8261c25370466fab72771bca132d737165f3f73f4ea2f668d1191de63",
+            "frames": "2bfadcb5ce122d308aa99f3b659a5ee16fb1fc0c1e88bd183cb21c4695ba1de2"
+        }
+    }
+}

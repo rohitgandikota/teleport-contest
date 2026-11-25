@@ -41,7 +41,7 @@ import { hides_under, is_clinger } from './mondata.js';
 
 import { waterbody_name, mhidden_description } from './pager.js';
 
-import { is_pool, t_at } from './mon.js';
+import { is_pool, is_lava, t_at } from './mon.js';
 
 import { simple_typename, ansimpleoname, OBJ_NAME, the, just_an } from './objnam.js';
 import { M_AP_TYPE, M_AP_NOTHING, M_AP_OBJECT, M_AP_FURNITURE, M_AP_MONSTER, TT_PIT, SPIKED_PIT, TT_BURIEDBALL, TT_LAVA, TT_INFLOOR } from './const.js';
@@ -56,7 +56,7 @@ import { notice_all_mons_flush } from './hack.js';
 
 import { in_trouble, can_pray, u_gname } from './pray.js';
 
-import { Invulnerable, PermaBlind, Blnd_resist, Undead_warning, Clairvoyant, Adornment, Aggravate_monster, Protection, Polymorph, Lifesaved, Half_spell_damage, Blind_telepat, Warn_of_mon, Detect_monsters, Conflict, Displaced, Jumping, Wwalking, Slow_digestion, Underwater, Free_action, Half_gas_damage, Half_physical_damage, Invisible, Hate_silver, Fixed_abil, Unchanging, Polymorph_control, Protection_from_shape_changers, Wounded_legs, Confusion, Stunned, Glib } from './youprop.js';
+import { Invulnerable, PermaBlind, Blnd_resist, Undead_warning, Clairvoyant, Adornment, Aggravate_monster, Protection, Polymorph, Lifesaved, Half_spell_damage, Blind_telepat, Warn_of_mon, Detect_monsters, Conflict, Displaced, Jumping, Wwalking, Slow_digestion, Underwater, Free_action, Half_gas_damage, Half_physical_damage, Invisible, Hate_silver, Fixed_abil, Unchanging, Polymorph_control, Protection_from_shape_changers, Wounded_legs, Confusion, Stunned, Glib, Fumbling, Lev_at_will } from './youprop.js';
 
 import { temp_resist } from './eat.js';
 
@@ -83,8 +83,8 @@ import { is_vampshifter } from './monst.js';
 
 import { is_vampire, lays_eggs } from './mondata.js';
 
-import { P_NONE, P_UNSKILLED, P_SKILLED, P_ISRESTRICTED, FULL_MOON, NEW_MOON, WEAK, P_TWO_WEAPON_COMBAT, ROLE_GENDMASK, ROLE_MALE, ROLE_FEMALE, ARTICLE_YOUR, ARTICLE_THE, SUPPRESS_IT, SUPPRESS_INVISIBLE, STRAT_WAITMASK, SUPPRESS_SADDLE, SUPPRESS_HALLUCINATION, MSLOW, MFAST, A_CURRENT, A_ORIGINAL, TIMEOUT, W_ARM, W_ARMS, W_ARMG, W_ARMU, W_AMUL, W_RINGL, W_RINGR, W_WEP, W_TOOL, W_ARMOR, W_ACCESSORY, W_ART, LEFT_SIDE, RIGHT_SIDE, BOTH_SIDES, LEG, HANDED, Upolyd, FROMFORM } from './const.js';
-import { makeplural, simpleonames, suit_simple_name } from './objnam.js';
+import { P_NONE, P_UNSKILLED, P_SKILLED, P_ISRESTRICTED, FULL_MOON, NEW_MOON, WEAK, P_TWO_WEAPON_COMBAT, ROLE_GENDMASK, ROLE_MALE, ROLE_FEMALE, ARTICLE_YOUR, ARTICLE_THE, SUPPRESS_IT, SUPPRESS_INVISIBLE, STRAT_WAITMASK, SUPPRESS_SADDLE, SUPPRESS_HALLUCINATION, MSLOW, MFAST, A_CURRENT, A_ORIGINAL, TIMEOUT, W_ARM, W_ARMS, W_ARMG, W_ARMU, W_AMUL, W_RINGL, W_RINGR, W_WEP, W_TOOL, W_ARMOR, W_ACCESSORY, W_ART, LEFT_SIDE, BOTH_SIDES, LEG, HANDED, Upolyd, FROMFORM } from './const.js';
+import { makeplural, simpleonames, suit_simple_name, shield_simple_name } from './objnam.js';
 import { weapon_descr, weapon_type, skill_name, skill_level_name, P_SKILL, can_advance } from './weapon.js';
 
 import { empty_handed, is_ammo } from './wield.js';
@@ -98,7 +98,7 @@ import { In_endgame, In_quest, Is_knox_level } from './const.js';
 
 import { aligns, genders } from './role_data.js';
 import { Sleepy } from './youprop.js';
-import { SLEEPY } from './const.js';
+import { SLEEPY, FUMBLING, HUNGER } from './const.js';
 
 import { A_MAX, ACURR } from './attrib.js';
 
@@ -138,7 +138,7 @@ import { Fire_resistance, Cold_resistance, Sleep_resistance,
          Passes_walls, Regeneration, Reflecting, Blindfolded, Blindfolded_only,
          Punished } from './youprop.js';
 
-import { body_part, mbodypart } from './polyself.js';
+import { body_part, mbodypart, ugenocided, udeadinside } from './polyself.js';
 
 import { is_metallic } from './obj.js';
 
@@ -805,8 +805,6 @@ function characteristics_enlightenment() {
         one_characteristic(a);
 }
 
-// src/insight.c:1180 status_enlightenment() — only the last-resort entries a
-// fresh hero reaches.
 // src/insight.c:233 trap_predicament() — describe u.utraptype; used by
 // status_enlightenment() and self_lookat()
 export function trap_predicament(final, wizxtra) {
@@ -873,13 +871,51 @@ function status_enlightenment(mode) {
     out('');
     out(`${en_final ? 'Final ' : ''}Status:`);
 
-    if (Upolyd(u))
-        you_are('transformed');
-    if (Levitation())
-        you_are('levitating', from_what('HLevitation'));
-    else if (Flying())
-        you_are('flying', from_what('HFlying'));
+    let youtoo = 'You ';
+    if (Upolyd(u)) {
+        let buf = 'transformed';
+        if (ugenocided())
+            buf += ` and ${en_final ? 'felt' : 'feel'} ${udeadinside()} inside`;
+        you_are(buf);
+    }
+    if (Riding) {
+        you_are(`riding ${steedname}`);
+        youtoo += `and ${steedname} `;
+    }
+    if (Levitation()) {
+        if (Lev_at_will() && magic)
+            you_are('levitating, at will');
+        else
+            enl_msg(youtoo, 'are ', 'were ', 'levitating', from_what('HLevitation'));
+    } else if (Flying()) {
+        enl_msg(youtoo, 'are ', 'were ', 'flying', from_what('HFlying'));
+    }
+    if (Underwater()) {
+        you_are('underwater');
+    } else if (u.uinwater) {
+        you_are(Swimming() ? 'swimming' : 'in water', from_what('HSwimming'));
+    } else if (walking_on_water()) {
+        const where = is_pool(u.ux, u.uy) ? 'water'
+            : is_lava(u.ux, u.uy) ? 'lava' : surface(u.ux, u.uy);
+        you_are(`walking on ${where}`, from_what('HWwalking'));
+    }
+    if (Upolyd(u) && (u.uundetected || M_AP_TYPE(game.youmonst) !== M_AP_NOTHING))
+        youhiding(true, en_final);
 
+    const Stoned = u.uprops?.STONED || 0;
+    if (Stoned) {
+        if (en_final && (Stoned & I_SPECIAL))
+            out(' You turned into stone.');
+        else
+            you_are('turning to stone');
+    }
+    const Slimed = u.uprops?.SLIMED || 0;
+    if (Slimed) {
+        if (en_final && (Slimed & I_SPECIAL))
+            out(' You turned into slime.');
+        else
+            you_are('turning into slime');
+    }
     const Strangled = u.intrinsic?.HStrangled || 0;
     if (Strangled) {
         if (u.uburied) {
@@ -894,8 +930,25 @@ function status_enlightenment(mode) {
         }
     }
 
-    if (u.intrinsic?.HStun || u.uprops?.STUNNED)
+    const Sick = u.uprops?.SICK || 0;
+    if (Sick) {
+        if (en_final && (Sick & I_SPECIAL)) {
+            const cause = (u.usick_type & SICK_NONVOMITABLE)
+                ? 'terminal illness' : 'food poisoning';
+            out(` You died from ${cause}.`);
+        } else {
+            if (u.usick_type & SICK_NONVOMITABLE)
+                you_are('terminally sick from illness');
+            if (u.usick_type & SICK_VOMITABLE)
+                you_are('terminally sick from food poisoning');
+        }
+    }
+    if (u.uprops?.VOMITING)
+        you_are('nauseated');
+    if (Stunned())
         you_are('stunned');
+    if (Confusion())
+        you_are('confused');
 
     if (Hallucination())
         you_are('hallucinating');
@@ -916,13 +969,17 @@ function status_enlightenment(mode) {
     }
 
     if (Deaf())
-        you_are('deaf');
+        you_are('deaf', from_what('HDeaf'));
 
     if (Punished()) {
-        const punishment = game.u.uball
-            ? `chained to ${an(simpleonames(game.u.uball))}`
-            : 'punished';
-        you_are(punishment);
+        let buf;
+        if (u.uball) {
+            buf = `chained to ${ansimpleoname(u.uball)}`;
+        } else {
+            impossible('Punished without uball?');
+            buf = 'punished';
+        }
+        you_are(buf);
     }
     if (u.utrap) {
         const anchored = (u.utraptype === TT_BURIEDBALL);
@@ -973,20 +1030,34 @@ function status_enlightenment(mode) {
             you_are(`stuck to ${s_suffix(steedname)} ${simpleonames(saddle)}`, '');
     }
 
-    if (((game.u.intrinsic?.HWounded_legs | 0) > 0
-         || (game.u.EWounded_legs | 0)) && !game.u.usteed) {
-        const side = (game.u.EWounded_legs | 0) & BOTH_SIDES;
-        let part = body_part(LEG);
+    if (Wounded_legs()) {
+        const side = (u.EWounded_legs | 0) & BOTH_SIDES;
+        let part = u.usteed ? mbodypart(u.usteed, LEG) : body_part(LEG);
         let article = 'a ';
         let which = '';
         if (side === BOTH_SIDES) {
             part = makeplural(part);
             article = '';
         } else {
-            which = side === LEFT_SIDE ? 'left '
-                  : side === RIGHT_SIDE ? 'right ' : '';
+            which = side === LEFT_SIDE ? 'left ' : 'right ';
         }
-        you_have(`${article}wounded ${which}${part}`);
+        const buf = `${article}wounded ${which}${part}`;
+        if (u.usteed) {
+            if (game.wizard && steedname)
+                enl_msg(highc(steedname), ' has ', ' had ', buf, '');
+        } else {
+            you_have(buf);
+        }
+    }
+    if (Glib()) {
+        let buf = `slippery ${fingers_or_gloves(true)}`;
+        if (game.wizard)
+            buf += ` (${(u.intrinsic?.HGlib || u.uprops?.GLIB || 0) & TIMEOUT})`;
+        you_have(buf);
+    }
+    if (Fumbling()) {
+        if (magic || cause_known(FUMBLING))
+            enl_msg('You ', 'fumble', 'fumbled', '', from_what('HFumbling'));
     }
 
     if (Sleepy()) {
@@ -998,6 +1069,10 @@ function status_enlightenment(mode) {
         }
     }
 
+    if (u.intrinsic?.HHunger || u.uprops?.HUNGER) {
+        if (magic || cause_known(HUNGER))
+            enl_msg('You ', 'hunger', 'hungered', ' rapidly', from_what('HHunger'));
+    }
     /* hunger: hu_stat[] is blank for the normal state. */
     let hunger = (hu_stat[game.u.uhs] || '').trim().toLowerCase();
     if (!hunger)
@@ -1022,18 +1097,36 @@ function status_enlightenment(mode) {
         you_are('unencumbered' + (game.wizard ? ` <${inv_weight()}>` : ''));
     }
 
-    /* src/insight.c:1270 weapon_insight() — the reachable arms: weaponless
-       (empty_handed) or wielding a plain weapon described by its skill
-       class. The twoweap arm and the shield-of-reflection / wet-towel
-       overrides need state no recorded hero reaches yet. */
+    weapon_insight();
+    if (game.iflags.tux_penalty && !Upolyd(u)) {
+        let buf = enlght_combatinc('to hit', -game.urole.spelarmr, en_final);
+        buf += ` due to your ${suit_simple_name(u.uarm)}`;
+        you_have(buf);
+    }
+
+    /* Report 'nudity' when no armor slot is filled. */
+    if (!wearing_any_armor()) {
+        if (game.u.uroleplay?.nudist)
+            enl_msg('You ', 'do', 'did', ' not wear any armor', '');
+        else
+            you_are('not wearing any armor');
+    }
+}
+
+// src/insight.c:1270 weapon_insight()
+function weapon_insight() {
     if (!game.u.uwep) {
         you_are(empty_handed());
     } else if (game.u.twoweap) {
         you_are('wielding two weapons at once');
     } else {
-        const what = weapon_descr(game.u.uwep);
+        let what = weapon_descr(game.u.uwep);
+        if (game.u.uwep.otyp === ONAMES.SHIELD_OF_REFLECTION)
+            what = shield_simple_name(game.u.uwep);
+        else if (game.u.uwep.otyp === ONAMES.TOWEL && game.u.uwep.spe > 0)
+            what = 'wet towel'; /* include/obj.h:256 is_wet_towel */
         let buf;
-        if (what === 'armor' || what === 'food' || what === 'venom')
+        if (['armor', 'food', 'venom'].includes(what.toLowerCase()))
             buf = `wielding some ${what}`;
         else
             buf = `wielding ${(game.u.uwep.quan === 1) ? an(what) : makeplural(what)}`;
@@ -1055,7 +1148,7 @@ function status_enlightenment(mode) {
             let buf = `${sklvlbuf} ${hav ? 'skill with' : 'in'} ${skill_name(wtype)}`;
             if (!game.u.twoweap) {
                 if (can_advance(wtype, false))
-                    buf += ' and can enhance that';
+                    buf += ` and ${en_final ? 'could have enhanced' : 'can enhance'} that`;
                 if (hav)
                     you_have(buf);
                 else
@@ -1156,16 +1249,6 @@ function status_enlightenment(mode) {
                 }
             }
         }
-    }
-
-    /* C reports 'nudity' when no armour slot is filled. A Tourist wears the
-       Hawaiian shirt, so this must NOT fire — emitting it would push every
-       following row down one and lose the frame. */
-    if (!wearing_any_armor()) {
-        if (game.u.uroleplay?.nudist)
-            enl_msg('You ', 'do', 'did', ' not wear any armor', '');
-        else
-            you_are('not wearing any armor');
     }
 }
 

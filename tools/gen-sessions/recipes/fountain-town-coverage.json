@@ -1,0 +1,205 @@
+{
+  "name": "fountain-town-coverage",
+  "description": "Ordinary wizard keys for town dryup warning, hero/watch anger, natural gremlin movement and steam visibility. Source and JS reach only until parent native verification.",
+  "coverage": [
+    "mode.debug",
+    "terrain.furniture"
+  ],
+  "requireBranchAssertions": true,
+  "branches": [
+    "unseen-watch-accept",
+    "unseen-watch-decline",
+    "visible-watch-accept",
+    "visible-watch-decline",
+    "nonhero-walking-gremlin",
+    "blind-nonhero-walking-gremlin",
+    "steam-drying-accept",
+    "steam-drying-decline",
+    "deaf-visible-watch-warning"
+  ],
+  "branchAssertions": [
+    {
+      "branch": "unseen-watch-accept",
+      "segment": 0,
+      "screenIncludes": [
+        "The flow reduces to a trickle.",
+        "The fountain dries up!",
+        "the shrill sound of guards' whistles."
+      ],
+      "screenExcludes": [],
+      "source": "fountain.c:205-237; no peaceful watch in couldsee causes fallback, warning preserves fountain, then hero accepts destruction and angry_guards(FALSE) makes watch hostile."
+    },
+    {
+      "branch": "unseen-watch-decline",
+      "segment": 1,
+      "screenIncludes": [
+        "The flow reduces to a trickle.",
+        "Dry up fountain?"
+      ],
+      "screenExcludes": [
+        "The fountain dries up!",
+        "guards' whistles"
+      ],
+      "source": "fountain.c:218-219; declined warning-stage drying returns before terrain/watch changes."
+    },
+    {
+      "branch": "visible-watch-accept",
+      "segment": 2,
+      "screenIncludes": [
+        "Hey, stop using that fountain!",
+        "The fountain dries up!",
+        "The guard gets angry!"
+      ],
+      "screenExcludes": [],
+      "source": "fountain.c:179-237 and mon.c:5711; real visible peaceful watch warns, accepted hero destruction angers all watch, adjacent watch supplies feedback."
+    },
+    {
+      "branch": "visible-watch-decline",
+      "segment": 3,
+      "screenIncludes": [
+        "Hey, stop using that fountain!",
+        "Dry up fountain?"
+      ],
+      "screenExcludes": [
+        "The fountain dries up!",
+        "The guard gets angry!"
+      ],
+      "source": "fountain.c:218-219; visible-watch negative retains warned fountain and peaceful watch."
+    },
+    {
+      "branch": "nonhero-walking-gremlin",
+      "segment": 4,
+      "screenIncludes": [
+        "Hey, stop using that fountain!",
+        "A gremlin appears next to you.",
+        "The gremlin multiplies!",
+        "The fountain dries up!"
+      ],
+      "screenExcludes": [
+        "Dry up fountain?",
+        "The guard gets angry!",
+        "You swap places"
+      ],
+      "source": "mon.c:986-992; tame gremlin walks onto real warned town fountain and splits. dryup(FALSE) skips hero query and watch anger. JS state verifies walking/clone/terrain, native text is supplementary."
+    },
+    {
+      "branch": "blind-nonhero-walking-gremlin",
+      "segment": 5,
+      "screenIncludes": [
+        "A cloud of darkness falls upon you.",
+        "A gremlin appears next to you."
+      ],
+      "screenExcludes": [
+        "Dry up fountain?",
+        "The fountain dries up!",
+        "The gremlin multiplies!",
+        "You swap places"
+      ],
+      "source": "fountain.c:223; real wizard blindness before walking gremlin water processing suppresses visible drying. Native absence/setup assertions do not alone prove the hidden terrain transition, which is JS-observed."
+    },
+    {
+      "branch": "steam-drying-accept",
+      "segment": 6,
+      "screenIncludes": [
+        "Steam billows from the fountain.",
+        "Dry up fountain?",
+        "You don't feel hot!"
+      ],
+      "screenExcludes": [
+        "The fountain dries up!"
+      ],
+      "source": "zap.c:5229-5234 creates real zero-damage steam before dryup(TRUE); fountain.c:223-227 suppresses feedback for S_cloud even with cansee true. Native setup/absence is supplementary to JS glyph/terrain state."
+    },
+    {
+      "branch": "steam-drying-decline",
+      "segment": 7,
+      "screenIncludes": [
+        "Steam billows from the fountain.",
+        "Dry up fountain?",
+        "You don't feel hot!"
+      ],
+      "screenExcludes": [
+        "The fountain dries up!"
+      ],
+      "source": "fountain.c:218-219; declined fire-drying retains fountain under steam. JS state distinguishes this negative from accepted suppression."
+    },
+    {
+      "branch": "deaf-visible-watch-warning",
+      "segment": 8,
+      "screenIncludes": [
+        "A watchman earnestly waves her arms!"
+      ],
+      "screenExcludes": [
+        "Hey, stop using that fountain!",
+        "The fountain dries up!",
+        "Dry up fountain?"
+      ],
+      "source": "fountain.c:179-198; real HDeaf producer changes the peaceful visible watch warning to gesture, preserving fountain and peacefulness."
+    }
+  ],
+  "segments": [
+    {
+      "name": "unseen-watch-accept",
+      "seed": 12000,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "moves": " \u0016?\n w  \u0017fountain\n#dip\n-y #dip\n-y y"
+    },
+    {
+      "name": "unseen-watch-decline",
+      "seed": 12000,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "moves": " \u0016?\n w  \u0017fountain\n#dip\n-y #dip\n-y n"
+    },
+    {
+      "name": "visible-watch-accept",
+      "seed": 12000,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "moves": " \u0016?\n w  \u0014llllllllllllllkkkkkk.\u0017fountain\n#dip\n-y  #dip\n-y   #dip\n-y  y "
+    },
+    {
+      "name": "visible-watch-decline",
+      "seed": 12000,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "moves": " \u0016?\n w  \u0014llllllllllllllkkkkkk.\u0017fountain\n#dip\n-y  #dip\n-y   #dip\n-y  n"
+    },
+    {
+      "name": "nonhero-walking-gremlin",
+      "seed": 12000,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "moves": " \u0016?\n w  \u0014llllllllllllllkkkkkk.\u0017fountain\n#dip\n-y  #dip\n-y   \u0007tame gremlin\nu.."
+    },
+    {
+      "name": "blind-nonhero-walking-gremlin",
+      "seed": 12000,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "moves": " \u0016?\n w  \u0014llllllllllllllkkkkkk.\u0017fountain\n#dip\n-y  #dip\n-y   \u0007tame gremlin\nu.#wizintrinsic\n100i\n ."
+    },
+    {
+      "name": "steam-drying-accept",
+      "seed": 12001,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "moves": " \u0017ring of fire resistance\nPar\u0017wand of fire\n\u0017fountain\njzbk   zbk y "
+    },
+    {
+      "name": "steam-drying-decline",
+      "seed": 12001,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "moves": " \u0017ring of fire resistance\nPar\u0017wand of fire\n\u0017fountain\njzbk   zbk n "
+    },
+    {
+      "name": "deaf-visible-watch-warning",
+      "seed": 12000,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "moves": " \u0016?\n w  \u0014llllllllllllllkkkkkk.\u0017fountain\n#wizintrinsic\n100j\n #dip\n-y  #dip\n-y   #dip\n-y   "
+    }
+  ]
+}

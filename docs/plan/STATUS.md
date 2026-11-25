@@ -1,5 +1,29 @@
 # STATUS — live handoff board
 
+## 2026-11-25: town fountain coverage ready for publication
+
+Slime checkpoint `78f78796` is pushed. The fountain checkpoint changes only
+tests and documentation. It adds nine native scenarios for town warnings,
+accepted and declined destruction, watch anger, a walking gremlin's split,
+blindness, steam suppression and deaf watch gestures. All nine cases match
+611 styled boundaries/cursors, 34,832 complete RNG calls and 98 styled
+animation frames. Thirteen ordinary controls check actual producers, unchanged
+observed/deferred outputs and three unanswered prompts. Scoring and the
+bounded worker pass. The preserved source packet's 375 member hashes verify.
+
+All 279 runtime files remain identical to `78f78796`; all 859 prior recordings
+retain their hashes. The registry appends nine requirements. The maintained
+corpus is 860. Native silence alone does not prove hidden terrain or watch
+state; those claims remain separate JS observations. No new runtime repair,
+held-out gain, LLVM coverage count or full860 sweep is claimed. Receipt:
+`.cache/restart-20261122/fountain-town-main-verification.json`, SHA256
+`fd2bf55bf74acd5e688f4571e93ae6c18b5ee25c8683df391dac148bb768dec7`.
+
+Artifact healing has now been sealed by the source agent: 26/26 source
+controls versus 15/26 before, and 45/45 ordinary checks versus 39/45 before.
+Parent native recording, source review and composition remain pending. The
+half-damage reader and pet-swap agents are actively finishing their packets.
+
 ## 2026-11-25: slime timeout clamp and flag preservation verified
 
 Text checkpoint `aef18d5a` is pushed. The next three-line runtime change

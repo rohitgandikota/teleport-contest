@@ -48,10 +48,11 @@ The slime timeout setter now clamps counts while preserving flags and uses
 the masked appearance type. Eleven new C cases match all 1,885 styled
 boundaries and 34,206 calls, fixing two count displays. All 172 controls,
 56 selected/public replays and 56 bounded workers pass. The corpus is 859;
-this setter change is outside the completed full858 run. Fountain-town native
-coverage is ready for its separate test checkpoint. The three next runtime
-targets are canonical half-damage readers, artifact healing and pet-swap
-consequences.
+this setter change is outside the completed full858 run. Nine additional
+fountain-town C cases match 611 styled boundaries, 34,832 calls and 98 frames;
+all thirteen ordinary controls pass. That test-only checkpoint brings the
+maintained corpus to 860. The three next runtime targets are canonical
+half-damage readers, artifact healing and pet-swap consequences.
 
 Publication resumed with `2089260a` after the earlier approval-review usage
 limit. That pushed checkpoint includes probing, dark-side visibility and the

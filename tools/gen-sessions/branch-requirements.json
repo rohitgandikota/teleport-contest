@@ -4173,6 +4173,15 @@
     {"group":"Slimed timeout setter","id":"slime-timeout.amulet-cure-negative","cFile":"src/potion.c","cFunction":"make_slimed","description":"amulet cure negative"},
     {"group":"Slimed timeout setter","id":"slime-timeout.unrelated-delayed-killer-negative","cFile":"src/potion.c","cFunction":"make_slimed","description":"unrelated delayed killer negative"},
     {"group":"Slimed timeout setter","id":"slime-timeout.expiry-glyph-negative","cFile":"src/potion.c","cFunction":"make_slimed","description":"expiry glyph negative"},
-    {"group":"Slimed timeout setter","id":"slime-timeout.lava-burn-negative","cFile":"src/potion.c","cFunction":"make_slimed","description":"lava burn negative"}
+    {"group":"Slimed timeout setter","id":"slime-timeout.lava-burn-negative","cFile":"src/potion.c","cFunction":"make_slimed","description":"lava burn negative"},
+    {"group":"Town fountain consequences","id":"unseen-watch-accept","cFile":"src/fountain.c","cFunction":"dryup","description":"unseen watch accept"},
+    {"group":"Town fountain consequences","id":"unseen-watch-decline","cFile":"src/fountain.c","cFunction":"dryup","description":"unseen watch decline"},
+    {"group":"Town fountain consequences","id":"visible-watch-accept","cFile":"src/fountain.c","cFunction":"dryup","description":"visible watch accept"},
+    {"group":"Town fountain consequences","id":"visible-watch-decline","cFile":"src/fountain.c","cFunction":"dryup","description":"visible watch decline"},
+    {"group":"Town fountain consequences","id":"nonhero-walking-gremlin","cFile":"src/fountain.c","cFunction":"dryup","description":"nonhero walking gremlin"},
+    {"group":"Town fountain consequences","id":"blind-nonhero-walking-gremlin","cFile":"src/fountain.c","cFunction":"dryup","description":"blind nonhero walking gremlin"},
+    {"group":"Town fountain consequences","id":"steam-drying-accept","cFile":"src/fountain.c","cFunction":"dryup","description":"steam drying accept"},
+    {"group":"Town fountain consequences","id":"steam-drying-decline","cFile":"src/fountain.c","cFunction":"dryup","description":"steam drying decline"},
+    {"group":"Town fountain consequences","id":"deaf-visible-watch-warning","cFile":"src/fountain.c","cFunction":"dryup","description":"deaf visible watch warning"}
   ]
 }

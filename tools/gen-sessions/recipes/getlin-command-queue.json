@@ -1,0 +1,79 @@
+{
+  "name": "getlin-command-queue",
+  "description": "Four original C caller-retention cases cover physical core input and direct tty menu search. Queued arbitrary-line bytes and in_getlin lifetime have separate constructed source controls.",
+  "coverage": [
+    "mode.debug",
+    "ui.getlin"
+  ],
+  "requireBranchAssertions": true,
+  "branches": [
+    "queued-dip-menu-search",
+    "ordinary-dip-menu-search",
+    "queued-item-name-physical-line",
+    "chargen-menu-direct-tty-search"
+  ],
+  "branchAssertions": [
+    {
+      "branch": "queued-dip-menu-search",
+      "segment": 0,
+      "screenIncludes": [
+        "Search for: dag"
+      ],
+      "source": "src/cmd.c:4773-4777 creates [dip, USER_INPUT, y]; invent.c:1785-1830 consumes USER_INPUT, and win/tty/wintty.c:1709 calls the direct tty reader. JS observer separately proves y remains pending; native terminal alone does not prove queue state."
+    },
+    {
+      "branch": "ordinary-dip-menu-search",
+      "segment": 1,
+      "screenIncludes": [
+        "Search for: dag"
+      ],
+      "source": "Direct #dip has no canned confirmation. Its inventory menu search still uses tty_getlin."
+    },
+    {
+      "branch": "queued-item-name-physical-line",
+      "segment": 2,
+      "screenIncludes": [
+        "What do you want to name this dagger? Edge"
+      ],
+      "source": "src/iactions.c:167-172 and do_name.c docallcmd consume the command/category/invlet before core getlin. Typed name is physical; in_getlin lifetime is source/state proof, not a native terminal flag."
+    },
+    {
+      "branch": "chargen-menu-direct-tty-search",
+      "segment": 3,
+      "screenIncludes": [
+        "Search for: Wiz"
+      ],
+      "source": "src/role.c:2337 select_menu dispatches win/tty/wintty.c:1709 tty_getlin. JS plselect.select_menu_pick_one is a separate live implementation of this direct tty menu contract, before hero initialization."
+    }
+  ],
+  "segments": [
+    {
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "name": "queued-dip-menu-search",
+      "moves": " \u0017dagger\n\u0017apple\n\u0017fountain\n#herecmdmenu\nb?:dag"
+    },
+    {
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "name": "ordinary-dip-menu-search",
+      "moves": " \u0017dagger\n\u0017apple\n\u0017fountain\n#dip\n?:dag"
+    },
+    {
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "name": "queued-item-name-physical-line",
+      "moves": " \u0017dagger\n\u0017apple\niacEdge\n#\u001b"
+    },
+    {
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "name": "chargen-menu-direct-tty-search",
+      "moves": "n:Wiz"
+    }
+  ]
+}

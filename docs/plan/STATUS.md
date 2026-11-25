@@ -9507,6 +9507,63 @@ recorded unchanged: raw
 the complete dodip owner and its real queued confirmation discrepancy. Other
 agents continue their fixed-snapshot audits. No remote coverage job is active.
 
+## 2026-11-25 04:06 UTC: queued line input verified; full839 active
+
+Killer checkpoint `4f70416481d938462e67b02d810c87e97643c0fe` is pushed.
+The full839 run is active on that exact fixed runtime in workers 24647 and
+63576. Last observed counts were 306 and 323 passing fixtures, no failures.
+Run `verify-killer-full839.py` after both workers actually close. All 279
+runtime files, 839 raw fixtures and 261 protected hashes are pinned. No newer
+full-regression pass is claimed yet.
+
+Core getlin composition worker 7086 closed with exit 0. All 27 checks pass:
+104 controls, eighteen focused fixtures with 122 segments, 5,030 screens and
+cursors, 321,713 scored RNG positions and fifteen frames. All 44 public
+sessions and 62 bounded workers pass. Seven strict native and all-five deferred
+fixtures cover 33 segments, 2,584 boundaries and 92,952 complete calls, with
+zero frames. The four fresh C cases retain all 116 styled grids, cursors,
+slices and 9,117 calls; all five output hashes are unchanged for every case.
+Constructed state coverage improves from 5/32 to 32/32 and ordinary input
+assertions from 3/4 to 4/4. This is a source/state repair, with no new native
+rendered-score gain claimed. Arbitrary queued text remains constructed proof.
+
+Only cmd.js, plselect.js and tty/wintty.js change. Core queued lines bypass the
+tty reader, and two menu search callers use the direct tty owner. Physical
+getlin sets and clears in_getlin while restoring bot_disabled. The EOF and
+wish changes are retained. All 279 main runtime and six support hashes equal
+the tested candidate. All 839 preceding raw hashes remain fixed; four intent
+entries appended. Maintained corpus: 840. Publish now. Verification SHA
+`9ae87105398e4791ee07d75221d4674ce8e495f3f2ca8ae21f3b1c5554c85943`.
+Integration receipt: `getlin-command-queue-main-integration.json`. A first
+integration preflight incorrectly counted only generated fixtures rather than
+generated plus public; it stopped before mutation. The corrected preflight
+uses the full839 fixture manifest. An initial verifier invocation omitted its
+directory argument and performed no verification; the corrected invocation
+passed. Neither mistake required any game-test retry.
+
+Parent history diagnostic `line-history-parent-diagnostic` records seven
+unchanged ordinary inputs. Raw SHA
+`bf9dbac8a21dd799d335fb41d9de725c52aa19905348c30fb4987c9a7a30a7b2`,
+179 boundaries and 21,273 complete calls. Five cases differ in nine styled
+screens and nine cursors; both negative cases and the complete RNG stream
+remain exact. Missing Ctrl-P history and selected Ctrl-U line kill explain the
+first failures. No history patch exists yet. Parent owns this follow-up;
+Jason continues the separate complete dodip owner. Original diagnostics stay
+fixed. Selected NOMUX tty uses DEL erase and Ctrl-U kill; DEL is not a whole-
+line kill in this build.
+
+The complete status packet is sealed and independently checked: 694 files,
+six links, seal
+`f342f34f86ea015cbafc33ada4f7bbab476b43f3e546b408b202a90d04cd6757`.
+Its thirteen exact proposals were recorded successfully in worker 99452. Raw
+SHA `b0ed4de855a23c00e856a9bd9061c6825c28c41b933732561b9a3ec5c326ed7e`,
+1,249 boundaries. Native comparison worker 75512 is active; no pass claimed
+yet. Runtime scope is complete status_enlightenment and private weapon_insight,
+plus a separately reviewed one-conditional glob description prerequisite.
+Darwin traces four preserved spoteffects native RNG failures; no terrain
+promotion is allowed before they close. Pauli and Singer continue their fixed
+do_stone_mon and breath/chant audits. No remote coverage job is active.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

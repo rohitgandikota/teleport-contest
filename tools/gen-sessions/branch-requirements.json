@@ -3978,6 +3978,10 @@
     {"group":"Fresh-game killer initialization","id":"genocide-killer-initialization.single-self-human","cFile":"src/decl.c","cFunction":"decl_globals_init","description":"genocide killer initialization.single self human"},
     {"group":"Fresh-game killer initialization","id":"genocide-killer-initialization.single-cancel-control","cFile":"src/decl.c","cFunction":"decl_globals_init","description":"genocide killer initialization.single cancel control"},
     {"group":"Fresh-game killer initialization","id":"genocide-killer-initialization.class-cancel-control","cFile":"src/decl.c","cFunction":"decl_globals_init","description":"genocide killer initialization.class cancel control"},
-    {"group":"Fresh-game killer initialization","id":"genocide-killer-initialization.single-other-control","cFile":"src/decl.c","cFunction":"decl_globals_init","description":"genocide killer initialization.single other control"}
+    {"group":"Fresh-game killer initialization","id":"genocide-killer-initialization.single-other-control","cFile":"src/decl.c","cFunction":"decl_globals_init","description":"genocide killer initialization.single other control"},
+    {"group":"Core line input and direct tty menu callers","id":"queued-dip-menu-search","cFile":"win/tty/wintty.c","cFunction":"process_menu_window","description":"queued dip menu search"},
+    {"group":"Core line input and direct tty menu callers","id":"ordinary-dip-menu-search","cFile":"win/tty/wintty.c","cFunction":"process_menu_window","description":"ordinary dip menu search"},
+    {"group":"Core line input and direct tty menu callers","id":"queued-item-name-physical-line","cFile":"src/windows.c","cFunction":"getlin","description":"queued item name physical line"},
+    {"group":"Core line input and direct tty menu callers","id":"chargen-menu-direct-tty-search","cFile":"win/tty/wintty.c","cFunction":"process_menu_window","description":"chargen menu direct tty search"}
   ]
 }

@@ -873,16 +873,33 @@ export async function hooked_tty_getlin(query, hook, suppress_history = false) {
     return buf;
 }
 
-// src/windows.c:1868 getlin() — the core wrapper: bot() is disabled for the
-// duration of the prompt, so the status rows are not repainted by the
-// prompt's flush ("Set fruit to what?" over a blank status stays blank).
+// src/windows.c:1868 getlin(), queued answers bypass the tty line reader.
 export async function getlin(query, hook) {
     const old_bot_disabled = !!game.bot_disabled;
+    let buf = '', got_cmdq = false, cmdq;
+
+    while ((cmdq = cmdq_pop()) !== null) {
+        if (cmdq.typ !== CMDQ_KEY)
+            break;
+        got_cmdq = true;
+        if (cmdq.key === '\n')
+            break;
+        buf += cmdq.key;
+    }
+    if (got_cmdq) {
+        /* C callers and pline see only the prefix before the first NUL. */
+        buf = buf.split('\0', 1)[0];
+        await pline(`${query} ${buf}`);
+        return buf;
+    }
+
+    game.program_state.in_getlin = 1;
     game.bot_disabled = true;
     try {
         return await hooked_tty_getlin(query, hook);
     } finally {
         game.bot_disabled = old_bot_disabled;
+        game.program_state.in_getlin = 0;
     }
 }
 

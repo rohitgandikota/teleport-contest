@@ -208,8 +208,21 @@ pass. Six new C cases match 705 boundaries and 16,757 complete calls. All three
 negative cases preserve every output hash. Two old gaze-test assertions now
 expect C's blank record; gameplay checks are unchanged. Existing JSON saves
 that lack the record remain a separate compatibility limit. Maintained corpus:
-839. Slippery-armor checkpoint `026ccf81` is pushed. A fixed full839 run follows
-this checkpoint; the latest completed full sweep remains full832.
+839. Slippery-armor checkpoint `026ccf81` and killer checkpoint `4f704164` are
+pushed. The fixed full839 run is active on the exact killer runtime; the latest
+completed full sweep remains full832.
+
+Core line input now consumes queued answers and preserves C's physical-input
+state lifetime. Menu searches call the tty reader directly, as their C callers
+do. All 27 checks, 104 controls, eighteen focused fixtures, 44 public sessions
+and 62 bounded workers pass. Four new C retention cases preserve all 116
+boundaries, 9,117 calls and every output hash. Arbitrary queued text has
+constructed real-helper coverage; no ordinary Lua producer reach is claimed.
+Maintained corpus: 840. This checkpoint is outside the active full839 runtime.
+Seven separate history diagnostics now reproduce missing Ctrl-P and Ctrl-U
+behavior, with nine styled/cursor differences and an unchanged complete random
+stream. The complete status-display candidate has thirteen freshly recorded C
+cases; parent comparison and current-runtime verification are pending.
 
 The latest shared-machine C union credits 834 inputs across 111 layouts,
 reaching 4,584/5,492 functions and 60,961/107,260 branch outcomes. It adds

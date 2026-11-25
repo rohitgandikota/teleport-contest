@@ -120,11 +120,19 @@ boundaries/cursors and 25,166 calls, with zero frames. All 73 selected/public
 fixtures and 73 eight-second workers pass, together with eight retained suites,
 source audit and five syntax checks. Its new fixture brings the corpus to 876,
 outside full875. CapitalMon's DEBUG listing is explicitly unported and unverified.
-The next test_move candidate passes nine fixed native cases versus five before,
-matching 759 styled boundaries/cursors and 20,745 calls. Its composition and
-full877 verification remain pending. Further source reviews cover article
-handling, rooted and mounted movement, monster blindness feedback and intrinsic
-free action.
+Poison is pushed as `77d106c5`. The next test_move composition passes nine
+native cases versus five before, matching 759 styled boundaries/cursors and
+20,745 calls. All 54 source controls, 27 ordinary assertions, 79 selected/public
+fixtures, nine retained suites and source audit pass. The strict eight-second
+check passes 77/79; both large door batches finish on both fixed runtimes within
+the default 45-second budget, with exact outputs. Full877 passes on NFS without
+retries: 908,363 screens/cursors, 19,223,960 random positions and 32,811 frames.
+All 1,167 files remain fixed. The movement checkpoint is ready for publication.
+A separate free-action candidate passes 22 source controls and ten native
+cases, matching 969 styled boundaries/cursors, 23,279 calls and eight frames.
+Its ordinary delivery checks and broader regression remain pending. Further
+source reviews cover article handling, rooted and mounted movement, and monster
+blindness feedback with its shared notice-location prerequisite.
 These local results do not establish a newer held-out score.
 
 Publication resumed with `2089260a` after the earlier approval-review usage

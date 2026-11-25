@@ -1,5 +1,55 @@
 # STATUS — live handoff board
 
+## 2026-11-25: test_move passes full877; ready for publication
+
+Poison is pushed as `77d106c5`. Its redundant parent recording now links to
+the canonical fixture after checksum verification, removing 1,950,070 bytes.
+The only unpublished main runtime changes are the scoped test_move owner,
+geometry helpers and caller in cmd.js, hack.js and monmove.js. The caller now
+uses the shared owner after trap escape and before liquid danger. Duplicate
+door, blocking and squeeze paths are removed. The patch preserves all newer
+poison, potion and delayed-death fixes.
+
+All 54 source controls and 27 ordinary assertions pass, versus 37 and 19 before.
+Nine native cases match 759 styled boundaries/cursors, 20,745 calls and ordered
+slices, and zero frames, versus five exact cases before. All 79 selected/public
+fixtures match 92,285 screens/cursors, 1,608,680 random positions and 3,892 frames.
+The strict eight-second check passes 77/79. The two large door-magic batches
+also exceed that budget on the previous runtime. All four fixed baseline and
+candidate diagnostic workers finish with exact outputs within 7.8 to 22.7
+seconds, below the scorer's default 45-second limit. Original strict failures
+are retained in `test-move-main-checks.json`; do not report 79/79 strict passes.
+Nine retained suites, source audit and five syntax checks pass.
+
+Full877 passes on NFS with two workers, default budgets and no retries:
+908,363 screens/cursors, 19,223,960 random positions and 32,811 frames. Root:
+`/share/NFS/u/rohit/research/contest/artifacts/2026-11-22/test-move-full877-js-20261125`.
+All 1,167 files are fixed. This run links 875 prior raw recordings and uploads
+only source and two new recordings. All-files SHA256:
+`24fad212af92f68f6f1fdc3da3914e2cbe0a08b08cc5a2dd463cbd7a43b8e089`.
+Compact full receipt SHA256:
+`ea7b31a85230986a7bcb1425135865b00542c4f08bdb0d13ecb7c28d195f7a5a`.
+All hashes also match current local main. Main receipt:
+`test-move-main-verification.json`, SHA256
+`839176f6c4ecb1c19a1fb6e0d2e1c9d4362eb034e6fa2fb004347b56ab80e247`.
+Commit and immediately push. Other domove, swim and pushing gaps remain
+documented in the complete source review; this is not whole-movement closure.
+
+Free-action research now has a separate four-file candidate, based on this
+test_move composition. The real wizard timer needs HFree_action storage and
+countdown, while C's Free_action macro accepts equipment sources only. The
+sleeping-potion reader also needs the canonical macro. All ten newly recorded
+C cases match 969 styled boundaries/cursors, 23,279 calls and eight frames,
+versus five exact cases before. All 22 constructed controls pass versus seven
+before. Two initial harness assertions were corrected to use C's inner rn2
+log and actual paralysis-vapor wording; original reports are retained.
+Ordinary observer/deferred controls and broader regression are still pending.
+The bad amulet proposal was replaced by real sleep resistance, with ring-removal
+and ring/paralysis cases added. No free-action runtime edits are on main.
+The display notice-location prerequisite, article owner, rooted and mounted
+movement reviews continue separately. Latest observed leaderboard remains
+rank 7; no new held-out result is inferred.
+
 ## 2026-11-25: poison verified for publication; test_move native comparisons pass
 
 Trap movement is pushed as `e21f4fa8`, including the completed full875

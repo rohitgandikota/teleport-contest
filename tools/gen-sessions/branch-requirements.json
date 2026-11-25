@@ -4333,6 +4333,15 @@
     {"group": "poisoned-owner", "id": "needle-attribute-negative", "cFile": "src/attrib.c", "cFunction": "poisoned", "description": "A worn wet towel leaves chest needle poison constitution loss unchanged."},
     {"group": "poisoned-owner", "id": "amulet-resistance-negative", "cFile": "src/attrib.c", "cFunction": "poisoned", "description": "An actually worn amulet versus poison prevents the poison consequence through extrinsic resistance."},
     {"group": "poisoned-owner", "id": "natural-bite-negative", "cFile": "src/attrib.c", "cFunction": "poisoned", "description": "An actual hostile giant spider bite keeps the ordinary poison caller behavior unchanged."},
-    {"group": "poisoned-owner", "id": "carried-gas-attribute-negative", "cFile": "src/attrib.c", "cFunction": "poisoned", "description": "A carried wet towel gives no gas protection and leaves the chest gas strength loss unchanged."}
+    {"group": "poisoned-owner", "id": "carried-gas-attribute-negative", "cFile": "src/attrib.c", "cFunction": "poisoned", "description": "A carried wet towel gives no gas protection and leaves the chest gas strength loss unchanged."},
+    {"group":"test-move-owner","id":"test-move-owner.door-open-enter","cFile":"src/hack.c","cFunction":"test_move","description":"Ordinary keyboard witness: door-open-enter"},
+    {"group":"test-move-owner","id":"test-move-owner.autoopen-off","cFile":"src/hack.c","cFunction":"test_move","description":"Ordinary keyboard witness: autoopen-off"},
+    {"group":"test-move-owner","id":"test-move-owner.pit-door-climb","cFile":"src/hack.c","cFunction":"domove_core","description":"Ordinary keyboard witness: pit-door-climb"},
+    {"group":"test-move-owner","id":"test-move-owner.pit-door-escape-open","cFile":"src/hack.c","cFunction":"domove_core","description":"Ordinary keyboard witness: pit-door-escape-open"},
+    {"group":"test-move-owner","id":"test-move-owner.web-door-climb","cFile":"src/hack.c","cFunction":"domove_core","description":"Ordinary keyboard witness: web-door-climb"},
+    {"group":"test-move-owner","id":"test-move-owner.rock-mole-door","cFile":"src/hack.c","cFunction":"test_move","description":"Ordinary keyboard witness: rock-mole-door"},
+    {"group":"test-move-owner","id":"test-move-owner.xorn-door","cFile":"src/hack.c","cFunction":"test_move","description":"Ordinary keyboard witness: xorn-door"},
+    {"group":"test-move-owner","id":"test-move-owner.open-door-negative","cFile":"src/hack.c","cFunction":"test_move","description":"Ordinary keyboard witness: open-door-negative"},
+    {"group":"test-move-owner","id":"test-move-owner.plain-floor-negative","cFile":"src/hack.c","cFunction":"test_move","description":"Ordinary keyboard witness: plain-floor-negative"}
   ]
 }

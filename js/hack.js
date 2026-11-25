@@ -27,7 +27,7 @@ import { YMonnam, m_monnam, mon_nam, y_monnam } from './do_name.js';
 import { is_flimsy } from './obj.js';
 import { You, You_feel, pline_xy, pline_The, set_msg_xy, Norep } from './pline.js';
 import { feel_location } from './display.js';
-import { can_ooze, accessible } from './monmove.js';
+import { can_ooze, can_fog, accessible } from './monmove.js';
 import { dig_typ, use_pick_axe2, bury_objs, buried_ball,
          buried_ball_to_punishment } from './dig.js';
 import { docrt } from './display.js';
@@ -55,7 +55,10 @@ import { dotrap, immune_to_trap, into_vs_onto } from './trap.js';
 import { is_pit, EXT_ENCUMBER, HVY_ENCUMBER, IS_FURNITURE, STAIRS, ECMD_OK, ECMD_TIME, OBJ_AT, GOLD_SYM, TT_BEARTRAP, TT_PIT, TT_WEB, TT_LAVA, TT_INFLOOR, TT_BURIEDBALL } from './const.js';
 import { near_capacity } from './attrib.js';
 import { gethungry } from './eat.js';
-import { cmdq_clear, closed_door, paranoid_query, xytodir } from './cmd.js';
+import { cmdq_clear, cmdq_peek, closed_door, paranoid_query, xytodir } from './cmd.js';
+import { doopen_indir } from './lock.js';
+import { dokick } from './dokick.js';
+import { CMDQ_EXTCMD } from './const.js';
 import { delobj } from './mon.js';
 import { block_point, recalc_block_point } from './vision.js';
 import { add_damage, pay_for_damage } from './shk.js';
@@ -491,6 +494,9 @@ export function may_passwall(x, y) {
     return !(IS_STWALL(lev.typ) && (lev.wall_info & W_NONPASSWALL));
 }
 
+// include/rm.h:538 Sokoban, active puzzle rules on the current level.
+const Sokoban = () => !!game.level.flags.sokoban_rules;
+
 // src/hack.c:939 bad_rock() — is this square one a monster cannot walk through?
 //
 // The port used to carry only three of the five terms. It was missing
@@ -503,7 +509,7 @@ export function bad_rock(mdat, x, y) {
     if (!lev)
         return true;
 
-    return ((In_sokoban(game.u.uz) && sobj_at(ONAMES.BOULDER, x, y))
+    return !!((Sokoban() && sobj_at(ONAMES.BOULDER, x, y))
             || (IS_OBSTRUCTED(lev.typ)
                 && (!tunnels(mdat) || needspick(mdat) || !may_dig(x, y))
                 && !(passes_walls(mdat) && may_passwall(x, y))));
@@ -544,10 +550,10 @@ export function cant_squeeze_thru(mon) {
     if (is_u ? Passes_walls() : passes_walls(ptr))
         return 0;
 
-    /* too big? (can_fog needs polymorph-into-fog state, not modelled) */
+    /* too big? */
     if (bigmonst(ptr)
         && !(amorphous(ptr) || is_whirly(ptr) || noncorporeal(ptr)
-             || slithy(ptr)))
+             || slithy(ptr) || can_fog(mon)))
         return 1;
 
     /* lugging too much junk? */
@@ -558,7 +564,7 @@ export function cant_squeeze_thru(mon) {
         return 2;
 
     /* Sokoban restriction applies to hero only */
-    if (is_u && In_sokoban(game.u.uz))
+    if (is_u && Sokoban())
         return 3;
 
     return 0;
@@ -581,9 +587,7 @@ export function doorless_door(x, y) {
 }
 
 // src/hack.c:991 test_move() — is (ux+dx,uy+dy) an OK place to move? mode is
-// DO_MOVE, TEST_MOVE, TEST_TRAV or TEST_TRAP. The DO_MOVE message/side-effect
-// record themselves; nothing reaches them today because domove_core in
-// js/cmd.js still carries its own inline blocked-move test.
+// DO_MOVE, TEST_MOVE, TEST_TRAV or TEST_TRAP.
 export async function test_move(ux, uy, dx, dy, mode) {
     const x = ux + dx;
     const y = uy + dy;
@@ -594,15 +598,14 @@ export async function test_move(ux, uy, dx, dy, mode) {
         return false;
 
     const tmpr = game.level.at(x, y);
-    const passesWalls = Passes_walls();
 
     /*
      *  Check for physical obstacles.  First, the place we are going.
      */
     if (IS_OBSTRUCTED(tmpr.typ) || tmpr.typ === IRONBARS) {
-        if (game.u.ublind && mode === DO_MOVE)
+        if (Blind() && mode === DO_MOVE)
             await feel_location(x, y);
-        if (passesWalls && may_passwall(x, y)) {
+        if (Passes_walls() && may_passwall(x, y)) {
             ; /* do nothing */
         } else if (Underwater()) {
             if (mode === DO_MOVE)
@@ -616,7 +619,7 @@ export async function test_move(ux, uy, dx, dy, mode) {
                 && await still_chewing(x, y)) {
                 return false;
             }
-            if (!(passesWalls || passes_bars(game.youmonst.data))) {
+            if (!(Passes_walls() || passes_bars(game.youmonst.data))) {
                 if (mode === DO_MOVE && game.flags?.mention_walls)
                     await You('cannot pass through the bars.');
                 return false;
@@ -637,7 +640,7 @@ export async function test_move(ux, uy, dx, dy, mode) {
             if (mode === DO_MOVE) {
                 if (is_db_wall(x, y)) {
                     await pline('That drawbridge is up!');
-                } else if (passesWalls && !may_passwall(x, y)
+                } else if (Passes_walls() && !may_passwall(x, y)
                            && In_sokoban(game.u.uz)) {
                     /* soko restriction stays even after puzzle is solved */
                     await pline_The('Sokoban walls resist your ability.');
@@ -661,9 +664,9 @@ export async function test_move(ux, uy, dx, dy, mode) {
         }
     } else if (IS_DOOR(tmpr.typ)) {
         if (closed_door(x, y)) {
-            if (game.u.ublind && mode === DO_MOVE)
+            if (Blind() && mode === DO_MOVE)
                 await feel_location(x, y);
-            if (passesWalls) {
+            if (Passes_walls()) {
                 ; /* do nothing */
             } else if (can_ooze(game.youmonst)) {
                 if (mode === DO_MOVE)
@@ -685,11 +688,14 @@ export async function test_move(ux, uy, dx, dy, mode) {
                                   + " but can't squeeze your possessions through.");
                     if ((game.flags?.autoopen !== false) && !game.context.run
                         && !Confusion() && !Stunned() && !Fumbling()) {
-                        /* src/hack.c:1101 doopen_indir() arm: this port
-                           runs it before domove() (js/cmd.js, the closed
-                           door pre-check), so a walk that qualifies never
-                           reaches test_move() */
-                        ;
+                        const tmp = await doopen_indir(x, y);
+                        const cq = cmdq_peek(CQ_CANNED);
+                        if (tmp === ECMD_OK && cq?.typ === CMDQ_EXTCMD
+                            && cq.fn === dokick)
+                            game.context.door_opened = true;
+                        else
+                            game.context.door_opened = !closed_door(x, y);
+                        game.context.move = (ux !== game.u.ux || uy !== game.u.uy);
                     } else if (x === ux || y === uy) {
                         if (Blind() || Stunned() || ACURR(A_DEX) < 10
                             || Fumbling()) {
@@ -697,7 +703,7 @@ export async function test_move(ux, uy, dx, dy, mode) {
                                 await You_cant(`lead ${y_monnam(game.u.usteed)} through that closed door.`);
                             } else {
                                 await pline('Ouch!  You bump into a door.');
-                                exercise(A_DEX, false);
+                                await exercise(A_DEX, false);
                             }
                             /* use current move; needed for the "ouch" case
                                but done for steed case too for consistency;
@@ -716,7 +722,7 @@ export async function test_move(ux, uy, dx, dy, mode) {
                     /* C: goto testdiag — on survival, control falls out of
                        the door branch into the squeeze tests below */
                     const r = await test_move_testdiag(x, y, dx, dy, mode,
-                                                       passesWalls);
+                                                       Passes_walls());
                     if (r !== 'fallthru')
                         return r;
                     through_testdiag = true;
@@ -726,7 +732,7 @@ export async function test_move(ux, uy, dx, dy, mode) {
             }
         } else {
             const r = await test_move_testdiag(x, y, dx, dy, mode,
-                                               passesWalls);
+                                               Passes_walls());
             if (r !== 'fallthru')
                 return r;
         }
@@ -765,21 +771,12 @@ export async function test_move(ux, uy, dx, dy, mode) {
         if (t && t.tseen && t.ttyp !== VIBRATING_SQUARE)
             return (mode === TEST_TRAP);
 
-        /* src/hack.c:59 Known_wwalking / :63 Known_lwalking */
-        const uarmf = game.u.uarmf;
-        const Known_wwalking =
-            (uarmf && uarmf.otyp === ONAMES.WATER_WALKING_BOOTS
-             && game.objects[ONAMES.WATER_WALKING_BOOTS].oc_name_known
-             && !game.u.usteed);
-        const Known_lwalking =
-            (Known_wwalking && Fire_resistance()
-             && uarmf.oerodeproof && uarmf.rknown);
         if ((tmpr.seenv && is_pool_or_lava(x, y))
             && ((IS_WATERWALL(tmpr.typ)
                  || tmpr.typ === LAVAWALL)
                 || !(Levitation() || Flying()
-                     || (is_pool(x, y) ? Known_wwalking
-                         : (Known_lwalking
+                     || (is_pool(x, y) ? Known_wwalking()
+                         : (Known_lwalking()
                             && is_lava(game.u.ux, game.u.uy))))))
             return (mode === TEST_TRAP);
     }
@@ -790,7 +787,7 @@ export async function test_move(ux, uy, dx, dy, mode) {
     const ust = game.level.at(ux, uy);
 
     /* Now see if other things block our way . . */
-    if (dx && dy && !passesWalls && IS_DOOR(ust.typ)
+    if (dx && dy && !Passes_walls() && IS_DOOR(ust.typ)
         && (!doorless_door(ux, uy) || await block_entry(x, y))) {
         /* Can't move at a diagonal out of a doorway with door. */
         if (mode === DO_MOVE && game.flags?.mention_walls)
@@ -799,9 +796,9 @@ export async function test_move(ux, uy, dx, dy, mode) {
     }
 
     if (sobj_at(ONAMES.BOULDER, x, y)
-        && (In_sokoban(game.u.uz) || !passesWalls)) {
+        && (Sokoban() || !Passes_walls())) {
         if (mode !== TEST_TRAV && game.context.run >= 2
-            && !(game.u.ublind || Hallucination())
+            && !(Blind() || Hallucination())
             && !could_move_onto_boulder(x, y)) {
             if (mode === DO_MOVE && game.flags?.mention_walls)
                 await pline_dir(xytodir(dx, dy), 'A boulder blocks your path.');
@@ -810,19 +807,19 @@ export async function test_move(ux, uy, dx, dy, mode) {
         if (mode === DO_MOVE) {
             /* tunneling monsters will chew before pushing */
             if (tunnels(game.youmonst.data) && !needspick(game.youmonst.data)
-                && !In_sokoban(game.u.uz)) {
+                && !Sokoban()) {
                 if (await still_chewing(x, y))
                     return false;
             } else if ((await moverock()) < 0)
                 return false;
         } else if (mode === TEST_TRAV) {
             /* never travel through boulders in Sokoban */
-            if (In_sokoban(game.u.uz))
+            if (Sokoban())
                 return false;
 
             /* don't pick two boulders in a row, unless there's a way thru */
-            if (sobj_at(ONAMES.BOULDER, ux, uy) && !In_sokoban(game.u.uz)) {
-                if (!passesWalls
+            if (sobj_at(ONAMES.BOULDER, ux, uy) && !Sokoban()) {
+                if (!Passes_walls()
                     && !could_move_onto_boulder(ux, uy)
                     && !(tunnels(game.youmonst.data)
                          && !needspick(game.youmonst.data))
@@ -848,7 +845,7 @@ async function test_move_testdiag(x, y, dx, dy, mode, passesWalls) {
         && (!doorless_door(x, y) || await block_door(x, y))) {
         /* Diagonal moves into a door are not allowed. */
         if (mode === DO_MOVE) {
-            if (game.u.ublind)
+            if (Blind())
                 await feel_location(x, y);
             if (Underwater() || game.flags?.mention_walls)
                 await You_cant('move diagonally into an intact doorway.');

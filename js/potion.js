@@ -26,7 +26,7 @@ import { exercise, adjattrib, A_MAX, ACURR, Fast } from './attrib.js';
 import { A_STR, A_INT, A_DEX, A_CON, A_CHA,
          BOLT_LIM, QBUFSZ, KILLED_BY_AN, KILLED_BY, POTHIT_HERO_THROW,
          POTHIT_OTHER_THROW, COLNO, ROWNO,
-         HEAD, EYE, SICK_ALL, TIMEOUT, A_CHAOTIC, A_LAWFUL, NON_PM,
+         HEAD, EYE, SICK, SICK_ALL, TIMEOUT, A_CHAOTIC, A_LAWFUL, NON_PM,
          Upolyd, ismnum, FAST, MFAST, MSLOW, STRAT_WAITFORU } from './const.js';
 import { Your } from './pline.js';
 import { nomul, losehp } from './hack.js';
@@ -35,7 +35,7 @@ import { A_WIS, ECMD_CANCEL, ECMD_FAIL, CQ_CANNED, IS_FOUNTAIN, IS_SINK } from '
 import { cmdq_peek } from './cmd.js';
 import { carried, is_plural } from './obj.js';
 import { Unaware, Hallucination, Halluc_resistance, Blind,
-         Deaf, Poison_resistance, Sleep_resistance,
+         Deaf, Poison_resistance, Sick_resistance, Sleep_resistance,
          Underwater, Antimagic, Detect_monsters } from './youprop.js';
 import { rn2, rn1, rnd, rnl, d } from './rng.js';
 import { ONAMES, MATERIALS } from './objects_data.js';
@@ -146,45 +146,47 @@ export function paralyze_monst(mon, amount) {
 }
 
 
-// src/potion.c:137 make_sick(). Set or clear fatal illness and food
-// poisoning. The delayed-killer record is retained in JS state for the
-// timeout path; immediate messaging and status state match the C routine.
+// src/potion.c:137 make_sick(). Fatal illness and food poisoning share
+// one timeout and one delayed killer, even when both types are present.
 export async function make_sick(xtime, cause, talk, type) {
     const u = game.u;
     const props = (u.uprops ||= {});
     const old = props.SICK || 0;
 
     if (xtime > 0) {
-        if (props.SICK_RES || u.intrinsic?.HSick_resistance)
+        if (Sick_resistance())
             return;
         if (!old) {
             await You_feel('deathly sick.');
         } else if (talk) {
-            await You_feel(`${xtime <= old / 2 ? 'much' : 'even'} worse.`);
+            await You_feel(`${xtime <= Math.trunc(old / 2) ? 'much' : 'even'} worse.`);
         }
-        props.SICK = xtime;
+        props.SICK = (old & ~TIMEOUT) | itimeout(xtime); /* set_itimeout(&Sick, xtime) */
         u.usick_type = (u.usick_type || 0) | type;
         (game.disp ||= {}).botl = true;
     } else if (old && (type & (u.usick_type || 0))) {
         u.usick_type &= ~type;
-        const still_sick = !!u.usick_type;
-        if (talk)
-            await You_feel(still_sick ? 'somewhat better.'
-                                      : 'cured.  What a relief!');
-        props.SICK = still_sick ? old * 2 : 0;
+        if (u.usick_type) {
+            if (talk)
+                await You_feel('somewhat better.');
+            props.SICK = (props.SICK & ~TIMEOUT) | itimeout(props.SICK * 2);
+        } else {
+            if (talk)
+                await You_feel('cured.  What a relief!');
+            props.SICK = 0;
+        }
         (game.disp ||= {}).botl = true;
     }
 
+    const kptr = find_delayed_killer(SICK);
     if (props.SICK) {
         exercise(A_CON, false);
-        game.delayed_killer = {
-            how: 'sickness',
-            format: cause === '#wizintrinsic' ? KILLED_BY : KILLED_BY_AN,
-            name: cause,
-        };
-    } else if (game.delayed_killer?.how === 'sickness') {
-        game.delayed_killer = null;
-    }
+        // A partial cure must retain the existing shared cause.
+        if (xtime || !old || !kptr)
+            delayed_killer(SICK, cause === '#wizintrinsic' ? KILLED_BY : KILLED_BY_AN,
+                           cause);
+    } else
+        dealloc_killer(kptr);
 }
 
 // src/potion.c:243 make_vomiting(). The countdown dialogue and per-turn

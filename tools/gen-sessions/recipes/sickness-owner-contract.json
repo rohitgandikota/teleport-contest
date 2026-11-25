@@ -1,0 +1,348 @@
+{
+  "name": "sickness-owner-contract",
+  "description": "Sickness preserves its shared delayed cause, timed flags, cure semantics and complete warning and expiry behavior.",
+  "coverage": [
+    "mode.debug",
+    "survival.hunger",
+    "object.food-corpses",
+    "object.tools",
+    "monster.special-effects",
+    "ui.more-paging"
+  ],
+  "branches": [
+    "tainted-food-leaf-cure",
+    "tainted-food-recovery",
+    "horn-final-death",
+    "mixed-illness-partial-vomit",
+    "food-poisoning-full-vomit",
+    "mixed-illness-hallucinated-expiry",
+    "green-armor-blocks-horn",
+    "illness-full-cure",
+    "illness-unrelated-stone-cure",
+    "monster-illness-survival",
+    "fresh-food-negative",
+    "healthy-leaf-negative",
+    "armor-other-ailment-negative"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "tainted-food-leaf-cure",
+      "segment": 0,
+      "screenIncludes": [
+        "Ulch - that meat was tainted!",
+        "You feel cured.  What a relief!"
+      ]
+    },
+    {
+      "branch": "tainted-food-recovery",
+      "segment": 1,
+      "screenIncludes": [
+        "Your sickness feels worse.",
+        "You have recovered from your illness."
+      ]
+    },
+    {
+      "branch": "horn-final-death",
+      "segment": 2,
+      "screenIncludes": [
+        "You die from your illness.",
+        "poisoned by a",
+        "unicorn horn"
+      ],
+      "screenCells": [
+        {
+          "step": 81,
+          "x": 22,
+          "y": 10,
+          "equals": "u"
+        },
+        {
+          "step": 81,
+          "x": 23,
+          "y": 10,
+          "equals": "n"
+        },
+        {
+          "step": 81,
+          "x": 24,
+          "y": 10,
+          "equals": "i"
+        },
+        {
+          "step": 81,
+          "x": 25,
+          "y": 10,
+          "equals": "c"
+        },
+        {
+          "step": 81,
+          "x": 26,
+          "y": 10,
+          "equals": "o"
+        },
+        {
+          "step": 81,
+          "x": 27,
+          "y": 10,
+          "equals": "r"
+        },
+        {
+          "step": 81,
+          "x": 28,
+          "y": 10,
+          "equals": "n"
+        },
+        {
+          "step": 81,
+          "x": 29,
+          "y": 10,
+          "equals": " "
+        },
+        {
+          "step": 81,
+          "x": 30,
+          "y": 10,
+          "equals": "h"
+        },
+        {
+          "step": 81,
+          "x": 31,
+          "y": 10,
+          "equals": "o"
+        },
+        {
+          "step": 81,
+          "x": 32,
+          "y": 10,
+          "equals": "r"
+        },
+        {
+          "step": 81,
+          "x": 33,
+          "y": 10,
+          "equals": "n"
+        }
+      ]
+    },
+    {
+      "branch": "mixed-illness-partial-vomit",
+      "segment": 3,
+      "screenIncludes": [
+        "You feel deathly sick.",
+        "Ulch - that meat was tainted!",
+        "You feel somewhat better."
+      ]
+    },
+    {
+      "branch": "food-poisoning-full-vomit",
+      "segment": 4,
+      "screenIncludes": [
+        "Ulch - that meat was tainted!",
+        "You feel cured.  What a relief!"
+      ]
+    },
+    {
+      "branch": "mixed-illness-hallucinated-expiry",
+      "segment": 5,
+      "screenIncludes": [
+        "You are at Death's door.",
+        "inviting you in.",
+        "You die from your illness."
+      ]
+    },
+    {
+      "branch": "green-armor-blocks-horn",
+      "segment": 6,
+      "screenIncludes": [
+        "unicorn horn"
+      ],
+      "screenExcludes": [
+        "You feel deathly sick."
+      ],
+      "rngIncludes": [
+        "rn2(13)=0"
+      ]
+    },
+    {
+      "branch": "illness-full-cure",
+      "segment": 7,
+      "screenIncludes": [
+        "You feel deathly sick.",
+        "You feel cured.  What a relief!"
+      ]
+    },
+    {
+      "branch": "illness-unrelated-stone-cure",
+      "segment": 8,
+      "screenIncludes": [
+        "You are slowing down.",
+        "You feel cured.  What a relief!"
+      ]
+    },
+    {
+      "branch": "monster-illness-survival",
+      "segment": 9,
+      "screenIncludes": [
+        "Pestilence reaches out, and you feel fever and chills.",
+        "OK, so you don't die."
+      ]
+    },
+    {
+      "branch": "fresh-food-negative",
+      "segment": 10,
+      "screenIncludes": [
+        "newt corpse"
+      ],
+      "screenExcludes": [
+        "You feel deathly sick."
+      ]
+    },
+    {
+      "branch": "healthy-leaf-negative",
+      "segment": 11,
+      "screenIncludes": [
+        "This eucalyptus leaf is delicious!"
+      ],
+      "screenExcludes": [
+        "You feel deathly sick."
+      ]
+    },
+    {
+      "branch": "armor-other-ailment-negative",
+      "segment": 12,
+      "screenIncludes": [
+        "unicorn horn"
+      ],
+      "screenExcludes": [
+        "You feel deathly sick."
+      ],
+      "rngIncludes": [
+        "rn2(13)=3"
+      ]
+    }
+  ],
+  "segments": [
+    {
+      "name": "tainted-food-leaf-cure",
+      "seed": 12001,
+      "moves": " 140.\u0017cursed poisoned newt corpse\rea  \u0017uncursed eucalyptus leaf\ri\u001beb  i\u001b",
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:Sicktest,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:plain\n"
+    },
+    {
+      "name": "tainted-food-recovery",
+      "seed": 12001,
+      "moves": " 140.\u0017cursed poisoned newt corpse\rea  . . . . . . . . . . . . . . . . . . . . . . . . n  i\u001b",
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:Sicktest,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:plain\n"
+    },
+    {
+      "name": "horn-final-death",
+      "seed": 12002,
+      "moves": " \u0017cursed unicorn horn\raa . . . . . . . . . . . . . . . . . . . . . . . . . yn n n",
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:Sicktest,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:plain\n"
+    },
+    {
+      "name": "mixed-illness-partial-vomit",
+      "seed": 12006,
+      "moves": " 140.\u0017cursed unicorn horn\r\u0017cursed poisoned newt corpse\raa aa aa aa aa eb  . . . . . . . . . . . . . . . . . . n  i\u001b",
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:Sicktest,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:plain\n"
+    },
+    {
+      "name": "food-poisoning-full-vomit",
+      "seed": 12001,
+      "moves": " 140.\u0017cursed unicorn horn\r\u0017cursed poisoned newt corpse\raa aa aa aa aa eb  . . . . . . . . . . . . . . . . . . n  i\u001b",
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:Sicktest,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:plain\n"
+    },
+    {
+      "name": "mixed-illness-hallucinated-expiry",
+      "seed": 12002,
+      "moves": " 140.\u0017cursed unicorn horn\r\u0017cursed poisoned newt corpse\raa aa aa aa aa eb  . . . . . . . . . . . . . . . . . . n  i\u001b",
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:Sicktest,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:plain\n"
+    },
+    {
+      "name": "green-armor-blocks-horn",
+      "seed": 12005,
+      "moves": " \u0017uncursed green dragon scale mail\rWa  \u0017cursed unicorn horn\rab i\u001b",
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:Sicktest,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:plain\n"
+    },
+    {
+      "name": "illness-full-cure",
+      "seed": 12002,
+      "moves": " \u0017cursed unicorn horn\raa  \u0017uncursed eucalyptus leaf\reb  i\u001b",
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:Sicktest,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:plain\n"
+    },
+    {
+      "name": "illness-unrelated-stone-cure",
+      "seed": 12002,
+      "moves": " \u0017cursed unicorn horn\raa  \u0017cockatrice egg\reb  \u0017uncursed eucalyptus leaf\rec  \u0017lizard corpse\red   i\u001b",
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:Sicktest,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:plain\n"
+    },
+    {
+      "name": "monster-illness-survival",
+      "seed": 12001,
+      "moves": " #levelchange\r30\r                              \u0007hostile Pestilence\r. . . . i\u001b n   i\u001b",
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:Sicktest,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:plain\n"
+    },
+    {
+      "name": "fresh-food-negative",
+      "seed": 12001,
+      "moves": " \u0017uncursed newt corpse\rea  . . . . i\u001b",
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:Sicktest,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:plain\n"
+    },
+    {
+      "name": "healthy-leaf-negative",
+      "seed": 12001,
+      "moves": " \u0017uncursed eucalyptus leaf\rea  i\u001b",
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:Sicktest,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:plain\n"
+    },
+    {
+      "name": "armor-other-ailment-negative",
+      "seed": 12002,
+      "moves": " \u0017uncursed green dragon scale mail\rWa  \u0017cursed unicorn horn\rab i\u001b",
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:Sicktest,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:plain\n"
+    }
+  ],
+  "unchangedOutputHashes": {
+    "green-armor-blocks-horn": {
+      "screens": "7a54c2e56fa0156c1f6a53b19dc40c680b8c3af0fdc3bc99f341035892e0699d",
+      "cursors": "f911591c34b6f322945cd1f4e8cfaf9f49049097a9b9be892efc51a997a25ccf",
+      "rng": "49e179dbf883e6cc96208f5d5ba8ebdc4acd09365906d3320129ba25daacc4c5",
+      "slices": "44033b9de74a6178a0b1ec903a87bf419d597647a19f13c46ba4adb22c4dbdd0",
+      "frames": "2bfadcb5ce122d308aa99f3b659a5ee16fb1fc0c1e88bd183cb21c4695ba1de2"
+    },
+    "fresh-food-negative": {
+      "screens": "4afdc80ed52d2e8003d22d1d1f9a452fef4e5471b94f59c43df6b7e1bbe880e8",
+      "cursors": "997a1822b9b49323761e210a4417a411ada8da591f35b677ea721d0a9537c5e2",
+      "rng": "99716256242ac43ec8385a0b0775d288ecae92c304172dd6e47daff08bc0286e",
+      "slices": "34cab037b3afda478559b3b8292946fa6897c33cc3e77af9054bc7abb079eb66",
+      "frames": "66e00794d06e09b4d80066682769c2d9fdb683b3158fbdbfe887c727eeeba53a"
+    },
+    "healthy-leaf-negative": {
+      "screens": "93377b31b40a822cb89df3f07a2f4af8794cbb9caaf1306b06867730dc71dfbd",
+      "cursors": "bb9482dd6265b486b7e9652800de4cfbb77f1c4310248f0a7c48983bc24cc312",
+      "rng": "2b4f3e92bd42f45fdd556f0e0f559ac563794975baefae9307d763c18e32c786",
+      "slices": "463883cb64f6c7e8f881391f5effd0118998a0455dea70aeb5c58b47a9876036",
+      "frames": "ca69e417b3351040835f2d3151f03209ed6dacfb0421d1027996f9d7048a263a"
+    },
+    "armor-other-ailment-negative": {
+      "screens": "5eb7409d599e128ca09569f46ebd975d963c6bdf093c100be56ab1ff917bf998",
+      "cursors": "581e5b542d9180de6b0afaeae1906f66f8fd84b63bcc0c5690e401f93bbf991e",
+      "rng": "548aa434d2e87c15b03cbd67966f6ce101fc5e35b1735f603870dd3b86d417ff",
+      "slices": "deb6647efb38f07690b929db0cca197ef3bae7bfd9cdad3e34e96bea8b38042f",
+      "frames": "2bfadcb5ce122d308aa99f3b659a5ee16fb1fc0c1e88bd183cb21c4695ba1de2"
+    }
+  }
+}

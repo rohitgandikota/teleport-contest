@@ -175,7 +175,8 @@ export async function done_in_by(mtmp, how) {
             buf += ` ${has_ebones(mtmp) ? 'of' : 'called'} ${MGIVENNAME(mtmp)}`;
     }
 
-    game.killer = { format, name: buf };
+    game.killer.format = format;
+    game.killer.name = buf;
 
     /* might be killed by a monster which was the cause of hero's
        helplessness; if so, shorten the reason to just the verb

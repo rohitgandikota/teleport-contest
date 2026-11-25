@@ -72,8 +72,7 @@ random positions and 32,586 frames. All 64 bounded workers also pass.
 The empty-inventory initialization and complete external-ignition owner now
 pass all 865 recordings in a fresh NFS run with default timeouts and no retries:
 897,905 screens/cursors, 18,948,050 scored random positions and 32,609 frames.
-Their seven new
-C cases match 666 styled boundaries, 22,262 calls and 23 frames; 29 source
+Their seven new C cases match 666 styled boundaries, 22,262 calls and 23 frames; 29 source
 controls and seven ordinary controls pass. The previous burning-oil state test
 was reading freed fields; its corrected observation passes both baseline and
 candidate. That checkpoint is pushed as `59ff3a89`. Monster death now passes
@@ -83,9 +82,13 @@ overrides: 898,368 screens/cursors, 18,969,264 random positions and 32,609 frame
 Death is pushed as `0ae78cc3`. The natural-fire patch is now composed on main;
 32 source controls, eleven native cases, all 61 selected/public fixtures and
 61 bounded workers pass. It brings the corpus to 867, outside the completed
-full866 run. The sickness candidate also passes thirteen new native cases;
-its portable gates are delivered and composition verification is underway.
-Parallel source reviews continue for potion impacts, sickness and pit traps.
+full866 run. Fire is pushed as `72f26443`. Sickness is now verified on main with 34 source
+controls, thirteen native cases, 62 selected/public fixtures and 62 bounded
+workers. Its new fixture brings the corpus to 868, outside full866. Potion
+impact and pit owner reviews follow; a separate prior-pit caller repair is
+required before composing the latter.
+Parallel source reviews continue for potion vapors, immediate death causes and
+the pit caller.
 These local results do not establish a newer held-out score.
 
 Publication resumed with `2089260a` after the earlier approval-review usage

@@ -4259,6 +4259,19 @@
     {"group": "monster-fire-owner", "id": "monster-fire.pet-straw-golem", "cFile": "src/uhitm.c", "cFunction": "mhitm_ad_fire", "description": "pet-straw-golem: ordinary fire and unaffected controls"},
     {"group": "monster-fire-owner", "id": "monster-fire.pet-jackal", "cFile": "src/uhitm.c", "cFunction": "mhitm_ad_fire", "description": "pet-jackal: ordinary fire and unaffected controls"},
     {"group": "monster-fire-owner", "id": "monster-fire.pet-paper-golem-accessible", "cFile": "src/uhitm.c", "cFunction": "mhitm_ad_fire", "description": "pet-paper-golem-accessible: ordinary fire and unaffected controls"},
-    {"group": "monster-fire-owner", "id": "monster-fire.pet-jackal-accessible", "cFile": "src/uhitm.c", "cFunction": "mhitm_ad_fire", "description": "pet-jackal-accessible: ordinary fire and unaffected controls"}
+    {"group": "monster-fire-owner", "id": "monster-fire.pet-jackal-accessible", "cFile": "src/uhitm.c", "cFunction": "mhitm_ad_fire", "description": "pet-jackal-accessible: ordinary fire and unaffected controls"},
+    {"group": "sickness-owner", "id": "tainted-food-leaf-cure", "cFile": "src/potion.c", "cFunction": "make_sick", "description": "tainted-food-leaf-cure: sickness producer, cure, cause and expiry contract"},
+    {"group": "sickness-owner", "id": "tainted-food-recovery", "cFile": "src/timeout.c", "cFunction": "nh_timeout", "description": "tainted-food-recovery: sickness producer, cure, cause and expiry contract"},
+    {"group": "sickness-owner", "id": "horn-final-death", "cFile": "src/timeout.c", "cFunction": "nh_timeout", "description": "horn-final-death: sickness producer, cure, cause and expiry contract"},
+    {"group": "sickness-owner", "id": "mixed-illness-partial-vomit", "cFile": "src/potion.c", "cFunction": "make_sick", "description": "mixed-illness-partial-vomit: sickness producer, cure, cause and expiry contract"},
+    {"group": "sickness-owner", "id": "food-poisoning-full-vomit", "cFile": "src/potion.c", "cFunction": "make_sick", "description": "food-poisoning-full-vomit: sickness producer, cure, cause and expiry contract"},
+    {"group": "sickness-owner", "id": "mixed-illness-hallucinated-expiry", "cFile": "src/timeout.c", "cFunction": "sickness_dialogue", "description": "mixed-illness-hallucinated-expiry: sickness producer, cure, cause and expiry contract"},
+    {"group": "sickness-owner", "id": "green-armor-blocks-horn", "cFile": "src/potion.c", "cFunction": "make_sick", "description": "green-armor-blocks-horn: sickness producer, cure, cause and expiry contract"},
+    {"group": "sickness-owner", "id": "illness-full-cure", "cFile": "src/potion.c", "cFunction": "make_sick", "description": "illness-full-cure: sickness producer, cure, cause and expiry contract"},
+    {"group": "sickness-owner", "id": "illness-unrelated-stone-cure", "cFile": "src/potion.c", "cFunction": "make_sick", "description": "illness-unrelated-stone-cure: sickness producer, cure, cause and expiry contract"},
+    {"group": "sickness-owner", "id": "monster-illness-survival", "cFile": "src/end.c", "cFunction": "done_in_by", "description": "monster-illness-survival: sickness producer, cure, cause and expiry contract"},
+    {"group": "sickness-owner", "id": "fresh-food-negative", "cFile": "src/potion.c", "cFunction": "make_sick", "description": "fresh-food-negative: sickness producer, cure, cause and expiry contract"},
+    {"group": "sickness-owner", "id": "healthy-leaf-negative", "cFile": "src/potion.c", "cFunction": "make_sick", "description": "healthy-leaf-negative: sickness producer, cure, cause and expiry contract"},
+    {"group": "sickness-owner", "id": "armor-other-ailment-negative", "cFile": "src/potion.c", "cFunction": "make_sick", "description": "armor-other-ailment-negative: sickness producer, cure, cause and expiry contract"}
   ]
 }

@@ -1,5 +1,55 @@
 # STATUS — live handoff board
 
+## 2026-11-25: sickness handling verified for publication
+
+Fire checkpoint `72f26443` is pushed. Main now contains only the unpublished
+sickness patch in potion.js, timeout.js and end.js. It preserves timeout flags,
+uses complete sickness resistance, retains the shared delayed cause across
+partial cures, and restores urgent food-poisoning and hallucinated warnings.
+Monster death and strangulation update immediate killer fields while retaining
+the linked delayed causes. The new dialogue and its static text table precede
+levitation dialogue as in C; no adjacent owner was refactored.
+
+All 34 source controls pass versus twelve before, and all thirteen ordinary
+witness cases pass versus four before. Four unaffected controls retain all five
+output hashes. Observer, deferred and exhausted-input checks pass. The final
+main native comparison matches all 1,042 styled boundaries/cursors, 41,015
+calls/slices and 93 frames. It repairs seven styled boundaries and one random
+stream; all cursors were already exact. The thirteen native input tuples and
+existing branch assertions are unchanged. Negative hashes are metadata in the
+recipe, avoiding an extra non-recipe JSON in the recipe directory. All 867
+older recording hashes remain fixed. Thirteen requirements are appended and
+the maintained corpus is 868.
+
+All 62 selected/public fixtures pass: 24,943 screens/cursors, 1,127,032 scored
+random positions and 1,614 frames. All 62 bounded workers, six retained suites,
+source audit and five syntax checks pass. Main receipt:
+`sickness-main-verification.json`, SHA256
+`4db747336d790be3ad759fd62a7cf38a61bdd419e1b258a4f8a39889b9ffaf76`.
+The latest full-corpus run remains full866 on `0ae78cc3`. No full868 run or
+new held-out score is claimed. Next: commit and immediately push sickness.
+
+Parent reviewed the complete potionhit and trapeffect_pit C bodies and scoped
+patches. Both delivery manifests are verified: 625 potion-impact members and
+636 pit members. Their newly recorded inputs retain all fields and keys.
+Potion-impact raw: `potion-impact-owner-parent-native.session.json`, SHA256
+`531ba851f55f470dce7d83542789c864ab5091b8f9df7750326286f551329639`;
+four cases and 355 boundaries. Pit raw: `pit-owner-parent-native.session.json`,
+SHA256 `df6ecac75c33d05277f63f901c669a9a5407c5d54f04342e461679a99c9fbbb5`;
+twelve cases and 1,283 boundaries. Fixed-candidate comparison reports use
+`*-fixed-candidate-native.json`. Neither patch is in main yet. The potion
+patch's first import hunk needs context-only preservation of the new SICK import.
+Both fixed candidates are native-exact: all twelve pit cases match 31,052 calls
+and all four potion-impact cases match 16,213 calls, including every styled
+boundary, cursor, per-input slice and their empty animation collections.
+
+Pit still has two documented caller failures: dotrap clears prior pit state
+before conjoined/adjacent handling. Sartre is auditing the complete caller in a
+separate packet before pit composition. Leibniz audits complete potionbreathe,
+including the verified polymorphed-healing gap. Euclid audits complete immediate
+death owners that discard delayed causes. Their sealed packets stay unchanged;
+parent owns native recording, current-main composition and publication.
+
 ## 2026-11-25: natural fire attacks verified for publication
 
 Death checkpoint `0ae78cc3` is pushed after full866 passed. The only unpublished

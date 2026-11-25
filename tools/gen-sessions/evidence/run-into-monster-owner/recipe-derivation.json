@@ -1,0 +1,170 @@
+{
+  "schema": 1,
+  "originalRecipe": "/Users/rohit/research/code/contest/.cache/restart-20261122/run-into-monster-owner-source-audit/recipes/run-into-monster-owner.json",
+  "originalRecipeSHA256": "b5fa6a04bdea65c3a5790c591855ff40bac4352384560cff058ee0b7998c66b6",
+  "derivedRecipeSHA256": "2c66149c30156448ce3e52049a527987418ba127fad3d4e1d7066b0b85d6de9d",
+  "changes": "Only additive requireBranchAssertions, branches and branchAssertions metadata. Every original root field, input tuple, state requirement and negative hash remains unchanged.",
+  "addedFields": [
+    "requireBranchAssertions",
+    "branches",
+    "branchAssertions"
+  ],
+  "branchMetadataSHA256": "5d81530960ecf82c3dd26574b2a2b3e7e4ecc53d2045695d32b976e7c32545a4",
+  "raw": {
+    "path": "/Users/rohit/research/code/contest/.cache/restart-20261122/run-into-monster-parent-native.session.json",
+    "canonicalPath": "tools/gen-sessions/generated/run-into-monster-owner.session.json",
+    "sha256": "9341aa8eb7b9046c1c2815465bba48cd7c0bf2b48cccb8b39be10c2cbc4f10b1",
+    "bytes": 606766,
+    "source": "c",
+    "version": 5,
+    "boundaries": 255,
+    "keys": 251
+  },
+  "observations": [
+    {
+      "name": "sighted-run-newt",
+      "steps": [
+        25,
+        26,
+        29
+      ],
+      "heroMapXY": [
+        69,
+        9
+      ],
+      "heroScreenXY": [
+        68,
+        10
+      ],
+      "targetMapXY": [
+        70,
+        8
+      ],
+      "targetScreenXY": [
+        69,
+        9
+      ],
+      "targetCharacters": [
+        ":",
+        ":",
+        ":"
+      ]
+    },
+    {
+      "name": "eyes-run-newt",
+      "steps": [
+        60,
+        61,
+        64
+      ],
+      "heroMapXY": [
+        69,
+        9
+      ],
+      "heroScreenXY": [
+        68,
+        10
+      ],
+      "targetMapXY": [
+        70,
+        9
+      ],
+      "targetScreenXY": [
+        69,
+        10
+      ],
+      "targetCharacters": [
+        ":",
+        ":",
+        ":"
+      ]
+    },
+    {
+      "name": "cream-run-newt",
+      "steps": [
+        83,
+        84,
+        87
+      ],
+      "heroMapXY": [
+        69,
+        9
+      ],
+      "heroScreenXY": [
+        68,
+        10
+      ],
+      "targetMapXY": [
+        68,
+        8
+      ],
+      "targetScreenXY": [
+        67,
+        9
+      ],
+      "targetCharacters": [
+        ":",
+        ":",
+        ":"
+      ]
+    },
+    {
+      "name": "blind-run-newt",
+      "steps": [
+        67,
+        68,
+        71
+      ],
+      "heroMapXY": [
+        69,
+        9
+      ],
+      "heroScreenXY": [
+        68,
+        10
+      ],
+      "targetMapXY": [
+        70,
+        9
+      ],
+      "targetScreenXY": [
+        69,
+        10
+      ],
+      "targetCharacters": [
+        "·",
+        "I",
+        "I"
+      ]
+    }
+  ],
+  "coordinateConvention": "C map (x,y) becomes decoded screen (x-1,y+1). runKey is the G-prefix boundary, runKey+1 the direction result; final is the V boundary. The standard gen-sessions decoder returns rows of characters as strings.",
+  "parentFourWayReports": {
+    "baseline": {
+      "path": "/Users/rohit/research/code/contest/.cache/restart-20261122/run-into-monster-parent-baseline-native.json",
+      "sha256": "4c29f7d48533b0310a64673685ba4184fe2f1c9e8294157c39f4cf932a90d094",
+      "exactCases": 3,
+      "cases": 4
+    },
+    "reader": {
+      "path": "/Users/rohit/research/code/contest/.cache/restart-20261122/run-into-monster-parent-reader-native.json",
+      "sha256": "79a4dc0c98f3de5cd8e624ddf6d8fa8bf779d2e136a12bc242aacadc9483a7f3",
+      "exactCases": 3,
+      "cases": 4
+    },
+    "current": {
+      "path": "/Users/rohit/research/code/contest/.cache/restart-20261122/run-into-monster-parent-current-native.json",
+      "sha256": "2ff7ff1cd1f32fee51875252335ac4393051c772fbb07582ca72d5019d56d7de",
+      "exactCases": 4,
+      "cases": 4
+    },
+    "combined": {
+      "path": "/Users/rohit/research/code/contest/.cache/restart-20261122/run-into-monster-parent-combined-native.json",
+      "sha256": "2ff7ff1cd1f32fee51875252335ac4393051c772fbb07582ca72d5019d56d7de",
+      "exactCases": 4,
+      "cases": 4
+    }
+  },
+  "attribution": "No independent native improvement. Original baseline3/4, reader-only3/4 (earlier cream message), current cream4/4, combined4/4. Constructed canonical-reader proof and unchanged ordinary regression cases are distinct from native attribution.",
+  "workerNativeReplayPerformed": false
+}

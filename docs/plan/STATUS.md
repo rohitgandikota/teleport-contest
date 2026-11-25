@@ -1,6 +1,36 @@
 # STATUS — live handoff board
 
-## 2026-11-25: configuration line assembly verified
+## 2026-11-25: run-into-monster blindness guard verified
+
+Only cmd.js changes runtime. The running guard now uses Blind() rather than
+the cached u.ublind field, matching C's predicate and existing guard order.
+Source controls pass 50/50 versus 38/50; the 38 previously passing controls
+retain their state hashes. Four ordinary inputs pass with observer/plain/
+deferred EOF equality, and three negative cases retain all fifteen hashes.
+
+All four original C cases match on current cream code, with or without this
+reader fix: 255 styled boundaries/cursors, 11,800 calls and ordered slices,
+zero frames. Old-producer and reader-only comparisons remain 3/4. Those
+failures are preserved; no independent native gain is attributed to the guard.
+
+All 69 selected/public recordings and all 69 strict eight-second workers pass:
+27,493 screens/cursors, 1,323,688 random positions and 1,762 frames. Twelve
+retained suites, source audit and three syntax checks pass. All 316 source
+members, 27 promotion members and 279 runtime hashes verify. All 892 prior
+recordings and branch requirements remain fixed; four requirements and one
+raw bring the corpus to 893. The primary recipe adds only C-observed branch
+assertions; the original recipe and derivation remain in evidence.
+Main receipt `run-into-monster-main-verification.json`, SHA256
+`d22ebc2bf9872712064b6f90b7ffd46beba56eda6c1107eb821685a171b84373`.
+
+Full893 is running on two NFS CPU workers with default budgets and no retries.
+PID 3146125; 1,183 files, 892 linked raws and one new raw. Root:
+/share/NFS/u/rohit/research/contest/artifacts/2026-11-22/guard-full893-js-20261125.
+All-files SHA256 `cc4b2d75cb4efa16cac2dddc022b51042c55f807ec4395720cd1c74270fcf80f`.
+Next are canonical species-delivery flags, configuration sections/CHOOSE,
+and mounted movement. No new held-out result or whole-port completion is claimed.
+
+## 2026-11-25: configuration line assembly pushed as 072e5cbd
 
 Only options.js changes. Ordinary physical configuration lines now follow
 C's continuation, comment, blank-line and EOF rules. Continuation is tested
@@ -26,8 +56,13 @@ and branch requirements remain fixed; twelve requirements and one raw bring
 the corpus to 892. Main receipt `config-line-assembly-main-verification.json`,
 SHA256 `f452fb71dd2e20ec9a8f36df52ace35cc4f38563376cd8594f8954cdd48c1869`.
 
-Full892 is running after full891 completed, with two NFS CPU workers, default
-budgets and no retries. PID 3138003; 1,182 files, 891 linked raws and one new raw.
+Full892 passes with two NFS CPU workers, default budgets and no retries:
+919,903 screens/cursors, 19,594,179 random positions and 32,997 frames.
+All 1,182 files match published commit 072e5cbd and its maintained corpus.
+Verification SHA256 `7c4306ee92c76059d3b1cfaf340625d6190515e518ea561c5fc1aeee54e2aa81`;
+publication receipt SHA256
+`a853bad077b1fff5d143adb3a2887b4f3f5719549aa328c2934f01f853408329`.
+The run shared 891 old raws and added one.
 Root: /share/NFS/u/rohit/research/contest/artifacts/2026-11-22/line-full892-js-20261125.
 All-files SHA256 `cc21ba53bd228ceac47db8180d0110afccf22d5000efca500e4e4fab9f2e2485`.
 Byte limits, NUL, sections/CHOOSE, other parser callers and duplicate-warning

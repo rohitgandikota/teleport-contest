@@ -4487,6 +4487,10 @@
     {"group": "config-line-assembly-contract", "id": "config-line-assembly.line-eof-pending-with-lf", "cFile": "src/cfgfiles.c", "cFunction": "parse_conf_buf", "description": "line eof pending with lf"},
     {"group": "config-line-assembly-contract", "id": "config-line-assembly.line-canonical-symbols-negative", "cFile": "src/cfgfiles.c", "cFunction": "parse_conf_buf", "description": "line canonical symbols negative"},
     {"group": "config-line-assembly-contract", "id": "config-line-assembly.line-canonical-bindings-negative", "cFile": "src/cfgfiles.c", "cFunction": "parse_conf_buf", "description": "line canonical bindings negative"},
-    {"group": "config-line-assembly-contract", "id": "config-line-assembly.line-crlf-menu-negative", "cFile": "src/cfgfiles.c", "cFunction": "parse_conf_buf", "description": "line crlf menu negative"}
+    {"group": "config-line-assembly-contract", "id": "config-line-assembly.line-crlf-menu-negative", "cFile": "src/cfgfiles.c", "cFunction": "parse_conf_buf", "description": "line crlf menu negative"},
+    {"group": "run-into-monster-owner", "id": "run-into-monster.sighted-run-newt", "cFile": "src/hack.c", "cFunction": "domove_core", "description": "sighted run newt"},
+    {"group": "run-into-monster-owner", "id": "run-into-monster.eyes-run-newt", "cFile": "src/hack.c", "cFunction": "domove_core", "description": "eyes run newt"},
+    {"group": "run-into-monster-owner", "id": "run-into-monster.cream-run-newt", "cFile": "src/hack.c", "cFunction": "domove_core", "description": "cream run newt"},
+    {"group": "run-into-monster-owner", "id": "run-into-monster.blind-run-newt", "cFile": "src/hack.c", "cFunction": "domove_core", "description": "blind run newt"}
   ]
 }

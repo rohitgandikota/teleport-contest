@@ -1,0 +1,148 @@
+{
+  "name": "run-into-monster-owner",
+  "segments": [
+    {
+      "name": "sighted-run-newt",
+      "seed": 855315,
+      "datetime": "20260327071407",
+      "nethackrc": "OPTIONS=name:Desired,role:Monk,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3,symset:DECgraphics,mention_walls\n",
+      "moves": " \u0007sleeping hostile newt\rGu\u001b\u001bV"
+    },
+    {
+      "name": "eyes-run-newt",
+      "seed": 855315,
+      "datetime": "20260327071407",
+      "nethackrc": "OPTIONS=name:Desired,role:Monk,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3,symset:DECgraphics,mention_walls\n",
+      "moves": " \u0017The Eyes of the Overworld\r   \u001b\u001baa \u0007sleeping hostile newt\rGl\u001b\u001bV"
+    },
+    {
+      "name": "cream-run-newt",
+      "seed": 855315,
+      "datetime": "20260327071407",
+      "nethackrc": "OPTIONS=name:Desired,role:Monk,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3,symset:DECgraphics,mention_walls\n",
+      "moves": " \u0017The Eyes of the Overworld\r   \u001b\u001baa \u0017uncursed cream pie\rab \u0007sleeping hostile newt\rGy\u001b\u001bV"
+    },
+    {
+      "name": "blind-run-newt",
+      "seed": 855315,
+      "datetime": "20260327071407",
+      "nethackrc": "OPTIONS=name:Desired,role:Monk,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3,symset:DECgraphics,mention_walls\n",
+      "moves": " \u0017uncursed lenses\raa\u0017uncursed cream pie\rab \u0007sleeping hostile newt\rGl\u001b\u001bV"
+    }
+  ],
+  "branchRequirements": [
+    {
+      "name": "sighted-run-newt",
+      "negative": true,
+      "runKey": 25,
+      "targetXY": [
+        70,
+        8
+      ],
+      "startXY": [
+        69,
+        9
+      ],
+      "finalXY": [
+        69,
+        9
+      ],
+      "finalTurn": 1,
+      "blind": false,
+      "eyes": false,
+      "cream": false,
+      "stops": true
+    },
+    {
+      "name": "eyes-run-newt",
+      "negative": true,
+      "runKey": 60,
+      "targetXY": [
+        70,
+        9
+      ],
+      "startXY": [
+        69,
+        9
+      ],
+      "finalXY": [
+        69,
+        9
+      ],
+      "finalTurn": 2,
+      "blind": false,
+      "eyes": true,
+      "cream": false,
+      "stops": true
+    },
+    {
+      "name": "cream-run-newt",
+      "negative": false,
+      "runKey": 83,
+      "targetXY": [
+        68,
+        8
+      ],
+      "startXY": [
+        69,
+        9
+      ],
+      "finalXY": [
+        69,
+        9
+      ],
+      "finalTurn": 2,
+      "blind": false,
+      "eyes": true,
+      "cream": true,
+      "stops": true
+    },
+    {
+      "name": "blind-run-newt",
+      "negative": true,
+      "runKey": 67,
+      "targetXY": [
+        70,
+        9
+      ],
+      "startXY": [
+        69,
+        9
+      ],
+      "finalXY": [
+        69,
+        9
+      ],
+      "finalTurn": 3,
+      "blind": true,
+      "eyes": false,
+      "cream": true,
+      "stops": false
+    }
+  ],
+  "unchangedOutputHashes": {
+    "sighted-run-newt": {
+      "screens": "49ec11ce1ed50bb635db47ed33f314f8dcc883a5e236d2f7517d481857d002f7",
+      "cursors": "be23d0b5077f54adaf5270f2d090d8641aa033a66a37ff25f18c84bba021d91a",
+      "calls": "5319d7567dae69e00615628e63a8c92be82e9e0d6a22a9f7ae395c6b8292b13f",
+      "slices": "355535fe09c6e6711716a760ff706882e9d8834e5145666cfab4bd16d4e56d42",
+      "frames": "96bb5fe26d6e7f3aee8284cb6098fb4fd8eaa56a3cf877038fb3015f8a2988e7"
+    },
+    "eyes-run-newt": {
+      "screens": "b4f435712407e00383ee6ac1e678ac2733d21b3b04a4c7e52886f252ecb27c6c",
+      "cursors": "24ccbb1a3a759345f22a7ae392aaed6034a9ebe40df0f25ace3eb490ae007e94",
+      "calls": "204263d60714e188084b0662972e78f839220cb6d0657c9c476ad7be648f6bb5",
+      "slices": "3fbb5f166ce57b319eb27d9562dde8c9e3d2a31c89c8faa20655f86d68bab79d",
+      "frames": "07dcef581ee2581866ca67d8e290e54aa590694177087de6c7e07b2aae8d53a9"
+    },
+    "blind-run-newt": {
+      "screens": "65158c9eb4bc06115f2d3f082551444c0f6142b41db8d29d1df41c1738f86749",
+      "cursors": "27f8956db77695b1ecbe119dcd57e48a43ad973f1182e7f50aae0eeff5dca761",
+      "calls": "2c98f700a1f798e05a5b9083e403567f28eaab17f1f831e6a301b7a002df32e5",
+      "slices": "c9c326591c841f59c571cffed4710741b771d49dbe5b7922357c9084dccff5cb",
+      "frames": "836368bd9f29635d24140fe7cf1c8b41b45136aff887dc7026acf4997a51f1e4"
+    }
+  },
+  "description": "Ordinary debug keyboard proposals for first run-step monster guarding. Eyes plus cream reaches a stale cached blindness on the fixed old producer. Cream-only repair can remove that stale state; no independent native win is attributed to the guard.",
+  "nativeStatus": "Parent recording/comparison required. No C runs by this worker."
+}

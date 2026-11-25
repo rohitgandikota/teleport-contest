@@ -2719,7 +2719,7 @@ async function domove_core() {
     {
         const mtmp_run = m_at(newx, newy);
         if (mtmp_run && !is_safemon(mtmp_run) && game.context.run
-            && ((!u.ublind && mon_visible(mtmp_run)
+            && ((!Blind() && mon_visible(mtmp_run)
                  && ((M_AP_TYPE(mtmp_run) !== M_AP_FURNITURE
                       && M_AP_TYPE(mtmp_run) !== M_AP_OBJECT)
                      || Protection_from_shape_changers()))

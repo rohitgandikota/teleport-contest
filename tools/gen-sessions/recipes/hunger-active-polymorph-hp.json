@@ -1,0 +1,66 @@
+{
+  "name": "hunger-active-polymorph-hp",
+  "description": "After real petrification recovery initializes delayed-killer state, self-genocide leaves the original body dead while a hill giant survives a complete meal. Three original C cases verify active-form hunger exhaustion and unchanged meal controls.",
+  "coverage": [
+    "survival.hunger",
+    "forms.polymorph",
+    "mode.debug"
+  ],
+  "branches": [
+    "polymorphed-self-genocide-meal",
+    "polymorphed-cancelled-genocide-control",
+    "human-meal-control"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "polymorphed-self-genocide-meal",
+      "segment": 0,
+      "screenIncludes": [
+        "You no longer seem to be petrifying.",
+        "Wiped out all humans.",
+        "You feel dead inside.",
+        "My, this is a yummy slime mold!"
+      ]
+    },
+    {
+      "branch": "polymorphed-cancelled-genocide-control",
+      "segment": 1,
+      "screenIncludes": [
+        "You no longer seem to be petrifying.",
+        "You turn into a hill giant!",
+        "My, this is a yummy slime mold!"
+      ]
+    },
+    {
+      "branch": "human-meal-control",
+      "segment": 2,
+      "screenIncludes": [
+        "My, this is a yummy slime mold!"
+      ]
+    }
+  ],
+  "segments": [
+    {
+      "name": "poly-self-genocide-meal",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Hungerform,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #wizintrinsic\r100b\r   \u001b\u001b#polyself\rstone golem\r   \u001b\u001b#polyself\rhill giant\r   \u001b\u001b\u0017uncursed scroll of genocide\r  \u001b\u001b\u00171 uncursed slime mold\r  \u001b\u001bra  human\r    \u001b\u001beb           \u001b\u001b"
+    },
+    {
+      "name": "poly-cancelled-genocide-meal",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Hungerform,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #wizintrinsic\r100b\r   \u001b\u001b#polyself\rstone golem\r   \u001b\u001b#polyself\rhill giant\r   \u001b\u001b\u0017uncursed scroll of genocide\r  \u001b\u001b\u00171 uncursed slime mold\r  \u001b\u001bra  none\r    \u001b\u001beb           \u001b\u001b"
+    },
+    {
+      "name": "human-cancelled-genocide-meal",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Hungerform,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed scroll of genocide\r  \u001b\u001b\u00171 uncursed slime mold\r  \u001b\u001bra  none\r    \u001b\u001beb           \u001b\u001b"
+    }
+  ]
+}

@@ -3943,6 +3943,9 @@
     {"group":"Boot removal","id":"boots-off.low-boots","cFile":"src/do_wear.c","cFunction":"Boots_off","description":"low boots"},
     {"group":"Boot removal","id":"boots-off.speed-boots","cFile":"src/do_wear.c","cFunction":"Boots_off","description":"speed boots"},
     {"group":"Boot removal","id":"boots-off.elven-boots","cFile":"src/do_wear.c","cFunction":"Boots_off","description":"elven boots"},
-    {"group":"Boot removal","id":"boots-off.fumble-boots","cFile":"src/do_wear.c","cFunction":"Boots_off","description":"fumble boots"}
+    {"group":"Boot removal","id":"boots-off.fumble-boots","cFile":"src/do_wear.c","cFunction":"Boots_off","description":"fumble boots"},
+    {"group":"Hunger in the active form","id":"polymorphed-self-genocide-meal","cFile":"src/eat.c","cFunction":"newuhs","description":"polymorphed self genocide meal"},
+    {"group":"Hunger in the active form","id":"polymorphed-cancelled-genocide-control","cFile":"src/eat.c","cFunction":"newuhs","description":"polymorphed cancelled genocide control"},
+    {"group":"Hunger in the active form","id":"human-meal-control","cFile":"src/eat.c","cFunction":"newuhs","description":"human meal control"}
   ]
 }

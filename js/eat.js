@@ -2868,7 +2868,7 @@ export async function newuhs(incr) {
         game.u.uhs = newhs2;
         (game.disp ||= {}).botl = true;
         await bot();
-        if (game.u.uhp < 1) {
+        if ((Upolyd(game.u) ? game.u.mh : game.u.uhp) < 1) {
             await You('die from hunger and exhaustion.');
             game.killer = { format: KILLED_BY, name: 'exhaustion' };
             await done(STARVING);

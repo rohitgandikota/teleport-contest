@@ -9130,6 +9130,77 @@ eating-helper-contract, line-input-eof and spoteffects-owner source packets.
 No full832 or additional C-coverage completion is claimed yet. The NFS union
 remains at 826 credited inputs, 108 layouts and 60,750 branch outcomes.
 
+## 2026-11-25 03:02 UTC: active-form hunger exhaustion verified
+
+Boot checkpoint `81ad0594` is pushed; process 17426 closed with exit 0.
+Full832 is running on that exact runtime in `boots-full832`, two 416-fixture
+shards, workers 37717 and 23414. All 279 runtime, 832 raw and 217 protected
+files are fixed. The preceding 828 raw hashes remain unchanged; the registry
+appends 34 intent rows. Expected totals are 864,786 screens/cursors,
+18,095,911 scored RNG positions and 32,366 frames. No completion is claimed.
+
+The newuhs parent composition passes all twenty checks, process 50394 exit 0:
+59 controls, eighteen focused fixtures with 99 segments, all public sessions
+and 62 bounded workers. Focused totals are 9,630 screens/cursors, 292,423
+scored RNG positions and eighteen frames. Five strict/deferred native fixtures
+cover 35 segments, 3,682 boundaries, 98,451 complete calls and one frame.
+The three fresh C cases match all 431 styled grids, cursors and slices,
+8,439 complete calls and zero frames. Before the repair, 417 grids,
+428 cursors and 429 slices matched. Both negative cases retain all five hashes.
+
+The complete C/JS newuhs owner and source/caller review establish a single-line
+repair: after changed hunger status, check current-form HP while polymorphed.
+Real self-genocide leaves original-body HP negative while a hill giant lives;
+the original code wrongly kills that hero after a meal. The ordinary-key case
+uses debug commands. Opposite dead-form and pending-feedback boundaries are
+constructed real-helper controls. Thirteen producer controls constrain the
+separate consume_oeaten zero-nutrition guard; its two direct failing diagnostics
+remain unchanged. A fresh-read killer initialization error is also preserved
+and assigned separately. Neither missing behavior is claimed repaired here.
+
+Parent verified all 380 sealed files and five symlinks. All 279 runtime and
+seven promoted support hashes match the tested composition. All 832 preceding
+raw recordings remain fixed; three intent rows are appended. Maintained corpus:
+833. Active full832 excludes this repair. Publish now.
+Verification: `.cache/restart-20261122/newuhs-parent-composition-verification.json`.
+Integration: `.cache/restart-20261122/newuhs-main-integration.json`.
+Source seal `7e858a01e1d622d39f7481271491c53e5ccf191d4acef450912cc2372b91a0de`.
+Raw SHA `6c334a69298d95187264649b9c2f90347595949eed748e5a7a6f842c8ddc2921`.
+The first prerequisite preflight used the wrong manifest nesting and failed
+before creating a candidate. A wrapper then started before the composition
+copy finished and exited before any check; its receipt is preserved as
+`newuhs-premature-run-preflight-failure.json`. The actual completed run began
+only after preparation, with no test retry or timeout override.
+
+The NFS boots/strangulation/hunger batch and union both closed with exit 0,
+process 47314. All three original C recordings are byte-identical to both
+instrumented Linux replays. The union credits 829 inputs across 109 layouts,
+with 4,583/5,492 functions and 60,806/107,260 outcomes, adding one function
+and 56 outcomes. All 108 previous run records, source/binary pins and explicit
+platform-rejection/control hashes remain unchanged. Additional native inputs
+are 147 with 633 segments, plus four Linux controls with twenty segments.
+check_strangling reaches 12/12 C outcomes, but its separate JS inspection
+mismatch is still unresolved. C reach is not JS parity.
+Bulk artifacts remain at
+`/share/NFS/u/rohit/research/contest/artifacts/2026-11-22/c-coverage-compress.E84JI2/verified-boots-strangulation-hunger-union-20261125`.
+Seven compact files were hash-checked, download process 96379 exit 0.
+Summary SHA `f38c399cb48783c5a60c4385005528e6a038635da43a2f70f2694f01a71c25aa`;
+compact SHA `9a76ae1e6e395100397c1a0ecb2502e246651c6863147752f235f03b496a7efb`.
+Receipt: `linux-coverage-boots-strangulation-hunger-download.json` in the restart cache.
+
+The next physical-hit feedback package is independently verified, 662 files
+and no links, seal `d6f0dfbe9995af6058aed34db0f4ec0796d02ef04e5ed9d27c6bab69fad74674`.
+Parent read the full C/JS physical-hit owner and source/helper/caller review.
+Its four-case fresh C raw, SHA
+`c0ed493833d15c0386b0ecf7256e5b52a8610c80aff0931e1377823c3ec3d4fe`,
+matches all five output collections on the fixed hunger prerequisite candidate:
+292 boundaries, 9,756 calls and zero frames. This is qualification only, not
+main integration or public/full verification. The patch changes three message
+helper calls; artifact fallback remains constructed-only. Pauli now audits
+u_slip_free separately. Avicenna traces the missing status_enlightenment line;
+Jason handles byte-FF line input; Darwin handles spoteffects; Singer handles
+fresh genocide killer initialization. Original seals and failures stay fixed.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

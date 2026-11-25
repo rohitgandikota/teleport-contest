@@ -157,12 +157,21 @@ bounds. The next strangulation candidate passes five of six fresh native
 cases; two inspection screens still differ in the sixth. That failure remains
 preserved and is being traced before promotion.
 
-The latest shared-machine C union credits 826 inputs across 108 layouts,
-reaching 4,582/5,492 functions and 60,750/107,260 branch outcomes. It adds
-18 outcomes. All 106 preceding run records remain unchanged. The new amulet
-recording is byte-identical on both platforms. The food recording retains its
-Mac apple-message rejection; a separately recorded ordinary Linux control
-matches both instrumented Linux replays byte for byte. These figures measure
+Hunger exhaustion now checks the active form's HP. All twenty parent checks,
+59 controls, eighteen focused fixtures, all public sessions and 62 bounded
+workers pass. Three fresh C cases match 431 styled boundaries and 8,439
+complete calls, correcting fourteen screens. Both unaffected cases retain
+all five output hashes. Maintained corpus: 833. Full832 is running on pushed
+boot checkpoint `81ad0594`; this subsequent hunger repair is outside it.
+Fresh-read killer initialization and the zero-nutrition helper guard remain
+separate recorded failures.
+
+The latest shared-machine C union credits 829 inputs across 109 layouts,
+reaching 4,583/5,492 functions and 60,806/107,260 branch outcomes. It adds
+one function and 56 outcomes from 24 boot, strangulation and hunger cases.
+All 108 preceding run records, binary/source pins and platform controls remain
+unchanged. The original Mac apple-message rejection is still excluded; its
+independent ordinary Linux control remains accepted. These figures measure
 C reach, not JS parity or complete source coverage.
 
 The preceding full regression passes all 817 fixtures: 853,841 screens/cursors,

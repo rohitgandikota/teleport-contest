@@ -1,0 +1,466 @@
+{
+  "name": "forcefight-owner",
+  "description": "Fixed debug-startup keyboard proposals through real wishes, wielding and movement; native recording is parent work.",
+  "segments": [
+    {
+      "name": "bars-dagger",
+      "seed": 855315,
+      "datetime": "20260327071407",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3,symset:DECgraphics\n",
+      "moves": " h\u0017uncursed +0 dagger\rwa\u0017iron bars\rlFh      \u001b\u001b      V"
+    },
+    {
+      "name": "bars-mirror-single",
+      "seed": 855315,
+      "datetime": "20260327071407",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3,symset:DECgraphics\n",
+      "moves": " h\u0017uncursed mirror\rwa\u0017iron bars\rlFh      \u001b\u001b      V"
+    },
+    {
+      "name": "bars-potion-stack",
+      "seed": 855315,
+      "datetime": "20260327071407",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3,symset:DECgraphics\n",
+      "moves": " h\u00172 uncursed potions of water\rwa\u0017iron bars\rlFh      \u001b\u001b      V"
+    },
+    {
+      "name": "bars-acid",
+      "seed": 855315,
+      "datetime": "20260327071407",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3,symset:DECgraphics\n",
+      "moves": " h\u0017uncursed potion of acid\rwa\u0017iron bars\rlFh      \u001b\u001b      V"
+    },
+    {
+      "name": "bars-hammer",
+      "seed": 855315,
+      "datetime": "20260327071407",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3,symset:DECgraphics\n",
+      "moves": " h\u0017uncursed +10 war hammer\rwa\u0017iron bars\rlFh      \u001b\u001b      V"
+    },
+    {
+      "name": "web-dagger-success",
+      "seed": 855315,
+      "datetime": "20260327071407",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3,symset:DECgraphics\n",
+      "moves": " h\u0017uncursed +10 dagger\rwa\u0017web\rl\u0006Fh      \u001b\u001b      V"
+    },
+    {
+      "name": "web-axe",
+      "seed": 855315,
+      "datetime": "20260327071407",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3,symset:DECgraphics\n",
+      "moves": " h\u0017uncursed +10 axe\rwa\u0017web\rl\u0006Fh      \u001b\u001b      V"
+    },
+    {
+      "name": "web-dagger-failure",
+      "seed": 855315,
+      "datetime": "20260327071407",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3,symset:DECgraphics\n",
+      "moves": " h\u0017uncursed -10 dagger\rwa\u0017web\rl\u0006Fh      \u001b\u001b      V"
+    },
+    {
+      "name": "web-sting",
+      "seed": 855315,
+      "datetime": "20260327071407",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3,symset:DECgraphics\n",
+      "moves": " h\u0017uncursed Sting\rwa\u0017web\rl\u0006Fh      \u001b\u001b      V"
+    },
+    {
+      "name": "web-fire-brand",
+      "seed": 855315,
+      "datetime": "20260327071407",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3,symset:DECgraphics\n",
+      "moves": " h\u0017uncursed Fire Brand\rwa\u0017web\rl\u0006Fh      \u001b\u001b      V"
+    },
+    {
+      "name": "web-nonblade",
+      "seed": 855315,
+      "datetime": "20260327071407",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3,symset:DECgraphics\n",
+      "moves": " h\u0017uncursed mace\rwa\u0017web\rl\u0006Fh      \u001b\u001b      V"
+    },
+    {
+      "name": "web-bare",
+      "seed": 855315,
+      "datetime": "20260327071407",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3,symset:DECgraphics\n",
+      "moves": " h\u0017web\rl\u0006Fh      \u001b\u001b      V"
+    },
+    {
+      "name": "floor-negative",
+      "seed": 855315,
+      "datetime": "20260327071407",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3,symset:DECgraphics\n",
+      "moves": " h\u0017uncursed dagger\rwaFl      \u001b\u001b      V"
+    },
+    {
+      "name": "bars-unforced-negative",
+      "seed": 855315,
+      "datetime": "20260327071407",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3,symset:DECgraphics\n",
+      "moves": " h\u0017uncursed mirror\rwa\u0017iron bars\rlh      \u001b\u001b      V"
+    },
+    {
+      "name": "bars-unarmed-negative",
+      "seed": 855315,
+      "datetime": "20260327071407",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3,symset:DECgraphics\n",
+      "moves": " h\u0017iron bars\rlFh      \u001b\u001b      V"
+    },
+    {
+      "name": "web-unseen-negative",
+      "seed": 855315,
+      "datetime": "20260327071407",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3,symset:DECgraphics\n",
+      "moves": " h\u0017uncursed dagger\rwa\u0017web\rlFh      \u001b\u001b      V"
+    }
+  ],
+  "coverage": [
+    "level.ordinary",
+    "mode.debug",
+    "ui.getlin",
+    "ui.more-paging"
+  ],
+  "branches": [
+    "forcefight-owner.bars-dagger",
+    "forcefight-owner.bars-mirror-single",
+    "forcefight-owner.bars-potion-stack",
+    "forcefight-owner.bars-acid",
+    "forcefight-owner.bars-hammer",
+    "forcefight-owner.web-dagger-success",
+    "forcefight-owner.web-axe",
+    "forcefight-owner.web-dagger-failure",
+    "forcefight-owner.web-sting",
+    "forcefight-owner.web-fire-brand",
+    "forcefight-owner.web-nonblade",
+    "forcefight-owner.web-bare",
+    "forcefight-owner.floor-negative",
+    "forcefight-owner.bars-unforced-negative",
+    "forcefight-owner.bars-unarmed-negative",
+    "forcefight-owner.web-unseen-negative"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "forcefight-owner.bars-dagger",
+      "segment": 0,
+      "screenIncludes": [
+        "Clonk!",
+        "MacOS NetHack Version 5.0.0"
+      ],
+      "screenExcludes": []
+    },
+    {
+      "branch": "forcefight-owner.bars-mirror-single",
+      "segment": 1,
+      "screenIncludes": [
+        "shatters into a thousand pieces!",
+        "MacOS NetHack Version 5.0.0"
+      ],
+      "screenExcludes": []
+    },
+    {
+      "branch": "forcefight-owner.bars-potion-stack",
+      "segment": 2,
+      "screenIncludes": [
+        "A clear potion shatters!",
+        "MacOS NetHack Version 5.0.0"
+      ],
+      "screenExcludes": []
+    },
+    {
+      "branch": "forcefight-owner.bars-acid",
+      "segment": 3,
+      "screenIncludes": [
+        "The iron bars are dissolved!",
+        "MacOS NetHack Version 5.0.0"
+      ],
+      "screenExcludes": []
+    },
+    {
+      "branch": "forcefight-owner.bars-hammer",
+      "segment": 4,
+      "screenIncludes": [
+        "Clonk!",
+        "MacOS NetHack Version 5.0.0"
+      ],
+      "screenExcludes": []
+    },
+    {
+      "branch": "forcefight-owner.web-dagger-success",
+      "segment": 5,
+      "screenIncludes": [
+        "You cut through the web.",
+        "MacOS NetHack Version 5.0.0"
+      ],
+      "screenExcludes": []
+    },
+    {
+      "branch": "forcefight-owner.web-axe",
+      "segment": 6,
+      "screenIncludes": [
+        "You cut through the web.",
+        "MacOS NetHack Version 5.0.0"
+      ],
+      "screenExcludes": []
+    },
+    {
+      "branch": "forcefight-owner.web-dagger-failure",
+      "segment": 7,
+      "screenIncludes": [
+        "You hack ineffectually at some of the strands.",
+        "MacOS NetHack Version 5.0.0"
+      ],
+      "screenExcludes": []
+    },
+    {
+      "branch": "forcefight-owner.web-sting",
+      "segment": 8,
+      "screenIncludes": [
+        "Sting cuts through the web!",
+        "MacOS NetHack Version 5.0.0"
+      ],
+      "screenExcludes": []
+    },
+    {
+      "branch": "forcefight-owner.web-fire-brand",
+      "segment": 9,
+      "screenIncludes": [
+        "Fire Brand burns through the web!",
+        "MacOS NetHack Version 5.0.0"
+      ],
+      "screenExcludes": []
+    },
+    {
+      "branch": "forcefight-owner.web-nonblade",
+      "segment": 10,
+      "screenIncludes": [
+        "You can't cut a web with a mace!",
+        "MacOS NetHack Version 5.0.0"
+      ],
+      "screenExcludes": []
+    },
+    {
+      "branch": "forcefight-owner.web-bare",
+      "segment": 11,
+      "screenIncludes": [
+        "You punch through the web.",
+        "MacOS NetHack Version 5.0.0"
+      ],
+      "screenExcludes": []
+    },
+    {
+      "branch": "forcefight-owner.floor-negative",
+      "segment": 12,
+      "screenIncludes": [
+        "You harmlessly attack the branch staircase up.",
+        "MacOS NetHack Version 5.0.0"
+      ],
+      "screenExcludes": []
+    },
+    {
+      "branch": "forcefight-owner.bars-unforced-negative",
+      "segment": 13,
+      "screenIncludes": [
+        "Iron bars.",
+        "MacOS NetHack Version 5.0.0"
+      ],
+      "screenExcludes": []
+    },
+    {
+      "branch": "forcefight-owner.bars-unarmed-negative",
+      "segment": 14,
+      "screenIncludes": [
+        "You harmlessly attack the iron bars.",
+        "MacOS NetHack Version 5.0.0"
+      ],
+      "screenExcludes": []
+    },
+    {
+      "branch": "forcefight-owner.web-unseen-negative",
+      "segment": 15,
+      "screenIncludes": [
+        "You attack thin air.",
+        "MacOS NetHack Version 5.0.0"
+      ],
+      "screenExcludes": []
+    }
+  ],
+  "branchRequirements": [
+    {
+      "name": "bars-dagger",
+      "branch": "forcefight-owner.bars-dagger",
+      "classification": "positive",
+      "producer": "wizard wishes and wield; movement F prefix",
+      "message": "Clonk!",
+      "survival": true,
+      "versionAtEOF": true
+    },
+    {
+      "name": "bars-mirror-single",
+      "branch": "forcefight-owner.bars-mirror-single",
+      "classification": "positive",
+      "producer": "wizard wishes and wield; movement F prefix",
+      "message": "shatters into a thousand pieces!",
+      "survival": true,
+      "versionAtEOF": true
+    },
+    {
+      "name": "bars-potion-stack",
+      "branch": "forcefight-owner.bars-potion-stack",
+      "classification": "positive",
+      "producer": "wizard wishes and wield; movement F prefix",
+      "message": "A clear potion shatters!",
+      "survival": true,
+      "versionAtEOF": true
+    },
+    {
+      "name": "bars-acid",
+      "branch": "forcefight-owner.bars-acid",
+      "classification": "positive",
+      "producer": "wizard wishes and wield; movement F prefix",
+      "message": "The iron bars are dissolved!",
+      "survival": true,
+      "versionAtEOF": true
+    },
+    {
+      "name": "bars-hammer",
+      "branch": "forcefight-owner.bars-hammer",
+      "classification": "positive",
+      "producer": "wizard wishes and wield; movement F prefix",
+      "message": "Clonk!",
+      "survival": true,
+      "versionAtEOF": true
+    },
+    {
+      "name": "web-dagger-success",
+      "branch": "forcefight-owner.web-dagger-success",
+      "classification": "positive",
+      "producer": "wizard trap wish and map revelation",
+      "message": "You cut through the web.",
+      "survival": true,
+      "versionAtEOF": true
+    },
+    {
+      "name": "web-axe",
+      "branch": "forcefight-owner.web-axe",
+      "classification": "positive",
+      "producer": "wizard trap wish and map revelation",
+      "message": "You cut through the web.",
+      "survival": true,
+      "versionAtEOF": true
+    },
+    {
+      "name": "web-dagger-failure",
+      "branch": "forcefight-owner.web-dagger-failure",
+      "classification": "positive",
+      "producer": "wizard trap wish and map revelation",
+      "message": "You hack ineffectually at some of the strands.",
+      "survival": true,
+      "versionAtEOF": true
+    },
+    {
+      "name": "web-sting",
+      "branch": "forcefight-owner.web-sting",
+      "classification": "positive",
+      "producer": "wizard trap wish and map revelation",
+      "message": "Sting cuts through the web!",
+      "survival": true,
+      "versionAtEOF": true
+    },
+    {
+      "name": "web-fire-brand",
+      "branch": "forcefight-owner.web-fire-brand",
+      "classification": "positive",
+      "producer": "wizard trap wish and map revelation",
+      "message": "Fire Brand burns through the web!",
+      "survival": true,
+      "versionAtEOF": true
+    },
+    {
+      "name": "web-nonblade",
+      "branch": "forcefight-owner.web-nonblade",
+      "classification": "positive",
+      "producer": "wizard trap wish and map revelation",
+      "message": "You can't cut a web with a mace!",
+      "survival": true,
+      "versionAtEOF": true
+    },
+    {
+      "name": "web-bare",
+      "branch": "forcefight-owner.web-bare",
+      "classification": "positive",
+      "producer": "wizard trap wish and map revelation",
+      "message": "You punch through the web.",
+      "survival": true,
+      "versionAtEOF": true
+    },
+    {
+      "name": "floor-negative",
+      "branch": "forcefight-owner.floor-negative",
+      "classification": "negative",
+      "producer": "empty-square force-fight aimed at the starting branch stairs",
+      "message": "You harmlessly attack the branch staircase up.",
+      "survival": true,
+      "versionAtEOF": true
+    },
+    {
+      "name": "bars-unforced-negative",
+      "branch": "forcefight-owner.bars-unforced-negative",
+      "classification": "negative",
+      "producer": "wizard wishes and wield; movement F prefix",
+      "message": "Iron bars.",
+      "survival": true,
+      "versionAtEOF": true
+    },
+    {
+      "name": "bars-unarmed-negative",
+      "branch": "forcefight-owner.bars-unarmed-negative",
+      "classification": "negative",
+      "producer": "wizard wishes and wield; movement F prefix",
+      "message": "You harmlessly attack the iron bars.",
+      "survival": true,
+      "versionAtEOF": true
+    },
+    {
+      "name": "web-unseen-negative",
+      "branch": "forcefight-owner.web-unseen-negative",
+      "classification": "negative",
+      "producer": "ordinary movement control",
+      "message": "You attack thin air.",
+      "survival": true,
+      "versionAtEOF": true
+    }
+  ],
+  "unchangedOutputHashes": {
+    "floor-negative": {
+      "screens": "0c51f6721c1d71ef7caefc4472bed7eaabee3aed736bea13d73458a3ec015858",
+      "cursors": "670d37b53986e6e7bb5dfba5c0686e5a3eac4cb71b210cb0b61d08f3d655214b",
+      "calls": "f346368544a344e33ef0f4dea0fd01229a0c6a80e1252a15323ca4a54d00abf0",
+      "slices": "3ea8c64b0f2bcd84977300f9267160f287075451778dacbb324b671d85393f8d",
+      "frames": "ceacc46061d233bebb03d40ab9eb9fd66b4fd743e465e8f625aaaf2ed2cee92d"
+    },
+    "bars-unforced-negative": {
+      "screens": "f757330c49a38fb330358db2f724c8ad236fd80c05f1bb4e8c0ddd051e81fa03",
+      "cursors": "d4eb5906066caec0eb4e4092a32e0eb3d508ff9f6553f916fa6d068201cddafe",
+      "calls": "5ab18fbc6389d23dc0a649aa0dfd008e785340c56252248fa16616ce379b5352",
+      "slices": "bba7e7ed2e4aeb03075118ac7de20387816e3df20b0e239cf0ccfe293fea031b",
+      "frames": "ead94411bc034605bfb4d5be3b4e254292ddb7da918596c470c3bae6da3d6349"
+    },
+    "bars-unarmed-negative": {
+      "screens": "cc549021e9342e2d6fe40aa82453e9b4139c1daf824837058d2841152b9cb436",
+      "cursors": "4e403cc3b011069e73d5f04cd09a6e1c01b6a58b1f3c01c21f48f40f345b5dec",
+      "calls": "fa037d7e84c01b837b3463fbdcf0bb93e7246504c48875c04bc4a97b61a7268c",
+      "slices": "48bbd2c2d32d27cbc6f05101c88722307eafc583c0bcfbb82f470ab4ef208ca3",
+      "frames": "dbd098af6556ed79650d149b1691be336a46f8bad6f327e942508dd11342575e"
+    },
+    "web-unseen-negative": {
+      "screens": "90e4246a041b5c64b557ce4cb185cd738f58c21eb1452265c5e41602ca82ac0b",
+      "cursors": "b7d4ddad0c2580a0f9ded11f05b83f65d6029faaa5ac53353087c94714710209",
+      "calls": "e4c9832a83304c18d5f2d5186f123b4744d8cfc5b4c70223ab35fc8140c32359",
+      "slices": "c055a1f18257bdddabe80f721e4a41c7e364367e921ea6ffd151876d143bcf61",
+      "frames": "df9d8b6589deeb4b04ce405a1070a7c03705e5ad451c117574ea288303c80cb3"
+    }
+  },
+  "recordingNote": "Parent records these fixed 16 inputs; this packet has no native result. Preserve all five input fields and all key bytes. Copy to tools/gen-sessions/recipes/forcefight-owner.json and record tools/gen-sessions/generated/forcefight-owner.session.json."
+}

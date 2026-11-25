@@ -4395,6 +4395,22 @@
     {"group":"swim-move-danger","id":"swim-move-danger.blob-pool","cFile":"src/hack.c","cFunction":"swim_move_danger","description":"Ordinary keyboard proposal: blob-pool"},
     {"group":"swim-move-danger","id":"swim-move-danger.clinger-breathing-pool","cFile":"src/hack.c","cFunction":"swim_move_danger","description":"Ordinary keyboard proposal: clinger-breathing-pool"},
     {"group":"swim-move-danger","id":"swim-move-danger.lava-known-type-unknown-proof","cFile":"src/hack.c","cFunction":"swim_move_danger","description":"Ordinary keyboard proposal: lava-known-type-unknown-proof"},
-    {"group":"swim-move-danger","id":"swim-move-danger.lava-known-no-fire","cFile":"src/hack.c","cFunction":"swim_move_danger","description":"Ordinary keyboard proposal: lava-known-no-fire"}
+    {"group":"swim-move-danger","id":"swim-move-danger.lava-known-no-fire","cFile":"src/hack.c","cFunction":"swim_move_danger","description":"Ordinary keyboard proposal: lava-known-no-fire"},
+    {"group": "forcefight-owner", "id": "forcefight-owner.bars-dagger", "cFile": "src/hack.c", "cFunction": "domove_fight_ironbars", "description": "Clonk!"},
+    {"group": "forcefight-owner", "id": "forcefight-owner.bars-mirror-single", "cFile": "src/hack.c", "cFunction": "domove_fight_ironbars", "description": "shatters into a thousand pieces!"},
+    {"group": "forcefight-owner", "id": "forcefight-owner.bars-potion-stack", "cFile": "src/hack.c", "cFunction": "domove_fight_ironbars", "description": "A clear potion shatters!"},
+    {"group": "forcefight-owner", "id": "forcefight-owner.bars-acid", "cFile": "src/hack.c", "cFunction": "domove_fight_ironbars", "description": "The iron bars are dissolved!"},
+    {"group": "forcefight-owner", "id": "forcefight-owner.bars-hammer", "cFile": "src/hack.c", "cFunction": "domove_fight_ironbars", "description": "Clonk!"},
+    {"group": "forcefight-owner", "id": "forcefight-owner.web-dagger-success", "cFile": "src/hack.c", "cFunction": "domove_fight_web", "description": "You cut through the web."},
+    {"group": "forcefight-owner", "id": "forcefight-owner.web-axe", "cFile": "src/hack.c", "cFunction": "domove_fight_web", "description": "You cut through the web."},
+    {"group": "forcefight-owner", "id": "forcefight-owner.web-dagger-failure", "cFile": "src/hack.c", "cFunction": "domove_fight_web", "description": "You hack ineffectually at some of the strands."},
+    {"group": "forcefight-owner", "id": "forcefight-owner.web-sting", "cFile": "src/hack.c", "cFunction": "domove_fight_web", "description": "Sting cuts through the web!"},
+    {"group": "forcefight-owner", "id": "forcefight-owner.web-fire-brand", "cFile": "src/hack.c", "cFunction": "domove_fight_web", "description": "Fire Brand burns through the web!"},
+    {"group": "forcefight-owner", "id": "forcefight-owner.web-nonblade", "cFile": "src/hack.c", "cFunction": "domove_fight_web", "description": "You can't cut a web with a mace!"},
+    {"group": "forcefight-owner", "id": "forcefight-owner.web-bare", "cFile": "src/hack.c", "cFunction": "domove_fight_web", "description": "You punch through the web."},
+    {"group": "forcefight-owner", "id": "forcefight-owner.floor-negative", "cFile": "src/hack.c", "cFunction": "domove_fight_empty", "description": "You harmlessly attack the branch staircase up."},
+    {"group": "forcefight-owner", "id": "forcefight-owner.bars-unforced-negative", "cFile": "src/hack.c", "cFunction": "domove_fight_ironbars", "description": "Iron bars."},
+    {"group": "forcefight-owner", "id": "forcefight-owner.bars-unarmed-negative", "cFile": "src/hack.c", "cFunction": "domove_fight_ironbars", "description": "You harmlessly attack the iron bars."},
+    {"group": "forcefight-owner", "id": "forcefight-owner.web-unseen-negative", "cFile": "src/hack.c", "cFunction": "domove_fight_web", "description": "You attack thin air."}
   ]
 }

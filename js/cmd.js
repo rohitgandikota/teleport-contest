@@ -36,7 +36,8 @@ import { doname } from './objnam.js';
 import { num_spells } from './spell.js';
 import { can_reach_floor } from './pickup.js';
 import { which_armor } from './worn.js';
-import { test_move, u_rooted } from './hack.js';
+import { test_move, u_rooted, domove_fight_ironbars, domove_fight_web,
+         domove_fight_empty } from './hack.js';
 import { stucksteed } from './steed.js';
 import { vobj_at } from './display.js';
 import { auto_describe } from './getpos.js';
@@ -2738,23 +2739,6 @@ async function domove_core() {
     u.uy0 = u.uy;
     game.bhitpos = { x: newx, y: newy };
 
-    /* src/hack.c:2242: force-fighting an empty square, or walking into a stale
-       invisible-monster marker without nopick, attacks the square instead of
-       moving onto it. */
-    const empty_target = !m_at(newx, newy);
-    const stale_invisible = empty_target
-        && glyph_is_invisible_at(newx, newy)
-        && !game.context.nopick;
-    if (empty_target && (game.context.forcefight || stale_invisible)) {
-        /* src/hack.c:2228 domove_fight_empty() handles the no-target case.
-           A real target continues through domove_attackmon_at below while
-           forcefight is still set, bypassing the peaceful-monster prompt. */
-        const { domove_fight_empty } = await import('./hack.js');
-        await domove_fight_empty(newx, newy);
-        game.context.move = 1;
-        return;
-    }
-
     /* src/hack.c:2786 — bumping a monster ends a run.
      *
      *     if (mtmp) {
@@ -2797,6 +2781,13 @@ async function domove_core() {
     }
 
     if (!displaceu.value) {
+        if (await domove_fight_ironbars(newx, newy))
+            return;
+        if (await domove_fight_web(newx, newy))
+            return;
+        if (await domove_fight_empty(newx, newy))
+            return;
+
         /* src/hack.c:2813: reaching an apparently empty destination proves
            that a remembered invisible-monster marker there is stale. This must
            run before boulder handling so a boulder pushed onto that square can

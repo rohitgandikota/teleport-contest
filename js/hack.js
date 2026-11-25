@@ -9,16 +9,22 @@ import { float_vs_flight } from './polyself.js';
 import { float_up, float_down, blow_up_landmine, fill_pit, deltrap, seetrap, feeltrap, launch_obj, selftouch } from './trap.js';
 import { incr_itimeout } from './potion.js';
 import { You_cant, pline_dir } from './pline.js';
-import { u_wield_art } from './artifact.js';
+import { u_wield_art, attacks } from './artifact.js';
 import { ART_STING } from './artilist_data.js';
 import { TT_NONE } from './const.js';
 import { FROMOUTSIDE, FROMFORM, I_SPECIAL, W_ARTI, NO_KILLER_PREFIX, TIMEOUT, A_DEX, Is_airlevel, DRAWBRIDGE_UP, DB_UNDER, DB_ICE, MAX_TYPE, IN_SIGHT, MIGR_RANDOM, ROLL, LAUNCH_KNOWN, xFLOOR, xGROUND, xOPENDOOR, xSHUTDOOR, xSWAMP, xSUBMERGED, xSEA, xWATERWALL, TREE, DOOR, D_TRAPPED, MOAT, Is_earthlevel, Is_juiblex_level } from './const.js';
-import { obj_extract_self, useupf } from './invent.js';
-import { place_object } from './mkobj.js';
-import { exercise, ACURR } from './attrib.js';
+import { obj_extract_self, useupf, freeinv } from './invent.js';
+import { place_object, splitobj } from './mkobj.js';
+import { exercise, ACURR, acurrstr } from './attrib.js';
+import { breaktest } from './dothrow.js';
+import { hit_bars } from './mthrowu.js';
+import { setuwep_with_feedback } from './wield.js';
+import { BRK_BY_HERO, BRK_FROM_INV, BRK_MELEE, BRK_KNOWN2BREAK,
+         BRK_KNOWN2NOTBREAK, WEB, P_UNSKILLED } from './const.js';
 import { A_STR, LANDMINE, SPIKED_PIT, PIT, HOLE, TRAPDOOR,
          LEVEL_TELEP, TELEP_TRAP, ROLLING_BOULDER_TRAP, FAILEDUNTRAP, NO_TRAP } from './const.js';
-import { the, xname, doname, ansimpleoname, Tobjnam, otense } from './objnam.js';
+import { the, xname, doname, ansimpleoname, Tobjnam, otense,
+         bare_artifactname, makeplural } from './objnam.js';
 import { costly_spot, stolen_value } from './shk.js';
 import { You_hear, There } from './pline.js';
 import { flush_screen, glyph_at, map_invisible, newsym, unmap_invisible,
@@ -44,7 +50,7 @@ import { Levitation, Flying, Fire_resistance, Underwater,
          Hallucination, Deaf, Passes_walls, Stealth, Swimming,
          Amphibious, Breathless } from './youprop.js';
 import { is_pool_or_lava, is_db_wall, db_under_typ, is_ice } from './dbridge.js';
-import { is_pool, is_lava, t_at, m_at, is_pick, seemimic,
+import { is_pool, is_lava, t_at, m_at, is_pick, is_blade, seemimic,
          wake_msg } from './mon.js';
 import { hliquid } from './do_name.js';
 import { Is_waterlevel, WATER, LAVAPOOL, POOL, AIR, PLNMSG_BACK_ON_GROUND } from './const.js';
@@ -142,7 +148,7 @@ import { objdescr_is } from './o_init.js';
 import { Wwalking } from './youprop.js';
 import { s_suffix } from './hacklib.js';
 import { uteetering_at_seen_pit } from './trap.js';
-import { P_SKILL } from './weapon.js';
+import { P_SKILL, uwep_skill_type, use_skill, weapon_descr } from './weapon.js';
 import { P_RIDING, P_BASIC } from './const.js';
 import { rider_cant_reach } from './steed.js';
 import { canseemon } from './display.js';
@@ -1241,6 +1247,78 @@ export function in_town(x, y) {
     return !has_subrooms;
 }
 
+
+// src/hack.c:1996 domove_fight_ironbars()
+export async function domove_fight_ironbars(x, y) {
+    if (game.context.forcefight && game.level.at(x, y).typ === IRONBARS
+        && game.u.uwep) {
+        let obj = game.u.uwep;
+        let breakflags = BRK_BY_HERO | BRK_FROM_INV | BRK_MELEE;
+
+        if (breaktest(obj)) {
+            if (obj.quan > 1)
+                obj = splitobj(obj, 1);
+            else
+                await setuwep_with_feedback(null);
+            await freeinv(obj);
+            breakflags |= BRK_KNOWN2BREAK;
+        } else {
+            breakflags |= BRK_KNOWN2NOTBREAK;
+        }
+
+        await hit_bars({ obj }, game.u.ux, game.u.uy, x, y, breakflags);
+        return true;
+    }
+    return false;
+}
+
+// src/hack.c:2021 domove_fight_web()
+export async function domove_fight_web(x, y) {
+    const trap = t_at(x, y);
+
+    if (game.context.forcefight && trap && trap.ttyp === WEB && trap.tseen) {
+        const u = game.u;
+        const wtype = uwep_skill_type();
+        const wskill_minus_2 = Math.max(P_SKILL(wtype), P_UNSKILLED) - 2;
+        const roll = rn2(u.uwep ? 20 : 45 - 5 * wskill_minus_2);
+
+        if (u.uwep && (u_wield_art(ART_STING)
+                      || (u.uwep.oartifact && attacks(ATTKS.AD_FIRE, u.uwep)))) {
+            await pline(`${bare_artifactname(u.uwep)} ${
+                u_wield_art(ART_STING) ? 'cuts' : 'burns'} through the web!`);
+        } else if (u.uwep && !is_blade(u.uwep)
+                   && (!u.twoweap || !is_blade(u.uswapwep))) {
+            const uwepbuf = weapon_descr(u.uwep);
+            const scndbuf = u.twoweap ? weapon_descr(u.uswapwep) : '';
+            const onewep = !scndbuf || uwepbuf === scndbuf;
+            let uwepstr, scndstr = '';
+            if (['armor', 'food', 'venom'].includes(uwepbuf.toLowerCase())) {
+                uwepstr = uwepbuf;
+            } else if (u.uwep.quan === 1 && !(u.twoweap && onewep)) {
+                uwepstr = an(uwepbuf);
+            } else {
+                uwepstr = makeplural(uwepbuf);
+            }
+            if (!onewep)
+                scndstr = u.uswapwep.quan === 1 ? an(scndbuf) : makeplural(scndbuf);
+            await You_cant(`cut a web with ${uwepstr}${
+                !onewep ? ' or ' + scndstr : ''}!`);
+            return true;
+        } else if (roll > acurrstr() - 2
+                   + (u.uwep ? u.uwep.spe + wskill_minus_2 : 0)) {
+            await You(`${u.uwep ? 'hack' : 'thrash'} ineffectually at some of the strands.`);
+            return true;
+        } else {
+            await You(`${u.uwep ? 'cut' : 'punch'} through the web.`);
+            await use_skill(wtype, 1);
+        }
+
+        deltrap(trap);
+        newsym(x, y);
+        return true;
+    }
+    return false;
+}
 
 // src/hack.c:2229 domove_fight_empty()
 export async function domove_fight_empty(x, y) {

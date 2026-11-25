@@ -13,18 +13,20 @@ Ground rules are in `/CLAUDE.md`. Read that first if you have not.
 ## Current focus, 2026-11-25
 
 
-Swimming guards are pushed as `18daa6f0`. The verified ing_suffix checkpoint
-matches 22,869 direct C helper outputs, versus 18,235 before. All 52 selected/
-public recordings and 52 strict workers pass, along with retained swimming
-controls. The corpus remains 882. Full881 passed on `4a8e688e`; it excludes
-the later swimming and string-helper changes. See STATUS for receipts.
+The string-helper checkpoint is pushed as `0efe51fe`. Forced attacks on iron
+bars and visible webs now pass 85 source controls, sixteen ordinary/native
+cases and all 62 selected/public recordings. All public strict workers pass;
+three large untrapping aggregates exceed eight seconds on both fixed baseline
+and candidate, while matching under the standard 45-second budget. Eight
+retained suites pass. See STATUS for the immediate publication receipt.
 
-Forced attacks on bars and webs now match all sixteen original C inputs,
-versus four before, and await current-main composition. The queued-notice
-boundary prerequisite improves the original cases from two to six exact;
-two duplicate-option startup failures remain preserved. Boulder pushing is
-under source review. The latest observed official feed is still rank 7 with
-659 unmatched screens. Recent local results do not establish a new rank.
+The corpus is 883. A fresh full883 NFS run uses two CPU workers, reuses 881
+recordings and uploads two new fixtures. It includes swimming, the helper fix
+and force-fight integration. Full881 remains the latest completed full run.
+Queued-notice timing passes six original and two separately locked new C cases;
+two original duplicate-option startup failures remain preserved. Boulder
+pushing and travel pathfinding are under source review. The latest observed
+official rank remains 7 with 659 unmatched screens; no newer score is inferred.
 
 
 The storage cleanup is complete. The user explicitly authorized deleting

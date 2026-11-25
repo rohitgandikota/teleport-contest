@@ -1,5 +1,44 @@
 # STATUS — live handoff board
 
+## 2026-11-25: force-fight owners verified; full883 running
+
+The string helper is pushed as `0efe51fe`. The next checkpoint ports
+domove_fight_ironbars and domove_fight_web, and puts bars/web/empty handling
+after monster attack inside !displaceu. Only hack.js and cmd.js change.
+All 85 source controls pass versus 12 before. Sixteen ordinary cases pass
+versus four, including observer/deferred/held-EOF equality. Four negative
+cases preserve all twenty output hashes. All sixteen original C cases match
+765 styled boundaries/cursors, 41,851 calls and ordered slices, zero frames.
+The actual C blade macro accepts axes despite its contrary comment; the port
+and axe scenario preserve the executable behavior.
+
+All 62 selected/public recordings match 97,552 screens/cursors, 1,641,129
+random positions and 3,901 frames. All 44 public strict workers pass. Overall,
+59/62 pass the stricter eight-second limit; untrapping-floor, doors and rescue
+exceed it. Paired fixed baseline and candidate pass all three under the standard
+45-second budget, taking 8.20–13.09 seconds. The strict failures remain visible.
+Eight retained suites, source audit and four syntax checks pass. All 612 source
+packet members and 17 promotion members remain fixed. One initial parent link
+verification error and one missing isolated scorer dependency are preserved;
+correcting the test setup changed no runtime. All 882 old recordings and prior
+requirements remain fixed; one C recording and sixteen requirements make 883.
+Main receipt `forcefight-main-verification.json`, SHA256
+`6d91e9a503e1edb7433ae047f97dbc5d95f35af7c6e49aeaeedab01adcd65f77`.
+Commit and immediately push this checkpoint.
+
+Full883 is running on the exact main runtime with two NFS CPU workers, default
+budgets and no retries. It links 881 old recordings and uploads 292 files,
+including only two new recordings. All 1,173 snapshot files are fixed.
+Root: `/share/NFS/u/rohit/research/contest/artifacts/2026-11-22/forcefight-full883-js-20261125`.
+All-files SHA256: `582984fc54dc51d957def1baf7bb571979d90fe81fbeb84b7bfa4eaa70d836b7`.
+No completed full883 result is claimed yet.
+
+The queued-notice prerequisite now matches six original C cases and two
+separately locked nonduplicate-RC cases. The two original duplicate-option
+failures remain unchanged and unresolved. Its portable companion is underway.
+Boulder pushing and travel pathfinding are active source audits. Shared helper
+gaps and whole-port completion remain unclaimed.
+
 ## 2026-11-25: ing_suffix matches the original C helper
 
 Swimming guards are pushed as `18daa6f0`. The next checkpoint changes only

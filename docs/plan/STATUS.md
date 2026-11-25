@@ -10020,13 +10020,49 @@ are unchanged. The resulting complete run passes without retries.
 
 The float_down test-only builder and verifier are prepared for the exact
 monster-slip candidate. It adds twenty native cases and 108 controls without
-runtime changes. Full/public runtime verification will be inherited from that
+runtime changes. Public and focused runtime verification will be inherited from that
 exact published predecessor; new/related fixtures and bounded input still run.
 The parent text caller patch is prepared in line-history-text-caller-parent:
 three C-reviewed post-display loops plus newly unused imports, on exact parent
 cmd-v2 and current options baselines. It is untested and requires Singer's
 coherent text owner before execution or promotion. No cmd/window changes are
 in main.
+
+## 2026-11-25 05:31 UTC: levitation descent tests verified
+
+Slippery-helmet checkpoint `b00dfea9` is pushed. The float-down-parent-tests
+worker 70568 closed with exit 0. All nine checks and 108 controls pass on its
+exact runtime, with zero runtime edits. Eight new/related fixtures match
+13,585 screens/cursors, 248,601 scored RNG positions and 129 frames. All
+eight bounded workers pass. Twenty fresh C cases match 3,787 fully styled
+boundaries/cursors, 65,762 complete calls, every slice and one frame. All
+20 cases are observer-neutral and deferred-neutral over all five collections.
+Public and other runtime checks are inherited from exact b00dfea9; no new
+full848/849 sweep is claimed yet.
+
+The test integration preserves all 279 runtime hashes and all 848 prior raw
+fixtures. Six support files match the tested candidate; twenty registry
+entries append only. Corpus: 849. Publish now. Verification SHA
+`95aca2d1d7d634e2d7b69a8c383007c37b5cc3a254fd6d9f8bc435957270f7d0`.
+Receipt: float-down-main-integration.json. prepare-float-full849.py and
+verify-float-full849.py are prepared for a new fixed sweep after publication.
+The completed full845 remains exact on its older option runtime.
+
+The basics/characteristics source seal independently verifies 712 members and
+six links, SHA 8add40e2e15a2c0b863dce0e072edf3507ead9da5b8ccbe9db49da9eaa486271.
+Complete enlightenment/basics/characteristics/one-characteristic C bodies and
+AC/ring helper contracts were reviewed. Eleven unchanged proposals recorded
+successfully, and all eleven match on exact b00dfea9 plus the scoped insight
+patch: 840 boundaries, 30,307 complete calls, no frames. Raw SHA
+`aaa060510e704ec8467a3bff17ab8ba68dea2776d04c7271fa300737a81ceb2b`.
+All five input fields and keys are fixed. Parent composition is next. Elapsed
+time and DEBUGFILES remain separate; Avicenna owns elapsed-time producer work.
+
+Singer's coherent text-window package is sealed and awaits independent parent
+verification: 39 allowed caller removals, the actual wait_synch producer and
+normal-import controls. The three parent-owned removals remain explicit,
+unapplied dependencies. Its selected native reports are agent evidence until
+parent composition/replay. No history/window runtime changes are in main.
 
 ## 2026-09-05: full faithful port is the active goal
 

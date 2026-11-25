@@ -1,0 +1,386 @@
+{
+  "name": "float-down-owner",
+  "description": "Twenty original C recordings cover levitation descent, blocked traps, retained sources, resumed flight, pools, lava and equipment removal. Complete source-owner review found no runtime correction. Source-only controls and unrecorded arms remain separately classified.",
+  "coverage": [
+    "level.ordinary",
+    "mode.debug",
+    "object.armor",
+    "terrain.water-lava",
+    "survival.timed-status",
+    "ui.getlin",
+    "ui.menus",
+    "ui.more-paging"
+  ],
+  "requireBranchAssertions": true,
+  "branches": [
+    "float-down.voluntary-floor",
+    "float-down.voluntary-pit",
+    "float-down.voluntary-spiked-pit",
+    "float-down.voluntary-hole",
+    "float-down.voluntary-trapdoor",
+    "float-down.blocked-bear",
+    "float-down.blocked-web",
+    "float-down.remaining-ring-negative",
+    "float-down.remaining-form-negative",
+    "float-down.flight-resumes",
+    "float-down.pool-breathing",
+    "float-down.pool-swimming",
+    "float-down.pool-walking",
+    "float-down.pool-crawl",
+    "float-down.lava-resistant",
+    "float-down.lava-walking",
+    "float-down.lava-salamander",
+    "float-down.ordinary-no-levitation-negative",
+    "float-down.ring-removal-pit",
+    "float-down.boots-removal-pit"
+  ],
+  "branchAssertions": [
+    {
+      "branch": "float-down.voluntary-floor",
+      "segment": 0,
+      "screenIncludes": [
+        "You float gently to the floor."
+      ]
+    },
+    {
+      "branch": "float-down.voluntary-pit",
+      "segment": 1,
+      "screenIncludes": [
+        "You float gently to the floor.",
+        "You fall into a pit!"
+      ]
+    },
+    {
+      "branch": "float-down.voluntary-spiked-pit",
+      "segment": 2,
+      "screenIncludes": [
+        "You land on a set of sharp iron spikes!"
+      ]
+    },
+    {
+      "branch": "float-down.voluntary-hole",
+      "segment": 3,
+      "screenIncludes": [
+        "You escape a hole."
+      ]
+    },
+    {
+      "branch": "float-down.voluntary-trapdoor",
+      "segment": 4,
+      "screenIncludes": [
+        "A trap door opens up under you!"
+      ]
+    },
+    {
+      "branch": "float-down.blocked-bear",
+      "segment": 5,
+      "screenIncludes": [
+        "no longer trying to float up from the trap's jaws.",
+        "Your latent levitation ceases."
+      ],
+      "screenExcludes": [
+        "You float gently"
+      ]
+    },
+    {
+      "branch": "float-down.blocked-web",
+      "segment": 6,
+      "screenIncludes": [
+        "no longer trying to float up from the web.",
+        "Your latent levitation ceases."
+      ],
+      "screenExcludes": [
+        "You float gently"
+      ]
+    },
+    {
+      "branch": "float-down.remaining-ring-negative",
+      "segment": 7,
+      "screenIncludes": [
+        "You are floating high above the floor."
+      ],
+      "screenExcludes": [
+        "You float gently",
+        "You fall into a pit!"
+      ]
+    },
+    {
+      "branch": "float-down.remaining-form-negative",
+      "segment": 8,
+      "screenIncludes": [
+        "You turn into a floating eye!",
+        "You are floating high above the floor."
+      ],
+      "screenExcludes": [
+        "You float gently",
+        "You fall into a pit!"
+      ]
+    },
+    {
+      "branch": "float-down.flight-resumes",
+      "segment": 9,
+      "screenIncludes": [
+        "You have stopped levitating and are now flying."
+      ],
+      "screenExcludes": [
+        "You float gently",
+        "You fall into a pit!"
+      ]
+    },
+    {
+      "branch": "float-down.pool-breathing",
+      "segment": 10,
+      "screenIncludes": [
+        "You sink like a rock.",
+        "You touch bottom."
+      ],
+      "screenExcludes": [
+        "You float gently"
+      ]
+    },
+    {
+      "branch": "float-down.pool-swimming",
+      "segment": 11,
+      "screenIncludes": [
+        "You float gently to the water.",
+        "You touch bottom."
+      ]
+    },
+    {
+      "branch": "float-down.pool-walking",
+      "segment": 12,
+      "screenIncludes": [
+        "You float gently to the water."
+      ]
+    },
+    {
+      "branch": "float-down.pool-crawl",
+      "segment": 13,
+      "screenIncludes": [
+        "You try to crawl out of the water."
+      ],
+      "screenExcludes": [
+        "You float gently"
+      ]
+    },
+    {
+      "branch": "float-down.lava-resistant",
+      "segment": 14,
+      "screenIncludes": [
+        "You sink into the molten lava, but it only burns slightly!"
+      ],
+      "screenExcludes": [
+        "You float gently"
+      ]
+    },
+    {
+      "branch": "float-down.lava-walking",
+      "segment": 15,
+      "screenIncludes": [
+        "A pool of molten lava."
+      ],
+      "screenExcludes": [
+        "You float gently"
+      ]
+    },
+    {
+      "branch": "float-down.lava-salamander",
+      "segment": 16,
+      "screenIncludes": [
+        "You turn into a salamander!",
+        "A pool of molten lava."
+      ],
+      "screenExcludes": [
+        "You float gently"
+      ]
+    },
+    {
+      "branch": "float-down.ordinary-no-levitation-negative",
+      "segment": 17,
+      "screenIncludes": [
+        "You can't go down here."
+      ],
+      "screenExcludes": [
+        "You float gently"
+      ]
+    },
+    {
+      "branch": "float-down.ring-removal-pit",
+      "segment": 18,
+      "screenIncludes": [
+        "You were wearing a ring of levitation",
+        "You fall into a pit!"
+      ]
+    },
+    {
+      "branch": "float-down.boots-removal-pit",
+      "segment": 19,
+      "screenIncludes": [
+        "You finish taking off your boots.",
+        "You fall into a pit!"
+      ]
+    }
+  ],
+  "segments": [
+    {
+      "name": "voluntary-floor",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "moves": " #levelchange\r30\r                             l    \u001b\u001b\u0017blessed scroll of genocide\r    \u001b\u001bra  *\r    \u001b\u001b\u0017blessed potion of levitation\r    \u001b\u001bqb    \u001b\u001b>    \u001b\u001bi    \u001b\u001b",
+      "steps": []
+    },
+    {
+      "name": "voluntary-pit",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "moves": " #levelchange\r30\r                             l    \u001b\u001b\u0017blessed scroll of genocide\r    \u001b\u001bra  *\r    \u001b\u001b\u0017blessed potion of levitation\r    \u001b\u001bqb    \u001b\u001b\u0017pit\r    \u001b\u001b>    \u001b\u001bi    \u001b\u001b",
+      "steps": []
+    },
+    {
+      "name": "voluntary-spiked-pit",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "moves": " #levelchange\r30\r                             l    \u001b\u001b\u0017blessed scroll of genocide\r    \u001b\u001bra  *\r    \u001b\u001b\u0017blessed potion of levitation\r    \u001b\u001bqb    \u001b\u001b\u0017spiked pit\r    \u001b\u001b>    \u001b\u001bi    \u001b\u001b",
+      "steps": []
+    },
+    {
+      "name": "voluntary-hole",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "moves": " #levelchange\r30\r                             l    \u001b\u001b\u0017blessed scroll of genocide\r    \u001b\u001bra  *\r    \u001b\u001b\u0017blessed potion of levitation\r    \u001b\u001bqb    \u001b\u001b\u0017hole\r    \u001b\u001b>    \u001b\u001bi    \u001b\u001b",
+      "steps": []
+    },
+    {
+      "name": "voluntary-trapdoor",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "moves": " #levelchange\r30\r                             l    \u001b\u001b\u0017blessed scroll of genocide\r    \u001b\u001bra  *\r    \u001b\u001b\u0017blessed potion of levitation\r    \u001b\u001bqb    \u001b\u001b\u0017trap door\r    \u001b\u001b>    \u001b\u001bi    \u001b\u001b",
+      "steps": []
+    },
+    {
+      "name": "blocked-bear",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "moves": " #levelchange\r30\r                             l    \u001b\u001b\u0017blessed scroll of genocide\r    \u001b\u001bra  *\r    \u001b\u001b\u0017bear trap trap\r    \u001b\u001b#sit\r    \u001b\u001b\u0017blessed potion of levitation\r    \u001b\u001bqb    \u001b\u001b>    \u001b\u001bi    \u001b\u001b",
+      "steps": []
+    },
+    {
+      "name": "blocked-web",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "moves": " #levelchange\r30\r                             l    \u001b\u001b\u0017blessed scroll of genocide\r    \u001b\u001bra  *\r    \u001b\u001b\u0017web trap\r    \u001b\u001b#sit\r    \u001b\u001b\u0017blessed potion of levitation\r    \u001b\u001bqb    \u001b\u001b>    \u001b\u001bi    \u001b\u001b",
+      "steps": []
+    },
+    {
+      "name": "remaining-ring-negative",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "moves": " #levelchange\r30\r                             l    \u001b\u001b\u0017blessed scroll of genocide\r    \u001b\u001bra  *\r    \u001b\u001b\u0017uncursed ring of levitation\r    \u001b\u001bPbl    \u001b\u001b\u0017blessed potion of levitation\r    \u001b\u001bqc    \u001b\u001b\u0017pit\r    \u001b\u001b>    \u001b\u001bi    \u001b\u001b",
+      "steps": []
+    },
+    {
+      "name": "remaining-form-negative",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "moves": " #levelchange\r30\r                             l    \u001b\u001b\u0017blessed scroll of genocide\r    \u001b\u001bra  *\r    \u001b\u001b#polyself\rfloating eye\r    \u001b\u001b\u0017blessed potion of levitation\r    \u001b\u001bqb    \u001b\u001b\u0017pit\r    \u001b\u001b>    \u001b\u001bi    \u001b\u001b",
+      "steps": []
+    },
+    {
+      "name": "flight-resumes",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "moves": " #levelchange\r30\r                             l    \u001b\u001b\u0017blessed scroll of genocide\r    \u001b\u001bra  *\r    \u001b\u001b\u0017uncursed amulet of flying\r    \u001b\u001bPb    \u001b\u001b\u0017blessed potion of levitation\r    \u001b\u001bqc    \u001b\u001b\u0017pit\r    \u001b\u001b>    \u001b\u001bi    \u001b\u001b",
+      "steps": []
+    },
+    {
+      "name": "pool-breathing",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "moves": " #levelchange\r30\r                             l    \u001b\u001b\u0017blessed scroll of genocide\r    \u001b\u001bra  *\r    \u001b\u001b\u0017uncursed amulet of magical breathing\r    \u001b\u001bPb    \u001b\u001b\u0017blessed potion of levitation\r    \u001b\u001bqc    \u001b\u001b\u0017pool\r    \u001b\u001b>    \u001b\u001bi    \u001b\u001b",
+      "steps": []
+    },
+    {
+      "name": "pool-swimming",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "moves": " #levelchange\r30\r                             l    \u001b\u001b\u0017blessed scroll of genocide\r    \u001b\u001bra  *\r    \u001b\u001b#polyself\rgiant eel\r    \u001b\u001b\u0017blessed potion of levitation\r    \u001b\u001bqb    \u001b\u001b\u0017pool\r    \u001b\u001b>    \u001b\u001bi    \u001b\u001b",
+      "steps": []
+    },
+    {
+      "name": "pool-walking",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "moves": " #levelchange\r30\r                             l    \u001b\u001b\u0017blessed scroll of genocide\r    \u001b\u001bra  *\r    \u001b\u001b\u0017uncursed water walking boots\r    \u001b\u001bWb    \u001b\u001b\u0017blessed potion of levitation\r    \u001b\u001bqc    \u001b\u001b\u0017pool\r    \u001b\u001b>    \u001b\u001bi    \u001b\u001b",
+      "steps": []
+    },
+    {
+      "name": "pool-crawl",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "moves": " #levelchange\r30\r                             l    \u001b\u001b\u0017blessed scroll of genocide\r    \u001b\u001bra  *\r    \u001b\u001b\u0017blessed potion of levitation\r    \u001b\u001bqb    \u001b\u001b\u0017pool\r    \u001b\u001b>    \u001b\u001bi    \u001b\u001b",
+      "steps": []
+    },
+    {
+      "name": "lava-resistant",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "moves": " #levelchange\r30\r                             l    \u001b\u001b\u0017blessed scroll of genocide\r    \u001b\u001bra  *\r    \u001b\u001b\u0017uncursed ring of fire resistance\r    \u001b\u001bPbl    \u001b\u001b\u0017blessed potion of levitation\r    \u001b\u001bqc    \u001b\u001b\u0017lava\r    \u001b\u001b>    \u001b\u001bi    \u001b\u001b",
+      "steps": []
+    },
+    {
+      "name": "lava-walking",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "moves": " #levelchange\r30\r                             l    \u001b\u001b\u0017blessed scroll of genocide\r    \u001b\u001bra  *\r    \u001b\u001b\u0017uncursed ring of fire resistance\r    \u001b\u001bPbl    \u001b\u001b\u0017uncursed fireproof water walking boots\r    \u001b\u001bWc    \u001b\u001b\u0017blessed potion of levitation\r    \u001b\u001bqd    \u001b\u001b\u0017lava\r    \u001b\u001b>    \u001b\u001bi    \u001b\u001b",
+      "steps": []
+    },
+    {
+      "name": "lava-salamander",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "moves": " #levelchange\r30\r                             l    \u001b\u001b\u0017blessed scroll of genocide\r    \u001b\u001bra  *\r    \u001b\u001b#polyself\rsalamander\r    \u001b\u001b\u0017blessed potion of levitation\r    \u001b\u001bqb    \u001b\u001b\u0017lava\r    \u001b\u001b>    \u001b\u001bi    \u001b\u001b",
+      "steps": []
+    },
+    {
+      "name": "ordinary-no-levitation-negative",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "moves": " #levelchange\r30\r                             l    \u001b\u001b\u0017blessed scroll of genocide\r    \u001b\u001bra  *\r    \u001b\u001b>    \u001b\u001bi    \u001b\u001b",
+      "steps": []
+    },
+    {
+      "name": "ring-removal-pit",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "moves": " #levelchange\r30\r                             l    \u001b\u001b\u0017blessed scroll of genocide\r    \u001b\u001bra  *\r    \u001b\u001b\u0017uncursed ring of levitation\r    \u001b\u001bPbl    \u001b\u001b\u0017pit\r    \u001b\u001bRb    \u001b\u001bi    \u001b\u001b",
+      "steps": []
+    },
+    {
+      "name": "boots-removal-pit",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "moves": " #levelchange\r30\r                             l    \u001b\u001b\u0017blessed scroll of genocide\r    \u001b\u001bra  *\r    \u001b\u001b\u0017uncursed levitation boots\r    \u001b\u001bWb    \u001b\u001b\u0017pit\r    \u001b\u001bTb    \u001b\u001bi    \u001b\u001b",
+      "steps": []
+    }
+  ]
+}

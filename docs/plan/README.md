@@ -334,6 +334,19 @@ applies after a protected grab. Corpus: 848. This change is outside full845.
 The recipe's original preflight failure is preserved; concrete C witnesses
 were added without changing any input or runtime bytes.
 
+Slippery-helmet checkpoint `b00dfea9` is pushed. The levitation-descent test
+checkpoint adds twenty original C cases without runtime changes. All nine
+checks and 108 controls pass. Eight related fixtures and bounded workers pass;
+the new cases match all 3,787 styled boundaries, 65,762 complete calls and one
+frame, including observer/deferred equality. All 848 earlier raw fixtures are
+unchanged. Corpus: 849. The next full849 sweep is prepared; full845 remains
+the latest completed full regression.
+
+Eleven fresh character-inspection cases also match C on a separate scoped
+candidate. That code is pending parent regression. The history text-window
+package is sealed, with its three parent-owned caller removals prepared for
+coherent composition. Neither pending repair is in the published runtime.
+
 The preceding full regression passes all 817 fixtures: 853,841 screens/cursors,
 17,766,231 scored RNG positions and 32,296 frames. Both fixed-runtime shards
 pass without retries or timeouts. All 279 runtime hashes, 817 raw inputs and

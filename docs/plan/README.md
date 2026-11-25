@@ -89,15 +89,17 @@ checks, forty new controls, seventeen retained source controls, sixteen focused
 fixtures, 44 public sessions and sixty bounded workers pass. Four fresh C cases
 match all 799 styled boundaries and 10,337 calls, correcting eleven boundaries.
 All three unaffected cases preserve all five output collections. The maintained
-corpus is 824. A fixed full824 regression on this composition is running in two shards.
+corpus is 824. Its fixed full regression passes all 824 fixtures without retries:
+858,340 screens/cursors, 17,899,210 scored RNG positions and 32,359 frames.
+All 279 runtime, 824 raw and 172 protected hashes remain fixed.
 
-Background inspection is verified for publication. Shifted vampire wording,
+Background inspection is pushed as `7692b8f4`. Shifted vampire wording,
 final tense, anatomy-based handedness and C long XP display now match their
 source owner. All nineteen checks, 69 controls, twelve focused fixtures,
 44 public sessions and 56 bounded workers pass. Five new C cases match all
 150 styled boundaries and 13,818 calls, fixing three screens. Both unchanged
 controls retain all five hashes. The maintained corpus is 825; this patch is
-outside the active full824 runtime.
+outside the completed full824 runtime.
 
 The latest shared-machine C coverage run accepts the tin-opening, background
 and hero-status recordings byte for byte. The union covers 4,580/5,492

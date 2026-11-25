@@ -8673,6 +8673,48 @@ the ordinary-food tail; Pauli covers miscellaneous monster items; Avicenna
 covers accessory wearing; Jason covers shared message/query bounds. All work
 uses assigned fixed runtime snapshots, with parent-owned C and integration.
 
+## 2026-11-25: uninterrupted full824 passes; background pushed
+
+Background checkpoint `7692b8f4` pushed successfully, process 75751 exit 0.
+HEAD and origin/main matched with no unpublished commits. The full824 workers
+72293 and 40689 both closed with exit 0. Independent verification passes every
+fixture on exact pushed tin-opening runtime `34b1e6b3`: 858,340 screens/cursors,
+17,899,210 scored random-call positions and 32,359 frames. Neither shard
+needed a retry or timeout override. All 279 runtime files, 824 raw fixtures
+and 172 protected files stayed fixed. All earlier820 raw hashes are unchanged.
+Verification: `.cache/restart-20261122/muse-defensive-full824/verification.json`,
+SHA-256 `4bf729cddccc30fa3f4e3a55ecdd5090fd653655f2b41bff77377fe8861dc9d2`.
+This completed sweep excludes the later background patch and pending work.
+
+The accessory-wear source package is independently sealed at 713 files and
+six link targets. Seal `2b2d55717c9bdae130530a53974a0d4bfbe031304e69e949098c641d922ed17a`
+and manifest `9a700b25bc82af3aed3b2e25b25f5d9a4e3eea945e641cd15834be0e8cecd75a`
+match. Parent read complete `accessory_or_armor_on`, missing `dosinkfall`,
+`Boots_on` and selected immediate helper contracts. The complete delegated
+source ledger covers 44 owner/helper bodies and records adjacent limits.
+Regex source checks remain cache review support, outside published tests.
+
+The ten original input cases were C-recorded against the fixed input hash
+and unchanged receipt before the final package seal. Both still match that seal.
+Raw SHA-256 `f4213bf14c45bcac79ef5c1b947bc0578d59b19fb5a429423c0438086eca0b0f`,
+1,778,914 bytes, matches all 793 styled boundaries, cursor triples, 30,102
+complete calls, per-input slices and empty frame arrays on the source candidate.
+All five original input fields and every key are preserved. No old oracle changed.
+
+Current-main composition is fixed in
+`.cache/restart-20261122/accessory-wear-parent-composition`; process 53313
+runs nineteen checks, 114 behavior controls, twenty focused fixtures, public
+sessions and bounded input gates. It changes only do_wear.js and hack.js.
+An initial builder preflight assumed a dictionary where the source manifests
+use path/hash rows. It failed before creating the composition or running tests.
+The preserved builder and diagnostic record the schema correction. No runtime
+change, oracle change, or replay retry was made to resolve that tooling issue.
+
+Avicenna now audits complete `Amulet_on` in a separate fixed copy of this
+pending wear composition. The other agents continue ordinary-food tail,
+monster miscellaneous items, shared message/query bounds, and artifact/sit
+slime readers. Parent owns all fresh native recording, integration and pushes.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

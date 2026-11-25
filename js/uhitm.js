@@ -122,7 +122,7 @@ import { canseemon, canspotmon, glyph_at, sensemon, newsym, pline, shieldeff,
          tmp_at } from './display.js';
 import { wakeup, wake_nearto, killed, xkilled, seemimic, setmangry, mongone,
          shieldeff_mon, is_pool, m_carrying, t_at, minliquid,
-         healmon, monstone, mondied, newcham, mlifesaver, corpse_chance } from './mon.js';
+         healmon, monstone, mon_to_stone, mondied, newcham, mlifesaver, corpse_chance } from './mon.js';
 import { DEADMONSTER, troll_baned } from './monst.js';
 import { is_pole } from './u_init.js';
 import { bimanual, carried, is_plural, is_flimsy, is_shield,
@@ -4811,6 +4811,7 @@ export async function mhitm_ad_blnd(magr, mattk, mdef, mhm) {
 
 // src/uhitm.c:3945 do_stone_mon(), active monster petrification.
 async function do_stone_mon(magr, mattk, mdef, mhm) {
+    const pd = mdef.data;
     const { munstone } = await import('./muse.js');
     if (await munstone(mdef, false)) {
         if (!DEADMONSTER(mdef)) {
@@ -4826,14 +4827,14 @@ async function do_stone_mon(magr, mattk, mdef, mhm) {
         return;
     }
 
-    if (poly_when_stoned(game.mons[mdef.mnum])) {
-        await minstapetrify(mdef, false);
+    if (poly_when_stoned(pd)) {
+        await mon_to_stone(mdef);
         mhm.damage = 0;
         return;
     }
     if (!resists_ston(mdef)) {
         if (game.vis && canseemon(mdef))
-            await pline(`${Monnam(mdef)} turns to stone!`);
+            await pline_mon(mdef, `${Monnam(mdef)} turns to stone!`);
         await monstone(mdef);
         if (!DEADMONSTER(mdef)) {
             mhm.hitflags = M_ATTK_MISS;

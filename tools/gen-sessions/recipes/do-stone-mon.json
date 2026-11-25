@@ -1,0 +1,143 @@
+{
+  "name": "do-stone-mon",
+  "description": "Four original C recordings cover active cockatrice petrification, defender location feedback, golem conversion and lizard resistance. Constructed source controls cover cure, life saving, growth and pending messages.",
+  "coverage": [
+    "mode.debug",
+    "ui.getlin",
+    "ui.more-paging",
+    "level.ordinary",
+    "monster.vs-monster",
+    "monster.special-effects",
+    "monster.death-corpse-revival",
+    "monster.pets",
+    "forms.polymorph"
+  ],
+  "branches": [
+    "monster.stoning.active-located",
+    "monster.stoning.active-plain",
+    "monster.stoning.golem-conversion",
+    "monster.stoning.innate-resistance"
+  ],
+  "segments": [
+    {
+      "name": "cockatrice-orc-located",
+      "seed": 7401,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=accessiblemsg,whatis_coord:map\n",
+      "moves": " #polyself\rstone golem\r   \u001b\u0007tame cockatrice\r   \u0007hostile orc\r. . . . . . . "
+    },
+    {
+      "name": "cockatrice-orc-plain",
+      "seed": 7401,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!accessiblemsg,whatis_coord:map\n",
+      "moves": " #polyself\rstone golem\r   \u001b\u0007tame cockatrice\r   \u0007hostile orc\r. . . . . . . "
+    },
+    {
+      "name": "cockatrice-straw-golem",
+      "seed": 7401,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=accessiblemsg,whatis_coord:map\n",
+      "moves": " #polyself\rstone golem\r   \u001b\u0007tame cockatrice\r   \u0007hostile straw golem\r. . . . . . . "
+    },
+    {
+      "name": "cockatrice-lizard",
+      "seed": 7401,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=accessiblemsg,whatis_coord:map\n",
+      "moves": " #polyself\rstone golem\r   \u001b\u0007tame cockatrice\r   \u0007hostile lizard\r. . . . . . . . . ."
+    }
+  ],
+  "branchAssertions": [
+    {
+      "branch": "monster.stoning.active-located",
+      "segment": 0,
+      "evidence": "Original C message witnesses plus actual-producer state and observer-neutrality checks in do-stone-mon-input-gate.mjs.",
+      "assertions": [
+        "Actual tame cockatrice AT_TUCH contacts hostile orc before the owner message.",
+        "Orc location appears with accessiblemsg; corpse-free statue is on the same tile; defender removed and pet grows.",
+        "All five output collections equal an unobserved replay; original snapshot descriptor restored."
+      ],
+      "screenIncludes": [
+        "The cockatrice touches the orc.",
+        "<39,4>: The orc turns to stone!"
+      ]
+    },
+    {
+      "branch": "monster.stoning.active-plain",
+      "segment": 1,
+      "evidence": "Original C message witnesses plus actual-producer state and observer-neutrality checks in do-stone-mon-input-gate.mjs.",
+      "assertions": [
+        "Same actual attack and statue with accessiblemsg off.",
+        "All five output hashes unchanged against fixed baseline.",
+        "All five output collections equal an unobserved replay; original snapshot descriptor restored."
+      ],
+      "screenIncludes": [
+        "The cockatrice touches the orc.",
+        "The orc turns to stone!"
+      ],
+      "screenExcludes": [
+        "<39,4>:"
+      ]
+    },
+    {
+      "branch": "monster.stoning.golem-conversion",
+      "segment": 2,
+      "evidence": "Original C message witnesses plus actual-producer state and observer-neutrality checks in do-stone-mon-input-gate.mjs.",
+      "assertions": [
+        "Cockatrice touches actual straw golem before it solidifies.",
+        "Same monster id becomes a living stone golem, no statue; all five output hashes unchanged.",
+        "All five output collections equal an unobserved replay; original snapshot descriptor restored."
+      ],
+      "screenIncludes": [
+        "The cockatrice touches the straw golem.",
+        "The straw golem solidifies...",
+        "Now it's a stone golem."
+      ],
+      "screenExcludes": [
+        "The straw golem turns to stone!"
+      ]
+    },
+    {
+      "branch": "monster.stoning.innate-resistance",
+      "segment": 3,
+      "evidence": "Original C message witnesses plus actual-producer state and observer-neutrality checks in do-stone-mon-input-gate.mjs.",
+      "assertions": [
+        "Cockatrice touches innate stone-resistant lizard, whose HP is unchanged across the first touch.",
+        "Lizard survives later combat; no petrification or conversion; all five output hashes unchanged.",
+        "All five output collections equal an unobserved replay; original snapshot descriptor restored."
+      ],
+      "screenIncludes": [
+        "The cockatrice touches the lizard."
+      ],
+      "screenExcludes": [
+        "The lizard turns to stone",
+        "The lizard solidifies"
+      ]
+    }
+  ],
+  "negativeOutputHashes": {
+    "1": {
+      "screens": "4197121ce3812a9768c3e93d79d8d687618eea9992db9db2a0b9bedfa24bb1c5",
+      "cursors": "0544be7ad5f672786d4b0c8b41c31ebf0aaa04739c23f866ee0c9754387b8d46",
+      "calls": "7a7f86f93c05a4432a9b0d2302b5acb2c1820981b7a771faa362470f69ca53bc",
+      "slices": "bbe1ab32b904e48e4624839a4083ef33f7b75658278fa7ce5fb847e90647ad6c",
+      "frames": "3faa4e5cdf09446d7d8b04f15df88044c36defdb6ddf7cba66c797361f979799"
+    },
+    "2": {
+      "screens": "f5f77c3d3075234f93d1e8532def4413ec646ca1ce0ba064e5bf8fe90b2ac34e",
+      "cursors": "15a6e9f6e5633664c20ccf068a3eaaf80fc83bbc967b8ec6c74494da4cfafa14",
+      "calls": "d76efab6be9457cf8082ab8b367bd943c335f28ea535fb5277738f0fcbfad839",
+      "slices": "5a206f77baf6a2998f7222294cfa0c91358181f2c3d5da1a66bb1229ba78c6b2",
+      "frames": "b4a35e45b0f8066f5d0bbc13c537c1607c381fbb46824ecbe850262111cf34ed"
+    },
+    "3": {
+      "screens": "68ea6152863525d3fcbb7add6deea47bb99fdb2692518ab2782c5d464ebb5321",
+      "cursors": "21ebf7d378eda04007fa3027e9bd5f7cfce9966820d1262c5d32d8df0ffa5779",
+      "calls": "b9534ddd29a250f5e28ac91b342332492664110abd1c118feda4c57af4694c26",
+      "slices": "e088d4f502ccc6b4bf4a4318252b860784d5b3515a4429fb41f9c0270e649467",
+      "frames": "b4a35e45b0f8066f5d0bbc13c537c1607c381fbb46824ecbe850262111cf34ed"
+    }
+  },
+  "requireBranchAssertions": true
+}

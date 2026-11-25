@@ -4021,6 +4021,10 @@
     {"group":"Square effects and terrain transitions","id":"spoteffects.hidden-peaceful","cFile":"src/hack.c","cFunction":"spoteffects","description":"spoteffects.hidden peaceful"},
     {"group":"Square effects and terrain transitions","id":"spoteffects.hidden-hostile","cFile":"src/hack.c","cFunction":"spoteffects","description":"spoteffects.hidden hostile"},
     {"group":"Square effects and terrain transitions","id":"spoteffects.hidden-friendly","cFile":"src/hack.c","cFunction":"spoteffects","description":"spoteffects.hidden friendly"},
-    {"group":"Square effects and terrain transitions","id":"spoteffects.ice-warning","cFile":"src/hack.c","cFunction":"spoteffects","description":"spoteffects.ice warning"}
+    {"group":"Square effects and terrain transitions","id":"spoteffects.ice-warning","cFile":"src/hack.c","cFunction":"spoteffects","description":"spoteffects.ice warning"},
+    {"group":"Active monster petrification","id":"monster.stoning.active-located","cFile":"src/uhitm.c","cFunction":"do_stone_mon","description":"Actual tame cockatrice AT_TUCH contacts hostile orc before the owner message. Orc location appears with accessiblemsg; corpse-free statue is on the same tile; defender removed and pet grows."},
+    {"group":"Active monster petrification","id":"monster.stoning.active-plain","cFile":"src/uhitm.c","cFunction":"do_stone_mon","description":"Same actual attack and statue with accessiblemsg off. All five output hashes unchanged against fixed baseline."},
+    {"group":"Active monster petrification","id":"monster.stoning.golem-conversion","cFile":"src/uhitm.c","cFunction":"do_stone_mon","description":"Cockatrice touches actual straw golem before it solidifies. Same monster id becomes a living stone golem, no statue; all five output hashes unchanged."},
+    {"group":"Active monster petrification","id":"monster.stoning.innate-resistance","cFile":"src/uhitm.c","cFunction":"do_stone_mon","description":"Cockatrice touches innate stone-resistant lizard, whose HP is unchanged across the first touch. Lizard survives later combat; no petrification or conversion; all five output hashes unchanged."}
   ]
 }

@@ -9767,6 +9767,49 @@ screens, 44/44 public and 40/56 held-out. Last scoring timestamp remains
 No rank gain is inferred from these local checks. Full839 is still the latest
 complete full-corpus regression and excludes these later checkpoints.
 
+## 2026-11-25 04:48 UTC: active petrification verified
+
+Terrain checkpoint `18d3f3878c3281a7d35b19fe7f7390f4db37e40d` is pushed.
+Do_stone_mon's second parent run, worker 50685, closed with exit 0. All 22
+checks and 91 controls pass. Eighteen focused fixtures cover 104 segments,
+15,357 screens/cursors, 306,066 scored RNG positions and 287 frames. All
+44 public sessions and 62 bounded workers pass. Seven strict-native and
+all-five deferred fixtures match 55 segments, 8,328 boundaries, 162,875
+complete calls and 121 frames. Four new C cases match all 316 boundaries
+and 10,228 complete calls, zero frames. Before: 315 matching styled screens;
+all cursors, full RNG streams and slices already matched. Three unaffected
+cases retain all five output hashes. Source controls improve 29/31 to 31/31;
+ordinary input controls improve 3/4 to 4/4; 51 retained controls pass.
+
+Only uhitm.js's private do_stone_mon and import change. The defender message
+uses pline_mon; species is saved at entry and the non-stone-golem arm calls
+mon_to_stone directly. The latter two are source alignment, not additional
+proven output gains. Complete C owner, direct helpers and source review were
+read. Cure, acid death, life saving, genocide, growth, invisible feedback and
+corpse-weapon cases have constructed controls. No production exports added.
+All 279 runtime and seven support hashes equal the tested candidate; all
+843 preceding raw fixtures remain fixed. Four registry entries append only.
+Maintained corpus: 844. Publish now. Verification SHA
+`cc74795b9da515643c735eee4f318dbec4cf9bb8b164a90956dab33184c6b581`.
+Integration: `do-stone-mon-main-integration.json`.
+
+The initial builder stopped before snapshots because the source recipe lacked
+the optional requireBranchAssertions property. After enabling it, attempt one
+passed all four native output tests but failed the recipe integrity check:
+its assertions were prose-only and not executable by the maintained validator.
+That attempt remains in do-stone-mon-parent-composition-attempt1. The new
+composition adds concrete C message inclusion/exclusion witnesses, preserving
+the existing state assertions, all raw/input bytes and runtime patch. Its full
+run passes without retries. No failure was relabeled as a pass.
+
+Parent history source controls now use actual line and message producers and
+the private autocomplete hook through ordinary keys. The first observer draft
+called a nonexistent display getter; its file/logs are preserved and version
+two reads the public cursor properties. No runtime changed for that observer
+correction. The separate text-window source audit continues. The prepared
+msg_window parent-composition builder uses this verified petrification runtime
+as its next baseline. Full839 remains the latest complete full-corpus sweep.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

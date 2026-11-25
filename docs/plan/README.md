@@ -255,6 +255,17 @@ The historical timeout-deferred input actually reaches early expiry. Its
 incorrect assertion was separately reviewed and strengthened; deferred expiry
 has constructed source controls. Both original failures are preserved.
 
+Active monster petrification now locates feedback at the defender and follows
+C's saved-species and direct stone-golem conversion path. All 22 parent
+checks, 91 controls, eighteen focused fixtures, 44 public sessions and 62
+bounded workers pass. Four C cases match all 316 boundaries and 10,228
+complete calls, fixing one styled screen. All three unaffected cases retain
+all five output hashes. Maintained corpus: 844. Terrain checkpoint `18d3f387`
+is pushed. Cure, life-saving, genocide and growth combinations have constructed
+controls; direct conversion is source alignment with no new output gain claimed.
+The original recipe-witness validation failure is preserved, followed by a
+complete successful run with concrete message assertions and unchanged inputs.
+
 The latest shared-machine C union credits 839 inputs across 113 layouts,
 reaching 4,587/5,492 functions and 61,160/107,260 branch outcomes. It adds
 three functions and 199 outcomes. All 111 preceding run records and binary/

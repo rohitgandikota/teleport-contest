@@ -96,7 +96,9 @@ import { depth, dunlev, endgamelevelname } from './dungeon.js';
 
 import { In_endgame, In_quest, Is_knox_level } from './const.js';
 
-import { aligns } from './role_data.js';
+import { aligns, genders } from './role_data.js';
+import { Sleepy } from './youprop.js';
+import { SLEEPY } from './const.js';
 
 import { A_MAX, ACURR } from './attrib.js';
 
@@ -600,6 +602,18 @@ function background_enlightenment() {
         opp += ` ${align_gname(-1)} (${align_str(-1)})`;
     out(opp + '.');
 
+    /* Report original gender and permanent alignment separately from a helm. */
+    const difgend = (female ? 1 : 0) !== game.flags.initgend;
+    let difalgn = (u.ualign.type !== currentAlign ? 1 : 0)
+                  + (currentAlign !== originalAlign ? 2 : 0);
+    if (difalgn & 1) {
+        you_are(`actually ${align_str(currentAlign)}`);
+        difalgn &= ~1;
+    }
+    if (difgend || difalgn)
+        out(` You started out ${difgend ? genders[game.flags.initgend].adj : ''}${
+            difgend && difalgn ? ' and ' : ''}${difalgn ? align_str(originalAlign) : ''}.`);
+
     you_are(`${polymorphed ? 'normally ' : ''}${
         (u.uhandedness === RIGHT_HANDED) ? 'right-handed' : 'left-handed'}`);
 
@@ -822,8 +836,25 @@ export function trap_predicament(final, wizxtra) {
     return outbuf;
 }
 
-function status_enlightenment() {
+// src/insight.c:267 cause_known()
+function cause_known(propindx) {
+    const mask = W_ARMOR | W_AMUL | W_RINGL | W_RINGR | W_TOOL;
+
+    /* Ignore artifacts and wielded items, as in C. */
+    for (const o of game.invent || []) {
+        if (!(o.owornmask & mask))
+            continue;
+        if (game.objects[o.otyp].oc_oprop === propindx
+            && game.objects[o.otyp].oc_name_known && o.dknown)
+            return true;
+    }
+    return false;
+}
+
+// src/insight.c:940 status_enlightenment()
+function status_enlightenment(mode) {
     const u = game.u;
+    const magic = !!(mode & MAGICENLIGHTENMENT);
     const Riding = !!(u.usteed
                       /* if hero dies while dismounting, u.usteed will still
                          be set; we want to ignore steed in that situation */
@@ -844,10 +875,6 @@ function status_enlightenment() {
         you_are('levitating', from_what('HLevitation'));
     else if (Flying())
         you_are('flying', from_what('HFlying'));
-
-    /* src/insight.c:1181, restful sleep and other Sleepy sources. */
-    if ((u.intrinsic?.HSleepy || u.uprops?.SLEEPY))
-        enl_msg('You ', 'fall', 'fell', ' asleep uncontrollably', '');
 
     if (u.intrinsic?.HStun || u.uprops?.STUNNED)
         you_are('stunned');
@@ -942,6 +969,15 @@ function status_enlightenment() {
                   : side === RIGHT_SIDE ? 'right ' : '';
         }
         you_have(`${article}wounded ${which}${part}`);
+    }
+
+    if (Sleepy()) {
+        if (magic || cause_known(SLEEPY)) {
+            let buf = from_what('HSleepy');
+            if (game.wizard)
+                buf += ` (${(u.intrinsic?.HSleepy || 0) & TIMEOUT})`;
+            enl_msg('You ', 'fall', 'fell', ' asleep uncontrollably', buf);
+        }
     }
 
     /* hunger: hu_stat[] is blank for the normal state. */
@@ -1142,7 +1178,7 @@ export function enlightenment(mode, final) {
         basics_enlightenment();
         characteristics_enlightenment();
     }
-    status_enlightenment();
+    status_enlightenment(mode);
 
     /* src/insight.c:420 — the intrinsics section is shown for
        MAGICENLIGHTENMENT: wizard/discover ^X, and always at game end. */

@@ -3847,6 +3847,24 @@
     {"group":"Altar glyph preservation","id":"altar-glyph-preservation.lawful-altar-number","cFile":"src/display.c","cFunction":"newsym","description":"lawful altar number"},
     {"group":"Altar glyph preservation","id":"altar-glyph-preservation.chaotic-altar-number","cFile":"src/display.c","cFunction":"newsym","description":"chaotic altar number"},
     {"group":"Altar glyph preservation","id":"altar-glyph-preservation.neutral-altar-control","cFile":"src/display.c","cFunction":"newsym","description":"neutral altar control"},
-    {"group":"Altar glyph preservation","id":"altar-glyph-preservation.ordinary-floor-control","cFile":"src/display.c","cFunction":"newsym","description":"ordinary floor control"}
+    {"group":"Altar glyph preservation","id":"altar-glyph-preservation.ordinary-floor-control","cFile":"src/display.c","cFunction":"newsym","description":"ordinary floor control"},
+    {"group":"Accessory eating effects","id":"accessory-eating-effects.thresholds","cFile":"src/eat.c","cFunction":"bounded_increase","description":"accessory thresholds"},
+    {"group":"Accessory eating effects","id":"accessory-eating-effects.worn-contribution","cFile":"src/eat.c","cFunction":"bounded_increase","description":"accessory worn contribution"},
+    {"group":"Accessory eating effects","id":"accessory-eating-effects.damage","cFile":"src/eat.c","cFunction":"eataccessory","description":"accessory damage"},
+    {"group":"Accessory eating effects","id":"accessory-eating-effects.protection","cFile":"src/eat.c","cFunction":"eataccessory","description":"accessory protection"},
+    {"group":"Accessory eating effects","id":"accessory-eating-effects.adornment","cFile":"src/eat.c","cFunction":"eataccessory","description":"accessory adornment"},
+    {"group":"Accessory eating effects","id":"accessory-eating-effects.strength","cFile":"src/eat.c","cFunction":"eataccessory","description":"accessory strength"},
+    {"group":"Accessory eating effects","id":"accessory-eating-effects.constitution","cFile":"src/eat.c","cFunction":"eataccessory","description":"accessory constitution"},
+    {"group":"Accessory eating effects","id":"accessory-eating-effects.levitation","cFile":"src/eat.c","cFunction":"eataccessory","description":"accessory levitation"},
+    {"group":"Accessory eating effects","id":"accessory-eating-effects.see-invisible","cFile":"src/eat.c","cFunction":"eataccessory","description":"accessory see invisible"},
+    {"group":"Accessory eating effects","id":"accessory-eating-effects.shape-protection","cFile":"src/eat.c","cFunction":"eataccessory","description":"accessory shape protection"},
+    {"group":"Accessory eating effects","id":"accessory-eating-effects.guarding","cFile":"src/eat.c","cFunction":"eataccessory","description":"accessory guarding"},
+    {"group":"Accessory eating effects","id":"accessory-eating-effects.change","cFile":"src/eat.c","cFunction":"eataccessory","description":"accessory change"},
+    {"group":"Accessory eating effects","id":"accessory-eating-effects.unchanging","cFile":"src/eat.c","cFunction":"eataccessory","description":"accessory unchanging"},
+    {"group":"Accessory eating effects","id":"accessory-eating-effects.sleep","cFile":"src/eat.c","cFunction":"eataccessory","description":"accessory sleep"},
+    {"group":"Accessory eating effects","id":"accessory-eating-effects.telepathy","cFile":"src/eat.c","cFunction":"eataccessory","description":"accessory telepathy"},
+    {"group":"Accessory eating effects","id":"accessory-eating-effects.reflection-negative","cFile":"src/eat.c","cFunction":"eataccessory","description":"accessory reflection negative"},
+    {"group":"Accessory eating effects","id":"accessory-eating-effects.bone-rejection","cFile":"src/eat.c","cFunction":"is_edible","description":"accessory bone rejection"},
+    {"group":"Accessory eating effects","id":"accessory-eating-effects.wood-consumed-no-effect","cFile":"src/eat.c","cFunction":"eataccessory","description":"accessory wood consumed no effect"}
   ]
 }

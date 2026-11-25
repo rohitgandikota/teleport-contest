@@ -8377,6 +8377,63 @@ deferred and bounded-input verification is still pending. These changes are
 outside full820, and no new held-out score is claimed. Jason's separate
 ustatusline work remains disjoint.
 
+## 2026-11-25: accessory evidence and feedback repair verified for publication
+
+The full820 report is pushed as `3d28ee47`; process 51570 closed with exit 0.
+Parent has integrated the verified accessory feedback patch and nine support
+files. Only `do_wear.js` and `insight.js` change at runtime. Ring prompts and
+full-slot messages use the existing anatomy helpers, and hand choice retains
+C's repeat-answer flag. Background inspection reports original sex and
+permanent alignment separately from a temporary helm. Sleepy reporting uses
+the complete C `cause_known` owner, canonical property, original report order,
+known-source guard, source explanation and wizard countdown.
+
+The parent composition passes 18 checks, 184 controls, 16 focused fixtures,
+44 public sessions and 60 bounded input workers. The focused suite covers
+66 segments, 6,348 screens/cursors, 217,262 scored random-call positions and
+eight frames. All eighteen new C cases match every styled cell, cursor,
+complete call, per-input slice and empty frame array over 1,637 boundaries
+and 50,095 calls. This repairs five styled boundaries and two cursors. All
+fifteen unaffected cases preserve all five original output hashes. Every
+case retains its complete calls, slices and frames. Deferred completion also
+matches all five outputs across 28 segments, 2,834 boundaries, 77,236 calls
+and one frame, including the retained nonfood fixture.
+
+All 279 runtime files and nine support files are pinned. Patch reversal
+recovers the complete baseline. All 820 preceding raw files and 140 other
+protected files are unchanged. The branch registry only appends eighteen
+rows. The original C recording is never rewritten. The sealed pre-fix JS
+output goldens remain in evidence; the promoted source-state gate retains
+all source states and observer neutrality, while the independent native gate
+checks the corrected outputs. Original failed native comparisons and the
+initial source-gate failure remain preserved. No comparator or timeout was
+relaxed. The verification receipt SHA-256 is
+`95f955480eb5d5ba24d39b9519b4947c8e5488b801c4e5ece41060dfe4f5637b`.
+The integration receipt is `.cache/restart-20261122/accessory-effects-main-integration.json`.
+The source review records remaining accessory-owner and insight omissions;
+this patch does not claim either subsystem is complete. The maintained corpus
+is 821, outside the completed full820 runtime. Publish this checkpoint now.
+
+The CPU-only NFS coverage replay and union both closed successfully. Four
+compact reports were independently downloaded and hash checked. The original
+Mac raw matches the instrumented C output byte for byte. The union credits
+815 inputs in 103 layouts and covers 4,575/5,492 functions plus
+60,464/107,260 branch outcomes, adding three functions and 97 outcomes.
+All 102 prior run records and source, binary, control and rejection pins
+are unchanged. The additional native pool has 134 inputs and 546 segments,
+plus three Linux controls with fourteen segments. `bounded_increase` now has
+eight native calls and covers 20/38 outcomes; `eataccessory` covers 55/86.
+Constructed edge controls remain separate from these measured native paths.
+
+Bulk artifacts remain on NFS at
+`/share/NFS/u/rohit/research/contest/artifacts/2026-11-22/c-coverage-compress.E84JI2/verified-accessory-effects-union-20261125`.
+Local receipt: `.cache/restart-20261122/linux-coverage-accessory-effects-download.json`.
+Summary SHA-256:
+`d517ceae5ab46b646133d2487f761a5c74f68bb0436ac78d59a4a9852830d2c4`.
+Compact SHA-256:
+`29e032bb038b426fb33e7193072bf7c4048c2665a5fffd5d729411c5990d3ae8`.
+No new held-out score or literal DEC/Unicode byte-identity claim is made.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

@@ -1,0 +1,317 @@
+{
+  "name": "accessory-eating-effects",
+  "description": "Ordinary-key accessory effects and bounded combat bonuses, with worn contribution, deliberate non-effect, failed chance and material rejection controls. Independent C recording with complete styled-output and random-call checks.",
+  "coverage": [
+    "mode.debug",
+    "ui.getlin",
+    "ui.more-paging",
+    "forms.polymorph",
+    "object.rings",
+    "object.amulets",
+    "object.food-corpses"
+  ],
+  "branches": [
+    "accessory-eating-effects.thresholds",
+    "accessory-eating-effects.worn-contribution",
+    "accessory-eating-effects.damage",
+    "accessory-eating-effects.protection",
+    "accessory-eating-effects.adornment",
+    "accessory-eating-effects.strength",
+    "accessory-eating-effects.constitution",
+    "accessory-eating-effects.levitation",
+    "accessory-eating-effects.see-invisible",
+    "accessory-eating-effects.shape-protection",
+    "accessory-eating-effects.guarding",
+    "accessory-eating-effects.change",
+    "accessory-eating-effects.unchanging",
+    "accessory-eating-effects.sleep",
+    "accessory-eating-effects.telepathy",
+    "accessory-eating-effects.reflection-negative",
+    "accessory-eating-effects.bone-rejection",
+    "accessory-eating-effects.wood-consumed-no-effect"
+  ],
+  "branchAssertions": [
+    {
+      "branch": "accessory-eating-effects.thresholds",
+      "segment": 0,
+      "screenIncludes": [
+        "Magic spreads through your body"
+      ],
+      "rngIncludes": [
+        "rnd(8)=8",
+        "rn2(15)=12",
+        "rnd(4)=1"
+      ]
+    },
+    {
+      "branch": "accessory-eating-effects.worn-contribution",
+      "segment": 1,
+      "screenIncludes": [
+        "Magic spreads through your body"
+      ]
+    },
+    {
+      "branch": "accessory-eating-effects.damage",
+      "segment": 2,
+      "screenIncludes": [
+        "Magic spreads through your body"
+      ]
+    },
+    {
+      "branch": "accessory-eating-effects.protection",
+      "segment": 3,
+      "screenIncludes": [
+        "Magic spreads through your body"
+      ]
+    },
+    {
+      "branch": "accessory-eating-effects.adornment",
+      "segment": 4,
+      "screenIncludes": [
+        "Magic spreads through your body",
+        "You feel very charismatic!"
+      ]
+    },
+    {
+      "branch": "accessory-eating-effects.strength",
+      "segment": 5,
+      "screenIncludes": [
+        "Magic spreads through your body",
+        "You feel very weak!"
+      ]
+    },
+    {
+      "branch": "accessory-eating-effects.constitution",
+      "segment": 6,
+      "screenIncludes": [
+        "Magic spreads through your body",
+        "You feel very tough!"
+      ]
+    },
+    {
+      "branch": "accessory-eating-effects.levitation",
+      "segment": 7,
+      "screenIncludes": [
+        "Magic spreads through your body",
+        "You start to float in the air!"
+      ]
+    },
+    {
+      "branch": "accessory-eating-effects.see-invisible",
+      "segment": 8,
+      "screenIncludes": [
+        "Magic spreads through your body"
+      ]
+    },
+    {
+      "branch": "accessory-eating-effects.shape-protection",
+      "segment": 9,
+      "screenIncludes": [
+        "Magic spreads through your body"
+      ]
+    },
+    {
+      "branch": "accessory-eating-effects.guarding",
+      "segment": 10,
+      "screenIncludes": [
+        "Magic spreads through your body"
+      ]
+    },
+    {
+      "branch": "accessory-eating-effects.change",
+      "segment": 11,
+      "screenIncludes": [
+        "Magic spreads through your body",
+        "You are suddenly very feminine!"
+      ]
+    },
+    {
+      "branch": "accessory-eating-effects.unchanging",
+      "segment": 12,
+      "screenIncludes": [
+        "Magic spreads through your body",
+        "You return to human form!"
+      ]
+    },
+    {
+      "branch": "accessory-eating-effects.sleep",
+      "segment": 13,
+      "screenIncludes": [
+        "Magic spreads through your body"
+      ]
+    },
+    {
+      "branch": "accessory-eating-effects.telepathy",
+      "segment": 14,
+      "screenIncludes": [
+        "Magic spreads through your body"
+      ]
+    },
+    {
+      "branch": "accessory-eating-effects.reflection-negative",
+      "segment": 15,
+      "screenIncludes": [
+        "is delicious!"
+      ],
+      "screenExcludes": [
+        "Magic spreads through your body"
+      ]
+    },
+    {
+      "branch": "accessory-eating-effects.bone-rejection",
+      "segment": 16,
+      "screenIncludes": [
+        "You don't have anything to eat."
+      ],
+      "screenExcludes": [
+        "Magic spreads through your body",
+        "is delicious!"
+      ]
+    },
+    {
+      "branch": "accessory-eating-effects.wood-consumed-no-effect",
+      "segment": 17,
+      "screenIncludes": [
+        "is delicious!"
+      ],
+      "screenExcludes": [
+        "Magic spreads through your body"
+      ]
+    }
+  ],
+  "segments": [
+    {
+      "name": "accessory-thresholds",
+      "seed": 8,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #polyself\rxorn\r   \u001b\u0017uncursed +8 ring of increase accuracy\r   \u001bea   \u001b\u0017uncursed +8 ring of increase accuracy\r   \u001beb   \u001b\u0017uncursed +8 ring of increase accuracy\r   \u001bec   \u001b\u0017uncursed +15 ring of increase accuracy\r   \u001b.ed   \u001b\u0017uncursed +40 ring of increase accuracy\r   \u001b..ee   \u001b\u0018   \u001bi   \u001b"
+    },
+    {
+      "name": "accessory-worn-contribution",
+      "seed": 8,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #polyself\rxorn\r   \u001b\u0017uncursed +30 ring of increase accuracy\r   \u001bPar   \u001b\u0017uncursed +8 ring of increase accuracy\r   \u001beb   \u001b\u0018   \u001bi   \u001b"
+    },
+    {
+      "name": "accessory-damage",
+      "seed": 5,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed +8 ring of increase damage\r   \u001b#polyself\rxorn\r   \u001bea   \u001b\u0018   \u001bi   \u001b"
+    },
+    {
+      "name": "accessory-protection",
+      "seed": 7,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed +8 ring of protection\r   \u001b#polyself\rxorn\r   \u001bea   \u001b\u0018   \u001bi   \u001b"
+    },
+    {
+      "name": "accessory-adornment",
+      "seed": 5,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed +2 ring of adornment\r   \u001b#polyself\rxorn\r   \u001bea   \u001b\u0018   \u001bi   \u001b"
+    },
+    {
+      "name": "accessory-strength",
+      "seed": 7,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed -2 ring of gain strength\r   \u001b#polyself\rxorn\r   \u001bea   \u001b\u0018   \u001bi   \u001b"
+    },
+    {
+      "name": "accessory-constitution",
+      "seed": 7,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed +2 ring of gain constitution\r   \u001b#polyself\rxorn\r   \u001bea   \u001b\u0018   \u001bi   \u001b"
+    },
+    {
+      "name": "accessory-levitation",
+      "seed": 4,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed ring of levitation\r   \u001b#polyself\rxorn\r   \u001bea   \u001b\u0018   \u001bi   \u001b"
+    },
+    {
+      "name": "accessory-see-invisible",
+      "seed": 10,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed ring of see invisible\r   \u001b#polyself\rxorn\r   \u001bea   \u001b\u0018   \u001bi   \u001b"
+    },
+    {
+      "name": "accessory-shape-protection",
+      "seed": 3,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed ring of protection from shape changers\r   \u001b#polyself\rxorn\r   \u001b...ea   \u001b\u0018   \u001bi   \u001b"
+    },
+    {
+      "name": "accessory-guarding",
+      "seed": 3,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed amulet of guarding\r   \u001b#polyself\rxorn\r   \u001bea   \u001b\u0018   \u001bi   \u001b"
+    },
+    {
+      "name": "accessory-change",
+      "seed": 3,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed amulet of change\r   \u001b#polyself\rxorn\r   \u001b.....ea   \u001b\u0018   \u001bi   \u001b"
+    },
+    {
+      "name": "accessory-unchanging",
+      "seed": 3,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed amulet of unchanging\r   \u001b#polyself\rxorn\r   \u001bea   \u001b\u0018   \u001bi   \u001b"
+    },
+    {
+      "name": "accessory-sleep",
+      "seed": 3,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed amulet of restful sleep\r   \u001b#polyself\rxorn\r   \u001b.....ea   \u001b\u0018   \u001bi   \u001b"
+    },
+    {
+      "name": "accessory-telepathy",
+      "seed": 3,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed amulet of ESP\r   \u001b#polyself\rxorn\r   \u001bea   \u001b\u0018   \u001bi   \u001b"
+    },
+    {
+      "name": "accessory-reflection-negative",
+      "seed": 3,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed amulet of reflection\r   \u001b#polyself\rxorn\r   \u001bea   \u001b\u0018   \u001bi   \u001b"
+    },
+    {
+      "name": "accessory-bone-rejection",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed +8 ring of increase damage\r   \u001b#polyself\rgelatinous cube\r   \u001bea   \u001b\u0018   \u001bi   \u001b"
+    },
+    {
+      "name": "accessory-wood-consumed-no-effect",
+      "seed": 1,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed +8 ring of increase damage\r   \u001b#polyself\rgelatinous cube\r   \u001bea   \u001b\u0018   \u001bi   \u001b"
+    }
+  ],
+  "limits": [
+    "Wizard keyboard inputs reach each selected branch. Source-state observations are read only; native output is checked separately.",
+    "Constructed width, both-ring, negative-threshold, existing-levitation and shorter-sleep-timeout controls remain separate.",
+    "No new ordinary strangulation, invisibility transparency or live-chameleon reversion witness is claimed.",
+    "See-invisible and shape protection establish intrinsic acquisition, not every downstream visibility/shape branch.",
+    "The prior accepted-nonfood-meals free-action case is not duplicated."
+  ]
+}

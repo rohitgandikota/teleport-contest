@@ -56,14 +56,22 @@ fixed shards: 854,827 screens/cursors, 17,814,492 scored RNG positions and
 32,296 frames. Both shards pass without retries. All 817 earlier raw hashes
 remain unchanged; all 279 runtime files and 141 protected files stayed fixed.
 
-The latest shared-machine C coverage run accepts the status and altar recordings
-byte for byte. The union covers 4,572/5,492 functions and 60,367/107,260 branch
-outcomes across 814 credited inputs and 102 instrumented layouts. This adds
-one function and 18 outcomes after the nonfood/contact expansion. All 101
-previous run hashes are unchanged.
-These figures measure C reach, not JS parity. Accessory stat increases still
-have constructed controls only; the native corpus has not reached
-`bounded_increase`.
+Accessory feedback is now verified for publication. Ring prompts use the
+current anatomy and retain repeat answers. Character inspection reports
+original sex and alignment, plus the known source and timeout of Sleepy.
+All 18 checks, 184 controls, 16 focused fixtures, 44 public sessions and 60
+bounded workers pass. Eighteen new native cases match all 1,637 styled
+boundaries and 50,095 calls, correcting five screens. The fifteen unaffected
+cases preserve all five original output collections. The maintained corpus is
+821. This new runtime is outside the completed full820 regression.
+
+The latest shared-machine C coverage run accepts the complete accessory
+recording byte for byte. The union covers 4,575/5,492 functions and
+60,464/107,260 branch outcomes across 815 credited inputs and 103 instrumented
+layouts. This adds three functions and 97 outcomes after the status/altar
+expansion. All 102 previous run hashes are unchanged. `bounded_increase` now
+has eight native calls and covers 20/38 outcomes; `eataccessory` covers 55/86.
+These figures measure C reach, not JS parity or complete source coverage.
 
 The preceding full regression passes all 817 fixtures: 853,841 screens/cursors,
 17,766,231 scored RNG positions and 32,296 frames. Both fixed-runtime shards

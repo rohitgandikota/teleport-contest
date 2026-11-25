@@ -1,0 +1,93 @@
+{
+  "name": "symbol-value-contract",
+  "classification": "Independent short ordinary family. Original nine and both fruit failures remain separate and unchanged. Locked before any new candidate run.",
+  "derivation": {
+    "preambleAndMovesFrom": "config-byte-reader-source-audit/recipes/initial-consumer-probes.json segment0",
+    "sourceRecipeSHA256": "830063f7485bea0e59285205e7e1046528d7eafada5fe70f2306a790e538c2ce",
+    "inputChanges": "New names and short literal/quoted/escaped/ASCII symbol directives in both sets. No original tuple is changed."
+  },
+  "segments": [
+    {
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nSYMBOLS=S_room:é\nROGUESYMBOLS=S_room:é\n",
+      "moves": " V\f",
+      "name": "symbol-value-literal-utf8"
+    },
+    {
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nSYMBOLS=S_room:'é'\nROGUESYMBOLS=S_room:'é'\n",
+      "moves": " V\f",
+      "name": "symbol-value-quoted-utf8"
+    },
+    {
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nSYMBOLS=S_room:\\195\nROGUESYMBOLS=S_room:\\195\n",
+      "moves": " V\f",
+      "name": "symbol-value-escaped-byte-negative"
+    },
+    {
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nSYMBOLS=S_room:Z\nROGUESYMBOLS=S_room:Z\n",
+      "moves": " V\f",
+      "name": "symbol-value-ascii-negative"
+    }
+  ],
+  "expectations": [
+    {
+      "name": "symbol-value-literal-utf8",
+      "positive": true,
+      "reference": "byte195",
+      "primaryRoom": 195,
+      "rogueRoom": 195,
+      "kind": "literal",
+      "firstRoomCell": {
+        "x": 8,
+        "y": 12,
+        "ch": "C"
+      }
+    },
+    {
+      "name": "symbol-value-quoted-utf8",
+      "positive": true,
+      "reference": "byte195",
+      "primaryRoom": 195,
+      "rogueRoom": 195,
+      "kind": "quoted",
+      "firstRoomCell": {
+        "x": 8,
+        "y": 12,
+        "ch": "C"
+      }
+    },
+    {
+      "name": "symbol-value-escaped-byte-negative",
+      "positive": false,
+      "reference": "byte195",
+      "primaryRoom": 195,
+      "rogueRoom": 195,
+      "kind": "escaped",
+      "firstRoomCell": {
+        "x": 8,
+        "y": 12,
+        "ch": "C"
+      }
+    },
+    {
+      "name": "symbol-value-ascii-negative",
+      "positive": false,
+      "reference": "ascii90",
+      "primaryRoom": 90,
+      "rogueRoom": 90,
+      "kind": "ascii",
+      "firstRoomCell": {
+        "x": 8,
+        "y": 12,
+        "ch": "Z"
+      }
+    }
+  ]
+}

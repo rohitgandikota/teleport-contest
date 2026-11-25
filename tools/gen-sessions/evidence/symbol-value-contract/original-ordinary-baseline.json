@@ -1,0 +1,255 @@
+{
+  "classification": "Independent short symbol family. Original9 retains both native fruit failures; no reader-cap closure.",
+  "variant": "baseline",
+  "recipeSHA256": "e81b47816c4b088074825e7ac4c6ec498ac8bace0d02177801e5bd2dc080cf5a",
+  "total": 4,
+  "passed": 2,
+  "rows": [
+    {
+      "name": "symbol-value-literal-utf8",
+      "positive": true,
+      "pass": false,
+      "checks": [
+        {
+          "name": "all keys and observer/plain/deferred all-five equality",
+          "pass": true
+        },
+        {
+          "name": "valid ordinary parser inputs have no errors or unhandled directives",
+          "pass": true
+        },
+        {
+          "name": "both actual symbol override producers store the C byte",
+          "pass": false,
+          "error": "The expression evaluated to a falsy value:\n\n  assert.ok(states.every(s => s.primaryRoom === expected.primaryRoom))\n"
+        },
+        {
+          "name": "visible primary room shows the byte through ordinary rendering",
+          "pass": false,
+          "error": "Expected values to be strictly equal:\n\n'i' !== 'C'\n"
+        },
+        {
+          "name": "all-five equality to explicit short canonical input",
+          "pass": false,
+          "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n... Skipped lines\n\n  {\n    calls: [\n      'rn2(2)=1',\n      'rn2(2)=1',\n      'rn2(4)=0',\n...\n        '\\x1B[5C-----\\n' +\n+       '\\x1B[5C|\\x1B[35mx\\x1B[95m!\\x1B[39mi|\\n' +\n+       '\\x1B[5C|\\x1B[33m(\\x1B[97m@\\x1B[39mi|\\n' +\n+       '\\x1B[5C|iii.\\n' +\n-       '\\x1B[5C|\\x1B[35mx\\x1B[95m!\\x1B[39mC|\\n' +\n-       '\\x1B[5C|\\x1B[33m(\\x1B[97m@\\x1B[39mC|\\n' +\n-       '\\x1B[5C|CCC.\\n' +\n        '\\x1B[5C-----\\n' +\n        '\\n' +\n        '\\n' +\n        '\\n' +\n        '\\n' +\n...\n        '\\x1B[5C-----\\n' +\n+       '\\x1B[5C|\\x1B[35mx\\x1B[95m!\\x1B[39mi|\\n' +\n+       '\\x1B[5C|\\x1B[33m(\\x1B[97m@\\x1B[39mi|\\n' +\n+       '\\x1B[5C|iii.\\n' +\n-       '\\x"
+        }
+      ],
+      "hashes": {
+        "screens": "1c2af25a6f6f885cc3b65e583beb3daa536d639b58a929b92aa2312563eb88b7",
+        "cursors": "51ee802e3d5290b524b6181657ab5f2507aec19ad89d3092f447a446b1c6ad04",
+        "calls": "860cfcf1eaecd7f446231c18899a60664b97fcf89acbb674e5207b78373a3ccf",
+        "slices": "336b5ea699fbb622d130038f227b78985c6ef651592acf98444ec4f8d0764ef4",
+        "frames": "210e130878aabaf46f1fe72749a263f9eb71c6a262b80f13882ed08d472c0ecd"
+      },
+      "referenceHashes": {
+        "screens": "f81a1e53742fdce640b7ad2dcae43cb049c566a8dcfd06ece54f163c9e830069",
+        "cursors": "51ee802e3d5290b524b6181657ab5f2507aec19ad89d3092f447a446b1c6ad04",
+        "calls": "860cfcf1eaecd7f446231c18899a60664b97fcf89acbb674e5207b78373a3ccf",
+        "slices": "336b5ea699fbb622d130038f227b78985c6ef651592acf98444ec4f8d0764ef4",
+        "frames": "210e130878aabaf46f1fe72749a263f9eb71c6a262b80f13882ed08d472c0ecd"
+      },
+      "changedStreams": [
+        "screens"
+      ],
+      "boundaries": 4,
+      "calls": 3039,
+      "frames": 0,
+      "firstState": {
+        "step": 0,
+        "errors": [],
+        "unhandled": [],
+        "primaryRoom": 233,
+        "rogueRoom": 233
+      },
+      "lastState": {
+        "step": 3,
+        "errors": [],
+        "unhandled": [],
+        "primaryRoom": 233,
+        "rogueRoom": 233
+      }
+    },
+    {
+      "name": "symbol-value-quoted-utf8",
+      "positive": true,
+      "pass": false,
+      "checks": [
+        {
+          "name": "all keys and observer/plain/deferred all-five equality",
+          "pass": true
+        },
+        {
+          "name": "valid ordinary parser inputs have no errors or unhandled directives",
+          "pass": true
+        },
+        {
+          "name": "both actual symbol override producers store the C byte",
+          "pass": false,
+          "error": "The expression evaluated to a falsy value:\n\n  assert.ok(states.every(s => s.primaryRoom === expected.primaryRoom))\n"
+        },
+        {
+          "name": "visible primary room shows the byte through ordinary rendering",
+          "pass": false,
+          "error": "Expected values to be strictly equal:\n\n'i' !== 'C'\n"
+        },
+        {
+          "name": "all-five equality to explicit short canonical input",
+          "pass": false,
+          "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n... Skipped lines\n\n  {\n    calls: [\n      'rn2(2)=1',\n      'rn2(2)=1',\n      'rn2(4)=0',\n...\n        '\\x1B[5C-----\\n' +\n+       '\\x1B[5C|\\x1B[35mx\\x1B[95m!\\x1B[39mi|\\n' +\n+       '\\x1B[5C|\\x1B[33m(\\x1B[97m@\\x1B[39mi|\\n' +\n+       '\\x1B[5C|iii.\\n' +\n-       '\\x1B[5C|\\x1B[35mx\\x1B[95m!\\x1B[39mC|\\n' +\n-       '\\x1B[5C|\\x1B[33m(\\x1B[97m@\\x1B[39mC|\\n' +\n-       '\\x1B[5C|CCC.\\n' +\n        '\\x1B[5C-----\\n' +\n        '\\n' +\n        '\\n' +\n        '\\n' +\n        '\\n' +\n...\n        '\\x1B[5C-----\\n' +\n+       '\\x1B[5C|\\x1B[35mx\\x1B[95m!\\x1B[39mi|\\n' +\n+       '\\x1B[5C|\\x1B[33m(\\x1B[97m@\\x1B[39mi|\\n' +\n+       '\\x1B[5C|iii.\\n' +\n-       '\\x"
+        }
+      ],
+      "hashes": {
+        "screens": "1c2af25a6f6f885cc3b65e583beb3daa536d639b58a929b92aa2312563eb88b7",
+        "cursors": "51ee802e3d5290b524b6181657ab5f2507aec19ad89d3092f447a446b1c6ad04",
+        "calls": "860cfcf1eaecd7f446231c18899a60664b97fcf89acbb674e5207b78373a3ccf",
+        "slices": "336b5ea699fbb622d130038f227b78985c6ef651592acf98444ec4f8d0764ef4",
+        "frames": "210e130878aabaf46f1fe72749a263f9eb71c6a262b80f13882ed08d472c0ecd"
+      },
+      "referenceHashes": {
+        "screens": "f81a1e53742fdce640b7ad2dcae43cb049c566a8dcfd06ece54f163c9e830069",
+        "cursors": "51ee802e3d5290b524b6181657ab5f2507aec19ad89d3092f447a446b1c6ad04",
+        "calls": "860cfcf1eaecd7f446231c18899a60664b97fcf89acbb674e5207b78373a3ccf",
+        "slices": "336b5ea699fbb622d130038f227b78985c6ef651592acf98444ec4f8d0764ef4",
+        "frames": "210e130878aabaf46f1fe72749a263f9eb71c6a262b80f13882ed08d472c0ecd"
+      },
+      "changedStreams": [
+        "screens"
+      ],
+      "boundaries": 4,
+      "calls": 3039,
+      "frames": 0,
+      "firstState": {
+        "step": 0,
+        "errors": [],
+        "unhandled": [],
+        "primaryRoom": 233,
+        "rogueRoom": 233
+      },
+      "lastState": {
+        "step": 3,
+        "errors": [],
+        "unhandled": [],
+        "primaryRoom": 233,
+        "rogueRoom": 233
+      }
+    },
+    {
+      "name": "symbol-value-escaped-byte-negative",
+      "positive": false,
+      "pass": true,
+      "checks": [
+        {
+          "name": "all keys and observer/plain/deferred all-five equality",
+          "pass": true
+        },
+        {
+          "name": "valid ordinary parser inputs have no errors or unhandled directives",
+          "pass": true
+        },
+        {
+          "name": "both actual symbol override producers store the C byte",
+          "pass": true
+        },
+        {
+          "name": "visible primary room shows the byte through ordinary rendering",
+          "pass": true
+        },
+        {
+          "name": "all-five equality to explicit short canonical input",
+          "pass": true
+        }
+      ],
+      "hashes": {
+        "screens": "f81a1e53742fdce640b7ad2dcae43cb049c566a8dcfd06ece54f163c9e830069",
+        "cursors": "51ee802e3d5290b524b6181657ab5f2507aec19ad89d3092f447a446b1c6ad04",
+        "calls": "860cfcf1eaecd7f446231c18899a60664b97fcf89acbb674e5207b78373a3ccf",
+        "slices": "336b5ea699fbb622d130038f227b78985c6ef651592acf98444ec4f8d0764ef4",
+        "frames": "210e130878aabaf46f1fe72749a263f9eb71c6a262b80f13882ed08d472c0ecd"
+      },
+      "referenceHashes": {
+        "screens": "f81a1e53742fdce640b7ad2dcae43cb049c566a8dcfd06ece54f163c9e830069",
+        "cursors": "51ee802e3d5290b524b6181657ab5f2507aec19ad89d3092f447a446b1c6ad04",
+        "calls": "860cfcf1eaecd7f446231c18899a60664b97fcf89acbb674e5207b78373a3ccf",
+        "slices": "336b5ea699fbb622d130038f227b78985c6ef651592acf98444ec4f8d0764ef4",
+        "frames": "210e130878aabaf46f1fe72749a263f9eb71c6a262b80f13882ed08d472c0ecd"
+      },
+      "changedStreams": [],
+      "boundaries": 4,
+      "calls": 3039,
+      "frames": 0,
+      "firstState": {
+        "step": 0,
+        "errors": [],
+        "unhandled": [],
+        "primaryRoom": 195,
+        "rogueRoom": 195
+      },
+      "lastState": {
+        "step": 3,
+        "errors": [],
+        "unhandled": [],
+        "primaryRoom": 195,
+        "rogueRoom": 195
+      }
+    },
+    {
+      "name": "symbol-value-ascii-negative",
+      "positive": false,
+      "pass": true,
+      "checks": [
+        {
+          "name": "all keys and observer/plain/deferred all-five equality",
+          "pass": true
+        },
+        {
+          "name": "valid ordinary parser inputs have no errors or unhandled directives",
+          "pass": true
+        },
+        {
+          "name": "both actual symbol override producers store the C byte",
+          "pass": true
+        },
+        {
+          "name": "visible primary room shows the byte through ordinary rendering",
+          "pass": true
+        },
+        {
+          "name": "all-five equality to explicit short canonical input",
+          "pass": true
+        }
+      ],
+      "hashes": {
+        "screens": "b4bbdccdb9075504eb0cbfde37684a4d6cb5c072203780611d96dbf0f1c798d6",
+        "cursors": "51ee802e3d5290b524b6181657ab5f2507aec19ad89d3092f447a446b1c6ad04",
+        "calls": "860cfcf1eaecd7f446231c18899a60664b97fcf89acbb674e5207b78373a3ccf",
+        "slices": "336b5ea699fbb622d130038f227b78985c6ef651592acf98444ec4f8d0764ef4",
+        "frames": "210e130878aabaf46f1fe72749a263f9eb71c6a262b80f13882ed08d472c0ecd"
+      },
+      "referenceHashes": {
+        "screens": "b4bbdccdb9075504eb0cbfde37684a4d6cb5c072203780611d96dbf0f1c798d6",
+        "cursors": "51ee802e3d5290b524b6181657ab5f2507aec19ad89d3092f447a446b1c6ad04",
+        "calls": "860cfcf1eaecd7f446231c18899a60664b97fcf89acbb674e5207b78373a3ccf",
+        "slices": "336b5ea699fbb622d130038f227b78985c6ef651592acf98444ec4f8d0764ef4",
+        "frames": "210e130878aabaf46f1fe72749a263f9eb71c6a262b80f13882ed08d472c0ecd"
+      },
+      "changedStreams": [],
+      "boundaries": 4,
+      "calls": 3039,
+      "frames": 0,
+      "firstState": {
+        "step": 0,
+        "errors": [],
+        "unhandled": [],
+        "primaryRoom": 90,
+        "rogueRoom": 90
+      },
+      "lastState": {
+        "step": 3,
+        "errors": [],
+        "unhandled": [],
+        "primaryRoom": 90,
+        "rogueRoom": 90
+      }
+    }
+  ]
+}

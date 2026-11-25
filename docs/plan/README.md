@@ -12,22 +12,23 @@ Ground rules are in `/CLAUDE.md`. Read that first if you have not.
 
 ## Current focus, 2026-11-25
 
-The latest pushed runtime is `0179abf9`, verified against all 901 maintained
-recordings on NFS with default budgets and no retries. All 1,192 tested files
-match that commit: 922,147 screens/cursors, 19,758,050 random positions and
-32,997 frames. See STATUS for publication receipts and prior checkpoints.
+The symbol-byte checkpoint is ready to publish. All 904 maintained recordings
+pass on its exact 280-module runtime with default budgets and no retries:
+922,895 screens/cursors, 19,808,235 random positions and 33,029 frames. All
+1,195 tested files remain fixed. See STATUS for receipts and prior checkpoints.
 
-Moving engulfer positioning is verified for publication. All four original C
-cases match versus three before, all 207 selected/public recordings pass,
-and 57 focused checks pass. The initial strict batch passed 206/207; its
-level-names timeout remains recorded. The unchanged eight-second check passes
-on both fixed old and new snapshots, with exact scorer output. Only monmove.js
-changes runtime. The corpus is 902; its full NFS replay is running.
+Moving engulfer positioning and random-arrival terrain restoration are pushed.
+The latter matches all seven original C cases versus three before, with all
+59 focused checks, 219 selected/public recordings and 219 strict workers passing.
+Only dungeon.js changed runtime in that checkpoint.
 
-Random arrival terrain restoration is next, with seven locked original C
-inputs. Byte consumers, menu map restoration and shopkeeper re-entry remain
-separate source audits. The two original merged-byte-cap failures stay open.
-The latest leaderboard check, 22:06 UTC, still shows rank 7 and 659 unmatched
+Symbol byte handling passes four new C cases versus two, 52 source controls,
+28 retained suites, 101 selected recordings and 101 strict workers. The earlier
+nine-case audit still has two fruit/menu failures. The isolated Tower arrival
+fix passes seven C cases versus four and all 68 ordinary controls; it is next
+for main verification. The full byte reader, row restoration and shopkeeper
+re-entry remain separate audits. Both original merged-byte-cap failures stay open.
+The latest leaderboard check, 22:41 UTC, still shows rank 7 and 659 unmatched
 screens. Its 19:31 row predates the recent checkpoints and does not identify
 the scored commit. Local parity does not establish a new held-out score.
 

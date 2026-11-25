@@ -1,6 +1,47 @@
 # STATUS — live handoff board
 
-## 2026-11-25: random placement terrain restoration verified
+## 2026-11-25: symbol byte handling verified for publication
+
+Only symbols.js changes runtime. sym_val reads UTF8 bytes into its local C
+character buffer and returns the recorder's signed char value. The four symbol
+stores convert it to nhsym's unsigned byte. Existing escape and quote logic
+keeps its C order. No shared string representation changes.
+
+Source controls pass 52/52 versus 29/52. Four independent ordinary and original
+C cases pass versus two before: sixteen styled boundaries/cursors, 12,156 calls
+and ordered slices, zero frames. Literal, quoted and escaped forms have identical
+complete C step arrays. All ten new negative hashes remain fixed. The original
+nine-case audit improves from five exact to seven; both fruit failures remain,
+including its failed negative menu case. The original six-case byte audit stays
+4/6 with both merged-cap failures. All 55 inherited negative hashes stay fixed.
+
+All 101 selected/public recordings and 101 strict eight-second workers pass:
+48,566 screens/cursors, 2,180,563 random positions and 1,583 frames. Both new
+gates, 28 retained suites, source audit and three syntax checks pass. All 77
+source members, 31 promotion members, fifteen payloads and 280 runtime hashes
+verify. All 903 prior raws and requirements remain fixed; four requirements
+and one raw bring the corpus to 904. Main receipt
+`symbol-value-main-verification.json`, SHA256
+`225477bcfb701c0bc11f25f881d4d19645adb55c3ad8075d6d08e440bfffaf2c`.
+
+Full904 passed all 904 recordings with two NFS CPU workers, default budgets
+and no retries: 922,895 screens/cursors, 19,808,235 random positions and 33,029
+frames. All 1,195 tested files remain fixed. Root:
+/share/NFS/u/rohit/research/contest/artifacts/2026-11-22/symbol-value-full904-js-20261125.
+All-files SHA256 `2e23c40b1ed5cf57e70cb94f7ff373c387270bf9542eef07dae658290234bf68`.
+Verification SHA256 `b448f94af6f82952d1e90ccbc6e5b8ac4be4cef74c7289aac87064f384fa6f84`.
+The publication receipt is next, after committing and pushing this exact graph.
+
+The separate Tower arrival candidate preserves the existing inside-tower flag
+at goto_level's random-placement call. All seven locked original C cases now
+match versus four; all 68 ordinary controls pass versus 64. Its four negative
+cases retain all twenty output hashes. It is not installed yet. The seven
+row-refresh C cases establish a 3/7 baseline; that candidate remains separate,
+as do the full byte reader and shopkeeper billing storage audits. The latest
+leaderboard check, 22:41 UTC, is still rank 7 and 659 unmatched screens, with
+the row dated 19:31. No newer held-out score or whole-port closure is claimed.
+
+## 2026-11-25: random placement terrain restoration pushed as e2a36e32
 
 Only dungeon.js changes runtime. After every u_on_rndspot placement arm,
 the existing switch_terrain helper is awaited in C order. Leaving solid rock
@@ -24,18 +65,17 @@ and one raw bring the corpus to 903. Main receipt
 `random-position-main-verification.json`, SHA256
 `49e198955d71f1ffd5f8c51f086e9dcd18c0192aa0812ac697b007e725d6ddd5`.
 
-Full903 is running with two NFS CPU workers, default budgets and no retries,
-PID 3213642. Root:
+Full903 passed all 903 recordings: 922,879 screens/cursors, 19,796,079 random
+positions and 33,029 frames. All 1,194 tested files match published e2a36e32.
+Publication receipt `random-position-full903-publication-verification.json`,
+SHA256 `88922d42d618bf7fd4b331427e95bc4aabada2cfd77d3929253d5c422c11ec04`.
+The run used two NFS CPU workers, default budgets and no retries. Root:
 /share/NFS/u/rohit/research/contest/artifacts/2026-11-22/random-position-full903-js-20261125.
-Its 1,194 files contain 902 linked raws and one new raw; all-files SHA256
+All-files SHA256
 `28b49447cfebbfe2b73f530eeef1955a77b48cdc8d6cdbb1e922594adc5c12a0`.
 
-The separate symbol-byte candidate improves the unchanged nine-case native
-audit from five exact to seven, on both isolated and composed graphs. Both
-fruit failures remain unchanged, including the 123-cell menu-dismissal gap.
-That candidate is not installed. The full byte reader, row-refresh producers
-and shopkeeper billing storage remain separate source audits. No new held-out
-score or whole-port closure is claimed.
+The later symbol, Tower arrival, row-refresh and billing audits are tracked
+in the current entry above. Other goto_level branches remain separate work.
 
 ## 2026-11-25: moving engulfer positioning pushed as 42655f63
 

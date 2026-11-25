@@ -1,0 +1,198 @@
+{
+  "classification": "Symbol owner only. No full-byte, fruit/name, menu-dismissal or external-filename closure. No original probe is selected out or relabelled.",
+  "originalNine": {
+    "cases": 9,
+    "nativeBaselineExact": 5,
+    "nativeCandidateExact": 7,
+    "candidateExit": 1,
+    "negativeHashes": 30,
+    "recipe": {
+      "sourcePacketPath": ".cache/restart-20261122/symbol-value-source-audit/fixtures/original-nine-recipe.json",
+      "sha256": "830063f7485bea0e59285205e7e1046528d7eafada5fe70f2306a790e538c2ce",
+      "bytes": 12986
+    },
+    "inputLock": {
+      "sourcePacketPath": ".cache/restart-20261122/symbol-value-source-audit/fixtures/original-nine-input-lock.json",
+      "sha256": "607d48aa03ad3273b3dbc468950a72adeb3c91ba9d54caff6c49d24dd9253e80",
+      "bytes": 1808
+    },
+    "raw": {
+      "sourcePacketPath": ".cache/restart-20261122/symbol-value-source-audit/fixtures/original-nine-c.session.json",
+      "sha256": "581a7ab10916efe4c9f20496f29572fa84428f9799ed9eb7abc1727c782683f5",
+      "bytes": 1199678
+    },
+    "negativeHashFile": {
+      "sourcePacketPath": ".cache/restart-20261122/symbol-value-source-audit/fixtures/original-nine-negative-hashes.json",
+      "sha256": "4ce117e1addd08584a32190c3fcfd4474ba0634fb94a31cb1184ac04138c90f0",
+      "bytes": 3278
+    },
+    "assertions": {
+      "sourcePacketPath": ".cache/restart-20261122/symbol-value-source-audit/fixtures/original-nine-assertions.mjs",
+      "sha256": "0f611e471087117cc7d188873a85ffc698e0a38935688276e64254fd00778724",
+      "bytes": 7332
+    },
+    "sourceBaselinePassed": 6,
+    "sourceCandidatePassed": 8,
+    "sourceBaseline": {
+      "sourcePacketPath": ".cache/restart-20261122/symbol-value-source-audit/fixtures/original-nine-source-baseline.json",
+      "sha256": "b204cdf8deb2a6c178e653f9dcad7ca6f2e9f57201dd1a9c7fb2e559bc7a8e1e",
+      "bytes": 22935
+    },
+    "sourceCandidate": {
+      "sourcePacketPath": ".cache/restart-20261122/symbol-value-source-audit/fixtures/original-nine-source-candidate.json",
+      "sha256": "4fa5c6c564d440a1ef68c2b90a341523d429e40dceb71ed6f9f2389e0b076da2",
+      "bytes": 21141
+    },
+    "nativeBaseline": {
+      "sourcePacketPath": ".cache/restart-20261122/symbol-value-source-audit/fixtures/original-nine-native-baseline.json",
+      "sha256": "febe9c8100c7a4ede3fd2a623e97d64f07b32960a0840b1682e65193049d37e6",
+      "bytes": 33910
+    },
+    "nativeCandidate": {
+      "sourcePacketPath": ".cache/restart-20261122/symbol-value-source-audit/fixtures/original-nine-native-candidate.json",
+      "sha256": "71f2079a6415b509baf20b8fbfe1d31d090ddf27f324e6be2a3d434a3814a259",
+      "bytes": 27064
+    },
+    "nativeComposed": {
+      "sourcePacketPath": ".cache/restart-20261122/symbol-value-source-audit/fixtures/original-nine-native-composed.json",
+      "sha256": "71f2079a6415b509baf20b8fbfe1d31d090ddf27f324e6be2a3d434a3814a259",
+      "bytes": 27064
+    },
+    "candidateAssertions": {
+      "sourcePacketPath": ".cache/restart-20261122/symbol-value-source-audit/fixtures/original-nine-candidate-assertions.mjs",
+      "sha256": "4b51b55e16646a1a41b21e234d513910042c4cec13ec571ee1ff27fd0aba291f",
+      "bytes": 7417
+    },
+    "failedNegativeMetadataPreserved": true
+  },
+  "originalSix": {
+    "cases": 6,
+    "nativeBaselineExact": 3,
+    "nativeCandidateExact": 4,
+    "candidateExit": 1,
+    "negativeHashes": 15,
+    "recipe": {
+      "sourcePacketPath": ".cache/restart-20261122/symbol-value-source-audit/fixtures/original-six-recipe.json",
+      "sha256": "f8776c42ecabc2ccfa67f69d81741f7422792b1db1ee42c9e0dfc603677e2a90",
+      "bytes": 13238
+    },
+    "inputLock": {
+      "sourcePacketPath": ".cache/restart-20261122/symbol-value-source-audit/fixtures/original-six-input-lock.json",
+      "sha256": "2034168e898833c602d8613ac9bbadf802343b6cdbfed431bb26a56780ae9d16",
+      "bytes": 1290
+    },
+    "raw": {
+      "sourcePacketPath": ".cache/restart-20261122/symbol-value-source-audit/fixtures/original-six-c.session.json",
+      "sha256": "03999566888cd7958db091e323a8a827c3cc099100aba96ad1dc7664af29cbfb",
+      "bytes": 802264
+    },
+    "negativeHashFile": {
+      "sourcePacketPath": ".cache/restart-20261122/symbol-value-source-audit/fixtures/original-six-negative-hashes.json",
+      "sha256": "d7e1bfea1fe774e8b736fbb119564005be1c7915f33e3c923fb71e40bd44cc35",
+      "bytes": 1577
+    },
+    "assertions": {
+      "sourcePacketPath": ".cache/restart-20261122/symbol-value-source-audit/fixtures/original-six-assertions.mjs",
+      "sha256": "4f652150b7226b4160b3dd5282e050f9d3f1c99f581ad19c979ab1a25821b284",
+      "bytes": 6184
+    },
+    "nativeAfterNulBeforeSymbol": 4,
+    "nativeCandidate": {
+      "sourcePacketPath": ".cache/restart-20261122/symbol-value-source-audit/fixtures/original-six-nul-native.json",
+      "sha256": "322c93ff63466462c50ac0377fb0bb6787ab721d168cf7f4865a750fb54f569b",
+      "bytes": 21429
+    },
+    "sourceCandidate": {
+      "sourcePacketPath": ".cache/restart-20261122/symbol-value-source-audit/fixtures/original-six-source-candidate.json",
+      "sha256": "d33a0f5dd8ad308bcd4e204b96c3bafe828b647e4f50dce1b82d522e15452627",
+      "bytes": 12711
+    },
+    "allSixAllFiveHashesUnchangedBySymbol": true
+  },
+  "additionalFour": {
+    "cases": 4,
+    "nativeBaselineExact": 2,
+    "nativeCandidateExact": 4,
+    "candidateExit": 0,
+    "negativeHashes": 10,
+    "recipe": {
+      "sourcePacketPath": ".cache/restart-20261122/symbol-value-source-audit/fixtures/additional-four-recipe.json",
+      "sha256": "2c913699672463ad044a9c09c277b92d2fee0a5af8fb30cb48ca38039dcb2775",
+      "bytes": 4742
+    },
+    "inputLock": {
+      "sourcePacketPath": ".cache/restart-20261122/symbol-value-source-audit/fixtures/additional-four-input-lock.json",
+      "sha256": "d0e9a81fac019ca0d0ce5cb10f4d5114ffd40a65150927dd59201d4eb2549205",
+      "bytes": 973
+    },
+    "raw": {
+      "sourcePacketPath": ".cache/restart-20261122/symbol-value-source-audit/fixtures/additional-four-c.session.json",
+      "sha256": "de9db54ca299824437f0ffe66a24b99418bf68fedb980714c37a62ddf9c0a17e",
+      "bytes": 517213
+    },
+    "negativeHashFile": {
+      "sourcePacketPath": ".cache/restart-20261122/symbol-value-source-audit/fixtures/additional-four-negative-hashes.json",
+      "sha256": "e2138cf99c41e1c5796030b4ede5a34e86db471cadd081f6d39d63c21ca458c4",
+      "bytes": 1071
+    },
+    "assertions": {
+      "sourcePacketPath": ".cache/restart-20261122/symbol-value-source-audit/fixtures/additional-four-assertions.mjs",
+      "sha256": "59a0975587dd65b7df44953d9239acd7d0d0cd672e2ac19f40ef4147ffa6abab",
+      "bytes": 6910
+    },
+    "sourceCandidate": {
+      "sourcePacketPath": ".cache/restart-20261122/symbol-value-source-audit/fixtures/additional-four-source-candidate.json",
+      "sha256": "ccb8fcdb6212af053a47c59fdff4c8f76919570aad801b50a272ff2e2968a05a",
+      "bytes": 7534
+    }
+  },
+  "expectedFailures": [
+    {
+      "family": "originalNine",
+      "name": "reader-fruit-utf8-bytes",
+      "firstStep": 8,
+      "cause": "C sanitizes UTF8 bytes into two underscores; JS yields one. Unchanged by symbol stage."
+    },
+    {
+      "family": "originalNine",
+      "name": "reader-fruit-partial-byte-limit-negative",
+      "firstStep": 10,
+      "negative": true,
+      "glyphDifferences": 123,
+      "cause": "Original source assertion passes but native menu dismissal differs. Step9 exact, steps10/11 fail. Parent owns row_refresh producer/caller audit."
+    },
+    {
+      "family": "originalSix",
+      "name": "config-bytes-merged-ascii-cap",
+      "cause": "Missing 1023-byte merged append cap. Still fails."
+    },
+    {
+      "family": "originalSix",
+      "name": "config-bytes-merged-utf8-cap",
+      "cause": "Missing 1023-byte merged append cap and incomplete-byte transport. Still fails."
+    }
+  ],
+  "newFamily": {
+    "cases": 4,
+    "baselineExact": 2,
+    "candidateExact": 4,
+    "negativeHashes": 10,
+    "recipe": {
+      "sourcePacketPath": ".cache/restart-20261122/symbol-value-source-audit/recipes/symbol-value-probes.json",
+      "sha256": "e81b47816c4b088074825e7ac4c6ec498ac8bace0d02177801e5bd2dc080cf5a",
+      "bytes": 3350
+    },
+    "inputLock": {
+      "sourcePacketPath": ".cache/restart-20261122/symbol-value-source-audit/recipes/symbol-value-input-lock.json",
+      "sha256": "c2cf9b3a6e64817b0e3727b40c3cf29e0c18331c0c8dcd4a29f484b44f0951b9",
+      "bytes": 942
+    },
+    "raw": {
+      "sourcePacketPath": ".cache/restart-20261122/symbol-value-source-audit/fixtures/new-four-c.session.json",
+      "sha256": "d792d4da09f7d58cf0798b330bd059dae932e3d41d73340f09738f868624e357",
+      "bytes": 507861
+    }
+  },
+  "unchangedOriginalNegativeHashes": 55,
+  "maintainedCorpusPolicy": "Only independent complete new4 raw is proposed. Original9/original6 raw recordings and failed reports remain linked in source evidence; never normalized or claimed exact."
+}

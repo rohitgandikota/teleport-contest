@@ -1,0 +1,33 @@
+{
+  "recipeSHA256": "e81b47816c4b088074825e7ac4c6ec498ac8bace0d02177801e5bd2dc080cf5a",
+  "fields": [
+    "seed",
+    "datetime",
+    "nethackrc",
+    "moves",
+    "name"
+  ],
+  "inputFieldsSHA256": "6f104b41f1e1025b9768b8cb3a7bcb6cb0cff87db331752efd7e5fd6fd721afb",
+  "segments": [
+    {
+      "name": "symbol-value-literal-utf8",
+      "keys": 3,
+      "inputSHA256": "291d0f3c273970e64d1be9a14602981dd67ab64ddc3f66bfc24916102d2ddf96"
+    },
+    {
+      "name": "symbol-value-quoted-utf8",
+      "keys": 3,
+      "inputSHA256": "089c41cf5d54457e44f8a7dd231f43c7d1596a1e45aefae07cb0d1571974767e"
+    },
+    {
+      "name": "symbol-value-escaped-byte-negative",
+      "keys": 3,
+      "inputSHA256": "44f0d0ef4f6ed781d1d24295635cd2eb556de2a292f7936836332c04acd4b64c"
+    },
+    {
+      "name": "symbol-value-ascii-negative",
+      "keys": 3,
+      "inputSHA256": "6ad0f66dc68a8e64b2f46993125b02408852fadd905686738aa8a4307c6e5b02"
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "byte195": {
+    "seed": 9770,
+    "datetime": "20000112093000",
+    "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nSYMBOLS=S_room:\\195\nROGUESYMBOLS=S_room:\\195\n",
+    "moves": " V\f",
+    "name": "symbol-value-canonical-byte195"
+  },
+  "ascii90": {
+    "seed": 9770,
+    "datetime": "20000112093000",
+    "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nSYMBOLS=S_room:Z\nROGUESYMBOLS=S_room:Z\n",
+    "moves": " V\f",
+    "name": "symbol-value-canonical-ascii90"
+  }
+}

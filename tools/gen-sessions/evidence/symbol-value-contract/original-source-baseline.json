@@ -1,0 +1,240 @@
+{
+  "classification": "Constructed source controls, not ordinary reach. No mocks or new runtime exports.",
+  "variant": "baseline",
+  "total": 52,
+  "passed": 29,
+  "rows": [
+    {
+      "name": "sym_val/empty",
+      "pass": true
+    },
+    {
+      "name": "sym_val/space",
+      "pass": true
+    },
+    {
+      "name": "sym_val/tab",
+      "pass": true
+    },
+    {
+      "name": "sym_val/ASCII-single",
+      "pass": true
+    },
+    {
+      "name": "sym_val/ASCII-multiple",
+      "pass": true
+    },
+    {
+      "name": "sym_val/NUL-first",
+      "pass": true
+    },
+    {
+      "name": "sym_val/NUL-after-space",
+      "pass": false,
+      "error": "Expected values to be strictly equal:\n\n32 !== 0\n"
+    },
+    {
+      "name": "sym_val/NUL-after-quote",
+      "pass": false,
+      "error": "Expected values to be strictly equal:\n\n0 !== 39\n"
+    },
+    {
+      "name": "sym_val/NUL-after-ASCII",
+      "pass": true
+    },
+    {
+      "name": "sym_val/UTF8-two-byte",
+      "pass": false,
+      "error": "Expected values to be strictly equal:\n\n233 !== -61\n"
+    },
+    {
+      "name": "sym_val/UTF8-three-byte",
+      "pass": false,
+      "error": "Expected values to be strictly equal:\n\n8364 !== -30\n"
+    },
+    {
+      "name": "sym_val/UTF8-four-byte",
+      "pass": false,
+      "error": "Expected values to be strictly equal:\n\n61 !== -16\n"
+    },
+    {
+      "name": "sym_val/non-ASCII-space-is-byte",
+      "pass": false,
+      "error": "Expected values to be strictly equal:\n\n160 !== -62\n"
+    },
+    {
+      "name": "sym_val/single-quote-character",
+      "pass": true
+    },
+    {
+      "name": "sym_val/simple-quoted-ASCII",
+      "pass": true
+    },
+    {
+      "name": "sym_val/triple-quote",
+      "pass": true
+    },
+    {
+      "name": "sym_val/simple-quoted-backslash",
+      "pass": true
+    },
+    {
+      "name": "sym_val/escaped-quote",
+      "pass": true
+    },
+    {
+      "name": "sym_val/escaped-double-quote",
+      "pass": true
+    },
+    {
+      "name": "sym_val/quoted-UTF8",
+      "pass": false,
+      "error": "Expected values to be strictly equal:\n\n233 !== -61\n"
+    },
+    {
+      "name": "sym_val/unclosed-quote",
+      "pass": true
+    },
+    {
+      "name": "sym_val/ASCII-closing-quote-fits127",
+      "pass": true
+    },
+    {
+      "name": "sym_val/ASCII-closing-quote-beyond127",
+      "pass": true
+    },
+    {
+      "name": "sym_val/UTF8-closing-quote-fits127",
+      "pass": false,
+      "error": "Expected values to be strictly equal:\n\n233 !== -61\n"
+    },
+    {
+      "name": "sym_val/UTF8-closing-quote-beyond127",
+      "pass": false,
+      "error": "Expected values to be strictly equal:\n\n233 !== 0\n"
+    },
+    {
+      "name": "sym_val/decimal-127",
+      "pass": true
+    },
+    {
+      "name": "sym_val/decimal-128",
+      "pass": false,
+      "error": "Expected values to be strictly equal:\n\n128 !== -128\n"
+    },
+    {
+      "name": "sym_val/decimal-195",
+      "pass": false,
+      "error": "Expected values to be strictly equal:\n\n195 !== -61\n"
+    },
+    {
+      "name": "sym_val/decimal-255",
+      "pass": false,
+      "error": "Expected values to be strictly equal:\n\n255 !== -1\n"
+    },
+    {
+      "name": "sym_val/hex-byte",
+      "pass": false,
+      "error": "Expected values to be strictly equal:\n\n233 !== -23\n"
+    },
+    {
+      "name": "sym_val/octal-byte",
+      "pass": false,
+      "error": "Expected values to be strictly equal:\n\n255 !== -1\n"
+    },
+    {
+      "name": "sym_val/meta-byte",
+      "pass": false,
+      "error": "Expected values to be strictly equal:\n\n193 !== -63\n"
+    },
+    {
+      "name": "sym_val/control-byte",
+      "pass": true
+    },
+    {
+      "name": "sym_val/C-newline-escape",
+      "pass": true
+    },
+    {
+      "name": "sym_val/trailing-backslash",
+      "pass": true
+    },
+    {
+      "name": "update_ov_primary_symset/signed-byte",
+      "pass": false,
+      "error": "Expected values to be strictly equal:\n\n-61 !== 195\n"
+    },
+    {
+      "name": "update_ov_primary_symset/ASCII-negative",
+      "pass": true
+    },
+    {
+      "name": "update_ov_rogue_symset/signed-byte",
+      "pass": false,
+      "error": "Expected values to be strictly equal:\n\n-61 !== 195\n"
+    },
+    {
+      "name": "update_ov_rogue_symset/ASCII-negative",
+      "pass": true
+    },
+    {
+      "name": "update_primary_symset/signed-byte",
+      "pass": false,
+      "error": "Expected values to be strictly equal:\n\n-61 !== 195\n"
+    },
+    {
+      "name": "update_primary_symset/ASCII-negative",
+      "pass": true
+    },
+    {
+      "name": "update_rogue_symset/signed-byte",
+      "pass": false,
+      "error": "Expected values to be strictly equal:\n\n-61 !== 195\n"
+    },
+    {
+      "name": "update_rogue_symset/ASCII-negative",
+      "pass": true
+    },
+    {
+      "name": "parsesymbols/0/literal-byte",
+      "pass": false,
+      "error": "Expected values to be strictly equal:\n\n233 !== 195\n"
+    },
+    {
+      "name": "parsesymbols/0/decimal-negative",
+      "pass": true
+    },
+    {
+      "name": "parse_sym_line/0/real-start-and-value",
+      "pass": false,
+      "error": "Expected values to be strictly equal:\n\n233 !== 195\n"
+    },
+    {
+      "name": "parsesymbols/1/literal-byte",
+      "pass": false,
+      "error": "Expected values to be strictly equal:\n\n233 !== 195\n"
+    },
+    {
+      "name": "parsesymbols/1/decimal-negative",
+      "pass": true
+    },
+    {
+      "name": "parse_sym_line/1/real-start-and-value",
+      "pass": false,
+      "error": "Expected values to be strictly equal:\n\n233 !== 195\n"
+    },
+    {
+      "name": "existing-txt2key/\"M-Ā\"",
+      "pass": true
+    },
+    {
+      "name": "existing-txt2key/\"\\\\195\"",
+      "pass": true
+    },
+    {
+      "name": "existing-txt2key/\"~\"",
+      "pass": true
+    }
+  ],
+  "symbolsSHA256": "ce340ee6bd9b4118d0c94d82b92751e49bc11adfbd337e68de824e8d24aac6ca"
+}

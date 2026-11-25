@@ -175,11 +175,11 @@ export function get_othersym(idx, which_set) {
 
 // src/symbols.c:295 update_ov_primary_symset()
 export function update_ov_primary_symset(symp, val) {
-    go_ov_primary_syms[symp.idx] = val;
+    go_ov_primary_syms[symp.idx] = val & 0xff; // nhsym is uchar
 }
 // src/symbols.c:301 update_ov_rogue_symset()
 export function update_ov_rogue_symset(symp, val) {
-    go_ov_rogue_syms[symp.idx] = val;
+    go_ov_rogue_syms[symp.idx] = val & 0xff; // nhsym is uchar
 }
 
 /* src/symbols.c:403 loadsyms[] — include/defsym.h expands PCHAR_PARSE,
@@ -349,6 +349,9 @@ export function escapes(cp) {
 // src/options.c:9385 sym_val() — the character code an option value names
 export function sym_val(strval) {
     const QBUFSZ = 128;
+    // C receives UTF-8 file bytes. Keep its char buffer local to this owner.
+    strval = String.fromCharCode(...new TextEncoder().encode(strval))
+        .split('\0', 1)[0];
     let buf = '', tmp; /* to hold truncated copy of 'strval' */
 
     if (strval[0] === undefined || strval[1] === undefined) { /* empty, or single character */
@@ -383,7 +386,8 @@ export function sym_val(strval) {
         buf = escapes(tmp);
     }
 
-    return buf.length ? buf.charCodeAt(0) : 0;
+    // The recorder's signed char is widened to int at return.
+    return buf.length ? (buf.charCodeAt(0) << 24) >> 24 : 0;
 }
 
 /* C strings inside a mutable buffer: the text from index i to its NUL */
@@ -683,10 +687,10 @@ export function init_rogue_symbols() {
 
 // src/symbols.c:307 update_primary_symset() / :313 update_rogue_symset()
 export function update_primary_symset(symp, val) {
-    gp_primary_syms[symp.idx] = val;
+    gp_primary_syms[symp.idx] = val & 0xff; // nhsym is uchar
 }
 export function update_rogue_symset(symp, val) {
-    gr_rogue_syms[symp.idx] = val;
+    gr_rogue_syms[symp.idx] = val & 0xff; // nhsym is uchar
 }
 
 // src/symbols.c:319 clear_symsetentry()

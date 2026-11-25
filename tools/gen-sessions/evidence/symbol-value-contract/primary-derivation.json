@@ -1,0 +1,76 @@
+{
+  "originalRecipeSHA256": "e81b47816c4b088074825e7ac4c6ec498ac8bace0d02177801e5bd2dc080cf5a",
+  "primaryRecipeSHA256": "565ad0da22c4d1cbcb78b44aff6efaafc74a7a59416fd995c667ebf59ca8c6cd",
+  "inputLockSHA256": "c2cf9b3a6e64817b0e3727b40c3cf29e0c18331c0c8dcd4a29f484b44f0951b9",
+  "preservedKeys": [
+    "name",
+    "classification",
+    "derivation",
+    "segments",
+    "expectations"
+  ],
+  "addedMetadata": {
+    "requireBranchAssertions": true,
+    "branches": [
+      "symbol-value-contract.symbol-value-literal-utf8",
+      "symbol-value-contract.symbol-value-quoted-utf8",
+      "symbol-value-contract.symbol-value-escaped-byte-negative",
+      "symbol-value-contract.symbol-value-ascii-negative"
+    ],
+    "branchAssertions": [
+      {
+        "branch": "symbol-value-contract.symbol-value-literal-utf8",
+        "segment": 0,
+        "screenCells": [
+          {
+            "step": 0,
+            "x": 8,
+            "y": 12,
+            "equals": "C"
+          }
+        ]
+      },
+      {
+        "branch": "symbol-value-contract.symbol-value-quoted-utf8",
+        "segment": 1,
+        "screenCells": [
+          {
+            "step": 0,
+            "x": 8,
+            "y": 12,
+            "equals": "C"
+          }
+        ]
+      },
+      {
+        "branch": "symbol-value-contract.symbol-value-escaped-byte-negative",
+        "segment": 2,
+        "screenCells": [
+          {
+            "step": 0,
+            "x": 8,
+            "y": 12,
+            "equals": "C"
+          }
+        ]
+      },
+      {
+        "branch": "symbol-value-contract.symbol-value-ascii-negative",
+        "segment": 3,
+        "screenCells": [
+          {
+            "step": 0,
+            "x": 8,
+            "y": 12,
+            "equals": "Z"
+          }
+        ]
+      }
+    ],
+    "provenance": {
+      "originalRecipe": "tools/gen-sessions/evidence/symbol-value-contract/original-recipe.json",
+      "originalRecipeSHA256": "e81b47816c4b088074825e7ac4c6ec498ac8bace0d02177801e5bd2dc080cf5a",
+      "derivation": "Only primary metadata added. Every original field, expectation, classification and input remains unchanged. New4 is independent; original9 remains7/9 and original6 remains4/6."
+    }
+  }
+}

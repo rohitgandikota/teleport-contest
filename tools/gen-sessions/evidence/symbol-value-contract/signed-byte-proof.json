@@ -1,0 +1,15 @@
+{
+  "method": "Read-only otool disassembly, no C execution/build/recording. Full symbol listing streamed, only four instructions retained.",
+  "binary": "nethack-c/recorder/install/games/lib/nethackdir/nethack",
+  "binarySHA256": "ba4dbc1c823f8d4b0cfb6fd594d00ff0ff5754daaaa2036bee15baeffdf85aa7",
+  "parentReceipt": "fixtures/initial-consumer-parent-recording.json",
+  "symbol": "_sym_val",
+  "returnInstructions": [
+    "0000000100207eb0\tldursb\tw8, [x29, #-0x98]",
+    "0000000100207eb4\tstr\tw8, [sp, #0x4]",
+    "0000000100207ed8\tldr\tw0, [sp, #0x4]",
+    "0000000100207ee8\tret"
+  ],
+  "finding": "Signed byte load into w8, saved then loaded into w0 at return. C int result sign-extends char; nhsym stores subsequently convert to unsigned byte.",
+  "symbolListingSHA256": "d612ba4ce04c85b9b4eb2fb9cdd3427d0c52265ffb8ba162f3f6cd65d573b416"
+}

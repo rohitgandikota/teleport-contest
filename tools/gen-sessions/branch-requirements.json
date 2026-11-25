@@ -4547,6 +4547,10 @@
     {"group":"random-position-owner","id":"random-position.lev-wall-walk-out","cFile":"src/dungeon.c","cFunction":"u_on_rndspot","description":"lev wall walk out"},
     {"group":"random-position-owner","id":"random-position.lev-wall-level","cFile":"src/dungeon.c","cFunction":"u_on_rndspot","description":"lev wall level"},
     {"group":"random-position-owner","id":"random-position.fly-wall-level","cFile":"src/dungeon.c","cFunction":"u_on_rndspot","description":"fly wall level"},
-    {"group":"random-position-owner","id":"random-position.fly-open-level","cFile":"src/dungeon.c","cFunction":"u_on_rndspot","description":"fly open level"}
+    {"group":"random-position-owner","id":"random-position.fly-open-level","cFile":"src/dungeon.c","cFunction":"u_on_rndspot","description":"fly open level"},
+    {"group":"symbol-value-contract","id":"symbol-value-contract.symbol-value-literal-utf8","cFile":"src/options.c","cFunction":"sym_val","description":"symbol value literal utf8"},
+    {"group":"symbol-value-contract","id":"symbol-value-contract.symbol-value-quoted-utf8","cFile":"src/options.c","cFunction":"sym_val","description":"symbol value quoted utf8"},
+    {"group":"symbol-value-contract","id":"symbol-value-contract.symbol-value-escaped-byte-negative","cFile":"src/options.c","cFunction":"sym_val","description":"symbol value escaped byte negative"},
+    {"group":"symbol-value-contract","id":"symbol-value-contract.symbol-value-ascii-negative","cFile":"src/options.c","cFunction":"sym_val","description":"symbol value ascii negative"}
   ]
 }

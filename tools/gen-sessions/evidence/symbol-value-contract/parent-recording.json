@@ -1,0 +1,21 @@
+{
+  "startedAt": "2026-11-25T22:49:25.354681+00:00",
+  "input": ".cache/restart-20261122/symbol-value-parent-input.session.json",
+  "inputSha256": "01aaab9938934f5363bf44da8b32459f5ab5b5872150b43326ed7f9e744b2af7",
+  "sourceInput": ".cache/restart-20261122/symbol-value-locked-input.session.json",
+  "sealReference": ".cache/restart-20261122/symbol-value-source-audit/recipes/symbol-value-input-lock.json",
+  "sealSha256": "c2cf9b3a6e64817b0e3727b40c3cf29e0c18331c0c8dcd4a29f484b44f0951b9",
+  "binarySha256": "ba4dbc1c823f8d4b0cfb6fd594d00ff0ff5754daaaa2036bee15baeffdf85aa7",
+  "recorderSha256": "b129caee2ca3941b30c36f5c26644bd37ff610344332eb511c474b8709b70648",
+  "cPin": "16ff59115315917b93185d026aeefea06db9b0f4",
+  "timezone": "Etc/GMT+4",
+  "raw": ".cache/restart-20261122/symbol-value-parent-native.session.json",
+  "exit": 0,
+  "closedAt": "2026-11-25T22:49:25.596810+00:00",
+  "rawSha256": "d792d4da09f7d58cf0798b330bd059dae932e3d41d73340f09738f868624e357",
+  "bytes": 507861,
+  "segments": 4,
+  "boundaries": 16,
+  "fiveInputFieldsAndPresencePreserved": true,
+  "allKeysExact": true
+}

@@ -1,0 +1,56 @@
+{
+  "recording": {
+    "sourcePacketPath": ".cache/restart-20261122/symbol-value-source-audit/fixtures/new-four-parent-recording.json",
+    "sha256": "33acbd018dc92767c54c30221142bf6a57fee32e1570b2293652648f06993197",
+    "bytes": 1096
+  },
+  "inputMinimal": {
+    "sourcePacketPath": ".cache/restart-20261122/symbol-value-source-audit/fixtures/new-four-parent-input.session.json",
+    "sha256": "01aaab9938934f5363bf44da8b32459f5ab5b5872150b43326ed7f9e744b2af7",
+    "bytes": 1794
+  },
+  "inputLock": {
+    "sourcePacketPath": ".cache/restart-20261122/symbol-value-source-audit/recipes/symbol-value-input-lock.json",
+    "sha256": "c2cf9b3a6e64817b0e3727b40c3cf29e0c18331c0c8dcd4a29f484b44f0951b9",
+    "bytes": 942
+  },
+  "raw": {
+    "sourcePacketPath": ".cache/restart-20261122/symbol-value-source-audit/fixtures/new-four-c.session.json",
+    "sha256": "d792d4da09f7d58cf0798b330bd059dae932e3d41d73340f09738f868624e357",
+    "bytes": 507861
+  },
+  "checks": {
+    "sourcePacketPath": ".cache/restart-20261122/symbol-value-source-audit/fixtures/new-four-parent-checks.json",
+    "sha256": "d83dc9b837bc89ad0860d77ebc037cf3cf1b4f365e808e0826d1c629b8447a76",
+    "bytes": 5544
+  },
+  "reports": {
+    "baseline": {
+      "sourcePacketPath": ".cache/restart-20261122/symbol-value-source-audit/reports/native-baseline.json",
+      "sha256": "d0290bc349155587c2f03d886a292272274929b2b999852b60849bbaa225e6e1",
+      "bytes": 16555
+    },
+    "candidate": {
+      "sourcePacketPath": ".cache/restart-20261122/symbol-value-source-audit/reports/native-candidate.json",
+      "sha256": "6c44e0c824467fa76876573fbc259f0b7c8a5fd61b2ee28e64c61ebefbdc18f6",
+      "bytes": 9709
+    },
+    "composed": {
+      "sourcePacketPath": ".cache/restart-20261122/symbol-value-source-audit/reports/native-composed.json",
+      "sha256": "6c44e0c824467fa76876573fbc259f0b7c8a5fd61b2ee28e64c61ebefbdc18f6",
+      "bytes": 9709
+    }
+  },
+  "result": {
+    "baseline": "2/4",
+    "candidate": "4/4",
+    "composed": "4/4",
+    "keys": 12,
+    "boundaries": 16,
+    "calls": 12156,
+    "frames": 0,
+    "firstThreeEntireStepArraysEqual": true
+  },
+  "originalNine": "7/9 exit1, both fruit failures unchanged; see source/open-failures.json",
+  "sealReferenceMeaning": "Parent recording cites the locked input file, not this later source seal."
+}

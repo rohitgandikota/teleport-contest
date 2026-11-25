@@ -4540,6 +4540,13 @@
     {"group":"moving-engulfer-owner","id":"moving-engulfer.invisible-hostile","cFile":"src/monmove.c","cFunction":"postmov","description":"invisible hostile"},
     {"group":"moving-engulfer-owner","id":"moving-engulfer.visible-hostile","cFile":"src/monmove.c","cFunction":"postmov","description":"visible hostile"},
     {"group":"moving-engulfer-owner","id":"moving-engulfer.invisible-peaceful","cFile":"src/monmove.c","cFunction":"postmov","description":"invisible peaceful"},
-    {"group":"moving-engulfer-owner","id":"moving-engulfer.no-engulfer","cFile":"src/monmove.c","cFunction":"postmov","description":"no engulfer"}
+    {"group":"moving-engulfer-owner","id":"moving-engulfer.no-engulfer","cFile":"src/monmove.c","cFunction":"postmov","description":"no engulfer"},
+    {"group":"random-position-owner","id":"random-position.lev-wall-regenerate","cFile":"src/dungeon.c","cFunction":"u_on_rndspot","description":"lev wall regenerate"},
+    {"group":"random-position-owner","id":"random-position.fly-wall-regenerate","cFile":"src/dungeon.c","cFunction":"u_on_rndspot","description":"fly wall regenerate"},
+    {"group":"random-position-owner","id":"random-position.lev-open-regenerate","cFile":"src/dungeon.c","cFunction":"u_on_rndspot","description":"lev open regenerate"},
+    {"group":"random-position-owner","id":"random-position.lev-wall-walk-out","cFile":"src/dungeon.c","cFunction":"u_on_rndspot","description":"lev wall walk out"},
+    {"group":"random-position-owner","id":"random-position.lev-wall-level","cFile":"src/dungeon.c","cFunction":"u_on_rndspot","description":"lev wall level"},
+    {"group":"random-position-owner","id":"random-position.fly-wall-level","cFile":"src/dungeon.c","cFunction":"u_on_rndspot","description":"fly wall level"},
+    {"group":"random-position-owner","id":"random-position.fly-open-level","cFile":"src/dungeon.c","cFunction":"u_on_rndspot","description":"fly open level"}
   ]
 }

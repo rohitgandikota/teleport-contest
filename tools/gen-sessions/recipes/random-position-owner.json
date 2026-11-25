@@ -1,0 +1,483 @@
+{
+  "name": "random-position-owner",
+  "description": "Seven locked ordinary debug keyboard inputs on real generated maps. Xorn polymorph, worn ring or amulet, and wall movement produce terrain blocking. Random arrivals through map regeneration or level teleport must restore levitation/flight; open-floor arrivals and walking out are negatives. C source expectations, no worker native claim.",
+  "coverage": [
+    "mode.debug",
+    "forms.polymorph",
+    "movement.basic",
+    "ui.map-memory-vision"
+  ],
+  "requireBranchAssertions": true,
+  "segments": [
+    {
+      "seed": 9772,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\nOPTIONS=!debug_mongen\n",
+      "name": "lev-wall-regenerate",
+      "moves": " #polyself\rxorn\r  \u001b\u001b\u0017uncursed ring of levitation\r  \u001b\u001bPal  \u001b\u001bl  \u001b\u001b#wizmakemap\r  \u001b\u001b\u0012"
+    },
+    {
+      "seed": 9772,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\nOPTIONS=!debug_mongen\n",
+      "name": "fly-wall-regenerate",
+      "moves": " #polyself\rxorn\r  \u001b\u001b\u0017uncursed amulet of flying\r  \u001b\u001bPa  \u001b\u001bl  \u001b\u001b#wizmakemap\r  \u001b\u001b\u0012"
+    },
+    {
+      "seed": 9772,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\nOPTIONS=!debug_mongen\n",
+      "name": "lev-open-regenerate",
+      "moves": " #polyself\rxorn\r  \u001b\u001b\u0017uncursed ring of levitation\r  \u001b\u001bPal  \u001b\u001b#wizmakemap\r  \u001b\u001b\u0012"
+    },
+    {
+      "seed": 9772,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\nOPTIONS=!debug_mongen\n",
+      "name": "lev-wall-walk-out",
+      "moves": " #polyself\rxorn\r  \u001b\u001b\u0017uncursed ring of levitation\r  \u001b\u001bPal  \u001b\u001bl  \u001b\u001bh  \u001b\u001b\u0012"
+    },
+    {
+      "seed": 9772,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\nOPTIONS=!debug_mongen\n",
+      "name": "lev-wall-level",
+      "moves": " #polyself\rxorn\r  \u001b\u001b\u0017uncursed ring of levitation\r  \u001b\u001bPal  \u001b\u001bl  \u001b\u001b\u00162\r  \u001b\u001b\u0012"
+    },
+    {
+      "seed": 9772,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\nOPTIONS=!debug_mongen\n",
+      "name": "fly-wall-level",
+      "moves": " #polyself\rxorn\r  \u001b\u001b\u0017uncursed amulet of flying\r  \u001b\u001bPa  \u001b\u001bl  \u001b\u001b\u00162\r  \u001b\u001b\u0012"
+    },
+    {
+      "seed": 9772,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\nOPTIONS=!debug_mongen\n",
+      "name": "fly-open-level",
+      "moves": " #polyself\rxorn\r  \u001b\u001b\u0017uncursed amulet of flying\r  \u001b\u001bPa  \u001b\u001b\u00162\r  \u001b\u001b\u0012"
+    }
+  ],
+  "branches": [
+    "random-position.lev-wall-regenerate",
+    "random-position.fly-wall-regenerate",
+    "random-position.lev-open-regenerate",
+    "random-position.lev-wall-walk-out",
+    "random-position.lev-wall-level",
+    "random-position.fly-wall-level",
+    "random-position.fly-open-level"
+  ],
+  "branchAssertions": [
+    {
+      "branch": "random-position.lev-wall-regenerate",
+      "segment": 0,
+      "screenIncludes": [
+        "You turn into a xorn!",
+        "You start to float in the air!",
+        "You can't levitate in here."
+      ],
+      "screenCells": [
+        {
+          "step": 82,
+          "x": 40,
+          "y": 23,
+          "equals": "L"
+        },
+        {
+          "step": 82,
+          "x": 41,
+          "y": 23,
+          "equals": "e"
+        },
+        {
+          "step": 82,
+          "x": 42,
+          "y": 23,
+          "equals": "v"
+        }
+      ]
+    },
+    {
+      "branch": "random-position.fly-wall-regenerate",
+      "segment": 1,
+      "screenIncludes": [
+        "You turn into a xorn!",
+        "You are now in flight.",
+        "You can't fly in here.",
+        "You start flying."
+      ],
+      "screenCells": [
+        {
+          "step": 79,
+          "x": 40,
+          "y": 23,
+          "equals": "F"
+        },
+        {
+          "step": 79,
+          "x": 41,
+          "y": 23,
+          "equals": "l"
+        },
+        {
+          "step": 79,
+          "x": 42,
+          "y": 23,
+          "equals": "y"
+        }
+      ]
+    },
+    {
+      "branch": "random-position.lev-open-regenerate",
+      "segment": 2,
+      "screenIncludes": [
+        "You turn into a xorn!",
+        "You start to float in the air!"
+      ],
+      "screenCells": [
+        {
+          "step": 77,
+          "x": 40,
+          "y": 23,
+          "equals": "L"
+        },
+        {
+          "step": 77,
+          "x": 41,
+          "y": 23,
+          "equals": "e"
+        },
+        {
+          "step": 77,
+          "x": 42,
+          "y": 23,
+          "equals": "v"
+        }
+      ],
+      "screenExcludes": [
+        "You can't levitate in here."
+      ]
+    },
+    {
+      "branch": "random-position.lev-wall-walk-out",
+      "segment": 3,
+      "screenIncludes": [
+        "You turn into a xorn!",
+        "You start to float in the air!",
+        "You can't levitate in here."
+      ],
+      "screenCells": [
+        {
+          "step": 71,
+          "x": 40,
+          "y": 23,
+          "equals": "L"
+        },
+        {
+          "step": 71,
+          "x": 41,
+          "y": 23,
+          "equals": "e"
+        },
+        {
+          "step": 71,
+          "x": 42,
+          "y": 23,
+          "equals": "v"
+        }
+      ]
+    },
+    {
+      "branch": "random-position.lev-wall-level",
+      "segment": 4,
+      "screenIncludes": [
+        "You turn into a xorn!",
+        "You start to float in the air!",
+        "You can't levitate in here."
+      ],
+      "screenCells": [
+        {
+          "step": 73,
+          "x": 40,
+          "y": 23,
+          "equals": "L"
+        },
+        {
+          "step": 73,
+          "x": 41,
+          "y": 23,
+          "equals": "e"
+        },
+        {
+          "step": 73,
+          "x": 42,
+          "y": 23,
+          "equals": "v"
+        }
+      ]
+    },
+    {
+      "branch": "random-position.fly-wall-level",
+      "segment": 5,
+      "screenIncludes": [
+        "You turn into a xorn!",
+        "You are now in flight.",
+        "You can't fly in here.",
+        "You start flying."
+      ],
+      "screenCells": [
+        {
+          "step": 70,
+          "x": 40,
+          "y": 23,
+          "equals": "F"
+        },
+        {
+          "step": 70,
+          "x": 41,
+          "y": 23,
+          "equals": "l"
+        },
+        {
+          "step": 70,
+          "x": 42,
+          "y": 23,
+          "equals": "y"
+        }
+      ]
+    },
+    {
+      "branch": "random-position.fly-open-level",
+      "segment": 6,
+      "screenIncludes": [
+        "You turn into a xorn!",
+        "You are now in flight."
+      ],
+      "screenCells": [
+        {
+          "step": 65,
+          "x": 40,
+          "y": 23,
+          "equals": "F"
+        },
+        {
+          "step": 65,
+          "x": 41,
+          "y": 23,
+          "equals": "l"
+        },
+        {
+          "step": 65,
+          "x": 42,
+          "y": 23,
+          "equals": "y"
+        }
+      ],
+      "screenExcludes": [
+        "You can't fly in here."
+      ]
+    }
+  ],
+  "branchRequirements": [
+    {
+      "name": "lev-wall-regenerate",
+      "levitation": true,
+      "negative": false,
+      "arrival": "regenerate",
+      "actionKey": 77,
+      "wallKey": 61,
+      "beforeXY": [
+        68,
+        14
+      ],
+      "finalXY": [
+        61,
+        3
+      ],
+      "finalLevel": [
+        0,
+        1
+      ],
+      "finalTerrain": 25,
+      "expectedBlocked": [
+        0,
+        536870912
+      ]
+    },
+    {
+      "name": "fly-wall-regenerate",
+      "levitation": false,
+      "negative": false,
+      "arrival": "regenerate",
+      "actionKey": 74,
+      "wallKey": 58,
+      "beforeXY": [
+        68,
+        14
+      ],
+      "finalXY": [
+        61,
+        3
+      ],
+      "finalLevel": [
+        0,
+        1
+      ],
+      "finalTerrain": 25,
+      "expectedBlocked": [
+        0,
+        0
+      ]
+    },
+    {
+      "name": "lev-open-regenerate",
+      "levitation": true,
+      "negative": true,
+      "arrival": "regenerate",
+      "actionKey": 72,
+      "wallKey": 61,
+      "beforeXY": [
+        67,
+        14
+      ],
+      "finalXY": [
+        26,
+        11
+      ],
+      "finalLevel": [
+        0,
+        1
+      ],
+      "finalTerrain": 25,
+      "expectedBlocked": [
+        0,
+        536870912
+      ]
+    },
+    {
+      "name": "lev-wall-walk-out",
+      "levitation": true,
+      "negative": true,
+      "arrival": "walk",
+      "actionKey": 66,
+      "wallKey": 61,
+      "beforeXY": [
+        68,
+        14
+      ],
+      "finalXY": [
+        67,
+        14
+      ],
+      "finalLevel": [
+        0,
+        1
+      ],
+      "finalTerrain": 26,
+      "expectedBlocked": [
+        0,
+        536870912
+      ]
+    },
+    {
+      "name": "lev-wall-level",
+      "levitation": true,
+      "negative": false,
+      "arrival": "level",
+      "actionKey": 68,
+      "wallKey": 61,
+      "beforeXY": [
+        68,
+        14
+      ],
+      "finalXY": [
+        31,
+        4
+      ],
+      "finalLevel": [
+        0,
+        2
+      ],
+      "finalTerrain": 25,
+      "expectedBlocked": [
+        0,
+        536870912
+      ]
+    },
+    {
+      "name": "fly-wall-level",
+      "levitation": false,
+      "negative": false,
+      "arrival": "level",
+      "actionKey": 65,
+      "wallKey": 58,
+      "beforeXY": [
+        68,
+        14
+      ],
+      "finalXY": [
+        31,
+        4
+      ],
+      "finalLevel": [
+        0,
+        2
+      ],
+      "finalTerrain": 25,
+      "expectedBlocked": [
+        0,
+        0
+      ]
+    },
+    {
+      "name": "fly-open-level",
+      "levitation": false,
+      "negative": true,
+      "arrival": "level",
+      "actionKey": 60,
+      "wallKey": 58,
+      "beforeXY": [
+        67,
+        14
+      ],
+      "finalXY": [
+        45,
+        4
+      ],
+      "finalLevel": [
+        0,
+        2
+      ],
+      "finalTerrain": 25,
+      "expectedBlocked": [
+        0,
+        0
+      ]
+    }
+  ],
+  "unchangedOutputHashes": {
+    "lev-open-regenerate": {
+      "screens": "d0e2bbe8428bfeea555ad3abe11cd629c2fd1adb7526d51614db1e58347bebbb",
+      "cursors": "0e60d43c8cd64910bb3a267a068efbd83932f8849a06497a056630d10a6d935a",
+      "calls": "ef6c151967bfac9e43320b1c52baa4fed27390088f32c125c5403c66377ad042",
+      "slices": "82a0c8555291c4c63f9fe7590dd3587bd174b439e159aceadd4d4f012b78f650",
+      "frames": "e44c62244f3f39a3184ac105b42202b30af1040c458b6a2236da2d4f1dceaec3"
+    },
+    "lev-wall-walk-out": {
+      "screens": "cba80458d971fef4474c83e8af77928ab249b95e3b3ceb4721b28c0076af31ad",
+      "cursors": "27ce3a3324ffb956d4a13278ce10c8f72844390281c23903286eac82c229143a",
+      "calls": "f63b69e768b019d6b1a6dc4560702ddb2e94d5450914df059d319e9d960e0357",
+      "slices": "cf5024e6485d76d3a1854a5094e35eb4e7f73b24b1f0269c5fcff648b44e6ce4",
+      "frames": "836368bd9f29635d24140fe7cf1c8b41b45136aff887dc7026acf4997a51f1e4"
+    },
+    "fly-open-level": {
+      "screens": "68cc6e9a442a6419b35a2b789d75126716f43bc490cd615f162aa8a529bc8eec",
+      "cursors": "a5047eede00028d4a579d8fa512d1a3219ffb0a08e77c0c24f252644d9d2f7b8",
+      "calls": "feaed5fc0477b0e119cef7e0ca4725dcebf685acc0652ee43158f2ea616fef56",
+      "slices": "cdb09d3e4c2b7c2fe1702037033e94e5928c237b1ca2d727787af099f13f426d",
+      "frames": "2bfadcb5ce122d308aa99f3b659a5ee16fb1fc0c1e88bd183cb21c4695ba1de2"
+    }
+  },
+  "recordingNote": "All seven five-field tuples are unchanged from preserved baseline proposals-01 and proposals-02. Inputs locked before candidate. Parent exclusively records and compares original C. All source controls beyond these ordinary inputs are classified separately."
+}

@@ -1,6 +1,43 @@
 # STATUS — live handoff board
 
-## 2026-11-25: moving engulfer positioning verified
+## 2026-11-25: random placement terrain restoration verified
+
+Only dungeon.js changes runtime. After every u_on_rndspot placement arm,
+the existing switch_terrain helper is awaited in C order. Leaving solid rock
+through regeneration or a level change now restores levitation or flight,
+including the missing feedback and status condition. All four callers already
+await this owner, so no other runtime changes are needed.
+
+Source controls pass 23/23 versus 3/23. Seven ordinary cases pass all 21
+assertions versus 17 before. All seven original C cases match versus three:
+524 styled boundaries/cursors, 29,513 calls and ordered slices, zero frames.
+All seven RNG comparisons were already exact. Fifteen negative hashes and
+all observer/plain/deferred EOF checks remain fixed. Tower identity, source
+regions and held feedback have constructed controls, without new native reach.
+
+All 219 selected/public recordings and 219 strict eight-second workers pass:
+121,403 screens/cursors, 3,979,371 random positions and 2,651 frames. Both new
+gates, 53 retained suites, source audit and three syntax checks pass. All 314
+source members, 25 promotion members, five payloads and 280 runtime hashes
+verify. All 902 prior raws and requirements remain fixed; seven requirements
+and one raw bring the corpus to 903. Main receipt
+`random-position-main-verification.json`, SHA256
+`49e198955d71f1ffd5f8c51f086e9dcd18c0192aa0812ac697b007e725d6ddd5`.
+
+Full903 is running with two NFS CPU workers, default budgets and no retries,
+PID 3213642. Root:
+/share/NFS/u/rohit/research/contest/artifacts/2026-11-22/random-position-full903-js-20261125.
+Its 1,194 files contain 902 linked raws and one new raw; all-files SHA256
+`28b49447cfebbfe2b73f530eeef1955a77b48cdc8d6cdbb1e922594adc5c12a0`.
+
+The separate symbol-byte candidate improves the unchanged nine-case native
+audit from five exact to seven, on both isolated and composed graphs. Both
+fruit failures remain unchanged, including the 123-cell menu-dismissal gap.
+That candidate is not installed. The full byte reader, row-refresh producers
+and shopkeeper billing storage remain separate source audits. No new held-out
+score or whole-port closure is claimed.
+
+## 2026-11-25: moving engulfer positioning pushed as 42655f63
 
 Only monmove.js changes runtime. After a moved monster survives arrival traps
 and terrain effects, an engulfer that changed coordinates now carries the
@@ -30,19 +67,15 @@ requirements and one raw bring the corpus to 902. Main receipt
 `moving-engulfer-main-verification.json`, SHA256
 `ca91a73f7c61b10f40c16887fb96d0b7b954ac1fa6839ccb06589a4dd8df2211`.
 
-Full902 is running with two NFS CPU workers, default budgets and no retries,
-PID 3205200. Root:
+Full902 passed all 902 recordings: 922,355 screens/cursors, 19,766,566 random
+positions and 33,029 frames. All 1,193 tested files match published 42655f63.
+Publication receipt `engulfer-full902-publication-verification.json`, SHA256
+`35db5990d779640d7a806613d4af39d5fc9e06ce3b296f667929a8ab160a6ca9`.
+The run used two NFS CPU workers, default budgets and no retries. Root:
 /share/NFS/u/rohit/research/contest/artifacts/2026-11-22/engulfer-full902-js-20261125.
-Its 1,193 files contain 901 linked raws and one new raw; all-files SHA256
+All-files SHA256
 `313754a81b193e3816f802591afa6400132cc53c5dab8e1e685ceda0789bb0c2`.
 
-Random-position inputs are locked at seven cases; original C shows four
-missing terrain-restoration messages, with all RNG already exact. Candidate
-source verification is pending. The byte-consumer audit has five of nine
-original C cases exact, including an unexpected inventory-dismissal failure.
-The latter clears 123 unexplored cells in C but repaints them in JS; a separate
-row-refresh/force/frame review is recorded without a runtime patch. Shopkeeper
-re-entry needs its missing billing-state producer reviewed before a hook fix.
 The latest 22:06 UTC leaderboard check remains rank 7 with 659 unmatched screens
 and a 19:31 row. No newer held-out score or whole-port closure is claimed.
 

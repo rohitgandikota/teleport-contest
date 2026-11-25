@@ -1,0 +1,70 @@
+{
+  "final": true,
+  "recipe": "tools/gen-sessions/recipes/random-position-owner.json",
+  "recipeSHA256": "7f7459f8941384ecdf004d80af7539d5f4beff769bbc3575d6535dd3d55500e7",
+  "tupleFields": [
+    "name",
+    "seed",
+    "datetime",
+    "nethackrc",
+    "moves"
+  ],
+  "tupleSHA256": "158b7f3e5d8c524259ca0deb8d0a15fbdd2d6c2e46c23389546fab59e6a63d98",
+  "cases": 7,
+  "keys": 517,
+  "boundaries": 524,
+  "branches": 7,
+  "negativeHashes": 15,
+  "native": "not recorded by this worker; parent owns original C",
+  "segments": [
+    {
+      "seed": 9772,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\nOPTIONS=!debug_mongen\n",
+      "name": "lev-wall-regenerate",
+      "moves": " #polyself\rxorn\r  \u001b\u001b\u0017uncursed ring of levitation\r  \u001b\u001bPal  \u001b\u001bl  \u001b\u001b#wizmakemap\r  \u001b\u001b\u0012"
+    },
+    {
+      "seed": 9772,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\nOPTIONS=!debug_mongen\n",
+      "name": "fly-wall-regenerate",
+      "moves": " #polyself\rxorn\r  \u001b\u001b\u0017uncursed amulet of flying\r  \u001b\u001bPa  \u001b\u001bl  \u001b\u001b#wizmakemap\r  \u001b\u001b\u0012"
+    },
+    {
+      "seed": 9772,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\nOPTIONS=!debug_mongen\n",
+      "name": "lev-open-regenerate",
+      "moves": " #polyself\rxorn\r  \u001b\u001b\u0017uncursed ring of levitation\r  \u001b\u001bPal  \u001b\u001b#wizmakemap\r  \u001b\u001b\u0012"
+    },
+    {
+      "seed": 9772,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\nOPTIONS=!debug_mongen\n",
+      "name": "lev-wall-walk-out",
+      "moves": " #polyself\rxorn\r  \u001b\u001b\u0017uncursed ring of levitation\r  \u001b\u001bPal  \u001b\u001bl  \u001b\u001bh  \u001b\u001b\u0012"
+    },
+    {
+      "seed": 9772,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\nOPTIONS=!debug_mongen\n",
+      "name": "lev-wall-level",
+      "moves": " #polyself\rxorn\r  \u001b\u001b\u0017uncursed ring of levitation\r  \u001b\u001bPal  \u001b\u001bl  \u001b\u001b\u00162\r  \u001b\u001b\u0012"
+    },
+    {
+      "seed": 9772,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\nOPTIONS=!debug_mongen\n",
+      "name": "fly-wall-level",
+      "moves": " #polyself\rxorn\r  \u001b\u001b\u0017uncursed amulet of flying\r  \u001b\u001bPa  \u001b\u001bl  \u001b\u001b\u00162\r  \u001b\u001b\u0012"
+    },
+    {
+      "seed": 9772,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\nOPTIONS=!debug_mongen\n",
+      "name": "fly-open-level",
+      "moves": " #polyself\rxorn\r  \u001b\u001b\u0017uncursed amulet of flying\r  \u001b\u001bPa  \u001b\u001b\u00162\r  \u001b\u001b\u0012"
+    }
+  ]
+}

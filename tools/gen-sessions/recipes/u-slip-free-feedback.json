@@ -1,0 +1,132 @@
+{
+  "name": "u-slip-free-feedback",
+  "description": "Four original C cases verify oilskin and applied helmet grease protection, located feedback and matched accessibility-off controls.",
+  "coverage": [
+    "mode.debug",
+    "ui.getlin",
+    "ui.more-paging",
+    "level.ordinary",
+    "monster.hero-melee",
+    "monster.special-effects",
+    "object.armor",
+    "object.tools-containers",
+    "forms.polymorph"
+  ],
+  "branches": [
+    "monster.slippery.oilskin-located",
+    "monster.slippery.oilskin-plain",
+    "monster.slippery.greased-helmet-located",
+    "monster.slippery.greased-helmet-plain"
+  ],
+  "segments": [
+    {
+      "name": "oilskin-owlbear-located",
+      "seed": 7401,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=accessiblemsg,whatis_coord:map\n",
+      "moves": " #polyself\rmaster mind flayer\r   \u001b\u0017uncursed oilskin cloak\rWa   \u0007hostile owlbear\r. . . . . . . . . . "
+    },
+    {
+      "name": "oilskin-owlbear-plain",
+      "seed": 7401,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!accessiblemsg,whatis_coord:map\n",
+      "moves": " #polyself\rmaster mind flayer\r   \u001b\u0017uncursed oilskin cloak\rWa   \u0007hostile owlbear\r. . . . . . . . . . "
+    },
+    {
+      "name": "greased-helmet-mind-flayer-located",
+      "seed": 7401,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=accessiblemsg,whatis_coord:map\n",
+      "moves": " #polyself\rstone golem\r   \u001b\u0017uncursed helmet\rWa   \u0017uncursed can of grease (0:10)\raba   \u0007hostile mind flayer\r. . . . . . . . . . . . . . . . . . "
+    },
+    {
+      "name": "greased-helmet-mind-flayer-plain",
+      "seed": 7401,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!accessiblemsg,whatis_coord:map\n",
+      "moves": " #polyself\rstone golem\r   \u001b\u0017uncursed helmet\rWa   \u0017uncursed can of grease (0:10)\raba   \u0007hostile mind flayer\r. . . . . . . . . . . . . . . . . . "
+    }
+  ],
+  "branchAssertions": [
+    {
+      "branch": "monster.slippery.oilskin-located",
+      "segment": 0,
+      "evidence": "Original C recording plus read-only live state assertions for the actual worn armor and grease producers.",
+      "assertions": [
+        "Actual worn uncursed undiscovered oilskin, a human-sized master mind flayer form, hostile owlbear protection and no holder.",
+        "Feedback location follows accessiblemsg.",
+        "Observer is read-only and all five output collections equal an unobserved replay."
+      ],
+      "screenIncludes": [
+        "<40,6>: The owlbear grabs you, but cannot hold onto your slippery cloak!"
+      ]
+    },
+    {
+      "branch": "monster.slippery.oilskin-plain",
+      "segment": 1,
+      "evidence": "Original C recording plus read-only live state assertions for the actual worn armor and grease producers.",
+      "assertions": [
+        "Actual worn uncursed undiscovered oilskin, a human-sized master mind flayer form, hostile owlbear protection and no holder.",
+        "Feedback location follows accessiblemsg.",
+        "Observer is read-only and all five output collections equal an unobserved replay."
+      ],
+      "screenIncludes": [
+        "The owlbear grabs you, but cannot hold onto your slippery cloak!"
+      ],
+      "screenExcludes": [
+        "<40,6>: The owlbear grabs you, but cannot hold onto your slippery cloak!"
+      ]
+    },
+    {
+      "branch": "monster.slippery.greased-helmet-located",
+      "segment": 2,
+      "evidence": "Original C recording plus read-only live state assertions for the actual worn armor and grease producers.",
+      "assertions": [
+        "Actual worn helmet greased by applying a charged can, one charge used, mind flayer protection followed by grease wear-off.",
+        "Protection and wear-off both reach real More boundaries.",
+        "Feedback location follows accessiblemsg.",
+        "Observer is read-only and all five output collections equal an unobserved replay."
+      ],
+      "screenIncludes": [
+        "<39,5>: The mind flayer grabs you, but cannot hold onto your greased visored",
+        "The grease wears off."
+      ]
+    },
+    {
+      "branch": "monster.slippery.greased-helmet-plain",
+      "segment": 3,
+      "evidence": "Original C recording plus read-only live state assertions for the actual worn armor and grease producers.",
+      "assertions": [
+        "Actual worn helmet greased by applying a charged can, one charge used, mind flayer protection followed by grease wear-off.",
+        "Protection and wear-off both reach real More boundaries.",
+        "Feedback location follows accessiblemsg.",
+        "Observer is read-only and all five output collections equal an unobserved replay."
+      ],
+      "screenIncludes": [
+        "The mind flayer grabs you, but cannot hold onto your greased visored",
+        "The grease wears off."
+      ],
+      "screenExcludes": [
+        "<39,5>: The mind flayer grabs you, but cannot hold onto your greased visored"
+      ]
+    }
+  ],
+  "negativeOutputHashes": {
+    "1": {
+      "screens": "bec649984463d7a29bfd55e57e498c2e14d7ffff6642850428d07091b6ec3ab5",
+      "cursors": "da1269ca2de7af2756377058c42a1b3ee80d9e46d7132168d7dd803cbcfdead0",
+      "calls": "5aebb2803cfdee4baec9c6bfe417730e43215736ecc1cf6683223cc8fe4608cd",
+      "slices": "9ae9946be3cd3224097bd278ba2385815fc6fb39eeff6a4ca1d08ea65317baba",
+      "frames": "c6d3a06babbec7a367f9aa47e4dbc2791f83d94f1ba773cef23af4dcdd850556"
+    },
+    "3": {
+      "screens": "ba39d5509621745f30568d2ff892729c8f7f22bb175e315b54f66eb82d79e5bc",
+      "cursors": "8253a2e601fd331c6b14d8aeac7392c0d49e38043dbcca5c0e0f9bbd47f1f998",
+      "calls": "0f0505f17453b4446110e1f5307566854ce1e7012ce56070ac9eac20dfabcf2f",
+      "slices": "be1ff951d50d0a23c6b83f9a6df316c178628afe798213197a2ecafd90688630",
+      "frames": "c4b37863c7b402e33923a25d89716ec888f86f17c8d3068f4f0096fd510cdb03"
+    }
+  },
+  "requireBranchAssertions": true
+}

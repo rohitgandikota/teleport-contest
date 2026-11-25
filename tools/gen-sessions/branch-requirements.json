@@ -3968,6 +3968,10 @@
     {"group":"Amulet wearing and form-transition strangulation","id":"amulet-on-owner.change-human","cFile":"src/do_wear.c","cFunction":"Amulet_on","description":"amulet on owner.change human"},
     {"group":"Amulet wearing and form-transition strangulation","id":"amulet-on-owner.change-wood-nymph","cFile":"src/do_wear.c","cFunction":"Amulet_on","description":"amulet on owner.change wood nymph"},
     {"group":"Amulet wearing and form-transition strangulation","id":"amulet-on-owner.sleep-first-wear","cFile":"src/do_wear.c","cFunction":"Amulet_on","description":"amulet on owner.sleep first wear"},
-    {"group":"Amulet wearing and form-transition strangulation","id":"amulet-on-owner.reflection-control","cFile":"src/do_wear.c","cFunction":"Amulet_on","description":"amulet on owner.reflection control"}
+    {"group":"Amulet wearing and form-transition strangulation","id":"amulet-on-owner.reflection-control","cFile":"src/do_wear.c","cFunction":"Amulet_on","description":"amulet on owner.reflection control"},
+    {"group":"Slippery hero armor","id":"monster.slippery.oilskin-located","cFile":"src/mhitu.c","cFunction":"u_slip_free","description":"Actual worn uncursed undiscovered oilskin, a human-sized master mind flayer form, hostile owlbear protection and no holder. Accessible location on."},
+    {"group":"Slippery hero armor","id":"monster.slippery.oilskin-plain","cFile":"src/mhitu.c","cFunction":"u_slip_free","description":"Actual worn uncursed undiscovered oilskin, a human-sized master mind flayer form, hostile owlbear protection and no holder. Accessible location off."},
+    {"group":"Slippery hero armor","id":"monster.slippery.greased-helmet-located","cFile":"src/mhitu.c","cFunction":"u_slip_free","description":"Actual worn helmet greased by applying a charged can, one charge used, mind flayer protection followed by grease wear-off. Accessible location on."},
+    {"group":"Slippery hero armor","id":"monster.slippery.greased-helmet-plain","cFile":"src/mhitu.c","cFunction":"u_slip_free","description":"Actual worn helmet greased by applying a charged can, one charge used, mind flayer protection followed by grease wear-off. Accessible location off."}
   ]
 }

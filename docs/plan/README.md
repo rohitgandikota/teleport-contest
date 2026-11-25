@@ -193,13 +193,22 @@ transport-EOF, Unicode-name or complete queued-line claim is made. Maintained
 corpus at that checkpoint: 835. EOF checkpoint `f78a516a` is pushed. The
 completed full832 run excludes hunger, physical feedback, EOF and strangulation.
 
-The latest shared-machine C union credits 831 inputs across 110 layouts,
-reaching 4,583/5,492 functions and 60,818/107,260 branch outcomes. It adds
-twelve outcomes from ten physical-feedback and EOF cases. All 109 preceding
-run records, binary/source pins and platform controls remain unchanged.
-The original Mac apple-message rejection is still excluded; its independent
-ordinary Linux control remains accepted. These figures measure C reach,
-not JS parity or complete source coverage.
+Slippery armor feedback now uses the monster-location helper. All 21 parent
+checks, sixty controls, eighteen focused fixtures, all public sessions and
+62 bounded workers pass. Four fresh C cases match all 490 boundaries and
+9,967 complete calls, correcting three styled screens, two cursors and two
+input slices. Both unaffected cases retain all five hashes. The complete RNG
+stream is unchanged; wrapping places the grease wear-off draw at C's input
+boundary. Maintained corpus: 838. Strangulation checkpoint `88fe9e57` is pushed.
+
+The latest shared-machine C union credits 834 inputs across 111 layouts,
+reaching 4,584/5,492 functions and 60,961/107,260 branch outcomes. It adds
+one function and 143 outcomes from thirty slippery-armor, genocide and terrain
+cases. All 110 preceding run records, binary/source pins and platform controls
+remain unchanged. The original Mac apple-message rejection is still excluded;
+its independent ordinary Linux control remains accepted. These figures measure
+C reach, not JS parity. Four new terrain cases still have an unresolved JS
+random-stream mismatch and are not promoted.
 
 The preceding full regression passes all 817 fixtures: 853,841 screens/cursors,
 17,766,231 scored RNG positions and 32,296 frames. Both fixed-runtime shards

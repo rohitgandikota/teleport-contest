@@ -2609,7 +2609,7 @@ export async function u_slip_free(mtmp, mattk) {
        protection might fail (33% chance) when the armor is cursed */
     if (obj && (obj.greased || obj.otyp === ONAMES.OILSKIN_CLOAK)
         && (!obj.cursed || rn2(3))) {
-        await pline(`${Monnam(mtmp)} ${
+        await pline_mon(mtmp, `${Monnam(mtmp)} ${
               (mattk[1] === ATTKS.AD_WRAP) ? 'slips off of'
                                            : 'grabs you, but cannot hold onto'} your ${
               obj.greased ? 'greased' : 'slippery'} ${

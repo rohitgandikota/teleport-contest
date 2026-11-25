@@ -9402,6 +9402,59 @@ retained for later. Pauli continues do_stone_mon; Singer audits complete
 can_blow/can_chant; Jason handles queued lines; Avicenna completes the broader
 status owner. All work stays on declared fixed snapshots.
 
+## 2026-11-25 03:46 UTC: slippery-armor feedback verified
+
+Strangulation checkpoint `88fe9e576774e1068f20feb66687f63d555a4fd5`
+is pushed; process 15961 closed with exit 0. A live leaderboard reload around
+03:42 UTC still reports the Nov24 21:36:49 Eastern scoring timestamp:
+agentic rank seven, 715/24,531 unmatched, 44 public plus forty held-out
+sessions, 3,776/4,489 animation frames. It predates the new EOF/strangulation
+pushes and exposes no exact scored commit. No score gain is inferred.
+
+Slippery-armor parent worker 3854 closed with exit 0. All 21 checks pass:
+sixty controls, eighteen focused fixtures with 141 segments, all public
+sessions and 62 bounded workers. Focused totals are 20,654 screens/cursors,
+471,183 scored RNG positions and 4,875 frames. Seven strict/deferred native
+fixtures match 37 segments, 4,224 boundaries and 98,317 complete calls, with
+zero frames. The four new C cases match all 490 grids/cursors/slices and
+9,967 calls. Before, 487 grids and 488 cursors/slices matched. Both negatives
+retain all five hashes. Complete streams are unchanged; the prefixed helmet
+message correctly delays the wear-off draw from input slice 111 to 113.
+Only one awaited pline changes to pline_mon inside the fully reviewed owner.
+
+All 279 runtime hashes and seven support files match the tested candidate;
+all 837 preceding raw recordings remain unchanged. Four intent rows appended.
+Maintained corpus: 838. Publish now. Verification SHA
+`aedba7650d110257fd74e68a619283555113fd4e070c162f0190c625439f84dc`.
+Integration: `u-slip-free-main-integration.json` in the restart cache.
+The recipe's original prose assertions are retained with six executable
+source-message checks and two accessibility negatives added before testing.
+Input fields and raw bytes stay fixed. Cursed armor, engulf/wrap and pending
+caller checks remain constructed. Named armor and remaining caller gaps are
+separate; the full832 run predates this checkpoint.
+
+The thirty-case NFS batch and union completed with exit 0, process 54758.
+All three raw files match both instrumented Linux replays. New union:
+834 credited inputs, 111 layouts, 4,584/5,492 functions, 60,961/107,260 branch
+outcomes. This adds one function and 143 outcomes, with all 110 prior run
+records, binary/source pins and platform controls unchanged. Additional native
+validation totals 152 inputs/673 segments, plus four independent Linux controls
+with twenty segments. Focused C reach is spoteffects 63/78, u_slip_free 25/28,
+lava_effects 37/86 and float_down 25/74. This is C reach, not JS parity; the four
+terrain failures remain open and no terrain patch is promoted.
+
+Bulk profiles remain at
+`/share/NFS/u/rohit/research/contest/artifacts/2026-11-22/c-coverage-compress.E84JI2/verified-slip-killer-spot-union-20261125`.
+Seven compact files were independently downloaded and hash-verified, process
+12946 exit 0. Summary SHA
+`1e7f85ab736884138551b1218ca72fe999ba97d4f7e9726e94411f2bcfaf077d`.
+Compact SHA `3320fcce1394ca8646802b91f0474a16ff60b4b44bebd394dd29ee926c75e1a5`.
+Receipt: `linux-coverage-slip-killer-spot-download.json`. No remote job is active.
+The next prepared parent builder is `prepare-killer-composition.py`; run after
+this checkpoint is pushed. It preserves the demonstrated baseline exception,
+reviews the two obsolete gaze assertions separately, and checks actual
+save/restore, fresh self-genocide, public and bounded replay before promotion.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

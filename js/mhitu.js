@@ -184,8 +184,8 @@ export async function hitmsg(mtmp, mattk, indx) {
        if same gender, "engagingly" for nymph, normal msg for others. */
     if ((compat = could_seduce(mtmp, game.youmonst, mattk)) !== 0
         && !mtmp.mcan && !mtmp.mspec_used) {
-        await pline(`${Monst_name} ${
-            !game.u.ublind ? 'smiles at' : !Deaf() ? 'talks to' : 'touches'
+        await pline_mon(mtmp, `${Monst_name} ${
+            !Blind() ? 'smiles at' : !Deaf() ? 'talks to' : 'touches'
         } you ${(compat === 2) ? 'engagingly' : 'seductively'}.`);
     } else {
         switch (mattk[0]) {
@@ -224,7 +224,7 @@ export async function hitmsg(mtmp, mattk, indx) {
                        && !prev.alternate && !mattk.getmattk_alternate
                        && indx === prev.indx + 1
                        && mattk[0] === prev.aatyp) ? ' again' : '';
-        await pline(`${Monst_name} ${verb}${again}${punct}`);
+        await pline_mon(mtmp, `${Monst_name} ${verb}${again}${punct}`);
     }
     game.hitmsg_mid = mtmp.m_id;
     game.hitmsg_prev = {
@@ -243,9 +243,9 @@ export async function missmu(mtmp, nearmiss, mattk) {
         map_invisible(mtmp.mx, mtmp.my);
 
     if (could_seduce(mtmp, game.youmonst, mattk) && !mtmp.mcan)
-        await pline(`${Monnam(mtmp)} pretends to be friendly.`);
+        await pline_mon(mtmp, `${Monnam(mtmp)} pretends to be friendly.`);
     else
-        await pline(`${Monnam(mtmp)} ${
+        await pline_mon(mtmp, `${Monnam(mtmp)} ${
             (nearmiss && game.flags?.verbose) ? 'just ' : ''}misses!`);
 
     await stop_occupation();
@@ -270,7 +270,7 @@ export function mswings_verb(mwep, bash) {
 // src/mhitu.c:130 mswings() — monster swings obj.
 export async function mswings(mtmp, otemp, bash) {
     if (game.flags?.verbose && !Blind() && mon_visible(mtmp)) {
-        await pline(`${Monnam(mtmp)} ${mswings_verb(otemp, bash)} ${
+        await pline_mon(mtmp, `${Monnam(mtmp)} ${mswings_verb(otemp, bash)} ${
             ((otemp.quan ?? 1) > 1) ? 'one of ' : ''}${mhis(mtmp)} ${
             xname(otemp)}.`);
     }

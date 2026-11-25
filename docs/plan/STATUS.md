@@ -8901,6 +8901,90 @@ passes the first strict native check on the fixed food/conduct candidate:
 No new full-corpus or C-coverage credit yet. Avicenna now investigates the
 separate real-producer polymorph strangulation cancellation mismatch.
 
+## 2026-11-25 02:28 UTC: miscellaneous items and combat feedback verified
+
+Food/conduct checkpoint `0540b75e` is pushed; process 99663 closed with exit 0.
+Fixed full828 started on that exact runtime under
+`.cache/restart-20261122/food-conduct-full828`: two 414-fixture shards, workers
+2880 and 37552, with all 279 runtime, 828 raw and 195 protected hashes fixed.
+The 824 preceding raw hashes are unchanged; the registry retains all old rows
+and appends 31. Expected totals are 860,557 screens/cursors, 17,989,232 scored
+RNG positions and 32,359 frames. Neither completion nor retry is claimed.
+The initial builder's registry-prefix preflight failed before creating or
+running a shard; the preserved script used inferred prefixes. The corrected
+preflight verifies the exact ID sets from the four approved recipes.
+
+The live table was reloaded after the food push and still reports the November
+24 3:16:25 PM Eastern scoring timestamp, rank 7 agentic, 752 unmatched screens,
+39/56 held-out sessions and 3,776/4,489 animation frames. No scored commit is
+exposed. This unchanged row does not establish the effect of recent pushes.
+
+The miscellaneous-item/combat parent composition passes all 25 checks, process
+5127 exit 0. Its 130 controls cover 49 combat states, 31 miscellaneous-item
+states, both nine-case input gates, seventeen retained location controls and
+fifteen occupation controls. Sixteen focused fixtures with 136 segments match
+19,793 screens/cursors, 461,586 scored RNG positions and 4,875 frames. All
+44 public sessions and sixty bounded workers pass. Five strict/deferred native
+fixtures cover 29 segments, 3,442 boundaries, 78,594 complete calls and zero
+frames. The nine new C cases match all 1,098 styled grids, cursors and slices,
+27,705 complete calls and zero frames. Before both repairs, 1,028 grids,
+1,061 cursors and 1,072 slices matched, with 27,752 JS calls. The combined
+patch fixes seventy styled boundaries. Cases 2/4/6/7/8 retain all five hashes.
+
+The scoped muse patch uses full migrate_to_level for cursed gain-level
+potions, remove_worn_item for bullwhip disarming, urgent wrapping feedback,
+and located trap/loot/disarm messages. It removes a redraw that C does not do
+under the monster. The combat prerequisite uses existing pline_mon for the
+complete hitmsg, missmu and mswings owners, and canonical Blind for seduction.
+The existing tin-opening correction is retained. All selected C/JS bodies and
+immediate helper/caller contracts were reviewed; no private exports, helper
+replacement, raw normalization or frozen-file edit is involved. Blind-seduction
+transient boundaries remain source controls, not an ordinary native positive.
+Hallucinated vararg order and separate damage/engulf/grab owners remain open.
+
+All 279 runtime and nine support hashes match the tested candidate; all 828
+preceding raw files remain unchanged. Nine intent rows are appended. Maintained
+corpus: 829. Active full828 excludes these changes. Publish this checkpoint now.
+Verification SHA-256:
+`738fee37e59d442b56c5e93b6bbc1579816edd0d81733cbbc96acdc6a6d0c005`.
+Integration: `.cache/restart-20261122/misc-combat-main-integration.json`.
+Combat source seal:
+`06660af6ef06290890014ce233bed7fb34116a8c745641f0838a99d24563fe9a`.
+Miscellaneous source seal:
+`02864cfafb026615d51629593d36992b89c1c5d10865299d3c164e1f4992eadb`.
+
+The new NFS batch accepted the amulet raw but rejected the Mac food recording
+at exactly segment 4, step 23. Every other boundary and RNG entry matched.
+C eat.c:2179-2190 chooses "Must be a Macintosh!" under MACOS and "Core dumped."
+under UNIX. This is a compile-time platform distinction. The original raw and
+rejection remain unchanged. The initial driver closed with exit 1 and its union
+was never run; that receipt remains preserved. A remote diagnostic initially
+failed to import a decoder absent from the C-only checkout, before comparison.
+A raw-byte comparison then established the exact single-message difference.
+
+Independent ordinary Linux C, binary `a4d6a28cfadfd5489bf3b4ce82108fae1860c05c542640956af51df5f0f9372d`,
+re-recorded the same six inputs. Its output SHA
+`4fc1a06c81b806b4762b6a4904bdc3233aebf4040f0241f368b9b5af40e4f16f`
+matches both instrumented replays byte for byte. The control process 64733,
+new union 11199 and compact download 20875 all closed with exit 0. The union
+credits only the accepted amulet and independent Linux food control, never the
+rejected Mac raw. It has 826 credited inputs and 108 layouts, reaching
+4,582/5,492 functions and 60,750/107,260 branch outcomes, adding eighteen.
+All 106 earlier run records and binary/source/control/rejection pins stay fixed.
+There are 144 additional Mac inputs with 609 segments and four additional
+Linux controls with twenty segments. The amulet runtime remains unchanged;
+its test packet is not yet part of the maintained JS corpus.
+
+Bulk results stay at
+`/share/NFS/u/rohit/research/contest/artifacts/2026-11-22/c-coverage-compress.E84JI2/verified-food-amulet-linux-union-20261125`.
+Seven compact artifacts were hash checked. Summary SHA
+`93ff6cb223fe5e7f04b538fd326e99cdf1ef784d8ab9f3142da594aa93eb8bc6`;
+compact SHA `5936ff12b9d4f0b33f7460ee6b8801c5f007ac146bb43198651f16e714fe8e15`.
+Receipt: `.cache/restart-20261122/linux-coverage-food-amulet-linux-download.json`.
+Next parent checkpoint is the sealed message/query/cloud composition. Agent
+follow-ups remain food helpers, Boots_off, strangulation cancellation, name
+encoding and separate monster feedback.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

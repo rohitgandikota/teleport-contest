@@ -1,0 +1,177 @@
+{
+  "name": "monster-miscellaneous-use",
+  "description": "Ordinary C-recorded miscellaneous monster use, located combat feedback, urgent wrapping, pending Sunsword disarm, and trapped cursed gain-level migration.",
+  "coverage": [
+    "mode.debug",
+    "ui.getlin",
+    "ui.menus",
+    "turn.speed-energy",
+    "level.ordinary",
+    "object.tools-containers",
+    "object.weapons",
+    "object.potions",
+    "object.gems-stones",
+    "monster.movement",
+    "monster.special-effects",
+    "forms.polymorph",
+    "traps.magical",
+    "traps.monster"
+  ],
+  "branches": [
+    "monster.misc.whip-located",
+    "monster.misc.whip-urgent",
+    "monster.misc.whip-light-pending",
+    "monster.misc.polymorph-trap-located",
+    "monster.misc.polymorph-trap-plain",
+    "monster.misc.loot-located",
+    "monster.misc.loot-plain",
+    "monster.misc.trapped-gain-level",
+    "monster.misc.untrapped-gain-level"
+  ],
+  "segments": [
+    {
+      "name": "orc-whip-located",
+      "seed": 7401,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=accessiblemsg,whatis_coord:map\n",
+      "moves": " #polyself\rstone golem\r   \u001b\u0017uncursed bullwhip\rda\u0017uncursed dagger\rwb\u0007hostile orc\rjjhhh. . . . . . . . . . . . . . . . "
+    },
+    {
+      "name": "orc-whip-hidden-urgent",
+      "seed": 7401,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nMSGTYPE=hide \"wraps around\"\n",
+      "moves": " #polyself\rstone golem\r   \u001b\u0017uncursed bullwhip\rda\u0017uncursed dagger\rwb\u0007hostile orc\rjjhhh. . . . . . . . . . . . . . . . "
+    },
+    {
+      "name": "orc-whip-Sunsword-ack",
+      "seed": 7401,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nMSGTYPE=stop \"stops shining\"\n",
+      "moves": " #polyself\rstone golem\r   \u001b\u0017uncursed bullwhip\rda\u0017uncursed Sunsword\rwb        \u0007hostile orc\rjjhhh. . . . . . . . . . . . . . . . "
+    },
+    {
+      "seed": 7401,
+      "datetime": "20000112121000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=accessiblemsg,whatis_coord:map\n",
+      "moves": " h\u0017polymorph trap\r\u0007hostile goblin\rhm.m. m.m.",
+      "name": "monster-polymorph-use-located"
+    },
+    {
+      "seed": 7401,
+      "datetime": "20000112121000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " h\u0017polymorph trap\r\u0007hostile goblin\rhm.m. m.m.",
+      "name": "monster-polymorph-use-plain"
+    },
+    {
+      "seed": 7401,
+      "datetime": "20000112122000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=accessiblemsg,whatis_coord:map\n",
+      "moves": " \u0017empty uncursed sack\r\u0017uncursed diamond\r\u0017uncursed ruby\r\u0017uncursed emerald\r\u0017uncursed sapphire\raospaosqaosraoss\u0007hostile goblin\rldolllm.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.",
+      "name": "monster-container-loot-located"
+    },
+    {
+      "seed": 7401,
+      "datetime": "20000112122000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017empty uncursed sack\r\u0017uncursed diamond\r\u0017uncursed ruby\r\u0017uncursed emerald\r\u0017uncursed sapphire\raospaosqaosraoss\u0007hostile goblin\rldolllm.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.",
+      "name": "monster-container-loot-plain"
+    },
+    {
+      "name": "giant-rise-armed-bear-east",
+      "seed": 7401,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00162\r #polyself\rstone golem\r   \u001b\u0017cursed potion of gain level\rda\u0017trapped bear trap\r\u0007hostile stone giant\rjlll. . . . . . . . . . . . . . . . . . \r        \u001b"
+    },
+    {
+      "name": "giant-rise-bear",
+      "seed": 7401,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00162\r #polyself\rstone golem\r   \u001b\u0017cursed potion of gain level\rda\u0017bear trap\r\u0007hostile stone giant\rjhhh. . . . . . . . . . . . . . . . . . \r        \u001b"
+    }
+  ],
+  "branchAssertions": [
+    {
+      "segment": 0,
+      "screenIncludes": [
+        "<40,6>: The orc flicks a bullwhip",
+        "<40,6>: The orc yanks the dagger from your hand!",
+        "<40,6>: The orc lashes his bullwhip."
+      ],
+      "branch": "monster.misc.whip-located"
+    },
+    {
+      "segment": 1,
+      "screenIncludes": [
+        "The bullwhip wraps around the dagger you're wielding!"
+      ],
+      "branch": "monster.misc.whip-urgent"
+    },
+    {
+      "segment": 2,
+      "screenIncludes": [
+        "Sunsword stops shining.--More--",
+        "The orc yanks the long sword named Sunsword to the floor!"
+      ],
+      "branch": "monster.misc.whip-light-pending"
+    },
+    {
+      "segment": 3,
+      "screenIncludes": [
+        "<40,4>: The goblin deliberately jumps onto a polymorph trap!",
+        "<39,5>: The owlbear hits!  <39,5>: The owlbear hits again!"
+      ],
+      "branch": "monster.misc.polymorph-trap-located"
+    },
+    {
+      "segment": 4,
+      "screenIncludes": [
+        "The goblin deliberately jumps onto a polymorph trap!"
+      ],
+      "screenExcludes": [
+        "<40,4>: The goblin deliberately"
+      ],
+      "branch": "monster.misc.polymorph-trap-plain"
+    },
+    {
+      "segment": 5,
+      "screenIncludes": [
+        "<43,5>: The goblin removes a white gem from a bag.",
+        "<40,6>: The goblin hits!"
+      ],
+      "branch": "monster.misc.loot-located"
+    },
+    {
+      "segment": 6,
+      "screenIncludes": [
+        "The goblin removes a white gem from a bag."
+      ],
+      "screenExcludes": [
+        "<43,5>: The goblin removes"
+      ],
+      "branch": "monster.misc.loot-plain"
+    },
+    {
+      "segment": 7,
+      "screenIncludes": [
+        "The stone giant is caught in a bear trap!",
+        "The stone giant rises up, through the ceiling!"
+      ],
+      "branch": "monster.misc.trapped-gain-level"
+    },
+    {
+      "segment": 8,
+      "screenIncludes": [
+        "The stone giant rises up, through the ceiling!"
+      ],
+      "screenExcludes": [
+        "The stone giant is caught in a bear trap!"
+      ],
+      "branch": "monster.misc.untrapped-gain-level"
+    }
+  ],
+  "oracleLimits": "All nine original input tuples and native bytes retained. Strict all-cell styles, cursors, complete RNG and every slice match on the combined misc+combat candidate. Cases 0,3,5 visibly repair located combat feedback. Cases 1,2,4,6,7,8 retain all five original JS output hashes. Canonical Blind transient boundaries are constructed source controls; no ordinary blind-seduction native witness is claimed."
+}

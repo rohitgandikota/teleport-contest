@@ -3909,6 +3909,15 @@
     {"group":"Ordinary food meal tail","id":"partly-single-turn-finish","cFile":"src/eat.c","cFunction":"doeat","description":"A partly eaten one-turn meal reports its completion"},
     {"group":"Ordinary food meal tail","id":"animal-product-conduct","cFile":"src/eat.c","cFunction":"doeat","description":"Pancake breaks vegan conduct while preserving vegetarian conduct"},
     {"group":"Ordinary food meal tail","id":"whole-apple-control","cFile":"src/eat.c","cFunction":"doeat","description":"Whole apple remains a vegan one-turn meal"},
-    {"group":"Ordinary food meal tail","id":"whole-carrot-control","cFile":"src/eat.c","cFunction":"doeat","description":"Whole carrot remains a vegan one-turn meal without a finish message"}
+    {"group":"Ordinary food meal tail","id":"whole-carrot-control","cFile":"src/eat.c","cFunction":"doeat","description":"Whole carrot remains a vegan one-turn meal without a finish message"},
+    {"group":"Monster miscellaneous item use","id":"monster.misc.whip-located","cFile":"src/muse.c","cFunction":"use_misc","description":"orc-whip-located"},
+    {"group":"Monster miscellaneous item use","id":"monster.misc.whip-urgent","cFile":"src/muse.c","cFunction":"use_misc","description":"orc-whip-hidden-urgent"},
+    {"group":"Monster miscellaneous item use","id":"monster.misc.whip-light-pending","cFile":"src/muse.c","cFunction":"use_misc","description":"orc-whip-Sunsword-ack"},
+    {"group":"Monster miscellaneous item use","id":"monster.misc.polymorph-trap-located","cFile":"src/muse.c","cFunction":"use_misc","description":"monster-polymorph-use-located"},
+    {"group":"Monster miscellaneous item use","id":"monster.misc.polymorph-trap-plain","cFile":"src/muse.c","cFunction":"use_misc","description":"monster-polymorph-use-plain"},
+    {"group":"Monster miscellaneous item use","id":"monster.misc.loot-located","cFile":"src/muse.c","cFunction":"mloot_container","description":"monster-container-loot-located"},
+    {"group":"Monster miscellaneous item use","id":"monster.misc.loot-plain","cFile":"src/muse.c","cFunction":"mloot_container","description":"monster-container-loot-plain"},
+    {"group":"Monster miscellaneous item use","id":"monster.misc.trapped-gain-level","cFile":"src/muse.c","cFunction":"use_misc","description":"giant-rise-armed-bear-east"},
+    {"group":"Monster miscellaneous item use","id":"monster.misc.untrapped-gain-level","cFile":"src/muse.c","cFunction":"use_misc","description":"giant-rise-bear"}
   ]
 }

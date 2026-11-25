@@ -116,22 +116,31 @@ pass. Ten new C cases match all 953 boundaries and 29,894 calls, fixing 31
 screens. Seven controls retain all five output hashes. The maintained corpus
 is 827; the completed full824 excludes these two reader changes.
 
-Ordinary meals and empty-inventory conduct are verified for publication.
+Ordinary meals and empty-inventory conduct are pushed as `0540b75e`.
 The common food tail now preserves dietary conduct, Monk guilt, partly eaten
 meal duration and nutrition, and the real reset paths. Conduct inspection tests
 inventory length after the last item is consumed. All 21 checks, 84 controls,
 eighteen focused fixtures, 44 public sessions and 62 bounded workers pass.
 Six fresh C cases match all 321 boundaries and 16,208 calls, fixing ten screens.
 The maintained corpus is 828. The completed full824 excludes this change;
-a full828 run is the next verification step.
+a fixed full828 run is active in two shards with 195 protected files.
 
-The latest shared-machine C run accepts the wear, miscellaneous-item, slime
-and message recordings byte for byte. Across 824 credited inputs and 106
-instrumented layouts, it reaches 4,582/5,492 functions and 60,732/107,260
-branch outcomes. It adds two functions and 83 outcomes. All 105 preceding run
-records remain unchanged. Miscellaneous-item and message runtime work remains
-pending, so those recordings add C reach without a publication claim.
-These figures measure C reach, not JS parity or complete source coverage.
+Miscellaneous monster actions and combat feedback are verified for publication.
+Cursed gain-level movement uses the complete migration owner; bullwhips use
+canonical equipment removal and urgent wrapping feedback. Hit, miss, swing,
+trap and container messages retain their C locations and input timing. All
+25 checks, 130 controls, sixteen focused fixtures, 44 public sessions and sixty
+bounded workers pass. Nine C cases match 1,098 boundaries and 27,705 calls,
+fixing seventy styled boundaries. The maintained corpus is 829. The active
+full828 run excludes this checkpoint.
+
+The latest shared-machine C union credits 826 inputs across 108 layouts,
+reaching 4,582/5,492 functions and 60,750/107,260 branch outcomes. It adds
+18 outcomes. All 106 preceding run records remain unchanged. The new amulet
+recording is byte-identical on both platforms. The food recording retains its
+Mac apple-message rejection; a separately recorded ordinary Linux control
+matches both instrumented Linux replays byte for byte. These figures measure
+C reach, not JS parity or complete source coverage.
 
 The preceding full regression passes all 817 fixtures: 853,841 screens/cursors,
 17,766,231 scored RNG positions and 32,296 frames. Both fixed-runtime shards

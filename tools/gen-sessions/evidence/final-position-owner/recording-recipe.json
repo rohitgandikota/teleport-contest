@@ -1,0 +1,284 @@
+{
+  "schema": 1,
+  "description": "Dwarf final positioning and earth sense, real debug keyboard burial, walk, race and equipment controls. Native recording/parity belongs to parent.",
+  "segments": [
+    {
+      "name": "dwarf-room-return",
+      "seed": 7401,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Archeologist,race:dwarf,gender:male,align:lawful,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " h \u0017dagger\r  \u001b\u001bda #wizbury\r  \u001b\u001bhl  V"
+    },
+    {
+      "name": "dwarf-room-repeat",
+      "seed": 7401,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Archeologist,race:dwarf,gender:male,align:lawful,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " h \u0017dagger\r  \u001b\u001bda #wizbury\r  \u001b\u001bhl  hl  V"
+    },
+    {
+      "name": "human-room-return",
+      "seed": 7401,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Archeologist,race:human,gender:male,align:lawful,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " h \u0017dagger\r  \u001b\u001bda #wizbury\r  \u001b\u001bhl  V"
+    },
+    {
+      "name": "dwarf-stairs-return",
+      "seed": 7401,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Archeologist,race:dwarf,gender:male,align:lawful,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017dagger\r  \u001b\u001bda #wizbury\r  \u001b\u001bhl  V"
+    },
+    {
+      "name": "dwarf-flying-return",
+      "seed": 7401,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Archeologist,race:dwarf,gender:male,align:lawful,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " h \u0017dagger\r  \u001b\u001bda #wizbury\r  \u001b\u001b\u0017amulet of flying\r  \u001b\u001bPb  \u001b\u001bhl  V"
+    },
+    {
+      "name": "dwarf-levitating-return",
+      "seed": 7401,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Archeologist,race:dwarf,gender:male,align:lawful,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " h \u0017dagger\r  \u001b\u001bda #wizbury\r  \u001b\u001b\u0017ring of levitation\r  \u001b\u001bPbl  \u001b\u001bhl  V"
+    },
+    {
+      "name": "dwarf-blind-return",
+      "seed": 7401,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Archeologist,race:dwarf,gender:male,align:lawful,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " h \u0017dagger\r  \u001b\u001bda #wizbury\r  \u001b\u001b\u0017blindfold\r  \u001b\u001bPb  \u001b\u001bhl  V"
+    }
+  ],
+  "branchRequirements": [
+    {
+      "name": "dwarf-room-return",
+      "buriedStep": 27,
+      "buriedXY": [
+        15,
+        10
+      ],
+      "buriedId": 52,
+      "returnSteps": [
+        33
+      ],
+      "messageSteps": [
+        33
+      ],
+      "endXY": [
+        15,
+        10
+      ],
+      "endTurn": 5,
+      "negative": false,
+      "dwarf": true,
+      "mounted": false,
+      "flying": false,
+      "levitation": false,
+      "polymorphed": false,
+      "blind": false,
+      "terrain": 25,
+      "eligible": true
+    },
+    {
+      "name": "dwarf-room-repeat",
+      "buriedStep": 27,
+      "buriedXY": [
+        15,
+        10
+      ],
+      "buriedId": 52,
+      "returnSteps": [
+        33,
+        37
+      ],
+      "messageSteps": [
+        33,
+        37
+      ],
+      "endXY": [
+        15,
+        10
+      ],
+      "endTurn": 7,
+      "negative": false,
+      "dwarf": true,
+      "mounted": false,
+      "flying": false,
+      "levitation": false,
+      "polymorphed": false,
+      "blind": false,
+      "terrain": 25,
+      "eligible": true
+    },
+    {
+      "name": "human-room-return",
+      "buriedStep": 27,
+      "buriedXY": [
+        15,
+        10
+      ],
+      "buriedId": 52,
+      "returnSteps": [
+        33
+      ],
+      "messageSteps": [],
+      "endXY": [
+        15,
+        10
+      ],
+      "endTurn": 5,
+      "negative": true,
+      "dwarf": false,
+      "mounted": false,
+      "flying": false,
+      "levitation": false,
+      "polymorphed": false,
+      "blind": false,
+      "terrain": 25,
+      "eligible": false
+    },
+    {
+      "name": "dwarf-stairs-return",
+      "buriedStep": 25,
+      "buriedXY": [
+        16,
+        10
+      ],
+      "buriedId": 52,
+      "returnSteps": [
+        31
+      ],
+      "messageSteps": [],
+      "endXY": [
+        16,
+        10
+      ],
+      "endTurn": 4,
+      "negative": true,
+      "dwarf": true,
+      "mounted": false,
+      "flying": false,
+      "levitation": false,
+      "polymorphed": false,
+      "blind": false,
+      "terrain": 26,
+      "eligible": false
+    },
+    {
+      "name": "dwarf-flying-return",
+      "buriedStep": 27,
+      "buriedXY": [
+        15,
+        10
+      ],
+      "buriedId": 52,
+      "returnSteps": [
+        61
+      ],
+      "messageSteps": [],
+      "endXY": [
+        15,
+        10
+      ],
+      "endTurn": 6,
+      "negative": true,
+      "dwarf": true,
+      "mounted": false,
+      "flying": true,
+      "levitation": false,
+      "polymorphed": false,
+      "blind": false,
+      "terrain": 25,
+      "eligible": false
+    },
+    {
+      "name": "dwarf-levitating-return",
+      "buriedStep": 27,
+      "buriedXY": [
+        15,
+        10
+      ],
+      "buriedId": 52,
+      "returnSteps": [
+        64
+      ],
+      "messageSteps": [],
+      "endXY": [
+        15,
+        10
+      ],
+      "endTurn": 6,
+      "negative": true,
+      "dwarf": true,
+      "mounted": false,
+      "flying": false,
+      "levitation": true,
+      "polymorphed": false,
+      "blind": false,
+      "terrain": 25,
+      "eligible": false
+    },
+    {
+      "name": "dwarf-blind-return",
+      "buriedStep": 27,
+      "buriedXY": [
+        15,
+        10
+      ],
+      "buriedId": 52,
+      "returnSteps": [
+        54
+      ],
+      "messageSteps": [
+        54
+      ],
+      "endXY": [
+        15,
+        10
+      ],
+      "endTurn": 6,
+      "negative": false,
+      "dwarf": true,
+      "mounted": false,
+      "flying": false,
+      "levitation": false,
+      "polymorphed": false,
+      "blind": true,
+      "terrain": 25,
+      "eligible": true
+    }
+  ],
+  "unchangedOutputHashes": {
+    "human-room-return": {
+      "screens": "82326fc2e4faec3aa7df4e72e3dd86304ba3ef2f1d63fb80f30ce69e76074a4c",
+      "cursors": "36ab97cdc8f7970637ca353e58f1be7f71f6611857891b5d55b44a28df3aa658",
+      "calls": "3729e453e009da8b7e5b4534474c3eb960ec3450cf56688a9029ae843ed3e75e",
+      "slices": "c0b6e74baccd5f53ad886f9406943802aafb2a4999b1b296667264cf2cc267d6",
+      "frames": "bf84363005bb97747024844387bf0a1be9b6e40939beb0a026cfd533f74e250b"
+    },
+    "dwarf-stairs-return": {
+      "screens": "f5510646ec931a1e7e66e555df9592fef79f5565ac5867d37e0dd578f196d05a",
+      "cursors": "fb3233ed4596114aa95bc959120d54ffc2192774d348c2e756b76df1f465adbd",
+      "calls": "62be78f87daac513647789c7f6958af7ce7566ad247acc78c6984e92eba15660",
+      "slices": "f6cc8f37ee93df9a7f1a8f817758257e6bbbe1aff2173db6463e23fd812f5347",
+      "frames": "89d2001be71c9ed2b7a38ea178329280ad4ad5637170558bf764244822adbbcb"
+    },
+    "dwarf-flying-return": {
+      "screens": "b9570f92e4d4861fcf828461b193a2690bb29c720fdc74f2582c92830e251810",
+      "cursors": "f063567cc4bbbbbeae18be606e54837ce4423ba0434d1428eab418b0d7d90e79",
+      "calls": "35dc40ed8036416845415bab1530370db1906b77bbc38b154ba9c766dcf10e60",
+      "slices": "9d79d50741f1b73c3233dca99f3890dbaef1d4766835b1200b055c6a610c99c1",
+      "frames": "07dcef581ee2581866ca67d8e290e54aa590694177087de6c7e07b2aae8d53a9"
+    },
+    "dwarf-levitating-return": {
+      "screens": "73dcedd0f3b47900d5c88427e8c0ef069cdb851ea6b144167a59de5efe41b7c5",
+      "cursors": "090b381e39b66edd2ad983fc6fce457ce1089767be1220731b6c8ecf8c705d5f",
+      "calls": "a69f800f5d44395bf84908e1714eb08d134fc7158c76f99e0f67867531ac1703",
+      "slices": "8efeb50cbdb8113958e723015ec69d64cf6345d200d956b372ce1d73a69ca640",
+      "frames": "9cff06d5a2a0095c86ac6c0e5e54cd9475a4eb865c2f95ab0e978b5853d6a5ef"
+    }
+  }
+}

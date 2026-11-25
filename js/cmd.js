@@ -2659,7 +2659,7 @@ async function domove_core() {
         const mtmp = u.ustuck;
         if (!mtmp)
             return;
-        u_on_newpos(mtmp.mx, mtmp.my);
+        await u_on_newpos(mtmp.mx, mtmp.my);
         u.ux0 = u.ux;
         u.uy0 = u.uy;
         game.bhitpos = { x: mtmp.mx, y: mtmp.my };
@@ -2911,7 +2911,7 @@ async function domove_core() {
 
     /* src/hack.c:2934 — full re-position after the tentative move; this is
        where a ridden steed's mx,my get synced to the hero. */
-    u_on_newpos(u.ux, u.uy);
+    await u_on_newpos(u.ux, u.uy);
 
     /* src/hack.c:2936 — the post-move run check.
      *

@@ -1,0 +1,196 @@
+{
+  "schema": 1,
+  "originalRecipeSHA256": "a93452f8a5dae84a6b8dd468379fbc700abef9d5a4dc1adf1e40e079726bf22b",
+  "derivedRecipeSHA256": "8df9da30140b5624d432d7d5d9ef0a2bb1f5bc6debe0ebec0e3b753970608fe4",
+  "addedRootFields": [
+    "requireBranchAssertions",
+    "branches",
+    "branchAssertions"
+  ],
+  "originalFieldsUnchanged": true,
+  "branchMetadataSHA256": "64fffae40f90de2a08452d335fba51414168b8929f4cafa3bd7005287c0a4aaf",
+  "inputLockSHA256": "9f32f80de8a5612729558b362ffdcd29373d37b3efc3e34fc5888d058a236806",
+  "sourceSealSHA256": "f1d177357ef14b9c064ce89ee9dea5400ba9c8c473ef8f52f7fc4e6aabec9224",
+  "raw": {
+    "canonicalPath": "tools/gen-sessions/generated/final-position-owner.session.json",
+    "sha256": "b4ea635ce22af1f8a9a5d3637385fefa82fb0ea8160c49e6cfe85ef22e51363c",
+    "bytes": 766372,
+    "source": "c",
+    "version": 5,
+    "segments": 7,
+    "keys": 334,
+    "boundaries": 341
+  },
+  "method": "Decode the unchanged parent C recording. Pin burial text, step-before/step-after hero cells, full positive feedback text cells and negative blank top cell. Pin exposed up-stair glyph and actual worn equipment feedback where applicable. All original recipe fields, tuples, state requirements and 20 negative hashes are unchanged.",
+  "observations": [
+    {
+      "name": "dwarf-room-return",
+      "segment": 0,
+      "burial": {
+        "step": 27,
+        "top": "1 object buried."
+      },
+      "returns": [
+        {
+          "step": 33,
+          "top": "You sense something below your feet.",
+          "heroCell": {
+            "x": 14,
+            "y": 11,
+            "equals": "@"
+          }
+        }
+      ],
+      "equipmentEvidence": [],
+      "assertionSHA256": "db26d3c7601784802891b7b8ec13eb2dd111bddc9976c7deaea8587c941c2720",
+      "attribution": "missing earth-sense feedback restored; no independent Blind-reader gain claimed"
+    },
+    {
+      "name": "dwarf-room-repeat",
+      "segment": 1,
+      "burial": {
+        "step": 27,
+        "top": "1 object buried."
+      },
+      "returns": [
+        {
+          "step": 33,
+          "top": "You sense something below your feet.",
+          "heroCell": {
+            "x": 14,
+            "y": 11,
+            "equals": "@"
+          }
+        },
+        {
+          "step": 37,
+          "top": "You sense something below your feet.",
+          "heroCell": {
+            "x": 14,
+            "y": 11,
+            "equals": "@"
+          }
+        }
+      ],
+      "equipmentEvidence": [],
+      "assertionSHA256": "ec57ccb6aaee3b5388b0a5f7f138241bb9f9791e4993e8d44621ec6eaa53fcbe",
+      "attribution": "missing earth-sense feedback restored; no independent Blind-reader gain claimed"
+    },
+    {
+      "name": "human-room-return",
+      "segment": 2,
+      "burial": {
+        "step": 27,
+        "top": "1 object buried."
+      },
+      "returns": [
+        {
+          "step": 33,
+          "top": "",
+          "heroCell": {
+            "x": 14,
+            "y": 11,
+            "equals": "@"
+          }
+        }
+      ],
+      "equipmentEvidence": [],
+      "assertionSHA256": "2eadb8359fbbab39469d6d2e389891b2ad23c160a6f252baed63bdd653a0374e",
+      "attribution": "native regression, baseline already exact"
+    },
+    {
+      "name": "dwarf-stairs-return",
+      "segment": 3,
+      "burial": {
+        "step": 25,
+        "top": "1 object buried."
+      },
+      "returns": [
+        {
+          "step": 31,
+          "top": "",
+          "heroCell": {
+            "x": 15,
+            "y": 11,
+            "equals": "@"
+          }
+        }
+      ],
+      "equipmentEvidence": [],
+      "assertionSHA256": "d784a4e37767089202744d16b574ffdf4f488d71d2ff5eaace7e0e25cdb06478",
+      "attribution": "native regression, baseline already exact"
+    },
+    {
+      "name": "dwarf-flying-return",
+      "segment": 4,
+      "burial": {
+        "step": 27,
+        "top": "1 object buried."
+      },
+      "returns": [
+        {
+          "step": 61,
+          "top": "",
+          "heroCell": {
+            "x": 14,
+            "y": 11,
+            "equals": "@"
+          }
+        }
+      ],
+      "equipmentEvidence": [
+        "You are now in flight."
+      ],
+      "assertionSHA256": "2fce80e3ca7873dde2381f8b960e3b32191a7038316a074f8612624be6fb9a09",
+      "attribution": "native regression, baseline already exact"
+    },
+    {
+      "name": "dwarf-levitating-return",
+      "segment": 5,
+      "burial": {
+        "step": 27,
+        "top": "1 object buried."
+      },
+      "returns": [
+        {
+          "step": 64,
+          "top": "",
+          "heroCell": {
+            "x": 14,
+            "y": 11,
+            "equals": "@"
+          }
+        }
+      ],
+      "equipmentEvidence": [
+        "ring of levitation (on left hand)"
+      ],
+      "assertionSHA256": "4a1493cea6782bd2a0855a9c28e11070d1111e430debd241ed16551cc5084877",
+      "attribution": "native regression, baseline already exact"
+    },
+    {
+      "name": "dwarf-blind-return",
+      "segment": 6,
+      "burial": {
+        "step": 27,
+        "top": "1 object buried."
+      },
+      "returns": [
+        {
+          "step": 54,
+          "top": "You sense something below your feet.",
+          "heroCell": {
+            "x": 14,
+            "y": 11,
+            "equals": "@"
+          }
+        }
+      ],
+      "equipmentEvidence": [
+        "You are now wearing a blindfold."
+      ],
+      "assertionSHA256": "368e6026e0af1b9b2a541b03282b96bf494b210d83c049b7d60af48acbe98ab7",
+      "attribution": "missing earth-sense feedback restored; no independent Blind-reader gain claimed"
+    }
+  ]
+}

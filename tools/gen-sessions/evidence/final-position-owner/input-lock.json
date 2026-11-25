@@ -1,0 +1,49 @@
+{
+  "recipe": "tools/gen-sessions/recipes/final-position-owner.json",
+  "recipeSHA256": "a93452f8a5dae84a6b8dd468379fbc700abef9d5a4dc1adf1e40e079726bf22b",
+  "segments": 7,
+  "keys": 334,
+  "boundaries": 341,
+  "fieldsPresenceSHA256": "c46a13f8ec0391788fe193ccd6a8212e12e6dfa81cf34bfd0d05bd1c4c0bd5c1",
+  "branchRequirementsSHA256": "0f517453f44f67ee84e1265744913a64d5ca2ff28497f5a1a7eae561c6124d1f",
+  "negativeHashesSHA256": "5d953bfab1ba4553355f1fbdd044c6f9db6c6d94d52e3af8807920b9018a9c68",
+  "segmentsSHA256": [
+    {
+      "name": "dwarf-room-return",
+      "fieldsSHA256": "f9fd20fd16d63234dea1399493a34c89dbb14103729e8c9d3cb70ebd300150df",
+      "movesSHA256": "ceb0d7a684520f3e50008d96c3f14814130fad9920b91a5fb557107015c247af"
+    },
+    {
+      "name": "dwarf-room-repeat",
+      "fieldsSHA256": "c5d369e94e4296240c2f963001c307d1ddcded82c380dab22137a7d965776e8e",
+      "movesSHA256": "129fd3d3d22fb2f6f2faea5eddc61e6e96e991c8cf8248fe4b96a015b3906f6d"
+    },
+    {
+      "name": "human-room-return",
+      "fieldsSHA256": "b0c6b5ed415c06a1bc2557bc3dcbcc8f6d4b3444497c24d1dd94ec6a9e4ac54f",
+      "movesSHA256": "ceb0d7a684520f3e50008d96c3f14814130fad9920b91a5fb557107015c247af"
+    },
+    {
+      "name": "dwarf-stairs-return",
+      "fieldsSHA256": "4ec3d781cc79eeecd2bfc128ae5df2e3f0c1ebc9ed5ddd07fa2513eb443ce8ef",
+      "movesSHA256": "6d931856ea2c7cbcf20b60a603de59c9221ec775e7791bb4f8b2c98750a8224c"
+    },
+    {
+      "name": "dwarf-flying-return",
+      "fieldsSHA256": "e201504eb667a1ee2aad2721056b3c53b315c4a4a7e8a2c4a3e2e5abba05ff0c",
+      "movesSHA256": "187ad331f43c4f63c93eb933cf835bcb13be52effcc6c74a3bd8e12ba90fa81c"
+    },
+    {
+      "name": "dwarf-levitating-return",
+      "fieldsSHA256": "5dc827150f40543a59d4b8cd049ce5529cc5a463a94b51e7e467d64201329f91",
+      "movesSHA256": "baf0f07238c5ac8b73361f3fb91ee0da880ef11f7bf215633db3db869096875b"
+    },
+    {
+      "name": "dwarf-blind-return",
+      "fieldsSHA256": "29fe099e8fa0f0f9304095a901a72d765a60aec57740f5c3638e841edcb07d1c",
+      "movesSHA256": "02c06ed1c58f53ec8db2245bc766b45abe8f9642c01d3c21838b4a6730d444b2"
+    }
+  ],
+  "nativeParityClaimed": false,
+  "nativeRecordingBy": "parent only"
+}

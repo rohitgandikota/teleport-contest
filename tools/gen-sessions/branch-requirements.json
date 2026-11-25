@@ -4515,6 +4515,13 @@
     {"group": "invocation-message-owner", "id": "invocation.walk-arrival", "cFile": "src/hack.c", "cFunction": "invocation_message", "description": "walk arrival"},
     {"group": "invocation-message-owner", "id": "invocation.counted-walk-arrival", "cFile": "src/hack.c", "cFunction": "invocation_message", "description": "counted walk arrival"},
     {"group": "invocation-message-owner", "id": "invocation.controlled-teleport-negative", "cFile": "src/hack.c", "cFunction": "invocation_message", "description": "controlled teleport negative"},
-    {"group": "invocation-message-owner", "id": "invocation.blocked-off-square-negative", "cFile": "src/hack.c", "cFunction": "invocation_message", "description": "blocked off square negative"}
+    {"group": "invocation-message-owner", "id": "invocation.blocked-off-square-negative", "cFile": "src/hack.c", "cFunction": "invocation_message", "description": "blocked off square negative"},
+    {"group":"final-position-owner","id":"final-position.dwarf-room-return","cFile":"src/dungeon.c","cFunction":"u_on_newpos","description":"dwarf room return"},
+    {"group":"final-position-owner","id":"final-position.dwarf-room-repeat","cFile":"src/dungeon.c","cFunction":"u_on_newpos","description":"dwarf room repeat"},
+    {"group":"final-position-owner","id":"final-position.human-room-return","cFile":"src/dungeon.c","cFunction":"u_on_newpos","description":"human room return"},
+    {"group":"final-position-owner","id":"final-position.dwarf-stairs-return","cFile":"src/dungeon.c","cFunction":"u_on_newpos","description":"dwarf stairs return"},
+    {"group":"final-position-owner","id":"final-position.dwarf-flying-return","cFile":"src/dungeon.c","cFunction":"u_on_newpos","description":"dwarf flying return"},
+    {"group":"final-position-owner","id":"final-position.dwarf-levitating-return","cFile":"src/dungeon.c","cFunction":"u_on_newpos","description":"dwarf levitating return"},
+    {"group":"final-position-owner","id":"final-position.dwarf-blind-return","cFile":"src/dungeon.c","cFunction":"u_on_newpos","description":"dwarf blind return"}
   ]
 }

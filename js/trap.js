@@ -650,7 +650,7 @@ export async function move_into_trap(ttmp) {
             || await drag_ball(x, y, bc, true))) {
         u.ux0 = u.ux;
         u.uy0 = u.uy;
-        u_on_newpos(x, y);
+        await u_on_newpos(x, y);
         u.umoved = true;
         newsym(u.ux0, u.uy0);
         vision_recalc(1);

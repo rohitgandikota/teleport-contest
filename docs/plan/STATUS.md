@@ -1,6 +1,44 @@
 # STATUS — live handoff board
 
-## 2026-11-25: stale teleport and collision fixtures corrected
+## 2026-11-25: final positioning and earth sense verified
+
+The private earth_sense helper now follows dungeon.c beside the existing
+u_on_newpos owner. Dwarves receive the buried-object clue on room/corridor
+terrain, with C's mounted, flying, levitating and polymorphed exclusions.
+The nearby-object reader uses Blind(). All nineteen positioning calls await
+feedback; only two startup wrappers need further async propagation. Seven
+runtime files change, with the invocation and mounted-training blocks intact.
+
+Source controls pass 34/34 versus 16/34, including eight pending-input checks.
+Seven ordinary keyboard cases pass versus four before. All twenty negative
+hashes and seven observer/plain/deferred EOF comparisons remain fixed. All
+seven original C cases match versus four before: 341 styled boundaries/cursors,
+14,320 calls and ordered slices, zero frames. The three gains restore earth
+feedback. The canonical blindness guard has source controls, without an
+independent ordinary native gain.
+
+All 112 selected/public recordings and 112 strict eight-second workers pass:
+74,166 screens/cursors, 2,417,584 random positions and 1,961 frames. The two
+new gates, 34 retained suites, source audit and nine syntax checks pass. Three
+stale fixtures were separately corrected in f8f108d3 after reproducing their
+original failures on both old and new runtime graphs. Those failures remain
+preserved. All 328 source members, 34 promotion members, six new payloads and
+280 runtime hashes verify. All 897 prior raws and requirements stay fixed;
+seven requirements and one raw bring the corpus to 898. Main receipt
+`final-position-main-verification.json`, SHA256
+`ccd54e33f9a25fc318f29c53f210439e3cf6d9e68f273495c6dcda6930a69024`.
+
+Full898 is running with two NFS CPU workers, default budgets and no retries,
+PID 3180406. Its 1,189 files include 897 linked raws and one new raw. Root:
+/share/NFS/u/rohit/research/contest/artifacts/2026-11-22/position-full898-js-20261125.
+All-files SHA256 `46020812d36e2f7d233c966965cb4ced22c0a1960238e2cfd50083bcd4461e1b`.
+Invalid-coordinate diagnostics, nearby-object glyph handling, duplicate
+startup placement, terrain switching and moving engulfers remain open.
+The latest 21:27 UTC leaderboard check is still rank 7 with 659 unmatched
+screens and a 19:31 row, before nine pushed commits. No held-out gain or
+whole-port closure is claimed. NUL parsing and moving-mimic audits continue.
+
+## 2026-11-25: stale fixtures corrected in f8f108d3
 
 Three older state gates failed identically on published d43ff4b4 and the
 pending final-position candidate. The polymorph fixture set only a timer,
@@ -14,12 +52,9 @@ Original failing files and logs remain preserved. No runtime, native input
 or recorded expectation changes. Receipt `stale-state-test-repair/verification.json`,
 SHA256 `3ff9875933caf8980f3c64de5148cba7206dfed88994f09330b871c779188407`.
 
-Final-position/earth-sense now matches all seven original C cases versus four
-before, including composition with invocation feedback. All 112 selected
-replays and 112 strict eight-second checks pass. Its portable promotion is
-finishing; the seven runtime files remain an unpublished candidate.
+The final-position checkpoint above includes these corrected retained gates.
 
-## 2026-11-25: invocation arrival feedback verified
+## 2026-11-25: invocation arrival feedback pushed as d43ff4b4
 
 Movement now calls invocation_message after a successful position change,
 following C's redraw order. The helper uses the steed's name or the current
@@ -44,14 +79,15 @@ recording and four primary branch assertions. Main verification receipt:
 `invocation-message-main-verification.json`, SHA256
 `7d343a655775a6f81beb53478a5838915cf3d7d1733377aed980733ed2fb7b49`.
 
-Full897 is running with two NFS CPU workers, default budgets and no retries,
-PID 3171867. Its 1,188 files include 896 linked raws and one new raw. Root:
+Full897 passed all 897 recordings: 921,552 screens/cursors, 19,704,099 random
+positions and 32,997 frames. All 1,188 tested files match published d43ff4b4.
+Publication receipt `invocation-full897-publication-verification.json`, SHA256
+`6d8228acfe190b9593d5751f66fcd9eb6647e1d7a0c1fc8ef9cda79808d42288`.
+The run used two NFS CPU workers, default budgets and no retries. Root:
 /share/NFS/u/rohit/research/contest/artifacts/2026-11-22/invocation-full897-js-20261125.
 All-files SHA256 `9d8c79426cdd86f75d130c4fb8a761588be90149b892776f313c0b78c04ca4b4`.
-Final positioning, earth sense, configuration byte limits and moving mimic
-disguises remain active audits. No held-out improvement or whole-port closure
-is claimed. The latest official row remains rank 7 with 659 unmatched screens,
-timestamped 19:31 UTC, before the four preceding checkpoints were pushed.
+Configuration byte limits and moving mimic disguises remain active audits.
+No held-out improvement or whole-port closure is claimed.
 
 ## 2026-11-25: mounted movement training pushed as 45f754e9
 

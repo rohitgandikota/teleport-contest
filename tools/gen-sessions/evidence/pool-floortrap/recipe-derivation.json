@@ -1,0 +1,63 @@
+{
+  "version": 1,
+  "change": "Only six terminal screenCell.x values decrease by one. C tty_curs decrements map x; terminal y is unchanged.",
+  "sourceRecipe": "tools/gen-sessions/evidence/pool-floortrap/recording-recipe.json",
+  "sourceSHA256": "baeed8206ddb5ccddbf4ce6f588e133e9273d86689863dc2720f622fa6da160a",
+  "derivedRecipe": "tools/gen-sessions/recipes/pool-floortrap.json",
+  "derivedSHA256": "4ac2b2343965e1311dcb656ddfb14ac0049fa74e9ba3f0c3779c57c6b852ff1a",
+  "changes": [
+    {
+      "pointer": "/branchAssertions/0/screenCells/0/x",
+      "from": 41,
+      "to": 40
+    },
+    {
+      "pointer": "/branchAssertions/1/screenCells/0/x",
+      "from": 40,
+      "to": 39
+    },
+    {
+      "pointer": "/branchAssertions/2/screenCells/0/x",
+      "from": 40,
+      "to": 39
+    },
+    {
+      "pointer": "/branchAssertions/3/screenCells/0/x",
+      "from": 40,
+      "to": 39
+    },
+    {
+      "pointer": "/branchAssertions/4/screenCells/0/x",
+      "from": 41,
+      "to": 40
+    },
+    {
+      "pointer": "/branchAssertions/5/screenCells/0/x",
+      "from": 41,
+      "to": 40
+    }
+  ],
+  "allOtherJSONValuesUnchanged": true,
+  "cases": 6,
+  "keys": 499,
+  "boundaries": 505,
+  "arrayTupleFields": [
+    "name",
+    "seed",
+    "datetime",
+    "nethackrc",
+    "moves"
+  ],
+  "arrayTupleSHA256": "a560b8ae7f1c5e51251753c0edf340c4ca50f3b752b67028b54f0e6f32430e60",
+  "sourceLockSHA256": "50f4bdb652de20101e5d68b18b136e542bd8cb1b64844671f249262c7141b555",
+  "parentInputLockSHA256": "277928b6af53bc3c2347c054034365b2cba31ed068208a5c274d7c33484f3bc0",
+  "canonicalRawSHA256": "92212252b87118670a9b0169152c57f827f53fb593127f04dba6c4551bfd0ece",
+  "sourceProof": "nethack-c/upstream/win/tty/wintty.c:2113; sealed review/input-branch-correction.md",
+  "initialWrongCoordinateReport": "../pool-floortrap-source-audit/review/input-candidate-initial.json",
+  "initialWrongCoordinateSHA256": "9db742e78107f2f2db45a418ebf2d958ee4b9a690e566c21ccc4d037f8fc5eaa",
+  "initialWrongCoordinateAssertions": [
+    12,
+    18
+  ],
+  "nativeComparison": "parent evidence, unchanged2/6 baseline to6/6 candidate"
+}

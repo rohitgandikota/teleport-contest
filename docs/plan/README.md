@@ -13,28 +13,35 @@ Ground rules are in `/CLAUDE.md`. Read that first if you have not.
 ## Current focus, 2026-11-25
 
 
-`1814d670` is pushed and passes all 884 maintained recordings on NFS with
-default budgets and no retries. The complete run covers 915,513 screens/cursors,
-19,421,581 random positions and 32,821 frames. All snapshot hashes still match
+`a7dae0ed` is pushed and passes all 887 maintained recordings on NFS with
+default budgets and no retries. The complete run covers 918,206 screens/cursors,
+19,492,010 random positions and 32,997 frames. All 1,177 snapshot hashes match
 the published runtime and maintained recordings. See STATUS for the receipts.
 
 `3bb53bcb` is pushed. Its boulder fixes pass sixteen C cases, all 74
 selected/public recordings, all 74 strict workers and 21 retained suites.
-Travel is the next verified checkpoint: source54, ordinary12 and native12 pass,
+Travel is pushed as `a7dae0ed`: source54, ordinary12 and native12 pass,
 versus source37 and six ordinary/native cases before. All 68 selected/public
 recordings pass. One large inventory recording exceeds the strict eight-second
 budget on both versions; fixed baseline and candidate are exact under the
 normal 45-second budget. Eighteen retained suites pass. See STATUS for the
 preserved failure, paired timing result and stronger raw-grid death assertion.
 
-Commit and immediately push the verified travel checkpoint. The corpus is 887,
-and full887 is running on the exact composition with two NFS workers. It shares
-884 existing fixtures and adds three recordings. The next isolated audits cover
-pool floor-trap cleanup, valid config directive forms and lookaround. Two
-original duplicate-option startup failures remain explicit: the C warning uses
-a temporary filename absent from replay inputs. No path normalization is used.
-The latest official feed remains rank 7 with 659 unmatched screens and does
-not identify a newer scored commit.
+The pool floor-trap fix is verified for publication. Six original C cases pass
+versus two before, source58 versus46, all70 selected/public and strict workers,
+and20 retained suites. Full888 passes on the exact composition with default
+budgets and no retries:918,711 screens/cursors,19,505,842 random positions and
+32,997 frames. The primary recipe's six terminal-coordinate errors are corrected
+with its original metadata preserved as evidence. See STATUS for the receipts.
+
+The next config parser patch passes all eleven C cases versus three, including
+composition with pool. Main integration follows the pool push. Lookaround's
+four C cases remain3/4 due to an earlier cream-pie feedback mismatch; its source
+fix restores the positive random stream. The unchanged failure is preserved
+while the producer is reviewed separately. Two duplicate-option startup
+failures also remain explicit because C's temporary filename is absent from
+replay inputs. The latest verified official feed is still rank7 with659
+unmatched screens; no new held-out score is inferred.
 
 
 The storage cleanup is complete. The user explicitly authorized deleting

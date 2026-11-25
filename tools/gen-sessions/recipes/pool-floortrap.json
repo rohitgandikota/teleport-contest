@@ -1,0 +1,179 @@
+{
+  "name": "pool-floortrap",
+  "description": "Six locked normal debug-startup keyboard cases. Four real pool/trap/boulder producers and two unchanged movement negatives. Native recording/comparison remain parent work.",
+  "segments": [
+    {
+      "seed": 7401,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "arrow-drop",
+      "moves": " #levelchange\r15\r               l\u0017arrow trap\r  \u001b\u001b\u0017pool\r  \u001b\u001b\u0017boulder\r  \u001b\u001b    hl    V"
+    },
+    {
+      "seed": 7401,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "pit-drop",
+      "moves": " #levelchange\r15\r               l\u0017pit\r  \u001b\u001bhl\u0017pool\r  \u001b\u001b\u0017boulder\r  \u001b\u001b    h    V"
+    },
+    {
+      "seed": 7401,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "web-drop",
+      "moves": " #levelchange\r15\r               l\u0017web\r  \u001b\u001bhl\u0017pool\r  \u001b\u001b\u0017boulder\r  \u001b\u001b    h    V"
+    },
+    {
+      "seed": 7401,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "bear-levitation-drop",
+      "moves": " #levelchange\r15\r               l\u0017bear trap trap\r  \u001b\u001bhl\u0017uncursed ring of levitation\r  \u001b\u001bPal  \u0017pool\r  \u001b\u001b\u0017boulder\r  \u001b\u001b    h    V"
+    },
+    {
+      "seed": 7401,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "plain-push",
+      "moves": " #levelchange\r15\r               l\u0017boulder\r  \u001b\u001bhl    V"
+    },
+    {
+      "seed": 7401,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "blind-known",
+      "moves": " #levelchange\r15\r               l\u0017boulder\r  \u001b\u001bh\u0017uncursed blindfold\r  \u001b\u001bPb    l    V"
+    }
+  ],
+  "branches": [
+    "pool-floortrap.arrow-drop",
+    "pool-floortrap.pit-drop",
+    "pool-floortrap.web-drop",
+    "pool-floortrap.bear-levitation-drop",
+    "pool-floortrap.plain-push",
+    "pool-floortrap.blind-known"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "pool-floortrap.arrow-drop",
+      "segment": 0,
+      "screenIncludes": [
+        "MacOS NetHack Version 5.0.0",
+        "A pool of water.",
+        "There is a large splash as the boulder fills the pool of water.",
+        "An arrow shoots out at you!"
+      ],
+      "screenCells": [
+        {
+          "step": 83,
+          "x": 40,
+          "y": 6,
+          "equals": "@"
+        }
+      ]
+    },
+    {
+      "branch": "pool-floortrap.pit-drop",
+      "segment": 1,
+      "screenIncludes": [
+        "MacOS NetHack Version 5.0.0",
+        "You fall into a pit!",
+        "There is a large splash as the boulder fills the pool of water."
+      ],
+      "screenCells": [
+        {
+          "step": 77,
+          "x": 39,
+          "y": 6,
+          "equals": "@"
+        }
+      ]
+    },
+    {
+      "branch": "pool-floortrap.web-drop",
+      "segment": 2,
+      "screenIncludes": [
+        "MacOS NetHack Version 5.0.0",
+        "You stumble into a spider web!",
+        "There is a large splash as the boulder fills the pool of water."
+      ],
+      "screenCells": [
+        {
+          "step": 77,
+          "x": 39,
+          "y": 6,
+          "equals": "@"
+        }
+      ]
+    },
+    {
+      "branch": "pool-floortrap.bear-levitation-drop",
+      "segment": 3,
+      "screenIncludes": [
+        "MacOS NetHack Version 5.0.0",
+        "A bear trap closes on your foot!",
+        "You float up slightly, but your leg is still stuck.",
+        "You start to float in the air!",
+        "There is a large splash as the boulder fills the pool of water."
+      ],
+      "screenCells": [
+        {
+          "step": 126,
+          "x": 39,
+          "y": 6,
+          "equals": "@"
+        }
+      ]
+    },
+    {
+      "branch": "pool-floortrap.plain-push",
+      "segment": 4,
+      "screenIncludes": [
+        "MacOS NetHack Version 5.0.0",
+        "With great effort you move the boulder."
+      ],
+      "screenCells": [
+        {
+          "step": 53,
+          "x": 40,
+          "y": 6,
+          "equals": "@"
+        }
+      ]
+    },
+    {
+      "branch": "pool-floortrap.blind-known",
+      "segment": 5,
+      "screenIncludes": [
+        "MacOS NetHack Version 5.0.0",
+        "You are now wearing a blindfold.",
+        "With great effort you move the boulder."
+      ],
+      "screenCells": [
+        {
+          "step": 83,
+          "x": 40,
+          "y": 6,
+          "equals": "@"
+        }
+      ]
+    }
+  ],
+  "unchangedOutputHashes": {
+    "plain-push": {
+      "screens": "e97ce884a43c6c21b63401b603bff40c7d70b25f0cf452f4643d23e12585993c",
+      "cursors": "6870545f21f1ce13eedd95fe01c2bbbf05e2148f714e6bc1c73435eea7fada6e",
+      "rng": "1d92cf23e477259ce5ddf6a3dd21795a7f896b0e43e1e2c866df77df0dfff6a2",
+      "slices": "9de204e5a1fe241eadfde0fb7b3df80da26ee658cea297f1bd194a149cab3e21",
+      "frames": "40b562827d4106f549ef757157290919f3573b7cc415b7acf131dd48f86a1587"
+    },
+    "blind-known": {
+      "screens": "c5127e83af925fc405da9401c90b7d90117ecc5605fba30e1d22edf0b5362a08",
+      "cursors": "3b73729e292ffbfc377d99cce9ecf980460077d6d69a618ad02cf4accc2a375f",
+      "rng": "ef1864f361c7da2d43889290546ac75f3f09395f57c2222c609491a17385e125",
+      "slices": "f8179d3a2a2897bf3299bc6fe9c5f83b426c6b5a80f001c46ce3d6699f9b5add",
+      "frames": "ada4d7e97a3be8882abf41a06ea80f7404eaa28cbceb0a993ccbda9b92f57b09"
+    }
+  }
+}

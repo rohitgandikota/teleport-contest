@@ -4447,6 +4447,12 @@
     {"group": "travel-owner", "id": "travel-owner.debug-frontier", "cFile": "src/hack.c", "cFunction": "findtravelpath", "description": "debug frontier"},
     {"group": "travel-owner", "id": "travel-owner.debug-frontier-crawl", "cFile": "src/hack.c", "cFunction": "findtravelpath", "description": "debug frontier crawl"},
     {"group": "travel-owner", "id": "travel-owner.debug-guess", "cFile": "src/hack.c", "cFunction": "findtravelpath", "description": "debug guess"},
-    {"group": "travel-owner", "id": "travel-owner.debug-guess-crawl", "cFile": "src/hack.c", "cFunction": "findtravelpath", "description": "debug guess crawl"}
+    {"group": "travel-owner", "id": "travel-owner.debug-guess-crawl", "cFile": "src/hack.c", "cFunction": "findtravelpath", "description": "debug guess crawl"},
+    {"group": "pool-floortrap", "id": "pool-floortrap.arrow-drop", "cFile": "src/do.c", "cFunction": "boulder_hits_pool", "description": "arrow drop"},
+    {"group": "pool-floortrap", "id": "pool-floortrap.pit-drop", "cFile": "src/do.c", "cFunction": "boulder_hits_pool", "description": "pit drop"},
+    {"group": "pool-floortrap", "id": "pool-floortrap.web-drop", "cFile": "src/do.c", "cFunction": "boulder_hits_pool", "description": "web drop"},
+    {"group": "pool-floortrap", "id": "pool-floortrap.bear-levitation-drop", "cFile": "src/do.c", "cFunction": "boulder_hits_pool", "description": "bear levitation drop"},
+    {"group": "pool-floortrap", "id": "pool-floortrap.plain-push", "cFile": "src/do.c", "cFunction": "boulder_hits_pool", "description": "plain push"},
+    {"group": "pool-floortrap", "id": "pool-floortrap.blind-known", "cFile": "src/do.c", "cFunction": "boulder_hits_pool", "description": "blind known"}
   ]
 }

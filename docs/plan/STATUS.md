@@ -1,8 +1,70 @@
 # STATUS — live handoff board
 
+## 2026-11-25: pool floor-trap fix verified for publication
+
+The pool checkpoint changes only do.js. It calls the existing delfloortrap so
+filling water removes floor traps, releases trapped occupants and preserves
+other trap types. It awaits object disposal and restores the C diagnostic for
+an invalid boulder. Source controls pass 58/58 versus 46/58. All six original
+C cases pass versus two before: 505 styled boundaries/cursors, 13,832 calls and
+ordered slices, zero frames. All 18 ordinary assertions pass, with observer,
+plain and deferred EOF equality; two negatives retain ten output hashes.
+
+All 70 selected/public recordings and all 70 strict eight-second workers pass.
+Twenty retained suites, source audit and three syntax checks pass. The 338-member
+source packet and 19-member promotion verify. The maintained primary recipe
+corrects six terminal x coordinates only; the original recipe and exact
+correction are preserved under tools/gen-sessions/evidence/pool-floortrap.
+All six primary assertions pass the unchanged C recording. Missing or wrong
+native fixtures are rejected before ordinary replay.
+
+Full888 passes on NFS with two CPU workers, default budgets and no retries:
+918,711 screens/cursors, 19,505,842 random positions and 32,997 frames. All 1,178
+snapshot files match the exact main candidate and maintained corpus. Remote
+root: /share/NFS/u/rohit/research/contest/artifacts/2026-11-22/pool-full888-js-20261125.
+Verification SHA256: 652861e0c45480449b74b05340d42c24164d1c3222a5f62b5d0cbfc2b19d4343.
+All 887 prior raw files and branch requirements remain unchanged. Six branch
+requirements and one raw grow the corpus to 888. Main receipt:
+`pool-floortrap-main-verification.json`, SHA256 `95d3263f5f033c3e472102b3c60826f870d1287336c138b3a23ed29f37570417`.
+Commit and immediately push this verified checkpoint.
+
+Next: config directive recognition passes eleven C cases versus three before,
+including composition with pool. Its source74/74 and ordinary11/11 need installed
+main and broader checks after the pool push. Lookaround passes source55/55 but
+its original four C cases remain 3/4: the candidate repairs the positive RNG
+stream while an earlier cream-pie feedback mismatch remains. Original raw and
+failed comparisons are retained. A separate producer review will address that
+prerequisite without changing the inputs. No newer held-out rank is claimed.
+
+## 2026-11-25: published travel checkpoint passes full887
+
+`a7dae0ed` passes all 887 maintained recordings on NFS, with two workers,
+default budgets and no retries: 918,206 screens/cursors, 19,492,010 random
+positions and 32,997 frames. All 1,177 files remain fixed and match the
+published runtime and maintained corpus. Verification SHA256
+`1d4a9a828a5d86ced3029a973f6df11ec4d8a7e71fc4e505dbfa1b61bffca7f7`;
+publication receipt SHA256
+`9f041705330f971cf874342fd5b3ca45f644d0bfb96427e7b48e0f7cf1f364eb`.
+After this checksum verification, three duplicate parent raw paths were
+atomically replaced with links to their maintained recordings, removing
+6,124,069 local bytes. The 953-member boulder packet and 17-member promotion
+still verify unchanged. No NFS dependency was deleted.
+
+The pool/floortrap candidate changes only do.js: use the existing delfloortrap,
+await disposal completion and restore C's invalid-boulder diagnostic. Its six
+locked C cases improve from 2/6 to 6/6, matching 505 styled boundaries/cursors,
+13,832 calls and ordered slices, zero frames. Native raw SHA256
+`92212252b87118670a9b0169152c57f827f53fb593127f04dba6c4551bfd0ece`.
+Source controls pass 58/58 versus 46/58; initial failed premises remain fixed.
+That exact runtime and raw are now being integrated for broader verification.
+The source packet and mandatory native input preflight are still being finished.
+Do not commit until those and the main checks pass. The six input tuples are
+fixed in pool-floortrap-parent-input-lock.json; new attempts must stay separate.
+
 ## 2026-11-25: travel pathfinding verified on the published boulder port
 
-`3bb53bcb` is pushed. The next checkpoint changes only hack.js runtime code:
+`3bb53bcb` and travel checkpoint `a7dae0ed` are pushed. Travel changes only
+hack.js runtime code:
 use complete end_running and next2u, restrict grid-bug search to cardinal
 directions, remove door delay for forms that can ooze, read canonical Blind,
 and reproduce both C DEBUG path displays. The obsolete private flag-only
@@ -35,7 +97,7 @@ The corpus grows to 887 with twelve new branch requirements; all 886 prior
 raw files and requirements are unchanged. All 279 runtime hashes match the
 reviewed composition. Receipt `travel-main-verification.json`, SHA256
 `ead8405335de2df8f9c86791bdfa74c4994e03304153db2d2ad5c10d8cf05799`.
-Commit and immediately push this verified checkpoint.
+This verified checkpoint is published as `a7dae0ed`.
 
 Full887 is running on that exact composition with two NFS CPU workers, default
 budgets and no retries. It shares 884 old fixtures and uploads three new raws.

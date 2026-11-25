@@ -4511,6 +4511,10 @@
     {"group": "mounted-movement-owner", "id": "mounted-movement.mounted-101", "cFile": "src/hack.c", "cFunction": "domove_core", "description": "mounted 101"},
     {"group": "mounted-movement-owner", "id": "mounted-movement.mounted-wait-negative", "cFile": "src/hack.c", "cFunction": "domove_core", "description": "mounted wait negative"},
     {"group": "mounted-movement-owner", "id": "mounted-movement.mounted-wall-negative", "cFile": "src/hack.c", "cFunction": "domove_core", "description": "mounted wall negative"},
-    {"group": "mounted-movement-owner", "id": "mounted-movement.unmounted-walk-negative", "cFile": "src/hack.c", "cFunction": "domove_core", "description": "unmounted walk negative"}
+    {"group": "mounted-movement-owner", "id": "mounted-movement.unmounted-walk-negative", "cFile": "src/hack.c", "cFunction": "domove_core", "description": "unmounted walk negative"},
+    {"group": "invocation-message-owner", "id": "invocation.walk-arrival", "cFile": "src/hack.c", "cFunction": "invocation_message", "description": "walk arrival"},
+    {"group": "invocation-message-owner", "id": "invocation.counted-walk-arrival", "cFile": "src/hack.c", "cFunction": "invocation_message", "description": "counted walk arrival"},
+    {"group": "invocation-message-owner", "id": "invocation.controlled-teleport-negative", "cFile": "src/hack.c", "cFunction": "invocation_message", "description": "controlled teleport negative"},
+    {"group": "invocation-message-owner", "id": "invocation.blocked-off-square-negative", "cFile": "src/hack.c", "cFunction": "invocation_message", "description": "blocked off square negative"}
   ]
 }

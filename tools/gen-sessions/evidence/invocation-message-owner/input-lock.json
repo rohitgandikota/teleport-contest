@@ -1,0 +1,142 @@
+{
+  "final": true,
+  "recipe": "tools/gen-sessions/recipes/invocation-message-owner.json",
+  "recipeSHA256": "4ff09eeee073ab87dcefb77a1fd5b1d5f76d209d06a5396ab77f6a801de8ed10",
+  "originalRecipeSHA256": "64a6a368e84d755953891cab4d215bfb644edcbbd60a062518ffb9ab6ca23a9f",
+  "cases": 4,
+  "keys": 171,
+  "boundaries": 175,
+  "tupleSHA256": "7afc7e0665b98693f6d935340d0d17ee3b05c05dcc5411472ac418a309185feb",
+  "tupleFields": [
+    "name",
+    "seed",
+    "datetime",
+    "nethackrc",
+    "moves"
+  ],
+  "branchRequirements": [
+    {
+      "name": "walk-arrival",
+      "approachXY": [
+        66,
+        13
+      ],
+      "finalXY": [
+        65,
+        13
+      ],
+      "finalTurn": 5,
+      "uvibrated": 1,
+      "invocationXY": [
+        65,
+        13
+      ],
+      "negative": false,
+      "arrivalKey": 41
+    },
+    {
+      "name": "counted-walk-arrival",
+      "approachXY": [
+        66,
+        13
+      ],
+      "finalXY": [
+        65,
+        13
+      ],
+      "finalTurn": 5,
+      "uvibrated": 1,
+      "invocationXY": [
+        65,
+        13
+      ],
+      "negative": false,
+      "arrivalKey": 42
+    },
+    {
+      "name": "controlled-teleport-negative",
+      "approachXY": [
+        65,
+        13
+      ],
+      "finalXY": [
+        65,
+        13
+      ],
+      "finalTurn": 4,
+      "uvibrated": 1,
+      "invocationXY": [
+        65,
+        13
+      ],
+      "negative": true,
+      "arrivalKey": null
+    },
+    {
+      "name": "blocked-off-square-negative",
+      "approachXY": [
+        66,
+        13
+      ],
+      "finalXY": [
+        66,
+        13
+      ],
+      "finalTurn": 4,
+      "uvibrated": 0,
+      "invocationXY": [
+        65,
+        13
+      ],
+      "negative": true,
+      "arrivalKey": null
+    }
+  ],
+  "negativeHashes": {
+    "controlled-teleport-negative": {
+      "screens": "c3a4eddc2f8f352e78685dc9eeab0e0a1239b7e916fdec37a1440ca2b2103d17",
+      "cursors": "46c5a98fb34ccf9040564987656d58a0bd68ff826f87af8e578b9503965da836",
+      "calls": "c3d8f51a1a8871027816519820321ff83bf44f87830cda35706c63f64d10ab88",
+      "slices": "34a573ee9fc3305df26caabb96e93913760658da165022016cadfd6308a10611",
+      "frames": "3676a365cf6c08430f69bc5abcf1e8430728bce2c4fd44e576a818a7cbc49b30"
+    },
+    "blocked-off-square-negative": {
+      "screens": "96f67a3c71ee301727c88424f9ca4f98e3e2241fad9350468aa8c331079c6855",
+      "cursors": "535f58f957388e7a8444f8e7fe0fbc70e20709e5a519028d23235d136ed51e70",
+      "calls": "c3d8f51a1a8871027816519820321ff83bf44f87830cda35706c63f64d10ab88",
+      "slices": "4f021ea424d678640812889a6808443d3769b1af7870a40455997227cab830bb",
+      "frames": "a147172b881a30ec4c105645a48f0c4fa10e621a48460129b7abe8cc96126a46"
+    }
+  },
+  "segments": [
+    {
+      "seed": 7300,
+      "datetime": "20000112090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0016?\r v\u001b\u0006\u0014lkkkk.<\u001b\u0006\u0014LLLLLlllllllkkkkkkl.\u001bh\u001bV",
+      "name": "walk-arrival"
+    },
+    {
+      "seed": 7300,
+      "datetime": "20000112090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0016?\r v\u001b\u0006\u0014lkkkk.<\u001b\u0006\u0014LLLLLlllllllkkkkkkl.\u001b2h\u001bV",
+      "name": "counted-walk-arrival"
+    },
+    {
+      "seed": 7300,
+      "datetime": "20000112090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0016?\r v\u001b\u0006\u0014lkkkk.<\u001b\u0006\u0014LLLLLlllllllkkkkkk.\u001b\u001bV",
+      "name": "controlled-teleport-negative"
+    },
+    {
+      "seed": 7300,
+      "datetime": "20000112090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0016?\r v\u001b\u0006\u0014lkkkk.<\u001b\u0006\u0014LLLLLlllllllkkkkkkl.\u001bj\u001bV",
+      "name": "blocked-off-square-negative"
+    }
+  ],
+  "nativeEvidence": "not recorded by worker; parent only"
+}

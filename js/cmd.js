@@ -67,7 +67,7 @@ import { goodpos, hideunder, place_monster, remove_monster, monsndx } from './ma
 import { sobj_at } from './invent.js';
 import { PMNAMES, MFLAGS, MONSYMS } from './monst_data.js';
 import { hides_under, is_hider, verysmall, sticks } from './mondata.js';
-import { bad_rock, nomul, domove_attackmon_at, spoteffects,
+import { bad_rock, nomul, domove_attackmon_at, spoteffects, invocation_message,
          domove_bump_mon, dopickup, trapmove, doorless_door,
          disturb_buried_zombies, may_passwall,
          runmode_delay_output, avoid_trap_andor_region } from './hack.js';
@@ -2845,7 +2845,6 @@ async function domove_core() {
         return;
 
     // Move the hero
-    const oldx = u.ux, oldy = u.uy;
     u.ux = newx;
     u.uy = newy;
 
@@ -2953,11 +2952,6 @@ async function domove_core() {
 
     await check_leash(game.u.ux0, game.u.uy0);
 
-    /* Clean old position -- vision_recalc() will print our new one. */
-    newsym(oldx, oldy);
-    /* Since the hero has moved, adjust what can be seen/unseen. */
-    vision_recalc(1); /* Do the work now in the recover time. */
-
     /* src/hack.c:2964 — position changed: mark success for domove()'s
        smudge/bubble tail and set u.umoved, read by u_calc_moveamt (steed
        budget) and the encumbrance exhaustion arm. The attempting mask is 0
@@ -2967,6 +2961,11 @@ async function domove_core() {
         game.domove_succeeded |= ((game.domove_attempting | 0)
                                   & (DOMOVE_RUSH | DOMOVE_WALK));
         game.u.umoved = true;
+        /* Clean old position -- vision_recalc() will print our new one. */
+        newsym(u.ux0, u.uy0);
+        /* Since the hero has moved, adjust what can be seen/unseen. */
+        vision_recalc(1); /* Do the work now in the recover time. */
+        await invocation_message();
     }
 
     if (Punished()) /* put back ball and chain */

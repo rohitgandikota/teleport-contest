@@ -1,6 +1,40 @@
 # STATUS — live handoff board
 
-## 2026-11-25: mounted movement training verified
+## 2026-11-25: invocation arrival feedback verified
+
+Movement now calls invocation_message after a successful position change,
+following C's redraw order. The helper uses the steed's name or the current
+form's feet, captures the carried Candelabrum before feedback, and reads the
+canonical blindness property. Only cmd.js and hack.js change runtime.
+
+Source controls pass 33/33 versus 22/33. Four ordinary inputs pass all twelve
+assertions versus ten before. All ten negative hashes, five original ritual
+hashes, and observer/plain/deferred EOF comparisons remain fixed. All four
+original C cases match versus two before: 175 styled boundaries/cursors,
+37,740 calls and ordered slices, zero frames. The two gains restore missing
+walk-arrival clue screens. The counted walk is not independent proof of run
+cancellation because the wall beyond also stops the baseline.
+
+All 83 selected/public recordings and 83 strict eight-second workers pass:
+35,407 screens/cursors, 1,567,469 random positions and 1,769 frames. The two
+new gates, 22 retained suites, source audit and four syntax checks pass. All
+321 source members, 29 promotion members, five payloads and 280 runtime hashes
+verify. All 896 prior raws and requirements stay fixed; four requirements and
+one raw bring the corpus to 897. Both gates require the unchanged original C
+recording and four primary branch assertions. Main verification receipt:
+`invocation-message-main-verification.json`, SHA256
+`7d343a655775a6f81beb53478a5838915cf3d7d1733377aed980733ed2fb7b49`.
+
+Full897 is running with two NFS CPU workers, default budgets and no retries,
+PID 3171867. Its 1,188 files include 896 linked raws and one new raw. Root:
+/share/NFS/u/rohit/research/contest/artifacts/2026-11-22/invocation-full897-js-20261125.
+All-files SHA256 `9d8c79426cdd86f75d130c4fb8a761588be90149b892776f313c0b78c04ca4b4`.
+Final positioning, earth sense, configuration byte limits and moving mimic
+disguises remain active audits. No held-out improvement or whole-port closure
+is claimed. The latest official row remains rank 7 with 659 unmatched screens,
+timestamped 19:31 UTC, before the four preceding checkpoints were pushed.
+
+## 2026-11-25: mounted movement training pushed as 45f754e9
 
 Only cmd.js changes runtime. After m_postmove_effect, movement now updates the
 steed's tentative position and awaits exercise_steed before displacement, as
@@ -25,10 +59,12 @@ the input gate requires the original C raw and six primary branch assertions.
 Main receipt `mounted-movement-main-verification.json`, SHA256
 `ca89760e03c4644dccb1786c9d2bd74a6e038e922f315daab00e517c7579d249`.
 
-Full896 scripts are prepared; launch waits for full895 completion and
-verification to retain the two-worker NFS limit. Skill-tip helper omissions
-remain separate, and these inputs disable tips. Invocation-message and
-final-position/earth-sense audits continue. No full-movement closure or
+Full896 passed all 896 recordings: 921,377 screens/cursors, 19,666,359 random
+positions and 32,997 frames. All 1,187 tested files match published 45f754e9.
+Publication receipt `mounted-full896-publication-verification.json`, SHA256
+`52020004cbfc99d331d7b699c7716eb2a20affc37e7198cb4328320f1bbde463`.
+Skill-tip helper omissions remain separate, and these inputs disable tips.
+Final-position/earth-sense audits continue. No full-movement closure or
 held-out improvement is claimed.
 
 Four additional locked section/continuation probes now match original C on
@@ -66,19 +102,19 @@ the corrected RNG-count premise and a rejected pre-write composition attempt
 remain explicit evidence. Main receipt `config-sections-main-verification.json`,
 SHA256 `f8a07dfd038632f54e76e117177f024af66a12c67e13c35da79174602f659ed5`.
 
-Full895 is running with two NFS CPU workers, default budgets and no retries.
-PID 3155139; 1,186 files, 893 linked raws and two new raws. Root:
+Full895 passed all 895 recordings: 920,621 screens/cursors, 19,648,163 random
+positions and 32,997 frames. All 1,186 tested files match published 340f6887.
+Publication receipt `sections-full895-publication-verification.json`, SHA256
+`2e6d7d195025e6bfd68b6eddc7bcb98763006728776e65b73abc84ab3196f03c`.
+The run used two NFS CPU workers, default budgets and no retries. Root:
 /share/NFS/u/rohit/research/contest/artifacts/2026-11-22/sections-full895-js-20261125.
 All-files SHA256 `0c84a8fd7d026650f333965fd13f7feaab67dcb1c656b3de8d41dab09962d20d`.
 Byte/NUL limits, section-continuation interaction coverage, DEBUGFILES timing,
 other parser callers and malformed/duplicate filename diagnostics remain open.
 
-Next: mounted movement now matches all six unchanged C inputs versus four
-before. Source25/25 and ordinary6/6 pass; only the 100/101-step skill menus
-change scored output, while the 99-step case is state evidence. The candidate
-adds C's steed positioning/training call before displacement. Its portable
-promotion is pending. Invocation-message and final-position hooks are separate
-audits. No held-out improvement or whole-port completion is claimed.
+Mounted movement was subsequently published as 45f754e9. The 100/101-step
+skill menus change scored output, while the 99-step case remains state evidence.
+No held-out improvement or whole-port completion is claimed.
 
 ## 2026-11-25: canonical species flags pushed as 66619e1d
 

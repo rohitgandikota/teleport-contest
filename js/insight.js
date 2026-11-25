@@ -880,6 +880,20 @@ function status_enlightenment(mode) {
     else if (Flying())
         you_are('flying', from_what('HFlying'));
 
+    const Strangled = u.intrinsic?.HStrangled || 0;
+    if (Strangled) {
+        if (u.uburied) {
+            you_are('buried');
+        } else if (en_final && (Strangled & I_SPECIAL)) {
+            out(' You died from strangulation.');
+        } else {
+            let buf = 'being strangled';
+            if (game.wizard)
+                buf += ` (${Strangled & TIMEOUT})`;
+            you_are(buf, from_what('HStrangled'));
+        }
+    }
+
     if (u.intrinsic?.HStun || u.uprops?.STUNNED)
         you_are('stunned');
 

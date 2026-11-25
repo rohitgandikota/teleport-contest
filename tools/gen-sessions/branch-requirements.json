@@ -3956,6 +3956,18 @@
     {"group":"Line input and interrupted wishes","id":"line-eof-wish-resume","cFile":"src/allmain.c","cFunction":"moveloop_core","description":"line eof wish resume"},
     {"group":"Line input and interrupted wishes","id":"line-ascii-empty-escape","cFile":"win/tty/getline.c","cFunction":"hooked_tty_getlin","description":"line ascii empty escape"},
     {"group":"Line input and interrupted wishes","id":"line-ascii-clear-and-cancel","cFile":"win/tty/getline.c","cFunction":"hooked_tty_getlin","description":"line ascii clear and cancel"},
-    {"group":"Line input and interrupted wishes","id":"line-ascii-wish-nothing","cFile":"win/tty/getline.c","cFunction":"hooked_tty_getlin","description":"line ascii wish nothing"}
+    {"group":"Line input and interrupted wishes","id":"line-ascii-wish-nothing","cFile":"win/tty/getline.c","cFunction":"hooked_tty_getlin","description":"line ascii wish nothing"},
+    {"group":"Amulet wearing and form-transition strangulation","id":"strangulation-form-transitions.human-to-golem-breath","cFile":"src/polyself.c","cFunction":"check_strangling","description":"strangulation form transitions.human to golem breath"},
+    {"group":"Amulet wearing and form-transition strangulation","id":"strangulation-form-transitions.immune-to-vulnerable","cFile":"src/polyself.c","cFunction":"check_strangling","description":"strangulation form transitions.immune to vulnerable"},
+    {"group":"Amulet wearing and form-transition strangulation","id":"strangulation-form-transitions.vulnerable-reset","cFile":"src/polyself.c","cFunction":"check_strangling","description":"strangulation form transitions.vulnerable reset"},
+    {"group":"Amulet wearing and form-transition strangulation","id":"strangulation-form-transitions.wizard-timer-breath","cFile":"src/insight.c","cFunction":"status_enlightenment","description":"strangulation form transitions.wizard timer breath"},
+    {"group":"Amulet wearing and form-transition strangulation","id":"strangulation-form-transitions.unworn-golem-control","cFile":"src/polyself.c","cFunction":"check_strangling","description":"strangulation form transitions.unworn golem control"},
+    {"group":"Amulet wearing and form-transition strangulation","id":"strangulation-form-transitions.reflection-golem-control","cFile":"src/polyself.c","cFunction":"check_strangling","description":"strangulation form transitions.reflection golem control"},
+    {"group":"Amulet wearing and form-transition strangulation","id":"amulet-on-owner.slime-cure","cFile":"src/do_wear.c","cFunction":"Amulet_on","description":"amulet on owner.slime cure"},
+    {"group":"Amulet wearing and form-transition strangulation","id":"amulet-on-owner.healthy-unchanging","cFile":"src/do_wear.c","cFunction":"Amulet_on","description":"amulet on owner.healthy unchanging"},
+    {"group":"Amulet wearing and form-transition strangulation","id":"amulet-on-owner.change-human","cFile":"src/do_wear.c","cFunction":"Amulet_on","description":"amulet on owner.change human"},
+    {"group":"Amulet wearing and form-transition strangulation","id":"amulet-on-owner.change-wood-nymph","cFile":"src/do_wear.c","cFunction":"Amulet_on","description":"amulet on owner.change wood nymph"},
+    {"group":"Amulet wearing and form-transition strangulation","id":"amulet-on-owner.sleep-first-wear","cFile":"src/do_wear.c","cFunction":"Amulet_on","description":"amulet on owner.sleep first wear"},
+    {"group":"Amulet wearing and form-transition strangulation","id":"amulet-on-owner.reflection-control","cFile":"src/do_wear.c","cFunction":"Amulet_on","description":"amulet on owner.reflection control"}
   ]
 }

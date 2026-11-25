@@ -1,0 +1,487 @@
+{
+  "name": "strangulation-form-transitions",
+  "description": "Native C and fixed JS verify form-transition countdown cancellation, restart and reset, breath refusal, and the attributes status line. Five unaffected cases preserve all five output hashes for the status-only amendment. Constructed burial and final-death controls are not native claims.",
+  "coverage": [
+    "mode.debug",
+    "forms.polymorph",
+    "object.amulets",
+    "object.identification",
+    "ui.getlin",
+    "ui.more-paging"
+  ],
+  "branches": [
+    "strangulation-form-transitions.human-to-golem-breath",
+    "strangulation-form-transitions.immune-to-vulnerable",
+    "strangulation-form-transitions.vulnerable-reset",
+    "strangulation-form-transitions.wizard-timer-breath",
+    "strangulation-form-transitions.unworn-golem-control",
+    "strangulation-form-transitions.reflection-golem-control"
+  ],
+  "requireBranchAssertions": true,
+  "segments": [
+    {
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "human-to-golem-breath",
+      "moves": " #levelchange\r10\r    \u001b\u001b\u001b\u0017uncursed amulet of strangulation\r    \u001b\u001b\u001bPa    \u001b\u001b\u001b#polyself\riron golem\r    \u001b\u001b\u001b\u0018    \u001b\u001b\u001b#monster\r\u001b    \u001b\u001b\u001bi    \u001b\u001b\u001b"
+    },
+    {
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "immune-to-vulnerable",
+      "moves": " #levelchange\r10\r    \u001b\u001b\u001b#polyself\riron golem\r    \u001b\u001b\u001b\u0017uncursed amulet of strangulation\r    \u001b\u001b\u001bPa    \u001b\u001b\u001b#polyself\rwood nymph\r    \u001b\u001b\u001b#wizintrinsic\r\u001b    \u001b\u001b\u001bR    \u001b\u001b\u001bi    \u001b\u001b\u001b"
+    },
+    {
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "vulnerable-reset",
+      "moves": " #levelchange\r10\r    \u001b\u001b\u001b\u0017uncursed amulet of strangulation\r    \u001b\u001b\u001bPa    \u001b\u001b\u001bss    \u001b\u001b\u001b#polyself\rvampire\r    \u001b\u001b\u001b#wizintrinsic\r\u001b    \u001b\u001b\u001bR    \u001b\u001b\u001b"
+    },
+    {
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "wizard-timer-breath",
+      "moves": " #levelchange\r10\r    \u001b\u001b\u001b#polyself\rred dragon\r    \u001b\u001b\u001b#wizintrinsic\r30d\r    \u001b\u001b\u001b#monster\r\u001b    \u001b\u001b\u001b\u0018    \u001b\u001b\u001b"
+    },
+    {
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "unworn-golem-control",
+      "moves": " #levelchange\r10\r    \u001b\u001b\u001b#polyself\riron golem\r    \u001b\u001b\u001b#monster\r\u001b    \u001b\u001b\u001b\u0018    \u001b\u001b\u001b"
+    },
+    {
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "reflection-golem-control",
+      "moves": " #levelchange\r10\r    \u001b\u001b\u001b\u0017uncursed amulet of reflection\r    \u001b\u001b\u001bPa    \u001b\u001b\u001b#polyself\riron golem\r    \u001b\u001b\u001b#monster\r\u001b    \u001b\u001b\u001bi    \u001b\u001b\u001b"
+    }
+  ],
+  "branchAssertions": [
+    {
+      "branch": "strangulation-form-transitions.human-to-golem-breath",
+      "segment": 0,
+      "screenIncludes": [
+        "You are no longer being strangled.",
+        "In what direction?"
+      ]
+    },
+    {
+      "branch": "strangulation-form-transitions.immune-to-vulnerable",
+      "segment": 1,
+      "screenIncludes": [
+        "begins constricting your neck!"
+      ],
+      "screenCells": [
+        {
+          "step": 144,
+          "x": 5,
+          "y": 6,
+          "equals": "s"
+        },
+        {
+          "step": 144,
+          "x": 6,
+          "y": 6,
+          "equals": "t"
+        },
+        {
+          "step": 144,
+          "x": 7,
+          "y": 6,
+          "equals": "r"
+        },
+        {
+          "step": 144,
+          "x": 8,
+          "y": 6,
+          "equals": "a"
+        },
+        {
+          "step": 144,
+          "x": 9,
+          "y": 6,
+          "equals": "n"
+        },
+        {
+          "step": 144,
+          "x": 10,
+          "y": 6,
+          "equals": "g"
+        },
+        {
+          "step": 144,
+          "x": 11,
+          "y": 6,
+          "equals": "l"
+        },
+        {
+          "step": 144,
+          "x": 12,
+          "y": 6,
+          "equals": "i"
+        },
+        {
+          "step": 144,
+          "x": 13,
+          "y": 6,
+          "equals": "n"
+        },
+        {
+          "step": 144,
+          "x": 14,
+          "y": 6,
+          "equals": "g"
+        },
+        {
+          "step": 144,
+          "x": 15,
+          "y": 6,
+          "equals": " "
+        },
+        {
+          "step": 144,
+          "x": 16,
+          "y": 6,
+          "equals": " "
+        },
+        {
+          "step": 144,
+          "x": 17,
+          "y": 6,
+          "equals": " "
+        },
+        {
+          "step": 144,
+          "x": 18,
+          "y": 6,
+          "equals": " "
+        },
+        {
+          "step": 144,
+          "x": 19,
+          "y": 6,
+          "equals": " "
+        },
+        {
+          "step": 144,
+          "x": 20,
+          "y": 6,
+          "equals": " "
+        },
+        {
+          "step": 144,
+          "x": 21,
+          "y": 6,
+          "equals": " "
+        },
+        {
+          "step": 144,
+          "x": 22,
+          "y": 6,
+          "equals": " "
+        },
+        {
+          "step": 144,
+          "x": 23,
+          "y": 6,
+          "equals": " "
+        },
+        {
+          "step": 144,
+          "x": 24,
+          "y": 6,
+          "equals": " "
+        },
+        {
+          "step": 144,
+          "x": 25,
+          "y": 6,
+          "equals": " "
+        },
+        {
+          "step": 144,
+          "x": 26,
+          "y": 6,
+          "equals": " "
+        },
+        {
+          "step": 144,
+          "x": 27,
+          "y": 6,
+          "equals": " "
+        },
+        {
+          "step": 144,
+          "x": 28,
+          "y": 6,
+          "equals": " "
+        },
+        {
+          "step": 144,
+          "x": 29,
+          "y": 6,
+          "equals": " "
+        },
+        {
+          "step": 144,
+          "x": 30,
+          "y": 6,
+          "equals": " "
+        },
+        {
+          "step": 144,
+          "x": 31,
+          "y": 6,
+          "equals": " "
+        },
+        {
+          "step": 144,
+          "x": 32,
+          "y": 6,
+          "equals": " "
+        },
+        {
+          "step": 144,
+          "x": 33,
+          "y": 6,
+          "equals": "["
+        },
+        {
+          "step": 144,
+          "x": 34,
+          "y": 6,
+          "equals": "6"
+        },
+        {
+          "step": 144,
+          "x": 35,
+          "y": 6,
+          "equals": "]"
+        }
+      ]
+    },
+    {
+      "branch": "strangulation-form-transitions.vulnerable-reset",
+      "segment": 2,
+      "screenIncludes": [
+        "still constricts your neck!"
+      ],
+      "screenCells": [
+        {
+          "step": 122,
+          "x": 5,
+          "y": 6,
+          "equals": "s"
+        },
+        {
+          "step": 122,
+          "x": 6,
+          "y": 6,
+          "equals": "t"
+        },
+        {
+          "step": 122,
+          "x": 7,
+          "y": 6,
+          "equals": "r"
+        },
+        {
+          "step": 122,
+          "x": 8,
+          "y": 6,
+          "equals": "a"
+        },
+        {
+          "step": 122,
+          "x": 9,
+          "y": 6,
+          "equals": "n"
+        },
+        {
+          "step": 122,
+          "x": 10,
+          "y": 6,
+          "equals": "g"
+        },
+        {
+          "step": 122,
+          "x": 11,
+          "y": 6,
+          "equals": "l"
+        },
+        {
+          "step": 122,
+          "x": 12,
+          "y": 6,
+          "equals": "i"
+        },
+        {
+          "step": 122,
+          "x": 13,
+          "y": 6,
+          "equals": "n"
+        },
+        {
+          "step": 122,
+          "x": 14,
+          "y": 6,
+          "equals": "g"
+        },
+        {
+          "step": 122,
+          "x": 15,
+          "y": 6,
+          "equals": " "
+        },
+        {
+          "step": 122,
+          "x": 16,
+          "y": 6,
+          "equals": " "
+        },
+        {
+          "step": 122,
+          "x": 17,
+          "y": 6,
+          "equals": " "
+        },
+        {
+          "step": 122,
+          "x": 18,
+          "y": 6,
+          "equals": " "
+        },
+        {
+          "step": 122,
+          "x": 19,
+          "y": 6,
+          "equals": " "
+        },
+        {
+          "step": 122,
+          "x": 20,
+          "y": 6,
+          "equals": " "
+        },
+        {
+          "step": 122,
+          "x": 21,
+          "y": 6,
+          "equals": " "
+        },
+        {
+          "step": 122,
+          "x": 22,
+          "y": 6,
+          "equals": " "
+        },
+        {
+          "step": 122,
+          "x": 23,
+          "y": 6,
+          "equals": " "
+        },
+        {
+          "step": 122,
+          "x": 24,
+          "y": 6,
+          "equals": " "
+        },
+        {
+          "step": 122,
+          "x": 25,
+          "y": 6,
+          "equals": " "
+        },
+        {
+          "step": 122,
+          "x": 26,
+          "y": 6,
+          "equals": " "
+        },
+        {
+          "step": 122,
+          "x": 27,
+          "y": 6,
+          "equals": " "
+        },
+        {
+          "step": 122,
+          "x": 28,
+          "y": 6,
+          "equals": " "
+        },
+        {
+          "step": 122,
+          "x": 29,
+          "y": 6,
+          "equals": " "
+        },
+        {
+          "step": 122,
+          "x": 30,
+          "y": 6,
+          "equals": " "
+        },
+        {
+          "step": 122,
+          "x": 31,
+          "y": 6,
+          "equals": " "
+        },
+        {
+          "step": 122,
+          "x": 32,
+          "y": 6,
+          "equals": " "
+        },
+        {
+          "step": 122,
+          "x": 33,
+          "y": 6,
+          "equals": "["
+        },
+        {
+          "step": 122,
+          "x": 34,
+          "y": 6,
+          "equals": "6"
+        },
+        {
+          "step": 122,
+          "x": 35,
+          "y": 6,
+          "equals": "]"
+        }
+      ]
+    },
+    {
+      "branch": "strangulation-form-transitions.wizard-timer-breath",
+      "segment": 3,
+      "screenIncludes": [
+        "You can't breathe.  Sorry.",
+        "You are being strangled (30)."
+      ]
+    },
+    {
+      "branch": "strangulation-form-transitions.unworn-golem-control",
+      "segment": 4,
+      "screenIncludes": [
+        "In what direction?"
+      ]
+    },
+    {
+      "branch": "strangulation-form-transitions.reflection-golem-control",
+      "segment": 5,
+      "screenIncludes": [
+        "In what direction?"
+      ]
+    }
+  ]
+}

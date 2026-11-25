@@ -1,0 +1,113 @@
+{
+  "name": "amulet-on-owner",
+  "description": "Six original C cases verify Amulet_on slime cure, healthy unchanging, human sex change, fixed-female naming/cancellation, first sleep timeout and reflection. No Amulet_on runtime patch. Existing-deadline and permanent-source sleep controls remain constructed state evidence.",
+  "coverage": [
+    "mode.debug",
+    "object.amulets",
+    "object.identification",
+    "forms.polymorph",
+    "ui.getlin",
+    "ui.more-paging"
+  ],
+  "branches": [
+    "amulet-on-owner.slime-cure",
+    "amulet-on-owner.healthy-unchanging",
+    "amulet-on-owner.change-human",
+    "amulet-on-owner.change-wood-nymph",
+    "amulet-on-owner.sleep-first-wear",
+    "amulet-on-owner.reflection-control"
+  ],
+  "requireBranchAssertions": true,
+  "segments": [
+    {
+      "name": "slime-cure",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed amulet of unchanging\r    \u001b\u001b\u001b#wizintrinsic\r30c\r    \u001b\u001b\u001bPa    \u001b\u001b\u001b\u0018    \u001b\u001b\u001bi    \u001b\u001b\u001b"
+    },
+    {
+      "name": "healthy-unchanging",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed amulet of unchanging\r    \u001b\u001b\u001bPa    \u001b\u001b\u001b\u0018    \u001b\u001b\u001b"
+    },
+    {
+      "name": "change-human",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed amulet of change\r    \u001b\u001b\u001bPa    \u001b\u001b\u001b\u0018    \u001b\u001b\u001bi    \u001b\u001b\u001b"
+    },
+    {
+      "name": "change-wood-nymph",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #polyself\rwood nymph\r    \u001b\u001b\u001b\u0017uncursed amulet of change\r    \u001b\u001b\u001bPa    \u001b\u001b\u001b\u0018    \u001b\u001b\u001bi    \u001b\u001b\u001b"
+    },
+    {
+      "name": "sleep-first-wear",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed amulet of restful sleep\r    \u001b\u001b\u001bPa    \u001b\u001b\u001b\u0018    \u001b\u001b\u001bRa    \u001b\u001b\u001b"
+    },
+    {
+      "name": "reflection-control",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed amulet of reflection\r    \u001b\u001b\u001bPa    \u001b\u001b\u001bi    \u001b\u001b\u001bRa    \u001b\u001b\u001b"
+    }
+  ],
+  "branchAssertions": [
+    {
+      "branch": "amulet-on-owner.slime-cure",
+      "segment": 0,
+      "screenIncludes": [
+        "You are turning into slime.",
+        "(being worn)",
+        "You can't change from your current form"
+      ]
+    },
+    {
+      "branch": "amulet-on-owner.healthy-unchanging",
+      "segment": 1,
+      "screenIncludes": [
+        "(being worn)"
+      ]
+    },
+    {
+      "branch": "amulet-on-owner.change-human",
+      "segment": 2,
+      "screenIncludes": [
+        "You are suddenly very feminine!",
+        "The amulet disintegrates!"
+      ]
+    },
+    {
+      "branch": "amulet-on-owner.change-wood-nymph",
+      "segment": 3,
+      "screenIncludes": [
+        "You don't feel like yourself.",
+        "Call an oval amulet:"
+      ]
+    },
+    {
+      "branch": "amulet-on-owner.sleep-first-wear",
+      "segment": 4,
+      "screenIncludes": [
+        "You fall asleep uncontrollably because of your circular amulet (45)."
+      ]
+    },
+    {
+      "branch": "amulet-on-owner.reflection-control",
+      "segment": 5,
+      "screenIncludes": [
+        "(being worn)"
+      ]
+    }
+  ]
+}

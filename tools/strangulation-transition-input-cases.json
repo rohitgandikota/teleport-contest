@@ -1,0 +1,66 @@
+{
+    "evidence": "fixed baseline ordinary JS only; no native oracle",
+    "visible": [
+        [
+            0,
+            95,
+            "You are no longer being strangled."
+        ],
+        [
+            0,
+            119,
+            "In what direction?"
+        ],
+        [
+            1,
+            124,
+            "begins constricting your neck!"
+        ],
+        [
+            1,
+            144,
+            "strangling                  [6]"
+        ],
+        [
+            2,
+            102,
+            "still constricts your neck!"
+        ],
+        [
+            2,
+            122,
+            "strangling                  [6]"
+        ],
+        [
+            3,
+            86,
+            "You can't breathe.  Sorry."
+        ],
+        [
+            4,
+            61,
+            "In what direction?"
+        ],
+        [
+            5,
+            108,
+            "In what direction?"
+        ]
+    ],
+    "negativeHashes": {
+        "4": {
+            "screens": "eb17f68de3b8565ff63891bea6168b8591efb4c7b3dd251888c2e48b34f98501",
+            "cursors": "61346eaedd11d3e0c9bf3e7939bc5ff658c65d3ad288a23558b57b5d0ba6c233",
+            "rng": "5e07d27cc9dc60a2bc240cfbc413bc0681b1a2b80d0160e8bf925fabf2b25bba",
+            "slices": "babf545f279cbadb517b80a3fdb58976ac52a26c4a20d583142af20a9397f84f",
+            "frames": "e44c62244f3f39a3184ac105b42202b30af1040c458b6a2236da2d4f1dceaec3"
+        },
+        "5": {
+            "screens": "ff06c5bb5ec4ae9e338d41814eb730016cb2e6915195a8aa6b2f065e665b1355",
+            "cursors": "16c6ebe5eb8d19334fef7bd682e1581fa3a935305f00898c09e7faf930dd5961",
+            "rng": "9a903cf1daa430e0ebb741c42891f5f6b3d91c247a15b8cb61023aeeebc031cc",
+            "slices": "045fd1e1748bde57037c24a13f24d249a04ac2ce46939369cd9ba3687f4cbae1",
+            "frames": "cc9d468891b6a599b18a5cc1c2e19f4d08a5c772d4de4b7c06a2734e6772d2df"
+        }
+    }
+}

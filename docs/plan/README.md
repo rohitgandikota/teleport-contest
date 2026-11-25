@@ -153,10 +153,14 @@ boundaries, 48,265 complete calls and seven frames, fixing six screens.
 Twelve unaffected cases retain all five output hashes. Eighteen focused
 fixtures, all 44 public sessions and 62 bounded workers pass. The maintained
 corpus is 832. Completed full828 excludes this change, combat and message
-bounds. The next strangulation candidate now matches all six fresh native
-cases after repairing the canonical timeout reader in character inspection.
-Its current-runtime regression is next; the original two-screen failure is
-preserved. Full status-enlightenment source review continues separately.
+bounds. Strangulation now updates and reads the intrinsic countdown, preserving
+the worn amulet mask, and character inspection includes C's strangulation text.
+All 26 parent checks, 135 controls, eighteen focused fixtures, all public
+sessions and 62 bounded workers pass. Six C cases match 750 boundaries and
+16,922 complete calls, correcting 88 styled screens, four cursors and two
+input slices. Both unaffected cases retain all five hashes. Six Amulet_on
+cases add regression coverage without changing that owner. The full status
+function remains under separate review. Maintained corpus: 837.
 
 Hunger exhaustion now checks the active form's HP. All twenty parent checks,
 59 controls, eighteen focused fixtures, all public sessions and 62 bounded
@@ -186,8 +190,8 @@ focused fixtures, all public sessions and 62 bounded workers pass. Six fresh
 C cases match 52 styled boundaries and 18,174 complete calls, correcting eight
 screens/cursors. Three ASCII controls preserve all five output hashes. No
 transport-EOF, Unicode-name or complete queued-line claim is made. Maintained
-corpus: 835. The completed full832 run excludes hunger, physical feedback
-and this EOF repair.
+corpus at that checkpoint: 835. EOF checkpoint `f78a516a` is pushed. The
+completed full832 run excludes hunger, physical feedback, EOF and strangulation.
 
 The latest shared-machine C union credits 831 inputs across 110 layouts,
 reaching 4,583/5,492 functions and 60,818/107,260 branch outcomes. It adds

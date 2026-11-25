@@ -9346,6 +9346,62 @@ Seven compact files were downloaded and hash-verified; receipt is
 Compact SHA `7d4395c62ffe2f20169df840445501abd026dc0dfbc926103b33e2f5d5dedff8`.
 This measures C reach only, not JS parity. No NFS batch is active.
 
+## 2026-11-25 03:38 UTC: strangulation and amulet coverage verified
+
+EOF checkpoint `f78a516a77e95f9ef2a5bb3ac88f7b0465d89c15` is pushed.
+Strangulation parent worker 98248 closed with exit 0; all 26 checks pass.
+There are 135 controls, eighteen focused fixtures with eighty segments,
+8,828 screens/cursors, 240,894 scored RNG positions and 71 frames. All public
+sessions and 62 bounded workers pass. Seven strict/deferred native fixtures
+match 47 segments, 4,269 boundaries, 140,545 complete calls and seven frames.
+
+The two runtime modules use the canonical intrinsic countdown and restore
+strangulation text in character inspection. The six transition cases improve
+from 662 to all 750 styled grids, 746 to all 750 cursors and 748 to all 750
+slices; all 16,922 complete calls remain equal. Cases four and five retain
+all five hashes. The separate six-case Amulet_on audit adds 38 state, 23
+input/native-witness and seven complete-native checks without a runtime edit.
+Its 432 boundaries and 16,664 calls are exact. Constructed burial, final-death,
+existing-deadline and permanent-source tests are not ordinary native claims.
+
+All 279 runtime hashes and fifteen support files match the tested candidate;
+all 835 preceding raw files remain unchanged. Twelve intent rows appended.
+Maintained corpus: 837. Publish now. Full832 remains on older 81ad0594.
+Verification SHA `a8a91437b76db94bdc3977e6099acba756e5806c0fa716676b54c994451aaf8d`.
+Integration: `strangulation-main-integration.json` in the restart cache.
+The original status recipe failure and separately reviewed 62-cell assertion
+amendment are retained; raw bytes and all input fields are unchanged.
+The initial builder failed before snapshot creation because system Python has
+no zip(strict=...) argument. Explicit length equality replaced that argument;
+no test ran in that failed preparation. Receipt:
+`strangulation-preparation-python-version-failure.json`.
+The Amulet_on parent seal receipt had copied the seal SHA into its manifest
+field. An independent recheck of all 660 files and six links confirms manifest
+`d40b13ce1314c0819dc6f272d8d4030ec75897568c8232595c38b18daa35e4ae`.
+Correction is separate in `amulet-on-source-audit-parent-seal-recheck.json`;
+the prior receipt and sealed package remain unchanged.
+
+Three new packets were independently sealed and recorded without changing
+inputs. First native comparisons on the fixed strangulation candidate plus
+each individual scoped patch: u_slip_free passes all four cases, 490 boundaries
+and 9,967 complete calls; killer initialization passes all six, 705 boundaries
+and 16,757 calls. Both have zero frames. Current parent regressions remain
+pending. The killer patch initializes the C head in resetGame and leaves read.js
+unchanged; two obsolete missing-record assertions need a separately reviewed
+test amendment. Old JSON saves lacking that head remain outside the repair.
+
+Spoteffects first native comparison passes sixteen of twenty cases. The four
+timeout cases diverge at step 246, random-call index 3851: C enters distfleeck,
+m_move, then distfleeck before mcalcmove, while JS skips three calls. Native
+raw has 5,084 boundaries, 70,564 calls and 121 frames. Original proposal, raw
+and all failures are preserved. Raw SHA
+`e0d2dbdf3849b12f733dee843ee7caf24b7a98fd8b020255ce887e3ccbe302af`.
+Darwin now traces this first cause in a separate native-prerequisite sibling;
+no promotion or whole-owner parity is claimed. His begun float_down audit is
+retained for later. Pauli continues do_stone_mon; Singer audits complete
+can_blow/can_chant; Jason handles queued lines; Avicenna completes the broader
+status owner. All work stays on declared fixed snapshots.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

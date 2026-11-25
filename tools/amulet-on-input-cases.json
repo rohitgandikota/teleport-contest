@@ -1,0 +1,103 @@
+{
+    "evidence": "baseline ordinary JS outputs, no C oracle",
+    "visible": [
+        [
+            0,
+            57,
+            "You are turning into slime."
+        ],
+        [
+            0,
+            66,
+            "(being worn)"
+        ],
+        [
+            0,
+            75,
+            "You can't change from your current form"
+        ],
+        [
+            1,
+            41,
+            "(being worn)"
+        ],
+        [
+            2,
+            37,
+            "You are suddenly very feminine!"
+        ],
+        [
+            2,
+            38,
+            "The amulet disintegrates!"
+        ],
+        [
+            3,
+            65,
+            "You don't feel like yourself."
+        ],
+        [
+            3,
+            67,
+            "Call an oval amulet:"
+        ],
+        [
+            4,
+            53,
+            "You fall asleep uncontrollably because of your circular amulet (45)."
+        ],
+        [
+            5,
+            41,
+            "(being worn)"
+        ]
+    ],
+    "unchangedBaselineHashes": {
+        "0": {
+            "screens": "4947f9bbb5b8aedc654df65eb6e51df97d33c6ce9c8608d695c33c64ddb8eb6f",
+            "cursors": "47be306f43b6fdb0b32ff1b5a905422fc85376fd146f37ddece498bbda7b20f8",
+            "rng": "37a2b880d125938da2df72fc899e5477c3aaaf6461283b6404a0535b13d2f96a",
+            "slices": "b8cb4386575b97e4198fa2752e7ad0d990202511315712845ac68060a08f5c7f",
+            "frames": "bcb4b513eb010b376d15b612f8230cb539c14df8f76e58ebaf78f977b5f9a295"
+        },
+        "1": {
+            "screens": "70de58eddb1eddca8b48ac06722174dda797f88a5d491c53739dcfa34a2631eb",
+            "cursors": "9c48a6071abe77040635e1f6deacf6a947e6664c478e07905c06ef3474b2e0ef",
+            "rng": "37a2b880d125938da2df72fc899e5477c3aaaf6461283b6404a0535b13d2f96a",
+            "slices": "ac33d9ec3e3bfb865387c53ceab2b9da369cc87f183cbe6a372d89fd37f339ba",
+            "frames": "b86647c3fcd094442688a9e26f6faad8a5d26459fb781461216d57253e03d344"
+        },
+        "2": {
+            "screens": "39887c8c69dfeb309b0878582770580d321eb28e426b54473498aeb1f49fb912",
+            "cursors": "17db74fa95817f92365466898b112119ed8f4a370865ef3bd99ab21a78f55b73",
+            "rng": "742b211a7bda663f1a298bdce4643745c2447d91bb968e096112eb813e93b2c2",
+            "slices": "28ecd53097bdb03ea9456da0c90ad412c21782ff6d999b104f03b5f012fa5b2e",
+            "frames": "d06edf87c991b296083d111a5081863fd799c120b37dcc72eae7c55c9e4dabc3"
+        },
+        "3": {
+            "screens": "ef15bb3958f90b326f318e9853d12a2b3ec184828d71ceb001c4cf7ce1c632c3",
+            "cursors": "ee1d2ad4f2032bf106eccb824ef3ce509aff26d564f361bc5bc39e0ead6319ab",
+            "rng": "16dabf865ddd93fd5f229ca0a7b940da7183505988f70cadc77d930c85fd80ef",
+            "slices": "7da00bc51a43c4f935ca192fb141e84760eef69e6861a6da1d1dba16f0c28c19",
+            "frames": "ba56ec9390e018ba54353628fe4a9e51159cd53adff013965530ee3a6fbb36ad"
+        },
+        "4": {
+            "screens": "1426276771cb2664a1ae25efb60f77eab24f440ea118d5b22029745700b4b12b",
+            "cursors": "7cf314e356c581671065468986d8031b834ce3949c09ec8ace72a661a86c97f5",
+            "rng": "70dd6c09ae365b173905255690379875b2eaf43e1d51db55fe872d35018f1655",
+            "slices": "a3aa186ff8c6636ea4400580589331b572d11cc47e9e26b6730cde21791f7d60",
+            "frames": "1ad64dbc6fde8607076665b1fe325391f4e0731c252467c89445b62bbacdb636"
+        },
+        "5": {
+            "screens": "85df7d0d83777bb197eb59a937d29a4ff2c7f6e69620ba97aac615352b96776c",
+            "cursors": "63c3395dd266d385411dda556bb9a99a7d6b134f68ef033df33a799cab21652a",
+            "rng": "683af1e9c033565000ad00359e6c32027824be8c9714298a15dedfa21f112992",
+            "slices": "fc1663fb6af2c746c80ed6414665d4b226a0bb50b0e733db9765e4563ca2da1e",
+            "frames": "2bfadcb5ce122d308aa99f3b659a5ee16fb1fc0c1e88bd183cb21c4695ba1de2"
+        }
+    },
+    "negativeCases": [
+        1,
+        5
+    ]
+}

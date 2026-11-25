@@ -4360,6 +4360,15 @@
     {"id": "mcureblindness.owner.extra-cursed", "group": "mcureblindness-owner", "cFile": "src/muse.c", "cFunction": "mcureblindness", "description": "cursed extra impact leaves blindness"},
     {"id": "mcureblindness.owner.full-cursed", "group": "mcureblindness-owner", "cFile": "src/muse.c", "cFunction": "mcureblindness", "description": "cursed full impact still cures with location"},
     {"id": "mcureblindness.owner.natural-horn-unseen", "group": "mcureblindness-owner", "cFile": "src/muse.c", "cFunction": "mcureblindness", "description": "natural horn cures silently while hero is blinded by vapor"},
-    {"id": "mcureblindness.owner.carrot-pet", "group": "mcureblindness-owner", "cFile": "src/muse.c", "cFunction": "mcureblindness", "description": "pet eats an actual thrown carrot and recovers sight at its square"}
+    {"id": "mcureblindness.owner.carrot-pet", "group": "mcureblindness-owner", "cFile": "src/muse.c", "cFunction": "mcureblindness", "description": "pet eats an actual thrown carrot and recovers sight at its square"},
+    {"group": "rooted-steed-guards", "id": "rooted-steed-guards.root-ground", "cFile": "src/hack.c", "cFunction": "u_rooted", "description": "Ordinary keyboard proposal: root-ground"},
+    {"group": "rooted-steed-guards", "id": "rooted-steed-guards.root-door", "cFile": "src/hack.c", "cFunction": "u_rooted", "description": "Ordinary keyboard proposal: root-door"},
+    {"group": "rooted-steed-guards", "id": "rooted-steed-guards.root-levitating", "cFile": "src/hack.c", "cFunction": "u_rooted", "description": "Ordinary keyboard proposal: root-levitating"},
+    {"group": "rooted-steed-guards", "id": "rooted-steed-guards.steed-paralysis", "cFile": "src/steed.c", "cFunction": "stucksteed", "description": "Ordinary keyboard proposal: steed-paralysis"},
+    {"group": "rooted-steed-guards", "id": "rooted-steed-guards.steed-sleep", "cFile": "src/steed.c", "cFunction": "stucksteed", "description": "Ordinary keyboard proposal: steed-sleep"},
+    {"group": "rooted-steed-guards", "id": "rooted-steed-guards.mobile-lichen-negative", "cFile": "src/hack.c", "cFunction": "u_rooted", "description": "Ordinary keyboard proposal: mobile-lichen-negative"},
+    {"group": "rooted-steed-guards", "id": "rooted-steed-guards.root-stairs-negative", "cFile": "src/hack.c", "cFunction": "u_rooted", "description": "Ordinary keyboard proposal: root-stairs-negative"},
+    {"group": "rooted-steed-guards", "id": "rooted-steed-guards.steed-awake-negative", "cFile": "src/steed.c", "cFunction": "stucksteed", "description": "Ordinary keyboard proposal: steed-awake-negative"},
+    {"group": "rooted-steed-guards", "id": "rooted-steed-guards.steed-saddle-negative", "cFile": "src/steed.c", "cFunction": "stucksteed", "description": "Ordinary keyboard proposal: steed-saddle-negative"}
   ]
 }

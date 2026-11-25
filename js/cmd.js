@@ -36,7 +36,8 @@ import { doname } from './objnam.js';
 import { num_spells } from './spell.js';
 import { can_reach_floor } from './pickup.js';
 import { which_armor } from './worn.js';
-import { test_move } from './hack.js';
+import { test_move, u_rooted } from './hack.js';
+import { stucksteed } from './steed.js';
 import { vobj_at } from './display.js';
 import { auto_describe } from './getpos.js';
 import { dountrap } from './trap.js';
@@ -2795,30 +2796,37 @@ async function domove_core() {
         }
     }
 
-    /* src/hack.c:2813: reaching an apparently empty destination proves
-       that a remembered invisible-monster marker there is stale. This must
-       run before boulder handling so a boulder pushed onto that square can
-       replace the marker in map memory. */
-    unmap_invisible(newx, newy);
-
-    // src/hack.c:2826, confirm hazards before struggling out of a trap.
-    if (await avoid_trap_andor_region(newx, newy))
-        return;
-
-    /* src/hack.c:2831, a walk attempts escape from the current trap.
-       Even successful escape may consume the move without changing position. */
-    if (game.u.utrap) {
-        const moved = await trapmove(newx, newy, null);
-        if (!game.u.utrap) {
-            (game.disp ||= {}).botl = true;
-            await reset_utrap(true); /* might resume levitation or flight */
-        }
-        if (!moved)
-            return;
-    }
-
-    // src/hack.c:2846, terrain validation precedes liquid danger.
     if (!displaceu.value) {
+        /* src/hack.c:2813: reaching an apparently empty destination proves
+           that a remembered invisible-monster marker there is stale. This must
+           run before boulder handling so a boulder pushed onto that square can
+           replace the marker in map memory. */
+        unmap_invisible(newx, newy);
+
+        // src/hack.c:2815, inability to move is checked after attacking.
+        if ((u.dx || u.dy) && u.usteed && await stucksteed(false)) {
+            nomul(0);
+            return;
+        }
+        if (await u_rooted())
+            return;
+
+        // src/hack.c:2826, confirm hazards before struggling out of a trap.
+        if (await avoid_trap_andor_region(newx, newy))
+            return;
+
+        /* src/hack.c:2831, a walk attempts escape from the current trap.
+           Even successful escape may consume the move without changing position. */
+        if (game.u.utrap) {
+            const moved = await trapmove(newx, newy, null);
+            if (!game.u.utrap) {
+                (game.disp ||= {}).botl = true;
+                await reset_utrap(true); /* might resume levitation or flight */
+            }
+            if (!moved)
+                return;
+        }
+
         if (!(await test_move(u.ux, u.uy, newx - u.ux, newy - u.uy, DO_MOVE))) {
             if (!game.context.door_opened) {
                 game.context.move = 0;

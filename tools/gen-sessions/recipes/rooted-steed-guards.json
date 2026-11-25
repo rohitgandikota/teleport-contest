@@ -1,0 +1,218 @@
+{
+  "name": "rooted-steed-guards",
+  "description": "Locked normal debug-startup keyboard proposals with real polymorph, speed/levitation potions, saddle mounting and potion impact. JS reach verified separately; canonical native recording and output comparison are parent work.",
+  "coverage": [
+    "level.ordinary",
+    "mode.debug",
+    "ui.getlin",
+    "ui.more-paging"
+  ],
+  "branches": [
+    "rooted-steed-guards.root-ground",
+    "rooted-steed-guards.root-door",
+    "rooted-steed-guards.root-levitating",
+    "rooted-steed-guards.steed-paralysis",
+    "rooted-steed-guards.steed-sleep",
+    "rooted-steed-guards.mobile-lichen-negative",
+    "rooted-steed-guards.root-stairs-negative",
+    "rooted-steed-guards.steed-awake-negative",
+    "rooted-steed-guards.steed-saddle-negative"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "rooted-steed-guards.root-ground",
+      "segment": 0,
+      "screenIncludes": [
+        "You turn into a brown mold!",
+        "You are rooted to the ground.",
+        "MacOS NetHack Version 5.0.0"
+      ],
+      "screenExcludes": []
+    },
+    {
+      "branch": "rooted-steed-guards.root-door",
+      "segment": 1,
+      "screenIncludes": [
+        "You turn into a blue jelly!",
+        "You are rooted to the ground.",
+        "MacOS NetHack Version 5.0.0"
+      ],
+      "screenExcludes": [
+        "The door opens.",
+        "The door resists!"
+      ]
+    },
+    {
+      "branch": "rooted-steed-guards.root-levitating",
+      "segment": 2,
+      "screenIncludes": [
+        "You turn into a brown mold!",
+        "You are rooted in place.",
+        "MacOS NetHack Version 5.0.0"
+      ],
+      "screenExcludes": [
+        "You are rooted to the ground."
+      ]
+    },
+    {
+      "branch": "rooted-steed-guards.steed-paralysis",
+      "segment": 3,
+      "screenIncludes": [
+        "pony's head",
+        "Your pony won't move!",
+        "MacOS NetHack Version 5.0.0"
+      ],
+      "screenExcludes": []
+    },
+    {
+      "branch": "rooted-steed-guards.steed-sleep",
+      "segment": 4,
+      "screenIncludes": [
+        "pony's head",
+        "falls asleep.",
+        "Your pony won't move!",
+        "MacOS NetHack Version 5.0.0"
+      ],
+      "screenExcludes": []
+    },
+    {
+      "branch": "rooted-steed-guards.mobile-lichen-negative",
+      "segment": 5,
+      "screenIncludes": [
+        "You turn into a lichen!",
+        "MacOS NetHack Version 5.0.0"
+      ],
+      "screenExcludes": [
+        "You are rooted"
+      ]
+    },
+    {
+      "branch": "rooted-steed-guards.root-stairs-negative",
+      "segment": 6,
+      "screenIncludes": [
+        "You are rooted to the ground.",
+        "MacOS NetHack Version 5.0.0"
+      ],
+      "screenExcludes": []
+    },
+    {
+      "branch": "rooted-steed-guards.steed-awake-negative",
+      "segment": 7,
+      "screenIncludes": [
+        "Force the mount to succeed?",
+        "MacOS NetHack Version 5.0.0"
+      ],
+      "screenExcludes": [
+        "won't move!"
+      ]
+    },
+    {
+      "branch": "rooted-steed-guards.steed-saddle-negative",
+      "segment": 8,
+      "screenIncludes": [
+        "pony's saddle",
+        "saddle gets wet.",
+        "MacOS NetHack Version 5.0.0"
+      ],
+      "screenExcludes": [
+        "won't move!"
+      ]
+    }
+  ],
+  "segments": [
+    {
+      "seed": 7401,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "root-ground",
+      "moves": " #levelchange\r15\r               l \u0017blessed potion of speed\r  \u001b\u001bqa    \u001b\u001b#polyself\rbrown mold\r   \u001b\u001bl    V"
+    },
+    {
+      "seed": 7401,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "root-door",
+      "moves": " #levelchange\r15\r               l l \u0017wall\r  \u001b\u001b\u0017closed door\r  \u001b\u001bh \u0017blessed potion of speed\r  \u001b\u001bqa    \u001b\u001b#polyself\rblue jelly\r   \u001b\u001bl    V"
+    },
+    {
+      "seed": 7401,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "root-levitating",
+      "moves": " #levelchange\r15\r               l \u0017blessed potion of levitation\r  \u001b\u001bqa    \u001b\u001b\u0017blessed potion of speed\r  \u001b\u001bqb    \u001b\u001b#polyself\rbrown mold\r   \u001b\u001bl    V"
+    },
+    {
+      "seed": 6962,
+      "datetime": "20000112124000",
+      "nethackrc": "OPTIONS=name:wizard,role:Knight,race:human,gender=male,align:lawful,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!safe_wait\n",
+      "name": "steed-paralysis",
+      "moves": " #levelchange\r30\r                             i\u001bwb \u0007tame saddled pony\r#ride\ryy\u001b\u001b\u001b\u001b\u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed ring of free action\r  \u001b\u001bPil     \u001b\u001b\u0017blessed potion of paralysis\r  \u001b\u001b.    \u001b\u001btj>    \u001b\u001bl    V"
+    },
+    {
+      "seed": 6962,
+      "datetime": "20000112124000",
+      "nethackrc": "OPTIONS=name:wizard,role:Knight,race:human,gender=male,align:lawful,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!safe_wait\n",
+      "name": "steed-sleep",
+      "moves": " #levelchange\r30\r                             i\u001bwb \u0007tame saddled pony\r#ride\ryy\u001b\u001b\u001b\u001b\u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed ring of free action\r  \u001b\u001bPil     \u001b\u001b\u0017blessed potion of sleeping\r  \u001b\u001b.    \u001b\u001btj>    \u001b\u001bl    V"
+    },
+    {
+      "seed": 7401,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "mobile-lichen-negative",
+      "moves": " #levelchange\r15\r               l \u0017blessed potion of speed\r  \u001b\u001bqa    \u001b\u001b#polyself\rlichen\r   \u001b\u001bl    V"
+    },
+    {
+      "seed": 7401,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "root-stairs-negative",
+      "moves": " #levelchange\r15\r               l \u0017blessed potion of speed\r  \u001b\u001bqa    \u001b\u001b#polyself\rbrown mold\r   \u001b\u001b>    V"
+    },
+    {
+      "seed": 6962,
+      "datetime": "20000112124000",
+      "nethackrc": "OPTIONS=name:wizard,role:Knight,race:human,gender=male,align:lawful,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!safe_wait\n",
+      "name": "steed-awake-negative",
+      "moves": " #levelchange\r30\r                             i\u001bwb \u0007tame saddled pony\r#ride\ryy\u001b\u001b\u001b\u001b\u001b\u001b\u001b\u001b\u001b\u001bl    V"
+    },
+    {
+      "seed": 6962,
+      "datetime": "20000112124000",
+      "nethackrc": "OPTIONS=name:wizard,role:Knight,race:human,gender=male,align:lawful,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!safe_wait\n",
+      "name": "steed-saddle-negative",
+      "moves": " #levelchange\r30\r                             i\u001bwb \u0007tame saddled pony\r#ride\ryy\u001b\u001b\u001b\u001b\u001b\u001b\u001b\u001b\u001b\u001b\u0017uncursed ring of free action\r  \u001b\u001bPil     \u001b\u001b\u0017blessed potion of paralysis\r  \u001b\u001btj>    \u001b\u001bl    V"
+    }
+  ],
+  "unchangedOutputHashes": {
+    "mobile-lichen-negative": {
+      "screens": "9f7ee99a8587029d909c77da6bee9b833b50988aa39a63cf92436dac4ef4fc78",
+      "cursors": "2f1ea6afa7d15b08c260abc53d262951bd0f924e3ad5ecb29d8802db1cac13a1",
+      "rng": "8c558ad726cde1bbe5e2e2538cb433d4e00a9eaa50a7ee55bc66cbacb34dccca",
+      "slices": "e9bf04210bbad5fb2dcc60872f7a0905b54fb1a8cf830583f918efd500a62496",
+      "frames": "fc482d9dff1398983f90ceb73ffa4effb77458765e1f976f5ae5b7b76fe41780"
+    },
+    "root-stairs-negative": {
+      "screens": "4b2fd2a033fd3b455d2404a878bf65e5f890f6bc941444687d1c0cfd8c135221",
+      "cursors": "77667cf9f99c00470b8bada3cdfd2fd7373d2f65597106cd4fda272975a45da1",
+      "rng": "50cc203db011262ad225fbb6eb3990151a0456f70a37e756d330bbd57cd54d1e",
+      "slices": "aa1d17ae38a3811b682043262d51caf97300af1ee8c1ecb73301f59cdc85f3b9",
+      "frames": "9563dee59b16a6072418273edb77b2f3f3d7f770aafd73feb95338d581909d4e"
+    },
+    "steed-awake-negative": {
+      "screens": "1ffa2fc18886ba1b918362d5387ccbb95f625a7ae384ba462042f5fab18e3669",
+      "cursors": "c2429fdbace24d9b4a799d9cad4ff9c2ef96e27136e1551b52346eedcb831871",
+      "rng": "e9f61d1638ee4474197f7cbf612ce5db2d4b97cf9f0cc956b040f067719173cc",
+      "slices": "2f0620d61e0696b3769ded10ddaf353d73dd318d96d28c273a7f88209745d05a",
+      "frames": "f34a52467004bc7c8b382207016ecf5386f853f54ab3f7d58352d1b39f6d4ebc"
+    },
+    "steed-saddle-negative": {
+      "screens": "86ec5564f490d27f7e9e0d1496f127893a476aef262bbafa072891d64cd577c8",
+      "cursors": "44362357f7b2038412a031030dd9e16dfd78ffdcbd10cbc4c1c866486887a9ca",
+      "rng": "bf854477e3a9e56afdaab43fbc7659756b836f497d69b5a186b53a186013face",
+      "slices": "8ae0a17a562a2e3c77eb168c07e970f9ab0fe3aa1a7533aea11d2b4b5e7a2ff0",
+      "frames": "9f00f1c780e66365aa54773c2b1f0c95556ca8bc45d5923de1b68ad458f8d2d0"
+    }
+  }
+}

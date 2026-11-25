@@ -1,5 +1,46 @@
 # STATUS — live handoff board
 
+## 2026-11-25: rooted and mounted movement verified; full880 running
+
+Pet and sight-recovery messages are pushed as `b5100d6e`. The redundant parent
+recording now links to the canonical fixture, removing1,316,407 identical bytes.
+Current main changes only cmd.js to call stucksteed and u_rooted after attack
+and invisible-memory cleanup, inside !displaceu, before hazards, trap escape
+and terrain checks. It preserves the C time cost and awaits refusal messages.
+The complete existing helper owners remain unchanged.
+
+All41 source controls and27 ordinary assertions pass, versus26 and17 before.
+Four negatives retain all five hashes; observer/plain/deferred/exhausted-input
+checks pass. All nine unchanged C cases match1,240 styled boundaries/cursors,
+22,044 calls and ordered slices, and zero frames, versus four before. All72
+selected/public recordings match27,764 screens/cursors,1,167,954 random positions
+and1,560 frames. All72 strict eight-second workers, nine retained suites,
+source audit and three syntax checks pass. All18 main checks pass.
+All643 source-packet members are verified. All879 prior recordings and prior
+requirements remain fixed; one fixture and nine requirements bring the corpus
+to880. Main receipt: `rooted-steed-main-verification.json`, SHA256
+`50cc44a34781596e75946063867bb6bf44e3c600396f126cd1c4cc7ee7db7215`.
+Commit and immediately push this verified checkpoint.
+
+The separate display.pline location-capture hunk passes50 source controls
+versus16 on this composition, with59 mcure controls, eight ordinary cases and
+eight native cases retained. All637 original packet members are verified.
+Four other queued-message contract failures remain under separate review.
+The display change is not yet on main. Full880 is running with that candidate,
+two CPU workers, default45-second worker budgets and no retries. NFS root:
+`/share/NFS/u/rohit/research/contest/artifacts/2026-11-22/notice-location-full880-js-20261125`.
+The run fixes1,170 files, links877 prior recordings and uploads only293 files,
+including three new recordings. All-files SHA256:
+`19ba70f028ef81bf7c37e53f553782e1ee01e891c3ca5084f5aee255039533ff`.
+Driver PID3065878. No completed full880 result is claimed yet.
+
+Article native comparison remains12/14. Decoded C differences are missing
+indefinite articles for Excalibur-named fruit in inventory/drop/eat feedback;
+the final the()/food_xname branches already match. The separate helper review
+keeps the original packet, all inputs and failing evidence fixed. Swim danger
+review found known-boots, locomotion wording and grounded-floor gaps, with no
+runtime candidate yet. Latest observed leaderboard remains rank7,659 unmatched.
+
 ## 2026-11-25: pet and sight-recovery messages verified for publication
 
 Free action is pushed as `a42abe34`. Its redundant parent recording now links

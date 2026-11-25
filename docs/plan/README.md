@@ -13,6 +13,19 @@ Ground rules are in `/CLAUDE.md`. Read that first if you have not.
 ## Current focus, 2026-11-25
 
 
+The message-location checkpoint is pushed as `b5100d6e`. Rooted and mounted
+movement is now verified for publication:41 source controls,27 ordinary
+assertions, nine exact C cases,72 selected/public recordings and72 strict
+workers pass. All879 prior recordings remain fixed; the corpus is880.
+The separate queued-location candidate passes50 controls and is in a fresh
+full880 NFS run with two workers,877 reused recordings and three new recordings.
+That run is still active. Its snapshot includes the rooted/steed change but
+the display hunk remains outside main until verification completes.
+Article naming retains two native failures under a separate helper review.
+See the newest STATUS entry for publication and full-run receipts.
+
+
+
 Free action is pushed as `a42abe34`. The next checkpoint is verified: six
 message calls in dog.js and mon.js now preserve C's monster coordinates.
 All84 source controls, eight native cases,72 selected/public recordings and72

@@ -3,18 +3,18 @@ import { is_rider, locomotion } from './mondata.js';
 import { goodpos } from './makemon.js';
 import { rloc_to, enexto, random_teleport_level, rloco } from './teleport.js';
 import { revive_corpse, flooreffects } from './do.js';
-import { obj_ice_effects, add_to_migration } from './mkobj.js';
+import { obj_ice_effects, add_to_migration, is_weptool } from './mkobj.js';
 import { spot_time_left, spot_stop_timers, MELT_ICE_AWAY } from './timeout.js';
 import { float_vs_flight } from './polyself.js';
-import { float_up, blow_up_landmine, fill_pit, deltrap, seetrap, feeltrap, launch_obj } from './trap.js';
+import { float_up, blow_up_landmine, fill_pit, deltrap, seetrap, feeltrap, launch_obj, selftouch } from './trap.js';
 import { You_cant, pline_dir } from './pline.js';
-import { FROMOUTSIDE, TIMEOUT, A_DEX, Is_airlevel, DRAWBRIDGE_UP, DB_UNDER, DB_ICE, MAX_TYPE, IN_SIGHT, MIGR_RANDOM, ROLL, LAUNCH_KNOWN, xFLOOR, xGROUND, xOPENDOOR, xSHUTDOOR, xSWAMP, xSUBMERGED, xSEA, xWATERWALL, TREE, DOOR, D_TRAPPED, MOAT, Is_earthlevel, Is_juiblex_level } from './const.js';
+import { FROMOUTSIDE, FROMFORM, I_SPECIAL, W_ARTI, NO_KILLER_PREFIX, TIMEOUT, A_DEX, Is_airlevel, DRAWBRIDGE_UP, DB_UNDER, DB_ICE, MAX_TYPE, IN_SIGHT, MIGR_RANDOM, ROLL, LAUNCH_KNOWN, xFLOOR, xGROUND, xOPENDOOR, xSHUTDOOR, xSWAMP, xSUBMERGED, xSEA, xWATERWALL, TREE, DOOR, D_TRAPPED, MOAT, Is_earthlevel, Is_juiblex_level } from './const.js';
 import { obj_extract_self, useupf } from './invent.js';
 import { place_object } from './mkobj.js';
 import { exercise, ACURR } from './attrib.js';
 import { A_STR, LANDMINE, SPIKED_PIT, PIT, HOLE, TRAPDOOR,
          LEVEL_TELEP, TELEP_TRAP, ROLLING_BOULDER_TRAP } from './const.js';
-import { the, xname, ansimpleoname, Tobjnam, otense } from './objnam.js';
+import { the, xname, doname, ansimpleoname, Tobjnam, otense } from './objnam.js';
 import { costly_spot, stolen_value } from './shk.js';
 import { You_hear, There } from './pline.js';
 import { flush_screen, glyph_at, map_invisible, newsym, unmap_invisible,
@@ -65,7 +65,7 @@ import { on_level } from './dungeon.js';
 import { d } from './rng.js';
 import { Warning, Half_physical_damage, Protection_from_shape_changers } from './youprop.js';
 import { ESHK, RLOC_NOMSG, something, DISMOUNT_FELL, DISMOUNT_GENERIC, invlet_basic, GP_ALLOW_U, A_CON } from './const.js';
-import { hard_helmet, helm_simple_name } from './do_wear.js';
+import { hard_helmet, helm_simple_name, Ring_off, Boots_off, off_msg, stop_donning } from './do_wear.js';
 import { fall_asleep } from './timeout.js';
 import { mnexto } from './mon.js';
 import { mdamageu } from './mhitu.js';
@@ -98,7 +98,7 @@ import { sensemon, is_safemon, mon_visible, pline, urgent_pline, canspotmon } fr
 import { hides_under, noattacks, is_hider, ceiling_hider } from './mondata.js';
 import { onscary } from './monmove.js';
 import { PMNAMES, MONSYMS, ATTKS } from './monst_data.js';
-import { rn2, rnd } from './rng.js';
+import { rn1, rn2, rnd } from './rng.js';
 import {
     IS_STWALL, IS_TREE, IS_OBSTRUCTED,
     W_NONDIGGABLE, W_NONPASSWALL,
@@ -119,7 +119,7 @@ import { couldsee, cansee } from './vision.js';
 import { D_CLOSED, D_LOCKED } from './const.js';
 import { done } from './end.js';
 import { DIED } from './const.js';
-import { ONAMES } from './objects_data.js';
+import { ONAMES, OCLASSES } from './objects_data.js';
 import { In_sokoban } from './dungeon.js';
 import { inside_room } from './sp_lev.js';
 import { cmap_names } from './drawing_data.js';
@@ -397,6 +397,72 @@ export function movobj(obj, ox, oy) {
     if (placement)
         return placement.then(() => newsym(ox, oy));
     newsym(ox, oy);
+}
+
+// src/hack.c:836 dosinkfall()
+async function dosinkfall() {
+    const fell_on_sink = 'fell onto a sink';
+    const u = game.u;
+    let lev_boots = u.uarmf && u.uarmf.otyp === ONAMES.LEVITATION_BOOTS;
+    const innate_lev = !!(u.intrinsic.HLevitation & (FROMOUTSIDE | FROMFORM));
+    const blockd_lev = u.blocked.LEVITATION === I_SPECIAL;
+    const ufall = !innate_lev && !blockd_lev
+        && !(u.intrinsic.HFlying || u.uprops.FLYING);
+
+    if (!ufall) {
+        await You(innate_lev || blockd_lev ? 'wobble unsteadily for a moment.'
+                                          : 'gain control of your flight.');
+    } else {
+        const save_ELev = u.uprops.LEVITATION;
+        const save_HLev = u.intrinsic.HLevitation;
+        u.uprops.LEVITATION = u.intrinsic.HLevitation = 0;
+        await You('crash to the floor!');
+        let dmg = rn1(8, 25 - ACURR(A_CON));
+        if (Half_physical_damage())
+            dmg = Math.trunc((dmg + 1) / 2);
+        await losehp(dmg, fell_on_sink, NO_KILLER_PREFIX);
+        exercise(A_DEX, false);
+        await selftouch('Falling, you');
+        for (let obj = game.level.objectAt(u.ux, u.uy); obj; obj = obj.nexthere) {
+            if (obj.oclass === OCLASSES.WEAPON_CLASS || is_weptool(obj, game.objects)) {
+                await You(`fell on ${doname(obj)}.`);
+                let dmg = rnd(3);
+                if (Half_physical_damage())
+                    dmg = Math.trunc((dmg + 1) / 2);
+                await losehp(dmg, fell_on_sink, NO_KILLER_PREFIX);
+                await exercise(A_CON, false);
+            }
+        }
+        u.uprops.LEVITATION = save_ELev;
+        u.intrinsic.HLevitation = save_HLev;
+    }
+
+    // Falling interrupts dressing. Levitation boots are removed even without a fall.
+    if (ufall || lev_boots) {
+        await stop_donning(lev_boots ? u.uarmf : null);
+        lev_boots = u.uarmf && u.uarmf.otyp === ONAMES.LEVITATION_BOOTS;
+    }
+
+    u.uprops.LEVITATION &= ~W_ARTI;
+    u.intrinsic.HLevitation &= ~(I_SPECIAL | TIMEOUT);
+    u.intrinsic.HLevitation++;
+    if (u.uleft && u.uleft.otyp === ONAMES.RIN_LEVITATION) {
+        const obj = u.uleft;
+        await Ring_off(obj);
+        await off_msg(obj);
+    }
+    if (u.uright && u.uright.otyp === ONAMES.RIN_LEVITATION) {
+        const obj = u.uright;
+        await Ring_off(obj);
+        await off_msg(obj);
+    }
+    if (lev_boots) {
+        const obj = u.uarmf;
+        await Boots_off();
+        await off_msg(obj);
+    }
+    u.intrinsic.HLevitation--;
+    float_vs_flight();
 }
 
 // src/hack.c:922 may_dig() — intended to be called only on ROCKs or TREEs. A
@@ -1497,7 +1563,7 @@ export async function pooleffects(newspot) {
 // src/hack.c:3312 spoteffects() — what happens on the square just moved onto.
 //
 // Terrain changes and pool effects precede pickup and trap activation.
-// Sink handling, recursion guards and levitation-timeout deferral remain partial.
+// Recursion guards and levitation-timeout deferral remain partial.
 export async function spoteffects(pick) {
     const trap = t_at(game.u.ux, game.u.uy);
     const trapflag = game.iflags.failing_untrap ? 0x40 /* FAILEDUNTRAP */ : 0;
@@ -1512,6 +1578,8 @@ export async function spoteffects(pick) {
         return;
 
     await check_special_room(false);
+    if (game.level.at(game.u.ux, game.u.uy).typ === SINK && Levitation())
+        await dosinkfall();
 
     /* src/hack.c:3355 — "if dismounting, check again later": the whole
        pickup/trap block is skipped so that only float_down()'s pickup runs;

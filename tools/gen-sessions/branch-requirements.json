@@ -3883,6 +3883,16 @@
     {"group":"Background polymorph enlightenment","id":"background-polymorph-enlightenment.vampire-alternate-form","cFile":"src/insight.c","cFunction":"background_enlightenment","description":"vampire alternate"},
     {"group":"Background polymorph enlightenment","id":"background-polymorph-enlightenment.final-polymorph-disclosure","cFile":"src/insight.c","cFunction":"background_enlightenment","description":"ogre final"},
     {"group":"Background polymorph enlightenment","id":"background-polymorph-enlightenment.plain-bat-control","cFile":"src/insight.c","cFunction":"background_enlightenment","description":"plain bat control"},
-    {"group":"Background polymorph enlightenment","id":"background-polymorph-enlightenment.natural-human-control","cFile":"src/insight.c","cFunction":"background_enlightenment","description":"human control"}
+    {"group":"Background polymorph enlightenment","id":"background-polymorph-enlightenment.natural-human-control","cFile":"src/insight.c","cFunction":"background_enlightenment","description":"human control"},
+    {"group":"Accessory wear owner","id":"accessory-wear-owner.wielded-helmet","cFile":"src/do_wear.c","cFunction":"accessory_or_armor_on","description":"wielded helmet"},
+    {"group":"Accessory wear owner","id":"accessory-wear-owner.silver-vampire","cFile":"src/do_wear.c","cFunction":"accessory_or_armor_on","description":"silver vampire"},
+    {"group":"Accessory wear owner","id":"accessory-wear-owner.silver-human-control","cFile":"src/do_wear.c","cFunction":"accessory_or_armor_on","description":"silver human control"},
+    {"group":"Accessory wear owner","id":"accessory-wear-owner.headless-eyewear","cFile":"src/do_wear.c","cFunction":"accessory_or_armor_on","description":"headless eyewear"},
+    {"group":"Accessory wear owner","id":"accessory-wear-owner.eyewear-conflicts","cFile":"src/do_wear.c","cFunction":"accessory_or_armor_on","description":"eyewear conflicts"},
+    {"group":"Accessory wear owner","id":"accessory-wear-owner.sink-levitation","cFile":"src/do_wear.c","cFunction":"accessory_or_armor_on","description":"sink levitation"},
+    {"group":"Accessory wear owner","id":"accessory-wear-owner.ordinary-ring-control","cFile":"src/do_wear.c","cFunction":"accessory_or_armor_on","description":"ordinary ring control"},
+    {"group":"Accessory wear owner","id":"accessory-wear-owner.quest-helm","cFile":"src/do_wear.c","cFunction":"accessory_or_armor_on","description":"quest helm"},
+    {"group":"Accessory wear owner","id":"accessory-wear-owner.artifact-eyewear","cFile":"src/do_wear.c","cFunction":"accessory_or_armor_on","description":"artifact eyewear"},
+    {"group":"Accessory wear owner","id":"accessory-wear-owner.water-walking","cFile":"src/do_wear.c","cFunction":"accessory_or_armor_on","description":"water walking"}
   ]
 }

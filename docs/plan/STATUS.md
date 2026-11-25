@@ -8715,6 +8715,54 @@ pending wear composition. The other agents continue ordinary-food tail,
 monster miscellaneous items, shared message/query bounds, and artifact/sit
 slime readers. Parent owns all fresh native recording, integration and pushes.
 
+## 2026-11-25: accessory wearing and sink falls verified and integrated
+
+Full824 result checkpoint `a598f62f` pushed successfully, process 12334 exit 0.
+Accessory wear composition process 53313 closed with exit 0. Independent
+verification passes nineteen checks and 114 behavior controls, including 52
+real-producer state cases, 26 ordinary/native input checks, 25 retained accessory
+controls and eleven complete native checks. Twenty focused fixtures cover 122
+segments, 9,477 screens/cursors, 347,272 scored random-call positions and five
+frames. All 44 public sessions remain exact; all 64 bounded workers pass.
+
+The ten new C cases improve from 683/793 to 793/793 styled boundaries,
+786 to 793 exact cursors and 783 to 793 exact slices. Complete random calls
+now match 30,102, from 30,146 before. Both unaffected controls retain all five
+output hashes. New plus three retained native fixtures pass complete styled
+blank-inclusive, cursor, full-stream, per-input and animation checks over
+997 boundaries, 37,715 calls and four frames. Deferred input matches immediate
+completion on those thirteen segments. Pending message ordering is covered by
+the real-producer state gate, including damage, artifact contact and encumbrance.
+
+The runtime patch changes only `do_wear.js` and `hack.js`. It completes the
+selected wear-owner flow and the missing C sink-fall owner. It keeps C ordering
+for quest checks, touch rejection, slot release, actual completion callbacks,
+water discovery, temporary levitation removal and restoration, local floor-chain
+injuries, dressing interruption and final levitation-item removal. The existing
+`off_msg` body gains its public export for the real sink caller. No runtime
+observation hook, private test export, mock, frozen change or input special case
+is added. The source-regex gate stays in the immutable cache as review support.
+Adjacent equipment callbacks and broader movement recursion remain separate.
+
+All 279 runtime files and seven support files are verified. Reversing the patch
+recovers the parent exactly. All 825 older raw recordings remain unchanged;
+only ten rows are appended to the branch registry. The maintained corpus is
+826. The full824 pass uses preceding `34b1e6b3` and does not include this patch
+or background `7692b8f4`. No full826 or new held-out result is claimed.
+Verification SHA-256 `142683f6a609b0c4fc71a2fd95f904008d2f07814286754eed56912f8a50a526`.
+Integration receipt: `.cache/restart-20261122/accessory-wear-main-integration.json`.
+Publish this checkpoint now.
+
+Parent also recorded the nine immutable miscellaneous-monster inputs:
+raw `0aef44bd299815a5383f6d67d02202b1eb78fd3688e05e9ca2f029fedf853f1b`,
+1,738,178 bytes and 1,098 boundaries. Six cases match all five output collections.
+Three accessibility cases expose inherited combat feedback before or after the
+selected item action. Complete RNG streams match in all nine; whip-case slices
+differ where missing location feedback changes More timing. First mismatch
+artifacts are retained. Do not rewrite those C inputs or claim full native parity.
+Parent is reviewing the complete combat-message owner separately. Amulet,
+ordinary food, shared message/query bounds and slime-reader audits continue.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

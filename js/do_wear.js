@@ -12,7 +12,7 @@ import { set_bc } from './ball.js';
 import { gulp_blnd_check } from './mhitu.js';
 import { shirt_simple_name, shield_simple_name, vtense } from './objnam.js';
 import { urgent_pline } from './display.js';
-import { artifact_light } from './artifact.js';
+import { artifact_light, retouch_object } from './artifact.js';
 import { condtests } from './botl.js';
 import { make_glib, make_hallucinated, toggle_blindness } from './potion.js';
 import { end_burn } from './timeout.js';
@@ -26,8 +26,8 @@ import { W_ARM, W_ARMC, W_ARMH, W_ARMS, W_ARMG, W_ARMF, W_ARMU, W_TOOL,
          WORN_ARMOR, WORN_CLOAK, WORN_SHIRT, WORN_HELMET, WORN_GLOVES,
          WORN_SHIELD, WORN_BOOTS, WORN_AMUL, WORN_BLINDF,
          LEFT_RING, RIGHT_RING, TIMEOUT, A_STR, A_INT, A_WIS, A_DEX, A_CON,
-         A_CHA, A_MAX, A_CURRENT, A_CHAOTIC, A_LAWFUL, A_NEUTRAL, NH_BLACK,
-         INTRINSIC, HEAD, HAND, FINGER, CQ_CANNED, st_corpse,
+         A_CHA, A_MAX, A_CURRENT, A_ORIGINAL, A_CHAOTIC, A_LAWFUL, A_NEUTRAL, NH_BLACK,
+         INTRINSIC, HEAD, HAND, FINGER, FACE, CQ_CANNED, st_corpse,
          st_petrifies, MENU_TRADITIONAL, MENU_COMBINATION, MENU_FULL,
          ALL_TYPES_SELECTED, ALL_FINISHED, SIGNAL_NOMENU, USE_INVLET, INVORDER_SORT, PICK_ANY,
          FROMOUTSIDE, ARTICLE_YOUR, SUPPRESS_SADDLE, SUPPRESS_HALLUCINATION } from './const.js';
@@ -35,7 +35,7 @@ import { setworn } from './worn.js';
 import { welded, is_sword, setuwep, setuswapwep, setuqwep, empty_handed }
     from './wield.js';
 import { bimanual, is_metallic } from './obj.js';
-import { nolimbs, nohands, touch_petrifies, verysmall, humanoid } from './mondata.js';
+import { nolimbs, nohands, touch_petrifies, verysmall, humanoid, has_head } from './mondata.js';
 import { sgn } from './hacklib.js';
 import { erode_obj, float_up, float_down, is_flammable, is_rustprone, is_crackable, is_rottable,
          is_corrodeable, is_damageable } from './trap.js';
@@ -47,7 +47,7 @@ import { ERODE_BURN, ERODE_RUST, ERODE_CRACK, ERODE_ROT, ERODE_CORRODE,
 import { set_occupation, stop_occupation } from './allmain.js';
 import { newsym, pline, see_monsters } from './display.js';
 import { There, You, You_feel, You_cant, Your, impossible } from './pline.js';
-import { an, xname, doname, the, Tobjnam, gloves_simple_name,
+import { an, ansimpleoname, xname, doname, the, safe_typename, Tobjnam, gloves_simple_name,
          boots_simple_name, suit_simple_name, Yname2, makeplural,
          makesingular, otense, corpse_xname, CXN_NOCORPSE,
          CXN_NOARTICLE, CXN_SINGULAR, CXN_ARTICLE, thesimpleoname,
@@ -901,7 +901,7 @@ export function cancel_doff(obj, slotmask) {
 }
 
 // src/do_wear.c:68 off_msg() / :76 on_msg()
-async function off_msg(otmp) {
+export async function off_msg(otmp) {
     if (game.flags?.verbose !== false)
         await You(`were wearing ${doname(otmp)}.`);
 }
@@ -944,6 +944,11 @@ export async function Boots_on() {
     case ONAMES.WATER_WALKING_BOOTS:
         if (game.u.uinwater)
             await spoteffects(true);
+        if (game.wasinwater) {
+            if (!game.u.uinwater)
+                makeknown(ONAMES.WATER_WALKING_BOOTS);
+            game.wasinwater = 0;
+        }
         break;
     case ONAMES.ELVEN_BOOTS:
         await toggle_stealth(uarmf, oldprop, true);
@@ -1445,11 +1450,11 @@ export async function Ring_on(obj) {
 
     /* make sure ring isn't wielded; can't use remove_worn_item()
        here because it has already been set worn in a ring slot */
-    if (obj === game.uwep)
-        setuwep(null);
-    else if (obj === game.uswapwep)
+    if (obj === game.u.uwep)
+        await setuwep(null);
+    else if (obj === game.u.uswapwep)
         setuswapwep(null);
-    else if (obj === game.uquiver)
+    else if (obj === game.u.uquiver)
         setuqwep(null);
 
     /* only mask out W_RING when we don't have both
@@ -1829,7 +1834,7 @@ export function cloak_simple_name(c) {
     return 'cloak';
 }
 
-// src/do_wear.c:2201 accessory_or_armor_on()
+// src/do_wear.c:2209 accessory_or_armor_on()
 export async function accessory_or_armor_on(obj) {
     let mask = 0;
     const armor = obj.oclass === OCLASSES_ARMOR;
@@ -1847,6 +1852,17 @@ export async function accessory_or_armor_on(obj) {
         mask = await canwearobj(obj, true);
         if (!mask)
             return ECMD_OK;
+        if (obj.otyp === ONAMES.HELM_OF_OPPOSITE_ALIGNMENT
+            && game.qstart_level.dnum === game.u.uz.dnum) {
+            if (game.u.ualignbase[A_CURRENT] === game.u.ualignbase[A_ORIGINAL])
+                await You('narrowly avoid losing all chance at your goal.');
+            else
+                await You('are suddenly overcome with shame and change your mind.');
+            game.u.ublessed = 0;
+            makeknown(obj.otyp);
+            game.disp.botl = true;
+            return ECMD_TIME;
+        }
     } else if (ring) {
         if (nolimbs(game.youmonst.data)) {
             await You('cannot make the ring stick to your body.');
@@ -1908,19 +1924,27 @@ export async function accessory_or_armor_on(obj) {
             return ECMD_OK;
         }
     } else if (eyewear) {
-        /* src/do_wear.c:2324 — has_head() is true for every current hero
-           form; the ublindf conflict messages */
+        if (!has_head(game.youmonst.data)) {
+            await You(`have no head to wear ${ansimpleoname(obj)} on.`);
+            return ECMD_OK;
+        }
         const ub = worn(W_TOOL);
         if (ub) {
-            if (ub.otyp === ONAMES.TOWEL)
-                await Your('face is already covered by a towel.');
-            else if (ub.otyp === ONAMES.BLINDFOLD)
-                await You(`are already wearing ${
-                    obj.otyp === ONAMES.LENSES ? 'lenses' : 'a blindfold'}.`);
-            else if (ub.otyp === ONAMES.LENSES)
-                await You(`are already wearing ${
-                    obj.otyp === ONAMES.BLINDFOLD ? 'a blindfold'
-                                                  : 'some lenses'}.`);
+            if (ub.otyp === ONAMES.TOWEL) {
+                await Your(`${body_part(FACE)} is already covered by a towel.`);
+            } else if (ub.otyp === ONAMES.BLINDFOLD) {
+                if (obj.otyp === ONAMES.LENSES)
+                    await You_cant("wear lenses because you're wearing a blindfold there already.");
+                else
+                    await You('are already wearing a blindfold.');
+            } else if (ub.otyp === ONAMES.LENSES) {
+                if (obj.otyp === ONAMES.BLINDFOLD)
+                    await You_cant("wear a blindfold because you're wearing some lenses there already.");
+                else
+                    await You('are already wearing some lenses.');
+            } else {
+                await You('are already wearing something.');
+            }
             return ECMD_OK;
         }
     } else {
@@ -1928,38 +1952,53 @@ export async function accessory_or_armor_on(obj) {
         return ECMD_OK;
     }
 
-    /* retouch_object(): silver/artifact touch effects; nothing reachable */
+    if (!await retouch_object(obj, false))
+        return ECMD_TIME;
 
     if (armor) {
-        setworn(obj, mask);
-        let afternmv = null;
-        if (mask === W_ARM) afternmv = Armor_on;
-        else if (mask === W_ARMC) afternmv = Cloak_on;
-        else if (mask === W_ARMH) afternmv = Helmet_on;
-        else if (mask === W_ARMG) afternmv = Gloves_on;
-        else if (mask === W_ARMF) afternmv = Boots_on;
-        else if (mask === W_ARMS) afternmv = Shield_on;
-        else if (mask === W_ARMU) afternmv = Shirt_on;
+        if (obj.owornmask & W_WEAPONS)
+            await remove_worn_item(obj, false);
+        game.wasinwater = game.u.uinwater;
+        await setworn(obj, mask);
+        if (obj === game.u.uarm)
+            game.afternmv = Armor_on;
+        else if (obj === game.u.uarmh)
+            game.afternmv = Helmet_on;
+        else if (obj === game.u.uarmg)
+            game.afternmv = Gloves_on;
+        else if (obj === game.u.uarmf)
+            game.afternmv = Boots_on;
+        else if (obj === game.u.uarms)
+            game.afternmv = Shield_on;
+        else if (obj === game.u.uarmc)
+            game.afternmv = Cloak_on;
+        else if (obj === game.u.uarmu)
+            game.afternmv = Shirt_on;
+        else
+            throw new Error(`wearing armor not worn as armor? [${obj.owornmask.toString(16)}]`);
 
-        const delay = -(objects[obj.otyp].oc_delay || 0);
+        const delay = -objects[obj.otyp].oc_delay;
         if (delay) {
-            game.afternmv = afternmv;
             nomul(delay);
             game.multi_reason = 'dressing up';
             game.nomovemsg = 'You finish your dressing maneuver.';
         } else {
-            game.afternmv = afternmv;
             await unmul('');
             await on_msg(obj);
         }
+        const takeoff = (game.context_takeoff ||= {});
+        takeoff.mask = takeoff.what = 0;
     } else if (ring) {
-        setworn(obj, mask);
+        await setworn(obj, mask);
         await Ring_on(obj);
-        await on_msg(obj);
+        if (is_worn(obj))
+            await on_msg(obj);
     } else if (amulet) {
         await Amulet_on(obj);
     } else if (eyewear) {
         await Blindf_on(obj);
+    } else {
+        await impossible(`putting on unexpected type of accessory: ${safe_typename(obj.otyp)}`);
     }
     return ECMD_TIME;
 }

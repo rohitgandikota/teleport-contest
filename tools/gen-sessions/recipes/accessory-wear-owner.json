@@ -1,0 +1,176 @@
+{
+  "name": "accessory-wear-owner",
+  "description": "Original C wear commands cover wielded armor release, silver and artifact contact, headless and conflicting eyewear, sink removal, quest helm refusal and delayed water-walking discovery. Human silver and ordinary-ring negatives retain all five baseline outputs. All ten C cases have complete output checks. Converted quest refusal and other direct-state controls are not ordinary native claims.",
+  "coverage": [
+    "mode.debug",
+    "ui.getlin",
+    "ui.more-paging",
+    "forms.polymorph",
+    "object.armor",
+    "object.rings",
+    "object.artifacts",
+    "object.identification",
+    "level.quest"
+  ],
+  "branches": [
+    "accessory-wear-owner.wielded-helmet",
+    "accessory-wear-owner.silver-vampire",
+    "accessory-wear-owner.silver-human-control",
+    "accessory-wear-owner.headless-eyewear",
+    "accessory-wear-owner.eyewear-conflicts",
+    "accessory-wear-owner.sink-levitation",
+    "accessory-wear-owner.ordinary-ring-control",
+    "accessory-wear-owner.quest-helm",
+    "accessory-wear-owner.artifact-eyewear",
+    "accessory-wear-owner.water-walking"
+  ],
+  "requireBranchAssertions": true,
+  "segments": [
+    {
+      "name": "wielded-helmet",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed helmet\r    \u001b\u001b\u001bwa    \u001b\u001b\u001bWa    \u001b\u001b\u001b....    \u001b\u001b\u001bi    \u001b\u001b\u001b"
+    },
+    {
+      "name": "silver-vampire",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #polyself\rvampire\r    \u001b\u001b\u001b\u0017uncursed silver ring\r    \u001b\u001b\u001bPal    \u001b\u001b\u001bi    \u001b\u001b\u001b"
+    },
+    {
+      "name": "silver-human-control",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed silver ring\r    \u001b\u001b\u001bPal    \u001b\u001b\u001bi    \u001b\u001b\u001b"
+    },
+    {
+      "name": "headless-eyewear",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #polyself\rgelatinous cube\r    \u001b\u001b\u001b\u0017uncursed lenses\r    \u001b\u001b\u001bPa    \u001b\u001b\u001bi    \u001b\u001b\u001b"
+    },
+    {
+      "name": "eyewear-conflicts",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed blindfold\r    \u001b\u001b\u001b\u0017uncursed lenses\r    \u001b\u001b\u001bPa    \u001b\u001b\u001bPb    \u001b\u001b\u001bRa    \u001b\u001b\u001bPb    \u001b\u001b\u001bPa    \u001b\u001b\u001bi    \u001b\u001b\u001b"
+    },
+    {
+      "name": "sink-levitation",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r10\r    \u001b\u001b\u001b\u0017sink\r    \u001b\u001b\u001b\u0017uncursed ring of levitation\r    \u001b\u001b\u001bPal    \u001b\u001b\u001bi    \u001b\u001b\u001b:    \u001b\u001b\u001b"
+    },
+    {
+      "name": "ordinary-ring-control",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed ring of searching\r    \u001b\u001b\u001bPal    \u001b\u001b\u001bi    \u001b\u001b\u001b"
+    },
+    {
+      "name": "quest-helm",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0016?\r y    \u001b\u001b\u001b\u0017uncursed helm of opposite alignment\r    \u001b\u001b\u001bWa    \u001b\u001b\u001bi    \u001b\u001b\u001b"
+    },
+    {
+      "name": "artifact-eyewear",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r10\r    \u001b\u001b\u001b\u0017The Eyes of the Overworld\r    \u001b\u001b\u001bPa    \u001b\u001b\u001bi    \u001b\u001b\u001b"
+    },
+    {
+      "name": "water-walking",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #polyself\rwater troll\r    \u001b\u001b\u001b\u0017pool\r    \u001b\u001b\u001bhml    \u001b\u001b\u001b\u0017uncursed water walking boots\r    \u001b\u001b\u001bWa    \u001b\u001b\u001b....    \u001b\u001b\u001bi    \u001b\u001b\u001b"
+    }
+  ],
+  "branchAssertions": [
+    {
+      "branch": "accessory-wear-owner.wielded-helmet",
+      "segment": 0,
+      "screenIncludes": [
+        "being worn"
+      ]
+    },
+    {
+      "branch": "accessory-wear-owner.silver-vampire",
+      "segment": 1,
+      "screenIncludes": [
+        "You can't handle your silver ring!"
+      ]
+    },
+    {
+      "branch": "accessory-wear-owner.silver-human-control",
+      "segment": 2,
+      "screenIncludes": [
+        "a silver ring (on left hand)"
+      ]
+    },
+    {
+      "branch": "accessory-wear-owner.headless-eyewear",
+      "segment": 3,
+      "screenIncludes": [
+        "You have no head to wear a pair of lenses on."
+      ]
+    },
+    {
+      "branch": "accessory-wear-owner.eyewear-conflicts",
+      "segment": 4,
+      "screenIncludes": [
+        "You can't wear lenses because you're wearing a blindfold there already.",
+        "You can't wear a blindfold because you're wearing some lenses there already."
+      ]
+    },
+    {
+      "branch": "accessory-wear-owner.sink-levitation",
+      "segment": 5,
+      "screenIncludes": [
+        "You crash to the floor!",
+        "You were wearing a ring of levitation."
+      ]
+    },
+    {
+      "branch": "accessory-wear-owner.ordinary-ring-control",
+      "segment": 6,
+      "screenIncludes": [
+        "on left hand"
+      ]
+    },
+    {
+      "branch": "accessory-wear-owner.quest-helm",
+      "segment": 7,
+      "screenIncludes": [
+        "You narrowly avoid losing all chance at your goal."
+      ]
+    },
+    {
+      "branch": "accessory-wear-owner.artifact-eyewear",
+      "segment": 8,
+      "screenIncludes": [
+        "You are blasted by the pair of lenses named the Eyes of the Overworld's power!",
+        "You are now wearing a pair of lenses named the Eyes of the Overworld."
+      ]
+    },
+    {
+      "branch": "accessory-wear-owner.water-walking",
+      "segment": 9,
+      "screenIncludes": [
+        "You slowly rise above the surface.",
+        "water walking boots (being worn)"
+      ]
+    }
+  ]
+}

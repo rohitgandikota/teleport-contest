@@ -101,6 +101,14 @@ source owner. All nineteen checks, 69 controls, twelve focused fixtures,
 controls retain all five hashes. The maintained corpus is 825; this patch is
 outside the completed full824 runtime.
 
+Accessory wearing is verified for publication. The owner now checks quest-helm
+refusal, silver/artifact contact, head anatomy and eyewear conflicts, releases
+weapon slots, and preserves the water-walking discovery latch. The complete
+sink-fall helper removes levitation sources in C order. Nineteen checks,
+114 controls, twenty focused fixtures, all public sessions and 64 bounded workers
+pass. Ten new C cases match 793 boundaries and 30,102 calls, fixing 110 screens.
+The maintained corpus is 826; the completed full824 excludes this repair.
+
 The latest shared-machine C coverage run accepts the tin-opening, background
 and hero-status recordings byte for byte. The union covers 4,580/5,492
 functions and 60,649/107,260 branch outcomes across 820 credited inputs and

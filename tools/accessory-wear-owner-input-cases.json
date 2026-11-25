@@ -1,0 +1,91 @@
+{
+    "evidence": "JS ordinary commands only; C pending",
+    "negativeHashes": {
+        "2": {
+            "screens": "434e2e6497e0ea66786360b0499aff465826273ca77ec8cb1ad061fc951d48ed",
+            "cursors": "b4e8cf2c45e36e07a25a0dcf4c63d732fa68b315f61b42ed0f5b479425dde263",
+            "rng": "b03246ce5512560b00c6480a557df166ebecead0213a21bec6e514ad17019f8a",
+            "slices": "b3c602fbd2aac0b859d6ffc8f8f529a215a68c4f69a0a1dbf4d10ee5e771192b",
+            "frames": "e9c0fffcf333ef825cf4383dade7fc993aaeb757765281c4f6035fbf1d51d533"
+        },
+        "6": {
+            "screens": "afc0479fb9225c9f7d15d0b625dadb472617575f9c6223c73d55a779b81fe1a0",
+            "cursors": "4a93732f17f9d4ae5b24825f2974aa31a57ee6a2bc766ab7f9bf54093a15877f",
+            "rng": "b03246ce5512560b00c6480a557df166ebecead0213a21bec6e514ad17019f8a",
+            "slices": "8fb87701ecf71d282b7d5e97eae53ddd6785891e757d2179aa7f428e87159090",
+            "frames": "15fcb526193a83bb2e31bb4ef61874172a1bba7ded5d510678eb02e07bd59ebb"
+        }
+    },
+    "visible": [
+        [
+            0,
+            55,
+            "being worn"
+        ],
+        [
+            1,
+            58,
+            "You can't handle your silver ring!"
+        ],
+        [
+            2,
+            33,
+            "a silver ring (on left hand)"
+        ],
+        [
+            3,
+            60,
+            "You have no head to wear a pair of lenses on."
+        ],
+        [
+            4,
+            63,
+            "You can't wear lenses because you're wearing a blindfold there already."
+        ],
+        [
+            4,
+            90,
+            "You can't wear a blindfold because you're wearing some lenses there already."
+        ],
+        [
+            5,
+            76,
+            "You crash to the floor!"
+        ],
+        [
+            5,
+            77,
+            "You were wearing a ring of levitation."
+        ],
+        [
+            6,
+            39,
+            "on left hand"
+        ],
+        [
+            7,
+            59,
+            "You narrowly avoid losing all chance at your goal."
+        ],
+        [
+            8,
+            60,
+            "You are blasted by the pair of lenses named the Eyes of the Overworld's power!"
+        ],
+        [
+            8,
+            61,
+            "You are now wearing a pair of lenses named the Eyes of the Overworld."
+        ],
+        [
+            9,
+            92,
+            "You slowly rise above the surface."
+        ],
+        [
+            9,
+            111,
+            "water walking boots (being worn)"
+        ]
+    ]
+}

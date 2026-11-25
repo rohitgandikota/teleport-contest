@@ -1,0 +1,372 @@
+{
+  "name": "spoteffects-owner",
+  "description": "Twenty original C recordings cover terrain, trap ordering, levitation expiry and hidden monsters. The historical timeout-deferred segment actually reaches early expiry; constructed source controls cover the deferred arm.",
+  "coverage": [
+    "level.ordinary",
+    "mode.debug",
+    "object.armor",
+    "terrain.water-lava",
+    "survival.timed-status",
+    "ui.getlin",
+    "ui.menus",
+    "ui.more-paging"
+  ],
+  "branches": [
+    "spoteffects.timeout-early",
+    "spoteffects.timeout-deferred",
+    "spoteffects.timeout-two-turn-negative",
+    "spoteffects.timeout-no-trap-negative",
+    "spoteffects.extrinsic-ring-negative",
+    "spoteffects.rust-rehumanize",
+    "spoteffects.fire-ice-recursion",
+    "spoteffects.lava-loot-rescue",
+    "spoteffects.lava-no-loot-negative",
+    "spoteffects.ordinary-pit",
+    "spoteffects.ordinary-web",
+    "spoteffects.ordinary-landmine",
+    "spoteffects.ordinary-floor",
+    "spoteffects.hidden-helmet",
+    "spoteffects.hidden-leather",
+    "spoteffects.hidden-tame",
+    "spoteffects.hidden-peaceful",
+    "spoteffects.hidden-hostile",
+    "spoteffects.hidden-friendly",
+    "spoteffects.ice-warning"
+  ],
+  "segments": [
+    {
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "name": "timeout-early",
+      "moves": " #levelchange\r30\r                             l    \u001b\u001b\u0017blessed scroll of genocide\r    \u001b\u001bra  *\r    \u001b\u001b\u0017pit\r    \u001b\u001bh    \u001b\u001b.\u0017uncursed potion of levitation\r    \u001b\u001bqb    \u001b\u001b.........................................................................................l    \u001b\u001bi    \u001b\u001b",
+      "steps": []
+    },
+    {
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "name": "timeout-deferred",
+      "moves": " #levelchange\r30\r                             l    \u001b\u001b\u0017blessed scroll of genocide\r    \u001b\u001bra  *\r    \u001b\u001b\u0017pit\r    \u001b\u001bh    \u001b\u001b.\u0017uncursed potion of levitation\r    \u001b\u001bqb    \u001b\u001b.........................................................................................\u0017uncursed apple\r    \u001b\u001bl    \u001b\u001bi    \u001b\u001b.    \u001b\u001bi    \u001b\u001b",
+      "steps": []
+    },
+    {
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "name": "timeout-two-turn-negative",
+      "moves": " #levelchange\r30\r                             l    \u001b\u001b\u0017blessed scroll of genocide\r    \u001b\u001bra  *\r    \u001b\u001b\u0017pit\r    \u001b\u001bh    \u001b\u001b.\u0017uncursed potion of levitation\r    \u001b\u001bqb    \u001b\u001b........................................................................................l    \u001b\u001bi    \u001b\u001b",
+      "steps": []
+    },
+    {
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "name": "timeout-no-trap-negative",
+      "moves": " #levelchange\r30\r                             l    \u001b\u001b\u0017blessed scroll of genocide\r    \u001b\u001bra  *\r    \u001b\u001b\u0017pit\r    \u001b\u001bh    \u001b\u001b.\u0017uncursed potion of levitation\r    \u001b\u001bqb    \u001b\u001b.........................................................................................h    \u001b\u001bi    \u001b\u001b",
+      "steps": []
+    },
+    {
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "name": "extrinsic-ring-negative",
+      "moves": " #levelchange\r30\r                             l    \u001b\u001b\u0017blessed scroll of genocide\r    \u001b\u001bra  *\r    \u001b\u001b\u0017uncursed ring of levitation\r    \u001b\u001bPbl    \u001b\u001b\u0017pit\r    \u001b\u001bhl    \u001b\u001bi    \u001b\u001b",
+      "steps": []
+    },
+    {
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "name": "rust-rehumanize",
+      "moves": " #levelchange\r30\r                             l    \u001b\u001b\u0017blessed scroll of genocide\r    \u001b\u001bra  *\r    \u001b\u001b\u0017uncursed amulet of magical breathing\r    \u001b\u001bPb    \u001b\u001b#polyself\riron golem\r    \u001b\u001b\u0017pool\r    \u001b\u001bh    \u001b\u001bml    \u001b\u001bh    \u001b\u001bml    \u001b\u001bh    \u001b\u001bml    \u001b\u001bh    \u001b\u001bml    \u001b\u001bh    \u001b\u001bml    \u001b\u001bh    \u001b\u001bml    \u001b\u001bh    \u001b\u001bml    \u001b\u001bh    \u001b\u001bml    \u001b\u001bh    \u001b\u001bml    \u001b\u001bh    \u001b\u001bml    \u001b\u001bh    \u001b\u001bml    \u001b\u001bh    \u001b\u001bml    \u001b\u001bh    \u001b\u001bml    \u001b\u001bh    \u001b\u001bml    \u001b\u001bh    \u001b\u001bml    \u001b\u001bh    \u001b\u001bml    \u001b\u001bh    \u001b\u001bml    \u001b\u001bh    \u001b\u001bml    \u001b\u001bh    \u001b\u001bml    \u001b\u001bh    \u001b\u001bml    \u001b\u001bh    \u001b\u001bml    \u001b\u001bh    \u001b\u001bml    \u001b\u001bh    \u001b\u001bml    \u001b\u001bh    \u001b\u001bml    \u001b\u001bh    \u001b\u001bml         \u001b\u001bi    \u001b\u001b",
+      "steps": []
+    },
+    {
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "name": "fire-ice-recursion",
+      "moves": " #levelchange\r30\r                             l    \u001b\u001b\u0017blessed scroll of genocide\r    \u001b\u001bra  *\r    \u001b\u001b\u0017uncursed amulet of magical breathing\r    \u001b\u001bPb    \u001b\u001b\u0017uncursed ring of fire resistance\r    \u001b\u001bPcl    \u001b\u001b\u0017uncursed wand of cold\r    \u001b\u001b\u0017pool\r    \u001b\u001bzd>    \u001b\u001b\u0017fire trap\r    \u001b\u001bhl    \u001b\u001bi    \u001b\u001b",
+      "steps": []
+    },
+    {
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "name": "lava-loot-rescue",
+      "moves": " #levelchange\r30\r                             l    \u001b\u001b\u0017blessed scroll of genocide\r    \u001b\u001bra  *\r    \u001b\u001b\u0017uncursed apple\r    \u001b\u001b\u0014llllllllllllllllllllllkkk.    \u001b\u001bdb    \u001b\u001b\u0014hhhhhhhhhhhhhhhhhhhhhhjjj.    \u001b\u001b\u0017uncursed amulet of life saving\r    \u001b\u001bPc    \u001b\u001b\u0017lava\r    \u001b\u001b    \u001b\u001bi    \u001b\u001b",
+      "steps": []
+    },
+    {
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "name": "lava-no-loot-negative",
+      "moves": " #levelchange\r30\r                             l    \u001b\u001b\u0017blessed scroll of genocide\r    \u001b\u001bra  *\r    \u001b\u001b\u0017uncursed amulet of life saving\r    \u001b\u001bPb    \u001b\u001b\u0017lava\r    \u001b\u001b    \u001b\u001b",
+      "steps": []
+    },
+    {
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "name": "ordinary-pit",
+      "moves": " #levelchange\r30\r                             l    \u001b\u001b\u0017blessed scroll of genocide\r    \u001b\u001bra  *\r    \u001b\u001b\u0017pit\r    \u001b\u001bhl    \u001b\u001b",
+      "steps": []
+    },
+    {
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "name": "ordinary-web",
+      "moves": " #levelchange\r30\r                             l    \u001b\u001b\u0017blessed scroll of genocide\r    \u001b\u001bra  *\r    \u001b\u001b\u0017web trap\r    \u001b\u001bhl    \u001b\u001b",
+      "steps": []
+    },
+    {
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "name": "ordinary-landmine",
+      "moves": " #levelchange\r30\r                             l    \u001b\u001b\u0017blessed scroll of genocide\r    \u001b\u001bra  *\r    \u001b\u001b\u0017land mine trap\r    \u001b\u001bhl    \u001b\u001bi    \u001b\u001b",
+      "steps": []
+    },
+    {
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "name": "ordinary-floor",
+      "moves": " #levelchange\r30\r                             l    \u001b\u001b\u0017blessed scroll of genocide\r    \u001b\u001bra  *\r    \u001b\u001bhl    \u001b\u001bi    \u001b\u001b",
+      "steps": []
+    },
+    {
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "name": "hidden-helmet",
+      "moves": " #levelchange\r30\r                             l    \u001b\u001b\u0017blessed scroll of genocide\r    \u001b\u001bra  *\r    \u001b\u001b\u0017uncursed helmet\r    \u001b\u001bWb    \u001b\u001b\u0007hidden sleeping hostile rock piercer\r    \u001b\u001bh    \u001b\u001bi    \u001b\u001b",
+      "steps": []
+    },
+    {
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "name": "hidden-leather",
+      "moves": " #levelchange\r30\r                             l    \u001b\u001b\u0017blessed scroll of genocide\r    \u001b\u001bra  *\r    \u001b\u001b\u0017uncursed leather hat\r    \u001b\u001bWb    \u001b\u001b\u0007hidden sleeping hostile rock piercer\r    \u001b\u001bh    \u001b\u001bi    \u001b\u001b",
+      "steps": []
+    },
+    {
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "name": "hidden-tame",
+      "moves": " #levelchange\r30\r                             l    \u001b\u001b\u0017blessed scroll of genocide\r    \u001b\u001bra  *\r    \u001b\u001b\u0017uncursed helmet\r    \u001b\u001bWb    \u001b\u001b\u0007hidden sleeping tame rock piercer\r    \u001b\u001bh    \u001b\u001bi    \u001b\u001b",
+      "steps": []
+    },
+    {
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "name": "hidden-peaceful",
+      "moves": " #levelchange\r30\r                             l    \u001b\u001b\u0017blessed scroll of genocide\r    \u001b\u001bra  *\r    \u001b\u001b\u0017uncursed helmet\r    \u001b\u001bWb    \u001b\u001b\u0007hidden sleeping peaceful lurker above\r    \u001b\u001bh    \u001b\u001bi    \u001b\u001b",
+      "steps": []
+    },
+    {
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "name": "hidden-hostile",
+      "moves": " #levelchange\r30\r                             l    \u001b\u001b\u0017blessed scroll of genocide\r    \u001b\u001bra  *\r    \u001b\u001b\u0017uncursed helmet\r    \u001b\u001bWb    \u001b\u001b\u0007hidden sleeping hostile lurker above\r    \u001b\u001bh    \u001b\u001bi    \u001b\u001b",
+      "steps": []
+    },
+    {
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "name": "hidden-friendly",
+      "moves": " #levelchange\r30\r                             l    \u001b\u001b\u0017blessed scroll of genocide\r    \u001b\u001bra  *\r    \u001b\u001b\u0017uncursed helmet\r    \u001b\u001bWb    \u001b\u001b\u0007hidden sleeping tame lurker above\r    \u001b\u001bh    \u001b\u001bi    \u001b\u001b",
+      "steps": []
+    },
+    {
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "name": "ice-warning",
+      "moves": " #levelchange\r30\r                             l    \u001b\u001b\u0017blessed scroll of genocide\r    \u001b\u001bra  *\r    \u001b\u001b\u0017uncursed ring of warning\r    \u001b\u001bPbl    \u001b\u001b\u0017uncursed wand of cold\r    \u001b\u001b\u0017pool\r    \u001b\u001bzc>    \u001b\u001bmO:debug_mongen\r:debug_hunger\r\r    \u001b\u001bi    \u001b\u001b\u0017uncursed levitation boots\r    \u001b\u001bWd    \u001b\u001b...........................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................h    \u001b\u001bl    \u001b\u001bh    \u001b\u001bl    \u001b\u001bh    \u001b\u001bl    \u001b\u001bh    \u001b\u001bl    \u001b\u001bh    \u001b\u001bl    \u001b\u001bh    \u001b\u001bl    \u001b\u001bi    \u001b\u001b",
+      "steps": []
+    }
+  ],
+  "branchAssertions": [
+    {
+      "branch": "spoteffects.timeout-early",
+      "segment": 0,
+      "screenIncludes": [
+        "You float gently to the floor.",
+        "You fall into a pit!"
+      ]
+    },
+    {
+      "branch": "spoteffects.timeout-deferred",
+      "segment": 1,
+      "screenIncludes": [
+        "You float gently to the floor.",
+        "You fall into a pit!"
+      ]
+    },
+    {
+      "branch": "spoteffects.timeout-two-turn-negative",
+      "segment": 2,
+      "screenIncludes": [
+        "You start to float in the air!"
+      ],
+      "screenExcludes": [
+        "You float gently",
+        "You fall into a pit!"
+      ]
+    },
+    {
+      "branch": "spoteffects.timeout-no-trap-negative",
+      "segment": 3,
+      "screenIncludes": [
+        "You float gently to the floor.",
+        "You see here a large box."
+      ],
+      "screenExcludes": [
+        "You fall into a pit!"
+      ]
+    },
+    {
+      "branch": "spoteffects.extrinsic-ring-negative",
+      "segment": 4,
+      "screenIncludes": [
+        "You start to float in the air!"
+      ],
+      "screenExcludes": [
+        "You float gently",
+        "You fall into a pit!"
+      ]
+    },
+    {
+      "branch": "spoteffects.rust-rehumanize",
+      "segment": 5,
+      "screenIncludes": [
+        "You turn into an iron golem!",
+        "You rust!",
+        "You return to human form!",
+        "You touch bottom."
+      ]
+    },
+    {
+      "branch": "spoteffects.fire-ice-recursion",
+      "segment": 6,
+      "screenIncludes": [
+        "A tower of flame erupts from the ice!",
+        "The ice crackles and melts.",
+        "You touch bottom."
+      ]
+    },
+    {
+      "branch": "spoteffects.lava-loot-rescue",
+      "segment": 7,
+      "screenIncludes": [
+        "You drop an apple.",
+        "The medallion crumbles to dust!",
+        "You find yourself on solid ground."
+      ],
+      "screenExcludes": [
+        "You see here an apple."
+      ]
+    },
+    {
+      "branch": "spoteffects.lava-no-loot-negative",
+      "segment": 8,
+      "screenIncludes": [
+        "The medallion crumbles to dust!",
+        "You find yourself on solid ground."
+      ]
+    },
+    {
+      "branch": "spoteffects.ordinary-pit",
+      "segment": 9,
+      "screenIncludes": [
+        "You fall into a pit!"
+      ]
+    },
+    {
+      "branch": "spoteffects.ordinary-web",
+      "segment": 10,
+      "screenIncludes": [
+        "You stumble into a spider web!"
+      ]
+    },
+    {
+      "branch": "spoteffects.ordinary-landmine",
+      "segment": 11,
+      "screenIncludes": [
+        "KAABLAMM!!!"
+      ]
+    },
+    {
+      "branch": "spoteffects.ordinary-floor",
+      "segment": 12,
+      "screenIncludes": [
+        "Eliminated 5 monsters."
+      ],
+      "screenExcludes": [
+        "You fall into",
+        "You sink into"
+      ]
+    },
+    {
+      "branch": "spoteffects.hidden-helmet",
+      "segment": 13,
+      "screenIncludes": [
+        "Its blow glances off your helm."
+      ]
+    },
+    {
+      "branch": "spoteffects.hidden-leather",
+      "segment": 14,
+      "screenIncludes": [
+        "You are almost hit by a falling rock piercer!"
+      ]
+    },
+    {
+      "branch": "spoteffects.hidden-tame",
+      "segment": 15,
+      "screenIncludes": [
+        "A rock piercer suddenly drops from the ceiling!"
+      ]
+    },
+    {
+      "branch": "spoteffects.hidden-peaceful",
+      "segment": 16,
+      "screenIncludes": [
+        "You surprise a lurker above!"
+      ]
+    },
+    {
+      "branch": "spoteffects.hidden-hostile",
+      "segment": 17,
+      "screenIncludes": [
+        "A lurker above attacks you by surprise!"
+      ]
+    },
+    {
+      "branch": "spoteffects.hidden-friendly",
+      "segment": 18,
+      "screenIncludes": [
+        "A lurker above jumps near you from the ceiling."
+      ]
+    },
+    {
+      "branch": "spoteffects.ice-warning",
+      "segment": 19,
+      "screenIncludes": [
+        "The ice seems very soft and slushy.",
+        "You feel the ice shift beneath you!",
+        "The ice, is gonna BREAK!"
+      ]
+    }
+  ],
+  "requireBranchAssertions": true
+}

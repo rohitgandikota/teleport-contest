@@ -13,7 +13,7 @@ Ground rules are in `/CLAUDE.md`. Read that first if you have not.
 ## Current focus, 2026-11-24
 
 Continue the faithful port with readable C-aligned code and prompt verified
-pushes. The live leaderboard rechecked November 25 at 02:40 UTC has
+pushes. The live leaderboard rechecked November 25 at 04:36 UTC has
 23,816 of 24,531 combined screens and rank 7 among agentic entries. Public
 remains 44/44; held-out improves to 40/56, with 715 screens unmatched.
 Animations are 3,776/4,489. The row was scored at 02:36:49 UTC, adding one
@@ -241,18 +241,35 @@ worn amulet mask for immune forms. All 25 checks, 147 controls, eighteen
 focused fixtures, 44 public sessions and 62 bounded workers pass. Six new C
 cases match all 781 boundaries and 16,939 complete calls, fixing two styled
 screens. Four unaffected cases retain all five output hashes. Status checkpoint
-`2355899c` is pushed. Maintained corpus: 842. These latest changes are outside
-full839. A new NFS batch matched four of five recordings; its rejected
-character-selection case is being investigated before any new coverage union.
+`2355899c` and breath/chant checkpoint `44f6cbeb` are pushed.
 
-The latest shared-machine C union credits 834 inputs across 111 layouts,
-reaching 4,584/5,492 functions and 60,961/107,260 branch outcomes. It adds
-one function and 143 outcomes from thirty slippery-armor, genocide and terrain
-cases. All 110 preceding run records, binary/source pins and platform controls
-remain unchanged. The original Mac apple-message rejection is still excluded;
-its independent ordinary Linux control remains accepted. These figures measure
-C reach, not JS parity. Four new terrain cases still have an unresolved JS
-random-stream mismatch and are not promoted.
+Square effects now preserve C's recursion state, defer work during lava rescue,
+adjust final-turn levitation before trap pickup, and use the real worn helmet.
+The monster-cloak size predicate uses the defined medium-size constant. All
+34 parent checks, 156 controls, fifteen focused fixtures, 44 public sessions
+and 59 bounded workers pass. Twenty C cases match all 5,084 styled boundaries,
+70,564 complete calls and 121 frames, fixing 46 screens, three cursors and
+37 input slices. Thirteen unaffected cases retain all five output hashes.
+Maintained corpus: 843. These checkpoints remain outside completed full839.
+The historical timeout-deferred input actually reaches early expiry. Its
+incorrect assertion was separately reviewed and strengthened; deferred expiry
+has constructed source controls. Both original failures are preserved.
+
+The latest shared-machine C union credits 839 inputs across 113 layouts,
+reaching 4,587/5,492 functions and 61,160/107,260 branch outcomes. It adds
+three functions and 199 outcomes. All 111 preceding run records and binary/
+source pins remain fixed. The new character-selection Mac recording remains
+rejected for its platform banner. An independent ordinary Linux recording
+matches both instrumented executions and is credited separately. Earlier
+platform rejections and controls remain preserved. These figures measure C
+reach, not JS parity.
+
+Six new msg_window configuration recordings match all 138 boundaries and
+18,174 complete calls on an isolated normal-import candidate. Its startup
+option assignment is ready for parent regression. Combining it with the
+unpublished line-history patch exposes a separate text-window dismissal wait.
+The original seven-case and thirteen-case history recordings remain fixed;
+no history or option patch is in main yet.
 
 The preceding full regression passes all 817 fixtures: 853,841 screens/cursors,
 17,766,231 scored RNG positions and 32,296 frames. Both fixed-runtime shards

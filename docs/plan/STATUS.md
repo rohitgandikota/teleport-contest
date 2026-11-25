@@ -9686,6 +9686,87 @@ ordinary Linux control are the next steps if the platform cause is confirmed.
 All coverage artifacts remain on NFS. Latest credited union is still 834
 inputs, 111 layouts, 4,584 functions and 60,961 outcomes.
 
+## 2026-11-25 04:40 UTC: terrain composition verified; Linux coverage extended
+
+Breath/chant checkpoint `44f6cbebbaff9f2fd8ad421da4b049be3915ddfd` is
+pushed. Spoteffects parent worker 90738 closed with exit 0. All 34 checks
+pass, including 156 controls, fifteen focused fixtures with 103 segments,
+14,283 screens/cursors, 312,774 scored RNG positions and 128 frames. All
+44 public sessions and 59 bounded workers pass. Seven strict-native and
+all-five deferred fixtures match 70 segments, 10,555 boundaries, 214,775
+complete calls and 128 frames. Source controls improve 24/35 to 35/35;
+monster-cloak controls improve 18/25 to 25/25. Twenty unchanged C cases
+match 5,084 boundaries, 70,564 complete calls and 121 frames. Before:
+5,038 styled grids, 5,081 cursors, 5,047 slices and 70,552 calls. Thirteen
+negative cases preserve all five output hashes.
+
+Only hack.js spoteffects/imports and worn.js's single cloak-size operand
+change. All 279 runtime and seven support hashes equal the tested candidate;
+all 842 earlier raw fixtures remain fixed; twenty intent rows append only.
+Maintained corpus: 843. Publish now. Verification SHA
+`a1b898acd93a84f2dde791c54129cae63b504775fddb6d98394a364f4f1709b9`.
+Integration: `spoteffects-main-integration.json`. Complete C spoteffects and
+m_dowear_type, source controls and native prerequisites were reviewed.
+
+The separate timeout assertion amendment is approved and its 342 members
+independently verified. Its seal is
+`58d73e52c4f2912dde0c9d0d55a277fde6d0aab890758e37a0bbdca07c102327`.
+It changes no runtime or raw input. The historical timeout-deferred scenario
+reaches early expiry in C. The amended test now checks the full entry state,
+exact random prefix, trap/damage ordering and absence of a second trigger.
+The original 40/41 gate failure and source package remain untouched. This is
+not new ordinary coverage of the deferred branch; source controls cover it.
+Darwin continues float_down in the new fixed float-down-current-source-audit
+snapshot. The older package stays untouched.
+
+NFS union worker 27251 closed successfully: 839 credited inputs, 113 fixed
+layouts, 4,587/5,492 functions and 61,160/107,260 branch outcomes, adding
+three functions and 199 outcomes. The 111 previous run records are unchanged.
+There are 156 additional native inputs/712 segments and five separate ordinary
+Linux controls/24 segments. Remote target:
+`/share/NFS/u/rohit/research/contest/artifacts/2026-11-22/c-coverage-compress.E84JI2/verified-status-line-breath-linux-union-20261125`.
+Summary SHA `724d709de8ca76ec23fe2ca987c655e90423f8a23a81244eee17191d738cbfe9`;
+compact SHA `a520228ff35377770f7c836dbb73f67cb1d7acb5233c2013287006a33b5b9840`.
+Only small summaries were downloaded, with remote hashes verified. Receipt:
+`linux-coverage-status-line-breath-linux-download.json`; independent checks:
+`linux-coverage-status-line-breath-linux-parent-verification.json`.
+
+The original batch exit 1 and Mac getlin rejection remain preserved. The only
+platform differences are its six character-selection banner boundaries;
+all non-screen fields and the other three cases are unchanged. The first
+control preflight was too strict about cropped banner spacing and stopped
+before ordinary recording; its script/failure remain. The second independent
+ordinary Linux recorder matches original instrumented SHA
+`51b6cfc7b9ddbf148e3fc55719b91c8b4ae9e02009266c2f68d1110647985128`.
+Two fresh instrumented runs match this ordinary control exactly. No output
+normalization was used. All earlier food/contact/invoke controls and rejected
+Mac inputs remain unchanged. No C coverage job is active.
+
+Msg_window package independently verifies 347 files/four links, seal
+`5cae0ce1bee31c55077e0cc4c4427a758796f5733f2cfbe7fcd45392e3c76ec1`.
+Six fresh C inputs preserve all fields and keys, raw
+`70605c93c8eccb5e529d799cd436b3e6a7ba6c085c6ae9b2e4c57009011436ff`,
+845,633 bytes. The normal-import msg-window-current-prerequisite matches all
+138 boundaries and 18,174 complete calls, no frames. Complete C option owner,
+parser, delimiter helper, default and JS startup/application were reviewed.
+Its parent composition is next; no main option change yet.
+
+Parent history version two plus this option fix still matches four of seven
+original cases and nine of thirteen follow-through cases, with all random
+streams exact. The remaining mode windows lack the real text-window wait.
+Reports preserve both failures in line-history-options-native-details.json
+and line-history-options-followthrough-details.json. Singer owns the new fixed
+tty-text-window-source-audit; parent history stays unpublished. Do_stone_mon
+source and direct helper review is complete; its current-main composition
+follows terrain. Avicenna/Jason/Pauli retain attribute, dip and monster-slip
+audits in their assigned fixed siblings.
+
+The live board rechecked at 04:36 UTC remains agentic rank 7, 715 unmatched
+screens, 44/44 public and 40/56 held-out. Last scoring timestamp remains
+02:36:49 UTC. No exact scored commit or newer held-out result is exposed.
+No rank gain is inferred from these local checks. Full839 is still the latest
+complete full-corpus regression and excludes these later checkpoints.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

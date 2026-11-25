@@ -4001,6 +4001,26 @@
     {"group":"Breath and chant strangulation readers","id":"active-strangling-whistle","cFile":"src/mondata.c","cFunction":"can_blow","description":"active strangling whistle"},
     {"group":"Breath and chant strangulation readers","id":"unworn-amulet-whistle","cFile":"src/mondata.c","cFunction":"can_blow","description":"unworn amulet whistle"},
     {"group":"Breath and chant strangulation readers","id":"unworn-amulet-blind-read","cFile":"src/mondata.c","cFunction":"can_chant","description":"unworn amulet blind read"},
-    {"group":"Breath and chant strangulation readers","id":"active-strangling-blind-read","cFile":"src/mondata.c","cFunction":"can_chant","description":"active strangling blind read"}
+    {"group":"Breath and chant strangulation readers","id":"active-strangling-blind-read","cFile":"src/mondata.c","cFunction":"can_chant","description":"active strangling blind read"},
+    {"group":"Square effects and terrain transitions","id":"spoteffects.timeout-early","cFile":"src/hack.c","cFunction":"spoteffects","description":"spoteffects.timeout early"},
+    {"group":"Square effects and terrain transitions","id":"spoteffects.timeout-deferred","cFile":"src/hack.c","cFunction":"spoteffects","description":"Historical timeout-deferred input: early expiry with a carried apple; deferred expiry has constructed source controls only."},
+    {"group":"Square effects and terrain transitions","id":"spoteffects.timeout-two-turn-negative","cFile":"src/hack.c","cFunction":"spoteffects","description":"spoteffects.timeout two turn negative"},
+    {"group":"Square effects and terrain transitions","id":"spoteffects.timeout-no-trap-negative","cFile":"src/hack.c","cFunction":"spoteffects","description":"spoteffects.timeout no trap negative"},
+    {"group":"Square effects and terrain transitions","id":"spoteffects.extrinsic-ring-negative","cFile":"src/hack.c","cFunction":"spoteffects","description":"spoteffects.extrinsic ring negative"},
+    {"group":"Square effects and terrain transitions","id":"spoteffects.rust-rehumanize","cFile":"src/hack.c","cFunction":"spoteffects","description":"spoteffects.rust rehumanize"},
+    {"group":"Square effects and terrain transitions","id":"spoteffects.fire-ice-recursion","cFile":"src/hack.c","cFunction":"spoteffects","description":"spoteffects.fire ice recursion"},
+    {"group":"Square effects and terrain transitions","id":"spoteffects.lava-loot-rescue","cFile":"src/hack.c","cFunction":"spoteffects","description":"spoteffects.lava loot rescue"},
+    {"group":"Square effects and terrain transitions","id":"spoteffects.lava-no-loot-negative","cFile":"src/hack.c","cFunction":"spoteffects","description":"spoteffects.lava no loot negative"},
+    {"group":"Square effects and terrain transitions","id":"spoteffects.ordinary-pit","cFile":"src/hack.c","cFunction":"spoteffects","description":"spoteffects.ordinary pit"},
+    {"group":"Square effects and terrain transitions","id":"spoteffects.ordinary-web","cFile":"src/hack.c","cFunction":"spoteffects","description":"spoteffects.ordinary web"},
+    {"group":"Square effects and terrain transitions","id":"spoteffects.ordinary-landmine","cFile":"src/hack.c","cFunction":"spoteffects","description":"spoteffects.ordinary landmine"},
+    {"group":"Square effects and terrain transitions","id":"spoteffects.ordinary-floor","cFile":"src/hack.c","cFunction":"spoteffects","description":"spoteffects.ordinary floor"},
+    {"group":"Square effects and terrain transitions","id":"spoteffects.hidden-helmet","cFile":"src/hack.c","cFunction":"spoteffects","description":"spoteffects.hidden helmet"},
+    {"group":"Square effects and terrain transitions","id":"spoteffects.hidden-leather","cFile":"src/hack.c","cFunction":"spoteffects","description":"spoteffects.hidden leather"},
+    {"group":"Square effects and terrain transitions","id":"spoteffects.hidden-tame","cFile":"src/hack.c","cFunction":"spoteffects","description":"spoteffects.hidden tame"},
+    {"group":"Square effects and terrain transitions","id":"spoteffects.hidden-peaceful","cFile":"src/hack.c","cFunction":"spoteffects","description":"spoteffects.hidden peaceful"},
+    {"group":"Square effects and terrain transitions","id":"spoteffects.hidden-hostile","cFile":"src/hack.c","cFunction":"spoteffects","description":"spoteffects.hidden hostile"},
+    {"group":"Square effects and terrain transitions","id":"spoteffects.hidden-friendly","cFile":"src/hack.c","cFunction":"spoteffects","description":"spoteffects.hidden friendly"},
+    {"group":"Square effects and terrain transitions","id":"spoteffects.ice-warning","cFile":"src/hack.c","cFunction":"spoteffects","description":"spoteffects.ice warning"}
   ]
 }

@@ -1,0 +1,444 @@
+{
+  "name": "mstatusline-complete-owner",
+  "description": "Ordinary stethoscope cases for wizard pet detail, head and tail ordinals, gigantic size and changed-form status, with untamed and nonwizard pet negatives. Original C inputs are preserved.",
+  "coverage": [
+    "mode.debug",
+    "level.ordinary",
+    "object.tools-containers",
+    "ui.getlin",
+    "ui.more-paging",
+    "monster.special-effects"
+  ],
+  "branches": [
+    "mstatusline-complete-owner.wizard-pet-details",
+    "mstatusline-complete-owner.worm-head-status",
+    "mstatusline-complete-owner.worm-tail-status",
+    "mstatusline-complete-owner.changed-form-status",
+    "mstatusline-complete-owner.ordinary-untamed-negative",
+    "mstatusline-complete-owner.nonwizard-pet-negative"
+  ],
+  "branchAssertions": [
+    {
+      "branch": "mstatusline-complete-owner.wizard-pet-details",
+      "segment": 0,
+      "screenIncludes": [
+        "Status of your little dog",
+        "tame (10;",
+        "hungry 1001; apport 9)"
+      ]
+    },
+    {
+      "branch": "mstatusline-complete-owner.worm-head-status",
+      "segment": 1,
+      "screenIncludes": [
+        "Status of the long worm",
+        "neutral, gigantic",
+        "1st of 3 segments"
+      ],
+      "screenExcludes": [
+        "unknown size"
+      ]
+    },
+    {
+      "branch": "mstatusline-complete-owner.worm-tail-status",
+      "segment": 2,
+      "screenIncludes": [
+        "Status of the long worm",
+        "neutral, gigantic",
+        "2nd of 3 segments"
+      ],
+      "screenExcludes": [
+        "unknown size"
+      ]
+    },
+    {
+      "branch": "mstatusline-complete-owner.changed-form-status",
+      "segment": 3,
+      "screenIncludes": [
+        "Status of the iron piercer",
+        "shapechanger"
+      ]
+    },
+    {
+      "branch": "mstatusline-complete-owner.ordinary-untamed-negative",
+      "segment": 4,
+      "screenIncludes": [
+        "Status of the newt",
+        "AC 8, peaceful, asleep."
+      ],
+      "screenExcludes": [
+        "shapechanger",
+        "hungry",
+        "segments"
+      ]
+    },
+    {
+      "branch": "mstatusline-complete-owner.nonwizard-pet-negative",
+      "segment": 5,
+      "screenIncludes": [
+        "Status of your little dog",
+        "AC 6, tame."
+      ],
+      "screenExcludes": [
+        "hungry",
+        "apport",
+        "tame ("
+      ]
+    }
+  ],
+  "segments": [
+    {
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "name": "wizard-pet",
+      "moves": " \u0007sleeping tame little dog\r   \u0017uncursed stethoscope\r   aal   \u001b"
+    },
+    {
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "name": "long-worm",
+      "moves": " \u0007sleeping peaceful long worm\r   \u0017uncursed stethoscope\r   aal   \u001b"
+    },
+    {
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "name": "long-worm-tail",
+      "moves": " \u0007sleeping peaceful long worm\r   \u0017uncursed stethoscope\r   aan   \u001b"
+    },
+    {
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "name": "shapechanger",
+      "moves": " \u0007sleeping peaceful chameleon\r   \u0017uncursed stethoscope\r   aal   \u001b"
+    },
+    {
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "name": "plain-newt",
+      "moves": " \u0007sleeping peaceful newt\r   \u0017uncursed stethoscope\r   aal   \u001b"
+    },
+    {
+      "name": "normal-starting-pet",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:Desired,role:Healer,race:human,gender:male,align:neutral,playmode:normal\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:dog\n",
+      "moves": " ack   \u001b"
+    }
+  ],
+  "jsReach": [
+    {
+      "selectedStep": 58,
+      "commandDirectionStep": 58,
+      "target": {
+        "id": 72,
+        "mnum": 16,
+        "cham": -1,
+        "dataIsInnate": false,
+        "xy": [
+          9,
+          12
+        ],
+        "tame": 10,
+        "edog": {
+          "hungrytime": 1001,
+          "apport": 9
+        },
+        "hp": 4,
+        "sleeping": 1,
+        "peaceful": 1
+      },
+      "hero": [
+        8,
+        12
+      ],
+      "hit": {
+        "x": 9,
+        "y": 12
+      },
+      "notonhead": false,
+      "wizard": true,
+      "hp": 12,
+      "worms": {},
+      "negative": false,
+      "boundaries": 63,
+      "calls": 3085,
+      "frames": 0,
+      "originalOutputHashes": {
+        "screens": "aa04e8e3d2b0a4fbe84c9c80a6c12e91215bdb9a2d4ad049efbba81bfffab227",
+        "cursors": "f9016cb1096b7e7f6657e13e98f2e83571fb982f4573160e464889346ea78b18",
+        "calls": "ef84d77a8ccca8ad2f9128124787461acf794c6e935d89ea16bb888dae9864c6",
+        "slices": "d705ebc3889f6df3b26b2d44ba83f931e2610e7db987a0aae9ce0bce375f5b00",
+        "frames": "00f7e5ae82bd763869fe5aeccdf03357721f1ad6c604dbd22aa40516420b6bb8"
+      }
+    },
+    {
+      "selectedStep": 61,
+      "commandDirectionStep": 61,
+      "target": {
+        "id": 72,
+        "mnum": 114,
+        "cham": -1,
+        "dataIsInnate": false,
+        "xy": [
+          9,
+          12
+        ],
+        "wormno": 1,
+        "tame": 0,
+        "edog": null,
+        "hp": 35,
+        "sleeping": 1,
+        "peaceful": 1
+      },
+      "hero": [
+        8,
+        12
+      ],
+      "hit": {
+        "x": 9,
+        "y": 12
+      },
+      "notonhead": false,
+      "wizard": true,
+      "hp": 12,
+      "worms": {
+        "1": [
+          [
+            10,
+            13
+          ],
+          [
+            9,
+            13
+          ],
+          [
+            9,
+            12
+          ]
+        ]
+      },
+      "negative": false,
+      "boundaries": 66,
+      "calls": 3100,
+      "frames": 0,
+      "originalOutputHashes": {
+        "screens": "ac912e2dc93d5d400aa0cebf918b6a4ce7e16a2e48887a28ff9f307814400a55",
+        "cursors": "259843a42216b88c94fcb20a4bf441fa69f795c4d637dfe19e0a1755c270265e",
+        "calls": "0c8e8ce57801712ee7e59c8211407482044770feaec753c60ba8168e8ddde724",
+        "slices": "0adea8c55fc1139a9287be9a9e4f20e02bb6727d7ce821dc5c29af1d30341021",
+        "frames": "2bfadcb5ce122d308aa99f3b659a5ee16fb1fc0c1e88bd183cb21c4695ba1de2"
+      }
+    },
+    {
+      "selectedStep": 61,
+      "commandDirectionStep": 61,
+      "target": {
+        "id": 72,
+        "mnum": 114,
+        "cham": -1,
+        "dataIsInnate": false,
+        "xy": [
+          9,
+          12
+        ],
+        "wormno": 1,
+        "tame": 0,
+        "edog": null,
+        "hp": 35,
+        "sleeping": 1,
+        "peaceful": 1
+      },
+      "hero": [
+        8,
+        12
+      ],
+      "hit": {
+        "x": 9,
+        "y": 13
+      },
+      "notonhead": true,
+      "wizard": true,
+      "hp": 12,
+      "worms": {
+        "1": [
+          [
+            10,
+            13
+          ],
+          [
+            9,
+            13
+          ],
+          [
+            9,
+            12
+          ]
+        ]
+      },
+      "negative": false,
+      "boundaries": 66,
+      "calls": 3100,
+      "frames": 0,
+      "originalOutputHashes": {
+        "screens": "0c251421a5d44d9c7024a54c88adc8d9aec9cfcc1e782bc7b7dbfa28309a708b",
+        "cursors": "259843a42216b88c94fcb20a4bf441fa69f795c4d637dfe19e0a1755c270265e",
+        "calls": "0c8e8ce57801712ee7e59c8211407482044770feaec753c60ba8168e8ddde724",
+        "slices": "0adea8c55fc1139a9287be9a9e4f20e02bb6727d7ce821dc5c29af1d30341021",
+        "frames": "2bfadcb5ce122d308aa99f3b659a5ee16fb1fc0c1e88bd183cb21c4695ba1de2"
+      }
+    },
+    {
+      "selectedStep": 61,
+      "commandDirectionStep": 61,
+      "target": {
+        "id": 72,
+        "mnum": 79,
+        "cham": 327,
+        "dataIsInnate": false,
+        "xy": [
+          9,
+          12
+        ],
+        "tame": 0,
+        "edog": null,
+        "hp": 13,
+        "sleeping": 1,
+        "peaceful": 1
+      },
+      "hero": [
+        8,
+        12
+      ],
+      "hit": {
+        "x": 9,
+        "y": 12
+      },
+      "notonhead": false,
+      "wizard": true,
+      "hp": 12,
+      "worms": {},
+      "negative": false,
+      "boundaries": 66,
+      "calls": 3084,
+      "frames": 0,
+      "originalOutputHashes": {
+        "screens": "ef0dd832f1fd34d3579ce2df72467fee7890706a085452996fac3f3071cbe1e8",
+        "cursors": "3c2432211996d42041465bed96901e74d2852611e047824e4ace88b82492ea9f",
+        "calls": "b7b24b86d0947f0cb8b8f5afe078484d36faa75db00603dd090089a9f704203b",
+        "slices": "59529daeb90f5f6cdcc65e18454327d8ced8996ffdf267e841de90e9bf133391",
+        "frames": "2bfadcb5ce122d308aa99f3b659a5ee16fb1fc0c1e88bd183cb21c4695ba1de2"
+      }
+    },
+    {
+      "selectedStep": 56,
+      "commandDirectionStep": 56,
+      "target": {
+        "id": 72,
+        "mnum": 322,
+        "cham": -1,
+        "dataIsInnate": false,
+        "xy": [
+          9,
+          12
+        ],
+        "tame": 0,
+        "edog": null,
+        "hp": 4,
+        "sleeping": 1,
+        "peaceful": 1
+      },
+      "hero": [
+        8,
+        12
+      ],
+      "hit": {
+        "x": 9,
+        "y": 12
+      },
+      "notonhead": false,
+      "wizard": true,
+      "hp": 12,
+      "worms": {},
+      "negative": true,
+      "boundaries": 61,
+      "calls": 3083,
+      "frames": 0,
+      "originalOutputHashes": {
+        "screens": "8e4c0a03ed10e4258ee796e6f51ea490c72fc8fdb4d9d3b9e2c0ea8b9b7ce845",
+        "cursors": "8f7539d9505e5f737f32da1dee680f8a07b8330c443ccf0abfc891c487a4fca1",
+        "calls": "27f1b6111b471f2e7384856ae86680737d466ee050dce2266a0d62c6fb3af097",
+        "slices": "5bc7ba0c2a8d8f7204a37b1009a33806f69167701fc93603d0960640c53d3933",
+        "frames": "d06edf87c991b296083d111a5081863fd799c120b37dcc72eae7c55c9e4dabc3"
+      },
+      "baselineNegativeHashes": {
+        "screens": "8e4c0a03ed10e4258ee796e6f51ea490c72fc8fdb4d9d3b9e2c0ea8b9b7ce845",
+        "cursors": "8f7539d9505e5f737f32da1dee680f8a07b8330c443ccf0abfc891c487a4fca1",
+        "calls": "27f1b6111b471f2e7384856ae86680737d466ee050dce2266a0d62c6fb3af097",
+        "slices": "5bc7ba0c2a8d8f7204a37b1009a33806f69167701fc93603d0960640c53d3933",
+        "frames": "d06edf87c991b296083d111a5081863fd799c120b37dcc72eae7c55c9e4dabc3"
+      }
+    },
+    {
+      "selectedStep": 4,
+      "commandDirectionStep": 4,
+      "target": {
+        "id": 42,
+        "mnum": 16,
+        "cham": -1,
+        "dataIsInnate": false,
+        "xy": [
+          22,
+          7
+        ],
+        "tame": 10,
+        "edog": {
+          "hungrytime": 1000,
+          "apport": 3
+        },
+        "hp": 2,
+        "sleeping": 0,
+        "peaceful": 1
+      },
+      "hero": [
+        22,
+        8
+      ],
+      "hit": {
+        "x": 22,
+        "y": 7
+      },
+      "notonhead": false,
+      "wizard": false,
+      "hp": 13,
+      "worms": {},
+      "negative": true,
+      "boundaries": 9,
+      "calls": 2891,
+      "frames": 0,
+      "originalOutputHashes": {
+        "screens": "ece5075c7965aa95d2ce991c50ddff8813fb4aaba549cd7b6640404ce8dd915d",
+        "cursors": "83a8f984f0542e5fe5299cc25862ecd047c6c4a6fcb9bcb6b93f743c3422b0d5",
+        "calls": "06801e55b373821e6a87a7e751b63ba239a6f5966d88b2cb15870eaff871c7b5",
+        "slices": "9bd697f68b87f96bc4977033c88f789235d5eec8208b4f5f886d449d44ce609f",
+        "frames": "95d15e75300129c5b4dd7f324bec76f91976db7c7b6075f942e9ea82b243e0b3"
+      },
+      "baselineNegativeHashes": {
+        "screens": "ece5075c7965aa95d2ce991c50ddff8813fb4aaba549cd7b6640404ce8dd915d",
+        "cursors": "83a8f984f0542e5fe5299cc25862ecd047c6c4a6fcb9bcb6b93f743c3422b0d5",
+        "calls": "06801e55b373821e6a87a7e751b63ba239a6f5966d88b2cb15870eaff871c7b5",
+        "slices": "9bd697f68b87f96bc4977033c88f789235d5eec8208b4f5f886d449d44ce609f",
+        "frames": "95d15e75300129c5b4dd7f324bec76f91976db7c7b6075f942e9ea82b243e0b3"
+      }
+    }
+  ],
+  "limits": [
+    "The first five cases use wizard commands; the Healer pet control is an ordinary nonwizard start.",
+    "Held, digesting and mounted injury status, minion and roamer alignment, and worm lifecycle boundaries have constructed controls.",
+    "Native parity is established separately by the strict native gate, not by JS output hashes or branch intent tags."
+  ]
+}

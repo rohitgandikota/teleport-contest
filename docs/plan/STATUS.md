@@ -8224,6 +8224,55 @@ Parent owns fresh C recording, independent composition and prompt verified
 pushes. The latest official rank observation remains the November 24 23:40 UTC
 snapshot; no new held-out score is claimed.
 
+## 2026-11-25: complete monster-status owner verified
+
+The previous coverage documentation checkpoint `1d544f64` is pushed. Parent
+then reviewed Pauli's complete monster-status package and verified all 346
+sealed members, the 279-file fixed baseline and four promotion support files.
+Source seal SHA-256 is
+`d52fcf2588a47ae6d126a2f1da2948e7536d49084e564ee4ec286c6f71e03c87`.
+The two-module patch restores wizard pet detail, long-worm ordinals, changed
+form status, held/swallowed priority and injured-steed wording. It uses live
+species identity, canonical alignment and anatomy helpers. The new `wseg_at`
+follows the original tail-to-head lookup. Parent also verified the additional
+size finding: MZ_GIGANTIC is 7, so the former index-5 lookup was wrong.
+
+Six unchanged inputs were recorded against pinned C at 00:28 UTC. Raw SHA-256
+is `9d1f0bd43046a592396dde37632a1ec5c6b36303426d1970979f38891ce00aed`,
+882,776 bytes. Source-state evidence remains distinct from native reach:
+held/swallowed and mounted injuries, minion/roamer alignment and worm
+lifecycle boundaries have constructed controls. The six native cases cover
+wizard and ordinary pets, worm head/tail, a changed chameleon and an untamed
+newt. The current canonical animal table cannot reach the nondigesting,
+non-enfolding swallowing fallback; that limit is explicit.
+
+Independent parent composition passes 34 checks and 216 controls, 20 focused
+fixtures and all 44 public sessions. Focused output totals 7,345 screens/cursors,
+260,725 scored random-call positions and 66 frames across 91 segments. The
+six new C cases improve from 327/331 styled grids and cursors to all 331 exact;
+all 18,343 calls and every slice remain exact. Both ordinary negatives retain
+all five original output hashes. Twelve strict native fixtures match 4,428
+boundaries, 166,857 calls and 64 frames across 58 segments. The same cases
+preserve all five collections under delayed completion. All 64 bounded input
+workers finish. Runtime/support hashes and exact patch reversal pass.
+
+Parent integrated only the verified insight/worm hunks and seven support files.
+All 279 main runtime hashes match the candidate. Evidence and the integration
+receipt are under `.cache/restart-20261122/mstatusline-complete-parent-composition`
+and `mstatusline-complete-main-integration.json`. The maintained corpus is 819.
+The full817 result still belongs to the earlier runtime; no full819 claim is
+made. Commit and push follow this verified integration immediately.
+
+The altar source package is also sealed and verified, 659 members. Parent
+recorded its four locked cases at 00:33 UTC, raw SHA-256
+`ea2eef132569b7664a82533d2366f46cd5fe3485450935e187199db5bf081e87`,
+68 boundaries. This is an internal glyph-identity repair: all twenty original
+JS output hashes were unchanged. Parent composition/native comparison is next,
+with no rendered-score gain claimed. Jason moved to complete hero-status
+property handling. Pauli moved to ordinary accessory-effect input expansion;
+the initial parent attempts that ate without receiving an effect remain
+preserved. Avicenna and Singer retain the eating-prelude and engulfing audits.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

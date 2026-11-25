@@ -3837,6 +3837,12 @@
     {"group":"Polymorphed natural contact","id":"polymorph-natural-contact.silver-ring-shade-grasp","cFile":"src/uhitm.c","cFunction":"hmonas","description":"silver ring shade grasp"},
     {"group":"Polymorphed natural contact","id":"polymorph-natural-contact.blessed-flimsy-helmet-head-butt","cFile":"src/uhitm.c","cFunction":"hmonas","description":"blessed flimsy helmet head butt"},
     {"group":"Polymorphed natural contact","id":"polymorph-natural-contact.ordinary-wolf-miss-control","cFile":"src/uhitm.c","cFunction":"hmonas","description":"ordinary wolf miss control"},
-    {"group":"Polymorphed natural contact","id":"polymorph-natural-contact.solid-rust-monster-adhesion-control","cFile":"src/uhitm.c","cFunction":"hmonas","description":"solid rust monster adhesion control"}
+    {"group":"Polymorphed natural contact","id":"polymorph-natural-contact.solid-rust-monster-adhesion-control","cFile":"src/uhitm.c","cFunction":"hmonas","description":"solid rust monster adhesion control"},
+    {"group":"Complete monster status","id":"mstatusline-complete-owner.wizard-pet-details","cFile":"src/insight.c","cFunction":"mstatusline","description":"wizard pet"},
+    {"group":"Complete monster status","id":"mstatusline-complete-owner.worm-head-status","cFile":"src/insight.c","cFunction":"mstatusline","description":"long worm"},
+    {"group":"Complete monster status","id":"mstatusline-complete-owner.worm-tail-status","cFile":"src/insight.c","cFunction":"mstatusline","description":"long worm tail"},
+    {"group":"Complete monster status","id":"mstatusline-complete-owner.changed-form-status","cFile":"src/insight.c","cFunction":"mstatusline","description":"shapechanger"},
+    {"group":"Complete monster status","id":"mstatusline-complete-owner.ordinary-untamed-negative","cFile":"src/insight.c","cFunction":"mstatusline","description":"plain newt"},
+    {"group":"Complete monster status","id":"mstatusline-complete-owner.nonwizard-pet-negative","cFile":"src/insight.c","cFunction":"mstatusline","description":"normal starting pet"}
   ]
 }

@@ -33,8 +33,17 @@ contact and combat visibility lifetime. All 29 checks, 136 controls, 19 focused
 fixtures and 44 public sessions pass. Its seven new C cases match all 587
 styled boundaries and 17,744 calls. The maintained corpus is 818. This natural
 contact change is outside the completed full817 runtime; no full818 sweep is
-claimed. Two parallel source audits have resumed for complete monster-status
-feedback and altar-glyph preservation.
+claimed.
+
+Complete monster-status feedback is now verified and integrated for immediate
+push. Wizard pet details, worm ordinals, shapechanger status, held and swallowed
+relations, steed injuries and gigantic size follow the C owner. All 34 checks,
+216 controls, 20 focused fixtures and 44 public sessions pass, including 64
+bounded workers. Six new C cases match all 331 styled boundaries and 18,343
+calls, fixing four status screens. The two ordinary controls preserve all five
+output collections. The maintained corpus is 819; the completed full817 does
+not include this repair. Altar-glyph, hero-status, eating-prelude and engulfing
+audits continue in fixed snapshots.
 
 The new shared-machine C coverage run accepts both native recordings byte for
 byte. The union now covers 4,571/5,492 functions and 60,349/107,260 branch

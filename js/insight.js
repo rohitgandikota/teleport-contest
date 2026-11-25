@@ -83,7 +83,7 @@ import { is_vampshifter } from './monst.js';
 
 import { is_vampire, lays_eggs } from './mondata.js';
 
-import { P_NONE, P_UNSKILLED, P_SKILLED, P_ISRESTRICTED, FULL_MOON, NEW_MOON, WEAK, P_TWO_WEAPON_COMBAT, ROLE_GENDMASK, ROLE_MALE, ROLE_FEMALE, ARTICLE_YOUR, ARTICLE_THE, SUPPRESS_IT, SUPPRESS_INVISIBLE, STRAT_WAITMASK, SUPPRESS_SADDLE, SUPPRESS_HALLUCINATION, MSLOW, MFAST, A_NONE, A_CURRENT, A_ORIGINAL, TIMEOUT, W_ARM, W_ARMS, W_ARMG, W_ARMU, W_AMUL, W_RINGL, W_RINGR, W_WEP, W_TOOL, W_ARMOR, W_ACCESSORY, W_ART, LEFT_SIDE, RIGHT_SIDE, BOTH_SIDES, LEG, Upolyd, FROMFORM } from './const.js';
+import { P_NONE, P_UNSKILLED, P_SKILLED, P_ISRESTRICTED, FULL_MOON, NEW_MOON, WEAK, P_TWO_WEAPON_COMBAT, ROLE_GENDMASK, ROLE_MALE, ROLE_FEMALE, ARTICLE_YOUR, ARTICLE_THE, SUPPRESS_IT, SUPPRESS_INVISIBLE, STRAT_WAITMASK, SUPPRESS_SADDLE, SUPPRESS_HALLUCINATION, MSLOW, MFAST, A_CURRENT, A_ORIGINAL, TIMEOUT, W_ARM, W_ARMS, W_ARMG, W_ARMU, W_AMUL, W_RINGL, W_RINGR, W_WEP, W_TOOL, W_ARMOR, W_ACCESSORY, W_ART, LEFT_SIDE, RIGHT_SIDE, BOTH_SIDES, LEG, Upolyd, FROMFORM } from './const.js';
 import { makeplural, simpleonames, suit_simple_name } from './objnam.js';
 import { weapon_descr, weapon_type, skill_name, skill_level_name, P_SKILL, can_advance } from './weapon.js';
 
@@ -136,7 +136,7 @@ import { Fire_resistance, Cold_resistance, Sleep_resistance,
          Passes_walls, Regeneration, Reflecting, Blindfolded, Blindfolded_only,
          Punished } from './youprop.js';
 
-import { body_part } from './polyself.js';
+import { body_part, mbodypart } from './polyself.js';
 
 import { is_metallic } from './obj.js';
 
@@ -146,7 +146,10 @@ import { which_armor } from './worn.js';
 
 import { s_suffix } from './hacklib.js';
 
-import { digests, dmgtype } from './mondata.js';
+import { digests, dmgtype, enfolds, is_animal } from './mondata.js';
+import { EDOG } from './const.js';
+import { count_wsegs, wseg_at } from './worm.js';
+import { mon_aligntyp } from './priest.js';
 
 import { ATTKS } from './monst_data.js';
 
@@ -1678,13 +1681,32 @@ export function piousness(showneg, suffix) {
 
 // src/insight.c:3275 mstatusline() gives stethoscope and probing feedback.
 export async function mstatusline(mtmp) {
-    const mdat = game.mons[mtmp.mnum];
+    const alignment = mon_aligntyp(mtmp);
+    const mdat = mtmp.data;
     let info = '';
 
-    if (mtmp.mtame)
+    if (mtmp.mtame) {
         info += ', tame';
-    else if (mtmp.mpeaceful)
+        if (game.wizard) {
+            info += ` (${mtmp.mtame}`;
+            if (!mtmp.isminion)
+                info += `; hungry ${EDOG(mtmp).hungrytime}; apport ${EDOG(mtmp).apport}`;
+            info += ')';
+        }
+    } else if (mtmp.mpeaceful)
         info += ', peaceful';
+    if (mdat === game.mons[PMNAMES.PM_LONG_WORM]) {
+        let nsegs = count_wsegs(mtmp);
+        if (!nsegs) {
+            info += ', single segment';
+        } else {
+            ++nsegs; // Include the head when describing the worm.
+            const segndx = wseg_at(mtmp, game.bhitpos.x, game.bhitpos.y);
+            info += `, ${segndx}${ordin(segndx)} of ${nsegs} segments`;
+        }
+    }
+    if (ismnum(mtmp.cham) && mdat !== game.mons[mtmp.cham])
+        info += ', shapechanger';
     if (mtmp.meating) info += ', eating';
     if (mtmp.mundetected || mtmp.m_ap_type
         || visible_region_at(game.bhitpos.x, game.bhitpos.y))
@@ -1706,20 +1728,38 @@ export async function mstatusline(mtmp) {
         info += mtmp.mspeed === MFAST ? ', fast'
               : mtmp.mspeed === MSLOW ? ', slow' : ', [? speed]';
     if (mtmp.minvis) info += ', invisible';
-    if (mtmp === game.u.ustuck)
-        info += game.u.uswallow ? ', engulfing you' : ', holding you';
-    if (mtmp === game.u.usteed) info += ', carrying you';
+    if (mtmp === game.u.ustuck) {
+        if (game.u.uswallow) {
+            if (digests(mdat))
+                info += ', digesting you';
+            else if (is_animal(mdat) && !enfolds(mdat))
+                info += ', swallowing you';
+            else
+                info += ', engulfing you';
+        } else {
+            info += !sticks(game.youmonst.data) ? ', holding you' : ', held by you';
+        }
+    }
+    if (mtmp === game.u.usteed) {
+        info += ', carrying you';
+        if (Wounded_legs()) {
+            const legs = game.u.EWounded_legs & BOTH_SIDES;
+            let what = mbodypart(mtmp, LEG);
+            if (legs === BOTH_SIDES)
+                what = makeplural(what);
+            info += `, injured ${what}`;
+        }
+    }
     if (mtmp.mleashed) info += ', leashed';
 
-    let alignment = mtmp.ispriest
-        ? (mtmp.epri?.shralign ?? mtmp.mextra?.epri?.shralign ?? A_NONE)
-        : mtmp.isminion
-          ? (mtmp.emin?.min_align ?? mtmp.mextra?.emin?.min_align ?? A_NONE)
-          : mdat.maligntyp;
-    if (alignment !== A_NONE)
-        alignment = Math.sign(alignment);
-    const size = ['tiny', 'small', 'medium', 'large', 'huge', 'gigantic'][mdat.msize]
-                 ?? `unknown size (${mdat.msize})`;
+    const size = {
+        [MFLAGS.MZ_TINY]: 'tiny',
+        [MFLAGS.MZ_SMALL]: 'small',
+        [MFLAGS.MZ_MEDIUM]: 'medium',
+        [MFLAGS.MZ_LARGE]: 'large',
+        [MFLAGS.MZ_HUGE]: 'huge',
+        [MFLAGS.MZ_GIGANTIC]: 'gigantic',
+    }[mdat.msize] ?? `unknown size (${mdat.msize})`;
     const monname = x_monnam(mtmp, ARTICLE_YOUR, null,
                              SUPPRESS_IT | SUPPRESS_INVISIBLE, false);
     await pline(`Status of ${monname} (${align_str(alignment)}, ${size}):  `

@@ -1,0 +1,583 @@
+{
+  "name": "half-damage-reader",
+  "description": "Twenty-six ordinary-key proposals over the sealed intrinsic prerequisite. Native recording and composition belong to parent. Psychic blast is constructed-only here.",
+  "coverage": [
+    "mode.debug",
+    "ui.getlin",
+    "ui.more-paging",
+    "level.ordinary"
+  ],
+  "branches": [
+    "half-damage.reader.bottle.timed",
+    "half-damage.reader.bottle.none",
+    "half-damage.reader.acid-hit.timed",
+    "half-damage.reader.acid-hit.none",
+    "half-damage.reader.acid-drink.timed",
+    "half-damage.reader.acid-drink.none",
+    "half-damage.reader.ceiling.timed",
+    "half-damage.reader.ceiling.none",
+    "half-damage.reader.wand.timed",
+    "half-damage.reader.wand.none",
+    "half-damage.reader.ring.timed",
+    "half-damage.reader.ring.none",
+    "half-damage.reader.earth.timed",
+    "half-damage.reader.earth.none",
+    "half-damage.reader.force-bolt.timed",
+    "half-damage.reader.force-bolt.none",
+    "half-damage.reader.rocktrap.timed",
+    "half-damage.reader.rocktrap.none",
+    "half-damage.reader.spiked-pit.timed",
+    "half-damage.reader.spiked-pit.none",
+    "half-damage.reader.pit.timed",
+    "half-damage.reader.pit.none",
+    "half-damage.reader.lava.timed",
+    "half-damage.reader.lava.none",
+    "half-damage.reader.eel.timed",
+    "half-damage.reader.eel.none"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "half-damage.reader.bottle.timed",
+      "segment": 0,
+      "screenIncludes": [
+        "crashes on your",
+        "Timeout for half physical damage set to 100."
+      ],
+      "screenExcludes": [
+        "Die?"
+      ],
+      "rngIncludes": [
+        "potionhit(potion.c:1638)"
+      ]
+    },
+    {
+      "branch": "half-damage.reader.bottle.none",
+      "segment": 1,
+      "screenIncludes": [
+        "crashes on your"
+      ],
+      "screenExcludes": [
+        "Die?",
+        "Timeout for half physical damage set to"
+      ],
+      "rngIncludes": [
+        "potionhit(potion.c:1638)"
+      ]
+    },
+    {
+      "branch": "half-damage.reader.acid-hit.timed",
+      "segment": 2,
+      "screenIncludes": [
+        "This burns",
+        "Timeout for half physical damage set to 100."
+      ],
+      "screenExcludes": [
+        "Die?"
+      ],
+      "rngIncludes": [
+        "potionhit(potion.c:1701)"
+      ]
+    },
+    {
+      "branch": "half-damage.reader.acid-hit.none",
+      "segment": 3,
+      "screenIncludes": [
+        "This burns"
+      ],
+      "screenExcludes": [
+        "Die?",
+        "Timeout for half physical damage set to"
+      ],
+      "rngIncludes": [
+        "potionhit(potion.c:1701)"
+      ]
+    },
+    {
+      "branch": "half-damage.reader.acid-drink.timed",
+      "segment": 4,
+      "screenIncludes": [
+        "This burns",
+        "Timeout for half physical damage set to 100."
+      ],
+      "screenExcludes": [
+        "Die?"
+      ],
+      "rngIncludes": [
+        "peffect_acid(potion.c:1308)"
+      ]
+    },
+    {
+      "branch": "half-damage.reader.acid-drink.none",
+      "segment": 5,
+      "screenIncludes": [
+        "This burns"
+      ],
+      "screenExcludes": [
+        "Die?",
+        "Timeout for half physical damage set to"
+      ],
+      "rngIncludes": [
+        "peffect_acid(potion.c:1308)"
+      ]
+    },
+    {
+      "branch": "half-damage.reader.ceiling.timed",
+      "segment": 6,
+      "screenIncludes": [
+        "hit your head on the ceiling",
+        "Timeout for half physical damage set to 100."
+      ],
+      "screenExcludes": [
+        "Die?"
+      ],
+      "rngIncludes": [
+        "peffect_levitation(potion.c:1200)"
+      ]
+    },
+    {
+      "branch": "half-damage.reader.ceiling.none",
+      "segment": 7,
+      "screenIncludes": [
+        "hit your head on the ceiling"
+      ],
+      "screenExcludes": [
+        "Die?",
+        "Timeout for half physical damage set to"
+      ],
+      "rngIncludes": [
+        "peffect_levitation(potion.c:1200)"
+      ]
+    },
+    {
+      "branch": "half-damage.reader.wand.timed",
+      "segment": 8,
+      "screenIncludes": [
+        "vibrates violently and explodes",
+        "Timeout for half physical damage set to 100."
+      ],
+      "screenExcludes": [
+        "Die?"
+      ],
+      "rngIncludes": [
+        "wand_explode(read.c:2450)"
+      ]
+    },
+    {
+      "branch": "half-damage.reader.wand.none",
+      "segment": 9,
+      "screenIncludes": [
+        "vibrates violently and explodes"
+      ],
+      "screenExcludes": [
+        "Die?",
+        "Timeout for half physical damage set to"
+      ],
+      "rngIncludes": [
+        "wand_explode(read.c:2450)"
+      ]
+    },
+    {
+      "branch": "half-damage.reader.ring.timed",
+      "segment": 10,
+      "screenIncludes": [
+        "pulsates momentarily, then explodes",
+        "Timeout for half physical damage set to 100."
+      ],
+      "screenExcludes": [
+        "Die?"
+      ],
+      "rngIncludes": [
+        "recharge(read.c:812)"
+      ]
+    },
+    {
+      "branch": "half-damage.reader.ring.none",
+      "segment": 11,
+      "screenIncludes": [
+        "pulsates momentarily, then explodes"
+      ],
+      "screenExcludes": [
+        "Die?",
+        "Timeout for half physical damage set to"
+      ],
+      "rngIncludes": [
+        "recharge(read.c:812)"
+      ]
+    },
+    {
+      "branch": "half-damage.reader.earth.timed",
+      "segment": 12,
+      "screenIncludes": [
+        "You are hit by",
+        "Timeout for half physical damage set to 100."
+      ],
+      "screenExcludes": [
+        "Die?"
+      ]
+    },
+    {
+      "branch": "half-damage.reader.earth.none",
+      "segment": 13,
+      "screenIncludes": [
+        "You are hit by"
+      ],
+      "screenExcludes": [
+        "Die?",
+        "Timeout for half physical damage set to"
+      ]
+    },
+    {
+      "branch": "half-damage.reader.force-bolt.timed",
+      "segment": 14,
+      "screenIncludes": [
+        "bash yourself",
+        "Timeout for half physical damage set to 100."
+      ],
+      "screenExcludes": [
+        "Die?"
+      ],
+      "rngIncludes": [
+        "zapyourself(zap.c:"
+      ]
+    },
+    {
+      "branch": "half-damage.reader.force-bolt.none",
+      "segment": 15,
+      "screenIncludes": [
+        "bash yourself"
+      ],
+      "screenExcludes": [
+        "Die?",
+        "Timeout for half physical damage set to"
+      ],
+      "rngIncludes": [
+        "zapyourself(zap.c:"
+      ]
+    },
+    {
+      "branch": "half-damage.reader.rocktrap.timed",
+      "segment": 16,
+      "screenIncludes": [
+        "falls on your",
+        "Timeout for half physical damage set to 100."
+      ],
+      "screenExcludes": [
+        "Die?"
+      ],
+      "rngIncludes": [
+        "trapeffect_rocktrap(trap.c:1339)"
+      ]
+    },
+    {
+      "branch": "half-damage.reader.rocktrap.none",
+      "segment": 17,
+      "screenIncludes": [
+        "falls on your"
+      ],
+      "screenExcludes": [
+        "Die?",
+        "Timeout for half physical damage set to"
+      ],
+      "rngIncludes": [
+        "trapeffect_rocktrap(trap.c:1339)"
+      ]
+    },
+    {
+      "branch": "half-damage.reader.spiked-pit.timed",
+      "segment": 18,
+      "screenIncludes": [
+        "sharp iron spikes",
+        "Timeout for half physical damage set to 100."
+      ],
+      "screenExcludes": [
+        "Die?"
+      ],
+      "rngIncludes": [
+        "trapeffect_pit(trap.c:1925)"
+      ]
+    },
+    {
+      "branch": "half-damage.reader.spiked-pit.none",
+      "segment": 19,
+      "screenIncludes": [
+        "sharp iron spikes"
+      ],
+      "screenExcludes": [
+        "Die?",
+        "Timeout for half physical damage set to"
+      ],
+      "rngIncludes": [
+        "trapeffect_pit(trap.c:1925)"
+      ]
+    },
+    {
+      "branch": "half-damage.reader.pit.timed",
+      "segment": 20,
+      "screenIncludes": [
+        "fall into a pit",
+        "Timeout for half physical damage set to 100."
+      ],
+      "screenExcludes": [
+        "Die?"
+      ],
+      "rngIncludes": [
+        "trapeffect_pit(trap.c:1950)"
+      ]
+    },
+    {
+      "branch": "half-damage.reader.pit.none",
+      "segment": 21,
+      "screenIncludes": [
+        "fall into a pit"
+      ],
+      "screenExcludes": [
+        "Die?",
+        "Timeout for half physical damage set to"
+      ],
+      "rngIncludes": [
+        "trapeffect_pit(trap.c:1950)"
+      ]
+    },
+    {
+      "branch": "half-damage.reader.lava.timed",
+      "segment": 22,
+      "screenIncludes": [
+        "hit by molten lava",
+        "Timeout for half physical damage set to 100."
+      ],
+      "screenExcludes": [
+        "Die?"
+      ],
+      "rngIncludes": [
+        "boulder_hits_pool(do.c:138)"
+      ]
+    },
+    {
+      "branch": "half-damage.reader.lava.none",
+      "segment": 23,
+      "screenIncludes": [
+        "hit by molten lava"
+      ],
+      "screenExcludes": [
+        "Die?",
+        "Timeout for half physical damage set to"
+      ],
+      "rngIncludes": [
+        "boulder_hits_pool(do.c:138)"
+      ]
+    },
+    {
+      "branch": "half-damage.reader.eel.timed",
+      "segment": 24,
+      "screenIncludes": [
+        "turn into a giant eel",
+        "Timeout for half physical damage set to 100."
+      ],
+      "screenExcludes": [
+        "Die?"
+      ],
+      "rngIncludes": [
+        "regen_hp(allmain.c:639)"
+      ]
+    },
+    {
+      "branch": "half-damage.reader.eel.none",
+      "segment": 25,
+      "screenIncludes": [
+        "turn into a giant eel"
+      ],
+      "screenExcludes": [
+        "Die?",
+        "Timeout for half physical damage set to"
+      ],
+      "rngIncludes": [
+        "regen_hp(allmain.c:639)"
+      ]
+    }
+  ],
+  "segments": [
+    {
+      "seed": 7401,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "bottle/timed",
+      "moves": " #levelchange\r15\r               l #wizintrinsic\r>>100o\r   \u0017uncursed potion of water\r   ta<     \u001b\u001bV"
+    },
+    {
+      "seed": 7401,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "bottle/none",
+      "moves": " #levelchange\r15\r               l #wizintrinsic\r>>\u001b   \u0017uncursed potion of water\r   ta<     \u001b\u001bV"
+    },
+    {
+      "seed": 7401,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "acid-hit/timed",
+      "moves": " #levelchange\r15\r               l #wizintrinsic\r>>100o\r   \u0017cursed potion of acid\r   ta<     \u001b\u001bV"
+    },
+    {
+      "seed": 7401,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "acid-hit/none",
+      "moves": " #levelchange\r15\r               l #wizintrinsic\r>>\u001b   \u0017cursed potion of acid\r   ta<     \u001b\u001bV"
+    },
+    {
+      "seed": 7401,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "acid-drink/timed",
+      "moves": " #levelchange\r15\r               l #wizintrinsic\r>>100o\r   \u0017uncursed potion of acid\r   qa     \u001b\u001bV"
+    },
+    {
+      "seed": 7401,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "acid-drink/none",
+      "moves": " #levelchange\r15\r               l #wizintrinsic\r>>\u001b   \u0017uncursed potion of acid\r   qa     \u001b\u001bV"
+    },
+    {
+      "seed": 7401,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "ceiling/timed",
+      "moves": " #levelchange\r15\r               l #wizintrinsic\r>>100o\r   \u0017cursed potion of levitation\r   qa     V"
+    },
+    {
+      "seed": 7401,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "ceiling/none",
+      "moves": " #levelchange\r15\r               l #wizintrinsic\r>>\u001b   \u0017cursed potion of levitation\r   qa     V"
+    },
+    {
+      "seed": 7401,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "wand/timed",
+      "moves": " #levelchange\r15\r               l #wizintrinsic\r>>100o\r   \u0017uncursed wand of wishing (1:0)\r   \u0017blessed scroll of charging\r   rb a     V"
+    },
+    {
+      "seed": 7401,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "wand/none",
+      "moves": " #levelchange\r15\r               l #wizintrinsic\r>>\u001b   \u0017uncursed wand of wishing (1:0)\r   \u0017blessed scroll of charging\r   rb a     V"
+    },
+    {
+      "seed": 7402,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "ring/timed",
+      "moves": " #levelchange\r15\r               l #wizintrinsic\r>>100o\r   \u0017uncursed +7 ring of protection\r   \u0017blessed scroll of charging\r   rb a     V"
+    },
+    {
+      "seed": 7402,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "ring/none",
+      "moves": " #levelchange\r15\r               l #wizintrinsic\r>>\u001b   \u0017uncursed +7 ring of protection\r   \u0017blessed scroll of charging\r   rb a     V"
+    },
+    {
+      "seed": 7401,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "earth/timed",
+      "moves": " #levelchange\r15\r               l #wizintrinsic\r>>100o\r   \u0017cursed scroll of earth\r   ra     V"
+    },
+    {
+      "seed": 7401,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "earth/none",
+      "moves": " #levelchange\r15\r               l #wizintrinsic\r>>\u001b   \u0017cursed scroll of earth\r   ra     V"
+    },
+    {
+      "seed": 7401,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "force-bolt/timed",
+      "moves": " #levelchange\r15\r               l #wizintrinsic\r>>100o\r   #wizcast\r:force bolt\r.     V"
+    },
+    {
+      "seed": 7401,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "force-bolt/none",
+      "moves": " #levelchange\r15\r               l #wizintrinsic\r>>\u001b   #wizcast\r:force bolt\r.     V"
+    },
+    {
+      "seed": 7401,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "rocktrap/timed",
+      "moves": " #levelchange\r15\r               l #wizintrinsic\r>>100o\r   \u0017falling rock trap\r   #sit\r      V"
+    },
+    {
+      "seed": 7401,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "rocktrap/none",
+      "moves": " #levelchange\r15\r               l #wizintrinsic\r>>\u001b   \u0017falling rock trap\r   #sit\r      V"
+    },
+    {
+      "seed": 7402,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "spiked-pit/timed",
+      "moves": " #levelchange\r15\r               l #wizintrinsic\r>>100o\r   \u0017spiked pit trap\r   #sit\r      V"
+    },
+    {
+      "seed": 7402,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "spiked-pit/none",
+      "moves": " #levelchange\r15\r               l #wizintrinsic\r>>\u001b   \u0017spiked pit trap\r   #sit\r      V"
+    },
+    {
+      "seed": 7401,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "pit/timed",
+      "moves": " #levelchange\r15\r               l #wizintrinsic\r>>100o\r   \u0017pit trap\r   #sit\r      V"
+    },
+    {
+      "seed": 7401,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "pit/none",
+      "moves": " #levelchange\r15\r               l #wizintrinsic\r>>\u001b   \u0017pit trap\r   #sit\r      V"
+    },
+    {
+      "seed": 7401,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "lava/timed",
+      "moves": " #levelchange\r15\r               l #wizintrinsic\r>>100o\r   \u0017uncursed boots of levitation\r   Wa     \u0017lava\r   \u0017boulder\r       V"
+    },
+    {
+      "seed": 7401,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "lava/none",
+      "moves": " #levelchange\r15\r               l #wizintrinsic\r>>\u001b   \u0017uncursed boots of levitation\r   Wa     \u0017lava\r   \u0017boulder\r       V"
+    },
+    {
+      "seed": 7401,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "eel/timed",
+      "moves": " #levelchange\r15\r               l #wizintrinsic\r>>100o\r   #polyself\rgiant eel\r     . . . . . . V"
+    },
+    {
+      "seed": 7401,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "eel/none",
+      "moves": " #levelchange\r15\r               l #wizintrinsic\r>>\u001b   #polyself\rgiant eel\r     . . . . . . V"
+    }
+  ]
+}

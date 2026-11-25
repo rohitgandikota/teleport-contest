@@ -93,7 +93,7 @@ import { W_ARMC, W_ARMH, I_SPECIAL, W_ARTI, STONED,
 import { yname } from './objnam.js';
 import { aggravate } from './wizard.js';
 import { increment_intrinsic_timeout, do_enlightenment_effect } from './zap.js';
-import { Invis, Acid_resistance, Levitation } from './youprop.js';
+import { Invis, Acid_resistance, Levitation, Half_physical_damage } from './youprop.js';
 import { fix_petrification } from './eat.js';
 import { unfixable_trouble_count } from './apply.js';
 import { enlightenment } from './insight.js';
@@ -524,7 +524,7 @@ export async function potionhit(mon, obj, how) {
         distance = 0;
         await pline_The(`${botlnam} crashes on your ${body_part(HEAD)} and breaks into shards.`);
         let impact = rnd(2);
-        if (game.u.uprops?.HALF_PHDAM)
+        if (Half_physical_damage())
             impact = Math.trunc((impact + 1) / 2);
         await losehp(impact,
                      how === POTHIT_OTHER_THROW ? 'propelled potion'
@@ -568,11 +568,11 @@ export async function potionhit(mon, obj, how) {
             if (!Unchanging() && !Antimagic())
                 await polyself(POLY_NOFLAGS);
         } else if (obj.otyp === ONAMES.POT_ACID
-                   && !game.u.uprops?.ACID_RES) {
+                   && !Acid_resistance()) {
             await pline(`This burns${obj.blessed ? ' a little'
                                   : obj.cursed ? ' a lot' : ''}!`);
             let damage = d(obj.cursed ? 2 : 1, obj.blessed ? 4 : 8);
-            if (game.u.uprops?.HALF_PHDAM)
+            if (Half_physical_damage())
                 damage = Math.trunc((damage + 1) / 2);
             await losehp(damage, 'potion of acid', KILLED_BY_AN);
         }
@@ -1595,7 +1595,7 @@ async function peffect_levitation(otmp) {
             const uarmh = worn(W_ARMH);
             let dmg = rnd(!uarmh ? 10 : !hard_helmet(uarmh) ? 6 : 3);
             await You(`hit your ${body_part(HEAD)} on the ${ceiling(u.ux, u.uy)}.`);
-            if (u.uprops?.HALF_PHDAM)
+            if (Half_physical_damage())
                 dmg = Math.trunc((dmg + 1) / 2);   /* Maybe_Half_Phys */
             await losehp(dmg, 'colliding with the ceiling', KILLED_BY);
             game.potion_nothing = 0; /* not nothing after all */
@@ -1623,7 +1623,7 @@ async function peffect_acid(otmp) {
         await pline(`This burns${otmp.blessed ? ' a little'
                                  : otmp.cursed ? ' a lot' : ' like acid'}!`);
         let dmg = d(otmp.cursed ? 2 : 1, otmp.blessed ? 4 : 8);
-        if (game.u.uprops?.HALF_PHDAM)
+        if (Half_physical_damage())
             dmg = Math.trunc((dmg + 1) / 2);   /* Maybe_Half_Phys */
         await losehp(dmg, 'potion of acid', KILLED_BY_AN);
         exercise(A_CON, false);

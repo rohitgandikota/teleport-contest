@@ -470,6 +470,9 @@ function wiz_intrinsic_timeout(key) {
         return (game.u.uprops?.[key] || 0) & TIMEOUT;
     if (key === 'UNCHANGING')
         return (game.u.intrinsic?.HUnchanging || 0) & TIMEOUT;
+    if (key === 'HALF_PHDAM' || key === 'HALF_SPDAM')
+        return (game.u.intrinsic?.[key === 'HALF_PHDAM'
+            ? 'HHalf_physical_damage' : 'HHalf_spell_damage'] || 0) & TIMEOUT;
     if (key === 'STRANGLED')
         return (game.u.intrinsic?.HStrangled || 0) & TIMEOUT;
     if (key === 'MAGICAL_BREATHING' || key === 'PASSES_WALLS')
@@ -605,6 +608,13 @@ export async function wiz_intrinsic() {
             const { incr_itimeout } = await import('./potion.js');
             incr_itimeout(key === 'PASSES_WALLS'
                 ? 'HPasses_walls' : 'HMagical_breathing', amount);
+            (game.disp ||= {}).botl = true;
+            await pline(`Timeout for ${name} ${oldtimeout
+                ? 'increased by' : 'set to'} ${amount}.`);
+        } else if (key === 'HALF_PHDAM' || key === 'HALF_SPDAM') {
+            const { incr_itimeout } = await import('./potion.js');
+            incr_itimeout(key === 'HALF_PHDAM'
+                ? 'HHalf_physical_damage' : 'HHalf_spell_damage', amount);
             (game.disp ||= {}).botl = true;
             await pline(`Timeout for ${name} ${oldtimeout
                 ? 'increased by' : 'set to'} ${amount}.`);

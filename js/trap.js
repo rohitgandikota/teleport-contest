@@ -1656,7 +1656,7 @@ async function trapeffect_rocktrap(mtmp, trap, trflags) {
         newsym(game.u.ux, game.u.uy);
 
         if (!harmless) {
-            if (game.u.uprops?.HALF_PHDAM)
+            if (Half_physical_damage())
                 dmg = Math.trunc((dmg + 1) / 2);
             await losehp(dmg, 'falling rock', KILLED_BY_AN);
             exercise(A_STR, false);
@@ -3085,7 +3085,7 @@ async function trapeffect_pit(mtmp, trap, trflags) {
         if (!(await steedintrap(trap, null))) {
             if (relevant_spikes) {
                 let damage = rnd(conj_pit ? 4 : adj_pit ? 6 : 10);
-                if (game.u.uprops?.HALF_PHDAM)
+                if (Half_physical_damage())
                     damage = Math.trunc((damage + 1) / 2);
                 await losehp(damage,
                              plunged ? 'deliberately plunged into a pit of iron spikes'
@@ -3104,7 +3104,7 @@ async function trapeffect_pit(mtmp, trap, trflags) {
             } else if (!conj_pit && !deliberate
                        && !(plunged && (Flying() || is_clinger(mtmp.data)))) {
                 let damage = rnd(adj_pit ? 3 : 6);
-                if (game.u.uprops?.HALF_PHDAM)
+                if (Half_physical_damage())
                     damage = Math.trunc((damage + 1) / 2);
                 await losehp(damage,
                              plunged ? 'deliberately plunged into a pit'

@@ -1,0 +1,170 @@
+{
+  "name": "half-damage-intrinsic",
+  "description": "Wizard half-damage intrinsic timeout lifecycle, real artifact acquisition/removal and worn/carry sources. Six ordinary-key cases verified in JS; independent C recording pending. Save/recover and source-bit boundaries are constructed controls only.",
+  "coverage": [
+    "mode.debug",
+    "ui.getlin",
+    "ui.more-paging",
+    "level.ordinary"
+  ],
+  "branches": [
+    "wizard.half-damage.timed-both-expiry",
+    "wizard.half-damage.artifact-removed",
+    "wizard.half-damage.artifact-acquired",
+    "wizard.half-damage.eye-carried-worn",
+    "wizard.half-damage.artifact-only-negative",
+    "wizard.half-damage.menu-cancel-negative"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "screenIncludes": [
+        "Timeout for half physical damage set to 5.",
+        "Timeout for half spell damage set to 3.",
+        "You take half physical damage.",
+        "You take half spell damage."
+      ],
+      "branch": "wizard.half-damage.timed-both-expiry",
+      "segment": 0,
+      "screenExcludes": [
+        "Die?"
+      ]
+    },
+    {
+      "screenIncludes": [
+        "Timeout for half physical damage set to 3.",
+        "Timeout for half spell damage set to 3.",
+        "You drop a glass orb named the Orb of Fate."
+      ],
+      "branch": "wizard.half-damage.artifact-removed",
+      "segment": 1,
+      "screenExcludes": [
+        "Die?"
+      ]
+    },
+    {
+      "screenIncludes": [
+        "Timeout for half physical damage set to 3.",
+        "You take half physical damage because of the Orb of Fate.",
+        "You take half spell damage because of the Orb of Fate."
+      ],
+      "branch": "wizard.half-damage.artifact-acquired",
+      "segment": 2,
+      "screenExcludes": [
+        "Die?"
+      ]
+    },
+    {
+      "screenIncludes": [
+        "Timeout for half spell damage set to 5.",
+        "You were wearing a square amulet named the Eye of the Aethiopica.",
+        "You take half spell damage because of the Eye of the Aethiopica."
+      ],
+      "branch": "wizard.half-damage.eye-carried-worn",
+      "segment": 3,
+      "screenExcludes": [
+        "Die?"
+      ]
+    },
+    {
+      "screenIncludes": [
+        "You take half physical damage because of the Orb of Fate.",
+        "You take half spell damage because of the Orb of Fate."
+      ],
+      "screenExcludes": [
+        "Timeout for half",
+        "Die?"
+      ],
+      "branch": "wizard.half-damage.artifact-only-negative",
+      "segment": 4
+    },
+    {
+      "screenIncludes": [
+        "half spell damage",
+        "half physical damage"
+      ],
+      "screenExcludes": [
+        "Timeout for half",
+        "You take half physical damage",
+        "You take half spell damage",
+        "Die?"
+      ],
+      "branch": "wizard.half-damage.menu-cancel-negative",
+      "segment": 5
+    }
+  ],
+  "segments": [
+    {
+      "name": "timed-both-expiry",
+      "seed": 7401,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #wizintrinsic\n>>3n5o\r   #wizintrinsic\n>>\u001b   \u0018      . . . . . \u0018      "
+    },
+    {
+      "name": "orb-removed-during-timer",
+      "seed": 7401,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:Desired,role:Valkyrie,race:human,gender:female,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed Orb of Fate\r   #wizintrinsic\n>>3n3o\r   da   \u0018      . . . \u0018      "
+    },
+    {
+      "name": "orb-acquired-during-timer",
+      "seed": 7401,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:Desired,role:Valkyrie,race:human,gender:female,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #wizintrinsic\n>>3n3o\r   \u0017uncursed Orb of Fate\r   . . . \u0018      "
+    },
+    {
+      "name": "eye-worn-taken-off",
+      "seed": 7401,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed Eye of the Aethiopica\r   #wizintrinsic\n>>5n\r   Pa   Ra   \u0018      . . . . . \u0018      "
+    },
+    {
+      "name": "orb-only-negative",
+      "seed": 7401,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:Desired,role:Valkyrie,race:human,gender:female,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed Orb of Fate\r   \u0018      . . . \u0018      "
+    },
+    {
+      "name": "cancel-negative",
+      "seed": 7401,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #wizintrinsic\n>>\u001b   \u0018      . . "
+    }
+  ],
+  "unchangedOutputHashes": {
+    "0": {
+      "screens": "ad3127271a2567a66656b0dffac7037e0f72f0e790e4970dc0d550af84d2462d",
+      "cursors": "088a0e812a7b22841ba30d8fe41cd5708b2664161f0b2a452b9f6f6f7a6dd120",
+      "calls": "f62b076b91e0f0dbaef5c1030f741146845e4e07e181e6e54c23eae34313dff2",
+      "slices": "d42d7c878408e29eeb5f94c38fe1aca6828e342e6cdf2e5ccb8debd31f615726",
+      "frames": "e6419fb900f4b9fa1b2dd274822c473368fd6fafdba3bf504f262984addaa3b6"
+    },
+    "3": {
+      "screens": "3c4c404153b7394620b89d7087426cfb82a03d5d661ddfe2def046646492880c",
+      "cursors": "dc607ab44a4eb520d38b1a4372d765e9b61ab14085ddfab19c908ed4a6145c68",
+      "calls": "196f5cd5aa90827872b4b64b5ccbab765137d8f9cdc4df7bbfdbf6fe54dbfaef",
+      "slices": "964f4a00ae4569241aff3fb77ee04651ea661b1cff9c0c9f35083f22d5049fc8",
+      "frames": "a03fd2f8811ce412428854e40f9ee5c02874f3d2e3aa28c219784f5a99fc6b74"
+    },
+    "4": {
+      "screens": "3b7fab45efb6b99f868893a2d0a67d1593bc01ee8dc2a368f2ab510107e10b26",
+      "cursors": "f12381838ffbf73b4cd12592e71e08944c25e109a2f5e36ab11c5fce9afe572c",
+      "calls": "2c8af7158cfcfc51784653eb5badb83f74445dd5ff22ae4252d8ab1f71b95377",
+      "slices": "3cc341fc61ff32d3ea9bfdaa4ada1a35c053a49687f9c952a93e7f1883bda539",
+      "frames": "3b6bee301adeaf5ea0bb5e2c62647414fd4cc5b986ec24b3b8c3517aa859d89c"
+    },
+    "5": {
+      "screens": "0c49c825409a4fa1ebc7ebf997c18c51f1621608fa4c1f2370c902d900087c4b",
+      "cursors": "ea03f78ab53fdaf2bc4dc42b04db7e728f4a574e35178a892dff26820a405405",
+      "calls": "b365a38d81d182cb5797087b1cc9a158280d0c59e1339919cf5bd8d0931d3702",
+      "slices": "a529515ec940dd6375e0ce960cb5ee5bfb82db86595460ff8acafb720c202d39",
+      "frames": "ba3a1dbda7521fc175cc7ea8b04f1d61a74268d3a43a5e30c3ee86ae6ff797d0"
+    }
+  }
+}

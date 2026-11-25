@@ -63,8 +63,15 @@ Pet displacement now resolves liquid, traps, experience and guilt before
 returning. Four new C cases match 159 styled boundaries and 16,405 calls,
 repairing four screens, two cursors and a divergent random stream. All 68
 selected/public fixtures and 68 bounded workers pass. The maintained corpus
-is 862. Next is the combined intrinsic half-damage producer and its fourteen
-readers. Source reviews continue for monster death, sickness and monster fire.
+is 862. The combined intrinsic half-damage producer and its fourteen readers
+now pass 453 source controls, 32 ordinary controls and 118 retained tests.
+Its 32 new C cases match 2,995 styled boundaries and 77,064 calls. All 864
+maintained fixtures pass in a fresh NFS run on the exact candidate, without
+retries or timeout overrides: 897,239 screens/cursors, 18,925,788 scored
+random positions and 32,586 frames. All 64 bounded workers also pass.
+The next source review addresses empty-inventory fire handling and the complete
+external-ignition owner. Parallel reviews continue for monster death, sickness
+and monster fire. These local results do not establish a newer held-out score.
 
 Publication resumed with `2089260a` after the earlier approval-review usage
 limit. That pushed checkpoint includes probing, dark-side visibility and the

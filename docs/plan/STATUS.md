@@ -1,5 +1,52 @@
 # STATUS — live handoff board
 
+## 2026-11-25: half-damage producer and readers pass the full864 run
+
+Pet checkpoint `c3f5aef8` is pushed. The half-damage composition changes only
+eight runtime files. The wizard timeout producer now preserves canonical
+intrinsic and equipment sources. Fourteen damage readers use the complete
+physical or spell predicate. Immediate acid-resistance, latent-telepathy and
+regeneration guards follow the reviewed C owners. The source review explicitly
+retains broader owner gaps; this is not a whole-owner completion claim.
+
+All 453 source controls, 32 ordinary controls and 118 retained tests pass.
+The same source controls passed 319/453 before this repair. The 32 C cases
+match 2,995 styled boundaries/cursors, 77,064 complete random calls and every
+per-input slice, with zero frames. Three styled boundaries and two cursors
+are repaired in the six-case lifecycle fixture. All 26 reader outputs were
+already exact through the old aliased producer; their internal-source checks
+explain why both producer and consumers must change together. All seventeen
+negative cases preserve all five output hashes. The psychic reader currently
+has constructed source controls, not a new ordinary C input.
+
+All 864 maintained fixtures pass on the exact candidate in a fresh two-worker
+NFS run: 897,239 screens/cursors, 18,925,788 scored random positions and
+32,586 animation frames. Both 432-fixture shards pass without retries or
+timeout overrides. All 1,154 transferred or linked file hashes remain fixed.
+The run reuses 858 existing NFS recordings by relative links and uploads only
+six new recordings plus small source files. Its root is
+`/share/NFS/u/rohit/research/contest/artifacts/2026-11-22/half-damage-full864-js-20261125`.
+Compact local receipt: `.cache/restart-20261122/half-damage-full864-remote/verification.json`,
+SHA256 `afd2df02bea24194b7b5c3e0e3e53caa1e0cf75ff7b610c50fe34d3a9396a409`.
+All 64 selected/public bounded workers, source audit, 17 syntax checks and
+both unchanged native recipe assertion sets pass. All 862 prior raw hashes
+remain unchanged. The registry appends 32 requirements. No held-out gain is
+inferred. Main receipt: `.cache/restart-20261122/half-damage-main-verification.json`,
+SHA256 `7925f2c301609f29a22a2834b4c5ef03689f7af0086d60d097fab55e2c7b9998`.
+
+Parent follow-up is isolated in `catch-lit-owner-source-audit`. Its candidate
+moves the complete C ignition owner into apply.js, reuses canonical object
+location/fuel predicates, restores floor-message location and speech handling,
+and removes the duplicate trap.js helpers. Twenty-six constructed checks pass
+versus one before; the real monster-fire caller no longer throws on floor gold.
+Initial test expectations incorrectly treated an empty message as a newline
+and omitted discovery's wisdom draw; those failed reports are preserved.
+Ordinary empty-inventory hero fire also exposes a separate burnarmor failure.
+Review resetGame's missing empty inventory initialization before composing:
+main and the full864 runtime remain untouched by this follow-up. Native
+inputs and publication of that follow-up are pending. The three source agents
+continue monster death, sickness and monster fire in their existing packets.
+
 ## 2026-11-25: pet displacement consequences verified
 
 Artifact healing checkpoint `1ddd833e` is pushed. The pet-swap patch restores

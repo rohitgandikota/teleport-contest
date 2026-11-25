@@ -1,0 +1,143 @@
+{
+  "name": "brain-drain-half-damage",
+  "description": "Four original C recordings cover the Priest worn-Mitre half-damage condition and plain-helmet, carried-Mitre and living-attacker negatives. Canonical intrinsic reading retains separate source controls because the wizard producer still uses an alias.",
+  "coverage": [
+    "mode.debug",
+    "ui.getlin",
+    "ui.more-paging",
+    "level.ordinary",
+    "monster.special-effects"
+  ],
+  "branches": [
+    "combat.half-damage.worn-mitre",
+    "combat.half-damage.plain-helm-negative",
+    "combat.half-damage.carried-mitre-negative",
+    "combat.half-damage.living-attacker-negative"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "screenIncludes": [
+        "a crystal helmet named the Mitre of Holiness.",
+        "The kobold zombie hits!",
+        "[HP -1, 13 left]",
+        "[HP -1, 12 left]"
+      ],
+      "screenExcludes": [
+        "[HP -2",
+        "Die?"
+      ],
+      "rngIncludes": [
+        "d(1,4)=2"
+      ],
+      "stateEvidence": "Lawful Priest actually wears the uncursed role quest artifact; no generic half-damage source is active. Two actual zombie hits each apply one from rolled two.",
+      "branch": "combat.half-damage.worn-mitre",
+      "segment": 0
+    },
+    {
+      "screenIncludes": [
+        "The kobold zombie hits!",
+        "[HP -3, 11 left]",
+        "[HP -1, 10 left]"
+      ],
+      "screenExcludes": [
+        "Mitre of Holiness",
+        "Die?"
+      ],
+      "rngIncludes": [
+        "d(1,4)=3",
+        "d(1,4)=1"
+      ],
+      "stateEvidence": "The actual worn helm has the same base type and enchantment but no artifact identity. Its two hits apply full rolled damage.",
+      "branch": "combat.half-damage.plain-helm-negative",
+      "segment": 1
+    },
+    {
+      "screenIncludes": [
+        "a crystal helmet named the Mitre of Holiness.",
+        "The kobold zombie hits!",
+        "[HP -2, 12 left]"
+      ],
+      "screenExcludes": [
+        "Die?"
+      ],
+      "rngIncludes": [
+        "d(1,4)=2"
+      ],
+      "stateEvidence": "The role quest artifact remains in inventory and is never worn. Full zombie damage is retained.",
+      "branch": "combat.half-damage.carried-mitre-negative",
+      "segment": 2
+    },
+    {
+      "screenIncludes": [
+        "a crystal helmet named the Mitre of Holiness.",
+        "The sewer rat bites!",
+        "[HP -2, 12 left]",
+        "[HP -3, 9 left]"
+      ],
+      "screenExcludes": [
+        "Die?"
+      ],
+      "rngIncludes": [
+        "d(1,3)=2",
+        "d(1,3)=3"
+      ],
+      "stateEvidence": "The same worn role artifact does not halve hits from a living sewer rat.",
+      "branch": "combat.half-damage.living-attacker-negative",
+      "segment": 3
+    }
+  ],
+  "segments": [
+    {
+      "name": "mitre-zombie",
+      "seed": 7401,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:Desired,role:Priest,race:human,gender:male,align:lawful,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=accessiblemsg,whatis_coord:map\nOPTIONS=showdamage\n",
+      "moves": " \u0017uncursed +0 Mitre of Holiness\r   Wa    \u0007hostile kobold zombie\r   .     .     .     "
+    },
+    {
+      "name": "plain-helm-zombie",
+      "seed": 7401,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:Desired,role:Priest,race:human,gender:male,align:lawful,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=accessiblemsg,whatis_coord:map\nOPTIONS=showdamage\n",
+      "moves": " \u0017uncursed +0 helm of brilliance\r   Wa    \u0007hostile kobold zombie\r   .     .     .     "
+    },
+    {
+      "name": "carried-mitre-zombie",
+      "seed": 7401,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:Desired,role:Priest,race:human,gender:male,align:lawful,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=accessiblemsg,whatis_coord:map\nOPTIONS=showdamage\n",
+      "moves": " \u0017uncursed +0 Mitre of Holiness\r   \u0007hostile kobold zombie\r   .     .     .     "
+    },
+    {
+      "name": "mitre-living-negative",
+      "seed": 7401,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:Desired,role:Priest,race:human,gender:male,align:lawful,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=accessiblemsg,whatis_coord:map\nOPTIONS=showdamage\n",
+      "moves": " \u0017uncursed +0 Mitre of Holiness\r   Wa    \u0007hostile sewer rat\r   .     .     .     "
+    }
+  ],
+  "negativeOutputHashes": {
+    "1": {
+      "screens": "49c04fb8ccacb685125e151d90b4f0d33c8c1fab30ffe4edd4d33cee2afeee4f",
+      "cursors": "08869e5fcda2480823a83abd8e7d64e74d6ea077d976b200bd15f890498f429e",
+      "calls": "ac7aac255db82db5935382ef3c4876226817e60c759f353c4e180ce3344c900a",
+      "slices": "8f88fa2bb99b4468e381f93d6069447066788ba9006369ed6b80e78e49568ac1",
+      "frames": "ca4b48c4d6af158f0d9c327a0a0b4bc6fb500c36c998d54a3e66b0f7a9e0f381"
+    },
+    "2": {
+      "screens": "0760514e98a18505a0e5976bed810c342655ffedc4459f84f9a9f114356eb75c",
+      "cursors": "d050232afd1cfd85f1e45b44854d4d9e28906457ff9fcced51d66e9bfe32e2ef",
+      "calls": "537a2857578d53e642cd2a646997f8802675eed050d0e1552bad0bc5475f5e1b",
+      "slices": "1ea59ad41abcde4498847c5ad30f79c21a9ac00511184f25558f7a0f94eae663",
+      "frames": "eb76a891e7bbf373a155259f461cc74228a7a11f4adb9a1e3095777155bd7a98"
+    },
+    "3": {
+      "screens": "d83fef9566cb689f187d1255a71ab57d7498daa804c69986450ff147664472f9",
+      "cursors": "e083f81528d7cd39ff8b305a48ed0516198ed6011a397f1faa335e50a79a9623",
+      "calls": "37d7af1410c46b7d82ad278c16f3d68831d0c883ead8a426320b97ce04ac6cd0",
+      "slices": "59d7e4c858577c830f45600840fcc3db292169075fbd202982efe9b6507cb2ef",
+      "frames": "56ef76ae9604a1e028d3b84db576750c52129db11a9f185155f959a1d97adce5"
+    }
+  }
+}

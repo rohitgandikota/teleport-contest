@@ -368,10 +368,15 @@ boundaries and 26,227 calls, fixing six screens, three cursors and four slices.
 Five negatives retain all five hashes. Corpus: 852. The brain checkpoint is
 pushed as `ae4ce3db`.
 
+Fountain checkpoint `7de5e2ee` is pushed. The common monster-hit half-damage
+repair passes all 22 parent checks, 64 controls, twenty focused fixtures,
+44 public sessions and 64 bounded workers. Four C cases match all 335 boundaries
+and 9,356 calls, fixing twelve screens. Three negatives retain all five hashes.
+Corpus: 853. Full849 excludes this checkpoint.
+
 The lava menu prerequisite restores all twelve original cases in its fixed
 candidate. Six new levitation writer cases independently match 1,052 boundaries
-and 18,663 calls. Four new Mitre/half-damage cases also match all 335 boundaries
-and 9,356 calls. Both await parent regression; neither is in main.
+and 18,663 calls. Their joint parent regression is next.
 
 The coherent text/history candidate remains unpublished. Its 26 history and
 retained cases match C. One of four new caller cases has the pre-existing

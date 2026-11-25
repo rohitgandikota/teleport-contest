@@ -10266,6 +10266,35 @@ dose. Parent composition remains pending. Pauli continues the separate wizard
 half-damage producer/expiry contract; Darwin resumes the slime setter audit.
 No new held-out or whole-port result is claimed.
 
+## 2026-11-25 06:18 UTC: common monster-hit protection verified
+
+Fountain checkpoint `7de5e2ee94b0f8a02785ab17a669bf0d4cb1f9f4` is pushed.
+The half-damage parent composition independently passes all 22 checks and 64
+controls: 25 source, 30 retained brain, four ordinary-input and five native.
+Twenty focused fixtures match 15,939 screens/cursors, 419,963 scored RNG
+positions and 275 frames. All 44 public sessions and 64 bounded workers pass.
+Seven strict/deferred fixtures retain all 33 segments, 3,187 styled boundaries,
+81,322 complete calls and zero frames.
+
+Four new C cases improve from 323/335 styled boundaries to all 335, retaining
+all cursors, 9,356 calls and every input slice. Three negative cases keep all
+five hashes. Verification SHA:
+`4c98a2328d7f6870c5ca560df26d543534d958e3b5ad7a8c04c746390fc18c75`.
+Only the common hitmu protection condition and necessary imports change.
+Integration preserves all 852 earlier raw files, fixes all 279 runtime hashes,
+copies eight exact support files and appends four registry entries. Corpus:
+853. Publish promptly. Full849 excludes this repair. The canonical wizard
+half-damage producer/expiry audit remains separate, as do all unreviewed
+passive, movement, damage-type and death branches.
+
+The lava/levitation parent builder is prepared for this verified predecessor.
+It preserves both original recordings, twelve lava cases and six writer cases,
+and composes only the two source patches. The test decoder import will use
+the identical existing frozen decoder instead of adding a duplicate copy.
+The text/history candidate will follow with its terrain and remaining menu
+cancellation prerequisites plus the full regression. No held-out gain is
+inferred from these local results.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

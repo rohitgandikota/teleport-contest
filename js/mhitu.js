@@ -40,7 +40,7 @@ import { breamm, thrwmu, spitmm } from './mthrowu.js';
 import { rn2, rn1, rnd, d } from './rng.js';
 import { is_animal, is_human, perceives, dmgtype, gender, pronoun_gender,
          is_swimmer, thick_skinned, unsolid, hides_under, is_hider, is_demon,
-         nolimbs, is_undead, is_orc, is_whirly, digests, is_flyer,
+         nolimbs, is_undead, is_orc, is_whirly, digests, is_flyer, mon_hates_blessings,
          defended, resists_acid, resists_cold, resists_elec, resists_fire,
          resists_ston, resists_drli, sticks, haseyes, stagger,
          poly_when_stoned, mhe, noit_mhim, cvt_adtyp_to_mseenres,
@@ -81,7 +81,7 @@ import { mon_nam, Some_Monnam } from './do_name.js';
 import { Inhell, remove_monster, place_monster, makemon } from './makemon.js';
 import { swallowed } from './display.js';
 import { vision_recalc } from './vision.js';
-import { ACURR, adjalign, adjattrib, exercise, Fast } from './attrib.js';
+import { ACURR, adjalign, adjattrib, exercise, Fast, Role_if } from './attrib.js';
 import { A_CON, A_STR, A_DEX } from './const.js';
 import { sobj_at } from './invent.js';
 import { s_suffix } from './hacklib.js';
@@ -105,6 +105,7 @@ import { buzzmu, castmu } from './mcastu.js';
 import { burnarmor, erode_obj, ignite_items, reset_utrap, minstapetrify } from './trap.js';
 import { destroy_items, drain_item } from './zap.js';
 import { defends, retouch_equipment, is_art } from './artifact.js';
+import { is_quest_artifact } from './questpgr.js';
 import { ART_STORMBRINGER, ART_VORPAL_BLADE } from './artilist_data.js';
 import { set_ulycn } from './were.js';
 import { can_blnd } from './mondata.js';
@@ -1591,7 +1592,11 @@ async function hitmu(mtmp, mattk, indx) {
 
     if (mhm.damage > 0) {
         /* [Half_physical_damage isn't applied to mhm.permdmg] */
-        if (game.u.uprops?.HALF_PHDAM)
+        if (Half_physical_damage()
+            /* Mitre of Holiness, even if not currently blessed */
+            || (Role_if(PMNAMES.PM_CLERIC) && game.u.uarmh
+                && is_quest_artifact(game.u.uarmh)
+                && mon_hates_blessings(mtmp)))
             mhm.damage = ((mhm.damage + 1) / 2) | 0;
 
         if (mhm.permdmg) { /* Death's life force drain */

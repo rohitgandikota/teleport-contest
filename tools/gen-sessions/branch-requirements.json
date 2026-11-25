@@ -4106,6 +4106,10 @@
     {"group":"Fountain dipping","id":"fountain.dip.human-arm-negative","cFile":"src/fountain.c","cFunction":"dipfountain","description":"fountain.c:512, human anatomy retains arm wording."},
     {"group":"Fountain dipping","id":"fountain.dip.hands-loss-negative","cFile":"src/fountain.c","cFunction":"dipfountain","description":"fountain.c:478-487, bare uncursed hands take feeling-of-loss arm."},
     {"group":"Fountain dipping","id":"fountain.dip.visible-dryup-negative","cFile":"src/fountain.c","cFunction":"dryup","description":"fountain.c:223-227, visible non-cloud fountain prints drying feedback."},
-    {"group":"Fountain dipping","id":"fountain.dip.cancel-negative","cFile":"src/potion.c","cFunction":"dodip","description":"potion.c:2280, Escape at getobj returns before dipfountain."}
+    {"group":"Fountain dipping","id":"fountain.dip.cancel-negative","cFile":"src/potion.c","cFunction":"dodip","description":"potion.c:2280, Escape at getobj returns before dipfountain."},
+    {"group":"Common monster-hit half damage","id":"combat.half-damage.worn-mitre","cFile":"src/mhitu.c","cFunction":"hitmu","description":"Lawful Priest actually wears the uncursed role quest artifact; no generic half-damage source is active. Two actual zombie hits each apply one from rolled two."},
+    {"group":"Common monster-hit half damage","id":"combat.half-damage.plain-helm-negative","cFile":"src/mhitu.c","cFunction":"hitmu","description":"The actual worn helm has the same base type and enchantment but no artifact identity. Its two hits apply full rolled damage."},
+    {"group":"Common monster-hit half damage","id":"combat.half-damage.carried-mitre-negative","cFile":"src/mhitu.c","cFunction":"hitmu","description":"The role quest artifact remains in inventory and is never worn. Full zombie damage is retained."},
+    {"group":"Common monster-hit half damage","id":"combat.half-damage.living-attacker-negative","cFile":"src/mhitu.c","cFunction":"hitmu","description":"The same worn role artifact does not halve hits from a living sewer rat."}
   ]
 }

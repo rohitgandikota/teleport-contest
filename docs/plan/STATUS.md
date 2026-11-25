@@ -1,5 +1,47 @@
 # STATUS — live handoff board
 
+## 2026-11-25: pet and sight-recovery messages verified for publication
+
+Free action is pushed as `a42abe34`. Its redundant parent recording now links
+to the checksum-identical canonical fixture, removing1,493,241 bytes.
+The only new main runtime edits are six calls in dog.js and mon.js: all five
+C-located taming/feeding messages and the sight-recovery message now use
+pline_mon. Plain unseen-pet, spit and billing branches are unchanged.
+
+All59 mcure source controls and25 feeding controls pass, versus25 and9 before.
+All25 feeding random-stream hashes remain fixed. Eight unchanged ordinary
+inputs pass observer/deferred checks and retain four negative output hash sets.
+All eight C cases match1,185 styled boundaries/cursors,21,110 calls and ordered
+slices, and one frame, versus four on published a42abe34. The original one-line
+mcure candidate remains7/8; the separate feeding prerequisite repairs its
+carrot-pet catch/meal boundary. All610 feeding source-packet members are fixed.
+
+All72 selected/public recordings match22,545 screens/cursors,1,098,480 random
+positions and1,528 frames. All72 strict eight-second workers, nine retained
+suites, source audit and five syntax checks pass. Two initial retained-suite
+commands failed before replay because parent omitted the existing private
+import hook and canonical input argument. Correct invocations pass; the
+original failures remain. No runtime/test export was added. All878 prior raw
+recordings and prior requirements remain fixed; one fixture and eight branch
+requirements are appended. The corpus is879, outside completed full877.
+Main receipt: `mcure-pet-main-verification.json`, SHA256
+`07823cab97f02eaa5c9212c8d2838dc9c46ce0d16b377adcee6cf0a5c510a3c2`.
+Commit and immediately push this checkpoint.
+
+The separate rooted/steed source packet is sealed and verified643 members.
+All nine unchanged C cases match1,240 boundaries,22,044 calls and zero frames,
+versus four before. Raw SHA256:
+`ec633a96a3dea70319fb5e92d9cd93479804f8ca924a97ee4aa2b0bd78906f54`.
+Its portable mandatory-integrity delivery is pending before current-main
+composition. The article packet is also sealed and verified, but native
+comparison passes only12/14, versus5/14 before. Both failures involve Excalibur
+fruit naming. Preserve all inputs and investigate the helper prerequisite;
+do not promote or weaken the two predicates. Raw SHA256:
+`39a77d5a3a4824b6aab836a85c3f1d014a202299122592f94687bd3ef7aff5dc`.
+The one-hunk queued-notice location prerequisite is sealed with50/50 source
+controls versus16; four other message contracts remain explicitly failing.
+No new leaderboard check: latest observed rank7,659 unmatched screens.
+
 ## 2026-11-25: free action verified for publication; live score improves slightly
 
 The movement checkpoint is pushed as `35e8df5c`. Its redundant parent recording

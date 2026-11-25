@@ -4352,6 +4352,14 @@
     {"group":"free-action-owner","id":"free-action-owner.timed-sleeping-vapor","cFile":"src/potion.c","cFunction":"potionbreathe","description":"Ordinary timer and equipment witness: timed-sleeping-vapor"},
     {"group":"free-action-owner","id":"free-action-owner.timed-paralysis-vapor","cFile":"src/potion.c","cFunction":"potionbreathe","description":"Ordinary timer and equipment witness: timed-paralysis-vapor"},
     {"group":"free-action-owner","id":"free-action-owner.ring-removed-timed-sleeping","cFile":"src/potion.c","cFunction":"peffect_sleeping","description":"Ordinary timer and equipment witness: ring-removed-timed-sleeping"},
-    {"group":"free-action-owner","id":"free-action-owner.ring-timed-paralysis","cFile":"src/potion.c","cFunction":"peffect_paralysis","description":"Ordinary timer and equipment witness: ring-timed-paralysis"}
+    {"group":"free-action-owner","id":"free-action-owner.ring-timed-paralysis","cFile":"src/potion.c","cFunction":"peffect_paralysis","description":"Ordinary timer and equipment witness: ring-timed-paralysis"},
+    {"id": "mcureblindness.owner.healing-blessed", "group": "mcureblindness-owner", "cFile": "src/muse.c", "cFunction": "mcureblindness", "description": "blessed impact cures with monster location"},
+    {"id": "mcureblindness.owner.healing-plain", "group": "mcureblindness-owner", "cFile": "src/muse.c", "cFunction": "mcureblindness", "description": "accessiblemsg-off impact remains plain"},
+    {"id": "mcureblindness.owner.healing-uncursed", "group": "mcureblindness-owner", "cFile": "src/muse.c", "cFunction": "mcureblindness", "description": "uncursed ordinary impact leaves blindness"},
+    {"id": "mcureblindness.owner.extra-uncursed", "group": "mcureblindness-owner", "cFile": "src/muse.c", "cFunction": "mcureblindness", "description": "uncursed extra impact cures with location"},
+    {"id": "mcureblindness.owner.extra-cursed", "group": "mcureblindness-owner", "cFile": "src/muse.c", "cFunction": "mcureblindness", "description": "cursed extra impact leaves blindness"},
+    {"id": "mcureblindness.owner.full-cursed", "group": "mcureblindness-owner", "cFile": "src/muse.c", "cFunction": "mcureblindness", "description": "cursed full impact still cures with location"},
+    {"id": "mcureblindness.owner.natural-horn-unseen", "group": "mcureblindness-owner", "cFile": "src/muse.c", "cFunction": "mcureblindness", "description": "natural horn cures silently while hero is blinded by vapor"},
+    {"id": "mcureblindness.owner.carrot-pet", "group": "mcureblindness-owner", "cFile": "src/muse.c", "cFunction": "mcureblindness", "description": "pet eats an actual thrown carrot and recovers sight at its square"}
   ]
 }

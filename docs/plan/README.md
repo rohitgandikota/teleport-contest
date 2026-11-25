@@ -12,6 +12,21 @@ Ground rules are in `/CLAUDE.md`. Read that first if you have not.
 
 ## Current focus, 2026-11-25
 
+
+Free action is pushed as `a42abe34`. The next checkpoint is verified: six
+message calls in dog.js and mon.js now preserve C's monster coordinates.
+All84 source controls, eight native cases,72 selected/public recordings and72
+strict workers pass, along with nine retained suites. Two parent command
+invocation failures were corrected using existing test support; originals remain.
+The native cases match1,185 styled boundaries/cursors,21,110 calls and one frame.
+The maintained corpus is879; full877 predates the last two checkpoints.
+See the top STATUS entry for the exact receipt and immediate publication step.
+Rooted/steed comparisons pass9/9 and await composition. Article comparisons
+pass12/14; the two Excalibur-fruit failures require further source review.
+The common queued-notice location fix is sealed separately with50 passing
+source controls and four remaining diagnostic failures outside its scope.
+
+
 The storage cleanup is complete. The user explicitly authorized deleting
 unnecessary artifacts locally and on NFS. The reported checkout size fell
 from about 177 GB to 3.32 GB; available disk space rose from 8.28 GB to

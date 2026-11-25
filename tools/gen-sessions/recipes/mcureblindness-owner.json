@@ -1,0 +1,198 @@
+{
+  "segments": [
+    {
+      "name": "healing-blessed",
+      "seed": 7600,
+      "datetime": "20260503025436",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,debug_mongen\nOPTIONS=accessiblemsg,whatis_coord:map\n",
+      "moves": " #levelchange\r30\r                             \u0017uncursed potion of blindness\r\u0017blessed potion of healing\r\u0007peaceful hill giant\rwa Fj     \u001b\u001bwb Fj     \u001b\u001bV"
+    },
+    {
+      "name": "healing-plain",
+      "seed": 7600,
+      "datetime": "20260503025436",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,debug_mongen\nOPTIONS=!accessiblemsg,whatis_coord:map\n",
+      "moves": " #levelchange\r30\r                             \u0017uncursed potion of blindness\r\u0017blessed potion of healing\r\u0007peaceful hill giant\rwa Fj     \u001b\u001bwb Fj     \u001b\u001bV"
+    },
+    {
+      "name": "healing-uncursed",
+      "seed": 7600,
+      "datetime": "20260503025436",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,debug_mongen\nOPTIONS=accessiblemsg,whatis_coord:map\n",
+      "moves": " #levelchange\r30\r                             \u0017uncursed potion of blindness\r\u0017uncursed potion of healing\r\u0007peaceful hill giant\rwa Fj     \u001b\u001bwb Fj     \u001b\u001bV"
+    },
+    {
+      "name": "extra-uncursed",
+      "seed": 7600,
+      "datetime": "20260503025436",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,debug_mongen\nOPTIONS=accessiblemsg,whatis_coord:map\n",
+      "moves": " #levelchange\r30\r                             \u0017uncursed potion of blindness\r\u0017uncursed potion of extra healing\r\u0007peaceful hill giant\rwa Fj     \u001b\u001bwb Fj     \u001b\u001bV"
+    },
+    {
+      "name": "extra-cursed",
+      "seed": 7600,
+      "datetime": "20260503025436",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,debug_mongen\nOPTIONS=accessiblemsg,whatis_coord:map\n",
+      "moves": " #levelchange\r30\r                             \u0017uncursed potion of blindness\r\u0017cursed potion of extra healing\r\u0007peaceful hill giant\rwa Fj     \u001b\u001bwb Fj     \u001b\u001bV"
+    },
+    {
+      "name": "full-cursed",
+      "seed": 7600,
+      "datetime": "20260503025436",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,debug_mongen\nOPTIONS=accessiblemsg,whatis_coord:map\n",
+      "moves": " #levelchange\r30\r                             \u0017uncursed potion of blindness\r\u0017cursed potion of full healing\r\u0007peaceful hill giant\rwa Fj     \u001b\u001bwb Fj     \u001b\u001bV"
+    },
+    {
+      "name": "natural-horn-unseen",
+      "seed": 7600,
+      "datetime": "20260503025436",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,debug_mongen\nOPTIONS=accessiblemsg,whatis_coord:map\n",
+      "moves": " #levelchange\r30\r                             \u0017uncursed potion of blindness\r\u0017blessed potion of healing\r\u0007peaceful gray unicorn\rwa Fj     \u001b\u001bV"
+    },
+    {
+      "name": "carrot-pet",
+      "seed": 7600,
+      "datetime": "20260503025436",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,debug_mongen\nOPTIONS=accessiblemsg,whatis_coord:map\n",
+      "moves": " #levelchange\r30\r                             \u0017uncursed potion of blindness\r\u0017uncursed carrot\r\u0007tame pony\rwa Fj     \u001b\u001btbl     \u001b\u001bV"
+    }
+  ],
+  "name": "mcureblindness-owner",
+  "description": "Ordinary potion impacts, pet carrot feeding and unseen natural-horn recovery. JS reach verified; native recording is parent-owned and pending.",
+  "coverage": [
+    "mode.debug",
+    "object.potions",
+    "monster.special-effects",
+    "combat.melee",
+    "combat.ranged",
+    "ui.getlin",
+    "ui.more-paging",
+    "monster.pets"
+  ],
+  "requireBranchAssertions": true,
+  "branches": [
+    "mcureblindness.owner.healing-blessed",
+    "mcureblindness.owner.healing-plain",
+    "mcureblindness.owner.healing-uncursed",
+    "mcureblindness.owner.extra-uncursed",
+    "mcureblindness.owner.extra-cursed",
+    "mcureblindness.owner.full-cursed",
+    "mcureblindness.owner.natural-horn-unseen",
+    "mcureblindness.owner.carrot-pet"
+  ],
+  "branchAssertions": [
+    {
+      "branch": "mcureblindness.owner.healing-blessed",
+      "segment": 0,
+      "screenIncludes": [
+        "NetHack Version",
+        "The hill giant looks sound and hale again.",
+        "<7,6>: The hill giant can see again."
+      ]
+    },
+    {
+      "branch": "mcureblindness.owner.healing-plain",
+      "segment": 1,
+      "screenIncludes": [
+        "NetHack Version",
+        "The hill giant looks sound and hale again.",
+        "The hill giant can see again."
+      ],
+      "screenExcludes": [
+        "<7,6>:"
+      ]
+    },
+    {
+      "branch": "mcureblindness.owner.healing-uncursed",
+      "segment": 2,
+      "screenIncludes": [
+        "NetHack Version",
+        "The hill giant looks sound and hale again."
+      ],
+      "screenExcludes": [
+        "The hill giant can see again."
+      ]
+    },
+    {
+      "branch": "mcureblindness.owner.extra-uncursed",
+      "segment": 3,
+      "screenIncludes": [
+        "NetHack Version",
+        "The hill giant looks sound and hale again.",
+        "<7,6>: The hill giant can see again."
+      ]
+    },
+    {
+      "branch": "mcureblindness.owner.extra-cursed",
+      "segment": 4,
+      "screenIncludes": [
+        "NetHack Version",
+        "The hill giant looks sound and hale again."
+      ],
+      "screenExcludes": [
+        "The hill giant can see again."
+      ]
+    },
+    {
+      "branch": "mcureblindness.owner.full-cursed",
+      "segment": 5,
+      "screenIncludes": [
+        "NetHack Version",
+        "The hill giant looks sound and hale again.",
+        "<7,6>: The hill giant can see again."
+      ]
+    },
+    {
+      "branch": "mcureblindness.owner.natural-horn-unseen",
+      "segment": 6,
+      "screenIncludes": [
+        "NetHack Version",
+        "The gray unicorn neighs!"
+      ],
+      "screenExcludes": [
+        "can see again.",
+        "horn glows"
+      ]
+    },
+    {
+      "branch": "mcureblindness.owner.carrot-pet",
+      "segment": 7,
+      "screenIncludes": [
+        "NetHack Version",
+        "The pony catches the carrot.",
+        "Your pony eats a carrot.",
+        "<9,5>: The pony can see again."
+      ]
+    }
+  ],
+  "unchangedOutputHashes": {
+    "healing-plain": {
+      "screens": "d5b20968ca10b9ee618654ca37aafdbb1e721825b38e650ade58ee055377dd58",
+      "cursors": "dedb2cd73c25f784ee250df54f9f858200b3c3b9a8b3019ff337a32e5bdaef28",
+      "calls": "7a4430b30dc93acf799c8ff2200012825406813a80e1f4cfd763332c3c74bc2f",
+      "slices": "3231d025cf13fe4b13b9fcb0cb2aed34123602cd88694db91697509244105ce6",
+      "frames": "2b42d7de36a189bc47c57bea468f955d10f1c67505a58e654190ca4726d4bf7d"
+    },
+    "healing-uncursed": {
+      "screens": "6161c842dd4fe493440603d933186fb2797fe920142bb606974bd2f6131d5b17",
+      "cursors": "58a1d4baa515f543a4b5f66bcfdb5c15f2e91d816506e3f8f485c14050fcea07",
+      "calls": "7a4430b30dc93acf799c8ff2200012825406813a80e1f4cfd763332c3c74bc2f",
+      "slices": "43a9844cfaba82934b39af459b79be47177168bd5fdd6f704e2d7319b435376c",
+      "frames": "22ea103a2b4941f256c4408a463b64736f310af061623675bf433cdfa40d4cf8"
+    },
+    "extra-cursed": {
+      "screens": "925a65589e292cea8d9daddf4b2fb33b679b501b2be66d1437963e597db2b854",
+      "cursors": "d34b1c6a82f030ff324dcf6d9f778059b87c7364d524be46be603811be11f6ad",
+      "calls": "d440be0671dff0f25031ca40aa4f45242e5a4f19e9b445089832523b106cd476",
+      "slices": "ab0696d8a686ecea52182ac4d2347bb302f49c6957e09021c0f1a425d266748a",
+      "frames": "08f456a35671599792ed024f6ebb1f7b9097e6b79db6190b1f7627eb4c7a5ea2"
+    },
+    "natural-horn-unseen": {
+      "screens": "fd6d1ff17e42e43320e0728971b751948484f77e4c7fa551645163550fa18bc5",
+      "cursors": "8352fea3de4f965d6aa8ec996209f7b5608b2069318df0cb0248241d40a14f14",
+      "calls": "260d1201fff4f6e3068fbf614fe923dba5ad272e8d2c4e1de6316f538633188c",
+      "slices": "44664dfc389b76bd03969d98e62c6ea81c8abd7beb72843c942b036a535c154e",
+      "frames": "f5ef758f4c91db60988a182047566e4dce7a111c9e2dc3b73036594a75d2325e"
+    }
+  }
+}

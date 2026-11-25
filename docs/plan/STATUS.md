@@ -8829,6 +8829,78 @@ Those failures and exact inputs remain preserved; no normalization is proposed.
 Darwin now audits complete Boots_off while Avicenna covers Amulet_on in separate
 fixed snapshots. Pauli handles the miscellaneous-item combat prerequisite.
 
+## 2026-11-25 02:15 UTC: ordinary meals and empty-inventory conduct verified
+
+Slime checkpoint `cd071c01` is pushed; process 70066 closed with exit 0.
+The first food-only parent composition failed its native gate. All six cases
+had exactly one remaining conduct-screen difference; the complete RNG streams,
+slices, cursors and frames matched. C reported "You are without possessions"
+after the final item was eaten, while JS reported "You started without
+possessions". The cause was array truthiness in show_conduct. Startup inventory
+can be absent, but freeinv leaves an empty array. The scoped length check
+preserves both cases. The original failing composition and first native details
+remain immutable. No input or comparison changed.
+
+The complete C/JS conduct owner and immediate formatting, count, achievement
+rendering and inventory-removal contracts were read. Three added state tests
+use real freeinv and check current and final tenses, possessed paupers, and
+empty inventory without pauper conduct. Existing native roleplay cases retain
+empty startup, regained possessions and final disclosure.
+
+The new `.cache/restart-20261122/doeat-food-conduct-parent-composition`
+passes all 21 planned checks, process 50301 exit 0: 84 controls, eighteen
+focused fixtures, all 44 public sessions, and 62 bounded workers. The focused
+137 segments match 19,536 screens/cursors, 426,307 scored RNG positions and
+five frames. Strict native and deferred checks cover 33 segments, 3,126
+boundaries, 90,507 complete calls and one frame. The six new cases match all
+321 boundaries, 16,208 complete calls and zero frames; before the combined
+repair, 311 screens and 320 cursors matched. Existing roleplay cases 1 and 2
+preserve all five JS hashes. The earlier food-only apple/carrot controls remain
+unchanged by that scoped food patch; their conduct screens correctly change
+under the separate inventory repair, so they are positive cases here.
+
+The ordinary FOOD_CLASS tail follows the C material/conduct order, first-event
+log suppression, Monk vegetarian penalty, touchfood reset, complete victual
+reset after disposal, and duration/nutrition scaling for partly eaten food.
+Corpse and ordinary meals share the source's common tail. Overflow, rotten-food
+unconsciousness and pending guilt have constructed real-helper coverage only.
+All 279 runtime hashes match the tested candidate. Seven support files are
+promoted; recipe description alone changes after verification to replace stale
+"Native pending" text. Its inputs and assertions are byte-for-byte unchanged,
+and both metadata hashes are recorded in the integration receipt. All 827
+preceding raw recordings remain fixed; six registry intent rows are appended.
+Maintained corpus: 828. Publish now, then start a fixed full828 regression.
+
+Verification SHA-256:
+`394874328a563e5b1f176ecabe13159e0170c069a5b40713ad550b0821691087`.
+Integration: `.cache/restart-20261122/doeat-food-conduct-main-integration.json`.
+Raw SHA-256:
+`122eaed2f00fe01117a3a14c499ff1f059f4a34e134889e55ee74d3e06fde905`.
+The initial new composition builder failed its fixture-name preflight before
+any tests; that directory and script are retained separately. The corrected
+builder uses the existing background-polymorph fixture.
+
+Parent independently verified the 654-file combat packet, the 979-file
+message/cloud composition, and the 685-file original message packet. Combat
+resolves the inherited three miscellaneous-item native failures by using
+located hit/miss/swing feedback and canonical Blind. Source review and nine
+native cases pass in that fixed candidate; public/current integration is next.
+The message composition preserves the independent local cloud bound and generic
+message/query limits. Its three test-expectation migrations retain actual
+producers and local 239/255 capacity assertions. It has ten native cases, 988
+boundaries and 30,709 calls; no long-cloud or long-query native positive or
+encoding parity is claimed. Jason now investigates the separate preserved
+name-encoding failures. Pauli proceeds to a separate feedback owner; Darwin
+continues Boots_off.
+
+Amulet_on needs no runtime patch in its complete owner audit. Parent verified
+all 660 files and six symlinks, then recorded its unchanged six-case proposal.
+Raw `4debb14ee41953d6639701272c015b5b53f36257c3862974b847aa8759356d6a`
+passes the first strict native check on the fixed food/conduct candidate:
+432 boundaries, 16,664 complete calls, zero frames, all five outputs exact.
+No new full-corpus or C-coverage credit yet. Avicenna now investigates the
+separate real-producer polymorph strangulation cancellation mismatch.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

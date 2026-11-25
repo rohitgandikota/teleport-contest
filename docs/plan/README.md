@@ -109,12 +109,21 @@ sink-fall helper removes levitation sources in C order. Nineteen checks,
 pass. Ten new C cases match 793 boundaries and 30,102 calls, fixing 110 screens.
 The maintained corpus is 826; the completed full824 excludes this repair.
 
-Fire-artifact and trapped-lava slime cures are verified for publication.
+Fire-artifact and trapped-lava slime cures are pushed as `cd071c01`.
 Both readers now use the timer written by the real slime producer. All 22 checks,
 59 controls, twelve focused fixtures, all public sessions and 56 bounded workers
 pass. Ten new C cases match all 953 boundaries and 29,894 calls, fixing 31
 screens. Seven controls retain all five output hashes. The maintained corpus
 is 827; the completed full824 excludes these two reader changes.
+
+Ordinary meals and empty-inventory conduct are verified for publication.
+The common food tail now preserves dietary conduct, Monk guilt, partly eaten
+meal duration and nutrition, and the real reset paths. Conduct inspection tests
+inventory length after the last item is consumed. All 21 checks, 84 controls,
+eighteen focused fixtures, 44 public sessions and 62 bounded workers pass.
+Six fresh C cases match all 321 boundaries and 16,208 calls, fixing ten screens.
+The maintained corpus is 828. The completed full824 excludes this change;
+a full828 run is the next verification step.
 
 The latest shared-machine C run accepts the wear, miscellaneous-item, slime
 and message recordings byte for byte. Across 824 credited inputs and 106

@@ -2027,7 +2027,7 @@ export async function show_conduct(final) {
     if (roleplay.deaf)
         have_been('deaf from birth');
     if (roleplay.pauper)
-        cmsg(game.invent ? 'started ' : 'are ', 'started out ',
+        cmsg(game.invent?.length ? 'started ' : 'are ', 'started out ',
              'without possessions');
     if (roleplay.nudist)
         have_been('faithfully nudist');

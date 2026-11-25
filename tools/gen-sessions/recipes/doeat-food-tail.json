@@ -1,0 +1,112 @@
+{
+  "name": "doeat-food-tail",
+  "description": "Real meat, partly eaten wish, and conduct commands exercise the common FOOD_CLASS meal tail. Six original C cases retain all inputs and compare complete output collections.",
+  "coverage": [
+    "object.food-corpses",
+    "survival.hunger",
+    "ending.conduct-achievement",
+    "mode.debug"
+  ],
+  "branches": [
+    "monk-meat-guilt",
+    "partly-food-duration",
+    "partly-single-turn-finish",
+    "animal-product-conduct",
+    "whole-apple-control",
+    "whole-carrot-control"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "monk-meat-guilt",
+      "segment": 0,
+      "screenIncludes": [
+        "You feel guilty.",
+        "This meatball is delicious!"
+      ]
+    },
+    {
+      "branch": "partly-food-duration",
+      "segment": 1,
+      "screenIncludes": [
+        "You begin eating a partly eaten food ration.",
+        "You finish eating the food ration."
+      ]
+    },
+    {
+      "branch": "partly-single-turn-finish",
+      "segment": 2,
+      "screenIncludes": [
+        "You eat a partly eaten carrot.",
+        "You finish eating the carrot."
+      ]
+    },
+    {
+      "branch": "animal-product-conduct",
+      "segment": 3,
+      "screenIncludes": [
+        "You have been vegetarian."
+      ]
+    },
+    {
+      "branch": "whole-apple-control",
+      "segment": 4,
+      "screenIncludes": [
+        "Delicious!  Must be a Macintosh!",
+        "You have followed a strict vegan diet."
+      ]
+    },
+    {
+      "branch": "whole-carrot-control",
+      "segment": 5,
+      "screenIncludes": [
+        "This carrot is delicious!",
+        "You have followed a strict vegan diet."
+      ]
+    }
+  ],
+  "segments": [
+    {
+      "name": "monk-meat",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Foodtail,role:Monk,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed meatball\r  \u001b\u001bea        #conduct\r    \u001b\u001b"
+    },
+    {
+      "name": "partly-ration",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Foodtail,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017partly eaten uncursed food ration\r  \u001b\u001bea        #conduct\r    \u001b\u001b"
+    },
+    {
+      "name": "partly-carrot",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Foodtail,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017partly eaten uncursed carrot\r  \u001b\u001bea        #conduct\r    \u001b\u001b"
+    },
+    {
+      "name": "pancake-conduct",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Foodtail,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed pancake\r  \u001b\u001bea        #conduct\r    \u001b\u001b"
+    },
+    {
+      "name": "whole-apple-control",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Foodtail,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed apple\r  \u001b\u001bea        #conduct\r    \u001b\u001b"
+    },
+    {
+      "name": "whole-carrot-control",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Foodtail,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed carrot\r  \u001b\u001bea        #conduct\r    \u001b\u001b"
+    }
+  ]
+}

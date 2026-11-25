@@ -3903,6 +3903,12 @@
     {"group":"Canonical Slimed fire readers","id":"slime-fire.surface-lava-slimed","cFile":"src/sit.c","cFunction":"dosit","description":"surface lava slimed"},
     {"group":"Canonical Slimed fire readers","id":"slime-fire.surface-lava-healthy","cFile":"src/sit.c","cFunction":"dosit","description":"surface lava healthy"},
     {"group":"Canonical Slimed fire readers","id":"slime-fire.ordinary-floor-slimed","cFile":"src/sit.c","cFunction":"dosit","description":"ordinary floor slimed"},
-    {"group":"Canonical Slimed fire readers","id":"slime-fire.fire-resistant-slimed","cFile":"src/artifact.c","cFunction":"artifact_hit","description":"fire resistant slimed"}
+    {"group":"Canonical Slimed fire readers","id":"slime-fire.fire-resistant-slimed","cFile":"src/artifact.c","cFunction":"artifact_hit","description":"fire resistant slimed"},
+    {"group":"Ordinary food meal tail","id":"monk-meat-guilt","cFile":"src/eat.c","cFunction":"doeat","description":"Monk meat meal waits for guilt and applies the vegetarian penalty"},
+    {"group":"Ordinary food meal tail","id":"partly-food-duration","cFile":"src/eat.c","cFunction":"doeat","description":"Partly eaten food scales the required time before starting the meal"},
+    {"group":"Ordinary food meal tail","id":"partly-single-turn-finish","cFile":"src/eat.c","cFunction":"doeat","description":"A partly eaten one-turn meal reports its completion"},
+    {"group":"Ordinary food meal tail","id":"animal-product-conduct","cFile":"src/eat.c","cFunction":"doeat","description":"Pancake breaks vegan conduct while preserving vegetarian conduct"},
+    {"group":"Ordinary food meal tail","id":"whole-apple-control","cFile":"src/eat.c","cFunction":"doeat","description":"Whole apple remains a vegan one-turn meal"},
+    {"group":"Ordinary food meal tail","id":"whole-carrot-control","cFile":"src/eat.c","cFunction":"doeat","description":"Whole carrot remains a vegan one-turn meal without a finish message"}
   ]
 }

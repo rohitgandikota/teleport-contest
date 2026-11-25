@@ -3893,6 +3893,16 @@
     {"group":"Accessory wear owner","id":"accessory-wear-owner.ordinary-ring-control","cFile":"src/do_wear.c","cFunction":"accessory_or_armor_on","description":"ordinary ring control"},
     {"group":"Accessory wear owner","id":"accessory-wear-owner.quest-helm","cFile":"src/do_wear.c","cFunction":"accessory_or_armor_on","description":"quest helm"},
     {"group":"Accessory wear owner","id":"accessory-wear-owner.artifact-eyewear","cFile":"src/do_wear.c","cFunction":"accessory_or_armor_on","description":"artifact eyewear"},
-    {"group":"Accessory wear owner","id":"accessory-wear-owner.water-walking","cFile":"src/do_wear.c","cFunction":"accessory_or_armor_on","description":"water walking"}
+    {"group":"Accessory wear owner","id":"accessory-wear-owner.water-walking","cFile":"src/do_wear.c","cFunction":"accessory_or_armor_on","description":"water walking"},
+    {"group":"Canonical Slimed fire readers","id":"slime-fire.fire-slimed","cFile":"src/artifact.c","cFunction":"artifact_hit","description":"fire slimed"},
+    {"group":"Canonical Slimed fire readers","id":"slime-fire.fire-healthy","cFile":"src/artifact.c","cFunction":"artifact_hit","description":"fire healthy"},
+    {"group":"Canonical Slimed fire readers","id":"slime-fire.ordinary-sword-slimed","cFile":"src/dothrow.c","cFunction":"toss_up","description":"ordinary sword slimed"},
+    {"group":"Canonical Slimed fire readers","id":"slime-fire.cold-slimed","cFile":"src/artifact.c","cFunction":"artifact_hit","description":"cold slimed"},
+    {"group":"Canonical Slimed fire readers","id":"slime-fire.trapped-lava-slimed","cFile":"src/sit.c","cFunction":"dosit","description":"trapped lava slimed"},
+    {"group":"Canonical Slimed fire readers","id":"slime-fire.trapped-lava-healthy","cFile":"src/sit.c","cFunction":"dosit","description":"trapped lava healthy"},
+    {"group":"Canonical Slimed fire readers","id":"slime-fire.surface-lava-slimed","cFile":"src/sit.c","cFunction":"dosit","description":"surface lava slimed"},
+    {"group":"Canonical Slimed fire readers","id":"slime-fire.surface-lava-healthy","cFile":"src/sit.c","cFunction":"dosit","description":"surface lava healthy"},
+    {"group":"Canonical Slimed fire readers","id":"slime-fire.ordinary-floor-slimed","cFile":"src/sit.c","cFunction":"dosit","description":"ordinary floor slimed"},
+    {"group":"Canonical Slimed fire readers","id":"slime-fire.fire-resistant-slimed","cFile":"src/artifact.c","cFunction":"artifact_hit","description":"fire resistant slimed"}
   ]
 }

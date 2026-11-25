@@ -8763,6 +8763,72 @@ artifacts are retained. Do not rewrite those C inputs or claim full native parit
 Parent is reviewing the complete combat-message owner separately. Amulet,
 ordinary food, shared message/query bounds and slime-reader audits continue.
 
+## 2026-11-25: canonical slime readers verified; C coverage expands
+
+Accessory wearing checkpoint `684631f7` pushed successfully, process 82869
+exit 0. Slime composition process 34567 closed with exit 0. Independent
+verification passes 22 checks, 59 controls, twelve focused fixtures, all 44
+public sessions and 56 bounded workers. Focused totals are 61 segments,
+5,580 screens/cursors, 193,514 scored random-call positions and 219 frames.
+Ten fresh C cases improve from 922/953 to 953/953 styled boundaries,
+950 to 953 exact cursors and 949 to 953 exact slices. Complete calls match
+29,894, down from the incorrect 29,897. Seven unchanged controls retain all
+five output hashes. Strict native and deferred checks on the new fixture plus
+slimicide and sit/trap/terrain fixtures pass across twenty segments, 2,563
+boundaries, 55,206 calls and two frames.
+
+Only two runtime lines change: artifact fire contact and trapped-lava sitting
+read `u.uprops.SLIMED`, which the complete real producer writes. Their existing
+call order, awaited feedback, damage, RNG and burn helper remain untouched.
+The delegated audit read complete affected owners and helper/caller contracts;
+parent checked the source macro, affected branches and producer/burn ordering.
+Actual slime attacks and setters, delayed killers and pending More state are
+covered without helper replacement. Late-countdown cleanup and other artifact
+or lava branches are not newly claimed.
+
+All 279 runtime files and six support files are fixed; patch reversal recovers
+the parent. All 826 older C recordings remain unchanged; the registry appends
+ten rows. The maintained corpus is 827. Full824 excludes this and the two
+preceding runtime changes. Verification SHA-256 `00020a1fb147ede216a9fc2dc40ac0fbfd1c20f7423d2c1d45d30687afba7ffe`.
+Integration receipt: `.cache/restart-20261122/slime-fire-readers-main-integration.json`.
+Publish this checkpoint now.
+
+The first parent attempt to run the standalone native comparator against the
+sealed source candidate failed at import because that candidate has no frozen
+support directory. No gameplay replay occurred. The empty report and process
+failure remain preserved. The complete parent composition supplies the unchanged
+frozen support and every actual native replay passes. No source seal, raw input,
+comparison rule or timeout changed to resolve that harness setup issue.
+
+NFS CPU batch process 3026 and both native/union phases closed with exit 0.
+Download 55859 closed with exit 0; all four compact reports were hash checked.
+All four original Mac raw recordings are byte-identical in instrumented C.
+The union credits 824 inputs across 106 layouts: 4,582/5,492 functions and
+60,732/107,260 branch outcomes, adding two functions and 83 outcomes. All
+105 preceding run records and source/binary/control/rejection pins remain fixed.
+There are 143 additional native inputs with 603 segments, plus three Linux
+controls with fourteen segments. Pending miscellaneous-item and message work
+contributes C reach only. The new encoding diagnostic is outside this union.
+
+Bulk results stay at
+`/share/NFS/u/rohit/research/contest/artifacts/2026-11-22/c-coverage-compress.E84JI2/verified-wear-misc-slime-message-union-20261125`.
+Summary SHA-256 `c079de247537b6f6578418d60e87333bcab030cfac38fddfbd217eb8e47e8dfd`;
+compact SHA-256 `99dd125721c7f62fd068fc1733204047a40b1e58729df6663469a511f8a13c89`.
+Receipt: `.cache/restart-20261122/linux-coverage-wear-misc-slime-message-download.json`.
+
+Message/query bounds now have a fresh exact four-case C recording,
+`7d45afa6c026724b5a16573e9fb3f812bc48b31697ee0b9406630c31265a1eca`,
+677 boundaries and 12,446 calls, exact across all five outputs. Jason is
+composing that sealed patch with the independent hero-status cloud bound on
+the fixed slime candidate, retaining current background changes and migrating
+only the three long-message test expectations per the C rule. The separate
+encoding diagnostic `d61775bca52b33be5ed03c6ace3a91eeaa866243303d0a3b62e516f6c4d684ba`
+preserves two failing C cases: config player-name rendering matches 0/7 grids,
+keyboard non-ASCII monster naming 282/345. Complete RNG streams match both.
+Those failures and exact inputs remain preserved; no normalization is proposed.
+Darwin now audits complete Boots_off while Avicenna covers Amulet_on in separate
+fixed snapshots. Pauli handles the miscellaneous-item combat prerequisite.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

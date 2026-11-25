@@ -101,7 +101,7 @@ source owner. All nineteen checks, 69 controls, twelve focused fixtures,
 controls retain all five hashes. The maintained corpus is 825; this patch is
 outside the completed full824 runtime.
 
-Accessory wearing is verified for publication. The owner now checks quest-helm
+Accessory wearing is pushed as `684631f7`. The owner now checks quest-helm
 refusal, silver/artifact contact, head anatomy and eyewear conflicts, releases
 weapon slots, and preserves the water-walking discovery latch. The complete
 sink-fall helper removes levitation sources in C order. Nineteen checks,
@@ -109,13 +109,20 @@ sink-fall helper removes levitation sources in C order. Nineteen checks,
 pass. Ten new C cases match 793 boundaries and 30,102 calls, fixing 110 screens.
 The maintained corpus is 826; the completed full824 excludes this repair.
 
-The latest shared-machine C coverage run accepts the tin-opening, background
-and hero-status recordings byte for byte. The union covers 4,580/5,492
-functions and 60,649/107,260 branch outcomes across 820 credited inputs and
-105 instrumented layouts. It adds 48 outcomes; all 104 preceding run records
-remain unchanged. The hero-status recording contributes C reach while its
-cloud-bound runtime patch remains pending. These figures measure C reach,
-not JS parity or complete source coverage.
+Fire-artifact and trapped-lava slime cures are verified for publication.
+Both readers now use the timer written by the real slime producer. All 22 checks,
+59 controls, twelve focused fixtures, all public sessions and 56 bounded workers
+pass. Ten new C cases match all 953 boundaries and 29,894 calls, fixing 31
+screens. Seven controls retain all five output hashes. The maintained corpus
+is 827; the completed full824 excludes these two reader changes.
+
+The latest shared-machine C run accepts the wear, miscellaneous-item, slime
+and message recordings byte for byte. Across 824 credited inputs and 106
+instrumented layouts, it reaches 4,582/5,492 functions and 60,732/107,260
+branch outcomes. It adds two functions and 83 outcomes. All 105 preceding run
+records remain unchanged. Miscellaneous-item and message runtime work remains
+pending, so those recordings add C reach without a publication claim.
+These figures measure C reach, not JS parity or complete source coverage.
 
 The preceding full regression passes all 817 fixtures: 853,841 screens/cursors,
 17,766,231 scored RNG positions and 32,296 frames. Both fixed-runtime shards

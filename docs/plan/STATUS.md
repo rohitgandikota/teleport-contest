@@ -1,6 +1,49 @@
 # STATUS — live handoff board
 
-## 2026-11-25: Rogue mimic wall symbols verified
+## 2026-11-25: cream-pie and running checkpoint verified
+
+Only apply.js and hack.js change runtime. use_cream_pie now follows C's
+canonical blindness predicate, can_blnd guard, shared blindness setter and
+awaited unwield, bill, extract and delete sequence. It names the pie only
+outside hallucination. lookaround checks Blind() after its grid-bug guard.
+The complete owners and immediate contracts are retained in the source audits.
+
+Cream source controls pass 35/35 versus 17/35; lookaround passes 55/55 versus
+47/55. Both ordinary gates pass their same four original inputs, including
+observer/plain/deferred EOF equality and fifteen unchanged negative hashes.
+All four original C cases now match versus three before: 251 styled
+boundaries/cursors, 11,732 calls and ordered slices, zero frames. Cream alone
+also passes all four. The native improvement is not independently attributed
+to lookaround; its timeout and stale-cache cases are source controls.
+
+All 66 selected/public recordings and all 66 strict eight-second workers pass:
+26,273 screens/cursors, 1,237,457 random positions and 1,762 frames. Fourteen
+retained suites, source audit and six syntax checks pass. Two initial artifact
+suite invocations omitted their existing artifact-hallucination-test-loader.
+The unchanged suites pass with that loader; both failed logs remain preserved.
+No runtime exports or test assertions were changed for these invocations.
+
+The 329-member cream packet, 327-member lookaround packet and 18-member
+promotion verify. All 279 runtime hashes match the native-tested composition.
+All 890 prior raws and branch requirements remain fixed. Six requirements
+and one raw bring the corpus to 891. The derived primary recipe adds C-observed
+positions, door-stop outcomes and cream feedback assertions while preserving
+every original tuple, state requirement and negative hash. Original recipe
+and derivation remain under tools/gen-sessions/evidence/lookaround-owner.
+Main receipt `cream-lookaround-main-verification.json`, SHA256
+`1edb3a572158fa511dde230d978425f601cdf21bb80510ba7495166a504a3814`.
+
+Full891 is running on NFS with two CPU workers, default budgets and no retries.
+PID 3129356; 1,181 fixed files, 889 linked old raws, two new raws. Root:
+/share/NFS/u/rohit/research/contest/artifacts/2026-11-22/cream-full891-js-20261125.
+All-files SHA256 `1dbaaa5c764e9d236737078d294fd9701437e6efc123996e032f5c3a1b4103e8`.
+Next: physical config-line assembly passes all twelve original C cases versus
+four before, including composition with this checkpoint. Its source controls
+pass 80/80 versus 13/80; ordinary assertions pass 12/12 versus 3/12. Portable
+promotion is in progress. No new native billing/immunity coverage, held-out
+improvement, whole-helper closure or whole-port completion is claimed.
+
+## 2026-11-25: Rogue mimic checkpoint pushed as 1110bf19
 
 Only makemon.js changes. On Rogue levels, a mimic beside a connecting wall
 uses the horizontal wall symbol; otherwise it uses the vertical wall symbol.

@@ -39,12 +39,20 @@ and its unchanged passing invocation are preserved. All prior 888 recordings
 remain fixed. Full889 passes on the exact published runtime: 919,096
 screens/cursors, 19,535,320 random positions and 32,997 frames.
 
-Rogue mimic wall symbols are verified for publication: source35/35 versus20,
-ordinary and original C5/5 versus3, all58 selected/public and strict workers,
-nine retained suites, source audit and three syntax checks. All889 prior raws
-remain fixed; the corpus is890. Cream-pie handling plus lookaround now match
-their four unchanged C cases on the composed runtime; broader checks remain.
-Config physical-line assembly awaits C recording. Floor object effects and
+Rogue mimic wall symbols are pushed as `1110bf19`: source 35/35 versus 20,
+ordinary and original C 5/5 versus 3, all 58 selected/public and strict workers,
+nine retained suites, source audit and three syntax checks.
+
+Cream-pie handling and lookaround are verified for publication. Source controls
+pass 35/35 and 55/55; all four original C cases match versus three before.
+Cream alone also passes those four; lookaround has separate source evidence.
+All 66 selected/public recordings and strict workers, fourteen retained suites,
+source audit and six syntax checks pass. All 890 prior raws remain fixed;
+the corpus is 891. Its full NFS replay is running with two workers.
+
+Config physical-line assembly passes all twelve original C cases versus four,
+including composition with cream and lookaround. Its portable promotion is
+being prepared. Floor object effects and
 shipping audits have no ordinary failure established and no runtime patch.
 Two duplicate startup warning failures remain unresolved. The 19:16 UTC feed
 is unchanged: rank 7 with 659 unmatched screens. See STATUS for exact receipts.

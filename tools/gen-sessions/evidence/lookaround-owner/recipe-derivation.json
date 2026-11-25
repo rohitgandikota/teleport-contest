@@ -1,0 +1,15 @@
+{
+  "originalRecipeSHA256": "ec411e875df67e0cb218e2f925343238e368d1bef1b0425f7e90eaba09a91ac0",
+  "maintainedRecipeSHA256": "dda405909c1c7231269b409a3c2dcf76f5eebc156ee65dccf3e502c1191784d5",
+  "originalRawSHA256": "c47781e9b14889ae7c676dd2940b481f9276d2ce19fbaf6632600fd186a4b979",
+  "changes": [
+    "Update descriptive status after parent C comparison.",
+    "Add six standard primary assertions for four final positions/door-stop outcomes and two cream-pie feedback cases."
+  ],
+  "unchanged": [
+    "All four input tuples and field presences.",
+    "Original state requirements and fifteen negative hashes.",
+    "Every original C recording byte."
+  ],
+  "nativeAttribution": "Cream alone and cream plus lookaround both pass four original C cases; lookaround has independent source-level blindness controls."
+}

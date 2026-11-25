@@ -4469,6 +4469,12 @@
     {"group": "rogue-mimic","id": "rogue-mimic.rogue-wall-horizontal","cFile": "src/makemon.c","cFunction": "set_mimic_sym","description": "rogue wall horizontal"},
     {"group": "rogue-mimic","id": "rogue-mimic.normal-wall-vertical","cFile": "src/makemon.c","cFunction": "set_mimic_sym","description": "normal wall vertical"},
     {"group": "rogue-mimic","id": "rogue-mimic.normal-wall-horizontal","cFile": "src/makemon.c","cFunction": "set_mimic_sym","description": "normal wall horizontal"},
-    {"group": "rogue-mimic","id": "rogue-mimic.rogue-floor-negative","cFile": "src/makemon.c","cFunction": "set_mimic_sym","description": "rogue floor negative"}
+    {"group": "rogue-mimic","id": "rogue-mimic.rogue-floor-negative","cFile": "src/makemon.c","cFunction": "set_mimic_sym","description": "rogue floor negative"},
+    {"group": "lookaround-cream", "id": "lookaround-sighted-side-door", "cFile": "src/hack.c", "cFunction": "lookaround", "description": "sighted side door"},
+    {"group": "lookaround-cream", "id": "lookaround-eyes-side-door", "cFile": "src/hack.c", "cFunction": "lookaround", "description": "eyes side door"},
+    {"group": "lookaround-cream", "id": "lookaround-eyes-cream-side-door", "cFile": "src/hack.c", "cFunction": "lookaround", "description": "eyes cream side door"},
+    {"group": "lookaround-cream", "id": "lookaround-lenses-cream-side-door", "cFile": "src/hack.c", "cFunction": "lookaround", "description": "lenses cream side door"},
+    {"group": "lookaround-cream", "id": "cream-pie.eyes-feedback", "cFile": "src/apply.c", "cFunction": "use_cream_pie", "description": "eyes feedback"},
+    {"group": "lookaround-cream", "id": "cream-pie.lenses-feedback", "cFile": "src/apply.c", "cFunction": "use_cream_pie", "description": "lenses feedback"}
   ]
 }

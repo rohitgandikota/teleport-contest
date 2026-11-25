@@ -1,0 +1,240 @@
+{
+  "name": "lookaround-owner",
+  "segments": [
+    {
+      "name": "sighted-side-door",
+      "seed": 855315,
+      "datetime": "20260327071407",
+      "moves": " u\u0017wall\r\u0017closed door\rhjGk\u001b\u001bV",
+      "nethackrc": "OPTIONS=name:Desired,role:Monk,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3,symset:DECgraphics,mention_walls\n"
+    },
+    {
+      "name": "eyes-side-door",
+      "seed": 855315,
+      "datetime": "20260327071407",
+      "moves": " u\u0017wall\r\u0017closed door\rhj\u0017The Eyes of the Overworld\r   \u001b\u001baa Gk\u001b\u001bV",
+      "nethackrc": "OPTIONS=name:Desired,role:Monk,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3,symset:DECgraphics,mention_walls\n"
+    },
+    {
+      "name": "eyes-cream-side-door",
+      "seed": 855315,
+      "datetime": "20260327071407",
+      "moves": " u\u0017wall\r\u0017closed door\rhj\u0017The Eyes of the Overworld\r   \u001b\u001baa \u0017uncursed cream pie\rab Gk\u001b\u001bV",
+      "nethackrc": "OPTIONS=name:Desired,role:Monk,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3,symset:DECgraphics,mention_walls\n"
+    },
+    {
+      "name": "lenses-cream-side-door",
+      "seed": 855315,
+      "datetime": "20260327071407",
+      "moves": " u\u0017wall\r\u0017closed door\rhj\u0017uncursed lenses\raa\u0017uncursed cream pie\rab Gk\u001b\u001bV",
+      "nethackrc": "OPTIONS=name:Desired,role:Monk,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3,symset:DECgraphics,mention_walls\n"
+    }
+  ],
+  "description": "Original four keyboard inputs for cream-pie feedback and stopping beside a door while running.",
+  "branchRequirements": [
+    {
+      "name": "sighted-side-door",
+      "branch": "lookaround-sighted-side-door",
+      "negative": true,
+      "runKey": 23,
+      "startXY": [
+        69,
+        9
+      ],
+      "doorXY": [
+        70,
+        8
+      ],
+      "finalXY": [
+        69,
+        8
+      ],
+      "finalTurn": 4,
+      "blind": false,
+      "eyes": false,
+      "cream": false,
+      "stopsAtDoor": true
+    },
+    {
+      "name": "eyes-side-door",
+      "branch": "lookaround-eyes-side-door",
+      "negative": true,
+      "runKey": 58,
+      "startXY": [
+        69,
+        9
+      ],
+      "doorXY": [
+        70,
+        8
+      ],
+      "finalXY": [
+        69,
+        8
+      ],
+      "finalTurn": 5,
+      "blind": false,
+      "eyes": true,
+      "cream": false,
+      "stopsAtDoor": true
+    },
+    {
+      "name": "eyes-cream-side-door",
+      "branch": "lookaround-eyes-cream-side-door",
+      "negative": false,
+      "runKey": 81,
+      "startXY": [
+        69,
+        9
+      ],
+      "doorXY": [
+        70,
+        8
+      ],
+      "finalXY": [
+        69,
+        8
+      ],
+      "finalTurn": 5,
+      "blind": false,
+      "eyes": true,
+      "cream": true,
+      "stopsAtDoor": true
+    },
+    {
+      "name": "lenses-cream-side-door",
+      "branch": "lookaround-lenses-cream-side-door",
+      "negative": true,
+      "runKey": 65,
+      "startXY": [
+        69,
+        9
+      ],
+      "doorXY": [
+        70,
+        8
+      ],
+      "finalXY": [
+        69,
+        7
+      ],
+      "finalTurn": 6,
+      "blind": true,
+      "eyes": false,
+      "cream": true,
+      "stopsAtDoor": false
+    }
+  ],
+  "unchangedOutputHashes": {
+    "sighted-side-door": {
+      "screens": "8aa84a27066e7cb31ddd5410139798da76eb41a6b44ac699ead660bc0d6e7f4a",
+      "cursors": "1226670980f7206e79af1fa1e5f79e3fa83a02e6c0a8c410f95216df1dc99f87",
+      "calls": "5999ead34758215de2f70d8e463ab62c34ae014568f71e04573e691756d956e4",
+      "slices": "deef774a7b39f48f34ab9516aa5e934fdd51ea1e260c58a451c7d8b91abb189f",
+      "frames": "a192576ca9cc796f35fbdb87b401dac2e91bf67a1d38e0cbf04a1d322c1c4c34"
+    },
+    "eyes-side-door": {
+      "screens": "29102282e16e9946c24e9242c1893b0e3df3474fade82e30fc6a87e17ca6c13f",
+      "cursors": "6428bcbcd9df05716c3c345fcf734ae411896eb7b3c0080001f465cf78ba097f",
+      "calls": "786eb3a1ae51a02633144c1fd125b0c8b002341c9cb73111f1a752f77a7401e6",
+      "slices": "b5cd4fa8773fed359c0f6a2868c5c43a1d28fcec6a26fee1ed2e34171f3a09e6",
+      "frames": "60e36dc4bc844fe8285371cf70c955b79990f094bc50b3401dcac4cbede63e8d"
+    },
+    "lenses-cream-side-door": {
+      "screens": "9a754d759bd55163a1fc4cc78c96306e8467717d7686e2d308485699d0c28ee2",
+      "cursors": "6f5c2814282d60d30e5d971f8f729a6ea13c6e5071a07534546ff73733344f03",
+      "calls": "5b9f5394404c4fd0fec09969e344fd5531e148dec40a32d3a14a40dcaa3f54b9",
+      "slices": "6a411098d1603ac5e64f7aa11edbe57b974fe3d7555f7365f73d4466cbf38488",
+      "frames": "7760da97b89ee5cf29410a68bb84c0b6f5b477f6b909c675ca52256006d86466"
+    }
+  },
+  "nativeStatus": "Original C5 recording retained unchanged; parent comparison passes all four cases with the cream-pie fix, and with cream-pie plus lookaround.",
+  "requireBranchAssertions": true,
+  "branches": [
+    "lookaround-sighted-side-door",
+    "lookaround-eyes-side-door",
+    "lookaround-eyes-cream-side-door",
+    "lookaround-lenses-cream-side-door",
+    "cream-pie.eyes-feedback",
+    "cream-pie.lenses-feedback"
+  ],
+  "branchAssertions": [
+    {
+      "branch": "lookaround-sighted-side-door",
+      "segment": 0,
+      "screenCells": [
+        {
+          "step": 28,
+          "x": 68,
+          "y": 9,
+          "equals": "@"
+        }
+      ],
+      "screenIncludes": [
+        "You stop in front of the door."
+      ]
+    },
+    {
+      "branch": "lookaround-eyes-side-door",
+      "segment": 1,
+      "screenCells": [
+        {
+          "step": 63,
+          "x": 68,
+          "y": 9,
+          "equals": "@"
+        }
+      ],
+      "screenIncludes": [
+        "You stop in front of the door."
+      ]
+    },
+    {
+      "branch": "lookaround-eyes-cream-side-door",
+      "segment": 2,
+      "screenCells": [
+        {
+          "step": 86,
+          "x": 68,
+          "y": 9,
+          "equals": "@"
+        }
+      ],
+      "screenIncludes": [
+        "You stop in front of the door."
+      ]
+    },
+    {
+      "branch": "lookaround-lenses-cream-side-door",
+      "segment": 3,
+      "screenCells": [
+        {
+          "step": 70,
+          "x": 68,
+          "y": 8,
+          "equals": "@"
+        }
+      ],
+      "screenExcludes": [
+        "You stop in front of the door."
+      ]
+    },
+    {
+      "branch": "cream-pie.eyes-feedback",
+      "segment": 2,
+      "screenIncludes": [
+        "There's sticky goop all over your face."
+      ],
+      "screenExcludes": [
+        "You can't see through all the sticky goop"
+      ]
+    },
+    {
+      "branch": "cream-pie.lenses-feedback",
+      "segment": 3,
+      "screenIncludes": [
+        "You can't see through all the sticky goop on your face."
+      ]
+    }
+  ]
+}

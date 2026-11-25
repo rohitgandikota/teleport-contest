@@ -2083,7 +2083,7 @@ export async function lookaround() {
         return;
     }
 
-    if (u.ublind || (game.context?.run | 0) === 0)
+    if (Blind() || (game.context?.run | 0) === 0)
         return;
 
     for (x = u.ux - 1; x <= u.ux + 1; x++) {

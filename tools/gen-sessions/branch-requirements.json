@@ -4079,6 +4079,17 @@
     {"group":"Levitation descent","id":"float-down.lava-salamander","cFile":"src/trap.c","cFunction":"float_down","description":"lava salamander"},
     {"group":"Levitation descent","id":"float-down.ordinary-no-levitation-negative","cFile":"src/trap.c","cFunction":"float_down","description":"ordinary no levitation negative"},
     {"group":"Levitation descent","id":"float-down.ring-removal-pit","cFile":"src/trap.c","cFunction":"float_down","description":"ring removal pit"},
-    {"group":"Levitation descent","id":"float-down.boots-removal-pit","cFile":"src/trap.c","cFunction":"float_down","description":"boots removal pit"}
+    {"group":"Levitation descent","id":"float-down.boots-removal-pit","cFile":"src/trap.c","cFunction":"float_down","description":"boots removal pit"},
+    {"group":"Basic character inspection","id":"enlightenment-basic-characteristics.empty-wallet-control","cFile":"src/insight.c","cFunction":"basics_enlightenment","description":"enlightenment basic characteristics.empty wallet control"},
+    {"group":"Basic character inspection","id":"enlightenment-basic-characteristics.wallet-coins-control","cFile":"src/insight.c","cFunction":"basics_enlightenment","description":"enlightenment basic characteristics.wallet coins control"},
+    {"group":"Basic character inspection","id":"enlightenment-basic-characteristics.known-pack-gold","cFile":"src/insight.c","cFunction":"basics_enlightenment","description":"enlightenment basic characteristics.known pack gold"},
+    {"group":"Basic character inspection","id":"enlightenment-basic-characteristics.wallet-and-pack-gold","cFile":"src/insight.c","cFunction":"basics_enlightenment","description":"enlightenment basic characteristics.wallet and pack gold"},
+    {"group":"Basic character inspection","id":"enlightenment-basic-characteristics.hallucinated-wallet","cFile":"src/insight.c","cFunction":"basics_enlightenment","description":"enlightenment basic characteristics.hallucinated wallet"},
+    {"group":"Basic character inspection","id":"enlightenment-basic-characteristics.best-armor-class","cFile":"src/insight.c","cFunction":"basics_enlightenment","description":"enlightenment basic characteristics.best armor class"},
+    {"group":"Basic character inspection","id":"enlightenment-basic-characteristics.worst-armor-class","cFile":"src/insight.c","cFunction":"basics_enlightenment","description":"enlightenment basic characteristics.worst armor class"},
+    {"group":"Basic character inspection","id":"enlightenment-basic-characteristics.magic-disclosure-cursed-gauntlets","cFile":"src/insight.c","cFunction":"one_characteristic","description":"enlightenment basic characteristics.magic disclosure cursed gauntlets"},
+    {"group":"Basic character inspection","id":"enlightenment-basic-characteristics.final-bones-disabled","cFile":"src/insight.c","cFunction":"enlightenment","description":"enlightenment basic characteristics.final bones disabled"},
+    {"group":"Basic character inspection","id":"enlightenment-basic-characteristics.half-hit-die-control","cFile":"src/insight.c","cFunction":"basics_enlightenment","description":"enlightenment basic characteristics.half hit die control"},
+    {"group":"Basic character inspection","id":"enlightenment-basic-characteristics.dagger-control","cFile":"src/insight.c","cFunction":"basics_enlightenment","description":"enlightenment basic characteristics.dagger control"}
   ]
 }

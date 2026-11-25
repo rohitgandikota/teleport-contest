@@ -1,0 +1,3028 @@
+{
+  "name": "enlightenment-basic-characteristics",
+  "description": "Eleven original C recordings cover wallet and known-container gold, hallucinated currency, both armor-class caps, magic disclosure, final bones wording and five ordinary negatives. BASIC cursed-item concealment has constructed source controls; elapsed time and DEBUGFILES remain separate prerequisites.",
+  "coverage": [
+    "mode.debug",
+    "object.tools-containers",
+    "object.rings",
+    "object.armor",
+    "object.potions",
+    "forms.polymorph",
+    "ui.hallucination",
+    "ui.getlin",
+    "ui.menus",
+    "ui.more-paging",
+    "ending.death-disclosure"
+  ],
+  "branches": [
+    "enlightenment-basic-characteristics.empty-wallet-control",
+    "enlightenment-basic-characteristics.wallet-coins-control",
+    "enlightenment-basic-characteristics.known-pack-gold",
+    "enlightenment-basic-characteristics.wallet-and-pack-gold",
+    "enlightenment-basic-characteristics.hallucinated-wallet",
+    "enlightenment-basic-characteristics.best-armor-class",
+    "enlightenment-basic-characteristics.worst-armor-class",
+    "enlightenment-basic-characteristics.magic-disclosure-cursed-gauntlets",
+    "enlightenment-basic-characteristics.final-bones-disabled",
+    "enlightenment-basic-characteristics.half-hit-die-control",
+    "enlightenment-basic-characteristics.dagger-control"
+  ],
+  "requireBranchAssertions": true,
+  "segments": [
+    {
+      "name": "empty-wallet-control",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r10\r    \u001b\u001b\u001b\u0018    \u001b\u001b\u001b"
+    },
+    {
+      "name": "wallet-coins-control",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r10\r    \u001b\u001b\u001b\u001710 gold pieces\r    \u001b\u001b\u001b\u0018    \u001b\u001b\u001b"
+    },
+    {
+      "name": "known-pack-gold",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r10\r    \u001b\u001b\u001b\u0017empty uncursed sack\r    \u001b\u001b\u001b\u001710 gold pieces\r    \u001b\u001b\u001baas$    \u001b\u001b\u001b\u0018    \u001b\u001b\u001b"
+    },
+    {
+      "name": "wallet-and-pack-gold",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r10\r    \u001b\u001b\u001b\u0017empty uncursed sack\r    \u001b\u001b\u001b\u001710 gold pieces\r    \u001b\u001b\u001baas5$    \u001b\u001b\u001b\u0018    \u001b\u001b\u001b"
+    },
+    {
+      "name": "hallucinated-wallet",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r10\r    \u001b\u001b\u001b\u001710 gold pieces\r    \u001b\u001b\u001b\u0017uncursed potion of hallucination\r    \u001b\u001b\u001bqa    \u001b\u001b\u001b\u0018    \u001b\u001b\u001b"
+    },
+    {
+      "name": "best-armor-class",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r10\r    \u001b\u001b\u001b\u0017uncursed +99 ring of protection\r    \u001b\u001b\u001bPal    \u001b\u001b\u001b\u0017uncursed +99 ring of protection\r    \u001b\u001b\u001bPbr    \u001b\u001b\u001b\u0018    \u001b\u001b\u001b"
+    },
+    {
+      "name": "worst-armor-class",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r10\r    \u001b\u001b\u001b\u0017uncursed -120 ring of protection\r    \u001b\u001b\u001bPal    \u001b\u001b\u001b\u0018    \u001b\u001b\u001b"
+    },
+    {
+      "name": "magic-disclosure-cursed-gauntlets",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r10\r    \u001b\u001b\u001b\u0017cursed gauntlets of power\r    \u001b\u001b\u001bWa    \u001b\u001b\u001b\u0018    \u001b\u001b\u001b"
+    },
+    {
+      "name": "final-bones-disabled",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!bones,disclose:+a\n",
+      "moves": " #levelchange\r10\r    \u001b\u001b\u001b#quit\ryn    \u001b"
+    },
+    {
+      "name": "half-hit-die-control",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r10\r    \u001b\u001b\u001b#polyself\rlichen\r    \u001b\u001b\u001b\u0018    \u001b\u001b\u001b"
+    },
+    {
+      "name": "dagger-control",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r10\r    \u001b\u001b\u001b\u0017uncursed dagger\r    \u001b\u001b\u001bwa    \u001b\u001b\u001b\u0018    \u001b\u001b\u001b"
+    }
+  ],
+  "branchAssertions": [
+    {
+      "branch": "enlightenment-basic-characteristics.empty-wallet-control",
+      "segment": 0,
+      "screenCells": [
+        {
+          "step": 25,
+          "x": 2,
+          "y": 15,
+          "equals": "Y"
+        },
+        {
+          "step": 25,
+          "x": 3,
+          "y": 15,
+          "equals": "o"
+        },
+        {
+          "step": 25,
+          "x": 4,
+          "y": 15,
+          "equals": "u"
+        },
+        {
+          "step": 25,
+          "x": 5,
+          "y": 15,
+          "equals": "r"
+        },
+        {
+          "step": 25,
+          "x": 6,
+          "y": 15,
+          "equals": " "
+        },
+        {
+          "step": 25,
+          "x": 7,
+          "y": 15,
+          "equals": "w"
+        },
+        {
+          "step": 25,
+          "x": 8,
+          "y": 15,
+          "equals": "a"
+        },
+        {
+          "step": 25,
+          "x": 9,
+          "y": 15,
+          "equals": "l"
+        },
+        {
+          "step": 25,
+          "x": 10,
+          "y": 15,
+          "equals": "l"
+        },
+        {
+          "step": 25,
+          "x": 11,
+          "y": 15,
+          "equals": "e"
+        },
+        {
+          "step": 25,
+          "x": 12,
+          "y": 15,
+          "equals": "t"
+        },
+        {
+          "step": 25,
+          "x": 13,
+          "y": 15,
+          "equals": " "
+        },
+        {
+          "step": 25,
+          "x": 14,
+          "y": 15,
+          "equals": "i"
+        },
+        {
+          "step": 25,
+          "x": 15,
+          "y": 15,
+          "equals": "s"
+        },
+        {
+          "step": 25,
+          "x": 16,
+          "y": 15,
+          "equals": " "
+        },
+        {
+          "step": 25,
+          "x": 17,
+          "y": 15,
+          "equals": "e"
+        },
+        {
+          "step": 25,
+          "x": 18,
+          "y": 15,
+          "equals": "m"
+        },
+        {
+          "step": 25,
+          "x": 19,
+          "y": 15,
+          "equals": "p"
+        },
+        {
+          "step": 25,
+          "x": 20,
+          "y": 15,
+          "equals": "t"
+        },
+        {
+          "step": 25,
+          "x": 21,
+          "y": 15,
+          "equals": "y"
+        },
+        {
+          "step": 25,
+          "x": 22,
+          "y": 15,
+          "equals": "."
+        }
+      ]
+    },
+    {
+      "branch": "enlightenment-basic-characteristics.wallet-coins-control",
+      "segment": 1,
+      "screenCells": [
+        {
+          "step": 48,
+          "x": 2,
+          "y": 15,
+          "equals": "Y"
+        },
+        {
+          "step": 48,
+          "x": 3,
+          "y": 15,
+          "equals": "o"
+        },
+        {
+          "step": 48,
+          "x": 4,
+          "y": 15,
+          "equals": "u"
+        },
+        {
+          "step": 48,
+          "x": 5,
+          "y": 15,
+          "equals": "r"
+        },
+        {
+          "step": 48,
+          "x": 6,
+          "y": 15,
+          "equals": " "
+        },
+        {
+          "step": 48,
+          "x": 7,
+          "y": 15,
+          "equals": "w"
+        },
+        {
+          "step": 48,
+          "x": 8,
+          "y": 15,
+          "equals": "a"
+        },
+        {
+          "step": 48,
+          "x": 9,
+          "y": 15,
+          "equals": "l"
+        },
+        {
+          "step": 48,
+          "x": 10,
+          "y": 15,
+          "equals": "l"
+        },
+        {
+          "step": 48,
+          "x": 11,
+          "y": 15,
+          "equals": "e"
+        },
+        {
+          "step": 48,
+          "x": 12,
+          "y": 15,
+          "equals": "t"
+        },
+        {
+          "step": 48,
+          "x": 13,
+          "y": 15,
+          "equals": " "
+        },
+        {
+          "step": 48,
+          "x": 14,
+          "y": 15,
+          "equals": "c"
+        },
+        {
+          "step": 48,
+          "x": 15,
+          "y": 15,
+          "equals": "o"
+        },
+        {
+          "step": 48,
+          "x": 16,
+          "y": 15,
+          "equals": "n"
+        },
+        {
+          "step": 48,
+          "x": 17,
+          "y": 15,
+          "equals": "t"
+        },
+        {
+          "step": 48,
+          "x": 18,
+          "y": 15,
+          "equals": "a"
+        },
+        {
+          "step": 48,
+          "x": 19,
+          "y": 15,
+          "equals": "i"
+        },
+        {
+          "step": 48,
+          "x": 20,
+          "y": 15,
+          "equals": "n"
+        },
+        {
+          "step": 48,
+          "x": 21,
+          "y": 15,
+          "equals": "s"
+        },
+        {
+          "step": 48,
+          "x": 22,
+          "y": 15,
+          "equals": " "
+        },
+        {
+          "step": 48,
+          "x": 23,
+          "y": 15,
+          "equals": "1"
+        },
+        {
+          "step": 48,
+          "x": 24,
+          "y": 15,
+          "equals": "0"
+        },
+        {
+          "step": 48,
+          "x": 25,
+          "y": 15,
+          "equals": " "
+        },
+        {
+          "step": 48,
+          "x": 26,
+          "y": 15,
+          "equals": "z"
+        },
+        {
+          "step": 48,
+          "x": 27,
+          "y": 15,
+          "equals": "o"
+        },
+        {
+          "step": 48,
+          "x": 28,
+          "y": 15,
+          "equals": "r"
+        },
+        {
+          "step": 48,
+          "x": 29,
+          "y": 15,
+          "equals": "k"
+        },
+        {
+          "step": 48,
+          "x": 30,
+          "y": 15,
+          "equals": "m"
+        },
+        {
+          "step": 48,
+          "x": 31,
+          "y": 15,
+          "equals": "i"
+        },
+        {
+          "step": 48,
+          "x": 32,
+          "y": 15,
+          "equals": "d"
+        },
+        {
+          "step": 48,
+          "x": 33,
+          "y": 15,
+          "equals": "s"
+        },
+        {
+          "step": 48,
+          "x": 34,
+          "y": 15,
+          "equals": "."
+        }
+      ]
+    },
+    {
+      "branch": "enlightenment-basic-characteristics.known-pack-gold",
+      "segment": 2,
+      "screenCells": [
+        {
+          "step": 87,
+          "x": 2,
+          "y": 15,
+          "equals": "Y"
+        },
+        {
+          "step": 87,
+          "x": 3,
+          "y": 15,
+          "equals": "o"
+        },
+        {
+          "step": 87,
+          "x": 4,
+          "y": 15,
+          "equals": "u"
+        },
+        {
+          "step": 87,
+          "x": 5,
+          "y": 15,
+          "equals": "r"
+        },
+        {
+          "step": 87,
+          "x": 6,
+          "y": 15,
+          "equals": " "
+        },
+        {
+          "step": 87,
+          "x": 7,
+          "y": 15,
+          "equals": "w"
+        },
+        {
+          "step": 87,
+          "x": 8,
+          "y": 15,
+          "equals": "a"
+        },
+        {
+          "step": 87,
+          "x": 9,
+          "y": 15,
+          "equals": "l"
+        },
+        {
+          "step": 87,
+          "x": 10,
+          "y": 15,
+          "equals": "l"
+        },
+        {
+          "step": 87,
+          "x": 11,
+          "y": 15,
+          "equals": "e"
+        },
+        {
+          "step": 87,
+          "x": 12,
+          "y": 15,
+          "equals": "t"
+        },
+        {
+          "step": 87,
+          "x": 13,
+          "y": 15,
+          "equals": " "
+        },
+        {
+          "step": 87,
+          "x": 14,
+          "y": 15,
+          "equals": "i"
+        },
+        {
+          "step": 87,
+          "x": 15,
+          "y": 15,
+          "equals": "s"
+        },
+        {
+          "step": 87,
+          "x": 16,
+          "y": 15,
+          "equals": " "
+        },
+        {
+          "step": 87,
+          "x": 17,
+          "y": 15,
+          "equals": "e"
+        },
+        {
+          "step": 87,
+          "x": 18,
+          "y": 15,
+          "equals": "m"
+        },
+        {
+          "step": 87,
+          "x": 19,
+          "y": 15,
+          "equals": "p"
+        },
+        {
+          "step": 87,
+          "x": 20,
+          "y": 15,
+          "equals": "t"
+        },
+        {
+          "step": 87,
+          "x": 21,
+          "y": 15,
+          "equals": "y"
+        },
+        {
+          "step": 87,
+          "x": 22,
+          "y": 15,
+          "equals": ","
+        },
+        {
+          "step": 87,
+          "x": 23,
+          "y": 15,
+          "equals": " "
+        },
+        {
+          "step": 87,
+          "x": 24,
+          "y": 15,
+          "equals": "b"
+        },
+        {
+          "step": 87,
+          "x": 25,
+          "y": 15,
+          "equals": "u"
+        },
+        {
+          "step": 87,
+          "x": 26,
+          "y": 15,
+          "equals": "t"
+        },
+        {
+          "step": 87,
+          "x": 2,
+          "y": 16,
+          "equals": "y"
+        },
+        {
+          "step": 87,
+          "x": 3,
+          "y": 16,
+          "equals": "o"
+        },
+        {
+          "step": 87,
+          "x": 4,
+          "y": 16,
+          "equals": "u"
+        },
+        {
+          "step": 87,
+          "x": 5,
+          "y": 16,
+          "equals": " "
+        },
+        {
+          "step": 87,
+          "x": 6,
+          "y": 16,
+          "equals": "h"
+        },
+        {
+          "step": 87,
+          "x": 7,
+          "y": 16,
+          "equals": "a"
+        },
+        {
+          "step": 87,
+          "x": 8,
+          "y": 16,
+          "equals": "v"
+        },
+        {
+          "step": 87,
+          "x": 9,
+          "y": 16,
+          "equals": "e"
+        },
+        {
+          "step": 87,
+          "x": 10,
+          "y": 16,
+          "equals": " "
+        },
+        {
+          "step": 87,
+          "x": 11,
+          "y": 16,
+          "equals": "1"
+        },
+        {
+          "step": 87,
+          "x": 12,
+          "y": 16,
+          "equals": "0"
+        },
+        {
+          "step": 87,
+          "x": 13,
+          "y": 16,
+          "equals": " "
+        },
+        {
+          "step": 87,
+          "x": 14,
+          "y": 16,
+          "equals": "z"
+        },
+        {
+          "step": 87,
+          "x": 15,
+          "y": 16,
+          "equals": "o"
+        },
+        {
+          "step": 87,
+          "x": 16,
+          "y": 16,
+          "equals": "r"
+        },
+        {
+          "step": 87,
+          "x": 17,
+          "y": 16,
+          "equals": "k"
+        },
+        {
+          "step": 87,
+          "x": 18,
+          "y": 16,
+          "equals": "m"
+        },
+        {
+          "step": 87,
+          "x": 19,
+          "y": 16,
+          "equals": "i"
+        },
+        {
+          "step": 87,
+          "x": 20,
+          "y": 16,
+          "equals": "d"
+        },
+        {
+          "step": 87,
+          "x": 21,
+          "y": 16,
+          "equals": "s"
+        },
+        {
+          "step": 87,
+          "x": 22,
+          "y": 16,
+          "equals": " "
+        },
+        {
+          "step": 87,
+          "x": 23,
+          "y": 16,
+          "equals": "s"
+        },
+        {
+          "step": 87,
+          "x": 24,
+          "y": 16,
+          "equals": "t"
+        },
+        {
+          "step": 87,
+          "x": 25,
+          "y": 16,
+          "equals": "a"
+        },
+        {
+          "step": 87,
+          "x": 26,
+          "y": 16,
+          "equals": "s"
+        },
+        {
+          "step": 87,
+          "x": 27,
+          "y": 16,
+          "equals": "h"
+        },
+        {
+          "step": 87,
+          "x": 28,
+          "y": 16,
+          "equals": "e"
+        },
+        {
+          "step": 87,
+          "x": 29,
+          "y": 16,
+          "equals": "d"
+        },
+        {
+          "step": 87,
+          "x": 30,
+          "y": 16,
+          "equals": " "
+        },
+        {
+          "step": 87,
+          "x": 31,
+          "y": 16,
+          "equals": "a"
+        },
+        {
+          "step": 87,
+          "x": 32,
+          "y": 16,
+          "equals": "w"
+        },
+        {
+          "step": 87,
+          "x": 33,
+          "y": 16,
+          "equals": "a"
+        },
+        {
+          "step": 87,
+          "x": 34,
+          "y": 16,
+          "equals": "y"
+        },
+        {
+          "step": 87,
+          "x": 35,
+          "y": 16,
+          "equals": " "
+        },
+        {
+          "step": 87,
+          "x": 36,
+          "y": 16,
+          "equals": "i"
+        },
+        {
+          "step": 87,
+          "x": 37,
+          "y": 16,
+          "equals": "n"
+        },
+        {
+          "step": 87,
+          "x": 38,
+          "y": 16,
+          "equals": " "
+        },
+        {
+          "step": 87,
+          "x": 39,
+          "y": 16,
+          "equals": "y"
+        },
+        {
+          "step": 87,
+          "x": 40,
+          "y": 16,
+          "equals": "o"
+        },
+        {
+          "step": 87,
+          "x": 41,
+          "y": 16,
+          "equals": "u"
+        },
+        {
+          "step": 87,
+          "x": 42,
+          "y": 16,
+          "equals": "r"
+        },
+        {
+          "step": 87,
+          "x": 43,
+          "y": 16,
+          "equals": " "
+        },
+        {
+          "step": 87,
+          "x": 44,
+          "y": 16,
+          "equals": "p"
+        },
+        {
+          "step": 87,
+          "x": 45,
+          "y": 16,
+          "equals": "a"
+        },
+        {
+          "step": 87,
+          "x": 46,
+          "y": 16,
+          "equals": "c"
+        },
+        {
+          "step": 87,
+          "x": 47,
+          "y": 16,
+          "equals": "k"
+        },
+        {
+          "step": 87,
+          "x": 48,
+          "y": 16,
+          "equals": "."
+        }
+      ]
+    },
+    {
+      "branch": "enlightenment-basic-characteristics.wallet-and-pack-gold",
+      "segment": 3,
+      "screenCells": [
+        {
+          "step": 88,
+          "x": 2,
+          "y": 15,
+          "equals": "Y"
+        },
+        {
+          "step": 88,
+          "x": 3,
+          "y": 15,
+          "equals": "o"
+        },
+        {
+          "step": 88,
+          "x": 4,
+          "y": 15,
+          "equals": "u"
+        },
+        {
+          "step": 88,
+          "x": 5,
+          "y": 15,
+          "equals": "r"
+        },
+        {
+          "step": 88,
+          "x": 6,
+          "y": 15,
+          "equals": " "
+        },
+        {
+          "step": 88,
+          "x": 7,
+          "y": 15,
+          "equals": "w"
+        },
+        {
+          "step": 88,
+          "x": 8,
+          "y": 15,
+          "equals": "a"
+        },
+        {
+          "step": 88,
+          "x": 9,
+          "y": 15,
+          "equals": "l"
+        },
+        {
+          "step": 88,
+          "x": 10,
+          "y": 15,
+          "equals": "l"
+        },
+        {
+          "step": 88,
+          "x": 11,
+          "y": 15,
+          "equals": "e"
+        },
+        {
+          "step": 88,
+          "x": 12,
+          "y": 15,
+          "equals": "t"
+        },
+        {
+          "step": 88,
+          "x": 13,
+          "y": 15,
+          "equals": " "
+        },
+        {
+          "step": 88,
+          "x": 14,
+          "y": 15,
+          "equals": "c"
+        },
+        {
+          "step": 88,
+          "x": 15,
+          "y": 15,
+          "equals": "o"
+        },
+        {
+          "step": 88,
+          "x": 16,
+          "y": 15,
+          "equals": "n"
+        },
+        {
+          "step": 88,
+          "x": 17,
+          "y": 15,
+          "equals": "t"
+        },
+        {
+          "step": 88,
+          "x": 18,
+          "y": 15,
+          "equals": "a"
+        },
+        {
+          "step": 88,
+          "x": 19,
+          "y": 15,
+          "equals": "i"
+        },
+        {
+          "step": 88,
+          "x": 20,
+          "y": 15,
+          "equals": "n"
+        },
+        {
+          "step": 88,
+          "x": 21,
+          "y": 15,
+          "equals": "s"
+        },
+        {
+          "step": 88,
+          "x": 22,
+          "y": 15,
+          "equals": " "
+        },
+        {
+          "step": 88,
+          "x": 23,
+          "y": 15,
+          "equals": "5"
+        },
+        {
+          "step": 88,
+          "x": 24,
+          "y": 15,
+          "equals": " "
+        },
+        {
+          "step": 88,
+          "x": 25,
+          "y": 15,
+          "equals": "z"
+        },
+        {
+          "step": 88,
+          "x": 26,
+          "y": 15,
+          "equals": "o"
+        },
+        {
+          "step": 88,
+          "x": 27,
+          "y": 15,
+          "equals": "r"
+        },
+        {
+          "step": 88,
+          "x": 28,
+          "y": 15,
+          "equals": "k"
+        },
+        {
+          "step": 88,
+          "x": 29,
+          "y": 15,
+          "equals": "m"
+        },
+        {
+          "step": 88,
+          "x": 30,
+          "y": 15,
+          "equals": "i"
+        },
+        {
+          "step": 88,
+          "x": 31,
+          "y": 15,
+          "equals": "d"
+        },
+        {
+          "step": 88,
+          "x": 32,
+          "y": 15,
+          "equals": "s"
+        },
+        {
+          "step": 88,
+          "x": 33,
+          "y": 15,
+          "equals": ","
+        },
+        {
+          "step": 88,
+          "x": 34,
+          "y": 15,
+          "equals": " "
+        },
+        {
+          "step": 88,
+          "x": 35,
+          "y": 15,
+          "equals": "a"
+        },
+        {
+          "step": 88,
+          "x": 36,
+          "y": 15,
+          "equals": "n"
+        },
+        {
+          "step": 88,
+          "x": 37,
+          "y": 15,
+          "equals": "d"
+        },
+        {
+          "step": 88,
+          "x": 2,
+          "y": 16,
+          "equals": "y"
+        },
+        {
+          "step": 88,
+          "x": 3,
+          "y": 16,
+          "equals": "o"
+        },
+        {
+          "step": 88,
+          "x": 4,
+          "y": 16,
+          "equals": "u"
+        },
+        {
+          "step": 88,
+          "x": 5,
+          "y": 16,
+          "equals": " "
+        },
+        {
+          "step": 88,
+          "x": 6,
+          "y": 16,
+          "equals": "h"
+        },
+        {
+          "step": 88,
+          "x": 7,
+          "y": 16,
+          "equals": "a"
+        },
+        {
+          "step": 88,
+          "x": 8,
+          "y": 16,
+          "equals": "v"
+        },
+        {
+          "step": 88,
+          "x": 9,
+          "y": 16,
+          "equals": "e"
+        },
+        {
+          "step": 88,
+          "x": 10,
+          "y": 16,
+          "equals": " "
+        },
+        {
+          "step": 88,
+          "x": 11,
+          "y": 16,
+          "equals": "5"
+        },
+        {
+          "step": 88,
+          "x": 12,
+          "y": 16,
+          "equals": " "
+        },
+        {
+          "step": 88,
+          "x": 13,
+          "y": 16,
+          "equals": "m"
+        },
+        {
+          "step": 88,
+          "x": 14,
+          "y": 16,
+          "equals": "o"
+        },
+        {
+          "step": 88,
+          "x": 15,
+          "y": 16,
+          "equals": "r"
+        },
+        {
+          "step": 88,
+          "x": 16,
+          "y": 16,
+          "equals": "e"
+        },
+        {
+          "step": 88,
+          "x": 17,
+          "y": 16,
+          "equals": " "
+        },
+        {
+          "step": 88,
+          "x": 18,
+          "y": 16,
+          "equals": "s"
+        },
+        {
+          "step": 88,
+          "x": 19,
+          "y": 16,
+          "equals": "t"
+        },
+        {
+          "step": 88,
+          "x": 20,
+          "y": 16,
+          "equals": "a"
+        },
+        {
+          "step": 88,
+          "x": 21,
+          "y": 16,
+          "equals": "s"
+        },
+        {
+          "step": 88,
+          "x": 22,
+          "y": 16,
+          "equals": "h"
+        },
+        {
+          "step": 88,
+          "x": 23,
+          "y": 16,
+          "equals": "e"
+        },
+        {
+          "step": 88,
+          "x": 24,
+          "y": 16,
+          "equals": "d"
+        },
+        {
+          "step": 88,
+          "x": 25,
+          "y": 16,
+          "equals": " "
+        },
+        {
+          "step": 88,
+          "x": 26,
+          "y": 16,
+          "equals": "a"
+        },
+        {
+          "step": 88,
+          "x": 27,
+          "y": 16,
+          "equals": "w"
+        },
+        {
+          "step": 88,
+          "x": 28,
+          "y": 16,
+          "equals": "a"
+        },
+        {
+          "step": 88,
+          "x": 29,
+          "y": 16,
+          "equals": "y"
+        },
+        {
+          "step": 88,
+          "x": 30,
+          "y": 16,
+          "equals": " "
+        },
+        {
+          "step": 88,
+          "x": 31,
+          "y": 16,
+          "equals": "i"
+        },
+        {
+          "step": 88,
+          "x": 32,
+          "y": 16,
+          "equals": "n"
+        },
+        {
+          "step": 88,
+          "x": 33,
+          "y": 16,
+          "equals": " "
+        },
+        {
+          "step": 88,
+          "x": 34,
+          "y": 16,
+          "equals": "y"
+        },
+        {
+          "step": 88,
+          "x": 35,
+          "y": 16,
+          "equals": "o"
+        },
+        {
+          "step": 88,
+          "x": 36,
+          "y": 16,
+          "equals": "u"
+        },
+        {
+          "step": 88,
+          "x": 37,
+          "y": 16,
+          "equals": "r"
+        },
+        {
+          "step": 88,
+          "x": 38,
+          "y": 16,
+          "equals": " "
+        },
+        {
+          "step": 88,
+          "x": 39,
+          "y": 16,
+          "equals": "p"
+        },
+        {
+          "step": 88,
+          "x": 40,
+          "y": 16,
+          "equals": "a"
+        },
+        {
+          "step": 88,
+          "x": 41,
+          "y": 16,
+          "equals": "c"
+        },
+        {
+          "step": 88,
+          "x": 42,
+          "y": 16,
+          "equals": "k"
+        },
+        {
+          "step": 88,
+          "x": 43,
+          "y": 16,
+          "equals": "."
+        }
+      ]
+    },
+    {
+      "branch": "enlightenment-basic-characteristics.hallucinated-wallet",
+      "segment": 4,
+      "screenCells": [
+        {
+          "step": 98,
+          "x": 2,
+          "y": 15,
+          "equals": "Y"
+        },
+        {
+          "step": 98,
+          "x": 3,
+          "y": 15,
+          "equals": "o"
+        },
+        {
+          "step": 98,
+          "x": 4,
+          "y": 15,
+          "equals": "u"
+        },
+        {
+          "step": 98,
+          "x": 5,
+          "y": 15,
+          "equals": "r"
+        },
+        {
+          "step": 98,
+          "x": 6,
+          "y": 15,
+          "equals": " "
+        },
+        {
+          "step": 98,
+          "x": 7,
+          "y": 15,
+          "equals": "w"
+        },
+        {
+          "step": 98,
+          "x": 8,
+          "y": 15,
+          "equals": "a"
+        },
+        {
+          "step": 98,
+          "x": 9,
+          "y": 15,
+          "equals": "l"
+        },
+        {
+          "step": 98,
+          "x": 10,
+          "y": 15,
+          "equals": "l"
+        },
+        {
+          "step": 98,
+          "x": 11,
+          "y": 15,
+          "equals": "e"
+        },
+        {
+          "step": 98,
+          "x": 12,
+          "y": 15,
+          "equals": "t"
+        },
+        {
+          "step": 98,
+          "x": 13,
+          "y": 15,
+          "equals": " "
+        },
+        {
+          "step": 98,
+          "x": 14,
+          "y": 15,
+          "equals": "c"
+        },
+        {
+          "step": 98,
+          "x": 15,
+          "y": 15,
+          "equals": "o"
+        },
+        {
+          "step": 98,
+          "x": 16,
+          "y": 15,
+          "equals": "n"
+        },
+        {
+          "step": 98,
+          "x": 17,
+          "y": 15,
+          "equals": "t"
+        },
+        {
+          "step": 98,
+          "x": 18,
+          "y": 15,
+          "equals": "a"
+        },
+        {
+          "step": 98,
+          "x": 19,
+          "y": 15,
+          "equals": "i"
+        },
+        {
+          "step": 98,
+          "x": 20,
+          "y": 15,
+          "equals": "n"
+        },
+        {
+          "step": 98,
+          "x": 21,
+          "y": 15,
+          "equals": "s"
+        },
+        {
+          "step": 98,
+          "x": 22,
+          "y": 15,
+          "equals": " "
+        },
+        {
+          "step": 98,
+          "x": 23,
+          "y": 15,
+          "equals": "1"
+        },
+        {
+          "step": 98,
+          "x": 24,
+          "y": 15,
+          "equals": "0"
+        },
+        {
+          "step": 98,
+          "x": 25,
+          "y": 15,
+          "equals": " "
+        },
+        {
+          "step": 98,
+          "x": 26,
+          "y": 15,
+          "equals": "n"
+        },
+        {
+          "step": 98,
+          "x": 27,
+          "y": 15,
+          "equals": "a"
+        },
+        {
+          "step": 98,
+          "x": 28,
+          "y": 15,
+          "equals": "n"
+        },
+        {
+          "step": 98,
+          "x": 29,
+          "y": 15,
+          "equals": "i"
+        },
+        {
+          "step": 98,
+          "x": 30,
+          "y": 15,
+          "equals": "t"
+        },
+        {
+          "step": 98,
+          "x": 31,
+          "y": 15,
+          "equals": "e"
+        },
+        {
+          "step": 98,
+          "x": 32,
+          "y": 15,
+          "equals": "s"
+        },
+        {
+          "step": 98,
+          "x": 33,
+          "y": 15,
+          "equals": "."
+        }
+      ]
+    },
+    {
+      "branch": "enlightenment-basic-characteristics.best-armor-class",
+      "segment": 5,
+      "screenCells": [
+        {
+          "step": 125,
+          "x": 2,
+          "y": 14,
+          "equals": "Y"
+        },
+        {
+          "step": 125,
+          "x": 3,
+          "y": 14,
+          "equals": "o"
+        },
+        {
+          "step": 125,
+          "x": 4,
+          "y": 14,
+          "equals": "u"
+        },
+        {
+          "step": 125,
+          "x": 5,
+          "y": 14,
+          "equals": "r"
+        },
+        {
+          "step": 125,
+          "x": 6,
+          "y": 14,
+          "equals": " "
+        },
+        {
+          "step": 125,
+          "x": 7,
+          "y": 14,
+          "equals": "a"
+        },
+        {
+          "step": 125,
+          "x": 8,
+          "y": 14,
+          "equals": "r"
+        },
+        {
+          "step": 125,
+          "x": 9,
+          "y": 14,
+          "equals": "m"
+        },
+        {
+          "step": 125,
+          "x": 10,
+          "y": 14,
+          "equals": "o"
+        },
+        {
+          "step": 125,
+          "x": 11,
+          "y": 14,
+          "equals": "r"
+        },
+        {
+          "step": 125,
+          "x": 12,
+          "y": 14,
+          "equals": " "
+        },
+        {
+          "step": 125,
+          "x": 13,
+          "y": 14,
+          "equals": "c"
+        },
+        {
+          "step": 125,
+          "x": 14,
+          "y": 14,
+          "equals": "l"
+        },
+        {
+          "step": 125,
+          "x": 15,
+          "y": 14,
+          "equals": "a"
+        },
+        {
+          "step": 125,
+          "x": 16,
+          "y": 14,
+          "equals": "s"
+        },
+        {
+          "step": 125,
+          "x": 17,
+          "y": 14,
+          "equals": "s"
+        },
+        {
+          "step": 125,
+          "x": 18,
+          "y": 14,
+          "equals": " "
+        },
+        {
+          "step": 125,
+          "x": 19,
+          "y": 14,
+          "equals": "i"
+        },
+        {
+          "step": 125,
+          "x": 20,
+          "y": 14,
+          "equals": "s"
+        },
+        {
+          "step": 125,
+          "x": 21,
+          "y": 14,
+          "equals": " "
+        },
+        {
+          "step": 125,
+          "x": 22,
+          "y": 14,
+          "equals": "-"
+        },
+        {
+          "step": 125,
+          "x": 23,
+          "y": 14,
+          "equals": "9"
+        },
+        {
+          "step": 125,
+          "x": 24,
+          "y": 14,
+          "equals": "9"
+        },
+        {
+          "step": 125,
+          "x": 25,
+          "y": 14,
+          "equals": ","
+        },
+        {
+          "step": 125,
+          "x": 26,
+          "y": 14,
+          "equals": " "
+        },
+        {
+          "step": 125,
+          "x": 27,
+          "y": 14,
+          "equals": "t"
+        },
+        {
+          "step": 125,
+          "x": 28,
+          "y": 14,
+          "equals": "h"
+        },
+        {
+          "step": 125,
+          "x": 29,
+          "y": 14,
+          "equals": "e"
+        },
+        {
+          "step": 125,
+          "x": 30,
+          "y": 14,
+          "equals": " "
+        },
+        {
+          "step": 125,
+          "x": 31,
+          "y": 14,
+          "equals": "b"
+        },
+        {
+          "step": 125,
+          "x": 32,
+          "y": 14,
+          "equals": "e"
+        },
+        {
+          "step": 125,
+          "x": 33,
+          "y": 14,
+          "equals": "s"
+        },
+        {
+          "step": 125,
+          "x": 34,
+          "y": 14,
+          "equals": "t"
+        },
+        {
+          "step": 125,
+          "x": 35,
+          "y": 14,
+          "equals": " "
+        },
+        {
+          "step": 125,
+          "x": 36,
+          "y": 14,
+          "equals": "p"
+        },
+        {
+          "step": 125,
+          "x": 37,
+          "y": 14,
+          "equals": "o"
+        },
+        {
+          "step": 125,
+          "x": 38,
+          "y": 14,
+          "equals": "s"
+        },
+        {
+          "step": 125,
+          "x": 39,
+          "y": 14,
+          "equals": "s"
+        },
+        {
+          "step": 125,
+          "x": 40,
+          "y": 14,
+          "equals": "i"
+        },
+        {
+          "step": 125,
+          "x": 41,
+          "y": 14,
+          "equals": "b"
+        },
+        {
+          "step": 125,
+          "x": 42,
+          "y": 14,
+          "equals": "l"
+        },
+        {
+          "step": 125,
+          "x": 43,
+          "y": 14,
+          "equals": "e"
+        },
+        {
+          "step": 125,
+          "x": 44,
+          "y": 14,
+          "equals": "."
+        }
+      ]
+    },
+    {
+      "branch": "enlightenment-basic-characteristics.worst-armor-class",
+      "segment": 6,
+      "screenCells": [
+        {
+          "step": 76,
+          "x": 2,
+          "y": 14,
+          "equals": "Y"
+        },
+        {
+          "step": 76,
+          "x": 3,
+          "y": 14,
+          "equals": "o"
+        },
+        {
+          "step": 76,
+          "x": 4,
+          "y": 14,
+          "equals": "u"
+        },
+        {
+          "step": 76,
+          "x": 5,
+          "y": 14,
+          "equals": "r"
+        },
+        {
+          "step": 76,
+          "x": 6,
+          "y": 14,
+          "equals": " "
+        },
+        {
+          "step": 76,
+          "x": 7,
+          "y": 14,
+          "equals": "a"
+        },
+        {
+          "step": 76,
+          "x": 8,
+          "y": 14,
+          "equals": "r"
+        },
+        {
+          "step": 76,
+          "x": 9,
+          "y": 14,
+          "equals": "m"
+        },
+        {
+          "step": 76,
+          "x": 10,
+          "y": 14,
+          "equals": "o"
+        },
+        {
+          "step": 76,
+          "x": 11,
+          "y": 14,
+          "equals": "r"
+        },
+        {
+          "step": 76,
+          "x": 12,
+          "y": 14,
+          "equals": " "
+        },
+        {
+          "step": 76,
+          "x": 13,
+          "y": 14,
+          "equals": "c"
+        },
+        {
+          "step": 76,
+          "x": 14,
+          "y": 14,
+          "equals": "l"
+        },
+        {
+          "step": 76,
+          "x": 15,
+          "y": 14,
+          "equals": "a"
+        },
+        {
+          "step": 76,
+          "x": 16,
+          "y": 14,
+          "equals": "s"
+        },
+        {
+          "step": 76,
+          "x": 17,
+          "y": 14,
+          "equals": "s"
+        },
+        {
+          "step": 76,
+          "x": 18,
+          "y": 14,
+          "equals": " "
+        },
+        {
+          "step": 76,
+          "x": 19,
+          "y": 14,
+          "equals": "i"
+        },
+        {
+          "step": 76,
+          "x": 20,
+          "y": 14,
+          "equals": "s"
+        },
+        {
+          "step": 76,
+          "x": 21,
+          "y": 14,
+          "equals": " "
+        },
+        {
+          "step": 76,
+          "x": 22,
+          "y": 14,
+          "equals": "9"
+        },
+        {
+          "step": 76,
+          "x": 23,
+          "y": 14,
+          "equals": "9"
+        },
+        {
+          "step": 76,
+          "x": 24,
+          "y": 14,
+          "equals": ","
+        },
+        {
+          "step": 76,
+          "x": 25,
+          "y": 14,
+          "equals": " "
+        },
+        {
+          "step": 76,
+          "x": 26,
+          "y": 14,
+          "equals": "t"
+        },
+        {
+          "step": 76,
+          "x": 27,
+          "y": 14,
+          "equals": "h"
+        },
+        {
+          "step": 76,
+          "x": 28,
+          "y": 14,
+          "equals": "e"
+        },
+        {
+          "step": 76,
+          "x": 29,
+          "y": 14,
+          "equals": " "
+        },
+        {
+          "step": 76,
+          "x": 30,
+          "y": 14,
+          "equals": "w"
+        },
+        {
+          "step": 76,
+          "x": 31,
+          "y": 14,
+          "equals": "o"
+        },
+        {
+          "step": 76,
+          "x": 32,
+          "y": 14,
+          "equals": "r"
+        },
+        {
+          "step": 76,
+          "x": 33,
+          "y": 14,
+          "equals": "s"
+        },
+        {
+          "step": 76,
+          "x": 34,
+          "y": 14,
+          "equals": "t"
+        },
+        {
+          "step": 76,
+          "x": 35,
+          "y": 14,
+          "equals": " "
+        },
+        {
+          "step": 76,
+          "x": 36,
+          "y": 14,
+          "equals": "p"
+        },
+        {
+          "step": 76,
+          "x": 37,
+          "y": 14,
+          "equals": "o"
+        },
+        {
+          "step": 76,
+          "x": 38,
+          "y": 14,
+          "equals": "s"
+        },
+        {
+          "step": 76,
+          "x": 39,
+          "y": 14,
+          "equals": "s"
+        },
+        {
+          "step": 76,
+          "x": 40,
+          "y": 14,
+          "equals": "i"
+        },
+        {
+          "step": 76,
+          "x": 41,
+          "y": 14,
+          "equals": "b"
+        },
+        {
+          "step": 76,
+          "x": 42,
+          "y": 14,
+          "equals": "l"
+        },
+        {
+          "step": 76,
+          "x": 43,
+          "y": 14,
+          "equals": "e"
+        },
+        {
+          "step": 76,
+          "x": 44,
+          "y": 14,
+          "equals": "."
+        }
+      ]
+    },
+    {
+      "branch": "enlightenment-basic-characteristics.magic-disclosure-cursed-gauntlets",
+      "segment": 7,
+      "screenCells": [
+        {
+          "step": 68,
+          "x": 2,
+          "y": 19,
+          "equals": "Y"
+        },
+        {
+          "step": 68,
+          "x": 3,
+          "y": 19,
+          "equals": "o"
+        },
+        {
+          "step": 68,
+          "x": 4,
+          "y": 19,
+          "equals": "u"
+        },
+        {
+          "step": 68,
+          "x": 5,
+          "y": 19,
+          "equals": "r"
+        },
+        {
+          "step": 68,
+          "x": 6,
+          "y": 19,
+          "equals": " "
+        },
+        {
+          "step": 68,
+          "x": 7,
+          "y": 19,
+          "equals": "s"
+        },
+        {
+          "step": 68,
+          "x": 8,
+          "y": 19,
+          "equals": "t"
+        },
+        {
+          "step": 68,
+          "x": 9,
+          "y": 19,
+          "equals": "r"
+        },
+        {
+          "step": 68,
+          "x": 10,
+          "y": 19,
+          "equals": "e"
+        },
+        {
+          "step": 68,
+          "x": 11,
+          "y": 19,
+          "equals": "n"
+        },
+        {
+          "step": 68,
+          "x": 12,
+          "y": 19,
+          "equals": "g"
+        },
+        {
+          "step": 68,
+          "x": 13,
+          "y": 19,
+          "equals": "t"
+        },
+        {
+          "step": 68,
+          "x": 14,
+          "y": 19,
+          "equals": "h"
+        },
+        {
+          "step": 68,
+          "x": 15,
+          "y": 19,
+          "equals": " "
+        },
+        {
+          "step": 68,
+          "x": 16,
+          "y": 19,
+          "equals": "i"
+        },
+        {
+          "step": 68,
+          "x": 17,
+          "y": 19,
+          "equals": "s"
+        },
+        {
+          "step": 68,
+          "x": 18,
+          "y": 19,
+          "equals": " "
+        },
+        {
+          "step": 68,
+          "x": 19,
+          "y": 19,
+          "equals": "2"
+        },
+        {
+          "step": 68,
+          "x": 20,
+          "y": 19,
+          "equals": "5"
+        },
+        {
+          "step": 68,
+          "x": 21,
+          "y": 19,
+          "equals": " "
+        },
+        {
+          "step": 68,
+          "x": 22,
+          "y": 19,
+          "equals": "("
+        },
+        {
+          "step": 68,
+          "x": 23,
+          "y": 19,
+          "equals": "c"
+        },
+        {
+          "step": 68,
+          "x": 24,
+          "y": 19,
+          "equals": "u"
+        },
+        {
+          "step": 68,
+          "x": 25,
+          "y": 19,
+          "equals": "r"
+        },
+        {
+          "step": 68,
+          "x": 26,
+          "y": 19,
+          "equals": "r"
+        },
+        {
+          "step": 68,
+          "x": 27,
+          "y": 19,
+          "equals": "e"
+        },
+        {
+          "step": 68,
+          "x": 28,
+          "y": 19,
+          "equals": "n"
+        },
+        {
+          "step": 68,
+          "x": 29,
+          "y": 19,
+          "equals": "t"
+        },
+        {
+          "step": 68,
+          "x": 30,
+          "y": 19,
+          "equals": ";"
+        },
+        {
+          "step": 68,
+          "x": 31,
+          "y": 19,
+          "equals": " "
+        },
+        {
+          "step": 68,
+          "x": 32,
+          "y": 19,
+          "equals": "b"
+        },
+        {
+          "step": 68,
+          "x": 33,
+          "y": 19,
+          "equals": "a"
+        },
+        {
+          "step": 68,
+          "x": 34,
+          "y": 19,
+          "equals": "s"
+        },
+        {
+          "step": 68,
+          "x": 35,
+          "y": 19,
+          "equals": "e"
+        },
+        {
+          "step": 68,
+          "x": 36,
+          "y": 19,
+          "equals": ":"
+        },
+        {
+          "step": 68,
+          "x": 37,
+          "y": 19,
+          "equals": "9"
+        },
+        {
+          "step": 68,
+          "x": 38,
+          "y": 19,
+          "equals": ")"
+        },
+        {
+          "step": 68,
+          "x": 39,
+          "y": 19,
+          "equals": "."
+        }
+      ]
+    },
+    {
+      "branch": "enlightenment-basic-characteristics.final-bones-disabled",
+      "segment": 8,
+      "screenCells": [
+        {
+          "step": 33,
+          "x": 1,
+          "y": 18,
+          "equals": "Y"
+        },
+        {
+          "step": 33,
+          "x": 2,
+          "y": 18,
+          "equals": "o"
+        },
+        {
+          "step": 33,
+          "x": 3,
+          "y": 18,
+          "equals": "u"
+        },
+        {
+          "step": 33,
+          "x": 4,
+          "y": 18,
+          "equals": " "
+        },
+        {
+          "step": 33,
+          "x": 5,
+          "y": 18,
+          "equals": "d"
+        },
+        {
+          "step": 33,
+          "x": 6,
+          "y": 18,
+          "equals": "i"
+        },
+        {
+          "step": 33,
+          "x": 7,
+          "y": 18,
+          "equals": "s"
+        },
+        {
+          "step": 33,
+          "x": 8,
+          "y": 18,
+          "equals": "a"
+        },
+        {
+          "step": 33,
+          "x": 9,
+          "y": 18,
+          "equals": "b"
+        },
+        {
+          "step": 33,
+          "x": 10,
+          "y": 18,
+          "equals": "l"
+        },
+        {
+          "step": 33,
+          "x": 11,
+          "y": 18,
+          "equals": "e"
+        },
+        {
+          "step": 33,
+          "x": 12,
+          "y": 18,
+          "equals": "d"
+        },
+        {
+          "step": 33,
+          "x": 13,
+          "y": 18,
+          "equals": " "
+        },
+        {
+          "step": 33,
+          "x": 14,
+          "y": 18,
+          "equals": "l"
+        },
+        {
+          "step": 33,
+          "x": 15,
+          "y": 18,
+          "equals": "o"
+        },
+        {
+          "step": 33,
+          "x": 16,
+          "y": 18,
+          "equals": "a"
+        },
+        {
+          "step": 33,
+          "x": 17,
+          "y": 18,
+          "equals": "d"
+        },
+        {
+          "step": 33,
+          "x": 18,
+          "y": 18,
+          "equals": "i"
+        },
+        {
+          "step": 33,
+          "x": 19,
+          "y": 18,
+          "equals": "n"
+        },
+        {
+          "step": 33,
+          "x": 20,
+          "y": 18,
+          "equals": "g"
+        },
+        {
+          "step": 33,
+          "x": 21,
+          "y": 18,
+          "equals": " "
+        },
+        {
+          "step": 33,
+          "x": 22,
+          "y": 18,
+          "equals": "o"
+        },
+        {
+          "step": 33,
+          "x": 23,
+          "y": 18,
+          "equals": "f"
+        },
+        {
+          "step": 33,
+          "x": 24,
+          "y": 18,
+          "equals": " "
+        },
+        {
+          "step": 33,
+          "x": 25,
+          "y": 18,
+          "equals": "b"
+        },
+        {
+          "step": 33,
+          "x": 26,
+          "y": 18,
+          "equals": "o"
+        },
+        {
+          "step": 33,
+          "x": 27,
+          "y": 18,
+          "equals": "n"
+        },
+        {
+          "step": 33,
+          "x": 28,
+          "y": 18,
+          "equals": "e"
+        },
+        {
+          "step": 33,
+          "x": 29,
+          "y": 18,
+          "equals": "s"
+        },
+        {
+          "step": 33,
+          "x": 30,
+          "y": 18,
+          "equals": " "
+        },
+        {
+          "step": 33,
+          "x": 31,
+          "y": 18,
+          "equals": "l"
+        },
+        {
+          "step": 33,
+          "x": 32,
+          "y": 18,
+          "equals": "e"
+        },
+        {
+          "step": 33,
+          "x": 33,
+          "y": 18,
+          "equals": "v"
+        },
+        {
+          "step": 33,
+          "x": 34,
+          "y": 18,
+          "equals": "e"
+        },
+        {
+          "step": 33,
+          "x": 35,
+          "y": 18,
+          "equals": "l"
+        },
+        {
+          "step": 33,
+          "x": 36,
+          "y": 18,
+          "equals": "s"
+        },
+        {
+          "step": 33,
+          "x": 37,
+          "y": 18,
+          "equals": "."
+        },
+        {
+          "step": 32,
+          "x": 0,
+          "y": 18,
+          "equals": "F"
+        },
+        {
+          "step": 32,
+          "x": 1,
+          "y": 18,
+          "equals": "i"
+        },
+        {
+          "step": 32,
+          "x": 2,
+          "y": 18,
+          "equals": "n"
+        },
+        {
+          "step": 32,
+          "x": 3,
+          "y": 18,
+          "equals": "a"
+        },
+        {
+          "step": 32,
+          "x": 4,
+          "y": 18,
+          "equals": "l"
+        },
+        {
+          "step": 32,
+          "x": 5,
+          "y": 18,
+          "equals": " "
+        },
+        {
+          "step": 32,
+          "x": 6,
+          "y": 18,
+          "equals": "C"
+        },
+        {
+          "step": 32,
+          "x": 7,
+          "y": 18,
+          "equals": "h"
+        },
+        {
+          "step": 32,
+          "x": 8,
+          "y": 18,
+          "equals": "a"
+        },
+        {
+          "step": 32,
+          "x": 9,
+          "y": 18,
+          "equals": "r"
+        },
+        {
+          "step": 32,
+          "x": 10,
+          "y": 18,
+          "equals": "a"
+        },
+        {
+          "step": 32,
+          "x": 11,
+          "y": 18,
+          "equals": "c"
+        },
+        {
+          "step": 32,
+          "x": 12,
+          "y": 18,
+          "equals": "t"
+        },
+        {
+          "step": 32,
+          "x": 13,
+          "y": 18,
+          "equals": "e"
+        },
+        {
+          "step": 32,
+          "x": 14,
+          "y": 18,
+          "equals": "r"
+        },
+        {
+          "step": 32,
+          "x": 15,
+          "y": 18,
+          "equals": "i"
+        },
+        {
+          "step": 32,
+          "x": 16,
+          "y": 18,
+          "equals": "s"
+        },
+        {
+          "step": 32,
+          "x": 17,
+          "y": 18,
+          "equals": "t"
+        },
+        {
+          "step": 32,
+          "x": 18,
+          "y": 18,
+          "equals": "i"
+        },
+        {
+          "step": 32,
+          "x": 19,
+          "y": 18,
+          "equals": "c"
+        },
+        {
+          "step": 32,
+          "x": 20,
+          "y": 18,
+          "equals": "s"
+        },
+        {
+          "step": 32,
+          "x": 21,
+          "y": 18,
+          "equals": ":"
+        }
+      ]
+    },
+    {
+      "branch": "enlightenment-basic-characteristics.half-hit-die-control",
+      "segment": 9,
+      "screenCells": [
+        {
+          "step": 49,
+          "x": 2,
+          "y": 14,
+          "equals": "Y"
+        },
+        {
+          "step": 49,
+          "x": 3,
+          "y": 14,
+          "equals": "o"
+        },
+        {
+          "step": 49,
+          "x": 4,
+          "y": 14,
+          "equals": "u"
+        },
+        {
+          "step": 49,
+          "x": 5,
+          "y": 14,
+          "equals": " "
+        },
+        {
+          "step": 49,
+          "x": 6,
+          "y": 14,
+          "equals": "h"
+        },
+        {
+          "step": 49,
+          "x": 7,
+          "y": 14,
+          "equals": "a"
+        },
+        {
+          "step": 49,
+          "x": 8,
+          "y": 14,
+          "equals": "v"
+        },
+        {
+          "step": 49,
+          "x": 9,
+          "y": 14,
+          "equals": "e"
+        },
+        {
+          "step": 49,
+          "x": 10,
+          "y": 14,
+          "equals": " "
+        },
+        {
+          "step": 49,
+          "x": 11,
+          "y": 14,
+          "equals": "0"
+        },
+        {
+          "step": 49,
+          "x": 12,
+          "y": 14,
+          "equals": " "
+        },
+        {
+          "step": 49,
+          "x": 13,
+          "y": 14,
+          "equals": "h"
+        },
+        {
+          "step": 49,
+          "x": 14,
+          "y": 14,
+          "equals": "i"
+        },
+        {
+          "step": 49,
+          "x": 15,
+          "y": 14,
+          "equals": "t"
+        },
+        {
+          "step": 49,
+          "x": 16,
+          "y": 14,
+          "equals": " "
+        },
+        {
+          "step": 49,
+          "x": 17,
+          "y": 14,
+          "equals": "d"
+        },
+        {
+          "step": 49,
+          "x": 18,
+          "y": 14,
+          "equals": "i"
+        },
+        {
+          "step": 49,
+          "x": 19,
+          "y": 14,
+          "equals": "c"
+        },
+        {
+          "step": 49,
+          "x": 20,
+          "y": 14,
+          "equals": "e"
+        },
+        {
+          "step": 49,
+          "x": 21,
+          "y": 14,
+          "equals": " "
+        },
+        {
+          "step": 49,
+          "x": 22,
+          "y": 14,
+          "equals": "("
+        },
+        {
+          "step": 49,
+          "x": 23,
+          "y": 14,
+          "equals": "a"
+        },
+        {
+          "step": 49,
+          "x": 24,
+          "y": 14,
+          "equals": "c"
+        },
+        {
+          "step": 49,
+          "x": 25,
+          "y": 14,
+          "equals": "t"
+        },
+        {
+          "step": 49,
+          "x": 26,
+          "y": 14,
+          "equals": "u"
+        },
+        {
+          "step": 49,
+          "x": 27,
+          "y": 14,
+          "equals": "a"
+        },
+        {
+          "step": 49,
+          "x": 28,
+          "y": 14,
+          "equals": "l"
+        },
+        {
+          "step": 49,
+          "x": 29,
+          "y": 14,
+          "equals": "l"
+        },
+        {
+          "step": 49,
+          "x": 30,
+          "y": 14,
+          "equals": "y"
+        },
+        {
+          "step": 49,
+          "x": 31,
+          "y": 14,
+          "equals": " "
+        },
+        {
+          "step": 49,
+          "x": 32,
+          "y": 14,
+          "equals": "1"
+        },
+        {
+          "step": 49,
+          "x": 33,
+          "y": 14,
+          "equals": "/"
+        },
+        {
+          "step": 49,
+          "x": 34,
+          "y": 14,
+          "equals": "2"
+        },
+        {
+          "step": 49,
+          "x": 35,
+          "y": 14,
+          "equals": ")"
+        },
+        {
+          "step": 49,
+          "x": 36,
+          "y": 14,
+          "equals": "."
+        }
+      ]
+    },
+    {
+      "branch": "enlightenment-basic-characteristics.dagger-control",
+      "segment": 10,
+      "screenCells": [
+        {
+          "step": 58,
+          "x": 2,
+          "y": 15,
+          "equals": "Y"
+        },
+        {
+          "step": 58,
+          "x": 3,
+          "y": 15,
+          "equals": "o"
+        },
+        {
+          "step": 58,
+          "x": 4,
+          "y": 15,
+          "equals": "u"
+        },
+        {
+          "step": 58,
+          "x": 5,
+          "y": 15,
+          "equals": "r"
+        },
+        {
+          "step": 58,
+          "x": 6,
+          "y": 15,
+          "equals": " "
+        },
+        {
+          "step": 58,
+          "x": 7,
+          "y": 15,
+          "equals": "w"
+        },
+        {
+          "step": 58,
+          "x": 8,
+          "y": 15,
+          "equals": "a"
+        },
+        {
+          "step": 58,
+          "x": 9,
+          "y": 15,
+          "equals": "l"
+        },
+        {
+          "step": 58,
+          "x": 10,
+          "y": 15,
+          "equals": "l"
+        },
+        {
+          "step": 58,
+          "x": 11,
+          "y": 15,
+          "equals": "e"
+        },
+        {
+          "step": 58,
+          "x": 12,
+          "y": 15,
+          "equals": "t"
+        },
+        {
+          "step": 58,
+          "x": 13,
+          "y": 15,
+          "equals": " "
+        },
+        {
+          "step": 58,
+          "x": 14,
+          "y": 15,
+          "equals": "i"
+        },
+        {
+          "step": 58,
+          "x": 15,
+          "y": 15,
+          "equals": "s"
+        },
+        {
+          "step": 58,
+          "x": 16,
+          "y": 15,
+          "equals": " "
+        },
+        {
+          "step": 58,
+          "x": 17,
+          "y": 15,
+          "equals": "e"
+        },
+        {
+          "step": 58,
+          "x": 18,
+          "y": 15,
+          "equals": "m"
+        },
+        {
+          "step": 58,
+          "x": 19,
+          "y": 15,
+          "equals": "p"
+        },
+        {
+          "step": 58,
+          "x": 20,
+          "y": 15,
+          "equals": "t"
+        },
+        {
+          "step": 58,
+          "x": 21,
+          "y": 15,
+          "equals": "y"
+        },
+        {
+          "step": 58,
+          "x": 22,
+          "y": 15,
+          "equals": "."
+        }
+      ]
+    }
+  ]
+}

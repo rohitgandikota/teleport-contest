@@ -10064,6 +10064,58 @@ normal-import controls. The three parent-owned removals remain explicit,
 unapplied dependencies. Its selected native reports are agent evidence until
 parent composition/replay. No history/window runtime changes are in main.
 
+## 2026-11-25 05:40 UTC: basic character inspection verified
+
+Levitation tests are pushed as `d518e73ea0066fa6a26db402482895e5e7217663`.
+The full849 sweep started at 05:31 UTC on that exact snapshot, sessions
+76612 and 33782. It pins 279 runtime files, 849 raw fixtures and 320 protected
+files. Both shards are still running without retries or timeout overrides.
+Expected totals derive from the preceding passing corpus plus the four
+verified new fixtures: 881,528 screens/cursors, 18,499,004 scored RNG positions
+and 32,488 frames. These are expected totals, not a completed-run claim.
+
+The basics/characteristics worker closed at 05:38:39 UTC with exit 0. Its
+independent verifier passes all 24 checks and 192 controls: 30 new source,
+122 retained status/attribute, 28 ordinary-input and twelve native controls.
+Twenty focused fixtures match 19,483 screens/cursors, 456,263 scored RNG
+positions and 129 frames. All 44 public sessions and 64 bounded workers pass.
+Seven strict/deferred fixtures retain all 76 segments, 8,111 styled
+boundaries, 220,816 complete calls and one frame.
+
+Eleven new original C cases improve from 832/840 styled boundaries,
+838/840 cursors and 839/840 slices to complete equality. The missing currency
+draw is restored: 30,307 complete calls. Five ordinary negative cases retain
+all five before/after hashes. Raw SHA is unchanged:
+`aaa060510e704ec8467a3bff17ab8ba68dea2776d04c7271fa300737a81ceb2b`.
+Verification SHA:
+`282d25b1df032d055a1fc57848944a625dbd2d6c48240396b7d08ba937f4f88d`.
+
+Only insight.js changes. The whole basics/characteristics owners and their
+AC, stuck-ring, money, currency and final-wording helpers were reviewed.
+Integration preserves all 849 prior raw fixtures, copies seven exact support
+files and appends eleven registry entries. Corpus: 850. Receipt:
+enlightenment-basic-characteristics-main-integration.json. Publish promptly.
+BASIC cursed-item concealment and some final bones branches remain constructed
+source controls, not ordinary native coverage. Elapsed time and DEBUGFILES
+remain separate. No held-out improvement is inferred from this verification.
+
+The text-window seal independently verifies all 1,038 members and three
+links, SHA 89646343f7601dc1d317233e9107df3ff6ebfedf9cdba536f21c25227c5eccd5.
+The core and 39 caller-removal patches were reviewed, along with the actual
+C display/text/wait/select/cancel owners. Parent history cmd-v2 and the three
+additional caller removals remain explicit dependencies. Parent is recording
+the four unchanged caller proposals, session 14090. Their input SHA is
+f60207c0d4c6524ba12e2810ed6d8b5ca8bf4f971fdc87fbe4af9a668171a996.
+The original packet's two caller failures remain preserved. No text/history
+changes are in main. Compose all dependencies on the current verified runtime
+and independently replay before any promotion; a full sweep is required for
+this shared input-owner migration.
+
+Agents continue in fixed snapshots: Pauli brain-drain, Jason dipfountain,
+Darwin sink_into_lava, Avicenna elapsed-time producers, and Singer the complete
+tty_putstr streaming contract. Singer's new audit must first establish its
+actual producer/caller completion contract, not add speculative broad awaits.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

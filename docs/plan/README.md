@@ -339,13 +339,24 @@ checkpoint adds twenty original C cases without runtime changes. All nine
 checks and 108 controls pass. Eight related fixtures and bounded workers pass;
 the new cases match all 3,787 styled boundaries, 65,762 complete calls and one
 frame, including observer/deferred equality. All 848 earlier raw fixtures are
-unchanged. Corpus: 849. The next full849 sweep is prepared; full845 remains
-the latest completed full regression.
+unchanged. Corpus: 849. This checkpoint is pushed as `d518e73e`. Full849 is
+running in two fixed shards on that exact runtime; full845 remains the latest
+completed full regression.
 
-Eleven fresh character-inspection cases also match C on a separate scoped
-candidate. That code is pending parent regression. The history text-window
-package is sealed, with its three parent-owned caller removals prepared for
-coherent composition. Neither pending repair is in the published runtime.
+Character inspection now follows C for known hidden gold, hallucinated
+currency, armor-class caps, innate-attribute disclosure and final bones
+wording. All 24 parent checks, 192 controls, twenty focused fixtures, 44 public
+sessions and 64 bounded workers pass. Eleven C cases match all 840 styled
+boundaries and 30,307 complete calls, fixing eight screens, two cursors and
+one input slice. Five unaffected cases retain all five hashes. Corpus: 850.
+This change is outside the running full849. Elapsed time and system-only
+diagnostics remain separate prerequisites.
+
+The history text-window package independently verifies 1,038 files and three
+links. Its three parent-owned caller removals are prepared for coherent
+composition; no history/window runtime change is published yet. The next
+source audits cover brain-drain handling, fountain dipping, lava sinking,
+elapsed-time producers and text production while a page is being filled.
 
 The preceding full regression passes all 817 fixtures: 853,841 screens/cursors,
 17,766,231 scored RNG positions and 32,296 frames. Both fixed-runtime shards

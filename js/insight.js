@@ -75,7 +75,10 @@ import { is_pool_or_lava } from './dbridge.js';
 import { visible_region_at, reg_damg } from './region.js';
 import { MHID_PREFIX, MHID_ARTICLE, MHID_ALTMON, MHID_REGION } from './const.js';
 
-import { fingers_or_gloves } from './do_wear.js';
+import { fingers_or_gloves, find_ac, stuck_ring } from './do_wear.js';
+import { u_wield_art } from './artifact.js';
+import { ART_OGRESMASHER } from './artilist_data.js';
+import { AC_MAX } from './const.js';
 
 import { spellid } from './spell.js';
 
@@ -104,7 +107,7 @@ import { A_MAX, ACURR } from './attrib.js';
 
 import { hu_stat, rank_of, rank_to_xlev } from './botl.js';
 
-import { carrying, money_cnt, stone_luck } from './invent.js';
+import { carrying, money_cnt, hidden_gold, currency, stone_luck } from './invent.js';
 
 import { costly_spot } from './shk.js';
 
@@ -690,7 +693,7 @@ function background_enlightenment() {
     }
 }
 
-// src/insight.c:600 basics_enlightenment()
+// src/insight.c:728 basics_enlightenment()
 function basics_enlightenment() {
     const u = game.u;
     const Power = 'energy points (spell power)';
@@ -719,19 +722,27 @@ function basics_enlightenment() {
                    : `${hitDice} hit dice`);
     }
 
-    enl_msg('Your armor class ', 'is ', 'was ', `${u.uac}`, '');
+    find_ac(); /* enforces AC_MAX cap */
+    let buf = `${u.uac}`;
+    if (Math.abs(u.uac) === AC_MAX)
+        buf += `, the ${u.uac < 0 ? 'best' : 'worst'} possible`;
+    enl_msg('Your armor class ', 'is ', 'was ', buf, '');
 
-    /* src/insight.c:781 — money_cnt(gi.invent), the live count, not the
-       starting umoney0 snapshot; hidden_gold (containers) is recorded. */
-    const money = money_cnt(game.invent);
-    out(money ? ` Your wallet contain${en_final ? 'ed' : 's'} ${money} zorkmid${plur(money)}`
-              : ` Your wallet ${en_final ? 'was' : 'is'} empty`);
-    /* C terminates that line here when nothing follows it */
-    lines[lines.length - 1] += '.';
+    const umoney = money_cnt(game.invent),
+          hmoney = hidden_gold(game.invent, en_final);
+    if (!umoney)
+        buf = ` Your wallet ${en_final ? 'was' : 'is'} empty`;
+    else
+        buf = ` Your wallet contain${en_final ? 'ed' : 's'} ${umoney} ${currency(umoney)}`;
+    buf += !hmoney ? '.' : !umoney ? ', but' : ', and';
+    out(buf);
+    if (hmoney) {
+        buf = `${hmoney} ${umoney ? 'more' : currency(hmoney)} stashed away in your pack`;
+        enl_msg('you ', 'have ', 'had ', buf, '');
+    }
 
     /* src/insight.c:804 — the "on" arm reports scope: shop suspension, the
        pickup_types symbols (or "all types"), pickup_thrown, exceptions. */
-    let buf;
     if (game.flags.autopickup) {
         buf = 'on';
         if (costly_spot(u.ux, u.uy)) {
@@ -751,7 +762,6 @@ function basics_enlightenment() {
     enl_msg('Autopickup ', 'is ', 'was ', buf, '');
 }
 
-// src/insight.c:770 one_characteristic()
 /* src/insight.c:287 attrval() — strength between 18 and 18/100 renders in
    the exceptional "18/xx" notation; 19..25 shed the +100 encoding. */
 function attrval(attrindx, attrvalue) {
@@ -762,15 +772,48 @@ function attrval(attrindx, attrvalue) {
     return `18/${String(attrvalue - 18).padStart(2, '0')}`;
 }
 
-function one_characteristic(attrindx) {
+// src/insight.c:846 one_characteristic()
+function one_characteristic(mode, attrindx) {
+    const u = game.u;
+    let hide_innate_value = false;
+
+    if (Upolyd(u)) {
+        hide_innate_value = true;
+    } else if (Fixed_abil()) {
+        if (stuck_ring(u.uleft, ONAMES.RIN_SUSTAIN_ABILITY)
+            || stuck_ring(u.uright, ONAMES.RIN_SUSTAIN_ABILITY))
+            hide_innate_value = true;
+    }
+    switch (attrindx) {
+    case A_STR:
+        if (u.uarmg && u.uarmg.otyp === ONAMES.GAUNTLETS_OF_POWER && u.uarmg.cursed)
+            hide_innate_value = true;
+        break;
+    case A_DEX:
+        break;
+    case A_CON:
+        if (u_wield_art(ART_OGRESMASHER) && u.uwep.cursed)
+            hide_innate_value = true;
+        break;
+    case A_INT:
+    case A_WIS:
+        if (u.uarmh && u.uarmh.otyp === ONAMES.DUNCE_CAP && u.uarmh.cursed)
+            hide_innate_value = true;
+        break;
+    case A_CHA:
+        break;
+    default:
+        return;
+    }
+    if ((mode & MAGICENLIGHTENMENT) && !Upolyd(u))
+        hide_innate_value = false;
+
     const acurrent = ACURR(attrindx);
     const abase = game.u.acurr.a[attrindx], apeak = game.u.amax.a[attrindx];
     const alimit = game.urace.attrmax[attrindx];
     let valubuf = attrval(attrindx, acurrent);
 
-    /* src/insight.c:858: a polymorphed hero cannot reliably inspect the
-       underlying base, peak, or innate-limit values. */
-    if (Upolyd(game.u)) {
+    if (hide_innate_value) {
         enl_msg(`Your ${attrname[attrindx]} `, 'is ', 'was ', valubuf, '');
         return;
     }
@@ -797,12 +840,12 @@ function one_characteristic(attrindx) {
     enl_msg(`Your ${attrname[attrindx]} `, 'is ', 'was ', valubuf, '');
 }
 
-// src/insight.c:900 characteristics_enlightenment() — bottom-line order.
-function characteristics_enlightenment() {
+// src/insight.c:827 characteristics_enlightenment(), bottom-line order.
+function characteristics_enlightenment(mode) {
     out('');
     out(`${en_final ? 'Final ' : ''}Characteristics:`);
     for (const a of [A_STR, A_DEX, A_CON, A_INT, A_WIS, A_CHA])
-        one_characteristic(a);
+        one_characteristic(mode, a);
 }
 
 // src/insight.c:233 trap_predicament() — describe u.utraptype; used by
@@ -1277,7 +1320,7 @@ export function enlightenment(mode, final) {
     if (mode & BASICENLIGHTENMENT) {
         background_enlightenment();
         basics_enlightenment();
-        characteristics_enlightenment();
+        characteristics_enlightenment(mode);
     }
     status_enlightenment(mode);
 
@@ -1295,15 +1338,15 @@ export function enlightenment(mode, final) {
         if (game.wizard || game.discover)
             you_are(`running in ${game.wizard ? 'debug' : 'explore'} mode`);
         if (game.flags?.bones === false) {
-            you_have(`disabled loading${
+            enl_msg('You ', 'have ', '', `disabled loading${
                 en_final === ENL_GAMEOVERDEAD ? ' and storing' : ''
-                } of bones levels`);
+                } of bones levels`, '');
         } else if (!(game.u.uroleplay?.numbones)) {
             enl_msg('You ', "haven't encountered", "didn't encounter",
                     ' any bones levels', '');
         } else {
-            you_have(`encountered ${game.u.uroleplay.numbones} bones level${
-                plur(game.u.uroleplay.numbones)}`); /* you_have_X(buf) */
+            enl_msg('You ', 'have ', '', `encountered ${game.u.uroleplay.numbones} bones level${
+                plur(game.u.uroleplay.numbones)}`, ''); /* you_have_X(buf) */
         }
     }
     enl_msg('Total elapsed playing time ', 'is', 'was', ' none', '');

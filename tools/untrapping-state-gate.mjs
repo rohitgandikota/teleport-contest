@@ -15,7 +15,8 @@ import {initRng,rnd,enableRngLog,getRngLog} from '../js/rng.js';
 import {mksobj,place_object,add_to_minv} from '../js/mkobj.js';
 import {makemon} from '../js/makemon.js';
 import {maketrap} from '../js/mklev.js';
-import {t_at} from '../js/mon.js';
+import {t_at,m_at,dmonsfree} from '../js/mon.js';
+import {MON_DETACH} from '../js/const.js';
 import {weight,GETOBJ_EXCLUDE,GETOBJ_SUGGEST,GETOBJ_DOWNPLAY} from '../js/invent.js';
 import {untrap_prob,try_disarm,disarm_holdingtrap,disarm_landmine,disarm_shooting_trap,disarm_squeaky_board,unsqueak_ok,try_lift,help_monster_out,reward_untrap,untrap,dountrap,closeholdingtrap,set_utrap,reset_utrap,b_trapped,float_up} from '../js/trap.js';
 import {invoke_untrap} from '../js/artifact.js';
@@ -180,7 +181,14 @@ for(const own of [false,true]){
 }
 // Forced failures injure captives; spreading webs cannot overwrite other traps.
 for(const hp of [8,2]){
- await setup();const t=trap(),m=monster(t,{mhp:hp});seed(2);assert.equal(await try_disarm(t,true),1);assert.equal(m.mhp,Math.max(0,hp-3));assert.equal(game.level.monsters.includes(m),hp>3);assert.ok(game.level.traps.includes(t));
+ await setup();const t=trap(),m=monster(t,{mhp:hp});seed(2);
+ assert.equal(await try_disarm(t,true),1);assert.equal(m.mhp,Math.max(0,hp-3));
+ // src/mon.c:2734 removes the map entry; dmonsfree unlinks at turn cleanup.
+ assert.equal(game.level.monsters.includes(m),true);
+ assert.equal(m_at(t.tx,t.ty)===m,hp>3);
+ assert.equal(!!(m.mstate&MON_DETACH),hp<=3);
+ assert.ok(game.level.traps.includes(t));
+ dmonsfree();assert.equal(game.level.monsters.includes(m),hp>3);
 }
 for(const existing of [0,WEB,PIT]){
  await setup();const t=trap(WEB),m=monster(t);const under=existing?trap(existing,{},true):null;seed(2);assert.equal(await try_disarm(t,true),1);assert.equal(m.mtrapped,1);const result=t_at(game.u.ux,game.u.uy);assert.equal(result.ttyp,existing||WEB);if(under)assert.equal(result,under);assert.equal(!!game.u.utrap,existing!==PIT);assert.equal(text().includes("You're caught too"),existing!==PIT);

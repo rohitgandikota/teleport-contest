@@ -1,0 +1,109 @@
+{
+  "name": "feeltrap-discovery",
+  "description": "Tactile trap memory while blind and levitating, with grounded and sighted controls.",
+  "coverage": [
+    "level.ordinary",
+    "mode.debug",
+    "survival.timed-status",
+    "ui.getlin",
+    "ui.more-paging"
+  ],
+  "branches": [
+    "feeltrap.blind-floating",
+    "feeltrap.blind-grounded",
+    "feeltrap.sighted-floating"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "feeltrap.blind-floating",
+      "segment": 0,
+      "screenIncludes": [
+        "A vibrating square.",
+        "NetHack Version"
+      ],
+      "screenCells": [
+        {
+          "step": 79,
+          "x": 47,
+          "y": 10,
+          "equals": "~"
+        }
+      ],
+      "source": "trap.c:3588 feeltrap -> display.c:296 map_trap -> newsym; ordinary debug wish, blindness equipment and levitation potion."
+    },
+    {
+      "branch": "feeltrap.blind-grounded",
+      "segment": 1,
+      "screenIncludes": [
+        "A vibrating square.",
+        "NetHack Version"
+      ],
+      "screenCells": [
+        {
+          "step": 46,
+          "x": 47,
+          "y": 10,
+          "equals": "~"
+        }
+      ],
+      "source": "trap.c:3588 feeltrap -> display.c:296 map_trap -> newsym; ordinary debug wish, blindness equipment and levitation potion."
+    },
+    {
+      "branch": "feeltrap.sighted-floating",
+      "segment": 2,
+      "screenIncludes": [
+        "A vibrating square.",
+        "NetHack Version"
+      ],
+      "screenCells": [
+        {
+          "step": 57,
+          "x": 47,
+          "y": 10,
+          "equals": "~"
+        }
+      ],
+      "source": "trap.c:3588 feeltrap -> display.c:296 map_trap -> newsym; ordinary debug wish, blindness equipment and levitation potion."
+    }
+  ],
+  "segments": [
+    {
+      "seed": 21100,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Touch,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "blind-floating",
+      "moves": " k\u0017uncursed blindfold\rPa\u0017uncursed potion of levitation\rqb\u0017vibrating square\rhlh\u0012#version\r"
+    },
+    {
+      "seed": 21100,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Touch,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "blind-grounded",
+      "moves": " k\u0017uncursed blindfold\rPa\u0017vibrating square\rhlh\u0012#version\r"
+    },
+    {
+      "seed": 21100,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Touch,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "sighted-floating",
+      "moves": " k\u0017uncursed potion of levitation\rqa\u0017vibrating square\rhlh\u0012#version\r"
+    }
+  ],
+  "unchangedOutputHashes": {
+    "blind-grounded": {
+      "screens": "d03fbe8ec7b960bc2bc206c99c3c859aaac48b08944371b6320d824b646b85dc",
+      "cursors": "12c8c522cfd9484fdd789be3daee202cc19fd423e857b9fe108ea90a7ebb2cbf",
+      "calls": "81d89ed31b5f108b8369b40ec3edf0c27db9e7821ad1378b902735e4545fed2b",
+      "slices": "1e0630e6b4fef4f59cd6db765873654ddaab9104b43ea0931bfbddba54056fea",
+      "frames": "c2f28f692055aed56f09c92ae17d40f28620e693eadddc36b360d357a1136ea6"
+    },
+    "sighted-floating": {
+      "screens": "9d63350be6784ae5df4a02a82fdc14646cc8cbec6f0cc4ae2c195104f4a1e24d",
+      "cursors": "3a992afb1c05c2e0c74db4e3b254bb81eb146982ff7fb5e4917cb3d1e61ffe6d",
+      "calls": "fe55441bc32c9ee9fe78747a96015913d30e91d4c31c185938f4e0c952d33a49",
+      "slices": "e321563146d040fe391f1d373fb9c50b0dce8b4f8fedf17a72b897f834862643",
+      "frames": "235e5dd95f17c97426de01639453bb14b3c9e0ef98aa0318be30681fcee3ffe9"
+    }
+  }
+}

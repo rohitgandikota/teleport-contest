@@ -4276,6 +4276,25 @@
     {"group": "potion-impact-owner", "id": "potion-impact.owner.unpaid-self", "cFile": "src/potion.c", "cFunction": "potionhit", "description": "unpaid-self: impact attribution, billing and disposal"},
     {"group": "potion-impact-owner", "id": "potion-impact.owner.paid-self", "cFile": "src/potion.c", "cFunction": "potionhit", "description": "paid-self: impact attribution, billing and disposal"},
     {"group": "potion-impact-owner", "id": "potion-impact.owner.hero-acid-newt", "cFile": "src/potion.c", "cFunction": "potionhit", "description": "hero-acid-newt: impact attribution, billing and disposal"},
-    {"group": "potion-impact-owner", "id": "potion-impact.owner.hero-acid-resistant", "cFile": "src/potion.c", "cFunction": "potionhit", "description": "hero-acid-resistant: impact attribution, billing and disposal"}
+    {"group": "potion-impact-owner", "id": "potion-impact.owner.hero-acid-resistant", "cFile": "src/potion.c", "cFunction": "potionhit", "description": "hero-acid-resistant: impact attribution, billing and disposal"},
+    {"group": "pit-owner", "id": "pit-owner.spiked-pit-timed", "cFile": "src/trap.c", "cFunction": "trapeffect_pit", "description": "spiked-pit-timed: ordinary trap owner or producer control"},
+    {"group": "pit-owner", "id": "pit-owner.spiked-pit-none", "cFile": "src/trap.c", "cFunction": "trapeffect_pit", "description": "spiked-pit-none: ordinary trap owner or producer control"},
+    {"group": "pit-owner", "id": "pit-owner.pit-timed", "cFile": "src/trap.c", "cFunction": "trapeffect_pit", "description": "pit-timed: ordinary trap owner or producer control"},
+    {"group": "pit-owner", "id": "pit-owner.pit-none", "cFile": "src/trap.c", "cFunction": "trapeffect_pit", "description": "pit-none: ordinary trap owner or producer control"},
+    {"group": "pit-owner", "id": "pit-owner.ball-behind", "cFile": "src/trap.c", "cFunction": "trapeffect_pit", "description": "ball-behind: ordinary trap owner or producer control"},
+    {"group": "pit-owner", "id": "pit-owner.ball-free-negative", "cFile": "src/trap.c", "cFunction": "trapeffect_pit", "description": "ball-free-negative: ordinary trap owner or producer control"},
+    {"group": "pit-owner", "id": "pit-owner.corpse-selftouch", "cFile": "src/trap.c", "cFunction": "trapeffect_pit", "description": "corpse-selftouch: ordinary trap owner or producer control"},
+    {"group": "pit-owner", "id": "pit-owner.weapon-selftouch-negative", "cFile": "src/trap.c", "cFunction": "trapeffect_pit", "description": "weapon-selftouch-negative: ordinary trap owner or producer control"},
+    {"group": "pit-owner", "id": "pit-owner.mounted-spiked", "cFile": "src/trap.c", "cFunction": "trapeffect_pit", "description": "mounted-spiked: ordinary trap owner or producer control"},
+    {"group": "pit-owner", "id": "pit-owner.mounted-plain-negative", "cFile": "src/trap.c", "cFunction": "trapeffect_pit", "description": "mounted-plain-negative: ordinary trap owner or producer control"},
+    {"group": "pit-owner", "id": "pit-owner.ball-impact", "cFile": "src/trap.c", "cFunction": "trapeffect_pit", "description": "ball-impact: ordinary trap owner or producer control"},
+    {"group": "pit-owner", "id": "pit-owner.ranger-locate", "cFile": "src/trap.c", "cFunction": "trapeffect_pit", "description": "ranger-locate: ordinary trap owner or producer control"},
+    {"group": "feeltrap-discovery", "id": "feeltrap.blind-floating", "cFile": "src/trap.c", "cFunction": "feeltrap", "description": "blind-floating: ordinary trap owner or producer control"},
+    {"group": "feeltrap-discovery", "id": "feeltrap.blind-grounded", "cFile": "src/trap.c", "cFunction": "feeltrap", "description": "blind-grounded: ordinary trap owner or producer control"},
+    {"group": "feeltrap-discovery", "id": "feeltrap.sighted-floating", "cFile": "src/trap.c", "cFunction": "feeltrap", "description": "sighted-floating: ordinary trap owner or producer control"},
+    {"group": "dotrap-prior-state-producers", "id": "dotrap-prior.pick-producer", "cFile": "src/trap.c", "cFunction": "dotrap", "description": "pick-producer: ordinary trap owner or producer control"},
+    {"group": "dotrap-prior-state-producers", "id": "dotrap-prior.wand-producer", "cFile": "src/trap.c", "cFunction": "dotrap", "description": "wand-producer: ordinary trap owner or producer control"},
+    {"group": "dotrap-prior-state-producers", "id": "dotrap-prior.plain-entry-negative", "cFile": "src/trap.c", "cFunction": "dotrap", "description": "plain-entry-negative: ordinary trap owner or producer control"},
+    {"group": "dotrap-prior-state-producers", "id": "dotrap-prior.pick-unjoined-negative", "cFile": "src/trap.c", "cFunction": "dotrap", "description": "pick-unjoined-negative: ordinary trap owner or producer control"}
   ]
 }

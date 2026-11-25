@@ -109,7 +109,7 @@ import { strongmonst } from './mondata.js';
 import { digests } from './mondata.js';
 import { can_teleport } from './mondata.js';
 import { schedule_goto } from './do.js';
-import { unplacebc, placebc } from './ball.js';
+import { unplacebc, ballfall, placebc } from './ball.js';
 import { maybe_dunk_boulders } from './apply.js';
 import { next_to_u } from './apply.js';
 import { unleash_all } from './apply.js';
@@ -182,7 +182,7 @@ import { mksobj, place_object, splitobj, add_to_migration, dealloc_obj } from '.
 import { weight } from './invent.js';
 import { dmgval } from './weapon.js';
 import { makeknown, observe_object } from './o_init.js';
-import { canspotmon, display_nhwindow_message, feel_newsym,
+import { canspotmon, display_nhwindow_message, feel_newsym, map_trap,
          newsym, pline, temporary_object_glyph, under_water,
          urgent_pline } from './display.js';
 import { You, You_hear, You_feel, You_see, Your, Norep } from './pline.js';
@@ -1778,11 +1778,7 @@ function adj_nonconjoined_pit(adjtrap) {
     return false;
 }
 
-// src/trap.c:1188 dotrap() — the hero steps on a trap.
-//
-// Only the arms whose effects are ported dispatch; every other trap type is
-// recorded, so a session that walks onto one is visibly incomplete rather
-// than silently wrong.
+// src/trap.c:2996 dotrap(), the hero steps on a trap.
 export async function dotrap(trap, trflags) {
     const ttype = trap.ttyp;
     const already_seen = !!trap.tseen;
@@ -1839,8 +1835,6 @@ export async function dotrap(trap, trflags) {
         mon_learns_traps(game.u.usteed, ttype);
     mons_see_trap(trap);
 
-    game.u.utrap = 0;                   /* reset_utrap() */
-    game.u.utraptype = 0;
     if (ttype === ARROW_TRAP)
         return await trapeffect_arrow_trap(game.youmonst, trap, trflags);
     if (ttype === DART_TRAP)
@@ -2778,9 +2772,11 @@ async function trapeffect_landmine(mtmp, trap, trflags) {
     return Trap_Effect_Finished;
 }
 
-// src/trap.c:3570 feeltrap() — like seetrap() but works when blind.
+// src/trap.c:3588 feeltrap(), like seetrap() but overrides vision.
 export function feeltrap(trap) {
     trap.tseen = 1;
+    map_trap(trap, 1);
+    // In case it is beneath something, redisplay that layer.
     newsym(trap.tx, trap.ty);
 }
 
@@ -2944,7 +2940,7 @@ async function trapeffect_slp_gas_trap(mtmp, trap, trflags) {
     return Trap_Effect_Finished;
 }
 
-// src/trap.c:1826 trapeffect_pit().
+// src/trap.c:1825 trapeffect_pit().
 async function trapeffect_pit(mtmp, trap, trflags) {
     const ttype = trap.ttyp;
     let relevant_spikes = (ttype === SPIKED_PIT);
@@ -2958,6 +2954,10 @@ async function trapeffect_pit(mtmp, trap, trflags) {
         const already_known = !!trap.tseen;
         const article = trap.madeby_u ? 'your' : 'a';
         let deliberate = false;
+        let steed_article = ARTICLE_THE;
+
+        if (game.u.usteed && has_mgivenname(game.u.usteed) && !Hallucination())
+            steed_article = ARTICLE_NONE;
 
         if (!Sokoban()
             && (Levitation() || (Flying() && !plunged && !viasitting)))
@@ -2975,12 +2975,6 @@ async function trapeffect_pit(mtmp, trap, trflags) {
         }
         if (!Sokoban()) {
             if (game.u.usteed) {
-                let steed_article = ARTICLE_THE;
-
-                /* suppress article in various steed messages when using its
-                   name (which won't occur when hallucinating) */
-                if (has_mgivenname(game.u.usteed) && !Hallucination())
-                    steed_article = ARTICLE_NONE;
                 const verbbuf = ((trflags & RECURSIVETRAP) !== 0)
                     ? `and ${x_monnam(game.u.usteed, steed_article, null,
                                        SUPPRESS_SADDLE, false)} fall`
@@ -3000,7 +2994,11 @@ async function trapeffect_pit(mtmp, trap, trflags) {
                 await You(`${verb} into ${article} pit!`);
             }
         }
-        if (game.u.umonnum === PMNAMES.PM_PIT_VIPER
+        if (Role_if(PMNAMES.PM_RANGER) && !trap.madeby_u && !trap.once
+            && In_quest(game.u.uz) && on_level(game.u.uz, game.qlocate_level)) {
+            await pline('Fortunately it has a bottom after all...');
+            trap.once = 1;
+        } else if (game.u.umonnum === PMNAMES.PM_PIT_VIPER
             || game.u.umonnum === PMNAMES.PM_PIT_FIEND)
             await pline("How pitiful.  Isn't that the pits?");
 
@@ -3008,13 +3006,21 @@ async function trapeffect_pit(mtmp, trap, trflags) {
             await pline(`${Yname2(game.u.uarmf)} protects you from the sharp iron spikes.`);
             relevant_spikes = false;
         } else if (relevant_spikes) {
-            await You(`${conj_pit ? 'step' : 'land'} on a set of sharp iron spikes!`);
+            const predicament = 'on a set of sharp iron spikes';
+
+            if (game.u.usteed) {
+                await pline(`${upstart(x_monnam(game.u.usteed, steed_article,
+                    'poor', SUPPRESS_SADDLE, false))} ${
+                    conj_pit ? 'steps' : 'lands'} ${predicament}!`);
+            } else {
+                await You(`${conj_pit ? 'step' : 'land'} ${predicament}!`);
+            }
         }
 
-        game.u.utrap = rn1(6, 2);
-        game.u.utraptype = TT_PIT;
+        set_utrap(rn1(6, 2), TT_PIT);
         if (!(await steedintrap(trap, null))) {
             if (relevant_spikes) {
+                const oldumort = game.u.umortality || 0;
                 let damage = rnd(conj_pit ? 4 : adj_pit ? 6 : 10);
                 if (Half_physical_damage())
                     damage = Math.trunc((damage + 1) / 2);
@@ -3030,7 +3036,7 @@ async function trapeffect_pit(mtmp, trap, trflags) {
                                    (conj_pit || adj_pit || deliberate)
                                      ? 'stepping on poison spikes'
                                      : 'fall onto poison spikes',
-                                   8, false);
+                                   game.u.umortality > oldumort ? 0 : 8, false);
                 }
             } else if (!conj_pit && !deliberate
                        && !(plunged && (Flying() || is_clinger(mtmp.data)))) {
@@ -3042,10 +3048,16 @@ async function trapeffect_pit(mtmp, trap, trflags) {
                                      : 'fell into a pit',
                              NO_KILLER_PREFIX);
             }
+            if (Punished() && !carried(game.u.uball)) {
+                unplacebc();
+                await ballfall();
+                await placebc();
+            }
+            if (!conj_pit)
+                await selftouch('Falling, you');
             game.vision_full_recalc = 1;
-            vision_recalc(0);
-            exercise(A_STR, false);
-            exercise(A_DEX, false);
+            await exercise(A_STR, false);
+            await exercise(A_DEX, false);
         }
         return Trap_Effect_Finished;
     }
@@ -3063,7 +3075,7 @@ async function trapeffect_pit(mtmp, trap, trflags) {
             /* openfallingtrap; not inescapable here */
             if (in_sight) {
                 seetrap(trap);
-                await pline(`${Monnam(mtmp)} doesn't fall into the pit.`);
+                await pline_mon(mtmp, `${Monnam(mtmp)} doesn't fall into the pit.`);
             }
             return Trap_Effect_Finished;
         }
@@ -3074,16 +3086,16 @@ async function trapeffect_pit(mtmp, trap, trflags) {
     if (!passes_walls(mptr))
         mtmp.mtrapped = 1;
     if (in_sight) {
-        await pline(`${Monnam(mtmp)} ${fallverb} into ${trap.madeby_u ? 'your' : 'a'} pit!`);
-        if (mtmp.mnum === PMNAMES.PM_PIT_VIPER
-            || mtmp.mnum === PMNAMES.PM_PIT_FIEND)
+        await pline_mon(mtmp, `${Monnam(mtmp)} ${fallverb} into ${trap.madeby_u ? 'your' : 'a'} pit!`);
+        if (mptr === game.mons[PMNAMES.PM_PIT_VIPER]
+            || mptr === game.mons[PMNAMES.PM_PIT_FIEND])
             await pline("How pitiful.  Isn't that the pits?");
         seetrap(trap);
     }
     await mselftouch(mtmp, 'Falling, ', false);
     if (wearing_iron_shoes(mtmp))
         relevant_spikes = false;
-    if (mtmp.mhp <= 0
+    if (DEADMONSTER(mtmp)
         || await thitm(0, mtmp, null, rnd(relevant_spikes ? 10 : 6), false))
         trapkilled = true;
 

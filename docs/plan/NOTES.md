@@ -3261,8 +3261,12 @@ workflow and it was skipped when the fork was set up. Every listed team
 carries a `category` field, and grandfathered.json exists to backfill exactly
 this field for six teams, which is consistent with it being required.
 
-Fixed by declaring `agentic` (README:64 -- LLM-driven workflow). The judge
-cron runs every two hours, so confirm the row appears rather than assuming.
+Fixed by declaring `agentic` (README:64 -- LLM-driven workflow). Confirm the
+row appears rather than assuming. As checked on November 25, 2026, the
+[contest home page](https://mazesofmenace.ai/) says scoring runs every six
+hours. The older two-hour schedule in the repository README is stale. Check
+the feed timestamp and the row's `lastScored` field separately; a successful
+push does not establish that the official judge has scored that commit.
 
 GENERAL POINT: local score is not the submission. The port ran clean and
 scored 512 the whole time it was invisible to the contest. Check the fork's

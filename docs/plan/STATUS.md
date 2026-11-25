@@ -1,5 +1,74 @@
 # STATUS — live handoff board
 
+## 2026-11-25: traps pass full872; death causes ready next
+
+Potion-impact checkpoint `50f6ce67` is pushed. Main's only unpublished runtime
+file is trap.js. It combines the reviewed pit owner, the dotrap prerequisite
+that preserves prior trap state, and the complete feeltrap mapping step. The
+pit patch and dotrap patch were applied as scoped hunks; newer runtime fixes
+remain intact. Parent verified all 642 dotrap manifest members, including six
+link targets. The provenance comment uses plain punctuation.
+
+Current main passes all 47 pit, nine prior-state and nine tactile-map source
+controls, versus 29, four and four before. Twelve pit cases pass all 36 ordinary
+assertions. Three tactile cases and four genuine pit-producer cases also pass,
+with observer and deferred-input equality. The two known non-C walking
+diagnostics remain only in the research packet. The maintained producer gate
+requires its four actual cases and canonical C recording.
+
+All nineteen C cases match 1,909 complete styled boundaries/cursors, 47,640
+calls and ordered slices, and 37 frames on main. Pit repairs 36 styled
+boundaries and four divergent random streams. Tactile mapping repairs ten
+styled boundaries while preserving every random stream. Its ordinary positive
+is a blind, levitating hero discovering and leaving a vibrating square. The
+map assertion checks the redraw before the final version window; the original
+failed observation and all unchanged input bytes are preserved.
+
+Full872 passes on NFS with two workers and default timeouts, no retries:
+`/share/NFS/u/rohit/research/contest/artifacts/2026-11-22/trap-full872-js-20261125`.
+All 872 fixtures match 902,696 screens/cursors, 19,113,005 scored random
+positions and 32,751 frames. All-files SHA256:
+`7c1a96ca97dd09421678af2362d8081bf6a413bb67b67d14fa55edf28dbce28c`.
+It reuses 866 existing recordings by checked relative links and uploads six
+new recordings. All 1,162 input hashes still match locally and remotely.
+Runtime hashes are in `trap-main-after-runtime.json`. The compact full receipt
+is `trap-full872-remote/verification.json`, SHA256
+`605a8a4e35d17b8c684ef2417c0f4bd8c7733476f076ed20baada64259963589`.
+
+Nine retained suites, source audit and eight syntax checks pass. The initial
+eight-second gate passes 75 of 79 fixtures. Four untrapping batches contain
+40 to 90 cases each; all eight paired baseline/candidate workers finish in
+6.0 to 13.1 seconds and match every scored output. Those four batches also
+pass the explicit 45-second hang gate, matching the scorer's default budget.
+The original eight-second failures are retained, not counted as passes.
+The old untrapping
+test's immediate-unlink expectation fails identically before and after this
+checkpoint. Its corrected control checks map removal, MON_DETACH and retained
+list membership, then real dmonsfree cleanup. Both corrected variants pass;
+`untrapping-observation-correction.json` retains the evidence.
+
+Main receipt: `trap-main-verification.json`, SHA256
+`86d524ff31a9b3b64e9076ccdb5d9746944a64c4c3eac999f0d36010fcbbc526`.
+All 869 older raw hashes and prior requirements remain fixed; nineteen
+requirements are appended. Next commit and immediately push this checkpoint.
+The separate death-cause patch preserves the delayed-cause list in complete
+losehp and losexp owners. Parent verified both 283-file source manifests and
+seventeen C source hashes. Eight unchanged C inputs produce 533 boundaries,
+18,651 calls and zero frames; the fixed candidate and the composition on the
+current trap runtime are fully exact. Portable composed gates pass 20 source
+and eight ordinary cases. Main is unchanged for these two owners. Promotion
+is in `immediate-death-cause-promotion`; parent lock is
+`death-causes-parent-source-lock.json`. Compose only after trap publication.
+
+Potion-vapor review has 149 source and eleven ordinary cases, pending final
+native recording. Its three CON exercise calls have a confirmed ordering
+prerequisite: six of eight pending-feedback controls still fail without awaits.
+Complete that prerequisite before promotion. Separate poisoned and movement-caller
+reviews continue. The latest leaderboard check at 10:01 UTC still has the
+07:23 UTC row and agentic rank 7. The official home page now states six-hour
+scoring; NOTES corrects the obsolete two-hour schedule. No newer held-out
+result is claimed.
+
 ## 2026-11-25: potion impacts verified for publication
 
 Sickness checkpoint `cb2a805f` is pushed. The only unpublished runtime change

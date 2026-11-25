@@ -88,8 +88,17 @@ workers. It is pushed as `cb2a805f`; its fixture brings the corpus to 868,
 outside full866. Potion impacts now pass 46 source controls, four native cases,
 61 selected/public fixtures and 61 bounded workers. The new fixture brings
 the corpus to 869. Its complete C comparison matches 355 styled boundaries,
-16,213 calls and zero frames. A separate prior-pit caller repair is required
-before composing the reviewed pit owner.
+16,213 calls and zero frames. Potion impacts are pushed as `50f6ce67`. The
+pit owner, prior-state caller and tactile trap mapping are now composed. All
+65 source controls and nineteen C cases pass: 1,909 styled boundaries,
+47,640 calls and 37 frames. Fresh full872 passes on NFS with two workers and
+default timeouts, no retries: 902,696 screens/cursors, 19,113,005 random positions
+and 32,751 frames. Nine retained suites pass. The strict eight-second check
+passes 75 fixtures; four large batches pass at the scorer's 45-second budget
+after all eight paired baseline/candidate replays finish in 6 to 13 seconds.
+The separate death-cause
+composition passes twenty source controls and eight C cases, ready after trap
+publication. Current main contains only the trap runtime changes.
 Parallel source reviews continue for potion vapors, immediate death causes and
 the pit caller.
 These local results do not establish a newer held-out score.

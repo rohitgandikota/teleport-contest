@@ -1,0 +1,276 @@
+{
+  "name": "pit-owner",
+  "description": "Source-derived keyboard proposals. Native recording remains parent work.",
+  "segments": [
+    {
+      "seed": 7402,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "spiked-pit-timed",
+      "moves": " #levelchange\r15\r               l #wizintrinsic\r>>100o\r   \u0017spiked pit trap\r   #sit\r      V"
+    },
+    {
+      "seed": 7402,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "spiked-pit-none",
+      "moves": " #levelchange\r15\r               l #wizintrinsic\r>>\u001b   \u0017spiked pit trap\r   #sit\r      V"
+    },
+    {
+      "seed": 7401,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "pit-timed",
+      "moves": " #levelchange\r15\r               l #wizintrinsic\r>>100o\r   \u0017pit trap\r   #sit\r      V"
+    },
+    {
+      "seed": 7401,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "pit-none",
+      "moves": " #levelchange\r15\r               l #wizintrinsic\r>>\u001b   \u0017pit trap\r   #sit\r      V"
+    },
+    {
+      "name": "ball-behind",
+      "seed": 7401,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r15\r               \u0017uncursed scroll of punishment\r  \u001b\u001bra   \u001b\u001bl \u0017pit trap\r  \u001b\u001b#sit\r       V"
+    },
+    {
+      "name": "ball-free-negative",
+      "seed": 7401,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r15\r               l \u0017pit trap\r  \u001b\u001b#sit\r       V"
+    },
+    {
+      "name": "corpse-selftouch",
+      "seed": 7401,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r15\r               \u0017uncursed leather gloves\r  \u001b\u001bWa   \u001b\u001b\u0017uncursed cockatrice corpse\r  \u001b\u001bwb   \u001b\u001b\u0017uncursed amulet of life saving\r  \u001b\u001bPc   \u001b\u001bl \u0017pit trap\r  \u001b\u001b#sit\r             V"
+    },
+    {
+      "name": "weapon-selftouch-negative",
+      "seed": 7401,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r15\r               \u0017uncursed leather gloves\r  \u001b\u001bWa   \u001b\u001b\u0017uncursed long sword\r  \u001b\u001bwb   \u001b\u001b\u0017uncursed amulet of life saving\r  \u001b\u001bPc   \u001b\u001bl \u0017pit trap\r  \u001b\u001b#sit\r             V"
+    },
+    {
+      "name": "mounted-spiked",
+      "seed": 6962,
+      "datetime": "20000112124000",
+      "nethackrc": "OPTIONS=name:wizard,role:Knight,race:human,gender=male,align:lawful,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             i\u001bwb \u0007tame saddled pony\r#ride\ryyl \u0017spiked pit trap\r  \u001b\u001bhl        V"
+    },
+    {
+      "name": "mounted-plain-negative",
+      "seed": 6962,
+      "datetime": "20000112124000",
+      "nethackrc": "OPTIONS=name:wizard,role:Knight,race:human,gender=male,align:lawful,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             i\u001bwb \u0007tame saddled pony\r#ride\ryyl \u0017pit trap\r  \u001b\u001bhl        V"
+    },
+    {
+      "name": "ball-impact",
+      "seed": 7402,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r15\r               \u0017uncursed scroll of punishment\r  \u001b\u001bra   \u001b\u001bl \u0017pit trap\r  \u001b\u001b#sit\r       V"
+    },
+    {
+      "seed": 6110,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Ranger,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "ranger-locate",
+      "moves": " #levelchange\r30\r                             \u0016?\r z    \u001b\u001bl \u0017pit trap\r  \u001b\u001b#sit\r       V"
+    }
+  ],
+  "coverage": [
+    "level.ordinary",
+    "mode.debug",
+    "survival.timed-status",
+    "ui.getlin",
+    "ui.more-paging"
+  ],
+  "branches": [
+    "pit-owner.spiked-pit-timed",
+    "pit-owner.spiked-pit-none",
+    "pit-owner.pit-timed",
+    "pit-owner.pit-none",
+    "pit-owner.ball-behind",
+    "pit-owner.ball-free-negative",
+    "pit-owner.corpse-selftouch",
+    "pit-owner.weapon-selftouch-negative",
+    "pit-owner.mounted-spiked",
+    "pit-owner.mounted-plain-negative",
+    "pit-owner.ball-impact",
+    "pit-owner.ranger-locate"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "pit-owner.spiked-pit-timed",
+      "segment": 0,
+      "screenIncludes": [
+        "You fall into a pit!",
+        "You land on a set of sharp iron spikes!"
+      ]
+    },
+    {
+      "branch": "pit-owner.spiked-pit-none",
+      "segment": 1,
+      "screenIncludes": [
+        "You fall into a pit!",
+        "You land on a set of sharp iron spikes!"
+      ]
+    },
+    {
+      "branch": "pit-owner.pit-timed",
+      "segment": 2,
+      "screenIncludes": [
+        "You fall into a pit!"
+      ]
+    },
+    {
+      "branch": "pit-owner.pit-none",
+      "segment": 3,
+      "screenIncludes": [
+        "You fall into a pit!"
+      ]
+    },
+    {
+      "branch": "pit-owner.ball-behind",
+      "segment": 4,
+      "screenIncludes": [
+        "You fall into a pit!",
+        "You are being punished for your misbehavior!"
+      ],
+      "screenExcludes": [
+        "The iron ball falls on your head."
+      ]
+    },
+    {
+      "branch": "pit-owner.ball-free-negative",
+      "segment": 5,
+      "screenIncludes": [
+        "You fall into a pit!"
+      ],
+      "screenExcludes": [
+        "The iron ball falls on your head."
+      ]
+    },
+    {
+      "branch": "pit-owner.corpse-selftouch",
+      "segment": 6,
+      "screenIncludes": [
+        "You fall into a pit!",
+        "Falling, you touch the cockatrice corpse.",
+        "You turn to stone...",
+        "The medallion crumbles to dust!"
+      ]
+    },
+    {
+      "branch": "pit-owner.weapon-selftouch-negative",
+      "segment": 7,
+      "screenIncludes": [
+        "You fall into a pit!"
+      ],
+      "screenExcludes": [
+        "Falling, you touch",
+        "You turn to stone..."
+      ]
+    },
+    {
+      "branch": "pit-owner.mounted-spiked",
+      "segment": 8,
+      "screenIncludes": [
+        "You lead the poor pony into a pit!",
+        "The poor pony lands on a set of sharp iron spikes!"
+      ],
+      "screenExcludes": [
+        "You land on a set of sharp iron spikes!"
+      ]
+    },
+    {
+      "branch": "pit-owner.mounted-plain-negative",
+      "segment": 9,
+      "screenIncludes": [
+        "You lead the poor pony into a pit!"
+      ],
+      "screenExcludes": [
+        "You land on a set of sharp iron spikes!",
+        "lands on a set of sharp iron spikes!"
+      ]
+    },
+    {
+      "branch": "pit-owner.ball-impact",
+      "segment": 10,
+      "screenIncludes": [
+        "You fall into a pit!",
+        "You are being punished for your misbehavior!",
+        "The iron ball falls on your head."
+      ]
+    },
+    {
+      "branch": "pit-owner.ranger-locate",
+      "segment": 11,
+      "screenIncludes": [
+        "You fall into a pit!",
+        "Fortunately it has a bottom after all..."
+      ]
+    }
+  ],
+  "unchangedOutputHashes": {
+    "spiked-pit-timed": {
+      "screens": "9e36be03e13aed755257f522060cd36588fef308d9b1b196eeaa9b8846dea3d6",
+      "cursors": "ee4df98af0946d3b048cb4c8f87f441a71c1e73612d77c1f792b53b404712b85",
+      "rng": "7ea0f9a0d174497962047a39e419179a79e927dacd472689eae711858ebe1d42",
+      "slices": "c44db789868a084f193bd3ffe22119c7b4db7e40de027880d368b53d676c50de",
+      "frames": "d7923ac301c0a298a8997a954f1c8e13f2474271f43979077bf13ec0f0fa4fb9"
+    },
+    "spiked-pit-none": {
+      "screens": "98583a56a0f5688e84b4e5008bb23677fcc90cd48f5eae954af6cca5b970bba2",
+      "cursors": "096b694a11270fa26d105407d2d5906d457d43ed0cf1dac18fd5a481a37d8623",
+      "rng": "7ea0f9a0d174497962047a39e419179a79e927dacd472689eae711858ebe1d42",
+      "slices": "0d6aca335b01e4c9a770127422461a5c5ac7305df8a391903a59200966b138e4",
+      "frames": "ca4b48c4d6af158f0d9c327a0a0b4bc6fb500c36c998d54a3e66b0f7a9e0f381"
+    },
+    "pit-timed": {
+      "screens": "129156996226b39e7c34a39c0afc55b7d1a300a2a4cd55047c1c7d31aed19a80",
+      "cursors": "637eca9c87abb6026e6c55c1d38f55bbfadd22fde8811957d9211e26e3ec8d48",
+      "rng": "4f0f7e284160aa0e70f80baf70cccfa6222ef3e7bfc8df9f7ab3f72b8e30dede",
+      "slices": "148c79c864c2bcef5990632e9beefc6cdd95db22f1029da2ccb72d94539b3ebf",
+      "frames": "ada4d7e97a3be8882abf41a06ea80f7404eaa28cbceb0a993ccbda9b92f57b09"
+    },
+    "pit-none": {
+      "screens": "58340da809d388c403211484a6d2fdb3451d7fdd8ee31d823fef7377da8b718a",
+      "cursors": "9604915944326809b3c15965b7de372a7b634cc244c14203a5ecf8da1439a44b",
+      "rng": "4f0f7e284160aa0e70f80baf70cccfa6222ef3e7bfc8df9f7ab3f72b8e30dede",
+      "slices": "92076fb48ad32f20a4838b86763de70f5e6ab24d88c616ed11a61aca149c02fe",
+      "frames": "eb76a891e7bbf373a155259f461cc74228a7a11f4adb9a1e3095777155bd7a98"
+    },
+    "ball-free-negative": {
+      "screens": "10deb7b8a930005bd0ff8d36172e107e1c81cb2e77d338c5dfcd76463d7799a7",
+      "cursors": "2f4a0a0089f5de9782a70f70e145d617a700fb73a694ccbc4db818e226083b5b",
+      "rng": "4f0f7e284160aa0e70f80baf70cccfa6222ef3e7bfc8df9f7ab3f72b8e30dede",
+      "slices": "04b61a07b20412242847ace02a5f4f2777cb99d82ad62d1289f57f8aec5d4560",
+      "frames": "c1b907fd988f1c4dbfb5f9a1348edc5d9455cd8a1f3b175d134fd4e48a607b02"
+    },
+    "weapon-selftouch-negative": {
+      "screens": "44bbec707ebe48d3cf206b52182bd1d6309b3f56d9f65f8d16ecc6705e4fed54",
+      "cursors": "51b9ad66293bd747cc7b488fba051817b5452b4753775cae2d3eb130d2197107",
+      "rng": "b9c310236bdec07be4e90fc14ac20292d4914fb3d8f9e0d68825ca739f603f6c",
+      "slices": "74e099167a253c6e1f37aa9dd18ae9575ded5ca4179075555eb6b2cda300276f",
+      "frames": "a242e5276f9497c028405d47b672f09133dd0ad398b19d63946f1d3a3830486a"
+    },
+    "mounted-plain-negative": {
+      "screens": "1816d6515ca0f22781114a8bb868783ea2b58ed9bc8a57c431b7eefab68b34fd",
+      "cursors": "3baeb2717234a6cf07de78b2464599912fa93c651a2917e3a3f6e2f933dcf24c",
+      "rng": "cbb766ce0a48ca8956ecce21376792c5be86575e77cab388daf3fb6f44e04f4d",
+      "slices": "cd918b3f587c4d46e402257e70dc151e04a34db5d59f11744085e6deccd0a50f",
+      "frames": "b46fa7dce74b8dec3ee4265685c06bbb819b419c77fe6e9870f7b789adfb4ec9"
+    }
+  }
+}

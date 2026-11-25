@@ -122,16 +122,17 @@ meal duration and nutrition, and the real reset paths. Conduct inspection tests
 inventory length after the last item is consumed. All 21 checks, 84 controls,
 eighteen focused fixtures, 44 public sessions and 62 bounded workers pass.
 Six fresh C cases match all 321 boundaries and 16,208 calls, fixing ten screens.
-The maintained corpus is 828. The completed full824 excludes this change;
-a fixed full828 run is active in two shards with 195 protected files.
+The full regression on this exact runtime passes all 828 fixtures without
+retries: 860,557 screens/cursors, 17,989,232 scored RNG positions and 32,359
+frames. All 279 runtime, 828 raw and 195 protected hashes remain fixed.
 
-Miscellaneous monster actions and combat feedback are verified for publication.
+Miscellaneous monster actions and combat feedback are pushed as `6c64a297`.
 Cursed gain-level movement uses the complete migration owner; bullwhips use
 canonical equipment removal and urgent wrapping feedback. Hit, miss, swing,
 trap and container messages retain their C locations and input timing. All
 25 checks, 130 controls, sixteen focused fixtures, 44 public sessions and sixty
 bounded workers pass. Nine C cases match 1,098 boundaries and 27,705 calls,
-fixing seventy styled boundaries. The maintained corpus is 829. The active
+fixing seventy styled boundaries. The maintained corpus is 829. The completed
 full828 run excludes this checkpoint.
 
 The latest shared-machine C union credits 826 inputs across 108 layouts,

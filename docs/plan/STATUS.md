@@ -8985,6 +8985,33 @@ Next parent checkpoint is the sealed message/query/cloud composition. Agent
 follow-ups remain food helpers, Boots_off, strangulation cancellation, name
 encoding and separate monster feedback.
 
+## 2026-11-25 02:32 UTC: full828 passes without retries
+
+Both full828 workers closed with exit 0: 2880 at 02:30:22 UTC and 37552 at
+02:31:11 UTC. Independent verification passes all 828 fixtures on exact
+`0540b75e6ab7395081412fbdab2086e1f046614d`: 860,557 screens/cursors,
+17,989,232 scored RNG positions and 32,359 frames. No retry, timeout override
+or relaxed comparator was used. All 279 runtime, 828 raw and 195 protected
+hashes remain fixed. All preceding 824 raw hashes remain unchanged. Verification
+SHA-256 `70b83b75c4a7c8cc5bd9c1323477d5f176b745655e0fe5b041a89ffbb72eccc3`.
+Receipt: `.cache/restart-20261122/food-conduct-full828/verification.json`.
+This is contest-scored parity, not a claim of all styled blank bytes or literal
+DEC/Unicode serialization identity, nor a new held-out score.
+
+Miscellaneous-item and combat checkpoint `6c64a297` is pushed; process 78347
+closed with exit 0. It is outside full828 and has its separately passing
+25-check parent composition. The maintained corpus is 829.
+
+The message/query/cloud parent composition is prepared on that exact runtime:
+`.cache/restart-20261122/message-cloud-parent-composition`, 31 planned checks,
+83 controls, eighteen focused fixtures and ten support files. Worker 55853
+is active. It applies only the three sealed runtime hunks, retains the new
+conduct length correction, and reverse-applies to all 279 baseline hashes.
+The ten intent rows come from the existing recipe assertions; original raw
+files remain unchanged. The three long-cloud test migrations were reviewed
+in full and preserve actual producers and local capacity assertions. No
+publication or completed current-runtime result is claimed while it runs.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

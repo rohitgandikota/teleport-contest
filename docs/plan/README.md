@@ -201,6 +201,16 @@ input slices. Both unaffected cases retain all five hashes. The complete RNG
 stream is unchanged; wrapping places the grease wear-off draw at C's input
 boundary. Maintained corpus: 838. Strangulation checkpoint `88fe9e57` is pushed.
 
+Fresh games now initialize C's blank killer record. This fixes three actual
+self-genocide crashes without changing read.js. All 22 parent checks, 59
+controls, eighteen focused fixtures, all public sessions and 62 bounded workers
+pass. Six new C cases match 705 boundaries and 16,757 complete calls. All three
+negative cases preserve every output hash. Two old gaze-test assertions now
+expect C's blank record; gameplay checks are unchanged. Existing JSON saves
+that lack the record remain a separate compatibility limit. Maintained corpus:
+839. Slippery-armor checkpoint `026ccf81` is pushed. A fixed full839 run follows
+this checkpoint; the latest completed full sweep remains full832.
+
 The latest shared-machine C union credits 834 inputs across 111 layouts,
 reaching 4,584/5,492 functions and 60,961/107,260 branch outcomes. It adds
 one function and 143 outcomes from thirty slippery-armor, genocide and terrain

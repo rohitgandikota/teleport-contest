@@ -9455,6 +9455,58 @@ this checkpoint is pushed. It preserves the demonstrated baseline exception,
 reviews the two obsolete gaze assertions separately, and checks actual
 save/restore, fresh self-genocide, public and bounded replay before promotion.
 
+## 2026-11-25 03:51 UTC: fresh killer initialization verified
+
+Slippery-armor checkpoint `026ccf810524d65b324405319d181df12743359a`
+is pushed; process 47900 closed with exit 0.
+
+Killer-initialization parent worker 76181 closed with exit 0. All 22 checks
+pass: 59 controls, eighteen focused fixtures, all public sessions and 62 bounded
+workers. Focused totals are 65 segments, 7,672 screens/cursors, 184,027 scored
+RNG positions and 66 frames. Seven strict native and all-five deferred fixtures
+match 46 segments, 5,003 boundaries, 135,188 complete calls and seven frames.
+The six fresh C cases match all 705 styled grids/cursors/slices and 16,757
+complete calls, with zero frames. Baseline native comparison throws in
+read.js do_genocide because killer is undefined; that exception is retained,
+with no invented complete baseline counts. Three ordinary self-genocide cases
+crash before the repair and complete afterward. All three negative cases retain
+all five hashes.
+
+Only resetGame gains C's four-field zeroed killer head. Parent read the full
+C initializer, head declaration and source/caller/restore contracts. No read.js
+change is needed. Fresh reset and real saved cause lists pass. Old JSON saves
+missing the record retain their original demonstrated incompatibility. The two
+obsolete gaze assertions are separately changed to expect C's blank record;
+the remaining assertions and gameplay setup are unchanged. Source patch SHA
+`7d436046623292a7d2ce76911dc1e4b922d4074afec5eef5afbb6f8f0aa6a1f1`.
+Original baseline-pass/candidate-fail receipts remain in the source packet.
+
+All 279 runtime and eight support hashes equal the tested candidate; all 838
+preceding raw recordings remain fixed. Six namespaced intent entries appended.
+Maintained corpus: 839. Publish now. Verification SHA
+`5c45ec7ae930c8e18a30cb2706e95a70cb9150ed7da5cb589a2dcc8f602ee80f`.
+Integration: `killer-initialization-main-integration.json` in the restart cache.
+Run `prepare-killer-full839.py`, then its two fixed-runtime shards after push.
+The corresponding verifier is `verify-killer-full839.py`. No full839 pass is
+claimed yet; latest completed sweep is full832 on 81ad0594 with its documented
+infrastructure retry. A preflight using the wrong source-manifest filename
+failed before killer snapshot creation; `baseline.json.runtime` is the actual
+279-entry manifest. Its failure receipt remains separate.
+
+The core getlin queue packet is independently sealed: 990 listed files plus
+MANIFEST, zero links; seal
+`b112e85d713ea66e0a7634ddb60792e8919c29e2270e42a6d8c726c8935e0c42`.
+Complete selected core/tty owners and actual menu callers were reviewed. Scoped
+changes restore queued lines and in_getlin lifetime, and make two tty menu
+search callers bypass the core queue as C does. Arbitrary queued text remains
+constructed source proof; the actual C Lua nh.pushkey producer has no proved
+ordinary keyboard equivalent here. Four ordinary retention controls were
+recorded unchanged: raw
+`2e1040c51d28ccf1f255dec87d8e32a42245bb18c533cfb769e2bd133e8c22bf`,
+116 boundaries. Native/current-runtime comparison is next. Jason proceeds to
+the complete dodip owner and its real queued confirmation discrepancy. Other
+agents continue their fixed-snapshot audits. No remote coverage job is active.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

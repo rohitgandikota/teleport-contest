@@ -1,0 +1,110 @@
+{
+  "name": "genocide-killer-initialization",
+  "description": "Six original C cases verify fresh-game single and class self-genocide, wizard death recovery, cancellations and another-species controls using the zero-initialized killer head.",
+  "coverage": [
+    "object.scrolls",
+    "forms.polymorph",
+    "mode.debug"
+  ],
+  "branches": [
+    "genocide-killer-initialization.single-self-polymorphed",
+    "genocide-killer-initialization.class-self-polymorphed",
+    "genocide-killer-initialization.single-self-human",
+    "genocide-killer-initialization.single-cancel-control",
+    "genocide-killer-initialization.class-cancel-control",
+    "genocide-killer-initialization.single-other-control"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "genocide-killer-initialization.single-self-polymorphed",
+      "segment": 0,
+      "screenIncludes": [
+        "Wiped out all humans.",
+        "You feel dead inside."
+      ]
+    },
+    {
+      "branch": "genocide-killer-initialization.class-self-polymorphed",
+      "segment": 1,
+      "screenIncludes": [
+        "Wiped out all orcs.",
+        "You feel dead inside.",
+        "Wiped out all orc-captains."
+      ]
+    },
+    {
+      "branch": "genocide-killer-initialization.single-self-human",
+      "segment": 2,
+      "screenIncludes": [
+        "Wiped out all humans.",
+        "OK, so you don't die."
+      ]
+    },
+    {
+      "branch": "genocide-killer-initialization.single-cancel-control",
+      "segment": 3,
+      "screenIncludes": [
+        "What type of monster do you want to genocide?"
+      ]
+    },
+    {
+      "branch": "genocide-killer-initialization.class-cancel-control",
+      "segment": 4,
+      "screenIncludes": [
+        "What class of monsters do you want to genocide?"
+      ]
+    },
+    {
+      "branch": "genocide-killer-initialization.single-other-control",
+      "segment": 5,
+      "screenIncludes": [
+        "Wiped out all goblins."
+      ]
+    }
+  ],
+  "segments": [
+    {
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Hungerform,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "single-self-polymorphed",
+      "moves": " #polyself\rhill giant\r   \u001b\u001b\u0017uncursed scroll of genocide\r  \u001b\u001bra  human\r                                                  \u001b\u001b"
+    },
+    {
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Hungerform,role:Wizard,race:orc,gender:male,align:chaotic,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "class-self-polymorphed",
+      "moves": " #polyself\rhill giant\r   \u001b\u001b\u0017blessed scroll of genocide\r  \u001b\u001bra  o\r                                                  \u001b\u001b"
+    },
+    {
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Hungerform,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "single-self-human",
+      "moves": " \u0017uncursed scroll of genocide\r  \u001b\u001bra  human\r                                                  \u001b\u001b"
+    },
+    {
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Hungerform,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "single-cancel-control",
+      "moves": " #polyself\rhill giant\r   \u001b\u001b\u0017uncursed scroll of genocide\r  \u001b\u001bra  none\r                                                  \u001b\u001b"
+    },
+    {
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Hungerform,role:Wizard,race:orc,gender:male,align:chaotic,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "class-cancel-control",
+      "moves": " #polyself\rhill giant\r   \u001b\u001b\u0017blessed scroll of genocide\r  \u001b\u001bra  none\r                                                  \u001b\u001b"
+    },
+    {
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Hungerform,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "single-other-control",
+      "moves": " #polyself\rhill giant\r   \u001b\u001b\u0017uncursed scroll of genocide\r  \u001b\u001bra  goblin\r                                                  \u001b\u001b"
+    }
+  ]
+}

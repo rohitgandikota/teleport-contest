@@ -209,13 +209,13 @@ test('surviving eye counter-gaze follows fire dice and item-destruction roll', a
 test('cancelled Medusa is confused without invoking death', async () => {
     await prepare(); const medusa = await monster(P.PM_MEDUSA); medusa.mcan = 1;
     assert.equal(await dogaze(), ECMD_TIME); assert.equal(medusa.mconf, 1);
-    assert.equal(game.u.umortality || 0, 0); assert.equal(game.killer, undefined);
+    assert.equal(game.u.umortality || 0, 0); assert.deepEqual(game.killer, {next:null,id:0,format:0,name:''});
     assert.doesNotMatch(messages(), /turn to stone/);
 });
 for (const stoneResistance of [false, true]) test(`Medusa lifesaving completes with stone resistance ${stoneResistance}`, async () => {
     await prepare(); const amulet = await lifesaver();
     const later = await monster(P.PM_NEWT, 2); const medusa = await monster(P.PM_MEDUSA);
-    assert.equal(game.killer, undefined, 'fresh runtime must not rely on a previous death');
+    assert.deepEqual(game.killer, {next:null,id:0,format:0,name:''}, 'C starts with a blank killer record, independent of any previous death');
     if (stoneResistance) game.u.intrinsic.HStone_resistance = FROMOUTSIDE;
     assert.equal(Stone_resistance(), stoneResistance);
     assert.equal(await dogaze(), ECMD_TIME);

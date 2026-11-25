@@ -153,19 +153,23 @@ boundaries, 48,265 complete calls and seven frames, fixing six screens.
 Twelve unaffected cases retain all five output hashes. Eighteen focused
 fixtures, all 44 public sessions and 62 bounded workers pass. The maintained
 corpus is 832. Completed full828 excludes this change, combat and message
-bounds. The next strangulation candidate passes five of six fresh native
-cases; two inspection screens still differ in the sixth. That failure remains
-preserved and is being traced before promotion.
+bounds. The next strangulation candidate now matches all six fresh native
+cases after repairing the canonical timeout reader in character inspection.
+Its current-runtime regression is next; the original two-screen failure is
+preserved. Full status-enlightenment source review continues separately.
 
 Hunger exhaustion now checks the active form's HP. All twenty parent checks,
 59 controls, eighteen focused fixtures, all public sessions and 62 bounded
 workers pass. Three fresh C cases match 431 styled boundaries and 8,439
 complete calls, correcting fourteen screens. Both unaffected cases retain
 all five output hashes. Hunger checkpoint `66d0e922` is pushed. Full832 is
-being rerun on boot checkpoint `81ad0594` after the first attempt lost its
-completion records to a disk-space failure. Original logs remain preserved;
-no full832 pass is claimed. Independent clone copies now avoid corpus
-duplication, after checksum-verified NFS archival. This hunger repair is
+complete on boot checkpoint `81ad0594`: 832/832 fixtures, 864,786
+screens/cursors, 18,095,911 scored RNG positions and 32,366 frames. Both
+416-fixture shards passed. The first attempt lost completion records to a
+disk-space failure and remains preserved; the successful run is attempt two.
+All 279 runtime, 832 raw and 217 protected hashes remain fixed. Independent
+clone copies now avoid corpus duplication after checksum-verified NFS archival.
+This hunger repair is
 outside that fixed runtime. Fresh-read killer initialization and the
 zero-nutrition helper guard remain separate recorded failures.
 
@@ -174,17 +178,24 @@ eighteen focused fixtures, all public sessions and 62 bounded workers. Four
 fresh C cases match 292 styled boundaries and 9,756 complete calls, correcting
 six screens/cursors. Both unaffected cases retain all five hashes. Three
 message calls use the existing attacker-location helper. Artifact fallback has
-constructed evidence only. Maintained corpus: 834. The subsequent EOF candidate
-matches all six fresh C cases, 52 boundaries and 18,174 calls, but still needs
-its current-runtime regression before promotion.
+constructed evidence only. Physical feedback checkpoint `f65c0c3a` is pushed.
 
-The latest shared-machine C union credits 829 inputs across 109 layouts,
-reaching 4,583/5,492 functions and 60,806/107,260 branch outcomes. It adds
-one function and 56 outcomes from 24 boot, strangulation and hunger cases.
-All 108 preceding run records, binary/source pins and platform controls remain
-unchanged. The original Mac apple-message rejection is still excluded; its
-independent ordinary Linux control remains accepted. These figures measure
-C reach, not JS parity or complete source coverage.
+Signed-byte FF now cancels tty line input, and interrupted wishes resume at
+C's existing moveloop position. All 21 parent checks, 69 controls, eighteen
+focused fixtures, all public sessions and 62 bounded workers pass. Six fresh
+C cases match 52 styled boundaries and 18,174 complete calls, correcting eight
+screens/cursors. Three ASCII controls preserve all five output hashes. No
+transport-EOF, Unicode-name or complete queued-line claim is made. Maintained
+corpus: 835. The completed full832 run excludes hunger, physical feedback
+and this EOF repair.
+
+The latest shared-machine C union credits 831 inputs across 110 layouts,
+reaching 4,583/5,492 functions and 60,818/107,260 branch outcomes. It adds
+twelve outcomes from ten physical-feedback and EOF cases. All 109 preceding
+run records, binary/source pins and platform controls remain unchanged.
+The original Mac apple-message rejection is still excluded; its independent
+ordinary Linux control remains accepted. These figures measure C reach,
+not JS parity or complete source coverage.
 
 The preceding full regression passes all 817 fixtures: 853,841 screens/cursors,
 17,766,231 scored RNG positions and 32,296 frames. Both fixed-runtime shards

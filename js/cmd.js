@@ -816,11 +816,14 @@ export async function hooked_tty_getlin(query, hook, suppress_history = false) {
         game._toplines = `${query} ${buf}`;
         const c = String.fromCharCode(await nhgetch());
 
-        if (c === '\x1b') {
+        if (c === '\x1b' || c === '\xff') {
+            // C pgetchar() returns signed char: byte FF reaches here as EOF.
+            if (c === '\xff')
+                game.iflags.term_gone = 1;
             /* ESC with text typed clears the line and keeps reading; only ESC
                on an empty line abandons. Returning immediately either way ate
                a key the C spends going round again. */
-            if (buf !== '') {
+            if (c === '\x1b' && buf !== '') {
                 buf = '';               /* obufp[0] = '\0'; bufp = obufp; */
                 shown = '';
                 pos = 0;

@@ -9278,6 +9278,74 @@ prerequisite; Singer continues killer initialization; Darwin continues
 spoteffects; Pauli continues u_slip_free. Latest NFS C coverage remains the
 829-input, 109-layout union. No physical/EOF C-coverage addition is claimed yet.
 
+## 2026-11-25 03:29 UTC: EOF repair verified; full832 recovery passes
+
+Physical feedback checkpoint `f65c0c3ab5405f3531da30d3cf8ad4c17094a5d9`
+is pushed. Main has no held commits.
+
+Full832 recovery workers 54782 and 6620 both closed with exit 0. The independent
+verifier checked all 832 results, 279 runtime hashes, 832 raw hashes and 217
+protected hashes: 864,786 screens/cursors, 18,095,911 scored RNG positions and
+32,366 frames. All preceding 828 raw files remain unchanged. This is the
+successful second attempt after the documented disk-space failure, not an
+uninterrupted original attempt. Runtime is exactly boot checkpoint `81ad0594`;
+hunger, physical feedback and EOF fixes are outside that run.
+Verification SHA `3df4f37f035fbf7ecf8340b54a513dde3400d88597f63232a4eb89ff023923f3`
+at `boots-full832-recovery/verification.json` in the restart cache.
+
+EOF parent worker 33362 closed with exit 0. All 21 checks pass: 69 controls,
+eighteen focused fixtures, 44 public sessions and 62 bounded workers. Focused
+totals: 119 segments, 4,977 screens/cursors, 318,630 scored RNG positions and
+fifteen frames. Five strict/deferred native fixtures match 23 segments,
+1,763 boundaries, 67,078 complete calls and zero frames. The six new C cases
+match all 52 styled grids/cursors/slices and 18,174 complete calls; before,
+44 grids and cursors matched. All three ASCII negatives retain all five hashes.
+The two scoped hunks cancel signed-byte FF in tty line input and resume an
+interrupted wish before ordinary turn processing. This follows the selected
+signed-char C input contract. Transport EOF, restored/signal/debug-fuzzer
+resumption, full tty history, queued lines and Unicode-name production remain
+separate limits. Frozen input and end-of-replay exceptions are unchanged.
+
+All 279 integrated runtime and six support hashes equal the tested candidate;
+all 834 preceding raw recordings remain unchanged. Six intent rows appended.
+Maintained corpus: 835. Publish now. Verification SHA
+`cf527c26a9c25b0d427ae50e09de089a3e7407a02bf9d66daac5d434a89a67c5`.
+Integration: `line-input-eof-main-integration.json` in the restart cache.
+
+The strangulation status packet was independently sealed: 675 files, six literal
+symlinks, seal `effdb80d2c565f4117592b46ea55389c207557af236337a434b502f4cc50e936`.
+The missing inspection text comes from reading the extrinsic mask instead of
+the intrinsic timeout. Status patch restores buried precedence, final-death
+wording, wizard timeout and source annotation. It does not complete the whole
+status function. The original native failure remains preserved. The recipe's
+two raw substring checks for spaced columns failed on C's cursor-motion ANSI;
+a separate amendment uses all 62 exact decoded character/space cells and adds
+the source-derived inspection witness. Input fields and raw bytes are fixed.
+Amendment SHA `a85a5cdb53f8a51858ee6ff87521a75c7bb568b0dbc8b681b3a238851d8b94de`.
+
+On the fixed EOF candidate plus the scoped polyself/insight patches, all six
+strangulation cases now match all five collections: 750 boundaries and 16,922
+complete calls. Six retained Amulet_on cases also match: 432 boundaries and
+16,664 calls. Both have zero frames. These are native qualification results;
+full current-runtime composition checks are next. The broader complete
+status_enlightenment source audit is Avicenna's next task, preserving the
+verified timeout block. Other agents continue u_slip_free, core getlin queues,
+genocide killer initialization and spoteffects on fixed cache-only snapshots.
+
+The physical/EOF NFS native batch and union closed with exit 0. Ten original
+inputs match both instrumented Linux replays. New union: 831 credited inputs,
+110 layouts, 4,583/5,492 functions and 60,818/107,260 outcomes, twelve new
+outcomes and no new functions. All 109 preceding run records, source/binary
+pins, platform controls and rejected-original records remain fixed. Additional
+native validation now spans 149 inputs and 643 segments, with four independent
+Linux controls and twenty segments. Bulk profiles stay on NFS:
+`/share/NFS/u/rohit/research/contest/artifacts/2026-11-22/c-coverage-compress.E84JI2/verified-physical-eof-union-20261125`.
+Seven compact files were downloaded and hash-verified; receipt is
+`linux-coverage-physical-eof-download.json`. Summary SHA
+`97bc750cad383ef8695704a477bc5324dc3e4858f127b17bbf070479e481383a`.
+Compact SHA `7d4395c62ffe2f20169df840445501abd026dc0dfbc926103b33e2f5d5dedff8`.
+This measures C reach only, not JS parity. No NFS batch is active.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

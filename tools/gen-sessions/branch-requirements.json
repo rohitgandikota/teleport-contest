@@ -3950,6 +3950,12 @@
     {"group":"Physical attack feedback","id":"monster.physical.grab-located","cFile":"src/uhitm.c","cFunction":"mhitm_ad_phys","description":"Actual hostile owlbear, successful grab and hero holder identity. Accessible location on."},
     {"group":"Physical attack feedback","id":"monster.physical.grab-plain","cFile":"src/uhitm.c","cFunction":"mhitm_ad_phys","description":"Actual hostile owlbear, successful grab and hero holder identity. Accessible location off."},
     {"group":"Physical attack feedback","id":"monster.physical.corpse-located","cFile":"src/uhitm.c","cFunction":"mhitm_ad_phys","description":"Actual skeleton picks up and wields the wished cockatrice corpse. Accessible location on."},
-    {"group":"Physical attack feedback","id":"monster.physical.corpse-plain","cFile":"src/uhitm.c","cFunction":"mhitm_ad_phys","description":"Actual skeleton picks up and wields the wished cockatrice corpse. Accessible location off."}
+    {"group":"Physical attack feedback","id":"monster.physical.corpse-plain","cFile":"src/uhitm.c","cFunction":"mhitm_ad_phys","description":"Actual skeleton picks up and wields the wished cockatrice corpse. Accessible location off."},
+    {"group":"Line input and interrupted wishes","id":"line-eof-empty-command","cFile":"win/tty/getline.c","cFunction":"hooked_tty_getlin","description":"line eof empty command"},
+    {"group":"Line input and interrupted wishes","id":"line-eof-completed-command","cFile":"win/tty/getline.c","cFunction":"hooked_tty_getlin","description":"line eof completed command"},
+    {"group":"Line input and interrupted wishes","id":"line-eof-wish-resume","cFile":"src/allmain.c","cFunction":"moveloop_core","description":"line eof wish resume"},
+    {"group":"Line input and interrupted wishes","id":"line-ascii-empty-escape","cFile":"win/tty/getline.c","cFunction":"hooked_tty_getlin","description":"line ascii empty escape"},
+    {"group":"Line input and interrupted wishes","id":"line-ascii-clear-and-cancel","cFile":"win/tty/getline.c","cFunction":"hooked_tty_getlin","description":"line ascii clear and cancel"},
+    {"group":"Line input and interrupted wishes","id":"line-ascii-wish-nothing","cFile":"win/tty/getline.c","cFunction":"hooked_tty_getlin","description":"line ascii wish nothing"}
   ]
 }

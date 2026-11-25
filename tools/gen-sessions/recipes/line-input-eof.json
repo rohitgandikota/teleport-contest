@@ -1,0 +1,257 @@
+{
+  "name": "line-input-eof",
+  "description": "Six original C cases verify byte-FF line cancellation, interrupted wish resumption and unchanged ASCII controls. No name-encoding or capture repair.",
+  "coverage": [
+    "mode.debug",
+    "ui.getlin"
+  ],
+  "requireBranchAssertions": true,
+  "branches": [
+    "line-eof-empty-command",
+    "line-eof-completed-command",
+    "line-eof-wish-resume",
+    "line-ascii-empty-escape",
+    "line-ascii-clear-and-cancel",
+    "line-ascii-wish-nothing"
+  ],
+  "branchAssertions": [
+    {
+      "branch": "line-eof-empty-command",
+      "segment": 0,
+      "screenCells": [
+        {
+          "step": 2,
+          "x": 0,
+          "y": 0,
+          "equals": "#"
+        },
+        {
+          "step": 3,
+          "x": 0,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 4,
+          "x": 0,
+          "y": 0,
+          "equals": "#"
+        },
+        {
+          "step": 5,
+          "x": 0,
+          "y": 0,
+          "equals": " "
+        }
+      ],
+      "source": "win/tty/getline.c:83-103,292-337: EOF cancels empty extended input, then the next # is read as a new command."
+    },
+    {
+      "branch": "line-eof-completed-command",
+      "segment": 1,
+      "screenCells": [
+        {
+          "step": 6,
+          "x": 2,
+          "y": 0,
+          "equals": "v"
+        },
+        {
+          "step": 7,
+          "x": 0,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 7,
+          "x": 2,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 8,
+          "x": 0,
+          "y": 0,
+          "equals": "#"
+        },
+        {
+          "step": 9,
+          "x": 0,
+          "y": 0,
+          "equals": " "
+        }
+      ],
+      "source": "win/tty/getline.c:83-103: EOF cancels an already completed buffer; only ordinary Escape clears it and continues."
+    },
+    {
+      "branch": "line-eof-wish-resume",
+      "segment": 2,
+      "screenCells": [
+        {
+          "step": 5,
+          "x": 22,
+          "y": 0,
+          "equals": "a"
+        },
+        {
+          "step": 6,
+          "x": 0,
+          "y": 0,
+          "equals": "Y"
+        },
+        {
+          "step": 7,
+          "x": 0,
+          "y": 0,
+          "equals": "F"
+        }
+      ],
+      "source": "src/zap.c:6339-6343 and allmain.c:200-201: term_gone returns before object parsing; the next loop resumes makewish before turn effects.",
+      "screenIncludes": [
+        "For what do you wish? abc",
+        "You may wish for an object."
+      ],
+      "screenExcludes": [
+        "Nothing fitting that description exists in the game."
+      ]
+    },
+    {
+      "branch": "line-ascii-empty-escape",
+      "segment": 3,
+      "screenCells": [
+        {
+          "step": 2,
+          "x": 0,
+          "y": 0,
+          "equals": "#"
+        },
+        {
+          "step": 3,
+          "x": 0,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 4,
+          "x": 0,
+          "y": 0,
+          "equals": "#"
+        },
+        {
+          "step": 5,
+          "x": 0,
+          "y": 0,
+          "equals": " "
+        }
+      ],
+      "source": "win/tty/getline.c:83-103: ordinary empty Escape returns cancellation without terminal EOF."
+    },
+    {
+      "branch": "line-ascii-clear-and-cancel",
+      "segment": 4,
+      "screenCells": [
+        {
+          "step": 6,
+          "x": 2,
+          "y": 0,
+          "equals": "v"
+        },
+        {
+          "step": 7,
+          "x": 0,
+          "y": 0,
+          "equals": "#"
+        },
+        {
+          "step": 7,
+          "x": 2,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 8,
+          "x": 0,
+          "y": 0,
+          "equals": " "
+        },
+        {
+          "step": 9,
+          "x": 0,
+          "y": 0,
+          "equals": "#"
+        },
+        {
+          "step": 10,
+          "x": 0,
+          "y": 0,
+          "equals": " "
+        }
+      ],
+      "source": "win/tty/getline.c:88-103: first ordinary Escape clears completed input, second cancels."
+    },
+    {
+      "branch": "line-ascii-wish-nothing",
+      "segment": 5,
+      "screenCells": [
+        {
+          "step": 9,
+          "x": 22,
+          "y": 0,
+          "equals": "n"
+        }
+      ],
+      "source": "src/zap.c:6344-6375: ASCII nothing declines the wish, preserving wishless conduct; internal flag checks are in the JS input gate.",
+      "screenIncludes": [
+        "For what do you wish? nothing"
+      ],
+      "screenExcludes": [
+        "Nothing fitting that description exists in the game.",
+        "You may wish for an object."
+      ]
+    }
+  ],
+  "segments": [
+    {
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "name": "line-eof-empty-command",
+      "moves": " #\u00ff#\u001b"
+    },
+    {
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "name": "line-eof-completed-command",
+      "moves": " #vers\u00ff#\u001b"
+    },
+    {
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "name": "line-eof-wish-resume",
+      "moves": " \u0017abc\u00ff\r"
+    },
+    {
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "name": "line-ascii-empty-escape",
+      "moves": " #\u001b#\u001b"
+    },
+    {
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "name": "line-ascii-clear-and-cancel",
+      "moves": " #vers\u001b\u001b#\u001b"
+    },
+    {
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "name": "line-ascii-wish-nothing",
+      "moves": " \u0017nothing\r"
+    }
+  ]
+}

@@ -1,5 +1,49 @@
 # STATUS — live handoff board
 
+## 2026-11-25: potion vapor verified for publication; movement native cases exact
+
+Death-cause preservation is pushed as `f93c8bed`. Its 62 selected/public
+fixtures match 32,304 screens/cursors, 1,173,149 random positions and 1,603
+frames. All 62 eight-second workers pass. Receipt:
+`death-causes-main-verification.json`, SHA256
+`8b7462ce36d3d205b796dfb7c8eeac10b9a3f5f62d98f4727dc65fbdd55356cd`.
+The published duplicate raw file now links to the canonical fixture, removing
+1,017,877 redundant bytes; `death-causes-publication-dedup.json` records it.
+
+Current main changes only potionbreathe and two imports in potion.js. The
+scoped patch preserves the published make_sick and potionhit owners. All 279
+runtime hashes match the tested composition. Its 149 source controls, eight
+pending-feedback ordering controls and eleven ordinary cases pass, versus
+108, two and three before. All eleven C cases match 1,342 styled boundaries,
+25,373 calls and ordered slices, and zero frames. All 656 sealed source
+members are verified. All seventy selected/public fixtures and seventy
+eight-second workers pass. Seven retained suites, source audit and four
+syntax checks pass. The three installed gates pass all 149 source, eight
+ordering and eleven ordinary cases on main. Canonical raw is unchanged;
+eleven requirements are appended, with branch/coverage metadata kept in the
+recipe. All 873 prior recordings are unchanged. The main receipt is
+`breathing-main-verification.json`. Commit and immediately push this checkpoint.
+The maintained corpus is 874, outside full872.
+
+The nine movement proposals are now recorded from unchanged inputs:
+`domove-trapmove-owner-parent-native.session.json`, SHA256
+`fa161dfbae8ec58932ba85dd7d06d1705a3e0232ba8e260cb64a87a1688ab92a`.
+The sealed candidate passes every styled cell, cursor, call/slice and frame:
+917 boundaries, 21,020 calls and 60 frames, versus four exact cases before.
+Current-main composition passes all 44 source controls, 27 ordinary assertions
+and nine native cases. It has no main edits yet.
+Use only its cmd.js/hack.js scoped patch, preserving published losehp.
+Portable delivery is `domove-trapmove-owner-promotion`. Full875 NFS setup is
+pending transport; no worker has run. Node's prior SHA was an archive hash,
+and the executable has now been checked against that archive's member. Both
+hashes are recorded. The initial executable/archive comparison and rsync
+failures are setup failures, not replay results.
+Poison's ten unchanged inputs are recorded as
+`poisoned-owner-contract-parent-native.session.json`, SHA256
+`88d199c4dfe6dd82c286d64d4b52a4450a219ce75608528e4c89a424ff2eebf2`,
+with 2,116 boundaries. Its native comparison and portable promotion remain
+pending. Further movement and monster-blindness source reviews continue.
+
 ## 2026-11-25: death-cause preservation verified for publication
 
 Trap checkpoint `135a55c5` is pushed after full872 passed. The only unpublished

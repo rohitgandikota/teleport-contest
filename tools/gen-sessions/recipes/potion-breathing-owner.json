@@ -1,0 +1,592 @@
+{
+  "name": "potion-breathing-owner",
+  "description": "Ordinary command proposals for polymorphed healing and canonical vapor property readers; native recording is separate.",
+  "segments": [
+    {
+      "name": "poly-healing",
+      "seed": 7401,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r15\r               l \u0017uncursed potion of sickness\r   \u0017uncursed potion of healing\r   #polyself\rhill giant\r   ta>   \u001b\u001btb>   \u001b\u001bV"
+    },
+    {
+      "name": "poly-extra-healing",
+      "seed": 7401,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r15\r               l \u0017uncursed potion of sickness\r   \u0017uncursed potion of extra healing\r   #polyself\rhill giant\r   ta>   \u001b\u001btb>   \u001b\u001bV"
+    },
+    {
+      "name": "poly-full-healing",
+      "seed": 7401,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r15\r               l \u0017uncursed potion of sickness\r   \u0017uncursed potion of full healing\r   #polyself\rhill giant\r   ta>   \u001b\u001btb>   \u001b\u001bV"
+    },
+    {
+      "name": "base-full-healing",
+      "seed": 7401,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r15\r               l \u0017uncursed potion of sickness\r   \u0017uncursed potion of full healing\r   ta>   \u001b\u001btb>   \u001b\u001bV"
+    },
+    {
+      "name": "poly-full-healing-cap",
+      "seed": 7401,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r15\r               l \u0017uncursed potion of full healing\r   #polyself\rhill giant\r   ta>   \u001b\u001bV"
+    },
+    {
+      "name": "invisibility-visible",
+      "seed": 7401,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r15\r               l \u0017uncursed potion of invisibility\r   ta>   \u001b\u001bV"
+    },
+    {
+      "name": "invisibility-timed",
+      "seed": 7401,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r15\r               l \u0017uncursed potion of invisibility\r   qa   \u001b\u001b\u0017uncursed potion of invisibility\r   tb>   \u001b\u001bV"
+    },
+    {
+      "name": "invisibility-see-timed",
+      "seed": 7401,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r15\r               l \u0017blessed potion of see invisible\r   qa   \u001b\u001b\u0017uncursed potion of invisibility\r   tb>   \u001b\u001bV"
+    },
+    {
+      "name": "invisibility-stalker",
+      "seed": 7401,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r15\r               l \u0017uncursed potion of invisibility\r   #polyself\rstalker\r   ta>   \u001b\u001bV"
+    },
+    {
+      "name": "invisibility-form-see",
+      "seed": 7401,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r15\r               l \u0017uncursed potion of invisibility\r   #polyself\rWoodland-elf\r   ta>   \u001b\u001bV"
+    },
+    {
+      "name": "invisibility-ring-blocked",
+      "seed": 7401,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r15\r               l \u0017uncursed ring of invisibility\r   Pal   \u001b\u001b\u0017uncursed mummy wrapping\r   Wb   \u001b\u001b\u0017uncursed potion of invisibility\r   tc>   \u001b\u001bV"
+    }
+  ],
+  "coverage": [
+    "mode.debug",
+    "level.ordinary",
+    "object.potions",
+    "forms.polymorph",
+    "object.armor",
+    "object.rings",
+    "ui.getlin",
+    "ui.more-paging"
+  ],
+  "branches": [
+    "potion-breathing.owner.poly-healing",
+    "potion-breathing.owner.poly-extra-healing",
+    "potion-breathing.owner.poly-full-healing",
+    "potion-breathing.owner.base-full-healing",
+    "potion-breathing.owner.poly-full-healing-cap",
+    "potion-breathing.owner.invisibility-visible",
+    "potion-breathing.owner.invisibility-timed",
+    "potion-breathing.owner.invisibility-see-timed",
+    "potion-breathing.owner.invisibility-stalker",
+    "potion-breathing.owner.invisibility-form-see",
+    "potion-breathing.owner.invisibility-ring-blocked"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "potion-breathing.owner.poly-healing",
+      "segment": 0,
+      "screenIncludes": [
+        "NetHack Version",
+        "shatters!",
+        "smell a peculiar odor",
+        "Call a",
+        "You turn into a hill giant!"
+      ],
+      "screenExcludes": [
+        "Die?",
+        "You die...",
+        "OK, so you don't die."
+      ],
+      "screenCells": [
+        {
+          "step": 138,
+          "x": 11,
+          "y": 23,
+          "equals": "H"
+        },
+        {
+          "step": 138,
+          "x": 12,
+          "y": 23,
+          "equals": "P"
+        },
+        {
+          "step": 138,
+          "x": 13,
+          "y": 23,
+          "equals": ":"
+        },
+        {
+          "step": 138,
+          "x": 14,
+          "y": 23,
+          "equals": "2"
+        },
+        {
+          "step": 138,
+          "x": 15,
+          "y": 23,
+          "equals": "0"
+        },
+        {
+          "step": 138,
+          "x": 16,
+          "y": 23,
+          "equals": "("
+        },
+        {
+          "step": 138,
+          "x": 17,
+          "y": 23,
+          "equals": "2"
+        },
+        {
+          "step": 138,
+          "x": 18,
+          "y": 23,
+          "equals": "4"
+        },
+        {
+          "step": 138,
+          "x": 19,
+          "y": 23,
+          "equals": ")"
+        }
+      ]
+    },
+    {
+      "branch": "potion-breathing.owner.poly-extra-healing",
+      "segment": 1,
+      "screenIncludes": [
+        "NetHack Version",
+        "shatters!",
+        "smell a peculiar odor",
+        "Call a",
+        "You turn into a hill giant!"
+      ],
+      "screenExcludes": [
+        "Die?",
+        "You die...",
+        "OK, so you don't die."
+      ],
+      "screenCells": [
+        {
+          "step": 144,
+          "x": 11,
+          "y": 23,
+          "equals": "H"
+        },
+        {
+          "step": 144,
+          "x": 12,
+          "y": 23,
+          "equals": "P"
+        },
+        {
+          "step": 144,
+          "x": 13,
+          "y": 23,
+          "equals": ":"
+        },
+        {
+          "step": 144,
+          "x": 14,
+          "y": 23,
+          "equals": "2"
+        },
+        {
+          "step": 144,
+          "x": 15,
+          "y": 23,
+          "equals": "1"
+        },
+        {
+          "step": 144,
+          "x": 16,
+          "y": 23,
+          "equals": "("
+        },
+        {
+          "step": 144,
+          "x": 17,
+          "y": 23,
+          "equals": "2"
+        },
+        {
+          "step": 144,
+          "x": 18,
+          "y": 23,
+          "equals": "4"
+        },
+        {
+          "step": 144,
+          "x": 19,
+          "y": 23,
+          "equals": ")"
+        }
+      ]
+    },
+    {
+      "branch": "potion-breathing.owner.poly-full-healing",
+      "segment": 2,
+      "screenIncludes": [
+        "NetHack Version",
+        "shatters!",
+        "smell a peculiar odor",
+        "Call a",
+        "You turn into a hill giant!"
+      ],
+      "screenExcludes": [
+        "Die?",
+        "You die...",
+        "OK, so you don't die."
+      ],
+      "screenCells": [
+        {
+          "step": 143,
+          "x": 11,
+          "y": 23,
+          "equals": "H"
+        },
+        {
+          "step": 143,
+          "x": 12,
+          "y": 23,
+          "equals": "P"
+        },
+        {
+          "step": 143,
+          "x": 13,
+          "y": 23,
+          "equals": ":"
+        },
+        {
+          "step": 143,
+          "x": 14,
+          "y": 23,
+          "equals": "2"
+        },
+        {
+          "step": 143,
+          "x": 15,
+          "y": 23,
+          "equals": "2"
+        },
+        {
+          "step": 143,
+          "x": 16,
+          "y": 23,
+          "equals": "("
+        },
+        {
+          "step": 143,
+          "x": 17,
+          "y": 23,
+          "equals": "2"
+        },
+        {
+          "step": 143,
+          "x": 18,
+          "y": 23,
+          "equals": "4"
+        },
+        {
+          "step": 143,
+          "x": 19,
+          "y": 23,
+          "equals": ")"
+        }
+      ]
+    },
+    {
+      "branch": "potion-breathing.owner.base-full-healing",
+      "segment": 3,
+      "screenIncludes": [
+        "NetHack Version",
+        "shatters!",
+        "smell a peculiar odor",
+        "Call a"
+      ],
+      "screenExcludes": [
+        "Die?",
+        "You die...",
+        "OK, so you don't die.",
+        "You turn into a hill giant!"
+      ],
+      "screenCells": [
+        {
+          "step": 119,
+          "x": 11,
+          "y": 23,
+          "equals": "H"
+        },
+        {
+          "step": 119,
+          "x": 12,
+          "y": 23,
+          "equals": "P"
+        },
+        {
+          "step": 119,
+          "x": 13,
+          "y": 23,
+          "equals": ":"
+        },
+        {
+          "step": 119,
+          "x": 14,
+          "y": 23,
+          "equals": "8"
+        },
+        {
+          "step": 119,
+          "x": 15,
+          "y": 23,
+          "equals": "7"
+        },
+        {
+          "step": 119,
+          "x": 16,
+          "y": 23,
+          "equals": "("
+        },
+        {
+          "step": 119,
+          "x": 17,
+          "y": 23,
+          "equals": "8"
+        },
+        {
+          "step": 119,
+          "x": 18,
+          "y": 23,
+          "equals": "9"
+        },
+        {
+          "step": 119,
+          "x": 19,
+          "y": 23,
+          "equals": ")"
+        }
+      ]
+    },
+    {
+      "branch": "potion-breathing.owner.poly-full-healing-cap",
+      "segment": 4,
+      "screenIncludes": [
+        "NetHack Version",
+        "shatters!",
+        "smell a peculiar odor",
+        "Call a",
+        "You turn into a hill giant!"
+      ],
+      "screenExcludes": [
+        "Die?",
+        "You die...",
+        "OK, so you don't die."
+      ],
+      "screenCells": [
+        {
+          "step": 103,
+          "x": 11,
+          "y": 23,
+          "equals": "H"
+        },
+        {
+          "step": 103,
+          "x": 12,
+          "y": 23,
+          "equals": "P"
+        },
+        {
+          "step": 103,
+          "x": 13,
+          "y": 23,
+          "equals": ":"
+        },
+        {
+          "step": 103,
+          "x": 14,
+          "y": 23,
+          "equals": "3"
+        },
+        {
+          "step": 103,
+          "x": 15,
+          "y": 23,
+          "equals": "0"
+        },
+        {
+          "step": 103,
+          "x": 16,
+          "y": 23,
+          "equals": "("
+        },
+        {
+          "step": 103,
+          "x": 17,
+          "y": 23,
+          "equals": "3"
+        },
+        {
+          "step": 103,
+          "x": 18,
+          "y": 23,
+          "equals": "0"
+        },
+        {
+          "step": 103,
+          "x": 19,
+          "y": 23,
+          "equals": ")"
+        }
+      ]
+    },
+    {
+      "branch": "potion-breathing.owner.invisibility-visible",
+      "segment": 5,
+      "screenIncludes": [
+        "NetHack Version",
+        "shatters!",
+        "smell a peculiar odor",
+        "For an instant you couldn't see yourself!"
+      ],
+      "screenExcludes": [
+        "Die?",
+        "You die...",
+        "OK, so you don't die.",
+        "For an instant you could see right through yourself!"
+      ]
+    },
+    {
+      "branch": "potion-breathing.owner.invisibility-timed",
+      "segment": 6,
+      "screenIncludes": [
+        "NetHack Version",
+        "shatters!",
+        "smell a peculiar odor",
+        "potion of invisibility shatters!"
+      ],
+      "screenExcludes": [
+        "Die?",
+        "You die...",
+        "OK, so you don't die.",
+        "For an instant"
+      ]
+    },
+    {
+      "branch": "potion-breathing.owner.invisibility-see-timed",
+      "segment": 7,
+      "screenIncludes": [
+        "NetHack Version",
+        "shatters!",
+        "smell a peculiar odor",
+        "For an instant you could see right through yourself!",
+        "This tastes like slime mold juice."
+      ],
+      "screenExcludes": [
+        "Die?",
+        "You die...",
+        "OK, so you don't die.",
+        "For an instant you couldn't see yourself!"
+      ]
+    },
+    {
+      "branch": "potion-breathing.owner.invisibility-stalker",
+      "segment": 8,
+      "screenIncludes": [
+        "NetHack Version",
+        "shatters!",
+        "smell a peculiar odor",
+        "You turn into a stalker!",
+        "Call a pink potion:"
+      ],
+      "screenExcludes": [
+        "Die?",
+        "You die...",
+        "OK, so you don't die.",
+        "For an instant"
+      ]
+    },
+    {
+      "branch": "potion-breathing.owner.invisibility-form-see",
+      "segment": 9,
+      "screenIncludes": [
+        "NetHack Version",
+        "shatters!",
+        "smell a peculiar odor",
+        "For an instant you could see right through yourself!",
+        "You turn into a Woodland-elf!"
+      ],
+      "screenExcludes": [
+        "Die?",
+        "You die...",
+        "OK, so you don't die.",
+        "For an instant you couldn't see yourself!"
+      ]
+    },
+    {
+      "branch": "potion-breathing.owner.invisibility-ring-blocked",
+      "segment": 10,
+      "screenIncludes": [
+        "NetHack Version",
+        "shatters!",
+        "smell a peculiar odor",
+        "For an instant you couldn't see yourself!",
+        "You are now wearing a mummy wrapping."
+      ],
+      "screenExcludes": [
+        "Die?",
+        "You die...",
+        "OK, so you don't die.",
+        "For an instant you could see right through yourself!"
+      ]
+    }
+  ],
+  "unchangedOutputHashes": {
+    "base-full-healing": {
+      "screens": "c0a5611db24da2f9ebb9001f0ea21876d418dc0b213a15c8784edde2bb765a18",
+      "cursors": "ec4c0fc2b42d18d3d875dc8907e4260ff4ac6e2999fedaaed10d8b1685e056f0",
+      "calls": "7560504238b532f74874ee30e72fb8c1036d3aa4df8edf338d2d903d0592d4af",
+      "slices": "24195c253df3c8e5112ecc41ae2af37b96952f4a74f4488bd3786eb5a4f14ea4",
+      "frames": "850e3e8c25e8114ac032a847360152f4cc81c853b257844e745f76ab251f61cc"
+    },
+    "poly-full-healing-cap": {
+      "screens": "037eec4da492e772b1c7b98ade838b03390da9cd84170d2983ab8ed5a34068cc",
+      "cursors": "65fce93a2d9f66e53f48c18401fff23e67a5399486ce9cdc00232d7a8918fa1b",
+      "calls": "4fa32b84fa854a60132694dcc0e0f94099d7647a59b534b321980408cb3a1f10",
+      "slices": "7b86be4bf031399fcd5740e128be924089167877db51911a47b173195ec22dae",
+      "frames": "9563dee59b16a6072418273edb77b2f3f3d7f770aafd73feb95338d581909d4e"
+    },
+    "invisibility-visible": {
+      "screens": "8bde3c4546d01c9124a793919f9bb8e6adb38f2e612b07810a69aea85dc0b972",
+      "cursors": "a31ea4bdacafeeed94e149dd327de17edda311d9556ec10823116e49757865f5",
+      "calls": "b1044f0162574dd52b0a32032a855e1193107448823751df230eb992bd1eedd1",
+      "slices": "b3eb1104befcc4bb2a75f4261d5e4d13beeba6b85c750c0e15a119131eb8cdc8",
+      "frames": "eb76a891e7bbf373a155259f461cc74228a7a11f4adb9a1e3095777155bd7a98"
+    }
+  }
+}

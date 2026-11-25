@@ -4303,6 +4303,17 @@
     {"group": "immediate-death-cause-contract", "id": "hp-healthy-negative", "cFile": "src/hack.c", "cFunction": "losehp", "description": "hp-healthy-negative: survive immediate damage while preserving delayed death causes"},
     {"group": "immediate-death-cause-contract", "id": "xp-healthy-negative", "cFile": "src/exper.c", "cFunction": "losexp", "description": "xp-healthy-negative: survive immediate damage while preserving delayed death causes"},
     {"group": "immediate-death-cause-contract", "id": "hp-nonfatal-negative", "cFile": "src/hack.c", "cFunction": "losehp", "description": "hp-nonfatal-negative: survive immediate damage while preserving delayed death causes"},
-    {"group": "immediate-death-cause-contract", "id": "xp-nonfatal-negative", "cFile": "src/exper.c", "cFunction": "losexp", "description": "xp-nonfatal-negative: survive immediate damage while preserving delayed death causes"}
+    {"group": "immediate-death-cause-contract", "id": "xp-nonfatal-negative", "cFile": "src/exper.c", "cFunction": "losexp", "description": "xp-nonfatal-negative: survive immediate damage while preserving delayed death causes"},
+    {"group": "potion-breathing-owner", "id": "potion-breathing.owner.poly-healing", "cFile": "src/potion.c", "cFunction": "potionbreathe", "description": "injured polymorph receives one healing point"},
+    {"group": "potion-breathing-owner", "id": "potion-breathing.owner.poly-extra-healing", "cFile": "src/potion.c", "cFunction": "potionbreathe", "description": "injured polymorph receives two healing points"},
+    {"group": "potion-breathing-owner", "id": "potion-breathing.owner.poly-full-healing", "cFile": "src/potion.c", "cFunction": "potionbreathe", "description": "injured polymorph receives three healing points"},
+    {"group": "potion-breathing-owner", "id": "potion-breathing.owner.base-full-healing", "cFile": "src/potion.c", "cFunction": "potionbreathe", "description": "normal-form healing control"},
+    {"group": "potion-breathing-owner", "id": "potion-breathing.owner.poly-full-healing-cap", "cFile": "src/potion.c", "cFunction": "potionbreathe", "description": "full polymorphed HP cap control"},
+    {"group": "potion-breathing-owner", "id": "potion-breathing.owner.invisibility-visible", "cFile": "src/potion.c", "cFunction": "potionbreathe", "description": "visible hero identifies invisibility vapor"},
+    {"group": "potion-breathing-owner", "id": "potion-breathing.owner.invisibility-timed", "cFile": "src/potion.c", "cFunction": "potionbreathe", "description": "timed invisible hero gets no flash"},
+    {"group": "potion-breathing-owner", "id": "potion-breathing.owner.invisibility-see-timed", "cFile": "src/potion.c", "cFunction": "potionbreathe", "description": "timed see-invisible chooses transparent feedback"},
+    {"group": "potion-breathing-owner", "id": "potion-breathing.owner.invisibility-stalker", "cFile": "src/potion.c", "cFunction": "potionbreathe", "description": "stalker invisibility suppresses flash and knowledge"},
+    {"group": "potion-breathing-owner", "id": "potion-breathing.owner.invisibility-form-see", "cFile": "src/potion.c", "cFunction": "potionbreathe", "description": "Woodland-elf perception chooses transparent feedback"},
+    {"group": "potion-breathing-owner", "id": "potion-breathing.owner.invisibility-ring-blocked", "cFile": "src/potion.c", "cFunction": "potionbreathe", "description": "mummy wrapping blocks ring invisibility and allows identification"}
   ]
 }

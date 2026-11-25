@@ -34,7 +34,7 @@ import { surface } from './dungeon.js';
 import { A_WIS, ECMD_CANCEL, ECMD_FAIL, CQ_CANNED, IS_FOUNTAIN, IS_SINK } from './const.js';
 import { cmdq_peek } from './cmd.js';
 import { carried, is_plural } from './obj.js';
-import { Unaware, Hallucination, Halluc_resistance, Blind,
+import { Unaware, Hallucination, Halluc_resistance, Blind, Confusion, See_invisible,
          Deaf, Poison_resistance, Sick_resistance, Sleep_resistance,
          Underwater, Antimagic, Detect_monsters } from './youprop.js';
 import { rn2, rn1, rnd, rnl, d } from './rng.js';
@@ -290,6 +290,10 @@ export async function potionbreathe(obj) {
             }
             break;
         case ONAMES.POT_FULL_HEALING:
+            if (Upolyd(game.u) && game.u.mh < game.u.mhmax) {
+                game.u.mh++;
+                (game.disp ||= {}).botl = true;
+            }
             if (game.u.uhp < game.u.uhpmax) {
                 game.u.uhp++;
                 (game.disp ||= {}).botl = true;
@@ -297,6 +301,10 @@ export async function potionbreathe(obj) {
             cureblind = true;
             // Falls through for the extra-healing and healing vapor effects.
         case ONAMES.POT_EXTRA_HEALING:
+            if (Upolyd(game.u) && game.u.mh < game.u.mhmax) {
+                game.u.mh++;
+                (game.disp ||= {}).botl = true;
+            }
             if (game.u.uhp < game.u.uhpmax) {
                 game.u.uhp++;
                 (game.disp ||= {}).botl = true;
@@ -305,6 +313,10 @@ export async function potionbreathe(obj) {
                 cureblind = true;
             // Falls through for the ordinary healing vapor effect.
         case ONAMES.POT_HEALING:
+            if (Upolyd(game.u) && game.u.mh < game.u.mhmax) {
+                game.u.mh++;
+                (game.disp ||= {}).botl = true;
+            }
             if (game.u.uhp < game.u.uhpmax) {
                 game.u.uhp++;
                 (game.disp ||= {}).botl = true;
@@ -315,7 +327,7 @@ export async function potionbreathe(obj) {
                 await make_blinded(0, !game.u.ucreamed);
                 await make_deaf(0, true);
             }
-            exercise(A_CON, true);
+            await exercise(A_CON, true);
             break;
         case ONAMES.POT_SICKNESS:
             if (!Role_if('PM_HEALER')) {
@@ -325,7 +337,7 @@ export async function potionbreathe(obj) {
                     game.u.uhp = game.u.uhp <= 5 ? 1 : game.u.uhp - 5;
                 }
                 (game.disp ||= {}).botl = true;
-                exercise(A_CON, false);
+                await exercise(A_CON, false);
             }
             break;
         case ONAMES.POT_HALLUCINATION:
@@ -333,23 +345,22 @@ export async function potionbreathe(obj) {
             break;
         case ONAMES.POT_CONFUSION:
         case ONAMES.POT_BOOZE:
-            if (!game.u.uprops?.CONFUSION)
+            if (!Confusion())
                 await You_feel('somewhat dizzy.');
             await make_confused(itimeout_incr(game.u.intrinsic?.HConfusion,
                                               rnd(5)), false);
             break;
         case ONAMES.POT_INVISIBILITY:
-            if (!game.u.ublind && !game.u.uprops?.INVIS) {
+            if (!Blind() && !Invis()) {
                 kn++;
                 await pline(`For an instant you ${
-                    game.u.uprops?.SEE_INVIS ? 'could see right through yourself'
-                                             : "couldn't see yourself"}!`);
+                    See_invisible() ? 'could see right through yourself'
+                                    : "couldn't see yourself"}!`);
             }
             break;
         case ONAMES.POT_PARALYSIS:
             kn++;
-            if (!game.u.uprops?.FREE_ACTION
-                && !game.u.intrinsic?.HFree_action) {
+            if (!game.u.uprops?.FREE_ACTION) {
                 await pline('Something seems to be holding you.');
                 nomul(-rnd(5));
                 game.multi_reason = 'frozen by a potion';
@@ -362,7 +373,6 @@ export async function potionbreathe(obj) {
         case ONAMES.POT_SLEEPING:
             kn++;
             if (!game.u.uprops?.FREE_ACTION
-                && !game.u.intrinsic?.HFree_action
                 && !Sleep_resistance()) {
                 await You_feel('rather tired.');
                 nomul(-rnd(5));
@@ -397,18 +407,18 @@ export async function potionbreathe(obj) {
             }
             break;
         case ONAMES.POT_BLINDNESS:
-            if (!game.u.ublind && !Unaware()) {
+            if (!Blind() && !Unaware()) {
                 kn++;
                 await pline('It suddenly gets dark.');
             }
             await make_blinded(
                 itimeout_incr(game.u.intrinsic?.HBlinded, rnd(5)), false);
-            if (!game.u.ublind && !Unaware())
+            if (!Blind() && !Unaware())
                 await Your('vision clears.');
             break;
         case ONAMES.POT_ACID:
         case ONAMES.POT_POLYMORPH:
-            exercise(A_CON, false);
+            await exercise(A_CON, false);
             break;
         case ONAMES.POT_GAIN_LEVEL:
         case ONAMES.POT_GAIN_ENERGY:

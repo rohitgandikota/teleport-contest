@@ -101,11 +101,17 @@ source controls and eight C cases on main: 533 styled boundaries, 18,651 calls
 and zero frames. All 62 selected/public fixtures, 62 eight-second workers,
 seven retained suites, source audit and four syntax checks pass. Its new
 fixture brings the corpus to 873, outside the completed full872 run.
-The two unpublished runtime changes preserve delayed causes in losehp and
-losexp. Parallel source reviews continue for potion vapors, poison handling
-and movement. Potion vapors pass 149 owner and eight ordering controls;
-movement passes 44 source controls and 27 ordinary assertions. Their parent
-native comparisons and composition remain pending.
+Death causes are pushed as `f93c8bed`. The sole unpublished runtime change is
+now potionbreathe. It passes 149 owner and eight ordering controls, eleven
+ordinary cases, and eleven native comparisons on the current composition:
+1,342 styled boundaries, 25,373 calls and zero frames. All seventy selected/public
+fixtures, seventy eight-second workers, seven retained suites, source audit
+and four syntax checks pass. The corpus is 874, outside full872. Movement passes 44
+source controls, 27 ordinary assertions and nine native comparisons in its
+sealed source snapshot: 917 boundaries, 21,020 calls and 60 frames. Its
+current-main composition also passes, without main edits. Full875 NFS setup
+is pending transport; no replay result is claimed yet. Further source
+reviews cover poison handling, movement and monster blindness feedback.
 These local results do not establish a newer held-out score.
 
 Publication resumed with `2089260a` after the earlier approval-review usage

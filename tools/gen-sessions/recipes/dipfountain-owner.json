@@ -1,0 +1,208 @@
+{
+  "name": "dipfountain-owner",
+  "description": "Ten original C recordings cover fountain uncursing, anatomy, drying, bare hands, repeat input and cancellation. Town anger and cloud suppression retain separate source controls.",
+  "coverage": [
+    "mode.debug",
+    "terrain.furniture",
+    "ui.count-repeat"
+  ],
+  "requireBranchAssertions": true,
+  "branches": [
+    "fountain.dip.hallu-uncurse",
+    "fountain.dip.dog-foreleg",
+    "fountain.dip.blind-dryup",
+    "fountain.dip.hands-curse-guard",
+    "fountain.dip.wizard-decline-repeat",
+    "fountain.dip.sober-uncurse-negative",
+    "fountain.dip.human-arm-negative",
+    "fountain.dip.hands-loss-negative",
+    "fountain.dip.visible-dryup-negative",
+    "fountain.dip.cancel-negative"
+  ],
+  "branchAssertions": [
+    {
+      "branch": "fountain.dip.hallu-uncurse",
+      "segment": 0,
+      "screenIncludes": [
+        "The ink glows for a moment."
+      ],
+      "rngIncludes": [
+        "rnd(30)=19"
+      ],
+      "source": "fountain.c:479-484, Hallucination-dependent hliquid naming occurs before uncurse; JS observer separately verifies the real intrinsic and curse transition."
+    },
+    {
+      "branch": "fountain.dip.dog-foreleg",
+      "segment": 1,
+      "screenIncludes": [
+        "A strange tingling runs up your foreleg."
+      ],
+      "rngIncludes": [
+        "rnd(30)=26"
+      ],
+      "source": "fountain.c:512, body_part(ARM) after real dog polymorph. Native text can distinguish foreleg from arm."
+    },
+    {
+      "branch": "fountain.dip.blind-dryup",
+      "segment": 2,
+      "screenIncludes": [
+        "Dry up fountain?"
+      ],
+      "rngIncludes": [
+        "rnd(30)=30"
+      ],
+      "source": "fountain.c:223-227, actual blindfold and wizard acceptance; C cansee suppresses drying message. Terrain transition is JS-observed separately.",
+      "screenExcludes": [
+        "The fountain dries up!"
+      ]
+    },
+    {
+      "branch": "fountain.dip.hands-curse-guard",
+      "segment": 3,
+      "screenIncludes": [
+        "You wash your hands in the water."
+      ],
+      "rngIncludes": [
+        "rnd(30)=16"
+      ],
+      "source": "fountain.c:469, !is_hands prevents curse. rnd(30)=16 and wash message demonstrate the input route; the hands sentinel is JS-only observed state, not a native screen claim."
+    },
+    {
+      "branch": "fountain.dip.wizard-decline-repeat",
+      "segment": 4,
+      "screenIncludes": [
+        "A strange tingling runs up your arm.",
+        "Nothing seems to happen."
+      ],
+      "rngIncludes": [
+        "rnd(30)=26"
+      ],
+      "source": "fountain.c:218, y_n records wizard answer for repeat. Ctrl-A follows; exact queue identity is JS-observed. These outputs alone do not prove the queue contents."
+    },
+    {
+      "branch": "fountain.dip.sober-uncurse-negative",
+      "segment": 5,
+      "screenIncludes": [
+        "The water glows for a moment."
+      ],
+      "rngIncludes": [
+        "rnd(30)=19"
+      ],
+      "source": "fountain.c:479-484, nonhallucinating negative retains water naming and uncurses."
+    },
+    {
+      "branch": "fountain.dip.human-arm-negative",
+      "segment": 6,
+      "screenIncludes": [
+        "A strange tingling runs up your arm."
+      ],
+      "rngIncludes": [
+        "rnd(30)=26"
+      ],
+      "source": "fountain.c:512, human anatomy retains arm wording."
+    },
+    {
+      "branch": "fountain.dip.hands-loss-negative",
+      "segment": 7,
+      "screenIncludes": [
+        "A feeling of loss comes over you."
+      ],
+      "rngIncludes": [
+        "rnd(30)=18"
+      ],
+      "source": "fountain.c:478-487, bare uncursed hands take feeling-of-loss arm."
+    },
+    {
+      "branch": "fountain.dip.visible-dryup-negative",
+      "segment": 8,
+      "screenIncludes": [
+        "The fountain dries up!"
+      ],
+      "rngIncludes": [
+        "rn2(3)=0"
+      ],
+      "source": "fountain.c:223-227, visible non-cloud fountain prints drying feedback."
+    },
+    {
+      "branch": "fountain.dip.cancel-negative",
+      "segment": 9,
+      "screenIncludes": [
+        "Never mind."
+      ],
+      "rngIncludes": [],
+      "source": "potion.c:2280, Escape at getobj returns before dipfountain."
+    }
+  ],
+  "segments": [
+    {
+      "name": "hallu-uncurse",
+      "seed": 12008,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "moves": " \u0017cursed ruby\n\u0017fountain\n#wizintrinsic\n100h\n #dip\nay"
+    },
+    {
+      "name": "dog-foreleg",
+      "seed": 12047,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "moves": " \u0017fountain\n#polyself\ndog\n  #dip\n-y  n"
+    },
+    {
+      "name": "blind-dryup",
+      "seed": 12006,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "moves": " \u0017ruby\n\u0017fountain\n\u0017blindfold\nPb #dip\nay y"
+    },
+    {
+      "name": "hands-curse-guard",
+      "seed": 12001,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "moves": " \u0017fountain\n#dip\n-y n"
+    },
+    {
+      "name": "wizard-decline-repeat",
+      "seed": 12001,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "moves": " \u0017cursed ruby\n\u0017fountain\n#dip\nay n\u0001"
+    },
+    {
+      "name": "sober-uncurse-negative",
+      "seed": 12008,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "moves": " \u0017cursed ruby\n\u0017fountain\n#dip\nay"
+    },
+    {
+      "name": "human-arm-negative",
+      "seed": 12001,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "moves": " \u0017cursed ruby\n\u0017fountain\n#dip\nay n"
+    },
+    {
+      "name": "hands-loss-negative",
+      "seed": 12005,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "moves": " \u0017fountain\n#dip\n-y"
+    },
+    {
+      "name": "visible-dryup-negative",
+      "seed": 12001,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "moves": " \u0017cursed ruby\n\u0017fountain\n#dip\nay y"
+    },
+    {
+      "name": "cancel-negative",
+      "seed": 12001,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=symset:plain\n",
+      "moves": " \u0017cursed ruby\n\u0017fountain\n#dip\n\u001b"
+    }
+  ]
+}

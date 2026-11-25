@@ -362,15 +362,24 @@ twenty focused fixtures, 44 public sessions and 64 bounded workers. Six native
 cases now match all 601 styled boundaries and 14,499 calls, correcting twenty
 screens, eight cursors and nine input slices. Three unchanged cases retain all
 five hashes. Corpus: 851. This checkpoint is outside full849. The fountain
-candidate matches all ten native cases and awaits parent regression. Lava matches ten of twelve native cases; the two
-remaining styled-screen failures expose a missing intrinsic-menu timer marker.
-That prerequisite is being repaired with all original inputs preserved.
+candidate now passes all 24 parent checks, 80 controls, twenty focused fixtures,
+44 public sessions and 64 bounded workers. Its ten C cases match all 337
+boundaries and 26,227 calls, fixing six screens, three cursors and four slices.
+Five negatives retain all five hashes. Corpus: 852. The brain checkpoint is
+pushed as `ae4ce3db`.
+
+The lava menu prerequisite restores all twelve original cases in its fixed
+candidate. Six new levitation writer cases independently match 1,052 boundaries
+and 18,663 calls. Four new Mitre/half-damage cases also match all 335 boundaries
+and 9,356 calls. Both await parent regression; neither is in main.
 
 The coherent text/history candidate remains unpublished. Its 26 history and
 retained cases match C. One of four new caller cases has the pre-existing
 random config-path limitation, which remains visible and unnormalized.
-A separate public terrain-display regression is being repaired before the
-required full sweep. The bounded-worker and source checks pass.
+The terrain cancellation prerequisite restores the original public case;
+three related callers are under review before the required full sweep. All
+bounded-worker, source and seventeen syntax checks pass. The whole four-case
+caller diagnostic remains preserved outside passing-corpus admission.
 
 The latest independently verified NFS union reaches 4,594/5,492 functions and
 61,390/107,260 branch outcomes across 849 credited inputs and 116 layouts.

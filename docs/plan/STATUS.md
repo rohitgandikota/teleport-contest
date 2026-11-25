@@ -10204,6 +10204,68 @@ Off-head, intrinsic, half-damage and life-saving paths retain source controls;
 the shared half-damage caller remains separate. Full849 excludes this change.
 No whole-port, literal serialized-byte or held-out improvement is claimed.
 
+## 2026-11-25 06:13 UTC: fountain owners verified; text prerequisite ready
+
+Brain-drain checkpoint `ae4ce3db48003925cc655c01615d61b2b02262a9` is pushed.
+The fountain parent composition independently passes all 24 checks and 80
+controls: 25 source, 33 retained, eleven ordinary-input and eleven native.
+Twenty focused fixtures match all 19,684 screens/cursors, 479,208 scored RNG
+positions and 129 frames. All 44 public sessions and 64 bounded workers pass.
+Seven strict/deferred fixtures retain all 77 segments, 8,553 styled boundaries,
+229,325 complete calls and 121 frames.
+
+Ten fresh C cases improve from 331/337 styled boundaries, 334/337 cursors and
+333/337 slices to complete equality. All 26,227 calls match. Five negative
+cases retain all five before/after hashes. Raw SHA:
+`c12f20ea196bac65d33975463f3e6c08f3314284b897bbf7bad53d4eef8c8fa3`.
+Verification SHA:
+`9c3a0dd7b7662382b019eab54fd39b1e0007b3d1462ce839e22c70571035d2a3`.
+The complete dipfountain/dryup owners and relevant helper contracts were
+reviewed. Only fountain.js changes. Integration preserves all 851 earlier
+raw fixtures, fixes all 279 runtime hashes, copies six exact support files
+and appends ten namespaced branch entries. Corpus: 852. Publish promptly.
+Town anger, cloud suppression and non-hero exclusion retain source controls;
+Jason continues their ordinary-input coverage. Full849 excludes this change.
+
+All 34 original text/history checks are now closed. Its preserved failures
+are native-2 and focused score for the pre-existing random config-path
+limitation, plus the real public terrain cancellation regression. All seventeen
+syntax checks pass after correcting only the continuation log filename.
+The original failure and script remain preserved. No failed case was removed.
+
+The terrain prerequisite independently seals 604 files and three links.
+Its two-line cmd.js correction uses the saved selection cancellation result,
+not the already-cleared window flag. Parent reviewed complete C doterrain and
+tty_select_menu plus the source/caller explanation. It restores all 267
+original boundaries, 4,194 calls and six frames in the assigned public case.
+Fourteen source controls and seven unchanged negative outputs pass. Singer is
+auditing three other readers of the same cleared flag before the new full
+text/history sweep. The config-path audit independently verifies 316 members;
+no authoritative filename exists in the runtime launch contract. Retain the
+whole four-case diagnostic and its failure separately from passing-corpus
+admission, without masking or changing the raw. This is an explicit limitation,
+not a claim of 30/30 new native parity.
+
+The intrinsic-levitation prerequisite independently seals 675 files. Parent
+reviewed complete wiz_intrinsic, its timeout reader and the existing setter
+contract. All twelve original lava cases now match C in the agent's fixed
+candidate. Six newly recorded writer cases also independently match all 1,052
+boundaries, 18,663 calls and zero frames. Raw SHA:
+`a150699679ce7acf7e7c23af82d4b9537b23b63f4ca53271e71c16141ffdb9da`.
+The first parent comparison lacked the frozen decoder in the packet layout;
+that import failure is preserved. A fresh identical 279-module runtime with
+the unchanged decoder passes. No gameplay or raw bytes changed.
+
+The half-damage caller independently seals 692 files. Parent reviewed complete
+C/JS hitmu and the canonical role/artifact/monster predicates. Four fresh
+C cases match all 335 boundaries and 9,356 calls with zero frames. Raw SHA:
+`ff5afce4c5d8c35da17a19ab135124d00940f2274345151549ec143322da45c4`.
+The Mitre and canonical intrinsic/extrinsic condition belong in the common
+positive-residual-damage caller, preserving the brain owner's single consumed
+dose. Parent composition remains pending. Pauli continues the separate wizard
+half-damage producer/expiry contract; Darwin resumes the slime setter audit.
+No new held-out or whole-port result is claimed.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

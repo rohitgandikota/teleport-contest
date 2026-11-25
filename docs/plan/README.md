@@ -13,19 +13,19 @@ Ground rules are in `/CLAUDE.md`. Read that first if you have not.
 ## Current focus, 2026-11-25
 
 
-The rooted and mounted movement checkpoint is pushed as `7e88961d`. The next
-verified checkpoint captures message locations before draining monster notices.
-Its 50 source controls pass versus16 before; all70 selected/public recordings,
-eleven retained suites and eight native cases pass. The strict eight-second
-check passes69/70. The large message-location batch matches both fixed runtimes
-within the scorer's default45-second budget; its original timeout remains.
+Queued message locations are pushed as `d810959e`, with full880 passing.
+The next verified checkpoint fixes article selection, artifact-named fruit and
+corpse meal names. All67 source controls,14 ordinary cases and14 full C
+comparisons pass. All75 selected/public recordings and75 strict workers pass,
+together with twelve retained suites. One stale test flag was corrected after
+proving the runtime owner unchanged; its original failure remains recorded.
+The corpus is881. A fresh full881 run is active on NFS, reusing880 recordings.
+See the newest STATUS entry for receipts and immediate publication.
 
-Fresh full880 passes on NFS with two workers and no retries or timeout overrides:
-911,757 screens/cursors,19,290,393 random positions and32,820 frames. All1,170
-snapshot files match current main. See the newest STATUS entry for exact
-receipts and immediate publication. Four separate notice-queue diagnostics
-remain open. Article naming's fruit prerequisite is sealed but awaits native
-comparison; swim danger and forced attacks remain under source review.
+Queued-notice flag/entry repairs, their earlier input-boundary prerequisite,
+swim guards and forced attacks remain independent active reviews. The current
+official feed is unchanged from13:55 UTC: rank7,659 unmatched. Local results
+do not establish a newer held-out score.
 
 
 The storage cleanup is complete. The user explicitly authorized deleting

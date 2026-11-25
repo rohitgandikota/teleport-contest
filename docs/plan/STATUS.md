@@ -1,5 +1,51 @@
 # STATUS — live handoff board
 
+## 2026-11-25: article and fruit naming verified for publication
+
+Queued message locations are pushed as `d810959e`; full880 passed on that
+runtime. Current main changes only the article helper and doname fruit prefix
+in objnam.js, plus food_xname in eat.js. Registered fruit follows an artifact's
+article convention, and corpse meals use the existing canonical corpse namer.
+All 67 source controls pass, versus 37 before. The 14 unchanged ordinary inputs
+pass original branches, two additional prerequisite branches and complete
+observer/plain/deferred/exhausted-input checks. Five negatives retain all25
+hashes. The old Excalibur sit screen-hash failure is preserved and explicitly
+classified as positive for the separate doname prerequisite.
+
+All14 native cases match462 styled boundaries/cursors,40,460 calls and ordered
+slices, and zero frames, versus5 before. All75 selected/public recordings match
+32,293 screens/cursors,1,366,465 random positions and1,495 frames. All75 strict
+eight-second workers, twelve retained suites, source audit and five syntax
+checks pass. One initial retained-suite failure exposed two stale test writes
+to nested program_state.gameover. Fixed baseline and candidate reproduce that
+mis-set flag with the identical distant_name owner. The test now uses the
+canonical game-over field;91 queries and29 control groups pass. Runtime is
+unchanged by this correction, and original failure evidence is retained.
+
+All880 prior recordings and prior requirements remain fixed. One unchanged C
+recording and14 branch requirements bring the corpus to881. Main receipt:
+`article-main-verification.json`, SHA256
+`69ee10da00da918493ed6fa09bce09d82c7402f5278a6c2494c8825fd510c07f`.
+Commit and immediately push this checkpoint. Whole doname, corpse-helper and
+compiled-in DEBUG CapitalMon limits remain documented and unclosed.
+
+Fresh full881 is running with two NFS CPU workers, default budgets and no
+retries. It links880 existing recordings and uploads291 files, including only
+one new recording. Root:
+`/share/NFS/u/rohit/research/contest/artifacts/2026-11-22/article-full881-js-20261125`.
+All1,171 snapshot files match current main. All-files SHA256:
+`454182e5dc308264a036fa04998caef63d05a230d8b22927a66ca04fc5c3fbb5`.
+No completed full881 result is claimed yet.
+
+The queued-notice follow-up packet verifies644 members and passes60 source
+controls versus17. Its eight unchanged inputs now have a pinned C recording;
+parent comparison is pending. Earlier input-boundary delivery and typed-count
+bypasses remain under separate review. Swim danger is sealed with52 source
+controls and36 assertions across12 ordinary inputs; native recording is next.
+Forced iron-bar/web attacks remain under complete source review. The official
+feed was checked again and is byte-identical to13:55 UTC: rank7,659 unmatched.
+Do not attribute recent pushes to that older score.
+
 ## 2026-11-25: queued message locations pass full880
 
 Rooted and mounted movement is pushed as `7e88961d`. The next runtime change

@@ -144,9 +144,9 @@ for(const [where,dx,dy,xray,artifact,visible,want]of [
     assert.equal(distant_name(o,()=>game.distantname||0),want,JSON.stringify([where,dx,dy,xray,artifact,visible]));
     assert.equal(game.distantname||0,0);
 }
-await setup();const o=obj(),id=o.o_id;game.program_state.gameover=true;
+await setup();const o=obj(),id=o.o_id;game.program_state_gameover=true;
 assert.equal(distant_name(o,p=>p.o_id),0);assert.equal(o.o_id,id);
-game.program_state.gameover=false;assert.equal(distant_name(o,p=>p.o_id),id);
+game.program_state_gameover=false;assert.equal(distant_name(o,p=>p.o_id),id);
 game.distantname=2;o.where=OBJ_FREE;assert.equal(distant_name(o,()=>game.distantname),3);assert.equal(game.distantname,2);
 assert.deepEqual(game.impossible_log||[],[]);
 console.log(`inventory types: ${groups} constructed control groups PASS`);

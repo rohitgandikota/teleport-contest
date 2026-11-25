@@ -4369,6 +4369,20 @@
     {"group": "rooted-steed-guards", "id": "rooted-steed-guards.mobile-lichen-negative", "cFile": "src/hack.c", "cFunction": "u_rooted", "description": "Ordinary keyboard proposal: mobile-lichen-negative"},
     {"group": "rooted-steed-guards", "id": "rooted-steed-guards.root-stairs-negative", "cFile": "src/hack.c", "cFunction": "u_rooted", "description": "Ordinary keyboard proposal: root-stairs-negative"},
     {"group": "rooted-steed-guards", "id": "rooted-steed-guards.steed-awake-negative", "cFile": "src/steed.c", "cFunction": "stucksteed", "description": "Ordinary keyboard proposal: steed-awake-negative"},
-    {"group": "rooted-steed-guards", "id": "rooted-steed-guards.steed-saddle-negative", "cFile": "src/steed.c", "cFunction": "stucksteed", "description": "Ordinary keyboard proposal: steed-saddle-negative"}
+    {"group": "rooted-steed-guards", "id": "rooted-steed-guards.steed-saddle-negative", "cFile": "src/steed.c", "cFunction": "stucksteed", "description": "Ordinary keyboard proposal: steed-saddle-negative"},
+    {"group":"article-owner","id":"fruit-zelda-sit","cFile":"src/objnam.c","cFunction":"the","description":"Registered capitalized fruit receives the article in actual sit feedback."},
+    {"group":"article-owner","id":"fruit-rubies-sit","cFile":"src/objnam.c","cFunction":"the","description":"Registered irregular plural fruit receives the article for a real stack."},
+    {"group":"article-owner","id":"fruit-excalibur-sit-negative","cFile":"src/objnam.c","cFunction":"doname_base","description":"Registered Excalibur fruit omits a/an in inventory and drop feedback; the original article-neutral sit target retains its proper name. The fixed legacy input name is retained."},
+    {"group":"article-owner","id":"fruit-lower-sit-negative","cFile":"src/objnam.c","cFunction":"the","description":"Lowercase registered fruit retains the existing sit article."},
+    {"group":"article-owner","id":"fruit-excalibur-eat","cFile":"src/eat.c","cFunction":"food_xname","description":"A partly eaten Excalibur fruit omits a/an in doname_base inventory and meal feedback, then food_xname finishes without an extra article."},
+    {"group":"article-owner","id":"fruit-zelda-eat-negative","cFile":"src/eat.c","cFunction":"food_xname","description":"A partly eaten Zelda fruit retains its ordinary finish article."},
+    {"group":"article-owner","id":"oracle-corpse-eat","cFile":"src/eat.c","cFunction":"food_xname","description":"Actual Oracle corpse taste and completion retain the unique possessive."},
+    {"group":"article-owner","id":"cavewoman-corpse-eat","cFile":"src/eat.c","cFunction":"food_xname","description":"Actual cavewoman corpse retains its recorded female name in completion."},
+    {"group":"article-owner","id":"novel-uppercase-of","cFile":"src/objnam.c","cFunction":"the","description":"Novel wish with uppercase OF resolves through the shared article helper."},
+    {"group":"article-owner","id":"novel-lowercase-of-negative","cFile":"src/objnam.c","cFunction":"the","description":"Lowercase of novel wish keeps the existing canonical title."},
+    {"group":"article-owner","id":"artifact-card-sit","cFile":"src/objnam.c","cFunction":"the","description":"Actually identified Express Card receives the article in sit feedback."},
+    {"group":"article-owner","id":"apple-sit-negative","cFile":"src/objnam.c","cFunction":"the","description":"An ordinary apple retains its existing sit article."},
+    {"group":"article-owner","id":"artifact-excalibur-sit-negative","cFile":"src/objnam.c","cFunction":"the","description":"Actually identified Excalibur retains its proper name in sit feedback."},
+    {"group":"article-owner","id":"twoflower-corpse-eat","cFile":"src/eat.c","cFunction":"food_xname","description":"Actual Twoflower corpse retains its personal possessive without an article."}
   ]
 }

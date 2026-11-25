@@ -1,0 +1,271 @@
+{
+  "name": "article-owner-contract",
+  "description": "Actual registered fruit, artifact wishes, novel lookup and food naming through configuration and ordinary keys. Constructed limits remain in the separate source gate. Parent native recording required.",
+  "coverage": [
+    "mode.debug",
+    "object.food-corpses",
+    "object.artifacts",
+    "object.spellbooks"
+  ],
+  "branches": [
+    "fruit-zelda-sit",
+    "fruit-rubies-sit",
+    "fruit-excalibur-sit-negative",
+    "fruit-lower-sit-negative",
+    "fruit-excalibur-eat",
+    "fruit-zelda-eat-negative",
+    "oracle-corpse-eat",
+    "cavewoman-corpse-eat",
+    "novel-uppercase-of",
+    "novel-lowercase-of-negative",
+    "artifact-card-sit",
+    "apple-sit-negative",
+    "artifact-excalibur-sit-negative",
+    "twoflower-corpse-eat"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "fruit-zelda-sit",
+      "segment": 0,
+      "screenIncludes": [
+        "You sit on the Zelda."
+      ]
+    },
+    {
+      "branch": "fruit-rubies-sit",
+      "segment": 1,
+      "screenIncludes": [
+        "You sit on the Rubies."
+      ]
+    },
+    {
+      "branch": "fruit-excalibur-sit-negative",
+      "segment": 2,
+      "screenIncludes": [
+        "You sit on Excalibur."
+      ]
+    },
+    {
+      "branch": "fruit-lower-sit-negative",
+      "segment": 3,
+      "screenIncludes": [
+        "You sit on the mango."
+      ]
+    },
+    {
+      "branch": "fruit-excalibur-eat",
+      "segment": 4,
+      "screenIncludes": [
+        "You finish eating Excalibur."
+      ]
+    },
+    {
+      "branch": "fruit-zelda-eat-negative",
+      "segment": 5,
+      "screenIncludes": [
+        "You finish eating the Zelda."
+      ]
+    },
+    {
+      "branch": "oracle-corpse-eat",
+      "segment": 6,
+      "screenIncludes": [
+        "You finish eating the Oracle's corpse."
+      ]
+    },
+    {
+      "branch": "cavewoman-corpse-eat",
+      "segment": 7,
+      "screenIncludes": [
+        "You finish eating the cavewoman corpse."
+      ]
+    },
+    {
+      "branch": "novel-uppercase-of",
+      "segment": 8,
+      "screenIncludes": [
+        "The Colour of Magic"
+      ]
+    },
+    {
+      "branch": "novel-lowercase-of-negative",
+      "segment": 9,
+      "screenIncludes": [
+        "The Colour of Magic"
+      ]
+    },
+    {
+      "branch": "artifact-card-sit",
+      "segment": 10,
+      "screenIncludes": [
+        "You sit on the Platinum Yendorian Express Card."
+      ]
+    },
+    {
+      "branch": "apple-sit-negative",
+      "segment": 11,
+      "screenIncludes": [
+        "You sit on the apple."
+      ]
+    },
+    {
+      "branch": "artifact-excalibur-sit-negative",
+      "segment": 12,
+      "screenIncludes": [
+        "You sit on Excalibur."
+      ]
+    },
+    {
+      "branch": "twoflower-corpse-eat",
+      "segment": 13,
+      "screenIncludes": [
+        "You finish eating Twoflower's corpse."
+      ]
+    }
+  ],
+  "segments": [
+    {
+      "name": "fruit-zelda-sit",
+      "seed": 19001,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:Article,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,debug_mongen\nOPTIONS=symset:plain\nOPTIONS=fruit:Zelda\n",
+      "moves": " \u0017fruit\rda#sit\r   "
+    },
+    {
+      "name": "fruit-rubies-sit",
+      "seed": 19001,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:Article,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,debug_mongen\nOPTIONS=symset:plain\nOPTIONS=fruit:Ruby\n",
+      "moves": " \u00173 fruits\rda#sit\r   "
+    },
+    {
+      "name": "fruit-excalibur-sit-negative",
+      "seed": 19001,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:Article,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,debug_mongen\nOPTIONS=symset:plain\nOPTIONS=fruit:Excalibur\n",
+      "moves": " \u0017fruit\rda#sit\r   "
+    },
+    {
+      "name": "fruit-lower-sit-negative",
+      "seed": 19001,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:Article,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,debug_mongen\nOPTIONS=symset:plain\nOPTIONS=fruit:mango\n",
+      "moves": " \u0017fruit\rda#sit\r   "
+    },
+    {
+      "name": "fruit-excalibur-eat",
+      "seed": 19001,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:Article,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,debug_mongen\nOPTIONS=symset:plain\nOPTIONS=fruit:Excalibur\n",
+      "moves": " \u0017partly eaten fruit\rea..........   "
+    },
+    {
+      "name": "fruit-zelda-eat-negative",
+      "seed": 19001,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:Article,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,debug_mongen\nOPTIONS=symset:plain\nOPTIONS=fruit:Zelda\n",
+      "moves": " \u0017partly eaten fruit\rea..........   "
+    },
+    {
+      "name": "oracle-corpse-eat",
+      "seed": 19001,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:Article,role:Wizard,race:elf,gender:male,align:chaotic,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,debug_mongen\nOPTIONS=symset:plain\n",
+      "moves": " \u0017Oracle corpse\rey....................   "
+    },
+    {
+      "name": "cavewoman-corpse-eat",
+      "seed": 19001,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:Article,role:Wizard,race:elf,gender:male,align:chaotic,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,debug_mongen\nOPTIONS=symset:plain\n",
+      "moves": " \u0017cavewoman corpse\rey....................   "
+    },
+    {
+      "name": "novel-uppercase-of",
+      "seed": 19001,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:Article,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,debug_mongen\nOPTIONS=symset:plain\n",
+      "moves": " \u0017novel named Color OF Magic\ri   "
+    },
+    {
+      "name": "novel-lowercase-of-negative",
+      "seed": 19001,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:Article,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,debug_mongen\nOPTIONS=symset:plain\n",
+      "moves": " \u0017novel named Color of Magic\ri   "
+    },
+    {
+      "name": "artifact-card-sit",
+      "seed": 19001,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:Article,role:Tourist,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,debug_mongen\nOPTIONS=symset:plain\n",
+      "moves": " \u0017The Platinum Yendorian Express Card\r   #wizidentify\ra  da#sit\r   "
+    },
+    {
+      "name": "apple-sit-negative",
+      "seed": 19001,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:Article,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,debug_mongen\nOPTIONS=symset:plain\n",
+      "moves": " \u0017apple\rda#sit\r   "
+    },
+    {
+      "name": "artifact-excalibur-sit-negative",
+      "seed": 19001,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:Article,role:Knight,race:human,gender:male,align:lawful,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,debug_mongen\nOPTIONS=symset:plain\n",
+      "moves": " \u0017Excalibur\r   #wizidentify\ra  da#sit\r   "
+    },
+    {
+      "name": "twoflower-corpse-eat",
+      "seed": 19001,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:Article,role:Wizard,race:elf,gender:male,align:chaotic,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait,debug_mongen\nOPTIONS=symset:plain\n",
+      "moves": " \u0017Twoflower corpse\rey   "
+    }
+  ],
+  "unchangedOutputHashes": {
+    "fruit-excalibur-sit-negative": {
+      "screens": "d3e08f87730c210b758a3245a24c3d2e74ae3b8c4a42da5a162479cc7582caa8",
+      "cursors": "03740842f4dd133f1bc6dcf938b050553f3a1759180549bc9b0d58e12de133e6",
+      "rng": "c9af44d1fca1e17ddba2c5fe73976f66f6469ea207dea56b63d411377cb18912",
+      "slices": "667e8b7b0e9ef9362fcb3e49ceabc98ab0e286f67487d05b199d098ba61b6348",
+      "frames": "e4706c18460184e9d10777e46e1d623be0cf3e935ee6995120219b578a4303f1"
+    },
+    "fruit-lower-sit-negative": {
+      "screens": "e8bdbdb4c380c0c87735ce0fd6c8095389555e0295e6a46648d313fadb719bf1",
+      "cursors": "03740842f4dd133f1bc6dcf938b050553f3a1759180549bc9b0d58e12de133e6",
+      "rng": "c9af44d1fca1e17ddba2c5fe73976f66f6469ea207dea56b63d411377cb18912",
+      "slices": "667e8b7b0e9ef9362fcb3e49ceabc98ab0e286f67487d05b199d098ba61b6348",
+      "frames": "e4706c18460184e9d10777e46e1d623be0cf3e935ee6995120219b578a4303f1"
+    },
+    "fruit-zelda-eat-negative": {
+      "screens": "a33f13db44a31f8730c940a827b28a51b21bea7cc4b354d9d28ed74ac8233ec0",
+      "cursors": "b4c64137f06359c172c2eeb62045c10c48ee98d1aaba415ceddc273df8cc043e",
+      "rng": "7741e000dfa3157058113fb9617c7d67468de4626d3fdfa692be5136573c3170",
+      "slices": "34a06ca1e7cf37ca8da0f0c0e1bc7c2fd92eaeab1b372671b6acf404e3d910bb",
+      "frames": "bf84363005bb97747024844387bf0a1be9b6e40939beb0a026cfd533f74e250b"
+    },
+    "novel-lowercase-of-negative": {
+      "screens": "9357bc16dc89be641c9f85d4c9bf414ceb1963ef595bc3fa37831a8e5a485755",
+      "cursors": "b2806f5dbce7ba519dc453d94e51ee97b66056d66deba4a0680f27a1e909cd1f",
+      "rng": "89795b5f778760ffec4ea63434ac08f2eb0118a8155d652c194ef3dc589bb17e",
+      "slices": "30c0cb6f04d0891d9471ea9491576e2f175e270971ce92415fb422f2fe449935",
+      "frames": "ca69e417b3351040835f2d3151f03209ed6dacfb0421d1027996f9d7048a263a"
+    },
+    "apple-sit-negative": {
+      "screens": "7684a500c7c67395d2465c6c2ddbc35c7d346847bf0aa991eda7fa61c33e26ef",
+      "cursors": "03740842f4dd133f1bc6dcf938b050553f3a1759180549bc9b0d58e12de133e6",
+      "rng": "874b9dfadf3e0dab227c9e661edadc0a4a09cdcd5a4c1f5d4f035c30017774b8",
+      "slices": "5cfc8996023cb68d1ef9c46cd1185f039b027931aceb6a8b19e444110b27e73c",
+      "frames": "e4706c18460184e9d10777e46e1d623be0cf3e935ee6995120219b578a4303f1"
+    },
+    "artifact-excalibur-sit-negative": {
+      "screens": "6380ac9010c5551da929d8614df3f8e8147fdd82dc2c5a924a81000958b46ed7",
+      "cursors": "e3eadbf8c8ce61f252a47169671fbfccdf59eb5a46d00945f023eb194a253678",
+      "rng": "387c4188b25dd2f3a6a67a6d69db17fcddf91856bfa93f449170ef0e55306713",
+      "slices": "4806167e065c6a258b1d44fdf306dfa663ac7e9eff0ec479b8650d44c3528376",
+      "frames": "3676a365cf6c08430f69bc5abcf1e8430728bce2c4fd44e576a818a7cbc49b30"
+    }
+  }
+}

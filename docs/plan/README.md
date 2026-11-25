@@ -324,6 +324,16 @@ The preserved NFS union now reaches 4,592/5,492 functions and 61,305/107,260
 outcomes across 845 credited inputs and 115 layouts. Test integration remains
 pending; these coverage figures alone do not establish JS parity.
 
+Dipping checkpoint `598bca28` is pushed. Monster brain attacks now consult
+the existing slippery-armor helper before rolling helmet protection. All 21
+parent checks, 125 controls, eighteen focused fixtures, 44 public sessions and
+62 bounded workers pass. Four C cases match all 566 styled boundaries and
+9,772 complete calls, fixing seven screens, two cursors and seven input slices.
+Two unaffected cases retain all five hashes. Ordinary physical damage still
+applies after a protected grab. Corpus: 848. This change is outside full845.
+The recipe's original preflight failure is preserved; concrete C witnesses
+were added without changing any input or runtime bytes.
+
 The preceding full regression passes all 817 fixtures: 853,841 screens/cursors,
 17,766,231 scored RNG positions and 32,296 frames. Both fixed-runtime shards
 pass without retries or timeouts. All 279 runtime hashes, 817 raw inputs and

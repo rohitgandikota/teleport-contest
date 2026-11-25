@@ -1,0 +1,150 @@
+{
+  "name": "m-slips-free",
+  "description": "Four original C recordings cover real monster armor pickup and donning, greased helmet protection, cursed protection failure, and dry-helmet/body-armor negatives during hero brain attacks. Physical damage remains after a protected grab.",
+  "coverage": [
+    "mode.debug",
+    "ui.getlin",
+    "ui.more-paging",
+    "level.ordinary",
+    "monster.special-effects",
+    "monster.death-corpse-revival",
+    "monster.pets",
+    "forms.polymorph"
+  ],
+  "branches": [
+    "monster.slip.greased-helmet",
+    "monster.slip.dry-helmet",
+    "monster.slip.cursed-helmet-failure",
+    "monster.slip.cloak-head-negative"
+  ],
+  "segments": [
+    {
+      "name": "greased-worn-helmet",
+      "seed": 7401,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!accessiblemsg,whatis_coord:map\n",
+      "moves": " \u0017blessed greased +5 dwarvish iron helm\r   da l\u0007hostile orc\rh   h   . . #polyself\rmind flayer\r   \u001b. \u0017blessed scroll of taming\r   rb   . . Fl    "
+    },
+    {
+      "name": "dry-worn-helmet",
+      "seed": 7401,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!accessiblemsg,whatis_coord:map\n",
+      "moves": " \u0017blessed +5 dwarvish iron helm\r   da l\u0007hostile orc\rh   h   . . #polyself\rmind flayer\r   \u001b. \u0017blessed scroll of taming\r   rb   . . Fl    "
+    },
+    {
+      "name": "cursed-greased-worn-helmet",
+      "seed": 7401,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!accessiblemsg,whatis_coord:map\n",
+      "moves": " \u0017cursed greased +5 dwarvish iron helm\r   da l\u0007hostile orc\rh   h   . . #polyself\rmind flayer\r   \u001b. \u0017blessed scroll of taming\r   rb   . . Fl    "
+    },
+    {
+      "name": "greased-cloak-head-negative",
+      "seed": 7401,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=!accessiblemsg,whatis_coord:map\n",
+      "moves": " \u0017blessed greased +5 oilskin cloak\r   da l\u0007hostile orc\rh   h   . . #polyself\rmind flayer\r   \u001b. \u0017blessed scroll of taming\r   rb   . . Fl    "
+    }
+  ],
+  "branchAssertions": [
+    {
+      "branch": "monster.slip.greased-helmet",
+      "segment": 0,
+      "evidence": "Original C message witnesses; source conditions, ownership, precise input slices and retained physical damage are checked by m-slips-free-input-gate.mjs.",
+      "assertions": [
+        "Hero wishes and drops a greased helmet; the orc picks up the same object unworn and equips it after actual taming.",
+        "Mind-flayer tentacle message precedes slip More; grease is still present and HP unchanged at the pending boundary.",
+        "Next slice is the wear-off draw, no helmet or brain draw; ordinary physical damage kills the orc and returns the same ungreased helmet to the floor.",
+        "All five observed outputs equal an unobserved replay; original snapshot descriptor restored."
+      ],
+      "screenIncludes": [
+        "Your tentacles suck the orc.",
+        "You kill the poor orc!",
+        "You grab, but cannot hold onto the orc's greased hard hat!",
+        "The grease wears off."
+      ],
+      "screenExcludes": [
+        "helm blocks your attack",
+        "eat its brain"
+      ]
+    },
+    {
+      "branch": "monster.slip.dry-helmet",
+      "segment": 1,
+      "evidence": "Original C message witnesses; source conditions, ownership, precise input slices and retained physical damage are checked by m-slips-free-input-gate.mjs.",
+      "assertions": [
+        "Same ordinary pickup, taming and equipment path with a dry helmet.",
+        "Only the normal helmet roll follows the tentacle damage roll; all five original output hashes are unchanged.",
+        "All five observed outputs equal an unobserved replay; original snapshot descriptor restored."
+      ],
+      "screenIncludes": [
+        "Your tentacles suck the orc.",
+        "You kill the poor orc!",
+        "The orc's helm blocks your attack to his head."
+      ],
+      "screenExcludes": [
+        "grab, but cannot hold onto",
+        "The grease wears off.",
+        "eat its brain"
+      ]
+    },
+    {
+      "branch": "monster.slip.cursed-helmet-failure",
+      "segment": 2,
+      "evidence": "Original C message witnesses; source conditions, ownership, precise input slices and retained physical damage are checked by m-slips-free-input-gate.mjs.",
+      "assertions": [
+        "The worn greased helmet is actually cursed by the wish.",
+        "Cursed-protection failure draw precedes the ordinary helmet roll; grease remains on the item when dropped after death.",
+        "All five observed outputs equal an unobserved replay; original snapshot descriptor restored."
+      ],
+      "screenIncludes": [
+        "Your tentacles suck the orc.",
+        "You kill the poor orc!",
+        "The orc's helm blocks your attack to his head."
+      ],
+      "screenExcludes": [
+        "grab, but cannot hold onto",
+        "The grease wears off.",
+        "eat its brain"
+      ]
+    },
+    {
+      "branch": "monster.slip.cloak-head-negative",
+      "segment": 3,
+      "evidence": "Original C message witnesses; source conditions, ownership, precise input slices and retained physical damage are checked by m-slips-free-input-gate.mjs.",
+      "assertions": [
+        "The actual greased oilskin cloak is worn but does not protect the head.",
+        "Existing dry helmet handles the brain attack; all five original output hashes are unchanged.",
+        "All five observed outputs equal an unobserved replay; original snapshot descriptor restored."
+      ],
+      "screenIncludes": [
+        "Your tentacles suck the orc.",
+        "You kill the poor orc!",
+        "The orc's helm blocks your attack to his head."
+      ],
+      "screenExcludes": [
+        "grab, but cannot hold onto",
+        "The grease wears off.",
+        "eat its brain"
+      ]
+    }
+  ],
+  "negativeOutputHashes": {
+    "1": {
+      "screens": "52c15081c93eb596224ed72b0ae1491d9b487c31f933293125328d7efdeb9df2",
+      "cursors": "57049cc28b191a01b8aedbe124639144888243947f5feeb03ec09b818f35c3b9",
+      "calls": "bbffffd596c9b1e2be17ae04768914d2fa7e5ae7e2302e5f3cf949d88e517588",
+      "slices": "a7020847fceaafb411b97502b825dca1e34ff0610d7e8278a1301034464a35cf",
+      "frames": "dbee1e7824ed6f3ad558d6b74aee0d66425c0d31ea59e1525dfbf29a568188fc"
+    },
+    "3": {
+      "screens": "aaaf6ef0522ebc6e4c6213fa7010c75a4d104a11373f8dc9d3b6a6699dc2d8e6",
+      "cursors": "d34f02b99330ebae4696f2088c814bdd10624a9f0fc2e8bd63dcc5322559a158",
+      "calls": "13b65bca9ccfa86b1f6cae3ac8563359269efc45cc5eff1a98e5481e04ce1b38",
+      "slices": "ec3ae0188850b34ce91cab3911346704bcb079b1972b774b7d6d2c3de0325b51",
+      "frames": "f5ef758f4c91db60988a182047566e4dce7a111c9e2dc3b73036594a75d2325e"
+    }
+  },
+  "requireBranchAssertions": true
+}

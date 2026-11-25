@@ -4691,6 +4691,9 @@ export async function mhitm_ad_drin(magr, mattk, mdef, mhm) {
         return;
     }
 
+    if (await m_slips_free(mdef, mattk))
+        return;
+
     const helmet = which_armor(mdef, W_ARMH);
     if (helmet && rn2(8)) {
         await pline(`${s_suffix(Monnam(mdef))} ${helm_simple_name(helmet)} `
@@ -4889,8 +4892,7 @@ export async function mhitm_ad_ston(magr, mattk, mdef, mhm) {
     }
 }
 
-// src/uhitm.c:2056 m_slips_free(). Greased or oilskin body armor can
-// protect a monster from the hero's wrap attack.
+// src/uhitm.c:2056 m_slips_free(), slippery armor protects against hero grabs.
 async function m_slips_free(mdef, mattk) {
     let obj;
 

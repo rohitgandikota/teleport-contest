@@ -9987,6 +9987,47 @@ caller waits that must move to the C owner. Parent owns the three cmd/options
 removals; Singer owns the other 39 and the real wait_synch interrupt producer.
 The coherent migration must be composed and fully tested before publication.
 
+## 2026-11-25 05:26 UTC: slippery monster helmet verified
+
+Dipping checkpoint `598bca28` is pushed. Monster-slip parent worker 46349
+closed with exit 0. All 21 checks, 125 controls and eighteen focused fixtures
+pass: 122 segments, 14,766 screens/cursors, 358,939 scored RNG positions and
+275 frames. All 44 public sessions and 62 bounded workers pass. Seven strict-
+native and all-five deferred fixtures match 60 segments, 8,301 boundaries,
+179,841 complete calls and 121 frames. Four new C cases match all 566 styled
+boundaries, cursors and slices, plus 9,772 complete calls, no frames. Before:
+559 styled screens, 564 cursors, 559 slices and 9,756 calls. Two unaffected
+cases retain all five output hashes. Source controls improve 23/34 to 34/34;
+82 retained attack controls pass; ordinary checks improve 2/4 to 4/4.
+
+Only the existing m_slips_free call is restored before the hero brain-drain
+helmet roll, plus its helper comment. The complete helper is unchanged.
+Protection retains ordinary attack damage, as C does. All 279 runtime and
+seven support hashes equal the tested candidate; all 847 prior raw fixtures
+remain unchanged. Four registry entries append only. Corpus: 848. Publish now.
+Verification SHA `82365132b1b02e9f5647d3d5780a74cd4d98ee3f96d8887e1128b51e00ae6844`. Integration:
+m-slips-free-main-integration.json. The completed full845 excludes this change,
+the role-title fix and dipping. Direct body-wrap controls remain source-only:
+the pinned outer guard prevents the ordinary hero path from reaching them.
+
+The first builder preflight stopped before snapshot creation because the
+source recipe omitted the optional requireBranchAssertions flag. Inspection
+also found prose-only branch descriptions. The original builder and receipt
+are retained. The final recipe preserves those descriptions and adds mandatory
+C-derived inclusion/exclusion witnesses for slip, grease wear-off, helmet
+blocking and retained physical death. Runtime, input tuple and native bytes
+are unchanged. The resulting complete run passes without retries.
+
+The float_down test-only builder and verifier are prepared for the exact
+monster-slip candidate. It adds twenty native cases and 108 controls without
+runtime changes. Full/public runtime verification will be inherited from that
+exact published predecessor; new/related fixtures and bounded input still run.
+The parent text caller patch is prepared in line-history-text-caller-parent:
+three C-reviewed post-display loops plus newly unused imports, on exact parent
+cmd-v2 and current options baselines. It is untested and requires Singer's
+coherent text owner before execution or promotion. No cmd/window changes are
+in main.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

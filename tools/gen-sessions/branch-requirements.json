@@ -4055,6 +4055,10 @@
     {"group":"Dipping selection and floor queries","id":"potion.dodip.no-feature-negative","cFile":"src/potion.c","cFunction":"dodip","description":"no feature negative"},
     {"group":"Dipping selection and floor queries","id":"potion.dodip.ordinary-fountain-negative","cFile":"src/potion.c","cFunction":"dodip","description":"ordinary fountain negative"},
     {"group":"Dipping selection and floor queries","id":"potion.dodip.cancel-potion-negative","cFile":"src/potion.c","cFunction":"dodip","description":"cancel potion negative"},
-    {"group":"Dipping selection and floor queries","id":"potion.dodip.ordinary-pool-negative","cFile":"src/potion.c","cFunction":"dodip","description":"ordinary pool negative"}
+    {"group":"Dipping selection and floor queries","id":"potion.dodip.ordinary-pool-negative","cFile":"src/potion.c","cFunction":"dodip","description":"ordinary pool negative"},
+    {"group":"Monster slippery armor","id":"monster.slip.greased-helmet","cFile":"src/uhitm.c","cFunction":"m_slips_free","description":"Hero wishes and drops a greased helmet; the orc picks up the same object unworn and equips it after actual taming. Mind-flayer tentacle message precedes slip More; grease is still present and HP unchanged at the pending boundary. Next slice is the wear-off draw, no helmet or brain draw; ordinary physical damage kills the orc and returns the same ungreased helmet to the floor."},
+    {"group":"Monster slippery armor","id":"monster.slip.dry-helmet","cFile":"src/uhitm.c","cFunction":"m_slips_free","description":"Same ordinary pickup, taming and equipment path with a dry helmet. Only the normal helmet roll follows the tentacle damage roll; all five original output hashes are unchanged."},
+    {"group":"Monster slippery armor","id":"monster.slip.cursed-helmet-failure","cFile":"src/uhitm.c","cFunction":"m_slips_free","description":"The worn greased helmet is actually cursed by the wish. Cursed-protection failure draw precedes the ordinary helmet roll; grease remains on the item when dropped after death."},
+    {"group":"Monster slippery armor","id":"monster.slip.cloak-head-negative","cFile":"src/uhitm.c","cFunction":"m_slips_free","description":"The actual greased oilskin cloak is worn but does not protect the head. Existing dry helmet handles the brain attack; all five original output hashes are unchanged."}
   ]
 }

@@ -1,5 +1,41 @@
 # STATUS — live handoff board
 
+## 2026-11-25: potion impacts verified for publication
+
+Sickness checkpoint `cb2a805f` is pushed. The only unpublished runtime change
+is now potionhit and its imports in potion.js. Acid deaths use the actual
+thrower's attribution; unpaid shattered potions settle their bill before
+disposal. The complete owner and its required death and billing helpers were
+reviewed against pinned C. The already published make_sick is unchanged.
+
+All 46 source controls pass versus 28 before. Four ordinary cases pass versus
+three before, with three unchanged negative outputs and all-five observer and
+deferred-input equality. All four new C cases match 355 styled boundaries and
+cursors, 16,213 complete calls and ordered slices, and zero animation frames.
+This repairs one styled boundary; all cursors and random streams were already
+exact. All 868 prior recording hashes remain fixed. Four asserted branches are
+appended; the maintained corpus is 869.
+
+All 61 selected/public fixtures pass: 24,365 screens/cursors, 1,213,602 scored
+random positions and 1,624 frames. All 61 bounded workers, seven retained suites,
+source audit and three syntax checks pass. Main receipt:
+`potion-impact-main-verification.json`, SHA256
+`cbd3d70573166e55e5a5a6e03a5b10222edb0b5666bd4b31218e7f73ccc89ab1`.
+The latest full-corpus run remains full866 on `0ae78cc3`. No full869 sweep or
+new held-out score is claimed. Next: commit and immediately push potion impacts.
+
+Nonhero acid attribution has source controls through the real ohitmon caller;
+ordinary keyboard reach is not newly demonstrated. Polymorphed vapor healing
+and located mcureblindness feedback remain separate helper work. The pit
+owner's twelve C cases pass, but its two prior-state caller failures remain
+open in the separate complete dotrap review. Do not compose pit until those
+failures are resolved. Potionbreathe and immediate-death cause reviews continue.
+
+Removed another 6,966,223 redundant local bytes by replacing four published
+native-recording copies with links to their checksum-identical canonical files.
+Receipt: `published-native-dedup-20261125.json`. Active source snapshots and NFS
+fixture-link targets remain in use and are retained.
+
 ## 2026-11-25: sickness handling verified for publication
 
 Fire checkpoint `72f26443` is pushed. Main now contains only the unpublished

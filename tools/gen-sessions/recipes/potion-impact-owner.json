@@ -1,0 +1,121 @@
+{
+  "name": "potion-impact-owner",
+  "description": "Potion impacts preserve acid-kill ownership and settle consumed unpaid potions before disposal.",
+  "segments": [
+    {
+      "seed": 6903,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "unpaid-self",
+      "moves": " \u00162\r\u0006\u0014  llllllllllllllllllll.  \u00171 uncursed potion of levitation\rdo y,a\r .....to<   \u001b\u001b\u001b\u001b\u001bV"
+    },
+    {
+      "seed": 6903,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "paid-self",
+      "moves": " \u00162\r\u0006\u0014  llllllllllllllllllll.  \u00171 uncursed potion of levitation\r.....to<   \u001b\u001b\u001b\u001b\u001bV"
+    },
+    {
+      "seed": 7600,
+      "datetime": "20260503025436",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align=neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "hero-acid-newt",
+      "moves": " #levelchange\r30\r                             \u0017cursed potion of acid\r\u0007newt\rwoFl   \u001b\u001b\u001b\u001b\u001bV"
+    },
+    {
+      "seed": 7600,
+      "datetime": "20260503025436",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align=neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "hero-acid-resistant",
+      "moves": " #levelchange\r30\r                             \u0017cursed potion of acid\r\u0007acid blob\rwoFl   \u001b\u001b\u001b\u001b\u001bV"
+    }
+  ],
+  "coverage": [
+    "object.potions",
+    "combat.ranged",
+    "combat.melee",
+    "social.shops-billing",
+    "mode.debug",
+    "ui.more-paging"
+  ],
+  "branches": [
+    "potion-impact.owner.unpaid-self",
+    "potion-impact.owner.paid-self",
+    "potion-impact.owner.hero-acid-newt",
+    "potion-impact.owner.hero-acid-resistant"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "potion-impact.owner.unpaid-self",
+      "segment": 0,
+      "screenIncludes": [
+        "NetHack Version",
+        "crashes on your head",
+        "You owe"
+      ],
+      "screenExcludes": [
+        "Die?"
+      ]
+    },
+    {
+      "branch": "potion-impact.owner.paid-self",
+      "segment": 1,
+      "screenIncludes": [
+        "NetHack Version",
+        "crashes on your head"
+      ],
+      "screenExcludes": [
+        "Die?",
+        "You owe"
+      ]
+    },
+    {
+      "branch": "potion-impact.owner.hero-acid-newt",
+      "segment": 2,
+      "screenIncludes": [
+        "NetHack Version",
+        "You kill the newt!"
+      ],
+      "screenExcludes": [
+        "Die?"
+      ]
+    },
+    {
+      "branch": "potion-impact.owner.hero-acid-resistant",
+      "segment": 3,
+      "screenIncludes": [
+        "NetHack Version",
+        "crashes on the acid blob"
+      ],
+      "screenExcludes": [
+        "Die?",
+        "in pain!"
+      ]
+    }
+  ],
+  "unchangedOutputHashes": {
+    "paid-self": {
+      "screens": "457290323cf99ad9cfb243d7fe1660f6708aadf129b3de6cde394e7a2c4f11e4",
+      "cursors": "1a401a6c6a2359f49c84b8071fb29e080289d6b7289e90c299553bb2107262d8",
+      "calls": "5b94a1f88134dad64e2309c6a9b545c38200d66a4f34f13a3297ac08dc3035a0",
+      "slices": "615577c0a8acd83d746e3b0618f41fdc017ec56f0c3040afbd333ada1c8d148c",
+      "frames": "56ef76ae9604a1e028d3b84db576750c52129db11a9f185155f959a1d97adce5"
+    },
+    "hero-acid-newt": {
+      "screens": "de8490dc5e7cdc1d0455be24e6bbac15e43009fbd609d81ae219e9fa7695e12a",
+      "cursors": "0426a235197ba5148a29e2936e0dd3fb4a2dce2b4956dbb6e21e0025a40ea2d9",
+      "calls": "7b782c08703dfbd0fbea2905e13afcbe9725fc4d11804402752f06cd8bfcb63e",
+      "slices": "63319798597e8b75e683feeaf3034c7c255a5378e90def9d401bf9b58de13c70",
+      "frames": "ba56ec9390e018ba54353628fe4a9e51159cd53adff013965530ee3a6fbb36ad"
+    },
+    "hero-acid-resistant": {
+      "screens": "1ab7087e7ebeebfe977e7c81d65e10753f940472cb549357709e80bd813e584e",
+      "cursors": "645e2d7bc9e05c018d7944661f92365b95fd6f0f4c1ade2c661951643876c809",
+      "calls": "4977ae930cae698c4fcfcab37c1424f79fb630634c62badabfe89884c583d60e",
+      "slices": "db593290cfeab86a85b71b846a58d01ee20057cebe5132167aea328300208be9",
+      "frames": "43772b957697bdfa27d15a9320020b130b9529b0184c8b8e1bd746b0806215e4"
+    }
+  }
+}

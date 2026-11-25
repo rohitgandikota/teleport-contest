@@ -4272,6 +4272,10 @@
     {"group": "sickness-owner", "id": "monster-illness-survival", "cFile": "src/end.c", "cFunction": "done_in_by", "description": "monster-illness-survival: sickness producer, cure, cause and expiry contract"},
     {"group": "sickness-owner", "id": "fresh-food-negative", "cFile": "src/potion.c", "cFunction": "make_sick", "description": "fresh-food-negative: sickness producer, cure, cause and expiry contract"},
     {"group": "sickness-owner", "id": "healthy-leaf-negative", "cFile": "src/potion.c", "cFunction": "make_sick", "description": "healthy-leaf-negative: sickness producer, cure, cause and expiry contract"},
-    {"group": "sickness-owner", "id": "armor-other-ailment-negative", "cFile": "src/potion.c", "cFunction": "make_sick", "description": "armor-other-ailment-negative: sickness producer, cure, cause and expiry contract"}
+    {"group": "sickness-owner", "id": "armor-other-ailment-negative", "cFile": "src/potion.c", "cFunction": "make_sick", "description": "armor-other-ailment-negative: sickness producer, cure, cause and expiry contract"},
+    {"group": "potion-impact-owner", "id": "potion-impact.owner.unpaid-self", "cFile": "src/potion.c", "cFunction": "potionhit", "description": "unpaid-self: impact attribution, billing and disposal"},
+    {"group": "potion-impact-owner", "id": "potion-impact.owner.paid-self", "cFile": "src/potion.c", "cFunction": "potionhit", "description": "paid-self: impact attribution, billing and disposal"},
+    {"group": "potion-impact-owner", "id": "potion-impact.owner.hero-acid-newt", "cFile": "src/potion.c", "cFunction": "potionhit", "description": "hero-acid-newt: impact attribution, billing and disposal"},
+    {"group": "potion-impact-owner", "id": "potion-impact.owner.hero-acid-resistant", "cFile": "src/potion.c", "cFunction": "potionhit", "description": "hero-acid-resistant: impact attribution, billing and disposal"}
   ]
 }

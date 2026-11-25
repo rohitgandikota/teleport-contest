@@ -25,11 +25,11 @@ import { You, You_feel, pline_The } from './pline.js';
 import { exercise, adjattrib, A_MAX, ACURR, Fast } from './attrib.js';
 import { A_STR, A_INT, A_DEX, A_CON, A_CHA,
          BOLT_LIM, QBUFSZ, KILLED_BY_AN, KILLED_BY, POTHIT_HERO_THROW,
-         POTHIT_OTHER_THROW, COLNO, ROWNO,
+         POTHIT_OTHER_THROW, COLNO, ROWNO, SHOPBASE,
          HEAD, EYE, SICK, SICK_ALL, TIMEOUT, A_CHAOTIC, A_LAWFUL, NON_PM,
          Upolyd, ismnum, FAST, MFAST, MSLOW, STRAT_WAITFORU } from './const.js';
 import { Your } from './pline.js';
-import { nomul, losehp } from './hack.js';
+import { nomul, losehp, in_rooms } from './hack.js';
 import { surface } from './dungeon.js';
 import { A_WIS, ECMD_CANCEL, ECMD_FAIL, CQ_CANNED, IS_FOUNTAIN, IS_SINK } from './const.js';
 import { cmdq_peek } from './cmd.js';
@@ -46,7 +46,7 @@ import { more_experienced } from './exper.js';
 import { freeinv, getobj, hold_another_object, useup, useupall,
          update_inventory, ECMD_TIME, ECMD_OK, GETOBJ_PROMPT,
          obfree } from './invent.js';
-import { is_pool, wake_nearto, wakeup, killed, healmon, unstuck,
+import { is_pool, wake_nearto, wakeup, killed, monkilled, healmon, unstuck,
          mcureblindness }
     from './mon.js';
 import { OCLASSES } from './objects_data.js';
@@ -81,7 +81,7 @@ import { fixup_oil, is_corrodeable, is_rustprone, is_weptool } from './mkobj.js'
 import { is_ammo } from './wield.js';
 import { fingers_or_gloves, inaccessible_equipment } from './do_wear.js';
 import { erode_obj, fire_damage } from './trap.js';
-import { check_unpaid } from './shk.js';
+import { check_unpaid, shop_keeper, subfrombill, stolen_value } from './shk.js';
 import { HAND, LL_CONDUCT, NH_ORANGE, NH_RED, ERODE_CORRODE,
          EF_GREASE, EXPL_FIERY, COST_NUTRLZ } from './const.js';
 import { uhis } from './mhitu.js';
@@ -519,6 +519,7 @@ export async function potionhit(mon, obj, how) {
     const botlnam = bottlename();
     const isyou = mon === game.youmonst;
     let tx, ty, distance, saddle = null, hit_saddle = false;
+    const your_fault = how <= POTHIT_HERO_THROW;
 
     if (isyou) {
         tx = game.u.ux;
@@ -595,7 +596,7 @@ export async function potionhit(mon, obj, how) {
         if (useeit && !affected)
             await pline(`${buf} ${aobjnam(saddle, 'get')} wet.`);
     } else {
-        let angermon = how <= POTHIT_HERO_THROW;
+        let angermon = your_fault;
         switch (obj.otyp) {
         case ONAMES.POT_FULL_HEALING:
         case ONAMES.POT_EXTRA_HEALING:
@@ -764,8 +765,12 @@ export async function potionhit(mon, obj, how) {
                 if (!is_silent(mon.data))
                     await wake_nearto(tx, ty, (mon.data.mlevel | 0) * 10);
                 mon.mhp -= d(obj.cursed ? 2 : 1, obj.blessed ? 4 : 8);
-                if ((mon.mhp | 0) <= 0)
-                    await killed(mon);
+                if ((mon.mhp | 0) <= 0) {
+                    if (your_fault)
+                        await killed(mon);
+                    else
+                        await monkilled(mon, '', ATTKS.AD_ACID);
+                }
             }
             break;
         }
@@ -784,6 +789,20 @@ export async function potionhit(mon, obj, how) {
         await potionbreathe(obj);
     } else if (obj.dknown && cansee(tx, ty)) {
         await trycall(obj);
+    }
+    if (game.u.ushops && obj.unpaid) {
+        const shkp = shop_keeper((in_rooms(game.u.ux, game.u.uy, SHOPBASE)
+                                  || '\0').charCodeAt(0));
+
+        // Neither of the first two cases should be possible: only the hero
+        // should have an unpaid item, and only inside a tended shop.
+        if (!shkp)
+            obj.unpaid = 0;
+        else if (game.context.mon_moving)
+            subfrombill(obj, shkp);
+        else
+            await stolen_value(obj, game.u.ux, game.u.uy,
+                               !!shkp.mpeaceful, false);
     }
     obfree(obj);
 }

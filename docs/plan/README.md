@@ -84,9 +84,12 @@ Death is pushed as `0ae78cc3`. The natural-fire patch is now composed on main;
 61 bounded workers pass. It brings the corpus to 867, outside the completed
 full866 run. Fire is pushed as `72f26443`. Sickness is now verified on main with 34 source
 controls, thirteen native cases, 62 selected/public fixtures and 62 bounded
-workers. Its new fixture brings the corpus to 868, outside full866. Potion
-impact and pit owner reviews follow; a separate prior-pit caller repair is
-required before composing the latter.
+workers. It is pushed as `cb2a805f`; its fixture brings the corpus to 868,
+outside full866. Potion impacts now pass 46 source controls, four native cases,
+61 selected/public fixtures and 61 bounded workers. The new fixture brings
+the corpus to 869. Its complete C comparison matches 355 styled boundaries,
+16,213 calls and zero frames. A separate prior-pit caller repair is required
+before composing the reviewed pit owner.
 Parallel source reviews continue for potion vapors, immediate death causes and
 the pit caller.
 These local results do not establish a newer held-out score.

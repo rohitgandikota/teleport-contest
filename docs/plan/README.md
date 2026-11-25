@@ -236,6 +236,15 @@ cases preserve all five hashes. Maintained corpus: 841. This status checkpoint
 is outside full839. Final and uncommon combinations have constructed controls;
 complete attribute enlightenment remains a separate audit.
 
+Breathing and chanting now read the actual strangulation timer, preserving the
+worn amulet mask for immune forms. All 25 checks, 147 controls, eighteen
+focused fixtures, 44 public sessions and 62 bounded workers pass. Six new C
+cases match all 781 boundaries and 16,939 complete calls, fixing two styled
+screens. Four unaffected cases retain all five output hashes. Status checkpoint
+`2355899c` is pushed. Maintained corpus: 842. These latest changes are outside
+full839. A new NFS batch matched four of five recordings; its rejected
+character-selection case is being investigated before any new coverage union.
+
 The latest shared-machine C union credits 834 inputs across 111 layouts,
 reaching 4,584/5,492 functions and 60,961/107,260 branch outcomes. It adds
 one function and 143 outcomes from thirty slippery-armor, genocide and terrain

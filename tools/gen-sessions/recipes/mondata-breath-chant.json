@@ -1,0 +1,110 @@
+{
+  "name": "mondata-breath-chant",
+  "description": "Six original C cases cover whistle and blind scroll capability for an immune skeleton wearing an amulet, with active-strangulation and unworn controls. Source controls separately cover anatomy, monsters and pending input.",
+  "coverage": [
+    "object.tools-containers",
+    "object.scrolls",
+    "forms.polymorph",
+    "mode.debug"
+  ],
+  "branches": [
+    "cancelled-amulet-whistle",
+    "immune-amulet-blind-read",
+    "active-strangling-whistle",
+    "unworn-amulet-whistle",
+    "unworn-amulet-blind-read",
+    "active-strangling-blind-read"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "cancelled-amulet-whistle",
+      "segment": 0,
+      "screenIncludes": [
+        "You are no longer being strangled.",
+        "You produce a high whistling sound."
+      ]
+    },
+    {
+      "branch": "immune-amulet-blind-read",
+      "segment": 1,
+      "screenIncludes": [
+        "As you pronounce the formula on it, the scroll disappears."
+      ]
+    },
+    {
+      "branch": "active-strangling-whistle",
+      "segment": 2,
+      "screenIncludes": [
+        "It constricts your throat!",
+        "You are incapable of using the whistle."
+      ]
+    },
+    {
+      "branch": "unworn-amulet-whistle",
+      "segment": 3,
+      "screenIncludes": [
+        "You produce a high whistling sound."
+      ]
+    },
+    {
+      "branch": "unworn-amulet-blind-read",
+      "segment": 4,
+      "screenIncludes": [
+        "As you pronounce the formula on it, the scroll disappears."
+      ]
+    },
+    {
+      "branch": "active-strangling-blind-read",
+      "segment": 5,
+      "screenIncludes": [
+        "It constricts your throat!",
+        "As you cogitate the formula on it, the scroll disappears."
+      ]
+    }
+  ],
+  "segments": [
+    {
+      "name": "cancelled-amulet-whistle",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Breath,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed tin whistle\r   \u001b\u001b\u0017uncursed amulet of strangulation\r   \u001b\u001bPb   \u001b\u001b#polyself\rskeleton\r   \u001b\u001baa      \u001b\u001b"
+    },
+    {
+      "name": "immune-amulet-blind-read",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Breath,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #polyself\rskeleton\r   \u001b\u001b\u0017uncursed tin whistle\r   \u001b\u001b\u0017uncursed amulet of strangulation\r   \u001b\u001b\u0017uncursed blindfold\r   \u001b\u001b\u0017uncursed scroll of light\r   \u001b\u001bPc   \u001b\u001bPb   \u001b\u001brd      \u001b\u001b"
+    },
+    {
+      "name": "active-strangling-whistle",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Breath,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed tin whistle\r   \u001b\u001b\u0017uncursed amulet of strangulation\r   \u001b\u001bPb   \u001b\u001baa      \u001b\u001b"
+    },
+    {
+      "name": "unworn-amulet-whistle",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Breath,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #polyself\rskeleton\r   \u001b\u001b\u0017uncursed tin whistle\r   \u001b\u001b\u0017uncursed amulet of strangulation\r   \u001b\u001baa      \u001b\u001b"
+    },
+    {
+      "name": "unworn-amulet-blind-read",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Breath,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #polyself\rskeleton\r   \u001b\u001b\u0017uncursed tin whistle\r   \u001b\u001b\u0017uncursed amulet of strangulation\r   \u001b\u001b\u0017uncursed blindfold\r   \u001b\u001b\u0017uncursed scroll of light\r   \u001b\u001bPc   \u001b\u001brd      \u001b\u001b"
+    },
+    {
+      "name": "active-strangling-blind-read",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Breath,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist,!safe_wait\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed tin whistle\r   \u001b\u001b\u0017uncursed amulet of strangulation\r   \u001b\u001b\u0017uncursed blindfold\r   \u001b\u001b\u0017uncursed scroll of light\r   \u001b\u001bPc   \u001b\u001bPb   \u001b\u001brd      \u001b\u001b"
+    }
+  ]
+}

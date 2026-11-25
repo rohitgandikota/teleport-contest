@@ -3995,6 +3995,12 @@
     {"group":"Complete status enlightenment","id":"status-enlightenment-completion.shield-and-wet-towel","cFile":"src/insight.c","cFunction":"status_enlightenment","description":"status enlightenment completion.shield and wet towel"},
     {"group":"Complete status enlightenment","id":"status-enlightenment-completion.wielded-glob","cFile":"src/insight.c","cFunction":"status_enlightenment","description":"status enlightenment completion.wielded glob"},
     {"group":"Complete status enlightenment","id":"status-enlightenment-completion.healthy-control","cFile":"src/insight.c","cFunction":"status_enlightenment","description":"status enlightenment completion.healthy control"},
-    {"group":"Complete status enlightenment","id":"status-enlightenment-completion.dagger-control","cFile":"src/insight.c","cFunction":"status_enlightenment","description":"status enlightenment completion.dagger control"}
+    {"group":"Complete status enlightenment","id":"status-enlightenment-completion.dagger-control","cFile":"src/insight.c","cFunction":"status_enlightenment","description":"status enlightenment completion.dagger control"},
+    {"group":"Breath and chant strangulation readers","id":"cancelled-amulet-whistle","cFile":"src/mondata.c","cFunction":"can_blow","description":"cancelled amulet whistle"},
+    {"group":"Breath and chant strangulation readers","id":"immune-amulet-blind-read","cFile":"src/mondata.c","cFunction":"can_chant","description":"immune amulet blind read"},
+    {"group":"Breath and chant strangulation readers","id":"active-strangling-whistle","cFile":"src/mondata.c","cFunction":"can_blow","description":"active strangling whistle"},
+    {"group":"Breath and chant strangulation readers","id":"unworn-amulet-whistle","cFile":"src/mondata.c","cFunction":"can_blow","description":"unworn amulet whistle"},
+    {"group":"Breath and chant strangulation readers","id":"unworn-amulet-blind-read","cFile":"src/mondata.c","cFunction":"can_chant","description":"unworn amulet blind read"},
+    {"group":"Breath and chant strangulation readers","id":"active-strangling-blind-read","cFile":"src/mondata.c","cFunction":"can_chant","description":"active strangling blind read"}
   ]
 }

@@ -9628,6 +9628,64 @@ deferred case actually takes C's early arm. Darwin is preparing a separately
 reviewable source-derived assertion correction, preserving the old failure and
 every input/raw byte, then resuming float_down. No remote coverage job is active.
 
+## 2026-11-25 04:25 UTC: breath and chant readers verified
+
+Complete status checkpoint `2355899cc5d62927ba108fb90a9ea222d3b7c669`
+is pushed. Mondata worker 56803 closed with exit 0. All 25 checks pass:
+147 controls, eighteen focused fixtures with ninety segments, 9,921 screens
+and cursors, 265,493 scored RNG positions and 24 frames. All public sessions
+and 62 bounded workers pass. Seven strict native and all-five deferred
+fixtures match 56 segments, 5,523 boundaries, 162,385 complete calls and
+seven frames. The six fresh C cases match all 781 styled boundaries/cursors/
+slices and 16,939 complete calls, zero frames. Before: 779 styled grids;
+all cursors and random calls/slices already matched. Four negative cases retain
+all five output hashes. Source controls improve 17/22 to 22/22, and ordinary
+input controls improve 4/6 to 6/6.
+
+Only two operands in mondata.js change: can_blow and can_chant use the real
+intrinsic strangulation word, excluding the independent worn-slot mask. Full
+C owners, anatomy helpers, actual producers and all ten direct caller sites
+are reviewed. NPC, spell and pending-message combinations retain constructed
+coverage; other raw strangulation readers remain separate. All 279 runtime
+and seven support hashes equal the tested candidate. All 841 preceding raw
+fixtures remain fixed; six intent entries appended. Maintained corpus: 842.
+Publish now. Verification SHA
+`930509ea52682a2d4f4829c8d631eccd94f6e5b06f75da0885ebae18c1cdc8ec`.
+Integration: `mondata-breath-chant-main-integration.json`. A preflight initially
+counted the package's unchanged shared test helper as a new promotion file;
+it stopped before creating snapshots. The corrected builder uses the explicit
+four-file promotion manifest and verifies the existing helper's exact hash.
+
+Parent independently confirms all twenty spoteffects cases on the status
+composition plus the scoped terrain and monster-cloak patches: 5,084 styled
+boundaries, 70,564 complete calls and 121 frames. The corrected source-derived
+input assertion is pending in `spoteffects-timeout-test-amendment`; its old
+40/41 failure remains preserved. No terrain promotion yet. Do_stone_mon's
+707-file seal is independently checked after correcting a list-schema
+preflight. Four unchanged C inputs record successfully, raw
+`50f28cbc955a9c51949d98e34b347e6e61a8075b69eb75bb5f965f64f40c08c8`,
+316 boundaries; the current-status prerequisite passes native comparison.
+Pauli proceeds to m_slips_free on his fixed sealed source snapshot.
+
+Parent history follow-through adds thirteen fixed inputs, raw
+`2d09a3598357fc3bd6fab5f64d14b3993912ec4fd54fda65ed174e2fe4baf578`,
+368 boundaries. Nine cases already match version two exactly; four full/
+combination/reversed cases remain blocked by the separate option initializer.
+All complete random streams match. Original seven-case diagnostics are fixed.
+Singer is finishing the msg_window source package. No history patch is in main.
+
+NFS batch `status-line-breath` closed native with exit 1 in worker 72380:
+four recordings match both instrumented executions, while core getlin's
+character-selection segment differs at its first screen. Original Mac input
+remains rejected; the driver did not run its union. No coverage gain is
+claimed. First rejected actual SHA
+`51b6cfc7b9ddbf148e3fc55719b91c8b4ae9e02009266c2f68d1110647985128`.
+An attempted remote diagnostic used an absent frozen decoder and stopped
+before decoding. Read-only first-difference inspection and an independent
+ordinary Linux control are the next steps if the platform cause is confirmed.
+All coverage artifacts remain on NFS. Latest credited union is still 834
+inputs, 111 layouts, 4,584 functions and 60,961 outcomes.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

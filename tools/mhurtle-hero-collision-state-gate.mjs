@@ -124,8 +124,8 @@ set_occupation(async () => 1, 'searching', false);
 await hurtleIntoHero(state.mon);
 assert.equal(game.occupation, null,
              'a monster colliding with the hero stops an occupation');
-assert.equal(game.occtxt, null,
-             'occupation text is cleared with the interrupted occupation');
+assert.equal(game.occtxt, 'searching',
+             'C stop_occupation retains the interrupted occupation text');
 
 await run(1);
 assert.equal(liveMonster(PMNAMES.PM_MINOTAUR), undefined,

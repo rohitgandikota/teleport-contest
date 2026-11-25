@@ -123,7 +123,7 @@ test('scrolltele form stun produced by public set_uasmon', async () => {
     game.u.mtimedone = 100;
     set_uasmon();
     assert.equal(game.u.intrinsic.HStun & FROMFORM, FROMFORM);
-    assert.equal(game.u.uprops.STUNNED, undefined, 'form setter does not mirror stun');
+    assert.ok(Stunned(), 'bat form enables canonical stun');
     game.u.intrinsic.HTeleport_control = FROMOUTSIDE;
     initRng(1);
     enableRngLog();

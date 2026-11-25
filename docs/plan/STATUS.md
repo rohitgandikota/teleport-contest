@@ -1,5 +1,24 @@
 # STATUS — live handoff board
 
+## 2026-11-25: stale teleport and collision fixtures corrected
+
+Three older state gates failed identically on published d43ff4b4 and the
+pending final-position candidate. The polymorph fixture set only a timer,
+but C's Upolyd compares form identities. It now uses set_uasmon and checks
+the form before selecting an HP pool. The bat-form test now checks canonical
+stun instead of requiring an absent compatibility cache. The collision test
+checks that stop_occupation retains occtxt, as the complete C owner does.
+
+All three corrected gates pass on both runtime graphs, six runs total.
+Original failing files and logs remain preserved. No runtime, native input
+or recorded expectation changes. Receipt `stale-state-test-repair/verification.json`,
+SHA256 `3ff9875933caf8980f3c64de5148cba7206dfed88994f09330b871c779188407`.
+
+Final-position/earth-sense now matches all seven original C cases versus four
+before, including composition with invocation feedback. All 112 selected
+replays and 112 strict eight-second checks pass. Its portable promotion is
+finishing; the seven runtime files remain an unpublished candidate.
+
 ## 2026-11-25: invocation arrival feedback verified
 
 Movement now calls invocation_message after a successful position change,

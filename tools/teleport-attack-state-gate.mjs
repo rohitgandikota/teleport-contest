@@ -9,6 +9,7 @@ import {InMemoryStorage} from '../js/storage.js';
 import {pushKeys,resetInputState} from '../js/input.js';
 import {initRng,rn2,getRngLog} from '../js/rng.js';
 import {mhitm_ad_tlpt} from '../js/uhitm.js';
+import {set_uasmon} from '../js/polyself.js';
 import {makemon} from '../js/makemon.js';
 import {mksobj} from '../js/mkobj.js';
 import {magic_negation} from '../js/mhitu.js';
@@ -74,6 +75,9 @@ for(const [poly,half,hp,damage,wantDamage,wantHp]of [
     [false,true,2,4,4,2]
 ]) {
     const {q}=await setup();game.u.mtimedone=poly?20:0;
+    game.u.umonnum=poly?P.PM_HILL_GIANT:game.u.umonster;
+    set_uasmon();
+    assert.equal(Upolyd(game.u),poly,'form identity selects the HP pool');
     game.u.uhp=poly?100:hp;game.u.mh=poly?hp:100;
     game.u.intrinsic.HHalf_physical_damage=half?1:0;
     const hit=mhm(damage);await mhitm_ad_tlpt(q,attack,game.youmonst,hit);

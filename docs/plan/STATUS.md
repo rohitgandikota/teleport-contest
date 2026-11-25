@@ -8434,6 +8434,47 @@ Compact SHA-256:
 `29e032bb038b426fb33e7193072bf7c4048c2665a5fffd5d729411c5990d3ae8`.
 No new held-out score or literal DEC/Unicode byte-identity claim is made.
 
+## 2026-11-25: golem elemental feedback verified and integrated
+
+Accessory checkpoint `54473120` pushed successfully; process 38405 closed
+with exit 0. Parent composition for the golem repair closed with exit 0,
+including the 56 bounded input workers. Its independent verification passes
+18 checks, 41 controls, twelve focused fixtures and all 44 public sessions.
+The focused suite covers 64 segments, 13,169 screens/cursors, 186,141 scored
+random-call positions and 277 animation frames.
+
+The three fresh C cases match every styled cell, cursor, complete call,
+per-input slice and frame across 297 boundaries, 7,517 calls and 63 frames.
+Baseline failed two styled boundaries, one cursor and two slices. Both
+unaffected cases retain all five output hashes. The new fixture plus two
+retained engulfing fixtures also match deferred completion over twenty
+segments, 6,193 boundaries, 66,658 calls and 164 frames. Existing serialized
+DEC/Unicode differences remain separate from these rendered comparisons.
+
+Only `uhitm.js` changes at runtime. `golemeffects` now delegates slowing to
+complete `mon_adjust_speed` and healing feedback to `pline_mon`. The duplicate
+speed logic and its unused import are removed. All 279 runtime files and
+seven support files are pinned; reversing the patch recovers the complete
+baseline. All 821 preceding raw files are unchanged. The branch registry only
+appends three rows. The source seal, original failed comparisons and retained
+fixtures remain unchanged. An early verifier invocation rejected an incomplete
+result list while the original worker was running; it triggered no replay or
+timeout retry. Final verification ran only after process closure.
+
+Verification SHA-256:
+`57e07bcdcc9a74cb5ce4d6d6b7134a2133a0f7c9cd96568d4d958fbefbf72aa5`.
+Integration receipt: `.cache/restart-20261122/golem-explosion-main-integration.json`.
+The parent source review records separate `healmon` and `Resists_Elem` gaps.
+No entire combat-owner closure is claimed. The maintained corpus is 822,
+outside the completed full820 runtime. Publish this checkpoint now.
+
+Fresh C recording for the six eating-prelude cases also completed. Its raw
+SHA-256 is `61a6e9a3febca2ceecf47f03b225344194360bcd2616f9faf8d158a012c46bc2`.
+The sealed source candidate matches all six cases, 780 styled boundaries and
+16,769 calls. Current-main composition, focused/public and bounded-input
+verification remain next. The original six input tuples and raw outputs are
+fixed. Other source workers continue their disjoint assigned owners.
+
 ## 2026-09-05: full faithful port is the active goal
 
 The user explicitly set an ongoing goal: port every reachable C and Lua

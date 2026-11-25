@@ -56,7 +56,7 @@ fixed shards: 854,827 screens/cursors, 17,814,492 scored RNG positions and
 32,296 frames. Both shards pass without retries. All 817 earlier raw hashes
 remain unchanged; all 279 runtime files and 141 protected files stayed fixed.
 
-Accessory feedback is now verified for publication. Ring prompts use the
+Accessory feedback is pushed as `54473120`. Ring prompts use the
 current anatomy and retain repeat answers. Character inspection reports
 original sex and alignment, plus the known source and timeout of Sleepy.
 All 18 checks, 184 controls, 16 focused fixtures, 44 public sessions and 60
@@ -64,6 +64,15 @@ bounded workers pass. Eighteen new native cases match all 1,637 styled
 boundaries and 50,095 calls, correcting five screens. The fifteen unaffected
 cases preserve all five original output collections. The maintained corpus is
 821. This new runtime is outside the completed full820 regression.
+
+Golem elemental feedback is verified for publication. It reuses the complete
+monster speed owner and locates healing messages at the affected monster.
+All 18 checks, 41 controls, 12 focused fixtures, 44 public sessions and 56
+bounded workers pass. Three new C cases match all 297 styled boundaries,
+7,517 calls and 63 frames. Two unaffected cases preserve all five output
+collections. Deferred checks also pass on the new fixture and two retained
+engulfing fixtures. The maintained corpus is 822. No full822 sweep or new
+held-out result is claimed.
 
 The latest shared-machine C coverage run accepts the complete accessory
 recording byte for byte. The union covers 4,575/5,492 functions and

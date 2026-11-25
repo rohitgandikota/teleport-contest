@@ -194,7 +194,7 @@ import { W_ARM, W_ARMS, W_ARMC, W_ARMF, W_ARMU,
          P_NONE, P_KNIFE, P_WHIP, P_SKILLED,
          P_LANCE, P_TWO_WEAPON_COMBAT, P_ISRESTRICTED, P_UNSKILLED,
          NEED_WEAPON, XKILL_NOMSG, XKILL_NOCORPSE, STRAT_WAITMASK,
-         engulfing_u, NEW_MOON, MSLOW, MFAST, ARTICLE_THE,
+         engulfing_u, NEW_MOON, MSLOW, ARTICLE_THE,
          RLOC_NOMSG, DISMOUNT_POLY, SICK_ALL } from './const.js';
 import { is_undead } from './mondata.js';
 import { A_LAWFUL } from './const.js';
@@ -3586,21 +3586,10 @@ export async function golemeffects(mon, adtyp, damage) {
         return;
     }
 
-    if (slow && (mon.mspeed | 0) !== MSLOW) {
-        const oldspeed = mon.mspeed | 0;
-        mon.permspeed = (mon.permspeed | 0) === MFAST ? 0 : MSLOW;
-        const boots = which_armor(mon, W_ARMF);
-        mon.mspeed = boots?.otyp === ONAMES.SPEED_BOOTS
-            ? MFAST : mon.permspeed;
-        if (mon.mspeed !== oldspeed && game.mons[mon.mnum].mmove
-            && !mon.mfrozen && !mon.msleeping && canseemon(mon)) {
-            const howmuch = mon.mspeed + oldspeed === MFAST + MSLOW
-                ? 'much ' : '';
-            await pline(`${Monnam(mon)} seems to be moving ${howmuch}slower.`);
-        }
-    }
+    if (slow && mon.mspeed !== MSLOW)
+        await mon_adjust_speed(mon, -1, null);
     if (heal && healmon(mon, heal, 0) && cansee(mon.mx, mon.my))
-        await pline(`${Monnam(mon)} seems healthier.`);
+        await pline_mon(mon, `${Monnam(mon)} seems healthier.`);
 }
 
 /* include/hack.h:1236 Maybe_Half_Phys() */

@@ -3865,6 +3865,9 @@
     {"group":"Accessory eating effects","id":"accessory-eating-effects.telepathy","cFile":"src/eat.c","cFunction":"eataccessory","description":"accessory telepathy"},
     {"group":"Accessory eating effects","id":"accessory-eating-effects.reflection-negative","cFile":"src/eat.c","cFunction":"eataccessory","description":"accessory reflection negative"},
     {"group":"Accessory eating effects","id":"accessory-eating-effects.bone-rejection","cFile":"src/eat.c","cFunction":"is_edible","description":"accessory bone rejection"},
-    {"group":"Accessory eating effects","id":"accessory-eating-effects.wood-consumed-no-effect","cFile":"src/eat.c","cFunction":"eataccessory","description":"accessory wood consumed no effect"}
+    {"group":"Accessory eating effects","id":"accessory-eating-effects.wood-consumed-no-effect","cFile":"src/eat.c","cFunction":"eataccessory","description":"accessory wood consumed no effect"},
+    {"group":"Polymorphed explosion golem feedback","id":"polymorph-explosion-golem-feedback.sphere-golem-located-slow","cFile":"src/mon.c","cFunction":"golemeffects","description":"sphere slow"},
+    {"group":"Polymorphed explosion golem feedback","id":"polymorph-explosion-golem-feedback.sphere-golem-plain-control","cFile":"src/mon.c","cFunction":"golemeffects","description":"sphere plain"},
+    {"group":"Polymorphed explosion golem feedback","id":"polymorph-explosion-golem-feedback.sphere-ordinary-victim-control","cFile":"src/mon.c","cFunction":"golemeffects","description":"sphere goblin"}
   ]
 }

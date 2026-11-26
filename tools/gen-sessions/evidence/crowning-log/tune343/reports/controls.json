@@ -1,0 +1,44 @@
+{
+  "controls": [
+    {
+      "name": "negative 3: all five hashes",
+      "pass": true
+    },
+    {
+      "name": "negative 3: complete ordinary row",
+      "pass": true
+    },
+    {
+      "name": "negative 3: complete native row",
+      "pass": true
+    },
+    {
+      "name": "negative 4: all five hashes",
+      "pass": true
+    },
+    {
+      "name": "negative 4: complete ordinary row",
+      "pass": true
+    },
+    {
+      "name": "negative 4: complete native row",
+      "pass": true
+    },
+    {
+      "name": "negative 5: all five hashes",
+      "pass": true
+    },
+    {
+      "name": "negative 5: complete ordinary row",
+      "pass": true
+    },
+    {
+      "name": "negative 5: complete native row",
+      "pass": true
+    },
+    {
+      "name": "all six full native comparisons",
+      "pass": true
+    }
+  ]
+}

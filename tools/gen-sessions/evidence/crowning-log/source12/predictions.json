@@ -1,0 +1,74 @@
+[
+  {
+    "index": 0,
+    "crown": 1,
+    "title": "was crowned \"The Hand of Elbereth\" by Tyr",
+    "gift": "had her wielded long sword transformed into Excalibur",
+    "flags": [
+      8,
+      72
+    ],
+    "artifact": "ART_EXCALIBUR",
+    "objectType": "LONG_SWORD"
+  },
+  {
+    "index": 1,
+    "crown": 2,
+    "title": "became Thoth's Envoy of Balance",
+    "gift": "was bestowed with spellbook of finger of death",
+    "flags": [
+      8,
+      8264
+    ],
+    "artifact": null,
+    "objectType": "SPE_FINGER_OF_DEATH"
+  },
+  {
+    "index": 2,
+    "crown": 3,
+    "title": "was chosen to steal souls for the Glory of Kos",
+    "gift": "was bestowed with Stormbringer",
+    "flags": [
+      8,
+      72
+    ],
+    "artifact": "ART_STORMBRINGER",
+    "objectType": "RUNESWORD"
+  },
+  {
+    "index": 3,
+    "crown": 0,
+    "title": "was crowned \"The Hand of Elbereth\" by Tyr",
+    "gift": "had her wielded long sword transformed into Excalibur",
+    "flags": [
+      8,
+      72
+    ],
+    "artifact": "ART_EXCALIBUR",
+    "objectType": "LONG_SWORD"
+  },
+  {
+    "index": 4,
+    "crown": 0,
+    "title": "became Thoth's Envoy of Balance",
+    "gift": "was bestowed with spellbook of finger of death",
+    "flags": [
+      8,
+      72
+    ],
+    "artifact": null,
+    "objectType": "SPE_FINGER_OF_DEATH"
+  },
+  {
+    "index": 5,
+    "crown": 0,
+    "title": "was chosen to steal souls for the Glory of Kos",
+    "gift": "was bestowed with Stormbringer",
+    "flags": [
+      8,
+      72
+    ],
+    "artifact": "ART_STORMBRINGER",
+    "objectType": "RUNESWORD"
+  }
+]

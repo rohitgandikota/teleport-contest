@@ -1,0 +1,24 @@
+{
+  "sealedAt": "2026-11-26T19:22:41.714266+00:00",
+  "members": 343,
+  "manifestSHA256": "3475455a9c9b3f948631dc301720cd71eebf7658f6cfef16cde8900b3dace2aa",
+  "pins": {
+    "handoff.json": "ea76d8041d73d63b37f66af539b60c27c7e3fdb50813860e1b6bff5ce48fdba8",
+    "runtime.json": "08bc7651d0aa6b5cf434d77727fd6e2ab2bbc80de705913a6010980dda979943",
+    "run-lock.json": "b11bbcaecc4af76aece89c2fdc59916939416d776c91359bde72fe5a4c41358f",
+    "scoped-runtime.patch": "280ba84667a61fe92db4b5a3e895466c7744b32a02cf1a561a4d783e35518c6b",
+    "composed-runtime.patch": "b2455e09b201d4080de97e388aa1cdd3fba9281e548acab72034cf2af343a0c7",
+    "reports/accounting.json": "621aa8e86ab8209af5921fad54a27a56ce68eade2a2de6acd8dad84a1b903080"
+  },
+  "priorMembers": 334,
+  "runtimeModules": 280,
+  "ordinaryPassed": 42,
+  "ordinaryTotal": 42,
+  "questPassed": 3,
+  "tunePassed": 1,
+  "nativePassed": 6,
+  "nativeTotal": 6,
+  "negativeHashes": 15,
+  "neutrality": 12,
+  "sourceAndPriorSealsUnchanged": true
+}

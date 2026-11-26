@@ -1,0 +1,15 @@
+{
+  "members": 12,
+  "sourceFilesSHA256": "257754214cf13ca46e20cb9220d7b5fc8fcf5b4e7fb22f1be421b84fde2b4b1f",
+  "cases": 6,
+  "checks": 42,
+  "passed": 33,
+  "setupChecksPassed": 6,
+  "negativeHashes": 15,
+  "observerAndDeferredChecksPassed": 12,
+  "keys": 890,
+  "boundaries": 896,
+  "calls": 32391,
+  "frames": 9,
+  "beforeCAndCandidate": true
+}

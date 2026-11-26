@@ -1,0 +1,17 @@
+{
+  "prior334SealSHA256": "0364605be3bdc18be6be31f18add974e3d933c5eadfb522bec0dc2c08d2ed714",
+  "priorWorkerExitCode": 1,
+  "priorNativePassed": 5,
+  "priorNegativeComparisonFailures": 3,
+  "priorControlsSHA256": "b7a37396ef412021aa338c0209760710393e5f080ec3d28bcbcbed370a361a61",
+  "followupPreflightFailure": "attempts/preflight-1/worker.log",
+  "preflightFailureSHA256": "709ea73db0bd68a48887b977d59aae08e5dc966e948f5af7b317a162aa14eb36",
+  "preflightFailedBeforeGameplayImports": true,
+  "actualGameplayBatchesInFailedAttempt": 0,
+  "correctedPathOnly": true,
+  "runtimeAtBothAttemptsSHA256": "08bc7651d0aa6b5cf434d77727fd6e2ab2bbc80de705913a6010980dda979943",
+  "retainedOldRunLockSHA256": "c340c7019e0793ef41460ad05dedd75a82b75e8542937fa25769e6a4c1e61456",
+  "successfulRunLockSHA256": "b11bbcaecc4af76aece89c2fdc59916939416d776c91359bde72fe5a4c41358f",
+  "allInputTupleFieldsAndKeysUnchanged": true,
+  "newCRecordings": 0
+}

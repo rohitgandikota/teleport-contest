@@ -1,0 +1,30 @@
+{
+  "command": [
+    "node",
+    "--max-old-space-size=512",
+    "--preserve-symlinks",
+    "--preserve-symlinks-main",
+    "/Users/rohit/research/code/contest/.cache/restart-20261122/crowning-log-candidate/probe.mjs"
+  ],
+  "startedAt": "2026-11-26T19:10:09.962374+00:00",
+  "closedAt": "2026-11-26T19:10:13.586424+00:00",
+  "seconds": 3.624,
+  "exitCode": 1,
+  "timeout": false,
+  "timeoutSeconds": 55,
+  "maxOldSpaceMB": 512,
+  "observedPlainDeferredBatches": 1,
+  "nativeComparisonsFromSameObservedOutputs": true,
+  "extraNativeReplays": 0,
+  "runLockSHA256": "010e4d026158518611c7c80139412b816e9d654d461198da42907bb897195585",
+  "probeSHA256": "089f16947bb5aa64075727a9e3338d563eaa5638367c05269826cd9e09b1712f",
+  "logSHA256": "1c431fd9e69f905a6307467089e757ca75104d960d6e83c7df9d81e2dc18896e",
+  "reportHashes": {
+    "reports/preflight.json": "45987ceebcb1cc7895cc213228446b0c7c46b18ddcc8a12c9711c3a9c64df522",
+    "reports/candidate-observation.json": "58df0b0da8fddc827e4426b90104536bad4e89cd8ed7d89ed9c7f8d83cf4ec8f",
+    "reports/candidate-native.json": "a51a07ae8fa2e829e7857203c509e5e6caeaa5182d974aa5eb5fdca452e18482",
+    "reports/quest-candidate.json": "9ed18dd619154ba5eac5634c832d241fee486fdf0909efa46f563c6031424db7",
+    "reports/controls.json": "b7a37396ef412021aa338c0209760710393e5f080ec3d28bcbcbed370a361a61",
+    "page-observation.json": "8ff32bd9196ceff91cd48ca99ea632c4b4d1fcf266aad622825f4d513485f55f"
+  }
+}

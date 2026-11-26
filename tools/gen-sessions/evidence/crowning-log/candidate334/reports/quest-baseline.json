@@ -1,0 +1,48 @@
+{
+  "baselineReplay": false,
+  "beforeRuntimeEdits": true,
+  "checks": [
+    {
+      "index": 0,
+      "name": "lawful-sword",
+      "expected": [
+        {
+          "flags": 2,
+          "turn": 2,
+          "text": "the Norn has granted access to proceed deeper into the quest"
+        }
+      ],
+      "actual": [],
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ []\n- [\n-   {\n-     flags: 2,\n-     text: 'the Norn has granted access to proceed deeper into the quest',\n-     turn: 2\n-   }\n- ]\n"
+    },
+    {
+      "index": 1,
+      "name": "neutral-class-book",
+      "expected": [
+        {
+          "flags": 2,
+          "turn": 2,
+          "text": "Neferet the Green has granted access to proceed deeper into the quest"
+        }
+      ],
+      "actual": [],
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ []\n- [\n-   {\n-     flags: 2,\n-     text: 'Neferet the Green has granted access to proceed deeper into the quest',\n-     turn: 2\n-   }\n- ]\n"
+    },
+    {
+      "index": 2,
+      "name": "chaotic-sword",
+      "expected": [
+        {
+          "flags": 2,
+          "turn": 2,
+          "text": "the Master of Thieves has granted access to proceed deeper into the quest"
+        }
+      ],
+      "actual": [],
+      "pass": false,
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ []\n- [\n-   {\n-     flags: 2,\n-     text: 'the Master of Thieves has granted access to proceed deeper into the quest',\n-     turn: 2\n-   }\n- ]\n"
+    }
+  ]
+}

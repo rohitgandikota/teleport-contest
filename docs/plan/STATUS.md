@@ -1,5 +1,101 @@
 # STATUS — live handoff board
 
+## 2026-11-26: crown and tune checkpoint verified on full945
+
+Published main remains ad02b5565e569e584b9f80424d94e4a444a6ca80, stasis.
+The isolated follow-up343 is sealed and verified, SHA256:
+1a832cd63cafb44ad138db56c8ac0cd9eb1a9c65eab16ceed9458d2c1b49d752.
+All original 42 crown contracts, three quest-grant checks and one tune check
+pass. All 15 negative hashes, three complete ordinary/native negative rows
+and 12 observer/deferred comparisons are unchanged. Native is now 6/6:
+899 styled boundaries/cursors, 32,391 random calls and nine frames. Only the
+chaotic screen report changes from prior334; all four other streams and five
+complete reports remain unchanged. The first preflight invocation failed on
+a metadata path before importing gameplay; that diagnostic is preserved.
+The successful gameplay batch ran once in 3.653s, 512MB/55s, exit 0.
+
+Parent composition changes only pray.js and quest.js over published68aa.
+There are two copied modules and 278 links. Map SHA256:
+cf8d1e3c64277f4973aceb9158db882002ede691c4238586e53aac3952b0cac3.
+Fresh parent native6 reproduces the isolated complete report exactly, in
+1.827s. Both runtime files and the unchanged original paged C raw are installed.
+Canonical raw: tools/gen-sessions/generated/crowning-log-paged.session.json,
+SHA256 7caf6570b76e18e26c3bcb2988ad531ce302646413388c63662376c438a0edab.
+Full945 passes on NFS at crowning-log-full945-js-20261126, PID 3578407 completed, with
+two CPU workers, default 45s limits, 944 linked prior raw files and one new raw.
+All 1,236 files were fixed before launch. All-files SHA256:
+8d68ee2600756c2f458185345ae362fc8ff96b749c80324e34de6e95716893d1.
+All 945 recordings pass: 945,323 screens/cursors, 20,730,204 random calls and
+33,197 frames. Verification SHA256:
+cfb5960ae7c2084cbaaa0d5f913a54e4d79c38db2f9d230454a1faf357b20b6f.
+Six retained gates and 45 strict workers pass. The source audit is empty.
+Portable promotion95 is verified and its 77 exact payloads are installed.
+The fresh public gate passes in 3.917s and its complete report equals the
+sealed promotion byte-for-byte. Ten branch rows bring the registry to 4,760;
+one coverage row brings that registry to 110, preserving every prior entry.
+The four supplementary quest/tune source checks remain explicitly outside
+the unchanged six-branch raw metadata. Public parent verification SHA256:
+e43ebaf6b47a509124e349d01a7aa094d9afcb2716344e9dec6a2700f646829a.
+All original source12/source35/prior334 diagnostics remain preserved.
+The 84 intended paths are ready for staged-tree verification and publication.
+
+Fire source audit ran its eight locked cases once. Original producer contracts
+are 132/144, zero fully passing setups, and source contracts are 33/56.
+All eight cases had an incorrect terminal-to-game coordinate assumption.
+Wood, leather and iron forms also received damage from fixed monsters during
+setup. The original36 packet is sealed and remains fixed. The distinct
+cleanup source35 packet is verified: all eight producers and 192 setup
+checks pass after real-key monster cleanup. Source checks remain 33/56,
+with five predicted nonresistant damage failures and three passing controls.
+All eight five-stream neutrality checks and 15 negative hashes are fixed.
+Parent original C recording is next; no fire runtime candidate yet.
+Sartre's mounted teleport source28 is sealed, 42/44 with only two predicted
+mounted phrase failures. Parent original C4 passes all primary predicates and
+baseline native is 2/4, with only styled boundaries85/69 different; every
+random stream, cursor and frame matches. Raw SHA256:
+00e4b2257cb728e331561ff7292c3ea54687c109636b11442bd6364d46207de5.
+It contains 266 keys, 270 boundaries, 9,998 calls and zero frames. The sealed
+candidate313 passes all 44 ordinary checks and all four C comparisons.
+Only the mounted whobuf expression in teleport.js changes. Both complete
+negative reports and ten negative hashes remain unchanged. Sartre owns
+portable promotion; parent composition follows crowning publication.
+Parent's five next source leads are in next-source-leads-20261126.json. Highest
+priority is autoquiver equipment fields, then gremlin light fear and Balrog
+weapon selection. These are source leads only. The hmon_hitmon accessors are
+already correct despite their stale comment. Euclid now owns source-only
+autoquiver equipment coverage on fixedcf8d. Next: staged-tree verification,
+commit and immediate push, then mounted teleport composition.
+
+## 2026-11-26: stasis published; crowning tune prerequisite
+
+Published main is ad02b5565e569e584b9f80424d94e4a444a6ca80. All 1,235
+full944 tested files match the pushed Git tree. Publication receipt SHA256:
+a3746fe7c62e883e9bb75c08b7c8ac2140990573e640aa3993afbae4d46c0725.
+There are no unpublished gameplay changes. Stasis and shop proof is public at
+tools/gen-sessions/evidence/scrolltele-stasis/parent-verification.json.
+
+Crowning's first isolated candidate passes all 42 original contracts and three
+quest-grant checks, versus zero quest checks on the stored baseline. Native
+improves 3/6 to 5/6: 897/899 styled boundaries, all 899 cursors, 32,391 calls
+and nine frames exact. The remaining chaotic page difference is a missing
+castle-tune achievement at turn 29. Complete pleased and record_achievement
+owners confirm the omitted ACH_TUNE call after the second hint. Euclid has
+authorization for a separate follow-up candidate with that call and imports
+only. The first candidate, original input families, raw C files and failed
+control diagnostics stay unchanged. Added live-to-JSON row checks failed only
+on firstCrown:undefined versus an omitted serialized field. Separate persisted
+JSON comparisons preserve every field and all 15 negative hashes; the next
+wrapper must document this serialization correction explicitly.
+
+Leibniz continues the source-only polymorphed fire-trap family on fixed f2af.
+Sartre continues the source-only mounted teleport prompt family on fixed68aa.
+Parent read complete special_stock and sellobj owners and naming helpers.
+The candle-shop Candelabrum refusal is absent, but no ordinary witness is
+locked. The existing seed6601 shop route reaches Samoe, not Izchak. Do not
+treat that route as a candle-shop setup or patch adjacent sellobj omissions.
+Next: verify the crown/tune follow-up, compose over published68aa, replay the
+new and retained families, then full945 and immediate verified publication.
+
 ## 2026-11-26: stasis checkpoint verified on full944
 
 Published main is bdc0a0f427297cebe24682806c4d31ea6017bef1. Chat changes

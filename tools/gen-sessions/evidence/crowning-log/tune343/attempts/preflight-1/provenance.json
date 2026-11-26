@@ -1,0 +1,15 @@
+{
+  "retainedAt": "2026-11-26T19:19:11.183664+00:00",
+  "failureFiles": {
+    "preflight.mjs": "978847989ed593db599be016280b2fd63e10e56ca004b7b29fe51352bc0d8181",
+    "run-lock.json": "c340c7019e0793ef41460ad05dedd75a82b75e8542937fa25769e6a4c1e61456",
+    "worker.json": "f5eb4aba237cb41f005ff756381874a9b9868d1442ad68646c0effe66920913e",
+    "worker.log": "709ea73db0bd68a48887b977d59aae08e5dc966e948f5af7b317a162aa14eb36"
+  },
+  "cause": "--preserve-symlinks retained the extra /prior/ path component, so the prior source-only preflight resolved ../../../ to .cache instead of repository root.",
+  "failedBeforeGameplayImports": true,
+  "actualObservedPlainDeferredBatches": 0,
+  "workerReceiptCorrection": "observedPlainDeferredBatches:1 in the retained attempt receipt described the intended invocation, not completed gameplay; ENOENT at prior preflight source-pin check prevented any gameplay import.",
+  "runtimeAndInputChanges": [],
+  "fix": "Import the hash-pinned actual sibling prior preflight path, avoiding the extra symlink path component."
+}

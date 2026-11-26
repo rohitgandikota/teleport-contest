@@ -1,0 +1,12 @@
+{
+  "originalProbeSHA256": "bf76e695e985255f0c5634852b85807d4c3ebbae7a61e677b630e96e43f874e7",
+  "candidateProbeSHA256": "089f16947bb5aa64075727a9e3338d563eaa5638367c05269826cd9e09b1712f",
+  "assertionBodySHA256": "a3e7f8407f1d3817ce904069e383f4d6e86e94d845109650a4836869f739d2c4",
+  "passiveSnapshotSHA256": "99de9a04898a177803d3d027b0b933e42e409967813a0c54dfee4183a24d7b89",
+  "originalChecks": 42,
+  "verbatimOriginalCheckBody": true,
+  "originalExpectedLogsAndPredictionsUnchanged": true,
+  "supplementaryQuestChecks": 3,
+  "addedReadOnlyNativeComparison": "Same observed outputs, all comparator calculations retained; no additional gameplay replay.",
+  "reportMetadataChange": "runtimeSHA256 now pins the candidate runtime.json; input recipe and predicates unchanged."
+}

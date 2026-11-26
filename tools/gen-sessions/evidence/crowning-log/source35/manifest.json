@@ -1,0 +1,135 @@
+{
+  "members": {
+    "PLAN.md": {
+      "sha256": "eb253d814ae7b3306636a44f2b1b01380c7114d4ae0cca238925585e71214853",
+      "bytes": 745
+    },
+    "README.md": {
+      "sha256": "ac786f89a924ecb16b35a1a69f71c3fc5d2b007187dd34fb36502989c33f1ad0",
+      "bytes": 2042
+    },
+    "RESULTS.md": {
+      "sha256": "9803242e06b073ea1e88e2d355c59efe4caa017d7e7f8552e5beda87eab8a958",
+      "bytes": 2202
+    },
+    "SOURCE-REVIEW.md": {
+      "sha256": "19737aca4b9f9d93a14f6b65746ccd37c7254d35847f9551a9c3cd8cfc4c0660",
+      "bytes": 3866
+    },
+    "STATUS.md": {
+      "sha256": "31a9e0765244ee65889ecf133bcb915fee3cbfe6fcd1dc0edd491b38b9fb947e",
+      "bytes": 1350
+    },
+    "assertion-preservation.json": {
+      "sha256": "8e1168463fdb7fe9a91dd2d8905d1973c234ee7fbcfad1066a718e9084494bca",
+      "bytes": 574
+    },
+    "baseline": {
+      "link": "../altar-familiar-parent-composed"
+    },
+    "baseline-observation.json": {
+      "sha256": "0cdd02416567416b4441faf6be056ba1dcc4f48130c91f8adbc3945049190624",
+      "bytes": 67155
+    },
+    "baseline-runtime.json": {
+      "link": "../crowning-log-source-audit/baseline-runtime.json"
+    },
+    "changed-paths.json": {
+      "sha256": "b0254809113cfc02a11807fdb51beeb4fe2274da71f22c31252c05a6a8ba826b",
+      "bytes": 1448
+    },
+    "check-parent.mjs": {
+      "sha256": "3ef09552324aafffc654592683e9e756673d1a5f0781f028e7605b6bca912fd4",
+      "bytes": 4177
+    },
+    "handoff.json": {
+      "sha256": "c363f60ab06a7c31734041dfcb090ade6dda504a2dab8fe778d2010cdc450c5e",
+      "bytes": 4787
+    },
+    "input-lock.json": {
+      "sha256": "bfbc4378e1fb7ae54e63dc01c67c70780c9dde94cc277f173e0e04f129a2a940",
+      "bytes": 18374
+    },
+    "negative-hashes.json": {
+      "link": "../crowning-log-source-audit/negative-hashes.json"
+    },
+    "original": {
+      "link": "../crowning-log-source-audit"
+    },
+    "original-pins.json": {
+      "sha256": "746c23b56cb6c6777390965196d2b439fb388e9dff1f93a01a9e1a2878635c42",
+      "bytes": 1267
+    },
+    "page-observation.json": {
+      "sha256": "edd9bf28c29e243d49fc7ae2340d4e48545fd23b11545bacb9f85d73fb0eb972",
+      "bytes": 9029
+    },
+    "parent-input-lock.json": {
+      "link": "../crowning-log-parent-input-lock.json"
+    },
+    "parent-native.session.json": {
+      "link": "../crowning-log-parent-native.session.json"
+    },
+    "parent-page-proof.json": {
+      "sha256": "53e77d60fad8401c75915b25d734bee5d91cd70284fd6e514732163cd60423c8",
+      "bytes": 5935
+    },
+    "parent-pins.json": {
+      "sha256": "3ee513cc7489b58204732e1bf34eee0d631544f6d09770a7258df2c870f70491",
+      "bytes": 897
+    },
+    "parent-primary-recipe.json": {
+      "link": "../crowning-log-parent-primary-recipe.json"
+    },
+    "parent-recording.json": {
+      "link": "../crowning-log-parent-native-recording.json"
+    },
+    "parent-review": {
+      "link": "../crowning-log-parent-review"
+    },
+    "predictions.json": {
+      "sha256": "5442c96272086cea1db95b5ac483a05d1573cf933fdeed51f629628647fc8129",
+      "bytes": 1571
+    },
+    "probe.mjs": {
+      "sha256": "bf76e695e985255f0c5634852b85807d4c3ebbae7a61e677b630e96e43f874e7",
+      "bytes": 7829
+    },
+    "producer-changes.json": {
+      "sha256": "961c804b117d83d5f03d7d278232ae1c931d39544ce4c64adaaf1a1dc3203555",
+      "bytes": 1265
+    },
+    "recipe.json": {
+      "sha256": "bf3891e71e363a2fd72a1e6de0de126f1245a833e14db549637c72f9359c9a4e",
+      "bytes": 5984
+    },
+    "reports/accounting.json": {
+      "sha256": "9b2099d54b592f1b26e8a16cbb2a8034e81af7ca9f04492b9c82a7e2fdbbc9df",
+      "bytes": 2825
+    },
+    "reports/page-accounting.json": {
+      "sha256": "013352e627210fcfb9e72b337360063889d0271647a1d3ac8f89cfe79e5eb0b6",
+      "bytes": 5099
+    },
+    "reports/parent-page-check.log": {
+      "sha256": "c13a56d5eb99d391b5e2e2fa1e47db001a3991b3bff21e801c8d941ff8da36be",
+      "bytes": 4761
+    },
+    "reports/worker.json": {
+      "sha256": "9e1bb44b5e14e4c1fcbb913c86922e66a6adc0641d84cabb5b855ea505db29af",
+      "bytes": 864
+    },
+    "reports/worker.log": {
+      "sha256": "baeb66b745a0627801aa4f06f1fb33f80e6c721533f9757305ce1b477d66d083",
+      "bytes": 1823
+    },
+    "source-pins.json": {
+      "sha256": "7a111721cfbec45bf4bb4878d49d9e70d76ff6cfaa2bf9be20424029f82de3da",
+      "bytes": 1492
+    },
+    "verify-audit.py": {
+      "sha256": "2e41a68840bc648c18e096b11eba9affcf0e09d77375b533b150843ed3c6a80d",
+      "bytes": 8242
+    }
+  }
+}

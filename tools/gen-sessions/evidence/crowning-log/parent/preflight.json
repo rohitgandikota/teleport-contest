@@ -1,0 +1,12 @@
+{
+  "beforeGameplayImports": true,
+  "cases": 6,
+  "primaryAssertions": 6,
+  "fieldsAndPresence": true,
+  "keysExact": true,
+  "metadataPreserved": true,
+  "integrityErrors": [],
+  "branchErrors": [],
+  "rawSHA256": "7caf6570b76e18e26c3bcb2988ad531ce302646413388c63662376c438a0edab",
+  "runtimeSHA256": "0829d57462918ebe904415389933860d6133f13b778aab15fb4c0cb1a360abc6"
+}

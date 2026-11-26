@@ -1,0 +1,16 @@
+{
+  "priorProbeSHA256": "089f16947bb5aa64075727a9e3338d563eaa5638367c05269826cd9e09b1712f",
+  "newProbeSHA256": "4e270a68f1e827771b5339b4a2fe6668b076553476a5a7e36fd74f03c3c7054f",
+  "original42BodySHA256": "a3e7f8407f1d3817ce904069e383f4d6e86e94d845109650a4836869f739d2c4",
+  "original42BodyVerbatim": true,
+  "quest3BodyByteIdentical": true,
+  "passiveObserverUnchanged": true,
+  "newTunePredicateLockedBeforeEdit": true,
+  "negativeWholeRowCorrection": {
+    "old": "assert.deepEqual(rows[index], before[index])",
+    "new": "assert.deepEqual(storedRows[index], before[index])",
+    "justification": "Both complete persisted JSON rows use the original report serialization; no field or value is removed or rewritten.",
+    "oldFailuresSHA256": "b7a37396ef412021aa338c0209760710393e5f080ec3d28bcbcbed370a361a61",
+    "attributionSHA256": "58a99adeb5bf528e0c1e59031ba99115145fbbdd514f88e88cef056c08e2e498"
+  }
+}

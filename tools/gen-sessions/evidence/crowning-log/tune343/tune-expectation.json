@@ -1,0 +1,16 @@
+{
+  "index": 2,
+  "name": "chaotic-sword",
+  "event": {
+    "flags": 4096,
+    "turn": 29,
+    "text": "learned castle drawbridge's tune"
+  },
+  "cBoundary": 373,
+  "cRow": 22,
+  "decodedCRow": "   29: learned castle drawbridge's tune",
+  "cOwner": "src/pray.c:1240 pleased()",
+  "cReader": "src/insight.c:2407 record_achievement()",
+  "cFlag": "include/global.h:506 LL_MINORAC",
+  "cRawSHA256": "7caf6570b76e18e26c3bcb2988ad531ce302646413388c63662376c438a0edab"
+}

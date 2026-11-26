@@ -1,0 +1,23 @@
+{
+  "sealedAt": "2026-11-26T19:15:09.160939+00:00",
+  "members": 334,
+  "manifestSHA256": "e1be94389109b8cc92303b18ae403f3d9af332072897b0c55fd1a48091292a20",
+  "pins": {
+    "handoff.json": "aa6acd462b53bb91ecff9ff66dc80178abf6d2fa9e1403469ace1e3e262299e2",
+    "runtime.json": "87564e8894bafd62e9edd0db73d8db58bd3b64073fd2797d839d6ee82d200ad5",
+    "run-lock.json": "010e4d026158518611c7c80139412b816e9d654d461198da42907bb897195585",
+    "scoped-runtime.patch": "3a55f927c28e62e28985c981ea0f4c245e68e99e5943aeac66ca7e02ca24c40f",
+    "reports/accounting.json": "ea6c0d1a8f75a5b2ca187d4804233b803d8d0276be70d74203d83b98cc6b516e"
+  },
+  "runtimeModules": 280,
+  "ordinaryPassed": 42,
+  "ordinaryTotal": 42,
+  "questPassed": 3,
+  "questTotal": 3,
+  "nativePassed": 5,
+  "nativeTotal": 6,
+  "negativeHashes": 15,
+  "neutrality": 12,
+  "retainedWorkerExit": 1,
+  "readOnlyVerificationRequired": true
+}

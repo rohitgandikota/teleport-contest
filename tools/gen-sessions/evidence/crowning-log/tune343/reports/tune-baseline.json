@@ -1,0 +1,18 @@
+{
+  "baselineReplay": false,
+  "beforeRuntimeEdits": true,
+  "check": {
+    "index": 2,
+    "name": "chaotic-sword",
+    "expected": [
+      {
+        "flags": 4096,
+        "turn": 29,
+        "text": "learned castle drawbridge's tune"
+      }
+    ],
+    "actual": [],
+    "pass": false,
+    "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ []\n- [\n-   {\n-     flags: 4096,\n-     text: \"learned castle drawbridge's tune\",\n-     turn: 29\n-   }\n- ]\n"
+  }
+}

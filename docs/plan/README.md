@@ -12,13 +12,16 @@ Ground rules are in `/CLAUDE.md`. Read that first if you have not.
 
 ## Current focus, 2026-11-26
 
-Chat direction and target fixes are pushed as `bdc0a0f4`, with all 1,233
-full942 tested files verified against the publication. The stasis teleport
-restriction now passes four C cases, 44 source contracts and all 944 recordings.
-Three focused teleport checks and 46 timeout checks pass. Six shop container/coin
-cases pass without runtime changes. The next step is the verified commit and
-immediate push. Crowning and quest-grant logs are a separate isolated candidate;
-polymorphed fire damage and mounted teleport prompts are source investigations.
+Stasis teleport restrictions and shop container coverage are pushed as
+`ad02b556`, with all 1,235 full944 tested files verified against the publication.
+Crowning, quest-grant and castle-tune logs now pass six original C cases,
+46 source checks and all 15 negative hashes. All 945 recordings, six retained
+checks and 45 timeout checks pass. All 77 portable payloads are installed;
+the fresh public gate reproduces the sealed report exactly. The next step is
+immediate verified publication. Mounted teleport feedback passes four C
+cases and awaits composition. The corrected fire-trap producer reaches all
+eight setups; parent C confirmation is next. Autoquiver equipment coverage
+is a separate source investigation.
 See STATUS for exact evidence, preserved diagnostics and limits.
 
 Chat speech guards and wear-command entry checks are verified on `ef2bfd2d`.

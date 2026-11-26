@@ -1,0 +1,38 @@
+[
+  {
+    "group": "Quest chronicle prerequisites",
+    "id": "crowning-log-paged.quest-granted-0",
+    "cFile": "src/quest.c",
+    "cFunction": "chat_with_leader",
+    "description": "Log the worthy quest grant at turn2 with LL_ACHIEVE and the actual lawful-sword leader name",
+    "segment": 0,
+    "verification": "tools/crowning-log-input-gate.mjs supplementary quest check"
+  },
+  {
+    "group": "Quest chronicle prerequisites",
+    "id": "crowning-log-paged.quest-granted-1",
+    "cFile": "src/quest.c",
+    "cFunction": "chat_with_leader",
+    "description": "Log the worthy quest grant at turn2 with LL_ACHIEVE and the actual neutral-class-book leader name",
+    "segment": 1,
+    "verification": "tools/crowning-log-input-gate.mjs supplementary quest check"
+  },
+  {
+    "group": "Quest chronicle prerequisites",
+    "id": "crowning-log-paged.quest-granted-2",
+    "cFile": "src/quest.c",
+    "cFunction": "chat_with_leader",
+    "description": "Log the worthy quest grant at turn2 with LL_ACHIEVE and the actual chaotic-sword leader name",
+    "segment": 2,
+    "verification": "tools/crowning-log-input-gate.mjs supplementary quest check"
+  },
+  {
+    "group": "Castle-tune achievement",
+    "id": "crowning-log-paged.second-tune-hint",
+    "cFile": "src/pray.c",
+    "cFunction": "pleased",
+    "description": "Record ACH_TUNE through record_achievement after the second hint at turn29, with LL_MINORAC",
+    "segment": 2,
+    "verification": "tools/crowning-log-input-gate.mjs supplementary tune check"
+  }
+]

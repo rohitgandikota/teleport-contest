@@ -1,0 +1,9 @@
+{
+  "oldProbeSha256": "2dac0fdd4af504de2ef0e9a3236169877ca8b7ad257710e8d8967c60888ae00c",
+  "newProbeSha256": "bf76e695e985255f0c5634852b85807d4c3ebbae7a61e677b630e96e43f874e7",
+  "assertionBlockAndTailSha256": "99f48b288c6b18c02077bc1dda9b0c7a6b4b9254ac6312b0056963d3148e3683",
+  "passiveSnapshotSha256": "99de9a04898a177803d3d027b0b933e42e409967813a0c54dfee4183a24d7b89",
+  "unchangedChecks": 42,
+  "predictionsByteIdentical": true,
+  "newReadOnlyScreenObservation": "Three first/next/closed chronicle pages, decoded from the same run before the unchanged check block."
+}

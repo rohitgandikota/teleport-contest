@@ -1,0 +1,51 @@
+{
+  "oldRecipeSha256": "467fee137b0712249624e654d2b105057c3e5e9da34bd640959454e9634ad2b3",
+  "newRecipeSha256": "bf3891e71e363a2fd72a1e6de0de126f1245a833e14db549637c72f9359c9a4e",
+  "changes": [
+    {
+      "index": 0,
+      "name": "lawful-sword",
+      "insertAtKeyOffset": 229,
+      "insert": " ",
+      "insertCode": 32,
+      "oldChronicleBoundary": 229,
+      "newSecondPageBoundary": 230,
+      "newCloseBoundary": 231,
+      "otherInputFieldsUnchanged": true
+    },
+    {
+      "index": 1,
+      "name": "neutral-class-book",
+      "insertAtKeyOffset": 276,
+      "insert": " ",
+      "insertCode": 32,
+      "oldChronicleBoundary": 276,
+      "newSecondPageBoundary": 277,
+      "newCloseBoundary": 278,
+      "otherInputFieldsUnchanged": true
+    },
+    {
+      "index": 2,
+      "name": "chaotic-sword",
+      "insertAtKeyOffset": 373,
+      "insert": " ",
+      "insertCode": 32,
+      "oldChronicleBoundary": 373,
+      "newSecondPageBoundary": 374,
+      "newCloseBoundary": 375,
+      "otherInputFieldsUnchanged": true
+    }
+  ],
+  "unchangedIndexes": [
+    3,
+    4,
+    5
+  ],
+  "segmentNamesUnchanged": true,
+  "rootMetadataOnlyChanges": [
+    "name",
+    "branches",
+    "branchAssertions[].branch"
+  ],
+  "allBranchConditionsUnchanged": true
+}

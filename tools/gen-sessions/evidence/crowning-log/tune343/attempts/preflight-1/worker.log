@@ -1,0 +1,19 @@
+node:fs:556
+  return binding.open(
+                 ^
+
+Error: ENOENT: no such file or directory, open '/Users/rohit/research/code/contest/.cache/nethack-c/upstream/src/pray.c'
+    at Object.openSync (node:fs:556:18)
+    at readFileSync (node:fs:440:35)
+    at checkPins (file:///Users/rohit/research/code/contest/.cache/restart-20261122/crowning-log-tune-candidate/prior/preflight.mjs:12:26)
+    at file:///Users/rohit/research/code/contest/.cache/restart-20261122/crowning-log-tune-candidate/prior/preflight.mjs:20:1
+    at ModuleJob.run (node:internal/modules/esm/module_job:439:25)
+    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:646:26)
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5) {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/rohit/research/code/contest/.cache/nethack-c/upstream/src/pray.c'
+}
+
+Node.js v26.3.0

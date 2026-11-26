@@ -136,6 +136,12 @@
       "description": "First sighted non-coin altar-drop conduct event and coin/blind/floor exclusions. Original source recipe compatibility label; not complete doaltarobj branch coverage.",
       "minimumSessions": 1,
       "normalModeRequired": false
+    },
+    {
+      "group": "Religion and luck",
+      "id": "src/pray.c:gcrownu",
+      "description": "The bounded crowning chronicle family and its uncrowned controls; no complete owner claim",
+      "minimumSessions": 1
     }
   ]
 }

@@ -5361,6 +5361,84 @@
       "description": "Allow a wizard blessed teleport scroll when the starting stasis wand is not activated.",
       "minimumSessions": 1,
       "normalModeRequired": false
+    },
+    {
+      "group": "Crowning chronicle events",
+      "id": "crowning-log-paged.lawful-sword",
+      "cFile": "src/pray.c",
+      "cFunction": "gcrownu",
+      "description": "Record the source crown title and real gift, with event order, turn and flags for lawful-sword"
+    },
+    {
+      "group": "Crowning chronicle events",
+      "id": "crowning-log-paged.neutral-class-book",
+      "cFile": "src/pray.c",
+      "cFunction": "gcrownu",
+      "description": "Record the source crown title and real gift, with event order, turn and flags for neutral-class-book"
+    },
+    {
+      "group": "Crowning chronicle events",
+      "id": "crowning-log-paged.chaotic-sword",
+      "cFile": "src/pray.c",
+      "cFunction": "gcrownu",
+      "description": "Record the source crown title and real gift, with event order, turn and flags for chaotic-sword"
+    },
+    {
+      "group": "Crowning chronicle events",
+      "id": "crowning-log-paged.lawful-sword-uncrowned",
+      "cFile": "src/pray.c",
+      "cFunction": "gcrownu",
+      "description": "Keep an uncrowned chronicle free of crown and gift events for lawful-sword-uncrowned"
+    },
+    {
+      "group": "Crowning chronicle events",
+      "id": "crowning-log-paged.neutral-class-book-uncrowned",
+      "cFile": "src/pray.c",
+      "cFunction": "gcrownu",
+      "description": "Keep an uncrowned chronicle free of crown and gift events for neutral-class-book-uncrowned"
+    },
+    {
+      "group": "Crowning chronicle events",
+      "id": "crowning-log-paged.chaotic-sword-uncrowned",
+      "cFile": "src/pray.c",
+      "cFunction": "gcrownu",
+      "description": "Keep an uncrowned chronicle free of crown and gift events for chaotic-sword-uncrowned"
+    },
+    {
+      "group": "Quest chronicle prerequisites",
+      "id": "crowning-log-paged.quest-granted-0",
+      "cFile": "src/quest.c",
+      "cFunction": "chat_with_leader",
+      "description": "Log the worthy quest grant at turn2 with LL_ACHIEVE and the actual lawful-sword leader name",
+      "segment": 0,
+      "verification": "tools/crowning-log-input-gate.mjs supplementary quest check"
+    },
+    {
+      "group": "Quest chronicle prerequisites",
+      "id": "crowning-log-paged.quest-granted-1",
+      "cFile": "src/quest.c",
+      "cFunction": "chat_with_leader",
+      "description": "Log the worthy quest grant at turn2 with LL_ACHIEVE and the actual neutral-class-book leader name",
+      "segment": 1,
+      "verification": "tools/crowning-log-input-gate.mjs supplementary quest check"
+    },
+    {
+      "group": "Quest chronicle prerequisites",
+      "id": "crowning-log-paged.quest-granted-2",
+      "cFile": "src/quest.c",
+      "cFunction": "chat_with_leader",
+      "description": "Log the worthy quest grant at turn2 with LL_ACHIEVE and the actual chaotic-sword leader name",
+      "segment": 2,
+      "verification": "tools/crowning-log-input-gate.mjs supplementary quest check"
+    },
+    {
+      "group": "Castle-tune achievement",
+      "id": "crowning-log-paged.second-tune-hint",
+      "cFile": "src/pray.c",
+      "cFunction": "pleased",
+      "description": "Record ACH_TUNE through record_achievement after the second hint at turn29, with LL_MINORAC",
+      "segment": 2,
+      "verification": "tools/crowning-log-input-gate.mjs supplementary tune check"
     }
   ]
 }

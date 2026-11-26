@@ -1,0 +1,12 @@
+{
+  "command": [
+    "node",
+    "--max-old-space-size=512",
+    "--preserve-symlinks",
+    "--preserve-symlinks-main",
+    ".cache/restart-20261122/crowning-log-parent-review/native.mjs"
+  ],
+  "exit": 1,
+  "seconds": 0.141,
+  "logSHA256": "838ae6a448f7badd44fd9de7b7434ca038637f39a4614d2a15c0d6da1b308cdb"
+}

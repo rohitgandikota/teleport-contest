@@ -1,0 +1,22 @@
+{
+  "command": [
+    "node",
+    "--max-old-space-size=512",
+    "--preserve-symlinks",
+    "--preserve-symlinks-main",
+    "/Users/rohit/research/code/contest/.cache/restart-20261122/crowning-log-tune-candidate/probe.mjs"
+  ],
+  "startedAt": "2026-11-26T19:18:22.021384+00:00",
+  "closedAt": "2026-11-26T19:18:22.115510+00:00",
+  "seconds": 0.094,
+  "exitCode": 1,
+  "timeout": false,
+  "timeoutSeconds": 55,
+  "maxOldSpaceMB": 512,
+  "observedPlainDeferredBatches": 1,
+  "extraNativeReplays": 0,
+  "runLockSHA256": "c340c7019e0793ef41460ad05dedd75a82b75e8542937fa25769e6a4c1e61456",
+  "probeSHA256": "4e270a68f1e827771b5339b4a2fe6668b076553476a5a7e36fd74f03c3c7054f",
+  "logSHA256": "709ea73db0bd68a48887b977d59aae08e5dc966e948f5af7b317a162aa14eb36",
+  "reportHashes": {}
+}

@@ -1,0 +1,44 @@
+[
+  {
+    "group": "Crowning chronicle events",
+    "id": "crowning-log-paged.lawful-sword",
+    "cFile": "src/pray.c",
+    "cFunction": "gcrownu",
+    "description": "Record the source crown title and real gift, with event order, turn and flags for lawful-sword"
+  },
+  {
+    "group": "Crowning chronicle events",
+    "id": "crowning-log-paged.neutral-class-book",
+    "cFile": "src/pray.c",
+    "cFunction": "gcrownu",
+    "description": "Record the source crown title and real gift, with event order, turn and flags for neutral-class-book"
+  },
+  {
+    "group": "Crowning chronicle events",
+    "id": "crowning-log-paged.chaotic-sword",
+    "cFile": "src/pray.c",
+    "cFunction": "gcrownu",
+    "description": "Record the source crown title and real gift, with event order, turn and flags for chaotic-sword"
+  },
+  {
+    "group": "Crowning chronicle events",
+    "id": "crowning-log-paged.lawful-sword-uncrowned",
+    "cFile": "src/pray.c",
+    "cFunction": "gcrownu",
+    "description": "Keep an uncrowned chronicle free of crown and gift events for lawful-sword-uncrowned"
+  },
+  {
+    "group": "Crowning chronicle events",
+    "id": "crowning-log-paged.neutral-class-book-uncrowned",
+    "cFile": "src/pray.c",
+    "cFunction": "gcrownu",
+    "description": "Keep an uncrowned chronicle free of crown and gift events for neutral-class-book-uncrowned"
+  },
+  {
+    "group": "Crowning chronicle events",
+    "id": "crowning-log-paged.chaotic-sword-uncrowned",
+    "cFile": "src/pray.c",
+    "cFunction": "gcrownu",
+    "description": "Keep an uncrowned chronicle free of crown and gift events for chaotic-sword-uncrowned"
+  }
+]

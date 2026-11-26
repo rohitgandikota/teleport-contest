@@ -1,0 +1,30 @@
+{
+  "lockedAt": "2026-11-26T18:42:36.677703+00:00",
+  "files": {
+    "recipe.json": "467fee137b0712249624e654d2b105057c3e5e9da34bd640959454e9634ad2b3",
+    "predictions.json": "5442c96272086cea1db95b5ac483a05d1573cf933fdeed51f629628647fc8129",
+    "baseline-runtime.json": "0829d57462918ebe904415389933860d6133f13b778aab15fb4c0cb1a360abc6",
+    "source-pins.json": "0fc642d01d1ff5080401d8fad1e86c9b62240893c355effcc6769e80c9fb90e5",
+    "producer-origin.json": "0336d8435f3fe571ea7c303350691c735e95c45fdb835d63945de410aa4a4e91",
+    "SOURCE-REVIEW.md": "3175d6e7df2c08f31f4b9141cb767d15f9a24140028d88903a0a0af5d3c834ab"
+  },
+  "probeSHA256": "2dac0fdd4af504de2ef0e9a3236169877ca8b7ad257710e8d8967c60888ae00c",
+  "beforeGameplayCAndCandidate": true,
+  "negativeIndexes": [
+    3,
+    4,
+    5
+  ],
+  "expectedBaselineFailures": {
+    "indexes": [
+      0,
+      1,
+      2
+    ],
+    "checks": [
+      "C title and gift event order",
+      "C event categories and turn",
+      "C chronicle entries"
+    ]
+  }
+}

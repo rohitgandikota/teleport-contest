@@ -1,0 +1,50 @@
+{
+  "ordinaryChecks": 42,
+  "ordinaryPassed": 42,
+  "questChecks": 3,
+  "questPassed": 3,
+  "tuneChecks": 1,
+  "tuneBaselinePassed": 0,
+  "tuneCandidatePassed": 1,
+  "neutralityPassed": 12,
+  "negativeHashes": 15,
+  "completeOrdinaryNegativeRowsEqual": [
+    3,
+    4,
+    5
+  ],
+  "completeNativeNegativeRowsEqual": [
+    3,
+    4,
+    5
+  ],
+  "nativeBaselinePassed": 3,
+  "nativePriorPassed": 5,
+  "nativePassed": 6,
+  "nativeTotal": 6,
+  "styledBoundaries": 899,
+  "calls": 32391,
+  "frames": 9,
+  "allCursorsExact": true,
+  "allRngSlicesExact": true,
+  "allFramesExact": true,
+  "fullReportsUnchangedFromPrior": [
+    0,
+    1,
+    3,
+    4,
+    5
+  ],
+  "allFourNonScreenStreamsUnchangedFromPrior": true,
+  "onlyAddedObservedEvent": {
+    "flags": 4096,
+    "turn": 29,
+    "text": "learned castle drawbridge's tune"
+  },
+  "wholeRowRepresentation": "Full stored JSON rows, no field/value selection or rewriting.",
+  "workerExitCode": 0,
+  "completedGameplayBatches": 1,
+  "preGameplayFailedAttempts": 1,
+  "extraNativeReplays": 0,
+  "parentCompositionPending": true
+}

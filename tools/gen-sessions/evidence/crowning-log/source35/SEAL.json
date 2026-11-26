@@ -1,0 +1,25 @@
+{
+  "sealedAt": "2026-11-26T18:59:06.470704+00:00",
+  "members": 35,
+  "manifestSHA256": "87a956d86ea1d28f3f99116e915bbca8dede69ea13eb668e51c807dc54ea5a40",
+  "pins": {
+    "handoff.json": "c363f60ab06a7c31734041dfcb090ade6dda504a2dab8fe778d2010cdc450c5e",
+    "recipe.json": "bf3891e71e363a2fd72a1e6de0de126f1245a833e14db549637c72f9359c9a4e",
+    "input-lock.json": "bfbc4378e1fb7ae54e63dc01c67c70780c9dde94cc277f173e0e04f129a2a940",
+    "baseline-runtime.json": "0829d57462918ebe904415389933860d6133f13b778aab15fb4c0cb1a360abc6",
+    "baseline-observation.json": "0cdd02416567416b4441faf6be056ba1dcc4f48130c91f8adbc3945049190624",
+    "page-observation.json": "edd9bf28c29e243d49fc7ae2340d4e48545fd23b11545bacb9f85d73fb0eb972"
+  },
+  "sourceOnly": true,
+  "runtimeModules": 280,
+  "checks": 42,
+  "passed": 33,
+  "setupChecksPassed": 6,
+  "negativeHashes": 15,
+  "observerAndDeferredChecksPassed": 12,
+  "originalSourceMembers": 12,
+  "originalSourceUnchanged": true,
+  "originalCPrimaryFailures": 6,
+  "newCConfirmation": "pending",
+  "runtimeChangedPaths": []
+}

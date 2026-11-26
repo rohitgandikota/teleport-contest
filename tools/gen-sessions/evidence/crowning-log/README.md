@@ -1,0 +1,9 @@
+# Crowning, quest and tune evidence
+
+The canonical paged six-case C raw is unchanged, SHA7caf6570b76e18e26c3bcb2988ad531ce302646413388c63662376c438a0edab. Its exact original primary recipe is unchanged. Source12 retains the failed first-page producer and33/42 diagnostic. Source35 changes only three final-page acknowledgement keys and retains33/42. Candidate334 records the seven crown and one quest logs, passes42+3 but native5/6, and retains three live-undefined versus omitted-JSON row failures. Tune343 adds the existing achievement call and passes42+3+1/native6/6. Its independent tune predicate first failed on stored prior logs. All15 negative hashes, three complete negative rows and12 neutrality checks remain.
+
+The public gate validates these immutable historical records and the canonical C raw before importing current installed JS. It does not import archived probes or depend on a source snapshot, C checkout or recorder build. Historical C/build hashes remain in source-contract.json. Original failed-page C raw is retained in the sealed source packet and referenced by its exact hash/recording receipt/page proof here, not copied into the maintained corpus.
+
+The prior334 comparison failures and the tune packet's pre-gameplay path failure remain visible. Complete stored JSON is used on both sides of whole-row controls, without dropping fields or rewriting values. Original42 and quest3 bodies remain unchanged. No runtime source or patch is an installation payload.
+
+Six registry rows match the unchanged recipe's branch metadata. Four additional source-owned quest/tune requirements are checked by the public gate but are not silently inserted into original C metadata. Generic metadata coverage remains separate for those four. The original function-shaped coverage tag requires the explicit compatibility row supplied with this packet; no full-owner coverage is claimed.

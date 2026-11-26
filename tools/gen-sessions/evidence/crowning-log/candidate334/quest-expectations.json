@@ -1,0 +1,38 @@
+[
+  {
+    "index": 0,
+    "name": "lawful-sword",
+    "event": {
+      "flags": 2,
+      "turn": 2,
+      "text": "the Norn has granted access to proceed deeper into the quest"
+    },
+    "sourceFirstPageBoundary": 229,
+    "sourceRow": 17,
+    "sourceDecodedRow": "    2: the Norn has granted access to proceed deeper into the quest"
+  },
+  {
+    "index": 1,
+    "name": "neutral-class-book",
+    "event": {
+      "flags": 2,
+      "turn": 2,
+      "text": "Neferet the Green has granted access to proceed deeper into the quest"
+    },
+    "sourceFirstPageBoundary": 276,
+    "sourceRow": 17,
+    "sourceDecodedRow": "    2: Neferet the Green has granted access to proceed deeper into the quest"
+  },
+  {
+    "index": 2,
+    "name": "chaotic-sword",
+    "event": {
+      "flags": 2,
+      "turn": 2,
+      "text": "the Master of Thieves has granted access to proceed deeper into the quest"
+    },
+    "sourceFirstPageBoundary": 373,
+    "sourceRow": 17,
+    "sourceDecodedRow": "2: the Master of Thieves has granted access to proceed deeper into the quest"
+  }
+]

@@ -1,0 +1,51 @@
+{
+  "createdAt": "2026-11-26T19:12:47.549413+00:00",
+  "originalReportSHA256": "0cdd02416567416b4441faf6be056ba1dcc4f48130c91f8adbc3945049190624",
+  "candidateReportSHA256": "58df0b0da8fddc827e4426b90104536bad4e89cd8ed7d89ed9c7f8d83cf4ec8f",
+  "failedControlsSHA256": "b7a37396ef412021aa338c0209760710393e5f080ec3d28bcbcbed370a361a61",
+  "workerLogSHA256": "1c431fd9e69f905a6307467089e757ca75104d960d6e83c7df9d81e2dc18896e",
+  "cause": "Additional live-to-JSON comparison retained firstCrown:undefined in live rows; JSON.stringify omits that property. Both original and candidate stored records use the same unchanged rows.push/report serialization.",
+  "checks": [
+    {
+      "index": 3,
+      "completeStoredJSONRowEqual": true,
+      "allFiveHashesEqual": true,
+      "completeNativeRowEqual": true,
+      "firstCrownPresentInEitherStoredRow": false,
+      "retainedLiveComparisonFailure": {
+        "name": "negative 3: complete ordinary row",
+        "pass": false,
+        "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n... Skipped lines\n\n  {\n    boundaries: 4,\n    calls: 2334,\n    checks: [\n      {\n...\n    ],\n+   firstCrown: undefined,\n    frames: 0,\n    hashes: {\n      calls: '46cf16c5fd7d989ed83d693f305a984815f31015c93e77ec9204aa5238ad5c3c',\n      cursors: '2648a3a4977687462e31cf06d9a9f1885918e8d82ad906cdc9b51ad1bca315ad',\n      frames: '210e130878aabaf46f1fe72749a263f9eb71c6a262b80f13882ed08d472c0ecd',\n"
+      }
+    },
+    {
+      "index": 4,
+      "completeStoredJSONRowEqual": true,
+      "allFiveHashesEqual": true,
+      "completeNativeRowEqual": true,
+      "firstCrownPresentInEitherStoredRow": false,
+      "retainedLiveComparisonFailure": {
+        "name": "negative 4: complete ordinary row",
+        "pass": false,
+        "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n... Skipped lines\n\n  {\n    boundaries: 4,\n    calls: 2211,\n    checks: [\n      {\n...\n    ],\n+   firstCrown: undefined,\n    frames: 0,\n    hashes: {\n      calls: 'f687d5f81d594082087aa5d5a97acc8fb75ec6f9e641bb0f68aec8635a558813',\n      cursors: '5c4aaef56d4904ee04edb4506ee91ba0505c2b2f66c7b9e9ace2ce82b980b2bc',\n      frames: '210e130878aabaf46f1fe72749a263f9eb71c6a262b80f13882ed08d472c0ecd',\n"
+      }
+    },
+    {
+      "index": 5,
+      "completeStoredJSONRowEqual": true,
+      "allFiveHashesEqual": true,
+      "completeNativeRowEqual": true,
+      "firstCrownPresentInEitherStoredRow": false,
+      "retainedLiveComparisonFailure": {
+        "name": "negative 5: complete ordinary row",
+        "pass": false,
+        "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n... Skipped lines\n\n  {\n    boundaries: 4,\n    calls: 2348,\n    checks: [\n      {\n...\n    ],\n+   firstCrown: undefined,\n    frames: 0,\n    hashes: {\n      calls: '28e219c230789dc9315a243dcf66f7bd620194d42eabcd72c641f2dbb40f7c7d',\n      cursors: '2648a3a4977687462e31cf06d9a9f1885918e8d82ad906cdc9b51ad1bca315ad',\n      frames: '210e130878aabaf46f1fe72749a263f9eb71c6a262b80f13882ed08d472c0ecd',\n"
+      }
+    }
+  ],
+  "negativeHashes": 15,
+  "original42BodiesUnchanged": true,
+  "noRuntimeChange": true,
+  "noReplay": true,
+  "noOutputOrExpectedFieldRewrite": true
+}

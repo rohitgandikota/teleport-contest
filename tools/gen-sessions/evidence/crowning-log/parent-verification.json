@@ -1,0 +1,652 @@
+{
+  "verifiedAt": "2026-11-26T19:45:21.644561+00:00",
+  "baselineCommit": "ad02b5565e569e584b9f80424d94e4a444a6ca80",
+  "composition": {
+    "baselineCommit": "ad02b5565e569e584b9f80424d94e4a444a6ca80",
+    "baselineRuntimeSHA256": "68aa0830525b530b58f5f18b848ddafd3beb586dff20a4d63619b5d3dd66d7ad",
+    "candidateRuntimeSHA256": "08bc7651d0aa6b5cf434d77727fd6e2ab2bbc80de705913a6010980dda979943",
+    "candidateSealSHA256": "1a832cd63cafb44ad138db56c8ac0cd9eb1a9c65eab16ceed9458d2c1b49d752",
+    "composedPatchSHA256": "b2455e09b201d4080de97e388aa1cdd3fba9281e548acab72034cf2af343a0c7",
+    "runtimeSHA256": "cf8d1e3c64277f4973aceb9158db882002ede691c4238586e53aac3952b0cac3",
+    "runtimeChanged": [
+      "js/pray.js",
+      "js/quest.js"
+    ],
+    "copies": 2,
+    "fixedLinks": 278
+  },
+  "validation": {
+    "ordinaryChecks": 42,
+    "ordinaryPassed": 42,
+    "questChecks": 3,
+    "questPassed": 3,
+    "tuneChecks": 1,
+    "tuneBaselinePassed": 0,
+    "tuneCandidatePassed": 1,
+    "neutralityPassed": 12,
+    "negativeHashes": 15,
+    "completeOrdinaryNegativeRowsEqual": [
+      3,
+      4,
+      5
+    ],
+    "completeNativeNegativeRowsEqual": [
+      3,
+      4,
+      5
+    ],
+    "nativeBaselinePassed": 3,
+    "nativePriorPassed": 5,
+    "nativePassed": 6,
+    "nativeTotal": 6,
+    "styledBoundaries": 899,
+    "calls": 32391,
+    "frames": 9,
+    "allCursorsExact": true,
+    "allRngSlicesExact": true,
+    "allFramesExact": true,
+    "fullReportsUnchangedFromPrior": [
+      0,
+      1,
+      3,
+      4,
+      5
+    ],
+    "allFourNonScreenStreamsUnchangedFromPrior": true,
+    "onlyAddedObservedEvent": {
+      "flags": 4096,
+      "turn": 29,
+      "text": "learned castle drawbridge's tune"
+    },
+    "wholeRowRepresentation": "Full stored JSON rows, no field/value selection or rewriting.",
+    "workerExitCode": 0,
+    "completedGameplayBatches": 1,
+    "preGameplayFailedAttempts": 1,
+    "extraNativeReplays": 0,
+    "parentCompositionPending": true
+  },
+  "compositionNativeCases": 6,
+  "completeComposedNativeReportEqualsIsolated": true,
+  "freshPublicReportEqualsPromotion": true,
+  "preservedDiagnostics": {
+    "prior334SealSHA256": "0364605be3bdc18be6be31f18add974e3d933c5eadfb522bec0dc2c08d2ed714",
+    "priorWorkerExitCode": 1,
+    "priorNativePassed": 5,
+    "priorNegativeComparisonFailures": 3,
+    "priorControlsSHA256": "b7a37396ef412021aa338c0209760710393e5f080ec3d28bcbcbed370a361a61",
+    "followupPreflightFailure": "attempts/preflight-1/worker.log",
+    "preflightFailureSHA256": "709ea73db0bd68a48887b977d59aae08e5dc966e948f5af7b317a162aa14eb36",
+    "preflightFailedBeforeGameplayImports": true,
+    "actualGameplayBatchesInFailedAttempt": 0,
+    "correctedPathOnly": true,
+    "runtimeAtBothAttemptsSHA256": "08bc7651d0aa6b5cf434d77727fd6e2ab2bbc80de705913a6010980dda979943",
+    "retainedOldRunLockSHA256": "c340c7019e0793ef41460ad05dedd75a82b75e8542937fa25769e6a4c1e61456",
+    "successfulRunLockSHA256": "b11bbcaecc4af76aece89c2fdc59916939416d776c91359bde72fe5a4c41358f",
+    "allInputTupleFieldsAndKeysUnchanged": true,
+    "newCRecordings": 0
+  },
+  "install": {
+    "installedAt": "2026-11-26T19:45:12.515326+00:00",
+    "payloads": [
+      {
+        "path": "tools/crowning-log-input-gate.mjs",
+        "sha256": "25e46fd4d0f402adc76c4d8a456a6b56717de9ea68fdbff65e8520b769f83e51",
+        "existingExact": false
+      },
+      {
+        "path": "tools/gen-sessions/evidence/crowning-log/README.md",
+        "sha256": "df5ea28906839b7caa3d441c815b64c550b780991c38560b5af416f862f3dc56",
+        "existingExact": false
+      },
+      {
+        "path": "tools/gen-sessions/evidence/crowning-log/candidate334/SEAL.json",
+        "sha256": "0364605be3bdc18be6be31f18add974e3d933c5eadfb522bec0dc2c08d2ed714",
+        "existingExact": false
+      },
+      {
+        "path": "tools/gen-sessions/evidence/crowning-log/candidate334/SOURCE-REVIEW.md",
+        "sha256": "2bfab0ec0e8a017010ef150be865fadc12b6e3a00b8c2d712aab37a726d72b22",
+        "existingExact": false
+      },
+      {
+        "path": "tools/gen-sessions/evidence/crowning-log/candidate334/assertion-preservation.json",
+        "sha256": "9e8f296f13db30b60d19e13d71c5b7871e83755796442037f450c52784cb1e1b",
+        "existingExact": false
+      },
+      {
+        "path": "tools/gen-sessions/evidence/crowning-log/candidate334/compare-native.mjs",
+        "sha256": "c2663cfbb2c30e5b114d8e64a0519ec70e2a86580ab9add67d7646e89f87b876",
+        "existingExact": false
+      },
+      {
+        "path": "tools/gen-sessions/evidence/crowning-log/candidate334/manifest.json",
+        "sha256": "e1be94389109b8cc92303b18ae403f3d9af332072897b0c55fd1a48091292a20",
+        "existingExact": false
+      },
+      {
+        "path": "tools/gen-sessions/evidence/crowning-log/candidate334/pre-edit-lock.json",
+        "sha256": "20f47cfe4de0832198b699ef2923fd11d2e2650401420d4e9bb999d71ee00445",
+        "existingExact": false
+      },
+      {
+        "path": "tools/gen-sessions/evidence/crowning-log/candidate334/quest-checks.mjs",
+        "sha256": "bce3fb575634ed576fd7c3204b1e63d0aca284172e6b1073efa1053d4eb16bca",
+        "existingExact": false
+      },
+      {
+        "path": "tools/gen-sessions/evidence/crowning-log/candidate334/quest-expectations.json",
+        "sha256": "4cc7d3d8afc5e4788a49b0efa108cf85bf5b3063ad6a99333c525a9b7375a160",
+        "existingExact": false
+      },
+      {
+        "path": "tools/gen-sessions/evidence/crowning-log/candidate334/reports/candidate-native.json",
+        "sha256": "a51a07ae8fa2e829e7857203c509e5e6caeaa5182d974aa5eb5fdca452e18482",
+        "existingExact": false
+      },
+      {
+        "path": "tools/gen-sessions/evidence/crowning-log/candidate334/reports/candidate-observation.json",
+        "sha256": "58df0b0da8fddc827e4426b90104536bad4e89cd8ed7d89ed9c7f8d83cf4ec8f",
+        "existingExact": false
+      },
+      {
+        "path": "tools/gen-sessions/evidence/crowning-log/candidate334/reports/controls.json",
+        "sha256": "b7a37396ef412021aa338c0209760710393e5f080ec3d28bcbcbed370a361a61",
+        "existingExact": false
+      },
+      {
+        "path": "tools/gen-sessions/evidence/crowning-log/candidate334/reports/negative-json-accounting.json",
+        "sha256": "58a99adeb5bf528e0c1e59031ba99115145fbbdd514f88e88cef056c08e2e498",
+        "existingExact": false
+      },
+      {
+        "path": "tools/gen-sessions/evidence/crowning-log/candidate334/reports/quest-baseline.json",
+        "sha256": "4e8d6b241dda246facfce85616c6ce599077ced08821873fa3dec233b7b2daf4",
+        "existingExact": false
+      },
+      {
+        "path": "tools/gen-sessions/evidence/crowning-log/candidate334/reports/worker.json",
+        "sha256": "2411997cf8dceb41e8923c98cb915f11a20e3081204474559ead92ec2691ae6e",
+        "existingExact": false
+      },
+      {
+        "path": "tools/gen-sessions/evidence/crowning-log/candidate334/reports/worker.log",
+        "sha256": "1c431fd9e69f905a6307467089e757ca75104d960d6e83c7df9d81e2dc18896e",
+        "existingExact": false
+      },
+      {
+        "path": "tools/gen-sessions/evidence/crowning-log/coverage-additions.json",
+        "sha256": "a7979b1d3d7772e3e1203f9ee05d36f257759c657639d3d5d665b7a2d6830198",
+        "existingExact": false
+      },
+      {
+        "path": "tools/gen-sessions/evidence/crowning-log/original-parent/baseline-native.log",
+        "sha256": "838ae6a448f7badd44fd9de7b7434ca038637f39a4614d2a15c0d6da1b308cdb",
+        "existingExact": false
+      },
+      {
+        "path": "tools/gen-sessions/evidence/crowning-log/original-parent/command.json",
+        "sha256": "e221013bccfc9aa4f3d287747f99e75f871c777bb40927646a684b011e636201",
+        "existingExact": false
+      },
+      {
+        "path": "tools/gen-sessions/evidence/crowning-log/original-parent/input-lock.json",
+        "sha256": "8d86204653039193399d151bb68f765382b8e623769260c592845de2e8c32cd2",
+        "existingExact": false
+      },
+      {
+        "path": "tools/gen-sessions/evidence/crowning-log/original-parent/native-recording.json",
+        "sha256": "6e4d347d635fce80e7a146479e22ca01b4a60104a803c47752c26f7333f28b99",
+        "existingExact": false
+      },
+      {
+        "path": "tools/gen-sessions/evidence/crowning-log/original-parent/pins.json",
+        "sha256": "1d4d62c06c2b9ce5748a6a05d5fe071b92205e29530f91baedd39f9f4109def7",
+        "existingExact": false
+      },
+      {
+        "path": "tools/gen-sessions/evidence/crowning-log/parent/baseline-native.json",
+        "sha256": "1b30e9f8164eece16a6105ee7a4ce63eae7fdea1384f6670a3888cb11f57f16a",
+        "existingExact": false
+      },
+      {
+        "path": "tools/gen-sessions/evidence/crowning-log/parent/baseline-native.log",
+        "sha256": "760df3dc35b2b4ce8dbf0cd908ec2d9a30caddb4e431d3004ec9ac9cf4d1d71f",
+        "existingExact": false
+      },
+      {
+        "path": "tools/gen-sessions/evidence/crowning-log/parent/command.json",
+        "sha256": "f0a8abd4acb92b33a5802b5480af1a8086c4d5004fa7b517f9f8f36e771ea3b5",
+        "existingExact": false
+      },
+      {
+        "path": "tools/gen-sessions/evidence/crowning-log/parent/input-lock.json",
+        "sha256": "c7fc3c79e2bdaa00871f839ed257d7cdbb4fabeda6d2a3e76805a6cea7890937",
+        "existingExact": false
+      },
+      {
+        "path": "tools/gen-sessions/evidence/crowning-log/parent/native-recording.json",
+        "sha256": "60968b165d57351f9f8ab7b72e9001a6e854a096e2e84a9462900597a1d0ece5",
+        "existingExact": false
+      },
+      {
+        "path": "tools/gen-sessions/evidence/crowning-log/parent/pins.json",
+        "sha256": "09325a43adc33668e9bd376b373b3fb33a2c30e3905cc8da39cf73f66c386377",
+        "existingExact": false
+      },
+      {
+        "path": "tools/gen-sessions/evidence/crowning-log/parent/preflight.json",
+        "sha256": "a48339f3bdb5a8c575ad02a5e4467c887aaf6f68b4c5ad9f1de5daf8f053f448",
+        "existingExact": false
+      },
+      {
+        "path": "tools/gen-sessions/evidence/crowning-log/parent/primary-recipe.json",
+        "sha256": "bf3891e71e363a2fd72a1e6de0de126f1245a833e14db549637c72f9359c9a4e",
+        "existingExact": false
+      },
+      {
+        "path": "tools/gen-sessions/evidence/crowning-log/prerequisite-requirements-additions.json",
+        "sha256": "b833bc564d3200ecb8d811ad74f562afb4df1f9860073141dda78737610907bd",
+        "existingExact": false
+      },
+      {
+        "path": "tools/gen-sessions/evidence/crowning-log/requirements-additions.json",
+        "sha256": "ef988daa2203d340fa2b1cfb751e79caed9f10165132c3c96fcdcec7d28d6941",
+        "existingExact": false
+      },
+      {
+        "path": "tools/gen-sessions/evidence/crowning-log/source-contract.json",
+        "sha256": "a1c526451b164ab5ca1ea5f475a5aa93281acc4936d51f5417eee5c4a1e5eb56",
+        "existingExact": false
+      },
+      {
+        "path": "tools/gen-sessions/evidence/crowning-log/source12/SEAL.json",
+        "sha256": "5ee7fad0c7bcf00f6a251dacdcf5061a32d2ea60ad606dcffe091699e014f4b8",
+        "existingExact": false
+      },
+      {
+        "path": "tools/gen-sessions/evidence/crowning-log/source12/SOURCE-REVIEW.md",
+        "sha256": "3175d6e7df2c08f31f4b9141cb767d15f9a24140028d88903a0a0af5d3c834ab",
+        "existingExact": false
+      },
+      {
+        "path": "tools/gen-sessions/evidence/crowning-log/source12/baseline-observation.json",
+        "sha256": "454de02c687233b83808c96856903d46d998e0f4f773bae2430dcd7da743e6e4",
+        "existingExact": false
+      },
+      {
+        "path": "tools/gen-sessions/evidence/crowning-log/source12/baseline.log",
+        "sha256": "baeb66b745a0627801aa4f06f1fb33f80e6c721533f9757305ce1b477d66d083",
+        "existingExact": false
+      },
+      {
+        "path": "tools/gen-sessions/evidence/crowning-log/source12/input-lock.json",
+        "sha256": "66b89d7c90ead4665171a0164c70fa9f7077f19c01c4788bd720c6c8ee2a5adc",
+        "existingExact": false
+      },
+      {
+        "path": "tools/gen-sessions/evidence/crowning-log/source12/negative-hashes.json",
+        "sha256": "4dcf5afe17d6a68abf235f3638fa7034a14d8a6be29a714485b378156f945d04",
+        "existingExact": false
+      },
+      {
+        "path": "tools/gen-sessions/evidence/crowning-log/source12/predictions.json",
+        "sha256": "5442c96272086cea1db95b5ac483a05d1573cf933fdeed51f629628647fc8129",
+        "existingExact": false
+      },
+      {
+        "path": "tools/gen-sessions/evidence/crowning-log/source12/probe.mjs",
+        "sha256": "2dac0fdd4af504de2ef0e9a3236169877ca8b7ad257710e8d8967c60888ae00c",
+        "existingExact": false
+      },
+      {
+        "path": "tools/gen-sessions/evidence/crowning-log/source12/recipe.json",
+        "sha256": "467fee137b0712249624e654d2b105057c3e5e9da34bd640959454e9634ad2b3",
+        "existingExact": false
+      },
+      {
+        "path": "tools/gen-sessions/evidence/crowning-log/source12/source-files.json",
+        "sha256": "257754214cf13ca46e20cb9220d7b5fc8fcf5b4e7fb22f1be421b84fde2b4b1f",
+        "existingExact": false
+      },
+      {
+        "path": "tools/gen-sessions/evidence/crowning-log/source35/SEAL.json",
+        "sha256": "8181583fb4f774e26929909bb1a2e7274ba01757f02aa4955ffe74f9cb537a16",
+        "existingExact": false
+      },
+      {
+        "path": "tools/gen-sessions/evidence/crowning-log/source35/SOURCE-REVIEW.md",
+        "sha256": "19737aca4b9f9d93a14f6b65746ccd37c7254d35847f9551a9c3cd8cfc4c0660",
+        "existingExact": false
+      },
+      {
+        "path": "tools/gen-sessions/evidence/crowning-log/source35/assertion-preservation.json",
+        "sha256": "8e1168463fdb7fe9a91dd2d8905d1973c234ee7fbcfad1066a718e9084494bca",
+        "existingExact": false
+      },
+      {
+        "path": "tools/gen-sessions/evidence/crowning-log/source35/baseline-observation.json",
+        "sha256": "0cdd02416567416b4441faf6be056ba1dcc4f48130c91f8adbc3945049190624",
+        "existingExact": false
+      },
+      {
+        "path": "tools/gen-sessions/evidence/crowning-log/source35/input-lock.json",
+        "sha256": "bfbc4378e1fb7ae54e63dc01c67c70780c9dde94cc277f173e0e04f129a2a940",
+        "existingExact": false
+      },
+      {
+        "path": "tools/gen-sessions/evidence/crowning-log/source35/manifest.json",
+        "sha256": "87a956d86ea1d28f3f99116e915bbca8dede69ea13eb668e51c807dc54ea5a40",
+        "existingExact": false
+      },
+      {
+        "path": "tools/gen-sessions/evidence/crowning-log/source35/parent-page-proof.json",
+        "sha256": "53e77d60fad8401c75915b25d734bee5d91cd70284fd6e514732163cd60423c8",
+        "existingExact": false
+      },
+      {
+        "path": "tools/gen-sessions/evidence/crowning-log/source35/probe.mjs",
+        "sha256": "bf76e695e985255f0c5634852b85807d4c3ebbae7a61e677b630e96e43f874e7",
+        "existingExact": false
+      },
+      {
+        "path": "tools/gen-sessions/evidence/crowning-log/source35/producer-changes.json",
+        "sha256": "961c804b117d83d5f03d7d278232ae1c931d39544ce4c64adaaf1a1dc3203555",
+        "existingExact": false
+      },
+      {
+        "path": "tools/gen-sessions/evidence/crowning-log/tune343/NEGATIVE-RECONCILIATION.md",
+        "sha256": "cb54a8b0d663a15f84f4e9f7a4076c3320c96db93ace5cf63276d9dae37713d1",
+        "existingExact": false
+      },
+      {
+        "path": "tools/gen-sessions/evidence/crowning-log/tune343/SEAL.json",
+        "sha256": "1a832cd63cafb44ad138db56c8ac0cd9eb1a9c65eab16ceed9458d2c1b49d752",
+        "existingExact": false
+      },
+      {
+        "path": "tools/gen-sessions/evidence/crowning-log/tune343/SOURCE-REVIEW.md",
+        "sha256": "07fabf6d5753ec465d08309837c4416843677ca4ed457e7dc4f5efc2349ce538",
+        "existingExact": false
+      },
+      {
+        "path": "tools/gen-sessions/evidence/crowning-log/tune343/assertion-preservation.json",
+        "sha256": "3b4931d32dc2335b4998eb7fdccade028336b231854629844537dd6c017ac099",
+        "existingExact": false
+      },
+      {
+        "path": "tools/gen-sessions/evidence/crowning-log/tune343/attempts/preflight-1/provenance.json",
+        "sha256": "a3bdf3e1fd3d189d80b2cd96811d69e1a9cd5e2cddee9689f415e2271ef0ecb3",
+        "existingExact": false
+      },
+      {
+        "path": "tools/gen-sessions/evidence/crowning-log/tune343/attempts/preflight-1/worker.json",
+        "sha256": "f5eb4aba237cb41f005ff756381874a9b9868d1442ad68646c0effe66920913e",
+        "existingExact": false
+      },
+      {
+        "path": "tools/gen-sessions/evidence/crowning-log/tune343/attempts/preflight-1/worker.log",
+        "sha256": "709ea73db0bd68a48887b977d59aae08e5dc966e948f5af7b317a162aa14eb36",
+        "existingExact": false
+      },
+      {
+        "path": "tools/gen-sessions/evidence/crowning-log/tune343/manifest.json",
+        "sha256": "3475455a9c9b3f948631dc301720cd71eebf7658f6cfef16cde8900b3dace2aa",
+        "existingExact": false
+      },
+      {
+        "path": "tools/gen-sessions/evidence/crowning-log/tune343/pre-edit-lock.json",
+        "sha256": "37c4527c892f422faba6524b4367d66dfa19ae229dc3f9250165e3bd2b19540f",
+        "existingExact": false
+      },
+      {
+        "path": "tools/gen-sessions/evidence/crowning-log/tune343/probe.mjs",
+        "sha256": "4e270a68f1e827771b5339b4a2fe6668b076553476a5a7e36fd74f03c3c7054f",
+        "existingExact": false
+      },
+      {
+        "path": "tools/gen-sessions/evidence/crowning-log/tune343/reports/accounting.json",
+        "sha256": "621aa8e86ab8209af5921fad54a27a56ce68eade2a2de6acd8dad84a1b903080",
+        "existingExact": false
+      },
+      {
+        "path": "tools/gen-sessions/evidence/crowning-log/tune343/reports/attempt-accounting.json",
+        "sha256": "7f64a346c0d25e930f8d6bc58344b09d621669b2f030cee9684ac2fe398cbf83",
+        "existingExact": false
+      },
+      {
+        "path": "tools/gen-sessions/evidence/crowning-log/tune343/reports/candidate-native.json",
+        "sha256": "372a538d08f0866355ddc68ab4d6cb1d79f0184e61b8b09597961acf870ca10e",
+        "existingExact": false
+      },
+      {
+        "path": "tools/gen-sessions/evidence/crowning-log/tune343/reports/candidate-observation.json",
+        "sha256": "e81e638fc9bf11b485af7b5aab70c6b100a57a0e54cc2e4a6ec1f59981da8db4",
+        "existingExact": false
+      },
+      {
+        "path": "tools/gen-sessions/evidence/crowning-log/tune343/reports/controls.json",
+        "sha256": "3583d6a00b95a711e42244ff0e43f12699964be2faf329bd68bc8576638ec670",
+        "existingExact": false
+      },
+      {
+        "path": "tools/gen-sessions/evidence/crowning-log/tune343/reports/quest-candidate.json",
+        "sha256": "9ed18dd619154ba5eac5634c832d241fee486fdf0909efa46f563c6031424db7",
+        "existingExact": false
+      },
+      {
+        "path": "tools/gen-sessions/evidence/crowning-log/tune343/reports/tune-baseline.json",
+        "sha256": "e94ed9477e646d5b9c422a281210c53f41a6347ceb599eb805c86abcd2e402d8",
+        "existingExact": false
+      },
+      {
+        "path": "tools/gen-sessions/evidence/crowning-log/tune343/reports/tune-candidate.json",
+        "sha256": "ca99da1a6651c3f1905066eb5aab5cbd6af1f190b1d4d1ab4a70a872276a5045",
+        "existingExact": false
+      },
+      {
+        "path": "tools/gen-sessions/evidence/crowning-log/tune343/reports/worker.json",
+        "sha256": "2e8e46081f9d10d44e4a12d7f8b7b0db78a5c24be88c6a1cfaaef279144cd417",
+        "existingExact": false
+      },
+      {
+        "path": "tools/gen-sessions/evidence/crowning-log/tune343/reports/worker.log",
+        "sha256": "25e09fc12bc9446917ad9e04e5596cf4a0d4e9e708e8d1541dda3f5920763c30",
+        "existingExact": false
+      },
+      {
+        "path": "tools/gen-sessions/evidence/crowning-log/tune343/tune-check.mjs",
+        "sha256": "7f07dc8c812f6d55a9b6abe8eed3b827c173103a5dcec982137adb95fb38dee1",
+        "existingExact": false
+      },
+      {
+        "path": "tools/gen-sessions/evidence/crowning-log/tune343/tune-expectation.json",
+        "sha256": "8fe0e468a9af84f0424ee51f6720ed9ca15e649615032999b8eebb12748b5cdf",
+        "existingExact": false
+      },
+      {
+        "path": "tools/gen-sessions/generated/crowning-log-paged.session.json",
+        "sha256": "7caf6570b76e18e26c3bcb2988ad531ce302646413388c63662376c438a0edab",
+        "existingExact": true
+      },
+      {
+        "path": "tools/gen-sessions/recipes/crowning-log-paged.json",
+        "sha256": "bf3891e71e363a2fd72a1e6de0de126f1245a833e14db549637c72f9359c9a4e",
+        "existingExact": false
+      }
+    ],
+    "registries": [
+      {
+        "path": "tools/gen-sessions/branch-requirements.json",
+        "before": 4750,
+        "added": 10,
+        "after": 4760,
+        "oldSHA256": "74fbf3bc0cfe5a06b25507b345e03041e249c638dd0aabf4ae914262d7b31957",
+        "sha256": "2d16f6699f954db8732081c1c2fc5c57505ef8631499ac8eb3bafbc931dc0230",
+        "priorBytesPreserved": true
+      },
+      {
+        "path": "tools/gen-sessions/coverage-requirements.json",
+        "before": 109,
+        "added": 1,
+        "after": 110,
+        "oldSHA256": "f7680d1280c0d55b0147fa73ec1a1275939e349f4be32d6d494a68fb0f625ac9",
+        "sha256": "c4a4fd10c4a634c3400862efad300dfa2bb45a2fe38d83dc084698687abc15bc",
+        "priorBytesPreserved": true
+      }
+    ],
+    "promotionSealSHA256": "66e897f23353058d76e14b418ad106d4717d82c9b7d153cdf4071a38a60b9719"
+  },
+  "fullRegression": {
+    "verifiedAt": "2026-11-26T19:35:40.321656+00:00",
+    "sessions": 945,
+    "passed": 945,
+    "failures": [],
+    "totals": {
+      "screens": 945323,
+      "cursors": 945323,
+      "rngCalls": 20730204,
+      "animFrames": 33197
+    },
+    "missingMetrics": {},
+    "runtimeFilesFixed": 280,
+    "rawFilesFixed": 945,
+    "allFilesFixed": 1236,
+    "allFilesSHA256": "8d68ee2600756c2f458185345ae362fc8ff96b749c80324e34de6e95716893d1",
+    "defaultWorkerTimeoutMs": 45000,
+    "retries": 0,
+    "started": {
+      "startedAt": "2026-11-26T19:25:18.513270+00:00",
+      "workers": 2,
+      "pid": 3578407,
+      "cpuCount": 24,
+      "loadAverage": [
+        1.09912109375,
+        1.10205078125,
+        1.603515625
+      ],
+      "timeoutOverride": false,
+      "retries": 0,
+      "node": {
+        "version": "v26.3.0",
+        "archive": "node-v26.3.0-linux-x64.tar.xz",
+        "sha256": "0ce210831380ab75a5fec0d3fb6b5af0958898016b2cae51cc2fa11057d2f77e",
+        "officialURL": "https://nodejs.org/dist/v26.3.0/node-v26.3.0-linux-x64.tar.xz",
+        "checksumsURL": "https://nodejs.org/dist/v26.3.0/SHASUMS256.txt",
+        "binary": "/share/NFS/u/rohit/research/contest/artifacts/2026-11-22/text-history-full858-js-20261125/node-v26.3.0-linux-x64/bin/node",
+        "archiveSHA256": "0ce210831380ab75a5fec0d3fb6b5af0958898016b2cae51cc2fa11057d2f77e",
+        "binarySHA256": "5325ac9da58541494afcc136f0880279a2a853609bf4dae7755e04fb682b6926"
+      },
+      "allFilesSHA256": "8d68ee2600756c2f458185345ae362fc8ff96b749c80324e34de6e95716893d1"
+    },
+    "logs": {
+      "shard-0.log": "9f4be714db647358635f12f2f7328a9d7d682e3a6455f473e3537dc787df514d",
+      "shard-1.log": "893ccdb802fd7e929a1e9574c39ee69373b0ff0d222884135bebb5529f1d5307"
+    },
+    "limits": [
+      "Scored corpus parity, not literal serialized-byte or whole-port proof.",
+      "No held-out result is inferred from these fixtures."
+    ]
+  },
+  "retainedChecks": [
+    {
+      "name": "prayer-confirmation-state-gate",
+      "command": [
+        "node",
+        "--max-old-space-size=512",
+        "tools/prayer-confirmation-state-gate.mjs"
+      ],
+      "exit": 0,
+      "seconds": 1.469,
+      "log": ".cache/restart-20261122/crowning-log-retained-prayer-confirmation-state-gate.log",
+      "sha256": "70702db71dca654bf1fdc5295ceb7f7bc47a548fa7615a6b4bb272c993085271"
+    },
+    {
+      "name": "prayer-recovery-state-gate",
+      "command": [
+        "node",
+        "--max-old-space-size=512",
+        "tools/prayer-recovery-state-gate.mjs"
+      ],
+      "exit": 0,
+      "seconds": 1.802,
+      "log": ".cache/restart-20261122/crowning-log-retained-prayer-recovery-state-gate.log",
+      "sha256": "96788420b662a5e72b587524b14d514dafcf226879e6bc0cedfe022db879664d"
+    },
+    {
+      "name": "prayer-timeout-state-gate",
+      "command": [
+        "node",
+        "--max-old-space-size=512",
+        "tools/prayer-timeout-state-gate.mjs"
+      ],
+      "exit": 0,
+      "seconds": 2.128,
+      "log": ".cache/restart-20261122/crowning-log-retained-prayer-timeout-state-gate.log",
+      "sha256": "9ff697b067c4d027844a27d86fb8d940f2fd3ce74277c7516fc6762cf976ac0f"
+    },
+    {
+      "name": "prayer-divine-state-gate",
+      "command": [
+        "node",
+        "--max-old-space-size=512",
+        "tools/prayer-divine-state-gate.mjs"
+      ],
+      "exit": 0,
+      "seconds": 2.109,
+      "log": ".cache/restart-20261122/crowning-log-retained-prayer-divine-state-gate.log",
+      "sha256": "50d79b560961af7fbb56fb39fde50bbebed35575283dc6344e2ab571f6337d98"
+    },
+    {
+      "name": "quest-guardian-anger-gate",
+      "command": [
+        "node",
+        "--max-old-space-size=512",
+        "tools/quest-guardian-anger-gate.mjs"
+      ],
+      "exit": 0,
+      "seconds": 0.448,
+      "log": ".cache/restart-20261122/crowning-log-retained-quest-guardian-anger-gate.log",
+      "sha256": "6e05726cd8bcb827d009b6d32addbf755d7d6c9d16bcf4675e0f67b1c4eccff3"
+    },
+    {
+      "name": "invocation-acquisition-state-gate",
+      "command": [
+        "node",
+        "--max-old-space-size=512",
+        "tools/invocation-acquisition-state-gate.mjs"
+      ],
+      "exit": 0,
+      "seconds": 2.833,
+      "log": ".cache/restart-20261122/crowning-log-retained-invocation-acquisition-state-gate.log",
+      "sha256": "66c9075bc4fdea2c57f6e163002f2031d55d4d543ef3640ce385e8f1900ff38f"
+    }
+  ],
+  "strict": {
+    "exit": 0,
+    "seconds": 30.461,
+    "targets": 45,
+    "budgetMs": 8000,
+    "log": ".cache/restart-20261122/crowning-log-public45-strict.log",
+    "sha256": "8d5b5c1946094092d19693ee75a43de11c09df50ea6700e35beef83c3d080de9"
+  },
+  "scopeImportAudit": [],
+  "evidenceSHA256": {
+    "crowning-log-source-audit/SEAL.json": "5ee7fad0c7bcf00f6a251dacdcf5061a32d2ea60ad606dcffe091699e014f4b8",
+    "crowning-log-paged-source-audit/SEAL.json": "8181583fb4f774e26929909bb1a2e7274ba01757f02aa4955ffe74f9cb537a16",
+    "crowning-log-candidate/SEAL.json": "0364605be3bdc18be6be31f18add974e3d933c5eadfb522bec0dc2c08d2ed714",
+    "crowning-log-tune-candidate/SEAL.json": "1a832cd63cafb44ad138db56c8ac0cd9eb1a9c65eab16ceed9458d2c1b49d752",
+    "crowning-log-tune-candidate/reports/candidate-native.json": "372a538d08f0866355ddc68ab4d6cb1d79f0184e61b8b09597961acf870ca10e",
+    "crowning-log-promotion/SEAL.json": "66e897f23353058d76e14b418ad106d4717d82c9b7d153cdf4071a38a60b9719",
+    "crowning-log-promotion/promotion-files.json": "48b914911d4034f616a662c7cb2075e433e90b4ac7cc9fc988c0805708652898",
+    "crowning-log-main-ordinary.json": "1724fb14bb131e1de60147b20430156aadd3476323a531503eac41b622ee2fe7",
+    "crowning-log-parent-composed/crowning-log-native.json": "372a538d08f0866355ddc68ab4d6cb1d79f0184e61b8b09597961acf870ca10e",
+    "crowning-log-full945-remote/control/all-files.json": "8d68ee2600756c2f458185345ae362fc8ff96b749c80324e34de6e95716893d1",
+    "crowning-log-full945-remote/verification.json": "cfb5960ae7c2084cbaaa0d5f913a54e4d79c38db2f9d230454a1faf357b20b6f"
+  },
+  "limits": [
+    "Recorded screen/style/cursor/random-stream parity does not prove literal serialized bytes or the entire port.",
+    "Four supplementary source requirements are checked by the public gate; unchanged native metadata declares six primary branches only.",
+    "Quest banishment and the nonwizard spoiler filter remain separate untested source leads.",
+    "No new leaderboard or held-out result is inferred."
+  ]
+}

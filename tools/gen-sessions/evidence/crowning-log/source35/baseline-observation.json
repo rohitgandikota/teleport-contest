@@ -1,0 +1,2843 @@
+{
+  "recipeSHA256": "bf3891e71e363a2fd72a1e6de0de126f1245a833e14db549637c72f9359c9a4e",
+  "runtimeSHA256": "0829d57462918ebe904415389933860d6133f13b778aab15fb4c0cb1a360abc6",
+  "rows": [
+    {
+      "name": "lawful-sword",
+      "checks": [
+        {
+          "name": "real crown and gift setup",
+          "pass": true
+        },
+        {
+          "name": "C title and gift event order",
+          "pass": false,
+          "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ []\n- [\n-   'was crowned \"The Hand of Elbereth\" by Tyr',\n-   'had her wielded long sword transformed into Excalibur'\n- ]\n"
+        },
+        {
+          "name": "C event categories and turn",
+          "pass": false,
+          "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ []\n- [\n-   8,\n-   72\n- ]\n"
+        },
+        {
+          "name": "C chronicle entries",
+          "pass": false,
+          "error": "Expected values to be strictly equal:\n\nfalse !== true\n"
+        },
+        {
+          "name": "survival and every input boundary",
+          "pass": true
+        },
+        {
+          "name": "observer preserves five streams",
+          "pass": true
+        },
+        {
+          "name": "deferred input preserves five streams",
+          "pass": true
+        }
+      ],
+      "firstCrown": {
+        "step": 222,
+        "turn": 14,
+        "hp": 21,
+        "mortality": 0,
+        "crown": 1,
+        "intrinsic": [
+          67108864,
+          67108864,
+          352321536,
+          67108864,
+          67108864,
+          67108864
+        ],
+        "objects": [
+          {
+            "id": 41,
+            "type": 27,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 43,
+            "type": 34,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 45,
+            "type": 150,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 47,
+            "type": 293,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 174,
+            "type": 470,
+            "artifact": 0,
+            "blessed": true
+          },
+          {
+            "id": 175,
+            "type": 54,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 176,
+            "type": 265,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 172,
+            "type": 121,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 171,
+            "type": 18,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 169,
+            "type": 83,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 167,
+            "type": 73,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 166,
+            "type": 293,
+            "artifact": 0,
+            "blessed": false
+          }
+        ],
+        "logs": [
+          {
+            "flags": 2,
+            "turn": 1,
+            "text": "wizard the lawful human Valkyrie entered the dungeon"
+          },
+          {
+            "flags": 4096,
+            "turn": 1,
+            "text": "gained experience level 2"
+          },
+          {
+            "flags": 20480,
+            "turn": 1,
+            "text": "attained the rank of Skirmisher (level 3)"
+          },
+          {
+            "flags": 4096,
+            "turn": 1,
+            "text": "gained experience level 4"
+          },
+          {
+            "flags": 4096,
+            "turn": 1,
+            "text": "gained experience level 5"
+          },
+          {
+            "flags": 20480,
+            "turn": 1,
+            "text": "attained the rank of Fighter (level 6)"
+          },
+          {
+            "flags": 4096,
+            "turn": 1,
+            "text": "gained experience level 7"
+          },
+          {
+            "flags": 4096,
+            "turn": 1,
+            "text": "gained experience level 8"
+          },
+          {
+            "flags": 4096,
+            "turn": 1,
+            "text": "gained experience level 9"
+          },
+          {
+            "flags": 20480,
+            "turn": 1,
+            "text": "attained the rank of Woman-at-arms (level 10)"
+          },
+          {
+            "flags": 4096,
+            "turn": 1,
+            "text": "gained experience level 11"
+          },
+          {
+            "flags": 4096,
+            "turn": 1,
+            "text": "gained experience level 12"
+          },
+          {
+            "flags": 4096,
+            "turn": 1,
+            "text": "gained experience level 13"
+          },
+          {
+            "flags": 2,
+            "turn": 1,
+            "text": "attained the rank of Warrior (level 14)"
+          },
+          {
+            "flags": 2,
+            "turn": 1,
+            "text": "entered Home 1, the Quest"
+          },
+          {
+            "flags": 32768,
+            "turn": 2,
+            "text": "entered level 15, the Dungeons of Doom"
+          },
+          {
+            "flags": 4096,
+            "turn": 2,
+            "text": "lost experience level 14"
+          },
+          {
+            "flags": 4096,
+            "turn": 2,
+            "text": "lost experience level 13"
+          },
+          {
+            "flags": 4096,
+            "turn": 2,
+            "text": "lost experience level 12"
+          },
+          {
+            "flags": 4096,
+            "turn": 2,
+            "text": "lost experience level 11"
+          },
+          {
+            "flags": 4096,
+            "turn": 2,
+            "text": "lost experience level 10"
+          },
+          {
+            "flags": 4096,
+            "turn": 2,
+            "text": "lost experience level 9"
+          },
+          {
+            "flags": 4096,
+            "turn": 2,
+            "text": "lost experience level 8"
+          },
+          {
+            "flags": 4096,
+            "turn": 2,
+            "text": "lost experience level 7"
+          },
+          {
+            "flags": 4096,
+            "turn": 2,
+            "text": "lost experience level 6"
+          },
+          {
+            "flags": 4096,
+            "turn": 2,
+            "text": "lost experience level 5"
+          },
+          {
+            "flags": 4096,
+            "turn": 2,
+            "text": "lost experience level 4"
+          },
+          {
+            "flags": 4096,
+            "turn": 2,
+            "text": "lost experience level 3"
+          },
+          {
+            "turn": 2,
+            "text": "made her first wish - \"blessed luckstone\", got \"a gray stone\""
+          },
+          {
+            "turn": 2,
+            "text": "wished for \"long sword\", got \"a long sword\""
+          },
+          {
+            "turn": 3,
+            "text": "wished for \"20 red dragon corpses\", got \"20 red dragon corpses\""
+          },
+          {
+            "flags": 32,
+            "turn": 3,
+            "text": "eschewed atheism, by dropping 20 red dragon corpses on an altar"
+          }
+        ]
+      },
+      "last": {
+        "step": 231,
+        "turn": 14,
+        "hp": 21,
+        "mortality": 0,
+        "crown": 1,
+        "intrinsic": [
+          67108864,
+          67108864,
+          352321536,
+          67108864,
+          67108864,
+          67108864
+        ],
+        "objects": [
+          {
+            "id": 41,
+            "type": 27,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 43,
+            "type": 34,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 45,
+            "type": 150,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 47,
+            "type": 293,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 174,
+            "type": 470,
+            "artifact": 0,
+            "blessed": true
+          },
+          {
+            "id": 175,
+            "type": 54,
+            "artifact": 1,
+            "blessed": true
+          },
+          {
+            "id": 176,
+            "type": 265,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 172,
+            "type": 121,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 171,
+            "type": 18,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 169,
+            "type": 83,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 167,
+            "type": 73,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 166,
+            "type": 293,
+            "artifact": 0,
+            "blessed": false
+          }
+        ],
+        "logs": [
+          {
+            "flags": 2,
+            "turn": 1,
+            "text": "wizard the lawful human Valkyrie entered the dungeon"
+          },
+          {
+            "flags": 4096,
+            "turn": 1,
+            "text": "gained experience level 2"
+          },
+          {
+            "flags": 20480,
+            "turn": 1,
+            "text": "attained the rank of Skirmisher (level 3)"
+          },
+          {
+            "flags": 4096,
+            "turn": 1,
+            "text": "gained experience level 4"
+          },
+          {
+            "flags": 4096,
+            "turn": 1,
+            "text": "gained experience level 5"
+          },
+          {
+            "flags": 20480,
+            "turn": 1,
+            "text": "attained the rank of Fighter (level 6)"
+          },
+          {
+            "flags": 4096,
+            "turn": 1,
+            "text": "gained experience level 7"
+          },
+          {
+            "flags": 4096,
+            "turn": 1,
+            "text": "gained experience level 8"
+          },
+          {
+            "flags": 4096,
+            "turn": 1,
+            "text": "gained experience level 9"
+          },
+          {
+            "flags": 20480,
+            "turn": 1,
+            "text": "attained the rank of Woman-at-arms (level 10)"
+          },
+          {
+            "flags": 4096,
+            "turn": 1,
+            "text": "gained experience level 11"
+          },
+          {
+            "flags": 4096,
+            "turn": 1,
+            "text": "gained experience level 12"
+          },
+          {
+            "flags": 4096,
+            "turn": 1,
+            "text": "gained experience level 13"
+          },
+          {
+            "flags": 2,
+            "turn": 1,
+            "text": "attained the rank of Warrior (level 14)"
+          },
+          {
+            "flags": 2,
+            "turn": 1,
+            "text": "entered Home 1, the Quest"
+          },
+          {
+            "flags": 32768,
+            "turn": 2,
+            "text": "entered level 15, the Dungeons of Doom"
+          },
+          {
+            "flags": 4096,
+            "turn": 2,
+            "text": "lost experience level 14"
+          },
+          {
+            "flags": 4096,
+            "turn": 2,
+            "text": "lost experience level 13"
+          },
+          {
+            "flags": 4096,
+            "turn": 2,
+            "text": "lost experience level 12"
+          },
+          {
+            "flags": 4096,
+            "turn": 2,
+            "text": "lost experience level 11"
+          },
+          {
+            "flags": 4096,
+            "turn": 2,
+            "text": "lost experience level 10"
+          },
+          {
+            "flags": 4096,
+            "turn": 2,
+            "text": "lost experience level 9"
+          },
+          {
+            "flags": 4096,
+            "turn": 2,
+            "text": "lost experience level 8"
+          },
+          {
+            "flags": 4096,
+            "turn": 2,
+            "text": "lost experience level 7"
+          },
+          {
+            "flags": 4096,
+            "turn": 2,
+            "text": "lost experience level 6"
+          },
+          {
+            "flags": 4096,
+            "turn": 2,
+            "text": "lost experience level 5"
+          },
+          {
+            "flags": 4096,
+            "turn": 2,
+            "text": "lost experience level 4"
+          },
+          {
+            "flags": 4096,
+            "turn": 2,
+            "text": "lost experience level 3"
+          },
+          {
+            "turn": 2,
+            "text": "made her first wish - \"blessed luckstone\", got \"a gray stone\""
+          },
+          {
+            "turn": 2,
+            "text": "wished for \"long sword\", got \"a long sword\""
+          },
+          {
+            "turn": 3,
+            "text": "wished for \"20 red dragon corpses\", got \"20 red dragon corpses\""
+          },
+          {
+            "flags": 32,
+            "turn": 3,
+            "text": "eschewed atheism, by dropping 20 red dragon corpses on an altar"
+          }
+        ]
+      },
+      "hashes": {
+        "screens": "19e5bf42cd7573fa0648f30de993d280a572383d2da1414b73e8dec0f3932828",
+        "cursors": "ef4d9d35257010a94779eb64540d5f10bfc32de3e8291df0af839b38d8f90fb0",
+        "calls": "9c1e3e42f3d00094ae828d7fee0cae58c92522b4b0efc0d7ffe9b9645ea7e2e7",
+        "slices": "e669cab2e86eee3b565f39c7efa76548bb62d88d60cb6bcf19f79f2f2873da09",
+        "frames": "458254d7534e0e2114612d79f4588448378607d9d8a9c37664d6d8143891555a"
+      },
+      "keys": 231,
+      "boundaries": 232,
+      "calls": 3729,
+      "frames": 1
+    },
+    {
+      "name": "neutral-class-book",
+      "checks": [
+        {
+          "name": "real crown and gift setup",
+          "pass": true
+        },
+        {
+          "name": "C title and gift event order",
+          "pass": false,
+          "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ []\n- [\n-   \"became Thoth's Envoy of Balance\",\n-   'was bestowed with spellbook of finger of death'\n- ]\n"
+        },
+        {
+          "name": "C event categories and turn",
+          "pass": false,
+          "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ []\n- [\n-   8,\n-   8264\n- ]\n"
+        },
+        {
+          "name": "C chronicle entries",
+          "pass": false,
+          "error": "Expected values to be strictly equal:\n\nfalse !== true\n"
+        },
+        {
+          "name": "survival and every input boundary",
+          "pass": true
+        },
+        {
+          "name": "observer preserves five streams",
+          "pass": true
+        },
+        {
+          "name": "deferred input preserves five streams",
+          "pass": true
+        }
+      ],
+      "firstCrown": {
+        "step": 269,
+        "turn": 29,
+        "hp": 22,
+        "mortality": 0,
+        "crown": 2,
+        "intrinsic": [
+          67108864,
+          67108864,
+          67108864,
+          67108864,
+          67108864,
+          67108864
+        ],
+        "objects": [
+          {
+            "id": 43,
+            "type": 79,
+            "artifact": 0,
+            "blessed": true
+          },
+          {
+            "id": 44,
+            "type": 148,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 45,
+            "type": 427,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 46,
+            "type": 196,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 47,
+            "type": 187,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 49,
+            "type": 300,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 50,
+            "type": 302,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 51,
+            "type": 308,
+            "artifact": 0,
+            "blessed": true
+          },
+          {
+            "id": 53,
+            "type": 327,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 54,
+            "type": 329,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 57,
+            "type": 376,
+            "artifact": 0,
+            "blessed": true
+          },
+          {
+            "id": 60,
+            "type": 374,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 61,
+            "type": 242,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 223,
+            "type": 470,
+            "artifact": 0,
+            "blessed": true
+          },
+          {
+            "id": 225,
+            "type": 265,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 222,
+            "type": 438,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 221,
+            "type": 462,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 217,
+            "type": 456,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 207,
+            "type": 463,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 205,
+            "type": 475,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 203,
+            "type": 475,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 201,
+            "type": 475,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 198,
+            "type": 302,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 190,
+            "type": 336,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 188,
+            "type": 293,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 184,
+            "type": 309,
+            "artifact": 0,
+            "blessed": true
+          },
+          {
+            "id": 183,
+            "type": 73,
+            "artifact": 0,
+            "blessed": true
+          },
+          {
+            "id": 182,
+            "type": 313,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 178,
+            "type": 279,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 176,
+            "type": 298,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 174,
+            "type": 23,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 171,
+            "type": 324,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 169,
+            "type": 293,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 165,
+            "type": 221,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 159,
+            "type": 476,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 157,
+            "type": 476,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 155,
+            "type": 476,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 154,
+            "type": 476,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 153,
+            "type": 476,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 152,
+            "type": 476,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 148,
+            "type": 476,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 146,
+            "type": 476,
+            "artifact": 0,
+            "blessed": false
+          }
+        ],
+        "logs": [
+          {
+            "flags": 2,
+            "turn": 1,
+            "text": "wizard the neutral male human Wizard entered the dungeon"
+          },
+          {
+            "flags": 4096,
+            "turn": 1,
+            "text": "gained experience level 2"
+          },
+          {
+            "flags": 20480,
+            "turn": 1,
+            "text": "attained the rank of Conjurer (level 3)"
+          },
+          {
+            "flags": 4096,
+            "turn": 1,
+            "text": "gained experience level 4"
+          },
+          {
+            "flags": 4096,
+            "turn": 1,
+            "text": "gained experience level 5"
+          },
+          {
+            "flags": 20480,
+            "turn": 1,
+            "text": "attained the rank of Thaumaturge (level 6)"
+          },
+          {
+            "flags": 4096,
+            "turn": 1,
+            "text": "gained experience level 7"
+          },
+          {
+            "flags": 4096,
+            "turn": 1,
+            "text": "gained experience level 8"
+          },
+          {
+            "flags": 4096,
+            "turn": 1,
+            "text": "gained experience level 9"
+          },
+          {
+            "flags": 20480,
+            "turn": 1,
+            "text": "attained the rank of Magician (level 10)"
+          },
+          {
+            "flags": 4096,
+            "turn": 1,
+            "text": "gained experience level 11"
+          },
+          {
+            "flags": 4096,
+            "turn": 1,
+            "text": "gained experience level 12"
+          },
+          {
+            "flags": 4096,
+            "turn": 1,
+            "text": "gained experience level 13"
+          },
+          {
+            "flags": 2,
+            "turn": 1,
+            "text": "attained the rank of Enchanter (level 14)"
+          },
+          {
+            "flags": 2,
+            "turn": 1,
+            "text": "entered Home 1, the Quest"
+          },
+          {
+            "flags": 32768,
+            "turn": 3,
+            "text": "entered level 5, the Dungeons of Doom"
+          },
+          {
+            "flags": 4096,
+            "turn": 3,
+            "text": "lost experience level 14"
+          },
+          {
+            "flags": 4096,
+            "turn": 3,
+            "text": "lost experience level 13"
+          },
+          {
+            "flags": 4096,
+            "turn": 3,
+            "text": "lost experience level 12"
+          },
+          {
+            "flags": 4096,
+            "turn": 3,
+            "text": "lost experience level 11"
+          },
+          {
+            "flags": 4096,
+            "turn": 3,
+            "text": "lost experience level 10"
+          },
+          {
+            "flags": 4096,
+            "turn": 3,
+            "text": "lost experience level 9"
+          },
+          {
+            "flags": 4096,
+            "turn": 3,
+            "text": "lost experience level 8"
+          },
+          {
+            "flags": 4096,
+            "turn": 3,
+            "text": "lost experience level 7"
+          },
+          {
+            "flags": 4096,
+            "turn": 3,
+            "text": "lost experience level 6"
+          },
+          {
+            "flags": 4096,
+            "turn": 3,
+            "text": "lost experience level 5"
+          },
+          {
+            "flags": 4096,
+            "turn": 3,
+            "text": "lost experience level 4"
+          },
+          {
+            "flags": 4096,
+            "turn": 3,
+            "text": "lost experience level 3"
+          },
+          {
+            "turn": 3,
+            "text": "made his first wish - \"blessed luckstone\", got \"a gray stone\""
+          },
+          {
+            "turn": 3,
+            "text": "wished for \"20 red dragon corpses\", got \"20 red dragon corpses\""
+          },
+          {
+            "flags": 32,
+            "turn": 3,
+            "text": "eschewed atheism, by dropping 20 red dragon corpses on an altar"
+          }
+        ]
+      },
+      "last": {
+        "step": 278,
+        "turn": 29,
+        "hp": 22,
+        "mortality": 0,
+        "crown": 2,
+        "intrinsic": [
+          67108864,
+          67108864,
+          67108864,
+          67108864,
+          67108864,
+          67108864
+        ],
+        "objects": [
+          {
+            "id": 43,
+            "type": 79,
+            "artifact": 0,
+            "blessed": true
+          },
+          {
+            "id": 44,
+            "type": 148,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 45,
+            "type": 427,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 46,
+            "type": 196,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 47,
+            "type": 187,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 49,
+            "type": 300,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 50,
+            "type": 302,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 51,
+            "type": 308,
+            "artifact": 0,
+            "blessed": true
+          },
+          {
+            "id": 53,
+            "type": 327,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 54,
+            "type": 329,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 57,
+            "type": 376,
+            "artifact": 0,
+            "blessed": true
+          },
+          {
+            "id": 60,
+            "type": 374,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 61,
+            "type": 242,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 223,
+            "type": 470,
+            "artifact": 0,
+            "blessed": true
+          },
+          {
+            "id": 238,
+            "type": 371,
+            "artifact": 0,
+            "blessed": true
+          },
+          {
+            "id": 225,
+            "type": 265,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 222,
+            "type": 438,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 221,
+            "type": 462,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 217,
+            "type": 456,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 207,
+            "type": 463,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 205,
+            "type": 475,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 203,
+            "type": 475,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 201,
+            "type": 475,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 198,
+            "type": 302,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 190,
+            "type": 336,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 188,
+            "type": 293,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 184,
+            "type": 309,
+            "artifact": 0,
+            "blessed": true
+          },
+          {
+            "id": 183,
+            "type": 73,
+            "artifact": 0,
+            "blessed": true
+          },
+          {
+            "id": 182,
+            "type": 313,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 178,
+            "type": 279,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 176,
+            "type": 298,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 174,
+            "type": 23,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 171,
+            "type": 324,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 169,
+            "type": 293,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 165,
+            "type": 221,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 159,
+            "type": 476,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 157,
+            "type": 476,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 155,
+            "type": 476,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 154,
+            "type": 476,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 153,
+            "type": 476,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 152,
+            "type": 476,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 148,
+            "type": 476,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 146,
+            "type": 476,
+            "artifact": 0,
+            "blessed": false
+          }
+        ],
+        "logs": [
+          {
+            "flags": 2,
+            "turn": 1,
+            "text": "wizard the neutral male human Wizard entered the dungeon"
+          },
+          {
+            "flags": 4096,
+            "turn": 1,
+            "text": "gained experience level 2"
+          },
+          {
+            "flags": 20480,
+            "turn": 1,
+            "text": "attained the rank of Conjurer (level 3)"
+          },
+          {
+            "flags": 4096,
+            "turn": 1,
+            "text": "gained experience level 4"
+          },
+          {
+            "flags": 4096,
+            "turn": 1,
+            "text": "gained experience level 5"
+          },
+          {
+            "flags": 20480,
+            "turn": 1,
+            "text": "attained the rank of Thaumaturge (level 6)"
+          },
+          {
+            "flags": 4096,
+            "turn": 1,
+            "text": "gained experience level 7"
+          },
+          {
+            "flags": 4096,
+            "turn": 1,
+            "text": "gained experience level 8"
+          },
+          {
+            "flags": 4096,
+            "turn": 1,
+            "text": "gained experience level 9"
+          },
+          {
+            "flags": 20480,
+            "turn": 1,
+            "text": "attained the rank of Magician (level 10)"
+          },
+          {
+            "flags": 4096,
+            "turn": 1,
+            "text": "gained experience level 11"
+          },
+          {
+            "flags": 4096,
+            "turn": 1,
+            "text": "gained experience level 12"
+          },
+          {
+            "flags": 4096,
+            "turn": 1,
+            "text": "gained experience level 13"
+          },
+          {
+            "flags": 2,
+            "turn": 1,
+            "text": "attained the rank of Enchanter (level 14)"
+          },
+          {
+            "flags": 2,
+            "turn": 1,
+            "text": "entered Home 1, the Quest"
+          },
+          {
+            "flags": 32768,
+            "turn": 3,
+            "text": "entered level 5, the Dungeons of Doom"
+          },
+          {
+            "flags": 4096,
+            "turn": 3,
+            "text": "lost experience level 14"
+          },
+          {
+            "flags": 4096,
+            "turn": 3,
+            "text": "lost experience level 13"
+          },
+          {
+            "flags": 4096,
+            "turn": 3,
+            "text": "lost experience level 12"
+          },
+          {
+            "flags": 4096,
+            "turn": 3,
+            "text": "lost experience level 11"
+          },
+          {
+            "flags": 4096,
+            "turn": 3,
+            "text": "lost experience level 10"
+          },
+          {
+            "flags": 4096,
+            "turn": 3,
+            "text": "lost experience level 9"
+          },
+          {
+            "flags": 4096,
+            "turn": 3,
+            "text": "lost experience level 8"
+          },
+          {
+            "flags": 4096,
+            "turn": 3,
+            "text": "lost experience level 7"
+          },
+          {
+            "flags": 4096,
+            "turn": 3,
+            "text": "lost experience level 6"
+          },
+          {
+            "flags": 4096,
+            "turn": 3,
+            "text": "lost experience level 5"
+          },
+          {
+            "flags": 4096,
+            "turn": 3,
+            "text": "lost experience level 4"
+          },
+          {
+            "flags": 4096,
+            "turn": 3,
+            "text": "lost experience level 3"
+          },
+          {
+            "turn": 3,
+            "text": "made his first wish - \"blessed luckstone\", got \"a gray stone\""
+          },
+          {
+            "turn": 3,
+            "text": "wished for \"20 red dragon corpses\", got \"20 red dragon corpses\""
+          },
+          {
+            "flags": 32,
+            "turn": 3,
+            "text": "eschewed atheism, by dropping 20 red dragon corpses on an altar"
+          }
+        ]
+      },
+      "hashes": {
+        "screens": "1d6b034b13d0a728f8ab2f5ab472e4c0e174546652a54d17d674d3d6dc589a72",
+        "cursors": "70aff2cf0629ed59489a168f2f5d432c96fb12a9be54c705dc841f75449e4f26",
+        "calls": "e1c1117fe7370abfd51196dd11e70098e9927d040f9e850d38c2cf234cb0c5cb",
+        "slices": "66e3e1499bab51bba4b1902155f7d68c6b796237948dca5e535cba1d8f0ac133",
+        "frames": "3c305b9bd0f33163f6148b64cfc0f3598dfb0f513645a4431de2d8160718ddaa"
+      },
+      "keys": 278,
+      "boundaries": 279,
+      "calls": 10438,
+      "frames": 3
+    },
+    {
+      "name": "chaotic-sword",
+      "checks": [
+        {
+          "name": "real crown and gift setup",
+          "pass": true
+        },
+        {
+          "name": "C title and gift event order",
+          "pass": false,
+          "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ []\n- [\n-   'was chosen to steal souls for the Glory of Kos',\n-   'was bestowed with Stormbringer'\n- ]\n"
+        },
+        {
+          "name": "C event categories and turn",
+          "pass": false,
+          "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ []\n- [\n-   8,\n-   72\n- ]\n"
+        },
+        {
+          "name": "C chronicle entries",
+          "pass": false,
+          "error": "Expected values to be strictly equal:\n\nfalse !== true\n"
+        },
+        {
+          "name": "survival and every input boundary",
+          "pass": true
+        },
+        {
+          "name": "observer preserves five streams",
+          "pass": true
+        },
+        {
+          "name": "deferred input preserves five streams",
+          "pass": true
+        }
+      ],
+      "firstCrown": {
+        "step": 368,
+        "turn": 44,
+        "hp": 62,
+        "mortality": 0,
+        "crown": 3,
+        "intrinsic": [
+          67108864,
+          67108864,
+          67108864,
+          67108864,
+          67108864,
+          67108864
+        ],
+        "objects": [
+          {
+            "id": 41,
+            "type": 46,
+            "artifact": 0,
+            "blessed": true
+          },
+          {
+            "id": 43,
+            "type": 34,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 45,
+            "type": 134,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 47,
+            "type": 318,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 48,
+            "type": 222,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 50,
+            "type": 217,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 52,
+            "type": 233,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 288,
+            "type": 470,
+            "artifact": 0,
+            "blessed": true
+          },
+          {
+            "id": 308,
+            "type": 390,
+            "artifact": 0,
+            "blessed": true
+          },
+          {
+            "id": 304,
+            "type": 381,
+            "artifact": 0,
+            "blessed": true
+          },
+          {
+            "id": 290,
+            "type": 265,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 285,
+            "type": 467,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 283,
+            "type": 438,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 281,
+            "type": 456,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 280,
+            "type": 461,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 274,
+            "type": 438,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 273,
+            "type": 438,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 271,
+            "type": 466,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 269,
+            "type": 438,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 268,
+            "type": 438,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 265,
+            "type": 438,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 262,
+            "type": 438,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 258,
+            "type": 462,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 251,
+            "type": 438,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 249,
+            "type": 475,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 246,
+            "type": 329,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 243,
+            "type": 476,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 241,
+            "type": 121,
+            "artifact": 0,
+            "blessed": true
+          },
+          {
+            "id": 238,
+            "type": 236,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 235,
+            "type": 279,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 233,
+            "type": 234,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 229,
+            "type": 395,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 228,
+            "type": 293,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 217,
+            "type": 476,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 216,
+            "type": 476,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 214,
+            "type": 476,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 211,
+            "type": 476,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 210,
+            "type": 476,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 206,
+            "type": 476,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 205,
+            "type": 476,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 203,
+            "type": 476,
+            "artifact": 0,
+            "blessed": false
+          }
+        ],
+        "logs": [
+          {
+            "flags": 2,
+            "turn": 1,
+            "text": "wizard the chaotic male human Rogue entered the dungeon"
+          },
+          {
+            "flags": 4096,
+            "turn": 1,
+            "text": "gained experience level 2"
+          },
+          {
+            "flags": 20480,
+            "turn": 1,
+            "text": "attained the rank of Cutpurse (level 3)"
+          },
+          {
+            "flags": 4096,
+            "turn": 1,
+            "text": "gained experience level 4"
+          },
+          {
+            "flags": 4096,
+            "turn": 1,
+            "text": "gained experience level 5"
+          },
+          {
+            "flags": 20480,
+            "turn": 1,
+            "text": "attained the rank of Rogue (level 6)"
+          },
+          {
+            "flags": 4096,
+            "turn": 1,
+            "text": "gained experience level 7"
+          },
+          {
+            "flags": 4096,
+            "turn": 1,
+            "text": "gained experience level 8"
+          },
+          {
+            "flags": 4096,
+            "turn": 1,
+            "text": "gained experience level 9"
+          },
+          {
+            "flags": 20480,
+            "turn": 1,
+            "text": "attained the rank of Pilferer (level 10)"
+          },
+          {
+            "flags": 4096,
+            "turn": 1,
+            "text": "gained experience level 11"
+          },
+          {
+            "flags": 4096,
+            "turn": 1,
+            "text": "gained experience level 12"
+          },
+          {
+            "flags": 4096,
+            "turn": 1,
+            "text": "gained experience level 13"
+          },
+          {
+            "flags": 2,
+            "turn": 1,
+            "text": "attained the rank of Robber (level 14)"
+          },
+          {
+            "flags": 2,
+            "turn": 1,
+            "text": "entered Home 1, the Quest"
+          },
+          {
+            "flags": 32768,
+            "turn": 3,
+            "text": "entered level 8, the Dungeons of Doom"
+          },
+          {
+            "turn": 3,
+            "text": "made his first wish - \"blessed luckstone\", got \"a gray stone\""
+          },
+          {
+            "turn": 3,
+            "text": "wished for \"20 red dragon corpses\", got \"20 red dragon corpses\""
+          },
+          {
+            "flags": 32,
+            "turn": 3,
+            "text": "eschewed atheism, by dropping 20 red dragon corpses on an altar"
+          }
+        ]
+      },
+      "last": {
+        "step": 375,
+        "turn": 44,
+        "hp": 62,
+        "mortality": 0,
+        "crown": 3,
+        "intrinsic": [
+          67108864,
+          67108864,
+          67108864,
+          67108864,
+          67108864,
+          67108864
+        ],
+        "objects": [
+          {
+            "id": 41,
+            "type": 46,
+            "artifact": 0,
+            "blessed": true
+          },
+          {
+            "id": 43,
+            "type": 34,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 45,
+            "type": 134,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 47,
+            "type": 318,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 48,
+            "type": 222,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 50,
+            "type": 217,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 52,
+            "type": 233,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 288,
+            "type": 470,
+            "artifact": 0,
+            "blessed": true
+          },
+          {
+            "id": 309,
+            "type": 58,
+            "artifact": 2,
+            "blessed": true
+          },
+          {
+            "id": 308,
+            "type": 390,
+            "artifact": 0,
+            "blessed": true
+          },
+          {
+            "id": 304,
+            "type": 381,
+            "artifact": 0,
+            "blessed": true
+          },
+          {
+            "id": 290,
+            "type": 265,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 285,
+            "type": 467,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 283,
+            "type": 438,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 281,
+            "type": 456,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 280,
+            "type": 461,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 274,
+            "type": 438,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 273,
+            "type": 438,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 271,
+            "type": 466,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 269,
+            "type": 438,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 268,
+            "type": 438,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 265,
+            "type": 438,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 262,
+            "type": 438,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 258,
+            "type": 462,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 251,
+            "type": 438,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 249,
+            "type": 475,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 246,
+            "type": 329,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 243,
+            "type": 476,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 241,
+            "type": 121,
+            "artifact": 0,
+            "blessed": true
+          },
+          {
+            "id": 238,
+            "type": 236,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 235,
+            "type": 279,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 233,
+            "type": 234,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 229,
+            "type": 395,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 228,
+            "type": 293,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 217,
+            "type": 476,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 216,
+            "type": 476,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 214,
+            "type": 476,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 211,
+            "type": 476,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 210,
+            "type": 476,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 206,
+            "type": 476,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 205,
+            "type": 476,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 203,
+            "type": 476,
+            "artifact": 0,
+            "blessed": false
+          }
+        ],
+        "logs": [
+          {
+            "flags": 2,
+            "turn": 1,
+            "text": "wizard the chaotic male human Rogue entered the dungeon"
+          },
+          {
+            "flags": 4096,
+            "turn": 1,
+            "text": "gained experience level 2"
+          },
+          {
+            "flags": 20480,
+            "turn": 1,
+            "text": "attained the rank of Cutpurse (level 3)"
+          },
+          {
+            "flags": 4096,
+            "turn": 1,
+            "text": "gained experience level 4"
+          },
+          {
+            "flags": 4096,
+            "turn": 1,
+            "text": "gained experience level 5"
+          },
+          {
+            "flags": 20480,
+            "turn": 1,
+            "text": "attained the rank of Rogue (level 6)"
+          },
+          {
+            "flags": 4096,
+            "turn": 1,
+            "text": "gained experience level 7"
+          },
+          {
+            "flags": 4096,
+            "turn": 1,
+            "text": "gained experience level 8"
+          },
+          {
+            "flags": 4096,
+            "turn": 1,
+            "text": "gained experience level 9"
+          },
+          {
+            "flags": 20480,
+            "turn": 1,
+            "text": "attained the rank of Pilferer (level 10)"
+          },
+          {
+            "flags": 4096,
+            "turn": 1,
+            "text": "gained experience level 11"
+          },
+          {
+            "flags": 4096,
+            "turn": 1,
+            "text": "gained experience level 12"
+          },
+          {
+            "flags": 4096,
+            "turn": 1,
+            "text": "gained experience level 13"
+          },
+          {
+            "flags": 2,
+            "turn": 1,
+            "text": "attained the rank of Robber (level 14)"
+          },
+          {
+            "flags": 2,
+            "turn": 1,
+            "text": "entered Home 1, the Quest"
+          },
+          {
+            "flags": 32768,
+            "turn": 3,
+            "text": "entered level 8, the Dungeons of Doom"
+          },
+          {
+            "turn": 3,
+            "text": "made his first wish - \"blessed luckstone\", got \"a gray stone\""
+          },
+          {
+            "turn": 3,
+            "text": "wished for \"20 red dragon corpses\", got \"20 red dragon corpses\""
+          },
+          {
+            "flags": 32,
+            "turn": 3,
+            "text": "eschewed atheism, by dropping 20 red dragon corpses on an altar"
+          }
+        ]
+      },
+      "hashes": {
+        "screens": "b919b7926b363b2cc694a8a4063931f7405f07acec0d987e496df4e73b613f22",
+        "cursors": "67869d5c52456efc503f8297d381c08bc0300b4bf095920d7e62c1ba78beda77",
+        "calls": "104c690ca2590f5be29e8d7457f723c030bda608b8680ca0910a0cc16e913eab",
+        "slices": "025aaf226981b777e8e24fec6a45e7679aa295f1982e4c62073ab536ffe6cb22",
+        "frames": "026b720596d13f1838434a94d6866004dd8fa368c40c46c0f529cf816b5b1ccc"
+      },
+      "keys": 375,
+      "boundaries": 376,
+      "calls": 11331,
+      "frames": 5
+    },
+    {
+      "name": "lawful-sword-uncrowned",
+      "checks": [
+        {
+          "name": "real crown and gift setup",
+          "pass": true
+        },
+        {
+          "name": "C title and gift event order",
+          "pass": true
+        },
+        {
+          "name": "C event categories and turn",
+          "pass": true
+        },
+        {
+          "name": "C chronicle entries",
+          "pass": true
+        },
+        {
+          "name": "survival and every input boundary",
+          "pass": true
+        },
+        {
+          "name": "observer preserves five streams",
+          "pass": true
+        },
+        {
+          "name": "deferred input preserves five streams",
+          "pass": true
+        }
+      ],
+      "last": {
+        "step": 3,
+        "turn": 1,
+        "hp": 16,
+        "mortality": 0,
+        "crown": 0,
+        "intrinsic": [
+          0,
+          0,
+          285212672,
+          0,
+          0,
+          0
+        ],
+        "objects": [
+          {
+            "id": 41,
+            "type": 27,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 43,
+            "type": 34,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 45,
+            "type": 150,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 47,
+            "type": 293,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 40,
+            "type": 438,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 39,
+            "type": 438,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 37,
+            "type": 438,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 36,
+            "type": 438,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 34,
+            "type": 469,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 31,
+            "type": 438,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 28,
+            "type": 468,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 26,
+            "type": 438,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 23,
+            "type": 329,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 22,
+            "type": 245,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 20,
+            "type": 342,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 9,
+            "type": 215,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 6,
+            "type": 438,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 4,
+            "type": 438,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 3,
+            "type": 438,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 2,
+            "type": 438,
+            "artifact": 0,
+            "blessed": false
+          }
+        ],
+        "logs": [
+          {
+            "flags": 2,
+            "turn": 1,
+            "text": "wizard the lawful human Valkyrie entered the dungeon"
+          }
+        ]
+      },
+      "hashes": {
+        "screens": "6f0b0112a88348faec10761080c57ef3502a18b548cbbdb8dcf0ea50f02f2f9b",
+        "cursors": "2648a3a4977687462e31cf06d9a9f1885918e8d82ad906cdc9b51ad1bca315ad",
+        "calls": "46cf16c5fd7d989ed83d693f305a984815f31015c93e77ec9204aa5238ad5c3c",
+        "slices": "cd26231b9be5c37e37dcf477d57c05229b0762f6faca2bffffef6e196dc01857",
+        "frames": "210e130878aabaf46f1fe72749a263f9eb71c6a262b80f13882ed08d472c0ecd"
+      },
+      "keys": 3,
+      "boundaries": 4,
+      "calls": 2334,
+      "frames": 0
+    },
+    {
+      "name": "neutral-class-book-uncrowned",
+      "checks": [
+        {
+          "name": "real crown and gift setup",
+          "pass": true
+        },
+        {
+          "name": "C title and gift event order",
+          "pass": true
+        },
+        {
+          "name": "C event categories and turn",
+          "pass": true
+        },
+        {
+          "name": "C chronicle entries",
+          "pass": true
+        },
+        {
+          "name": "survival and every input boundary",
+          "pass": true
+        },
+        {
+          "name": "observer preserves five streams",
+          "pass": true
+        },
+        {
+          "name": "deferred input preserves five streams",
+          "pass": true
+        }
+      ],
+      "last": {
+        "step": 3,
+        "turn": 1,
+        "hp": 12,
+        "mortality": 0,
+        "crown": 0,
+        "intrinsic": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "objects": [
+          {
+            "id": 43,
+            "type": 79,
+            "artifact": 0,
+            "blessed": true
+          },
+          {
+            "id": 44,
+            "type": 148,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 45,
+            "type": 427,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 46,
+            "type": 196,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 47,
+            "type": 187,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 49,
+            "type": 300,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 50,
+            "type": 302,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 51,
+            "type": 308,
+            "artifact": 0,
+            "blessed": true
+          },
+          {
+            "id": 53,
+            "type": 327,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 54,
+            "type": 329,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 57,
+            "type": 376,
+            "artifact": 0,
+            "blessed": true
+          },
+          {
+            "id": 60,
+            "type": 374,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 61,
+            "type": 242,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 41,
+            "type": 438,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 39,
+            "type": 438,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 36,
+            "type": 438,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 35,
+            "type": 438,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 33,
+            "type": 466,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 31,
+            "type": 438,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 26,
+            "type": 438,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 25,
+            "type": 468,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 24,
+            "type": 469,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 22,
+            "type": 464,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 20,
+            "type": 133,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 18,
+            "type": 476,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 6,
+            "type": 214,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 4,
+            "type": 381,
+            "artifact": 0,
+            "blessed": false
+          }
+        ],
+        "logs": [
+          {
+            "flags": 2,
+            "turn": 1,
+            "text": "wizard the neutral male human Wizard entered the dungeon"
+          }
+        ]
+      },
+      "hashes": {
+        "screens": "d1da2c88e12db20553d241504cff5c3097ef052c94c2cde60ddf02fe41952126",
+        "cursors": "5c4aaef56d4904ee04edb4506ee91ba0505c2b2f66c7b9e9ace2ce82b980b2bc",
+        "calls": "f687d5f81d594082087aa5d5a97acc8fb75ec6f9e641bb0f68aec8635a558813",
+        "slices": "af6aed67c38d8b4a77dbb09a9767b5e2fe4aa7739dfa72bdb0b769b4201eecd5",
+        "frames": "210e130878aabaf46f1fe72749a263f9eb71c6a262b80f13882ed08d472c0ecd"
+      },
+      "keys": 3,
+      "boundaries": 4,
+      "calls": 2211,
+      "frames": 0
+    },
+    {
+      "name": "chaotic-sword-uncrowned",
+      "checks": [
+        {
+          "name": "real crown and gift setup",
+          "pass": true
+        },
+        {
+          "name": "C title and gift event order",
+          "pass": true
+        },
+        {
+          "name": "C event categories and turn",
+          "pass": true
+        },
+        {
+          "name": "C chronicle entries",
+          "pass": true
+        },
+        {
+          "name": "survival and every input boundary",
+          "pass": true
+        },
+        {
+          "name": "observer preserves five streams",
+          "pass": true
+        },
+        {
+          "name": "deferred input preserves five streams",
+          "pass": true
+        }
+      ],
+      "last": {
+        "step": 3,
+        "turn": 1,
+        "hp": 12,
+        "mortality": 0,
+        "crown": 0,
+        "intrinsic": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "objects": [
+          {
+            "id": 41,
+            "type": 46,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 43,
+            "type": 34,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 45,
+            "type": 134,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 47,
+            "type": 318,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 48,
+            "type": 222,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 50,
+            "type": 217,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 52,
+            "type": 233,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 40,
+            "type": 438,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 39,
+            "type": 438,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 37,
+            "type": 438,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 36,
+            "type": 438,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 34,
+            "type": 469,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 31,
+            "type": 438,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 28,
+            "type": 468,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 26,
+            "type": 438,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 23,
+            "type": 329,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 22,
+            "type": 245,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 20,
+            "type": 342,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 9,
+            "type": 215,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 6,
+            "type": 438,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 4,
+            "type": 438,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 3,
+            "type": 438,
+            "artifact": 0,
+            "blessed": false
+          },
+          {
+            "id": 2,
+            "type": 438,
+            "artifact": 0,
+            "blessed": false
+          }
+        ],
+        "logs": [
+          {
+            "flags": 2,
+            "turn": 1,
+            "text": "wizard the chaotic male human Rogue entered the dungeon"
+          }
+        ]
+      },
+      "hashes": {
+        "screens": "236bfd11b4d466c3dc20690e191cecaae96107f8927aff0721a3a7c10523cd7a",
+        "cursors": "2648a3a4977687462e31cf06d9a9f1885918e8d82ad906cdc9b51ad1bca315ad",
+        "calls": "28e219c230789dc9315a243dcf66f7bd620194d42eabcd72c641f2dbb40f7c7d",
+        "slices": "bcc41452d8c4f39a0768a988c63fb8c456b7daf6efdc2e1f3baf892a36c9cddd",
+        "frames": "210e130878aabaf46f1fe72749a263f9eb71c6a262b80f13882ed08d472c0ecd"
+      },
+      "keys": 3,
+      "boundaries": 4,
+      "calls": 2348,
+      "frames": 0
+    }
+  ]
+}

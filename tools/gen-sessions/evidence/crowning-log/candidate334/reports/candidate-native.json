@@ -1,0 +1,531 @@
+[
+  {
+    "segment": 0,
+    "name": "lawful-sword",
+    "boundaries": {
+      "expected": 232,
+      "actual": 232
+    },
+    "frozenScreens": 232,
+    "fullStyleScreens": 232,
+    "matchingStyleCells": 445440,
+    "totalCells": 445440,
+    "blankStyleMismatches": 0,
+    "nonblankStyleMismatches": 0,
+    "glyphMismatches": 0,
+    "screenDifferences": [],
+    "cursors": {
+      "expected": 232,
+      "actual": 232,
+      "matched": 232,
+      "firstDifference": null
+    },
+    "calls": {
+      "rawExpected": 3729,
+      "rawActual": 3729,
+      "discardedEntries": 0,
+      "expected": 3729,
+      "actual": 3729,
+      "firstDifference": null
+    },
+    "slices": {
+      "expected": 232,
+      "actual": 232,
+      "matched": 232,
+      "differences": []
+    },
+    "frames": {
+      "expected": 1,
+      "actual": 1,
+      "expectedSlices": 232,
+      "actualSlices": 232,
+      "countMismatches": [],
+      "fullStyleMatches": 1,
+      "cursorMatches": 1
+    },
+    "rawHashes": {
+      "c": {
+        "screens": "859063da8e34c5b36ef496414dc51236e508a9f2848e66435e90af961c955c72",
+        "cursors": "ef4d9d35257010a94779eb64540d5f10bfc32de3e8291df0af839b38d8f90fb0",
+        "calls": "488915702715e50f81f88c9d43b65d243415a708b95377e3572894c66387d0ee",
+        "slices": "33b31d7f02ce00f30674a7d9da7a1cc2bec0dee28646c57275552efce1dc94a1",
+        "frames": "169ff6358bfb057b4524a9aa2bb3ae0d677fd4e6e1a9392edb204831b9602786"
+      },
+      "js": {
+        "screens": "323598ff46df10f52347849850d34e79097d324f1d343d5e1c2ab454e7daad31",
+        "cursors": "ef4d9d35257010a94779eb64540d5f10bfc32de3e8291df0af839b38d8f90fb0",
+        "calls": "9c1e3e42f3d00094ae828d7fee0cae58c92522b4b0efc0d7ffe9b9645ea7e2e7",
+        "slices": "e669cab2e86eee3b565f39c7efa76548bb62d88d60cb6bcf19f79f2f2873da09",
+        "frames": "458254d7534e0e2114612d79f4588448378607d9d8a9c37664d6d8143891555a"
+      }
+    },
+    "normalizedHashes": {
+      "c": {
+        "calls": "9c1e3e42f3d00094ae828d7fee0cae58c92522b4b0efc0d7ffe9b9645ea7e2e7",
+        "slices": "e669cab2e86eee3b565f39c7efa76548bb62d88d60cb6bcf19f79f2f2873da09"
+      },
+      "js": {
+        "calls": "9c1e3e42f3d00094ae828d7fee0cae58c92522b4b0efc0d7ffe9b9645ea7e2e7",
+        "slices": "e669cab2e86eee3b565f39c7efa76548bb62d88d60cb6bcf19f79f2f2873da09"
+      }
+    },
+    "frozenScreenCursorExact": true,
+    "fullRngExact": true,
+    "fullStyleExact": true,
+    "animationExact": true
+  },
+  {
+    "segment": 1,
+    "name": "neutral-class-book",
+    "boundaries": {
+      "expected": 279,
+      "actual": 279
+    },
+    "frozenScreens": 279,
+    "fullStyleScreens": 279,
+    "matchingStyleCells": 535680,
+    "totalCells": 535680,
+    "blankStyleMismatches": 0,
+    "nonblankStyleMismatches": 0,
+    "glyphMismatches": 0,
+    "screenDifferences": [],
+    "cursors": {
+      "expected": 279,
+      "actual": 279,
+      "matched": 279,
+      "firstDifference": null
+    },
+    "calls": {
+      "rawExpected": 10438,
+      "rawActual": 10438,
+      "discardedEntries": 0,
+      "expected": 10438,
+      "actual": 10438,
+      "firstDifference": null
+    },
+    "slices": {
+      "expected": 279,
+      "actual": 279,
+      "matched": 279,
+      "differences": []
+    },
+    "frames": {
+      "expected": 3,
+      "actual": 3,
+      "expectedSlices": 279,
+      "actualSlices": 279,
+      "countMismatches": [],
+      "fullStyleMatches": 3,
+      "cursorMatches": 3
+    },
+    "rawHashes": {
+      "c": {
+        "screens": "46854514138b2b2461ae1caec96c7a091fe198419f707b4854d7242f5dd00d1b",
+        "cursors": "70aff2cf0629ed59489a168f2f5d432c96fb12a9be54c705dc841f75449e4f26",
+        "calls": "9201b4d45d53559f0e181be0a8c00841525982cf98bab681be7a0f1ca4d1e86f",
+        "slices": "35a23b4129c47e1495f9320cccf298745e776d5f65014a60f41f977ad162c5bc",
+        "frames": "2c7b043239325ee187e531ee1fef5a4de5a7dd8f250e6f8bd336d50eedaadaab"
+      },
+      "js": {
+        "screens": "10177716f07821730862c60c4fface671b9fec1fe506773a59301092d0e5dfa2",
+        "cursors": "70aff2cf0629ed59489a168f2f5d432c96fb12a9be54c705dc841f75449e4f26",
+        "calls": "e1c1117fe7370abfd51196dd11e70098e9927d040f9e850d38c2cf234cb0c5cb",
+        "slices": "66e3e1499bab51bba4b1902155f7d68c6b796237948dca5e535cba1d8f0ac133",
+        "frames": "3c305b9bd0f33163f6148b64cfc0f3598dfb0f513645a4431de2d8160718ddaa"
+      }
+    },
+    "normalizedHashes": {
+      "c": {
+        "calls": "e1c1117fe7370abfd51196dd11e70098e9927d040f9e850d38c2cf234cb0c5cb",
+        "slices": "66e3e1499bab51bba4b1902155f7d68c6b796237948dca5e535cba1d8f0ac133"
+      },
+      "js": {
+        "calls": "e1c1117fe7370abfd51196dd11e70098e9927d040f9e850d38c2cf234cb0c5cb",
+        "slices": "66e3e1499bab51bba4b1902155f7d68c6b796237948dca5e535cba1d8f0ac133"
+      }
+    },
+    "frozenScreenCursorExact": true,
+    "fullRngExact": true,
+    "fullStyleExact": true,
+    "animationExact": true
+  },
+  {
+    "segment": 2,
+    "name": "chaotic-sword",
+    "boundaries": {
+      "expected": 376,
+      "actual": 376
+    },
+    "frozenScreens": 374,
+    "fullStyleScreens": 374,
+    "matchingStyleCells": 721809,
+    "totalCells": 721920,
+    "blankStyleMismatches": 0,
+    "nonblankStyleMismatches": 0,
+    "glyphMismatches": 111,
+    "screenDifferences": [
+      {
+        "step": 373,
+        "frozenEqual": false,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1877,
+        "blankStyleMismatches": 0,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 43,
+        "firstFullStyleDifference": {
+          "x": 3,
+          "y": 22,
+          "c": {
+            "ch": "2",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "4",
+            "color": 8,
+            "attr": 0
+          }
+        },
+        "firstFrozenDifference": {
+          "x": 3,
+          "y": 22,
+          "kind": "ch",
+          "c": {
+            "ch": "2",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "4",
+            "color": 8,
+            "attr": 0
+          }
+        }
+      },
+      {
+        "step": 374,
+        "frozenEqual": false,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1852,
+        "blankStyleMismatches": 0,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 68,
+        "firstFullStyleDifference": {
+          "x": 11,
+          "y": 0,
+          "c": {
+            "ch": "c",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "b",
+            "color": 8,
+            "attr": 0
+          }
+        },
+        "firstFrozenDifference": {
+          "x": 11,
+          "y": 0,
+          "kind": "ch",
+          "c": {
+            "ch": "c",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "b",
+            "color": 8,
+            "attr": 0
+          }
+        }
+      }
+    ],
+    "cursors": {
+      "expected": 376,
+      "actual": 376,
+      "matched": 376,
+      "firstDifference": null
+    },
+    "calls": {
+      "rawExpected": 11331,
+      "rawActual": 11331,
+      "discardedEntries": 0,
+      "expected": 11331,
+      "actual": 11331,
+      "firstDifference": null
+    },
+    "slices": {
+      "expected": 376,
+      "actual": 376,
+      "matched": 376,
+      "differences": []
+    },
+    "frames": {
+      "expected": 5,
+      "actual": 5,
+      "expectedSlices": 376,
+      "actualSlices": 376,
+      "countMismatches": [],
+      "fullStyleMatches": 5,
+      "cursorMatches": 5
+    },
+    "rawHashes": {
+      "c": {
+        "screens": "d9b56726ddc34ec8b3c16e97c5bad46c56ad9c2d71901c8b1fb790338660bd18",
+        "cursors": "f59fe1a805b63c07f8715577964bd6f1d285c0a11f3a42ef0ed9b02f628789e3",
+        "calls": "570756b16566d124ba7a1a7ec809580ce2f8c061d667b6bea116e42f325346ef",
+        "slices": "312f896d33d2682ac26c3a3dfce50975875dfd8af812374a45e53e612ffa3355",
+        "frames": "52d2e207375cdffe8c0577ede31a37bffb279b6ecd614e725520eb39a4bd17a0"
+      },
+      "js": {
+        "screens": "47e57caf5881f6aaec9ddd7f31c772354afc4f92705970bb65feea813965df53",
+        "cursors": "f59fe1a805b63c07f8715577964bd6f1d285c0a11f3a42ef0ed9b02f628789e3",
+        "calls": "104c690ca2590f5be29e8d7457f723c030bda608b8680ca0910a0cc16e913eab",
+        "slices": "025aaf226981b777e8e24fec6a45e7679aa295f1982e4c62073ab536ffe6cb22",
+        "frames": "026b720596d13f1838434a94d6866004dd8fa368c40c46c0f529cf816b5b1ccc"
+      }
+    },
+    "normalizedHashes": {
+      "c": {
+        "calls": "104c690ca2590f5be29e8d7457f723c030bda608b8680ca0910a0cc16e913eab",
+        "slices": "025aaf226981b777e8e24fec6a45e7679aa295f1982e4c62073ab536ffe6cb22"
+      },
+      "js": {
+        "calls": "104c690ca2590f5be29e8d7457f723c030bda608b8680ca0910a0cc16e913eab",
+        "slices": "025aaf226981b777e8e24fec6a45e7679aa295f1982e4c62073ab536ffe6cb22"
+      }
+    },
+    "frozenScreenCursorExact": false,
+    "fullRngExact": true,
+    "fullStyleExact": false,
+    "animationExact": true
+  },
+  {
+    "segment": 3,
+    "name": "lawful-sword-uncrowned",
+    "boundaries": {
+      "expected": 4,
+      "actual": 4
+    },
+    "frozenScreens": 4,
+    "fullStyleScreens": 4,
+    "matchingStyleCells": 7680,
+    "totalCells": 7680,
+    "blankStyleMismatches": 0,
+    "nonblankStyleMismatches": 0,
+    "glyphMismatches": 0,
+    "screenDifferences": [],
+    "cursors": {
+      "expected": 4,
+      "actual": 4,
+      "matched": 4,
+      "firstDifference": null
+    },
+    "calls": {
+      "rawExpected": 2334,
+      "rawActual": 2334,
+      "discardedEntries": 0,
+      "expected": 2334,
+      "actual": 2334,
+      "firstDifference": null
+    },
+    "slices": {
+      "expected": 4,
+      "actual": 4,
+      "matched": 4,
+      "differences": []
+    },
+    "frames": {
+      "expected": 0,
+      "actual": 0,
+      "expectedSlices": 4,
+      "actualSlices": 4,
+      "countMismatches": [],
+      "fullStyleMatches": 0,
+      "cursorMatches": 0
+    },
+    "rawHashes": {
+      "c": {
+        "screens": "89fe7b47b61c671487fa96fa9518f28d5014b2a38cfb11d02abe8bb8b6acaed0",
+        "cursors": "2648a3a4977687462e31cf06d9a9f1885918e8d82ad906cdc9b51ad1bca315ad",
+        "calls": "62261f0f89fe956dc8c5cd02584d4e1c6e36e3209bd45a74250a4b2663a6d4f4",
+        "slices": "2f4ce1133b50ade6e3f9e73d63ae1d2f2292fd2eeb4801400aeb850a62bceff6",
+        "frames": "210e130878aabaf46f1fe72749a263f9eb71c6a262b80f13882ed08d472c0ecd"
+      },
+      "js": {
+        "screens": "6f0b0112a88348faec10761080c57ef3502a18b548cbbdb8dcf0ea50f02f2f9b",
+        "cursors": "2648a3a4977687462e31cf06d9a9f1885918e8d82ad906cdc9b51ad1bca315ad",
+        "calls": "46cf16c5fd7d989ed83d693f305a984815f31015c93e77ec9204aa5238ad5c3c",
+        "slices": "cd26231b9be5c37e37dcf477d57c05229b0762f6faca2bffffef6e196dc01857",
+        "frames": "210e130878aabaf46f1fe72749a263f9eb71c6a262b80f13882ed08d472c0ecd"
+      }
+    },
+    "normalizedHashes": {
+      "c": {
+        "calls": "46cf16c5fd7d989ed83d693f305a984815f31015c93e77ec9204aa5238ad5c3c",
+        "slices": "cd26231b9be5c37e37dcf477d57c05229b0762f6faca2bffffef6e196dc01857"
+      },
+      "js": {
+        "calls": "46cf16c5fd7d989ed83d693f305a984815f31015c93e77ec9204aa5238ad5c3c",
+        "slices": "cd26231b9be5c37e37dcf477d57c05229b0762f6faca2bffffef6e196dc01857"
+      }
+    },
+    "frozenScreenCursorExact": true,
+    "fullRngExact": true,
+    "fullStyleExact": true,
+    "animationExact": true
+  },
+  {
+    "segment": 4,
+    "name": "neutral-class-book-uncrowned",
+    "boundaries": {
+      "expected": 4,
+      "actual": 4
+    },
+    "frozenScreens": 4,
+    "fullStyleScreens": 4,
+    "matchingStyleCells": 7680,
+    "totalCells": 7680,
+    "blankStyleMismatches": 0,
+    "nonblankStyleMismatches": 0,
+    "glyphMismatches": 0,
+    "screenDifferences": [],
+    "cursors": {
+      "expected": 4,
+      "actual": 4,
+      "matched": 4,
+      "firstDifference": null
+    },
+    "calls": {
+      "rawExpected": 2211,
+      "rawActual": 2211,
+      "discardedEntries": 0,
+      "expected": 2211,
+      "actual": 2211,
+      "firstDifference": null
+    },
+    "slices": {
+      "expected": 4,
+      "actual": 4,
+      "matched": 4,
+      "differences": []
+    },
+    "frames": {
+      "expected": 0,
+      "actual": 0,
+      "expectedSlices": 4,
+      "actualSlices": 4,
+      "countMismatches": [],
+      "fullStyleMatches": 0,
+      "cursorMatches": 0
+    },
+    "rawHashes": {
+      "c": {
+        "screens": "983661ae7c98b23c11ce78510885585f78d280e836bb9fc428b6951fce535b34",
+        "cursors": "5c4aaef56d4904ee04edb4506ee91ba0505c2b2f66c7b9e9ace2ce82b980b2bc",
+        "calls": "c6e9bbd9d8ca912ed38a67242baf74b3a77d228d1eb58c06195ff981a6dfd9f8",
+        "slices": "00ff12364ea98799aee9bdef1f079a19f86d5771326879c1e66cee3ef6ac7a8e",
+        "frames": "210e130878aabaf46f1fe72749a263f9eb71c6a262b80f13882ed08d472c0ecd"
+      },
+      "js": {
+        "screens": "d1da2c88e12db20553d241504cff5c3097ef052c94c2cde60ddf02fe41952126",
+        "cursors": "5c4aaef56d4904ee04edb4506ee91ba0505c2b2f66c7b9e9ace2ce82b980b2bc",
+        "calls": "f687d5f81d594082087aa5d5a97acc8fb75ec6f9e641bb0f68aec8635a558813",
+        "slices": "af6aed67c38d8b4a77dbb09a9767b5e2fe4aa7739dfa72bdb0b769b4201eecd5",
+        "frames": "210e130878aabaf46f1fe72749a263f9eb71c6a262b80f13882ed08d472c0ecd"
+      }
+    },
+    "normalizedHashes": {
+      "c": {
+        "calls": "f687d5f81d594082087aa5d5a97acc8fb75ec6f9e641bb0f68aec8635a558813",
+        "slices": "af6aed67c38d8b4a77dbb09a9767b5e2fe4aa7739dfa72bdb0b769b4201eecd5"
+      },
+      "js": {
+        "calls": "f687d5f81d594082087aa5d5a97acc8fb75ec6f9e641bb0f68aec8635a558813",
+        "slices": "af6aed67c38d8b4a77dbb09a9767b5e2fe4aa7739dfa72bdb0b769b4201eecd5"
+      }
+    },
+    "frozenScreenCursorExact": true,
+    "fullRngExact": true,
+    "fullStyleExact": true,
+    "animationExact": true
+  },
+  {
+    "segment": 5,
+    "name": "chaotic-sword-uncrowned",
+    "boundaries": {
+      "expected": 4,
+      "actual": 4
+    },
+    "frozenScreens": 4,
+    "fullStyleScreens": 4,
+    "matchingStyleCells": 7680,
+    "totalCells": 7680,
+    "blankStyleMismatches": 0,
+    "nonblankStyleMismatches": 0,
+    "glyphMismatches": 0,
+    "screenDifferences": [],
+    "cursors": {
+      "expected": 4,
+      "actual": 4,
+      "matched": 4,
+      "firstDifference": null
+    },
+    "calls": {
+      "rawExpected": 2348,
+      "rawActual": 2348,
+      "discardedEntries": 0,
+      "expected": 2348,
+      "actual": 2348,
+      "firstDifference": null
+    },
+    "slices": {
+      "expected": 4,
+      "actual": 4,
+      "matched": 4,
+      "differences": []
+    },
+    "frames": {
+      "expected": 0,
+      "actual": 0,
+      "expectedSlices": 4,
+      "actualSlices": 4,
+      "countMismatches": [],
+      "fullStyleMatches": 0,
+      "cursorMatches": 0
+    },
+    "rawHashes": {
+      "c": {
+        "screens": "05d9822a23f0b7f04fd383ea06c1f1381dfa4f718be1cde3feb755430f34310d",
+        "cursors": "2648a3a4977687462e31cf06d9a9f1885918e8d82ad906cdc9b51ad1bca315ad",
+        "calls": "d4f733120704dc162c490ed1f828376eb15aa172da6d8654854628bb5ca958a5",
+        "slices": "0ac7a4351293985bcf39000a58779b3908bccd4ab0d196235c8e2cccc6bb3b98",
+        "frames": "210e130878aabaf46f1fe72749a263f9eb71c6a262b80f13882ed08d472c0ecd"
+      },
+      "js": {
+        "screens": "236bfd11b4d466c3dc20690e191cecaae96107f8927aff0721a3a7c10523cd7a",
+        "cursors": "2648a3a4977687462e31cf06d9a9f1885918e8d82ad906cdc9b51ad1bca315ad",
+        "calls": "28e219c230789dc9315a243dcf66f7bd620194d42eabcd72c641f2dbb40f7c7d",
+        "slices": "bcc41452d8c4f39a0768a988c63fb8c456b7daf6efdc2e1f3baf892a36c9cddd",
+        "frames": "210e130878aabaf46f1fe72749a263f9eb71c6a262b80f13882ed08d472c0ecd"
+      }
+    },
+    "normalizedHashes": {
+      "c": {
+        "calls": "28e219c230789dc9315a243dcf66f7bd620194d42eabcd72c641f2dbb40f7c7d",
+        "slices": "bcc41452d8c4f39a0768a988c63fb8c456b7daf6efdc2e1f3baf892a36c9cddd"
+      },
+      "js": {
+        "calls": "28e219c230789dc9315a243dcf66f7bd620194d42eabcd72c641f2dbb40f7c7d",
+        "slices": "bcc41452d8c4f39a0768a988c63fb8c456b7daf6efdc2e1f3baf892a36c9cddd"
+      }
+    },
+    "frozenScreenCursorExact": true,
+    "fullRngExact": true,
+    "fullStyleExact": true,
+    "animationExact": true
+  }
+]

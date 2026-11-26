@@ -1,0 +1,1074 @@
+{
+  "members": {
+    "NEGATIVE-RECONCILIATION.md": {
+      "sha256": "cb54a8b0d663a15f84f4e9f7a4076c3320c96db93ace5cf63276d9dae37713d1",
+      "bytes": 989
+    },
+    "PLAN.md": {
+      "sha256": "1a5c114ef427cb4c0fc8ac8a85a2411ee4dff09f3e2d4217b63dc4efa1f2d639",
+      "bytes": 1143
+    },
+    "README.md": {
+      "sha256": "915dd4bc181b782c1909f41c721aa2c109315ac0dab5510f14ebd14723de0e41",
+      "bytes": 2133
+    },
+    "SOURCE-REVIEW.md": {
+      "sha256": "07fabf6d5753ec465d08309837c4416843677ca4ed457e7dc4f5efc2349ce538",
+      "bytes": 1785
+    },
+    "STATUS.md": {
+      "sha256": "7d2bc99b2efc4e91e80779401c1c6046ccdf65adf59cc0e953602ed4b9d4ac68",
+      "bytes": 1003
+    },
+    "assertion-preservation.json": {
+      "sha256": "3b4931d32dc2335b4998eb7fdccade028336b231854629844537dd6c017ac099",
+      "bytes": 912
+    },
+    "attempts/preflight-1/preflight.mjs": {
+      "sha256": "978847989ed593db599be016280b2fd63e10e56ca004b7b29fe51352bc0d8181",
+      "bytes": 3521
+    },
+    "attempts/preflight-1/provenance.json": {
+      "sha256": "a3bdf3e1fd3d189d80b2cd96811d69e1a9cd5e2cddee9689f415e2271ef0ecb3",
+      "bytes": 1056
+    },
+    "attempts/preflight-1/run-lock.json": {
+      "sha256": "c340c7019e0793ef41460ad05dedd75a82b75e8542937fa25769e6a4c1e61456",
+      "bytes": 2967
+    },
+    "attempts/preflight-1/worker.json": {
+      "sha256": "f5eb4aba237cb41f005ff756381874a9b9868d1442ad68646c0effe66920913e",
+      "bytes": 776
+    },
+    "attempts/preflight-1/worker.log": {
+      "sha256": "709ea73db0bd68a48887b977d59aae08e5dc966e948f5af7b317a162aa14eb36",
+      "bytes": 909
+    },
+    "baseline": {
+      "link": "../crowning-log-candidate"
+    },
+    "baseline-runtime.json": {
+      "link": "../crowning-log-candidate/runtime.json"
+    },
+    "changed-paths.json": {
+      "sha256": "2916b4964251e4a087d60e1a3bff48eff3eb983a2d4095fb7c433a2028675439",
+      "bytes": 8499
+    },
+    "compare-native.mjs": {
+      "link": "../crowning-log-candidate/compare-native.mjs"
+    },
+    "composed-runtime.patch": {
+      "sha256": "b2455e09b201d4080de97e388aa1cdd3fba9281e548acab72034cf2af343a0c7",
+      "bytes": 7452
+    },
+    "frozen": {
+      "link": "../../../frozen"
+    },
+    "handoff.json": {
+      "sha256": "ea76d8041d73d63b37f66af539b60c27c7e3fdb50813860e1b6bff5ce48fdba8",
+      "bytes": 5279
+    },
+    "input-lock.json": {
+      "link": "../crowning-log-candidate/input-lock.json"
+    },
+    "js/allmain.js": {
+      "link": "../baseline/js/allmain.js"
+    },
+    "js/apply.js": {
+      "link": "../baseline/js/apply.js"
+    },
+    "js/artifact.js": {
+      "link": "../baseline/js/artifact.js"
+    },
+    "js/artilist_data.js": {
+      "link": "../baseline/js/artilist_data.js"
+    },
+    "js/attrib.js": {
+      "link": "../baseline/js/attrib.js"
+    },
+    "js/ball.js": {
+      "link": "../baseline/js/ball.js"
+    },
+    "js/banner_data.js": {
+      "link": "../baseline/js/banner_data.js"
+    },
+    "js/bones.js": {
+      "link": "../baseline/js/bones.js"
+    },
+    "js/botl.js": {
+      "link": "../baseline/js/botl.js"
+    },
+    "js/calendar.js": {
+      "link": "../baseline/js/calendar.js"
+    },
+    "js/cfgfiles.js": {
+      "link": "../baseline/js/cfgfiles.js"
+    },
+    "js/cmd.js": {
+      "link": "../baseline/js/cmd.js"
+    },
+    "js/coloratt.js": {
+      "link": "../baseline/js/coloratt.js"
+    },
+    "js/coloratt_data.js": {
+      "link": "../baseline/js/coloratt_data.js"
+    },
+    "js/const.js": {
+      "link": "../baseline/js/const.js"
+    },
+    "js/dat/air.js": {
+      "link": "../../baseline/js/dat/air.js"
+    },
+    "js/dat/arc-fila.js": {
+      "link": "../../baseline/js/dat/arc-fila.js"
+    },
+    "js/dat/arc-filb.js": {
+      "link": "../../baseline/js/dat/arc-filb.js"
+    },
+    "js/dat/arc-goal.js": {
+      "link": "../../baseline/js/dat/arc-goal.js"
+    },
+    "js/dat/arc-loca.js": {
+      "link": "../../baseline/js/dat/arc-loca.js"
+    },
+    "js/dat/arc-strt.js": {
+      "link": "../../baseline/js/dat/arc-strt.js"
+    },
+    "js/dat/asmodeus.js": {
+      "link": "../../baseline/js/dat/asmodeus.js"
+    },
+    "js/dat/astral.js": {
+      "link": "../../baseline/js/dat/astral.js"
+    },
+    "js/dat/baalz.js": {
+      "link": "../../baseline/js/dat/baalz.js"
+    },
+    "js/dat/bar-fila.js": {
+      "link": "../../baseline/js/dat/bar-fila.js"
+    },
+    "js/dat/bar-filb.js": {
+      "link": "../../baseline/js/dat/bar-filb.js"
+    },
+    "js/dat/bar-goal.js": {
+      "link": "../../baseline/js/dat/bar-goal.js"
+    },
+    "js/dat/bar-loca.js": {
+      "link": "../../baseline/js/dat/bar-loca.js"
+    },
+    "js/dat/bar-strt.js": {
+      "link": "../../baseline/js/dat/bar-strt.js"
+    },
+    "js/dat/bigrm-1.js": {
+      "link": "../../baseline/js/dat/bigrm-1.js"
+    },
+    "js/dat/bigrm-10.js": {
+      "link": "../../baseline/js/dat/bigrm-10.js"
+    },
+    "js/dat/bigrm-11.js": {
+      "link": "../../baseline/js/dat/bigrm-11.js"
+    },
+    "js/dat/bigrm-12.js": {
+      "link": "../../baseline/js/dat/bigrm-12.js"
+    },
+    "js/dat/bigrm-13.js": {
+      "link": "../../baseline/js/dat/bigrm-13.js"
+    },
+    "js/dat/bigrm-2.js": {
+      "link": "../../baseline/js/dat/bigrm-2.js"
+    },
+    "js/dat/bigrm-3.js": {
+      "link": "../../baseline/js/dat/bigrm-3.js"
+    },
+    "js/dat/bigrm-4.js": {
+      "link": "../../baseline/js/dat/bigrm-4.js"
+    },
+    "js/dat/bigrm-5.js": {
+      "link": "../../baseline/js/dat/bigrm-5.js"
+    },
+    "js/dat/bigrm-6.js": {
+      "link": "../../baseline/js/dat/bigrm-6.js"
+    },
+    "js/dat/bigrm-7.js": {
+      "link": "../../baseline/js/dat/bigrm-7.js"
+    },
+    "js/dat/bigrm-8.js": {
+      "link": "../../baseline/js/dat/bigrm-8.js"
+    },
+    "js/dat/bigrm-9.js": {
+      "link": "../../baseline/js/dat/bigrm-9.js"
+    },
+    "js/dat/castle.js": {
+      "link": "../../baseline/js/dat/castle.js"
+    },
+    "js/dat/cav-fila.js": {
+      "link": "../../baseline/js/dat/cav-fila.js"
+    },
+    "js/dat/cav-filb.js": {
+      "link": "../../baseline/js/dat/cav-filb.js"
+    },
+    "js/dat/cav-goal.js": {
+      "link": "../../baseline/js/dat/cav-goal.js"
+    },
+    "js/dat/cav-loca.js": {
+      "link": "../../baseline/js/dat/cav-loca.js"
+    },
+    "js/dat/cav-strt.js": {
+      "link": "../../baseline/js/dat/cav-strt.js"
+    },
+    "js/dat/earth.js": {
+      "link": "../../baseline/js/dat/earth.js"
+    },
+    "js/dat/fakewiz1.js": {
+      "link": "../../baseline/js/dat/fakewiz1.js"
+    },
+    "js/dat/fakewiz2.js": {
+      "link": "../../baseline/js/dat/fakewiz2.js"
+    },
+    "js/dat/fire.js": {
+      "link": "../../baseline/js/dat/fire.js"
+    },
+    "js/dat/hea-fila.js": {
+      "link": "../../baseline/js/dat/hea-fila.js"
+    },
+    "js/dat/hea-filb.js": {
+      "link": "../../baseline/js/dat/hea-filb.js"
+    },
+    "js/dat/hea-goal.js": {
+      "link": "../../baseline/js/dat/hea-goal.js"
+    },
+    "js/dat/hea-loca.js": {
+      "link": "../../baseline/js/dat/hea-loca.js"
+    },
+    "js/dat/hea-strt.js": {
+      "link": "../../baseline/js/dat/hea-strt.js"
+    },
+    "js/dat/hellfill.js": {
+      "link": "../../baseline/js/dat/hellfill.js"
+    },
+    "js/dat/juiblex.js": {
+      "link": "../../baseline/js/dat/juiblex.js"
+    },
+    "js/dat/kni-fila.js": {
+      "link": "../../baseline/js/dat/kni-fila.js"
+    },
+    "js/dat/kni-filb.js": {
+      "link": "../../baseline/js/dat/kni-filb.js"
+    },
+    "js/dat/kni-goal.js": {
+      "link": "../../baseline/js/dat/kni-goal.js"
+    },
+    "js/dat/kni-loca.js": {
+      "link": "../../baseline/js/dat/kni-loca.js"
+    },
+    "js/dat/kni-strt.js": {
+      "link": "../../baseline/js/dat/kni-strt.js"
+    },
+    "js/dat/knox.js": {
+      "link": "../../baseline/js/dat/knox.js"
+    },
+    "js/dat/levels.js": {
+      "link": "../../baseline/js/dat/levels.js"
+    },
+    "js/dat/medusa-1.js": {
+      "link": "../../baseline/js/dat/medusa-1.js"
+    },
+    "js/dat/medusa-2.js": {
+      "link": "../../baseline/js/dat/medusa-2.js"
+    },
+    "js/dat/medusa-3.js": {
+      "link": "../../baseline/js/dat/medusa-3.js"
+    },
+    "js/dat/medusa-4.js": {
+      "link": "../../baseline/js/dat/medusa-4.js"
+    },
+    "js/dat/minefill.js": {
+      "link": "../../baseline/js/dat/minefill.js"
+    },
+    "js/dat/minend-1.js": {
+      "link": "../../baseline/js/dat/minend-1.js"
+    },
+    "js/dat/minend-2.js": {
+      "link": "../../baseline/js/dat/minend-2.js"
+    },
+    "js/dat/minend-3.js": {
+      "link": "../../baseline/js/dat/minend-3.js"
+    },
+    "js/dat/minetn-1.js": {
+      "link": "../../baseline/js/dat/minetn-1.js"
+    },
+    "js/dat/minetn-2.js": {
+      "link": "../../baseline/js/dat/minetn-2.js"
+    },
+    "js/dat/minetn-3.js": {
+      "link": "../../baseline/js/dat/minetn-3.js"
+    },
+    "js/dat/minetn-4.js": {
+      "link": "../../baseline/js/dat/minetn-4.js"
+    },
+    "js/dat/minetn-5.js": {
+      "link": "../../baseline/js/dat/minetn-5.js"
+    },
+    "js/dat/minetn-6.js": {
+      "link": "../../baseline/js/dat/minetn-6.js"
+    },
+    "js/dat/minetn-7.js": {
+      "link": "../../baseline/js/dat/minetn-7.js"
+    },
+    "js/dat/mon-fila.js": {
+      "link": "../../baseline/js/dat/mon-fila.js"
+    },
+    "js/dat/mon-filb.js": {
+      "link": "../../baseline/js/dat/mon-filb.js"
+    },
+    "js/dat/mon-goal.js": {
+      "link": "../../baseline/js/dat/mon-goal.js"
+    },
+    "js/dat/mon-loca.js": {
+      "link": "../../baseline/js/dat/mon-loca.js"
+    },
+    "js/dat/mon-strt.js": {
+      "link": "../../baseline/js/dat/mon-strt.js"
+    },
+    "js/dat/nhlib.js": {
+      "link": "../../baseline/js/dat/nhlib.js"
+    },
+    "js/dat/oracle.js": {
+      "link": "../../baseline/js/dat/oracle.js"
+    },
+    "js/dat/orcus.js": {
+      "link": "../../baseline/js/dat/orcus.js"
+    },
+    "js/dat/pri-fila.js": {
+      "link": "../../baseline/js/dat/pri-fila.js"
+    },
+    "js/dat/pri-filb.js": {
+      "link": "../../baseline/js/dat/pri-filb.js"
+    },
+    "js/dat/pri-goal.js": {
+      "link": "../../baseline/js/dat/pri-goal.js"
+    },
+    "js/dat/pri-loca.js": {
+      "link": "../../baseline/js/dat/pri-loca.js"
+    },
+    "js/dat/pri-strt.js": {
+      "link": "../../baseline/js/dat/pri-strt.js"
+    },
+    "js/dat/quest-levels.js": {
+      "link": "../../baseline/js/dat/quest-levels.js"
+    },
+    "js/dat/ran-fila.js": {
+      "link": "../../baseline/js/dat/ran-fila.js"
+    },
+    "js/dat/ran-filb.js": {
+      "link": "../../baseline/js/dat/ran-filb.js"
+    },
+    "js/dat/ran-goal.js": {
+      "link": "../../baseline/js/dat/ran-goal.js"
+    },
+    "js/dat/ran-loca.js": {
+      "link": "../../baseline/js/dat/ran-loca.js"
+    },
+    "js/dat/ran-strt.js": {
+      "link": "../../baseline/js/dat/ran-strt.js"
+    },
+    "js/dat/rog-fila.js": {
+      "link": "../../baseline/js/dat/rog-fila.js"
+    },
+    "js/dat/rog-filb.js": {
+      "link": "../../baseline/js/dat/rog-filb.js"
+    },
+    "js/dat/rog-goal.js": {
+      "link": "../../baseline/js/dat/rog-goal.js"
+    },
+    "js/dat/rog-loca.js": {
+      "link": "../../baseline/js/dat/rog-loca.js"
+    },
+    "js/dat/rog-strt.js": {
+      "link": "../../baseline/js/dat/rog-strt.js"
+    },
+    "js/dat/sam-fila.js": {
+      "link": "../../baseline/js/dat/sam-fila.js"
+    },
+    "js/dat/sam-filb.js": {
+      "link": "../../baseline/js/dat/sam-filb.js"
+    },
+    "js/dat/sam-goal.js": {
+      "link": "../../baseline/js/dat/sam-goal.js"
+    },
+    "js/dat/sam-loca.js": {
+      "link": "../../baseline/js/dat/sam-loca.js"
+    },
+    "js/dat/sam-strt.js": {
+      "link": "../../baseline/js/dat/sam-strt.js"
+    },
+    "js/dat/sanctum.js": {
+      "link": "../../baseline/js/dat/sanctum.js"
+    },
+    "js/dat/soko1-1.js": {
+      "link": "../../baseline/js/dat/soko1-1.js"
+    },
+    "js/dat/soko1-2.js": {
+      "link": "../../baseline/js/dat/soko1-2.js"
+    },
+    "js/dat/soko2-1.js": {
+      "link": "../../baseline/js/dat/soko2-1.js"
+    },
+    "js/dat/soko2-2.js": {
+      "link": "../../baseline/js/dat/soko2-2.js"
+    },
+    "js/dat/soko3-1.js": {
+      "link": "../../baseline/js/dat/soko3-1.js"
+    },
+    "js/dat/soko3-2.js": {
+      "link": "../../baseline/js/dat/soko3-2.js"
+    },
+    "js/dat/soko4-1.js": {
+      "link": "../../baseline/js/dat/soko4-1.js"
+    },
+    "js/dat/soko4-2.js": {
+      "link": "../../baseline/js/dat/soko4-2.js"
+    },
+    "js/dat/tou-fila.js": {
+      "link": "../../baseline/js/dat/tou-fila.js"
+    },
+    "js/dat/tou-filb.js": {
+      "link": "../../baseline/js/dat/tou-filb.js"
+    },
+    "js/dat/tou-goal.js": {
+      "link": "../../baseline/js/dat/tou-goal.js"
+    },
+    "js/dat/tou-loca.js": {
+      "link": "../../baseline/js/dat/tou-loca.js"
+    },
+    "js/dat/tou-strt.js": {
+      "link": "../../baseline/js/dat/tou-strt.js"
+    },
+    "js/dat/tower1.js": {
+      "link": "../../baseline/js/dat/tower1.js"
+    },
+    "js/dat/tower2.js": {
+      "link": "../../baseline/js/dat/tower2.js"
+    },
+    "js/dat/tower3.js": {
+      "link": "../../baseline/js/dat/tower3.js"
+    },
+    "js/dat/tut-1.js": {
+      "link": "../../baseline/js/dat/tut-1.js"
+    },
+    "js/dat/tut-2.js": {
+      "link": "../../baseline/js/dat/tut-2.js"
+    },
+    "js/dat/val-fila.js": {
+      "link": "../../baseline/js/dat/val-fila.js"
+    },
+    "js/dat/val-filb.js": {
+      "link": "../../baseline/js/dat/val-filb.js"
+    },
+    "js/dat/val-goal.js": {
+      "link": "../../baseline/js/dat/val-goal.js"
+    },
+    "js/dat/val-loca.js": {
+      "link": "../../baseline/js/dat/val-loca.js"
+    },
+    "js/dat/val-strt.js": {
+      "link": "../../baseline/js/dat/val-strt.js"
+    },
+    "js/dat/valley.js": {
+      "link": "../../baseline/js/dat/valley.js"
+    },
+    "js/dat/water.js": {
+      "link": "../../baseline/js/dat/water.js"
+    },
+    "js/dat/wiz-fila.js": {
+      "link": "../../baseline/js/dat/wiz-fila.js"
+    },
+    "js/dat/wiz-filb.js": {
+      "link": "../../baseline/js/dat/wiz-filb.js"
+    },
+    "js/dat/wiz-goal.js": {
+      "link": "../../baseline/js/dat/wiz-goal.js"
+    },
+    "js/dat/wiz-loca.js": {
+      "link": "../../baseline/js/dat/wiz-loca.js"
+    },
+    "js/dat/wiz-strt.js": {
+      "link": "../../baseline/js/dat/wiz-strt.js"
+    },
+    "js/dat/wizard1.js": {
+      "link": "../../baseline/js/dat/wizard1.js"
+    },
+    "js/dat/wizard2.js": {
+      "link": "../../baseline/js/dat/wizard2.js"
+    },
+    "js/dat/wizard3.js": {
+      "link": "../../baseline/js/dat/wizard3.js"
+    },
+    "js/dat_files.js": {
+      "link": "../baseline/js/dat_files.js"
+    },
+    "js/dbridge.js": {
+      "link": "../baseline/js/dbridge.js"
+    },
+    "js/detect.js": {
+      "link": "../baseline/js/detect.js"
+    },
+    "js/dig.js": {
+      "link": "../baseline/js/dig.js"
+    },
+    "js/display.js": {
+      "link": "../baseline/js/display.js"
+    },
+    "js/do.js": {
+      "link": "../baseline/js/do.js"
+    },
+    "js/do_name.js": {
+      "link": "../baseline/js/do_name.js"
+    },
+    "js/do_wear.js": {
+      "link": "../baseline/js/do_wear.js"
+    },
+    "js/dog.js": {
+      "link": "../baseline/js/dog.js"
+    },
+    "js/dogmove.js": {
+      "link": "../baseline/js/dogmove.js"
+    },
+    "js/dokick.js": {
+      "link": "../baseline/js/dokick.js"
+    },
+    "js/dothrow.js": {
+      "link": "../baseline/js/dothrow.js"
+    },
+    "js/drawing.js": {
+      "link": "../baseline/js/drawing.js"
+    },
+    "js/drawing_data.js": {
+      "link": "../baseline/js/drawing_data.js"
+    },
+    "js/dungeon.js": {
+      "link": "../baseline/js/dungeon.js"
+    },
+    "js/dungeon_data.js": {
+      "link": "../baseline/js/dungeon_data.js"
+    },
+    "js/eat.js": {
+      "link": "../baseline/js/eat.js"
+    },
+    "js/end.js": {
+      "link": "../baseline/js/end.js"
+    },
+    "js/engrave.js": {
+      "link": "../baseline/js/engrave.js"
+    },
+    "js/exper.js": {
+      "link": "../baseline/js/exper.js"
+    },
+    "js/explode.js": {
+      "link": "../baseline/js/explode.js"
+    },
+    "js/extcmd_data.js": {
+      "link": "../baseline/js/extcmd_data.js"
+    },
+    "js/files.js": {
+      "link": "../baseline/js/files.js"
+    },
+    "js/fountain.js": {
+      "link": "../baseline/js/fountain.js"
+    },
+    "js/game.js": {
+      "link": "../baseline/js/game.js"
+    },
+    "js/game_display.js": {
+      "link": "../baseline/js/game_display.js"
+    },
+    "js/getpos.js": {
+      "link": "../baseline/js/getpos.js"
+    },
+    "js/glyphs.js": {
+      "link": "../baseline/js/glyphs.js"
+    },
+    "js/gstate.js": {
+      "link": "../baseline/js/gstate.js"
+    },
+    "js/hack.js": {
+      "link": "../baseline/js/hack.js"
+    },
+    "js/hacklib.js": {
+      "link": "../baseline/js/hacklib.js"
+    },
+    "js/input.js": {
+      "link": "../baseline/js/input.js"
+    },
+    "js/insight.js": {
+      "link": "../baseline/js/insight.js"
+    },
+    "js/invent.js": {
+      "link": "../baseline/js/invent.js"
+    },
+    "js/isaac64.js": {
+      "link": "../baseline/js/isaac64.js"
+    },
+    "js/jsmain.js": {
+      "link": "../baseline/js/jsmain.js"
+    },
+    "js/light.js": {
+      "link": "../baseline/js/light.js"
+    },
+    "js/lock.js": {
+      "link": "../baseline/js/lock.js"
+    },
+    "js/lua/lmathlib.js": {
+      "link": "../../baseline/js/lua/lmathlib.js"
+    },
+    "js/mail.js": {
+      "link": "../baseline/js/mail.js"
+    },
+    "js/makemon.js": {
+      "link": "../baseline/js/makemon.js"
+    },
+    "js/mcastu.js": {
+      "link": "../baseline/js/mcastu.js"
+    },
+    "js/mhitm.js": {
+      "link": "../baseline/js/mhitm.js"
+    },
+    "js/mhitu.js": {
+      "link": "../baseline/js/mhitu.js"
+    },
+    "js/minion.js": {
+      "link": "../baseline/js/minion.js"
+    },
+    "js/mklev.js": {
+      "link": "../baseline/js/mklev.js"
+    },
+    "js/mkmap.js": {
+      "link": "../baseline/js/mkmap.js"
+    },
+    "js/mkmaze.js": {
+      "link": "../baseline/js/mkmaze.js"
+    },
+    "js/mkobj.js": {
+      "link": "../baseline/js/mkobj.js"
+    },
+    "js/mkroom.js": {
+      "link": "../baseline/js/mkroom.js"
+    },
+    "js/mon.js": {
+      "link": "../baseline/js/mon.js"
+    },
+    "js/mondata.js": {
+      "link": "../baseline/js/mondata.js"
+    },
+    "js/monmove.js": {
+      "link": "../baseline/js/monmove.js"
+    },
+    "js/monst.js": {
+      "link": "../baseline/js/monst.js"
+    },
+    "js/monst_data.js": {
+      "link": "../baseline/js/monst_data.js"
+    },
+    "js/mplayer.js": {
+      "link": "../baseline/js/mplayer.js"
+    },
+    "js/mthrowu.js": {
+      "link": "../baseline/js/mthrowu.js"
+    },
+    "js/muse.js": {
+      "link": "../baseline/js/muse.js"
+    },
+    "js/music.js": {
+      "link": "../baseline/js/music.js"
+    },
+    "js/nethack.js": {
+      "link": "../baseline/js/nethack.js"
+    },
+    "js/nhlua.js": {
+      "link": "../baseline/js/nhlua.js"
+    },
+    "js/o_init.js": {
+      "link": "../baseline/js/o_init.js"
+    },
+    "js/obj.js": {
+      "link": "../baseline/js/obj.js"
+    },
+    "js/objects_data.js": {
+      "link": "../baseline/js/objects_data.js"
+    },
+    "js/objnam.js": {
+      "link": "../baseline/js/objnam.js"
+    },
+    "js/options.js": {
+      "link": "../baseline/js/options.js"
+    },
+    "js/optlist.js": {
+      "link": "../baseline/js/optlist.js"
+    },
+    "js/pager.js": {
+      "link": "../baseline/js/pager.js"
+    },
+    "js/pickup.js": {
+      "link": "../baseline/js/pickup.js"
+    },
+    "js/pline.js": {
+      "link": "../baseline/js/pline.js"
+    },
+    "js/plselect.js": {
+      "link": "../baseline/js/plselect.js"
+    },
+    "js/polyself.js": {
+      "link": "../baseline/js/polyself.js"
+    },
+    "js/posixregex.js": {
+      "link": "../baseline/js/posixregex.js"
+    },
+    "js/potion.js": {
+      "link": "../baseline/js/potion.js"
+    },
+    "js/pray.js": {
+      "sha256": "7c71cb9195f0c1ef80f5fa0746f5cdb871a74cfa3216dfe82757645e8f732931",
+      "bytes": 89377
+    },
+    "js/priest.js": {
+      "link": "../baseline/js/priest.js"
+    },
+    "js/quest.js": {
+      "link": "../baseline/js/quest.js"
+    },
+    "js/quest_data.js": {
+      "link": "../baseline/js/quest_data.js"
+    },
+    "js/questpgr.js": {
+      "link": "../baseline/js/questpgr.js"
+    },
+    "js/read.js": {
+      "link": "../baseline/js/read.js"
+    },
+    "js/rect.js": {
+      "link": "../baseline/js/rect.js"
+    },
+    "js/region.js": {
+      "link": "../baseline/js/region.js"
+    },
+    "js/report.js": {
+      "link": "../baseline/js/report.js"
+    },
+    "js/restore.js": {
+      "link": "../baseline/js/restore.js"
+    },
+    "js/rip.js": {
+      "link": "../baseline/js/rip.js"
+    },
+    "js/rng.js": {
+      "link": "../baseline/js/rng.js"
+    },
+    "js/role.js": {
+      "link": "../baseline/js/role.js"
+    },
+    "js/role_data.js": {
+      "link": "../baseline/js/role_data.js"
+    },
+    "js/rumors.js": {
+      "link": "../baseline/js/rumors.js"
+    },
+    "js/save.js": {
+      "link": "../baseline/js/save.js"
+    },
+    "js/selvar.js": {
+      "link": "../baseline/js/selvar.js"
+    },
+    "js/shk.js": {
+      "link": "../baseline/js/shk.js"
+    },
+    "js/shknam.js": {
+      "link": "../baseline/js/shknam.js"
+    },
+    "js/shknam_data.js": {
+      "link": "../baseline/js/shknam_data.js"
+    },
+    "js/sit.js": {
+      "link": "../baseline/js/sit.js"
+    },
+    "js/skills_data.js": {
+      "link": "../baseline/js/skills_data.js"
+    },
+    "js/sounds.js": {
+      "link": "../baseline/js/sounds.js"
+    },
+    "js/sp_lev.js": {
+      "link": "../baseline/js/sp_lev.js"
+    },
+    "js/spell.js": {
+      "link": "../baseline/js/spell.js"
+    },
+    "js/stairs.js": {
+      "link": "../baseline/js/stairs.js"
+    },
+    "js/steal.js": {
+      "link": "../baseline/js/steal.js"
+    },
+    "js/steed.js": {
+      "link": "../baseline/js/steed.js"
+    },
+    "js/storage.js": {
+      "link": "../baseline/js/storage.js"
+    },
+    "js/symbols.js": {
+      "link": "../baseline/js/symbols.js"
+    },
+    "js/teleport.js": {
+      "link": "../baseline/js/teleport.js"
+    },
+    "js/terminal.js": {
+      "link": "../baseline/js/terminal.js"
+    },
+    "js/themerms.js": {
+      "link": "../baseline/js/themerms.js"
+    },
+    "js/themerms_data.js": {
+      "link": "../baseline/js/themerms_data.js"
+    },
+    "js/timeout.js": {
+      "link": "../baseline/js/timeout.js"
+    },
+    "js/topten.js": {
+      "link": "../baseline/js/topten.js"
+    },
+    "js/track.js": {
+      "link": "../baseline/js/track.js"
+    },
+    "js/trap.js": {
+      "link": "../baseline/js/trap.js"
+    },
+    "js/tty/getline.js": {
+      "link": "../../baseline/js/tty/getline.js"
+    },
+    "js/tty/termcap.js": {
+      "link": "../../baseline/js/tty/termcap.js"
+    },
+    "js/tty/topl.js": {
+      "link": "../../baseline/js/tty/topl.js"
+    },
+    "js/tty/wintty.js": {
+      "link": "../../baseline/js/tty/wintty.js"
+    },
+    "js/u_init.js": {
+      "link": "../baseline/js/u_init.js"
+    },
+    "js/uhitm.js": {
+      "link": "../baseline/js/uhitm.js"
+    },
+    "js/uinit_data.js": {
+      "link": "../baseline/js/uinit_data.js"
+    },
+    "js/unixmain.js": {
+      "link": "../baseline/js/unixmain.js"
+    },
+    "js/utf8map.js": {
+      "link": "../baseline/js/utf8map.js"
+    },
+    "js/vault.js": {
+      "link": "../baseline/js/vault.js"
+    },
+    "js/version.js": {
+      "link": "../baseline/js/version.js"
+    },
+    "js/version_data.js": {
+      "link": "../baseline/js/version_data.js"
+    },
+    "js/vision.js": {
+      "link": "../baseline/js/vision.js"
+    },
+    "js/weapon.js": {
+      "link": "../baseline/js/weapon.js"
+    },
+    "js/were.js": {
+      "link": "../baseline/js/were.js"
+    },
+    "js/wield.js": {
+      "link": "../baseline/js/wield.js"
+    },
+    "js/windows.js": {
+      "link": "../baseline/js/windows.js"
+    },
+    "js/wizard.js": {
+      "link": "../baseline/js/wizard.js"
+    },
+    "js/wizcmds.js": {
+      "link": "../baseline/js/wizcmds.js"
+    },
+    "js/worm.js": {
+      "link": "../baseline/js/worm.js"
+    },
+    "js/worn.js": {
+      "link": "../baseline/js/worn.js"
+    },
+    "js/write.js": {
+      "link": "../baseline/js/write.js"
+    },
+    "js/youprop.js": {
+      "link": "../baseline/js/youprop.js"
+    },
+    "js/zap.js": {
+      "link": "../baseline/js/zap.js"
+    },
+    "negative-hashes.json": {
+      "link": "../crowning-log-candidate/negative-hashes.json"
+    },
+    "original-baseline": {
+      "link": "../altar-familiar-parent-composed"
+    },
+    "original-baseline-runtime.json": {
+      "link": "../crowning-log-paged-source-audit/baseline-runtime.json"
+    },
+    "package.json": {
+      "link": "../../../package.json"
+    },
+    "page-observation.json": {
+      "sha256": "949ad142ffab0ed6437b9a044c539e05eb91eda35de3354b80463ad1a3c758e8",
+      "bytes": 9016
+    },
+    "parent-input-lock.json": {
+      "link": "../crowning-log-paged-parent-input-lock.json"
+    },
+    "parent-native.session.json": {
+      "link": "../crowning-log-paged-parent-native.session.json"
+    },
+    "parent-pins.json": {
+      "link": "../crowning-log-candidate/parent-pins.json"
+    },
+    "parent-primary-recipe.json": {
+      "link": "../crowning-log-paged-parent-primary-recipe.json"
+    },
+    "parent-recording.json": {
+      "link": "../crowning-log-paged-parent-native-recording.json"
+    },
+    "parent-review": {
+      "link": "../crowning-log-paged-parent-review"
+    },
+    "pre-edit-lock.json": {
+      "sha256": "37c4527c892f422faba6524b4367d66dfa19ae229dc3f9250165e3bd2b19540f",
+      "bytes": 2647
+    },
+    "predictions.json": {
+      "link": "../crowning-log-candidate/predictions.json"
+    },
+    "preflight.mjs": {
+      "sha256": "0ca68ebbea93b985263ad721f963007edf3b2bc6f7f8c4cee6252cd0c403dab4",
+      "bytes": 3539
+    },
+    "prior": {
+      "link": "../crowning-log-candidate"
+    },
+    "probe.mjs": {
+      "sha256": "4e270a68f1e827771b5339b4a2fe6668b076553476a5a7e36fd74f03c3c7054f",
+      "bytes": 8524
+    },
+    "quest-checks.mjs": {
+      "link": "../crowning-log-candidate/quest-checks.mjs"
+    },
+    "quest-expectations.json": {
+      "link": "../crowning-log-candidate/quest-expectations.json"
+    },
+    "recipe.json": {
+      "link": "../crowning-log-candidate/recipe.json"
+    },
+    "reports/accounting.json": {
+      "sha256": "621aa8e86ab8209af5921fad54a27a56ce68eade2a2de6acd8dad84a1b903080",
+      "bytes": 1075
+    },
+    "reports/attempt-accounting.json": {
+      "sha256": "7f64a346c0d25e930f8d6bc58344b09d621669b2f030cee9684ac2fe398cbf83",
+      "bytes": 931
+    },
+    "reports/candidate-native.json": {
+      "sha256": "372a538d08f0866355ddc68ab4d6cb1d79f0184e61b8b09597961acf870ca10e",
+      "bytes": 14605
+    },
+    "reports/candidate-observation.json": {
+      "sha256": "e81e638fc9bf11b485af7b5aab70c6b100a57a0e54cc2e4a6ec1f59981da8db4",
+      "bytes": 67984
+    },
+    "reports/controls.json": {
+      "sha256": "3583d6a00b95a711e42244ff0e43f12699964be2faf329bd68bc8576638ec670",
+      "bytes": 827
+    },
+    "reports/pre-run-checks.json": {
+      "sha256": "0b58ec33e89c8cc1aaea7c9fd76fa9bc4614f9ced35af6d75a6d92100db97e0b",
+      "bytes": 1273
+    },
+    "reports/preflight.json": {
+      "sha256": "e7de047ffb55c27ac76252affa08e310e857c783af9d8577b586a32336dd177b",
+      "bytes": 865
+    },
+    "reports/quest-candidate.json": {
+      "sha256": "9ed18dd619154ba5eac5634c832d241fee486fdf0909efa46f563c6031424db7",
+      "bytes": 1344
+    },
+    "reports/tune-baseline-command.json": {
+      "sha256": "a7a0941971fb648ac309a5e4d0189e3308272585d6255ecb91c3107aa5b5a5ce",
+      "bytes": 544
+    },
+    "reports/tune-baseline.json": {
+      "sha256": "e94ed9477e646d5b9c422a281210c53f41a6347ceb599eb805c86abcd2e402d8",
+      "bytes": 495
+    },
+    "reports/tune-baseline.log": {
+      "sha256": "8a11c5b75335daa8962b1d28165ddc6a7058680a82d3b3f8269328197975e469",
+      "bytes": 394
+    },
+    "reports/tune-candidate.json": {
+      "sha256": "ca99da1a6651c3f1905066eb5aab5cbd6af1f190b1d4d1ab4a70a872276a5045",
+      "bytes": 351
+    },
+    "reports/worker.json": {
+      "sha256": "2e8e46081f9d10d44e4a12d7f8b7b0db78a5c24be88c6a1cfaaef279144cd417",
+      "bytes": 1537
+    },
+    "reports/worker.log": {
+      "sha256": "25e09fc12bc9446917ad9e04e5596cf4a0d4e9e708e8d1541dda3f5920763c30",
+      "bytes": 205
+    },
+    "run-lock.json": {
+      "sha256": "b11bbcaecc4af76aece89c2fdc59916939416d776c91359bde72fe5a4c41358f",
+      "bytes": 3514
+    },
+    "runtime-edit-start.json": {
+      "sha256": "791cfb5d430e71559b6246fb6ce717f616a12a5e0968cc8d114f6c05dbb70d8b",
+      "bytes": 409
+    },
+    "runtime.json": {
+      "sha256": "08bc7651d0aa6b5cf434d77727fd6e2ab2bbc80de705913a6010980dda979943",
+      "bytes": 24861
+    },
+    "scoped-runtime.patch": {
+      "sha256": "280ba84667a61fe92db4b5a3e895466c7744b32a02cf1a561a4d783e35518c6b",
+      "bytes": 693
+    },
+    "source": {
+      "link": "../crowning-log-paged-source-audit"
+    },
+    "source-pins.json": {
+      "link": "../crowning-log-candidate/source-pins.json"
+    },
+    "source-seals.json": {
+      "sha256": "89ead9ba0a4dae3c3fea10fc4258ef284d7588a4da3e4b6defcddeb92825f1bd",
+      "bytes": 674
+    },
+    "tools/half-damage-reader-observe.mjs": {
+      "link": "../prior/tools/half-damage-reader-observe.mjs"
+    },
+    "tune-check.mjs": {
+      "sha256": "7f07dc8c812f6d55a9b6abe8eed3b827c173103a5dcec982137adb95fb38dee1",
+      "bytes": 1511
+    },
+    "tune-expectation.json": {
+      "sha256": "8fe0e468a9af84f0424ee51f6720ed9ca15e649615032999b8eebb12748b5cdf",
+      "bytes": 465
+    },
+    "verify-candidate.py": {
+      "sha256": "d1022d2c317982f0e4e76aec59a2322655f255d0d9c3280616a0dc5391c7ee51",
+      "bytes": 6455
+    }
+  }
+}

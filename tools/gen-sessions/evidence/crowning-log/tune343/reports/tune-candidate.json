@@ -1,0 +1,21 @@
+{
+  "check": {
+    "index": 2,
+    "name": "chaotic-sword",
+    "expected": [
+      {
+        "flags": 4096,
+        "turn": 29,
+        "text": "learned castle drawbridge's tune"
+      }
+    ],
+    "actual": [
+      {
+        "flags": 4096,
+        "turn": 29,
+        "text": "learned castle drawbridge's tune"
+      }
+    ],
+    "pass": true
+  }
+}

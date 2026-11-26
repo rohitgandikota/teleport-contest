@@ -1,0 +1,174 @@
+{
+  "original23/SEAL.json": {
+    "source": ".cache/restart-20261122/dochat-branches-source-audit/SEAL.json",
+    "sha256": "6f1ccfd85780353b6ef9fa551a36526a06179bb5159588aa60b3d0ddb3cc65ff"
+  },
+  "original23/manifest.json": {
+    "source": ".cache/restart-20261122/dochat-branches-source-audit/manifest.json",
+    "sha256": "d5b507ef173f82c7984fc16ae757f3ff8d11176f5f8813d08fcd1878f1f05261"
+  },
+  "original23/SOURCE-REVIEW.md": {
+    "source": ".cache/restart-20261122/dochat-branches-source-audit/SOURCE-REVIEW.md",
+    "sha256": "c55e5adc5e83a05d2d6bc4346bb14cca231e61b512ffa556ec20e5cc7d4b6248"
+  },
+  "original23/observation.json": {
+    "source": ".cache/restart-20261122/dochat-branches-source-audit/reports/observation.json",
+    "sha256": "1cbb8229340e702658da05a6f120a995bb942067e06ca69ef0bba0169e56dc93"
+  },
+  "original23/negative-hashes.json": {
+    "source": ".cache/restart-20261122/dochat-branches-source-audit/reports/negative-hashes.json",
+    "sha256": "fb6d654a854962375523232546d23019edf548bbef541b543d38a0f3ca93c960"
+  },
+  "corrected22/SEAL.json": {
+    "source": ".cache/restart-20261122/dochat-corrected-producer-source-audit/SEAL.json",
+    "sha256": "3e0c13a096429924b7723ac75125a8eca4f20de10f65836e58129b7e42b537d2"
+  },
+  "corrected22/manifest.json": {
+    "source": ".cache/restart-20261122/dochat-corrected-producer-source-audit/manifest.json",
+    "sha256": "8dadcff3820a6e9ecea25f2dd31c514cc64b65b03d92c4e2e8ca177e6fa5abcf"
+  },
+  "corrected22/SOURCE-REVIEW.md": {
+    "source": ".cache/restart-20261122/dochat-corrected-producer-source-audit/SOURCE-REVIEW.md",
+    "sha256": "dde93b11d337d28e744cac46f8a5f54c76d551ffd79d01fd3bf0a76ebfa0c8e9"
+  },
+  "corrected22/observation.json": {
+    "source": ".cache/restart-20261122/dochat-corrected-producer-source-audit/reports/observation.json",
+    "sha256": "ce2d899bea16310e978664443def1082e1fa778ef2ea23d182eb708255ddb993"
+  },
+  "corrected22/history-accounting.json": {
+    "source": ".cache/restart-20261122/dochat-corrected-producer-source-audit/reports/history-accounting.json",
+    "sha256": "d6569f5bdb111aa07db891ed1ffd75325dc75b942bb5fbffcd57a0ade9c1c611"
+  },
+  "clear26/SEAL.json": {
+    "source": ".cache/restart-20261122/dochat-clear-target-source-audit/SEAL.json",
+    "sha256": "b1e6c70b919b42e0be408ab629e6dc1307ba9ff6c2ea46f343a4cc67a382f523"
+  },
+  "clear26/manifest.json": {
+    "source": ".cache/restart-20261122/dochat-clear-target-source-audit/manifest.json",
+    "sha256": "671b0079e100b697c5c76ce344aa8fee39c3d5b69afaac3b5b861089381cfef1"
+  },
+  "clear26/SOURCE-REVIEW.md": {
+    "source": ".cache/restart-20261122/dochat-clear-target-source-audit/SOURCE-REVIEW.md",
+    "sha256": "660b79ded92809463d4d0e5a8cdba926363e20a825db5391e6a6d383b8100254"
+  },
+  "clear26/observation.json": {
+    "source": ".cache/restart-20261122/dochat-clear-target-source-audit/reports/observation.json",
+    "sha256": "edf9368e5346843db23948195b301c8300cb3f5ba0ff8e6179f2d29c909d8b94"
+  },
+  "clear26/history-accounting.json": {
+    "source": ".cache/restart-20261122/dochat-clear-target-source-audit/reports/history-accounting.json",
+    "sha256": "16d1cd4d07acb83549ec89693832d335f58706072dfcedce4615b7355445282c"
+  },
+  "source28/SEAL.json": {
+    "source": ".cache/restart-20261122/dochat-prompt-acknowledgement-source-audit/SEAL.json",
+    "sha256": "1e1db68fe6b460c7201304c1a93c058b5e290f8e5038eec48018d15c9fff5bb1"
+  },
+  "source28/manifest.json": {
+    "source": ".cache/restart-20261122/dochat-prompt-acknowledgement-source-audit/manifest.json",
+    "sha256": "71071f756f53465afe94a20ed13d6cc3f18406cdf772afb49b6e1d614122f74f"
+  },
+  "source28/SOURCE-REVIEW.md": {
+    "source": ".cache/restart-20261122/dochat-prompt-acknowledgement-source-audit/SOURCE-REVIEW.md",
+    "sha256": "fdb62922d462d24a9be0f95fdc4fb2f5879cf8b5970c834781db7e25fc2c7b75"
+  },
+  "source28/observation.json": {
+    "source": ".cache/restart-20261122/dochat-prompt-acknowledgement-source-audit/reports/observation.json",
+    "sha256": "7219f40dc914058b49c5bd4da7147ec61158a52f5d39d01f1773a8ca0821ba58"
+  },
+  "source28/negative-hashes.json": {
+    "source": ".cache/restart-20261122/dochat-prompt-acknowledgement-source-audit/reports/negative-hashes.json",
+    "sha256": "46eaed214d43342e16026d0a94beb4c21f08a2d338c8d0e8f56d1464547a7b6c"
+  },
+  "candidate316/SEAL.json": {
+    "source": ".cache/restart-20261122/dochat-direction-targets-candidate/SEAL.json",
+    "sha256": "83e3a8375f792703d6a94e73c980abd28e8f846aaee978cd7b5e6e2aa9e66e52"
+  },
+  "candidate316/manifest.json": {
+    "source": ".cache/restart-20261122/dochat-direction-targets-candidate/manifest.json",
+    "sha256": "3b4b1ad6e9cfa98709b7a6ad884eb7c4d55d859ffbd947e8a182e09a045abbb1"
+  },
+  "candidate316/SOURCE-REVIEW.md": {
+    "source": ".cache/restart-20261122/dochat-direction-targets-candidate/SOURCE-REVIEW.md",
+    "sha256": "8238a659d43a173043ef226139a1c1a9be139ccb5d1ffaf1bbca9b8ab1c9ad8f"
+  },
+  "candidate316/observation.json": {
+    "source": ".cache/restart-20261122/dochat-direction-targets-candidate/reports/observation.json",
+    "sha256": "389c5c14c641563fd63a4cbb8e8fed40d710b0b6f1aabbf886192c082dcb316f"
+  },
+  "candidate316/negative-hashes.json": {
+    "source": ".cache/restart-20261122/dochat-direction-targets-candidate/reports/negative-hashes.json",
+    "sha256": "a54f843656a188b0388b4727e9524a1d24ba2e0221512189447ad456a0d6a712"
+  },
+  "source28/recipe.json": {
+    "source": ".cache/restart-20261122/dochat-direction-targets-candidate/audit/proposals/recipe.json",
+    "sha256": "05b48381543e232f5a37218b20cdf8e8cce09dae7eb977b0afe2664b90a451aa"
+  },
+  "source28/input-lock.json": {
+    "source": ".cache/restart-20261122/dochat-direction-targets-candidate/audit/proposals/input-lock.json",
+    "sha256": "3d4b244be88215d5900b5c56c74026b1a2f1659764492adc0c103cce28296667"
+  },
+  "source28/predictions.json": {
+    "source": ".cache/restart-20261122/dochat-direction-targets-candidate/audit/proposals/predictions.json",
+    "sha256": "4ee242f00109f057a387a96e1519eb677d4050c383f0824caccf30bc5d62b7b8"
+  },
+  "source28/observe.mjs": {
+    "source": ".cache/restart-20261122/dochat-direction-targets-candidate/audit/tools/observe.mjs",
+    "sha256": "15ee6e73e1f6eac8ab3430a1aeaa5de3e428b33caae68f239dfd2c1ff262aa46"
+  },
+  "source28/source-pins.json": {
+    "source": ".cache/restart-20261122/dochat-direction-targets-candidate/audit/source-pins.json",
+    "sha256": "96176139ac9b79cdcce1c8775b10616ce47fa4bac3be7102acc49478515f74f3"
+  },
+  "clear26/predictions.json": {
+    "source": ".cache/restart-20261122/dochat-direction-targets-candidate/previous/proposals/predictions.json",
+    "sha256": "4dc70f76a2b3ed8c8a3dcfdc357cfda58b530e77354360f1c46fb6278d930a24"
+  },
+  "candidate316/observe.mjs": {
+    "source": ".cache/restart-20261122/dochat-direction-targets-candidate/scripts/observe.mjs",
+    "sha256": "82f9f0e5de2aa226f0f528c6c5867b712494e8c552c6e8ac1ddcf0ee780ce79a"
+  },
+  "candidate316/contract-accounting.json": {
+    "source": ".cache/restart-20261122/dochat-direction-targets-candidate/reports/contract-accounting.json",
+    "sha256": "47cfce1abbf3d90f2f88c101d8c4d958a108ce033d5387d7a0e49a448ac5700d"
+  },
+  "candidate316/native.json": {
+    "source": ".cache/restart-20261122/dochat-direction-targets-candidate/reports/native.json",
+    "sha256": "0865c068a33d08f6c67def5330b91f61ec4a14714b55cea0685393e66ebbf56c"
+  },
+  "candidate316/assertion-preservation.json": {
+    "source": ".cache/restart-20261122/dochat-direction-targets-candidate/assertion-preservation.json",
+    "sha256": "7644cd78aeb52936775591facfbb19f93dbcfc25558f888fd322c3e9cb9bbad7"
+  },
+  "candidate316/scoped-runtime.patch": {
+    "source": ".cache/restart-20261122/dochat-direction-targets-candidate/scoped-runtime.patch",
+    "sha256": "100f416fc318ce988a19e9724c05c533d70451d710282ec0753968bf2e599ccd"
+  },
+  "candidate316/scope.json": {
+    "source": ".cache/restart-20261122/dochat-direction-targets-candidate/scope.json",
+    "sha256": "1232b34059227070e27d9225770e7594a49d380af806db7463e9665b5b3b7256"
+  },
+  "parent/primary-recipe.json": {
+    "source": ".cache/restart-20261122/dochat-direction-targets-candidate/evidence/primary-recipe.json",
+    "sha256": "25de54f5e671e6ec393834adb9622c46897bbaeb5c510902a747921784b102e7"
+  },
+  "parent/input-lock.json": {
+    "source": ".cache/restart-20261122/dochat-direction-targets-candidate/evidence/parent-input-lock.json",
+    "sha256": "a1e96842350ec5dda19853bbef5531a7072052444d3044e70aade59c1bb662b5"
+  },
+  "parent/recording.json": {
+    "source": ".cache/restart-20261122/dochat-direction-targets-candidate/evidence/recording.json",
+    "sha256": "a919ea99f62577da72cd81bb80ebcd42f58106cd7ac69137d03d2b0a7f5df80f"
+  },
+  "parent/recording.log": {
+    "source": ".cache/restart-20261122/dochat-direction-targets-candidate/evidence/recording.log",
+    "sha256": "c6fbf21665733be0d97030c90b09c88d602d391b5bce1bad702f2365c9ace7a6"
+  },
+  "parent/preflight.json": {
+    "source": ".cache/restart-20261122/dochat-direction-targets-candidate/parent-review/preflight.json",
+    "sha256": "25be0955e1cbfbbf35a2597afeed089aa8b20e6da12232dc6438823d5a9ee170"
+  },
+  "parent/baseline-native.json": {
+    "source": ".cache/restart-20261122/dochat-direction-targets-candidate/parent-review/baseline-native.json",
+    "sha256": "7e0e7abb7145013006249cfb830c7d08e8bf1c90dc81a3b12371782561fe6148"
+  }
+}

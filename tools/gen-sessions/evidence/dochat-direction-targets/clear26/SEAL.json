@@ -1,0 +1,15 @@
+{
+  "kind": "source-only failed ordinary producer evidence",
+  "members": 26,
+  "manifestSha256": "671b0079e100b697c5c76ce344aa8fee39c3d5b69afaac3b5b861089381cfef1",
+  "inputSealSha256": "ec1bee4086abc39a09b989f7ab96f317eb12385775588834d95aed0e5bfb4d3b",
+  "originalSealSha256": "6f1ccfd85780353b6ef9fa551a36526a06179bb5159588aa60b3d0ddb3cc65ff",
+  "previousSealSha256": "3e0c13a096429924b7723ac75125a8eca4f20de10f65836e58129b7e42b537d2",
+  "links": {
+    "source": "../chat-wear-parent-composed",
+    "previous": "../dochat-corrected-producer-source-audit",
+    "original": "../dochat-branches-source-audit"
+  },
+  "nativeConfirmed": false,
+  "runtimeCandidate": false
+}

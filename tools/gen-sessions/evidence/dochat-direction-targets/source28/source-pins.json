@@ -1,0 +1,74 @@
+{
+  "runtimeMap": ".cache/restart-20261122/chat-wear-parent-composed/runtime.json",
+  "runtimeMapSha256": "88b58f9ee504928b3adf4295da37cce4337882990cc75541f033df1d36c1ab11",
+  "runtimeModules": 280,
+  "dependencies": {
+    "tools/half-damage-reader-observe.mjs": "201cdafe4409d5d58414c1d0ebc0449c32b29834cdf35c72c151a555d9031d07",
+    "frozen/screen-decode.mjs": "cb4a0fbfed3dda28c14736e6ae9c8b9eb8c87d75916c50d6df80f40eb0368cbe",
+    "tools/gen-sessions/recipes/pager-lookat-swallow-statue.json": "f93f3807ff9bd8475f37c8d6c09a135cab3aa81465ea9e25debbce204c259d71",
+    "tools/gen-sessions/recipes/stealth-mount.json": "3bca6a8239d97140dc039619804ea08d0d8b7bddc3de4f2da07a01ae104506f4",
+    "tools/gen-sessions/recipes/chat-speech-guards.json": "afb8fd2ed61a293321d79d283b129738d637d4d8b43a60980a8dda8f963ec48c",
+    "tools/gen-sessions/recipes/do-wear-entry.json": "36971b80c0d04ac19f94f537e3bee1d34e37940f203909984fdb92c14b85108c"
+  },
+  "existingFamilies": {
+    "tools/gen-sessions/recipes/chat-speech-guards.json": "afb8fd2ed61a293321d79d283b129738d637d4d8b43a60980a8dda8f963ec48c",
+    "tools/gen-sessions/recipes/do-wear-entry.json": "36971b80c0d04ac19f94f537e3bee1d34e37940f203909984fdb92c14b85108c"
+  },
+  "canonicalProducerFixtures": {
+    "tools/gen-sessions/generated/stealth-mount.session.json": {
+      "sha256": "78d1a20dd402d80b2bf7c1477b2ac01be220be7ee3dc39fa207584c063329533",
+      "bytes": 309722,
+      "linkedOnly": true
+    },
+    "tools/gen-sessions/generated/pager-lookat-swallow-statue.session.json": {
+      "sha256": "ff1ca7b0841ae26deafb4343c6503fc87058f013875fb138f61a58e49678c15a",
+      "bytes": 820370,
+      "linkedOnly": true
+    }
+  },
+  "previousSeals": {
+    ".cache/restart-20261122/do-wear-entry-source-audit/SEAL.json": "1003e27dde112bfaceff9bb73c050863de63431db4aa902534bc4bc2eabe6967",
+    ".cache/restart-20261122/do-wear-entry-candidate/SEAL.json": "4ae8edb60b97ab5def56d8632613194894440d276b3a9a6592c0deb75ce395eb",
+    ".cache/restart-20261122/do-wear-entry-promotion/SEAL.json": "ca5375f991c375683b21c07e94f15be59dfc3ea662c093c9591c94796bce4a87"
+  },
+  "reviewedCSourcePins": {
+    "nethack-c/upstream/src/sounds.c": "d67ce86f95b8d2180f6e676ebe5532aa63561e1a208fcd158c7fdc0b164c85e8",
+    "nethack-c/upstream/src/cmd.c": "a14c0fc8706bd9957f8f4aab7f9e2abbd30eb5f4e43166b90a8bfeb25094a7ce",
+    "nethack-c/upstream/src/steed.c": "cff685476b7cb4654935b231654015336286ad0ad7020294cdb60ca066075fd2",
+    "nethack-c/upstream/src/dothrow.c": "1fb4be7ca03d4d4256a7637fcaab3ec3048f7c71928a4b5577ab6477ed28bc06",
+    "nethack-c/upstream/src/potion.c": "05176768623072e3e1337fc23b91e1f3991980dbefb4ca2fc44c0fe6d1115aa9",
+    "nethack-c/upstream/src/mon.c": "0ab56f908ac2147a5e57970250b99f90d47f2ec32fbdfb1a6fab04c33167bd01",
+    "nethack-c/upstream/src/display.c": "c40bea2174713159eb7aa7b3b443f176a48282866c31d658449a1b2092145423",
+    "nethack-c/upstream/src/do_name.c": "64c6cb5e7f4034e9edbd8fac983b313a7df0e029b4812bd3a9327852d12ad9d1",
+    "nethack-c/upstream/src/rumors.c": "0bc8665c1bcff5b2d9d9063ff02dfd081ddcb01ba0ba5c817f0dbf857d73c255",
+    "nethack-c/upstream/src/rnd.c": "3fd80fbd93271b746a915cd938b9c9de2f752cbacf8c53ef77e4f0a3c4400362",
+    "nethack-c/upstream/src/zap.c": "8ee02bd7aa29b026d6b5a2e0017ddf402fcfc6fc81037e35ceda2d86467547cb",
+    "nethack-c/upstream/src/do_wear.c": "cf33ad9f5b18bcdfffd09d4e99867590802735a9ae2d34b9eb2b64880fa459c7",
+    "nethack-c/upstream/src/read.c": "ec15ad773e50f5d466ddc20515b441c9ddb4e99449abd1f34fa43a14e6a8b2c4",
+    "nethack-c/upstream/src/dog.c": "52608b20fad3e144f5580e144adf3f592cbdbdfa432116794e16bec4c5583abc",
+    "nethack-c/upstream/src/dogmove.c": "d6b80a15c36009ea34974179033fff53475400c39910ff74da4eac2b64e8cb40",
+    "nethack-c/upstream/src/role.c": "d6f9341da2a6dff5197442f78cb322c8b22437c95646c44350810fbc058f25a8",
+    "nethack-c/upstream/src/mkobj.c": "49c2de3bcf1125be55f11c17ffc4f614956f5288a5edfb56b2248b7fcaa3b488",
+    "nethack-c/upstream/src/options.c": "494772974500aa9b42df179b4e090def15fd0bc8148f09a9c392bbadd05dd940",
+    "nethack-c/upstream/include/optlist.h": "23dafb109132dd63bbfe704b39fac8cccaaeee31a0dbd895c7ba928bd92af9b8",
+    "nethack-c/upstream/include/display.h": "36e9f838d3298d047e0605abcf2deb627eb79c18aa72f770d5289c34f3692b4c",
+    "nethack-c/upstream/include/youprop.h": "9c4e25bc385c405226085ae3526dc165bd9397ce922b8a18a46f67de21683a2f",
+    "nethack-c/upstream/include/monst.h": "08e9e2251ac5c3beedb8700dd56287f9f397b506851ceb44a37e41b6d80067a6",
+    "nethack-c/upstream/include/mondata.h": "6f1ca3db69a5cfbe425859fe1c7decfa1da1fdac45af9d8a84be5f0f8c9c21f2",
+    "nethack-c/upstream/include/objects.h": "eb573ca76f7afe35d6420b958333fbb3c44911415df4e0034e6367456e2913cb",
+    "nethack-c/upstream/src/invent.c": "0b93d6ce1abb5b63ed7ea07c26a57e1016c6cef0fc2ef0e4016e6622054524b5",
+    "nethack-c/upstream/src/mhitm.c": "f3674e65aca558ae7461a05463ed003a9fd755d9078a9298639a4752f44b4e22",
+    "nethack-c/upstream/src/worn.c": "0414baea25644ea52cc7b628dff4ab1a533eada1523405eaabe7d7555bc3d4cf",
+    "nethack-c/upstream/src/makemon.c": "04bb46b793cb7a724544ed5860f57116e4661ce5d052a1321d90dc0167d3ffc3",
+    "nethack-c/upstream/src/mklev.c": "9958b95e15d0a6e27cac80c07a8bb8eac54ef239a51af3992cff303a615731a4",
+    "nethack-c/upstream/src/mondata.c": "c7a19d003c169fed7dde555ecad9069627f059309142b7d8104314572f90a685",
+    "nethack-c/upstream/src/steal.c": "0aa14e4a989d4869de9b9bd223231ac559f2d6641d9bfb949d0aaff29ca8a447",
+    "nethack-c/upstream/include/monflag.h": "89e4ef1dc1cd46fa8d81ff833351934c666420abdf902286bdacdca0bb171d88",
+    "nethack-c/upstream/include/monsters.h": "c63db922770c96a9956d221f364ba4368a9f81f81c8d64ed28251a0506d4a906",
+    "nethack-c/upstream/include/rm.h": "da2ae88d704a358474c6986a3f4763e62053b96a6e60a475879029e658996af7",
+    "nethack-c/upstream/win/tty/topl.c": "7abe4855c351b90048261752bab6bcc329f6fa236da1cca0cc48e362b6ff5d6d",
+    "nethack-c/upstream/win/tty/getline.c": "43abddf287e558949bb7bd17d0d7fa42201eb6f86a84146e9ee5889bc7f66afc",
+    "nethack-c/upstream/src/windows.c": "d731d0edab36e7331987fa2ab6c751a91cec3d0de4edddb52ec27a40d03711df"
+  },
+  "readOnlySourceGraph": true
+}

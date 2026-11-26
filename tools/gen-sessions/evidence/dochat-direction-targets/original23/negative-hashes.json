@@ -1,0 +1,71 @@
+{
+  "sourceReportSha256": "1cbb8229340e702658da05a6f120a995bb942067e06ca69ef0bba0169e56dc93",
+  "allFiveOriginalDesignationsRetained": true,
+  "rows": [
+    {
+      "index": 1,
+      "name": "self-repeat-negative",
+      "hashes": {
+        "screens": "f842f87e9eb1b13fb14f01258db0afdac8e3e705354939c165a9b5811c2d990a",
+        "cursors": "f9d0025d458e7e626f6599e28a7b1cf7d699102ee5eaab7ac4dc00034de56bcd",
+        "calls": "2009166a4f54844b7571bcb4187acb69fdade0978abaa305ffafc5f3a29d5aed",
+        "slices": "2181318af2b7ec28f5665a25eb7b0e24472a52a45b64b6cd28eb6168ac557c17",
+        "frames": "bf0077cf664e94e64924481687b6698b868329c03f281147f54f16ab099d7df3"
+      },
+      "allOriginalChecksPass": true,
+      "intendedStateEstablished": true
+    },
+    {
+      "index": 4,
+      "name": "mounted-up-negative",
+      "hashes": {
+        "screens": "df2fc4207d00cceb853b2f6de89245ea870a0334aa53816d0ac02629b9cb76c6",
+        "cursors": "d62e7c8fb819883947c0b6c00a4441ebad55e2c05ea0aafe30c160fd0f90ffde",
+        "calls": "24eaac6e4815671d6a3aff0db30398a44edbb9322e640b4280c1406a7bc081cf",
+        "slices": "ae228aedba1e03c6fbf02bb893299da571f814b045aae49ece13ce8bc58275cf",
+        "frames": "4d7ba6a4c38d723186da1f268f5b662c9ce9580c0d24fc0d9481337db9066638"
+      },
+      "allOriginalChecksPass": true,
+      "intendedStateEstablished": true
+    },
+    {
+      "index": 7,
+      "name": "statue-blind-negative",
+      "hashes": {
+        "screens": "88d6203dd2a2ad8919d0d8e716665d4e8c1019e9075c78b8429d7912f1be020c",
+        "cursors": "7d2b57b5e051d5b3623530d06103fbe73e87c3174ab8930c25cc183360233357",
+        "calls": "0540cca925ca089875c9d6fdf2638781f06bf9b502f3300517a621afd2518914",
+        "slices": "8f49fbeddd116ae9bd99f34ab4372f391963aaf1eb9e6872ab910a813fba3df1",
+        "frames": "bcb4b513eb010b376d15b612f8230cb539c14df8f76e58ebaf78f977b5f9a295"
+      },
+      "allOriginalChecksPass": false,
+      "intendedStateEstablished": false
+    },
+    {
+      "index": 9,
+      "name": "eating-pet-visible-negative",
+      "hashes": {
+        "screens": "2bef88fa49672d65704627a17482274cefccf391ed721ea6b735150ca9d963ba",
+        "cursors": "9157ae44c5551f76bf12fa72bb862f4b37b66acce6852e4eb7bdf277918bad25",
+        "calls": "d909638388e07b0fa0a3fc18731176aaa184bbc076230f5653221b4383756872",
+        "slices": "c3d9092c1da57d58f5cac067c98547a852572f69b1166a351d5a4831bb73c647",
+        "frames": "ba56ec9390e018ba54353628fe4a9e51159cd53adff013965530ee3a6fbb36ad"
+      },
+      "allOriginalChecksPass": true,
+      "intendedStateEstablished": true
+    },
+    {
+      "index": 10,
+      "name": "eating-pet-deaf-negative",
+      "hashes": {
+        "screens": "17948b7f1a6b2b289ea7c41e316eadb548ce853f5f40fc9bb874100d33aed73e",
+        "cursors": "4a03d5bbce20fd781212155f6169d80d388a4d5f6daf296bc017104f97c3494f",
+        "calls": "f4c1c103dac140e290ae420f43182b2938d0ec2fcc09c26ec26d4f1652e02520",
+        "slices": "60945b5117054e3f153541538aad5c03c8f8e8f31bb2d27a1ae23846bbbd76c0",
+        "frames": "94ab54d16ab775c1688a586b307ad8494bec4997126a9727ccaad9e1572a7e26"
+      },
+      "allOriginalChecksPass": true,
+      "intendedStateEstablished": true
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+# Dochat direction and target evidence
+
+The original once-recorded C11 raw and original primary recipe retain all bytes and eleven tuples. The raw belongs at tools/gen-sessions/generated/dochat-direction-targets.session.json; the primary is installed unchanged at tools/gen-sessions/recipes/dochat-direction-targets.json. Its historical name and pending-C description remain literal provenance; recording.json and the native reports establish subsequent confirmation. No second recording occurred.
+
+Original23 (68/80), corrected22 (78/92), clear26 (81/99), source28 (90/99) and candidate316 (91/99) observations remain unchanged here. Original99 bodies and the passive snapshot are preserved. Source28 finally proves all actual producers; candidate316 has native11/11 versus baseline5/11. All25 current negative hashes and all five complete ordinary/native negative rows are unchanged.
+
+Portable reconciliation is explicit. Nine baseline input-history comparisons run only on sealed source28 against clear26. Of90 live contracts, the87 other expectations are unchanged. Mounted awake and helpless predicates retain each complete expected chat message as a prefix at the same boundary and also require the full styled C screen. C appends a jackal attack during the time-consuming command. The common map projection reads dungeon(x,y) at decoded(x-1,y+1); the actual target(3,8) is cell(2,9), while the old cell(3,9) is the hero. The existing negative marker conditions are unchanged. All three old predicate failures on original C are checked and retained before any game import.
+
+All reviewed C hashes and original source seals are historical provenance. The public gate needs installed tools, this evidence, the canonical fixture and current js only. It never reads a C source/build tree or a cache runner. No runtime source is installed by this package. The copied scoped patch is review evidence only; the parent composes it while retaining published shop quote code.

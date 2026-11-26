@@ -1,0 +1,252 @@
+{
+  "native": {
+    "path": "tools/gen-sessions/generated/dochat-direction-targets.session.json",
+    "sha256": "f808288a2eadda2fa617282c8f6a5e82f7718d14866777feefdf897aa57c44ac",
+    "bytes": 1857649
+  },
+  "primaryRecipeSha256": "25de54f5e671e6ec393834adb9622c46897bbaeb5c510902a747921784b102e7",
+  "cPin": "16ff59115315917b93185d026aeefea06db9b0f4",
+  "recordedBinarySha256": "ba4dbc1c823f8d4b0cfb6fd594d00ff0ff5754daaaa2036bee15baeffdf85aa7",
+  "recorderSha256": "b129caee2ca3941b30c36f5c26644bd37ff610344332eb511c474b8709b70648",
+  "evidencePins": {
+    "README.md": "325517164e47233cb5e23563f13c5ad3aaf396245ea9415dc36297e4ac128f79",
+    "assertion-preservation.json": "5083585845b7518c062701810b3735d35ac2d96f257c62b0e5152da7d9c25fcb",
+    "candidate316/SEAL.json": "83e3a8375f792703d6a94e73c980abd28e8f846aaee978cd7b5e6e2aa9e66e52",
+    "candidate316/SOURCE-REVIEW.md": "8238a659d43a173043ef226139a1c1a9be139ccb5d1ffaf1bbca9b8ab1c9ad8f",
+    "candidate316/assertion-preservation.json": "7644cd78aeb52936775591facfbb19f93dbcfc25558f888fd322c3e9cb9bbad7",
+    "candidate316/contract-accounting.json": "47cfce1abbf3d90f2f88c101d8c4d958a108ce033d5387d7a0e49a448ac5700d",
+    "candidate316/manifest.json": "3b4b1ad6e9cfa98709b7a6ad884eb7c4d55d859ffbd947e8a182e09a045abbb1",
+    "candidate316/native.json": "0865c068a33d08f6c67def5330b91f61ec4a14714b55cea0685393e66ebbf56c",
+    "candidate316/negative-hashes.json": "a54f843656a188b0388b4727e9524a1d24ba2e0221512189447ad456a0d6a712",
+    "candidate316/observation.json": "389c5c14c641563fd63a4cbb8e8fed40d710b0b6f1aabbf886192c082dcb316f",
+    "candidate316/observe.mjs": "82f9f0e5de2aa226f0f528c6c5867b712494e8c552c6e8ac1ddcf0ee780ce79a",
+    "candidate316/scope.json": "1232b34059227070e27d9225770e7594a49d380af806db7463e9665b5b3b7256",
+    "candidate316/scoped-runtime.patch": "100f416fc318ce988a19e9724c05c533d70451d710282ec0753968bf2e599ccd",
+    "clear26/SEAL.json": "b1e6c70b919b42e0be408ab629e6dc1307ba9ff6c2ea46f343a4cc67a382f523",
+    "clear26/SOURCE-REVIEW.md": "660b79ded92809463d4d0e5a8cdba926363e20a825db5391e6a6d383b8100254",
+    "clear26/history-accounting.json": "16d1cd4d07acb83549ec89693832d335f58706072dfcedce4615b7355445282c",
+    "clear26/manifest.json": "671b0079e100b697c5c76ce344aa8fee39c3d5b69afaac3b5b861089381cfef1",
+    "clear26/observation.json": "edf9368e5346843db23948195b301c8300cb3f5ba0ff8e6179f2d29c909d8b94",
+    "clear26/predictions.json": "4dc70f76a2b3ed8c8a3dcfdc357cfda58b530e77354360f1c46fb6278d930a24",
+    "corrected22/SEAL.json": "3e0c13a096429924b7723ac75125a8eca4f20de10f65836e58129b7e42b537d2",
+    "corrected22/SOURCE-REVIEW.md": "dde93b11d337d28e744cac46f8a5f54c76d551ffd79d01fd3bf0a76ebfa0c8e9",
+    "corrected22/history-accounting.json": "d6569f5bdb111aa07db891ed1ffd75325dc75b942bb5fbffcd57a0ade9c1c611",
+    "corrected22/manifest.json": "8dadcff3820a6e9ecea25f2dd31c514cc64b65b03d92c4e2e8ca177e6fa5abcf",
+    "corrected22/observation.json": "ce2d899bea16310e978664443def1082e1fa778ef2ea23d182eb708255ddb993",
+    "original23/SEAL.json": "6f1ccfd85780353b6ef9fa551a36526a06179bb5159588aa60b3d0ddb3cc65ff",
+    "original23/SOURCE-REVIEW.md": "c55e5adc5e83a05d2d6bc4346bb14cca231e61b512ffa556ec20e5cc7d4b6248",
+    "original23/manifest.json": "d5b507ef173f82c7984fc16ae757f3ff8d11176f5f8813d08fcd1878f1f05261",
+    "original23/negative-hashes.json": "fb6d654a854962375523232546d23019edf548bbef541b543d38a0f3ca93c960",
+    "original23/observation.json": "1cbb8229340e702658da05a6f120a995bb942067e06ca69ef0bba0169e56dc93",
+    "origins.json": "35b94e6097c9bdfa6994ce15c9293106444927bf80fa59ec36e345a03ec056ac",
+    "parent/baseline-native.json": "7e0e7abb7145013006249cfb830c7d08e8bf1c90dc81a3b12371782561fe6148",
+    "parent/input-lock.json": "a1e96842350ec5dda19853bbef5531a7072052444d3044e70aade59c1bb662b5",
+    "parent/preflight.json": "25be0955e1cbfbbf35a2597afeed089aa8b20e6da12232dc6438823d5a9ee170",
+    "parent/primary-recipe.json": "25de54f5e671e6ec393834adb9622c46897bbaeb5c510902a747921784b102e7",
+    "parent/recording.json": "a919ea99f62577da72cd81bb80ebcd42f58106cd7ac69137d03d2b0a7f5df80f",
+    "parent/recording.log": "c6fbf21665733be0d97030c90b09c88d602d391b5bce1bad702f2365c9ace7a6",
+    "source28/SEAL.json": "1e1db68fe6b460c7201304c1a93c058b5e290f8e5038eec48018d15c9fff5bb1",
+    "source28/SOURCE-REVIEW.md": "fdb62922d462d24a9be0f95fdc4fb2f5879cf8b5970c834781db7e25fc2c7b75",
+    "source28/input-lock.json": "3d4b244be88215d5900b5c56c74026b1a2f1659764492adc0c103cce28296667",
+    "source28/manifest.json": "71071f756f53465afe94a20ed13d6cc3f18406cdf772afb49b6e1d614122f74f",
+    "source28/negative-hashes.json": "46eaed214d43342e16026d0a94beb4c21f08a2d338c8d0e8f56d1464547a7b6c",
+    "source28/observation.json": "7219f40dc914058b49c5bd4da7147ec61158a52f5d39d01f1773a8ca0821ba58",
+    "source28/observe.mjs": "15ee6e73e1f6eac8ab3430a1aeaa5de3e428b33caae68f239dfd2c1ff262aa46",
+    "source28/predictions.json": "4ee242f00109f057a387a96e1519eb677d4050c383f0824caccf30bc5d62b7b8",
+    "source28/recipe.json": "05b48381543e232f5a37218b20cdf8e8cce09dae7eb977b0afe2664b90a451aa",
+    "source28/source-pins.json": "96176139ac9b79cdcce1c8775b10616ce47fa4bac3be7102acc49478515f74f3"
+  },
+  "portableDependencyPins": {
+    "tools/half-damage-reader-observe.mjs": "201cdafe4409d5d58414c1d0ebc0449c32b29834cdf35c72c151a555d9031d07",
+    "tools/gen-sessions/assertions.mjs": "aed2dfe01e18cb2e8b0d62e389ab9d8a9c02b0e3e98d4e427fcead4c228e3adc",
+    "tools/gen-sessions/screen-decode.mjs": "0831fd4db121dab1d3c8f80efac29c68ce50f67fedbb49f2bd7c21371244dae0",
+    "frozen/screen-decode.mjs": "cb4a0fbfed3dda28c14736e6ae9c8b9eb8c87d75916c50d6df80f40eb0368cbe"
+  },
+  "sealedPackets": {
+    "original23": {
+      "sha256": "6f1ccfd85780353b6ef9fa551a36526a06179bb5159588aa60b3d0ddb3cc65ff",
+      "members": 23
+    },
+    "corrected22": {
+      "sha256": "3e0c13a096429924b7723ac75125a8eca4f20de10f65836e58129b7e42b537d2",
+      "members": 22
+    },
+    "clear26": {
+      "sha256": "b1e6c70b919b42e0be408ab629e6dc1307ba9ff6c2ea46f343a4cc67a382f523",
+      "members": 26
+    },
+    "source28": {
+      "sha256": "1e1db68fe6b460c7201304c1a93c058b5e290f8e5038eec48018d15c9fff5bb1",
+      "members": 28
+    },
+    "candidate316": {
+      "sha256": "83e3a8375f792703d6a94e73c980abd28e8f846aaee978cd7b5e6e2aa9e66e52",
+      "members": 316
+    }
+  },
+  "sealedEvidence": {
+    "original23/SOURCE-REVIEW.md": {
+      "packet": "original23",
+      "member": "SOURCE-REVIEW.md"
+    },
+    "original23/observation.json": {
+      "packet": "original23",
+      "member": "reports/observation.json"
+    },
+    "original23/negative-hashes.json": {
+      "packet": "original23",
+      "member": "reports/negative-hashes.json"
+    },
+    "corrected22/SOURCE-REVIEW.md": {
+      "packet": "corrected22",
+      "member": "SOURCE-REVIEW.md"
+    },
+    "corrected22/observation.json": {
+      "packet": "corrected22",
+      "member": "reports/observation.json"
+    },
+    "corrected22/history-accounting.json": {
+      "packet": "corrected22",
+      "member": "reports/history-accounting.json"
+    },
+    "clear26/SOURCE-REVIEW.md": {
+      "packet": "clear26",
+      "member": "SOURCE-REVIEW.md"
+    },
+    "clear26/observation.json": {
+      "packet": "clear26",
+      "member": "reports/observation.json"
+    },
+    "clear26/history-accounting.json": {
+      "packet": "clear26",
+      "member": "reports/history-accounting.json"
+    },
+    "source28/SOURCE-REVIEW.md": {
+      "packet": "source28",
+      "member": "SOURCE-REVIEW.md"
+    },
+    "source28/observation.json": {
+      "packet": "source28",
+      "member": "reports/observation.json"
+    },
+    "source28/negative-hashes.json": {
+      "packet": "source28",
+      "member": "reports/negative-hashes.json"
+    },
+    "candidate316/SOURCE-REVIEW.md": {
+      "packet": "candidate316",
+      "member": "SOURCE-REVIEW.md"
+    },
+    "candidate316/observation.json": {
+      "packet": "candidate316",
+      "member": "reports/observation.json"
+    },
+    "candidate316/negative-hashes.json": {
+      "packet": "candidate316",
+      "member": "reports/negative-hashes.json"
+    },
+    "source28/recipe.json": {
+      "packet": "source28",
+      "member": "proposals/recipe.json"
+    },
+    "source28/input-lock.json": {
+      "packet": "source28",
+      "member": "proposals/input-lock.json"
+    },
+    "source28/predictions.json": {
+      "packet": "source28",
+      "member": "proposals/predictions.json"
+    },
+    "source28/observe.mjs": {
+      "packet": "source28",
+      "member": "tools/observe.mjs"
+    },
+    "source28/source-pins.json": {
+      "packet": "source28",
+      "member": "source-pins.json"
+    },
+    "clear26/predictions.json": {
+      "packet": "clear26",
+      "member": "proposals/predictions.json"
+    },
+    "candidate316/observe.mjs": {
+      "packet": "candidate316",
+      "member": "scripts/observe.mjs"
+    },
+    "candidate316/contract-accounting.json": {
+      "packet": "candidate316",
+      "member": "reports/contract-accounting.json"
+    },
+    "candidate316/native.json": {
+      "packet": "candidate316",
+      "member": "reports/native.json"
+    },
+    "candidate316/assertion-preservation.json": {
+      "packet": "candidate316",
+      "member": "assertion-preservation.json"
+    },
+    "candidate316/scoped-runtime.patch": {
+      "packet": "candidate316",
+      "member": "scoped-runtime.patch"
+    },
+    "candidate316/scope.json": {
+      "packet": "candidate316",
+      "member": "scope.json"
+    }
+  },
+  "reviewedCSourcePins": {
+    "nethack-c/upstream/src/sounds.c": "d67ce86f95b8d2180f6e676ebe5532aa63561e1a208fcd158c7fdc0b164c85e8",
+    "nethack-c/upstream/src/cmd.c": "a14c0fc8706bd9957f8f4aab7f9e2abbd30eb5f4e43166b90a8bfeb25094a7ce",
+    "nethack-c/upstream/src/steed.c": "cff685476b7cb4654935b231654015336286ad0ad7020294cdb60ca066075fd2",
+    "nethack-c/upstream/src/dothrow.c": "1fb4be7ca03d4d4256a7637fcaab3ec3048f7c71928a4b5577ab6477ed28bc06",
+    "nethack-c/upstream/src/potion.c": "05176768623072e3e1337fc23b91e1f3991980dbefb4ca2fc44c0fe6d1115aa9",
+    "nethack-c/upstream/src/mon.c": "0ab56f908ac2147a5e57970250b99f90d47f2ec32fbdfb1a6fab04c33167bd01",
+    "nethack-c/upstream/src/display.c": "c40bea2174713159eb7aa7b3b443f176a48282866c31d658449a1b2092145423",
+    "nethack-c/upstream/src/do_name.c": "64c6cb5e7f4034e9edbd8fac983b313a7df0e029b4812bd3a9327852d12ad9d1",
+    "nethack-c/upstream/src/rumors.c": "0bc8665c1bcff5b2d9d9063ff02dfd081ddcb01ba0ba5c817f0dbf857d73c255",
+    "nethack-c/upstream/src/rnd.c": "3fd80fbd93271b746a915cd938b9c9de2f752cbacf8c53ef77e4f0a3c4400362",
+    "nethack-c/upstream/src/zap.c": "8ee02bd7aa29b026d6b5a2e0017ddf402fcfc6fc81037e35ceda2d86467547cb",
+    "nethack-c/upstream/src/do_wear.c": "cf33ad9f5b18bcdfffd09d4e99867590802735a9ae2d34b9eb2b64880fa459c7",
+    "nethack-c/upstream/src/read.c": "ec15ad773e50f5d466ddc20515b441c9ddb4e99449abd1f34fa43a14e6a8b2c4",
+    "nethack-c/upstream/src/dog.c": "52608b20fad3e144f5580e144adf3f592cbdbdfa432116794e16bec4c5583abc",
+    "nethack-c/upstream/src/dogmove.c": "d6b80a15c36009ea34974179033fff53475400c39910ff74da4eac2b64e8cb40",
+    "nethack-c/upstream/src/role.c": "d6f9341da2a6dff5197442f78cb322c8b22437c95646c44350810fbc058f25a8",
+    "nethack-c/upstream/src/mkobj.c": "49c2de3bcf1125be55f11c17ffc4f614956f5288a5edfb56b2248b7fcaa3b488",
+    "nethack-c/upstream/src/options.c": "494772974500aa9b42df179b4e090def15fd0bc8148f09a9c392bbadd05dd940",
+    "nethack-c/upstream/include/optlist.h": "23dafb109132dd63bbfe704b39fac8cccaaeee31a0dbd895c7ba928bd92af9b8",
+    "nethack-c/upstream/include/display.h": "36e9f838d3298d047e0605abcf2deb627eb79c18aa72f770d5289c34f3692b4c",
+    "nethack-c/upstream/include/youprop.h": "9c4e25bc385c405226085ae3526dc165bd9397ce922b8a18a46f67de21683a2f",
+    "nethack-c/upstream/include/monst.h": "08e9e2251ac5c3beedb8700dd56287f9f397b506851ceb44a37e41b6d80067a6",
+    "nethack-c/upstream/include/mondata.h": "6f1ca3db69a5cfbe425859fe1c7decfa1da1fdac45af9d8a84be5f0f8c9c21f2",
+    "nethack-c/upstream/include/objects.h": "eb573ca76f7afe35d6420b958333fbb3c44911415df4e0034e6367456e2913cb",
+    "nethack-c/upstream/src/invent.c": "0b93d6ce1abb5b63ed7ea07c26a57e1016c6cef0fc2ef0e4016e6622054524b5",
+    "nethack-c/upstream/src/mhitm.c": "f3674e65aca558ae7461a05463ed003a9fd755d9078a9298639a4752f44b4e22",
+    "nethack-c/upstream/src/worn.c": "0414baea25644ea52cc7b628dff4ab1a533eada1523405eaabe7d7555bc3d4cf",
+    "nethack-c/upstream/src/makemon.c": "04bb46b793cb7a724544ed5860f57116e4661ce5d052a1321d90dc0167d3ffc3",
+    "nethack-c/upstream/src/mklev.c": "9958b95e15d0a6e27cac80c07a8bb8eac54ef239a51af3992cff303a615731a4",
+    "nethack-c/upstream/src/mondata.c": "c7a19d003c169fed7dde555ecad9069627f059309142b7d8104314572f90a685",
+    "nethack-c/upstream/src/steal.c": "0aa14e4a989d4869de9b9bd223231ac559f2d6641d9bfb949d0aaff29ca8a447",
+    "nethack-c/upstream/include/monflag.h": "89e4ef1dc1cd46fa8d81ff833351934c666420abdf902286bdacdca0bb171d88",
+    "nethack-c/upstream/include/monsters.h": "c63db922770c96a9956d221f364ba4368a9f81f81c8d64ed28251a0506d4a906",
+    "nethack-c/upstream/include/rm.h": "da2ae88d704a358474c6986a3f4763e62053b96a6e60a475879029e658996af7",
+    "nethack-c/upstream/win/tty/topl.c": "7abe4855c351b90048261752bab6bcc329f6fa236da1cca0cc48e362b6ff5d6d",
+    "nethack-c/upstream/win/tty/getline.c": "43abddf287e558949bb7bd17d0d7fa42201eb6f86a84146e9ee5889bc7f66afc",
+    "nethack-c/upstream/src/windows.c": "d731d0edab36e7331987fa2ab6c751a91cec3d0de4edddb52ec27a40d03711df",
+    "nethack-c/upstream/win/tty/wintty.c": "43381180f9dfe41111b0dd34ba2ea0eb02f852b25e696810161c83e8c63745d5"
+  },
+  "CSourcePinsAreHistoricalNotPortableDependencies": true,
+  "originalRuntimeMapSha256": "88b58f9ee504928b3adf4295da37cce4337882990cc75541f033df1d36c1ab11",
+  "candidateRuntimeMapSha256": "7c91a842100b70fdf6735ed8fed8628416915a5de3666864f95c03286bbfa2b4",
+  "originalDiagnostics": {
+    "original23": "68/80",
+    "corrected22": "78/92",
+    "clear26": "81/99",
+    "source28": "90/99",
+    "candidate316": "91/99 exit1"
+  },
+  "currentContracts": 90,
+  "historicalContracts": 9,
+  "correctedCRejectionsRetained": 3,
+  "negativeHashes": 25,
+  "neutralityComparisons": 22
+}

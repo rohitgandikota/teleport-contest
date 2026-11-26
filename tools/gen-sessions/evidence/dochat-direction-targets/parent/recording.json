@@ -1,0 +1,31 @@
+{
+  "startedAt": "2026-11-26T18:09:36.601523+00:00",
+  "command": [
+    "node",
+    "/Users/rohit/research/code/contest/scripts/record-session.mjs",
+    "/Users/rohit/research/code/contest/.cache/restart-20261122/dochat-direction-targets-parent-minimal.session.json",
+    "/Users/rohit/research/code/contest/.cache/restart-20261122/dochat-direction-targets-parent-native.session.json"
+  ],
+  "input": ".cache/restart-20261122/dochat-direction-targets-parent-minimal.session.json",
+  "inputSHA256": "25de54f5e671e6ec393834adb9622c46897bbaeb5c510902a747921784b102e7",
+  "primaryRecipeSHA256": "25de54f5e671e6ec393834adb9622c46897bbaeb5c510902a747921784b102e7",
+  "binarySha256": "ba4dbc1c823f8d4b0cfb6fd594d00ff0ff5754daaaa2036bee15baeffdf85aa7",
+  "recorderSha256": "b129caee2ca3941b30c36f5c26644bd37ff610344332eb511c474b8709b70648",
+  "cPin": "16ff59115315917b93185d026aeefea06db9b0f4",
+  "timezone": "Etc/GMT+4",
+  "raw": ".cache/restart-20261122/dochat-direction-targets-parent-native.session.json",
+  "exit": 0,
+  "closedAt": "2026-11-26T18:09:37.181361+00:00",
+  "log": ".cache/restart-20261122/dochat-direction-targets-parent-native-recording.log",
+  "logSHA256": "c6fbf21665733be0d97030c90b09c88d602d391b5bce1bad702f2365c9ace7a6",
+  "rawSha256": "f808288a2eadda2fa617282c8f6a5e82f7718d14866777feefdf897aa57c44ac",
+  "bytes": 1857649,
+  "segments": 11,
+  "boundaries": 1067,
+  "keys": 1056,
+  "calls": 31031,
+  "frames": 0,
+  "fiveInputFieldsAndPresencePreserved": true,
+  "allKeysExact": true,
+  "cExecutedOnce": true
+}

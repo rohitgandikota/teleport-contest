@@ -1,0 +1,197 @@
+{
+  "name": "dochat-prompt-acknowledgement-producers",
+  "source": "c",
+  "description": "Source-only two-message acknowledgement correction; original C pending.",
+  "segments": [
+    {
+      "name": "cancel-direction-repeat",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #chat\r\u001b\u0001\u001b"
+    },
+    {
+      "name": "self-repeat-negative",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #chat\r.\u0001\u001b"
+    },
+    {
+      "name": "mounted-awake-down",
+      "seed": 6962,
+      "datetime": "20000112124000",
+      "nethackrc": "OPTIONS=name:wizard,role:Rogue,race:human,gender:male,align:chaotic,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                                   \u0007tame saddled pony\r  \u001b\u001b#ride\rly        \u001b\u001b#chat\r>\u001b"
+    },
+    {
+      "name": "mounted-helpless-free-action-down",
+      "seed": 6962,
+      "datetime": "20000112124000",
+      "nethackrc": "OPTIONS=name:wizard,role:Rogue,race:human,gender:male,align:chaotic,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                                   \u0007tame saddled pony\r  \u001b\u001b#ride\rly        \u001b\u001b\u0017uncursed ring of free action\r    \u001b\u001b\u001bPal    \u001b\u001b\u001b\u0017uncursed potion of paralysis\r    \u001b\u001b\u001btb>    \u001b\u001b\u001b#chat\r>\u001b"
+    },
+    {
+      "name": "mounted-up-negative",
+      "seed": 6962,
+      "datetime": "20000112124000",
+      "nethackrc": "OPTIONS=name:wizard,role:Rogue,race:human,gender:male,align:chaotic,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                                   \u0007tame saddled pony\r  \u001b\u001b#ride\rly        \u001b\u001b#chat\r<\u001b"
+    },
+    {
+      "name": "statue-sober",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed statue of a grid bug\rda  \u001b\u001b\u001bl  \u001b\u001b\u001b#chat\rh\u001b"
+    },
+    {
+      "name": "statue-hallucinated-prompt-acknowledged",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed statue of a grid bug\rda  \u001b\u001b\u001bl  \u001b\u001b\u001b\u0017cursed potion of hallucination\r    \u001b\u001b\u001b\u0017uncursed scroll of genocide\r    \u001b\u001b\u001brc  sewer rat\r    \u001b\u001b\u001bqb    \u001b\u001b\u001b#chat\rh\u001b"
+    },
+    {
+      "name": "statue-blind-prompt-acknowledged-negative",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed statue of a grid bug\rda  \u001b\u001b\u001bl  \u001b\u001b\u001b\u0017uncursed blindfold\r    \u001b\u001b\u001b\u0017uncursed scroll of genocide\r    \u001b\u001b\u001brc  sewer rat\r    \u001b\u001b\u001bPb    \u001b\u001b\u001b#chat\rh\u001b"
+    },
+    {
+      "name": "eating-pet-blind",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Rogue,race:human,gender:male,align:chaotic,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:dog,!safe_wait,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed blindfold\r    \u001b\u001b\u001b\u0017uncursed enormous meatball\r    \u001b\u001b\u001bdb    \u001b\u001b\u001bl    \u001b\u001b\u001bPa    \u001b\u001b\u001b#chat\rh\u001b"
+    },
+    {
+      "name": "eating-pet-visible-negative",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Rogue,race:human,gender:male,align:chaotic,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:dog,!safe_wait,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed blindfold\r    \u001b\u001b\u001b\u0017uncursed enormous meatball\r    \u001b\u001b\u001bdb    \u001b\u001b\u001bl    \u001b\u001b\u001b#chat\rh\u001b"
+    },
+    {
+      "name": "eating-pet-deaf-negative",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Rogue,race:human,gender:male,align:chaotic,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:dog,!safe_wait,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=deaf\n",
+      "moves": " \u0017uncursed blindfold\r    \u001b\u001b\u001b\u0017uncursed enormous meatball\r    \u001b\u001b\u001bdb    \u001b\u001b\u001bl    \u001b\u001b\u001bPa    \u001b\u001b\u001b#chat\rh\u001b"
+    }
+  ],
+  "version": 5,
+  "coverage": [
+    "social.chat",
+    "src/sounds.c:dochat"
+  ],
+  "requireBranchAssertions": true,
+  "branches": [
+    "dochat-direction-targets.cancel-direction-repeat",
+    "dochat-direction-targets.self-repeat-negative",
+    "dochat-direction-targets.mounted-awake-down",
+    "dochat-direction-targets.mounted-helpless-free-action-down",
+    "dochat-direction-targets.mounted-up-negative",
+    "dochat-direction-targets.statue-sober",
+    "dochat-direction-targets.statue-hallucinated-prompt-acknowledged",
+    "dochat-direction-targets.statue-blind-prompt-acknowledged-negative",
+    "dochat-direction-targets.eating-pet-blind",
+    "dochat-direction-targets.eating-pet-visible-negative",
+    "dochat-direction-targets.eating-pet-deaf-negative"
+  ],
+  "branchAssertions": [
+    {
+      "branch": "dochat-direction-targets.cancel-direction-repeat",
+      "segment": 0,
+      "screenIncludes": [
+        "Talk to whom?",
+        "There is no command available to repeat."
+      ]
+    },
+    {
+      "branch": "dochat-direction-targets.self-repeat-negative",
+      "segment": 1,
+      "screenIncludes": [
+        "Talk to whom?",
+        "Talking to yourself is a bad habit for a dungeoneer."
+      ]
+    },
+    {
+      "branch": "dochat-direction-targets.mounted-awake-down",
+      "segment": 2,
+      "screenIncludes": [
+        "Talk to whom?",
+        "The saddled pony whickers."
+      ]
+    },
+    {
+      "branch": "dochat-direction-targets.mounted-helpless-free-action-down",
+      "segment": 3,
+      "screenIncludes": [
+        "Talk to whom?",
+        "The saddled pony seems not to notice you."
+      ]
+    },
+    {
+      "branch": "dochat-direction-targets.mounted-up-negative",
+      "segment": 4,
+      "screenIncludes": [
+        "Talk to whom?",
+        "They won't hear you up there."
+      ]
+    },
+    {
+      "branch": "dochat-direction-targets.statue-sober",
+      "segment": 5,
+      "screenIncludes": [
+        "Talk to whom?",
+        "The statue seems not to notice you."
+      ]
+    },
+    {
+      "branch": "dochat-direction-targets.statue-hallucinated-prompt-acknowledged",
+      "segment": 6,
+      "screenIncludes": [
+        "Talk to whom?",
+        "Wiped out all sewer rats.",
+        "seems not to notice you."
+      ]
+    },
+    {
+      "branch": "dochat-direction-targets.statue-blind-prompt-acknowledged-negative",
+      "segment": 7,
+      "screenIncludes": [
+        "Talk to whom?",
+        "Wiped out all sewer rats."
+      ],
+      "screenExcludes": [
+        "seems not to notice you."
+      ]
+    },
+    {
+      "branch": "dochat-direction-targets.eating-pet-blind",
+      "segment": 8,
+      "screenIncludes": [
+        "Talk to whom?",
+        "It is eating noisily."
+      ]
+    },
+    {
+      "branch": "dochat-direction-targets.eating-pet-visible-negative",
+      "segment": 9,
+      "screenIncludes": [
+        "Talk to whom?",
+        "The little dog is eating noisily."
+      ]
+    },
+    {
+      "branch": "dochat-direction-targets.eating-pet-deaf-negative",
+      "segment": 10,
+      "screenIncludes": [
+        "Talk to whom?",
+        "Any response falls on deaf ears."
+      ]
+    }
+  ]
+}

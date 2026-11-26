@@ -1,0 +1,26 @@
+{
+  "sourceToolSha256": "15ee6e73e1f6eac8ab3430a1aeaa5de3e428b33caae68f239dfd2c1ff262aa46",
+  "candidateToolSha256": "82f9f0e5de2aa226f0f528c6c5867b712494e8c552c6e8ac1ddcf0ee780ce79a",
+  "assertionBlockAndTailSha256": "105f8a1bd98f061f9d587baa5d5abeff91835b25b6315b841751bd6935d86606",
+  "passiveSnapshotSha256": "c3ef1cae9b9f5a9e63fb8bb2242dac0f3be669eb5e63cc3d0c95da30e1941639",
+  "unchangedAssertionBodies": 99,
+  "unchangedPassiveSnapshot": true,
+  "unchangedInputs": 11,
+  "ordinaryGameplayChecks": 90,
+  "historicalBaselineHashChecks": 9,
+  "expectedCandidateHistoricalFailures": [
+    0,
+    2,
+    3,
+    5,
+    8
+  ],
+  "negativeIndexes": [
+    1,
+    4,
+    7,
+    9,
+    10
+  ],
+  "originalDiagnosticNotRewritten": true
+}

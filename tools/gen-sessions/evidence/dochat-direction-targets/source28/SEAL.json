@@ -1,0 +1,19 @@
+{
+  "kind": "source-only ordinary producer setup proof with retained runtime failures",
+  "members": 28,
+  "manifestSha256": "71071f756f53465afe94a20ed13d6cc3f18406cdf772afb49b6e1d614122f74f",
+  "inputSealSha256": "0a28a18d3932f7623396595c0f59bbab9ec2bec5f30d90ad732cf1530e5be8d2",
+  "priorSeals": {
+    "original": "6f1ccfd85780353b6ef9fa551a36526a06179bb5159588aa60b3d0ddb3cc65ff",
+    "corrected": "3e0c13a096429924b7723ac75125a8eca4f20de10f65836e58129b7e42b537d2",
+    "previous": "b1e6c70b919b42e0be408ab629e6dc1307ba9ff6c2ea46f343a4cc67a382f523"
+  },
+  "links": {
+    "source": "../chat-wear-parent-composed",
+    "original": "../dochat-branches-source-audit",
+    "corrected": "../dochat-corrected-producer-source-audit",
+    "previous": "../dochat-clear-target-source-audit"
+  },
+  "nativeConfirmed": false,
+  "runtimeCandidate": false
+}

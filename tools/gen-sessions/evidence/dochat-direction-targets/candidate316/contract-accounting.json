@@ -1,0 +1,430 @@
+{
+  "preflight": {
+    "beforeGameplayImports": true,
+    "sourceMembers": 99,
+    "sourceSeals": {
+      "original": "6f1ccfd85780353b6ef9fa551a36526a06179bb5159588aa60b3d0ddb3cc65ff",
+      "corrected": "3e0c13a096429924b7723ac75125a8eca4f20de10f65836e58129b7e42b537d2",
+      "previous": "b1e6c70b919b42e0be408ab629e6dc1307ba9ff6c2ea46f343a4cc67a382f523",
+      "audit": "1e1db68fe6b460c7201304c1a93c058b5e290f8e5038eec48018d15c9fff5bb1"
+    },
+    "runtimeModules": 280,
+    "changedRuntime": [
+      "js/sounds.js"
+    ],
+    "runtimeMapSha256": "7c91a842100b70fdf6735ed8fed8628416915a5de3666864f95c03286bbfa2b4",
+    "rawSha256": "f808288a2eadda2fa617282c8f6a5e82f7718d14866777feefdf897aa57c44ac",
+    "primaryRecipeSha256": "25de54f5e671e6ec393834adb9622c46897bbaeb5c510902a747921784b102e7",
+    "cases": 11,
+    "keys": 1056,
+    "boundaries": 1067,
+    "calls": 31031,
+    "frames": 0,
+    "fieldsAndPresence": true,
+    "keysExact": true,
+    "metadataPreserved": true,
+    "primaryAssertions": 11,
+    "integrityErrors": [],
+    "branchErrors": []
+  },
+  "ordinaryReportSha256": "389c5c14c641563fd63a4cbb8e8fed40d710b0b6f1aabbf886192c082dcb316f",
+  "nativeReportSha256": "0865c068a33d08f6c67def5330b91f61ec4a14714b55cea0685393e66ebbf56c",
+  "originalDiagnostic": {
+    "passed": 91,
+    "checks": 99,
+    "exitCode": 1,
+    "failures": [
+      {
+        "index": 0,
+        "name": "unchanged original tuple retains all five hashes",
+        "category": "history"
+      },
+      {
+        "index": 2,
+        "name": "mounted source feedback",
+        "category": "source-prediction"
+      },
+      {
+        "index": 2,
+        "name": "unchanged original tuple retains all five hashes",
+        "category": "history"
+      },
+      {
+        "index": 3,
+        "name": "mounted source feedback",
+        "category": "source-prediction"
+      },
+      {
+        "index": 3,
+        "name": "unchanged original tuple retains all five hashes",
+        "category": "history"
+      },
+      {
+        "index": 5,
+        "name": "unchanged original tuple retains all five hashes",
+        "category": "history"
+      },
+      {
+        "index": 8,
+        "name": "C invisible-marker condition",
+        "category": "source-prediction"
+      },
+      {
+        "index": 8,
+        "name": "unchanged original tuple retains all five hashes",
+        "category": "history"
+      }
+    ]
+  },
+  "categories": {
+    "integrity": {
+      "passed": 11,
+      "checks": 11
+    },
+    "setup": {
+      "passed": 30,
+      "checks": 30
+    },
+    "source-prediction": {
+      "passed": 24,
+      "checks": 27
+    },
+    "history": {
+      "passed": 4,
+      "checks": 9
+    },
+    "neutrality": {
+      "passed": 22,
+      "checks": 22
+    }
+  },
+  "unchangedBodies": 99,
+  "originalExpectationsRewritten": false,
+  "negativeRows": [
+    {
+      "index": 1,
+      "name": "self-repeat-negative",
+      "ordinaryRowUnchanged": true,
+      "nativeRowUnchanged": true,
+      "hashes": {
+        "screens": "f842f87e9eb1b13fb14f01258db0afdac8e3e705354939c165a9b5811c2d990a",
+        "cursors": "f9d0025d458e7e626f6599e28a7b1cf7d699102ee5eaab7ac4dc00034de56bcd",
+        "calls": "2009166a4f54844b7571bcb4187acb69fdade0978abaa305ffafc5f3a29d5aed",
+        "slices": "2181318af2b7ec28f5665a25eb7b0e24472a52a45b64b6cd28eb6168ac557c17",
+        "frames": "bf0077cf664e94e64924481687b6698b868329c03f281147f54f16ab099d7df3"
+      }
+    },
+    {
+      "index": 4,
+      "name": "mounted-up-negative",
+      "ordinaryRowUnchanged": true,
+      "nativeRowUnchanged": true,
+      "hashes": {
+        "screens": "df2fc4207d00cceb853b2f6de89245ea870a0334aa53816d0ac02629b9cb76c6",
+        "cursors": "d62e7c8fb819883947c0b6c00a4441ebad55e2c05ea0aafe30c160fd0f90ffde",
+        "calls": "24eaac6e4815671d6a3aff0db30398a44edbb9322e640b4280c1406a7bc081cf",
+        "slices": "ae228aedba1e03c6fbf02bb893299da571f814b045aae49ece13ce8bc58275cf",
+        "frames": "4d7ba6a4c38d723186da1f268f5b662c9ce9580c0d24fc0d9481337db9066638"
+      }
+    },
+    {
+      "index": 7,
+      "name": "statue-blind-prompt-acknowledged-negative",
+      "ordinaryRowUnchanged": true,
+      "nativeRowUnchanged": true,
+      "hashes": {
+        "screens": "e4715fc5f6d09d4552f2c081f2fa8dfeda1a2ab2aab69d74fba9e9d66e1f5936",
+        "cursors": "c8368667f1b3d52bfa77f0a19cbc17a07463b72a885cd5ed3c7235915e66b515",
+        "calls": "e6ddfb4c9d43120abdc37a4a852dc7f388e68986ec14b65d005175091da1b47e",
+        "slices": "71598a7d41d6ca697ccd737e29e9514a9c7cc0b9f3435e87285a0c8cf6a1e98d",
+        "frames": "fd331dce7a25bcf0dbbeff0f74846e08676871f53a7f8457b4d8bbe0f8c079ac"
+      }
+    },
+    {
+      "index": 9,
+      "name": "eating-pet-visible-negative",
+      "ordinaryRowUnchanged": true,
+      "nativeRowUnchanged": true,
+      "hashes": {
+        "screens": "2bef88fa49672d65704627a17482274cefccf391ed721ea6b735150ca9d963ba",
+        "cursors": "9157ae44c5551f76bf12fa72bb862f4b37b66acce6852e4eb7bdf277918bad25",
+        "calls": "d909638388e07b0fa0a3fc18731176aaa184bbc076230f5653221b4383756872",
+        "slices": "c3d9092c1da57d58f5cac067c98547a852572f69b1166a351d5a4831bb73c647",
+        "frames": "ba56ec9390e018ba54353628fe4a9e51159cd53adff013965530ee3a6fbb36ad"
+      }
+    },
+    {
+      "index": 10,
+      "name": "eating-pet-deaf-negative",
+      "ordinaryRowUnchanged": true,
+      "nativeRowUnchanged": true,
+      "hashes": {
+        "screens": "17948b7f1a6b2b289ea7c41e316eadb548ce853f5f40fc9bb874100d33aed73e",
+        "cursors": "4a03d5bbce20fd781212155f6169d80d388a4d5f6daf296bc017104f97c3494f",
+        "calls": "f4c1c103dac140e290ae420f43182b2938d0ec2fcc09c26ec26d4f1652e02520",
+        "slices": "60945b5117054e3f153541538aad5c03c8f8e8f31bb2d27a1ae23846bbbd76c0",
+        "frames": "94ab54d16ab775c1688a586b307ad8494bec4997126a9727ccaad9e1572a7e26"
+      }
+    }
+  ],
+  "negativeHashes": 25,
+  "neutralityComparisons": 22,
+  "allOrdinaryOutputsMatchNativeJS": true,
+  "historicalBaselineChecks": [
+    {
+      "index": 0,
+      "baselineInputHistoryUnchanged": true,
+      "changedStreams": [
+        "screens"
+      ],
+      "originalHashes": {
+        "screens": "78ca63ebf7f946728527b096c7978d1c6a22a798579e6bee60d505f62dc386cb",
+        "cursors": "f9d0025d458e7e626f6599e28a7b1cf7d699102ee5eaab7ac4dc00034de56bcd",
+        "calls": "2009166a4f54844b7571bcb4187acb69fdade0978abaa305ffafc5f3a29d5aed",
+        "slices": "2181318af2b7ec28f5665a25eb7b0e24472a52a45b64b6cd28eb6168ac557c17",
+        "frames": "bf0077cf664e94e64924481687b6698b868329c03f281147f54f16ab099d7df3"
+      },
+      "candidateHashes": {
+        "screens": "86fcf52fb9096bd2b2c38e263d2ad854704293e0f441a94cb0db9482525cc6a7",
+        "cursors": "f9d0025d458e7e626f6599e28a7b1cf7d699102ee5eaab7ac4dc00034de56bcd",
+        "calls": "2009166a4f54844b7571bcb4187acb69fdade0978abaa305ffafc5f3a29d5aed",
+        "slices": "2181318af2b7ec28f5665a25eb7b0e24472a52a45b64b6cd28eb6168ac557c17",
+        "frames": "bf0077cf664e94e64924481687b6698b868329c03f281147f54f16ab099d7df3"
+      },
+      "nativeExact": true
+    },
+    {
+      "index": 1,
+      "baselineInputHistoryUnchanged": true,
+      "changedStreams": [],
+      "originalHashes": {
+        "screens": "f842f87e9eb1b13fb14f01258db0afdac8e3e705354939c165a9b5811c2d990a",
+        "cursors": "f9d0025d458e7e626f6599e28a7b1cf7d699102ee5eaab7ac4dc00034de56bcd",
+        "calls": "2009166a4f54844b7571bcb4187acb69fdade0978abaa305ffafc5f3a29d5aed",
+        "slices": "2181318af2b7ec28f5665a25eb7b0e24472a52a45b64b6cd28eb6168ac557c17",
+        "frames": "bf0077cf664e94e64924481687b6698b868329c03f281147f54f16ab099d7df3"
+      },
+      "candidateHashes": {
+        "screens": "f842f87e9eb1b13fb14f01258db0afdac8e3e705354939c165a9b5811c2d990a",
+        "cursors": "f9d0025d458e7e626f6599e28a7b1cf7d699102ee5eaab7ac4dc00034de56bcd",
+        "calls": "2009166a4f54844b7571bcb4187acb69fdade0978abaa305ffafc5f3a29d5aed",
+        "slices": "2181318af2b7ec28f5665a25eb7b0e24472a52a45b64b6cd28eb6168ac557c17",
+        "frames": "bf0077cf664e94e64924481687b6698b868329c03f281147f54f16ab099d7df3"
+      },
+      "nativeExact": true
+    },
+    {
+      "index": 2,
+      "baselineInputHistoryUnchanged": true,
+      "changedStreams": [
+        "screens",
+        "calls",
+        "slices"
+      ],
+      "originalHashes": {
+        "screens": "02ec4ee52db6a752e2539a4574597b1ec5a9e8c7d6c8aeb6939b2fa430f8a3d2",
+        "cursors": "d62e7c8fb819883947c0b6c00a4441ebad55e2c05ea0aafe30c160fd0f90ffde",
+        "calls": "24eaac6e4815671d6a3aff0db30398a44edbb9322e640b4280c1406a7bc081cf",
+        "slices": "ae228aedba1e03c6fbf02bb893299da571f814b045aae49ece13ce8bc58275cf",
+        "frames": "4d7ba6a4c38d723186da1f268f5b662c9ce9580c0d24fc0d9481337db9066638"
+      },
+      "candidateHashes": {
+        "screens": "d052c544fe9f5eda015cacf81daf18226a1885873b25f41b3cc41a7407589b9c",
+        "cursors": "d62e7c8fb819883947c0b6c00a4441ebad55e2c05ea0aafe30c160fd0f90ffde",
+        "calls": "a8bfcf8cfd549026ee5677d7ed5452ce35912fbe5f3f978cf5317930a3616b43",
+        "slices": "f8d11c91092aa624ec9a97effe6ff368e44b0939f4e90aa7b143413e8ab8966a",
+        "frames": "4d7ba6a4c38d723186da1f268f5b662c9ce9580c0d24fc0d9481337db9066638"
+      },
+      "nativeExact": true
+    },
+    {
+      "index": 3,
+      "baselineInputHistoryUnchanged": true,
+      "changedStreams": [
+        "screens",
+        "calls",
+        "slices"
+      ],
+      "originalHashes": {
+        "screens": "c11b7ac2472255c1bc04669b9650ffb95b6531a19528d3979fde4554ffa604a2",
+        "cursors": "08810a742f76fe34e55daa57266bb018a95c5585e7fa1d601030173c612edca8",
+        "calls": "b0e04b698e39f0dc5a16e24b3a68e03eafbb24b4569ac6651cc1e5fe5d1ad8b2",
+        "slices": "bf78e146520bc2127066eec1f8cf4431abdc668d7f576c119a22d39a995bb842",
+        "frames": "8144c0e5ec6e8574dff53b9b03a4db94bb6c78c963e5596c9f8b3c76d4a295bd"
+      },
+      "candidateHashes": {
+        "screens": "5a782ab4a7a3d152c5db25910c44b2d40e0c68e9401871ba9f2ad2843e0abffb",
+        "cursors": "08810a742f76fe34e55daa57266bb018a95c5585e7fa1d601030173c612edca8",
+        "calls": "838a9cedb676cfdef1c1a7ef4117b2c34c76a5ccb14c6ea6e774188d1707f408",
+        "slices": "8e02c92aeb8a7a2373609f81b791ef566a1f0242236dcb9c96ad539c5275144d",
+        "frames": "8144c0e5ec6e8574dff53b9b03a4db94bb6c78c963e5596c9f8b3c76d4a295bd"
+      },
+      "nativeExact": true
+    },
+    {
+      "index": 4,
+      "baselineInputHistoryUnchanged": true,
+      "changedStreams": [],
+      "originalHashes": {
+        "screens": "df2fc4207d00cceb853b2f6de89245ea870a0334aa53816d0ac02629b9cb76c6",
+        "cursors": "d62e7c8fb819883947c0b6c00a4441ebad55e2c05ea0aafe30c160fd0f90ffde",
+        "calls": "24eaac6e4815671d6a3aff0db30398a44edbb9322e640b4280c1406a7bc081cf",
+        "slices": "ae228aedba1e03c6fbf02bb893299da571f814b045aae49ece13ce8bc58275cf",
+        "frames": "4d7ba6a4c38d723186da1f268f5b662c9ce9580c0d24fc0d9481337db9066638"
+      },
+      "candidateHashes": {
+        "screens": "df2fc4207d00cceb853b2f6de89245ea870a0334aa53816d0ac02629b9cb76c6",
+        "cursors": "d62e7c8fb819883947c0b6c00a4441ebad55e2c05ea0aafe30c160fd0f90ffde",
+        "calls": "24eaac6e4815671d6a3aff0db30398a44edbb9322e640b4280c1406a7bc081cf",
+        "slices": "ae228aedba1e03c6fbf02bb893299da571f814b045aae49ece13ce8bc58275cf",
+        "frames": "4d7ba6a4c38d723186da1f268f5b662c9ce9580c0d24fc0d9481337db9066638"
+      },
+      "nativeExact": true
+    },
+    {
+      "index": 5,
+      "baselineInputHistoryUnchanged": true,
+      "changedStreams": [
+        "screens"
+      ],
+      "originalHashes": {
+        "screens": "fcfe67b0bd514133874c8981201f1df62427430bfa229630b07f31ca3b090e86",
+        "cursors": "4bd85504eb8072bb0857d42ab1d60d9260e399bff5fd5b9a2d65ccddc4aa89ef",
+        "calls": "be1f9fa60dd6a70cc6f8ff7cd8c82f7aa2a426734ea83b69d246f555eb413429",
+        "slices": "8ff73191797d076dcb66fe7619cc4a397879f2e26f66a370da7a7581137255d9",
+        "frames": "40b562827d4106f549ef757157290919f3573b7cc415b7acf131dd48f86a1587"
+      },
+      "candidateHashes": {
+        "screens": "c2d5ce2b45e2e9e8620fc6d1e8bf7a4075b2b1e132b77fed63c8680bece4c318",
+        "cursors": "4bd85504eb8072bb0857d42ab1d60d9260e399bff5fd5b9a2d65ccddc4aa89ef",
+        "calls": "be1f9fa60dd6a70cc6f8ff7cd8c82f7aa2a426734ea83b69d246f555eb413429",
+        "slices": "8ff73191797d076dcb66fe7619cc4a397879f2e26f66a370da7a7581137255d9",
+        "frames": "40b562827d4106f549ef757157290919f3573b7cc415b7acf131dd48f86a1587"
+      },
+      "nativeExact": true
+    },
+    {
+      "index": 8,
+      "baselineInputHistoryUnchanged": true,
+      "changedStreams": [
+        "screens"
+      ],
+      "originalHashes": {
+        "screens": "7bc82cb62deaecceba31d3501c06b02760e7360ca706364fa90933fede371632",
+        "cursors": "4a03d5bbce20fd781212155f6169d80d388a4d5f6daf296bc017104f97c3494f",
+        "calls": "f4c1c103dac140e290ae420f43182b2938d0ec2fcc09c26ec26d4f1652e02520",
+        "slices": "60945b5117054e3f153541538aad5c03c8f8e8f31bb2d27a1ae23846bbbd76c0",
+        "frames": "94ab54d16ab775c1688a586b307ad8494bec4997126a9727ccaad9e1572a7e26"
+      },
+      "candidateHashes": {
+        "screens": "84e475706ed956a12043393f698bac4d912a484fe631de5c2e74598c1e5cba5a",
+        "cursors": "4a03d5bbce20fd781212155f6169d80d388a4d5f6daf296bc017104f97c3494f",
+        "calls": "f4c1c103dac140e290ae420f43182b2938d0ec2fcc09c26ec26d4f1652e02520",
+        "slices": "60945b5117054e3f153541538aad5c03c8f8e8f31bb2d27a1ae23846bbbd76c0",
+        "frames": "94ab54d16ab775c1688a586b307ad8494bec4997126a9727ccaad9e1572a7e26"
+      },
+      "nativeExact": true
+    },
+    {
+      "index": 9,
+      "baselineInputHistoryUnchanged": true,
+      "changedStreams": [],
+      "originalHashes": {
+        "screens": "2bef88fa49672d65704627a17482274cefccf391ed721ea6b735150ca9d963ba",
+        "cursors": "9157ae44c5551f76bf12fa72bb862f4b37b66acce6852e4eb7bdf277918bad25",
+        "calls": "d909638388e07b0fa0a3fc18731176aaa184bbc076230f5653221b4383756872",
+        "slices": "c3d9092c1da57d58f5cac067c98547a852572f69b1166a351d5a4831bb73c647",
+        "frames": "ba56ec9390e018ba54353628fe4a9e51159cd53adff013965530ee3a6fbb36ad"
+      },
+      "candidateHashes": {
+        "screens": "2bef88fa49672d65704627a17482274cefccf391ed721ea6b735150ca9d963ba",
+        "cursors": "9157ae44c5551f76bf12fa72bb862f4b37b66acce6852e4eb7bdf277918bad25",
+        "calls": "d909638388e07b0fa0a3fc18731176aaa184bbc076230f5653221b4383756872",
+        "slices": "c3d9092c1da57d58f5cac067c98547a852572f69b1166a351d5a4831bb73c647",
+        "frames": "ba56ec9390e018ba54353628fe4a9e51159cd53adff013965530ee3a6fbb36ad"
+      },
+      "nativeExact": true
+    },
+    {
+      "index": 10,
+      "baselineInputHistoryUnchanged": true,
+      "changedStreams": [],
+      "originalHashes": {
+        "screens": "17948b7f1a6b2b289ea7c41e316eadb548ce853f5f40fc9bb874100d33aed73e",
+        "cursors": "4a03d5bbce20fd781212155f6169d80d388a4d5f6daf296bc017104f97c3494f",
+        "calls": "f4c1c103dac140e290ae420f43182b2938d0ec2fcc09c26ec26d4f1652e02520",
+        "slices": "60945b5117054e3f153541538aad5c03c8f8e8f31bb2d27a1ae23846bbbd76c0",
+        "frames": "94ab54d16ab775c1688a586b307ad8494bec4997126a9727ccaad9e1572a7e26"
+      },
+      "candidateHashes": {
+        "screens": "17948b7f1a6b2b289ea7c41e316eadb548ce853f5f40fc9bb874100d33aed73e",
+        "cursors": "4a03d5bbce20fd781212155f6169d80d388a4d5f6daf296bc017104f97c3494f",
+        "calls": "f4c1c103dac140e290ae420f43182b2938d0ec2fcc09c26ec26d4f1652e02520",
+        "slices": "60945b5117054e3f153541538aad5c03c8f8e8f31bb2d27a1ae23846bbbd76c0",
+        "frames": "94ab54d16ab775c1688a586b307ad8494bec4997126a9727ccaad9e1572a7e26"
+      },
+      "nativeExact": true
+    }
+  ],
+  "mountedMessageAttribution": [
+    {
+      "index": 2,
+      "step": 100,
+      "unchangedExpected": "The saddled pony whickers.",
+      "originalCRow": "The saddled pony whickers.  The jackal bites!",
+      "candidateRow": "The saddled pony whickers.  The jackal bites!",
+      "oldEqualityRejectsC": true,
+      "sourceMessageComplete": true,
+      "followingMessage": "The jackal bites!",
+      "timeAdvanced": 1
+    },
+    {
+      "index": 3,
+      "step": 194,
+      "unchangedExpected": "The saddled pony seems not to notice you.",
+      "originalCRow": "The saddled pony seems not to notice you.  The jackal bites!",
+      "candidateRow": "The saddled pony seems not to notice you.  The jackal bites!",
+      "oldEqualityRejectsC": true,
+      "sourceMessageComplete": true,
+      "followingMessage": "The jackal bites!",
+      "timeAdvanced": 1
+    }
+  ],
+  "markerCoordinateAttribution": {
+    "index": 8,
+    "step": 96,
+    "mapTarget": [
+      3,
+      8
+    ],
+    "oldDecodedCoordinate": [
+      3,
+      9
+    ],
+    "sourceDecodedCoordinate": [
+      2,
+      9
+    ],
+    "originalCAtOldCoordinate": "@",
+    "originalCAtTarget": "I",
+    "oldCoordinateRejectsC": true,
+    "rememberedMarker": "invis",
+    "candidateFullStyleNativeExact": true
+  },
+  "native": {
+    "baselineExact": 5,
+    "candidateExact": 11,
+    "cases": 11,
+    "boundaries": 1067,
+    "calls": 31031,
+    "frames": 0
+  },
+  "sourceContractAccounting": {
+    "unchangedCurrentChecksPassed": 87,
+    "currentChecks": 90,
+    "separateCBackedAttributions": 3,
+    "originalBaselineHistoryChecksPreserved": 9,
+    "originalDiagnosticStillFails": true
+  },
+  "gameplayRunsAdded": 0
+}

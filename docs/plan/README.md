@@ -12,13 +12,13 @@ Ground rules are in `/CLAUDE.md`. Read that first if you have not.
 
 ## Current focus, 2026-11-26
 
-Shop price quotes are pushed as `ee4f5966`. Altar conduct and bones arrival
-fixes pass all 941 recordings, 17 targeted native cases and 47 timeout workers.
-All three portable gates preserve their isolated results and fifty control
-hashes. Six retained checks pass; one older synthetic fruit assertion fails
-identically before and after, with both failures and source attribution kept.
-The next step is the verified commit and immediate push, then the separate
-chat candidate. See STATUS for the exact evidence and remaining limits.
+Altar and bones fixes are pushed as `efe508f9`, with all 1,232 full941 tested
+files verified against the publication. Chat direction and target fixes now
+pass all 942 recordings, 20 targeted native cases, the fresh 90-contract gate,
+five focused checks and 45 strict workers. The next step is the verified
+commit and immediate push. Stasis restrictions, shop container coverage and a
+corrected crowning chronicle producer are separate active investigations.
+See STATUS for exact evidence, preserved diagnostics and limits.
 
 Chat speech guards and wear-command entry checks are verified on `ef2bfd2d`.
 All 934 recordings, 12 new native cases, 12 focused checks and 46 strict workers

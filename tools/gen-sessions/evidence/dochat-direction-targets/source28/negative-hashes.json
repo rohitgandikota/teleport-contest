@@ -1,0 +1,62 @@
+{
+  "kind": "New locked-family baseline controls; earlier 25 negative hashes remain in immutable original23.",
+  "recipeSha256": "05b48381543e232f5a37218b20cdf8e8cce09dae7eb977b0afe2664b90a451aa",
+  "reportSha256": "7219f40dc914058b49c5bd4da7147ec61158a52f5d39d01f1773a8ca0821ba58",
+  "rows": [
+    {
+      "index": 1,
+      "name": "self-repeat-negative",
+      "hashes": {
+        "screens": "f842f87e9eb1b13fb14f01258db0afdac8e3e705354939c165a9b5811c2d990a",
+        "cursors": "f9d0025d458e7e626f6599e28a7b1cf7d699102ee5eaab7ac4dc00034de56bcd",
+        "calls": "2009166a4f54844b7571bcb4187acb69fdade0978abaa305ffafc5f3a29d5aed",
+        "slices": "2181318af2b7ec28f5665a25eb7b0e24472a52a45b64b6cd28eb6168ac557c17",
+        "frames": "bf0077cf664e94e64924481687b6698b868329c03f281147f54f16ab099d7df3"
+      }
+    },
+    {
+      "index": 4,
+      "name": "mounted-up-negative",
+      "hashes": {
+        "screens": "df2fc4207d00cceb853b2f6de89245ea870a0334aa53816d0ac02629b9cb76c6",
+        "cursors": "d62e7c8fb819883947c0b6c00a4441ebad55e2c05ea0aafe30c160fd0f90ffde",
+        "calls": "24eaac6e4815671d6a3aff0db30398a44edbb9322e640b4280c1406a7bc081cf",
+        "slices": "ae228aedba1e03c6fbf02bb893299da571f814b045aae49ece13ce8bc58275cf",
+        "frames": "4d7ba6a4c38d723186da1f268f5b662c9ce9580c0d24fc0d9481337db9066638"
+      }
+    },
+    {
+      "index": 7,
+      "name": "statue-blind-prompt-acknowledged-negative",
+      "hashes": {
+        "screens": "e4715fc5f6d09d4552f2c081f2fa8dfeda1a2ab2aab69d74fba9e9d66e1f5936",
+        "cursors": "c8368667f1b3d52bfa77f0a19cbc17a07463b72a885cd5ed3c7235915e66b515",
+        "calls": "e6ddfb4c9d43120abdc37a4a852dc7f388e68986ec14b65d005175091da1b47e",
+        "slices": "71598a7d41d6ca697ccd737e29e9514a9c7cc0b9f3435e87285a0c8cf6a1e98d",
+        "frames": "fd331dce7a25bcf0dbbeff0f74846e08676871f53a7f8457b4d8bbe0f8c079ac"
+      }
+    },
+    {
+      "index": 9,
+      "name": "eating-pet-visible-negative",
+      "hashes": {
+        "screens": "2bef88fa49672d65704627a17482274cefccf391ed721ea6b735150ca9d963ba",
+        "cursors": "9157ae44c5551f76bf12fa72bb862f4b37b66acce6852e4eb7bdf277918bad25",
+        "calls": "d909638388e07b0fa0a3fc18731176aaa184bbc076230f5653221b4383756872",
+        "slices": "c3d9092c1da57d58f5cac067c98547a852572f69b1166a351d5a4831bb73c647",
+        "frames": "ba56ec9390e018ba54353628fe4a9e51159cd53adff013965530ee3a6fbb36ad"
+      }
+    },
+    {
+      "index": 10,
+      "name": "eating-pet-deaf-negative",
+      "hashes": {
+        "screens": "17948b7f1a6b2b289ea7c41e316eadb548ce853f5f40fc9bb874100d33aed73e",
+        "cursors": "4a03d5bbce20fd781212155f6169d80d388a4d5f6daf296bc017104f97c3494f",
+        "calls": "f4c1c103dac140e290ae420f43182b2938d0ec2fcc09c26ec26d4f1652e02520",
+        "slices": "60945b5117054e3f153541538aad5c03c8f8e8f31bb2d27a1ae23846bbbd76c0",
+        "frames": "94ab54d16ab775c1688a586b307ad8494bec4997126a9727ccaad9e1572a7e26"
+      }
+    }
+  ]
+}

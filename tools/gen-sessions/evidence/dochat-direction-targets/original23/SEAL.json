@@ -1,0 +1,8 @@
+{
+  "kind": "source-only audit; no runtime candidate",
+  "members": 23,
+  "manifestSha256": "d5b507ef173f82c7984fc16ae757f3ff8d11176f5f8813d08fcd1878f1f05261",
+  "sourceLink": "../chat-wear-parent-composed",
+  "inputSealSha256": "9ad91fa578caf7db176f0f4b31571f631078d561e390c30c202ab3140a350616",
+  "nativeRequiredBeforeCandidate": true
+}

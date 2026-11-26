@@ -1,0 +1,96 @@
+{
+  "members": {
+    "INPUT-SEAL.json": {
+      "sha256": "9ad91fa578caf7db176f0f4b31571f631078d561e390c30c202ab3140a350616",
+      "bytes": 803
+    },
+    "PLAN.md": {
+      "sha256": "e91d3d767613aef799e193885f20c344ebbe9e10af0a1035f45250dd1bb3978e",
+      "bytes": 917
+    },
+    "README.md": {
+      "sha256": "cce48ff4d8c917fbb698bbc1f9de43e4c2bc8d98ab60dd465d7b1b51b351abb7",
+      "bytes": 2207
+    },
+    "RESULTS.md": {
+      "sha256": "330807040efbe7c61c8e34303f79f60dffd6ad92e6940f3d18bc9dba43209b7a",
+      "bytes": 3151
+    },
+    "ROUTES.md": {
+      "sha256": "d55e8f0f75ddf7b7969656b550bc739d9cfdedc8e247451ec84ebc80e2f15c71",
+      "bytes": 1238
+    },
+    "SETUP-FOLLOWUP.md": {
+      "sha256": "3d3347ae6e3c08d7ad584490307a229a8a03c1db93c3ac3fe682316df467484f",
+      "bytes": 2229
+    },
+    "SOURCE-REVIEW.md": {
+      "sha256": "c55e5adc5e83a05d2d6bc4346bb14cca231e61b512ffa556ec20e5cc7d4b6248",
+      "bytes": 7231
+    },
+    "STATUS.md": {
+      "sha256": "bd9a35fb6bf7be62c6c4de98de6ab01103c6f4d182435d32e94de253a50d25b6",
+      "bytes": 1829
+    },
+    "native-handoff.json": {
+      "sha256": "2b14ea3a0be938439f8357c4ec1da689f3642a6b89bb1746b6f06c410650bd37",
+      "bytes": 2263
+    },
+    "post-observation-source-pins.json": {
+      "sha256": "fcd73d2177bdcf48ace15e02302e5f282043d2e624b5fdc112bb232b798aa085",
+      "bytes": 717
+    },
+    "proposals/input-lock.json": {
+      "sha256": "f7a540437114f44da8b5da7fa1092869a79c157f4b6d983cd08a7c4b006c4923",
+      "bytes": 20903
+    },
+    "proposals/predictions.json": {
+      "sha256": "34b36e3dbe1434997bab7a973a5af382c7086f1c79c9834ff1948e4a17369c25",
+      "bytes": 3633
+    },
+    "proposals/producer-provenance.json": {
+      "sha256": "412dc09d0ec207729a31f87a828399c0450f16438136534874846dc2d5464679",
+      "bytes": 720
+    },
+    "proposals/recipe.json": {
+      "sha256": "565c40010387daa4d58133c852b2c7439f1bee1eed54c8e95db5cc8fcb69f2bd",
+      "bytes": 5631
+    },
+    "reports/negative-hashes.json": {
+      "sha256": "fb6d654a854962375523232546d23019edf548bbef541b543d38a0f3ca93c960",
+      "bytes": 3182
+    },
+    "reports/observation.json": {
+      "sha256": "1cbb8229340e702658da05a6f120a995bb942067e06ca69ef0bba0169e56dc93",
+      "bytes": 64160
+    },
+    "reports/source-findings.json": {
+      "sha256": "61b2a27d8498b0e45177d6931af7bbdbe1521bb3819b0991cd6216d51cea5e15",
+      "bytes": 2449
+    },
+    "reports/worker-receipt.json": {
+      "sha256": "46dc51f025f9d94146af246a6ea8fe50bc99a2b58cade47c95533751e25632ba",
+      "bytes": 612
+    },
+    "reports/worker.log": {
+      "sha256": "9d1120af3714c51c5e312f9de4c77b294eac34fb22c28593f0f4c12e058e014f",
+      "bytes": 975
+    },
+    "source-pins.json": {
+      "sha256": "8d83f0ef4194c5ae4f1e35f322ca5026996cdd407210ac13bd9fec27ab2bbf08",
+      "bytes": 4743
+    },
+    "tools/build-proposals.py": {
+      "sha256": "c77677867cd01fb968f98eeb657e0344c62163e9051b523c6e9004de70a7dbf2",
+      "bytes": 5733
+    },
+    "tools/observe.mjs": {
+      "sha256": "598304c0c309cf41e10d8c6ebe53815d2c7e3120f4b21e5f9550694f846a68c3",
+      "bytes": 10858
+    },
+    "verify-audit.py": {
+      "sha256": "a847f7723bbe63d268f7fbcd723b4c8c8bd9da6d0dcc1f355f3feeeea5b836b3",
+      "bytes": 5931
+    }
+  }
+}

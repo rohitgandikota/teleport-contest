@@ -1,0 +1,13 @@
+{
+  "kind": "corrected producer source-only evidence; retained failures",
+  "members": 22,
+  "manifestSha256": "8dadcff3820a6e9ecea25f2dd31c514cc64b65b03d92c4e2e8ca177e6fa5abcf",
+  "inputSealSha256": "5a54ea18524ee2bf728680cdee9681f9efc219f062038c40fc7c0a5fe2aaeaeb",
+  "originalSealSha256": "6f1ccfd85780353b6ef9fa551a36526a06179bb5159588aa60b3d0ddb3cc65ff",
+  "links": {
+    "source": "../chat-wear-parent-composed",
+    "original": "../dochat-branches-source-audit"
+  },
+  "nativeConfirmed": false,
+  "runtimeCandidate": false
+}

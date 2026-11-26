@@ -1,0 +1,206 @@
+{
+  "verifiedAt": "2026-11-26T18:51:15.250240+00:00",
+  "baselineCommit": "efe508f97c033c1ecd2b4d09d49fbb36a38c925e",
+  "composition": {
+    "baselineCommit": "efe508f97c033c1ecd2b4d09d49fbb36a38c925e",
+    "baselineRuntimeSHA256": "0829d57462918ebe904415389933860d6133f13b778aab15fb4c0cb1a360abc6",
+    "candidateRuntimeSHA256": "7c91a842100b70fdf6735ed8fed8628416915a5de3666864f95c03286bbfa2b4",
+    "candidateSealSHA256": "83e3a8375f792703d6a94e73c980abd28e8f846aaee978cd7b5e6e2aa9e66e52",
+    "candidatePatchSHA256": "100f416fc318ce988a19e9724c05c533d70451d710282ec0753968bf2e599ccd",
+    "runtimeSHA256": "f2afc28c9b9816b3f48fe811979969ef9adae95c4e9d1119b6146d884910c99f",
+    "runtimeChanged": [
+      "js/sounds.js"
+    ],
+    "copies": 1,
+    "fixedLinks": 279,
+    "shopQuoteBranchPreserved": true
+  },
+  "validation": {
+    "nativeBefore": "5/11",
+    "nativeAfter": "11/11",
+    "targetedNativeCases": 20,
+    "unchangedChatGuardCases": 6,
+    "fullComposedReportsEqualIsolated": true,
+    "currentContracts": "90/90",
+    "historicalContracts": "9/9",
+    "originalCPrimary": "11/11",
+    "negativeHashes": 25,
+    "neutrality": 22,
+    "originalDiagnostic": "91/99 retained; five historical output checks and three predicates also rejecting original C",
+    "correctedPredicates": "Two mounted own-message prefixes preserve following C monster messages; invisible marker translates map x to decoded x-1."
+  },
+  "install": {
+    "promotionSealSHA256": "3e6e56638d7fb9ebcd425ea3999028e8eaad8897eddb9cda48edf9d406ecfb02",
+    "payloadManifestSHA256": "0fe5ea13ec6537e3ec3bd90a7e86496998e96bb1536c71929c7cadba3f6bae1d",
+    "payloads": 50,
+    "existingRawUnchanged": true,
+    "branchesBefore": 4729,
+    "branchesAfter": 4740,
+    "registryBeforeSHA256": "398c7f99429bce712a8a2e7f957fbbb46a109f999f21bb3125e85d283652eb54",
+    "registryAfterSHA256": "c6e453154269369911adf68936171bc2e033944da4a6a03b91a4ae8a36ddb915",
+    "priorRegistryBytesPreserved": true
+  },
+  "fullRegression": {
+    "verifiedAt": "2026-11-26T18:49:28.381627+00:00",
+    "sessions": 942,
+    "passed": 942,
+    "failures": [],
+    "totals": {
+      "screens": 943599,
+      "cursors": 943599,
+      "rngCalls": 20654848,
+      "animFrames": 33188
+    },
+    "missingMetrics": {},
+    "runtimeFilesFixed": 280,
+    "rawFilesFixed": 942,
+    "allFilesFixed": 1233,
+    "allFilesSHA256": "c99c095eff21ef8fc2070df6e1ecb82bb7b7cfb73264da280bb5ddfdf1b462ac",
+    "defaultWorkerTimeoutMs": 45000,
+    "retries": 0,
+    "started": {
+      "startedAt": "2026-11-26T18:38:59.983629+00:00",
+      "workers": 2,
+      "pid": 3559629,
+      "cpuCount": 24,
+      "loadAverage": [
+        1.1962890625,
+        1.25146484375,
+        1.736328125
+      ],
+      "timeoutOverride": false,
+      "retries": 0,
+      "node": {
+        "version": "v26.3.0",
+        "archive": "node-v26.3.0-linux-x64.tar.xz",
+        "sha256": "0ce210831380ab75a5fec0d3fb6b5af0958898016b2cae51cc2fa11057d2f77e",
+        "officialURL": "https://nodejs.org/dist/v26.3.0/node-v26.3.0-linux-x64.tar.xz",
+        "checksumsURL": "https://nodejs.org/dist/v26.3.0/SHASUMS256.txt",
+        "binary": "/share/NFS/u/rohit/research/contest/artifacts/2026-11-22/text-history-full858-js-20261125/node-v26.3.0-linux-x64/bin/node",
+        "archiveSHA256": "0ce210831380ab75a5fec0d3fb6b5af0958898016b2cae51cc2fa11057d2f77e",
+        "binarySHA256": "5325ac9da58541494afcc136f0880279a2a853609bf4dae7755e04fb682b6926"
+      },
+      "allFilesSHA256": "c99c095eff21ef8fc2070df6e1ecb82bb7b7cfb73264da280bb5ddfdf1b462ac"
+    },
+    "logs": {
+      "shard-0.log": "8b62ed1a8f46731bc00bad4ba1fc607d0340e488aadc83d62fc947b09fc77b97",
+      "shard-1.log": "9f002c9edf19b3228179475d203fa9ea968978399b6757a18ab34d8f75e4d163"
+    },
+    "limits": [
+      "Scored corpus parity, not literal serialized-byte or whole-port proof.",
+      "No held-out result is inferred from these fixtures."
+    ]
+  },
+  "retainedChecks": [
+    {
+      "name": "mounted-movement-input-gate",
+      "command": [
+        "node",
+        "--max-old-space-size=512",
+        "tools/mounted-movement-input-gate.mjs"
+      ],
+      "exit": 0,
+      "seconds": 2.696,
+      "log": ".cache/restart-20261122/dochat-direction-targets-retained-mounted-movement-input-gate.log",
+      "sha256": "b5ffacba32fe98cfe5e6963d4b8191638e03da92d877557ea915cef475d75da3"
+    },
+    {
+      "name": "peaceful-minion-chat-input-gate",
+      "command": [
+        "node",
+        "--max-old-space-size=512",
+        "tools/peaceful-minion-chat-input-gate.mjs"
+      ],
+      "exit": 0,
+      "seconds": 1.353,
+      "log": ".cache/restart-20261122/dochat-direction-targets-retained-peaceful-minion-chat-input-gate.log",
+      "sha256": "5a8f5f44740a64d4cdd9961f142e1cd9677bc8aa4f880234ce4cce843546f9a2"
+    },
+    {
+      "name": "monster-invisibility-state-gate",
+      "command": [
+        "node",
+        "--max-old-space-size=512",
+        "tools/monster-invisibility-state-gate.mjs"
+      ],
+      "exit": 0,
+      "seconds": 1.175,
+      "log": ".cache/restart-20261122/dochat-direction-targets-retained-monster-invisibility-state-gate.log",
+      "sha256": "f6768ea99d02e594a5104a86ec9b3de516b7b0cb22c564387455c80a87a27cde"
+    },
+    {
+      "name": "pager-lookat-swallow-statue-input-gate",
+      "command": [
+        "node",
+        "--max-old-space-size=512",
+        "tools/pager-lookat-swallow-statue-input-gate.mjs"
+      ],
+      "exit": 0,
+      "seconds": 1.472,
+      "log": ".cache/restart-20261122/dochat-direction-targets-retained-pager-lookat-swallow-statue-input-gate.log",
+      "sha256": "f076f1cca17c8236a41f0b197359438049aff8981e80a15b7d5968147bb4bdee"
+    },
+    {
+      "name": "shop-chat-quote-input-gate",
+      "command": [
+        "node",
+        "--max-old-space-size=512",
+        "tools/shop-chat-quote-input-gate.mjs"
+      ],
+      "exit": 0,
+      "seconds": 2.359,
+      "log": ".cache/restart-20261122/dochat-direction-targets-retained-shop-chat-quote-input-gate.log",
+      "sha256": "d841df60e4daa868e15ea48ec97e837335846b00ab9f93a35177bf2a192414b6"
+    }
+  ],
+  "strict": {
+    "exit": 0,
+    "seconds": 31.036,
+    "targets": 45,
+    "budgetMs": 8000,
+    "log": ".cache/restart-20261122/dochat-direction-targets-public45-strict.log",
+    "sha256": "8d5b5c1946094092d19693ee75a43de11c09df50ea6700e35beef83c3d080de9"
+  },
+  "scopeImportAudit": [],
+  "evidenceSHA256": {
+    "dochat-direction-targets-candidate/SEAL.json": "83e3a8375f792703d6a94e73c980abd28e8f846aaee978cd7b5e6e2aa9e66e52",
+    "dochat-direction-targets-candidate/reports/native.json": "0865c068a33d08f6c67def5330b91f61ec4a14714b55cea0685393e66ebbf56c",
+    "dochat-direction-targets-candidate/reports/observation.json": "389c5c14c641563fd63a4cbb8e8fed40d710b0b6f1aabbf886192c082dcb316f",
+    "dochat-direction-targets-candidate/reports/contract-accounting.json": "47cfce1abbf3d90f2f88c101d8c4d958a108ce033d5387d7a0e49a448ac5700d",
+    "dochat-direction-targets-promotion/SEAL.json": "3e6e56638d7fb9ebcd425ea3999028e8eaad8897eddb9cda48edf9d406ecfb02",
+    "dochat-direction-targets-promotion/promotion-files.json": "0fe5ea13ec6537e3ec3bd90a7e86496998e96bb1536c71929c7cadba3f6bae1d",
+    "dochat-direction-targets-main-ordinary.json": "a25ecd48938273f1b5f9bd02f6aeacb269be5d925c2e15f0858badc8b1efbe06",
+    "dochat-direction-targets-full942-remote/control/all-files.json": "c99c095eff21ef8fc2070df6e1ecb82bb7b7cfb73264da280bb5ddfdf1b462ac",
+    "dochat-direction-targets-full942-remote/verification.json": "861d6779c8c90110328d07bc3789305fb3a5219d5da8474f3d163a2d55e716a3"
+  },
+  "limits": [
+    "Full recorded corpus parity does not prove literal serialized bytes or the entire port.",
+    "No new leaderboard or held-out result is inferred."
+  ],
+  "whitespaceCheck": {
+    "originalCheckExit": 2,
+    "originalOutput": "tools/gen-sessions/evidence/dochat-direction-targets/candidate316/scoped-runtime.patch:4: trailing whitespace.\n+ \ntools/gen-sessions/evidence/dochat-direction-targets/candidate316/scoped-runtime.patch:27: trailing whitespace.\n+ \ntools/gen-sessions/evidence/dochat-direction-targets/candidate316/scoped-runtime.patch:39: trailing whitespace.\n+ \ntools/gen-sessions/evidence/dochat-direction-targets/candidate316/scoped-runtime.patch:44: trailing whitespace.\n+ \ntools/gen-sessions/evidence/dochat-direction-targets/candidate316/scoped-runtime.patch:59: trailing whitespace.\n+ \n",
+    "artifact": "tools/gen-sessions/evidence/dochat-direction-targets/candidate316/scoped-runtime.patch",
+    "sha256": "100f416fc318ce988a19e9724c05c533d70451d710282ec0753968bf2e599ccd",
+    "lines": [
+      4,
+      27,
+      39,
+      44,
+      59
+    ],
+    "classification": "Each whitespace-only line is a required unified-diff context prefix in the preserved original evidence patch. Gameplay and source files have no whitespace errors.",
+    "nonArtifactCheck": [
+      "git",
+      "diff",
+      "--cached",
+      "--check",
+      "--",
+      ".",
+      ":(exclude)tools/gen-sessions/evidence/dochat-direction-targets/candidate316/scoped-runtime.patch"
+    ],
+    "nonArtifactCheckExit": 0,
+    "patchParses": true,
+    "originalEvidenceUnchanged": true
+  }
+}

@@ -1,5 +1,52 @@
 # STATUS — live handoff board
 
+## 2026-11-26: chat checkpoint verified on full942
+
+Published main is efe508f97c033c1ecd2b4d09d49fbb36a38c925e (altar and bones).
+All 1,232 full941 tested Git blobs match that publication; receipt SHA256:
+2db0655bfe12cf809a0a107f3170e67d2432b802595416032390b3b420c58ed3.
+
+Current changes only sounds.js: cancelled chat returns ECMD_CANCEL; downward
+mounted chat uses the actual steed; visible statues receive their C response;
+an unseen eating pet is mapped before its noise message. The prior shop quote
+branch remains intact. Composed runtime map:
+f2afc28c9b9816b3f48fe811979969ef9adae95c4e9d1119b6146d884910c99f.
+All 20 composed native cases and six chat guard cases reproduce their isolated
+reports. Original C chat improves from 5/11 to 11/11, with 1,067 boundaries,
+31,031 calls and zero frames. Fresh public gate passes 90 current contracts,
+nine historical checks, 11 C primary predicates, 25 negative hashes and 22
+neutrality comparisons. Its complete report equals the promotion report.
+Original 99 bodies and 91/99 diagnostic remain preserved. Three old predicates
+also reject original C; their documented corrections preserve mounted message
+prefixes plus the following C message and translate the pet map coordinate.
+
+Full942 passes on NFS, two CPU workers, default 45s, no retries:
+/share/NFS/u/rohit/research/contest/artifacts/2026-11-22/dochat-direction-targets-full942-js-20261126.
+PID 3559629 is complete. All 942 recordings pass: 943,599 screens/cursors,
+20,654,848 calls and 33,188 frames. All 1,233 tested files were fixed.
+all-files SHA256:
+c99c095eff21ef8fc2070df6e1ecb82bb7b7cfb73264da280bb5ddfdf1b462ac.
+Verification SHA256:
+861d6779c8c90110328d07bc3789305fb3a5219d5da8474f3d163a2d55e716a3.
+Five focused checks and 45 strict workers pass; scope/import audit is empty.
+Promotion82 installs 50 exact payloads and 11 branch rows, totaling 4,740.
+Parent verification is public under evidence/dochat-direction-targets.
+Next action: staged-tree verification, commit and immediate push.
+
+Next source families: scrolltele-stasis source24 has original C4 confirmed,
+baseline3/4, only explore-mode stasis differs. Sartre owns an isolated early
+restriction guard candidate, preserving other teleport omissions as limits.
+Shop container/coins source31 has original C6 already exact on baseline;
+Leibniz owns coverage-only promotion, with no runtime change.
+Crowning source12 preserves 33/42 checks with all six setups and 15 controls.
+Its original C6 recording rejected the primary chronicle text predicates:
+the input closed page one before those entries. No candidate or C rerun was
+made. Euclid owns a separate paged-input proposal with one extra space in each
+positive and all three negative tuples unchanged. Original evidence stays fixed.
+Parent read complete dofiretrap and losehp owners: missing polymorphed-hero
+fire damage is the next source-only lead. No fire input or candidate yet.
+The source-disposition ledger now distinguishes 15 reviewed lexical leads.
+
 ## 2026-11-26: altar and bones checkpoint verified on full941
 
 Published main is ee4f59667e32ae2ae6ea6b5a28f06d59ad0549db (shop quotes).

@@ -5206,6 +5206,83 @@
       "normalModeRequired": false,
       "cFile": "src/do.c",
       "cFunction": "doaltarobj"
+    },
+    {
+      "group": "Chat direction and target branches",
+      "id": "dochat-direction-targets.cancel-direction-repeat",
+      "cFile": "src/sounds.c",
+      "cFunction": "dochat",
+      "description": "Rejected chat direction clears repeat history and Ctrl-A reports no command."
+    },
+    {
+      "group": "Chat direction and target branches",
+      "id": "dochat-direction-targets.self-repeat-negative",
+      "cFile": "src/sounds.c",
+      "cFunction": "dochat",
+      "description": "Self-directed chat keeps the successful repeat path unchanged."
+    },
+    {
+      "group": "Chat direction and target branches",
+      "id": "dochat-direction-targets.mounted-awake-down",
+      "cFile": "src/sounds.c",
+      "cFunction": "dochat",
+      "description": "Downward chat to the actual fed tame steed emits its noise and consumes time."
+    },
+    {
+      "group": "Chat direction and target branches",
+      "id": "dochat-direction-targets.mounted-helpless-free-action-down",
+      "cFile": "src/sounds.c",
+      "cFunction": "dochat",
+      "description": "Downward chat to the actual paralyzed steed emits the notice message and consumes time."
+    },
+    {
+      "group": "Chat direction and target branches",
+      "id": "dochat-direction-targets.mounted-up-negative",
+      "cFile": "src/sounds.c",
+      "cFunction": "dochat",
+      "description": "Mounted upward chat retains the generic vertical response without consuming time."
+    },
+    {
+      "group": "Chat direction and target branches",
+      "id": "dochat-direction-targets.statue-sober",
+      "cFile": "src/sounds.c",
+      "cFunction": "dochat",
+      "description": "Sighted chat to the actual pile-head statue emits the statue message."
+    },
+    {
+      "group": "Chat direction and target branches",
+      "id": "dochat-direction-targets.statue-hallucinated-prompt-acknowledged",
+      "cFile": "src/sounds.c",
+      "cFunction": "dochat",
+      "description": "Hallucinated chat to the cleared statue square uses the display-random name and source message shape."
+    },
+    {
+      "group": "Chat direction and target branches",
+      "id": "dochat-direction-targets.statue-blind-prompt-acknowledged-negative",
+      "cFile": "src/sounds.c",
+      "cFunction": "dochat",
+      "description": "Blind chat to the cleared statue square remains silent."
+    },
+    {
+      "group": "Chat direction and target branches",
+      "id": "dochat-direction-targets.eating-pet-blind",
+      "cFile": "src/sounds.c",
+      "cFunction": "dochat",
+      "description": "A hearing blind hero maps the actual unseen eating pet before its noise message."
+    },
+    {
+      "group": "Chat direction and target branches",
+      "id": "dochat-direction-targets.eating-pet-visible-negative",
+      "cFile": "src/sounds.c",
+      "cFunction": "dochat",
+      "description": "Visible eating pet chat retains the existing noise message without an invisible marker."
+    },
+    {
+      "group": "Chat direction and target branches",
+      "id": "dochat-direction-targets.eating-pet-deaf-negative",
+      "cFile": "src/sounds.c",
+      "cFunction": "dochat",
+      "description": "Deaf eating pet chat retains the deaf response without an invisible marker."
     }
   ]
 }

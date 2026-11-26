@@ -1,0 +1,2538 @@
+{
+  "runtimeMapSha256": "88b58f9ee504928b3adf4295da37cce4337882990cc75541f033df1d36c1ab11",
+  "recipeSha256": "565c40010387daa4d58133c852b2c7439f1bee1eed54c8e95db5cc8fcb69f2bd",
+  "nativeRecorded": false,
+  "runtimeChanged": false,
+  "rows": [
+    {
+      "name": "cancel-direction-repeat",
+      "kind": "cancel",
+      "negative": false,
+      "keys": 10,
+      "boundaries": 11,
+      "hashes": {
+        "screens": "78ca63ebf7f946728527b096c7978d1c6a22a798579e6bee60d505f62dc386cb",
+        "cursors": "f9d0025d458e7e626f6599e28a7b1cf7d699102ee5eaab7ac4dc00034de56bcd",
+        "calls": "2009166a4f54844b7571bcb4187acb69fdade0978abaa305ffafc5f3a29d5aed",
+        "slices": "2181318af2b7ec28f5665a25eb7b0e24472a52a45b64b6cd28eb6168ac557c17",
+        "frames": "bf0077cf664e94e64924481687b6698b868329c03f281147f54f16ab099d7df3"
+      },
+      "states": {
+        "1": {
+          "turn": 1,
+          "xy": [
+            59,
+            6
+          ],
+          "hp": 12,
+          "multi": 0,
+          "afternmv": null,
+          "gameover": false,
+          "blind": false,
+          "deaf": false,
+          "hallu": false,
+          "swallowed": false,
+          "underwater": false,
+          "strangled": false,
+          "form": 343,
+          "shop": "",
+          "heroMemory": true,
+          "steed": null,
+          "target": [
+            58,
+            6
+          ],
+          "monster": null,
+          "topObject": null,
+          "marker": "cmap",
+          "inventory": [],
+          "repeat": []
+        },
+        "7": {
+          "turn": 1,
+          "xy": [
+            59,
+            6
+          ],
+          "hp": 12,
+          "multi": 0,
+          "afternmv": null,
+          "gameover": false,
+          "blind": false,
+          "deaf": false,
+          "hallu": false,
+          "swallowed": false,
+          "underwater": false,
+          "strangled": false,
+          "form": 343,
+          "shop": "",
+          "heroMemory": true,
+          "steed": null,
+          "target": [
+            58,
+            6
+          ],
+          "monster": null,
+          "topObject": null,
+          "marker": "cmap",
+          "inventory": [],
+          "repeat": []
+        },
+        "8": {
+          "turn": 1,
+          "xy": [
+            59,
+            6
+          ],
+          "hp": 12,
+          "multi": 0,
+          "afternmv": null,
+          "gameover": false,
+          "blind": false,
+          "deaf": false,
+          "hallu": false,
+          "swallowed": false,
+          "underwater": false,
+          "strangled": false,
+          "form": 343,
+          "shop": "",
+          "heroMemory": true,
+          "steed": null,
+          "target": [
+            58,
+            6
+          ],
+          "monster": null,
+          "topObject": null,
+          "marker": "cmap",
+          "inventory": [],
+          "repeat": [
+            {
+              "type": 1,
+              "command": "chat",
+              "key": null
+            },
+            {
+              "type": 0,
+              "command": null,
+              "key": "\u001b"
+            }
+          ]
+        },
+        "9": {
+          "turn": 1,
+          "xy": [
+            59,
+            6
+          ],
+          "hp": 12,
+          "multi": 0,
+          "afternmv": null,
+          "gameover": false,
+          "blind": false,
+          "deaf": false,
+          "hallu": false,
+          "swallowed": false,
+          "underwater": false,
+          "strangled": false,
+          "form": 343,
+          "shop": "",
+          "heroMemory": true,
+          "steed": null,
+          "target": [
+            58,
+            6
+          ],
+          "monster": null,
+          "topObject": null,
+          "marker": "cmap",
+          "inventory": [],
+          "repeat": [
+            {
+              "type": 1,
+              "command": "chat",
+              "key": null
+            },
+            {
+              "type": 0,
+              "command": null,
+              "key": "\u001b"
+            }
+          ]
+        }
+      },
+      "texts": {
+        "1": [
+          "Unknown command ' '.",
+          ""
+        ],
+        "7": [
+          "Talk to whom? (in what direction)",
+          ""
+        ],
+        "8": [
+          "",
+          ""
+        ],
+        "9": [
+          "",
+          ""
+        ]
+      },
+      "checks": [
+        {
+          "name": "all boundaries and RNG slices",
+          "category": "integrity",
+          "pass": true
+        },
+        {
+          "name": "actual hero ready for chat",
+          "category": "setup",
+          "pass": true
+        },
+        {
+          "name": "cancel clears repeat",
+          "category": "source-prediction",
+          "pass": false,
+          "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   {\n+     command: 'chat',\n+     key: null,\n+     type: 1\n+   },\n+   {\n+     command: null,\n+     key: '\\x1B',\n+     type: 0\n+   }\n+ ]\n- []\n"
+        },
+        {
+          "name": "Ctrl-A reports no command",
+          "category": "source-prediction",
+          "pass": false,
+          "error": "The expression evaluated to a falsy value:\n\n  assert.ok(row.texts[plan.repeated][0].includes(plan.expected))\n"
+        },
+        {
+          "name": "C command time and position",
+          "category": "source-prediction",
+          "pass": true
+        },
+        {
+          "name": "observer-free five streams unchanged",
+          "category": "neutrality",
+          "pass": true
+        },
+        {
+          "name": "deferred five streams unchanged",
+          "category": "neutrality",
+          "pass": true
+        }
+      ]
+    },
+    {
+      "name": "self-repeat-negative",
+      "kind": "self",
+      "negative": true,
+      "keys": 10,
+      "boundaries": 11,
+      "hashes": {
+        "screens": "f842f87e9eb1b13fb14f01258db0afdac8e3e705354939c165a9b5811c2d990a",
+        "cursors": "f9d0025d458e7e626f6599e28a7b1cf7d699102ee5eaab7ac4dc00034de56bcd",
+        "calls": "2009166a4f54844b7571bcb4187acb69fdade0978abaa305ffafc5f3a29d5aed",
+        "slices": "2181318af2b7ec28f5665a25eb7b0e24472a52a45b64b6cd28eb6168ac557c17",
+        "frames": "bf0077cf664e94e64924481687b6698b868329c03f281147f54f16ab099d7df3"
+      },
+      "states": {
+        "1": {
+          "turn": 1,
+          "xy": [
+            59,
+            6
+          ],
+          "hp": 12,
+          "multi": 0,
+          "afternmv": null,
+          "gameover": false,
+          "blind": false,
+          "deaf": false,
+          "hallu": false,
+          "swallowed": false,
+          "underwater": false,
+          "strangled": false,
+          "form": 343,
+          "shop": "",
+          "heroMemory": true,
+          "steed": null,
+          "target": [
+            58,
+            6
+          ],
+          "monster": null,
+          "topObject": null,
+          "marker": "cmap",
+          "inventory": [],
+          "repeat": []
+        },
+        "7": {
+          "turn": 1,
+          "xy": [
+            59,
+            6
+          ],
+          "hp": 12,
+          "multi": 0,
+          "afternmv": null,
+          "gameover": false,
+          "blind": false,
+          "deaf": false,
+          "hallu": false,
+          "swallowed": false,
+          "underwater": false,
+          "strangled": false,
+          "form": 343,
+          "shop": "",
+          "heroMemory": true,
+          "steed": null,
+          "target": [
+            58,
+            6
+          ],
+          "monster": null,
+          "topObject": null,
+          "marker": "cmap",
+          "inventory": [],
+          "repeat": []
+        },
+        "8": {
+          "turn": 1,
+          "xy": [
+            59,
+            6
+          ],
+          "hp": 12,
+          "multi": 0,
+          "afternmv": null,
+          "gameover": false,
+          "blind": false,
+          "deaf": false,
+          "hallu": false,
+          "swallowed": false,
+          "underwater": false,
+          "strangled": false,
+          "form": 343,
+          "shop": "",
+          "heroMemory": true,
+          "steed": null,
+          "target": [
+            58,
+            6
+          ],
+          "monster": null,
+          "topObject": null,
+          "marker": "cmap",
+          "inventory": [],
+          "repeat": [
+            {
+              "type": 1,
+              "command": "chat",
+              "key": null
+            },
+            {
+              "type": 0,
+              "command": null,
+              "key": "."
+            }
+          ]
+        },
+        "9": {
+          "turn": 1,
+          "xy": [
+            59,
+            6
+          ],
+          "hp": 12,
+          "multi": 0,
+          "afternmv": null,
+          "gameover": false,
+          "blind": false,
+          "deaf": false,
+          "hallu": false,
+          "swallowed": false,
+          "underwater": false,
+          "strangled": false,
+          "form": 343,
+          "shop": "",
+          "heroMemory": true,
+          "steed": null,
+          "target": [
+            58,
+            6
+          ],
+          "monster": null,
+          "topObject": null,
+          "marker": "cmap",
+          "inventory": [],
+          "repeat": [
+            {
+              "type": 1,
+              "command": "chat",
+              "key": null
+            },
+            {
+              "type": 0,
+              "command": null,
+              "key": "."
+            }
+          ]
+        }
+      },
+      "texts": {
+        "1": [
+          "Unknown command ' '.",
+          ""
+        ],
+        "7": [
+          "Talk to whom? (in what direction)",
+          ""
+        ],
+        "8": [
+          "Talking to yourself is a bad habit for a dungeoneer.",
+          ""
+        ],
+        "9": [
+          "Talking to yourself is a bad habit for a dungeoneer.",
+          ""
+        ]
+      },
+      "checks": [
+        {
+          "name": "all boundaries and RNG slices",
+          "category": "integrity",
+          "pass": true
+        },
+        {
+          "name": "actual hero ready for chat",
+          "category": "setup",
+          "pass": true
+        },
+        {
+          "name": "self response",
+          "category": "source-prediction",
+          "pass": true
+        },
+        {
+          "name": "successful chat retains repeat",
+          "category": "source-prediction",
+          "pass": true
+        },
+        {
+          "name": "C command time and position",
+          "category": "source-prediction",
+          "pass": true
+        },
+        {
+          "name": "observer-free five streams unchanged",
+          "category": "neutrality",
+          "pass": true
+        },
+        {
+          "name": "deferred five streams unchanged",
+          "category": "neutrality",
+          "pass": true
+        }
+      ]
+    },
+    {
+      "name": "mounted-awake-down",
+      "kind": "mounted-awake",
+      "negative": false,
+      "keys": 101,
+      "boundaries": 102,
+      "hashes": {
+        "screens": "02ec4ee52db6a752e2539a4574597b1ec5a9e8c7d6c8aeb6939b2fa430f8a3d2",
+        "cursors": "d62e7c8fb819883947c0b6c00a4441ebad55e2c05ea0aafe30c160fd0f90ffde",
+        "calls": "24eaac6e4815671d6a3aff0db30398a44edbb9322e640b4280c1406a7bc081cf",
+        "slices": "ae228aedba1e03c6fbf02bb893299da571f814b045aae49ece13ce8bc58275cf",
+        "frames": "4d7ba6a4c38d723186da1f268f5b662c9ce9580c0d24fc0d9481337db9066638"
+      },
+      "states": {
+        "93": {
+          "turn": 2,
+          "xy": [
+            46,
+            4
+          ],
+          "hp": 103,
+          "multi": 0,
+          "afternmv": null,
+          "gameover": false,
+          "blind": false,
+          "deaf": false,
+          "hallu": false,
+          "swallowed": false,
+          "underwater": false,
+          "strangled": false,
+          "form": 339,
+          "shop": "",
+          "heroMemory": true,
+          "steed": {
+            "id": 30,
+            "species": "PM_PONY",
+            "xy": [
+              46,
+              4
+            ],
+            "tame": 10,
+            "hp": 16,
+            "sleeping": false,
+            "canmove": true,
+            "frozen": 0,
+            "eating": 0,
+            "helpless": false,
+            "undetected": false,
+            "appearance": 0,
+            "spotted": true,
+            "hungrytime": 1001,
+            "customName": null
+          },
+          "target": [
+            45,
+            4
+          ],
+          "monster": null,
+          "topObject": null,
+          "marker": "cmap",
+          "inventory": [],
+          "repeat": []
+        },
+        "99": {
+          "turn": 2,
+          "xy": [
+            46,
+            4
+          ],
+          "hp": 103,
+          "multi": 0,
+          "afternmv": null,
+          "gameover": false,
+          "blind": false,
+          "deaf": false,
+          "hallu": false,
+          "swallowed": false,
+          "underwater": false,
+          "strangled": false,
+          "form": 339,
+          "shop": "",
+          "heroMemory": true,
+          "steed": {
+            "id": 30,
+            "species": "PM_PONY",
+            "xy": [
+              46,
+              4
+            ],
+            "tame": 10,
+            "hp": 16,
+            "sleeping": false,
+            "canmove": true,
+            "frozen": 0,
+            "eating": 0,
+            "helpless": false,
+            "undetected": false,
+            "appearance": 0,
+            "spotted": true,
+            "hungrytime": 1001,
+            "customName": null
+          },
+          "target": [
+            45,
+            4
+          ],
+          "monster": null,
+          "topObject": null,
+          "marker": "cmap",
+          "inventory": [],
+          "repeat": []
+        },
+        "100": {
+          "turn": 2,
+          "xy": [
+            46,
+            4
+          ],
+          "hp": 103,
+          "multi": 0,
+          "afternmv": null,
+          "gameover": false,
+          "blind": false,
+          "deaf": false,
+          "hallu": false,
+          "swallowed": false,
+          "underwater": false,
+          "strangled": false,
+          "form": 339,
+          "shop": "",
+          "heroMemory": true,
+          "steed": {
+            "id": 30,
+            "species": "PM_PONY",
+            "xy": [
+              46,
+              4
+            ],
+            "tame": 10,
+            "hp": 16,
+            "sleeping": false,
+            "canmove": true,
+            "frozen": 0,
+            "eating": 0,
+            "helpless": false,
+            "undetected": false,
+            "appearance": 0,
+            "spotted": true,
+            "hungrytime": 1001,
+            "customName": null
+          },
+          "target": [
+            45,
+            4
+          ],
+          "monster": null,
+          "topObject": null,
+          "marker": "cmap",
+          "inventory": [],
+          "repeat": [
+            {
+              "type": 1,
+              "command": "chat",
+              "key": null
+            },
+            {
+              "type": 0,
+              "command": null,
+              "key": ">"
+            }
+          ]
+        }
+      },
+      "texts": {
+        "93": [
+          "",
+          ""
+        ],
+        "99": [
+          "Talk to whom? (in what direction)",
+          ""
+        ],
+        "100": [
+          "They won't hear you down there.",
+          ""
+        ]
+      },
+      "checks": [
+        {
+          "name": "all boundaries and RNG slices",
+          "category": "integrity",
+          "pass": true
+        },
+        {
+          "name": "actual hero ready for chat",
+          "category": "setup",
+          "pass": true
+        },
+        {
+          "name": "actual mounted pony producer",
+          "category": "setup",
+          "pass": true
+        },
+        {
+          "name": "mounted source feedback",
+          "category": "source-prediction",
+          "pass": false,
+          "error": "Expected values to be strictly equal:\n+ actual - expected\n\n+ \"They won't hear you down there.\"\n- 'The saddled pony whickers.'\n"
+        },
+        {
+          "name": "C command time and position",
+          "category": "source-prediction",
+          "pass": false,
+          "error": "Expected values to be strictly equal:\n\n2 !== 3\n"
+        },
+        {
+          "name": "observer-free five streams unchanged",
+          "category": "neutrality",
+          "pass": true
+        },
+        {
+          "name": "deferred five streams unchanged",
+          "category": "neutrality",
+          "pass": true
+        }
+      ]
+    },
+    {
+      "name": "mounted-helpless-down",
+      "kind": "mounted-helpless",
+      "negative": false,
+      "keys": 148,
+      "boundaries": 149,
+      "hashes": {
+        "screens": "c5f23c1de06a7dc6fa7170baa1d0e336e93bf0bb775f0f2cc4360a2fc1074df1",
+        "cursors": "b30c71fb75c71b0a59e08fab0d86f14a8c6c6042d7ed18472bf174cff8350434",
+        "calls": "dca0d109a2430921ee0ec643014ae1c240cb4ce2a611c25efd1c1b036f2afec0",
+        "slices": "a866a262563ee4f6150b265a94db621998d698119978803058bc60d6d0b9b9c6",
+        "frames": "693791fe6f6c9828d91f4a5cf0a516797213b230aa59ac1668210d9a6024ec24"
+      },
+      "states": {
+        "140": {
+          "turn": 6,
+          "xy": [
+            46,
+            4
+          ],
+          "hp": 99,
+          "multi": 0,
+          "afternmv": null,
+          "gameover": false,
+          "blind": false,
+          "deaf": false,
+          "hallu": false,
+          "swallowed": false,
+          "underwater": false,
+          "strangled": false,
+          "form": 339,
+          "shop": "",
+          "heroMemory": true,
+          "steed": {
+            "id": 30,
+            "species": "PM_PONY",
+            "xy": [
+              46,
+              4
+            ],
+            "tame": 10,
+            "hp": 16,
+            "sleeping": false,
+            "canmove": true,
+            "frozen": 0,
+            "eating": 0,
+            "helpless": false,
+            "undetected": false,
+            "appearance": 0,
+            "spotted": true,
+            "hungrytime": 1001,
+            "customName": null
+          },
+          "target": [
+            45,
+            4
+          ],
+          "monster": null,
+          "topObject": null,
+          "marker": "cmap",
+          "inventory": [],
+          "repeat": []
+        },
+        "146": {
+          "turn": 6,
+          "xy": [
+            46,
+            4
+          ],
+          "hp": 99,
+          "multi": 0,
+          "afternmv": null,
+          "gameover": false,
+          "blind": false,
+          "deaf": false,
+          "hallu": false,
+          "swallowed": false,
+          "underwater": false,
+          "strangled": false,
+          "form": 339,
+          "shop": "",
+          "heroMemory": true,
+          "steed": {
+            "id": 30,
+            "species": "PM_PONY",
+            "xy": [
+              46,
+              4
+            ],
+            "tame": 10,
+            "hp": 16,
+            "sleeping": false,
+            "canmove": true,
+            "frozen": 0,
+            "eating": 0,
+            "helpless": false,
+            "undetected": false,
+            "appearance": 0,
+            "spotted": true,
+            "hungrytime": 1001,
+            "customName": null
+          },
+          "target": [
+            45,
+            4
+          ],
+          "monster": null,
+          "topObject": null,
+          "marker": "cmap",
+          "inventory": [],
+          "repeat": []
+        },
+        "147": {
+          "turn": 6,
+          "xy": [
+            46,
+            4
+          ],
+          "hp": 99,
+          "multi": 0,
+          "afternmv": null,
+          "gameover": false,
+          "blind": false,
+          "deaf": false,
+          "hallu": false,
+          "swallowed": false,
+          "underwater": false,
+          "strangled": false,
+          "form": 339,
+          "shop": "",
+          "heroMemory": true,
+          "steed": {
+            "id": 30,
+            "species": "PM_PONY",
+            "xy": [
+              46,
+              4
+            ],
+            "tame": 10,
+            "hp": 16,
+            "sleeping": false,
+            "canmove": true,
+            "frozen": 0,
+            "eating": 0,
+            "helpless": false,
+            "undetected": false,
+            "appearance": 0,
+            "spotted": true,
+            "hungrytime": 1001,
+            "customName": null
+          },
+          "target": [
+            45,
+            4
+          ],
+          "monster": null,
+          "topObject": null,
+          "marker": "cmap",
+          "inventory": [],
+          "repeat": [
+            {
+              "type": 1,
+              "command": "chat",
+              "key": null
+            },
+            {
+              "type": 0,
+              "command": null,
+              "key": ">"
+            }
+          ]
+        }
+      },
+      "texts": {
+        "140": [
+          "",
+          ""
+        ],
+        "146": [
+          "Talk to whom? (in what direction)",
+          ""
+        ],
+        "147": [
+          "They won't hear you down there.",
+          ""
+        ]
+      },
+      "checks": [
+        {
+          "name": "all boundaries and RNG slices",
+          "category": "integrity",
+          "pass": true
+        },
+        {
+          "name": "actual hero ready for chat",
+          "category": "setup",
+          "pass": true
+        },
+        {
+          "name": "actual mounted pony producer",
+          "category": "setup",
+          "pass": false,
+          "error": "Expected values to be strictly equal:\n\nfalse !== true\n"
+        },
+        {
+          "name": "mounted source feedback",
+          "category": "source-prediction",
+          "pass": false,
+          "error": "Expected values to be strictly equal:\n+ actual - expected\n\n+ \"They won't hear you down there.\"\n- 'The saddled pony seems not to notice you.'\n"
+        },
+        {
+          "name": "C command time and position",
+          "category": "source-prediction",
+          "pass": false,
+          "error": "Expected values to be strictly equal:\n\n6 !== 7\n"
+        },
+        {
+          "name": "observer-free five streams unchanged",
+          "category": "neutrality",
+          "pass": true
+        },
+        {
+          "name": "deferred five streams unchanged",
+          "category": "neutrality",
+          "pass": true
+        }
+      ]
+    },
+    {
+      "name": "mounted-up-negative",
+      "kind": "mounted-up",
+      "negative": true,
+      "keys": 101,
+      "boundaries": 102,
+      "hashes": {
+        "screens": "df2fc4207d00cceb853b2f6de89245ea870a0334aa53816d0ac02629b9cb76c6",
+        "cursors": "d62e7c8fb819883947c0b6c00a4441ebad55e2c05ea0aafe30c160fd0f90ffde",
+        "calls": "24eaac6e4815671d6a3aff0db30398a44edbb9322e640b4280c1406a7bc081cf",
+        "slices": "ae228aedba1e03c6fbf02bb893299da571f814b045aae49ece13ce8bc58275cf",
+        "frames": "4d7ba6a4c38d723186da1f268f5b662c9ce9580c0d24fc0d9481337db9066638"
+      },
+      "states": {
+        "93": {
+          "turn": 2,
+          "xy": [
+            46,
+            4
+          ],
+          "hp": 103,
+          "multi": 0,
+          "afternmv": null,
+          "gameover": false,
+          "blind": false,
+          "deaf": false,
+          "hallu": false,
+          "swallowed": false,
+          "underwater": false,
+          "strangled": false,
+          "form": 339,
+          "shop": "",
+          "heroMemory": true,
+          "steed": {
+            "id": 30,
+            "species": "PM_PONY",
+            "xy": [
+              46,
+              4
+            ],
+            "tame": 10,
+            "hp": 16,
+            "sleeping": false,
+            "canmove": true,
+            "frozen": 0,
+            "eating": 0,
+            "helpless": false,
+            "undetected": false,
+            "appearance": 0,
+            "spotted": true,
+            "hungrytime": 1001,
+            "customName": null
+          },
+          "target": [
+            45,
+            4
+          ],
+          "monster": null,
+          "topObject": null,
+          "marker": "cmap",
+          "inventory": [],
+          "repeat": []
+        },
+        "99": {
+          "turn": 2,
+          "xy": [
+            46,
+            4
+          ],
+          "hp": 103,
+          "multi": 0,
+          "afternmv": null,
+          "gameover": false,
+          "blind": false,
+          "deaf": false,
+          "hallu": false,
+          "swallowed": false,
+          "underwater": false,
+          "strangled": false,
+          "form": 339,
+          "shop": "",
+          "heroMemory": true,
+          "steed": {
+            "id": 30,
+            "species": "PM_PONY",
+            "xy": [
+              46,
+              4
+            ],
+            "tame": 10,
+            "hp": 16,
+            "sleeping": false,
+            "canmove": true,
+            "frozen": 0,
+            "eating": 0,
+            "helpless": false,
+            "undetected": false,
+            "appearance": 0,
+            "spotted": true,
+            "hungrytime": 1001,
+            "customName": null
+          },
+          "target": [
+            45,
+            4
+          ],
+          "monster": null,
+          "topObject": null,
+          "marker": "cmap",
+          "inventory": [],
+          "repeat": []
+        },
+        "100": {
+          "turn": 2,
+          "xy": [
+            46,
+            4
+          ],
+          "hp": 103,
+          "multi": 0,
+          "afternmv": null,
+          "gameover": false,
+          "blind": false,
+          "deaf": false,
+          "hallu": false,
+          "swallowed": false,
+          "underwater": false,
+          "strangled": false,
+          "form": 339,
+          "shop": "",
+          "heroMemory": true,
+          "steed": {
+            "id": 30,
+            "species": "PM_PONY",
+            "xy": [
+              46,
+              4
+            ],
+            "tame": 10,
+            "hp": 16,
+            "sleeping": false,
+            "canmove": true,
+            "frozen": 0,
+            "eating": 0,
+            "helpless": false,
+            "undetected": false,
+            "appearance": 0,
+            "spotted": true,
+            "hungrytime": 1001,
+            "customName": null
+          },
+          "target": [
+            45,
+            4
+          ],
+          "monster": null,
+          "topObject": null,
+          "marker": "cmap",
+          "inventory": [],
+          "repeat": [
+            {
+              "type": 1,
+              "command": "chat",
+              "key": null
+            },
+            {
+              "type": 0,
+              "command": null,
+              "key": "<"
+            }
+          ]
+        }
+      },
+      "texts": {
+        "93": [
+          "",
+          ""
+        ],
+        "99": [
+          "Talk to whom? (in what direction)",
+          ""
+        ],
+        "100": [
+          "They won't hear you up there.",
+          ""
+        ]
+      },
+      "checks": [
+        {
+          "name": "all boundaries and RNG slices",
+          "category": "integrity",
+          "pass": true
+        },
+        {
+          "name": "actual hero ready for chat",
+          "category": "setup",
+          "pass": true
+        },
+        {
+          "name": "actual mounted pony producer",
+          "category": "setup",
+          "pass": true
+        },
+        {
+          "name": "mounted source feedback",
+          "category": "source-prediction",
+          "pass": true
+        },
+        {
+          "name": "C command time and position",
+          "category": "source-prediction",
+          "pass": true
+        },
+        {
+          "name": "observer-free five streams unchanged",
+          "category": "neutrality",
+          "pass": true
+        },
+        {
+          "name": "deferred five streams unchanged",
+          "category": "neutrality",
+          "pass": true
+        }
+      ]
+    },
+    {
+      "name": "statue-sober",
+      "kind": "statue",
+      "negative": false,
+      "keys": 53,
+      "boundaries": 54,
+      "hashes": {
+        "screens": "fcfe67b0bd514133874c8981201f1df62427430bfa229630b07f31ca3b090e86",
+        "cursors": "4bd85504eb8072bb0857d42ab1d60d9260e399bff5fd5b9a2d65ccddc4aa89ef",
+        "calls": "be1f9fa60dd6a70cc6f8ff7cd8c82f7aa2a426734ea83b69d246f555eb413429",
+        "slices": "8ff73191797d076dcb66fe7619cc4a397879f2e26f66a370da7a7581137255d9",
+        "frames": "40b562827d4106f549ef757157290919f3573b7cc415b7acf131dd48f86a1587"
+      },
+      "states": {
+        "45": {
+          "turn": 3,
+          "xy": [
+            60,
+            6
+          ],
+          "hp": 12,
+          "multi": 0,
+          "afternmv": null,
+          "gameover": false,
+          "blind": false,
+          "deaf": false,
+          "hallu": false,
+          "swallowed": false,
+          "underwater": false,
+          "strangled": false,
+          "form": 343,
+          "shop": "",
+          "heroMemory": true,
+          "steed": null,
+          "target": [
+            59,
+            6
+          ],
+          "monster": null,
+          "topObject": {
+            "type": "STATUE",
+            "species": "PM_GRID_BUG"
+          },
+          "marker": "obj",
+          "inventory": [],
+          "repeat": []
+        },
+        "51": {
+          "turn": 3,
+          "xy": [
+            60,
+            6
+          ],
+          "hp": 12,
+          "multi": 0,
+          "afternmv": null,
+          "gameover": false,
+          "blind": false,
+          "deaf": false,
+          "hallu": false,
+          "swallowed": false,
+          "underwater": false,
+          "strangled": false,
+          "form": 343,
+          "shop": "",
+          "heroMemory": true,
+          "steed": null,
+          "target": [
+            59,
+            6
+          ],
+          "monster": null,
+          "topObject": {
+            "type": "STATUE",
+            "species": "PM_GRID_BUG"
+          },
+          "marker": "obj",
+          "inventory": [],
+          "repeat": []
+        },
+        "52": {
+          "turn": 3,
+          "xy": [
+            60,
+            6
+          ],
+          "hp": 12,
+          "multi": 0,
+          "afternmv": null,
+          "gameover": false,
+          "blind": false,
+          "deaf": false,
+          "hallu": false,
+          "swallowed": false,
+          "underwater": false,
+          "strangled": false,
+          "form": 343,
+          "shop": "",
+          "heroMemory": true,
+          "steed": null,
+          "target": [
+            59,
+            6
+          ],
+          "monster": null,
+          "topObject": {
+            "type": "STATUE",
+            "species": "PM_GRID_BUG"
+          },
+          "marker": "obj",
+          "inventory": [],
+          "repeat": [
+            {
+              "type": 1,
+              "command": "chat",
+              "key": null
+            },
+            {
+              "type": 0,
+              "command": null,
+              "key": "h"
+            }
+          ]
+        }
+      },
+      "texts": {
+        "45": [
+          "",
+          ""
+        ],
+        "51": [
+          "Talk to whom? (in what direction)",
+          ""
+        ],
+        "52": [
+          "",
+          ""
+        ]
+      },
+      "checks": [
+        {
+          "name": "all boundaries and RNG slices",
+          "category": "integrity",
+          "pass": true
+        },
+        {
+          "name": "actual hero ready for chat",
+          "category": "setup",
+          "pass": true
+        },
+        {
+          "name": "actual statue and perception producer",
+          "category": "setup",
+          "pass": true
+        },
+        {
+          "name": "statue source feedback",
+          "category": "source-prediction",
+          "pass": false,
+          "error": "Expected values to be strictly equal:\n+ actual - expected\n\n+ ''\n- 'The statue seems not to notice you.'\n"
+        },
+        {
+          "name": "C command time and position",
+          "category": "source-prediction",
+          "pass": true
+        },
+        {
+          "name": "observer-free five streams unchanged",
+          "category": "neutrality",
+          "pass": true
+        },
+        {
+          "name": "deferred five streams unchanged",
+          "category": "neutrality",
+          "pass": true
+        }
+      ]
+    },
+    {
+      "name": "statue-hallucinated",
+      "kind": "statue-hallu",
+      "negative": false,
+      "keys": 101,
+      "boundaries": 102,
+      "hashes": {
+        "screens": "fd8c35d4a707f39686002165dc8d62f7a9585900080714fa236750cfbb0d6cab",
+        "cursors": "43e70a2b7c9e991681f571e9de4f2c2487c15ff9909589e75de1261ae660e1cb",
+        "calls": "11fce342b98aae4a6813073fe4ae4795eada96a3ad257d2fce2e4fb5b62cf2de",
+        "slices": "ada6b05f94af97330cc5a4f3c1e4f9024fc40c57dac4a8d3f0a880dfdb787472",
+        "frames": "4d7ba6a4c38d723186da1f268f5b662c9ce9580c0d24fc0d9481337db9066638"
+      },
+      "states": {
+        "93": {
+          "turn": 3,
+          "xy": [
+            60,
+            6
+          ],
+          "hp": 12,
+          "multi": 0,
+          "afternmv": null,
+          "gameover": false,
+          "blind": false,
+          "deaf": false,
+          "hallu": false,
+          "swallowed": false,
+          "underwater": false,
+          "strangled": false,
+          "form": 343,
+          "shop": "",
+          "heroMemory": true,
+          "steed": null,
+          "target": [
+            59,
+            6
+          ],
+          "monster": null,
+          "topObject": {
+            "type": "STATUE",
+            "species": "PM_GRID_BUG"
+          },
+          "marker": "obj",
+          "inventory": [
+            {
+              "letter": "b",
+              "type": "POT_HALLUCINATION",
+              "cursed": true,
+              "worn": 0
+            }
+          ],
+          "repeat": []
+        },
+        "99": {
+          "turn": 3,
+          "xy": [
+            60,
+            6
+          ],
+          "hp": 12,
+          "multi": 0,
+          "afternmv": null,
+          "gameover": false,
+          "blind": false,
+          "deaf": false,
+          "hallu": false,
+          "swallowed": false,
+          "underwater": false,
+          "strangled": false,
+          "form": 343,
+          "shop": "",
+          "heroMemory": true,
+          "steed": null,
+          "target": [
+            59,
+            6
+          ],
+          "monster": null,
+          "topObject": {
+            "type": "STATUE",
+            "species": "PM_GRID_BUG"
+          },
+          "marker": "obj",
+          "inventory": [
+            {
+              "letter": "b",
+              "type": "POT_HALLUCINATION",
+              "cursed": true,
+              "worn": 0
+            }
+          ],
+          "repeat": []
+        },
+        "100": {
+          "turn": 3,
+          "xy": [
+            60,
+            6
+          ],
+          "hp": 12,
+          "multi": 0,
+          "afternmv": null,
+          "gameover": false,
+          "blind": false,
+          "deaf": false,
+          "hallu": false,
+          "swallowed": false,
+          "underwater": false,
+          "strangled": false,
+          "form": 343,
+          "shop": "",
+          "heroMemory": true,
+          "steed": null,
+          "target": [
+            59,
+            6
+          ],
+          "monster": null,
+          "topObject": {
+            "type": "STATUE",
+            "species": "PM_GRID_BUG"
+          },
+          "marker": "obj",
+          "inventory": [
+            {
+              "letter": "b",
+              "type": "POT_HALLUCINATION",
+              "cursed": true,
+              "worn": 0
+            }
+          ],
+          "repeat": [
+            {
+              "type": 1,
+              "command": "chat",
+              "key": null
+            },
+            {
+              "type": 0,
+              "command": null,
+              "key": "h"
+            }
+          ]
+        }
+      },
+      "texts": {
+        "93": [
+          "",
+          ""
+        ],
+        "99": [
+          "Talk to whom? (in what direction)",
+          ""
+        ],
+        "100": [
+          "",
+          ""
+        ]
+      },
+      "checks": [
+        {
+          "name": "all boundaries and RNG slices",
+          "category": "integrity",
+          "pass": true
+        },
+        {
+          "name": "actual hero ready for chat",
+          "category": "setup",
+          "pass": true
+        },
+        {
+          "name": "actual statue and perception producer",
+          "category": "setup",
+          "pass": false,
+          "error": "Expected values to be strictly equal:\n\nfalse !== true\n"
+        },
+        {
+          "name": "statue source feedback",
+          "category": "source-prediction",
+          "pass": false,
+          "error": "The input did not match the regular expression /^The .+ seems not to notice you\\.$/. Input:\n\n''\n"
+        },
+        {
+          "name": "C command time and position",
+          "category": "source-prediction",
+          "pass": true
+        },
+        {
+          "name": "observer-free five streams unchanged",
+          "category": "neutrality",
+          "pass": true
+        },
+        {
+          "name": "deferred five streams unchanged",
+          "category": "neutrality",
+          "pass": true
+        }
+      ]
+    },
+    {
+      "name": "statue-blind-negative",
+      "kind": "statue-blind",
+      "negative": true,
+      "keys": 89,
+      "boundaries": 90,
+      "hashes": {
+        "screens": "88d6203dd2a2ad8919d0d8e716665d4e8c1019e9075c78b8429d7912f1be020c",
+        "cursors": "7d2b57b5e051d5b3623530d06103fbe73e87c3174ab8930c25cc183360233357",
+        "calls": "0540cca925ca089875c9d6fdf2638781f06bf9b502f3300517a621afd2518914",
+        "slices": "8f49fbeddd116ae9bd99f34ab4372f391963aaf1eb9e6872ab910a813fba3df1",
+        "frames": "bcb4b513eb010b376d15b612f8230cb539c14df8f76e58ebaf78f977b5f9a295"
+      },
+      "states": {
+        "81": {
+          "turn": 3,
+          "xy": [
+            60,
+            6
+          ],
+          "hp": 12,
+          "multi": 0,
+          "afternmv": null,
+          "gameover": false,
+          "blind": false,
+          "deaf": false,
+          "hallu": false,
+          "swallowed": false,
+          "underwater": false,
+          "strangled": false,
+          "form": 343,
+          "shop": "",
+          "heroMemory": true,
+          "steed": null,
+          "target": [
+            59,
+            6
+          ],
+          "monster": null,
+          "topObject": {
+            "type": "STATUE",
+            "species": "PM_GRID_BUG"
+          },
+          "marker": "obj",
+          "inventory": [
+            {
+              "letter": "b",
+              "type": "BLINDFOLD",
+              "cursed": false,
+              "worn": 0
+            }
+          ],
+          "repeat": []
+        },
+        "87": {
+          "turn": 3,
+          "xy": [
+            60,
+            6
+          ],
+          "hp": 12,
+          "multi": 0,
+          "afternmv": null,
+          "gameover": false,
+          "blind": false,
+          "deaf": false,
+          "hallu": false,
+          "swallowed": false,
+          "underwater": false,
+          "strangled": false,
+          "form": 343,
+          "shop": "",
+          "heroMemory": true,
+          "steed": null,
+          "target": [
+            59,
+            6
+          ],
+          "monster": null,
+          "topObject": {
+            "type": "STATUE",
+            "species": "PM_GRID_BUG"
+          },
+          "marker": "obj",
+          "inventory": [
+            {
+              "letter": "b",
+              "type": "BLINDFOLD",
+              "cursed": false,
+              "worn": 0
+            }
+          ],
+          "repeat": []
+        },
+        "88": {
+          "turn": 3,
+          "xy": [
+            60,
+            6
+          ],
+          "hp": 12,
+          "multi": 0,
+          "afternmv": null,
+          "gameover": false,
+          "blind": false,
+          "deaf": false,
+          "hallu": false,
+          "swallowed": false,
+          "underwater": false,
+          "strangled": false,
+          "form": 343,
+          "shop": "",
+          "heroMemory": true,
+          "steed": null,
+          "target": [
+            59,
+            6
+          ],
+          "monster": null,
+          "topObject": {
+            "type": "STATUE",
+            "species": "PM_GRID_BUG"
+          },
+          "marker": "obj",
+          "inventory": [
+            {
+              "letter": "b",
+              "type": "BLINDFOLD",
+              "cursed": false,
+              "worn": 0
+            }
+          ],
+          "repeat": [
+            {
+              "type": 1,
+              "command": "chat",
+              "key": null
+            },
+            {
+              "type": 0,
+              "command": null,
+              "key": "h"
+            }
+          ]
+        }
+      },
+      "texts": {
+        "81": [
+          "",
+          ""
+        ],
+        "87": [
+          "Talk to whom? (in what direction)",
+          ""
+        ],
+        "88": [
+          "",
+          ""
+        ]
+      },
+      "checks": [
+        {
+          "name": "all boundaries and RNG slices",
+          "category": "integrity",
+          "pass": true
+        },
+        {
+          "name": "actual hero ready for chat",
+          "category": "setup",
+          "pass": true
+        },
+        {
+          "name": "actual statue and perception producer",
+          "category": "setup",
+          "pass": false,
+          "error": "Expected values to be strictly equal:\n\nfalse !== true\n"
+        },
+        {
+          "name": "statue source feedback",
+          "category": "source-prediction",
+          "pass": true
+        },
+        {
+          "name": "C command time and position",
+          "category": "source-prediction",
+          "pass": true
+        },
+        {
+          "name": "observer-free five streams unchanged",
+          "category": "neutrality",
+          "pass": true
+        },
+        {
+          "name": "deferred five streams unchanged",
+          "category": "neutrality",
+          "pass": true
+        }
+      ]
+    },
+    {
+      "name": "eating-pet-blind",
+      "kind": "pet-blind",
+      "negative": false,
+      "keys": 97,
+      "boundaries": 98,
+      "hashes": {
+        "screens": "7bc82cb62deaecceba31d3501c06b02760e7360ca706364fa90933fede371632",
+        "cursors": "4a03d5bbce20fd781212155f6169d80d388a4d5f6daf296bc017104f97c3494f",
+        "calls": "f4c1c103dac140e290ae420f43182b2938d0ec2fcc09c26ec26d4f1652e02520",
+        "slices": "60945b5117054e3f153541538aad5c03c8f8e8f31bb2d27a1ae23846bbbd76c0",
+        "frames": "94ab54d16ab775c1688a586b307ad8494bec4997126a9727ccaad9e1572a7e26"
+      },
+      "states": {
+        "89": {
+          "turn": 4,
+          "xy": [
+            4,
+            8
+          ],
+          "hp": 12,
+          "multi": 0,
+          "afternmv": null,
+          "gameover": false,
+          "blind": true,
+          "deaf": false,
+          "hallu": false,
+          "swallowed": false,
+          "underwater": false,
+          "strangled": false,
+          "form": 339,
+          "shop": "",
+          "heroMemory": true,
+          "steed": null,
+          "target": [
+            3,
+            8
+          ],
+          "monster": {
+            "id": 92,
+            "species": "PM_LITTLE_DOG",
+            "xy": [
+              3,
+              8
+            ],
+            "tame": 11,
+            "hp": 2,
+            "sleeping": false,
+            "canmove": true,
+            "frozen": 0,
+            "eating": 18,
+            "helpless": false,
+            "undetected": false,
+            "appearance": 0,
+            "spotted": false,
+            "hungrytime": 13000,
+            "customName": null
+          },
+          "topObject": null,
+          "marker": "cmap",
+          "inventory": [
+            {
+              "letter": "a",
+              "type": "BLINDFOLD",
+              "cursed": false,
+              "worn": 524288
+            }
+          ],
+          "repeat": []
+        },
+        "95": {
+          "turn": 4,
+          "xy": [
+            4,
+            8
+          ],
+          "hp": 12,
+          "multi": 0,
+          "afternmv": null,
+          "gameover": false,
+          "blind": true,
+          "deaf": false,
+          "hallu": false,
+          "swallowed": false,
+          "underwater": false,
+          "strangled": false,
+          "form": 339,
+          "shop": "",
+          "heroMemory": true,
+          "steed": null,
+          "target": [
+            3,
+            8
+          ],
+          "monster": {
+            "id": 92,
+            "species": "PM_LITTLE_DOG",
+            "xy": [
+              3,
+              8
+            ],
+            "tame": 11,
+            "hp": 2,
+            "sleeping": false,
+            "canmove": true,
+            "frozen": 0,
+            "eating": 18,
+            "helpless": false,
+            "undetected": false,
+            "appearance": 0,
+            "spotted": false,
+            "hungrytime": 13000,
+            "customName": null
+          },
+          "topObject": null,
+          "marker": "cmap",
+          "inventory": [
+            {
+              "letter": "a",
+              "type": "BLINDFOLD",
+              "cursed": false,
+              "worn": 524288
+            }
+          ],
+          "repeat": []
+        },
+        "96": {
+          "turn": 4,
+          "xy": [
+            4,
+            8
+          ],
+          "hp": 12,
+          "multi": 0,
+          "afternmv": null,
+          "gameover": false,
+          "blind": true,
+          "deaf": false,
+          "hallu": false,
+          "swallowed": false,
+          "underwater": false,
+          "strangled": false,
+          "form": 339,
+          "shop": "",
+          "heroMemory": true,
+          "steed": null,
+          "target": [
+            3,
+            8
+          ],
+          "monster": {
+            "id": 92,
+            "species": "PM_LITTLE_DOG",
+            "xy": [
+              3,
+              8
+            ],
+            "tame": 11,
+            "hp": 2,
+            "sleeping": false,
+            "canmove": true,
+            "frozen": 0,
+            "eating": 18,
+            "helpless": false,
+            "undetected": false,
+            "appearance": 0,
+            "spotted": false,
+            "hungrytime": 13000,
+            "customName": null
+          },
+          "topObject": null,
+          "marker": "cmap",
+          "inventory": [
+            {
+              "letter": "a",
+              "type": "BLINDFOLD",
+              "cursed": false,
+              "worn": 524288
+            }
+          ],
+          "repeat": [
+            {
+              "type": 1,
+              "command": "chat",
+              "key": null
+            },
+            {
+              "type": 0,
+              "command": null,
+              "key": "h"
+            }
+          ]
+        }
+      },
+      "texts": {
+        "89": [
+          "",
+          ""
+        ],
+        "95": [
+          "Talk to whom? (in what direction)",
+          ""
+        ],
+        "96": [
+          "It is eating noisily.",
+          ""
+        ]
+      },
+      "checks": [
+        {
+          "name": "all boundaries and RNG slices",
+          "category": "integrity",
+          "pass": true
+        },
+        {
+          "name": "actual hero ready for chat",
+          "category": "setup",
+          "pass": true
+        },
+        {
+          "name": "actual adjacent eating pet and perception producer",
+          "category": "setup",
+          "pass": true
+        },
+        {
+          "name": "eating or deaf response",
+          "category": "source-prediction",
+          "pass": true
+        },
+        {
+          "name": "C invisible-marker condition",
+          "category": "source-prediction",
+          "pass": false,
+          "error": "Expected values to be strictly equal:\n\n'cmap' !== 'invis'\n"
+        },
+        {
+          "name": "C command time and position",
+          "category": "source-prediction",
+          "pass": true
+        },
+        {
+          "name": "observer-free five streams unchanged",
+          "category": "neutrality",
+          "pass": true
+        },
+        {
+          "name": "deferred five streams unchanged",
+          "category": "neutrality",
+          "pass": true
+        }
+      ]
+    },
+    {
+      "name": "eating-pet-visible-negative",
+      "kind": "pet-visible",
+      "negative": true,
+      "keys": 88,
+      "boundaries": 89,
+      "hashes": {
+        "screens": "2bef88fa49672d65704627a17482274cefccf391ed721ea6b735150ca9d963ba",
+        "cursors": "9157ae44c5551f76bf12fa72bb862f4b37b66acce6852e4eb7bdf277918bad25",
+        "calls": "d909638388e07b0fa0a3fc18731176aaa184bbc076230f5653221b4383756872",
+        "slices": "c3d9092c1da57d58f5cac067c98547a852572f69b1166a351d5a4831bb73c647",
+        "frames": "ba56ec9390e018ba54353628fe4a9e51159cd53adff013965530ee3a6fbb36ad"
+      },
+      "states": {
+        "80": {
+          "turn": 3,
+          "xy": [
+            4,
+            8
+          ],
+          "hp": 12,
+          "multi": 0,
+          "afternmv": null,
+          "gameover": false,
+          "blind": false,
+          "deaf": false,
+          "hallu": false,
+          "swallowed": false,
+          "underwater": false,
+          "strangled": false,
+          "form": 339,
+          "shop": "",
+          "heroMemory": true,
+          "steed": null,
+          "target": [
+            3,
+            8
+          ],
+          "monster": {
+            "id": 92,
+            "species": "PM_LITTLE_DOG",
+            "xy": [
+              3,
+              8
+            ],
+            "tame": 11,
+            "hp": 2,
+            "sleeping": false,
+            "canmove": true,
+            "frozen": 0,
+            "eating": 20,
+            "helpless": false,
+            "undetected": false,
+            "appearance": 0,
+            "spotted": true,
+            "hungrytime": 13000,
+            "customName": null
+          },
+          "topObject": null,
+          "marker": "cmap",
+          "inventory": [
+            {
+              "letter": "a",
+              "type": "BLINDFOLD",
+              "cursed": false,
+              "worn": 0
+            }
+          ],
+          "repeat": []
+        },
+        "86": {
+          "turn": 3,
+          "xy": [
+            4,
+            8
+          ],
+          "hp": 12,
+          "multi": 0,
+          "afternmv": null,
+          "gameover": false,
+          "blind": false,
+          "deaf": false,
+          "hallu": false,
+          "swallowed": false,
+          "underwater": false,
+          "strangled": false,
+          "form": 339,
+          "shop": "",
+          "heroMemory": true,
+          "steed": null,
+          "target": [
+            3,
+            8
+          ],
+          "monster": {
+            "id": 92,
+            "species": "PM_LITTLE_DOG",
+            "xy": [
+              3,
+              8
+            ],
+            "tame": 11,
+            "hp": 2,
+            "sleeping": false,
+            "canmove": true,
+            "frozen": 0,
+            "eating": 20,
+            "helpless": false,
+            "undetected": false,
+            "appearance": 0,
+            "spotted": true,
+            "hungrytime": 13000,
+            "customName": null
+          },
+          "topObject": null,
+          "marker": "cmap",
+          "inventory": [
+            {
+              "letter": "a",
+              "type": "BLINDFOLD",
+              "cursed": false,
+              "worn": 0
+            }
+          ],
+          "repeat": []
+        },
+        "87": {
+          "turn": 3,
+          "xy": [
+            4,
+            8
+          ],
+          "hp": 12,
+          "multi": 0,
+          "afternmv": null,
+          "gameover": false,
+          "blind": false,
+          "deaf": false,
+          "hallu": false,
+          "swallowed": false,
+          "underwater": false,
+          "strangled": false,
+          "form": 339,
+          "shop": "",
+          "heroMemory": true,
+          "steed": null,
+          "target": [
+            3,
+            8
+          ],
+          "monster": {
+            "id": 92,
+            "species": "PM_LITTLE_DOG",
+            "xy": [
+              3,
+              8
+            ],
+            "tame": 11,
+            "hp": 2,
+            "sleeping": false,
+            "canmove": true,
+            "frozen": 0,
+            "eating": 20,
+            "helpless": false,
+            "undetected": false,
+            "appearance": 0,
+            "spotted": true,
+            "hungrytime": 13000,
+            "customName": null
+          },
+          "topObject": null,
+          "marker": "cmap",
+          "inventory": [
+            {
+              "letter": "a",
+              "type": "BLINDFOLD",
+              "cursed": false,
+              "worn": 0
+            }
+          ],
+          "repeat": [
+            {
+              "type": 1,
+              "command": "chat",
+              "key": null
+            },
+            {
+              "type": 0,
+              "command": null,
+              "key": "h"
+            }
+          ]
+        }
+      },
+      "texts": {
+        "80": [
+          "",
+          ""
+        ],
+        "86": [
+          "Talk to whom? (in what direction)",
+          ""
+        ],
+        "87": [
+          "The little dog is eating noisily.",
+          ""
+        ]
+      },
+      "checks": [
+        {
+          "name": "all boundaries and RNG slices",
+          "category": "integrity",
+          "pass": true
+        },
+        {
+          "name": "actual hero ready for chat",
+          "category": "setup",
+          "pass": true
+        },
+        {
+          "name": "actual adjacent eating pet and perception producer",
+          "category": "setup",
+          "pass": true
+        },
+        {
+          "name": "eating or deaf response",
+          "category": "source-prediction",
+          "pass": true
+        },
+        {
+          "name": "C invisible-marker condition",
+          "category": "source-prediction",
+          "pass": true
+        },
+        {
+          "name": "C command time and position",
+          "category": "source-prediction",
+          "pass": true
+        },
+        {
+          "name": "observer-free five streams unchanged",
+          "category": "neutrality",
+          "pass": true
+        },
+        {
+          "name": "deferred five streams unchanged",
+          "category": "neutrality",
+          "pass": true
+        }
+      ]
+    },
+    {
+      "name": "eating-pet-deaf-negative",
+      "kind": "pet-deaf",
+      "negative": true,
+      "keys": 97,
+      "boundaries": 98,
+      "hashes": {
+        "screens": "17948b7f1a6b2b289ea7c41e316eadb548ce853f5f40fc9bb874100d33aed73e",
+        "cursors": "4a03d5bbce20fd781212155f6169d80d388a4d5f6daf296bc017104f97c3494f",
+        "calls": "f4c1c103dac140e290ae420f43182b2938d0ec2fcc09c26ec26d4f1652e02520",
+        "slices": "60945b5117054e3f153541538aad5c03c8f8e8f31bb2d27a1ae23846bbbd76c0",
+        "frames": "94ab54d16ab775c1688a586b307ad8494bec4997126a9727ccaad9e1572a7e26"
+      },
+      "states": {
+        "89": {
+          "turn": 4,
+          "xy": [
+            4,
+            8
+          ],
+          "hp": 12,
+          "multi": 0,
+          "afternmv": null,
+          "gameover": false,
+          "blind": true,
+          "deaf": true,
+          "hallu": false,
+          "swallowed": false,
+          "underwater": false,
+          "strangled": false,
+          "form": 339,
+          "shop": "",
+          "heroMemory": true,
+          "steed": null,
+          "target": [
+            3,
+            8
+          ],
+          "monster": {
+            "id": 92,
+            "species": "PM_LITTLE_DOG",
+            "xy": [
+              3,
+              8
+            ],
+            "tame": 11,
+            "hp": 2,
+            "sleeping": false,
+            "canmove": true,
+            "frozen": 0,
+            "eating": 18,
+            "helpless": false,
+            "undetected": false,
+            "appearance": 0,
+            "spotted": false,
+            "hungrytime": 13000,
+            "customName": null
+          },
+          "topObject": null,
+          "marker": "cmap",
+          "inventory": [
+            {
+              "letter": "a",
+              "type": "BLINDFOLD",
+              "cursed": false,
+              "worn": 524288
+            }
+          ],
+          "repeat": []
+        },
+        "95": {
+          "turn": 4,
+          "xy": [
+            4,
+            8
+          ],
+          "hp": 12,
+          "multi": 0,
+          "afternmv": null,
+          "gameover": false,
+          "blind": true,
+          "deaf": true,
+          "hallu": false,
+          "swallowed": false,
+          "underwater": false,
+          "strangled": false,
+          "form": 339,
+          "shop": "",
+          "heroMemory": true,
+          "steed": null,
+          "target": [
+            3,
+            8
+          ],
+          "monster": {
+            "id": 92,
+            "species": "PM_LITTLE_DOG",
+            "xy": [
+              3,
+              8
+            ],
+            "tame": 11,
+            "hp": 2,
+            "sleeping": false,
+            "canmove": true,
+            "frozen": 0,
+            "eating": 18,
+            "helpless": false,
+            "undetected": false,
+            "appearance": 0,
+            "spotted": false,
+            "hungrytime": 13000,
+            "customName": null
+          },
+          "topObject": null,
+          "marker": "cmap",
+          "inventory": [
+            {
+              "letter": "a",
+              "type": "BLINDFOLD",
+              "cursed": false,
+              "worn": 524288
+            }
+          ],
+          "repeat": []
+        },
+        "96": {
+          "turn": 4,
+          "xy": [
+            4,
+            8
+          ],
+          "hp": 12,
+          "multi": 0,
+          "afternmv": null,
+          "gameover": false,
+          "blind": true,
+          "deaf": true,
+          "hallu": false,
+          "swallowed": false,
+          "underwater": false,
+          "strangled": false,
+          "form": 339,
+          "shop": "",
+          "heroMemory": true,
+          "steed": null,
+          "target": [
+            3,
+            8
+          ],
+          "monster": {
+            "id": 92,
+            "species": "PM_LITTLE_DOG",
+            "xy": [
+              3,
+              8
+            ],
+            "tame": 11,
+            "hp": 2,
+            "sleeping": false,
+            "canmove": true,
+            "frozen": 0,
+            "eating": 18,
+            "helpless": false,
+            "undetected": false,
+            "appearance": 0,
+            "spotted": false,
+            "hungrytime": 13000,
+            "customName": null
+          },
+          "topObject": null,
+          "marker": "cmap",
+          "inventory": [
+            {
+              "letter": "a",
+              "type": "BLINDFOLD",
+              "cursed": false,
+              "worn": 524288
+            }
+          ],
+          "repeat": [
+            {
+              "type": 1,
+              "command": "chat",
+              "key": null
+            },
+            {
+              "type": 0,
+              "command": null,
+              "key": "h"
+            }
+          ]
+        }
+      },
+      "texts": {
+        "89": [
+          "",
+          ""
+        ],
+        "95": [
+          "Talk to whom? (in what direction)",
+          ""
+        ],
+        "96": [
+          "Any response falls on deaf ears.",
+          ""
+        ]
+      },
+      "checks": [
+        {
+          "name": "all boundaries and RNG slices",
+          "category": "integrity",
+          "pass": true
+        },
+        {
+          "name": "actual hero ready for chat",
+          "category": "setup",
+          "pass": true
+        },
+        {
+          "name": "actual adjacent eating pet and perception producer",
+          "category": "setup",
+          "pass": true
+        },
+        {
+          "name": "eating or deaf response",
+          "category": "source-prediction",
+          "pass": true
+        },
+        {
+          "name": "C invisible-marker condition",
+          "category": "source-prediction",
+          "pass": true
+        },
+        {
+          "name": "C command time and position",
+          "category": "source-prediction",
+          "pass": true
+        },
+        {
+          "name": "observer-free five streams unchanged",
+          "category": "neutrality",
+          "pass": true
+        },
+        {
+          "name": "deferred five streams unchanged",
+          "category": "neutrality",
+          "pass": true
+        }
+      ]
+    }
+  ],
+  "summary": {
+    "cases": 11,
+    "checks": 80,
+    "failures": [
+      {
+        "case": "cancel-direction-repeat",
+        "name": "cancel clears repeat",
+        "category": "source-prediction",
+        "pass": false,
+        "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   {\n+     command: 'chat',\n+     key: null,\n+     type: 1\n+   },\n+   {\n+     command: null,\n+     key: '\\x1B',\n+     type: 0\n+   }\n+ ]\n- []\n"
+      },
+      {
+        "case": "cancel-direction-repeat",
+        "name": "Ctrl-A reports no command",
+        "category": "source-prediction",
+        "pass": false,
+        "error": "The expression evaluated to a falsy value:\n\n  assert.ok(row.texts[plan.repeated][0].includes(plan.expected))\n"
+      },
+      {
+        "case": "mounted-awake-down",
+        "name": "mounted source feedback",
+        "category": "source-prediction",
+        "pass": false,
+        "error": "Expected values to be strictly equal:\n+ actual - expected\n\n+ \"They won't hear you down there.\"\n- 'The saddled pony whickers.'\n"
+      },
+      {
+        "case": "mounted-awake-down",
+        "name": "C command time and position",
+        "category": "source-prediction",
+        "pass": false,
+        "error": "Expected values to be strictly equal:\n\n2 !== 3\n"
+      },
+      {
+        "case": "mounted-helpless-down",
+        "name": "actual mounted pony producer",
+        "category": "setup",
+        "pass": false,
+        "error": "Expected values to be strictly equal:\n\nfalse !== true\n"
+      },
+      {
+        "case": "mounted-helpless-down",
+        "name": "mounted source feedback",
+        "category": "source-prediction",
+        "pass": false,
+        "error": "Expected values to be strictly equal:\n+ actual - expected\n\n+ \"They won't hear you down there.\"\n- 'The saddled pony seems not to notice you.'\n"
+      },
+      {
+        "case": "mounted-helpless-down",
+        "name": "C command time and position",
+        "category": "source-prediction",
+        "pass": false,
+        "error": "Expected values to be strictly equal:\n\n6 !== 7\n"
+      },
+      {
+        "case": "statue-sober",
+        "name": "statue source feedback",
+        "category": "source-prediction",
+        "pass": false,
+        "error": "Expected values to be strictly equal:\n+ actual - expected\n\n+ ''\n- 'The statue seems not to notice you.'\n"
+      },
+      {
+        "case": "statue-hallucinated",
+        "name": "actual statue and perception producer",
+        "category": "setup",
+        "pass": false,
+        "error": "Expected values to be strictly equal:\n\nfalse !== true\n"
+      },
+      {
+        "case": "statue-hallucinated",
+        "name": "statue source feedback",
+        "category": "source-prediction",
+        "pass": false,
+        "error": "The input did not match the regular expression /^The .+ seems not to notice you\\.$/. Input:\n\n''\n"
+      },
+      {
+        "case": "statue-blind-negative",
+        "name": "actual statue and perception producer",
+        "category": "setup",
+        "pass": false,
+        "error": "Expected values to be strictly equal:\n\nfalse !== true\n"
+      },
+      {
+        "case": "eating-pet-blind",
+        "name": "C invisible-marker condition",
+        "category": "source-prediction",
+        "pass": false,
+        "error": "Expected values to be strictly equal:\n\n'cmap' !== 'invis'\n"
+      }
+    ],
+    "observerRestored": true
+  }
+}

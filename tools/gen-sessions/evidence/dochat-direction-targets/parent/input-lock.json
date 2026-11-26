@@ -1,0 +1,16 @@
+{
+  "sourceDirectory": "dochat-prompt-acknowledgement-source-audit",
+  "sourceSealSHA256": "1e1db68fe6b460c7201304c1a93c058b5e290f8e5038eec48018d15c9fff5bb1",
+  "sourceManifestSHA256": "71071f756f53465afe94a20ed13d6cc3f18406cdf772afb49b6e1d614122f74f",
+  "sourceRecipeSHA256": "05b48381543e232f5a37218b20cdf8e8cce09dae7eb977b0afe2664b90a451aa",
+  "sourcePredictionsSHA256": "4ee242f00109f057a387a96e1519eb677d4050c383f0824caccf30bc5d62b7b8",
+  "sourceNegativeSHA256": "46eaed214d43342e16026d0a94beb4c21f08a2d338c8d0e8f56d1464547a7b6c",
+  "primaryRecipeSHA256": "25de54f5e671e6ec393834adb9622c46897bbaeb5c510902a747921784b102e7",
+  "minimalSHA256": "25de54f5e671e6ec393834adb9622c46897bbaeb5c510902a747921784b102e7",
+  "baselineRuntimeSHA256": "88b58f9ee504928b3adf4295da37cce4337882990cc75541f033df1d36c1ab11",
+  "segments": 11,
+  "keys": 1056,
+  "beforeC": true,
+  "sourceFiveFieldTuplesUnchanged": true,
+  "primaryBasis": "Exact original prediction phrases; hallucination checks fixed source suffix without selecting a random name. Blind statue checks silence after real genocide setup. Full native and ordinary state checks remain required."
+}

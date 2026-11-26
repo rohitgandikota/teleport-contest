@@ -1,0 +1,827 @@
+[
+  {
+    "segment": 0,
+    "name": "cancel-direction-repeat",
+    "boundaries": {
+      "expected": 11,
+      "actual": 11
+    },
+    "frozenScreens": 11,
+    "fullStyleScreens": 11,
+    "matchingStyleCells": 21120,
+    "totalCells": 21120,
+    "blankStyleMismatches": 0,
+    "nonblankStyleMismatches": 0,
+    "glyphMismatches": 0,
+    "screenDifferences": [],
+    "cursors": {
+      "expected": 11,
+      "actual": 11,
+      "matched": 11,
+      "firstDifference": null
+    },
+    "calls": {
+      "rawExpected": 2759,
+      "rawActual": 2759,
+      "discardedEntries": 0,
+      "expected": 2759,
+      "actual": 2759,
+      "firstDifference": null
+    },
+    "slices": {
+      "expected": 11,
+      "actual": 11,
+      "matched": 11,
+      "differences": []
+    },
+    "frames": {
+      "expected": 0,
+      "actual": 0,
+      "expectedSlices": 11,
+      "actualSlices": 11,
+      "countMismatches": [],
+      "fullStyleMatches": 0,
+      "cursorMatches": 0
+    },
+    "rawHashes": {
+      "c": {
+        "screens": "b0ab9dd1b2ab48e782ab5852057d1d8bffd325da4f4d88df0be4b2ae0f2e5cfd",
+        "cursors": "f9d0025d458e7e626f6599e28a7b1cf7d699102ee5eaab7ac4dc00034de56bcd",
+        "calls": "5c7c53bf22a233a4fe8140b8a3d03882071b96e010f55d68a410dde9ce7d27a9",
+        "slices": "e3be7e8db018f145c792903e81c2edd548aec24da8af254032e015371a5be7f7",
+        "frames": "bf0077cf664e94e64924481687b6698b868329c03f281147f54f16ab099d7df3"
+      },
+      "js": {
+        "screens": "86fcf52fb9096bd2b2c38e263d2ad854704293e0f441a94cb0db9482525cc6a7",
+        "cursors": "f9d0025d458e7e626f6599e28a7b1cf7d699102ee5eaab7ac4dc00034de56bcd",
+        "calls": "2009166a4f54844b7571bcb4187acb69fdade0978abaa305ffafc5f3a29d5aed",
+        "slices": "2181318af2b7ec28f5665a25eb7b0e24472a52a45b64b6cd28eb6168ac557c17",
+        "frames": "bf0077cf664e94e64924481687b6698b868329c03f281147f54f16ab099d7df3"
+      }
+    },
+    "normalizedHashes": {
+      "c": {
+        "calls": "2009166a4f54844b7571bcb4187acb69fdade0978abaa305ffafc5f3a29d5aed",
+        "slices": "2181318af2b7ec28f5665a25eb7b0e24472a52a45b64b6cd28eb6168ac557c17"
+      },
+      "js": {
+        "calls": "2009166a4f54844b7571bcb4187acb69fdade0978abaa305ffafc5f3a29d5aed",
+        "slices": "2181318af2b7ec28f5665a25eb7b0e24472a52a45b64b6cd28eb6168ac557c17"
+      }
+    },
+    "frozenScreenCursorExact": true,
+    "fullRngExact": true,
+    "fullStyleExact": true,
+    "animationExact": true
+  },
+  {
+    "segment": 1,
+    "name": "self-repeat-negative",
+    "boundaries": {
+      "expected": 11,
+      "actual": 11
+    },
+    "frozenScreens": 11,
+    "fullStyleScreens": 11,
+    "matchingStyleCells": 21120,
+    "totalCells": 21120,
+    "blankStyleMismatches": 0,
+    "nonblankStyleMismatches": 0,
+    "glyphMismatches": 0,
+    "screenDifferences": [],
+    "cursors": {
+      "expected": 11,
+      "actual": 11,
+      "matched": 11,
+      "firstDifference": null
+    },
+    "calls": {
+      "rawExpected": 2759,
+      "rawActual": 2759,
+      "discardedEntries": 0,
+      "expected": 2759,
+      "actual": 2759,
+      "firstDifference": null
+    },
+    "slices": {
+      "expected": 11,
+      "actual": 11,
+      "matched": 11,
+      "differences": []
+    },
+    "frames": {
+      "expected": 0,
+      "actual": 0,
+      "expectedSlices": 11,
+      "actualSlices": 11,
+      "countMismatches": [],
+      "fullStyleMatches": 0,
+      "cursorMatches": 0
+    },
+    "rawHashes": {
+      "c": {
+        "screens": "5b01025c94fc95109e6bc653b32ae0521f2b8b03877148dc4298779110c12f5a",
+        "cursors": "f9d0025d458e7e626f6599e28a7b1cf7d699102ee5eaab7ac4dc00034de56bcd",
+        "calls": "5c7c53bf22a233a4fe8140b8a3d03882071b96e010f55d68a410dde9ce7d27a9",
+        "slices": "e3be7e8db018f145c792903e81c2edd548aec24da8af254032e015371a5be7f7",
+        "frames": "bf0077cf664e94e64924481687b6698b868329c03f281147f54f16ab099d7df3"
+      },
+      "js": {
+        "screens": "f842f87e9eb1b13fb14f01258db0afdac8e3e705354939c165a9b5811c2d990a",
+        "cursors": "f9d0025d458e7e626f6599e28a7b1cf7d699102ee5eaab7ac4dc00034de56bcd",
+        "calls": "2009166a4f54844b7571bcb4187acb69fdade0978abaa305ffafc5f3a29d5aed",
+        "slices": "2181318af2b7ec28f5665a25eb7b0e24472a52a45b64b6cd28eb6168ac557c17",
+        "frames": "bf0077cf664e94e64924481687b6698b868329c03f281147f54f16ab099d7df3"
+      }
+    },
+    "normalizedHashes": {
+      "c": {
+        "calls": "2009166a4f54844b7571bcb4187acb69fdade0978abaa305ffafc5f3a29d5aed",
+        "slices": "2181318af2b7ec28f5665a25eb7b0e24472a52a45b64b6cd28eb6168ac557c17"
+      },
+      "js": {
+        "calls": "2009166a4f54844b7571bcb4187acb69fdade0978abaa305ffafc5f3a29d5aed",
+        "slices": "2181318af2b7ec28f5665a25eb7b0e24472a52a45b64b6cd28eb6168ac557c17"
+      }
+    },
+    "frozenScreenCursorExact": true,
+    "fullRngExact": true,
+    "fullStyleExact": true,
+    "animationExact": true
+  },
+  {
+    "segment": 2,
+    "name": "mounted-awake-down",
+    "boundaries": {
+      "expected": 102,
+      "actual": 102
+    },
+    "frozenScreens": 102,
+    "fullStyleScreens": 102,
+    "matchingStyleCells": 195840,
+    "totalCells": 195840,
+    "blankStyleMismatches": 0,
+    "nonblankStyleMismatches": 0,
+    "glyphMismatches": 0,
+    "screenDifferences": [],
+    "cursors": {
+      "expected": 102,
+      "actual": 102,
+      "matched": 102,
+      "firstDifference": null
+    },
+    "calls": {
+      "rawExpected": 2306,
+      "rawActual": 2306,
+      "discardedEntries": 0,
+      "expected": 2306,
+      "actual": 2306,
+      "firstDifference": null
+    },
+    "slices": {
+      "expected": 102,
+      "actual": 102,
+      "matched": 102,
+      "differences": []
+    },
+    "frames": {
+      "expected": 0,
+      "actual": 0,
+      "expectedSlices": 102,
+      "actualSlices": 102,
+      "countMismatches": [],
+      "fullStyleMatches": 0,
+      "cursorMatches": 0
+    },
+    "rawHashes": {
+      "c": {
+        "screens": "6c1296017df3a097237245a4b7cddccd736f095f2572d89a7060a9b19f0079d5",
+        "cursors": "d62e7c8fb819883947c0b6c00a4441ebad55e2c05ea0aafe30c160fd0f90ffde",
+        "calls": "46d9e68c82b814fb831647d74842908acd9476a74bb258ae5822fc478fded7e2",
+        "slices": "7b6bbcfe4bd194e18e17859c7800fcc4b15c538fd6dd676731d44b212af432a5",
+        "frames": "4d7ba6a4c38d723186da1f268f5b662c9ce9580c0d24fc0d9481337db9066638"
+      },
+      "js": {
+        "screens": "d052c544fe9f5eda015cacf81daf18226a1885873b25f41b3cc41a7407589b9c",
+        "cursors": "d62e7c8fb819883947c0b6c00a4441ebad55e2c05ea0aafe30c160fd0f90ffde",
+        "calls": "a8bfcf8cfd549026ee5677d7ed5452ce35912fbe5f3f978cf5317930a3616b43",
+        "slices": "f8d11c91092aa624ec9a97effe6ff368e44b0939f4e90aa7b143413e8ab8966a",
+        "frames": "4d7ba6a4c38d723186da1f268f5b662c9ce9580c0d24fc0d9481337db9066638"
+      }
+    },
+    "normalizedHashes": {
+      "c": {
+        "calls": "a8bfcf8cfd549026ee5677d7ed5452ce35912fbe5f3f978cf5317930a3616b43",
+        "slices": "f8d11c91092aa624ec9a97effe6ff368e44b0939f4e90aa7b143413e8ab8966a"
+      },
+      "js": {
+        "calls": "a8bfcf8cfd549026ee5677d7ed5452ce35912fbe5f3f978cf5317930a3616b43",
+        "slices": "f8d11c91092aa624ec9a97effe6ff368e44b0939f4e90aa7b143413e8ab8966a"
+      }
+    },
+    "frozenScreenCursorExact": true,
+    "fullRngExact": true,
+    "fullStyleExact": true,
+    "animationExact": true
+  },
+  {
+    "segment": 3,
+    "name": "mounted-helpless-free-action-down",
+    "boundaries": {
+      "expected": 196,
+      "actual": 196
+    },
+    "frozenScreens": 196,
+    "fullStyleScreens": 196,
+    "matchingStyleCells": 376320,
+    "totalCells": 376320,
+    "blankStyleMismatches": 0,
+    "nonblankStyleMismatches": 0,
+    "glyphMismatches": 0,
+    "screenDifferences": [],
+    "cursors": {
+      "expected": 196,
+      "actual": 196,
+      "matched": 196,
+      "firstDifference": null
+    },
+    "calls": {
+      "rawExpected": 2352,
+      "rawActual": 2352,
+      "discardedEntries": 0,
+      "expected": 2352,
+      "actual": 2352,
+      "firstDifference": null
+    },
+    "slices": {
+      "expected": 196,
+      "actual": 196,
+      "matched": 196,
+      "differences": []
+    },
+    "frames": {
+      "expected": 0,
+      "actual": 0,
+      "expectedSlices": 196,
+      "actualSlices": 196,
+      "countMismatches": [],
+      "fullStyleMatches": 0,
+      "cursorMatches": 0
+    },
+    "rawHashes": {
+      "c": {
+        "screens": "0542f7445e7dea980a2d0476375d73cbe2804eebb51575a43f109ffd5f61c276",
+        "cursors": "08810a742f76fe34e55daa57266bb018a95c5585e7fa1d601030173c612edca8",
+        "calls": "c96f2c9aeeaa2dafd293cac0d4a19fb1ef197ef67f7cd8c8263a1870dd7a0306",
+        "slices": "3ca11b0f0c0b26064ef0e5e8e3cf779d564a645543ad47871d8e9c7fb202a138",
+        "frames": "8144c0e5ec6e8574dff53b9b03a4db94bb6c78c963e5596c9f8b3c76d4a295bd"
+      },
+      "js": {
+        "screens": "5a782ab4a7a3d152c5db25910c44b2d40e0c68e9401871ba9f2ad2843e0abffb",
+        "cursors": "08810a742f76fe34e55daa57266bb018a95c5585e7fa1d601030173c612edca8",
+        "calls": "838a9cedb676cfdef1c1a7ef4117b2c34c76a5ccb14c6ea6e774188d1707f408",
+        "slices": "8e02c92aeb8a7a2373609f81b791ef566a1f0242236dcb9c96ad539c5275144d",
+        "frames": "8144c0e5ec6e8574dff53b9b03a4db94bb6c78c963e5596c9f8b3c76d4a295bd"
+      }
+    },
+    "normalizedHashes": {
+      "c": {
+        "calls": "838a9cedb676cfdef1c1a7ef4117b2c34c76a5ccb14c6ea6e774188d1707f408",
+        "slices": "8e02c92aeb8a7a2373609f81b791ef566a1f0242236dcb9c96ad539c5275144d"
+      },
+      "js": {
+        "calls": "838a9cedb676cfdef1c1a7ef4117b2c34c76a5ccb14c6ea6e774188d1707f408",
+        "slices": "8e02c92aeb8a7a2373609f81b791ef566a1f0242236dcb9c96ad539c5275144d"
+      }
+    },
+    "frozenScreenCursorExact": true,
+    "fullRngExact": true,
+    "fullStyleExact": true,
+    "animationExact": true
+  },
+  {
+    "segment": 4,
+    "name": "mounted-up-negative",
+    "boundaries": {
+      "expected": 102,
+      "actual": 102
+    },
+    "frozenScreens": 102,
+    "fullStyleScreens": 102,
+    "matchingStyleCells": 195840,
+    "totalCells": 195840,
+    "blankStyleMismatches": 0,
+    "nonblankStyleMismatches": 0,
+    "glyphMismatches": 0,
+    "screenDifferences": [],
+    "cursors": {
+      "expected": 102,
+      "actual": 102,
+      "matched": 102,
+      "firstDifference": null
+    },
+    "calls": {
+      "rawExpected": 2287,
+      "rawActual": 2287,
+      "discardedEntries": 0,
+      "expected": 2287,
+      "actual": 2287,
+      "firstDifference": null
+    },
+    "slices": {
+      "expected": 102,
+      "actual": 102,
+      "matched": 102,
+      "differences": []
+    },
+    "frames": {
+      "expected": 0,
+      "actual": 0,
+      "expectedSlices": 102,
+      "actualSlices": 102,
+      "countMismatches": [],
+      "fullStyleMatches": 0,
+      "cursorMatches": 0
+    },
+    "rawHashes": {
+      "c": {
+        "screens": "2700b7eea5ea562f2d139f200fc2a6df63540631d24937a5531047fc7b289f94",
+        "cursors": "d62e7c8fb819883947c0b6c00a4441ebad55e2c05ea0aafe30c160fd0f90ffde",
+        "calls": "327bb4d600d04a3ef9a3c55b26c48b47ad82638a3bc6b2516a6eab57d010088f",
+        "slices": "44e0d978d6931dc29708a93c36a3619761b05bf8c54d6d6c35e10fe58af49561",
+        "frames": "4d7ba6a4c38d723186da1f268f5b662c9ce9580c0d24fc0d9481337db9066638"
+      },
+      "js": {
+        "screens": "df2fc4207d00cceb853b2f6de89245ea870a0334aa53816d0ac02629b9cb76c6",
+        "cursors": "d62e7c8fb819883947c0b6c00a4441ebad55e2c05ea0aafe30c160fd0f90ffde",
+        "calls": "24eaac6e4815671d6a3aff0db30398a44edbb9322e640b4280c1406a7bc081cf",
+        "slices": "ae228aedba1e03c6fbf02bb893299da571f814b045aae49ece13ce8bc58275cf",
+        "frames": "4d7ba6a4c38d723186da1f268f5b662c9ce9580c0d24fc0d9481337db9066638"
+      }
+    },
+    "normalizedHashes": {
+      "c": {
+        "calls": "24eaac6e4815671d6a3aff0db30398a44edbb9322e640b4280c1406a7bc081cf",
+        "slices": "ae228aedba1e03c6fbf02bb893299da571f814b045aae49ece13ce8bc58275cf"
+      },
+      "js": {
+        "calls": "24eaac6e4815671d6a3aff0db30398a44edbb9322e640b4280c1406a7bc081cf",
+        "slices": "ae228aedba1e03c6fbf02bb893299da571f814b045aae49ece13ce8bc58275cf"
+      }
+    },
+    "frozenScreenCursorExact": true,
+    "fullRngExact": true,
+    "fullStyleExact": true,
+    "animationExact": true
+  },
+  {
+    "segment": 5,
+    "name": "statue-sober",
+    "boundaries": {
+      "expected": 54,
+      "actual": 54
+    },
+    "frozenScreens": 54,
+    "fullStyleScreens": 54,
+    "matchingStyleCells": 103680,
+    "totalCells": 103680,
+    "blankStyleMismatches": 0,
+    "nonblankStyleMismatches": 0,
+    "glyphMismatches": 0,
+    "screenDifferences": [],
+    "cursors": {
+      "expected": 54,
+      "actual": 54,
+      "matched": 54,
+      "firstDifference": null
+    },
+    "calls": {
+      "rawExpected": 2796,
+      "rawActual": 2796,
+      "discardedEntries": 0,
+      "expected": 2796,
+      "actual": 2796,
+      "firstDifference": null
+    },
+    "slices": {
+      "expected": 54,
+      "actual": 54,
+      "matched": 54,
+      "differences": []
+    },
+    "frames": {
+      "expected": 0,
+      "actual": 0,
+      "expectedSlices": 54,
+      "actualSlices": 54,
+      "countMismatches": [],
+      "fullStyleMatches": 0,
+      "cursorMatches": 0
+    },
+    "rawHashes": {
+      "c": {
+        "screens": "6600d59ef82f13d6bd3bd25e24e34af95939639e658b0d3e59cfce0ac67c5cf4",
+        "cursors": "4bd85504eb8072bb0857d42ab1d60d9260e399bff5fd5b9a2d65ccddc4aa89ef",
+        "calls": "2f6040520314285464c314cee904a03c57b3e1515b7415ba9b671e578d1a6dd5",
+        "slices": "9a5a4a494ac3765d176b65337ab2125c3a6ba30c264c36fb039c7664142c073f",
+        "frames": "40b562827d4106f549ef757157290919f3573b7cc415b7acf131dd48f86a1587"
+      },
+      "js": {
+        "screens": "c2d5ce2b45e2e9e8620fc6d1e8bf7a4075b2b1e132b77fed63c8680bece4c318",
+        "cursors": "4bd85504eb8072bb0857d42ab1d60d9260e399bff5fd5b9a2d65ccddc4aa89ef",
+        "calls": "be1f9fa60dd6a70cc6f8ff7cd8c82f7aa2a426734ea83b69d246f555eb413429",
+        "slices": "8ff73191797d076dcb66fe7619cc4a397879f2e26f66a370da7a7581137255d9",
+        "frames": "40b562827d4106f549ef757157290919f3573b7cc415b7acf131dd48f86a1587"
+      }
+    },
+    "normalizedHashes": {
+      "c": {
+        "calls": "be1f9fa60dd6a70cc6f8ff7cd8c82f7aa2a426734ea83b69d246f555eb413429",
+        "slices": "8ff73191797d076dcb66fe7619cc4a397879f2e26f66a370da7a7581137255d9"
+      },
+      "js": {
+        "calls": "be1f9fa60dd6a70cc6f8ff7cd8c82f7aa2a426734ea83b69d246f555eb413429",
+        "slices": "8ff73191797d076dcb66fe7619cc4a397879f2e26f66a370da7a7581137255d9"
+      }
+    },
+    "frozenScreenCursorExact": true,
+    "fullRngExact": true,
+    "fullStyleExact": true,
+    "animationExact": true
+  },
+  {
+    "segment": 6,
+    "name": "statue-hallucinated-prompt-acknowledged",
+    "boundaries": {
+      "expected": 159,
+      "actual": 159
+    },
+    "frozenScreens": 159,
+    "fullStyleScreens": 159,
+    "matchingStyleCells": 305280,
+    "totalCells": 305280,
+    "blankStyleMismatches": 0,
+    "nonblankStyleMismatches": 0,
+    "glyphMismatches": 0,
+    "screenDifferences": [],
+    "cursors": {
+      "expected": 159,
+      "actual": 159,
+      "matched": 159,
+      "firstDifference": null
+    },
+    "calls": {
+      "rawExpected": 2836,
+      "rawActual": 2836,
+      "discardedEntries": 0,
+      "expected": 2836,
+      "actual": 2836,
+      "firstDifference": null
+    },
+    "slices": {
+      "expected": 159,
+      "actual": 159,
+      "matched": 159,
+      "differences": []
+    },
+    "frames": {
+      "expected": 0,
+      "actual": 0,
+      "expectedSlices": 159,
+      "actualSlices": 159,
+      "countMismatches": [],
+      "fullStyleMatches": 0,
+      "cursorMatches": 0
+    },
+    "rawHashes": {
+      "c": {
+        "screens": "1e994a7f1b33cd92d18e1a0523aafd46039317885a631959d55e7902b0a4454c",
+        "cursors": "4041dad1d2b62acab6cbb4645059138510bb528b414fe9d2a398097e9fc8ef53",
+        "calls": "e77c67e2865c94d342fb7cc0291924d65f6e4416f6ecd09920f97dce36e6b4eb",
+        "slices": "4a6bae1e25ef4022c08b71aa606a43c7345b418abd536c563111d51a40cc5fe4",
+        "frames": "fa2c8143aa6110b7091018d69ae453516552a50982b0dc04f857ba863de50240"
+      },
+      "js": {
+        "screens": "895788bb9f851c2982f8325f3174779eba1e7be843b513863cc3cec9e160cf3c",
+        "cursors": "4041dad1d2b62acab6cbb4645059138510bb528b414fe9d2a398097e9fc8ef53",
+        "calls": "b53545ec83b3c6c45efacb29593451dfcf003274a3c055274cd0800b9ead6604",
+        "slices": "5fe5051d1afaaef63a56ed39c844300b59d810bd6a128321173d4b3e42017d89",
+        "frames": "fa2c8143aa6110b7091018d69ae453516552a50982b0dc04f857ba863de50240"
+      }
+    },
+    "normalizedHashes": {
+      "c": {
+        "calls": "b53545ec83b3c6c45efacb29593451dfcf003274a3c055274cd0800b9ead6604",
+        "slices": "5fe5051d1afaaef63a56ed39c844300b59d810bd6a128321173d4b3e42017d89"
+      },
+      "js": {
+        "calls": "b53545ec83b3c6c45efacb29593451dfcf003274a3c055274cd0800b9ead6604",
+        "slices": "5fe5051d1afaaef63a56ed39c844300b59d810bd6a128321173d4b3e42017d89"
+      }
+    },
+    "frozenScreenCursorExact": true,
+    "fullRngExact": true,
+    "fullStyleExact": true,
+    "animationExact": true
+  },
+  {
+    "segment": 7,
+    "name": "statue-blind-prompt-acknowledged-negative",
+    "boundaries": {
+      "expected": 147,
+      "actual": 147
+    },
+    "frozenScreens": 147,
+    "fullStyleScreens": 147,
+    "matchingStyleCells": 282240,
+    "totalCells": 282240,
+    "blankStyleMismatches": 0,
+    "nonblankStyleMismatches": 0,
+    "glyphMismatches": 0,
+    "screenDifferences": [],
+    "cursors": {
+      "expected": 147,
+      "actual": 147,
+      "matched": 147,
+      "firstDifference": null
+    },
+    "calls": {
+      "rawExpected": 2832,
+      "rawActual": 2832,
+      "discardedEntries": 0,
+      "expected": 2832,
+      "actual": 2832,
+      "firstDifference": null
+    },
+    "slices": {
+      "expected": 147,
+      "actual": 147,
+      "matched": 147,
+      "differences": []
+    },
+    "frames": {
+      "expected": 0,
+      "actual": 0,
+      "expectedSlices": 147,
+      "actualSlices": 147,
+      "countMismatches": [],
+      "fullStyleMatches": 0,
+      "cursorMatches": 0
+    },
+    "rawHashes": {
+      "c": {
+        "screens": "98bc7c3bca18e7486779fc88083dbfc904c34458373ac779a92afeaead5a25fb",
+        "cursors": "c8368667f1b3d52bfa77f0a19cbc17a07463b72a885cd5ed3c7235915e66b515",
+        "calls": "b8066cab9e6b65a31be9a26f868e431ce70426971e9b972beb9b339938768738",
+        "slices": "41bcfc7358ebc5a770aa8d05b790a66cfd5375685c171b882c1199501a42627b",
+        "frames": "fd331dce7a25bcf0dbbeff0f74846e08676871f53a7f8457b4d8bbe0f8c079ac"
+      },
+      "js": {
+        "screens": "e4715fc5f6d09d4552f2c081f2fa8dfeda1a2ab2aab69d74fba9e9d66e1f5936",
+        "cursors": "c8368667f1b3d52bfa77f0a19cbc17a07463b72a885cd5ed3c7235915e66b515",
+        "calls": "e6ddfb4c9d43120abdc37a4a852dc7f388e68986ec14b65d005175091da1b47e",
+        "slices": "71598a7d41d6ca697ccd737e29e9514a9c7cc0b9f3435e87285a0c8cf6a1e98d",
+        "frames": "fd331dce7a25bcf0dbbeff0f74846e08676871f53a7f8457b4d8bbe0f8c079ac"
+      }
+    },
+    "normalizedHashes": {
+      "c": {
+        "calls": "e6ddfb4c9d43120abdc37a4a852dc7f388e68986ec14b65d005175091da1b47e",
+        "slices": "71598a7d41d6ca697ccd737e29e9514a9c7cc0b9f3435e87285a0c8cf6a1e98d"
+      },
+      "js": {
+        "calls": "e6ddfb4c9d43120abdc37a4a852dc7f388e68986ec14b65d005175091da1b47e",
+        "slices": "71598a7d41d6ca697ccd737e29e9514a9c7cc0b9f3435e87285a0c8cf6a1e98d"
+      }
+    },
+    "frozenScreenCursorExact": true,
+    "fullRngExact": true,
+    "fullStyleExact": true,
+    "animationExact": true
+  },
+  {
+    "segment": 8,
+    "name": "eating-pet-blind",
+    "boundaries": {
+      "expected": 98,
+      "actual": 98
+    },
+    "frozenScreens": 98,
+    "fullStyleScreens": 98,
+    "matchingStyleCells": 188160,
+    "totalCells": 188160,
+    "blankStyleMismatches": 0,
+    "nonblankStyleMismatches": 0,
+    "glyphMismatches": 0,
+    "screenDifferences": [],
+    "cursors": {
+      "expected": 98,
+      "actual": 98,
+      "matched": 98,
+      "firstDifference": null
+    },
+    "calls": {
+      "rawExpected": 3371,
+      "rawActual": 3371,
+      "discardedEntries": 0,
+      "expected": 3371,
+      "actual": 3371,
+      "firstDifference": null
+    },
+    "slices": {
+      "expected": 98,
+      "actual": 98,
+      "matched": 98,
+      "differences": []
+    },
+    "frames": {
+      "expected": 0,
+      "actual": 0,
+      "expectedSlices": 98,
+      "actualSlices": 98,
+      "countMismatches": [],
+      "fullStyleMatches": 0,
+      "cursorMatches": 0
+    },
+    "rawHashes": {
+      "c": {
+        "screens": "95255c9bbcb328975cec76fb79331977cd31a43a38cf192b9b0963fb855f0606",
+        "cursors": "4a03d5bbce20fd781212155f6169d80d388a4d5f6daf296bc017104f97c3494f",
+        "calls": "d1c4ab15a5e368ac2d72c2e12826b5c4c7895a0064bf0659e64645bc01187086",
+        "slices": "b350e7a7a58fe7f8bf719ac5c6c4bf360b7e690677deec59ea1181cf87b7e5e7",
+        "frames": "94ab54d16ab775c1688a586b307ad8494bec4997126a9727ccaad9e1572a7e26"
+      },
+      "js": {
+        "screens": "84e475706ed956a12043393f698bac4d912a484fe631de5c2e74598c1e5cba5a",
+        "cursors": "4a03d5bbce20fd781212155f6169d80d388a4d5f6daf296bc017104f97c3494f",
+        "calls": "f4c1c103dac140e290ae420f43182b2938d0ec2fcc09c26ec26d4f1652e02520",
+        "slices": "60945b5117054e3f153541538aad5c03c8f8e8f31bb2d27a1ae23846bbbd76c0",
+        "frames": "94ab54d16ab775c1688a586b307ad8494bec4997126a9727ccaad9e1572a7e26"
+      }
+    },
+    "normalizedHashes": {
+      "c": {
+        "calls": "f4c1c103dac140e290ae420f43182b2938d0ec2fcc09c26ec26d4f1652e02520",
+        "slices": "60945b5117054e3f153541538aad5c03c8f8e8f31bb2d27a1ae23846bbbd76c0"
+      },
+      "js": {
+        "calls": "f4c1c103dac140e290ae420f43182b2938d0ec2fcc09c26ec26d4f1652e02520",
+        "slices": "60945b5117054e3f153541538aad5c03c8f8e8f31bb2d27a1ae23846bbbd76c0"
+      }
+    },
+    "frozenScreenCursorExact": true,
+    "fullRngExact": true,
+    "fullStyleExact": true,
+    "animationExact": true
+  },
+  {
+    "segment": 9,
+    "name": "eating-pet-visible-negative",
+    "boundaries": {
+      "expected": 89,
+      "actual": 89
+    },
+    "frozenScreens": 89,
+    "fullStyleScreens": 89,
+    "matchingStyleCells": 170880,
+    "totalCells": 170880,
+    "blankStyleMismatches": 0,
+    "nonblankStyleMismatches": 0,
+    "glyphMismatches": 0,
+    "screenDifferences": [],
+    "cursors": {
+      "expected": 89,
+      "actual": 89,
+      "matched": 89,
+      "firstDifference": null
+    },
+    "calls": {
+      "rawExpected": 3362,
+      "rawActual": 3362,
+      "discardedEntries": 0,
+      "expected": 3362,
+      "actual": 3362,
+      "firstDifference": null
+    },
+    "slices": {
+      "expected": 89,
+      "actual": 89,
+      "matched": 89,
+      "differences": []
+    },
+    "frames": {
+      "expected": 0,
+      "actual": 0,
+      "expectedSlices": 89,
+      "actualSlices": 89,
+      "countMismatches": [],
+      "fullStyleMatches": 0,
+      "cursorMatches": 0
+    },
+    "rawHashes": {
+      "c": {
+        "screens": "5bda54be98963632ded00f28ffcd888e11de9ea9c6d3aa1abe64887a0487819f",
+        "cursors": "9157ae44c5551f76bf12fa72bb862f4b37b66acce6852e4eb7bdf277918bad25",
+        "calls": "82db0307f1b0e874bc90ee394e0556928aa544b4506c1bd1814cbf2abf0f9b1b",
+        "slices": "5418aa5724c51595ac788a56d99e8dfd1be2b5e5cf266b30027d9c969657e2dc",
+        "frames": "ba56ec9390e018ba54353628fe4a9e51159cd53adff013965530ee3a6fbb36ad"
+      },
+      "js": {
+        "screens": "2bef88fa49672d65704627a17482274cefccf391ed721ea6b735150ca9d963ba",
+        "cursors": "9157ae44c5551f76bf12fa72bb862f4b37b66acce6852e4eb7bdf277918bad25",
+        "calls": "d909638388e07b0fa0a3fc18731176aaa184bbc076230f5653221b4383756872",
+        "slices": "c3d9092c1da57d58f5cac067c98547a852572f69b1166a351d5a4831bb73c647",
+        "frames": "ba56ec9390e018ba54353628fe4a9e51159cd53adff013965530ee3a6fbb36ad"
+      }
+    },
+    "normalizedHashes": {
+      "c": {
+        "calls": "d909638388e07b0fa0a3fc18731176aaa184bbc076230f5653221b4383756872",
+        "slices": "c3d9092c1da57d58f5cac067c98547a852572f69b1166a351d5a4831bb73c647"
+      },
+      "js": {
+        "calls": "d909638388e07b0fa0a3fc18731176aaa184bbc076230f5653221b4383756872",
+        "slices": "c3d9092c1da57d58f5cac067c98547a852572f69b1166a351d5a4831bb73c647"
+      }
+    },
+    "frozenScreenCursorExact": true,
+    "fullRngExact": true,
+    "fullStyleExact": true,
+    "animationExact": true
+  },
+  {
+    "segment": 10,
+    "name": "eating-pet-deaf-negative",
+    "boundaries": {
+      "expected": 98,
+      "actual": 98
+    },
+    "frozenScreens": 98,
+    "fullStyleScreens": 98,
+    "matchingStyleCells": 188160,
+    "totalCells": 188160,
+    "blankStyleMismatches": 0,
+    "nonblankStyleMismatches": 0,
+    "glyphMismatches": 0,
+    "screenDifferences": [],
+    "cursors": {
+      "expected": 98,
+      "actual": 98,
+      "matched": 98,
+      "firstDifference": null
+    },
+    "calls": {
+      "rawExpected": 3371,
+      "rawActual": 3371,
+      "discardedEntries": 0,
+      "expected": 3371,
+      "actual": 3371,
+      "firstDifference": null
+    },
+    "slices": {
+      "expected": 98,
+      "actual": 98,
+      "matched": 98,
+      "differences": []
+    },
+    "frames": {
+      "expected": 0,
+      "actual": 0,
+      "expectedSlices": 98,
+      "actualSlices": 98,
+      "countMismatches": [],
+      "fullStyleMatches": 0,
+      "cursorMatches": 0
+    },
+    "rawHashes": {
+      "c": {
+        "screens": "cec30677b66fcb0c205f98c1aaf5c8345f612255ba4ece82b7f1064e747611be",
+        "cursors": "4a03d5bbce20fd781212155f6169d80d388a4d5f6daf296bc017104f97c3494f",
+        "calls": "d1c4ab15a5e368ac2d72c2e12826b5c4c7895a0064bf0659e64645bc01187086",
+        "slices": "b350e7a7a58fe7f8bf719ac5c6c4bf360b7e690677deec59ea1181cf87b7e5e7",
+        "frames": "94ab54d16ab775c1688a586b307ad8494bec4997126a9727ccaad9e1572a7e26"
+      },
+      "js": {
+        "screens": "17948b7f1a6b2b289ea7c41e316eadb548ce853f5f40fc9bb874100d33aed73e",
+        "cursors": "4a03d5bbce20fd781212155f6169d80d388a4d5f6daf296bc017104f97c3494f",
+        "calls": "f4c1c103dac140e290ae420f43182b2938d0ec2fcc09c26ec26d4f1652e02520",
+        "slices": "60945b5117054e3f153541538aad5c03c8f8e8f31bb2d27a1ae23846bbbd76c0",
+        "frames": "94ab54d16ab775c1688a586b307ad8494bec4997126a9727ccaad9e1572a7e26"
+      }
+    },
+    "normalizedHashes": {
+      "c": {
+        "calls": "f4c1c103dac140e290ae420f43182b2938d0ec2fcc09c26ec26d4f1652e02520",
+        "slices": "60945b5117054e3f153541538aad5c03c8f8e8f31bb2d27a1ae23846bbbd76c0"
+      },
+      "js": {
+        "calls": "f4c1c103dac140e290ae420f43182b2938d0ec2fcc09c26ec26d4f1652e02520",
+        "slices": "60945b5117054e3f153541538aad5c03c8f8e8f31bb2d27a1ae23846bbbd76c0"
+      }
+    },
+    "frozenScreenCursorExact": true,
+    "fullRngExact": true,
+    "fullStyleExact": true,
+    "animationExact": true
+  }
+]

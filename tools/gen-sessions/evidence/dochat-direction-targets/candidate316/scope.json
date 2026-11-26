@@ -1,0 +1,29 @@
+{
+  "baseline": ".cache/restart-20261122/chat-wear-parent-composed",
+  "baselineMapSha256": "88b58f9ee504928b3adf4295da37cce4337882990cc75541f033df1d36c1ab11",
+  "candidateMapSha256": "7c91a842100b70fdf6735ed8fed8628416915a5de3666864f95c03286bbfa2b4",
+  "runtimeModules": 280,
+  "linkedUnchangedModules": 279,
+  "copiedChangedModules": 1,
+  "changedRuntime": [
+    {
+      "path": "js/sounds.js",
+      "baselineSha256": "0a4d881953bd41c21d981c2f4b73cdfe07b8acd83833ab5565ce910928a662bb",
+      "candidateSha256": "bc37e77f205cce385a7871bd6dfb7421498e0c320f5af6396c6acdb66172567e",
+      "addedLines": 20,
+      "removedLines": 6
+    }
+  ],
+  "patch": "scoped-runtime.patch",
+  "patchSha256": "100f416fc318ce988a19e9724c05c533d70451d710282ec0753968bf2e599ccd",
+  "shopClauseIncluded": false,
+  "composition": "Apply reviewed hunks only; retain current published shop quote branch and unrelated owner changes. Never install this sounds.js wholesale.",
+  "extraAttributionSourcePins": {
+    "nethack-c/upstream/win/tty/wintty.c": "43381180f9dfe41111b0dd34ba2ea0eb02f852b25e696810161c83e8c63745d5"
+  },
+  "noNewCRecording": true,
+  "noMainEdits": true,
+  "noGitWrites": true,
+  "noNFSEdits": true,
+  "noCorpusCopies": true
+}

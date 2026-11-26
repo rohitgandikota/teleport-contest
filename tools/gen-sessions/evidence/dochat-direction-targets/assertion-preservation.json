@@ -1,0 +1,25 @@
+{
+  "sourceToolSha256": "15ee6e73e1f6eac8ab3430a1aeaa5de3e428b33caae68f239dfd2c1ff262aa46",
+  "candidateToolSha256": "82f9f0e5de2aa226f0f528c6c5867b712494e8c552c6e8ac1ddcf0ee780ce79a",
+  "originalAssertionBlockAndTailSha256": "105f8a1bd98f061f9d587baa5d5abeff91835b25b6315b841751bd6935d86606",
+  "originalBodies": 99,
+  "historicalBodies": 9,
+  "currentBodies": 90,
+  "currentPredicateExpectationsUnchanged": 87,
+  "approvedCReconciliations": 3,
+  "snapshotUnchanged": true,
+  "mountedPredicate": {
+    "old": "check('mounted source feedback',()=>assert.equal(feedback,plan.expected));",
+    "new": "check('mounted source feedback',()=>{\n                if(plan.kind==='mounted-awake'||plan.kind==='mounted-helpless') {\n                    assert.ok(feedback.startsWith(plan.expected));\n                    assert.deepEqual(styles(output.screens[plan.after]),\n                        styles(raw.segments[i].steps[plan.after].screen));\n                } else assert.equal(feedback,plan.expected);\n            });"
+  },
+  "coordinateProjection": {
+    "old": "const actual=renderCell(decodeScreen(output.screens[plan.after])[y+1][x]);",
+    "new": "const actual=renderCell(decodeScreen(output.screens[plan.after])[y+1][x-1]);",
+    "negativeConditionsUnchanged": true
+  },
+  "historicalBlock": "        if(predictions.unchangedIndexes.includes(i))\n            check('unchanged original tuple retains all five hashes',()=>\n                assert.deepEqual(row.hashes,originalReport.rows[i].hashes),'history');\n",
+  "historicalRuntimeComparisonRemoved": true,
+  "oldThreeCPredicateFailuresRetained": true,
+  "originalInputFieldsAndKeysUnchanged": true,
+  "passiveSnapshotSha256": "c3ef1cae9b9f5a9e63fb8bb2242dac0f3be669eb5e63cc3d0c95da30e1941639"
+}

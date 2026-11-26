@@ -1,0 +1,267 @@
+{
+  "originalSealSha256": "6f1ccfd85780353b6ef9fa551a36526a06179bb5159588aa60b3d0ddb3cc65ff",
+  "originalReportSha256": "1cbb8229340e702658da05a6f120a995bb942067e06ca69ef0bba0169e56dc93",
+  "newReportSha256": "ce2d899bea16310e978664443def1082e1fa778ef2ea23d182eb708255ddb993",
+  "originalNegativeHashesSha256": "fb6d654a854962375523232546d23019edf548bbef541b543d38a0f3ca93c960",
+  "originalNegativeHashesRetained": 25,
+  "unchangedTupleIndexes": [
+    0,
+    1,
+    2,
+    4,
+    5,
+    8,
+    9,
+    10
+  ],
+  "unchangedTupleHashes": 40,
+  "rows": [
+    {
+      "index": 0,
+      "oldName": "cancel-direction-repeat",
+      "newName": "cancel-direction-repeat",
+      "sameStreams": [
+        "screens",
+        "cursors",
+        "calls",
+        "slices",
+        "frames"
+      ],
+      "changedStreams": []
+    },
+    {
+      "index": 1,
+      "oldName": "self-repeat-negative",
+      "newName": "self-repeat-negative",
+      "sameStreams": [
+        "screens",
+        "cursors",
+        "calls",
+        "slices",
+        "frames"
+      ],
+      "changedStreams": []
+    },
+    {
+      "index": 2,
+      "oldName": "mounted-awake-down",
+      "newName": "mounted-awake-down",
+      "sameStreams": [
+        "screens",
+        "cursors",
+        "calls",
+        "slices",
+        "frames"
+      ],
+      "changedStreams": []
+    },
+    {
+      "index": 3,
+      "oldName": "mounted-helpless-down",
+      "newName": "mounted-helpless-free-action-down",
+      "sameStreams": [],
+      "changedStreams": [
+        "screens",
+        "cursors",
+        "calls",
+        "slices",
+        "frames"
+      ]
+    },
+    {
+      "index": 4,
+      "oldName": "mounted-up-negative",
+      "newName": "mounted-up-negative",
+      "sameStreams": [
+        "screens",
+        "cursors",
+        "calls",
+        "slices",
+        "frames"
+      ],
+      "changedStreams": []
+    },
+    {
+      "index": 5,
+      "oldName": "statue-sober",
+      "newName": "statue-sober",
+      "sameStreams": [
+        "screens",
+        "cursors",
+        "calls",
+        "slices",
+        "frames"
+      ],
+      "changedStreams": []
+    },
+    {
+      "index": 6,
+      "oldName": "statue-hallucinated",
+      "newName": "statue-hallucinated-slot-b",
+      "sameStreams": [
+        "frames"
+      ],
+      "changedStreams": [
+        "screens",
+        "cursors",
+        "calls",
+        "slices"
+      ]
+    },
+    {
+      "index": 7,
+      "oldName": "statue-blind-negative",
+      "newName": "statue-blind-slot-b-negative",
+      "sameStreams": [
+        "frames"
+      ],
+      "changedStreams": [
+        "screens",
+        "cursors",
+        "calls",
+        "slices"
+      ]
+    },
+    {
+      "index": 8,
+      "oldName": "eating-pet-blind",
+      "newName": "eating-pet-blind",
+      "sameStreams": [
+        "screens",
+        "cursors",
+        "calls",
+        "slices",
+        "frames"
+      ],
+      "changedStreams": []
+    },
+    {
+      "index": 9,
+      "oldName": "eating-pet-visible-negative",
+      "newName": "eating-pet-visible-negative",
+      "sameStreams": [
+        "screens",
+        "cursors",
+        "calls",
+        "slices",
+        "frames"
+      ],
+      "changedStreams": []
+    },
+    {
+      "index": 10,
+      "oldName": "eating-pet-deaf-negative",
+      "newName": "eating-pet-deaf-negative",
+      "sameStreams": [
+        "screens",
+        "cursors",
+        "calls",
+        "slices",
+        "frames"
+      ],
+      "changedStreams": []
+    }
+  ],
+  "negativeRows": [
+    {
+      "index": 1,
+      "originalName": "self-repeat-negative",
+      "originalHashes": {
+        "screens": "f842f87e9eb1b13fb14f01258db0afdac8e3e705354939c165a9b5811c2d990a",
+        "cursors": "f9d0025d458e7e626f6599e28a7b1cf7d699102ee5eaab7ac4dc00034de56bcd",
+        "calls": "2009166a4f54844b7571bcb4187acb69fdade0978abaa305ffafc5f3a29d5aed",
+        "slices": "2181318af2b7ec28f5665a25eb7b0e24472a52a45b64b6cd28eb6168ac557c17",
+        "frames": "bf0077cf664e94e64924481687b6698b868329c03f281147f54f16ab099d7df3"
+      },
+      "newName": "self-repeat-negative",
+      "newHashes": {
+        "screens": "f842f87e9eb1b13fb14f01258db0afdac8e3e705354939c165a9b5811c2d990a",
+        "cursors": "f9d0025d458e7e626f6599e28a7b1cf7d699102ee5eaab7ac4dc00034de56bcd",
+        "calls": "2009166a4f54844b7571bcb4187acb69fdade0978abaa305ffafc5f3a29d5aed",
+        "slices": "2181318af2b7ec28f5665a25eb7b0e24472a52a45b64b6cd28eb6168ac557c17",
+        "frames": "bf0077cf664e94e64924481687b6698b868329c03f281147f54f16ab099d7df3"
+      },
+      "intendedRouteEstablished": true
+    },
+    {
+      "index": 4,
+      "originalName": "mounted-up-negative",
+      "originalHashes": {
+        "screens": "df2fc4207d00cceb853b2f6de89245ea870a0334aa53816d0ac02629b9cb76c6",
+        "cursors": "d62e7c8fb819883947c0b6c00a4441ebad55e2c05ea0aafe30c160fd0f90ffde",
+        "calls": "24eaac6e4815671d6a3aff0db30398a44edbb9322e640b4280c1406a7bc081cf",
+        "slices": "ae228aedba1e03c6fbf02bb893299da571f814b045aae49ece13ce8bc58275cf",
+        "frames": "4d7ba6a4c38d723186da1f268f5b662c9ce9580c0d24fc0d9481337db9066638"
+      },
+      "newName": "mounted-up-negative",
+      "newHashes": {
+        "screens": "df2fc4207d00cceb853b2f6de89245ea870a0334aa53816d0ac02629b9cb76c6",
+        "cursors": "d62e7c8fb819883947c0b6c00a4441ebad55e2c05ea0aafe30c160fd0f90ffde",
+        "calls": "24eaac6e4815671d6a3aff0db30398a44edbb9322e640b4280c1406a7bc081cf",
+        "slices": "ae228aedba1e03c6fbf02bb893299da571f814b045aae49ece13ce8bc58275cf",
+        "frames": "4d7ba6a4c38d723186da1f268f5b662c9ce9580c0d24fc0d9481337db9066638"
+      },
+      "intendedRouteEstablished": true
+    },
+    {
+      "index": 7,
+      "originalName": "statue-blind-negative",
+      "originalHashes": {
+        "screens": "88d6203dd2a2ad8919d0d8e716665d4e8c1019e9075c78b8429d7912f1be020c",
+        "cursors": "7d2b57b5e051d5b3623530d06103fbe73e87c3174ab8930c25cc183360233357",
+        "calls": "0540cca925ca089875c9d6fdf2638781f06bf9b502f3300517a621afd2518914",
+        "slices": "8f49fbeddd116ae9bd99f34ab4372f391963aaf1eb9e6872ab910a813fba3df1",
+        "frames": "bcb4b513eb010b376d15b612f8230cb539c14df8f76e58ebaf78f977b5f9a295"
+      },
+      "newName": "statue-blind-slot-b-negative",
+      "newHashes": {
+        "screens": "7247ff5746efb45b4fd56bff410efdb98e5b4519df3a38aff6c6405ae2beddcc",
+        "cursors": "f41074e5b3818a57ecb10c09abaaf958cf26764d7482e4c917f17fff45df9d50",
+        "calls": "45f8ef9a3b5edceb20af8b60bccaa9937eb706dbb44eda7a19fb18d0a1ab212d",
+        "slices": "75395f87bac0e5bee0ac6cc6c1a3ceded60d66ae64aa193b58363afd7636a054",
+        "frames": "bcb4b513eb010b376d15b612f8230cb539c14df8f76e58ebaf78f977b5f9a295"
+      },
+      "intendedRouteEstablished": false
+    },
+    {
+      "index": 9,
+      "originalName": "eating-pet-visible-negative",
+      "originalHashes": {
+        "screens": "2bef88fa49672d65704627a17482274cefccf391ed721ea6b735150ca9d963ba",
+        "cursors": "9157ae44c5551f76bf12fa72bb862f4b37b66acce6852e4eb7bdf277918bad25",
+        "calls": "d909638388e07b0fa0a3fc18731176aaa184bbc076230f5653221b4383756872",
+        "slices": "c3d9092c1da57d58f5cac067c98547a852572f69b1166a351d5a4831bb73c647",
+        "frames": "ba56ec9390e018ba54353628fe4a9e51159cd53adff013965530ee3a6fbb36ad"
+      },
+      "newName": "eating-pet-visible-negative",
+      "newHashes": {
+        "screens": "2bef88fa49672d65704627a17482274cefccf391ed721ea6b735150ca9d963ba",
+        "cursors": "9157ae44c5551f76bf12fa72bb862f4b37b66acce6852e4eb7bdf277918bad25",
+        "calls": "d909638388e07b0fa0a3fc18731176aaa184bbc076230f5653221b4383756872",
+        "slices": "c3d9092c1da57d58f5cac067c98547a852572f69b1166a351d5a4831bb73c647",
+        "frames": "ba56ec9390e018ba54353628fe4a9e51159cd53adff013965530ee3a6fbb36ad"
+      },
+      "intendedRouteEstablished": true
+    },
+    {
+      "index": 10,
+      "originalName": "eating-pet-deaf-negative",
+      "originalHashes": {
+        "screens": "17948b7f1a6b2b289ea7c41e316eadb548ce853f5f40fc9bb874100d33aed73e",
+        "cursors": "4a03d5bbce20fd781212155f6169d80d388a4d5f6daf296bc017104f97c3494f",
+        "calls": "f4c1c103dac140e290ae420f43182b2938d0ec2fcc09c26ec26d4f1652e02520",
+        "slices": "60945b5117054e3f153541538aad5c03c8f8e8f31bb2d27a1ae23846bbbd76c0",
+        "frames": "94ab54d16ab775c1688a586b307ad8494bec4997126a9727ccaad9e1572a7e26"
+      },
+      "newName": "eating-pet-deaf-negative",
+      "newHashes": {
+        "screens": "17948b7f1a6b2b289ea7c41e316eadb548ce853f5f40fc9bb874100d33aed73e",
+        "cursors": "4a03d5bbce20fd781212155f6169d80d388a4d5f6daf296bc017104f97c3494f",
+        "calls": "f4c1c103dac140e290ae420f43182b2938d0ec2fcc09c26ec26d4f1652e02520",
+        "slices": "60945b5117054e3f153541538aad5c03c8f8e8f31bb2d27a1ae23846bbbd76c0",
+        "frames": "94ab54d16ab775c1688a586b307ad8494bec4997126a9727ccaad9e1572a7e26"
+      },
+      "intendedRouteEstablished": true
+    }
+  ]
+}

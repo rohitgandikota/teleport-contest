@@ -1,0 +1,9 @@
+{
+  "sourceManifestSHA256": "055b041c0578eef247ac2091d5217bbfaa1ff24e29f97b0293ba35e74bd07942",
+  "originalRecipeSHA256": "c7ba39861b0abd711a291821fcfbea0a5b3cdbe48ec38848722c2d9b63915315",
+  "primaryRecipeSHA256": "c7ba39861b0abd711a291821fcfbea0a5b3cdbe48ec38848722c2d9b63915315",
+  "minimalInputSHA256": "a01843a91120ba9e12200443a2da3d47e8bb13b32d5e2f93323a76fcd3ae7118",
+  "sourceProbeSHA256": "4dd4063992467f14ff20bf274969a85640b54b0a47cf962898b9fd7c5d136eda",
+  "negativeHashesSHA256": "25cb4c73232765926c00b883ec27e17e905c2af735c314f4522603398a4ab1af",
+  "beforeCAndCandidate": true
+}

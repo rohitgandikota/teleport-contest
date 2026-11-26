@@ -1,0 +1,28 @@
+[
+  {
+    "name": "corrected-baseline",
+    "command": [
+      "node",
+      "--max-old-space-size=512",
+      "--preserve-symlinks",
+      "--preserve-symlinks-main",
+      ".cache/restart-20261122/potion-entry-feedback-candidate/runtime/impact-corrected-baseline.mjs",
+      "/Users/rohit/research/code/contest/.cache/restart-20261122/potion-impact-bill-observer-review/corrected-baseline.json"
+    ],
+    "exit": 0,
+    "seconds": 2.358,
+    "reportSHA256": "2a3696ca01b7d8cff37a02558c313a168ebc0b5bb6da2acefef58e50d33bda7b"
+  },
+  {
+    "name": "corrected-candidate",
+    "command": [
+      "node",
+      "--max-old-space-size=512",
+      "tools/potion-impact-input-gate.mjs",
+      "/Users/rohit/research/code/contest/.cache/restart-20261122/potion-impact-bill-observer-review/corrected-candidate.json"
+    ],
+    "exit": 0,
+    "seconds": 2.451,
+    "reportSHA256": "2a3696ca01b7d8cff37a02558c313a168ebc0b5bb6da2acefef58e50d33bda7b"
+  }
+]

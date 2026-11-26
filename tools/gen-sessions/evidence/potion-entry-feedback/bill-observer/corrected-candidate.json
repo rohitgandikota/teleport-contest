@@ -1,0 +1,78 @@
+{
+  "kind": "ordinary reach, current-runtime assertions and observer/deferred neutrality",
+  "recipeSHA256": "cb3b69966080ea019b04cad7b502fec20cee57f6e6345835bb2d795b9c5a14c6",
+  "nativeSHA256": "531ba851f55f470dce7d83542789c864ab5091b8f9df7750326286f551329639",
+  "inputSHA256": "82f5fceae0d5da4f2a4b755593c26a671de8a54948cc6ff6b09487b577aa76b1",
+  "passed": 4,
+  "total": 4,
+  "results": [
+    {
+      "name": "unpaid-self",
+      "inputSHA256": "78062b8812f203478e5adcb52a861ccd8cc518b58976f3d1d7f958f69a3d077a",
+      "observerNeutral": true,
+      "deferredNeutral": true,
+      "boundaries": 90,
+      "calls": 5463,
+      "frames": 0,
+      "hashes": {
+        "screens": "d7f3f734ca1600bcac2ae77dbbbd5e62e0ba710e63c24a79f8cb35854f84c761",
+        "cursors": "daf7cb98bdfbe728225cbac58dfb3deede48b024d990fce09c5f6dea96bf620f",
+        "calls": "d6e6bd2a54ba4748c934db3a52cb9928101180131822313abe0b3a1b2717ca76",
+        "slices": "99b457f8c85a7867ffa501cdc5f8b69029f8678b3a4d1b14bf4ade0e0de14450",
+        "frames": "bcb4b513eb010b376d15b612f8230cb539c14df8f76e58ebaf78f977b5f9a295"
+      },
+      "pass": true
+    },
+    {
+      "name": "paid-self",
+      "inputSHA256": "f4ab2ba517997eb1f3b273bdb77b185440edd852fb28e539fef982b08607a9b8",
+      "observerNeutral": true,
+      "deferredNeutral": true,
+      "boundaries": 82,
+      "calls": 5449,
+      "frames": 0,
+      "hashes": {
+        "screens": "457290323cf99ad9cfb243d7fe1660f6708aadf129b3de6cde394e7a2c4f11e4",
+        "cursors": "1a401a6c6a2359f49c84b8071fb29e080289d6b7289e90c299553bb2107262d8",
+        "calls": "5b94a1f88134dad64e2309c6a9b545c38200d66a4f34f13a3297ac08dc3035a0",
+        "slices": "615577c0a8acd83d746e3b0618f41fdc017ec56f0c3040afbd333ada1c8d148c",
+        "frames": "56ef76ae9604a1e028d3b84db576750c52129db11a9f185155f959a1d97adce5"
+      },
+      "pass": true
+    },
+    {
+      "name": "hero-acid-newt",
+      "inputSHA256": "c55dd526dc7909df9dcb066b77afe06efc21f8835a27faf0f35ce1ef79487fce",
+      "observerNeutral": true,
+      "deferredNeutral": true,
+      "boundaries": 89,
+      "calls": 2649,
+      "frames": 0,
+      "hashes": {
+        "screens": "de8490dc5e7cdc1d0455be24e6bbac15e43009fbd609d81ae219e9fa7695e12a",
+        "cursors": "0426a235197ba5148a29e2936e0dd3fb4a2dce2b4956dbb6e21e0025a40ea2d9",
+        "calls": "7b782c08703dfbd0fbea2905e13afcbe9725fc4d11804402752f06cd8bfcb63e",
+        "slices": "63319798597e8b75e683feeaf3034c7c255a5378e90def9d401bf9b58de13c70",
+        "frames": "ba56ec9390e018ba54353628fe4a9e51159cd53adff013965530ee3a6fbb36ad"
+      },
+      "pass": true
+    },
+    {
+      "name": "hero-acid-resistant",
+      "inputSHA256": "1dfce7bb19db1c0cdd78c48a0ef5d8027060afb832d1294dab3e1585c751cfcb",
+      "observerNeutral": true,
+      "deferredNeutral": true,
+      "boundaries": 94,
+      "calls": 2652,
+      "frames": 0,
+      "hashes": {
+        "screens": "1ab7087e7ebeebfe977e7c81d65e10753f940472cb549357709e80bd813e584e",
+        "cursors": "645e2d7bc9e05c018d7944661f92365b95fd6f0f4c1ade2c661951643876c809",
+        "calls": "4977ae930cae698c4fcfcab37c1424f79fb630634c62badabfe89884c583d60e",
+        "slices": "db593290cfeab86a85b71b846a58d01ee20057cebe5132167aea328300208be9",
+        "frames": "43772b957697bdfa27d15a9320020b130b9529b0184c8b8e1bd746b0806215e4"
+      },
+      "pass": true
+    }
+  ]
+}

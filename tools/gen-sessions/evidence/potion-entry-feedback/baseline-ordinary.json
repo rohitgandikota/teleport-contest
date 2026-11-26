@@ -1,0 +1,447 @@
+{
+  "recipeSHA256": "c7ba39861b0abd711a291821fcfbea0a5b3cdbe48ec38848722c2d9b63915315",
+  "runtimeSHA256": "b22f77601464926cd00681f97c54eb3a031f3aa4752f3366aa1ff8baba9908d4",
+  "rows": [
+    {
+      "name": "strangled-quaff",
+      "checks": [
+        {
+          "name": "real producer setup",
+          "pass": true
+        },
+        {
+          "name": "C entry or effect feedback",
+          "pass": false,
+          "error": "The expression evaluated to a falsy value:\n\n  assert.ok(text.includes(predictions.expectedMessages[index]))\n"
+        },
+        {
+          "name": "command effect and turn contract",
+          "pass": true
+        },
+        {
+          "name": "all boundaries and ordered random slices",
+          "pass": true
+        },
+        {
+          "name": "observer preserves five streams",
+          "pass": true
+        },
+        {
+          "name": "deferred input preserves five streams",
+          "pass": true
+        }
+      ],
+      "before": {
+        "step": 39,
+        "turn": 2,
+        "hp": 12,
+        "strangled": 5,
+        "hallucinating": false,
+        "confused": false,
+        "potionNothing": 0,
+        "wornAmulet": 203,
+        "inventory": [
+          {
+            "type": 203,
+            "quantity": 1,
+            "letter": "a"
+          }
+        ]
+      },
+      "after": {
+        "step": 40,
+        "turn": 2,
+        "hp": 12,
+        "strangled": 5,
+        "hallucinating": false,
+        "confused": false,
+        "potionNothing": 0,
+        "wornAmulet": 203,
+        "inventory": [
+          {
+            "type": 203,
+            "quantity": 1,
+            "letter": "a"
+          }
+        ]
+      },
+      "hashes": {
+        "screens": "4da7f16930dade4216bbb82f80a81614e84b6342ae2b8a399cff772ed582a6b5",
+        "cursors": "72faf802d739953fa9f4629b7664338aff37ec79308f25aa36a93de996e219b0",
+        "calls": "a884c7d595b49bfcfe7911b9cc0c15eb3d71b7128da3e7419a9d7dfddafffa61",
+        "slices": "94f9e8fa695a2b5dfb60796cbc2096a9440f35b1e56ff0f2d5f15216f3134be0",
+        "frames": "c328b9bb48a1e7fcc359de0a7dd2b7398c3eb7993dbfb87a9a0ac084be406dc2"
+      },
+      "finalText": "You don't have anything to drink.\n\n\n\n\n\n\n\n\n\n                                                          ┌──·┐\n                                                          │···│\n                                                          │··o·\n                                                          │···│\n                                                          │···│\n                                                          │···│\n                                                          │@··│\n                                                          └───┘\n\n\n\n\nWizard the Evoker              St:12 Dx:13 Co:14 In:18 Wi:9 Ch:9 Neutral\nDlvl:1 $:0 HP:12(12) Pw:8(8) AC:10 Xp:1 Strngl",
+      "keys": 40,
+      "boundaries": 41,
+      "calls": 2213,
+      "frames": 0
+    },
+    {
+      "name": "strangled-menu-quaff",
+      "checks": [
+        {
+          "name": "real producer setup",
+          "pass": true
+        },
+        {
+          "name": "C entry or effect feedback",
+          "pass": false,
+          "error": "The expression evaluated to a falsy value:\n\n  assert.ok(text.includes(predictions.expectedMessages[index]))\n"
+        },
+        {
+          "name": "command effect and turn contract",
+          "pass": true
+        },
+        {
+          "name": "all boundaries and ordered random slices",
+          "pass": true
+        },
+        {
+          "name": "observer preserves five streams",
+          "pass": true
+        },
+        {
+          "name": "deferred input preserves five streams",
+          "pass": true
+        }
+      ],
+      "before": {
+        "step": 39,
+        "turn": 2,
+        "hp": 12,
+        "strangled": 5,
+        "hallucinating": false,
+        "confused": false,
+        "potionNothing": 0,
+        "wornAmulet": 203,
+        "inventory": [
+          {
+            "type": 203,
+            "quantity": 1,
+            "letter": "a"
+          }
+        ]
+      },
+      "after": {
+        "step": 41,
+        "turn": 2,
+        "hp": 12,
+        "strangled": 5,
+        "hallucinating": false,
+        "confused": false,
+        "potionNothing": 0,
+        "wornAmulet": 203,
+        "inventory": [
+          {
+            "type": 203,
+            "quantity": 1,
+            "letter": "a"
+          }
+        ]
+      },
+      "hashes": {
+        "screens": "791dbf7105b2733ddd215b6dce46cab5e3ed2f553d6395575db060e020321590",
+        "cursors": "de0fe49c62bd5a8dbf2b4fb9d29407fd791b2223f80e5a5e7919c1642aab4ee1",
+        "calls": "a884c7d595b49bfcfe7911b9cc0c15eb3d71b7128da3e7419a9d7dfddafffa61",
+        "slices": "4fa6c2a1113f09f9079c5afe94a82cb59fe31e0a1b9f649bab44c5aca0fc1135",
+        "frames": "3676a365cf6c08430f69bc5abcf1e8430728bce2c4fd44e576a818a7cbc49b30"
+      },
+      "finalText": "You don't have anything to drink.\n\n\n\n\n\n\n\n\n\n                                                          ┌──·┐\n                                                          │···│\n                                                          │··o·\n                                                          │···│\n                                                          │···│\n                                                          │···│\n                                                          │@··│\n                                                          └───┘\n\n\n\n\nWizard the Evoker              St:12 Dx:13 Co:14 In:18 Wi:9 Ch:9 Neutral\nDlvl:1 $:0 HP:12(12) Pw:8(8) AC:10 Xp:1 Strngl",
+      "keys": 41,
+      "boundaries": 42,
+      "calls": 2213,
+      "frames": 0
+    },
+    {
+      "name": "healthy-potion-prompt-negative",
+      "checks": [
+        {
+          "name": "real producer setup",
+          "pass": true
+        },
+        {
+          "name": "C entry or effect feedback",
+          "pass": true
+        },
+        {
+          "name": "command effect and turn contract",
+          "pass": true
+        },
+        {
+          "name": "all boundaries and ordered random slices",
+          "pass": true
+        },
+        {
+          "name": "observer preserves five streams",
+          "pass": true
+        },
+        {
+          "name": "deferred input preserves five streams",
+          "pass": true
+        }
+      ],
+      "before": {
+        "step": 31,
+        "turn": 1,
+        "hp": 12,
+        "strangled": 0,
+        "hallucinating": false,
+        "confused": false,
+        "potionNothing": 0,
+        "wornAmulet": null,
+        "inventory": [
+          {
+            "type": 307,
+            "quantity": 1,
+            "letter": "a"
+          }
+        ]
+      },
+      "after": {
+        "step": 32,
+        "turn": 1,
+        "hp": 12,
+        "strangled": 0,
+        "hallucinating": false,
+        "confused": false,
+        "potionNothing": 0,
+        "wornAmulet": null,
+        "inventory": [
+          {
+            "type": 307,
+            "quantity": 1,
+            "letter": "a"
+          }
+        ]
+      },
+      "hashes": {
+        "screens": "3a302160bfea1627cfc65ba5267792bdbc57c118a154800a022bb2928758e124",
+        "cursors": "14cfc50b0f2def5b5d0bf8056bb2105bcf817f4710d4490f225f7b857666340c",
+        "calls": "c736b81b3e7c4eef139a310a1b3af5a718fa116e2040c366944b6f81c3bb2a6f",
+        "slices": "3447cc74f1c696149852c532ffc35a7652dd5f8bdb877c0f11cdb838009cf223",
+        "frames": "ba3a1dbda7521fc175cc7ea8b04f1d61a74268d3a43a5e30c3ee86ae6ff797d0"
+      },
+      "finalText": "What do you want to drink? [a or ?*]\n\n\n\n\n\n\n\n\n\n                                                          ┌──·┐\n                                                          │···│\n                                                          │··o·\n                                                          │···│\n                                                          │···│\n                                                          │···│\n                                                          │@··│\n                                                          └───┘\n\n\n\n\nWizard the Evoker              St:12 Dx:13 Co:14 In:18 Wi:9 Ch:9 Neutral\nDlvl:1 $:0 HP:12(12) Pw:8(8) AC:10 Xp:1",
+      "keys": 32,
+      "boundaries": 33,
+      "calls": 2200,
+      "frames": 0
+    },
+    {
+      "name": "unworn-strangulation-amulet-negative",
+      "checks": [
+        {
+          "name": "real producer setup",
+          "pass": true
+        },
+        {
+          "name": "C entry or effect feedback",
+          "pass": true
+        },
+        {
+          "name": "command effect and turn contract",
+          "pass": true
+        },
+        {
+          "name": "all boundaries and ordered random slices",
+          "pass": true
+        },
+        {
+          "name": "observer preserves five streams",
+          "pass": true
+        },
+        {
+          "name": "deferred input preserves five streams",
+          "pass": true
+        }
+      ],
+      "before": {
+        "step": 37,
+        "turn": 1,
+        "hp": 12,
+        "strangled": 0,
+        "hallucinating": false,
+        "confused": false,
+        "potionNothing": 0,
+        "wornAmulet": null,
+        "inventory": [
+          {
+            "type": 203,
+            "quantity": 1,
+            "letter": "a"
+          }
+        ]
+      },
+      "after": {
+        "step": 38,
+        "turn": 1,
+        "hp": 12,
+        "strangled": 0,
+        "hallucinating": false,
+        "confused": false,
+        "potionNothing": 0,
+        "wornAmulet": null,
+        "inventory": [
+          {
+            "type": 203,
+            "quantity": 1,
+            "letter": "a"
+          }
+        ]
+      },
+      "hashes": {
+        "screens": "bfcfa7353c947cc52bead4084edfcc74f462236041e3d94a4ea1bf5f48e26c54",
+        "cursors": "18d5bc4039856b086833eaaac3da2cc1244d14c309036eb0145825bac811ef84",
+        "calls": "efbecf67bd3a75b3f2fb6f973dc50ee1ce43eba97c7cf284ae65efca4b3f332c",
+        "slices": "8e8a5c75a39fe4e2cd55fa34d1d708a6c0bc84d75f0fdbf2e1b3e4e6dde811dd",
+        "frames": "ceacc46061d233bebb03d40ab9eb9fd66b4fd743e465e8f625aaaf2ed2cee92d"
+      },
+      "finalText": "You don't have anything to drink.\n\n\n\n\n\n\n\n\n\n                                                          ┌──·┐\n                                                          │···│\n                                                          │··o·\n                                                          │···│\n                                                          │···│\n                                                          │···│\n                                                          │@··│\n                                                          └───┘\n\n\n\n\nWizard the Evoker              St:12 Dx:13 Co:14 In:18 Wi:9 Ch:9 Neutral\nDlvl:1 $:0 HP:12(12) Pw:8(8) AC:10 Xp:1",
+      "keys": 38,
+      "boundaries": 39,
+      "calls": 2202,
+      "frames": 0
+    },
+    {
+      "name": "hallucinated-nothing-normal",
+      "checks": [
+        {
+          "name": "real producer setup",
+          "pass": true
+        },
+        {
+          "name": "C entry or effect feedback",
+          "pass": false,
+          "error": "The expression evaluated to a falsy value:\n\n  assert.ok(text.includes(predictions.expectedMessages[index]))\n"
+        },
+        {
+          "name": "command effect and turn contract",
+          "pass": true
+        },
+        {
+          "name": "all boundaries and ordered random slices",
+          "pass": true
+        },
+        {
+          "name": "observer preserves five streams",
+          "pass": true
+        },
+        {
+          "name": "deferred input preserves five streams",
+          "pass": true
+        }
+      ],
+      "before": {
+        "step": 52,
+        "turn": 2,
+        "hp": 12,
+        "strangled": 0,
+        "hallucinating": true,
+        "confused": false,
+        "potionNothing": 0,
+        "wornAmulet": null,
+        "inventory": [
+          {
+            "type": 304,
+            "quantity": 1,
+            "letter": "a"
+          }
+        ]
+      },
+      "after": {
+        "step": 54,
+        "turn": 3,
+        "hp": 12,
+        "strangled": 0,
+        "hallucinating": true,
+        "confused": false,
+        "potionNothing": 1,
+        "wornAmulet": null,
+        "inventory": []
+      },
+      "hashes": {
+        "screens": "3855c3f4e039d17fe96eb68ec539bca6897885ddd4ebb756c08c21a0387686e4",
+        "cursors": "5778e8cc61a4c5ff506ea12262b42efdd807d0c90634a0286d74ef974a4fc1fb",
+        "calls": "d9548d849f86877dcc2d1b97bb570c5fb88921b69ad60176b7707b676db221a3",
+        "slices": "3b1a464cb1ea30cfbb35f2150e7e38057ce0edc25548f74633b6e1773d08f4fc",
+        "frames": "15fcb526193a83bb2e31bb4ef61874172a1bba7ded5d510678eb02e07bd59ebb"
+      },
+      "finalText": "You have a peculiar feeling for a moment, then it passes.\n\n\n\n\n                                                                         │\n                                                      ┌────┐           ··│\n                                                      │···@·    ▒········│\n                                                      │··A·│           ··│\n                                                      │?···│           ──┘\n                                                      └·───┘\n\n\n\n\n\n\n\n\n\n\n\nWizard the Evoker              St:9 Dx:15 Co:15 In:18 Wi:7 Ch:10 Neutral\nDlvl:1 $:0 HP:12(12) Pw:8(8) AC:10 Xp:1 Hallu",
+      "keys": 54,
+      "boundaries": 55,
+      "calls": 2791,
+      "frames": 0
+    },
+    {
+      "name": "confused-nothing-peculiar-negative",
+      "checks": [
+        {
+          "name": "real producer setup",
+          "pass": true
+        },
+        {
+          "name": "C entry or effect feedback",
+          "pass": true
+        },
+        {
+          "name": "command effect and turn contract",
+          "pass": true
+        },
+        {
+          "name": "all boundaries and ordered random slices",
+          "pass": true
+        },
+        {
+          "name": "observer preserves five streams",
+          "pass": true
+        },
+        {
+          "name": "deferred input preserves five streams",
+          "pass": true
+        }
+      ],
+      "before": {
+        "step": 48,
+        "turn": 2,
+        "hp": 12,
+        "strangled": 0,
+        "hallucinating": false,
+        "confused": true,
+        "potionNothing": 0,
+        "wornAmulet": null,
+        "inventory": [
+          {
+            "type": 299,
+            "quantity": 1,
+            "letter": "a"
+          }
+        ]
+      },
+      "after": {
+        "step": 50,
+        "turn": 3,
+        "hp": 12,
+        "strangled": 0,
+        "hallucinating": false,
+        "confused": true,
+        "potionNothing": 1,
+        "wornAmulet": null,
+        "inventory": []
+      },
+      "hashes": {
+        "screens": "411c3767bbe2b5606109e892323afc0cb37ab8538cefa16380a2e14af7cc119d",
+        "cursors": "0a5e27d6cae6ec80b875e35424ff7f24477c6824c3b2787f38932146b33d5817",
+        "calls": "ce41bec928c25e29d1202924954a03a1ebe32b44f8a4ae641ef5b444c5d21a96",
+        "slices": "39e5f99c54f30d02519651327c32ec63e5ebb3bba6d595e2a6aca902544c8b9c",
+        "frames": "b88cee804dd63a0179b150c6aa14c547cd5d25aab92700534a4ea441962b180d"
+      },
+      "finalText": "You have a peculiar feeling for a moment, then it passes.\n\n\n\n\n                                                                         │\n                                                      ┌────┐           ··│\n                                                      │···@·    ▒········│\n                                                      │··r·│           ··│\n                                                      │%···│           ──┘\n                                                      └·───┘\n\n\n\n\n\n\n\n\n\n\n\nWizard the Evoker              St:9 Dx:15 Co:15 In:18 Wi:7 Ch:10 Neutral\nDlvl:1 $:0 HP:12(12) Pw:8(8) AC:10 Xp:1 Conf",
+      "keys": 50,
+      "boundaries": 51,
+      "calls": 2789,
+      "frames": 0
+    }
+  ]
+}

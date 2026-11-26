@@ -11,6 +11,14 @@ Newest first within each section.
 
 ---
 
+## Bill observers must use the active prefix
+
+C's eshk owns a fixed bill array and a separate billct. Removing an entry
+reduces billct without clearing unused slots. The potion-impact observer
+mistook those slots for active charges. Its original failures were identical
+on the published baseline and potion candidate. Reading the billct prefix
+preserves every assertion and all twenty output hashes; both graphs pass.
+
 ## Vault trap removal must preserve pit links
 
 C wallify_vault calls deltrap, which clears reciprocal links on neighboring

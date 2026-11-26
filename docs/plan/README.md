@@ -12,11 +12,12 @@ Ground rules are in `/CLAUDE.md`. Read that first if you have not.
 
 ## Current focus, 2026-11-26
 
-Chat and wear fixes are pushed as `867e3805`; all 1,225 tested Git blobs match
-the published tree. Vault pit cleanup passes all 935 recordings, 14 ordinary
-checks, eight focused checks and 45 strict workers.
-The separate welcome audit has 16 original C cases and a candidate in progress.
-See STATUS for exact paths and remaining verification.
+Vault pit cleanup is pushed as `2ea98ff9`; all 1,226 tested Git blobs match
+the published tree. The next potion fix passes six native cases, 36 ordinary
+checks, six focused checks and 45 strict workers. All 936 recordings pass
+on NFS. A stale bill-array observer is corrected with unchanged
+assertions and output hashes. The isolated welcome composition passes all
+22 welcome and potion native cases. See STATUS for publication requirements.
 
 Chat speech guards and wear-command entry checks are verified on `ef2bfd2d`.
 All 934 recordings, 12 new native cases, 12 focused checks and 46 strict workers

@@ -1,5 +1,54 @@
 # STATUS — live handoff board
 
+## 2026-11-26: pit cleanup published; potion checkpoint verified
+
+Published main is 2ea98ff991150497a5079e351fee3be2bcdaeb45, confirmed on
+origin/main. All 1,226 full935 tested Git blobs match the published tree.
+Publication receipt SHA256:
+63c29e9da39d695bf08677eb536c519107dff29159e7833b5f1b6874978daaa6.
+The exact 23-path index receipt is
+06034bb5dfca9ec221fbc542d2cad7877e5913d1e8c9095a810a992640a4c004.
+
+Main now changes only potion.js gameplay: dodrink rejects Strangled before
+prompts, and dopotion selects normal feedback while hallucinating. Six locked
+ordinary cases improve from 33/36 to 36/36 assertions, and native comparison
+improves from 3/6 to 6/6. All three complete control rows and fifteen hashes
+remain unchanged. The original C recording was made once, raw SHA256:
+a4382e966fe5498849f77a906b14c9c24ff9496552fc42a2a4a1c14a59bb0952.
+It has 255 keys, 261 boundaries, 14,408 calls and zero frames. The fixed
+potion-entry-feedback-candidate map is
+bb93ea137987f9bddec3b0eb9bdab06ab2283f374275a782b7fc2c4308cc0bb3.
+Fresh public gate rows equal the candidate. Six focused checks, 45 strict
+workers and the static scope/import audit pass. Six requirements bring the
+registry to 4,690. Full936 passes with two CPU workers and default limits:
+/share/NFS/u/rohit/research/contest/artifacts/2026-11-22/potion-entry-feedback-full936-js-20261126.
+PID 3522723 is complete: 1,227 fixed files, 935 reused recordings and one new recording.
+The all-files SHA256 is
+c032896e96929b8e9fe5c25725341c9d4aba20f4581d65ed0ba94cc7ce4652c4.
+All 936 recordings pass: 939,256 screens/cursors, 20,495,378 calls and
+33,188 frames. Verification SHA256:
+2c4b8b98194672d0cd65baed87ca2ac0c0d9ea7253669abcd3009c0e3ff40bca.
+Do not rerun. Next: verify the staged tree, commit and push.
+
+The retained potion-impact observer originally fails 2/4 on both published
+baseline and candidate, with identical diagnostic logs. It counted inactive
+slots in C's fixed bill array. Reading only the billct prefix passes 4/4 on
+both graphs, with identical complete reports and twenty unchanged hashes.
+No assertion or input changes. Original failures and gate are preserved in
+potion-impact-bill-observer-review and public evidence/potion-entry-feedback/bill-observer.
+
+Welcome source18/20 and candidate323 verify. Its only gameplay files are
+allmain.js and do.js. Original metadata diagnostic 15/16 is retained; the
+explicit correction keeps all original expectations and negative applicability.
+Corrected observed/plain/deferred checks pass 16/16 each, all twenty negative
+hashes stay fixed, and a separate source check verifies LL_ACHIEVE. Parent
+composed the two files over the potion candidate in welcome-restore-parent-composed,
+map 50a18d5fbd3b7c3cb89b049d931e936124b5b89cec61ed195dbc5220985d22a6.
+All 22 native welcome/potion cases reproduce their isolated reports exactly.
+Sartre is preparing a portable promotion. Keep this isolated until the potion
+checkpoint is published. Leibniz owns the C-confirmed shop quote candidate;
+Euclid owns a separately locked correction of three failed chat test setups.
+
 ## 2026-11-26: pit cleanup verified; welcome candidate in progress
 
 Published main is 867e38052bbe205056c4e56a1ce6dd06b6e8e351, confirmed on

@@ -1,0 +1,12 @@
+{
+  "originalProbeSHA256": "966d08597aae023b67cb52b3af2ac1f2e687422aa73fa64d510dfea54dd91705",
+  "assertionBodySHA256": "b8a221425c10b39b02e0f71de2d202ac649b9354a9b8e0837b23d466e0ec62d2",
+  "originalChecks": 36,
+  "bodyUnchanged": true,
+  "wrapperChanges": [
+    "Portable paths and data preflight replace the fixed candidate graph.",
+    "Default execution is read-only; an optional report must be new.",
+    "All three complete negative rows and fifteen original hashes are checked."
+  ],
+  "originalFailuresPreserved": "baseline-ordinary.json contains the three source-predicted feedback failures."
+}

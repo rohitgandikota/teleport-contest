@@ -1,0 +1,23 @@
+{
+  "healthy-potion-prompt-negative": {
+    "screens": "3a302160bfea1627cfc65ba5267792bdbc57c118a154800a022bb2928758e124",
+    "cursors": "14cfc50b0f2def5b5d0bf8056bb2105bcf817f4710d4490f225f7b857666340c",
+    "calls": "c736b81b3e7c4eef139a310a1b3af5a718fa116e2040c366944b6f81c3bb2a6f",
+    "slices": "3447cc74f1c696149852c532ffc35a7652dd5f8bdb877c0f11cdb838009cf223",
+    "frames": "ba3a1dbda7521fc175cc7ea8b04f1d61a74268d3a43a5e30c3ee86ae6ff797d0"
+  },
+  "unworn-strangulation-amulet-negative": {
+    "screens": "bfcfa7353c947cc52bead4084edfcc74f462236041e3d94a4ea1bf5f48e26c54",
+    "cursors": "18d5bc4039856b086833eaaac3da2cc1244d14c309036eb0145825bac811ef84",
+    "calls": "efbecf67bd3a75b3f2fb6f973dc50ee1ce43eba97c7cf284ae65efca4b3f332c",
+    "slices": "8e8a5c75a39fe4e2cd55fa34d1d708a6c0bc84d75f0fdbf2e1b3e4e6dde811dd",
+    "frames": "ceacc46061d233bebb03d40ab9eb9fd66b4fd743e465e8f625aaaf2ed2cee92d"
+  },
+  "confused-nothing-peculiar-negative": {
+    "screens": "411c3767bbe2b5606109e892323afc0cb37ab8538cefa16380a2e14af7cc119d",
+    "cursors": "0a5e27d6cae6ec80b875e35424ff7f24477c6824c3b2787f38932146b33d5817",
+    "calls": "ce41bec928c25e29d1202924954a03a1ebe32b44f8a4ae641ef5b444c5d21a96",
+    "slices": "39e5f99c54f30d02519651327c32ec63e5ebb3bba6d595e2a6aca902544c8b9c",
+    "frames": "b88cee804dd63a0179b150c6aa14c547cd5d25aab92700534a4ea441962b180d"
+  }
+}

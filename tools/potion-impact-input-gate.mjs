@@ -43,7 +43,9 @@ for(const part of parts) {
                     held:(g.invent||[]).filter(o=>o.otyp===O.POT_LEVITATION)
                         .map(o=>({id:o.o_id,quantity:o.quan,unpaid:!!o.unpaid})),
                     bill:eshk?{debit:eshk.debit||0,credit:eshk.credit||0,robbed:eshk.robbed||0,
-                        entries:(eshk.bill_p||[]).map(b=>({id:b.bo_id,quantity:b.bquan,price:b.price,useup:!!b.useup})),
+                        // include/mextra.h:138: only billct slots are active.
+                        entries:(eshk.bill_p||[]).slice(0,eshk.billct)
+                            .map(b=>({id:b.bo_id,quantity:b.bquan,price:b.price,useup:!!b.useup})),
                         copies:(g.billobjs||[]).length}:null,
                     targets:g.level.monsters.filter(m=>m.mhp>0&&[P.PM_NEWT,P.PM_ACID_BLOB].includes(m.mnum))
                         .map(m=>({id:m.m_id,type:m.mnum,hp:m.mhp})),

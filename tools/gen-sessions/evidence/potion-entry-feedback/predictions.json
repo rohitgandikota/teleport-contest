@@ -1,0 +1,36 @@
+{
+  "expectedMessages": [
+    "If you can't breathe air, how can you drink liquid?",
+    "If you can't breathe air, how can you drink liquid?",
+    "What do you want to drink?",
+    "You don't have anything to drink.",
+    "You have a normal feeling for a moment, then it passes.",
+    "You have a peculiar feeling for a moment, then it passes."
+  ],
+  "actionStart": [
+    39,
+    39,
+    31,
+    37,
+    52,
+    48
+  ],
+  "negativeIndexes": [
+    2,
+    3,
+    5
+  ],
+  "expectedBaselineFailures": [
+    0,
+    1,
+    4
+  ],
+  "stateContracts": [
+    "Strangled>0 and worn strangulation amulet, plain q guard before item selection.",
+    "Same guard before menu_requested handling.",
+    "Strangled0 and actual healing potion inventory, ordinary getobj prompt.",
+    "Strangled0 and unworn strangulation amulet, no potion selection available.",
+    "Second real cursed hallucination potion with hallucination active sets potion_nothing; C selects normal.",
+    "Second real cursed confusion potion without hallucination sets potion_nothing; C keeps peculiar."
+  ]
+}

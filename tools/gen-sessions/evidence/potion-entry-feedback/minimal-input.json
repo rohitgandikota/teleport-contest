@@ -1,0 +1,61 @@
+{
+  "name": "potion-entry-feedback",
+  "source": "c",
+  "version": 5,
+  "coverage": [
+    "src/potion.c:dodrink",
+    "src/potion.c:dopotion"
+  ],
+  "branches": [
+    "potion-entry-feedback.strangled-quaff",
+    "potion-entry-feedback.strangled-menu-quaff",
+    "potion-entry-feedback.healthy-potion-prompt-negative",
+    "potion-entry-feedback.unworn-strangulation-amulet-negative",
+    "potion-entry-feedback.hallucinated-nothing-normal",
+    "potion-entry-feedback.confused-nothing-peculiar-negative"
+  ],
+  "segments": [
+    {
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!autoquiver,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "strangled-quaff",
+      "moves": " \u0017uncursed amulet of strangulation\rPa\u001b\u001bq"
+    },
+    {
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!autoquiver,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "strangled-menu-quaff",
+      "moves": " \u0017uncursed amulet of strangulation\rPa\u001b\u001bmq"
+    },
+    {
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!autoquiver,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "healthy-potion-prompt-negative",
+      "moves": " \u0017uncursed potion of healing\r\u001b\u001bq"
+    },
+    {
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!autoquiver,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "unworn-strangulation-amulet-negative",
+      "moves": " \u0017uncursed amulet of strangulation\r\u001b\u001bq"
+    },
+    {
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "hallucinated-nothing-normal",
+      "moves": " \u00172 cursed potions of hallucination\r    \u001b\u001b\u001bqa    \u001b\u001b\u001bqa"
+    },
+    {
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "confused-nothing-peculiar-negative",
+      "moves": " \u00172 cursed potions of confusion\r    \u001b\u001b\u001bqa    \u001b\u001b\u001bqa"
+    }
+  ]
+}

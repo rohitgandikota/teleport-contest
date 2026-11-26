@@ -1,0 +1,328 @@
+{
+  "baselineCommit": "2ea98ff991150497a5079e351fee3be2bcdaeb45",
+  "composition": {
+    "parent": "2ea98ff991150497a5079e351fee3be2bcdaeb45",
+    "runtimeFiles": 280,
+    "runtimeSHA256": "bb93ea137987f9bddec3b0eb9bdab06ab2283f374275a782b7fc2c4308cc0bb3",
+    "runtimeChanged": [
+      "js/potion.js"
+    ],
+    "fixedLinks": 279,
+    "sourceCopies": 1,
+    "patchSHA256": "6163f354c9b45f39a9ec4c733627b6b825f2c1334d257f3fa55b045de8a882cb",
+    "assertionBodySHA256": "b8a221425c10b39b02e0f71de2d202ac649b9354a9b8e0837b23d466e0ec62d2",
+    "wrapperChanges": [
+      [
+        "sha(readFileSync(new URL(import.meta.url)))",
+        "sha(readFileSync(new URL('../potion-entry-feedback-source-audit/probe.mjs', root)))"
+      ],
+      [
+        "'baseline-runtime.json'",
+        "'runtime.json'"
+      ],
+      [
+        "assert.equal(sha(runtimeBytes), lock.runtimeSHA256);",
+        "assert.equal(sha(runtimeBytes), 'bb93ea137987f9bddec3b0eb9bdab06ab2283f374275a782b7fc2c4308cc0bb3');"
+      ],
+      [
+        "'baseline/'",
+        "'runtime/'"
+      ],
+      [
+        "'./baseline/",
+        "'./runtime/"
+      ],
+      [
+        "'baseline-observation.json'",
+        "'candidate-observation.json'"
+      ],
+      [
+        "runtimeSHA256:lock.runtimeSHA256",
+        "runtimeSHA256:sha(runtimeBytes)"
+      ]
+    ],
+    "originalSourceManifestSHA256": "055b041c0578eef247ac2091d5217bbfaa1ff24e29f97b0293ba35e74bd07942"
+  },
+  "candidateValidation": {
+    "ordinaryChecks": 36,
+    "ordinaryPassed": 36,
+    "nativeCases": 6,
+    "nativePassed": 6,
+    "completeNegativeRowsUnchanged": [
+      2,
+      3,
+      5
+    ],
+    "completeNegativeNativeRowsUnchanged": [
+      2,
+      3,
+      5
+    ],
+    "negativeOutputHashesUnchanged": 15,
+    "nativeSHA256": "e50ddab2b0a3ea436aeecbf5ce4f7af8876c62be006608578a4d51eeda4df508",
+    "ordinarySHA256": "8d2825ffc8e78a36d72384e51589a5086e165df9a75e18a110b7307f1dbde7c2",
+    "limits": [
+      "Six locked keyboard cases establish these two missing branches, not full potion coverage."
+    ]
+  },
+  "raw": {
+    "path": "tools/gen-sessions/generated/potion-entry-feedback.session.json",
+    "sha256": "a4382e966fe5498849f77a906b14c9c24ff9496552fc42a2a4a1c14a59bb0952",
+    "bytes": 739222
+  },
+  "publicPayloads": 18,
+  "observerPayloads": 10,
+  "requirementsAdded": 6,
+  "registryTotal": 4690,
+  "ordinary": {
+    "command": [
+      "node",
+      "--max-old-space-size=512",
+      "tools/potion-entry-feedback-input-gate.mjs",
+      "/Users/rohit/research/code/contest/.cache/restart-20261122/potion-entry-feedback-main-ordinary.json"
+    ],
+    "exit": 0,
+    "seconds": 3.219,
+    "report": ".cache/restart-20261122/potion-entry-feedback-main-ordinary.json",
+    "reportSHA256": "60ac69f998d3569997b685e26453d73486dfb21bde0cf9f96623cd5d3d3029c7",
+    "log": ".cache/restart-20261122/potion-entry-feedback-main-ordinary.log",
+    "logSHA256": "6318922fdfb65a0fbbd83003889b348b4ddac4ebcc6c71548d627d7eb0d28faf",
+    "timeoutSeconds": 55,
+    "maxOldSpaceMB": 512
+  },
+  "originalRetainedAttempt": [
+    {
+      "name": "potion-breathing-input",
+      "command": [
+        "node",
+        "--max-old-space-size=512",
+        "tools/potion-breathing-input-gate.mjs"
+      ],
+      "exit": 0,
+      "seconds": 4.633,
+      "log": ".cache/restart-20261122/potion-entry-feedback-retained-potion-breathing-input.log",
+      "sha256": "e9cb285096f579c8d28cb0d56f507f9f5e71cbb8c138a73a287cbb2c1848e81a"
+    },
+    {
+      "name": "hallucination-predicate-input",
+      "command": [
+        "node",
+        "--max-old-space-size=512",
+        "tools/hallucination-predicate-input-gate.mjs"
+      ],
+      "exit": 0,
+      "seconds": 1.606,
+      "log": ".cache/restart-20261122/potion-entry-feedback-retained-hallucination-predicate-input.log",
+      "sha256": "a5be80a2d966b535df561e89ea22cbe0fca4c01cf913c06d1655312c24093c3d"
+    },
+    {
+      "name": "potion-impact-input",
+      "command": [
+        "node",
+        "--max-old-space-size=512",
+        "tools/potion-impact-input-gate.mjs"
+      ],
+      "exit": 1,
+      "seconds": 2.145,
+      "log": ".cache/restart-20261122/potion-entry-feedback-retained-potion-impact-input.log",
+      "sha256": "464436d06db9e16b56515f85775e43d860ad18c09c9df498f62e209118e732f5"
+    }
+  ],
+  "remainingRetained": [
+    {
+      "name": "chat-speech-guards-input",
+      "command": [
+        "node",
+        "--max-old-space-size=512",
+        "tools/chat-speech-guards-input-gate.mjs"
+      ],
+      "exit": 0,
+      "seconds": 2.918,
+      "log": ".cache/restart-20261122/potion-entry-feedback-retained-chat-speech-guards-input.log",
+      "sha256": "2f61e2adc30eb36e6ab64290da657d80513471b9f1b1a8a2d5a070bdeb69f140"
+    },
+    {
+      "name": "itemactions-context-input",
+      "command": [
+        "node",
+        "--max-old-space-size=512",
+        "tools/itemactions-context-input-gate.mjs"
+      ],
+      "exit": 0,
+      "seconds": 4.538,
+      "log": ".cache/restart-20261122/potion-entry-feedback-retained-itemactions-context-input.log",
+      "sha256": "312f6e7cdc3fac81c303e10db575216c7fea8b75f7f3fd7c2c9392207f96e826"
+    },
+    {
+      "name": "itemactions-accessory-input",
+      "command": [
+        "node",
+        "--max-old-space-size=512",
+        "tools/itemactions-accessory-input-gate.mjs"
+      ],
+      "exit": 0,
+      "seconds": 2.072,
+      "log": ".cache/restart-20261122/potion-entry-feedback-retained-itemactions-accessory-input.log",
+      "sha256": "b3ae6a9aaa28f92adbca51f8180478ea17e55d5098222a73a78d6113359c3592"
+    }
+  ],
+  "billObserverCorrection": {
+    "source": "include/mextra.h:138-140 defines billct as the active length of fixed bill[BILLSZ]; complete C onbill and sub_one_frombill use it.",
+    "originalBaseline": "2/4",
+    "originalCandidate": "2/4",
+    "originalDiagnosticLogsIdentical": true,
+    "correctedBaseline": "4/4",
+    "correctedCandidate": "4/4",
+    "completeCorrectedReportsIdentical": true,
+    "allTwentyOriginalOutputHashesUnchanged": true,
+    "assertionBodyUnchanged": true,
+    "inputRecipeSHA256": "cb3b69966080ea019b04cad7b502fec20cee57f6e6345835bb2d795b9c5a14c6",
+    "correctedGateSHA256": "d96271ca6c9ab73a3d49015a4e86653a3f2acacc687de7a7643f809fc3d4c5e3",
+    "correctedReportSHA256": "2a3696ca01b7d8cff37a02558c313a168ebc0b5bb6da2acefef58e50d33bda7b"
+  },
+  "correctedObserverCommands": [
+    {
+      "name": "corrected-baseline",
+      "command": [
+        "node",
+        "--max-old-space-size=512",
+        "--preserve-symlinks",
+        "--preserve-symlinks-main",
+        ".cache/restart-20261122/potion-entry-feedback-candidate/runtime/impact-corrected-baseline.mjs",
+        "/Users/rohit/research/code/contest/.cache/restart-20261122/potion-impact-bill-observer-review/corrected-baseline.json"
+      ],
+      "exit": 0,
+      "seconds": 2.358,
+      "reportSHA256": "2a3696ca01b7d8cff37a02558c313a168ebc0b5bb6da2acefef58e50d33bda7b"
+    },
+    {
+      "name": "corrected-candidate",
+      "command": [
+        "node",
+        "--max-old-space-size=512",
+        "tools/potion-impact-input-gate.mjs",
+        "/Users/rohit/research/code/contest/.cache/restart-20261122/potion-impact-bill-observer-review/corrected-candidate.json"
+      ],
+      "exit": 0,
+      "seconds": 2.451,
+      "reportSHA256": "2a3696ca01b7d8cff37a02558c313a168ebc0b5bb6da2acefef58e50d33bda7b"
+    }
+  ],
+  "strict": {
+    "command": [
+      "node",
+      "tools/hang-gate.mjs",
+      "sessions/seed0002-healer-reflection-drummer.session.json",
+      "sessions/seed0004-feeding-pony.session.json",
+      "sessions/seed0006-wizard-water-demon.session.json",
+      "sessions/seed0007-rogue-snake-swamp.session.json",
+      "sessions/seed0009-swimmer-mforce.session.json",
+      "sessions/seed0012-monk-vault-escort.session.json",
+      "sessions/seed0013-friday13-save-then-fullmoon-restore.session.json",
+      "sessions/seed0013-rogue-friday13-combat.session.json",
+      "sessions/seed0014-dequa-fountain-explore.session.json",
+      "sessions/seed0015-valk-level2-pit-dog-wait.session.json",
+      "sessions/seed0016-healer-newmoon-eat-zap.session.json",
+      "sessions/seed0017-samurai-altar-pray.session.json",
+      "sessions/seed0030-ten-diverse-deaths.session.json",
+      "sessions/seed0060-orc-rogue-kick-search.session.json",
+      "sessions/seed0077-rogue-chargen.session.json",
+      "sessions/seed0101-ranger-quiver-throw-travel-engrave.session.json",
+      "sessions/seed0102-ranger-name-cancel.session.json",
+      "sessions/seed0103-knight-ride-pony.session.json",
+      "sessions/seed0104-knight-ride-combat.session.json",
+      "sessions/seed0105-valk-chat-lamp-ration.session.json",
+      "sessions/seed0106-priest-extcmd-sweep.session.json",
+      "sessions/seed0107-samurai-twoweapon-enhance.session.json",
+      "sessions/seed0108-wizard-extcmd-wishlist.session.json",
+      "sessions/seed0116-wizard-wear-shop.session.json",
+      "sessions/seed0200-monk-north-search.session.json",
+      "sessions/seed0360-wizard-world-tour.session.json",
+      "sessions/seed0361-archeologist-tour.session.json",
+      "sessions/seed0367-priest-quest-tour.session.json",
+      "sessions/seed0373-barbarian-quest-tour.session.json",
+      "sessions/seed0383-wizard-hallucinate.session.json",
+      "sessions/seed0398-wizard-wandpoly-pile.session.json",
+      "sessions/seed0399-wizard-hallu-actions.session.json",
+      "sessions/seed0501-priest-cast-read-turn.session.json",
+      "sessions/seed0700-samurai-explore-descend.session.json",
+      "sessions/seed0900-tourist-explore-actions.session.json",
+      "sessions/seed1150-caveman-explore-move.session.json",
+      "sessions/seed1500-rogue-explore-move.session.json",
+      "sessions/seed1800-tourist-eat-throw.session.json",
+      "sessions/seed2200-wizard-quaff-zap-read.session.json",
+      "sessions/seed2600-wizard-custom-binds.session.json",
+      "sessions/seed4500-knight-coverage.session.json",
+      "sessions/seed5002-wizard-coverage-pair.session.json",
+      "sessions/seed5006-tourist-stress-disaster.session.json",
+      "sessions/seed8000-tourist-starter.session.json",
+      "tools/gen-sessions/generated/potion-entry-feedback.session.json"
+    ],
+    "exit": 0,
+    "seconds": 40.124,
+    "targets": 45,
+    "budgetMs": 8000,
+    "log": ".cache/restart-20261122/potion-entry-feedback-public45-strict.log",
+    "sha256": "8d5b5c1946094092d19693ee75a43de11c09df50ea6700e35beef83c3d080de9"
+  },
+  "scopeImportAudit": [],
+  "full": {
+    "verifiedAt": "2026-11-26T17:23:58.300047+00:00",
+    "sessions": 936,
+    "passed": 936,
+    "failures": [],
+    "totals": {
+      "screens": 939256,
+      "cursors": 939256,
+      "rngCalls": 20495378,
+      "animFrames": 33188
+    },
+    "missingMetrics": {},
+    "runtimeFilesFixed": 280,
+    "rawFilesFixed": 936,
+    "allFilesFixed": 1227,
+    "allFilesSHA256": "c032896e96929b8e9fe5c25725341c9d4aba20f4581d65ed0ba94cc7ce4652c4",
+    "defaultWorkerTimeoutMs": 45000,
+    "retries": 0,
+    "started": {
+      "startedAt": "2026-11-26T17:13:39.903790+00:00",
+      "workers": 2,
+      "pid": 3522723,
+      "cpuCount": 24,
+      "loadAverage": [
+        1.2412109375,
+        1.29736328125,
+        1.79248046875
+      ],
+      "timeoutOverride": false,
+      "retries": 0,
+      "node": {
+        "version": "v26.3.0",
+        "archive": "node-v26.3.0-linux-x64.tar.xz",
+        "sha256": "0ce210831380ab75a5fec0d3fb6b5af0958898016b2cae51cc2fa11057d2f77e",
+        "officialURL": "https://nodejs.org/dist/v26.3.0/node-v26.3.0-linux-x64.tar.xz",
+        "checksumsURL": "https://nodejs.org/dist/v26.3.0/SHASUMS256.txt",
+        "binary": "/share/NFS/u/rohit/research/contest/artifacts/2026-11-22/text-history-full858-js-20261125/node-v26.3.0-linux-x64/bin/node",
+        "archiveSHA256": "0ce210831380ab75a5fec0d3fb6b5af0958898016b2cae51cc2fa11057d2f77e",
+        "binarySHA256": "5325ac9da58541494afcc136f0880279a2a853609bf4dae7755e04fb682b6926"
+      },
+      "allFilesSHA256": "c032896e96929b8e9fe5c25725341c9d4aba20f4581d65ed0ba94cc7ce4652c4"
+    },
+    "logs": {
+      "shard-1.log": "4b90de18e1c660604bdfc2587cd86982a89592cdd6d1a4210324c92f0d8c9265",
+      "shard-0.log": "d93c0511581ddab274ed263209e7be410b65046fd28266d57c1ec397bbb172c4"
+    },
+    "limits": [
+      "Scored corpus parity, not literal serialized-byte or whole-port proof.",
+      "No held-out result is inferred from these fixtures."
+    ]
+  },
+  "fullVerificationSHA256": "2c4b8b98194672d0cd65baed87ca2ac0c0d9ea7253669abcd3009c0e3ff40bca",
+  "installationReceiptSHA256": "bc9b7196f0b111a5ddd1a58d23038c922342067805a8a56e70e9294bc1f3fa10",
+  "observerInstallationReceiptSHA256": "42cd6ed25a867b231441ec35a00a08d4ab68d626c65a473ca288457e9cc56c40",
+  "limits": [
+    "Only six locked potion cases and the retained corpus are verified.",
+    "Native comparison uses decoded terminal styles, cursors, ordered random calls and frames, not serialized byte identity.",
+    "No new leaderboard result is attributed to this checkpoint."
+  ]
+}

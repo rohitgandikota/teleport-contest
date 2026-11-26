@@ -1,0 +1,14 @@
+{
+  "source": "include/mextra.h:138-140 defines billct as the active length of fixed bill[BILLSZ]; complete C onbill and sub_one_frombill use it.",
+  "originalBaseline": "2/4",
+  "originalCandidate": "2/4",
+  "originalDiagnosticLogsIdentical": true,
+  "correctedBaseline": "4/4",
+  "correctedCandidate": "4/4",
+  "completeCorrectedReportsIdentical": true,
+  "allTwentyOriginalOutputHashesUnchanged": true,
+  "assertionBodyUnchanged": true,
+  "inputRecipeSHA256": "cb3b69966080ea019b04cad7b502fec20cee57f6e6345835bb2d795b9c5a14c6",
+  "correctedGateSHA256": "d96271ca6c9ab73a3d49015a4e86653a3f2acacc687de7a7643f809fc3d4c5e3",
+  "correctedReportSHA256": "2a3696ca01b7d8cff37a02558c313a168ebc0b5bb6da2acefef58e50d33bda7b"
+}

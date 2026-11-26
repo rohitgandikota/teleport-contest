@@ -1,0 +1,22 @@
+{
+  "ordinaryChecks": 36,
+  "ordinaryPassed": 36,
+  "nativeCases": 6,
+  "nativePassed": 6,
+  "completeNegativeRowsUnchanged": [
+    2,
+    3,
+    5
+  ],
+  "completeNegativeNativeRowsUnchanged": [
+    2,
+    3,
+    5
+  ],
+  "negativeOutputHashesUnchanged": 15,
+  "nativeSHA256": "e50ddab2b0a3ea436aeecbf5ce4f7af8876c62be006608578a4d51eeda4df508",
+  "ordinarySHA256": "8d2825ffc8e78a36d72384e51589a5086e165df9a75e18a110b7307f1dbde7c2",
+  "limits": [
+    "Six locked keyboard cases establish these two missing branches, not full potion coverage."
+  ]
+}

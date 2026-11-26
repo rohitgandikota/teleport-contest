@@ -1,0 +1,14 @@
+{
+  "command": [
+    "node",
+    "--max-old-space-size=512",
+    "--preserve-symlinks",
+    "--preserve-symlinks-main",
+    ".cache/restart-20261122/potion-entry-feedback-candidate/runtime/impact-original-baseline.mjs",
+    "/Users/rohit/research/code/contest/.cache/restart-20261122/potion-impact-bill-observer-review/original-baseline.json"
+  ],
+  "exit": 1,
+  "seconds": 2.984,
+  "originalGateSHA256": "c010348b1214535290e64d0d243e1db956440c734bcec83e5e0ec9f83f9e969d",
+  "baselineRuntimeSHA256": "b22f77601464926cd00681f97c54eb3a031f3aa4752f3366aa1ff8baba9908d4"
+}

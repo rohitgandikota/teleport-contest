@@ -1,0 +1,43 @@
+{
+  "parent": "2ea98ff991150497a5079e351fee3be2bcdaeb45",
+  "runtimeFiles": 280,
+  "runtimeSHA256": "bb93ea137987f9bddec3b0eb9bdab06ab2283f374275a782b7fc2c4308cc0bb3",
+  "runtimeChanged": [
+    "js/potion.js"
+  ],
+  "fixedLinks": 279,
+  "sourceCopies": 1,
+  "patchSHA256": "6163f354c9b45f39a9ec4c733627b6b825f2c1334d257f3fa55b045de8a882cb",
+  "assertionBodySHA256": "b8a221425c10b39b02e0f71de2d202ac649b9354a9b8e0837b23d466e0ec62d2",
+  "wrapperChanges": [
+    [
+      "sha(readFileSync(new URL(import.meta.url)))",
+      "sha(readFileSync(new URL('../potion-entry-feedback-source-audit/probe.mjs', root)))"
+    ],
+    [
+      "'baseline-runtime.json'",
+      "'runtime.json'"
+    ],
+    [
+      "assert.equal(sha(runtimeBytes), lock.runtimeSHA256);",
+      "assert.equal(sha(runtimeBytes), 'bb93ea137987f9bddec3b0eb9bdab06ab2283f374275a782b7fc2c4308cc0bb3');"
+    ],
+    [
+      "'baseline/'",
+      "'runtime/'"
+    ],
+    [
+      "'./baseline/",
+      "'./runtime/"
+    ],
+    [
+      "'baseline-observation.json'",
+      "'candidate-observation.json'"
+    ],
+    [
+      "runtimeSHA256:lock.runtimeSHA256",
+      "runtimeSHA256:sha(runtimeBytes)"
+    ]
+  ],
+  "originalSourceManifestSHA256": "055b041c0578eef247ac2091d5217bbfaa1ff24e29f97b0293ba35e74bd07942"
+}

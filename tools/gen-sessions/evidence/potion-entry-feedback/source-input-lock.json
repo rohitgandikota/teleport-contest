@@ -1,0 +1,17 @@
+{
+  "recipeSHA256": "c7ba39861b0abd711a291821fcfbea0a5b3cdbe48ec38848722c2d9b63915315",
+  "predictionsSHA256": "e54428c255437d6c4a0dbd4b74e056401daaae5e9374e5e9103fd1d4b020c8e6",
+  "runtimeSHA256": "b22f77601464926cd00681f97c54eb3a031f3aa4752f3366aa1ff8baba9908d4",
+  "sourcePins": {
+    "nethack-c/upstream/src/potion.c": "05176768623072e3e1337fc23b91e1f3991980dbefb4ca2fc44c0fe6d1115aa9",
+    "nethack-c/upstream/src/do_wear.c": "cf33ad9f5b18bcdfffd09d4e99867590802735a9ae2d34b9eb2b64880fa459c7",
+    "nethack-c/upstream/src/invent.c": "0b93d6ce1abb5b63ed7ea07c26a57e1016c6cef0fc2ef0e4016e6622054524b5",
+    "nethack-c/upstream/include/youprop.h": "9c4e25bc385c405226085ae3526dc165bd9397ce922b8a18a46f67de21683a2f"
+  },
+  "beforeProbeCAndCandidate": true,
+  "inheritedProducerRecipes": {
+    "/Users/rohit/research/code/contest/.cache/restart-20261122/chat-speech-guards-source-audit/proposal-01.json": "fb5056ab061f2df448353076da844a2a1d5aa01315576e816ea21608c39afedb",
+    "/Users/rohit/research/code/contest/.cache/restart-20261122/welcome-restore-branches-source-audit/welcome-restore-branches.json": "0ac79e37338b5e37e64ae94e221a52ac5618abf68c13882d623ff592af795bae"
+  },
+  "probeSHA256": "966d08597aae023b67cb52b3af2ac1f2e687422aa73fa64d510dfea54dd91705"
+}

@@ -1,0 +1,194 @@
+{
+  "baselineCommit": "5674c5ca3dae7ce71da694f230f50920ea4f3315",
+  "cSourcePin": "16ff59115315917b93185d026aeefea06db9b0f4",
+  "runtimeChanged": [
+    "js/vault.js"
+  ],
+  "runtimeFiles": 280,
+  "runtimeSHA256": "ac8bbeed420f20dae9b9b17f662c2b1eeb7f2573cdc509d9841b0ec58bf19a81",
+  "ordinary": {
+    "baseline": 26,
+    "candidate": 28,
+    "total": 28,
+    "mainReportSHA256": "48ffc390bc3d88fecded63f6cec4635f206ee8273625e5d4fda8ea47a66f8498"
+  },
+  "historicalCausalControls": {
+    "passed": 15,
+    "total": 15
+  },
+  "native": {
+    "baseline": 3,
+    "candidate": 5,
+    "cases": 5,
+    "boundaries": 1077,
+    "calls": 32428,
+    "frames": 0,
+    "repairedBoundaries": 7,
+    "negativeCompleteReportsUnchanged": 3,
+    "negativeOutputHashesUnchanged": 15,
+    "checks": [
+      {
+        "runtime": "source-baseline",
+        "command": [
+          "node",
+          "--max-old-space-size=512",
+          "--preserve-symlinks",
+          "--preserve-symlinks-main",
+          "/Users/rohit/research/code/contest/.cache/restart-20261122/guard-restored-entry-parent-source-baseline-native-runner/tools/tty-text-window-native-gate.mjs",
+          "/Users/rohit/research/code/contest/.cache/restart-20261122/guard-restored-entry-parent-native.session.json",
+          "/Users/rohit/research/code/contest/.cache/restart-20261122/guard-restored-entry-parent-source-baseline-native.json"
+        ],
+        "exit": 1,
+        "exact": 3,
+        "total": 5,
+        "seconds": 2.05,
+        "report": ".cache/restart-20261122/guard-restored-entry-parent-source-baseline-native.json",
+        "reportSHA256": "48760672389dbaca9aba837fc1bea0954d63dbc06f84a4f72b2e4ab5e796fca1",
+        "log": ".cache/restart-20261122/guard-restored-entry-parent-source-baseline-native.log",
+        "logSHA256": "4c903b4fb52e4e402339a8a55ea017204e28781cc67bdd4e13c1c209fbf92f08"
+      },
+      {
+        "runtime": "source-candidate",
+        "command": [
+          "node",
+          "--max-old-space-size=512",
+          "--preserve-symlinks",
+          "--preserve-symlinks-main",
+          "/Users/rohit/research/code/contest/.cache/restart-20261122/guard-restored-entry-parent-source-candidate-native-runner/tools/tty-text-window-native-gate.mjs",
+          "/Users/rohit/research/code/contest/.cache/restart-20261122/guard-restored-entry-parent-native.session.json",
+          "/Users/rohit/research/code/contest/.cache/restart-20261122/guard-restored-entry-parent-source-candidate-native.json"
+        ],
+        "exit": 0,
+        "exact": 5,
+        "total": 5,
+        "seconds": 1.98,
+        "report": ".cache/restart-20261122/guard-restored-entry-parent-source-candidate-native.json",
+        "reportSHA256": "1fcc9928edc130cb1c784161c9b85a421f6fb35531b214e15adde78bc005c475",
+        "log": ".cache/restart-20261122/guard-restored-entry-parent-source-candidate-native.log",
+        "logSHA256": "7d5ec641d088b3bf2dd91f84bc0b1216dd00831063193f16bf287d3127df1f1e"
+      },
+      {
+        "runtime": "published-baseline",
+        "command": [
+          "node",
+          "--max-old-space-size=512",
+          "--preserve-symlinks",
+          "--preserve-symlinks-main",
+          "/Users/rohit/research/code/contest/.cache/restart-20261122/guard-restored-entry-parent-published-baseline-native-runner/tools/tty-text-window-native-gate.mjs",
+          "/Users/rohit/research/code/contest/.cache/restart-20261122/guard-restored-entry-parent-native.session.json",
+          "/Users/rohit/research/code/contest/.cache/restart-20261122/guard-restored-entry-parent-published-baseline-native.json"
+        ],
+        "exit": 1,
+        "exact": 3,
+        "total": 5,
+        "seconds": 1.69,
+        "report": ".cache/restart-20261122/guard-restored-entry-parent-published-baseline-native.json",
+        "reportSHA256": "48760672389dbaca9aba837fc1bea0954d63dbc06f84a4f72b2e4ab5e796fca1",
+        "log": ".cache/restart-20261122/guard-restored-entry-parent-published-baseline-native.log",
+        "logSHA256": "4c903b4fb52e4e402339a8a55ea017204e28781cc67bdd4e13c1c209fbf92f08"
+      },
+      {
+        "runtime": "composed",
+        "command": [
+          "node",
+          "--max-old-space-size=512",
+          "--preserve-symlinks",
+          "--preserve-symlinks-main",
+          "/Users/rohit/research/code/contest/.cache/restart-20261122/guard-restored-entry-parent-composed-native-runner/tools/tty-text-window-native-gate.mjs",
+          "/Users/rohit/research/code/contest/.cache/restart-20261122/guard-restored-entry-parent-native.session.json",
+          "/Users/rohit/research/code/contest/.cache/restart-20261122/guard-restored-entry-parent-composed-native.json"
+        ],
+        "exit": 0,
+        "exact": 5,
+        "total": 5,
+        "seconds": 1.69,
+        "report": ".cache/restart-20261122/guard-restored-entry-parent-composed-native.json",
+        "reportSHA256": "1fcc9928edc130cb1c784161c9b85a421f6fb35531b214e15adde78bc005c475",
+        "log": ".cache/restart-20261122/guard-restored-entry-parent-composed-native.log",
+        "logSHA256": "7d5ec641d088b3bf2dd91f84bc0b1216dd00831063193f16bf287d3127df1f1e"
+      }
+    ]
+  },
+  "retained": {
+    "passed": 36,
+    "total": 36,
+    "receiptSHA256": "93539c4546e84bb9dcc664e72037c9c7ec8eaf8f976deda3a21b8a3b3d2f844c"
+  },
+  "retainedNative": {
+    "passed": 11,
+    "total": 11,
+    "reportsUnchanged": true,
+    "checks": [
+      {
+        "name": "guard-hallucinated-name",
+        "command": [
+          "node",
+          "--max-old-space-size=512",
+          "tools/tty-text-window-native-gate.mjs",
+          "tools/gen-sessions/generated/guard-hallucinated-name.session.json",
+          ".cache/restart-20261122/guard-restored-entry-retained-guard-hallucinated-name-native.json"
+        ],
+        "exit": 0,
+        "cases": 6,
+        "report": ".cache/restart-20261122/guard-restored-entry-retained-guard-hallucinated-name-native.json",
+        "reportSHA256": "4a631e4763068c855e9a7f83dd6916dfdf1b3ac886dc0d744051590f4c64dc83",
+        "priorReport": ".cache/restart-20261122/guard-hallucinated-name-parent-candidate-native.json",
+        "log": ".cache/restart-20261122/guard-restored-entry-retained-guard-hallucinated-name-native.log",
+        "logSHA256": "dab4475cc31cf4a7ffd15b7f2566d3926e6082f3cb2ee63b6efc96a6cc3c197e"
+      },
+      {
+        "name": "guard-cleanup-prompt",
+        "command": [
+          "node",
+          "--max-old-space-size=512",
+          "tools/tty-text-window-native-gate.mjs",
+          "tools/gen-sessions/generated/guard-cleanup-prompt.session.json",
+          ".cache/restart-20261122/guard-restored-entry-retained-guard-cleanup-prompt-native.json"
+        ],
+        "exit": 0,
+        "cases": 5,
+        "report": ".cache/restart-20261122/guard-restored-entry-retained-guard-cleanup-prompt-native.json",
+        "reportSHA256": "44199d241221013fc97d82501c3c0bc06ce602472f3ce5f215841d2be5865ad5",
+        "priorReport": ".cache/restart-20261122/guard-cleanup-policy-parent-composed-native.json",
+        "log": ".cache/restart-20261122/guard-restored-entry-retained-guard-cleanup-prompt-native.log",
+        "logSHA256": "8eda1b763a2c9e9518300b5c360eaae8318d7291b48376d65eea6679dea73a84"
+      }
+    ]
+  },
+  "selectedPublic": {
+    "passed": 92,
+    "total": 92
+  },
+  "strict8s": {
+    "passed": 92,
+    "total": 92
+  },
+  "full918": {
+    "root": "/share/NFS/u/rohit/research/contest/artifacts/2026-11-22/guard-restored-entry-full918-js-20261125",
+    "passed": 918,
+    "sessions": 918,
+    "totals": {
+      "screens": 930434,
+      "cursors": 930434,
+      "rngCalls": 20194075,
+      "animFrames": 33131
+    },
+    "files": 1209,
+    "allFilesSHA256": "9a311216f9fd2d9ee6b5954efe8a5f6e0e2e68637723aa3feff38ae689d980d8",
+    "verificationSHA256": "86a621c7d69ee4c608480877a8b6a8b8f37b14fa3b28e4b9d642666e61cbdcce",
+    "workers": 2,
+    "timeoutOverride": false,
+    "retries": 0
+  },
+  "seals": {
+    "sourceSealSHA256": "8d141acab774cba57edf58c0f40dad75a7a727d4e0b95639dc537b4896b5c7c3",
+    "promotionSealSHA256": "6991ba59e0c94d2cc2ac69e0f9527a2fad2bd291e03f0d63e88d5a4c19543f45"
+  },
+  "portablePayloads": 21,
+  "newRequirements": 5,
+  "limits": [
+    "This checkpoint ports the restored-entry branch, not the whole gd_move or vault owner. Wall restoration, nonwall entrance reconstruction and later destination naming remain separate.",
+    "The native comparator checks decoded styled cells, cursors, ordered core RNG and frames. Full corpus uses the contest comparator; literal serialized-byte and whole-port completion are not established.",
+    "No held-out score change is inferred from local tests."
+  ]
+}

@@ -1,6 +1,6 @@
 # STATUS — live handoff board
 
-## 2026-11-25: corpse naming917 passed, publication next
+## 2026-11-25: restored-entry guard918 passed, publication next
 
 Continue the full C port and push each verified checkpoint immediately. The user
 has renewed permission and restored usage. Do not hold completed local commits.
@@ -32,7 +32,11 @@ using that exact document from 80049 and restored current documentation in a
 finally block. No sealed evidence or runtime changed. The receipt is
 `guard-hallucinated-name-parent-historical-document-check.json`.
 
-Current uncommitted checkpoint: corpse_xname in js/objnam.js. Main matches the
+Corpse naming is published as 5674c5ca3dae7ce71da694f230f50920ea4f3315, pushed
+at 22:46 EST and confirmed on origin/main. All 1,208 tested Git files match.
+Publication receipt SHA256:
+204682156922e7197ef98f0f8d66f68f9872644711372cf5f108d9751e09727b.
+Its baseline for the next fix is the
 280-file map `corpse-xname-owner-parent-composed-runtime.json`, SHA256
 `309f0c98243645b1565e61979fd09d6cfade2c58588361151c3d7f113c3f553b`.
 Only objnam.js changes from published 5569. It imports the existing obj_pmname
@@ -84,25 +88,59 @@ Verification SHA256
 `bf735761ff4fadb4ce77ee984d612010091acab648e26bfbb1c4d129b4b16c8e`.
 Do not relaunch it or remove a linked ancestor.
 
-Full917 is complete. Run the final parent verifier, then
-`stage-corpse-xname-owner.py`. It stages exactly 35 paths
-and checks all 1,208 Git blobs. Commit and push immediately. Verify publication
-with `verify-full-publication.py corpse-xname-owner-full917 COMMIT
-corpse-xname-owner-parent-composed-native-runner`. All scripts and receipts are
-under `.cache/restart-20261122/`. No broad rerun is needed if these checks pass.
+Full917 and publication verification are complete. Do not rerun them. Scripts
+and receipts are under .cache/restart-20261122/.
 
-Next source-only audits are isolated from main. Leibniz reviews feel_cockatrice's
-killer-name caller, Euclid reviews the remaining byte-cap gap, and Sartre reviews
-restored-entry guard confusion. They must preserve locked inputs and existing
-negative controls. Parent owns new C recording, composition and publication.
+The current uncommitted fix adds C vault.c1009-1016 to gd_move. If the hero has
+left the temporary corridor and its entrance is restored, the guard announces
+confusion and cleans up. The change is nine lines in js/vault.js, with existing
+helpers and no new imports. Source335 verifies; its original ordinary assertions
+improve 26/28 to 28/28, with all 15 causal checks passing.
 
-Storage was rechecked after the two pushes: `du -sh .` reports 3.3G. Full replay
+Parent recorded the five locked inputs once. All five source-predicted native
+branch assertions pass without metadata changes. Published309 and source673
+both pass 3/5 native cases; composed and source candidates both pass 5/5.
+Three complete negative reports and their 15 hashes are unchanged. Seven screen
+boundaries and both positive RNG streams are repaired. These checks cover
+1,077 styled boundaries/cursors, 32,428 random calls and zero frames.
+Raw SHA256: 0b8294748f93709831d4333e04df9bd1ebd173d6049c6bf4d6015d446c542d11.
+Runtime map SHA256: ac8bbeed420f20dae9b9b17f662c2b1eeb7f2573cdc509d9841b0ec58bf19a81.
+Only vault.js differs from published309. Parent comparison receipts use the
+prefix guard-restored-entry-parent. Canonical raw and runtime are installed;
+The sealed 43-member portable companion verifies. All 21 exact payloads and
+five requirements are installed, bringing the registry to 4,607 entries. Its
+fresh main gate passes 28/28 with report SHA256
+48ffc390bc3d88fecded63f6cec4635f206ee8273625e5d4fda8ea47a66f8498.
+All 36 retained commands, 92 selected/public recordings and 92 strict workers
+pass. Eleven retained native cases preserve their complete reports. Full918
+passes 918/918 on NFS, completed PID3359044, using links to full917. Totals:
+930,434 screens/cursors, 20,194,075 random calls and 33,131 frames. Verification
+SHA256: 86a621c7d69ee4c608480877a8b6a8b8f37b14fa3b28e4b9d642666e61cbdcce.
+Both two-CPU shards pass with default 45-second limits and no retries. All 1,209 files
+are pinned by SHA256 9a311216f9fd2d9ee6b5954efe8a5f6e0e2e68637723aa3feff38ae689d980d8.
+Full918 is complete. Run verify-guard-restored-entry-parent.py, then
+stage-guard-restored-entry.py, commit and
+push immediately, then verify-full-publication.py guard-restored-entry-full918
+COMMIT guard-restored-entry-parent-composed-native-runner.
+
+Leibniz's feel_cockatrice audit found no qualifying ordinary naming difference:
+8/8 controls and all negative hashes pass, with no runtime patch. Its 29-member
+packet and 68 source ranges verify. He is auditing vault wall restoration next.
+Euclid has locked three ordinary merged-config-byte-limit inputs before any
+candidate edit. Parent recorded them once; all three predicted native branches
+pass. The fixed baseline is 2/3, with the quoted partial-byte case failing.
+Raw SHA256: 384cd13b3cc862459640cebe944e6c704c623fee3a60abe154b218e23f0b6cf2.
+Euclid is preparing the isolated three-file candidate. Sartre is auditing
+invault nonwall entry reconstruction. Neither audit changes main.
+
+Storage was rechecked after the first two pushes: `du -sh .` reports 3.3G. Full replay
 runs remain on NFS; no complete result or fixture corpus was copied locally.
-The last official recheck, 22:05 EST, returned the 21:05 feed: rank 7, 812
-unmatched screens, 44/44 public and 42/56 held-out passes. Its 20:32 scored row
-predates these pushes. Recent scored rows are roughly six hours apart, and the
-feed does not identify the scored commit. Local parity establishes no newer
-held-out score. Receipt: `leaderboard-current-recheck-20261126-030513.json`.
+The last official recheck, 22:47 EST, returned the 21:05 feed: agentic rank 7,
+812 unmatched screens, 44/44 public and 42/56 held-out passes. Its 20:32 scored
+row predates all three latest pushes. The official site explicitly lists
+six-hour scoring cycles; the feed does not identify the scored commit. Local
+parity establishes no newer held-out score. Receipt:
+leaderboard-current-recheck-20261126-034737.json.
 
 ## 2026-11-25: guard prompt correction published as 80049d92
 

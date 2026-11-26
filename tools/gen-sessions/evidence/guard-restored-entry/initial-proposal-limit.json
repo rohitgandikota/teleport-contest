@@ -1,0 +1,10 @@
+{
+  "classification": "Initial ordinary proposal retained; predicate reached, later turn not proven",
+  "case": "entry-restored-far-teleport",
+  "firstEligibleStep": 205,
+  "turn": 44,
+  "cause": "Plain rest refused while a monster threatens the hero. All four dots leave turn44.",
+  "message": "Are you waiting to get hit?  Use 'm' prefix to force a no-op (to rest).",
+  "nextProposal": "Use actual m. forced-rest keyboard commands, no property or map changes",
+  "runtimeChanged": false
+}

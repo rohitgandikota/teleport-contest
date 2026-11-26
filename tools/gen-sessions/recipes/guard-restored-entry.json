@@ -1,0 +1,136 @@
+{
+  "name": "guard-restored-entry",
+  "description": "Controlled teleport out of an ordinary guard escort, allowing actual corridor restoration before the next forced rest. No injected state. C source predictions pending parent recording.",
+  "segments": [
+    {
+      "seed": 7303,
+      "datetime": "20000115090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "entry-restored-far-teleport",
+      "moves": " \u00162\r\u0006\u0017500 gold pieces\r\u0014kkkkkkkkkkkkkhhhhh. #wizintrinsic\r>30f\r  \u001b\u001bllllk\u0017throne\r  \u0017floor\r  E- proof\r  \u0017wall\r  \u0017doorless doorway\r  jhhhh................................... intruder\r  \u001b\u001bd$ll\u0014llljjjjjjjjjjjjj.  \u001b\u001bm.  \u001b\u001bm.  "
+    },
+    {
+      "seed": 7303,
+      "datetime": "20000115090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nMSGTYPE=hide \"The guard, confused, disappears\\.\"\n",
+      "name": "entry-restored-hidden-teleport",
+      "moves": " \u00162\r\u0006\u0017500 gold pieces\r\u0014kkkkkkkkkkkkkhhhhh. #wizintrinsic\r>30f\r  \u001b\u001bllllk\u0017throne\r  \u0017floor\r  E- proof\r  \u0017wall\r  \u0017doorless doorway\r  jhhhh................................... intruder\r  \u001b\u001bd$ll\u0014llljjjjjjjjjjjjj.  \u001b\u001bm.  \u001b\u001bm.  "
+    },
+    {
+      "seed": 7303,
+      "datetime": "20000115090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "two-entry-far-negative",
+      "moves": " \u00162\r\u0006\u0017500 gold pieces\r\u0014kkkkkkkkkkkkkhhhhh. #wizintrinsic\r>30f\r  \u001b\u001bllllk\u0017throne\r  \u0017floor\r  E- proof\r  \u0017wall\r  \u0017doorless doorway\r  jhhhh................................... intruder\r  \u001b\u001bd$l\u0014lllljjjjjjjjjjjjj.  \u001b\u001bm.  \u001b\u001bm.  "
+    },
+    {
+      "seed": 7303,
+      "datetime": "20000115090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "restored-entry-before-next-turn-negative",
+      "moves": " \u00162\r\u0006\u0017500 gold pieces\r\u0014kkkkkkkkkkkkkhhhhh. #wizintrinsic\r>30f\r  \u001b\u001bllllk\u0017throne\r  \u0017floor\r  E- proof\r  \u0017wall\r  \u0017doorless doorway\r  jhhhh................................... intruder\r  \u001b\u001bd$ll\u0014llljjjjjjjjjjjjj."
+    },
+    {
+      "seed": 7303,
+      "datetime": "20000115090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "ordinary-exit-negative",
+      "moves": " \u00162\r\u0006\u0017500 gold pieces\r\u0014kkkkkkkkkkkkkhhhhh. #wizintrinsic\r>30f\r  \u001b\u001bllllk\u0017throne\r  \u0017floor\r  E- proof\r  \u0017wall\r  \u0017doorless doorway\r  jhhhh................................... intruder\r  \u001b\u001bd$lll  \u001b\u001bu  \u0014hhhhj.  \u0006 ... "
+    }
+  ],
+  "coverage": [
+    "mode.debug",
+    "social.vault-guard",
+    "ui.messages"
+  ],
+  "branches": [
+    "vault.restored-entry.visible",
+    "vault.restored-entry.hidden",
+    "vault.restored-entry.two-entry-negative",
+    "vault.restored-entry.before-next-turn-negative",
+    "vault.restored-entry.ordinary-exit-negative"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "vault.restored-entry.visible",
+      "segment": 0,
+      "source": "C vault.c1009-1016, clear_fcorr48-119 and gd_move_cleanup836-867. Ordinary JS reach plus source prediction; native validation pending parent.",
+      "screenIncludes": [
+        "You drop 500 gold pieces.",
+        "The guard, confused, disappears."
+      ],
+      "screenCells": [
+        {
+          "step": 211,
+          "x": 0,
+          "y": 0,
+          "equals": "T"
+        }
+      ]
+    },
+    {
+      "branch": "vault.restored-entry.hidden",
+      "segment": 1,
+      "source": "C vault.c1009-1016, clear_fcorr48-119 and gd_move_cleanup836-867. Ordinary JS reach plus source prediction; native validation pending parent.",
+      "screenIncludes": [
+        "You drop 500 gold pieces.",
+        "You materialize in a different location!"
+      ],
+      "screenExcludes": [
+        "confused, disappears."
+      ]
+    },
+    {
+      "branch": "vault.restored-entry.two-entry-negative",
+      "segment": 2,
+      "source": "C vault.c1009-1016, clear_fcorr48-119 and gd_move_cleanup836-867. Ordinary JS reach plus source prediction; native validation pending parent.",
+      "screenIncludes": [
+        "You drop 500 gold pieces.",
+        "\"Move along!\""
+      ],
+      "screenExcludes": [
+        "confused, disappears."
+      ]
+    },
+    {
+      "branch": "vault.restored-entry.before-next-turn-negative",
+      "segment": 3,
+      "source": "C vault.c1009-1016, clear_fcorr48-119 and gd_move_cleanup836-867. Ordinary JS reach plus source prediction; native validation pending parent.",
+      "screenIncludes": [
+        "You drop 500 gold pieces."
+      ],
+      "screenCells": [
+        {
+          "step": 205,
+          "x": 0,
+          "y": 0,
+          "equals": "Y"
+        }
+      ],
+      "screenExcludes": [
+        "confused, disappears."
+      ]
+    },
+    {
+      "branch": "vault.restored-entry.ordinary-exit-negative",
+      "segment": 4,
+      "source": "C vault.c1009-1016, clear_fcorr48-119 and gd_move_cleanup836-867. Ordinary JS reach plus source prediction; native validation pending parent.",
+      "screenIncludes": [
+        "You drop 500 gold pieces.",
+        "Suddenly, the guard disappears."
+      ],
+      "screenCells": [
+        {
+          "step": 188,
+          "x": 0,
+          "y": 0,
+          "equals": "S"
+        }
+      ],
+      "screenExcludes": [
+        "confused, disappears."
+      ]
+    }
+  ]
+}

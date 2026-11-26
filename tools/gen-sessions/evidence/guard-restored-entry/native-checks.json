@@ -1,0 +1,82 @@
+[
+  {
+    "runtime": "source-baseline",
+    "command": [
+      "node",
+      "--max-old-space-size=512",
+      "--preserve-symlinks",
+      "--preserve-symlinks-main",
+      "/Users/rohit/research/code/contest/.cache/restart-20261122/guard-restored-entry-parent-source-baseline-native-runner/tools/tty-text-window-native-gate.mjs",
+      "/Users/rohit/research/code/contest/.cache/restart-20261122/guard-restored-entry-parent-native.session.json",
+      "/Users/rohit/research/code/contest/.cache/restart-20261122/guard-restored-entry-parent-source-baseline-native.json"
+    ],
+    "exit": 1,
+    "exact": 3,
+    "total": 5,
+    "seconds": 2.05,
+    "report": ".cache/restart-20261122/guard-restored-entry-parent-source-baseline-native.json",
+    "reportSHA256": "48760672389dbaca9aba837fc1bea0954d63dbc06f84a4f72b2e4ab5e796fca1",
+    "log": ".cache/restart-20261122/guard-restored-entry-parent-source-baseline-native.log",
+    "logSHA256": "4c903b4fb52e4e402339a8a55ea017204e28781cc67bdd4e13c1c209fbf92f08"
+  },
+  {
+    "runtime": "source-candidate",
+    "command": [
+      "node",
+      "--max-old-space-size=512",
+      "--preserve-symlinks",
+      "--preserve-symlinks-main",
+      "/Users/rohit/research/code/contest/.cache/restart-20261122/guard-restored-entry-parent-source-candidate-native-runner/tools/tty-text-window-native-gate.mjs",
+      "/Users/rohit/research/code/contest/.cache/restart-20261122/guard-restored-entry-parent-native.session.json",
+      "/Users/rohit/research/code/contest/.cache/restart-20261122/guard-restored-entry-parent-source-candidate-native.json"
+    ],
+    "exit": 0,
+    "exact": 5,
+    "total": 5,
+    "seconds": 1.98,
+    "report": ".cache/restart-20261122/guard-restored-entry-parent-source-candidate-native.json",
+    "reportSHA256": "1fcc9928edc130cb1c784161c9b85a421f6fb35531b214e15adde78bc005c475",
+    "log": ".cache/restart-20261122/guard-restored-entry-parent-source-candidate-native.log",
+    "logSHA256": "7d5ec641d088b3bf2dd91f84bc0b1216dd00831063193f16bf287d3127df1f1e"
+  },
+  {
+    "runtime": "published-baseline",
+    "command": [
+      "node",
+      "--max-old-space-size=512",
+      "--preserve-symlinks",
+      "--preserve-symlinks-main",
+      "/Users/rohit/research/code/contest/.cache/restart-20261122/guard-restored-entry-parent-published-baseline-native-runner/tools/tty-text-window-native-gate.mjs",
+      "/Users/rohit/research/code/contest/.cache/restart-20261122/guard-restored-entry-parent-native.session.json",
+      "/Users/rohit/research/code/contest/.cache/restart-20261122/guard-restored-entry-parent-published-baseline-native.json"
+    ],
+    "exit": 1,
+    "exact": 3,
+    "total": 5,
+    "seconds": 1.69,
+    "report": ".cache/restart-20261122/guard-restored-entry-parent-published-baseline-native.json",
+    "reportSHA256": "48760672389dbaca9aba837fc1bea0954d63dbc06f84a4f72b2e4ab5e796fca1",
+    "log": ".cache/restart-20261122/guard-restored-entry-parent-published-baseline-native.log",
+    "logSHA256": "4c903b4fb52e4e402339a8a55ea017204e28781cc67bdd4e13c1c209fbf92f08"
+  },
+  {
+    "runtime": "composed",
+    "command": [
+      "node",
+      "--max-old-space-size=512",
+      "--preserve-symlinks",
+      "--preserve-symlinks-main",
+      "/Users/rohit/research/code/contest/.cache/restart-20261122/guard-restored-entry-parent-composed-native-runner/tools/tty-text-window-native-gate.mjs",
+      "/Users/rohit/research/code/contest/.cache/restart-20261122/guard-restored-entry-parent-native.session.json",
+      "/Users/rohit/research/code/contest/.cache/restart-20261122/guard-restored-entry-parent-composed-native.json"
+    ],
+    "exit": 0,
+    "exact": 5,
+    "total": 5,
+    "seconds": 1.69,
+    "report": ".cache/restart-20261122/guard-restored-entry-parent-composed-native.json",
+    "reportSHA256": "1fcc9928edc130cb1c784161c9b85a421f6fb35531b214e15adde78bc005c475",
+    "log": ".cache/restart-20261122/guard-restored-entry-parent-composed-native.log",
+    "logSHA256": "7d5ec641d088b3bf2dd91f84bc0b1216dd00831063193f16bf287d3127df1f1e"
+  }
+]

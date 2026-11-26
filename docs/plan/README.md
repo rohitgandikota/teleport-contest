@@ -24,17 +24,26 @@ Conditional guard naming is pushed as `8c978c3f`. Its six native cases improve
 from 4/6 to 6/6, repairing 18 boundaries. All 913 recordings and the focused
 checks pass, with all 1,204 tested files matching the published tree.
 
-The current corpse naming fix changes only objnam.js. Forty owner controls and
-all four native cases pass, versus three native cases before the fix. All 31
-retained checks, 122 selected/public replays and 122 strict workers pass. All
-917 recordings pass on NFS, covering 929,357 screens/cursors, 20,161,647 random
-calls and 33,131 frames. The checkpoint is ready for immediate publication. Three unchanged killer_xname field-restoration diagnostics
-remain open. See STATUS for exact inputs and the immediate publication steps.
+Corpse naming is pushed as `5674c5ca`. It changes only objnam.js. Forty owner
+controls and all four native cases pass, versus three native cases before the
+fix. All 31 retained checks, 122 selected/public replays and 122 strict workers
+pass. All 917 recordings pass on NFS, covering 929,357 screens/cursors,
+20,161,647 random calls and 33,131 frames. All 1,208 tested files match the
+published tree. Three unchanged killer_xname field-shape diagnostics remain open.
 
-The last official recheck at 22:05 EST returned the 21:05 feed: rank 7,
+The next guard fix adds the missing cleanup when the hero has left and the
+corridor entrance is restored. Five native cases pass versus three, with all
+three negative reports unchanged. It repairs seven screen boundaries and the
+two positive random streams. All 28 ordinary controls, 36 retained checks,
+92 selected/public recordings and 92 strict workers pass. Full918 passes all
+918 recordings with default limits and no retries: 930,434 screens/cursors,
+20,194,075 random calls and 33,131 frames. Publication is next.
+See STATUS for the fixed runtime and exact next action.
+
+The last official recheck at 22:47 EST returned the 21:05 feed: agentic rank 7,
 812 unmatched screens, 44/44 public and 42/56 held-out passes. Its 20:32 scored
-row predates these pushes and identifies no exact commit. Local verification
-establishes no newer held-out result.
+row predates these pushes and identifies no exact commit. The official site
+lists six-hour scoring cycles. Local tests establish no newer held-out result.
 
 Shopkeeper re-entry is pushed as `31a63071`. All 906 maintained recordings
 pass on the exact published runtime with two NFS CPU workers, default budgets

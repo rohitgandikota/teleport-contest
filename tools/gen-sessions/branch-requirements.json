@@ -4620,6 +4620,11 @@
     {"group":"Corpse naming","id":"corpse-xname.unknown-plural-contact","cFile":"src/objnam.c","cFunction":"corpse_xname","description":"Unknown plural impact suppresses the indefinite article and preserves the actual corpse stack."},
     {"group":"Corpse naming","id":"corpse-xname.known-plural-contact","cFile":"src/objnam.c","cFunction":"corpse_xname","description":"Known plural impact retains the definite article and petrifies the generated keeper."},
     {"group":"Corpse naming","id":"corpse-xname.unknown-plural-held","cFile":"src/objnam.c","cFunction":"corpse_xname","description":"Blind held plural stack keeps quantity and inventory naming without landed contact."},
-    {"group":"Corpse naming","id":"corpse-xname.unknown-singular-contact","cFile":"src/objnam.c","cFunction":"corpse_xname","description":"Unknown singular impact retains the indefinite article and actual petrification."}
+    {"group":"Corpse naming","id":"corpse-xname.unknown-singular-contact","cFile":"src/objnam.c","cFunction":"corpse_xname","description":"Unknown singular impact retains the indefinite article and actual petrification."},
+    {"group":"guard-restored-entry","id":"vault.restored-entry.visible","cFile":"src/vault.c","cFunction":"gd_move","description":"entry-restored-far-teleport"},
+    {"group":"guard-restored-entry","id":"vault.restored-entry.hidden","cFile":"src/vault.c","cFunction":"gd_move","description":"entry-restored-hidden-teleport"},
+    {"group":"guard-restored-entry","id":"vault.restored-entry.two-entry-negative","cFile":"src/vault.c","cFunction":"gd_move","description":"two-entry-far-negative"},
+    {"group":"guard-restored-entry","id":"vault.restored-entry.before-next-turn-negative","cFile":"src/vault.c","cFunction":"gd_move","description":"restored-entry-before-next-turn-negative"},
+    {"group":"guard-restored-entry","id":"vault.restored-entry.ordinary-exit-negative","cFile":"src/vault.c","cFunction":"gd_move","description":"ordinary-exit-negative"}
   ]
 }

@@ -1,0 +1,31 @@
+{
+  "startedAt": "2026-11-26T03:50:57.146104+00:00",
+  "command": [
+    "node",
+    "/Users/rohit/research/code/contest/scripts/record-session.mjs",
+    "/Users/rohit/research/code/contest/.cache/restart-20261122/guard-restored-entry-parent-minimal.session.json",
+    "/Users/rohit/research/code/contest/.cache/restart-20261122/guard-restored-entry-parent-native.session.json"
+  ],
+  "input": ".cache/restart-20261122/guard-restored-entry-parent-minimal.session.json",
+  "inputSHA256": "1f1f3ca094e9aff7a7f8bf1bdb640fffaa9fad4bdb00d26f992ff9bda7c2702c",
+  "primaryRecipeSHA256": "1cbf009a45ecfaeafea96d4e1fbc1cbfff010fd1fef286212dac115de3ed0ed2",
+  "binarySha256": "ba4dbc1c823f8d4b0cfb6fd594d00ff0ff5754daaaa2036bee15baeffdf85aa7",
+  "recorderSha256": "b129caee2ca3941b30c36f5c26644bd37ff610344332eb511c474b8709b70648",
+  "cPin": "16ff59115315917b93185d026aeefea06db9b0f4",
+  "timezone": "Etc/GMT+4",
+  "raw": ".cache/restart-20261122/guard-restored-entry-parent-native.session.json",
+  "exit": 0,
+  "closedAt": "2026-11-26T03:50:57.700075+00:00",
+  "log": ".cache/restart-20261122/guard-restored-entry-parent-native-recording.log",
+  "logSHA256": "51edf66acf12094b6420d60cc2a48a4ef5a8567c78ce9aa356ece5d593fc41a2",
+  "rawSha256": "0b8294748f93709831d4333e04df9bd1ebd173d6049c6bf4d6015d446c542d11",
+  "bytes": 4410858,
+  "segments": 5,
+  "boundaries": 1077,
+  "keys": 1072,
+  "calls": 32428,
+  "frames": 0,
+  "fiveInputFieldsAndPresencePreserved": true,
+  "allKeysExact": true,
+  "cExecutedOnce": true
+}

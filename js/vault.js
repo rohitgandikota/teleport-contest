@@ -617,6 +617,15 @@ export async function gd_move(guard) {
         }
     }
 
+    // src/vault.c:1009, the entry was restored after the hero left the corridor.
+    if (egd.fcend > 2 && in_fcorridor(guard, guard.mx, guard.my)
+        && !egd.gddone && !in_fcorridor(guard, u.ux, u.uy)
+        && game.level.at(egd.fakecorr[0].fx, egd.fakecorr[0].fy).typ
+            === egd.fakecorr[0].ftyp) {
+        await pline(`${noit_Monnam(guard)}, confused, disappears.`);
+        return gd_move_cleanup(guard, semi_dead, true);
+    }
+
     if (egd.fcend > 1 && u_carry_gold
         && (in_fcorridor(guard, u.ux, u.uy) || u_in_vault)) {
         if (egd.warncnt < 6) {

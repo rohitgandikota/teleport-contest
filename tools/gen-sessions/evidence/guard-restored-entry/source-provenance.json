@@ -1,0 +1,47 @@
+{
+  "classification": "Historical source/build locations are provenance data only; public gate never dereferences them",
+  "sourcePacket": ".cache/restart-20261122/guard-restored-entry-source-audit",
+  "sourceSealSHA256": "8d141acab774cba57edf58c0f40dad75a7a727d4e0b95639dc537b4896b5c7c3",
+  "sourceManifestSHA256": "15bc3cb8d4294c786b1c76109c4a80cae153d82ace94bc21aa79377260af1104",
+  "baselineRuntimeSHA256": "673194bc4f680064af746bc2a36f67a3f8473d24ab88685b060d604f183ebf8e",
+  "candidateRuntimeSHA256": "599b7c14138fe036a09f484f5a52fa251e1c352b5e83c91192e517d563cbcaaf",
+  "sourcePins": {
+    "nethack-c/upstream/src/vault.c": {
+      "sha256": "490406d3195819eec9d155ed7d1e6119ab98571bf1e9879831d40dfbe9a4368f",
+      "bytes": 44702
+    },
+    "nethack-c/upstream/src/mon.c": {
+      "sha256": "0ab56f908ac2147a5e57970250b99f90d47f2ec32fbdfb1a6fab04c33167bd01",
+      "bytes": 220281
+    },
+    "nethack-c/upstream/src/monmove.c": {
+      "sha256": "a7dae4554a30b51e0971ae32086c7494da8e3b8c18ee0e6d4a875f4a8baaf613",
+      "bytes": 86176
+    },
+    "nethack-c/upstream/src/teleport.c": {
+      "sha256": "e1d9d4255ac148caa4618dc4f275ddf5417d2a2830beca738c3821cf7678e5c8",
+      "bytes": 87744
+    },
+    "nethack-c/upstream/src/do_name.c": {
+      "sha256": "64c6cb5e7f4034e9edbd8fac983b313a7df0e029b4812bd3a9327852d12ad9d1",
+      "bytes": 57517
+    },
+    "nethack-c/upstream/include/mextra.h": {
+      "sha256": "e78bdfa21d4fd7718f1a25ed8f1ef466c96c2bd49f2069af7d1ab346148a1229",
+      "bytes": 9207
+    },
+    "nethack-c/upstream/include/monst.h": {
+      "sha256": "08e9e2251ac5c3beedb8700dd56287f9f397b506851ceb44a37e41b6d80067a6",
+      "bytes": 12413
+    },
+    "tools/half-damage-reader-observe.mjs": {
+      "sha256": "201cdafe4409d5d58414c1d0ebc0449c32b29834cdf35c72c151a555d9031d07",
+      "bytes": 3796
+    }
+  },
+  "initialProbeSHA256": "421e698318f1d549eec0606733725333c23112977a159be03b81229f61220dcd",
+  "initialProbeCommandSHA256": "66026b7e064b6011a2aa0e3d87578983f6e621f584de2c53d3bb0bbbf987c771",
+  "inputLockSHA256": "168468130efc663c2bef05a2488ac3b50ca26f3e24bfe41cb6776a56f78edaf8",
+  "patchSHA256": "8e963c37574684bc40f5227fd6b458a4142e577695c6f2f39c62703e7eb6dda2",
+  "noNativeComparisonPerformedByWorker": true
+}

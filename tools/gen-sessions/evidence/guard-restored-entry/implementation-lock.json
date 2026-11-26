@@ -1,0 +1,30 @@
+{
+  "candidateExisted": false,
+  "baseline": "26/28, only two C cleanup policy positives fail",
+  "files": {
+    "SOURCE-REVIEW.md": {
+      "sha256": "8d82515dec4772c3dc4218969f780db0f528cbeaa9b79aa08ffb25c469bf1391",
+      "bytes": 4705
+    },
+    "tools/ordinary-controls.mjs": {
+      "sha256": "7130c14c57e9b54cabaf00da9f5090975d66327d431d74ee09be79ed4dd86f33",
+      "bytes": 3819
+    },
+    "tools/observer.mjs": {
+      "sha256": "6b0c30bca27b7a680601555cc52623885c8c76d0b689b2239e12a78015ed1784",
+      "bytes": 2771
+    },
+    "review/baseline-ordinary.json": {
+      "sha256": "719d0262f02900fbb883201d5bce8c7b4398474de2a49bdebd6fdcee82a53c3b",
+      "bytes": 9908
+    },
+    "review/input-lock.json": {
+      "sha256": "168468130efc663c2bef05a2488ac3b50ca26f3e24bfe41cb6776a56f78edaf8",
+      "bytes": 7022
+    },
+    "review/pre-candidate-lock.json": {
+      "sha256": "7ed2f7f55ee6fa4ec125550da6c3c8513e0ec8f013b724763d84e42b6d84cde8",
+      "bytes": 1640
+    }
+  }
+}

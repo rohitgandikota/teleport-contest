@@ -1,0 +1,67 @@
+{
+  "classification": "Checks of fresh ordinary passive states and output-neutral source traces. No constructed game state or native comparison.",
+  "passed": 15,
+  "total": 15,
+  "results": [
+    {
+      "name": "entry-restored-far-teleport: identical full passive prefix through210",
+      "pass": true
+    },
+    {
+      "name": "entry-restored-far-teleport: all C conditions reached at205",
+      "pass": true
+    },
+    {
+      "name": "entry-restored-far-teleport: baseline guard remains at next two actual turns",
+      "pass": true
+    },
+    {
+      "name": "entry-restored-far-teleport: wait calls prove baseline owner execution",
+      "pass": true
+    },
+    {
+      "name": "entry-restored-far-teleport: candidate removes guard before any later wait call",
+      "pass": true
+    },
+    {
+      "name": "entry-restored-far-teleport: C message policy retained",
+      "pass": true
+    },
+    {
+      "name": "entry-restored-hidden-teleport: identical full passive prefix through210",
+      "pass": true
+    },
+    {
+      "name": "entry-restored-hidden-teleport: all C conditions reached at205",
+      "pass": true
+    },
+    {
+      "name": "entry-restored-hidden-teleport: baseline guard remains at next two actual turns",
+      "pass": true
+    },
+    {
+      "name": "entry-restored-hidden-teleport: wait calls prove baseline owner execution",
+      "pass": true
+    },
+    {
+      "name": "entry-restored-hidden-teleport: candidate removes guard before any later wait call",
+      "pass": true
+    },
+    {
+      "name": "entry-restored-hidden-teleport: C message policy retained",
+      "pass": true
+    },
+    {
+      "name": "two-entry-far-negative: unchanged five full-output hashes",
+      "pass": true
+    },
+    {
+      "name": "restored-entry-before-next-turn-negative: unchanged five full-output hashes",
+      "pass": true
+    },
+    {
+      "name": "ordinary-exit-negative: unchanged five full-output hashes",
+      "pass": true
+    }
+  ]
+}

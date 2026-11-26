@@ -1,0 +1,223 @@
+{
+  "classification": "Fresh ordinary JS controls against C source contracts; native comparison remains parent-only",
+  "passed": 26,
+  "total": 28,
+  "results": [
+    {
+      "name": "entry-restored-far-teleport: passive observer neutral",
+      "pass": true
+    },
+    {
+      "name": "entry-restored-far-teleport: deferred and exhausted input equal",
+      "pass": true
+    },
+    {
+      "name": "entry-restored-far-teleport: all keys and RNG boundaries retained",
+      "pass": true
+    },
+    {
+      "name": "entry-restored-far-teleport: actual guard and restoration producers",
+      "pass": true
+    },
+    {
+      "name": "entry-restored-far-teleport: C cleanup policy or paired negative",
+      "pass": false,
+      "error": "C disposes the restored-entry guard on the next turn\n+ actual - expected\n\n+ {\n+   begin: 2,\n+   corridor: [\n+     {\n+       cansee: false,\n+       couldsee: false,\n+       current: 1,\n+       saved: 1,\n+       xy: [\n+         25,\n+         5\n+       ]\n+     },\n+     {\n+       cansee: false,\n+       couldsee: false,\n+       current: 0,\n+       saved: 0,\n+       xy: [\n+         26,\n+         5\n+       ]\n+     },\n+     {\n+       cansee: false,\n+       couldsee: false,\n+       current: 24,\n+       saved: 0,\n+       xy: [\n+         27,\n+         5\n+       ]\n+     }\n+   ],\n+   done: 0,\n+   end: 3,\n+"
+    },
+    {
+      "name": "entry-restored-hidden-teleport: passive observer neutral",
+      "pass": true
+    },
+    {
+      "name": "entry-restored-hidden-teleport: deferred and exhausted input equal",
+      "pass": true
+    },
+    {
+      "name": "entry-restored-hidden-teleport: all keys and RNG boundaries retained",
+      "pass": true
+    },
+    {
+      "name": "entry-restored-hidden-teleport: actual guard and restoration producers",
+      "pass": true
+    },
+    {
+      "name": "entry-restored-hidden-teleport: C cleanup policy or paired negative",
+      "pass": false,
+      "error": "C disposes the restored-entry guard on the next turn\n+ actual - expected\n\n+ {\n+   begin: 2,\n+   corridor: [\n+     {\n+       cansee: false,\n+       couldsee: false,\n+       current: 1,\n+       saved: 1,\n+       xy: [\n+         25,\n+         5\n+       ]\n+     },\n+     {\n+       cansee: false,\n+       couldsee: false,\n+       current: 0,\n+       saved: 0,\n+       xy: [\n+         26,\n+         5\n+       ]\n+     },\n+     {\n+       cansee: false,\n+       couldsee: false,\n+       current: 24,\n+       saved: 0,\n+       xy: [\n+         27,\n+         5\n+       ]\n+     }\n+   ],\n+   done: 0,\n+   end: 3,\n+"
+    },
+    {
+      "name": "two-entry-far-negative: passive observer neutral",
+      "pass": true
+    },
+    {
+      "name": "two-entry-far-negative: deferred and exhausted input equal",
+      "pass": true
+    },
+    {
+      "name": "two-entry-far-negative: all keys and RNG boundaries retained",
+      "pass": true
+    },
+    {
+      "name": "two-entry-far-negative: actual guard and restoration producers",
+      "pass": true
+    },
+    {
+      "name": "two-entry-far-negative: C cleanup policy or paired negative",
+      "pass": true
+    },
+    {
+      "name": "two-entry-far-negative: all five original negative hashes",
+      "pass": true
+    },
+    {
+      "name": "restored-entry-before-next-turn-negative: passive observer neutral",
+      "pass": true
+    },
+    {
+      "name": "restored-entry-before-next-turn-negative: deferred and exhausted input equal",
+      "pass": true
+    },
+    {
+      "name": "restored-entry-before-next-turn-negative: all keys and RNG boundaries retained",
+      "pass": true
+    },
+    {
+      "name": "restored-entry-before-next-turn-negative: actual guard and restoration producers",
+      "pass": true
+    },
+    {
+      "name": "restored-entry-before-next-turn-negative: C cleanup policy or paired negative",
+      "pass": true
+    },
+    {
+      "name": "restored-entry-before-next-turn-negative: all five original negative hashes",
+      "pass": true
+    },
+    {
+      "name": "ordinary-exit-negative: passive observer neutral",
+      "pass": true
+    },
+    {
+      "name": "ordinary-exit-negative: deferred and exhausted input equal",
+      "pass": true
+    },
+    {
+      "name": "ordinary-exit-negative: all keys and RNG boundaries retained",
+      "pass": true
+    },
+    {
+      "name": "ordinary-exit-negative: actual guard and restoration producers",
+      "pass": true
+    },
+    {
+      "name": "ordinary-exit-negative: C cleanup policy or paired negative",
+      "pass": true
+    },
+    {
+      "name": "ordinary-exit-negative: all five original negative hashes",
+      "pass": true
+    }
+  ],
+  "rows": [
+    {
+      "name": "entry-restored-far-teleport",
+      "keys": 219,
+      "boundaries": 220,
+      "calls": 6490,
+      "hashes": {
+        "screens": "6b865078efa08af9ccda68d028b78db4a67126db2aa372f1033d3e472592101f",
+        "cursors": "85c0aae9c6c491b07f491b33785bcdd4a4741fe3a0c64adde189307bab4c9940",
+        "calls": "77fdc83e7a365b31273738385cd781ed00c0ff71d8dfd100d2b4e93186c9d519",
+        "slices": "3e05073e71ced8668dc9d8623e6fd533a069af183e33f0135427ed18f7f5acfc",
+        "frames": "c412ffc277fe86f76b05ee2b6cf331d3ce3b557fb20bf275d060557932fb458c"
+      },
+      "deferredHashes": {
+        "screens": "6b865078efa08af9ccda68d028b78db4a67126db2aa372f1033d3e472592101f",
+        "cursors": "85c0aae9c6c491b07f491b33785bcdd4a4741fe3a0c64adde189307bab4c9940",
+        "calls": "77fdc83e7a365b31273738385cd781ed00c0ff71d8dfd100d2b4e93186c9d519",
+        "slices": "3e05073e71ced8668dc9d8623e6fd533a069af183e33f0135427ed18f7f5acfc",
+        "frames": "c412ffc277fe86f76b05ee2b6cf331d3ce3b557fb20bf275d060557932fb458c"
+      }
+    },
+    {
+      "name": "entry-restored-hidden-teleport",
+      "keys": 219,
+      "boundaries": 220,
+      "calls": 6490,
+      "hashes": {
+        "screens": "6b865078efa08af9ccda68d028b78db4a67126db2aa372f1033d3e472592101f",
+        "cursors": "85c0aae9c6c491b07f491b33785bcdd4a4741fe3a0c64adde189307bab4c9940",
+        "calls": "77fdc83e7a365b31273738385cd781ed00c0ff71d8dfd100d2b4e93186c9d519",
+        "slices": "3e05073e71ced8668dc9d8623e6fd533a069af183e33f0135427ed18f7f5acfc",
+        "frames": "c412ffc277fe86f76b05ee2b6cf331d3ce3b557fb20bf275d060557932fb458c"
+      },
+      "deferredHashes": {
+        "screens": "6b865078efa08af9ccda68d028b78db4a67126db2aa372f1033d3e472592101f",
+        "cursors": "85c0aae9c6c491b07f491b33785bcdd4a4741fe3a0c64adde189307bab4c9940",
+        "calls": "77fdc83e7a365b31273738385cd781ed00c0ff71d8dfd100d2b4e93186c9d519",
+        "slices": "3e05073e71ced8668dc9d8623e6fd533a069af183e33f0135427ed18f7f5acfc",
+        "frames": "c412ffc277fe86f76b05ee2b6cf331d3ce3b557fb20bf275d060557932fb458c"
+      }
+    },
+    {
+      "name": "two-entry-far-negative",
+      "keys": 219,
+      "boundaries": 220,
+      "calls": 6454,
+      "hashes": {
+        "screens": "ecdf631065dcfe0d154efcd897cc60647974b352800e0366131603c90182dd9f",
+        "cursors": "5a028ddba5ccee91d5ed6f73724aa4a44effa58b84a2df18f90e5ab4da385c77",
+        "calls": "dee89d162b9a8c06347af3e2bd919ca8288ca1abb8896cdbaa87d613a5a92ab9",
+        "slices": "00542c7c6fdb3ae9e59d43c9b42a567c7839cd667e0a9d26a93f1c01d6942c84",
+        "frames": "c412ffc277fe86f76b05ee2b6cf331d3ce3b557fb20bf275d060557932fb458c"
+      },
+      "deferredHashes": {
+        "screens": "ecdf631065dcfe0d154efcd897cc60647974b352800e0366131603c90182dd9f",
+        "cursors": "5a028ddba5ccee91d5ed6f73724aa4a44effa58b84a2df18f90e5ab4da385c77",
+        "calls": "dee89d162b9a8c06347af3e2bd919ca8288ca1abb8896cdbaa87d613a5a92ab9",
+        "slices": "00542c7c6fdb3ae9e59d43c9b42a567c7839cd667e0a9d26a93f1c01d6942c84",
+        "frames": "c412ffc277fe86f76b05ee2b6cf331d3ce3b557fb20bf275d060557932fb458c"
+      }
+    },
+    {
+      "name": "restored-entry-before-next-turn-negative",
+      "keys": 205,
+      "boundaries": 206,
+      "calls": 6413,
+      "hashes": {
+        "screens": "e9d6eb5bf90db767ec44040843e67acacba1f851f0eb2cd1974a916b9f4a900d",
+        "cursors": "89d72bcb145688ed86fcbb9be9636a93fd01a1b4988b7ad1757b592c537b2d2d",
+        "calls": "4aa0eaf0f72f3a0bb7cf9df754bde109701c6990da75db07d6485fa1e1966127",
+        "slices": "5fd7e9cae80c2fab9742523e3834bf3c56c4122638bece7ca3c7537b9fdb9c0a",
+        "frames": "cf9b6a0ec504cd5da53d01a675a2441052f08ddd144fd048ef12806b086281c7"
+      },
+      "deferredHashes": {
+        "screens": "e9d6eb5bf90db767ec44040843e67acacba1f851f0eb2cd1974a916b9f4a900d",
+        "cursors": "89d72bcb145688ed86fcbb9be9636a93fd01a1b4988b7ad1757b592c537b2d2d",
+        "calls": "4aa0eaf0f72f3a0bb7cf9df754bde109701c6990da75db07d6485fa1e1966127",
+        "slices": "5fd7e9cae80c2fab9742523e3834bf3c56c4122638bece7ca3c7537b9fdb9c0a",
+        "frames": "cf9b6a0ec504cd5da53d01a675a2441052f08ddd144fd048ef12806b086281c7"
+      }
+    },
+    {
+      "name": "ordinary-exit-negative",
+      "keys": 210,
+      "boundaries": 211,
+      "calls": 6581,
+      "hashes": {
+        "screens": "51d9ab3676888f2ef164bcf9ace94579aaea72bc2d48dbcd92292e0e105865a0",
+        "cursors": "b3dca09bb4519a5c4cf19b6d484199edea497cb5d4b7aa31213180637e24df82",
+        "calls": "5c12200739a03097cf58f1eac9c15e926e9b07baedd02a00595edb60487fdf66",
+        "slices": "3c10540636f07f7d627e6b4ce87ba3cc674e0b113dd1a67951adc39933a78679",
+        "frames": "eb916bbad1aea9fc6bd6001b15e689b3ae5b4e82fd73e30e2759ff2ef7f5050c"
+      },
+      "deferredHashes": {
+        "screens": "51d9ab3676888f2ef164bcf9ace94579aaea72bc2d48dbcd92292e0e105865a0",
+        "cursors": "b3dca09bb4519a5c4cf19b6d484199edea497cb5d4b7aa31213180637e24df82",
+        "calls": "5c12200739a03097cf58f1eac9c15e926e9b07baedd02a00595edb60487fdf66",
+        "slices": "3c10540636f07f7d627e6b4ce87ba3cc674e0b113dd1a67951adc39933a78679",
+        "frames": "eb916bbad1aea9fc6bd6001b15e689b3ae5b4e82fd73e30e2759ff2ef7f5050c"
+      }
+    }
+  ]
+}

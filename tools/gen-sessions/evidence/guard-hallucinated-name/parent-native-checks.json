@@ -1,0 +1,42 @@
+[
+  {
+    "label": "baseline",
+    "command": [
+      "node",
+      "--max-old-space-size=512",
+      "--preserve-symlinks",
+      "--preserve-symlinks-main",
+      "/Users/rohit/research/code/contest/.cache/restart-20261122/guard-cleanup-policy-parent-composed-native-runner/tools/tty-text-window-native-gate.mjs",
+      "/Users/rohit/research/code/contest/.cache/restart-20261122/guard-hallucinated-name-parent-native.session.json",
+      "/Users/rohit/research/code/contest/.cache/restart-20261122/guard-hallucinated-name-parent-baseline-native.json"
+    ],
+    "exit": 1,
+    "seconds": 2.05,
+    "report": ".cache/restart-20261122/guard-hallucinated-name-parent-baseline-native.json",
+    "reportSHA256": "c8775ffea889ad77e07a145b52f6d04b1e3475f276dd7de4094a5955698a819c",
+    "log": ".cache/restart-20261122/guard-hallucinated-name-parent-baseline-native.log",
+    "logSHA256": "22a469dd4760cfcee02d5f4c680311e0fc9c9fcf22ef3b81264a5fbb54e205bd",
+    "exact": 4,
+    "total": 6
+  },
+  {
+    "label": "candidate",
+    "command": [
+      "node",
+      "--max-old-space-size=512",
+      "--preserve-symlinks",
+      "--preserve-symlinks-main",
+      "/Users/rohit/research/code/contest/.cache/restart-20261122/guard-hallucinated-name-parent-candidate-native-runner/tools/tty-text-window-native-gate.mjs",
+      "/Users/rohit/research/code/contest/.cache/restart-20261122/guard-hallucinated-name-parent-native.session.json",
+      "/Users/rohit/research/code/contest/.cache/restart-20261122/guard-hallucinated-name-parent-candidate-native.json"
+    ],
+    "exit": 0,
+    "seconds": 2.14,
+    "report": ".cache/restart-20261122/guard-hallucinated-name-parent-candidate-native.json",
+    "reportSHA256": "4a631e4763068c855e9a7f83dd6916dfdf1b3ac886dc0d744051590f4c64dc83",
+    "log": ".cache/restart-20261122/guard-hallucinated-name-parent-candidate-native.log",
+    "logSHA256": "dab4475cc31cf4a7ffd15b7f2566d3926e6082f3cb2ee63b6efc96a6cc3c197e",
+    "exact": 6,
+    "total": 6
+  }
+]

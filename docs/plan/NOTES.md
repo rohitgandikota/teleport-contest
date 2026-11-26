@@ -11,6 +11,36 @@ Newest first within each section.
 
 ---
 
+## Observed scoring cadence, November 25, 2026
+
+Do not promise that a push will appear on the official table within two hours.
+The [official feed](https://mazesofmenace.ai/leaderboard/data.json) checked at
+22:05 EST still reports this fork's last score at20:32 EST. Its preceding
+scores were at14:31,08:20 and02:23 EST, roughly six hours apart. These are
+observed timestamps, not a guaranteed future schedule. The feed does not
+identify the exact scored commit. Compare lastScored with push times, and
+keep local parity results separate from the last observed held-out result.
+Compact receipt:leaderboard-current-recheck-20261126-030513.json.
+
+## Message bytes and mixed glyphs
+
+A decoded map glyph can occupy the same JS character range as a C text byte.
+Do not decide its rendering path from its character value alone. C marks
+mixed message output in tty_putmixed, and redotoplin emits its first high-bit
+glyph through g_putch before ordinary signed text. The byte-handling candidate
+lost glyphs in nine existing recordings when that distinction was missing.
+Keep mixed-glyph and plain-byte controls separate at the actual window entry.
+
+## Dead shopkeeper disposal observations
+
+m_detach clears the shop bill and marks the monster detached while leaving it
+in fmon. dmonsfree unlinks it later. An observation at a pending death message
+can therefore find a zero-HP detached shopkeeper with an empty bill. Test that
+intermediate state and its later removal instead of requiring immediate unlink.
+The original billing-disposal recording establishes both boundaries without
+changing inputs. Source review and the corrected test pass on the published
+and pending runtimes; no gameplay change was needed.
+
 ## Interrupted trap setup belongs to its level
 
 goto_level returns for the current level before clearing context. A real

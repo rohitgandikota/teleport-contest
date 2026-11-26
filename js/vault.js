@@ -406,14 +406,13 @@ async function gd_letknow(guard) {
 async function gd_move_cleanup(guard, semi_dead, disappear_msg_seen) {
     const x = guard.mx, y = guard.my;
     const see_guard = canspotmon(guard);
-    const guard_name = noit_mon_nam(guard);
     parkguard(guard);
     await wallify_vault(guard);
     await restfakecorr(guard);
     if (!semi_dead && (in_fcorridor(guard, game.u.ux, game.u.uy)
                        || cansee(x, y))) {
         if (!disappear_msg_seen && see_guard) {
-            await pline(`Suddenly, ${guard_name} disappears.`);
+            await pline(`Suddenly, ${noit_mon_nam(guard)} disappears.`);
         }
         return 1;
     }

@@ -12,20 +12,32 @@ Ground rules are in `/CLAUDE.md`. Read that first if you have not.
 
 ## Current focus, 2026-11-25
 
-The 21:12 EST official recheck is still rank 7, now 812 unmatched screens and
-42/56 held-out passes, versus 659 and 43/56 previously. Public stays 44/44.
-The 20:32 EST scored row predates the three latest pushes. A source-grounded
-regression audit now runs alongside the guard and fruit checkpoints.
+The 21:12 EST official recheck remains rank 7, with 812 unmatched screens and
+42/56 held-out passes. Public stays 44/44. Its 20:32 EST scored row predates
+four recent pushes, and does not identify the scored commit. The regression
+audit proved a missing arrival-newsym await introduced by the engulfer change;
+that await is restored in the published guard checkpoint. Its contribution to
+the held-out score is unknown.
 
-Species bounds now match C's NUMMONS limit. Source controls pass 32/32 versus
-26/32, four ordinary cases and nine C comparisons remain exact, and all 107
-selected/public and strict checks pass. Full911 passes on NFS with default
-budgets and no retries: 926,078 screens/cursors, 20,011,996 random positions and
-33,131 frames. The previous trap-reset checkpoint is pushed as b09a3ace.
-The species checkpoint is pushed as aa9ecbbd. The guard cleanup now matches
-all five C cases and passes 80 selected/public and strict checks; full912 is
-now passes all 912 recordings on NFS. Fruit/text and its menu-color prerequisite match all eighteen
-C cases, including after composition with the guard fixes. See the top of STATUS for fixed snapshots and remaining limits.
+Species bounds are pushed as aa9ecbbd and pass all 911 recordings. Guard
+cleanup and diagnostic ordering are pushed as 80049d92 and pass all 912
+recordings, 80 selected/public checks, 80 strict checks and 35 retained checks.
+Both published trees match their complete NFS verification inputs.
+
+Fruit/text and its menu-color prerequisite are integrated locally. All eighteen
+fruit and five prior guard native comparisons match. The initial full915 run
+passed906/915, exposing nine screen regressions. A reviewed mixed-message glyph
+correction restores all nine to their published behavior and passes16 source
+controls. Fresh70 retained checks and142 selected/public recordings pass. The142
+strict checks and full916 continue on the corrected composition. The old full-style blank
+cell differences in three fixtures remain open and explicit.
+
+Conditional guard naming independently improves six C cases from4/6 to6/6,
+repairing18 boundaries. Its87 normal,87 strict,35 retained and30 portable checks
+pass. Full913 passes all913 recordings on the isolated candidate. The guard-only checkpoint
+is staged separately, with every tested file matching its staged Git blob.
+No pending fruit runtime or registry entry is staged with it. See STATUS for
+exact source graphs, receipts and publication steps.
 
 Shopkeeper re-entry is pushed as `31a63071`. All 906 maintained recordings
 pass on the exact published runtime with two NFS CPU workers, default budgets

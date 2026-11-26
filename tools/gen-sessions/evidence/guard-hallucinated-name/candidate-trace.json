@@ -1,0 +1,113 @@
+{
+  "classification": "Existing display RNG diagnostic logging, output-neutral; no native comparison",
+  "rows": [
+    {
+      "name": "nonhallucinated-cleanup-negative",
+      "loggingNeutral": true,
+      "hashes": {
+        "screens": "51d9ab3676888f2ef164bcf9ace94579aaea72bc2d48dbcd92292e0e105865a0",
+        "cursors": "b3dca09bb4519a5c4cf19b6d484199edea497cb5d4b7aa31213180637e24df82",
+        "calls": "5c12200739a03097cf58f1eac9c15e926e9b07baedd02a00595edb60487fdf66",
+        "slices": "3c10540636f07f7d627e6b4ce87ba3cc674e0b113dd1a67951adc39933a78679",
+        "frames": "eb916bbad1aea9fc6bd6001b15e689b3ae5b4e82fd73e30e2759ff2ef7f5050c"
+      },
+      "displayDraws": 0,
+      "namingDraws": []
+    },
+    {
+      "name": "hallucinated-visible-cleanup",
+      "loggingNeutral": true,
+      "hashes": {
+        "screens": "a95cf51fafe2252748fa4ba56148b6ac2eefd63446ca0dc3f7e88da8e68227cd",
+        "cursors": "506d3fe7e7cb25bd23787ebbfd248216fcceacaf91361369e0c73e940024aa27",
+        "calls": "da15c15c5b6c678b187f94a604b4977d9184d0d7f7985dc4eb01ec06ae7d4bc6",
+        "slices": "410895df512b4e9ff12a7c7f442ff07781fe19b56a99ad30f35ac038544daf7b",
+        "frames": "dbd94e4485071fbfe00eb66982cc30f5243253500524d9723fae6d92109c38c1"
+      },
+      "displayDraws": 77,
+      "namingDraws": [
+        {
+          "step": 211,
+          "turn": 43,
+          "guard": 122,
+          "index": 6405,
+          "call": "~drn2(430)=188 @js/do_name.js:137:16"
+        },
+        {
+          "step": 211,
+          "turn": 43,
+          "guard": 122,
+          "index": 6406,
+          "call": "~drn2(2)=0 @js/do_name.js:157:39"
+        }
+      ]
+    },
+    {
+      "name": "hallucinated-hidden-cleanup",
+      "loggingNeutral": true,
+      "hashes": {
+        "screens": "4c8e73b7c646e1f01d56469454ec26853305a6e0b19258d905bc25678bfccb44",
+        "cursors": "6c80de28f31bd08d11bdd62e8349fe67f89f964e42a2eafb0b5c3eee98f8afa5",
+        "calls": "da15c15c5b6c678b187f94a604b4977d9184d0d7f7985dc4eb01ec06ae7d4bc6",
+        "slices": "b7e8921aab2606cb131ffa89126eb73caae2269c84820f765959a6f4e5e1f71d",
+        "frames": "dbd94e4485071fbfe00eb66982cc30f5243253500524d9723fae6d92109c38c1"
+      },
+      "displayDraws": 77,
+      "namingDraws": [
+        {
+          "step": 211,
+          "turn": 43,
+          "guard": 122,
+          "index": 6405,
+          "call": "~drn2(430)=188 @js/do_name.js:137:16"
+        },
+        {
+          "step": 211,
+          "turn": 43,
+          "guard": 122,
+          "index": 6406,
+          "call": "~drn2(2)=0 @js/do_name.js:157:39"
+        }
+      ]
+    },
+    {
+      "name": "hallucinated-blind-cleanup",
+      "loggingNeutral": true,
+      "hashes": {
+        "screens": "7242e30101dd7766350da4252454241db9cf40b3d8c02cf45688f8bca0025602",
+        "cursors": "7182c651d292c8247ec83e4ccd342bcac3682e70afc3dd2b13db1bb6752b19ce",
+        "calls": "da15c15c5b6c678b187f94a604b4977d9184d0d7f7985dc4eb01ec06ae7d4bc6",
+        "slices": "f589e8c9ac862f58895090398ebb629ae7ca144db5eaaea9b39c88d83c105f30",
+        "frames": "48250bf8dcd6fd3199019dec20f4374a1ea2413b0a9f7fcf8c76bef8d91a7f2e"
+      },
+      "displayDraws": 21,
+      "namingDraws": []
+    },
+    {
+      "name": "hallucinated-before-cleanup-negative",
+      "loggingNeutral": true,
+      "hashes": {
+        "screens": "31ff69997ebe068dc06c3499ea108fe248feefa0a32218b02aa2fbc94fc0b5d1",
+        "cursors": "35e640808ac98384cb6217aaf6beca251b353b9294fe9febcc76ab4ca979d678",
+        "calls": "9ee927eb393f2d042c834009159beb928bf8a47202acf1f43920a29f51e9d1f8",
+        "slices": "ff5bba98b9a9405f864227baffdc24d09313055ba94297981d1797138049eecb",
+        "frames": "eb916bbad1aea9fc6bd6001b15e689b3ae5b4e82fd73e30e2759ff2ef7f5050c"
+      },
+      "displayDraws": 24,
+      "namingDraws": []
+    },
+    {
+      "name": "hallucinated-blind-before-cleanup-negative",
+      "loggingNeutral": true,
+      "hashes": {
+        "screens": "cc8e53c2fea3e34b4666bea0f7555f01363c0748f4888a1ab0cd9aea8b987d7e",
+        "cursors": "58b4348cb7cb9b328f7d0e356c5cbdbb6218994e3873b5bf502ffc62abb0a2cd",
+        "calls": "9ee927eb393f2d042c834009159beb928bf8a47202acf1f43920a29f51e9d1f8",
+        "slices": "1cd8cd3828445cf0b2885af905161056da611ba6009f3483ec9b122e89becbbc",
+        "frames": "28b63a1542f4d70b0f0637581d693adbdf87b5b20ca57e70411e395e2f20e7c2"
+      },
+      "displayDraws": 4,
+      "namingDraws": []
+    }
+  ]
+}

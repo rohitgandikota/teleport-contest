@@ -1,0 +1,11 @@
+RNGSTACK 6384 Error
+    at rn2_on_display_rng (file:///Users/rohit/research/code/contest/.cache/restart-20261122/guard-hallucinated-name-source-audit/baseline/js/rng.js:59:59)
+    at rndmonnam_with_code (file:///Users/rohit/research/code/contest/.cache/restart-20261122/guard-hallucinated-name-source-audit/baseline/js/do_name.js:137:16)
+    at x_monnam (file:///Users/rohit/research/code/contest/.cache/restart-20261122/guard-hallucinated-name-source-audit/baseline/js/do_name.js:268:28)
+    at noit_mon_nam (file:///Users/rohit/research/code/contest/.cache/restart-20261122/guard-hallucinated-name-source-audit/baseline/js/do_name.js:492:5)
+    at gd_move_cleanup (file:///Users/rohit/research/code/contest/.cache/restart-20261122/guard-hallucinated-name-source-audit/baseline/js/vault.js:409:24)
+    at gd_move (file:///Users/rohit/research/code/contest/.cache/restart-20261122/guard-hallucinated-name-source-audit/baseline/js/vault.js:777:16)
+    at async m_move (file:///Users/rohit/research/code/contest/.cache/restart-20261122/guard-hallucinated-name-source-audit/baseline/js/monmove.js:1797:22)
+    at async dochug (file:///Users/rohit/research/code/contest/.cache/restart-20261122/guard-hallucinated-name-source-audit/baseline/js/monmove.js:1514:22)
+    at async dochugw (file:///Users/rohit/research/code/contest/.cache/restart-20261122/guard-hallucinated-name-source-audit/baseline/js/monmove.js:1615:23)
+    at async movemon_singlemon (file:///Users/rohit/research/code/contest/.cache/restart-20261122/guard-hallucinated-name-source-audit/baseline/js/mon.js:523:5)

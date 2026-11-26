@@ -1,0 +1,31 @@
+{
+  "startedAt": "2026-11-26T02:43:57.508570+00:00",
+  "command": [
+    "node",
+    "/Users/rohit/research/code/contest/scripts/record-session.mjs",
+    "/Users/rohit/research/code/contest/.cache/restart-20261122/guard-hallucinated-name-parent-minimal.session.json",
+    "/Users/rohit/research/code/contest/.cache/restart-20261122/guard-hallucinated-name-parent-native.session.json"
+  ],
+  "input": ".cache/restart-20261122/guard-hallucinated-name-parent-minimal.session.json",
+  "inputSHA256": "b3d8e30f084a2ed7f0c9436bbfe701736e5eabd472b5ba683322c3bcd0b7f0f4",
+  "primaryRecipeSHA256": "f7c36bc50d7c92a2c8ebc69940a4707b76212de900932b6060e5e6bc8660400f",
+  "binarySha256": "ba4dbc1c823f8d4b0cfb6fd594d00ff0ff5754daaaa2036bee15baeffdf85aa7",
+  "recorderSha256": "b129caee2ca3941b30c36f5c26644bd37ff610344332eb511c474b8709b70648",
+  "cPin": "16ff59115315917b93185d026aeefea06db9b0f4",
+  "timezone": "Etc/GMT+4",
+  "raw": ".cache/restart-20261122/guard-hallucinated-name-parent-native.session.json",
+  "exit": 0,
+  "closedAt": "2026-11-26T02:43:58.275229+00:00",
+  "log": ".cache/restart-20261122/guard-hallucinated-name-parent-native-recording.log",
+  "logSHA256": "947647f6c62ded35906d85030126853608e3961023fdcc116dcc4bee58939500",
+  "rawSha256": "a68e3eaf35cfbf52cafa3b562e9e46b19e0459fa587be0820be9a045606cbd10",
+  "bytes": 5369894,
+  "segments": 6,
+  "boundaries": 1343,
+  "keys": 1337,
+  "calls": 39082,
+  "frames": 0,
+  "fiveInputFieldsAndPresencePreserved": true,
+  "allKeysExact": true,
+  "cExecutedOnce": true
+}

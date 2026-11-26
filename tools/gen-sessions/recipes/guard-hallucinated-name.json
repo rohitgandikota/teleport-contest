@@ -1,0 +1,170 @@
+{
+  "name": "guard-hallucinated-name",
+  "description": "Ordinary source-grounded guard naming evaluation timing; six original locked tuples unchanged. C recording pending parent.",
+  "segments": [
+    {
+      "seed": 7303,
+      "datetime": "20000115090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "nonhallucinated-cleanup-negative",
+      "moves": " \u00162\r\u0006\u0017500 gold pieces\r\u0014kkkkkkkkkkkkkhhhhh. #wizintrinsic\r>30f\r  \u001b\u001bllllk\u0017throne\r  \u0017floor\r  E- proof\r  \u0017wall\r  \u0017doorless doorway\r  jhhhh................................... intruder\r  \u001b\u001bd$lll  \u001b\u001bu  \u0014hhhhj.  \u0006 ... "
+    },
+    {
+      "seed": 7303,
+      "datetime": "20000115090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "hallucinated-visible-cleanup",
+      "moves": " \u00162\r\u0006\u0017500 gold pieces\r\u0014kkkkkkkkkkkkkhhhhh. #wizintrinsic\r>30f\r  \u001b\u001bllllk\u0017throne\r  \u0017floor\r  E- proof\r  \u0017wall\r  \u0017doorless doorway\r  jhhhh................................... intruder\r  \u001b\u001bd$ll#wizintrinsic\r100h\r  \u001b\u001bl  \u001b\u001bu  \u0014hhhhj.  \u0006 ... "
+    },
+    {
+      "seed": 7303,
+      "datetime": "20000115090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nMSGTYPE=hide \"Suddenly, .* disappears\\.\"\n",
+      "name": "hallucinated-hidden-cleanup",
+      "moves": " \u00162\r\u0006\u0017500 gold pieces\r\u0014kkkkkkkkkkkkkhhhhh. #wizintrinsic\r>30f\r  \u001b\u001bllllk\u0017throne\r  \u0017floor\r  E- proof\r  \u0017wall\r  \u0017doorless doorway\r  jhhhh................................... intruder\r  \u001b\u001bd$ll#wizintrinsic\r100h\r  \u001b\u001bl  \u001b\u001bu  \u0014hhhhj.  \u0006 ... "
+    },
+    {
+      "seed": 7303,
+      "datetime": "20000115090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "hallucinated-blind-cleanup",
+      "moves": " \u00162\r\u0006\u0017500 gold pieces\r\u0014kkkkkkkkkkkkkhhhhh. #wizintrinsic\r>30f\r  \u001b\u001bllllk\u0017throne\r  \u0017floor\r  E- proof\r  \u0017wall\r  \u0017doorless doorway\r  jhhhh................................... intruder\r  \u001b\u001bd$ll#wizintrinsic\r100h100i\r  \u001b\u001bl  \u001b\u001bu  \u0014hhhhj.  \u0006 ... "
+    },
+    {
+      "seed": 7303,
+      "datetime": "20000115090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "hallucinated-before-cleanup-negative",
+      "moves": " \u00162\r\u0006\u0017500 gold pieces\r\u0014kkkkkkkkkkkkkhhhhh. #wizintrinsic\r>30f\r  \u001b\u001bllllk\u0017throne\r  \u0017floor\r  E- proof\r  \u0017wall\r  \u0017doorless doorway\r  jhhhh................................... intruder\r  \u001b\u001bd$ll#wizintrinsic\r100h\r  \u001b\u001b"
+    },
+    {
+      "seed": 7303,
+      "datetime": "20000115090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "hallucinated-blind-before-cleanup-negative",
+      "moves": " \u00162\r\u0006\u0017500 gold pieces\r\u0014kkkkkkkkkkkkkhhhhh. #wizintrinsic\r>30f\r  \u001b\u001bllllk\u0017throne\r  \u0017floor\r  E- proof\r  \u0017wall\r  \u0017doorless doorway\r  jhhhh................................... intruder\r  \u001b\u001bd$ll#wizintrinsic\r100h100i\r  \u001b\u001b"
+    }
+  ],
+  "coverage": [
+    "mode.debug",
+    "social.vault-guard",
+    "status.hallucination",
+    "ui.messages"
+  ],
+  "branches": [
+    "vault.cleanup-name.nonhallucinated-negative",
+    "vault.cleanup-name.visible-and-parked",
+    "vault.cleanup-name.hidden-and-parked",
+    "vault.cleanup-name.blind",
+    "vault.cleanup-name.before-cleanup-negative",
+    "vault.cleanup-name.blind-before-cleanup-negative"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "vault.cleanup-name.nonhallucinated-negative",
+      "segment": 0,
+      "source": "vault.c836-867, mon.c1233-1240, do_name.c1054-1061/1389-1411; source prediction, not native evidence",
+      "screenIncludes": [
+        "You drop 500 gold pieces.",
+        "newsym: attempting screen update for <0,0>"
+      ],
+      "screenCells": [
+        {
+          "step": 188,
+          "x": 0,
+          "y": 0,
+          "equals": "S"
+        }
+      ]
+    },
+    {
+      "branch": "vault.cleanup-name.visible-and-parked",
+      "segment": 1,
+      "source": "vault.c836-867, mon.c1233-1240, do_name.c1054-1061/1389-1411; source prediction, not native evidence",
+      "screenIncludes": [
+        "You drop 500 gold pieces.",
+        "Oh wow!  Everything looks so cosmic!",
+        "newsym: attempting screen update for <0,0>"
+      ],
+      "screenCells": [
+        {
+          "step": 211,
+          "x": 0,
+          "y": 0,
+          "equals": "S"
+        }
+      ]
+    },
+    {
+      "branch": "vault.cleanup-name.hidden-and-parked",
+      "segment": 2,
+      "source": "vault.c836-867, mon.c1233-1240, do_name.c1054-1061/1389-1411; source prediction, not native evidence",
+      "screenIncludes": [
+        "You drop 500 gold pieces.",
+        "Oh wow!  Everything looks so cosmic!",
+        "newsym: attempting screen update for <0,0>"
+      ],
+      "screenCells": [
+        {
+          "step": 211,
+          "x": 0,
+          "y": 0,
+          "equals": "n"
+        }
+      ],
+      "screenExcludes": [
+        "Suddenly,"
+      ]
+    },
+    {
+      "branch": "vault.cleanup-name.blind",
+      "segment": 3,
+      "source": "vault.c836-867, mon.c1233-1240, do_name.c1054-1061/1389-1411; source prediction, not native evidence",
+      "screenIncludes": [
+        "You drop 500 gold pieces.",
+        "Oh wow!  Everything looks so cosmic!",
+        "Oh, bummer!  Everything is dark!  Help!",
+        "newsym: attempting screen update for <0,0>"
+      ],
+      "screenCells": [
+        {
+          "step": 215,
+          "x": 0,
+          "y": 0,
+          "equals": "n"
+        }
+      ],
+      "screenExcludes": [
+        "Suddenly,"
+      ]
+    },
+    {
+      "branch": "vault.cleanup-name.before-cleanup-negative",
+      "segment": 4,
+      "source": "vault.c836-867, mon.c1233-1240, do_name.c1054-1061/1389-1411; source prediction, not native evidence",
+      "screenIncludes": [
+        "You drop 500 gold pieces.",
+        "Oh wow!  Everything looks so cosmic!"
+      ],
+      "screenExcludes": [
+        "Suddenly,",
+        "newsym: attempting screen update for <0,0>"
+      ]
+    },
+    {
+      "branch": "vault.cleanup-name.blind-before-cleanup-negative",
+      "segment": 5,
+      "source": "vault.c836-867, mon.c1233-1240, do_name.c1054-1061/1389-1411; source prediction, not native evidence",
+      "screenIncludes": [
+        "You drop 500 gold pieces.",
+        "Oh wow!  Everything looks so cosmic!",
+        "Oh, bummer!  Everything is dark!  Help!"
+      ],
+      "screenExcludes": [
+        "Suddenly,",
+        "newsym: attempting screen update for <0,0>"
+      ]
+    }
+  ]
+}

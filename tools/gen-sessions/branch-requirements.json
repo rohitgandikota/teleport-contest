@@ -4592,6 +4592,12 @@
     {"group":"guard-cleanup-prompt","id":"vault.cleanup-prompt.hidden","cFile":"src/vault.c","cFunction":"gd_move_cleanup","description":"Hidden disappearance emits no extra acknowledgement; the diagnostic follows immediately."},
     {"group":"guard-cleanup-prompt","id":"vault.cleanup-prompt.explicit-stop-once","cFile":"src/vault.c","cFunction":"gd_move_cleanup","description":"Stop message policy acknowledges disappearance once, then the diagnostic follows."},
     {"group":"guard-cleanup-prompt","id":"vault.cleanup-prompt.hide-before-exit-negative","cFile":"src/vault.c","cFunction":"gd_move_cleanup","description":"Before-exit hide prefix remains unchanged and does not reach cleanup."},
-    {"group":"guard-cleanup-prompt","id":"vault.cleanup-prompt.stop-before-exit-negative","cFile":"src/vault.c","cFunction":"gd_move_cleanup","description":"Before-exit stop prefix remains unchanged and does not reach cleanup."}
+    {"group":"guard-cleanup-prompt","id":"vault.cleanup-prompt.stop-before-exit-negative","cFile":"src/vault.c","cFunction":"gd_move_cleanup","description":"Before-exit stop prefix remains unchanged and does not reach cleanup."},
+    {"group":"guard-hallucinated-name","id":"vault.cleanup-name.nonhallucinated-negative","cFile":"src/vault.c","cFunction":"gd_move_cleanup","description":"Nonhallucinated cleanup negative preserves all five output streams."},
+    {"group":"guard-hallucinated-name","id":"vault.cleanup-name.visible-and-parked","cFile":"src/vault.c","cFunction":"gd_move_cleanup","description":"Visible disappearance evaluates one name; final parked cleanup skips naming."},
+    {"group":"guard-hallucinated-name","id":"vault.cleanup-name.hidden-and-parked","cFile":"src/vault.c","cFunction":"gd_move_cleanup","description":"Hidden message policy still evaluates the required name, then skips final parked naming."},
+    {"group":"guard-hallucinated-name","id":"vault.cleanup-name.blind","cFile":"src/vault.c","cFunction":"gd_move_cleanup","description":"Blind unseen cleanup skips naming, retaining real diagnostic handling."},
+    {"group":"guard-hallucinated-name","id":"vault.cleanup-name.before-cleanup-negative","cFile":"src/vault.c","cFunction":"gd_move_cleanup","description":"Hallucination producer before cleanup remains unchanged."},
+    {"group":"guard-hallucinated-name","id":"vault.cleanup-name.blind-before-cleanup-negative","cFile":"src/vault.c","cFunction":"gd_move_cleanup","description":"Blind hallucination producer before cleanup remains unchanged."}
   ]
 }

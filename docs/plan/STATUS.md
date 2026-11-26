@@ -1,6 +1,168 @@
 # STATUS — live handoff board
 
-## 2026-11-25: guard prompt correction verified for publication
+## 2026-11-25: guard913 passed, corrected fruit/text verifying
+
+Guard correction is published as 80049d9227b05454dd0922275fb6fd403bd92819.
+All 1,203 tested files match that pushed tree. Publication receipt:
+guard-cleanup-policy-full912-publication-verification.json, SHA256
+`5d37c85397a78e828f8d93784e0cebba577aad49fb544d6683712f2ee0aec2fe`.
+
+The eight fruit/text runtime files and one marker-color expression are now
+installed on main, matching composed280 map b161939eae5516586ccd728590eb6393167509297536bbbc72395e7eb6b26587.
+Portable promotion126 is sealed and reviewed: 105 exact payloads, three C
+recordings and eighteen appended requirements are installed. Its shared
+preflight works without generated C build files or the private cache. All five
+main gates pass with reports byte-identical to the sealed composition. The
+initial eleven-case report preserves the old ASCII negative screen failure
+explicitly; a separate C-backed two-cell accounting explains its correction.
+All eighteen fruit and five guard native comparisons match on this composition.
+
+Broader selected/public replay is 132/138, with six screen-only failures:
+seed0004-feeding-pony, seed0030-ten-diverse-deaths,
+seed0360-wizard-world-tour, seed2200-wizard-quaff-zap-read,
+pager-lookat-swallow-statue and pager-lookat-terrain. Random calls, cursors and
+animation frames remain exact. Original failures are retained in
+fruit-text-main-replay-checks.json. Those original failures are preserved. Source409 now repairs the mixed-message
+glyph route through pager, tty/topl and tty/wintty; parent review and verifier
+pass. Sixteen constructed controls pass, all nine affected complete reports
+equal published80049, and the five fruit gates retain their exact reports.
+The original15/16 NOSTOP failure was fixed in code, with expectations unchanged.
+Three fixtures retain1,182 pre-existing blank-style cell differences; no full
+style closure is claimed for those. Original legacyfruit10/11 remains explicit.
+All 138 strict eight-second workers pass; its log and receipt remain fixed.
+
+Initial full915 completed at906/915 on NFS. In addition to the initial six,
+bones-persistence, variant-world-tour and pager-restricted-inspection fail.
+The fixed b161 runtime has not been published. Both shards completed with
+default45-second budgets and no retries; all1,206 tested files stayed exact.
+Root:/share/NFS/u/rohit/research/contest/artifacts/2026-11-22/fruit-text-full915-js-20261125.
+All-files SHA256652e9dae103ceb4e2510c936d24428135abb2529e32b46b3caf35606e7ee17b3.
+Verification SHA25685ba733088de4cce8efa594faf9e0fc555fa42451a497eb44a8483ccbc4409c2.
+Totals:927,281screens/cursors,20,098,639RNG positions,33,131frames. Preserve
+this completed failing run. A source-backed correction needs fresh verification.
+
+The final mixed correction is installed on the guard-name composition. Main
+and the physical replay snapshot match280-file map
+fruit-text-corrected-parent-composed-runtime.json, SHA256
+227567f7163bcc49aa09addaaac59478a05d0f7799404dd662d13bf133519f5a.
+Only pager.js, tty/topl.js and tty/wintty.js changed from combined102. Install
+receipt SHA256868e4d8eed7c146e28981e0b2bf2796f0e7f2057a28bc16d17a9fc9ffcf15cc5.
+Fresh70 retained checks and142 selected/public recordings pass. The142
+strict workers are still running in parent session90034. All optional report destinations are new and names
+are normalized before launch. Full916 is running with two CPU workers, PID3340415, root
+/share/NFS/u/rohit/research/contest/artifacts/2026-11-22/fruit-text-corrected-full916-js-20261125.
+Its parent is verifiedguard912, with912 fixture links and four new raws; it
+includes the new guard naming fixture. Do not mutate or relaunch either run.
+
+The 69 retained commands initially pass 67. Both failures have now been
+reviewed against source and corrected without runtime changes. The message-type
+test decoded C bytes as UTF-8. Changing only stdout decoding to Latin-1 keeps
+all ten assertions: original baseline5/5, corrected baseline4/5 and corrected
+candidate/main5/5. The corrected test exposes the old byte-handling bug.
+Proof: fruit-text-parent-msgtype-test-review/verification.json.
+
+The old billing-disposal7/8 diagnostic expected the dead keeper unlinked at
+boundary127. C m_detach keeps it linked until dmonsfree. The test now checks
+linked/HP0/MON_DETACH at127 and moves its original absent assertion to140;
+all billing/disposal assertions remain, with three additional assertions.
+Corrected baseline/candidate/main pass8/8 with the original two C cases and
+five unchanged native witnesses. Proof: fruit-text-parent-billing-test-review.
+The final retained receipt is fruit-text-main-retained-checks-final.json,
+69/69, SHA25674896283b68a25ddcc01e19f68ff3a0cf83324cb7690c592abb53ee54c9d0a84.
+Both original failures and all proof logs remain preserved.
+
+Two parent test-driver errors remain recorded in
+fruit-text-parent-driver-path-review. Inherited report destinations rewrote
+three historical reports with byte-identical contents, verified against sealed
+promotion copies. Corrected destinations are fruit-owned. A slash in a syntax
+check name then prevented opening its log before the command ran; only the log
+name was corrected. Completed results were reused, and original logs remain.
+Neither driver correction changed runtime or assertions.
+
+Official recheck at22:05 EST still returns the21:05 EST feed. Score remains
+rank7,812unmatched screens,42/56held-out and44/44public. Receipt:
+leaderboard-current-recheck-20261126-030513.json. Recent scored rows are about
+six hours apart; no exact scored commit is given. Its scored row predates guard and
+three other recent pushes. No exact scored commit or causal explanation for
+the 153 lost screens is available. Leibniz is closing the recent regression
+audit and returning to corpse naming. Sartre is reviewing ordinary hallucinated
+guard-name timing against the published guard snapshot.
+
+Guard hallucinated naming has a new source34 packet and independent two-line
+vault.js candidate based on published f6f0. The original six locked input
+cases were recorded once with explicit source:c. All six primary branch
+assertions pass. Raw guard-hallucinated-name-parent-native.session.json,
+SHA256a68e3eaf35cfbf52cafa3b562e9e46b19e0459fa587be0820be9a045606cbd10,
+5,369,894 bytes,1,343 boundaries,39,082 calls,zero frames. Baseline4/6 improves
+to6/6 full C comparisons. Visible and hidden-message paths repair later
+hallucinated map redraws; the blind case already matches screens, while source
+traces prove the extra naming draws. Candidate and recipe are independently
+fixed in parent-native-checks.json and parent-candidate-runtime.json. Sartre is
+finishing the immutable owner proof and compact portable gate. The isolated candidate673194bc now passes87 normal
+selected/public and87 strict eight-second checks. All35 retained checks pass; source/owner seals verify34/310. Independent full913 passes913/913
+on NFS with two CPU workers, default45-second budgets and no retries:
+/share/NFS/u/rohit/research/contest/artifacts/2026-11-22/guard-hallucinated-name-full913-js-20261125.
+CompletedPID3331712,1,204 fixed files,912 prior fixture links and one new recording;
+all-files SHA2561241e01cf92f5c11fdf8f2eabc631c285c8a89183d9d1303d9c5d658dd212794.
+Totals:928,430 screens/cursors,20,083,579 RNG positions,33,131 frames.
+Verification SHA25640358a9adfd45fb9334e96942eb09e68438de661d000bc9ca30b54aa54d2102e.
+This full913 excludes the three unpublished fruit fixtures. Candidate source
+is the fixed parent snapshot; mutable main is not being used for this run.
+A premature retained-driver invocation returned exit2 before its preparation
+created the script. No tests ran in that invocation; the ordering error is
+preserved in guard-hallucinated-name-parent-retained-driver-order.json.
+
+The corrected guard promotion50 is sealed and parent-verified. Its23 payloads
+are installed. Live passive observations supply every state/error/key assertion;
+the initial cached-state draft is preserved. All30 original assertion bodies
+and expected five-stream hashes remain unchanged. Twelve metadata rejections
+and a valid metadata control pass; no default file writes or generated C
+build dependencies are required. Both original source/owner seals are unchanged.
+
+Main now contains the guard vault change alongside pending fruit. Combined280
+map fruit-text-guard-name-parent-composed-runtime.json has SHA256
+102781b9ef143decbf8441420eb3dfe7f7718d9144648e98aea72821cf433233.
+Only vault changed from b161. Working registry is published4574 + guard6 +
+pendingfruit18, preserving all old entries and eighteen fruit values. The file
+guard-hallucinated-name-publish-registry.json contains only published+guard6
+for staging. Install receipt:guard-hallucinated-name-main-install.json, SHA256
+787a91bae3e304f25a8dce95e1bbad3fc7d44e9215fe26c3fbb04749333a17ec.
+Independent physical-root and combined-main portable checks both pass30/30
+with byte-identical report SHA256
+5db322e862f972a26523c56eb04e9c3a77a9d7e974993cadadd4772a12556c5c.
+Guard-only staging is complete:30files, only vault.js at runtime,23 portable
+payloads,new raw,six requirements and four docs. All1,204 tested files match
+the staged Git blobs. The pending fruit changes, eighteen requirements and
+two test corrections remain unstaged. Staging receipt SHA256
+96553cc164daa685e2c295a9ea7c44a777a849c5cd81fd546b06a15941206d8d.
+Final parent verification passes. Public receipt SHA256
+b4502161023c70d5f09aef48908a07c2f0140352ce194bffc64aef0871e951c0.
+The historical source verifier pins the earlier CLAUDE.md. It passed using
+that exact document from80049; the current documentation was restored exactly
+in a finally block. No sealed file or runtime changed. The failure and proof
+remain in guard-hallucinated-name-parent-historical-document-check.json.
+Add the public receipt and updated docs, commit and immediately push. Then
+run verify-full-publication.py against the isolated guard snapshot.
+Do not accidentally stage the pending fruit files or full working registry.
+
+
+Corpse naming source358 is now sealed and independently reviewed. Only objnam.js
+changes, importing existing obj_pmname and following C corpse_xname prefix,
+plural, glob and adjective branches. Direct controls40/40 versus23/40; ordinary
+4/4 versus3/4. Strict wrapper diagnostic remains43/46 with three explicit JS
+property-shape failures in unchanged killer_xname. All46 name values match;
+no ordinary C field-value defect is established by those three failures.
+
+Four unchanged input tuples were recorded once. All4 primary C assertions
+pass; baseline3/4 improves to candidate4/4 full styled C comparisons. Raw
+corpse-xname-owner-parent-native.session.json SHA256
+13990943b540a0f3b08f4752fe68249b1aa43da2ca210e2a12b93a5d91d7c309,
+3,056,105bytes,733boundaries,729keys,23,926calls,zero frames. Source candidate
+map603af569 is on baseline32dd. Leibniz is preparing compact portable source
+and ordinary gates with fresh state observations, retaining the three open
+shape diagnostics. No corpse naming runtime or canonical fixture is on main.
+
+## 2026-11-25: guard prompt correction published as 80049d92
 
 Latest official recheck at 21:12 EST returned a new feed (21:05 EST). Rank
 remains 7, but unmatched screens increased from 659 to 812 and held-out passes
@@ -15,10 +177,10 @@ one code regression: 42655f63 removed the arrival newsym await while adding the
 engulfer branch. On the five locked guard inputs, ordinary controls pass 40/40
 before that commit, 31/40 afterward and at the interval end, then 40/40 with
 the await restored. All five output streams return to their prior hashes.
-The pending guard checkpoint already restores that await. This does not identify
+The published guard checkpoint restores that await. This does not identify
 the hidden session or establish that it accounts for the 153 lost screens.
 
-Main has only the two guard runtime fixes beyond pushed aa9ecbbd:
+The guard checkpoint contains two runtime fixes beyond aa9ecbbd:
 postmov awaits its existing arrival newsym, and gd_move_cleanup leaves
 acknowledgement to C's message policy. The latter removes its explicit more
 call and unused import. Source325 and cleanup328 remain sealed. Original23
@@ -59,7 +221,7 @@ fixed source and composition. All 75 static control assertions are unchanged.
 Parent receipt: guard-cleanup-policy-main-verification.json, SHA256
 `fddaf98de172286c26474d87b7380644e9421e9d7b19a4c5e458a6cc86973c4f`.
 Public evidence: tools/gen-sessions/evidence/guard-cleanup-prompt/parent-verification.json.
-Commit and immediately push, then verify the published tree. Do not relaunch.
+Published as 80049d92 and verified against the pushed tree. Do not relaunch.
 Other vault paths, hallucinated naming and complete message behavior remain open.
 
 Next fruit/text: sealed334 and separate marker334 now pass all eighteen C
@@ -69,13 +231,13 @@ all cursor, call, slice and frame hashes remain exact. The original ASCII
 negative screen hash remains an explicit historical failure, with a separate
 C-backed correction receipt. The other 34 negative hashes remain unchanged.
 The initial raw missing source metadata is preserved; its companion inserts
-only source:c. No C recording was repeated. Portable promotion is still unsealed.
+only source:c. No C recording was repeated. Portable promotion126 is sealed; its installed payload is tracked above.
 
 Fruit plus both guard fixes has composed280 map
 fruit-text-marker-guard-parent-composed-runtime.json, SHA256
 `b161939eae5516586ccd728590eb6393167509297536bbbc72395e7eb6b26587`.
 All 18 fruit and five guard C comparisons pass on it, with complete reports
-byte-identical to the separate candidates. Main does not contain fruit changes.
+byte-identical to the separate candidates. Main contains the fruit changes; broader regression findings are tracked above.
 Plural corpse naming has source review and the old 2/3 diagnostic reproduced;
 ordinary input proposals and caller review are in progress, with no candidate.
 

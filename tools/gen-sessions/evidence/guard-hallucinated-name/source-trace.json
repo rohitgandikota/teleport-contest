@@ -1,0 +1,137 @@
+{
+  "classification": "Existing display RNG diagnostic logging, output-neutral; no native comparison",
+  "rows": [
+    {
+      "name": "nonhallucinated-cleanup-negative",
+      "loggingNeutral": true,
+      "hashes": {
+        "screens": "51d9ab3676888f2ef164bcf9ace94579aaea72bc2d48dbcd92292e0e105865a0",
+        "cursors": "b3dca09bb4519a5c4cf19b6d484199edea497cb5d4b7aa31213180637e24df82",
+        "calls": "5c12200739a03097cf58f1eac9c15e926e9b07baedd02a00595edb60487fdf66",
+        "slices": "3c10540636f07f7d627e6b4ce87ba3cc674e0b113dd1a67951adc39933a78679",
+        "frames": "eb916bbad1aea9fc6bd6001b15e689b3ae5b4e82fd73e30e2759ff2ef7f5050c"
+      },
+      "displayDraws": 0,
+      "namingDraws": []
+    },
+    {
+      "name": "hallucinated-visible-cleanup",
+      "loggingNeutral": true,
+      "hashes": {
+        "screens": "25d0fe8ad730f622789a9df0cd93af0fc56174ebc1cfdc0f17a5463ef0b8f20d",
+        "cursors": "506d3fe7e7cb25bd23787ebbfd248216fcceacaf91361369e0c73e940024aa27",
+        "calls": "da15c15c5b6c678b187f94a604b4977d9184d0d7f7985dc4eb01ec06ae7d4bc6",
+        "slices": "410895df512b4e9ff12a7c7f442ff07781fe19b56a99ad30f35ac038544daf7b",
+        "frames": "dbd94e4485071fbfe00eb66982cc30f5243253500524d9723fae6d92109c38c1"
+      },
+      "displayDraws": 79,
+      "namingDraws": [
+        {
+          "step": 211,
+          "turn": 43,
+          "guard": 122,
+          "index": 6405,
+          "call": "~drn2(430)=188 @js/do_name.js:137:16"
+        },
+        {
+          "step": 211,
+          "turn": 43,
+          "guard": 122,
+          "index": 6406,
+          "call": "~drn2(2)=0 @js/do_name.js:157:39"
+        },
+        {
+          "step": 216,
+          "turn": 44,
+          "guard": 122,
+          "index": 6453,
+          "call": "~drn2(430)=424 @js/do_name.js:137:16"
+        }
+      ]
+    },
+    {
+      "name": "hallucinated-hidden-cleanup",
+      "loggingNeutral": true,
+      "hashes": {
+        "screens": "b3674c46fc90889b66e9b788a3ce991b33e02d1b15dda2f6518e39166761ec87",
+        "cursors": "6c80de28f31bd08d11bdd62e8349fe67f89f964e42a2eafb0b5c3eee98f8afa5",
+        "calls": "da15c15c5b6c678b187f94a604b4977d9184d0d7f7985dc4eb01ec06ae7d4bc6",
+        "slices": "b7e8921aab2606cb131ffa89126eb73caae2269c84820f765959a6f4e5e1f71d",
+        "frames": "dbd94e4485071fbfe00eb66982cc30f5243253500524d9723fae6d92109c38c1"
+      },
+      "displayDraws": 79,
+      "namingDraws": [
+        {
+          "step": 211,
+          "turn": 43,
+          "guard": 122,
+          "index": 6405,
+          "call": "~drn2(430)=188 @js/do_name.js:137:16"
+        },
+        {
+          "step": 211,
+          "turn": 43,
+          "guard": 122,
+          "index": 6406,
+          "call": "~drn2(2)=0 @js/do_name.js:157:39"
+        },
+        {
+          "step": 216,
+          "turn": 44,
+          "guard": 122,
+          "index": 6453,
+          "call": "~drn2(430)=424 @js/do_name.js:137:16"
+        }
+      ]
+    },
+    {
+      "name": "hallucinated-blind-cleanup",
+      "loggingNeutral": true,
+      "hashes": {
+        "screens": "7242e30101dd7766350da4252454241db9cf40b3d8c02cf45688f8bca0025602",
+        "cursors": "7182c651d292c8247ec83e4ccd342bcac3682e70afc3dd2b13db1bb6752b19ce",
+        "calls": "da15c15c5b6c678b187f94a604b4977d9184d0d7f7985dc4eb01ec06ae7d4bc6",
+        "slices": "f589e8c9ac862f58895090398ebb629ae7ca144db5eaaea9b39c88d83c105f30",
+        "frames": "48250bf8dcd6fd3199019dec20f4374a1ea2413b0a9f7fcf8c76bef8d91a7f2e"
+      },
+      "displayDraws": 26,
+      "namingDraws": [
+        {
+          "step": 215,
+          "turn": 43,
+          "guard": 122,
+          "index": 6384,
+          "call": "~drn2(430)=228 @js/do_name.js:137:16"
+        },
+        {
+          "step": 215,
+          "turn": 43,
+          "guard": 122,
+          "index": 6385,
+          "call": "~drn2(430)=101 @js/do_name.js:137:16"
+        },
+        {
+          "step": 215,
+          "turn": 43,
+          "guard": 122,
+          "index": 6386,
+          "call": "~drn2(2)=0 @js/do_name.js:157:39"
+        },
+        {
+          "step": 220,
+          "turn": 45,
+          "guard": null,
+          "index": 6430,
+          "call": "~drn2(430)=88 @js/do_name.js:137:16"
+        },
+        {
+          "step": 220,
+          "turn": 45,
+          "guard": null,
+          "index": 6431,
+          "call": "~drn2(2)=0 @js/do_name.js:157:39"
+        }
+      ]
+    }
+  ]
+}

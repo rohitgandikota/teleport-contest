@@ -1,0 +1,14 @@
+{
+  "originalRecipeSHA256": "c09d559e4ecb157f176b65db3ee3c2f2fbe9079d829c5dbf5ea3e39828c28a8e",
+  "derivedRecipeSHA256": "f7c36bc50d7c92a2c8ebc69940a4707b76212de900932b6060e5e6bc8660400f",
+  "segmentsUnchanged": true,
+  "changedTopLevelMetadata": [
+    "description",
+    "coverage",
+    "branches",
+    "requireBranchAssertions",
+    "branchAssertions"
+  ],
+  "tupleSHA256": "0dec7414df643620f80b6c8dde5f59f81ca908e247b8b591b6ab07c0e08fefb7",
+  "nativePending": true
+}

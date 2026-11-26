@@ -163,4 +163,6 @@ or 2 is rejected.
 - Never mention an AI assistant, model name, or tool in commit messages, PR
   titles, or PR bodies. Never add `Co-Authored-By` or "generated with" trailers.
 - Push to `origin` (`rohitgandikota/teleport-contest`). Pushing *is* the
-  submission; the judge cron picks up `main` within two hours.
+  submission. Check the official feed's `lastScored` timestamp before attributing
+  a score to a push. Recent observed cycles are about six hours apart; see
+  the dated scoring note in `docs/plan/NOTES.md`.

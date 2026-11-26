@@ -1,0 +1,15 @@
+{
+  "sourceReportSHA256": "c0f54d8ca4e02b1a92f907579f7a039eac172584e0f7549e3f862cc4cdf6bd02",
+  "derivedSHA256": "aba0b77c4ecb10bfdb60156eecddec17b43d0bc6a7772a7aa174be2cc108f12f",
+  "rowFields": [
+    "name",
+    "hashes",
+    "error",
+    "allKeysCaptured",
+    "states"
+  ],
+  "stateSelection": "key187, first done guard if any, final boundary; original state objects unchanged",
+  "cases": 6,
+  "states": 16,
+  "sourceRequiredAtRuntime": false
+}

@@ -1,0 +1,8 @@
+{
+  "classification": "Observer-only failure, no gameplay conclusion",
+  "cause": "Guard name prompt exposes newly allocated EGD before finish_guard_corridor creates fakecorr",
+  "readSource": "makemon.js2301 and vault.js505-520",
+  "correction": "Represent absent corridor as null in observer only",
+  "inputsChanged": false,
+  "runtimeChanged": false
+}

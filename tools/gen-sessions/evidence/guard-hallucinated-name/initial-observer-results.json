@@ -1,0 +1,49 @@
+{
+  "classification": "Baseline ordinary JS reach; no C evidence or candidate",
+  "results": [
+    {
+      "name": "nonhallucinated-cleanup-negative",
+      "keys": 210,
+      "error": {
+        "name": "TypeError",
+        "message": "Cannot read properties of undefined (reading 'slice')"
+      },
+      "hashes": null,
+      "allKeysCaptured": false,
+      "states": []
+    },
+    {
+      "name": "hallucinated-visible-cleanup",
+      "keys": 233,
+      "error": {
+        "name": "TypeError",
+        "message": "Cannot read properties of undefined (reading 'slice')"
+      },
+      "hashes": null,
+      "allKeysCaptured": false,
+      "states": []
+    },
+    {
+      "name": "hallucinated-hidden-cleanup",
+      "keys": 233,
+      "error": {
+        "name": "TypeError",
+        "message": "Cannot read properties of undefined (reading 'slice')"
+      },
+      "hashes": null,
+      "allKeysCaptured": false,
+      "states": []
+    },
+    {
+      "name": "hallucinated-blind-cleanup",
+      "keys": 237,
+      "error": {
+        "name": "TypeError",
+        "message": "Cannot read properties of undefined (reading 'slice')"
+      },
+      "hashes": null,
+      "allKeysCaptured": false,
+      "states": []
+    }
+  ]
+}

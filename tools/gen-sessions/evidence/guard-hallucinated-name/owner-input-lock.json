@@ -1,0 +1,41 @@
+{
+  "sourceLockSHA256": "33c5a0e39b5cf78788fa3987a4135b658b93cb3649c1e0c6e123cb7bab4ed25e",
+  "originalRecipeSHA256": "c09d559e4ecb157f176b65db3ee3c2f2fbe9079d829c5dbf5ea3e39828c28a8e",
+  "recipe": "promotion/tools/gen-sessions/recipes/guard-hallucinated-name.json",
+  "recipeSHA256": "f7c36bc50d7c92a2c8ebc69940a4707b76212de900932b6060e5e6bc8660400f",
+  "tupleSHA256": "0dec7414df643620f80b6c8dde5f59f81ca908e247b8b591b6ab07c0e08fefb7",
+  "inputFields": [
+    "name",
+    "seed",
+    "datetime",
+    "nethackrc",
+    "moves"
+  ],
+  "cases": 6,
+  "keys": 1337,
+  "boundaries": 1343,
+  "negativeHashes": {
+    "nonhallucinated-cleanup-negative": {
+      "screens": "51d9ab3676888f2ef164bcf9ace94579aaea72bc2d48dbcd92292e0e105865a0",
+      "cursors": "b3dca09bb4519a5c4cf19b6d484199edea497cb5d4b7aa31213180637e24df82",
+      "calls": "5c12200739a03097cf58f1eac9c15e926e9b07baedd02a00595edb60487fdf66",
+      "slices": "3c10540636f07f7d627e6b4ce87ba3cc674e0b113dd1a67951adc39933a78679",
+      "frames": "eb916bbad1aea9fc6bd6001b15e689b3ae5b4e82fd73e30e2759ff2ef7f5050c"
+    },
+    "hallucinated-before-cleanup-negative": {
+      "screens": "31ff69997ebe068dc06c3499ea108fe248feefa0a32218b02aa2fbc94fc0b5d1",
+      "cursors": "35e640808ac98384cb6217aaf6beca251b353b9294fe9febcc76ab4ca979d678",
+      "calls": "9ee927eb393f2d042c834009159beb928bf8a47202acf1f43920a29f51e9d1f8",
+      "slices": "ff5bba98b9a9405f864227baffdc24d09313055ba94297981d1797138049eecb",
+      "frames": "eb916bbad1aea9fc6bd6001b15e689b3ae5b4e82fd73e30e2759ff2ef7f5050c"
+    },
+    "hallucinated-blind-before-cleanup-negative": {
+      "screens": "cc8e53c2fea3e34b4666bea0f7555f01363c0748f4888a1ab0cd9aea8b987d7e",
+      "cursors": "58b4348cb7cb9b328f7d0e356c5cbdbb6218994e3873b5bf502ffc62abb0a2cd",
+      "calls": "9ee927eb393f2d042c834009159beb928bf8a47202acf1f43920a29f51e9d1f8",
+      "slices": "1cd8cd3828445cf0b2885af905161056da611ba6009f3483ec9b122e89becbbc",
+      "frames": "28b63a1542f4d70b0f0637581d693adbdf87b5b20ca57e70411e395e2f20e7c2"
+    }
+  },
+  "parentRecording": "Parent recorded once, all6 branches pass, baseline4/6 candidate6/6. Exact original six tuples and recipe remain fixed."
+}

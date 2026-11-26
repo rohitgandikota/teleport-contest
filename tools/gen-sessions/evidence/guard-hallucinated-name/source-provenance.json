@@ -1,0 +1,106 @@
+{
+  "classification": "Historical source/build pins are provenance only; no historical path is required by the portable gate",
+  "sourceSealSHA256": "68537e0d7756f73138d148ff1868c0b7965e0631cc5df9cebb86a23c91db3904",
+  "ownerSealSHA256": "8bd41eeff17c1b60693225e09fd32795b19d9fb5fb7a64b1ca669dddcdeeb499",
+  "sourcePins": {
+    "CLAUDE.md": {
+      "sha256": "f48c201dd8ff7b8cdec10b2a92840e46d232bf1c0e3b9568abefa6779db56f7e",
+      "bytes": 7922
+    },
+    "nethack-c/upstream/src/vault.c": {
+      "sha256": "490406d3195819eec9d155ed7d1e6119ab98571bf1e9879831d40dfbe9a4368f",
+      "bytes": 44702
+    },
+    "nethack-c/upstream/src/do_name.c": {
+      "sha256": "64c6cb5e7f4034e9edbd8fac983b313a7df0e029b4812bd3a9327852d12ad9d1",
+      "bytes": 57517
+    },
+    "nethack-c/upstream/src/rnd.c": {
+      "sha256": "3fd80fbd93271b746a915cd938b9c9de2f752cbacf8c53ef77e4f0a3c4400362",
+      "bytes": 6853
+    },
+    "nethack-c/upstream/src/rumors.c": {
+      "sha256": "0bc8665c1bcff5b2d9d9063ff02dfd081ddcb01ba0ba5c817f0dbf857d73c255",
+      "bytes": 35882
+    },
+    "nethack-c/upstream/src/potion.c": {
+      "sha256": "05176768623072e3e1337fc23b91e1f3991980dbefb4ca2fc44c0fe6d1115aa9",
+      "bytes": 98476
+    },
+    "nethack-c/upstream/include/youprop.h": {
+      "sha256": "9c4e25bc385c405226085ae3526dc165bd9397ce922b8a18a46f67de21683a2f",
+      "bytes": 17700
+    },
+    "tools/half-damage-reader-observe.mjs": {
+      "sha256": "201cdafe4409d5d58414c1d0ebc0449c32b29834cdf35c72c151a555d9031d07",
+      "bytes": 3796
+    },
+    "nethack-c/upstream/src/wizcmds.c": {
+      "sha256": "4611d620caedc59dc270f5d6b6f9a2497831dc88325edc90f3770e75afd9b71f",
+      "bytes": 66043
+    },
+    "nethack-c/upstream/src/display.c": {
+      "sha256": "c40bea2174713159eb7aa7b3b443f176a48282866c31d658449a1b2092145423",
+      "bytes": 130123
+    },
+    "nethack-c/upstream/src/mon.c": {
+      "sha256": "0ab56f908ac2147a5e57970250b99f90d47f2ec32fbdfb1a6fab04c33167bd01",
+      "bytes": 220281
+    },
+    "nethack-c/upstream/src/monmove.c": {
+      "sha256": "a7dae4554a30b51e0971ae32086c7494da8e3b8c18ee0e6d4a875f4a8baaf613",
+      "bytes": 86176
+    },
+    "nethack-c/upstream/include/display.h": {
+      "sha256": "36e9f838d3298d047e0605abcf2deb627eb79c18aa72f770d5289c34f3692b4c",
+      "bytes": 47005
+    },
+    ".cache/restart-20261122/guard-cleanup-policy-source-audit/SOURCE-REVIEW.md": {
+      "sha256": "31412850c260f7a9b17c0ad8173ba7c45ccbd9ec06cf25e30c1a9de435296d0e",
+      "bytes": 7557
+    }
+  },
+  "parentNativeEvidence": {
+    "classification": "Parent-supplied original C recording/comparisons; no worker native run",
+    "files": {
+      "raw": {
+        "path": "../guard-hallucinated-name-parent-native.session.json",
+        "sha256": "a68e3eaf35cfbf52cafa3b562e9e46b19e0459fa587be0820be9a045606cbd10",
+        "bytes": 5369894
+      },
+      "receipt": {
+        "path": "../guard-hallucinated-name-parent-native-checks.json",
+        "sha256": "0576738b739b455978780d3bab53fd2c13a64aea842d5f2ec598d360935dd7cb",
+        "bytes": 1983
+      },
+      "recording": {
+        "path": "../guard-hallucinated-name-parent-native-recording.json",
+        "sha256": "a6a592c3b81cf3045be08c8314f53d95455b638caf1dc1037ce376227db45fa6",
+        "bytes": 1520
+      },
+      "baselineReport": {
+        "path": "../guard-hallucinated-name-parent-baseline-native.json",
+        "sha256": "c8775ffea889ad77e07a145b52f6d04b1e3475f276dd7de4094a5955698a819c",
+        "bytes": 30198
+      },
+      "candidateReport": {
+        "path": "../guard-hallucinated-name-parent-candidate-native.json",
+        "sha256": "4a631e4763068c855e9a7f83dd6916dfdf1b3ac886dc0d744051590f4c64dc83",
+        "bytes": 14756
+      },
+      "parentMap": {
+        "path": "../guard-hallucinated-name-parent-candidate-runtime.json",
+        "sha256": "673194bc4f680064af746bc2a36f67a3f8473d24ab88685b060d604f183ebf8e",
+        "bytes": 24861
+      }
+    },
+    "baseline": "4/6",
+    "candidate": "6/6",
+    "cases": 6,
+    "keys": 1337,
+    "boundaries": 1343,
+    "calls": 39082,
+    "frames": 0,
+    "firstChangedNativeBoundary": 225
+  }
+}

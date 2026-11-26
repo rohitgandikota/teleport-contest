@@ -1,0 +1,108 @@
+{
+  "baselineCommit": "80049d9227b05454dd0922275fb6fd403bd92819",
+  "cSourcePin": "16ff59115315917b93185d026aeefea06db9b0f4",
+  "runtimeChanged": [
+    "js/vault.js"
+  ],
+  "runtimeFiles": 280,
+  "runtimeSHA256": "673194bc4f680064af746bc2a36f67a3f8473d24ab88685b060d604f183ebf8e",
+  "testedRuntimeIncludesPendingFruit": false,
+  "sourceSeal": {
+    "members": 34,
+    "sha256": "68537e0d7756f73138d148ff1868c0b7965e0631cc5df9cebb86a23c91db3904"
+  },
+  "ownerSeal": {
+    "members": 310,
+    "sha256": "8bd41eeff17c1b60693225e09fd32795b19d9fb5fb7a64b1ca669dddcdeeb499"
+  },
+  "promotionSeal": {
+    "members": 50,
+    "sha256": "9b6333998f0bf0edea1cabc99b03422d759233e811e81d79b4a9d7d3272c2bc0"
+  },
+  "sourceControls": {
+    "ordinary": "30/30",
+    "causal": "20/20",
+    "namingPolicy": "3/5 to5/5"
+  },
+  "native": {
+    "baselineExact": 4,
+    "candidateExact": 6,
+    "cases": 6,
+    "boundaries": 1343,
+    "calls": 39082,
+    "frames": 0,
+    "negativeCompleteReportsUnchanged": 3,
+    "negativeOutputHashesUnchanged": 15,
+    "allCompleteReportsUnchanged": [
+      "nonhallucinated-cleanup-negative",
+      "hallucinated-blind-cleanup",
+      "hallucinated-before-cleanup-negative",
+      "hallucinated-blind-before-cleanup-negative"
+    ],
+    "allCursorCallSliceFrameHashesUnchanged": true,
+    "repairedStyledBoundaries": 18,
+    "rawSHA256": "a68e3eaf35cfbf52cafa3b562e9e46b19e0459fa587be0820be9a045606cbd10",
+    "inputsChanged": false,
+    "rerecorded": false,
+    "limits": [
+      "Display-RNG call-site traces establish skipped blind naming, but that case has no native screen improvement in this input.",
+      "Whole vault and hallucination behavior are not established."
+    ]
+  },
+  "retainedNative": {
+    "cases": 5,
+    "completeReportUnchanged": true,
+    "reportSHA256": "44199d241221013fc97d82501c3c0bc06ce602472f3ce5f215841d2be5865ad5"
+  },
+  "portable": {
+    "payloads": 23,
+    "requirements": 6,
+    "freshPassiveObservation": true,
+    "originalAssertions": 30,
+    "preflightRejections": 12,
+    "validMetadataControls": 1,
+    "reportSHA256": "5db322e862f972a26523c56eb04e9c3a77a9d7e974993cadadd4772a12556c5c"
+  },
+  "retained": {
+    "passed": 35,
+    "total": 35,
+    "receiptSHA256": "96c34707b6110f3dfdd0d46da2e235b5c051e6e4398042a731fda61d629c9250",
+    "driverOrderErrorPreserved": true
+  },
+  "selectedPublic": {
+    "passed": 87,
+    "total": 87,
+    "screens": 42409,
+    "cursors": 42409,
+    "rngCalls": 1814402,
+    "animFrames": 1607
+  },
+  "strict8s": {
+    "passed": 87,
+    "total": 87
+  },
+  "full913": {
+    "root": "/share/NFS/u/rohit/research/contest/artifacts/2026-11-22/guard-hallucinated-name-full913-js-20261125",
+    "passed": 913,
+    "sessions": 913,
+    "totals": {
+      "screens": 928430,
+      "cursors": 928430,
+      "rngCalls": 20083579,
+      "animFrames": 33131
+    },
+    "allFilesFixed": 1204,
+    "allFilesSHA256": "1241e01cf92f5c11fdf8f2eabc631c285c8a89183d9d1303d9c5d658dd212794",
+    "verificationSHA256": "40358a9adfd45fb9334e96942eb09e68438de661d000bc9ca30b54aa54d2102e",
+    "workers": 2,
+    "timeoutOverride": false,
+    "retries": 0
+  },
+  "limits": [
+    "The blind case proves the skipped naming call through source and display-RNG traces; its native screens already matched.",
+    "Other vault cleanup, wallification and restored-entry confusion remain outside this change.",
+    "The full913 run tests the isolated guard candidate, excluding three unpublished fruit fixtures and their pending runtime.",
+    "Decoded styled cells, cursors, ordered core RNG and frames are checked; literal serialized-byte and whole-port completion are not established.",
+    "Local verification does not establish a newer held-out result."
+  ]
+}

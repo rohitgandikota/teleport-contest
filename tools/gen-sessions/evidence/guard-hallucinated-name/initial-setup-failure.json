@@ -1,0 +1,7 @@
+{
+  "stage": "Symbolic candidate graph setup, before any runtime copy or gameplay",
+  "error": "Missing nested js/dat directory before symlink creation; subsequent probe command had no script",
+  "correction": "Create each parent directory before adding link",
+  "candidateRuntimeHadBeenEdited": false,
+  "inputsChanged": false
+}

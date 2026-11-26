@@ -1,0 +1,14 @@
+{
+  "ordinaryChecks": 14,
+  "ordinaryPassed": 14,
+  "nativeCases": 2,
+  "nativePassed": 2,
+  "completeNativeReportUnchanged": true,
+  "completeNegativeOrdinaryRowUnchanged": true,
+  "allTenOutputHashesUnchanged": true,
+  "nativeSHA256": "6c7ef7814ef840b08a0976d6ef54c9c7e0c440065350cd1bebcbe4f1a2da5e7b",
+  "ordinarySHA256": "c5c8b964f7ac8df11046f13964011ca36558f96fe013e7f2b4461d29286a15d1",
+  "limits": [
+    "State cleanup is source-confirmed; no visible flooding result is claimed."
+  ]
+}

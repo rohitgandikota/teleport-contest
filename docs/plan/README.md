@@ -12,6 +12,12 @@ Ground rules are in `/CLAUDE.md`. Read that first if you have not.
 
 ## Current focus, 2026-11-26
 
+Chat and wear fixes are pushed as `867e3805`; all 1,225 tested Git blobs match
+the published tree. Vault pit cleanup passes all 935 recordings, 14 ordinary
+checks, eight focused checks and 45 strict workers.
+The separate welcome audit has 16 original C cases and a candidate in progress.
+See STATUS for exact paths and remaining verification.
+
 Chat speech guards and wear-command entry checks are verified on `ef2bfd2d`.
 All 934 recordings, 12 new native cases, 12 focused checks and 46 strict workers
 pass. Fresh public checks preserve all six chat cases, 52 wear assertions and

@@ -1,5 +1,55 @@
 # STATUS — live handoff board
 
+## 2026-11-26: pit cleanup verified; welcome candidate in progress
+
+Published main is 867e38052bbe205056c4e56a1ce6dd06b6e8e351, confirmed on
+origin/main. Chat/wear full934 publication checks all 1,225 tested Git blobs.
+Publication receipt SHA256:
+c210c1307af8c97766867c2f770f65f12e9095cf8dfe992d1c6c8c1830f563e6.
+The 72-path index receipt is 1d4f9fae8dcf2bd2684ac63cd3516df64ba5d638a1e9443dac98b0cb6369832b.
+Its initial whitespace check only flagged three valid blank context lines in
+two preserved patch artifacts; all other staged files passed unchanged.
+
+The working runtime changes only vault.js: replace the trap-array filter in
+wallify_vault with existing t_at/deltrap. Original ordinary checks improve
+from 13/14 to 14/14. The positive reciprocal bit changes from 64 to zero;
+the complete negative row and all ten output hashes stay fixed. Both original
+C native cases already pass and remain byte-identical. This is internal state
+cleanup, not a demonstrated visible flooding repair. Raw recorded once:
+e51ff4565cbb7f98f303a9f758ce83e82c9b8ea6848f7f3d9638c42f1b1690f6,
+556 keys, 558 boundaries, 12,990 calls and one frame. Source/candidate are
+vault-pit-unlink-source-audit and vault-pit-unlink-candidate. Fixed map:
+b22f77601464926cd00681f97c54eb3a031f3aa4752f3366aa1ff8baba9908d4.
+
+Full935 passes on NFS with two CPU workers, default limits and no retries:
+/share/NFS/u/rohit/research/contest/artifacts/2026-11-22/vault-pit-unlink-full935-js-20261126.
+PID3512510 is complete. It tests 1,226 fixed files, linking the prior 934 recordings and adding
+one exact raw. all-files SHA256:
+2cf3d9be80d57545cb07d6021cf863ff147223b7065c4acfee3042b800224eca.
+Do not rerun it. All 935 recordings pass: 938,995 screens/cursors, 20,480,970
+random calls and 33,188 frames. Verification SHA256:
+691a16c68b27c11830e4347db4cbeff8ba1a692c1c5d0b77b5856f2c89ffdcb9.
+The portable pit gate and 16 small payloads are installed; two requirements
+bring the registry to 4,684. Fresh public ordinary checks preserve all 14
+candidate assertions and complete rows. Eight focused checks, 45 strict
+workers and the static scope/import audit pass. Next: verify the staged tree,
+commit and push. Keep the other candidates isolated until publication.
+
+Welcome expanded source20 and original source18 both verify. All 16 original
+save/restore tuples reach their intended state, with plain/deferred equality
+and twenty fixed negative hashes. Parent recorded C once, all 16 primary
+predicates pass. Raw SHA256:
+82b5aaf8ae42d10946ffb75a3df0b73791adc461d3d6f33126de56a1d7b98bb0,
+606 keys, 622 boundaries, 38,777 calls and zero frames. Native baseline10/16
+fails only restored branches 1,7,9,11,13,15; all random calls and frames match.
+Baseline report SHA256:
+82c0a2c9b49ea9cb8c4b9aa34c544b8558eed3306b8a2ecbfb879c81fb1f0f5c.
+Sartre is authorized for welcome-restore-branches-candidate on fixed0ee:
+a named welcome owner, both callers, and an exact extraction of the existing
+hellish_smoke_mesg logic. Custom hooks and general temperature production remain
+open. No original predicate or input may change. The remaining chat branches
+and shop quotes are separate source audits owned by Euclid and Leibniz.
+
 ## 2026-11-26: chat and wear composition verified
 
 Current published main remains ef2bfd2d. The working tree now contains both

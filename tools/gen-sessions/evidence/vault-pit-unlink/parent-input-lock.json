@@ -1,0 +1,10 @@
+{
+  "sourceManifestSHA256": "237c27067c6a46bd2613eafa317e187e5753f13902cf15c407cb740fd29181e4",
+  "originalRecipeSHA256": "a1a5861ef80ea7ff31516da75581e5fb2b550ebf7fb6dc31957c14d9a314c378",
+  "primaryRecipeSHA256": "a1a5861ef80ea7ff31516da75581e5fb2b550ebf7fb6dc31957c14d9a314c378",
+  "minimalInputSHA256": "9ad260645d2b8f37dbc753f4084836fd4aa1f4f8c68f1fb2417edfd9b111e03d",
+  "baselineReportSHA256": "eccf54bfe40f935f52f32589fd3410f29b679e1537b46d0b7b63c621471f1637",
+  "negativeHashesSHA256": "67663ece146008e365b5c6e745155b5ae435ab811df0eb42732bc65770adad66",
+  "runtimeSHA256": "88b58f9ee504928b3adf4295da37cce4337882990cc75541f033df1d36c1ab11",
+  "beforeCAndCandidate": true
+}

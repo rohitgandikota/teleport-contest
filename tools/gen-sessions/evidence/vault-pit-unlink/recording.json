@@ -1,0 +1,31 @@
+{
+  "startedAt": "2026-11-26T16:45:47.558557+00:00",
+  "command": [
+    "node",
+    "/Users/rohit/research/code/contest/scripts/record-session.mjs",
+    "/Users/rohit/research/code/contest/.cache/restart-20261122/vault-pit-unlink-parent-minimal.session.json",
+    "/Users/rohit/research/code/contest/.cache/restart-20261122/vault-pit-unlink-parent-native.session.json"
+  ],
+  "input": ".cache/restart-20261122/vault-pit-unlink-parent-minimal.session.json",
+  "inputSHA256": "9ad260645d2b8f37dbc753f4084836fd4aa1f4f8c68f1fb2417edfd9b111e03d",
+  "primaryRecipeSHA256": "a1a5861ef80ea7ff31516da75581e5fb2b550ebf7fb6dc31957c14d9a314c378",
+  "binarySha256": "ba4dbc1c823f8d4b0cfb6fd594d00ff0ff5754daaaa2036bee15baeffdf85aa7",
+  "recorderSha256": "b129caee2ca3941b30c36f5c26644bd37ff610344332eb511c474b8709b70648",
+  "cPin": "16ff59115315917b93185d026aeefea06db9b0f4",
+  "timezone": "Etc/GMT+4",
+  "raw": ".cache/restart-20261122/vault-pit-unlink-parent-native.session.json",
+  "exit": 0,
+  "closedAt": "2026-11-26T16:45:48.147727+00:00",
+  "log": ".cache/restart-20261122/vault-pit-unlink-parent-native-recording.log",
+  "logSHA256": "9bdcb9607dbbb7a1994204ac7b5b548f6538e6a60ba561928ff4b6c62ef5fccb",
+  "rawSha256": "e51ff4565cbb7f98f303a9f758ce83e82c9b8ea6848f7f3d9638c42f1b1690f6",
+  "bytes": 2159125,
+  "segments": 2,
+  "boundaries": 558,
+  "keys": 556,
+  "calls": 12990,
+  "frames": 1,
+  "fiveInputFieldsAndPresencePreserved": true,
+  "allKeysExact": true,
+  "cExecutedOnce": true
+}

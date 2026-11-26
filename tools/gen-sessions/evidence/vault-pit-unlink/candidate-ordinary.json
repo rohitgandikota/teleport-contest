@@ -1,0 +1,221 @@
+{
+  "recipeSHA256": "a1a5861ef80ea7ff31516da75581e5fb2b550ebf7fb6dc31957c14d9a314c378",
+  "runtimeSHA256": "b22f77601464926cd00681f97c54eb3a031f3aa4752f3366aa1ff8baba9908d4",
+  "classification": "C-source state predictions with ordinary inputs; no native comparison yet",
+  "rows": [
+    {
+      "name": "guard-restoration-removes-linked-boundary-pit",
+      "checks": [
+        {
+          "name": "real pit pair before ordinary guard repair",
+          "pass": true
+        },
+        {
+          "name": "wall repair removes only the boundary pit",
+          "pass": true
+        },
+        {
+          "name": "C deltrap clears the surviving reciprocal link",
+          "pass": true
+        },
+        {
+          "name": "boundary remains outside the guard corridor",
+          "pass": true
+        },
+        {
+          "name": "all keys complete without death",
+          "pass": true
+        },
+        {
+          "name": "observer preserves all five output streams",
+          "pass": true
+        },
+        {
+          "name": "deferred keys preserve all five output streams",
+          "pass": true
+        }
+      ],
+      "before": {
+        "step": 277,
+        "turn": 50,
+        "hero": [
+          25,
+          5
+        ],
+        "hp": 12,
+        "mortality": 0,
+        "targetType": 23,
+        "target": {
+          "type": 11,
+          "conjoined": 4
+        },
+        "survivor": {
+          "type": 11,
+          "conjoined": 64
+        },
+        "corridor": [
+          [
+            25,
+            5
+          ],
+          [
+            26,
+            5
+          ],
+          [
+            27,
+            5
+          ]
+        ]
+      },
+      "after": {
+        "step": 278,
+        "turn": 50,
+        "hero": [
+          26,
+          5
+        ],
+        "hp": 12,
+        "mortality": 0,
+        "targetType": 2,
+        "target": null,
+        "survivor": {
+          "type": 11,
+          "conjoined": 0
+        },
+        "corridor": [
+          [
+            25,
+            5
+          ],
+          [
+            26,
+            5
+          ],
+          [
+            27,
+            5
+          ]
+        ]
+      },
+      "hashes": {
+        "screens": "771871a1f58c16c964495c0cce9b1b976b1a5fdd69daa20e767a2788b40acc81",
+        "cursors": "de85a85102a5fb8835951bb9620f69b2b16719355fb43843ec784dbfcf9169e8",
+        "calls": "4d8d235fb28d2046810fdc13922ed3e8ed0ad69ccb09b88f5d68796132125be1",
+        "slices": "4bc769c486c8a4059f860b6cea533a465569427a8eaf603ecb51acf41ed5348e",
+        "frames": "b04a8dc89c1d20c1a879ed1054a9fcd545cb570ba65d11c004b653daa754f94c"
+      },
+      "keys": 279,
+      "boundaries": 280,
+      "calls": 6507,
+      "frames": 1
+    },
+    {
+      "name": "guard-restoration-removes-unlinked-boundary-pit",
+      "checks": [
+        {
+          "name": "real pit pair before ordinary guard repair",
+          "pass": true
+        },
+        {
+          "name": "wall repair removes only the boundary pit",
+          "pass": true
+        },
+        {
+          "name": "C deltrap clears the surviving reciprocal link",
+          "pass": true
+        },
+        {
+          "name": "boundary remains outside the guard corridor",
+          "pass": true
+        },
+        {
+          "name": "all keys complete without death",
+          "pass": true
+        },
+        {
+          "name": "observer preserves all five output streams",
+          "pass": true
+        },
+        {
+          "name": "deferred keys preserve all five output streams",
+          "pass": true
+        }
+      ],
+      "before": {
+        "step": 275,
+        "turn": 50,
+        "hero": [
+          25,
+          5
+        ],
+        "hp": 12,
+        "mortality": 0,
+        "targetType": 23,
+        "target": {
+          "type": 11,
+          "conjoined": 0
+        },
+        "survivor": {
+          "type": 11,
+          "conjoined": 0
+        },
+        "corridor": [
+          [
+            25,
+            5
+          ],
+          [
+            26,
+            5
+          ],
+          [
+            27,
+            5
+          ]
+        ]
+      },
+      "after": {
+        "step": 276,
+        "turn": 50,
+        "hero": [
+          26,
+          5
+        ],
+        "hp": 12,
+        "mortality": 0,
+        "targetType": 2,
+        "target": null,
+        "survivor": {
+          "type": 11,
+          "conjoined": 0
+        },
+        "corridor": [
+          [
+            25,
+            5
+          ],
+          [
+            26,
+            5
+          ],
+          [
+            27,
+            5
+          ]
+        ]
+      },
+      "hashes": {
+        "screens": "f5a60598751bae921c5bc21cc172cc282a496e553057f0da251f461ceb0cea32",
+        "cursors": "07af974a11a593bb8caf16b203acad20d48c7d213e9f58947bcf4a0464a4e706",
+        "calls": "1e2813911fd3e52c0becb5a133a5a7712f8f2c3513a60c22fecb686da66d35ab",
+        "slices": "2691c56ee8802d9f4cb44ad6117ae14258c615de666900d024e1ac2019a94998",
+        "frames": "007f45b9e9c914e5b478a0a9c803c5bc60e54608e801cd3d48c5eec01a714247"
+      },
+      "keys": 277,
+      "boundaries": 278,
+      "calls": 6483,
+      "frames": 0
+    }
+  ]
+}

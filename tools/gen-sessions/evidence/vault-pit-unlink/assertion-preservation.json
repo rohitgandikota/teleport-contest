@@ -1,0 +1,11 @@
+{
+  "originalProbeSHA256": "edf0ab0293439df0ef63d11d49e20d7c5f941471b00b07de5e94977dfcc90154",
+  "assertionBodySHA256": "fe78aa13ad6304ed8a577ed37259d07c3da58abfe8958843fb9ae31f35cfad23",
+  "bodyUnchanged": true,
+  "gateSHA256": "a73c2e2cb32af204c9a7fabb84aa336a7f5fcb4cf925664cb1c3594165951a80",
+  "adaptations": [
+    "Replace fixed-runtime header with exact recorded-input preflight and normal runtime imports.",
+    "Make report output optional and exclusive; preserve every original state/neutrality assertion.",
+    "Add equality with the original complete negative row and all ten baseline output hashes."
+  ]
+}

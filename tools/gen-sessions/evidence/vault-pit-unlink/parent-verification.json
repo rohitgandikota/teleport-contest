@@ -1,0 +1,299 @@
+{
+  "baselineCommit": "867e38052bbe205056c4e56a1ce6dd06b6e8e351",
+  "composition": {
+    "parent": "867e38052bbe205056c4e56a1ce6dd06b6e8e351",
+    "runtimeFiles": 280,
+    "runtimeSHA256": "b22f77601464926cd00681f97c54eb3a031f3aa4752f3366aa1ff8baba9908d4",
+    "runtimeChanged": [
+      "js/vault.js"
+    ],
+    "fixedLinks": 279,
+    "sourceCopies": 1,
+    "patchSHA256": "1dc6cc9b97f06c058bc3b5547ba6c2558bcaeab75a98c3a437afb665936cb90f",
+    "assertionBodySHA256": "d6ac45446efb469c10b7a5774b90bdf1e3e2c02e6a0beb7681be8530021bbd68",
+    "wrapperChanges": [
+      [
+        "sha(readFileSync(import.meta.url.slice(7)))",
+        "sha(readFileSync(new URL('../vault-pit-unlink-source-audit/probe.mjs',root)))"
+      ],
+      [
+        "'baseline-runtime.json'",
+        "'runtime.json'"
+      ],
+      [
+        "assert.equal(sha(runtimeBytes), lock.runtimeSHA256);",
+        "assert.equal(sha(runtimeBytes), 'b22f77601464926cd00681f97c54eb3a031f3aa4752f3366aa1ff8baba9908d4');"
+      ],
+      [
+        "'baseline/'",
+        "'runtime/'"
+      ],
+      [
+        "'./baseline/",
+        "'./runtime/"
+      ],
+      [
+        "'baseline-observation.json'",
+        "'candidate-observation.json'"
+      ],
+      [
+        "runtimeSHA256:lock.runtimeSHA256",
+        "runtimeSHA256:sha(runtimeBytes)"
+      ]
+    ],
+    "originalSourceManifestSHA256": "237c27067c6a46bd2613eafa317e187e5753f13902cf15c407cb740fd29181e4"
+  },
+  "raw": {
+    "path": "tools/gen-sessions/generated/vault-pit-unlink.session.json",
+    "sha256": "e51ff4565cbb7f98f303a9f758ce83e82c9b8ea6848f7f3d9638c42f1b1690f6",
+    "bytes": 2159125
+  },
+  "publicPayloads": 16,
+  "requirementsAdded": 2,
+  "registryTotal": 4684,
+  "candidateValidation": {
+    "ordinaryChecks": 14,
+    "ordinaryPassed": 14,
+    "nativeCases": 2,
+    "nativePassed": 2,
+    "completeNativeReportUnchanged": true,
+    "completeNegativeOrdinaryRowUnchanged": true,
+    "allTenOutputHashesUnchanged": true,
+    "nativeSHA256": "6c7ef7814ef840b08a0976d6ef54c9c7e0c440065350cd1bebcbe4f1a2da5e7b",
+    "ordinarySHA256": "c5c8b964f7ac8df11046f13964011ca36558f96fe013e7f2b4461d29286a15d1",
+    "limits": [
+      "State cleanup is source-confirmed; no visible flooding result is claimed."
+    ]
+  },
+  "ordinary": {
+    "command": [
+      "node",
+      "--max-old-space-size=512",
+      "tools/vault-pit-unlink-input-gate.mjs",
+      "/Users/rohit/research/code/contest/.cache/restart-20261122/vault-pit-unlink-main-ordinary.json"
+    ],
+    "exit": 0,
+    "seconds": 1.65,
+    "report": ".cache/restart-20261122/vault-pit-unlink-main-ordinary.json",
+    "reportSHA256": "ac24e1938fe79962c8beeee9ee035d9e4e7d67bfff9ba1b0cddd242b427a38f3",
+    "log": ".cache/restart-20261122/vault-pit-unlink-main-ordinary.log",
+    "logSHA256": "66746fb34a524949ff3b008e81f3dc392886358b58c21297f42ddc95e09772f3",
+    "timeoutSeconds": 55,
+    "maxOldSpaceMB": 512
+  },
+  "retained": [
+    {
+      "name": "pit-owner-state",
+      "command": [
+        "node",
+        "--max-old-space-size=512",
+        "tools/pit-owner-state-gate.mjs"
+      ],
+      "exit": 0,
+      "seconds": 0.78,
+      "log": ".cache/restart-20261122/vault-pit-unlink-retained-pit-owner-state.log",
+      "sha256": "181f269b4e1b8d3fb4da0f485c1d59cec1119e598313d93e8869604d5748848e"
+    },
+    {
+      "name": "pit-owner-input",
+      "command": [
+        "node",
+        "--max-old-space-size=512",
+        "tools/pit-owner-input-gate.mjs"
+      ],
+      "exit": 0,
+      "seconds": 4.908,
+      "log": ".cache/restart-20261122/vault-pit-unlink-retained-pit-owner-input.log",
+      "sha256": "0e727d3c2dc030ba978f694ac07b727e876c9c037cba40ef092b1eab37b006f3"
+    },
+    {
+      "name": "wallify-vault-input",
+      "command": [
+        "node",
+        "--max-old-space-size=512",
+        "tools/wallify-vault-input-gate.mjs"
+      ],
+      "exit": 0,
+      "seconds": 2.678,
+      "log": ".cache/restart-20261122/vault-pit-unlink-retained-wallify-vault-input.log",
+      "sha256": "5a33715efdd93d6fe8b6dd77694d276df186f0a9dd246810d5041154f756faa8"
+    },
+    {
+      "name": "wallify-vault-wall-mode-input",
+      "command": [
+        "node",
+        "--max-old-space-size=512",
+        "tools/wallify-vault-wall-mode-input-gate.mjs"
+      ],
+      "exit": 0,
+      "seconds": 2.368,
+      "log": ".cache/restart-20261122/vault-pit-unlink-retained-wallify-vault-wall-mode-input.log",
+      "sha256": "b5514510fa7d237b7dd45064ad3015894297696933419a6504a5fd1e0a515f0f"
+    },
+    {
+      "name": "wallify-vault-occupant-input",
+      "command": [
+        "node",
+        "--max-old-space-size=512",
+        "tools/wallify-vault-occupant-input-gate.mjs"
+      ],
+      "exit": 0,
+      "seconds": 2.421,
+      "log": ".cache/restart-20261122/vault-pit-unlink-retained-wallify-vault-occupant-input.log",
+      "sha256": "8a0d80cb13db6386d0be7a31e13de8bb7b7f387d2c9887847795ccc65d02ee90"
+    },
+    {
+      "name": "vault-exit-corridor-state",
+      "command": [
+        "node",
+        "--max-old-space-size=512",
+        "tools/vault-exit-corridor-state-gate.mjs"
+      ],
+      "exit": 0,
+      "seconds": 2.031,
+      "log": ".cache/restart-20261122/vault-pit-unlink-retained-vault-exit-corridor-state.log",
+      "sha256": "72d9e882bb98a2e070b46ae118f4a845ee9c02daffbba1733f0d6ae4a6ca7462"
+    },
+    {
+      "name": "vault-guard-death-state",
+      "command": [
+        "node",
+        "--max-old-space-size=512",
+        "tools/vault-guard-death-state-gate.mjs"
+      ],
+      "exit": 0,
+      "seconds": 3.083,
+      "log": ".cache/restart-20261122/vault-pit-unlink-retained-vault-guard-death-state.log",
+      "sha256": "016caad324f493de9c0b1037d7518bc50f4df3ac01e6dd6d51f9b434b0ce77dd"
+    },
+    {
+      "name": "hmonas-pit-kick-state",
+      "command": [
+        "node",
+        "--max-old-space-size=512",
+        "tools/hmonas-pit-kick-state-gate.mjs"
+      ],
+      "exit": 0,
+      "seconds": 0.573,
+      "log": ".cache/restart-20261122/vault-pit-unlink-retained-hmonas-pit-kick-state.log",
+      "sha256": "6c4a499754bf6ea8286b463edd9ac4f8b72b3c2f5f730186246941420eea6525"
+    }
+  ],
+  "strict": {
+    "command": [
+      "node",
+      "tools/hang-gate.mjs",
+      "sessions/seed0002-healer-reflection-drummer.session.json",
+      "sessions/seed0004-feeding-pony.session.json",
+      "sessions/seed0006-wizard-water-demon.session.json",
+      "sessions/seed0007-rogue-snake-swamp.session.json",
+      "sessions/seed0009-swimmer-mforce.session.json",
+      "sessions/seed0012-monk-vault-escort.session.json",
+      "sessions/seed0013-friday13-save-then-fullmoon-restore.session.json",
+      "sessions/seed0013-rogue-friday13-combat.session.json",
+      "sessions/seed0014-dequa-fountain-explore.session.json",
+      "sessions/seed0015-valk-level2-pit-dog-wait.session.json",
+      "sessions/seed0016-healer-newmoon-eat-zap.session.json",
+      "sessions/seed0017-samurai-altar-pray.session.json",
+      "sessions/seed0030-ten-diverse-deaths.session.json",
+      "sessions/seed0060-orc-rogue-kick-search.session.json",
+      "sessions/seed0077-rogue-chargen.session.json",
+      "sessions/seed0101-ranger-quiver-throw-travel-engrave.session.json",
+      "sessions/seed0102-ranger-name-cancel.session.json",
+      "sessions/seed0103-knight-ride-pony.session.json",
+      "sessions/seed0104-knight-ride-combat.session.json",
+      "sessions/seed0105-valk-chat-lamp-ration.session.json",
+      "sessions/seed0106-priest-extcmd-sweep.session.json",
+      "sessions/seed0107-samurai-twoweapon-enhance.session.json",
+      "sessions/seed0108-wizard-extcmd-wishlist.session.json",
+      "sessions/seed0116-wizard-wear-shop.session.json",
+      "sessions/seed0200-monk-north-search.session.json",
+      "sessions/seed0360-wizard-world-tour.session.json",
+      "sessions/seed0361-archeologist-tour.session.json",
+      "sessions/seed0367-priest-quest-tour.session.json",
+      "sessions/seed0373-barbarian-quest-tour.session.json",
+      "sessions/seed0383-wizard-hallucinate.session.json",
+      "sessions/seed0398-wizard-wandpoly-pile.session.json",
+      "sessions/seed0399-wizard-hallu-actions.session.json",
+      "sessions/seed0501-priest-cast-read-turn.session.json",
+      "sessions/seed0700-samurai-explore-descend.session.json",
+      "sessions/seed0900-tourist-explore-actions.session.json",
+      "sessions/seed1150-caveman-explore-move.session.json",
+      "sessions/seed1500-rogue-explore-move.session.json",
+      "sessions/seed1800-tourist-eat-throw.session.json",
+      "sessions/seed2200-wizard-quaff-zap-read.session.json",
+      "sessions/seed2600-wizard-custom-binds.session.json",
+      "sessions/seed4500-knight-coverage.session.json",
+      "sessions/seed5002-wizard-coverage-pair.session.json",
+      "sessions/seed5006-tourist-stress-disaster.session.json",
+      "sessions/seed8000-tourist-starter.session.json",
+      "tools/gen-sessions/generated/vault-pit-unlink.session.json"
+    ],
+    "exit": 0,
+    "seconds": 35.59,
+    "targets": 45,
+    "budgetMs": 8000,
+    "log": ".cache/restart-20261122/vault-pit-unlink-public45-strict.log",
+    "sha256": "8d5b5c1946094092d19693ee75a43de11c09df50ea6700e35beef83c3d080de9"
+  },
+  "scopeImportFindings": 0,
+  "fullRegression": {
+    "verifiedAt": "2026-11-26T17:01:51.651225+00:00",
+    "sessions": 935,
+    "passed": 935,
+    "failures": [],
+    "totals": {
+      "screens": 938995,
+      "cursors": 938995,
+      "rngCalls": 20480970,
+      "animFrames": 33188
+    },
+    "missingMetrics": {},
+    "runtimeFilesFixed": 280,
+    "rawFilesFixed": 935,
+    "allFilesFixed": 1226,
+    "allFilesSHA256": "2cf3d9be80d57545cb07d6021cf863ff147223b7065c4acfee3042b800224eca",
+    "defaultWorkerTimeoutMs": 45000,
+    "retries": 0,
+    "started": {
+      "startedAt": "2026-11-26T16:51:37.999312+00:00",
+      "workers": 2,
+      "pid": 3512510,
+      "cpuCount": 24,
+      "loadAverage": [
+        1.16748046875,
+        1.2783203125,
+        1.7109375
+      ],
+      "timeoutOverride": false,
+      "retries": 0,
+      "node": {
+        "version": "v26.3.0",
+        "archive": "node-v26.3.0-linux-x64.tar.xz",
+        "sha256": "0ce210831380ab75a5fec0d3fb6b5af0958898016b2cae51cc2fa11057d2f77e",
+        "officialURL": "https://nodejs.org/dist/v26.3.0/node-v26.3.0-linux-x64.tar.xz",
+        "checksumsURL": "https://nodejs.org/dist/v26.3.0/SHASUMS256.txt",
+        "binary": "/share/NFS/u/rohit/research/contest/artifacts/2026-11-22/text-history-full858-js-20261125/node-v26.3.0-linux-x64/bin/node",
+        "archiveSHA256": "0ce210831380ab75a5fec0d3fb6b5af0958898016b2cae51cc2fa11057d2f77e",
+        "binarySHA256": "5325ac9da58541494afcc136f0880279a2a853609bf4dae7755e04fb682b6926"
+      },
+      "allFilesSHA256": "2cf3d9be80d57545cb07d6021cf863ff147223b7065c4acfee3042b800224eca"
+    },
+    "logs": {
+      "shard-0.log": "84b2e04915adff4354bd2c24d292ae1ce2795219bb5020a74e2849ac46d1e42f",
+      "shard-1.log": "74c89edf075d5b5fe086f8c18c21872d3ff649ebc8096a3a547612fe9b8d1eb0"
+    },
+    "limits": [
+      "Scored corpus parity, not literal serialized-byte or whole-port proof.",
+      "No held-out result is inferred from these fixtures."
+    ]
+  },
+  "fullVerificationSHA256": "691a16c68b27c11830e4347db4cbeff8ba1a692c1c5d0b77b5856f2c89ffdcb9",
+  "NFSRoot": "/share/NFS/u/rohit/research/contest/artifacts/2026-11-22/vault-pit-unlink-full935-js-20261126",
+  "limits": [
+    "C-source state cleanup: no native-visible flooding difference is claimed.",
+    "Both original C cases already matched all decoded terminal cells, cursors, normalized calls/slices and frames; complete reports remain byte-identical.",
+    "No serialized-byte, whole-port or new held-out result is claimed."
+  ],
+  "installationReceiptSHA256": "4b4b8902d1c7c2021e635830ea07914cfac8f577eebdd1f4cda6727332ca61e1"
+}

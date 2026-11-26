@@ -1,0 +1,43 @@
+{
+  "parent": "867e38052bbe205056c4e56a1ce6dd06b6e8e351",
+  "runtimeFiles": 280,
+  "runtimeSHA256": "b22f77601464926cd00681f97c54eb3a031f3aa4752f3366aa1ff8baba9908d4",
+  "runtimeChanged": [
+    "js/vault.js"
+  ],
+  "fixedLinks": 279,
+  "sourceCopies": 1,
+  "patchSHA256": "1dc6cc9b97f06c058bc3b5547ba6c2558bcaeab75a98c3a437afb665936cb90f",
+  "assertionBodySHA256": "d6ac45446efb469c10b7a5774b90bdf1e3e2c02e6a0beb7681be8530021bbd68",
+  "wrapperChanges": [
+    [
+      "sha(readFileSync(import.meta.url.slice(7)))",
+      "sha(readFileSync(new URL('../vault-pit-unlink-source-audit/probe.mjs',root)))"
+    ],
+    [
+      "'baseline-runtime.json'",
+      "'runtime.json'"
+    ],
+    [
+      "assert.equal(sha(runtimeBytes), lock.runtimeSHA256);",
+      "assert.equal(sha(runtimeBytes), 'b22f77601464926cd00681f97c54eb3a031f3aa4752f3366aa1ff8baba9908d4');"
+    ],
+    [
+      "'baseline/'",
+      "'runtime/'"
+    ],
+    [
+      "'./baseline/",
+      "'./runtime/"
+    ],
+    [
+      "'baseline-observation.json'",
+      "'candidate-observation.json'"
+    ],
+    [
+      "runtimeSHA256:lock.runtimeSHA256",
+      "runtimeSHA256:sha(runtimeBytes)"
+    ]
+  ],
+  "originalSourceManifestSHA256": "237c27067c6a46bd2613eafa317e187e5753f13902cf15c407cb740fd29181e4"
+}

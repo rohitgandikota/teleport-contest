@@ -1,0 +1,152 @@
+[
+  {
+    "segment": 0,
+    "name": "guard-restoration-removes-linked-boundary-pit",
+    "boundaries": {
+      "expected": 280,
+      "actual": 280
+    },
+    "frozenScreens": 280,
+    "fullStyleScreens": 280,
+    "matchingStyleCells": 537600,
+    "totalCells": 537600,
+    "blankStyleMismatches": 0,
+    "nonblankStyleMismatches": 0,
+    "glyphMismatches": 0,
+    "screenDifferences": [],
+    "cursors": {
+      "expected": 280,
+      "actual": 280,
+      "matched": 280,
+      "firstDifference": null
+    },
+    "calls": {
+      "rawExpected": 6507,
+      "rawActual": 6507,
+      "discardedEntries": 0,
+      "expected": 6507,
+      "actual": 6507,
+      "firstDifference": null
+    },
+    "slices": {
+      "expected": 280,
+      "actual": 280,
+      "matched": 280,
+      "differences": []
+    },
+    "frames": {
+      "expected": 1,
+      "actual": 1,
+      "expectedSlices": 280,
+      "actualSlices": 280,
+      "countMismatches": [],
+      "fullStyleMatches": 1,
+      "cursorMatches": 1
+    },
+    "rawHashes": {
+      "c": {
+        "screens": "7d7dd62fb162b1e31ed8640d72e0f25912fc28af58735a27547b5691a0a69310",
+        "cursors": "de85a85102a5fb8835951bb9620f69b2b16719355fb43843ec784dbfcf9169e8",
+        "calls": "ce7c2e83f56cebde5d9f04fafb3fda1cdcb2556b5d78541f96c1aaf6ed36dce7",
+        "slices": "c760c686525c2738a15af82911bea8c08730510d81dee0d25b51389b9b607e61",
+        "frames": "575f506ba79f5e5091147600a861503838ee1746644e9abedd4b9a5b9e272e01"
+      },
+      "js": {
+        "screens": "771871a1f58c16c964495c0cce9b1b976b1a5fdd69daa20e767a2788b40acc81",
+        "cursors": "de85a85102a5fb8835951bb9620f69b2b16719355fb43843ec784dbfcf9169e8",
+        "calls": "4d8d235fb28d2046810fdc13922ed3e8ed0ad69ccb09b88f5d68796132125be1",
+        "slices": "4bc769c486c8a4059f860b6cea533a465569427a8eaf603ecb51acf41ed5348e",
+        "frames": "b04a8dc89c1d20c1a879ed1054a9fcd545cb570ba65d11c004b653daa754f94c"
+      }
+    },
+    "normalizedHashes": {
+      "c": {
+        "calls": "4d8d235fb28d2046810fdc13922ed3e8ed0ad69ccb09b88f5d68796132125be1",
+        "slices": "4bc769c486c8a4059f860b6cea533a465569427a8eaf603ecb51acf41ed5348e"
+      },
+      "js": {
+        "calls": "4d8d235fb28d2046810fdc13922ed3e8ed0ad69ccb09b88f5d68796132125be1",
+        "slices": "4bc769c486c8a4059f860b6cea533a465569427a8eaf603ecb51acf41ed5348e"
+      }
+    },
+    "frozenScreenCursorExact": true,
+    "fullRngExact": true,
+    "fullStyleExact": true,
+    "animationExact": true
+  },
+  {
+    "segment": 1,
+    "name": "guard-restoration-removes-unlinked-boundary-pit",
+    "boundaries": {
+      "expected": 278,
+      "actual": 278
+    },
+    "frozenScreens": 278,
+    "fullStyleScreens": 278,
+    "matchingStyleCells": 533760,
+    "totalCells": 533760,
+    "blankStyleMismatches": 0,
+    "nonblankStyleMismatches": 0,
+    "glyphMismatches": 0,
+    "screenDifferences": [],
+    "cursors": {
+      "expected": 278,
+      "actual": 278,
+      "matched": 278,
+      "firstDifference": null
+    },
+    "calls": {
+      "rawExpected": 6483,
+      "rawActual": 6483,
+      "discardedEntries": 0,
+      "expected": 6483,
+      "actual": 6483,
+      "firstDifference": null
+    },
+    "slices": {
+      "expected": 278,
+      "actual": 278,
+      "matched": 278,
+      "differences": []
+    },
+    "frames": {
+      "expected": 0,
+      "actual": 0,
+      "expectedSlices": 278,
+      "actualSlices": 278,
+      "countMismatches": [],
+      "fullStyleMatches": 0,
+      "cursorMatches": 0
+    },
+    "rawHashes": {
+      "c": {
+        "screens": "1721e6aaed15d15db03983ac58bee075d958a5ff59c0b53b5a27561fe821bd86",
+        "cursors": "07af974a11a593bb8caf16b203acad20d48c7d213e9f58947bcf4a0464a4e706",
+        "calls": "7948a56a048701be79d4ffafdbeceb9532f62a3429234119e6639b6cea5e5ef8",
+        "slices": "46caf9ecce12fe61b6a9f524e1a7b88dec6d3214102be0c221f797442d974bfc",
+        "frames": "007f45b9e9c914e5b478a0a9c803c5bc60e54608e801cd3d48c5eec01a714247"
+      },
+      "js": {
+        "screens": "f5a60598751bae921c5bc21cc172cc282a496e553057f0da251f461ceb0cea32",
+        "cursors": "07af974a11a593bb8caf16b203acad20d48c7d213e9f58947bcf4a0464a4e706",
+        "calls": "1e2813911fd3e52c0becb5a133a5a7712f8f2c3513a60c22fecb686da66d35ab",
+        "slices": "2691c56ee8802d9f4cb44ad6117ae14258c615de666900d024e1ac2019a94998",
+        "frames": "007f45b9e9c914e5b478a0a9c803c5bc60e54608e801cd3d48c5eec01a714247"
+      }
+    },
+    "normalizedHashes": {
+      "c": {
+        "calls": "1e2813911fd3e52c0becb5a133a5a7712f8f2c3513a60c22fecb686da66d35ab",
+        "slices": "2691c56ee8802d9f4cb44ad6117ae14258c615de666900d024e1ac2019a94998"
+      },
+      "js": {
+        "calls": "1e2813911fd3e52c0becb5a133a5a7712f8f2c3513a60c22fecb686da66d35ab",
+        "slices": "2691c56ee8802d9f4cb44ad6117ae14258c615de666900d024e1ac2019a94998"
+      }
+    },
+    "frozenScreenCursorExact": true,
+    "fullRngExact": true,
+    "fullStyleExact": true,
+    "animationExact": true
+  }
+]

@@ -1,0 +1,3 @@
+The vault restoration path now uses the existing deltrap helper, preserving its reciprocal pit cleanup. Run `node tools/vault-pit-unlink-input-gate.mjs` from the repository. An optional new report filename saves the compact result; the default is read-only.
+
+All 14 ordinary checks pass, including actual setup and observer/deferred equality. Both original C cases already matched visually before the fix and remain unchanged. This repair corrects internal state; it does not claim a new visible flooding result or complete vault parity. The original recordings, source predictions, baseline failure and candidate results are retained here.

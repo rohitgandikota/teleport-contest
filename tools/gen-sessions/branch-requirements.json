@@ -4865,6 +4865,20 @@
       "cFile": "src/do_wear.c",
       "cFunction": "dowear",
       "description": "Direct Escape preserves the existing no-command-to-repeat behavior for W and P."
+    },
+    {
+      "group": "Vault trap cleanup",
+      "id": "vault-pit-unlink.joined",
+      "cFile": "src/vault.c",
+      "cFunction": "wallify_vault",
+      "description": "Restoring a wall removes its joined pit through deltrap and clears the surviving reciprocal link."
+    },
+    {
+      "group": "Vault trap cleanup",
+      "id": "vault-pit-unlink.unlinked-negative",
+      "cFile": "src/vault.c",
+      "cFunction": "wallify_vault",
+      "description": "Restoring the adjacent unlinked pit preserves the survivor and all original outputs."
     }
   ]
 }

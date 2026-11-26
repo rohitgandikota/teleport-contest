@@ -11,6 +11,16 @@ Newest first within each section.
 
 ---
 
+## Vault trap removal must preserve pit links
+
+C wallify_vault calls deltrap, which clears reciprocal links on neighboring
+pits before removing the boundary trap. Filtering the JS trap array leaves
+the neighbor's link set. Ordinary guard repair reproduces that state error;
+the existing deltrap helper fixes it. Both terminal recordings already match
+C and stay unchanged. The separate flooding route did not reach its terrain
+prerequisites, so it does not prove a visible consequence. Keep state assertions
+and native output comparisons as separate evidence.
+
 ## Inventory accessory P follows the wear command
 
 C iactions.c assigns IA_WEAR_OBJ to the inventory menu's accessory P action.

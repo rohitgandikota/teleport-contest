@@ -1,0 +1,47 @@
+{
+  "name": "vault-pit-unlink",
+  "source": "c",
+  "version": 5,
+  "description": "Ordinary vault wall repair clears the surviving pit reciprocal link through deltrap. State assertions are source-derived; native screens separately protect parity.",
+  "coverage": [
+    "src/vault.c:wallify_vault",
+    "src/trap.c:deltrap",
+    "src/trap.c:clear_conjoined_pits"
+  ],
+  "branches": [
+    "vault-pit-unlink.joined",
+    "vault-pit-unlink.unlinked-negative"
+  ],
+  "segments": [
+    {
+      "seed": 7303,
+      "datetime": "20000115090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "guard-restoration-removes-linked-boundary-pit",
+      "moves": " \u00162\r\u0006\u0017500 gold pieces\r\u0014kkkkkkkkkkkkkhhhhh. #wizintrinsic\r>30f\r  \u001b\u001bk\u0017pit trap\r  \u001b\u001bk\u0017pit trap\r  \u001b\u001b#sit\r    \u001b\u001b\u0017uncursed wand of digging (0:10)\r  \u001b\u001bzoj    \u001b\u001blljjlllk\u0017throne\r  \u0017floor\r  E- proof\r  \u0017wall\r  \u0017doorless doorway\r  jhhhh................................... intruder\r  \u001b\u001bd$lll "
+    },
+    {
+      "seed": 7303,
+      "datetime": "20000115090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "guard-restoration-removes-unlinked-boundary-pit",
+      "moves": " \u00162\r\u0006\u0017500 gold pieces\r\u0014kkkkkkkkkkkkkhhhhh. #wizintrinsic\r>30f\r  \u001b\u001bk\u0017pit trap\r  \u001b\u001bk\u0017pit trap\r  \u001b\u001b#sit\r    \u001b\u001b\u0017uncursed wand of digging (0:10)\r  \u001b\u001b.    \u001b\u001blljjlllk\u0017throne\r  \u0017floor\r  E- proof\r  \u0017wall\r  \u0017doorless doorway\r  jhhhh................................... intruder\r  \u001b\u001bd$lll "
+    }
+  ],
+  "branchAssertions": [
+    {
+      "branch": "vault-pit-unlink.joined",
+      "segment": 0,
+      "screenIncludes": [
+        "magically restored!"
+      ]
+    },
+    {
+      "branch": "vault-pit-unlink.unlinked-negative",
+      "segment": 1,
+      "screenIncludes": [
+        "magically restored!"
+      ]
+    }
+  ]
+}

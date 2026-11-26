@@ -1,0 +1,46 @@
+{
+  "recipeSHA256": "a1a5861ef80ea7ff31516da75581e5fb2b550ebf7fb6dc31957c14d9a314c378",
+  "runtimeSHA256": "88b58f9ee504928b3adf4295da37cce4337882990cc75541f033df1d36c1ab11",
+  "originalPositive": {
+    "path": ".cache/restart-20261122/wallify-vault-debris-source-audit/proposals/proposal01.json",
+    "sha256": "2e15006a58638e27ef1fb9cbceb3f203652cba1cd5588a4126dd2ff3bdb841e0",
+    "tupleUnchanged": true
+  },
+  "negativePrefix": {
+    "path": ".cache/restart-20261122/wallify-vault-pit-flow-source-audit/proposals/proposal01.json",
+    "sha256": "f28cdf19d3ebb0e1cf872c629ba3ff04c7666aacdc125ba43846fdeb9737be4d",
+    "segment": 1,
+    "prefixKeys": 277,
+    "nameChanged": true
+  },
+  "sourcePins": {
+    "nethack-c/upstream/src/vault.c": "490406d3195819eec9d155ed7d1e6119ab98571bf1e9879831d40dfbe9a4368f",
+    "nethack-c/upstream/src/trap.c": "1f6af30bbd0b75a2e4c043098355c1f4eff2a841de27aecdc9f47343d4d5402c",
+    "nethack-c/upstream/include/decl.h": "4782c5f522f6de63503cda131c0e2485aef31506d83dcfb32defeebf984fb470",
+    "nethack-c/upstream/include/rm.h": "da2ae88d704a358474c6986a3f4763e62053b96a6e60a475879029e658996af7"
+  },
+  "beforeImplementation": true,
+  "cRecorded": false,
+  "sourcePrediction": {
+    "joinedBefore": {
+      "targetNorth": 4,
+      "survivorSouth": 64
+    },
+    "unlinkedBefore": {
+      "targetNorth": 0,
+      "survivorSouth": 0
+    },
+    "afterC": {
+      "targetAbsent": true,
+      "survivorPresent": true,
+      "survivorSouth": 0,
+      "targetWall": true
+    }
+  },
+  "expectedBaseline": "Only the joined reciprocal-bit assertion fails; both full input routes reach ordinary wall repair.",
+  "limits": [
+    "No visible flood consequence is claimed. The earlier failed flood proposals and original wrong-mask diagnostic remain unchanged.",
+    "Native output comparison cannot expose this internal bit directly; the state assertion follows complete C deltrap and clear_conjoined_pits."
+  ],
+  "probeSHA256": "edf0ab0293439df0ef63d11d49e20d7c5f941471b00b07de5e94977dfcc90154"
+}

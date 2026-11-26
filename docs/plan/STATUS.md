@@ -1,6 +1,80 @@
 # STATUS — live handoff board
 
-## 2026-11-25: shopkeeper re-entry verified for publication
+## 2026-11-25: row restoration verified for publication
+
+HEAD and origin/main are 31a6307100985748d08904e3c857d11e544151d3. No unpublished
+commit is being held. The row candidate is fully verified and ready to commit
+and immediately push.
+
+The current 280-file runtime map is
+`row-refresh-parent-startup-runtime.json`, SHA256
+`352b7dedba3da9853678ccea6abc62f4bd2517c656e10bac58fcc48ba6f50b6a`.
+Its source snapshot is `row-refresh-parent-startup-native-runner`.
+Eleven runtime files change. Source367, promotion27 and retained-review117
+remain sealed and unchanged. Six exact payloads add seven requirements and
+one unchanged C recording, bringing the maintained corpus to907.
+
+Current checks pass36/36 state,23/23 background and21/21 ordinary. Seven new
+C cases match versus three. Original nine-case diagnostics improve to8/9,
+with fruit UTF8 still failed. These reports remain byte-identical after the
+startup correction. All100 selected/public recordings and100 strict8-second
+workers pass:53,394 screens/cursors,2,028,572 random positions,1,760 frames.
+The final68 checks have67 passes and the unchanged18/19 saved-traits diagnostic.
+All181 retained cases pass on the corrected runtime. Results are in
+`row-refresh-final-checks.json` and `row-refresh-startup-main-replay-checks.json`.
+
+Initial graph cec26066 failed9/100 selected recordings and17/907 full-corpus
+recordings during startup. The original full run completed890/907. Its final
+aggregation also raised KeyError:cursors because crashed workers omit that
+metric. Both shard logs and receipts remain unchanged. The separate compact
+failure summary has SHA256
+d9010dae8db6182775bc6d5351c1f37d559d5ccb8ae3b835896897a9fbac0363.
+Root: /share/NFS/u/rohit/research/contest/artifacts/2026-11-22/row-refresh-full907-js-20261125.
+
+Parent source review corrects the absent JS startup level and awaits five
+active plselect destruction callers. C owns zeroed level storage before
+character selection. Background terrain now treats absent JS storage as
+unseen while frame handling remains independent. The original source packet's
+caller census missed those five active legacy adapters; its sealed evidence
+stays unchanged and `row-refresh-parent-startup-review` records the correction.
+
+Seven retained-test corrections are installed exactly from review117. Five
+files only await asynchronous row_refresh. The coordinate fixture explicitly
+disables background validation. Three other-symbol expectations now follow
+C's canonical blank buffer and numeric unexplored skip; one cache assertion
+is added. Of150 static assertion sites,147 are unchanged. Original tests
+pass181/181 on the old runtime and59/181 on the row runtime; corrected tests
+pass179/181 and181/181. All original failures are preserved. The three shop
+comments only stop claiming that gstate has no dependencies.
+
+Fresh corrected full907 passes all907 recordings on two NFS CPU workers,
+default45-second budgets and no retries:924,671 screens/cursors,19,940,948
+random positions and33,095 frames. All1198 source/fixture/scorer files remain
+fixed. Root:
+/share/NFS/u/rohit/research/contest/artifacts/2026-11-22/row-refresh-startup-full907-js-20261125.
+All-files SHA256561cf5c5139652240f7a1f210a6ea5a7f975bbf24bd6665a34d0417d11cd6377.
+Verification SHA25683bb5647fa96a9ef9d26158aff4e344eed616ebb830afde6044d5d56d293134c.
+Main verification receipt: `row-refresh-main-verification.json`, SHA256
+4674e8d3909986b02cde2c2564d8b7429be1b9947a4d61e342d185cad01bfa09.
+All906 prior raws, requirements, six payloads and seven corrected tests verify.
+Public evidence: tools/gen-sessions/evidence/row-refresh-owner/verification.json.
+Commit and push this checkpoint now, then verify all1198 files against the
+published Git tree with verify-full-publication.py. Preserve the initial runs.
+
+The last official check at23:45UTC still shows rank7 and659 unmatched, our row
+dated19:31UTC. Five locked fruit-byte C inputs establish1/5 on the separate
+byte-reader baseline. Saved-monster-traits source260 is now sealed on published shop31a: source21/21,
+original diagnostic19/19 and ordinary4/4. Its locked v2 four-case C recording
+is complete, SHA2563c7d858545b068fa7e9187488bbae50674d94d56bf0fd0778c8ab239f64b2cba,
+378 boundaries. Parent native baseline is3/4. Candidate setup stopped before
+execution because Python rglob omitted three linked subdirectories; verify
+the explicit280-file map instead. No failed C recording or replay was retried.
+A separate uhitm statue-producer prerequisite audit and display audit are source-only. Parent level-change-context audit
+records missing lock/trap/polearm departure cleanup, with no candidate yet.
+All cache names above are under `.cache/restart-20261122/`; large outputs stay
+on NFS. No new held-out result or whole-port completion is claimed.
+
+## 2026-11-25: shopkeeper re-entry pushed as 31a63071
 
 Normal monster movement now restores shop occupancy after a pursuing keeper
 returns. Absent entry marks the bill pointer invalid before feedback; the
@@ -44,13 +118,11 @@ runtime hashes verify. Main receipt `shopkeeper-reentry-main-verification.json`,
 SHA256 `483cc2686fb9e9647d2eeac90b1faf4bff11de840ddd3f4c8a8e35bd8fde8cfa`. Compact public evidence is
 `tools/gen-sessions/evidence/shopkeeper-reentry-owner/verification.json`.
 
-Next: push this checkpoint, verify its published file map, then integrate the
-sealed row-refresh repair. Its seven C cases pass versus three on three fixed
-compositions. The original nine-case audit improves to 8/9 with symbol+row;
-the old 123-cell failed negative is repaired without input changes. Fruit UTF8
-remains. Five new fruit-byte C inputs establish a 1/5 baseline; no byte runtime
-candidate exists yet. The saved-monster-traits audit is separate work. These
-results do not establish a newer held-out score or whole-port completion.
+All 1,197 tested files match published 31a63071. Publication receipt
+`shopkeeper-reentry-full906-publication-verification.json`, SHA256
+`2b26d9b65d5d3ed13a093255c10cc324bd4d8d7f5cf1d9f8125b14f392548aff`.
+Subsequent row, fruit-byte and saved-monster-traits work is tracked above.
+These results do not establish a newer held-out score or whole-port completion.
 
 ## 2026-11-25: Tower random arrival pushed as b392a883
 

@@ -1480,7 +1480,7 @@ function longest_option_name(startpass, endpass) {
    menu and the rc must write the same place. */
 export const iflag_boolean_options = new Set([
     'autodescribe', 'cmdassist', 'fireassist', 'menu_overlay', 'menu_tab_sep',
-    'customcolors', 'customsymbols',
+    'customcolors', 'customsymbols', 'bgcolors',
     'debug_hunger', 'debug_mongen', 'debug_overwrite_stairs',
     'menucolors', /* iflags.use_menu_color */
     'whatis_menu', /* iflags.getloc_usemenu */
@@ -3960,7 +3960,7 @@ async function parseoptions_interactive(buf) {
                 new_status_window();
         } else if (name === 'statushilites') {
             /* iflags.hilite_delta was written by parseoptions() */
-        } else if (name === 'safe_pet') {
+        } else if (name === 'safe_pet' || name === 'bgcolors') {
             set_bool_optval(name, value);
         } else {
             game.flags[name] = value;

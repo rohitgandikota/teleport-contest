@@ -12,29 +12,27 @@ Ground rules are in `/CLAUDE.md`. Read that first if you have not.
 
 ## Current focus, 2026-11-25
 
-Tower arrival is pushed as `b392a883`. Full905 passes on that exact published
-runtime: 923,873 screens/cursors, 19,899,635 random positions and 33,029 frames.
-The symbol, random-arrival terrain and engulfer checkpoints are also pushed.
+Shopkeeper re-entry is pushed as `31a63071`. All 906 maintained recordings
+pass on the exact published runtime with two NFS CPU workers, default budgets
+and no retries: 924,506 screens/cursors, 19,921,247 random positions and 33,095
+frames. Tower, symbol, random-arrival terrain and engulfer fixes are pushed too.
 
-Shopkeeper re-entry and its fixed billing storage are verified for publication.
-All four new C cases match versus three. All 906 maintained recordings pass on
-NFS with default budgets and no retries: 924,506 screens/cursors, 19,921,247
-random positions and 33,095 frames. All 145 selected/public recordings pass.
-Thirty-nine focused checks pass; two pre-existing diagnostics remain failed.
-The original strict batch is 142/145. Paired baseline/current runs identify
-three long container cases: two finish within eight seconds on both, and the
-largest passes the normal scorer in about nine seconds on both. See STATUS
-for preserved failures, test-observation corrections and exact receipts.
+Row restoration is fully verified for publication. Seven new C cases match
+versus three; the original byte audit improves to8/9. The initial composition
+failed9/100 selected and17/907 full-corpus recordings at startup. The reviewed
+correction passes100 selected/public and100 strict checks. All907 maintained
+recordings now pass on NFS with default budgets and no retries:924,671 screens
+and cursors,19,940,948 random positions,33,095 frames. Focused checks have67
+passes and one unchanged saved-traits diagnostic. All181 cases in seven
+corrected retained suites pass. Commit and immediately push, preserving the
+initial failures. See STATUS for exact evidence and the next saved-traits work.
 
-Next is the sealed row-refresh repair, with seven native matches versus three.
-It also repairs the old 123-cell menu-dismissal failure. The original nine-case
-byte audit reaches 8/9 with the composed symbol and row changes; fruit UTF8
-remains. Five new fruit-byte inputs establish a 1/5 C baseline. Saved monster
-traits and both merged-byte-cap failures remain separate work.
-
-The latest leaderboard check, 23:10 UTC, still shows rank 7 and 659 unmatched
-screens. Its 19:31 row predates the recent checkpoints and does not identify
-the scored commit. Local parity does not establish a new held-out score.
+Fruit UTF8, both merged-byte-cap failures and saved monster traits remain
+separate work. Five new fruit-byte C inputs establish a1/5 baseline. A parent
+source-only plan records missing level-departure context cleanup; it has no
+candidate yet. The latest leaderboard check,23:45UTC, still shows rank7 and659
+unmatched screens, with our row dated19:31UTC. Local parity does not establish
+a newer held-out score or whole-port completion.
 
 
 The storage cleanup is complete. The user explicitly authorized deleting

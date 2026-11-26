@@ -30,13 +30,13 @@ function expectedDraw(random, normal) {
     game.dispCtx = before;
     return {mnum, after, core:structuredClone(game.coreCtx)};
 }
-function check(glyphnum, draw) {
+async function check(glyphnum, draw) {
     glyphmap()[glyphnum].customcolor = C.NH_BASIC_COLOR | CLR_RED;
     display_self();
     const cell = gbuf_at(game.u.ux, game.u.uy);
     assert.equal(cell.disp_glyphnum, glyphnum);
     assert.equal(cell.disp_customcolor, C.NH_BASIC_COLOR | CLR_RED);
-    row_refresh(game.u.ux, game.u.ux, game.u.uy);
+    await row_refresh(game.u.ux, game.u.ux, game.u.uy);
     assert.equal(game.nhDisplay.grid[game.u.uy + 1][game.u.ux - 1].color, CLR_RED);
     assert.deepEqual(game.dispCtx, draw.after);
     assert.deepEqual(game.coreCtx, draw.core);
@@ -49,7 +49,7 @@ for (const female of [false, true]) {
             game.u.usteed = {data:game.mons[PM.PM_PONY], mnum:PM.PM_PONY,
                 female, mtame:10, minvis:0, mundetected:0, mburied:0};
             const draw = expectedDraw(hallucinating, PM.PM_PONY);
-            check(draw.mnum + (female ? C.GLYPH_RIDDEN_FEM_OFF : C.GLYPH_RIDDEN_MALE_OFF), draw);
+            await check(draw.mnum + (female ? C.GLYPH_RIDDEN_FEM_OFF : C.GLYPH_RIDDEN_MALE_OFF), draw);
         });
     }
 }
@@ -62,7 +62,7 @@ for (const hidden of ['minvis', 'mundetected', 'mburied']) {
         game.u.uprops.SEE_INVIS = 0;
         game.u.intrinsic.HSee_invisible = 0;
         const draw = expectedDraw(false, game.u.umonnum);
-        check(draw.mnum + C.GLYPH_MON_MALE_OFF, draw);
+        await check(draw.mnum + C.GLYPH_MON_MALE_OFF, draw);
     });
 }
 
@@ -73,7 +73,7 @@ test('a visible steed takes priority over the hero object disguise', async () =>
     game.u.usteed = {data:game.mons[PM.PM_PONY], mnum:PM.PM_PONY,
         female:1, mtame:10, minvis:0, mundetected:0, mburied:0};
     const draw = expectedDraw(true, PM.PM_PONY);
-    check(draw.mnum + C.GLYPH_RIDDEN_FEM_OFF, draw);
+    await check(draw.mnum + C.GLYPH_RIDDEN_FEM_OFF, draw);
 });
 
 for (const otyp of [ONAMES.STRANGE_OBJECT, ONAMES.DAGGER, ONAMES.CORPSE, ONAMES.STATUE, ONAMES.BOULDER]) {
@@ -83,7 +83,7 @@ for (const otyp of [ONAMES.STRANGE_OBJECT, ONAMES.DAGGER, ONAMES.CORPSE, ONAMES.
             game.youmonst.m_ap_type = C.M_AP_OBJECT;
             game.youmonst.mappearance = otyp;
             const draw = expectedDraw(false, 0);
-            check(C.GLYPH_OBJ_OFF + otyp, draw);
+            await check(C.GLYPH_OBJ_OFF + otyp, draw);
         });
     }
 }

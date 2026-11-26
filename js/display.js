@@ -26,6 +26,7 @@ import { MON_STILL_ARRIVING } from './const.js';
 import { see_wsegs } from './worm.js';
 
 import { game } from './gstate.js';
+import { mapxy_valid } from './getpos.js';
 
 import { bot as botl_bot, timebot as botl_timebot } from './botl.js';
 
@@ -1028,6 +1029,8 @@ export function gbuf_at(x, y) {
 }
 
 export function show_glyph_cell(x, y, ch, color = NO_COLOR, decgfx = false, attr = 0, glyph = undefined) {
+    // src/display.c:1933 show_glyph(): column zero is never a map display.
+    if (x === 0) return;
     const loc = game.level?.at(x, y);
     if (!loc) return;
     // src/display.c:2739 reset_glyphmap(), Rogue colors and active symbols.
@@ -1171,6 +1174,10 @@ export function show_glyph_cell(x, y, ch, color = NO_COLOR, decgfx = false, attr
             disp_u: gm?.u ?? null,
             gnew: 1,
         };
+        (game.gbuf_start ||= new Array(ROWNO).fill(COLNO - 1))[y]
+            = Math.min(game.gbuf_start[y], x);
+        (game.gbuf_stop ||= new Array(ROWNO).fill(0))[y]
+            = Math.max(game.gbuf_stop[y], x);
     }
     loc.disp_ch = ch;
     loc.disp_color = color;
@@ -1183,14 +1190,30 @@ export function show_glyph_cell(x, y, ch, color = NO_COLOR, decgfx = false, attr
 /* the glyph buffer's unexplored entry, what glyph_at() reads after cls() */
 const GLYPH_UNEXPLORED_GLYPH = Object.freeze({ kind: 'unexplored' });
 
+// src/display.c:2088 nul_gbuf, cached metadata for the buffered tty build.
+const nul_gbuf = {
+    gnew: 0, disp_glyph: GLYPH_UNEXPLORED_GLYPH,
+    disp_glyphnum: GLYPH_UNEXPLORED_OFF, disp_ch: ' ', disp_color: NO_COLOR,
+    disp_decgfx: false, disp_attr: 0, disp_glyphflags: MG_UNEXPL,
+    disp_customcolor: 0, disp_tileidx: 0, disp_color256idx: 0, disp_u: null,
+};
+
 // src/display.c:2107 clear_glyph_buffer(), reset to unexplored glyphs.
-// A custom unexplored symbol must repaint the cleared physical map.
 export function clear_glyph_buffer() {
-    game.gbuf = [];
+    // src/decl.c:353 initializes the C buffer to zero before its first clear.
+    const origin = game.gbuf?.[0]?.[0];
+    const gnew = ((origin?.disp_ch ?? '\0') !== nul_gbuf.disp_ch
+        || (origin?.disp_color ?? 0) !== nul_gbuf.disp_color
+        || (origin?.disp_glyphflags ?? 0) !== nul_gbuf.disp_glyphflags
+        || (origin?.disp_customcolor ?? 0) !== nul_gbuf.disp_customcolor
+        || (origin?.disp_tileidx ?? 0) !== nul_gbuf.disp_tileidx) ? 1 : 0;
+    game.gbuf = Array.from({ length: ROWNO }, () =>
+        Array.from({ length: COLNO }, () => ({ ...nul_gbuf, gnew })));
+    game.gbuf_start = new Array(ROWNO).fill(1);
+    game.gbuf_stop = new Array(ROWNO).fill(COLNO - 1);
     const lev = game.level;
     if (!lev)
         return;
-    const sym = showsym_other(SYM_UNEXPLORED);
     for (let x = 1; x < COLNO; x++) {
         for (let y = 0; y < ROWNO; y++) {
             const loc = lev.at(x, y);
@@ -1202,9 +1225,6 @@ export function clear_glyph_buffer() {
             loc.disp_attr = 0;
             loc.disp_glyph = GLYPH_UNEXPLORED_GLYPH;
             loc.gnew = 0;
-            if (sym !== ' ')
-                show_glyph_cell(x, y, sym, NO_COLOR, false, 0,
-                                GLYPH_UNEXPLORED_GLYPH);
         }
     }
 }
@@ -1957,13 +1977,16 @@ export function newsym(x, y) {
     }
 }
 
-// src/display.c newsym_force(); the port's flush scans every gnew cell,
-// so there are no gbuf_start/gbuf_stop bounds to widen
+// src/display.c:1863 newsym_force()
 export function newsym_force(x, y) {
     newsym(x, y);
-    const g = game.gbuf?.[y]?.[x];
-    if (g)
-        g.gnew = 1;
+    const rows = (game.gbuf ||= []);
+    const g = ((rows[y] ||= [])[x] ||= { ...nul_gbuf });
+    g.gnew = 1;
+    (game.gbuf_start ||= new Array(ROWNO).fill(COLNO - 1))[y]
+        = Math.min(game.gbuf_start[y], x);
+    (game.gbuf_stop ||= new Array(ROWNO).fill(0))[y]
+        = Math.max(game.gbuf_stop[y], x);
 }
 
 /* region.js is already an input to display.js, so publish this redraw hook
@@ -2041,6 +2064,10 @@ export async function docrt_flags(refresh_flags) {
                             loc.remembered_glyph.color, loc.remembered_glyph.decgfx,
                             pile_attr(loc.remembered_glyph.glyph),
                             loc.remembered_glyph.glyph);
+                    } else if (loc) {
+                        // C show_glyph(lev->glyph) includes unexplored memory.
+                        show_glyph_cell(x, y, ' ', NO_COLOR, false, 0,
+                                        GLYPH_UNEXPLORED_GLYPH);
                     }
                 }
 
@@ -2066,13 +2093,12 @@ async function redraw_map(cursor_on_u) {
         return;
 
     /* Sparse buffer entries represent C's unexplored glyph. */
-    const unexplored = {
-        disp_ch: ' ', disp_color: NO_COLOR,
-        disp_glyphnum: GLYPH_UNEXPLORED_OFF, disp_glyphflags: MG_UNEXPL,
-    };
     for (let y = 0; y < ROWNO; y++)
-        for (let x = 1; x < COLNO; x++)
-            _paint_map_cell(game.nhDisplay, x, y, gbuf_at(x, y) ?? unexplored);
+        for (let x = 1; x < COLNO; x++) {
+            const background = await get_bkglyph_and_framecolor(x, y);
+            _paint_map_cell(game.nhDisplay, x, y, gbuf_at(x, y) ?? nul_gbuf,
+                            background);
+        }
     await flush_screen(cursor_on_u);
 }
 
@@ -2183,7 +2209,7 @@ const CMP_DEC_MAP = {
 
 /* Paint one gbuf cell to the terminal grid. The DEC→Unicode translation
    is for the browser-facing grid; the frozen serializer re-encodes it. */
-function _paint_map_cell(display, x, y, g = gbuf_at(x, y)) {
+function _paint_map_cell(display, x, y, g = gbuf_at(x, y), background = null) {
     if (!g) return;
     /* win/tty/wintty.c:3949,4042: tty_print_glyph() positions the cursor
        and advances it once even when nomux does not capture the byte. */
@@ -2214,7 +2240,10 @@ function _paint_map_cell(display, x, y, g = gbuf_at(x, y)) {
     if (raw.charCodeAt(0) < 0x20)
         return;
     const ch = dec ? (CMP_DEC_MAP[raw] || raw) : raw;
-    const attr = (g.disp_attr ?? 0) | pet_terminal_attr(g.disp_glyphflags);
+    // win/tty/wintty.c:3923 frame highlighting precedes pet and inverse.
+    // term_start_bgcolor's escape bypasses nomux; its attribute precedence does not.
+    const frame = use_color() && background && background.framecolor !== NO_COLOR;
+    const attr = frame ? 0 : (g.disp_attr ?? 0) | pet_terminal_attr(g.disp_glyphflags);
     // win/tty/wintty.c:3966 tty_print_glyph(). Extra RGB/256-color
     // escapes bypass the nomux foreground buffer; basic colors use g_putch.
     let color = g.disp_color ?? NO_COLOR;
@@ -2366,11 +2395,22 @@ export function feel_newsym(x, y) {
 // src/display.c:2147 row_refresh() — repaint map row y, columns start..stop,
 // from the glyph buffer. Cells never drawn to stay blank, like C's
 // GLYPH_UNEXPLORED skip.
-export function row_refresh(start, stop, y) {
+export async function row_refresh(start, stop, y) {
     const display = game?.nhDisplay;
     if (!display) return;
-    for (let x = start; x <= stop; x++)
-        _paint_map_cell(display, x, y);
+    const origin = gbuf_at(0, 0) ?? nul_gbuf;
+    const force = origin.disp_ch !== nul_gbuf.disp_ch
+        || origin.disp_color !== nul_gbuf.disp_color
+        || origin.disp_glyphflags !== nul_gbuf.disp_glyphflags
+        || origin.disp_customcolor !== nul_gbuf.disp_customcolor
+        || origin.disp_tileidx !== nul_gbuf.disp_tileidx;
+    for (let x = start; x <= stop; x++) {
+        const g = gbuf_at(x, y) ?? nul_gbuf;
+        const background = await get_bkglyph_and_framecolor(x, y);
+        if (force || g.disp_glyphnum !== GLYPH_UNEXPLORED_OFF
+            || background.framecolor !== NO_COLOR)
+            _paint_map_cell(display, x, y, g, background);
+    }
 }
 
 /* win/tty/topl.c putsyms()/cl_end() — paint the pending topline text into
@@ -2432,20 +2472,21 @@ export async function flush_screen(cursor_on_u) {
     for (let y = 0; y < ROWNO; y++) {
         const row = rows[y];
         if (!row) continue;
-        for (let x = 1; x < COLNO; x++) {
+        for (let x = game.gbuf_start?.[y] ?? COLNO - 1;
+             x <= (game.gbuf_stop?.[y] ?? 0); x++) {
             const g = row[x];
-            if (g && g.gnew) {
-                _paint_map_cell(display, x, y);
+            const background = await get_bkglyph_and_framecolor(x, y);
+            if (g && (g.gnew || (game.wsettings.map_frame_color !== NO_COLOR
+                                && background.framecolor !== NO_COLOR))) {
+                _paint_map_cell(display, x, y, g, background);
                 g.gnew = 0;
             }
         }
     }
 
-    if (game._flush_cursor_override) {
-        display.setCursor(game._flush_cursor_override.col,
-                          game._flush_cursor_override.row);
-        game._flush_cursor_override = null;
-    } else if (cursor_on_u) {
+    game.gbuf_start = new Array(ROWNO).fill(COLNO - 1);
+    game.gbuf_stop = new Array(ROWNO).fill(0);
+    if (cursor_on_u) {
         /* curs_on_u() — unless getpos has parked the cursor elsewhere */
         if (game._map_cursor)
             display.setCursor(game._map_cursor.col, game._map_cursor.row);
@@ -2453,6 +2494,44 @@ export async function flush_screen(cursor_on_u) {
             display.setCursor(game.u.ux - 1, game.u.uy + 1);
     }
     game._flushing = false;
+}
+
+// src/display.c:2507 get_bkglyph_and_framecolor()
+async function get_bkglyph_and_framecolor(x, y) {
+    let glyph = GLYPH_UNEXPLORED_OFF;
+    // C's zeroed level array exists before JS creates the first level.
+    const lev = game.level?.at(x, y);
+    if (game.iflags.use_background_glyph && lev && lev.seenv !== 0
+        && (gbuf_at(x, y) ?? nul_gbuf).disp_glyphnum !== GLYPH_UNEXPLORED_OFF) {
+        let idx;
+        switch (lev.typ) {
+        case SCORR:
+        case STONE: idx = game.level.flags.arboreal ? CM.S_tree : CM.S_stone; break;
+        case ROOM: idx = CM.S_room; break;
+        case CORR: idx = (lev.waslit || game.flags.lit_corridor) ? CM.S_litcorr : CM.S_corr; break;
+        case ICE: idx = CM.S_ice; break;
+        case AIR: idx = CM.S_air; break;
+        case CLOUD: idx = CM.S_cloud; break;
+        case POOL:
+        case MOAT: idx = CM.S_pool; break;
+        case WATER: idx = CM.S_water; break;
+        case LAVAPOOL: idx = CM.S_lava; break;
+        case LAVAWALL: idx = CM.S_lavawall; break;
+        default: idx = CM.S_room; break;
+        }
+        if (!cansee(x, y) && (!lev.waslit || game.flags.dark_room !== false)) {
+            if (lev.typ === CORR && idx === CM.S_litcorr)
+                idx = CM.S_corr;
+            else if (idx === CM.S_room)
+                idx = dark_room_color() ? darkroomsym_cell().glyph.cmap : CM.S_stone;
+        }
+        if (idx !== CM.S_room)
+            glyph = cmap_to_glyph(idx);
+    }
+    const framecolor = game.iflags.bgcolors
+        && game.wsettings.map_frame_color !== NO_COLOR && await mapxy_valid(x, y)
+        ? game.wsettings.map_frame_color : NO_COLOR;
+    return { glyph, framecolor };
 }
 
 // src/display.c:2189 cls()

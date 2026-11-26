@@ -1,6 +1,6 @@
 // Constructed bill operations, using real generated shop and public producers.
 import assert from 'node:assert/strict';
-import {game as g} from '../js/gstate.js'; // Preserve the live binding; this module has no dependencies.
+import {game as g} from '../js/gstate.js'; // Preserve the live game binding.
 import {branchAssertionErrors,recordingIntegrityErrors} from './gen-sessions/assertions.mjs';
 import {createHash} from 'node:crypto';
 import {readFileSync,writeFileSync} from 'node:fs';

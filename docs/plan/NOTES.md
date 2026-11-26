@@ -7082,9 +7082,26 @@ glyph_at() reads the per-cell disp_glyph, which kept the last drawn glyph.
 monster_detection() calls cls() before map_monst() and then browse_map()
 with autodescribe on, so moving the cursor onto the (cleared) wall next to
 the hero printed "wall" where the C prints "unexplored area" (s48-29).
-clear_glyph_buffer() now resets each cell's disp_* fields to the blank
-unexplored record with gnew = 0 (the physical map was just cleared). The
-same applies to docrt()'s cls(), which redraws everything afterwards.
+clear_glyph_buffer() resets each cell's disp_* fields to the blank unexplored
+record. In the buffered C build, nul_gbuf has a literal space and canonical
+metadata even when S_unexplored is customized. The buffer's gnew comes from
+comparing its origin with that canonical record; it is zero after a normal
+initialized clear. A clear does not paint the terminal. docrt() restores
+remembered unexplored glyphs through show_glyph, which resolves customization.
+
+row_refresh() skips a numeric GLYPH_UNEXPLORED unless the origin forces a
+refresh or the cell has a frame color. docorner() first clears the popup to
+spaces, then restores the eligible cells. Comparing the rendered character
+instead of the glyph identity incorrectly paints customized unexplored cells.
+The seven row-refresh-owner C cases cover this distinction, shortened corner
+pages, jump targeting and frame precedence over pet attributes.
+
+The background helper can await the real jump validator. Row restoration,
+corner dismissal and their active callers must therefore await completion.
+Five legacy character-selection callers leave their menu active and need to
+await destruction too. During character selection C already owns a zeroed
+level array, while JS has no level yet. Treat that absence as unseen terrain
+inside the background branch, keeping independent frame handling intact.
 
 ## The last spelleffects() arms: protection, chain lightning, cures, familiar
 

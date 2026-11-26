@@ -75,7 +75,7 @@ function markVariants(mnum,female,range) {
             | (which===range?CLR_RED:CLR_WHITE);
     }
 }
-function checkBuffered(mon,expected,draw,px=x,py=y) {
+async function checkBuffered(mon,expected,draw,px=x,py=y) {
     const cell=gbuf_at(px,py);
     assert.deepEqual(game.dispCtx,draw.after,'display RNG draw count/order');
     assert.deepEqual(game.coreCtx,draw.core,'core RNG unchanged');
@@ -86,13 +86,13 @@ function checkBuffered(mon,expected,draw,px=x,py=y) {
     mon.mnum=PM.PM_HUMAN; mon.data=game.mons[PM.PM_HUMAN];
     mon.female=!mon.female; mon.mtame=mon.mtame?0:7;
     glyphmap()[expected].customcolor=C.NH_BASIC_COLOR|CLR_GREEN;
-    row_refresh(px,px,py);
+    await row_refresh(px,px,py);
     assert.equal(gbuf_at(px,py).disp_glyphnum,expected,'live monster mutation does not change ID');
     assert.equal(game.nhDisplay.grid[py+1][px-1].color,CLR_RED,'buffer retains metadata snapshot');
     assert.equal(desc.mnum,mnum); assert.equal(desc.female,female);
     show_glyph_cell(px,py,cell.disp_ch,cell.disp_color,cell.disp_decgfx,cell.disp_attr,desc);
     assert.equal(gbuf_at(px,py).disp_glyphnum,expected,'reusing descriptor preserves original range');
-    row_refresh(px,px,py);
+    await row_refresh(px,px,py);
     assert.equal(game.nhDisplay.grid[py+1][px-1].color,CLR_GREEN,'new show reads new metadata');
     assert.deepEqual(game.dispCtx,draw.after,'repaint makes no display RNG draws');
     assert.deepEqual(game.coreCtx,draw.core,'repaint makes no core RNG draws');
@@ -136,7 +136,7 @@ for (const sample of ordinary) test(`newsym: ${sample.name}`,async()=>{
     const expected=glyphnum(draw.mnum,sample.female,range);
     markVariants(draw.mnum,sample.female,range);
     newsym(x,y);
-    checkBuffered(mon,expected,draw);
+    await checkBuffered(mon,expected,draw);
 });
 
 const maps=[
@@ -160,7 +160,7 @@ for (const sample of maps) test(`map_monst: ${sample.name}`,async()=>{
     const expected=glyphnum(draw.mnum,sample.female,range);
     markVariants(draw.mnum,sample.female,range);
     audit_map_monst(mon,false);
-    checkBuffered(mon,expected,draw);
+    await checkBuffered(mon,expected,draw);
 });
 
 for (const sample of [
@@ -177,7 +177,7 @@ for (const sample of [
     markVariants(draw.mnum,sample.female,'normal');
     const cell=audit_mon_cell(mon);
     show_glyph_cell(x,y,cell.ch,cell.color,cell.decgfx,0,cell.glyph);
-    checkBuffered(mon,expected,draw);
+    await checkBuffered(mon,expected,draw);
 });
 
 for (const sample of [
@@ -201,7 +201,7 @@ for (const sample of [
     markVariants(draw.mnum,sample.female,range);
     detect_wsegs(mon,!!sample.detect);
     assert.equal(gbuf_at(x+1,y).disp_glyphnum,expected,'all tail segments share the sampled identity');
-    checkBuffered(mon,expected,draw);
+    await checkBuffered(mon,expected,draw);
 });
 
 test('detect_wsegs consumes the hallucination draw for an empty tail',async()=>{
@@ -226,7 +226,7 @@ test('ordinary pet Unicode uses the captured pet range through the actual painte
     assert.equal(gbuf_at(x,y).disp_glyphnum,expected);
     mon.mtame=0; mon.female=0; mon.mnum=PM.PM_HUMAN;
     const core=structuredClone(game.coreCtx),display=structuredClone(game.dispCtx);
-    row_refresh(x,x,y);
+    await row_refresh(x,x,y);
     const cell=game.nhDisplay.grid[y+1][x-1];
     assert.equal(cell.ch,before.ch); assert.equal(cell.color,before.color);
     assert.deepEqual(game.coreCtx,core); assert.deepEqual(game.dispCtx,display);

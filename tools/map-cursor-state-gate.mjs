@@ -30,13 +30,13 @@ async function setup() {
 function show({px=x,py=y,ch='Q',color=CLR_WHITE,dec=false,attr=0,glyphnum=id}={}) {
     show_glyph_cell(px,py,ch,color,dec,attr,{kind:'effect',glyphnum});
 }
-function paint(options={}) {show(options);row_refresh(options.px??x,options.px??x,options.py??y);}
+async function paint(options={}) {show(options);await row_refresh(options.px??x,options.px??x,options.py??y);}
 function rng() {return {core:structuredClone(game.coreCtx),display:structuredClone(game.dispCtx)};}
 
 test('generic setCell writes and absent map entries do not move the cursor',async()=>{
     await setup();
     game.nhDisplay.setCell(x-1,y+1,'X',CLR_RED,0);
-    row_refresh(x,x,y);
+    await row_refresh(x,x,y);
     assert.deepEqual(cursor(),[2,1]);
 });
 
@@ -58,7 +58,7 @@ for(const [name,ch,handling,eightBit,expected] of [
         game.flags.eight_bit_tty=eightBit;
         game.nhDisplay.setCell(x-1,y+1,'X',CLR_RED,0);
         const before=rng();
-        paint({ch});
+        await paint({ch});
         assert.equal(game.nhDisplay.grid[y+1][x-1].ch,expected);
         assert.deepEqual(cursor(),[x,y+1]);
         assert.deepEqual(rng(),before);
@@ -71,14 +71,14 @@ test('Unicode bytes bypass nomux but advance one glyph column',async()=>{
     glyphmap()[id].u=unicode;
     game.nhDisplay.setCell(x-1,y+1,'X',CLR_RED,ATR_INVERSE);
     const cell=structuredClone(game.nhDisplay.grid[y+1][x-1]);
-    paint();
+    await paint();
     assert.deepEqual(game.nhDisplay.grid[y+1][x-1],cell);
     assert.deepEqual(cursor(),[x,y+1]);
 });
 
 test('Unicode metadata without UTF8 handling still prints the raw byte',async()=>{
     await setup();glyphmap()[id].u=unicode;
-    paint();
+    await paint();
     assert.equal(game.nhDisplay.grid[y+1][x-1].ch,'Q');
     assert.deepEqual(cursor(),[x,y+1]);
 });

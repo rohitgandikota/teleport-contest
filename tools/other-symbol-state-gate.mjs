@@ -23,15 +23,18 @@ async function setup(segment) {
         storage:new InMemoryStorage()});
 }
 
-test('clearing marks custom unexplored cells for the next screen flush', async () => {
+test('clearing stores canonical blank unexplored cells without repainting', async () => {
     await setup(0);
+    // C display.c2088-2141: canonical buffered origin, not configured S_unexplored.
     clear_glyph_buffer();
     for (let x = 1; x < COLNO; x++) {
         for (let y = 0; y < ROWNO; y++) {
-            assert.equal(game.level.at(x, y).gnew, 1);
+            assert.equal(game.level.at(x, y).gnew, 0);
+            assert.equal(gbuf_at(x, y).disp_ch, ' ');
             assert.equal(glyph_at(x, y).kind, 'unexplored');
         }
     }
+    // clear_glyph_buffer does not erase the physical U drawn at startup.
     await flush_screen(0);
     assert.equal(game.nhDisplay.grid[1][0].ch, 'U');
     assert.equal(game.nhDisplay.grid[ROWNO][COLNO - 2].ch, 'U');
@@ -44,14 +47,15 @@ test('default unexplored cells need no repaint after a screen clear', async () =
     assert.equal(glyph_at(1, 0).kind, 'unexplored');
 });
 
-test('row refresh restores custom unexplored symbols under a text overlay', async () => {
+test('row refresh skips unexplored glyphs even with a custom U symbol', async () => {
     await setup(0);
     clear_glyph_buffer();
     for (let column = 0; column < 3; column++)
         game.nhDisplay.setCell(column, 1, 'X', NO_COLOR, 0);
-    row_refresh(1, 2, 0);
-    assert.equal(game.nhDisplay.grid[1][0].ch, 'U');
-    assert.equal(game.nhDisplay.grid[1][1].ch, 'U');
+    // C display.c2180: with no force/frame, numeric GLYPH_UNEXPLORED is skipped.
+    await row_refresh(1, 2, 0);
+    assert.equal(game.nhDisplay.grid[1][0].ch, 'X');
+    assert.equal(game.nhDisplay.grid[1][1].ch, 'X');
     assert.equal(game.nhDisplay.grid[1][2].ch, 'X');
 });
 

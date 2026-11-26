@@ -28,9 +28,9 @@ async function setup() {
     game.flags.color = true;
 }
 const x=4, y=2;
-function paint(desc, ch='Q', color=CLR_WHITE) {
+async function paint(desc, ch='Q', color=CLR_WHITE) {
     show_glyph_cell(x,y,ch,color,false,0,desc);
-    row_refresh(x,x,y);
+    await row_refresh(x,x,y);
     return game.nhDisplay.grid[y+1][x-1];
 }
 const unicode = {utf32ch:0x2603,utf8str:[226,152,131]};
@@ -72,7 +72,7 @@ test('numeric glyph lookup accepts Unicode in every glyph partition', async () =
         const before = structuredClone(game.nhDisplay.grid[y+1][x-1]);
         // kind effect deliberately leaves base-character handling alone. This
         // tests tty metadata, not the still-incomplete gameplay producers.
-        paint({kind:'effect',glyphnum});
+        await paint({kind:'effect',glyphnum});
         assert.deepEqual(game.nhDisplay.grid[y+1][x-1],before,name);
         glyphmap()[glyphnum].u = null;
     }
@@ -82,7 +82,7 @@ test('glyph variants retain independent basic colors', async () => {
     await setup();
     for (const [name,glyphnum] of variants) {
         glyphmap()[glyphnum].customcolor = C.NH_BASIC_COLOR | CLR_RED;
-        assert.equal(paint({kind:'effect',glyphnum}).color,CLR_RED,name);
+        assert.equal((await paint({kind:'effect',glyphnum})).color,CLR_RED,name);
         glyphmap()[glyphnum].customcolor = 0;
     }
 });
@@ -95,7 +95,7 @@ test('loaded fountain Unicode is read without a preset cmap marker', async () =>
     const glyphnum=C.GLYPH_CMAP_B_OFF + S.S_fountain - S.S_grave;
     assert.equal(glyphmap()[glyphnum].u.utf32ch,0x2320);
     game.nhDisplay.setCell(x-1,y+1,'X',CLR_RED,0);
-    paint(g.glyph ?? {kind:'cmap',cmap:g.cmap},g.ch,g.color);
+    await paint(g.glyph ?? {kind:'cmap',cmap:g.cmap},g.ch,g.color);
     assert.equal(game.nhDisplay.grid[y+1][x-1].ch,'X');
 });
 
@@ -104,10 +104,10 @@ test('Unicode requires UTF8 handling and a representation', async () => {
     const glyphnum=C.GLYPH_MON_MALE_OFF + PMNAMES.PM_HUMAN;
     glyphmap()[glyphnum].u=unicode;
     gs_symset[gc_currentgraphics.set].handling=H_UNK;
-    assert.equal(paint({kind:'effect',glyphnum}).ch,'Q');
+    assert.equal((await paint({kind:'effect',glyphnum})).ch,'Q');
     gs_symset[gc_currentgraphics.set].handling=H_UTF8;
     glyphmap()[glyphnum].u=null;
-    assert.equal(paint({kind:'effect',glyphnum},'R').ch,'R');
+    assert.equal((await paint({kind:'effect',glyphnum},'R')).ch,'R');
 });
 
 test('custom color respects color and terminal color-count gates', async () => {
@@ -115,12 +115,12 @@ test('custom color respects color and terminal color-count gates', async () => {
     const glyphnum=C.GLYPH_MON_MALE_OFF + PMNAMES.PM_HUMAN;
     glyphmap()[glyphnum].customcolor=C.NH_BASIC_COLOR | CLR_RED;
     game.iflags.colorcount=16;
-    assert.equal(paint({kind:'effect',glyphnum}).color,CLR_WHITE);
+    assert.equal((await paint({kind:'effect',glyphnum})).color,CLR_WHITE);
     game.iflags.colorcount=256;
     game.flags.color=false;
-    assert.equal(paint({kind:'effect',glyphnum}).color,NO_COLOR);
+    assert.equal((await paint({kind:'effect',glyphnum})).color,NO_COLOR);
     game.flags.color=true;
-    assert.equal(paint({kind:'effect',glyphnum}).color,CLR_RED);
+    assert.equal((await paint({kind:'effect',glyphnum})).color,CLR_RED);
 });
 
 test('startup !color and bound toggle(color) gate custom hero color', async () => {
@@ -145,7 +145,7 @@ test('extra RGB output leaves nomux foreground at its reset value', async () => 
     glyphmap()[glyphnum].color256idx=24;
     for (const colorcount of [256,16777216]) {
         game.iflags.colorcount=colorcount;
-        assert.equal(paint({kind:'effect',glyphnum}).color,NO_COLOR);
+        assert.equal((await paint({kind:'effect',glyphnum})).color,NO_COLOR);
         assert.equal(gbuf_at(x,y).disp_color256idx,24);
     }
 });
@@ -158,11 +158,11 @@ test('buffered custom metadata is retained until show_glyph updates it', async (
     const core=structuredClone(game.coreCtx), display=structuredClone(game.dispCtx);
     show_glyph_cell(x,y,'Q',CLR_WHITE,false,0,{kind:'effect',glyphnum});
     gm.customcolor=C.NH_BASIC_COLOR | CLR_GREEN;
-    row_refresh(x,x,y);
+    await row_refresh(x,x,y);
     assert.equal(game.nhDisplay.grid[y+1][x-1].color,CLR_RED);
     assert.deepEqual(game.coreCtx,core);
     assert.deepEqual(game.dispCtx,display);
-    assert.equal(paint({kind:'effect',glyphnum}).color,CLR_GREEN);
+    assert.equal((await paint({kind:'effect',glyphnum})).color,CLR_GREEN);
 });
 
 test('object producers retain generic, body and statue identities', async () => {
@@ -187,8 +187,8 @@ test('hallucinated statue retains both draws without drawing again on repaint', 
         corpsenm:PMNAMES.PM_NEWT,spe:0,dknown:1});
     assert.equal(g.glyph.glyphnum,mnum+(female?C.GLYPH_MON_FEM_OFF:C.GLYPH_MON_MALE_OFF));
     assert.deepEqual(game.dispCtx,after);
-    paint(g.glyph,g.ch,g.color);
-    row_refresh(x,x,y);
+    await paint(g.glyph,g.ch,g.color);
+    await row_refresh(x,x,y);
     assert.deepEqual(game.dispCtx,after);
     assert.deepEqual(game.coreCtx,core);
 });
@@ -206,7 +206,7 @@ test('mon_to_glyph retains sampled species and original gender', async () => {
     mon.female=0;
     const core=structuredClone(game.coreCtx), display=structuredClone(game.dispCtx);
     glyphmap()[C.GLYPH_MON_FEM_OFF+PMNAMES.PM_NEWT].customcolor=C.NH_BASIC_COLOR | CLR_RED;
-    assert.equal(paint(g.glyph,g.ch,g.color).color,CLR_RED);
+    assert.equal((await paint(g.glyph,g.ch,g.color)).color,CLR_RED);
     assert.equal(gbuf_at(x,y).disp_glyphnum,C.GLYPH_MON_FEM_OFF+PMNAMES.PM_NEWT);
     assert.deepEqual(game.coreCtx,core);
     assert.deepEqual(game.dispCtx,display);
@@ -265,7 +265,7 @@ test('freeing Unicode metadata also clears buffered representations', async () =
     free_all_glyphmap_u();
     assert.equal(glyphmap()[glyphnum].u, null);
     assert.equal(gbuf_at(x, y).disp_u, null);
-    row_refresh(x, x, y);
+    await row_refresh(x, x, y);
     assert.equal(game.nhDisplay.grid[y + 1][x - 1].ch, 'Q');
 });
 

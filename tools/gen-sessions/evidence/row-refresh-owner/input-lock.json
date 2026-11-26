@@ -1,0 +1,58 @@
+{
+  "final": true,
+  "recipe": "tools/gen-sessions/recipes/row-refresh-owner.json",
+  "recipeSHA256": "5ae0788985abccda96baf4e1c94106e7b6bf067c60782f11906ab7b271206351",
+  "runtimeMapSHA256": "e49e903c742f7befe33663baacd2a623591d4eeb265b886517b860dcc3a11108",
+  "cases": 7,
+  "keys": 158,
+  "boundaries": 165,
+  "tupleFields": [
+    "name",
+    "seed",
+    "datetime",
+    "nethackrc",
+    "moves"
+  ],
+  "tupleSHA256": "eb01f6a7f477cb0c5214ce900b7935b5c8c733cae375a0053804d50584a962af",
+  "segments": [
+    {
+      "name": "row-fruit-unexplored-U",
+      "keys": 11,
+      "tupleSHA256": "c9449e94ff8e20f571192f312b8c3c4bc891e985dc8fa8f0072d262924b63469"
+    },
+    {
+      "name": "row-fruit-default-space-negative",
+      "keys": 11,
+      "tupleSHA256": "c54e5ec1a7fac7c7e603e9113e869082e7b3681130afedf186b513a34bd72910"
+    },
+    {
+      "name": "row-fruit-room-U-identity-negative",
+      "keys": 26,
+      "tupleSHA256": "2baf97121f2e1aea59f4e9e549d29a79253e49f67d61188fc3507796141021ff"
+    },
+    {
+      "name": "row-jump-valid-menu-background",
+      "keys": 20,
+      "tupleSHA256": "d7c6626b8d2f19eb0f6cadddc13024f82c731a68c8c651113ec221e5cfe8354d"
+    },
+    {
+      "name": "row-jump-valid-menu-no-background",
+      "keys": 20,
+      "tupleSHA256": "757363c8cc4fe152a1452db46488495a7aeee48f44a32572513e48d3304d1a7d"
+    },
+    {
+      "name": "row-cloud-pet-background",
+      "keys": 35,
+      "tupleSHA256": "6c9bd5530a49a39c18701b871587b533e23523703748941e717c5f6279936f71"
+    },
+    {
+      "name": "row-cloud-pet-no-background-negative",
+      "keys": 35,
+      "tupleSHA256": "0fa24bc3d816e2f2452eff2014777082cc76810c6ac75784acb0767444a030df"
+    }
+  ],
+  "negativeCases": 3,
+  "negativeHashes": 15,
+  "native": "Parent only; not recorded or compared by worker. Original9 remains5/9.",
+  "candidateExists": false
+}

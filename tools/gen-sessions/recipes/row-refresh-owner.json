@@ -1,0 +1,315 @@
+{
+  "name": "row-refresh-owner",
+  "description": "Seven independent ordinary ASCII fruit and real targeting inputs. Numeric glyph identity controls and async jump/sync cloud validators. C buffered owner expectations; parent alone supplies native evidence.",
+  "coverage": [
+    "mode.debug",
+    "ui.inventory",
+    "ui.map-memory-vision",
+    "movement.teleport"
+  ],
+  "requireBranchAssertions": true,
+  "branches": [
+    "row-refresh.fruit-unexplored-U",
+    "row-refresh.fruit-default-space-negative",
+    "row-refresh.fruit-room-U-identity-negative",
+    "row-refresh.jump-valid-menu-background",
+    "row-refresh.jump-valid-menu-no-background",
+    "row-refresh.cloud-pet-background",
+    "row-refresh.cloud-pet-no-background-negative"
+  ],
+  "branchAssertions": [
+    {
+      "branch": "row-refresh.fruit-unexplored-U",
+      "segment": 0,
+      "screenIncludes": [
+        "ABCDEFGHIJKLMNOPQRSTUVWXYZabcde",
+        "Comestibles"
+      ],
+      "screenCells": [
+        {
+          "step": 8,
+          "x": 38,
+          "y": 1,
+          "equals": "U"
+        },
+        {
+          "step": 10,
+          "x": 38,
+          "y": 1,
+          "equals": " "
+        },
+        {
+          "step": 11,
+          "x": 38,
+          "y": 1,
+          "equals": "U"
+        }
+      ]
+    },
+    {
+      "branch": "row-refresh.fruit-default-space-negative",
+      "segment": 1,
+      "screenIncludes": [
+        "ABCDEFGHIJKLMNOPQRSTUVWXYZabcde",
+        "Comestibles"
+      ],
+      "screenCells": [
+        {
+          "step": 10,
+          "x": 38,
+          "y": 1,
+          "equals": " "
+        }
+      ]
+    },
+    {
+      "branch": "row-refresh.fruit-room-U-identity-negative",
+      "segment": 2,
+      "screenIncludes": [
+        "ABCDEFGHIJKLMNOPQRSTUVWXYZabcde",
+        "Comestibles"
+      ],
+      "screenCells": [
+        {
+          "step": 23,
+          "x": 55,
+          "y": 3,
+          "equals": "U"
+        },
+        {
+          "step": 25,
+          "x": 55,
+          "y": 3,
+          "equals": "U"
+        }
+      ]
+    },
+    {
+      "branch": "row-refresh.jump-valid-menu-background",
+      "segment": 3,
+      "screenIncludes": [
+        "Where do you want to jump?",
+        "Pick a valid location",
+        "floor of a room"
+      ],
+      "screenCells": [
+        {
+          "step": 19,
+          "x": 70,
+          "y": 1,
+          "equals": " "
+        },
+        {
+          "step": 19,
+          "x": 53,
+          "y": 3,
+          "equals": "."
+        }
+      ]
+    },
+    {
+      "branch": "row-refresh.jump-valid-menu-no-background",
+      "segment": 4,
+      "screenIncludes": [
+        "Where do you want to jump?",
+        "Pick a valid location",
+        "floor of a room"
+      ],
+      "screenCells": [
+        {
+          "step": 19,
+          "x": 70,
+          "y": 1,
+          "equals": " "
+        },
+        {
+          "step": 19,
+          "x": 53,
+          "y": 3,
+          "equals": "."
+        }
+      ]
+    },
+    {
+      "branch": "row-refresh.cloud-pet-background",
+      "segment": 5,
+      "screenIncludes": [
+        "Where do you want to center the cloud?",
+        "Pick a valid location",
+        "tame kitten",
+        "Never mind."
+      ]
+    },
+    {
+      "branch": "row-refresh.cloud-pet-no-background-negative",
+      "segment": 6,
+      "screenIncludes": [
+        "Where do you want to center the cloud?",
+        "Pick a valid location",
+        "tame kitten",
+        "Never mind."
+      ]
+    }
+  ],
+  "branchRequirements": [
+    {
+      "name": "row-fruit-unexplored-U",
+      "negative": false,
+      "menuStep": 9,
+      "dismissStep": 10,
+      "finalXY": [
+        8,
+        12
+      ],
+      "producer": "fruit",
+      "background": true
+    },
+    {
+      "name": "row-fruit-default-space-negative",
+      "negative": true,
+      "menuStep": 9,
+      "dismissStep": 10,
+      "finalXY": [
+        8,
+        12
+      ],
+      "producer": "fruit",
+      "background": true
+    },
+    {
+      "name": "row-fruit-room-U-identity-negative",
+      "negative": true,
+      "menuStep": 24,
+      "dismissStep": 25,
+      "finalXY": [
+        60,
+        2
+      ],
+      "producer": "fruit",
+      "background": true
+    },
+    {
+      "name": "row-jump-valid-menu-background",
+      "negative": false,
+      "menuStep": 18,
+      "dismissStep": 19,
+      "finalXY": [
+        56,
+        3
+      ],
+      "producer": "jump",
+      "background": true
+    },
+    {
+      "name": "row-jump-valid-menu-no-background",
+      "negative": false,
+      "menuStep": 18,
+      "dismissStep": 19,
+      "finalXY": [
+        56,
+        3
+      ],
+      "producer": "jump",
+      "background": false
+    },
+    {
+      "name": "row-cloud-pet-background",
+      "negative": false,
+      "menuStep": 33,
+      "dismissStep": 34,
+      "finalXY": [
+        8,
+        12
+      ],
+      "producer": "cloud",
+      "background": true
+    },
+    {
+      "name": "row-cloud-pet-no-background-negative",
+      "negative": true,
+      "menuStep": 33,
+      "dismissStep": 34,
+      "finalXY": [
+        8,
+        12
+      ],
+      "producer": "cloud",
+      "background": false
+    }
+  ],
+  "unchangedOutputHashes": {
+    "row-fruit-default-space-negative": {
+      "screens": "c2da3fb2f7b9e6ededb33ff8d8cf4fb1199c13f95687e37a27191f83613238ea",
+      "cursors": "a76e9a136e7781e82c9412cd8206c79b7c3d1cf4a5f1e01faf393adc7fae2876",
+      "calls": "b27a2236071db8f2bdaf7bec2f2a496be0229efbfcd238663a330197698fb86b",
+      "slices": "512456e005d7b9a29f6004408f6ba55f24b18b98f8d4205aa63a61488c9a1014",
+      "frames": "5307a86f889f9084bce219e5ca004cc5cb1a0fc50740d1c92d0bc61fe2c50786"
+    },
+    "row-fruit-room-U-identity-negative": {
+      "screens": "544e523ada207986bdc598ecbfc43d2b622e077baee4cfb1c6a33db2ede2965b",
+      "cursors": "49898145c3b740ef283db14a37f21243f55b3a5610b8df39a69eaccd0850a1b6",
+      "calls": "ea734768189e423270859b15cc8173d7c5eb218304147cc87fb914f7150743a0",
+      "slices": "46d0d286730fedb562cce7ca6a142bc22cd857b3409fa7c38559967465f1506b",
+      "frames": "eb6998029085529de57bad77afaba926c6b41aa400526407721b45c77a78c59a"
+    },
+    "row-cloud-pet-no-background-negative": {
+      "screens": "8b593674012c0b17f1eda3bb0bb89514e99c54a5f8bf2cf658b09281c6234bfb",
+      "cursors": "1a0c0e90bdb61e768de078f53b90b4c3d892b1ba3e76742d5a6d80e32381151f",
+      "calls": "472e6d4270dfd116cb486a2d61a01d34dd6f6c6b7a991879e2c8dc81fc4d15dd",
+      "slices": "0469af50afe0e3c4e116208a55114ad851eadbd07b613b545a6eb72485238e6a",
+      "frames": "d7e05d62119e6c5eb0f72a659df5eabe0a9c28413e532b84dc2b1acd8f02d171"
+    }
+  },
+  "segments": [
+    {
+      "name": "row-fruit-unexplored-U",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nSYMBOLS=S_unexplored:U\nOPTIONS=fruit:ABCDEFGHIJKLMNOPQRSTUVWXYZabcde\n",
+      "moves": " \u0017fruit\ri \u0012"
+    },
+    {
+      "name": "row-fruit-default-space-negative",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=fruit:ABCDEFGHIJKLMNOPQRSTUVWXYZabcde\n",
+      "moves": " \u0017fruit\ri \u0012"
+    },
+    {
+      "name": "row-fruit-room-U-identity-negative",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nSYMBOLS=S_room:U\nOPTIONS=fruit:ABCDEFGHIJKLMNOPQRSTUVWXYZabcde\n",
+      "moves": " \u0014LLLLLLllllKkk.\u0017fruit\ri \u0012"
+    },
+    {
+      "name": "row-jump-valid-menu-background",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Knight,race:human,gender:male,align:lawful,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=bgcolors,color\nSYMBOLS=S_unexplored:U\n",
+      "moves": " \u0014LLLLll. #jump\r!z\u001b\u001b"
+    },
+    {
+      "name": "row-jump-valid-menu-no-background",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Knight,race:human,gender:male,align:lawful,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=!bgcolors,color\nSYMBOLS=S_unexplored:U\n",
+      "moves": " \u0014LLLLll. #jump\r!z\u001b\u001b"
+    },
+    {
+      "name": "row-cloud-pet-background",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:cat,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=bgcolors,color,hilite_pet\n",
+      "moves": " \u0017scroll of stinking cloud\rra  !z\u001b\u001b"
+    },
+    {
+      "name": "row-cloud-pet-no-background-negative",
+      "seed": 9770,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:cat,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=!eight_bit_tty\nOPTIONS=!bgcolors,color,hilite_pet\n",
+      "moves": " \u0017scroll of stinking cloud\rra  !z\u001b\u001b"
+    }
+  ],
+  "recordingNote": "Locked before candidate. Original nine config-byte cases remain unchanged, including their 5/9 result and failing fruit negative. These are independent ASCII inputs. No original C output is rewritten."
+}

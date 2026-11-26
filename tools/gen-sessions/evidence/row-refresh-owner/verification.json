@@ -1,0 +1,193 @@
+{
+  "baselineCommit": "31a6307100985748d08904e3c857d11e544151d3",
+  "cSourcePin": "16ff59115315917b93185d026aeefea06db9b0f4",
+  "runtimeChanged": [
+    "js/artifact.js",
+    "js/display.js",
+    "js/fountain.js",
+    "js/getpos.js",
+    "js/gstate.js",
+    "js/options.js",
+    "js/plselect.js",
+    "js/potion.js",
+    "js/selvar.js",
+    "js/tty/wintty.js",
+    "js/zap.js"
+  ],
+  "runtimeFiles": 280,
+  "runtimeSHA256": "352b7dedba3da9853678ccea6abc62f4bd2517c656e10bac58fcc48ba6f50b6a",
+  "sourceSeals": {
+    "row-refresh-source-audit": {
+      "members": 367,
+      "sha256": "95fff4d0a95a4b19a25d23078f2cac7ef77ef0def7776924ac8ca9a6551c0ef8"
+    },
+    "row-refresh-promotion": {
+      "members": 27,
+      "sha256": "dac393822286dabcdfa31ea9c8342c97949af46eef36ce9ae1c881b08a373aba"
+    },
+    "row-refresh-parent-retained-review": {
+      "members": 117,
+      "sha256": "d324cc169d01a0b3d986ecad32e615577654f15246bf3ec8a61fae46f2b0e657"
+    }
+  },
+  "native": {
+    "baseline": 3,
+    "candidate": 7,
+    "composed": 7,
+    "cases": 7,
+    "keys": 158,
+    "boundaries": 165,
+    "calls": 19701,
+    "frames": 0,
+    "rawSHA256": "7b1be02ec8062856a39860d4095c0ffdb5a25be97fdf5cdd7f01a3330e1587cf",
+    "reportSHA256": "13864697252811798655b511511385482bca8de06350f62ebe3c8e7c4dbcaba1",
+    "unchangedNegativeHashes": 15
+  },
+  "originalNine": {
+    "symbolOnly": 7,
+    "symbolAndRow": 8,
+    "total": 9,
+    "remainingFailures": [
+      "reader-fruit-utf8-bytes"
+    ],
+    "reportSHA256": "bf7df8b26ed287a4783a3c1522d95c2368755871dab7c30f05fd97a799fa6322"
+  },
+  "sourceControls": {
+    "state": "36/36 versus 10/36",
+    "background": "23/23, helper absent before",
+    "ordinary": "21/21 versus 16/21",
+    "sourceRngPairsUnchanged": 59
+  },
+  "initialFailures": {
+    "runtimeSHA256": "cec26066fa78b27a64d0407000349f81c328de28d3a1653ee755168a2c738a79",
+    "selected": "91/100",
+    "fullCorpus": "890/907",
+    "startupFailures": 17,
+    "failureSummarySHA256": "d9010dae8db6182775bc6d5351c1f37d559d5ccb8ae3b835896897a9fbac0363",
+    "driverFailure": "Final metric aggregation raised KeyError: cursors because failed workers omit that metric; no verification.json was produced.",
+    "originalReportsPreserved": true
+  },
+  "startupCorrection": {
+    "source": {
+      "nethack-c/upstream/include/rm.h:473-488": "C dlevel_t owns locations[COLNO][ROWNO]; levl aliases that always-present array.",
+      "nethack-c/upstream/src/decl.c:908-915 and include/hack.h:1093": "init_svl zero-initializes level.locations via UNDEFINED_VALUES={0}.",
+      "nethack-c/upstream/src/display.c:2507-2581": "The background terrain branch requires use_background_glyph and seenv!=0; startup cells have seenv0. Frame computation remains independent.",
+      "nethack-c/upstream/win/tty/wintty.c:966-987,1950-2035,2775-2820,3650-3720": "Corner dismissal traverses row_refresh synchronously. Destruction completes dismissal before freeing the window.",
+      "nethack-c/upstream/src/role.c:2206-2770": "Facet selections and reset_role_filtering destroy the selected window before moving on; C select_menu already dismisses.",
+      "js/plselect.js:468-602,626-938": "The two local legacy selection adapters leave their window active. Five destruction callers need await after row_refresh becomes asynchronous. The confirmation path already uses awaited tty_select_menu and is inactive."
+    },
+    "changes": [
+      "Treat absent JS startup level as unseen C terrain.",
+      "Await five active legacy character-selection window destructions."
+    ],
+    "callerCensusCorrection": "The sealed source packet missed these five active callers; parent review supersedes that classification."
+  },
+  "retainedTests": {
+    "original": {
+      "baseline": 181,
+      "candidate": 59
+    },
+    "corrected": {
+      "baseline": 179,
+      "candidate": 181,
+      "startupCorrected": 181
+    },
+    "totalCases": 181,
+    "skipped": 0,
+    "assertionSites": {
+      "original": 150,
+      "preserved": 147,
+      "Ccorrected": 3,
+      "added": 1
+    },
+    "changes": [
+      "Five files only await asynchronous painting.",
+      "Coordinate-only fixture explicitly disables background validation.",
+      "Three expectations follow canonical buffer and numeric unexplored skip; one cached-blank assertion added."
+    ],
+    "files": [
+      {
+        "path": "tools/cursor-description-coordinates-state-gate.mjs",
+        "cases": 20,
+        "originalSHA256": "2e493ec782a608b703852cce3b8be538e0d3e74f52f6cea124e29d9a8e978729",
+        "correctedSHA256": "9c5f5e6b352bfca567ad4e7c7c7f79addc19da51e162d4129064da1ccb6c24ef"
+      },
+      {
+        "path": "tools/custom-glyph-state-gate.mjs",
+        "cases": 15,
+        "originalSHA256": "072ed28418319e98a16912d3c1ff1daa0d56bb35edb9e9cf278d6b3835d8ee99",
+        "correctedSHA256": "981ac026f58db1d45a5788f187371b6f84a5153fa95ff8ab1e02ab4e67f25d24"
+      },
+      {
+        "path": "tools/hero-glyph-state-gate.mjs",
+        "cases": 19,
+        "originalSHA256": "eb2e5d57de08fe412be909a8242c5d9a8ee70b121c74793b5f9c7427549b62c1",
+        "correctedSHA256": "ef5bf736877b906dbb0d23807ff56d66bc9a6dbaa81cf8569a31053bf4140034"
+      },
+      {
+        "path": "tools/map-cursor-state-gate.mjs",
+        "cases": 32,
+        "originalSHA256": "04b43876d4d6a3869d0c97c27bbe2062acf069eb87a087f8cfc124ebcab8160b",
+        "correctedSHA256": "783220796b688402cef3e231e11ce52ee1fa33d089f405569944229bd7810195"
+      },
+      {
+        "path": "tools/monster-glyph-state-gate.mjs",
+        "cases": 45,
+        "originalSHA256": "cc23a220ed4ce66ede36164ddba44e9e55e95831be4d511f733624a78fe39a21",
+        "correctedSHA256": "f860d220182e848cf7df2cd99978c1482fae7a985e72719ccf0179d68082a57c"
+      },
+      {
+        "path": "tools/other-symbol-state-gate.mjs",
+        "cases": 6,
+        "originalSHA256": "95d79b56636091b672bd25cf300577df04baa5d7d88e88ef36872a8842254780",
+        "correctedSHA256": "e63a90f83b2610389d3c441a8ede3aa3de55fe165da9a7b2715dbeb79480cb38"
+      },
+      {
+        "path": "tools/pet-glyph-state-gate.mjs",
+        "cases": 44,
+        "originalSHA256": "9401f924f26f6189e622533110a50ddd9ea82dbdb4057e307ee29518cab58bb7",
+        "correctedSHA256": "17d9f0c1212ca4db2d4f324fef215d87664313a5cb25d91183642824ebe0fb3c"
+      }
+    ]
+  },
+  "selectedPublic": {
+    "passed": 100,
+    "screens": 53394,
+    "cursors": 53394,
+    "rngCalls": 2028572,
+    "animFrames": 1760
+  },
+  "strict8s": {
+    "passed": 100,
+    "total": 100,
+    "timeoutOverride": false
+  },
+  "focused": {
+    "passed": 67,
+    "total": 68,
+    "unchangedFailure": "Saved monster traits:18/19, get_mtraits pointer copy."
+  },
+  "full907": {
+    "root": "/share/NFS/u/rohit/research/contest/artifacts/2026-11-22/row-refresh-startup-full907-js-20261125",
+    "sessions": 907,
+    "passed": 907,
+    "totals": {
+      "screens": 924671,
+      "cursors": 924671,
+      "rngCalls": 19940948,
+      "animFrames": 33095
+    },
+    "allFilesFixed": 1198,
+    "allFilesSHA256": "561cf5c5139652240f7a1f210a6ea5a7f975bbf24bd6665a34d0417d11cd6377",
+    "verificationSHA256": "83bb5647fa96a9ef9d26158aff4e344eed616ebb830afde6044d5d56d293134c",
+    "workers": 2,
+    "timeoutOverride": false,
+    "retries": 0
+  },
+  "limits": [
+    "Full styled cells, cursors, ordered RNG and frames are compared; serialized byte identity and whole-port closure are not established.",
+    "Background terrain glyph construction has source controls; the tty recorder does not expose the Windows background glyph channel.",
+    "Fruit UTF8, merged byte caps, saved monster traits, wrapped-message synchronous painting and other listed display gaps remain open.",
+    "No new held-out score is inferred."
+  ]
+}

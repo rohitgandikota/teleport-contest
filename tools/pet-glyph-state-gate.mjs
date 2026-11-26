@@ -44,7 +44,7 @@ async function setup({female=false,tame=true,hallu=false,mnum=PM.PM_GNOME}={}) {
     return mon;
 }
 const streams=()=>({core:structuredClone(game.coreCtx),display:structuredClone(game.dispCtx)});
-const paint=()=>{row_refresh(x,x,y);return game.nhDisplay.grid[y+1][x-1];};
+const paint=async()=>{await row_refresh(x,x,y);return game.nhDisplay.grid[y+1][x-1];};
 function capture(mon,range,{attr=range==='detected'?ATR_INVERSE:0,withMon=true}={}) {
     const glyphnum=ranges[range][+!!mon.female]+mon.mnum;
     show_glyph_cell(x,y,'g',CLR_WHITE,false,attr,
@@ -61,7 +61,7 @@ for(const range of Object.keys(ranges))for(const female of [false,true])for(cons
         mon.mnum=PM.PM_HUMAN;mon.data=game.mons[PM.PM_HUMAN];
         game.u.uprops.HALLUC=hallu?0:100;
         const expected=range==='pet'?ATR_BOLD:range==='detected'?ATR_INVERSE:0;
-        assert.equal(paint().attr,expected);
+        assert.equal((await paint()).attr,expected);
         assert.equal(gbuf_at(x,y).disp_glyphnum,id);
         assert.deepEqual(streams(),before);
     });
@@ -74,7 +74,7 @@ for(const [name,nhattr,terminal] of [
 ]) test(`petattr ${name}: tty attribute maps to recorder bits`,async()=>{
     const mon=await setup({tame:false});
     capture(mon,'pet');game.iflags.wc2_petattr=nhattr;
-    assert.equal(paint().attr,terminal);
+    assert.equal((await paint()).attr,terminal);
 });
 
 for(const [name,hilite,inverse,color,expected] of [
@@ -86,28 +86,28 @@ for(const [name,hilite,inverse,color,expected] of [
     const mon=await setup({tame:false});capture(mon,'pet');
     game.flags.hilite_pet=hilite;game.flags.use_inverse=inverse;game.flags.color=color;
     game.iflags.wc2_petattr=7;
-    assert.equal(paint().attr,expected);
+    assert.equal((await paint()).attr,expected);
 });
 
 test('pet highlighting and attribute changes take effect on buffered glyphs',async()=>{
     const mon=await setup({tame:false});capture(mon,'pet');const before=streams();
-    assert.equal(paint().attr,ATR_BOLD);
-    game.flags.hilite_pet=false;assert.equal(paint().attr,0);
+    assert.equal((await paint()).attr,ATR_BOLD);
+    game.flags.hilite_pet=false;assert.equal((await paint()).attr,0);
     game.flags.hilite_pet=true;game.iflags.wc2_petattr=4;
-    assert.equal(paint().attr,ATR_UNDERLINE);
+    assert.equal((await paint()).attr,ATR_UNDERLINE);
     assert.deepEqual(streams(),before);
 });
 
 test('pet identity does not require a live monster pointer',async()=>{
     const mon=await setup();capture(mon,'pet',{withMon:false});
-    assert.equal(paint().attr,ATR_BOLD);
+    assert.equal((await paint()).attr,ATR_BOLD);
 });
 
 test('glyphmap flag mutation does not change an already buffered pet',async()=>{
     const mon=await setup({tame:false}),id=capture(mon,'pet');
     const flags=gbuf_at(x,y).disp_glyphflags;
     glyphmap()[id].glyphflags&=~C.MG_PET;
-    assert.equal(paint().attr,ATR_BOLD);
+    assert.equal((await paint()).attr,ATR_BOLD);
     assert.equal(gbuf_at(x,y).disp_glyphflags,flags);
 });
 
@@ -116,7 +116,7 @@ for(const tame of [false,true]) test(`unresolved identity snapshots its legacy t
     show_glyph_cell(x,y,'g',CLR_WHITE,false,0,{kind:'mon',mon});
     assert.equal(gbuf_at(x,y).disp_glyphnum,undefined);
     mon.mtame=tame?0:7;
-    assert.equal(paint().attr,tame?ATR_BOLD:0);
+    assert.equal((await paint()).attr,tame?ATR_BOLD:0);
 });
 
 for(const producer of ['newsym','map_monst'])for(const female of [false,true])for(const hallu of [false,true]) {
@@ -130,7 +130,7 @@ for(const producer of ['newsym','map_monst'])for(const female of [false,true])fo
         assert.equal(gbuf_at(x,y).disp_glyphnum,selected+ranges[range][+female]);
         assert.deepEqual(streams(),after);
         mon.mtame=range==='pet'?0:5;
-        assert.equal(paint().attr,range==='pet'?ATR_BOLD:0);
+        assert.equal((await paint()).attr,range==='pet'?ATR_BOLD:0);
         assert.deepEqual(streams(),after);
     });
 }
@@ -139,7 +139,7 @@ for(const female of [false,true]) test(`tame ghost detection keeps detected ${fe
     const mon=await setup({female,mnum:PM.PM_GHOST});
     audit_map_monst(mon,false);
     assert.equal(gbuf_at(x,y).disp_glyphnum,mon.mnum+ranges.detected[+female]);
-    assert.equal(paint().attr,ATR_INVERSE); // no pet bold bit
+    assert.equal((await paint()).attr,ATR_INVERSE); // no pet bold bit
 });
 
 

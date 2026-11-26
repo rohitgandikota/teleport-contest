@@ -4562,6 +4562,13 @@
     {"group":"shopkeeper-reentry-owner","id":"shopkeeper-reentry.normal-return-pickup","cFile":"src/monmove.c","cFunction":"postmov","description":"normal return pickup"},
     {"group":"shopkeeper-reentry-owner","id":"shopkeeper-reentry.tended-entry","cFile":"src/shk.c","cFunction":"u_entered_shop","description":"tended entry"},
     {"group":"shopkeeper-reentry-owner","id":"shopkeeper-reentry.outside-no-reentry","cFile":"src/shk.c","cFunction":"u_entered_shop","description":"outside no reentry"},
-    {"group":"shopkeeper-reentry-owner","id":"shopkeeper-reentry.absent-special-no-return","cFile":"src/shk.c","cFunction":"u_entered_shop","description":"absent special no return"}
+    {"group":"shopkeeper-reentry-owner","id":"shopkeeper-reentry.absent-special-no-return","cFile":"src/shk.c","cFunction":"u_entered_shop","description":"absent special no return"},
+    {"group": "row-refresh-owner", "id": "row-refresh.fruit-unexplored-U", "cFile": "src/display.c", "cFunction": "row_refresh", "description": "fruit unexplored U"},
+    {"group": "row-refresh-owner", "id": "row-refresh.fruit-default-space-negative", "cFile": "src/display.c", "cFunction": "row_refresh", "description": "fruit default space negative"},
+    {"group": "row-refresh-owner", "id": "row-refresh.fruit-room-U-identity-negative", "cFile": "src/display.c", "cFunction": "row_refresh", "description": "fruit room U identity negative"},
+    {"group": "row-refresh-owner", "id": "row-refresh.jump-valid-menu-background", "cFile": "src/display.c", "cFunction": "row_refresh", "description": "jump valid menu background"},
+    {"group": "row-refresh-owner", "id": "row-refresh.jump-valid-menu-no-background", "cFile": "src/display.c", "cFunction": "row_refresh", "description": "jump valid menu no background"},
+    {"group": "row-refresh-owner", "id": "row-refresh.cloud-pet-background", "cFile": "win/tty/wintty.c", "cFunction": "tty_print_glyph", "description": "cloud pet background"},
+    {"group": "row-refresh-owner", "id": "row-refresh.cloud-pet-no-background-negative", "cFile": "win/tty/wintty.c", "cFunction": "tty_print_glyph", "description": "cloud pet no background negative"}
   ]
 }

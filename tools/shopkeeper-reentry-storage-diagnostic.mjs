@@ -1,7 +1,7 @@
 // Source diagnostics on real keyboard-produced keepers; one adjacent gap retained.
 // Explicit C-storage fixtures below are constructed, never ordinary evidence.
 import assert from 'node:assert/strict';
-import {game as g} from '../js/gstate.js'; // Preserve the live binding; this module has no dependencies.
+import {game as g} from '../js/gstate.js'; // Preserve the live game binding.
 import {branchAssertionErrors,recordingIntegrityErrors} from './gen-sessions/assertions.mjs';
 import {readFileSync,writeFileSync} from 'node:fs';
 import {createHash} from 'node:crypto';

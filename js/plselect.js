@@ -590,7 +590,7 @@ async function reset_role_filtering() {
                  + (gotrolefilter()
                     ? ' and/or unpick any that no longer apply' : ''));
     const selected = await select_menu_pick_any(win);
-    tty_destroy_nhwindow(win);
+    await tty_destroy_nhwindow(win);
 
     const f = game.flags;
     if (selected) {   /* n >= 0; an empty list clears the filter */
@@ -701,7 +701,7 @@ async function genl_player_setup(screenheight) {
             role_menu_extra(ROLE_NONE, win, false);   /* quit */
             tty_end_menu(win, 'Pick a role or profession');
             const r = decode_choice(await select_menu_pick_one(win));
-            tty_destroy_nhwindow(win);
+            await tty_destroy_nhwindow(win);
             if (r.kind === 'quit') return -1;
             if (r.kind === 'jump' && r.to === RS_filter) {
                 /* src/role.c:2357 — the role is dropped, the filter menu runs,
@@ -754,7 +754,7 @@ async function genl_player_setup(screenheight) {
                 role_menu_extra(ROLE_NONE, win, false);   /* quit */
                 tty_end_menu(win, 'Pick a race or species');
                 const r = decode_choice(await select_menu_pick_one(win));
-                tty_destroy_nhwindow(win);
+                await tty_destroy_nhwindow(win);
                 if (r.kind === 'quit') return -1;
                 if (r.kind === 'jump' && r.to === RS_filter) {
                     /* src/role.c:2441 — go back to the role menu only if the
@@ -801,7 +801,7 @@ async function genl_player_setup(screenheight) {
                 role_menu_extra(ROLE_NONE, win, false);   /* quit */
                 tty_end_menu(win, 'Pick a gender or sex');
                 const r = decode_choice(await select_menu_pick_one(win));
-                tty_destroy_nhwindow(win);
+                await tty_destroy_nhwindow(win);
                 if (r.kind === 'quit') return -1;
                 if (r.kind === 'jump' && r.to === RS_filter) {
                     f.initgend = ROLE_NONE;
@@ -850,7 +850,7 @@ async function genl_player_setup(screenheight) {
             role_menu_extra(ROLE_NONE, win, false);   /* quit */
             tty_end_menu(win, 'Pick an alignment or creed');
             const r = decode_choice(await select_menu_pick_one(win));
-            tty_destroy_nhwindow(win);
+            await tty_destroy_nhwindow(win);
             if (r.kind === 'quit') return -1;
             if (r.kind === 'jump' && r.to === RS_filter) {
                 f.initalign = ROLE_NONE;

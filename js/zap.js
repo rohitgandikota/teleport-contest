@@ -1827,7 +1827,7 @@ export async function do_enlightenment_effect() {
         tty_end_menu(win, null);
         await tty_display_nhwindow(win);
         await xwaitforspace(' \r\n\x1b');
-        while (game.morc !== '\x1b' && tty_next_page(win))
+        while (game.morc !== '\x1b' && await tty_next_page(win))
             await xwaitforspace(' \r\n\x1b');
         await tty_destroy_nhwindow(win);
         await notice_all_mons_flush();

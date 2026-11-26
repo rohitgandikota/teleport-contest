@@ -11,6 +11,8 @@ for(const [mode,coords] of [['n',''],['c',' (2e)'],['f',' (2east)'],
 for(const validation of ['none','valid','invalid','disabled'])
 test(`coordinates ${mode}, target validation ${validation}`,async()=>{
     await setup();
+    // C display.c2573: exclude frame-paint validation from this coordinate fixture.
+    game.iflags.bgcolors=false;
     game.iflags.getpos_coords=mode;
     game.iflags.autodescribe=validation!=='disabled';
     game.iflags.getloc_travelmode=false;

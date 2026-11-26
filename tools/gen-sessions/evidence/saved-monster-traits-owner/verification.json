@@ -1,0 +1,141 @@
+{
+  "baselineCommit": "abe90b9c40cb4cf9770ebd21434da25ace212c9c",
+  "cSourcePin": "16ff59115315917b93185d026aeefea06db9b0f4",
+  "runtimeChanged": [
+    "js/mkobj.js",
+    "js/mon.js",
+    "js/shk.js",
+    "js/zap.js"
+  ],
+  "runtimeFiles": 280,
+  "runtimeSHA256": "dbb109468ac19dfd5696f02e80c1bd67a2cc6de89f489b4a34844509564d0ee3",
+  "sourceSeals": {
+    "saved-monster-traits-source-audit": {
+      "members": 260,
+      "sha256": "ccc2a9b1aebe3854724d23fc662ffaa7054a04f7061b831aece7ff779754895f"
+    },
+    "saved-monster-traits-promotion": {
+      "members": 56,
+      "sha256": "f75e2f05943eaa29494e6cf5e345b5125d133d2d7add257e1dd5f9304edec814"
+    }
+  },
+  "native": {
+    "nativeRawSHA256": "3c7d858545b068fa7e9187488bbae50674d94d56bf0fd0778c8ab239f64b2cba",
+    "sourceSealSHA256": "ccc2a9b1aebe3854724d23fc662ffaa7054a04f7061b831aece7ff779754895f",
+    "baseline": 3,
+    "candidate": 4,
+    "composed": 4,
+    "total": 4,
+    "keys": 374,
+    "boundaries": 378,
+    "calls": 16124,
+    "frames": 15,
+    "unchangedNegativeReports": 3,
+    "unchangedNegativeHashes": 15,
+    "candidateComposedReportSHA256": "fbee292d22512576d243fd381870e1888abfec85017e59c26cde8d81de6f2f28",
+    "positiveFirstDifference": {
+      "step": 103,
+      "frozenEqual": false,
+      "fullStyleEqual": false,
+      "totalCells": 1920,
+      "matchingStyleCells": 1860,
+      "blankStyleMismatches": 0,
+      "nonblankStyleMismatches": 0,
+      "glyphMismatches": 60,
+      "firstFullStyleDifference": {
+        "x": 0,
+        "y": 0,
+        "c": {
+          "ch": "\"",
+          "color": 8,
+          "attr": 0
+        },
+        "js": {
+          "ch": "Y",
+          "color": 8,
+          "attr": 0
+        }
+      },
+      "firstFrozenDifference": {
+        "x": 0,
+        "y": 0,
+        "kind": "ch",
+        "c": {
+          "ch": "\"",
+          "color": 8,
+          "attr": 0
+        },
+        "js": {
+          "ch": "Y",
+          "color": 8,
+          "attr": 0
+        }
+      }
+    },
+    "positiveFirstRngDifference": {
+      "index": 5404,
+      "c": "rn2(4)=0",
+      "js": "rn2(5)=2"
+    },
+    "inputScope": "Only v2 was C-recorded. Original v1 pickup reach failure and three acknowledgement-byte correction are preserved before v2 validation; no C rerecord."
+  },
+  "sourceControls": {
+    "constructed": "21/21 versus 8/21",
+    "storageContract": "19/19 versus 18/19",
+    "ordinary": "4/4 versus 3/4"
+  },
+  "portableGates": {
+    "reports": {
+      "tools/saved-monster-traits-controls-gate.mjs": "927f96335feca2ae0bdd3ce3bcaa7ac2b1342a00e06f0d7f2747f6a2cd39c7b3",
+      "tools/saved-monster-traits-storage-contract-gate.mjs": "4eb3dd575fae310e9dce0996c1640ca4aa9f713ae23f8a6846ffbd9eb057a15b",
+      "tools/saved-monster-traits-input-gate.mjs": "b11d6efa1a3d3d89a9b47f113de88720b48f76d7d06bc4f3511b20f484ddbc9d"
+    },
+    "preflightRejections": 12,
+    "validImportBoundaryControls": 3
+  },
+  "inputCorrections": [
+    "Original v1 pickup was consumed by a welcome More prompt. Three acknowledgement keys were added before pickup in v2, before the only C recording. All three negative inputs and fifteen output hashes remain unchanged.",
+    "A source fixture used the old PM_ALIGNED_PRIEST name. The fixture now uses the pinned C 5.0 PM_ALIGNED_CLERIC name; original failure evidence is preserved."
+  ],
+  "selectedPublic": {
+    "passed": 113,
+    "screens": 38705,
+    "cursors": 38705,
+    "rngCalls": 1860340,
+    "animFrames": 2258
+  },
+  "strict8s": {
+    "passed": 113,
+    "total": 113,
+    "timeoutOverride": false
+  },
+  "retainedChecks": {
+    "passed": 55,
+    "total": 56,
+    "unchangedFailure": "billing-disposal-input: 7/8, complete output unchanged from the published shopkeeper checkpoint"
+  },
+  "full908": {
+    "root": "/share/NFS/u/rohit/research/contest/artifacts/2026-11-22/saved-monster-traits-full908-js-20261125",
+    "sessions": 908,
+    "passed": 908,
+    "totals": {
+      "screens": 925049,
+      "cursors": 925049,
+      "rngCalls": 19957072,
+      "animFrames": 33110
+    },
+    "allFilesFixed": 1199,
+    "allFilesSHA256": "951427c562f40866c6583afdc483e623c80a8bfba31416998c6a74dfb15c7fe6",
+    "verificationSHA256": "3c930d98590077e6881b4ee408cb833b63bd7d23413fde1c34212a98b4f5d421",
+    "workers": 2,
+    "timeoutOverride": false,
+    "retries": 0
+  },
+  "limits": [
+    "Full styled cells, cursors, ordered RNG and frames are compared; serialized byte identity and whole-port closure are not established.",
+    "Ordinary active-bill-pointer copying and statue revival remain unproven. Their separate constructed controls and failed proposals are retained.",
+    "Saved-record reuse is source-reviewed, without an independent ordinary witness. Nonempty saved worm tails, off-level/bones revival and occupation duplication remain open.",
+    "The original storage diagnostic retains its historical classification text, although its get_mtraits assertion now passes.",
+    "No new held-out result is inferred."
+  ]
+}

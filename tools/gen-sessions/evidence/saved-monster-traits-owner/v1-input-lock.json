@@ -1,0 +1,10 @@
+{
+  "recipeSHA256": "ffe092fddd16029d025e37dfb1cfb936fe410c6512a1d78a6c3a4ce4e676bd48",
+  "fieldsSHA256": "c6fcd1d49c518cebba93d61e0af0982a465c5f312597fd35099779ac5031777b",
+  "branchesSHA256": "4e238072efbf61215ac06bd287e9610d1d72e4f3e5e16db624bb320c45f6d7c1",
+  "negativeHashesSHA256": "e126e5195b29a6f1f021171bd8781d1294cbae6aa40bf79ad929d68973d23065",
+  "cases": 4,
+  "keys": 371,
+  "classification": "locked before candidate; no native recording by worker",
+  "sourceProposalSHA256": "0142b40565ef44c2c0bd65c7fe2f2b579c221c410a6507eb2149146cb9121593"
+}

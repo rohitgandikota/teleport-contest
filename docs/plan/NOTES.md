@@ -286,6 +286,16 @@ must write the substituted monster type as well as return true.
 The new revival source-state matrix and trap-identification gate pin both
 outputs independently of screen comparisons.
 
+**Monster record copies must preserve pointer identity.** C copies embedded
+coordinates and bill entries by value, but keeps live pointers shallow until
+their owning helper rebinds them. Cloning the whole saved monster recursively
+breaks that distinction. Revival must also replace the temporary monster
+through replmon and replshk so map placement, inventory ownership, light,
+held/steed references and shop residency follow C order. The ordinary revived
+shopkeeper case catches the missing stock bill after resurrection; the
+separate source controls check pointer identity without claiming an ordinary
+active-bill-pointer or statue witness.
+
 **September 3 regression audit: run the whole supplemental corpus.** A clean
 44/44 public score and a 94/102 RNG-only fuzz census hid four supplemental
 runtime errors after the large source ports. The live judge also exposed

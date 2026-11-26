@@ -4569,6 +4569,10 @@
     {"group": "row-refresh-owner", "id": "row-refresh.jump-valid-menu-background", "cFile": "src/display.c", "cFunction": "row_refresh", "description": "jump valid menu background"},
     {"group": "row-refresh-owner", "id": "row-refresh.jump-valid-menu-no-background", "cFile": "src/display.c", "cFunction": "row_refresh", "description": "jump valid menu no background"},
     {"group": "row-refresh-owner", "id": "row-refresh.cloud-pet-background", "cFile": "win/tty/wintty.c", "cFunction": "tty_print_glyph", "description": "cloud pet background"},
-    {"group": "row-refresh-owner", "id": "row-refresh.cloud-pet-no-background-negative", "cFile": "win/tty/wintty.c", "cFunction": "tty_print_glyph", "description": "cloud pet no background negative"}
+    {"group": "row-refresh-owner", "id": "row-refresh.cloud-pet-no-background-negative", "cFile": "win/tty/wintty.c", "cFunction": "tty_print_glyph", "description": "cloud pet no background negative"},
+    {"group":"saved-monster-traits-owner","id":"saved-monster-traits.revived-resident-stock","cFile":"src/shk.c","cFunction":"replshk","description":"Revived shopkeeper resumes residency and bills stock pickup."},
+    {"group":"saved-monster-traits-owner","id":"saved-monster-traits.dead-resident-no-revival","cFile":"src/mkobj.c","cFunction":"mkcorpstat","description":"Dead shopkeeper remains absent when its corpse is not revived."},
+    {"group":"saved-monster-traits-owner","id":"saved-monster-traits.saved-cyclops-revival","cFile":"src/zap.c","cFunction":"montraits","description":"Revive the saved Cyclops record without shop residency."},
+    {"group":"saved-monster-traits-owner","id":"saved-monster-traits.unsaved-newt-revival","cFile":"src/zap.c","cFunction":"revive","description":"Revive a newt corpse without a saved monster record."}
   ]
 }

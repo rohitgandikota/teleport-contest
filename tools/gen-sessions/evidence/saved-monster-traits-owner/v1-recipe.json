@@ -1,0 +1,79 @@
+{
+  "classification": "locked ordinary keyboard corpse generation and revival; source-predicted positive, no native parity claim",
+  "segments": [
+    {
+      "seed": 6903,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00162\r\u0006\u0014  llllllllllllllllllll.  \u001b\u001b\u0017blessed wand of death\r\u0017blessed wand of undead turning\ri\u001bzoy  \u001bzpy  \u001bl,  \u001b",
+      "name": "revived-resident-stock-positive"
+    },
+    {
+      "seed": 6903,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00162\r\u0006\u0014  llllllllllllllllllll.  \u001b\u001b\u0017blessed wand of death\r\u0017blessed wand of undead turning\ri\u001bzoy  \u001bl,  \u001b",
+      "name": "dead-resident-no-revival-negative"
+    },
+    {
+      "seed": 9485,
+      "datetime": "20000112120000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align=neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0007peaceful Cyclops\ry\u0006\u0017blessed wand of death\ri\u001bzoh  \u0006\u0017blessed wand of undead turning\ri\u001bzph\u0006h",
+      "name": "saved-cyclops-revival-negative"
+    },
+    {
+      "seed": 7101,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017newt corpse\r\u0017wand of undead turning\rzo.   \u0017newt corpse\rdp  zo>   zo>  ",
+      "name": "unsaved-newt-revival-negative"
+    }
+  ],
+  "name": "saved-monster-traits-owner",
+  "branchRequirements": [
+    {
+      "name": "revived-resident-stock-positive",
+      "branch": "revived-resident-stock",
+      "minimumHP": 10
+    },
+    {
+      "name": "dead-resident-no-revival-negative",
+      "branch": "dead-resident-no-revival",
+      "minimumHP": 10
+    },
+    {
+      "name": "saved-cyclops-revival-negative",
+      "branch": "saved-cyclops-revival",
+      "minimumHP": 10
+    },
+    {
+      "name": "unsaved-newt-revival-negative",
+      "branch": "unsaved-newt-revival",
+      "minimumHP": 10
+    }
+  ],
+  "unchangedOutputHashes": {
+    "dead-resident-no-revival-negative": {
+      "screens": "33e06cfde8724bf6d888cfbb71208d77ea8f424c3f5264a68fa57160d18e90ed",
+      "cursors": "f0d7592c25ca6384a594039929063a674535afc9d83b398d3f122138d7cdaa83",
+      "calls": "2fc58910c403fc452775e40f773870468f3edc07aa816fde5d09f3f2c9f2d642",
+      "slices": "89e41887741eb0a8857ec7a58afaa37accdaf7dce234b864b1b25528bdab9c71",
+      "frames": "eacb62eece57ea2ae3d930bd3dd55e85eb2f38fa771ba74ad1ddb8f4e5ec8d6d"
+    },
+    "saved-cyclops-revival-negative": {
+      "screens": "d9ba8fb2a68321be841d9fb9f90ad96d4861c5f8b89be9f6c4ed9447bbf64572",
+      "cursors": "2165c6774688ebe9ad7d3f1b82d4ac10fea077430d5f9149536a98bbbaf53027",
+      "calls": "666e346b9beb60d12a48b502742848488c2431b7b34cba36f4bcb28f959f62ed",
+      "slices": "85ada2da7fe5fa040b0d48f3d4595b463118ce3547d5ec3c91587ce158ab506e",
+      "frames": "dc4d30b764b11c98b31605a5e0b3afcd7b4ea9214f47d42f28e959fe3b55392d"
+    },
+    "unsaved-newt-revival-negative": {
+      "screens": "5e06d56b5b23bc9f72063c935d2f1c058bc169349b930df60ed2c448a6d5b42c",
+      "cursors": "b5d55736e431186456171dc1a90b3b3d450f15906ac9a45785546b02ff144a71",
+      "calls": "54888b4829c8b5bd0df34ca316ae476d2d7122f90b604a457b6bc8568f9d8b71",
+      "slices": "f47fd401ff16b4528c132c2695833c6b751b4d99e040eb951e72fa1dc71a7b3e",
+      "frames": "6ebaa05e83879cdab661dfc02e802b1708c8aaa63ce8aa180024b67c7c225e3b"
+    }
+  }
+}

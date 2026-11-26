@@ -1,10 +1,56 @@
 # STATUS — live handoff board
 
-## 2026-11-25: row restoration verified for publication
+## 2026-11-25: saved monster traits preserve C ownership
 
-HEAD and origin/main are 31a6307100985748d08904e3c857d11e544151d3. No unpublished
-commit is being held. The row candidate is fully verified and ready to commit
-and immediately push.
+The four-file revival change restores shop residency through replmon/replshk.
+Saved monster records copy embedded values separately from live pointers,
+and montraits replaces the temporary monster in C order. The 280-file runtime
+map is saved-monster-traits-parent-composed-runtime.json, SHA256
+`dbb109468ac19dfd5696f02e80c1bd67a2cc6de89f489b4a34844509564d0ee3`.
+
+All four new ordinary C cases match, versus three on the baseline: 378 styled
+screen boundaries and cursors, 16,124 random calls and 15 frames. The three
+negative cases retain all fifteen original output hashes. Source controls
+pass 21/21 versus 8/21, the original storage diagnostic passes 19/19 versus
+18/19, and ordinary producer checks pass 4/4 versus 3/4. The three portable
+gates produce byte-identical reports on main and the isolated candidate.
+Source260 and promotion56 remain sealed; 17 exact payloads and four mandatory
+branch requirements are installed. No existing assertions were weakened.
+
+All 113 selected/public recordings and 113 strict 8-second workers pass:
+38,705 screens/cursors, 1,860,340 random positions and 2,258 frames. Existing
+focused checks pass 55/56. The sole failure is the prior billing-disposal 7/8
+diagnostic, whose complete output is byte-identical to the published shop
+checkpoint. The saved-traits diagnostic that failed at the row checkpoint
+now passes. The original v1 welcome-prompt failure remains preserved. Three
+acknowledgement keys were added before the single v2 C recording; the other
+inputs, state assertions and negative output hashes stayed fixed.
+
+The full NFS run passes 908/908 recordings with two CPU workers, default
+45-second budgets and no retries: 925,049 screens/cursors, 19,957,072 random
+positions and 33,110 frames. All 1,199 source/fixture/scorer files are fixed.
+Root: /share/NFS/u/rohit/research/contest/artifacts/2026-11-22/saved-monster-traits-full908-js-20261125.
+All-files SHA256: `951427c562f40866c6583afdc483e623c80a8bfba31416998c6a74dfb15c7fe6`.
+Compact public evidence: tools/gen-sessions/evidence/saved-monster-traits-owner/verification.json.
+Parent receipt: .cache/restart-20261122/saved-monster-traits-main-verification.json.
+
+Ordinary active-bill-pointer copying and statue revival remain unproven;
+constructed source controls and failed ordinary proposals are kept separate.
+Saved-record reuse has source review but no independent ordinary witness.
+Nonempty saved worm tails, off-level/bones revival and occupation duplication
+remain open. The next corpse-impact audit follows a real cockatrice-corpse
+hit that currently deals ordinary weight damage instead of attempting stoning.
+Fruit byte handling, wrapped-message clearing and level-departure context
+cleanup continue independently. Large replay output stays on NFS.
+
+The latest official check at 19:21 EST on November 25 still shows rank 7 and
+659 unmatched screens. The scored row predates these checkpoints. Local
+parity does not establish a newer held-out score or whole-port completion.
+
+## 2026-11-25: row restoration pushed as abe90b9c
+
+The verified display checkpoint was pushed as
+abe90b9c40cb4cf9770ebd21434da25ace212c9c.
 
 The current 280-file runtime map is
 `row-refresh-parent-startup-runtime.json`, SHA256
@@ -58,21 +104,14 @@ Main verification receipt: `row-refresh-main-verification.json`, SHA256
 4674e8d3909986b02cde2c2564d8b7429be1b9947a4d61e342d185cad01bfa09.
 All906 prior raws, requirements, six payloads and seven corrected tests verify.
 Public evidence: tools/gen-sessions/evidence/row-refresh-owner/verification.json.
-Commit and push this checkpoint now, then verify all1198 files against the
-published Git tree with verify-full-publication.py. Preserve the initial runs.
+All1198 tested files match the exact published Git tree. Publication receipt
+`row-refresh-startup-full907-publication-verification.json`, SHA256
+16cfddd05ff5c761e978edd183dada5821ca60c4234b390727afdfe32578f738.
+Git ls-remote independently confirms origin/main. The initial failures remain.
 
-The last official check at23:45UTC still shows rank7 and659 unmatched, our row
-dated19:31UTC. Five locked fruit-byte C inputs establish1/5 on the separate
-byte-reader baseline. Saved-monster-traits source260 is now sealed on published shop31a: source21/21,
-original diagnostic19/19 and ordinary4/4. Its locked v2 four-case C recording
-is complete, SHA2563c7d858545b068fa7e9187488bbae50674d94d56bf0fd0778c8ab239f64b2cba,
-378 boundaries. Parent native baseline is3/4. Candidate setup stopped before
-execution because Python rglob omitted three linked subdirectories; verify
-the explicit280-file map instead. No failed C recording or replay was retried.
-A separate uhitm statue-producer prerequisite audit and display audit are source-only. Parent level-change-context audit
-records missing lock/trap/polearm departure cleanup, with no candidate yet.
-All cache names above are under `.cache/restart-20261122/`; large outputs stay
-on NFS. No new held-out result or whole-port completion is claimed.
+Saved-monster-traits work advanced after this checkpoint; its verified
+results and current source audits are recorded above. Cache paths in this
+entry are under .cache/restart-20261122/. Large outputs remain on NFS.
 
 ## 2026-11-25: shopkeeper re-entry pushed as 31a63071
 

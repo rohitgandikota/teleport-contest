@@ -1,0 +1,17 @@
+{
+  "reason": "C restored welcome message at entry blocks at --More-- before look_here/pickup. v1 pickup key was consumed; original failed assertion retained.",
+  "v1RecipeSHA256": "ffe092fddd16029d025e37dfb1cfb936fe410c6512a1d78a6c3a4ce4e676bd48",
+  "v2RecipeSHA256": "f693ddd418ad6f54757c1c903a8115ab5863d2abd32453d9e6967a11881c97c6",
+  "change": {
+    "case": "revived-resident-stock-positive",
+    "insertBeforePickup": [
+      32,
+      32,
+      27
+    ]
+  },
+  "assertionBodiesUnchanged": true,
+  "threeNegativeTuplesUnchanged": true,
+  "fifteenNegativeHashesUnchanged": true,
+  "runtimeChangedForCorrection": false
+}

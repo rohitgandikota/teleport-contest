@@ -4287,6 +4287,18 @@ export function set_residency(shkp, zero_out) {
     }
 }
 
+// src/shk.c:280 replshk(), transfer residency to a replacement monster.
+export function replshk(mtmp, mtmp2) {
+    const eshk = mtmp2.eshk || ESHK(mtmp2);
+    const roomidx = eshk.shoproom - ROOMOFFSET;
+    const room = game.level.rooms[roomidx]
+        || (game.level.subrooms || []).find(r => r.roomnoidx === roomidx);
+    room.resident = mtmp2;
+    if (inhishop(mtmp)
+        && game.u.ushops?.charCodeAt(0) === (mtmp.eshk || ESHK(mtmp)).shoproom)
+        eshk.bill_p = eshk.bill;
+}
+
 // src/shk.c:290 restshk(). Rebind the active pointer to this keeper's bill.
 export function restshk(shkp, ghostly) {
     const eshk = shkp.eshk || ESHK(shkp);

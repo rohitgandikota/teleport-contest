@@ -17,22 +17,30 @@ pass on the exact published runtime with two NFS CPU workers, default budgets
 and no retries: 924,506 screens/cursors, 19,921,247 random positions and 33,095
 frames. Tower, symbol, random-arrival terrain and engulfer fixes are pushed too.
 
-Row restoration is fully verified for publication. Seven new C cases match
+Row restoration is pushed as `abe90b9c`. Seven new C cases match
 versus three; the original byte audit improves to8/9. The initial composition
 failed9/100 selected and17/907 full-corpus recordings at startup. The reviewed
 correction passes100 selected/public and100 strict checks. All907 maintained
 recordings now pass on NFS with default budgets and no retries:924,671 screens
 and cursors,19,940,948 random positions,33,095 frames. Focused checks have67
 passes and one unchanged saved-traits diagnostic. All181 cases in seven
-corrected retained suites pass. Commit and immediately push, preserving the
-initial failures. See STATUS for exact evidence and the next saved-traits work.
+corrected retained suites pass. All1198 tested files match the published tree. Initial failures remain preserved.
+Saved monster traits now preserve C value fields and live pointers, and
+revival restores the shop resident through replmon/replshk. All four new C
+cases match versus three. The portable source, storage and ordinary gates
+pass 21/21, 19/19 and 4/4. All 113 selected/public recordings and strict workers
+pass. Full NFS verification passes 908/908 recordings: 925,049 screens/cursors,
+19,957,072 random positions and 33,110 frames, with default budgets and no
+retries. One prior billing-disposal diagnostic remains unchanged at 7/8.
+See STATUS and the saved-monster-traits-owner evidence for exact scope.
 
-Fruit UTF8, both merged-byte-cap failures and saved monster traits remain
-separate work. Five new fruit-byte C inputs establish a1/5 baseline. A parent
-source-only plan records missing level-departure context cleanup; it has no
-candidate yet. The latest leaderboard check,23:45UTC, still shows rank7 and659
-unmatched screens, with our row dated19:31UTC. Local parity does not establish
-a newer held-out score or whole-port completion.
+Fruit UTF8, merged byte caps, wrapped-message clearing and level-departure
+context cleanup remain separate work. Five fruit-byte C inputs establish a
+1/5 baseline. The next source audit follows the missing cockatrice-corpse
+impact behavior needed for ordinary statue production. The latest leaderboard
+check, 19:21 EST on November 25, still shows rank 7 and 659 unmatched screens;
+its scored row predates these checkpoints. Local parity does not establish a
+newer held-out score or whole-port completion.
 
 
 The storage cleanup is complete. The user explicitly authorized deleting

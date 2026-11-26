@@ -1,0 +1,52 @@
+{
+  "originalRecipeSHA256": "f693ddd418ad6f54757c1c903a8115ab5863d2abd32453d9e6967a11881c97c6",
+  "primaryRecipeSHA256": "cdeee4337d02db79544ce5e1ed847d7c9d252de5c47fa3de2adc208296513e81",
+  "onlyAddedFields": [
+    "requireBranchAssertions",
+    "branches",
+    "branchAssertions"
+  ],
+  "originalFieldsEqual": true,
+  "inputFieldsSHA256": "41d53500476c05c4f76cd40ccb3fbe690d5343a76ae2786a58c138079ab31463",
+  "stateRequirementsSHA256": "4e238072efbf61215ac06bd287e9610d1d72e4f3e5e16db624bb320c45f6d7c1",
+  "all15NegativeHashesSHA256": "e126e5195b29a6f1f021171bd8781d1294cbae6aa40bf79ad929d68973d23065",
+  "addedMetadataSHA256": "3f7ab88998cabac943aa915011a8285ccb1b832c6eed07a961390a5f069873d9",
+  "nativeRawSHA256": "3c7d858545b068fa7e9187488bbae50674d94d56bf0fd0778c8ab239f64b2cba",
+  "source": "Parent original C recording, source c/version5; generated once from immutable v2; raw bytes unchanged.",
+  "CBranchEvidence": [
+    {
+      "segment": 0,
+      "steps": [
+        99,
+        103,
+        108
+      ],
+      "meaning": "Saved keeper resurrection, restored welcome and unpaid pickup feedback."
+    },
+    {
+      "segment": 1,
+      "steps": [
+        93,
+        98
+      ],
+      "meaning": "Keeper death and unpaid-free pickup, no resurrection or restored welcome."
+    },
+    {
+      "segment": 2,
+      "steps": [
+        49,
+        89
+      ],
+      "meaning": "Real Cyclops death and saved monster resurrection."
+    },
+    {
+      "segment": 3,
+      "steps": [
+        41,
+        64
+      ],
+      "meaning": "Wished newt corpses revive from inventory and floor."
+    }
+  ],
+  "limits": "C text establishes observable branches. Pointer identity and constructed storage cases remain JS source controls; integrity is not native parity. Parent owns recorded native comparison."
+}

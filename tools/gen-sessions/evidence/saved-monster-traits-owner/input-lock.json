@@ -1,0 +1,10 @@
+{
+  "recipeSHA256": "f693ddd418ad6f54757c1c903a8115ab5863d2abd32453d9e6967a11881c97c6",
+  "fieldsSHA256": "41d53500476c05c4f76cd40ccb3fbe690d5343a76ae2786a58c138079ab31463",
+  "branchesSHA256": "4e238072efbf61215ac06bd287e9610d1d72e4f3e5e16db624bb320c45f6d7c1",
+  "negativeHashesSHA256": "e126e5195b29a6f1f021171bd8781d1294cbae6aa40bf79ad929d68973d23065",
+  "cases": 4,
+  "keys": 374,
+  "classification": "input acknowledgement repair after v1 candidate failure; before v2 candidate validation; no runtime change",
+  "originalLockSHA256": "4ebb055e2171375de29b6d633c310f1ba5ed5198004f3734b80135785c330cd8"
+}

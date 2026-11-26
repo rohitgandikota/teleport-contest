@@ -1,0 +1,65 @@
+{
+  "sourceSHA256": "6537d17d5f5ea4e5593748b0594bf426e66a5ae9e71531b9bc8db82705608103",
+  "rows": [
+    {
+      "name": "changed-female-save",
+      "hashes": {
+        "screens": "7c9ddcb5e0f331541702958289d1dae8bd2783d929f3f3ea4e17c63126274db5",
+        "cursors": "1cfd5db0c60ff8dd7ea2d589abb32420f13fe0c291b0b78f64940e77e12eda94",
+        "calls": "742b211a7bda663f1a298bdce4643745c2447d91bb968e096112eb813e93b2c2",
+        "slices": "3db6a285b7585ba8feae8a27dbfeb7ee98c3d417b1bd3444c07a2d99e0deca6e",
+        "frames": "3b6bee301adeaf5ea0bb5e2c62647414fd4cc5b986ec24b3b8c3517aa859d89c"
+      }
+    },
+    {
+      "name": "changed-female-restore",
+      "hashes": {
+        "screens": "56fba8a74d9ea0aa55f39bdcf2e6a9199043421382ca59bfeefc5e0a59ec3372",
+        "cursors": "c874a9343d4fe99cad4f78f2e7b7ad75edd73f7813ab17ee7754abd34656224d",
+        "calls": "0d5e5793409d2565c10821e2553815510069124f221443f836a6d24d63acf85d",
+        "slices": "ff7b79157d05f838a4a28693e0b8594e877db986f7169c4a5be5e7cec4c20adc",
+        "frames": "63b3067edc45557301e80474209597e219fc1466b5584fc0b500ac406c5b9210"
+      }
+    },
+    {
+      "name": "unchanged-male-save",
+      "hashes": {
+        "screens": "35599f35966b2f1a08af3c63c6aa3988d311732e2587daa48f93ed6777d49972",
+        "cursors": "2eb968958fbd23dd45ca03a373de13c9b7d183b3781a6b963edd737f42752105",
+        "calls": "90e1c93f3bfb25850063a27116046a104bd495512d00559fb8186dca6f72a235",
+        "slices": "136e344e8fc120916930a2fe792c17ecc53c504ee40568b8fa09025a47ea5fd6",
+        "frames": "b88cee804dd63a0179b150c6aa14c547cd5d25aab92700534a4ea441962b180d"
+      }
+    },
+    {
+      "name": "unchanged-male-restore",
+      "hashes": {
+        "screens": "8a33d160f965893e56db434ceb10809b2e4759e2e81210f07db78e61463081b7",
+        "cursors": "c874a9343d4fe99cad4f78f2e7b7ad75edd73f7813ab17ee7754abd34656224d",
+        "calls": "0d5e5793409d2565c10821e2553815510069124f221443f836a6d24d63acf85d",
+        "slices": "ff7b79157d05f838a4a28693e0b8594e877db986f7169c4a5be5e7cec4c20adc",
+        "frames": "63b3067edc45557301e80474209597e219fc1466b5584fc0b500ac406c5b9210"
+      }
+    },
+    {
+      "name": "unchanged-female-save",
+      "hashes": {
+        "screens": "c1674e873d291bb0c5cffc9e5deec84fe96648ad306dbd7f5e52b39a4373267a",
+        "cursors": "2eb968958fbd23dd45ca03a373de13c9b7d183b3781a6b963edd737f42752105",
+        "calls": "90e1c93f3bfb25850063a27116046a104bd495512d00559fb8186dca6f72a235",
+        "slices": "136e344e8fc120916930a2fe792c17ecc53c504ee40568b8fa09025a47ea5fd6",
+        "frames": "b88cee804dd63a0179b150c6aa14c547cd5d25aab92700534a4ea441962b180d"
+      }
+    },
+    {
+      "name": "unchanged-female-restore",
+      "hashes": {
+        "screens": "f494c59f25301354cdbbc2c54f5db617a8af0db5456d857b320787fb780b0a82",
+        "cursors": "c874a9343d4fe99cad4f78f2e7b7ad75edd73f7813ab17ee7754abd34656224d",
+        "calls": "0d5e5793409d2565c10821e2553815510069124f221443f836a6d24d63acf85d",
+        "slices": "ff7b79157d05f838a4a28693e0b8594e877db986f7169c4a5be5e7cec4c20adc",
+        "frames": "63b3067edc45557301e80474209597e219fc1466b5584fc0b500ac406c5b9210"
+      }
+    }
+  ]
+}

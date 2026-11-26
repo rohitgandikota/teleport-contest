@@ -1,0 +1,33 @@
+{
+  "evidence": "Original passive JS output hashes for both full negative save/restore pairs. Native comparison and observer/plain/deferred equality pending.",
+  "hashes": {
+    "unchanged-male-save": {
+      "screens": "35599f35966b2f1a08af3c63c6aa3988d311732e2587daa48f93ed6777d49972",
+      "cursors": "2eb968958fbd23dd45ca03a373de13c9b7d183b3781a6b963edd737f42752105",
+      "calls": "90e1c93f3bfb25850063a27116046a104bd495512d00559fb8186dca6f72a235",
+      "slices": "136e344e8fc120916930a2fe792c17ecc53c504ee40568b8fa09025a47ea5fd6",
+      "frames": "b88cee804dd63a0179b150c6aa14c547cd5d25aab92700534a4ea441962b180d"
+    },
+    "unchanged-male-restore": {
+      "screens": "8a33d160f965893e56db434ceb10809b2e4759e2e81210f07db78e61463081b7",
+      "cursors": "c874a9343d4fe99cad4f78f2e7b7ad75edd73f7813ab17ee7754abd34656224d",
+      "calls": "0d5e5793409d2565c10821e2553815510069124f221443f836a6d24d63acf85d",
+      "slices": "ff7b79157d05f838a4a28693e0b8594e877db986f7169c4a5be5e7cec4c20adc",
+      "frames": "63b3067edc45557301e80474209597e219fc1466b5584fc0b500ac406c5b9210"
+    },
+    "unchanged-female-save": {
+      "screens": "c1674e873d291bb0c5cffc9e5deec84fe96648ad306dbd7f5e52b39a4373267a",
+      "cursors": "2eb968958fbd23dd45ca03a373de13c9b7d183b3781a6b963edd737f42752105",
+      "calls": "90e1c93f3bfb25850063a27116046a104bd495512d00559fb8186dca6f72a235",
+      "slices": "136e344e8fc120916930a2fe792c17ecc53c504ee40568b8fa09025a47ea5fd6",
+      "frames": "b88cee804dd63a0179b150c6aa14c547cd5d25aab92700534a4ea441962b180d"
+    },
+    "unchanged-female-restore": {
+      "screens": "f494c59f25301354cdbbc2c54f5db617a8af0db5456d857b320787fb780b0a82",
+      "cursors": "c874a9343d4fe99cad4f78f2e7b7ad75edd73f7813ab17ee7754abd34656224d",
+      "calls": "0d5e5793409d2565c10821e2553815510069124f221443f836a6d24d63acf85d",
+      "slices": "ff7b79157d05f838a4a28693e0b8594e877db986f7169c4a5be5e7cec4c20adc",
+      "frames": "63b3067edc45557301e80474209597e219fc1466b5584fc0b500ac406c5b9210"
+    }
+  }
+}

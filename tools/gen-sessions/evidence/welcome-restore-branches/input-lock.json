@@ -1,0 +1,546 @@
+{
+  "phase": "pre-probe; fixed proposal-01; do not rewrite failed routes",
+  "runtimeSHA256": "0ee2ebcfa3c310dbebe74409836bb8dedea2d6cacbf7d8e5d73d76bca082204b",
+  "recipe": "welcome-restore-branches.json",
+  "recipeSHA256": "0ac79e37338b5e37e64ae94e221a52ac5618abf68c13882d623ff592af795bae",
+  "predictionsSHA256": "6708c50ebf90d36a6a30bc20be982e7f9e892aafc32d07062e879bb3e7e90d4d",
+  "fields": [
+    "name",
+    "seed",
+    "datetime",
+    "nethackrc",
+    "moves"
+  ],
+  "tuples": [
+    [
+      {
+        "field": "name",
+        "present": true,
+        "value": "changed-female-save"
+      },
+      {
+        "field": "seed",
+        "present": true,
+        "value": 99812
+      },
+      {
+        "field": "datetime",
+        "present": true,
+        "value": "20000110090000"
+      },
+      {
+        "field": "nethackrc",
+        "present": true,
+        "value": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n"
+      },
+      {
+        "field": "moves",
+        "present": true,
+        "value": " \u0017uncursed amulet of change\r    \u001b\u001b\u001bPa    \u001b\u001b\u001bSy"
+      }
+    ],
+    [
+      {
+        "field": "name",
+        "present": true,
+        "value": "changed-female-restore"
+      },
+      {
+        "field": "seed",
+        "present": true,
+        "value": 7
+      },
+      {
+        "field": "datetime",
+        "present": true,
+        "value": "20000110090000"
+      },
+      {
+        "field": "nethackrc",
+        "present": true,
+        "value": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n"
+      },
+      {
+        "field": "moves",
+        "present": true,
+        "value": " n    #attributes\r    \u001b\u001b"
+      }
+    ],
+    [
+      {
+        "field": "name",
+        "present": true,
+        "value": "unchanged-male-save"
+      },
+      {
+        "field": "seed",
+        "present": true,
+        "value": 99812
+      },
+      {
+        "field": "datetime",
+        "present": true,
+        "value": "20000110090000"
+      },
+      {
+        "field": "nethackrc",
+        "present": true,
+        "value": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n"
+      },
+      {
+        "field": "moves",
+        "present": true,
+        "value": " \u0017uncursed amulet of reflection\r    \u001b\u001b\u001bPa    \u001b\u001b\u001bSy"
+      }
+    ],
+    [
+      {
+        "field": "name",
+        "present": true,
+        "value": "unchanged-male-restore"
+      },
+      {
+        "field": "seed",
+        "present": true,
+        "value": 7
+      },
+      {
+        "field": "datetime",
+        "present": true,
+        "value": "20000110090000"
+      },
+      {
+        "field": "nethackrc",
+        "present": true,
+        "value": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n"
+      },
+      {
+        "field": "moves",
+        "present": true,
+        "value": " n    #attributes\r    \u001b\u001b"
+      }
+    ],
+    [
+      {
+        "field": "name",
+        "present": true,
+        "value": "unchanged-female-save"
+      },
+      {
+        "field": "seed",
+        "present": true,
+        "value": 99812
+      },
+      {
+        "field": "datetime",
+        "present": true,
+        "value": "20000110090000"
+      },
+      {
+        "field": "nethackrc",
+        "present": true,
+        "value": "OPTIONS=name:wizard,role:Wizard,race:human,gender:female,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n"
+      },
+      {
+        "field": "moves",
+        "present": true,
+        "value": " \u0017uncursed amulet of reflection\r    \u001b\u001b\u001bPa    \u001b\u001b\u001bSy"
+      }
+    ],
+    [
+      {
+        "field": "name",
+        "present": true,
+        "value": "unchanged-female-restore"
+      },
+      {
+        "field": "seed",
+        "present": true,
+        "value": 7
+      },
+      {
+        "field": "datetime",
+        "present": true,
+        "value": "20000110090000"
+      },
+      {
+        "field": "nethackrc",
+        "present": true,
+        "value": "OPTIONS=name:wizard,role:Wizard,race:human,gender:female,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n"
+      },
+      {
+        "field": "moves",
+        "present": true,
+        "value": " n    #attributes\r    \u001b\u001b"
+      }
+    ],
+    [
+      {
+        "field": "name",
+        "present": true,
+        "value": "hallucination-save"
+      },
+      {
+        "field": "seed",
+        "present": true,
+        "value": 99812
+      },
+      {
+        "field": "datetime",
+        "present": true,
+        "value": "20000110090000"
+      },
+      {
+        "field": "nethackrc",
+        "present": true,
+        "value": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n"
+      },
+      {
+        "field": "moves",
+        "present": true,
+        "value": " \u0017cursed potion of hallucination\r    \u001b\u001b\u001bqa    \u001b\u001b\u001bSy"
+      }
+    ],
+    [
+      {
+        "field": "name",
+        "present": true,
+        "value": "hallucination-restore"
+      },
+      {
+        "field": "seed",
+        "present": true,
+        "value": 7
+      },
+      {
+        "field": "datetime",
+        "present": true,
+        "value": "20000110090000"
+      },
+      {
+        "field": "nethackrc",
+        "present": true,
+        "value": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n"
+      },
+      {
+        "field": "moves",
+        "present": true,
+        "value": "                \u001b\u001b\u001b"
+      }
+    ],
+    [
+      {
+        "field": "name",
+        "present": true,
+        "value": "helm-drift-save"
+      },
+      {
+        "field": "seed",
+        "present": true,
+        "value": 99812
+      },
+      {
+        "field": "datetime",
+        "present": true,
+        "value": "20000110090000"
+      },
+      {
+        "field": "nethackrc",
+        "present": true,
+        "value": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:chaotic,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n"
+      },
+      {
+        "field": "moves",
+        "present": true,
+        "value": " \u0017uncursed helm of opposite alignment\r    \u001b\u001b\u001bWa ....    \u001b\u001b\u001bSy"
+      }
+    ],
+    [
+      {
+        "field": "name",
+        "present": true,
+        "value": "helm-drift-restore"
+      },
+      {
+        "field": "seed",
+        "present": true,
+        "value": 7
+      },
+      {
+        "field": "datetime",
+        "present": true,
+        "value": "20000110090000"
+      },
+      {
+        "field": "nethackrc",
+        "present": true,
+        "value": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:chaotic,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n"
+      },
+      {
+        "field": "moves",
+        "present": true,
+        "value": "                \u001b\u001b\u001b"
+      }
+    ],
+    [
+      {
+        "field": "name",
+        "present": true,
+        "value": "underlying-male-priest-save"
+      },
+      {
+        "field": "seed",
+        "present": true,
+        "value": 99812
+      },
+      {
+        "field": "datetime",
+        "present": true,
+        "value": "20000110090000"
+      },
+      {
+        "field": "nethackrc",
+        "present": true,
+        "value": "OPTIONS=name:wizard,role:Priest,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n"
+      },
+      {
+        "field": "moves",
+        "present": true,
+        "value": " #polyself\rwater nymph\r    \u001b\u001b\u001bSy"
+      }
+    ],
+    [
+      {
+        "field": "name",
+        "present": true,
+        "value": "underlying-male-priest-restore"
+      },
+      {
+        "field": "seed",
+        "present": true,
+        "value": 7
+      },
+      {
+        "field": "datetime",
+        "present": true,
+        "value": "20000110090000"
+      },
+      {
+        "field": "nethackrc",
+        "present": true,
+        "value": "OPTIONS=name:wizard,role:Priest,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n"
+      },
+      {
+        "field": "moves",
+        "present": true,
+        "value": "                \u001b\u001b\u001b"
+      }
+    ],
+    [
+      {
+        "field": "name",
+        "present": true,
+        "value": "pending-human-genocide-save"
+      },
+      {
+        "field": "seed",
+        "present": true,
+        "value": 99812
+      },
+      {
+        "field": "datetime",
+        "present": true,
+        "value": "20000110090000"
+      },
+      {
+        "field": "nethackrc",
+        "present": true,
+        "value": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n"
+      },
+      {
+        "field": "moves",
+        "present": true,
+        "value": " #polyself\rhill giant\r    \u001b\u001b\u001b\u0017uncursed scroll of genocide\r    \u001b\u001b\u001bra  human\r    \u001b\u001b\u001bSy"
+      }
+    ],
+    [
+      {
+        "field": "name",
+        "present": true,
+        "value": "pending-human-genocide-restore"
+      },
+      {
+        "field": "seed",
+        "present": true,
+        "value": 7
+      },
+      {
+        "field": "datetime",
+        "present": true,
+        "value": "20000110090000"
+      },
+      {
+        "field": "nethackrc",
+        "present": true,
+        "value": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n"
+      },
+      {
+        "field": "moves",
+        "present": true,
+        "value": "                \u001b\u001b\u001b"
+      }
+    ],
+    [
+      {
+        "field": "name",
+        "present": true,
+        "value": "hot-smoke-annotation-save"
+      },
+      {
+        "field": "seed",
+        "present": true,
+        "value": 99812
+      },
+      {
+        "field": "datetime",
+        "present": true,
+        "value": "20000110090000"
+      },
+      {
+        "field": "nethackrc",
+        "present": true,
+        "value": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n"
+      },
+      {
+        "field": "moves",
+        "present": true,
+        "value": " \u0016baalz\r        \u001b\u001b\u001b\u0016baalz\r        \u001b\u001b\u001b#annotate\rHot camp\r    \u001b\u001b\u001bSy"
+      }
+    ],
+    [
+      {
+        "field": "name",
+        "present": true,
+        "value": "hot-smoke-annotation-restore"
+      },
+      {
+        "field": "seed",
+        "present": true,
+        "value": 7
+      },
+      {
+        "field": "datetime",
+        "present": true,
+        "value": "20000110090000"
+      },
+      {
+        "field": "nethackrc",
+        "present": true,
+        "value": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n"
+      },
+      {
+        "field": "moves",
+        "present": true,
+        "value": "                \u001b\u001b\u001b"
+      }
+    ]
+  ],
+  "tuplesSHA256": "7841b4a028128d47bfa4ffc21271ffe3fc854cac25c18fccdcecb7573706c093",
+  "allKeysSHA256": "3d4f70b8f1b95a7aa2fc2a42e02e5d17b524cc9d7308c4393ae239be760cf6f1",
+  "segments": 16,
+  "keys": 606,
+  "expectedBoundaries": 622,
+  "pairs": [
+    {
+      "case": "changed-female",
+      "segments": [
+        0,
+        1
+      ],
+      "tupleSHA256": "eb9eda81eb1d72064fb0b94a23b7639c5b42b7a0530459079f7fe6a04ef00008",
+      "allKeysSHA256": "c4245e45d6acef92ba6ec28ca3e762eced2b8b331571705122f13ff399a88857",
+      "keys": 70
+    },
+    {
+      "case": "unchanged-male",
+      "segments": [
+        2,
+        3
+      ],
+      "tupleSHA256": "b6227fb8008a569365674d623b50954e1bdcbc7048ddda93dea8d2b8042cf710",
+      "allKeysSHA256": "49e90fe129a7c3ca52de4ca097418bfda8b981ca7546fc628e1a7af107de4217",
+      "keys": 74
+    },
+    {
+      "case": "unchanged-female",
+      "segments": [
+        4,
+        5
+      ],
+      "tupleSHA256": "b6c378541dddad91394a1e4fb9edb397f8308b790345206647425975f95612b1",
+      "allKeysSHA256": "49e90fe129a7c3ca52de4ca097418bfda8b981ca7546fc628e1a7af107de4217",
+      "keys": 74
+    },
+    {
+      "case": "hallucination",
+      "segments": [
+        6,
+        7
+      ],
+      "tupleSHA256": "3f474f31a32a83066a1021abc3576a186bd686ce8a666f873eec9d4c9f5caa1e",
+      "allKeysSHA256": "2b9ae87124309e016bd55c618582affe22d3abcb1f5fba091d02187dca618446",
+      "keys": 70
+    },
+    {
+      "case": "helm-drift",
+      "segments": [
+        8,
+        9
+      ],
+      "tupleSHA256": "540dedb966058c4dab99c35af55b7a548a80c433d5fde5f3814a2691419557bc",
+      "allKeysSHA256": "55567206cd2d713e887c979107ecae491ed5c25b789f3bae945959553eb102a3",
+      "keys": 80
+    },
+    {
+      "case": "underlying-male-priest",
+      "segments": [
+        10,
+        11
+      ],
+      "tupleSHA256": "b2df8c5b018251826130ae9ee2ce46d50c9ad2e5a7f369fb94642608df207889",
+      "allKeysSHA256": "bc352d1e1996289c6be35f2fe2bb3b6dba3aa1a113fa1435764a3dcda0a1cebe",
+      "keys": 51
+    },
+    {
+      "case": "pending-human-genocide",
+      "segments": [
+        12,
+        13
+      ],
+      "tupleSHA256": "d653a6d31e497f1b908e2d49a2d26d3ec6da73d81b632b4b21199cbfdebe0091",
+      "allKeysSHA256": "0a4252b6e3576d812d0844c45ca79e211108ab3c771f1c9f22374bb2e2b21b84",
+      "keys": 103
+    },
+    {
+      "case": "hot-smoke-annotation",
+      "segments": [
+        14,
+        15
+      ],
+      "tupleSHA256": "280095c9f7034c96a28b52e0a8aae902d8259ff0b89ff43dc4749140f8365e0d",
+      "allKeysSHA256": "7c77b5daa482eef5f63f8a2d545969ef44430c0c05c10ec8935b9574477d869a",
+      "keys": 84
+    }
+  ],
+  "original": {
+    "packet": "../welcome-restore-source-audit",
+    "sealSHA256": "6c0671bf957003abdde71918fdbf47e2034bf8bae520246ce0a41d9cf20f6246",
+    "recipeSHA256": "ed6d76e3bfd2d9cb52071dce1690d2b8a42bdfc5a5425eb56d6125616ff3d3c4",
+    "inputLockSHA256": "2748a3561238c5c69748aab72bd1f93b17ca80e09a969e3f36a20c9ade664e9e",
+    "tuplesSHA256": "86e33dd863b2c1e6d9c43a31780be88cae9a478681fc96c831d8547ca6bd50f5",
+    "negativeHashesSHA256": "02e5c03f4f372694e5d2c4b150cc267570da2f6d106233ef0897a5e297def86f",
+    "assertionsUnchanged": true
+  },
+  "nativeRecorded": false,
+  "runtimeCandidate": false
+}

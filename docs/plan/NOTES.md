@@ -11,6 +11,15 @@ Newest first within each section.
 
 ---
 
+## Welcome describes the underlying hero
+
+C welcome uses u.mfemale while polymorphed and flags.female otherwise.
+Its pending-genocide return exits only welcome, so the restore caller still
+handles rooms and the keep-save prompt. Restore also emits heat and smoke
+even without a temperature transition. Extract the shared helper while keeping
+the existing level-change guard. Log-category checks are separate state evidence;
+matching terminal output does not establish logfile behavior.
+
 ## Bill observers must use the active prefix
 
 C's eshk owns a fixed bill array and a separate billct. Removing an entry

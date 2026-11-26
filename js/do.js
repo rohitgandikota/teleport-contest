@@ -1498,14 +1498,7 @@ export async function goto_level(newlevel, at_stairs, falling, portal) {
         const temp = game.level?.flags?.temperature | 0;
         if (prev_temperature !== temp) {
             if (temp) {
-                /* hellish_smoke_mesg() (do.c:2003) */
-                await pline(`It is ${temp > 0 ? 'hot' : 'cold'} here.`);
-                if (game.dungeons?.[game.u.uz.dnum]?.flags?.hellish
-                    && temp > 0) {
-                    const { olfaction } = await import('./mondata.js');
-                    await You(`${olfaction(game.youmonst.data)
-                        ? 'smell' : 'sense'} smoke...`);
-                }
+                await hellish_smoke_mesg();
             } else if (prev_temperature > 0) {
                 await pline(`The heat ${
                     game.dungeons?.[game.u.uz0.dnum]?.flags?.hellish
@@ -1594,6 +1587,17 @@ export async function goto_level(newlevel, at_stairs, falling, portal) {
     {
         const { pickup } = await import('./pickup.js');
         await pickup(1);
+    }
+}
+
+// src/do.c:2003 hellish_smoke_mesg()
+export async function hellish_smoke_mesg() {
+    const temp = game.level?.flags?.temperature | 0;
+    if (temp)
+        await pline(`It is ${temp > 0 ? 'hot' : 'cold'} here.`);
+    if (game.dungeons?.[game.u.uz.dnum]?.flags?.hellish && temp > 0) {
+        const { olfaction } = await import('./mondata.js');
+        await You(`${olfaction(game.youmonst.data) ? 'smell' : 'sense'} smoke...`);
     }
 }
 

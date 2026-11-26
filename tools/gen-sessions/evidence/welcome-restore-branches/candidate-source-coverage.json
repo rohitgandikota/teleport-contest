@@ -1,0 +1,115 @@
+{
+  "inheritedSource18SealSHA256": "6c0671bf957003abdde71918fdbf47e2034bf8bae520246ce0a41d9cf20f6246",
+  "inheritedSource20SealSHA256": "725e1974e4e1633b94bdbe379c06b64f341fe48543f70e01c37bfe05d975fc21",
+  "inheritedRangeCounts": [
+    77,
+    59
+  ],
+  "additionalReadRanges": [
+    {
+      "path": "nethack-c/upstream/src/allmain.c",
+      "start": 838,
+      "end": 929,
+      "scope": "complete welcome plus newgame caller tail",
+      "fileSHA256": "6ce44a662ad3d180b9dcbf7660a1899b8d1356c8ef83e7787b21b39c6b2a35e4",
+      "rangeSHA256": "70cbd533f5f79e573e492dca65dea8141cea85afee5ac144bf66298b52e95adf"
+    },
+    {
+      "path": ".cache/restart-20261122/wall-accessory-parent-composed/js/allmain.js",
+      "start": 245,
+      "end": 268,
+      "scope": "restore greeting caller block",
+      "fileSHA256": "ea9ee7cc9590888deb87c11fabd32514832a5cd637b219ff10ccda5caf34c372",
+      "rangeSHA256": "e6fd9f636e0e96d498612b14f8cc9843dcb654c1c5fd1d9f2425424070255f67"
+    },
+    {
+      "path": ".cache/restart-20261122/wall-accessory-parent-composed/js/allmain.js",
+      "start": 526,
+      "end": 562,
+      "scope": "new-game greeting caller block",
+      "fileSHA256": "ea9ee7cc9590888deb87c11fabd32514832a5cd637b219ff10ccda5caf34c372",
+      "rangeSHA256": "935b1078f335c3b7e75706ec77c96e3e9cff64155df6b25ce5bde4c4e786c69f"
+    },
+    {
+      "path": "nethack-c/upstream/src/restore.c",
+      "start": 931,
+      "end": 952,
+      "scope": "dorecover caller tail",
+      "fileSHA256": "42a1251840cc5a964d6f6b93f6425e72c34149659a850e23ac7b44cdde88712f",
+      "rangeSHA256": "83c990b9a050445a910214a9d4914b4844d263d354fe4916aeac68dd92e60858"
+    },
+    {
+      "path": "nethack-c/upstream/src/do.c",
+      "start": 1479,
+      "end": 2028,
+      "scope": "complete goto_level, hellish_smoke_mesg and temperature_change_msg",
+      "fileSHA256": "e2fe19b83f22dcf496d2ced54f8d727433ef29aa4c3a3151a64e66350cae985f",
+      "rangeSHA256": "dd3747b49ee865d88e74f69b31735a7a3a7f2f71754f91ce78d5f423f863c77d"
+    },
+    {
+      "path": ".cache/restart-20261122/wall-accessory-parent-composed/js/do.js",
+      "start": 971,
+      "end": 1599,
+      "scope": "complete goto_level including inline smoke owner",
+      "fileSHA256": "e6944fff03cf405db6eac1bde7395f6cd44aba0394caf33b7be6392a60620d27",
+      "rangeSHA256": "d67f53d893a4a1bb7cc8d2524d6ffc41019bea3ac6d093e88568b3bbc8ee0a03"
+    },
+    {
+      "path": "nethack-c/upstream/src/pline.c",
+      "start": 495,
+      "end": 526,
+      "scope": "complete gamelog_add and livelog_printf",
+      "fileSHA256": "394d4d33f3ecfa66005a0df96cacf582782c79437f34daeaaa9bf25238d857ff",
+      "rangeSHA256": "4c043e5e6954f683cc6c34b7a4330240fd5e67dd4a533edb6102f4f9403c98f5"
+    },
+    {
+      "path": ".cache/restart-20261122/wall-accessory-parent-composed/js/pline.js",
+      "start": 147,
+      "end": 163,
+      "scope": "complete livelog_add, gamelog_add and livelog_printf",
+      "fileSHA256": "38dcca9ebef2a344a46e96291640d8a24fabe0bd40f3f60485450a7daa7ffd0f",
+      "rangeSHA256": "1744264fc09c8a000bc4235e626c5f12e0d43cdae750a0b6bcfa26be61594a51"
+    },
+    {
+      "path": "nethack-c/upstream/include/global.h",
+      "start": 495,
+      "end": 495,
+      "scope": "LL_ACHIEVE",
+      "fileSHA256": "97bcc4fdd9c1f880dacaf1fffe0043f78874f9fc7e9d84f57aa1a1d4be811e88",
+      "rangeSHA256": "6b27a05624374d29163170703fbbce3ee18952218c13e49953106e1e5f9237b8"
+    },
+    {
+      "path": "nethack-c/upstream/dat/nhcore.lua",
+      "start": 118,
+      "end": 144,
+      "scope": "shipped callback table",
+      "fileSHA256": "45c42ace2fe61acea1d4202bf1fc040937275d5d9b20d1898358b4a95d6afd94",
+      "rangeSHA256": "65611b5f4b22f5b81fc2e6345f3b93ce2bbb19db971960094d52b54ab73145e2"
+    },
+    {
+      "path": "nethack-c/upstream/src/mondata.c",
+      "start": 1500,
+      "end": 1520,
+      "scope": "complete olfaction with context",
+      "fileSHA256": "c7a19d003c169fed7dde555ecad9069627f059309142b7d8104314572f90a685",
+      "rangeSHA256": "13e5f1522843dc1a1a1c8e3f7c3d9dabf2c07b7a0be956e49facf8fb96f16b71"
+    },
+    {
+      "path": ".cache/restart-20261122/wall-accessory-parent-composed/js/mondata.js",
+      "start": 1034,
+      "end": 1050,
+      "scope": "complete olfaction with context",
+      "fileSHA256": "d057b4d8fbccd625638ebf9f3f3035dab138a1c61c6e558057b8d085c649cdb5",
+      "rangeSHA256": "76f4b4d9457a35779f347fb6b0f52a9ab407ad812dcc09de1bfcbfc5f8c15023"
+    },
+    {
+      "path": ".cache/restart-20261122/wall-accessory-parent-composed/js/dungeon.js",
+      "start": 859,
+      "end": 864,
+      "scope": "complete In_hell",
+      "fileSHA256": "c728fd3ca42c1a782936186d32b25c29a519727cb9b5cc6b16f4dbcb54cb7473",
+      "rangeSHA256": "42b2abe8e3b80ce7cd85a78006d156ac392df23beccf729e90cb2ee44a3a28b1"
+    }
+  ],
+  "meaning": "Read scope, not exhaustive executed coverage. Unrelated goto_level omissions and custom callbacks remain explicit limits."
+}

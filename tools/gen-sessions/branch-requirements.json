@@ -4921,6 +4921,125 @@
       "cFile": "src/potion.c",
       "cFunction": "dopotion",
       "description": "A repeated confusion potion preserves peculiar unchanged-effect feedback."
+    },
+    {
+      "group": "Welcome save/restore",
+      "id": "welcome-restore.changed-female-save",
+      "description": "Original locked changed-female-save keyboard case: preserve its primary C predicates, real saved state, and observed/plain/deferred output equality.",
+      "minimumSessions": 1,
+      "normalModeRequired": false
+    },
+    {
+      "group": "Welcome save/restore",
+      "id": "welcome-restore.changed-female-restore",
+      "description": "Original locked changed-female-restore keyboard case: preserve its primary C predicates, real saved state, and observed/plain/deferred output equality.",
+      "minimumSessions": 1,
+      "normalModeRequired": false
+    },
+    {
+      "group": "Welcome save/restore",
+      "id": "welcome-restore.unchanged-male-save",
+      "description": "Original locked unchanged-male-save keyboard case: preserve its primary C predicates, real saved state, and observed/plain/deferred output equality.",
+      "minimumSessions": 1,
+      "normalModeRequired": false
+    },
+    {
+      "group": "Welcome save/restore",
+      "id": "welcome-restore.unchanged-male-restore",
+      "description": "Original locked unchanged-male-restore keyboard case: preserve its primary C predicates, real saved state, and observed/plain/deferred output equality.",
+      "minimumSessions": 1,
+      "normalModeRequired": false
+    },
+    {
+      "group": "Welcome save/restore",
+      "id": "welcome-restore.unchanged-female-save",
+      "description": "Original locked unchanged-female-save keyboard case: preserve its primary C predicates, real saved state, and observed/plain/deferred output equality.",
+      "minimumSessions": 1,
+      "normalModeRequired": false
+    },
+    {
+      "group": "Welcome save/restore",
+      "id": "welcome-restore.unchanged-female-restore",
+      "description": "Original locked unchanged-female-restore keyboard case: preserve its primary C predicates, real saved state, and observed/plain/deferred output equality.",
+      "minimumSessions": 1,
+      "normalModeRequired": false
+    },
+    {
+      "group": "Welcome save/restore",
+      "id": "welcome-restore-branches.hallucination-save",
+      "description": "Original locked hallucination-save keyboard case: preserve its primary C predicates, real saved state, and observed/plain/deferred output equality.",
+      "minimumSessions": 1,
+      "normalModeRequired": false
+    },
+    {
+      "group": "Welcome save/restore",
+      "id": "welcome-restore-branches.hallucination-restore",
+      "description": "Original locked hallucination-restore keyboard case: preserve its primary C predicates, real saved state, and observed/plain/deferred output equality.",
+      "minimumSessions": 1,
+      "normalModeRequired": false
+    },
+    {
+      "group": "Welcome save/restore",
+      "id": "welcome-restore-branches.helm-drift-save",
+      "description": "Original locked helm-drift-save keyboard case: preserve its primary C predicates, real saved state, and observed/plain/deferred output equality.",
+      "minimumSessions": 1,
+      "normalModeRequired": false
+    },
+    {
+      "group": "Welcome save/restore",
+      "id": "welcome-restore-branches.helm-drift-restore",
+      "description": "Original locked helm-drift-restore keyboard case: preserve its primary C predicates, real saved state, and observed/plain/deferred output equality.",
+      "minimumSessions": 1,
+      "normalModeRequired": false
+    },
+    {
+      "group": "Welcome save/restore",
+      "id": "welcome-restore-branches.underlying-male-priest-save",
+      "description": "Original locked underlying-male-priest-save keyboard case: preserve its primary C predicates, real saved state, and observed/plain/deferred output equality.",
+      "minimumSessions": 1,
+      "normalModeRequired": false
+    },
+    {
+      "group": "Welcome save/restore",
+      "id": "welcome-restore-branches.underlying-male-priest-restore",
+      "description": "Original locked underlying-male-priest-restore keyboard case: preserve its primary C predicates, real saved state, and observed/plain/deferred output equality.",
+      "minimumSessions": 1,
+      "normalModeRequired": false
+    },
+    {
+      "group": "Welcome save/restore",
+      "id": "welcome-restore-branches.pending-human-genocide-save",
+      "description": "Original locked pending-human-genocide-save keyboard case: preserve its primary C predicates, real saved state, and observed/plain/deferred output equality.",
+      "minimumSessions": 1,
+      "normalModeRequired": false
+    },
+    {
+      "group": "Welcome save/restore",
+      "id": "welcome-restore-branches.pending-human-genocide-restore",
+      "description": "Original locked pending-human-genocide-restore keyboard case: preserve its primary C predicates, real saved state, and observed/plain/deferred output equality.",
+      "minimumSessions": 1,
+      "normalModeRequired": false
+    },
+    {
+      "group": "Welcome save/restore",
+      "id": "welcome-restore-branches.hot-smoke-annotation-save",
+      "description": "Original locked hot-smoke-annotation-save keyboard case: preserve its primary C predicates, real saved state, and observed/plain/deferred output equality.",
+      "minimumSessions": 1,
+      "normalModeRequired": false
+    },
+    {
+      "group": "Welcome save/restore",
+      "id": "welcome-restore-branches.hot-smoke-annotation-restore",
+      "description": "Original locked hot-smoke-annotation-restore keyboard case: preserve its primary C predicates, real saved state, and observed/plain/deferred output equality.",
+      "minimumSessions": 1,
+      "normalModeRequired": false
+    },
+    {
+      "group": "Persistence and ending",
+      "id": "state.save-restore",
+      "description": "Compatibility label retained by the exact historical welcome-restore-branches recipe: real keyboard save, exit and restore. The canonical persistence.save-restore requirement remains separate.",
+      "minimumSessions": 1,
+      "normalModeRequired": false
     }
   ]
 }

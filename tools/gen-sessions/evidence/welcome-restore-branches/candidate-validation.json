@@ -1,0 +1,56 @@
+{
+  "baselineEvidence": "Inherited parent C16 baseline, not rerun here. Separate log-source baseline startup was fresh.",
+  "nativeBaselineExact": 10,
+  "nativeCandidateExact": 16,
+  "nativeCases": 16,
+  "nativeBoundaries": 622,
+  "nativeCalls": 38777,
+  "nativeFrames": 0,
+  "rawSHA256": "82b5aaf8ae42d10946ffb75a3df0b73791adc461d3d6f33126de56a1d7b98bb0",
+  "baselineNativeSHA256": "82c0a2c9b49ea9cb8c4b9aa34c544b8558eed3306b8a2ecbfb879c81fb1f0f5c",
+  "candidateNativeSHA256": "8b01e878c9612653b0cb211addf7cafec6cf13685814fc47f1994412a5d0a8ab",
+  "ordinaryCandidateSHA256": "205356fb633320a56160d5f6d3b0e5e6b7711e7f2954bbee06f7ffc6654f791a",
+  "ordinaryOriginalDiagnosticSHA256": "f887757e1f96656cc08b4caa167509ef3fb7ceaa73e7dc0e6c8145c0d7aa6b8f",
+  "sourceLogCategorySHA256": "45ceb6fe7406f0ca532fe7a013bd55e2abe0851c1474294fce4d2ef9ad1e4562",
+  "candidateRuntimeSHA256": "e040e6ee4e2d02d957e56c57c6f480968390b54fd97ef9648edfbea370748bac",
+  "unchangedInputs": {
+    "segments": 16,
+    "keys": 606,
+    "fiveFieldTuplesSHA256": "7841b4a028128d47bfa4ffc21271ffe3fc854cac25c18fccdcecb7573706c093",
+    "recipeSHA256": "0ac79e37338b5e37e64ae94e221a52ac5618abf68c13882d623ff592af795bae"
+  },
+  "nativeChangedScreenSegments": [
+    1,
+    7,
+    9,
+    11,
+    13,
+    15
+  ],
+  "allOriginalCallsSlicesFramesUnchanged": true,
+  "negativeCompleteNativeRowsUnchanged": [
+    2,
+    3,
+    4,
+    5
+  ],
+  "negativeOutputHashes": 20,
+  "ordinaryObserved": "16/16",
+  "ordinaryPlain": "16/16",
+  "ordinaryDeferred": "16/16",
+  "primaryAssertions": "16/16 unchanged bodies",
+  "preservedOriginalDiagnostic": "observed15/16; sole index1 obsolete baseline-positive screen identity; plain16/16/deferred16/16/primary16/16",
+  "sourceLogCategory": "fresh baseline missing flags; candidate LL_ACHIEVE, same text/turn and five output streams",
+  "unobserved": [
+    "generic custom callbacks",
+    "conversion-only alignment",
+    "cold and non-olfactory smoke",
+    "alternate nonliving genocide wording",
+    "some combined gender/hallucination/genocide branches",
+    "native logfile and visible chronicle category selection"
+  ],
+  "noNewCRecording": true,
+  "noMainGitNFSWrites": true,
+  "runtimeCopies": 2,
+  "unchangedRuntimeLinks": 278
+}

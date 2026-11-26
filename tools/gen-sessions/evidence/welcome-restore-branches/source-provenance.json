@@ -1,0 +1,44 @@
+{
+  "evidence": "Inherited original sources and accepted candidate. Paths are historical provenance only; the public gate never reads caches or a C build.",
+  "sources": {
+    "original18": {
+      "packet": "welcome-restore-source-audit",
+      "sealSHA256": "6c0671bf957003abdde71918fdbf47e2034bf8bae520246ce0a41d9cf20f6246",
+      "manifestSHA256": "79478b621b0ec06bd9e1e627ec7f63ad530fe5632d77bc5c82dd78848e3cdbb9",
+      "members": 18
+    },
+    "expanded20": {
+      "packet": "welcome-restore-branches-source-audit",
+      "sealSHA256": "725e1974e4e1633b94bdbe379c06b64f341fe48543f70e01c37bfe05d975fc21",
+      "manifestSHA256": "9a69532a17c68a349e85687612430731a74a4db1827e3ea1972f15144b5d2cd6",
+      "members": 20
+    },
+    "candidate323": {
+      "packet": "welcome-restore-branches-candidate",
+      "sealSHA256": "fcde46230d6e4a15ec124e37d2d29026f0bde43439f5fe65c40cdf24853963fe",
+      "manifestSHA256": "0e1d6d37e227b36b9ad21713ef8617c873197b2bfc437071437b9d0b358fb919",
+      "members": 323
+    }
+  },
+  "baselineRuntimeSHA256": "0ee2ebcfa3c310dbebe74409836bb8dedea2d6cacbf7d8e5d73d76bca082204b",
+  "candidateRuntimeSHA256": "e040e6ee4e2d02d957e56c57c6f480968390b54fd97ef9648edfbea370748bac",
+  "runtimePatchSHA256": "b04742d2801111848b630c82cd922e51c4bc31c3df8298977f112bc309c718a2",
+  "originalProbeSHA256": "6537d17d5f5ea4e5593748b0594bf426e66a5ae9e71531b9bc8db82705608103",
+  "expandedProbeSHA256": "8a14015215f1e7ef37baf65e2464a4feaa7609076c6895fed66818993453561b",
+  "candidateSourceBodySHA256": "703ee3dd1d38bb4d4b1b5c16142ee976bf098747c7914cd1e071de205cff13e2",
+  "rawSHA256": "82b5aaf8ae42d10946ffb75a3df0b73791adc461d3d6f33126de56a1d7b98bb0",
+  "nativeComparison": "Inherited candidate16/16 versus baseline10/16. Promotion runs ordinary controls only.",
+  "keys": 606,
+  "boundaries": 622,
+  "calls": 38777,
+  "frames": 0,
+  "negativeHashes": 20,
+  "unobserved": [
+    "generic custom callbacks",
+    "conversion-only alignment",
+    "cold and non-olfactory smoke",
+    "alternate nonliving genocide wording",
+    "some combined gender/hallucination/genocide branches",
+    "native logfile and visible chronicle category selection"
+  ]
+}

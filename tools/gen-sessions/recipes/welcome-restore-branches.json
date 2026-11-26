@@ -1,0 +1,289 @@
+{
+  "name": "welcome-restore-branches",
+  "description": "Source-only fixed combined proposal: original six unchanged, plus five real keyboard save/restore pairs. Native recording remains pending actual reach.",
+  "source": "c",
+  "coverage": [
+    "mode.debug",
+    "state.save-restore",
+    "object.amulets"
+  ],
+  "branches": [
+    "welcome-restore.changed-female-save",
+    "welcome-restore.changed-female-restore",
+    "welcome-restore.unchanged-male-save",
+    "welcome-restore.unchanged-male-restore",
+    "welcome-restore.unchanged-female-save",
+    "welcome-restore.unchanged-female-restore",
+    "welcome-restore-branches.hallucination-save",
+    "welcome-restore-branches.hallucination-restore",
+    "welcome-restore-branches.helm-drift-save",
+    "welcome-restore-branches.helm-drift-restore",
+    "welcome-restore-branches.underlying-male-priest-save",
+    "welcome-restore-branches.underlying-male-priest-restore",
+    "welcome-restore-branches.pending-human-genocide-save",
+    "welcome-restore-branches.pending-human-genocide-restore",
+    "welcome-restore-branches.hot-smoke-annotation-save",
+    "welcome-restore-branches.hot-smoke-annotation-restore"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "welcome-restore.changed-female-save",
+      "segment": 0,
+      "screenIncludes": [
+        "You are a neutral male human Wizard.",
+        "Be seeing you...",
+        "You are suddenly very feminine!"
+      ]
+    },
+    {
+      "branch": "welcome-restore.changed-female-restore",
+      "segment": 1,
+      "screenIncludes": [
+        "Hello wizard, the female human Wizard, welcome back to NetHack!",
+        "Do you want to keep the save file?"
+      ]
+    },
+    {
+      "branch": "welcome-restore.unchanged-male-save",
+      "segment": 2,
+      "screenIncludes": [
+        "You are a neutral male human Wizard.",
+        "Be seeing you...",
+        "(being worn)"
+      ]
+    },
+    {
+      "branch": "welcome-restore.unchanged-male-restore",
+      "segment": 3,
+      "screenIncludes": [
+        "Hello wizard, the human Wizard, welcome back to NetHack!",
+        "Do you want to keep the save file?"
+      ],
+      "screenExcludes": [
+        "the male human Wizard, welcome back",
+        "the female human Wizard, welcome back"
+      ]
+    },
+    {
+      "branch": "welcome-restore.unchanged-female-save",
+      "segment": 4,
+      "screenIncludes": [
+        "You are a neutral female human Wizard.",
+        "Be seeing you...",
+        "(being worn)"
+      ]
+    },
+    {
+      "branch": "welcome-restore.unchanged-female-restore",
+      "segment": 5,
+      "screenIncludes": [
+        "Hello wizard, the human Wizard, welcome back to NetHack!",
+        "Do you want to keep the save file?"
+      ],
+      "screenExcludes": [
+        "the male human Wizard, welcome back",
+        "the female human Wizard, welcome back"
+      ]
+    },
+    {
+      "branch": "welcome-restore-branches.hallucination-save",
+      "segment": 6,
+      "screenIncludes": [
+        "Be seeing you..."
+      ]
+    },
+    {
+      "branch": "welcome-restore-branches.hallucination-restore",
+      "segment": 7,
+      "screenIncludes": [
+        "NetHack is filmed in front of an undead studio audience.",
+        "Hello wizard, the human Wizard, welcome back to NetHack!",
+        "Do you want to keep the save file?"
+      ]
+    },
+    {
+      "branch": "welcome-restore-branches.helm-drift-save",
+      "segment": 8,
+      "screenIncludes": [
+        "Be seeing you..."
+      ]
+    },
+    {
+      "branch": "welcome-restore-branches.helm-drift-restore",
+      "segment": 9,
+      "screenIncludes": [
+        "Hello wizard, the adrift lawful human Wizard, welcome back to NetHack!",
+        "Do you want to keep the save file?"
+      ]
+    },
+    {
+      "branch": "welcome-restore-branches.underlying-male-priest-save",
+      "segment": 10,
+      "screenIncludes": [
+        "Be seeing you..."
+      ]
+    },
+    {
+      "branch": "welcome-restore-branches.underlying-male-priest-restore",
+      "segment": 11,
+      "screenIncludes": [
+        "Hello wizard, the human Priest, welcome back to NetHack!",
+        "Do you want to keep the save file?"
+      ],
+      "screenExcludes": [
+        "the human Priestess, welcome back"
+      ]
+    },
+    {
+      "branch": "welcome-restore-branches.pending-human-genocide-save",
+      "segment": 12,
+      "screenIncludes": [
+        "Be seeing you..."
+      ]
+    },
+    {
+      "branch": "welcome-restore-branches.pending-human-genocide-restore",
+      "segment": 13,
+      "screenIncludes": [
+        "You're back, but you still feel dead inside.",
+        "Do you want to keep the save file?"
+      ],
+      "screenExcludes": [
+        "welcome back to NetHack!"
+      ]
+    },
+    {
+      "branch": "welcome-restore-branches.hot-smoke-annotation-save",
+      "segment": 14,
+      "screenIncludes": [
+        "Be seeing you..."
+      ]
+    },
+    {
+      "branch": "welcome-restore-branches.hot-smoke-annotation-restore",
+      "segment": 15,
+      "screenIncludes": [
+        "Hello wizard, the human Wizard, welcome back to NetHack!",
+        "It is hot here.",
+        "You smell smoke...",
+        "You remember this level as Hot camp.",
+        "Do you want to keep the save file?"
+      ]
+    }
+  ],
+  "segments": [
+    {
+      "name": "changed-female-save",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed amulet of change\r    \u001b\u001b\u001bPa    \u001b\u001b\u001bSy"
+    },
+    {
+      "name": "changed-female-restore",
+      "seed": 7,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " n    #attributes\r    \u001b\u001b"
+    },
+    {
+      "name": "unchanged-male-save",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed amulet of reflection\r    \u001b\u001b\u001bPa    \u001b\u001b\u001bSy"
+    },
+    {
+      "name": "unchanged-male-restore",
+      "seed": 7,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " n    #attributes\r    \u001b\u001b"
+    },
+    {
+      "name": "unchanged-female-save",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:female,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed amulet of reflection\r    \u001b\u001b\u001bPa    \u001b\u001b\u001bSy"
+    },
+    {
+      "name": "unchanged-female-restore",
+      "seed": 7,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:female,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " n    #attributes\r    \u001b\u001b"
+    },
+    {
+      "name": "hallucination-save",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017cursed potion of hallucination\r    \u001b\u001b\u001bqa    \u001b\u001b\u001bSy"
+    },
+    {
+      "name": "hallucination-restore",
+      "seed": 7,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": "                \u001b\u001b\u001b"
+    },
+    {
+      "name": "helm-drift-save",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:chaotic,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed helm of opposite alignment\r    \u001b\u001b\u001bWa ....    \u001b\u001b\u001bSy"
+    },
+    {
+      "name": "helm-drift-restore",
+      "seed": 7,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:chaotic,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": "                \u001b\u001b\u001b"
+    },
+    {
+      "name": "underlying-male-priest-save",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Priest,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #polyself\rwater nymph\r    \u001b\u001b\u001bSy"
+    },
+    {
+      "name": "underlying-male-priest-restore",
+      "seed": 7,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Priest,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": "                \u001b\u001b\u001b"
+    },
+    {
+      "name": "pending-human-genocide-save",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #polyself\rhill giant\r    \u001b\u001b\u001b\u0017uncursed scroll of genocide\r    \u001b\u001b\u001bra  human\r    \u001b\u001b\u001bSy"
+    },
+    {
+      "name": "pending-human-genocide-restore",
+      "seed": 7,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": "                \u001b\u001b\u001b"
+    },
+    {
+      "name": "hot-smoke-annotation-save",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0016baalz\r        \u001b\u001b\u001b\u0016baalz\r        \u001b\u001b\u001b#annotate\rHot camp\r    \u001b\u001b\u001bSy"
+    },
+    {
+      "name": "hot-smoke-annotation-restore",
+      "seed": 7,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": "                \u001b\u001b\u001b"
+    }
+  ]
+}

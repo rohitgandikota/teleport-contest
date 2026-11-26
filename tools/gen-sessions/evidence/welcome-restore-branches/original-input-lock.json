@@ -1,0 +1,186 @@
+{
+  "phase": "pre-probe; immutable proposal-01",
+  "runtimeSHA256": "0ee2ebcfa3c310dbebe74409836bb8dedea2d6cacbf7d8e5d73d76bca082204b",
+  "recipe": "welcome-restore.json",
+  "recipeSHA256": "ed6d76e3bfd2d9cb52071dce1690d2b8a42bdfc5a5425eb56d6125616ff3d3c4",
+  "predictionsSHA256": "8921a8c897632ea30c7ef4ef45b5a9a4ab9ac5febf9cf4d4b4bf4408e70b5447",
+  "fields": [
+    "name",
+    "seed",
+    "datetime",
+    "nethackrc",
+    "moves"
+  ],
+  "tuples": [
+    [
+      {
+        "field": "name",
+        "present": true,
+        "value": "changed-female-save"
+      },
+      {
+        "field": "seed",
+        "present": true,
+        "value": 99812
+      },
+      {
+        "field": "datetime",
+        "present": true,
+        "value": "20000110090000"
+      },
+      {
+        "field": "nethackrc",
+        "present": true,
+        "value": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n"
+      },
+      {
+        "field": "moves",
+        "present": true,
+        "value": " \u0017uncursed amulet of change\r    \u001b\u001b\u001bPa    \u001b\u001b\u001bSy"
+      }
+    ],
+    [
+      {
+        "field": "name",
+        "present": true,
+        "value": "changed-female-restore"
+      },
+      {
+        "field": "seed",
+        "present": true,
+        "value": 7
+      },
+      {
+        "field": "datetime",
+        "present": true,
+        "value": "20000110090000"
+      },
+      {
+        "field": "nethackrc",
+        "present": true,
+        "value": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n"
+      },
+      {
+        "field": "moves",
+        "present": true,
+        "value": " n    #attributes\r    \u001b\u001b"
+      }
+    ],
+    [
+      {
+        "field": "name",
+        "present": true,
+        "value": "unchanged-male-save"
+      },
+      {
+        "field": "seed",
+        "present": true,
+        "value": 99812
+      },
+      {
+        "field": "datetime",
+        "present": true,
+        "value": "20000110090000"
+      },
+      {
+        "field": "nethackrc",
+        "present": true,
+        "value": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n"
+      },
+      {
+        "field": "moves",
+        "present": true,
+        "value": " \u0017uncursed amulet of reflection\r    \u001b\u001b\u001bPa    \u001b\u001b\u001bSy"
+      }
+    ],
+    [
+      {
+        "field": "name",
+        "present": true,
+        "value": "unchanged-male-restore"
+      },
+      {
+        "field": "seed",
+        "present": true,
+        "value": 7
+      },
+      {
+        "field": "datetime",
+        "present": true,
+        "value": "20000110090000"
+      },
+      {
+        "field": "nethackrc",
+        "present": true,
+        "value": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n"
+      },
+      {
+        "field": "moves",
+        "present": true,
+        "value": " n    #attributes\r    \u001b\u001b"
+      }
+    ],
+    [
+      {
+        "field": "name",
+        "present": true,
+        "value": "unchanged-female-save"
+      },
+      {
+        "field": "seed",
+        "present": true,
+        "value": 99812
+      },
+      {
+        "field": "datetime",
+        "present": true,
+        "value": "20000110090000"
+      },
+      {
+        "field": "nethackrc",
+        "present": true,
+        "value": "OPTIONS=name:wizard,role:Wizard,race:human,gender:female,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n"
+      },
+      {
+        "field": "moves",
+        "present": true,
+        "value": " \u0017uncursed amulet of reflection\r    \u001b\u001b\u001bPa    \u001b\u001b\u001bSy"
+      }
+    ],
+    [
+      {
+        "field": "name",
+        "present": true,
+        "value": "unchanged-female-restore"
+      },
+      {
+        "field": "seed",
+        "present": true,
+        "value": 7
+      },
+      {
+        "field": "datetime",
+        "present": true,
+        "value": "20000110090000"
+      },
+      {
+        "field": "nethackrc",
+        "present": true,
+        "value": "OPTIONS=name:wizard,role:Wizard,race:human,gender:female,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n"
+      },
+      {
+        "field": "moves",
+        "present": true,
+        "value": " n    #attributes\r    \u001b\u001b"
+      }
+    ]
+  ],
+  "tuplesSHA256": "86e33dd863b2c1e6d9c43a31780be88cae9a478681fc96c831d8547ca6bd50f5",
+  "allKeysSHA256": "aed7e8029b283b1fd74d9f9d796c5b0b38b17d718ac2747a8448bf382c5c0128",
+  "segments": 6,
+  "pairs": 3,
+  "keys": 218,
+  "expectedBoundaries": 224,
+  "native": false,
+  "runtimeCandidate": false
+}

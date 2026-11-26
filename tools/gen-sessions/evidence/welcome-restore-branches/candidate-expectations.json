@@ -1,0 +1,41 @@
+{
+  "meaning": "Candidate-only classification of original-six output preservation, based on the C welcome gender branch. No input, C primary assertion, state assertion or negative expected hash changes. Original unchanged-body diagnostic is retained.",
+  "unchangedOriginalSegments": [
+    0,
+    2,
+    3,
+    4,
+    5
+  ],
+  "correctedOriginalPositiveSegments": [
+    1
+  ],
+  "mandatoryNegativeSegments": [
+    2,
+    3,
+    4,
+    5
+  ],
+  "mandatoryCPrimarySegments": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15
+  ],
+  "originalDiagnosticSHA256": "f887757e1f96656cc08b4caa167509ef3fb7ceaa73e7dc0e6c8145c0d7aa6b8f",
+  "originalDiagnosticObserved": "15/16; sole index1 baseline-positive screen hash identity assertion",
+  "plainAndDeferredOriginalDiagnostic": "16/16 each",
+  "nativeCandidateSHA256": "8b01e878c9612653b0cb211addf7cafec6cf13685814fc47f1994412a5d0a8ab"
+}

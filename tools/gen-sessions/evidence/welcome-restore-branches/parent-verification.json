@@ -1,0 +1,361 @@
+{
+  "baselineCommit": "44e972437a123dc4ac7442ba35590a28b34e6bbd",
+  "composition": {
+    "baselineRuntimeSHA256": "bb93ea137987f9bddec3b0eb9bdab06ab2283f374275a782b7fc2c4308cc0bb3",
+    "welcomeCandidateRuntimeSHA256": "e040e6ee4e2d02d957e56c57c6f480968390b54fd97ef9648edfbea370748bac",
+    "runtimeSHA256": "50a18d5fbd3b7c3cb89b049d931e936124b5b89cec61ed195dbc5220985d22a6",
+    "runtimeChanged": [
+      "js/allmain.js",
+      "js/do.js"
+    ],
+    "sourceCopies": 2,
+    "resolvedLinks": 278,
+    "allOwnedFilesMatchOriginalBaselineBeforeComposition": true,
+    "originalCandidateSealSHA256": "fcde46230d6e4a15ec124e37d2d29026f0bde43439f5fe65c40cdf24853963fe",
+    "patchSHA256": "b04742d2801111848b630c82cd922e51c4bc31c3df8298977f112bc309c718a2"
+  },
+  "candidateValidation": {
+    "baselineEvidence": "Inherited parent C16 baseline, not rerun here. Separate log-source baseline startup was fresh.",
+    "nativeBaselineExact": 10,
+    "nativeCandidateExact": 16,
+    "nativeCases": 16,
+    "nativeBoundaries": 622,
+    "nativeCalls": 38777,
+    "nativeFrames": 0,
+    "rawSHA256": "82b5aaf8ae42d10946ffb75a3df0b73791adc461d3d6f33126de56a1d7b98bb0",
+    "baselineNativeSHA256": "82c0a2c9b49ea9cb8c4b9aa34c544b8558eed3306b8a2ecbfb879c81fb1f0f5c",
+    "candidateNativeSHA256": "8b01e878c9612653b0cb211addf7cafec6cf13685814fc47f1994412a5d0a8ab",
+    "ordinaryCandidateSHA256": "205356fb633320a56160d5f6d3b0e5e6b7711e7f2954bbee06f7ffc6654f791a",
+    "ordinaryOriginalDiagnosticSHA256": "f887757e1f96656cc08b4caa167509ef3fb7ceaa73e7dc0e6c8145c0d7aa6b8f",
+    "sourceLogCategorySHA256": "45ceb6fe7406f0ca532fe7a013bd55e2abe0851c1474294fce4d2ef9ad1e4562",
+    "candidateRuntimeSHA256": "e040e6ee4e2d02d957e56c57c6f480968390b54fd97ef9648edfbea370748bac",
+    "unchangedInputs": {
+      "segments": 16,
+      "keys": 606,
+      "fiveFieldTuplesSHA256": "7841b4a028128d47bfa4ffc21271ffe3fc854cac25c18fccdcecb7573706c093",
+      "recipeSHA256": "0ac79e37338b5e37e64ae94e221a52ac5618abf68c13882d623ff592af795bae"
+    },
+    "nativeChangedScreenSegments": [
+      1,
+      7,
+      9,
+      11,
+      13,
+      15
+    ],
+    "allOriginalCallsSlicesFramesUnchanged": true,
+    "negativeCompleteNativeRowsUnchanged": [
+      2,
+      3,
+      4,
+      5
+    ],
+    "negativeOutputHashes": 20,
+    "ordinaryObserved": "16/16",
+    "ordinaryPlain": "16/16",
+    "ordinaryDeferred": "16/16",
+    "primaryAssertions": "16/16 unchanged bodies",
+    "preservedOriginalDiagnostic": "observed15/16; sole index1 obsolete baseline-positive screen identity; plain16/16/deferred16/16/primary16/16",
+    "sourceLogCategory": "fresh baseline missing flags; candidate LL_ACHIEVE, same text/turn and five output streams",
+    "unobserved": [
+      "generic custom callbacks",
+      "conversion-only alignment",
+      "cold and non-olfactory smoke",
+      "alternate nonliving genocide wording",
+      "some combined gender/hallucination/genocide branches",
+      "native logfile and visible chronicle category selection"
+    ],
+    "noNewCRecording": true,
+    "noMainGitNFSWrites": true,
+    "runtimeCopies": 2,
+    "unchangedRuntimeLinks": 278
+  },
+  "raw": {
+    "path": "tools/gen-sessions/generated/welcome-restore-branches.session.json",
+    "sha256": "82b5aaf8ae42d10946ffb75a3df0b73791adc461d3d6f33126de56a1d7b98bb0",
+    "bytes": 1983712
+  },
+  "publicPayloads": 28,
+  "requirementsAdded": 17,
+  "registryTotal": 4707,
+  "promotionSealSHA256": "e7840cc2b84a7a61f438bb32a058329fcb4d8338c12043c96bc3d6b82a4b2c4d",
+  "installationReceiptSHA256": "506398438d8738e7cfa4c7857e0a028daececf90f07087419bd842cc26b558d1",
+  "ordinary": [
+    {
+      "name": "welcome",
+      "command": [
+        "node",
+        "--max-old-space-size=512",
+        "tools/welcome-restore-branches-input-gate.mjs",
+        "/Users/rohit/research/code/contest/.cache/restart-20261122/welcome-restore-main-welcome-ordinary.json"
+      ],
+      "exit": 0,
+      "seconds": 10.107,
+      "report": ".cache/restart-20261122/welcome-restore-main-welcome-ordinary.json",
+      "reportSHA256": "e4a4b3c728ffcb68a17730d8d233db78e70e2e96bce2a28254decaa1f964ca1d",
+      "log": ".cache/restart-20261122/welcome-restore-main-welcome-ordinary.log",
+      "logSHA256": "d33eb23c76cee2f420382dc57d4d9f4f18898ceb65f5c81d89a6d4020b0f1304"
+    },
+    {
+      "name": "potion",
+      "command": [
+        "node",
+        "--max-old-space-size=512",
+        "tools/potion-entry-feedback-input-gate.mjs",
+        "/Users/rohit/research/code/contest/.cache/restart-20261122/welcome-restore-main-potion-ordinary.json"
+      ],
+      "exit": 0,
+      "seconds": 2.468,
+      "report": ".cache/restart-20261122/welcome-restore-main-potion-ordinary.json",
+      "reportSHA256": "60ac69f998d3569997b685e26453d73486dfb21bde0cf9f96623cd5d3d3029c7",
+      "log": ".cache/restart-20261122/welcome-restore-main-potion-ordinary.log",
+      "logSHA256": "6318922fdfb65a0fbbd83003889b348b4ddac4ebcc6c71548d627d7eb0d28faf"
+    }
+  ],
+  "composedNative": [
+    {
+      "family": "welcome-restore-branches",
+      "command": [
+        "node",
+        "--max-old-space-size=512",
+        "--preserve-symlinks",
+        "--preserve-symlinks-main",
+        ".cache/restart-20261122/welcome-restore-parent-composed/native-welcome.mjs"
+      ],
+      "exit": 0,
+      "seconds": 4.099,
+      "logSHA256": "453297c22a175e6a79fa387e132531cb3e0619431edeed42808ea65cfa4129ae",
+      "reportSHA256": "8b01e878c9612653b0cb211addf7cafec6cf13685814fc47f1994412a5d0a8ab"
+    },
+    {
+      "family": "potion-entry-feedback",
+      "command": [
+        "node",
+        "--max-old-space-size=512",
+        "--preserve-symlinks",
+        "--preserve-symlinks-main",
+        ".cache/restart-20261122/welcome-restore-parent-composed/native-potion.mjs"
+      ],
+      "exit": 0,
+      "seconds": 1.387,
+      "logSHA256": "81788da44962cea458a71fee3312529c5a3c42da88803e8d645c36108a004de7",
+      "reportSHA256": "e50ddab2b0a3ea436aeecbf5ce4f7af8876c62be006608578a4d51eeda4df508"
+    }
+  ],
+  "nativeCases": 22,
+  "completeNativeReportsEqualIsolated": true,
+  "completeWelcomeReportEqualsPromotion": true,
+  "completePotionReportUnchanged": true,
+  "initialRetainedAttempt": [
+    {
+      "name": "tty-startup-clear-input",
+      "command": [
+        "node",
+        "--max-old-space-size=512",
+        "tools/tty-startup-clear-input-gate.mjs"
+      ],
+      "exit": 0,
+      "seconds": 2.427,
+      "log": ".cache/restart-20261122/welcome-restore-retained-tty-startup-clear-input.log",
+      "sha256": "1b2002ff4f76a81ba0e3d57c661134740df693f8ff5f85a38f6eb4ad00b250bb"
+    },
+    {
+      "name": "restore-phase-input",
+      "command": [
+        "node",
+        "--max-old-space-size=512",
+        "tools/restore-phase-input-gate.mjs"
+      ],
+      "exit": 1,
+      "seconds": 0.276,
+      "log": ".cache/restart-20261122/welcome-restore-retained-restore-phase-input.log",
+      "sha256": "312df8fa51f718285beb2340f6c465e7d9cde361807b27d8da517ad7855db03b"
+    }
+  ],
+  "initialRetainedFailureAttribution": "restore-phase-input was invoked without its required four fixture arguments. Its top-level count assertion stopped before gameplay; the corrected invocation used the four original canonical fixtures. No runtime or input was altered.",
+  "remainingRetained": [
+    {
+      "name": "restore-phase-input",
+      "command": [
+        "node",
+        "--max-old-space-size=512",
+        "tools/restore-phase-input-gate.mjs",
+        "tools/gen-sessions/generated/restore-current-fixed-floor.session.json",
+        "tools/gen-sessions/generated/restore-current-first-revert.session.json",
+        "tools/gen-sessions/generated/restore-current-held-control.session.json",
+        "tools/gen-sessions/generated/restore-air-clouds.session.json"
+      ],
+      "exit": 0,
+      "seconds": 2.043,
+      "log": ".cache/restart-20261122/welcome-restore-retained-restore-phase-input-with-inputs.log",
+      "sha256": "f1b70a862847629de22deef79b5a73a368ef635a0058f5d142333708d91d82bf"
+    },
+    {
+      "name": "restore-options-state",
+      "command": [
+        "node",
+        "--max-old-space-size=512",
+        "tools/restore-options-state-gate.mjs"
+      ],
+      "exit": 0,
+      "seconds": 1.686,
+      "log": ".cache/restart-20261122/welcome-restore-retained-restore-options-state.log",
+      "sha256": "df84eafa9a7745c04eccf631a8e24dbf9d22394e7ee1ab1af7013131ebea9a2d"
+    },
+    {
+      "name": "restore-dormant-input",
+      "command": [
+        "node",
+        "--max-old-space-size=512",
+        "tools/restore-dormant-input-gate.mjs",
+        "tools/gen-sessions/generated/restore-dormant-floor.session.json",
+        "tools/gen-sessions/generated/restore-dormant-worm.session.json"
+      ],
+      "exit": 0,
+      "seconds": 1.229,
+      "log": ".cache/restart-20261122/welcome-restore-retained-restore-dormant-input-with-inputs.log",
+      "sha256": "40ebd8179713b88572709cf959a33b1b40081b6a0442fc1c8871823d89dac07e"
+    },
+    {
+      "name": "restore-storage-continuation",
+      "command": [
+        "node",
+        "--max-old-space-size=512",
+        "tools/restore-storage-continuation-gate.mjs"
+      ],
+      "exit": 0,
+      "seconds": 2.01,
+      "log": ".cache/restart-20261122/welcome-restore-retained-restore-storage-continuation.log",
+      "sha256": "f87500eb4d0059bca044040a2cf50c11749b0b9e5518806c3c6e9b98d8e93240"
+    },
+    {
+      "name": "guard-restored-entry-input",
+      "command": [
+        "node",
+        "--max-old-space-size=512",
+        "tools/guard-restored-entry-input-gate.mjs"
+      ],
+      "exit": 0,
+      "seconds": 2.929,
+      "log": ".cache/restart-20261122/welcome-restore-retained-guard-restored-entry-input.log",
+      "sha256": "bdb881189d4274a92a1771a919e88699c81cec8027092ab5e3eb1bf197358304"
+    }
+  ],
+  "strict": {
+    "command": [
+      "node",
+      "tools/hang-gate.mjs",
+      "sessions/seed0002-healer-reflection-drummer.session.json",
+      "sessions/seed0004-feeding-pony.session.json",
+      "sessions/seed0006-wizard-water-demon.session.json",
+      "sessions/seed0007-rogue-snake-swamp.session.json",
+      "sessions/seed0009-swimmer-mforce.session.json",
+      "sessions/seed0012-monk-vault-escort.session.json",
+      "sessions/seed0013-friday13-save-then-fullmoon-restore.session.json",
+      "sessions/seed0013-rogue-friday13-combat.session.json",
+      "sessions/seed0014-dequa-fountain-explore.session.json",
+      "sessions/seed0015-valk-level2-pit-dog-wait.session.json",
+      "sessions/seed0016-healer-newmoon-eat-zap.session.json",
+      "sessions/seed0017-samurai-altar-pray.session.json",
+      "sessions/seed0030-ten-diverse-deaths.session.json",
+      "sessions/seed0060-orc-rogue-kick-search.session.json",
+      "sessions/seed0077-rogue-chargen.session.json",
+      "sessions/seed0101-ranger-quiver-throw-travel-engrave.session.json",
+      "sessions/seed0102-ranger-name-cancel.session.json",
+      "sessions/seed0103-knight-ride-pony.session.json",
+      "sessions/seed0104-knight-ride-combat.session.json",
+      "sessions/seed0105-valk-chat-lamp-ration.session.json",
+      "sessions/seed0106-priest-extcmd-sweep.session.json",
+      "sessions/seed0107-samurai-twoweapon-enhance.session.json",
+      "sessions/seed0108-wizard-extcmd-wishlist.session.json",
+      "sessions/seed0116-wizard-wear-shop.session.json",
+      "sessions/seed0200-monk-north-search.session.json",
+      "sessions/seed0360-wizard-world-tour.session.json",
+      "sessions/seed0361-archeologist-tour.session.json",
+      "sessions/seed0367-priest-quest-tour.session.json",
+      "sessions/seed0373-barbarian-quest-tour.session.json",
+      "sessions/seed0383-wizard-hallucinate.session.json",
+      "sessions/seed0398-wizard-wandpoly-pile.session.json",
+      "sessions/seed0399-wizard-hallu-actions.session.json",
+      "sessions/seed0501-priest-cast-read-turn.session.json",
+      "sessions/seed0700-samurai-explore-descend.session.json",
+      "sessions/seed0900-tourist-explore-actions.session.json",
+      "sessions/seed1150-caveman-explore-move.session.json",
+      "sessions/seed1500-rogue-explore-move.session.json",
+      "sessions/seed1800-tourist-eat-throw.session.json",
+      "sessions/seed2200-wizard-quaff-zap-read.session.json",
+      "sessions/seed2600-wizard-custom-binds.session.json",
+      "sessions/seed4500-knight-coverage.session.json",
+      "sessions/seed5002-wizard-coverage-pair.session.json",
+      "sessions/seed5006-tourist-stress-disaster.session.json",
+      "sessions/seed8000-tourist-starter.session.json",
+      "tools/gen-sessions/generated/potion-entry-feedback.session.json",
+      "tools/gen-sessions/generated/welcome-restore-branches.session.json"
+    ],
+    "exit": 0,
+    "seconds": 34.423,
+    "targets": 46,
+    "budgetMs": 8000,
+    "log": ".cache/restart-20261122/welcome-restore-public46-strict.log",
+    "sha256": "be758e0e909692b09655b61c22e730e58a7a4b59c54e413e3f1f5f1203842a6a"
+  },
+  "scopeImportAudit": [],
+  "full": {
+    "verifiedAt": "2026-11-26T17:39:56.356679+00:00",
+    "sessions": 937,
+    "passed": 937,
+    "failures": [],
+    "totals": {
+      "screens": 939878,
+      "cursors": 939878,
+      "rngCalls": 20534155,
+      "animFrames": 33188
+    },
+    "missingMetrics": {},
+    "runtimeFilesFixed": 280,
+    "rawFilesFixed": 937,
+    "allFilesFixed": 1228,
+    "allFilesSHA256": "e444a37c88e238891f4c1a8a4953396fd937485648e25b328a056659ecad9cb0",
+    "defaultWorkerTimeoutMs": 45000,
+    "retries": 0,
+    "started": {
+      "startedAt": "2026-11-26T17:29:40.798281+00:00",
+      "workers": 2,
+      "pid": 3531516,
+      "cpuCount": 24,
+      "loadAverage": [
+        1.16845703125,
+        1.78271484375,
+        2.201171875
+      ],
+      "timeoutOverride": false,
+      "retries": 0,
+      "node": {
+        "version": "v26.3.0",
+        "archive": "node-v26.3.0-linux-x64.tar.xz",
+        "sha256": "0ce210831380ab75a5fec0d3fb6b5af0958898016b2cae51cc2fa11057d2f77e",
+        "officialURL": "https://nodejs.org/dist/v26.3.0/node-v26.3.0-linux-x64.tar.xz",
+        "checksumsURL": "https://nodejs.org/dist/v26.3.0/SHASUMS256.txt",
+        "binary": "/share/NFS/u/rohit/research/contest/artifacts/2026-11-22/text-history-full858-js-20261125/node-v26.3.0-linux-x64/bin/node",
+        "archiveSHA256": "0ce210831380ab75a5fec0d3fb6b5af0958898016b2cae51cc2fa11057d2f77e",
+        "binarySHA256": "5325ac9da58541494afcc136f0880279a2a853609bf4dae7755e04fb682b6926"
+      },
+      "allFilesSHA256": "e444a37c88e238891f4c1a8a4953396fd937485648e25b328a056659ecad9cb0"
+    },
+    "logs": {
+      "shard-0.log": "b427ed4e80eb4a97bc3be06ba89efa7f7f4566bfaa05fac12884c413a775b19a",
+      "shard-1.log": "7eb1d1fc4c74fb9a089f6768ac719e65547ab31374010261d7649a2986547d8a"
+    },
+    "limits": [
+      "Scored corpus parity, not literal serialized-byte or whole-port proof.",
+      "No held-out result is inferred from these fixtures."
+    ]
+  },
+  "fullVerificationSHA256": "65c2cba8e0ed9724f0043e92cf29333043bcc3bae322cacdfd74d271e555563e",
+  "limits": [
+    "Scored corpus parity and source-state evidence, not whole-port or serialized terminal-byte proof.",
+    "Generic custom hooks and temperature producer changes are excluded.",
+    "Native logfile/category filtering, conversion-only formatting, cold/non-olfactory smoke and alternate genocide wording remain unobserved.",
+    "No leaderboard score is attributed to this checkpoint."
+  ]
+}

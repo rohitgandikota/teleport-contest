@@ -1,0 +1,44 @@
+{
+  "evidence": "Fresh passive source assertion on original keyboard startup, C allmain.c:919-923 and pline.c:495-526. Native logfile untested.",
+  "rows": [
+    {
+      "label": "baseline",
+      "input": "changed-female-save",
+      "firstSeen": 0,
+      "entries": [
+        {
+          "turn": 1,
+          "text": "wizard the neutral male human Wizard entered the dungeon"
+        }
+      ],
+      "hashes": {
+        "screens": "7c9ddcb5e0f331541702958289d1dae8bd2783d929f3f3ea4e17c63126274db5",
+        "cursors": "1cfd5db0c60ff8dd7ea2d589abb32420f13fe0c291b0b78f64940e77e12eda94",
+        "calls": "742b211a7bda663f1a298bdce4643745c2447d91bb968e096112eb813e93b2c2",
+        "slices": "3db6a285b7585ba8feae8a27dbfeb7ee98c3d417b1bd3444c07a2d99e0deca6e",
+        "frames": "3b6bee301adeaf5ea0bb5e2c62647414fd4cc5b986ec24b3b8c3517aa859d89c"
+      },
+      "categoryFailure": "C welcome uses LL_ACHIEVE\n\nundefined !== 2\n"
+    },
+    {
+      "label": "candidate",
+      "input": "changed-female-save",
+      "firstSeen": 0,
+      "entries": [
+        {
+          "flags": 2,
+          "turn": 1,
+          "text": "wizard the neutral male human Wizard entered the dungeon"
+        }
+      ],
+      "hashes": {
+        "screens": "7c9ddcb5e0f331541702958289d1dae8bd2783d929f3f3ea4e17c63126274db5",
+        "cursors": "1cfd5db0c60ff8dd7ea2d589abb32420f13fe0c291b0b78f64940e77e12eda94",
+        "calls": "742b211a7bda663f1a298bdce4643745c2447d91bb968e096112eb813e93b2c2",
+        "slices": "3db6a285b7585ba8feae8a27dbfeb7ee98c3d417b1bd3444c07a2d99e0deca6e",
+        "frames": "3b6bee301adeaf5ea0bb5e2c62647414fd4cc5b986ec24b3b8c3517aa859d89c"
+      },
+      "categoryFailure": null
+    }
+  ]
+}

@@ -1,5 +1,63 @@
 # STATUS — live handoff board
 
+## 2026-11-26: welcome checkpoint verified after potion publication
+
+Published main is 44e972437a123dc4ac7442ba35590a28b34e6bbd. Potion gameplay
+was pushed in 6ebbcbb4fd2b5197b315bba46112700be24339b9. All 1,227 tested
+full936 Git blobs match that publication, receipt SHA256:
+444bf01a7e70cadc8f1851486878b965153b8152bc1353f3a650b6be7cf40a72.
+The 35-path index receipt is
+703b0f79c354e0468167736742d5bbbfba94e00ed730b464837ed9ff0695e34f.
+The follow-up restores prior registry formatting only. Parsed data and all
+tested files remain unchanged; potion-registry-format-publication.json proves
+the sole changed path. New registry merges must preserve prior text bytes.
+
+Current gameplay changes only allmain.js and do.js. Named welcome(new_game)
+replaces both inline greetings, uses underlying gender, handles hallucination,
+alignment drift and pending genocide, and logs LL_ACHIEVE. Restores call the
+extracted existing hellish_smoke_mesg before the annotation. The old level-change
+temperature guard remains. No custom hook or temperature producer is added.
+Fixed composed map:
+50a18d5fbd3b7c3cb89b049d931e936124b5b89cec61ed195dbc5220985d22a6.
+All 16 native welcome and six potion cases reproduce their isolated reports.
+Original C raw remains 82b5aaf8ae42d10946ffb75a3df0b73791adc461d3d6f33126de56a1d7b98bb0.
+
+Full937 passes on NFS with two workers, default limits and no retries:
+/share/NFS/u/rohit/research/contest/artifacts/2026-11-22/welcome-restore-full937-js-20261126.
+PID 3531516 is complete. All 937 recordings pass: 939,878 screens/cursors,
+20,534,155 calls and 33,188 frames. There are 1,228 fixed files. all-files SHA256:
+e444a37c88e238891f4c1a8a4953396fd937485648e25b328a056659ecad9cb0.
+Verification SHA256:
+65c2cba8e0ed9724f0043e92cf29333043bcc3bae322cacdfd74d271e555563e.
+Do not rerun. Verify the staged tree, commit and push next.
+
+Source18/20, candidate323 and promotion66 all verify. Promotion seal:
+e7840cc2b84a7a61f438bb32a058329fcb4d8338c12043c96bc3d6b82a4b2c4d.
+Installed 28 payloads and 17 requirements, including the explicit compatibility
+tag, bring the registry to 4,707. Fresh observed/plain/deferred results pass
+16/16 each and the entire report equals the promotion proof, SHA256:
+e4a4b3c728ffcb68a17730d8d233db78e70e2e96bce2a28254decaa1f964ca1d.
+All twenty negative hashes, 42 original assertion sites and separate source
+log-category checks remain enforced. The original 15/16 metadata diagnostic
+and its correction are preserved. Fresh potion rows also remain exact.
+Six focused checks, 46 strict workers and the scope/import audit pass. The
+first restore-phase invocation omitted its four fixture paths and stopped
+before gameplay; its failure is retained, followed by the successful invocation
+with original canonical fixtures. Native logfile/category filtering is untested.
+
+Shop source24, candidate316 and promotion49 verify. The parent composition
+shop-chat-parent-composed is isolated on map
+9dbbff6acd0f9bf314062fc27ca6ae962b4dae207b95ece2a1efcd4b1b204f30.
+It passes five native cases and preserves all six chat-guard rows exactly.
+Promotion is not yet installed. Generic coverage remains partial because the
+original raw lacks branchAssertions metadata; the portable gate independently
+checks all five primary predicates. Do not rewrite the recording to hide this.
+Leibniz is auditing separately locked quote variants and unknown compiled
+currency/embellishment order. Euclid is preparing clear-target statue inputs,
+preserving original23 and corrected22 failures. Sartre owns the familiar-bones
+message source audit. Parent has read altar-drop conduct and chronicle owners;
+that separate lead has no locked input, C recording or candidate yet.
+
 ## 2026-11-26: pit cleanup published; potion checkpoint verified
 
 Published main is 2ea98ff991150497a5079e351fee3be2bcdaeb45, confirmed on

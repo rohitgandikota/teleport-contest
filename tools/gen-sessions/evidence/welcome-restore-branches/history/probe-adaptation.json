@@ -1,0 +1,35 @@
+{
+  "originalProbeSHA256": "6a734c20339b21d4df2d3805b976868d5188323ceebda79bac452e352d4147f5",
+  "adaptedProbeSHA256": "7e37d342faed48ededb23389e318e8296a827d8471f311b26230499fc1c14b0f",
+  "changes": [
+    {
+      "before": "import assert from 'node:assert/strict';",
+      "after": "import { pins } from './preflight.mjs';\nimport assert from 'node:assert/strict';"
+    },
+    {
+      "before": "const runtime = new URL('../wall-accessory-parent-composed/', packet);",
+      "after": "const runtime = new URL('./candidate/', packet);\nconst source = new URL('./source/', packet);"
+    },
+    {
+      "before": "const read = p => fs.readFileSync(new URL(p, packet));",
+      "after": "const read = p => fs.readFileSync(new URL(p, source));"
+    },
+    {
+      "before": "assert.equal(sha(mapBytes), lock.runtimeSHA256);",
+      "after": "assert.equal(sha(mapBytes), pins.candidateRuntimeSHA256);"
+    },
+    {
+      "before": "new URL('review/proposal-01-probe.json', packet)",
+      "after": "new URL('review/ordinary-original-diagnostic.json', packet)"
+    },
+    {
+      "before": "evidence: 'Source-only fixed ordinary JS inputs. No native recording, comparison or candidate.'",
+      "after": "evidence: 'Fresh candidate ordinary probe with unchanged assertion body. The original-six baseline-output diagnostic remains; native comparison is separate.'"
+    },
+    {
+      "before": "tuplesSHA256: lock.tuplesSHA256, runtimeSHA256: lock.runtimeSHA256,",
+      "after": "tuplesSHA256: lock.tuplesSHA256, runtimeSHA256: pins.candidateRuntimeSHA256,\n    baselineRuntimeSHA256: lock.runtimeSHA256,"
+    }
+  ],
+  "scope": "Only metadata/preflight/paths/report label; every original assertion and observation body is unchanged, including the known baseline-only positive hash diagnostic."
+}

@@ -1,0 +1,110 @@
+{
+  "inherited": {
+    "packet": "../welcome-restore-source-audit",
+    "sourcePredictionsSHA256": "8921a8c897632ea30c7ef4ef45b5a9a4ab9ac5febf9cf4d4b4bf4408e70b5447"
+  },
+  "added": [
+    {
+      "case": "hallucination",
+      "segments": [
+        6,
+        7
+      ],
+      "kind": "positive",
+      "expectedCRestoreLines": [
+        "NetHack is filmed in front of an undead studio audience.",
+        "Hello wizard, the human Wizard, welcome back to NetHack!"
+      ],
+      "forbiddenCRestoreLines": []
+    },
+    {
+      "case": "helm-drift",
+      "segments": [
+        8,
+        9
+      ],
+      "kind": "positive",
+      "expectedCRestoreLines": [
+        "Hello wizard, the adrift lawful human Wizard, welcome back to NetHack!"
+      ],
+      "forbiddenCRestoreLines": []
+    },
+    {
+      "case": "underlying-male-priest",
+      "segments": [
+        10,
+        11
+      ],
+      "kind": "positive",
+      "expectedCRestoreLines": [
+        "Hello wizard, the human Priest, welcome back to NetHack!"
+      ],
+      "forbiddenCRestoreLines": [
+        "the human Priestess, welcome back"
+      ]
+    },
+    {
+      "case": "pending-human-genocide",
+      "segments": [
+        12,
+        13
+      ],
+      "kind": "positive",
+      "expectedCRestoreLines": [
+        "You're back, but you still feel dead inside."
+      ],
+      "forbiddenCRestoreLines": [
+        "welcome back to NetHack!"
+      ]
+    },
+    {
+      "case": "hot-smoke-annotation",
+      "segments": [
+        14,
+        15
+      ],
+      "kind": "positive",
+      "expectedCRestoreLines": [
+        "Hello wizard, the human Wizard, welcome back to NetHack!",
+        "It is hot here.",
+        "You smell smoke...",
+        "You remember this level as Hot camp."
+      ],
+      "forbiddenCRestoreLines": []
+    }
+  ],
+  "reachPredicates": {
+    "hallucination": "saved and first restored HALLUC > 0; Halluc_resistance false; unpolymorphed healthy hero",
+    "helm-drift": "current alignment +1; both alignment bases -1; opposite-alignment helmet worn at save and restore",
+    "underlying-male-priest": "role Priest with feminine name Priestess, initgend 0, mfemale false, flags.female true, water nymph form with positive monster HP",
+    "pending-human-genocide": "hill giant form, human HP < 0, monster HP > 0, human G_GENOD set; same branch at first restored state",
+    "hot-smoke-annotation": "actual baalz special level in hellish dungeon, temperature 1, human olfaction, mapseen custom Hot camp; same restored level and annotation"
+  },
+  "predictedBaselineOmissions": [
+    "changed-female restore adjective (inherited)",
+    "hallucination studio-audience line",
+    "helm drift phrase",
+    "underlying male Priest role (baseline names current female Priestess)",
+    "pending genocide early return and message",
+    "hot and smoke lines; annotation should already follow greeting"
+  ],
+  "feedbackOrder": {
+    "hallucination-restore": [
+      "studio audience",
+      "welcome back"
+    ],
+    "hot-smoke-annotation-restore": [
+      "welcome back",
+      "It is hot here.",
+      "You smell smoke...",
+      "You remember this level as Hot camp."
+    ]
+  },
+  "limits": [
+    "No native evidence yet",
+    "No callback or conversion witness",
+    "No cold or non-olfactory smoke witness",
+    "No nonliving genocide wording witness",
+    "No state injection or candidate"
+  ]
+}

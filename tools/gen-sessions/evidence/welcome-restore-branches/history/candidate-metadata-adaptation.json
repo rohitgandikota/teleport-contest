@@ -1,0 +1,31 @@
+{
+  "beforeSHA256": "7e37d342faed48ededb23389e318e8296a827d8471f311b26230499fc1c14b0f",
+  "afterSHA256": "703ee3dd1d38bb4d4b1b5c16142ee976bf098747c7914cd1e071de205cff13e2",
+  "changes": [
+    {
+      "before": "const lock = JSON.parse(lockBytes);",
+      "after": "const lock = JSON.parse(lockBytes);\nconst expectations = JSON.parse(fs.readFileSync(new URL('review/candidate-expectations.json', packet)));"
+    },
+    {
+      "before": "new URL('review/ordinary-original-diagnostic.json', packet)",
+      "after": "new URL('review/ordinary-candidate.json', packet)"
+    },
+    {
+      "before": "evidence: 'Fresh candidate ordinary probe with unchanged assertion body. The original-six baseline-output diagnostic remains; native comparison is separate.'",
+      "after": "evidence: 'Fresh candidate ordinary controls. Source-derived positive classification is separate metadata; original diagnostic retained. Native comparison is separate.'"
+    },
+    {
+      "before": "if (index < 6) check(() => assert.deepEqual(digest, oldRows[index].hashes, 'original six full outputs unchanged'));",
+      "after": "if (expectations.unchangedOriginalSegments.includes(index)) check(() => assert.deepEqual(digest, oldRows[index].hashes, 'original six full outputs unchanged'));"
+    },
+    {
+      "before": "fs.writeFileSync(target, JSON.stringify(report, null, 2) + '\\n', { flag: 'wx' });",
+      "after": "// Keep fresh state/storage hashes instead of duplicating the full diagnostic traces.\nconst compactReport = { ...report, modes: Object.fromEntries(Object.entries(report.modes)\n    .map(([mode, rows]) => [mode, rows.map(({ trace, before, after, feedback, ...row }) => ({\n        ...row, beforeSHA256: sha(JSON.stringify(before)), afterSHA256: sha(JSON.stringify(after)),\n        ...(trace ? { traceSHA256: sha(JSON.stringify(trace)), feedbackSHA256: sha(JSON.stringify(feedback)) } : {}),\n    }))])) };\nfs.writeFileSync(target, JSON.stringify(compactReport, null, 2) + '\\n', { flag: 'wx' });"
+    },
+    {
+      "before": "if (Object.values(report.modes).some(rows => rows.some(r => !r.passed))) process.exitCode = 1;",
+      "after": "if (Object.values(report.modes).some(rows => rows.some(r => !r.passed || r.sourcePredictionFailures.length))) process.exitCode = 1;"
+    }
+  ],
+  "assertionBodyChange": "Only the original-six hash-control applicability guard; all asserted expected hash values and every state/observer/deferred assertion body stay byte-identical. Original C primary bodies unchanged and now mandatory. Report compaction stores fresh trace/storage hashes."
+}

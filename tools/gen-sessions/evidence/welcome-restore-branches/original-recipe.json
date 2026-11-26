@@ -1,0 +1,124 @@
+{
+  "name": "welcome-restore",
+  "description": "Three keyboard-only save/restore pairs. One changed-gender welcome prediction and two unchanged-gender controls. Source proposal; no native evidence yet.",
+  "source": "c",
+  "coverage": [
+    "mode.debug",
+    "state.save-restore",
+    "object.amulets"
+  ],
+  "branches": [
+    "welcome-restore.changed-female-save",
+    "welcome-restore.changed-female-restore",
+    "welcome-restore.unchanged-male-save",
+    "welcome-restore.unchanged-male-restore",
+    "welcome-restore.unchanged-female-save",
+    "welcome-restore.unchanged-female-restore"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "welcome-restore.changed-female-save",
+      "segment": 0,
+      "screenIncludes": [
+        "You are a neutral male human Wizard.",
+        "Be seeing you...",
+        "You are suddenly very feminine!"
+      ]
+    },
+    {
+      "branch": "welcome-restore.changed-female-restore",
+      "segment": 1,
+      "screenIncludes": [
+        "Hello wizard, the female human Wizard, welcome back to NetHack!",
+        "Do you want to keep the save file?"
+      ]
+    },
+    {
+      "branch": "welcome-restore.unchanged-male-save",
+      "segment": 2,
+      "screenIncludes": [
+        "You are a neutral male human Wizard.",
+        "Be seeing you...",
+        "(being worn)"
+      ]
+    },
+    {
+      "branch": "welcome-restore.unchanged-male-restore",
+      "segment": 3,
+      "screenIncludes": [
+        "Hello wizard, the human Wizard, welcome back to NetHack!",
+        "Do you want to keep the save file?"
+      ],
+      "screenExcludes": [
+        "the male human Wizard, welcome back",
+        "the female human Wizard, welcome back"
+      ]
+    },
+    {
+      "branch": "welcome-restore.unchanged-female-save",
+      "segment": 4,
+      "screenIncludes": [
+        "You are a neutral female human Wizard.",
+        "Be seeing you...",
+        "(being worn)"
+      ]
+    },
+    {
+      "branch": "welcome-restore.unchanged-female-restore",
+      "segment": 5,
+      "screenIncludes": [
+        "Hello wizard, the human Wizard, welcome back to NetHack!",
+        "Do you want to keep the save file?"
+      ],
+      "screenExcludes": [
+        "the male human Wizard, welcome back",
+        "the female human Wizard, welcome back"
+      ]
+    }
+  ],
+  "segments": [
+    {
+      "name": "changed-female-save",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed amulet of change\r    \u001b\u001b\u001bPa    \u001b\u001b\u001bSy"
+    },
+    {
+      "name": "changed-female-restore",
+      "seed": 7,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " n    #attributes\r    \u001b\u001b"
+    },
+    {
+      "name": "unchanged-male-save",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed amulet of reflection\r    \u001b\u001b\u001bPa    \u001b\u001b\u001bSy"
+    },
+    {
+      "name": "unchanged-male-restore",
+      "seed": 7,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " n    #attributes\r    \u001b\u001b"
+    },
+    {
+      "name": "unchanged-female-save",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:female,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed amulet of reflection\r    \u001b\u001b\u001bPa    \u001b\u001b\u001bSy"
+    },
+    {
+      "name": "unchanged-female-restore",
+      "seed": 7,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:female,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " n    #attributes\r    \u001b\u001b"
+    }
+  ]
+}

@@ -1,0 +1,2333 @@
+[
+  {
+    "segment": 0,
+    "name": "changed-female-save",
+    "boundaries": {
+      "expected": 47,
+      "actual": 47
+    },
+    "frozenScreens": 47,
+    "fullStyleScreens": 47,
+    "matchingStyleCells": 90240,
+    "totalCells": 90240,
+    "blankStyleMismatches": 0,
+    "nonblankStyleMismatches": 0,
+    "glyphMismatches": 0,
+    "screenDifferences": [],
+    "cursors": {
+      "expected": 47,
+      "actual": 47,
+      "matched": 47,
+      "firstDifference": null
+    },
+    "calls": {
+      "rawExpected": 2772,
+      "rawActual": 2772,
+      "discardedEntries": 0,
+      "expected": 2772,
+      "actual": 2772,
+      "firstDifference": null
+    },
+    "slices": {
+      "expected": 47,
+      "actual": 47,
+      "matched": 47,
+      "differences": []
+    },
+    "frames": {
+      "expected": 0,
+      "actual": 0,
+      "expectedSlices": 47,
+      "actualSlices": 47,
+      "countMismatches": [],
+      "fullStyleMatches": 0,
+      "cursorMatches": 0
+    },
+    "rawHashes": {
+      "c": {
+        "screens": "f8133def24ed1b7163208db5a00c8e3c6ae493cd40435a95613e6b0f85ea98f2",
+        "cursors": "1cfd5db0c60ff8dd7ea2d589abb32420f13fe0c291b0b78f64940e77e12eda94",
+        "calls": "9933a8de06e1636c474b827ebc53888fbfc79eec760a164fd6c7c3a3454cb78e",
+        "slices": "42d927990604fa2d81c627f6a861aaa581d595e4bbbe0e90d281c2fb2a17cb3a",
+        "frames": "3b6bee301adeaf5ea0bb5e2c62647414fd4cc5b986ec24b3b8c3517aa859d89c"
+      },
+      "js": {
+        "screens": "7c9ddcb5e0f331541702958289d1dae8bd2783d929f3f3ea4e17c63126274db5",
+        "cursors": "1cfd5db0c60ff8dd7ea2d589abb32420f13fe0c291b0b78f64940e77e12eda94",
+        "calls": "742b211a7bda663f1a298bdce4643745c2447d91bb968e096112eb813e93b2c2",
+        "slices": "3db6a285b7585ba8feae8a27dbfeb7ee98c3d417b1bd3444c07a2d99e0deca6e",
+        "frames": "3b6bee301adeaf5ea0bb5e2c62647414fd4cc5b986ec24b3b8c3517aa859d89c"
+      }
+    },
+    "normalizedHashes": {
+      "c": {
+        "calls": "742b211a7bda663f1a298bdce4643745c2447d91bb968e096112eb813e93b2c2",
+        "slices": "3db6a285b7585ba8feae8a27dbfeb7ee98c3d417b1bd3444c07a2d99e0deca6e"
+      },
+      "js": {
+        "calls": "742b211a7bda663f1a298bdce4643745c2447d91bb968e096112eb813e93b2c2",
+        "slices": "3db6a285b7585ba8feae8a27dbfeb7ee98c3d417b1bd3444c07a2d99e0deca6e"
+      }
+    },
+    "frozenScreenCursorExact": true,
+    "fullRngExact": true,
+    "fullStyleExact": true,
+    "animationExact": true
+  },
+  {
+    "segment": 1,
+    "name": "changed-female-restore",
+    "boundaries": {
+      "expected": 25,
+      "actual": 25
+    },
+    "frozenScreens": 24,
+    "fullStyleScreens": 24,
+    "matchingStyleCells": 47951,
+    "totalCells": 48000,
+    "blankStyleMismatches": 0,
+    "nonblankStyleMismatches": 0,
+    "glyphMismatches": 49,
+    "screenDifferences": [
+      {
+        "step": 0,
+        "frozenEqual": false,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1871,
+        "blankStyleMismatches": 0,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 49,
+        "firstFullStyleDifference": {
+          "x": 18,
+          "y": 0,
+          "c": {
+            "ch": "f",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "h",
+            "color": 8,
+            "attr": 0
+          }
+        },
+        "firstFrozenDifference": {
+          "x": 18,
+          "y": 0,
+          "kind": "ch",
+          "c": {
+            "ch": "f",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "h",
+            "color": 8,
+            "attr": 0
+          }
+        }
+      }
+    ],
+    "cursors": {
+      "expected": 25,
+      "actual": 25,
+      "matched": 24,
+      "firstDifference": {
+        "index": 0,
+        "c": [
+          71,
+          0,
+          1
+        ],
+        "js": [
+          64,
+          0,
+          1
+        ]
+      }
+    },
+    "calls": {
+      "rawExpected": 3,
+      "rawActual": 3,
+      "discardedEntries": 0,
+      "expected": 3,
+      "actual": 3,
+      "firstDifference": null
+    },
+    "slices": {
+      "expected": 25,
+      "actual": 25,
+      "matched": 25,
+      "differences": []
+    },
+    "frames": {
+      "expected": 0,
+      "actual": 0,
+      "expectedSlices": 25,
+      "actualSlices": 25,
+      "countMismatches": [],
+      "fullStyleMatches": 0,
+      "cursorMatches": 0
+    },
+    "rawHashes": {
+      "c": {
+        "screens": "f00f6b82731f8f6abb234eab66678e2cb992b2fb2dc7c41544f786bcf0ceb77b",
+        "cursors": "dd00c34ffc3932c1d496a08bb91b30b9ca9be5982678482d6540950c0252f5a4",
+        "calls": "e2a88e80a64a54c41d98749d15ccb55c6e1d85ce64cb13e7d3adf711a1080541",
+        "slices": "ad11dcc98108593fa8ad369a9de507d0c2d844d6560bf208a5be301bfe0378ee",
+        "frames": "63b3067edc45557301e80474209597e219fc1466b5584fc0b500ac406c5b9210"
+      },
+      "js": {
+        "screens": "56fba8a74d9ea0aa55f39bdcf2e6a9199043421382ca59bfeefc5e0a59ec3372",
+        "cursors": "c874a9343d4fe99cad4f78f2e7b7ad75edd73f7813ab17ee7754abd34656224d",
+        "calls": "0d5e5793409d2565c10821e2553815510069124f221443f836a6d24d63acf85d",
+        "slices": "ff7b79157d05f838a4a28693e0b8594e877db986f7169c4a5be5e7cec4c20adc",
+        "frames": "63b3067edc45557301e80474209597e219fc1466b5584fc0b500ac406c5b9210"
+      }
+    },
+    "normalizedHashes": {
+      "c": {
+        "calls": "0d5e5793409d2565c10821e2553815510069124f221443f836a6d24d63acf85d",
+        "slices": "ff7b79157d05f838a4a28693e0b8594e877db986f7169c4a5be5e7cec4c20adc"
+      },
+      "js": {
+        "calls": "0d5e5793409d2565c10821e2553815510069124f221443f836a6d24d63acf85d",
+        "slices": "ff7b79157d05f838a4a28693e0b8594e877db986f7169c4a5be5e7cec4c20adc"
+      }
+    },
+    "frozenScreenCursorExact": false,
+    "fullRngExact": true,
+    "fullStyleExact": false,
+    "animationExact": true
+  },
+  {
+    "segment": 2,
+    "name": "unchanged-male-save",
+    "boundaries": {
+      "expected": 51,
+      "actual": 51
+    },
+    "frozenScreens": 51,
+    "fullStyleScreens": 51,
+    "matchingStyleCells": 97920,
+    "totalCells": 97920,
+    "blankStyleMismatches": 0,
+    "nonblankStyleMismatches": 0,
+    "glyphMismatches": 0,
+    "screenDifferences": [],
+    "cursors": {
+      "expected": 51,
+      "actual": 51,
+      "matched": 51,
+      "firstDifference": null
+    },
+    "calls": {
+      "rawExpected": 2772,
+      "rawActual": 2772,
+      "discardedEntries": 0,
+      "expected": 2772,
+      "actual": 2772,
+      "firstDifference": null
+    },
+    "slices": {
+      "expected": 51,
+      "actual": 51,
+      "matched": 51,
+      "differences": []
+    },
+    "frames": {
+      "expected": 0,
+      "actual": 0,
+      "expectedSlices": 51,
+      "actualSlices": 51,
+      "countMismatches": [],
+      "fullStyleMatches": 0,
+      "cursorMatches": 0
+    },
+    "rawHashes": {
+      "c": {
+        "screens": "9f1411403683553b9648a825b67e013ccad1938bd522118445174bd6bcbc5147",
+        "cursors": "2eb968958fbd23dd45ca03a373de13c9b7d183b3781a6b963edd737f42752105",
+        "calls": "52dabaed3b204400ba99ebdd69d14ca27963799bbaaa9e1551862d29050a4c79",
+        "slices": "89672994826cb684100d1c4b66ded0220cbc0ac523b099c752ad2c28cbbfd79a",
+        "frames": "b88cee804dd63a0179b150c6aa14c547cd5d25aab92700534a4ea441962b180d"
+      },
+      "js": {
+        "screens": "35599f35966b2f1a08af3c63c6aa3988d311732e2587daa48f93ed6777d49972",
+        "cursors": "2eb968958fbd23dd45ca03a373de13c9b7d183b3781a6b963edd737f42752105",
+        "calls": "90e1c93f3bfb25850063a27116046a104bd495512d00559fb8186dca6f72a235",
+        "slices": "136e344e8fc120916930a2fe792c17ecc53c504ee40568b8fa09025a47ea5fd6",
+        "frames": "b88cee804dd63a0179b150c6aa14c547cd5d25aab92700534a4ea441962b180d"
+      }
+    },
+    "normalizedHashes": {
+      "c": {
+        "calls": "90e1c93f3bfb25850063a27116046a104bd495512d00559fb8186dca6f72a235",
+        "slices": "136e344e8fc120916930a2fe792c17ecc53c504ee40568b8fa09025a47ea5fd6"
+      },
+      "js": {
+        "calls": "90e1c93f3bfb25850063a27116046a104bd495512d00559fb8186dca6f72a235",
+        "slices": "136e344e8fc120916930a2fe792c17ecc53c504ee40568b8fa09025a47ea5fd6"
+      }
+    },
+    "frozenScreenCursorExact": true,
+    "fullRngExact": true,
+    "fullStyleExact": true,
+    "animationExact": true
+  },
+  {
+    "segment": 3,
+    "name": "unchanged-male-restore",
+    "boundaries": {
+      "expected": 25,
+      "actual": 25
+    },
+    "frozenScreens": 25,
+    "fullStyleScreens": 25,
+    "matchingStyleCells": 48000,
+    "totalCells": 48000,
+    "blankStyleMismatches": 0,
+    "nonblankStyleMismatches": 0,
+    "glyphMismatches": 0,
+    "screenDifferences": [],
+    "cursors": {
+      "expected": 25,
+      "actual": 25,
+      "matched": 25,
+      "firstDifference": null
+    },
+    "calls": {
+      "rawExpected": 3,
+      "rawActual": 3,
+      "discardedEntries": 0,
+      "expected": 3,
+      "actual": 3,
+      "firstDifference": null
+    },
+    "slices": {
+      "expected": 25,
+      "actual": 25,
+      "matched": 25,
+      "differences": []
+    },
+    "frames": {
+      "expected": 0,
+      "actual": 0,
+      "expectedSlices": 25,
+      "actualSlices": 25,
+      "countMismatches": [],
+      "fullStyleMatches": 0,
+      "cursorMatches": 0
+    },
+    "rawHashes": {
+      "c": {
+        "screens": "d91be9a2339a5510f009b9e79e06cd0b994bb4d408ee2a35a472801b38ad15ca",
+        "cursors": "c874a9343d4fe99cad4f78f2e7b7ad75edd73f7813ab17ee7754abd34656224d",
+        "calls": "e2a88e80a64a54c41d98749d15ccb55c6e1d85ce64cb13e7d3adf711a1080541",
+        "slices": "ad11dcc98108593fa8ad369a9de507d0c2d844d6560bf208a5be301bfe0378ee",
+        "frames": "63b3067edc45557301e80474209597e219fc1466b5584fc0b500ac406c5b9210"
+      },
+      "js": {
+        "screens": "8a33d160f965893e56db434ceb10809b2e4759e2e81210f07db78e61463081b7",
+        "cursors": "c874a9343d4fe99cad4f78f2e7b7ad75edd73f7813ab17ee7754abd34656224d",
+        "calls": "0d5e5793409d2565c10821e2553815510069124f221443f836a6d24d63acf85d",
+        "slices": "ff7b79157d05f838a4a28693e0b8594e877db986f7169c4a5be5e7cec4c20adc",
+        "frames": "63b3067edc45557301e80474209597e219fc1466b5584fc0b500ac406c5b9210"
+      }
+    },
+    "normalizedHashes": {
+      "c": {
+        "calls": "0d5e5793409d2565c10821e2553815510069124f221443f836a6d24d63acf85d",
+        "slices": "ff7b79157d05f838a4a28693e0b8594e877db986f7169c4a5be5e7cec4c20adc"
+      },
+      "js": {
+        "calls": "0d5e5793409d2565c10821e2553815510069124f221443f836a6d24d63acf85d",
+        "slices": "ff7b79157d05f838a4a28693e0b8594e877db986f7169c4a5be5e7cec4c20adc"
+      }
+    },
+    "frozenScreenCursorExact": true,
+    "fullRngExact": true,
+    "fullStyleExact": true,
+    "animationExact": true
+  },
+  {
+    "segment": 4,
+    "name": "unchanged-female-save",
+    "boundaries": {
+      "expected": 51,
+      "actual": 51
+    },
+    "frozenScreens": 51,
+    "fullStyleScreens": 51,
+    "matchingStyleCells": 97920,
+    "totalCells": 97920,
+    "blankStyleMismatches": 0,
+    "nonblankStyleMismatches": 0,
+    "glyphMismatches": 0,
+    "screenDifferences": [],
+    "cursors": {
+      "expected": 51,
+      "actual": 51,
+      "matched": 51,
+      "firstDifference": null
+    },
+    "calls": {
+      "rawExpected": 2772,
+      "rawActual": 2772,
+      "discardedEntries": 0,
+      "expected": 2772,
+      "actual": 2772,
+      "firstDifference": null
+    },
+    "slices": {
+      "expected": 51,
+      "actual": 51,
+      "matched": 51,
+      "differences": []
+    },
+    "frames": {
+      "expected": 0,
+      "actual": 0,
+      "expectedSlices": 51,
+      "actualSlices": 51,
+      "countMismatches": [],
+      "fullStyleMatches": 0,
+      "cursorMatches": 0
+    },
+    "rawHashes": {
+      "c": {
+        "screens": "2130df724cce1f8b01377fd60e2aff7c7a6613ca9cc37e6ddfd1f4f0d043e16f",
+        "cursors": "2eb968958fbd23dd45ca03a373de13c9b7d183b3781a6b963edd737f42752105",
+        "calls": "52dabaed3b204400ba99ebdd69d14ca27963799bbaaa9e1551862d29050a4c79",
+        "slices": "89672994826cb684100d1c4b66ded0220cbc0ac523b099c752ad2c28cbbfd79a",
+        "frames": "b88cee804dd63a0179b150c6aa14c547cd5d25aab92700534a4ea441962b180d"
+      },
+      "js": {
+        "screens": "c1674e873d291bb0c5cffc9e5deec84fe96648ad306dbd7f5e52b39a4373267a",
+        "cursors": "2eb968958fbd23dd45ca03a373de13c9b7d183b3781a6b963edd737f42752105",
+        "calls": "90e1c93f3bfb25850063a27116046a104bd495512d00559fb8186dca6f72a235",
+        "slices": "136e344e8fc120916930a2fe792c17ecc53c504ee40568b8fa09025a47ea5fd6",
+        "frames": "b88cee804dd63a0179b150c6aa14c547cd5d25aab92700534a4ea441962b180d"
+      }
+    },
+    "normalizedHashes": {
+      "c": {
+        "calls": "90e1c93f3bfb25850063a27116046a104bd495512d00559fb8186dca6f72a235",
+        "slices": "136e344e8fc120916930a2fe792c17ecc53c504ee40568b8fa09025a47ea5fd6"
+      },
+      "js": {
+        "calls": "90e1c93f3bfb25850063a27116046a104bd495512d00559fb8186dca6f72a235",
+        "slices": "136e344e8fc120916930a2fe792c17ecc53c504ee40568b8fa09025a47ea5fd6"
+      }
+    },
+    "frozenScreenCursorExact": true,
+    "fullRngExact": true,
+    "fullStyleExact": true,
+    "animationExact": true
+  },
+  {
+    "segment": 5,
+    "name": "unchanged-female-restore",
+    "boundaries": {
+      "expected": 25,
+      "actual": 25
+    },
+    "frozenScreens": 25,
+    "fullStyleScreens": 25,
+    "matchingStyleCells": 48000,
+    "totalCells": 48000,
+    "blankStyleMismatches": 0,
+    "nonblankStyleMismatches": 0,
+    "glyphMismatches": 0,
+    "screenDifferences": [],
+    "cursors": {
+      "expected": 25,
+      "actual": 25,
+      "matched": 25,
+      "firstDifference": null
+    },
+    "calls": {
+      "rawExpected": 3,
+      "rawActual": 3,
+      "discardedEntries": 0,
+      "expected": 3,
+      "actual": 3,
+      "firstDifference": null
+    },
+    "slices": {
+      "expected": 25,
+      "actual": 25,
+      "matched": 25,
+      "differences": []
+    },
+    "frames": {
+      "expected": 0,
+      "actual": 0,
+      "expectedSlices": 25,
+      "actualSlices": 25,
+      "countMismatches": [],
+      "fullStyleMatches": 0,
+      "cursorMatches": 0
+    },
+    "rawHashes": {
+      "c": {
+        "screens": "94b043537695ff2f13235a014543f5940eda09a603b73b38a3d61b14f613bdc9",
+        "cursors": "c874a9343d4fe99cad4f78f2e7b7ad75edd73f7813ab17ee7754abd34656224d",
+        "calls": "e2a88e80a64a54c41d98749d15ccb55c6e1d85ce64cb13e7d3adf711a1080541",
+        "slices": "ad11dcc98108593fa8ad369a9de507d0c2d844d6560bf208a5be301bfe0378ee",
+        "frames": "63b3067edc45557301e80474209597e219fc1466b5584fc0b500ac406c5b9210"
+      },
+      "js": {
+        "screens": "f494c59f25301354cdbbc2c54f5db617a8af0db5456d857b320787fb780b0a82",
+        "cursors": "c874a9343d4fe99cad4f78f2e7b7ad75edd73f7813ab17ee7754abd34656224d",
+        "calls": "0d5e5793409d2565c10821e2553815510069124f221443f836a6d24d63acf85d",
+        "slices": "ff7b79157d05f838a4a28693e0b8594e877db986f7169c4a5be5e7cec4c20adc",
+        "frames": "63b3067edc45557301e80474209597e219fc1466b5584fc0b500ac406c5b9210"
+      }
+    },
+    "normalizedHashes": {
+      "c": {
+        "calls": "0d5e5793409d2565c10821e2553815510069124f221443f836a6d24d63acf85d",
+        "slices": "ff7b79157d05f838a4a28693e0b8594e877db986f7169c4a5be5e7cec4c20adc"
+      },
+      "js": {
+        "calls": "0d5e5793409d2565c10821e2553815510069124f221443f836a6d24d63acf85d",
+        "slices": "ff7b79157d05f838a4a28693e0b8594e877db986f7169c4a5be5e7cec4c20adc"
+      }
+    },
+    "frozenScreenCursorExact": true,
+    "fullRngExact": true,
+    "fullStyleExact": true,
+    "animationExact": true
+  },
+  {
+    "segment": 6,
+    "name": "hallucination-save",
+    "boundaries": {
+      "expected": 52,
+      "actual": 52
+    },
+    "frozenScreens": 52,
+    "fullStyleScreens": 52,
+    "matchingStyleCells": 99840,
+    "totalCells": 99840,
+    "blankStyleMismatches": 0,
+    "nonblankStyleMismatches": 0,
+    "glyphMismatches": 0,
+    "screenDifferences": [],
+    "cursors": {
+      "expected": 52,
+      "actual": 52,
+      "matched": 52,
+      "firstDifference": null
+    },
+    "calls": {
+      "rawExpected": 2775,
+      "rawActual": 2775,
+      "discardedEntries": 0,
+      "expected": 2775,
+      "actual": 2775,
+      "firstDifference": null
+    },
+    "slices": {
+      "expected": 52,
+      "actual": 52,
+      "matched": 52,
+      "differences": []
+    },
+    "frames": {
+      "expected": 0,
+      "actual": 0,
+      "expectedSlices": 52,
+      "actualSlices": 52,
+      "countMismatches": [],
+      "fullStyleMatches": 0,
+      "cursorMatches": 0
+    },
+    "rawHashes": {
+      "c": {
+        "screens": "19a08972222d01e2d581a911cb1bc7c4e016e755231e1fd029b7f47353b8aa31",
+        "cursors": "6db40a1e87cd01fddb0b8f153a30d52b294b3835e6a6a291e63aa381a209e3c1",
+        "calls": "9fd690d3f13d6f3feb6f0276793b001d73bcbb2939befcbcd21a9eaaa0151fc2",
+        "slices": "bbe51089e10251332275a0c52fe4deeedf544538e46513ba034cf5c3f7165983",
+        "frames": "fbe834c0b4f316033b2a2c03cc76018cc6d88b54f91079ea347c02f630fdc438"
+      },
+      "js": {
+        "screens": "695ef4a34478026fd4e2ae7647e0e5086326dbfc6ad49ed94a18ab8c9e6bf9cb",
+        "cursors": "6db40a1e87cd01fddb0b8f153a30d52b294b3835e6a6a291e63aa381a209e3c1",
+        "calls": "937c5cbbc8d308c05d58db3ba707270db8c0539b67883c400629114747a7c2f4",
+        "slices": "f1323611d3375a60c695d1350fef830e9669a2358ccffcad8a293339ec81384a",
+        "frames": "fbe834c0b4f316033b2a2c03cc76018cc6d88b54f91079ea347c02f630fdc438"
+      }
+    },
+    "normalizedHashes": {
+      "c": {
+        "calls": "937c5cbbc8d308c05d58db3ba707270db8c0539b67883c400629114747a7c2f4",
+        "slices": "f1323611d3375a60c695d1350fef830e9669a2358ccffcad8a293339ec81384a"
+      },
+      "js": {
+        "calls": "937c5cbbc8d308c05d58db3ba707270db8c0539b67883c400629114747a7c2f4",
+        "slices": "f1323611d3375a60c695d1350fef830e9669a2358ccffcad8a293339ec81384a"
+      }
+    },
+    "frozenScreenCursorExact": true,
+    "fullRngExact": true,
+    "fullStyleExact": true,
+    "animationExact": true
+  },
+  {
+    "segment": 7,
+    "name": "hallucination-restore",
+    "boundaries": {
+      "expected": 20,
+      "actual": 20
+    },
+    "frozenScreens": 0,
+    "fullStyleScreens": 0,
+    "matchingStyleCells": 38220,
+    "totalCells": 38400,
+    "blankStyleMismatches": 0,
+    "nonblankStyleMismatches": 2,
+    "glyphMismatches": 178,
+    "screenDifferences": [
+      {
+        "step": 0,
+        "frozenEqual": false,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1868,
+        "blankStyleMismatches": 0,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 52,
+        "firstFullStyleDifference": {
+          "x": 0,
+          "y": 0,
+          "c": {
+            "ch": "N",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "H",
+            "color": 8,
+            "attr": 0
+          }
+        },
+        "firstFrozenDifference": {
+          "x": 0,
+          "y": 0,
+          "kind": "ch",
+          "c": {
+            "ch": "N",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "H",
+            "color": 8,
+            "attr": 0
+          }
+        }
+      },
+      {
+        "step": 1,
+        "frozenEqual": false,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1862,
+        "blankStyleMismatches": 0,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 58,
+        "firstFullStyleDifference": {
+          "x": 0,
+          "y": 0,
+          "c": {
+            "ch": "H",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "D",
+            "color": 8,
+            "attr": 0
+          }
+        },
+        "firstFrozenDifference": {
+          "x": 0,
+          "y": 0,
+          "kind": "ch",
+          "c": {
+            "ch": "H",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "D",
+            "color": 8,
+            "attr": 0
+          }
+        }
+      },
+      {
+        "step": 2,
+        "frozenEqual": false,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1918,
+        "blankStyleMismatches": 0,
+        "nonblankStyleMismatches": 1,
+        "glyphMismatches": 1,
+        "firstFullStyleDifference": {
+          "x": 55,
+          "y": 9,
+          "c": {
+            "ch": "[",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "[",
+            "color": 3,
+            "attr": 0
+          }
+        },
+        "firstFrozenDifference": {
+          "x": 55,
+          "y": 9,
+          "kind": "attr",
+          "c": {
+            "ch": "[",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "[",
+            "color": 3,
+            "attr": 0
+          }
+        }
+      },
+      {
+        "step": 3,
+        "frozenEqual": false,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1880,
+        "blankStyleMismatches": 0,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 40,
+        "firstFullStyleDifference": {
+          "x": 0,
+          "y": 0,
+          "c": {
+            "ch": "D",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "U",
+            "color": 8,
+            "attr": 0
+          }
+        },
+        "firstFrozenDifference": {
+          "x": 0,
+          "y": 0,
+          "kind": "ch",
+          "c": {
+            "ch": "D",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "U",
+            "color": 8,
+            "attr": 0
+          }
+        }
+      },
+      {
+        "step": 4,
+        "frozenEqual": false,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1919,
+        "blankStyleMismatches": 0,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 1,
+        "firstFullStyleDifference": {
+          "x": 55,
+          "y": 9,
+          "c": {
+            "ch": "/",
+            "color": 3,
+            "attr": 0
+          },
+          "js": {
+            "ch": "[",
+            "color": 14,
+            "attr": 0
+          }
+        },
+        "firstFrozenDifference": {
+          "x": 55,
+          "y": 9,
+          "kind": "ch",
+          "c": {
+            "ch": "/",
+            "color": 3,
+            "attr": 0
+          },
+          "js": {
+            "ch": "[",
+            "color": 14,
+            "attr": 0
+          }
+        }
+      },
+      {
+        "step": 5,
+        "frozenEqual": false,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1918,
+        "blankStyleMismatches": 0,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 2,
+        "firstFullStyleDifference": {
+          "x": 55,
+          "y": 9,
+          "c": {
+            "ch": "[",
+            "color": 14,
+            "attr": 0
+          },
+          "js": {
+            "ch": "/",
+            "color": 11,
+            "attr": 0
+          }
+        },
+        "firstFrozenDifference": {
+          "x": 55,
+          "y": 9,
+          "kind": "ch",
+          "c": {
+            "ch": "[",
+            "color": 14,
+            "attr": 0
+          },
+          "js": {
+            "ch": "/",
+            "color": 11,
+            "attr": 0
+          }
+        }
+      },
+      {
+        "step": 6,
+        "frozenEqual": false,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1918,
+        "blankStyleMismatches": 0,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 2,
+        "firstFullStyleDifference": {
+          "x": 55,
+          "y": 9,
+          "c": {
+            "ch": "/",
+            "color": 11,
+            "attr": 0
+          },
+          "js": {
+            "ch": ")",
+            "color": 3,
+            "attr": 0
+          }
+        },
+        "firstFrozenDifference": {
+          "x": 55,
+          "y": 9,
+          "kind": "ch",
+          "c": {
+            "ch": "/",
+            "color": 11,
+            "attr": 0
+          },
+          "js": {
+            "ch": ")",
+            "color": 3,
+            "attr": 0
+          }
+        }
+      },
+      {
+        "step": 7,
+        "frozenEqual": false,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1918,
+        "blankStyleMismatches": 0,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 2,
+        "firstFullStyleDifference": {
+          "x": 55,
+          "y": 9,
+          "c": {
+            "ch": ")",
+            "color": 3,
+            "attr": 0
+          },
+          "js": {
+            "ch": "*",
+            "color": 2,
+            "attr": 0
+          }
+        },
+        "firstFrozenDifference": {
+          "x": 55,
+          "y": 9,
+          "kind": "ch",
+          "c": {
+            "ch": ")",
+            "color": 3,
+            "attr": 0
+          },
+          "js": {
+            "ch": "*",
+            "color": 2,
+            "attr": 0
+          }
+        }
+      },
+      {
+        "step": 8,
+        "frozenEqual": false,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1918,
+        "blankStyleMismatches": 0,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 2,
+        "firstFullStyleDifference": {
+          "x": 55,
+          "y": 9,
+          "c": {
+            "ch": "*",
+            "color": 2,
+            "attr": 0
+          },
+          "js": {
+            "ch": "!",
+            "color": 6,
+            "attr": 0
+          }
+        },
+        "firstFrozenDifference": {
+          "x": 55,
+          "y": 9,
+          "kind": "ch",
+          "c": {
+            "ch": "*",
+            "color": 2,
+            "attr": 0
+          },
+          "js": {
+            "ch": "!",
+            "color": 6,
+            "attr": 0
+          }
+        }
+      },
+      {
+        "step": 9,
+        "frozenEqual": false,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1918,
+        "blankStyleMismatches": 0,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 2,
+        "firstFullStyleDifference": {
+          "x": 55,
+          "y": 9,
+          "c": {
+            "ch": "!",
+            "color": 6,
+            "attr": 0
+          },
+          "js": {
+            "ch": "?",
+            "color": 15,
+            "attr": 0
+          }
+        },
+        "firstFrozenDifference": {
+          "x": 55,
+          "y": 9,
+          "kind": "ch",
+          "c": {
+            "ch": "!",
+            "color": 6,
+            "attr": 0
+          },
+          "js": {
+            "ch": "?",
+            "color": 15,
+            "attr": 0
+          }
+        }
+      },
+      {
+        "step": 10,
+        "frozenEqual": false,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1918,
+        "blankStyleMismatches": 0,
+        "nonblankStyleMismatches": 1,
+        "glyphMismatches": 1,
+        "firstFullStyleDifference": {
+          "x": 55,
+          "y": 9,
+          "c": {
+            "ch": "?",
+            "color": 15,
+            "attr": 0
+          },
+          "js": {
+            "ch": "[",
+            "color": 6,
+            "attr": 0
+          }
+        },
+        "firstFrozenDifference": {
+          "x": 55,
+          "y": 9,
+          "kind": "ch",
+          "c": {
+            "ch": "?",
+            "color": 15,
+            "attr": 0
+          },
+          "js": {
+            "ch": "[",
+            "color": 6,
+            "attr": 0
+          }
+        }
+      },
+      {
+        "step": 11,
+        "frozenEqual": false,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1918,
+        "blankStyleMismatches": 0,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 2,
+        "firstFullStyleDifference": {
+          "x": 55,
+          "y": 9,
+          "c": {
+            "ch": "[",
+            "color": 6,
+            "attr": 0
+          },
+          "js": {
+            "ch": "+",
+            "color": 15,
+            "attr": 0
+          }
+        },
+        "firstFrozenDifference": {
+          "x": 55,
+          "y": 9,
+          "kind": "ch",
+          "c": {
+            "ch": "[",
+            "color": 6,
+            "attr": 0
+          },
+          "js": {
+            "ch": "+",
+            "color": 15,
+            "attr": 0
+          }
+        }
+      },
+      {
+        "step": 12,
+        "frozenEqual": false,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1918,
+        "blankStyleMismatches": 0,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 2,
+        "firstFullStyleDifference": {
+          "x": 55,
+          "y": 9,
+          "c": {
+            "ch": "+",
+            "color": 15,
+            "attr": 0
+          },
+          "js": {
+            "ch": ")",
+            "color": 3,
+            "attr": 0
+          }
+        },
+        "firstFrozenDifference": {
+          "x": 55,
+          "y": 9,
+          "kind": "ch",
+          "c": {
+            "ch": "+",
+            "color": 15,
+            "attr": 0
+          },
+          "js": {
+            "ch": ")",
+            "color": 3,
+            "attr": 0
+          }
+        }
+      },
+      {
+        "step": 13,
+        "frozenEqual": false,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1919,
+        "blankStyleMismatches": 0,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 1,
+        "firstFullStyleDifference": {
+          "x": 56,
+          "y": 9,
+          "c": {
+            "ch": "@",
+            "color": 4,
+            "attr": 0
+          },
+          "js": {
+            "ch": "Y",
+            "color": 15,
+            "attr": 0
+          }
+        },
+        "firstFrozenDifference": {
+          "x": 56,
+          "y": 9,
+          "kind": "ch",
+          "c": {
+            "ch": "@",
+            "color": 4,
+            "attr": 0
+          },
+          "js": {
+            "ch": "Y",
+            "color": 15,
+            "attr": 0
+          }
+        }
+      },
+      {
+        "step": 14,
+        "frozenEqual": false,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1919,
+        "blankStyleMismatches": 0,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 1,
+        "firstFullStyleDifference": {
+          "x": 56,
+          "y": 9,
+          "c": {
+            "ch": "Y",
+            "color": 15,
+            "attr": 0
+          },
+          "js": {
+            "ch": "D",
+            "color": 1,
+            "attr": 0
+          }
+        },
+        "firstFrozenDifference": {
+          "x": 56,
+          "y": 9,
+          "kind": "ch",
+          "c": {
+            "ch": "Y",
+            "color": 15,
+            "attr": 0
+          },
+          "js": {
+            "ch": "D",
+            "color": 1,
+            "attr": 0
+          }
+        }
+      },
+      {
+        "step": 15,
+        "frozenEqual": false,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1918,
+        "blankStyleMismatches": 0,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 2,
+        "firstFullStyleDifference": {
+          "x": 55,
+          "y": 9,
+          "c": {
+            "ch": ")",
+            "color": 3,
+            "attr": 0
+          },
+          "js": {
+            "ch": "/",
+            "color": 6,
+            "attr": 0
+          }
+        },
+        "firstFrozenDifference": {
+          "x": 55,
+          "y": 9,
+          "kind": "ch",
+          "c": {
+            "ch": ")",
+            "color": 3,
+            "attr": 0
+          },
+          "js": {
+            "ch": "/",
+            "color": 6,
+            "attr": 0
+          }
+        }
+      },
+      {
+        "step": 16,
+        "frozenEqual": false,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1918,
+        "blankStyleMismatches": 0,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 2,
+        "firstFullStyleDifference": {
+          "x": 55,
+          "y": 9,
+          "c": {
+            "ch": "/",
+            "color": 6,
+            "attr": 0
+          },
+          "js": {
+            "ch": "%",
+            "color": 3,
+            "attr": 0
+          }
+        },
+        "firstFrozenDifference": {
+          "x": 55,
+          "y": 9,
+          "kind": "ch",
+          "c": {
+            "ch": "/",
+            "color": 6,
+            "attr": 0
+          },
+          "js": {
+            "ch": "%",
+            "color": 3,
+            "attr": 0
+          }
+        }
+      },
+      {
+        "step": 17,
+        "frozenEqual": false,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1918,
+        "blankStyleMismatches": 0,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 2,
+        "firstFullStyleDifference": {
+          "x": 55,
+          "y": 9,
+          "c": {
+            "ch": "%",
+            "color": 3,
+            "attr": 0
+          },
+          "js": {
+            "ch": ")",
+            "color": 6,
+            "attr": 0
+          }
+        },
+        "firstFrozenDifference": {
+          "x": 55,
+          "y": 9,
+          "kind": "ch",
+          "c": {
+            "ch": "%",
+            "color": 3,
+            "attr": 0
+          },
+          "js": {
+            "ch": ")",
+            "color": 6,
+            "attr": 0
+          }
+        }
+      },
+      {
+        "step": 18,
+        "frozenEqual": false,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1919,
+        "blankStyleMismatches": 0,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 1,
+        "firstFullStyleDifference": {
+          "x": 55,
+          "y": 9,
+          "c": {
+            "ch": ")",
+            "color": 6,
+            "attr": 0
+          },
+          "js": {
+            "ch": "=",
+            "color": 2,
+            "attr": 0
+          }
+        },
+        "firstFrozenDifference": {
+          "x": 55,
+          "y": 9,
+          "kind": "ch",
+          "c": {
+            "ch": ")",
+            "color": 6,
+            "attr": 0
+          },
+          "js": {
+            "ch": "=",
+            "color": 2,
+            "attr": 0
+          }
+        }
+      },
+      {
+        "step": 19,
+        "frozenEqual": false,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1918,
+        "blankStyleMismatches": 0,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 2,
+        "firstFullStyleDifference": {
+          "x": 55,
+          "y": 9,
+          "c": {
+            "ch": "=",
+            "color": 2,
+            "attr": 0
+          },
+          "js": {
+            "ch": "[",
+            "color": 8,
+            "attr": 0
+          }
+        },
+        "firstFrozenDifference": {
+          "x": 55,
+          "y": 9,
+          "kind": "ch",
+          "c": {
+            "ch": "=",
+            "color": 2,
+            "attr": 0
+          },
+          "js": {
+            "ch": "[",
+            "color": 8,
+            "attr": 0
+          }
+        }
+      }
+    ],
+    "cursors": {
+      "expected": 20,
+      "actual": 20,
+      "matched": 18,
+      "firstDifference": {
+        "index": 1,
+        "c": [
+          64,
+          0,
+          1
+        ],
+        "js": [
+          44,
+          0,
+          1
+        ]
+      }
+    },
+    "calls": {
+      "rawExpected": 3,
+      "rawActual": 3,
+      "discardedEntries": 0,
+      "expected": 3,
+      "actual": 3,
+      "firstDifference": null
+    },
+    "slices": {
+      "expected": 20,
+      "actual": 20,
+      "matched": 20,
+      "differences": []
+    },
+    "frames": {
+      "expected": 0,
+      "actual": 0,
+      "expectedSlices": 20,
+      "actualSlices": 20,
+      "countMismatches": [],
+      "fullStyleMatches": 0,
+      "cursorMatches": 0
+    },
+    "rawHashes": {
+      "c": {
+        "screens": "efe1f33b2f99ad33fcf43a54d54031a04f5dd822a1ee18b381367c399311fe9a",
+        "cursors": "2472c155fb13c1822beb7eaaee7b053c5208bc28c4548950fed0e68354217059",
+        "calls": "e2a88e80a64a54c41d98749d15ccb55c6e1d85ce64cb13e7d3adf711a1080541",
+        "slices": "9cdd01e629306dfa19eac1c1d80b22fd5da5c3f5232e44fd5d4f4808d80035ba",
+        "frames": "8c6e351b83642ea4d58e5bb456624576be95d6ad699a0d0e0f71ba49e32b2356"
+      },
+      "js": {
+        "screens": "a6b04fe7f0ce14e33e3a139607c81dac874c16a46e9cb130639543f2971624c2",
+        "cursors": "7953efcf33d7e72f542557670b5824cd49c47709faa1dc06741c56a08a315222",
+        "calls": "0d5e5793409d2565c10821e2553815510069124f221443f836a6d24d63acf85d",
+        "slices": "a4c81b87136741487a7c2d2b097b0f2226cf5ef8ee784287c353616980353dc1",
+        "frames": "8c6e351b83642ea4d58e5bb456624576be95d6ad699a0d0e0f71ba49e32b2356"
+      }
+    },
+    "normalizedHashes": {
+      "c": {
+        "calls": "0d5e5793409d2565c10821e2553815510069124f221443f836a6d24d63acf85d",
+        "slices": "a4c81b87136741487a7c2d2b097b0f2226cf5ef8ee784287c353616980353dc1"
+      },
+      "js": {
+        "calls": "0d5e5793409d2565c10821e2553815510069124f221443f836a6d24d63acf85d",
+        "slices": "a4c81b87136741487a7c2d2b097b0f2226cf5ef8ee784287c353616980353dc1"
+      }
+    },
+    "frozenScreenCursorExact": false,
+    "fullRngExact": true,
+    "fullStyleExact": false,
+    "animationExact": true
+  },
+  {
+    "segment": 8,
+    "name": "helm-drift-save",
+    "boundaries": {
+      "expected": 62,
+      "actual": 62
+    },
+    "frozenScreens": 62,
+    "fullStyleScreens": 62,
+    "matchingStyleCells": 119040,
+    "totalCells": 119040,
+    "blankStyleMismatches": 0,
+    "nonblankStyleMismatches": 0,
+    "glyphMismatches": 0,
+    "screenDifferences": [],
+    "cursors": {
+      "expected": 62,
+      "actual": 62,
+      "matched": 62,
+      "firstDifference": null
+    },
+    "calls": {
+      "rawExpected": 2852,
+      "rawActual": 2852,
+      "discardedEntries": 0,
+      "expected": 2852,
+      "actual": 2852,
+      "firstDifference": null
+    },
+    "slices": {
+      "expected": 62,
+      "actual": 62,
+      "matched": 62,
+      "differences": []
+    },
+    "frames": {
+      "expected": 0,
+      "actual": 0,
+      "expectedSlices": 62,
+      "actualSlices": 62,
+      "countMismatches": [],
+      "fullStyleMatches": 0,
+      "cursorMatches": 0
+    },
+    "rawHashes": {
+      "c": {
+        "screens": "2839fb489c16d3cd981620a72a1d8033b3d27f038607f9241bd400f70a7b647a",
+        "cursors": "368e7da0b7a52caec47dc3f595eb74286d9247e8077a0fa83dfa219b0d572588",
+        "calls": "2663a7fd5c6910e1204510c5d845ccea2482424e2f39f7e2c8856bc4b7b5485c",
+        "slices": "93977365cc64ffc160c8ae858a4da7b1598317449a93ba197154b5ee712d4aef",
+        "frames": "c1b907fd988f1c4dbfb5f9a1348edc5d9455cd8a1f3b175d134fd4e48a607b02"
+      },
+      "js": {
+        "screens": "e7204cac0d94c4424ba89aebbfa76dc50a490b3aeadec9a4e703436aa531e9d2",
+        "cursors": "368e7da0b7a52caec47dc3f595eb74286d9247e8077a0fa83dfa219b0d572588",
+        "calls": "cfa1e86a9bb811c77570645161c74e47ec0f3e290aedbb68bc3a62b61408bcbd",
+        "slices": "f6b013f7b02ef8b8dd2c1a64c283605ca034d895b082ccf483ac4f044c205eb7",
+        "frames": "c1b907fd988f1c4dbfb5f9a1348edc5d9455cd8a1f3b175d134fd4e48a607b02"
+      }
+    },
+    "normalizedHashes": {
+      "c": {
+        "calls": "cfa1e86a9bb811c77570645161c74e47ec0f3e290aedbb68bc3a62b61408bcbd",
+        "slices": "f6b013f7b02ef8b8dd2c1a64c283605ca034d895b082ccf483ac4f044c205eb7"
+      },
+      "js": {
+        "calls": "cfa1e86a9bb811c77570645161c74e47ec0f3e290aedbb68bc3a62b61408bcbd",
+        "slices": "f6b013f7b02ef8b8dd2c1a64c283605ca034d895b082ccf483ac4f044c205eb7"
+      }
+    },
+    "frozenScreenCursorExact": true,
+    "fullRngExact": true,
+    "fullStyleExact": true,
+    "animationExact": true
+  },
+  {
+    "segment": 9,
+    "name": "helm-drift-restore",
+    "boundaries": {
+      "expected": 20,
+      "actual": 20
+    },
+    "frozenScreens": 19,
+    "fullStyleScreens": 19,
+    "matchingStyleCells": 38342,
+    "totalCells": 38400,
+    "blankStyleMismatches": 0,
+    "nonblankStyleMismatches": 0,
+    "glyphMismatches": 58,
+    "screenDifferences": [
+      {
+        "step": 0,
+        "frozenEqual": false,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1862,
+        "blankStyleMismatches": 0,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 58,
+        "firstFullStyleDifference": {
+          "x": 18,
+          "y": 0,
+          "c": {
+            "ch": "a",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "h",
+            "color": 8,
+            "attr": 0
+          }
+        },
+        "firstFrozenDifference": {
+          "x": 18,
+          "y": 0,
+          "kind": "ch",
+          "c": {
+            "ch": "a",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "h",
+            "color": 8,
+            "attr": 0
+          }
+        }
+      }
+    ],
+    "cursors": {
+      "expected": 20,
+      "actual": 20,
+      "matched": 19,
+      "firstDifference": {
+        "index": 0,
+        "c": [
+          78,
+          0,
+          1
+        ],
+        "js": [
+          64,
+          0,
+          1
+        ]
+      }
+    },
+    "calls": {
+      "rawExpected": 3,
+      "rawActual": 3,
+      "discardedEntries": 0,
+      "expected": 3,
+      "actual": 3,
+      "firstDifference": null
+    },
+    "slices": {
+      "expected": 20,
+      "actual": 20,
+      "matched": 20,
+      "differences": []
+    },
+    "frames": {
+      "expected": 0,
+      "actual": 0,
+      "expectedSlices": 20,
+      "actualSlices": 20,
+      "countMismatches": [],
+      "fullStyleMatches": 0,
+      "cursorMatches": 0
+    },
+    "rawHashes": {
+      "c": {
+        "screens": "c78359c450d2827580eb7e199e4bcf41497d5a616f25f83441aab474d6f6c05f",
+        "cursors": "04fb8a1cf3290824c9ab0ab3e68a6f71a1936ed6a9f6c0709abb5553c948750a",
+        "calls": "e2a88e80a64a54c41d98749d15ccb55c6e1d85ce64cb13e7d3adf711a1080541",
+        "slices": "9cdd01e629306dfa19eac1c1d80b22fd5da5c3f5232e44fd5d4f4808d80035ba",
+        "frames": "8c6e351b83642ea4d58e5bb456624576be95d6ad699a0d0e0f71ba49e32b2356"
+      },
+      "js": {
+        "screens": "657cc122c86b538ca4f72ad7fe7ea8527b1165fd3c96b68170c1e6661f0710be",
+        "cursors": "7953efcf33d7e72f542557670b5824cd49c47709faa1dc06741c56a08a315222",
+        "calls": "0d5e5793409d2565c10821e2553815510069124f221443f836a6d24d63acf85d",
+        "slices": "a4c81b87136741487a7c2d2b097b0f2226cf5ef8ee784287c353616980353dc1",
+        "frames": "8c6e351b83642ea4d58e5bb456624576be95d6ad699a0d0e0f71ba49e32b2356"
+      }
+    },
+    "normalizedHashes": {
+      "c": {
+        "calls": "0d5e5793409d2565c10821e2553815510069124f221443f836a6d24d63acf85d",
+        "slices": "a4c81b87136741487a7c2d2b097b0f2226cf5ef8ee784287c353616980353dc1"
+      },
+      "js": {
+        "calls": "0d5e5793409d2565c10821e2553815510069124f221443f836a6d24d63acf85d",
+        "slices": "a4c81b87136741487a7c2d2b097b0f2226cf5ef8ee784287c353616980353dc1"
+      }
+    },
+    "frozenScreenCursorExact": false,
+    "fullRngExact": true,
+    "fullStyleExact": false,
+    "animationExact": true
+  },
+  {
+    "segment": 10,
+    "name": "underlying-male-priest-save",
+    "boundaries": {
+      "expected": 33,
+      "actual": 33
+    },
+    "frozenScreens": 33,
+    "fullStyleScreens": 33,
+    "matchingStyleCells": 63360,
+    "totalCells": 63360,
+    "blankStyleMismatches": 0,
+    "nonblankStyleMismatches": 0,
+    "glyphMismatches": 0,
+    "screenDifferences": [],
+    "cursors": {
+      "expected": 33,
+      "actual": 33,
+      "matched": 33,
+      "firstDifference": null
+    },
+    "calls": {
+      "rawExpected": 2757,
+      "rawActual": 2757,
+      "discardedEntries": 0,
+      "expected": 2757,
+      "actual": 2757,
+      "firstDifference": null
+    },
+    "slices": {
+      "expected": 33,
+      "actual": 33,
+      "matched": 33,
+      "differences": []
+    },
+    "frames": {
+      "expected": 0,
+      "actual": 0,
+      "expectedSlices": 33,
+      "actualSlices": 33,
+      "countMismatches": [],
+      "fullStyleMatches": 0,
+      "cursorMatches": 0
+    },
+    "rawHashes": {
+      "c": {
+        "screens": "670641044cc9f7d7bafad11c7712d4f5d218e7a83086aa3ee60ed0506dae4b39",
+        "cursors": "dd40d2301a19b62be032a1e75962f868e673f575ff70c3e1b2237e6b05ef521d",
+        "calls": "62f3e7b73fc53c165141ed58cd3008357180099ac772e2dc3c3338d497afcccf",
+        "slices": "86067da364f419220e401b33b59a1fdf1be24ac4d298932b31b02a7e5fb4d7a5",
+        "frames": "ba3a1dbda7521fc175cc7ea8b04f1d61a74268d3a43a5e30c3ee86ae6ff797d0"
+      },
+      "js": {
+        "screens": "09fc60726e951030d91ca67b7c973a26819cc9794bb9cfbd65df3d31b004898e",
+        "cursors": "dd40d2301a19b62be032a1e75962f868e673f575ff70c3e1b2237e6b05ef521d",
+        "calls": "ab8a37587e5563cb2eaa35bd9e3ac2469060e22361fe96ecaed1e26eaabd1562",
+        "slices": "a3fdffa6e1d8f67af5a4920cf5120f33b1ca3c2732fef004f749d4774b3414e9",
+        "frames": "ba3a1dbda7521fc175cc7ea8b04f1d61a74268d3a43a5e30c3ee86ae6ff797d0"
+      }
+    },
+    "normalizedHashes": {
+      "c": {
+        "calls": "ab8a37587e5563cb2eaa35bd9e3ac2469060e22361fe96ecaed1e26eaabd1562",
+        "slices": "a3fdffa6e1d8f67af5a4920cf5120f33b1ca3c2732fef004f749d4774b3414e9"
+      },
+      "js": {
+        "calls": "ab8a37587e5563cb2eaa35bd9e3ac2469060e22361fe96ecaed1e26eaabd1562",
+        "slices": "a3fdffa6e1d8f67af5a4920cf5120f33b1ca3c2732fef004f749d4774b3414e9"
+      }
+    },
+    "frozenScreenCursorExact": true,
+    "fullRngExact": true,
+    "fullStyleExact": true,
+    "animationExact": true
+  },
+  {
+    "segment": 11,
+    "name": "underlying-male-priest-restore",
+    "boundaries": {
+      "expected": 20,
+      "actual": 20
+    },
+    "frozenScreens": 19,
+    "fullStyleScreens": 19,
+    "matchingStyleCells": 38364,
+    "totalCells": 38400,
+    "blankStyleMismatches": 0,
+    "nonblankStyleMismatches": 0,
+    "glyphMismatches": 36,
+    "screenDifferences": [
+      {
+        "step": 0,
+        "frozenEqual": false,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1884,
+        "blankStyleMismatches": 0,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 36,
+        "firstFullStyleDifference": {
+          "x": 30,
+          "y": 0,
+          "c": {
+            "ch": ",",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "e",
+            "color": 8,
+            "attr": 0
+          }
+        },
+        "firstFrozenDifference": {
+          "x": 30,
+          "y": 0,
+          "kind": "ch",
+          "c": {
+            "ch": ",",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "e",
+            "color": 8,
+            "attr": 0
+          }
+        }
+      }
+    ],
+    "cursors": {
+      "expected": 20,
+      "actual": 20,
+      "matched": 19,
+      "firstDifference": {
+        "index": 0,
+        "c": [
+          64,
+          0,
+          1
+        ],
+        "js": [
+          67,
+          0,
+          1
+        ]
+      }
+    },
+    "calls": {
+      "rawExpected": 2,
+      "rawActual": 2,
+      "discardedEntries": 0,
+      "expected": 2,
+      "actual": 2,
+      "firstDifference": null
+    },
+    "slices": {
+      "expected": 20,
+      "actual": 20,
+      "matched": 20,
+      "differences": []
+    },
+    "frames": {
+      "expected": 0,
+      "actual": 0,
+      "expectedSlices": 20,
+      "actualSlices": 20,
+      "countMismatches": [],
+      "fullStyleMatches": 0,
+      "cursorMatches": 0
+    },
+    "rawHashes": {
+      "c": {
+        "screens": "1d80a24ca92b2cec0fe53815dddc99a42b90f3528e28b146cf3651fb0470391c",
+        "cursors": "7953efcf33d7e72f542557670b5824cd49c47709faa1dc06741c56a08a315222",
+        "calls": "63488badbda28da8eb949724f5740be9c64e9e302e1d44092937b311266f2baf",
+        "slices": "0752d24ec60305d9cb2dca2153b0fe68a9288613f63d2ac7b4f6bf75d168232b",
+        "frames": "8c6e351b83642ea4d58e5bb456624576be95d6ad699a0d0e0f71ba49e32b2356"
+      },
+      "js": {
+        "screens": "9d5a8fcc52c69951ef528c024d0575b173fc8bac586004cbf82d66a5a7c6840f",
+        "cursors": "d14ce3fb502a458784fc8ab7fb3becfeba238a77206e7b775b58b7164ca3d066",
+        "calls": "d851772ea659556a4c79eb6f919c3c1e6484e9c3274fa1f6b5a4741e804b047a",
+        "slices": "c6f478830f50fef5507828b52ca8b26fc0cc01a2637b7390e8497ca37dcf63d1",
+        "frames": "8c6e351b83642ea4d58e5bb456624576be95d6ad699a0d0e0f71ba49e32b2356"
+      }
+    },
+    "normalizedHashes": {
+      "c": {
+        "calls": "d851772ea659556a4c79eb6f919c3c1e6484e9c3274fa1f6b5a4741e804b047a",
+        "slices": "c6f478830f50fef5507828b52ca8b26fc0cc01a2637b7390e8497ca37dcf63d1"
+      },
+      "js": {
+        "calls": "d851772ea659556a4c79eb6f919c3c1e6484e9c3274fa1f6b5a4741e804b047a",
+        "slices": "c6f478830f50fef5507828b52ca8b26fc0cc01a2637b7390e8497ca37dcf63d1"
+      }
+    },
+    "frozenScreenCursorExact": false,
+    "fullRngExact": true,
+    "fullStyleExact": false,
+    "animationExact": true
+  },
+  {
+    "segment": 12,
+    "name": "pending-human-genocide-save",
+    "boundaries": {
+      "expected": 85,
+      "actual": 85
+    },
+    "frozenScreens": 85,
+    "fullStyleScreens": 85,
+    "matchingStyleCells": 163200,
+    "totalCells": 163200,
+    "blankStyleMismatches": 0,
+    "nonblankStyleMismatches": 0,
+    "glyphMismatches": 0,
+    "screenDifferences": [],
+    "cursors": {
+      "expected": 85,
+      "actual": 85,
+      "matched": 85,
+      "firstDifference": null
+    },
+    "calls": {
+      "rawExpected": 2795,
+      "rawActual": 2795,
+      "discardedEntries": 0,
+      "expected": 2795,
+      "actual": 2795,
+      "firstDifference": null
+    },
+    "slices": {
+      "expected": 85,
+      "actual": 85,
+      "matched": 85,
+      "differences": []
+    },
+    "frames": {
+      "expected": 0,
+      "actual": 0,
+      "expectedSlices": 85,
+      "actualSlices": 85,
+      "countMismatches": [],
+      "fullStyleMatches": 0,
+      "cursorMatches": 0
+    },
+    "rawHashes": {
+      "c": {
+        "screens": "82d753b7ce849706c835a8ac82bfa47b5f9296305d0661832351cffbb7ec2025",
+        "cursors": "be8e7f5371bd56c317e0bd35ead0b2eba40e3a942e93a73409b504769e16ee59",
+        "calls": "9d472015b32f1189aa2e31c19ded89f463d5f4b1cf601e3142136b63cbd1d21b",
+        "slices": "be9e618567d92d017811cf9efa8b3510030355d3b5b183cae00bfca5acde86f0",
+        "frames": "6b5f4a82d0b8dd72ef4e0a443829508771fd41c4e8ada6741b299fe350c2f345"
+      },
+      "js": {
+        "screens": "0537f4327304f642baf0cbf9436b15f080419a8b66e08abdbee018de93ea4212",
+        "cursors": "be8e7f5371bd56c317e0bd35ead0b2eba40e3a942e93a73409b504769e16ee59",
+        "calls": "aa8342d0559ae5976fd250d08b9c43820dc3dc108dea9207cba01e1a9b36ea72",
+        "slices": "488bf4f6905d8f3270f3bc7d7fb06e250c835ca102898c668774d13a0c0ea705",
+        "frames": "6b5f4a82d0b8dd72ef4e0a443829508771fd41c4e8ada6741b299fe350c2f345"
+      }
+    },
+    "normalizedHashes": {
+      "c": {
+        "calls": "aa8342d0559ae5976fd250d08b9c43820dc3dc108dea9207cba01e1a9b36ea72",
+        "slices": "488bf4f6905d8f3270f3bc7d7fb06e250c835ca102898c668774d13a0c0ea705"
+      },
+      "js": {
+        "calls": "aa8342d0559ae5976fd250d08b9c43820dc3dc108dea9207cba01e1a9b36ea72",
+        "slices": "488bf4f6905d8f3270f3bc7d7fb06e250c835ca102898c668774d13a0c0ea705"
+      }
+    },
+    "frozenScreenCursorExact": true,
+    "fullRngExact": true,
+    "fullStyleExact": true,
+    "animationExact": true
+  },
+  {
+    "segment": 13,
+    "name": "pending-human-genocide-restore",
+    "boundaries": {
+      "expected": 20,
+      "actual": 20
+    },
+    "frozenScreens": 19,
+    "fullStyleScreens": 19,
+    "matchingStyleCells": 38340,
+    "totalCells": 38400,
+    "blankStyleMismatches": 0,
+    "nonblankStyleMismatches": 0,
+    "glyphMismatches": 60,
+    "screenDifferences": [
+      {
+        "step": 0,
+        "frozenEqual": false,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1860,
+        "blankStyleMismatches": 0,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 60,
+        "firstFullStyleDifference": {
+          "x": 0,
+          "y": 0,
+          "c": {
+            "ch": "Y",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "H",
+            "color": 8,
+            "attr": 0
+          }
+        },
+        "firstFrozenDifference": {
+          "x": 0,
+          "y": 0,
+          "kind": "ch",
+          "c": {
+            "ch": "Y",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "H",
+            "color": 8,
+            "attr": 0
+          }
+        }
+      }
+    ],
+    "cursors": {
+      "expected": 20,
+      "actual": 20,
+      "matched": 19,
+      "firstDifference": {
+        "index": 0,
+        "c": [
+          52,
+          0,
+          1
+        ],
+        "js": [
+          64,
+          0,
+          1
+        ]
+      }
+    },
+    "calls": {
+      "rawExpected": 3,
+      "rawActual": 3,
+      "discardedEntries": 0,
+      "expected": 3,
+      "actual": 3,
+      "firstDifference": null
+    },
+    "slices": {
+      "expected": 20,
+      "actual": 20,
+      "matched": 20,
+      "differences": []
+    },
+    "frames": {
+      "expected": 0,
+      "actual": 0,
+      "expectedSlices": 20,
+      "actualSlices": 20,
+      "countMismatches": [],
+      "fullStyleMatches": 0,
+      "cursorMatches": 0
+    },
+    "rawHashes": {
+      "c": {
+        "screens": "1e658944373981fc98cee611524a8fc099d1fce48b68e86bb8bf06b74bbc1cd0",
+        "cursors": "8db881502ecdf25c9c99e070cb3cd6f2c12f9afee0064f09aeda00b3dc0a6374",
+        "calls": "e2a88e80a64a54c41d98749d15ccb55c6e1d85ce64cb13e7d3adf711a1080541",
+        "slices": "9cdd01e629306dfa19eac1c1d80b22fd5da5c3f5232e44fd5d4f4808d80035ba",
+        "frames": "8c6e351b83642ea4d58e5bb456624576be95d6ad699a0d0e0f71ba49e32b2356"
+      },
+      "js": {
+        "screens": "4ebb22ac20acf57af81794c2bc26652be836c8420780f9ec782a5a4099f91d43",
+        "cursors": "7953efcf33d7e72f542557670b5824cd49c47709faa1dc06741c56a08a315222",
+        "calls": "0d5e5793409d2565c10821e2553815510069124f221443f836a6d24d63acf85d",
+        "slices": "a4c81b87136741487a7c2d2b097b0f2226cf5ef8ee784287c353616980353dc1",
+        "frames": "8c6e351b83642ea4d58e5bb456624576be95d6ad699a0d0e0f71ba49e32b2356"
+      }
+    },
+    "normalizedHashes": {
+      "c": {
+        "calls": "0d5e5793409d2565c10821e2553815510069124f221443f836a6d24d63acf85d",
+        "slices": "a4c81b87136741487a7c2d2b097b0f2226cf5ef8ee784287c353616980353dc1"
+      },
+      "js": {
+        "calls": "0d5e5793409d2565c10821e2553815510069124f221443f836a6d24d63acf85d",
+        "slices": "a4c81b87136741487a7c2d2b097b0f2226cf5ef8ee784287c353616980353dc1"
+      }
+    },
+    "frozenScreenCursorExact": false,
+    "fullRngExact": true,
+    "fullStyleExact": false,
+    "animationExact": true
+  },
+  {
+    "segment": 14,
+    "name": "hot-smoke-annotation-save",
+    "boundaries": {
+      "expected": 66,
+      "actual": 66
+    },
+    "frozenScreens": 66,
+    "fullStyleScreens": 66,
+    "matchingStyleCells": 126720,
+    "totalCells": 126720,
+    "blankStyleMismatches": 0,
+    "nonblankStyleMismatches": 0,
+    "glyphMismatches": 0,
+    "screenDifferences": [],
+    "cursors": {
+      "expected": 66,
+      "actual": 66,
+      "matched": 66,
+      "firstDifference": null
+    },
+    "calls": {
+      "rawExpected": 19259,
+      "rawActual": 19259,
+      "discardedEntries": 0,
+      "expected": 19259,
+      "actual": 19259,
+      "firstDifference": null
+    },
+    "slices": {
+      "expected": 66,
+      "actual": 66,
+      "matched": 66,
+      "differences": []
+    },
+    "frames": {
+      "expected": 0,
+      "actual": 0,
+      "expectedSlices": 66,
+      "actualSlices": 66,
+      "countMismatches": [],
+      "fullStyleMatches": 0,
+      "cursorMatches": 0
+    },
+    "rawHashes": {
+      "c": {
+        "screens": "05072fda86846a3ae8955e6058a0f1c3b5a4e4b672072608acb4346c3b6d77ee",
+        "cursors": "049e9e5b116c959f1296b6cb22ee832ec422282bd5eea00fcf76ddfb45d2d8f6",
+        "calls": "e1bbbb063a35a86cb8aba2b457bb322d40317b3da14420e831e56d9973fd6a74",
+        "slices": "9962309bedad03745cfc9d706e1ceefbf47257538898402a94fd6f3346db6098",
+        "frames": "2bfadcb5ce122d308aa99f3b659a5ee16fb1fc0c1e88bd183cb21c4695ba1de2"
+      },
+      "js": {
+        "screens": "686c4e65a06ba575af921fee15f13ee212ccdded254edd33c92ce3677ade2d46",
+        "cursors": "049e9e5b116c959f1296b6cb22ee832ec422282bd5eea00fcf76ddfb45d2d8f6",
+        "calls": "ed429548f3acaa124563da331311edcd9bd9f5946bf42fcea40b916442b3fd57",
+        "slices": "cf2d19ce07774a9819c1bb547e1e960007b62ae91b440d28ae5a1b772f383f7c",
+        "frames": "2bfadcb5ce122d308aa99f3b659a5ee16fb1fc0c1e88bd183cb21c4695ba1de2"
+      }
+    },
+    "normalizedHashes": {
+      "c": {
+        "calls": "ed429548f3acaa124563da331311edcd9bd9f5946bf42fcea40b916442b3fd57",
+        "slices": "cf2d19ce07774a9819c1bb547e1e960007b62ae91b440d28ae5a1b772f383f7c"
+      },
+      "js": {
+        "calls": "ed429548f3acaa124563da331311edcd9bd9f5946bf42fcea40b916442b3fd57",
+        "slices": "cf2d19ce07774a9819c1bb547e1e960007b62ae91b440d28ae5a1b772f383f7c"
+      }
+    },
+    "frozenScreenCursorExact": true,
+    "fullRngExact": true,
+    "fullStyleExact": true,
+    "animationExact": true
+  },
+  {
+    "segment": 15,
+    "name": "hot-smoke-annotation-restore",
+    "boundaries": {
+      "expected": 20,
+      "actual": 20
+    },
+    "frozenScreens": 17,
+    "fullStyleScreens": 17,
+    "matchingStyleCells": 38279,
+    "totalCells": 38400,
+    "blankStyleMismatches": 0,
+    "nonblankStyleMismatches": 0,
+    "glyphMismatches": 121,
+    "screenDifferences": [
+      {
+        "step": 1,
+        "frozenEqual": false,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1879,
+        "blankStyleMismatches": 0,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 41,
+        "firstFullStyleDifference": {
+          "x": 0,
+          "y": 0,
+          "c": {
+            "ch": "I",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "Y",
+            "color": 8,
+            "attr": 0
+          }
+        },
+        "firstFrozenDifference": {
+          "x": 0,
+          "y": 0,
+          "kind": "ch",
+          "c": {
+            "ch": "I",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "Y",
+            "color": 8,
+            "attr": 0
+          }
+        }
+      },
+      {
+        "step": 2,
+        "frozenEqual": false,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1878,
+        "blankStyleMismatches": 0,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 42,
+        "firstFullStyleDifference": {
+          "x": 0,
+          "y": 0,
+          "c": {
+            "ch": "Y",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "D",
+            "color": 8,
+            "attr": 0
+          }
+        },
+        "firstFrozenDifference": {
+          "x": 0,
+          "y": 0,
+          "kind": "ch",
+          "c": {
+            "ch": "Y",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "D",
+            "color": 8,
+            "attr": 0
+          }
+        }
+      },
+      {
+        "step": 4,
+        "frozenEqual": false,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1882,
+        "blankStyleMismatches": 0,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 38,
+        "firstFullStyleDifference": {
+          "x": 0,
+          "y": 0,
+          "c": {
+            "ch": "D",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "U",
+            "color": 8,
+            "attr": 0
+          }
+        },
+        "firstFrozenDifference": {
+          "x": 0,
+          "y": 0,
+          "kind": "ch",
+          "c": {
+            "ch": "D",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "U",
+            "color": 8,
+            "attr": 0
+          }
+        }
+      }
+    ],
+    "cursors": {
+      "expected": 20,
+      "actual": 20,
+      "matched": 18,
+      "firstDifference": {
+        "index": 1,
+        "c": [
+          43,
+          0,
+          1
+        ],
+        "js": [
+          44,
+          0,
+          1
+        ]
+      }
+    },
+    "calls": {
+      "rawExpected": 3,
+      "rawActual": 3,
+      "discardedEntries": 0,
+      "expected": 3,
+      "actual": 3,
+      "firstDifference": null
+    },
+    "slices": {
+      "expected": 20,
+      "actual": 20,
+      "matched": 20,
+      "differences": []
+    },
+    "frames": {
+      "expected": 0,
+      "actual": 0,
+      "expectedSlices": 20,
+      "actualSlices": 20,
+      "countMismatches": [],
+      "fullStyleMatches": 0,
+      "cursorMatches": 0
+    },
+    "rawHashes": {
+      "c": {
+        "screens": "b10c3593dccad2d1010b5754676b738c974abb0b394d0bfde047dbbc1e4fabb0",
+        "cursors": "b38de811f58e68ae844ac8f19507894ea1850cf361acfc3acdce26c14e36e80e",
+        "calls": "e2a88e80a64a54c41d98749d15ccb55c6e1d85ce64cb13e7d3adf711a1080541",
+        "slices": "9cdd01e629306dfa19eac1c1d80b22fd5da5c3f5232e44fd5d4f4808d80035ba",
+        "frames": "8c6e351b83642ea4d58e5bb456624576be95d6ad699a0d0e0f71ba49e32b2356"
+      },
+      "js": {
+        "screens": "78b0a4fdc03e235aeb7fc8491208452ffa08cdf81b225933bce269dfe77541f1",
+        "cursors": "db6b8ddab15a89ac69119b749475955dc45e6ba0fcada37134fcb2b02334ea7b",
+        "calls": "0d5e5793409d2565c10821e2553815510069124f221443f836a6d24d63acf85d",
+        "slices": "a4c81b87136741487a7c2d2b097b0f2226cf5ef8ee784287c353616980353dc1",
+        "frames": "8c6e351b83642ea4d58e5bb456624576be95d6ad699a0d0e0f71ba49e32b2356"
+      }
+    },
+    "normalizedHashes": {
+      "c": {
+        "calls": "0d5e5793409d2565c10821e2553815510069124f221443f836a6d24d63acf85d",
+        "slices": "a4c81b87136741487a7c2d2b097b0f2226cf5ef8ee784287c353616980353dc1"
+      },
+      "js": {
+        "calls": "0d5e5793409d2565c10821e2553815510069124f221443f836a6d24d63acf85d",
+        "slices": "a4c81b87136741487a7c2d2b097b0f2226cf5ef8ee784287c353616980353dc1"
+      }
+    },
+    "frozenScreenCursorExact": false,
+    "fullRngExact": true,
+    "fullStyleExact": false,
+    "animationExact": true
+  }
+]

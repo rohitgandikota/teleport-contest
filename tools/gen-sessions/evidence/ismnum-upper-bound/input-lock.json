@@ -1,0 +1,175 @@
+{
+  "classification": "ordinary unchanged valid-species controls only; no new recording requested",
+  "recipeSHA256": "901e7494fc208ca9ccc36571225886b46efdd0aa9728b50f59f1605ba19300a6",
+  "originalReportSHA256": "e0abb496ad6f2d057179e575290bcfb5565eed27adeeb4fe96b56a9663d62ae4",
+  "fieldsSHA256": "998c1a60245582ad7450fbc72bc8a8555190ee093fe7e20c8140401ed26ec74d",
+  "fields": [
+    [
+      {
+        "field": "name",
+        "present": true,
+        "value": "shopkeeper-statue-contact"
+      },
+      {
+        "field": "seed",
+        "present": true,
+        "value": 6903
+      },
+      {
+        "field": "datetime",
+        "present": true,
+        "value": "20000110090000"
+      },
+      {
+        "field": "nethackrc",
+        "present": true,
+        "value": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n"
+      },
+      {
+        "field": "moves",
+        "present": true,
+        "value": " \u00162\r\u0006\u0014  llllllllllllllllllll.  \u001b\u001b#levelchange\r30\r                                   \u0017blessed leather gloves\rWo  \u001b\u0017cockatrice corpse\rwp  \u001bFy  \r\u001bkFy   \u001bFh   \u001b"
+      }
+    ],
+    [
+      {
+        "field": "name",
+        "present": true,
+        "value": "corpse-held-no-impact-negative"
+      },
+      {
+        "field": "seed",
+        "present": true,
+        "value": 6903
+      },
+      {
+        "field": "datetime",
+        "present": true,
+        "value": "20000110090000"
+      },
+      {
+        "field": "nethackrc",
+        "present": true,
+        "value": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n"
+      },
+      {
+        "field": "moves",
+        "present": true,
+        "value": " \u00162\r\u0006\u0014  llllllllllllllllllll.  \u001b\u001b#levelchange\r30\r                                   \u0017blessed leather gloves\rWo  \u001b\u0017cockatrice corpse\rwp  \u001bFy  \r\u001bkFy   \u001b"
+      }
+    ],
+    [
+      {
+        "field": "name",
+        "present": true,
+        "value": "newt-corpse-impact-negative"
+      },
+      {
+        "field": "seed",
+        "present": true,
+        "value": 6903
+      },
+      {
+        "field": "datetime",
+        "present": true,
+        "value": "20000110090000"
+      },
+      {
+        "field": "nethackrc",
+        "present": true,
+        "value": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n"
+      },
+      {
+        "field": "moves",
+        "present": true,
+        "value": " \u00162\r\u0006\u0014  llllllllllllllllllll.  \u001b\u001b#levelchange\r30\r                                   \u0017blessed leather gloves\rWo  \u001b\u0017newt corpse\rwp  \u001bFy  \r\u001bkFy   \u001bFh   \u001b"
+      }
+    ],
+    [
+      {
+        "field": "name",
+        "present": true,
+        "value": "thrown-corpse-negative"
+      },
+      {
+        "field": "seed",
+        "present": true,
+        "value": 6903
+      },
+      {
+        "field": "datetime",
+        "present": true,
+        "value": "20000110090000"
+      },
+      {
+        "field": "nethackrc",
+        "present": true,
+        "value": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n"
+      },
+      {
+        "field": "moves",
+        "present": true,
+        "value": " \u00162\r\u0006\u0014  llllllllllllllllllll.  \u001b\u001b#levelchange\r30\r                                   \u0017blessed leather gloves\rWo  \u001b\u0017cockatrice corpse\rwp  \u001bFy  \r\u001bkFy   \u001btph   \u001b"
+      }
+    ]
+  ],
+  "keys": [
+    {
+      "name": "shopkeeper-statue-contact",
+      "count": 156,
+      "sha256": "a55aa141fd1601b3acc3078e7fc92b98622bc5babae949a6feb72ad2d615bbd0"
+    },
+    {
+      "name": "corpse-held-no-impact-negative",
+      "count": 150,
+      "sha256": "c107f56f9e2be299b6c4bee9d20d4fee56d9d4ce1a21a9235425ce49c1e72736"
+    },
+    {
+      "name": "newt-corpse-impact-negative",
+      "count": 150,
+      "sha256": "0436d751425366d64fceca947674c597efa10454eb5787d555e83d7ba0807117"
+    },
+    {
+      "name": "thrown-corpse-negative",
+      "count": 157,
+      "sha256": "b52e5c00d5bf8105a07beec5e45808a6b4055b21da1946c53da589577a520d53"
+    }
+  ],
+  "outputHashes": {
+    "shopkeeper-statue-contact": {
+      "screens": "af6cef332548f5a6d2948bc25e6dc3450cd030e36dce78ced496e2b9d07488f9",
+      "cursors": "512c440ff73796e15abc2d6bd8913dac9e272c3979eb8345332b6d915bb98e31",
+      "calls": "2f0dcba25b1b773aceb2227cf5b3d673aa849c419124f706ce3ccc5d801b3a29",
+      "slices": "dc5d2102f1df2403bbd1aaf5d3ac23faa33d69bb6d150078be2ac847bc09a6c1",
+      "frames": "5f29849d168189fd67637d50c5af49a750761132618a3aaf7f2d50750267427f"
+    },
+    "corpse-held-no-impact-negative": {
+      "screens": "fba7013f0e7a55e6220437797d037fdf29e59ca846cb059d5f5c343fc45eae3c",
+      "cursors": "91d4ad6a90859812e2bb3d32902fb20e21863253787eca87d17371ab6eaae314",
+      "calls": "a54bd837f1982c8906cf406d71aecc8eb1a286545b945194b427e070585e6c2a",
+      "slices": "a23c6c9d52fe0fc1e3d74cfb8a1325067fb8475a15a37bc2f239e321771c7e2f",
+      "frames": "22ea103a2b4941f256c4408a463b64736f310af061623675bf433cdfa40d4cf8"
+    },
+    "newt-corpse-impact-negative": {
+      "screens": "31ada03235e1cc587d31e6f3ba37c8efd56865ca69c92f4549dc5ec0ea7a6a08",
+      "cursors": "cd0a6a1972426c105b9b03fd364b43dffd90d4f5c421071dcc461415e5a073be",
+      "calls": "f5fc9673cdb684c1139037e0ce9b53d5232ea0edde2904621b9a017549c926be",
+      "slices": "4928a2d736692f082e78a1cceaa614892a89463432b6c450fdbea26b5fe74085",
+      "frames": "01289d2955dc7fbb7b79271f1dc0d431750d8b6d1c3a4430b9368864ecc7fb52"
+    },
+    "thrown-corpse-negative": {
+      "screens": "5ca55b7d7c1c1d019b83bee457a95e58d19aabe06175040d99e8e0ebaa114545",
+      "cursors": "2088f742fd1b278aec5b783c88f8e55c4838a1718164c4ed92483e3b952fbd9e",
+      "calls": "d251b3bf441cbd7319b578e0e8ef4c368d79f406012b742a11bcbdf7cf83ccf6",
+      "slices": "26de567f8e34f30f06167581751ac40382148424a68028ffd0e17343bd52a038",
+      "frames": "cb81333dec67419a548d09515cb3f26a2070acb1632a40d05c820fe607efbc79"
+    }
+  },
+  "stateHashes": {
+    "shopkeeper-statue-contact": "0868c4f5b998fd9e81b76a55818879ef47e0040b9cf2716597007ca4607b801f",
+    "corpse-held-no-impact-negative": "d00244a9fa39e1bee224afe913590593a2371613364d99c6815c0b0e12d40027",
+    "newt-corpse-impact-negative": "1637566fee0748890d603576f496e65e62dd4e8217d3b59faa8dc6ca12a3cf70",
+    "thrown-corpse-negative": "11bdcb4e439ef738337b8631294df8c97bd1b0fb77e8e218ae73f75a0155a2fd"
+  },
+  "originalAssertions": "unchanged linked tools/ordinary.mjs; full report must match original candidate bytes"
+}

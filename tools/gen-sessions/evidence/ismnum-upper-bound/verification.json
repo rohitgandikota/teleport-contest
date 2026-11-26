@@ -1,0 +1,59 @@
+{
+  "classification": "constructed invalid-index source controls and unchanged valid-species ordinary controls",
+  "priorPackets": [
+    {
+      "path": "../ismnum-upper-bound-source-audit-20261125",
+      "members": 318,
+      "sealSHA256": "a50fb2dfbb646b5f846f0e85ea747cddedfc9358b19e44a2713cb9f0f2faadec",
+      "manifestSHA256": "749b388f469ed884aea9756e9ce1a717505d24c207b8cc14e7da1a3486ccd8f4"
+    },
+    {
+      "path": "../uhitm-misc-impact-statue-prerequisite-audit-20261125",
+      "members": 340,
+      "sealSHA256": "0238f20bb69c8161fc1403f9fb1fe37e9638c0b2b9a57bc7c175cd0046b9291a",
+      "manifestSHA256": "27a61ad8277835c1c91b7090c0891a58325accde025a41fd65ec092faf8a74e3"
+    },
+    {
+      "path": "../corpse-impact-promotion",
+      "members": 67,
+      "sealSHA256": "78074eaaa158d748ec64859519e65be7fa0fa95f88615191e1af955b73c96a25",
+      "manifestSHA256": "fd91556598f3f1f83c5e8717a40b69fdf74de2426b9c1e1993013577bfe52f9c"
+    }
+  ],
+  "validationRuntime": {
+    "modules": 280,
+    "mapSHA256": "1103fb675cabadca988cc858b4f1b68067bdc0b2c20c0fe66010daaddf1b1011",
+    "choice": "sealed source318 candidate, no live main composition"
+  },
+  "sourceControls": [
+    32,
+    32
+  ],
+  "ordinary": [
+    4,
+    4
+  ],
+  "reports": {
+    "reports/controls-baseline.json": "2f415a99064256fdb51b785352972fcec431ad029ccf3242374c6874a0a26f9c",
+    "reports/controls-candidate.json": "3fa077a05370608191e1dbfe08d3edc72f3e42cebe220dbe0f8aba783e4c7322",
+    "reports/ordinary-candidate.json": "e0abb496ad6f2d057179e575290bcfb5565eed27adeeb4fe96b56a9663d62ae4"
+  },
+  "ordinaryOutputHashes": 20,
+  "originalNegativeHashes": 15,
+  "raw": {
+    "path": "tools/gen-sessions/generated/corpse-impact-owner.session.json",
+    "sha256": "6e69c20ddb555c320603929bc52aa1f3b149f4cc6a58804a7cb55ef111ae7ce1",
+    "bytes": 2807903,
+    "policy": "Accept an existing canonical file only at the exact byte SHA. Packet links parent raw read-only; no copy or rewrite."
+  },
+  "reusedCBranches": 4,
+  "nativeImprovementClaimed": false,
+  "ordinaryInvalidSpeciesClaimed": false,
+  "workerNativeReplayRun": false,
+  "limits": [
+    "Sentinel-generator field differences remain untouched.",
+    "Local bounded predicates and ad hoc pray reader remain untouched.",
+    "obj_pmname impossible diagnostic remains omitted.",
+    "Other shared corpse naming and miscellaneous-impact gaps remain outside this fix."
+  ]
+}

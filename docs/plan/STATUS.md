@@ -1,6 +1,54 @@
 # STATUS — live handoff board
 
-## 2026-11-25: level-departure trap reset verified for publication
+## 2026-11-25: species upper bound verified for publication
+
+Only js/const.js changes at runtime. ismnum now excludes NUMMONS and larger
+indices, matching include/monst.h. All 383 valid species remain accepted.
+Constructed source controls pass 32/32 versus 26/32. The four ordinary corpse
+cases and all twenty output hashes are unchanged. Invalid indices are source
+controls; no ordinary invalid-species producer or native improvement is claimed.
+
+Source318, promotion42 and composed-validation14 remain sealed. Seven exact
+portable payloads are installed, without new recordings or branch requirements.
+Main portable reports match the sealed reports byte for byte. Nine existing C
+cases retain their complete matching reports. All 107 selected/public recordings
+and all 107 strict eight-second workers pass. Retained checks pass 29/30; the
+prior billing-disposal 7/8 diagnostic has byte-identical output.
+
+Full911 passes all 911 recordings with two NFS CPU workers, default 45-second
+budgets and no retries: 926,078 screens/cursors, 20,011,996 random positions and
+33,131 frames. All 1,202 tested files are fixed at all-files SHA256
+`4fbfaee24a419933d4c960742dcbcb4578e539ac55e68d0147e5f42be55a5dcb`.
+Runtime280 map: ismnum-upper-bound-parent-composed-runtime.json, SHA256
+`32dd9edca12276307dd353234ca770d4fe71aafc22f443774cf30a33794c0766`.
+Root: /share/NFS/u/rohit/research/contest/artifacts/2026-11-22/ismnum-upper-bound-full911-js-20261125.
+Parent receipt: ismnum-upper-bound-main-verification.json. Public evidence:
+tools/gen-sessions/evidence/ismnum-upper-bound/parent-verification.json.
+Commit and immediately push, then check the exact published tree.
+Sentinel generation, local predicates, the pray reader, obj_pmname's omitted
+diagnostic and shared corpse naming remain separate gaps.
+
+Next: fruit/text source334 improves native comparisons from 6/18 to 16/18.
+Its composition with runtime32dd has byte-identical reports. The separate
+menu-marker source334 corrects one color argument, passes 12/12 versus 6/12
+constructed controls, and accounts for exactly two changed styled cells across
+all eighteen original inputs. Parent native comparison is pending. The original
+ASCII negative screen hash remains a recorded failure; the other 34 hashes are
+unchanged. No expectations were rewritten. Fruit promotion remains unsealed.
+The initial eleven C inputs were recorded once; the raw lacking source metadata
+is retained and its certified companion inserts only source:c. Pickup2 and
+original fruit5 raw recordings remain fixed.
+
+Guard diagnostic-await source325 passes 40/40 ordinary controls and 17/17 helper
+controls. Its five original C inputs were recorded once: 2/5 baseline, 3/5 after
+the await, with complete candidate/composed reports identical. Raw SHA256:
+`fc19509383920053b46ababaa4f8d25264a29a562e4d93392529db670e6c9218`.
+A separate vault cleanup audit is removing the two extra blank prompts. Main
+has neither guard change yet. Shared plural-corpse naming is also under review.
+The official recheck at 20:48 EST still shows rank 7 and 659 unmatched screens;
+its last-scored row remains 14:31 EST, before these checkpoints.
+
+## 2026-11-25: level-departure trap reset pushed as b09a3ace
 
 Only js/do.js changes at runtime. goto_level returns for the current level
 before changing context, and calls the existing reset_trapset on departure.
@@ -33,20 +81,13 @@ Root: /share/NFS/u/rohit/research/contest/artifacts/2026-11-22/level-change-trap
 Parent receipt: level-change-trap-reset-main-verification.json, SHA256
 `09218683388738b84d6809d9dc80f601f995a894ecd582f1d1725d1ad906899b`.
 Public evidence: tools/gen-sessions/evidence/level-change-trap-reset/parent-verification.json.
-Commit and immediately push, then check the exact published tree.
+Commit b09a3aced3a3b66d432cc1484b6cc1bacfb0c288 is pushed. All 1,202 tested
+files match its Git tree. Publication receipt SHA256:
+`e5b6f953b7a1b261c779d033809b897cab77a909b57bae66253de6d520282409`.
 Direct same-level goto and force_bungle are constructed controls. Lock/carried
 box and polearm cleanup, non-stair falling and whole goto_level remain open.
 
-Next: shared ismnum bounds source318 is sealed, const.js only, source 32/32
-versus 26/32 and all four existing ordinary corpse reports unchanged. Portable
-promotion and parent composition are pending. Fruit/text source334 native
-comparison passes 16/18 versus 6/18. The two remaining failures share an inherited
-menu search-marker color defect; its separate C owner review is underway.
-All 35 original negative hashes remain fixed. The original 13 inputs were recorded
-once. The first raw lacked top-level source metadata because the parent input
-omitted it; the preserved raw is unchanged, and a certified companion inserts
-only source:c. No C recording was repeated. Existing five-case fruit raw stays fixed.
-The guard prompt's postmov/newsym diagnostic await remains a separate audit.
+Subsequent bounds, fruit/text and guard work is tracked above.
 
 ## 2026-11-25: corpse-impact checkpoint pushed as 92e5d858
 

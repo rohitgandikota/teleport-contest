@@ -12,6 +12,15 @@ Ground rules are in `/CLAUDE.md`. Read that first if you have not.
 
 ## Current focus, 2026-11-25
 
+Species bounds now match C's NUMMONS limit. Source controls pass 32/32 versus
+26/32, four ordinary cases and nine C comparisons remain exact, and all 107
+selected/public and strict checks pass. Full911 passes on NFS with default
+budgets and no retries: 926,078 screens/cursors, 20,011,996 random positions and
+33,131 frames. The previous trap-reset checkpoint is pushed as b09a3ace.
+The species checkpoint is verified for immediate publication. Fruit/text is at
+16/18 native matches; the separate menu-color prerequisite and vault cleanup
+are next. See the top of STATUS for fixed snapshots and remaining limits.
+
 Shopkeeper re-entry is pushed as `31a63071`. All 906 maintained recordings
 pass on the exact published runtime with two NFS CPU workers, default budgets
 and no retries: 924,506 screens/cursors, 19,921,247 random positions and 33,095

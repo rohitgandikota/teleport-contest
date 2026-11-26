@@ -1,0 +1,88 @@
+{
+  "baselineCommit": "b09a3aced3a3b66d432cc1484b6cc1bacfb0c288",
+  "cSourcePin": "16ff59115315917b93185d026aeefea06db9b0f4",
+  "runtimeChanged": [
+    "js/const.js"
+  ],
+  "runtimeFiles": 280,
+  "runtimeSHA256": "32dd9edca12276307dd353234ca770d4fe71aafc22f443774cf30a33794c0766",
+  "sourceSeal": {
+    "members": 318,
+    "sha256": "a50fb2dfbb646b5f846f0e85ea747cddedfc9358b19e44a2713cb9f0f2faadec"
+  },
+  "promotionSeal": {
+    "members": 42,
+    "sha256": "e05825f85273a23fd1589dc2516f894809019258992c11c5be4f368694e88158"
+  },
+  "composedValidationSeal": {
+    "members": 14,
+    "sha256": "d4bdaec5a249041045df199f8d7e38689a30550a5244cb4b6aff73fb7adcba91"
+  },
+  "sourceControls": "32/32 versus 26/32",
+  "ordinaryChecks": "4/4 unchanged, all 20 output hashes fixed",
+  "native": {
+    "cases": 9,
+    "allExact": true,
+    "completeReportsUnchanged": true,
+    "newRecordings": 0,
+    "improvementClaimed": false,
+    "reports": {
+      "corpse": "2658a5fd1e371ad001e27929f3162f5c8fe9bc7a1fb13ddf65f048b7ed4117ad",
+      "level": "88f268972628ebcdc0b9b5ce4316e8cdb26c3b151a6b2d7806ed0648b300f046"
+    }
+  },
+  "portable": {
+    "payloadFiles": 7,
+    "newRequirements": 0,
+    "preflightRejections": 11,
+    "validMetadataControls": 2,
+    "reports": {
+      "tools/ismnum-upper-bound-controls-gate.mjs": "3fa077a05370608191e1dbfe08d3edc72f3e42cebe220dbe0f8aba783e4c7322",
+      "tools/ismnum-upper-bound-input-gate.mjs": "e0abb496ad6f2d057179e575290bcfb5565eed27adeeb4fe96b56a9663d62ae4"
+    }
+  },
+  "retained": {
+    "passed": 29,
+    "total": 30,
+    "unchangedFailure": {
+      "name": "billing-disposal-input",
+      "passed": 7,
+      "total": 8,
+      "stdoutSHA256": "d3bc25b86bb6ec86423418d73fa65948167ad92ae9879b41f7407628856c7b03"
+    }
+  },
+  "selectedPublic": {
+    "passed": 107,
+    "screens": 29635,
+    "cursors": 29635,
+    "rngCalls": 1559772,
+    "animFrames": 12531
+  },
+  "strict8s": {
+    "passed": 107,
+    "total": 107
+  },
+  "full911": {
+    "root": "/share/NFS/u/rohit/research/contest/artifacts/2026-11-22/ismnum-upper-bound-full911-js-20261125",
+    "passed": 911,
+    "sessions": 911,
+    "totals": {
+      "screens": 926078,
+      "cursors": 926078,
+      "rngCalls": 20011996,
+      "animFrames": 33131
+    },
+    "allFilesFixed": 1202,
+    "allFilesSHA256": "4fbfaee24a419933d4c960742dcbcb4578e539ac55e68d0147e5f42be55a5dcb",
+    "verificationSHA256": "8366f8132b4a9d315a41899841477b6d1751c4068b5e480838e4b057775cfd23",
+    "workers": 2,
+    "timeoutOverride": false,
+    "retries": 0
+  },
+  "limits": [
+    "Invalid species indices are constructed macro/caller controls; no ordinary invalid-species producer or native improvement is claimed.",
+    "Sentinel generator differences, local bounded predicates, the pray reader and omitted obj_pmname diagnostic remain open.",
+    "Shared corpse naming remains a separate investigation.",
+    "Full styled cells, cursor, ordered RNG and frames are checked. Literal serialized bytes, whole-port completeness and a newer held-out score are not established."
+  ]
+}

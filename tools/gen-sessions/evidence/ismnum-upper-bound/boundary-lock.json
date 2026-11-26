@@ -1,0 +1,181 @@
+{
+  "source": "include/monst.h:285, include/permonst.h:9-26; obj_pmname return from src/do_name.c:1321-1359",
+  "expectedGroups": 32,
+  "boundaries": [
+    {
+      "name": "below NON_PM",
+      "kind": "C integer macro contract",
+      "value": -2,
+      "expected": false
+    },
+    {
+      "name": "NON_PM",
+      "kind": "C integer macro contract",
+      "value": -1,
+      "expected": false
+    },
+    {
+      "name": "LOW_PM",
+      "kind": "C integer macro contract",
+      "value": 0,
+      "expected": true
+    },
+    {
+      "name": "LOW_PM plus one",
+      "kind": "C integer macro contract",
+      "value": 1,
+      "expected": true
+    },
+    {
+      "name": "before SPECIAL_PM",
+      "kind": "C integer macro contract",
+      "value": 329,
+      "expected": true
+    },
+    {
+      "name": "SPECIAL_PM",
+      "kind": "C integer macro contract",
+      "value": 330,
+      "expected": true
+    },
+    {
+      "name": "HIGH_PM",
+      "kind": "C integer macro contract",
+      "value": 382,
+      "expected": true
+    },
+    {
+      "name": "NUMMONS sentinel",
+      "kind": "C integer macro contract",
+      "value": 383,
+      "expected": false
+    },
+    {
+      "name": "past NUMMONS",
+      "kind": "C integer macro contract",
+      "value": 384,
+      "expected": false
+    },
+    {
+      "name": "C int minimum",
+      "kind": "C integer macro contract",
+      "value": -2147483648,
+      "expected": false
+    },
+    {
+      "name": "C int maximum",
+      "kind": "C integer macro contract",
+      "value": 2147483647,
+      "expected": false
+    },
+    {
+      "name": "negative zero",
+      "kind": "JS representation of integer zero",
+      "special": "negativeZero",
+      "expected": true
+    },
+    {
+      "name": "fractional low",
+      "kind": "existing JS strictness outside C integer domain",
+      "value": 0.5,
+      "expected": false
+    },
+    {
+      "name": "fractional high",
+      "kind": "existing JS strictness outside C integer domain",
+      "value": 382.5,
+      "expected": false
+    },
+    {
+      "name": "string zero",
+      "kind": "existing JS strictness outside C integer domain",
+      "value": "0",
+      "expected": false
+    },
+    {
+      "name": "null",
+      "kind": "existing JS strictness outside C integer domain",
+      "value": null,
+      "expected": false
+    },
+    {
+      "name": "false",
+      "kind": "existing JS strictness outside C integer domain",
+      "value": false,
+      "expected": false
+    },
+    {
+      "name": "true",
+      "kind": "existing JS strictness outside C integer domain",
+      "value": true,
+      "expected": false
+    },
+    {
+      "name": "NaN",
+      "kind": "existing JS strictness outside C integer domain",
+      "special": "NaN",
+      "expected": false
+    },
+    {
+      "name": "Infinity",
+      "kind": "existing JS strictness outside C integer domain",
+      "special": "Infinity",
+      "expected": false
+    },
+    {
+      "name": "negativeInfinity",
+      "kind": "existing JS strictness outside C integer domain",
+      "special": "negativeInfinity",
+      "expected": false
+    },
+    {
+      "name": "undefined",
+      "kind": "existing JS strictness outside C integer domain",
+      "special": "undefined",
+      "expected": false
+    }
+  ],
+  "caller": [
+    {
+      "name": "first species",
+      "species": 0,
+      "expected": "giant ant"
+    },
+    {
+      "name": "special species",
+      "species": 330,
+      "expected": "long worm tail"
+    },
+    {
+      "name": "last species",
+      "species": 382,
+      "expected": "apprentice"
+    },
+    {
+      "name": "negative fallback",
+      "species": -1,
+      "expected": "two-legged glorkum-seeker"
+    },
+    {
+      "name": "sentinel fallback",
+      "species": 383,
+      "expected": "two-legged glorkum-seeker"
+    },
+    {
+      "name": "past sentinel fallback",
+      "species": 384,
+      "expected": "two-legged glorkum-seeker"
+    },
+    {
+      "name": "large integer fallback",
+      "species": 2147483647,
+      "expected": "two-legged glorkum-seeker"
+    }
+  ],
+  "exclusions": [
+    "No C assertion for noninteger JS values",
+    "No ordinary invalid-species claim",
+    "obj_pmname impossible diagnostic remains unported",
+    "No claim that generated sentinel fields match C"
+  ]
+}

@@ -1,0 +1,49 @@
+{
+  "ordinary": {
+    "cases": 6,
+    "checks": 54,
+    "passed": 54,
+    "producerChecks": 24,
+    "sourceChecks": 18,
+    "neutrality": 12
+  },
+  "originalOrdinary": {
+    "checks": 54,
+    "passed": 50,
+    "failingCases": [
+      0,
+      2
+    ]
+  },
+  "native": {
+    "before": 4,
+    "after": 6,
+    "cases": 6,
+    "boundaries": 946,
+    "calls": 16874,
+    "frames": 42,
+    "fullStyles": true,
+    "cursors": true,
+    "callsAndSlices": true,
+    "framesAndStyles": true
+  },
+  "controls": {
+    "negativeIndexes": [
+      1,
+      3,
+      4,
+      5
+    ],
+    "hashesExact": 20,
+    "fullOrdinaryRowsExact": 4,
+    "fullNativeRowsExact": 4,
+    "existingHealthyHashesExact": 10,
+    "observedNativeJSHashesExact": 30
+  },
+  "sourceInputsUnchanged": true,
+  "originalAssertionsUnchanged": true,
+  "changedRuntimeFiles": [
+    "js/trap.js"
+  ],
+  "newCRecordings": 0
+}

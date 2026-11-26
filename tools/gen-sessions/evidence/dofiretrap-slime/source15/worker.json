@@ -1,0 +1,14 @@
+{
+  "command": [
+    "node",
+    "--preserve-symlinks",
+    "--preserve-symlinks-main",
+    "--max-old-space-size=512",
+    "/Users/rohit/research/code/contest/.cache/restart-20261122/dofiretrap-slime-source-audit/probe.mjs"
+  ],
+  "seconds": 2.71,
+  "exit": 0,
+  "logSHA256": "c8dfcc3917ec26416aa1ee3d2bb26254c40022984503ab5f92f061f2f5d0208d",
+  "maxHeapMB": 512,
+  "timeoutSeconds": 55
+}

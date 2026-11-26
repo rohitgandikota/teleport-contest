@@ -1,0 +1,12 @@
+{
+  "command": [
+    "node",
+    "--preserve-symlinks",
+    "--preserve-symlinks-main",
+    "--max-old-space-size=512",
+    "/Users/rohit/research/code/contest/.cache/restart-20261122/dofiretrap-slime-parent-review/native.mjs"
+  ],
+  "exit": 1,
+  "seconds": 1.457,
+  "logSHA256": "aa94dc9ef798f1e08a4bf088cdf8e0a577ae7b1e1b790e4903196accdbd8e350"
+}

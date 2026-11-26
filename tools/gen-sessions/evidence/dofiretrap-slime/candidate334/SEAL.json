@@ -1,0 +1,17 @@
+{
+  "sealedUTC": "2026-11-26T20:50:53.720140+00:00",
+  "members": 334,
+  "manifestSHA256": "0c64b6aa8296f01fb69d522a543c8dbed18d517d5ef02ba5b15bb2c84a310c20",
+  "runtimeSHA256": "87cec1dc239942fd7b621e514cdb80d982dccdb33cd9bd86c7c57c54451cde09",
+  "patchSHA256": "cd946cfef1170928ff0b2abca751b01a693c0c34e040eea2d90487caf014f12f",
+  "nativeReportSHA256": "ae1345f5432e49915327a7ac13665d33ce446b2eb632dc4a54dcb3e25fac58a1",
+  "originalSourceSealSHA256": "1dd143a2783c159d2d3272967096347b6254b65211f63c582db751b7e09c4ae7",
+  "preEditLockSHA256": "b1f3f6e2a2f10daadb193321e87c1010faa720ef7cb4826b6c581a7db518421b",
+  "presealVerificationSHA256": "ff1cbee8ed03a6532f7f68b22683b4af26ea1f14c6eb5e0a7dc6ffb65b66bb03",
+  "gameplayBatches": 1,
+  "newCRecordings": 0,
+  "runtimeOwnerChanges": [
+    "js/trap.js"
+  ],
+  "portablePromotion": false
+}

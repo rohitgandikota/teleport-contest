@@ -1,0 +1,126 @@
+{
+  "version": 5,
+  "source": "c",
+  "name": "dofiretrap-slime",
+  "description": "Fire traps clear slime after damage for resistant and nonresistant forms; healthy and look-only controls.",
+  "coverage": [
+    "forms.polymorph",
+    "mode.debug",
+    "ui.getlin",
+    "ui.more-paging",
+    "survival.timed-status"
+  ],
+  "branches": [
+    "traps.fire.slime.slimed-iron-trigger",
+    "traps.fire.slime.healthy-iron-trigger",
+    "traps.fire.slime.slimed-minotaur-trigger",
+    "traps.fire.slime.healthy-minotaur-trigger",
+    "traps.fire.slime.slimed-iron-look",
+    "traps.fire.slime.slimed-minotaur-look"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "traps.fire.slime.slimed-iron-trigger",
+      "segment": 0,
+      "screenIncludes": [
+        "A tower of flame erupts",
+        "The slime that covers you is burned away!"
+      ],
+      "screenExcludes": []
+    },
+    {
+      "branch": "traps.fire.slime.healthy-iron-trigger",
+      "segment": 1,
+      "screenIncludes": [
+        "A tower of flame erupts"
+      ],
+      "screenExcludes": [
+        "The slime that covers you is burned away!"
+      ]
+    },
+    {
+      "branch": "traps.fire.slime.slimed-minotaur-trigger",
+      "segment": 2,
+      "screenIncludes": [
+        "A tower of flame erupts",
+        "The slime that covers you is burned away!"
+      ],
+      "screenExcludes": []
+    },
+    {
+      "branch": "traps.fire.slime.healthy-minotaur-trigger",
+      "segment": 3,
+      "screenIncludes": [
+        "A tower of flame erupts"
+      ],
+      "screenExcludes": [
+        "The slime that covers you is burned away!"
+      ]
+    },
+    {
+      "branch": "traps.fire.slime.slimed-iron-look",
+      "segment": 4,
+      "screenIncludes": [
+        "You see no objects here."
+      ],
+      "screenExcludes": [
+        "The slime that covers you is burned away!"
+      ]
+    },
+    {
+      "branch": "traps.fire.slime.slimed-minotaur-look",
+      "segment": 5,
+      "screenIncludes": [
+        "You see no objects here."
+      ],
+      "screenExcludes": [
+        "The slime that covers you is burned away!"
+      ]
+    }
+  ],
+  "segments": [
+    {
+      "name": "slimed-iron-trigger",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed scroll of genocide\r    \u001b\u001bra  *\r    \u001b\u001bh #polyself\riron golem\r   \u001b\u001b\u0017uncursed gauntlets of fumbling\r   \u001b\u001bWb   \u001b\u001b\u0017fire trap\r   \u001b\u001b#wizintrinsic\r100c\r\u001b\u001b#sit\r   \u001b\u001b"
+    },
+    {
+      "name": "healthy-iron-trigger",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed scroll of genocide\r    \u001b\u001bra  *\r    \u001b\u001bh #polyself\riron golem\r   \u001b\u001b\u0017uncursed gauntlets of fumbling\r   \u001b\u001bWb   \u001b\u001b\u0017fire trap\r   \u001b\u001b#sit\r   \u001b\u001b"
+    },
+    {
+      "name": "slimed-minotaur-trigger",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed scroll of genocide\r    \u001b\u001bra  *\r    \u001b\u001bh #polyself\rminotaur\r   \u001b\u001b\u0017uncursed gauntlets of fumbling\r   \u001b\u001bWb   \u001b\u001b\u0017fire trap\r   \u001b\u001b#wizintrinsic\r100c\r\u001b\u001b#sit\r   \u001b\u001b"
+    },
+    {
+      "name": "healthy-minotaur-trigger",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed scroll of genocide\r    \u001b\u001bra  *\r    \u001b\u001bh #polyself\rminotaur\r   \u001b\u001b\u0017uncursed gauntlets of fumbling\r   \u001b\u001bWb   \u001b\u001b\u0017fire trap\r   \u001b\u001b#sit\r   \u001b\u001b"
+    },
+    {
+      "name": "slimed-iron-look",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed scroll of genocide\r    \u001b\u001bra  *\r    \u001b\u001bh #polyself\riron golem\r   \u001b\u001b\u0017uncursed gauntlets of fumbling\r   \u001b\u001bWb   \u001b\u001b\u0017fire trap\r   \u001b\u001b#wizintrinsic\r100c\r\u001b\u001b:   \u001b\u001b"
+    },
+    {
+      "name": "slimed-minotaur-look",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed scroll of genocide\r    \u001b\u001bra  *\r    \u001b\u001bh #polyself\rminotaur\r   \u001b\u001b\u0017uncursed gauntlets of fumbling\r   \u001b\u001bWb   \u001b\u001b\u0017fire trap\r   \u001b\u001b#wizintrinsic\r100c\r\u001b\u001b:   \u001b\u001b"
+    }
+  ]
+}

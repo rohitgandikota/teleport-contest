@@ -1,0 +1,704 @@
+[
+  {
+    "index": 0,
+    "name": "slimed-iron-trigger",
+    "negative": false,
+    "checks": [
+      {
+        "kind": "producer",
+        "name": "actual fire trap and safe floor reached after cleanup",
+        "pass": true
+      },
+      {
+        "kind": "producer",
+        "name": "actual form, resistance and worn fumbling gloves",
+        "pass": true
+      },
+      {
+        "kind": "producer",
+        "name": "requested timed slime or healthy condition exists before action",
+        "pass": true
+      },
+      {
+        "kind": "producer",
+        "name": "all inputs consumed with no death or rehumanization",
+        "pass": true
+      },
+      {
+        "kind": "source",
+        "name": "only a sit action triggers the fire trap",
+        "pass": true
+      },
+      {
+        "kind": "source",
+        "name": "fire clears the timer, while look preserves it",
+        "pass": true
+      },
+      {
+        "kind": "source",
+        "name": "cure feedback occurs only for slimed fire triggers",
+        "pass": true
+      },
+      {
+        "kind": "neutrality",
+        "name": "passive observer preserves all five streams",
+        "pass": true
+      },
+      {
+        "kind": "neutrality",
+        "name": "deferred input preserves all five streams",
+        "pass": true
+      }
+    ],
+    "before": {
+      "step": 156,
+      "turn": 6,
+      "form": 259,
+      "hp": 12,
+      "hpmax": 12,
+      "mh": 120,
+      "mhmax": 120,
+      "mortality": 0,
+      "slime": 100,
+      "xy": [
+        58,
+        6
+      ],
+      "terrain": 25,
+      "resistant": true,
+      "fumbling": true,
+      "underwater": false,
+      "blind": false,
+      "gloves": {
+        "type": 160,
+        "worn": 16
+      },
+      "trap": 10,
+      "liveMonsters": 0
+    },
+    "after": {
+      "step": 166,
+      "turn": 8,
+      "form": 259,
+      "hp": 12,
+      "hpmax": 12,
+      "mh": 120,
+      "mhmax": 120,
+      "mortality": 0,
+      "slime": 0,
+      "xy": [
+        58,
+        6
+      ],
+      "terrain": 25,
+      "resistant": true,
+      "fumbling": true,
+      "underwater": false,
+      "blind": false,
+      "gloves": {
+        "type": 160,
+        "worn": 16
+      },
+      "trap": 10,
+      "liveMonsters": 0
+    },
+    "producer": true,
+    "source": true,
+    "statesSHA256": "36175dc8060b160299a62831fdd36685433f8c69bb95808c3d98bc9b462e80e9",
+    "outputHashes": {
+      "screens": "d115ac8abecc6ab1f7762f6980b33b424092c21024d53acf4e5cbc18ba04cdf5",
+      "cursors": "97bd9c8d5ca7a8ffb2f4c34f82d700f67e0291bbe05311c9435bf9a39895b88c",
+      "calls": "2aaf7d45565b885897678c890895ab6ca0cf560638ff63c11960ec3e09e5f035",
+      "slices": "3db366d5325fc4d4e35c23c0dbdd92d6e029eaff1ea4883f17bd7f2a7e5eb7b7",
+      "frames": "34ad5597c4fe4762e8e36e712dffefcd4701391a976c0d19f8a8e40a1824454f"
+    },
+    "boundaries": 167,
+    "calls": 2820,
+    "frames": 21
+  },
+  {
+    "index": 1,
+    "name": "healthy-iron-trigger",
+    "negative": true,
+    "checks": [
+      {
+        "kind": "producer",
+        "name": "actual fire trap and safe floor reached after cleanup",
+        "pass": true
+      },
+      {
+        "kind": "producer",
+        "name": "actual form, resistance and worn fumbling gloves",
+        "pass": true
+      },
+      {
+        "kind": "producer",
+        "name": "requested timed slime or healthy condition exists before action",
+        "pass": true
+      },
+      {
+        "kind": "producer",
+        "name": "all inputs consumed with no death or rehumanization",
+        "pass": true
+      },
+      {
+        "kind": "source",
+        "name": "only a sit action triggers the fire trap",
+        "pass": true
+      },
+      {
+        "kind": "source",
+        "name": "fire clears the timer, while look preserves it",
+        "pass": true
+      },
+      {
+        "kind": "source",
+        "name": "cure feedback occurs only for slimed fire triggers",
+        "pass": true
+      },
+      {
+        "kind": "neutrality",
+        "name": "passive observer preserves all five streams",
+        "pass": true
+      },
+      {
+        "kind": "neutrality",
+        "name": "deferred input preserves all five streams",
+        "pass": true
+      }
+    ],
+    "before": {
+      "step": 135,
+      "turn": 6,
+      "form": 259,
+      "hp": 12,
+      "hpmax": 12,
+      "mh": 120,
+      "mhmax": 120,
+      "mortality": 0,
+      "slime": 0,
+      "xy": [
+        58,
+        6
+      ],
+      "terrain": 25,
+      "resistant": true,
+      "fumbling": true,
+      "underwater": false,
+      "blind": false,
+      "gloves": {
+        "type": 160,
+        "worn": 16
+      },
+      "trap": 10,
+      "liveMonsters": 0
+    },
+    "after": {
+      "step": 145,
+      "turn": 8,
+      "form": 259,
+      "hp": 12,
+      "hpmax": 12,
+      "mh": 120,
+      "mhmax": 120,
+      "mortality": 0,
+      "slime": 0,
+      "xy": [
+        58,
+        6
+      ],
+      "terrain": 25,
+      "resistant": true,
+      "fumbling": true,
+      "underwater": false,
+      "blind": false,
+      "gloves": {
+        "type": 160,
+        "worn": 16
+      },
+      "trap": 10,
+      "liveMonsters": 0
+    },
+    "producer": true,
+    "source": true,
+    "statesSHA256": "fef5ad6fc01c82732436a7340498f0eb0d9e03a55f91db9f4dff10c51b1f69b1",
+    "outputHashes": {
+      "screens": "fa3cf8ada2b857cf81d5cf1fa63e85f25d788ddb57fcdeb8c779b7589f20f843",
+      "cursors": "6c640c6c0be2eb58db0c5e65a34ae5c47be41cdf658e34c1e8f8299f9cf6ecd3",
+      "calls": "2aaf7d45565b885897678c890895ab6ca0cf560638ff63c11960ec3e09e5f035",
+      "slices": "93c31a112875333debb3d5db31c0ae255ad02840b576bb0909ad2642a7ca304f",
+      "frames": "6b534ea99b37512ae521ef224958d4b3373da07c37fafbbb13d7eb394ebb40b0"
+    },
+    "boundaries": 146,
+    "calls": 2820,
+    "frames": 21
+  },
+  {
+    "index": 2,
+    "name": "slimed-minotaur-trigger",
+    "negative": false,
+    "checks": [
+      {
+        "kind": "producer",
+        "name": "actual fire trap and safe floor reached after cleanup",
+        "pass": true
+      },
+      {
+        "kind": "producer",
+        "name": "actual form, resistance and worn fumbling gloves",
+        "pass": true
+      },
+      {
+        "kind": "producer",
+        "name": "requested timed slime or healthy condition exists before action",
+        "pass": true
+      },
+      {
+        "kind": "producer",
+        "name": "all inputs consumed with no death or rehumanization",
+        "pass": true
+      },
+      {
+        "kind": "source",
+        "name": "only a sit action triggers the fire trap",
+        "pass": true
+      },
+      {
+        "kind": "source",
+        "name": "fire clears the timer, while look preserves it",
+        "pass": true
+      },
+      {
+        "kind": "source",
+        "name": "cure feedback occurs only for slimed fire triggers",
+        "pass": true
+      },
+      {
+        "kind": "neutrality",
+        "name": "passive observer preserves all five streams",
+        "pass": true
+      },
+      {
+        "kind": "neutrality",
+        "name": "deferred input preserves all five streams",
+        "pass": true
+      }
+    ],
+    "before": {
+      "step": 154,
+      "turn": 4,
+      "form": 177,
+      "hp": 12,
+      "hpmax": 12,
+      "mh": 79,
+      "mhmax": 79,
+      "mortality": 0,
+      "slime": 100,
+      "xy": [
+        58,
+        6
+      ],
+      "terrain": 25,
+      "resistant": false,
+      "fumbling": true,
+      "underwater": false,
+      "blind": false,
+      "gloves": {
+        "type": 160,
+        "worn": 16
+      },
+      "trap": 10,
+      "liveMonsters": 0
+    },
+    "after": {
+      "step": 164,
+      "turn": 5,
+      "form": 177,
+      "hp": 12,
+      "hpmax": 12,
+      "mh": 69,
+      "mhmax": 75,
+      "mortality": 0,
+      "slime": 0,
+      "xy": [
+        58,
+        6
+      ],
+      "terrain": 25,
+      "resistant": false,
+      "fumbling": true,
+      "underwater": false,
+      "blind": false,
+      "gloves": {
+        "type": 160,
+        "worn": 16
+      },
+      "trap": 10,
+      "liveMonsters": 0
+    },
+    "producer": true,
+    "source": true,
+    "statesSHA256": "2e24cf9453dae8758b89918a3fcdb8eee9a844427bcecebff2d7fcd9ffad3389",
+    "outputHashes": {
+      "screens": "ee5154392f4bf72405955d2a3bb381b5bdc232246042ef7857d2e2c3604804e1",
+      "cursors": "2be9cd0feca60ce0f595bc427852e30f7ec2c71179b39f0c78d6ac7c6d386c59",
+      "calls": "51fac02dee3a3d66f0bd628fae205f3889146df908445197df598c2b87f5d2e8",
+      "slices": "6e2dd8ae049df212bae444e0cfd67132e0b8c6360274181ad5d9530a62d99684",
+      "frames": "b8bc21b310f1865c65f531c491b0a8cce61cd1b3425a8d09ed8046a7b8749668"
+    },
+    "boundaries": 165,
+    "calls": 2815,
+    "frames": 0
+  },
+  {
+    "index": 3,
+    "name": "healthy-minotaur-trigger",
+    "negative": true,
+    "checks": [
+      {
+        "kind": "producer",
+        "name": "actual fire trap and safe floor reached after cleanup",
+        "pass": true
+      },
+      {
+        "kind": "producer",
+        "name": "actual form, resistance and worn fumbling gloves",
+        "pass": true
+      },
+      {
+        "kind": "producer",
+        "name": "requested timed slime or healthy condition exists before action",
+        "pass": true
+      },
+      {
+        "kind": "producer",
+        "name": "all inputs consumed with no death or rehumanization",
+        "pass": true
+      },
+      {
+        "kind": "source",
+        "name": "only a sit action triggers the fire trap",
+        "pass": true
+      },
+      {
+        "kind": "source",
+        "name": "fire clears the timer, while look preserves it",
+        "pass": true
+      },
+      {
+        "kind": "source",
+        "name": "cure feedback occurs only for slimed fire triggers",
+        "pass": true
+      },
+      {
+        "kind": "neutrality",
+        "name": "passive observer preserves all five streams",
+        "pass": true
+      },
+      {
+        "kind": "neutrality",
+        "name": "deferred input preserves all five streams",
+        "pass": true
+      }
+    ],
+    "before": {
+      "step": 133,
+      "turn": 4,
+      "form": 177,
+      "hp": 12,
+      "hpmax": 12,
+      "mh": 79,
+      "mhmax": 79,
+      "mortality": 0,
+      "slime": 0,
+      "xy": [
+        58,
+        6
+      ],
+      "terrain": 25,
+      "resistant": false,
+      "fumbling": true,
+      "underwater": false,
+      "blind": false,
+      "gloves": {
+        "type": 160,
+        "worn": 16
+      },
+      "trap": 10,
+      "liveMonsters": 0
+    },
+    "after": {
+      "step": 143,
+      "turn": 5,
+      "form": 177,
+      "hp": 12,
+      "hpmax": 12,
+      "mh": 69,
+      "mhmax": 75,
+      "mortality": 0,
+      "slime": 0,
+      "xy": [
+        58,
+        6
+      ],
+      "terrain": 25,
+      "resistant": false,
+      "fumbling": true,
+      "underwater": false,
+      "blind": false,
+      "gloves": {
+        "type": 160,
+        "worn": 16
+      },
+      "trap": 10,
+      "liveMonsters": 0
+    },
+    "producer": true,
+    "source": true,
+    "statesSHA256": "4ca59c1d24324e85fcbe0b558981ed2831cdddee47aac51d511aa0189294163a",
+    "outputHashes": {
+      "screens": "d596863bdb2a48724367a640af6213896dad1a155ada0357e739892c36d821b7",
+      "cursors": "4d18745245f3796287f428c67e5bff6269026d8b2a3134cd6b602c8c037bf6f4",
+      "calls": "51fac02dee3a3d66f0bd628fae205f3889146df908445197df598c2b87f5d2e8",
+      "slices": "4e643d20f5fc03998f0d1849259e82d937848c87bcbe578dca8a95b44ba805ee",
+      "frames": "c4b37863c7b402e33923a25d89716ec888f86f17c8d3068f4f0096fd510cdb03"
+    },
+    "boundaries": 144,
+    "calls": 2815,
+    "frames": 0
+  },
+  {
+    "index": 4,
+    "name": "slimed-iron-look",
+    "negative": true,
+    "checks": [
+      {
+        "kind": "producer",
+        "name": "actual fire trap and safe floor reached after cleanup",
+        "pass": true
+      },
+      {
+        "kind": "producer",
+        "name": "actual form, resistance and worn fumbling gloves",
+        "pass": true
+      },
+      {
+        "kind": "producer",
+        "name": "requested timed slime or healthy condition exists before action",
+        "pass": true
+      },
+      {
+        "kind": "producer",
+        "name": "all inputs consumed with no death or rehumanization",
+        "pass": true
+      },
+      {
+        "kind": "source",
+        "name": "only a sit action triggers the fire trap",
+        "pass": true
+      },
+      {
+        "kind": "source",
+        "name": "fire clears the timer, while look preserves it",
+        "pass": true
+      },
+      {
+        "kind": "source",
+        "name": "cure feedback occurs only for slimed fire triggers",
+        "pass": true
+      },
+      {
+        "kind": "neutrality",
+        "name": "passive observer preserves all five streams",
+        "pass": true
+      },
+      {
+        "kind": "neutrality",
+        "name": "deferred input preserves all five streams",
+        "pass": true
+      }
+    ],
+    "before": {
+      "step": 156,
+      "turn": 6,
+      "form": 259,
+      "hp": 12,
+      "hpmax": 12,
+      "mh": 120,
+      "mhmax": 120,
+      "mortality": 0,
+      "slime": 100,
+      "xy": [
+        58,
+        6
+      ],
+      "terrain": 25,
+      "resistant": true,
+      "fumbling": true,
+      "underwater": false,
+      "blind": false,
+      "gloves": {
+        "type": 160,
+        "worn": 16
+      },
+      "trap": 10,
+      "liveMonsters": 0
+    },
+    "after": {
+      "step": 162,
+      "turn": 6,
+      "form": 259,
+      "hp": 12,
+      "hpmax": 12,
+      "mh": 120,
+      "mhmax": 120,
+      "mortality": 0,
+      "slime": 100,
+      "xy": [
+        58,
+        6
+      ],
+      "terrain": 25,
+      "resistant": true,
+      "fumbling": true,
+      "underwater": false,
+      "blind": false,
+      "gloves": {
+        "type": 160,
+        "worn": 16
+      },
+      "trap": 10,
+      "liveMonsters": 0
+    },
+    "producer": true,
+    "source": true,
+    "statesSHA256": "d814982e3f60c87a1f52fb11e3857b931778d887c0a414721b1a6d2b232822c8",
+    "outputHashes": {
+      "screens": "39450a12b0e1cdd612813c611f05f554999fba2f1cb0f54ff2f2bc7b312b8f38",
+      "cursors": "27742a304c4859a7b30ee1bb1e545d4b011d8272bebbbb2cb36a80d3d65a98b8",
+      "calls": "2244bdf29cf5ec809de5d1bce14e26c7fb651b91f0c028baf475b0e01c299c16",
+      "slices": "eeb0c50bf01a5ef84ec4040dbb5f664a7d11e1655db7e093ecde3c90bb80a3df",
+      "frames": "88d054e863deab8e02c0771a1d29bc1196bfe76107b0f91192ac96df28b3c7e2"
+    },
+    "boundaries": 163,
+    "calls": 2806,
+    "frames": 0
+  },
+  {
+    "index": 5,
+    "name": "slimed-minotaur-look",
+    "negative": true,
+    "checks": [
+      {
+        "kind": "producer",
+        "name": "actual fire trap and safe floor reached after cleanup",
+        "pass": true
+      },
+      {
+        "kind": "producer",
+        "name": "actual form, resistance and worn fumbling gloves",
+        "pass": true
+      },
+      {
+        "kind": "producer",
+        "name": "requested timed slime or healthy condition exists before action",
+        "pass": true
+      },
+      {
+        "kind": "producer",
+        "name": "all inputs consumed with no death or rehumanization",
+        "pass": true
+      },
+      {
+        "kind": "source",
+        "name": "only a sit action triggers the fire trap",
+        "pass": true
+      },
+      {
+        "kind": "source",
+        "name": "fire clears the timer, while look preserves it",
+        "pass": true
+      },
+      {
+        "kind": "source",
+        "name": "cure feedback occurs only for slimed fire triggers",
+        "pass": true
+      },
+      {
+        "kind": "neutrality",
+        "name": "passive observer preserves all five streams",
+        "pass": true
+      },
+      {
+        "kind": "neutrality",
+        "name": "deferred input preserves all five streams",
+        "pass": true
+      }
+    ],
+    "before": {
+      "step": 154,
+      "turn": 4,
+      "form": 177,
+      "hp": 12,
+      "hpmax": 12,
+      "mh": 79,
+      "mhmax": 79,
+      "mortality": 0,
+      "slime": 100,
+      "xy": [
+        58,
+        6
+      ],
+      "terrain": 25,
+      "resistant": false,
+      "fumbling": true,
+      "underwater": false,
+      "blind": false,
+      "gloves": {
+        "type": 160,
+        "worn": 16
+      },
+      "trap": 10,
+      "liveMonsters": 0
+    },
+    "after": {
+      "step": 160,
+      "turn": 4,
+      "form": 177,
+      "hp": 12,
+      "hpmax": 12,
+      "mh": 79,
+      "mhmax": 79,
+      "mortality": 0,
+      "slime": 100,
+      "xy": [
+        58,
+        6
+      ],
+      "terrain": 25,
+      "resistant": false,
+      "fumbling": true,
+      "underwater": false,
+      "blind": false,
+      "gloves": {
+        "type": 160,
+        "worn": 16
+      },
+      "trap": 10,
+      "liveMonsters": 0
+    },
+    "producer": true,
+    "source": true,
+    "statesSHA256": "5aad2a9840c474898c910d2c4747e6d1f7f9aae36a619c8e35fd922cb8a08250",
+    "outputHashes": {
+      "screens": "b1325ed710cfa224986d7462ec34e7d0e297cd75ba05541bec1f81a943c2f270",
+      "cursors": "c02b2b153efe5845c1bde50b84f386448d40086f9e5f05464b5a3c8a7001fc97",
+      "calls": "9386169be802f025af0fa629d0862a97579842e00388076a7b40f5355218406d",
+      "slices": "8d3e3581067440f84e0cd905d5a3762cfa9cc9343637c39a9ca4bea3063a3f63",
+      "frames": "37d1c6f1dbfe89ed0fd4eeb129bbcf2c21b5f75604d93adb1355b87108d6813e"
+    },
+    "boundaries": 161,
+    "calls": 2798,
+    "frames": 0
+  }
+]

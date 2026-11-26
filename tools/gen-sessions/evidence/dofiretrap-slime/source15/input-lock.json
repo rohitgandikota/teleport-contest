@@ -1,0 +1,199 @@
+{
+  "lockedAt": "2026-11-26T20:35:44.275236+00:00",
+  "files": {
+    "recipe.json": "464be3d2901682092a659725341b561eff1d0bea614da8f6df7c27e88a9e6685",
+    "predictions.json": "f8280a16ade6d59d903d427c6453e6d67772f8be9b30021ad290cb1462346b11",
+    "runtime.json": "3eb0baba1215efe61ec5a314f78f243c3b91d24fd5854a5d3d21c319d57c4547",
+    "source-pins.json": "4d18645769b91aa3b9955f31e4fa66ea6c747dc895c458bbe6ce5f94d379c412",
+    "SOURCE-REVIEW.md": "d6f31cf42a72abd0d881b2a85ba4840ba30cda2f86b26d5ca6e250f28b2b3121",
+    "existing-healthy-hashes.json": "d32cf273a9c5a27b007a23a0be0149f57709d6e1c17e80ae8d7c9b756a5c4d2c",
+    "tools/half-damage-reader-observe.mjs": "201cdafe4409d5d58414c1d0ebc0449c32b29834cdf35c72c151a555d9031d07",
+    "frozen/screen-decode.mjs": "cb4a0fbfed3dda28c14736e6ae9c8b9eb8c87d75916c50d6df80f40eb0368cbe"
+  },
+  "probeSHA256": "6369ea90653a6368aefcb76d5fbfe282be1724eb8f4433c3858c2bdbb82329dd",
+  "fields": [
+    "name",
+    "seed",
+    "datetime",
+    "nethackrc",
+    "moves"
+  ],
+  "tuples": [
+    [
+      {
+        "field": "name",
+        "present": true,
+        "value": "slimed-iron-trigger"
+      },
+      {
+        "field": "seed",
+        "present": true,
+        "value": 99812
+      },
+      {
+        "field": "datetime",
+        "present": true,
+        "value": "20000110090000"
+      },
+      {
+        "field": "nethackrc",
+        "present": true,
+        "value": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n"
+      },
+      {
+        "field": "moves",
+        "present": true,
+        "value": " \u0017blessed scroll of genocide\r    \u001b\u001bra  *\r    \u001b\u001bh #polyself\riron golem\r   \u001b\u001b\u0017uncursed gauntlets of fumbling\r   \u001b\u001bWb   \u001b\u001b\u0017fire trap\r   \u001b\u001b#wizintrinsic\r100c\r\u001b\u001b#sit\r   \u001b\u001b"
+      }
+    ],
+    [
+      {
+        "field": "name",
+        "present": true,
+        "value": "healthy-iron-trigger"
+      },
+      {
+        "field": "seed",
+        "present": true,
+        "value": 99812
+      },
+      {
+        "field": "datetime",
+        "present": true,
+        "value": "20000110090000"
+      },
+      {
+        "field": "nethackrc",
+        "present": true,
+        "value": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n"
+      },
+      {
+        "field": "moves",
+        "present": true,
+        "value": " \u0017blessed scroll of genocide\r    \u001b\u001bra  *\r    \u001b\u001bh #polyself\riron golem\r   \u001b\u001b\u0017uncursed gauntlets of fumbling\r   \u001b\u001bWb   \u001b\u001b\u0017fire trap\r   \u001b\u001b#sit\r   \u001b\u001b"
+      }
+    ],
+    [
+      {
+        "field": "name",
+        "present": true,
+        "value": "slimed-minotaur-trigger"
+      },
+      {
+        "field": "seed",
+        "present": true,
+        "value": 99812
+      },
+      {
+        "field": "datetime",
+        "present": true,
+        "value": "20000110090000"
+      },
+      {
+        "field": "nethackrc",
+        "present": true,
+        "value": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n"
+      },
+      {
+        "field": "moves",
+        "present": true,
+        "value": " \u0017blessed scroll of genocide\r    \u001b\u001bra  *\r    \u001b\u001bh #polyself\rminotaur\r   \u001b\u001b\u0017uncursed gauntlets of fumbling\r   \u001b\u001bWb   \u001b\u001b\u0017fire trap\r   \u001b\u001b#wizintrinsic\r100c\r\u001b\u001b#sit\r   \u001b\u001b"
+      }
+    ],
+    [
+      {
+        "field": "name",
+        "present": true,
+        "value": "healthy-minotaur-trigger"
+      },
+      {
+        "field": "seed",
+        "present": true,
+        "value": 99812
+      },
+      {
+        "field": "datetime",
+        "present": true,
+        "value": "20000110090000"
+      },
+      {
+        "field": "nethackrc",
+        "present": true,
+        "value": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n"
+      },
+      {
+        "field": "moves",
+        "present": true,
+        "value": " \u0017blessed scroll of genocide\r    \u001b\u001bra  *\r    \u001b\u001bh #polyself\rminotaur\r   \u001b\u001b\u0017uncursed gauntlets of fumbling\r   \u001b\u001bWb   \u001b\u001b\u0017fire trap\r   \u001b\u001b#sit\r   \u001b\u001b"
+      }
+    ],
+    [
+      {
+        "field": "name",
+        "present": true,
+        "value": "slimed-iron-look"
+      },
+      {
+        "field": "seed",
+        "present": true,
+        "value": 99812
+      },
+      {
+        "field": "datetime",
+        "present": true,
+        "value": "20000110090000"
+      },
+      {
+        "field": "nethackrc",
+        "present": true,
+        "value": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n"
+      },
+      {
+        "field": "moves",
+        "present": true,
+        "value": " \u0017blessed scroll of genocide\r    \u001b\u001bra  *\r    \u001b\u001bh #polyself\riron golem\r   \u001b\u001b\u0017uncursed gauntlets of fumbling\r   \u001b\u001bWb   \u001b\u001b\u0017fire trap\r   \u001b\u001b#wizintrinsic\r100c\r\u001b\u001b:   \u001b\u001b"
+      }
+    ],
+    [
+      {
+        "field": "name",
+        "present": true,
+        "value": "slimed-minotaur-look"
+      },
+      {
+        "field": "seed",
+        "present": true,
+        "value": 99812
+      },
+      {
+        "field": "datetime",
+        "present": true,
+        "value": "20000110090000"
+      },
+      {
+        "field": "nethackrc",
+        "present": true,
+        "value": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n"
+      },
+      {
+        "field": "moves",
+        "present": true,
+        "value": " \u0017blessed scroll of genocide\r    \u001b\u001bra  *\r    \u001b\u001bh #polyself\rminotaur\r   \u001b\u001b\u0017uncursed gauntlets of fumbling\r   \u001b\u001bWb   \u001b\u001b\u0017fire trap\r   \u001b\u001b#wizintrinsic\r100c\r\u001b\u001b:   \u001b\u001b"
+      }
+    ]
+  ],
+  "negativeIndexes": [
+    1,
+    3,
+    4,
+    5
+  ],
+  "existingHealthyIndexes": [
+    1,
+    3
+  ],
+  "keys": 940,
+  "expectedBaseline": "6/6 producers, 4/6 source, only slimed trigger timer/message failures",
+  "newRuntimeCandidate": false,
+  "referenceCExecutions": 0
+}

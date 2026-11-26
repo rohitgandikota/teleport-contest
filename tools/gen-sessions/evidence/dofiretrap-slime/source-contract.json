@@ -1,0 +1,234 @@
+{
+  "recipe": {
+    "path": "tools/gen-sessions/recipes/dofiretrap-slime.json",
+    "sha256": "464be3d2901682092a659725341b561eff1d0bea614da8f6df7c27e88a9e6685"
+  },
+  "native": {
+    "path": "tools/gen-sessions/generated/dofiretrap-slime.session.json",
+    "sha256": "6014eaea22a8a560cc691c15c2a825bf036a344f4e8d059694c7e8d3a1f19531",
+    "bytes": 1313341
+  },
+  "cPin": "16ff59115315917b93185d026aeefea06db9b0f4",
+  "recordedBinarySHA256": "ba4dbc1c823f8d4b0cfb6fd594d00ff0ff5754daaaa2036bee15baeffdf85aa7",
+  "recordedRecorderSHA256": "b129caee2ca3941b30c36f5c26644bd37ff610344332eb511c474b8709b70648",
+  "reviewedCSourcePins": {
+    "/Users/rohit/research/code/contest/nethack-c/upstream/src/trap.c": "1f6af30bbd0b75a2e4c043098355c1f4eff2a841de27aecdc9f47343d4d5402c",
+    "/Users/rohit/research/code/contest/nethack-c/upstream/src/timeout.c": "779540f647749e0da11109f18a90e11c9e7bc36af44ed6455440b40fc6910596",
+    "/Users/rohit/research/code/contest/nethack-c/upstream/src/potion.c": "05176768623072e3e1337fc23b91e1f3991980dbefb4ca2fc44c0fe6d1115aa9",
+    "/Users/rohit/research/code/contest/nethack-c/upstream/src/wizcmds.c": "4611d620caedc59dc270f5d6b6f9a2497831dc88325edc90f3770e75afd9b71f",
+    "/Users/rohit/research/code/contest/nethack-c/upstream/src/sit.c": "b9c9d7d0eb82b003c984eb1e2868c97edf71c44570b0490ae21e8bd33cfb72e1"
+  },
+  "reviewedCSourcePinsAreHistoricalOnly": true,
+  "portableDependencyPins": {
+    "tools/half-damage-reader-observe.mjs": "201cdafe4409d5d58414c1d0ebc0449c32b29834cdf35c72c151a555d9031d07",
+    "tools/gen-sessions/assertions.mjs": "aed2dfe01e18cb2e8b0d62e389ab9d8a9c02b0e3e98d4e427fcead4c228e3adc",
+    "tools/gen-sessions/screen-decode.mjs": "0831fd4db121dab1d3c8f80efac29c68ce50f67fedbb49f2bd7c21371244dae0",
+    "frozen/screen-decode.mjs": "cb4a0fbfed3dda28c14736e6ae9c8b9eb8c87d75916c50d6df80f40eb0368cbe"
+  },
+  "sealedPackets": {
+    "source15": {
+      "members": 15,
+      "sealSHA256": "1dd143a2783c159d2d3272967096347b6254b65211f63c582db751b7e09c4ae7",
+      "manifestSHA256": "2dff56db0e2ae44b0d045ec4043064c63f1b8d0bfa55e02d2dee91c41177b521"
+    },
+    "candidate334": {
+      "members": 334,
+      "sealSHA256": "2a3681eed9b7e01334c57de370f45e24c1ee5ee6e4b4d6d8b21fdd07a0138568",
+      "manifestSHA256": "0c64b6aa8296f01fb69d522a543c8dbed18d517d5ef02ba5b15bb2c84a310c20"
+    }
+  },
+  "sealedEvidence": {
+    "source15/SOURCE-REVIEW.md": {
+      "packet": "source15",
+      "member": "SOURCE-REVIEW.md"
+    },
+    "source15/STATUS.md": {
+      "packet": "source15",
+      "member": "STATUS.md"
+    },
+    "source15/baseline-observation.json": {
+      "packet": "source15",
+      "member": "baseline-observation.json"
+    },
+    "source15/existing-healthy-hashes.json": {
+      "packet": "source15",
+      "member": "existing-healthy-hashes.json"
+    },
+    "source15/input-lock.json": {
+      "packet": "source15",
+      "member": "input-lock.json"
+    },
+    "source15/negative-hashes.json": {
+      "packet": "source15",
+      "member": "negative-hashes.json"
+    },
+    "source15/predictions.json": {
+      "packet": "source15",
+      "member": "predictions.json"
+    },
+    "source15/probe.mjs": {
+      "packet": "source15",
+      "member": "probe.mjs"
+    },
+    "source15/recipe.json": {
+      "packet": "source15",
+      "member": "recipe.json"
+    },
+    "source15/runtime.json": {
+      "packet": "source15",
+      "member": "runtime.json"
+    },
+    "source15/source-pins.json": {
+      "packet": "source15",
+      "member": "source-pins.json"
+    },
+    "source15/summary.json": {
+      "packet": "source15",
+      "member": "summary.json"
+    },
+    "source15/verify.py": {
+      "packet": "source15",
+      "member": "verify.py"
+    },
+    "source15/worker.json": {
+      "packet": "source15",
+      "member": "worker.json"
+    },
+    "source15/worker.log": {
+      "packet": "source15",
+      "member": "worker.log"
+    },
+    "candidate334/README.md": {
+      "packet": "candidate334",
+      "member": "README.md"
+    },
+    "candidate334/SOURCE-REVIEW.md": {
+      "packet": "candidate334",
+      "member": "SOURCE-REVIEW.md"
+    },
+    "candidate334/PLAN.md": {
+      "packet": "candidate334",
+      "member": "PLAN.md"
+    },
+    "candidate334/pre-edit-lock.json": {
+      "packet": "candidate334",
+      "member": "pre-edit-lock.json"
+    },
+    "candidate334/edit-receipt.json": {
+      "packet": "candidate334",
+      "member": "edit-receipt.json"
+    },
+    "candidate334/probe.mjs": {
+      "packet": "candidate334",
+      "member": "probe.mjs"
+    },
+    "candidate334/preflight.mjs": {
+      "packet": "candidate334",
+      "member": "preflight.mjs"
+    },
+    "candidate334/reports/accounting.json": {
+      "packet": "candidate334",
+      "member": "reports/accounting.json"
+    },
+    "candidate334/reports/candidate-observation.json": {
+      "packet": "candidate334",
+      "member": "reports/candidate-observation.json"
+    },
+    "candidate334/reports/candidate-native.json": {
+      "packet": "candidate334",
+      "member": "reports/candidate-native.json"
+    },
+    "candidate334/reports/negative-hashes.json": {
+      "packet": "candidate334",
+      "member": "reports/negative-hashes.json"
+    },
+    "candidate334/reports/preflight.json": {
+      "packet": "candidate334",
+      "member": "reports/preflight.json"
+    },
+    "candidate334/reports/batch-receipt.json": {
+      "packet": "candidate334",
+      "member": "reports/batch-receipt.json"
+    },
+    "candidate334/reports/batch-start.json": {
+      "packet": "candidate334",
+      "member": "reports/batch-start.json"
+    },
+    "candidate334/reports/batch.log": {
+      "packet": "candidate334",
+      "member": "reports/batch.log"
+    },
+    "candidate334/reports/preseal-verification.json": {
+      "packet": "candidate334",
+      "member": "reports/preseal-verification.json"
+    }
+  },
+  "evidencePins": {
+    "README.md": "05fdccd7037f19e137098b237b0281dc48952a3fa2e5fda49e5d63a348077234",
+    "candidate334/MANIFEST.json": "0c64b6aa8296f01fb69d522a543c8dbed18d517d5ef02ba5b15bb2c84a310c20",
+    "candidate334/PLAN.md": "c6aadeb045a8177f21ac58261b788e98be1071067bbf23c4fe6c322435f11658",
+    "candidate334/README.md": "97f94e910d8d63777480daac45d2b855741ecdc6a812173301e71b3c0888252a",
+    "candidate334/SEAL.json": "2a3681eed9b7e01334c57de370f45e24c1ee5ee6e4b4d6d8b21fdd07a0138568",
+    "candidate334/SOURCE-REVIEW.md": "aa3973baa9641e9eccb0ecce36a881da2e10d9cda19d06ecfb0b266f00c2fba9",
+    "candidate334/edit-receipt.json": "97e1c84cc06774f7010328e4c2e211619e49fc3b5c2d05cd0aa7a221b2c6ed4c",
+    "candidate334/pre-edit-lock.json": "b1f3f6e2a2f10daadb193321e87c1010faa720ef7cb4826b6c581a7db518421b",
+    "candidate334/preflight.mjs": "3ea0ba155a4b542d5c55229417410b97b2c2008c6cd8d9a68002e20cf4294784",
+    "candidate334/probe.mjs": "02f8e3834b0ea165556f66ad4aa4a2706c7895208f62010e5968d504e3439d39",
+    "candidate334/reports/accounting.json": "0fe30f6fa791c15c578d721d515c9d536f2935739826ff6314feddd7230cbbe6",
+    "candidate334/reports/batch-receipt.json": "d7ab2a995b09395935e911f40e88abd734fe7090c5d7efa4919e2f35f45a7550",
+    "candidate334/reports/batch-start.json": "8065990bea92f2bd451aaa1e31ce114766217942868aefb980bbd6aaf4c35d31",
+    "candidate334/reports/batch.log": "52078cc334c9ef02c18697a9e10edf163cf3c0bb70291e1981098079e352d68d",
+    "candidate334/reports/candidate-native.json": "ae1345f5432e49915327a7ac13665d33ce446b2eb632dc4a54dcb3e25fac58a1",
+    "candidate334/reports/candidate-observation.json": "d81b526b7317178b91ac5218911f701109ea7cc39caf0516fe59a8c9528f6b61",
+    "candidate334/reports/negative-hashes.json": "eb25fd0c6efe1bbf7ee66baa183aa69e472927d5a161f28f3f2e782a953555ae",
+    "candidate334/reports/preflight.json": "f330ac455f1a2c4d047fba8cdf4543319893bc7da76b170886fe19076d876655",
+    "candidate334/reports/preseal-verification.json": "ff1cbee8ed03a6532f7f68b22683b4af26ea1f14c6eb5e0a7dc6ffb65b66bb03",
+    "parent/baseline-command.json": "526c2ddcc53364ce50aa37c147ac67ec6095dfed4522ec8204444ae64125fa55",
+    "parent/baseline-native.json": "2a6e9be17240de09ab99f6ef9d25810632d271ba2b1bfb17a6c7984e32d4daa7",
+    "parent/baseline-native.log": "aa94dc9ef798f1e08a4bf088cdf8e0a577ae7b1e1b790e4903196accdbd8e350",
+    "parent/input-lock.json": "7103f354202bf44b4b6c044dec3da9622c0f5697b3e939450bce5739bf8492cc",
+    "parent/native-recording.json": "2d45a4df768ea1110303daaadc52df5f689ff662bbbf754bae2f320f31260fcb",
+    "parent/native-recording.log": "2644b689e0052b39ff298d979dbb764f00c1679e6a3850150b10076b1301445b",
+    "parent/pins.json": "5554559f937e004cbd29ad054a7cf10e49d3da6e2ff53848e0773fe311b173b5",
+    "parent/preflight.json": "7a71c16cbf5f54338f9c6fddd298003a8e70d26f56304a12d7d7bc1675777d41",
+    "portable-provenance.json": "040b084748e2c844d7d1eb6a83d8b62edddd839be7aabb71f4972b3d39e783e7",
+    "requirements-additions.json": "c7a826665edf83b66342761c1c8967f56ec478c860d9e05691026d86d6f34964",
+    "source15/MANIFEST.json": "2dff56db0e2ae44b0d045ec4043064c63f1b8d0bfa55e02d2dee91c41177b521",
+    "source15/SEAL.json": "1dd143a2783c159d2d3272967096347b6254b65211f63c582db751b7e09c4ae7",
+    "source15/SOURCE-REVIEW.md": "d6f31cf42a72abd0d881b2a85ba4840ba30cda2f86b26d5ca6e250f28b2b3121",
+    "source15/STATUS.md": "5862d21d653250e90d3d44f78eede381d24a8e22c7c414a553891135b2c835fb",
+    "source15/baseline-observation.json": "3a90873f7b4b0b4510eb748abbcf31020bdb2a5765fe9b401abb0a4b64ee03c2",
+    "source15/existing-healthy-hashes.json": "d32cf273a9c5a27b007a23a0be0149f57709d6e1c17e80ae8d7c9b756a5c4d2c",
+    "source15/input-lock.json": "fa1c45a662696e7ab4b54bb9072992ffebcd0d3de42a82f99170df6a23cb46d0",
+    "source15/negative-hashes.json": "eb25fd0c6efe1bbf7ee66baa183aa69e472927d5a161f28f3f2e782a953555ae",
+    "source15/predictions.json": "f8280a16ade6d59d903d427c6453e6d67772f8be9b30021ad290cb1462346b11",
+    "source15/probe.mjs": "6369ea90653a6368aefcb76d5fbfe282be1724eb8f4433c3858c2bdbb82329dd",
+    "source15/recipe.json": "464be3d2901682092a659725341b561eff1d0bea614da8f6df7c27e88a9e6685",
+    "source15/runtime.json": "3eb0baba1215efe61ec5a314f78f243c3b91d24fd5854a5d3d21c319d57c4547",
+    "source15/source-pins.json": "4d18645769b91aa3b9955f31e4fa66ea6c747dc895c458bbe6ce5f94d379c412",
+    "source15/summary.json": "0199aa60b898233e04c48f9014281643bf52341747c3f98cd91bbccbd042d5c7",
+    "source15/verify.py": "b94bd4ec94ff41989195718e1a99231b4e5f3b204c5f08312fd50c5b08e9f9e1",
+    "source15/worker.json": "46256531cf44ebe0037a13b783844e44061d5fbacaf687cb587fb6956fda9cc2",
+    "source15/worker.log": "c8dfcc3917ec26416aa1ee3d2bb26254c40022984503ab5f92f061f2f5d0208d"
+  },
+  "originalBodySHA256": "0c4011ab9dc5c7b44de44245d9035d85568b400d5f5367c3bbd1c40eaccd8c27",
+  "portableBodySHA256": "37fd14e3d048bd41c2b8fa89aeda3624de73eccfd7fa1e165654498575e880d6",
+  "originalInputLockSHA256": "fa1c45a662696e7ab4b54bb9072992ffebcd0d3de42a82f99170df6a23cb46d0",
+  "negativeIndexes": [
+    1,
+    3,
+    4,
+    5
+  ],
+  "healthyIndexes": [
+    1,
+    3
+  ],
+  "totals": {
+    "cases": 6,
+    "keys": 940,
+    "boundaries": 946,
+    "calls": 16874,
+    "frames": 42
+  }
+}

@@ -1,0 +1,68 @@
+[
+  {
+    "name": "slimed-iron-trigger",
+    "sourceIndex": 5,
+    "slimed": true,
+    "trigger": true,
+    "resistant": true,
+    "form": "PM_IRON_GOLEM",
+    "actionStart": 156,
+    "negative": false,
+    "expectedCSlime": 0
+  },
+  {
+    "name": "healthy-iron-trigger",
+    "sourceIndex": 5,
+    "slimed": false,
+    "trigger": true,
+    "resistant": true,
+    "form": "PM_IRON_GOLEM",
+    "actionStart": 135,
+    "negative": true,
+    "expectedCSlime": 0
+  },
+  {
+    "name": "slimed-minotaur-trigger",
+    "sourceIndex": 4,
+    "slimed": true,
+    "trigger": true,
+    "resistant": false,
+    "form": "PM_MINOTAUR",
+    "actionStart": 154,
+    "negative": false,
+    "expectedCSlime": 0
+  },
+  {
+    "name": "healthy-minotaur-trigger",
+    "sourceIndex": 4,
+    "slimed": false,
+    "trigger": true,
+    "resistant": false,
+    "form": "PM_MINOTAUR",
+    "actionStart": 133,
+    "negative": true,
+    "expectedCSlime": 0
+  },
+  {
+    "name": "slimed-iron-look",
+    "sourceIndex": 5,
+    "slimed": true,
+    "trigger": false,
+    "resistant": true,
+    "form": "PM_IRON_GOLEM",
+    "actionStart": 156,
+    "negative": true,
+    "expectedCSlime": 100
+  },
+  {
+    "name": "slimed-minotaur-look",
+    "sourceIndex": 4,
+    "slimed": true,
+    "trigger": false,
+    "resistant": false,
+    "form": "PM_MINOTAUR",
+    "actionStart": 154,
+    "negative": true,
+    "expectedCSlime": 100
+  }
+]

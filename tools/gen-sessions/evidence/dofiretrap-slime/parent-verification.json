@@ -1,0 +1,603 @@
+{
+  "verifiedAt": "2026-11-26T21:10:49.502009+00:00",
+  "baselineCommit": "c4b08f7dafcd7769f1b70c1ecb9d9cbab11deb0a",
+  "composition": {
+    "baselineCommit": "c4b08f7dafcd7769f1b70c1ecb9d9cbab11deb0a",
+    "baselineRuntimeSHA256": "697d501632cff9fa3fb61fbfa1f972012af6e5eaf03b406004e781f643d87bd1",
+    "candidateRuntimeSHA256": "87cec1dc239942fd7b621e514cdb80d982dccdb33cd9bd86c7c57c54451cde09",
+    "candidateSealSHA256": "2a3681eed9b7e01334c57de370f45e24c1ee5ee6e4b4d6d8b21fdd07a0138568",
+    "patchSHA256": "cd946cfef1170928ff0b2abca751b01a693c0c34e040eea2d90487caf014f12f",
+    "runtimeSHA256": "2b74bb698d3975fbae845838ab47bd9bf18154a5c1c088a73fbb31b04298b2a2",
+    "runtimeChanged": [
+      "js/trap.js"
+    ],
+    "copies": 1,
+    "fixedLinks": 279
+  },
+  "compositionNativeCases": 6,
+  "completeNativeReportEqualsIsolated": true,
+  "ordinary": {
+    "completeReportEqual": true,
+    "portableReportSHA256": "3e87525d6c05fa34fa8504c5b2e3dd883f52ad5f135f413e2d7707c2b18f115c",
+    "mainReportSHA256": "3e87525d6c05fa34fa8504c5b2e3dd883f52ad5f135f413e2d7707c2b18f115c",
+    "differentFields": []
+  },
+  "ordinaryCommand": {
+    "command": [
+      "node",
+      "--max-old-space-size=512",
+      "tools/dofiretrap-slime-gate.mjs",
+      ".cache/restart-20261122/dofiretrap-slime-main-ordinary.json"
+    ],
+    "seconds": 3.292,
+    "exit": 0,
+    "maxHeapMB": 512,
+    "timeoutSeconds": 55,
+    "stdoutSHA256": "3e87525d6c05fa34fa8504c5b2e3dd883f52ad5f135f413e2d7707c2b18f115c",
+    "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "reportSHA256": "3e87525d6c05fa34fa8504c5b2e3dd883f52ad5f135f413e2d7707c2b18f115c"
+  },
+  "publicInstall": {
+    "installedAt": "2026-11-26T21:07:32.508384+00:00",
+    "payloads": [
+      {
+        "path": "payload/tools/dofiretrap-slime-gate.mjs",
+        "target": "tools/dofiretrap-slime-gate.mjs",
+        "sha256": "62d9f5207268f678a08c39a3ad0d74ae11b5b9c19bb78fc6a2607496c806acbc",
+        "bytes": 16052,
+        "acceptExistingOnlyIfExact": true
+      },
+      {
+        "path": "payload/tools/gen-sessions/evidence/dofiretrap-slime/README.md",
+        "target": "tools/gen-sessions/evidence/dofiretrap-slime/README.md",
+        "sha256": "05fdccd7037f19e137098b237b0281dc48952a3fa2e5fda49e5d63a348077234",
+        "bytes": 1819,
+        "acceptExistingOnlyIfExact": true
+      },
+      {
+        "path": "payload/tools/gen-sessions/evidence/dofiretrap-slime/candidate334/MANIFEST.json",
+        "target": "tools/gen-sessions/evidence/dofiretrap-slime/candidate334/MANIFEST.json",
+        "sha256": "0c64b6aa8296f01fb69d522a543c8dbed18d517d5ef02ba5b15bb2c84a310c20",
+        "bytes": 30111,
+        "acceptExistingOnlyIfExact": true
+      },
+      {
+        "path": "payload/tools/gen-sessions/evidence/dofiretrap-slime/candidate334/PLAN.md",
+        "target": "tools/gen-sessions/evidence/dofiretrap-slime/candidate334/PLAN.md",
+        "sha256": "c6aadeb045a8177f21ac58261b788e98be1071067bbf23c4fe6c322435f11658",
+        "bytes": 2305,
+        "acceptExistingOnlyIfExact": true
+      },
+      {
+        "path": "payload/tools/gen-sessions/evidence/dofiretrap-slime/candidate334/README.md",
+        "target": "tools/gen-sessions/evidence/dofiretrap-slime/candidate334/README.md",
+        "sha256": "97f94e910d8d63777480daac45d2b855741ecdc6a812173301e71b3c0888252a",
+        "bytes": 2341,
+        "acceptExistingOnlyIfExact": true
+      },
+      {
+        "path": "payload/tools/gen-sessions/evidence/dofiretrap-slime/candidate334/SEAL.json",
+        "target": "tools/gen-sessions/evidence/dofiretrap-slime/candidate334/SEAL.json",
+        "sha256": "2a3681eed9b7e01334c57de370f45e24c1ee5ee6e4b4d6d8b21fdd07a0138568",
+        "bytes": 838,
+        "acceptExistingOnlyIfExact": true
+      },
+      {
+        "path": "payload/tools/gen-sessions/evidence/dofiretrap-slime/candidate334/SOURCE-REVIEW.md",
+        "target": "tools/gen-sessions/evidence/dofiretrap-slime/candidate334/SOURCE-REVIEW.md",
+        "sha256": "aa3973baa9641e9eccb0ecce36a881da2e10d9cda19d06ecfb0b266f00c2fba9",
+        "bytes": 2564,
+        "acceptExistingOnlyIfExact": true
+      },
+      {
+        "path": "payload/tools/gen-sessions/evidence/dofiretrap-slime/candidate334/edit-receipt.json",
+        "target": "tools/gen-sessions/evidence/dofiretrap-slime/candidate334/edit-receipt.json",
+        "sha256": "97e1c84cc06774f7010328e4c2e211619e49fc3b5c2d05cd0aa7a221b2c6ed4c",
+        "bytes": 614,
+        "acceptExistingOnlyIfExact": true
+      },
+      {
+        "path": "payload/tools/gen-sessions/evidence/dofiretrap-slime/candidate334/pre-edit-lock.json",
+        "target": "tools/gen-sessions/evidence/dofiretrap-slime/candidate334/pre-edit-lock.json",
+        "sha256": "b1f3f6e2a2f10daadb193321e87c1010faa720ef7cb4826b6c581a7db518421b",
+        "bytes": 4896,
+        "acceptExistingOnlyIfExact": true
+      },
+      {
+        "path": "payload/tools/gen-sessions/evidence/dofiretrap-slime/candidate334/preflight.mjs",
+        "target": "tools/gen-sessions/evidence/dofiretrap-slime/candidate334/preflight.mjs",
+        "sha256": "3ea0ba155a4b542d5c55229417410b97b2c2008c6cd8d9a68002e20cf4294784",
+        "bytes": 5671,
+        "acceptExistingOnlyIfExact": true
+      },
+      {
+        "path": "payload/tools/gen-sessions/evidence/dofiretrap-slime/candidate334/probe.mjs",
+        "target": "tools/gen-sessions/evidence/dofiretrap-slime/candidate334/probe.mjs",
+        "sha256": "02f8e3834b0ea165556f66ad4aa4a2706c7895208f62010e5968d504e3439d39",
+        "bytes": 6436,
+        "acceptExistingOnlyIfExact": true
+      },
+      {
+        "path": "payload/tools/gen-sessions/evidence/dofiretrap-slime/candidate334/reports/accounting.json",
+        "target": "tools/gen-sessions/evidence/dofiretrap-slime/candidate334/reports/accounting.json",
+        "sha256": "0fe30f6fa791c15c578d721d515c9d536f2935739826ff6314feddd7230cbbe6",
+        "bytes": 880,
+        "acceptExistingOnlyIfExact": true
+      },
+      {
+        "path": "payload/tools/gen-sessions/evidence/dofiretrap-slime/candidate334/reports/batch-receipt.json",
+        "target": "tools/gen-sessions/evidence/dofiretrap-slime/candidate334/reports/batch-receipt.json",
+        "sha256": "d7ab2a995b09395935e911f40e88abd734fe7090c5d7efa4919e2f35f45a7550",
+        "bytes": 460,
+        "acceptExistingOnlyIfExact": true
+      },
+      {
+        "path": "payload/tools/gen-sessions/evidence/dofiretrap-slime/candidate334/reports/batch-start.json",
+        "target": "tools/gen-sessions/evidence/dofiretrap-slime/candidate334/reports/batch-start.json",
+        "sha256": "8065990bea92f2bd451aaa1e31ce114766217942868aefb980bbd6aaf4c35d31",
+        "bytes": 395,
+        "acceptExistingOnlyIfExact": true
+      },
+      {
+        "path": "payload/tools/gen-sessions/evidence/dofiretrap-slime/candidate334/reports/batch.log",
+        "target": "tools/gen-sessions/evidence/dofiretrap-slime/candidate334/reports/batch.log",
+        "sha256": "52078cc334c9ef02c18697a9e10edf163cf3c0bb70291e1981098079e352d68d",
+        "bytes": 4441,
+        "acceptExistingOnlyIfExact": true
+      },
+      {
+        "path": "payload/tools/gen-sessions/evidence/dofiretrap-slime/candidate334/reports/candidate-native.json",
+        "target": "tools/gen-sessions/evidence/dofiretrap-slime/candidate334/reports/candidate-native.json",
+        "sha256": "ae1345f5432e49915327a7ac13665d33ce446b2eb632dc4a54dcb3e25fac58a1",
+        "bytes": 14695,
+        "acceptExistingOnlyIfExact": true
+      },
+      {
+        "path": "payload/tools/gen-sessions/evidence/dofiretrap-slime/candidate334/reports/candidate-observation.json",
+        "target": "tools/gen-sessions/evidence/dofiretrap-slime/candidate334/reports/candidate-observation.json",
+        "sha256": "d81b526b7317178b91ac5218911f701109ea7cc39caf0516fe59a8c9528f6b61",
+        "bytes": 17259,
+        "acceptExistingOnlyIfExact": true
+      },
+      {
+        "path": "payload/tools/gen-sessions/evidence/dofiretrap-slime/candidate334/reports/negative-hashes.json",
+        "target": "tools/gen-sessions/evidence/dofiretrap-slime/candidate334/reports/negative-hashes.json",
+        "sha256": "eb25fd0c6efe1bbf7ee66baa183aa69e472927d5a161f28f3f2e782a953555ae",
+        "bytes": 1895,
+        "acceptExistingOnlyIfExact": true
+      },
+      {
+        "path": "payload/tools/gen-sessions/evidence/dofiretrap-slime/candidate334/reports/preflight.json",
+        "target": "tools/gen-sessions/evidence/dofiretrap-slime/candidate334/reports/preflight.json",
+        "sha256": "f330ac455f1a2c4d047fba8cdf4543319893bc7da76b170886fe19076d876655",
+        "bytes": 841,
+        "acceptExistingOnlyIfExact": true
+      },
+      {
+        "path": "payload/tools/gen-sessions/evidence/dofiretrap-slime/candidate334/reports/preseal-verification.json",
+        "target": "tools/gen-sessions/evidence/dofiretrap-slime/candidate334/reports/preseal-verification.json",
+        "sha256": "ff1cbee8ed03a6532f7f68b22683b4af26ea1f14c6eb5e0a7dc6ffb65b66bb03",
+        "bytes": 464,
+        "acceptExistingOnlyIfExact": true
+      },
+      {
+        "path": "payload/tools/gen-sessions/evidence/dofiretrap-slime/parent/baseline-command.json",
+        "target": "tools/gen-sessions/evidence/dofiretrap-slime/parent/baseline-command.json",
+        "sha256": "526c2ddcc53364ce50aa37c147ac67ec6095dfed4522ec8204444ae64125fa55",
+        "bytes": 349,
+        "acceptExistingOnlyIfExact": true
+      },
+      {
+        "path": "payload/tools/gen-sessions/evidence/dofiretrap-slime/parent/baseline-native.json",
+        "target": "tools/gen-sessions/evidence/dofiretrap-slime/parent/baseline-native.json",
+        "sha256": "2a6e9be17240de09ab99f6ef9d25810632d271ba2b1bfb17a6c7984e32d4daa7",
+        "bytes": 24560,
+        "acceptExistingOnlyIfExact": true
+      },
+      {
+        "path": "payload/tools/gen-sessions/evidence/dofiretrap-slime/parent/baseline-native.log",
+        "target": "tools/gen-sessions/evidence/dofiretrap-slime/parent/baseline-native.log",
+        "sha256": "aa94dc9ef798f1e08a4bf088cdf8e0a577ae7b1e1b790e4903196accdbd8e350",
+        "bytes": 5316,
+        "acceptExistingOnlyIfExact": true
+      },
+      {
+        "path": "payload/tools/gen-sessions/evidence/dofiretrap-slime/parent/input-lock.json",
+        "target": "tools/gen-sessions/evidence/dofiretrap-slime/parent/input-lock.json",
+        "sha256": "7103f354202bf44b4b6c044dec3da9622c0f5697b3e939450bce5739bf8492cc",
+        "bytes": 451,
+        "acceptExistingOnlyIfExact": true
+      },
+      {
+        "path": "payload/tools/gen-sessions/evidence/dofiretrap-slime/parent/native-recording.json",
+        "target": "tools/gen-sessions/evidence/dofiretrap-slime/parent/native-recording.json",
+        "sha256": "2d45a4df768ea1110303daaadc52df5f689ff662bbbf754bae2f320f31260fcb",
+        "bytes": 1607,
+        "acceptExistingOnlyIfExact": true
+      },
+      {
+        "path": "payload/tools/gen-sessions/evidence/dofiretrap-slime/parent/native-recording.log",
+        "target": "tools/gen-sessions/evidence/dofiretrap-slime/parent/native-recording.log",
+        "sha256": "2644b689e0052b39ff298d979dbb764f00c1679e6a3850150b10076b1301445b",
+        "bytes": 300,
+        "acceptExistingOnlyIfExact": true
+      },
+      {
+        "path": "payload/tools/gen-sessions/evidence/dofiretrap-slime/parent/pins.json",
+        "target": "tools/gen-sessions/evidence/dofiretrap-slime/parent/pins.json",
+        "sha256": "5554559f937e004cbd29ad054a7cf10e49d3da6e2ff53848e0773fe311b173b5",
+        "bytes": 709,
+        "acceptExistingOnlyIfExact": true
+      },
+      {
+        "path": "payload/tools/gen-sessions/evidence/dofiretrap-slime/parent/preflight.json",
+        "target": "tools/gen-sessions/evidence/dofiretrap-slime/parent/preflight.json",
+        "sha256": "7a71c16cbf5f54338f9c6fddd298003a8e70d26f56304a12d7d7bc1675777d41",
+        "bytes": 372,
+        "acceptExistingOnlyIfExact": true
+      },
+      {
+        "path": "payload/tools/gen-sessions/evidence/dofiretrap-slime/portable-provenance.json",
+        "target": "tools/gen-sessions/evidence/dofiretrap-slime/portable-provenance.json",
+        "sha256": "040b084748e2c844d7d1eb6a83d8b62edddd839be7aabb71f4972b3d39e783e7",
+        "bytes": 1100,
+        "acceptExistingOnlyIfExact": true
+      },
+      {
+        "path": "payload/tools/gen-sessions/evidence/dofiretrap-slime/requirements-additions.json",
+        "target": "tools/gen-sessions/evidence/dofiretrap-slime/requirements-additions.json",
+        "sha256": "c7a826665edf83b66342761c1c8967f56ec478c860d9e05691026d86d6f34964",
+        "bytes": 1581,
+        "acceptExistingOnlyIfExact": true
+      },
+      {
+        "path": "payload/tools/gen-sessions/evidence/dofiretrap-slime/source-contract.json",
+        "target": "tools/gen-sessions/evidence/dofiretrap-slime/source-contract.json",
+        "sha256": "be69a9edf919f82e3cfe8b39fd0e55a20fcafe100bea2abada8eaca6a14d62cc",
+        "bytes": 11083,
+        "acceptExistingOnlyIfExact": true
+      },
+      {
+        "path": "payload/tools/gen-sessions/evidence/dofiretrap-slime/source15/MANIFEST.json",
+        "target": "tools/gen-sessions/evidence/dofiretrap-slime/source15/MANIFEST.json",
+        "sha256": "2dff56db0e2ae44b0d045ec4043064c63f1b8d0bfa55e02d2dee91c41177b521",
+        "bytes": 1332,
+        "acceptExistingOnlyIfExact": true
+      },
+      {
+        "path": "payload/tools/gen-sessions/evidence/dofiretrap-slime/source15/SEAL.json",
+        "target": "tools/gen-sessions/evidence/dofiretrap-slime/source15/SEAL.json",
+        "sha256": "1dd143a2783c159d2d3272967096347b6254b65211f63c582db751b7e09c4ae7",
+        "bytes": 422,
+        "acceptExistingOnlyIfExact": true
+      },
+      {
+        "path": "payload/tools/gen-sessions/evidence/dofiretrap-slime/source15/SOURCE-REVIEW.md",
+        "target": "tools/gen-sessions/evidence/dofiretrap-slime/source15/SOURCE-REVIEW.md",
+        "sha256": "d6f31cf42a72abd0d881b2a85ba4840ba30cda2f86b26d5ca6e250f28b2b3121",
+        "bytes": 1988,
+        "acceptExistingOnlyIfExact": true
+      },
+      {
+        "path": "payload/tools/gen-sessions/evidence/dofiretrap-slime/source15/STATUS.md",
+        "target": "tools/gen-sessions/evidence/dofiretrap-slime/source15/STATUS.md",
+        "sha256": "5862d21d653250e90d3d44f78eede381d24a8e22c7c414a553891135b2c835fb",
+        "bytes": 497,
+        "acceptExistingOnlyIfExact": true
+      },
+      {
+        "path": "payload/tools/gen-sessions/evidence/dofiretrap-slime/source15/baseline-observation.json",
+        "target": "tools/gen-sessions/evidence/dofiretrap-slime/source15/baseline-observation.json",
+        "sha256": "3a90873f7b4b0b4510eb748abbcf31020bdb2a5765fe9b401abb0a4b64ee03c2",
+        "bytes": 17567,
+        "acceptExistingOnlyIfExact": true
+      },
+      {
+        "path": "payload/tools/gen-sessions/evidence/dofiretrap-slime/source15/existing-healthy-hashes.json",
+        "target": "tools/gen-sessions/evidence/dofiretrap-slime/source15/existing-healthy-hashes.json",
+        "sha256": "d32cf273a9c5a27b007a23a0be0149f57709d6e1c17e80ae8d7c9b756a5c4d2c",
+        "bytes": 851,
+        "acceptExistingOnlyIfExact": true
+      },
+      {
+        "path": "payload/tools/gen-sessions/evidence/dofiretrap-slime/source15/input-lock.json",
+        "target": "tools/gen-sessions/evidence/dofiretrap-slime/source15/input-lock.json",
+        "sha256": "fa1c45a662696e7ab4b54bb9072992ffebcd0d3de42a82f99170df6a23cb46d0",
+        "bytes": 7252,
+        "acceptExistingOnlyIfExact": true
+      },
+      {
+        "path": "payload/tools/gen-sessions/evidence/dofiretrap-slime/source15/negative-hashes.json",
+        "target": "tools/gen-sessions/evidence/dofiretrap-slime/source15/negative-hashes.json",
+        "sha256": "eb25fd0c6efe1bbf7ee66baa183aa69e472927d5a161f28f3f2e782a953555ae",
+        "bytes": 1895,
+        "acceptExistingOnlyIfExact": true
+      },
+      {
+        "path": "payload/tools/gen-sessions/evidence/dofiretrap-slime/source15/predictions.json",
+        "target": "tools/gen-sessions/evidence/dofiretrap-slime/source15/predictions.json",
+        "sha256": "f8280a16ade6d59d903d427c6453e6d67772f8be9b30021ad290cb1462346b11",
+        "bytes": 1392,
+        "acceptExistingOnlyIfExact": true
+      },
+      {
+        "path": "payload/tools/gen-sessions/evidence/dofiretrap-slime/source15/probe.mjs",
+        "target": "tools/gen-sessions/evidence/dofiretrap-slime/source15/probe.mjs",
+        "sha256": "6369ea90653a6368aefcb76d5fbfe282be1724eb8f4433c3858c2bdbb82329dd",
+        "bytes": 7188,
+        "acceptExistingOnlyIfExact": true
+      },
+      {
+        "path": "payload/tools/gen-sessions/evidence/dofiretrap-slime/source15/recipe.json",
+        "target": "tools/gen-sessions/evidence/dofiretrap-slime/source15/recipe.json",
+        "sha256": "464be3d2901682092a659725341b561eff1d0bea614da8f6df7c27e88a9e6685",
+        "bytes": 6038,
+        "acceptExistingOnlyIfExact": true
+      },
+      {
+        "path": "payload/tools/gen-sessions/evidence/dofiretrap-slime/source15/runtime.json",
+        "target": "tools/gen-sessions/evidence/dofiretrap-slime/source15/runtime.json",
+        "sha256": "3eb0baba1215efe61ec5a314f78f243c3b91d24fd5854a5d3d21c319d57c4547",
+        "bytes": 24861,
+        "acceptExistingOnlyIfExact": true
+      },
+      {
+        "path": "payload/tools/gen-sessions/evidence/dofiretrap-slime/source15/source-pins.json",
+        "target": "tools/gen-sessions/evidence/dofiretrap-slime/source15/source-pins.json",
+        "sha256": "4d18645769b91aa3b9955f31e4fa66ea6c747dc895c458bbe6ce5f94d379c412",
+        "bytes": 700,
+        "acceptExistingOnlyIfExact": true
+      },
+      {
+        "path": "payload/tools/gen-sessions/evidence/dofiretrap-slime/source15/summary.json",
+        "target": "tools/gen-sessions/evidence/dofiretrap-slime/source15/summary.json",
+        "sha256": "0199aa60b898233e04c48f9014281643bf52341747c3f98cd91bbccbd042d5c7",
+        "bytes": 788,
+        "acceptExistingOnlyIfExact": true
+      },
+      {
+        "path": "payload/tools/gen-sessions/evidence/dofiretrap-slime/source15/verify.py",
+        "target": "tools/gen-sessions/evidence/dofiretrap-slime/source15/verify.py",
+        "sha256": "b94bd4ec94ff41989195718e1a99231b4e5f3b204c5f08312fd50c5b08e9f9e1",
+        "bytes": 1528,
+        "acceptExistingOnlyIfExact": true
+      },
+      {
+        "path": "payload/tools/gen-sessions/evidence/dofiretrap-slime/source15/worker.json",
+        "target": "tools/gen-sessions/evidence/dofiretrap-slime/source15/worker.json",
+        "sha256": "46256531cf44ebe0037a13b783844e44061d5fbacaf687cb587fb6956fda9cc2",
+        "bytes": 390,
+        "acceptExistingOnlyIfExact": true
+      },
+      {
+        "path": "payload/tools/gen-sessions/evidence/dofiretrap-slime/source15/worker.log",
+        "target": "tools/gen-sessions/evidence/dofiretrap-slime/source15/worker.log",
+        "sha256": "c8dfcc3917ec26416aa1ee3d2bb26254c40022984503ab5f92f061f2f5d0208d",
+        "bytes": 140,
+        "acceptExistingOnlyIfExact": true
+      },
+      {
+        "path": "payload/tools/gen-sessions/generated/dofiretrap-slime.session.json",
+        "target": "tools/gen-sessions/generated/dofiretrap-slime.session.json",
+        "sha256": "6014eaea22a8a560cc691c15c2a825bf036a344f4e8d059694c7e8d3a1f19531",
+        "bytes": 1313341,
+        "acceptExistingOnlyIfExact": true
+      },
+      {
+        "path": "payload/tools/gen-sessions/recipes/dofiretrap-slime.json",
+        "target": "tools/gen-sessions/recipes/dofiretrap-slime.json",
+        "sha256": "464be3d2901682092a659725341b561eff1d0bea614da8f6df7c27e88a9e6685",
+        "bytes": 6038,
+        "acceptExistingOnlyIfExact": true
+      }
+    ],
+    "promotionSealSHA256": "b2d971fcf546c6accdd6384f8392f3091eebed55b2318c2e17c1b668fd9e023c",
+    "branchRowsBefore": 4782,
+    "branchRowsAfter": 4788,
+    "coverageRows": 111,
+    "coverageSHA256Unchanged": "97a15d6cb89c81a5c5d8ebf38d9efabe6b5adb3ddccf1221640a86ffc23f2197"
+  },
+  "retained": [
+    {
+      "name": "dofiretrap-polymorph-gate",
+      "command": [
+        "node",
+        "--max-old-space-size=512",
+        "tools/dofiretrap-polymorph-gate.mjs"
+      ],
+      "exit": 0,
+      "seconds": 3.858,
+      "log": ".cache/restart-20261122/dofiretrap-slime-retained-dofiretrap-polymorph-gate.log",
+      "sha256": "83e212dca59289203ff46c6839d9936ef0cfbcd3e2d4e91c8caeea39a3927670"
+    },
+    {
+      "name": "fire-trap-floor-objects-state-gate",
+      "command": [
+        "node",
+        "--max-old-space-size=512",
+        "tools/fire-trap-floor-objects-state-gate.mjs"
+      ],
+      "exit": 0,
+      "seconds": 1.107,
+      "log": ".cache/restart-20261122/dofiretrap-slime-retained-fire-trap-floor-objects-state-gate.log",
+      "sha256": "73c19ca17a7410394fa52c3a9a6a9187bf5252e0645e5d56fbfefb716c07d31d"
+    },
+    {
+      "name": "fire-trap-ice-melting-state-gate",
+      "command": [
+        "node",
+        "--max-old-space-size=512",
+        "tools/fire-trap-ice-melting-state-gate.mjs"
+      ],
+      "exit": 0,
+      "seconds": 0.617,
+      "log": ".cache/restart-20261122/dofiretrap-slime-retained-fire-trap-ice-melting-state-gate.log",
+      "sha256": "ff1b22df95d942630a9a6c28ebc292c2217859095bbc9ed74cc22f379c74f69b"
+    },
+    {
+      "name": "slime-fire-readers-state-gate",
+      "command": [
+        "node",
+        "--max-old-space-size=512",
+        "tools/slime-fire-readers-state-gate.mjs"
+      ],
+      "exit": 0,
+      "seconds": 1.4,
+      "log": ".cache/restart-20261122/dofiretrap-slime-retained-slime-fire-readers-state-gate.log",
+      "sha256": "e9c73826f3ab426c4eb6a8dd5a939e53388cee8d3213f72c2666f83482a58a74"
+    },
+    {
+      "name": "slime-fire-readers-input-gate",
+      "command": [
+        "node",
+        "--max-old-space-size=512",
+        "tools/slime-fire-readers-input-gate.mjs"
+      ],
+      "exit": 0,
+      "seconds": 2.304,
+      "log": ".cache/restart-20261122/dofiretrap-slime-retained-slime-fire-readers-input-gate.log",
+      "sha256": "86b3fe9ecac081fe1e1cb96a39899b0a83821cc9b2f157f179dc9191aa01af5c"
+    },
+    {
+      "name": "slime-timeout-state-gate",
+      "command": [
+        "node",
+        "--max-old-space-size=512",
+        "tools/slime-timeout-state-gate.mjs"
+      ],
+      "exit": 0,
+      "seconds": 0.689,
+      "log": ".cache/restart-20261122/dofiretrap-slime-retained-slime-timeout-state-gate.log",
+      "sha256": "714030e244b3bafce4d5c64a65620cfa1cf327c5263b14724919dae2ecf6726f"
+    },
+    {
+      "name": "slime-timeout-input-gate",
+      "command": [
+        "node",
+        "--max-old-space-size=512",
+        "tools/slime-timeout-input-gate.mjs"
+      ],
+      "exit": 0,
+      "seconds": 1.422,
+      "log": ".cache/restart-20261122/dofiretrap-slime-retained-slime-timeout-input-gate.log",
+      "sha256": "ce580ab64c7067d5bc45a86fa2ab62c5ad4b9a51b78d2f5e5596f98ca373bb48"
+    }
+  ],
+  "strict": {
+    "command": [
+      "node",
+      "tools/hang-gate.mjs",
+      "sessions/seed0002-healer-reflection-drummer.session.json",
+      "sessions/seed0004-feeding-pony.session.json",
+      "sessions/seed0006-wizard-water-demon.session.json",
+      "sessions/seed0007-rogue-snake-swamp.session.json",
+      "sessions/seed0009-swimmer-mforce.session.json",
+      "sessions/seed0012-monk-vault-escort.session.json",
+      "sessions/seed0013-friday13-save-then-fullmoon-restore.session.json",
+      "sessions/seed0013-rogue-friday13-combat.session.json",
+      "sessions/seed0014-dequa-fountain-explore.session.json",
+      "sessions/seed0015-valk-level2-pit-dog-wait.session.json",
+      "sessions/seed0016-healer-newmoon-eat-zap.session.json",
+      "sessions/seed0017-samurai-altar-pray.session.json",
+      "sessions/seed0030-ten-diverse-deaths.session.json",
+      "sessions/seed0060-orc-rogue-kick-search.session.json",
+      "sessions/seed0077-rogue-chargen.session.json",
+      "sessions/seed0101-ranger-quiver-throw-travel-engrave.session.json",
+      "sessions/seed0102-ranger-name-cancel.session.json",
+      "sessions/seed0103-knight-ride-pony.session.json",
+      "sessions/seed0104-knight-ride-combat.session.json",
+      "sessions/seed0105-valk-chat-lamp-ration.session.json",
+      "sessions/seed0106-priest-extcmd-sweep.session.json",
+      "sessions/seed0107-samurai-twoweapon-enhance.session.json",
+      "sessions/seed0108-wizard-extcmd-wishlist.session.json",
+      "sessions/seed0116-wizard-wear-shop.session.json",
+      "sessions/seed0200-monk-north-search.session.json",
+      "sessions/seed0360-wizard-world-tour.session.json",
+      "sessions/seed0361-archeologist-tour.session.json",
+      "sessions/seed0367-priest-quest-tour.session.json",
+      "sessions/seed0373-barbarian-quest-tour.session.json",
+      "sessions/seed0383-wizard-hallucinate.session.json",
+      "sessions/seed0398-wizard-wandpoly-pile.session.json",
+      "sessions/seed0399-wizard-hallu-actions.session.json",
+      "sessions/seed0501-priest-cast-read-turn.session.json",
+      "sessions/seed0700-samurai-explore-descend.session.json",
+      "sessions/seed0900-tourist-explore-actions.session.json",
+      "sessions/seed1150-caveman-explore-move.session.json",
+      "sessions/seed1500-rogue-explore-move.session.json",
+      "sessions/seed1800-tourist-eat-throw.session.json",
+      "sessions/seed2200-wizard-quaff-zap-read.session.json",
+      "sessions/seed2600-wizard-custom-binds.session.json",
+      "sessions/seed4500-knight-coverage.session.json",
+      "sessions/seed5002-wizard-coverage-pair.session.json",
+      "sessions/seed5006-tourist-stress-disaster.session.json",
+      "sessions/seed8000-tourist-starter.session.json",
+      "tools/gen-sessions/generated/dofiretrap-slime.session.json"
+    ],
+    "exit": 0,
+    "seconds": 30.209,
+    "targets": 45,
+    "budgetMs": 8000,
+    "log": ".cache/restart-20261122/dofiretrap-slime-public45-strict.log",
+    "sha256": "8d5b5c1946094092d19693ee75a43de11c09df50ea6700e35beef83c3d080de9"
+  },
+  "sourceAudit": [],
+  "fullRegression": {
+    "verifiedAt": "2026-11-26T21:09:15.420429+00:00",
+    "sessions": 950,
+    "passed": 950,
+    "failures": [],
+    "totals": {
+      "screens": 948588,
+      "cursors": 948588,
+      "rngCalls": 20805574,
+      "animFrames": 33260
+    },
+    "missingMetrics": {},
+    "runtimeFilesFixed": 280,
+    "rawFilesFixed": 950,
+    "allFilesFixed": 1241,
+    "allFilesSHA256": "74df51927523058cf7bafe545d60ec35e1fc215cd50b0fab3bed35c51c6b70d6",
+    "defaultWorkerTimeoutMs": 45000,
+    "retries": 0,
+    "started": {
+      "startedAt": "2026-11-26T20:58:43.186245+00:00",
+      "workers": 2,
+      "pid": 3624019,
+      "cpuCount": 24,
+      "loadAverage": [
+        1.47900390625,
+        1.8017578125,
+        2.3828125
+      ],
+      "timeoutOverride": false,
+      "retries": 0,
+      "node": {
+        "version": "v26.3.0",
+        "archive": "node-v26.3.0-linux-x64.tar.xz",
+        "sha256": "0ce210831380ab75a5fec0d3fb6b5af0958898016b2cae51cc2fa11057d2f77e",
+        "officialURL": "https://nodejs.org/dist/v26.3.0/node-v26.3.0-linux-x64.tar.xz",
+        "checksumsURL": "https://nodejs.org/dist/v26.3.0/SHASUMS256.txt",
+        "binary": "/share/NFS/u/rohit/research/contest/artifacts/2026-11-22/text-history-full858-js-20261125/node-v26.3.0-linux-x64/bin/node",
+        "archiveSHA256": "0ce210831380ab75a5fec0d3fb6b5af0958898016b2cae51cc2fa11057d2f77e",
+        "binarySHA256": "5325ac9da58541494afcc136f0880279a2a853609bf4dae7755e04fb682b6926"
+      },
+      "allFilesSHA256": "74df51927523058cf7bafe545d60ec35e1fc215cd50b0fab3bed35c51c6b70d6"
+    },
+    "logs": {
+      "shard-0.log": "335c6b2ba08f59bbe16cd1a798e9c9da032a4a47995b77a60f78b9ba527d7073",
+      "shard-1.log": "698998677b74258875ddb55994075b949ad1816f5df9db852446cd08e0b4bf72"
+    },
+    "limits": [
+      "Scored corpus parity, not literal serialized-byte or whole-port proof.",
+      "No held-out result is inferred from these fixtures."
+    ]
+  },
+  "fullRegressionVerificationSHA256": "47985d1ab3ae831569b291c531d4b6b02a9979237693ab42608623b00f188f0a",
+  "nfs": "/share/NFS/u/rohit/research/contest/artifacts/2026-11-22/dofiretrap-slime-full950-js-20261126",
+  "limits": [
+    "950 recorded games establish corpus parity, not whole-port completion or a held-out result.",
+    "Only one awaited burn_away_slime call is added after fire damage and before armor damage.",
+    "The underwater return, human HP-floor behavior, boxes and other dofiretrap gaps remain separate.",
+    "Original source50/54 and native4/6 remain preserved."
+  ]
+}

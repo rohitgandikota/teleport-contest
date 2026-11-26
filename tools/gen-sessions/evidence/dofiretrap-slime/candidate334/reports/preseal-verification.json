@@ -1,0 +1,20 @@
+{
+  "verified": true,
+  "runtimePins": 280,
+  "sourceMembersUnchanged": 15,
+  "changedRuntimeFiles": [
+    "js/trap.js"
+  ],
+  "addedLines": 1,
+  "removedLines": 0,
+  "ordinary": "54/54",
+  "native": "6/6",
+  "negativeHashes": 20,
+  "fullOrdinaryNegativeRows": 4,
+  "fullNativeNegativeRows": 4,
+  "existingHealthyHashes": 10,
+  "neutrality": 12,
+  "originalDiagnosticPreserved": "50/54",
+  "originalNativePreserved": "4/6",
+  "gameplayRunsDuringVerification": 0
+}

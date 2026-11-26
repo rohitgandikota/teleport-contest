@@ -1,0 +1,14 @@
+{
+  "preEditLockSHA256": "b1f3f6e2a2f10daadb193321e87c1010faa720ef7cb4826b6c581a7db518421b",
+  "changedRuntimeFiles": [
+    "js/trap.js"
+  ],
+  "addedLines": 1,
+  "removedLines": 0,
+  "existingImportUnchanged": true,
+  "otherRuntimeLinks": 279,
+  "baselineOwnerSHA256": "c7a83a06a3b3a13182d4fe9ca6a6d707b5f755df0e24bf33cba73a0090858517",
+  "candidateOwnerSHA256": "8cfeb889f9f13ea8122422d435c29399c54cd66890a67b21ce8f7c693efc6776",
+  "patchSHA256": "cd946cfef1170928ff0b2abca751b01a693c0c34e040eea2d90487caf014f12f",
+  "candidateRuntimeSHA256": "87cec1dc239942fd7b621e514cdb80d982dccdb33cd9bd86c7c57c54451cde09"
+}

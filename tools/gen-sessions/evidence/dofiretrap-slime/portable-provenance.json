@@ -1,0 +1,31 @@
+{
+  "sourceProbeSHA256": "6369ea90653a6368aefcb76d5fbfe282be1724eb8f4433c3858c2bdbb82329dd",
+  "originalBodySHA256": "0c4011ab9dc5c7b44de44245d9035d85568b400d5f5367c3bbd1c40eaccd8c27",
+  "portableBodySHA256": "37fd14e3d048bd41c2b8fa89aeda3624de73eccfd7fa1e165654498575e880d6",
+  "bodyStart": "const {runSegment}",
+  "sourceBodyEnd": "\nverifyRuntime();",
+  "portableBodyEnd": "\n// Portable accounting.",
+  "replacements": [
+    {
+      "old": "await import('./js/",
+      "new": "await import('../js/"
+    },
+    {
+      "old": "await import('./frozen/",
+      "new": "await import('../frozen/"
+    },
+    {
+      "old": "await import('./tools/half-damage-reader-observe.mjs')",
+      "new": "await import('./half-damage-reader-observe.mjs')"
+    }
+  ],
+  "assertionBodiesChanged": 0,
+  "observerBodyChanged": false,
+  "onlyImportPathsRelocated": true,
+  "ordinaryChecks": 54,
+  "candidateBookkeepingNotReplayed": true,
+  "originalSourceDiagnostic": "50/54",
+  "originalNativeDiagnostic": "4/6",
+  "candidateNativeHistorical": "6/6",
+  "freshPositiveHashesOnlyComparedInPromotionValidation": true
+}

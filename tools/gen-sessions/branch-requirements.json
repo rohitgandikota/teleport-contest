@@ -5601,6 +5601,48 @@
       "cFile": "src/weapon.c",
       "cFunction": "select_hwep",
       "description": "A long sword in the alternate slot leaves the primary slot empty and preserves normal Balrog weapon selection and all five negative outputs."
+    },
+    {
+      "group": "Fire-trap slime cleanup",
+      "id": "traps.fire.slime.slimed-iron-trigger",
+      "cFile": "src/trap.c",
+      "cFunction": "dofiretrap",
+      "description": "Clear timed slime after resistant iron-golem fire damage and emit the cure message."
+    },
+    {
+      "group": "Fire-trap slime cleanup",
+      "id": "traps.fire.slime.healthy-iron-trigger",
+      "cFile": "src/trap.c",
+      "cFunction": "dofiretrap",
+      "description": "Healthy iron-golem fire retains its existing outputs without a slime-cure message."
+    },
+    {
+      "group": "Fire-trap slime cleanup",
+      "id": "traps.fire.slime.slimed-minotaur-trigger",
+      "cFile": "src/trap.c",
+      "cFunction": "dofiretrap",
+      "description": "Clear timed slime after nonresistant minotaur fire damage and emit the cure message."
+    },
+    {
+      "group": "Fire-trap slime cleanup",
+      "id": "traps.fire.slime.healthy-minotaur-trigger",
+      "cFile": "src/trap.c",
+      "cFunction": "dofiretrap",
+      "description": "Healthy minotaur fire retains its existing outputs without a slime-cure message."
+    },
+    {
+      "group": "Fire-trap slime cleanup",
+      "id": "traps.fire.slime.slimed-iron-look",
+      "cFile": "src/trap.c",
+      "cFunction": "dofiretrap",
+      "description": "Looking while slimed as an iron golem leaves the slime timer and fire trap unchanged."
+    },
+    {
+      "group": "Fire-trap slime cleanup",
+      "id": "traps.fire.slime.slimed-minotaur-look",
+      "cFile": "src/trap.c",
+      "cFunction": "dofiretrap",
+      "description": "Looking while slimed as a minotaur leaves the slime timer and fire trap unchanged."
     }
   ]
 }

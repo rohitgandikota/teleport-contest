@@ -1,0 +1,50 @@
+{
+  "cases": 6,
+  "producerChecks": 24,
+  "sourceChecks": 14,
+  "sourceTotal": 18,
+  "neutrality": 12,
+  "checksPassed": 50,
+  "checksTotal": 54,
+  "negativeIndexes": [
+    1,
+    3,
+    4,
+    5
+  ],
+  "negativeHashes": 20,
+  "preexistingHealthyHashesExact": 10,
+  "keys": 940,
+  "boundaries": 946,
+  "calls": 16874,
+  "frames": 42,
+  "predictedFailuresOnly": true,
+  "runtimeCandidate": false,
+  "nativeRecordings": 0,
+  "observedTimers": {
+    "slimed-iron-trigger": [
+      100,
+      98
+    ],
+    "healthy-iron-trigger": [
+      0,
+      0
+    ],
+    "slimed-minotaur-trigger": [
+      100,
+      99
+    ],
+    "healthy-minotaur-trigger": [
+      0,
+      0
+    ],
+    "slimed-iron-look": [
+      100,
+      100
+    ],
+    "slimed-minotaur-look": [
+      100,
+      100
+    ]
+  }
+}

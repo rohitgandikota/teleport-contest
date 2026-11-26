@@ -12,15 +12,15 @@ Ground rules are in `/CLAUDE.md`. Read that first if you have not.
 
 ## Current focus, 2026-11-26
 
-Autoquiver is pushed as `e421642b`, with all 1,239 tested Git blobs verified.
-Balrog weapon selection now reads the hero's actual weapon slot. All four C
-cases, 32 ordinary checks, 45 strict workers and 949 maintained recordings
-pass. Three retained gates pass; an older pickup assertion fails identically
-on the published baseline and is being corrected separately. Its original
-failure is preserved. The Balrog checkpoint is ready for publication.
-Startup gender and fire-trap slime cleanup have verified isolated candidates
-and are being prepared for integration. Gremlin light fear is under source
-review. The latest official result remains agentic rank7 with659 unmatched
+Balrog weapon selection is pushed as `c4b08f7d`, with all 1,240 tested Git blobs
+verified. Fire-trap slime cleanup now passes all six C cases, 54 ordinary
+checks, seven retained gates, 45 strict workers and 950 maintained recordings.
+The installed checks exactly reproduce the isolated results; publication is
+next. Two source-backed pickup-test corrections pass on both fixed runtimes
+and will be published separately. Startup gender normalization has a verified
+candidate and portable gate. Original C recordings confirm both gremlin light
+failures, with all three controls exact; its candidate is in progress.
+The latest official result remains agentic rank7 with659 unmatched
 screens; its timestamp predates the newest gameplay pushes.
 See STATUS for exact evidence, preserved diagnostics and limits.
 

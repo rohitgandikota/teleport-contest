@@ -1,0 +1,11 @@
+{
+  "raw": "../dofiretrap-slime-parent-native.session.json",
+  "recipe": "../dofiretrap-slime-parent-primary-recipe.json",
+  "files": {
+    "../dofiretrap-slime-parent-native.session.json": "6014eaea22a8a560cc691c15c2a825bf036a344f4e8d059694c7e8d3a1f19531",
+    "../dofiretrap-slime-parent-primary-recipe.json": "464be3d2901682092a659725341b561eff1d0bea614da8f6df7c27e88a9e6685",
+    "../dofiretrap-slime-parent-input-lock.json": "7103f354202bf44b4b6c044dec3da9622c0f5697b3e939450bce5739bf8492cc",
+    "../dofiretrap-slime-source-audit/SEAL.json": "1dd143a2783c159d2d3272967096347b6254b65211f63c582db751b7e09c4ae7",
+    "runtime.json": "3eb0baba1215efe61ec5a314f78f243c3b91d24fd5854a5d3d21c319d57c4547"
+  }
+}

@@ -1,5 +1,66 @@
 # STATUS — live handoff board
 
+## 2026-11-26: Balrog published; fire-trap slime verified on full950
+
+Published main is c4b08f7dafcd7769f1b70c1ecb9d9cbab11deb0a. All 1,240
+full949 tested Git blobs match publication. Receipt SHA256:
+51ee8558abe2df0ab5b02173b81d4e45faa5f758b681e634264ddc191ef40186.
+
+Only trap.js changes: dofiretrap awaits burn_away_slime after damage, before
+armor. Candidate334 and fresh parent composition both pass all six original
+C cases, versus four on baseline; complete native reports match. Runtime-map:
+2b74bb698d3975fbae845838ab47bd9bf18154a5c1c088a73fbb31b04298b2a2.
+Promotion127 is verified and all50 exact payloads are installed. The fresh
+installed gate passes in3.292s, with its whole report byte-identical to the
+portable report, SHA3e87525d6c05fa34fa8504c5b2e3dd883f52ad5f135f413e2d7707c2b18f115c.
+All54 checks,24 producer checks,18 source checks,12 neutrality comparisons,
+20 negative hashes, four complete ordinary/native negatives and ten prior
+healthy hashes remain exact. Six registry rows bring the total to4,788;
+aggregate coverage remains111. Original source50/54 and native4/6 stay fixed.
+
+Full950 passes on NFS, two CPU workers, default45s and no retries:
+/share/NFS/u/rohit/research/contest/artifacts/2026-11-22/dofiretrap-slime-full950-js-20261126.
+PID3624019 is complete. All950 recordings pass, with948,588 screens/cursors,
+20,805,574 random calls and33,260 frames. All1,241 files are fixed.
+All-files SHA256:
+74df51927523058cf7bafe545d60ec35e1fc215cd50b0fab3bed35c51c6b70d6.
+Verification SHA256:
+47985d1ab3ae831569b291c531d4b6b02a9979237693ab42608623b00f188f0a.
+Seven retained gates,45 strict workers and empty source audit pass. Public
+parent proof is under evidence/dofiretrap-slime. Next: stage the intended paths,
+verify all tested Git blobs, commit and immediately push.
+
+The separate pickup observer correction is verified, not installed. C frees
+the consumed corpse after the turn and retains fixed200-slot bill storage.
+The corrected gate checks surviving object lists/timers instead of freed
+fields, and retains billct==0 while removing the false bill_p.length==0
+premise. The immediate merged-object OBJ_DELETED assertion stays unchanged.
+All17 ordinary replays and later source controls pass on fixed496 and697,
+4.754s and4.748s; identical log SHA:
+2b86ae29eee9e064a0bd846172d8d0b0ee4efc4f3d382e1e47282b5a288c18b7.
+Both original failure stages remain in pickup-deallocation-observer-review;
+final lock/results are in pickup-lifetime-billing-observer-correction. Publish
+this as a separate test-only commit after the fire checkpoint.
+
+Role-init-gender promotion48 is sealed and independently verified:28 payloads,
+four branch rows,44/44 fresh ordinary checks and15 negative hashes. Candidate321
+passes native4/4 and retained welcome/restore16/16 in all three modes. Prepared
+parent composition requires the full950 publication receipt; prepared full951
+scripts have not run. Its C selector attribution limit remains explicit.
+
+Gremlin source30 is sealed: five actual setups,50 producer checks,11/15 source
+checks,10 neutrality comparisons and15 negative hashes. Parent original C5 raw
+SHA2edde5d3498453eb4f3c7d91a19d9808ea392caeff791bfcfeff6db90f93a452,
+755 keys,760 boundaries,13,811 calls,zero frames. Mandatory base5 and prelocked
+supplemental OR2/negative3 predicates pass before gameplay. Both C positives
+use painful-light text; verbal feedback is not native-covered. Baseline native
+is3/5, all three negative reports exact. The generic wrapper's expected-exit0
+assertion failed because the native gate correctly returned1 for mismatches;
+original reports and diagnostic are retained with no replay. Leibniz owns the
+isolated equipment-read and monflee feedback candidate. Euclid owns source-only
+underwater fire behavior on fixed2b after finishing slime promotion. No new
+underwater C recording or candidate is authorized yet.
+
 ## 2026-11-26: autoquiver published; Balrog verified on full949
 
 Published main is e421642b3d8bad6bb68daa7d3ed7edc594c3d198. All 1,239

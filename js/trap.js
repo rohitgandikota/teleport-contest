@@ -443,6 +443,7 @@ async function dofiretrap(box) {
         await You('are uninjured.');
     else
         await losehp(num, 'tower of flame', KILLED_BY_AN);
+    await burn_away_slime();
 
     if (await burnarmor(game.youmonst) || rn2(3)) {
         await destroy_items(game.youmonst, ATTKS.AD_FIRE, origDmg);

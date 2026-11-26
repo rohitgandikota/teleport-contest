@@ -1,0 +1,92 @@
+{
+  "name": "shop-chat-quote",
+  "source": "c",
+  "version": 5,
+  "coverage": [
+    "src/sounds.c:dochat",
+    "src/shk.c:price_quote"
+  ],
+  "branches": [
+    "shop-chat-quote.single-priced-stock",
+    "shop-chat-quote.multiple-goods",
+    "shop-chat-quote.single-no-charge",
+    "shop-chat-quote.empty-floor-no-quote",
+    "shop-chat-quote.blind-stock-no-quote"
+  ],
+  "segments": [
+    {
+      "name": "single-priced-stock",
+      "seed": 6903,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00162\r\u0006\u0014  llllllllllllllllllll.  \u001b\u001b#chat\r\u001b   \u001b\u001b"
+    },
+    {
+      "name": "multiple-goods",
+      "seed": 6903,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00162\r\u0006\u0014  llllllllllllllllllll.  \u001b\u001b\u0017uncursed apple\r  \u001b\u001bdo n   \u001b\u001b#chat\r\u001b   \u001b\u001b"
+    },
+    {
+      "name": "single-no-charge",
+      "seed": 6903,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00162\r\u0006\u0014  llllllllllllllllllll.  \u001b\u001b,   \u001b\u001b\u0017uncursed apple\r  \u001b\u001bdp n   \u001b\u001b#chat\r\u001b   \u001b\u001b"
+    },
+    {
+      "name": "empty-floor-no-quote",
+      "seed": 6903,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00162\r\u0006\u0014  llllllllllllllllllll.  \u001b\u001b,   \u001b\u001b#chat\r\u001b   \u001b\u001b"
+    },
+    {
+      "name": "blind-stock-no-quote",
+      "seed": 6903,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00162\r\u0006\u0014  llllllllllllllllllll.  \u001b\u001b\u0017uncursed blindfold\r  \u001b\u001bPo   \u001b\u001b#chat\r\u001b   \u001b\u001b"
+    }
+  ],
+  "branchAssertions": [
+    {
+      "branch": "shop-chat-quote.single-priced-stock",
+      "segment": 0,
+      "screenIncludes": [
+        "\"A pick-axe, price 67 zorkmids"
+      ]
+    },
+    {
+      "branch": "shop-chat-quote.multiple-goods",
+      "segment": 1,
+      "screenIncludes": [
+        "Fine goods for sale:",
+        "an apple, no charge",
+        "a pick-axe, 67 zorkmids"
+      ]
+    },
+    {
+      "branch": "shop-chat-quote.single-no-charge",
+      "segment": 2,
+      "screenIncludes": [
+        "\"An apple, no charge!\""
+      ]
+    },
+    {
+      "branch": "shop-chat-quote.empty-floor-no-quote",
+      "segment": 3,
+      "screenIncludes": [
+        "Talk to whom? (in what direction)"
+      ]
+    },
+    {
+      "branch": "shop-chat-quote.blind-stock-no-quote",
+      "segment": 4,
+      "screenIncludes": [
+        "Talk to whom? (in what direction)"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "reportSHA256": "731e393591dbe9948b7607bf152634a6bfcb4c0e9adacd79eb4dd629df0c2c94",
+  "runtimeSHA256": "88b58f9ee504928b3adf4295da37cce4337882990cc75541f033df1d36c1ab11",
+  "proposalSHA256": "d6ec42ace056443d1821b90707f1dd8d1d75851c76d1f42ab37775a41cd6829a",
+  "measuredWithPassiveObserver": true,
+  "observerNeutralityMeasured": false,
+  "deferredEqualityMeasured": false,
+  "rows": [
+    {
+      "name": "empty-floor-no-quote",
+      "outputHashes": {
+        "screens": "95a9e361027d911e8c09e056221bfb402fac751983b60d9a1cc846bc7d581c0e",
+        "cursors": "9e7462c3ed33cf1a1a7d29ec0cb776d9b0cf3b6194758f8d99391dd898b7acdd",
+        "calls": "25d3b3767a672e091589c70059faba4201c5c329ba24d2f5df0f42ab446d17a6",
+        "slices": "6154165e16208057ce9a692dc0f3ed35ab6bcd12f15419d22750d28eec24df07",
+        "frames": "fbe834c0b4f316033b2a2c03cc76018cc6d88b54f91079ea347c02f630fdc438"
+      }
+    },
+    {
+      "name": "blind-stock-no-quote",
+      "outputHashes": {
+        "screens": "5d0a05050ef95b2cdce797a66cf11ae9a9e4414ba5024e6b6a7460c9caaf4cd2",
+        "cursors": "506770dfb4a0ce15c0cad94e0c7797441689211137019f0bf4dc11ce7ab8526f",
+        "calls": "afa04f07e37a5025baf86654a6f5da4ef67e896bb402f4e9a2276bfe4c92bd12",
+        "slices": "079dedf04393df516f454e1aaa9f3f329d48e3693b6517ff57d67803b7aaaadd",
+        "frames": "07589e93566c34eb2de862d02c085b2605fdbb58d42ab45f096e06c1852a731b"
+      }
+    }
+  ]
+}

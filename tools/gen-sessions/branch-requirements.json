@@ -5040,6 +5040,41 @@
       "description": "Compatibility label retained by the exact historical welcome-restore-branches recipe: real keyboard save, exit and restore. The canonical persistence.save-restore requirement remains separate.",
       "minimumSessions": 1,
       "normalModeRequired": false
+    },
+    {
+      "group": "Shop chat price quotes",
+      "id": "shop-chat-quote.single-priced-stock",
+      "cFile": "src/shk.c",
+      "cFunction": "price_quote",
+      "description": "Sighted eligible chat over one priced pick-axe quotes its67-zorkmid price before consuming a turn."
+    },
+    {
+      "group": "Shop chat price quotes",
+      "id": "shop-chat-quote.multiple-goods",
+      "cFile": "src/shk.c",
+      "cFunction": "price_quote",
+      "description": "Chat over real dropped no-charge apple plus natural stock shows both entries in a waiting price menu."
+    },
+    {
+      "group": "Shop chat price quotes",
+      "id": "shop-chat-quote.single-no-charge",
+      "cFile": "src/shk.c",
+      "cFunction": "price_quote",
+      "description": "Chat over the sole no-charge apple after an unpaid pickup speaks the free quote and consumes one turn."
+    },
+    {
+      "group": "Shop chat price quotes",
+      "id": "shop-chat-quote.empty-floor-no-quote",
+      "cFile": "src/sounds.c",
+      "cFunction": "dochat",
+      "description": "Empty costly floor after ordinary unpaid pickup falls through to the cancellable direction prompt."
+    },
+    {
+      "group": "Shop chat price quotes",
+      "id": "shop-chat-quote.blind-stock-no-quote",
+      "cFile": "src/sounds.c",
+      "cFunction": "dochat",
+      "description": "A worn blindfold excludes the stock quote and preserves the cancellable direction prompt."
     }
   ]
 }

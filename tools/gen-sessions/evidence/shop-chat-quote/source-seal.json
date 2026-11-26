@@ -1,0 +1,18 @@
+{
+  "members": 24,
+  "manifestSHA256": "149a66c3393013324e50a6de53d7a5a539c81c615e86b06ee7d3ff1596e093a9",
+  "runtimeSHA256": "88b58f9ee504928b3adf4295da37cce4337882990cc75541f033df1d36c1ab11",
+  "sourceRanges": 63,
+  "inputSegments": 5,
+  "inputKeys": 326,
+  "ordinaryReach": "5/5",
+  "reachChecks": "85/85",
+  "CSourceBehavior": "2/5, three missing quote positives",
+  "nativeExecutions": 0,
+  "runtimeCandidate": false,
+  "attempts": {
+    "first": "invalid loader plus reporting error preserved",
+    "second": "one correctly loaded pass per locked input"
+  },
+  "negativeHashes": 10
+}

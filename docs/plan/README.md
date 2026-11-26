@@ -12,12 +12,13 @@ Ground rules are in `/CLAUDE.md`. Read that first if you have not.
 
 ## Current focus, 2026-11-26
 
-Potion fixes are pushed as `6ebbcbb4`; formatting follow-up `44e97243` preserves
-all 1,227 tested files. The welcome fix passes all 937 recordings, 22 targeted
-native cases, six focused checks and 46 strict workers. Its fresh portable
-report matches the isolated proof exactly. The next shop composition passes
-all five native cases and preserves six chat controls. See STATUS for the
-publication checks and separate source audits.
+Welcome and level-entry feedback are pushed as `735a0783`, with all 1,228
+full937 tested files verified against the publication. Shop chat quotes now
+pass all 938 recordings, five targeted native cases, 65 ordinary contracts,
+four focused checks and 45 strict workers. Its two runtime files and portable
+evidence are ready for the staged-tree check and immediate push. Separate
+altar, chat-producer and familiar-bones audits remain in progress. See STATUS
+for evidence, preserved diagnostics and the remaining unobserved branches.
 
 Chat speech guards and wear-command entry checks are verified on `ef2bfd2d`.
 All 934 recordings, 12 new native cases, 12 focused checks and 46 strict workers

@@ -1,0 +1,15 @@
+{
+  "command": [
+    "node",
+    "--max-old-space-size=512",
+    ".cache/restart-20261122/shop-chat-quote-source-audit/tools/probe.mjs"
+  ],
+  "exit": 1,
+  "timeout": false,
+  "stdout": "",
+  "stderr": "node:internal/crypto/hash:142\n    throw new ERR_INVALID_ARG_TYPE(\n          ^\n\nTypeError [ERR_INVALID_ARG_TYPE]: The \"data\" argument must be of type string or an instance of Buffer, TypedArray, or DataView. Received undefined\n    at Hash.update (node:internal/crypto/hash:142:11)\n    at sha (file:///Users/rohit/research/code/contest/.cache/restart-20261122/shop-chat-quote-source-audit/tools/probe.mjs:7:43)\n    at hash (file:///Users/rohit/research/code/contest/.cache/restart-20261122/shop-chat-quote-source-audit/tools/probe.mjs:8:23)\n    at file:///Users/rohit/research/code/contest/.cache/restart-20261122/shop-chat-quote-source-audit/tools/probe.mjs:107:38 {\n  code: 'ERR_INVALID_ARG_TYPE'\n}\n\nNode.js v26.3.0\n",
+  "seconds": 0.536,
+  "nativeExecutions": 0,
+  "stdoutSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "stderrSHA256": "87c4d3378e7fb1adc3c59fef3125758bedb0b27a089d3b7a929a56079b29e731"
+}

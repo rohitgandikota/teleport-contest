@@ -1,0 +1,75 @@
+{
+  "status": "unobserved compiled argument order under Hallucination",
+  "ranges": [
+    {
+      "path": "nethack-c/upstream/src/shk.c",
+      "start": 5406,
+      "end": 5503,
+      "fileSHA256": "b2b5b82934b15c1a4a3c9474a650ff5800a83f0b9634696fdf080d0458f16e1b",
+      "rangeSHA256": "2a93076fef02942fe528bb96bf05a2c5cf6ae710541b87a0842b4c157d35d62b"
+    },
+    {
+      "path": "nethack-c/upstream/src/invent.c",
+      "start": 1546,
+      "end": 1555,
+      "fileSHA256": "0b93d6ce1abb5b63ed7ea07c26a57e1016c6cef0fc2ef0e4016e6622054524b5",
+      "rangeSHA256": "bb20f54b456898b389046f3cd75616f08945156b58d9086528411687c6c50356"
+    },
+    {
+      "path": "nethack-c/upstream/include/hack.h",
+      "start": 1492,
+      "end": 1494,
+      "fileSHA256": "2840a9bd41fb0c09384839fafdbd427a5d8705ad8d3eb5e2a0308cccea36813b",
+      "rangeSHA256": "4f2c0edd1446ea4354772e30a584c71e9f7c5162d00efa91afcd623cc1d9e5e1"
+    },
+    {
+      "path": "nethack-c/README.md",
+      "start": 40,
+      "end": 51,
+      "fileSHA256": "b65cfb17cdb68b4798cb8b95d9167879af05b4a86d2ffc7d3a988938d67c9787",
+      "rangeSHA256": "e219329c97a45b569231ca51acefb45cca301040023e23a01dfe4c7e7b4e9a5e"
+    },
+    {
+      "path": "nethack-c/build-recorder.sh",
+      "start": 18,
+      "end": 50,
+      "fileSHA256": "6e9eff3612bc7369ae417a41ce25a747b811bf19e24bb4d0ff862432a86722b5",
+      "rangeSHA256": "5329ed1c037944505079a521155b70f94dd988559df8d269db83c7dd05077eeb"
+    },
+    {
+      "path": "nethack-c/build-recorder.sh",
+      "start": 123,
+      "end": 143,
+      "fileSHA256": "6e9eff3612bc7369ae417a41ce25a747b811bf19e24bb4d0ff862432a86722b5",
+      "rangeSHA256": "d7a4ba4b7eb9e0ba824a1712f355c6eec5e3e1d019c62e38697a015c25443add"
+    },
+    {
+      "path": ".cache/restart-20261122/shop-chat-quote-candidate/js/invent.js",
+      "start": 3175,
+      "end": 3185,
+      "fileSHA256": "9d9557972eb51853a5081b60c34963109fa0dc3bf4a4ddcd8050042b2778750d",
+      "rangeSHA256": "1f649056c2e8328b068a9b45e37be7bf57d5b24bfb0af6bd60dcebed9e6e11ba"
+    },
+    {
+      "path": ".cache/restart-20261122/shop-chat-quote-candidate/js/shk.js",
+      "start": 4892,
+      "end": 4972,
+      "fileSHA256": "02cc04e57d492b207c562c5cced50c426c864fc543f00c7183ad4ef86f060f0d",
+      "rangeSHA256": "ee87d2dfadeea826f7a942c7ed04c5924c0d2c2e2d68aff23789ceba643a23c0"
+    }
+  ],
+  "CContract": "currency() uses Hallucination ? ROLL_FROM(currencies) : zorkmid; ROLL_FROM is array[rn2(SIZE(array))]. shk_embellish consumes rn2(3), and conditionally rn2(5).",
+  "ordering": "The first loop currency call is in an earlier full expression. In the single-priced verbalize call, currency(cost) and shk_embellish(first_obj,cost) are arguments of the same call. C does not specify their relative evaluation order. JS template substitutions evaluate currency before embellishment. Naming helpers can consume additional currency draws; no total hallucination RNG trace is inferred here.",
+  "compilerEvidence": "Repository README documents a Clang policy intended to match JS evaluation order. build-recorder.sh checks clang and exports CC=clang; Lua explicitly builds with CC=clang. This is build-policy evidence, not proof of this compiled call. No compiler version or argument-order trace is supplied in the original recording receipt. No C/compiler execution performed for this review.",
+  "recordedEvidence": {
+    "binarySHA256": "ba4dbc1c823f8d4b0cfb6fd594d00ff0ff5754daaaa2036bee15baeffdf85aa7",
+    "recorderSHA256": "b129caee2ca3941b30c36f5c26644bd37ff610344332eb511c474b8709b70648",
+    "cPin": "16ff59115315917b93185d026aeefea06db9b0f4",
+    "recordingReceiptSHA256": "ec5b13dba1f02391026ff37495fce5b8d74780ba4cb6205cfb083249bc0f8449",
+    "rawSHA256": "bd1772e4400523a302e55c764045dd54e85464b451c74323a257c2529645dfd1"
+  },
+  "observedCoverage": "All five original state predicates require !Hallucination. The priced single takes rn2(3)=2, leaving inner rn2(5) choices unexercised. No independent native proof of hallucinated argument order.",
+  "remainingBranches": "Stacks, container/contents-only prices, globs, punishment objects, leading/interleaved coins, artifact/magic/food embellishments and excluded keeper states remain unexercised. Existing naming and sale helper gaps remain unchanged.",
+  "nextFamily": "Separately lock hallucinated quote, stack, contents and leading-coins ordinary producers before new evidence. Not started or authorized for replay here.",
+  "runtimeChangeForThisReview": false
+}

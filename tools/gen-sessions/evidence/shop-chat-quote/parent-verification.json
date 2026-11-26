@@ -1,0 +1,286 @@
+{
+  "baselineCommit": "735a07839935e41547db4aebf2fdb026c668a34e",
+  "composition": {
+    "baselineRuntimeSHA256": "50a18d5fbd3b7c3cb89b049d931e936124b5b89cec61ed195dbc5220985d22a6",
+    "sourceCandidateRuntimeSHA256": "43e0aee4ac0e598dde03d907d541dc066de52b66ee4ce9882cb36166b048c5d2",
+    "runtimeSHA256": "9dbbff6acd0f9bf314062fc27ca6ae962b4dae207b95ece2a1efcd4b1b204f30",
+    "runtimeChanged": [
+      "js/shk.js",
+      "js/sounds.js"
+    ],
+    "copies": 2,
+    "fixedLinks": 278,
+    "originalOwnedBaselineHashesMatch": true,
+    "sourceSealSHA256": "986139c60d246abf6b3d93c0755170a5f8660018d0b75a490ffa8e3238e169c5",
+    "scopedPatchSHA256": "c81e8caddd19a40172b647447515deeedf3d6e27c7894397382f60af450599f6"
+  },
+  "candidateReview": {
+    "baselineRuntimeSHA256": "88b58f9ee504928b3adf4295da37cce4337882990cc75541f033df1d36c1ab11",
+    "candidateRuntimeSHA256": "43e0aee4ac0e598dde03d907d541dc066de52b66ee4ce9882cb36166b048c5d2",
+    "patchSHA256": "c81e8caddd19a40172b647447515deeedf3d6e27c7894397382f60af450599f6",
+    "changedPaths": [
+      "js/shk.js",
+      "js/sounds.js"
+    ],
+    "unchangedRuntimeMembers": 278,
+    "reverseExact": true,
+    "reverse": {
+      "js/shk.js": {
+        "addedOwnersSHA256": "26b1b32ae643c3b837db3e977daf61e2f175fed512f29d1ace443bbaec478d7f",
+        "removedOnlyThreeOwnerBlock": true,
+        "restoredSHA256": "5101f5d39ed66d24c844f8dc8eaf2ee7fb5c733916aa7859e18f7b3e47e313e5"
+      },
+      "js/sounds.js": {
+        "shopBranchSHA256": "4692eae912b571d9d1babe811ae65a329944c9ce65e66a7562e175f8a6778584",
+        "removedOnlyShopBranchAndTwoImports": true,
+        "restoredSHA256": "0a4d881953bd41c21d981c2f4b73cdfe07b8acd83833ab5565ce910928a662bb"
+      }
+    },
+    "nativeCandidatePass": 5,
+    "nativeBaselinePass": 2,
+    "nativeReportSHA256": "eae96f77921fc930320c6b98da69c12e0252a415f086907b87e08e73fd683fd3",
+    "fullNegativeRowsIdentical": {
+      "indices": [
+        3,
+        4
+      ],
+      "rowSHA256": [
+        "c6c0ea9bd73a6af1277b45e33af8ce562f1cf7b718dba7459db377365ea72f1b",
+        "02d6cdd7839b103571caabd802dfa667291b846e59df96fb4721de04fe0f0798"
+      ]
+    },
+    "originalBaseline85DiagnosticEntireRowsExact": true,
+    "candidateOriginalDiagnosticPass": 73,
+    "candidateCSourceAcceptance": 5,
+    "ordinaryNegativeEntireRowsExact": true,
+    "negativeHashesExact": 10,
+    "plainObservedDeferredEqualBothGraphs": true,
+    "originalInputFieldsAndKeysUnchanged": true,
+    "nativeCExecutionsByWorker": 0
+  },
+  "raw": [
+    {
+      "source": "tools/gen-sessions/generated/shop-chat-quote.session.json",
+      "destination": "tools/gen-sessions/generated/shop-chat-quote.session.json",
+      "bytes": 1983407,
+      "sha256": "bd1772e4400523a302e55c764045dd54e85464b451c74323a257c2529645dfd1",
+      "policy": "Copy the exact original once, or accept an existing canonical file only if bytes match. Do not rewrite metadata."
+    }
+  ],
+  "publicPayloads": 17,
+  "branchRequirementsAdded": 5,
+  "coverageRequirementsAdded": 2,
+  "branchRegistryTotal": 4712,
+  "coverageRegistryTotal": 108,
+  "installationReceiptSHA256": "9c57cf81a4fc2d18efced45975f6aa43450a80c7e71040a1adb8c9da884b4ff4",
+  "ordinary": {
+    "command": [
+      "node",
+      "--max-old-space-size=512",
+      "tools/shop-chat-quote-input-gate.mjs",
+      "/Users/rohit/research/code/contest/.cache/restart-20261122/shop-chat-quote-main-ordinary.json"
+    ],
+    "exit": 0,
+    "seconds": 2.529,
+    "report": ".cache/restart-20261122/shop-chat-quote-main-ordinary.json",
+    "reportSHA256": "9e64a761d0cba78ddb639509cbe5301efffb0115904d2b5e4b0c4d5f754d22c8",
+    "log": ".cache/restart-20261122/shop-chat-quote-main-ordinary.log",
+    "logSHA256": "d841df60e4daa868e15ea48ec97e837335846b00ab9f93a35177bf2a192414b6"
+  },
+  "composedNative": [
+    {
+      "name": "native",
+      "command": [
+        "node",
+        "--max-old-space-size=512",
+        "--preserve-symlinks",
+        "--preserve-symlinks-main",
+        ".cache/restart-20261122/shop-chat-parent-composed/native.mjs"
+      ],
+      "exit": 0,
+      "seconds": 1.411,
+      "logSHA256": "9121f2679d19bd190f1c5fcfe755da3a96523725a7b7fe238af39b84c9df8268",
+      "reportSHA256": "eae96f77921fc930320c6b98da69c12e0252a415f086907b87e08e73fd683fd3"
+    },
+    {
+      "name": "chat-guards",
+      "command": [
+        "node",
+        "--max-old-space-size=512",
+        "--preserve-symlinks",
+        "--preserve-symlinks-main",
+        ".cache/restart-20261122/shop-chat-parent-composed/chat-guards.mjs"
+      ],
+      "exit": 0,
+      "seconds": 2.497,
+      "logSHA256": "2f61e2adc30eb36e6ab64290da657d80513471b9f1b1a8a2d5a070bdeb69f140",
+      "reportSHA256": "7d7ae27ec21975664f0a815794ddf565b62bb563abb55e5e855a19084190f193"
+    }
+  ],
+  "retained": [
+    {
+      "name": "shopkeeper-reentry-input",
+      "command": [
+        "node",
+        "--max-old-space-size=512",
+        "tools/shopkeeper-reentry-input-gate.mjs"
+      ],
+      "exit": 0,
+      "seconds": 2.048,
+      "log": ".cache/restart-20261122/shop-chat-quote-retained-shopkeeper-reentry-input.log",
+      "sha256": "56569df0a2fe5a55fbe5b1ea46550670e57b524a644004b21f87b4a168312875"
+    },
+    {
+      "name": "shop-billing-copy-state",
+      "command": [
+        "node",
+        "--max-old-space-size=512",
+        "tools/shop-billing-copy-state-gate.mjs"
+      ],
+      "exit": 0,
+      "seconds": 3.904,
+      "log": ".cache/restart-20261122/shop-chat-quote-retained-shop-billing-copy-state.log",
+      "sha256": "5c0f196d9789cc0f7fef767431569005b342924cdee8f7fcb0d5885b9d382410"
+    },
+    {
+      "name": "glob-billing-weight-input",
+      "command": [
+        "node",
+        "--max-old-space-size=512",
+        "tools/glob-billing-weight-input-gate.mjs"
+      ],
+      "exit": 0,
+      "seconds": 1.405,
+      "log": ".cache/restart-20261122/shop-chat-quote-retained-glob-billing-weight-input.log",
+      "sha256": "f2969072ac44a4b72fe4e6b09b70693ecb99318d690f3cc1a209681ff1d5df6f"
+    },
+    {
+      "name": "shop-robbery-chronicle-input",
+      "command": [
+        "node",
+        "--max-old-space-size=512",
+        "tools/shop-robbery-chronicle-input-gate.mjs"
+      ],
+      "exit": 0,
+      "seconds": 0.99,
+      "log": ".cache/restart-20261122/shop-chat-quote-retained-shop-robbery-chronicle-input.log",
+      "sha256": "f74faf3c4084dc77affed2565311e8a54832d5d1f3220093129561e3ec33b461"
+    }
+  ],
+  "strict": {
+    "command": [
+      "node",
+      "tools/hang-gate.mjs",
+      "sessions/seed0002-healer-reflection-drummer.session.json",
+      "sessions/seed0004-feeding-pony.session.json",
+      "sessions/seed0006-wizard-water-demon.session.json",
+      "sessions/seed0007-rogue-snake-swamp.session.json",
+      "sessions/seed0009-swimmer-mforce.session.json",
+      "sessions/seed0012-monk-vault-escort.session.json",
+      "sessions/seed0013-friday13-save-then-fullmoon-restore.session.json",
+      "sessions/seed0013-rogue-friday13-combat.session.json",
+      "sessions/seed0014-dequa-fountain-explore.session.json",
+      "sessions/seed0015-valk-level2-pit-dog-wait.session.json",
+      "sessions/seed0016-healer-newmoon-eat-zap.session.json",
+      "sessions/seed0017-samurai-altar-pray.session.json",
+      "sessions/seed0030-ten-diverse-deaths.session.json",
+      "sessions/seed0060-orc-rogue-kick-search.session.json",
+      "sessions/seed0077-rogue-chargen.session.json",
+      "sessions/seed0101-ranger-quiver-throw-travel-engrave.session.json",
+      "sessions/seed0102-ranger-name-cancel.session.json",
+      "sessions/seed0103-knight-ride-pony.session.json",
+      "sessions/seed0104-knight-ride-combat.session.json",
+      "sessions/seed0105-valk-chat-lamp-ration.session.json",
+      "sessions/seed0106-priest-extcmd-sweep.session.json",
+      "sessions/seed0107-samurai-twoweapon-enhance.session.json",
+      "sessions/seed0108-wizard-extcmd-wishlist.session.json",
+      "sessions/seed0116-wizard-wear-shop.session.json",
+      "sessions/seed0200-monk-north-search.session.json",
+      "sessions/seed0360-wizard-world-tour.session.json",
+      "sessions/seed0361-archeologist-tour.session.json",
+      "sessions/seed0367-priest-quest-tour.session.json",
+      "sessions/seed0373-barbarian-quest-tour.session.json",
+      "sessions/seed0383-wizard-hallucinate.session.json",
+      "sessions/seed0398-wizard-wandpoly-pile.session.json",
+      "sessions/seed0399-wizard-hallu-actions.session.json",
+      "sessions/seed0501-priest-cast-read-turn.session.json",
+      "sessions/seed0700-samurai-explore-descend.session.json",
+      "sessions/seed0900-tourist-explore-actions.session.json",
+      "sessions/seed1150-caveman-explore-move.session.json",
+      "sessions/seed1500-rogue-explore-move.session.json",
+      "sessions/seed1800-tourist-eat-throw.session.json",
+      "sessions/seed2200-wizard-quaff-zap-read.session.json",
+      "sessions/seed2600-wizard-custom-binds.session.json",
+      "sessions/seed4500-knight-coverage.session.json",
+      "sessions/seed5002-wizard-coverage-pair.session.json",
+      "sessions/seed5006-tourist-stress-disaster.session.json",
+      "sessions/seed8000-tourist-starter.session.json",
+      "tools/gen-sessions/generated/shop-chat-quote.session.json"
+    ],
+    "exit": 0,
+    "seconds": 30.138,
+    "targets": 45,
+    "budgetMs": 8000,
+    "log": ".cache/restart-20261122/shop-chat-quote-public45-strict.log",
+    "sha256": "8d5b5c1946094092d19693ee75a43de11c09df50ea6700e35beef83c3d080de9"
+  },
+  "scopeImportAudit": [],
+  "full": {
+    "verifiedAt": "2026-11-26T17:56:10.412391+00:00",
+    "sessions": 938,
+    "passed": 938,
+    "failures": [],
+    "totals": {
+      "screens": 940209,
+      "cursors": 940209,
+      "rngCalls": 20560801,
+      "animFrames": 33188
+    },
+    "missingMetrics": {},
+    "runtimeFilesFixed": 280,
+    "rawFilesFixed": 938,
+    "allFilesFixed": 1229,
+    "allFilesSHA256": "8857ffd5cd764aa71ea134ed2686479f91577ea34c710624260eb3ab98d0709d",
+    "defaultWorkerTimeoutMs": 45000,
+    "retries": 0,
+    "started": {
+      "startedAt": "2026-11-26T17:45:43.737246+00:00",
+      "workers": 2,
+      "pid": 3540145,
+      "cpuCount": 24,
+      "loadAverage": [
+        1.18701171875,
+        1.8330078125,
+        2.3837890625
+      ],
+      "timeoutOverride": false,
+      "retries": 0,
+      "node": {
+        "version": "v26.3.0",
+        "archive": "node-v26.3.0-linux-x64.tar.xz",
+        "sha256": "0ce210831380ab75a5fec0d3fb6b5af0958898016b2cae51cc2fa11057d2f77e",
+        "officialURL": "https://nodejs.org/dist/v26.3.0/node-v26.3.0-linux-x64.tar.xz",
+        "checksumsURL": "https://nodejs.org/dist/v26.3.0/SHASUMS256.txt",
+        "binary": "/share/NFS/u/rohit/research/contest/artifacts/2026-11-22/text-history-full858-js-20261125/node-v26.3.0-linux-x64/bin/node",
+        "archiveSHA256": "0ce210831380ab75a5fec0d3fb6b5af0958898016b2cae51cc2fa11057d2f77e",
+        "binarySHA256": "5325ac9da58541494afcc136f0880279a2a853609bf4dae7755e04fb682b6926"
+      },
+      "allFilesSHA256": "8857ffd5cd764aa71ea134ed2686479f91577ea34c710624260eb3ab98d0709d"
+    },
+    "logs": {
+      "shard-1.log": "3d7dd3cdccdab0e1f8437f1d2fd65732cef2af10e979c8957c20169d330730d6",
+      "shard-0.log": "542ebd1bc6622c0f34dabde77652fd7e8446a9ab3331e0c142fabe7f6b03372d"
+    },
+    "limits": [
+      "Scored corpus parity, not literal serialized-byte or whole-port proof.",
+      "No held-out result is inferred from these fixtures."
+    ]
+  },
+  "fullVerificationSHA256": "4eed805ea460091e6f07605d33159fc57f453cf8424631df4014033413748023",
+  "limits": [
+    "Scored corpus and source-state parity, not whole-port or serialized terminal-byte proof.",
+    "Original raw lacks branchAssertions metadata. The portable gate separately verifies all five unchanged primary predicates; generic coverage remains partial.",
+    "Hallucinated currency/embellishment order and other quote variants remain unobserved here.",
+    "No leaderboard score is attributed to this checkpoint."
+  ]
+}

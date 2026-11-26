@@ -1,0 +1,940 @@
+{
+  "sourceDiagnosticSHA256": "731e393591dbe9948b7607bf152634a6bfcb4c0e9adacd79eb4dd629df0c2c94",
+  "baselineReportSHA256": "d0ad0f26e3696d73fbb59c6ff82c2ed5dd88aa1282ebf7b8e57c12eb7cdfdfbd",
+  "candidateReportSHA256": "c4ede1c46aea5a7e6ffed937ec87de8c2389fa987f911d18d357664ab7434fd5",
+  "baseline": {
+    "pass": 85,
+    "total": 85,
+    "rows": [
+      {
+        "name": "single-priced-stock",
+        "checks": [
+          {
+            "name": "one complete pass and every key consumed",
+            "pass": true
+          },
+          {
+            "name": "maintained shop position",
+            "pass": true
+          },
+          {
+            "name": "peaceful able resident in costly shop square",
+            "pass": true
+          },
+          {
+            "name": "exact floor chain and ownership",
+            "pass": true
+          },
+          {
+            "name": "real unpaid pickup when required",
+            "pass": true
+          },
+          {
+            "name": "actual sight and other speech predicates",
+            "pass": true
+          },
+          {
+            "name": "blindness produced by worn blindfold when selected",
+            "pass": true
+          },
+          {
+            "name": "C quote eligibility reached",
+            "pass": true
+          },
+          {
+            "name": "survived without mortality",
+            "pass": true
+          },
+          {
+            "name": "every output boundary present",
+            "pass": true
+          },
+          {
+            "name": "ordered RNG slices equal full log",
+            "pass": true
+          },
+          {
+            "name": "declined-sale prompt produced when required",
+            "pass": true
+          },
+          {
+            "name": "fixed JS asks for direction",
+            "pass": true
+          },
+          {
+            "name": "fixed JS produces no quote",
+            "pass": true
+          },
+          {
+            "name": "fixed JS spends zero turns",
+            "pass": true
+          },
+          {
+            "name": "fixed JS post-chat RNG is empty",
+            "pass": true
+          },
+          {
+            "name": "chat cancellation preserves scoped object state",
+            "pass": true
+          }
+        ],
+        "CSourceBehaviorChecks": [
+          {
+            "name": "source-predicted phrases",
+            "pass": false
+          },
+          {
+            "name": "source-predicted direction behavior",
+            "pass": false
+          },
+          {
+            "name": "source-predicted turn cost",
+            "pass": false
+          },
+          {
+            "name": "source-predicted owner RNG",
+            "pass": false
+          }
+        ]
+      },
+      {
+        "name": "multiple-goods",
+        "checks": [
+          {
+            "name": "one complete pass and every key consumed",
+            "pass": true
+          },
+          {
+            "name": "maintained shop position",
+            "pass": true
+          },
+          {
+            "name": "peaceful able resident in costly shop square",
+            "pass": true
+          },
+          {
+            "name": "exact floor chain and ownership",
+            "pass": true
+          },
+          {
+            "name": "real unpaid pickup when required",
+            "pass": true
+          },
+          {
+            "name": "actual sight and other speech predicates",
+            "pass": true
+          },
+          {
+            "name": "blindness produced by worn blindfold when selected",
+            "pass": true
+          },
+          {
+            "name": "C quote eligibility reached",
+            "pass": true
+          },
+          {
+            "name": "survived without mortality",
+            "pass": true
+          },
+          {
+            "name": "every output boundary present",
+            "pass": true
+          },
+          {
+            "name": "ordered RNG slices equal full log",
+            "pass": true
+          },
+          {
+            "name": "declined-sale prompt produced when required",
+            "pass": true
+          },
+          {
+            "name": "fixed JS asks for direction",
+            "pass": true
+          },
+          {
+            "name": "fixed JS produces no quote",
+            "pass": true
+          },
+          {
+            "name": "fixed JS spends zero turns",
+            "pass": true
+          },
+          {
+            "name": "fixed JS post-chat RNG is empty",
+            "pass": true
+          },
+          {
+            "name": "chat cancellation preserves scoped object state",
+            "pass": true
+          }
+        ],
+        "CSourceBehaviorChecks": [
+          {
+            "name": "source-predicted phrases",
+            "pass": false
+          },
+          {
+            "name": "source-predicted direction behavior",
+            "pass": false
+          },
+          {
+            "name": "source-predicted turn cost",
+            "pass": false
+          },
+          {
+            "name": "source-predicted owner RNG",
+            "pass": true
+          }
+        ]
+      },
+      {
+        "name": "single-no-charge",
+        "checks": [
+          {
+            "name": "one complete pass and every key consumed",
+            "pass": true
+          },
+          {
+            "name": "maintained shop position",
+            "pass": true
+          },
+          {
+            "name": "peaceful able resident in costly shop square",
+            "pass": true
+          },
+          {
+            "name": "exact floor chain and ownership",
+            "pass": true
+          },
+          {
+            "name": "real unpaid pickup when required",
+            "pass": true
+          },
+          {
+            "name": "actual sight and other speech predicates",
+            "pass": true
+          },
+          {
+            "name": "blindness produced by worn blindfold when selected",
+            "pass": true
+          },
+          {
+            "name": "C quote eligibility reached",
+            "pass": true
+          },
+          {
+            "name": "survived without mortality",
+            "pass": true
+          },
+          {
+            "name": "every output boundary present",
+            "pass": true
+          },
+          {
+            "name": "ordered RNG slices equal full log",
+            "pass": true
+          },
+          {
+            "name": "declined-sale prompt produced when required",
+            "pass": true
+          },
+          {
+            "name": "fixed JS asks for direction",
+            "pass": true
+          },
+          {
+            "name": "fixed JS produces no quote",
+            "pass": true
+          },
+          {
+            "name": "fixed JS spends zero turns",
+            "pass": true
+          },
+          {
+            "name": "fixed JS post-chat RNG is empty",
+            "pass": true
+          },
+          {
+            "name": "chat cancellation preserves scoped object state",
+            "pass": true
+          }
+        ],
+        "CSourceBehaviorChecks": [
+          {
+            "name": "source-predicted phrases",
+            "pass": false
+          },
+          {
+            "name": "source-predicted direction behavior",
+            "pass": false
+          },
+          {
+            "name": "source-predicted turn cost",
+            "pass": false
+          },
+          {
+            "name": "source-predicted owner RNG",
+            "pass": true
+          }
+        ]
+      },
+      {
+        "name": "empty-floor-no-quote",
+        "checks": [
+          {
+            "name": "one complete pass and every key consumed",
+            "pass": true
+          },
+          {
+            "name": "maintained shop position",
+            "pass": true
+          },
+          {
+            "name": "peaceful able resident in costly shop square",
+            "pass": true
+          },
+          {
+            "name": "exact floor chain and ownership",
+            "pass": true
+          },
+          {
+            "name": "real unpaid pickup when required",
+            "pass": true
+          },
+          {
+            "name": "actual sight and other speech predicates",
+            "pass": true
+          },
+          {
+            "name": "blindness produced by worn blindfold when selected",
+            "pass": true
+          },
+          {
+            "name": "C quote eligibility reached",
+            "pass": true
+          },
+          {
+            "name": "survived without mortality",
+            "pass": true
+          },
+          {
+            "name": "every output boundary present",
+            "pass": true
+          },
+          {
+            "name": "ordered RNG slices equal full log",
+            "pass": true
+          },
+          {
+            "name": "declined-sale prompt produced when required",
+            "pass": true
+          },
+          {
+            "name": "fixed JS asks for direction",
+            "pass": true
+          },
+          {
+            "name": "fixed JS produces no quote",
+            "pass": true
+          },
+          {
+            "name": "fixed JS spends zero turns",
+            "pass": true
+          },
+          {
+            "name": "fixed JS post-chat RNG is empty",
+            "pass": true
+          },
+          {
+            "name": "chat cancellation preserves scoped object state",
+            "pass": true
+          }
+        ],
+        "CSourceBehaviorChecks": [
+          {
+            "name": "source-predicted phrases",
+            "pass": true
+          },
+          {
+            "name": "source-predicted direction behavior",
+            "pass": true
+          },
+          {
+            "name": "source-predicted turn cost",
+            "pass": true
+          },
+          {
+            "name": "source-predicted owner RNG",
+            "pass": true
+          }
+        ]
+      },
+      {
+        "name": "blind-stock-no-quote",
+        "checks": [
+          {
+            "name": "one complete pass and every key consumed",
+            "pass": true
+          },
+          {
+            "name": "maintained shop position",
+            "pass": true
+          },
+          {
+            "name": "peaceful able resident in costly shop square",
+            "pass": true
+          },
+          {
+            "name": "exact floor chain and ownership",
+            "pass": true
+          },
+          {
+            "name": "real unpaid pickup when required",
+            "pass": true
+          },
+          {
+            "name": "actual sight and other speech predicates",
+            "pass": true
+          },
+          {
+            "name": "blindness produced by worn blindfold when selected",
+            "pass": true
+          },
+          {
+            "name": "C quote eligibility reached",
+            "pass": true
+          },
+          {
+            "name": "survived without mortality",
+            "pass": true
+          },
+          {
+            "name": "every output boundary present",
+            "pass": true
+          },
+          {
+            "name": "ordered RNG slices equal full log",
+            "pass": true
+          },
+          {
+            "name": "declined-sale prompt produced when required",
+            "pass": true
+          },
+          {
+            "name": "fixed JS asks for direction",
+            "pass": true
+          },
+          {
+            "name": "fixed JS produces no quote",
+            "pass": true
+          },
+          {
+            "name": "fixed JS spends zero turns",
+            "pass": true
+          },
+          {
+            "name": "fixed JS post-chat RNG is empty",
+            "pass": true
+          },
+          {
+            "name": "chat cancellation preserves scoped object state",
+            "pass": true
+          }
+        ],
+        "CSourceBehaviorChecks": [
+          {
+            "name": "source-predicted phrases",
+            "pass": true
+          },
+          {
+            "name": "source-predicted direction behavior",
+            "pass": true
+          },
+          {
+            "name": "source-predicted turn cost",
+            "pass": true
+          },
+          {
+            "name": "source-predicted owner RNG",
+            "pass": true
+          }
+        ]
+      }
+    ]
+  },
+  "candidate": {
+    "pass": 73,
+    "total": 85,
+    "rows": [
+      {
+        "name": "single-priced-stock",
+        "checks": [
+          {
+            "name": "one complete pass and every key consumed",
+            "pass": true
+          },
+          {
+            "name": "maintained shop position",
+            "pass": true
+          },
+          {
+            "name": "peaceful able resident in costly shop square",
+            "pass": true
+          },
+          {
+            "name": "exact floor chain and ownership",
+            "pass": true
+          },
+          {
+            "name": "real unpaid pickup when required",
+            "pass": true
+          },
+          {
+            "name": "actual sight and other speech predicates",
+            "pass": true
+          },
+          {
+            "name": "blindness produced by worn blindfold when selected",
+            "pass": true
+          },
+          {
+            "name": "C quote eligibility reached",
+            "pass": true
+          },
+          {
+            "name": "survived without mortality",
+            "pass": true
+          },
+          {
+            "name": "every output boundary present",
+            "pass": true
+          },
+          {
+            "name": "ordered RNG slices equal full log",
+            "pass": true
+          },
+          {
+            "name": "declined-sale prompt produced when required",
+            "pass": true
+          },
+          {
+            "name": "fixed JS asks for direction",
+            "pass": false
+          },
+          {
+            "name": "fixed JS produces no quote",
+            "pass": false
+          },
+          {
+            "name": "fixed JS spends zero turns",
+            "pass": false
+          },
+          {
+            "name": "fixed JS post-chat RNG is empty",
+            "pass": false
+          },
+          {
+            "name": "chat cancellation preserves scoped object state",
+            "pass": true
+          }
+        ],
+        "CSourceBehaviorChecks": [
+          {
+            "name": "source-predicted phrases",
+            "pass": true
+          },
+          {
+            "name": "source-predicted direction behavior",
+            "pass": true
+          },
+          {
+            "name": "source-predicted turn cost",
+            "pass": true
+          },
+          {
+            "name": "source-predicted owner RNG",
+            "pass": true
+          }
+        ]
+      },
+      {
+        "name": "multiple-goods",
+        "checks": [
+          {
+            "name": "one complete pass and every key consumed",
+            "pass": true
+          },
+          {
+            "name": "maintained shop position",
+            "pass": true
+          },
+          {
+            "name": "peaceful able resident in costly shop square",
+            "pass": true
+          },
+          {
+            "name": "exact floor chain and ownership",
+            "pass": true
+          },
+          {
+            "name": "real unpaid pickup when required",
+            "pass": true
+          },
+          {
+            "name": "actual sight and other speech predicates",
+            "pass": true
+          },
+          {
+            "name": "blindness produced by worn blindfold when selected",
+            "pass": true
+          },
+          {
+            "name": "C quote eligibility reached",
+            "pass": true
+          },
+          {
+            "name": "survived without mortality",
+            "pass": true
+          },
+          {
+            "name": "every output boundary present",
+            "pass": true
+          },
+          {
+            "name": "ordered RNG slices equal full log",
+            "pass": true
+          },
+          {
+            "name": "declined-sale prompt produced when required",
+            "pass": true
+          },
+          {
+            "name": "fixed JS asks for direction",
+            "pass": false
+          },
+          {
+            "name": "fixed JS produces no quote",
+            "pass": false
+          },
+          {
+            "name": "fixed JS spends zero turns",
+            "pass": false
+          },
+          {
+            "name": "fixed JS post-chat RNG is empty",
+            "pass": false
+          },
+          {
+            "name": "chat cancellation preserves scoped object state",
+            "pass": true
+          }
+        ],
+        "CSourceBehaviorChecks": [
+          {
+            "name": "source-predicted phrases",
+            "pass": true
+          },
+          {
+            "name": "source-predicted direction behavior",
+            "pass": true
+          },
+          {
+            "name": "source-predicted turn cost",
+            "pass": true
+          },
+          {
+            "name": "source-predicted owner RNG",
+            "pass": false
+          }
+        ]
+      },
+      {
+        "name": "single-no-charge",
+        "checks": [
+          {
+            "name": "one complete pass and every key consumed",
+            "pass": true
+          },
+          {
+            "name": "maintained shop position",
+            "pass": true
+          },
+          {
+            "name": "peaceful able resident in costly shop square",
+            "pass": true
+          },
+          {
+            "name": "exact floor chain and ownership",
+            "pass": true
+          },
+          {
+            "name": "real unpaid pickup when required",
+            "pass": true
+          },
+          {
+            "name": "actual sight and other speech predicates",
+            "pass": true
+          },
+          {
+            "name": "blindness produced by worn blindfold when selected",
+            "pass": true
+          },
+          {
+            "name": "C quote eligibility reached",
+            "pass": true
+          },
+          {
+            "name": "survived without mortality",
+            "pass": true
+          },
+          {
+            "name": "every output boundary present",
+            "pass": true
+          },
+          {
+            "name": "ordered RNG slices equal full log",
+            "pass": true
+          },
+          {
+            "name": "declined-sale prompt produced when required",
+            "pass": true
+          },
+          {
+            "name": "fixed JS asks for direction",
+            "pass": false
+          },
+          {
+            "name": "fixed JS produces no quote",
+            "pass": false
+          },
+          {
+            "name": "fixed JS spends zero turns",
+            "pass": false
+          },
+          {
+            "name": "fixed JS post-chat RNG is empty",
+            "pass": false
+          },
+          {
+            "name": "chat cancellation preserves scoped object state",
+            "pass": true
+          }
+        ],
+        "CSourceBehaviorChecks": [
+          {
+            "name": "source-predicted phrases",
+            "pass": true
+          },
+          {
+            "name": "source-predicted direction behavior",
+            "pass": true
+          },
+          {
+            "name": "source-predicted turn cost",
+            "pass": true
+          },
+          {
+            "name": "source-predicted owner RNG",
+            "pass": false
+          }
+        ]
+      },
+      {
+        "name": "empty-floor-no-quote",
+        "checks": [
+          {
+            "name": "one complete pass and every key consumed",
+            "pass": true
+          },
+          {
+            "name": "maintained shop position",
+            "pass": true
+          },
+          {
+            "name": "peaceful able resident in costly shop square",
+            "pass": true
+          },
+          {
+            "name": "exact floor chain and ownership",
+            "pass": true
+          },
+          {
+            "name": "real unpaid pickup when required",
+            "pass": true
+          },
+          {
+            "name": "actual sight and other speech predicates",
+            "pass": true
+          },
+          {
+            "name": "blindness produced by worn blindfold when selected",
+            "pass": true
+          },
+          {
+            "name": "C quote eligibility reached",
+            "pass": true
+          },
+          {
+            "name": "survived without mortality",
+            "pass": true
+          },
+          {
+            "name": "every output boundary present",
+            "pass": true
+          },
+          {
+            "name": "ordered RNG slices equal full log",
+            "pass": true
+          },
+          {
+            "name": "declined-sale prompt produced when required",
+            "pass": true
+          },
+          {
+            "name": "fixed JS asks for direction",
+            "pass": true
+          },
+          {
+            "name": "fixed JS produces no quote",
+            "pass": true
+          },
+          {
+            "name": "fixed JS spends zero turns",
+            "pass": true
+          },
+          {
+            "name": "fixed JS post-chat RNG is empty",
+            "pass": true
+          },
+          {
+            "name": "chat cancellation preserves scoped object state",
+            "pass": true
+          }
+        ],
+        "CSourceBehaviorChecks": [
+          {
+            "name": "source-predicted phrases",
+            "pass": true
+          },
+          {
+            "name": "source-predicted direction behavior",
+            "pass": true
+          },
+          {
+            "name": "source-predicted turn cost",
+            "pass": true
+          },
+          {
+            "name": "source-predicted owner RNG",
+            "pass": true
+          }
+        ]
+      },
+      {
+        "name": "blind-stock-no-quote",
+        "checks": [
+          {
+            "name": "one complete pass and every key consumed",
+            "pass": true
+          },
+          {
+            "name": "maintained shop position",
+            "pass": true
+          },
+          {
+            "name": "peaceful able resident in costly shop square",
+            "pass": true
+          },
+          {
+            "name": "exact floor chain and ownership",
+            "pass": true
+          },
+          {
+            "name": "real unpaid pickup when required",
+            "pass": true
+          },
+          {
+            "name": "actual sight and other speech predicates",
+            "pass": true
+          },
+          {
+            "name": "blindness produced by worn blindfold when selected",
+            "pass": true
+          },
+          {
+            "name": "C quote eligibility reached",
+            "pass": true
+          },
+          {
+            "name": "survived without mortality",
+            "pass": true
+          },
+          {
+            "name": "every output boundary present",
+            "pass": true
+          },
+          {
+            "name": "ordered RNG slices equal full log",
+            "pass": true
+          },
+          {
+            "name": "declined-sale prompt produced when required",
+            "pass": true
+          },
+          {
+            "name": "fixed JS asks for direction",
+            "pass": true
+          },
+          {
+            "name": "fixed JS produces no quote",
+            "pass": true
+          },
+          {
+            "name": "fixed JS spends zero turns",
+            "pass": true
+          },
+          {
+            "name": "fixed JS post-chat RNG is empty",
+            "pass": true
+          },
+          {
+            "name": "chat cancellation preserves scoped object state",
+            "pass": true
+          }
+        ],
+        "CSourceBehaviorChecks": [
+          {
+            "name": "source-predicted phrases",
+            "pass": true
+          },
+          {
+            "name": "source-predicted direction behavior",
+            "pass": true
+          },
+          {
+            "name": "source-predicted turn cost",
+            "pass": true
+          },
+          {
+            "name": "source-predicted owner RNG",
+            "pass": true
+          }
+        ]
+      }
+    ]
+  },
+  "negativeRows": [
+    {
+      "name": "empty-floor-no-quote",
+      "rowSHA256": "62780e5efe7782e91c967e71034d4dd4bcdd95fae405058112b903a5c9b1c5a5"
+    },
+    {
+      "name": "blind-stock-no-quote",
+      "rowSHA256": "11f37029584ae694e3177334d226c8f7eb52121d60fa63223b30c8e456c860ee"
+    }
+  ],
+  "originalDiagnosticBodySHA256": "889db6bf8b99b11213818356aad17d05a8dacc3a7bac2b6c8f7088586b98b0d0",
+  "originalObserverBodySHA256": "c220ed81a357386e2ed01b635f67e83dff5b47b3ae26eb28f50904e9d2d84035",
+  "interpretation": "The twelve changed baseline expectations are preserved diagnostics. Acceptance uses the65 shared contracts, original C predictions and ten original negative hashes. Positive JS output and pre-chat snapshots are not correctness oracles."
+}

@@ -41,7 +41,7 @@ import { poly_gender } from './polyself.js';
 import { midnight, night } from './calendar.js';
 import { cansee } from './vision.js';
 import { Blind } from './youprop.js';
-import { shk_chat } from './shk.js';
+import { shk_chat, shop_object, price_quote } from './shk.js';
 import { demon_talk } from './minion.js';
 import { humanoid } from './mondata.js';
 import { doconsult } from './rumors.js';
@@ -216,6 +216,13 @@ export async function dochat() {
     if (Underwater()) {
         await Your('speech is unintelligible underwater.');
         return ECMD_OK;
+    }
+
+    // src/sounds.c:1280, shop goods are described before choosing a direction.
+    let otmp;
+    if (!Deaf() && !Blind() && (otmp = shop_object(game.u.ux, game.u.uy))) {
+        await price_quote(otmp);
+        return ECMD_TIME;
     }
 
     if (!await getdir('Talk to whom? (in what direction)'))

@@ -1,0 +1,44 @@
+{
+  "baselineRuntimeSHA256": "88b58f9ee504928b3adf4295da37cce4337882990cc75541f033df1d36c1ab11",
+  "candidateRuntimeSHA256": "43e0aee4ac0e598dde03d907d541dc066de52b66ee4ce9882cb36166b048c5d2",
+  "patchSHA256": "c81e8caddd19a40172b647447515deeedf3d6e27c7894397382f60af450599f6",
+  "changedPaths": [
+    "js/shk.js",
+    "js/sounds.js"
+  ],
+  "unchangedRuntimeMembers": 278,
+  "reverseExact": true,
+  "reverse": {
+    "js/shk.js": {
+      "addedOwnersSHA256": "26b1b32ae643c3b837db3e977daf61e2f175fed512f29d1ace443bbaec478d7f",
+      "removedOnlyThreeOwnerBlock": true,
+      "restoredSHA256": "5101f5d39ed66d24c844f8dc8eaf2ee7fb5c733916aa7859e18f7b3e47e313e5"
+    },
+    "js/sounds.js": {
+      "shopBranchSHA256": "4692eae912b571d9d1babe811ae65a329944c9ce65e66a7562e175f8a6778584",
+      "removedOnlyShopBranchAndTwoImports": true,
+      "restoredSHA256": "0a4d881953bd41c21d981c2f4b73cdfe07b8acd83833ab5565ce910928a662bb"
+    }
+  },
+  "nativeCandidatePass": 5,
+  "nativeBaselinePass": 2,
+  "nativeReportSHA256": "eae96f77921fc930320c6b98da69c12e0252a415f086907b87e08e73fd683fd3",
+  "fullNegativeRowsIdentical": {
+    "indices": [
+      3,
+      4
+    ],
+    "rowSHA256": [
+      "c6c0ea9bd73a6af1277b45e33af8ce562f1cf7b718dba7459db377365ea72f1b",
+      "02d6cdd7839b103571caabd802dfa667291b846e59df96fb4721de04fe0f0798"
+    ]
+  },
+  "originalBaseline85DiagnosticEntireRowsExact": true,
+  "candidateOriginalDiagnosticPass": 73,
+  "candidateCSourceAcceptance": 5,
+  "ordinaryNegativeEntireRowsExact": true,
+  "negativeHashesExact": 10,
+  "plainObservedDeferredEqualBothGraphs": true,
+  "originalInputFieldsAndKeysUnchanged": true,
+  "nativeCExecutionsByWorker": 0
+}

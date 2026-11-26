@@ -1,0 +1,18 @@
+{
+  "sourceScriptSHA256": "25e463604cd11b4f4405a1a7d5acba667a8b224582ed67ddab5ab0aa5eaf6434",
+  "ordinaryScriptSHA256": "efd65ea2dd128d53ca9246165f6ab0672716efdf0be442e66b8d196ee42ff504",
+  "originalDiagnosticBodySHA256": "889db6bf8b99b11213818356aad17d05a8dacc3a7bac2b6c8f7088586b98b0d0",
+  "originalObserverBodySHA256": "c220ed81a357386e2ed01b635f67e83dff5b47b3ae26eb28f50904e9d2d84035",
+  "originalAssertionExpressionsUnchanged": true,
+  "preservedSetupContracts": 13,
+  "baselineOnlyBehaviorExpectations": 4,
+  "newCAcceptancePredicatesPerCase": 10,
+  "deferredReferenceSHA256": "ca0df5236507d96b0fdd348bf221d21167ad56bfaf5c106aad99709110bd2e7c",
+  "changes": [
+    "Only runtime relocation/preflight and report destination outside original observer/85 assertion bodies",
+    "Retain every original diagnostic result, including baseline-specific expectations",
+    "Separate C acceptance uses original pre-run phrases, C ECMD_TIME and menu wait order",
+    "Whole post-command RNG is checked by full native call/slice equality; no zero-turn-RNG assumption for successful quotes",
+    "Add plain/deferred all-five-output equality and stable final pending-read check through existing interactive API"
+  ]
+}

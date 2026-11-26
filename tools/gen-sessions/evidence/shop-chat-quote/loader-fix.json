@@ -1,0 +1,53 @@
+{
+  "originalScriptSHA256": "59df9c0f8ab9fc4f015c19c34566a4d8e4b7657afff591227776201bc581fb68",
+  "correctedScriptSHA256": "25e463604cd11b4f4405a1a7d5acba667a8b224582ed67ddab5ab0aa5eaf6434",
+  "inputLockSHA256": "e5c1314920cbcbc4c716bee421d054a6ebfce3a2a91f9ce68406b02cccc5c223",
+  "proposalSHA256": "d6ec42ace056443d1821b90707f1dd8d1d75851c76d1f42ab37775a41cd6829a",
+  "originalRunSHA256": "882c8b4540d643691be0b49c474b8b4812e142c276ba085212885a668014fa1d",
+  "changes": [
+    "Require preserve-symlinks and preserve-symlinks-main before game imports",
+    "Encode absent observed snapshots as null for failed checks, rather than crashing while hashing undefined",
+    "Separate probe02 report paths; no assertion expression or input changes"
+  ],
+  "staticResolutionEvidence": [
+    {
+      "path": "js/jsmain.js",
+      "resolved": "/Users/rohit/research/code/contest/.cache/restart-20261122/config-menu-bindings-runtime-source-audit/js/jsmain.js",
+      "sha256": "dda1d824fbd7ea022418b8191aae9bee0adce9ef31b78c1e2a25bc89f2d19f59",
+      "linkTarget": "../../config-menu-bindings-runtime-source-audit/js/jsmain.js"
+    },
+    {
+      "path": "js/gstate.js",
+      "resolved": "/Users/rohit/research/code/contest/.cache/restart-20261122/config-menu-bindings-runtime-source-audit/js/gstate.js",
+      "sha256": "99ebcdb3a5c5ddae89d914bf46772683cca5cb83587251d3844e3855b3fe7d15",
+      "linkTarget": "../../config-menu-bindings-runtime-source-audit/js/gstate.js"
+    },
+    {
+      "path": "js/shk.js",
+      "resolved": "/Users/rohit/research/code/contest/.cache/restart-20261122/fruit-text-corrected-parent-replay-root/js/shk.js",
+      "sha256": "5101f5d39ed66d24c844f8dc8eaf2ee7fb5c733916aa7859e18f7b3e47e313e5",
+      "linkTarget": "../../fruit-text-corrected-parent-replay-root/js/shk.js"
+    },
+    {
+      "path": "js/youprop.js",
+      "resolved": "/Users/rohit/research/code/contest/.cache/restart-20261122/fruit-text-corrected-parent-replay-root/js/youprop.js",
+      "sha256": "2aebddf3e996e3af726fee291eb6aa0aaac907dcfd4fa549e9c60e3299c9a454",
+      "linkTarget": "../../fruit-text-corrected-parent-replay-root/js/youprop.js"
+    },
+    {
+      "path": "js/hack.js",
+      "resolved": "/Users/rohit/research/code/contest/.cache/restart-20261122/fruit-text-corrected-parent-replay-root/js/hack.js",
+      "sha256": "6e2c92c94c8e24e16da68d9bcbf595620f454476a5590294f2451208641675c5",
+      "linkTarget": "../../fruit-text-corrected-parent-replay-root/js/hack.js"
+    },
+    {
+      "path": "js/monmove.js",
+      "resolved": "/Users/rohit/research/code/contest/.cache/restart-20261122/fruit-text-corrected-parent-replay-root/js/monmove.js",
+      "sha256": "2636231f54085e278c9337e4127c66f4903bb65b6e589d4b844cd7411effd3cf",
+      "linkTarget": "../../fruit-text-corrected-parent-replay-root/js/monmove.js"
+    }
+  ],
+  "originalObservation": "First segment entered the harness, but snapshot was absent at chatStart; no completed report or output hashes saved. Later four segments were not attempted. Underlying caught game error was lost to the reporting exception.",
+  "loaderFinding": "Verified command omitted flags used by parent native checks. Realpath resolution can leave the fixed280 composition. This is not an observed game producer failure.",
+  "nextObservation": "Same locked five inputs, one correctly loaded bounded pass per segment; no exploratory input changes"
+}

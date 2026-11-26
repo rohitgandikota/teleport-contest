@@ -1,0 +1,24 @@
+{
+  "members": 316,
+  "manifestSHA256": "07cf1a05dd59f1bbf8719d95185c5cd3ea88897e89e44cb8de0af0252afdd565",
+  "sourceSealSHA256": "1265f944e536a71056de53f14e0f70c52267b8eab52f33f6c11a22e75171de75",
+  "baselineRuntimeSHA256": "88b58f9ee504928b3adf4295da37cce4337882990cc75541f033df1d36c1ab11",
+  "candidateRuntimeSHA256": "43e0aee4ac0e598dde03d907d541dc066de52b66ee4ce9882cb36166b048c5d2",
+  "patchSHA256": "c81e8caddd19a40172b647447515deeedf3d6e27c7894397382f60af450599f6",
+  "nativeReportSHA256": "eae96f77921fc930320c6b98da69c12e0252a415f086907b87e08e73fd683fd3",
+  "native": "2/5 -> 5/5",
+  "original85Diagnostic": "85/85 baseline;73/85 candidate retained",
+  "CSourceAcceptance": "2/5 -> 5/5",
+  "neutrality": "5/5 on each graph, all five channels plus EOF",
+  "negativeRowsExact": [
+    3,
+    4
+  ],
+  "negativeHashes": 10,
+  "reverseExact": true,
+  "nativeCExecutions": 0,
+  "changedRuntimePaths": [
+    "js/shk.js",
+    "js/sounds.js"
+  ]
+}

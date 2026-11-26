@@ -1,5 +1,55 @@
 # STATUS — live handoff board
 
+## 2026-11-26: shop quote checkpoint verified after welcome publication
+
+Published main is 735a07839935e41547db4aebf2fdb026c668a34e. All 1,228
+full937 tested Git blobs match that welcome publication, receipt SHA256:
+eb73934d7734ef929b94e8d36ad0caf56299873b1e2c4feca9945d4a97ef6c91.
+
+Current gameplay changes only shk.js and sounds.js. Complete C shop_object,
+price_quote and shk_embellish are ported, and dochat checks nearby stock after
+speech guards and before asking for direction. Five native cases improve from
+2/5 to 5/5. All 65 shared ordinary contracts, ten negative hashes, two complete
+negative rows, and all observed/plain/deferred comparisons pass. The original
+85-check baseline diagnostic and candidate 73/85 diagnostic remain preserved;
+twelve baseline-only predicates cease to apply when the three positives quote
+and consume time. Separate unchanged C predicates pass 5/5. The parent
+composition preserves all six published chat-guard native rows exactly.
+Runtime map: 9dbbff6acd0f9bf314062fc27ca6ae962b4dae207b95ece2a1efcd4b1b204f30.
+Original once-recorded C raw:
+bd1772e4400523a302e55c764045dd54e85464b451c74323a257c2529645dfd1.
+It contains 326 keys, 331 boundaries, 26,646 calls and zero animation frames.
+
+Full938 passes with two CPU workers, default limits and no retries:
+/share/NFS/u/rohit/research/contest/artifacts/2026-11-22/shop-chat-quote-full938-js-20261126.
+PID 3540145 is complete. All 938 recordings pass: 940,209 screens/cursors,
+20,560,801 calls and 33,188 frames. All 1,229 files were fixed. all-files SHA256:
+8857ffd5cd764aa71ea134ed2686479f91577ea34c710624260eb3ab98d0709d.
+Verification SHA256:
+4eed805ea460091e6f07605d33159fc57f453cf8424631df4014033413748023.
+Four retained shop checks, 45 strict workers and the scope/import audit pass.
+Fresh portable ordinary report SHA256:
+9e64a761d0cba78ddb639509cbe5301efffb0115904d2b5e4b0c4d5f754d22c8.
+Seventeen public payloads, five branch requirements and two coverage rows are
+installed without rewriting prior registry bytes. Totals are 4,712 and 108.
+The original raw lacks branchAssertions metadata, so generic coverage remains
+partial. The portable gate checks all five predicates before imports. Preserve
+this limit and raw bytes. Next: verify the staged tree, commit and push.
+
+Parent altar-drop-conduct source audit reaches all six intended setups. It
+passes 36/42 source assertions with only the six predicted missing log/chronicle
+checks failing. All 15 control hashes and observer/deferred neutrality pass.
+Source-files SHA256:
+74f2b4b1b294ed62dbef7a0123f99dcb4aa87bc6f185d017543678f25739c85a.
+Original C confirmation is next; no candidate exists. Sartre is reviewing the
+minimal do.js scope. Its separate familiar-level-message source24 audit is sealed:
+seven cases, 1,690 keys, 20 control hashes, real revisit reached. Native C
+confirmation is pending; hallucinated message and stale-blindness behavior are
+unobserved. Euclid preserves original23/corrected22/clear-target26 chat audits;
+the last two producers failed because --More-- consumed genocide input. A
+separately locked prompt-acknowledgement family is authorized. Leibniz owns the
+shop-quote variants source audit. No failed setup is treated as a C witness.
+
 ## 2026-11-26: welcome checkpoint verified after potion publication
 
 Published main is 44e972437a123dc4ac7442ba35590a28b34e6bbd. Potion gameplay

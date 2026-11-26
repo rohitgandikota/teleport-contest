@@ -1,0 +1,11 @@
+{
+  "sourceSealSHA256": "1265f944e536a71056de53f14e0f70c52267b8eab52f33f6c11a22e75171de75",
+  "originalRecipeSHA256": "d6ec42ace056443d1821b90707f1dd8d1d75851c76d1f42ab37775a41cd6829a",
+  "primaryRecipeSHA256": "2c3dc7b3271204601f0dbb9caee2e43ba9f9b862bc4949df81c1c83b42e1f512",
+  "minimalInputSHA256": "277aa8f69d4b8a285488fe7b5448f65039d4ed4e5de327ff3390c9f3fc2641fd",
+  "sourceInputLockSHA256": "e5c1314920cbcbc4c716bee421d054a6ebfce3a2a91f9ce68406b02cccc5c223",
+  "sourceProbeSHA256": "731e393591dbe9948b7607bf152634a6bfcb4c0e9adacd79eb4dd629df0c2c94",
+  "negativeHashesSHA256": "787a7d72b308a2045c5ae9b99ba3400360cec9e0e3a96611b3a837621c9ada91",
+  "metadataDerivation": "Exact original tuples; primary text predicates copied from pre-run predictions.C.requiredPhrases, with new root source/version/coverage/branch metadata.",
+  "beforeCAndCandidate": true
+}

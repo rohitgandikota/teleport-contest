@@ -1,0 +1,305 @@
+{
+  "name": "shop-chat-quote-owner",
+  "description": "Source-only locked ordinary keyboard proposals on fixed chat-wear280. Original C not recorded for these inputs.",
+  "segments": [
+    {
+      "name": "single-priced-stock",
+      "seed": 6903,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00162\r\u0006\u0014  llllllllllllllllllll.  \u001b\u001b#chat\r\u001b   \u001b\u001b"
+    },
+    {
+      "name": "multiple-goods",
+      "seed": 6903,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00162\r\u0006\u0014  llllllllllllllllllll.  \u001b\u001b\u0017uncursed apple\r  \u001b\u001bdo n   \u001b\u001b#chat\r\u001b   \u001b\u001b"
+    },
+    {
+      "name": "single-no-charge",
+      "seed": 6903,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00162\r\u0006\u0014  llllllllllllllllllll.  \u001b\u001b,   \u001b\u001b\u0017uncursed apple\r  \u001b\u001bdp n   \u001b\u001b#chat\r\u001b   \u001b\u001b"
+    },
+    {
+      "name": "empty-floor-no-quote",
+      "seed": 6903,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00162\r\u0006\u0014  llllllllllllllllllll.  \u001b\u001b,   \u001b\u001b#chat\r\u001b   \u001b\u001b"
+    },
+    {
+      "name": "blind-stock-no-quote",
+      "seed": 6903,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00162\r\u0006\u0014  llllllllllllllllllll.  \u001b\u001b\u0017uncursed blindfold\r  \u001b\u001bPo   \u001b\u001b#chat\r\u001b   \u001b\u001b"
+    }
+  ],
+  "predictions": [
+    {
+      "name": "single-priced-stock",
+      "kind": "single",
+      "negative": false,
+      "phases": {
+        "maintainedPrefixEnd": 31,
+        "chatStart": 33,
+        "chatEnter": 39,
+        "end": 45
+      },
+      "beforeChat": {
+        "level": [
+          0,
+          2
+        ],
+        "hero": [
+          75,
+          10
+        ],
+        "floorChain": [
+          [
+            "PICK_AXE",
+            1,
+            false
+          ]
+        ],
+        "blind": false,
+        "deaf": false,
+        "hallucinating": false,
+        "peacefulAbleKeeperInShop": true,
+        "carriedUnpaidPickaxe": false,
+        "declinedSale": false
+      },
+      "C": {
+        "quote": true,
+        "turns": 1,
+        "requiredPhrases": [
+          "\"A pick-axe, price 67 zorkmids"
+        ],
+        "directionPrompt": false,
+        "ownerRNG": "rn2(3); rn2(5) iff first draw is zero",
+        "singleSuffixes": [
+          ".",
+          ", a real bargain.",
+          ", an excellent choice.",
+          ", finest quality.",
+          ", superb craftsmanship!"
+        ],
+        "allTurnRNG": "Not predicted: successful quote advances the ordinary turn after owner feedback."
+      },
+      "fixedJS": {
+        "directionPrompt": true,
+        "quote": false,
+        "turns": 0,
+        "postChatCalls": 0
+      }
+    },
+    {
+      "name": "multiple-goods",
+      "kind": "multiple",
+      "negative": false,
+      "phases": {
+        "maintainedPrefixEnd": 31,
+        "chatStart": 62,
+        "chatEnter": 68,
+        "end": 74
+      },
+      "beforeChat": {
+        "level": [
+          0,
+          2
+        ],
+        "hero": [
+          75,
+          10
+        ],
+        "floorChain": [
+          [
+            "APPLE",
+            1,
+            true
+          ],
+          [
+            "PICK_AXE",
+            1,
+            false
+          ]
+        ],
+        "blind": false,
+        "deaf": false,
+        "hallucinating": false,
+        "peacefulAbleKeeperInShop": true,
+        "carriedUnpaidPickaxe": false,
+        "declinedSale": true
+      },
+      "C": {
+        "quote": true,
+        "turns": 1,
+        "requiredPhrases": [
+          "Fine goods for sale:",
+          "an apple, no charge",
+          "a pick-axe, 67 zorkmids"
+        ],
+        "directionPrompt": false,
+        "ownerRNG": "none",
+        "singleSuffixes": [],
+        "allTurnRNG": "Not predicted: successful quote advances the ordinary turn after owner feedback."
+      },
+      "fixedJS": {
+        "directionPrompt": true,
+        "quote": false,
+        "turns": 0,
+        "postChatCalls": 0
+      }
+    },
+    {
+      "name": "single-no-charge",
+      "kind": "free",
+      "negative": false,
+      "phases": {
+        "maintainedPrefixEnd": 31,
+        "chatStart": 68,
+        "chatEnter": 74,
+        "end": 80
+      },
+      "beforeChat": {
+        "level": [
+          0,
+          2
+        ],
+        "hero": [
+          75,
+          10
+        ],
+        "floorChain": [
+          [
+            "APPLE",
+            1,
+            true
+          ]
+        ],
+        "blind": false,
+        "deaf": false,
+        "hallucinating": false,
+        "peacefulAbleKeeperInShop": true,
+        "carriedUnpaidPickaxe": true,
+        "declinedSale": true
+      },
+      "C": {
+        "quote": true,
+        "turns": 1,
+        "requiredPhrases": [
+          "\"An apple, no charge!\""
+        ],
+        "directionPrompt": false,
+        "ownerRNG": "none",
+        "singleSuffixes": [],
+        "allTurnRNG": "Not predicted: successful quote advances the ordinary turn after owner feedback."
+      },
+      "fixedJS": {
+        "directionPrompt": true,
+        "quote": false,
+        "turns": 0,
+        "postChatCalls": 0
+      }
+    },
+    {
+      "name": "empty-floor-no-quote",
+      "kind": "empty",
+      "negative": true,
+      "phases": {
+        "maintainedPrefixEnd": 31,
+        "chatStart": 39,
+        "chatEnter": 45,
+        "end": 51
+      },
+      "beforeChat": {
+        "level": [
+          0,
+          2
+        ],
+        "hero": [
+          75,
+          10
+        ],
+        "floorChain": [],
+        "blind": false,
+        "deaf": false,
+        "hallucinating": false,
+        "peacefulAbleKeeperInShop": true,
+        "carriedUnpaidPickaxe": true,
+        "declinedSale": false
+      },
+      "C": {
+        "quote": false,
+        "turns": 0,
+        "requiredPhrases": [
+          "Talk to whom? (in what direction)"
+        ],
+        "directionPrompt": true,
+        "ownerRNG": "none",
+        "singleSuffixes": [],
+        "allTurnRNG": "Not predicted: successful quote advances the ordinary turn after owner feedback."
+      },
+      "fixedJS": {
+        "directionPrompt": true,
+        "quote": false,
+        "turns": 0,
+        "postChatCalls": 0
+      }
+    },
+    {
+      "name": "blind-stock-no-quote",
+      "kind": "blind",
+      "negative": true,
+      "phases": {
+        "maintainedPrefixEnd": 31,
+        "chatStart": 64,
+        "chatEnter": 70,
+        "end": 76
+      },
+      "beforeChat": {
+        "level": [
+          0,
+          2
+        ],
+        "hero": [
+          75,
+          10
+        ],
+        "floorChain": [
+          [
+            "PICK_AXE",
+            1,
+            false
+          ]
+        ],
+        "blind": true,
+        "deaf": false,
+        "hallucinating": false,
+        "peacefulAbleKeeperInShop": true,
+        "carriedUnpaidPickaxe": false,
+        "declinedSale": false
+      },
+      "C": {
+        "quote": false,
+        "turns": 0,
+        "requiredPhrases": [
+          "Talk to whom? (in what direction)"
+        ],
+        "directionPrompt": true,
+        "ownerRNG": "none",
+        "singleSuffixes": [],
+        "allTurnRNG": "Not predicted: successful quote advances the ordinary turn after owner feedback."
+      },
+      "fixedJS": {
+        "directionPrompt": true,
+        "quote": false,
+        "turns": 0,
+        "postChatCalls": 0
+      }
+    }
+  ]
+}

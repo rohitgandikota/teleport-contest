@@ -1,0 +1,16 @@
+{
+  "command": [
+    "node",
+    "--preserve-symlinks",
+    "--preserve-symlinks-main",
+    "--max-old-space-size=512",
+    "/Users/rohit/research/code/contest/.cache/restart-20261122/gremlin-retained-beatitude-baseline/tools/beatitude-state-gate.mjs"
+  ],
+  "exit": 1,
+  "seconds": 3.199,
+  "logSHA256": "7eff968339bb207bc936c243835f8d1e560dd65268492160d1b6115a56680093",
+  "baselineCommit": "8b226bc804967ed37db2e643c50863bc38e8de9a",
+  "runtimeSHA256": "6dd4f79cb8df03d68583ebe6b5b1c33c356d2e509c08d300e1eae9cbed5d4fc8",
+  "sameCompleteAssertionDiff": true,
+  "unchangedGateSHA256": "72e2cec094e33b244b6043453a738850caac97953d8c6e55a3b067394736f642"
+}

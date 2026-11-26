@@ -95,7 +95,8 @@ for (const name of ['beatitude-shared', 'beatitude-light-equipment',
             assert.equal(game.context_takeoff.mask, 0);
         } else if (name === 'figurine-timers' || segment.name === 'apply') {
             assert.ok(original);
-            assert.equal(original.timed, 0);
+            // The transformed figurine has been freed; inspect surviving timers.
+            assert.ok(game.timer_base.every(t => t.arg !== original));
             assert.ok(!game.invent.includes(original));
             assert.equal(figs().length, 0);
             const kitten = game.level.monsters.find(m => m.mnum === PMNAMES.PM_KITTEN);

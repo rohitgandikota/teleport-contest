@@ -1,5 +1,49 @@
 # STATUS — live handoff board
 
+## 2026-11-26: comment cleanup published; gremlin regression running
+
+Published main is8b226bc804967ed37db2e643c50863bc38e8de9a. All280 runtime
+Git blobs match the comment graph and the parsed code is unchanged from
+role-init-gender full951. Receipt:uhitm-comment-publication.json. Role's full951
+publication receipt SHA:f129e36d32e96497760dd83ec296de9302792192fb1b36131bb14ed3bcd8bc0e.
+
+Gremlin parent composition passes5/5 with the complete native report equal to
+candidate329. Only monmove.js changes. Runtime-map SHA256:
+60f1559001e34cad6b64b30a572b47f3fe74e704a33716cb0a53a1dde3ef9f18.
+Promotion60 is independently verified and all32 payloads plus original raw are
+installed. The fresh installed gate passes65 source/producer checks and10
+neutrality checks in2.347s; its complete report equals promotion. All15
+negative hashes and three complete ordinary/native negative rows stay exact.
+Five registry rows bring the total to4,797; aggregate coverage remains111.
+Full952 started21:28Z with PID3641220, two CPU workers and default45s limits:
+/share/NFS/u/rohit/research/contest/artifacts/2026-11-22/gremlin-light-full952-js-20261126.
+All1,243 files are fixed; all-files SHA256:
+2858f0ef482ba11ec8d2857062b42ff6d043277e74797d398d32bdac2a9601ce.
+Poll only using poll-gremlin-light-full952-remote.py; do not relaunch.
+
+Initial retained result is3/4 plus45 strict passes and an empty source audit.
+beatitude-state-gate read original.timed after a transformed figurine was freed.
+The unchanged gate fails identically on the published6dd baseline. Complete
+C/JS fig_transform/use_figurine and deletion owners confirm consumption and
+subsequent freeing. The separately locked correction inspects remaining timer
+references instead, preserving both live-object timed checks and all inputs.
+All33 replays and source controls pass on fixed6dd and60f in4.773s and4.681s;
+both log hashes ared4d7b15b24a1ae713cd782c044ef783235795918571118ab41dea3648d0f1384.
+The correction is installed. Stage only figurine-observer-stage-paths.json and
+publish its separate test-only commit while the gremlin runtime remains unstaged.
+Public proof is evidence/gremlin-light/retained-observer-correction.json;
+original failures and the pre-edit selector diagnostic remain preserved.
+
+Euclid's underwater source33 is sealed: all six setups/42 producer checks and
+12 neutrality comparisons pass. Original88/102 remains, with12 wet-trigger
+source failures and two invalid blind-look timing expectations in negative4.
+Four negative rows and20 hashes remain fixed. Recipe SHA:
+37d4f828f30e5d85af6801271a47b897f512a016641592628f86da6b74527c1f.
+No C recording or candidate yet. Parent must review the blind-look source
+attribution and original primary predicates before C confirmation. Sartre owns
+human HP-floor source review. Leibniz now owns source-only giant club preference
+on fixed60f after sealing gremlin promotion; no candidate or C is authorized.
+
 ## 2026-11-26: startup gender published; combat comment corrected
 
 Startup gender is pushed as3453b003. All1,242 full951 tested Git blobs match

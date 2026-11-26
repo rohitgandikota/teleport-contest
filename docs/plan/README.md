@@ -17,9 +17,11 @@ pushed as `8c3b7e1f`. Startup gender normalization is pushed as `3453b003`.
 It passes all four C cases,
 44 ordinary checks, both retained startup gates, 45 strict workers and all
 951 maintained recordings. The installed behavior report matches the isolated
-report; only the measured runtime hash differs. An obsolete combat warning
-has been replaced with the current C rule, with the parsed code unchanged. The
-gremlin candidate passes all five C cases and is being prepared for integration.
+report; only the measured runtime hash differs. The comment-only combat cleanup
+is pushed as `8b226bc8`. Gremlin light fear passes all five C cases on the
+combined code and the installed checks match its isolated results. Full952 is
+running. A separate figurine-test lifetime correction passes33 replays and
+source controls on both fixed runtimes and is ready to publish.
 Separate fire-trap source reviews cover underwater return and the human HP floor.
 The latest official result remains agentic rank7 with659 unmatched
 screens; its timestamp predates the newest gameplay pushes.

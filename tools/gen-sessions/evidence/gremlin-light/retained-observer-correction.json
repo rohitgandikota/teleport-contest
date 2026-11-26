@@ -1,0 +1,94 @@
+{
+  "verifiedAt": "2026-11-26T21:36:14.254847+00:00",
+  "correctionLock": {
+    "createdAt": "2026-11-26T21:33:22.834612+00:00",
+    "originalSHA256": "72e2cec094e33b244b6043453a738850caac97953d8c6e55a3b067394736f642",
+    "correctedSHA256": "ba95934db3a1e85584e16abded3d58e818165c2caa4385227c2103497f99f9bf",
+    "source": [
+      {
+        "path": "nethack-c/upstream/src/apply.c",
+        "sha256": "3599e3ce2ea7ce4dac10730dc1a5496114a363dc951d5c1f0289a8575b40e24b"
+      },
+      {
+        "path": "nethack-c/upstream/src/mkobj.c",
+        "sha256": "49c2de3bcf1125be55f11c17ffc4f614956f5288a5edfb56b2248b7fcaa3b488"
+      },
+      {
+        "path": "nethack-c/upstream/src/allmain.c",
+        "sha256": "6ce44a662ad3d180b9dcbf7660a1899b8d1356c8ef83e7787b21b39c6b2a35e4"
+      }
+    ],
+    "scope": "Only replace the post-turn read of a freed figurine timed field with absence of timer references to that object. Preserve live-object timed checks, all inputs, timer deadlines, inventory/monster assertions and source controls.",
+    "prediction": "No remaining timer references a figurine consumed by fig_transform or use_figurine; C frees the record after extraction/useup."
+  },
+  "results": [
+    {
+      "runtime": "uhitm-comment-parent-composed",
+      "runtimeSHA256": "6dd4f79cb8df03d68583ebe6b5b1c33c356d2e509c08d300e1eae9cbed5d4fc8",
+      "command": [
+        "node",
+        "--preserve-symlinks",
+        "--preserve-symlinks-main",
+        "--max-old-space-size=512",
+        "/Users/rohit/research/code/contest/.cache/restart-20261122/figurine-timer-observer-correction/baseline/tools/beatitude-state-gate.mjs"
+      ],
+      "exit": 0,
+      "seconds": 4.773,
+      "logSHA256": "d4d7b15b24a1ae713cd782c044ef783235795918571118ab41dea3648d0f1384"
+    },
+    {
+      "runtime": "gremlin-light-parent-composed",
+      "runtimeSHA256": "60f1559001e34cad6b64b30a572b47f3fe74e704a33716cb0a53a1dde3ef9f18",
+      "command": [
+        "node",
+        "--preserve-symlinks",
+        "--preserve-symlinks-main",
+        "--max-old-space-size=512",
+        "/Users/rohit/research/code/contest/.cache/restart-20261122/figurine-timer-observer-correction/gremlin/tools/beatitude-state-gate.mjs"
+      ],
+      "exit": 0,
+      "seconds": 4.681,
+      "logSHA256": "d4d7b15b24a1ae713cd782c044ef783235795918571118ab41dea3648d0f1384"
+    }
+  ],
+  "history": [
+    {
+      "path": "tools/gen-sessions/evidence/gremlin-light/history/retained-beatitude-failure.log",
+      "sha256": "fdb8fcec5611a0bfd871f09b33a082a011b1eed2ffd6f535e8529d156effa41f"
+    },
+    {
+      "path": "tools/gen-sessions/evidence/gremlin-light/history/retained-beatitude-baseline.log",
+      "sha256": "7eff968339bb207bc936c243835f8d1e560dd65268492160d1b6115a56680093"
+    },
+    {
+      "path": "tools/gen-sessions/evidence/gremlin-light/history/retained-beatitude-baseline.json",
+      "sha256": "617442f73b3c55476708be6aec645b09194ac38fad88971c8eb68f3bbe552296"
+    },
+    {
+      "path": "tools/gen-sessions/evidence/gremlin-light/history/retained-beatitude-corrected-baseline.log",
+      "sha256": "d4d7b15b24a1ae713cd782c044ef783235795918571118ab41dea3648d0f1384"
+    },
+    {
+      "path": "tools/gen-sessions/evidence/gremlin-light/history/retained-beatitude-corrected-gremlin.log",
+      "sha256": "d4d7b15b24a1ae713cd782c044ef783235795918571118ab41dea3648d0f1384"
+    }
+  ],
+  "ordinaryReplayCases": 33,
+  "sourceControlsAlsoPassed": true,
+  "runtimeChanged": false,
+  "nativeCoverageAdded": false,
+  "initialFailure": "After the transformation turn, original.timed is undefined because the figurine has been freed; the original assertion expected0. The published baseline has the identical complete assertion difference.",
+  "sourceContracts": [
+    "C apply.c2398-2510 consumes the figurine after transformation, including creation failure; use_figurine2544 stops its timer and consumes it.",
+    "C mkobj.c2745-2843 stops timers, stages deletion and then clears/frees the object at the turn boundary."
+  ],
+  "retainedAssertions": "Only the post-transformation timed-field read changes to absence of timer references. Both live-object original.timed checks, inputs, C timer deadlines, inventory/monster assertions and source controls remain unchanged.",
+  "initialEditSelectorDiagnostic": {
+    "error": "Initial edit selector required one original.timed assertion globally, but there are separate live and freed-object branches. No files or gameplay were changed before that assertion.",
+    "matches": 3
+  },
+  "limits": [
+    "The initial gremlin retained run remains three passes and one baseline-identical failure. This later source-backed test correction is recorded separately.",
+    "The33 cases are ordinary JS replay observations against maintained C inputs and timer deadlines, followed by source controls; no new C run or fresh native comparison."
+  ]
+}

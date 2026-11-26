@@ -1,0 +1,166 @@
+{
+  "baselineCommit": "5c7551585e52a375084b64749212e298ea8908f2",
+  "cSourcePin": "16ff59115315917b93185d026aeefea06db9b0f4",
+  "runtimeChanged": [
+    "js/uhitm.js"
+  ],
+  "runtimeFiles": 280,
+  "runtimeSHA256": "ee100ca8325e63d2e663c053eb4f3649b6bf579e850660f15ca61cea83fb44e3",
+  "sourceSeals": {
+    "uhitm-misc-impact-statue-prerequisite-audit-20261125": {
+      "members": 340,
+      "sha256": "0238f20bb69c8161fc1403f9fb1fe37e9638c0b2b9a57bc7c175cd0046b9291a"
+    },
+    "corpse-impact-promotion": {
+      "members": 67,
+      "sha256": "78074eaaa158d748ec64859519e65be7fa0fa95f88615191e1af955b73c96a25"
+    }
+  },
+  "native": {
+    "recordedAt": "2026-11-26T01:16:03.662283+00:00",
+    "baseline": 3,
+    "candidate": 4,
+    "composed": 4,
+    "cases": 4,
+    "keys": 613,
+    "boundaries": 617,
+    "calls": 24239,
+    "frames": 21,
+    "rawSHA256": "6e69c20ddb555c320603929bc52aa1f3b149f4cc6a58804a7cb55ef111ae7ce1",
+    "candidateComposedReportSHA256": "2658a5fd1e371ad001e27929f3162f5c8fe9bc7a1fb13ddf65f048b7ed4117ad",
+    "runtimeSHA256": "ee100ca8325e63d2e663c053eb4f3649b6bf579e850660f15ca61cea83fb44e3",
+    "unchangedNegativeReports": 3,
+    "unchangedNegativeHashes": 15,
+    "firstScreenDifference": {
+      "step": 153,
+      "frozenEqual": false,
+      "fullStyleEqual": false,
+      "totalCells": 1920,
+      "matchingStyleCells": 1864,
+      "blankStyleMismatches": 0,
+      "nonblankStyleMismatches": 0,
+      "glyphMismatches": 56,
+      "firstFullStyleDifference": {
+        "x": 14,
+        "y": 0,
+        "c": {
+          "ch": " ",
+          "color": 8,
+          "attr": 0
+        },
+        "js": {
+          "ch": ".",
+          "color": 8,
+          "attr": 0
+        }
+      },
+      "firstFrozenDifference": {
+        "x": 14,
+        "y": 0,
+        "kind": "ch",
+        "c": {
+          "ch": " ",
+          "color": 8,
+          "attr": 0
+        },
+        "js": {
+          "ch": ".",
+          "color": 8,
+          "attr": 0
+        }
+      }
+    },
+    "firstRngDifference": {
+      "index": 5990,
+      "c": "rn2(100)=70",
+      "js": "rn2(25)=20"
+    }
+  },
+  "sourceControls": {
+    "constructed": "25/25 versus 6/25",
+    "ordinary": "4/4 versus 3/4"
+  },
+  "portableGates": {
+    "reports": {
+      "tools/corpse-impact-controls-gate.mjs": "62fb26481db224be776028a0470577c0a867756799a84fea816d0284b04357dc",
+      "tools/corpse-impact-input-gate.mjs": "e0abb496ad6f2d057179e575290bcfb5565eed27adeeb4fe96b56a9663d62ae4"
+    },
+    "preflightRejections": 11,
+    "validImportBoundaryControls": 2
+  },
+  "retainedCorrection": {
+    "runtimeUnchanged": true,
+    "path": "tools/monster-detach-state-gate.mjs",
+    "originalSHA256": "6eb1a85061171992ebda7a220713e18a9decbca9ded1917b3ee85ee5baa31c7e",
+    "correctedSHA256": "99ae4861cec09c22586691cd93add7639bbfda53f2ff0a6422d436af825ca812",
+    "awaitsAdded": 1,
+    "assertionsBefore": 14,
+    "assertionsAfter": 14,
+    "removedAssertions": 0,
+    "originalBaselineError": "detached shopkeeper is dead:54!==0",
+    "originalCandidateError": "detached shopkeeper is dead:54!==0",
+    "checks": [
+      {
+        "kind": "baseline",
+        "exit": 0,
+        "log": ".cache/restart-20261122/corpse-impact-parent-detach-test-review/corrected-baseline.log",
+        "sha256": "433c19ec91ef9e4a3b6e5443b8fb11b9c71f9e85fca977a540e5bff5a9756383"
+      },
+      {
+        "kind": "candidate",
+        "exit": 0,
+        "log": ".cache/restart-20261122/corpse-impact-parent-detach-test-review/corrected-candidate.log",
+        "sha256": "433c19ec91ef9e4a3b6e5443b8fb11b9c71f9e85fca977a540e5bff5a9756383"
+      },
+      {
+        "kind": "main",
+        "exit": 0,
+        "log": ".cache/restart-20261122/corpse-impact-parent-detach-test-review/corrected-main.log",
+        "sha256": "433c19ec91ef9e4a3b6e5443b8fb11b9c71f9e85fca977a540e5bff5a9756383"
+      }
+    ]
+  },
+  "selectedPublic": {
+    "passed": 115,
+    "screens": 39570,
+    "cursors": 39570,
+    "rngCalls": 1899260,
+    "animFrames": 2279
+  },
+  "strict8s": {
+    "passed": 115,
+    "total": 115,
+    "timeoutOverride": false
+  },
+  "retainedChecks": {
+    "initialPassed": 18,
+    "passedAfterConsumerCorrection": 19,
+    "total": 20,
+    "unchangedFailure": "billing-disposal-input: 7/8, complete output unchanged from the published shopkeeper checkpoint"
+  },
+  "full910": {
+    "root": "/share/NFS/u/rohit/research/contest/artifacts/2026-11-22/corpse-impact-full910-js-20261125",
+    "sessions": 910,
+    "passed": 910,
+    "totals": {
+      "screens": 925914,
+      "cursors": 925914,
+      "rngCalls": 19995992,
+      "animFrames": 33131
+    },
+    "allFilesFixed": 1201,
+    "allFilesSHA256": "60e531688074f02aca3a514bb6e4b0a4b241224934b4568b1752b2cd3ac25200",
+    "verificationSHA256": "b2abbb30b136198242f0fbdd7627257ae3934fc125321d206d332326137c8696",
+    "workers": 2,
+    "timeoutOverride": false,
+    "retries": 0
+  },
+  "limits": [
+    "Full styled cells, cursors, ordered RNG and frames are compared; serialized byte identity and whole-port closure are not established.",
+    "Unknown plural corpse naming remains wrong in the shared helper; its separate 2/3 diagnostic is preserved.",
+    "Shared ismnum lacks an upper bound. Valid species and NON_PM are covered; invalid positive species indices are outside this patch.",
+    "Other miscellaneous-hit branches, generalized transformation/resistance and ordinary statue revival remain open.",
+    "Original failed quarterstaff reach and invalid timer fixture are retained. The original recipe is preserved; only three pre-recording branch-metadata fields were added to the primary recipe.",
+    "No new held-out result is inferred."
+  ]
+}

@@ -41,11 +41,19 @@ recordings on NFS: 925,297 screens/cursors, 19,971,753 random positions and
 33,110 frames, with default budgets and no retries. See STATUS for the fixed
 runtime and the wrapped-message-clear evidence for the exact scope.
 
+Corpse impacts now follow C's cure, petrification and early-return order.
+All four targeted C cases pass versus three. Source and ordinary controls
+pass 25/25 and 4/4, with 115 passing selected/public recordings and strict
+workers. Full910 passes all recordings on NFS: 925,914 screens/cursors,
+19,995,992 random positions and 33,131 frames, with default budgets and no
+retries. Nineteen of twenty retained checks pass; the prior billing-disposal
+diagnostic remains unchanged. See STATUS and corpse-impact-owner evidence.
+
 Fruit UTF8, merged byte caps and level-departure context cleanup remain
-separate work. Five fruit-byte C inputs establish a
-1/5 baseline. The next source audit follows the missing cockatrice-corpse
-impact behavior needed for ordinary statue production. The latest leaderboard
-check, 19:21 EST on November 25, still shows rank 7 and 659 unmatched screens;
+separate work. Five fruit-byte C inputs establish a 1/5 baseline. The level
+trap-reset candidate passes all five targeted C cases versus four; its full
+replay and portable promotion are pending. The latest leaderboard
+check, 20:12 EST on November 25, still shows rank 7 and 659 unmatched screens;
 its scored row predates these checkpoints. Local parity does not establish a
 newer held-out score or whole-port completion.
 

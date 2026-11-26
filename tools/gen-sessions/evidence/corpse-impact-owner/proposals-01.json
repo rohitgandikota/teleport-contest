@@ -1,0 +1,40 @@
+{
+  "classification": "pre-candidate ordinary keyboard proposals; original contact tuple unchanged",
+  "segments": [
+    {
+      "seed": 6903,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00162\r\u0006\u0014  llllllllllllllllllll.  \u001b\u001b#levelchange\r30\r                                   \u0017blessed leather gloves\rWo  \u001b\u0017cockatrice corpse\rwp  \u001bFy  \r\u001bkFy   \u001bFh   \u001b",
+      "name": "shopkeeper-statue-contact"
+    },
+    {
+      "seed": 6903,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00162\r\u0006\u0014  llllllllllllllllllll.  \u001b\u001b#levelchange\r30\r                                   \u0017blessed leather gloves\rWo  \u001b\u0017cockatrice corpse\rwp  \u001bFy  \r\u001bkFy   \u001b",
+      "name": "corpse-held-no-impact-negative"
+    },
+    {
+      "seed": 6903,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00162\r\u0006\u0014  llllllllllllllllllll.  \u001b\u001b#levelchange\r30\r                                   \u0017blessed leather gloves\rWo  \u001b\u0017newt corpse\rwp  \u001bFy  \r\u001bkFy   \u001bFh   \u001b",
+      "name": "newt-corpse-impact-negative"
+    },
+    {
+      "seed": 6903,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00162\r\u0006\u0014  llllllllllllllllllll.  \u001b\u001b#levelchange\r30\r                                   \u0017blessed leather gloves\rWo  \u001b\u0017cockatrice corpse\rwp  \u001bFy  \r\u001bkFy   \u001bwa  \u001bFh   \u001b",
+      "name": "quarterstaff-impact-negative"
+    },
+    {
+      "seed": 6903,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00162\r\u0006\u0014  llllllllllllllllllll.  \u001b\u001b#levelchange\r30\r                                   \u0017blessed leather gloves\rWo  \u001b\u0017cockatrice corpse\rwp  \u001bFy  \r\u001bkFy   \u001btph   \u001b",
+      "name": "thrown-corpse-negative"
+    }
+  ]
+}

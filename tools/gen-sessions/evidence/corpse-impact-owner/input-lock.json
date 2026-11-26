@@ -1,0 +1,41 @@
+{
+  "recipeSHA256": "901e7494fc208ca9ccc36571225886b46efdd0aa9728b50f59f1605ba19300a6",
+  "fieldsSHA256": "998c1a60245582ad7450fbc72bc8a8555190ee093fe7e20c8140401ed26ec74d",
+  "branchRequirementsSHA256": "d76479cd807d593541ea559bca45735917183fe8d867b52c2e9dbf9c582cefcd",
+  "negativeHashesSHA256": "b4e55eea2408ea7740913b5b777be65b47f23a8d995f82440b7e1fc4adad83eb",
+  "cases": [
+    {
+      "name": "shopkeeper-statue-contact",
+      "keys": 156,
+      "keyBytesSHA256": "c8a7b02c0c966fff1d4b886ffa75bc3b4593a8e1753c4127248a8ecd98f3b04b",
+      "fiveFieldsSHA256": "63d382ba18fce8ac537d05dac18a5a6ea0875d4f45779c7186ec63057dca537f"
+    },
+    {
+      "name": "corpse-held-no-impact-negative",
+      "keys": 150,
+      "keyBytesSHA256": "82279acf8762e2865b9073a394ee9e36e9b092fddefdcd6ea183a85eff322ab6",
+      "fiveFieldsSHA256": "2aa5000c3ab8a9effba59af8735f954c6299e9e36ae227fac3676eb644eb125c"
+    },
+    {
+      "name": "newt-corpse-impact-negative",
+      "keys": 150,
+      "keyBytesSHA256": "79cffcd22c194c2551ff86a9636af7019af4712c13accf7b62b583943f48e5ea",
+      "fiveFieldsSHA256": "3c139ba03229b8cda41c348c08f7c7fea6b0b13564f8bf4d4d1c75d415700dee"
+    },
+    {
+      "name": "thrown-corpse-negative",
+      "keys": 157,
+      "keyBytesSHA256": "e99cb9e25634a3760025ef5b21ad6af36a1d2d13cc919534c54c4ccc803ba2e6",
+      "fiveFieldsSHA256": "c014d0219631811f9786319b5f019975c7c6d822afcd312dbe70086ac28acf85"
+    }
+  ],
+  "totalKeys": 613,
+  "classification": "pre-candidate C source predictions; ordinary baseline reach established; parent C recording not run",
+  "candidateExists": false,
+  "branchPredictions": [
+    "Keeper97 petrifies, saved statue identifies original keeper and owns original inventory; no living original keeper or generic damage continuation.",
+    "No contact: original living peaceful keeper46HP and wielded cockatrice corpse remain.",
+    "Real newt-corpse contact: original keeper45HP hostile; no keeper statue; all five baseline outputs fixed.",
+    "Throw without engulfment routes thitmonst miss, not corpse melee; keeper46HP peaceful; corpse leaves wielded inventory; all five outputs fixed."
+  ]
+}

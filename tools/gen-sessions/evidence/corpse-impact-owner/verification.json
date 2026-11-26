@@ -1,0 +1,70 @@
+{
+  "scope": "Portable regression gates for the bounded CORPSE arm of hmon_hitmon_misc_obj, not whole miscellaneous-object closure",
+  "sourcePacket": {
+    "members": 340,
+    "sealSHA256": "0238f20bb69c8161fc1403f9fb1fe37e9638c0b2b9a57bc7c175cd0046b9291a",
+    "patchSHA256": "0a915d7c4a8e37d6bd905c3c63504801adb4bab46b0e070009746428e682d535"
+  },
+  "input": {
+    "originalRecipeSHA256": "901e7494fc208ca9ccc36571225886b46efdd0aa9728b50f59f1605ba19300a6",
+    "primaryRecipeSHA256": "0fe2c20e2a9156cc3c9dbcf339d4f3ca80f5e3d223e6cf1501964120493266f1",
+    "originalLockSHA256": "1d9d5d599782bbf513c04183d22eb42136d9a5e58dc8026325a44d695b9ef01e",
+    "onlyAddedRecipeFields": [
+      "branches",
+      "requireBranchAssertions",
+      "branchAssertions"
+    ],
+    "cases": 4,
+    "keys": 613,
+    "negativeOutputHashes": 15
+  },
+  "portableJS": {
+    "runtimeSHA256": "ee100ca8325e63d2e663c053eb4f3649b6bf579e850660f15ca61cea83fb44e3",
+    "modules": 280,
+    "sourceControls": [
+      25,
+      25
+    ],
+    "ordinary": [
+      4,
+      4
+    ],
+    "observerNeutral": 4,
+    "deferredEOFNeutral": 4,
+    "sourceReportSHA256": "62fb26481db224be776028a0470577c0a867756799a84fea816d0284b04357dc",
+    "ordinaryReportSHA256": "e0abb496ad6f2d057179e575290bcfb5565eed27adeeb4fe96b56a9663d62ae4",
+    "completeReportsEqualSealedSourceCandidate": true,
+    "assertionBodiesAndLiveBindingUnchanged": true
+  },
+  "native": {
+    "attribution": "Parent original C recording and fixed baseline/candidate/composed comparisons; this worker only validates recording integrity",
+    "canonicalPath": "tools/gen-sessions/generated/corpse-impact-owner.session.json",
+    "rawSHA256": "6e69c20ddb555c320603929bc52aa1f3b149f4cc6a58804a7cb55ef111ae7ce1",
+    "bytes": 2807903,
+    "baselineExact": [
+      3,
+      4
+    ],
+    "candidateExact": [
+      4,
+      4
+    ],
+    "composedExact": [
+      4,
+      4
+    ],
+    "candidateComposedReportSHA256": "2658a5fd1e371ad001e27929f3162f5c8fe9bc7a1fb13ddf65f048b7ed4117ad",
+    "boundaries": 617,
+    "calls": 24239,
+    "frames": 21,
+    "unchangedNegativeReports": 3,
+    "unchangedNegativeOutputHashes": 15,
+    "workerNativeReplayRun": false
+  },
+  "limits": [
+    "Unknown plural corpse_xname article remains wrong; original separate diagnostic2/3 on both source graphs is preserved.",
+    "Shared ismnum lacks the upper bound; valid species and NON_PM are covered, invalid positive species indices are outside closure.",
+    "Other miscellaneous impacts, general transformation/resistance/feedback dependencies and ordinary statue animation/revival are not claimed complete.",
+    "Failed quarterstaff reach and invalid initial timer fixture remain in the immutable source packet; their assertions were not weakened."
+  ]
+}

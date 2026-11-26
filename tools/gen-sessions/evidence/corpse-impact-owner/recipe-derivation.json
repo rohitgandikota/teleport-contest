@@ -1,0 +1,55 @@
+{
+  "classification": "C-source predictions established before parent recording, using sealed JS observations; native evidence pending",
+  "originalRecipeSHA256": "901e7494fc208ca9ccc36571225886b46efdd0aa9728b50f59f1605ba19300a6",
+  "primaryRecipeSHA256": "0fe2c20e2a9156cc3c9dbcf339d4f3ca80f5e3d223e6cf1501964120493266f1",
+  "onlyAddedFields": [
+    "branches",
+    "requireBranchAssertions",
+    "branchAssertions"
+  ],
+  "originalFieldsEqual": true,
+  "strippedSerializationEqualsOriginalBytes": true,
+  "inputFieldsSHA256": "998c1a60245582ad7450fbc72bc8a8555190ee093fe7e20c8140401ed26ec74d",
+  "stateRequirementsSHA256": "d76479cd807d593541ea559bca45735917183fe8d867b52c2e9dbf9c582cefcd",
+  "all15NegativeHashesSHA256": "b4e55eea2408ea7740913b5b777be65b47f23a8d995f82440b7e1fc4adad83eb",
+  "branchProvenance": [
+    {
+      "segment": 0,
+      "source": [
+        "uhitm.c1151-1166 corpse-specific You hit and stoning dispatch",
+        "trap.c3858-3875 visible turns-to-stone feedback"
+      ],
+      "observedEvidence": "source340 tools/ordinary.mjs asserts the exact two strings; reports/ordinary-candidate.json passes; target name is from the existing ordinary report, not guessed native output",
+      "CStepAssumed": false
+    },
+    {
+      "segment": 1,
+      "source": [
+        "wield.c ready_weapon feedback",
+        "uhitm.c corpse dispatch requires actual contact"
+      ],
+      "observedEvidence": "reports/proposals-01-baseline.json held case: wielded step134 and thin-air step139/146; no hit or stoning feedback. Steps are JS provenance only, not assertions.",
+      "CStepAssumed": false
+    },
+    {
+      "segment": 2,
+      "source": [
+        "uhitm.c543 real corpse bashing announcement",
+        "uhitm.c1175-1177 nonpetrifying damage",
+        "uhitm.c1637-1660 generic hit feedback"
+      ],
+      "observedEvidence": "reports/proposals-01-baseline.json newt case: wielded128 and real bashing/hit146; source340 ordinary negative full report/hashes unchanged in candidate. Steps are JS provenance only.",
+      "CStepAssumed": false
+    },
+    {
+      "segment": 3,
+      "source": [
+        "dothrow.c1951-1968 tmiss feedback",
+        "thitmonst ordinary corpse throw dispatch"
+      ],
+      "observedEvidence": "reports/proposals-01-baseline.json thrown case: wielded134 and The corpse misses Inuvik at153; negative full report/hashes unchanged. Steps are JS provenance only.",
+      "CStepAssumed": false
+    }
+  ],
+  "limits": "Text checks establish observable C branch predictions, not saved-trait identity, full native parity, or closure of shared corpse_xname/ismnum gaps."
+}

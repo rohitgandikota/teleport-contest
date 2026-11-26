@@ -11,6 +11,17 @@ Newest first within each section.
 
 ---
 
+## Corpse impact ordering and statue production
+
+C's miscellaneous-hit CORPSE arm prints the hit before observing the object,
+tries munstone before minstapetrify, and checks stone resistance afterward.
+An early return reports the monster's current death state. A non-petrifying
+corpse deals species size plus one damage, not the generic object-weight
+damage. A real cockatrice-corpse hit produces the saved-traits statue needed
+to exercise later revival. Keep thrown misses and non-petrifying contacts as
+negative controls. Shared plural corpse naming and invalid positive species
+indices remain separate gaps.
+
 ## Full-save timer ties
 
 C recovery reloads the current level from the original full save after
@@ -8913,6 +8924,12 @@ when a boulder sits on a pit), and mhp/MON_DETACH are set before the one
 unconditional await so the statue template is already detached when the
 caller continues. Deferring them cost five tour sessions a level-creation
 divergence (rndmonst() saw the template still on the map).
+
+November 25 update: current m_detach awaits mon_leaving_level before clearing
+HP. Its focused state test must await m_detach before inspecting final state.
+The old unawaited test observes map removal with HP still 54 on both the
+published baseline and corpse candidate. Adding only the missing await passes
+on both runtimes with all fourteen assertions unchanged.
 
 ## Objects that fall to the next level, and what drops when they are ours (12 Sep)
 

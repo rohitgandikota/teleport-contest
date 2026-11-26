@@ -1,0 +1,45 @@
+{
+  "original16ReproducedByteExactly": true,
+  "original16ReportSHA256": "47e724659ed3bfe22bb8a40f2e273d0dabdd3f21e65d1d901b655e96b7faacfe",
+  "selectedIndices": [
+    0,
+    1,
+    2,
+    4
+  ],
+  "excluded": [
+    {
+      "index": 3,
+      "name": "quarterstaff-impact-negative",
+      "reason": "Wielding spends a turn; keeper moves to74,10, so final Fh hits thin air. Kept as failed reach proposal, not claimed as a landed weapon control."
+    }
+  ],
+  "keeperInventoryObservedBeforeImpact": [
+    {
+      "id": 105,
+      "type": 342,
+      "quantity": 1,
+      "species": -1
+    },
+    {
+      "id": 103,
+      "type": 438,
+      "quantity": 1540,
+      "species": -1
+    },
+    {
+      "id": 101,
+      "type": 417,
+      "quantity": 1,
+      "species": -1
+    },
+    {
+      "id": 99,
+      "type": 221,
+      "quantity": 1,
+      "species": -1
+    }
+  ],
+  "negativeHashSets": 3,
+  "sourceCandidateCreated": false
+}

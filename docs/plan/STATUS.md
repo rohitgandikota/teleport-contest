@@ -1,6 +1,59 @@
 # STATUS — live handoff board
 
-## 2026-11-25: wrapped message clearing verified
+## 2026-11-25: corpse-impact checkpoint verified for publication
+
+The uncommitted runtime change is only js/uhitm.js. Its CORPSE arm follows C's
+message, observation, cure, petrification and early-return order. Four locked
+C cases pass versus three: 617 styled boundaries/cursors, 24,239 random calls
+and 21 frames. Three complete negative native reports and fifteen output
+hashes are unchanged. Candidate and composed reports are byte-identical.
+Source340 is sealed. Its constructed checks pass 25/25 versus 6/25 and ordinary
+checks pass 4/4 versus 3/4. The composed 280-file runtime map is
+corpse-impact-parent-composed-runtime.json, SHA256
+`ee100ca8325e63d2e663c053eb4f3649b6bf579e850660f15ca61cea83fb44e3`.
+
+All 115 selected/public recordings and 115 strict workers pass. Twenty focused
+checks initially had two failures. The prior billing-disposal 7/8 output is
+unchanged. An old monster-detach test omitted await and fails identically on
+the published baseline. Adding only that await passes on baseline, candidate
+and main, with all fourteen assertions intact. Its original failure and exact
+change are retained in corpse-impact-parent-detach-test-review.
+
+Full910 passes all 910 recordings on two NFS CPU workers with default budgets
+and no retries: 925,914 screens/cursors, 19,995,992 random positions and 33,131
+frames. Root: /share/NFS/u/rohit/research/contest/artifacts/2026-11-22/corpse-impact-full910-js-20261125.
+All 1,201 files are fixed at all-files SHA256
+`60e531688074f02aca3a514bb6e4b0a4b241224934b4568b1752b2cd3ac25200`.
+The exact thirteen promotion payloads, four branch requirements and original
+C recording are installed. Both portable gates pass on main with reports
+identical to the sealed promotion. Source340 and promotion67 verify unchanged.
+The parent receipt is corpse-impact-main-verification.json, SHA256
+`a97efd5f1db7888dded8326523b61c1b8b33857751f8f462b9802069e59d84f8`.
+Public evidence is tools/gen-sessions/evidence/corpse-impact-owner/parent-verification.json.
+Commit and immediately push this checkpoint, then verify its exact Git tree.
+Shared plural-corpse naming and ismnum bounds remain open. Only the corpse
+dispatch arm is covered, not the whole miscellaneous-hit owner.
+
+The separate level-change-trap-reset source317 is sealed. It adds only the C
+same-level return and the existing trap reset on departure. Its ordinary
+checks pass 15/15 versus 14/15; three constructed public-owner checks pass
+versus zero. Four complete negative rows and twenty hashes are unchanged.
+Five original C inputs were recorded once. Native comparison passes 5/5 versus
+4/5, including 164 styled boundaries/cursors and 16,004 random calls. Candidate
+and composed reports are identical; all four negative reports stay unchanged.
+Full911 is running on two NFS CPU workers with default budgets and no retries.
+PID3294213, root /share/NFS/u/rohit/research/contest/artifacts/2026-11-22/level-change-trap-reset-full911-js-20261125.
+Its 1,202 fixed files have all-files SHA256
+`2a258619b96af5b0f6efee6ec30964218fc8d28492965f2a53a319415270230f`.
+Portable promotion is separate; do.js is not installed on main yet.
+Lock/carried-box and polearm departure cleanup remain independently open.
+The guard-cleanup-prompt source23 records an ordinary extra-prompt witness,
+but a postmov/newsym diagnostic await must be reviewed before a runtime fix.
+Fruit/text has a sealed334 eight-file candidate. Its source controls pass
+22/22 versus 2/22 and thirteen ordinary checks pass versus six. Parent native
+verification and composition with wrapped clearing remain pending.
+
+## 2026-11-25: wrapped message clearing pushed as 5c755158
 
 The candidate restores rows covered by messages through C's docorner path,
 including its physical cursor movement. Direct more cleanup and the outer
@@ -31,9 +84,11 @@ and 33,110 frames. Its 1,200 fixed source/fixture/scorer files have map SHA256
 `e3e34bc9b00dbf191cbbe912060779524cff47df11b081f92488cf7a008e05d4`.
 Root: /share/NFS/u/rohit/research/contest/artifacts/2026-11-22/wrapped-message-clear-full909-js-20261125.
 Compact public evidence is in tools/gen-sessions/evidence/wrapped-message-clear/verification.json.
-The parent receipt is wrapped-message-clear-main-verification.json. The next
-action is to commit, immediately push, then verify the published tree against
-the tested file map. The prior published checkpoint is 1e15de5e.
+The parent receipt is wrapped-message-clear-main-verification.json. Commit
+5c7551585e52a375084b64749212e298ea8908f2 is pushed, and all 1,200 tested files
+match its Git tree. Publication receipt:
+wrapped-message-clear-full909-publication-verification.json, SHA256
+`c032d4903c93d9c8d1cf3fcea3e3d4b7610761ef0c5c123130cb58504979826a`.
 
 Ordinary active-frame and explored-same-symbol reach under this wrapped route
 remain unproven. Whole more rendering/guards, the extra vault prompt and
@@ -41,12 +96,12 @@ getlin's reconstruction flag remain open. Original probe, syntax and runner
 setup failures are retained. This does not establish serialized byte identity
 or a newer held-out result.
 
-Parallel work: corpse-impact source340 changes only uhitm.js, with 25/25
-constructed and 4/4 ordinary checks; native recording is pending. Shared
-plural-corpse naming and ismnum bounds remain explicit gaps. The level-change
-audit now has an ordinary interrupted-trap roundtrip witness, plus cancelled,
-same-level, no-departure and no-trap controls in proposal06. No level-change
-candidate exists yet. Fruit-byte ingress work remains isolated.
+Subsequent corpse, level-change and fruit work is tracked in the current
+checkpoint above. Shared plural-corpse naming and ismnum bounds remain gaps.
+
+The official recheck at 20:12 EST on November 25 still shows rank 7 and
+659 unmatched screens. Its last-scored time remains 14:31 EST, before the
+latest checkpoints. The official news feed is unchanged since November 14.
 
 ## 2026-11-25: saved monster traits preserve C ownership
 

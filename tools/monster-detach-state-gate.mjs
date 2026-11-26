@@ -39,7 +39,7 @@ const purgeBefore = game.iflags.purge_monsters | 0;
 
 initRng(102);
 enableRngLog();
-m_detach(shkp, shkp.data, false);
+await m_detach(shkp, shkp.data, false);
 
 assert.deepEqual(getRngLog(), [], 'shopkeeper detach consumes no RNG');
 assert.equal(game.level.monAt.get(`${mx},${my}`), undefined,

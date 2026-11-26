@@ -1,0 +1,180 @@
+{
+  "name": "wallify-vault-wall-mode",
+  "classification": "source-predicted ordinary wall-mode display omission; C confirmation pending parent",
+  "segments": [
+    {
+      "seed": 7303,
+      "datetime": "20000115090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "blind-unmapped-dig-north",
+      "moves": " \u00162\r#wizintrinsic\r100i\r  \u001b\u001b\u0017500 gold pieces\r\u0014kkkkkkkkkkkkkhhhhh.   \u001b\u001b#wizintrinsic\r>30f\r  \u001b\u001bh  k  k  l  \u0017nondiggable wall\r  h  j  j  l  \u0017uncursed wand of digging (0:10)\r  zok  l  l  l  l  k  \u0017throne\r  \u0017floor\r  E- proof\r  \u0017wall\r  \u0017doorless doorway\r  j  h  h  h  h  ................................... intruder\r  \u001b\u001bd$  l  l  l   \u001b\u001b#wizintrinsic\r>100f\r  \u001b\u001bk  k  h  h  h  ............................................................"
+    },
+    {
+      "seed": 7303,
+      "datetime": "20000115090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "blind-mapped-dig-north",
+      "moves": " \u00162\r\u0006#wizintrinsic\r100i\r  \u001b\u001b\u0017500 gold pieces\r\u0014kkkkkkkkkkkkkhhhhh.   \u001b\u001b#wizintrinsic\r>30f\r  \u001b\u001bh  k  k  l  \u0017nondiggable wall\r  h  j  j  l  \u0017uncursed wand of digging (0:10)\r  zok  l  l  l  l  k  \u0017throne\r  \u0017floor\r  E- proof\r  \u0017wall\r  \u0017doorless doorway\r  j  h  h  h  h  ................................... intruder\r  \u001b\u001bd$  l  l  l   \u001b\u001b#wizintrinsic\r>100f\r  \u001b\u001bk  k  h  h  h  ............................................................"
+    },
+    {
+      "seed": 7303,
+      "datetime": "20000115090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "blind-unmapped-intact-north",
+      "moves": " \u00162\r#wizintrinsic\r100i\r  \u001b\u001b\u0017500 gold pieces\r\u0014kkkkkkkkkkkkkhhhhh.   \u001b\u001b#wizintrinsic\r>30f\r  \u001b\u001bh  k  k  l  \u0017nondiggable wall\r  h  j  j  l  \u0017uncursed wand of digging (0:10)\r  l  l  l  l  k  \u0017throne\r  \u0017floor\r  E- proof\r  \u0017wall\r  \u0017doorless doorway\r  j  h  h  h  h  ................................... intruder\r  \u001b\u001bd$  l  l  l   \u001b\u001b#wizintrinsic\r>100f\r  \u001b\u001bk  k  h  h  h  ............................................................"
+    }
+  ],
+  "requirements": [
+    {
+      "name": "blind-unmapped-dig-north",
+      "target": [
+        23,
+        4
+      ],
+      "mapped": false,
+      "dug": true,
+      "expectedMode": 1,
+      "expectedSeenv": 1,
+      "expectedCell": " ",
+      "expectedMemoryCmap": 0,
+      "sightStep": 411,
+      "source": "C vault.c646-731; display.c3187-3204,3276-3326,3627-3645; rm.h296-400"
+    },
+    {
+      "name": "blind-mapped-dig-north",
+      "target": [
+        23,
+        4
+      ],
+      "mapped": true,
+      "dug": true,
+      "expectedMode": 1,
+      "expectedSeenv": 255,
+      "expectedCell": "─",
+      "expectedMemoryCmap": 2,
+      "sightStep": 412,
+      "source": "C vault.c646-731; display.c3187-3204,3276-3326,3627-3645; rm.h296-400"
+    },
+    {
+      "name": "blind-unmapped-intact-north",
+      "target": [
+        23,
+        4
+      ],
+      "mapped": false,
+      "dug": false,
+      "expectedMode": 1,
+      "expectedSeenv": 1,
+      "expectedCell": " ",
+      "expectedMemoryCmap": 0,
+      "sightStep": 407,
+      "source": "C vault.c646-731; display.c3187-3204,3276-3326,3627-3645; rm.h296-400"
+    }
+  ],
+  "negativeOutputHashes": {
+    "blind-mapped-dig-north": {
+      "screens": "7cab09e0f27a688f3dbf002d79894cffabc27102ee6c41a1ac033a3469c01d70",
+      "cursors": "f0a634ae0f5c11892142bede8d58aea9a1ae1bd4855cd0ca94430e7efe71b106",
+      "calls": "bd65eb60bd2349dc53c8492e34d5a41d405bd21a07d429d1c9fcda6db6662a87",
+      "slices": "b9b9236f8bd5f9a9259479100e317a4a95a944590b113cf6a4b03f4517da227f",
+      "frames": "19271d93e47649a40e9162ef7f56fbfdc40d6246f84b02b02619a051c1e2bba2"
+    },
+    "blind-unmapped-intact-north": {
+      "screens": "9bd6ddfd83c2d1a07d631cf9f75198d5771e0797f0183adf19f706ca9511c90c",
+      "cursors": "295bdcacf9ca91b913044ad1ff82537838aefa357d211a30e9291b5d2695a72e",
+      "calls": "1b1f6791108ed6de9e4fb4439cdfdba18ca4ee1518d40a6417edcf2f2ca0f8f8",
+      "slices": "1d8c29a64f2ec14863d9752e2156de294c0053b0510503afeeb6f6eef0eddc75",
+      "frames": "8de90f5f14e5d57b880e144e45d9b477b9d8f38a332e11a48fa83baebb441316"
+    }
+  },
+  "branches": [
+    "vault.wallify.unmapped-unfinished-side",
+    "vault.wallify.mapped-unfinished-side",
+    "vault.wallify.intact-unfinished-side"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "vault.wallify.unmapped-unfinished-side",
+      "segment": 0,
+      "screenIncludes": [
+        "Please drop that gold and follow me.",
+        "You drop 500 gold pieces.",
+        "You can see again.",
+        "The damaged vault's walls are magically restored!"
+      ],
+      "screenExcludes": [
+        "Program in disorder!",
+        "newsym: attempting screen update"
+      ],
+      "screenCells": [
+        {
+          "step": 428,
+          "x": 22,
+          "y": 5,
+          "equals": " "
+        }
+      ],
+      "source": "C-derived prediction, not a recorded result. Screen coordinate is map (23,4), terminal zero-based (22,5); final boundary is input length. C vault.c704-716 calls wall-mode setter before redraw; display.c3627-3645 selects stone for mode1/SV0 and HWALL for mode1/SVALL."
+    },
+    {
+      "branch": "vault.wallify.mapped-unfinished-side",
+      "segment": 1,
+      "screenIncludes": [
+        "Please drop that gold and follow me.",
+        "You drop 500 gold pieces.",
+        "You can see again.",
+        "The damaged vault's walls are magically restored!"
+      ],
+      "screenExcludes": [
+        "Program in disorder!",
+        "newsym: attempting screen update"
+      ],
+      "screenCells": [
+        {
+          "step": 429,
+          "x": 22,
+          "y": 5,
+          "equals": "─"
+        }
+      ],
+      "source": "C-derived prediction, not a recorded result. Screen coordinate is map (23,4), terminal zero-based (22,5); final boundary is input length. C vault.c704-716 calls wall-mode setter before redraw; display.c3627-3645 selects stone for mode1/SV0 and HWALL for mode1/SVALL."
+    },
+    {
+      "branch": "vault.wallify.intact-unfinished-side",
+      "segment": 2,
+      "screenIncludes": [
+        "Please drop that gold and follow me.",
+        "You drop 500 gold pieces.",
+        "You can see again."
+      ],
+      "screenExcludes": [
+        "Program in disorder!",
+        "newsym: attempting screen update",
+        "The damaged vault's walls are magically restored!",
+        "whispers an incantation."
+      ],
+      "screenCells": [
+        {
+          "step": 423,
+          "x": 22,
+          "y": 5,
+          "equals": " "
+        }
+      ],
+      "source": "C-derived prediction, not a recorded result. Screen coordinate is map (23,4), terminal zero-based (22,5); final boundary is input length. C vault.c704-716 calls wall-mode setter before redraw; display.c3627-3645 selects stone for mode1/SV0 and HWALL for mode1/SVALL."
+    }
+  ],
+  "provenance": {
+    "baselineSHA256": "9011330c65eaa22e18c1582b1011e319df5c856c1d4553d09fe6bec59c7ca131",
+    "originalProposal": "proposal-04.json",
+    "originalProposalSHA256": "e62e5181f91137d096d2825bb76b3432f273d0ee699eca3b6cdd1e61e39de822",
+    "sourcePin": "16ff59115315917b93185d026aeefea06db9b0f4",
+    "nativeComparison": "pending parent; no runtime candidate"
+  },
+  "coverage": [
+    "mode.debug",
+    "social.vault-guard",
+    "ui.map-memory-vision"
+  ]
+}

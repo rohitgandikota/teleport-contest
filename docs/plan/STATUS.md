@@ -1,8 +1,50 @@
 # STATUS — live handoff board
 
-## 2026-11-26: menu checkpoint ready to publish after usage reset
+## 2026-11-26: vault visibility and accessory routing ready to push
 
-Parent is dadb52c9dee9da8610b1609727e88df95a0e3271. The reviewed eight-file
+Two source-confirmed lines are composed on published e007ede1. Vault repair
+calls the existing xy_set_wall_state after resetting wall_info. Inventory-menu
+P queues dowear, matching C's IA_WEAR_OBJ, while direct P retains doputon.
+Runtime map SHA256 0ee2ebcfa3c310dbebe74409836bb8dedea2d6cacbf7d8e5d73d76bca082204b.
+The fresh combined native reports are byte-identical to the isolated candidate
+reports: all seven cases, 1,484 boundaries, 34,817 random calls and six frames
+match. The first parent wrapper used the wrong preflight import path and failed
+before game imports; its log is retained. The corrected entry changes no tests
+or runtime. Source/candidate/promotion files remain fixed.
+
+Full932 passes all 932 recordings: 936,312 screens/cursors, 20,436,640 random
+calls and 33,185 frames. Two CPU workers, default 45-second limits and no
+retries. PID3492136 is complete; do not rerun it. Directory:
+/share/NFS/u/rohit/research/contest/artifacts/2026-11-22/wall-accessory-full932-js-20261126.
+It links 930 earlier fixtures, uploads two new exact recordings and tests 1,223
+fixed files. all-files SHA256:
+52e6f8ebeeca322280c23c34450e600b39c8e2c9966ed06b954d03bfe68f06b3.
+Verification SHA256 e7e839de38d6352890e46643e1d7c41f193718dcbf64e061d1a71a4a9b0c3d09.
+Wall promotion44 and accessory promotion48 are installed with 44 payloads and
+seven requirements, total 4,670. All earlier registry text is preserved.
+Fresh ordinary gates pass all seven cases and retain 25 negative hashes.
+Accessory's report is byte-identical to candidate338. Wall's gameplay rows
+are identical; only the classification text changes. All 12 focused checks,
+46 strict public/new workers and the scope/import audit pass.
+Parent proof SHA256 ad8ab9740d6006e73b2e3dad2322eef94dca8f66d7e1580d5e963539d006257c.
+Commit/push and publication verification are next, already authorized.
+
+The separate youhiding audit proves the enlightenment branch completes
+synchronously. No missing await is present and no runtime patch is warranted.
+Its 21-member sealed source review and existing producer controls are retained
+in status-enlightenment-youhiding-source-audit. Next source audits cover the
+direct wear entry's full-equipment guards and vault debris/trap disposal.
+Neither audit authorizes a speculative runtime patch. A parent source audit
+also found four missing dochat speech guards. Its six original keyboard cases
+reach every intended state on fixed0ee; baseline ordinary2/6, with both negative
+cases and ten output hashes retained. No chat candidate or C recording yet.
+Packet: chat-speech-guards-source-audit. Accessory worker's next source audit
+covers the incomplete restored welcome owner. Keep all next work isolated.
+
+## 2026-11-26: menu checkpoint pushed; wall and accessory fixes next
+
+Published as e007ede12783e204bee3b5fa025ab94e82f235b3 and confirmed on origin/main.
+Its parent is dadb52c9dee9da8610b1609727e88df95a0e3271. The reviewed eight-file
 menu/status composition remains fixed at c425a83669d913cce211a9665a4513bbdcb44fb5753dcd20f23d243eb10b094a.
 Full930 completed successfully at 06:43Z while usage was unavailable. All 930
 recordings pass, with 934,828 screens/cursors, 20,401,823 random calls and
@@ -25,10 +67,14 @@ it is byte-identical to the portable report. The menu promotion's original
 historical-path verifier failure and corrected verifier are retained, with
 all 65 public payloads unchanged. Both current promotion verifiers pass.
 
-Next action: stage the exact installed payloads, eight runtime files, registry
-and documentation; verify all 1,221 staged blobs; commit and push immediately.
-Then run verify-full-publication.py menu-input-full930 NEW_COMMIT
-menu-input-parent-composed. Keep that fixed runner intact.
+The staged check verified all 1,221 tested blobs and exactly 110 staged paths.
+Index receipt SHA256 f40bfc56abd1694d38a569183846e1ca352002605ed07b69d450a304a84564d5.
+Parent proof SHA256 10dd7925a3ded0d227226c68505c29c2c64639e18c1ca37d99080c509efde156.
+Publication verification is complete under menu-input-full930. All 1,221
+tested Git blobs match e007. Receipt SHA256:
+99767d1528099ea44972e785b716f55447e88bd4289112021de3383be5f61ebb.
+Keep that fixed runner intact. Next: compose the separately verified wall-mode and
+accessory-routing patches on e007, preserving all eight menu/status owners.
 
 Queued work is separate: wall-mode candidate325 passes 3/3 C cases and repairs
 18 boundaries with one existing helper call; its portable promotion is in

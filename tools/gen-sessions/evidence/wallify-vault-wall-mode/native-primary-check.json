@@ -1,0 +1,16 @@
+{
+  "primaryBranches": 3,
+  "branchErrors": [],
+  "integrityErrors": [],
+  "rawSHA256": "3c56e3f4e461404b3c83003fbe0ed2b924ba378f9d4c6173c5ef3425b54be5ee",
+  "segments": 3,
+  "keys": 1280,
+  "boundaries": 1283,
+  "calls": 25837,
+  "frames": 4,
+  "rootMetadataIssue": "Parent omitted source from minimal input. record-session.mjs:716-719 only copies existing root metadata, so the successful C recording also lacks source. Original raw remains unchanged; pinned recorder/binary invocation and exit0 establish provenance. No re-recording or input/output edit.",
+  "recorderExit": 0,
+  "postRecordingAssertionFailed": "KeyError: 'source'",
+  "inputsAndPresenceExact": true,
+  "allKeysExact": true
+}

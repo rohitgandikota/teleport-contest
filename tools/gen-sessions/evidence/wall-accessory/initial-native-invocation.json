@@ -1,0 +1,24 @@
+[
+  {
+    "name": "wallify-vault-wall-mode",
+    "command": [
+      "node",
+      "--max-old-space-size=512",
+      "--preserve-symlinks",
+      "--preserve-symlinks-main",
+      "/Users/rohit/research/code/contest/.cache/restart-20261122/wall-accessory-parent-composed/wallify-vault-wall-mode-native.mjs"
+    ],
+    "exit": 1,
+    "seconds": 0.258,
+    "cases": 0,
+    "passed": 0,
+    "report": ".cache/restart-20261122/wall-accessory-wallify-vault-wall-mode-native.json",
+    "reportSHA256": null,
+    "priorReport": ".cache/restart-20261122/wallify-vault-wall-mode-candidate/reports/native.json",
+    "completeReportUnchanged": false,
+    "log": ".cache/restart-20261122/wall-accessory-wallify-vault-wall-mode-native.log",
+    "logSHA256": "89c38493bbc5f08bd21b05422c3abad95f9ebf655d27e849c4df834d21a75fe0",
+    "timeoutSeconds": 55,
+    "maxOldSpaceMB": 512
+  }
+]

@@ -1,0 +1,930 @@
+[
+  {
+    "segment": 0,
+    "name": "blind-unmapped-dig-north",
+    "boundaries": {
+      "expected": 429,
+      "actual": 429
+    },
+    "frozenScreens": 411,
+    "fullStyleScreens": 411,
+    "matchingStyleCells": 823662,
+    "totalCells": 823680,
+    "blankStyleMismatches": 0,
+    "nonblankStyleMismatches": 0,
+    "glyphMismatches": 18,
+    "screenDifferences": [
+      {
+        "step": 411,
+        "frozenEqual": false,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1919,
+        "blankStyleMismatches": 0,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 1,
+        "firstFullStyleDifference": {
+          "x": 22,
+          "y": 5,
+          "c": {
+            "ch": " ",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "─",
+            "color": 8,
+            "attr": 0
+          }
+        },
+        "firstFrozenDifference": {
+          "x": 22,
+          "y": 5,
+          "kind": "ch",
+          "c": {
+            "ch": " ",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "─",
+            "color": 8,
+            "attr": 0
+          }
+        }
+      },
+      {
+        "step": 412,
+        "frozenEqual": false,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1919,
+        "blankStyleMismatches": 0,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 1,
+        "firstFullStyleDifference": {
+          "x": 22,
+          "y": 5,
+          "c": {
+            "ch": " ",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "─",
+            "color": 8,
+            "attr": 0
+          }
+        },
+        "firstFrozenDifference": {
+          "x": 22,
+          "y": 5,
+          "kind": "ch",
+          "c": {
+            "ch": " ",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "─",
+            "color": 8,
+            "attr": 0
+          }
+        }
+      },
+      {
+        "step": 413,
+        "frozenEqual": false,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1919,
+        "blankStyleMismatches": 0,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 1,
+        "firstFullStyleDifference": {
+          "x": 22,
+          "y": 5,
+          "c": {
+            "ch": " ",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "─",
+            "color": 8,
+            "attr": 0
+          }
+        },
+        "firstFrozenDifference": {
+          "x": 22,
+          "y": 5,
+          "kind": "ch",
+          "c": {
+            "ch": " ",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "─",
+            "color": 8,
+            "attr": 0
+          }
+        }
+      },
+      {
+        "step": 414,
+        "frozenEqual": false,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1919,
+        "blankStyleMismatches": 0,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 1,
+        "firstFullStyleDifference": {
+          "x": 22,
+          "y": 5,
+          "c": {
+            "ch": " ",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "─",
+            "color": 8,
+            "attr": 0
+          }
+        },
+        "firstFrozenDifference": {
+          "x": 22,
+          "y": 5,
+          "kind": "ch",
+          "c": {
+            "ch": " ",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "─",
+            "color": 8,
+            "attr": 0
+          }
+        }
+      },
+      {
+        "step": 415,
+        "frozenEqual": false,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1919,
+        "blankStyleMismatches": 0,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 1,
+        "firstFullStyleDifference": {
+          "x": 22,
+          "y": 5,
+          "c": {
+            "ch": " ",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "─",
+            "color": 8,
+            "attr": 0
+          }
+        },
+        "firstFrozenDifference": {
+          "x": 22,
+          "y": 5,
+          "kind": "ch",
+          "c": {
+            "ch": " ",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "─",
+            "color": 8,
+            "attr": 0
+          }
+        }
+      },
+      {
+        "step": 416,
+        "frozenEqual": false,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1919,
+        "blankStyleMismatches": 0,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 1,
+        "firstFullStyleDifference": {
+          "x": 22,
+          "y": 5,
+          "c": {
+            "ch": " ",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "─",
+            "color": 8,
+            "attr": 0
+          }
+        },
+        "firstFrozenDifference": {
+          "x": 22,
+          "y": 5,
+          "kind": "ch",
+          "c": {
+            "ch": " ",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "─",
+            "color": 8,
+            "attr": 0
+          }
+        }
+      },
+      {
+        "step": 417,
+        "frozenEqual": false,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1919,
+        "blankStyleMismatches": 0,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 1,
+        "firstFullStyleDifference": {
+          "x": 22,
+          "y": 5,
+          "c": {
+            "ch": " ",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "─",
+            "color": 8,
+            "attr": 0
+          }
+        },
+        "firstFrozenDifference": {
+          "x": 22,
+          "y": 5,
+          "kind": "ch",
+          "c": {
+            "ch": " ",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "─",
+            "color": 8,
+            "attr": 0
+          }
+        }
+      },
+      {
+        "step": 418,
+        "frozenEqual": false,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1919,
+        "blankStyleMismatches": 0,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 1,
+        "firstFullStyleDifference": {
+          "x": 22,
+          "y": 5,
+          "c": {
+            "ch": " ",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "─",
+            "color": 8,
+            "attr": 0
+          }
+        },
+        "firstFrozenDifference": {
+          "x": 22,
+          "y": 5,
+          "kind": "ch",
+          "c": {
+            "ch": " ",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "─",
+            "color": 8,
+            "attr": 0
+          }
+        }
+      },
+      {
+        "step": 419,
+        "frozenEqual": false,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1919,
+        "blankStyleMismatches": 0,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 1,
+        "firstFullStyleDifference": {
+          "x": 22,
+          "y": 5,
+          "c": {
+            "ch": " ",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "─",
+            "color": 8,
+            "attr": 0
+          }
+        },
+        "firstFrozenDifference": {
+          "x": 22,
+          "y": 5,
+          "kind": "ch",
+          "c": {
+            "ch": " ",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "─",
+            "color": 8,
+            "attr": 0
+          }
+        }
+      },
+      {
+        "step": 420,
+        "frozenEqual": false,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1919,
+        "blankStyleMismatches": 0,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 1,
+        "firstFullStyleDifference": {
+          "x": 22,
+          "y": 5,
+          "c": {
+            "ch": " ",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "─",
+            "color": 8,
+            "attr": 0
+          }
+        },
+        "firstFrozenDifference": {
+          "x": 22,
+          "y": 5,
+          "kind": "ch",
+          "c": {
+            "ch": " ",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "─",
+            "color": 8,
+            "attr": 0
+          }
+        }
+      },
+      {
+        "step": 421,
+        "frozenEqual": false,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1919,
+        "blankStyleMismatches": 0,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 1,
+        "firstFullStyleDifference": {
+          "x": 22,
+          "y": 5,
+          "c": {
+            "ch": " ",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "─",
+            "color": 8,
+            "attr": 0
+          }
+        },
+        "firstFrozenDifference": {
+          "x": 22,
+          "y": 5,
+          "kind": "ch",
+          "c": {
+            "ch": " ",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "─",
+            "color": 8,
+            "attr": 0
+          }
+        }
+      },
+      {
+        "step": 422,
+        "frozenEqual": false,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1919,
+        "blankStyleMismatches": 0,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 1,
+        "firstFullStyleDifference": {
+          "x": 22,
+          "y": 5,
+          "c": {
+            "ch": " ",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "─",
+            "color": 8,
+            "attr": 0
+          }
+        },
+        "firstFrozenDifference": {
+          "x": 22,
+          "y": 5,
+          "kind": "ch",
+          "c": {
+            "ch": " ",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "─",
+            "color": 8,
+            "attr": 0
+          }
+        }
+      },
+      {
+        "step": 423,
+        "frozenEqual": false,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1919,
+        "blankStyleMismatches": 0,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 1,
+        "firstFullStyleDifference": {
+          "x": 22,
+          "y": 5,
+          "c": {
+            "ch": " ",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "─",
+            "color": 8,
+            "attr": 0
+          }
+        },
+        "firstFrozenDifference": {
+          "x": 22,
+          "y": 5,
+          "kind": "ch",
+          "c": {
+            "ch": " ",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "─",
+            "color": 8,
+            "attr": 0
+          }
+        }
+      },
+      {
+        "step": 424,
+        "frozenEqual": false,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1919,
+        "blankStyleMismatches": 0,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 1,
+        "firstFullStyleDifference": {
+          "x": 22,
+          "y": 5,
+          "c": {
+            "ch": " ",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "─",
+            "color": 8,
+            "attr": 0
+          }
+        },
+        "firstFrozenDifference": {
+          "x": 22,
+          "y": 5,
+          "kind": "ch",
+          "c": {
+            "ch": " ",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "─",
+            "color": 8,
+            "attr": 0
+          }
+        }
+      },
+      {
+        "step": 425,
+        "frozenEqual": false,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1919,
+        "blankStyleMismatches": 0,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 1,
+        "firstFullStyleDifference": {
+          "x": 22,
+          "y": 5,
+          "c": {
+            "ch": " ",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "─",
+            "color": 8,
+            "attr": 0
+          }
+        },
+        "firstFrozenDifference": {
+          "x": 22,
+          "y": 5,
+          "kind": "ch",
+          "c": {
+            "ch": " ",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "─",
+            "color": 8,
+            "attr": 0
+          }
+        }
+      },
+      {
+        "step": 426,
+        "frozenEqual": false,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1919,
+        "blankStyleMismatches": 0,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 1,
+        "firstFullStyleDifference": {
+          "x": 22,
+          "y": 5,
+          "c": {
+            "ch": " ",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "─",
+            "color": 8,
+            "attr": 0
+          }
+        },
+        "firstFrozenDifference": {
+          "x": 22,
+          "y": 5,
+          "kind": "ch",
+          "c": {
+            "ch": " ",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "─",
+            "color": 8,
+            "attr": 0
+          }
+        }
+      },
+      {
+        "step": 427,
+        "frozenEqual": false,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1919,
+        "blankStyleMismatches": 0,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 1,
+        "firstFullStyleDifference": {
+          "x": 22,
+          "y": 5,
+          "c": {
+            "ch": " ",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "─",
+            "color": 8,
+            "attr": 0
+          }
+        },
+        "firstFrozenDifference": {
+          "x": 22,
+          "y": 5,
+          "kind": "ch",
+          "c": {
+            "ch": " ",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "─",
+            "color": 8,
+            "attr": 0
+          }
+        }
+      },
+      {
+        "step": 428,
+        "frozenEqual": false,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1919,
+        "blankStyleMismatches": 0,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 1,
+        "firstFullStyleDifference": {
+          "x": 22,
+          "y": 5,
+          "c": {
+            "ch": " ",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "─",
+            "color": 8,
+            "attr": 0
+          }
+        },
+        "firstFrozenDifference": {
+          "x": 22,
+          "y": 5,
+          "kind": "ch",
+          "c": {
+            "ch": " ",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "─",
+            "color": 8,
+            "attr": 0
+          }
+        }
+      }
+    ],
+    "cursors": {
+      "expected": 429,
+      "actual": 429,
+      "matched": 429,
+      "firstDifference": null
+    },
+    "calls": {
+      "rawExpected": 8647,
+      "rawActual": 8647,
+      "discardedEntries": 0,
+      "expected": 8647,
+      "actual": 8647,
+      "firstDifference": null
+    },
+    "slices": {
+      "expected": 429,
+      "actual": 429,
+      "matched": 429,
+      "differences": []
+    },
+    "frames": {
+      "expected": 2,
+      "actual": 2,
+      "expectedSlices": 429,
+      "actualSlices": 429,
+      "countMismatches": [],
+      "fullStyleMatches": 2,
+      "cursorMatches": 2
+    },
+    "rawHashes": {
+      "c": {
+        "screens": "3cbd55fbf56c6f63d4079141c15360807773b564f040cf1b67e5f81425d7f3dd",
+        "cursors": "e83132b4d6d68b2d79c20190432e843f24a907dc4c20b5897c0ca518daa5108e",
+        "calls": "a63634880c7ec97e107be5a4e85bfe56bf57a20628e23dfccb965e5aa60abb14",
+        "slices": "72ee887498c536ef43ab19742308dd292f0d5098a4097267c6fe960c9bdb96fa",
+        "frames": "d20ba72dc6e4a56af64d5e70f8ecb7325290ed25df8ab88056b210591c8d3574"
+      },
+      "js": {
+        "screens": "3e32c27e63e88e259cfecd24c515281ac02d1781bef95670b052445550797f0c",
+        "cursors": "e83132b4d6d68b2d79c20190432e843f24a907dc4c20b5897c0ca518daa5108e",
+        "calls": "dca648dbcecd2e21b1b84edb0707a141cad3e8e3fe5864cfa426b22b753948de",
+        "slices": "de5a4ac6f3c8586bfeadba7a38ea0ed86acb5d464318b1282a9748984e2820f3",
+        "frames": "3210655eb1787436ea480fd151cb45555be659b63e0b882fd055f6fb4fa560e2"
+      }
+    },
+    "normalizedHashes": {
+      "c": {
+        "calls": "dca648dbcecd2e21b1b84edb0707a141cad3e8e3fe5864cfa426b22b753948de",
+        "slices": "de5a4ac6f3c8586bfeadba7a38ea0ed86acb5d464318b1282a9748984e2820f3"
+      },
+      "js": {
+        "calls": "dca648dbcecd2e21b1b84edb0707a141cad3e8e3fe5864cfa426b22b753948de",
+        "slices": "de5a4ac6f3c8586bfeadba7a38ea0ed86acb5d464318b1282a9748984e2820f3"
+      }
+    },
+    "frozenScreenCursorExact": false,
+    "fullRngExact": true,
+    "fullStyleExact": false,
+    "animationExact": true
+  },
+  {
+    "segment": 1,
+    "name": "blind-mapped-dig-north",
+    "boundaries": {
+      "expected": 430,
+      "actual": 430
+    },
+    "frozenScreens": 430,
+    "fullStyleScreens": 430,
+    "matchingStyleCells": 825600,
+    "totalCells": 825600,
+    "blankStyleMismatches": 0,
+    "nonblankStyleMismatches": 0,
+    "glyphMismatches": 0,
+    "screenDifferences": [],
+    "cursors": {
+      "expected": 430,
+      "actual": 430,
+      "matched": 430,
+      "firstDifference": null
+    },
+    "calls": {
+      "rawExpected": 8647,
+      "rawActual": 8647,
+      "discardedEntries": 0,
+      "expected": 8647,
+      "actual": 8647,
+      "firstDifference": null
+    },
+    "slices": {
+      "expected": 430,
+      "actual": 430,
+      "matched": 430,
+      "differences": []
+    },
+    "frames": {
+      "expected": 2,
+      "actual": 2,
+      "expectedSlices": 430,
+      "actualSlices": 430,
+      "countMismatches": [],
+      "fullStyleMatches": 2,
+      "cursorMatches": 2
+    },
+    "rawHashes": {
+      "c": {
+        "screens": "1d29e5b7977732977d9b3c65f33504da751d2f13dc0c551be0f501f67dfaceb5",
+        "cursors": "f0a634ae0f5c11892142bede8d58aea9a1ae1bd4855cd0ca94430e7efe71b106",
+        "calls": "f7da7c78ca9810fa97ff64c17ad15054c4a8127454c5dee422c21d9aeffeb635",
+        "slices": "2bab9aeceb1ed99eb52cf21158776bfdbed8ce6e8411caaf7c1e6bbcace16a6c",
+        "frames": "c38351c5f9e1ee58efcc7d6955376195d62bc02492732778e10891dc6cc142b3"
+      },
+      "js": {
+        "screens": "7cab09e0f27a688f3dbf002d79894cffabc27102ee6c41a1ac033a3469c01d70",
+        "cursors": "f0a634ae0f5c11892142bede8d58aea9a1ae1bd4855cd0ca94430e7efe71b106",
+        "calls": "bd65eb60bd2349dc53c8492e34d5a41d405bd21a07d429d1c9fcda6db6662a87",
+        "slices": "b9b9236f8bd5f9a9259479100e317a4a95a944590b113cf6a4b03f4517da227f",
+        "frames": "19271d93e47649a40e9162ef7f56fbfdc40d6246f84b02b02619a051c1e2bba2"
+      }
+    },
+    "normalizedHashes": {
+      "c": {
+        "calls": "bd65eb60bd2349dc53c8492e34d5a41d405bd21a07d429d1c9fcda6db6662a87",
+        "slices": "b9b9236f8bd5f9a9259479100e317a4a95a944590b113cf6a4b03f4517da227f"
+      },
+      "js": {
+        "calls": "bd65eb60bd2349dc53c8492e34d5a41d405bd21a07d429d1c9fcda6db6662a87",
+        "slices": "b9b9236f8bd5f9a9259479100e317a4a95a944590b113cf6a4b03f4517da227f"
+      }
+    },
+    "frozenScreenCursorExact": true,
+    "fullRngExact": true,
+    "fullStyleExact": true,
+    "animationExact": true
+  },
+  {
+    "segment": 2,
+    "name": "blind-unmapped-intact-north",
+    "boundaries": {
+      "expected": 424,
+      "actual": 424
+    },
+    "frozenScreens": 424,
+    "fullStyleScreens": 424,
+    "matchingStyleCells": 814080,
+    "totalCells": 814080,
+    "blankStyleMismatches": 0,
+    "nonblankStyleMismatches": 0,
+    "glyphMismatches": 0,
+    "screenDifferences": [],
+    "cursors": {
+      "expected": 424,
+      "actual": 424,
+      "matched": 424,
+      "firstDifference": null
+    },
+    "calls": {
+      "rawExpected": 8543,
+      "rawActual": 8543,
+      "discardedEntries": 0,
+      "expected": 8543,
+      "actual": 8543,
+      "firstDifference": null
+    },
+    "slices": {
+      "expected": 424,
+      "actual": 424,
+      "matched": 424,
+      "differences": []
+    },
+    "frames": {
+      "expected": 0,
+      "actual": 0,
+      "expectedSlices": 424,
+      "actualSlices": 424,
+      "countMismatches": [],
+      "fullStyleMatches": 0,
+      "cursorMatches": 0
+    },
+    "rawHashes": {
+      "c": {
+        "screens": "474106fedc898bc2cb067e5751ab78afb681f060ffab34a9fcf6cf53b09cfb2d",
+        "cursors": "295bdcacf9ca91b913044ad1ff82537838aefa357d211a30e9291b5d2695a72e",
+        "calls": "ac7c783d5726fa0d25ab0fbe7badc45fbfc2013345cf2226796c759bec263fce",
+        "slices": "39999651f10a68a534556e9da8b9689791079a07185b53e11b11f3c5d3c3564f",
+        "frames": "8de90f5f14e5d57b880e144e45d9b477b9d8f38a332e11a48fa83baebb441316"
+      },
+      "js": {
+        "screens": "9bd6ddfd83c2d1a07d631cf9f75198d5771e0797f0183adf19f706ca9511c90c",
+        "cursors": "295bdcacf9ca91b913044ad1ff82537838aefa357d211a30e9291b5d2695a72e",
+        "calls": "1b1f6791108ed6de9e4fb4439cdfdba18ca4ee1518d40a6417edcf2f2ca0f8f8",
+        "slices": "1d8c29a64f2ec14863d9752e2156de294c0053b0510503afeeb6f6eef0eddc75",
+        "frames": "8de90f5f14e5d57b880e144e45d9b477b9d8f38a332e11a48fa83baebb441316"
+      }
+    },
+    "normalizedHashes": {
+      "c": {
+        "calls": "1b1f6791108ed6de9e4fb4439cdfdba18ca4ee1518d40a6417edcf2f2ca0f8f8",
+        "slices": "1d8c29a64f2ec14863d9752e2156de294c0053b0510503afeeb6f6eef0eddc75"
+      },
+      "js": {
+        "calls": "1b1f6791108ed6de9e4fb4439cdfdba18ca4ee1518d40a6417edcf2f2ca0f8f8",
+        "slices": "1d8c29a64f2ec14863d9752e2156de294c0053b0510503afeeb6f6eef0eddc75"
+      }
+    },
+    "frozenScreenCursorExact": true,
+    "fullRngExact": true,
+    "fullStyleExact": true,
+    "animationExact": true
+  }
+]

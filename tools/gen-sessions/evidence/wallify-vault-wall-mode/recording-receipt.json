@@ -1,0 +1,23 @@
+{
+  "startedAt": "2026-11-26T06:19:17.991527+00:00",
+  "command": [
+    "node",
+    "/Users/rohit/research/code/contest/scripts/record-session.mjs",
+    "/Users/rohit/research/code/contest/.cache/restart-20261122/wallify-vault-wall-mode-parent-minimal.session.json",
+    "/Users/rohit/research/code/contest/.cache/restart-20261122/wallify-vault-wall-mode-parent-native.session.json"
+  ],
+  "input": ".cache/restart-20261122/wallify-vault-wall-mode-parent-minimal.session.json",
+  "inputSHA256": "78c0c30164f83bae4baeaa78b86dd0f2f4f6d2d800eb36d6e4a92d287bfc33dd",
+  "primaryRecipeSHA256": "4c185a49dd8fd192de24f1adaf03e220bbdffa69a0fae9633a26e99aa8454159",
+  "binarySha256": "ba4dbc1c823f8d4b0cfb6fd594d00ff0ff5754daaaa2036bee15baeffdf85aa7",
+  "recorderSha256": "b129caee2ca3941b30c36f5c26644bd37ff610344332eb511c474b8709b70648",
+  "cPin": "16ff59115315917b93185d026aeefea06db9b0f4",
+  "timezone": "Etc/GMT+4",
+  "raw": ".cache/restart-20261122/wallify-vault-wall-mode-parent-native.session.json",
+  "exit": 0,
+  "closedAt": "2026-11-26T06:19:18.820053+00:00",
+  "log": ".cache/restart-20261122/wallify-vault-wall-mode-parent-native-recording.log",
+  "logSHA256": "9df36b229ca4c7d2babe357b0a00a60fa92b542919782782f8d8718a17cbc29e",
+  "rawSha256": "3c56e3f4e461404b3c83003fbe0ed2b924ba378f9d4c6173c5ef3425b54be5ee",
+  "bytes": 2807052
+}

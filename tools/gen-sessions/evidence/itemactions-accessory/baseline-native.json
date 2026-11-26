@@ -1,0 +1,375 @@
+[
+  {
+    "segment": 0,
+    "name": "nohands-inventory-amulet",
+    "boundaries": {
+      "expected": 56,
+      "actual": 56
+    },
+    "frozenScreens": 55,
+    "fullStyleScreens": 55,
+    "matchingStyleCells": 107455,
+    "totalCells": 107520,
+    "blankStyleMismatches": 0,
+    "nonblankStyleMismatches": 0,
+    "glyphMismatches": 65,
+    "screenDifferences": [
+      {
+        "step": 55,
+        "frozenEqual": false,
+        "fullStyleEqual": false,
+        "totalCells": 1920,
+        "matchingStyleCells": 1855,
+        "blankStyleMismatches": 0,
+        "nonblankStyleMismatches": 0,
+        "glyphMismatches": 65,
+        "firstFullStyleDifference": {
+          "x": 0,
+          "y": 0,
+          "c": {
+            "ch": "D",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "a",
+            "color": 8,
+            "attr": 0
+          }
+        },
+        "firstFrozenDifference": {
+          "x": 0,
+          "y": 0,
+          "kind": "ch",
+          "c": {
+            "ch": "D",
+            "color": 8,
+            "attr": 0
+          },
+          "js": {
+            "ch": "a",
+            "color": 8,
+            "attr": 0
+          }
+        }
+      }
+    ],
+    "cursors": {
+      "expected": 56,
+      "actual": 56,
+      "matched": 55,
+      "firstDifference": {
+        "index": 55,
+        "c": [
+          26,
+          0,
+          1
+        ],
+        "js": [
+          74,
+          0,
+          1
+        ]
+      }
+    },
+    "calls": {
+      "rawExpected": 2207,
+      "rawActual": 2356,
+      "discardedEntries": 0,
+      "expected": 2207,
+      "actual": 2356,
+      "firstDifference": {
+        "index": 2207,
+        "c": null,
+        "js": "rn2(12)=0"
+      }
+    },
+    "slices": {
+      "expected": 56,
+      "actual": 56,
+      "matched": 55,
+      "differences": [
+        {
+          "step": 55,
+          "expected": 0,
+          "actual": 149,
+          "first": {
+            "index": 0,
+            "c": null,
+            "js": "rn2(12)=0"
+          }
+        }
+      ]
+    },
+    "frames": {
+      "expected": 0,
+      "actual": 2,
+      "expectedSlices": 56,
+      "actualSlices": 56,
+      "countMismatches": [
+        {
+          "step": 55,
+          "expected": 0,
+          "actual": 2
+        }
+      ],
+      "fullStyleMatches": 0,
+      "cursorMatches": 0
+    },
+    "rawHashes": {
+      "c": {
+        "screens": "ad5948f7149e5cb94acd8ac9dba5d5b486ab031bf5422ea8f6877c26b34f808f",
+        "cursors": "0c8e5120af6983cd43280d169e547be2127bcb10245ae97e20bcd77e19a33a6c",
+        "calls": "f6f263e59c49439d765b1392b2899a21baa2d29a3fded567199ca7254cea94b8",
+        "slices": "f33af3ae8c9db849b8dfd721da58559c56d3ddfc3681f5ed3bc620902c0c9937",
+        "frames": "c2f28f692055aed56f09c92ae17d40f28620e693eadddc36b360d357a1136ea6"
+      },
+      "js": {
+        "screens": "264fbb1d860b78e512b10d68fb3a908d23fcdf8da82f5c2ff6ce7d53ee32ab92",
+        "cursors": "aeaf205c86a13d88f492a01a8d73363119e3073311a17d3973c0db4686850d1f",
+        "calls": "7dee8d4636591352274951c0c1a3ce6f3e0ece39906913cd0b827962f8f6e5fc",
+        "slices": "2b9945dad62191bc364ced223c3cf6a71988d4343c1bc30451b4c7f613c289ce",
+        "frames": "42f194cd92c630f3a038b9eefcb2be320cb59562b14899e073810c8a86c8fa50"
+      }
+    },
+    "normalizedHashes": {
+      "c": {
+        "calls": "454aec170a033fcb6ea88ad880417011e7fba168ddcd7b4c37f9c9759f153218",
+        "slices": "5d789095a0566216852a1641789af6fb87363be8c3636a299413dafc6845f4fb"
+      },
+      "js": {
+        "calls": "7dee8d4636591352274951c0c1a3ce6f3e0ece39906913cd0b827962f8f6e5fc",
+        "slices": "2b9945dad62191bc364ced223c3cf6a71988d4343c1bc30451b4c7f613c289ce"
+      }
+    },
+    "frozenScreenCursorExact": false,
+    "fullRngExact": false,
+    "fullStyleExact": false,
+    "animationExact": false
+  },
+  {
+    "segment": 1,
+    "name": "human-inventory-amulet-negative",
+    "boundaries": {
+      "expected": 36,
+      "actual": 36
+    },
+    "frozenScreens": 36,
+    "fullStyleScreens": 36,
+    "matchingStyleCells": 69120,
+    "totalCells": 69120,
+    "blankStyleMismatches": 0,
+    "nonblankStyleMismatches": 0,
+    "glyphMismatches": 0,
+    "screenDifferences": [],
+    "cursors": {
+      "expected": 36,
+      "actual": 36,
+      "matched": 36,
+      "firstDifference": null
+    },
+    "calls": {
+      "rawExpected": 2210,
+      "rawActual": 2210,
+      "discardedEntries": 0,
+      "expected": 2210,
+      "actual": 2210,
+      "firstDifference": null
+    },
+    "slices": {
+      "expected": 36,
+      "actual": 36,
+      "matched": 36,
+      "differences": []
+    },
+    "frames": {
+      "expected": 0,
+      "actual": 0,
+      "expectedSlices": 36,
+      "actualSlices": 36,
+      "countMismatches": [],
+      "fullStyleMatches": 0,
+      "cursorMatches": 0
+    },
+    "rawHashes": {
+      "c": {
+        "screens": "ae9c4d3f1bc6882bb91bf1a06e97f4275dccdb543d3a2a89d0c0d8ff96b8336c",
+        "cursors": "bab0589a6be6719484d6bca1d7065f51258ba4ee165e4dd24d18cf5132f50e31",
+        "calls": "048adfeeeeb04e07b6e231ca6e7bde52195835ca29c1b7f79f659259c098c75c",
+        "slices": "830b60e206b63eea32d27d16db66e24dc6dd9ea0e05a674060f6b4010b89e3c3",
+        "frames": "d7e05d62119e6c5eb0f72a659df5eabe0a9c28413e532b84dc2b1acd8f02d171"
+      },
+      "js": {
+        "screens": "a290aa265d25d7bc013c61fa3cfb2485c4cb4a1049c07504343da6d5caa60599",
+        "cursors": "bab0589a6be6719484d6bca1d7065f51258ba4ee165e4dd24d18cf5132f50e31",
+        "calls": "2384d5cae2ac702e653182ee1bf0cfeed69b36f7852b33ff64c9e64b01341c93",
+        "slices": "21a7f79b1264f74322110165ad1b58fe0aa8a5994b81b8350e2b3c47dba4f7a2",
+        "frames": "d7e05d62119e6c5eb0f72a659df5eabe0a9c28413e532b84dc2b1acd8f02d171"
+      }
+    },
+    "normalizedHashes": {
+      "c": {
+        "calls": "2384d5cae2ac702e653182ee1bf0cfeed69b36f7852b33ff64c9e64b01341c93",
+        "slices": "21a7f79b1264f74322110165ad1b58fe0aa8a5994b81b8350e2b3c47dba4f7a2"
+      },
+      "js": {
+        "calls": "2384d5cae2ac702e653182ee1bf0cfeed69b36f7852b33ff64c9e64b01341c93",
+        "slices": "21a7f79b1264f74322110165ad1b58fe0aa8a5994b81b8350e2b3c47dba4f7a2"
+      }
+    },
+    "frozenScreenCursorExact": true,
+    "fullRngExact": true,
+    "fullStyleExact": true,
+    "animationExact": true
+  },
+  {
+    "segment": 2,
+    "name": "nohands-direct-puton-negative",
+    "boundaries": {
+      "expected": 55,
+      "actual": 55
+    },
+    "frozenScreens": 55,
+    "fullStyleScreens": 55,
+    "matchingStyleCells": 105600,
+    "totalCells": 105600,
+    "blankStyleMismatches": 0,
+    "nonblankStyleMismatches": 0,
+    "glyphMismatches": 0,
+    "screenDifferences": [],
+    "cursors": {
+      "expected": 55,
+      "actual": 55,
+      "matched": 55,
+      "firstDifference": null
+    },
+    "calls": {
+      "rawExpected": 2356,
+      "rawActual": 2356,
+      "discardedEntries": 0,
+      "expected": 2356,
+      "actual": 2356,
+      "firstDifference": null
+    },
+    "slices": {
+      "expected": 55,
+      "actual": 55,
+      "matched": 55,
+      "differences": []
+    },
+    "frames": {
+      "expected": 2,
+      "actual": 2,
+      "expectedSlices": 55,
+      "actualSlices": 55,
+      "countMismatches": [],
+      "fullStyleMatches": 2,
+      "cursorMatches": 2
+    },
+    "rawHashes": {
+      "c": {
+        "screens": "a59bd2f665b1948631aa5185f1c2c3da9df6b1a9e029950a7ac761c75d16fd29",
+        "cursors": "d9b44628d85b6d0924e48494157e6eb2511aae7824a084f9692bc55a64ad10e0",
+        "calls": "5f48aa49f829b650cde918e84ac6f46ba72c3052fe8498c7a4143b4a670df049",
+        "slices": "e75b1d79fc0163a59d3065f021e2d3fdc686c7e580cf9fa830e7cde7ab5aca4b",
+        "frames": "555e384eee33168c048a4bf496086eb2bf59de4130919d9a2573f7b4060d9dd3"
+      },
+      "js": {
+        "screens": "a4b301bd014865b62b388289f3cf890641aa516248aed1e51f7fbf213643cf3b",
+        "cursors": "d9b44628d85b6d0924e48494157e6eb2511aae7824a084f9692bc55a64ad10e0",
+        "calls": "7dee8d4636591352274951c0c1a3ce6f3e0ece39906913cd0b827962f8f6e5fc",
+        "slices": "9b8e6cd03e173ae24f1966aafff530f1b2a02ccc5daa41d86a03b66beb33cac7",
+        "frames": "d97fd70779463cae486b9e5bfae5ca63006dce78227ab8290460478d6328ddf2"
+      }
+    },
+    "normalizedHashes": {
+      "c": {
+        "calls": "7dee8d4636591352274951c0c1a3ce6f3e0ece39906913cd0b827962f8f6e5fc",
+        "slices": "9b8e6cd03e173ae24f1966aafff530f1b2a02ccc5daa41d86a03b66beb33cac7"
+      },
+      "js": {
+        "calls": "7dee8d4636591352274951c0c1a3ce6f3e0ece39906913cd0b827962f8f6e5fc",
+        "slices": "9b8e6cd03e173ae24f1966aafff530f1b2a02ccc5daa41d86a03b66beb33cac7"
+      }
+    },
+    "frozenScreenCursorExact": true,
+    "fullRngExact": true,
+    "fullStyleExact": true,
+    "animationExact": true
+  },
+  {
+    "segment": 3,
+    "name": "nohands-direct-wear-negative",
+    "boundaries": {
+      "expected": 54,
+      "actual": 54
+    },
+    "frozenScreens": 54,
+    "fullStyleScreens": 54,
+    "matchingStyleCells": 103680,
+    "totalCells": 103680,
+    "blankStyleMismatches": 0,
+    "nonblankStyleMismatches": 0,
+    "glyphMismatches": 0,
+    "screenDifferences": [],
+    "cursors": {
+      "expected": 54,
+      "actual": 54,
+      "matched": 54,
+      "firstDifference": null
+    },
+    "calls": {
+      "rawExpected": 2207,
+      "rawActual": 2207,
+      "discardedEntries": 0,
+      "expected": 2207,
+      "actual": 2207,
+      "firstDifference": null
+    },
+    "slices": {
+      "expected": 54,
+      "actual": 54,
+      "matched": 54,
+      "differences": []
+    },
+    "frames": {
+      "expected": 0,
+      "actual": 0,
+      "expectedSlices": 54,
+      "actualSlices": 54,
+      "countMismatches": [],
+      "fullStyleMatches": 0,
+      "cursorMatches": 0
+    },
+    "rawHashes": {
+      "c": {
+        "screens": "0af456a612aacd805b1d734ddd87c89ef71a2bb864fc7d4f54a5ed78c13794b5",
+        "cursors": "1d5f6343eaccf5422a90c9301fdf6280883a71f316450b708be6bfc47203b20e",
+        "calls": "f6f263e59c49439d765b1392b2899a21baa2d29a3fded567199ca7254cea94b8",
+        "slices": "39ee6bb0477f189e54d5d032735ce417835f84961a2b8dac7e211687850e6009",
+        "frames": "40b562827d4106f549ef757157290919f3573b7cc415b7acf131dd48f86a1587"
+      },
+      "js": {
+        "screens": "0bf5bab011435d5f3fac7947121bc8e8b7e77c33434ba27bc3afdd53ebdf7298",
+        "cursors": "1d5f6343eaccf5422a90c9301fdf6280883a71f316450b708be6bfc47203b20e",
+        "calls": "454aec170a033fcb6ea88ad880417011e7fba168ddcd7b4c37f9c9759f153218",
+        "slices": "9b7d5c0dd7cd7bcc56f3de72f7a32c4d83396f7e8c1cc47df63b49c54585d92c",
+        "frames": "40b562827d4106f549ef757157290919f3573b7cc415b7acf131dd48f86a1587"
+      }
+    },
+    "normalizedHashes": {
+      "c": {
+        "calls": "454aec170a033fcb6ea88ad880417011e7fba168ddcd7b4c37f9c9759f153218",
+        "slices": "9b7d5c0dd7cd7bcc56f3de72f7a32c4d83396f7e8c1cc47df63b49c54585d92c"
+      },
+      "js": {
+        "calls": "454aec170a033fcb6ea88ad880417011e7fba168ddcd7b4c37f9c9759f153218",
+        "slices": "9b7d5c0dd7cd7bcc56f3de72f7a32c4d83396f7e8c1cc47df63b49c54585d92c"
+      }
+    },
+    "frozenScreenCursorExact": true,
+    "fullRngExact": true,
+    "fullStyleExact": true,
+    "animationExact": true
+  }
+]

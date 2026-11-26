@@ -1,0 +1,119 @@
+{
+  "name": "itemactions-accessory",
+  "classification": "source predictions before runtime probe or candidate",
+  "runtime": "c425a83669d913cce211a9665a4513bbdcb44fb5753dcd20f23d243eb10b094a",
+  "segments": [
+    {
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!autoquiver,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "nohands-inventory-amulet",
+      "moves": " \u0017uncursed amulet of reflection\r#polyself\rfog cloud\riaP"
+    },
+    {
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!autoquiver,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "human-inventory-amulet-negative",
+      "moves": " \u0017uncursed amulet of reflection\riaP"
+    },
+    {
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!autoquiver,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "nohands-direct-puton-negative",
+      "moves": " \u0017uncursed amulet of reflection\r#polyself\rfog cloud\rPa"
+    },
+    {
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!autoquiver,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "nohands-direct-wear-negative",
+      "moves": " \u0017uncursed amulet of reflection\r#polyself\rfog cloud\rW"
+    }
+  ],
+  "expectations": [
+    {
+      "name": "nohands-inventory-amulet",
+      "message": "Don't even bother.",
+      "amuletWorn": false
+    },
+    {
+      "name": "human-inventory-amulet-negative",
+      "message": null,
+      "amuletWorn": true
+    },
+    {
+      "name": "nohands-direct-puton-negative",
+      "message": null,
+      "amuletWorn": true
+    },
+    {
+      "name": "nohands-direct-wear-negative",
+      "message": "Don't even bother.",
+      "amuletWorn": false
+    }
+  ],
+  "source": "iactions.c496-524 maps P to IA_WEAR_OBJ; itemactions_pushkeys IA_WEAR_OBJ calls dowear. do_wear.c2432 dowear rejects nohands before selection; doputon lacks that check; accessory_or_armor_on permits amulets without hands.",
+  "coverage": [
+    "mode.debug",
+    "object.amulets",
+    "forms.polymorph"
+  ],
+  "branches": [
+    "itemactions.accessory.nohands-inventory-amulet",
+    "itemactions.accessory.human-inventory-amulet-negative",
+    "itemactions.accessory.nohands-direct-puton-negative",
+    "itemactions.accessory.nohands-direct-wear-negative"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "itemactions.accessory.nohands-inventory-amulet",
+      "segment": 0,
+      "screenIncludes": [
+        "Don't even bother.",
+        "You turn into a fog cloud!"
+      ],
+      "screenExcludes": [
+        "Program in disorder!"
+      ],
+      "source": "iactions.c496-524 maps P to IA_WEAR_OBJ; itemactions_pushkeys IA_WEAR_OBJ calls dowear. do_wear.c2432 dowear rejects nohands before selection; doputon lacks that check; accessory_or_armor_on permits amulets without hands."
+    },
+    {
+      "branch": "itemactions.accessory.human-inventory-amulet-negative",
+      "segment": 1,
+      "screenIncludes": [
+        "(being worn)."
+      ],
+      "screenExcludes": [
+        "Program in disorder!"
+      ],
+      "source": "iactions.c496-524 maps P to IA_WEAR_OBJ; itemactions_pushkeys IA_WEAR_OBJ calls dowear. do_wear.c2432 dowear rejects nohands before selection; doputon lacks that check; accessory_or_armor_on permits amulets without hands."
+    },
+    {
+      "branch": "itemactions.accessory.nohands-direct-puton-negative",
+      "segment": 2,
+      "screenIncludes": [
+        "(being worn).",
+        "You turn into a fog cloud!"
+      ],
+      "screenExcludes": [
+        "Program in disorder!"
+      ],
+      "source": "iactions.c496-524 maps P to IA_WEAR_OBJ; itemactions_pushkeys IA_WEAR_OBJ calls dowear. do_wear.c2432 dowear rejects nohands before selection; doputon lacks that check; accessory_or_armor_on permits amulets without hands."
+    },
+    {
+      "branch": "itemactions.accessory.nohands-direct-wear-negative",
+      "segment": 3,
+      "screenIncludes": [
+        "Don't even bother.",
+        "You turn into a fog cloud!"
+      ],
+      "screenExcludes": [
+        "Program in disorder!"
+      ],
+      "source": "iactions.c496-524 maps P to IA_WEAR_OBJ; itemactions_pushkeys IA_WEAR_OBJ calls dowear. do_wear.c2432 dowear rejects nohands before selection; doputon lacks that check; accessory_or_armor_on permits amulets without hands."
+    }
+  ]
+}

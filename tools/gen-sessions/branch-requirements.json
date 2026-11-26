@@ -4810,6 +4810,13 @@
       "description": "menu capacity unbound negative",
       "nativeStatus": "exact",
       "maintainedPassingCorpus": true
-    }
+    },
+    {"group":"Vault wall restoration","id":"vault.wallify.unmapped-unfinished-side","cFile":"src/vault.c","cFunction":"wallify_vault","description":"A repaired unmapped horizontal vault wall gets mode1 before redraw; the northwest-only view displays stone after sight returns."},
+    {"group":"Vault wall restoration","id":"vault.wallify.mapped-unfinished-side","cFile":"src/vault.c","cFunction":"wallify_vault","description":"A mapped repaired horizontal wall gets mode1 while retaining the wall glyph and every original negative output hash."},
+    {"group":"Vault wall restoration","id":"vault.wallify.intact-unfinished-side","cFile":"src/vault.c","cFunction":"wallify_vault","description":"An intact horizontal vault wall is skipped by restoration, retaining mode1 and the northwest stone view with every negative output hash."},
+    {"group":"Inventory accessory routing","id":"itemactions.accessory.nohands-inventory-amulet","description":"Inventory-menu P maps to C IA_WEAR_OBJ/dowear and rejects the real fog-cloud no-hands form before getobj; amulet stays unworn.","minimumSessions":1,"normalModeRequired":false},
+    {"group":"Inventory accessory routing","id":"itemactions.accessory.human-inventory-amulet-negative","description":"Human inventory-menu P still wears the same selected amulet through dowear, whose queued getobj accepts a DOWNPLAY accessory.","minimumSessions":1,"normalModeRequired":false},
+    {"group":"Inventory accessory routing","id":"itemactions.accessory.nohands-direct-puton-negative","description":"Preserve the explicit C quirk: direct P/doputon permits this fog-cloud amulet despite no hands; do not add a shared rejection.","minimumSessions":1,"normalModeRequired":false},
+    {"group":"Inventory accessory routing","id":"itemactions.accessory.nohands-direct-wear-negative","description":"Direct W/dowear already rejects the fog cloud before getobj; preserve its feedback and all original output hashes.","minimumSessions":1,"normalModeRequired":false}
   ]
 }

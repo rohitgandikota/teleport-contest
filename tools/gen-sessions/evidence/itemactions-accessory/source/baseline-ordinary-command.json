@@ -1,0 +1,10 @@
+{
+  "command": [
+    "node",
+    "--max-old-space-size=512",
+    ".cache/restart-20261122/itemactions-accessory-source-audit/ordinary.mjs"
+  ],
+  "exit": 1,
+  "seconds": 2.0,
+  "logSHA256": "081126bb8553dedfd612c17e55098aa71ef65265be946ce8e7cae195bf5f343c"
+}

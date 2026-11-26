@@ -1,0 +1,464 @@
+{
+  "classification": "Owner/contract reads before candidate; partial producer reads labeled. No complete-subsystem claim.",
+  "ranges": [
+    {
+      "path": "nethack-c/upstream/src/iactions.c",
+      "resolvedPath": "/Users/rohit/research/code/contest/nethack-c/upstream/src/iactions.c",
+      "start": 13,
+      "end": 41,
+      "label": "action enum",
+      "fileSHA256": "a8b65fd2326977b85a2e93f6c939017fd7ab2ab6848b19f375d8852aa98f29f6",
+      "rangeSHA256": "c32c240725f8bc34d34266103eae0bb1b2b3fb301e9f94d81aaa112c52c0cc46"
+    },
+    {
+      "path": "nethack-c/upstream/src/iactions.c",
+      "resolvedPath": "/Users/rohit/research/code/contest/nethack-c/upstream/src/iactions.c",
+      "start": 127,
+      "end": 276,
+      "label": "complete addmenu and queued action owner",
+      "fileSHA256": "a8b65fd2326977b85a2e93f6c939017fd7ab2ab6848b19f375d8852aa98f29f6",
+      "rangeSHA256": "2ea3614958f2403bacfeba36cc43879a2b4c0f0d76955c9af7c50f2f46352a50"
+    },
+    {
+      "path": "nethack-c/upstream/src/iactions.c",
+      "resolvedPath": "/Users/rohit/research/code/contest/nethack-c/upstream/src/iactions.c",
+      "start": 278,
+      "end": 302,
+      "label": "itemactions entry",
+      "fileSHA256": "a8b65fd2326977b85a2e93f6c939017fd7ab2ab6848b19f375d8852aa98f29f6",
+      "rangeSHA256": "07e70fa8bb420b58b941e45393e805d13601deb8bfdb1801117941ee7fc3b6f4"
+    },
+    {
+      "path": "nethack-c/upstream/src/iactions.c",
+      "resolvedPath": "/Users/rohit/research/code/contest/nethack-c/upstream/src/iactions.c",
+      "start": 496,
+      "end": 525,
+      "label": "complete accessory P producer arm",
+      "fileSHA256": "a8b65fd2326977b85a2e93f6c939017fd7ab2ab6848b19f375d8852aa98f29f6",
+      "rangeSHA256": "bcec70fbef24c93d6f47a05caa4173a9536760f15d3416bef14233027296fe1b"
+    },
+    {
+      "path": "nethack-c/upstream/src/iactions.c",
+      "resolvedPath": "/Users/rohit/research/code/contest/nethack-c/upstream/src/iactions.c",
+      "start": 638,
+      "end": 743,
+      "label": "armor W and selected-action tail",
+      "fileSHA256": "a8b65fd2326977b85a2e93f6c939017fd7ab2ab6848b19f375d8852aa98f29f6",
+      "rangeSHA256": "c3e856ba7c23081f5e3b0b657c0d640809222a8f404d57900b8c55816115fb00"
+    },
+    {
+      "path": "nethack-c/upstream/src/do_wear.c",
+      "resolvedPath": "/Users/rohit/research/code/contest/nethack-c/upstream/src/do_wear.c",
+      "start": 2209,
+      "end": 2471,
+      "label": "complete accessory_on, dowear and doputon",
+      "fileSHA256": "cf33ad9f5b18bcdfffd09d4e99867590802735a9ae2d34b9eb2b64880fa459c7",
+      "rangeSHA256": "c78bd2febc3ee3da59b4a88dda57220dbd9941616360cbab7d3ad538762e218c"
+    },
+    {
+      "path": "nethack-c/upstream/src/do_wear.c",
+      "resolvedPath": "/Users/rohit/research/code/contest/nethack-c/upstream/src/do_wear.c",
+      "start": 3404,
+      "end": 3476,
+      "label": "complete equip_ok and four callbacks",
+      "fileSHA256": "cf33ad9f5b18bcdfffd09d4e99867590802735a9ae2d34b9eb2b64880fa459c7",
+      "rangeSHA256": "72581eb48e5f6235e79664f7d61ae033a8f24f69dc331396f5498def8930318c"
+    },
+    {
+      "path": "nethack-c/upstream/src/do_wear.c",
+      "resolvedPath": "/Users/rohit/research/code/contest/nethack-c/upstream/src/do_wear.c",
+      "start": 963,
+      "end": 1087,
+      "label": "complete Amulet_on",
+      "fileSHA256": "cf33ad9f5b18bcdfffd09d4e99867590802735a9ae2d34b9eb2b64880fa459c7",
+      "rangeSHA256": "b875beba205d134d8141186453ada0ce80dfc1f6c0b57a4c3e9f52c676719355"
+    },
+    {
+      "path": "nethack-c/upstream/src/artifact.c",
+      "resolvedPath": "/Users/rohit/research/code/contest/nethack-c/upstream/src/artifact.c",
+      "start": 2508,
+      "end": 2592,
+      "label": "complete retouch_object",
+      "fileSHA256": "f0cf8f78bb68f305394e3cd9ccb8080cb15c147582b7f5f55888f4acdfe10141",
+      "rangeSHA256": "8a2abea644edf0a8f4b8126ee5e47fc7bd84b6820add11ca46050c0751c96e71"
+    },
+    {
+      "path": "nethack-c/upstream/src/cmd.c",
+      "resolvedPath": "/Users/rohit/research/code/contest/nethack-c/upstream/src/cmd.c",
+      "start": 254,
+      "end": 292,
+      "label": "complete add_ec and add_key",
+      "fileSHA256": "a14c0fc8706bd9957f8f4aab7f9e2abbd30eb5f4e43166b90a8bfeb25094a7ce",
+      "rangeSHA256": "c7066087f21ce48976fa7b8182f940ef2aa09a14ed9765a8df7639b323f0aa48"
+    },
+    {
+      "path": "nethack-c/upstream/src/cmd.c",
+      "resolvedPath": "/Users/rohit/research/code/contest/nethack-c/upstream/src/cmd.c",
+      "start": 410,
+      "end": 444,
+      "label": "complete pop, peek and clear",
+      "fileSHA256": "a14c0fc8706bd9957f8f4aab7f9e2abbd30eb5f4e43166b90a8bfeb25094a7ce",
+      "rangeSHA256": "e9cecdbcfaef4bbbbb0f6467a3f6132596f4584c298d6a415b5bd789f7a98175"
+    },
+    {
+      "path": "nethack-c/upstream/src/cmd.c",
+      "resolvedPath": "/Users/rohit/research/code/contest/nethack-c/upstream/src/cmd.c",
+      "start": 3607,
+      "end": 3846,
+      "label": "complete reset_cmd_vars and rhack",
+      "fileSHA256": "a14c0fc8706bd9957f8f4aab7f9e2abbd30eb5f4e43166b90a8bfeb25094a7ce",
+      "rangeSHA256": "5bd9bc58783ba1e878997b6571c2d36c710c5043cb20515da7c4b33d85d8e4a2"
+    },
+    {
+      "path": "nethack-c/upstream/src/cmd.c",
+      "resolvedPath": "/Users/rohit/research/code/contest/nethack-c/upstream/src/cmd.c",
+      "start": 1801,
+      "end": 1808,
+      "label": "direct polyself and P bindings",
+      "fileSHA256": "a14c0fc8706bd9957f8f4aab7f9e2abbd30eb5f4e43166b90a8bfeb25094a7ce",
+      "rangeSHA256": "0dee155601e0aec003cafec378b84d0bce88ddabf0eb23c839e2092f21253fb8"
+    },
+    {
+      "path": "nethack-c/upstream/src/cmd.c",
+      "resolvedPath": "/Users/rohit/research/code/contest/nethack-c/upstream/src/cmd.c",
+      "start": 1932,
+      "end": 1933,
+      "label": "direct W binding",
+      "fileSHA256": "a14c0fc8706bd9957f8f4aab7f9e2abbd30eb5f4e43166b90a8bfeb25094a7ce",
+      "rangeSHA256": "13be8e4d66967a01fabe6176410b5f187b4f2bdc83f504b7d2d3f3852944c957"
+    },
+    {
+      "path": "nethack-c/upstream/src/invent.c",
+      "resolvedPath": "/Users/rohit/research/code/contest/nethack-c/upstream/src/invent.c",
+      "start": 1752,
+      "end": 1830,
+      "label": "getobj queued-key acceptance contract",
+      "fileSHA256": "0b93d6ce1abb5b63ed7ea07c26a57e1016c6cef0fc2ef0e4016e6622054524b5",
+      "rangeSHA256": "d2b294c67d9268c260565754bcba0e883927a1c6728e1909ab403540d2b1a379"
+    },
+    {
+      "path": "nethack-c/upstream/src/invent.c",
+      "resolvedPath": "/Users/rohit/research/code/contest/nethack-c/upstream/src/invent.c",
+      "start": 2964,
+      "end": 3009,
+      "label": "complete inventory action entry",
+      "fileSHA256": "0b93d6ce1abb5b63ed7ea07c26a57e1016c6cef0fc2ef0e4016e6622054524b5",
+      "rangeSHA256": "9cd9c84a2bba92293b6d35c1fb87f5a76f992626ca0184ca198d2de2c1cf7b60"
+    },
+    {
+      "path": "nethack-c/upstream/src/wizcmds.c",
+      "resolvedPath": "/Users/rohit/research/code/contest/nethack-c/upstream/src/wizcmds.c",
+      "start": 568,
+      "end": 572,
+      "label": "complete wizard polymorph entry",
+      "fileSHA256": "4611d620caedc59dc270f5d6b6f9a2497831dc88325edc90f3770e75afd9b71f",
+      "rangeSHA256": "45d82f289c97b4c073fe98f02ff33d035b5a9b19c94336e5fcc992145d20dfcb"
+    },
+    {
+      "path": "nethack-c/upstream/src/polyself.c",
+      "resolvedPath": "/Users/rohit/research/code/contest/nethack-c/upstream/src/polyself.c",
+      "start": 469,
+      "end": 731,
+      "label": "complete polyself producer",
+      "fileSHA256": "2f2f3dc74c2cbdd122f7a1401bd3e4e77efbc37ff6c499371cb8e57c9e39a5c8",
+      "rangeSHA256": "73b94468236bc8feacb9da95dab374fcc7d032811795232ec598649deef42a84"
+    },
+    {
+      "path": "nethack-c/upstream/src/polyself.c",
+      "resolvedPath": "/Users/rohit/research/code/contest/nethack-c/upstream/src/polyself.c",
+      "start": 38,
+      "end": 65,
+      "label": "set_uasmon producer prefix only",
+      "fileSHA256": "2f2f3dc74c2cbdd122f7a1401bd3e4e77efbc37ff6c499371cb8e57c9e39a5c8",
+      "rangeSHA256": "c7f283203d787dc162f7bd4e92d851d6d7d5449b87e186e7986060178734adb1"
+    },
+    {
+      "path": "nethack-c/upstream/src/polyself.c",
+      "resolvedPath": "/Users/rohit/research/code/contest/nethack-c/upstream/src/polyself.c",
+      "start": 738,
+      "end": 865,
+      "label": "polymon assignment and nohands path, partial owner",
+      "fileSHA256": "2f2f3dc74c2cbdd122f7a1401bd3e4e77efbc37ff6c499371cb8e57c9e39a5c8",
+      "rangeSHA256": "9ca03202770e5ec3b3aa37a405b57582c3d784c4fc2a7fa05ee18fce9a37054f"
+    },
+    {
+      "path": "nethack-c/upstream/include/monsters.h",
+      "resolvedPath": "/Users/rohit/research/code/contest/nethack-c/upstream/include/monsters.h",
+      "start": 1053,
+      "end": 1061,
+      "label": "fog-cloud data",
+      "fileSHA256": "c63db922770c96a9956d221f364ba4368a9f81f81c8d64ed28251a0506d4a906",
+      "rangeSHA256": "da9634f261b9b593e2e2b4b2eca0deff06071bd2ca9dfaa20ef54c5c46376198"
+    },
+    {
+      "path": "nethack-c/upstream/include/mondata.h",
+      "resolvedPath": "/Users/rohit/research/code/contest/nethack-c/upstream/include/mondata.h",
+      "start": 9,
+      "end": 12,
+      "label": "size predicates",
+      "fileSHA256": "6f1ca3db69a5cfbe425859fe1c7decfa1da1fdac45af9d8a84be5f0f8c9c21f2",
+      "rangeSHA256": "863316cd9dfa6418acbd2556161d8b6092d3e9558dda93195c1cb4f37f11294e"
+    },
+    {
+      "path": "nethack-c/upstream/include/mondata.h",
+      "resolvedPath": "/Users/rohit/research/code/contest/nethack-c/upstream/include/mondata.h",
+      "start": 52,
+      "end": 55,
+      "label": "hand and limb predicates",
+      "fileSHA256": "6f1ca3db69a5cfbe425859fe1c7decfa1da1fdac45af9d8a84be5f0f8c9c21f2",
+      "rangeSHA256": "a7d5e5580c267645a42270b4230f9d427bbd64488f1982aede72a93cf8df48bc"
+    },
+    {
+      "path": "nethack-c/upstream/include/monflag.h",
+      "resolvedPath": "/Users/rohit/research/code/contest/nethack-c/upstream/include/monflag.h",
+      "start": 98,
+      "end": 99,
+      "label": "nohands/nolimbs bit relationship",
+      "fileSHA256": "89e4ef1dc1cd46fa8d81ff833351934c666420abdf902286bdacdca0bb171d88",
+      "rangeSHA256": "d1633a826662a4fe1bf2676c643a57c18a6c948bc93d4c447f9cbebd461229de"
+    },
+    {
+      "path": "nethack-c/upstream/include/monflag.h",
+      "resolvedPath": "/Users/rohit/research/code/contest/nethack-c/upstream/include/monflag.h",
+      "start": 178,
+      "end": 182,
+      "label": "small/huge sizes",
+      "fileSHA256": "89e4ef1dc1cd46fa8d81ff833351934c666420abdf902286bdacdca0bb171d88",
+      "rangeSHA256": "81a23e031346fb726406ad92369ed2a9bd299dc42d11d72e4da97fd2e01b197a"
+    },
+    {
+      "path": "js/cmd.js",
+      "resolvedPath": "/Users/rohit/research/code/contest/.cache/restart-20261122/itemactions-context-candidate/js/cmd.js",
+      "start": 1020,
+      "end": 1074,
+      "label": "complete equip filter/callbacks",
+      "fileSHA256": "bb6460e1571e17eb4317b8536dfb872e9e2026dff30e86fd298379f809e89505",
+      "rangeSHA256": "d182ea42e04747f18c11613d7dcf53e1b1fab6d58d481c589fd6c01de62e7c9b"
+    },
+    {
+      "path": "js/cmd.js",
+      "resolvedPath": "/Users/rohit/research/code/contest/.cache/restart-20261122/itemactions-context-candidate/js/cmd.js",
+      "start": 1326,
+      "end": 1329,
+      "label": "direct polyself/P dispatch",
+      "fileSHA256": "bb6460e1571e17eb4317b8536dfb872e9e2026dff30e86fd298379f809e89505",
+      "rangeSHA256": "fb00eca8be15aff053ea437c803d0d50370b4528c5c82038fe312a4932097075"
+    },
+    {
+      "path": "js/cmd.js",
+      "resolvedPath": "/Users/rohit/research/code/contest/.cache/restart-20261122/itemactions-context-candidate/js/cmd.js",
+      "start": 1378,
+      "end": 1378,
+      "label": "direct W dispatch",
+      "fileSHA256": "bb6460e1571e17eb4317b8536dfb872e9e2026dff30e86fd298379f809e89505",
+      "rangeSHA256": "615961016efcfb832cdeffa41f8cfc78d71db7fc3fd5a8cfb8f4e76ae300f434"
+    },
+    {
+      "path": "js/cmd.js",
+      "resolvedPath": "/Users/rohit/research/code/contest/.cache/restart-20261122/itemactions-context-candidate/js/cmd.js",
+      "start": 2259,
+      "end": 2280,
+      "label": "complete command-state reset",
+      "fileSHA256": "bb6460e1571e17eb4317b8536dfb872e9e2026dff30e86fd298379f809e89505",
+      "rangeSHA256": "56439ee0449b37646619c2cb3ee0bcb3c988c4165a72566452204fd79ec583b5"
+    },
+    {
+      "path": "js/cmd.js",
+      "resolvedPath": "/Users/rohit/research/code/contest/.cache/restart-20261122/itemactions-context-candidate/js/cmd.js",
+      "start": 2313,
+      "end": 2534,
+      "label": "complete rhack",
+      "fileSHA256": "bb6460e1571e17eb4317b8536dfb872e9e2026dff30e86fd298379f809e89505",
+      "rangeSHA256": "6b96543174b593bd0f2663d0ec5ecb751bd5f2d6d22f0eb3d3219e0c2b2e31eb"
+    },
+    {
+      "path": "js/cmd.js",
+      "resolvedPath": "/Users/rohit/research/code/contest/.cache/restart-20261122/itemactions-context-candidate/js/cmd.js",
+      "start": 3341,
+      "end": 3370,
+      "label": "itemactions entry",
+      "fileSHA256": "bb6460e1571e17eb4317b8536dfb872e9e2026dff30e86fd298379f809e89505",
+      "rangeSHA256": "19f4e780aebd031ed31f41987e4b6492cc2ea6781f7ed0c5e8c75d286e053e66"
+    },
+    {
+      "path": "js/cmd.js",
+      "resolvedPath": "/Users/rohit/research/code/contest/.cache/restart-20261122/itemactions-context-candidate/js/cmd.js",
+      "start": 3520,
+      "end": 3549,
+      "label": "accessory P producer arm",
+      "fileSHA256": "bb6460e1571e17eb4317b8536dfb872e9e2026dff30e86fd298379f809e89505",
+      "rangeSHA256": "753869ef21097ebe74d36a67185d60585997372e21bb260bf4fdc3a13a0435e8"
+    },
+    {
+      "path": "js/cmd.js",
+      "resolvedPath": "/Users/rohit/research/code/contest/.cache/restart-20261122/itemactions-context-candidate/js/cmd.js",
+      "start": 3670,
+      "end": 3784,
+      "label": "itemactions tail and complete queue owner",
+      "fileSHA256": "bb6460e1571e17eb4317b8536dfb872e9e2026dff30e86fd298379f809e89505",
+      "rangeSHA256": "bdf3a05731e786b0033e93da6bc15f3b64110ad06e480a6cb3038b9e89e9f283"
+    },
+    {
+      "path": "js/cmd.js",
+      "resolvedPath": "/Users/rohit/research/code/contest/.cache/restart-20261122/itemactions-context-candidate/js/cmd.js",
+      "start": 3816,
+      "end": 3869,
+      "label": "complete queue clear/add/pop/peek functions",
+      "fileSHA256": "bb6460e1571e17eb4317b8536dfb872e9e2026dff30e86fd298379f809e89505",
+      "rangeSHA256": "e9da2b5c000e37ff73156cc2cf52aa5dd66272cfeaf09457651e2c60e973cc4b"
+    },
+    {
+      "path": "js/do_wear.js",
+      "resolvedPath": "/Users/rohit/research/code/contest/.cache/restart-20261122/fruit-text-corrected-parent-replay-root/js/do_wear.js",
+      "start": 1854,
+      "end": 2021,
+      "label": "complete accessory_or_armor_on",
+      "fileSHA256": "85811a70b3db2fa880c8ee7c08a716e4b95bbc363b35acd9cc735b5e1b4cb681",
+      "rangeSHA256": "f83427cf52b75ab12d584fb0f35473eb50e47647633fb3d6837de192178b138c"
+    },
+    {
+      "path": "js/do_wear.js",
+      "resolvedPath": "/Users/rohit/research/code/contest/.cache/restart-20261122/fruit-text-corrected-parent-replay-root/js/do_wear.js",
+      "start": 2624,
+      "end": 2642,
+      "label": "complete dowear and doputon",
+      "fileSHA256": "85811a70b3db2fa880c8ee7c08a716e4b95bbc363b35acd9cc735b5e1b4cb681",
+      "rangeSHA256": "509227ba6f168a3a251655e04338bf96701ed12c662874aec69095aa1d0016ee"
+    },
+    {
+      "path": "js/do_wear.js",
+      "resolvedPath": "/Users/rohit/research/code/contest/.cache/restart-20261122/fruit-text-corrected-parent-replay-root/js/do_wear.js",
+      "start": 1047,
+      "end": 1169,
+      "label": "complete Amulet_on",
+      "fileSHA256": "85811a70b3db2fa880c8ee7c08a716e4b95bbc363b35acd9cc735b5e1b4cb681",
+      "rangeSHA256": "52b563832fb6d72ad8f4fe81f3c42beef42115dd8de310948e27e5bdc47de11a"
+    },
+    {
+      "path": "js/artifact.js",
+      "resolvedPath": "/Users/rohit/research/code/contest/.cache/restart-20261122/fruit-text-corrected-parent-replay-root/js/artifact.js",
+      "start": 1164,
+      "end": 1232,
+      "label": "complete retouch_object",
+      "fileSHA256": "fab41ccba2f545b6eba689acf93283960eb71efbfe4011515bf766f2fe4a32e7",
+      "rangeSHA256": "67f598a40330e5f75c7700febcf7832890a320dee8180709417344a15f37436d"
+    },
+    {
+      "path": "js/invent.js",
+      "resolvedPath": "/Users/rohit/research/code/contest/.cache/restart-20261122/fruit-text-corrected-parent-replay-root/js/invent.js",
+      "start": 1722,
+      "end": 1795,
+      "label": "getobj queued-key acceptance contract",
+      "fileSHA256": "9d9557972eb51853a5081b60c34963109fa0dc3bf4a4ddcd8050042b2778750d",
+      "rangeSHA256": "e5514dcbb56afe295c7485a87df9f7ac531736b966d4e17aa58823c0ddb5c9f6"
+    },
+    {
+      "path": "js/invent.js",
+      "resolvedPath": "/Users/rohit/research/code/contest/.cache/restart-20261122/fruit-text-corrected-parent-replay-root/js/invent.js",
+      "start": 3015,
+      "end": 3052,
+      "label": "complete inventory action entry",
+      "fileSHA256": "9d9557972eb51853a5081b60c34963109fa0dc3bf4a4ddcd8050042b2778750d",
+      "rangeSHA256": "92f3768a7ae8c67bdccadd479363e30c78d40247dae1140dd8ae818017e7dea5"
+    },
+    {
+      "path": "js/wizcmds.js",
+      "resolvedPath": "/Users/rohit/research/code/contest/.cache/restart-20261122/fruit-text-corrected-parent-replay-root/js/wizcmds.js",
+      "start": 764,
+      "end": 767,
+      "label": "complete wizard polymorph entry",
+      "fileSHA256": "da98e20cc43514857ef7182eac987ab1e9b4e6cc49a404b3c16387f2f3de76ee",
+      "rangeSHA256": "2da04ec456e53d509f6198150e526b6a2b5bd4a86afd531c762b469f1e508166"
+    },
+    {
+      "path": "js/polyself.js",
+      "resolvedPath": "/Users/rohit/research/code/contest/.cache/restart-20261122/fruit-text-corrected-parent-replay-root/js/polyself.js",
+      "start": 755,
+      "end": 1032,
+      "label": "complete polyself producer",
+      "fileSHA256": "47c7cf889b2ae7c2ed56301d2c07f02f1a334a50dc669074ce70197befea326f",
+      "rangeSHA256": "e0b74a55090282b19d2a551938fd622157032fd632ea6396e1e7fff9bd1214a1"
+    },
+    {
+      "path": "js/polyself.js",
+      "resolvedPath": "/Users/rohit/research/code/contest/.cache/restart-20261122/fruit-text-corrected-parent-replay-root/js/polyself.js",
+      "start": 392,
+      "end": 425,
+      "label": "set_uasmon producer prefix only",
+      "fileSHA256": "47c7cf889b2ae7c2ed56301d2c07f02f1a334a50dc669074ce70197befea326f",
+      "rangeSHA256": "efacb61eedf9a2cce4c10f77e8fcc22c35e1bc3f7f241e5d579adc13b5059696"
+    },
+    {
+      "path": "js/polyself.js",
+      "resolvedPath": "/Users/rohit/research/code/contest/.cache/restart-20261122/fruit-text-corrected-parent-replay-root/js/polyself.js",
+      "start": 1035,
+      "end": 1160,
+      "label": "polymon assignment and nohands path, partial owner",
+      "fileSHA256": "47c7cf889b2ae7c2ed56301d2c07f02f1a334a50dc669074ce70197befea326f",
+      "rangeSHA256": "3ad996cd2371cabe311f5b5dba26bdc5ecd16da429cea98f008269090500af28"
+    },
+    {
+      "path": "js/mondata.js",
+      "resolvedPath": "/Users/rohit/research/code/contest/.cache/restart-20261122/fruit-text-corrected-parent-replay-root/js/mondata.js",
+      "start": 85,
+      "end": 88,
+      "label": "hand/limb predicates",
+      "fileSHA256": "d057b4d8fbccd625638ebf9f3f3035dab138a1c61c6e558057b8d085c649cdb5",
+      "rangeSHA256": "b2a3d305d20f5348015b201c7e5db32881eed15829131c1b7be34d691359ce73"
+    },
+    {
+      "path": "js/mondata.js",
+      "resolvedPath": "/Users/rohit/research/code/contest/.cache/restart-20261122/fruit-text-corrected-parent-replay-root/js/mondata.js",
+      "start": 101,
+      "end": 101,
+      "label": "verysmall predicate",
+      "fileSHA256": "d057b4d8fbccd625638ebf9f3f3035dab138a1c61c6e558057b8d085c649cdb5",
+      "rangeSHA256": "28698c71e0491e0872fc182930e4fc7ff12bda4006ad79ac76efd2f789ec2366"
+    },
+    {
+      "path": "js/monst_data.js",
+      "resolvedPath": "/Users/rohit/research/code/contest/.cache/restart-20261122/fruit-text-corrected-parent-replay-root/js/monst_data.js",
+      "start": 6799,
+      "end": 6863,
+      "label": "fog-cloud species106",
+      "fileSHA256": "2a18e823fd86a01ac176380ef657be535d555ec6ee7bde6f52f81c5895a9d7cd",
+      "rangeSHA256": "456259749ae998b84c7e5ce3d1451c52d1688158fe3739fc42ed1563ba00a690"
+    },
+    {
+      "path": "js/monst_data.js",
+      "resolvedPath": "/Users/rohit/research/code/contest/.cache/restart-20261122/fruit-text-corrected-parent-replay-root/js/monst_data.js",
+      "start": 25259,
+      "end": 25260,
+      "label": "nohands/nolimbs flags",
+      "fileSHA256": "2a18e823fd86a01ac176380ef657be535d555ec6ee7bde6f52f81c5895a9d7cd",
+      "rangeSHA256": "740df505fe82417630f46dd7ec58776e331574986c173bddc14800edf28d3ad7"
+    },
+    {
+      "path": "js/extcmd_data.js",
+      "resolvedPath": "/Users/rohit/research/code/contest/.cache/restart-20261122/fruit-text-corrected-parent-replay-root/js/extcmd_data.js",
+      "start": 61,
+      "end": 61,
+      "label": "inventory binding",
+      "fileSHA256": "2e9355a55243f1708e2513ee48d6ae0d92af9a939defd2bba756421aa906bdc0",
+      "rangeSHA256": "02dbe3ecaea3906f4093c5a78491303aea062415cf1ce3102db74c7a57a9bdca"
+    },
+    {
+      "path": "js/extcmd_data.js",
+      "resolvedPath": "/Users/rohit/research/code/contest/.cache/restart-20261122/fruit-text-corrected-parent-replay-root/js/extcmd_data.js",
+      "start": 85,
+      "end": 88,
+      "label": "polyself and direct P binding",
+      "fileSHA256": "2e9355a55243f1708e2513ee48d6ae0d92af9a939defd2bba756421aa906bdc0",
+      "rangeSHA256": "6fc91173d821c7a1a9f675e3cebfa780bf4bf3e3e36cb9f55717c41ea87e28dd"
+    },
+    {
+      "path": "js/extcmd_data.js",
+      "resolvedPath": "/Users/rohit/research/code/contest/.cache/restart-20261122/fruit-text-corrected-parent-replay-root/js/extcmd_data.js",
+      "start": 138,
+      "end": 138,
+      "label": "direct W binding",
+      "fileSHA256": "2e9355a55243f1708e2513ee48d6ae0d92af9a939defd2bba756421aa906bdc0",
+      "rangeSHA256": "d078d203ab57fd0100b21c95f63082d5ceddd2bb37d4ecd08f41c53770ab31d8"
+    }
+  ]
+}

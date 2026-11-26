@@ -1,0 +1,12 @@
+{
+  "command": [
+    "node",
+    "--max-old-space-size=512",
+    "tools/tty-text-window-native-gate.mjs",
+    ".cache/restart-20261122/itemactions-accessory-parent-native.session.json",
+    ".cache/restart-20261122/itemactions-accessory-parent-baseline-native.json"
+  ],
+  "exit": 1,
+  "seconds": 1.01,
+  "logSHA256": "8465b1267b6914b19d58e68541cd1086db38917df72bf7e1939749af804887fc"
+}

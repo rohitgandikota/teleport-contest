@@ -1,0 +1,14 @@
+{
+  "rangesVerified": 51,
+  "sourceCoverageSHA256": "467ccaa6594bfa10e830c5c07f767c61044e4afbc8868563c86724e653a80ee0",
+  "endOfFileClipping": [
+    {
+      "path": "nethack-c/upstream/src/iactions.c",
+      "start": 638,
+      "requestedEnd": 743,
+      "effectiveEnd": 716,
+      "rangeSHA256": "c3e856ba7c23081f5e3b0b657c0d640809222a8f404d57900b8c55816115fb00"
+    }
+  ],
+  "note": "Original requested bounds and pre-implementation pins preserved. An overlong final bound includes the entire remaining owner; no source bytes are missing or revised."
+}

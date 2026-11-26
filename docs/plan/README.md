@@ -12,7 +12,13 @@ Ground rules are in `/CLAUDE.md`. Read that first if you have not.
 
 ## Current focus, 2026-11-26
 
-Menu key bindings and status threshold editing are verified and ready to push.
+Vault wall visibility and inventory accessory routing are verified for the
+next checkpoint. Two runtime lines restore the C wall-mode call and queued
+wear command. All 932 recordings, seven new native/ordinary cases, 12 focused
+checks and 46 strict workers pass. Original negative hashes remain unchanged.
+See the wall-accessory evidence and STATUS for publication and remaining scope.
+
+Menu key bindings and status threshold editing are pushed as `e007ede1`.
 The eight-file change preserves C alias order, shared character-selection
 menus, early output and percentage-buffer behavior. All 930 recordings pass,
 with 934,828 screens/cursors, 20,401,823 random calls and 33,179 frames. All

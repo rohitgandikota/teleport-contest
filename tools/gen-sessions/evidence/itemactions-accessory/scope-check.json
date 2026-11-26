@@ -1,0 +1,17 @@
+{
+  "changedRuntimeFiles": [
+    "js/cmd.js"
+  ],
+  "forwardReplacementCount": 1,
+  "reverseExact": true,
+  "importsUnchanged": true,
+  "directPutonBindingUnchanged": true,
+  "handHelpersUnchanged": true,
+  "baselineCmdSHA256": "bb6460e1571e17eb4317b8536dfb872e9e2026dff30e86fd298379f809e89505",
+  "candidateCmdSHA256": "bb486a6d082e5a7602923d97450b50ba24ecbe1aa0f0176a06666f14bde777f7",
+  "candidateRuntimeSHA256": "a944dc5bc4a26573561d190b4a6ee994a8660e999cb35dc8e3ce383f9028645b",
+  "patchSHA256": "f39612c6515387b978259c4a520cf055d049d62225d964771bbd42fb9bde7823",
+  "runtimeLinks": 279,
+  "runtimeSourceCopies": 1,
+  "noLiveMainTargets": true
+}

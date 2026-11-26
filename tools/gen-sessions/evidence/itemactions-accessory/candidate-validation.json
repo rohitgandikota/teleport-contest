@@ -1,0 +1,93 @@
+{
+  "ordinary": {
+    "baselinePassed": 3,
+    "candidatePassed": 4,
+    "cases": 4,
+    "originalBodyUnchanged": true,
+    "observerPlainDeferredEqual": true,
+    "negativeRowsUnchanged": 3,
+    "negativeHashesUnchanged": 15,
+    "positiveBefore": {
+      "step": 55,
+      "turn": 8,
+      "form": 106,
+      "amulet": 208,
+      "inventory": [
+        {
+          "otyp": 208,
+          "invlet": "a",
+          "worn": 65536
+        }
+      ]
+    },
+    "positiveAfter": {
+      "step": 55,
+      "turn": 1,
+      "form": 106,
+      "amulet": null,
+      "inventory": [
+        {
+          "otyp": 208,
+          "invlet": "a",
+          "worn": 0
+        }
+      ]
+    },
+    "positiveChangedStreams": [
+      "screens",
+      "cursors",
+      "calls",
+      "slices",
+      "frames"
+    ]
+  },
+  "native": {
+    "baselinePassed": 3,
+    "candidatePassed": 4,
+    "cases": 4,
+    "boundaries": 201,
+    "calls": 8980,
+    "frames": 2,
+    "allStylesCursorsRngSlicesFramesExact": true,
+    "negativeCompleteRowsUnchanged": 3,
+    "baselinePositiveScreenSteps": [
+      55
+    ],
+    "baselinePositiveGlyphMismatches": 65,
+    "baselinePositiveExtraCalls": 149,
+    "baselinePositiveFrames": {
+      "expected": 0,
+      "actual": 2,
+      "expectedSlices": 56,
+      "actualSlices": 56,
+      "countMismatches": [
+        {
+          "step": 55,
+          "expected": 0,
+          "actual": 2
+        }
+      ],
+      "fullStyleMatches": 0,
+      "cursorMatches": 0
+    },
+    "candidatePositiveFrames": {
+      "expected": 0,
+      "actual": 0,
+      "expectedSlices": 56,
+      "actualSlices": 56,
+      "countMismatches": [],
+      "fullStyleMatches": 0,
+      "cursorMatches": 0
+    },
+    "discardedCoreCalls": 0
+  },
+  "candidateOrdinarySHA256": "ede953746ae7070c9d083b1690b45718d65817a4e01f582bb8581f8c62f2709b",
+  "candidateNativeSHA256": "7ba67eed022596835043cb92fc87e5d947a0fd4cd512af2ee88ab54827d8d764",
+  "rawSHA256": "94db2c2d62e2e7390bebdc905ec7a645d299e045d6cec54f3569a76273e6826f",
+  "candidateRuntimeSHA256": "a944dc5bc4a26573561d190b4a6ee994a8660e999cb35dc8e3ce383f9028645b",
+  "runtimeScope": [
+    "js/cmd.js"
+  ],
+  "workerCRecorded": false,
+  "newInputs": false
+}

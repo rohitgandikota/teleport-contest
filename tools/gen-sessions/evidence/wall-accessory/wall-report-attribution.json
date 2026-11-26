@@ -1,0 +1,12 @@
+{
+  "ordinaryRowsIdentical": true,
+  "originalAssertionsUnchanged": true,
+  "ordinaryCases": 3,
+  "negativeHashes": 10,
+  "metadataDifferences": {
+    "classification": {
+      "before": "C-confirmed wall modes, unchanged ordinary assertions on isolated candidate",
+      "after": "C-confirmed wall modes, original ordinary assertions on current repository"
+    }
+  }
+}

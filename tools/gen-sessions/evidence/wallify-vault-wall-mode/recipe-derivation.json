@@ -1,0 +1,21 @@
+{
+  "originalRecipeSHA256": "4c185a49dd8fd192de24f1adaf03e220bbdffa69a0fae9633a26e99aa8454159",
+  "canonicalRecipeSHA256": "436b24ba680e26785c6cc00d9fa6d2ec47f71f537c98c1a017c301076093d2a9",
+  "addedRootFields": [
+    "coverage"
+  ],
+  "coverage": [
+    "mode.debug",
+    "social.vault-guard",
+    "ui.map-memory-vision"
+  ],
+  "originalExactBytes": "recipe-original.json",
+  "inputFieldsSHA256": "1e8449d910975b73eff02784886d38805870d9ee41b470150430d41d73d76ef8",
+  "originalAssertionBodySHA256": "59fbbaf029ce38e9382f5182bbc306fc49f5f2e6a9c201036e6b51c996445149",
+  "inputTupleChanges": [],
+  "assertionChanges": [],
+  "negativeHashChanges": [],
+  "sourceSealSHA256": "d756366a80994a98e1bf995fa4c5c370e2df217b6aa9689367e7296ec4f7f1ff",
+  "candidateSealSHA256": "2a33732d5731255f71dc7dec457e1744f5448758d19ebd2f942ee4913b2c7c11",
+  "rawMetadataChanges": []
+}

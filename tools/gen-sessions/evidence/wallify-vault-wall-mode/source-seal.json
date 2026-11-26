@@ -1,0 +1,20 @@
+{
+  "classification": "sealed source-only wallify wall-mode audit; native confirmation pending parent",
+  "members": 322,
+  "manifestSHA256": "339c49fd6d5d787735375bed12dfae85e20a5a0c1148a029d1a8c647ef82822e",
+  "runtimeSHA256": "9011330c65eaa22e18c1582b1011e319df5c856c1d4553d09fe6bec59c7ca131",
+  "runtimeFiles": 280,
+  "sourceRanges": 137,
+  "recipeSHA256": "4c185a49dd8fd192de24f1adaf03e220bbdffa69a0fae9633a26e99aa8454159",
+  "inputFieldsSHA256": "1e8449d910975b73eff02784886d38805870d9ee41b470150430d41d73d76ef8",
+  "ordinaryCases": 3,
+  "keys": 1280,
+  "boundaries": 1283,
+  "sourceVisiblePassesOnBaseline": 2,
+  "sourceModePassesOnBaseline": 1,
+  "observerDeferredCases": 3,
+  "negativeHashes": 10,
+  "runtimePatchPaths": [],
+  "nativeParityClaimed": false,
+  "candidateAllowed": false
+}

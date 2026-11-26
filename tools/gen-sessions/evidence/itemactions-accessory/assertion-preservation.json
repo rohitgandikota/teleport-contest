@@ -1,0 +1,12 @@
+{
+  "originalFileSHA256": "eae296b0e365802529c6d15457169e397c1bbd879f1c5eea6cb0eac06cf6a9f2",
+  "originalBodySHA256": "b038c67900a27e97b559d5a2b3a5063f5dc1a5f580fad99e06dead39cb7a4d1d",
+  "adaptedFileSHA256": "63a24ad80332d69c4fe686c17b971fc86344717ef68dc227dd75081af2d31464",
+  "bodyByteIdentical": true,
+  "onlyEntryImportsAndPreflightAdapted": true,
+  "cases": 4,
+  "freshObserverPlainDeferred": true,
+  "negativeHashes": 15,
+  "nativeComparatorBodyUnchanged": true,
+  "nativeComparatorSHA256": "a466e4b8a0f1f00291fdcd3ec25d52ba4ebd45b98ba4100559405a5cba3d9e3c"
+}

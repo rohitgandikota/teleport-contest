@@ -11,6 +11,24 @@ Newest first within each section.
 
 ---
 
+## Inventory accessory P follows the wear command
+
+C iactions.c assigns IA_WEAR_OBJ to the inventory menu's accessory P action.
+Its queue invokes dowear, which rejects a no-hands form before selecting an
+object. The direct P command invokes doputon and can put an amulet on that same
+form. Preserve both paths. Four original keyboard cases confirm the distinction;
+changing the inventory queue argument repairs one case and leaves three controls
+unchanged. See tools/gen-sessions/evidence/itemactions-accessory.
+
+## Restored vault walls need their visibility mode
+
+C wallify_vault resets wall_info, then calls xy_set_wall_state before newsym.
+Resetting flags alone leaves an unmapped horizontal wall visible from an
+unfinished side. Calling the existing helper repairs 18 native boundaries.
+The mapped-wall negative changes mode as intended but retains its output;
+the intact-wall control retains both. Other wall shapes and debris/trap cleanup
+remain outside these three cases. See the wallify-vault-wall-mode evidence.
+
 ## Visual assertions and stored terminal commands
 
 The recorder can encode repeated spaces as ANSI cursor moves. screenIncludes

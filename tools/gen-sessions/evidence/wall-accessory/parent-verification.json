@@ -1,0 +1,407 @@
+{
+  "baselineCommit": "e007ede12783e204bee3b5fa025ab94e82f235b3",
+  "composition": {
+    "parent": "e007ede12783e204bee3b5fa025ab94e82f235b3",
+    "runtimeChanged": [
+      "js/cmd.js",
+      "js/vault.js"
+    ],
+    "runtimeFiles": 280,
+    "runtimeSHA256": "0ee2ebcfa3c310dbebe74409836bb8dedea2d6cacbf7d8e5d73d76bca082204b",
+    "patchSHA256": "cb76670c5ed37e64c4faf1d0f9c433474c1dbf2891f5286d833783f1d0de1ca1",
+    "fixedLinks": 278,
+    "sourceCopies": 2,
+    "sourceCandidateSeals": [
+      "2a33732d5731255f71dc7dec457e1744f5448758d19ebd2f942ee4913b2c7c11",
+      "e9dc07a82966f16ffa4930c01956da67a8991eefc46eac6a42e054f7c3e29ea0"
+    ]
+  },
+  "payloads": 44,
+  "newRequirements": 7,
+  "registryTotal": 4670,
+  "raws": [
+    {
+      "path": "tools/gen-sessions/generated/wallify-vault-wall-mode.session.json",
+      "sha256": "3c56e3f4e461404b3c83003fbe0ed2b924ba378f9d4c6173c5ef3425b54be5ee",
+      "bytes": 2807052,
+      "alreadyPresent": true
+    },
+    {
+      "path": "tools/gen-sessions/generated/itemactions-accessory.session.json",
+      "sha256": "94db2c2d62e2e7390bebdc905ec7a645d299e045d6cec54f3569a76273e6826f",
+      "bytes": 476442,
+      "alreadyPresent": false
+    }
+  ],
+  "native": [
+    {
+      "name": "wallify-vault-wall-mode",
+      "command": [
+        "node",
+        "--max-old-space-size=512",
+        "--preserve-symlinks",
+        "--preserve-symlinks-main",
+        "/Users/rohit/research/code/contest/.cache/restart-20261122/wall-accessory-parent-composed/wallify-vault-wall-mode-native-corrected.mjs"
+      ],
+      "exit": 0,
+      "seconds": 1.513,
+      "cases": 3,
+      "passed": 3,
+      "report": ".cache/restart-20261122/wall-accessory-wallify-vault-wall-mode-native-corrected.json",
+      "reportSHA256": "3c40507440f0803e785bd8e33813af020328e91208757ab266b9deab770b4a8d",
+      "priorReport": ".cache/restart-20261122/wallify-vault-wall-mode-candidate/reports/native.json",
+      "completeReportUnchanged": true,
+      "log": ".cache/restart-20261122/wall-accessory-wallify-vault-wall-mode-native-corrected.log",
+      "logSHA256": "9a2e48b10e36df0854f02eaa6bd8795940447f09a1d8b8cbd756b4a80b20bd9f",
+      "timeoutSeconds": 55,
+      "maxOldSpaceMB": 512
+    },
+    {
+      "name": "itemactions-accessory",
+      "command": [
+        "node",
+        "--max-old-space-size=512",
+        "--preserve-symlinks",
+        "--preserve-symlinks-main",
+        "/Users/rohit/research/code/contest/.cache/restart-20261122/wall-accessory-parent-composed/itemactions-accessory-native-corrected.mjs"
+      ],
+      "exit": 0,
+      "seconds": 0.941,
+      "cases": 4,
+      "passed": 4,
+      "report": ".cache/restart-20261122/wall-accessory-itemactions-accessory-native-corrected.json",
+      "reportSHA256": "7ba67eed022596835043cb92fc87e5d947a0fd4cd512af2ee88ab54827d8d764",
+      "priorReport": ".cache/restart-20261122/itemactions-accessory-candidate/review/candidate-native.json",
+      "completeReportUnchanged": true,
+      "log": ".cache/restart-20261122/wall-accessory-itemactions-accessory-native-corrected.log",
+      "logSHA256": "7fa9e9de14fc23f0f24ac04d9215fc49dcf00a4322fd0d78ddaec8f138a608f7",
+      "timeoutSeconds": 55,
+      "maxOldSpaceMB": 512
+    }
+  ],
+  "ordinary": [
+    {
+      "command": [
+        "node",
+        "--max-old-space-size=512",
+        "tools/wallify-vault-wall-mode-input-gate.mjs",
+        "/Users/rohit/research/code/contest/.cache/restart-20261122/wall-accessory-wall-mode-main-ordinary.json"
+      ],
+      "exit": 0,
+      "seconds": 2.326,
+      "report": ".cache/restart-20261122/wall-accessory-wall-mode-main-ordinary.json",
+      "reportSHA256": "c326370cb6d3ad6558070eb58b36cdebfc008442ffc09fc7692b378d60b43193",
+      "log": ".cache/restart-20261122/wall-accessory-wall-mode-main-ordinary.log",
+      "logSHA256": "b5514510fa7d237b7dd45064ad3015894297696933419a6504a5fd1e0a515f0f",
+      "timeoutSeconds": 55
+    },
+    {
+      "command": [
+        "node",
+        "--max-old-space-size=512",
+        "tools/itemactions-accessory-input-gate.mjs",
+        "/Users/rohit/research/code/contest/.cache/restart-20261122/wall-accessory-accessory-main-ordinary.json"
+      ],
+      "exit": 0,
+      "seconds": 2.039,
+      "report": ".cache/restart-20261122/wall-accessory-accessory-main-ordinary.json",
+      "reportSHA256": "ede953746ae7070c9d083b1690b45718d65817a4e01f582bb8581f8c62f2709b",
+      "log": ".cache/restart-20261122/wall-accessory-accessory-main-ordinary.log",
+      "logSHA256": "b3ae6a9aaa28f92adbca51f8180478ea17e55d5098222a73a78d6113359c3592",
+      "timeoutSeconds": 55
+    }
+  ],
+  "ordinaryCases": 7,
+  "negativeStreamHashes": 25,
+  "retained": [
+    {
+      "name": "command-result-state",
+      "command": [
+        "node",
+        "--max-old-space-size=512",
+        "tools/command-result-state-gate.mjs"
+      ],
+      "exit": 0,
+      "seconds": 1.057,
+      "log": ".cache/restart-20261122/wall-accessory-retained-command-result-state.log",
+      "sha256": "23dade78c4b2d64c88612325b5de1c8da23448750f80dfea3e67786603d7f416"
+    },
+    {
+      "name": "command-table",
+      "command": [
+        "node",
+        "--max-old-space-size=512",
+        "tools/command-table-gate.mjs"
+      ],
+      "exit": 0,
+      "seconds": 2.147,
+      "log": ".cache/restart-20261122/wall-accessory-retained-command-table.log",
+      "sha256": "9c47cbcbe71f53b2e1defca96029640cff47380845aca0c285faf374c593d014"
+    },
+    {
+      "name": "inventory-selection-state",
+      "command": [
+        "node",
+        "--max-old-space-size=512",
+        "tools/inventory-selection-state-gate.mjs"
+      ],
+      "exit": 0,
+      "seconds": 15.255,
+      "log": ".cache/restart-20261122/wall-accessory-retained-inventory-selection-state.log",
+      "sha256": "174b7715fd1081128f415f30f0a15309091974252fe4890318bfe2ca751c13c3"
+    },
+    {
+      "name": "accessory-wear-owner-state",
+      "command": [
+        "node",
+        "--max-old-space-size=512",
+        "tools/accessory-wear-owner-state-gate.mjs"
+      ],
+      "exit": 0,
+      "seconds": 0.83,
+      "log": ".cache/restart-20261122/wall-accessory-retained-accessory-wear-owner-state.log",
+      "sha256": "05555981f6403ae2ea32c2129a8a2717d2fcfb7f17854c5458c8bb37eaa5256b"
+    },
+    {
+      "name": "accessory-wear-owner-input",
+      "command": [
+        "node",
+        "--max-old-space-size=512",
+        "tools/accessory-wear-owner-input-gate.mjs"
+      ],
+      "exit": 0,
+      "seconds": 3.605,
+      "log": ".cache/restart-20261122/wall-accessory-retained-accessory-wear-owner-input.log",
+      "sha256": "b2b798670f93f42b75aaaa8fd84ca1b4232e339fba4c09bf8f32cc5645ca15e6"
+    },
+    {
+      "name": "set-wear-polymorph-state",
+      "command": [
+        "node",
+        "--max-old-space-size=512",
+        "tools/set-wear-polymorph-state-gate.mjs"
+      ],
+      "exit": 0,
+      "seconds": 0.565,
+      "log": ".cache/restart-20261122/wall-accessory-retained-set-wear-polymorph-state.log",
+      "sha256": "aaf789ea20774ec02b54f31128fd03e07546eeeea47f768e3a7903e0b52383e3"
+    },
+    {
+      "name": "getlin-command-queue-state",
+      "command": [
+        "node",
+        "--max-old-space-size=512",
+        "tools/getlin-command-queue-state-gate.mjs"
+      ],
+      "exit": 0,
+      "seconds": 0.675,
+      "log": ".cache/restart-20261122/wall-accessory-retained-getlin-command-queue-state.log",
+      "sha256": "843e18dc041c708c3e02a4cd3a1b1729793c10f2561e7518805a5be27de8b2a0"
+    },
+    {
+      "name": "inventory-merge-state",
+      "command": [
+        "node",
+        "--max-old-space-size=512",
+        "tools/inventory-merge-state-gate.mjs"
+      ],
+      "exit": 0,
+      "seconds": 1.488,
+      "log": ".cache/restart-20261122/wall-accessory-retained-inventory-merge-state.log",
+      "sha256": "514273664272e437f3f8dd2147b5716506036e041324f640f23bd587c944e3d2"
+    },
+    {
+      "name": "itemactions-context-input",
+      "command": [
+        "node",
+        "--max-old-space-size=512",
+        "tools/itemactions-context-input-gate.mjs"
+      ],
+      "exit": 0,
+      "seconds": 3.616,
+      "log": ".cache/restart-20261122/wall-accessory-retained-itemactions-context-input.log",
+      "sha256": "312f6e7cdc3fac81c303e10db575216c7fea8b75f7f3fd7c2c9392207f96e826"
+    },
+    {
+      "name": "wallify-vault-input",
+      "command": [
+        "node",
+        "--max-old-space-size=512",
+        "tools/wallify-vault-input-gate.mjs"
+      ],
+      "exit": 0,
+      "seconds": 2.57,
+      "log": ".cache/restart-20261122/wall-accessory-retained-wallify-vault-input.log",
+      "sha256": "5a33715efdd93d6fe8b6dd77694d276df186f0a9dd246810d5041154f756faa8"
+    },
+    {
+      "name": "wallify-vault-occupant-input",
+      "command": [
+        "node",
+        "--max-old-space-size=512",
+        "tools/wallify-vault-occupant-input-gate.mjs"
+      ],
+      "exit": 0,
+      "seconds": 2.197,
+      "log": ".cache/restart-20261122/wall-accessory-retained-wallify-vault-occupant-input.log",
+      "sha256": "8a0d80cb13db6386d0be7a31e13de8bb7b7f387d2c9887847795ccc65d02ee90"
+    },
+    {
+      "name": "invault-nonwall-entry-input",
+      "command": [
+        "node",
+        "--max-old-space-size=512",
+        "tools/invault-nonwall-entry-input-gate.mjs"
+      ],
+      "exit": 0,
+      "seconds": 2.07,
+      "log": ".cache/restart-20261122/wall-accessory-retained-invault-nonwall-entry-input.log",
+      "sha256": "bdb881189d4274a92a1771a919e88699c81cec8027092ab5e3eb1bf197358304"
+    }
+  ],
+  "strictPublicAndNew": {
+    "command": [
+      "node",
+      "tools/hang-gate.mjs",
+      "sessions/seed0002-healer-reflection-drummer.session.json",
+      "sessions/seed0004-feeding-pony.session.json",
+      "sessions/seed0006-wizard-water-demon.session.json",
+      "sessions/seed0007-rogue-snake-swamp.session.json",
+      "sessions/seed0009-swimmer-mforce.session.json",
+      "sessions/seed0012-monk-vault-escort.session.json",
+      "sessions/seed0013-friday13-save-then-fullmoon-restore.session.json",
+      "sessions/seed0013-rogue-friday13-combat.session.json",
+      "sessions/seed0014-dequa-fountain-explore.session.json",
+      "sessions/seed0015-valk-level2-pit-dog-wait.session.json",
+      "sessions/seed0016-healer-newmoon-eat-zap.session.json",
+      "sessions/seed0017-samurai-altar-pray.session.json",
+      "sessions/seed0030-ten-diverse-deaths.session.json",
+      "sessions/seed0060-orc-rogue-kick-search.session.json",
+      "sessions/seed0077-rogue-chargen.session.json",
+      "sessions/seed0101-ranger-quiver-throw-travel-engrave.session.json",
+      "sessions/seed0102-ranger-name-cancel.session.json",
+      "sessions/seed0103-knight-ride-pony.session.json",
+      "sessions/seed0104-knight-ride-combat.session.json",
+      "sessions/seed0105-valk-chat-lamp-ration.session.json",
+      "sessions/seed0106-priest-extcmd-sweep.session.json",
+      "sessions/seed0107-samurai-twoweapon-enhance.session.json",
+      "sessions/seed0108-wizard-extcmd-wishlist.session.json",
+      "sessions/seed0116-wizard-wear-shop.session.json",
+      "sessions/seed0200-monk-north-search.session.json",
+      "sessions/seed0360-wizard-world-tour.session.json",
+      "sessions/seed0361-archeologist-tour.session.json",
+      "sessions/seed0367-priest-quest-tour.session.json",
+      "sessions/seed0373-barbarian-quest-tour.session.json",
+      "sessions/seed0383-wizard-hallucinate.session.json",
+      "sessions/seed0398-wizard-wandpoly-pile.session.json",
+      "sessions/seed0399-wizard-hallu-actions.session.json",
+      "sessions/seed0501-priest-cast-read-turn.session.json",
+      "sessions/seed0700-samurai-explore-descend.session.json",
+      "sessions/seed0900-tourist-explore-actions.session.json",
+      "sessions/seed1150-caveman-explore-move.session.json",
+      "sessions/seed1500-rogue-explore-move.session.json",
+      "sessions/seed1800-tourist-eat-throw.session.json",
+      "sessions/seed2200-wizard-quaff-zap-read.session.json",
+      "sessions/seed2600-wizard-custom-binds.session.json",
+      "sessions/seed4500-knight-coverage.session.json",
+      "sessions/seed5002-wizard-coverage-pair.session.json",
+      "sessions/seed5006-tourist-stress-disaster.session.json",
+      "sessions/seed8000-tourist-starter.session.json",
+      "tools/gen-sessions/generated/wallify-vault-wall-mode.session.json",
+      "tools/gen-sessions/generated/itemactions-accessory.session.json"
+    ],
+    "exit": 0,
+    "seconds": 31.187,
+    "targets": 46,
+    "budgetMs": 8000,
+    "log": ".cache/restart-20261122/wall-accessory-public46-strict.log",
+    "sha256": "be758e0e909692b09655b61c22e730e58a7a4b59c54e413e3f1f5f1203842a6a"
+  },
+  "scopeImportFindings": 0,
+  "full932": {
+    "verifiedAt": "2026-11-26T15:59:13.675156+00:00",
+    "sessions": 932,
+    "passed": 932,
+    "failures": [],
+    "totals": {
+      "screens": 936312,
+      "cursors": 936312,
+      "rngCalls": 20436640,
+      "animFrames": 33185
+    },
+    "missingMetrics": {},
+    "runtimeFilesFixed": 280,
+    "rawFilesFixed": 932,
+    "allFilesFixed": 1223,
+    "allFilesSHA256": "52e6f8ebeeca322280c23c34450e600b39c8e2c9966ed06b954d03bfe68f06b3",
+    "defaultWorkerTimeoutMs": 45000,
+    "retries": 0,
+    "started": {
+      "startedAt": "2026-11-26T15:49:00.912474+00:00",
+      "workers": 2,
+      "pid": 3492136,
+      "cpuCount": 24,
+      "loadAverage": [
+        1.3154296875,
+        1.16845703125,
+        1.0625
+      ],
+      "timeoutOverride": false,
+      "retries": 0,
+      "node": {
+        "version": "v26.3.0",
+        "archive": "node-v26.3.0-linux-x64.tar.xz",
+        "sha256": "0ce210831380ab75a5fec0d3fb6b5af0958898016b2cae51cc2fa11057d2f77e",
+        "officialURL": "https://nodejs.org/dist/v26.3.0/node-v26.3.0-linux-x64.tar.xz",
+        "checksumsURL": "https://nodejs.org/dist/v26.3.0/SHASUMS256.txt",
+        "binary": "/share/NFS/u/rohit/research/contest/artifacts/2026-11-22/text-history-full858-js-20261125/node-v26.3.0-linux-x64/bin/node",
+        "archiveSHA256": "0ce210831380ab75a5fec0d3fb6b5af0958898016b2cae51cc2fa11057d2f77e",
+        "binarySHA256": "5325ac9da58541494afcc136f0880279a2a853609bf4dae7755e04fb682b6926"
+      },
+      "allFilesSHA256": "52e6f8ebeeca322280c23c34450e600b39c8e2c9966ed06b954d03bfe68f06b3"
+    },
+    "logs": {
+      "shard-0.log": "8c7d14328bb676c7231c408016d5085521411d326855260b427c029152b40ff7",
+      "shard-1.log": "765debd45a2bde37aefe479d11b460a9af4ea27ba538dade17c8599c4ce62d44"
+    },
+    "limits": [
+      "Scored corpus parity, not literal serialized-byte or whole-port proof.",
+      "No held-out result is inferred from these fixtures."
+    ]
+  },
+  "fullVerificationSHA256": "e7e839de38d6352890e46643e1d7c41f193718dcbf64e061d1a71a4a9b0c3d09",
+  "promotionSeals": {
+    "wallify-vault-wall-mode": "2a90c57b284a250860f50178fd738cabdfe676294d450bfe7034ba7bd9cdf493",
+    "itemactions-accessory": "08efd6341de3ecf2be8e302dad49a34bae6609912434895cbaca2fc38bbf2c93"
+  },
+  "initialInvocationFailure": [
+    {
+      "name": "wallify-vault-wall-mode",
+      "command": [
+        "node",
+        "--max-old-space-size=512",
+        "--preserve-symlinks",
+        "--preserve-symlinks-main",
+        "/Users/rohit/research/code/contest/.cache/restart-20261122/wall-accessory-parent-composed/wallify-vault-wall-mode-native.mjs"
+      ],
+      "exit": 1,
+      "seconds": 0.258,
+      "cases": 0,
+      "passed": 0,
+      "report": ".cache/restart-20261122/wall-accessory-wallify-vault-wall-mode-native.json",
+      "reportSHA256": null,
+      "priorReport": ".cache/restart-20261122/wallify-vault-wall-mode-candidate/reports/native.json",
+      "completeReportUnchanged": false,
+      "log": ".cache/restart-20261122/wall-accessory-wallify-vault-wall-mode-native.log",
+      "logSHA256": "89c38493bbc5f08bd21b05422c3abad95f9ebf655d27e849c4df834d21a75fe0",
+      "timeoutSeconds": 55,
+      "maxOldSpaceMB": 512
+    }
+  ],
+  "limits": [
+    "Exact C comparison covers decoded styles/cursors, ordered normalized core RNG calls/slices and animation frames. It does not prove serialized bytes or whole-port completeness.",
+    "The wall raw lacks source metadata because its minimal input did; exact recorder attribution and original bytes are preserved, with no new recording. Generic coverage can exclude it.",
+    "Direct P intentionally keeps the C no-hands accessory behavior. Full-equipment checks, other inventory routes and remaining vault debris/trap behavior are separate work.",
+    "No new held-out score is inferred."
+  ]
+}

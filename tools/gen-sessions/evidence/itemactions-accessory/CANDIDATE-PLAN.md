@@ -1,0 +1,7 @@
+# Inventory accessory routing candidate
+
+Use only the existing parent source packet and original C4 recording. The fixed baseline is menu-input-parent-composed/runtime.json, SHA c425a83669d913cce211a9665a4513bbdcb44fb5753dcd20f23d243eb10b094a. All280 entries resolve outside live main and match their pins. No candidate file existed at the latest resume; the existing source, input lock, baseline observations and original recording are retained without restarting their work.
+
+The owner and direct contract reads are complete and recorded in SOURCE-REVIEW.md before implementation. Change only queue_item_action's P arm from doputon to dowear. The existing import suffices. Preserve the direct P binding and all hand checks, helper behavior, other menu arms and prior inventory fixes.
+
+Preserve the original ordinary loop and assertions byte-for-byte, adapting only entry/import/preflight paths to the isolated graph. Before game imports, verify original source/input hashes, primary recipe, original C5 raw hash, all five fields with presence, every key, four primary branches and integrity. Run unchanged four ordinary cases and the maintained full native comparator, one512MB JS worker with55s timeout. Require4/4 each,15 negative hashes and three complete native negative rows unchanged. Do not rerecord, expand inputs, copy corpora, run broad suites or edit main/C/Git/NFS/frozen. Seal this packet with scope/reverse proof, compact reports and a read-only verifier.

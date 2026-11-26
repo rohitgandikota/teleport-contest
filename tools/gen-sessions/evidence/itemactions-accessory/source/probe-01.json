@@ -1,0 +1,2011 @@
+[
+  {
+    "name": "nohands-inventory-amulet",
+    "boundaries": 56,
+    "hashes": {
+      "screens": "264fbb1d860b78e512b10d68fb3a908d23fcdf8da82f5c2ff6ce7d53ee32ab92",
+      "cursors": "aeaf205c86a13d88f492a01a8d73363119e3073311a17d3973c0db4686850d1f",
+      "calls": "7dee8d4636591352274951c0c1a3ce6f3e0ece39906913cd0b827962f8f6e5fc",
+      "slices": "2b9945dad62191bc364ced223c3cf6a71988d4343c1bc30451b4c7f613c289ce",
+      "frames": "42f194cd92c630f3a038b9eefcb2be320cb59562b14899e073810c8a86c8fa50"
+    },
+    "states": [
+      {
+        "step": 0,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": []
+      },
+      {
+        "step": 1,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": []
+      },
+      {
+        "step": 2,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": []
+      },
+      {
+        "step": 3,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": []
+      },
+      {
+        "step": 4,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": []
+      },
+      {
+        "step": 5,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": []
+      },
+      {
+        "step": 6,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": []
+      },
+      {
+        "step": 7,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": []
+      },
+      {
+        "step": 8,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": []
+      },
+      {
+        "step": 9,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": []
+      },
+      {
+        "step": 10,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": []
+      },
+      {
+        "step": 11,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": []
+      },
+      {
+        "step": 12,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": []
+      },
+      {
+        "step": 13,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": []
+      },
+      {
+        "step": 14,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": []
+      },
+      {
+        "step": 15,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": []
+      },
+      {
+        "step": 16,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": []
+      },
+      {
+        "step": 17,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": []
+      },
+      {
+        "step": 18,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": []
+      },
+      {
+        "step": 19,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": []
+      },
+      {
+        "step": 20,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": []
+      },
+      {
+        "step": 21,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": []
+      },
+      {
+        "step": 22,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": []
+      },
+      {
+        "step": 23,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": []
+      },
+      {
+        "step": 24,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": []
+      },
+      {
+        "step": 25,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": []
+      },
+      {
+        "step": 26,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": []
+      },
+      {
+        "step": 27,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": []
+      },
+      {
+        "step": 28,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": []
+      },
+      {
+        "step": 29,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": []
+      },
+      {
+        "step": 30,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": []
+      },
+      {
+        "step": 31,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": []
+      },
+      {
+        "step": 32,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": [
+          {
+            "otyp": 208,
+            "invlet": "a",
+            "worn": 0
+          }
+        ]
+      },
+      {
+        "step": 33,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": [
+          {
+            "otyp": 208,
+            "invlet": "a",
+            "worn": 0
+          }
+        ]
+      },
+      {
+        "step": 34,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": [
+          {
+            "otyp": 208,
+            "invlet": "a",
+            "worn": 0
+          }
+        ]
+      },
+      {
+        "step": 35,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": [
+          {
+            "otyp": 208,
+            "invlet": "a",
+            "worn": 0
+          }
+        ]
+      },
+      {
+        "step": 36,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": [
+          {
+            "otyp": 208,
+            "invlet": "a",
+            "worn": 0
+          }
+        ]
+      },
+      {
+        "step": 37,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": [
+          {
+            "otyp": 208,
+            "invlet": "a",
+            "worn": 0
+          }
+        ]
+      },
+      {
+        "step": 38,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": [
+          {
+            "otyp": 208,
+            "invlet": "a",
+            "worn": 0
+          }
+        ]
+      },
+      {
+        "step": 39,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": [
+          {
+            "otyp": 208,
+            "invlet": "a",
+            "worn": 0
+          }
+        ]
+      },
+      {
+        "step": 40,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": [
+          {
+            "otyp": 208,
+            "invlet": "a",
+            "worn": 0
+          }
+        ]
+      },
+      {
+        "step": 41,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": [
+          {
+            "otyp": 208,
+            "invlet": "a",
+            "worn": 0
+          }
+        ]
+      },
+      {
+        "step": 42,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": [
+          {
+            "otyp": 208,
+            "invlet": "a",
+            "worn": 0
+          }
+        ]
+      },
+      {
+        "step": 43,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": [
+          {
+            "otyp": 208,
+            "invlet": "a",
+            "worn": 0
+          }
+        ]
+      },
+      {
+        "step": 44,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": [
+          {
+            "otyp": 208,
+            "invlet": "a",
+            "worn": 0
+          }
+        ]
+      },
+      {
+        "step": 45,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": [
+          {
+            "otyp": 208,
+            "invlet": "a",
+            "worn": 0
+          }
+        ]
+      },
+      {
+        "step": 46,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": [
+          {
+            "otyp": 208,
+            "invlet": "a",
+            "worn": 0
+          }
+        ]
+      },
+      {
+        "step": 47,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": [
+          {
+            "otyp": 208,
+            "invlet": "a",
+            "worn": 0
+          }
+        ]
+      },
+      {
+        "step": 48,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": [
+          {
+            "otyp": 208,
+            "invlet": "a",
+            "worn": 0
+          }
+        ]
+      },
+      {
+        "step": 49,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": [
+          {
+            "otyp": 208,
+            "invlet": "a",
+            "worn": 0
+          }
+        ]
+      },
+      {
+        "step": 50,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": [
+          {
+            "otyp": 208,
+            "invlet": "a",
+            "worn": 0
+          }
+        ]
+      },
+      {
+        "step": 51,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": [
+          {
+            "otyp": 208,
+            "invlet": "a",
+            "worn": 0
+          }
+        ]
+      },
+      {
+        "step": 52,
+        "turn": 1,
+        "form": 106,
+        "amulet": null,
+        "inventory": [
+          {
+            "otyp": 208,
+            "invlet": "a",
+            "worn": 0
+          }
+        ]
+      },
+      {
+        "step": 53,
+        "turn": 1,
+        "form": 106,
+        "amulet": null,
+        "inventory": [
+          {
+            "otyp": 208,
+            "invlet": "a",
+            "worn": 0
+          }
+        ]
+      },
+      {
+        "step": 54,
+        "turn": 1,
+        "form": 106,
+        "amulet": null,
+        "inventory": [
+          {
+            "otyp": 208,
+            "invlet": "a",
+            "worn": 0
+          }
+        ]
+      },
+      {
+        "step": 55,
+        "turn": 8,
+        "form": 106,
+        "amulet": 208,
+        "inventory": [
+          {
+            "otyp": 208,
+            "invlet": "a",
+            "worn": 65536
+          }
+        ]
+      }
+    ],
+    "finalText": "a - a perforated amulet (being worn).  It misses.  It just misses!--More--\n\n\n\n\n\n\n\n\n\n                                                          ┌──·┐\n                                                          │···│\n                                                          │····\n                                                          │···│\n                                                          │···│\n                                                          │I··│\n                                                          │v··│\n                                                          └───┘\n\n\n\n\nWizard the Fog Cloud           St:12 Dx:13 Co:14 In:18 Wi:9 Ch:9 Neutral\nDlvl:1 $:0 HP:21(21) Pw:8(8) AC:0 HD:3 Blind Fly",
+    "recentTop": [
+      [
+        "Become what kind of monster? [type the name] fog cloud",
+        "",
+        ""
+      ],
+      [
+        "You turn into a fog cloud!",
+        "",
+        ""
+      ],
+      [
+        "                                         Amulets",
+        "                                         a - a perforated amulet",
+        "                                         (end)"
+      ],
+      [
+        "                                  Do what with the perforated amulet?",
+        "",
+        "                                  c - Name this specific perforated amulet"
+      ],
+      [
+        "a - a perforated amulet (being worn).  It misses.  It just misses!--More--",
+        "",
+        ""
+      ]
+    ]
+  },
+  {
+    "name": "human-inventory-amulet-negative",
+    "boundaries": 36,
+    "hashes": {
+      "screens": "a290aa265d25d7bc013c61fa3cfb2485c4cb4a1049c07504343da6d5caa60599",
+      "cursors": "bab0589a6be6719484d6bca1d7065f51258ba4ee165e4dd24d18cf5132f50e31",
+      "calls": "2384d5cae2ac702e653182ee1bf0cfeed69b36f7852b33ff64c9e64b01341c93",
+      "slices": "21a7f79b1264f74322110165ad1b58fe0aa8a5994b81b8350e2b3c47dba4f7a2",
+      "frames": "d7e05d62119e6c5eb0f72a659df5eabe0a9c28413e532b84dc2b1acd8f02d171"
+    },
+    "states": [
+      {
+        "step": 0,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": []
+      },
+      {
+        "step": 1,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": []
+      },
+      {
+        "step": 2,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": []
+      },
+      {
+        "step": 3,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": []
+      },
+      {
+        "step": 4,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": []
+      },
+      {
+        "step": 5,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": []
+      },
+      {
+        "step": 6,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": []
+      },
+      {
+        "step": 7,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": []
+      },
+      {
+        "step": 8,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": []
+      },
+      {
+        "step": 9,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": []
+      },
+      {
+        "step": 10,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": []
+      },
+      {
+        "step": 11,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": []
+      },
+      {
+        "step": 12,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": []
+      },
+      {
+        "step": 13,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": []
+      },
+      {
+        "step": 14,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": []
+      },
+      {
+        "step": 15,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": []
+      },
+      {
+        "step": 16,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": []
+      },
+      {
+        "step": 17,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": []
+      },
+      {
+        "step": 18,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": []
+      },
+      {
+        "step": 19,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": []
+      },
+      {
+        "step": 20,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": []
+      },
+      {
+        "step": 21,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": []
+      },
+      {
+        "step": 22,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": []
+      },
+      {
+        "step": 23,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": []
+      },
+      {
+        "step": 24,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": []
+      },
+      {
+        "step": 25,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": []
+      },
+      {
+        "step": 26,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": []
+      },
+      {
+        "step": 27,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": []
+      },
+      {
+        "step": 28,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": []
+      },
+      {
+        "step": 29,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": []
+      },
+      {
+        "step": 30,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": []
+      },
+      {
+        "step": 31,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": []
+      },
+      {
+        "step": 32,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": [
+          {
+            "otyp": 208,
+            "invlet": "a",
+            "worn": 0
+          }
+        ]
+      },
+      {
+        "step": 33,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": [
+          {
+            "otyp": 208,
+            "invlet": "a",
+            "worn": 0
+          }
+        ]
+      },
+      {
+        "step": 34,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": [
+          {
+            "otyp": 208,
+            "invlet": "a",
+            "worn": 0
+          }
+        ]
+      },
+      {
+        "step": 35,
+        "turn": 2,
+        "form": 343,
+        "amulet": 208,
+        "inventory": [
+          {
+            "otyp": 208,
+            "invlet": "a",
+            "worn": 65536
+          }
+        ]
+      }
+    ],
+    "finalText": "a - a perforated amulet (being worn).\n\n\n\n\n\n\n\n\n\n                                                          ┌──·┐\n                                                          │···│\n                                                          │··o·\n                                                          │···│\n                                                          │···│\n                                                          │···│\n                                                          │@··│\n                                                          └───┘\n\n\n\n\nWizard the Evoker              St:12 Dx:13 Co:14 In:18 Wi:9 Ch:9 Neutral\nDlvl:1 $:0 HP:12(12) Pw:8(8) AC:10 Xp:1",
+    "recentTop": [
+      [
+        "For what do you wish? uncursed amulet of reflection",
+        "",
+        ""
+      ],
+      [
+        "a - a perforated amulet.",
+        "",
+        ""
+      ],
+      [
+        "                                         Amulets",
+        "                                         a - a perforated amulet",
+        "                                         (end)"
+      ],
+      [
+        "                                  Do what with the perforated amulet?",
+        "",
+        "                                  c - Name this specific perforated amulet"
+      ],
+      [
+        "a - a perforated amulet (being worn).",
+        "",
+        ""
+      ]
+    ]
+  },
+  {
+    "name": "nohands-direct-puton-negative",
+    "boundaries": 55,
+    "hashes": {
+      "screens": "a4b301bd014865b62b388289f3cf890641aa516248aed1e51f7fbf213643cf3b",
+      "cursors": "d9b44628d85b6d0924e48494157e6eb2511aae7824a084f9692bc55a64ad10e0",
+      "calls": "7dee8d4636591352274951c0c1a3ce6f3e0ece39906913cd0b827962f8f6e5fc",
+      "slices": "9b8e6cd03e173ae24f1966aafff530f1b2a02ccc5daa41d86a03b66beb33cac7",
+      "frames": "d97fd70779463cae486b9e5bfae5ca63006dce78227ab8290460478d6328ddf2"
+    },
+    "states": [
+      {
+        "step": 0,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": []
+      },
+      {
+        "step": 1,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": []
+      },
+      {
+        "step": 2,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": []
+      },
+      {
+        "step": 3,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": []
+      },
+      {
+        "step": 4,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": []
+      },
+      {
+        "step": 5,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": []
+      },
+      {
+        "step": 6,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": []
+      },
+      {
+        "step": 7,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": []
+      },
+      {
+        "step": 8,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": []
+      },
+      {
+        "step": 9,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": []
+      },
+      {
+        "step": 10,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": []
+      },
+      {
+        "step": 11,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": []
+      },
+      {
+        "step": 12,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": []
+      },
+      {
+        "step": 13,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": []
+      },
+      {
+        "step": 14,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": []
+      },
+      {
+        "step": 15,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": []
+      },
+      {
+        "step": 16,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": []
+      },
+      {
+        "step": 17,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": []
+      },
+      {
+        "step": 18,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": []
+      },
+      {
+        "step": 19,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": []
+      },
+      {
+        "step": 20,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": []
+      },
+      {
+        "step": 21,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": []
+      },
+      {
+        "step": 22,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": []
+      },
+      {
+        "step": 23,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": []
+      },
+      {
+        "step": 24,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": []
+      },
+      {
+        "step": 25,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": []
+      },
+      {
+        "step": 26,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": []
+      },
+      {
+        "step": 27,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": []
+      },
+      {
+        "step": 28,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": []
+      },
+      {
+        "step": 29,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": []
+      },
+      {
+        "step": 30,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": []
+      },
+      {
+        "step": 31,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": []
+      },
+      {
+        "step": 32,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": [
+          {
+            "otyp": 208,
+            "invlet": "a",
+            "worn": 0
+          }
+        ]
+      },
+      {
+        "step": 33,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": [
+          {
+            "otyp": 208,
+            "invlet": "a",
+            "worn": 0
+          }
+        ]
+      },
+      {
+        "step": 34,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": [
+          {
+            "otyp": 208,
+            "invlet": "a",
+            "worn": 0
+          }
+        ]
+      },
+      {
+        "step": 35,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": [
+          {
+            "otyp": 208,
+            "invlet": "a",
+            "worn": 0
+          }
+        ]
+      },
+      {
+        "step": 36,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": [
+          {
+            "otyp": 208,
+            "invlet": "a",
+            "worn": 0
+          }
+        ]
+      },
+      {
+        "step": 37,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": [
+          {
+            "otyp": 208,
+            "invlet": "a",
+            "worn": 0
+          }
+        ]
+      },
+      {
+        "step": 38,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": [
+          {
+            "otyp": 208,
+            "invlet": "a",
+            "worn": 0
+          }
+        ]
+      },
+      {
+        "step": 39,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": [
+          {
+            "otyp": 208,
+            "invlet": "a",
+            "worn": 0
+          }
+        ]
+      },
+      {
+        "step": 40,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": [
+          {
+            "otyp": 208,
+            "invlet": "a",
+            "worn": 0
+          }
+        ]
+      },
+      {
+        "step": 41,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": [
+          {
+            "otyp": 208,
+            "invlet": "a",
+            "worn": 0
+          }
+        ]
+      },
+      {
+        "step": 42,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": [
+          {
+            "otyp": 208,
+            "invlet": "a",
+            "worn": 0
+          }
+        ]
+      },
+      {
+        "step": 43,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": [
+          {
+            "otyp": 208,
+            "invlet": "a",
+            "worn": 0
+          }
+        ]
+      },
+      {
+        "step": 44,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": [
+          {
+            "otyp": 208,
+            "invlet": "a",
+            "worn": 0
+          }
+        ]
+      },
+      {
+        "step": 45,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": [
+          {
+            "otyp": 208,
+            "invlet": "a",
+            "worn": 0
+          }
+        ]
+      },
+      {
+        "step": 46,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": [
+          {
+            "otyp": 208,
+            "invlet": "a",
+            "worn": 0
+          }
+        ]
+      },
+      {
+        "step": 47,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": [
+          {
+            "otyp": 208,
+            "invlet": "a",
+            "worn": 0
+          }
+        ]
+      },
+      {
+        "step": 48,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": [
+          {
+            "otyp": 208,
+            "invlet": "a",
+            "worn": 0
+          }
+        ]
+      },
+      {
+        "step": 49,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": [
+          {
+            "otyp": 208,
+            "invlet": "a",
+            "worn": 0
+          }
+        ]
+      },
+      {
+        "step": 50,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": [
+          {
+            "otyp": 208,
+            "invlet": "a",
+            "worn": 0
+          }
+        ]
+      },
+      {
+        "step": 51,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": [
+          {
+            "otyp": 208,
+            "invlet": "a",
+            "worn": 0
+          }
+        ]
+      },
+      {
+        "step": 52,
+        "turn": 1,
+        "form": 106,
+        "amulet": null,
+        "inventory": [
+          {
+            "otyp": 208,
+            "invlet": "a",
+            "worn": 0
+          }
+        ]
+      },
+      {
+        "step": 53,
+        "turn": 1,
+        "form": 106,
+        "amulet": null,
+        "inventory": [
+          {
+            "otyp": 208,
+            "invlet": "a",
+            "worn": 0
+          }
+        ]
+      },
+      {
+        "step": 54,
+        "turn": 8,
+        "form": 106,
+        "amulet": 208,
+        "inventory": [
+          {
+            "otyp": 208,
+            "invlet": "a",
+            "worn": 65536
+          }
+        ]
+      }
+    ],
+    "finalText": "a - a perforated amulet (being worn).  It misses.  It just misses!--More--\n\n\n\n\n\n\n\n\n\n                                                          ┌──·┐\n                                                          │···│\n                                                          │····\n                                                          │···│\n                                                          │···│\n                                                          │I··│\n                                                          │v··│\n                                                          └───┘\n\n\n\n\nWizard the Fog Cloud           St:12 Dx:13 Co:14 In:18 Wi:9 Ch:9 Neutral\nDlvl:1 $:0 HP:21(21) Pw:8(8) AC:0 HD:3 Blind Fly",
+    "recentTop": [
+      [
+        "Become what kind of monster? [type the name] fog clou",
+        "",
+        ""
+      ],
+      [
+        "Become what kind of monster? [type the name] fog cloud",
+        "",
+        ""
+      ],
+      [
+        "You turn into a fog cloud!",
+        "",
+        ""
+      ],
+      [
+        "What do you want to put on? [a or ?*]",
+        "",
+        ""
+      ],
+      [
+        "a - a perforated amulet (being worn).  It misses.  It just misses!--More--",
+        "",
+        ""
+      ]
+    ]
+  },
+  {
+    "name": "nohands-direct-wear-negative",
+    "boundaries": 54,
+    "hashes": {
+      "screens": "0bf5bab011435d5f3fac7947121bc8e8b7e77c33434ba27bc3afdd53ebdf7298",
+      "cursors": "1d5f6343eaccf5422a90c9301fdf6280883a71f316450b708be6bfc47203b20e",
+      "calls": "454aec170a033fcb6ea88ad880417011e7fba168ddcd7b4c37f9c9759f153218",
+      "slices": "9b7d5c0dd7cd7bcc56f3de72f7a32c4d83396f7e8c1cc47df63b49c54585d92c",
+      "frames": "40b562827d4106f549ef757157290919f3573b7cc415b7acf131dd48f86a1587"
+    },
+    "states": [
+      {
+        "step": 0,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": []
+      },
+      {
+        "step": 1,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": []
+      },
+      {
+        "step": 2,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": []
+      },
+      {
+        "step": 3,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": []
+      },
+      {
+        "step": 4,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": []
+      },
+      {
+        "step": 5,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": []
+      },
+      {
+        "step": 6,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": []
+      },
+      {
+        "step": 7,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": []
+      },
+      {
+        "step": 8,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": []
+      },
+      {
+        "step": 9,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": []
+      },
+      {
+        "step": 10,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": []
+      },
+      {
+        "step": 11,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": []
+      },
+      {
+        "step": 12,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": []
+      },
+      {
+        "step": 13,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": []
+      },
+      {
+        "step": 14,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": []
+      },
+      {
+        "step": 15,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": []
+      },
+      {
+        "step": 16,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": []
+      },
+      {
+        "step": 17,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": []
+      },
+      {
+        "step": 18,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": []
+      },
+      {
+        "step": 19,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": []
+      },
+      {
+        "step": 20,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": []
+      },
+      {
+        "step": 21,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": []
+      },
+      {
+        "step": 22,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": []
+      },
+      {
+        "step": 23,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": []
+      },
+      {
+        "step": 24,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": []
+      },
+      {
+        "step": 25,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": []
+      },
+      {
+        "step": 26,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": []
+      },
+      {
+        "step": 27,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": []
+      },
+      {
+        "step": 28,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": []
+      },
+      {
+        "step": 29,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": []
+      },
+      {
+        "step": 30,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": []
+      },
+      {
+        "step": 31,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": []
+      },
+      {
+        "step": 32,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": [
+          {
+            "otyp": 208,
+            "invlet": "a",
+            "worn": 0
+          }
+        ]
+      },
+      {
+        "step": 33,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": [
+          {
+            "otyp": 208,
+            "invlet": "a",
+            "worn": 0
+          }
+        ]
+      },
+      {
+        "step": 34,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": [
+          {
+            "otyp": 208,
+            "invlet": "a",
+            "worn": 0
+          }
+        ]
+      },
+      {
+        "step": 35,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": [
+          {
+            "otyp": 208,
+            "invlet": "a",
+            "worn": 0
+          }
+        ]
+      },
+      {
+        "step": 36,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": [
+          {
+            "otyp": 208,
+            "invlet": "a",
+            "worn": 0
+          }
+        ]
+      },
+      {
+        "step": 37,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": [
+          {
+            "otyp": 208,
+            "invlet": "a",
+            "worn": 0
+          }
+        ]
+      },
+      {
+        "step": 38,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": [
+          {
+            "otyp": 208,
+            "invlet": "a",
+            "worn": 0
+          }
+        ]
+      },
+      {
+        "step": 39,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": [
+          {
+            "otyp": 208,
+            "invlet": "a",
+            "worn": 0
+          }
+        ]
+      },
+      {
+        "step": 40,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": [
+          {
+            "otyp": 208,
+            "invlet": "a",
+            "worn": 0
+          }
+        ]
+      },
+      {
+        "step": 41,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": [
+          {
+            "otyp": 208,
+            "invlet": "a",
+            "worn": 0
+          }
+        ]
+      },
+      {
+        "step": 42,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": [
+          {
+            "otyp": 208,
+            "invlet": "a",
+            "worn": 0
+          }
+        ]
+      },
+      {
+        "step": 43,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": [
+          {
+            "otyp": 208,
+            "invlet": "a",
+            "worn": 0
+          }
+        ]
+      },
+      {
+        "step": 44,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": [
+          {
+            "otyp": 208,
+            "invlet": "a",
+            "worn": 0
+          }
+        ]
+      },
+      {
+        "step": 45,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": [
+          {
+            "otyp": 208,
+            "invlet": "a",
+            "worn": 0
+          }
+        ]
+      },
+      {
+        "step": 46,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": [
+          {
+            "otyp": 208,
+            "invlet": "a",
+            "worn": 0
+          }
+        ]
+      },
+      {
+        "step": 47,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": [
+          {
+            "otyp": 208,
+            "invlet": "a",
+            "worn": 0
+          }
+        ]
+      },
+      {
+        "step": 48,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": [
+          {
+            "otyp": 208,
+            "invlet": "a",
+            "worn": 0
+          }
+        ]
+      },
+      {
+        "step": 49,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": [
+          {
+            "otyp": 208,
+            "invlet": "a",
+            "worn": 0
+          }
+        ]
+      },
+      {
+        "step": 50,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": [
+          {
+            "otyp": 208,
+            "invlet": "a",
+            "worn": 0
+          }
+        ]
+      },
+      {
+        "step": 51,
+        "turn": 1,
+        "form": 343,
+        "amulet": null,
+        "inventory": [
+          {
+            "otyp": 208,
+            "invlet": "a",
+            "worn": 0
+          }
+        ]
+      },
+      {
+        "step": 52,
+        "turn": 1,
+        "form": 106,
+        "amulet": null,
+        "inventory": [
+          {
+            "otyp": 208,
+            "invlet": "a",
+            "worn": 0
+          }
+        ]
+      },
+      {
+        "step": 53,
+        "turn": 1,
+        "form": 106,
+        "amulet": null,
+        "inventory": [
+          {
+            "otyp": 208,
+            "invlet": "a",
+            "worn": 0
+          }
+        ]
+      }
+    ],
+    "finalText": "Don't even bother.\n\n\n\n\n\n\n\n\n\n                                                          ┌──·┐\n                                                          │···│\n                                                          │····\n                                                          │···│\n                                                          │···│\n                                                          │···│\n                                                          │v··│\n                                                          └───┘\n\n\n\n\nWizard the Fog Cloud           St:12 Dx:13 Co:14 In:18 Wi:9 Ch:9 Neutral\nDlvl:1 $:0 HP:21(21) Pw:8(8) AC:0 HD:3 Blind Fly",
+    "recentTop": [
+      [
+        "Become what kind of monster? [type the name] fog clo",
+        "",
+        ""
+      ],
+      [
+        "Become what kind of monster? [type the name] fog clou",
+        "",
+        ""
+      ],
+      [
+        "Become what kind of monster? [type the name] fog cloud",
+        "",
+        ""
+      ],
+      [
+        "You turn into a fog cloud!",
+        "",
+        ""
+      ],
+      [
+        "Don't even bother.",
+        "",
+        ""
+      ]
+    ]
+  }
+]

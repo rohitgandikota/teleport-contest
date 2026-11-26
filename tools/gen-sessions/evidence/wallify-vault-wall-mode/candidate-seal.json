@@ -1,0 +1,23 @@
+{
+  "classification": "isolated fixed901 one-line wallify wall-mode candidate with original C comparison",
+  "members": 325,
+  "manifestSHA256": "5c60b3d27e4ddd641dca814bca8c709e7098d32fa633c0edd78f34c4bdc49603",
+  "sourceSealSHA256": "d756366a80994a98e1bf995fa4c5c370e2df217b6aa9689367e7296ec4f7f1ff",
+  "baselineSHA256": "9011330c65eaa22e18c1582b1011e319df5c856c1d4553d09fe6bec59c7ca131",
+  "candidateSHA256": "8133ca019502baf0e3a234c856676908ff5f66f8730502ea35db7a2787c65b0b",
+  "runtimeFiles": 280,
+  "changedPaths": [
+    "js/vault.js"
+  ],
+  "patchSHA256": "ce7bb8ac5047aa104e16d6b2d2d12276cded2e9edd382dafa905a0568460244e",
+  "ordinaryBodySHA256": "59fbbaf029ce38e9382f5182bbc306fc49f5f2e6a9c201036e6b51c996445149",
+  "ordinaryCasesPassed": 3,
+  "nativeCasesPassed": 3,
+  "baselineNativeCasesPassed": 2,
+  "negativeOrdinaryHashes": 10,
+  "completeNativeNegativeRowsUnchanged": 2,
+  "rawSHA256": "3c56e3f4e461404b3c83003fbe0ed2b924ba378f9d4c6173c5ef3425b54be5ee",
+  "rawSourcePresent": false,
+  "rawUnchanged": true,
+  "metadataAttributionBeforeGameImports": true
+}

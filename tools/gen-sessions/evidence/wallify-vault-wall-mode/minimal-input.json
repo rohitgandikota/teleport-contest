@@ -1,0 +1,26 @@
+{
+  "version": 5,
+  "segments": [
+    {
+      "seed": 7303,
+      "datetime": "20000115090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00162\r#wizintrinsic\r100i\r  \u001b\u001b\u0017500 gold pieces\r\u0014kkkkkkkkkkkkkhhhhh.   \u001b\u001b#wizintrinsic\r>30f\r  \u001b\u001bh  k  k  l  \u0017nondiggable wall\r  h  j  j  l  \u0017uncursed wand of digging (0:10)\r  zok  l  l  l  l  k  \u0017throne\r  \u0017floor\r  E- proof\r  \u0017wall\r  \u0017doorless doorway\r  j  h  h  h  h  ................................... intruder\r  \u001b\u001bd$  l  l  l   \u001b\u001b#wizintrinsic\r>100f\r  \u001b\u001bk  k  h  h  h  ............................................................",
+      "name": "blind-unmapped-dig-north"
+    },
+    {
+      "seed": 7303,
+      "datetime": "20000115090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00162\r\u0006#wizintrinsic\r100i\r  \u001b\u001b\u0017500 gold pieces\r\u0014kkkkkkkkkkkkkhhhhh.   \u001b\u001b#wizintrinsic\r>30f\r  \u001b\u001bh  k  k  l  \u0017nondiggable wall\r  h  j  j  l  \u0017uncursed wand of digging (0:10)\r  zok  l  l  l  l  k  \u0017throne\r  \u0017floor\r  E- proof\r  \u0017wall\r  \u0017doorless doorway\r  j  h  h  h  h  ................................... intruder\r  \u001b\u001bd$  l  l  l   \u001b\u001b#wizintrinsic\r>100f\r  \u001b\u001bk  k  h  h  h  ............................................................",
+      "name": "blind-mapped-dig-north"
+    },
+    {
+      "seed": 7303,
+      "datetime": "20000115090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00162\r#wizintrinsic\r100i\r  \u001b\u001b\u0017500 gold pieces\r\u0014kkkkkkkkkkkkkhhhhh.   \u001b\u001b#wizintrinsic\r>30f\r  \u001b\u001bh  k  k  l  \u0017nondiggable wall\r  h  j  j  l  \u0017uncursed wand of digging (0:10)\r  l  l  l  l  k  \u0017throne\r  \u0017floor\r  E- proof\r  \u0017wall\r  \u0017doorless doorway\r  j  h  h  h  h  ................................... intruder\r  \u001b\u001bd$  l  l  l   \u001b\u001b#wizintrinsic\r>100f\r  \u001b\u001bk  k  h  h  h  ............................................................",
+      "name": "blind-unmapped-intact-north"
+    }
+  ]
+}

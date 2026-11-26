@@ -291,6 +291,7 @@ async function wallify_vault(guard) {
             loc.flags = 0;
             loc.doormask = 0;
             loc.wall_info = 0;
+            xy_set_wall_state(x, y);
             const engraving = engr_at(x, y);
             if (engraving)
                 del_engr(engraving);

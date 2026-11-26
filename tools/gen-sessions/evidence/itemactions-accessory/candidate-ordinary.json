@@ -1,0 +1,102 @@
+[
+  {
+    "name": "nohands-inventory-amulet",
+    "passed": true,
+    "failures": [],
+    "hashes": {
+      "screens": "34cb6b87da032961ed6a2528afee08baa0b79fc3a2a20a0d4063bf67e1e90e2a",
+      "cursors": "0c8e5120af6983cd43280d169e547be2127bcb10245ae97e20bcd77e19a33a6c",
+      "calls": "454aec170a033fcb6ea88ad880417011e7fba168ddcd7b4c37f9c9759f153218",
+      "slices": "5d789095a0566216852a1641789af6fb87363be8c3636a299413dafc6845f4fb",
+      "frames": "c2f28f692055aed56f09c92ae17d40f28620e693eadddc36b360d357a1136ea6"
+    },
+    "final": {
+      "step": 55,
+      "turn": 1,
+      "form": 106,
+      "amulet": null,
+      "inventory": [
+        {
+          "otyp": 208,
+          "invlet": "a",
+          "worn": 0
+        }
+      ]
+    }
+  },
+  {
+    "name": "human-inventory-amulet-negative",
+    "passed": true,
+    "failures": [],
+    "hashes": {
+      "screens": "a290aa265d25d7bc013c61fa3cfb2485c4cb4a1049c07504343da6d5caa60599",
+      "cursors": "bab0589a6be6719484d6bca1d7065f51258ba4ee165e4dd24d18cf5132f50e31",
+      "calls": "2384d5cae2ac702e653182ee1bf0cfeed69b36f7852b33ff64c9e64b01341c93",
+      "slices": "21a7f79b1264f74322110165ad1b58fe0aa8a5994b81b8350e2b3c47dba4f7a2",
+      "frames": "d7e05d62119e6c5eb0f72a659df5eabe0a9c28413e532b84dc2b1acd8f02d171"
+    },
+    "final": {
+      "step": 35,
+      "turn": 2,
+      "form": 343,
+      "amulet": 208,
+      "inventory": [
+        {
+          "otyp": 208,
+          "invlet": "a",
+          "worn": 65536
+        }
+      ]
+    }
+  },
+  {
+    "name": "nohands-direct-puton-negative",
+    "passed": true,
+    "failures": [],
+    "hashes": {
+      "screens": "a4b301bd014865b62b388289f3cf890641aa516248aed1e51f7fbf213643cf3b",
+      "cursors": "d9b44628d85b6d0924e48494157e6eb2511aae7824a084f9692bc55a64ad10e0",
+      "calls": "7dee8d4636591352274951c0c1a3ce6f3e0ece39906913cd0b827962f8f6e5fc",
+      "slices": "9b8e6cd03e173ae24f1966aafff530f1b2a02ccc5daa41d86a03b66beb33cac7",
+      "frames": "d97fd70779463cae486b9e5bfae5ca63006dce78227ab8290460478d6328ddf2"
+    },
+    "final": {
+      "step": 54,
+      "turn": 8,
+      "form": 106,
+      "amulet": 208,
+      "inventory": [
+        {
+          "otyp": 208,
+          "invlet": "a",
+          "worn": 65536
+        }
+      ]
+    }
+  },
+  {
+    "name": "nohands-direct-wear-negative",
+    "passed": true,
+    "failures": [],
+    "hashes": {
+      "screens": "0bf5bab011435d5f3fac7947121bc8e8b7e77c33434ba27bc3afdd53ebdf7298",
+      "cursors": "1d5f6343eaccf5422a90c9301fdf6280883a71f316450b708be6bfc47203b20e",
+      "calls": "454aec170a033fcb6ea88ad880417011e7fba168ddcd7b4c37f9c9759f153218",
+      "slices": "9b7d5c0dd7cd7bcc56f3de72f7a32c4d83396f7e8c1cc47df63b49c54585d92c",
+      "frames": "40b562827d4106f549ef757157290919f3573b7cc415b7acf131dd48f86a1587"
+    },
+    "final": {
+      "step": 53,
+      "turn": 1,
+      "form": 106,
+      "amulet": null,
+      "inventory": [
+        {
+          "otyp": 208,
+          "invlet": "a",
+          "worn": 0
+        }
+      ]
+    }
+  }
+]

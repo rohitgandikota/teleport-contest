@@ -1,0 +1,4 @@
+{"name":"nohands-inventory-amulet","passed":false,"failures":["Expected values to be strictly equal:\n\ntrue !== false\n","Don't even bother."]}
+{"name":"human-inventory-amulet-negative","passed":true,"failures":[]}
+{"name":"nohands-direct-puton-negative","passed":true,"failures":[]}
+{"name":"nohands-direct-wear-negative","passed":true,"failures":[]}

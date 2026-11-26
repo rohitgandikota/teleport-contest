@@ -1,0 +1,58 @@
+{
+  "name": "itemactions-accessory",
+  "classification": "source predictions before runtime probe or candidate",
+  "runtime": "c425a83669d913cce211a9665a4513bbdcb44fb5753dcd20f23d243eb10b094a",
+  "segments": [
+    {
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!autoquiver,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "nohands-inventory-amulet",
+      "moves": " \u0017uncursed amulet of reflection\r#polyself\rfog cloud\riaP"
+    },
+    {
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!autoquiver,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "human-inventory-amulet-negative",
+      "moves": " \u0017uncursed amulet of reflection\riaP"
+    },
+    {
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!autoquiver,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "nohands-direct-puton-negative",
+      "moves": " \u0017uncursed amulet of reflection\r#polyself\rfog cloud\rPa"
+    },
+    {
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!autoquiver,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "name": "nohands-direct-wear-negative",
+      "moves": " \u0017uncursed amulet of reflection\r#polyself\rfog cloud\rW"
+    }
+  ],
+  "expectations": [
+    {
+      "name": "nohands-inventory-amulet",
+      "message": "Don't even bother.",
+      "amuletWorn": false
+    },
+    {
+      "name": "human-inventory-amulet-negative",
+      "message": null,
+      "amuletWorn": true
+    },
+    {
+      "name": "nohands-direct-puton-negative",
+      "message": null,
+      "amuletWorn": true
+    },
+    {
+      "name": "nohands-direct-wear-negative",
+      "message": "Don't even bother.",
+      "amuletWorn": false
+    }
+  ],
+  "source": "iactions.c496-524 maps P to IA_WEAR_OBJ; itemactions_pushkeys IA_WEAR_OBJ calls dowear. do_wear.c2432 dowear rejects nohands before selection; doputon lacks that check; accessory_or_armor_on permits amulets without hands."
+}

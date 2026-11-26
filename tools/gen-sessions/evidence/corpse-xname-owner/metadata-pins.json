@@ -1,0 +1,40 @@
+{
+  "files": {
+    "gen-sessions/evidence/corpse-xname-owner/health-metadata-v1/README.md": "3c37eba81fd295f6f9c4ab47f5238bb126d47643c58c1aca742ef5dec119c0bc",
+    "gen-sessions/evidence/corpse-xname-owner/health-metadata-v1/input-lock.json": "e02810cd963f5bfc2399e54aecfd2b657d3a8ad9f11ffb021965c39526b9c9ff",
+    "gen-sessions/evidence/corpse-xname-owner/health-metadata-v1/recipes/corpse-xname-owner.json": "232c51c6abcedbf5bb9d5694a7e265491d1e15a6ee78cd801462fc454c73cc8c",
+    "gen-sessions/evidence/corpse-xname-owner/health-metadata-v1/reports/ordinary-baseline.json": "1451daa28364cfa4900075eeb483652ba4b79e8962932c6006c9764705ac25ae",
+    "gen-sessions/evidence/corpse-xname-owner/input-lock.json": "0e205908567c292d5d64a9feb263f9a6204f8d2a57af8b107deb29232aac0927",
+    "gen-sessions/evidence/corpse-xname-owner/input-proposals.json": "6a2f0bf21e28cc6021a32ff2df03e8404d37a2accb3b6c7fa9a35c9d390583c0",
+    "gen-sessions/evidence/corpse-xname-owner/open-contracts.json": "d3849973ac72b9405f0a1592aa79acb7412464c8c5648b4eac9e1e7e3d203fbf",
+    "gen-sessions/evidence/corpse-xname-owner/original-diagnostic.mjs": "5904c20dcb0bcaa84d3c4cb16af10b5c9b987a0a9df2bf5827faa972b2f8a52f",
+    "gen-sessions/evidence/corpse-xname-owner/original-ordinary.mjs": "137bd301280e74bea66eed34bc62999eec41a4515012e2cf9c91db85b91fe5e6",
+    "gen-sessions/evidence/corpse-xname-owner/parent-baseline-native.json": "4eaa3b1164dd1cafea1b56f7aa0cfea67c97206be1d93475d2d81dee39685b8e",
+    "gen-sessions/evidence/corpse-xname-owner/parent-candidate-native.json": "dd91562ae4bf8fb1709e1c6a7eafee91db91e724f876a058e9115168d58806b1",
+    "gen-sessions/evidence/corpse-xname-owner/parent-native-checks.json": "1c5e41dfd752e0faa8a93f7b077d3da8f49afb90b52cb9d3d9312c8e115593ae",
+    "gen-sessions/evidence/corpse-xname-owner/parent-recording.json": "c3d7d3c597265e8125b669935a7e56110955b10a628e3fdd64bc7b341d43b825",
+    "gen-sessions/evidence/corpse-xname-owner/relocation.json": "760f3a1ebe120c6868faffb7e0eacac01b6b783fab69c23739956c3e9fbfa5e4",
+    "gen-sessions/evidence/corpse-xname-owner/source-diagnostic-report.json": "bc6ee7c35f8ebef9f293d37a6b0718ab7789eb40157f2b28dc3cc308c242c576",
+    "gen-sessions/evidence/corpse-xname-owner/source-ordinary-report.json": "42e4771d4e53526b42e779e857704916b8b107f113fb68f334bbd75cb8935ee8",
+    "gen-sessions/evidence/corpse-xname-owner/source-seal.json": "7f56eca19787e963d356b0d90303ccd1e2acc15b8a9274cf36cc7eedb2396868",
+    "gen-sessions/evidence/corpse-xname-owner/source-setup.json": "7a1b0209dd6ad61decb57cc638d187a71dab541e4479156efe7168ff018aad02",
+    "gen-sessions/recipes/corpse-xname-owner.json": "bc1799e7583e43752dfb2e5646ea87c68ab4897fe2018f92bb8bf897e7896ed6",
+    "corpse-xname-owner-controls.mjs": "9ccbebfd181b960e0a9830e1f6ace69a76f85d05080594b396e630341caa4e12",
+    "corpse-xname-diagnostic.mjs": "81d1a80d3eeffb1adb2c88f21c7a20efb43647e795a178201dda4c8d238e19ee",
+    "corpse-xname-ordinary.mjs": "fdd0aaf7dba80e978b043b67ccc3878bdf015da24fc1d259029d0e6b9bebabfe"
+  },
+  "sourceSealSHA256": "7f56eca19787e963d356b0d90303ccd1e2acc15b8a9274cf36cc7eedb2396868",
+  "sourceRuntimeSHA256": "603af569fdfef9aad8e37808e66c07f947b23b9a33a19f63d8d77a013e92f246",
+  "native": {
+    "path": "gen-sessions/generated/corpse-xname-owner.session.json",
+    "sha256": "13990943b540a0f3b08f4752fe68249b1aa43da2ca210e2a12b93a5d91d7c309",
+    "bytes": 3056105,
+    "source": "c",
+    "version": 5,
+    "segments": 4,
+    "keys": 729,
+    "boundaries": 733,
+    "calls": 23926,
+    "frames": 0
+  }
+}

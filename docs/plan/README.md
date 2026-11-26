@@ -12,34 +12,29 @@ Ground rules are in `/CLAUDE.md`. Read that first if you have not.
 
 ## Current focus, 2026-11-25
 
-The 21:12 EST official recheck remains rank 7, with 812 unmatched screens and
-42/56 held-out passes. Public stays 44/44. Its 20:32 EST scored row predates
-four recent pushes, and does not identify the scored commit. The regression
-audit proved a missing arrival-newsym await introduced by the engulfer change;
-that await is restored in the published guard checkpoint. Its contribution to
-the held-out score is unknown.
+Fruit and text bytes are pushed as `5569e6a4`. All 916 maintained recordings
+pass, covering 928,624 screens/cursors, 20,137,721 random calls and 33,131 frames.
+All 1,207 tested files match the published tree. The 18 new native cases improve
+from 6/18 to 18/18, with eleven retained guard reports unchanged. Seven portable
+gates, 70 retained checks and 142 selected/public and strict replays also pass.
+The initial 906/915 failure and three older blank-style differences remain
+explicit in the evidence.
 
-Species bounds are pushed as aa9ecbbd and pass all 911 recordings. Guard
-cleanup and diagnostic ordering are pushed as 80049d92 and pass all 912
-recordings, 80 selected/public checks, 80 strict checks and 35 retained checks.
-Both published trees match their complete NFS verification inputs.
+Conditional guard naming is pushed as `8c978c3f`. Its six native cases improve
+from 4/6 to 6/6, repairing 18 boundaries. All 913 recordings and the focused
+checks pass, with all 1,204 tested files matching the published tree.
 
-Fruit/text and its menu-color prerequisite are integrated locally. All eighteen
-fruit and five prior guard native comparisons match. The initial full915 run
-passed906/915, exposing nine screen regressions. A reviewed mixed-message glyph
-correction restores all nine to their published behavior and passes16 source
-controls. Fresh70 retained checks,142 selected/public recordings and142 strict checks
-pass. Full916 passes all916 recordings with928,624 screens/cursors,
-20,137,721 RNG positions and33,131 frames. Seven portable gates and29 native
-cases pass; the18 fruit cases improve from6/18 on published8c978 to18/18.
-The exact verified checkpoint is being prepared for immediate publication. The old full-style blank
-cell differences in three fixtures remain open and explicit.
+The current corpse naming fix changes only objnam.js. Forty owner controls and
+all four native cases pass, versus three native cases before the fix. All 31
+retained checks, 122 selected/public replays and 122 strict workers pass. All
+917 recordings pass on NFS, covering 929,357 screens/cursors, 20,161,647 random
+calls and 33,131 frames. The checkpoint is ready for immediate publication. Three unchanged killer_xname field-restoration diagnostics
+remain open. See STATUS for exact inputs and the immediate publication steps.
 
-Conditional guard naming independently improves six C cases from4/6 to6/6,
-repairing18 boundaries. Its87 normal,87 strict,35 retained and30 portable checks
-pass. The fix is pushed as8c978c3f. Full913 passes all913 recordings, and all
-1,204 tested files match the published tree. Pending fruit changes are separate. See STATUS for
-exact source graphs, receipts and publication steps.
+The last official recheck at 22:05 EST returned the 21:05 feed: rank 7,
+812 unmatched screens, 44/44 public and 42/56 held-out passes. Its 20:32 scored
+row predates these pushes and identifies no exact commit. Local verification
+establishes no newer held-out result.
 
 Shopkeeper re-entry is pushed as `31a63071`. All 906 maintained recordings
 pass on the exact published runtime with two NFS CPU workers, default budgets

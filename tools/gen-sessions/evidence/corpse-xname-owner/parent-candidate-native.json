@@ -1,0 +1,302 @@
+[
+  {
+    "segment": 0,
+    "name": "blind-plural-contact",
+    "boundaries": {
+      "expected": 193,
+      "actual": 193
+    },
+    "frozenScreens": 193,
+    "fullStyleScreens": 193,
+    "matchingStyleCells": 370560,
+    "totalCells": 370560,
+    "blankStyleMismatches": 0,
+    "nonblankStyleMismatches": 0,
+    "glyphMismatches": 0,
+    "screenDifferences": [],
+    "cursors": {
+      "expected": 193,
+      "actual": 193,
+      "matched": 193,
+      "firstDifference": null
+    },
+    "calls": {
+      "rawExpected": 5981,
+      "rawActual": 5981,
+      "discardedEntries": 0,
+      "expected": 5981,
+      "actual": 5981,
+      "firstDifference": null
+    },
+    "slices": {
+      "expected": 193,
+      "actual": 193,
+      "matched": 193,
+      "differences": []
+    },
+    "frames": {
+      "expected": 0,
+      "actual": 0,
+      "expectedSlices": 193,
+      "actualSlices": 193,
+      "countMismatches": [],
+      "fullStyleMatches": 0,
+      "cursorMatches": 0
+    },
+    "rawHashes": {
+      "c": {
+        "screens": "9e51c8e244c8fbbb98fcdb15bc91c8f6fe25f29a1df31bad02f5f7155ca92aec",
+        "cursors": "a5650b6c7bc0dab8b4eac1ed08a0441346b80c0fb0538375f21db52581dc5322",
+        "calls": "a47a5689fd5df645970162ccee6ef2cd03602ffd47c0680e4e40338fcb1510fb",
+        "slices": "7bc01807890ef88861791abc5037fe459836ce00f1b8b1344ca7456a98c62398",
+        "frames": "0b76a70a0a4ad537b43a47edf8b32b1b455ac736cefc0b0008aa8f05f6d93efe"
+      },
+      "js": {
+        "screens": "4cb43ef900539bad588134c2f18a1d1a8b45bd32736c3c698bfcf4b46ffa345b",
+        "cursors": "a5650b6c7bc0dab8b4eac1ed08a0441346b80c0fb0538375f21db52581dc5322",
+        "calls": "1965da0f950e3a4610c4290a5e27ee815fb669f9e27008f3187c1be2372aa3a0",
+        "slices": "8cc54f195ecf934783a581a3d59185a6b4d39879de12353958b444a317c7a3df",
+        "frames": "0b76a70a0a4ad537b43a47edf8b32b1b455ac736cefc0b0008aa8f05f6d93efe"
+      }
+    },
+    "normalizedHashes": {
+      "c": {
+        "calls": "1965da0f950e3a4610c4290a5e27ee815fb669f9e27008f3187c1be2372aa3a0",
+        "slices": "8cc54f195ecf934783a581a3d59185a6b4d39879de12353958b444a317c7a3df"
+      },
+      "js": {
+        "calls": "1965da0f950e3a4610c4290a5e27ee815fb669f9e27008f3187c1be2372aa3a0",
+        "slices": "8cc54f195ecf934783a581a3d59185a6b4d39879de12353958b444a317c7a3df"
+      }
+    },
+    "frozenScreenCursorExact": true,
+    "fullRngExact": true,
+    "fullStyleExact": true,
+    "animationExact": true
+  },
+  {
+    "segment": 1,
+    "name": "sighted-plural-contact-negative",
+    "boundaries": {
+      "expected": 163,
+      "actual": 163
+    },
+    "frozenScreens": 163,
+    "fullStyleScreens": 163,
+    "matchingStyleCells": 312960,
+    "totalCells": 312960,
+    "blankStyleMismatches": 0,
+    "nonblankStyleMismatches": 0,
+    "glyphMismatches": 0,
+    "screenDifferences": [],
+    "cursors": {
+      "expected": 163,
+      "actual": 163,
+      "matched": 163,
+      "firstDifference": null
+    },
+    "calls": {
+      "rawExpected": 6228,
+      "rawActual": 6228,
+      "discardedEntries": 0,
+      "expected": 6228,
+      "actual": 6228,
+      "firstDifference": null
+    },
+    "slices": {
+      "expected": 163,
+      "actual": 163,
+      "matched": 163,
+      "differences": []
+    },
+    "frames": {
+      "expected": 0,
+      "actual": 0,
+      "expectedSlices": 163,
+      "actualSlices": 163,
+      "countMismatches": [],
+      "fullStyleMatches": 0,
+      "cursorMatches": 0
+    },
+    "rawHashes": {
+      "c": {
+        "screens": "e7c87e09108ab04be895147d393b07b0d946e0527f4b76f2bd670fc531095e80",
+        "cursors": "351d03e6e495da037843661d7824cb06b546162d42c273fae7773934fffa6880",
+        "calls": "cff8bbfd363a78a7dd28d39fe638302cec40f6d1a6214e1aab7654c6f050e7c9",
+        "slices": "ebb899d1a326cb912e14845f3e2dc10c28324b3d5ac50ba454f74bf01c72d335",
+        "frames": "88d054e863deab8e02c0771a1d29bc1196bfe76107b0f91192ac96df28b3c7e2"
+      },
+      "js": {
+        "screens": "4138c2ae408db44cd62faa5c4efd60f842cc7be9ed048c6a4a74143b2c34c747",
+        "cursors": "351d03e6e495da037843661d7824cb06b546162d42c273fae7773934fffa6880",
+        "calls": "2f0dcba25b1b773aceb2227cf5b3d673aa849c419124f706ce3ccc5d801b3a29",
+        "slices": "b23411e399888c3429ef1bceee448e366258a0ea5ef5a93c6ddb21e403c1368e",
+        "frames": "88d054e863deab8e02c0771a1d29bc1196bfe76107b0f91192ac96df28b3c7e2"
+      }
+    },
+    "normalizedHashes": {
+      "c": {
+        "calls": "2f0dcba25b1b773aceb2227cf5b3d673aa849c419124f706ce3ccc5d801b3a29",
+        "slices": "b23411e399888c3429ef1bceee448e366258a0ea5ef5a93c6ddb21e403c1368e"
+      },
+      "js": {
+        "calls": "2f0dcba25b1b773aceb2227cf5b3d673aa849c419124f706ce3ccc5d801b3a29",
+        "slices": "b23411e399888c3429ef1bceee448e366258a0ea5ef5a93c6ddb21e403c1368e"
+      }
+    },
+    "frozenScreenCursorExact": true,
+    "fullRngExact": true,
+    "fullStyleExact": true,
+    "animationExact": true
+  },
+  {
+    "segment": 2,
+    "name": "blind-plural-held-negative",
+    "boundaries": {
+      "expected": 187,
+      "actual": 187
+    },
+    "frozenScreens": 187,
+    "fullStyleScreens": 187,
+    "matchingStyleCells": 359040,
+    "totalCells": 359040,
+    "blankStyleMismatches": 0,
+    "nonblankStyleMismatches": 0,
+    "glyphMismatches": 0,
+    "screenDifferences": [],
+    "cursors": {
+      "expected": 187,
+      "actual": 187,
+      "matched": 187,
+      "firstDifference": null
+    },
+    "calls": {
+      "rawExpected": 5736,
+      "rawActual": 5736,
+      "discardedEntries": 0,
+      "expected": 5736,
+      "actual": 5736,
+      "firstDifference": null
+    },
+    "slices": {
+      "expected": 187,
+      "actual": 187,
+      "matched": 187,
+      "differences": []
+    },
+    "frames": {
+      "expected": 0,
+      "actual": 0,
+      "expectedSlices": 187,
+      "actualSlices": 187,
+      "countMismatches": [],
+      "fullStyleMatches": 0,
+      "cursorMatches": 0
+    },
+    "rawHashes": {
+      "c": {
+        "screens": "c840808f4dc4a4a3f9337daeecc10ef001879709f52e888148d5e4d22cd0aec8",
+        "cursors": "08d062a8ec903e95545c19b3aabb4efe9f9891e9d6afdca276170c0d41897c7b",
+        "calls": "daea4e2d525e9bb1e1bbe7a6457d0c7d2491abbad7162f5f9b51680fda888c6d",
+        "slices": "c15cb7a69f99e0ab2b00e1d9fd856ad5cfa7291aeadff738e830f8c774ade776",
+        "frames": "f4e03316426f139350ebfa0d2dadeb98da3ef5db1b97e1ac40900b5058e5ebb4"
+      },
+      "js": {
+        "screens": "8fd7842e5a22362223222aac6fb02388a20f0232401887c95bdbfd7c4b6d1b50",
+        "cursors": "08d062a8ec903e95545c19b3aabb4efe9f9891e9d6afdca276170c0d41897c7b",
+        "calls": "f82223198d0ea5b883c97992fa3446a7f02680241f3185bbd673dd37990ae2b7",
+        "slices": "b53bfda3665e0066dbfdc0c0dfbe49732c466302b6ea572dd73f92cbc0179948",
+        "frames": "f4e03316426f139350ebfa0d2dadeb98da3ef5db1b97e1ac40900b5058e5ebb4"
+      }
+    },
+    "normalizedHashes": {
+      "c": {
+        "calls": "f82223198d0ea5b883c97992fa3446a7f02680241f3185bbd673dd37990ae2b7",
+        "slices": "b53bfda3665e0066dbfdc0c0dfbe49732c466302b6ea572dd73f92cbc0179948"
+      },
+      "js": {
+        "calls": "f82223198d0ea5b883c97992fa3446a7f02680241f3185bbd673dd37990ae2b7",
+        "slices": "b53bfda3665e0066dbfdc0c0dfbe49732c466302b6ea572dd73f92cbc0179948"
+      }
+    },
+    "frozenScreenCursorExact": true,
+    "fullRngExact": true,
+    "fullStyleExact": true,
+    "animationExact": true
+  },
+  {
+    "segment": 3,
+    "name": "blind-singular-contact-negative",
+    "boundaries": {
+      "expected": 190,
+      "actual": 190
+    },
+    "frozenScreens": 190,
+    "fullStyleScreens": 190,
+    "matchingStyleCells": 364800,
+    "totalCells": 364800,
+    "blankStyleMismatches": 0,
+    "nonblankStyleMismatches": 0,
+    "glyphMismatches": 0,
+    "screenDifferences": [],
+    "cursors": {
+      "expected": 190,
+      "actual": 190,
+      "matched": 190,
+      "firstDifference": null
+    },
+    "calls": {
+      "rawExpected": 5981,
+      "rawActual": 5981,
+      "discardedEntries": 0,
+      "expected": 5981,
+      "actual": 5981,
+      "firstDifference": null
+    },
+    "slices": {
+      "expected": 190,
+      "actual": 190,
+      "matched": 190,
+      "differences": []
+    },
+    "frames": {
+      "expected": 0,
+      "actual": 0,
+      "expectedSlices": 190,
+      "actualSlices": 190,
+      "countMismatches": [],
+      "fullStyleMatches": 0,
+      "cursorMatches": 0
+    },
+    "rawHashes": {
+      "c": {
+        "screens": "4c10130975262c7cce13fa2562614a5274b7e0ca391e68380ddd7bed7f56d549",
+        "cursors": "fa5746123e9c5bb8601b33f1c815f15b6679e6d062cfd67a265746c7f05a34e7",
+        "calls": "a47a5689fd5df645970162ccee6ef2cd03602ffd47c0680e4e40338fcb1510fb",
+        "slices": "f7c809072d68dca1b0e5e468dd4e962813b4e53c90100b6fe991222d09219658",
+        "frames": "558bb1113fd1d1a37d9a4e0a25e95d38f2cf4dd27f1307a070018a9d55f44a5f"
+      },
+      "js": {
+        "screens": "edcd770a5dbf85e1ef1dc0e4896dcb84496dce56528dd7c1504262756e4f7a24",
+        "cursors": "fa5746123e9c5bb8601b33f1c815f15b6679e6d062cfd67a265746c7f05a34e7",
+        "calls": "1965da0f950e3a4610c4290a5e27ee815fb669f9e27008f3187c1be2372aa3a0",
+        "slices": "9a457744814926e63992cff3f28b1be142222d72b47709abef21ab2426736844",
+        "frames": "558bb1113fd1d1a37d9a4e0a25e95d38f2cf4dd27f1307a070018a9d55f44a5f"
+      }
+    },
+    "normalizedHashes": {
+      "c": {
+        "calls": "1965da0f950e3a4610c4290a5e27ee815fb669f9e27008f3187c1be2372aa3a0",
+        "slices": "9a457744814926e63992cff3f28b1be142222d72b47709abef21ab2426736844"
+      },
+      "js": {
+        "calls": "1965da0f950e3a4610c4290a5e27ee815fb669f9e27008f3187c1be2372aa3a0",
+        "slices": "9a457744814926e63992cff3f28b1be142222d72b47709abef21ab2426736844"
+      }
+    },
+    "frozenScreenCursorExact": true,
+    "fullRngExact": true,
+    "fullStyleExact": true,
+    "animationExact": true
+  }
+]

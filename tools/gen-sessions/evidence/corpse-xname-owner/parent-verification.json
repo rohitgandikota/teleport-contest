@@ -1,0 +1,138 @@
+{
+  "baselineCommit": "5569e6a41be691eb698f5e97cff4b65d6bf67682",
+  "cSourcePin": "16ff59115315917b93185d026aeefea06db9b0f4",
+  "runtimeChanged": [
+    "js/objnam.js"
+  ],
+  "runtimeFiles": 280,
+  "runtimeSHA256": "309f0c98243645b1565e61979fd09d6cfade2c58588361151c3d7f113c3f553b",
+  "sourceOwner": {
+    "passed": 40,
+    "total": 40
+  },
+  "ordinary": {
+    "passed": 4,
+    "total": 4
+  },
+  "native": {
+    "baseline": 3,
+    "candidate": 4,
+    "cases": 4,
+    "boundaries": 733,
+    "calls": 23926,
+    "frames": 0,
+    "repairedBoundaries": 1,
+    "negativeCompleteReportsUnchanged": 3,
+    "negativeOutputHashesUnchanged": 15,
+    "checks": [
+      {
+        "runtime": "baseline",
+        "command": [
+          "node",
+          "--max-old-space-size=512",
+          "--preserve-symlinks",
+          "--preserve-symlinks-main",
+          "/Users/rohit/research/code/contest/.cache/restart-20261122/fruit-text-corrected-parent-replay-root/tools/tty-text-window-native-gate.mjs",
+          "/Users/rohit/research/code/contest/.cache/restart-20261122/corpse-xname-owner-parent-native.session.json",
+          "/Users/rohit/research/code/contest/.cache/restart-20261122/corpse-xname-owner-parent-composed-baseline-native.json"
+        ],
+        "exit": 1,
+        "seconds": 1.41,
+        "exact": 3,
+        "total": 4,
+        "report": ".cache/restart-20261122/corpse-xname-owner-parent-composed-baseline-native.json",
+        "reportSHA256": "4eaa3b1164dd1cafea1b56f7aa0cfea67c97206be1d93475d2d81dee39685b8e",
+        "log": ".cache/restart-20261122/corpse-xname-owner-parent-composed-baseline-native.log",
+        "logSHA256": "3573081feab9804bf0542673d77ae705d7faa640ff45c1633f7f16f9a00d53cd",
+        "sourceReportSHA256": "4eaa3b1164dd1cafea1b56f7aa0cfea67c97206be1d93475d2d81dee39685b8e",
+        "runtimeSHA256": "227567f7163bcc49aa09addaaac59478a05d0f7799404dd662d13bf133519f5a"
+      },
+      {
+        "runtime": "candidate",
+        "command": [
+          "node",
+          "--max-old-space-size=512",
+          "--preserve-symlinks",
+          "--preserve-symlinks-main",
+          "/Users/rohit/research/code/contest/.cache/restart-20261122/corpse-xname-owner-parent-composed-native-runner/tools/tty-text-window-native-gate.mjs",
+          "/Users/rohit/research/code/contest/.cache/restart-20261122/corpse-xname-owner-parent-native.session.json",
+          "/Users/rohit/research/code/contest/.cache/restart-20261122/corpse-xname-owner-parent-composed-candidate-native.json"
+        ],
+        "exit": 0,
+        "seconds": 1.33,
+        "exact": 4,
+        "total": 4,
+        "report": ".cache/restart-20261122/corpse-xname-owner-parent-composed-candidate-native.json",
+        "reportSHA256": "dd91562ae4bf8fb1709e1c6a7eafee91db91e724f876a058e9115168d58806b1",
+        "log": ".cache/restart-20261122/corpse-xname-owner-parent-composed-candidate-native.log",
+        "logSHA256": "febb44a191856b65833f8e86d8c5fee7a24ec1db3eff22686c8b221c3c77763e",
+        "sourceReportSHA256": "dd91562ae4bf8fb1709e1c6a7eafee91db91e724f876a058e9115168d58806b1",
+        "runtimeSHA256": "309f0c98243645b1565e61979fd09d6cfade2c58588361151c3d7f113c3f553b"
+      }
+    ]
+  },
+  "retained": {
+    "passed": 31,
+    "total": 31,
+    "receiptSHA256": "4a38a090f5a9039e2f1062cfdda3ba900bfa39c20614d072a669525986cbb837"
+  },
+  "selectedPublic": {
+    "passed": 122,
+    "total": 122
+  },
+  "strict8s": {
+    "passed": 122,
+    "total": 122
+  },
+  "openDiagnostic": {
+    "command": [
+      "node",
+      "--max-old-space-size=512",
+      "tools/corpse-xname-diagnostic-gate.mjs",
+      ".cache/restart-20261122/corpse-xname-owner-main-open-diagnostic.json"
+    ],
+    "exit": 1,
+    "passed": 43,
+    "total": 46,
+    "failures": [
+      "killer_xname plural",
+      "killer_xname singular",
+      "killer_xname random cleric"
+    ],
+    "report": ".cache/restart-20261122/corpse-xname-owner-main-open-diagnostic.json",
+    "reportSHA256": "bc6ee7c35f8ebef9f293d37a6b0718ab7789eb40157f2b28dc3cc308c242c576",
+    "log": ".cache/restart-20261122/corpse-xname-owner-main-open-diagnostic.log",
+    "logSHA256": "09e53d9a6d4459082b481673f32b1ff6b950c7d8589c94de0c23c7ee32733d76",
+    "completeReportUnchanged": true
+  },
+  "full917": {
+    "root": "/share/NFS/u/rohit/research/contest/artifacts/2026-11-22/corpse-xname-owner-full917-js-20261125",
+    "passed": 917,
+    "sessions": 917,
+    "totals": {
+      "screens": 929357,
+      "cursors": 929357,
+      "rngCalls": 20161647,
+      "animFrames": 33131
+    },
+    "files": 1208,
+    "allFilesSHA256": "a32242d6c36d265e00c99be67a7c278cdc86754be391b1048aef140904bcd2ab",
+    "verificationSHA256": "bf735761ff4fadb4ce77ee984d612010091acab648e26bfbb1c4d129b4b16c8e",
+    "workers": 2,
+    "timeoutOverride": false,
+    "retries": 0
+  },
+  "seals": {
+    "sourceSealSHA256": "7f56eca19787e963d356b0d90303ccd1e2acc15b8a9274cf36cc7eedb2396868",
+    "promotionSealSHA256": "045994ee75f7462011dc6a2b169517933299aaf42a0231946e2078c032796ef9",
+    "compositionSealSHA256": "089877c82398d1e7111205da2f0d10572cbaf1aa6507b4c1fc2628c7bc435240"
+  },
+  "portablePayloads": 27,
+  "newRequirements": 4,
+  "limits": [
+    "Three original killer_xname field-shape assertions still fail. All 46 name values match; no ordinary C field-value defect is established by these failures.",
+    "Glob handling has constructed source evidence. Ordinary reach, arbitrary empty strings and buffer truncation remain outside this checkpoint.",
+    "Native checks compare decoded styled cells, cursors, ordered core RNG and frames. Full corpus uses the contest comparator; whole-port or literal serialized-byte completion is not established.",
+    "No held-out score change is inferred from local tests."
+  ]
+}

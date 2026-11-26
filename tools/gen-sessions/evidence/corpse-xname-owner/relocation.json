@@ -1,0 +1,29 @@
+{
+  "sourceSealSHA256": "7f56eca19787e963d356b0d90303ccd1e2acc15b8a9274cf36cc7eedb2396868",
+  "sourceRuntimeSHA256": "603af569fdfef9aad8e37808e66c07f947b23b9a33a19f63d8d77a013e92f246",
+  "diagnosticOriginalSHA256": "5904c20dcb0bcaa84d3c4cb16af10b5c9b987a0a9df2bf5827faa972b2f8a52f",
+  "ordinaryOriginalSHA256": "137bd301280e74bea66eed34bc62999eec41a4515012e2cf9c91db85b91fe5e6",
+  "diagnosticSHA256": "81d1a80d3eeffb1adb2c88f21c7a20efb43647e795a178201dda4c8d238e19ee",
+  "ordinarySHA256": "fdd0aaf7dba80e978b043b67ccc3878bdf015da24fc1d259029d0e6b9bebabfe",
+  "ownerSHA256": "9ccbebfd181b960e0a9830e1f6ace69a76f85d05080594b396e630341caa4e12",
+  "diagnosticReplacement": {
+    "../../recipes/source-setup.json": "gen-sessions/evidence/corpse-xname-owner/source-setup.json"
+  },
+  "ordinaryReplacements": {
+    "../../recipes/corpse-xname-owner.json": "gen-sessions/recipes/corpse-xname-owner.json",
+    "../../input-lock.json": "gen-sessions/evidence/corpse-xname-owner/input-lock.json"
+  },
+  "ownerExtraction": "Same complete40 source-control block, excludes only the explicit six-call immediate-wrapper block, which remains intact in the portable46 diagnostic. No filtering after execution.",
+  "removedWrapperBlockSHA256": "1e801d807204dbd4225029434d6b42440ed2d2457a502883532212508be67186",
+  "ownerUnusedImportOnly": [
+    "cxname",
+    "cxname_singular",
+    "killer_xname",
+    "doname"
+  ],
+  "liveBinding": "Original static game as g binding retained; wrappers defer the entire module import until metadata preflight succeeds. No captured pre-reset game object.",
+  "ordinaryAssertionBodyUnchanged": true,
+  "diagnosticAssertionBodyUnchanged": true,
+  "ownerFortyAssertionBodiesUnchanged": true,
+  "freshObservations": "Every run starts real gameplay and reads current objects/states/keys/errors. Stored reports are evidence only, never state or error substitutes."
+}

@@ -1,0 +1,14 @@
+{
+  "members": 358,
+  "manifestSHA256": "46122fae96828045694ca25e472d3a5426a76a671fadb87e08931c632405cb2e",
+  "runtimePatchPaths": [
+    "js/objnam.js"
+  ],
+  "sourceRanges": 75,
+  "baselineModules": 280,
+  "candidateModules": 280,
+  "directOwnerControls": "40/40",
+  "fullDiagnostic": "43/46, three unchanged strict shape failures",
+  "ordinary": "4/4",
+  "nativeParityClaimed": false
+}

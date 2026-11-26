@@ -4616,6 +4616,10 @@
     {"group":"Fruit byte ingress and text consumers","id":"fruit-bytes.reader-fruit-eightbit-after","cFile":"src/options.c","cFunction":"optfn_fruit","description":"reader-fruit-eightbit-after; fixed original input, primary C predicate and causal ordinary controls retained."},
     {"group":"Fruit byte ingress and text consumers","id":"fruit-bytes.reader-fruit-enabled-partial-byte","cFile":"src/options.c","cFunction":"optfn_fruit","description":"reader-fruit-enabled-partial-byte; fixed original input, primary C predicate and causal ordinary controls retained."},
     {"group":"Fruit byte ingress and text consumers","id":"fruit-bytes.reader-fruit-control-low-seven","cFile":"src/options.c","cFunction":"optfn_fruit","description":"reader-fruit-control-low-seven; fixed original input, primary C predicate and causal ordinary controls retained."},
-    {"group":"Fruit byte ingress and text consumers","id":"fruit-bytes.reader-fruit-ascii-negative","cFile":"src/options.c","cFunction":"optfn_fruit","description":"reader-fruit-ascii-negative; fixed original input, primary C predicate and causal ordinary controls retained."}
+    {"group":"Fruit byte ingress and text consumers","id":"fruit-bytes.reader-fruit-ascii-negative","cFile":"src/options.c","cFunction":"optfn_fruit","description":"reader-fruit-ascii-negative; fixed original input, primary C predicate and causal ordinary controls retained."},
+    {"group":"Corpse naming","id":"corpse-xname.unknown-plural-contact","cFile":"src/objnam.c","cFunction":"corpse_xname","description":"Unknown plural impact suppresses the indefinite article and preserves the actual corpse stack."},
+    {"group":"Corpse naming","id":"corpse-xname.known-plural-contact","cFile":"src/objnam.c","cFunction":"corpse_xname","description":"Known plural impact retains the definite article and petrifies the generated keeper."},
+    {"group":"Corpse naming","id":"corpse-xname.unknown-plural-held","cFile":"src/objnam.c","cFunction":"corpse_xname","description":"Blind held plural stack keeps quantity and inventory naming without landed contact."},
+    {"group":"Corpse naming","id":"corpse-xname.unknown-singular-contact","cFile":"src/objnam.c","cFunction":"corpse_xname","description":"Unknown singular impact retains the indefinite article and actual petrification."}
   ]
 }

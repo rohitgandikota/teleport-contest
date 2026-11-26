@@ -1,0 +1,12 @@
+{
+  "classification": "ordinary keyboard setup only; field interventions in source controls are constructed",
+  "segments": [
+    {
+      "seed": 6903,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00162\r\u0006\u0014  llllllllllllllllllll.  \u001b\u001b#levelchange\r30\r                                   \u0017blessed leather gloves\rWo  \u001b\u0017cockatrice corpse\rwp  \u001bFy  \r\u001bkFy   \u001b\u0017gray ooze corpse\r  \u001b",
+      "name": "real-corpse-and-glob-setup"
+    }
+  ]
+}

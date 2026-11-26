@@ -1,0 +1,214 @@
+{
+  "classification": "ordinary keyboard plural corpse naming with locked negative outputs",
+  "nativeParityClaimed": false,
+  "total": 4,
+  "passed": 4,
+  "results": [
+    {
+      "name": "blind-plural-contact",
+      "inputSHA256": "13a8af2a78ab4c7fd8b6214a09609cf2d4d096ad6e67e3474263f64da459f110",
+      "hashes": {
+        "screens": "4cb43ef900539bad588134c2f18a1d1a8b45bd32736c3c698bfcf4b46ffa345b",
+        "cursors": "a5650b6c7bc0dab8b4eac1ed08a0441346b80c0fb0538375f21db52581dc5322",
+        "calls": "1965da0f950e3a4610c4290a5e27ee815fb669f9e27008f3187c1be2372aa3a0",
+        "slices": "8cc54f195ecf934783a581a3d59185a6b4d39879de12353958b444a317c7a3df",
+        "frames": "0b76a70a0a4ad537b43a47edf8b32b1b455ac736cefc0b0008aa8f05f6d93efe"
+      },
+      "boundaries": 193,
+      "calls": 5981,
+      "frames": 0,
+      "stateSHA256": "3a70789ccb5655e44b062de5faf3e2b509f5700bd0b3bd345ca841eaf6ad38d4",
+      "observerNeutral": true,
+      "deferredNeutral": true,
+      "final": {
+        "step": 192,
+        "turn": 9,
+        "hp": 115,
+        "mortality": 0,
+        "xy": [
+          75,
+          9
+        ],
+        "blind": true,
+        "weapon": 143,
+        "gloves": 139,
+        "blindfold": 141,
+        "corpse": {
+          "id": 143,
+          "type": 265,
+          "species": 10,
+          "quantity": 2,
+          "known": true,
+          "weight": 60
+        },
+        "keeper": null,
+        "statue": {
+          "id": 144,
+          "species": 271,
+          "savedID": 97,
+          "savedHP": 0,
+          "items": [
+            99,
+            101,
+            103,
+            105
+          ]
+        }
+      },
+      "pass": true
+    },
+    {
+      "name": "sighted-plural-contact-negative",
+      "inputSHA256": "dc46eec922c3793781c210be17d0860db5ded333b2d5e7b4e39bc6dda1a45446",
+      "hashes": {
+        "screens": "4138c2ae408db44cd62faa5c4efd60f842cc7be9ed048c6a4a74143b2c34c747",
+        "cursors": "351d03e6e495da037843661d7824cb06b546162d42c273fae7773934fffa6880",
+        "calls": "2f0dcba25b1b773aceb2227cf5b3d673aa849c419124f706ce3ccc5d801b3a29",
+        "slices": "b23411e399888c3429ef1bceee448e366258a0ea5ef5a93c6ddb21e403c1368e",
+        "frames": "88d054e863deab8e02c0771a1d29bc1196bfe76107b0f91192ac96df28b3c7e2"
+      },
+      "boundaries": 163,
+      "calls": 6228,
+      "frames": 0,
+      "stateSHA256": "58520b72c916578a30dcc3d3b1b84899f67381646154fa71ccc805148ea4637e",
+      "observerNeutral": true,
+      "deferredNeutral": true,
+      "final": {
+        "step": 162,
+        "turn": 8,
+        "hp": 115,
+        "mortality": 0,
+        "xy": [
+          75,
+          9
+        ],
+        "blind": false,
+        "weapon": 141,
+        "gloves": 139,
+        "blindfold": null,
+        "corpse": {
+          "id": 141,
+          "type": 265,
+          "species": 10,
+          "quantity": 2,
+          "known": true,
+          "weight": 60
+        },
+        "keeper": null,
+        "statue": {
+          "id": 154,
+          "species": 271,
+          "savedID": 97,
+          "savedHP": 0,
+          "items": [
+            99,
+            101,
+            103,
+            105
+          ]
+        }
+      },
+      "pass": true
+    },
+    {
+      "name": "blind-plural-held-negative",
+      "inputSHA256": "7913b89d4f11fea460ae36ff28439145827b1e4a88caa84075a181e4ffee990a",
+      "hashes": {
+        "screens": "8fd7842e5a22362223222aac6fb02388a20f0232401887c95bdbfd7c4b6d1b50",
+        "cursors": "08d062a8ec903e95545c19b3aabb4efe9f9891e9d6afdca276170c0d41897c7b",
+        "calls": "f82223198d0ea5b883c97992fa3446a7f02680241f3185bbd673dd37990ae2b7",
+        "slices": "b53bfda3665e0066dbfdc0c0dfbe49732c466302b6ea572dd73f92cbc0179948",
+        "frames": "f4e03316426f139350ebfa0d2dadeb98da3ef5db1b97e1ac40900b5058e5ebb4"
+      },
+      "boundaries": 187,
+      "calls": 5736,
+      "frames": 0,
+      "stateSHA256": "a9e35dad403cac2ff383594e41237bd8ae8ef4a763ac303362c39f088194b8f9",
+      "observerNeutral": true,
+      "deferredNeutral": true,
+      "final": {
+        "step": 186,
+        "turn": 8,
+        "hp": 115,
+        "mortality": 0,
+        "xy": [
+          75,
+          9
+        ],
+        "blind": true,
+        "weapon": 143,
+        "gloves": 139,
+        "blindfold": 141,
+        "corpse": {
+          "id": 143,
+          "type": 265,
+          "species": 10,
+          "quantity": 2,
+          "known": false,
+          "weight": 60
+        },
+        "keeper": {
+          "hp": 46,
+          "peaceful": true,
+          "mapped": true,
+          "resident": true
+        },
+        "statue": null
+      },
+      "pass": true
+    },
+    {
+      "name": "blind-singular-contact-negative",
+      "inputSHA256": "e745c849d71a53be3a930729fbe98759bfef6861f5a13493e69a2461c14a53a6",
+      "hashes": {
+        "screens": "edcd770a5dbf85e1ef1dc0e4896dcb84496dce56528dd7c1504262756e4f7a24",
+        "cursors": "fa5746123e9c5bb8601b33f1c815f15b6679e6d062cfd67a265746c7f05a34e7",
+        "calls": "1965da0f950e3a4610c4290a5e27ee815fb669f9e27008f3187c1be2372aa3a0",
+        "slices": "9a457744814926e63992cff3f28b1be142222d72b47709abef21ab2426736844",
+        "frames": "558bb1113fd1d1a37d9a4e0a25e95d38f2cf4dd27f1307a070018a9d55f44a5f"
+      },
+      "boundaries": 190,
+      "calls": 5981,
+      "frames": 0,
+      "stateSHA256": "3b2dfea5de102118bc3962bbc236177db5b1af9e9a43a03f225374a2700898fe",
+      "observerNeutral": true,
+      "deferredNeutral": true,
+      "final": {
+        "step": 189,
+        "turn": 9,
+        "hp": 115,
+        "mortality": 0,
+        "xy": [
+          75,
+          9
+        ],
+        "blind": true,
+        "weapon": 143,
+        "gloves": 139,
+        "blindfold": 141,
+        "corpse": {
+          "id": 143,
+          "type": 265,
+          "species": 10,
+          "quantity": 1,
+          "known": true,
+          "weight": 30
+        },
+        "keeper": null,
+        "statue": {
+          "id": 144,
+          "species": 271,
+          "savedID": 97,
+          "savedHP": 0,
+          "items": [
+            99,
+            101,
+            103,
+            105
+          ]
+        }
+      },
+      "pass": true
+    }
+  ]
+}

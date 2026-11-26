@@ -1,0 +1,286 @@
+{
+  "classification": "constructed source contracts on real keyboard objects; no native claim",
+  "total": 46,
+  "passed": 43,
+  "results": [
+    {
+      "name": "ordinary singular",
+      "expected": "cockatrice corpse",
+      "actual": "cockatrice corpse",
+      "pass": true
+    },
+    {
+      "name": "singular indefinite",
+      "expected": "a cockatrice corpse",
+      "actual": "a cockatrice corpse",
+      "pass": true
+    },
+    {
+      "name": "unknown plural indefinite",
+      "expected": "cockatrice corpses",
+      "actual": "cockatrice corpses",
+      "pass": true
+    },
+    {
+      "name": "known plural indefinite",
+      "expected": "cockatrice corpses",
+      "actual": "cockatrice corpses",
+      "pass": true
+    },
+    {
+      "name": "plural definite",
+      "expected": "the cockatrice corpses",
+      "actual": "the cockatrice corpses",
+      "pass": true
+    },
+    {
+      "name": "singular override",
+      "expected": "a cockatrice corpse",
+      "actual": "a cockatrice corpse",
+      "pass": true
+    },
+    {
+      "name": "no-prefix wins over both",
+      "expected": "cockatrice corpse",
+      "actual": "cockatrice corpse",
+      "pass": true
+    },
+    {
+      "name": "definite wins over indefinite",
+      "expected": "the cockatrice corpse",
+      "actual": "the cockatrice corpse",
+      "pass": true
+    },
+    {
+      "name": "omit suffix preserves article even for plural",
+      "expected": "a cockatrice",
+      "actual": "a cockatrice",
+      "pass": true
+    },
+    {
+      "name": "quantity zero is not plural",
+      "expected": "a cockatrice corpse",
+      "actual": "a cockatrice corpse",
+      "pass": true
+    },
+    {
+      "name": "numeric adjective",
+      "expected": "2 cockatrice corpse",
+      "actual": "2 cockatrice corpse",
+      "pass": true
+    },
+    {
+      "name": "raw leading space is not digit",
+      "expected": "a 2 cockatrice corpse",
+      "actual": "a 2 cockatrice corpse",
+      "pass": true
+    },
+    {
+      "name": "raw leading tab is not digit",
+      "expected": "a 2 cockatrice corpse",
+      "actual": "a 2 cockatrice corpse",
+      "pass": true
+    },
+    {
+      "name": "collapse all adjective spaces",
+      "expected": "a partly eaten cockatrice corpse",
+      "actual": "a partly eaten cockatrice corpse",
+      "pass": true
+    },
+    {
+      "name": "spaces-only adjective",
+      "expected": "a cockatrice corpse",
+      "actual": "a cockatrice corpse",
+      "pass": true
+    },
+    {
+      "name": "empty adjective",
+      "expected": "a cockatrice corpse",
+      "actual": "a cockatrice corpse",
+      "pass": true
+    },
+    {
+      "name": "newline truncates assembled name",
+      "expected": "an old corpse",
+      "actual": "an old corpse",
+      "pass": true
+    },
+    {
+      "name": "proper possessive ignores prefixes",
+      "expected": "Medusa's corpse",
+      "actual": "Medusa's corpse",
+      "pass": true
+    },
+    {
+      "name": "proper adjective follows possessive",
+      "expected": "Medusa's partly eaten corpse",
+      "actual": "Medusa's partly eaten corpse",
+      "pass": true
+    },
+    {
+      "name": "unique gets definite",
+      "expected": "the Oracle's corpse",
+      "actual": "the Oracle's corpse",
+      "pass": true
+    },
+    {
+      "name": "unique explicit no-prefix",
+      "expected": "Oracle's corpse",
+      "actual": "Oracle's corpse",
+      "pass": true
+    },
+    {
+      "name": "unique plural",
+      "expected": "the Oracle's corpses",
+      "actual": "the Oracle's corpses",
+      "pass": true
+    },
+    {
+      "name": "Wizard unique",
+      "expected": "the Wizard of Yendor's corpse",
+      "actual": "the Wizard of Yendor's corpse",
+      "pass": true
+    },
+    {
+      "name": "high cleric is not article-unique",
+      "expected": "a high cleric corpse",
+      "actual": "a high cleric corpse",
+      "pass": true
+    },
+    {
+      "name": "aligned cleric random uses role name",
+      "expected": "a cleric corpse",
+      "actual": "a cleric corpse",
+      "pass": true
+    },
+    {
+      "name": "aligned cleric male",
+      "expected": "a priest corpse",
+      "actual": "a priest corpse",
+      "pass": true
+    },
+    {
+      "name": "aligned cleric female",
+      "expected": "a priestess corpse",
+      "actual": "a priestess corpse",
+      "pass": true
+    },
+    {
+      "name": "explicit neuter keeps aligned name",
+      "expected": "an aligned cleric corpse",
+      "actual": "an aligned cleric corpse",
+      "pass": true
+    },
+    {
+      "name": "gender mask ignores historic bit",
+      "expected": "a priestess corpse",
+      "actual": "a priestess corpse",
+      "pass": true
+    },
+    {
+      "name": "NON_PM paranoia",
+      "expected": "a thing corpse",
+      "actual": "a thing corpse",
+      "pass": true
+    },
+    {
+      "name": "NON_PM plural",
+      "expected": "thing corpses",
+      "actual": "thing corpses",
+      "pass": true
+    },
+    {
+      "name": "CORPSE type excludes glob branch",
+      "expected": "a cockatrice corpse",
+      "actual": "a cockatrice corpse",
+      "pass": true
+    },
+    {
+      "name": "glob actual producer",
+      "expected": "glob of gray ooze",
+      "actual": "glob of gray ooze",
+      "pass": true
+    },
+    {
+      "name": "glob indefinite",
+      "expected": "a glob of gray ooze",
+      "actual": "a glob of gray ooze",
+      "pass": true
+    },
+    {
+      "name": "glob definite",
+      "expected": "the glob of gray ooze",
+      "actual": "the glob of gray ooze",
+      "pass": true
+    },
+    {
+      "name": "glob has no corpse suffix",
+      "expected": "a glob of gray ooze",
+      "actual": "a glob of gray ooze",
+      "pass": true
+    },
+    {
+      "name": "glob ignores constructed quantity",
+      "expected": "a glob of gray ooze",
+      "actual": "a glob of gray ooze",
+      "pass": true
+    },
+    {
+      "name": "glob ignores corpse species",
+      "expected": "a glob of gray ooze",
+      "actual": "a glob of gray ooze",
+      "pass": true
+    },
+    {
+      "name": "glob adjective mungspaces",
+      "expected": "a large partly eaten glob of gray ooze",
+      "actual": "a large partly eaten glob of gray ooze",
+      "pass": true
+    },
+    {
+      "name": "glob numeric adjective",
+      "expected": "2 glob of gray ooze",
+      "actual": "2 glob of gray ooze",
+      "pass": true
+    },
+    {
+      "name": "cxname plural",
+      "expected": "cockatrice corpses",
+      "actual": "cockatrice corpses",
+      "pass": true
+    },
+    {
+      "name": "cxname_singular override",
+      "expected": "cockatrice corpse",
+      "actual": "cockatrice corpse",
+      "pass": true
+    },
+    {
+      "name": "killer_xname plural",
+      "expected": "cockatrice corpses",
+      "actual": "cockatrice corpses",
+      "pass": false,
+      "error": "naming preserves the produced object\n+ actual - expected\n... Skipped lines\n\n  {\n    age: 3,\n    bknown: 0,\n    blessed: 0,\n    cknown: 0,\n...\n    dknown: 1,\n+   greased: 0,\n    how_lost: 0,\n    invlet: 'p',\n    known: 1,\n    lknown: 0,\n    no_charge: 0,\n...\n    oeaten: 0,\n+   opoisoned: 0,\n    otyp: 265,\n    owornmask: 256,\n    owt: 30,\n    pickup_prev: 1,\n    quan: 2,\n"
+    },
+    {
+      "name": "killer_xname singular",
+      "expected": "a cockatrice corpse",
+      "actual": "a cockatrice corpse",
+      "pass": false,
+      "error": "naming preserves the produced object\n+ actual - expected\n... Skipped lines\n\n  {\n    age: 3,\n    bknown: 0,\n    blessed: 0,\n    cknown: 0,\n...\n    dknown: 1,\n+   greased: 0,\n    how_lost: 0,\n    invlet: 'p',\n    known: 1,\n    lknown: 0,\n    no_charge: 0,\n...\n    oeaten: 0,\n+   opoisoned: 0,\n    otyp: 265,\n    owornmask: 256,\n    owt: 30,\n    pickup_prev: 1,\n    quan: 1,\n"
+    },
+    {
+      "name": "killer_xname random cleric",
+      "expected": "a cleric corpse",
+      "actual": "a cleric corpse",
+      "pass": false,
+      "error": "naming preserves the produced object\n+ actual - expected\n... Skipped lines\n\n  {\n    age: 3,\n    bknown: 0,\n    blessed: 0,\n    cknown: 0,\n...\n    dknown: 1,\n+   greased: 0,\n    how_lost: 0,\n    invlet: 'p',\n    known: 1,\n    lknown: 0,\n    no_charge: 0,\n...\n    oeaten: 0,\n+   opoisoned: 0,\n    otyp: 265,\n    owornmask: 256,\n    owt: 30,\n    pickup_prev: 1,\n    quan: 1,\n"
+    },
+    {
+      "name": "doname quantity and wielding",
+      "expected": "2 cockatrice corpses (wielded)",
+      "actual": "2 cockatrice corpses (wielded)",
+      "pass": true
+    }
+  ]
+}

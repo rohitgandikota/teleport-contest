@@ -1,0 +1,42 @@
+[
+  {
+    "label": "baseline",
+    "command": [
+      "node",
+      "--max-old-space-size=512",
+      "--preserve-symlinks",
+      "--preserve-symlinks-main",
+      "/Users/rohit/research/code/contest/.cache/restart-20261122/corpse-xname-owner-parent-baseline-native-runner/tools/tty-text-window-native-gate.mjs",
+      "/Users/rohit/research/code/contest/.cache/restart-20261122/corpse-xname-owner-parent-native.session.json",
+      "/Users/rohit/research/code/contest/.cache/restart-20261122/corpse-xname-owner-parent-baseline-native.json"
+    ],
+    "exit": 1,
+    "seconds": 1.35,
+    "report": ".cache/restart-20261122/corpse-xname-owner-parent-baseline-native.json",
+    "reportSHA256": "4eaa3b1164dd1cafea1b56f7aa0cfea67c97206be1d93475d2d81dee39685b8e",
+    "log": ".cache/restart-20261122/corpse-xname-owner-parent-baseline-native.log",
+    "logSHA256": "3573081feab9804bf0542673d77ae705d7faa640ff45c1633f7f16f9a00d53cd",
+    "exact": 3,
+    "total": 4
+  },
+  {
+    "label": "candidate",
+    "command": [
+      "node",
+      "--max-old-space-size=512",
+      "--preserve-symlinks",
+      "--preserve-symlinks-main",
+      "/Users/rohit/research/code/contest/.cache/restart-20261122/corpse-xname-owner-parent-candidate-native-runner/tools/tty-text-window-native-gate.mjs",
+      "/Users/rohit/research/code/contest/.cache/restart-20261122/corpse-xname-owner-parent-native.session.json",
+      "/Users/rohit/research/code/contest/.cache/restart-20261122/corpse-xname-owner-parent-candidate-native.json"
+    ],
+    "exit": 0,
+    "seconds": 1.4,
+    "report": ".cache/restart-20261122/corpse-xname-owner-parent-candidate-native.json",
+    "reportSHA256": "dd91562ae4bf8fb1709e1c6a7eafee91db91e724f876a058e9115168d58806b1",
+    "log": ".cache/restart-20261122/corpse-xname-owner-parent-candidate-native.log",
+    "logSHA256": "febb44a191856b65833f8e86d8c5fee7a24ec1db3eff22686c8b221c3c77763e",
+    "exact": 4,
+    "total": 4
+  }
+]

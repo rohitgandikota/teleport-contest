@@ -1,0 +1,20 @@
+{
+  "strictShapeDiagnostic": {
+    "owner": "killer_xname",
+    "C": "objnam.c1942-2005, whole struct save and restore",
+    "JS": "baseline/js/objnam.js4245-4305, Object.assign restore retains added keys",
+    "fields": [
+      "greased",
+      "opoisoned"
+    ],
+    "observed": "absent keys become own zero-valued properties",
+    "scopeLimit": "The strict JS shape check fails, while candidate name values match C expectations. No ordinary C field-value regression or blocker is established. The test remains unchanged and exits nonzero. No runtime repair is included."
+  },
+  "otherLimits": [
+    "Shared an empty-string impossible message/result and bounded concatenation remain unported.",
+    "obj_pmname invalid-object impossible diagnostic remains absent; invalid positive species is not a valid C corpse_xname input.",
+    "feel_cockatrice killer naming uses a different wrapper from C and remains unchanged.",
+    "Ordinary glob naming reach has not been established; real glob construction plus direct-owner calls are source controls.",
+    "Whole immediate caller subsystems and general xname are not claimed complete."
+  ]
+}

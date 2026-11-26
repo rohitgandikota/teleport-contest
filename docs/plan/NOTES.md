@@ -38,6 +38,13 @@ characters derived from C's formatting. The menu-alias audit exposed this at
 the Select row. Preserve original failed predicates when correcting this
 representation mismatch; do not change gameplay inputs or the expected row.
 
+The full-equipment P message is 81 characters. C topl.c wraps it between
+"some" and "lenses" on an 80-column terminal. Even a decoded-text substring
+check fails if it assumes one row. Preserve the original diagnostic and use
+the C-derived cell layout, or join the two message rows when checking the exact
+source phrase. The wear-entry evidence retains the unchanged original test,
+its 51/52 candidate result, and the separately corrected 52/52 result.
+
 ## Replay fixture links, November 26, 2026
 
 Link new runs directly to each fixture's resolved regular file on NFS. Linking

@@ -1,0 +1,8 @@
+{
+  "kind": "source-only audit, no runtime candidate",
+  "members": 25,
+  "manifestSha256": "dbf8cfb1a522527c8d8a6724aeb19be2859170ad5f42358516f05f7b04366bfe",
+  "runtimeMapSha256": "c425a83669d913cce211a9665a4513bbdcb44fb5753dcd20f23d243eb10b094a",
+  "nativeRecorded": false,
+  "originalAssertionFailuresRetained": 6
+}

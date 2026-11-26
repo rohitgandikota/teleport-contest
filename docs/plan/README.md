@@ -12,8 +12,14 @@ Ground rules are in `/CLAUDE.md`. Read that first if you have not.
 
 ## Current focus, 2026-11-26
 
-Vault wall visibility and inventory accessory routing are verified for the
-next checkpoint. Two runtime lines restore the C wall-mode call and queued
+Chat speech guards and wear-command entry checks are verified on `ef2bfd2d`.
+All 934 recordings, 12 new native cases, 12 focused checks and 46 strict workers
+pass. Fresh public checks preserve all six chat cases, 52 wear assertions and
+25 negative hashes. See STATUS and the chat-wear evidence for the fixed runner,
+preserved line-wrap diagnostic and publication steps.
+
+Vault wall visibility and inventory accessory routing are pushed as `ef2bfd2d`.
+Two runtime lines restore the C wall-mode call and queued
 wear command. All 932 recordings, seven new native/ordinary cases, 12 focused
 checks and 46 strict workers pass. Original negative hashes remain unchanged.
 See the wall-accessory evidence and STATUS for publication and remaining scope.

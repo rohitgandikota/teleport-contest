@@ -1,0 +1,28 @@
+{
+  "proposalSHA256": "fb5056ab061f2df448353076da844a2a1d5aa01315576e816ea21608c39afedb",
+  "ordinarySHA256": "ea05203d355d7cc5153ab0da498d82512ed5a56089d36c27518c738c19734ca1",
+  "probeSHA256": "0dacf5bc767bb3161f9eb1b5a4c756642c265517fdea3c6c4db1c35e9694fb8d",
+  "baselineOrdinarySHA256": "0e49dd820028a2069117cba1db152212953469326c52ebd386f9a0e1df291521",
+  "primaryRecipeSHA256": "afb8fd2ed61a293321d79d283b129738d637d4d8b43a60980a8dda8f963ec48c",
+  "minimalInputSHA256": "24699011d80e8e84a2f5a8e25f28c115208470a14a11b808798a3b2da7ec3474",
+  "runtimeSHA256": "0ee2ebcfa3c310dbebe74409836bb8dedea2d6cacbf7d8e5d73d76bca082204b",
+  "recordingExisted": false,
+  "candidateExisted": false,
+  "keys": 429,
+  "negativeHashes": {
+    "healthy-human-negative": {
+      "screens": "a6d2641ea8e25238b7ec72309cf4ecb2700efbafd057c8fa9d3cc1140c68e343",
+      "cursors": "8433fa37db0981644fedfcda6d130b3760278ba8f877527d7f0590033c1398a1",
+      "calls": "e88e039ec58ec1eb540a23a4e1eb86aeb4fd2c006a7c95b80b75b4231d2dbcee",
+      "slices": "68df626a3dbdad091085d08a1ef535f212a21322eab565fba3d459e33b7058cd",
+      "frames": "95d15e75300129c5b4dd7f324bec76f91976db7c7b6075f942e9ea82b243e0b3"
+    },
+    "vocal-nymph-on-land-negative": {
+      "screens": "e5ce17cafc328126d57bbd41eece74315cea61bb1a04ec0c58b200e988d4009d",
+      "cursors": "d5100a455fb955058015668352b9a1c6df930a3d640f76820d436779dacca94f",
+      "calls": "622c0efc63c8e5de0072016b88603b2d10fd83c95199b9f5cdff5d7ca07d42f0",
+      "slices": "209070997d5c844c7e9baaa4eab7e3bfc73aa15ddef994232555bc336803a064",
+      "frames": "ba3a1dbda7521fc175cc7ea8b04f1d61a74268d3a43a5e30c3ee86ae6ff797d0"
+    }
+  }
+}

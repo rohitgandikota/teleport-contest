@@ -1,0 +1,15 @@
+{
+  "kind": "isolated wear entry candidate",
+  "members": 348,
+  "manifestSha256": "71d4c1a57d925e65bd553bb43e46f8501cd032cc635eb741d479e37ba66468a4",
+  "runtimeMapSha256": "abbfee24d20c7b14bbb2ae01cf585bb2917279bc59c57759662dccf53c258031",
+  "runtimeChangedPaths": [
+    "js/do_wear.js"
+  ],
+  "source25ArchivedSealSha256": "7c3d0a72a35e4a1bdb8c51227ca34b514ed7e6ce4a95c75fa8401372f1f32aa3",
+  "source31FinalSealSha256": "1003e27dde112bfaceff9bb73c050863de63431db4aa902534bc4bc2eabe6967",
+  "nativeReportSha256": "0bf2a6f9cfba93abf50e67ca29dea185065bac7adc5d279cb5723486eb82dff0",
+  "nativePassed": 6,
+  "correctedOrdinaryPassed": 52,
+  "originalLayoutFailureRetained": true
+}

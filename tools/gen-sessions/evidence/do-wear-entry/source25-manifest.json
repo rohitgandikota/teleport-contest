@@ -1,0 +1,106 @@
+[
+  {
+    "path": "PLAN.md",
+    "sha256": "edc5e4497e194608c57b73d7bd1e86fc9e13c44a9f783cc48aa32dba62ba29d5"
+  },
+  {
+    "path": "README.md",
+    "sha256": "58c2566b1f4fd7d6b94324d00440b981251802283ba80dd85caa27bc4c6cdfa0"
+  },
+  {
+    "path": "SOURCE-REVIEW.md",
+    "sha256": "33e3ca5fb10ce7bd62b25a07caf5542794a4c6f3d351b6651eec2cfeaeeb0f0d"
+  },
+  {
+    "path": "STATUS.md",
+    "sha256": "a283ca09abaff3d7bb98dd39739f906cd119ab3788adf1526272d46fdb26c660"
+  },
+  {
+    "path": "changed-paths.json",
+    "sha256": "2cc06b1bb438bf1acbd2ff23ad05f6d7ae561c57df541630fef3d9e44943b3d2"
+  },
+  {
+    "path": "handoff.json",
+    "sha256": "511435b61dca41f7e82ae7763ed3a8bc7d836b42cd5971e81608f2898eca369b"
+  },
+  {
+    "path": "naming-source-pin.json",
+    "sha256": "80b9032b32310e9155679b0692314c9cf2ffbe3262ceb6d68b6108c41e045086"
+  },
+  {
+    "path": "negative-hashes.json",
+    "sha256": "b756b4977492f71c559281e7e63703a6490f79cdf3b1ad781c2d0105a57f74a4"
+  },
+  {
+    "path": "proposals/input-lock.json",
+    "sha256": "30964ad1d94de8f1686c1a52a5960082306ed08c4a1579ca353c301e1b936f83"
+  },
+  {
+    "path": "proposals/predictions.json",
+    "sha256": "b7efbd96955213a29be23c6c803257fb9c76ecbe986d28e83a0aa5a71c8a6708"
+  },
+  {
+    "path": "proposals/recipe.json",
+    "sha256": "e28b4ac22263258a7725b64d890ef9c17690280a6c9c687e644ad5d63243fd05"
+  },
+  {
+    "path": "reports/findings.json",
+    "sha256": "483948a2417fafb8da74ff7c216bfc44fb3ccf7771a51b1c11d70cf665460fb8"
+  },
+  {
+    "path": "reports/observation.json",
+    "sha256": "cc46fcdb32427e4530771fbc428bcfe604db50ffea3a65a8818dd2713b4d1ecb"
+  },
+  {
+    "path": "reports/observation.log",
+    "sha256": "2c15fa50b9308d37ee125a3e03628b69f77bb89ae990371e9703f155ff1ae4e0"
+  },
+  {
+    "path": "reports/preflight-draft-failure.json",
+    "sha256": "df8023d0eab06640727ef5a79af696f19e9ed2d831604a9e83f1956af301a089"
+  },
+  {
+    "path": "reports/worker.json",
+    "sha256": "e8d14f132b1bfa8b97964c7455a919ed2fac0e1b6c62605ff50038af5a6330d8"
+  },
+  {
+    "path": "source/accessory-review.md",
+    "link": "../../itemactions-accessory-candidate/SOURCE-REVIEW.md",
+    "sha256": "63e0f449fdb5ccb71fdfd06a9e521528273c3f0d61acbf4176f22337ced7ed58"
+  },
+  {
+    "path": "source/c",
+    "link": "../../../../nethack-c/upstream"
+  },
+  {
+    "path": "source/js",
+    "link": "../../menu-input-parent-composed/js"
+  },
+  {
+    "path": "source/runtime.json",
+    "link": "../../menu-input-parent-composed/runtime.json",
+    "sha256": "c425a83669d913cce211a9665a4513bbdcb44fb5753dcd20f23d243eb10b094a"
+  },
+  {
+    "path": "source/screen-decode.mjs",
+    "link": "../../../../frozen/screen-decode.mjs",
+    "sha256": "cb4a0fbfed3dda28c14736e6ae9c8b9eb8c87d75916c50d6df80f40eb0368cbe"
+  },
+  {
+    "path": "source/tools/half-damage-reader-observe.mjs",
+    "link": "../../../../../tools/half-damage-reader-observe.mjs",
+    "sha256": "201cdafe4409d5d58414c1d0ebc0449c32b29834cdf35c72c151a555d9031d07"
+  },
+  {
+    "path": "source-pins.json",
+    "sha256": "f12b414acb0ab61da9aec9c1afac5aad06b5b70551ef8e51f42c88728fefa852"
+  },
+  {
+    "path": "tools/observe.mjs",
+    "sha256": "b3ab34e623d7a286f44c01f687c60cbffab867f38be9862023f17c54ce4981bf"
+  },
+  {
+    "path": "tools/verify-audit.py",
+    "sha256": "db6626c0e379ad363d2df8fd5f7b945f9f084559e6d240343875adb9c9656251"
+  }
+]

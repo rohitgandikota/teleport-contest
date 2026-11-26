@@ -1,0 +1,5 @@
+The chat speech guards and wear-entry checks are verified together on parent ef2bfd2d. Both fresh native reports are byte-identical to their isolated candidates, all 12 cases pass, and all 25 negative output hashes remain fixed. The ordinary chat report is identical; wear retains all 52 corrected checks and complete compact gameplay rows.
+
+All 934 maintained recordings pass on two NFS CPU workers with default 45-second limits and no retries. The 46 public/new workers pass the separate 8-second gate. All 12 focused checks and the static scope/import audit pass. The parent receipt identifies the fixed 1,225 tested files and exact reports. Original C inputs and recordings are unchanged. Wear evidence retains the original 51/52 line-wrap diagnostic and the separate correction. These results do not establish whole-port or held-out completion.
+
+Run the portable gates with `node tools/chat-speech-guards-input-gate.mjs` and `node tools/do-wear-entry-input-gate.mjs`. Both are read-only unless given one new report filename.

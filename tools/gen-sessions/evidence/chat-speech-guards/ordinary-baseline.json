@@ -1,0 +1,148 @@
+[
+  {
+    "name": "silent-fog-cloud",
+    "passed": false,
+    "failures": [
+      "As a fog cloud, you cannot speak."
+    ],
+    "hashes": {
+      "screens": "1861b6a12b22db09fdbede3b443d2b6605fc8bb01b80609fc6f1fd4639b70c23",
+      "cursors": "654c0b3abe901e52001b3cc815c8439f2f91102ff7f5d5fd664fb3f90fd9e7b4",
+      "calls": "8059c6dd6c5f363f606adf2f8dc4732df750c9087e86231d1bb2e06b7b30e218",
+      "slices": "f828ac1e1da1dbe7df5245176dbcaddf6a1484028e3679a84bc6a61c946a8c43",
+      "frames": "96bb5fe26d6e7f3aee8284cb6098fb4fd8eaa56a3cf877038fb3015f8a2988e7"
+    },
+    "final": {
+      "step": 29,
+      "turn": 1,
+      "form": 106,
+      "sound": 0,
+      "strangled": 0,
+      "swallowed": false,
+      "underwater": false,
+      "x": 60,
+      "y": 15
+    }
+  },
+  {
+    "name": "strangled-human",
+    "passed": false,
+    "failures": [
+      "You can't speak.  You're choking!"
+    ],
+    "hashes": {
+      "screens": "67c07dada633b9c6245b39d079d87648fad3f41378348a1a9acb101844e32410",
+      "cursors": "fa6097b7564a785d6ae0b214f3f74bc66de5a6b671cbd5821cfa810759a91236",
+      "calls": "a884c7d595b49bfcfe7911b9cc0c15eb3d71b7128da3e7419a9d7dfddafffa61",
+      "slices": "dd81ab97326e60fbd5ba7d1009aad6db2ecb6be9612a0e94c0cfd0529970abe1",
+      "frames": "9e364c33ed6e25c0bb677d9712046c6555c904e1f42c13ca2db4e7d22a6c7509"
+    },
+    "final": {
+      "step": 45,
+      "turn": 2,
+      "form": 343,
+      "sound": 25,
+      "strangled": 5,
+      "swallowed": false,
+      "underwater": false,
+      "x": 60,
+      "y": 15
+    }
+  },
+  {
+    "name": "swallowed-human",
+    "passed": false,
+    "failures": [
+      "They won't hear you out there."
+    ],
+    "hashes": {
+      "screens": "c206da3d05828c71d65f583a9233855b406f880d5c1415ab18b0fba6853ea2de",
+      "cursors": "1519d38cd353d9ef98e9c61795551b39a92d2d5f60ef83a77b32177db78a3b20",
+      "calls": "a176b323596333df5363f3421672fff54c8e15d8444234db128349ae300604f1",
+      "slices": "d1c35dec0757230428cc0c8e4922a8b6d6a31f9b71a43494a07255cb05de9391",
+      "frames": "7dc4ff2040bf4989c4a10d2d3f5af68dfb97f252471c388ac01ceb0fed0738ca"
+    },
+    "final": {
+      "step": 271,
+      "turn": 22,
+      "form": 343,
+      "sound": 25,
+      "strangled": 0,
+      "swallowed": true,
+      "underwater": false,
+      "x": 60,
+      "y": 14
+    }
+  },
+  {
+    "name": "underwater-water-nymph",
+    "passed": false,
+    "failures": [
+      "Your speech is unintelligible underwater."
+    ],
+    "hashes": {
+      "screens": "65487fc5148bf9c1e303a9a1fdf18074de5eab5edf993ce0129f26f6da25b567",
+      "cursors": "ce70cd8588e41f6a2d6aeaad149e8793ae47ac9aadea4bfab99865bb1d7e64d7",
+      "calls": "bdb8653fc37e289de18d61b6ae270e5757938b3ef8f6a1ddf46001508ab1321e",
+      "slices": "5035e9774f4e8301e7a2e0c2e8220f729f95e166f194dcad84e2ebc3a486c410",
+      "frames": "df9d8b6589deeb4b04ce405a1070a7c03705e5ad451c117574ea288303c80cb3"
+    },
+    "final": {
+      "step": 44,
+      "turn": 3,
+      "form": 68,
+      "sound": 31,
+      "strangled": 0,
+      "swallowed": false,
+      "underwater": true,
+      "x": 60,
+      "y": 15
+    }
+  },
+  {
+    "name": "healthy-human-negative",
+    "passed": true,
+    "failures": [],
+    "hashes": {
+      "screens": "a6d2641ea8e25238b7ec72309cf4ecb2700efbafd057c8fa9d3cc1140c68e343",
+      "cursors": "8433fa37db0981644fedfcda6d130b3760278ba8f877527d7f0590033c1398a1",
+      "calls": "e88e039ec58ec1eb540a23a4e1eb86aeb4fd2c006a7c95b80b75b4231d2dbcee",
+      "slices": "68df626a3dbdad091085d08a1ef535f212a21322eab565fba3d459e33b7058cd",
+      "frames": "95d15e75300129c5b4dd7f324bec76f91976db7c7b6075f942e9ea82b243e0b3"
+    },
+    "final": {
+      "step": 8,
+      "turn": 1,
+      "form": 343,
+      "sound": 25,
+      "strangled": 0,
+      "swallowed": false,
+      "underwater": false,
+      "x": 60,
+      "y": 15
+    }
+  },
+  {
+    "name": "vocal-nymph-on-land-negative",
+    "passed": true,
+    "failures": [],
+    "hashes": {
+      "screens": "e5ce17cafc328126d57bbd41eece74315cea61bb1a04ec0c58b200e988d4009d",
+      "cursors": "d5100a455fb955058015668352b9a1c6df930a3d640f76820d436779dacca94f",
+      "calls": "622c0efc63c8e5de0072016b88603b2d10fd83c95199b9f5cdff5d7ca07d42f0",
+      "slices": "209070997d5c844c7e9baaa4eab7e3bfc73aa15ddef994232555bc336803a064",
+      "frames": "ba3a1dbda7521fc175cc7ea8b04f1d61a74268d3a43a5e30c3ee86ae6ff797d0"
+    },
+    "final": {
+      "step": 32,
+      "turn": 1,
+      "form": 68,
+      "sound": 31,
+      "strangled": 0,
+      "swallowed": false,
+      "underwater": false,
+      "x": 60,
+      "y": 15
+    }
+  }
+]

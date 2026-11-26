@@ -1,0 +1,15 @@
+import assert from 'node:assert/strict';
+import {readFileSync} from 'node:fs';
+import {createHash} from 'node:crypto';
+import {branchAssertionErrors,recordingIntegrityErrors} from '../../../tools/gen-sessions/assertions.mjs';
+const sha=b=>createHash('sha256').update(b).digest('hex');
+const rawBytes=readFileSync(new URL('../do-wear-entry-parent-native.session.json',import.meta.url));
+assert.equal(sha(rawBytes),'fe893b3d09f1637acac3a92b4df289009e77ea81ca0954e19f187390c7c67cb1');
+const raw=JSON.parse(rawBytes),recipe=JSON.parse(readFileSync(new URL('../do-wear-entry-parent-primary-recipe.json',import.meta.url)));
+assert.equal(sha(readFileSync(new URL('../do-wear-entry-parent-primary-recipe.json',import.meta.url))),'f2acabc524ba97ebe92bab5d0b46859687ade31f632c1428ebb317dea5adf9f0');
+assert.equal(raw.source,'c');assert.equal(raw.version,5);assert.equal(raw.segments.length,6);
+const tuple=s=>['name','seed','datetime','nethackrc','moves'].map(f=>({field:f,present:Object.hasOwn(s,f),value:s[f]}));
+assert.deepEqual(raw.segments.map(tuple),recipe.segments.map(tuple));
+for(const [i,part] of raw.segments.entries()) assert.deepEqual(part.steps.map(s=>s.key),[null,...recipe.segments[i].moves]);
+assert.deepEqual(recordingIntegrityErrors(raw),[]);assert.deepEqual(branchAssertionErrors(recipe,raw),[]);
+console.log(JSON.stringify({nativePreflight:true,cases:6,keys:1684,boundaries:1690,primaryBranches:6,rawSHA256:sha(rawBytes)}));

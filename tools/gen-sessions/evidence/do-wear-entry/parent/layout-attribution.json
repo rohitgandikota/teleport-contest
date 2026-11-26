@@ -1,0 +1,16 @@
+{
+  "originalPrimaryRecipeSHA256": "f2acabc524ba97ebe92bab5d0b46859687ade31f632c1428ebb317dea5adf9f0",
+  "rawSHA256": "fe893b3d09f1637acac3a92b4df289009e77ea81ca0954e19f187390c7c67cb1",
+  "originalPrimaryErrors": [
+    "do-wear-entry.full-eleven-wear-puton: segment 0 lacks screen text \"some lenses.\""
+  ],
+  "step": 478,
+  "decodedRows": [
+    "Your ring-fingers are full, and you're already wearing an amulet and some",
+    "lenses.--More--"
+  ],
+  "sourcePredictedMessage": "Your ring-fingers are full, and you're already wearing an amulet and some lenses.",
+  "joiningRowsRecoversOriginalSourceMessage": true,
+  "noRawOrInputOrOriginalAssertionChanged": true,
+  "reason": "The full message wraps between some and lenses. Both original string-containment predicates incorrectly require a contiguous substring across the row break."
+}

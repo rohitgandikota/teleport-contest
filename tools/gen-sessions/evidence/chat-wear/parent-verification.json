@@ -1,0 +1,383 @@
+{
+  "baselineCommit": "ef2bfd2dbd56cb78fce562156fb0247a52304d24",
+  "composition": {
+    "parent": "ef2bfd2dbd56cb78fce562156fb0247a52304d24",
+    "runtimeChanged": [
+      "js/do_wear.js",
+      "js/sounds.js"
+    ],
+    "runtimeFiles": 280,
+    "runtimeSHA256": "88b58f9ee504928b3adf4295da37cce4337882990cc75541f033df1d36c1ab11",
+    "patchSHA256": "e1bbd925525e103c859ca3815b05fb220a3ae458eec4afd7178e94cbd60e112d",
+    "fixedLinks": 278,
+    "sourceCopies": 2,
+    "sourceCandidatePins": {
+      "chat": "7960239bf4ca608eac35c01241031240d7ffccd67d364e84df94afde309e6b9b",
+      "wearSeal": "4ae8edb60b97ab5def56d8632613194894440d276b3a9a6592c0deb75ce395eb"
+    }
+  },
+  "payloads": 62,
+  "newRequirements": 12,
+  "registryTotal": 4682,
+  "raws": [
+    {
+      "path": "tools/gen-sessions/generated/chat-speech-guards.session.json",
+      "sha256": "ce89945391669f758be0f5c44d602051601984d77dbc4f7b046a698a7d2d2f78",
+      "bytes": 796608
+    },
+    {
+      "path": "tools/gen-sessions/generated/do-wear-entry.session.json",
+      "sha256": "fe893b3d09f1637acac3a92b4df289009e77ea81ca0954e19f187390c7c67cb1",
+      "bytes": 1730845
+    }
+  ],
+  "native": [
+    {
+      "name": "chat-speech-guards",
+      "command": [
+        "node",
+        "--max-old-space-size=512",
+        "--preserve-symlinks",
+        "--preserve-symlinks-main",
+        "/Users/rohit/research/code/contest/.cache/restart-20261122/chat-wear-parent-composed/chat-speech-guards-native.mjs"
+      ],
+      "exit": 0,
+      "seconds": 1.81,
+      "cases": 6,
+      "passed": 6,
+      "report": ".cache/restart-20261122/chat-wear-chat-speech-guards-native.json",
+      "reportSHA256": "9bd362366f39247379dd96093eaf027dbae280a6a25dbeded08b33b58fdcefde",
+      "priorReport": ".cache/restart-20261122/chat-speech-guards-candidate/native.json",
+      "completeReportUnchanged": true,
+      "log": ".cache/restart-20261122/chat-wear-chat-speech-guards-native.log",
+      "logSHA256": "1666deee7892d49bf22aa6a57972f88665884a9344df1e1b0825113607c17a07",
+      "timeoutSeconds": 55,
+      "maxOldSpaceMB": 512
+    },
+    {
+      "name": "do-wear-entry",
+      "command": [
+        "node",
+        "--max-old-space-size=512",
+        "--preserve-symlinks",
+        "--preserve-symlinks-main",
+        "/Users/rohit/research/code/contest/.cache/restart-20261122/chat-wear-parent-composed/do-wear-entry-native.mjs"
+      ],
+      "exit": 0,
+      "seconds": 1.815,
+      "cases": 6,
+      "passed": 6,
+      "report": ".cache/restart-20261122/chat-wear-do-wear-entry-native.json",
+      "reportSHA256": "0bf2a6f9cfba93abf50e67ca29dea185065bac7adc5d279cb5723486eb82dff0",
+      "priorReport": ".cache/restart-20261122/do-wear-entry-candidate/reports/candidate-native.json",
+      "completeReportUnchanged": true,
+      "log": ".cache/restart-20261122/chat-wear-do-wear-entry-native.log",
+      "logSHA256": "7147fc11f719b6798ae7e8888192d1f8aa01083e28d0cf692a9b7c93d2b2ddcc",
+      "timeoutSeconds": 55,
+      "maxOldSpaceMB": 512
+    }
+  ],
+  "ordinary": [
+    {
+      "command": [
+        "node",
+        "--max-old-space-size=512",
+        "tools/chat-speech-guards-input-gate.mjs",
+        "/Users/rohit/research/code/contest/.cache/restart-20261122/chat-wear-chat-main-ordinary.json"
+      ],
+      "exit": 0,
+      "seconds": 2.806,
+      "report": ".cache/restart-20261122/chat-wear-chat-main-ordinary.json",
+      "reportSHA256": "7d7ae27ec21975664f0a815794ddf565b62bb563abb55e5e855a19084190f193",
+      "log": ".cache/restart-20261122/chat-wear-chat-main-ordinary.log",
+      "logSHA256": "2f61e2adc30eb36e6ab64290da657d80513471b9f1b1a8a2d5a070bdeb69f140",
+      "timeoutSeconds": 55,
+      "maxOldSpaceMB": 512
+    },
+    {
+      "command": [
+        "node",
+        "--max-old-space-size=512",
+        "tools/do-wear-entry-input-gate.mjs",
+        "/Users/rohit/research/code/contest/.cache/restart-20261122/chat-wear-wear-main-ordinary.json"
+      ],
+      "exit": 0,
+      "seconds": 3.753,
+      "report": ".cache/restart-20261122/chat-wear-wear-main-ordinary.json",
+      "reportSHA256": "a7aab13842ca425520426effcb2b8752b5fe3c3811126053abad2818f054850c",
+      "log": ".cache/restart-20261122/chat-wear-wear-main-ordinary.log",
+      "logSHA256": "1702412195b45fd11757121b6e0fc089e83375d2f72e5c756614d83957eecf16",
+      "timeoutSeconds": 55,
+      "maxOldSpaceMB": 512
+    }
+  ],
+  "ordinaryCases": 12,
+  "wearChecks": 52,
+  "negativeStreamHashes": 25,
+  "wearOrdinaryRowsUnchanged": true,
+  "chatOrdinaryReportUnchanged": true,
+  "retained": [
+    {
+      "name": "command-result-state",
+      "command": [
+        "node",
+        "--max-old-space-size=512",
+        "tools/command-result-state-gate.mjs"
+      ],
+      "exit": 0,
+      "seconds": 1.006,
+      "log": ".cache/restart-20261122/chat-wear-retained-command-result-state.log",
+      "sha256": "41baed555830b544f513be6ed2ee0e99ff9633944d964914807332af88ee0515"
+    },
+    {
+      "name": "command-repeat-state",
+      "command": [
+        "node",
+        "--max-old-space-size=512",
+        "tools/command-repeat-state-gate.mjs"
+      ],
+      "exit": 0,
+      "seconds": 1.336,
+      "log": ".cache/restart-20261122/chat-wear-retained-command-repeat-state.log",
+      "sha256": "b00cc893088cae8b5ae79b871dc7aa15e71ce43b116bab57d206b57b6cc741fc"
+    },
+    {
+      "name": "command-table",
+      "command": [
+        "node",
+        "--max-old-space-size=512",
+        "tools/command-table-gate.mjs"
+      ],
+      "exit": 0,
+      "seconds": 2.516,
+      "log": ".cache/restart-20261122/chat-wear-retained-command-table.log",
+      "sha256": "cd90c9e0ccae5ef65842e0825101450f563549608db38fe015dae1125ca9ab9b"
+    },
+    {
+      "name": "inventory-selection-state",
+      "command": [
+        "node",
+        "--max-old-space-size=512",
+        "tools/inventory-selection-state-gate.mjs"
+      ],
+      "exit": 0,
+      "seconds": 15.587,
+      "log": ".cache/restart-20261122/chat-wear-retained-inventory-selection-state.log",
+      "sha256": "174b7715fd1081128f415f30f0a15309091974252fe4890318bfe2ca751c13c3"
+    },
+    {
+      "name": "accessory-wear-owner-state",
+      "command": [
+        "node",
+        "--max-old-space-size=512",
+        "tools/accessory-wear-owner-state-gate.mjs"
+      ],
+      "exit": 0,
+      "seconds": 0.904,
+      "log": ".cache/restart-20261122/chat-wear-retained-accessory-wear-owner-state.log",
+      "sha256": "8f15540fdd6b197d76a08233aa0590746693b1c5498611f8ccca9588004b50f4"
+    },
+    {
+      "name": "accessory-wear-owner-input",
+      "command": [
+        "node",
+        "--max-old-space-size=512",
+        "tools/accessory-wear-owner-input-gate.mjs"
+      ],
+      "exit": 0,
+      "seconds": 3.56,
+      "log": ".cache/restart-20261122/chat-wear-retained-accessory-wear-owner-input.log",
+      "sha256": "b2b798670f93f42b75aaaa8fd84ca1b4232e339fba4c09bf8f32cc5645ca15e6"
+    },
+    {
+      "name": "set-wear-polymorph-state",
+      "command": [
+        "node",
+        "--max-old-space-size=512",
+        "tools/set-wear-polymorph-state-gate.mjs"
+      ],
+      "exit": 0,
+      "seconds": 0.632,
+      "log": ".cache/restart-20261122/chat-wear-retained-set-wear-polymorph-state.log",
+      "sha256": "8feaff94a6d59e873c55ffba66dc9a6ee2828cd159d9b645f2e617088ddbe3ae"
+    },
+    {
+      "name": "set-wear-polymorph-input",
+      "command": [
+        "node",
+        "--max-old-space-size=512",
+        "tools/set-wear-polymorph-input-gate.mjs"
+      ],
+      "exit": 0,
+      "seconds": 0.84,
+      "log": ".cache/restart-20261122/chat-wear-retained-set-wear-polymorph-input.log",
+      "sha256": "be2300366df9ca1335fe7d39bdb64ac22d667e9c2a8bd789034c94c842893319"
+    },
+    {
+      "name": "strangulation-status-state",
+      "command": [
+        "node",
+        "--max-old-space-size=512",
+        "tools/strangulation-status-state-gate.mjs"
+      ],
+      "exit": 0,
+      "seconds": 0.573,
+      "log": ".cache/restart-20261122/chat-wear-retained-strangulation-status-state.log",
+      "sha256": "0f852cd6f6310a6641a857f4e5ece1dd940fc6781cc0d30b0c2f75158e69a878"
+    },
+    {
+      "name": "strangulation-transition-state",
+      "command": [
+        "node",
+        "--max-old-space-size=512",
+        "tools/strangulation-transition-state-gate.mjs"
+      ],
+      "exit": 0,
+      "seconds": 0.573,
+      "log": ".cache/restart-20261122/chat-wear-retained-strangulation-transition-state.log",
+      "sha256": "05d93259801d7c412fd96ef54dc4f6ca3bff61ac433440a10795e7b1d286213b"
+    },
+    {
+      "name": "strangulation-transition-input",
+      "command": [
+        "node",
+        "--max-old-space-size=512",
+        "tools/strangulation-transition-input-gate.mjs"
+      ],
+      "exit": 0,
+      "seconds": 2.198,
+      "log": ".cache/restart-20261122/chat-wear-retained-strangulation-transition-input.log",
+      "sha256": "9b49f442cc224e5e5ce6ee4b2b27cd8cc2844e93c565d0a71d2092686a4d66fc"
+    },
+    {
+      "name": "peaceful-minion-chat-input",
+      "command": [
+        "node",
+        "--max-old-space-size=512",
+        "tools/peaceful-minion-chat-input-gate.mjs"
+      ],
+      "exit": 0,
+      "seconds": 1.45,
+      "log": ".cache/restart-20261122/chat-wear-retained-peaceful-minion-chat-input.log",
+      "sha256": "5a8f5f44740a64d4cdd9961f142e1cd9677bc8aa4f880234ce4cce843546f9a2"
+    }
+  ],
+  "strict": {
+    "command": [
+      "node",
+      "tools/hang-gate.mjs",
+      "sessions/seed0002-healer-reflection-drummer.session.json",
+      "sessions/seed0004-feeding-pony.session.json",
+      "sessions/seed0006-wizard-water-demon.session.json",
+      "sessions/seed0007-rogue-snake-swamp.session.json",
+      "sessions/seed0009-swimmer-mforce.session.json",
+      "sessions/seed0012-monk-vault-escort.session.json",
+      "sessions/seed0013-friday13-save-then-fullmoon-restore.session.json",
+      "sessions/seed0013-rogue-friday13-combat.session.json",
+      "sessions/seed0014-dequa-fountain-explore.session.json",
+      "sessions/seed0015-valk-level2-pit-dog-wait.session.json",
+      "sessions/seed0016-healer-newmoon-eat-zap.session.json",
+      "sessions/seed0017-samurai-altar-pray.session.json",
+      "sessions/seed0030-ten-diverse-deaths.session.json",
+      "sessions/seed0060-orc-rogue-kick-search.session.json",
+      "sessions/seed0077-rogue-chargen.session.json",
+      "sessions/seed0101-ranger-quiver-throw-travel-engrave.session.json",
+      "sessions/seed0102-ranger-name-cancel.session.json",
+      "sessions/seed0103-knight-ride-pony.session.json",
+      "sessions/seed0104-knight-ride-combat.session.json",
+      "sessions/seed0105-valk-chat-lamp-ration.session.json",
+      "sessions/seed0106-priest-extcmd-sweep.session.json",
+      "sessions/seed0107-samurai-twoweapon-enhance.session.json",
+      "sessions/seed0108-wizard-extcmd-wishlist.session.json",
+      "sessions/seed0116-wizard-wear-shop.session.json",
+      "sessions/seed0200-monk-north-search.session.json",
+      "sessions/seed0360-wizard-world-tour.session.json",
+      "sessions/seed0361-archeologist-tour.session.json",
+      "sessions/seed0367-priest-quest-tour.session.json",
+      "sessions/seed0373-barbarian-quest-tour.session.json",
+      "sessions/seed0383-wizard-hallucinate.session.json",
+      "sessions/seed0398-wizard-wandpoly-pile.session.json",
+      "sessions/seed0399-wizard-hallu-actions.session.json",
+      "sessions/seed0501-priest-cast-read-turn.session.json",
+      "sessions/seed0700-samurai-explore-descend.session.json",
+      "sessions/seed0900-tourist-explore-actions.session.json",
+      "sessions/seed1150-caveman-explore-move.session.json",
+      "sessions/seed1500-rogue-explore-move.session.json",
+      "sessions/seed1800-tourist-eat-throw.session.json",
+      "sessions/seed2200-wizard-quaff-zap-read.session.json",
+      "sessions/seed2600-wizard-custom-binds.session.json",
+      "sessions/seed4500-knight-coverage.session.json",
+      "sessions/seed5002-wizard-coverage-pair.session.json",
+      "sessions/seed5006-tourist-stress-disaster.session.json",
+      "sessions/seed8000-tourist-starter.session.json",
+      "tools/gen-sessions/generated/chat-speech-guards.session.json",
+      "tools/gen-sessions/generated/do-wear-entry.session.json"
+    ],
+    "exit": 0,
+    "seconds": 33.59,
+    "targets": 46,
+    "budgetMs": 8000,
+    "log": ".cache/restart-20261122/chat-wear-public46-strict.log",
+    "sha256": "be758e0e909692b09655b61c22e730e58a7a4b59c54e413e3f1f5f1203842a6a"
+  },
+  "scopeImportFindings": 0,
+  "fullRegression": {
+    "verifiedAt": "2026-11-26T16:39:09.504371+00:00",
+    "sessions": 934,
+    "passed": 934,
+    "failures": [],
+    "totals": {
+      "screens": 938437,
+      "cursors": 938437,
+      "rngCalls": 20467980,
+      "animFrames": 33187
+    },
+    "missingMetrics": {},
+    "runtimeFilesFixed": 280,
+    "rawFilesFixed": 934,
+    "allFilesFixed": 1225,
+    "allFilesSHA256": "854b8f36bce9a71b1daada5f8be04f49e8993e64294eaf5e8752adcbbdc47f4f",
+    "defaultWorkerTimeoutMs": 45000,
+    "retries": 0,
+    "started": {
+      "startedAt": "2026-11-26T16:28:45.482094+00:00",
+      "workers": 2,
+      "pid": 3503084,
+      "cpuCount": 24,
+      "loadAverage": [
+        1.15380859375,
+        1.0673828125,
+        1.2197265625
+      ],
+      "timeoutOverride": false,
+      "retries": 0,
+      "node": {
+        "version": "v26.3.0",
+        "archive": "node-v26.3.0-linux-x64.tar.xz",
+        "sha256": "0ce210831380ab75a5fec0d3fb6b5af0958898016b2cae51cc2fa11057d2f77e",
+        "officialURL": "https://nodejs.org/dist/v26.3.0/node-v26.3.0-linux-x64.tar.xz",
+        "checksumsURL": "https://nodejs.org/dist/v26.3.0/SHASUMS256.txt",
+        "binary": "/share/NFS/u/rohit/research/contest/artifacts/2026-11-22/text-history-full858-js-20261125/node-v26.3.0-linux-x64/bin/node",
+        "archiveSHA256": "0ce210831380ab75a5fec0d3fb6b5af0958898016b2cae51cc2fa11057d2f77e",
+        "binarySHA256": "5325ac9da58541494afcc136f0880279a2a853609bf4dae7755e04fb682b6926"
+      },
+      "allFilesSHA256": "854b8f36bce9a71b1daada5f8be04f49e8993e64294eaf5e8752adcbbdc47f4f"
+    },
+    "logs": {
+      "shard-1.log": "b3eff36fcbac2b03b0f3960daf5ded1959b0c55b9dee4617066cf8fab25675da",
+      "shard-0.log": "ed6ab9d411f5f5978d83885ab33749aa369fa2648b67bcf8ef9ff7b75a464ea9"
+    },
+    "limits": [
+      "Scored corpus parity, not literal serialized-byte or whole-port proof.",
+      "No held-out result is inferred from these fixtures."
+    ]
+  },
+  "fullVerificationSHA256": "a17a6e09b979ddf073e9d5d6aa6fede2798debf1c96ab659e48aac0c8138b075",
+  "NFSRoot": "/share/NFS/u/rohit/research/contest/artifacts/2026-11-22/chat-wear-full934-js-20261126",
+  "limits": [
+    "Corpus/native checks compare decoded terminal cells, cursor positions, normalized RNG calls/slices and animation frames, not serialized ANSI byte identity or whole-port completion.",
+    "No new held-out or leaderboard result is inferred.",
+    "Original wear message-wrap diagnostics and corrected predicate are preserved separately.",
+    "Remaining shop, mounted, statue, invisible-pet and cancellation chat branches are separate work."
+  ]
+}

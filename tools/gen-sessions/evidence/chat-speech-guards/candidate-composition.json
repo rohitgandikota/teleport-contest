@@ -1,0 +1,13 @@
+{
+  "baseline": "0ee2ebcfa3c310dbebe74409836bb8dedea2d6cacbf7d8e5d73d76bca082204b",
+  "candidate": "1fc9d08c9aed0eee89768fb7cddf061f04ef5229df1960b4741c2ea75fa1eacd",
+  "changed": [
+    "js/sounds.js"
+  ],
+  "patchSHA256": "321a5e9bb59c60fd568c69acf5c6291fcdec9ab6531cfce335fc00b0f49cc8a1",
+  "originalOrdinaryBodySHA256": "bc59e33f852e4a6a9aad5900a2038c3146932f3a8e1985ef762aa4a2c9aa5f73",
+  "sourceManifestSHA256": "f8013dd51f1c5ae2450928e567d019f4ae497f1d888d581548a06703c3afbc51",
+  "runtimeLinks": 279,
+  "runtimeCopies": 1,
+  "rawSHA256": "ce89945391669f758be0f5c44d602051601984d77dbc4f7b046a698a7d2d2f78"
+}

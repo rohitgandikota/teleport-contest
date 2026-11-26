@@ -1,0 +1,14 @@
+{
+  "command": [
+    "node",
+    "--max-old-space-size=512",
+    "--preserve-symlinks",
+    "--preserve-symlinks-main",
+    ".cache/restart-20261122/do-wear-entry-parent-review/baseline-native-corrected.mjs"
+  ],
+  "exit": 1,
+  "seconds": 1.839,
+  "logSHA256": "26d99bd0c83e7070bbcc16bf898a702e749f6673ce36ae6ba2add6f32cd3e844",
+  "timeoutSeconds": 55,
+  "maxOldSpaceMB": 512
+}

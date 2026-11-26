@@ -1,0 +1,25 @@
+{
+  "originalDiagnosticSha256": "b3ab34e623d7a286f44c01f687c60cbffab867f38be9862023f17c54ce4981bf",
+  "correctedDiagnosticSha256": "73f5caa1abc0c234aeff4cffc8f61e765e07321c930073260942734a1f38cd48",
+  "portableBodySha256": "e9b17de4972041f34921cb046ebb174cdcdee1db5d7e9356b1ed3de248e8f947",
+  "all52CheckCallsAndExpectedValuesUnchanged": true,
+  "originalCandidate51of52Kept": true,
+  "sourceOriginal46of52Kept": true,
+  "correctedCandidate52of52Kept": true,
+  "singlePredicateCorrectionAlreadyApproved": "Only full-equipment P joins decoded first2rows before searching the unchanged complete source message.",
+  "portableBodyAdaptations": [
+    {
+      "from": "        writeFileSync(destination,JSON.stringify(report,null,2)+'\\n');\n",
+      "to": "        if (Object.hasOwn(negativeHashes, part.name))\n            assert.deepEqual(row.hashes, negativeHashes[part.name], 'all five negative streams');\n"
+    },
+    {
+      "from": "    writeFileSync(destination,JSON.stringify(report,null,2)+'\\n');\n",
+      "to": "    const compactReport = {...report, rows:report.rows.map(({observations, ...row}) => row)};\n    if (reportPath)\n        writeFileSync(reportPath,JSON.stringify(compactReport,null,2)+'\\n',{flag:'wx'});\n    console.log(JSON.stringify({cases:report.summary.cases,checks:report.summary.checks,\n        failures:report.summary.failures,observerRestored:report.summary.observerRestored,\n        workerFailure:report.workerFailure?.message || null,nativePreflight,sourcePreflight}));\n"
+    },
+    {
+      "from": "process.exitCode = report.workerFailure || report.summary.failures.length ? 1 : 0;",
+      "to": "process.exitCode = report.workerFailure || report.summary.failures.length\n    || !report.summary.observerRestored || report.summary.cases !== recipe.segments.length ? 1 : 0;"
+    }
+  ],
+  "purpose": "Remove unconditional cache reporting; require fresh optional compact report, current live negative15hash equality, observer restoration and all6cases. No assertions removed or changed."
+}

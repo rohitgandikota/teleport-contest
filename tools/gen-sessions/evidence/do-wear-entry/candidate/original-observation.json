@@ -1,0 +1,2532 @@
+{
+  "runtimeMapSha256": "abbfee24d20c7b14bbb2ae01cf585bb2917279bc59c57759662dccf53c258031",
+  "recipeSha256": "e28b4ac22263258a7725b64d890ef9c17690280a6c9c687e644ad5d63243fd05",
+  "nativeRecorded": false,
+  "runtimeChanged": false,
+  "rows": [
+    {
+      "name": "full-eleven-wear-puton",
+      "kind": "full-equipment",
+      "keys": 486,
+      "boundaries": 487,
+      "hashes": {
+        "screens": "758a643bdfbc6eb0068bb57329256c11bc7c5c8c2d83dae6fdf8cbc36ed946d2",
+        "cursors": "e0e3d70ab919eb27a93442325ce3ac5f761086c7276cf79e6086bbb73760b4a3",
+        "calls": "de6e28524bace90f931405f2abc77403d2f68262ae7467ed15e4f6a4e53edd51",
+        "slices": "6c3cec51d85ed6df24d33456c55ce4b6a752d97251f95270a70b79d0403b0c31",
+        "frames": "b361276612cb994df5d6d71256fc4b4febaf2a2544d861c2d91de439ab609938"
+      },
+      "checks": [
+        {
+          "name": "all input boundaries and RNG slices",
+          "category": "integrity",
+          "pass": true
+        },
+        {
+          "name": "wear: real producer setup",
+          "category": "setup",
+          "pass": true
+        },
+        {
+          "name": "wear: C entry feedback",
+          "category": "source-prediction",
+          "pass": true
+        },
+        {
+          "name": "wear: slots and time unaffected at entry",
+          "category": "source-prediction",
+          "pass": true
+        },
+        {
+          "name": "put on: real producer setup",
+          "category": "setup",
+          "pass": true
+        },
+        {
+          "name": "put on: C entry feedback",
+          "category": "source-prediction",
+          "pass": false,
+          "error": "The expression evaluated to a falsy value:\n\n  assert.ok(captured.after.text.includes(plan.kind==='full-equipment'\n"
+        },
+        {
+          "name": "put on: slots and time unaffected at entry",
+          "category": "source-prediction",
+          "pass": true
+        },
+        {
+          "name": "observer-free five streams unchanged",
+          "category": "neutrality",
+          "pass": true
+        },
+        {
+          "name": "deferred five streams unchanged",
+          "category": "neutrality",
+          "pass": true
+        }
+      ],
+      "observations": [
+        {
+          "label": "wear",
+          "before": {
+            "state": {
+              "step": 468,
+              "turn": 15,
+              "multi": 0,
+              "afternmv": null,
+              "hp": 7,
+              "form": 343,
+              "gameover": false,
+              "slots": {
+                "uarm": "b",
+                "uarmu": "a",
+                "uarmc": "c",
+                "uarmh": "d",
+                "uarms": "e",
+                "uarmg": "f",
+                "uarmf": "g",
+                "uleft": "h",
+                "uright": "i",
+                "uamul": "j",
+                "ublindf": "k"
+              },
+              "inventory": [
+                {
+                  "letter": "a",
+                  "type": "HAWAIIAN_SHIRT",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 64
+                },
+                {
+                  "letter": "b",
+                  "type": "LEATHER_ARMOR",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 1
+                },
+                {
+                  "letter": "c",
+                  "type": "LEATHER_CLOAK",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 2
+                },
+                {
+                  "letter": "d",
+                  "type": "HELMET",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 4
+                },
+                {
+                  "letter": "e",
+                  "type": "SMALL_SHIELD",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 8
+                },
+                {
+                  "letter": "f",
+                  "type": "LEATHER_GLOVES",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 16
+                },
+                {
+                  "letter": "g",
+                  "type": "LOW_BOOTS",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 32
+                },
+                {
+                  "letter": "h",
+                  "type": "RIN_PROTECTION",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 131072
+                },
+                {
+                  "letter": "i",
+                  "type": "RIN_ADORNMENT",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 262144
+                },
+                {
+                  "letter": "j",
+                  "type": "AMULET_OF_REFLECTION",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 65536
+                },
+                {
+                  "letter": "k",
+                  "type": "LENSES",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 524288
+                }
+              ],
+              "repeat": [],
+              "inDoagain": false
+            },
+            "text": "\n\n\n\n\n                                                                         │\n                                                      ┌────┐           ··│\n                                                      │···@d    ▒········│\n                                                      │··r·│           ··│\n                                                      │%···│           ──┘\n                                                      └·───┘\n\n\n\n\n\n\n\n\n\n\n\nWizard the Evoker              St:9 Dx:15 Co:15 In:18 Wi:7 Ch:10 Neutral\nDlvl:1 $:0 HP:7(12) Pw:8(8) AC:3 Xp:1"
+          },
+          "after": {
+            "state": {
+              "step": 469,
+              "turn": 15,
+              "multi": 0,
+              "afternmv": null,
+              "hp": 7,
+              "form": 343,
+              "gameover": false,
+              "slots": {
+                "uarm": "b",
+                "uarmu": "a",
+                "uarmc": "c",
+                "uarmh": "d",
+                "uarms": "e",
+                "uarmg": "f",
+                "uarmf": "g",
+                "uleft": "h",
+                "uright": "i",
+                "uamul": "j",
+                "ublindf": "k"
+              },
+              "inventory": [
+                {
+                  "letter": "a",
+                  "type": "HAWAIIAN_SHIRT",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 64
+                },
+                {
+                  "letter": "b",
+                  "type": "LEATHER_ARMOR",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 1
+                },
+                {
+                  "letter": "c",
+                  "type": "LEATHER_CLOAK",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 2
+                },
+                {
+                  "letter": "d",
+                  "type": "HELMET",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 4
+                },
+                {
+                  "letter": "e",
+                  "type": "SMALL_SHIELD",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 8
+                },
+                {
+                  "letter": "f",
+                  "type": "LEATHER_GLOVES",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 16
+                },
+                {
+                  "letter": "g",
+                  "type": "LOW_BOOTS",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 32
+                },
+                {
+                  "letter": "h",
+                  "type": "RIN_PROTECTION",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 131072
+                },
+                {
+                  "letter": "i",
+                  "type": "RIN_ADORNMENT",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 262144
+                },
+                {
+                  "letter": "j",
+                  "type": "AMULET_OF_REFLECTION",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 65536
+                },
+                {
+                  "letter": "k",
+                  "type": "LENSES",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 524288
+                }
+              ],
+              "repeat": [
+                {
+                  "type": 1,
+                  "command": "wear",
+                  "key": null
+                }
+              ],
+              "inDoagain": false
+            },
+            "text": "You are already wearing a full complement of armor.\n\n\n\n\n                                                                         │\n                                                      ┌────┐           ··│\n                                                      │···@d    ▒········│\n                                                      │··r·│           ··│\n                                                      │%···│           ──┘\n                                                      └·───┘\n\n\n\n\n\n\n\n\n\n\n\nWizard the Evoker              St:9 Dx:15 Co:15 In:18 Wi:7 Ch:10 Neutral\nDlvl:1 $:0 HP:7(12) Pw:8(8) AC:3 Xp:1"
+          }
+        },
+        {
+          "label": "put on",
+          "before": {
+            "state": {
+              "step": 477,
+              "turn": 15,
+              "multi": 0,
+              "afternmv": null,
+              "hp": 7,
+              "form": 343,
+              "gameover": false,
+              "slots": {
+                "uarm": "b",
+                "uarmu": "a",
+                "uarmc": "c",
+                "uarmh": "d",
+                "uarms": "e",
+                "uarmg": "f",
+                "uarmf": "g",
+                "uleft": "h",
+                "uright": "i",
+                "uamul": "j",
+                "ublindf": "k"
+              },
+              "inventory": [
+                {
+                  "letter": "a",
+                  "type": "HAWAIIAN_SHIRT",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 64
+                },
+                {
+                  "letter": "b",
+                  "type": "LEATHER_ARMOR",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 1
+                },
+                {
+                  "letter": "c",
+                  "type": "LEATHER_CLOAK",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 2
+                },
+                {
+                  "letter": "d",
+                  "type": "HELMET",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 4
+                },
+                {
+                  "letter": "e",
+                  "type": "SMALL_SHIELD",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 8
+                },
+                {
+                  "letter": "f",
+                  "type": "LEATHER_GLOVES",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 16
+                },
+                {
+                  "letter": "g",
+                  "type": "LOW_BOOTS",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 32
+                },
+                {
+                  "letter": "h",
+                  "type": "RIN_PROTECTION",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 131072
+                },
+                {
+                  "letter": "i",
+                  "type": "RIN_ADORNMENT",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 262144
+                },
+                {
+                  "letter": "j",
+                  "type": "AMULET_OF_REFLECTION",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 65536
+                },
+                {
+                  "letter": "k",
+                  "type": "LENSES",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 524288
+                }
+              ],
+              "repeat": [],
+              "inDoagain": false
+            },
+            "text": "\n\n\n\n\n                                                                         │\n                                                      ┌────┐           ··│\n                                                      │···@d    ▒········│\n                                                      │··r·│           ··│\n                                                      │%···│           ──┘\n                                                      └·───┘\n\n\n\n\n\n\n\n\n\n\n\nWizard the Evoker              St:9 Dx:15 Co:15 In:18 Wi:7 Ch:10 Neutral\nDlvl:1 $:0 HP:7(12) Pw:8(8) AC:3 Xp:1"
+          },
+          "after": {
+            "state": {
+              "step": 478,
+              "turn": 15,
+              "multi": 0,
+              "afternmv": null,
+              "hp": 7,
+              "form": 343,
+              "gameover": false,
+              "slots": {
+                "uarm": "b",
+                "uarmu": "a",
+                "uarmc": "c",
+                "uarmh": "d",
+                "uarms": "e",
+                "uarmg": "f",
+                "uarmf": "g",
+                "uleft": "h",
+                "uright": "i",
+                "uamul": "j",
+                "ublindf": "k"
+              },
+              "inventory": [
+                {
+                  "letter": "a",
+                  "type": "HAWAIIAN_SHIRT",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 64
+                },
+                {
+                  "letter": "b",
+                  "type": "LEATHER_ARMOR",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 1
+                },
+                {
+                  "letter": "c",
+                  "type": "LEATHER_CLOAK",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 2
+                },
+                {
+                  "letter": "d",
+                  "type": "HELMET",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 4
+                },
+                {
+                  "letter": "e",
+                  "type": "SMALL_SHIELD",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 8
+                },
+                {
+                  "letter": "f",
+                  "type": "LEATHER_GLOVES",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 16
+                },
+                {
+                  "letter": "g",
+                  "type": "LOW_BOOTS",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 32
+                },
+                {
+                  "letter": "h",
+                  "type": "RIN_PROTECTION",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 131072
+                },
+                {
+                  "letter": "i",
+                  "type": "RIN_ADORNMENT",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 262144
+                },
+                {
+                  "letter": "j",
+                  "type": "AMULET_OF_REFLECTION",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 65536
+                },
+                {
+                  "letter": "k",
+                  "type": "LENSES",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 524288
+                }
+              ],
+              "repeat": [
+                {
+                  "type": 1,
+                  "command": "puton",
+                  "key": null
+                }
+              ],
+              "inDoagain": false
+            },
+            "text": "Your ring-fingers are full, and you're already wearing an amulet and some\nlenses.--More--\n\n\n\n                                                                         │\n                                                      ┌────┐           ··│\n                                                      │···@d    ▒········│\n                                                      │··r·│           ··│\n                                                      │%···│           ──┘\n                                                      └·───┘\n\n\n\n\n\n\n\n\n\n\n\nWizard the Evoker              St:9 Dx:15 Co:15 In:18 Wi:7 Ch:10 Neutral\nDlvl:1 $:0 HP:7(12) Pw:8(8) AC:3 Xp:1"
+          }
+        }
+      ]
+    },
+    {
+      "name": "missing-helmet-negative",
+      "kind": "missing-slot-negative",
+      "keys": 477,
+      "boundaries": 478,
+      "hashes": {
+        "screens": "32d8c33692aa5b07ee483e46d7d875d6fa3b9c9818d0742d95e47c004743eb1c",
+        "cursors": "3f5f80a3db4bd4581900d3788fd775f893b91d88427e4052528bef27386a7f8a",
+        "calls": "a6ddf529e0b9355c90059f77a6e24906ed9e1d3b1522a9db4ed096acdddf3f8c",
+        "slices": "205200075cd0f9fd8c2cd04fcc3a7b90d49431901d8ac4983f56456699ee4e08",
+        "frames": "b85e971a55557b29515cad72edcb4976cadcc3f4d8744d7ce617d5cebf8ecf3f"
+      },
+      "checks": [
+        {
+          "name": "all input boundaries and RNG slices",
+          "category": "integrity",
+          "pass": true
+        },
+        {
+          "name": "wear: real producer setup",
+          "category": "setup",
+          "pass": true
+        },
+        {
+          "name": "wear: C entry feedback",
+          "category": "source-prediction",
+          "pass": true
+        },
+        {
+          "name": "wear: slots and time unaffected at entry",
+          "category": "source-prediction",
+          "pass": true
+        },
+        {
+          "name": "put on: real producer setup",
+          "category": "setup",
+          "pass": true
+        },
+        {
+          "name": "put on: C entry feedback",
+          "category": "source-prediction",
+          "pass": true
+        },
+        {
+          "name": "put on: slots and time unaffected at entry",
+          "category": "source-prediction",
+          "pass": true
+        },
+        {
+          "name": "observer-free five streams unchanged",
+          "category": "neutrality",
+          "pass": true
+        },
+        {
+          "name": "deferred five streams unchanged",
+          "category": "neutrality",
+          "pass": true
+        }
+      ],
+      "observations": [
+        {
+          "label": "wear",
+          "before": {
+            "state": {
+              "step": 459,
+              "turn": 13,
+              "multi": 0,
+              "afternmv": null,
+              "hp": 5,
+              "form": 343,
+              "gameover": false,
+              "slots": {
+                "uarm": "b",
+                "uarmu": "a",
+                "uarmc": "c",
+                "uarmh": null,
+                "uarms": "e",
+                "uarmg": "f",
+                "uarmf": "g",
+                "uleft": "h",
+                "uright": "i",
+                "uamul": "j",
+                "ublindf": "k"
+              },
+              "inventory": [
+                {
+                  "letter": "a",
+                  "type": "HAWAIIAN_SHIRT",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 64
+                },
+                {
+                  "letter": "b",
+                  "type": "LEATHER_ARMOR",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 1
+                },
+                {
+                  "letter": "c",
+                  "type": "LEATHER_CLOAK",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 2
+                },
+                {
+                  "letter": "d",
+                  "type": "HELMET",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 0
+                },
+                {
+                  "letter": "e",
+                  "type": "SMALL_SHIELD",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 8
+                },
+                {
+                  "letter": "f",
+                  "type": "LEATHER_GLOVES",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 16
+                },
+                {
+                  "letter": "g",
+                  "type": "LOW_BOOTS",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 32
+                },
+                {
+                  "letter": "h",
+                  "type": "RIN_PROTECTION",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 131072
+                },
+                {
+                  "letter": "i",
+                  "type": "RIN_ADORNMENT",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 262144
+                },
+                {
+                  "letter": "j",
+                  "type": "AMULET_OF_REFLECTION",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 65536
+                },
+                {
+                  "letter": "k",
+                  "type": "LENSES",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 524288
+                }
+              ],
+              "repeat": [],
+              "inDoagain": false
+            },
+            "text": "\n\n\n\n\n                                                                         │\n                                                      ┌────┐           ··│\n                                                      │···@d    ▒········│\n                                                      │··r·│           ··│\n                                                      │%···│           ──┘\n                                                      └·───┘\n\n\n\n\n\n\n\n\n\n\n\nWizard the Evoker              St:9 Dx:15 Co:15 In:18 Wi:7 Ch:10 Neutral\nDlvl:1 $:0 HP:5(12) Pw:8(8) AC:4 Xp:1"
+          },
+          "after": {
+            "state": {
+              "step": 460,
+              "turn": 13,
+              "multi": 0,
+              "afternmv": null,
+              "hp": 5,
+              "form": 343,
+              "gameover": false,
+              "slots": {
+                "uarm": "b",
+                "uarmu": "a",
+                "uarmc": "c",
+                "uarmh": null,
+                "uarms": "e",
+                "uarmg": "f",
+                "uarmf": "g",
+                "uleft": "h",
+                "uright": "i",
+                "uamul": "j",
+                "ublindf": "k"
+              },
+              "inventory": [
+                {
+                  "letter": "a",
+                  "type": "HAWAIIAN_SHIRT",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 64
+                },
+                {
+                  "letter": "b",
+                  "type": "LEATHER_ARMOR",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 1
+                },
+                {
+                  "letter": "c",
+                  "type": "LEATHER_CLOAK",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 2
+                },
+                {
+                  "letter": "d",
+                  "type": "HELMET",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 0
+                },
+                {
+                  "letter": "e",
+                  "type": "SMALL_SHIELD",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 8
+                },
+                {
+                  "letter": "f",
+                  "type": "LEATHER_GLOVES",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 16
+                },
+                {
+                  "letter": "g",
+                  "type": "LOW_BOOTS",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 32
+                },
+                {
+                  "letter": "h",
+                  "type": "RIN_PROTECTION",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 131072
+                },
+                {
+                  "letter": "i",
+                  "type": "RIN_ADORNMENT",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 262144
+                },
+                {
+                  "letter": "j",
+                  "type": "AMULET_OF_REFLECTION",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 65536
+                },
+                {
+                  "letter": "k",
+                  "type": "LENSES",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 524288
+                }
+              ],
+              "repeat": [
+                {
+                  "type": 1,
+                  "command": "wear",
+                  "key": null
+                }
+              ],
+              "inDoagain": false
+            },
+            "text": "What do you want to wear? [d or ?*]\n\n\n\n\n                                                                         │\n                                                      ┌────┐           ··│\n                                                      │···@d    ▒········│\n                                                      │··r·│           ··│\n                                                      │%···│           ──┘\n                                                      └·───┘\n\n\n\n\n\n\n\n\n\n\n\nWizard the Evoker              St:9 Dx:15 Co:15 In:18 Wi:7 Ch:10 Neutral\nDlvl:1 $:0 HP:5(12) Pw:8(8) AC:4 Xp:1"
+          }
+        },
+        {
+          "label": "put on",
+          "before": {
+            "state": {
+              "step": 468,
+              "turn": 13,
+              "multi": 0,
+              "afternmv": null,
+              "hp": 5,
+              "form": 343,
+              "gameover": false,
+              "slots": {
+                "uarm": "b",
+                "uarmu": "a",
+                "uarmc": "c",
+                "uarmh": null,
+                "uarms": "e",
+                "uarmg": "f",
+                "uarmf": "g",
+                "uleft": "h",
+                "uright": "i",
+                "uamul": "j",
+                "ublindf": "k"
+              },
+              "inventory": [
+                {
+                  "letter": "a",
+                  "type": "HAWAIIAN_SHIRT",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 64
+                },
+                {
+                  "letter": "b",
+                  "type": "LEATHER_ARMOR",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 1
+                },
+                {
+                  "letter": "c",
+                  "type": "LEATHER_CLOAK",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 2
+                },
+                {
+                  "letter": "d",
+                  "type": "HELMET",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 0
+                },
+                {
+                  "letter": "e",
+                  "type": "SMALL_SHIELD",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 8
+                },
+                {
+                  "letter": "f",
+                  "type": "LEATHER_GLOVES",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 16
+                },
+                {
+                  "letter": "g",
+                  "type": "LOW_BOOTS",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 32
+                },
+                {
+                  "letter": "h",
+                  "type": "RIN_PROTECTION",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 131072
+                },
+                {
+                  "letter": "i",
+                  "type": "RIN_ADORNMENT",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 262144
+                },
+                {
+                  "letter": "j",
+                  "type": "AMULET_OF_REFLECTION",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 65536
+                },
+                {
+                  "letter": "k",
+                  "type": "LENSES",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 524288
+                }
+              ],
+              "repeat": [],
+              "inDoagain": false
+            },
+            "text": "\n\n\n\n\n                                                                         │\n                                                      ┌────┐           ··│\n                                                      │···@d    ▒········│\n                                                      │··r·│           ··│\n                                                      │%···│           ──┘\n                                                      └·───┘\n\n\n\n\n\n\n\n\n\n\n\nWizard the Evoker              St:9 Dx:15 Co:15 In:18 Wi:7 Ch:10 Neutral\nDlvl:1 $:0 HP:5(12) Pw:8(8) AC:4 Xp:1"
+          },
+          "after": {
+            "state": {
+              "step": 469,
+              "turn": 13,
+              "multi": 0,
+              "afternmv": null,
+              "hp": 5,
+              "form": 343,
+              "gameover": false,
+              "slots": {
+                "uarm": "b",
+                "uarmu": "a",
+                "uarmc": "c",
+                "uarmh": null,
+                "uarms": "e",
+                "uarmg": "f",
+                "uarmf": "g",
+                "uleft": "h",
+                "uright": "i",
+                "uamul": "j",
+                "ublindf": "k"
+              },
+              "inventory": [
+                {
+                  "letter": "a",
+                  "type": "HAWAIIAN_SHIRT",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 64
+                },
+                {
+                  "letter": "b",
+                  "type": "LEATHER_ARMOR",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 1
+                },
+                {
+                  "letter": "c",
+                  "type": "LEATHER_CLOAK",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 2
+                },
+                {
+                  "letter": "d",
+                  "type": "HELMET",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 0
+                },
+                {
+                  "letter": "e",
+                  "type": "SMALL_SHIELD",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 8
+                },
+                {
+                  "letter": "f",
+                  "type": "LEATHER_GLOVES",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 16
+                },
+                {
+                  "letter": "g",
+                  "type": "LOW_BOOTS",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 32
+                },
+                {
+                  "letter": "h",
+                  "type": "RIN_PROTECTION",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 131072
+                },
+                {
+                  "letter": "i",
+                  "type": "RIN_ADORNMENT",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 262144
+                },
+                {
+                  "letter": "j",
+                  "type": "AMULET_OF_REFLECTION",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 65536
+                },
+                {
+                  "letter": "k",
+                  "type": "LENSES",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 524288
+                }
+              ],
+              "repeat": [
+                {
+                  "type": 1,
+                  "command": "puton",
+                  "key": null
+                }
+              ],
+              "inDoagain": false
+            },
+            "text": "What do you want to put on? [*]\n\n\n\n\n                                                                         │\n                                                      ┌────┐           ··│\n                                                      │···@d    ▒········│\n                                                      │··r·│           ··│\n                                                      │%···│           ──┘\n                                                      └·───┘\n\n\n\n\n\n\n\n\n\n\n\nWizard the Evoker              St:9 Dx:15 Co:15 In:18 Wi:7 Ch:10 Neutral\nDlvl:1 $:0 HP:5(12) Pw:8(8) AC:4 Xp:1"
+          }
+        }
+      ]
+    },
+    {
+      "name": "missing-amulet-negative",
+      "kind": "missing-slot-negative",
+      "keys": 477,
+      "boundaries": 478,
+      "hashes": {
+        "screens": "365f9a855969c58177eddaeafada9d8e67b0db8e64acdee59670fc7a3d4e8332",
+        "cursors": "dddf2f9c13232b43c296ac458daaa859ca2085bb836a287f60791e20514e2937",
+        "calls": "ab18aa7e61d604f5398ad817e2d8e7f22ce5fdd6a3a773d99d5635d4007aee88",
+        "slices": "7ffdbd020a16cffe66d6b5aff5cea35be56a0c9e197cad3e226b8b7b9023362d",
+        "frames": "fb728df6b5ddc5699205a6db061eaf81a2edf158e4ac2108746eb2b7e81bcfa5"
+      },
+      "checks": [
+        {
+          "name": "all input boundaries and RNG slices",
+          "category": "integrity",
+          "pass": true
+        },
+        {
+          "name": "wear: real producer setup",
+          "category": "setup",
+          "pass": true
+        },
+        {
+          "name": "wear: C entry feedback",
+          "category": "source-prediction",
+          "pass": true
+        },
+        {
+          "name": "wear: slots and time unaffected at entry",
+          "category": "source-prediction",
+          "pass": true
+        },
+        {
+          "name": "put on: real producer setup",
+          "category": "setup",
+          "pass": true
+        },
+        {
+          "name": "put on: C entry feedback",
+          "category": "source-prediction",
+          "pass": true
+        },
+        {
+          "name": "put on: slots and time unaffected at entry",
+          "category": "source-prediction",
+          "pass": true
+        },
+        {
+          "name": "observer-free five streams unchanged",
+          "category": "neutrality",
+          "pass": true
+        },
+        {
+          "name": "deferred five streams unchanged",
+          "category": "neutrality",
+          "pass": true
+        }
+      ],
+      "observations": [
+        {
+          "label": "wear",
+          "before": {
+            "state": {
+              "step": 459,
+              "turn": 14,
+              "multi": 0,
+              "afternmv": null,
+              "hp": 11,
+              "form": 343,
+              "gameover": false,
+              "slots": {
+                "uarm": "b",
+                "uarmu": "a",
+                "uarmc": "c",
+                "uarmh": "d",
+                "uarms": "e",
+                "uarmg": "f",
+                "uarmf": "g",
+                "uleft": "h",
+                "uright": "i",
+                "uamul": null,
+                "ublindf": "k"
+              },
+              "inventory": [
+                {
+                  "letter": "a",
+                  "type": "HAWAIIAN_SHIRT",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 64
+                },
+                {
+                  "letter": "b",
+                  "type": "LEATHER_ARMOR",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 1
+                },
+                {
+                  "letter": "c",
+                  "type": "LEATHER_CLOAK",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 2
+                },
+                {
+                  "letter": "d",
+                  "type": "HELMET",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 4
+                },
+                {
+                  "letter": "e",
+                  "type": "SMALL_SHIELD",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 8
+                },
+                {
+                  "letter": "f",
+                  "type": "LEATHER_GLOVES",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 16
+                },
+                {
+                  "letter": "g",
+                  "type": "LOW_BOOTS",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 32
+                },
+                {
+                  "letter": "h",
+                  "type": "RIN_PROTECTION",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 131072
+                },
+                {
+                  "letter": "i",
+                  "type": "RIN_ADORNMENT",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 262144
+                },
+                {
+                  "letter": "j",
+                  "type": "AMULET_OF_REFLECTION",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 0
+                },
+                {
+                  "letter": "k",
+                  "type": "LENSES",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 524288
+                }
+              ],
+              "repeat": [],
+              "inDoagain": false
+            },
+            "text": "\n\n\n\n\n                                                                         │\n                                                      ┌────┐           ··│\n                                                      │···@d    ▒········│\n                                                      │··r·│           ··│\n                                                      │%···│           ──┘\n                                                      └·───┘\n\n\n\n\n\n\n\n\n\n\n\nWizard the Evoker              St:9 Dx:15 Co:15 In:18 Wi:7 Ch:10 Neutral\nDlvl:1 $:0 HP:11(12) Pw:8(8) AC:3 Xp:1"
+          },
+          "after": {
+            "state": {
+              "step": 460,
+              "turn": 14,
+              "multi": 0,
+              "afternmv": null,
+              "hp": 11,
+              "form": 343,
+              "gameover": false,
+              "slots": {
+                "uarm": "b",
+                "uarmu": "a",
+                "uarmc": "c",
+                "uarmh": "d",
+                "uarms": "e",
+                "uarmg": "f",
+                "uarmf": "g",
+                "uleft": "h",
+                "uright": "i",
+                "uamul": null,
+                "ublindf": "k"
+              },
+              "inventory": [
+                {
+                  "letter": "a",
+                  "type": "HAWAIIAN_SHIRT",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 64
+                },
+                {
+                  "letter": "b",
+                  "type": "LEATHER_ARMOR",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 1
+                },
+                {
+                  "letter": "c",
+                  "type": "LEATHER_CLOAK",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 2
+                },
+                {
+                  "letter": "d",
+                  "type": "HELMET",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 4
+                },
+                {
+                  "letter": "e",
+                  "type": "SMALL_SHIELD",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 8
+                },
+                {
+                  "letter": "f",
+                  "type": "LEATHER_GLOVES",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 16
+                },
+                {
+                  "letter": "g",
+                  "type": "LOW_BOOTS",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 32
+                },
+                {
+                  "letter": "h",
+                  "type": "RIN_PROTECTION",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 131072
+                },
+                {
+                  "letter": "i",
+                  "type": "RIN_ADORNMENT",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 262144
+                },
+                {
+                  "letter": "j",
+                  "type": "AMULET_OF_REFLECTION",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 0
+                },
+                {
+                  "letter": "k",
+                  "type": "LENSES",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 524288
+                }
+              ],
+              "repeat": [
+                {
+                  "type": 1,
+                  "command": "wear",
+                  "key": null
+                }
+              ],
+              "inDoagain": false
+            },
+            "text": "What do you want to wear? [*]\n\n\n\n\n                                                                         │\n                                                      ┌────┐           ··│\n                                                      │···@d    ▒········│\n                                                      │··r·│           ··│\n                                                      │%···│           ──┘\n                                                      └·───┘\n\n\n\n\n\n\n\n\n\n\n\nWizard the Evoker              St:9 Dx:15 Co:15 In:18 Wi:7 Ch:10 Neutral\nDlvl:1 $:0 HP:11(12) Pw:8(8) AC:3 Xp:1"
+          }
+        },
+        {
+          "label": "put on",
+          "before": {
+            "state": {
+              "step": 468,
+              "turn": 14,
+              "multi": 0,
+              "afternmv": null,
+              "hp": 11,
+              "form": 343,
+              "gameover": false,
+              "slots": {
+                "uarm": "b",
+                "uarmu": "a",
+                "uarmc": "c",
+                "uarmh": "d",
+                "uarms": "e",
+                "uarmg": "f",
+                "uarmf": "g",
+                "uleft": "h",
+                "uright": "i",
+                "uamul": null,
+                "ublindf": "k"
+              },
+              "inventory": [
+                {
+                  "letter": "a",
+                  "type": "HAWAIIAN_SHIRT",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 64
+                },
+                {
+                  "letter": "b",
+                  "type": "LEATHER_ARMOR",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 1
+                },
+                {
+                  "letter": "c",
+                  "type": "LEATHER_CLOAK",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 2
+                },
+                {
+                  "letter": "d",
+                  "type": "HELMET",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 4
+                },
+                {
+                  "letter": "e",
+                  "type": "SMALL_SHIELD",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 8
+                },
+                {
+                  "letter": "f",
+                  "type": "LEATHER_GLOVES",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 16
+                },
+                {
+                  "letter": "g",
+                  "type": "LOW_BOOTS",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 32
+                },
+                {
+                  "letter": "h",
+                  "type": "RIN_PROTECTION",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 131072
+                },
+                {
+                  "letter": "i",
+                  "type": "RIN_ADORNMENT",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 262144
+                },
+                {
+                  "letter": "j",
+                  "type": "AMULET_OF_REFLECTION",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 0
+                },
+                {
+                  "letter": "k",
+                  "type": "LENSES",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 524288
+                }
+              ],
+              "repeat": [],
+              "inDoagain": false
+            },
+            "text": "\n\n\n\n\n                                                                         │\n                                                      ┌────┐           ··│\n                                                      │···@d    ▒········│\n                                                      │··r·│           ··│\n                                                      │%···│           ──┘\n                                                      └·───┘\n\n\n\n\n\n\n\n\n\n\n\nWizard the Evoker              St:9 Dx:15 Co:15 In:18 Wi:7 Ch:10 Neutral\nDlvl:1 $:0 HP:11(12) Pw:8(8) AC:3 Xp:1"
+          },
+          "after": {
+            "state": {
+              "step": 469,
+              "turn": 14,
+              "multi": 0,
+              "afternmv": null,
+              "hp": 11,
+              "form": 343,
+              "gameover": false,
+              "slots": {
+                "uarm": "b",
+                "uarmu": "a",
+                "uarmc": "c",
+                "uarmh": "d",
+                "uarms": "e",
+                "uarmg": "f",
+                "uarmf": "g",
+                "uleft": "h",
+                "uright": "i",
+                "uamul": null,
+                "ublindf": "k"
+              },
+              "inventory": [
+                {
+                  "letter": "a",
+                  "type": "HAWAIIAN_SHIRT",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 64
+                },
+                {
+                  "letter": "b",
+                  "type": "LEATHER_ARMOR",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 1
+                },
+                {
+                  "letter": "c",
+                  "type": "LEATHER_CLOAK",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 2
+                },
+                {
+                  "letter": "d",
+                  "type": "HELMET",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 4
+                },
+                {
+                  "letter": "e",
+                  "type": "SMALL_SHIELD",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 8
+                },
+                {
+                  "letter": "f",
+                  "type": "LEATHER_GLOVES",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 16
+                },
+                {
+                  "letter": "g",
+                  "type": "LOW_BOOTS",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 32
+                },
+                {
+                  "letter": "h",
+                  "type": "RIN_PROTECTION",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 131072
+                },
+                {
+                  "letter": "i",
+                  "type": "RIN_ADORNMENT",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 262144
+                },
+                {
+                  "letter": "j",
+                  "type": "AMULET_OF_REFLECTION",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 0
+                },
+                {
+                  "letter": "k",
+                  "type": "LENSES",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 524288
+                }
+              ],
+              "repeat": [
+                {
+                  "type": 1,
+                  "command": "puton",
+                  "key": null
+                }
+              ],
+              "inDoagain": false
+            },
+            "text": "What do you want to put on? [j or ?*]\n\n\n\n\n                                                                         │\n                                                      ┌────┐           ··│\n                                                      │···@d    ▒········│\n                                                      │··r·│           ··│\n                                                      │%···│           ──┘\n                                                      └·───┘\n\n\n\n\n\n\n\n\n\n\n\nWizard the Evoker              St:9 Dx:15 Co:15 In:18 Wi:7 Ch:10 Neutral\nDlvl:1 $:0 HP:11(12) Pw:8(8) AC:3 Xp:1"
+          }
+        }
+      ]
+    },
+    {
+      "name": "menu-cancel-wear-repeat",
+      "kind": "menu-cancellation",
+      "keys": 78,
+      "boundaries": 79,
+      "hashes": {
+        "screens": "34e7e83059b9d7b7c25ad38dde8b26a4acf2123d213f6fad34613fbe21d2818f",
+        "cursors": "80138cabfbd52d6f32c7b13aaaad24cc2be24d51595bcc968cdcf78c6b369f1f",
+        "calls": "7d2cd06f5261de20e8ba0198ccce919910e579a9fadd8b30093de76762211485",
+        "slices": "c96f6e27ace083d785e2cc17a72c21b76d398ed0cb71e721a8797b98ee503d85",
+        "frames": "cbe47dee881bd136e2ff4336ef66ea375ebfad810c4c95309d0d07ef1302abd0"
+      },
+      "checks": [
+        {
+          "name": "all input boundaries and RNG slices",
+          "category": "integrity",
+          "pass": true
+        },
+        {
+          "name": "wear: real producer setup",
+          "category": "setup",
+          "pass": true
+        },
+        {
+          "name": "wear: cancelled getobj clears repeat",
+          "category": "source-prediction",
+          "pass": true
+        },
+        {
+          "name": "wear: Ctrl-A has no command available",
+          "category": "source-prediction",
+          "pass": true
+        },
+        {
+          "name": "wear: cancellation consumes no time or equipment",
+          "category": "source-prediction",
+          "pass": true
+        },
+        {
+          "name": "observer-free five streams unchanged",
+          "category": "neutrality",
+          "pass": true
+        },
+        {
+          "name": "deferred five streams unchanged",
+          "category": "neutrality",
+          "pass": true
+        }
+      ],
+      "observations": [
+        {
+          "label": "wear",
+          "before": {
+            "state": {
+              "step": 66,
+              "turn": 1,
+              "multi": 0,
+              "afternmv": null,
+              "hp": 12,
+              "form": 343,
+              "gameover": false,
+              "slots": {
+                "uarm": null,
+                "uarmu": null,
+                "uarmc": null,
+                "uarmh": null,
+                "uarms": null,
+                "uarmg": null,
+                "uarmf": null,
+                "uleft": null,
+                "uright": null,
+                "uamul": null,
+                "ublindf": null
+              },
+              "inventory": [
+                {
+                  "letter": "a",
+                  "type": "HAWAIIAN_SHIRT",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 0
+                },
+                {
+                  "letter": "b",
+                  "type": "LOW_BOOTS",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 0
+                }
+              ],
+              "repeat": [],
+              "inDoagain": false
+            },
+            "text": "\n\n\n\n\n                                                                         │\n                                                      ┌────┐           ··│\n                                                      │···@·    ▒········│\n                                                      │····│           ··│\n                                                      │%r··│           ──┘\n                                                      └·───┘\n\n\n\n\n\n\n\n\n\n\n\nWizard the Evoker              St:9 Dx:15 Co:15 In:18 Wi:7 Ch:10 Neutral\nDlvl:1 $:0 HP:12(12) Pw:8(8) AC:10 Xp:1"
+          },
+          "prompt": {
+            "state": {
+              "step": 67,
+              "turn": 1,
+              "multi": 0,
+              "afternmv": null,
+              "hp": 12,
+              "form": 343,
+              "gameover": false,
+              "slots": {
+                "uarm": null,
+                "uarmu": null,
+                "uarmc": null,
+                "uarmh": null,
+                "uarms": null,
+                "uarmg": null,
+                "uarmf": null,
+                "uleft": null,
+                "uright": null,
+                "uamul": null,
+                "ublindf": null
+              },
+              "inventory": [
+                {
+                  "letter": "a",
+                  "type": "HAWAIIAN_SHIRT",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 0
+                },
+                {
+                  "letter": "b",
+                  "type": "LOW_BOOTS",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 0
+                }
+              ],
+              "repeat": [
+                {
+                  "type": 1,
+                  "command": "wear",
+                  "key": null
+                }
+              ],
+              "inDoagain": false
+            },
+            "text": "What do you want to wear? [ab or ?*]\n\n\n\n\n                                                                         │\n                                                      ┌────┐           ··│\n                                                      │···@·    ▒········│\n                                                      │····│           ··│\n                                                      │%r··│           ──┘\n                                                      └·───┘\n\n\n\n\n\n\n\n\n\n\n\nWizard the Evoker              St:9 Dx:15 Co:15 In:18 Wi:7 Ch:10 Neutral\nDlvl:1 $:0 HP:12(12) Pw:8(8) AC:10 Xp:1"
+          },
+          "menu": {
+            "state": {
+              "step": 68,
+              "turn": 1,
+              "multi": 0,
+              "afternmv": null,
+              "hp": 12,
+              "form": 343,
+              "gameover": false,
+              "slots": {
+                "uarm": null,
+                "uarmu": null,
+                "uarmc": null,
+                "uarmh": null,
+                "uarms": null,
+                "uarmg": null,
+                "uarmf": null,
+                "uleft": null,
+                "uright": null,
+                "uamul": null,
+                "ublindf": null
+              },
+              "inventory": [
+                {
+                  "letter": "a",
+                  "type": "HAWAIIAN_SHIRT",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 0
+                },
+                {
+                  "letter": "b",
+                  "type": "LOW_BOOTS",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 0
+                }
+              ],
+              "repeat": [
+                {
+                  "type": 1,
+                  "command": "wear",
+                  "key": null
+                }
+              ],
+              "inDoagain": false
+            },
+            "text": "                                         Armor\n                                         a - a Hawaiian shirt\n                                         b - a pair of walking shoes\n                                         (end)\n\n                                                                         │\n                                                      ┌────┐           ··│\n                                                      │···@·    ▒········│\n                                                      │····│           ··│\n                                                      │%r··│           ──┘\n                                                      └·───┘\n\n\n\n\n\n\n\n\n\n\n\nWizard the Evoker              St:9 Dx:15 Co:15 In:18 Wi:7 Ch:10 Neutral\nDlvl:1 $:0 HP:12(12) Pw:8(8) AC:10 Xp:1"
+          },
+          "cancelled": {
+            "state": {
+              "step": 69,
+              "turn": 1,
+              "multi": 0,
+              "afternmv": null,
+              "hp": 12,
+              "form": 343,
+              "gameover": false,
+              "slots": {
+                "uarm": null,
+                "uarmu": null,
+                "uarmc": null,
+                "uarmh": null,
+                "uarms": null,
+                "uarmg": null,
+                "uarmf": null,
+                "uleft": null,
+                "uright": null,
+                "uamul": null,
+                "ublindf": null
+              },
+              "inventory": [
+                {
+                  "letter": "a",
+                  "type": "HAWAIIAN_SHIRT",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 0
+                },
+                {
+                  "letter": "b",
+                  "type": "LOW_BOOTS",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 0
+                }
+              ],
+              "repeat": [],
+              "inDoagain": false
+            },
+            "text": "Never mind.\n\n\n\n\n                                                                         │\n                                                      ┌────┐           ··│\n                                                      │···@·    ▒········│\n                                                      │····│           ··│\n                                                      │%r··│           ──┘\n                                                      └·───┘\n\n\n\n\n\n\n\n\n\n\n\nWizard the Evoker              St:9 Dx:15 Co:15 In:18 Wi:7 Ch:10 Neutral\nDlvl:1 $:0 HP:12(12) Pw:8(8) AC:10 Xp:1"
+          },
+          "repeated": {
+            "state": {
+              "step": 70,
+              "turn": 1,
+              "multi": 0,
+              "afternmv": null,
+              "hp": 12,
+              "form": 343,
+              "gameover": false,
+              "slots": {
+                "uarm": null,
+                "uarmu": null,
+                "uarmc": null,
+                "uarmh": null,
+                "uarms": null,
+                "uarmg": null,
+                "uarmf": null,
+                "uleft": null,
+                "uright": null,
+                "uamul": null,
+                "ublindf": null
+              },
+              "inventory": [
+                {
+                  "letter": "a",
+                  "type": "HAWAIIAN_SHIRT",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 0
+                },
+                {
+                  "letter": "b",
+                  "type": "LOW_BOOTS",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 0
+                }
+              ],
+              "repeat": [],
+              "inDoagain": false
+            },
+            "text": "There is no command available to repeat.\n\n\n\n\n                                                                         │\n                                                      ┌────┐           ··│\n                                                      │···@·    ▒········│\n                                                      │····│           ··│\n                                                      │%r··│           ──┘\n                                                      └·───┘\n\n\n\n\n\n\n\n\n\n\n\nWizard the Evoker              St:9 Dx:15 Co:15 In:18 Wi:7 Ch:10 Neutral\nDlvl:1 $:0 HP:12(12) Pw:8(8) AC:10 Xp:1"
+          }
+        }
+      ]
+    },
+    {
+      "name": "menu-cancel-put-on-repeat",
+      "kind": "menu-cancellation",
+      "keys": 78,
+      "boundaries": 79,
+      "hashes": {
+        "screens": "ba02996d96b8752e5c7bf1952adfafbe450f45bd575a26c919e3703b013dee62",
+        "cursors": "16816d29f5845267e51cea28b3467b081fedc00a671207e0b4676f5a709942c4",
+        "calls": "7d2cd06f5261de20e8ba0198ccce919910e579a9fadd8b30093de76762211485",
+        "slices": "c96f6e27ace083d785e2cc17a72c21b76d398ed0cb71e721a8797b98ee503d85",
+        "frames": "cbe47dee881bd136e2ff4336ef66ea375ebfad810c4c95309d0d07ef1302abd0"
+      },
+      "checks": [
+        {
+          "name": "all input boundaries and RNG slices",
+          "category": "integrity",
+          "pass": true
+        },
+        {
+          "name": "put on: real producer setup",
+          "category": "setup",
+          "pass": true
+        },
+        {
+          "name": "put on: cancelled getobj clears repeat",
+          "category": "source-prediction",
+          "pass": true
+        },
+        {
+          "name": "put on: Ctrl-A has no command available",
+          "category": "source-prediction",
+          "pass": true
+        },
+        {
+          "name": "put on: cancellation consumes no time or equipment",
+          "category": "source-prediction",
+          "pass": true
+        },
+        {
+          "name": "observer-free five streams unchanged",
+          "category": "neutrality",
+          "pass": true
+        },
+        {
+          "name": "deferred five streams unchanged",
+          "category": "neutrality",
+          "pass": true
+        }
+      ],
+      "observations": [
+        {
+          "label": "put on",
+          "before": {
+            "state": {
+              "step": 66,
+              "turn": 1,
+              "multi": 0,
+              "afternmv": null,
+              "hp": 12,
+              "form": 343,
+              "gameover": false,
+              "slots": {
+                "uarm": null,
+                "uarmu": null,
+                "uarmc": null,
+                "uarmh": null,
+                "uarms": null,
+                "uarmg": null,
+                "uarmf": null,
+                "uleft": null,
+                "uright": null,
+                "uamul": null,
+                "ublindf": null
+              },
+              "inventory": [
+                {
+                  "letter": "a",
+                  "type": "HAWAIIAN_SHIRT",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 0
+                },
+                {
+                  "letter": "b",
+                  "type": "LOW_BOOTS",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 0
+                }
+              ],
+              "repeat": [],
+              "inDoagain": false
+            },
+            "text": "\n\n\n\n\n                                                                         │\n                                                      ┌────┐           ··│\n                                                      │···@·    ▒········│\n                                                      │····│           ··│\n                                                      │%r··│           ──┘\n                                                      └·───┘\n\n\n\n\n\n\n\n\n\n\n\nWizard the Evoker              St:9 Dx:15 Co:15 In:18 Wi:7 Ch:10 Neutral\nDlvl:1 $:0 HP:12(12) Pw:8(8) AC:10 Xp:1"
+          },
+          "prompt": {
+            "state": {
+              "step": 67,
+              "turn": 1,
+              "multi": 0,
+              "afternmv": null,
+              "hp": 12,
+              "form": 343,
+              "gameover": false,
+              "slots": {
+                "uarm": null,
+                "uarmu": null,
+                "uarmc": null,
+                "uarmh": null,
+                "uarms": null,
+                "uarmg": null,
+                "uarmf": null,
+                "uleft": null,
+                "uright": null,
+                "uamul": null,
+                "ublindf": null
+              },
+              "inventory": [
+                {
+                  "letter": "a",
+                  "type": "HAWAIIAN_SHIRT",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 0
+                },
+                {
+                  "letter": "b",
+                  "type": "LOW_BOOTS",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 0
+                }
+              ],
+              "repeat": [
+                {
+                  "type": 1,
+                  "command": "puton",
+                  "key": null
+                }
+              ],
+              "inDoagain": false
+            },
+            "text": "What do you want to put on? [*]\n\n\n\n\n                                                                         │\n                                                      ┌────┐           ··│\n                                                      │···@·    ▒········│\n                                                      │····│           ··│\n                                                      │%r··│           ──┘\n                                                      └·───┘\n\n\n\n\n\n\n\n\n\n\n\nWizard the Evoker              St:9 Dx:15 Co:15 In:18 Wi:7 Ch:10 Neutral\nDlvl:1 $:0 HP:12(12) Pw:8(8) AC:10 Xp:1"
+          },
+          "menu": {
+            "state": {
+              "step": 68,
+              "turn": 1,
+              "multi": 0,
+              "afternmv": null,
+              "hp": 12,
+              "form": 343,
+              "gameover": false,
+              "slots": {
+                "uarm": null,
+                "uarmu": null,
+                "uarmc": null,
+                "uarmh": null,
+                "uarms": null,
+                "uarmg": null,
+                "uarmf": null,
+                "uleft": null,
+                "uright": null,
+                "uamul": null,
+                "ublindf": null
+              },
+              "inventory": [
+                {
+                  "letter": "a",
+                  "type": "HAWAIIAN_SHIRT",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 0
+                },
+                {
+                  "letter": "b",
+                  "type": "LOW_BOOTS",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 0
+                }
+              ],
+              "repeat": [
+                {
+                  "type": 1,
+                  "command": "puton",
+                  "key": null
+                }
+              ],
+              "inDoagain": false
+            },
+            "text": "                                         Armor\n                                         a - a Hawaiian shirt\n                                         b - a pair of walking shoes\n                                         (end)\n\n                                                                         │\n                                                      ┌────┐           ··│\n                                                      │···@·    ▒········│\n                                                      │····│           ··│\n                                                      │%r··│           ──┘\n                                                      └·───┘\n\n\n\n\n\n\n\n\n\n\n\nWizard the Evoker              St:9 Dx:15 Co:15 In:18 Wi:7 Ch:10 Neutral\nDlvl:1 $:0 HP:12(12) Pw:8(8) AC:10 Xp:1"
+          },
+          "cancelled": {
+            "state": {
+              "step": 69,
+              "turn": 1,
+              "multi": 0,
+              "afternmv": null,
+              "hp": 12,
+              "form": 343,
+              "gameover": false,
+              "slots": {
+                "uarm": null,
+                "uarmu": null,
+                "uarmc": null,
+                "uarmh": null,
+                "uarms": null,
+                "uarmg": null,
+                "uarmf": null,
+                "uleft": null,
+                "uright": null,
+                "uamul": null,
+                "ublindf": null
+              },
+              "inventory": [
+                {
+                  "letter": "a",
+                  "type": "HAWAIIAN_SHIRT",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 0
+                },
+                {
+                  "letter": "b",
+                  "type": "LOW_BOOTS",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 0
+                }
+              ],
+              "repeat": [],
+              "inDoagain": false
+            },
+            "text": "Never mind.\n\n\n\n\n                                                                         │\n                                                      ┌────┐           ··│\n                                                      │···@·    ▒········│\n                                                      │····│           ··│\n                                                      │%r··│           ──┘\n                                                      └·───┘\n\n\n\n\n\n\n\n\n\n\n\nWizard the Evoker              St:9 Dx:15 Co:15 In:18 Wi:7 Ch:10 Neutral\nDlvl:1 $:0 HP:12(12) Pw:8(8) AC:10 Xp:1"
+          },
+          "repeated": {
+            "state": {
+              "step": 70,
+              "turn": 1,
+              "multi": 0,
+              "afternmv": null,
+              "hp": 12,
+              "form": 343,
+              "gameover": false,
+              "slots": {
+                "uarm": null,
+                "uarmu": null,
+                "uarmc": null,
+                "uarmh": null,
+                "uarms": null,
+                "uarmg": null,
+                "uarmf": null,
+                "uleft": null,
+                "uright": null,
+                "uamul": null,
+                "ublindf": null
+              },
+              "inventory": [
+                {
+                  "letter": "a",
+                  "type": "HAWAIIAN_SHIRT",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 0
+                },
+                {
+                  "letter": "b",
+                  "type": "LOW_BOOTS",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 0
+                }
+              ],
+              "repeat": [],
+              "inDoagain": false
+            },
+            "text": "There is no command available to repeat.\n\n\n\n\n                                                                         │\n                                                      ┌────┐           ··│\n                                                      │···@·    ▒········│\n                                                      │····│           ··│\n                                                      │%r··│           ──┘\n                                                      └·───┘\n\n\n\n\n\n\n\n\n\n\n\nWizard the Evoker              St:9 Dx:15 Co:15 In:18 Wi:7 Ch:10 Neutral\nDlvl:1 $:0 HP:12(12) Pw:8(8) AC:10 Xp:1"
+          }
+        }
+      ]
+    },
+    {
+      "name": "direct-escape-repeat-negative",
+      "kind": "direct-escape-negative",
+      "keys": 88,
+      "boundaries": 89,
+      "hashes": {
+        "screens": "e2992885f37b12e21cfab650f45aa8afc18472e26edf8c2c2108d3a4c35c26dc",
+        "cursors": "c0d065b0ebc6cd80398ef76e7a3618a8f119dcfedff11a1571e684225f80b991",
+        "calls": "7d2cd06f5261de20e8ba0198ccce919910e579a9fadd8b30093de76762211485",
+        "slices": "7ef63700f26adfac0b8475b0424a9bdb0c6d5669c6056c6e6369f63ab7681569",
+        "frames": "ba56ec9390e018ba54353628fe4a9e51159cd53adff013965530ee3a6fbb36ad"
+      },
+      "checks": [
+        {
+          "name": "all input boundaries and RNG slices",
+          "category": "integrity",
+          "pass": true
+        },
+        {
+          "name": "wear: real producer setup",
+          "category": "setup",
+          "pass": true
+        },
+        {
+          "name": "wear: cancelled getobj clears repeat",
+          "category": "source-prediction",
+          "pass": true
+        },
+        {
+          "name": "wear: Ctrl-A has no command available",
+          "category": "source-prediction",
+          "pass": true
+        },
+        {
+          "name": "wear: cancellation consumes no time or equipment",
+          "category": "source-prediction",
+          "pass": true
+        },
+        {
+          "name": "put on: real producer setup",
+          "category": "setup",
+          "pass": true
+        },
+        {
+          "name": "put on: cancelled getobj clears repeat",
+          "category": "source-prediction",
+          "pass": true
+        },
+        {
+          "name": "put on: Ctrl-A has no command available",
+          "category": "source-prediction",
+          "pass": true
+        },
+        {
+          "name": "put on: cancellation consumes no time or equipment",
+          "category": "source-prediction",
+          "pass": true
+        },
+        {
+          "name": "observer-free five streams unchanged",
+          "category": "neutrality",
+          "pass": true
+        },
+        {
+          "name": "deferred five streams unchanged",
+          "category": "neutrality",
+          "pass": true
+        }
+      ],
+      "observations": [
+        {
+          "label": "wear",
+          "before": {
+            "state": {
+              "step": 66,
+              "turn": 1,
+              "multi": 0,
+              "afternmv": null,
+              "hp": 12,
+              "form": 343,
+              "gameover": false,
+              "slots": {
+                "uarm": null,
+                "uarmu": null,
+                "uarmc": null,
+                "uarmh": null,
+                "uarms": null,
+                "uarmg": null,
+                "uarmf": null,
+                "uleft": null,
+                "uright": null,
+                "uamul": null,
+                "ublindf": null
+              },
+              "inventory": [
+                {
+                  "letter": "a",
+                  "type": "HAWAIIAN_SHIRT",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 0
+                },
+                {
+                  "letter": "b",
+                  "type": "LOW_BOOTS",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 0
+                }
+              ],
+              "repeat": [],
+              "inDoagain": false
+            },
+            "text": "\n\n\n\n\n                                                                         │\n                                                      ┌────┐           ··│\n                                                      │···@·    ▒········│\n                                                      │····│           ··│\n                                                      │%r··│           ──┘\n                                                      └·───┘\n\n\n\n\n\n\n\n\n\n\n\nWizard the Evoker              St:9 Dx:15 Co:15 In:18 Wi:7 Ch:10 Neutral\nDlvl:1 $:0 HP:12(12) Pw:8(8) AC:10 Xp:1"
+          },
+          "prompt": {
+            "state": {
+              "step": 67,
+              "turn": 1,
+              "multi": 0,
+              "afternmv": null,
+              "hp": 12,
+              "form": 343,
+              "gameover": false,
+              "slots": {
+                "uarm": null,
+                "uarmu": null,
+                "uarmc": null,
+                "uarmh": null,
+                "uarms": null,
+                "uarmg": null,
+                "uarmf": null,
+                "uleft": null,
+                "uright": null,
+                "uamul": null,
+                "ublindf": null
+              },
+              "inventory": [
+                {
+                  "letter": "a",
+                  "type": "HAWAIIAN_SHIRT",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 0
+                },
+                {
+                  "letter": "b",
+                  "type": "LOW_BOOTS",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 0
+                }
+              ],
+              "repeat": [
+                {
+                  "type": 1,
+                  "command": "wear",
+                  "key": null
+                }
+              ],
+              "inDoagain": false
+            },
+            "text": "What do you want to wear? [ab or ?*]\n\n\n\n\n                                                                         │\n                                                      ┌────┐           ··│\n                                                      │···@·    ▒········│\n                                                      │····│           ··│\n                                                      │%r··│           ──┘\n                                                      └·───┘\n\n\n\n\n\n\n\n\n\n\n\nWizard the Evoker              St:9 Dx:15 Co:15 In:18 Wi:7 Ch:10 Neutral\nDlvl:1 $:0 HP:12(12) Pw:8(8) AC:10 Xp:1"
+          },
+          "cancelled": {
+            "state": {
+              "step": 68,
+              "turn": 1,
+              "multi": 0,
+              "afternmv": null,
+              "hp": 12,
+              "form": 343,
+              "gameover": false,
+              "slots": {
+                "uarm": null,
+                "uarmu": null,
+                "uarmc": null,
+                "uarmh": null,
+                "uarms": null,
+                "uarmg": null,
+                "uarmf": null,
+                "uleft": null,
+                "uright": null,
+                "uamul": null,
+                "ublindf": null
+              },
+              "inventory": [
+                {
+                  "letter": "a",
+                  "type": "HAWAIIAN_SHIRT",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 0
+                },
+                {
+                  "letter": "b",
+                  "type": "LOW_BOOTS",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 0
+                }
+              ],
+              "repeat": [],
+              "inDoagain": false
+            },
+            "text": "Never mind.\n\n\n\n\n                                                                         │\n                                                      ┌────┐           ··│\n                                                      │···@·    ▒········│\n                                                      │····│           ··│\n                                                      │%r··│           ──┘\n                                                      └·───┘\n\n\n\n\n\n\n\n\n\n\n\nWizard the Evoker              St:9 Dx:15 Co:15 In:18 Wi:7 Ch:10 Neutral\nDlvl:1 $:0 HP:12(12) Pw:8(8) AC:10 Xp:1"
+          },
+          "repeated": {
+            "state": {
+              "step": 69,
+              "turn": 1,
+              "multi": 0,
+              "afternmv": null,
+              "hp": 12,
+              "form": 343,
+              "gameover": false,
+              "slots": {
+                "uarm": null,
+                "uarmu": null,
+                "uarmc": null,
+                "uarmh": null,
+                "uarms": null,
+                "uarmg": null,
+                "uarmf": null,
+                "uleft": null,
+                "uright": null,
+                "uamul": null,
+                "ublindf": null
+              },
+              "inventory": [
+                {
+                  "letter": "a",
+                  "type": "HAWAIIAN_SHIRT",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 0
+                },
+                {
+                  "letter": "b",
+                  "type": "LOW_BOOTS",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 0
+                }
+              ],
+              "repeat": [],
+              "inDoagain": false
+            },
+            "text": "There is no command available to repeat.\n\n\n\n\n                                                                         │\n                                                      ┌────┐           ··│\n                                                      │···@·    ▒········│\n                                                      │····│           ··│\n                                                      │%r··│           ──┘\n                                                      └·───┘\n\n\n\n\n\n\n\n\n\n\n\nWizard the Evoker              St:9 Dx:15 Co:15 In:18 Wi:7 Ch:10 Neutral\nDlvl:1 $:0 HP:12(12) Pw:8(8) AC:10 Xp:1"
+          }
+        },
+        {
+          "label": "put on",
+          "before": {
+            "state": {
+              "step": 77,
+              "turn": 1,
+              "multi": 0,
+              "afternmv": null,
+              "hp": 12,
+              "form": 343,
+              "gameover": false,
+              "slots": {
+                "uarm": null,
+                "uarmu": null,
+                "uarmc": null,
+                "uarmh": null,
+                "uarms": null,
+                "uarmg": null,
+                "uarmf": null,
+                "uleft": null,
+                "uright": null,
+                "uamul": null,
+                "ublindf": null
+              },
+              "inventory": [
+                {
+                  "letter": "a",
+                  "type": "HAWAIIAN_SHIRT",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 0
+                },
+                {
+                  "letter": "b",
+                  "type": "LOW_BOOTS",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 0
+                }
+              ],
+              "repeat": [],
+              "inDoagain": false
+            },
+            "text": "\n\n\n\n\n                                                                         │\n                                                      ┌────┐           ··│\n                                                      │···@·    ▒········│\n                                                      │····│           ··│\n                                                      │%r··│           ──┘\n                                                      └·───┘\n\n\n\n\n\n\n\n\n\n\n\nWizard the Evoker              St:9 Dx:15 Co:15 In:18 Wi:7 Ch:10 Neutral\nDlvl:1 $:0 HP:12(12) Pw:8(8) AC:10 Xp:1"
+          },
+          "prompt": {
+            "state": {
+              "step": 78,
+              "turn": 1,
+              "multi": 0,
+              "afternmv": null,
+              "hp": 12,
+              "form": 343,
+              "gameover": false,
+              "slots": {
+                "uarm": null,
+                "uarmu": null,
+                "uarmc": null,
+                "uarmh": null,
+                "uarms": null,
+                "uarmg": null,
+                "uarmf": null,
+                "uleft": null,
+                "uright": null,
+                "uamul": null,
+                "ublindf": null
+              },
+              "inventory": [
+                {
+                  "letter": "a",
+                  "type": "HAWAIIAN_SHIRT",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 0
+                },
+                {
+                  "letter": "b",
+                  "type": "LOW_BOOTS",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 0
+                }
+              ],
+              "repeat": [
+                {
+                  "type": 1,
+                  "command": "puton",
+                  "key": null
+                }
+              ],
+              "inDoagain": false
+            },
+            "text": "What do you want to put on? [*]\n\n\n\n\n                                                                         │\n                                                      ┌────┐           ··│\n                                                      │···@·    ▒········│\n                                                      │····│           ··│\n                                                      │%r··│           ──┘\n                                                      └·───┘\n\n\n\n\n\n\n\n\n\n\n\nWizard the Evoker              St:9 Dx:15 Co:15 In:18 Wi:7 Ch:10 Neutral\nDlvl:1 $:0 HP:12(12) Pw:8(8) AC:10 Xp:1"
+          },
+          "cancelled": {
+            "state": {
+              "step": 79,
+              "turn": 1,
+              "multi": 0,
+              "afternmv": null,
+              "hp": 12,
+              "form": 343,
+              "gameover": false,
+              "slots": {
+                "uarm": null,
+                "uarmu": null,
+                "uarmc": null,
+                "uarmh": null,
+                "uarms": null,
+                "uarmg": null,
+                "uarmf": null,
+                "uleft": null,
+                "uright": null,
+                "uamul": null,
+                "ublindf": null
+              },
+              "inventory": [
+                {
+                  "letter": "a",
+                  "type": "HAWAIIAN_SHIRT",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 0
+                },
+                {
+                  "letter": "b",
+                  "type": "LOW_BOOTS",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 0
+                }
+              ],
+              "repeat": [],
+              "inDoagain": false
+            },
+            "text": "Never mind.\n\n\n\n\n                                                                         │\n                                                      ┌────┐           ··│\n                                                      │···@·    ▒········│\n                                                      │····│           ··│\n                                                      │%r··│           ──┘\n                                                      └·───┘\n\n\n\n\n\n\n\n\n\n\n\nWizard the Evoker              St:9 Dx:15 Co:15 In:18 Wi:7 Ch:10 Neutral\nDlvl:1 $:0 HP:12(12) Pw:8(8) AC:10 Xp:1"
+          },
+          "repeated": {
+            "state": {
+              "step": 80,
+              "turn": 1,
+              "multi": 0,
+              "afternmv": null,
+              "hp": 12,
+              "form": 343,
+              "gameover": false,
+              "slots": {
+                "uarm": null,
+                "uarmu": null,
+                "uarmc": null,
+                "uarmh": null,
+                "uarms": null,
+                "uarmg": null,
+                "uarmf": null,
+                "uleft": null,
+                "uright": null,
+                "uamul": null,
+                "ublindf": null
+              },
+              "inventory": [
+                {
+                  "letter": "a",
+                  "type": "HAWAIIAN_SHIRT",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 0
+                },
+                {
+                  "letter": "b",
+                  "type": "LOW_BOOTS",
+                  "cursed": false,
+                  "artifact": 0,
+                  "worn": 0
+                }
+              ],
+              "repeat": [],
+              "inDoagain": false
+            },
+            "text": "There is no command available to repeat.\n\n\n\n\n                                                                         │\n                                                      ┌────┐           ··│\n                                                      │···@·    ▒········│\n                                                      │····│           ··│\n                                                      │%r··│           ──┘\n                                                      └·───┘\n\n\n\n\n\n\n\n\n\n\n\nWizard the Evoker              St:9 Dx:15 Co:15 In:18 Wi:7 Ch:10 Neutral\nDlvl:1 $:0 HP:12(12) Pw:8(8) AC:10 Xp:1"
+          }
+        }
+      ]
+    }
+  ],
+  "summary": {
+    "cases": 6,
+    "checks": 52,
+    "failures": [
+      {
+        "name": "put on: C entry feedback",
+        "category": "source-prediction",
+        "pass": false,
+        "error": "The expression evaluated to a falsy value:\n\n  assert.ok(captured.after.text.includes(plan.kind==='full-equipment'\n"
+      }
+    ],
+    "observerRestored": true
+  }
+}

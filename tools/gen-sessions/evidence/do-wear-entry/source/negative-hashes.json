@@ -1,0 +1,23 @@
+{
+  "missing-helmet-negative": {
+    "screens": "32d8c33692aa5b07ee483e46d7d875d6fa3b9c9818d0742d95e47c004743eb1c",
+    "cursors": "3f5f80a3db4bd4581900d3788fd775f893b91d88427e4052528bef27386a7f8a",
+    "calls": "a6ddf529e0b9355c90059f77a6e24906ed9e1d3b1522a9db4ed096acdddf3f8c",
+    "slices": "205200075cd0f9fd8c2cd04fcc3a7b90d49431901d8ac4983f56456699ee4e08",
+    "frames": "b85e971a55557b29515cad72edcb4976cadcc3f4d8744d7ce617d5cebf8ecf3f"
+  },
+  "missing-amulet-negative": {
+    "screens": "365f9a855969c58177eddaeafada9d8e67b0db8e64acdee59670fc7a3d4e8332",
+    "cursors": "dddf2f9c13232b43c296ac458daaa859ca2085bb836a287f60791e20514e2937",
+    "calls": "ab18aa7e61d604f5398ad817e2d8e7f22ce5fdd6a3a773d99d5635d4007aee88",
+    "slices": "7ffdbd020a16cffe66d6b5aff5cea35be56a0c9e197cad3e226b8b7b9023362d",
+    "frames": "fb728df6b5ddc5699205a6db061eaf81a2edf158e4ac2108746eb2b7e81bcfa5"
+  },
+  "direct-escape-repeat-negative": {
+    "screens": "e2992885f37b12e21cfab650f45aa8afc18472e26edf8c2c2108d3a4c35c26dc",
+    "cursors": "c0d065b0ebc6cd80398ef76e7a3618a8f119dcfedff11a1571e684225f80b991",
+    "calls": "7d2cd06f5261de20e8ba0198ccce919910e579a9fadd8b30093de76762211485",
+    "slices": "7ef63700f26adfac0b8475b0424a9bdb0c6d5669c6056c6e6369f63ab7681569",
+    "frames": "ba56ec9390e018ba54353628fe4a9e51159cd53adff013965530ee3a6fbb36ad"
+  }
+}

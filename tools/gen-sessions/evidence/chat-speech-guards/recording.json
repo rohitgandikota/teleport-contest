@@ -1,0 +1,31 @@
+{
+  "startedAt": "2026-11-26T16:05:06.106725+00:00",
+  "command": [
+    "node",
+    "/Users/rohit/research/code/contest/scripts/record-session.mjs",
+    "/Users/rohit/research/code/contest/.cache/restart-20261122/chat-speech-guards-parent-minimal.session.json",
+    "/Users/rohit/research/code/contest/.cache/restart-20261122/chat-speech-guards-parent-native.session.json"
+  ],
+  "input": ".cache/restart-20261122/chat-speech-guards-parent-minimal.session.json",
+  "inputSHA256": "24699011d80e8e84a2f5a8e25f28c115208470a14a11b808798a3b2da7ec3474",
+  "primaryRecipeSHA256": "afb8fd2ed61a293321d79d283b129738d637d4d8b43a60980a8dda8f963ec48c",
+  "binarySha256": "ba4dbc1c823f8d4b0cfb6fd594d00ff0ff5754daaaa2036bee15baeffdf85aa7",
+  "recorderSha256": "b129caee2ca3941b30c36f5c26644bd37ff610344332eb511c474b8709b70648",
+  "cPin": "16ff59115315917b93185d026aeefea06db9b0f4",
+  "timezone": "Etc/GMT+4",
+  "raw": ".cache/restart-20261122/chat-speech-guards-parent-native.session.json",
+  "exit": 0,
+  "closedAt": "2026-11-26T16:05:06.735225+00:00",
+  "log": ".cache/restart-20261122/chat-speech-guards-parent-native-recording.log",
+  "logSHA256": "882105895a5f25eab9e36b989fffc15bf72bd30b978abca3329306f52851e937",
+  "rawSha256": "ce89945391669f758be0f5c44d602051601984d77dbc4f7b046a698a7d2d2f78",
+  "bytes": 796608,
+  "segments": 6,
+  "boundaries": 435,
+  "keys": 429,
+  "calls": 13808,
+  "frames": 0,
+  "fiveInputFieldsAndPresencePreserved": true,
+  "allKeysExact": true,
+  "cExecutedOnce": true
+}

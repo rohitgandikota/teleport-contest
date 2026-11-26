@@ -1,0 +1,12 @@
+{
+  "originalRecipeSHA256": "e28b4ac22263258a7725b64d890ef9c17690280a6c9c687e644ad5d63243fd05",
+  "sourceSealSHA256": "7c3d0a72a35e4a1bdb8c51227ca34b514ed7e6ce4a95c75fa8401372f1f32aa3",
+  "sourcePredictionsSHA256": "b7efbd96955213a29be23c6c803257fb9c76ecbe986d28e83a0aa5a71c8a6708",
+  "primaryRecipeSHA256": "f2acabc524ba97ebe92bab5d0b46859687ade31f632c1428ebb317dea5adf9f0",
+  "minimalInputSHA256": "6a9fe7996b76ed8c22b4ba4e4cbd47289a521e44280cf4dba4b28ce1e26f44e0",
+  "originalTuplesUnchanged": true,
+  "cases": 6,
+  "keys": 1684,
+  "candidateExisted": false,
+  "rawExisted": false
+}

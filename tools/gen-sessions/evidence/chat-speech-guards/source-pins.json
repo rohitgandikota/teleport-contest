@@ -1,0 +1,60 @@
+{
+  "proposalSHA256": "fb5056ab061f2df448353076da844a2a1d5aa01315576e816ea21608c39afedb",
+  "runtimeSHA256": "0ee2ebcfa3c310dbebe74409836bb8dedea2d6cacbf7d8e5d73d76bca082204b",
+  "sourcePins": {
+    "nethack-c/upstream/src/sounds.c": "d67ce86f95b8d2180f6e676ebe5532aa63561e1a208fcd158c7fdc0b164c85e8",
+    "nethack-c/upstream/include/youprop.h": "9c4e25bc385c405226085ae3526dc165bd9397ce922b8a18a46f67de21683a2f",
+    "js/sounds.js": "6d9647bd6edffc265c6f5dc933d0ce4a504169d208d1354f13a6cb2e1237e0cd",
+    "js/mondata.js": "d057b4d8fbccd625638ebf9f3f3035dab138a1c61c6e558057b8d085c649cdb5",
+    "js/youprop.js": "2aebddf3e996e3af726fee291eb6aa0aaac907dcfd4fa549e9c60e3299c9a454",
+    "js/do_name.js": "42c8f5fd3f816e4ddb8ef45ee8ac8a4c1ffcf01e748f34058fc033205c0aa764",
+    "js/pline.js": "38dcca9ebef2a344a46e96291640d8a24fabe0bd40f3f60485450a7daa7ffd0f",
+    "js/cmd.js": "bb486a6d082e5a7602923d97450b50ba24ecbe1aa0f0176a06666f14bde777f7",
+    "js/do_wear.js": "85811a70b3db2fa880c8ee7c08a716e4b95bbc363b35acd9cc735b5e1b4cb681"
+  },
+  "tuples": [
+    {
+      "name": "silent-fog-cloud",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!autoquiver,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #polyself\rfog cloud\r\u001b\u001b#chat\r"
+    },
+    {
+      "name": "strangled-human",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!autoquiver,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed amulet of strangulation\rPa\u001b\u001b#chat\r"
+    },
+    {
+      "name": "swallowed-human",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             \u0007hostile fog cloud\rkms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b\u001bms  \u001b\u001b\u001b\u001b\u001b#chat\r"
+    },
+    {
+      "name": "underwater-water-nymph",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!autoquiver,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #polyself\rwater nymph\r\u001b\u001b\u0017pool\r\u001b\u001blmh\u001b\u001b#chat\r"
+    },
+    {
+      "name": "healthy-human-negative",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!autoquiver,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #chat\r."
+    },
+    {
+      "name": "vocal-nymph-on-land-negative",
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!autoquiver,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #polyself\rwater nymph\r\u001b\u001b#chat\r."
+    }
+  ],
+  "probeOrCandidateExisted": false
+}

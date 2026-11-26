@@ -1,0 +1,6 @@
+{
+  "phase": "metadata construction before any gameplay import",
+  "failure": "Requested nonexistent nethack-c/upstream/include/monsym.h while building historical source pins.",
+  "correction": "Remove that unneeded, unread header path; use reviewed mondata.h and fixed runtime graph. Original recipe and input lock unchanged.",
+  "workersStarted": 0
+}

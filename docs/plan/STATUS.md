@@ -1,6 +1,107 @@
 # STATUS — live handoff board
 
-## 2026-11-26: vault visibility and accessory routing ready to push
+## 2026-11-26: chat and wear composition verified
+
+Current published main remains ef2bfd2d. The working tree now contains both
+reviewed owners, sounds.js and do_wear.js. Combined map SHA256:
+88b58f9ee504928b3adf4295da37cce4337882990cc75541f033df1d36c1ab11.
+Both fresh native reports are byte-identical to their isolated candidates:
+12/12 cases, including all five complete negative reports. The wear candidate
+passes the separately corrected 52 ordinary checks and all six C cases. Its
+original 51/52 diagnostic is retained with the C line-wrap attribution below.
+Candidate348 seal SHA256:
+4ae8edb60b97ab5def56d8632613194894440d276b3a9a6592c0deb75ce395eb.
+
+Full934 passes all 934 recordings on two CPU workers with default limits and no retries:
+/share/NFS/u/rohit/research/contest/artifacts/2026-11-22/chat-wear-full934-js-20261126.
+PID3503084 is complete. It tests 1,225 fixed files, linking the earlier 932 recordings and
+uploading only the fixed runtime and two new original recordings. all-files
+SHA256: 854b8f36bce9a71b1daada5f8be04f49e8993e64294eaf5e8752adcbbdc47f4f.
+Do not launch a duplicate run. All 938,437 screens/cursors, 20,467,980 random
+calls and 33,187 frames match. Verification SHA256:
+a17a6e09b979ddf073e9d5d6aa6fede2798debf1c96ab659e48aac0c8138b075.
+The 12 focused checks, 46 strict public/new workers and scope/import audit pass.
+Both promotions are installed: 62 payloads and 12 requirements, total 4,682.
+Wear promotion111 seal SHA256:
+ca5375f991c375683b21c07e94f15be59dfc3ea662c093c9591c94796bce4a87.
+Fresh public ordinary checks pass all six chat cases and 52 wear assertions.
+Chat's report is byte-identical; wear's complete compact gameplay rows and
+summary are unchanged. All 25 negative hashes remain fixed. The original
+wear diagnostic, its separate layout correction and source25/31 history remain
+required evidence. Parent proof SHA256:
+fa0f27649dbedb2f223fd27572dc3b8ee5a5a6df3f16eee7d0de5fe96cb48dde.
+Next: verify staged blobs, commit and push this fixed composition.
+
+The separate welcome audit is expanding its original six save/restore segments
+to cover the remaining reachable branches before one original C recording.
+The pit-flow attempt failed to reach its terrain prerequisites and is preserved.
+A separate vault-pit-unlink-source-audit locks the original 279-key positive and
+the predeclared 277-key unlinked control prefix. Its 14 ordinary checks have
+exactly one expected state failure: the surviving reciprocal bit is 64 instead
+of C's zero. Both routes and observed/plain/deferred output equality pass.
+No visible flooding difference is claimed. No new C recording or pit patch yet.
+Shop price quotes and the other missing chat branches have separate source
+audits. None of these investigations changes the current main runtime.
+
+## 2026-11-26: chat guards verified; wear entry candidate prepared
+
+Current published main is ef2bfd2d, full932 verified below. The working tree
+adds only js/sounds.js runtime changes: C's ordered silent, strangled, swallowed
+and underwater checks before dochat asks for a direction. Chat's isolated map
+is 1fc9d08c9aed0eee89768fb7cddf061f04ef5229df1960b4741c2ea75fa1eacd.
+The original C6 was recorded once, SHA256
+ce89945391669f758be0f5c44d602051601984d77dbc4f7b046a698a7d2d2f78,
+796,608 bytes, 429 keys, 435 boundaries, 13,808 calls and zero frames.
+All six primary branches and original input fields/keys/integrity pass.
+Native and ordinary improve from 2/6 to 6/6, repairing four final boundaries.
+Both complete negative native/ordinary rows and ten negative hashes stay fixed.
+Candidate native SHA256 9bd362366f39247379dd96093eaf027dbae280a6a25dbeded08b33b58fdcefde.
+Fresh public ordinary report is byte-identical to its candidate:
+7d7ae27ec21975664f0a815794ddf565b62bb563abb55e5e855a19084190f193.
+
+Chat promotion23 is sealed and installed with 19 payloads, original raw and six
+requirements, total 4,676. Seal SHA256
+2493edc498f43a16079155702e9dc00c6e9096df785f4a10b517dfc589b6d6f6.
+Its original assertion body is unchanged. Packaging checks only tested syntax
+and three data-only preflights; the fresh public gameplay run is separately
+recorded in chat-speech-guards-main-command.json. No full933/934 run yet.
+Planned next checkpoint composes chat with the separate wear entry fix.
+
+Wear source31 is verified on fixed c425. Original source25 metadata is archived
+as reports/pre-primary-manifest.json and pre-primary-SEAL.json; the latter is
+the 7c3d... seal pinned in the parent's recording lock. Original tuples, probe,
+assertions and failures remain unchanged. Parent recorded C6 exactly once:
+fe893b3d09f1637acac3a92b4df289009e77ea81ca0954e19f187390c7c67cb1,
+1,730,845 bytes, 1,684 keys, 1,690 boundaries, 17,532 calls and two frames.
+Baseline native is 3/6 with all three complete negatives exact. The source
+ordinary probe is 46/52, with six failures across three positive cases.
+
+One original assertion incorrectly requires the full 81-character P message
+as contiguous text. C wraps it between some and lenses at boundary478. Parent's
+original raw-text primary predicate also fails there before game imports; its
+log is retained. The raw, recording recipe and original assertions are unchanged.
+do-wear-entry-parent-layout-attribution.json proves the decoded rows join to the
+exact original source message. Source31's separate primary metadata checks all
+467 cells across six branches and passes on that same original raw. The parent
+corrected native entry retains the original error and validates the full decoded
+message separately; it then produces the actual 3/6 baseline report.
+
+Euclid owns do-wear-entry-candidate: only do_wear.js, both eleven-slot guards and
+ECMD_CANCEL for null getobj. It must retain the original ordinary diagnostic's
+known layout failure, plus a separately corrected baseline/candidate pair that
+only joins the first two decoded rows for the full P message. No main wear edit
+is installed yet. Candidate map currently abbfee24d20c7b14bbb2ae01cf585bb2917279bc59c57759662dccf53c258031;
+wait for final verified handoff before composing. Source31 and source25 history
+must stay fixed. No second C recording is needed.
+
+Sartre is auditing welcome restoration on fixed0ee. Leibniz's debris source19
+is verified: a real repaired boundary pit leaves a stale neighbor link. Its
+original 8/9 probe used incorrect numeric direction masks, retained alongside
+the correct source-derived mask attribution. This is state reach, not yet a
+native-visible flooding defect. A separate pit-flow witness investigation is
+in progress. Neither source audit has a main patch.
+
+## 2026-11-26: vault visibility and accessory routing pushed
 
 Two source-confirmed lines are composed on published e007ede1. Vault repair
 calls the existing xy_set_wall_state after resetting wall_info. Inventory-menu
@@ -27,7 +128,11 @@ Accessory's report is byte-identical to candidate338. Wall's gameplay rows
 are identical; only the classification text changes. All 12 focused checks,
 46 strict public/new workers and the scope/import audit pass.
 Parent proof SHA256 ad8ab9740d6006e73b2e3dad2322eef94dca8f66d7e1580d5e963539d006257c.
-Commit/push and publication verification are next, already authorized.
+Published as ef2bfd2dbd56cb78fce562156fb0247a52304d24 and confirmed on origin/main.
+All 1,223 tested Git blobs match. Publication receipt SHA256:
+f12a1cf16c0123536aa314c918a498345f2ef80878818324805289a3860aab7a.
+Index receipt SHA256 d3b48b2d4e1908763f128c5b922869617bacc09c5640e0eebebd8179b6e56627.
+Do not rerun completed full932 or its publication verifier.
 
 The separate youhiding audit proves the enlightenment branch completes
 synchronously. No missing await is present and no runtime patch is warranted.

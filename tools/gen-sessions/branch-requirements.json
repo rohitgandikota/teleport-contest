@@ -4817,6 +4817,54 @@
     {"group":"Inventory accessory routing","id":"itemactions.accessory.nohands-inventory-amulet","description":"Inventory-menu P maps to C IA_WEAR_OBJ/dowear and rejects the real fog-cloud no-hands form before getobj; amulet stays unworn.","minimumSessions":1,"normalModeRequired":false},
     {"group":"Inventory accessory routing","id":"itemactions.accessory.human-inventory-amulet-negative","description":"Human inventory-menu P still wears the same selected amulet through dowear, whose queued getobj accepts a DOWNPLAY accessory.","minimumSessions":1,"normalModeRequired":false},
     {"group":"Inventory accessory routing","id":"itemactions.accessory.nohands-direct-puton-negative","description":"Preserve the explicit C quirk: direct P/doputon permits this fog-cloud amulet despite no hands; do not add a shared rejection.","minimumSessions":1,"normalModeRequired":false},
-    {"group":"Inventory accessory routing","id":"itemactions.accessory.nohands-direct-wear-negative","description":"Direct W/dowear already rejects the fog cloud before getobj; preserve its feedback and all original output hashes.","minimumSessions":1,"normalModeRequired":false}
+    {"group":"Inventory accessory routing","id":"itemactions.accessory.nohands-direct-wear-negative","description":"Direct W/dowear already rejects the fog cloud before getobj; preserve its feedback and all original output hashes.","minimumSessions":1,"normalModeRequired":false},
+    {"group":"Chat speech checks","id":"chat-speech-guards.silent-fog-cloud","cFile":"src/sounds.c","cFunction":"dochat","description":"Silent form exits before requesting a direction."},
+    {"group":"Chat speech checks","id":"chat-speech-guards.strangled-human","cFile":"src/sounds.c","cFunction":"dochat","description":"Strangled hero exits before requesting a direction."},
+    {"group":"Chat speech checks","id":"chat-speech-guards.swallowed-human","cFile":"src/sounds.c","cFunction":"dochat","description":"Swallowed hero exits before requesting a direction."},
+    {"group":"Chat speech checks","id":"chat-speech-guards.underwater-water-nymph","cFile":"src/sounds.c","cFunction":"dochat","description":"Underwater hero exits before requesting a direction."},
+    {"group":"Chat speech checks","id":"chat-speech-guards.healthy-human-negative","cFile":"src/sounds.c","cFunction":"dochat","description":"Healthy human still uses the direction prompt."},
+    {"group":"Chat speech checks","id":"chat-speech-guards.vocal-nymph-on-land-negative","cFile":"src/sounds.c","cFunction":"dochat","description":"Vocal polymorphed hero on land still uses the direction prompt."},
+    {
+      "group": "Wear command entry checks",
+      "id": "do-wear-entry.full-eleven-wear-puton",
+      "cFile": "src/do_wear.c",
+      "cFunction": "dowear",
+      "description": "Both entries return their C full-equipment feedback when all eleven slots are occupied."
+    },
+    {
+      "group": "Wear command entry checks",
+      "id": "do-wear-entry.missing-helmet-negative",
+      "cFile": "src/do_wear.c",
+      "cFunction": "dowear",
+      "description": "Missing helmet keeps both entries on getobj despite four occupied accessory slots."
+    },
+    {
+      "group": "Wear command entry checks",
+      "id": "do-wear-entry.missing-amulet-negative",
+      "cFile": "src/do_wear.c",
+      "cFunction": "doputon",
+      "description": "Missing amulet keeps both entries on getobj despite seven occupied armor slots."
+    },
+    {
+      "group": "Wear command entry checks",
+      "id": "do-wear-entry.menu-cancel-wear-repeat",
+      "cFile": "src/do_wear.c",
+      "cFunction": "dowear",
+      "description": "W inventory-menu Escape returns cancellation and clears repeat history."
+    },
+    {
+      "group": "Wear command entry checks",
+      "id": "do-wear-entry.menu-cancel-put-on-repeat",
+      "cFile": "src/do_wear.c",
+      "cFunction": "doputon",
+      "description": "P inventory-menu Escape returns cancellation and clears repeat history."
+    },
+    {
+      "group": "Wear command entry checks",
+      "id": "do-wear-entry.direct-escape-repeat-negative",
+      "cFile": "src/do_wear.c",
+      "cFunction": "dowear",
+      "description": "Direct Escape preserves the existing no-command-to-repeat behavior for W and P."
+    }
   ]
 }

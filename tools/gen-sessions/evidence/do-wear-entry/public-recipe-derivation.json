@@ -1,0 +1,15 @@
+{
+  "sourcePrimarySha256": "b5451f75a877ade073e92e7a5480bc4865620d2f5a2565b35756574ccdd5488f",
+  "parentRecordingPrimarySha256": "f2acabc524ba97ebe92bab5d0b46859687ade31f632c1428ebb317dea5adf9f0",
+  "publicRecipeSha256": "36971b80c0d04ac19f94f537e3bee1d34e37940f203909984fdb92c14b85108c",
+  "changes": [
+    "name becomes do-wear-entry to match the canonical filename",
+    "coverage and six branch IDs follow original parent recording metadata",
+    "each assertion branch label follows the same index mapping",
+    "description identifies the recorded contract; original historical description remains in source primary"
+  ],
+  "source467CellPredicatesUnchanged": true,
+  "allSixSegmentValuesAndAllFiveFieldsUnchanged": true,
+  "rawRewritten": false,
+  "secondRecording": false
+}

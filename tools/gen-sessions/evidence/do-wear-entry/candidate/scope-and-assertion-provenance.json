@@ -1,0 +1,26 @@
+{
+  "baselineMapSha256": "c425a83669d913cce211a9665a4513bbdcb44fb5753dcd20f23d243eb10b094a",
+  "candidateMapSha256": "abbfee24d20c7b14bbb2ae01cf585bb2917279bc59c57759662dccf53c258031",
+  "modules": 280,
+  "changedRuntimePaths": [
+    "js/do_wear.js"
+  ],
+  "unchangedRuntimePaths": 279,
+  "ownerBeforeSha256": "85811a70b3db2fa880c8ee7c08a716e4b95bbc363b35acd9cc735b5e1b4cb681",
+  "ownerAfterSha256": "8dac16ef66901568c041b75b1daa23242ee8d32004f860f1f8a37aa5d2f1ef63",
+  "patchSha256": "63f8562a5fc7d8cfda608a3f10d512814d0fe3e000a2607c3387b6380f090298",
+  "addedLines": 17,
+  "removedLines": 3,
+  "originalDiagnosticExact": true,
+  "originalDiagnosticSha256": "b3ab34e623d7a286f44c01f687c60cbffab867f38be9862023f17c54ce4981bf",
+  "correctedDiagnosticsIdentical": true,
+  "correctedDiagnosticSha256": "73f5caa1abc0c234aeff4cffc8f61e765e07321c930073260942734a1f38cd48",
+  "onlyPredicateChange": {
+    "original": "assert.ok(captured.after.text.includes(plan.kind==='full-equipment'",
+    "corrected": "const entryText = plan.kind==='full-equipment' && p.command==='P'\n                        ? captured.after.text.split('\\n').slice(0,2).join(' ')\n                        : captured.after.text;\n                    assert.ok(entryText.includes(plan.kind==='full-equipment'",
+    "scope": "full-equipment P only; expected message unchanged"
+  },
+  "nonPredicateChange": "const root gains one parent component for the nested test directory; fixture/runtime path loading only.",
+  "original52CheckNamesAndBodiesRetainedExceptOneMessagePredicate": true,
+  "candidateRuntimeUnrelatedChanges": false
+}

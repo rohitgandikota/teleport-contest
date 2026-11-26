@@ -17,7 +17,7 @@ import { ECMD_OK, ECMD_TIME, IS_WALL, SDOOR, isok, M_AP_TYPE,
          ANY_SHOP, ROOMOFFSET, VAULT, COURT, PLNMSG_GROWL,
          BEEHIVE, MORGUE, BARRACKS, ZOO, TEMPLE, W_ARMH, HAIR, NECK, HEAD,
          BLOOD, Upolyd, In_endgame, Is_astralevel, Is_sanctum,
-         A_LAWFUL } from './const.js';
+         A_LAWFUL, MALE, FEMALE } from './const.js';
 import { is_animal, is_undead, is_flyer, is_elf, is_dwarf, is_gnome,
          is_lord, is_prince, is_mplayer, mhis, carnivorous, herbivorous, is_silent } from './mondata.js';
 import { is_vampshifter } from './monst.js';
@@ -32,7 +32,7 @@ import { MSOUND } from './monst_data.js';
 import { canspotmon } from './display.js';
 import { getdir } from './cmd.js';
 import { Deaf, Hallucination, Underwater } from './youprop.js';
-import { pline_The, You, You_hear, verbalize } from './pline.js';
+import { pline_The, You, Your, You_cant, You_hear, verbalize } from './pline.js';
 import { pline } from './display.js';
 import { Monnam, noveltitle, pmname, mon_nam } from './do_name.js';
 import { an, vtense } from './objnam.js';
@@ -199,11 +199,25 @@ function Is_oracle_level() {
 // the command and the direction. Leaving it unhandled ran the direction key as
 // a movement command, the same failure that made an unhandled 'f' walk the hero
 // a square east.
-//
-// The early exits above getdir — polymorphed mute, strangled, swallowed,
-// underwater, standing on shop merchandise — all return before reading
-// anything, and none is reachable for an ordinary hero on an ordinary level.
 export async function dochat() {
+    if (is_silent(game.youmonst.data)) {
+        await pline(`As ${an(pmname(game.youmonst.data,
+            game.flags.female ? FEMALE : MALE))}, you cannot speak.`);
+        return ECMD_OK;
+    }
+    if (game.u.intrinsic?.HStrangled) {
+        await You_cant("speak.  You're choking!");
+        return ECMD_OK;
+    }
+    if (game.u.uswallow) {
+        await pline("They won't hear you out there.");
+        return ECMD_OK;
+    }
+    if (Underwater()) {
+        await Your('speech is unintelligible underwater.');
+        return ECMD_OK;
+    }
+
     if (!await getdir('Talk to whom? (in what direction)'))
         return ECMD_OK; /* ECMD_CANCEL */
 

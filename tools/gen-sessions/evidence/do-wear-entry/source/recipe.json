@@ -1,0 +1,49 @@
+{
+  "name": "do-wear-entry-observation",
+  "source": "c",
+  "description": "Original keyboard proposals locked before a single fixed-c425 observational JS probe. No native recording yet.",
+  "segments": [
+    {
+      "name": "full-eleven-wear-puton",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed +0 Hawaiian shirt\r    \u001b\u001b\u001b\u0017uncursed +0 leather armor\r    \u001b\u001b\u001b\u0017uncursed +0 leather cloak\r    \u001b\u001b\u001b\u0017uncursed +0 helmet\r    \u001b\u001b\u001b\u0017uncursed +0 small shield\r    \u001b\u001b\u001b\u0017uncursed +0 leather gloves\r    \u001b\u001b\u001b\u0017uncursed +0 low boots\r    \u001b\u001b\u001b\u0017uncursed +0 ring of protection\r    \u001b\u001b\u001b\u0017uncursed +0 ring of adornment\r    \u001b\u001b\u001b\u0017uncursed amulet of reflection\r    \u001b\u001b\u001b\u0017uncursed lenses\r    \u001b\u001b\u001bWa    \u001b\u001b\u001bWb    \u001b\u001b\u001bWc    \u001b\u001b\u001bWd    \u001b\u001b\u001bWe    \u001b\u001b\u001bWf    \u001b\u001b\u001bWg    \u001b\u001b\u001bPhl    \u001b\u001b\u001bPi    \u001b\u001b\u001bPj    \u001b\u001b\u001bPk    \u001b\u001b\u001bW\u001b    \u001b\u001b\u001bP\u001b    \u001b\u001b\u001b"
+    },
+    {
+      "name": "missing-helmet-negative",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed +0 Hawaiian shirt\r    \u001b\u001b\u001b\u0017uncursed +0 leather armor\r    \u001b\u001b\u001b\u0017uncursed +0 leather cloak\r    \u001b\u001b\u001b\u0017uncursed +0 helmet\r    \u001b\u001b\u001b\u0017uncursed +0 small shield\r    \u001b\u001b\u001b\u0017uncursed +0 leather gloves\r    \u001b\u001b\u001b\u0017uncursed +0 low boots\r    \u001b\u001b\u001b\u0017uncursed +0 ring of protection\r    \u001b\u001b\u001b\u0017uncursed +0 ring of adornment\r    \u001b\u001b\u001b\u0017uncursed amulet of reflection\r    \u001b\u001b\u001b\u0017uncursed lenses\r    \u001b\u001b\u001bWa    \u001b\u001b\u001bWb    \u001b\u001b\u001bWc    \u001b\u001b\u001bWe    \u001b\u001b\u001bWf    \u001b\u001b\u001bWg    \u001b\u001b\u001bPhl    \u001b\u001b\u001bPi    \u001b\u001b\u001bPj    \u001b\u001b\u001bPk    \u001b\u001b\u001bW\u001b    \u001b\u001b\u001bP\u001b    \u001b\u001b\u001b"
+    },
+    {
+      "name": "missing-amulet-negative",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed +0 Hawaiian shirt\r    \u001b\u001b\u001b\u0017uncursed +0 leather armor\r    \u001b\u001b\u001b\u0017uncursed +0 leather cloak\r    \u001b\u001b\u001b\u0017uncursed +0 helmet\r    \u001b\u001b\u001b\u0017uncursed +0 small shield\r    \u001b\u001b\u001b\u0017uncursed +0 leather gloves\r    \u001b\u001b\u001b\u0017uncursed +0 low boots\r    \u001b\u001b\u001b\u0017uncursed +0 ring of protection\r    \u001b\u001b\u001b\u0017uncursed +0 ring of adornment\r    \u001b\u001b\u001b\u0017uncursed amulet of reflection\r    \u001b\u001b\u001b\u0017uncursed lenses\r    \u001b\u001b\u001bWa    \u001b\u001b\u001bWb    \u001b\u001b\u001bWc    \u001b\u001b\u001bWd    \u001b\u001b\u001bWe    \u001b\u001b\u001bWf    \u001b\u001b\u001bWg    \u001b\u001b\u001bPhl    \u001b\u001b\u001bPi    \u001b\u001b\u001bPk    \u001b\u001b\u001bW\u001b    \u001b\u001b\u001bP\u001b    \u001b\u001b\u001b"
+    },
+    {
+      "name": "menu-cancel-wear-repeat",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed +0 Hawaiian shirt\r    \u001b\u001b\u001b\u0017uncursed +0 low boots\r    \u001b\u001b\u001bW?\u001b\u0001\u001b    \u001b\u001b\u001b"
+    },
+    {
+      "name": "menu-cancel-put-on-repeat",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed +0 Hawaiian shirt\r    \u001b\u001b\u001b\u0017uncursed +0 low boots\r    \u001b\u001b\u001bP?\u001b\u0001\u001b    \u001b\u001b\u001b"
+    },
+    {
+      "name": "direct-escape-repeat-negative",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed +0 Hawaiian shirt\r    \u001b\u001b\u001b\u0017uncursed +0 low boots\r    \u001b\u001b\u001bW\u001b\u0001\u001b    \u001b\u001b\u001bP\u001b\u0001\u001b    \u001b\u001b\u001b"
+    }
+  ]
+}

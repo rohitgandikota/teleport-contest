@@ -1,0 +1,150 @@
+{
+  "status": "source predictions before observation, not native-certified",
+  "slots": [
+    "uarm",
+    "uarmu",
+    "uarmc",
+    "uarmh",
+    "uarms",
+    "uarmg",
+    "uarmf",
+    "uleft",
+    "uright",
+    "uamul",
+    "ublindf"
+  ],
+  "items": [
+    "uncursed +0 Hawaiian shirt",
+    "uncursed +0 leather armor",
+    "uncursed +0 leather cloak",
+    "uncursed +0 helmet",
+    "uncursed +0 small shield",
+    "uncursed +0 leather gloves",
+    "uncursed +0 low boots",
+    "uncursed +0 ring of protection",
+    "uncursed +0 ring of adornment",
+    "uncursed amulet of reflection",
+    "uncursed lenses"
+  ],
+  "cPredictions": {
+    "wearFull": "You are already wearing a full complement of armor.",
+    "putonFull": "Your ring-fingers are full, and you're already wearing an amulet and some lenses.",
+    "missingSlot": "Both entries use getobj rather than the full-equipment message, and direct Escape cancels.",
+    "menuCancellation": "After inventory-menu Escape, ECMD_CANCEL clears CQ_REPEAT. Ctrl-A reports There is no command available to repeat.",
+    "directEscape": "The same no-command message follows direct Escape; fixed JS already clears repeat in this shared getobj branch."
+  },
+  "cases": [
+    {
+      "name": "full-eleven-wear-puton",
+      "kind": "full-equipment",
+      "points": [
+        {
+          "label": "wear",
+          "before": 468,
+          "after": 469,
+          "command": "W"
+        },
+        {
+          "label": "put on",
+          "before": 477,
+          "after": 478,
+          "command": "P"
+        }
+      ],
+      "missing": null
+    },
+    {
+      "name": "missing-helmet-negative",
+      "kind": "missing-slot-negative",
+      "points": [
+        {
+          "label": "wear",
+          "before": 459,
+          "after": 460,
+          "command": "W"
+        },
+        {
+          "label": "put on",
+          "before": 468,
+          "after": 469,
+          "command": "P"
+        }
+      ],
+      "missing": "uarmh"
+    },
+    {
+      "name": "missing-amulet-negative",
+      "kind": "missing-slot-negative",
+      "points": [
+        {
+          "label": "wear",
+          "before": 459,
+          "after": 460,
+          "command": "W"
+        },
+        {
+          "label": "put on",
+          "before": 468,
+          "after": 469,
+          "command": "P"
+        }
+      ],
+      "missing": "uamul"
+    },
+    {
+      "name": "menu-cancel-wear-repeat",
+      "kind": "menu-cancellation",
+      "points": [
+        {
+          "label": "wear",
+          "before": 66,
+          "prompt": 67,
+          "menu": 68,
+          "cancelled": 69,
+          "repeated": 70,
+          "command": "W"
+        }
+      ],
+      "missing": null
+    },
+    {
+      "name": "menu-cancel-put-on-repeat",
+      "kind": "menu-cancellation",
+      "points": [
+        {
+          "label": "put on",
+          "before": 66,
+          "prompt": 67,
+          "menu": 68,
+          "cancelled": 69,
+          "repeated": 70,
+          "command": "P"
+        }
+      ],
+      "missing": null
+    },
+    {
+      "name": "direct-escape-repeat-negative",
+      "kind": "direct-escape-negative",
+      "points": [
+        {
+          "label": "wear",
+          "before": 66,
+          "prompt": 67,
+          "cancelled": 68,
+          "repeated": 69,
+          "command": "W"
+        },
+        {
+          "label": "put on",
+          "before": 77,
+          "prompt": 78,
+          "cancelled": 79,
+          "repeated": 80,
+          "command": "P"
+        }
+      ],
+      "missing": null
+    }
+  ]
+}

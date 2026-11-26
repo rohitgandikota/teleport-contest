@@ -1,0 +1,33 @@
+{
+  "originalRecipeSha256": "e28b4ac22263258a7725b64d890ef9c17690280a6c9c687e644ad5d63243fd05",
+  "primaryRecipeSha256": "b5451f75a877ade073e92e7a5480bc4865620d2f5a2565b35756574ccdd5488f",
+  "originalInputLockSha256": "30964ad1d94de8f1686c1a52a5960082306ed08c4a1579ca353c301e1b936f83",
+  "addedTopLevelKeys": [
+    "branches",
+    "requireBranchAssertions",
+    "branchAssertions"
+  ],
+  "originalFieldsAndSegmentsUnchanged": true,
+  "segments": 6,
+  "keys": 1684,
+  "screenCells": 467,
+  "sources": {
+    "nethack-c/upstream/win/tty/topl.c": "7abe4855c351b90048261752bab6bcc329f6fa236da1cca0cc48e362b6ff5d6d",
+    "tools/gen-sessions/assertions.mjs": "aed2dfe01e18cb2e8b0d62e389ab9d8a9c02b0e3e98d4e427fcead4c228e3adc",
+    "tools/gen-sessions/screen-decode.mjs": "0831fd4db121dab1d3c8f80efac29c68ce50f67fedbb49f2bd7c21371244dae0"
+  },
+  "layoutAccounting": {
+    "originalObservationKept": true,
+    "originalCheck": "full-eleven-wear-puton / put on: C entry feedback",
+    "originalPredicate": "captured.after.text.includes(cPredictions.putonFull)",
+    "limitation": "The original 81-character contiguous predicate cannot match the faithful 80-column two-row layout. This remains a known observation-test premise issue, not a runtime fix or a native success claim.",
+    "source": "win/tty/topl.c:284-298 replaces the last space before column79 with newline; redotoplin:123-140 invokes more for multiline output.",
+    "messageLength": 81,
+    "breakOffset": 73,
+    "wrappedRows": [
+      "Your ring-fingers are full, and you're already wearing an amulet and some",
+      "lenses."
+    ],
+    "primaryReplacement": "All 80 visible message cells across rows0 and1 at boundary478, preserving every letter and the exact C wrap. No input or old assertion changed."
+  }
+}

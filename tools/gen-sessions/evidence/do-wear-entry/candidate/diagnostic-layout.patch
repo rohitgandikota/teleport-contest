@@ -1,0 +1,23 @@
+--- original/tools/observe.mjs
++++ corrected/tools/observe.mjs
+@@ -4,7 +4,7 @@
+ import { createHash } from 'node:crypto';
+ 
+ const packet = new URL('../', import.meta.url);
+-const root = new URL('../../../../', import.meta.url);
++const root = new URL('../../../../../', import.meta.url);
+ const json = url => JSON.parse(readFileSync(url, 'utf8'));
+ const sha = bytes => createHash('sha256').update(bytes).digest('hex');
+ const pins = json(new URL('source-pins.json', packet));
+@@ -101,7 +101,10 @@
+             }, 'setup');
+             if (plan.kind==='full-equipment' || plan.kind==='missing-slot-negative') {
+                 check(`${p.label}: C entry feedback`, () => {
+-                    assert.ok(captured.after.text.includes(plan.kind==='full-equipment'
++                    const entryText = plan.kind==='full-equipment' && p.command==='P'
++                        ? captured.after.text.split('\n').slice(0,2).join(' ')
++                        : captured.after.text;
++                    assert.ok(entryText.includes(plan.kind==='full-equipment'
+                         ? predictions.cPredictions[p.command==='W' ? 'wearFull' : 'putonFull']
+                         : `What do you want to ${p.label}?`));
+                 });

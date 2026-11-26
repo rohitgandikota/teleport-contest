@@ -1,0 +1,32 @@
+{
+  "runtimeMapSha256": "c425a83669d913cce211a9665a4513bbdcb44fb5753dcd20f23d243eb10b094a",
+  "runtimeModules": 280,
+  "cUpstream": "16ff59115315917b93185d026aeefea06db9b0f4",
+  "pins": {
+    "nethack-c/upstream/src/do_wear.c": "cf33ad9f5b18bcdfffd09d4e99867590802735a9ae2d34b9eb2b64880fa459c7",
+    "nethack-c/upstream/src/invent.c": "0b93d6ce1abb5b63ed7ea07c26a57e1016c6cef0fc2ef0e4016e6622054524b5",
+    "nethack-c/upstream/src/cmd.c": "a14c0fc8706bd9957f8f4aab7f9e2abbd30eb5f4e43166b90a8bfeb25094a7ce",
+    "nethack-c/upstream/src/worn.c": "0414baea25644ea52cc7b628dff4ab1a533eada1523405eaabe7d7555bc3d4cf",
+    "nethack-c/upstream/src/artifact.c": "f0cf8f78bb68f305394e3cd9ccb8080cb15c147582b7f5f55888f4acdfe10141",
+    "nethack-c/upstream/src/steal.c": "0aa14e4a989d4869de9b9bd223231ac559f2d6641d9bfb949d0aaff29ca8a447",
+    "nethack-c/upstream/src/hack.c": "547cab9e7aaa922aa5bb8b5ad38696f9f74e3e1e31c264509a9448a689cb4665",
+    "nethack-c/upstream/src/polyself.c": "2f2f3dc74c2cbdd122f7a1401bd3e4e77efbc37ff6c499371cb8e57c9e39a5c8",
+    "nethack-c/upstream/src/wizcmds.c": "4611d620caedc59dc270f5d6b6f9a2497831dc88325edc90f3770e75afd9b71f",
+    "nethack-c/upstream/src/zap.c": "8ee02bd7aa29b026d6b5a2e0017ddf402fcfc6fc81037e35ceda2d86467547cb",
+    "nethack-c/upstream/src/iactions.c": "a8b65fd2326977b85a2e93f6c939017fd7ab2ab6848b19f375d8852aa98f29f6",
+    "nethack-c/upstream/include/objects.h": "eb573ca76f7afe35d6420b958333fbb3c44911415df4e0034e6367456e2913cb",
+    "nethack-c/upstream/include/youprop.h": "9c4e25bc385c405226085ae3526dc165bd9397ce922b8a18a46f67de21683a2f",
+    "nethack-c/upstream/include/hack.h": "2840a9bd41fb0c09384839fafdbd427a5d8705ad8d3eb5e2a0308cccea36813b",
+    "nethack-c/upstream/include/mondata.h": "6f1ca3db69a5cfbe425859fe1c7decfa1da1fdac45af9d8a84be5f0f8c9c21f2",
+    "tools/half-damage-reader-observe.mjs": "201cdafe4409d5d58414c1d0ebc0449c32b29834cdf35c72c151a555d9031d07",
+    "frozen/screen-decode.mjs": "cb4a0fbfed3dda28c14736e6ae9c8b9eb8c87d75916c50d6df80f40eb0368cbe",
+    "tools/accessory-wear-owner-state-gate.mjs": "407c42aa8b7b4933d1b18d1067aca4de50f7ca4a9aef5f0868214c2c2f71be89",
+    "tools/accessory-wear-owner-input-gate.mjs": "00372938340e9b336da7b842efbf6de72ee1cec350446989339b15f7a8ec2709",
+    "tools/command-repeat-state-gate.mjs": "b81a5548194e59e5afbee87da46d456f72bbc653094d491ae6eeee793e61852e",
+    "tools/gen-sessions/recipes/accessory-wear-owner.json": "3bd8069a59c9e45defc13764d2f18f7863ee4f8d8b8e0820949ba9c05c20bcc6",
+    "tools/gen-sessions/recipes/armor-wear-remove.json": "11a58a95765ee28daf9a95267f1b249ce6b0d71cb96f24481f57253617f28c81",
+    "tools/gen-sessions/recipes/eyewear-lifecycle.json": "be5eb5ac88330b9daa3db499c76027331b4aa5b3806c15be43e57875062fb6c6",
+    "tools/gen-sessions/recipes/default-command-repeat.json": "3389f6a4506c29037f62eca4e3eada4733d8a0cad96bb45fccf0186746456f10",
+    ".cache/restart-20261122/itemactions-accessory-candidate/SOURCE-REVIEW.md": "63e0f449fdb5ccb71fdfd06a9e521528273c3f0d61acbf4176f22337ced7ed58"
+  }
+}

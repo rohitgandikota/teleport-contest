@@ -1,0 +1,51 @@
+{
+  "original52CheckNamesCategoriesAndCountPreserved": true,
+  "originalSourceDiagnostic": {
+    "pass": 46,
+    "total": 52,
+    "exit": 1
+  },
+  "originalCandidateDiagnostic": {
+    "pass": 51,
+    "total": 52,
+    "exit": 1,
+    "remainingFailure": "full-eleven-wear-puton / put on: C entry feedback"
+  },
+  "correctedBaseline": {
+    "pass": 46,
+    "total": 52,
+    "exit": 1
+  },
+  "correctedCandidate": {
+    "pass": 52,
+    "total": 52,
+    "exit": 0
+  },
+  "allOriginalExpectedValuesPreserved": true,
+  "onlyCorrectedPredicate": "Join decoded first2rows for full-equipment P before searching for the unchanged complete source message.",
+  "baselineOriginalVsCorrectedAll30HashesEqual": true,
+  "candidateOriginalVsCorrectedAll30HashesEqual": true,
+  "negativeFamilies": 3,
+  "negativeHashesPreserved": 15,
+  "nativeBaselinePassing": 3,
+  "nativeCandidatePassing": 6,
+  "nativeCases": 6,
+  "nativeBoundaries": 1690,
+  "nativeCalls": 17532,
+  "nativeFrames": 2,
+  "nativeNegativeRowsUnchanged": [
+    1,
+    2,
+    5
+  ],
+  "rawSha256": "fe893b3d09f1637acac3a92b4df289009e77ea81ca0954e19f187390c7c67cb1",
+  "candidateNativeReportSha256": "0bf2a6f9cfba93abf50e67ca29dea185065bac7adc5d279cb5723486eb82dff0",
+  "baselineNativeReportSha256": "d8a9bf8e2eba18e9ba5f59780d5c9b26b65378357176b2a9b7a8c39af01146bd",
+  "reportSha256": {
+    "reports/observation.json": "cbdf092129ee98395f4955cc180918028a103f87e202f8a7dedf5d1e35f76c6b",
+    "corrected-baseline/reports/observation.json": "b6241d92fc300de5a833e3fde9ae3afd4915d499fc9db974436ae5f5237d76f4",
+    "corrected-candidate/reports/observation.json": "5df0769a896690ba91886ca866b1505dc1caba4bf1a8d3175b8fe22950a59cd9"
+  },
+  "newCRecordings": 0,
+  "mainChanges": 0
+}

@@ -1,0 +1,10 @@
+{
+  "kind": "sealed source-only audit, no runtime candidate",
+  "members": 31,
+  "manifestSha256": "e12e6f4b25f904e8ba3f311a5e69e51bb1db1f8de1bed5b7ae9815b635840831",
+  "runtimeMapSha256": "c425a83669d913cce211a9665a4513bbdcb44fb5753dcd20f23d243eb10b094a",
+  "nativeRecorded": false,
+  "originalAssertionFailuresRetained": 6,
+  "knownLayoutPremiseFailures": 1,
+  "primaryRecipeSha256": "b5451f75a877ade073e92e7a5480bc4865620d2f5a2565b35756574ccdd5488f"
+}

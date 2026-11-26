@@ -1,0 +1,13 @@
+# Polymorphed fire-trap evidence
+
+The portable gate preserves the corrected cleanup family's 192 producer checks and 56 source assertions. `ordinary-original.mjs` is exact cleanup35 evidence, read only for body integrity. It is not executed. `derivation.json` identifies the unchanged imports, observer, deferred runner, checks and complete case-row construction. Only packet progress writes are removed from that block.
+
+All original C inputs and primary predicates remain byte-exact. The canonical raw is the parent's one-time recording, SHA256 `f1d26027a6456e8043fa4e5acce9b4aaabbb41712d1361c98e2f8f403e4c2fb3`. The recipe remains SHA256 `89a5937fa4330ba9d45418d4ccb73c4662b5330e3a81496354e9a96241ef0557`. Recording, input-lock and native preflight receipts record provenance. These receipts do not authorize rewriting the raw or changing inputs.
+
+Original36 failed all eight producer cases due to its coordinate observation error; wood, leather and iron also suffered fixed-monster attacks. Its original 33/56 source result, failed checks, original proposal/input lock, negative hashes and route attribution remain under `history/`. Cleanup35 uses actual blessed-scroll `*` keys and reaches all eight setups, retaining its 33/56 source diagnostic. The fixed candidate327 passes 192/192 and 56/56, with all eight native comparisons exact versus baseline3/8. The 15 corrected negative hashes and complete three ordinary and native negative rows are unchanged. `provenance.json` pins the immutable source packets and identifies each exact copy or explicit compact extraction.
+
+Candidate327's first static verifier assumed a two-field cursor. C and the existing runtime capture `[x,y,visibility]`. The failed verifier and provisional seal are preserved under `history/`; the correction changed neither gameplay assertions nor inputs, runtime or results. Parent's 1.832-second exit1 baseline-native command and log are also retained.
+
+The portable gate runs current runtime source, requires fresh passive state observations, and executes observed, plain and deferred inputs. It writes nothing by default and accepts one optional new compact report path. Archived native reports are checked as evidence before imports. This gate does not rerun native comparison; parent owns fresh native checks after main composition.
+
+The candidate fixes only the missing nonresistant Upolyd arm. Underwater, slime, box/floor, blindness capture and human HP-floor behavior remain open. Low monster maximum, live witnesses, Unchanging, regeneration and other equipment are outside the ordinary family. See `source-review.md` for exact source ordering and scope. No runtime or patch file is part of this evidence payload.

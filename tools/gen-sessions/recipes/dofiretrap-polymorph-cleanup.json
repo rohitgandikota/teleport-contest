@@ -1,0 +1,212 @@
+{
+  "source": "c",
+  "version": 5,
+  "name": "dofiretrap-polymorph-cleanup",
+  "description": "Source-locked ordinary fire-trap polymorph family with actual blessed-genocide star cleanup, pending parent original C. Eight distinct inputs replace no historical evidence.",
+  "coverage": [
+    "forms.polymorph",
+    "mode.debug",
+    "ui.getlin",
+    "ui.more-paging"
+  ],
+  "segments": [
+    {
+      "name": "clean-paper-trigger",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed scroll of genocide\r    \u001b\u001bra  *\r    \u001b\u001bh #polyself\rpaper golem\r   \u001b\u001b\u0017uncursed gauntlets of fumbling\r   \u001b\u001bWb   \u001b\u001b\u0017fire trap\r   \u001b\u001b#sit\r   \u001b\u001b"
+    },
+    {
+      "name": "clean-straw-trigger",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed scroll of genocide\r    \u001b\u001bra  *\r    \u001b\u001bh #polyself\rstraw golem\r   \u001b\u001b\u0017uncursed gauntlets of fumbling\r   \u001b\u001bWb   \u001b\u001b\u0017fire trap\r   \u001b\u001b#sit\r   \u001b\u001b"
+    },
+    {
+      "name": "clean-wood-trigger",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed scroll of genocide\r    \u001b\u001bra  *\r    \u001b\u001bh #polyself\rwood golem\r   \u001b\u001b\u0017uncursed gauntlets of fumbling\r   \u001b\u001bWb   \u001b\u001b\u0017fire trap\r   \u001b\u001b#sit\r   \u001b\u001b"
+    },
+    {
+      "name": "clean-leather-trigger",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed scroll of genocide\r    \u001b\u001bra  *\r    \u001b\u001bh #polyself\rleather golem\r   \u001b\u001b\u0017uncursed gauntlets of fumbling\r   \u001b\u001bWb   \u001b\u001b\u0017fire trap\r   \u001b\u001b#sit\r   \u001b\u001b"
+    },
+    {
+      "name": "clean-minotaur-trigger",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed scroll of genocide\r    \u001b\u001bra  *\r    \u001b\u001bh #polyself\rminotaur\r   \u001b\u001b\u0017uncursed gauntlets of fumbling\r   \u001b\u001bWb   \u001b\u001b\u0017fire trap\r   \u001b\u001b#sit\r   \u001b\u001b"
+    },
+    {
+      "name": "clean-iron-resistant",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed scroll of genocide\r    \u001b\u001bra  *\r    \u001b\u001bh #polyself\riron golem\r   \u001b\u001b\u0017uncursed gauntlets of fumbling\r   \u001b\u001bWb   \u001b\u001b\u0017fire trap\r   \u001b\u001b#sit\r   \u001b\u001b"
+    },
+    {
+      "name": "clean-paper-look-only",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed scroll of genocide\r    \u001b\u001bra  *\r    \u001b\u001bh #polyself\rpaper golem\r   \u001b\u001b\u0017uncursed gauntlets of fumbling\r   \u001b\u001bWb   \u001b\u001b\u0017fire trap\r   \u001b\u001b:   \u001b\u001b"
+    },
+    {
+      "name": "clean-minotaur-look-only",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed scroll of genocide\r    \u001b\u001bra  *\r    \u001b\u001bh #polyself\rminotaur\r   \u001b\u001b\u0017uncursed gauntlets of fumbling\r   \u001b\u001bWb   \u001b\u001b\u0017fire trap\r   \u001b\u001b:   \u001b\u001b"
+    }
+  ],
+  "branches": [
+    "traps.fire.polymorph.clean-paper-trigger",
+    "traps.fire.polymorph.clean-straw-trigger",
+    "traps.fire.polymorph.clean-wood-trigger",
+    "traps.fire.polymorph.clean-leather-trigger",
+    "traps.fire.polymorph.clean-minotaur-trigger",
+    "traps.fire.polymorph.clean-iron-resistant",
+    "traps.fire.polymorph.clean-paper-look-only",
+    "traps.fire.polymorph.clean-minotaur-look-only"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "traps.fire.polymorph.clean-paper-trigger",
+      "segment": 0,
+      "screenIncludes": [
+        "Eliminated ",
+        "You turn into a paper golem!",
+        "A fire trap.",
+        "You sit down.",
+        "A tower of flame erupts from the floor!",
+        "You return to human form!"
+      ],
+      "screenExcludes": [
+        "Creation of a fire trap failed.",
+        "You escape a fire trap."
+      ]
+    },
+    {
+      "branch": "traps.fire.polymorph.clean-straw-trigger",
+      "segment": 1,
+      "screenIncludes": [
+        "Eliminated ",
+        "You turn into a straw golem!",
+        "A fire trap.",
+        "You sit down.",
+        "A tower of flame erupts from the floor!"
+      ],
+      "screenExcludes": [
+        "Creation of a fire trap failed.",
+        "You escape a fire trap."
+      ]
+    },
+    {
+      "branch": "traps.fire.polymorph.clean-wood-trigger",
+      "segment": 2,
+      "screenIncludes": [
+        "Eliminated ",
+        "You turn into a wood golem!",
+        "A fire trap.",
+        "You sit down.",
+        "A tower of flame erupts from the floor!"
+      ],
+      "screenExcludes": [
+        "Creation of a fire trap failed.",
+        "You escape a fire trap.",
+        "You return to human form!"
+      ]
+    },
+    {
+      "branch": "traps.fire.polymorph.clean-leather-trigger",
+      "segment": 3,
+      "screenIncludes": [
+        "Eliminated ",
+        "You turn into a leather golem!",
+        "A fire trap.",
+        "You sit down.",
+        "A tower of flame erupts from the floor!"
+      ],
+      "screenExcludes": [
+        "Creation of a fire trap failed.",
+        "You escape a fire trap.",
+        "You return to human form!"
+      ]
+    },
+    {
+      "branch": "traps.fire.polymorph.clean-minotaur-trigger",
+      "segment": 4,
+      "screenIncludes": [
+        "Eliminated ",
+        "You turn into a minotaur!",
+        "A fire trap.",
+        "You sit down.",
+        "A tower of flame erupts from the floor!"
+      ],
+      "screenExcludes": [
+        "Creation of a fire trap failed.",
+        "You escape a fire trap.",
+        "You return to human form!"
+      ]
+    },
+    {
+      "branch": "traps.fire.polymorph.clean-iron-resistant",
+      "segment": 5,
+      "screenIncludes": [
+        "Eliminated ",
+        "You turn into an iron golem!",
+        "A fire trap.",
+        "You sit down.",
+        "A tower of flame erupts from the floor!"
+      ],
+      "screenExcludes": [
+        "Creation of a fire trap failed.",
+        "You escape a fire trap.",
+        "You return to human form!"
+      ]
+    },
+    {
+      "branch": "traps.fire.polymorph.clean-paper-look-only",
+      "segment": 6,
+      "screenIncludes": [
+        "Eliminated ",
+        "You turn into a paper golem!",
+        "A fire trap.",
+        "You see no objects here."
+      ],
+      "screenExcludes": [
+        "Creation of a fire trap failed.",
+        "You escape a fire trap.",
+        "tower of flame",
+        "You return to human form!"
+      ]
+    },
+    {
+      "branch": "traps.fire.polymorph.clean-minotaur-look-only",
+      "segment": 7,
+      "screenIncludes": [
+        "Eliminated ",
+        "You turn into a minotaur!",
+        "A fire trap.",
+        "You see no objects here."
+      ],
+      "screenExcludes": [
+        "Creation of a fire trap failed.",
+        "You escape a fire trap.",
+        "tower of flame",
+        "You return to human form!",
+        "You return to human form!"
+      ]
+    }
+  ],
+  "recordingNote": "Exact eight inputs locked before one observed/plain/deferred JS batch. Parent exclusively owns C recording; keep all five fields/presence and every key unchanged."
+}

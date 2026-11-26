@@ -1,0 +1,45 @@
+{
+  "sourceReportSHA256": "9f43198cd8afa4d95112814ffdad0527519403509fcbdf497b276944592aad23",
+  "negativeCases": 3,
+  "hashesPerCase": 5,
+  "hashCount": 15,
+  "scope": "Original complete observed outputs, with exact observed/plain/deferred equality. Iron final HP includes ordinary monster attacks. No C parity claimed.",
+  "rows": [
+    {
+      "name": "iron-resistant",
+      "outputHashes": {
+        "screens": "b6b8673a25c77d8173de73d6b5bc4be257dfd26a8a2a671d6751b2e8c6801b17",
+        "cursors": "2c659019916fd0929f498e357bc6c354d7b315385b9db6d55d50f22cbdef0619",
+        "calls": "ff2a5130290e81b2806a06ebe84297fc4b1df220f63e8a79f10ba7ba23e781af",
+        "slices": "4dc0b076dc94244857ea52e2885a8d14892f2b8fba16e5c06d20d32a3f5974e0",
+        "frames": "de7a64885199f3cc85e46fa6efd66088cd2eaa73ecbd17fece11a9325d494868"
+      },
+      "rowSHA256": "e32b077659565ef93319427719e13506232560922a0906bd2a9bc75ceded0999",
+      "neutrality": true
+    },
+    {
+      "name": "paper-look-only",
+      "outputHashes": {
+        "screens": "5dddd5cb9ebb69d58e96b79d134fac36a3a60246dd64d3a71b8b4c926e8e7a48",
+        "cursors": "8359efc9ea4660b5c479f739f4e25893867adf490a0be2f3d5e45e82c3dad235",
+        "calls": "b9189c35209042655bd0ee8a8df6ad01b3e47ab365c088157421d686e76fad85",
+        "slices": "38d3aefe533e137412f91cfb7287efe0c8b263b8f2f6a711da984a175d13f983",
+        "frames": "c16180881835d8cce45ca7f841a3efe63dcd809f0bd273be140ba0fe5dd263dd"
+      },
+      "rowSHA256": "04cae0299420439730f22d731ff7bc186c5a065474a9c2d6a122c2a8fe1340b6",
+      "neutrality": true
+    },
+    {
+      "name": "minotaur-look-only",
+      "outputHashes": {
+        "screens": "427d5cb7923177a02ac146d05bd54613c3d0f495b72d9429ddb6049d0f1b8781",
+        "cursors": "053bc26c1b1dffa32a1b12293fcb79edd902fb4e7b64372a33c9583c0937939c",
+        "calls": "e217f23cb0ec697b0fcd4a22c9e7003bca8a4d538dfe09959de78870d808d963",
+        "slices": "6206dfe375320f2bca50b9db6d3325342985c9fe70fc2b4647db27bec9afcbfb",
+        "frames": "43772b957697bdfa27d15a9320020b130b9529b0184c8b8e1bd746b0806215e4"
+      },
+      "rowSHA256": "616755350cb046ddf96fab2717b515b2095427d7abc03081b5da7278adcc400d",
+      "neutrality": true
+    }
+  ]
+}

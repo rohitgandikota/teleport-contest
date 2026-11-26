@@ -1,0 +1,489 @@
+{
+  "name": "dofiretrap-polymorph-cleanup-proposal01",
+  "runtimeSHA256": "f2afc28c9b9816b3f48fe811979969ef9adae95c4e9d1119b6146d884910c99f",
+  "oneBatchOnly": true,
+  "modes": [
+    "observed",
+    "plain",
+    "deferred"
+  ],
+  "sourceOnly": true,
+  "parentNativePending": true,
+  "originalFamily": "evidence/original/proposals/proposal01.json",
+  "segments": [
+    {
+      "name": "clean-paper-trigger",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed scroll of genocide\r    \u001b\u001bra  *\r    \u001b\u001bh #polyself\rpaper golem\r   \u001b\u001b\u0017uncursed gauntlets of fumbling\r   \u001b\u001bWb   \u001b\u001b\u0017fire trap\r   \u001b\u001b#sit\r   \u001b\u001b"
+    },
+    {
+      "name": "clean-straw-trigger",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed scroll of genocide\r    \u001b\u001bra  *\r    \u001b\u001bh #polyself\rstraw golem\r   \u001b\u001b\u0017uncursed gauntlets of fumbling\r   \u001b\u001bWb   \u001b\u001b\u0017fire trap\r   \u001b\u001b#sit\r   \u001b\u001b"
+    },
+    {
+      "name": "clean-wood-trigger",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed scroll of genocide\r    \u001b\u001bra  *\r    \u001b\u001bh #polyself\rwood golem\r   \u001b\u001b\u0017uncursed gauntlets of fumbling\r   \u001b\u001bWb   \u001b\u001b\u0017fire trap\r   \u001b\u001b#sit\r   \u001b\u001b"
+    },
+    {
+      "name": "clean-leather-trigger",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed scroll of genocide\r    \u001b\u001bra  *\r    \u001b\u001bh #polyself\rleather golem\r   \u001b\u001b\u0017uncursed gauntlets of fumbling\r   \u001b\u001bWb   \u001b\u001b\u0017fire trap\r   \u001b\u001b#sit\r   \u001b\u001b"
+    },
+    {
+      "name": "clean-minotaur-trigger",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed scroll of genocide\r    \u001b\u001bra  *\r    \u001b\u001bh #polyself\rminotaur\r   \u001b\u001b\u0017uncursed gauntlets of fumbling\r   \u001b\u001bWb   \u001b\u001b\u0017fire trap\r   \u001b\u001b#sit\r   \u001b\u001b"
+    },
+    {
+      "name": "clean-iron-resistant",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed scroll of genocide\r    \u001b\u001bra  *\r    \u001b\u001bh #polyself\riron golem\r   \u001b\u001b\u0017uncursed gauntlets of fumbling\r   \u001b\u001bWb   \u001b\u001b\u0017fire trap\r   \u001b\u001b#sit\r   \u001b\u001b"
+    },
+    {
+      "name": "clean-paper-look-only",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed scroll of genocide\r    \u001b\u001bra  *\r    \u001b\u001bh #polyself\rpaper golem\r   \u001b\u001b\u0017uncursed gauntlets of fumbling\r   \u001b\u001bWb   \u001b\u001b\u0017fire trap\r   \u001b\u001b:   \u001b\u001b"
+    },
+    {
+      "name": "clean-minotaur-look-only",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed scroll of genocide\r    \u001b\u001bra  *\r    \u001b\u001bh #polyself\rminotaur\r   \u001b\u001b\u0017uncursed gauntlets of fumbling\r   \u001b\u001bWb   \u001b\u001b\u0017fire trap\r   \u001b\u001b:   \u001b\u001b"
+    }
+  ],
+  "predictions": [
+    {
+      "name": "clean-paper-trigger",
+      "species": "paper golem",
+      "golemHP": 20,
+      "speciesLevel": 3,
+      "materialDivisor": 1,
+      "trigger": true,
+      "negative": false,
+      "fireResistant": false,
+      "phases": {
+        "initial": 0,
+        "cleanupWishStart": 1,
+        "scrollWish": 35,
+        "cleaned": 47,
+        "floor": 49,
+        "polymorphed": 76,
+        "gloveWishStart": 76,
+        "gloveWish": 113,
+        "wearStart": 113,
+        "worn": 120,
+        "trapWishStart": 120,
+        "beforeAction": 136,
+        "actionEnter": 141,
+        "final": 146
+      },
+      "C": {
+        "requiredPhrases": [
+          "Eliminated ",
+          "You turn into a paper golem!",
+          "A fire trap.",
+          "You sit down.",
+          "A tower of flame erupts from the floor!",
+          "You return to human form!"
+        ],
+        "excludedPhrases": [
+          "Creation of a fire trap failed.",
+          "You escape a fire trap."
+        ],
+        "humanHPMax": "unchanged across action in every case",
+        "humanHP": "unchanged across action conditional on verified full human pool, no live monsters, no regeneration boundary and only the locked fresh gloves",
+        "damage": "max(first d(2,4), trunc(pre-mhmax/materialDivisor)) with alternate0 if divisor0",
+        "rngPrefix": "d(2,4), rn2(min(pre-mhmax,max(first-d,alternate)+1)), then damage/armor/item helpers; no second d(2,4)",
+        "monsterHPMax": "subtract the bounded rn2 draw if above species mlevel, clamp mh before losehp; rehumanization then zeros mh/mhmax",
+        "form": "human",
+        "turns": "sitting consumes ECMD_TIME; slow forms can advance multiple world turns",
+        "primaryStatus": "source prediction pending parent original C, no native claim",
+        "setup": "real blessed-scroll wizard star cleanup, consumed scroll, no species genocide, no live monsters through action; subsequent exact polyself and gloves slot b"
+      },
+      "originalName": "paper-trigger"
+    },
+    {
+      "name": "clean-straw-trigger",
+      "species": "straw golem",
+      "golemHP": 20,
+      "speciesLevel": 3,
+      "materialDivisor": 2,
+      "trigger": true,
+      "negative": false,
+      "fireResistant": false,
+      "phases": {
+        "initial": 0,
+        "cleanupWishStart": 1,
+        "scrollWish": 35,
+        "cleaned": 47,
+        "floor": 49,
+        "polymorphed": 76,
+        "gloveWishStart": 76,
+        "gloveWish": 113,
+        "wearStart": 113,
+        "worn": 120,
+        "trapWishStart": 120,
+        "beforeAction": 136,
+        "actionEnter": 141,
+        "final": 146
+      },
+      "C": {
+        "requiredPhrases": [
+          "Eliminated ",
+          "You turn into a straw golem!",
+          "A fire trap.",
+          "You sit down.",
+          "A tower of flame erupts from the floor!"
+        ],
+        "excludedPhrases": [
+          "Creation of a fire trap failed.",
+          "You escape a fire trap."
+        ],
+        "humanHPMax": "unchanged across action in every case",
+        "humanHP": "unchanged across action conditional on verified full human pool, no live monsters, no regeneration boundary and only the locked fresh gloves",
+        "damage": "max(first d(2,4), trunc(pre-mhmax/materialDivisor)) with alternate0 if divisor0",
+        "rngPrefix": "d(2,4), rn2(min(pre-mhmax,max(first-d,alternate)+1)), then damage/armor/item helpers; no second d(2,4)",
+        "monsterHPMax": "subtract the bounded rn2 draw if above species mlevel, clamp mh before losehp; rehumanization then zeros mh/mhmax",
+        "form": "native draw may rehumanize straw",
+        "turns": "sitting consumes ECMD_TIME; slow forms can advance multiple world turns",
+        "primaryStatus": "source prediction pending parent original C, no native claim",
+        "setup": "real blessed-scroll wizard star cleanup, consumed scroll, no species genocide, no live monsters through action; subsequent exact polyself and gloves slot b"
+      },
+      "originalName": "straw-trigger"
+    },
+    {
+      "name": "clean-wood-trigger",
+      "species": "wood golem",
+      "golemHP": 50,
+      "speciesLevel": 7,
+      "materialDivisor": 4,
+      "trigger": true,
+      "negative": false,
+      "fireResistant": false,
+      "phases": {
+        "initial": 0,
+        "cleanupWishStart": 1,
+        "scrollWish": 35,
+        "cleaned": 47,
+        "floor": 49,
+        "polymorphed": 75,
+        "gloveWishStart": 75,
+        "gloveWish": 112,
+        "wearStart": 112,
+        "worn": 119,
+        "trapWishStart": 119,
+        "beforeAction": 135,
+        "actionEnter": 140,
+        "final": 145
+      },
+      "C": {
+        "requiredPhrases": [
+          "Eliminated ",
+          "You turn into a wood golem!",
+          "A fire trap.",
+          "You sit down.",
+          "A tower of flame erupts from the floor!"
+        ],
+        "excludedPhrases": [
+          "Creation of a fire trap failed.",
+          "You escape a fire trap.",
+          "You return to human form!"
+        ],
+        "humanHPMax": "unchanged across action in every case",
+        "humanHP": "unchanged across action conditional on verified full human pool, no live monsters, no regeneration boundary and only the locked fresh gloves",
+        "damage": "max(first d(2,4), trunc(pre-mhmax/materialDivisor)) with alternate0 if divisor0",
+        "rngPrefix": "d(2,4), rn2(min(pre-mhmax,max(first-d,alternate)+1)), then damage/armor/item helpers; no second d(2,4)",
+        "monsterHPMax": "subtract the bounded rn2 draw if above species mlevel, clamp mh before losehp; rehumanization then zeros mh/mhmax",
+        "form": "wood golem",
+        "turns": "sitting consumes ECMD_TIME; slow forms can advance multiple world turns",
+        "primaryStatus": "source prediction pending parent original C, no native claim",
+        "setup": "real blessed-scroll wizard star cleanup, consumed scroll, no species genocide, no live monsters through action; subsequent exact polyself and gloves slot b"
+      },
+      "originalName": "wood-trigger"
+    },
+    {
+      "name": "clean-leather-trigger",
+      "species": "leather golem",
+      "golemHP": 40,
+      "speciesLevel": 6,
+      "materialDivisor": 8,
+      "trigger": true,
+      "negative": false,
+      "fireResistant": false,
+      "phases": {
+        "initial": 0,
+        "cleanupWishStart": 1,
+        "scrollWish": 35,
+        "cleaned": 47,
+        "floor": 49,
+        "polymorphed": 78,
+        "gloveWishStart": 78,
+        "gloveWish": 115,
+        "wearStart": 115,
+        "worn": 122,
+        "trapWishStart": 122,
+        "beforeAction": 138,
+        "actionEnter": 143,
+        "final": 148
+      },
+      "C": {
+        "requiredPhrases": [
+          "Eliminated ",
+          "You turn into a leather golem!",
+          "A fire trap.",
+          "You sit down.",
+          "A tower of flame erupts from the floor!"
+        ],
+        "excludedPhrases": [
+          "Creation of a fire trap failed.",
+          "You escape a fire trap.",
+          "You return to human form!"
+        ],
+        "humanHPMax": "unchanged across action in every case",
+        "humanHP": "unchanged across action conditional on verified full human pool, no live monsters, no regeneration boundary and only the locked fresh gloves",
+        "damage": "max(first d(2,4), trunc(pre-mhmax/materialDivisor)) with alternate0 if divisor0",
+        "rngPrefix": "d(2,4), rn2(min(pre-mhmax,max(first-d,alternate)+1)), then damage/armor/item helpers; no second d(2,4)",
+        "monsterHPMax": "subtract the bounded rn2 draw if above species mlevel, clamp mh before losehp; rehumanization then zeros mh/mhmax",
+        "form": "leather golem",
+        "turns": "sitting consumes ECMD_TIME; slow forms can advance multiple world turns",
+        "primaryStatus": "source prediction pending parent original C, no native claim",
+        "setup": "real blessed-scroll wizard star cleanup, consumed scroll, no species genocide, no live monsters through action; subsequent exact polyself and gloves slot b"
+      },
+      "originalName": "leather-trigger"
+    },
+    {
+      "name": "clean-minotaur-trigger",
+      "species": "minotaur",
+      "golemHP": null,
+      "speciesLevel": 15,
+      "materialDivisor": 0,
+      "trigger": true,
+      "negative": false,
+      "fireResistant": false,
+      "phases": {
+        "initial": 0,
+        "cleanupWishStart": 1,
+        "scrollWish": 35,
+        "cleaned": 47,
+        "floor": 49,
+        "polymorphed": 73,
+        "gloveWishStart": 73,
+        "gloveWish": 110,
+        "wearStart": 110,
+        "worn": 117,
+        "trapWishStart": 117,
+        "beforeAction": 133,
+        "actionEnter": 138,
+        "final": 143
+      },
+      "C": {
+        "requiredPhrases": [
+          "Eliminated ",
+          "You turn into a minotaur!",
+          "A fire trap.",
+          "You sit down.",
+          "A tower of flame erupts from the floor!"
+        ],
+        "excludedPhrases": [
+          "Creation of a fire trap failed.",
+          "You escape a fire trap.",
+          "You return to human form!"
+        ],
+        "humanHPMax": "unchanged across action in every case",
+        "humanHP": "unchanged across action conditional on verified full human pool, no live monsters, no regeneration boundary and only the locked fresh gloves",
+        "damage": "max(first d(2,4), trunc(pre-mhmax/materialDivisor)) with alternate0 if divisor0",
+        "rngPrefix": "d(2,4), rn2(min(pre-mhmax,max(first-d,alternate)+1)), then damage/armor/item helpers; no second d(2,4)",
+        "monsterHPMax": "subtract the bounded rn2 draw if above species mlevel, clamp mh before losehp; rehumanization then zeros mh/mhmax",
+        "form": "minotaur",
+        "turns": "sitting consumes ECMD_TIME; slow forms can advance multiple world turns",
+        "primaryStatus": "source prediction pending parent original C, no native claim",
+        "setup": "real blessed-scroll wizard star cleanup, consumed scroll, no species genocide, no live monsters through action; subsequent exact polyself and gloves slot b"
+      },
+      "originalName": "minotaur-trigger"
+    },
+    {
+      "name": "clean-iron-resistant",
+      "species": "iron golem",
+      "golemHP": 120,
+      "speciesLevel": 18,
+      "materialDivisor": 0,
+      "trigger": true,
+      "negative": true,
+      "fireResistant": true,
+      "phases": {
+        "initial": 0,
+        "cleanupWishStart": 1,
+        "scrollWish": 35,
+        "cleaned": 47,
+        "floor": 49,
+        "polymorphed": 75,
+        "gloveWishStart": 75,
+        "gloveWish": 112,
+        "wearStart": 112,
+        "worn": 119,
+        "trapWishStart": 119,
+        "beforeAction": 135,
+        "actionEnter": 140,
+        "final": 145
+      },
+      "C": {
+        "requiredPhrases": [
+          "Eliminated ",
+          "You turn into an iron golem!",
+          "A fire trap.",
+          "You sit down.",
+          "A tower of flame erupts from the floor!"
+        ],
+        "excludedPhrases": [
+          "Creation of a fire trap failed.",
+          "You escape a fire trap.",
+          "You return to human form!"
+        ],
+        "humanHPMax": "unchanged across action in every case",
+        "humanHP": "unchanged across action conditional on verified full human pool, no live monsters, no regeneration boundary and only the locked fresh gloves",
+        "damage": "0..1 from rn2(2)",
+        "rngPrefix": "d(2,4), rn2(2), then armor/item helpers",
+        "monsterHPMax": "unchanged",
+        "form": "iron golem",
+        "turns": "sitting consumes ECMD_TIME; slow forms can advance multiple world turns",
+        "primaryStatus": "source prediction pending parent original C, no native claim",
+        "setup": "real blessed-scroll wizard star cleanup, consumed scroll, no species genocide, no live monsters through action; subsequent exact polyself and gloves slot b"
+      },
+      "originalName": "iron-resistant"
+    },
+    {
+      "name": "clean-paper-look-only",
+      "species": "paper golem",
+      "golemHP": 20,
+      "speciesLevel": 3,
+      "materialDivisor": 1,
+      "trigger": false,
+      "negative": true,
+      "fireResistant": false,
+      "phases": {
+        "initial": 0,
+        "cleanupWishStart": 1,
+        "scrollWish": 35,
+        "cleaned": 47,
+        "floor": 49,
+        "polymorphed": 76,
+        "gloveWishStart": 76,
+        "gloveWish": 113,
+        "wearStart": 113,
+        "worn": 120,
+        "trapWishStart": 120,
+        "beforeAction": 136,
+        "actionEnter": 137,
+        "final": 142
+      },
+      "C": {
+        "requiredPhrases": [
+          "Eliminated ",
+          "You turn into a paper golem!",
+          "A fire trap.",
+          "You see no objects here."
+        ],
+        "excludedPhrases": [
+          "Creation of a fire trap failed.",
+          "You escape a fire trap.",
+          "tower of flame",
+          "You return to human form!"
+        ],
+        "humanHPMax": "unchanged across action in every case",
+        "humanHP": "unchanged across action conditional on verified full human pool, no live monsters, no regeneration boundary and only the locked fresh gloves",
+        "damage": "none",
+        "rngPrefix": "no core calls for sighted look",
+        "monsterHPMax": "unchanged",
+        "form": "paper golem",
+        "turns": "no turn cost",
+        "primaryStatus": "source prediction pending parent original C, no native claim",
+        "setup": "real blessed-scroll wizard star cleanup, consumed scroll, no species genocide, no live monsters through action; subsequent exact polyself and gloves slot b"
+      },
+      "originalName": "paper-look-only"
+    },
+    {
+      "name": "clean-minotaur-look-only",
+      "species": "minotaur",
+      "golemHP": null,
+      "speciesLevel": 15,
+      "materialDivisor": 0,
+      "trigger": false,
+      "negative": true,
+      "fireResistant": false,
+      "phases": {
+        "initial": 0,
+        "cleanupWishStart": 1,
+        "scrollWish": 35,
+        "cleaned": 47,
+        "floor": 49,
+        "polymorphed": 73,
+        "gloveWishStart": 73,
+        "gloveWish": 110,
+        "wearStart": 110,
+        "worn": 117,
+        "trapWishStart": 117,
+        "beforeAction": 133,
+        "actionEnter": 134,
+        "final": 139
+      },
+      "C": {
+        "requiredPhrases": [
+          "Eliminated ",
+          "You turn into a minotaur!",
+          "A fire trap.",
+          "You see no objects here."
+        ],
+        "excludedPhrases": [
+          "Creation of a fire trap failed.",
+          "You escape a fire trap.",
+          "tower of flame",
+          "You return to human form!",
+          "You return to human form!"
+        ],
+        "humanHPMax": "unchanged across action in every case",
+        "humanHP": "unchanged across action conditional on verified full human pool, no live monsters, no regeneration boundary and only the locked fresh gloves",
+        "damage": "none",
+        "rngPrefix": "no core calls for sighted look",
+        "monsterHPMax": "unchanged",
+        "form": "minotaur",
+        "turns": "no turn cost",
+        "primaryStatus": "source prediction pending parent original C, no native claim",
+        "setup": "real blessed-scroll wizard star cleanup, consumed scroll, no species genocide, no live monsters through action; subsequent exact polyself and gloves slot b"
+      },
+      "originalName": "minotaur-look-only"
+    }
+  ],
+  "producerContract": [
+    "Real blessed scroll a is read with the maintained star cleanup substring before any movement or polymorph.",
+    "Initial live monsters must exist; all original live IDs must leave raw map occupancy. Dead list nodes may remain until dmonsfree.",
+    "No live monster of any kind may occur from cleaned boundary to final boundary. This is stronger than no live damaging monsters; !debug_mongen is retained and does not guarantee absence.",
+    "Human HP and maximum must stay healthy through setup. Exact chosen polymorph mh equals mhmax and mhmax exceeds the species level before fire.",
+    "One relative west move from cleanup position reaches ROOM on the same level with no objects or trap. No terminal coordinates are treated as game coordinates.",
+    "Gloves must be slot b, worn with W_ARMG and real Gloves_on timeout; unseen fire trap appears underfoot before #sit or look.",
+    "No selected gameplay state is changed by the observer, and all five streams plus pending EOF must agree across observed/plain/deferred."
+  ],
+  "limits": [
+    "Native results pending parent. No C recording or runtime candidate.",
+    "Random generation remains enabled by !debug_mongen; any live monster during observation is a retained failed setup.",
+    "Newly wished trap is unseen, so this does not isolate the seen-trap Fumbling dodge guard.",
+    "Underwater, slime, !box, blind and human-floor differences remain open; not asserted fixed.",
+    "Complete cleanup chosen owners were read; special quest/shop/guard/Rider/artifact and migrating-level cleanup branches are not claimed exercised."
+  ]
+}

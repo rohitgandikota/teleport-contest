@@ -1,0 +1,483 @@
+{
+  "verifiedAt": "2026-11-26T20:19:30.941253+00:00",
+  "baselineCommit": "4002d9904af1ede9cf83a29d537838c757ee8904",
+  "composition": {
+    "baselineCommit": "4002d9904af1ede9cf83a29d537838c757ee8904",
+    "baselineRuntimeSHA256": "54f4253995ebeaa653f714780ee49347d94f242d5a61b15ce4e6a4c8aff64388",
+    "candidateRuntimeSHA256": "13fa9922d57261ff5d038baad9b0eefcbf790b773ad799e97ae190d8e5c7c237",
+    "candidateSealSHA256": "296d189f5bd4480475f8a597efe11fb37483a4a91779ddb1972246e29a7314ed",
+    "patchSHA256": "161aa5ee5a9b90933dc935b5ddbbf07d7b357bc6935d9fa6b740e75dec3bc7a9",
+    "runtimeSHA256": "3eb0baba1215efe61ec5a314f78f243c3b91d24fd5854a5d3d21c319d57c4547",
+    "runtimeChanged": [
+      "js/trap.js"
+    ],
+    "copies": 1,
+    "fixedLinks": 279
+  },
+  "compositionNativeCases": 8,
+  "completeNativeReportEqualsIsolated": true,
+  "ordinary": {
+    "completeReportEqual": true,
+    "portableReportSHA256": "83e212dca59289203ff46c6839d9936ef0cfbcd3e2d4e91c8caeea39a3927670",
+    "mainReportSHA256": "a087971c27a4d66aee3659f81d1931bd00f1d62ca18b76d59762ab1b720f58cb",
+    "differentFields": []
+  },
+  "ordinaryCommand": {
+    "command": [
+      "node",
+      "--max-old-space-size=512",
+      "tools/dofiretrap-polymorph-gate.mjs",
+      ".cache/restart-20261122/dofiretrap-polymorph-main-ordinary.json"
+    ],
+    "seconds": 3.492,
+    "exit": 0,
+    "maxHeapMB": 512,
+    "timeoutSeconds": 55,
+    "stdoutSHA256": "83e212dca59289203ff46c6839d9936ef0cfbcd3e2d4e91c8caeea39a3927670",
+    "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "reportSHA256": "a087971c27a4d66aee3659f81d1931bd00f1d62ca18b76d59762ab1b720f58cb"
+  },
+  "publicInstall": {
+    "installedAt": "2026-11-26T20:18:27.157302+00:00",
+    "payloads": [
+      {
+        "source": "tools/dofiretrap-polymorph-gate.mjs",
+        "destination": "tools/dofiretrap-polymorph-gate.mjs",
+        "bytes": 31768,
+        "sha256": "ac32b836039f95f272e171e49cddcf0766128f8906c78c539d8496d8c27d6e49"
+      },
+      {
+        "source": "tools/gen-sessions/evidence/dofiretrap-polymorph/README.md",
+        "destination": "tools/gen-sessions/evidence/dofiretrap-polymorph/README.md",
+        "bytes": 2703,
+        "sha256": "1723e7d3aa32ce17d111462dc00aa21bd6c6a65107f814f8ba7d426eafeea5e9"
+      },
+      {
+        "source": "tools/gen-sessions/evidence/dofiretrap-polymorph/baseline-native.json",
+        "destination": "tools/gen-sessions/evidence/dofiretrap-polymorph/baseline-native.json",
+        "bytes": 47413,
+        "sha256": "4610b28680115d6aacc0e9221ea6594fe6d85eef8c972cccfde62d5dc423b726"
+      },
+      {
+        "source": "tools/gen-sessions/evidence/dofiretrap-polymorph/candidate-native.json",
+        "destination": "tools/gen-sessions/evidence/dofiretrap-polymorph/candidate-native.json",
+        "bytes": 19587,
+        "sha256": "a8396fbecb093cef2fad72d1335d9dc7202d090bfe55c05713a523032850f0f1"
+      },
+      {
+        "source": "tools/gen-sessions/evidence/dofiretrap-polymorph/candidate-seal.json",
+        "destination": "tools/gen-sessions/evidence/dofiretrap-polymorph/candidate-seal.json",
+        "bytes": 2134,
+        "sha256": "296d189f5bd4480475f8a597efe11fb37483a4a91779ddb1972246e29a7314ed"
+      },
+      {
+        "source": "tools/gen-sessions/evidence/dofiretrap-polymorph/cleanup-seal.json",
+        "destination": "tools/gen-sessions/evidence/dofiretrap-polymorph/cleanup-seal.json",
+        "bytes": 1362,
+        "sha256": "d6f165504df949f05c4b1411ab4182d91833b807c7de0b66e2c0731f29716d4f"
+      },
+      {
+        "source": "tools/gen-sessions/evidence/dofiretrap-polymorph/derivation.json",
+        "destination": "tools/gen-sessions/evidence/dofiretrap-polymorph/derivation.json",
+        "bytes": 1082,
+        "sha256": "96061c6b66d4f1001f73e2bdf2e3a689ffd363d0a57abf53d12f2fc513d9f612"
+      },
+      {
+        "source": "tools/gen-sessions/evidence/dofiretrap-polymorph/history/candidate-comparison.json",
+        "destination": "tools/gen-sessions/evidence/dofiretrap-polymorph/history/candidate-comparison.json",
+        "bytes": 556,
+        "sha256": "86a34d8e771005927fc6838da9ef82507c4bcf0625f7b63d4525bd8e2b92cfa4"
+      },
+      {
+        "source": "tools/gen-sessions/evidence/dofiretrap-polymorph/history/candidate-launch.json",
+        "destination": "tools/gen-sessions/evidence/dofiretrap-polymorph/history/candidate-launch.json",
+        "bytes": 507,
+        "sha256": "655bc98dd7cf472967c8fc3fe2d33025d85935663f8b6386e5e5f3c8755a7766"
+      },
+      {
+        "source": "tools/gen-sessions/evidence/dofiretrap-polymorph/history/cleanup-attribution.json",
+        "destination": "tools/gen-sessions/evidence/dofiretrap-polymorph/history/cleanup-attribution.json",
+        "bytes": 10895,
+        "sha256": "e9e64c8dce63a1d4bfbe42f4e6e96e8d48b6f6ef250b24a6781f98fed82a3734"
+      },
+      {
+        "source": "tools/gen-sessions/evidence/dofiretrap-polymorph/history/diagnostics.json",
+        "destination": "tools/gen-sessions/evidence/dofiretrap-polymorph/history/diagnostics.json",
+        "bytes": 57760,
+        "sha256": "21d1ce5f8419da06d8341786eb42abd6cd0edca7acfc5c62f2a1b11bfb6a8b97"
+      },
+      {
+        "source": "tools/gen-sessions/evidence/dofiretrap-polymorph/history/original-attribution.json",
+        "destination": "tools/gen-sessions/evidence/dofiretrap-polymorph/history/original-attribution.json",
+        "bytes": 15570,
+        "sha256": "86a2f5f4a9dd85729b9decc6086e658372107c2d06438d3a0605108071117b6a"
+      },
+      {
+        "source": "tools/gen-sessions/evidence/dofiretrap-polymorph/history/original-failed-probe.mjs",
+        "destination": "tools/gen-sessions/evidence/dofiretrap-polymorph/history/original-failed-probe.mjs",
+        "bytes": 20167,
+        "sha256": "5bc11781092afcfc58008e2004115812c78ccfbe956d367af6725d82047d261a"
+      },
+      {
+        "source": "tools/gen-sessions/evidence/dofiretrap-polymorph/history/original-input-lock.json",
+        "destination": "tools/gen-sessions/evidence/dofiretrap-polymorph/history/original-input-lock.json",
+        "bytes": 19833,
+        "sha256": "72fa0ee454ff6374e4437e6d52ed10acf3da188c98bd43942ccbb1aec61dab62"
+      },
+      {
+        "source": "tools/gen-sessions/evidence/dofiretrap-polymorph/history/original-negative-outputs.json",
+        "destination": "tools/gen-sessions/evidence/dofiretrap-polymorph/history/original-negative-outputs.json",
+        "bytes": 2204,
+        "sha256": "5a3b9ea9dd37ab458701aeb9aa81e8f5d956e82547d870f67a454952e4658d27"
+      },
+      {
+        "source": "tools/gen-sessions/evidence/dofiretrap-polymorph/history/original-proposal.json",
+        "destination": "tools/gen-sessions/evidence/dofiretrap-polymorph/history/original-proposal.json",
+        "bytes": 17674,
+        "sha256": "3465900a1ad6595c44a28a2b7070c62e4d843c9669b27023617e0ffbc18b50f2"
+      },
+      {
+        "source": "tools/gen-sessions/evidence/dofiretrap-polymorph/history/original-seal.json",
+        "destination": "tools/gen-sessions/evidence/dofiretrap-polymorph/history/original-seal.json",
+        "bytes": 1361,
+        "sha256": "85d5c433c32f718b78f2d26e7a6abe2a66689f469181c9904c6f1870325eb53b"
+      },
+      {
+        "source": "tools/gen-sessions/evidence/dofiretrap-polymorph/history/parent-baseline-command.json",
+        "destination": "tools/gen-sessions/evidence/dofiretrap-polymorph/history/parent-baseline-command.json",
+        "bytes": 361,
+        "sha256": "32df94435c05277ae79974eb0c1f6eb604c8220d33eef76b127a2f1eaf67ca28"
+      },
+      {
+        "source": "tools/gen-sessions/evidence/dofiretrap-polymorph/history/parent-baseline.log",
+        "destination": "tools/gen-sessions/evidence/dofiretrap-polymorph/history/parent-baseline.log",
+        "bytes": 9527,
+        "sha256": "d1be66e7a2f651b002800ecc1614cc92d64b231b49c7785a0a8d2e7cbba3a21d"
+      },
+      {
+        "source": "tools/gen-sessions/evidence/dofiretrap-polymorph/history/provisional-candidate-seal.json",
+        "destination": "tools/gen-sessions/evidence/dofiretrap-polymorph/history/provisional-candidate-seal.json",
+        "bytes": 1902,
+        "sha256": "abfb3bdd228c183d67d718748cd49f7d6a9cae92e8da83cfee07fe04bdd057ae"
+      },
+      {
+        "source": "tools/gen-sessions/evidence/dofiretrap-polymorph/history/verifier-before-shape-correction.py",
+        "destination": "tools/gen-sessions/evidence/dofiretrap-polymorph/history/verifier-before-shape-correction.py",
+        "bytes": 9591,
+        "sha256": "ae097f473c3fb9c1e592c551e9db4d18344c68783b68b7901274d073fb908b93"
+      },
+      {
+        "source": "tools/gen-sessions/evidence/dofiretrap-polymorph/history/verifier-shape-failure.json",
+        "destination": "tools/gen-sessions/evidence/dofiretrap-polymorph/history/verifier-shape-failure.json",
+        "bytes": 677,
+        "sha256": "1df252a9adb323010b0bbaa94d54568b2553af1d8690b7230c437199c121f4d8"
+      },
+      {
+        "source": "tools/gen-sessions/evidence/dofiretrap-polymorph/input-lock.json",
+        "destination": "tools/gen-sessions/evidence/dofiretrap-polymorph/input-lock.json",
+        "bytes": 25099,
+        "sha256": "be0063b019d30c1c17d87ce461a58a4253dde708515423d9f78a997e93ddcd6a"
+      },
+      {
+        "source": "tools/gen-sessions/evidence/dofiretrap-polymorph/native-preflight.json",
+        "destination": "tools/gen-sessions/evidence/dofiretrap-polymorph/native-preflight.json",
+        "bytes": 372,
+        "sha256": "97e1325b04baa83d2ae357fb2d19b459e0952e46a87c35e43ad9854716915b14"
+      },
+      {
+        "source": "tools/gen-sessions/evidence/dofiretrap-polymorph/negative-ordinary-rows.json",
+        "destination": "tools/gen-sessions/evidence/dofiretrap-polymorph/negative-ordinary-rows.json",
+        "bytes": 130089,
+        "sha256": "8a574841e984277923a3fc5875acb9d523e80a68505d2b3cab66b3c8272f4d41"
+      },
+      {
+        "source": "tools/gen-sessions/evidence/dofiretrap-polymorph/negative-outputs.json",
+        "destination": "tools/gen-sessions/evidence/dofiretrap-polymorph/negative-outputs.json",
+        "bytes": 2030,
+        "sha256": "610226827c59cee06b90c2e83b046a63def9dc5b0466cb398765c491a1cead00"
+      },
+      {
+        "source": "tools/gen-sessions/evidence/dofiretrap-polymorph/ordinary-original.mjs",
+        "destination": "tools/gen-sessions/evidence/dofiretrap-polymorph/ordinary-original.mjs",
+        "bytes": 23698,
+        "sha256": "16f58c4245fb3ed1bf5a4fcdfc40a12e11d0ecea0d4664ade62373c773dc6474"
+      },
+      {
+        "source": "tools/gen-sessions/evidence/dofiretrap-polymorph/parent-input-lock.json",
+        "destination": "tools/gen-sessions/evidence/dofiretrap-polymorph/parent-input-lock.json",
+        "bytes": 452,
+        "sha256": "497881f73f7a33cf38df28cb7f581a3274c777854a92a52cafce530742e4c007"
+      },
+      {
+        "source": "tools/gen-sessions/evidence/dofiretrap-polymorph/proposal.json",
+        "destination": "tools/gen-sessions/evidence/dofiretrap-polymorph/proposal.json",
+        "bytes": 22467,
+        "sha256": "dafd221435f2f8724a783d6e78287addbdec2be4a2b02ed88dc69279e85a4da7"
+      },
+      {
+        "source": "tools/gen-sessions/evidence/dofiretrap-polymorph/provenance.json",
+        "destination": "tools/gen-sessions/evidence/dofiretrap-polymorph/provenance.json",
+        "bytes": 8887,
+        "sha256": "46c36f4f80917b46975610236edeafb7e76eb437ee6b4116d8574cc0651ce1a3"
+      },
+      {
+        "source": "tools/gen-sessions/evidence/dofiretrap-polymorph/recording-receipt.json",
+        "destination": "tools/gen-sessions/evidence/dofiretrap-polymorph/recording-receipt.json",
+        "bytes": 1669,
+        "sha256": "26d1545d966f99acf59869dab5edf39b81c8503462713128e9c31644c61d81ea"
+      },
+      {
+        "source": "tools/gen-sessions/evidence/dofiretrap-polymorph/source-review.md",
+        "destination": "tools/gen-sessions/evidence/dofiretrap-polymorph/source-review.md",
+        "bytes": 3812,
+        "sha256": "5dc04e288492829abee5aa31ce78e987abaaae07ca2d86cf67e4456159d5956a"
+      },
+      {
+        "source": "tools/gen-sessions/recipes/dofiretrap-polymorph-cleanup.json",
+        "destination": "tools/gen-sessions/recipes/dofiretrap-polymorph-cleanup.json",
+        "bytes": 9551,
+        "sha256": "89a5937fa4330ba9d45418d4ccb73c4662b5330e3a81496354e9a96241ef0557"
+      }
+    ],
+    "raw": {
+      "source": "tools/gen-sessions/generated/dofiretrap-polymorph-cleanup.session.json",
+      "destination": "tools/gen-sessions/generated/dofiretrap-polymorph-cleanup.session.json",
+      "bytes": 1668076,
+      "sha256": "f1d26027a6456e8043fa4e5acce9b4aaabbb41712d1361c98e2f8f403e4c2fb3",
+      "policy": "Copy exact original bytes only if absent; accept existing raw only with this exact SHA. Promotion source is a read-only link."
+    },
+    "promotionSealSHA256": "b2e37058f2783de6992f4f73842803f4d4791ea0bdf168113f17b6e7fdded2df",
+    "branchRowsBefore": 4764,
+    "branchRowsAfter": 4772,
+    "coverageRows": 111,
+    "coverageSHA256Unchanged": "97a15d6cb89c81a5c5d8ebf38d9efabe6b5adb3ddccf1221640a86ffc23f2197"
+  },
+  "retained": {
+    "checks": [
+      {
+        "name": "fire-trap-ice-melting-state-gate",
+        "command": [
+          "node",
+          "--max-old-space-size=512",
+          "tools/fire-trap-ice-melting-state-gate.mjs"
+        ],
+        "exit": 1,
+        "seconds": 0.687,
+        "log": ".cache/restart-20261122/dofiretrap-polymorph-cleanup-retained-fire-trap-ice-melting-state-gate.log",
+        "sha256": "8502a0afea6401cd2f8d614987a3ddeff8b21ba6e89b67dbe3f7439ae030605a"
+      },
+      {
+        "name": "fire-trap-floor-objects-state-gate",
+        "command": [
+          "node",
+          "--max-old-space-size=512",
+          "tools/fire-trap-floor-objects-state-gate.mjs"
+        ],
+        "exit": 0,
+        "seconds": 1.167,
+        "log": ".cache/restart-20261122/dofiretrap-polymorph-cleanup-retained-fire-trap-floor-objects-state-gate.log",
+        "sha256": "73c19ca17a7410394fa52c3a9a6a9187bf5252e0645e5d56fbfefb716c07d31d"
+      },
+      {
+        "name": "rock-fire-feedback-state-gate",
+        "command": [
+          "node",
+          "--max-old-space-size=512",
+          "tools/rock-fire-feedback-state-gate.mjs"
+        ],
+        "exit": 0,
+        "seconds": 0.516,
+        "log": ".cache/restart-20261122/dofiretrap-polymorph-cleanup-retained-rock-fire-feedback-state-gate.log",
+        "sha256": "199f3ef265232f14541c48075815341267f73abcc9062851102f389b9886aeab"
+      },
+      {
+        "name": "trap-fumbling-state-gate",
+        "command": [
+          "node",
+          "--max-old-space-size=512",
+          "tools/trap-fumbling-state-gate.mjs"
+        ],
+        "exit": 0,
+        "seconds": 0.444,
+        "log": ".cache/restart-20261122/dofiretrap-polymorph-cleanup-retained-trap-fumbling-state-gate.log",
+        "sha256": "b9be8e0b628575c7d3d309b9d1981ff5102c69917547177bceb0aa7d18763d9c"
+      },
+      {
+        "name": "potion-hero-polymorph-impact-state-gate",
+        "command": [
+          "node",
+          "--max-old-space-size=512",
+          "tools/potion-hero-polymorph-impact-state-gate.mjs"
+        ],
+        "exit": 0,
+        "seconds": 0.695,
+        "log": ".cache/restart-20261122/dofiretrap-polymorph-cleanup-retained-potion-hero-polymorph-impact-state-gate.log",
+        "sha256": "f6746173bb3253c8fa7c2054d7e886ccec7ea27bc6ad9e3c45d7a259d6f4881e"
+      },
+      {
+        "name": "half-damage-reader-state-gate",
+        "command": [
+          "node",
+          "--max-old-space-size=512",
+          "tools/half-damage-reader-state-gate.mjs"
+        ],
+        "exit": 0,
+        "seconds": 2.307,
+        "log": ".cache/restart-20261122/dofiretrap-polymorph-cleanup-retained-half-damage-reader-state-gate.log",
+        "sha256": "cbe43a2bbabe8239e2c9a038813c271583efdb5208f15187b1664faeb7e6e21e"
+      },
+      {
+        "name": "slime-fire-readers-state-gate",
+        "command": [
+          "node",
+          "--max-old-space-size=512",
+          "tools/slime-fire-readers-state-gate.mjs"
+        ],
+        "exit": 0,
+        "seconds": 1.584,
+        "log": ".cache/restart-20261122/dofiretrap-polymorph-cleanup-retained-slime-fire-readers-state-gate.log",
+        "sha256": "8c91563ec48fbdb7e27b98316190610312ee9ece0bd07cc5b91d2ac953726935"
+      }
+    ],
+    "passed": 6,
+    "preexistingFailures": 1,
+    "baselineComparison": {
+      "command": [
+        "node",
+        "--preserve-symlinks",
+        "--preserve-symlinks-main",
+        "--max-old-space-size=512",
+        "/Users/rohit/research/code/contest/.cache/restart-20261122/dofiretrap-polymorph-retained-baseline/tools/fire-trap-ice-melting-state-gate.mjs"
+      ],
+      "exit": 1,
+      "seconds": 0.667,
+      "logSHA256": "53e817c822cccb7f6a7aef59103e619c459e6eb20f51f22809f90e0eff0581ae",
+      "runtimeSHA256": "54f4253995ebeaa653f714780ee49347d94f242d5a61b15ce4e6a4c8aff64388",
+      "sameCompleteAssertionDiff": true,
+      "baselineCommit": "4002d9904af1ede9cf83a29d537838c757ee8904",
+      "noRuntimeMutation": true
+    },
+    "failure": "fireAnts actual 1, expected 0; all other assertion fields equal on both runtimes. Cause is not yet established.",
+    "history": [
+      "history/retained-ice-main.log",
+      "history/retained-ice-baseline.log"
+    ]
+  },
+  "strict": {
+    "command": [
+      "node",
+      "tools/hang-gate.mjs",
+      "sessions/seed0002-healer-reflection-drummer.session.json",
+      "sessions/seed0004-feeding-pony.session.json",
+      "sessions/seed0006-wizard-water-demon.session.json",
+      "sessions/seed0007-rogue-snake-swamp.session.json",
+      "sessions/seed0009-swimmer-mforce.session.json",
+      "sessions/seed0012-monk-vault-escort.session.json",
+      "sessions/seed0013-friday13-save-then-fullmoon-restore.session.json",
+      "sessions/seed0013-rogue-friday13-combat.session.json",
+      "sessions/seed0014-dequa-fountain-explore.session.json",
+      "sessions/seed0015-valk-level2-pit-dog-wait.session.json",
+      "sessions/seed0016-healer-newmoon-eat-zap.session.json",
+      "sessions/seed0017-samurai-altar-pray.session.json",
+      "sessions/seed0030-ten-diverse-deaths.session.json",
+      "sessions/seed0060-orc-rogue-kick-search.session.json",
+      "sessions/seed0077-rogue-chargen.session.json",
+      "sessions/seed0101-ranger-quiver-throw-travel-engrave.session.json",
+      "sessions/seed0102-ranger-name-cancel.session.json",
+      "sessions/seed0103-knight-ride-pony.session.json",
+      "sessions/seed0104-knight-ride-combat.session.json",
+      "sessions/seed0105-valk-chat-lamp-ration.session.json",
+      "sessions/seed0106-priest-extcmd-sweep.session.json",
+      "sessions/seed0107-samurai-twoweapon-enhance.session.json",
+      "sessions/seed0108-wizard-extcmd-wishlist.session.json",
+      "sessions/seed0116-wizard-wear-shop.session.json",
+      "sessions/seed0200-monk-north-search.session.json",
+      "sessions/seed0360-wizard-world-tour.session.json",
+      "sessions/seed0361-archeologist-tour.session.json",
+      "sessions/seed0367-priest-quest-tour.session.json",
+      "sessions/seed0373-barbarian-quest-tour.session.json",
+      "sessions/seed0383-wizard-hallucinate.session.json",
+      "sessions/seed0398-wizard-wandpoly-pile.session.json",
+      "sessions/seed0399-wizard-hallu-actions.session.json",
+      "sessions/seed0501-priest-cast-read-turn.session.json",
+      "sessions/seed0700-samurai-explore-descend.session.json",
+      "sessions/seed0900-tourist-explore-actions.session.json",
+      "sessions/seed1150-caveman-explore-move.session.json",
+      "sessions/seed1500-rogue-explore-move.session.json",
+      "sessions/seed1800-tourist-eat-throw.session.json",
+      "sessions/seed2200-wizard-quaff-zap-read.session.json",
+      "sessions/seed2600-wizard-custom-binds.session.json",
+      "sessions/seed4500-knight-coverage.session.json",
+      "sessions/seed5002-wizard-coverage-pair.session.json",
+      "sessions/seed5006-tourist-stress-disaster.session.json",
+      "sessions/seed8000-tourist-starter.session.json",
+      "tools/gen-sessions/generated/dofiretrap-polymorph-cleanup.session.json"
+    ],
+    "exit": 0,
+    "seconds": 30.509,
+    "targets": 45,
+    "budgetMs": 8000,
+    "log": ".cache/restart-20261122/dofiretrap-polymorph-cleanup-public45-strict.log",
+    "sha256": "8d5b5c1946094092d19693ee75a43de11c09df50ea6700e35beef83c3d080de9"
+  },
+  "sourceAudit": [],
+  "fullRegression": {
+    "verifiedAt": "2026-11-26T20:15:28.800211+00:00",
+    "sessions": 947,
+    "passed": 947,
+    "failures": [],
+    "totals": {
+      "screens": 946755,
+      "cursors": 946755,
+      "rngCalls": 20762708,
+      "animFrames": 33218
+    },
+    "missingMetrics": {},
+    "runtimeFilesFixed": 280,
+    "rawFilesFixed": 947,
+    "allFilesFixed": 1238,
+    "allFilesSHA256": "fb007590257f75bf796cb822472ce0f3cc1f23cf3480d27cd3299f0100d5fc4d",
+    "defaultWorkerTimeoutMs": 45000,
+    "retries": 0,
+    "started": {
+      "startedAt": "2026-11-26T20:04:56.224671+00:00",
+      "workers": 2,
+      "pid": 3597536,
+      "cpuCount": 24,
+      "loadAverage": [
+        1.2431640625,
+        1.9423828125,
+        2.26513671875
+      ],
+      "timeoutOverride": false,
+      "retries": 0,
+      "node": {
+        "version": "v26.3.0",
+        "archive": "node-v26.3.0-linux-x64.tar.xz",
+        "sha256": "0ce210831380ab75a5fec0d3fb6b5af0958898016b2cae51cc2fa11057d2f77e",
+        "officialURL": "https://nodejs.org/dist/v26.3.0/node-v26.3.0-linux-x64.tar.xz",
+        "checksumsURL": "https://nodejs.org/dist/v26.3.0/SHASUMS256.txt",
+        "binary": "/share/NFS/u/rohit/research/contest/artifacts/2026-11-22/text-history-full858-js-20261125/node-v26.3.0-linux-x64/bin/node",
+        "archiveSHA256": "0ce210831380ab75a5fec0d3fb6b5af0958898016b2cae51cc2fa11057d2f77e",
+        "binarySHA256": "5325ac9da58541494afcc136f0880279a2a853609bf4dae7755e04fb682b6926"
+      },
+      "allFilesSHA256": "fb007590257f75bf796cb822472ce0f3cc1f23cf3480d27cd3299f0100d5fc4d"
+    },
+    "logs": {
+      "shard-1.log": "3d24333db3f349ada06407e1d7e3070a675366bcec4de3bb6e7dbdca0561798d",
+      "shard-0.log": "1dcb0411be4f809a9946c8c6a941bc22fb21368162305bfded821b3b4997e6fb"
+    },
+    "limits": [
+      "Scored corpus parity, not literal serialized-byte or whole-port proof.",
+      "No held-out result is inferred from these fixtures."
+    ]
+  },
+  "fullRegressionVerificationSHA256": "37f9a628dccfe3e949bf68703d1f14e023d9b993815dd8420a1742e4c985e7dd",
+  "nfs": "/share/NFS/u/rohit/research/contest/artifacts/2026-11-22/dofiretrap-polymorph-cleanup-full947-js-20261126",
+  "limits": [
+    "947 recorded games establish corpus parity, not whole-port completion or a held-out result.",
+    "Only the nonresistant Upolyd fire-trap damage arm changes.",
+    "Underwater, slime, box/floor, blindness capture, human HP-floor, low monster maximum, live witnesses and Unchanging remain outside this family.",
+    "One retained ice-melting assertion fails identically on the published baseline and remains unresolved."
+  ]
+}

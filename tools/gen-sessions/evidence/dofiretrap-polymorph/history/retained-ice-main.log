@@ -1,0 +1,43 @@
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: monster fire trap restores a pool, removes the trap, and drowns the ant
++ actual - expected
+
+  {
+    boulders: 1,
++   fireAnts: 1,
+-   fireAnts: 0,
+    fireTrap: false,
+    heroHp: 12,
+    icedpool: 0,
+    relevantUnported: [],
+    terrain: 16
+
+    at file:///Users/rohit/research/code/contest/tools/fire-trap-ice-melting-state-gate.mjs:78:8 {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: {
+    terrain: 16,
+    icedpool: 0,
+    fireTrap: false,
+    fireAnts: 1,
+    boulders: 1,
+    heroHp: 12,
+    relevantUnported: []
+  },
+  expected: {
+    terrain: 16,
+    icedpool: 0,
+    fireTrap: false,
+    fireAnts: 0,
+    boulders: 1,
+    heroHp: 12,
+    relevantUnported: []
+  },
+  operator: 'deepStrictEqual',
+  diff: 'simple'
+}
+
+Node.js v26.3.0

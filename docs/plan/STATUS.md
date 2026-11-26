@@ -1,5 +1,58 @@
 # STATUS — live handoff board
 
+## 2026-11-26: mounted prompt published; polymorphed fire checkpoint verified
+
+Published main is 4002d9904af1ede9cf83a29d537838c757ee8904. All 1,237
+full946 tested Git blobs match the publication. Publication receipt SHA256:
+0bde87799d9bd1c766503e84aff58d2d3546d8033d5dd8ff4d04a8a861c9bc6c.
+
+Only trap.js changes in this checkpoint. The missing nonresistant Upolyd arm
+now uses material damage, monster maximum shrink and current-HP clamping in
+C order. All eight original C cases pass, versus three on the fixed baseline.
+Fresh parent composition reproduces the isolated candidate's complete native
+report. Runtime-map SHA256:
+3eb0baba1215efe61ec5a314f78f243c3b91d24fd5854a5d3d21c319d57c4547.
+Promotion60 is verified and all 33 exact payloads are installed. The unchanged
+raw remains f1d26027a6456e8043fa4e5acce9b4aaabbb41712d1361c98e2f8f403e4c2fb3.
+The fresh installed gate passes 192 producer and 56 source checks in 3.492s.
+Its complete report equals the portable report; all eight ordinary cases,
+eight observer/deferred checks, 15 negative hashes and three control rows pass.
+Eight new branch rows bring the registry to 4,772; coverage remains 111.
+
+Full947 passes on NFS with two CPU workers, default 45s limits and no retries:
+/share/NFS/u/rohit/research/contest/artifacts/2026-11-22/dofiretrap-polymorph-cleanup-full947-js-20261126.
+PID 3597536 is complete. All 947 recordings pass, with 946,755 screens/cursors,
+20,762,708 random calls and 33,218 frames. All 1,238 files are fixed.
+All-files SHA256:
+fb007590257f75bf796cb822472ce0f3cc1f23cf3480d27cd3299f0100d5fc4d.
+Verification SHA256:
+37f9a628dccfe3e949bf68703d1f14e023d9b993815dd8420a1742e4c985e7dd.
+All 45 strict workers pass; the source audit is empty. Six retained gates pass.
+The seventh, fire-trap-ice-melting-state-gate, reports one fire ant instead of
+zero. The published baseline has the identical complete assertion difference.
+Both original logs and that comparison are preserved publicly. Its cause is
+unresolved; this is not a seven-of-seven retained pass. The original failed
+source36 and corrected source35 remain fixed. The public parent proof is in
+tools/gen-sessions/evidence/dofiretrap-polymorph/parent-verification.json.
+Next: verify the intended staged tree, commit and immediately push.
+
+Euclid owns an isolated autoquiver candidate. Parent recorded six C cases once;
+all primary predicates and ten decoded inventory-row checks pass before JS
+imports. Baseline native is 3/6, with all three negative reports exact. Only
+invent.js hold_another_object equipment reads are authorized for this candidate.
+Two original bow-wording prediction errors remain explicit in separate metadata
+corrections; original inputs, probe, assertions and 86/96 diagnostic are fixed.
+
+Leibniz owns an isolated one-line Balrog select_hwep candidate. The original
+one-wait source failed to reach a wield action. A six-wait family reaches it,
+but invalid male Valkyrie input exposes a separate startup gender discrepancy,
+so all four original C comparisons fail. That failure remains preserved. A
+distinct valid-female family keeps all action keys fixed, reaches four setups
+and gives baseline native 2/4 with both negative reports fully exact. Candidate
+scope is only game.uwep to game.u.uwep. Sartre owns source-only coverage for the
+independent role_init gender normalization gap. Gremlin light fear is queued;
+the S_GIANT versus M2_GIANT weapon predicate remains untested.
+
 ## 2026-11-26: crown published; mounted prompt checkpoint verified
 
 Published main is 95ffbeef239e3c380c8eee25c427962702dccca2. All 1,236

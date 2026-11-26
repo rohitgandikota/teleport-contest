@@ -1,0 +1,5372 @@
+[
+  {
+    "name": "clean-iron-resistant",
+    "negative": true,
+    "keys": 145,
+    "producerPass": true,
+    "sourcePass": true,
+    "firstUnmetProducer": null,
+    "reach": [
+      {
+        "name": "all keys consumed without runtime error",
+        "pass": true
+      },
+      {
+        "name": "fixed monsters exist before real cleanup",
+        "pass": true
+      },
+      {
+        "name": "real wished blessed scroll occupies slot a",
+        "pass": true
+      },
+      {
+        "name": "star cleanup removes live monsters and their raw map slots",
+        "pass": true
+      },
+      {
+        "name": "cleanup consumes scroll without species genocide",
+        "pass": true
+      },
+      {
+        "name": "read consumes time without damaging healthy human",
+        "pass": true
+      },
+      {
+        "name": "no live monsters at any observed boundary after cleanup",
+        "pass": true
+      },
+      {
+        "name": "one ordinary west step reaches clear room floor",
+        "pass": true
+      },
+      {
+        "name": "controlled exact species produced with healthy monster pool",
+        "pass": true
+      },
+      {
+        "name": "source HP producer reached",
+        "pass": true
+      },
+      {
+        "name": "only real wished uncursed gloves occupy slot b",
+        "pass": true
+      },
+      {
+        "name": "real wear retains identity and W_ARMG property",
+        "pass": true
+      },
+      {
+        "name": "Gloves_on timed producer ran before action",
+        "pass": true
+      },
+      {
+        "name": "polymorph human HP pool unchanged through setup",
+        "pass": true
+      },
+      {
+        "name": "fire resistance comes only from iron form",
+        "pass": true
+      },
+      {
+        "name": "sitting eligibility and excluded branch prerequisites",
+        "pass": true
+      },
+      {
+        "name": "ordinary fire trap exists unseen before action",
+        "pass": true
+      },
+      {
+        "name": "empty ground and glove-only inventory throughout setup",
+        "pass": true
+      },
+      {
+        "name": "healthy monster pool remains above its species level before action",
+        "pass": true
+      },
+      {
+        "name": "source-predicted ordinary producer feedback",
+        "pass": true
+      },
+      {
+        "name": "chosen trigger or look branch reached",
+        "pass": true
+      },
+      {
+        "name": "no regeneration boundary obscures damage observation",
+        "pass": true
+      },
+      {
+        "name": "ordinary producer and action survive",
+        "pass": true
+      },
+      {
+        "name": "all five output streams are complete",
+        "pass": true
+      }
+    ],
+    "contracts": [
+      {
+        "name": "C primary visible predicates",
+        "pass": true
+      },
+      {
+        "name": "C leaves human HP maximum unchanged",
+        "pass": true
+      },
+      {
+        "name": "C leaves healthy human HP unchanged",
+        "pass": true
+      },
+      {
+        "name": "C damage RNG prefix with no second d(2,4)",
+        "pass": true
+      },
+      {
+        "name": "C material shrink clamp and loss or unchanged look state",
+        "pass": true
+      },
+      {
+        "name": "C paper trigger always rehumanizes; controls preserve selected form",
+        "pass": true
+      },
+      {
+        "name": "C action time contract",
+        "pass": true
+      }
+    ],
+    "boundaries": 146,
+    "calls": 2820,
+    "frames": 21,
+    "outputHashes": {
+      "screens": "fa3cf8ada2b857cf81d5cf1fa63e85f25d788ddb57fcdeb8c779b7589f20f843",
+      "cursors": "6c640c6c0be2eb58db0c5e65a34ae5c47be41cdf658e34c1e8f8299f9cf6ecd3",
+      "calls": "2aaf7d45565b885897678c890895ab6ca0cf560638ff63c11960ec3e09e5f035",
+      "slices": "93c31a112875333debb3d5db31c0ae255ad02840b576bb0909ad2642a7ca304f",
+      "frames": "6b534ea99b37512ae521ef224958d4b3373da07c37fafbbb13d7eb394ebb40b0"
+    },
+    "stages": {
+      "initial": {
+        "step": 0,
+        "turn": 1,
+        "hero": [
+          59,
+          6
+        ],
+        "level": {
+          "dnum": 0,
+          "dlevel": 1
+        },
+        "terrain": 26,
+        "wizard": true,
+        "debugMongen": false,
+        "liveMonsters": [
+          {
+            "id": 24,
+            "species": "jackal",
+            "position": [
+              67,
+              3
+            ],
+            "hp": 4,
+            "state": 0
+          },
+          {
+            "id": 20,
+            "species": "sewer rat",
+            "position": [
+              57,
+              8
+            ],
+            "hp": 2,
+            "state": 0
+          },
+          {
+            "id": 17,
+            "species": "jackal",
+            "position": [
+              56,
+              15
+            ],
+            "hp": 2,
+            "state": 0
+          }
+        ],
+        "deadQueued": [],
+        "rawMap": [
+          {
+            "position": "56,15",
+            "id": 17,
+            "hp": 2
+          },
+          {
+            "position": "57,8",
+            "id": 20,
+            "hp": 2
+          },
+          {
+            "position": "67,3",
+            "id": 24,
+            "hp": 4
+          }
+        ],
+        "purgeCount": 0,
+        "genocidedSpecies": [],
+        "literacy": 0,
+        "wishes": 0,
+        "humanHP": 12,
+        "humanMax": 12,
+        "species": "wizard",
+        "speciesIndex": 343,
+        "humanIndex": 343,
+        "speciesLevel": 10,
+        "monsterSpeed": 12,
+        "polymorphed": false,
+        "mortality": 0,
+        "gameover": false,
+        "fumbling": false,
+        "fumblingIntrinsic": 0,
+        "fumblingExtrinsic": 0,
+        "fireResistant": false,
+        "fireIntrinsic": 0,
+        "fireExtrinsic": 0,
+        "blind": false,
+        "underwater": false,
+        "levitating": false,
+        "flying": false,
+        "unchanging": false,
+        "confused": false,
+        "stunned": false,
+        "hallucinating": false,
+        "slimed": false,
+        "regenerating": false,
+        "sleepingRegen": false,
+        "trapped": 0,
+        "swallowed": false,
+        "stuck": false,
+        "mounted": false,
+        "canReachFloor": true,
+        "gloves": null,
+        "inventory": [],
+        "floor": [],
+        "trap": null,
+        "coreCalls": 2759
+      },
+      "cleanupWishStart": {
+        "step": 1,
+        "turn": 1,
+        "hero": [
+          59,
+          6
+        ],
+        "level": {
+          "dnum": 0,
+          "dlevel": 1
+        },
+        "terrain": 26,
+        "wizard": true,
+        "debugMongen": false,
+        "liveMonsters": [
+          {
+            "id": 24,
+            "species": "jackal",
+            "position": [
+              67,
+              3
+            ],
+            "hp": 4,
+            "state": 0
+          },
+          {
+            "id": 20,
+            "species": "sewer rat",
+            "position": [
+              57,
+              8
+            ],
+            "hp": 2,
+            "state": 0
+          },
+          {
+            "id": 17,
+            "species": "jackal",
+            "position": [
+              56,
+              15
+            ],
+            "hp": 2,
+            "state": 0
+          }
+        ],
+        "deadQueued": [],
+        "rawMap": [
+          {
+            "position": "56,15",
+            "id": 17,
+            "hp": 2
+          },
+          {
+            "position": "57,8",
+            "id": 20,
+            "hp": 2
+          },
+          {
+            "position": "67,3",
+            "id": 24,
+            "hp": 4
+          }
+        ],
+        "purgeCount": 0,
+        "genocidedSpecies": [],
+        "literacy": 0,
+        "wishes": 0,
+        "humanHP": 12,
+        "humanMax": 12,
+        "species": "wizard",
+        "speciesIndex": 343,
+        "humanIndex": 343,
+        "speciesLevel": 10,
+        "monsterSpeed": 12,
+        "polymorphed": false,
+        "mortality": 0,
+        "gameover": false,
+        "fumbling": false,
+        "fumblingIntrinsic": 0,
+        "fumblingExtrinsic": 0,
+        "fireResistant": false,
+        "fireIntrinsic": 0,
+        "fireExtrinsic": 0,
+        "blind": false,
+        "underwater": false,
+        "levitating": false,
+        "flying": false,
+        "unchanging": false,
+        "confused": false,
+        "stunned": false,
+        "hallucinating": false,
+        "slimed": false,
+        "regenerating": false,
+        "sleepingRegen": false,
+        "trapped": 0,
+        "swallowed": false,
+        "stuck": false,
+        "mounted": false,
+        "canReachFloor": true,
+        "multi": 0,
+        "gloves": null,
+        "inventory": [],
+        "floor": [],
+        "trap": null,
+        "coreCalls": 2759
+      },
+      "scrollWish": {
+        "step": 35,
+        "turn": 1,
+        "hero": [
+          59,
+          6
+        ],
+        "level": {
+          "dnum": 0,
+          "dlevel": 1
+        },
+        "terrain": 26,
+        "wizard": true,
+        "debugMongen": false,
+        "liveMonsters": [
+          {
+            "id": 24,
+            "species": "jackal",
+            "position": [
+              67,
+              3
+            ],
+            "hp": 4,
+            "state": 0
+          },
+          {
+            "id": 20,
+            "species": "sewer rat",
+            "position": [
+              57,
+              8
+            ],
+            "hp": 2,
+            "state": 0
+          },
+          {
+            "id": 17,
+            "species": "jackal",
+            "position": [
+              56,
+              15
+            ],
+            "hp": 2,
+            "state": 0
+          }
+        ],
+        "deadQueued": [],
+        "rawMap": [
+          {
+            "position": "56,15",
+            "id": 17,
+            "hp": 2
+          },
+          {
+            "position": "57,8",
+            "id": 20,
+            "hp": 2
+          },
+          {
+            "position": "67,3",
+            "id": 24,
+            "hp": 4
+          }
+        ],
+        "purgeCount": 0,
+        "genocidedSpecies": [],
+        "literacy": 0,
+        "wishes": 1,
+        "humanHP": 12,
+        "humanMax": 12,
+        "species": "wizard",
+        "speciesIndex": 343,
+        "humanIndex": 343,
+        "speciesLevel": 10,
+        "monsterSpeed": 12,
+        "polymorphed": false,
+        "mortality": 0,
+        "gameover": false,
+        "fumbling": false,
+        "fumblingIntrinsic": 0,
+        "fumblingExtrinsic": 0,
+        "fireResistant": false,
+        "fireIntrinsic": 0,
+        "fireExtrinsic": 0,
+        "blind": false,
+        "underwater": false,
+        "levitating": false,
+        "flying": false,
+        "unchanging": false,
+        "confused": false,
+        "stunned": false,
+        "hallucinating": false,
+        "slimed": false,
+        "regenerating": false,
+        "sleepingRegen": false,
+        "trapped": 0,
+        "swallowed": false,
+        "stuck": false,
+        "mounted": false,
+        "canReachFloor": true,
+        "multi": 0,
+        "gloves": null,
+        "inventory": [
+          {
+            "id": 54,
+            "type": "SCR_GENOCIDE",
+            "letter": "a",
+            "quantity": 1,
+            "where": 3,
+            "worn": 0,
+            "cursed": false,
+            "blessed": true,
+            "known": true,
+            "artifact": 0,
+            "erosion": 0,
+            "material": 5
+          }
+        ],
+        "floor": [],
+        "trap": null,
+        "coreCalls": 2764
+      },
+      "cleaned": {
+        "step": 47,
+        "turn": 2,
+        "hero": [
+          59,
+          6
+        ],
+        "level": {
+          "dnum": 0,
+          "dlevel": 1
+        },
+        "terrain": 26,
+        "wizard": true,
+        "debugMongen": false,
+        "liveMonsters": [],
+        "deadQueued": [],
+        "rawMap": [],
+        "purgeCount": 0,
+        "genocidedSpecies": [],
+        "literacy": 1,
+        "wishes": 1,
+        "humanHP": 12,
+        "humanMax": 12,
+        "species": "wizard",
+        "speciesIndex": 343,
+        "humanIndex": 343,
+        "speciesLevel": 10,
+        "monsterSpeed": 12,
+        "polymorphed": false,
+        "mortality": 0,
+        "gameover": false,
+        "fumbling": false,
+        "fumblingIntrinsic": 0,
+        "fumblingExtrinsic": 0,
+        "fireResistant": false,
+        "fireIntrinsic": 0,
+        "fireExtrinsic": 0,
+        "blind": false,
+        "underwater": false,
+        "levitating": false,
+        "flying": false,
+        "unchanging": false,
+        "confused": false,
+        "stunned": false,
+        "hallucinating": false,
+        "slimed": false,
+        "regenerating": false,
+        "sleepingRegen": false,
+        "trapped": 0,
+        "swallowed": false,
+        "stuck": false,
+        "mounted": false,
+        "canReachFloor": true,
+        "multi": 0,
+        "gloves": null,
+        "inventory": [],
+        "floor": [],
+        "trap": null,
+        "coreCalls": 2771
+      },
+      "floor": {
+        "step": 49,
+        "turn": 3,
+        "hero": [
+          58,
+          6
+        ],
+        "level": {
+          "dnum": 0,
+          "dlevel": 1
+        },
+        "terrain": 25,
+        "wizard": true,
+        "debugMongen": false,
+        "liveMonsters": [],
+        "deadQueued": [],
+        "rawMap": [],
+        "purgeCount": 0,
+        "genocidedSpecies": [],
+        "literacy": 1,
+        "wishes": 1,
+        "humanHP": 12,
+        "humanMax": 12,
+        "species": "wizard",
+        "speciesIndex": 343,
+        "humanIndex": 343,
+        "speciesLevel": 10,
+        "monsterSpeed": 12,
+        "polymorphed": false,
+        "mortality": 0,
+        "gameover": false,
+        "fumbling": false,
+        "fumblingIntrinsic": 0,
+        "fumblingExtrinsic": 0,
+        "fireResistant": false,
+        "fireIntrinsic": 0,
+        "fireExtrinsic": 0,
+        "blind": false,
+        "underwater": false,
+        "levitating": false,
+        "flying": false,
+        "unchanging": false,
+        "confused": false,
+        "stunned": false,
+        "hallucinating": false,
+        "slimed": false,
+        "regenerating": false,
+        "sleepingRegen": false,
+        "trapped": 0,
+        "swallowed": false,
+        "stuck": false,
+        "mounted": false,
+        "canReachFloor": true,
+        "multi": 0,
+        "gloves": null,
+        "inventory": [],
+        "floor": [],
+        "trap": null,
+        "coreCalls": 2776
+      },
+      "polymorphed": {
+        "step": 75,
+        "turn": 3,
+        "hero": [
+          58,
+          6
+        ],
+        "level": {
+          "dnum": 0,
+          "dlevel": 1
+        },
+        "terrain": 25,
+        "wizard": true,
+        "debugMongen": false,
+        "liveMonsters": [],
+        "deadQueued": [],
+        "rawMap": [],
+        "purgeCount": 0,
+        "genocidedSpecies": [],
+        "literacy": 1,
+        "wishes": 1,
+        "humanHP": 12,
+        "humanMax": 12,
+        "monsterHP": 120,
+        "monsterMax": 120,
+        "species": "iron golem",
+        "speciesIndex": 259,
+        "humanIndex": 343,
+        "speciesLevel": 18,
+        "monsterSpeed": 6,
+        "formTimeout": 45,
+        "polymorphed": true,
+        "mortality": 0,
+        "gameover": false,
+        "fumbling": false,
+        "fumblingIntrinsic": 0,
+        "fumblingExtrinsic": 0,
+        "fireResistant": true,
+        "fireIntrinsic": 268435456,
+        "fireExtrinsic": 0,
+        "blind": false,
+        "underwater": false,
+        "levitating": false,
+        "flying": false,
+        "unchanging": false,
+        "confused": false,
+        "stunned": false,
+        "hallucinating": false,
+        "slimed": false,
+        "regenerating": false,
+        "sleepingRegen": false,
+        "trapped": 0,
+        "swallowed": false,
+        "stuck": false,
+        "mounted": false,
+        "canReachFloor": true,
+        "multi": 0,
+        "gloves": null,
+        "inventory": [],
+        "floor": [],
+        "trap": null,
+        "coreCalls": 2780
+      },
+      "gloveWishStart": {
+        "step": 75,
+        "turn": 3,
+        "hero": [
+          58,
+          6
+        ],
+        "level": {
+          "dnum": 0,
+          "dlevel": 1
+        },
+        "terrain": 25,
+        "wizard": true,
+        "debugMongen": false,
+        "liveMonsters": [],
+        "deadQueued": [],
+        "rawMap": [],
+        "purgeCount": 0,
+        "genocidedSpecies": [],
+        "literacy": 1,
+        "wishes": 1,
+        "humanHP": 12,
+        "humanMax": 12,
+        "monsterHP": 120,
+        "monsterMax": 120,
+        "species": "iron golem",
+        "speciesIndex": 259,
+        "humanIndex": 343,
+        "speciesLevel": 18,
+        "monsterSpeed": 6,
+        "formTimeout": 45,
+        "polymorphed": true,
+        "mortality": 0,
+        "gameover": false,
+        "fumbling": false,
+        "fumblingIntrinsic": 0,
+        "fumblingExtrinsic": 0,
+        "fireResistant": true,
+        "fireIntrinsic": 268435456,
+        "fireExtrinsic": 0,
+        "blind": false,
+        "underwater": false,
+        "levitating": false,
+        "flying": false,
+        "unchanging": false,
+        "confused": false,
+        "stunned": false,
+        "hallucinating": false,
+        "slimed": false,
+        "regenerating": false,
+        "sleepingRegen": false,
+        "trapped": 0,
+        "swallowed": false,
+        "stuck": false,
+        "mounted": false,
+        "canReachFloor": true,
+        "multi": 0,
+        "gloves": null,
+        "inventory": [],
+        "floor": [],
+        "trap": null,
+        "coreCalls": 2780
+      },
+      "gloveWish": {
+        "step": 112,
+        "turn": 3,
+        "hero": [
+          58,
+          6
+        ],
+        "level": {
+          "dnum": 0,
+          "dlevel": 1
+        },
+        "terrain": 25,
+        "wizard": true,
+        "debugMongen": false,
+        "liveMonsters": [],
+        "deadQueued": [],
+        "rawMap": [],
+        "purgeCount": 0,
+        "genocidedSpecies": [],
+        "literacy": 1,
+        "wishes": 2,
+        "humanHP": 12,
+        "humanMax": 12,
+        "monsterHP": 120,
+        "monsterMax": 120,
+        "species": "iron golem",
+        "speciesIndex": 259,
+        "humanIndex": 343,
+        "speciesLevel": 18,
+        "monsterSpeed": 6,
+        "formTimeout": 45,
+        "polymorphed": true,
+        "mortality": 0,
+        "gameover": false,
+        "fumbling": false,
+        "fumblingIntrinsic": 0,
+        "fumblingExtrinsic": 0,
+        "fireResistant": true,
+        "fireIntrinsic": 268435456,
+        "fireExtrinsic": 0,
+        "blind": false,
+        "underwater": false,
+        "levitating": false,
+        "flying": false,
+        "unchanging": false,
+        "confused": false,
+        "stunned": false,
+        "hallucinating": false,
+        "slimed": false,
+        "regenerating": false,
+        "sleepingRegen": false,
+        "trapped": 0,
+        "swallowed": false,
+        "stuck": false,
+        "mounted": false,
+        "canReachFloor": true,
+        "multi": 0,
+        "gloves": null,
+        "inventory": [
+          {
+            "id": 55,
+            "type": "GAUNTLETS_OF_FUMBLING",
+            "letter": "b",
+            "quantity": 1,
+            "where": 3,
+            "worn": 0,
+            "cursed": false,
+            "blessed": false,
+            "known": false,
+            "artifact": 0,
+            "erosion": 0,
+            "material": 7
+          }
+        ],
+        "floor": [],
+        "trap": null,
+        "coreCalls": 2790
+      },
+      "wearStart": {
+        "step": 112,
+        "turn": 3,
+        "hero": [
+          58,
+          6
+        ],
+        "level": {
+          "dnum": 0,
+          "dlevel": 1
+        },
+        "terrain": 25,
+        "wizard": true,
+        "debugMongen": false,
+        "liveMonsters": [],
+        "deadQueued": [],
+        "rawMap": [],
+        "purgeCount": 0,
+        "genocidedSpecies": [],
+        "literacy": 1,
+        "wishes": 2,
+        "humanHP": 12,
+        "humanMax": 12,
+        "monsterHP": 120,
+        "monsterMax": 120,
+        "species": "iron golem",
+        "speciesIndex": 259,
+        "humanIndex": 343,
+        "speciesLevel": 18,
+        "monsterSpeed": 6,
+        "formTimeout": 45,
+        "polymorphed": true,
+        "mortality": 0,
+        "gameover": false,
+        "fumbling": false,
+        "fumblingIntrinsic": 0,
+        "fumblingExtrinsic": 0,
+        "fireResistant": true,
+        "fireIntrinsic": 268435456,
+        "fireExtrinsic": 0,
+        "blind": false,
+        "underwater": false,
+        "levitating": false,
+        "flying": false,
+        "unchanging": false,
+        "confused": false,
+        "stunned": false,
+        "hallucinating": false,
+        "slimed": false,
+        "regenerating": false,
+        "sleepingRegen": false,
+        "trapped": 0,
+        "swallowed": false,
+        "stuck": false,
+        "mounted": false,
+        "canReachFloor": true,
+        "multi": 0,
+        "gloves": null,
+        "inventory": [
+          {
+            "id": 55,
+            "type": "GAUNTLETS_OF_FUMBLING",
+            "letter": "b",
+            "quantity": 1,
+            "where": 3,
+            "worn": 0,
+            "cursed": false,
+            "blessed": false,
+            "known": false,
+            "artifact": 0,
+            "erosion": 0,
+            "material": 7
+          }
+        ],
+        "floor": [],
+        "trap": null,
+        "coreCalls": 2790
+      },
+      "worn": {
+        "step": 119,
+        "turn": 6,
+        "hero": [
+          58,
+          6
+        ],
+        "level": {
+          "dnum": 0,
+          "dlevel": 1
+        },
+        "terrain": 25,
+        "wizard": true,
+        "debugMongen": false,
+        "liveMonsters": [],
+        "deadQueued": [],
+        "rawMap": [],
+        "purgeCount": 0,
+        "genocidedSpecies": [],
+        "literacy": 1,
+        "wishes": 2,
+        "humanHP": 12,
+        "humanMax": 12,
+        "monsterHP": 120,
+        "monsterMax": 120,
+        "species": "iron golem",
+        "speciesIndex": 259,
+        "humanIndex": 343,
+        "speciesLevel": 18,
+        "monsterSpeed": 6,
+        "formTimeout": 42,
+        "polymorphed": true,
+        "mortality": 0,
+        "gameover": false,
+        "fumbling": true,
+        "fumblingIntrinsic": 17,
+        "fumblingExtrinsic": 16,
+        "fireResistant": true,
+        "fireIntrinsic": 268435456,
+        "fireExtrinsic": 0,
+        "blind": false,
+        "underwater": false,
+        "levitating": false,
+        "flying": false,
+        "unchanging": false,
+        "confused": false,
+        "stunned": false,
+        "hallucinating": false,
+        "slimed": false,
+        "regenerating": false,
+        "sleepingRegen": false,
+        "trapped": 0,
+        "swallowed": false,
+        "stuck": false,
+        "mounted": false,
+        "canReachFloor": true,
+        "multi": 0,
+        "gloves": {
+          "id": 55,
+          "type": "GAUNTLETS_OF_FUMBLING",
+          "letter": "b",
+          "quantity": 1,
+          "where": 3,
+          "worn": 16,
+          "cursed": false,
+          "blessed": false,
+          "known": true,
+          "artifact": 0,
+          "erosion": 0,
+          "material": 7
+        },
+        "inventory": [
+          {
+            "id": 55,
+            "type": "GAUNTLETS_OF_FUMBLING",
+            "letter": "b",
+            "quantity": 1,
+            "where": 3,
+            "worn": 16,
+            "cursed": false,
+            "blessed": false,
+            "known": true,
+            "artifact": 0,
+            "erosion": 0,
+            "material": 7
+          }
+        ],
+        "floor": [],
+        "trap": null,
+        "coreCalls": 2806
+      },
+      "trapWishStart": {
+        "step": 119,
+        "turn": 6,
+        "hero": [
+          58,
+          6
+        ],
+        "level": {
+          "dnum": 0,
+          "dlevel": 1
+        },
+        "terrain": 25,
+        "wizard": true,
+        "debugMongen": false,
+        "liveMonsters": [],
+        "deadQueued": [],
+        "rawMap": [],
+        "purgeCount": 0,
+        "genocidedSpecies": [],
+        "literacy": 1,
+        "wishes": 2,
+        "humanHP": 12,
+        "humanMax": 12,
+        "monsterHP": 120,
+        "monsterMax": 120,
+        "species": "iron golem",
+        "speciesIndex": 259,
+        "humanIndex": 343,
+        "speciesLevel": 18,
+        "monsterSpeed": 6,
+        "formTimeout": 42,
+        "polymorphed": true,
+        "mortality": 0,
+        "gameover": false,
+        "fumbling": true,
+        "fumblingIntrinsic": 17,
+        "fumblingExtrinsic": 16,
+        "fireResistant": true,
+        "fireIntrinsic": 268435456,
+        "fireExtrinsic": 0,
+        "blind": false,
+        "underwater": false,
+        "levitating": false,
+        "flying": false,
+        "unchanging": false,
+        "confused": false,
+        "stunned": false,
+        "hallucinating": false,
+        "slimed": false,
+        "regenerating": false,
+        "sleepingRegen": false,
+        "trapped": 0,
+        "swallowed": false,
+        "stuck": false,
+        "mounted": false,
+        "canReachFloor": true,
+        "multi": 0,
+        "gloves": {
+          "id": 55,
+          "type": "GAUNTLETS_OF_FUMBLING",
+          "letter": "b",
+          "quantity": 1,
+          "where": 3,
+          "worn": 16,
+          "cursed": false,
+          "blessed": false,
+          "known": true,
+          "artifact": 0,
+          "erosion": 0,
+          "material": 7
+        },
+        "inventory": [
+          {
+            "id": 55,
+            "type": "GAUNTLETS_OF_FUMBLING",
+            "letter": "b",
+            "quantity": 1,
+            "where": 3,
+            "worn": 16,
+            "cursed": false,
+            "blessed": false,
+            "known": true,
+            "artifact": 0,
+            "erosion": 0,
+            "material": 7
+          }
+        ],
+        "floor": [],
+        "trap": null,
+        "coreCalls": 2806
+      },
+      "beforeAction": {
+        "step": 135,
+        "turn": 6,
+        "hero": [
+          58,
+          6
+        ],
+        "level": {
+          "dnum": 0,
+          "dlevel": 1
+        },
+        "terrain": 25,
+        "wizard": true,
+        "debugMongen": false,
+        "liveMonsters": [],
+        "deadQueued": [],
+        "rawMap": [],
+        "purgeCount": 0,
+        "genocidedSpecies": [],
+        "literacy": 1,
+        "wishes": 2,
+        "humanHP": 12,
+        "humanMax": 12,
+        "monsterHP": 120,
+        "monsterMax": 120,
+        "species": "iron golem",
+        "speciesIndex": 259,
+        "humanIndex": 343,
+        "speciesLevel": 18,
+        "monsterSpeed": 6,
+        "formTimeout": 42,
+        "polymorphed": true,
+        "mortality": 0,
+        "gameover": false,
+        "fumbling": true,
+        "fumblingIntrinsic": 17,
+        "fumblingExtrinsic": 16,
+        "fireResistant": true,
+        "fireIntrinsic": 268435456,
+        "fireExtrinsic": 0,
+        "blind": false,
+        "underwater": false,
+        "levitating": false,
+        "flying": false,
+        "unchanging": false,
+        "confused": false,
+        "stunned": false,
+        "hallucinating": false,
+        "slimed": false,
+        "regenerating": false,
+        "sleepingRegen": false,
+        "trapped": 0,
+        "swallowed": false,
+        "stuck": false,
+        "mounted": false,
+        "canReachFloor": true,
+        "multi": 0,
+        "gloves": {
+          "id": 55,
+          "type": "GAUNTLETS_OF_FUMBLING",
+          "letter": "b",
+          "quantity": 1,
+          "where": 3,
+          "worn": 16,
+          "cursed": false,
+          "blessed": false,
+          "known": true,
+          "artifact": 0,
+          "erosion": 0,
+          "material": 7
+        },
+        "inventory": [
+          {
+            "id": 55,
+            "type": "GAUNTLETS_OF_FUMBLING",
+            "letter": "b",
+            "quantity": 1,
+            "where": 3,
+            "worn": 16,
+            "cursed": false,
+            "blessed": false,
+            "known": true,
+            "artifact": 0,
+            "erosion": 0,
+            "material": 7
+          }
+        ],
+        "floor": [],
+        "trap": {
+          "type": 10,
+          "seen": false,
+          "position": [
+            58,
+            6
+          ]
+        },
+        "coreCalls": 2806
+      },
+      "actionEnter": {
+        "step": 140,
+        "turn": 6,
+        "hero": [
+          58,
+          6
+        ],
+        "level": {
+          "dnum": 0,
+          "dlevel": 1
+        },
+        "terrain": 25,
+        "wizard": true,
+        "debugMongen": false,
+        "liveMonsters": [],
+        "deadQueued": [],
+        "rawMap": [],
+        "purgeCount": 0,
+        "genocidedSpecies": [],
+        "literacy": 1,
+        "wishes": 2,
+        "humanHP": 12,
+        "humanMax": 12,
+        "monsterHP": 120,
+        "monsterMax": 120,
+        "species": "iron golem",
+        "speciesIndex": 259,
+        "humanIndex": 343,
+        "speciesLevel": 18,
+        "monsterSpeed": 6,
+        "formTimeout": 42,
+        "polymorphed": true,
+        "mortality": 0,
+        "gameover": false,
+        "fumbling": true,
+        "fumblingIntrinsic": 17,
+        "fumblingExtrinsic": 16,
+        "fireResistant": true,
+        "fireIntrinsic": 268435456,
+        "fireExtrinsic": 0,
+        "blind": false,
+        "underwater": false,
+        "levitating": false,
+        "flying": false,
+        "unchanging": false,
+        "confused": false,
+        "stunned": false,
+        "hallucinating": false,
+        "slimed": false,
+        "regenerating": false,
+        "sleepingRegen": false,
+        "trapped": 0,
+        "swallowed": false,
+        "stuck": false,
+        "mounted": false,
+        "canReachFloor": true,
+        "multi": 0,
+        "gloves": {
+          "id": 55,
+          "type": "GAUNTLETS_OF_FUMBLING",
+          "letter": "b",
+          "quantity": 1,
+          "where": 3,
+          "worn": 16,
+          "cursed": false,
+          "blessed": false,
+          "known": true,
+          "artifact": 0,
+          "erosion": 0,
+          "material": 7
+        },
+        "inventory": [
+          {
+            "id": 55,
+            "type": "GAUNTLETS_OF_FUMBLING",
+            "letter": "b",
+            "quantity": 1,
+            "where": 3,
+            "worn": 16,
+            "cursed": false,
+            "blessed": false,
+            "known": true,
+            "artifact": 0,
+            "erosion": 0,
+            "material": 7
+          }
+        ],
+        "floor": [],
+        "trap": {
+          "type": 10,
+          "seen": true,
+          "position": [
+            58,
+            6
+          ]
+        },
+        "coreCalls": 2808
+      },
+      "final": {
+        "step": 145,
+        "turn": 8,
+        "hero": [
+          58,
+          6
+        ],
+        "level": {
+          "dnum": 0,
+          "dlevel": 1
+        },
+        "terrain": 25,
+        "wizard": true,
+        "debugMongen": false,
+        "liveMonsters": [],
+        "deadQueued": [],
+        "rawMap": [],
+        "purgeCount": 0,
+        "genocidedSpecies": [],
+        "literacy": 1,
+        "wishes": 2,
+        "humanHP": 12,
+        "humanMax": 12,
+        "monsterHP": 120,
+        "monsterMax": 120,
+        "species": "iron golem",
+        "speciesIndex": 259,
+        "humanIndex": 343,
+        "speciesLevel": 18,
+        "monsterSpeed": 6,
+        "formTimeout": 40,
+        "polymorphed": true,
+        "mortality": 0,
+        "gameover": false,
+        "fumbling": true,
+        "fumblingIntrinsic": 15,
+        "fumblingExtrinsic": 16,
+        "fireResistant": true,
+        "fireIntrinsic": 268435456,
+        "fireExtrinsic": 0,
+        "blind": false,
+        "underwater": false,
+        "levitating": false,
+        "flying": false,
+        "unchanging": false,
+        "confused": false,
+        "stunned": false,
+        "hallucinating": false,
+        "slimed": false,
+        "regenerating": false,
+        "sleepingRegen": false,
+        "trapped": 0,
+        "swallowed": false,
+        "stuck": false,
+        "mounted": false,
+        "canReachFloor": true,
+        "multi": 0,
+        "gloves": {
+          "id": 55,
+          "type": "GAUNTLETS_OF_FUMBLING",
+          "letter": "b",
+          "quantity": 1,
+          "where": 3,
+          "worn": 16,
+          "cursed": false,
+          "blessed": false,
+          "known": true,
+          "artifact": 0,
+          "erosion": 0,
+          "material": 7
+        },
+        "inventory": [
+          {
+            "id": 55,
+            "type": "GAUNTLETS_OF_FUMBLING",
+            "letter": "b",
+            "quantity": 1,
+            "where": 3,
+            "worn": 16,
+            "cursed": false,
+            "blessed": false,
+            "known": true,
+            "artifact": 0,
+            "erosion": 0,
+            "material": 7
+          }
+        ],
+        "floor": [],
+        "trap": {
+          "type": 10,
+          "seen": true,
+          "position": [
+            58,
+            6
+          ]
+        },
+        "coreCalls": 2820
+      }
+    },
+    "actionCallCount": 14,
+    "actionCallPrefix": [
+      "d(2,4)=8",
+      "rn2(2)=0",
+      "rn2(5)=1",
+      "rn2(5)=1",
+      "rn2(70)=56",
+      "rn2(400)=177",
+      "rn2(200)=179",
+      "rn2(20)=9",
+      "rn2(85)=30",
+      "rn2(70)=55",
+      "rn2(400)=315",
+      "rn2(200)=74",
+      "rn2(20)=10",
+      "rn2(85)=22"
+    ],
+    "wearCalls": [
+      "rn2(70)=20",
+      "rn2(400)=319",
+      "rn2(200)=29",
+      "rn2(20)=7",
+      "rn2(85)=74",
+      "rnd(20)=19",
+      "rn2(70)=36",
+      "rn2(400)=345",
+      "rn2(200)=92",
+      "rn2(20)=2",
+      "rn2(85)=13",
+      "rn2(70)=43",
+      "rn2(400)=396",
+      "rn2(200)=171",
+      "rn2(20)=5",
+      "rn2(85)=27"
+    ],
+    "CAlternate": 0,
+    "CFirstDamage": 8,
+    "CExpectedShrinkBound": 9,
+    "CStateFromMatchingPrefix": {
+      "shrink": 0,
+      "damage": 0,
+      "monsterMax": 120,
+      "monsterHP": 120,
+      "polymorphed": true
+    },
+    "cleanupObservation": {
+      "initialLive": 3,
+      "cleanedLive": 0,
+      "cleanedDeadQueued": 0,
+      "cleanedPurge": 0,
+      "cleanedRawMap": 0,
+      "postCleanupMaximumLive": 0,
+      "postCleanupFirstLive": null
+    },
+    "messages": [
+      {
+        "step": 0,
+        "text": "Hello wizard, welcome to NetHack!  You are a neutral male human Wizard."
+      },
+      {
+        "step": 1,
+        "text": "Unknown command ' '."
+      },
+      {
+        "step": 2,
+        "text": "For what do you wish?"
+      },
+      {
+        "step": 3,
+        "text": "For what do you wish? b"
+      },
+      {
+        "step": 4,
+        "text": "For what do you wish? bl"
+      },
+      {
+        "step": 5,
+        "text": "For what do you wish? ble"
+      },
+      {
+        "step": 6,
+        "text": "For what do you wish? bles"
+      },
+      {
+        "step": 7,
+        "text": "For what do you wish? bless"
+      },
+      {
+        "step": 8,
+        "text": "For what do you wish? blesse"
+      },
+      {
+        "step": 9,
+        "text": "For what do you wish? blessed"
+      },
+      {
+        "step": 11,
+        "text": "For what do you wish? blessed s"
+      },
+      {
+        "step": 12,
+        "text": "For what do you wish? blessed sc"
+      },
+      {
+        "step": 13,
+        "text": "For what do you wish? blessed scr"
+      },
+      {
+        "step": 14,
+        "text": "For what do you wish? blessed scro"
+      },
+      {
+        "step": 15,
+        "text": "For what do you wish? blessed scrol"
+      },
+      {
+        "step": 16,
+        "text": "For what do you wish? blessed scroll"
+      },
+      {
+        "step": 18,
+        "text": "For what do you wish? blessed scroll o"
+      },
+      {
+        "step": 19,
+        "text": "For what do you wish? blessed scroll of"
+      },
+      {
+        "step": 21,
+        "text": "For what do you wish? blessed scroll of g"
+      },
+      {
+        "step": 22,
+        "text": "For what do you wish? blessed scroll of ge"
+      },
+      {
+        "step": 23,
+        "text": "For what do you wish? blessed scroll of gen"
+      },
+      {
+        "step": 24,
+        "text": "For what do you wish? blessed scroll of geno"
+      },
+      {
+        "step": 25,
+        "text": "For what do you wish? blessed scroll of genoc"
+      },
+      {
+        "step": 26,
+        "text": "For what do you wish? blessed scroll of genoci"
+      },
+      {
+        "step": 27,
+        "text": "For what do you wish? blessed scroll of genocid"
+      },
+      {
+        "step": 28,
+        "text": "For what do you wish? blessed scroll of genocide"
+      },
+      {
+        "step": 29,
+        "text": "a - a scroll labeled DUAM XNAHT."
+      },
+      {
+        "step": 30,
+        "text": "Unknown command ' '."
+      },
+      {
+        "step": 34,
+        "text": ""
+      },
+      {
+        "step": 37,
+        "text": "As you read the scroll, it disappears.--More--"
+      },
+      {
+        "step": 38,
+        "text": "You have found a scroll of genocide!--More--"
+      },
+      {
+        "step": 39,
+        "text": "What class of monsters do you want to genocide?"
+      },
+      {
+        "step": 40,
+        "text": "What class of monsters do you want to genocide? *"
+      },
+      {
+        "step": 41,
+        "text": "Eliminated 3 monsters."
+      },
+      {
+        "step": 42,
+        "text": "Unknown command ' '."
+      },
+      {
+        "step": 46,
+        "text": ""
+      },
+      {
+        "step": 49,
+        "text": "Unknown command ' '."
+      },
+      {
+        "step": 70,
+        "text": "You turn into an iron golem!--More--"
+      },
+      {
+        "step": 71,
+        "text": "Use the command #monster to use your breath weapon."
+      },
+      {
+        "step": 72,
+        "text": "Unknown command ' '."
+      },
+      {
+        "step": 74,
+        "text": ""
+      },
+      {
+        "step": 76,
+        "text": "For what do you wish?"
+      },
+      {
+        "step": 77,
+        "text": "For what do you wish? u"
+      },
+      {
+        "step": 78,
+        "text": "For what do you wish? un"
+      },
+      {
+        "step": 79,
+        "text": "For what do you wish? unc"
+      },
+      {
+        "step": 80,
+        "text": "For what do you wish? uncu"
+      },
+      {
+        "step": 81,
+        "text": "For what do you wish? uncur"
+      },
+      {
+        "step": 82,
+        "text": "For what do you wish? uncurs"
+      },
+      {
+        "step": 83,
+        "text": "For what do you wish? uncurse"
+      },
+      {
+        "step": 84,
+        "text": "For what do you wish? uncursed"
+      },
+      {
+        "step": 86,
+        "text": "For what do you wish? uncursed g"
+      },
+      {
+        "step": 87,
+        "text": "For what do you wish? uncursed ga"
+      },
+      {
+        "step": 88,
+        "text": "For what do you wish? uncursed gau"
+      },
+      {
+        "step": 89,
+        "text": "For what do you wish? uncursed gaun"
+      },
+      {
+        "step": 90,
+        "text": "For what do you wish? uncursed gaunt"
+      },
+      {
+        "step": 91,
+        "text": "For what do you wish? uncursed gauntl"
+      },
+      {
+        "step": 92,
+        "text": "For what do you wish? uncursed gauntle"
+      },
+      {
+        "step": 93,
+        "text": "For what do you wish? uncursed gauntlet"
+      },
+      {
+        "step": 94,
+        "text": "For what do you wish? uncursed gauntlets"
+      },
+      {
+        "step": 96,
+        "text": "For what do you wish? uncursed gauntlets o"
+      },
+      {
+        "step": 97,
+        "text": "For what do you wish? uncursed gauntlets of"
+      },
+      {
+        "step": 99,
+        "text": "For what do you wish? uncursed gauntlets of f"
+      },
+      {
+        "step": 100,
+        "text": "For what do you wish? uncursed gauntlets of fu"
+      },
+      {
+        "step": 101,
+        "text": "For what do you wish? uncursed gauntlets of fum"
+      },
+      {
+        "step": 102,
+        "text": "For what do you wish? uncursed gauntlets of fumb"
+      },
+      {
+        "step": 103,
+        "text": "For what do you wish? uncursed gauntlets of fumbl"
+      },
+      {
+        "step": 104,
+        "text": "For what do you wish? uncursed gauntlets of fumbli"
+      },
+      {
+        "step": 105,
+        "text": "For what do you wish? uncursed gauntlets of fumblin"
+      },
+      {
+        "step": 106,
+        "text": "For what do you wish? uncursed gauntlets of fumbling"
+      },
+      {
+        "step": 107,
+        "text": "b - a pair of old gloves."
+      },
+      {
+        "step": 108,
+        "text": "Unknown command ' '."
+      },
+      {
+        "step": 111,
+        "text": ""
+      },
+      {
+        "step": 114,
+        "text": "You finish your dressing maneuver."
+      },
+      {
+        "step": 115,
+        "text": "Unknown command ' '."
+      },
+      {
+        "step": 118,
+        "text": ""
+      },
+      {
+        "step": 120,
+        "text": "For what do you wish?"
+      },
+      {
+        "step": 121,
+        "text": "For what do you wish? f"
+      },
+      {
+        "step": 122,
+        "text": "For what do you wish? fi"
+      },
+      {
+        "step": 123,
+        "text": "For what do you wish? fir"
+      },
+      {
+        "step": 124,
+        "text": "For what do you wish? fire"
+      },
+      {
+        "step": 126,
+        "text": "For what do you wish? fire t"
+      },
+      {
+        "step": 127,
+        "text": "For what do you wish? fire tr"
+      },
+      {
+        "step": 128,
+        "text": "For what do you wish? fire tra"
+      },
+      {
+        "step": 129,
+        "text": "For what do you wish? fire trap"
+      },
+      {
+        "step": 130,
+        "text": "A fire trap."
+      },
+      {
+        "step": 131,
+        "text": "Unknown command ' '."
+      },
+      {
+        "step": 134,
+        "text": ""
+      },
+      {
+        "step": 140,
+        "text": "You sit down.  A tower of flame erupts from the floor!--More--"
+      },
+      {
+        "step": 141,
+        "text": "You are uninjured."
+      },
+      {
+        "step": 142,
+        "text": "Unknown command ' '."
+      },
+      {
+        "step": 144,
+        "text": ""
+      }
+    ],
+    "statesSHA256": "701447bcb041c171e3bf79a169732293b571ae2ba2e1d02966766bbc1360aaf1",
+    "stateCount": 146,
+    "neutrality": {
+      "observedEqualsPlain": true,
+      "plainEqualsDeferred": true,
+      "eofStable": true,
+      "plainConsumed": 145,
+      "deferredConsumed": 145,
+      "expectedConsumed": 145,
+      "hashes": {
+        "observed": {
+          "screens": "fa3cf8ada2b857cf81d5cf1fa63e85f25d788ddb57fcdeb8c779b7589f20f843",
+          "cursors": "6c640c6c0be2eb58db0c5e65a34ae5c47be41cdf658e34c1e8f8299f9cf6ecd3",
+          "calls": "2aaf7d45565b885897678c890895ab6ca0cf560638ff63c11960ec3e09e5f035",
+          "slices": "93c31a112875333debb3d5db31c0ae255ad02840b576bb0909ad2642a7ca304f",
+          "frames": "6b534ea99b37512ae521ef224958d4b3373da07c37fafbbb13d7eb394ebb40b0"
+        },
+        "plain": {
+          "screens": "fa3cf8ada2b857cf81d5cf1fa63e85f25d788ddb57fcdeb8c779b7589f20f843",
+          "cursors": "6c640c6c0be2eb58db0c5e65a34ae5c47be41cdf658e34c1e8f8299f9cf6ecd3",
+          "calls": "2aaf7d45565b885897678c890895ab6ca0cf560638ff63c11960ec3e09e5f035",
+          "slices": "93c31a112875333debb3d5db31c0ae255ad02840b576bb0909ad2642a7ca304f",
+          "frames": "6b534ea99b37512ae521ef224958d4b3373da07c37fafbbb13d7eb394ebb40b0"
+        },
+        "deferred": {
+          "screens": "fa3cf8ada2b857cf81d5cf1fa63e85f25d788ddb57fcdeb8c779b7589f20f843",
+          "cursors": "6c640c6c0be2eb58db0c5e65a34ae5c47be41cdf658e34c1e8f8299f9cf6ecd3",
+          "calls": "2aaf7d45565b885897678c890895ab6ca0cf560638ff63c11960ec3e09e5f035",
+          "slices": "93c31a112875333debb3d5db31c0ae255ad02840b576bb0909ad2642a7ca304f",
+          "frames": "6b534ea99b37512ae521ef224958d4b3373da07c37fafbbb13d7eb394ebb40b0"
+        }
+      },
+      "pass": true
+    },
+    "nativeParityClaimed": false
+  },
+  {
+    "name": "clean-paper-look-only",
+    "negative": true,
+    "keys": 142,
+    "producerPass": true,
+    "sourcePass": true,
+    "firstUnmetProducer": null,
+    "reach": [
+      {
+        "name": "all keys consumed without runtime error",
+        "pass": true
+      },
+      {
+        "name": "fixed monsters exist before real cleanup",
+        "pass": true
+      },
+      {
+        "name": "real wished blessed scroll occupies slot a",
+        "pass": true
+      },
+      {
+        "name": "star cleanup removes live monsters and their raw map slots",
+        "pass": true
+      },
+      {
+        "name": "cleanup consumes scroll without species genocide",
+        "pass": true
+      },
+      {
+        "name": "read consumes time without damaging healthy human",
+        "pass": true
+      },
+      {
+        "name": "no live monsters at any observed boundary after cleanup",
+        "pass": true
+      },
+      {
+        "name": "one ordinary west step reaches clear room floor",
+        "pass": true
+      },
+      {
+        "name": "controlled exact species produced with healthy monster pool",
+        "pass": true
+      },
+      {
+        "name": "source HP producer reached",
+        "pass": true
+      },
+      {
+        "name": "only real wished uncursed gloves occupy slot b",
+        "pass": true
+      },
+      {
+        "name": "real wear retains identity and W_ARMG property",
+        "pass": true
+      },
+      {
+        "name": "Gloves_on timed producer ran before action",
+        "pass": true
+      },
+      {
+        "name": "polymorph human HP pool unchanged through setup",
+        "pass": true
+      },
+      {
+        "name": "fire resistance comes only from iron form",
+        "pass": true
+      },
+      {
+        "name": "sitting eligibility and excluded branch prerequisites",
+        "pass": true
+      },
+      {
+        "name": "ordinary fire trap exists unseen before action",
+        "pass": true
+      },
+      {
+        "name": "empty ground and glove-only inventory throughout setup",
+        "pass": true
+      },
+      {
+        "name": "healthy monster pool remains above its species level before action",
+        "pass": true
+      },
+      {
+        "name": "source-predicted ordinary producer feedback",
+        "pass": true
+      },
+      {
+        "name": "chosen trigger or look branch reached",
+        "pass": true
+      },
+      {
+        "name": "no regeneration boundary obscures damage observation",
+        "pass": true
+      },
+      {
+        "name": "ordinary producer and action survive",
+        "pass": true
+      },
+      {
+        "name": "all five output streams are complete",
+        "pass": true
+      }
+    ],
+    "contracts": [
+      {
+        "name": "C primary visible predicates",
+        "pass": true
+      },
+      {
+        "name": "C leaves human HP maximum unchanged",
+        "pass": true
+      },
+      {
+        "name": "C leaves healthy human HP unchanged",
+        "pass": true
+      },
+      {
+        "name": "C damage RNG prefix with no second d(2,4)",
+        "pass": true
+      },
+      {
+        "name": "C material shrink clamp and loss or unchanged look state",
+        "pass": true
+      },
+      {
+        "name": "C paper trigger always rehumanizes; controls preserve selected form",
+        "pass": true
+      },
+      {
+        "name": "C action time contract",
+        "pass": true
+      }
+    ],
+    "boundaries": 143,
+    "calls": 2795,
+    "frames": 0,
+    "outputHashes": {
+      "screens": "a5e1d68d928220bd98e5bbf5ec53feb740e89efe2cf0e40d2423f38cb19d53a1",
+      "cursors": "35e4191fea872793d8b1b7ae917e8dad3ea6603e462cf92f56cdef3b0b948c66",
+      "calls": "ccbfbf565eef91752a2c6e3b7771216903301755b85212af7dd4f39e18ce2f21",
+      "slices": "5dafdcd2bea25b74feac0ba8442a6a6014bb1bd917509a6bc2c0d26d0a7a4a6d",
+      "frames": "c36be3fc69ed5c04f4a3b9654193a98180a19e75e761a364492db10787a71258"
+    },
+    "stages": {
+      "initial": {
+        "step": 0,
+        "turn": 1,
+        "hero": [
+          59,
+          6
+        ],
+        "level": {
+          "dnum": 0,
+          "dlevel": 1
+        },
+        "terrain": 26,
+        "wizard": true,
+        "debugMongen": false,
+        "liveMonsters": [
+          {
+            "id": 24,
+            "species": "jackal",
+            "position": [
+              67,
+              3
+            ],
+            "hp": 4,
+            "state": 0
+          },
+          {
+            "id": 20,
+            "species": "sewer rat",
+            "position": [
+              57,
+              8
+            ],
+            "hp": 2,
+            "state": 0
+          },
+          {
+            "id": 17,
+            "species": "jackal",
+            "position": [
+              56,
+              15
+            ],
+            "hp": 2,
+            "state": 0
+          }
+        ],
+        "deadQueued": [],
+        "rawMap": [
+          {
+            "position": "56,15",
+            "id": 17,
+            "hp": 2
+          },
+          {
+            "position": "57,8",
+            "id": 20,
+            "hp": 2
+          },
+          {
+            "position": "67,3",
+            "id": 24,
+            "hp": 4
+          }
+        ],
+        "purgeCount": 0,
+        "genocidedSpecies": [],
+        "literacy": 0,
+        "wishes": 0,
+        "humanHP": 12,
+        "humanMax": 12,
+        "species": "wizard",
+        "speciesIndex": 343,
+        "humanIndex": 343,
+        "speciesLevel": 10,
+        "monsterSpeed": 12,
+        "polymorphed": false,
+        "mortality": 0,
+        "gameover": false,
+        "fumbling": false,
+        "fumblingIntrinsic": 0,
+        "fumblingExtrinsic": 0,
+        "fireResistant": false,
+        "fireIntrinsic": 0,
+        "fireExtrinsic": 0,
+        "blind": false,
+        "underwater": false,
+        "levitating": false,
+        "flying": false,
+        "unchanging": false,
+        "confused": false,
+        "stunned": false,
+        "hallucinating": false,
+        "slimed": false,
+        "regenerating": false,
+        "sleepingRegen": false,
+        "trapped": 0,
+        "swallowed": false,
+        "stuck": false,
+        "mounted": false,
+        "canReachFloor": true,
+        "gloves": null,
+        "inventory": [],
+        "floor": [],
+        "trap": null,
+        "coreCalls": 2759
+      },
+      "cleanupWishStart": {
+        "step": 1,
+        "turn": 1,
+        "hero": [
+          59,
+          6
+        ],
+        "level": {
+          "dnum": 0,
+          "dlevel": 1
+        },
+        "terrain": 26,
+        "wizard": true,
+        "debugMongen": false,
+        "liveMonsters": [
+          {
+            "id": 24,
+            "species": "jackal",
+            "position": [
+              67,
+              3
+            ],
+            "hp": 4,
+            "state": 0
+          },
+          {
+            "id": 20,
+            "species": "sewer rat",
+            "position": [
+              57,
+              8
+            ],
+            "hp": 2,
+            "state": 0
+          },
+          {
+            "id": 17,
+            "species": "jackal",
+            "position": [
+              56,
+              15
+            ],
+            "hp": 2,
+            "state": 0
+          }
+        ],
+        "deadQueued": [],
+        "rawMap": [
+          {
+            "position": "56,15",
+            "id": 17,
+            "hp": 2
+          },
+          {
+            "position": "57,8",
+            "id": 20,
+            "hp": 2
+          },
+          {
+            "position": "67,3",
+            "id": 24,
+            "hp": 4
+          }
+        ],
+        "purgeCount": 0,
+        "genocidedSpecies": [],
+        "literacy": 0,
+        "wishes": 0,
+        "humanHP": 12,
+        "humanMax": 12,
+        "species": "wizard",
+        "speciesIndex": 343,
+        "humanIndex": 343,
+        "speciesLevel": 10,
+        "monsterSpeed": 12,
+        "polymorphed": false,
+        "mortality": 0,
+        "gameover": false,
+        "fumbling": false,
+        "fumblingIntrinsic": 0,
+        "fumblingExtrinsic": 0,
+        "fireResistant": false,
+        "fireIntrinsic": 0,
+        "fireExtrinsic": 0,
+        "blind": false,
+        "underwater": false,
+        "levitating": false,
+        "flying": false,
+        "unchanging": false,
+        "confused": false,
+        "stunned": false,
+        "hallucinating": false,
+        "slimed": false,
+        "regenerating": false,
+        "sleepingRegen": false,
+        "trapped": 0,
+        "swallowed": false,
+        "stuck": false,
+        "mounted": false,
+        "canReachFloor": true,
+        "multi": 0,
+        "gloves": null,
+        "inventory": [],
+        "floor": [],
+        "trap": null,
+        "coreCalls": 2759
+      },
+      "scrollWish": {
+        "step": 35,
+        "turn": 1,
+        "hero": [
+          59,
+          6
+        ],
+        "level": {
+          "dnum": 0,
+          "dlevel": 1
+        },
+        "terrain": 26,
+        "wizard": true,
+        "debugMongen": false,
+        "liveMonsters": [
+          {
+            "id": 24,
+            "species": "jackal",
+            "position": [
+              67,
+              3
+            ],
+            "hp": 4,
+            "state": 0
+          },
+          {
+            "id": 20,
+            "species": "sewer rat",
+            "position": [
+              57,
+              8
+            ],
+            "hp": 2,
+            "state": 0
+          },
+          {
+            "id": 17,
+            "species": "jackal",
+            "position": [
+              56,
+              15
+            ],
+            "hp": 2,
+            "state": 0
+          }
+        ],
+        "deadQueued": [],
+        "rawMap": [
+          {
+            "position": "56,15",
+            "id": 17,
+            "hp": 2
+          },
+          {
+            "position": "57,8",
+            "id": 20,
+            "hp": 2
+          },
+          {
+            "position": "67,3",
+            "id": 24,
+            "hp": 4
+          }
+        ],
+        "purgeCount": 0,
+        "genocidedSpecies": [],
+        "literacy": 0,
+        "wishes": 1,
+        "humanHP": 12,
+        "humanMax": 12,
+        "species": "wizard",
+        "speciesIndex": 343,
+        "humanIndex": 343,
+        "speciesLevel": 10,
+        "monsterSpeed": 12,
+        "polymorphed": false,
+        "mortality": 0,
+        "gameover": false,
+        "fumbling": false,
+        "fumblingIntrinsic": 0,
+        "fumblingExtrinsic": 0,
+        "fireResistant": false,
+        "fireIntrinsic": 0,
+        "fireExtrinsic": 0,
+        "blind": false,
+        "underwater": false,
+        "levitating": false,
+        "flying": false,
+        "unchanging": false,
+        "confused": false,
+        "stunned": false,
+        "hallucinating": false,
+        "slimed": false,
+        "regenerating": false,
+        "sleepingRegen": false,
+        "trapped": 0,
+        "swallowed": false,
+        "stuck": false,
+        "mounted": false,
+        "canReachFloor": true,
+        "multi": 0,
+        "gloves": null,
+        "inventory": [
+          {
+            "id": 54,
+            "type": "SCR_GENOCIDE",
+            "letter": "a",
+            "quantity": 1,
+            "where": 3,
+            "worn": 0,
+            "cursed": false,
+            "blessed": true,
+            "known": true,
+            "artifact": 0,
+            "erosion": 0,
+            "material": 5
+          }
+        ],
+        "floor": [],
+        "trap": null,
+        "coreCalls": 2764
+      },
+      "cleaned": {
+        "step": 47,
+        "turn": 2,
+        "hero": [
+          59,
+          6
+        ],
+        "level": {
+          "dnum": 0,
+          "dlevel": 1
+        },
+        "terrain": 26,
+        "wizard": true,
+        "debugMongen": false,
+        "liveMonsters": [],
+        "deadQueued": [],
+        "rawMap": [],
+        "purgeCount": 0,
+        "genocidedSpecies": [],
+        "literacy": 1,
+        "wishes": 1,
+        "humanHP": 12,
+        "humanMax": 12,
+        "species": "wizard",
+        "speciesIndex": 343,
+        "humanIndex": 343,
+        "speciesLevel": 10,
+        "monsterSpeed": 12,
+        "polymorphed": false,
+        "mortality": 0,
+        "gameover": false,
+        "fumbling": false,
+        "fumblingIntrinsic": 0,
+        "fumblingExtrinsic": 0,
+        "fireResistant": false,
+        "fireIntrinsic": 0,
+        "fireExtrinsic": 0,
+        "blind": false,
+        "underwater": false,
+        "levitating": false,
+        "flying": false,
+        "unchanging": false,
+        "confused": false,
+        "stunned": false,
+        "hallucinating": false,
+        "slimed": false,
+        "regenerating": false,
+        "sleepingRegen": false,
+        "trapped": 0,
+        "swallowed": false,
+        "stuck": false,
+        "mounted": false,
+        "canReachFloor": true,
+        "multi": 0,
+        "gloves": null,
+        "inventory": [],
+        "floor": [],
+        "trap": null,
+        "coreCalls": 2771
+      },
+      "floor": {
+        "step": 49,
+        "turn": 3,
+        "hero": [
+          58,
+          6
+        ],
+        "level": {
+          "dnum": 0,
+          "dlevel": 1
+        },
+        "terrain": 25,
+        "wizard": true,
+        "debugMongen": false,
+        "liveMonsters": [],
+        "deadQueued": [],
+        "rawMap": [],
+        "purgeCount": 0,
+        "genocidedSpecies": [],
+        "literacy": 1,
+        "wishes": 1,
+        "humanHP": 12,
+        "humanMax": 12,
+        "species": "wizard",
+        "speciesIndex": 343,
+        "humanIndex": 343,
+        "speciesLevel": 10,
+        "monsterSpeed": 12,
+        "polymorphed": false,
+        "mortality": 0,
+        "gameover": false,
+        "fumbling": false,
+        "fumblingIntrinsic": 0,
+        "fumblingExtrinsic": 0,
+        "fireResistant": false,
+        "fireIntrinsic": 0,
+        "fireExtrinsic": 0,
+        "blind": false,
+        "underwater": false,
+        "levitating": false,
+        "flying": false,
+        "unchanging": false,
+        "confused": false,
+        "stunned": false,
+        "hallucinating": false,
+        "slimed": false,
+        "regenerating": false,
+        "sleepingRegen": false,
+        "trapped": 0,
+        "swallowed": false,
+        "stuck": false,
+        "mounted": false,
+        "canReachFloor": true,
+        "multi": 0,
+        "gloves": null,
+        "inventory": [],
+        "floor": [],
+        "trap": null,
+        "coreCalls": 2776
+      },
+      "polymorphed": {
+        "step": 76,
+        "turn": 3,
+        "hero": [
+          58,
+          6
+        ],
+        "level": {
+          "dnum": 0,
+          "dlevel": 1
+        },
+        "terrain": 25,
+        "wizard": true,
+        "debugMongen": false,
+        "liveMonsters": [],
+        "deadQueued": [],
+        "rawMap": [],
+        "purgeCount": 0,
+        "genocidedSpecies": [],
+        "literacy": 1,
+        "wishes": 1,
+        "humanHP": 12,
+        "humanMax": 12,
+        "monsterHP": 20,
+        "monsterMax": 20,
+        "species": "paper golem",
+        "speciesIndex": 250,
+        "humanIndex": 343,
+        "speciesLevel": 3,
+        "monsterSpeed": 12,
+        "formTimeout": 182,
+        "polymorphed": true,
+        "mortality": 0,
+        "gameover": false,
+        "fumbling": false,
+        "fumblingIntrinsic": 0,
+        "fumblingExtrinsic": 0,
+        "fireResistant": false,
+        "fireIntrinsic": 0,
+        "fireExtrinsic": 0,
+        "blind": false,
+        "underwater": false,
+        "levitating": false,
+        "flying": false,
+        "unchanging": false,
+        "confused": false,
+        "stunned": false,
+        "hallucinating": false,
+        "slimed": false,
+        "regenerating": false,
+        "sleepingRegen": false,
+        "trapped": 0,
+        "swallowed": false,
+        "stuck": false,
+        "mounted": false,
+        "canReachFloor": true,
+        "multi": 0,
+        "gloves": null,
+        "inventory": [],
+        "floor": [],
+        "trap": null,
+        "coreCalls": 2779
+      },
+      "gloveWishStart": {
+        "step": 76,
+        "turn": 3,
+        "hero": [
+          58,
+          6
+        ],
+        "level": {
+          "dnum": 0,
+          "dlevel": 1
+        },
+        "terrain": 25,
+        "wizard": true,
+        "debugMongen": false,
+        "liveMonsters": [],
+        "deadQueued": [],
+        "rawMap": [],
+        "purgeCount": 0,
+        "genocidedSpecies": [],
+        "literacy": 1,
+        "wishes": 1,
+        "humanHP": 12,
+        "humanMax": 12,
+        "monsterHP": 20,
+        "monsterMax": 20,
+        "species": "paper golem",
+        "speciesIndex": 250,
+        "humanIndex": 343,
+        "speciesLevel": 3,
+        "monsterSpeed": 12,
+        "formTimeout": 182,
+        "polymorphed": true,
+        "mortality": 0,
+        "gameover": false,
+        "fumbling": false,
+        "fumblingIntrinsic": 0,
+        "fumblingExtrinsic": 0,
+        "fireResistant": false,
+        "fireIntrinsic": 0,
+        "fireExtrinsic": 0,
+        "blind": false,
+        "underwater": false,
+        "levitating": false,
+        "flying": false,
+        "unchanging": false,
+        "confused": false,
+        "stunned": false,
+        "hallucinating": false,
+        "slimed": false,
+        "regenerating": false,
+        "sleepingRegen": false,
+        "trapped": 0,
+        "swallowed": false,
+        "stuck": false,
+        "mounted": false,
+        "canReachFloor": true,
+        "multi": 0,
+        "gloves": null,
+        "inventory": [],
+        "floor": [],
+        "trap": null,
+        "coreCalls": 2779
+      },
+      "gloveWish": {
+        "step": 113,
+        "turn": 3,
+        "hero": [
+          58,
+          6
+        ],
+        "level": {
+          "dnum": 0,
+          "dlevel": 1
+        },
+        "terrain": 25,
+        "wizard": true,
+        "debugMongen": false,
+        "liveMonsters": [],
+        "deadQueued": [],
+        "rawMap": [],
+        "purgeCount": 0,
+        "genocidedSpecies": [],
+        "literacy": 1,
+        "wishes": 2,
+        "humanHP": 12,
+        "humanMax": 12,
+        "monsterHP": 20,
+        "monsterMax": 20,
+        "species": "paper golem",
+        "speciesIndex": 250,
+        "humanIndex": 343,
+        "speciesLevel": 3,
+        "monsterSpeed": 12,
+        "formTimeout": 182,
+        "polymorphed": true,
+        "mortality": 0,
+        "gameover": false,
+        "fumbling": false,
+        "fumblingIntrinsic": 0,
+        "fumblingExtrinsic": 0,
+        "fireResistant": false,
+        "fireIntrinsic": 0,
+        "fireExtrinsic": 0,
+        "blind": false,
+        "underwater": false,
+        "levitating": false,
+        "flying": false,
+        "unchanging": false,
+        "confused": false,
+        "stunned": false,
+        "hallucinating": false,
+        "slimed": false,
+        "regenerating": false,
+        "sleepingRegen": false,
+        "trapped": 0,
+        "swallowed": false,
+        "stuck": false,
+        "mounted": false,
+        "canReachFloor": true,
+        "multi": 0,
+        "gloves": null,
+        "inventory": [
+          {
+            "id": 55,
+            "type": "GAUNTLETS_OF_FUMBLING",
+            "letter": "b",
+            "quantity": 1,
+            "where": 3,
+            "worn": 0,
+            "cursed": false,
+            "blessed": false,
+            "known": false,
+            "artifact": 0,
+            "erosion": 0,
+            "material": 7
+          }
+        ],
+        "floor": [],
+        "trap": null,
+        "coreCalls": 2789
+      },
+      "wearStart": {
+        "step": 113,
+        "turn": 3,
+        "hero": [
+          58,
+          6
+        ],
+        "level": {
+          "dnum": 0,
+          "dlevel": 1
+        },
+        "terrain": 25,
+        "wizard": true,
+        "debugMongen": false,
+        "liveMonsters": [],
+        "deadQueued": [],
+        "rawMap": [],
+        "purgeCount": 0,
+        "genocidedSpecies": [],
+        "literacy": 1,
+        "wishes": 2,
+        "humanHP": 12,
+        "humanMax": 12,
+        "monsterHP": 20,
+        "monsterMax": 20,
+        "species": "paper golem",
+        "speciesIndex": 250,
+        "humanIndex": 343,
+        "speciesLevel": 3,
+        "monsterSpeed": 12,
+        "formTimeout": 182,
+        "polymorphed": true,
+        "mortality": 0,
+        "gameover": false,
+        "fumbling": false,
+        "fumblingIntrinsic": 0,
+        "fumblingExtrinsic": 0,
+        "fireResistant": false,
+        "fireIntrinsic": 0,
+        "fireExtrinsic": 0,
+        "blind": false,
+        "underwater": false,
+        "levitating": false,
+        "flying": false,
+        "unchanging": false,
+        "confused": false,
+        "stunned": false,
+        "hallucinating": false,
+        "slimed": false,
+        "regenerating": false,
+        "sleepingRegen": false,
+        "trapped": 0,
+        "swallowed": false,
+        "stuck": false,
+        "mounted": false,
+        "canReachFloor": true,
+        "multi": 0,
+        "gloves": null,
+        "inventory": [
+          {
+            "id": 55,
+            "type": "GAUNTLETS_OF_FUMBLING",
+            "letter": "b",
+            "quantity": 1,
+            "where": 3,
+            "worn": 0,
+            "cursed": false,
+            "blessed": false,
+            "known": false,
+            "artifact": 0,
+            "erosion": 0,
+            "material": 7
+          }
+        ],
+        "floor": [],
+        "trap": null,
+        "coreCalls": 2789
+      },
+      "worn": {
+        "step": 120,
+        "turn": 4,
+        "hero": [
+          58,
+          6
+        ],
+        "level": {
+          "dnum": 0,
+          "dlevel": 1
+        },
+        "terrain": 25,
+        "wizard": true,
+        "debugMongen": false,
+        "liveMonsters": [],
+        "deadQueued": [],
+        "rawMap": [],
+        "purgeCount": 0,
+        "genocidedSpecies": [],
+        "literacy": 1,
+        "wishes": 2,
+        "humanHP": 12,
+        "humanMax": 12,
+        "monsterHP": 20,
+        "monsterMax": 20,
+        "species": "paper golem",
+        "speciesIndex": 250,
+        "humanIndex": 343,
+        "speciesLevel": 3,
+        "monsterSpeed": 12,
+        "formTimeout": 181,
+        "polymorphed": true,
+        "mortality": 0,
+        "gameover": false,
+        "fumbling": true,
+        "fumblingIntrinsic": 15,
+        "fumblingExtrinsic": 16,
+        "fireResistant": false,
+        "fireIntrinsic": 0,
+        "fireExtrinsic": 0,
+        "blind": false,
+        "underwater": false,
+        "levitating": false,
+        "flying": false,
+        "unchanging": false,
+        "confused": false,
+        "stunned": false,
+        "hallucinating": false,
+        "slimed": false,
+        "regenerating": false,
+        "sleepingRegen": false,
+        "trapped": 0,
+        "swallowed": false,
+        "stuck": false,
+        "mounted": false,
+        "canReachFloor": true,
+        "multi": 0,
+        "gloves": {
+          "id": 55,
+          "type": "GAUNTLETS_OF_FUMBLING",
+          "letter": "b",
+          "quantity": 1,
+          "where": 3,
+          "worn": 16,
+          "cursed": false,
+          "blessed": false,
+          "known": true,
+          "artifact": 0,
+          "erosion": 0,
+          "material": 7
+        },
+        "inventory": [
+          {
+            "id": 55,
+            "type": "GAUNTLETS_OF_FUMBLING",
+            "letter": "b",
+            "quantity": 1,
+            "where": 3,
+            "worn": 16,
+            "cursed": false,
+            "blessed": false,
+            "known": true,
+            "artifact": 0,
+            "erosion": 0,
+            "material": 7
+          }
+        ],
+        "floor": [],
+        "trap": null,
+        "coreCalls": 2795
+      },
+      "trapWishStart": {
+        "step": 120,
+        "turn": 4,
+        "hero": [
+          58,
+          6
+        ],
+        "level": {
+          "dnum": 0,
+          "dlevel": 1
+        },
+        "terrain": 25,
+        "wizard": true,
+        "debugMongen": false,
+        "liveMonsters": [],
+        "deadQueued": [],
+        "rawMap": [],
+        "purgeCount": 0,
+        "genocidedSpecies": [],
+        "literacy": 1,
+        "wishes": 2,
+        "humanHP": 12,
+        "humanMax": 12,
+        "monsterHP": 20,
+        "monsterMax": 20,
+        "species": "paper golem",
+        "speciesIndex": 250,
+        "humanIndex": 343,
+        "speciesLevel": 3,
+        "monsterSpeed": 12,
+        "formTimeout": 181,
+        "polymorphed": true,
+        "mortality": 0,
+        "gameover": false,
+        "fumbling": true,
+        "fumblingIntrinsic": 15,
+        "fumblingExtrinsic": 16,
+        "fireResistant": false,
+        "fireIntrinsic": 0,
+        "fireExtrinsic": 0,
+        "blind": false,
+        "underwater": false,
+        "levitating": false,
+        "flying": false,
+        "unchanging": false,
+        "confused": false,
+        "stunned": false,
+        "hallucinating": false,
+        "slimed": false,
+        "regenerating": false,
+        "sleepingRegen": false,
+        "trapped": 0,
+        "swallowed": false,
+        "stuck": false,
+        "mounted": false,
+        "canReachFloor": true,
+        "multi": 0,
+        "gloves": {
+          "id": 55,
+          "type": "GAUNTLETS_OF_FUMBLING",
+          "letter": "b",
+          "quantity": 1,
+          "where": 3,
+          "worn": 16,
+          "cursed": false,
+          "blessed": false,
+          "known": true,
+          "artifact": 0,
+          "erosion": 0,
+          "material": 7
+        },
+        "inventory": [
+          {
+            "id": 55,
+            "type": "GAUNTLETS_OF_FUMBLING",
+            "letter": "b",
+            "quantity": 1,
+            "where": 3,
+            "worn": 16,
+            "cursed": false,
+            "blessed": false,
+            "known": true,
+            "artifact": 0,
+            "erosion": 0,
+            "material": 7
+          }
+        ],
+        "floor": [],
+        "trap": null,
+        "coreCalls": 2795
+      },
+      "beforeAction": {
+        "step": 136,
+        "turn": 4,
+        "hero": [
+          58,
+          6
+        ],
+        "level": {
+          "dnum": 0,
+          "dlevel": 1
+        },
+        "terrain": 25,
+        "wizard": true,
+        "debugMongen": false,
+        "liveMonsters": [],
+        "deadQueued": [],
+        "rawMap": [],
+        "purgeCount": 0,
+        "genocidedSpecies": [],
+        "literacy": 1,
+        "wishes": 2,
+        "humanHP": 12,
+        "humanMax": 12,
+        "monsterHP": 20,
+        "monsterMax": 20,
+        "species": "paper golem",
+        "speciesIndex": 250,
+        "humanIndex": 343,
+        "speciesLevel": 3,
+        "monsterSpeed": 12,
+        "formTimeout": 181,
+        "polymorphed": true,
+        "mortality": 0,
+        "gameover": false,
+        "fumbling": true,
+        "fumblingIntrinsic": 15,
+        "fumblingExtrinsic": 16,
+        "fireResistant": false,
+        "fireIntrinsic": 0,
+        "fireExtrinsic": 0,
+        "blind": false,
+        "underwater": false,
+        "levitating": false,
+        "flying": false,
+        "unchanging": false,
+        "confused": false,
+        "stunned": false,
+        "hallucinating": false,
+        "slimed": false,
+        "regenerating": false,
+        "sleepingRegen": false,
+        "trapped": 0,
+        "swallowed": false,
+        "stuck": false,
+        "mounted": false,
+        "canReachFloor": true,
+        "multi": 0,
+        "gloves": {
+          "id": 55,
+          "type": "GAUNTLETS_OF_FUMBLING",
+          "letter": "b",
+          "quantity": 1,
+          "where": 3,
+          "worn": 16,
+          "cursed": false,
+          "blessed": false,
+          "known": true,
+          "artifact": 0,
+          "erosion": 0,
+          "material": 7
+        },
+        "inventory": [
+          {
+            "id": 55,
+            "type": "GAUNTLETS_OF_FUMBLING",
+            "letter": "b",
+            "quantity": 1,
+            "where": 3,
+            "worn": 16,
+            "cursed": false,
+            "blessed": false,
+            "known": true,
+            "artifact": 0,
+            "erosion": 0,
+            "material": 7
+          }
+        ],
+        "floor": [],
+        "trap": {
+          "type": 10,
+          "seen": false,
+          "position": [
+            58,
+            6
+          ]
+        },
+        "coreCalls": 2795
+      },
+      "actionEnter": {
+        "step": 137,
+        "turn": 4,
+        "hero": [
+          58,
+          6
+        ],
+        "level": {
+          "dnum": 0,
+          "dlevel": 1
+        },
+        "terrain": 25,
+        "wizard": true,
+        "debugMongen": false,
+        "liveMonsters": [],
+        "deadQueued": [],
+        "rawMap": [],
+        "purgeCount": 0,
+        "genocidedSpecies": [],
+        "literacy": 1,
+        "wishes": 2,
+        "humanHP": 12,
+        "humanMax": 12,
+        "monsterHP": 20,
+        "monsterMax": 20,
+        "species": "paper golem",
+        "speciesIndex": 250,
+        "humanIndex": 343,
+        "speciesLevel": 3,
+        "monsterSpeed": 12,
+        "formTimeout": 181,
+        "polymorphed": true,
+        "mortality": 0,
+        "gameover": false,
+        "fumbling": true,
+        "fumblingIntrinsic": 15,
+        "fumblingExtrinsic": 16,
+        "fireResistant": false,
+        "fireIntrinsic": 0,
+        "fireExtrinsic": 0,
+        "blind": false,
+        "underwater": false,
+        "levitating": false,
+        "flying": false,
+        "unchanging": false,
+        "confused": false,
+        "stunned": false,
+        "hallucinating": false,
+        "slimed": false,
+        "regenerating": false,
+        "sleepingRegen": false,
+        "trapped": 0,
+        "swallowed": false,
+        "stuck": false,
+        "mounted": false,
+        "canReachFloor": true,
+        "multi": 0,
+        "gloves": {
+          "id": 55,
+          "type": "GAUNTLETS_OF_FUMBLING",
+          "letter": "b",
+          "quantity": 1,
+          "where": 3,
+          "worn": 16,
+          "cursed": false,
+          "blessed": false,
+          "known": true,
+          "artifact": 0,
+          "erosion": 0,
+          "material": 7
+        },
+        "inventory": [
+          {
+            "id": 55,
+            "type": "GAUNTLETS_OF_FUMBLING",
+            "letter": "b",
+            "quantity": 1,
+            "where": 3,
+            "worn": 16,
+            "cursed": false,
+            "blessed": false,
+            "known": true,
+            "artifact": 0,
+            "erosion": 0,
+            "material": 7
+          }
+        ],
+        "floor": [],
+        "trap": {
+          "type": 10,
+          "seen": false,
+          "position": [
+            58,
+            6
+          ]
+        },
+        "coreCalls": 2795
+      },
+      "final": {
+        "step": 142,
+        "turn": 4,
+        "hero": [
+          58,
+          6
+        ],
+        "level": {
+          "dnum": 0,
+          "dlevel": 1
+        },
+        "terrain": 25,
+        "wizard": true,
+        "debugMongen": false,
+        "liveMonsters": [],
+        "deadQueued": [],
+        "rawMap": [],
+        "purgeCount": 0,
+        "genocidedSpecies": [],
+        "literacy": 1,
+        "wishes": 2,
+        "humanHP": 12,
+        "humanMax": 12,
+        "monsterHP": 20,
+        "monsterMax": 20,
+        "species": "paper golem",
+        "speciesIndex": 250,
+        "humanIndex": 343,
+        "speciesLevel": 3,
+        "monsterSpeed": 12,
+        "formTimeout": 181,
+        "polymorphed": true,
+        "mortality": 0,
+        "gameover": false,
+        "fumbling": true,
+        "fumblingIntrinsic": 15,
+        "fumblingExtrinsic": 16,
+        "fireResistant": false,
+        "fireIntrinsic": 0,
+        "fireExtrinsic": 0,
+        "blind": false,
+        "underwater": false,
+        "levitating": false,
+        "flying": false,
+        "unchanging": false,
+        "confused": false,
+        "stunned": false,
+        "hallucinating": false,
+        "slimed": false,
+        "regenerating": false,
+        "sleepingRegen": false,
+        "trapped": 0,
+        "swallowed": false,
+        "stuck": false,
+        "mounted": false,
+        "canReachFloor": true,
+        "multi": 0,
+        "gloves": {
+          "id": 55,
+          "type": "GAUNTLETS_OF_FUMBLING",
+          "letter": "b",
+          "quantity": 1,
+          "where": 3,
+          "worn": 16,
+          "cursed": false,
+          "blessed": false,
+          "known": true,
+          "artifact": 0,
+          "erosion": 0,
+          "material": 7
+        },
+        "inventory": [
+          {
+            "id": 55,
+            "type": "GAUNTLETS_OF_FUMBLING",
+            "letter": "b",
+            "quantity": 1,
+            "where": 3,
+            "worn": 16,
+            "cursed": false,
+            "blessed": false,
+            "known": true,
+            "artifact": 0,
+            "erosion": 0,
+            "material": 7
+          }
+        ],
+        "floor": [],
+        "trap": {
+          "type": 10,
+          "seen": false,
+          "position": [
+            58,
+            6
+          ]
+        },
+        "coreCalls": 2795
+      }
+    },
+    "actionCallCount": 0,
+    "actionCallPrefix": [],
+    "wearCalls": [
+      "rn2(70)=6",
+      "rn2(400)=50",
+      "rn2(200)=119",
+      "rn2(20)=9",
+      "rn2(85)=72",
+      "rnd(20)=15"
+    ],
+    "CAlternate": 20,
+    "CFirstDamage": null,
+    "CExpectedShrinkBound": null,
+    "CStateFromMatchingPrefix": null,
+    "cleanupObservation": {
+      "initialLive": 3,
+      "cleanedLive": 0,
+      "cleanedDeadQueued": 0,
+      "cleanedPurge": 0,
+      "cleanedRawMap": 0,
+      "postCleanupMaximumLive": 0,
+      "postCleanupFirstLive": null
+    },
+    "messages": [
+      {
+        "step": 0,
+        "text": "Hello wizard, welcome to NetHack!  You are a neutral male human Wizard."
+      },
+      {
+        "step": 1,
+        "text": "Unknown command ' '."
+      },
+      {
+        "step": 2,
+        "text": "For what do you wish?"
+      },
+      {
+        "step": 3,
+        "text": "For what do you wish? b"
+      },
+      {
+        "step": 4,
+        "text": "For what do you wish? bl"
+      },
+      {
+        "step": 5,
+        "text": "For what do you wish? ble"
+      },
+      {
+        "step": 6,
+        "text": "For what do you wish? bles"
+      },
+      {
+        "step": 7,
+        "text": "For what do you wish? bless"
+      },
+      {
+        "step": 8,
+        "text": "For what do you wish? blesse"
+      },
+      {
+        "step": 9,
+        "text": "For what do you wish? blessed"
+      },
+      {
+        "step": 11,
+        "text": "For what do you wish? blessed s"
+      },
+      {
+        "step": 12,
+        "text": "For what do you wish? blessed sc"
+      },
+      {
+        "step": 13,
+        "text": "For what do you wish? blessed scr"
+      },
+      {
+        "step": 14,
+        "text": "For what do you wish? blessed scro"
+      },
+      {
+        "step": 15,
+        "text": "For what do you wish? blessed scrol"
+      },
+      {
+        "step": 16,
+        "text": "For what do you wish? blessed scroll"
+      },
+      {
+        "step": 18,
+        "text": "For what do you wish? blessed scroll o"
+      },
+      {
+        "step": 19,
+        "text": "For what do you wish? blessed scroll of"
+      },
+      {
+        "step": 21,
+        "text": "For what do you wish? blessed scroll of g"
+      },
+      {
+        "step": 22,
+        "text": "For what do you wish? blessed scroll of ge"
+      },
+      {
+        "step": 23,
+        "text": "For what do you wish? blessed scroll of gen"
+      },
+      {
+        "step": 24,
+        "text": "For what do you wish? blessed scroll of geno"
+      },
+      {
+        "step": 25,
+        "text": "For what do you wish? blessed scroll of genoc"
+      },
+      {
+        "step": 26,
+        "text": "For what do you wish? blessed scroll of genoci"
+      },
+      {
+        "step": 27,
+        "text": "For what do you wish? blessed scroll of genocid"
+      },
+      {
+        "step": 28,
+        "text": "For what do you wish? blessed scroll of genocide"
+      },
+      {
+        "step": 29,
+        "text": "a - a scroll labeled DUAM XNAHT."
+      },
+      {
+        "step": 30,
+        "text": "Unknown command ' '."
+      },
+      {
+        "step": 34,
+        "text": ""
+      },
+      {
+        "step": 37,
+        "text": "As you read the scroll, it disappears.--More--"
+      },
+      {
+        "step": 38,
+        "text": "You have found a scroll of genocide!--More--"
+      },
+      {
+        "step": 39,
+        "text": "What class of monsters do you want to genocide?"
+      },
+      {
+        "step": 40,
+        "text": "What class of monsters do you want to genocide? *"
+      },
+      {
+        "step": 41,
+        "text": "Eliminated 3 monsters."
+      },
+      {
+        "step": 42,
+        "text": "Unknown command ' '."
+      },
+      {
+        "step": 46,
+        "text": ""
+      },
+      {
+        "step": 49,
+        "text": "Unknown command ' '."
+      },
+      {
+        "step": 71,
+        "text": "You turn into a paper golem!"
+      },
+      {
+        "step": 72,
+        "text": "Unknown command ' '."
+      },
+      {
+        "step": 75,
+        "text": ""
+      },
+      {
+        "step": 77,
+        "text": "For what do you wish?"
+      },
+      {
+        "step": 78,
+        "text": "For what do you wish? u"
+      },
+      {
+        "step": 79,
+        "text": "For what do you wish? un"
+      },
+      {
+        "step": 80,
+        "text": "For what do you wish? unc"
+      },
+      {
+        "step": 81,
+        "text": "For what do you wish? uncu"
+      },
+      {
+        "step": 82,
+        "text": "For what do you wish? uncur"
+      },
+      {
+        "step": 83,
+        "text": "For what do you wish? uncurs"
+      },
+      {
+        "step": 84,
+        "text": "For what do you wish? uncurse"
+      },
+      {
+        "step": 85,
+        "text": "For what do you wish? uncursed"
+      },
+      {
+        "step": 87,
+        "text": "For what do you wish? uncursed g"
+      },
+      {
+        "step": 88,
+        "text": "For what do you wish? uncursed ga"
+      },
+      {
+        "step": 89,
+        "text": "For what do you wish? uncursed gau"
+      },
+      {
+        "step": 90,
+        "text": "For what do you wish? uncursed gaun"
+      },
+      {
+        "step": 91,
+        "text": "For what do you wish? uncursed gaunt"
+      },
+      {
+        "step": 92,
+        "text": "For what do you wish? uncursed gauntl"
+      },
+      {
+        "step": 93,
+        "text": "For what do you wish? uncursed gauntle"
+      },
+      {
+        "step": 94,
+        "text": "For what do you wish? uncursed gauntlet"
+      },
+      {
+        "step": 95,
+        "text": "For what do you wish? uncursed gauntlets"
+      },
+      {
+        "step": 97,
+        "text": "For what do you wish? uncursed gauntlets o"
+      },
+      {
+        "step": 98,
+        "text": "For what do you wish? uncursed gauntlets of"
+      },
+      {
+        "step": 100,
+        "text": "For what do you wish? uncursed gauntlets of f"
+      },
+      {
+        "step": 101,
+        "text": "For what do you wish? uncursed gauntlets of fu"
+      },
+      {
+        "step": 102,
+        "text": "For what do you wish? uncursed gauntlets of fum"
+      },
+      {
+        "step": 103,
+        "text": "For what do you wish? uncursed gauntlets of fumb"
+      },
+      {
+        "step": 104,
+        "text": "For what do you wish? uncursed gauntlets of fumbl"
+      },
+      {
+        "step": 105,
+        "text": "For what do you wish? uncursed gauntlets of fumbli"
+      },
+      {
+        "step": 106,
+        "text": "For what do you wish? uncursed gauntlets of fumblin"
+      },
+      {
+        "step": 107,
+        "text": "For what do you wish? uncursed gauntlets of fumbling"
+      },
+      {
+        "step": 108,
+        "text": "b - a pair of old gloves."
+      },
+      {
+        "step": 109,
+        "text": "Unknown command ' '."
+      },
+      {
+        "step": 112,
+        "text": ""
+      },
+      {
+        "step": 115,
+        "text": "You finish your dressing maneuver."
+      },
+      {
+        "step": 116,
+        "text": "Unknown command ' '."
+      },
+      {
+        "step": 119,
+        "text": ""
+      },
+      {
+        "step": 121,
+        "text": "For what do you wish?"
+      },
+      {
+        "step": 122,
+        "text": "For what do you wish? f"
+      },
+      {
+        "step": 123,
+        "text": "For what do you wish? fi"
+      },
+      {
+        "step": 124,
+        "text": "For what do you wish? fir"
+      },
+      {
+        "step": 125,
+        "text": "For what do you wish? fire"
+      },
+      {
+        "step": 127,
+        "text": "For what do you wish? fire t"
+      },
+      {
+        "step": 128,
+        "text": "For what do you wish? fire tr"
+      },
+      {
+        "step": 129,
+        "text": "For what do you wish? fire tra"
+      },
+      {
+        "step": 130,
+        "text": "For what do you wish? fire trap"
+      },
+      {
+        "step": 131,
+        "text": "A fire trap."
+      },
+      {
+        "step": 132,
+        "text": "Unknown command ' '."
+      },
+      {
+        "step": 135,
+        "text": ""
+      },
+      {
+        "step": 137,
+        "text": "You see no objects here."
+      },
+      {
+        "step": 138,
+        "text": "Unknown command ' '."
+      },
+      {
+        "step": 141,
+        "text": ""
+      }
+    ],
+    "statesSHA256": "e9bd847274db8f29194f220bc395dfe4d6de146ad9f1984e8856caeb16d1ebc7",
+    "stateCount": 143,
+    "neutrality": {
+      "observedEqualsPlain": true,
+      "plainEqualsDeferred": true,
+      "eofStable": true,
+      "plainConsumed": 142,
+      "deferredConsumed": 142,
+      "expectedConsumed": 142,
+      "hashes": {
+        "observed": {
+          "screens": "a5e1d68d928220bd98e5bbf5ec53feb740e89efe2cf0e40d2423f38cb19d53a1",
+          "cursors": "35e4191fea872793d8b1b7ae917e8dad3ea6603e462cf92f56cdef3b0b948c66",
+          "calls": "ccbfbf565eef91752a2c6e3b7771216903301755b85212af7dd4f39e18ce2f21",
+          "slices": "5dafdcd2bea25b74feac0ba8442a6a6014bb1bd917509a6bc2c0d26d0a7a4a6d",
+          "frames": "c36be3fc69ed5c04f4a3b9654193a98180a19e75e761a364492db10787a71258"
+        },
+        "plain": {
+          "screens": "a5e1d68d928220bd98e5bbf5ec53feb740e89efe2cf0e40d2423f38cb19d53a1",
+          "cursors": "35e4191fea872793d8b1b7ae917e8dad3ea6603e462cf92f56cdef3b0b948c66",
+          "calls": "ccbfbf565eef91752a2c6e3b7771216903301755b85212af7dd4f39e18ce2f21",
+          "slices": "5dafdcd2bea25b74feac0ba8442a6a6014bb1bd917509a6bc2c0d26d0a7a4a6d",
+          "frames": "c36be3fc69ed5c04f4a3b9654193a98180a19e75e761a364492db10787a71258"
+        },
+        "deferred": {
+          "screens": "a5e1d68d928220bd98e5bbf5ec53feb740e89efe2cf0e40d2423f38cb19d53a1",
+          "cursors": "35e4191fea872793d8b1b7ae917e8dad3ea6603e462cf92f56cdef3b0b948c66",
+          "calls": "ccbfbf565eef91752a2c6e3b7771216903301755b85212af7dd4f39e18ce2f21",
+          "slices": "5dafdcd2bea25b74feac0ba8442a6a6014bb1bd917509a6bc2c0d26d0a7a4a6d",
+          "frames": "c36be3fc69ed5c04f4a3b9654193a98180a19e75e761a364492db10787a71258"
+        }
+      },
+      "pass": true
+    },
+    "nativeParityClaimed": false
+  },
+  {
+    "name": "clean-minotaur-look-only",
+    "negative": true,
+    "keys": 139,
+    "producerPass": true,
+    "sourcePass": true,
+    "firstUnmetProducer": null,
+    "reach": [
+      {
+        "name": "all keys consumed without runtime error",
+        "pass": true
+      },
+      {
+        "name": "fixed monsters exist before real cleanup",
+        "pass": true
+      },
+      {
+        "name": "real wished blessed scroll occupies slot a",
+        "pass": true
+      },
+      {
+        "name": "star cleanup removes live monsters and their raw map slots",
+        "pass": true
+      },
+      {
+        "name": "cleanup consumes scroll without species genocide",
+        "pass": true
+      },
+      {
+        "name": "read consumes time without damaging healthy human",
+        "pass": true
+      },
+      {
+        "name": "no live monsters at any observed boundary after cleanup",
+        "pass": true
+      },
+      {
+        "name": "one ordinary west step reaches clear room floor",
+        "pass": true
+      },
+      {
+        "name": "controlled exact species produced with healthy monster pool",
+        "pass": true
+      },
+      {
+        "name": "source HP producer reached",
+        "pass": true
+      },
+      {
+        "name": "only real wished uncursed gloves occupy slot b",
+        "pass": true
+      },
+      {
+        "name": "real wear retains identity and W_ARMG property",
+        "pass": true
+      },
+      {
+        "name": "Gloves_on timed producer ran before action",
+        "pass": true
+      },
+      {
+        "name": "polymorph human HP pool unchanged through setup",
+        "pass": true
+      },
+      {
+        "name": "fire resistance comes only from iron form",
+        "pass": true
+      },
+      {
+        "name": "sitting eligibility and excluded branch prerequisites",
+        "pass": true
+      },
+      {
+        "name": "ordinary fire trap exists unseen before action",
+        "pass": true
+      },
+      {
+        "name": "empty ground and glove-only inventory throughout setup",
+        "pass": true
+      },
+      {
+        "name": "healthy monster pool remains above its species level before action",
+        "pass": true
+      },
+      {
+        "name": "source-predicted ordinary producer feedback",
+        "pass": true
+      },
+      {
+        "name": "chosen trigger or look branch reached",
+        "pass": true
+      },
+      {
+        "name": "no regeneration boundary obscures damage observation",
+        "pass": true
+      },
+      {
+        "name": "ordinary producer and action survive",
+        "pass": true
+      },
+      {
+        "name": "all five output streams are complete",
+        "pass": true
+      }
+    ],
+    "contracts": [
+      {
+        "name": "C primary visible predicates",
+        "pass": true
+      },
+      {
+        "name": "C leaves human HP maximum unchanged",
+        "pass": true
+      },
+      {
+        "name": "C leaves healthy human HP unchanged",
+        "pass": true
+      },
+      {
+        "name": "C damage RNG prefix with no second d(2,4)",
+        "pass": true
+      },
+      {
+        "name": "C material shrink clamp and loss or unchanged look state",
+        "pass": true
+      },
+      {
+        "name": "C paper trigger always rehumanizes; controls preserve selected form",
+        "pass": true
+      },
+      {
+        "name": "C action time contract",
+        "pass": true
+      }
+    ],
+    "boundaries": 140,
+    "calls": 2798,
+    "frames": 0,
+    "outputHashes": {
+      "screens": "02c33adc444d8def2489b96b0adf54aca098f1fa276fbd6679eb1b9227bfc5b0",
+      "cursors": "177de5e4ff7e9047a29ea27f7f8bcea7529367dc5e0125786091b5971331811b",
+      "calls": "9386169be802f025af0fa629d0862a97579842e00388076a7b40f5355218406d",
+      "slices": "b7bd137c2cedff7527c7c4843054c49e947d6535cad370a1d64ef563c4542d65",
+      "frames": "f5ef758f4c91db60988a182047566e4dce7a111c9e2dc3b73036594a75d2325e"
+    },
+    "stages": {
+      "initial": {
+        "step": 0,
+        "turn": 1,
+        "hero": [
+          59,
+          6
+        ],
+        "level": {
+          "dnum": 0,
+          "dlevel": 1
+        },
+        "terrain": 26,
+        "wizard": true,
+        "debugMongen": false,
+        "liveMonsters": [
+          {
+            "id": 24,
+            "species": "jackal",
+            "position": [
+              67,
+              3
+            ],
+            "hp": 4,
+            "state": 0
+          },
+          {
+            "id": 20,
+            "species": "sewer rat",
+            "position": [
+              57,
+              8
+            ],
+            "hp": 2,
+            "state": 0
+          },
+          {
+            "id": 17,
+            "species": "jackal",
+            "position": [
+              56,
+              15
+            ],
+            "hp": 2,
+            "state": 0
+          }
+        ],
+        "deadQueued": [],
+        "rawMap": [
+          {
+            "position": "56,15",
+            "id": 17,
+            "hp": 2
+          },
+          {
+            "position": "57,8",
+            "id": 20,
+            "hp": 2
+          },
+          {
+            "position": "67,3",
+            "id": 24,
+            "hp": 4
+          }
+        ],
+        "purgeCount": 0,
+        "genocidedSpecies": [],
+        "literacy": 0,
+        "wishes": 0,
+        "humanHP": 12,
+        "humanMax": 12,
+        "species": "wizard",
+        "speciesIndex": 343,
+        "humanIndex": 343,
+        "speciesLevel": 10,
+        "monsterSpeed": 12,
+        "polymorphed": false,
+        "mortality": 0,
+        "gameover": false,
+        "fumbling": false,
+        "fumblingIntrinsic": 0,
+        "fumblingExtrinsic": 0,
+        "fireResistant": false,
+        "fireIntrinsic": 0,
+        "fireExtrinsic": 0,
+        "blind": false,
+        "underwater": false,
+        "levitating": false,
+        "flying": false,
+        "unchanging": false,
+        "confused": false,
+        "stunned": false,
+        "hallucinating": false,
+        "slimed": false,
+        "regenerating": false,
+        "sleepingRegen": false,
+        "trapped": 0,
+        "swallowed": false,
+        "stuck": false,
+        "mounted": false,
+        "canReachFloor": true,
+        "gloves": null,
+        "inventory": [],
+        "floor": [],
+        "trap": null,
+        "coreCalls": 2759
+      },
+      "cleanupWishStart": {
+        "step": 1,
+        "turn": 1,
+        "hero": [
+          59,
+          6
+        ],
+        "level": {
+          "dnum": 0,
+          "dlevel": 1
+        },
+        "terrain": 26,
+        "wizard": true,
+        "debugMongen": false,
+        "liveMonsters": [
+          {
+            "id": 24,
+            "species": "jackal",
+            "position": [
+              67,
+              3
+            ],
+            "hp": 4,
+            "state": 0
+          },
+          {
+            "id": 20,
+            "species": "sewer rat",
+            "position": [
+              57,
+              8
+            ],
+            "hp": 2,
+            "state": 0
+          },
+          {
+            "id": 17,
+            "species": "jackal",
+            "position": [
+              56,
+              15
+            ],
+            "hp": 2,
+            "state": 0
+          }
+        ],
+        "deadQueued": [],
+        "rawMap": [
+          {
+            "position": "56,15",
+            "id": 17,
+            "hp": 2
+          },
+          {
+            "position": "57,8",
+            "id": 20,
+            "hp": 2
+          },
+          {
+            "position": "67,3",
+            "id": 24,
+            "hp": 4
+          }
+        ],
+        "purgeCount": 0,
+        "genocidedSpecies": [],
+        "literacy": 0,
+        "wishes": 0,
+        "humanHP": 12,
+        "humanMax": 12,
+        "species": "wizard",
+        "speciesIndex": 343,
+        "humanIndex": 343,
+        "speciesLevel": 10,
+        "monsterSpeed": 12,
+        "polymorphed": false,
+        "mortality": 0,
+        "gameover": false,
+        "fumbling": false,
+        "fumblingIntrinsic": 0,
+        "fumblingExtrinsic": 0,
+        "fireResistant": false,
+        "fireIntrinsic": 0,
+        "fireExtrinsic": 0,
+        "blind": false,
+        "underwater": false,
+        "levitating": false,
+        "flying": false,
+        "unchanging": false,
+        "confused": false,
+        "stunned": false,
+        "hallucinating": false,
+        "slimed": false,
+        "regenerating": false,
+        "sleepingRegen": false,
+        "trapped": 0,
+        "swallowed": false,
+        "stuck": false,
+        "mounted": false,
+        "canReachFloor": true,
+        "multi": 0,
+        "gloves": null,
+        "inventory": [],
+        "floor": [],
+        "trap": null,
+        "coreCalls": 2759
+      },
+      "scrollWish": {
+        "step": 35,
+        "turn": 1,
+        "hero": [
+          59,
+          6
+        ],
+        "level": {
+          "dnum": 0,
+          "dlevel": 1
+        },
+        "terrain": 26,
+        "wizard": true,
+        "debugMongen": false,
+        "liveMonsters": [
+          {
+            "id": 24,
+            "species": "jackal",
+            "position": [
+              67,
+              3
+            ],
+            "hp": 4,
+            "state": 0
+          },
+          {
+            "id": 20,
+            "species": "sewer rat",
+            "position": [
+              57,
+              8
+            ],
+            "hp": 2,
+            "state": 0
+          },
+          {
+            "id": 17,
+            "species": "jackal",
+            "position": [
+              56,
+              15
+            ],
+            "hp": 2,
+            "state": 0
+          }
+        ],
+        "deadQueued": [],
+        "rawMap": [
+          {
+            "position": "56,15",
+            "id": 17,
+            "hp": 2
+          },
+          {
+            "position": "57,8",
+            "id": 20,
+            "hp": 2
+          },
+          {
+            "position": "67,3",
+            "id": 24,
+            "hp": 4
+          }
+        ],
+        "purgeCount": 0,
+        "genocidedSpecies": [],
+        "literacy": 0,
+        "wishes": 1,
+        "humanHP": 12,
+        "humanMax": 12,
+        "species": "wizard",
+        "speciesIndex": 343,
+        "humanIndex": 343,
+        "speciesLevel": 10,
+        "monsterSpeed": 12,
+        "polymorphed": false,
+        "mortality": 0,
+        "gameover": false,
+        "fumbling": false,
+        "fumblingIntrinsic": 0,
+        "fumblingExtrinsic": 0,
+        "fireResistant": false,
+        "fireIntrinsic": 0,
+        "fireExtrinsic": 0,
+        "blind": false,
+        "underwater": false,
+        "levitating": false,
+        "flying": false,
+        "unchanging": false,
+        "confused": false,
+        "stunned": false,
+        "hallucinating": false,
+        "slimed": false,
+        "regenerating": false,
+        "sleepingRegen": false,
+        "trapped": 0,
+        "swallowed": false,
+        "stuck": false,
+        "mounted": false,
+        "canReachFloor": true,
+        "multi": 0,
+        "gloves": null,
+        "inventory": [
+          {
+            "id": 54,
+            "type": "SCR_GENOCIDE",
+            "letter": "a",
+            "quantity": 1,
+            "where": 3,
+            "worn": 0,
+            "cursed": false,
+            "blessed": true,
+            "known": true,
+            "artifact": 0,
+            "erosion": 0,
+            "material": 5
+          }
+        ],
+        "floor": [],
+        "trap": null,
+        "coreCalls": 2764
+      },
+      "cleaned": {
+        "step": 47,
+        "turn": 2,
+        "hero": [
+          59,
+          6
+        ],
+        "level": {
+          "dnum": 0,
+          "dlevel": 1
+        },
+        "terrain": 26,
+        "wizard": true,
+        "debugMongen": false,
+        "liveMonsters": [],
+        "deadQueued": [],
+        "rawMap": [],
+        "purgeCount": 0,
+        "genocidedSpecies": [],
+        "literacy": 1,
+        "wishes": 1,
+        "humanHP": 12,
+        "humanMax": 12,
+        "species": "wizard",
+        "speciesIndex": 343,
+        "humanIndex": 343,
+        "speciesLevel": 10,
+        "monsterSpeed": 12,
+        "polymorphed": false,
+        "mortality": 0,
+        "gameover": false,
+        "fumbling": false,
+        "fumblingIntrinsic": 0,
+        "fumblingExtrinsic": 0,
+        "fireResistant": false,
+        "fireIntrinsic": 0,
+        "fireExtrinsic": 0,
+        "blind": false,
+        "underwater": false,
+        "levitating": false,
+        "flying": false,
+        "unchanging": false,
+        "confused": false,
+        "stunned": false,
+        "hallucinating": false,
+        "slimed": false,
+        "regenerating": false,
+        "sleepingRegen": false,
+        "trapped": 0,
+        "swallowed": false,
+        "stuck": false,
+        "mounted": false,
+        "canReachFloor": true,
+        "multi": 0,
+        "gloves": null,
+        "inventory": [],
+        "floor": [],
+        "trap": null,
+        "coreCalls": 2771
+      },
+      "floor": {
+        "step": 49,
+        "turn": 3,
+        "hero": [
+          58,
+          6
+        ],
+        "level": {
+          "dnum": 0,
+          "dlevel": 1
+        },
+        "terrain": 25,
+        "wizard": true,
+        "debugMongen": false,
+        "liveMonsters": [],
+        "deadQueued": [],
+        "rawMap": [],
+        "purgeCount": 0,
+        "genocidedSpecies": [],
+        "literacy": 1,
+        "wishes": 1,
+        "humanHP": 12,
+        "humanMax": 12,
+        "species": "wizard",
+        "speciesIndex": 343,
+        "humanIndex": 343,
+        "speciesLevel": 10,
+        "monsterSpeed": 12,
+        "polymorphed": false,
+        "mortality": 0,
+        "gameover": false,
+        "fumbling": false,
+        "fumblingIntrinsic": 0,
+        "fumblingExtrinsic": 0,
+        "fireResistant": false,
+        "fireIntrinsic": 0,
+        "fireExtrinsic": 0,
+        "blind": false,
+        "underwater": false,
+        "levitating": false,
+        "flying": false,
+        "unchanging": false,
+        "confused": false,
+        "stunned": false,
+        "hallucinating": false,
+        "slimed": false,
+        "regenerating": false,
+        "sleepingRegen": false,
+        "trapped": 0,
+        "swallowed": false,
+        "stuck": false,
+        "mounted": false,
+        "canReachFloor": true,
+        "multi": 0,
+        "gloves": null,
+        "inventory": [],
+        "floor": [],
+        "trap": null,
+        "coreCalls": 2776
+      },
+      "polymorphed": {
+        "step": 73,
+        "turn": 3,
+        "hero": [
+          58,
+          6
+        ],
+        "level": {
+          "dnum": 0,
+          "dlevel": 1
+        },
+        "terrain": 25,
+        "wizard": true,
+        "debugMongen": false,
+        "liveMonsters": [],
+        "deadQueued": [],
+        "rawMap": [],
+        "purgeCount": 0,
+        "genocidedSpecies": [],
+        "literacy": 1,
+        "wishes": 1,
+        "humanHP": 12,
+        "humanMax": 12,
+        "monsterHP": 79,
+        "monsterMax": 79,
+        "species": "minotaur",
+        "speciesIndex": 177,
+        "humanIndex": 343,
+        "speciesLevel": 15,
+        "monsterSpeed": 15,
+        "formTimeout": 54,
+        "polymorphed": true,
+        "mortality": 0,
+        "gameover": false,
+        "fumbling": false,
+        "fumblingIntrinsic": 0,
+        "fumblingExtrinsic": 0,
+        "fireResistant": false,
+        "fireIntrinsic": 0,
+        "fireExtrinsic": 0,
+        "blind": false,
+        "underwater": false,
+        "levitating": false,
+        "flying": false,
+        "unchanging": false,
+        "confused": false,
+        "stunned": false,
+        "hallucinating": false,
+        "slimed": false,
+        "regenerating": false,
+        "sleepingRegen": false,
+        "trapped": 0,
+        "swallowed": false,
+        "stuck": false,
+        "mounted": false,
+        "canReachFloor": true,
+        "multi": 0,
+        "gloves": null,
+        "inventory": [],
+        "floor": [],
+        "trap": null,
+        "coreCalls": 2781
+      },
+      "gloveWishStart": {
+        "step": 73,
+        "turn": 3,
+        "hero": [
+          58,
+          6
+        ],
+        "level": {
+          "dnum": 0,
+          "dlevel": 1
+        },
+        "terrain": 25,
+        "wizard": true,
+        "debugMongen": false,
+        "liveMonsters": [],
+        "deadQueued": [],
+        "rawMap": [],
+        "purgeCount": 0,
+        "genocidedSpecies": [],
+        "literacy": 1,
+        "wishes": 1,
+        "humanHP": 12,
+        "humanMax": 12,
+        "monsterHP": 79,
+        "monsterMax": 79,
+        "species": "minotaur",
+        "speciesIndex": 177,
+        "humanIndex": 343,
+        "speciesLevel": 15,
+        "monsterSpeed": 15,
+        "formTimeout": 54,
+        "polymorphed": true,
+        "mortality": 0,
+        "gameover": false,
+        "fumbling": false,
+        "fumblingIntrinsic": 0,
+        "fumblingExtrinsic": 0,
+        "fireResistant": false,
+        "fireIntrinsic": 0,
+        "fireExtrinsic": 0,
+        "blind": false,
+        "underwater": false,
+        "levitating": false,
+        "flying": false,
+        "unchanging": false,
+        "confused": false,
+        "stunned": false,
+        "hallucinating": false,
+        "slimed": false,
+        "regenerating": false,
+        "sleepingRegen": false,
+        "trapped": 0,
+        "swallowed": false,
+        "stuck": false,
+        "mounted": false,
+        "canReachFloor": true,
+        "multi": 0,
+        "gloves": null,
+        "inventory": [],
+        "floor": [],
+        "trap": null,
+        "coreCalls": 2781
+      },
+      "gloveWish": {
+        "step": 110,
+        "turn": 3,
+        "hero": [
+          58,
+          6
+        ],
+        "level": {
+          "dnum": 0,
+          "dlevel": 1
+        },
+        "terrain": 25,
+        "wizard": true,
+        "debugMongen": false,
+        "liveMonsters": [],
+        "deadQueued": [],
+        "rawMap": [],
+        "purgeCount": 0,
+        "genocidedSpecies": [],
+        "literacy": 1,
+        "wishes": 2,
+        "humanHP": 12,
+        "humanMax": 12,
+        "monsterHP": 79,
+        "monsterMax": 79,
+        "species": "minotaur",
+        "speciesIndex": 177,
+        "humanIndex": 343,
+        "speciesLevel": 15,
+        "monsterSpeed": 15,
+        "formTimeout": 54,
+        "polymorphed": true,
+        "mortality": 0,
+        "gameover": false,
+        "fumbling": false,
+        "fumblingIntrinsic": 0,
+        "fumblingExtrinsic": 0,
+        "fireResistant": false,
+        "fireIntrinsic": 0,
+        "fireExtrinsic": 0,
+        "blind": false,
+        "underwater": false,
+        "levitating": false,
+        "flying": false,
+        "unchanging": false,
+        "confused": false,
+        "stunned": false,
+        "hallucinating": false,
+        "slimed": false,
+        "regenerating": false,
+        "sleepingRegen": false,
+        "trapped": 0,
+        "swallowed": false,
+        "stuck": false,
+        "mounted": false,
+        "canReachFloor": true,
+        "multi": 0,
+        "gloves": null,
+        "inventory": [
+          {
+            "id": 55,
+            "type": "GAUNTLETS_OF_FUMBLING",
+            "letter": "b",
+            "quantity": 1,
+            "where": 3,
+            "worn": 0,
+            "cursed": false,
+            "blessed": false,
+            "known": false,
+            "artifact": 0,
+            "erosion": 0,
+            "material": 7
+          }
+        ],
+        "floor": [],
+        "trap": null,
+        "coreCalls": 2792
+      },
+      "wearStart": {
+        "step": 110,
+        "turn": 3,
+        "hero": [
+          58,
+          6
+        ],
+        "level": {
+          "dnum": 0,
+          "dlevel": 1
+        },
+        "terrain": 25,
+        "wizard": true,
+        "debugMongen": false,
+        "liveMonsters": [],
+        "deadQueued": [],
+        "rawMap": [],
+        "purgeCount": 0,
+        "genocidedSpecies": [],
+        "literacy": 1,
+        "wishes": 2,
+        "humanHP": 12,
+        "humanMax": 12,
+        "monsterHP": 79,
+        "monsterMax": 79,
+        "species": "minotaur",
+        "speciesIndex": 177,
+        "humanIndex": 343,
+        "speciesLevel": 15,
+        "monsterSpeed": 15,
+        "formTimeout": 54,
+        "polymorphed": true,
+        "mortality": 0,
+        "gameover": false,
+        "fumbling": false,
+        "fumblingIntrinsic": 0,
+        "fumblingExtrinsic": 0,
+        "fireResistant": false,
+        "fireIntrinsic": 0,
+        "fireExtrinsic": 0,
+        "blind": false,
+        "underwater": false,
+        "levitating": false,
+        "flying": false,
+        "unchanging": false,
+        "confused": false,
+        "stunned": false,
+        "hallucinating": false,
+        "slimed": false,
+        "regenerating": false,
+        "sleepingRegen": false,
+        "trapped": 0,
+        "swallowed": false,
+        "stuck": false,
+        "mounted": false,
+        "canReachFloor": true,
+        "multi": 0,
+        "gloves": null,
+        "inventory": [
+          {
+            "id": 55,
+            "type": "GAUNTLETS_OF_FUMBLING",
+            "letter": "b",
+            "quantity": 1,
+            "where": 3,
+            "worn": 0,
+            "cursed": false,
+            "blessed": false,
+            "known": false,
+            "artifact": 0,
+            "erosion": 0,
+            "material": 7
+          }
+        ],
+        "floor": [],
+        "trap": null,
+        "coreCalls": 2792
+      },
+      "worn": {
+        "step": 117,
+        "turn": 4,
+        "hero": [
+          58,
+          6
+        ],
+        "level": {
+          "dnum": 0,
+          "dlevel": 1
+        },
+        "terrain": 25,
+        "wizard": true,
+        "debugMongen": false,
+        "liveMonsters": [],
+        "deadQueued": [],
+        "rawMap": [],
+        "purgeCount": 0,
+        "genocidedSpecies": [],
+        "literacy": 1,
+        "wishes": 2,
+        "humanHP": 12,
+        "humanMax": 12,
+        "monsterHP": 79,
+        "monsterMax": 79,
+        "species": "minotaur",
+        "speciesIndex": 177,
+        "humanIndex": 343,
+        "speciesLevel": 15,
+        "monsterSpeed": 15,
+        "formTimeout": 53,
+        "polymorphed": true,
+        "mortality": 0,
+        "gameover": false,
+        "fumbling": true,
+        "fumblingIntrinsic": 17,
+        "fumblingExtrinsic": 16,
+        "fireResistant": false,
+        "fireIntrinsic": 0,
+        "fireExtrinsic": 0,
+        "blind": false,
+        "underwater": false,
+        "levitating": false,
+        "flying": false,
+        "unchanging": false,
+        "confused": false,
+        "stunned": false,
+        "hallucinating": false,
+        "slimed": false,
+        "regenerating": false,
+        "sleepingRegen": false,
+        "trapped": 0,
+        "swallowed": false,
+        "stuck": false,
+        "mounted": false,
+        "canReachFloor": true,
+        "multi": 0,
+        "gloves": {
+          "id": 55,
+          "type": "GAUNTLETS_OF_FUMBLING",
+          "letter": "b",
+          "quantity": 1,
+          "where": 3,
+          "worn": 16,
+          "cursed": false,
+          "blessed": false,
+          "known": true,
+          "artifact": 0,
+          "erosion": 0,
+          "material": 7
+        },
+        "inventory": [
+          {
+            "id": 55,
+            "type": "GAUNTLETS_OF_FUMBLING",
+            "letter": "b",
+            "quantity": 1,
+            "where": 3,
+            "worn": 16,
+            "cursed": false,
+            "blessed": false,
+            "known": true,
+            "artifact": 0,
+            "erosion": 0,
+            "material": 7
+          }
+        ],
+        "floor": [],
+        "trap": null,
+        "coreCalls": 2798
+      },
+      "trapWishStart": {
+        "step": 117,
+        "turn": 4,
+        "hero": [
+          58,
+          6
+        ],
+        "level": {
+          "dnum": 0,
+          "dlevel": 1
+        },
+        "terrain": 25,
+        "wizard": true,
+        "debugMongen": false,
+        "liveMonsters": [],
+        "deadQueued": [],
+        "rawMap": [],
+        "purgeCount": 0,
+        "genocidedSpecies": [],
+        "literacy": 1,
+        "wishes": 2,
+        "humanHP": 12,
+        "humanMax": 12,
+        "monsterHP": 79,
+        "monsterMax": 79,
+        "species": "minotaur",
+        "speciesIndex": 177,
+        "humanIndex": 343,
+        "speciesLevel": 15,
+        "monsterSpeed": 15,
+        "formTimeout": 53,
+        "polymorphed": true,
+        "mortality": 0,
+        "gameover": false,
+        "fumbling": true,
+        "fumblingIntrinsic": 17,
+        "fumblingExtrinsic": 16,
+        "fireResistant": false,
+        "fireIntrinsic": 0,
+        "fireExtrinsic": 0,
+        "blind": false,
+        "underwater": false,
+        "levitating": false,
+        "flying": false,
+        "unchanging": false,
+        "confused": false,
+        "stunned": false,
+        "hallucinating": false,
+        "slimed": false,
+        "regenerating": false,
+        "sleepingRegen": false,
+        "trapped": 0,
+        "swallowed": false,
+        "stuck": false,
+        "mounted": false,
+        "canReachFloor": true,
+        "multi": 0,
+        "gloves": {
+          "id": 55,
+          "type": "GAUNTLETS_OF_FUMBLING",
+          "letter": "b",
+          "quantity": 1,
+          "where": 3,
+          "worn": 16,
+          "cursed": false,
+          "blessed": false,
+          "known": true,
+          "artifact": 0,
+          "erosion": 0,
+          "material": 7
+        },
+        "inventory": [
+          {
+            "id": 55,
+            "type": "GAUNTLETS_OF_FUMBLING",
+            "letter": "b",
+            "quantity": 1,
+            "where": 3,
+            "worn": 16,
+            "cursed": false,
+            "blessed": false,
+            "known": true,
+            "artifact": 0,
+            "erosion": 0,
+            "material": 7
+          }
+        ],
+        "floor": [],
+        "trap": null,
+        "coreCalls": 2798
+      },
+      "beforeAction": {
+        "step": 133,
+        "turn": 4,
+        "hero": [
+          58,
+          6
+        ],
+        "level": {
+          "dnum": 0,
+          "dlevel": 1
+        },
+        "terrain": 25,
+        "wizard": true,
+        "debugMongen": false,
+        "liveMonsters": [],
+        "deadQueued": [],
+        "rawMap": [],
+        "purgeCount": 0,
+        "genocidedSpecies": [],
+        "literacy": 1,
+        "wishes": 2,
+        "humanHP": 12,
+        "humanMax": 12,
+        "monsterHP": 79,
+        "monsterMax": 79,
+        "species": "minotaur",
+        "speciesIndex": 177,
+        "humanIndex": 343,
+        "speciesLevel": 15,
+        "monsterSpeed": 15,
+        "formTimeout": 53,
+        "polymorphed": true,
+        "mortality": 0,
+        "gameover": false,
+        "fumbling": true,
+        "fumblingIntrinsic": 17,
+        "fumblingExtrinsic": 16,
+        "fireResistant": false,
+        "fireIntrinsic": 0,
+        "fireExtrinsic": 0,
+        "blind": false,
+        "underwater": false,
+        "levitating": false,
+        "flying": false,
+        "unchanging": false,
+        "confused": false,
+        "stunned": false,
+        "hallucinating": false,
+        "slimed": false,
+        "regenerating": false,
+        "sleepingRegen": false,
+        "trapped": 0,
+        "swallowed": false,
+        "stuck": false,
+        "mounted": false,
+        "canReachFloor": true,
+        "multi": 0,
+        "gloves": {
+          "id": 55,
+          "type": "GAUNTLETS_OF_FUMBLING",
+          "letter": "b",
+          "quantity": 1,
+          "where": 3,
+          "worn": 16,
+          "cursed": false,
+          "blessed": false,
+          "known": true,
+          "artifact": 0,
+          "erosion": 0,
+          "material": 7
+        },
+        "inventory": [
+          {
+            "id": 55,
+            "type": "GAUNTLETS_OF_FUMBLING",
+            "letter": "b",
+            "quantity": 1,
+            "where": 3,
+            "worn": 16,
+            "cursed": false,
+            "blessed": false,
+            "known": true,
+            "artifact": 0,
+            "erosion": 0,
+            "material": 7
+          }
+        ],
+        "floor": [],
+        "trap": {
+          "type": 10,
+          "seen": false,
+          "position": [
+            58,
+            6
+          ]
+        },
+        "coreCalls": 2798
+      },
+      "actionEnter": {
+        "step": 134,
+        "turn": 4,
+        "hero": [
+          58,
+          6
+        ],
+        "level": {
+          "dnum": 0,
+          "dlevel": 1
+        },
+        "terrain": 25,
+        "wizard": true,
+        "debugMongen": false,
+        "liveMonsters": [],
+        "deadQueued": [],
+        "rawMap": [],
+        "purgeCount": 0,
+        "genocidedSpecies": [],
+        "literacy": 1,
+        "wishes": 2,
+        "humanHP": 12,
+        "humanMax": 12,
+        "monsterHP": 79,
+        "monsterMax": 79,
+        "species": "minotaur",
+        "speciesIndex": 177,
+        "humanIndex": 343,
+        "speciesLevel": 15,
+        "monsterSpeed": 15,
+        "formTimeout": 53,
+        "polymorphed": true,
+        "mortality": 0,
+        "gameover": false,
+        "fumbling": true,
+        "fumblingIntrinsic": 17,
+        "fumblingExtrinsic": 16,
+        "fireResistant": false,
+        "fireIntrinsic": 0,
+        "fireExtrinsic": 0,
+        "blind": false,
+        "underwater": false,
+        "levitating": false,
+        "flying": false,
+        "unchanging": false,
+        "confused": false,
+        "stunned": false,
+        "hallucinating": false,
+        "slimed": false,
+        "regenerating": false,
+        "sleepingRegen": false,
+        "trapped": 0,
+        "swallowed": false,
+        "stuck": false,
+        "mounted": false,
+        "canReachFloor": true,
+        "multi": 0,
+        "gloves": {
+          "id": 55,
+          "type": "GAUNTLETS_OF_FUMBLING",
+          "letter": "b",
+          "quantity": 1,
+          "where": 3,
+          "worn": 16,
+          "cursed": false,
+          "blessed": false,
+          "known": true,
+          "artifact": 0,
+          "erosion": 0,
+          "material": 7
+        },
+        "inventory": [
+          {
+            "id": 55,
+            "type": "GAUNTLETS_OF_FUMBLING",
+            "letter": "b",
+            "quantity": 1,
+            "where": 3,
+            "worn": 16,
+            "cursed": false,
+            "blessed": false,
+            "known": true,
+            "artifact": 0,
+            "erosion": 0,
+            "material": 7
+          }
+        ],
+        "floor": [],
+        "trap": {
+          "type": 10,
+          "seen": false,
+          "position": [
+            58,
+            6
+          ]
+        },
+        "coreCalls": 2798
+      },
+      "final": {
+        "step": 139,
+        "turn": 4,
+        "hero": [
+          58,
+          6
+        ],
+        "level": {
+          "dnum": 0,
+          "dlevel": 1
+        },
+        "terrain": 25,
+        "wizard": true,
+        "debugMongen": false,
+        "liveMonsters": [],
+        "deadQueued": [],
+        "rawMap": [],
+        "purgeCount": 0,
+        "genocidedSpecies": [],
+        "literacy": 1,
+        "wishes": 2,
+        "humanHP": 12,
+        "humanMax": 12,
+        "monsterHP": 79,
+        "monsterMax": 79,
+        "species": "minotaur",
+        "speciesIndex": 177,
+        "humanIndex": 343,
+        "speciesLevel": 15,
+        "monsterSpeed": 15,
+        "formTimeout": 53,
+        "polymorphed": true,
+        "mortality": 0,
+        "gameover": false,
+        "fumbling": true,
+        "fumblingIntrinsic": 17,
+        "fumblingExtrinsic": 16,
+        "fireResistant": false,
+        "fireIntrinsic": 0,
+        "fireExtrinsic": 0,
+        "blind": false,
+        "underwater": false,
+        "levitating": false,
+        "flying": false,
+        "unchanging": false,
+        "confused": false,
+        "stunned": false,
+        "hallucinating": false,
+        "slimed": false,
+        "regenerating": false,
+        "sleepingRegen": false,
+        "trapped": 0,
+        "swallowed": false,
+        "stuck": false,
+        "mounted": false,
+        "canReachFloor": true,
+        "multi": 0,
+        "gloves": {
+          "id": 55,
+          "type": "GAUNTLETS_OF_FUMBLING",
+          "letter": "b",
+          "quantity": 1,
+          "where": 3,
+          "worn": 16,
+          "cursed": false,
+          "blessed": false,
+          "known": true,
+          "artifact": 0,
+          "erosion": 0,
+          "material": 7
+        },
+        "inventory": [
+          {
+            "id": 55,
+            "type": "GAUNTLETS_OF_FUMBLING",
+            "letter": "b",
+            "quantity": 1,
+            "where": 3,
+            "worn": 16,
+            "cursed": false,
+            "blessed": false,
+            "known": true,
+            "artifact": 0,
+            "erosion": 0,
+            "material": 7
+          }
+        ],
+        "floor": [],
+        "trap": {
+          "type": 10,
+          "seen": false,
+          "position": [
+            58,
+            6
+          ]
+        },
+        "coreCalls": 2798
+      }
+    },
+    "actionCallCount": 0,
+    "actionCallPrefix": [],
+    "wearCalls": [
+      "rn2(70)=3",
+      "rn2(400)=203",
+      "rn2(200)=48",
+      "rn2(20)=1",
+      "rn2(85)=11",
+      "rnd(20)=17"
+    ],
+    "CAlternate": 0,
+    "CFirstDamage": null,
+    "CExpectedShrinkBound": null,
+    "CStateFromMatchingPrefix": null,
+    "cleanupObservation": {
+      "initialLive": 3,
+      "cleanedLive": 0,
+      "cleanedDeadQueued": 0,
+      "cleanedPurge": 0,
+      "cleanedRawMap": 0,
+      "postCleanupMaximumLive": 0,
+      "postCleanupFirstLive": null
+    },
+    "messages": [
+      {
+        "step": 0,
+        "text": "Hello wizard, welcome to NetHack!  You are a neutral male human Wizard."
+      },
+      {
+        "step": 1,
+        "text": "Unknown command ' '."
+      },
+      {
+        "step": 2,
+        "text": "For what do you wish?"
+      },
+      {
+        "step": 3,
+        "text": "For what do you wish? b"
+      },
+      {
+        "step": 4,
+        "text": "For what do you wish? bl"
+      },
+      {
+        "step": 5,
+        "text": "For what do you wish? ble"
+      },
+      {
+        "step": 6,
+        "text": "For what do you wish? bles"
+      },
+      {
+        "step": 7,
+        "text": "For what do you wish? bless"
+      },
+      {
+        "step": 8,
+        "text": "For what do you wish? blesse"
+      },
+      {
+        "step": 9,
+        "text": "For what do you wish? blessed"
+      },
+      {
+        "step": 11,
+        "text": "For what do you wish? blessed s"
+      },
+      {
+        "step": 12,
+        "text": "For what do you wish? blessed sc"
+      },
+      {
+        "step": 13,
+        "text": "For what do you wish? blessed scr"
+      },
+      {
+        "step": 14,
+        "text": "For what do you wish? blessed scro"
+      },
+      {
+        "step": 15,
+        "text": "For what do you wish? blessed scrol"
+      },
+      {
+        "step": 16,
+        "text": "For what do you wish? blessed scroll"
+      },
+      {
+        "step": 18,
+        "text": "For what do you wish? blessed scroll o"
+      },
+      {
+        "step": 19,
+        "text": "For what do you wish? blessed scroll of"
+      },
+      {
+        "step": 21,
+        "text": "For what do you wish? blessed scroll of g"
+      },
+      {
+        "step": 22,
+        "text": "For what do you wish? blessed scroll of ge"
+      },
+      {
+        "step": 23,
+        "text": "For what do you wish? blessed scroll of gen"
+      },
+      {
+        "step": 24,
+        "text": "For what do you wish? blessed scroll of geno"
+      },
+      {
+        "step": 25,
+        "text": "For what do you wish? blessed scroll of genoc"
+      },
+      {
+        "step": 26,
+        "text": "For what do you wish? blessed scroll of genoci"
+      },
+      {
+        "step": 27,
+        "text": "For what do you wish? blessed scroll of genocid"
+      },
+      {
+        "step": 28,
+        "text": "For what do you wish? blessed scroll of genocide"
+      },
+      {
+        "step": 29,
+        "text": "a - a scroll labeled DUAM XNAHT."
+      },
+      {
+        "step": 30,
+        "text": "Unknown command ' '."
+      },
+      {
+        "step": 34,
+        "text": ""
+      },
+      {
+        "step": 37,
+        "text": "As you read the scroll, it disappears.--More--"
+      },
+      {
+        "step": 38,
+        "text": "You have found a scroll of genocide!--More--"
+      },
+      {
+        "step": 39,
+        "text": "What class of monsters do you want to genocide?"
+      },
+      {
+        "step": 40,
+        "text": "What class of monsters do you want to genocide? *"
+      },
+      {
+        "step": 41,
+        "text": "Eliminated 3 monsters."
+      },
+      {
+        "step": 42,
+        "text": "Unknown command ' '."
+      },
+      {
+        "step": 46,
+        "text": ""
+      },
+      {
+        "step": 49,
+        "text": "Unknown command ' '."
+      },
+      {
+        "step": 68,
+        "text": "You turn into a minotaur!"
+      },
+      {
+        "step": 69,
+        "text": "Unknown command ' '."
+      },
+      {
+        "step": 72,
+        "text": ""
+      },
+      {
+        "step": 74,
+        "text": "For what do you wish?"
+      },
+      {
+        "step": 75,
+        "text": "For what do you wish? u"
+      },
+      {
+        "step": 76,
+        "text": "For what do you wish? un"
+      },
+      {
+        "step": 77,
+        "text": "For what do you wish? unc"
+      },
+      {
+        "step": 78,
+        "text": "For what do you wish? uncu"
+      },
+      {
+        "step": 79,
+        "text": "For what do you wish? uncur"
+      },
+      {
+        "step": 80,
+        "text": "For what do you wish? uncurs"
+      },
+      {
+        "step": 81,
+        "text": "For what do you wish? uncurse"
+      },
+      {
+        "step": 82,
+        "text": "For what do you wish? uncursed"
+      },
+      {
+        "step": 84,
+        "text": "For what do you wish? uncursed g"
+      },
+      {
+        "step": 85,
+        "text": "For what do you wish? uncursed ga"
+      },
+      {
+        "step": 86,
+        "text": "For what do you wish? uncursed gau"
+      },
+      {
+        "step": 87,
+        "text": "For what do you wish? uncursed gaun"
+      },
+      {
+        "step": 88,
+        "text": "For what do you wish? uncursed gaunt"
+      },
+      {
+        "step": 89,
+        "text": "For what do you wish? uncursed gauntl"
+      },
+      {
+        "step": 90,
+        "text": "For what do you wish? uncursed gauntle"
+      },
+      {
+        "step": 91,
+        "text": "For what do you wish? uncursed gauntlet"
+      },
+      {
+        "step": 92,
+        "text": "For what do you wish? uncursed gauntlets"
+      },
+      {
+        "step": 94,
+        "text": "For what do you wish? uncursed gauntlets o"
+      },
+      {
+        "step": 95,
+        "text": "For what do you wish? uncursed gauntlets of"
+      },
+      {
+        "step": 97,
+        "text": "For what do you wish? uncursed gauntlets of f"
+      },
+      {
+        "step": 98,
+        "text": "For what do you wish? uncursed gauntlets of fu"
+      },
+      {
+        "step": 99,
+        "text": "For what do you wish? uncursed gauntlets of fum"
+      },
+      {
+        "step": 100,
+        "text": "For what do you wish? uncursed gauntlets of fumb"
+      },
+      {
+        "step": 101,
+        "text": "For what do you wish? uncursed gauntlets of fumbl"
+      },
+      {
+        "step": 102,
+        "text": "For what do you wish? uncursed gauntlets of fumbli"
+      },
+      {
+        "step": 103,
+        "text": "For what do you wish? uncursed gauntlets of fumblin"
+      },
+      {
+        "step": 104,
+        "text": "For what do you wish? uncursed gauntlets of fumbling"
+      },
+      {
+        "step": 105,
+        "text": "b - a pair of old gloves."
+      },
+      {
+        "step": 106,
+        "text": "Unknown command ' '."
+      },
+      {
+        "step": 109,
+        "text": ""
+      },
+      {
+        "step": 112,
+        "text": "You finish your dressing maneuver."
+      },
+      {
+        "step": 113,
+        "text": "Unknown command ' '."
+      },
+      {
+        "step": 116,
+        "text": ""
+      },
+      {
+        "step": 118,
+        "text": "For what do you wish?"
+      },
+      {
+        "step": 119,
+        "text": "For what do you wish? f"
+      },
+      {
+        "step": 120,
+        "text": "For what do you wish? fi"
+      },
+      {
+        "step": 121,
+        "text": "For what do you wish? fir"
+      },
+      {
+        "step": 122,
+        "text": "For what do you wish? fire"
+      },
+      {
+        "step": 124,
+        "text": "For what do you wish? fire t"
+      },
+      {
+        "step": 125,
+        "text": "For what do you wish? fire tr"
+      },
+      {
+        "step": 126,
+        "text": "For what do you wish? fire tra"
+      },
+      {
+        "step": 127,
+        "text": "For what do you wish? fire trap"
+      },
+      {
+        "step": 128,
+        "text": "A fire trap."
+      },
+      {
+        "step": 129,
+        "text": "Unknown command ' '."
+      },
+      {
+        "step": 132,
+        "text": ""
+      },
+      {
+        "step": 134,
+        "text": "You see no objects here."
+      },
+      {
+        "step": 135,
+        "text": "Unknown command ' '."
+      },
+      {
+        "step": 138,
+        "text": ""
+      }
+    ],
+    "statesSHA256": "deed6af6c53581f8cee03ebb7be00df7ee2d25dfb05f8b25c192974dd24c1672",
+    "stateCount": 140,
+    "neutrality": {
+      "observedEqualsPlain": true,
+      "plainEqualsDeferred": true,
+      "eofStable": true,
+      "plainConsumed": 139,
+      "deferredConsumed": 139,
+      "expectedConsumed": 139,
+      "hashes": {
+        "observed": {
+          "screens": "02c33adc444d8def2489b96b0adf54aca098f1fa276fbd6679eb1b9227bfc5b0",
+          "cursors": "177de5e4ff7e9047a29ea27f7f8bcea7529367dc5e0125786091b5971331811b",
+          "calls": "9386169be802f025af0fa629d0862a97579842e00388076a7b40f5355218406d",
+          "slices": "b7bd137c2cedff7527c7c4843054c49e947d6535cad370a1d64ef563c4542d65",
+          "frames": "f5ef758f4c91db60988a182047566e4dce7a111c9e2dc3b73036594a75d2325e"
+        },
+        "plain": {
+          "screens": "02c33adc444d8def2489b96b0adf54aca098f1fa276fbd6679eb1b9227bfc5b0",
+          "cursors": "177de5e4ff7e9047a29ea27f7f8bcea7529367dc5e0125786091b5971331811b",
+          "calls": "9386169be802f025af0fa629d0862a97579842e00388076a7b40f5355218406d",
+          "slices": "b7bd137c2cedff7527c7c4843054c49e947d6535cad370a1d64ef563c4542d65",
+          "frames": "f5ef758f4c91db60988a182047566e4dce7a111c9e2dc3b73036594a75d2325e"
+        },
+        "deferred": {
+          "screens": "02c33adc444d8def2489b96b0adf54aca098f1fa276fbd6679eb1b9227bfc5b0",
+          "cursors": "177de5e4ff7e9047a29ea27f7f8bcea7529367dc5e0125786091b5971331811b",
+          "calls": "9386169be802f025af0fa629d0862a97579842e00388076a7b40f5355218406d",
+          "slices": "b7bd137c2cedff7527c7c4843054c49e947d6535cad370a1d64ef563c4542d65",
+          "frames": "f5ef758f4c91db60988a182047566e4dce7a111c9e2dc3b73036594a75d2325e"
+        }
+      },
+      "pass": true
+    },
+    "nativeParityClaimed": false
+  }
+]

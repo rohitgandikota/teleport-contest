@@ -1,0 +1,713 @@
+{
+  "originalReportSHA256": "9f43198cd8afa4d95112814ffdad0527519403509fcbdf497b276944592aad23",
+  "originalDriverSHA256": "5bc11781092afcfc58008e2004115812c78ccfbe956d367af6725d82047d261a",
+  "sourcesSHA256": "1313bad60e0facbe79e8615fbad59612d4c4b58c6e468b0f8e1f595ab79eac36",
+  "originalProducerPassed": 0,
+  "originalSourcePassed": 2,
+  "originalSourceChecks": 33,
+  "originalSourceTotal": 56,
+  "originalCountsUnchanged": true,
+  "gameplayBatches": 1,
+  "additionalGameplay": 0,
+  "cases": [
+    {
+      "name": "paper-trigger",
+      "originalProducerPass": false,
+      "originalProducerFailures": [
+        "one ordinary west step reaches clear room floor"
+      ],
+      "originalSourcePass": false,
+      "originalSourceFailures": [
+        "C primary visible predicates",
+        "C leaves human HP maximum unchanged",
+        "C leaves healthy human HP unchanged",
+        "C damage RNG prefix with no second d(2,4)",
+        "C material shrink clamp and loss or unchanged look state",
+        "C paper trigger always rehumanizes; controls preserve selected form"
+      ],
+      "coordinateAttribution": {
+        "originalExpected": [
+          57,
+          7
+        ],
+        "recordedInitial": [
+          59,
+          6
+        ],
+        "recordedAfterH": [
+          58,
+          6
+        ],
+        "terminalToGame": [
+          1,
+          -1
+        ],
+        "movesWestOne": true,
+        "actualClearRoomFloor": true
+      },
+      "preActionPools": {
+        "human": [
+          12,
+          12
+        ],
+        "monster": [
+          20,
+          20
+        ]
+      },
+      "atActionEnterPools": {
+        "human": [
+          9,
+          9
+        ],
+        "monster": [
+          17,
+          20
+        ]
+      },
+      "finalPools": {
+        "human": [
+          9,
+          9
+        ],
+        "monster": [
+          17,
+          20
+        ]
+      },
+      "turns": [
+        3,
+        3,
+        4
+      ],
+      "materialAlternate": 20,
+      "sourceShrinkBoundFromFirstJSDraw": 20,
+      "firstCoreCalls": [
+        "d(2,4)=5",
+        "d(2,4)=3",
+        "rn2(4)=3"
+      ],
+      "preActionMonsterDamage": 0,
+      "additionalMonsterLossAfterEnter": 0,
+      "feedback": [
+        {
+          "step": 96,
+          "text": "Your gloves smoulder!  The sewer rat just misses!"
+        }
+      ],
+      "triggerReached": true,
+      "attributionIsNewGameplay": false
+    },
+    {
+      "name": "straw-trigger",
+      "originalProducerPass": false,
+      "originalProducerFailures": [
+        "one ordinary west step reaches clear room floor"
+      ],
+      "originalSourcePass": false,
+      "originalSourceFailures": [
+        "C leaves human HP maximum unchanged",
+        "C leaves healthy human HP unchanged",
+        "C damage RNG prefix with no second d(2,4)",
+        "C material shrink clamp and loss or unchanged look state",
+        "C paper trigger always rehumanizes; controls preserve selected form"
+      ],
+      "coordinateAttribution": {
+        "originalExpected": [
+          57,
+          7
+        ],
+        "recordedInitial": [
+          59,
+          6
+        ],
+        "recordedAfterH": [
+          58,
+          6
+        ],
+        "terminalToGame": [
+          1,
+          -1
+        ],
+        "movesWestOne": true,
+        "actualClearRoomFloor": true
+      },
+      "preActionPools": {
+        "human": [
+          12,
+          12
+        ],
+        "monster": [
+          20,
+          20
+        ]
+      },
+      "atActionEnterPools": {
+        "human": [
+          9,
+          9
+        ],
+        "monster": [
+          17,
+          20
+        ]
+      },
+      "finalPools": {
+        "human": [
+          9,
+          9
+        ],
+        "monster": [
+          17,
+          20
+        ]
+      },
+      "turns": [
+        3,
+        3,
+        4
+      ],
+      "materialAlternate": 10,
+      "sourceShrinkBoundFromFirstJSDraw": 11,
+      "firstCoreCalls": [
+        "d(2,4)=5",
+        "d(2,4)=3",
+        "rn2(4)=3"
+      ],
+      "preActionMonsterDamage": 0,
+      "additionalMonsterLossAfterEnter": 0,
+      "feedback": [
+        {
+          "step": 96,
+          "text": "Your gloves smoulder!  The sewer rat just misses!"
+        }
+      ],
+      "triggerReached": true,
+      "attributionIsNewGameplay": false
+    },
+    {
+      "name": "wood-trigger",
+      "originalProducerPass": false,
+      "originalProducerFailures": [
+        "one ordinary west step reaches clear room floor",
+        "healthy monster pool remains above its species level before action"
+      ],
+      "originalSourcePass": false,
+      "originalSourceFailures": [
+        "C leaves human HP maximum unchanged",
+        "C leaves healthy human HP unchanged",
+        "C damage RNG prefix with no second d(2,4)",
+        "C material shrink clamp and loss or unchanged look state"
+      ],
+      "coordinateAttribution": {
+        "originalExpected": [
+          57,
+          7
+        ],
+        "recordedInitial": [
+          59,
+          6
+        ],
+        "recordedAfterH": [
+          58,
+          6
+        ],
+        "terminalToGame": [
+          1,
+          -1
+        ],
+        "movesWestOne": true,
+        "actualClearRoomFloor": true
+      },
+      "preActionPools": {
+        "human": [
+          12,
+          12
+        ],
+        "monster": [
+          41,
+          50
+        ]
+      },
+      "atActionEnterPools": {
+        "human": [
+          11,
+          11
+        ],
+        "monster": [
+          35,
+          50
+        ]
+      },
+      "finalPools": {
+        "human": [
+          11,
+          11
+        ],
+        "monster": [
+          29,
+          50
+        ]
+      },
+      "turns": [
+        7,
+        7,
+        11
+      ],
+      "materialAlternate": 12,
+      "sourceShrinkBoundFromFirstJSDraw": 13,
+      "firstCoreCalls": [
+        "d(2,4)=5",
+        "d(2,4)=6",
+        "rn2(7)=1"
+      ],
+      "preActionMonsterDamage": 9,
+      "additionalMonsterLossAfterEnter": 6,
+      "feedback": [
+        {
+          "step": 68,
+          "text": "You finish your dressing maneuver.  The sewer rat bites!--More--"
+        },
+        {
+          "step": 69,
+          "text": "The sewer rat bites!  The sewer rat bites!  The sewer rat bites!"
+        },
+        {
+          "step": 95,
+          "text": "Your gloves smoulder!  The sewer rat bites!  The sewer rat bites!--More--"
+        },
+        {
+          "step": 96,
+          "text": "The sewer rat misses!  The jackal bites!  The sewer rat misses!"
+        }
+      ],
+      "triggerReached": true,
+      "attributionIsNewGameplay": false
+    },
+    {
+      "name": "leather-trigger",
+      "originalProducerPass": false,
+      "originalProducerFailures": [
+        "one ordinary west step reaches clear room floor",
+        "healthy monster pool remains above its species level before action"
+      ],
+      "originalSourcePass": false,
+      "originalSourceFailures": [
+        "C leaves human HP maximum unchanged",
+        "C leaves healthy human HP unchanged",
+        "C damage RNG prefix with no second d(2,4)",
+        "C material shrink clamp and loss or unchanged look state"
+      ],
+      "coordinateAttribution": {
+        "originalExpected": [
+          57,
+          7
+        ],
+        "recordedInitial": [
+          59,
+          6
+        ],
+        "recordedAfterH": [
+          58,
+          6
+        ],
+        "terminalToGame": [
+          1,
+          -1
+        ],
+        "movesWestOne": true,
+        "actualClearRoomFloor": true
+      },
+      "preActionPools": {
+        "human": [
+          12,
+          12
+        ],
+        "monster": [
+          36,
+          40
+        ]
+      },
+      "atActionEnterPools": {
+        "human": [
+          10,
+          10
+        ],
+        "monster": [
+          31,
+          40
+        ]
+      },
+      "finalPools": {
+        "human": [
+          10,
+          10
+        ],
+        "monster": [
+          29,
+          40
+        ]
+      },
+      "turns": [
+        5,
+        5,
+        7
+      ],
+      "materialAlternate": 5,
+      "sourceShrinkBoundFromFirstJSDraw": 7,
+      "firstCoreCalls": [
+        "d(2,4)=6",
+        "d(2,4)=5",
+        "rn2(6)=2"
+      ],
+      "preActionMonsterDamage": 4,
+      "additionalMonsterLossAfterEnter": 2,
+      "feedback": [
+        {
+          "step": 71,
+          "text": "You finish your dressing maneuver.  The sewer rat bites!--More--"
+        },
+        {
+          "step": 72,
+          "text": "The sewer rat bites!"
+        },
+        {
+          "step": 98,
+          "text": "Your gloves smoulder!  The sewer rat bites!  The sewer rat bites!"
+        }
+      ],
+      "triggerReached": true,
+      "attributionIsNewGameplay": false
+    },
+    {
+      "name": "minotaur-trigger",
+      "originalProducerPass": false,
+      "originalProducerFailures": [
+        "one ordinary west step reaches clear room floor"
+      ],
+      "originalSourcePass": false,
+      "originalSourceFailures": [
+        "C damage RNG prefix with no second d(2,4)",
+        "C material shrink clamp and loss or unchanged look state"
+      ],
+      "coordinateAttribution": {
+        "originalExpected": [
+          57,
+          7
+        ],
+        "recordedInitial": [
+          59,
+          6
+        ],
+        "recordedAfterH": [
+          58,
+          6
+        ],
+        "terminalToGame": [
+          1,
+          -1
+        ],
+        "movesWestOne": true,
+        "actualClearRoomFloor": true
+      },
+      "preActionPools": {
+        "human": [
+          12,
+          12
+        ],
+        "monster": [
+          75,
+          75
+        ]
+      },
+      "atActionEnterPools": {
+        "human": [
+          12,
+          12
+        ],
+        "monster": [
+          69,
+          75
+        ]
+      },
+      "finalPools": {
+        "human": [
+          12,
+          12
+        ],
+        "monster": [
+          67,
+          75
+        ]
+      },
+      "turns": [
+        3,
+        3,
+        4
+      ],
+      "materialAlternate": 0,
+      "sourceShrinkBoundFromFirstJSDraw": 9,
+      "firstCoreCalls": [
+        "d(2,4)=8",
+        "d(2,4)=6",
+        "rn2(7)=0"
+      ],
+      "preActionMonsterDamage": 0,
+      "additionalMonsterLossAfterEnter": 2,
+      "feedback": [
+        {
+          "step": 93,
+          "text": "Your gloves smoulder!  The sewer rat bites!"
+        }
+      ],
+      "triggerReached": true,
+      "attributionIsNewGameplay": false
+    },
+    {
+      "name": "iron-resistant",
+      "originalProducerPass": false,
+      "originalProducerFailures": [
+        "one ordinary west step reaches clear room floor",
+        "healthy monster pool remains above its species level before action",
+        "source-predicted ordinary producer feedback"
+      ],
+      "originalSourcePass": false,
+      "originalSourceFailures": [
+        "C primary visible predicates",
+        "C material shrink clamp and loss or unchanged look state"
+      ],
+      "coordinateAttribution": {
+        "originalExpected": [
+          57,
+          7
+        ],
+        "recordedInitial": [
+          59,
+          6
+        ],
+        "recordedAfterH": [
+          58,
+          6
+        ],
+        "terminalToGame": [
+          1,
+          -1
+        ],
+        "movesWestOne": true,
+        "actualClearRoomFloor": true
+      },
+      "preActionPools": {
+        "human": [
+          12,
+          12
+        ],
+        "monster": [
+          119,
+          120
+        ]
+      },
+      "atActionEnterPools": {
+        "human": [
+          12,
+          12
+        ],
+        "monster": [
+          119,
+          120
+        ]
+      },
+      "finalPools": {
+        "human": [
+          12,
+          12
+        ],
+        "monster": [
+          118,
+          120
+        ]
+      },
+      "turns": [
+        5,
+        5,
+        7
+      ],
+      "materialAlternate": 0,
+      "sourceShrinkBoundFromFirstJSDraw": 9,
+      "firstCoreCalls": [
+        "d(2,4)=8",
+        "rn2(2)=0",
+        "rn2(5)=0"
+      ],
+      "preActionMonsterDamage": 1,
+      "additionalMonsterLossAfterEnter": 1,
+      "feedback": [
+        {
+          "step": 24,
+          "text": "You turn into an iron golem!--More--"
+        },
+        {
+          "step": 68,
+          "text": "You finish your dressing maneuver.  The sewer rat bites!--More--"
+        },
+        {
+          "step": 69,
+          "text": "The sewer rat misses!"
+        },
+        {
+          "step": 95,
+          "text": "You are uninjured.  Your gloves smoulder!  The sewer rat bites!--More--"
+        },
+        {
+          "step": 96,
+          "text": "The sewer rat just misses!"
+        }
+      ],
+      "triggerReached": true,
+      "attributionIsNewGameplay": false
+    },
+    {
+      "name": "paper-look-only",
+      "originalProducerPass": false,
+      "originalProducerFailures": [
+        "one ordinary west step reaches clear room floor"
+      ],
+      "originalSourcePass": true,
+      "originalSourceFailures": [],
+      "coordinateAttribution": {
+        "originalExpected": [
+          57,
+          7
+        ],
+        "recordedInitial": [
+          59,
+          6
+        ],
+        "recordedAfterH": [
+          58,
+          6
+        ],
+        "terminalToGame": [
+          1,
+          -1
+        ],
+        "movesWestOne": true,
+        "actualClearRoomFloor": true
+      },
+      "preActionPools": {
+        "human": [
+          12,
+          12
+        ],
+        "monster": [
+          20,
+          20
+        ]
+      },
+      "atActionEnterPools": {
+        "human": [
+          12,
+          12
+        ],
+        "monster": [
+          20,
+          20
+        ]
+      },
+      "finalPools": {
+        "human": [
+          12,
+          12
+        ],
+        "monster": [
+          20,
+          20
+        ]
+      },
+      "turns": [
+        3,
+        3,
+        3
+      ],
+      "materialAlternate": 20,
+      "sourceShrinkBoundFromFirstJSDraw": null,
+      "firstCoreCalls": [],
+      "preActionMonsterDamage": 0,
+      "additionalMonsterLossAfterEnter": 0,
+      "feedback": [],
+      "triggerReached": true,
+      "attributionIsNewGameplay": false
+    },
+    {
+      "name": "minotaur-look-only",
+      "originalProducerPass": false,
+      "originalProducerFailures": [
+        "one ordinary west step reaches clear room floor"
+      ],
+      "originalSourcePass": true,
+      "originalSourceFailures": [],
+      "coordinateAttribution": {
+        "originalExpected": [
+          57,
+          7
+        ],
+        "recordedInitial": [
+          59,
+          6
+        ],
+        "recordedAfterH": [
+          58,
+          6
+        ],
+        "terminalToGame": [
+          1,
+          -1
+        ],
+        "movesWestOne": true,
+        "actualClearRoomFloor": true
+      },
+      "preActionPools": {
+        "human": [
+          12,
+          12
+        ],
+        "monster": [
+          75,
+          75
+        ]
+      },
+      "atActionEnterPools": {
+        "human": [
+          12,
+          12
+        ],
+        "monster": [
+          75,
+          75
+        ]
+      },
+      "finalPools": {
+        "human": [
+          12,
+          12
+        ],
+        "monster": [
+          75,
+          75
+        ]
+      },
+      "turns": [
+        3,
+        3,
+        3
+      ],
+      "materialAlternate": 0,
+      "sourceShrinkBoundFromFirstJSDraw": null,
+      "firstCoreCalls": [],
+      "preActionMonsterDamage": 0,
+      "additionalMonsterLossAfterEnter": 0,
+      "feedback": [],
+      "triggerReached": true,
+      "attributionIsNewGameplay": false
+    }
+  ]
+}

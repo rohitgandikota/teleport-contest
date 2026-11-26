@@ -395,6 +395,36 @@ async function dofiretrap(box) {
         await shieldeff(game.u.ux, game.u.uy);
         monstseesu(M_SEEN_FIRE);
         num = rn2(2);
+    } else if (Upolyd(game.u)) {
+        let alt;
+        switch (game.u.umonnum) {
+        case PMNAMES.PM_PAPER_GOLEM:
+            alt = game.u.mhmax;
+            break;
+        case PMNAMES.PM_STRAW_GOLEM:
+            alt = Math.trunc(game.u.mhmax / 2);
+            break;
+        case PMNAMES.PM_WOOD_GOLEM:
+            alt = Math.trunc(game.u.mhmax / 4);
+            break;
+        case PMNAMES.PM_LEATHER_GOLEM:
+            alt = Math.trunc(game.u.mhmax / 8);
+            break;
+        default:
+            alt = 0;
+            break;
+        }
+        if (alt > num)
+            num = alt;
+        if (game.u.mhmax > game.mons[game.u.umonnum].mlevel) {
+            game.u.mhmax -= rn2(Math.min(game.u.mhmax, num + 1));
+            (game.disp ||= {}).botl = true;
+        }
+        if (game.u.mh > game.u.mhmax) {
+            game.u.mh = game.u.mhmax;
+            (game.disp ||= {}).botl = true;
+        }
+        monstunseesu(M_SEEN_FIRE);
     } else {
         num = d(2, 4);
         const minHp = Math.max(game.u.ulevel | 0, 1);

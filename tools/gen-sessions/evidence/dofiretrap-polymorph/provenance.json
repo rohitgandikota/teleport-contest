@@ -1,0 +1,185 @@
+{
+  "sourceSeals": {
+    "original36": "85d5c433c32f718b78f2d26e7a6abe2a66689f469181c9904c6f1870325eb53b",
+    "cleanup35": "d6f165504df949f05c4b1411ab4182d91833b807c7de0b66e2c0731f29716d4f",
+    "candidate327": "296d189f5bd4480475f8a597efe11fb37483a4a91779ddb1972246e29a7314ed"
+  },
+  "sourceMaps": {
+    "baseline": "f2afc28c9b9816b3f48fe811979969ef9adae95c4e9d1119b6146d884910c99f",
+    "candidate": "13fa9922d57261ff5d038baad9b0eefcbf790b773ad799e97ae190d8e5c7c237"
+  },
+  "files": {
+    "proposal.json": {
+      "source": ".cache/restart-20261122/dofiretrap-polymorph-cleanup-source-audit/proposals/proposal01.json",
+      "sha256": "dafd221435f2f8724a783d6e78287addbdec2be4a2b02ed88dc69279e85a4da7",
+      "bytes": 22467,
+      "mode": "exact preserved bytes"
+    },
+    "input-lock.json": {
+      "source": ".cache/restart-20261122/dofiretrap-polymorph-cleanup-source-audit/input-lock.json",
+      "sha256": "be0063b019d30c1c17d87ce461a58a4253dde708515423d9f78a997e93ddcd6a",
+      "bytes": 25099,
+      "mode": "exact preserved bytes"
+    },
+    "negative-outputs.json": {
+      "source": ".cache/restart-20261122/dofiretrap-polymorph-cleanup-source-audit/negative-outputs.json",
+      "sha256": "610226827c59cee06b90c2e83b046a63def9dc5b0466cb398765c491a1cead00",
+      "bytes": 2030,
+      "mode": "exact preserved bytes"
+    },
+    "ordinary-original.mjs": {
+      "source": ".cache/restart-20261122/dofiretrap-polymorph-cleanup-source-audit/tools/probe.mjs",
+      "sha256": "16f58c4245fb3ed1bf5a4fcdfc40a12e11d0ecea0d4664ade62373c773dc6474",
+      "bytes": 23698,
+      "mode": "exact preserved bytes"
+    },
+    "cleanup-seal.json": {
+      "source": ".cache/restart-20261122/dofiretrap-polymorph-cleanup-source-audit/SEAL.json",
+      "sha256": "d6f165504df949f05c4b1411ab4182d91833b807c7de0b66e2c0731f29716d4f",
+      "bytes": 1362,
+      "mode": "exact preserved bytes"
+    },
+    "candidate-seal.json": {
+      "source": ".cache/restart-20261122/dofiretrap-polymorph-cleanup-candidate/SEAL.json",
+      "sha256": "296d189f5bd4480475f8a597efe11fb37483a4a91779ddb1972246e29a7314ed",
+      "bytes": 2134,
+      "mode": "exact preserved bytes"
+    },
+    "native-preflight.json": {
+      "source": ".cache/restart-20261122/dofiretrap-polymorph-cleanup-parent-review/preflight.json",
+      "sha256": "97e1325b04baa83d2ae357fb2d19b459e0952e46a87c35e43ad9854716915b14",
+      "bytes": 372,
+      "mode": "exact preserved bytes"
+    },
+    "baseline-native.json": {
+      "source": ".cache/restart-20261122/dofiretrap-polymorph-cleanup-parent-review/baseline-native.json",
+      "sha256": "4610b28680115d6aacc0e9221ea6594fe6d85eef8c972cccfde62d5dc423b726",
+      "bytes": 47413,
+      "mode": "exact preserved bytes"
+    },
+    "candidate-native.json": {
+      "source": ".cache/restart-20261122/dofiretrap-polymorph-cleanup-candidate/reports/candidate-native.json",
+      "sha256": "a8396fbecb093cef2fad72d1335d9dc7202d090bfe55c05713a523032850f0f1",
+      "bytes": 19587,
+      "mode": "exact preserved bytes"
+    },
+    "recording-receipt.json": {
+      "source": ".cache/restart-20261122/dofiretrap-polymorph-cleanup-parent-native-recording.json",
+      "sha256": "26d1545d966f99acf59869dab5edf39b81c8503462713128e9c31644c61d81ea",
+      "bytes": 1669,
+      "mode": "exact preserved bytes"
+    },
+    "parent-input-lock.json": {
+      "source": ".cache/restart-20261122/dofiretrap-polymorph-cleanup-parent-input-lock.json",
+      "sha256": "497881f73f7a33cf38df28cb7f581a3274c777854a92a52cafce530742e4c007",
+      "bytes": 452,
+      "mode": "exact preserved bytes"
+    },
+    "source-review.md": {
+      "source": ".cache/restart-20261122/dofiretrap-polymorph-cleanup-candidate/SOURCE-REVIEW.md",
+      "sha256": "5dc04e288492829abee5aa31ce78e987abaaae07ca2d86cf67e4456159d5956a",
+      "bytes": 3812,
+      "mode": "exact preserved bytes"
+    },
+    "history/original-seal.json": {
+      "source": ".cache/restart-20261122/dofiretrap-polymorph-source-audit/SEAL.json",
+      "sha256": "85d5c433c32f718b78f2d26e7a6abe2a66689f469181c9904c6f1870325eb53b",
+      "bytes": 1361,
+      "mode": "exact preserved bytes"
+    },
+    "history/original-proposal.json": {
+      "source": ".cache/restart-20261122/dofiretrap-polymorph-source-audit/proposals/proposal01.json",
+      "sha256": "3465900a1ad6595c44a28a2b7070c62e4d843c9669b27023617e0ffbc18b50f2",
+      "bytes": 17674,
+      "mode": "exact preserved bytes"
+    },
+    "history/original-input-lock.json": {
+      "source": ".cache/restart-20261122/dofiretrap-polymorph-source-audit/input-lock.json",
+      "sha256": "72fa0ee454ff6374e4437e6d52ed10acf3da188c98bd43942ccbb1aec61dab62",
+      "bytes": 19833,
+      "mode": "exact preserved bytes"
+    },
+    "history/original-negative-outputs.json": {
+      "source": ".cache/restart-20261122/dofiretrap-polymorph-source-audit/negative-outputs.json",
+      "sha256": "5a3b9ea9dd37ab458701aeb9aa81e8f5d956e82547d870f67a454952e4658d27",
+      "bytes": 2204,
+      "mode": "exact preserved bytes"
+    },
+    "history/original-failed-probe.mjs": {
+      "source": ".cache/restart-20261122/dofiretrap-polymorph-source-audit/tools/probe.mjs",
+      "sha256": "5bc11781092afcfc58008e2004115812c78ccfbe956d367af6725d82047d261a",
+      "bytes": 20167,
+      "mode": "exact preserved bytes"
+    },
+    "history/original-attribution.json": {
+      "source": ".cache/restart-20261122/dofiretrap-polymorph-source-audit/reports/route-attribution.json",
+      "sha256": "86a2f5f4a9dd85729b9decc6086e658372107c2d06438d3a0605108071117b6a",
+      "bytes": 15570,
+      "mode": "exact preserved bytes"
+    },
+    "history/cleanup-attribution.json": {
+      "source": ".cache/restart-20261122/dofiretrap-polymorph-cleanup-source-audit/reports/route-attribution.json",
+      "sha256": "e9e64c8dce63a1d4bfbe42f4e6e96e8d48b6f6ef250b24a6781f98fed82a3734",
+      "bytes": 10895,
+      "mode": "exact preserved bytes"
+    },
+    "history/candidate-comparison.json": {
+      "source": ".cache/restart-20261122/dofiretrap-polymorph-cleanup-candidate/reports/comparison.json",
+      "sha256": "86a34d8e771005927fc6838da9ef82507c4bcf0625f7b63d4525bd8e2b92cfa4",
+      "bytes": 556,
+      "mode": "exact preserved bytes"
+    },
+    "history/candidate-launch.json": {
+      "source": ".cache/restart-20261122/dofiretrap-polymorph-cleanup-candidate/reports/launch.json",
+      "sha256": "655bc98dd7cf472967c8fc3fe2d33025d85935663f8b6386e5e5f3c8755a7766",
+      "bytes": 507,
+      "mode": "exact preserved bytes"
+    },
+    "history/parent-baseline-command.json": {
+      "source": ".cache/restart-20261122/dofiretrap-polymorph-cleanup-parent-review/command.json",
+      "sha256": "32df94435c05277ae79974eb0c1f6eb604c8220d33eef76b127a2f1eaf67ca28",
+      "bytes": 361,
+      "mode": "exact preserved bytes"
+    },
+    "history/parent-baseline.log": {
+      "source": ".cache/restart-20261122/dofiretrap-polymorph-cleanup-parent-review/baseline-native.log",
+      "sha256": "d1be66e7a2f651b002800ecc1614cc92d64b231b49c7785a0a8d2e7cbba3a21d",
+      "bytes": 9527,
+      "mode": "exact preserved bytes"
+    },
+    "history/verifier-shape-failure.json": {
+      "source": ".cache/restart-20261122/dofiretrap-polymorph-cleanup-candidate/evidence/verification-attempt01/failure.json",
+      "sha256": "1df252a9adb323010b0bbaa94d54568b2553af1d8690b7230c437199c121f4d8",
+      "bytes": 677,
+      "mode": "exact preserved bytes"
+    },
+    "history/verifier-before-shape-correction.py": {
+      "source": ".cache/restart-20261122/dofiretrap-polymorph-cleanup-candidate/evidence/verification-attempt01/verify.py",
+      "sha256": "ae097f473c3fb9c1e592c551e9db4d18344c68783b68b7901274d073fb908b93",
+      "bytes": 9591,
+      "mode": "exact preserved bytes"
+    },
+    "history/provisional-candidate-seal.json": {
+      "source": ".cache/restart-20261122/dofiretrap-polymorph-cleanup-candidate/evidence/verification-attempt01/SEAL.json",
+      "sha256": "abfb3bdd228c183d67d718748cd49f7d6a9cae92e8da83cfee07fe04bdd057ae",
+      "bytes": 1902,
+      "mode": "exact preserved bytes"
+    },
+    "negative-ordinary-rows.json": {
+      "source": ".cache/restart-20261122/dofiretrap-polymorph-cleanup-source-audit/reports/probe01.json",
+      "sourceSHA256": "78e0d33de7701148c5580ae397ed842f95755865a43cbcb859581a403a312ca0",
+      "mode": "exact persisted rows5,6,7; all fields retained",
+      "rowsSHA256": [
+        "8828fb8fe77be5cf80cd1afba53fa907f24dc3a3392eb71ea310b99cef6c39bb",
+        "44a27ddd9741d70a66770c02c54edbb48653130ed7edd91efb40baff5f3869b5",
+        "eda6d754d4a4d89fca728fd394ecd2460e54b3a3a5a86de53faaf864b4e24d2e"
+      ]
+    },
+    "history/diagnostics.json": {
+      "mode": "source-derived report subsets; every original reach/source result retained; full immutable source report hashes included"
+    }
+  },
+  "runtimeFilesPromoted": 0,
+  "patchFilesPromoted": 0,
+  "rawCopiedIntoPacket": false
+}

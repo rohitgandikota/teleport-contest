@@ -5475,6 +5475,62 @@
       "description": "Preserve the unmounted wizard-mode controlled prompt and cancelled placement.",
       "minimumSessions": 1,
       "normalModeRequired": false
+    },
+    {
+      "group": "Polymorphed fire-trap damage",
+      "id": "traps.fire.polymorph.clean-paper-trigger",
+      "cFile": "src/trap.c",
+      "cFunction": "dofiretrap",
+      "description": "Real blessed-scroll cleanup, paper polymorph and worn fumbling gloves lead to a seated fire trigger; paper damage uses the full monster maximum and rehumanizes the hero without reducing human maximum HP."
+    },
+    {
+      "group": "Polymorphed fire-trap damage",
+      "id": "traps.fire.polymorph.clean-straw-trigger",
+      "cFile": "src/trap.c",
+      "cFunction": "dofiretrap",
+      "description": "Real clean straw-golem fire trigger uses half of monster maximum HP, conditional maximum shrink and clamped damage; rehumanization depends on the native draw."
+    },
+    {
+      "group": "Polymorphed fire-trap damage",
+      "id": "traps.fire.polymorph.clean-wood-trigger",
+      "cFile": "src/trap.c",
+      "cFunction": "dofiretrap",
+      "description": "Real clean wood-golem fire trigger uses integer quarter-maximum material damage, shrinks monster maximum conditionally, and preserves the human HP maximum."
+    },
+    {
+      "group": "Polymorphed fire-trap damage",
+      "id": "traps.fire.polymorph.clean-leather-trigger",
+      "cFile": "src/trap.c",
+      "cFunction": "dofiretrap",
+      "description": "Real clean leather-golem fire trigger uses integer eighth-maximum material damage with the initial roll, monster maximum shrink and current-HP clamp."
+    },
+    {
+      "group": "Polymorphed fire-trap damage",
+      "id": "traps.fire.polymorph.clean-minotaur-trigger",
+      "cFile": "src/trap.c",
+      "cFunction": "dofiretrap",
+      "description": "Real clean minotaur fire trigger uses the default zero material alternate and the first damage roll, with monster maximum shrink rather than a human HP reroll."
+    },
+    {
+      "group": "Polymorphed fire-trap damage",
+      "id": "traps.fire.polymorph.clean-iron-resistant",
+      "cFile": "src/trap.c",
+      "cFunction": "dofiretrap",
+      "description": "Real iron-golem fire resistance keeps the existing shield and rn2(2) branch; all five outputs and the complete negative row remain unchanged."
+    },
+    {
+      "group": "Polymorphed fire-trap damage",
+      "id": "traps.fire.polymorph.clean-paper-look-only",
+      "cFile": "src/invent.c",
+      "cFunction": "dolook",
+      "description": "Looking at empty ground above an unseen fire trap while a clean paper golem consumes no turn or action RNG and leaves form, trap and HP unchanged."
+    },
+    {
+      "group": "Polymorphed fire-trap damage",
+      "id": "traps.fire.polymorph.clean-minotaur-look-only",
+      "cFile": "src/invent.c",
+      "cFunction": "dolook",
+      "description": "Looking at empty ground above an unseen fire trap while a clean minotaur consumes no turn or action RNG and leaves form, trap and HP unchanged."
     }
   ]
 }

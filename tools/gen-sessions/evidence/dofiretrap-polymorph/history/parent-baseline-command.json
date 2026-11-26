@@ -1,0 +1,12 @@
+{
+  "command": [
+    "node",
+    "--preserve-symlinks",
+    "--preserve-symlinks-main",
+    "--max-old-space-size=512",
+    "/Users/rohit/research/code/contest/.cache/restart-20261122/dofiretrap-polymorph-cleanup-parent-review/native.mjs"
+  ],
+  "exit": 1,
+  "seconds": 1.832,
+  "logSHA256": "d1be66e7a2f651b002800ecc1614cc92d64b231b49c7785a0a8d2e7cbba3a21d"
+}

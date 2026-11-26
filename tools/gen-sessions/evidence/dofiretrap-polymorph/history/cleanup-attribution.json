@@ -1,0 +1,438 @@
+{
+  "originalDiagnostic": "evidence/original/reports/route-attribution.json",
+  "originalProducer": "0/8",
+  "originalSource": "33/56",
+  "newReportSHA256": "78e0d33de7701148c5580ae397ed842f95755865a43cbcb859581a403a312ca0",
+  "newDriverSHA256": "16f58c4245fb3ed1bf5a4fcdfc40a12e11d0ecea0d4664ade62373c773dc6474",
+  "additionalGameplay": 0,
+  "cases": [
+    {
+      "name": "clean-paper-trigger",
+      "producerPass": true,
+      "firstUnmetProducer": null,
+      "cleanup": {
+        "initialLive": 3,
+        "cleanedLive": 0,
+        "cleanedDeadQueued": 0,
+        "cleanedPurge": 0,
+        "cleanedRawMap": 0,
+        "postCleanupMaximumLive": 0,
+        "postCleanupFirstLive": null
+      },
+      "initialPosition": [
+        59,
+        6
+      ],
+      "cleanedPosition": [
+        59,
+        6
+      ],
+      "firePosition": [
+        58,
+        6
+      ],
+      "beforeAction": {
+        "humanHP": 12,
+        "humanMax": 12,
+        "monsterHP": 20,
+        "monsterMax": 20,
+        "speciesLevel": 3,
+        "turn": 4
+      },
+      "afterAction": {
+        "humanHP": 10,
+        "humanMax": 10,
+        "monsterHP": 17,
+        "monsterMax": 20,
+        "form": "paper golem",
+        "turn": 5
+      },
+      "actionCorePrefix": [
+        "d(2,4)=4",
+        "d(2,4)=3",
+        "rn2(4)=2"
+      ],
+      "sourceFailures": [
+        "C primary visible predicates",
+        "C leaves human HP maximum unchanged",
+        "C leaves healthy human HP unchanged",
+        "C damage RNG prefix with no second d(2,4)",
+        "C material shrink clamp and loss or unchanged look state",
+        "C paper trigger always rehumanizes; controls preserve selected form"
+      ],
+      "predictedDamage": "max(first d(2,4), trunc(pre-mhmax/materialDivisor)) with alternate0 if divisor0",
+      "neutrality": true,
+      "nativeComparison": "pending parent; none performed"
+    },
+    {
+      "name": "clean-straw-trigger",
+      "producerPass": true,
+      "firstUnmetProducer": null,
+      "cleanup": {
+        "initialLive": 3,
+        "cleanedLive": 0,
+        "cleanedDeadQueued": 0,
+        "cleanedPurge": 0,
+        "cleanedRawMap": 0,
+        "postCleanupMaximumLive": 0,
+        "postCleanupFirstLive": null
+      },
+      "initialPosition": [
+        59,
+        6
+      ],
+      "cleanedPosition": [
+        59,
+        6
+      ],
+      "firePosition": [
+        58,
+        6
+      ],
+      "beforeAction": {
+        "humanHP": 12,
+        "humanMax": 12,
+        "monsterHP": 20,
+        "monsterMax": 20,
+        "speciesLevel": 3,
+        "turn": 4
+      },
+      "afterAction": {
+        "humanHP": 10,
+        "humanMax": 10,
+        "monsterHP": 17,
+        "monsterMax": 20,
+        "form": "straw golem",
+        "turn": 5
+      },
+      "actionCorePrefix": [
+        "d(2,4)=4",
+        "d(2,4)=3",
+        "rn2(4)=2"
+      ],
+      "sourceFailures": [
+        "C leaves human HP maximum unchanged",
+        "C leaves healthy human HP unchanged",
+        "C damage RNG prefix with no second d(2,4)",
+        "C material shrink clamp and loss or unchanged look state",
+        "C paper trigger always rehumanizes; controls preserve selected form"
+      ],
+      "predictedDamage": "max(first d(2,4), trunc(pre-mhmax/materialDivisor)) with alternate0 if divisor0",
+      "neutrality": true,
+      "nativeComparison": "pending parent; none performed"
+    },
+    {
+      "name": "clean-wood-trigger",
+      "producerPass": true,
+      "firstUnmetProducer": null,
+      "cleanup": {
+        "initialLive": 3,
+        "cleanedLive": 0,
+        "cleanedDeadQueued": 0,
+        "cleanedPurge": 0,
+        "cleanedRawMap": 0,
+        "postCleanupMaximumLive": 0,
+        "postCleanupFirstLive": null
+      },
+      "initialPosition": [
+        59,
+        6
+      ],
+      "cleanedPosition": [
+        59,
+        6
+      ],
+      "firePosition": [
+        58,
+        6
+      ],
+      "beforeAction": {
+        "humanHP": 12,
+        "humanMax": 12,
+        "monsterHP": 50,
+        "monsterMax": 50,
+        "speciesLevel": 7,
+        "turn": 8
+      },
+      "afterAction": {
+        "humanHP": 10,
+        "humanMax": 10,
+        "monsterHP": 43,
+        "monsterMax": 50,
+        "form": "wood golem",
+        "turn": 12
+      },
+      "actionCorePrefix": [
+        "d(2,4)=7",
+        "d(2,4)=7",
+        "rn2(8)=2"
+      ],
+      "sourceFailures": [
+        "C leaves human HP maximum unchanged",
+        "C leaves healthy human HP unchanged",
+        "C damage RNG prefix with no second d(2,4)",
+        "C material shrink clamp and loss or unchanged look state"
+      ],
+      "predictedDamage": "max(first d(2,4), trunc(pre-mhmax/materialDivisor)) with alternate0 if divisor0",
+      "neutrality": true,
+      "nativeComparison": "pending parent; none performed"
+    },
+    {
+      "name": "clean-leather-trigger",
+      "producerPass": true,
+      "firstUnmetProducer": null,
+      "cleanup": {
+        "initialLive": 3,
+        "cleanedLive": 0,
+        "cleanedDeadQueued": 0,
+        "cleanedPurge": 0,
+        "cleanedRawMap": 0,
+        "postCleanupMaximumLive": 0,
+        "postCleanupFirstLive": null
+      },
+      "initialPosition": [
+        59,
+        6
+      ],
+      "cleanedPosition": [
+        59,
+        6
+      ],
+      "firePosition": [
+        58,
+        6
+      ],
+      "beforeAction": {
+        "humanHP": 12,
+        "humanMax": 12,
+        "monsterHP": 40,
+        "monsterMax": 40,
+        "speciesLevel": 6,
+        "turn": 6
+      },
+      "afterAction": {
+        "humanHP": 9,
+        "humanMax": 9,
+        "monsterHP": 35,
+        "monsterMax": 40,
+        "form": "leather golem",
+        "turn": 8
+      },
+      "actionCorePrefix": [
+        "d(2,4)=5",
+        "d(2,4)=5",
+        "rn2(6)=3"
+      ],
+      "sourceFailures": [
+        "C leaves human HP maximum unchanged",
+        "C leaves healthy human HP unchanged",
+        "C damage RNG prefix with no second d(2,4)",
+        "C material shrink clamp and loss or unchanged look state"
+      ],
+      "predictedDamage": "max(first d(2,4), trunc(pre-mhmax/materialDivisor)) with alternate0 if divisor0",
+      "neutrality": true,
+      "nativeComparison": "pending parent; none performed"
+    },
+    {
+      "name": "clean-minotaur-trigger",
+      "producerPass": true,
+      "firstUnmetProducer": null,
+      "cleanup": {
+        "initialLive": 3,
+        "cleanedLive": 0,
+        "cleanedDeadQueued": 0,
+        "cleanedPurge": 0,
+        "cleanedRawMap": 0,
+        "postCleanupMaximumLive": 0,
+        "postCleanupFirstLive": null
+      },
+      "initialPosition": [
+        59,
+        6
+      ],
+      "cleanedPosition": [
+        59,
+        6
+      ],
+      "firePosition": [
+        58,
+        6
+      ],
+      "beforeAction": {
+        "humanHP": 12,
+        "humanMax": 12,
+        "monsterHP": 79,
+        "monsterMax": 79,
+        "speciesLevel": 15,
+        "turn": 4
+      },
+      "afterAction": {
+        "humanHP": 7,
+        "humanMax": 7,
+        "monsterHP": 74,
+        "monsterMax": 79,
+        "form": "minotaur",
+        "turn": 5
+      },
+      "actionCorePrefix": [
+        "d(2,4)=6",
+        "d(2,4)=5",
+        "rn2(6)=5"
+      ],
+      "sourceFailures": [
+        "C leaves human HP maximum unchanged",
+        "C leaves healthy human HP unchanged",
+        "C damage RNG prefix with no second d(2,4)",
+        "C material shrink clamp and loss or unchanged look state"
+      ],
+      "predictedDamage": "max(first d(2,4), trunc(pre-mhmax/materialDivisor)) with alternate0 if divisor0",
+      "neutrality": true,
+      "nativeComparison": "pending parent; none performed"
+    },
+    {
+      "name": "clean-iron-resistant",
+      "producerPass": true,
+      "firstUnmetProducer": null,
+      "cleanup": {
+        "initialLive": 3,
+        "cleanedLive": 0,
+        "cleanedDeadQueued": 0,
+        "cleanedPurge": 0,
+        "cleanedRawMap": 0,
+        "postCleanupMaximumLive": 0,
+        "postCleanupFirstLive": null
+      },
+      "initialPosition": [
+        59,
+        6
+      ],
+      "cleanedPosition": [
+        59,
+        6
+      ],
+      "firePosition": [
+        58,
+        6
+      ],
+      "beforeAction": {
+        "humanHP": 12,
+        "humanMax": 12,
+        "monsterHP": 120,
+        "monsterMax": 120,
+        "speciesLevel": 18,
+        "turn": 6
+      },
+      "afterAction": {
+        "humanHP": 12,
+        "humanMax": 12,
+        "monsterHP": 120,
+        "monsterMax": 120,
+        "form": "iron golem",
+        "turn": 8
+      },
+      "actionCorePrefix": [
+        "d(2,4)=8",
+        "rn2(2)=0",
+        "rn2(5)=1"
+      ],
+      "sourceFailures": [],
+      "predictedDamage": "0..1 from rn2(2)",
+      "neutrality": true,
+      "nativeComparison": "pending parent; none performed"
+    },
+    {
+      "name": "clean-paper-look-only",
+      "producerPass": true,
+      "firstUnmetProducer": null,
+      "cleanup": {
+        "initialLive": 3,
+        "cleanedLive": 0,
+        "cleanedDeadQueued": 0,
+        "cleanedPurge": 0,
+        "cleanedRawMap": 0,
+        "postCleanupMaximumLive": 0,
+        "postCleanupFirstLive": null
+      },
+      "initialPosition": [
+        59,
+        6
+      ],
+      "cleanedPosition": [
+        59,
+        6
+      ],
+      "firePosition": [
+        58,
+        6
+      ],
+      "beforeAction": {
+        "humanHP": 12,
+        "humanMax": 12,
+        "monsterHP": 20,
+        "monsterMax": 20,
+        "speciesLevel": 3,
+        "turn": 4
+      },
+      "afterAction": {
+        "humanHP": 12,
+        "humanMax": 12,
+        "monsterHP": 20,
+        "monsterMax": 20,
+        "form": "paper golem",
+        "turn": 4
+      },
+      "actionCorePrefix": [],
+      "sourceFailures": [],
+      "predictedDamage": "none",
+      "neutrality": true,
+      "nativeComparison": "pending parent; none performed"
+    },
+    {
+      "name": "clean-minotaur-look-only",
+      "producerPass": true,
+      "firstUnmetProducer": null,
+      "cleanup": {
+        "initialLive": 3,
+        "cleanedLive": 0,
+        "cleanedDeadQueued": 0,
+        "cleanedPurge": 0,
+        "cleanedRawMap": 0,
+        "postCleanupMaximumLive": 0,
+        "postCleanupFirstLive": null
+      },
+      "initialPosition": [
+        59,
+        6
+      ],
+      "cleanedPosition": [
+        59,
+        6
+      ],
+      "firePosition": [
+        58,
+        6
+      ],
+      "beforeAction": {
+        "humanHP": 12,
+        "humanMax": 12,
+        "monsterHP": 79,
+        "monsterMax": 79,
+        "speciesLevel": 15,
+        "turn": 4
+      },
+      "afterAction": {
+        "humanHP": 12,
+        "humanMax": 12,
+        "monsterHP": 79,
+        "monsterMax": 79,
+        "form": "minotaur",
+        "turn": 4
+      },
+      "actionCorePrefix": [],
+      "sourceFailures": [],
+      "predictedDamage": "none",
+      "neutrality": true,
+      "nativeComparison": "pending parent; none performed"
+    }
+  ]
+}

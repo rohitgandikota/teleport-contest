@@ -1,0 +1,51 @@
+{
+  "members": 327,
+  "manifestSHA256": "5935d0e081dbd68240f29b8cf019dc59acf6e726a0966594317b4878ed041a0f",
+  "runtimeChanged": [
+    "js/trap.js"
+  ],
+  "runtimeLinkedFiles": 279,
+  "baselineRuntimeSHA256": "f2afc28c9b9816b3f48fe811979969ef9adae95c4e9d1119b6146d884910c99f",
+  "candidateRuntimeSHA256": "13fa9922d57261ff5d038baad9b0eefcbf790b773ad799e97ae190d8e5c7c237",
+  "patchSHA256": "161aa5ee5a9b90933dc935b5ddbbf07d7b357bc6935d9fa6b740e75dec3bc7a9",
+  "reverseExact": true,
+  "priorSeals": [
+    36,
+    35
+  ],
+  "sourceSealSHA256": "d6f165504df949f05c4b1411ab4182d91833b807c7de0b66e2c0731f29716d4f",
+  "originalSealSHA256": "85d5c433c32f718b78f2d26e7a6abe2a66689f469181c9904c6f1870325eb53b",
+  "rawSHA256": "f1d26027a6456e8043fa4e5acce9b4aaabbb41712d1361c98e2f8f403e4c2fb3",
+  "recipeSHA256": "89a5937fa4330ba9d45418d4ccb73c4662b5330e3a81496354e9a96241ef0557",
+  "inputLockSHA256": "be0063b019d30c1c17d87ce461a58a4253dde708515423d9f78a997e93ddcd6a",
+  "sharedBodySHA256": "e07f64790adce838854a2ada80be99dc5bd909f7ecac25b37c9625a99b713077",
+  "driverSHA256": "1eeb166c53bbb9911e1a00d1783e0f661c49bf146411d4be1bf8ccafb3115079",
+  "producerChecks": "192/192",
+  "sourceChecks": "56/56",
+  "ordinary": "8/8",
+  "neutrality": "8/8 five outputs plus pending EOF",
+  "native": "8/8",
+  "nativeBoundaries": 1162,
+  "nativeCalls": 22506,
+  "nativeFrames": 21,
+  "nativeReportSHA256": "a8396fbecb093cef2fad72d1335d9dc7202d090bfe55c05713a523032850f0f1",
+  "ordinaryReportSHA256": "7af18f6ab9179f856d816ae50cb3fd4e355d497d6b984cef4553e1be56894e1f",
+  "negativeHashesUnchanged": 15,
+  "ordinaryNegativeRowsUnchanged": 3,
+  "nativeNegativeRowsUnchanged": 3,
+  "seconds": 4.633,
+  "workers": 1,
+  "maxHeapMB": 512,
+  "timeoutSeconds": 55,
+  "CExecutions": 0,
+  "mainWrites": 0,
+  "GitActions": 0,
+  "NFSWrites": 0,
+  "publicFullRuns": 0,
+  "runtimeCopiedFiles": [
+    "js/trap.js"
+  ],
+  "corpusCopies": 0,
+  "staticVerifierCorrection": "Original C cursor tuple is [x,y,visibility]. Prior verifier+provisional manifest/seal retained. No original assertion, runtime, input, native data, or gameplay result changed.",
+  "gameplayReruns": 0
+}

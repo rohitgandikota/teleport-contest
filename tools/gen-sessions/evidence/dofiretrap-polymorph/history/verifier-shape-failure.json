@@ -1,0 +1,11 @@
+{
+  "stage": "Post-gameplay read-only packet verifier only",
+  "error": "verify.py:91 expected cursor length2, but original C raw has1162 cursor tuples of length3. First tuple [58,7,1].",
+  "oldVerifierSHA256": "ae097f473c3fb9c1e592c551e9db4d18344c68783b68b7901274d073fb908b93",
+  "oldSealSHA256": "abfb3bdd228c183d67d718748cd49f7d6a9cae92e8da83cfee07fe04bdd057ae",
+  "gameplayBatchPassed": true,
+  "CPreflightPassedBeforeGameplay": true,
+  "ordinaryAssertionsModified": false,
+  "gameplayReruns": 0,
+  "correction": "Use the established captured [x,y,visibility] tuple. Full cursor equality, including visibility, already passed in native gate. Raw bytes remain unchanged."
+}

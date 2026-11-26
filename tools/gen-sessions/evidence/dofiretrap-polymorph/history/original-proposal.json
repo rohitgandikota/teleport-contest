@@ -1,0 +1,430 @@
+{
+  "name": "dofiretrap-polymorph-proposal01",
+  "runtimeSHA256": "f2afc28c9b9816b3f48fe811979969ef9adae95c4e9d1119b6146d884910c99f",
+  "oneBatchOnly": true,
+  "modes": [
+    "observed",
+    "plain",
+    "deferred"
+  ],
+  "segments": [
+    {
+      "name": "paper-trigger",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " h #polyself\rpaper golem\r   \u001b\u001b\u0017uncursed gauntlets of fumbling\r   \u001b\u001bWa   \u001b\u001b\u0017fire trap\r   \u001b\u001b#sit\r   \u001b\u001b"
+    },
+    {
+      "name": "straw-trigger",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " h #polyself\rstraw golem\r   \u001b\u001b\u0017uncursed gauntlets of fumbling\r   \u001b\u001bWa   \u001b\u001b\u0017fire trap\r   \u001b\u001b#sit\r   \u001b\u001b"
+    },
+    {
+      "name": "wood-trigger",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " h #polyself\rwood golem\r   \u001b\u001b\u0017uncursed gauntlets of fumbling\r   \u001b\u001bWa   \u001b\u001b\u0017fire trap\r   \u001b\u001b#sit\r   \u001b\u001b"
+    },
+    {
+      "name": "leather-trigger",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " h #polyself\rleather golem\r   \u001b\u001b\u0017uncursed gauntlets of fumbling\r   \u001b\u001bWa   \u001b\u001b\u0017fire trap\r   \u001b\u001b#sit\r   \u001b\u001b"
+    },
+    {
+      "name": "minotaur-trigger",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " h #polyself\rminotaur\r   \u001b\u001b\u0017uncursed gauntlets of fumbling\r   \u001b\u001bWa   \u001b\u001b\u0017fire trap\r   \u001b\u001b#sit\r   \u001b\u001b"
+    },
+    {
+      "name": "iron-resistant",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " h #polyself\riron golem\r   \u001b\u001b\u0017uncursed gauntlets of fumbling\r   \u001b\u001bWa   \u001b\u001b\u0017fire trap\r   \u001b\u001b#sit\r   \u001b\u001b"
+    },
+    {
+      "name": "paper-look-only",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " h #polyself\rpaper golem\r   \u001b\u001b\u0017uncursed gauntlets of fumbling\r   \u001b\u001bWa   \u001b\u001b\u0017fire trap\r   \u001b\u001b:   \u001b\u001b"
+    },
+    {
+      "name": "minotaur-look-only",
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " h #polyself\rminotaur\r   \u001b\u001b\u0017uncursed gauntlets of fumbling\r   \u001b\u001bWa   \u001b\u001b\u0017fire trap\r   \u001b\u001b:   \u001b\u001b"
+    }
+  ],
+  "predictions": [
+    {
+      "name": "paper-trigger",
+      "species": "paper golem",
+      "golemHP": 20,
+      "speciesLevel": 3,
+      "materialDivisor": 1,
+      "trigger": true,
+      "negative": false,
+      "fireResistant": false,
+      "phases": {
+        "initial": 0,
+        "floor": 3,
+        "polymorphed": 30,
+        "gloveWishStart": 30,
+        "gloveWish": 67,
+        "wearStart": 67,
+        "worn": 74,
+        "trapWishStart": 74,
+        "beforeAction": 90,
+        "actionEnter": 95,
+        "final": 100
+      },
+      "C": {
+        "requiredPhrases": [
+          "You turn into a paper golem!",
+          "A fire trap.",
+          "You sit down.",
+          "A tower of flame erupts from the floor!",
+          "You return to human form!"
+        ],
+        "excludedPhrases": [
+          "Creation of a fire trap failed.",
+          "You escape a fire trap."
+        ],
+        "humanHPMax": "unchanged across action in every case",
+        "humanHP": "unchanged: healthy human pool before damage; no human loss in Upolyd arm",
+        "damage": "max(first d(2,4), trunc(pre-mhmax/materialDivisor)) with alternate0 if divisor0",
+        "rngPrefix": "d(2,4), rn2(min(pre-mhmax,max(first-d,alternate)+1)), then damage/armor/item helpers; no second d(2,4)",
+        "monsterHPMax": "subtract the bounded rn2 draw if above species mlevel, clamp mh before losehp; rehumanization then zeros mh/mhmax",
+        "form": "human",
+        "turns": "sitting consumes ECMD_TIME; slow forms can advance multiple world turns",
+        "primaryStatus": "source prediction pending parent original C, no native claim"
+      }
+    },
+    {
+      "name": "straw-trigger",
+      "species": "straw golem",
+      "golemHP": 20,
+      "speciesLevel": 3,
+      "materialDivisor": 2,
+      "trigger": true,
+      "negative": false,
+      "fireResistant": false,
+      "phases": {
+        "initial": 0,
+        "floor": 3,
+        "polymorphed": 30,
+        "gloveWishStart": 30,
+        "gloveWish": 67,
+        "wearStart": 67,
+        "worn": 74,
+        "trapWishStart": 74,
+        "beforeAction": 90,
+        "actionEnter": 95,
+        "final": 100
+      },
+      "C": {
+        "requiredPhrases": [
+          "You turn into a straw golem!",
+          "A fire trap.",
+          "You sit down.",
+          "A tower of flame erupts from the floor!"
+        ],
+        "excludedPhrases": [
+          "Creation of a fire trap failed.",
+          "You escape a fire trap."
+        ],
+        "humanHPMax": "unchanged across action in every case",
+        "humanHP": "unchanged: healthy human pool before damage; no human loss in Upolyd arm",
+        "damage": "max(first d(2,4), trunc(pre-mhmax/materialDivisor)) with alternate0 if divisor0",
+        "rngPrefix": "d(2,4), rn2(min(pre-mhmax,max(first-d,alternate)+1)), then damage/armor/item helpers; no second d(2,4)",
+        "monsterHPMax": "subtract the bounded rn2 draw if above species mlevel, clamp mh before losehp; rehumanization then zeros mh/mhmax",
+        "form": "native draw may rehumanize straw",
+        "turns": "sitting consumes ECMD_TIME; slow forms can advance multiple world turns",
+        "primaryStatus": "source prediction pending parent original C, no native claim"
+      }
+    },
+    {
+      "name": "wood-trigger",
+      "species": "wood golem",
+      "golemHP": 50,
+      "speciesLevel": 7,
+      "materialDivisor": 4,
+      "trigger": true,
+      "negative": false,
+      "fireResistant": false,
+      "phases": {
+        "initial": 0,
+        "floor": 3,
+        "polymorphed": 29,
+        "gloveWishStart": 29,
+        "gloveWish": 66,
+        "wearStart": 66,
+        "worn": 73,
+        "trapWishStart": 73,
+        "beforeAction": 89,
+        "actionEnter": 94,
+        "final": 99
+      },
+      "C": {
+        "requiredPhrases": [
+          "You turn into a wood golem!",
+          "A fire trap.",
+          "You sit down.",
+          "A tower of flame erupts from the floor!"
+        ],
+        "excludedPhrases": [
+          "Creation of a fire trap failed.",
+          "You escape a fire trap.",
+          "You return to human form!"
+        ],
+        "humanHPMax": "unchanged across action in every case",
+        "humanHP": "unchanged: healthy human pool before damage; no human loss in Upolyd arm",
+        "damage": "max(first d(2,4), trunc(pre-mhmax/materialDivisor)) with alternate0 if divisor0",
+        "rngPrefix": "d(2,4), rn2(min(pre-mhmax,max(first-d,alternate)+1)), then damage/armor/item helpers; no second d(2,4)",
+        "monsterHPMax": "subtract the bounded rn2 draw if above species mlevel, clamp mh before losehp; rehumanization then zeros mh/mhmax",
+        "form": "wood golem",
+        "turns": "sitting consumes ECMD_TIME; slow forms can advance multiple world turns",
+        "primaryStatus": "source prediction pending parent original C, no native claim"
+      }
+    },
+    {
+      "name": "leather-trigger",
+      "species": "leather golem",
+      "golemHP": 40,
+      "speciesLevel": 6,
+      "materialDivisor": 8,
+      "trigger": true,
+      "negative": false,
+      "fireResistant": false,
+      "phases": {
+        "initial": 0,
+        "floor": 3,
+        "polymorphed": 32,
+        "gloveWishStart": 32,
+        "gloveWish": 69,
+        "wearStart": 69,
+        "worn": 76,
+        "trapWishStart": 76,
+        "beforeAction": 92,
+        "actionEnter": 97,
+        "final": 102
+      },
+      "C": {
+        "requiredPhrases": [
+          "You turn into a leather golem!",
+          "A fire trap.",
+          "You sit down.",
+          "A tower of flame erupts from the floor!"
+        ],
+        "excludedPhrases": [
+          "Creation of a fire trap failed.",
+          "You escape a fire trap.",
+          "You return to human form!"
+        ],
+        "humanHPMax": "unchanged across action in every case",
+        "humanHP": "unchanged: healthy human pool before damage; no human loss in Upolyd arm",
+        "damage": "max(first d(2,4), trunc(pre-mhmax/materialDivisor)) with alternate0 if divisor0",
+        "rngPrefix": "d(2,4), rn2(min(pre-mhmax,max(first-d,alternate)+1)), then damage/armor/item helpers; no second d(2,4)",
+        "monsterHPMax": "subtract the bounded rn2 draw if above species mlevel, clamp mh before losehp; rehumanization then zeros mh/mhmax",
+        "form": "leather golem",
+        "turns": "sitting consumes ECMD_TIME; slow forms can advance multiple world turns",
+        "primaryStatus": "source prediction pending parent original C, no native claim"
+      }
+    },
+    {
+      "name": "minotaur-trigger",
+      "species": "minotaur",
+      "golemHP": null,
+      "speciesLevel": 15,
+      "materialDivisor": 0,
+      "trigger": true,
+      "negative": false,
+      "fireResistant": false,
+      "phases": {
+        "initial": 0,
+        "floor": 3,
+        "polymorphed": 27,
+        "gloveWishStart": 27,
+        "gloveWish": 64,
+        "wearStart": 64,
+        "worn": 71,
+        "trapWishStart": 71,
+        "beforeAction": 87,
+        "actionEnter": 92,
+        "final": 97
+      },
+      "C": {
+        "requiredPhrases": [
+          "You turn into a minotaur!",
+          "A fire trap.",
+          "You sit down.",
+          "A tower of flame erupts from the floor!"
+        ],
+        "excludedPhrases": [
+          "Creation of a fire trap failed.",
+          "You escape a fire trap.",
+          "You return to human form!"
+        ],
+        "humanHPMax": "unchanged across action in every case",
+        "humanHP": "unchanged: healthy human pool before damage; no human loss in Upolyd arm",
+        "damage": "max(first d(2,4), trunc(pre-mhmax/materialDivisor)) with alternate0 if divisor0",
+        "rngPrefix": "d(2,4), rn2(min(pre-mhmax,max(first-d,alternate)+1)), then damage/armor/item helpers; no second d(2,4)",
+        "monsterHPMax": "subtract the bounded rn2 draw if above species mlevel, clamp mh before losehp; rehumanization then zeros mh/mhmax",
+        "form": "minotaur",
+        "turns": "sitting consumes ECMD_TIME; slow forms can advance multiple world turns",
+        "primaryStatus": "source prediction pending parent original C, no native claim"
+      }
+    },
+    {
+      "name": "iron-resistant",
+      "species": "iron golem",
+      "golemHP": 120,
+      "speciesLevel": 18,
+      "materialDivisor": 0,
+      "trigger": true,
+      "negative": true,
+      "fireResistant": true,
+      "phases": {
+        "initial": 0,
+        "floor": 3,
+        "polymorphed": 29,
+        "gloveWishStart": 29,
+        "gloveWish": 66,
+        "wearStart": 66,
+        "worn": 73,
+        "trapWishStart": 73,
+        "beforeAction": 89,
+        "actionEnter": 94,
+        "final": 99
+      },
+      "C": {
+        "requiredPhrases": [
+          "You turn into a iron golem!",
+          "A fire trap.",
+          "You sit down.",
+          "A tower of flame erupts from the floor!"
+        ],
+        "excludedPhrases": [
+          "Creation of a fire trap failed.",
+          "You escape a fire trap.",
+          "You return to human form!"
+        ],
+        "humanHPMax": "unchanged across action in every case",
+        "humanHP": "unchanged: healthy human pool before damage; no human loss in Upolyd arm",
+        "damage": "0..1 from rn2(2)",
+        "rngPrefix": "d(2,4), rn2(2), then armor/item helpers",
+        "monsterHPMax": "unchanged",
+        "form": "iron golem",
+        "turns": "sitting consumes ECMD_TIME; slow forms can advance multiple world turns",
+        "primaryStatus": "source prediction pending parent original C, no native claim"
+      }
+    },
+    {
+      "name": "paper-look-only",
+      "species": "paper golem",
+      "golemHP": 20,
+      "speciesLevel": 3,
+      "materialDivisor": 1,
+      "trigger": false,
+      "negative": true,
+      "fireResistant": false,
+      "phases": {
+        "initial": 0,
+        "floor": 3,
+        "polymorphed": 30,
+        "gloveWishStart": 30,
+        "gloveWish": 67,
+        "wearStart": 67,
+        "worn": 74,
+        "trapWishStart": 74,
+        "beforeAction": 90,
+        "actionEnter": 91,
+        "final": 96
+      },
+      "C": {
+        "requiredPhrases": [
+          "You turn into a paper golem!",
+          "A fire trap.",
+          "You see no objects here."
+        ],
+        "excludedPhrases": [
+          "Creation of a fire trap failed.",
+          "You escape a fire trap.",
+          "tower of flame",
+          "You return to human form!"
+        ],
+        "humanHPMax": "unchanged across action in every case",
+        "humanHP": "unchanged: healthy human pool before damage; no human loss in Upolyd arm",
+        "damage": "none",
+        "rngPrefix": "no core calls for sighted look",
+        "monsterHPMax": "unchanged",
+        "form": "paper golem",
+        "turns": "no turn cost",
+        "primaryStatus": "source prediction pending parent original C, no native claim"
+      }
+    },
+    {
+      "name": "minotaur-look-only",
+      "species": "minotaur",
+      "golemHP": null,
+      "speciesLevel": 15,
+      "materialDivisor": 0,
+      "trigger": false,
+      "negative": true,
+      "fireResistant": false,
+      "phases": {
+        "initial": 0,
+        "floor": 3,
+        "polymorphed": 27,
+        "gloveWishStart": 27,
+        "gloveWish": 64,
+        "wearStart": 64,
+        "worn": 71,
+        "trapWishStart": 71,
+        "beforeAction": 87,
+        "actionEnter": 88,
+        "final": 93
+      },
+      "C": {
+        "requiredPhrases": [
+          "You turn into a minotaur!",
+          "A fire trap.",
+          "You see no objects here."
+        ],
+        "excludedPhrases": [
+          "Creation of a fire trap failed.",
+          "You escape a fire trap.",
+          "tower of flame",
+          "You return to human form!",
+          "You return to human form!"
+        ],
+        "humanHPMax": "unchanged across action in every case",
+        "humanHP": "unchanged: healthy human pool before damage; no human loss in Upolyd arm",
+        "damage": "none",
+        "rngPrefix": "no core calls for sighted look",
+        "monsterHPMax": "unchanged",
+        "form": "minotaur",
+        "turns": "no turn cost",
+        "primaryStatus": "source prediction pending parent original C, no native claim"
+      }
+    }
+  ],
+  "sourceNotes": [
+    "No seed search; same maintained seed/profile across all forms. One west step selected from existing C screen, before form change and before fumbling.",
+    "Every runtime change comes from keys. Observer only reads public game data and pure predicates.",
+    "New wished fire trap starts unseen. Gloves create real extrinsic Fumbling and timed HFumbling; this does not independently test a seen-trap dodge.",
+    "Keep C predictions separate from baseline diagnosis. Do not replace a failed producer or source predicate with observed baseline output.",
+    "No fixed shrink result, exact damage roll, or straw survival assumed before parent C.",
+    "Nonpaper survivor state excludes natural regeneration boundaries; predicate checks that independently instead of masking HP differences."
+  ]
+}

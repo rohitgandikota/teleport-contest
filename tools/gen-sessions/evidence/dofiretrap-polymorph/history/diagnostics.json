@@ -1,0 +1,1954 @@
+{
+  "original36": {
+    "reportSHA256": "9f43198cd8afa4d95112814ffdad0527519403509fcbdf497b276944592aad23",
+    "producerPassed": 0,
+    "sourceChecks": 33,
+    "sourceTotal": 56,
+    "rows": [
+      {
+        "name": "paper-trigger",
+        "firstUnmetProducer": "one ordinary west step reaches clear room floor",
+        "reach": [
+          {
+            "name": "all keys consumed without runtime error",
+            "pass": true
+          },
+          {
+            "name": "one ordinary west step reaches clear room floor",
+            "pass": false
+          },
+          {
+            "name": "controlled exact species produced with healthy monster pool",
+            "pass": true
+          },
+          {
+            "name": "source HP producer reached",
+            "pass": true
+          },
+          {
+            "name": "only real wished uncursed gloves occupy slot a",
+            "pass": true
+          },
+          {
+            "name": "real wear retains identity and W_ARMG property",
+            "pass": true
+          },
+          {
+            "name": "Gloves_on timed producer ran before action",
+            "pass": true
+          },
+          {
+            "name": "polymorph human HP pool unchanged through setup",
+            "pass": true
+          },
+          {
+            "name": "fire resistance comes only from iron form",
+            "pass": true
+          },
+          {
+            "name": "sitting eligibility and excluded branch prerequisites",
+            "pass": true
+          },
+          {
+            "name": "ordinary fire trap exists unseen before action",
+            "pass": true
+          },
+          {
+            "name": "empty ground and glove-only inventory throughout setup",
+            "pass": true
+          },
+          {
+            "name": "healthy monster pool remains above its species level before action",
+            "pass": true
+          },
+          {
+            "name": "source-predicted ordinary producer feedback",
+            "pass": true
+          },
+          {
+            "name": "chosen trigger or look branch reached",
+            "pass": true
+          },
+          {
+            "name": "no regeneration boundary obscures damage observation",
+            "pass": true
+          },
+          {
+            "name": "ordinary producer and action survive",
+            "pass": true
+          },
+          {
+            "name": "all five output streams are complete",
+            "pass": true
+          }
+        ],
+        "contracts": [
+          {
+            "name": "C primary visible predicates",
+            "pass": false
+          },
+          {
+            "name": "C leaves human HP maximum unchanged",
+            "pass": false
+          },
+          {
+            "name": "C leaves healthy human HP unchanged",
+            "pass": false
+          },
+          {
+            "name": "C damage RNG prefix with no second d(2,4)",
+            "pass": false
+          },
+          {
+            "name": "C material shrink clamp and loss or unchanged look state",
+            "pass": false
+          },
+          {
+            "name": "C paper trigger always rehumanizes; controls preserve selected form",
+            "pass": false
+          },
+          {
+            "name": "C action time contract",
+            "pass": true
+          }
+        ],
+        "rowSHA256": "784e8a4934ef0ad48d1af0f2ffd432c4f1f1ab152b795187cdab7133ff75b95e"
+      },
+      {
+        "name": "straw-trigger",
+        "firstUnmetProducer": "one ordinary west step reaches clear room floor",
+        "reach": [
+          {
+            "name": "all keys consumed without runtime error",
+            "pass": true
+          },
+          {
+            "name": "one ordinary west step reaches clear room floor",
+            "pass": false
+          },
+          {
+            "name": "controlled exact species produced with healthy monster pool",
+            "pass": true
+          },
+          {
+            "name": "source HP producer reached",
+            "pass": true
+          },
+          {
+            "name": "only real wished uncursed gloves occupy slot a",
+            "pass": true
+          },
+          {
+            "name": "real wear retains identity and W_ARMG property",
+            "pass": true
+          },
+          {
+            "name": "Gloves_on timed producer ran before action",
+            "pass": true
+          },
+          {
+            "name": "polymorph human HP pool unchanged through setup",
+            "pass": true
+          },
+          {
+            "name": "fire resistance comes only from iron form",
+            "pass": true
+          },
+          {
+            "name": "sitting eligibility and excluded branch prerequisites",
+            "pass": true
+          },
+          {
+            "name": "ordinary fire trap exists unseen before action",
+            "pass": true
+          },
+          {
+            "name": "empty ground and glove-only inventory throughout setup",
+            "pass": true
+          },
+          {
+            "name": "healthy monster pool remains above its species level before action",
+            "pass": true
+          },
+          {
+            "name": "source-predicted ordinary producer feedback",
+            "pass": true
+          },
+          {
+            "name": "chosen trigger or look branch reached",
+            "pass": true
+          },
+          {
+            "name": "no regeneration boundary obscures damage observation",
+            "pass": true
+          },
+          {
+            "name": "ordinary producer and action survive",
+            "pass": true
+          },
+          {
+            "name": "all five output streams are complete",
+            "pass": true
+          }
+        ],
+        "contracts": [
+          {
+            "name": "C primary visible predicates",
+            "pass": true
+          },
+          {
+            "name": "C leaves human HP maximum unchanged",
+            "pass": false
+          },
+          {
+            "name": "C leaves healthy human HP unchanged",
+            "pass": false
+          },
+          {
+            "name": "C damage RNG prefix with no second d(2,4)",
+            "pass": false
+          },
+          {
+            "name": "C material shrink clamp and loss or unchanged look state",
+            "pass": false
+          },
+          {
+            "name": "C paper trigger always rehumanizes; controls preserve selected form",
+            "pass": false
+          },
+          {
+            "name": "C action time contract",
+            "pass": true
+          }
+        ],
+        "rowSHA256": "598f4d3740247dc6c82a48834c366a6f1fee05cff15baf30032798dec85de022"
+      },
+      {
+        "name": "wood-trigger",
+        "firstUnmetProducer": "one ordinary west step reaches clear room floor",
+        "reach": [
+          {
+            "name": "all keys consumed without runtime error",
+            "pass": true
+          },
+          {
+            "name": "one ordinary west step reaches clear room floor",
+            "pass": false
+          },
+          {
+            "name": "controlled exact species produced with healthy monster pool",
+            "pass": true
+          },
+          {
+            "name": "source HP producer reached",
+            "pass": true
+          },
+          {
+            "name": "only real wished uncursed gloves occupy slot a",
+            "pass": true
+          },
+          {
+            "name": "real wear retains identity and W_ARMG property",
+            "pass": true
+          },
+          {
+            "name": "Gloves_on timed producer ran before action",
+            "pass": true
+          },
+          {
+            "name": "polymorph human HP pool unchanged through setup",
+            "pass": true
+          },
+          {
+            "name": "fire resistance comes only from iron form",
+            "pass": true
+          },
+          {
+            "name": "sitting eligibility and excluded branch prerequisites",
+            "pass": true
+          },
+          {
+            "name": "ordinary fire trap exists unseen before action",
+            "pass": true
+          },
+          {
+            "name": "empty ground and glove-only inventory throughout setup",
+            "pass": true
+          },
+          {
+            "name": "healthy monster pool remains above its species level before action",
+            "pass": false
+          },
+          {
+            "name": "source-predicted ordinary producer feedback",
+            "pass": true
+          },
+          {
+            "name": "chosen trigger or look branch reached",
+            "pass": true
+          },
+          {
+            "name": "no regeneration boundary obscures damage observation",
+            "pass": true
+          },
+          {
+            "name": "ordinary producer and action survive",
+            "pass": true
+          },
+          {
+            "name": "all five output streams are complete",
+            "pass": true
+          }
+        ],
+        "contracts": [
+          {
+            "name": "C primary visible predicates",
+            "pass": true
+          },
+          {
+            "name": "C leaves human HP maximum unchanged",
+            "pass": false
+          },
+          {
+            "name": "C leaves healthy human HP unchanged",
+            "pass": false
+          },
+          {
+            "name": "C damage RNG prefix with no second d(2,4)",
+            "pass": false
+          },
+          {
+            "name": "C material shrink clamp and loss or unchanged look state",
+            "pass": false
+          },
+          {
+            "name": "C paper trigger always rehumanizes; controls preserve selected form",
+            "pass": true
+          },
+          {
+            "name": "C action time contract",
+            "pass": true
+          }
+        ],
+        "rowSHA256": "82d7bc26f004f18e7f71d871a135708f3cc6c1a32d7fbf4dfd6c796c520ebb45"
+      },
+      {
+        "name": "leather-trigger",
+        "firstUnmetProducer": "one ordinary west step reaches clear room floor",
+        "reach": [
+          {
+            "name": "all keys consumed without runtime error",
+            "pass": true
+          },
+          {
+            "name": "one ordinary west step reaches clear room floor",
+            "pass": false
+          },
+          {
+            "name": "controlled exact species produced with healthy monster pool",
+            "pass": true
+          },
+          {
+            "name": "source HP producer reached",
+            "pass": true
+          },
+          {
+            "name": "only real wished uncursed gloves occupy slot a",
+            "pass": true
+          },
+          {
+            "name": "real wear retains identity and W_ARMG property",
+            "pass": true
+          },
+          {
+            "name": "Gloves_on timed producer ran before action",
+            "pass": true
+          },
+          {
+            "name": "polymorph human HP pool unchanged through setup",
+            "pass": true
+          },
+          {
+            "name": "fire resistance comes only from iron form",
+            "pass": true
+          },
+          {
+            "name": "sitting eligibility and excluded branch prerequisites",
+            "pass": true
+          },
+          {
+            "name": "ordinary fire trap exists unseen before action",
+            "pass": true
+          },
+          {
+            "name": "empty ground and glove-only inventory throughout setup",
+            "pass": true
+          },
+          {
+            "name": "healthy monster pool remains above its species level before action",
+            "pass": false
+          },
+          {
+            "name": "source-predicted ordinary producer feedback",
+            "pass": true
+          },
+          {
+            "name": "chosen trigger or look branch reached",
+            "pass": true
+          },
+          {
+            "name": "no regeneration boundary obscures damage observation",
+            "pass": true
+          },
+          {
+            "name": "ordinary producer and action survive",
+            "pass": true
+          },
+          {
+            "name": "all five output streams are complete",
+            "pass": true
+          }
+        ],
+        "contracts": [
+          {
+            "name": "C primary visible predicates",
+            "pass": true
+          },
+          {
+            "name": "C leaves human HP maximum unchanged",
+            "pass": false
+          },
+          {
+            "name": "C leaves healthy human HP unchanged",
+            "pass": false
+          },
+          {
+            "name": "C damage RNG prefix with no second d(2,4)",
+            "pass": false
+          },
+          {
+            "name": "C material shrink clamp and loss or unchanged look state",
+            "pass": false
+          },
+          {
+            "name": "C paper trigger always rehumanizes; controls preserve selected form",
+            "pass": true
+          },
+          {
+            "name": "C action time contract",
+            "pass": true
+          }
+        ],
+        "rowSHA256": "21404798c53c4e0f99f584f617e204966c3f6d7a16af7587dbfdfef18a95c8d6"
+      },
+      {
+        "name": "minotaur-trigger",
+        "firstUnmetProducer": "one ordinary west step reaches clear room floor",
+        "reach": [
+          {
+            "name": "all keys consumed without runtime error",
+            "pass": true
+          },
+          {
+            "name": "one ordinary west step reaches clear room floor",
+            "pass": false
+          },
+          {
+            "name": "controlled exact species produced with healthy monster pool",
+            "pass": true
+          },
+          {
+            "name": "source HP producer reached",
+            "pass": true
+          },
+          {
+            "name": "only real wished uncursed gloves occupy slot a",
+            "pass": true
+          },
+          {
+            "name": "real wear retains identity and W_ARMG property",
+            "pass": true
+          },
+          {
+            "name": "Gloves_on timed producer ran before action",
+            "pass": true
+          },
+          {
+            "name": "polymorph human HP pool unchanged through setup",
+            "pass": true
+          },
+          {
+            "name": "fire resistance comes only from iron form",
+            "pass": true
+          },
+          {
+            "name": "sitting eligibility and excluded branch prerequisites",
+            "pass": true
+          },
+          {
+            "name": "ordinary fire trap exists unseen before action",
+            "pass": true
+          },
+          {
+            "name": "empty ground and glove-only inventory throughout setup",
+            "pass": true
+          },
+          {
+            "name": "healthy monster pool remains above its species level before action",
+            "pass": true
+          },
+          {
+            "name": "source-predicted ordinary producer feedback",
+            "pass": true
+          },
+          {
+            "name": "chosen trigger or look branch reached",
+            "pass": true
+          },
+          {
+            "name": "no regeneration boundary obscures damage observation",
+            "pass": true
+          },
+          {
+            "name": "ordinary producer and action survive",
+            "pass": true
+          },
+          {
+            "name": "all five output streams are complete",
+            "pass": true
+          }
+        ],
+        "contracts": [
+          {
+            "name": "C primary visible predicates",
+            "pass": true
+          },
+          {
+            "name": "C leaves human HP maximum unchanged",
+            "pass": true
+          },
+          {
+            "name": "C leaves healthy human HP unchanged",
+            "pass": true
+          },
+          {
+            "name": "C damage RNG prefix with no second d(2,4)",
+            "pass": false
+          },
+          {
+            "name": "C material shrink clamp and loss or unchanged look state",
+            "pass": false
+          },
+          {
+            "name": "C paper trigger always rehumanizes; controls preserve selected form",
+            "pass": true
+          },
+          {
+            "name": "C action time contract",
+            "pass": true
+          }
+        ],
+        "rowSHA256": "e761df53ea39adb5f969fc8c7292587c5bb1f9f4ed6bd30258e22c84bc2ed1ed"
+      },
+      {
+        "name": "iron-resistant",
+        "firstUnmetProducer": "one ordinary west step reaches clear room floor",
+        "reach": [
+          {
+            "name": "all keys consumed without runtime error",
+            "pass": true
+          },
+          {
+            "name": "one ordinary west step reaches clear room floor",
+            "pass": false
+          },
+          {
+            "name": "controlled exact species produced with healthy monster pool",
+            "pass": true
+          },
+          {
+            "name": "source HP producer reached",
+            "pass": true
+          },
+          {
+            "name": "only real wished uncursed gloves occupy slot a",
+            "pass": true
+          },
+          {
+            "name": "real wear retains identity and W_ARMG property",
+            "pass": true
+          },
+          {
+            "name": "Gloves_on timed producer ran before action",
+            "pass": true
+          },
+          {
+            "name": "polymorph human HP pool unchanged through setup",
+            "pass": true
+          },
+          {
+            "name": "fire resistance comes only from iron form",
+            "pass": true
+          },
+          {
+            "name": "sitting eligibility and excluded branch prerequisites",
+            "pass": true
+          },
+          {
+            "name": "ordinary fire trap exists unseen before action",
+            "pass": true
+          },
+          {
+            "name": "empty ground and glove-only inventory throughout setup",
+            "pass": true
+          },
+          {
+            "name": "healthy monster pool remains above its species level before action",
+            "pass": false
+          },
+          {
+            "name": "source-predicted ordinary producer feedback",
+            "pass": false
+          },
+          {
+            "name": "chosen trigger or look branch reached",
+            "pass": true
+          },
+          {
+            "name": "no regeneration boundary obscures damage observation",
+            "pass": true
+          },
+          {
+            "name": "ordinary producer and action survive",
+            "pass": true
+          },
+          {
+            "name": "all five output streams are complete",
+            "pass": true
+          }
+        ],
+        "contracts": [
+          {
+            "name": "C primary visible predicates",
+            "pass": false
+          },
+          {
+            "name": "C leaves human HP maximum unchanged",
+            "pass": true
+          },
+          {
+            "name": "C leaves healthy human HP unchanged",
+            "pass": true
+          },
+          {
+            "name": "C damage RNG prefix with no second d(2,4)",
+            "pass": true
+          },
+          {
+            "name": "C material shrink clamp and loss or unchanged look state",
+            "pass": false
+          },
+          {
+            "name": "C paper trigger always rehumanizes; controls preserve selected form",
+            "pass": true
+          },
+          {
+            "name": "C action time contract",
+            "pass": true
+          }
+        ],
+        "rowSHA256": "e32b077659565ef93319427719e13506232560922a0906bd2a9bc75ceded0999"
+      },
+      {
+        "name": "paper-look-only",
+        "firstUnmetProducer": "one ordinary west step reaches clear room floor",
+        "reach": [
+          {
+            "name": "all keys consumed without runtime error",
+            "pass": true
+          },
+          {
+            "name": "one ordinary west step reaches clear room floor",
+            "pass": false
+          },
+          {
+            "name": "controlled exact species produced with healthy monster pool",
+            "pass": true
+          },
+          {
+            "name": "source HP producer reached",
+            "pass": true
+          },
+          {
+            "name": "only real wished uncursed gloves occupy slot a",
+            "pass": true
+          },
+          {
+            "name": "real wear retains identity and W_ARMG property",
+            "pass": true
+          },
+          {
+            "name": "Gloves_on timed producer ran before action",
+            "pass": true
+          },
+          {
+            "name": "polymorph human HP pool unchanged through setup",
+            "pass": true
+          },
+          {
+            "name": "fire resistance comes only from iron form",
+            "pass": true
+          },
+          {
+            "name": "sitting eligibility and excluded branch prerequisites",
+            "pass": true
+          },
+          {
+            "name": "ordinary fire trap exists unseen before action",
+            "pass": true
+          },
+          {
+            "name": "empty ground and glove-only inventory throughout setup",
+            "pass": true
+          },
+          {
+            "name": "healthy monster pool remains above its species level before action",
+            "pass": true
+          },
+          {
+            "name": "source-predicted ordinary producer feedback",
+            "pass": true
+          },
+          {
+            "name": "chosen trigger or look branch reached",
+            "pass": true
+          },
+          {
+            "name": "no regeneration boundary obscures damage observation",
+            "pass": true
+          },
+          {
+            "name": "ordinary producer and action survive",
+            "pass": true
+          },
+          {
+            "name": "all five output streams are complete",
+            "pass": true
+          }
+        ],
+        "contracts": [
+          {
+            "name": "C primary visible predicates",
+            "pass": true
+          },
+          {
+            "name": "C leaves human HP maximum unchanged",
+            "pass": true
+          },
+          {
+            "name": "C leaves healthy human HP unchanged",
+            "pass": true
+          },
+          {
+            "name": "C damage RNG prefix with no second d(2,4)",
+            "pass": true
+          },
+          {
+            "name": "C material shrink clamp and loss or unchanged look state",
+            "pass": true
+          },
+          {
+            "name": "C paper trigger always rehumanizes; controls preserve selected form",
+            "pass": true
+          },
+          {
+            "name": "C action time contract",
+            "pass": true
+          }
+        ],
+        "rowSHA256": "04cae0299420439730f22d731ff7bc186c5a065474a9c2d6a122c2a8fe1340b6"
+      },
+      {
+        "name": "minotaur-look-only",
+        "firstUnmetProducer": "one ordinary west step reaches clear room floor",
+        "reach": [
+          {
+            "name": "all keys consumed without runtime error",
+            "pass": true
+          },
+          {
+            "name": "one ordinary west step reaches clear room floor",
+            "pass": false
+          },
+          {
+            "name": "controlled exact species produced with healthy monster pool",
+            "pass": true
+          },
+          {
+            "name": "source HP producer reached",
+            "pass": true
+          },
+          {
+            "name": "only real wished uncursed gloves occupy slot a",
+            "pass": true
+          },
+          {
+            "name": "real wear retains identity and W_ARMG property",
+            "pass": true
+          },
+          {
+            "name": "Gloves_on timed producer ran before action",
+            "pass": true
+          },
+          {
+            "name": "polymorph human HP pool unchanged through setup",
+            "pass": true
+          },
+          {
+            "name": "fire resistance comes only from iron form",
+            "pass": true
+          },
+          {
+            "name": "sitting eligibility and excluded branch prerequisites",
+            "pass": true
+          },
+          {
+            "name": "ordinary fire trap exists unseen before action",
+            "pass": true
+          },
+          {
+            "name": "empty ground and glove-only inventory throughout setup",
+            "pass": true
+          },
+          {
+            "name": "healthy monster pool remains above its species level before action",
+            "pass": true
+          },
+          {
+            "name": "source-predicted ordinary producer feedback",
+            "pass": true
+          },
+          {
+            "name": "chosen trigger or look branch reached",
+            "pass": true
+          },
+          {
+            "name": "no regeneration boundary obscures damage observation",
+            "pass": true
+          },
+          {
+            "name": "ordinary producer and action survive",
+            "pass": true
+          },
+          {
+            "name": "all five output streams are complete",
+            "pass": true
+          }
+        ],
+        "contracts": [
+          {
+            "name": "C primary visible predicates",
+            "pass": true
+          },
+          {
+            "name": "C leaves human HP maximum unchanged",
+            "pass": true
+          },
+          {
+            "name": "C leaves healthy human HP unchanged",
+            "pass": true
+          },
+          {
+            "name": "C damage RNG prefix with no second d(2,4)",
+            "pass": true
+          },
+          {
+            "name": "C material shrink clamp and loss or unchanged look state",
+            "pass": true
+          },
+          {
+            "name": "C paper trigger always rehumanizes; controls preserve selected form",
+            "pass": true
+          },
+          {
+            "name": "C action time contract",
+            "pass": true
+          }
+        ],
+        "rowSHA256": "616755350cb046ddf96fab2717b515b2095427d7abc03081b5da7278adcc400d"
+      }
+    ]
+  },
+  "cleanup35": {
+    "reportSHA256": "78e0d33de7701148c5580ae397ed842f95755865a43cbcb859581a403a312ca0",
+    "producerPassed": 8,
+    "sourceChecks": 33,
+    "sourceTotal": 56,
+    "rows": [
+      {
+        "name": "clean-paper-trigger",
+        "firstUnmetProducer": null,
+        "reach": [
+          {
+            "name": "all keys consumed without runtime error",
+            "pass": true
+          },
+          {
+            "name": "fixed monsters exist before real cleanup",
+            "pass": true
+          },
+          {
+            "name": "real wished blessed scroll occupies slot a",
+            "pass": true
+          },
+          {
+            "name": "star cleanup removes live monsters and their raw map slots",
+            "pass": true
+          },
+          {
+            "name": "cleanup consumes scroll without species genocide",
+            "pass": true
+          },
+          {
+            "name": "read consumes time without damaging healthy human",
+            "pass": true
+          },
+          {
+            "name": "no live monsters at any observed boundary after cleanup",
+            "pass": true
+          },
+          {
+            "name": "one ordinary west step reaches clear room floor",
+            "pass": true
+          },
+          {
+            "name": "controlled exact species produced with healthy monster pool",
+            "pass": true
+          },
+          {
+            "name": "source HP producer reached",
+            "pass": true
+          },
+          {
+            "name": "only real wished uncursed gloves occupy slot b",
+            "pass": true
+          },
+          {
+            "name": "real wear retains identity and W_ARMG property",
+            "pass": true
+          },
+          {
+            "name": "Gloves_on timed producer ran before action",
+            "pass": true
+          },
+          {
+            "name": "polymorph human HP pool unchanged through setup",
+            "pass": true
+          },
+          {
+            "name": "fire resistance comes only from iron form",
+            "pass": true
+          },
+          {
+            "name": "sitting eligibility and excluded branch prerequisites",
+            "pass": true
+          },
+          {
+            "name": "ordinary fire trap exists unseen before action",
+            "pass": true
+          },
+          {
+            "name": "empty ground and glove-only inventory throughout setup",
+            "pass": true
+          },
+          {
+            "name": "healthy monster pool remains above its species level before action",
+            "pass": true
+          },
+          {
+            "name": "source-predicted ordinary producer feedback",
+            "pass": true
+          },
+          {
+            "name": "chosen trigger or look branch reached",
+            "pass": true
+          },
+          {
+            "name": "no regeneration boundary obscures damage observation",
+            "pass": true
+          },
+          {
+            "name": "ordinary producer and action survive",
+            "pass": true
+          },
+          {
+            "name": "all five output streams are complete",
+            "pass": true
+          }
+        ],
+        "contracts": [
+          {
+            "name": "C primary visible predicates",
+            "pass": false
+          },
+          {
+            "name": "C leaves human HP maximum unchanged",
+            "pass": false
+          },
+          {
+            "name": "C leaves healthy human HP unchanged",
+            "pass": false
+          },
+          {
+            "name": "C damage RNG prefix with no second d(2,4)",
+            "pass": false
+          },
+          {
+            "name": "C material shrink clamp and loss or unchanged look state",
+            "pass": false
+          },
+          {
+            "name": "C paper trigger always rehumanizes; controls preserve selected form",
+            "pass": false
+          },
+          {
+            "name": "C action time contract",
+            "pass": true
+          }
+        ],
+        "rowSHA256": "0865d99b0fc527251d5b291adecb01d62882a321ca40fb35590a040ec6e94b48"
+      },
+      {
+        "name": "clean-straw-trigger",
+        "firstUnmetProducer": null,
+        "reach": [
+          {
+            "name": "all keys consumed without runtime error",
+            "pass": true
+          },
+          {
+            "name": "fixed monsters exist before real cleanup",
+            "pass": true
+          },
+          {
+            "name": "real wished blessed scroll occupies slot a",
+            "pass": true
+          },
+          {
+            "name": "star cleanup removes live monsters and their raw map slots",
+            "pass": true
+          },
+          {
+            "name": "cleanup consumes scroll without species genocide",
+            "pass": true
+          },
+          {
+            "name": "read consumes time without damaging healthy human",
+            "pass": true
+          },
+          {
+            "name": "no live monsters at any observed boundary after cleanup",
+            "pass": true
+          },
+          {
+            "name": "one ordinary west step reaches clear room floor",
+            "pass": true
+          },
+          {
+            "name": "controlled exact species produced with healthy monster pool",
+            "pass": true
+          },
+          {
+            "name": "source HP producer reached",
+            "pass": true
+          },
+          {
+            "name": "only real wished uncursed gloves occupy slot b",
+            "pass": true
+          },
+          {
+            "name": "real wear retains identity and W_ARMG property",
+            "pass": true
+          },
+          {
+            "name": "Gloves_on timed producer ran before action",
+            "pass": true
+          },
+          {
+            "name": "polymorph human HP pool unchanged through setup",
+            "pass": true
+          },
+          {
+            "name": "fire resistance comes only from iron form",
+            "pass": true
+          },
+          {
+            "name": "sitting eligibility and excluded branch prerequisites",
+            "pass": true
+          },
+          {
+            "name": "ordinary fire trap exists unseen before action",
+            "pass": true
+          },
+          {
+            "name": "empty ground and glove-only inventory throughout setup",
+            "pass": true
+          },
+          {
+            "name": "healthy monster pool remains above its species level before action",
+            "pass": true
+          },
+          {
+            "name": "source-predicted ordinary producer feedback",
+            "pass": true
+          },
+          {
+            "name": "chosen trigger or look branch reached",
+            "pass": true
+          },
+          {
+            "name": "no regeneration boundary obscures damage observation",
+            "pass": true
+          },
+          {
+            "name": "ordinary producer and action survive",
+            "pass": true
+          },
+          {
+            "name": "all five output streams are complete",
+            "pass": true
+          }
+        ],
+        "contracts": [
+          {
+            "name": "C primary visible predicates",
+            "pass": true
+          },
+          {
+            "name": "C leaves human HP maximum unchanged",
+            "pass": false
+          },
+          {
+            "name": "C leaves healthy human HP unchanged",
+            "pass": false
+          },
+          {
+            "name": "C damage RNG prefix with no second d(2,4)",
+            "pass": false
+          },
+          {
+            "name": "C material shrink clamp and loss or unchanged look state",
+            "pass": false
+          },
+          {
+            "name": "C paper trigger always rehumanizes; controls preserve selected form",
+            "pass": false
+          },
+          {
+            "name": "C action time contract",
+            "pass": true
+          }
+        ],
+        "rowSHA256": "ab18ca7b268c9c2aed747f4aa78be9f2cfc75f83eda76df9753443d92b1b49e6"
+      },
+      {
+        "name": "clean-wood-trigger",
+        "firstUnmetProducer": null,
+        "reach": [
+          {
+            "name": "all keys consumed without runtime error",
+            "pass": true
+          },
+          {
+            "name": "fixed monsters exist before real cleanup",
+            "pass": true
+          },
+          {
+            "name": "real wished blessed scroll occupies slot a",
+            "pass": true
+          },
+          {
+            "name": "star cleanup removes live monsters and their raw map slots",
+            "pass": true
+          },
+          {
+            "name": "cleanup consumes scroll without species genocide",
+            "pass": true
+          },
+          {
+            "name": "read consumes time without damaging healthy human",
+            "pass": true
+          },
+          {
+            "name": "no live monsters at any observed boundary after cleanup",
+            "pass": true
+          },
+          {
+            "name": "one ordinary west step reaches clear room floor",
+            "pass": true
+          },
+          {
+            "name": "controlled exact species produced with healthy monster pool",
+            "pass": true
+          },
+          {
+            "name": "source HP producer reached",
+            "pass": true
+          },
+          {
+            "name": "only real wished uncursed gloves occupy slot b",
+            "pass": true
+          },
+          {
+            "name": "real wear retains identity and W_ARMG property",
+            "pass": true
+          },
+          {
+            "name": "Gloves_on timed producer ran before action",
+            "pass": true
+          },
+          {
+            "name": "polymorph human HP pool unchanged through setup",
+            "pass": true
+          },
+          {
+            "name": "fire resistance comes only from iron form",
+            "pass": true
+          },
+          {
+            "name": "sitting eligibility and excluded branch prerequisites",
+            "pass": true
+          },
+          {
+            "name": "ordinary fire trap exists unseen before action",
+            "pass": true
+          },
+          {
+            "name": "empty ground and glove-only inventory throughout setup",
+            "pass": true
+          },
+          {
+            "name": "healthy monster pool remains above its species level before action",
+            "pass": true
+          },
+          {
+            "name": "source-predicted ordinary producer feedback",
+            "pass": true
+          },
+          {
+            "name": "chosen trigger or look branch reached",
+            "pass": true
+          },
+          {
+            "name": "no regeneration boundary obscures damage observation",
+            "pass": true
+          },
+          {
+            "name": "ordinary producer and action survive",
+            "pass": true
+          },
+          {
+            "name": "all five output streams are complete",
+            "pass": true
+          }
+        ],
+        "contracts": [
+          {
+            "name": "C primary visible predicates",
+            "pass": true
+          },
+          {
+            "name": "C leaves human HP maximum unchanged",
+            "pass": false
+          },
+          {
+            "name": "C leaves healthy human HP unchanged",
+            "pass": false
+          },
+          {
+            "name": "C damage RNG prefix with no second d(2,4)",
+            "pass": false
+          },
+          {
+            "name": "C material shrink clamp and loss or unchanged look state",
+            "pass": false
+          },
+          {
+            "name": "C paper trigger always rehumanizes; controls preserve selected form",
+            "pass": true
+          },
+          {
+            "name": "C action time contract",
+            "pass": true
+          }
+        ],
+        "rowSHA256": "06d36b7a45328f37b82d7fec81185246a90e8588b7cd8d52a8f8d8b52b7c490a"
+      },
+      {
+        "name": "clean-leather-trigger",
+        "firstUnmetProducer": null,
+        "reach": [
+          {
+            "name": "all keys consumed without runtime error",
+            "pass": true
+          },
+          {
+            "name": "fixed monsters exist before real cleanup",
+            "pass": true
+          },
+          {
+            "name": "real wished blessed scroll occupies slot a",
+            "pass": true
+          },
+          {
+            "name": "star cleanup removes live monsters and their raw map slots",
+            "pass": true
+          },
+          {
+            "name": "cleanup consumes scroll without species genocide",
+            "pass": true
+          },
+          {
+            "name": "read consumes time without damaging healthy human",
+            "pass": true
+          },
+          {
+            "name": "no live monsters at any observed boundary after cleanup",
+            "pass": true
+          },
+          {
+            "name": "one ordinary west step reaches clear room floor",
+            "pass": true
+          },
+          {
+            "name": "controlled exact species produced with healthy monster pool",
+            "pass": true
+          },
+          {
+            "name": "source HP producer reached",
+            "pass": true
+          },
+          {
+            "name": "only real wished uncursed gloves occupy slot b",
+            "pass": true
+          },
+          {
+            "name": "real wear retains identity and W_ARMG property",
+            "pass": true
+          },
+          {
+            "name": "Gloves_on timed producer ran before action",
+            "pass": true
+          },
+          {
+            "name": "polymorph human HP pool unchanged through setup",
+            "pass": true
+          },
+          {
+            "name": "fire resistance comes only from iron form",
+            "pass": true
+          },
+          {
+            "name": "sitting eligibility and excluded branch prerequisites",
+            "pass": true
+          },
+          {
+            "name": "ordinary fire trap exists unseen before action",
+            "pass": true
+          },
+          {
+            "name": "empty ground and glove-only inventory throughout setup",
+            "pass": true
+          },
+          {
+            "name": "healthy monster pool remains above its species level before action",
+            "pass": true
+          },
+          {
+            "name": "source-predicted ordinary producer feedback",
+            "pass": true
+          },
+          {
+            "name": "chosen trigger or look branch reached",
+            "pass": true
+          },
+          {
+            "name": "no regeneration boundary obscures damage observation",
+            "pass": true
+          },
+          {
+            "name": "ordinary producer and action survive",
+            "pass": true
+          },
+          {
+            "name": "all five output streams are complete",
+            "pass": true
+          }
+        ],
+        "contracts": [
+          {
+            "name": "C primary visible predicates",
+            "pass": true
+          },
+          {
+            "name": "C leaves human HP maximum unchanged",
+            "pass": false
+          },
+          {
+            "name": "C leaves healthy human HP unchanged",
+            "pass": false
+          },
+          {
+            "name": "C damage RNG prefix with no second d(2,4)",
+            "pass": false
+          },
+          {
+            "name": "C material shrink clamp and loss or unchanged look state",
+            "pass": false
+          },
+          {
+            "name": "C paper trigger always rehumanizes; controls preserve selected form",
+            "pass": true
+          },
+          {
+            "name": "C action time contract",
+            "pass": true
+          }
+        ],
+        "rowSHA256": "8af6432a11c3ad4481f0371d3a2e4dfc54f8d5a8e29619627202f8a9a679fc34"
+      },
+      {
+        "name": "clean-minotaur-trigger",
+        "firstUnmetProducer": null,
+        "reach": [
+          {
+            "name": "all keys consumed without runtime error",
+            "pass": true
+          },
+          {
+            "name": "fixed monsters exist before real cleanup",
+            "pass": true
+          },
+          {
+            "name": "real wished blessed scroll occupies slot a",
+            "pass": true
+          },
+          {
+            "name": "star cleanup removes live monsters and their raw map slots",
+            "pass": true
+          },
+          {
+            "name": "cleanup consumes scroll without species genocide",
+            "pass": true
+          },
+          {
+            "name": "read consumes time without damaging healthy human",
+            "pass": true
+          },
+          {
+            "name": "no live monsters at any observed boundary after cleanup",
+            "pass": true
+          },
+          {
+            "name": "one ordinary west step reaches clear room floor",
+            "pass": true
+          },
+          {
+            "name": "controlled exact species produced with healthy monster pool",
+            "pass": true
+          },
+          {
+            "name": "source HP producer reached",
+            "pass": true
+          },
+          {
+            "name": "only real wished uncursed gloves occupy slot b",
+            "pass": true
+          },
+          {
+            "name": "real wear retains identity and W_ARMG property",
+            "pass": true
+          },
+          {
+            "name": "Gloves_on timed producer ran before action",
+            "pass": true
+          },
+          {
+            "name": "polymorph human HP pool unchanged through setup",
+            "pass": true
+          },
+          {
+            "name": "fire resistance comes only from iron form",
+            "pass": true
+          },
+          {
+            "name": "sitting eligibility and excluded branch prerequisites",
+            "pass": true
+          },
+          {
+            "name": "ordinary fire trap exists unseen before action",
+            "pass": true
+          },
+          {
+            "name": "empty ground and glove-only inventory throughout setup",
+            "pass": true
+          },
+          {
+            "name": "healthy monster pool remains above its species level before action",
+            "pass": true
+          },
+          {
+            "name": "source-predicted ordinary producer feedback",
+            "pass": true
+          },
+          {
+            "name": "chosen trigger or look branch reached",
+            "pass": true
+          },
+          {
+            "name": "no regeneration boundary obscures damage observation",
+            "pass": true
+          },
+          {
+            "name": "ordinary producer and action survive",
+            "pass": true
+          },
+          {
+            "name": "all five output streams are complete",
+            "pass": true
+          }
+        ],
+        "contracts": [
+          {
+            "name": "C primary visible predicates",
+            "pass": true
+          },
+          {
+            "name": "C leaves human HP maximum unchanged",
+            "pass": false
+          },
+          {
+            "name": "C leaves healthy human HP unchanged",
+            "pass": false
+          },
+          {
+            "name": "C damage RNG prefix with no second d(2,4)",
+            "pass": false
+          },
+          {
+            "name": "C material shrink clamp and loss or unchanged look state",
+            "pass": false
+          },
+          {
+            "name": "C paper trigger always rehumanizes; controls preserve selected form",
+            "pass": true
+          },
+          {
+            "name": "C action time contract",
+            "pass": true
+          }
+        ],
+        "rowSHA256": "428732e97d1111adc852aac210208946b9c666fab68553f52d7bb336d7ae6e17"
+      },
+      {
+        "name": "clean-iron-resistant",
+        "firstUnmetProducer": null,
+        "reach": [
+          {
+            "name": "all keys consumed without runtime error",
+            "pass": true
+          },
+          {
+            "name": "fixed monsters exist before real cleanup",
+            "pass": true
+          },
+          {
+            "name": "real wished blessed scroll occupies slot a",
+            "pass": true
+          },
+          {
+            "name": "star cleanup removes live monsters and their raw map slots",
+            "pass": true
+          },
+          {
+            "name": "cleanup consumes scroll without species genocide",
+            "pass": true
+          },
+          {
+            "name": "read consumes time without damaging healthy human",
+            "pass": true
+          },
+          {
+            "name": "no live monsters at any observed boundary after cleanup",
+            "pass": true
+          },
+          {
+            "name": "one ordinary west step reaches clear room floor",
+            "pass": true
+          },
+          {
+            "name": "controlled exact species produced with healthy monster pool",
+            "pass": true
+          },
+          {
+            "name": "source HP producer reached",
+            "pass": true
+          },
+          {
+            "name": "only real wished uncursed gloves occupy slot b",
+            "pass": true
+          },
+          {
+            "name": "real wear retains identity and W_ARMG property",
+            "pass": true
+          },
+          {
+            "name": "Gloves_on timed producer ran before action",
+            "pass": true
+          },
+          {
+            "name": "polymorph human HP pool unchanged through setup",
+            "pass": true
+          },
+          {
+            "name": "fire resistance comes only from iron form",
+            "pass": true
+          },
+          {
+            "name": "sitting eligibility and excluded branch prerequisites",
+            "pass": true
+          },
+          {
+            "name": "ordinary fire trap exists unseen before action",
+            "pass": true
+          },
+          {
+            "name": "empty ground and glove-only inventory throughout setup",
+            "pass": true
+          },
+          {
+            "name": "healthy monster pool remains above its species level before action",
+            "pass": true
+          },
+          {
+            "name": "source-predicted ordinary producer feedback",
+            "pass": true
+          },
+          {
+            "name": "chosen trigger or look branch reached",
+            "pass": true
+          },
+          {
+            "name": "no regeneration boundary obscures damage observation",
+            "pass": true
+          },
+          {
+            "name": "ordinary producer and action survive",
+            "pass": true
+          },
+          {
+            "name": "all five output streams are complete",
+            "pass": true
+          }
+        ],
+        "contracts": [
+          {
+            "name": "C primary visible predicates",
+            "pass": true
+          },
+          {
+            "name": "C leaves human HP maximum unchanged",
+            "pass": true
+          },
+          {
+            "name": "C leaves healthy human HP unchanged",
+            "pass": true
+          },
+          {
+            "name": "C damage RNG prefix with no second d(2,4)",
+            "pass": true
+          },
+          {
+            "name": "C material shrink clamp and loss or unchanged look state",
+            "pass": true
+          },
+          {
+            "name": "C paper trigger always rehumanizes; controls preserve selected form",
+            "pass": true
+          },
+          {
+            "name": "C action time contract",
+            "pass": true
+          }
+        ],
+        "rowSHA256": "8828fb8fe77be5cf80cd1afba53fa907f24dc3a3392eb71ea310b99cef6c39bb"
+      },
+      {
+        "name": "clean-paper-look-only",
+        "firstUnmetProducer": null,
+        "reach": [
+          {
+            "name": "all keys consumed without runtime error",
+            "pass": true
+          },
+          {
+            "name": "fixed monsters exist before real cleanup",
+            "pass": true
+          },
+          {
+            "name": "real wished blessed scroll occupies slot a",
+            "pass": true
+          },
+          {
+            "name": "star cleanup removes live monsters and their raw map slots",
+            "pass": true
+          },
+          {
+            "name": "cleanup consumes scroll without species genocide",
+            "pass": true
+          },
+          {
+            "name": "read consumes time without damaging healthy human",
+            "pass": true
+          },
+          {
+            "name": "no live monsters at any observed boundary after cleanup",
+            "pass": true
+          },
+          {
+            "name": "one ordinary west step reaches clear room floor",
+            "pass": true
+          },
+          {
+            "name": "controlled exact species produced with healthy monster pool",
+            "pass": true
+          },
+          {
+            "name": "source HP producer reached",
+            "pass": true
+          },
+          {
+            "name": "only real wished uncursed gloves occupy slot b",
+            "pass": true
+          },
+          {
+            "name": "real wear retains identity and W_ARMG property",
+            "pass": true
+          },
+          {
+            "name": "Gloves_on timed producer ran before action",
+            "pass": true
+          },
+          {
+            "name": "polymorph human HP pool unchanged through setup",
+            "pass": true
+          },
+          {
+            "name": "fire resistance comes only from iron form",
+            "pass": true
+          },
+          {
+            "name": "sitting eligibility and excluded branch prerequisites",
+            "pass": true
+          },
+          {
+            "name": "ordinary fire trap exists unseen before action",
+            "pass": true
+          },
+          {
+            "name": "empty ground and glove-only inventory throughout setup",
+            "pass": true
+          },
+          {
+            "name": "healthy monster pool remains above its species level before action",
+            "pass": true
+          },
+          {
+            "name": "source-predicted ordinary producer feedback",
+            "pass": true
+          },
+          {
+            "name": "chosen trigger or look branch reached",
+            "pass": true
+          },
+          {
+            "name": "no regeneration boundary obscures damage observation",
+            "pass": true
+          },
+          {
+            "name": "ordinary producer and action survive",
+            "pass": true
+          },
+          {
+            "name": "all five output streams are complete",
+            "pass": true
+          }
+        ],
+        "contracts": [
+          {
+            "name": "C primary visible predicates",
+            "pass": true
+          },
+          {
+            "name": "C leaves human HP maximum unchanged",
+            "pass": true
+          },
+          {
+            "name": "C leaves healthy human HP unchanged",
+            "pass": true
+          },
+          {
+            "name": "C damage RNG prefix with no second d(2,4)",
+            "pass": true
+          },
+          {
+            "name": "C material shrink clamp and loss or unchanged look state",
+            "pass": true
+          },
+          {
+            "name": "C paper trigger always rehumanizes; controls preserve selected form",
+            "pass": true
+          },
+          {
+            "name": "C action time contract",
+            "pass": true
+          }
+        ],
+        "rowSHA256": "44a27ddd9741d70a66770c02c54edbb48653130ed7edd91efb40baff5f3869b5"
+      },
+      {
+        "name": "clean-minotaur-look-only",
+        "firstUnmetProducer": null,
+        "reach": [
+          {
+            "name": "all keys consumed without runtime error",
+            "pass": true
+          },
+          {
+            "name": "fixed monsters exist before real cleanup",
+            "pass": true
+          },
+          {
+            "name": "real wished blessed scroll occupies slot a",
+            "pass": true
+          },
+          {
+            "name": "star cleanup removes live monsters and their raw map slots",
+            "pass": true
+          },
+          {
+            "name": "cleanup consumes scroll without species genocide",
+            "pass": true
+          },
+          {
+            "name": "read consumes time without damaging healthy human",
+            "pass": true
+          },
+          {
+            "name": "no live monsters at any observed boundary after cleanup",
+            "pass": true
+          },
+          {
+            "name": "one ordinary west step reaches clear room floor",
+            "pass": true
+          },
+          {
+            "name": "controlled exact species produced with healthy monster pool",
+            "pass": true
+          },
+          {
+            "name": "source HP producer reached",
+            "pass": true
+          },
+          {
+            "name": "only real wished uncursed gloves occupy slot b",
+            "pass": true
+          },
+          {
+            "name": "real wear retains identity and W_ARMG property",
+            "pass": true
+          },
+          {
+            "name": "Gloves_on timed producer ran before action",
+            "pass": true
+          },
+          {
+            "name": "polymorph human HP pool unchanged through setup",
+            "pass": true
+          },
+          {
+            "name": "fire resistance comes only from iron form",
+            "pass": true
+          },
+          {
+            "name": "sitting eligibility and excluded branch prerequisites",
+            "pass": true
+          },
+          {
+            "name": "ordinary fire trap exists unseen before action",
+            "pass": true
+          },
+          {
+            "name": "empty ground and glove-only inventory throughout setup",
+            "pass": true
+          },
+          {
+            "name": "healthy monster pool remains above its species level before action",
+            "pass": true
+          },
+          {
+            "name": "source-predicted ordinary producer feedback",
+            "pass": true
+          },
+          {
+            "name": "chosen trigger or look branch reached",
+            "pass": true
+          },
+          {
+            "name": "no regeneration boundary obscures damage observation",
+            "pass": true
+          },
+          {
+            "name": "ordinary producer and action survive",
+            "pass": true
+          },
+          {
+            "name": "all five output streams are complete",
+            "pass": true
+          }
+        ],
+        "contracts": [
+          {
+            "name": "C primary visible predicates",
+            "pass": true
+          },
+          {
+            "name": "C leaves human HP maximum unchanged",
+            "pass": true
+          },
+          {
+            "name": "C leaves healthy human HP unchanged",
+            "pass": true
+          },
+          {
+            "name": "C damage RNG prefix with no second d(2,4)",
+            "pass": true
+          },
+          {
+            "name": "C material shrink clamp and loss or unchanged look state",
+            "pass": true
+          },
+          {
+            "name": "C paper trigger always rehumanizes; controls preserve selected form",
+            "pass": true
+          },
+          {
+            "name": "C action time contract",
+            "pass": true
+          }
+        ],
+        "rowSHA256": "eda6d754d4a4d89fca728fd394ecd2460e54b3a3a5a86de53faaf864b4e24d2e"
+      }
+    ]
+  }
+}

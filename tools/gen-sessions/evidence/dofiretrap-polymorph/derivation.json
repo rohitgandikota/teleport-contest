@@ -1,0 +1,17 @@
+{
+  "originalDriverSHA256": "16f58c4245fb3ed1bf5a4fcdfc40a12e11d0ecea0d4664ade62373c773dc6474",
+  "start": "const {runSegment, NethackGame} = await import('../js/jsmain.js');",
+  "end": "const report = {runtimeSHA256:",
+  "removedProgressWrite": "    appendFileSync(new URL('reports/probe01-progress.ndjson', root), JSON.stringify({name: row.name,\n        producerPass: row.producerPass, firstUnmetProducer: row.firstUnmetProducer,\n        sourceChecks: contracts.filter(c => c.pass).length, sourceTotal: contracts.length,\n        neutrality: neutrality.pass}) + '\\n');\n",
+  "portableBodySHA256": "35da2c95771a26b8efecd69f760a57b1344bab5bdc817e671ab220cd4090d1d8",
+  "producerChecks": 192,
+  "sourceChecks": 56,
+  "ordinaryCases": 8,
+  "negativeHashes": 15,
+  "observerAndDeferredUnchanged": true,
+  "stateExpectationsUnchanged": true,
+  "negativeCaseRowsUnchanged": true,
+  "inputTuplesUnchanged": true,
+  "liveBinding": "gstate namespace import preserved; no loader fix needed",
+  "nativeExecution": "Archived native receipts only; no fresh native replay in portable gate"
+}

@@ -11,6 +11,16 @@ Newest first within each section.
 
 ---
 
+## Retained ice-melting assertion, November 26, 2026
+
+The polymorphed fire checkpoint passes all 947 recordings, but the older
+fire-trap-ice-melting-state-gate expects zero fire ants and observes one.
+Running that unchanged gate against the published mounted-teleport baseline
+produces the identical complete assertion difference. The other state fields
+match. Preserve both logs and report six passing retained gates plus one
+preexisting failure. Do not infer its cause or claim a clean retained sweep.
+See the dofiretrap-polymorph evidence and parent verification.
+
 ## Welcome describes the underlying hero
 
 C welcome uses u.mfemale while polymorphed and flags.female otherwise.

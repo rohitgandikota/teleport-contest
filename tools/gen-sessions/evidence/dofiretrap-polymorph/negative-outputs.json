@@ -1,0 +1,40 @@
+{
+  "family": "corrected cleanup inputs only; original negatives preserved through evidence/original",
+  "reportSHA256": "78e0d33de7701148c5580ae397ed842f95755865a43cbcb859581a403a312ca0",
+  "hashCount": 15,
+  "rows": [
+    {
+      "name": "clean-iron-resistant",
+      "rowSHA256": "8828fb8fe77be5cf80cd1afba53fa907f24dc3a3392eb71ea310b99cef6c39bb",
+      "outputHashes": {
+        "screens": "fa3cf8ada2b857cf81d5cf1fa63e85f25d788ddb57fcdeb8c779b7589f20f843",
+        "cursors": "6c640c6c0be2eb58db0c5e65a34ae5c47be41cdf658e34c1e8f8299f9cf6ecd3",
+        "calls": "2aaf7d45565b885897678c890895ab6ca0cf560638ff63c11960ec3e09e5f035",
+        "slices": "93c31a112875333debb3d5db31c0ae255ad02840b576bb0909ad2642a7ca304f",
+        "frames": "6b534ea99b37512ae521ef224958d4b3373da07c37fafbbb13d7eb394ebb40b0"
+      }
+    },
+    {
+      "name": "clean-paper-look-only",
+      "rowSHA256": "44a27ddd9741d70a66770c02c54edbb48653130ed7edd91efb40baff5f3869b5",
+      "outputHashes": {
+        "screens": "a5e1d68d928220bd98e5bbf5ec53feb740e89efe2cf0e40d2423f38cb19d53a1",
+        "cursors": "35e4191fea872793d8b1b7ae917e8dad3ea6603e462cf92f56cdef3b0b948c66",
+        "calls": "ccbfbf565eef91752a2c6e3b7771216903301755b85212af7dd4f39e18ce2f21",
+        "slices": "5dafdcd2bea25b74feac0ba8442a6a6014bb1bd917509a6bc2c0d26d0a7a4a6d",
+        "frames": "c36be3fc69ed5c04f4a3b9654193a98180a19e75e761a364492db10787a71258"
+      }
+    },
+    {
+      "name": "clean-minotaur-look-only",
+      "rowSHA256": "eda6d754d4a4d89fca728fd394ecd2460e54b3a3a5a86de53faaf864b4e24d2e",
+      "outputHashes": {
+        "screens": "02c33adc444d8def2489b96b0adf54aca098f1fa276fbd6679eb1b9227bfc5b0",
+        "cursors": "177de5e4ff7e9047a29ea27f7f8bcea7529367dc5e0125786091b5971331811b",
+        "calls": "9386169be802f025af0fa629d0862a97579842e00388076a7b40f5355218406d",
+        "slices": "b7bd137c2cedff7527c7c4843054c49e947d6535cad370a1d64ef563c4542d65",
+        "frames": "f5ef758f4c91db60988a182047566e4dce7a111c9e2dc3b73036594a75d2325e"
+      }
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "command": [
+    "node",
+    "--max-old-space-size=512",
+    "--preserve-symlinks",
+    "--preserve-symlinks-main",
+    ".cache/restart-20261122/dofiretrap-polymorph-cleanup-candidate/tools/probe.mjs"
+  ],
+  "elapsedSeconds": 4.633,
+  "exitCode": 0,
+  "workers": 1,
+  "maxHeapMB": 512,
+  "timeoutSeconds": 55,
+  "stdoutSHA256": "f9e8b4bcc96e60756481f97ebfe8ed14565e3255f438f049aadc9991161376a0",
+  "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "CExecutions": 0
+}

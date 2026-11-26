@@ -1,0 +1,19 @@
+{
+  "producerCases": 8,
+  "producerChecks": 192,
+  "sourceCases": 8,
+  "sourceChecks": 56,
+  "sourceTotal": 56,
+  "neutrality": 8,
+  "ordinaryNegativeRowsExact": 3,
+  "ordinaryNegativeHashesExact": 15,
+  "nativeNegativeRowsExact": 3,
+  "nativeCases": 8,
+  "nativePassed": 8,
+  "nativeBoundaries": 1162,
+  "nativeCalls": 22506,
+  "nativeFrames": 21,
+  "ordinaryReportSHA256": "7af18f6ab9179f856d816ae50cb3fd4e355d497d6b984cef4553e1be56894e1f",
+  "nativeReportSHA256": "a8396fbecb093cef2fad72d1335d9dc7202d090bfe55c05713a523032850f0f1",
+  "CExecutions": 0
+}

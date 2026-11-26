@@ -1,0 +1,29 @@
+[
+  {
+    "index": 0,
+    "before": 43,
+    "fire": true,
+    "lampWhere": "floor",
+    "chestWhere": "inventory",
+    "lampLitAfter": false,
+    "negative": false
+  },
+  {
+    "index": 1,
+    "before": 43,
+    "fire": true,
+    "lampWhere": "inventory",
+    "chestWhere": "floor",
+    "lampLitAfter": true,
+    "negative": true
+  },
+  {
+    "index": 2,
+    "before": 43,
+    "fire": false,
+    "lampWhere": "floor",
+    "chestWhere": "inventory",
+    "lampLitAfter": false,
+    "negative": true
+  }
+]

@@ -1,0 +1,21 @@
+{
+  "sourceProbeSHA256": "9f11173b0a3cbd82a2d87c83dffa65c3c996fad12d29fd09debd1d20248a6c7e",
+  "start": "const snapshotObject =",
+  "end": "\nverifyRuntime();\nconst write",
+  "bodySHA256": "3fccb13d61d7d52db3554cdf379dc27bf2b9c89a912c68de6ed46f10be22b2fe",
+  "changes": [
+    "data-only mandatory preflight before imports",
+    "repository-relative imports",
+    "original assertion body unchanged",
+    "fixed snapshot hash check replaced by current repository imports",
+    "no cached baseline execution",
+    "default no files and optional exclusive-new report"
+  ],
+  "liveBindingChange": false,
+  "negativeIndexes": [
+    1,
+    2
+  ],
+  "nameAbsentIndex": 1,
+  "savedRowComparison": "Compare whole freshly observed rows in the original persisted JSON representation; original live assertions and JSON state/output hashes are unchanged."
+}

@@ -1,5 +1,42 @@
 # STATUS — live handoff board
 
+## 2026-11-26: chest-fire floor guard verified on full954
+
+Underwater fire is pushed as 56af1da04bd9f60372a3956cae474a1c5d441431.
+Its publication receipt confirms all 1,244 tested Git blobs, SHA:
+97f299af51b99d7a36b66554c22b2d8fade3fd535fe3d7ef0d6eb13f1e233c15.
+
+The next checkpoint adds only !box to the floor-burning call in dofiretrap.
+The underwater and chest patches commute byte-exactly. The composed runtime
+36978614de358d9ff69f659f4ce5fc11e8c7170ffca2973674135a3c88c16264
+passes all three native cases with the complete isolated report unchanged.
+The fresh installed gate passes 27/27 in 1.719s, including six observation
+neutrality checks. Its complete report is byte-identical to the portable gate:
+7f95b64d45efe5cff992a25f503e829d9f3f84091ac4a950065c68a57d06430e.
+Ten negative hashes and two complete ordinary/native rows remain unchanged.
+Thirty payload files and original C raw bytes are installed exactly. Three
+new branch rows bring the total to 4,806; aggregate coverage remains 111.
+
+Full954 passes all 954 recordings with two workers, default 45s and no retries:
+/share/NFS/u/rohit/research/contest/artifacts/2026-11-22/dofiretrap-chest-floor-full954-js-20261126.
+It covers 950,600 screens/cursors, 20,855,474 random calls and 33,317 frames.
+All 1,245 tested files are fixed. All-files SHA:
+be702034ab2aae1d2cd8de57e0cb43452766efaea72d91e3ec2d09b565b10c8a.
+Verification SHA:365af745324c96374b47e09e2f245cc05613c945ebe7f5aebca64afc13aca338.
+All seven retained gates, 45 strict workers and the empty source audit pass.
+Public parent verification is under evidence/dofiretrap-chest-floor.
+Commit the exact staged paths, immediately push and write the publication receipt.
+Original source25/27, native2/3 and the first portable serialization failure
+remain preserved; this passing checkpoint does not erase them.
+
+The parent is preparing a separately locked entry-vision source family on
+fixed369. C saves see_it at fire entry; JS currently checks Blind after potion
+vapor can change vision. No gameplay run, C recording or candidate exists yet.
+Euclid owns corrected giant weapon producers after preserving source39 with
+zero valid choice setups. Sartre owns corrected human HP-floor producers after
+tracing Fumbling gear dropping wished items and floor objects intercepting sit.
+Those failures remain evidence, not claims of newly reached branches.
+
 ## 2026-11-26: underwater fire verified on full953
 
 The nine-line liquid early return is ready to publish. Parent and isolated

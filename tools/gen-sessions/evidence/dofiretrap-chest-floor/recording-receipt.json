@@ -1,0 +1,33 @@
+{
+  "startedAt": "2026-11-26T21:59:07.298765+00:00",
+  "command": [
+    "node",
+    "/Users/rohit/research/code/contest/scripts/record-session.mjs",
+    "/Users/rohit/research/code/contest/.cache/restart-20261122/dofiretrap-chest-floor-parent-minimal.session.json",
+    "/Users/rohit/research/code/contest/.cache/restart-20261122/dofiretrap-chest-floor-parent-native.session.json"
+  ],
+  "input": ".cache/restart-20261122/dofiretrap-chest-floor-parent-minimal.session.json",
+  "inputSHA256": "b7c21e9f46180cbd8546ec60f062accc5571de0a33679c494f1df511423a9eda",
+  "primaryRecipeSHA256": "b7c21e9f46180cbd8546ec60f062accc5571de0a33679c494f1df511423a9eda",
+  "sourceSealSHA256": "da788716cafe30043538a5aa22f5b942f961ec71a2434357d2cfbeaed391969e",
+  "binarySha256": "ba4dbc1c823f8d4b0cfb6fd594d00ff0ff5754daaaa2036bee15baeffdf85aa7",
+  "recorderSha256": "b129caee2ca3941b30c36f5c26644bd37ff610344332eb511c474b8709b70648",
+  "cPin": "16ff59115315917b93185d026aeefea06db9b0f4",
+  "timezone": "Etc/GMT+4",
+  "raw": ".cache/restart-20261122/dofiretrap-chest-floor-parent-native.session.json",
+  "exit": 0,
+  "closedAt": "2026-11-26T21:59:07.666295+00:00",
+  "log": ".cache/restart-20261122/dofiretrap-chest-floor-parent-native-recording.log",
+  "logSHA256": "0612673dce6057998cc1559c277c9f7fdb163b3cd59642d3f4b6f51279d6e695",
+  "rawSha256": "e822528540fa739189e0743021e04c0f7f5c851e952ad11e4fca683c1fedcfef",
+  "bytes": 441203,
+  "segments": 3,
+  "boundaries": 159,
+  "keys": 156,
+  "calls": 8018,
+  "frames": 36,
+  "fiveInputFieldsAndPresencePreserved": true,
+  "allKeysExact": true,
+  "rootMetadataPreserved": true,
+  "cExecutedOnce": true
+}

@@ -1,0 +1,11 @@
+{
+  "sourceRecipeSHA256": "21764f1c38c3ddd93ca402da2dccac75b09d0ac48b601390757badfc7282ecbd",
+  "sourceSealSHA256": "da788716cafe30043538a5aa22f5b942f961ec71a2434357d2cfbeaed391969e",
+  "primaryRecipeSHA256": "b7c21e9f46180cbd8546ec60f062accc5571de0a33679c494f1df511423a9eda",
+  "minimalSHA256": "b7c21e9f46180cbd8546ec60f062accc5571de0a33679c494f1df511423a9eda",
+  "segments": 3,
+  "keys": 156,
+  "preserveAllRootMetadata": true,
+  "beforeC": true,
+  "metadataCorrectionSHA256": "69030cf7c179f283a16fe09adabb55d3c3c42f66cfdae135394eef432c85821e"
+}

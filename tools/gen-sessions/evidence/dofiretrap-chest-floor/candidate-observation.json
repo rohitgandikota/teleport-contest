@@ -1,0 +1,963 @@
+[
+  {
+    "index": 0,
+    "negative": false,
+    "checks": [
+      {
+        "kind": "producer",
+        "name": "starting uncursed lamp is unlit and fueled at the selected location",
+        "pass": true
+      },
+      {
+        "kind": "producer",
+        "name": "actual trapped unlocked chest occupies the selected location",
+        "pass": true
+      },
+      {
+        "kind": "producer",
+        "name": "actual fire dispatch matches the predeclared action",
+        "pass": true
+      },
+      {
+        "kind": "producer",
+        "name": "all inputs finish without death or relocation",
+        "pass": true
+      },
+      {
+        "kind": "source",
+        "name": "chest fire preserves ground fuel and may ignite carried fuel",
+        "pass": true
+      },
+      {
+        "kind": "source",
+        "name": "lamp ignition feedback agrees with the source item path",
+        "pass": true
+      },
+      {
+        "kind": "source",
+        "name": "opening spends only the chest trap; look preserves it",
+        "pass": true
+      },
+      {
+        "kind": "neutrality",
+        "name": "passive observation preserves all five streams",
+        "pass": true
+      },
+      {
+        "kind": "neutrality",
+        "name": "deferred input preserves all five streams",
+        "pass": true
+      }
+    ],
+    "before": {
+      "step": 43,
+      "turn": 2,
+      "hp": 16,
+      "maxHp": 16,
+      "mortality": 0,
+      "gameover": false,
+      "xy": [
+        52,
+        4
+      ],
+      "inventory": [
+        {
+          "id": 50,
+          "type": 27,
+          "letter": "a",
+          "where": 3,
+          "lit": false,
+          "age": 1,
+          "cursed": false,
+          "trapped": false,
+          "locked": false,
+          "xy": [
+            null,
+            null
+          ]
+        },
+        {
+          "id": 52,
+          "type": 34,
+          "letter": "b",
+          "where": 3,
+          "lit": false,
+          "age": 1,
+          "cursed": false,
+          "trapped": false,
+          "locked": false,
+          "xy": [
+            null,
+            null
+          ]
+        },
+        {
+          "id": 54,
+          "type": 150,
+          "letter": "c",
+          "where": 3,
+          "lit": false,
+          "age": 1,
+          "cursed": false,
+          "trapped": false,
+          "locked": false,
+          "xy": [
+            null,
+            null
+          ]
+        },
+        {
+          "id": 56,
+          "type": 293,
+          "letter": "d",
+          "where": 3,
+          "lit": false,
+          "age": 1,
+          "cursed": false,
+          "trapped": false,
+          "locked": false,
+          "xy": [
+            null,
+            null
+          ]
+        },
+        {
+          "id": 60,
+          "type": 215,
+          "letter": "f",
+          "where": 3,
+          "lit": false,
+          "age": 1,
+          "cursed": false,
+          "trapped": true,
+          "locked": false,
+          "xy": [
+            null,
+            null
+          ]
+        }
+      ],
+      "floor": [
+        {
+          "id": 58,
+          "type": 227,
+          "letter": "e",
+          "where": 1,
+          "lit": false,
+          "age": 1116,
+          "cursed": false,
+          "trapped": false,
+          "locked": false,
+          "xy": [
+            52,
+            4
+          ]
+        }
+      ]
+    },
+    "after": {
+      "step": 51,
+      "turn": 7,
+      "hp": 6,
+      "maxHp": 13,
+      "mortality": 0,
+      "gameover": false,
+      "xy": [
+        52,
+        4
+      ],
+      "inventory": [
+        {
+          "id": 50,
+          "type": 27,
+          "letter": "a",
+          "where": 3,
+          "lit": false,
+          "age": 1,
+          "cursed": false,
+          "trapped": false,
+          "locked": false,
+          "xy": [
+            null,
+            null
+          ]
+        },
+        {
+          "id": 52,
+          "type": 34,
+          "letter": "b",
+          "where": 3,
+          "lit": false,
+          "age": 1,
+          "cursed": false,
+          "trapped": false,
+          "locked": false,
+          "xy": [
+            null,
+            null
+          ]
+        },
+        {
+          "id": 54,
+          "type": 150,
+          "letter": "c",
+          "where": 3,
+          "lit": false,
+          "age": 1,
+          "cursed": false,
+          "trapped": false,
+          "locked": false,
+          "xy": [
+            null,
+            null
+          ]
+        },
+        {
+          "id": 56,
+          "type": 293,
+          "letter": "d",
+          "where": 3,
+          "lit": false,
+          "age": 1,
+          "cursed": false,
+          "trapped": false,
+          "locked": false,
+          "xy": [
+            null,
+            null
+          ]
+        },
+        {
+          "id": 60,
+          "type": 215,
+          "letter": "f",
+          "where": 3,
+          "lit": false,
+          "age": 1,
+          "cursed": false,
+          "trapped": false,
+          "locked": false,
+          "xy": [
+            null,
+            null
+          ]
+        }
+      ],
+      "floor": [
+        {
+          "id": 58,
+          "type": 227,
+          "letter": "e",
+          "where": 1,
+          "lit": false,
+          "age": 1116,
+          "cursed": false,
+          "trapped": false,
+          "locked": false,
+          "xy": [
+            52,
+            4
+          ]
+        }
+      ]
+    },
+    "producer": true,
+    "source": true,
+    "statesSHA256": "c995ca935aa1827ab7e12a98a07d5c56599527e59bba18ab1096a7bdb4d7ae8e",
+    "outputHashes": {
+      "screens": "05891759a3f9486747ab1ed8b8843873ec8e27f7d8dbbc05d2f13b6114aa2150",
+      "cursors": "4ec12f763ce1a1d059442b9af087e9acc5769c0ce349941e54026f9d4e7e7cca",
+      "calls": "dcc180597b91be03cd464592aa0e4c368bb612a9bf09dca39d1ccf8f36be59ae",
+      "slices": "74ab832b895c0b5c6aee7016fe2120be7ee53f3b4d411a5d037df42023154df3",
+      "frames": "94e80abfac3bc1346b852d8a39ebdd6169c14199540a9138953878aa6a00bbf8"
+    },
+    "actionCalls": [
+      "rn2(13)=3",
+      "rn2(20)=6",
+      "rn2(13)=12",
+      "d(2,4)=3",
+      "d(2,4)=7",
+      "rn2(8)=3",
+      "rn2(5)=1",
+      "rn2(5)=3",
+      "rn2(5)=1",
+      "rn2(5)=3",
+      "rn2(12)=11",
+      "rn2(12)=2",
+      "rn2(70)=62",
+      "rn2(100)=64",
+      "rn2(400)=108",
+      "rn2(200)=71",
+      "rn2(20)=17",
+      "rn2(88)=34",
+      "rn2(11)=9",
+      "rn2(4)=2",
+      "rn2(5)=2",
+      "rn2(5)=1",
+      "rn2(12)=7",
+      "rn2(12)=2",
+      "rn2(70)=55",
+      "rn2(100)=40",
+      "rn2(400)=392",
+      "rn2(200)=150",
+      "rn2(20)=14",
+      "rn2(88)=15",
+      "rn2(5)=3",
+      "rn2(20)=10",
+      "rn2(5)=4",
+      "rn2(12)=6",
+      "rn2(12)=0",
+      "rn2(70)=15",
+      "rn2(100)=22",
+      "rn2(400)=304",
+      "rn2(200)=193",
+      "rn2(20)=17",
+      "rn2(88)=33",
+      "rn2(5)=3",
+      "rn2(16)=13",
+      "rn2(5)=4",
+      "rn2(12)=4",
+      "rn2(12)=10",
+      "rn2(70)=52",
+      "rn2(100)=88",
+      "rn2(400)=96",
+      "rn2(200)=52",
+      "rn2(20)=2",
+      "rn2(88)=29",
+      "rn2(5)=4",
+      "rn2(20)=13",
+      "rn2(5)=3",
+      "rn2(12)=11",
+      "rn2(12)=11",
+      "rn2(70)=67",
+      "rn2(100)=23",
+      "rn2(400)=289",
+      "rn2(200)=182",
+      "rn2(20)=7",
+      "rn2(88)=47",
+      "rn2(19)=5"
+    ],
+    "boundaries": 52,
+    "calls": 2694,
+    "frames": 12
+  },
+  {
+    "index": 1,
+    "negative": true,
+    "checks": [
+      {
+        "kind": "producer",
+        "name": "starting uncursed lamp is unlit and fueled at the selected location",
+        "pass": true
+      },
+      {
+        "kind": "producer",
+        "name": "actual trapped unlocked chest occupies the selected location",
+        "pass": true
+      },
+      {
+        "kind": "producer",
+        "name": "actual fire dispatch matches the predeclared action",
+        "pass": true
+      },
+      {
+        "kind": "producer",
+        "name": "all inputs finish without death or relocation",
+        "pass": true
+      },
+      {
+        "kind": "source",
+        "name": "chest fire preserves ground fuel and may ignite carried fuel",
+        "pass": true
+      },
+      {
+        "kind": "source",
+        "name": "lamp ignition feedback agrees with the source item path",
+        "pass": true
+      },
+      {
+        "kind": "source",
+        "name": "opening spends only the chest trap; look preserves it",
+        "pass": true
+      },
+      {
+        "kind": "neutrality",
+        "name": "passive observation preserves all five streams",
+        "pass": true
+      },
+      {
+        "kind": "neutrality",
+        "name": "deferred input preserves all five streams",
+        "pass": true
+      }
+    ],
+    "before": {
+      "step": 43,
+      "turn": 2,
+      "hp": 16,
+      "maxHp": 16,
+      "mortality": 0,
+      "gameover": false,
+      "xy": [
+        52,
+        4
+      ],
+      "inventory": [
+        {
+          "id": 50,
+          "type": 27,
+          "letter": "a",
+          "where": 3,
+          "lit": false,
+          "age": 1,
+          "cursed": false,
+          "trapped": false,
+          "locked": false,
+          "xy": [
+            null,
+            null
+          ]
+        },
+        {
+          "id": 52,
+          "type": 34,
+          "letter": "b",
+          "where": 3,
+          "lit": false,
+          "age": 1,
+          "cursed": false,
+          "trapped": false,
+          "locked": false,
+          "xy": [
+            null,
+            null
+          ]
+        },
+        {
+          "id": 54,
+          "type": 150,
+          "letter": "c",
+          "where": 3,
+          "lit": false,
+          "age": 1,
+          "cursed": false,
+          "trapped": false,
+          "locked": false,
+          "xy": [
+            null,
+            null
+          ]
+        },
+        {
+          "id": 56,
+          "type": 293,
+          "letter": "d",
+          "where": 3,
+          "lit": false,
+          "age": 1,
+          "cursed": false,
+          "trapped": false,
+          "locked": false,
+          "xy": [
+            null,
+            null
+          ]
+        },
+        {
+          "id": 58,
+          "type": 227,
+          "letter": "e",
+          "where": 3,
+          "lit": false,
+          "age": 1116,
+          "cursed": false,
+          "trapped": false,
+          "locked": false,
+          "xy": [
+            null,
+            null
+          ]
+        }
+      ],
+      "floor": [
+        {
+          "id": 60,
+          "type": 215,
+          "letter": "f",
+          "where": 1,
+          "lit": false,
+          "age": 1,
+          "cursed": false,
+          "trapped": true,
+          "locked": false,
+          "xy": [
+            52,
+            4
+          ]
+        }
+      ]
+    },
+    "after": {
+      "step": 55,
+      "turn": 7,
+      "hp": 6,
+      "maxHp": 13,
+      "mortality": 0,
+      "gameover": false,
+      "xy": [
+        52,
+        4
+      ],
+      "inventory": [
+        {
+          "id": 50,
+          "type": 27,
+          "letter": "a",
+          "where": 3,
+          "lit": false,
+          "age": 1,
+          "cursed": false,
+          "trapped": false,
+          "locked": false,
+          "xy": [
+            null,
+            null
+          ]
+        },
+        {
+          "id": 52,
+          "type": 34,
+          "letter": "b",
+          "where": 3,
+          "lit": false,
+          "age": 1,
+          "cursed": false,
+          "trapped": false,
+          "locked": false,
+          "xy": [
+            null,
+            null
+          ]
+        },
+        {
+          "id": 54,
+          "type": 150,
+          "letter": "c",
+          "where": 3,
+          "lit": false,
+          "age": 1,
+          "cursed": false,
+          "trapped": false,
+          "locked": false,
+          "xy": [
+            null,
+            null
+          ]
+        },
+        {
+          "id": 56,
+          "type": 293,
+          "letter": "d",
+          "where": 3,
+          "lit": false,
+          "age": 1,
+          "cursed": false,
+          "trapped": false,
+          "locked": false,
+          "xy": [
+            null,
+            null
+          ]
+        },
+        {
+          "id": 58,
+          "type": 227,
+          "letter": "e",
+          "where": 3,
+          "lit": true,
+          "age": 150,
+          "cursed": false,
+          "trapped": false,
+          "locked": false,
+          "xy": [
+            null,
+            null
+          ]
+        }
+      ],
+      "floor": [
+        {
+          "id": 60,
+          "type": 215,
+          "letter": "f",
+          "where": 1,
+          "lit": false,
+          "age": 1,
+          "cursed": false,
+          "trapped": false,
+          "locked": false,
+          "xy": [
+            52,
+            4
+          ]
+        }
+      ]
+    },
+    "producer": true,
+    "source": true,
+    "statesSHA256": "eb33fe228c462e0e8cfa281130d46c7e625e19d9e4ffdbd70f5eb4be5b6ed941",
+    "outputHashes": {
+      "screens": "90bad70b1c25d6e953ec3f608edb0ac7bb83259b24c770ad67edc4528cab7c96",
+      "cursors": "d65b6c9fbd596ce9003efc118687536eb1d04fcedea670aa65f6b556b620d945",
+      "calls": "dcc180597b91be03cd464592aa0e4c368bb612a9bf09dca39d1ccf8f36be59ae",
+      "slices": "57970fb504bd35b1a105eacb687ef4504bfaeff29306f4aca950e7b8f01ebe57",
+      "frames": "9e7616d82a3b2aadf359d2bda981839b32fcf48d51302b878eebc3549d17e9cf"
+    },
+    "actionCalls": [
+      "rn2(13)=3",
+      "rn2(20)=6",
+      "rn2(13)=12",
+      "d(2,4)=3",
+      "d(2,4)=7",
+      "rn2(8)=3",
+      "rn2(5)=1",
+      "rn2(5)=3",
+      "rn2(5)=1",
+      "rn2(5)=3",
+      "rn2(12)=11",
+      "rn2(12)=2",
+      "rn2(70)=62",
+      "rn2(100)=64",
+      "rn2(400)=108",
+      "rn2(200)=71",
+      "rn2(20)=17",
+      "rn2(88)=34",
+      "rn2(11)=9",
+      "rn2(4)=2",
+      "rn2(5)=2",
+      "rn2(5)=1",
+      "rn2(12)=7",
+      "rn2(12)=2",
+      "rn2(70)=55",
+      "rn2(100)=40",
+      "rn2(400)=392",
+      "rn2(200)=150",
+      "rn2(20)=14",
+      "rn2(88)=15",
+      "rn2(5)=3",
+      "rn2(20)=10",
+      "rn2(5)=4",
+      "rn2(12)=6",
+      "rn2(12)=0",
+      "rn2(70)=15",
+      "rn2(100)=22",
+      "rn2(400)=304",
+      "rn2(200)=193",
+      "rn2(20)=17",
+      "rn2(88)=33",
+      "rn2(5)=3",
+      "rn2(16)=13",
+      "rn2(5)=4",
+      "rn2(12)=4",
+      "rn2(12)=10",
+      "rn2(70)=52",
+      "rn2(100)=88",
+      "rn2(400)=96",
+      "rn2(200)=52",
+      "rn2(20)=2",
+      "rn2(88)=29",
+      "rn2(5)=4",
+      "rn2(20)=13",
+      "rn2(5)=3",
+      "rn2(12)=11",
+      "rn2(12)=11",
+      "rn2(70)=67",
+      "rn2(100)=23",
+      "rn2(400)=289",
+      "rn2(200)=182",
+      "rn2(20)=7",
+      "rn2(88)=47",
+      "rn2(19)=5"
+    ],
+    "boundaries": 56,
+    "calls": 2694,
+    "frames": 12
+  },
+  {
+    "index": 2,
+    "negative": true,
+    "checks": [
+      {
+        "kind": "producer",
+        "name": "starting uncursed lamp is unlit and fueled at the selected location",
+        "pass": true
+      },
+      {
+        "kind": "producer",
+        "name": "actual trapped unlocked chest occupies the selected location",
+        "pass": true
+      },
+      {
+        "kind": "producer",
+        "name": "actual fire dispatch matches the predeclared action",
+        "pass": true
+      },
+      {
+        "kind": "producer",
+        "name": "all inputs finish without death or relocation",
+        "pass": true
+      },
+      {
+        "kind": "source",
+        "name": "chest fire preserves ground fuel and may ignite carried fuel",
+        "pass": true
+      },
+      {
+        "kind": "source",
+        "name": "lamp ignition feedback agrees with the source item path",
+        "pass": true
+      },
+      {
+        "kind": "source",
+        "name": "opening spends only the chest trap; look preserves it",
+        "pass": true
+      },
+      {
+        "kind": "neutrality",
+        "name": "passive observation preserves all five streams",
+        "pass": true
+      },
+      {
+        "kind": "neutrality",
+        "name": "deferred input preserves all five streams",
+        "pass": true
+      }
+    ],
+    "before": {
+      "step": 43,
+      "turn": 2,
+      "hp": 16,
+      "maxHp": 16,
+      "mortality": 0,
+      "gameover": false,
+      "xy": [
+        52,
+        4
+      ],
+      "inventory": [
+        {
+          "id": 50,
+          "type": 27,
+          "letter": "a",
+          "where": 3,
+          "lit": false,
+          "age": 1,
+          "cursed": false,
+          "trapped": false,
+          "locked": false,
+          "xy": [
+            null,
+            null
+          ]
+        },
+        {
+          "id": 52,
+          "type": 34,
+          "letter": "b",
+          "where": 3,
+          "lit": false,
+          "age": 1,
+          "cursed": false,
+          "trapped": false,
+          "locked": false,
+          "xy": [
+            null,
+            null
+          ]
+        },
+        {
+          "id": 54,
+          "type": 150,
+          "letter": "c",
+          "where": 3,
+          "lit": false,
+          "age": 1,
+          "cursed": false,
+          "trapped": false,
+          "locked": false,
+          "xy": [
+            null,
+            null
+          ]
+        },
+        {
+          "id": 56,
+          "type": 293,
+          "letter": "d",
+          "where": 3,
+          "lit": false,
+          "age": 1,
+          "cursed": false,
+          "trapped": false,
+          "locked": false,
+          "xy": [
+            null,
+            null
+          ]
+        },
+        {
+          "id": 60,
+          "type": 215,
+          "letter": "f",
+          "where": 3,
+          "lit": false,
+          "age": 1,
+          "cursed": false,
+          "trapped": true,
+          "locked": false,
+          "xy": [
+            null,
+            null
+          ]
+        }
+      ],
+      "floor": [
+        {
+          "id": 58,
+          "type": 227,
+          "letter": "e",
+          "where": 1,
+          "lit": false,
+          "age": 1116,
+          "cursed": false,
+          "trapped": false,
+          "locked": false,
+          "xy": [
+            52,
+            4
+          ]
+        }
+      ]
+    },
+    "after": {
+      "step": 50,
+      "turn": 2,
+      "hp": 16,
+      "maxHp": 16,
+      "mortality": 0,
+      "gameover": false,
+      "xy": [
+        52,
+        4
+      ],
+      "inventory": [
+        {
+          "id": 50,
+          "type": 27,
+          "letter": "a",
+          "where": 3,
+          "lit": false,
+          "age": 1,
+          "cursed": false,
+          "trapped": false,
+          "locked": false,
+          "xy": [
+            null,
+            null
+          ]
+        },
+        {
+          "id": 52,
+          "type": 34,
+          "letter": "b",
+          "where": 3,
+          "lit": false,
+          "age": 1,
+          "cursed": false,
+          "trapped": false,
+          "locked": false,
+          "xy": [
+            null,
+            null
+          ]
+        },
+        {
+          "id": 54,
+          "type": 150,
+          "letter": "c",
+          "where": 3,
+          "lit": false,
+          "age": 1,
+          "cursed": false,
+          "trapped": false,
+          "locked": false,
+          "xy": [
+            null,
+            null
+          ]
+        },
+        {
+          "id": 56,
+          "type": 293,
+          "letter": "d",
+          "where": 3,
+          "lit": false,
+          "age": 1,
+          "cursed": false,
+          "trapped": false,
+          "locked": false,
+          "xy": [
+            null,
+            null
+          ]
+        },
+        {
+          "id": 60,
+          "type": 215,
+          "letter": "f",
+          "where": 3,
+          "lit": false,
+          "age": 1,
+          "cursed": false,
+          "trapped": true,
+          "locked": false,
+          "xy": [
+            null,
+            null
+          ]
+        }
+      ],
+      "floor": [
+        {
+          "id": 58,
+          "type": 227,
+          "letter": "e",
+          "where": 1,
+          "lit": false,
+          "age": 1116,
+          "cursed": false,
+          "trapped": false,
+          "locked": false,
+          "xy": [
+            52,
+            4
+          ]
+        }
+      ]
+    },
+    "producer": true,
+    "source": true,
+    "statesSHA256": "759ae0b0a2fe496c103d6cd00d9daa425273fbe8ac768cdc00885325afc7e707",
+    "outputHashes": {
+      "screens": "b2095b651833c15f6d9b2b3746bcd8beb4a93f82f14108895536dc7621a6f1ec",
+      "cursors": "df7f1c0df8d334627cebe9771831ddf8ba488349cc8a7d60f6144d53bf696331",
+      "calls": "6b7ecbb82723a8e91a6153ba6abf604cd694329ab87b682ea60d42eb5c73c6cf",
+      "slices": "bc0ce3a8d8101b9c7b63b7a8cdd3f56694a40705c7bbb142bcb67621d88a7a1d",
+      "frames": "3a1e0e8ef959e5ab52eb4b9046c6506cd9818e21645ada37265a41300dc97d04"
+    },
+    "actionCalls": [],
+    "boundaries": 51,
+    "calls": 2630,
+    "frames": 12
+  }
+]

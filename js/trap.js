@@ -458,7 +458,7 @@ async function dofiretrap(box) {
         await destroy_items(game.youmonst, ATTKS.AD_FIRE, origDmg);
         await ignite_items(game.invent);
     }
-    if (await burn_floor_objects(game.u.ux, game.u.uy, !Blind(), true)
+    if (!box && await burn_floor_objects(game.u.ux, game.u.uy, !Blind(), true)
         && Blind())
         await You('smell paper burning.');
     const { is_ice } = await import('./dbridge.js');

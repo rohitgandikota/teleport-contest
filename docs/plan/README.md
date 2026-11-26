@@ -12,21 +12,19 @@ Ground rules are in `/CLAUDE.md`. Read that first if you have not.
 
 ## Current focus, 2026-11-26
 
-Fire-trap slime cleanup, startup gender validation, and their test corrections
-are pushed. The latest test-only checkpoint is `1d6eaf44`, which checks surviving
-timers after a figurine is consumed. Gremlin light fear is pushed as `b939e5a6`: all
-five native cases,65 source/producer checks,10 neutrality comparisons,45 strict
-workers and952 maintained recordings pass. Its complete installed report equals
-the isolated result. Original observer failures remain preserved separately.
-Underwater fire return is ready to publish: six native cases,102 focused
-checks,nine retained gates,45 strict workers and953 maintained recordings pass.
-The installed report is byte-identical to its portable result. The next scoped
-fix prevents chest fire from igniting floor objects; its isolated three C cases
-and retained floor-fire checks pass. Human HP-floor handling and giant weapon
-selection need corrected ordinary producers, with failed attempts retained.
-The latest official result remains agentic rank7 with
-659 unmatched screens; its timestamp predates these newest gameplay pushes.
-See STATUS for exact evidence and limits.
+Underwater fire is pushed as `56af1da0`, following the gremlin light fix
+`b939e5a6`. The next checkpoint prevents a trapped chest from burning objects
+on the floor. All three native cases, 27 focused checks, seven retained gates,
+45 strict workers and 954 maintained recordings pass. Its complete installed
+report equals the isolated result. The one-line guard preserves the underwater
+fix, and all 1,245 regression files are fixed. Original failed source and test
+packaging attempts remain preserved separately.
+
+The next source audits cover fire-entry vision, human HP-floor handling and
+giant weapon selection. The latter two need corrected ordinary producers.
+The latest official result remains agentic rank 7 with 659 unmatched screens;
+its timestamp predates these newest gameplay pushes. See STATUS for evidence
+and limits.
 
 Chat speech guards and wear-command entry checks are verified on `ef2bfd2d`.
 All 934 recordings, 12 new native cases, 12 focused checks and 46 strict workers

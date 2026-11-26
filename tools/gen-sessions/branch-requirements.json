@@ -5756,6 +5756,27 @@
       "cFile": "src/trap.c",
       "cFunction": "dofiretrap",
       "description": "Sighted submerged look does not trigger the unseen fire trap and consumes no time or action RNG."
+    },
+    {
+      "group": "Chest fire floor isolation",
+      "id": "traps.fire.chest.ground-lamp",
+      "cFile": "src/trap.c",
+      "cFunction": "dofiretrap",
+      "description": "A held fire-trapped chest leaves the real dropped oil lamp unlit and emits no floor-ignition message."
+    },
+    {
+      "group": "Chest fire floor isolation",
+      "id": "traps.fire.chest.carried-lamp",
+      "cFile": "src/trap.c",
+      "cFunction": "dofiretrap",
+      "description": "The unchanged floor-chest input retains its absent name field and ignites the carried oil lamp."
+    },
+    {
+      "group": "Chest fire floor isolation",
+      "id": "traps.fire.chest.look-ground-lamp",
+      "cFile": "src/trap.c",
+      "cFunction": "dofiretrap",
+      "description": "Looking at the dropped lamp leaves the held chest trapped and the lamp unlit."
     }
   ]
 }

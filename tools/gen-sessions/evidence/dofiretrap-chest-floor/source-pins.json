@@ -1,0 +1,11 @@
+{
+  "nethack-c/upstream/src/trap.c": "1f6af30bbd0b75a2e4c043098355c1f4eff2a841de27aecdc9f47343d4d5402c",
+  "nethack-c/upstream/src/zap.c": "8ee02bd7aa29b026d6b5a2e0017ddf402fcfc6fc81037e35ceda2d86467547cb",
+  "nethack-c/upstream/src/apply.c": "3599e3ce2ea7ce4dac10730dc1a5496114a363dc951d5c1f0289a8575b40e24b",
+  "nethack-c/upstream/src/pickup.c": "915da0f8fce16461cc42a0035f7ef3e9847fc8f8ee3708a7f017ad6587383134",
+  "nethack-c/upstream/src/u_init.c": "64a85cf484189ef817da3f3e913e2f9a4c4a6e2f31588632387c43d45ab2ec71",
+  "tools/gen-sessions/recipes/trap-door-container.json": "05b60c0a1c78719966e94050656e24f3181f65a2b61473e1c953adbb97b21f8e",
+  "tools/gen-sessions/generated/trap-door-container.session.json": "f1114b5f3ddf8c242c685794e6e6a06a222e220f54482f0f89b08032ca225055",
+  "tools/half-damage-reader-observe.mjs": "201cdafe4409d5d58414c1d0ebc0449c32b29834cdf35c72c151a555d9031d07",
+  "frozen/screen-decode.mjs": "cb4a0fbfed3dda28c14736e6ae9c8b9eb8c87d75916c50d6df80f40eb0368cbe"
+}

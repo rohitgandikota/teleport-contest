@@ -1,0 +1,29 @@
+{
+  "failure": "Portable footer compared live undefined inventory coordinates against JSON null.",
+  "attempt": {
+    "command": [
+      "node",
+      "--preserve-symlinks",
+      "--preserve-symlinks-main",
+      "--max-old-space-size=512",
+      "/Users/rohit/research/code/contest/.cache/restart-20261122/dofiretrap-chest-floor-promotion/tools/dofiretrap-chest-floor-gate.mjs",
+      "/Users/rohit/research/code/contest/.cache/restart-20261122/dofiretrap-chest-floor-promotion/fresh-report.json"
+    ],
+    "startedAt": "2026-11-26T22:14:05.218627+00:00",
+    "seconds": 1.55,
+    "exitCode": 1,
+    "timedOut": false,
+    "heapMiB": 512,
+    "wallLimitSeconds": 55,
+    "ordinaryBatches": 1,
+    "nativeReplays": 0,
+    "logSHA256": "4263f94a6d960da2a8908c96e627f8fb456beed732ebd096a1f76e72d27cb06e"
+  },
+  "initialGateSHA256": "78fa2e8bd49f9d99ed3977ef37e3f1be8905478c4a7865b8a0cf487a5febc34b",
+  "initialRunLockSHA256": "11baf1e7f0519a49996a9fdad3eeb3a99fc09895f6ed4f9b729e8396897608ac",
+  "correction": "Serialize only the additional full negative row comparison through JSON, as the original saved reports already do.",
+  "originalAssertionBodyChanged": false,
+  "expectedNegativeHashesChanged": false,
+  "runtimeChanged": false,
+  "nativeReplayed": false
+}

@@ -1,0 +1,12 @@
+{
+  "sealedAt": "2026-11-26T21:58:50.356847+00:00",
+  "members": 15,
+  "manifestSHA256": "f1579fd44539850e63a537c93a21bf001c9a49c91deb4c56bc76991116ac73bd",
+  "runtimeSHA256": "60f1559001e34cad6b64b30a572b47f3fe74e704a33716cb0a53a1dde3ef9f18",
+  "recipeSHA256": "21764f1c38c3ddd93ca402da2dccac75b09d0ac48b601390757badfc7282ecbd",
+  "inputLockSHA256": "6a3f746f51cf2abd70a32d34466ec0a1914ef7dd19c836580e508838d48f1e14",
+  "originalChecks": "25/27",
+  "setupCases": 3,
+  "negativeHashes": 10,
+  "nativeRecordings": 0
+}

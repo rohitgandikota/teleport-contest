@@ -1,0 +1,250 @@
+{
+  "verifiedAt": "2026-11-26T22:25:52.698769+00:00",
+  "composition": {
+    "baselineCommit": "56af1da04bd9f60372a3956cae474a1c5d441431",
+    "baselineRuntimeSHA256": "37be1fb4af27b98e5a5e73d6a06ff3771ccd30f9b3f634a383fd7c98f9716b70",
+    "sourceRuntimeSHA256": "60f1559001e34cad6b64b30a572b47f3fe74e704a33716cb0a53a1dde3ef9f18",
+    "candidateRuntimeSHA256": "aa0b26dc728a26dd34229e6cc8c69ba9cc8be853501456907e20e97cb5a0aed5",
+    "candidateSealSHA256": "5c35f5d72729d6dd34bf50a42627d9774e5bec885e42566bbdb5366d559d32f8",
+    "patchSHA256": "9338606d9ffa2cbe1733340042c7d9c7ddd3f41594f675a8bbb83b338d42859c",
+    "runtimeSHA256": "36978614de358d9ff69f659f4ce5fc11e8c7170ffca2973674135a3c88c16264",
+    "runtimeChanged": [
+      "js/trap.js"
+    ],
+    "copies": 1,
+    "fixedLinks": 279,
+    "underwaterAndChestPatchesCommuteByteExactly": true,
+    "inverseGuardRestoresPublishedFile": true
+  },
+  "compositionNativeCases": 3,
+  "completeNativeReportEqualsIsolated": true,
+  "ordinary": {
+    "completeReportEqual": true,
+    "portableReportSHA256": "7f95b64d45efe5cff992a25f503e829d9f3f84091ac4a950065c68a57d06430e",
+    "mainReportSHA256": "7f95b64d45efe5cff992a25f503e829d9f3f84091ac4a950065c68a57d06430e",
+    "differentFields": []
+  },
+  "ordinaryCommand": {
+    "command": [
+      "node",
+      "--max-old-space-size=512",
+      "tools/dofiretrap-chest-floor-gate.mjs",
+      "/Users/rohit/research/code/contest/.cache/restart-20261122/dofiretrap-chest-floor-main-ordinary.json"
+    ],
+    "seconds": 1.719,
+    "exit": 0,
+    "maxHeapMB": 512,
+    "timeoutSeconds": 55,
+    "stdoutSHA256": "1182528549381b92a9c757316587ffe0a00fe63f0a975023dc2603e492e72cb3",
+    "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "reportSHA256": "7f95b64d45efe5cff992a25f503e829d9f3f84091ac4a950065c68a57d06430e"
+  },
+  "promotionSealSHA256": "172267bfefe7aa6ac9d807ee91e4d57c3d97b38373f56b5ae9aeaf0af6ce52ef",
+  "installManifestSHA256": "cdcb0fb7335175db4e4f40002154d84a53c90a2ff84df5a9279030e01a0404c0",
+  "publicInstallSHA256": "c78caa93796d7650bb2438456be8bed258de68b04c36627e0b778419ce8b419f",
+  "branchRows": 4806,
+  "aggregateCoverageRows": 111,
+  "retained": [
+    {
+      "name": "dofiretrap-underwater-gate",
+      "command": [
+        "node",
+        "--max-old-space-size=512",
+        "tools/dofiretrap-underwater-gate.mjs"
+      ],
+      "exit": 0,
+      "seconds": 3.44,
+      "log": ".cache/restart-20261122/dofiretrap-chest-floor-retained-dofiretrap-underwater-gate.log",
+      "sha256": "5e2a4e54aeb43687c5780eed5d94897af0b4ce1daa24d7fdc39d11709af16a9e"
+    },
+    {
+      "name": "dofiretrap-slime-gate",
+      "command": [
+        "node",
+        "--max-old-space-size=512",
+        "tools/dofiretrap-slime-gate.mjs"
+      ],
+      "exit": 0,
+      "seconds": 3.182,
+      "log": ".cache/restart-20261122/dofiretrap-chest-floor-retained-dofiretrap-slime-gate.log",
+      "sha256": "912fc8baaebfc2d358ce082d685c218304318170f5311eb7d0059bbf443d4df0"
+    },
+    {
+      "name": "dofiretrap-polymorph-gate",
+      "command": [
+        "node",
+        "--max-old-space-size=512",
+        "tools/dofiretrap-polymorph-gate.mjs"
+      ],
+      "exit": 0,
+      "seconds": 3.351,
+      "log": ".cache/restart-20261122/dofiretrap-chest-floor-retained-dofiretrap-polymorph-gate.log",
+      "sha256": "83e212dca59289203ff46c6839d9936ef0cfbcd3e2d4e91c8caeea39a3927670"
+    },
+    {
+      "name": "fire-trap-floor-objects-state-gate",
+      "command": [
+        "node",
+        "--max-old-space-size=512",
+        "tools/fire-trap-floor-objects-state-gate.mjs"
+      ],
+      "exit": 0,
+      "seconds": 1.128,
+      "log": ".cache/restart-20261122/dofiretrap-chest-floor-retained-fire-trap-floor-objects-state-gate.log",
+      "sha256": "73c19ca17a7410394fa52c3a9a6a9187bf5252e0645e5d56fbfefb716c07d31d"
+    },
+    {
+      "name": "fire-light-source-ignition-state-gate",
+      "command": [
+        "node",
+        "--max-old-space-size=512",
+        "tools/fire-light-source-ignition-state-gate.mjs"
+      ],
+      "exit": 0,
+      "seconds": 1.67,
+      "log": ".cache/restart-20261122/dofiretrap-chest-floor-retained-fire-light-source-ignition-state-gate.log",
+      "sha256": "d233e04a410a7a7a4ed6d91ce678695d2bcbf58c1632b94088a3a4b0abcdba11"
+    },
+    {
+      "name": "fire-trap-ice-melting-state-gate",
+      "command": [
+        "node",
+        "--max-old-space-size=512",
+        "tools/fire-trap-ice-melting-state-gate.mjs"
+      ],
+      "exit": 0,
+      "seconds": 0.63,
+      "log": ".cache/restart-20261122/dofiretrap-chest-floor-retained-fire-trap-ice-melting-state-gate.log",
+      "sha256": "ff1b22df95d942630a9a6c28ebc292c2217859095bbc9ed74cc22f379c74f69b"
+    },
+    {
+      "name": "stun-chest-attack-input-gate",
+      "command": [
+        "node",
+        "--max-old-space-size=512",
+        "tools/stun-chest-attack-input-gate.mjs"
+      ],
+      "exit": 0,
+      "seconds": 0.688,
+      "log": ".cache/restart-20261122/dofiretrap-chest-floor-retained-stun-chest-attack-input-gate.log",
+      "sha256": "d4c2b8f337b2f8bda712f7a5976db34957be6657e55e886d09d876a81946c8ab"
+    }
+  ],
+  "strict": {
+    "command": [
+      "node",
+      "tools/hang-gate.mjs",
+      "sessions/seed0002-healer-reflection-drummer.session.json",
+      "sessions/seed0004-feeding-pony.session.json",
+      "sessions/seed0006-wizard-water-demon.session.json",
+      "sessions/seed0007-rogue-snake-swamp.session.json",
+      "sessions/seed0009-swimmer-mforce.session.json",
+      "sessions/seed0012-monk-vault-escort.session.json",
+      "sessions/seed0013-friday13-save-then-fullmoon-restore.session.json",
+      "sessions/seed0013-rogue-friday13-combat.session.json",
+      "sessions/seed0014-dequa-fountain-explore.session.json",
+      "sessions/seed0015-valk-level2-pit-dog-wait.session.json",
+      "sessions/seed0016-healer-newmoon-eat-zap.session.json",
+      "sessions/seed0017-samurai-altar-pray.session.json",
+      "sessions/seed0030-ten-diverse-deaths.session.json",
+      "sessions/seed0060-orc-rogue-kick-search.session.json",
+      "sessions/seed0077-rogue-chargen.session.json",
+      "sessions/seed0101-ranger-quiver-throw-travel-engrave.session.json",
+      "sessions/seed0102-ranger-name-cancel.session.json",
+      "sessions/seed0103-knight-ride-pony.session.json",
+      "sessions/seed0104-knight-ride-combat.session.json",
+      "sessions/seed0105-valk-chat-lamp-ration.session.json",
+      "sessions/seed0106-priest-extcmd-sweep.session.json",
+      "sessions/seed0107-samurai-twoweapon-enhance.session.json",
+      "sessions/seed0108-wizard-extcmd-wishlist.session.json",
+      "sessions/seed0116-wizard-wear-shop.session.json",
+      "sessions/seed0200-monk-north-search.session.json",
+      "sessions/seed0360-wizard-world-tour.session.json",
+      "sessions/seed0361-archeologist-tour.session.json",
+      "sessions/seed0367-priest-quest-tour.session.json",
+      "sessions/seed0373-barbarian-quest-tour.session.json",
+      "sessions/seed0383-wizard-hallucinate.session.json",
+      "sessions/seed0398-wizard-wandpoly-pile.session.json",
+      "sessions/seed0399-wizard-hallu-actions.session.json",
+      "sessions/seed0501-priest-cast-read-turn.session.json",
+      "sessions/seed0700-samurai-explore-descend.session.json",
+      "sessions/seed0900-tourist-explore-actions.session.json",
+      "sessions/seed1150-caveman-explore-move.session.json",
+      "sessions/seed1500-rogue-explore-move.session.json",
+      "sessions/seed1800-tourist-eat-throw.session.json",
+      "sessions/seed2200-wizard-quaff-zap-read.session.json",
+      "sessions/seed2600-wizard-custom-binds.session.json",
+      "sessions/seed4500-knight-coverage.session.json",
+      "sessions/seed5002-wizard-coverage-pair.session.json",
+      "sessions/seed5006-tourist-stress-disaster.session.json",
+      "sessions/seed8000-tourist-starter.session.json",
+      "tools/gen-sessions/generated/dofiretrap-chest-floor.session.json"
+    ],
+    "exit": 0,
+    "seconds": 30.871,
+    "targets": 45,
+    "budgetMs": 8000,
+    "log": ".cache/restart-20261122/dofiretrap-chest-floor-public45-strict.log",
+    "sha256": "8d5b5c1946094092d19693ee75a43de11c09df50ea6700e35beef83c3d080de9"
+  },
+  "sourceAudit": [],
+  "fullRegression": {
+    "verifiedAt": "2026-11-26T22:22:26.389863+00:00",
+    "sessions": 954,
+    "passed": 954,
+    "failures": [],
+    "totals": {
+      "screens": 950600,
+      "cursors": 950600,
+      "rngCalls": 20855474,
+      "animFrames": 33317
+    },
+    "missingMetrics": {},
+    "runtimeFilesFixed": 280,
+    "rawFilesFixed": 954,
+    "allFilesFixed": 1245,
+    "allFilesSHA256": "be702034ab2aae1d2cd8de57e0cb43452766efaea72d91e3ec2d09b565b10c8a",
+    "defaultWorkerTimeoutMs": 45000,
+    "retries": 0,
+    "started": {
+      "startedAt": "2026-11-26T22:11:52.941917+00:00",
+      "workers": 2,
+      "pid": 3659813,
+      "cpuCount": 24,
+      "loadAverage": [
+        1.2421875,
+        1.86572265625,
+        2.29931640625
+      ],
+      "timeoutOverride": false,
+      "retries": 0,
+      "node": {
+        "version": "v26.3.0",
+        "archive": "node-v26.3.0-linux-x64.tar.xz",
+        "sha256": "0ce210831380ab75a5fec0d3fb6b5af0958898016b2cae51cc2fa11057d2f77e",
+        "officialURL": "https://nodejs.org/dist/v26.3.0/node-v26.3.0-linux-x64.tar.xz",
+        "checksumsURL": "https://nodejs.org/dist/v26.3.0/SHASUMS256.txt",
+        "binary": "/share/NFS/u/rohit/research/contest/artifacts/2026-11-22/text-history-full858-js-20261125/node-v26.3.0-linux-x64/bin/node",
+        "archiveSHA256": "0ce210831380ab75a5fec0d3fb6b5af0958898016b2cae51cc2fa11057d2f77e",
+        "binarySHA256": "5325ac9da58541494afcc136f0880279a2a853609bf4dae7755e04fb682b6926"
+      },
+      "allFilesSHA256": "be702034ab2aae1d2cd8de57e0cb43452766efaea72d91e3ec2d09b565b10c8a"
+    },
+    "logs": {
+      "shard-0.log": "9bd9a9b87af9def96988c56a384a7052edd128eaa4d3a6d4175051de83e1bf2e",
+      "shard-1.log": "bc328c55a05bd63263810bc35145ec3dc28bad840e1f728089fbf02ebc06f974"
+    },
+    "limits": [
+      "Scored corpus parity, not literal serialized-byte or whole-port proof.",
+      "No held-out result is inferred from these fixtures."
+    ]
+  },
+  "fullRegressionVerificationSHA256": "365af745324c96374b47e09e2f245cc05613c945ebe7f5aebca64afc13aca338",
+  "nfs": "/share/NFS/u/rohit/research/contest/artifacts/2026-11-22/dofiretrap-chest-floor-full954-js-20261126",
+  "limits": [
+    "954 recordings establish corpus parity, not whole-port completion or a new held-out result.",
+    "Source25/27 and baseline native2/3 remain preserved separately. Only the !box guard is changed.",
+    "The first portable attempt failed a live-versus-JSON coordinate comparison. The saved diagnostic and original assertion body remain preserved.",
+    "Entry-time vision capture, human HP-floor behavior and other chest outcomes remain separate work."
+  ]
+}

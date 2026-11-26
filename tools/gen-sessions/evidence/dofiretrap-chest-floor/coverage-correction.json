@@ -1,0 +1,17 @@
+{
+  "createdAt": "2026-11-26T21:58:50.358981+00:00",
+  "beforeC": true,
+  "originalRecipeSHA256": "21764f1c38c3ddd93ca402da2dccac75b09d0ac48b601390757badfc7282ecbd",
+  "primaryRecipeSHA256": "b7c21e9f46180cbd8546ec60f062accc5571de0a33679c494f1df511423a9eda",
+  "sourceSealSHA256": "da788716cafe30043538a5aa22f5b942f961ec71a2434357d2cfbeaed391969e",
+  "onlyByteReplacement": {
+    "before": "\"items.containers\"",
+    "after": "\"object.tools-containers\""
+  },
+  "reason": "The source proposal used an unregistered coverage tag. Map it to the existing object.tools-containers id before C recording. Original recipe and observation remain immutable.",
+  "allInputFieldsAndPresenceUnchanged": true,
+  "allMovesUnchanged": true,
+  "allBranchPredicatesUnchanged": true,
+  "allOtherRootMetadataUnchanged": true,
+  "nativeRecordings": 0
+}

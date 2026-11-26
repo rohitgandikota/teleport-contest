@@ -1,0 +1,18 @@
+{
+  "command": [
+    "node",
+    "--preserve-symlinks",
+    "--preserve-symlinks-main",
+    "--max-old-space-size=512",
+    "/Users/rohit/research/code/contest/.cache/restart-20261122/dofiretrap-chest-floor-candidate/batch.mjs"
+  ],
+  "startedAt": "2026-11-26T22:05:11.409692+00:00",
+  "seconds": 4.269,
+  "exitCode": 0,
+  "timedOut": false,
+  "heapMiB": 512,
+  "wallLimitSeconds": 55,
+  "logSHA256": "637638c753dd283284b068cec6127faaefc65507ce0cb3f7fa6c5417c256419a",
+  "sequentialBatches": 1,
+  "newCExecutions": 0
+}

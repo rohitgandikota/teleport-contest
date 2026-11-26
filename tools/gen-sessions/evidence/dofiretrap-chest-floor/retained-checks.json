@@ -1,0 +1,12 @@
+{
+  "fire-trap-floor-objects-state-gate.mjs": {
+    "pass": true,
+    "cases": 6
+  },
+  "fire-light-source-ignition-state-gate.mjs": {
+    "pass": true,
+    "cases": 11
+  },
+  "unchangedBodies": true,
+  "isolatedCandidateRuntime": true
+}

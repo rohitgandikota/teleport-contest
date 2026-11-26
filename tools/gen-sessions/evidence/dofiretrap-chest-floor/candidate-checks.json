@@ -1,0 +1,19 @@
+{
+  "source": "27/27",
+  "neutrality": "6/6",
+  "native": "3/3",
+  "retainedGates": 2,
+  "completeOrdinaryNegatives": [
+    1,
+    2
+  ],
+  "completeNativeNegatives": [
+    1,
+    2
+  ],
+  "negativeHashes": 10,
+  "CExecutions": 0,
+  "runtimePaths": [
+    "js/trap.js"
+  ]
+}

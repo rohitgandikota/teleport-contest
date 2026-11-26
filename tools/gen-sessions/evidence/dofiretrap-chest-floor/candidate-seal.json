@@ -1,0 +1,48 @@
+{
+  "members": 334,
+  "manifestSHA256": "5dcc4d86726a5600d5bd72e0c23853a30f89c97c80f8d5bdeb9df4ce5bc64e76",
+  "runtimeSHA256": "aa0b26dc728a26dd34229e6cc8c69ba9cc8be853501456907e20e97cb5a0aed5",
+  "baselineRuntimeSHA256": "60f1559001e34cad6b64b30a572b47f3fe74e704a33716cb0a53a1dde3ef9f18",
+  "patchSHA256": "9338606d9ffa2cbe1733340042c7d9c7ddd3f41594f675a8bbb83b338d42859c",
+  "originalSourceSealSHA256": "da788716cafe30043538a5aa22f5b942f961ec71a2434357d2cfbeaed391969e",
+  "recipeSHA256": "b7c21e9f46180cbd8546ec60f062accc5571de0a33679c494f1df511423a9eda",
+  "correctionLockSHA256": "69030cf7c179f283a16fe09adabb55d3c3c42f66cfdae135394eef432c85821e",
+  "rawSHA256": "e822528540fa739189e0743021e04c0f7f5c851e952ad11e4fca683c1fedcfef",
+  "nativeReportSHA256": "8a0bbebb2a0a2135c5440c64a8cc8b18834d83b1e5b28217442f1f3859c07fb6",
+  "ordinaryReportSHA256": "6aa421ef394f9299cd3afe6599bfd7cdb1cded1580d57b54d4334fc9af010dda",
+  "runtimePaths": [
+    "js/trap.js"
+  ],
+  "originalSource": "25/27",
+  "source": "27/27",
+  "nativeBefore": "2/3",
+  "nativeAfter": "3/3",
+  "completeNegativeRows": [
+    1,
+    2
+  ],
+  "negativeHashes": 10,
+  "retainedGates": 2,
+  "newCExecutions": 0,
+  "portablePromotionPending": true,
+  "remainingLimits": [
+    "entry-time see_it versus later Blind",
+    "separate underwater return",
+    "human HP floor and other chest outcomes"
+  ],
+  "verification": {
+    "runtimeMembers": 280,
+    "runtimeChanges": [
+      "js/trap.js"
+    ],
+    "source": "27/27",
+    "neutrality": "6/6",
+    "native": "3/3",
+    "retainedGates": 2,
+    "negativeHashes": 10,
+    "completeNegativeRows": 2,
+    "keys": 156,
+    "boundaries": 159,
+    "newCExecutions": 0
+  }
+}

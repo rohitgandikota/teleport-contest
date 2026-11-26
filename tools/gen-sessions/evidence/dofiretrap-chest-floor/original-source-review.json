@@ -1,0 +1,48 @@
+{
+  "classification": "Source-confirmed omission; ordinary positive reach not established",
+  "baselineCommit": "b939e5a6bb331758858bb54c6545b2355a6864cc",
+  "owner": "src/trap.c:4233 dofiretrap",
+  "sourcePredicate": "!box && burn_floor_objects(u.ux,u.uy,see_it,TRUE) && !see_it",
+  "currentJSPredicate": "await burn_floor_objects(game.u.ux,game.u.uy,!Blind(),true) && Blind()",
+  "gap": "The box guard is missing. Chest fire therefore runs floor consumption and ignition that original C skips. Entry-time see_it capture is a separate adjacent difference and has not been attributed to a real blind-state transition.",
+  "completeOwnersRead": [
+    "C trap.c:4233-4314 dofiretrap",
+    "JS trap.js:387-459 dofiretrap",
+    "C trap.c:6294-6503 chest_trap",
+    "JS trap.js:461-573 chest_trap",
+    "C zap.c:4598-4667 burn_floor_objects",
+    "JS zap.js:4469-4522 burn_floor_objects",
+    "C apply.c:1577-1628 catch_lit",
+    "JS apply.js:1667-1703 catch_lit"
+  ],
+  "callerRead": [
+    "C pickup.c:2972-3020 use_container trap entry",
+    "JS pickup.js:2264-2292 use_container trap entry",
+    "C pickup.c:3954-3993 tipcontainer_checks trap entry",
+    "JS pickup.js:1409-1430 tipcontainer_checks trap entry",
+    "C apply.c:4271-4278 held use_container dispatch",
+    "JS apply.js:3597-3608 held use_container dispatch",
+    "C u_init.c:767-772 Valkyrie lamp producer"
+  ],
+  "existingProducer": {
+    "recipe": "tools/gen-sessions/recipes/trap-door-container.json",
+    "raw": "tools/gen-sessions/generated/trap-door-container.session.json",
+    "segment": 5,
+    "seed": 7037,
+    "keys": 55,
+    "note": "Existing named family description identifies this last segment as fire chest. This segment has not yet been checked for ground fuel, so it cannot witness the omitted guard by itself."
+  },
+  "sourceTestPlan": [
+    "Preserve the existing original fire chest as an unchanged control.",
+    "Use actual wishes/drop/loot to place eligible paper or an unlit fuel source under the hero and trigger a real trapped chest.",
+    "Before replay, lock all five input fields and their presence, all keys, producer assertions, intended negative cases and unfiltered output comparison.",
+    "A setup passes only with actual pre-trigger paper/fuel and actual chest-fire dispatch; do not infer dispatch from the species or object name.",
+    "If a fixed bounded proposal misses the fire branch, retain that failure. Do not search seeds or mutate an RNG state to force it.",
+    "A floor-fire comparison should still consume/ignite floor items; chest-fire source expectation is that floor items remain."
+  ],
+  "nativeRecordings": 0,
+  "gameplayRuns": 0,
+  "runtimeEdits": 0,
+  "inspectionDiagnostic": "Initial recipe metadata query assumed every segment has name and raised KeyError. Repeated read used optional names; original presence is unchanged.",
+  "producerDerivation": "Original raw segment5 confirms real fire plus carried oil-lamp ignition. The C Valkyrie startup supplies an oil lamp on rn2(6)==0. Replacing df with de drops that existing lamp; replacing loot with af opens the retained chest. No new wish, seed, RNG hook or inventory mutation is added. Actual dispatch and chest load/turn effects are unresolved until this sole batch."
+}

@@ -1,0 +1,276 @@
+{
+  "createdAt": "2026-11-26T21:57:07.365880+00:00",
+  "beforeGameplay": true,
+  "files": {
+    "probe.mjs": "9f11173b0a3cbd82a2d87c83dffa65c3c996fad12d29fd09debd1d20248a6c7e",
+    "recipe.json": "21764f1c38c3ddd93ca402da2dccac75b09d0ac48b601390757badfc7282ecbd",
+    "predictions.json": "308999f0ab6195ea7b41169c192cd569d7cbdb85b0d561e4a8f47014cb5f538f",
+    "runtime.json": "60f1559001e34cad6b64b30a572b47f3fe74e704a33716cb0a53a1dde3ef9f18",
+    "source-pins.json": "629879abc900c6a13c7d392daa633f4f439e04b434791fc39a9f080abadff75c",
+    "source-review.json": "ce82376070b4145640da99871bf6e7c4ffa1a8fa2657302c3e3e8247bd587c51",
+    "package.json": "2cf11600dde45377115ca285655e2c049f8a4f1f126e5e0264df1419b094a6e4"
+  },
+  "fields": [
+    "name",
+    "seed",
+    "datetime",
+    "nethackrc",
+    "moves"
+  ],
+  "tuples": [
+    [
+      {
+        "field": "name",
+        "present": true,
+        "value": "held-chest-ground-lamp"
+      },
+      {
+        "field": "seed",
+        "present": true,
+        "value": 7037
+      },
+      {
+        "field": "datetime",
+        "present": true,
+        "value": "20000112090000"
+      },
+      {
+        "field": "nethackrc",
+        "present": true,
+        "value": "OPTIONS=name:wizard,role:Valkyrie,race:human,gender:female,align:lawful,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n"
+      },
+      {
+        "field": "moves",
+        "present": true,
+        "value": " \u0017uncursed trapped unlocked empty chest\rde\u0005af ....\u0006"
+      }
+    ],
+    [
+      {
+        "field": "name",
+        "present": false
+      },
+      {
+        "field": "seed",
+        "present": true,
+        "value": 7037
+      },
+      {
+        "field": "datetime",
+        "present": true,
+        "value": "20000112090000"
+      },
+      {
+        "field": "nethackrc",
+        "present": true,
+        "value": "OPTIONS=name:wizard,role:Valkyrie,race:human,gender:female,align:lawful,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n"
+      },
+      {
+        "field": "moves",
+        "present": true,
+        "value": " \u0017uncursed trapped unlocked empty chest\rdf\u0005#loot\r ....\u0006"
+      }
+    ],
+    [
+      {
+        "field": "name",
+        "present": true,
+        "value": "held-chest-ground-lamp-look"
+      },
+      {
+        "field": "seed",
+        "present": true,
+        "value": 7037
+      },
+      {
+        "field": "datetime",
+        "present": true,
+        "value": "20000112090000"
+      },
+      {
+        "field": "nethackrc",
+        "present": true,
+        "value": "OPTIONS=name:wizard,role:Valkyrie,race:human,gender:female,align:lawful,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n"
+      },
+      {
+        "field": "moves",
+        "present": true,
+        "value": " \u0017uncursed trapped unlocked empty chest\rde\u0005:\u001b\u001b\u001b\u001b\u001b\u001b"
+      }
+    ]
+  ],
+  "keys": [
+    [
+      32,
+      23,
+      117,
+      110,
+      99,
+      117,
+      114,
+      115,
+      101,
+      100,
+      32,
+      116,
+      114,
+      97,
+      112,
+      112,
+      101,
+      100,
+      32,
+      117,
+      110,
+      108,
+      111,
+      99,
+      107,
+      101,
+      100,
+      32,
+      101,
+      109,
+      112,
+      116,
+      121,
+      32,
+      99,
+      104,
+      101,
+      115,
+      116,
+      13,
+      100,
+      101,
+      5,
+      97,
+      102,
+      32,
+      46,
+      46,
+      46,
+      46,
+      6
+    ],
+    [
+      32,
+      23,
+      117,
+      110,
+      99,
+      117,
+      114,
+      115,
+      101,
+      100,
+      32,
+      116,
+      114,
+      97,
+      112,
+      112,
+      101,
+      100,
+      32,
+      117,
+      110,
+      108,
+      111,
+      99,
+      107,
+      101,
+      100,
+      32,
+      101,
+      109,
+      112,
+      116,
+      121,
+      32,
+      99,
+      104,
+      101,
+      115,
+      116,
+      13,
+      100,
+      102,
+      5,
+      35,
+      108,
+      111,
+      111,
+      116,
+      13,
+      32,
+      46,
+      46,
+      46,
+      46,
+      6
+    ],
+    [
+      32,
+      23,
+      117,
+      110,
+      99,
+      117,
+      114,
+      115,
+      101,
+      100,
+      32,
+      116,
+      114,
+      97,
+      112,
+      112,
+      101,
+      100,
+      32,
+      117,
+      110,
+      108,
+      111,
+      99,
+      107,
+      101,
+      100,
+      32,
+      101,
+      109,
+      112,
+      116,
+      121,
+      32,
+      99,
+      104,
+      101,
+      115,
+      116,
+      13,
+      100,
+      101,
+      5,
+      58,
+      27,
+      27,
+      27,
+      27,
+      27,
+      27
+    ]
+  ],
+  "negativeIndexes": [
+    1,
+    2
+  ],
+  "runtimeSHA256": "60f1559001e34cad6b64b30a572b47f3fe74e704a33716cb0a53a1dde3ef9f18",
+  "sourceExpectations": "C skips floor burn/ignite when box is non-null. Carried fuel remains eligible. Existing known fire seed is reused without seed search; actual held fire reach is a setup assertion.",
+  "plannedBatches": 1,
+  "maxHeapMB": 512,
+  "timeoutSeconds": 55,
+  "nativeRecordings": 0
+}

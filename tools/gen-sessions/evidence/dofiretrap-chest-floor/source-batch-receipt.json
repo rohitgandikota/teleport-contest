@@ -1,0 +1,16 @@
+{
+  "startedAt": "2026-11-26T21:57:07.369088+00:00",
+  "command": [
+    "node",
+    "--max-old-space-size=512",
+    "--preserve-symlinks",
+    "--preserve-symlinks-main",
+    ".cache/restart-20261122/dofiretrap-chest-floor-source-audit/probe.mjs"
+  ],
+  "inputLockSHA256": "6a3f746f51cf2abd70a32d34466ec0a1914ef7dd19c836580e508838d48f1e14",
+  "timeoutSeconds": 55,
+  "maxHeapMB": 512,
+  "exit": 1,
+  "seconds": 1.964,
+  "logSHA256": "b3284aaad574f33ba4cfc620e200565b6d1ebc8f1130b9510532cc310360912c"
+}

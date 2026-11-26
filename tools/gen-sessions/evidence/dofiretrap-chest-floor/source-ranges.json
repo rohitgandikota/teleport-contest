@@ -1,0 +1,86 @@
+[
+  {
+    "path": "../../../nethack-c/upstream/src/trap.c",
+    "first": 4233,
+    "last": 4314,
+    "fileSHA256": "1f6af30bbd0b75a2e4c043098355c1f4eff2a841de27aecdc9f47343d4d5402c",
+    "rangeSHA256": "6d240402756a839d568d28f3a2abf013f65001dbd40abb2f429909b0582159bf"
+  },
+  {
+    "path": "js/trap.js",
+    "first": 387,
+    "last": 458,
+    "fileSHA256": "18eb99434123e26e1b3e697111543c5c8ec0fac317897623409c113b6a86b66d",
+    "rangeSHA256": "d4d7cc37c37c6406e044c7c5ed8b9541ffa6a09d3d5c34ae8dfb0a95ff02ae62"
+  },
+  {
+    "path": "../../../nethack-c/upstream/src/trap.c",
+    "first": 6294,
+    "last": 6499,
+    "fileSHA256": "1f6af30bbd0b75a2e4c043098355c1f4eff2a841de27aecdc9f47343d4d5402c",
+    "rangeSHA256": "6b674b896acfbdefdb5399dd76ae39364f417c1dfb1cbc53761c6573aed452b0"
+  },
+  {
+    "path": "js/trap.js",
+    "first": 461,
+    "last": 570,
+    "fileSHA256": "18eb99434123e26e1b3e697111543c5c8ec0fac317897623409c113b6a86b66d",
+    "rangeSHA256": "e6e8c58fc42381bf053c0066210761bfc923b8256bf3ab45a109947ed2904f7e"
+  },
+  {
+    "path": "../../../nethack-c/upstream/src/trap.c",
+    "first": 7161,
+    "last": 7172,
+    "fileSHA256": "1f6af30bbd0b75a2e4c043098355c1f4eff2a841de27aecdc9f47343d4d5402c",
+    "rangeSHA256": "cd5d0dcdbfc51e56195723e0d2f88222deb85f192ff9f2c98b7b45784e5f90d7"
+  },
+  {
+    "path": "js/trap.js",
+    "first": 377,
+    "last": 384,
+    "fileSHA256": "18eb99434123e26e1b3e697111543c5c8ec0fac317897623409c113b6a86b66d",
+    "rangeSHA256": "9de28cf5cf57bcf45b661f09bac79dab77e52209c26417ffbc57e2b1dc4bb3ce"
+  },
+  {
+    "path": "../../../nethack-c/upstream/src/zap.c",
+    "first": 4598,
+    "last": 4658,
+    "fileSHA256": "8ee02bd7aa29b026d6b5a2e0017ddf402fcfc6fc81037e35ceda2d86467547cb",
+    "rangeSHA256": "605cdf1c15943880708655bf3048d149926be82d3cb7cf34d484b052326493a9"
+  },
+  {
+    "path": "js/zap.js",
+    "first": 4469,
+    "last": 4520,
+    "fileSHA256": "45ef0a3d639924ae698a4b2860accc082d1e9669dcd0080a9f8fb662d1280f24",
+    "rangeSHA256": "b6347f5e4f124d9ec6653923445bff03023e2c184eef6efc9083c16780998bd9"
+  },
+  {
+    "path": "../../../nethack-c/upstream/src/apply.c",
+    "first": 1577,
+    "last": 1625,
+    "fileSHA256": "3599e3ce2ea7ce4dac10730dc1a5496114a363dc951d5c1f0289a8575b40e24b",
+    "rangeSHA256": "9fd3bee76d385cfafcd69d3784dc127760968e5ea8564ed9e104c2327e7fe914"
+  },
+  {
+    "path": "js/apply.js",
+    "first": 1667,
+    "last": 1701,
+    "fileSHA256": "800ddff0c6168390e4c0c566e06f1c8de33962e7ac2e898f012c36f5d17bf6e4",
+    "rangeSHA256": "9f231cb7ae3511e47d6ed6db43e5f0c6a3754cda367fda66e622ae052fa9ddea"
+  },
+  {
+    "path": "../../../nethack-c/upstream/src/pickup.c",
+    "first": 2972,
+    "last": 3020,
+    "fileSHA256": "915da0f8fce16461cc42a0035f7ef3e9847fc8f8ee3708a7f017ad6587383134",
+    "rangeSHA256": "233e78a5047c2325912a864b56f1e333cf90bd84ad4f79ad9780dfd0c46e9dc6"
+  },
+  {
+    "path": "js/pickup.js",
+    "first": 2264,
+    "last": 2292,
+    "fileSHA256": "a5fec458919aff2173fd97e4a742eefd7b337f76986ab56ec686e5dcd2614927",
+    "rangeSHA256": "27dd153bfe06c14ed47cf3345429936b8cbe945541e2542c0cf17d3823913da2"
+  }
+]
